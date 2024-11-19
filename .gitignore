@@ -1,0 +1,48 @@
+# Visual Studio相关文件
+.vs/
+*.user
+*.suo
+
+# 构建输出文件夹
+bin/
+obj/
+
+# NuGet 包
+*.nupkg
+packages/
+# 如果运行`dotnet restore`，不需要将packages.lock.json加入版本控制
+#dependencies.lock.json
+
+# .NET 项目的编译输出
+project.lock.json
+project.fragment.lock.json
+
+# 临时文件
+*.tmp
+*.temp
+
+# 迁移生成文件
+Migrations/
+
+# Rider 文件
+.idea/
+
+# ReSharper文件
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# Mac files
+*.DS_Store
+
+# Windows 文件
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# 备份文件
+*.bak
+*.swp
+*~
+
+# 用于发布的发布输出
+publish/
