@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
+    <Folder Include="Data\PlotData\" />
     <Folder Include="Helpers\" />
   </ItemGroup>
 

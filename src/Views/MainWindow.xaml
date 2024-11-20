@@ -34,7 +34,11 @@
                 <TreeView Margin="2">
                     <TreeViewItem Header="岩浆岩">
                         <TreeViewItem Header="构造环境">
-                            <TreeViewItem Header="Pearce (1982)" />
+                            <TreeViewItem Header="Pearce (1982)">
+                                <TreeViewItem.InputBindings>
+                                    <MouseBinding Gesture="LeftClick" Command="{Binding TestCommand}"/>
+                                </TreeViewItem.InputBindings>
+                            </TreeViewItem>
                             <TreeViewItem Header="Pearce (2006)" />
                         </TreeViewItem>
                     </TreeViewItem>
@@ -67,12 +71,22 @@
                             </WrapPanel>
                         </Border>-->
                         <TabControl>
-                            <TabItem Header="绘图">
-                                <ScottPlot:WpfPlot Name="WpfPlot1"/>
-                            </TabItem>
-                            <TabItem Header="指南">
-                                <TextBlock FontSize="30" Text="内容" />
-                            </TabItem>
+                        <TabItem Header="绘图">
+                            <ScottPlot:WpfPlot Name="WpfPlot1"/>
+                        </TabItem>
+                        <TabItem Header="指南">
+                            <RichTextBox IsReadOnly="True" BorderThickness="1">
+                                <FlowDocument>
+                                    <Paragraph>
+                                        <Hyperlink NavigateUri="https://github.com/MahApps/MahApps.Metro">
+                                            <Run Text="Normal" />
+                                        </Hyperlink>
+                                        <LineBreak />
+                                        <Run>Cupcake ipsum dolor sit amet dessert halvah dessert. Chocolate oat cake carrot cake sweet dragée gummi bears chocolate.</Run>
+                                    </Paragraph>
+                                </FlowDocument>
+                            </RichTextBox>
+                        </TabItem>
                         </TabControl>
                     <!--</StackPanel>-->
                 </GroupBox>
