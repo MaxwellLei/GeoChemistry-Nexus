@@ -22,7 +22,7 @@ namespace GeoChemistryNexus.ViewModels
 {
     public partial class MainWindowViewModel: ObservableObject
     {
-        //图层选中列表
+        // 图层选中列表
         private IList<PlotItemModel> _previousSelectedItems;
 
         // 添加一个标志来防止递归更新属性
@@ -40,21 +40,55 @@ namespace GeoChemistryNexus.ViewModels
         private ObservableCollection<PlotItemModel> _basePlotItems;
 
         /// <summary>
-        /// 线属性
+        /// 公共属性
         /// </summary>
 
-        // 线条类型
+        // 线是否可见
         [ObservableProperty]
-        private int _plotLineType;
+        private bool _plotVisible;
 
-        // 线宽度
+        // 线点 宽度-大小
         [ObservableProperty]
-        private float _plotLineWidth;
+        private float _plotWidth;
 
-        // 线颜色
+        // 线条/字体类型
         [ObservableProperty]
-        private ScottPlot.Color _plotLineColor;
+        private int _plotType;
 
+        // 线-文本绘制颜色
+        [ObservableProperty]
+        private ScottPlot.Color _plotColor;
+
+        
+
+        /// <summary>
+        /// 文本属性
+        /// </summary>
+
+        // 文本字体列表
+        [ObservableProperty]
+        private List<string> _plotTextFontNames;
+
+        // 当前文本字体
+        [ObservableProperty]
+        private int _plotTextFontName;
+
+        // 当前文本内容
+        [ObservableProperty]
+        private string _plotTextContent;
+
+
+        /// <summary>
+        /// 属性面板显示
+        /// </summary>
+
+        // 是否显示边界属性
+        [ObservableProperty]
+        private bool _plotLineShow = false;
+
+        // 是否显示文本属性
+        [ObservableProperty]
+        private bool _plotTextShow = false;
 
 
         // 初始化
@@ -62,8 +96,46 @@ namespace GeoChemistryNexus.ViewModels
             WpfPlot1 = wpfPlot;     // 获取绘图控件
             BasePlotItems = new ObservableCollection<PlotItemModel>();      // 初始化底图列表
             _previousSelectedItems = new List<PlotItemModel>();     // 初始化图层选中对象
+            _plotTextFontNames = new List<string>();        // 字体集合
         }
 
+        // 设置显示属性
+        private void SetTrue(string key)
+        {
+            if (key == null)
+            {
+                PlotLineShow = false;
+                PlotTextShow = false;
+                return;
+            }
+
+            if (key == "PlotLine")
+            {
+                PlotLineShow = true;
+                PlotTextShow = false;
+            }
+            else
+            {
+                PlotLineShow = false;
+                PlotTextShow = true;
+            }
+        }
+
+
+        // 查找字体
+        private int FindFontNameIndex(string currentFontName)
+        {
+            // 如果当前字体名为空，返回0或其他默认值
+            if (string.IsNullOrEmpty(currentFontName))
+                return 0;
+
+            // 在字体列表中查找当前字体的索引
+            int index = PlotTextFontNames.FindIndex(name =>
+                name.Equals(currentFontName, StringComparison.OrdinalIgnoreCase));
+
+            // 如果找不到，返回0或其他默认值
+            return index >= 0 ? index : 0;
+        }
 
         // 刷新图层列表
         private void PopulatePlotItems(List<IPlottable> plottables)
@@ -96,8 +168,54 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
-        // 改变 LinePlot 线宽
-        partial void OnPlotLineTypeChanged(int value)
+        // 改变 Text 文本内容
+        partial void OnPlotTextContentChanged(string value)
+        {
+            // 如果是在更新属性值，则不执行更新_plotLineType
+            if (_isUpdatingLineWidth)
+                return;
+
+            // 更新当前选中图层的线宽
+            if (_previousSelectedItems != null && _previousSelectedItems.Any())
+            {
+                foreach (var item in _previousSelectedItems)
+                {
+                    if (item.TypeName == "Text")
+                    {
+                        var text = (ScottPlot.Plottables.Text)item.Plottable;
+                        text.LabelText = value;
+                    }
+                }
+                // 刷新图形
+                WpfPlot1.Refresh();
+            }
+        }
+
+        // 改变 Text 文本字体
+        partial void OnPlotTextFontNameChanged(int value)
+        {
+            // 如果是在更新属性值，则不执行更新_plotLineType
+            if (_isUpdatingLineWidth)
+                return;
+
+            // 更新当前选中图层的线宽
+            if (_previousSelectedItems != null && _previousSelectedItems.Any())
+            {
+                foreach (var item in _previousSelectedItems)
+                {
+                    if (item.TypeName == "Text")
+                    {
+                        var text = (ScottPlot.Plottables.Text)item.Plottable;
+                        text.LabelFontName = PlotTextFontNames[value];
+                    }
+                }
+                // 刷新图形
+                WpfPlot1.Refresh();
+            }
+        }
+
+        // 改变 绘图对象 可见性
+        partial void OnPlotVisibleChanged(bool value)
         {
             // 如果是在更新属性值，则不执行更新_plotLineType
             if (_isUpdatingLineWidth)
@@ -111,7 +229,46 @@ namespace GeoChemistryNexus.ViewModels
                     if (item.TypeName == "LinePlot")
                     {
                         var linePlot = (LinePlot)item.Plottable;
-                        linePlot.LineStyle.Pattern = LinePattern.DenselyDashed;
+                        linePlot.IsVisible = value;
+                    }
+                    if (item.TypeName == "Text")
+                    {
+                        var text = (ScottPlot.Plottables.Text)item.Plottable;
+                        text.IsVisible = value;
+                    }
+                }
+                // 刷新图形
+                WpfPlot1.Refresh();
+            }
+        }
+
+        // 改变 LinePlot 线类型
+        partial void OnPlotTypeChanged(int value)
+        {
+            // 如果是在更新属性值，则不执行更新_plotLineType
+            if (_isUpdatingLineWidth)
+                return;
+
+            // 更新当前选中图层的线宽
+            if (_previousSelectedItems != null && _previousSelectedItems.Any())
+            {
+                foreach (var item in _previousSelectedItems)
+                {
+                    if (item.TypeName == "LinePlot")
+                    {
+                        var linePlot = (LinePlot)item.Plottable;
+                        if (PlotType == 0){linePlot.LineStyle.Pattern = LinePattern.Solid;}
+                        if (PlotType == 1) { linePlot.LineStyle.Pattern = LinePattern.Dashed; }
+                        if (PlotType == 2) { linePlot.LineStyle.Pattern = LinePattern.DenselyDashed; }
+                        if (PlotType == 3) { linePlot.LineStyle.Pattern = LinePattern.Dotted; }
+                    }
+
+                    if (item.TypeName == "Text")
+                    {
+                        var text = (ScottPlot.Plottables.Text)item.Plottable;
+                        if (PlotType == 0) { text.LabelStyle.Bold = false; text.LabelStyle.Italic = false;}
+                        if (PlotType == 1) { text.LabelStyle.Bold = true; }
+                        if (PlotType == 2) { text.LabelStyle.Italic = true; }
                     }
                 }
                 // 刷新图形
@@ -121,7 +278,7 @@ namespace GeoChemistryNexus.ViewModels
 
 
         // 改变 LinePlot 线宽
-        partial void OnPlotLineWidthChanged(float value)
+        partial void OnPlotWidthChanged(float value)
         {
             // 如果是在更新属性值，则不执行更新
             if (_isUpdatingLineWidth)
@@ -135,8 +292,12 @@ namespace GeoChemistryNexus.ViewModels
                     if (item.TypeName == "LinePlot")
                     {
                         var linePlot = (LinePlot)item.Plottable;
-                        item.Tag = value;  // 更新保存的原始线宽
                         linePlot.LineWidth = value;
+                    }
+                    if (item.TypeName == "Text")
+                    {
+                        var text = (ScottPlot.Plottables.Text)item.Plottable;
+                        text.LabelFontSize = value;
                     }
                 }
                 // 刷新图形
@@ -145,7 +306,7 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         // 改变 LinePlot 颜色
-        partial void OnPlotLineColorChanged(ScottPlot.Color value)
+        partial void OnPlotColorChanged(ScottPlot.Color value)
         {
             // 如果是在更新属性值，则不执行更新
             if (_isUpdatingLineWidth)
@@ -161,6 +322,11 @@ namespace GeoChemistryNexus.ViewModels
                         var linePlot = (LinePlot)item.Plottable;
                         linePlot.LineColor = value;
                     }
+                    if (item.TypeName == "Text")
+                    {
+                        var text = (ScottPlot.Plottables.Text)item.Plottable;
+                        text.LabelFontColor = value;
+                    }
                 }
                 // 刷新图形
                 WpfPlot1.Refresh();
@@ -168,14 +334,20 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         // LinePlot 属性匹配
-        private void GetLinePlotAttributeMapping(PlotItemModel plotItem)
+        private void GetLinePlotAttributeMapping(LinePlot linePlot)
         {
             _isUpdatingLineWidth = true;  // 设置标志，防止触发更新
             try
             {
-                PlotLineWidth = ((LinePlot)plotItem.Plottable).LineWidth;
-                PlotLineColor = ((LinePlot)plotItem.Plottable).LineColor;
-                OnPropertyChanged(nameof(PlotLineWidth));  // 手动触发属性更新
+                PlotWidth = linePlot.LineWidth;     // 匹配线宽
+                PlotColor = linePlot.LineColor;     // 匹配线的颜色
+                // 匹配线的样式
+                if (linePlot.LinePattern.Name == LinePattern.Solid.Name) { PlotType = 0; }
+                if (linePlot.LinePattern.Name == LinePattern.Dashed.Name) { PlotType = 1; }
+                if (linePlot.LinePattern.Name == LinePattern.DenselyDashed.Name) { PlotType = 2; }
+                if (linePlot.LinePattern.Name == LinePattern.Dotted.Name) { PlotType = 3; }
+                PlotVisible = linePlot.IsVisible;       // 匹配可见性
+                //OnPropertyChanged(nameof(PlotLineWidth));  // 手动触发属性更新
             }
             finally
             {
@@ -183,44 +355,49 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
-        // LinePlot 高亮显示
-        private void LinePlotHighlight(PlotItemModel plotItem, bool Highlight)
-        {
-            var linePlot = (LinePlot)plotItem.Plottable;
-            if (Highlight)
-            {
-                // 保存原始颜色到 Tag
-                plotItem.Tag = linePlot.LineColor;
-            }
-            else
-            {
-                // 恢复原始颜色
-                linePlot.LineColor = (ScottPlot.Color)plotItem.Tag;
-            }
-        }
-
         // Text 属性匹配
-        private void GetTextAttributeMapping(PlotItemModel plotItem)
+        private void GetTextAttributeMapping(ScottPlot.Plottables.Text text)
         {
-            //PlotLineWidth = ((Text)plotItem.Plottable).LineWidth;
-            //PlotLineColor = ((Text)plotItem.Plottable).LineColor;
+            _isUpdatingLineWidth = true;  // 设置标志，防止触发更新
+            try
+            {
+                PlotVisible = text.IsVisible;       // 匹配可见性
+
+                PlotWidth = text.LabelFontSize;     // 匹配文本大小
+
+                // 匹配字体
+                // 获取系统所有字体
+                PlotTextFontNames = System.Drawing.FontFamily.Families
+                    .Select(f => f.Name)
+                    .OrderBy(name => name)
+                    .ToList();
+
+                // 当前字体
+                PlotTextFontName = FindFontNameIndex(text.LabelFontName);
+
+                // 匹配字体的样式
+                if (text.LabelStyle.Italic == true) { PlotType = 2; }
+                if (text.LabelStyle.Bold == true) { PlotType = 1; } else
+                {
+                    PlotType = 0;
+                }
+
+                PlotColor = text.LabelFontColor;        // 匹配字体颜色
+                PlotTextContent = text.LabelText;       // 匹配文本内容
+
+
+            }
+            finally
+            {
+                _isUpdatingLineWidth = false;  // 确保标志被重置
+            }
         }
 
-        // Text 高亮显示
-        private void TextHighlight(PlotItemModel plotItem, bool Highlight)
+        // 文本更新改变
+        [RelayCommand]
+        public void RefreshText()
         {
-            var text = (ScottPlot.Plottables.Text)plotItem.Plottable;
-
-            if (Highlight)
-            {
-                // 保存原始颜色到 Tag
-                plotItem.Tag = text.Color;
-            }
-            else
-            {
-                // 恢复原始颜色
-                text.Color = (ScottPlot.Color)plotItem.Tag;
-            }
+            OnPlotTextContentChanged(PlotTextContent);
         }
 
         // 图层对象选择
@@ -232,6 +409,7 @@ namespace GeoChemistryNexus.ViewModels
             {
                 foreach (var item in BasePlotItems)
                 {
+                    SetTrue(null);
                     if (item.TypeName == "LinePlot")
                     {
                         var linePlot = (LinePlot)item.Plottable;
@@ -254,12 +432,12 @@ namespace GeoChemistryNexus.ViewModels
                 if (item.TypeName == "LinePlot")
                 {
                     var linePlot = (LinePlot)item.Plottable;
-                    linePlot.LineColor = linePlot.LineColor.WithAlpha(0.3f); // 降低透明度
+                    linePlot.LineColor = linePlot.LineColor.WithAlpha(0.5f); // 降低透明度
                 }
                 else if (item.TypeName == "Text")
                 {
                     var text = (ScottPlot.Plottables.Text)item.Plottable;
-                    text.Color = text.Color.WithAlpha(0.3f); // 降低透明度
+                    text.Color = text.Color.WithAlpha(0.5f); // 降低透明度
                 }
             }
 
@@ -272,13 +450,15 @@ namespace GeoChemistryNexus.ViewModels
                     {
                         var linePlot = (LinePlot)plotItem.Plottable;
                         linePlot.LineColor = linePlot.LineColor.WithAlpha(1f); // 完全不透明
-                        GetLinePlotAttributeMapping(plotItem);
+                        SetTrue("PlotLine");
+                        GetLinePlotAttributeMapping(linePlot);
                     }
                     else if (plotItem.TypeName == "Text")
                     {
                         var text = (ScottPlot.Plottables.Text)plotItem.Plottable;
                         text.Color = text.Color.WithAlpha(1f); // 完全不透明
-                        GetTextAttributeMapping(plotItem);
+                        SetTrue("PlotText");
+                        GetTextAttributeMapping(text);
                     }
                 }
             }

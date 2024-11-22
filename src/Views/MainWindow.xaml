@@ -15,6 +15,7 @@
         Title="MainWindow" Height="720" Width="1200">
     <mahc:MetroWindow.Resources>
         <converters:ColorConverter x:Key="ColorConverter"/>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </mahc:MetroWindow.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -143,37 +144,96 @@
                 <GridSplitter Grid.Row="1" Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                      ResizeBehavior="PreviousAndNext"/>
                 <GroupBox Header="属性面板" Grid.Row="2">
-                    <StackPanel Margin="8">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="0.3*"/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <TextBlock Text="线条类型" VerticalAlignment="Center"/>
-                            <ComboBox Grid.Column="1" SelectedIndex="{Binding PlotLineType}">
-                                <ComboBox.Items>
-                                    <ComboBoxItem Content="实线 (Solid)"/>
-                                    <ComboBoxItem Content="虚线 (Dash)"/>
-                                    <ComboBoxItem Content="点线 (DashDot)"/>
-                                    <ComboBoxItem Content="点点线(DashDotDot)"/>
-                                    <ComboBoxItem Content="点状 (Dot)"/>
-                                </ComboBox.Items>
-                            </ComboBox>
+                    <Grid>
+                        <!--文本属性设置面板-->
+                        <StackPanel Margin="8" Visibility="{Binding PlotTextShow, 
+                            Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.3*"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="是否可见" VerticalAlignment="Center"/>
+                                <CheckBox Grid.Column="1" IsChecked="{Binding PlotVisible}"/>
 
-                            <TextBlock Text="宽度" VerticalAlignment="Center" Grid.Row="1" Margin="0 5"/>
-                            <mahc:NumericUpDown Grid.Row="1" Grid.Column="1" Value="{Binding PlotLineWidth,Mode=TwoWay}"
+                                <TextBlock Text="字体" VerticalAlignment="Center" Grid.Row="1" Margin="0 5"/>
+                                <ComboBox Grid.Column="1" SelectedIndex="{Binding PlotTextFontName}" Grid.Row="1" 
+                                          ItemsSource="{Binding PlotTextFontNames}" Margin="0 5"/>
+
+                                <TextBlock Text="字体样式" VerticalAlignment="Center" Grid.Row="2"/>
+                                <ComboBox Grid.Column="1" SelectedIndex="{Binding PlotType}" Grid.Row="2">
+                                    <ComboBox.Items>
+                                        <ComboBoxItem Content="默认 (Normal)"/>
+                                        <ComboBoxItem Content="加粗 (Bold)"/>
+                                        <ComboBoxItem Content="斜体 (Italic)"/>
+                                    </ComboBox.Items>
+                                </ComboBox>
+
+                                <TextBlock Text="字体大小" VerticalAlignment="Center" Grid.Row="3" Margin="0 5"/>
+                                <mahc:NumericUpDown Grid.Row="3" Grid.Column="1" Value="{Binding PlotWidth,Mode=TwoWay}"
                                                 Margin="0 5"/>
-                            <TextBlock Text="颜色" VerticalAlignment="Center" Grid.Row="2" />
-                            <mahc:ColorPicker Grid.Row="2" Grid.Column="1" Margin="0 5" 
-                                              SelectedColor="{Binding PlotLineColor,Mode=TwoWay,
+
+                                <TextBlock Text="字体颜色" VerticalAlignment="Center" Grid.Row="4" />
+                                <mahc:ColorPicker Grid.Row="4" Grid.Column="1"
+                                              SelectedColor="{Binding PlotColor,Mode=TwoWay,
                                               Converter={StaticResource ColorConverter}}"/>
-                        </Grid>
-                    </StackPanel>
+
+                                <TextBlock Text="内容" VerticalAlignment="Center" Grid.Row="5" Margin="0 5"/>
+                                <TextBox Grid.Row="5" Grid.Column="1" Margin="0 5" Text="{Binding PlotTextContent,Mode=TwoWay}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="TextChanged">
+                                            <mahc:CommandTriggerAction Command="{Binding RefreshTextCommand}"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </TextBox>
+                            </Grid>
+                        </StackPanel>
+                        <!--边界设置面板-->
+                        <StackPanel Margin="8" Visibility="{Binding PlotLineShow, 
+                            Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.3*"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="是否可见" VerticalAlignment="Center"/>
+                                <CheckBox Grid.Column="1" IsChecked="{Binding PlotVisible}"/>
+
+                                <TextBlock Text="线条类型" VerticalAlignment="Center" Grid.Row="1" Margin="0 5"/>
+                                <ComboBox Grid.Column="1" SelectedIndex="{Binding PlotType}" Grid.Row="1" Margin="0 5">
+                                    <ComboBox.Items>
+                                        <ComboBoxItem Content="实线 (Solid)"/>
+                                        <ComboBoxItem Content="虚线 (Dash)"/>
+                                        <ComboBoxItem Content="点线 (DashDot)"/>
+                                        <ComboBoxItem Content="密集虚线 (DenselyDashed)"/>
+                                    </ComboBox.Items>
+                                </ComboBox>
+
+                                <TextBlock Text="宽度" VerticalAlignment="Center" Grid.Row="2"/>
+                                <mahc:NumericUpDown Grid.Row="2" Grid.Column="1" Value="{Binding PlotWidth,Mode=TwoWay}"
+                                                />
+
+                                <TextBlock Text="颜色" VerticalAlignment="Center" Grid.Row="3" Margin="0 5"/>
+                                <mahc:ColorPicker Grid.Row="3" Grid.Column="1" Margin="0 5"
+                                              SelectedColor="{Binding PlotColor,Mode=TwoWay,
+                                              Converter={StaticResource ColorConverter}}"/>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
                 </GroupBox>
             </Grid>
 

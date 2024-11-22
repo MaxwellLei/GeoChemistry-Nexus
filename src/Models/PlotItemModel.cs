@@ -13,6 +13,5 @@ namespace GeoChemistryNexus.Models
         public IPlottable Plottable { get; set; }       // 实际绘图对象
         public string DisplayName { get; set; }     // 显示绘图对象名称
         public string TypeName { get; set; }        // 实际绘图对象类型
-        public object Tag { get; set; }     // 保存的实际值，在线中表示线宽
     }
 }
