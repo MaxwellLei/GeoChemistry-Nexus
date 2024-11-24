@@ -28,7 +28,7 @@ namespace GeoChemistryNexus
             // 初始化窗体
             InitializeComponent();
             // 链接 ViewModel
-            this.DataContext = new MainWindowViewModel(this.WpfPlot1);
+            this.DataContext = new MainWindowViewModel(this.WpfPlot1,this.Drichtextbox);
         }
     }
 }

@@ -7,15 +7,15 @@
         xmlns:mahc="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:ScottPlot="clr-namespace:ScottPlot.WPF;assembly=ScottPlot.WPF"
         xmlns:local="clr-namespace:GeoChemistryNexus"
-        xmlns:converters="clr-namespace:GeoChemistryNexus.Converter"
+        xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
         BorderThickness="0"
         GlowBrush="Black"
         ResizeMode="CanResizeWithGrip"
         WindowStartupLocation="CenterScreen"
         Title="MainWindow" Height="720" Width="1200">
     <mahc:MetroWindow.Resources>
-        <converters:ColorConverter x:Key="ColorConverter"/>
-        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <cvs:ColorConverter x:Key="ColorConverter"/>
+        <cvs:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </mahc:MetroWindow.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -37,26 +37,20 @@
             </Grid.ColumnDefinitions>
             <!--投图类型选择-->
             <GroupBox Header="绘图类型" Margin="1">
-                <TreeView Margin="2">
-                    <TreeViewItem Header="岩浆岩">
-                        <TreeViewItem Header="构造环境">
-                            <TreeViewItem Header="Vermeesch (2006)">
+                <TreeView ItemsSource="{Binding RootTreeNode.Children}">
+                    <TreeView.ItemTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                            <TextBlock Text="{Binding Name}">
                                 <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="Selected">
-                                        <i:InvokeCommandAction Command="{Binding I_TS_Vermessch_2006Command}"/>
+                                    <i:EventTrigger EventName="MouseLeftButtonDown">
+                                        <i:InvokeCommandAction Command="{Binding DataContext.SelectTreeViewItemCommand, 
+                                                              RelativeSource={RelativeSource AncestorType=TreeView}}"
+                                                              CommandParameter="{Binding}"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
-                            </TreeViewItem>
-                            <TreeViewItem Header="Pearce (2006)" />
-                        </TreeViewItem>
-                    </TreeViewItem>
-                    <TreeViewItem Header="沉积岩" />
-                    <TreeViewItem Header="变质岩">
-                        <TreeViewItem Header="Item 3.1" IsExpanded="True">
-                            <TreeViewItem Header="Item 3.1.1" IsExpanded="True" />
-                            <TreeViewItem Header="Item 3.1.2" />
-                        </TreeViewItem>
-                    </TreeViewItem>
+                            </TextBlock>
+                        </HierarchicalDataTemplate>
+                    </TreeView.ItemTemplate>
                 </TreeView>
             </GroupBox>
             <!--绘图/数据区域-->
@@ -67,42 +61,74 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <GroupBox Header="绘图面板">
-                    <!--<StackPanel>-->
-                        <!--<Border Height="50">
-                            <WrapPanel>
-                                <mahc:DropDownButton
-                                    Width="100"
-                                    Content="导入数据"
-                                    DisplayMemberPath="Title"
-                                    Orientation="Vertical">
-                                </mahc:DropDownButton>
-                            </WrapPanel>
-                        </Border>-->
-                        <TabControl>
-                            <TabItem Header="绘图">
-                                <ScottPlot:WpfPlot Name="WpfPlot1">
-                                    <!--<i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="MouseDoubleClick">
-                                            <i:InvokeCommandAction Command="{Binding NewTestCommand}"/>
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>-->
-                                </ScottPlot:WpfPlot>
-                            </TabItem>
+                    <TabControl>
+                        <TabItem Header="绘图">
+                            <Grid>
+                                <Grid.Resources>
+                                    <Style x:Key="AccentCircleButtonStyle"
+                                            BasedOn="{StaticResource MahApps.Styles.Button.Circle}"
+                                            TargetType="{x:Type ButtonBase}">
+                                        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Accent}" />
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Accent}" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Resources>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <ScottPlot:WpfPlot Name="WpfPlot1"/>
+
+                                <StackPanel Grid.Column="1" Margin="0 10 0 0">
+                                    <Button VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <StackPanel>
+                                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe653;"
+                                                               Height="20" Width="20" FontSize="18"/>
+                                            <TextBlock Text="导入数据"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button VerticalAlignment="Center" HorizontalAlignment="Center"
+                                            Margin="0 5">
+                                        <StackPanel>
+                                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe600;"
+                                                               Height="20" Width="20" FontSize="18"/>
+                                            <TextBlock Text="恢复默认"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <StackPanel>
+                                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe601;"
+                                                               Height="20" Width="20" FontSize="18"/>
+                                            <TextBlock Text="视图复位"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button VerticalAlignment="Center" HorizontalAlignment="Center"
+                                            Margin="0 5">
+                                        <StackPanel>
+                                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe644;"
+                                                               Height="20" Width="20" FontSize="18"/>
+                                            <TextBlock Text="导出图片"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button VerticalAlignment="Center" HorizontalAlignment="Center"
+                                            Margin="0 5">
+                                        <StackPanel>
+                                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe60f;"
+                                                               Height="20" Width="20" FontSize="18"/>
+                                            <TextBlock Text="绘图设置"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                        </TabItem>
                         <TabItem Header="指南">
-                            <RichTextBox IsReadOnly="True" BorderThickness="1">
-                                <FlowDocument>
-                                    <Paragraph>
-                                        <Hyperlink NavigateUri="https://github.com/MahApps/MahApps.Metro">
-                                            <Run Text="Normal" />
-                                        </Hyperlink>
-                                        <LineBreak />
-                                        <Run>Cupcake ipsum dolor sit amet dessert halvah dessert. Chocolate oat cake carrot cake sweet dragée gummi bears chocolate.</Run>
-                                    </Paragraph>
-                                </FlowDocument>
-                            </RichTextBox>
+                            <RichTextBox x:Name="Drichtextbox" IsReadOnly="True" BorderThickness="1"/>
                         </TabItem>
                     </TabControl>
-                    <!--</StackPanel>-->
                 </GroupBox>
                 <!-- GridSplitter 用于调整上下行的高度 -->
                 <GridSplitter Grid.Row="1" Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
@@ -131,9 +157,6 @@
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </ListBox>
-                        </TabItem>
-                        <TabItem Header="坐标轴">
-                            <ListBox/>
                         </TabItem>
                         <TabItem Header="数据">
                             <ListBox/>

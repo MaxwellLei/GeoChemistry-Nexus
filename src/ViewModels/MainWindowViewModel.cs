@@ -10,10 +10,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using static System.Net.Mime.MediaTypeNames;
@@ -22,6 +26,9 @@ namespace GeoChemistryNexus.ViewModels
 {
     public partial class MainWindowViewModel: ObservableObject
     {
+        // 注册绘图模板列表
+        private PlotTemplateRegistry _registry = new PlotTemplateRegistry();
+
         // 图层选中列表
         private IList<PlotItemModel> _previousSelectedItems;
 
@@ -31,23 +38,34 @@ namespace GeoChemistryNexus.ViewModels
         // 绘图控件
         private WpfPlot WpfPlot1;
 
+        // 描述控件
+        private RichTextBox _richTextBox;
+
         // 测试
         [ObservableProperty]
         private string? _newtitle = "nihao";
+
+        // 绘图模板列表
+        [ObservableProperty]
+        private TreeNode _rootTreeNode;
 
         // 图层列表
         [ObservableProperty]
         private ObservableCollection<PlotItemModel> _basePlotItems;
 
+        // 坐标轴列表
+        [ObservableProperty]
+        private ObservableCollection<AxisInfoModel> _axesList;
+
         /// <summary>
         /// 公共属性
         /// </summary>
 
-        // 线是否可见
+        // 绘图对象是否可见
         [ObservableProperty]
         private bool _plotVisible;
 
-        // 线点 宽度-大小
+        // 绘图对象 宽度-大小
         [ObservableProperty]
         private float _plotWidth;
 
@@ -55,7 +73,7 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private int _plotType;
 
-        // 线-文本绘制颜色
+        // 绘图对象绘制颜色
         [ObservableProperty]
         private ScottPlot.Color _plotColor;
 
@@ -92,11 +110,24 @@ namespace GeoChemistryNexus.ViewModels
 
 
         // 初始化
-        public MainWindowViewModel(WpfPlot wpfPlot) {
+        public MainWindowViewModel(WpfPlot wpfPlot, RichTextBox richTextBox) {
             WpfPlot1 = wpfPlot;     // 获取绘图控件
+            _richTextBox = richTextBox;     // 获取内容控件
             BasePlotItems = new ObservableCollection<PlotItemModel>();      // 初始化底图列表
             _previousSelectedItems = new List<PlotItemModel>();     // 初始化图层选中对象
             _plotTextFontNames = new List<string>();        // 字体集合
+            _axesList = new ObservableCollection<AxisInfoModel>();      // 初始化坐标轴对象
+
+            RegisterPlotTemplates();
+            RootTreeNode = _registry.GenerateTreeStructure();
+        }
+
+        // 注册绘图模板
+        private void RegisterPlotTemplates()
+        {
+            _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境" }, "Vermeesch (2006)", NormalPlotTemplate.Vermessch_2006, "DC.rtf");
+            _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境" }, "Prease (2006)", NormalPlotTemplate.Vermessch_2006, "Vermeesch (2006) 绘图说明...");
+            // 在这里添加更多模板
         }
 
         // 设置显示属性
@@ -165,7 +196,15 @@ namespace GeoChemistryNexus.ViewModels
                     DisplayName = displayName,
                     TypeName = plottableType
                 });
+
             }
+
+            //坐标轴残留代码
+            //var allAxes = WpfPlot1.Plot.Axes;
+            //var allAxes1 = WpfPlot1.Plot.Axes.GetAxes();
+
+            //AxesList.Add(new AxisInfoModel { Name = "X Axis", Axis = WpfPlot1.Plot.Axes.DefaultGrid.XAxis});
+            //AxesList.Add(new AxisInfoModel { Name = "Y Axis", Axis = WpfPlot1.Plot.Axes.DefaultGrid.YAxis });
         }
 
         // 改变 Text 文本内容
@@ -393,6 +432,43 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
+        // 解压缩
+        private string ReadRtfFromZip(string zipFilePath, string rtfFileName)
+        {
+            using (ZipArchive archive = ZipFile.OpenRead(zipFilePath))
+            {
+                ZipArchiveEntry entry = archive.GetEntry(rtfFileName);
+                if (entry != null)
+                {
+                    using (Stream stream = entry.Open())
+                    using (StreamReader reader = new StreamReader(stream))
+                    {
+                        return reader.ReadToEnd();
+                    }
+                }
+            }
+            return null;
+        }
+
+        // 加载内容
+        private void LoadRtfContent(string zipFilePath, string rtfFileName)
+        {
+            string rtfContent = ReadRtfFromZip(zipFilePath, rtfFileName);
+            if (rtfContent != null)
+            {
+                TextRange textRange = new TextRange(_richTextBox.Document.ContentStart, _richTextBox.Document.ContentEnd);
+                using (MemoryStream stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(rtfContent)))
+                {
+                    // 使用 Dispatcher 在 UI 线程上更新 UI 元素
+                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        textRange.Load(stream, DataFormats.Rtf);
+                    });
+                    
+                }
+            }
+        }
+
         // 文本更新改变
         [RelayCommand]
         public void RefreshText()
@@ -469,30 +545,28 @@ namespace GeoChemistryNexus.ViewModels
             WpfPlot1.Refresh();
         }
 
-        // 岩浆岩-构造环境-Vermessch_2006底图加载
         [RelayCommand]
-        public async void I_TS_Vermessch_2006()
+        private async void SelectTreeViewItem(object parameter)
         {
-            // 异步绘图
-            await Task.Run(() =>
+            if (parameter is TreeNode node && node.PlotTemplate != null)
             {
-                // 清除绘图
-                WpfPlot1.Plot.Clear();
+                await Task.Run(() =>
+                {
+                    WpfPlot1.Plot.Clear();
+                    node.PlotTemplate.DrawMethod(WpfPlot1.Plot);
+                    LoadRtfContent(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "PlotData","PlotD.zip"), 
+                        ((TreeNode)parameter).PlotTemplate.Description);
+                });
 
-                // 绘制图形
-                NormalPlotTemplate.Vermessch_2006(WpfPlot1.Plot);
-            });
-
-            // 使用 Dispatcher 在 UI 线程上更新 UI 元素
-            System.Windows.Application.Current.Dispatcher.Invoke(() =>
-            {
-                // 刷新图层列表
-                PopulatePlotItems((List<IPlottable>)WpfPlot1.Plot.GetPlottables());
-                // 刷新图形界面
-                WpfPlot1.Refresh();
-            });
+                // 使用 Dispatcher 在 UI 线程上更新 UI 元素
+                System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                {
+                    // 刷新图层列表
+                    PopulatePlotItems((List<IPlottable>)WpfPlot1.Plot.GetPlottables());
+                    // 刷新图形界面
+                    WpfPlot1.Refresh();
+                });
+            }
         }
-
-
     }
 }

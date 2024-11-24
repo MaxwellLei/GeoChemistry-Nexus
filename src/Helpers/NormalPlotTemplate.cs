@@ -28,9 +28,9 @@ namespace GeoChemistryNexus.Helpers
             plot.Add.Line(centerPoint, point3);
 
             // 添加区域标注
-            plot.Add.Text("A", -15, 2);   // 区域 A 的大致位置
-            plot.Add.Text("B", -9, 0);  // 区域 B 的大致位置
-            plot.Add.Text("C", -12, -5);  // 区域 C 的大致位置
+            plot.Add.Text("IAB", -15, 2);   // 区域 A 的大致位置
+            plot.Add.Text("OIB", -9, 0);  // 区域 B 的大致位置
+            plot.Add.Text("MORB", -12, -5);  // 区域 C 的大致位置
 
             // 手动设置坐标轴范围
             double xMin = -19;  // X轴的最小值
