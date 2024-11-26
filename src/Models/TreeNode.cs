@@ -8,16 +8,10 @@ using System.Threading.Tasks;
 
 namespace GeoChemistryNexus.Models
 {
-    public class TreeNode : INotifyPropertyChanged
+    public class TreeNode
     {
         public string Name { get; set; }
         public PlotTemplate PlotTemplate { get; set; }
         public ObservableCollection<TreeNode> Children { get; } = new ObservableCollection<TreeNode>();
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }

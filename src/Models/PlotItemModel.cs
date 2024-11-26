@@ -10,8 +10,8 @@ namespace GeoChemistryNexus.Models
 {
     public class PlotItemModel
     {
-        public IPlottable Plottable { get; set; }       // 实际绘图对象
-        public string DisplayName { get; set; }     // 显示绘图对象名称
-        public string TypeName { get; set; }        // 实际绘图对象类型
+        public object Plottable { get; set; }       // 实际绘图对象
+        public string Name { get; set; }     // 显示绘图对象名称
+        public string ObjectType { get; set; }        // 实际绘图对象类型
     }
 }

@@ -15,6 +15,9 @@ namespace GeoChemistryNexus.Helpers
         // Vermeesch, P., 2006. Tectonic discrimination diagrams revisited.  Geochemistry, Geophysics, Geosystems 7, Q06017, doi:  10.1029/2005GC001092.
         public static void Vermessch_2006(ScottPlot.Plot plot)
         {
+            plot.Axes.Title.Label.Text = "Vermeesch (2006) Tectonic Setting Discrimination Diagram";
+            plot.Axes.Title.Label.FontSize = 18;
+
             // 定义中心点和其他点
             var centerPoint = new ScottPlot.Coordinates(-12.23, -1.37);
             var point1 = new ScottPlot.Coordinates(-12.0, 4.0);  // IAB-OIB
@@ -23,14 +26,26 @@ namespace GeoChemistryNexus.Helpers
 
 
             // 绘制从中心点到每个其他点的线
-            plot.Add.Line(centerPoint, point1);
-            plot.Add.Line(centerPoint, point2);
-            plot.Add.Line(centerPoint, point3);
+            var newline1 = plot.Add.Line(centerPoint, point1);
+            var newline2 = plot.Add.Line(centerPoint, point2);
+            var newline3 = plot.Add.Line(centerPoint, point3);
+
+            // 设置线宽
+            newline1.LineWidth = 3;
+            newline2.LineWidth = 3;
+            newline3.LineWidth = 3;
 
             // 添加区域标注
-            plot.Add.Text("IAB", -15, 2);   // 区域 A 的大致位置
-            plot.Add.Text("OIB", -9, 0);  // 区域 B 的大致位置
-            plot.Add.Text("MORB", -12, -5);  // 区域 C 的大致位置
+            var newtext1 = plot.Add.Text("IAB", -15, 2);   // 区域 A 的大致位置
+            var newtext2 = plot.Add.Text("OIB", -9, 0);  // 区域 B 的大致位置
+            var newtext3 = plot.Add.Text("MORB", -12, -5);  // 区域 C 的大致位置
+
+            newtext1.LabelFontSize = 20;
+            newtext2.LabelFontSize = 20;
+            newtext3.LabelFontSize = 20;
+
+            plot.XLabel("DF1");
+            plot.YLabel("DF2");
 
             // 手动设置坐标轴范围
             double xMin = -19;  // X轴的最小值

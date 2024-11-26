@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,14 +12,17 @@ namespace GeoChemistryNexus.Models
     {
         private Dictionary<string, PlotTemplate> _templates = new Dictionary<string, PlotTemplate>();
 
-        public void RegisterTemplate(string[] categories, string name, Action<ScottPlot.Plot> drawMethod, string description)
+        public void RegisterTemplate(string[] categories, string name, Action<ScottPlot.Plot> drawMethod,
+            Func<ScottPlot.Plot, DataTable, Task<int>> plotMethod, string description, string[] requiredElements)
         {
             string key = string.Join("/", categories) + "/" + name;
             _templates[key] = new PlotTemplate
             {
                 Name = name,
                 DrawMethod = drawMethod,
-                Description = description
+                PlotMethod = plotMethod,
+                Description = description,
+                RequiredElements = requiredElements
             };
         }
 

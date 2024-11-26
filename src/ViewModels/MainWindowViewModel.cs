@@ -3,16 +3,23 @@ using CommunityToolkit.Mvvm.Input;
 using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Models;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
+using OfficeOpenXml;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using ScottPlot;
+using ScottPlot.Colormaps;
+using ScottPlot.Grids;
 using ScottPlot.Plottables;
 using ScottPlot.WPF;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -26,11 +33,17 @@ namespace GeoChemistryNexus.ViewModels
 {
     public partial class MainWindowViewModel: ObservableObject
     {
+        // 消息通知窗口
+        private IDialogCoordinator _dialogCoordinator;
+
         // 注册绘图模板列表
         private PlotTemplateRegistry _registry = new PlotTemplateRegistry();
 
         // 图层选中列表
         private IList<PlotItemModel> _previousSelectedItems;
+
+        // 当前选中模板
+        public static TreeNode _previousSelectedNode;
 
         // 添加一个标志来防止递归更新属性
         private bool _isUpdatingLineWidth = false;  
@@ -55,7 +68,7 @@ namespace GeoChemistryNexus.ViewModels
 
         // 坐标轴列表
         [ObservableProperty]
-        private ObservableCollection<AxisInfoModel> _axesList;
+        private ObservableCollection<PlotItemModel> _axesList;
 
         /// <summary>
         /// 公共属性
@@ -65,7 +78,7 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private bool _plotVisible;
 
-        // 绘图对象 宽度-大小
+        // 绘图对象 宽度-大小-轴标题大小
         [ObservableProperty]
         private float _plotWidth;
 
@@ -73,32 +86,135 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private int _plotType;
 
-        // 绘图对象绘制颜色
+        // 绘图对象绘制颜色-坐标轴标题颜色
         [ObservableProperty]
         private ScottPlot.Color _plotColor;
 
-        
-
-        /// <summary>
-        /// 文本属性
-        /// </summary>
-
-        // 文本字体列表
-        [ObservableProperty]
-        private List<string> _plotTextFontNames;
-
-        // 当前文本字体
+        // 当前文本-标题字体
         [ObservableProperty]
         private int _plotTextFontName;
 
-        // 当前文本内容
+        // 文本字体-轴标题列表
+        [ObservableProperty]
+        private List<string> _plotTextFontNames;
+
+        // 当前文本-轴标题内容
         [ObservableProperty]
         private string _plotTextContent;
 
 
         /// <summary>
-        /// 属性面板显示
+        /// 坐标轴属性
         /// </summary>
+
+        // 反转坐标轴
+        [ObservableProperty]
+        private bool _reverseAxis;
+
+        // 刻度字体
+        [ObservableProperty]
+        private int _axisTickFontName;
+
+        // 刻度字体大小
+        [ObservableProperty]
+        private float _axisTickFontSize;
+
+        // 刻度上限
+        [ObservableProperty]
+        private double _axisTickUpLimit;
+
+        // 刻度下限
+        [ObservableProperty]
+        private double _axisTickDownLimit;
+
+        // 刻度颜色
+        [ObservableProperty]
+        private ScottPlot.Color _axisPlotColor;
+
+        /// <summary>
+        /// 绘图设置
+        /// </summary>
+
+        // 绘图标题
+        [ObservableProperty]
+        private string _axisTitle;
+
+        // 标题字体大小
+        [ObservableProperty]
+        private float _axisTitleFontSize;
+
+        // 标题字体
+        [ObservableProperty]
+        private int _axisTitleFontName;
+
+        // 轴标题颜色
+        [ObservableProperty]
+        private ScottPlot.Color _axisTitleColor;
+
+        // 坐标x轴标题
+        [ObservableProperty]
+        private string _xAxisTitle;
+
+        // 坐标y轴标题
+        [ObservableProperty]
+        private string _yAxisTitle;
+
+        // 轴标题字体大小
+        [ObservableProperty]
+        private float _axisXYTitleFontSize;
+
+        // 轴标题字体
+        [ObservableProperty]
+        private int _axisXYTitleFontName;
+
+        // 轴标题颜色
+        [ObservableProperty]
+        private ScottPlot.Color _axisXYTitleColor;
+
+        /// <summary>
+        /// 背景设置
+        /// </summary>
+
+        // 显示主网格
+        [ObservableProperty]
+        private bool _firstGridShow;
+
+        // 主网格颜色
+        [ObservableProperty]
+        private ScottPlot.Color _firstGridColor;
+
+        // 主网格宽度
+        [ObservableProperty]
+        private float _firstGridWidth;
+
+        // 显示次网格
+        [ObservableProperty]
+        private bool _secondGridShow;
+
+        // 次网格颜色
+        [ObservableProperty]
+        private ScottPlot.Color _secondGridColor;
+
+        // 次网格宽度
+        [ObservableProperty]
+        private float _secondGridWidth;
+
+        // 反转填充颜色
+        [ObservableProperty]
+        private bool _swichtFillColor = false;
+
+        // 填充区域颜色1
+        [ObservableProperty]
+        private ScottPlot.Color _gridFillColor1;
+
+        // 填充区域颜色2
+        [ObservableProperty]
+        private ScottPlot.Color _gridFillColor2;
+
+        /// <summary>
+        /// =========================================这是分隔符
+        /// </summary>
+        /// 
 
         // 是否显示边界属性
         [ObservableProperty]
@@ -108,25 +224,52 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private bool _plotTextShow = false;
 
+        // 是否显示数据点属性
+        [ObservableProperty]
+        private bool _plotDataShow = false;
+
+        // 是否显示坐标轴属性
+        [ObservableProperty]
+        private bool _plotAxisShow = false;
+
+        // 是否显示绘图设置属性
+        [ObservableProperty]
+        private bool _plotMainShow = false;
+
+
+
 
         // 初始化
-        public MainWindowViewModel(WpfPlot wpfPlot, RichTextBox richTextBox) {
+        public MainWindowViewModel(WpfPlot wpfPlot, RichTextBox richTextBox, IDialogCoordinator dialogCoordinator) {
             WpfPlot1 = wpfPlot;     // 获取绘图控件
             _richTextBox = richTextBox;     // 获取内容控件
             BasePlotItems = new ObservableCollection<PlotItemModel>();      // 初始化底图列表
+            _axesList = new();  // 初始化坐标轴列表
             _previousSelectedItems = new List<PlotItemModel>();     // 初始化图层选中对象
             _plotTextFontNames = new List<string>();        // 字体集合
-            _axesList = new ObservableCollection<AxisInfoModel>();      // 初始化坐标轴对象
+            _axesList = new ObservableCollection<PlotItemModel>();      // 初始化坐标轴对象
 
-            RegisterPlotTemplates();
-            RootTreeNode = _registry.GenerateTreeStructure();
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;     // 初始化 excel 相关协议
+            _dialogCoordinator = dialogCoordinator;     //弹窗提醒
+            RegisterPlotTemplates();    // 注册绘图模板
+            RootTreeNode = _registry.GenerateTreeStructure();       // 注册模板列表
+
+            // 获取系统所有字体
+            PlotTextFontNames = System.Drawing.FontFamily.Families
+                .Select(f => f.Name)
+                .OrderBy(name => name)
+                .ToList();
         }
 
         // 注册绘图模板
         private void RegisterPlotTemplates()
         {
-            _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境" }, "Vermeesch (2006)", NormalPlotTemplate.Vermessch_2006, "DC.rtf");
-            _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境" }, "Prease (2006)", NormalPlotTemplate.Vermessch_2006, "Vermeesch (2006) 绘图说明...");
+            _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "Vermeesch (2006)" },"主要元素氧化物", 
+                NormalPlotTemplate.Vermessch_2006, NormalPlotMethod.Vermessch_2006_PlotAsync,
+                "DC.rtf", new string[] { "SiO2", "Al2O3", "TiO2", "CaO", "MgO", "MnO", "K2O", "Na2O" });
+            _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "Vermeesch (2006)" },"TiO2-Zr-Y-Sr", 
+                NormalPlotTemplate.Vermessch_2006, NormalPlotMethod.Vermessch_2006_PlotAsync, 
+                "Vermeesch (2006) 绘图说明...", new string[] { "TiO2", "Zr", "Y", "Sr", });
             // 在这里添加更多模板
         }
 
@@ -137,6 +280,9 @@ namespace GeoChemistryNexus.ViewModels
             {
                 PlotLineShow = false;
                 PlotTextShow = false;
+                PlotDataShow = false;
+                PlotAxisShow = false;
+                PlotMainShow = false;
                 return;
             }
 
@@ -144,14 +290,43 @@ namespace GeoChemistryNexus.ViewModels
             {
                 PlotLineShow = true;
                 PlotTextShow = false;
+                PlotDataShow = false;
+                PlotAxisShow = false;
+                PlotMainShow = false;
+            }
+            else if(key == "Scatter")
+            {
+                PlotLineShow = false;
+                PlotTextShow = false;
+                PlotDataShow = true;
+                PlotAxisShow = false;
+                PlotMainShow = false;
+            }
+            else if (key == "Axis")
+            {
+                PlotLineShow = false;
+                PlotTextShow = false;
+                PlotDataShow = false;
+                PlotAxisShow = true;
+                PlotMainShow = false;
+            }
+            else if (key == "Main")
+            {
+                PlotLineShow = false;
+                PlotTextShow = false;
+                PlotDataShow = false;
+                PlotAxisShow = false;
+                PlotMainShow = true;
             }
             else
             {
                 PlotLineShow = false;
                 PlotTextShow = true;
+                PlotDataShow = false;
+                PlotAxisShow = false;
+                PlotMainShow = false;
             }
         }
-
 
         // 查找字体
         private int FindFontNameIndex(string currentFontName)
@@ -166,6 +341,22 @@ namespace GeoChemistryNexus.ViewModels
 
             // 如果找不到，返回0或其他默认值
             return index >= 0 ? index : 0;
+        }
+
+        // 刷新坐标轴列表
+        private void GetAxisList()
+        {
+            AxesList.Clear();
+            var testdata = WpfPlot1.Plot.Axes.GetAxes();
+            foreach (var axis in WpfPlot1.Plot.Axes.GetAxes())
+            {
+                AxesList.Add(new PlotItemModel()
+                {
+                    Name = axis.Edge.ToString(),
+                    ObjectType = "Axis",
+                    Plottable = axis,
+                });
+            }
         }
 
         // 刷新图层列表
@@ -193,18 +384,49 @@ namespace GeoChemistryNexus.ViewModels
                 BasePlotItems.Add(new PlotItemModel
                 {
                     Plottable = plottable,
-                    DisplayName = displayName,
-                    TypeName = plottableType
+                    Name = displayName,
+                    ObjectType = plottableType
                 });
 
             }
+        }
 
-            //坐标轴残留代码
-            //var allAxes = WpfPlot1.Plot.Axes;
-            //var allAxes1 = WpfPlot1.Plot.Axes.GetAxes();
+        // 检查字符匹配
+        private int ContainsAllStrings(DataTable dataTable, string[] stringsToCheck)
+        {
+            if (dataTable == null || stringsToCheck == null || stringsToCheck.Length == 0)
+            {
+                return -1;      // 输入数据参数错误
+            }
 
-            //AxesList.Add(new AxisInfoModel { Name = "X Axis", Axis = WpfPlot1.Plot.Axes.DefaultGrid.XAxis});
-            //AxesList.Add(new AxisInfoModel { Name = "Y Axis", Axis = WpfPlot1.Plot.Axes.DefaultGrid.YAxis });
+            // 检查 DataTable 是否有列
+            if (dataTable.Columns.Count == 0 || dataTable.Rows.Count == 0)
+            {
+                return 0;       // DataTable 内容为空
+            }
+
+            // 遍历要检查的字符串
+            foreach (var str in stringsToCheck)
+            {
+                bool found = false;
+                // 遍历所有列名
+                foreach (DataColumn column in dataTable.Columns)
+                {
+                    // 检查当前列名是否包含目标字符串
+                    if (column.ColumnName.Contains(str, StringComparison.OrdinalIgnoreCase))
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+                // 如果当前字符串没有在列名中找到，返回 false
+                if (!found)
+                {
+                    return -2;      // 匹配失败
+                }
+            }
+            // 所有字符串都在列名中找到了
+            return 1;
         }
 
         // 改变 Text 文本内容
@@ -219,10 +441,15 @@ namespace GeoChemistryNexus.ViewModels
             {
                 foreach (var item in _previousSelectedItems)
                 {
-                    if (item.TypeName == "Text")
+                    if (item.ObjectType == "Text")
                     {
                         var text = (ScottPlot.Plottables.Text)item.Plottable;
                         text.LabelText = value;
+                    }
+                    else if (item.ObjectType == "Axis")
+                    {
+                        var tempAxis = (IAxis)item.Plottable;
+                        tempAxis.Label.Text = value;
                     }
                 }
                 // 刷新图形
@@ -242,10 +469,15 @@ namespace GeoChemistryNexus.ViewModels
             {
                 foreach (var item in _previousSelectedItems)
                 {
-                    if (item.TypeName == "Text")
+                    if (item.ObjectType == "Text")
                     {
                         var text = (ScottPlot.Plottables.Text)item.Plottable;
                         text.LabelFontName = PlotTextFontNames[value];
+                    }
+                    else if (item.ObjectType == "Axis")
+                    {
+                        var tempAxis = (IAxis)item.Plottable;
+                        tempAxis.Label.FontName = PlotTextFontNames[value];
                     }
                 }
                 // 刷新图形
@@ -265,23 +497,31 @@ namespace GeoChemistryNexus.ViewModels
             {
                 foreach (var item in _previousSelectedItems)
                 {
-                    if (item.TypeName == "LinePlot")
+                    if (item.ObjectType == "LinePlot")
                     {
                         var linePlot = (LinePlot)item.Plottable;
                         linePlot.IsVisible = value;
-                    }
-                    if (item.TypeName == "Text")
+                    }else if (item.ObjectType == "Text")
                     {
                         var text = (ScottPlot.Plottables.Text)item.Plottable;
                         text.IsVisible = value;
+                    }else if (item.ObjectType == "Scatter")
+                    {
+                        var scatter = (ScottPlot.Plottables.Scatter)item.Plottable;
+                        scatter.IsVisible = value;
+                    }else if (item.ObjectType == "Axis")
+                    {
+                        var tempAxis = (IAxis)item.Plottable;
+                        tempAxis.IsVisible = value;
                     }
                 }
                 // 刷新图形
                 WpfPlot1.Refresh();
             }
+            
         }
 
-        // 改变 LinePlot 线类型
+        // 改变 绘图对象 类型
         partial void OnPlotTypeChanged(int value)
         {
             // 如果是在更新属性值，则不执行更新_plotLineType
@@ -293,7 +533,7 @@ namespace GeoChemistryNexus.ViewModels
             {
                 foreach (var item in _previousSelectedItems)
                 {
-                    if (item.TypeName == "LinePlot")
+                    if (item.ObjectType == "LinePlot")
                     {
                         var linePlot = (LinePlot)item.Plottable;
                         if (PlotType == 0){linePlot.LineStyle.Pattern = LinePattern.Solid;}
@@ -302,12 +542,26 @@ namespace GeoChemistryNexus.ViewModels
                         if (PlotType == 3) { linePlot.LineStyle.Pattern = LinePattern.Dotted; }
                     }
 
-                    if (item.TypeName == "Text")
+                    if (item.ObjectType == "Text")
                     {
                         var text = (ScottPlot.Plottables.Text)item.Plottable;
                         if (PlotType == 0) { text.LabelStyle.Bold = false; text.LabelStyle.Italic = false;}
                         if (PlotType == 1) { text.LabelStyle.Bold = true; }
                         if (PlotType == 2) { text.LabelStyle.Italic = true; }
+                    }
+
+                    if (item.ObjectType == "Scatter")
+                    {
+                        var scatter = (ScottPlot.Plottables.Scatter)item.Plottable;
+                        if (PlotType == 0) { scatter.MarkerShape = MarkerShape.FilledCircle; }
+                        if (PlotType == 1) { scatter.MarkerShape = MarkerShape.OpenCircle; }
+                        if (PlotType == 2) { scatter.MarkerShape = MarkerShape.FilledSquare; }
+                        if (PlotType == 3) { scatter.MarkerShape = MarkerShape.FilledTriangleUp; }
+                        if (PlotType == 4) { scatter.MarkerShape = MarkerShape.FilledTriangleDown; }
+                        if (PlotType == 5) { scatter.MarkerShape = MarkerShape.FilledDiamond; }
+                        if (PlotType == 6) { scatter.MarkerShape = MarkerShape.Eks; }
+                        if (PlotType == 7) { scatter.MarkerShape = MarkerShape.Cross; }
+                        if (PlotType == 8) { scatter.MarkerShape = MarkerShape.Asterisk; }
                     }
                 }
                 // 刷新图形
@@ -315,8 +569,7 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
-
-        // 改变 LinePlot 线宽
+        // 改变 绘图对象 宽度-大小
         partial void OnPlotWidthChanged(float value)
         {
             // 如果是在更新属性值，则不执行更新
@@ -328,15 +581,25 @@ namespace GeoChemistryNexus.ViewModels
             {
                 foreach (var item in _previousSelectedItems)
                 {
-                    if (item.TypeName == "LinePlot")
+                    if (item.ObjectType == "LinePlot")
                     {
                         var linePlot = (LinePlot)item.Plottable;
                         linePlot.LineWidth = value;
                     }
-                    if (item.TypeName == "Text")
+                    if (item.ObjectType == "Text")
                     {
                         var text = (ScottPlot.Plottables.Text)item.Plottable;
                         text.LabelFontSize = value;
+                    }
+                    if (item.ObjectType == "Scatter")
+                    {
+                        var scatter = (ScottPlot.Plottables.Scatter)item.Plottable;
+                        scatter.MarkerSize = value;
+                    }
+                    else if (item.ObjectType == "Axis")
+                    {
+                        var tempAxis = (IAxis)item.Plottable;
+                        tempAxis.Label.FontSize = value;
                     }
                 }
                 // 刷新图形
@@ -344,7 +607,7 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
-        // 改变 LinePlot 颜色
+        // 改变 绘图对象 颜色
         partial void OnPlotColorChanged(ScottPlot.Color value)
         {
             // 如果是在更新属性值，则不执行更新
@@ -356,20 +619,445 @@ namespace GeoChemistryNexus.ViewModels
             {
                 foreach (var item in _previousSelectedItems)
                 {
-                    if (item.TypeName == "LinePlot")
+                    if (item.ObjectType == "LinePlot")
                     {
                         var linePlot = (LinePlot)item.Plottable;
                         linePlot.LineColor = value;
                     }
-                    if (item.TypeName == "Text")
+                    if (item.ObjectType == "Text")
                     {
                         var text = (ScottPlot.Plottables.Text)item.Plottable;
                         text.LabelFontColor = value;
+                    }
+                    if (item.ObjectType == "Scatter")
+                    {
+                        var scatter = (ScottPlot.Plottables.Scatter)item.Plottable;
+                        scatter.MarkerColor = value;
+                    }
+                    else if (item.ObjectType == "Axis")
+                    {
+                        var tempAxis = (IAxis)item.Plottable;
+                        tempAxis.Label.ForeColor = value;
                     }
                 }
                 // 刷新图形
                 WpfPlot1.Refresh();
             }
+        }
+
+        // 主刻度是否显示
+        partial void OnReverseAxisChanged(bool value)
+        {
+            // 如果是在更新属性值，则不执行更新
+            if (_isUpdatingLineWidth)
+                return;
+
+            // 更新当前选中图层的颜色
+            if (_previousSelectedItems != null && _previousSelectedItems.Any())
+            {
+                foreach (var item in _previousSelectedItems)
+                {
+                    var tempAxis = (IAxis)item.Plottable;
+                    if(value == true)
+                    {
+                        tempAxis.MajorTickStyle = new TickMarkStyle()
+                        {
+                            Length = 0,
+                            Width = 0,
+                        };
+                    }
+                    else
+                    {
+                        tempAxis.MajorTickStyle = new TickMarkStyle()
+                        {
+                            Length = 4,
+                            Width = 1,
+                        };
+                    }
+                    
+                }
+                // 刷新图形
+                WpfPlot1.Refresh();
+            }
+        }
+
+        // 改变 刻度轴字体
+        partial void OnAxisTickFontNameChanged(int value)
+        {
+            // 如果是在更新属性值，则不执行更新
+            if (_isUpdatingLineWidth)
+                return;
+
+            // 更新当前选中图层的颜色
+            if (_previousSelectedItems != null && _previousSelectedItems.Any())
+            {
+                foreach (var item in _previousSelectedItems)
+                {
+                    var tempAxis = (IAxis)item.Plottable;
+                    tempAxis.TickLabelStyle.FontName = PlotTextFontNames[value];
+                }
+                // 刷新图形
+                WpfPlot1.Refresh();
+            }
+        }
+
+        // 改变 刻度轴字体大小
+        partial void OnAxisTickFontSizeChanged(float value)
+        {
+            // 如果是在更新属性值，则不执行更新
+            if (_isUpdatingLineWidth)
+                return;
+
+            // 更新当前选中图层的颜色
+            if (_previousSelectedItems != null && _previousSelectedItems.Any())
+            {
+                foreach (var item in _previousSelectedItems)
+                {
+                    var tempAxis = (IAxis)item.Plottable;
+                    tempAxis.TickLabelStyle.FontSize = value;
+                }
+                // 刷新图形
+                WpfPlot1.Refresh();
+            }
+        }
+
+        // 改变 刻度轴上限
+        partial void OnAxisTickUpLimitChanged(double value)
+        {
+            // 如果是在更新属性值，则不执行更新
+            if (_isUpdatingLineWidth)
+                return;
+
+            // 更新当前选中图层的颜色
+            if (_previousSelectedItems != null && _previousSelectedItems.Any())
+            {
+                foreach (var item in _previousSelectedItems)
+                {
+                    var tempAxis = (IAxis)item.Plottable;
+                    tempAxis.Max = value;
+                }
+                // 刷新图形
+                WpfPlot1.Refresh();
+            }
+        }
+
+        // 改变 刻度轴下限
+        partial void OnAxisTickDownLimitChanged(double value)
+        {
+            // 如果是在更新属性值，则不执行更新
+            if (_isUpdatingLineWidth)
+                return;
+
+            // 更新当前选中图层的颜色
+            if (_previousSelectedItems != null && _previousSelectedItems.Any())
+            {
+                foreach (var item in _previousSelectedItems)
+                {
+                    var tempAxis = (IAxis)item.Plottable;
+                    tempAxis.Min = value;
+                }
+                // 刷新图形
+                WpfPlot1.Refresh();
+            }
+        }
+
+        // 改变 刻度轴的颜色
+        partial void OnAxisPlotColorChanged(ScottPlot.Color value)
+        {
+            // 如果是在更新属性值，则不执行更新
+            if (_isUpdatingLineWidth)
+                return;
+
+            // 更新当前选中图层的颜色
+            if (_previousSelectedItems != null && _previousSelectedItems.Any())
+            {
+                foreach (var item in _previousSelectedItems)
+                {
+                    var tempAxis = (IAxis)item.Plottable;
+                    tempAxis.TickLabelStyle.ForeColor = value;
+                }
+                // 刷新图形
+                WpfPlot1.Refresh();
+            }
+        }
+
+        // 改变 绘图设置 绘图标题
+        partial void OnAxisTitleChanged(string value)
+        {
+            // 如果是在更新属性值，则不执行更新
+            if (_isUpdatingLineWidth)
+                return;
+
+            // 更新标题
+            WpfPlot1.Plot.Axes.Title.Label.Text = value;
+
+            // 刷新图形
+            WpfPlot1.Refresh();
+        }
+
+        // 改变 绘图设置 绘图标题字体大小
+        partial void OnAxisTitleFontSizeChanged(float value)
+        {
+            // 如果是在更新属性值，则不执行更新
+            if (_isUpdatingLineWidth)
+                return;
+
+            // 更新标题
+            WpfPlot1.Plot.Axes.Title.Label.FontSize = value;
+
+            // 刷新图形
+            WpfPlot1.Refresh();
+        }
+
+        // 改变 绘图设置 绘图标题字体
+        partial void OnAxisTitleFontNameChanged(int value)
+        {
+            // 如果是在更新属性值，则不执行更新
+            if (_isUpdatingLineWidth)
+                return;
+
+            // 更新标题
+            WpfPlot1.Plot.Axes.Title.Label.FontName = PlotTextFontNames[value];
+
+            // 刷新图形
+            WpfPlot1.Refresh();
+        }
+
+        // 改变 绘图设置 绘图标题颜色
+        partial void OnAxisTitleColorChanged(ScottPlot.Color value)
+        {
+            // 如果是在更新属性值，则不执行更新
+            if (_isUpdatingLineWidth)
+                return;
+
+            // 更新标题
+            WpfPlot1.Plot.Axes.Title.Label.ForeColor = value;
+
+            // 刷新图形
+            WpfPlot1.Refresh();
+        }
+
+        // 改变 绘图设置 X轴标题
+        partial void OnXAxisTitleChanged(string value)
+        {
+            // 如果是在更新属性值，则不执行更新
+            if (_isUpdatingLineWidth)
+                return;
+
+            // 更新标题
+            WpfPlot1.Plot.Axes.Bottom.Label.Text = value;
+
+            // 刷新图形
+            WpfPlot1.Refresh();
+        }
+
+        // 改变 绘图设置 Y轴标题
+        partial void OnYAxisTitleChanged(string value)
+        {
+            // 如果是在更新属性值，则不执行更新
+            if (_isUpdatingLineWidth)
+                return;
+
+            // 更新标题
+            WpfPlot1.Plot.Axes.Left.Label.Text = value;
+
+            // 刷新图形
+            WpfPlot1.Refresh();
+        }
+
+        // 改变 绘图设置 轴标题字体大小
+        partial void OnAxisXYTitleFontSizeChanged(float value)
+        {
+            // 如果是在更新属性值，则不执行更新
+            if (_isUpdatingLineWidth)
+                return;
+
+            // 更新标题
+            WpfPlot1.Plot.Axes.Left.Label.FontSize = value;
+            WpfPlot1.Plot.Axes.Bottom.Label.FontSize = value;
+
+            // 刷新图形
+            WpfPlot1.Refresh();
+        }
+
+        // 改变 绘图设置 轴标题字体
+        partial void OnAxisXYTitleFontNameChanged(int value)
+        {
+            // 如果是在更新属性值，则不执行更新
+            if (_isUpdatingLineWidth)
+                return;
+
+            // 更新标题
+            WpfPlot1.Plot.Axes.Left.Label.FontName = PlotTextFontNames[value];
+            WpfPlot1.Plot.Axes.Bottom.Label.FontName = PlotTextFontNames[value];
+
+            // 刷新图形
+            WpfPlot1.Refresh();
+        }
+
+        // 改变 绘图设置 轴标题颜色
+        partial void OnAxisXYTitleColorChanged(ScottPlot.Color value)
+        {
+            // 如果是在更新属性值，则不执行更新
+            if (_isUpdatingLineWidth)
+                return;
+
+            // 更新标题
+            WpfPlot1.Plot.Axes.Left.Label.ForeColor =value;
+            WpfPlot1.Plot.Axes.Bottom.Label.ForeColor = value;
+
+            // 刷新图形
+            WpfPlot1.Refresh();
+        }
+
+        // 改变 背景设置 显示主网格
+        partial void OnFirstGridShowChanged(bool value)
+        {
+            // 如果是在更新属性值，则不执行更新
+            if (_isUpdatingLineWidth)
+                return;
+
+            if (value)
+            {
+                WpfPlot1.Plot.Grid.MajorLineWidth = 1;
+            }
+            else
+            {
+                WpfPlot1.Plot.Grid.MajorLineWidth = 0;
+            }
+
+            // 刷新图形
+            WpfPlot1.Refresh();
+        }
+
+        // 改变 背景设置 主网格颜色
+        partial void OnFirstGridColorChanged(ScottPlot.Color value)
+        {
+            // 如果是在更新属性值，则不执行更新
+            if (_isUpdatingLineWidth)
+                return;
+
+            WpfPlot1.Plot.Grid.MajorLineColor = value;
+            //WpfPlot1.Plot.Grid.YAxisStyle.MajorLineStyle.Color = value;
+
+            // 刷新图形
+            WpfPlot1.Refresh();
+        }
+
+        // 改变 背景设置 主网格宽度
+        partial void OnFirstGridWidthChanged(float value)
+        {
+            // 如果是在更新属性值，则不执行更新
+            if (_isUpdatingLineWidth)
+                return;
+
+            WpfPlot1.Plot.Grid.XAxisStyle.MajorLineStyle.Width = value;
+            WpfPlot1.Plot.Grid.YAxisStyle.MajorLineStyle.Width = value;
+
+            // 刷新图形
+            WpfPlot1.Refresh();
+        }
+
+        // 改变 背景设置 显示次网格
+        partial void OnSecondGridShowChanged(bool value)
+        {
+            // 如果是在更新属性值，则不执行更新
+            if (_isUpdatingLineWidth)
+                return;
+
+            if (value)
+            {
+                WpfPlot1.Plot.Grid.MinorLineWidth = 1;
+            }
+            else
+            {
+                WpfPlot1.Plot.Grid.MinorLineWidth = 0;
+            }
+
+            // 刷新图形
+            WpfPlot1.Refresh();
+        }
+
+        // 改变 背景设置 次网格颜色
+        partial void OnSecondGridColorChanged(ScottPlot.Color value)
+        {
+            // 如果是在更新属性值，则不执行更新
+            if (_isUpdatingLineWidth)
+                return;
+
+            WpfPlot1.Plot.Grid.MinorLineColor = value;
+            //WpfPlot1.Plot.Grid.YAxisStyle.MajorLineStyle.Color = value;
+
+            // 刷新图形
+            WpfPlot1.Refresh();
+        }
+
+        // 改变 背景设置 主网格宽度
+        partial void OnSecondGridWidthChanged(float value)
+        {
+            // 如果是在更新属性值，则不执行更新
+            if (_isUpdatingLineWidth)
+                return;
+
+            WpfPlot1.Plot.Grid.XAxisStyle.MinorLineStyle.Width = value;
+            WpfPlot1.Plot.Grid.YAxisStyle.MinorLineStyle.Width = value;
+
+            // 刷新图形
+            WpfPlot1.Refresh();
+        }
+
+        // 改变 背景设置 反转填充颜色
+        partial void OnSwichtFillColorChanged(bool value)
+        {
+            // 如果是在更新属性值，则不执行更新
+            if (_isUpdatingLineWidth)
+                return;
+
+            if (value)
+            {
+                WpfPlot1.Plot.Grid.YAxisStyle.FillColor1 = GridFillColor1;
+                WpfPlot1.Plot.Grid.YAxisStyle.FillColor2 = GridFillColor2;
+                WpfPlot1.Plot.Grid.XAxisStyle.FillColor1 = ScottPlot.Colors.Transparent;
+                WpfPlot1.Plot.Grid.XAxisStyle.FillColor2 = ScottPlot.Colors.Transparent;
+            }
+            else
+            {
+                WpfPlot1.Plot.Grid.YAxisStyle.FillColor1 = ScottPlot.Colors.Transparent;
+                WpfPlot1.Plot.Grid.YAxisStyle.FillColor2 = ScottPlot.Colors.Transparent;
+                WpfPlot1.Plot.Grid.XAxisStyle.FillColor1 = GridFillColor1;
+                WpfPlot1.Plot.Grid.XAxisStyle.FillColor2 = GridFillColor2;
+            }   
+
+            // 刷新图形
+            WpfPlot1.Refresh();
+        }
+
+        // 改变 背景设置 填充颜色1
+        partial void OnGridFillColor1Changed(ScottPlot.Color value)
+        {
+            // 如果是在更新属性值，则不执行更新
+            if (_isUpdatingLineWidth)
+                return;
+
+            WpfPlot1.Plot.Grid.XAxisStyle.FillColor1 = value;
+            //WpfPlot1.Plot.Grid.YAxisStyle.MajorLineStyle.Color = value;
+
+            // 刷新图形
+            WpfPlot1.Refresh();
+        }
+
+        // 改变 背景设置 填充颜色2
+        partial void OnGridFillColor2Changed(ScottPlot.Color value)
+        {
+            // 如果是在更新属性值，则不执行更新
+            if (_isUpdatingLineWidth)
+                return;
+
+            WpfPlot1.Plot.Grid.XAxisStyle.FillColor2 = value;
+            //WpfPlot1.Plot.Grid.YAxisStyle.MajorLineStyle.Color = value;
+
+            // 刷新图形
+            WpfPlot1.Refresh();
         }
 
         // LinePlot 属性匹配
@@ -404,12 +1092,12 @@ namespace GeoChemistryNexus.ViewModels
 
                 PlotWidth = text.LabelFontSize;     // 匹配文本大小
 
-                // 匹配字体
-                // 获取系统所有字体
-                PlotTextFontNames = System.Drawing.FontFamily.Families
-                    .Select(f => f.Name)
-                    .OrderBy(name => name)
-                    .ToList();
+                //// 匹配字体
+                //// 获取系统所有字体
+                //PlotTextFontNames = System.Drawing.FontFamily.Families
+                //    .Select(f => f.Name)
+                //    .OrderBy(name => name)
+                //    .ToList();
 
                 // 当前字体
                 PlotTextFontName = FindFontNameIndex(text.LabelFontName);
@@ -425,6 +1113,98 @@ namespace GeoChemistryNexus.ViewModels
                 PlotTextContent = text.LabelText;       // 匹配文本内容
 
 
+            }
+            finally
+            {
+                _isUpdatingLineWidth = false;  // 确保标志被重置
+            }
+        }
+
+        // 数据点 属性匹配
+        private void GetDataAttributeMapping(ScottPlot.Plottables.Scatter scatter)
+        {
+            _isUpdatingLineWidth = true;  // 设置标志，防止触发更新
+            try
+            {
+
+                PlotWidth = scatter.MarkerSize;     // 匹配线宽
+                PlotColor = scatter.MarkerColor;     // 匹配线的颜色
+                //// 匹配线的样式
+                if (scatter.MarkerShape.ToString() == MarkerShape.FilledCircle.ToString()) { PlotType = 0; }
+                if (scatter.MarkerShape.ToString() == MarkerShape.OpenCircle.ToString()) { PlotType = 1; }
+                if (scatter.MarkerShape.ToString() == MarkerShape.FilledSquare.ToString()) { PlotType = 2; }
+                if (scatter.MarkerShape.ToString() == MarkerShape.FilledTriangleUp.ToString()) { PlotType = 3; }
+                if (scatter.MarkerShape.ToString() == MarkerShape.FilledTriangleDown.ToString()) { PlotType = 4; }
+                if (scatter.MarkerShape.ToString() == MarkerShape.FilledDiamond.ToString()) { PlotType = 5; }
+                if (scatter.MarkerShape.ToString() == MarkerShape.Eks.ToString()) { PlotType = 6; }
+                if (scatter.MarkerShape.ToString() == MarkerShape.Cross.ToString()) { PlotType = 7; }
+                if (scatter.MarkerShape.ToString() == MarkerShape.Asterisk.ToString()) { PlotType = 8; }
+                PlotVisible = scatter.IsVisible;       // 匹配可见性
+            }
+            finally
+            {
+                _isUpdatingLineWidth = false;  // 确保标志被重置
+            }
+        }
+
+        // 坐标轴属性匹配
+        private void GetAxisAttributeMapping(IAxis axes)
+        {
+            _isUpdatingLineWidth = true;  // 设置标志，防止触发更新
+            try
+            {
+                PlotVisible = axes.IsVisible;       // 匹配可见性
+                ReverseAxis = axes.IsInverted();    // 匹配轴反转
+                AxisTitle = axes.Label.Text;        // 匹配轴标题
+                PlotTextFontName = FindFontNameIndex(axes.Label.FontName);      // 匹配当前字体
+                PlotWidth = axes.Label.FontSize;        //匹配轴标题字体大小
+                PlotColor = axes.Label.ForeColor;     // 匹配标题的颜色
+                AxisTickFontName = FindFontNameIndex(axes.TickLabelStyle.FontName);        // 匹配刻度轴字体
+                AxisTickFontSize = axes.TickLabelStyle.FontSize;       // 匹配刻度轴字体大小
+                AxisTickUpLimit = axes.GetRange().Max;      // 匹配刻度上限
+                AxisTickDownLimit = axes.GetRange().Min;        // 匹配刻度下限
+                AxisPlotColor = axes.TickLabelStyle.ForeColor;     // 匹配刻度的颜色
+            }
+            finally
+            {
+                _isUpdatingLineWidth = false;  // 确保标志被重置
+            }
+        }
+
+        // 绘图设置匹配
+        private void GetPlotAttributeMapping()
+        {
+            _isUpdatingLineWidth = true;  // 设置标志，防止触发更新
+            try
+            {
+                // 这是绘图部分
+                AxisTitle = WpfPlot1.Plot.Axes.Title.Label.Text;        // 匹配绘图标题
+                AxisTitleFontSize = WpfPlot1.Plot.Axes.Title.Label.FontSize;        // 匹配绘图标题大小
+                AxisTitleFontName = FindFontNameIndex(WpfPlot1.Plot.Axes.Title.Label.FontName); // 匹配绘图标题字体
+                AxisTitleColor = WpfPlot1.Plot.Axes.Title.Label.ForeColor; // 匹配绘图标题字体
+
+                YAxisTitle = WpfPlot1.Plot.Axes.Left.Label.Text;        // 匹配左侧轴标题
+                XAxisTitle = WpfPlot1.Plot.Axes.Bottom.Label.Text;        // 匹配左侧轴标题
+                AxisXYTitleColor = WpfPlot1.Plot.Axes.Left.Label.ForeColor;     // 匹配轴标题的颜色
+                AxisXYTitleFontName = FindFontNameIndex(WpfPlot1.Plot.Axes.Left.Label.FontName);      // 匹配轴标题字体
+                AxisXYTitleFontSize = WpfPlot1.Plot.Axes.Left.Label.FontSize;        //匹配轴标题字体大小
+
+
+                // 这是背景部分
+                if (WpfPlot1.Plot.Grid.XAxisStyle.MajorLineStyle.Width > 0)
+                {
+                    FirstGridShow = true;       // 匹配显示主网格
+                }
+                FirstGridColor = WpfPlot1.Plot.Grid.XAxisStyle.MajorLineStyle.Color;    // 匹配主网格颜色
+                FirstGridWidth = WpfPlot1.Plot.Grid.XAxisStyle.MajorLineStyle.Width;    // 匹配主网格宽度
+                if (WpfPlot1.Plot.Grid.XAxisStyle.MinorLineStyle.Width > 0)
+                {
+                    SecondGridShow = true;       // 匹配显示次网格
+                }
+                SecondGridColor = WpfPlot1.Plot.Grid.XAxisStyle.MinorLineStyle.Color;    // 匹配主网格颜色
+                SecondGridWidth = WpfPlot1.Plot.Grid.XAxisStyle.MinorLineStyle.Width;    // 匹配主网格宽度
+                GridFillColor1 = WpfPlot1.Plot.Grid.XAxisStyle.FillColor1;      // 匹配填充颜色1
+                GridFillColor2 = WpfPlot1.Plot.Grid.XAxisStyle.FillColor2;      // 匹配填充颜色1
             }
             finally
             {
@@ -486,12 +1266,12 @@ namespace GeoChemistryNexus.ViewModels
                 foreach (var item in BasePlotItems)
                 {
                     SetTrue(null);
-                    if (item.TypeName == "LinePlot")
+                    if (item.ObjectType == "LinePlot")
                     {
                         var linePlot = (LinePlot)item.Plottable;
                         linePlot.LineColor = linePlot.LineColor.WithAlpha(1f); // 恢复完全不透明
                     }
-                    else if (item.TypeName == "Text")
+                    else if (item.ObjectType == "Text")
                     {
                         var text = (ScottPlot.Plottables.Text)item.Plottable;
                         text.Color = text.Color.WithAlpha(1f); // 恢复完全不透明
@@ -505,12 +1285,12 @@ namespace GeoChemistryNexus.ViewModels
             // 先将所有对象设置为暗淡效果
             foreach (var item in BasePlotItems)
             {
-                if (item.TypeName == "LinePlot")
+                if (item.ObjectType == "LinePlot")
                 {
                     var linePlot = (LinePlot)item.Plottable;
                     linePlot.LineColor = linePlot.LineColor.WithAlpha(0.5f); // 降低透明度
                 }
-                else if (item.TypeName == "Text")
+                else if (item.ObjectType == "Text")
                 {
                     var text = (ScottPlot.Plottables.Text)item.Plottable;
                     text.Color = text.Color.WithAlpha(0.5f); // 降低透明度
@@ -522,19 +1302,26 @@ namespace GeoChemistryNexus.ViewModels
             {
                 if (item is PlotItemModel plotItem)
                 {
-                    if (plotItem.TypeName == "LinePlot")
+                    if (plotItem.ObjectType == "LinePlot")
                     {
                         var linePlot = (LinePlot)plotItem.Plottable;
                         linePlot.LineColor = linePlot.LineColor.WithAlpha(1f); // 完全不透明
                         SetTrue("PlotLine");
                         GetLinePlotAttributeMapping(linePlot);
                     }
-                    else if (plotItem.TypeName == "Text")
+                    else if (plotItem.ObjectType == "Text")
                     {
                         var text = (ScottPlot.Plottables.Text)plotItem.Plottable;
                         text.Color = text.Color.WithAlpha(1f); // 完全不透明
                         SetTrue("PlotText");
                         GetTextAttributeMapping(text);
+                    }
+                    else if (plotItem.ObjectType == "Scatter")
+                    {
+                        var markers = (ScottPlot.Plottables.Scatter)plotItem.Plottable;
+                        markers.Color = markers.Color.WithAlpha(1f); // 完全不透明
+                        SetTrue("Scatter");
+                        GetDataAttributeMapping(markers);
                     }
                 }
             }
@@ -545,6 +1332,32 @@ namespace GeoChemistryNexus.ViewModels
             WpfPlot1.Refresh();
         }
 
+        // 坐标轴对象选择
+        [RelayCommand]
+        public void AxisSelection(IList selectedItems)
+        {
+            // 如果存在对象
+            if (selectedItems != null || selectedItems.Count != 0)
+            {
+                foreach (var item in selectedItems)
+                {
+                    SetTrue("Axis");
+                    var tempAxis = ((PlotItemModel)item).Plottable;
+                    GetAxisAttributeMapping((IAxis)tempAxis);
+                }
+                WpfPlot1.Refresh();
+                // 更新选中状态
+                _previousSelectedItems = selectedItems.Cast<PlotItemModel>().ToList();
+                return;
+            }
+            else
+            {
+                _previousSelectedItems.Clear();
+                SetTrue("null");
+            }
+        }
+
+        // 点击选择绘图模板
         [RelayCommand]
         private async void SelectTreeViewItem(object parameter)
         {
@@ -553,9 +1366,83 @@ namespace GeoChemistryNexus.ViewModels
                 await Task.Run(() =>
                 {
                     WpfPlot1.Plot.Clear();
+                    _previousSelectedNode = (TreeNode)parameter;
                     node.PlotTemplate.DrawMethod(WpfPlot1.Plot);
                     LoadRtfContent(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "PlotData","PlotD.zip"), 
                         ((TreeNode)parameter).PlotTemplate.Description);
+
+                    // 使用 Dispatcher 在 UI 线程上更新 UI 元素
+                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        // 刷新图层列表
+                        PopulatePlotItems((List<IPlottable>)WpfPlot1.Plot.GetPlottables());
+                        // 获取坐标轴对象
+                        GetAxisList();
+                        // 刷新图形界面
+                        WpfPlot1.Refresh();
+                    });
+                });
+            }
+        }
+
+        // 点击选择导入数据投图
+        [RelayCommand]
+        private async void ImportDataPlot()
+        {
+            if(_previousSelectedNode != null)
+            {
+                var fileContent = FileHelper.ReadFile();
+                if (fileContent == null)
+                {
+                    await _dialogCoordinator.ShowMessageAsync(this, "说明","未选择文件\n文件存在问题");
+                }
+                else
+                {
+                    var tempNum = ContainsAllStrings(fileContent, _previousSelectedNode.PlotTemplate.RequiredElements);
+                    if (tempNum == 1)
+                    {
+                        // 计算投点
+                        await _previousSelectedNode.PlotTemplate.PlotMethod(WpfPlot1.Plot, fileContent);
+                        // 刷新绘图
+                        WpfPlot1.Refresh();
+                        // 添加数据
+                        BasePlotItems.Add(new PlotItemModel
+                        {
+                            Name = "数据点",
+                            Plottable = (IPlottable)NormalPlotMethod.pointObject,
+                            ObjectType = "Scatter"
+                        });
+                    }
+                    else
+                    {
+
+                        if (tempNum == -2)
+                        {
+                            await _dialogCoordinator.ShowMessageAsync(this, "说明", "匹配失败，请检查表头");
+                        }
+                        else
+                        {
+                            if (tempNum == 0)
+                            {
+                                await _dialogCoordinator.ShowMessageAsync(this, "说明", "读取表格数据为空");
+                            }
+                            else
+                            {
+                                if (tempNum == -1)
+                                {
+                                    await _dialogCoordinator.ShowMessageAsync(this, "说明", "输入数据参数错误");
+                                }
+                            }
+                        }
+                    }
+                    return;
+                }
+                
+
+                await Task.Run(() =>
+                {
+                    DataTable dataTable = new DataTable();
+                    _previousSelectedNode.PlotTemplate.PlotMethod(WpfPlot1.Plot, dataTable);
                 });
 
                 // 使用 Dispatcher 在 UI 线程上更新 UI 元素
@@ -567,6 +1454,47 @@ namespace GeoChemistryNexus.ViewModels
                     WpfPlot1.Refresh();
                 });
             }
+        }
+
+        // 恢复默认
+        [RelayCommand]
+        public async void ReSetDefault()
+        {
+            await Task.Run(() =>
+            {
+                WpfPlot1.Plot.Clear();
+                _previousSelectedNode.PlotTemplate.DrawMethod(WpfPlot1.Plot);
+                // 使用 Dispatcher 在 UI 线程上更新 UI 元素
+                System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                {
+                    // 刷新属性
+                    SetTrue("null");
+                    // 获取坐标轴对象
+                    GetAxisList();
+                    // 刷新图层列表
+                    PopulatePlotItems((List<IPlottable>)WpfPlot1.Plot.GetPlottables());
+                    // 刷新图形界面
+                    WpfPlot1.Refresh();
+                });
+            });
+
+            
+        }
+
+        // 视图复位
+        [RelayCommand]
+        public void CenterPlot()
+        {
+            WpfPlot1.Plot.Axes.AutoScale();
+            WpfPlot1.Refresh();
+        }
+
+        // 绘图设置
+        [RelayCommand]
+        public void PlotSetting()
+        {
+            SetTrue("Main");
+            GetPlotAttributeMapping();
         }
     }
 }
