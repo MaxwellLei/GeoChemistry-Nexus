@@ -42,17 +42,16 @@
                 <TreeView ItemsSource="{Binding RootTreeNode.Children}">
                     <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                            <TextBlock Text="{Binding Name}">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                        <i:InvokeCommandAction Command="{Binding DataContext.SelectTreeViewItemCommand, 
-                                                              RelativeSource={RelativeSource AncestorType=TreeView}}"
-                                                              CommandParameter="{Binding}"/>
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                            </TextBlock>
+                            <TextBlock Text="{Binding Name}"/>
                         </HierarchicalDataTemplate>
                     </TreeView.ItemTemplate>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectedItemChanged">
+                            <i:InvokeCommandAction Command="{Binding SelectTreeViewItemCommand}"
+                                  CommandParameter="{Binding SelectedItem, 
+                                  RelativeSource={RelativeSource AncestorType=TreeView}}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                 </TreeView>
             </GroupBox>
             <!--绘图/数据区域-->
@@ -141,7 +140,7 @@
                     
                 </Expander>
             </Grid>
-
+            <!--图层面板-->
             <Grid Grid.Column="2" Margin="0 1 0 1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.5*"/>
@@ -333,50 +332,67 @@
                                             <RowDefinition/>
                                             <RowDefinition/>
                                             <RowDefinition/>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
                                         </Grid.RowDefinitions>
                                         <TextBlock Text="显示轴" VerticalAlignment="Center"/>
                                         <CheckBox Grid.Column="1" IsChecked="{Binding PlotVisible}"/>
 
-                                        <TextBlock Text="隐藏主刻度" VerticalAlignment="Center" Grid.Row="2" Margin="0 5"/>
-                                        <CheckBox Grid.Column="1" IsChecked="{Binding ReverseAxis}" Grid.Row="2" Margin="0 5"/>
+                                        <TextBlock Text="隐藏主刻度" VerticalAlignment="Center" Grid.Row="1" Margin="0 5"/>
+                                        <CheckBox Grid.Column="1" IsChecked="{Binding ReverseAxis}" Grid.Row="1" Margin="0 5"/>
 
-                                        <TextBlock Text="刻度轴样式" VerticalAlignment="Center" Grid.Row="7"/>
-                                        <ComboBox Grid.Column="1" SelectedIndex="{Binding PlotType}" Grid.Row="7">
+                                        <TextBlock Text="刻度轴样式" VerticalAlignment="Center" Grid.Row="2"/>
+                                        <ComboBox Grid.Column="1" SelectedIndex="{Binding PlotType}" Grid.Row="2">
                                             <ComboBox.Items>
                                                 <ComboBoxItem Content="常规 "/>
                                                 <ComboBoxItem Content="Log(10)"/>
                                             </ComboBox.Items>
                                         </ComboBox>
 
-                                        <TextBlock Text="刻度轴字体" VerticalAlignment="Center" Grid.Row="8" Margin="0 5"/>
-                                        <ComboBox Grid.Column="1" SelectedIndex="{Binding AxisTickFontName}" Grid.Row="8"
+                                        <TextBlock Text="刻度轴字体" VerticalAlignment="Center" Grid.Row="3" Margin="0 5"/>
+                                        <ComboBox Grid.Column="1" SelectedIndex="{Binding AxisTickFontName}" Grid.Row="3"
                                                   ItemsSource="{Binding PlotTextFontNames}" Margin="0 5"/>
 
-                                        <TextBlock Text="刻度字体大小" VerticalAlignment="Center" Grid.Row="9"/>
-                                        <mahc:NumericUpDown Grid.Row="9" Grid.Column="1"
+                                        <TextBlock Text="刻度字体大小" VerticalAlignment="Center" Grid.Row="4"/>
+                                        <mahc:NumericUpDown Grid.Row="4" Grid.Column="1"
                                                             Value="{Binding AxisTickFontSize,Mode=TwoWay}"/>
 
-                                        <TextBlock Text="刻度上限" VerticalAlignment="Center" Grid.Row="10" Margin="0 5"/>
-                                        <mahc:NumericUpDown Grid.Row="10" Grid.Column="1" Margin="0 5"
+                                        <TextBlock Text="刻度间距" VerticalAlignment="Center" Grid.Row="5" Margin="0 5"/>
+                                        <mahc:NumericUpDown Grid.Row="5" Grid.Column="1" Margin="0 5"
+                                                            Value="{Binding AxisTickSpan,Mode=TwoWay}"/>
+
+                                        <TextBlock Text="刻度上限" VerticalAlignment="Center" Grid.Row="6"/>
+                                        <mahc:NumericUpDown Grid.Row="6" Grid.Column="1"
                                                             Value="{Binding AxisTickUpLimit,Mode=TwoWay}"/>
 
-                                        <TextBlock Text="刻度下限" VerticalAlignment="Center" Grid.Row="11"/>
-                                        <mahc:NumericUpDown Grid.Row="11" Grid.Column="1"
+                                        <TextBlock Text="刻度下限" VerticalAlignment="Center" Grid.Row="7" Margin="0 5"/>
+                                        <mahc:NumericUpDown Grid.Row="7" Grid.Column="1" Margin="0 5"
                                                             Value="{Binding AxisTickDownLimit,Mode=TwoWay}"/>
 
-                                        <TextBlock Text="刻度颜色" VerticalAlignment="Center" Grid.Row="12" Margin="0 5"/>
-                                        <mahc:ColorPicker Grid.Row="12" Grid.Column="1" Margin="0 5"
+                                        <TextBlock Text="刻度颜色" VerticalAlignment="Center" Grid.Row="8"/>
+                                        <mahc:ColorPicker Grid.Row="8" Grid.Column="1"
                                               SelectedColor="{Binding AxisPlotColor,Mode=TwoWay,
                                               Converter={StaticResource ColorConverter}}"/>
                                     </Grid>
                                 </StackPanel>
                             </TabItem>
                             <TabItem Header="次刻度轴">
-                                
+                                <StackPanel Margin="8">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="0.5*"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Text="隐藏次刻度" VerticalAlignment="Center"/>
+                                        <CheckBox Grid.Column="1" IsChecked="{Binding SecondTickShow}"/>
+
+                                        <!--<TextBlock Text="刻度间距" VerticalAlignment="Center" Grid.Row="5" Margin="0 5"/>
+                                        <mahc:NumericUpDown Grid.Row="5" Grid.Column="1" Margin="0 5"
+                                                            Value="{Binding AxisTickSpan,Mode=TwoWay}"/>-->
+                                    </Grid>
+                                </StackPanel>
                             </TabItem>
                         </TabControl>
 

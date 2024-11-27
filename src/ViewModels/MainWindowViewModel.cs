@@ -10,6 +10,7 @@ using ScottPlot;
 using ScottPlot.Colormaps;
 using ScottPlot.Grids;
 using ScottPlot.Plottables;
+using ScottPlot.TickGenerators;
 using ScottPlot.WPF;
 using System;
 using System.Collections;
@@ -27,6 +28,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.TextFormatting;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace GeoChemistryNexus.ViewModels
@@ -107,9 +109,13 @@ namespace GeoChemistryNexus.ViewModels
         /// 坐标轴属性
         /// </summary>
 
-        // 反转坐标轴
+        // 显示刻度
         [ObservableProperty]
         private bool _reverseAxis;
+
+        // 显示次刻度
+        [ObservableProperty]
+        private bool _SecondTickShow;
 
         // 刻度字体
         [ObservableProperty]
@@ -118,6 +124,10 @@ namespace GeoChemistryNexus.ViewModels
         // 刻度字体大小
         [ObservableProperty]
         private float _axisTickFontSize;
+
+        // 主刻度间距
+        [ObservableProperty]
+        private double _axisTickSpan;
 
         // 刻度上限
         [ObservableProperty]
@@ -266,10 +276,10 @@ namespace GeoChemistryNexus.ViewModels
         {
             _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "Vermeesch (2006)" },"主要元素氧化物", 
                 NormalPlotTemplate.Vermessch_2006, NormalPlotMethod.Vermessch_2006_PlotAsync,
-                "DC.rtf", new string[] { "SiO2", "Al2O3", "TiO2", "CaO", "MgO", "MnO", "K2O", "Na2O" });
-            _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "Vermeesch (2006)" },"TiO2-Zr-Y-Sr", 
-                NormalPlotTemplate.Vermessch_2006, NormalPlotMethod.Vermessch_2006_PlotAsync, 
-                "Vermeesch (2006) 绘图说明...", new string[] { "TiO2", "Zr", "Y", "Sr", });
+                "Vermessch_2006.rtf", new string[] { "Group", "SiO2", "Al2O3", "TiO2", "CaO", "MgO", "MnO", "K2O", "Na2O" });
+            _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "Butler and Woronow (1986)" },"TiO2-Zr-Y-Sr", 
+                NormalPlotTemplate.Butler_and_Woronow_1986, NormalPlotMethod.Vermessch_2006_PlotAsync,
+                "Butler_and_Woronow_1986.rtf", new string[] { "Group", "TiO2", "Zr", "Y", "Sr", });
             // 在这里添加更多模板
         }
 
@@ -391,20 +401,18 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
-        // 检查字符匹配
+        // 检查字符完全匹配
         private int ContainsAllStrings(DataTable dataTable, string[] stringsToCheck)
         {
             if (dataTable == null || stringsToCheck == null || stringsToCheck.Length == 0)
             {
                 return -1;      // 输入数据参数错误
             }
-
             // 检查 DataTable 是否有列
             if (dataTable.Columns.Count == 0 || dataTable.Rows.Count == 0)
             {
                 return 0;       // DataTable 内容为空
             }
-
             // 遍历要检查的字符串
             foreach (var str in stringsToCheck)
             {
@@ -412,8 +420,8 @@ namespace GeoChemistryNexus.ViewModels
                 // 遍历所有列名
                 foreach (DataColumn column in dataTable.Columns)
                 {
-                    // 检查当前列名是否包含目标字符串
-                    if (column.ColumnName.Contains(str, StringComparison.OrdinalIgnoreCase))
+                    // 检查当前列名是否完全匹配目标字符串（区分大小写）
+                    if (column.ColumnName == str)
                     {
                         found = true;
                         break;
@@ -425,7 +433,7 @@ namespace GeoChemistryNexus.ViewModels
                     return -2;      // 匹配失败
                 }
             }
-            // 所有字符串都在列名中找到了
+            // 所有字符串都完全匹配
             return 1;
         }
 
@@ -681,6 +689,52 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
+        // 次刻度是否显示
+        partial void OnSecondTickShowChanged(bool value)
+        {
+            // 如果是在更新属性值，则不执行更新
+            if (_isUpdatingLineWidth)
+                return;
+
+            // 更新当前选中图层的颜色
+            if (_previousSelectedItems != null && _previousSelectedItems.Any())
+            {
+                foreach (var item in _previousSelectedItems)
+                {
+                    var tempAxis = (IAxis)item.Plottable;
+                    if (value == true)
+                    {
+                        List<Tick> wwee = tempAxis.TickGenerator.Ticks.ToList();
+                        wwee.Add(new Tick(-9, "-9",false));
+                        var tewew = tempAxis.TickGenerator;
+                        if(tempAxis.TickGenerator is ScottPlot.TickGenerators.NumericFixedInterval)
+                        {
+                            ((ScottPlot.TickGenerators.NumericFixedInterval)tempAxis.TickGenerator).Ticks = wwee.ToArray();
+                        }
+                        
+                        //tempAxis.SetTicks(wwee.Select(tick => tick.Position).ToArray(), wwee.Select(tick => tick.Label).ToArray()) ;
+                        //tempAxis.MinorTickStyle = new TickMarkStyle()
+                        //{
+                        //    Length = 0,
+                        //    Width = 0,
+                        //};
+                    }
+                    else
+                    {
+                        tempAxis.MinorTickStyle = new TickMarkStyle()
+                        {
+                            Length = 2,
+                            Width = 1,
+                            Color = ScottPlot.Colors.Black,
+                        };
+                    }
+
+                }
+                // 刷新图形
+                WpfPlot1.Refresh();
+            }
+        }
+
         // 改变 刻度轴字体
         partial void OnAxisTickFontNameChanged(int value)
         {
@@ -719,6 +773,33 @@ namespace GeoChemistryNexus.ViewModels
                 // 刷新图形
                 WpfPlot1.Refresh();
             }
+        }
+
+        // 改变 主刻度间距
+        partial void OnAxisTickSpanChanged(double value)
+        {
+            // 如果是在更新属性值，则不执行更新
+            if (_isUpdatingLineWidth)
+                return;
+
+            // 更新当前选中图层的颜色
+            if (_previousSelectedItems != null && _previousSelectedItems.Any())
+            {
+                foreach (var item in _previousSelectedItems)
+                {
+
+                    var tempAxis = (IAxis)item.Plottable;
+                    var tickGen = new ScottPlot.TickGenerators.NumericFixedInterval()
+                    {
+                        Interval = value, // 设置间隔为2
+                        //MaxTickCount = 3 // 可选设置最大刻度数
+                    };
+                    tempAxis.TickGenerator = tickGen;
+                }
+                // 刷新图形
+                WpfPlot1.Refresh();
+            }
+            
         }
 
         // 改变 刻度轴上限
@@ -1161,6 +1242,15 @@ namespace GeoChemistryNexus.ViewModels
                 PlotColor = axes.Label.ForeColor;     // 匹配标题的颜色
                 AxisTickFontName = FindFontNameIndex(axes.TickLabelStyle.FontName);        // 匹配刻度轴字体
                 AxisTickFontSize = axes.TickLabelStyle.FontSize;       // 匹配刻度轴字体大小
+                if (axes.TickGenerator is ScottPlot.TickGenerators.NumericFixedInterval)
+                {
+                    // 匹配刻度间隔
+                    AxisTickSpan = ((ScottPlot.TickGenerators.NumericFixedInterval)axes.TickGenerator).Interval;
+                }
+                else
+                {
+                    AxisTickSpan = 1;
+                }
                 AxisTickUpLimit = axes.GetRange().Max;      // 匹配刻度上限
                 AxisTickDownLimit = axes.GetRange().Min;        // 匹配刻度下限
                 AxisPlotColor = axes.TickLabelStyle.ForeColor;     // 匹配刻度的颜色
@@ -1293,7 +1383,7 @@ namespace GeoChemistryNexus.ViewModels
                 else if (item.ObjectType == "Text")
                 {
                     var text = (ScottPlot.Plottables.Text)item.Plottable;
-                    text.Color = text.Color.WithAlpha(0.5f); // 降低透明度
+                    text.Color = text.Color.WithAlpha(0.3f); // 降低透明度
                 }
             }
 
@@ -1389,12 +1479,12 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private async void ImportDataPlot()
         {
-            if(_previousSelectedNode != null)
+            if (_previousSelectedNode != null)
             {
                 var fileContent = FileHelper.ReadFile();
                 if (fileContent == null)
                 {
-                    await _dialogCoordinator.ShowMessageAsync(this, "说明","未选择文件\n文件存在问题");
+                    await _dialogCoordinator.ShowMessageAsync(this, "说明", "未选择文件\n文件存在问题");
                 }
                 else
                 {
@@ -1406,45 +1496,39 @@ namespace GeoChemistryNexus.ViewModels
                         // 刷新绘图
                         WpfPlot1.Refresh();
                         // 添加数据
-                        BasePlotItems.Add(new PlotItemModel
+                        foreach (var kvp in NormalPlotMethod.pointObject)
                         {
-                            Name = "数据点",
-                            Plottable = (IPlottable)NormalPlotMethod.pointObject,
-                            ObjectType = "Scatter"
-                        });
+                            BasePlotItems.Add(new PlotItemModel
+                            {
+                                Name = kvp.Key, // 组别的名称
+                                Plottable = (IPlottable)kvp.Value, // 对应的散点图对象
+                                ObjectType = "Scatter"
+                            });
+                        }
                     }
                     else
                     {
-
                         if (tempNum == -2)
                         {
                             await _dialogCoordinator.ShowMessageAsync(this, "说明", "匹配失败，请检查表头");
                         }
-                        else
+                        else if (tempNum == 0)
                         {
-                            if (tempNum == 0)
-                            {
-                                await _dialogCoordinator.ShowMessageAsync(this, "说明", "读取表格数据为空");
-                            }
-                            else
-                            {
-                                if (tempNum == -1)
-                                {
-                                    await _dialogCoordinator.ShowMessageAsync(this, "说明", "输入数据参数错误");
-                                }
-                            }
+                            await _dialogCoordinator.ShowMessageAsync(this, "说明", "读取表格数据为空");
+                        }
+                        else if (tempNum == -1)
+                        {
+                            await _dialogCoordinator.ShowMessageAsync(this, "说明", "输入数据参数错误");
                         }
                     }
                     return;
                 }
-                
 
                 await Task.Run(() =>
                 {
                     DataTable dataTable = new DataTable();
                     _previousSelectedNode.PlotTemplate.PlotMethod(WpfPlot1.Plot, dataTable);
                 });
-
                 // 使用 Dispatcher 在 UI 线程上更新 UI 元素
                 System.Windows.Application.Current.Dispatcher.Invoke(() =>
                 {
@@ -1456,7 +1540,7 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
-        // 恢复默认
+        // 恢复默认绘图
         [RelayCommand]
         public async void ReSetDefault()
         {
@@ -1469,6 +1553,8 @@ namespace GeoChemistryNexus.ViewModels
                 {
                     // 刷新属性
                     SetTrue("null");
+                    // 加载绘图
+                    //NormalPlotTemplate.Vermessch_2006(WpfPlot1.Plot);
                     // 获取坐标轴对象
                     GetAxisList();
                     // 刷新图层列表
