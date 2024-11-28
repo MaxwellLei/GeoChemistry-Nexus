@@ -14,7 +14,7 @@
         GlowBrush="Black"
         ResizeMode="CanResizeWithGrip"
         WindowStartupLocation="CenterScreen"
-        Title="MainWindow" Height="720" Width="1200">
+        Title="MainWindow" Height="760" Width="1200">
     <mahc:MetroWindow.Resources>
         <cvs:ColorConverter x:Key="ColorConverter"/>
         <cvs:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
@@ -110,7 +110,14 @@
                                         </StackPanel>
                                     </Button>
                                     <Button VerticalAlignment="Center" HorizontalAlignment="Center"
-                                            Margin="0 5">
+                                            Command="{Binding CancelSelectedCommand}" Margin="0 5">
+                                        <StackPanel>
+                                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe6a5;"
+                                                               Height="20" Width="20" FontSize="18"/>
+                                            <TextBlock Text="取消选中"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button VerticalAlignment="Center" HorizontalAlignment="Center">
                                         <StackPanel>
                                             <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe644;"
                                                                Height="20" Width="20" FontSize="18"/>
@@ -148,7 +155,8 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <GroupBox Header="图层面板">
-                    <TabControl mahc:HeaderedControlHelper.HeaderFontSize="15" mahc:TabControlHelper.Underlined="TabPanel">
+                    <TabControl mahc:HeaderedControlHelper.HeaderFontSize="15" mahc:TabControlHelper.Underlined="TabPanel"
+                                SelectedIndex="{Binding SwitchLayer}">
                         <TabItem Header="底图">
                             <ListBox ItemsSource="{Binding BasePlotItems}" DisplayMemberPath="Name" 
                                      SelectionMode="Extended">
@@ -156,7 +164,7 @@
                                     <i:EventTrigger EventName="SelectionChanged">
                                         <i:InvokeCommandAction Command="{Binding LayersSelectionCommand}"
                                                                CommandParameter="{Binding SelectedItems, 
-                                                                                  RelativeSource={RelativeSource AncestorType=ListBox}}"/>
+                                                               RelativeSource={RelativeSource AncestorType=ListBox}}"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </ListBox>

@@ -72,6 +72,10 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private ObservableCollection<PlotItemModel> _axesList;
 
+        // 测试属性
+        [ObservableProperty]
+        private int _switchLayer;
+
         /// <summary>
         /// 公共属性
         /// </summary>
@@ -246,9 +250,6 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private bool _plotMainShow = false;
 
-
-
-
         // 初始化
         public MainWindowViewModel(WpfPlot wpfPlot, RichTextBox richTextBox, IDialogCoordinator dialogCoordinator) {
             WpfPlot1 = wpfPlot;     // 获取绘图控件
@@ -274,13 +275,21 @@ namespace GeoChemistryNexus.ViewModels
         // 注册绘图模板
         private void RegisterPlotTemplates()
         {
-            _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "Vermeesch (2006)" },"主要元素氧化物", 
+            _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "玄武岩", "Vermeesch (2006)" }, "Major Elements (-Fe)", 
                 NormalPlotTemplate.Vermessch_2006, NormalPlotMethod.Vermessch_2006_PlotAsync,
                 "Vermessch_2006.rtf", new string[] { "Group", "SiO2", "Al2O3", "TiO2", "CaO", "MgO", "MnO", "K2O", "Na2O" });
-            _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "Butler and Woronow (1986)" },"TiO2-Zr-Y-Sr", 
-                NormalPlotTemplate.Butler_and_Woronow_1986, NormalPlotMethod.Vermessch_2006_PlotAsync,
-                "Butler_and_Woronow_1986.rtf", new string[] { "Group", "TiO2", "Zr", "Y", "Sr", });
-            // 在这里添加更多模板
+            _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "玄武岩", "Vermeesch (2006)" }, "TiO2-Zr-Y-Sr", 
+                NormalPlotTemplate.Vermessch_2006_b, NormalPlotMethod.Vermessch_2006_b_PlotAsync,
+                "Vermessch_2006_b.rtf", new string[] { "Group", "TiO2", "Zr", "Y", "Sr", });
+            _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "玄武岩", "Saccani (2015)" }, "Th_n-Nb_n",
+                NormalPlotTemplate.Saccani_2015, NormalPlotMethod.Saccani_2015_PlotAsync,
+                "Saccani_2015.rtf", new string[] { "Group", "Th", "Nb" });
+            _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "玄武岩", "Saccani (2015)" }, "Yb_n-Dy_n",
+                NormalPlotTemplate.Saccani_2015_b, NormalPlotMethod.Saccani_2015_PlotAsync,
+                "Saccani_2015.rtf", new string[] { "Group", "Yb", "Dy" });
+            _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "玄武岩", "Saccani (2015)" }, "Ce|Yb-Dy|Yb",
+                NormalPlotTemplate.Saccani_2015_c, NormalPlotMethod.Saccani_2015_PlotAsync,
+                "Saccani_2015.rtf", new string[] { "Group", "Ce", "Yb", "Dy" });
         }
 
         // 设置显示属性
@@ -388,7 +397,11 @@ namespace GeoChemistryNexus.ViewModels
                 }
                 if (plottableType == "Text")
                 {
-                    displayName = "文本";
+                    displayName = "注释";
+                }
+                if (plottableType == "Scatter")
+                {
+                    displayName = ((Scatter)plottable).LegendText;
                 }
 
                 BasePlotItems.Add(new PlotItemModel
@@ -435,6 +448,17 @@ namespace GeoChemistryNexus.ViewModels
             }
             // 所有字符串都完全匹配
             return 1;
+        }
+
+        // 改变 选择图层 内容
+        partial void OnSwitchLayerChanged(int value)
+        {
+            // 取消属性显示
+            LayersSelection(null);
+            // 刷新图层列表
+            PopulatePlotItems((List<IPlottable>)WpfPlot1.Plot.GetPlottables());
+            // 刷新坐标轴列表
+            GetAxisList();
         }
 
         // 改变 Text 文本内容
@@ -1320,7 +1344,7 @@ namespace GeoChemistryNexus.ViewModels
             return null;
         }
 
-        // 加载内容
+        // 加载绘图说明内容
         private void LoadRtfContent(string zipFilePath, string rtfFileName)
         {
             string rtfContent = ReadRtfFromZip(zipFilePath, rtfFileName);
@@ -1456,9 +1480,10 @@ namespace GeoChemistryNexus.ViewModels
                 await Task.Run(() =>
                 {
                     WpfPlot1.Plot.Clear();
+                    SetTrue(null);
                     _previousSelectedNode = (TreeNode)parameter;
                     node.PlotTemplate.DrawMethod(WpfPlot1.Plot);
-                    LoadRtfContent(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "PlotData","PlotD.zip"), 
+                    LoadRtfContent(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "PlotData","PlotData.zip"), 
                         ((TreeNode)parameter).PlotTemplate.Description);
 
                     // 使用 Dispatcher 在 UI 线程上更新 UI 元素
@@ -1546,22 +1571,25 @@ namespace GeoChemistryNexus.ViewModels
         {
             await Task.Run(() =>
             {
-                WpfPlot1.Plot.Clear();
-                _previousSelectedNode.PlotTemplate.DrawMethod(WpfPlot1.Plot);
-                // 使用 Dispatcher 在 UI 线程上更新 UI 元素
-                System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                if(_previousSelectedNode != null)
                 {
-                    // 刷新属性
-                    SetTrue("null");
-                    // 加载绘图
-                    //NormalPlotTemplate.Vermessch_2006(WpfPlot1.Plot);
-                    // 获取坐标轴对象
-                    GetAxisList();
-                    // 刷新图层列表
-                    PopulatePlotItems((List<IPlottable>)WpfPlot1.Plot.GetPlottables());
-                    // 刷新图形界面
-                    WpfPlot1.Refresh();
-                });
+                    WpfPlot1.Plot.Clear();
+                    _previousSelectedNode.PlotTemplate.DrawMethod(WpfPlot1.Plot);
+                    // 使用 Dispatcher 在 UI 线程上更新 UI 元素
+                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        // 刷新属性
+                        SetTrue(null);
+                        // 加载绘图
+                        //NormalPlotTemplate.Vermessch_2006(WpfPlot1.Plot);
+                        // 获取坐标轴对象
+                        GetAxisList();
+                        // 刷新图层列表
+                        PopulatePlotItems((List<IPlottable>)WpfPlot1.Plot.GetPlottables());
+                        // 刷新图形界面
+                        WpfPlot1.Refresh();
+                    });
+                }
             });
 
             
@@ -1575,12 +1603,33 @@ namespace GeoChemistryNexus.ViewModels
             WpfPlot1.Refresh();
         }
 
+        // 取消选中
+        [RelayCommand]
+        public void CancelSelected()
+        {
+            // 取消选择图层对象
+            LayersSelection(null);
+            // 刷新属性
+            SetTrue(null);
+            // 获取坐标轴对象
+            GetAxisList();
+            // 刷新图层列表
+            PopulatePlotItems((List<IPlottable>)WpfPlot1.Plot.GetPlottables());
+        }
+
         // 绘图设置
         [RelayCommand]
         public void PlotSetting()
         {
             SetTrue("Main");
             GetPlotAttributeMapping();
+        }
+
+        // 测试方法
+        [RelayCommand]
+        public void Test()
+        {
+
         }
     }
 }

@@ -10,13 +10,14 @@
   <ItemGroup>
     <None Remove="Data\Icon\iconfont.ttf" />
     <None Remove="Data\PlotData\PlotD.zip" />
+    <None Remove="Data\PlotData\PlotData.zip" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Data\Icon\iconfont.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\PlotData\PlotD.zip">
+    <Content Include="Data\PlotData\PlotData.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
