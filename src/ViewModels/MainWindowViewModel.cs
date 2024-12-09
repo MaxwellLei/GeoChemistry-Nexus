@@ -275,21 +275,30 @@ namespace GeoChemistryNexus.ViewModels
         // 注册绘图模板
         private void RegisterPlotTemplates()
         {
+            _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "玄武岩", "Pearce and Gale (1977)" }, "Ti-Zr-Y",
+                NormalPlotTemplate.Pearce_and_Gale_1977, NormalPlotMethod.Vermessch_2006_PlotAsync,
+                "Vermessch_2006.rtf", new string[] { "Group", "Ti", "Zr", "Y" });
             _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "玄武岩", "Vermeesch (2006)" }, "Major Elements (-Fe)", 
                 NormalPlotTemplate.Vermessch_2006, NormalPlotMethod.Vermessch_2006_PlotAsync,
                 "Vermessch_2006.rtf", new string[] { "Group", "SiO2", "Al2O3", "TiO2", "CaO", "MgO", "MnO", "K2O", "Na2O" });
             _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "玄武岩", "Vermeesch (2006)" }, "TiO2-Zr-Y-Sr", 
                 NormalPlotTemplate.Vermessch_2006_b, NormalPlotMethod.Vermessch_2006_b_PlotAsync,
                 "Vermessch_2006_b.rtf", new string[] { "Group", "TiO2", "Zr", "Y", "Sr", });
-            _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "玄武岩", "Saccani (2015)" }, "Th_n-Nb_n",
+            _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "玄武岩", "Vermeesch (2006)" }, "Ti-Y",
+                NormalPlotTemplate.Vermessch_2006_c, NormalPlotMethod.Vermessch_2006_b_PlotAsync,
+                "Vermessch_2006_c.rtf", new string[] { "Group", "TiO2", "Zr", "Y", "Sr", });
+            _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "玄武岩", "Saccani (2015)" }, "Th-Nb",
                 NormalPlotTemplate.Saccani_2015, NormalPlotMethod.Saccani_2015_PlotAsync,
                 "Saccani_2015.rtf", new string[] { "Group", "Th", "Nb" });
-            _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "玄武岩", "Saccani (2015)" }, "Yb_n-Dy_n",
-                NormalPlotTemplate.Saccani_2015_b, NormalPlotMethod.Saccani_2015_PlotAsync,
+            _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "玄武岩", "Saccani (2015)" }, "Yb-Dy",
+                NormalPlotTemplate.Saccani_2015_b, NormalPlotMethod.Saccani_2015_b_PlotAsync,
                 "Saccani_2015.rtf", new string[] { "Group", "Yb", "Dy" });
-            _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "玄武岩", "Saccani (2015)" }, "Ce|Yb-Dy|Yb",
-                NormalPlotTemplate.Saccani_2015_c, NormalPlotMethod.Saccani_2015_PlotAsync,
+            _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "玄武岩", "Saccani (2015)" }, "Ce-Dy-Yb",
+                NormalPlotTemplate.Saccani_2015_c, NormalPlotMethod.Saccani_2015_c_PlotAsync,
                 "Saccani_2015.rtf", new string[] { "Group", "Ce", "Yb", "Dy" });
+            _registry.RegisterTemplate(new[] { "岩浆岩", "岩石分类" }, "TAS",
+                NormalPlotTemplate.TAS, NormalPlotMethod.TAS_PlotAsync,
+                "Saccani_2015.rtf", new string[] { "Group", "K2O", "Na2O", "SiO2" });
         }
 
         // 设置显示属性
@@ -1623,13 +1632,6 @@ namespace GeoChemistryNexus.ViewModels
         {
             SetTrue("Main");
             GetPlotAttributeMapping();
-        }
-
-        // 测试方法
-        [RelayCommand]
-        public void Test()
-        {
-
         }
     }
 }

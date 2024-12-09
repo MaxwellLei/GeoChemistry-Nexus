@@ -2,6 +2,7 @@
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using ScottPlot;
+using ScottPlot.Plottables;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +30,7 @@ namespace GeoChemistryNexus
             // 初始化窗体
             InitializeComponent();
             // 链接 ViewModel
-            this.DataContext = new MainWindowViewModel(this.WpfPlot1,this.Drichtextbox, DialogCoordinator.Instance);
+            this.DataContext = new MainWindowViewModel(this.WpfPlot1, this.Drichtextbox, DialogCoordinator.Instance);
         }
     }
 }
