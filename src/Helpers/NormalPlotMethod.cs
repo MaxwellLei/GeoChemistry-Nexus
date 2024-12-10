@@ -48,7 +48,7 @@ public static class NormalPlotMethod
     private static (bool success, Dictionary<string, object> values) ExtractValues(DataRow row)
     {
         var values = new Dictionary<string, object>();
-        foreach (string column in MainWindowViewModel._previousSelectedNode.PlotTemplate.RequiredElements)
+        foreach (string column in MainPlotViewModel._previousSelectedNode.PlotTemplate.RequiredElements)
         {
             // 如果列名是 "Group"，允许任何字符串值
             if (column == "Group")
@@ -83,7 +83,7 @@ public static class NormalPlotMethod
             var df1Values = group.Value.Select(p => p.Item1).ToArray();
             var df2Values = group.Value.Select(p => p.Item2).ToArray();
             var scatter = plot.Add.ScatterPoints(df1Values, df2Values);
-            scatter.Label = group.Key;
+            scatter.LegendText = group.Key;
             pointObject[group.Key] = scatter;
         }
     }
