@@ -1,5 +1,7 @@
 ﻿using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Models;
 using GeoChemistryNexus.ViewModels;
+using GeoChemistryNexus.Views;
 using ScottPlot;
 using ScottPlot.Plottables;
 using System;
@@ -16,6 +18,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
@@ -32,6 +35,7 @@ namespace GeoChemistryNexus
             InitializeComponent();
             // 链接 ViewModel
             this.DataContext = new MainWindowViewModel(this.Nav);
+            Nav.Navigate(MainPlotPage.GetPage());
         }
 
         //关闭
@@ -115,40 +119,37 @@ namespace GeoChemistryNexus
 
             }
 
-            //// 创建 NotifyIcon 对象
-            //System.Windows.Forms.NotifyIcon notifyIcon = new()
-            //{
-            //    // 设置托盘图标
-            //    Icon = new Icon(@"Resources/Icon/logo_icon.ico"),
-
-            //    // 设置鼠标移动时的文本
-            //    Text = "林木价值评价系统",
-
-            //    // 显示托盘图标
-            //    Visible = true
-            //};
-
-            //// 创建菜单项
-            //ToolStripMenuItem restoreItem = new("显示");
-            //restoreItem.Click += RestoreItem_Click;
-
-            //ToolStripMenuItem exitItem = new("退出");
-            //exitItem.Click += ExitItem_Click;
-
-            //// 创建右键菜单
-            //ContextMenuStrip menu = new();
-            //menu.Items.Add(restoreItem);
-            //menu.Items.Add(exitItem);
-
-            //// 将右键菜单分配给 NotifyIcon 对象
-            //notifyIcon.ContextMenuStrip = menu;
-            //notifyIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(NotifyIcon_MouseClick);
 
 
-            // 加载自定义的鼠标样式
-            //System.Windows.Input.Cursor myCursor = new System.Windows.Input.Cursor(@"Resources/Cursors/pointer.cur");
+            //加载自定义的鼠标样式
+            //System.Windows.Input.Cursor myCursor = new System.Windows.Input.Cursor(@"Data/Cursors/pointer.cur");
             //rootborder.Cursor = myCursor;
 
+        }
+
+        //窗体关闭触发
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (ConfigHelper.GetConfig("exit_program_mode") == "0")
+            {
+                // 将窗口隐藏并最小化到托盘
+                e.Cancel = true;
+                this.Visibility = Visibility.Hidden;
+                this.WindowState = WindowState.Minimized;
+            }
+        }
+
+        //彩蛋
+        private void Stinger_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        //关闭窗口
+        private void ShutDownWindow(object sender, RoutedEventArgs e)
+        {
+            // 关闭应用程序
+            System.Windows.Application.Current.Shutdown();
         }
     }
 }

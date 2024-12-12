@@ -1,0 +1,160 @@
+﻿<Page x:Class="GeoChemistryNexus.Views.SCommonPageView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+      xmlns:hc="https://handyorg.github.io/handycontrol"
+      xmlns:local="clr-namespace:GeoChemistryNexus.Views"
+      xmlns:sys="clr-namespace:System;assembly=mscorlib"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="SCommonPageView">
+    <Grid Margin="10 30 10 30">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <hc:ScrollViewer HorizontalAlignment="Stretch" Padding="120 0">
+            <VirtualizingStackPanel HorizontalAlignment="Stretch" Margin="0 0 10 0">
+                <hc:Divider Content="文件路径" HorizontalContentAlignment="Left" FontSize="20" FontWeight="Bold" LineStrokeThickness="5"/>
+                <GroupBox Header="保存文件位置" Style="{StaticResource GroupBoxOriginal}" hc:TitleElement.TitlePlacement="Left" 
+                              FontSize="16" Margin="0 0 0 5">
+                    <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Right">
+                        <ComboBox SelectedIndex="{Binding DbLocation,Mode=TwoWay}" FontSize="12">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <i:InvokeCommandAction Command="{Binding DbLocationChangedCommand}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                            <ComboBox.Items>
+                                <sys:String>默认位置</sys:String>
+                                <sys:String>自定义文件位置</sys:String>
+                            </ComboBox.Items>
+                        </ComboBox>
+                        <Button Content="打开文件位置" Margin="10 0 0 0" Command="{Binding OpenDbFolderCommand}"/>
+                    </WrapPanel>
+                </GroupBox>
+                <!--<GroupBox Header="{DynamicResource WorkspacePath}" Style="{StaticResource GroupBoxOriginal}" hc:TitleElement.TitlePlacement="Left" 
+                              FontSize="16" Margin="0 0 0 5">
+                    <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Right">
+                        <ComboBox SelectedIndex="{Binding WpLocation}" FontSize="12">
+                            --><!--<i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <cmd:EventToCommand Command="{Binding WsLocationChangedCommand}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>--><!--
+                            <ComboBox.Items>
+                                <TextBlock Text="{DynamicResource DefaultPath}"/>
+                                <TextBlock Text="{DynamicResource CustomPath}"/>
+                            </ComboBox.Items>
+                        </ComboBox>
+                        <Button Content="{DynamicResource OpenFileLocation}" Margin="10 0 0 0" Command="{Binding OpenWsFolderCommand}"/>
+                    </WrapPanel>
+                </GroupBox>-->
+                <hc:Divider Content="国际化 &amp; 个性化" HorizontalContentAlignment="Left" FontSize="20" FontWeight="Bold" 
+                            LineStrokeThickness="5"/>
+                <GroupBox Header="主题" Style="{StaticResource GroupBoxOriginal}" hc:TitleElement.TitlePlacement="Left" 
+                              FontSize="16" Margin="0 0 0 5">
+                    <ComboBox SelectedIndex="{Binding Language}" FontSize="12" VerticalAlignment="Center" 
+                              HorizontalAlignment="Right">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction Command="{Binding LanguageChangedCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <ComboBox.Items>
+                            <sys:String>默认</sys:String>
+                        </ComboBox.Items>
+                    </ComboBox>
+                </GroupBox>
+                <GroupBox Header="语言" Style="{StaticResource GroupBoxOriginal}" hc:TitleElement.TitlePlacement="Left" 
+                              FontSize="16" Margin="0 0 0 5">
+                    <ComboBox SelectedIndex="{Binding Language}" FontSize="12" VerticalAlignment="Center" 
+                              HorizontalAlignment="Right">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction Command="{Binding LanguageChangedCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <ComboBox.Items>
+                            <sys:String>简体中文</sys:String>
+                            <sys:String>English(US)</sys:String>
+                        </ComboBox.Items>
+                    </ComboBox>
+                </GroupBox>
+                <GroupBox Header="字体" Style="{StaticResource GroupBoxOriginal}" hc:TitleElement.TitlePlacement="Left" 
+                              FontSize="16" Margin="0 0 0 5">
+                    <ComboBox SelectedIndex="{Binding Font}" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Right">
+                        <ComboBox.Items>
+                            <sys:String>默认</sys:String>
+                        </ComboBox.Items>
+                    </ComboBox>
+                </GroupBox>
+                <GroupBox Header="启动背景图" Style="{StaticResource GroupBoxOriginal}" hc:TitleElement.TitlePlacement="Left" 
+                              FontSize="16" Margin="0 0 0 5">
+                    <StackPanel>
+                        <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Right">
+                            <ComboBox SelectedIndex="0" FontSize="12" >
+                                <ComboBox.Items>
+                                    <sys:String>默认随机</sys:String>
+                                    <sys:String>固定显示当前</sys:String>
+                                </ComboBox.Items>
+                            </ComboBox>
+                            <Button Content="添加启动图" Margin="10 0 0 0" Command="{Binding AddStartImgCommand}"/>
+                        </WrapPanel>
+                    </StackPanel>
+                </GroupBox>
+                <hc:CoverFlow x:Name="CoverFlow" VerticalAlignment="Stretch" Height="200"/>
+                <hc:Divider Content="消息通知" HorizontalContentAlignment="Left" 
+                            FontSize="20" FontWeight="Bold" LineStrokeThickness="5"/>
+                <GroupBox Header="自动关闭时间" Style="{StaticResource GroupBoxOriginal}" 
+                              hc:TitleElement.TitlePlacement="Left" FontSize="16" Margin="0 0 0 5">
+                    <ComboBox SelectedIndex="{Binding AutoOffTime}" FontSize="12" VerticalAlignment="Center" 
+                              HorizontalAlignment="Right">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction Command="{Binding AutoOffTimeChangedCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <ComboBox.Items>
+                            <sys:String>5 秒</sys:String>
+                            <sys:String>4 秒</sys:String>
+                            <sys:String>3 秒</sys:String>
+                            <sys:String>2 秒</sys:String>
+                        </ComboBox.Items>
+                    </ComboBox>
+                </GroupBox>
+                <hc:Divider Content="其他" HorizontalContentAlignment="Left" FontSize="20" FontWeight="Bold" LineStrokeThickness="5"/>
+                <GroupBox Header="开机启动" Style="{StaticResource GroupBoxOriginal}" 
+                          hc:TitleElement.TitlePlacement="Left" FontSize="16" Margin="0 0 0 5" >
+                    <ToggleButton Style="{StaticResource ToggleButtonSwitch}" IsChecked="{Binding Boot}" 
+                                  HorizontalAlignment="Right"/>
+                </GroupBox>
+                <GroupBox Header="自动检查更新" Style="{StaticResource GroupBoxOriginal}" 
+                          hc:TitleElement.TitlePlacement="Left" FontSize="16" Margin="0 0 0 5">
+                    <StackPanel>
+                        <ToggleButton Style="{StaticResource ToggleButtonSwitch}" HorizontalAlignment="Right" 
+                                      IsChecked="{Binding AutoCheck}"/>
+                        <Button Width="125" Content="检查更新" HorizontalAlignment="Right" 
+                                Margin="0 10 0 5" Command="{Binding CheckUpdateCommand}"/>
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Header="退出程序方法" Style="{StaticResource GroupBoxOriginal}" 
+                          hc:TitleElement.TitlePlacement="Left" FontSize="16" Margin="0 0 0 5">
+                    <ComboBox SelectedIndex="{Binding ExitMode}" FontSize="12" VerticalAlignment="Center" 
+                              HorizontalAlignment="Right">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction Command="{Binding ExitProgrmModeCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <ComboBox.Items>
+                            <sys:String>最小化到托盘</sys:String>
+                            <sys:String>直接退出</sys:String>
+                        </ComboBox.Items>
+                    </ComboBox>
+                </GroupBox>
+            </VirtualizingStackPanel>
+        </hc:ScrollViewer>
+    </Grid>
+</Page>

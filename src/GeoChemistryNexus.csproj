@@ -5,17 +5,67 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Data\Icon\logo.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Data\Cursors\pointer.cur" />
     <None Remove="Data\Icon\iconfont.ttf" />
+    <None Remove="Data\Icon\logo.png" />
+    <None Remove="Data\Image\StartPic\1.jpg" />
+    <None Remove="Data\Image\StartPic\10.jpg" />
+    <None Remove="Data\Image\StartPic\2.jpg" />
+    <None Remove="Data\Image\StartPic\3.jpg" />
+    <None Remove="Data\Image\StartPic\4.jpg" />
+    <None Remove="Data\Image\StartPic\5.jpg" />
+    <None Remove="Data\Image\StartPic\6.jpg" />
+    <None Remove="Data\Image\StartPic\7.jpg" />
+    <None Remove="Data\Image\StartPic\8.jpg" />
+    <None Remove="Data\Image\StartPic\9.jpg" />
     <None Remove="Data\PlotData\PlotD.zip" />
     <None Remove="Data\PlotData\PlotData.zip" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Data\Cursors\pointer.cur">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\Icon\iconfont.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Icon\logo.ico" />
+    <Content Include="Data\Icon\logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Image\StartPic\1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Image\StartPic\10.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Image\StartPic\2.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Image\StartPic\3.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Image\StartPic\4.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Image\StartPic\5.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Image\StartPic\6.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Image\StartPic\7.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Image\StartPic\8.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Image\StartPic\9.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\PlotData\PlotData.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -26,9 +76,13 @@
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
     <PackageReference Include="EPPlus" Version="7.5.1" />
     <PackageReference Include="HandyControl" Version="3.5.1" />
-    <PackageReference Include="Microsoft.Kiota.Serialization.Form" Version="1.15.2" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
+    <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
     <PackageReference Include="ScottPlot.WPF" Version="5.0.46" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\Config\" />
   </ItemGroup>
 
 </Project>

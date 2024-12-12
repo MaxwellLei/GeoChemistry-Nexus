@@ -158,57 +158,55 @@
                 <!--文本属性设置面板-->
                 <StackPanel Margin="8" Visibility="{Binding PlotTextShow, 
                             Converter={StaticResource BoolToVisibilityConverter}}">
-                    <Expander Header="常规">
-                        <Grid Name="MainGrid">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="0.3*"/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <TextBlock Text="是否可见" VerticalAlignment="Center"/>
-                            <CheckBox Grid.Column="1" IsChecked="{Binding PlotVisible}"/>
+                    <Grid Name="MainGrid">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.3*"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="是否可见" VerticalAlignment="Center"/>
+                        <CheckBox Grid.Column="1" IsChecked="{Binding PlotVisible}"/>
 
-                            <TextBlock Text="字体" VerticalAlignment="Center" Grid.Row="1" Margin="0 5"/>
-                            <ComboBox Grid.Column="1" SelectedIndex="{Binding PlotTextFontName}" Grid.Row="1" 
+                        <TextBlock Text="字体" VerticalAlignment="Center" Grid.Row="1" Margin="0 5"/>
+                        <ComboBox Grid.Column="1" SelectedIndex="{Binding PlotTextFontName}" Grid.Row="1" 
                                           ItemsSource="{Binding PlotTextFontNames}" Margin="0 5"/>
 
-                            <TextBlock Text="字体样式" VerticalAlignment="Center" Grid.Row="2"/>
-                            <ComboBox Grid.Column="1" SelectedIndex="{Binding PlotType}" Grid.Row="2">
-                                <ComboBox.Items>
-                                    <ComboBoxItem Content="默认 (Normal)"/>
-                                    <ComboBoxItem Content="加粗 (Bold)"/>
-                                    <ComboBoxItem Content="斜体 (Italic)"/>
-                                </ComboBox.Items>
-                            </ComboBox>
+                        <TextBlock Text="字体样式" VerticalAlignment="Center" Grid.Row="2"/>
+                        <ComboBox Grid.Column="1" SelectedIndex="{Binding PlotType}" Grid.Row="2">
+                            <ComboBox.Items>
+                                <ComboBoxItem Content="默认 (Normal)"/>
+                                <ComboBoxItem Content="加粗 (Bold)"/>
+                                <ComboBoxItem Content="斜体 (Italic)"/>
+                            </ComboBox.Items>
+                        </ComboBox>
 
-                            <TextBlock Text="字体大小" VerticalAlignment="Center" Grid.Row="3" Margin="0 5"/>
-                            <hc:NumericUpDown Grid.Row="3" Grid.Column="1" Value="{Binding PlotWidth,Mode=TwoWay}"
+                        <TextBlock Text="字体大小" VerticalAlignment="Center" Grid.Row="3" Margin="0 5"/>
+                        <hc:NumericUpDown Grid.Row="3" Grid.Column="1" Value="{Binding PlotWidth,Mode=TwoWay}"
                                                 Margin="0 5"/>
 
-                            <TextBlock Text="字体颜色" VerticalAlignment="Center" Grid.Row="4" />
-                            <Button Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                        <TextBlock Text="字体颜色" VerticalAlignment="Center" Grid.Row="4" />
+                        <Button Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                                 Content="" Click="Color_Pick" BorderThickness="0"
                                 Background="{Binding PlotColor, Converter={StaticResource BackgroundColorConverter}}"/>
 
 
 
-                            <TextBlock Text="内容" VerticalAlignment="Center" Grid.Row="5" Margin="0 5"/>
-                            <TextBox Grid.Row="5" Grid.Column="1" Margin="0 5" Text="{Binding PlotTextContent,Mode=TwoWay}">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="TextChanged">
-                                        <i:InvokeCommandAction Command="{Binding RefreshTextCommand}"/>
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                            </TextBox>
-                        </Grid>
-                    </Expander>
+                        <TextBlock Text="内容" VerticalAlignment="Center" Grid.Row="5" Margin="0 5"/>
+                        <TextBox Grid.Row="5" Grid.Column="1" Margin="0 5" Text="{Binding PlotTextContent,Mode=TwoWay}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="TextChanged">
+                                    <i:InvokeCommandAction Command="{Binding RefreshTextCommand}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </TextBox>
+                    </Grid>
                 </StackPanel>
                 <!--边界设置面板-->
                 <StackPanel Margin="8" Visibility="{Binding PlotLineShow, 

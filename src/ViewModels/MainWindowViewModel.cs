@@ -28,7 +28,7 @@ namespace GeoChemistryNexus.ViewModels
         public RelayCommand HomePage { get; private set; }  //切换主页命令
         public RelayCommand ModelPage { get; private set; }  //切换模型命令
         public RelayCommand DataPage { get; private set; }  //切换数据命令
-        public RelayCommand SettingPage { get; private set; }  //切换设置命令
+        public RelayCommand SettingPage { get; private set; }  //切换数据命令
         public RelayCommand ThemeModeChange { get; private set; }  //切换设置命令
 
         //初始化
@@ -39,7 +39,7 @@ namespace GeoChemistryNexus.ViewModels
             HomePage = new RelayCommand(ExecuteHomePage);
             //ModelPage = new RelayCommand(ExecuteModelPage);
             //DataPage = new RelayCommand(ExecuteDataPage);
-            //SettingPage = new RelayCommand(ExecuteSettingPage);
+            SettingPage = new RelayCommand(ExecuteSettingPage);
             //ThemeModeChange = new RelayCommand(ExecuteThemeModeChange);
 
             //FunInit();
@@ -70,8 +70,8 @@ namespace GeoChemistryNexus.ViewModels
         //切换设置命令
         private void ExecuteSettingPage()
         {
-            //Nav.Navigate(SettingPageView.GetPage());
-            //SettingPageView.RefeshAn();
+            Nav.Navigate(SettingPageView.GetPage());
+            SettingPageView.RefeshAn();
         }
 
         ////功能初始化

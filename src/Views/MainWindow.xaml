@@ -7,39 +7,46 @@
         xmlns:local="clr-namespace:GeoChemistryNexus"
         xmlns:hc="https://handyorg.github.io/handycontrol"
         WindowStyle="None" AllowsTransparency="True" Background="Transparent"
-        WindowStartupLocation="CenterScreen" Loaded="Window_Loaded"
+        WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" Closing="Window_Closing" 
         Title="MainWindow" Height="760" Width="1200" BorderThickness="1">
     <WindowChrome.WindowChrome>
         <WindowChrome/>
     </WindowChrome.WindowChrome>
 
     <!--主窗体-->
-    <Border Name="rootborder" CornerRadius="8" Background="#35383e">
+    <Border CornerRadius="8" Background="#35383e">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="36"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <!--<hc:NotifyIcon Name="notifyIcon" Text="{DynamicResource Title}" IsBlink="False" Visibility="Visible">
-            -->
-            <!--<hc:NotifyIcon.ContextMenu>
-                -->
-            <!--<ContextMenu Width="160" Placement="Right">
-                    <MenuItem Header="{DynamicResource Show}" Click="ShowWindow"/>
-                    -->
-            <!--<Separator/>-->
-            <!--
-                    <MenuItem Header="{DynamicResource Quit}" Click="ShutDownWindow"/>
-                </ContextMenu>-->
-            <!--
-            </hc:NotifyIcon.ContextMenu>-->
-            <!--
-        </hc:NotifyIcon>-->
+            <hc:NotifyIcon Name="notifyIcon" Text="GeoChemistry Nexus" IsBlink="False" Visibility="Visible"
+                           Icon="../Data/Icon/logo.png">
+                <hc:NotifyIcon.ContextMenu>
+                    <ContextMenu Width="160" Placement="Right">
+                        <MenuItem Header="显示界面" Click="ShowWindow"/>
+                        <Separator/>
+                        <MenuItem Header="退出程序" Click="ShutDownWindow"/>
+                    </ContextMenu>
+
+                </hc:NotifyIcon.ContextMenu>
+            </hc:NotifyIcon>
             <!--标题栏-->
             <Border Background="#35383e" CornerRadius="8 8 0 0">
                 <Grid>
-                    <!--<Image Source="../Resources/Image/Other/Seraphine0.png"  HorizontalAlignment="Left" Margin="-2 0 0 0"/>-->
-                    <TextBlock Text="{DynamicResource Title}" Foreground="White"
+                    <TextBlock Text="&#xe794;" Foreground="White"  Margin="20 5 0 0" FontSize="24" 
+                               FontFamily="../Data/Icon/#iconfont" VerticalAlignment="Center"
+                               WindowChrome.IsHitTestVisibleInChrome="True" HorizontalAlignment="Left">
+                        <TextBlock.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="🔨砸一下？" Click="Stinger_Click"/>
+                            </ContextMenu>
+                        </TextBlock.ContextMenu>
+                        <TextBlock.ToolTip>
+                            <TextBlock Text="里面会有什么呢？也许你可以尝试砸一下" />
+                        </TextBlock.ToolTip>
+                    </TextBlock>
+                    <TextBlock Text="Geo Chemistry Nexus" Foreground="White" FontWeight="Bold" FontSize="16"
                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 5 0">
                         <Button Content="&#xe607;" WindowChrome.IsHitTestVisibleInChrome="True"
@@ -117,6 +124,12 @@
                 <Grid Grid.Column="1">
                     <Frame Name="Nav" BorderThickness="0" NavigationUIVisibility="Hidden"  ClipToBounds="True"
                            Background="White"/>
+
+                    <!--消息通知-->
+                    <ScrollViewer VerticalScrollBarVisibility="Hidden" VerticalAlignment="Top" 
+                                  HorizontalAlignment="Right">
+                        <VirtualizingStackPanel  hc:Growl.GrowlParent="True" VerticalAlignment="Top"/>
+                    </ScrollViewer>
                 </Grid>
             </Grid>
         </Grid>
