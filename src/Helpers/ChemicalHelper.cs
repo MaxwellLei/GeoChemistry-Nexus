@@ -34,6 +34,12 @@ namespace GeoChemistryNexus.Helpers
             return sampleValue / referenceValue;
         }
 
+        // 原子量换算
+        public static float CalAtomicMass(float sampleValue, float atomicMassValue, int num = 1)
+        {
+            return (sampleValue * num) / atomicMassValue;
+        }
+
 
     }
 }

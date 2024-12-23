@@ -1,0 +1,43 @@
+﻿<Page x:Class="GeoChemistryNexus.Views.GeothermometerPageView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:hc="https://handyorg.github.io/handycontrol"
+      xmlns:local="clr-namespace:GeoChemistryNexus.Views"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="GeothermometerPageView">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.3*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <hc:SideMenu BorderThickness="1" VerticalAlignment="Stretch">
+            <hc:SideMenuItem Header="锆石">
+                <hc:SideMenuItem.Icon>
+                    <Image Source="/GeoChemistryNexus;component/Data/Icon/T_Icon/Zircon.png" Width="24" Height="24"/>
+                </hc:SideMenuItem.Icon>
+                <hc:SideMenuItem Header="Ti 温度计" Command="{Binding ZirconTiCommand}"/>
+                <hc:SideMenuItem Header="Zr 温度计" Command="{Binding ZirconZrCommand}"/>
+            </hc:SideMenuItem>
+            <hc:SideMenuItem Header="闪锌矿">
+                <hc:SideMenuItem.Icon>
+                    <Image Source="/GeoChemistryNexus;component/Data/Icon/T_Icon/Sphalerite.png" Width="24" Height="24"/>
+                </hc:SideMenuItem.Icon>
+                <hc:SideMenuItem Header="FeS,硫逸度 温度计" Command="{Binding SphaleriteFeSCommand}"/>
+                <hc:SideMenuItem Header="GGIMFis 温度计" Command="{Binding SphaleriteGGIMFisCommand}"/>
+            </hc:SideMenuItem>
+        </hc:SideMenu>
+        
+        <TabControl Grid.Column="1">
+            <TabItem Header="绘图">
+                <Frame BorderThickness="0" Content="{Binding CurrentView}" Margin="32 0 32 10"/>
+            </TabItem>
+            <TabItem Header="指南"/>
+        </TabControl>
+
+        
+    </Grid>
+    
+</Page>

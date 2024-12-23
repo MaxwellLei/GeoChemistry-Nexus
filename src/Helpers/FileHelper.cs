@@ -5,6 +5,9 @@ using Microsoft.Win32;
 using OfficeOpenXml;
 using HandyControl.Controls;
 using Ookii.Dialogs.Wpf;
+using System.Linq;
+using System.Windows;
+using GeoChemistryNexus.Helpers;
 
 public class FileHelper
 {
@@ -45,6 +48,31 @@ public class FileHelper
         }
 
         return null;
+    }
+
+    // 读取 数据 文件
+    public static DataTable? ReadFile(string filePath)
+    {
+        string fileExtension = Path.GetExtension(filePath).ToLower();
+
+        FileInfo fileInfo = new FileInfo(filePath);
+        if (fileInfo.Length == 0)
+        {
+            return null; // 空文件
+        }
+
+        if (fileExtension == ".xlsx" || fileExtension == ".xls")
+        {
+            return ReadExcelFile(filePath);
+        }
+        else if (fileExtension == ".csv")
+        {
+            return ReadCsvFile(filePath);
+        }
+        else
+        {
+            throw new NotSupportedException("Unsupported file format.");
+        }
     }
 
     private static DataTable? ReadExcelFile(string filePath)
@@ -109,6 +137,77 @@ public class FileHelper
         return dataTable;
     }
 
+    // 导出 DataTable 到指定格式的文件
+    public static bool ExportDataTable(DataTable dataTable)
+    {
+        SaveFileDialog saveFileDialog = new SaveFileDialog
+        {
+            Filter = "Excel Files|*.xlsx;*.xls|CSV Files|*.csv",
+            Title = "Save DataTable as File",
+            FileName = "ExportedData" // 默认文件名
+        };
+
+        // 显示保存文件对话框
+        if (saveFileDialog.ShowDialog() == true)
+        {
+            string filePath = saveFileDialog.FileName;
+            string fileExtension = Path.GetExtension(filePath).ToLower();
+
+            try
+            {
+                if (fileExtension == ".xlsx" || fileExtension == ".xls")
+                {
+                    ExportToExcel(dataTable, filePath);
+                }
+                else if (fileExtension == ".csv")
+                {
+                    ExportToCsv(dataTable, filePath);
+                }
+                else
+                {
+                    throw new NotSupportedException("Unsupported file format.");
+                }
+                MessageHelper.Success("导出成功");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.Error($"Error exporting DataTable: {ex.Message}");
+                return false;
+            }
+        }
+
+        return false; // 用户取消了保存对话框
+    }
+
+    private static void ExportToExcel(DataTable dataTable, string filePath)
+    {
+        using (var package = new ExcelPackage())
+        {
+            var worksheet = package.Workbook.Worksheets.Add("Sheet1");
+
+            // Load the DataTable into the worksheet
+            worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
+
+            // Save the workbook to the specified file
+            package.SaveAs(new FileInfo(filePath));
+        }
+    }
+
+    private static void ExportToCsv(DataTable dataTable, string filePath)
+    {
+        using (var writer = new StreamWriter(filePath))
+        {
+            // Write the header line
+            writer.WriteLine(string.Join(",", dataTable.Columns.Cast<DataColumn>().Select(col => col.ColumnName)));
+
+            // Write each data row
+            foreach (DataRow row in dataTable.Rows)
+            {
+                writer.WriteLine(string.Join(",", row.ItemArray));
+            }
+        }
+    }
 
     //获取文件路径——不带格式限制
     public static string GetFilePath()
