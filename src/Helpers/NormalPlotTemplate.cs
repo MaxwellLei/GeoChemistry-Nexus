@@ -1,4 +1,6 @@
-﻿using ScottPlot;
+﻿using GeoChemistryNexus.ViewModels;
+using GeoChemistryNexus.Views;
+using ScottPlot;
 using ScottPlot.AxisPanels;
 using ScottPlot.Plottables;
 using ScottPlot.TickGenerators;
@@ -12,10 +14,10 @@ using static OfficeOpenXml.ExcelErrorValue;
 namespace GeoChemistryNexus.Helpers
 {
     // 常规投图模板
-    public static class NormalPlotTemplate
+    public class NormalPlotTemplate
     {
         // 重置坐标轴
-        private static void ResetPlot(ScottPlot.Plot plot)
+        private static void ResetPlot(ScottPlot.Plot plot,bool showLocationLine = true)
         {
             // 重置刻度轴限制
             plot.Axes.SetLimits(double.NaN, double.NaN, double.NaN, double.NaN);    
@@ -28,6 +30,12 @@ namespace GeoChemistryNexus.Helpers
             // 重置坐标轴刻度字体大小
             plot.Axes.Left.TickLabelStyle.FontSize  = 12;
             plot.Axes.Bottom.TickLabelStyle.FontSize = 12;
+            // 在原始坐标添加坐标线
+            MainPlotViewModel.crosshair = plot.Add.Crosshair(0, 0);
+            MainPlotViewModel.myHighlightMarker = plot.Add.Marker(0, 0); // 添加高亮标记
+            MainPlotViewModel.myHighlightMarker.Shape = MarkerShape.OpenCircle; // 设置标记形状
+            MainPlotViewModel.myHighlightMarker.Size = 17; // 设置标记大小
+            MainPlotViewModel.myHighlightMarker.LineWidth = 2; // 设置标记线宽
         }
 
         // Pearce and Gale (1977) 【构造环境判别】
@@ -135,6 +143,8 @@ namespace GeoChemistryNexus.Helpers
         public static void Vermessch_2006_c(ScottPlot.Plot plot)
         {
             ResetPlot(plot);
+            //MainPlotPage.crosshair = plot.Add.Crosshair(0, 0);
+
             plot.Axes.Title.Label.Text = "Vermessch (2006) Tectonic Setting Discrimination Diagram";
             plot.Axes.Title.Label.FontSize = 18;
 

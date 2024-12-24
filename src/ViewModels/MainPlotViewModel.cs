@@ -46,27 +46,42 @@ namespace GeoChemistryNexus.ViewModels
         // 添加一个标志来防止递归更新属性
         private bool _isUpdatingLineWidth = false;
 
+        // 映射字典
+        Dictionary<string, string> translations;
+
         // 绘图控件
         private WpfPlot WpfPlot1;
 
         // 描述控件
         private RichTextBox _richTextBox;
 
-        // 测试
-        [ObservableProperty]
-        private string? _newtitle = "nihao";
+        // 定位轴显示
+        public static Crosshair crosshair;
+
+        // 选中对象提示
+        public static ScottPlot.Plottables.Marker myHighlightMarker; // 高亮标记
 
         // 绘图模板列表
         [ObservableProperty]
         private TreeNode _rootTreeNode;
 
-        // 图层列表
+        // 边界列表
         [ObservableProperty]
         private ObservableCollection<PlotItemModel> _basePlotItems;
+
+        // 注释列表
+        [ObservableProperty]
+        private ObservableCollection<PlotItemModel> _baseTextItems;
 
         // 坐标轴列表
         [ObservableProperty]
         private ObservableCollection<PlotItemModel> _axesList;
+
+        //数据列表
+        [ObservableProperty]
+        private ObservableCollection<PlotItemModel> _baseDataItems;
+
+
 
         // 测试属性
         [ObservableProperty]
@@ -251,11 +266,12 @@ namespace GeoChemistryNexus.ViewModels
         {
             WpfPlot1 = wpfPlot;     // 获取绘图控件
             _richTextBox = richTextBox;     // 获取内容控件
-            BasePlotItems = new ObservableCollection<PlotItemModel>();      // 初始化底图列表
+            BasePlotItems = new ObservableCollection<PlotItemModel>();      // 初始化边界列表
+            BaseTextItems = new ObservableCollection<PlotItemModel>();      // 初始化注释列表
+            BaseDataItems = new ObservableCollection<PlotItemModel>();      // 初始化数据列表
             _axesList = new();  // 初始化坐标轴列表
             _previousSelectedItems = new List<PlotItemModel>();     // 初始化图层选中对象
             _plotTextFontNames = new List<string>();        // 字体集合
-            _axesList = new ObservableCollection<PlotItemModel>();      // 初始化坐标轴对象
 
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;     // 初始化 excel 相关协议
             RegisterPlotTemplates();    // 注册绘图模板
@@ -266,6 +282,13 @@ namespace GeoChemistryNexus.ViewModels
                 .Select(f => f.Name)
                 .OrderBy(name => name)
                 .ToList();
+
+            // 映射字典
+            translations = new Dictionary<string, string>
+            {
+                { "Left", "左侧" },
+                { "Bottom", "底部" }
+            };
         }
 
         // 注册绘图模板
@@ -367,6 +390,30 @@ namespace GeoChemistryNexus.ViewModels
             return index >= 0 ? index : 0;
         }
 
+        // 去掉转义字符
+        private string RemoveNewlines(string str)
+        {
+            if (str == null)
+            {
+                throw new ArgumentNullException(nameof(str), "输入字符串不能为 null。");
+            }
+
+            return str.Replace("\n", string.Empty);
+        }
+
+        // 字典映射
+        private string Translate(string input, Dictionary<string, string> translations)
+        {
+            if (translations.TryGetValue(input, out string translation))
+            {
+                return translation;
+            }
+            else
+            {
+                return "映射Key未找到"; // "Translation not found"
+            }
+        }
+
         // 刷新坐标轴列表
         private void GetAxisList()
         {
@@ -374,12 +421,17 @@ namespace GeoChemistryNexus.ViewModels
             var testdata = WpfPlot1.Plot.Axes.GetAxes();
             foreach (var axis in WpfPlot1.Plot.Axes.GetAxes())
             {
-                AxesList.Add(new PlotItemModel()
+                var test = axis.Edge.ToString();
+                var test2 = Equals(axis.Edge.ToString(), "Top");
+                if (axis.Edge.ToString() != "Right" && axis.Edge.ToString() != "Top")
                 {
-                    Name = axis.Edge.ToString(),
-                    ObjectType = "Axis",
-                    Plottable = axis,
-                });
+                    AxesList.Add(new PlotItemModel()
+                    {
+                        Name = Translate(axis.Edge.ToString(), translations),
+                        ObjectType = "Axis",
+                        Plottable = axis,
+                    });
+                }
             }
         }
 
@@ -390,6 +442,8 @@ namespace GeoChemistryNexus.ViewModels
                 throw new ArgumentNullException(nameof(plottables));
 
             BasePlotItems.Clear();
+            BaseTextItems.Clear();
+            BaseDataItems.Clear();
             foreach (IPlottable plottable in plottables)
             {
                 // 获取绘图名称
@@ -399,22 +453,37 @@ namespace GeoChemistryNexus.ViewModels
                 if (plottableType == "LinePlot")
                 {
                     displayName = "边界";
+                    BasePlotItems.Add(new PlotItemModel
+                    {
+                        Plottable = plottable,
+                        Name = displayName,
+                        ObjectType = plottableType
+                    });
                 }
                 if (plottableType == "Text")
                 {
-                    displayName = "注释";
+                    // 添加注释对象
+                    displayName = RemoveNewlines(((ScottPlot.Plottables.Text)plottable).LabelText);
+                    BaseTextItems.Add(new PlotItemModel
+                    {
+                        Plottable = plottable,
+                        Name = displayName,
+                        ObjectType = plottableType
+                    });
                 }
                 if (plottableType == "Scatter")
                 {
+                    // 添加数据对象
                     displayName = ((Scatter)plottable).LegendText;
+                    BaseDataItems.Add(new PlotItemModel
+                    {
+                        Plottable = plottable,
+                        Name = displayName,
+                        ObjectType = plottableType
+                    });
                 }
 
-                BasePlotItems.Add(new PlotItemModel
-                {
-                    Plottable = plottable,
-                    Name = displayName,
-                    ObjectType = plottableType
-                });
+
 
             }
         }
@@ -1205,13 +1274,6 @@ namespace GeoChemistryNexus.ViewModels
 
                 PlotWidth = text.LabelFontSize;     // 匹配文本大小
 
-                //// 匹配字体
-                //// 获取系统所有字体
-                //PlotTextFontNames = System.Drawing.FontFamily.Families
-                //    .Select(f => f.Name)
-                //    .OrderBy(name => name)
-                //    .ToList();
-
                 // 当前字体
                 PlotTextFontName = FindFontNameIndex(text.LabelFontName);
 
@@ -1379,73 +1441,105 @@ namespace GeoChemistryNexus.ViewModels
             OnPlotTextContentChanged(PlotTextContent);
         }
 
-        // 图层对象选择
+        //// 图层对象选择
+        //[RelayCommand]
+        //public void LayersSelection(IList selectedItems)
+        //{
+        //    // 如果没有选中项，恢复所有对象的正常显示
+        //    if (selectedItems == null || selectedItems.Count == 0)
+        //    {
+        //        foreach (var item in BasePlotItems)
+        //        {
+        //            SetTrue(null);
+        //            if (item.ObjectType == "LinePlot")
+        //            {
+        //                var linePlot = (LinePlot)item.Plottable;
+        //                linePlot.LineColor = linePlot.LineColor.WithAlpha(1f); // 恢复完全不透明
+        //            }
+        //            else if (item.ObjectType == "Text")
+        //            {
+        //                var text = (ScottPlot.Plottables.Text)item.Plottable;
+        //                text.Color = text.Color.WithAlpha(1f); // 恢复完全不透明
+        //            }
+        //        }
+        //        _previousSelectedItems.Clear();
+        //        WpfPlot1.Refresh();
+        //        return;
+        //    }
+
+        //    // 先将所有对象设置为暗淡效果
+        //    foreach (var item in BasePlotItems)
+        //    {
+        //        if (item.ObjectType == "LinePlot")
+        //        {
+        //            var linePlot = (LinePlot)item.Plottable;
+        //            linePlot.LineColor = linePlot.LineColor.WithAlpha(0.5f); // 降低透明度
+        //        }
+        //        else if (item.ObjectType == "Text")
+        //        {
+        //            var text = (ScottPlot.Plottables.Text)item.Plottable;
+        //            text.Color = text.Color.WithAlpha(0.3f); // 降低透明度
+        //        }
+        //    }
+
+        //    // 恢复选中项的完全不透明效果
+        //    foreach (var item in selectedItems)
+        //    {
+        //        if (item is PlotItemModel plotItem)
+        //        {
+        //            if (plotItem.ObjectType == "LinePlot")
+        //            {
+        //                var linePlot = (LinePlot)plotItem.Plottable;
+        //                linePlot.LineColor = linePlot.LineColor.WithAlpha(1f); // 完全不透明
+        //                SetTrue("PlotLine");
+        //                GetLinePlotAttributeMapping(linePlot);
+        //            }
+        //            else if (plotItem.ObjectType == "Text")
+        //            {
+        //                var text = (ScottPlot.Plottables.Text)plotItem.Plottable;
+        //                text.Color = text.Color.WithAlpha(1f); // 完全不透明
+        //                SetTrue("PlotText");
+        //                GetTextAttributeMapping(text);
+        //            }
+        //            else if (plotItem.ObjectType == "Scatter")
+        //            {
+        //                var markers = (ScottPlot.Plottables.Scatter)plotItem.Plottable;
+        //                markers.Color = markers.Color.WithAlpha(1f); // 完全不透明
+        //                SetTrue("Scatter");
+        //                GetDataAttributeMapping(markers);
+        //            }
+        //        }
+        //    }
+
+        //    // 更新选中状态
+        //    _previousSelectedItems = selectedItems.Cast<PlotItemModel>().ToList();
+        //    // 刷新绘图
+        //    WpfPlot1.Refresh();
+        //}
+
+        // 坐标轴对象选择
+
         [RelayCommand]
         public void LayersSelection(IList selectedItems)
         {
             // 如果没有选中项，恢复所有对象的正常显示
             if (selectedItems == null || selectedItems.Count == 0)
             {
-                foreach (var item in BasePlotItems)
-                {
-                    SetTrue(null);
-                    if (item.ObjectType == "LinePlot")
-                    {
-                        var linePlot = (LinePlot)item.Plottable;
-                        linePlot.LineColor = linePlot.LineColor.WithAlpha(1f); // 恢复完全不透明
-                    }
-                    else if (item.ObjectType == "Text")
-                    {
-                        var text = (ScottPlot.Plottables.Text)item.Plottable;
-                        text.Color = text.Color.WithAlpha(1f); // 恢复完全不透明
-                    }
-                }
+                ResetAllItemsOpacity();
                 _previousSelectedItems.Clear();
                 WpfPlot1.Refresh();
                 return;
             }
 
-            // 先将所有对象设置为暗淡效果
-            foreach (var item in BasePlotItems)
-            {
-                if (item.ObjectType == "LinePlot")
-                {
-                    var linePlot = (LinePlot)item.Plottable;
-                    linePlot.LineColor = linePlot.LineColor.WithAlpha(0.5f); // 降低透明度
-                }
-                else if (item.ObjectType == "Text")
-                {
-                    var text = (ScottPlot.Plottables.Text)item.Plottable;
-                    text.Color = text.Color.WithAlpha(0.3f); // 降低透明度
-                }
-            }
+            // 将所有对象设置为暗淡效果
+            SetItemsOpacity(0.5f);
 
-            // 恢复选中项的完全不透明效果
-            foreach (var item in selectedItems)
+            // 恢复所有选中项的完全不透明效果
+            foreach (var selectedItem in selectedItems)
             {
-                if (item is PlotItemModel plotItem)
+                if (selectedItem is PlotItemModel plotItem)
                 {
-                    if (plotItem.ObjectType == "LinePlot")
-                    {
-                        var linePlot = (LinePlot)plotItem.Plottable;
-                        linePlot.LineColor = linePlot.LineColor.WithAlpha(1f); // 完全不透明
-                        SetTrue("PlotLine");
-                        GetLinePlotAttributeMapping(linePlot);
-                    }
-                    else if (plotItem.ObjectType == "Text")
-                    {
-                        var text = (ScottPlot.Plottables.Text)plotItem.Plottable;
-                        text.Color = text.Color.WithAlpha(1f); // 完全不透明
-                        SetTrue("PlotText");
-                        GetTextAttributeMapping(text);
-                    }
-                    else if (plotItem.ObjectType == "Scatter")
-                    {
-                        var markers = (ScottPlot.Plottables.Scatter)plotItem.Plottable;
-                        markers.Color = markers.Color.WithAlpha(1f); // 完全不透明
-                        SetTrue("Scatter");
-                        GetDataAttributeMapping(markers);
-                    }
+                    RestoreItemOpacity(plotItem);
                 }
             }
 
@@ -1455,7 +1549,77 @@ namespace GeoChemistryNexus.ViewModels
             WpfPlot1.Refresh();
         }
 
-        // 坐标轴对象选择
+        // 将所有图层的透明度设置为指定值
+        private void SetItemsOpacity(float alpha)
+        {
+            foreach (var item in BasePlotItems)
+            {
+                SetItemOpacity(item, alpha);
+            }
+
+            foreach (var item in BaseTextItems)
+            {
+                SetItemOpacity(item, alpha);
+            }
+
+            foreach (var item in BaseDataItems)
+            {
+                SetItemOpacity(item, alpha);
+            }
+        }
+
+        // 设置单个图层的透明度
+        private void SetItemOpacity(PlotItemModel item, float alpha)
+        {
+            if (item.ObjectType == "LinePlot")
+            {
+                var linePlot = (LinePlot)item.Plottable;
+                linePlot.LineColor = linePlot.LineColor.WithAlpha(alpha);
+            }
+            else if (item.ObjectType == "Text")
+            {
+                var text = (ScottPlot.Plottables.Text)item.Plottable;
+                text.LabelFontColor = text.LabelFontColor.WithAlpha(alpha);
+            }
+            else if (item.ObjectType == "Scatter")
+            {
+                var scatter = (ScottPlot.Plottables.Scatter)item.Plottable;
+                scatter.Color = scatter.Color.WithAlpha(alpha);
+            }
+        }
+
+        // 恢复选中项的透明度
+        private void RestoreItemOpacity(PlotItemModel selectedItem)
+        {
+            if (selectedItem.ObjectType == "LinePlot")
+            {
+                var linePlot = (LinePlot)selectedItem.Plottable;
+                linePlot.LineColor = linePlot.LineColor.WithAlpha(1f);
+                SetTrue("PlotLine");
+                GetLinePlotAttributeMapping(linePlot);
+            }
+            else if (selectedItem.ObjectType == "Text")
+            {
+                var text = (ScottPlot.Plottables.Text)selectedItem.Plottable;
+                text.LabelFontColor = text.LabelFontColor.WithAlpha(1f);
+                SetTrue("PlotText");
+                GetTextAttributeMapping(text);
+            }
+            else if (selectedItem.ObjectType == "Scatter")
+            {
+                var markers = (ScottPlot.Plottables.Scatter)selectedItem.Plottable;
+                markers.Color = markers.Color.WithAlpha(1f);
+                SetTrue("Scatter");
+                GetDataAttributeMapping(markers);
+            }
+        }
+
+        // 重置所有对象的透明度
+        private void ResetAllItemsOpacity()
+        {
+            SetItemsOpacity(1f); // 恢复为不透明
+        }
+
         [RelayCommand]
         public void AxisSelection(IList selectedItems)
         {
@@ -1489,9 +1653,9 @@ namespace GeoChemistryNexus.ViewModels
                 await Task.Run(() =>
                 {
                     WpfPlot1.Plot.Clear();
-                    SetTrue(null);
+                    SetTrue(null);      // 显示属性
                     _previousSelectedNode = (TreeNode)parameter;
-                    node.PlotTemplate.DrawMethod(WpfPlot1.Plot);
+                    node.PlotTemplate.DrawMethod(WpfPlot1.Plot);        // 获取选择对象
                     LoadRtfContent(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "PlotData", "PlotData.zip"),
                         ((TreeNode)parameter).PlotTemplate.Description);
 
@@ -1532,7 +1696,7 @@ namespace GeoChemistryNexus.ViewModels
                         // 添加数据
                         foreach (var kvp in NormalPlotMethod.pointObject)
                         {
-                            BasePlotItems.Add(new PlotItemModel
+                            BaseDataItems.Add(new PlotItemModel
                             {
                                 Name = kvp.Key, // 组别的名称
                                 Plottable = (IPlottable)kvp.Value, // 对应的散点图对象
@@ -1632,6 +1796,22 @@ namespace GeoChemistryNexus.ViewModels
         {
             SetTrue("Main");
             GetPlotAttributeMapping();
+        }
+
+        // 展示定位轴
+        [RelayCommand]
+        public void LocationAxis()
+        {
+            if(crosshair == null)
+            {
+                crosshair = WpfPlot1.Plot.Add.Crosshair(0, 0);
+            }
+            else
+            {
+                WpfPlot1.Plot.Remove(crosshair);
+                crosshair = null;
+            }
+            WpfPlot1.Refresh();
         }
     }
 }
