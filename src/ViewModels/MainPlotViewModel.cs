@@ -27,6 +27,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
+using static OfficeOpenXml.ExcelErrorValue;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace GeoChemistryNexus.ViewModels
@@ -81,14 +82,12 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private ObservableCollection<PlotItemModel> _baseDataItems;
 
-
-
-        // 测试属性
+        // 切换属性对象
         [ObservableProperty]
         private int _switchLayer;
 
         /// <summary>
-        /// 公共属性
+        /// ========================================公共属性
         /// </summary>
 
         // 绘图对象是否可见
@@ -121,7 +120,7 @@ namespace GeoChemistryNexus.ViewModels
 
 
         /// <summary>
-        /// 坐标轴属性
+        /// ========================================坐标轴属性
         /// </summary>
 
         // 显示刻度
@@ -157,7 +156,35 @@ namespace GeoChemistryNexus.ViewModels
         private ScottPlot.Color _axisPlotColor;
 
         /// <summary>
-        /// 绘图设置
+        /// ========================================图例设置
+        /// </summary>
+
+        // 是否显示图例
+        [ObservableProperty]
+        private bool _showLegends;
+
+        // 图例位置
+        [ObservableProperty]
+        private int _legendsLocation;
+
+        // 图例方向
+        [ObservableProperty]
+        private int _legendsO;
+
+        // 图例字体
+        [ObservableProperty]
+        private int _legendsFonts;
+
+        // 图例字体大小
+        [ObservableProperty]
+        private float _legendsFontSize;
+
+        // 图例字体颜色
+        [ObservableProperty]
+        private ScottPlot.Color _legendsFontColor;
+
+        /// <summary>
+        /// ========================================绘图设置
         /// </summary>
 
         // 绘图标题
@@ -197,7 +224,7 @@ namespace GeoChemistryNexus.ViewModels
         private ScottPlot.Color _axisXYTitleColor;
 
         /// <summary>
-        /// 背景设置
+        /// ========================================背景设置
         /// </summary>
 
         // 显示主网格
@@ -260,6 +287,10 @@ namespace GeoChemistryNexus.ViewModels
         // 是否显示绘图设置属性
         [ObservableProperty]
         private bool _plotMainShow = false;
+
+        // 是否显示图例设置属性
+        [ObservableProperty]
+        private bool _plotLegendShow = false;
 
         // 初始化
         public MainPlotViewModel(WpfPlot wpfPlot, RichTextBox richTextBox)
@@ -330,6 +361,7 @@ namespace GeoChemistryNexus.ViewModels
                 PlotDataShow = false;
                 PlotAxisShow = false;
                 PlotMainShow = false;
+                PlotLegendShow = false;
                 return;
             }
 
@@ -340,6 +372,7 @@ namespace GeoChemistryNexus.ViewModels
                 PlotDataShow = false;
                 PlotAxisShow = false;
                 PlotMainShow = false;
+                PlotLegendShow = false;
             }
             else if (key == "Scatter")
             {
@@ -348,6 +381,7 @@ namespace GeoChemistryNexus.ViewModels
                 PlotDataShow = true;
                 PlotAxisShow = false;
                 PlotMainShow = false;
+                PlotLegendShow = false;
             }
             else if (key == "Axis")
             {
@@ -356,6 +390,16 @@ namespace GeoChemistryNexus.ViewModels
                 PlotDataShow = false;
                 PlotAxisShow = true;
                 PlotMainShow = false;
+                PlotLegendShow = false;
+            }
+            else if (key == "Legend")
+            {
+                PlotLineShow = false;
+                PlotTextShow = false;
+                PlotDataShow = false;
+                PlotAxisShow = false;
+                PlotMainShow = false;
+                PlotLegendShow = true;
             }
             else if (key == "Main")
             {
@@ -364,6 +408,7 @@ namespace GeoChemistryNexus.ViewModels
                 PlotDataShow = false;
                 PlotAxisShow = false;
                 PlotMainShow = true;
+                PlotLegendShow = false;
             }
             else
             {
@@ -372,6 +417,7 @@ namespace GeoChemistryNexus.ViewModels
                 PlotDataShow = false;
                 PlotAxisShow = false;
                 PlotMainShow = false;
+                PlotLegendShow = false;
             }
         }
 
@@ -529,6 +575,8 @@ namespace GeoChemistryNexus.ViewModels
         {
             // 取消属性显示
             LayersSelection(null);
+            // 取消属性面板展示
+            SetTrue(null);
             // 刷新图层列表
             PopulatePlotItems((List<IPlottable>)WpfPlot1.Plot.GetPlottables());
             // 刷新坐标轴列表
@@ -781,6 +829,7 @@ namespace GeoChemistryNexus.ViewModels
                         {
                             Length = 4,
                             Width = 1,
+                            Color = ScottPlot.Colors.Black,
                         };
                     }
 
@@ -890,11 +939,14 @@ namespace GeoChemistryNexus.ViewModels
                 {
 
                     var tempAxis = (IAxis)item.Plottable;
-                    var tickGen = new ScottPlot.TickGenerators.NumericFixedInterval()
+                    var testtt = tempAxis.TickGenerator.GetType();
+                    var tickGen = new ScottPlot.TickGenerators.NumericAutomatic()
                     {
-                        Interval = value, // 设置间隔为2
-                        //MaxTickCount = 3 // 可选设置最大刻度数
+                        MinimumTickSpacing = (float)value
+                    //Interval = value, // 设置间隔为2
+                    //MaxTickCount = 3 // 可选设置最大刻度数
                     };
+                    //tickGen.TickDensity = value;
                     tempAxis.TickGenerator = tickGen;
                 }
                 // 刷新图形
@@ -962,6 +1014,116 @@ namespace GeoChemistryNexus.ViewModels
                 WpfPlot1.Refresh();
             }
         }
+
+        /// <summary>
+        /// ========================================图例设置
+        /// </summary>
+
+        // 改变 图例对象 可见性
+        partial void OnShowLegendsChanged(bool value)
+        {
+            if (value)
+            {
+                WpfPlot1.Plot.ShowLegend();
+            }
+            else
+            {
+                WpfPlot1.Plot.HideLegend();
+            }
+            WpfPlot1.Refresh();
+
+        }
+
+        // 改变 图例 的位置
+        partial void OnLegendsLocationChanged(int value)
+        {
+            // 右上角
+            if (value == 0)
+            {
+                WpfPlot1.Plot.Legend.Alignment = Alignment.UpperRight;
+            }
+
+            // 右下角
+            if (value == 1)
+            {
+                WpfPlot1.Plot.Legend.Alignment = Alignment.LowerRight;
+            }
+
+            // 左上角
+            if (value == 2)
+            {
+                WpfPlot1.Plot.Legend.Alignment = Alignment.UpperLeft;
+            }
+
+            if (value == 3)
+            {
+                WpfPlot1.Plot.Legend.Alignment = Alignment.LowerLeft;
+
+            }
+
+            // 刷新绘图
+            WpfPlot1.Refresh();
+        }
+
+        // 改变 图例 的排序展示方向
+        partial void OnLegendsOChanged(int value)
+        {
+            // 默认纵向展示
+            if (value == 0)
+            {
+                WpfPlot1.Plot.Legend.Orientation = ScottPlot.Orientation.Vertical;
+            }
+            else
+            {
+                WpfPlot1.Plot.Legend.Orientation = ScottPlot.Orientation.Horizontal;
+            }
+            // 刷新图形
+            WpfPlot1.Refresh();
+        }
+
+        // 改变 图例 字体
+        partial void OnLegendsFontsChanged(int value)
+        {
+
+            // 匹配字体
+            foreach(var temp in WpfPlot1.Plot.Legend.LegendItems)
+            {
+                temp.LabelFontName = PlotTextFontNames[value];
+            }
+            // 刷新图形
+            WpfPlot1.Refresh();
+        }
+
+        // 改变 图例 字体大小
+        partial void OnLegendsFontSizeChanged(float value)
+        {
+            // 匹配字体大小
+            foreach (var temp in WpfPlot1.Plot.Legend.LegendItems)
+            {
+                temp.LabelFontSize = value;
+            }
+
+            // 刷新图形
+            WpfPlot1.Refresh();
+        }
+
+        // 改变 图例 颜色
+        partial void OnLegendsFontColorChanged(ScottPlot.Color value)
+        {
+            // 匹配字体
+            foreach (var temp in WpfPlot1.Plot.Legend.LegendItems)
+            {
+                temp.LabelFontColor = value;
+            }
+
+            // 刷新图形
+            WpfPlot1.Refresh();
+        }
+
+
+        /// <summary>
+        /// ========================================绘图设置
+        /// </summary>
 
         // 改变 绘图设置 绘图标题
         partial void OnAxisTitleChanged(string value)
@@ -1101,11 +1263,11 @@ namespace GeoChemistryNexus.ViewModels
 
             if (value)
             {
-                WpfPlot1.Plot.Grid.MajorLineWidth = 1;
+                WpfPlot1.Plot.ShowGrid();
             }
             else
             {
-                WpfPlot1.Plot.Grid.MajorLineWidth = 0;
+                WpfPlot1.Plot.HideGrid();
             }
 
             // 刷新图形
@@ -1133,8 +1295,7 @@ namespace GeoChemistryNexus.ViewModels
             if (_isUpdatingLineWidth)
                 return;
 
-            WpfPlot1.Plot.Grid.XAxisStyle.MajorLineStyle.Width = value;
-            WpfPlot1.Plot.Grid.YAxisStyle.MajorLineStyle.Width = value;
+            WpfPlot1.Plot.Grid.MajorLineWidth = value;
 
             // 刷新图形
             WpfPlot1.Refresh();
@@ -1168,7 +1329,6 @@ namespace GeoChemistryNexus.ViewModels
                 return;
 
             WpfPlot1.Plot.Grid.MinorLineColor = value;
-            //WpfPlot1.Plot.Grid.YAxisStyle.MajorLineStyle.Color = value;
 
             // 刷新图形
             WpfPlot1.Refresh();
@@ -1181,8 +1341,7 @@ namespace GeoChemistryNexus.ViewModels
             if (_isUpdatingLineWidth)
                 return;
 
-            WpfPlot1.Plot.Grid.XAxisStyle.MinorLineStyle.Width = value;
-            WpfPlot1.Plot.Grid.YAxisStyle.MinorLineStyle.Width = value;
+            WpfPlot1.Plot.Grid.MinorLineWidth = value;
 
             // 刷新图形
             WpfPlot1.Refresh();
@@ -1395,6 +1554,52 @@ namespace GeoChemistryNexus.ViewModels
             {
                 _isUpdatingLineWidth = false;  // 确保标志被重置
             }
+        }
+
+        // 图例设置匹配
+        private void GetLegendAttributeMapping()
+        {
+            ShowLegends = WpfPlot1.Plot.Legend.IsVisible;      // 是否显示
+
+            // 右上角
+            if (WpfPlot1.Plot.Legend.Alignment == Alignment.UpperRight)
+            {
+                _legendsLocation = 0;
+            }
+
+            // 右下角
+            if (WpfPlot1.Plot.Legend.Alignment == Alignment.LowerRight)
+            {
+                _legendsLocation = 1;
+            }
+
+            // 左上角
+            if (WpfPlot1.Plot.Legend.Alignment == Alignment.UpperLeft)
+            {
+                _legendsLocation = 2;
+            }
+            else
+            {
+                _legendsLocation = 3;
+            }
+
+            // 默认纵向展示
+            if (WpfPlot1.Plot.Legend.Orientation == ScottPlot.Orientation.Vertical)
+            {
+                _legendsO = 0;
+            }
+            else
+            {
+                _legendsO = 1;
+            }
+            //// 匹配字体
+            //_legendsFonts = FindFontNameIndex(WpfPlot1.Plot.Legend.LegendItems.First().LabelFontName);
+
+            //// 匹配字体大小
+            //_legendsFontSize = (float)WpfPlot1.Plot.Legend.LegendItems.First().LabelFontSize;
+
+            //// 匹配字体颜色
+            //_legendsFontColor = (ScottPlot.Color)WpfPlot1.Plot.Legend.LegendItems.First().LabelFontColor;
         }
 
         // 解压缩
@@ -1790,6 +1995,14 @@ namespace GeoChemistryNexus.ViewModels
             PopulatePlotItems((List<IPlottable>)WpfPlot1.Plot.GetPlottables());
         }
 
+        // 图例设置
+        [RelayCommand]
+        public void LegendSetting()
+        {
+            SetTrue("Legend");
+            GetLegendAttributeMapping();
+        }
+
         // 绘图设置
         [RelayCommand]
         public void PlotSetting()
@@ -1808,10 +2021,25 @@ namespace GeoChemistryNexus.ViewModels
             }
             else
             {
-                WpfPlot1.Plot.Remove(crosshair);
-                crosshair = null;
+                if(crosshair.IsVisible == false)
+                {
+                    crosshair.IsVisible = true;
+                }
+                else
+                {
+                    WpfPlot1.Plot.Remove(crosshair);
+                    crosshair = null;
+                }
+
             }
             WpfPlot1.Refresh();
+        }
+
+        // 导出图片
+        [RelayCommand]
+        public void ExportImg()
+        {
+
         }
     }
 }

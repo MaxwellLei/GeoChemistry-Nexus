@@ -37,8 +37,10 @@ namespace GeoChemistryNexus.Views
             this.DataContext = viewModel;
             // 在原始坐标添加坐标线
             MainPlotViewModel.crosshair = WpfPlot1.Plot.Add.Crosshair(0, 0);
+            MainPlotViewModel.crosshair.IsVisible = false;
 
             MainPlotViewModel.myHighlightMarker = WpfPlot1.Plot.Add.Marker(0, 0); // 添加高亮标记
+            MainPlotViewModel.myHighlightMarker.IsVisible = false;
             MainPlotViewModel.myHighlightMarker.Shape = MarkerShape.OpenCircle; // 设置标记形状
             MainPlotViewModel.myHighlightMarker.Size = 17; // 设置标记大小
             MainPlotViewModel.myHighlightMarker.LineWidth = 2; // 设置标记线宽

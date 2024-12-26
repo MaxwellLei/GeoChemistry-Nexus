@@ -104,7 +104,14 @@
                                     <TextBlock Text="导出图片"/>
                                 </StackPanel>
                             </Button>
-                            <Button Height="60" Command="{Binding PlotSettingCommand}">
+                            <Button Height="60" Command="{Binding LegendSettingCommand}">
+                                <StackPanel>
+                                    <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe602;"
+                                               HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
+                                    <TextBlock Text="图例设置"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Height="60" Command="{Binding PlotSettingCommand}" Margin="5">
                                 <StackPanel>
                                     <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe60f;"
                                                HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
@@ -238,6 +245,7 @@
                         </TextBox>
                     </Grid>
                 </StackPanel>
+                
                 <!--边界设置面板-->
                 <StackPanel Margin="8" Visibility="{Binding PlotLineShow, 
                             Converter={StaticResource BoolToVisibilityConverter}}">
@@ -409,6 +417,60 @@
                     </TabItem>
                 </TabControl>
 
+                <!--图例设置面板-->
+                <TabControl Visibility="{Binding PlotLegendShow,Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TabItem Header="图例">
+                        <StackPanel Margin="8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.6*"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="是否显示图例" VerticalAlignment="Center"/>
+                                <CheckBox Grid.Column="1" IsChecked="{Binding ShowLegends,Mode=TwoWay}"/>
+
+                                <TextBlock Text="图例位置" VerticalAlignment="Center" Grid.Row="1" Margin="0 5"/>
+                                <ComboBox Grid.Column="1" SelectedIndex="{Binding LegendsLocation}" 
+                                                  Grid.Row="1" Margin="0 5">
+                                    <ComboBoxItem Content="右上角"/>
+                                    <ComboBoxItem Content="右下角"/>
+                                    <ComboBoxItem Content="左上角"/>
+                                    <ComboBoxItem Content="左下角"/>
+                                </ComboBox>
+
+                                <TextBlock Text="图例方向" VerticalAlignment="Center" Grid.Row="2"/>
+                                <ComboBox Grid.Column="1" SelectedIndex="{Binding LegendsO}" 
+                                                  Grid.Row="2">
+                                    <ComboBoxItem Content="纵向"/>
+                                    <ComboBoxItem Content="横向"/>
+                                </ComboBox>
+
+                                <!--<TextBlock Text="图例字体" VerticalAlignment="Center" Grid.Row="3" Margin="0 5"/>
+                                <ComboBox Grid.Column="1" SelectedIndex="{Binding LegendsFonts}" 
+                                                  Grid.Row="3" ItemsSource="{Binding PlotTextFontNames}" Margin="0 5"/>
+
+                                <TextBlock Text="图例字体大小" VerticalAlignment="Center" Grid.Row="4"/>
+                                <hc:NumericUpDown Grid.Row="4" Grid.Column="1" 
+                                                            Value="{Binding LegendsFontSize,Mode=TwoWay}"/>
+
+                                <TextBlock Text="图例字体颜色" VerticalAlignment="Center" Grid.Row="5" Margin="0 5"/>
+                                <Button Grid.Row="5" Grid.Column="1" Margin="0 5" HorizontalAlignment="Stretch" 
+                                        VerticalAlignment="Stretch" Content="" Click="Color_Pick000" BorderThickness="1"
+                                        Background="{Binding LegendsFontColor, Converter={StaticResource BackgroundColorConverter}}"/>-->
+                            </Grid>
+                        </StackPanel>
+                    </TabItem>
+                </TabControl>
+
                 <!--绘图设置面板-->
                 <TabControl Visibility="{Binding PlotMainShow,Converter={StaticResource BoolToVisibilityConverter}}">
                     <TabItem Header="绘图">
@@ -431,7 +493,7 @@
                                 </Grid.RowDefinitions>
 
                                 <TextBlock Text="绘图标题" VerticalAlignment="Center"/>
-                                <TextBox Grid.Column="1" Text="{Binding AxisTitle,Mode=TwoWay}"/>
+                                <TextBox Grid.Column="1" Text="{Binding AxisTitle,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  AcceptsReturn="True"/>
 
                                 <TextBlock Text="标题字体" VerticalAlignment="Center" Grid.Row="1" Margin="0 5"/>
                                 <ComboBox Grid.Column="1" SelectedIndex="{Binding AxisTitleFontName}" 
@@ -450,10 +512,10 @@
                                               Converter={StaticResource ColorConverter}}"/>-->
 
                                 <TextBlock Text="坐标轴标题1" VerticalAlignment="Center" Grid.Row="4"/>
-                                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding XAxisTitle,Mode=TwoWay}"/>
+                                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding XAxisTitle,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  AcceptsReturn="True"/>
 
                                 <TextBlock Text="坐标轴标题2" VerticalAlignment="Center" Grid.Row="5" Margin="0 5"/>
-                                <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding YAxisTitle,Mode=TwoWay}"
+                                <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding YAxisTitle,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  AcceptsReturn="True"
                                                  Margin="0 5"/>
 
                                 <TextBlock Text="轴标题字体" VerticalAlignment="Center" Grid.Row="6"/>
@@ -494,7 +556,7 @@
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
 
-                                <TextBlock Text="显示主网格" VerticalAlignment="Center"/>
+                                <TextBlock Text="显示网格" VerticalAlignment="Center"/>
                                 <CheckBox Grid.Column="1" IsChecked="{Binding FirstGridShow}"/>
 
                                 <TextBlock Text="主网格颜色" VerticalAlignment="Center" Grid.Row="1" Margin="0 5"/>
