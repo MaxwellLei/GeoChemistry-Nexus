@@ -943,15 +943,8 @@ namespace GeoChemistryNexus.ViewModels
                 {
 
                     var tempAxis = (IAxis)item.Plottable;
-                    var testtt = tempAxis.TickGenerator.GetType();
-                    var tickGen = new ScottPlot.TickGenerators.NumericAutomatic()
-                    {
-                        MinimumTickSpacing = (float)value
-                    //Interval = value, // 设置间隔为2
-                    //MaxTickCount = 3 // 可选设置最大刻度数
-                    };
-                    //tickGen.TickDensity = value;
-                    tempAxis.TickGenerator = tickGen;
+                    var majortick = new ScottPlot.TickGenerators.NumericFixedInterval(value);
+                    tempAxis.TickGenerator = majortick;
                 }
                 // 刷新图形
                 WpfPlot1.Refresh();

@@ -28,7 +28,7 @@ namespace GeoChemistryNexus.ViewModels
         //切换关于命令
         private void ExecuteAboutPage()
         {
-            //Nav.Navigate(SAboutPageView.GetPage());
+            Nav.Navigate(SAboutPageView.GetPage());
         }
 
         //切换外观设置命令

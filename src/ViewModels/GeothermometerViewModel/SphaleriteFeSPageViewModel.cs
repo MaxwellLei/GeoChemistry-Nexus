@@ -39,16 +39,18 @@ namespace GeoChemistryNexus.ViewModels.GeothermometerViewModel
         private void InitDataExcel()
         {
             // 创建新的 DataTable
-            ExcelData = new DataTable();
+            var dataTable = new DataTable();
 
             // 添加列
             DataColumn feSColumn = new DataColumn("FeS(Mol%)", typeof(double));
             DataColumn fSColumn = new DataColumn("fS(log10)", typeof(double));
             DataColumn temperatureCColumn = new DataColumn("T(℃)", typeof(double));
 
-            ExcelData.Columns.Add(feSColumn);
-            ExcelData.Columns.Add(fSColumn);
-            ExcelData.Columns.Add(temperatureCColumn);
+            dataTable.Columns.Add(feSColumn);
+            dataTable.Columns.Add(fSColumn);
+            dataTable.Columns.Add(temperatureCColumn);
+
+            ExcelData = dataTable;
         }
 
         // 初始化数据

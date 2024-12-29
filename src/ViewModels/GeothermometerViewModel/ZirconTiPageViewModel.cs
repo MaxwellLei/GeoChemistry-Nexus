@@ -46,16 +46,18 @@ namespace GeoChemistryNexus.ViewModels.GeothermometerViewModel
         private void InitDataExcel()
         {
             // 创建新的 DataTable
-            ExcelData = new DataTable();
+            var dataTable = new DataTable();
 
             // 添加列
             DataColumn tiO2Column = new DataColumn("Ti(ppm)", typeof(double));
             DataColumn temperatureCColumn = new DataColumn("T(K)", typeof(double));
             DataColumn temperatureKColumn = new DataColumn("T(℃)", typeof(double));
 
-            ExcelData.Columns.Add(tiO2Column);
-            ExcelData.Columns.Add(temperatureCColumn);
-            ExcelData.Columns.Add(temperatureKColumn);
+            dataTable.Columns.Add(tiO2Column);
+            dataTable.Columns.Add(temperatureCColumn);
+            dataTable.Columns.Add(temperatureKColumn);
+
+            ExcelData = dataTable;
         }
 
         // 初始化数据
