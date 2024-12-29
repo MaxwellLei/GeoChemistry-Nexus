@@ -349,6 +349,10 @@ namespace GeoChemistryNexus.ViewModels
             _registry.RegisterTemplate(new[] { "岩浆岩", "岩石分类" }, "TAS",
                 NormalPlotTemplate.TAS, NormalPlotMethod.TAS_PlotAsync,
                 "Saccani_2015.rtf", new string[] { "Group", "K2O", "Na2O", "SiO2" });
+            // 临时
+            _registry.RegisterTemplate(new[] { "其他", "温度绘图" }, "毒砂",
+                NormalPlotTemplate.ArsenicT, NormalPlotMethod.TAS_PlotAsync,
+                "Saccani_2015.rtf", new string[] { "Group", "K2O", "Na2O", "SiO2" });
         }
 
         // 设置显示属性
@@ -1737,7 +1741,7 @@ namespace GeoChemistryNexus.ViewModels
             }
 
             // 将所有对象设置为暗淡效果
-            SetItemsOpacity(0.5f);
+            SetItemsOpacity(0.2f);
 
             // 恢复所有选中项的完全不透明效果
             foreach (var selectedItem in selectedItems)

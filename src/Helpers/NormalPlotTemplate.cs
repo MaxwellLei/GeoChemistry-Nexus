@@ -456,5 +456,173 @@ namespace GeoChemistryNexus.Helpers
 
             plot.Axes.SetLimits(35, 80, 0, 16);
         }
+
+
+        //  毒砂【其他，温度计】【未确定】
+        public static void ArsenicT(ScottPlot.Plot plot)
+        {
+            ResetPlot(plot);
+            plot.Axes.Title.Label.Text = "Lgf(s2) vs. temperature (T) variation diagram of arsenopyrite";
+            plot.Axes.Title.Label.FontSize = 18;
+
+            // 定义中心点和其他点
+            var point1 = new ScottPlot.Coordinates(40.298002031832034, -13.784461152882207);
+            var point2 = new ScottPlot.Coordinates(90.67080162308923, -4.998496240601504);
+            var point3 = new ScottPlot.Coordinates(96.13196553863494, -3.827568922305765);
+            var point4 = new ScottPlot.Coordinates(98.9244190734201, -2.965413533834587);  // 右上角顶点
+            var point5 = new ScottPlot.Coordinates(29.055198103623432, -13.784461152882207);
+            var point6 = new ScottPlot.Coordinates(20.115391764205636, -13.796491228070177);
+            var point7 = new ScottPlot.Coordinates(11.513969481780979, -13.796491228070177);
+            var point8 = new ScottPlot.Coordinates(-0.03386386725363799, -13.784461152882207);
+            var point9 = new ScottPlot.Coordinates(73.45785730835725, -4.521303258145364);
+            var point10 = new ScottPlot.Coordinates(55.99666283894635, -6.714786967418547);
+            // 毒砂占比
+            var point11 = new ScottPlot.Coordinates(91.538, -3.417);
+            var point12 = new ScottPlot.Coordinates(88.19169495020992, -4.665664160401002);
+            var point13 = new ScottPlot.Coordinates(88.16077527163786, -5.389956372412514);
+            var point14 = new ScottPlot.Coordinates(87.998, -3.633);
+            var point15 = new ScottPlot.Coordinates(81.71891361897366, -5.654506636962779);
+            var point16 = new ScottPlot.Coordinates(81.69740096311946, -6.489928525016246);
+            var point17 = new ScottPlot.Coordinates(83.465, -3.910);
+            var point18 = new ScottPlot.Coordinates(74.17931712991454, -6.831059129304745);
+            var point19 = new ScottPlot.Coordinates(74.16099699148161, -7.817321080478977);
+            var point20 = new ScottPlot.Coordinates(78.454, -4.216);
+            var point21 = new ScottPlot.Coordinates(66.26899569476551, -8.084191961384946);
+            var point22 = new ScottPlot.Coordinates(66.29306236455675, -9.221293975679943);
+            var point23 = new ScottPlot.Coordinates(57.733530232876745, -9.43014944769331);
+            var point24 = new ScottPlot.Coordinates(57.8406023556213, -10.785389399424488);
+            var point25 = new ScottPlot.Coordinates(61.497, -6.602);
+            var point26 = new ScottPlot.Coordinates(47.24414587785766, -11.049939663974756);
+            var point27 = new ScottPlot.Coordinates(47.23795730562565, -12.609393855007893);
+            var point28 = new ScottPlot.Coordinates(50.670, -8.484);
+            var point29 = new ScottPlot.Coordinates(38.72695143874915, -12.33324050867911);
+            var point30 = new ScottPlot.Coordinates(38.836135534557016, -13.788266963705563);
+            var point31 = new ScottPlot.Coordinates(40.994, -10.168);
+            var point32 = new ScottPlot.Coordinates(32.49491185414213, -13.252204585537921);
+            // 加了一个垂下来的点
+            var point33 = new ScottPlot.Coordinates(32.506257569900846, -13.78826696370551);
+            var point34 = new ScottPlot.Coordinates(32.263, -11.690);
+            var point35 = new ScottPlot.Coordinates(25.647207563753923, -13.785946347349862);
+            var point36 = new ScottPlot.Coordinates(92.90809779273788, -2.839598997493735);
+
+
+
+            // 添加形状
+            var ploy1 = plot.Add.Polygon(new Coordinates[] { point4, point9, point6, point5 });
+            ploy1.FillColor = new ScottPlot.Color("#D5EAD8");
+            ploy1.LineStyle.Width = 0;
+            var ploy2 = plot.Add.Polygon(new Coordinates[] { point4, point5, point1, point2, point3, point4 });
+            ploy2.FillColor = new ScottPlot.Color("#B8CEDA");
+            ploy2.LineStyle.Width = 0;
+
+
+            // 绘制从中心点到每个其他点的线
+            var newline1 = plot.Add.Line(point1, point2).LineWidth = 3;
+            var newline2 = plot.Add.Line(point2, point3).LineWidth = 3;
+            var newline3 = plot.Add.Line(point3, point4).LineWidth = 3;
+            var newline4 = plot.Add.Line(point4, point5).LineWidth = 3;
+            var newline5 = plot.Add.Line(point9, point4).LineWidth = 3;
+            var newline6 = plot.Add.Line(point9, point6).LineWidth = 3;
+            var newline7 = plot.Add.Line(point8, point9).LineWidth = 3;
+            //var newline8 = plot.Add.Line(point9, point8).LineWidth = 3;
+            var newline9 = plot.Add.Line(point10, point7).LineWidth = 3;
+            // 毒砂占比
+            var newline11 = plot.Add.Line(point11, point12);
+            var newline12 = plot.Add.Line(point12, point13);
+            var newline13 = plot.Add.Line(point14, point15);
+            var newline14 = plot.Add.Line(point15, point16);
+            var newline15 = plot.Add.Line(point17, point18);
+            var newline16 = plot.Add.Line(point18, point19);
+            var newline17 = plot.Add.Line(point20, point21);
+            var newline18 = plot.Add.Line(point21, point22);
+            var newline19 = plot.Add.Line(point9, point23);
+            var newline20 = plot.Add.Line(point23, point24);
+            var newline21 = plot.Add.Line(point25, point26);
+            var newline22 = plot.Add.Line(point26, point27);
+            var newline23 = plot.Add.Line(point28, point29);
+            var newline24 = plot.Add.Line(point29, point30);
+            var newline25 = plot.Add.Line(point31, point32);
+            var newline26 = plot.Add.Line(point32, point33);
+            var newline27 = plot.Add.Line(point34, point35);
+            var newline28 = plot.Add.Line(point9, point36);
+
+
+            //var newline23 = plot.Add.Line(point15, point22).LineWidth = 3;
+            //var newline24 = plot.Add.Line(point15, point21).LineWidth = 3;
+            //var newline25 = plot.Add.Line(point13, point23).LineWidth = 3;
+            //var newline26 = plot.Add.Line(point9, point24).LineWidth = 3;
+            //var newline27 = plot.Add.Line(point8, point11).LineWidth = 3;
+            //var newline28 = plot.Add.Line(point11, point14).LineWidth = 3;
+            //var newline29 = plot.Add.Line(point14, point20).LineWidth = 3;
+
+            foreach (var temp in plot.GetPlottables())
+            {
+                if (temp.GetType().Name == "LinePlot")
+                {
+                    ((LinePlot)temp).Color = ScottPlot.Colors.Black;
+                    ((LinePlot)temp).LineWidth = 3;
+                }
+            }
+
+            (newline11).Color = ScottPlot.Colors.Gray;
+            (newline12).Color = ScottPlot.Colors.Gray;
+            (newline13).Color = ScottPlot.Colors.Gray;
+            (newline14).Color = ScottPlot.Colors.Gray;
+            (newline15).Color = ScottPlot.Colors.Gray;
+            (newline16).Color = ScottPlot.Colors.Gray;
+            (newline17).Color = ScottPlot.Colors.Gray;
+            (newline18).Color = ScottPlot.Colors.Gray;
+            (newline19).Color = ScottPlot.Colors.Gray;
+            (newline20).Color = ScottPlot.Colors.Gray;
+            (newline21).Color = ScottPlot.Colors.Gray;
+            (newline22).Color = ScottPlot.Colors.Gray;
+            (newline23).Color = ScottPlot.Colors.Gray;
+            (newline24).Color = ScottPlot.Colors.Gray;
+            (newline25).Color = ScottPlot.Colors.Gray;
+            (newline26).Color = ScottPlot.Colors.Gray;
+            (newline27).Color = ScottPlot.Colors.Gray;
+            (newline28).Color = ScottPlot.Colors.Gray;
+
+            // 添加注释
+            plot.Add.Text("36", 84.584, -4.410);
+            plot.Add.Text("35", 79.547, -4.982);
+            plot.Add.Text("34", 73.487, -5.694);
+            plot.Add.Text("33", 65.762, -6.773);
+            plot.Add.Text("32", 54.401, -8.681);
+            plot.Add.Text("31", 43.797, -10.395);
+            plot.Add.Text("30", 35.768, -11.725);
+            plot.Add.Text("29", 26.528, -13.247);
+
+            var text1 = plot.Add.Text("Pyrrhotite + Lollomgite", 43.141, -11.998);
+            text1.LabelRotation = -52;
+            text1.FontSize = 20;
+            var text2 = plot.Add.Text("Arsenopyrite", 17, -13.240);
+            text2.LabelRotation = -53;
+            text2.FontSize = 20;
+            var text3 = plot.Add.Text("AArsenopyrite + Pyrite", 7.098, -13.342);
+            text3.LabelRotation = -49;
+            text3.FontSize = 20;
+            var text4 = plot.Add.Text("Pyrite + L", 60.308, -5.45);
+            text4.LabelRotation = -43;
+            text4.FontSize = 20;
+            var text5 = plot.Add.Text("Pyrrhotite + L", 72.882, -4.041);
+            text5.LabelRotation = -35;
+            text5.FontSize = 20;
+
+            double[] tickPositions = { 0, 35.17156757579819, 57.9044035883943, 74.32681143477777, 87.75070868778727, 97.9804677029771 };
+            string[] tickLabels = { "200", "300", "400", "500", "600", "700" };
+            plot.Axes.Bottom.SetTicks(tickPositions, tickLabels);
+
+
+
+            // 设置标题属性
+            plot.XLabel("T(°C)");
+            plot.Axes.Bottom.Label.FontSize = 20;
+            plot.YLabel("Logf(S2)");
+            plot.Axes.Left.Label.FontSize = 20;
+
+            // 设置 X 轴的范围
+            plot.Axes.SetLimits(0, 100, -14, -3);
+        }
     }
 }

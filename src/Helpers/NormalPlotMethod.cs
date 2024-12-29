@@ -244,4 +244,16 @@ public static class NormalPlotMethod
             return skippedRows;
         });
     }
+
+    // 毒砂【温度绘图】【未确定】
+    public static async Task<int> ArsenicT_PlotAsync(ScottPlot.Plot plot, DataTable dataTable)
+    {
+        return await Task.Run(() =>
+        {
+            var (groupedData, skippedRows) = ProcessData(dataTable, CalculateTASPoints);
+            if (!groupedData.Any()) return -1;
+            System.Windows.Application.Current.Dispatcher.Invoke(() => PlotData(plot, groupedData));
+            return skippedRows;
+        });
+    }
 }
