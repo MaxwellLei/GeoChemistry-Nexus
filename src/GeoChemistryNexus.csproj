@@ -103,10 +103,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\Geothermometer\ChloritePageView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Geothermometer\AmphiboleMPageView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\Geothermometer\SphaleriteFeSPageView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Geothermometer\SphaleriteGGIMFisPageView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Geothermometer\QuatzTiPageView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Geothermometer\ZirconZrPageView.xaml.cs">

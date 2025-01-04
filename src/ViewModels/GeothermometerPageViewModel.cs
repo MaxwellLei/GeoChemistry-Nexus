@@ -24,13 +24,6 @@ namespace GeoChemistryNexus.ViewModels
             CurrentView = ZirconZrPageView.GetPage();
         }
 
-        // 锆石微量 - Ti 温度计
-        [RelayCommand]
-        public void ZirconTi()
-        {
-            CurrentView = ZirconTiPageView.GetPage();
-        }
-
         // 闪锌矿 - FeS 温度计
         [RelayCommand]
         public void SphaleriteFeS()
@@ -43,6 +36,27 @@ namespace GeoChemistryNexus.ViewModels
         public void SphaleriteGGIMFis()
         {
             CurrentView = SphaleriteGGIMFisPageView.GetPage();
+        }
+
+        // 石英 - TitaniQ 温度计
+        [RelayCommand]
+        public void QuatzTi()
+        {
+            CurrentView = QuatzTiPageView.GetPage();
+        }
+
+        // 角闪石 - 主量温度计
+        [RelayCommand]
+        public void AmphiboleM()
+        {
+            CurrentView = AmphiboleMPageView.GetPage();
+        }
+
+        // 绿泥石 - Jowett (1991)
+        [RelayCommand]
+        public void ChloriteM()
+        {
+            CurrentView = ChloritePageView.GetPage();
         }
     }
 }
