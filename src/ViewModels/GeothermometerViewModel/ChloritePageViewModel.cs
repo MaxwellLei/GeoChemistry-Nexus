@@ -96,6 +96,8 @@ namespace GeoChemistryNexus.ViewModels.GeothermometerViewModel
             dataRow[12] = 0;
             dataRow[13] = 0;
             dataRow[14] = 0;
+            dataRow[15] = 0;
+            dataRow[16] = 0;
 
             dataTable.Rows.Add(dataRow);
 
@@ -118,16 +120,93 @@ namespace GeoChemistryNexus.ViewModels.GeothermometerViewModel
 
         // B199
         // B199 = （28 * （MgO/40.31） / B121） * B189
-        // B121 = (sio2 *2/60.09) + (tio2 *2/79.9) + (al2o3 *3/101.96) + (cr2o3 *3/152) + 0 + (feo/71.85) + (mno/70.94) + (mgo/40.31) + (nio/74.708) + (zno/81.38)
-        //          + (cao/56.08) + (na2o/61.98) + (k2o/94.22) + (bao/153.36) + (rb2o/186.936) + (f*0.5/19) + (cl*0.5/35.45);
+        // B121 = (sio2 *2/60.09) + (tio2 *2/79.9) + (al2o3 *3/101.96) + (cr2o3 *3/152) + 0 +
+        //      (feo/71.85) + (mno/70.94) + (mgo/40.31) + (nio/74.708) + (zno/81.38)
+        //          + (cao/56.08) + (na2o/61.98) + (k2o/94.22) + (bao/153.36) +
+        //          (rb2o/186.936) + (f*0.5/19) + (cl*0.5/35.45);
         // B189 = 28/B188
         // B188 = ((28*B126/B121)*2) + ((28*b127/b121)*2) + ((28*b128/b121)*1.5) + ((28*b129/b121)*1.5) + (B167*1.5) + B168 + (28*b132/b121) +
         //         (28*b133/b121) + (28*b134/b121) + (28*b135/b121) + (28*b136/b121) + (28*b137/b121) + (28*b138/b121) + (28*b139/b121) + (28*b140/b121)
         //         + (28*b141/b121) + (28*b142/b121)
 
+        // 新B188
+        // B188 = ((28*(B30/60.09)/B121)*2) + ((28*(B31/79.9)/b121)*2) + ((28*(B32*2/101.96)/b121)*1.5) + ((28*(B33*2/152)/b121)*1.5) +
+        //         (B167*1.5) + B168 + (28*(B36/70.94)/b121) + (28*(B37/40.31)/b121) + (28*(B38/74.708)/b121) + (28*(B39/81.38)/b121) +
+        //         (28*(B40/56.08)/b121) + (28*(B41*2/61.98)/b121) + (28*(B42*2/94.22)/b121) + (28*(B43/153.36)/b121) + (28*(B44*2/186.936)/b121)
+        //         + (28*(B45/19)/b121) + (28*(B46/35.45)/b121)
 
+        // 新B188
+        // B188 = ((28*(B7/60.09)/B121)*2) + ((28*(B8/79.9)/b121)*2) + ((28*(B9*2/101.96)/b121)*1.5) +
+        //        ((28*(B22*2/152)/b121)*1.5) + (B167*1.5) + B168 + (28*(B11/70.94)/b121) +
+        //        (28*(B12/40.31)/b121) + (28*(b23/74.708)/b121) + (28*(B19/81.38)/b121) +
+        //         (28*(B13/56.08)/b121) + (28*(B14*2/61.98)/b121) + (28*(B15*2/94.22)/b121) +
+        //         (28*(B16/153.36)/b121) + (28*(B17*2/186.936)/b121)
+        //         + (28*(B20/19)/b121) + (28*(B21/35.45)/b121)
+
+        // 新B188
+        // B188 = ((28*(sio2/60.09)/B121)*2) + ((28*(tio2/79.9)/b121)*2) + ((28*(al2o3*2/101.96)/b121)*1.5) +
+        //        ((28*(cr2o3*2/152)/b121)*1.5) + (B167*1.5) + B168 + (28*(mno/70.94)/b121) +
+        //        (28*(mgo/40.31)/b121) + (28*(nio/74.708)/b121) + (28*(zno/81.38)/b121) +
+        //         (28*(cao/56.08)/b121) + (28*(na2o*2/61.98)/b121) + (28*(k2o*2/94.22)/b121) +
+        //         (28*(bao/153.36)/b121) + (28*(rb2o*2/186.936)/b121)
+        //         + (28*(f/19)/b121) + (28*(cl/35.45)/b121)
+
+        // b151 = =28*(feo/71.85)/B121
+        // bsum  = ((28*(B7/60.09)/B121)) + ((28*(B8/79.9)/b121)) + ((28*(B9*2/101.96)/b121)) +
+        //        ((28*(B22*2/152)/b121)) + 0 + (28*(feo/71.85)/b121) + (28*(B11/70.94)/b121) +
+        //        (28*(B12/40.31)/b121) + (28*(b23/74.708)/b121) + (28*(B19/81.38)/b121) +
+        //         (28*(B13/56.08)/b121) + (28*(B14*2/61.98)/b121) + (28*(B15*2/94.22)/b121) +
+        //         (28*(B16/153.36)/b121) + (28*(B17*2/186.936)/b121)
+        // b164 = 20 - bsum
+
+        // b150 = 28*0/b121 = 0
+        // b151 = 28*(feo/71.85)/b121
+
+        //b166 = B151-B164
+
+        // 计算 b168
+        public double B168(double b151, double b165, double b166)
+        {
+            return (b165 > b151) ? 0 : b166;
+        }
+
+        // 计算 b165
+        public double B165(double b164)
+        {
+            return (b164 < 0) ? 0 : b164;
+        }
+
+        // 计算 B167
+        public double B167(double b151, double b165)
+        {
+            return (b165 > b151) ? b151 : b165;
+        }
+
+        // B215 = B84/2
+
+        // 计算 B84
+        public double B84(double b83)
+        {
+            return (b83 > 0) ? b83 : 0;
+        }
+
+        // 计算 B83
+        public double B83(double B192, double al2o3, double b121)
+        {
+            double b82 = (28 * (al2o3 * 2 / 101.96) / b121);
+            return (B192 + b82 > 8) ? (8 - B192) : b82;
+        }
+
+        // 计算 B192
+        public double B192(double sio2, double b188, double B121)
+        {
+            return (((28 * (sio2 / 60.09) / B121) * 2) * (28/ b188)) / 2;
+        }
+
+
+        // B217 = B197/2 = (b168*(25/b188))/2
         // 计算 B219
-        public double B219(double B215, double B217, double B199)
+        public double B219(double B84, double B217, double B199)
         {
             // 检查分母是否为零，避免除以零的错误
             if (B217 + B199 == 0)
@@ -136,7 +215,7 @@ namespace GeoChemistryNexus.ViewModels.GeothermometerViewModel
             }
 
             // 计算并返回结果
-            return B215 + 0.1 * (B217 / (B217 + B199 / 2));
+            return (B84/2) + 0.1 * (B217 / (B217 + B199 / 2));
         }
 
 
@@ -151,22 +230,57 @@ namespace GeoChemistryNexus.ViewModels.GeothermometerViewModel
                 // 遍历 DataTable 中的每一行
                 foreach (DataRow row in ExcelData.Rows)
                 {
-                    double sio2 = Convert.ToDouble(row[0]);
-                    double tio2 = Convert.ToDouble(row[1]);
-                    double al2o3 = Convert.ToDouble(row[2]);
-                    double cr2o3 = Convert.ToDouble(row[3]);
-                    double feo = Convert.ToDouble(row[4]);
-                    double mno = Convert.ToDouble(row[5]);
-                    double mgo = Convert.ToDouble(row[6]);
-                    double cao = Convert.ToDouble(row[7]);
-                    double na2o = Convert.ToDouble(row[8]);
-                    double k2o = Convert.ToDouble(row[9]);
-                    double f = Convert.ToDouble(row[10]);
-                    double cl = Convert.ToDouble(row[11]);
+                    double sio2 = Convert.ToDouble(row[0]);     
+                    double tio2 = Convert.ToDouble(row[1]);     
+                    double al2o3 = Convert.ToDouble(row[2]);    
+                    double feo = Convert.ToDouble(row[3]);      
+                    double mno = Convert.ToDouble(row[4]);      
+                    double mgo = Convert.ToDouble(row[5]);      
+                    double cao = Convert.ToDouble(row[6]);      
+                    double na2o = Convert.ToDouble(row[7]);     
+                    double k2o = Convert.ToDouble(row[8]);      
+                    double bao = Convert.ToDouble(row[9]);      
+                    double rb2o = Convert.ToDouble(row[10]);     
+                    double cso = Convert.ToDouble(row[11]);     
+                    double zno = Convert.ToDouble(row[12]);     
+                    double f = Convert.ToDouble(row[13]);       
+                    double cl = Convert.ToDouble(row[14]);      
+                    double cr2o3 = Convert.ToDouble(row[15]);   
+                    double nio = Convert.ToDouble(row[16]);
+
+                    double b121 = (sio2 * 2 / 60.09) + (tio2 * 2 / 79.9) + (al2o3 * 3 / 101.96) + (cr2o3 * 3 / 152) + 0 +
+                         (feo / 71.85) + (mno / 70.94) + (mgo / 40.31) + (nio / 74.708) + (zno / 81.38)
+                             + (cao / 56.08) + (na2o / 61.98) + (k2o / 94.22) + (bao / 153.36) +
+                             (rb2o / 186.936) + (f * 0.5 / 19) + (cl * 0.5 / 35.45);
+
+                    double b151 = 28 * (feo / 71.85) / b121;
+
+                    double bsum = ((28 * (sio2 / 60.09) / b121)) + ((28 * (tio2 / 79.9) / b121)) + ((28 * (al2o3 * 2 / 101.96) / b121)) +
+                             ((28 * (cr2o3 * 2 / 152) / b121)) + (28 * (feo / 71.85) / b121) + (28 * (mno / 70.94) / b121) +
+                             (28 * (mgo / 40.31) / b121) + (28 * (nio / 74.708) / b121) + (28 * (zno / 81.38) / b121) +
+                              (28 * (cao / 56.08) / b121) + (28 * (na2o * 2 / 61.98) / b121) + (28 * (k2o * 2 / 94.22) / b121) +
+                              (28 * (bao / 153.36) / b121) + (28 * (rb2o * 2 / 186.936) / b121);
+                    double b164 = 20 - bsum;
+                    double b166 = b151 - b164;
+
+
+
+                    double b188 = ((28 * (sio2 / 60.09) / b121) * 2) + ((28 * (tio2 / 79.9) / b121) * 2) + ((28 * (al2o3 * 2 / 101.96) / b121) * 1.5) +
+                           ((28 * (cr2o3 * 2 / 152) / b121) * 1.5) + (B167(b151,B165(b164)) * 1.5) + B168(b151, B165(b164),b166) + (28 * (mno / 70.94) / b121) +
+                           (28 * (mgo / 40.31) / b121) + (28 * (nio / 74.708) / b121) + (28 * (zno / 81.38) / b121) +
+                            (28 * (cao / 56.08) / b121) + (28 * (na2o * 2 / 61.98) / b121) + (28 * (k2o * 2 / 94.22) / b121) +
+                            (28 * (bao / 153.36) / b121) + (28 * (rb2o * 2 / 186.936) / b121)
+                            + (28 * (f / 19) / b121) + (28 * (cl / 35.45) / b121);
+
+                    double b217 = (B168(b151, B165(b164),b166) * (28 / b188)) / 2;
+
+                    double b189 = 28 / b188;
+
+                    double b199 = (28 * (mgo / 40.31) / b121) *b189;
 
                     try
                     {
-
+                        row[17] = CalculateTValue(B219(B84(B83(B192(sio2, b188, b121), al2o3, b121)), b217, b199));
                     }
                     catch (Exception ex)
                     {

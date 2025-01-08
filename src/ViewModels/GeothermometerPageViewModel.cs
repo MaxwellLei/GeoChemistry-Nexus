@@ -24,6 +24,13 @@ namespace GeoChemistryNexus.ViewModels
             CurrentView = ZirconZrPageView.GetPage();
         }
 
+        // 锆石微量 - Ti 温度计
+        [RelayCommand]
+        public void ZirconTi()
+        {
+            CurrentView = ZirconTiPageView.GetPage();
+        }
+
         // 闪锌矿 - FeS 温度计
         [RelayCommand]
         public void SphaleriteFeS()

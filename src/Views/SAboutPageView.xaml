@@ -82,16 +82,18 @@
                                 </WrapPanel>
                             </StackPanel>
                         </Grid>
-                        <Border Style="{StaticResource BorderRegion}" Margin="0 10"
-                                BorderThickness="5 0 0 0" BorderBrush="#42b983" Background="#ecf8f2">
-                            <WrapPanel>
-                                <TextBlock Text="茶歇的时候拿了香蕉，我觉得自己像一只猴子。不仅听不懂别人在说什么，还在旁边吃香蕉🍌" VerticalAlignment="Center" 
-                               HorizontalAlignment="Stretch" Foreground="Black" FontSize="15" TextWrapping="Wrap"/>
-                            </WrapPanel>
-                        </Border>
-                    </StackPanel>
-                    
 
+                    </StackPanel>
+                    <Border Style="{StaticResource BorderRegion}" Margin="0 10"
+                                BorderThickness="5 0 0 0" BorderBrush="#42b983" Background="#ecf8f2">
+                        <WrapPanel>
+                            <TextBlock Text="我们欢迎更多的研究人员加入！
+                                            &#xA;一起维护和更新地球化学计算的方法，还有更多的绘图底图模板！
+                                            &#xA;让软件变得更强大，更好用！" VerticalAlignment="Center"
+                               HorizontalAlignment="Stretch" Foreground="Black" FontSize="15" TextWrapping="Wrap"
+                                       LineHeight="28"/>
+                        </WrapPanel>
+                    </Border>
                 </VirtualizingStackPanel>
             </hc:ScrollViewer>
         </Grid>

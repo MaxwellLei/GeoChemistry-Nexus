@@ -77,37 +77,46 @@ public class FileHelper
 
     private static DataTable? ReadExcelFile(string filePath)
     {
-        DataTable dataTable = new DataTable();
-
-        using (var package = new ExcelPackage(new FileInfo(filePath)))
+        try
         {
-            ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
-            if (worksheet.Dimension == null)
-            {
-                return null;
-            }
-            int rowCount = worksheet.Dimension.Rows;
-            int colCount = worksheet.Dimension.Columns;
+            DataTable dataTable = new DataTable();
 
-            // Read header
-            for (int col = 1; col <= colCount; col++)
+            using (var package = new ExcelPackage(new FileInfo(filePath)))
             {
-                dataTable.Columns.Add(worksheet.Cells[1, col].Value?.ToString() ?? $"Column{col}");
-            }
+                ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
+                if (worksheet.Dimension == null)
+                {
+                    return null;
+                }
+                int rowCount = worksheet.Dimension.Rows;
+                int colCount = worksheet.Dimension.Columns;
 
-            // Read data
-            for (int row = 2; row <= rowCount; row++)
-            {
-                DataRow dataRow = dataTable.NewRow();
+                // Read header
                 for (int col = 1; col <= colCount; col++)
                 {
-                    dataRow[col - 1] = worksheet.Cells[row, col].Value;
+                    dataTable.Columns.Add(worksheet.Cells[1, col].Value?.ToString() ?? $"Column{col}");
                 }
-                dataTable.Rows.Add(dataRow);
+
+                // Read data
+                for (int row = 2; row <= rowCount; row++)
+                {
+                    DataRow dataRow = dataTable.NewRow();
+                    for (int col = 1; col <= colCount; col++)
+                    {
+                        dataRow[col - 1] = worksheet.Cells[row, col].Value;
+                    }
+                    dataTable.Rows.Add(dataRow);
+                }
             }
+
+            return dataTable;
+        }
+        catch
+        {
+            MessageHelper.Error("文件不合法，请检查文件");
+            return null;
         }
 
-        return dataTable;
     }
 
     private static DataTable ReadCsvFile(string filePath)
