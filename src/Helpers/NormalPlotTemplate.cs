@@ -491,17 +491,17 @@ namespace GeoChemistryNexus.Helpers
             var point22 = new ScottPlot.Coordinates(66.29306236455675, -9.221293975679943);
             var point23 = new ScottPlot.Coordinates(57.733530232876745, -9.43014944769331);
             var point24 = new ScottPlot.Coordinates(57.8406023556213, -10.785389399424488);
-            var point25 = new ScottPlot.Coordinates(61.497, -6.602);
+            var point25 = new ScottPlot.Coordinates(61.503823, -6.599871);
             var point26 = new ScottPlot.Coordinates(47.24414587785766, -11.049939663974756);
             var point27 = new ScottPlot.Coordinates(47.23795730562565, -12.609393855007893);
-            var point28 = new ScottPlot.Coordinates(50.670, -8.484);
+            var point28 = new ScottPlot.Coordinates(50.67231833822731, -8.483252800374077);
             var point29 = new ScottPlot.Coordinates(38.72695143874915, -12.33324050867911);
             var point30 = new ScottPlot.Coordinates(38.836135534557016, -13.788266963705563);
-            var point31 = new ScottPlot.Coordinates(40.994, -10.168);
+            var point31 = new ScottPlot.Coordinates(41.003953073697566, -10.164388163646334);
             var point32 = new ScottPlot.Coordinates(32.49491185414213, -13.252204585537921);
             // 加了一个垂下来的点
             var point33 = new ScottPlot.Coordinates(32.506257569900846, -13.78826696370551);
-            var point34 = new ScottPlot.Coordinates(32.263, -11.690);
+            var point34 = new ScottPlot.Coordinates(32.30312399946232, -11.677288333041801);
             var point35 = new ScottPlot.Coordinates(25.647207563753923, -13.785946347349862);
             var point36 = new ScottPlot.Coordinates(92.90809779273788, -2.839598997493735);
 

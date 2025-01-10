@@ -38,7 +38,7 @@
                 <hc:SideMenuItem.Icon>
                     <Image Source="/GeoChemistryNexus;component/Data/Icon/T_Icon/Sphalerite.png" Width="24" Height="24"/>
                 </hc:SideMenuItem.Icon>
-                <hc:SideMenuItem Header="绿泥石" Command="{Binding SphaleriteFeSCommand}" Background="#F3F3F3"/>
+                <hc:SideMenuItem Header="毒砂" Command="{Binding ArsenopyriteMCommand}" Background="#F3F3F3"/>
             </hc:SideMenuItem>
             <hc:SideMenuItem Header="绿泥石" Background="#F3F3F3">
                 <hc:SideMenuItem.Icon>
@@ -50,7 +50,7 @@
                 <hc:SideMenuItem.Icon>
                     <Image Source="/GeoChemistryNexus;component/Data/Icon/T_Icon/Sphalerite.png" Width="24" Height="24"/>
                 </hc:SideMenuItem.Icon>
-                <hc:SideMenuItem Header="黑云母" Command="{Binding SphaleriteFeSCommand}" Background="#F3F3F3"/>
+                <hc:SideMenuItem Header="黑云母" Command="{Binding ArsenopyriteMCommand}" CommandParameter="biotite" Background="#F3F3F3"/>
             </hc:SideMenuItem>
             <hc:SideMenuItem Header="角闪石" Background="#F3F3F3">
                 <hc:SideMenuItem.Icon>
@@ -61,7 +61,7 @@
         </hc:SideMenu>
         
         <TabControl Grid.Column="1">
-            <TabItem Header="绘图">
+            <TabItem Header="计算">
                 <Frame BorderThickness="0" Content="{Binding CurrentView}" Margin="32 0 32 10"/>
             </TabItem>
             <TabItem Header="指南"/>

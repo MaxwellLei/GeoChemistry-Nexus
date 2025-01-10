@@ -15,7 +15,7 @@ namespace GeoChemistryNexus.ViewModels
 {
     partial class SCommonPageViewModel : ObservableObject
     {
-        private bool changeConfig = false;  //是否第一次进入设置页面
+        private bool changeConfig = false;  // 是否第一次进入设置页面
         private bool isInsideChange = false;    //是否是代码层面改变设置的值
 
         private string dbLocationPath;  //数据库路径
@@ -25,35 +25,35 @@ namespace GeoChemistryNexus.ViewModels
         private CoverFlow coverFlowMain;
 
         [ObservableProperty]     
-        private int dbLocation;      //数据库位置设置(0是默认位置，即文档；1是自定义位置)
+        private int dbLocation;      // 数据库位置设置(0是默认位置，即文档；1是自定义位置)
 
         [ObservableProperty]
-        private int language;     //语言设置(0是中文;1是英文)
+        private int language;     // 语言设置(0是中文;1是英文)
 
         [ObservableProperty]
-        private int font;     //字体设置(0是微软雅黑;1是添加字体)
+        private int font;     // 字体设置(0是微软雅黑;1是添加字体)
 
         [ObservableProperty]
-        private int autoOffTime;    //通知自动关闭时间(0是5秒;1是4秒;2是3秒;3是2秒)
+        private int autoOffTime;    // 通知自动关闭时间(0是5秒;1是4秒;2是3秒;3是2秒)
 
         [ObservableProperty]
-        private bool boot;  //开机自动启动
+        private bool boot;  // 开机自动启动
 
         [ObservableProperty]
-        private bool autoCheck;  //自动检查更新
+        private bool autoCheck;  // 自动检查更新
 
         [ObservableProperty]
-        private int exitMode;    //退出方式(0是最小化到托盘;1是退出程序)
+        private int exitMode;    // 退出方式(0是最小化到托盘;1是退出程序)
 
-        public RelayCommand OpenDbFolderCommand { get; private set; }   //打开存储文件夹命令
-        public RelayCommand DbLocationChangedCommand { get; private set; }   //修改存储文件位置命令
-        public RelayCommand AutoOffTimeChangedCommand { get; private set; }   //修改通知自动关闭时间命令
-        public RelayCommand LanguageChangedCommand { get; private set; }   //修改语言命令
-        public RelayCommand CheckUpdateCommand { get; private set; }   //检查更新命令
-        public RelayCommand ExitProgrmModeCommand { get; private set; }   //退出程序方式命令
-        public RelayCommand AddStartImgCommand { get; private set; }    //添加启动图
+        public RelayCommand OpenDbFolderCommand { get; private set; }   // 打开存储文件夹命令
+        public RelayCommand DbLocationChangedCommand { get; private set; }   // 修改存储文件位置命令
+        public RelayCommand AutoOffTimeChangedCommand { get; private set; }   // 修改通知自动关闭时间命令
+        public RelayCommand LanguageChangedCommand { get; private set; }   // 修改语言命令
+        public RelayCommand CheckUpdateCommand { get; private set; }   // 检查更新命令
+        public RelayCommand ExitProgrmModeCommand { get; private set; }   // 退出程序方式命令
+        public RelayCommand AddStartImgCommand { get; private set; }    // 添加启动图
 
-        //初始化
+        // 初始化
         public SCommonPageViewModel()
         {
             OpenDbFolderCommand = new RelayCommand(ExecuteOpenDbFolderCommand);
@@ -63,18 +63,18 @@ namespace GeoChemistryNexus.ViewModels
             CheckUpdateCommand = new RelayCommand(ExecuteCheckUpdateCommand);
             ExitProgrmModeCommand = new RelayCommand(ExecuteExitProgrmModeCommand);
             AddStartImgCommand = new RelayCommand(ExecuteAddStartImgCommand);
-            ReadConfig();   //读取配置文件
+            ReadConfig();   // 读取配置文件
             changeConfig = true;
         }
 
-        //退出程序方式
+        // 退出程序方式
         private void ExecuteExitProgrmModeCommand()
         {
             ConfigHelper.SetConfig("exit_program_mode", ExitMode.ToString());
             MessageHelper.Success("修改成功");
         }
 
-        //检查更新
+        // 检查更新
         private void ExecuteCheckUpdateCommand()
         {
             UpdateHelper.CheckForUpdatesAsync();
@@ -95,7 +95,7 @@ namespace GeoChemistryNexus.ViewModels
             MessageHelper.Success("修改成功");
         }
 
-        //修改消息通知时间
+        // 修改消息通知时间
         private void ExecuteAutoOffTimeChangedCommand()
         {
             switch (AutoOffTime)
@@ -116,7 +116,7 @@ namespace GeoChemistryNexus.ViewModels
             MessageHelper.Success("修改成功");
         }
 
-        //修改语言
+        // 修改语言
         private void ExecuteLanguageChangedCommand()
         {
             if (Language == 0)
@@ -132,7 +132,7 @@ namespace GeoChemistryNexus.ViewModels
             MessageHelper.Success("修改成功");
         }
 
-        //修改数据库位置
+        // 修改数据库位置
         private void ExecuteDbLocationChangedCommand()
         {
             //保存数据库位置设置
@@ -164,16 +164,14 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
-
-
-        //打开指定数据库文件夹
+        // 打开指定数据库文件夹
         private void ExecuteOpenDbFolderCommand()
         {
             FileHelper.Openxplorer(ConfigHelper.GetConfig("database_location_path"));
             MessageHelper.Success("修改成功");
         }
 
-        //读取配置文件
+        // 读取配置文件
         void ReadConfig()
         {
             if (ConfigHelper.GetConfig("database_location_path") == "")
@@ -189,7 +187,7 @@ namespace GeoChemistryNexus.ViewModels
             ExitMode = int.Parse(Helpers.ConfigHelper.GetConfig("exit_program_mode"));  //读取退出方式
         }
 
-        //保存修改后的配置文件
+        // 保存修改后的配置文件
         void SaveConfig()
         {
             Helpers.ConfigHelper.SetConfig("language", Language.ToString());  //保存语言设置
@@ -199,10 +197,9 @@ namespace GeoChemistryNexus.ViewModels
             Helpers.ConfigHelper.SetConfig("exit_program_mode", ExitMode.ToString());  //保存退出方式设置
         }
 
-        //添加启动图
+        // 添加启动图
         private void ExecuteAddStartImgCommand()
         {
-
             // 源文件路径
             string sourceFilePath = FileHelper.GetFilePath("ImageFile(*.jpg,*.png)|*.jpg;*.png");
             if (sourceFilePath != null)
@@ -217,7 +214,7 @@ namespace GeoChemistryNexus.ViewModels
                 {
                     // 如果目标文件已存在，将overwrite参数设置为true以覆盖
                     File.Copy(sourceFilePath, destinationFilePath, true);
-                    //刷新封面流
+                    // 刷新封面流
                     GetFlowPic();
                     MessageHelper.Success((string)Application.Current.Resources["StartImageCopySuccessfully"]);
                 }
@@ -229,6 +226,7 @@ namespace GeoChemistryNexus.ViewModels
             MessageHelper.Success("添加成功");
         }
 
+        // 获取启动封面图
         public void GetFlowPic()
         {
             //获取启动封面

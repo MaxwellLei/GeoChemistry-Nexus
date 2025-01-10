@@ -97,10 +97,10 @@
                             <ComboBox SelectedIndex="0" FontSize="12" >
                                 <ComboBox.Items>
                                     <sys:String>默认随机</sys:String>
-                                    <sys:String>固定显示当前</sys:String>
+                                    <!--<sys:String>固定显示当前</sys:String>-->
                                 </ComboBox.Items>
                             </ComboBox>
-                            <Button Content="添加启动图" Margin="10 0 0 0" Command="{Binding AddStartImgCommand}"/>
+                            <!--<Button Content="添加启动图" Margin="10 0 0 0" Command="{Binding AddStartImgCommand}"/>-->
                         </WrapPanel>
                     </StackPanel>
                 </GroupBox>

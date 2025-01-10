@@ -99,10 +99,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Config\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <Compile Update="Views\Geothermometer\ArsenopyritePageView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\Geothermometer\ChloritePageView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

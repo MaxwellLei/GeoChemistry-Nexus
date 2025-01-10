@@ -334,9 +334,11 @@ namespace GeoChemistryNexus.ViewModels
             _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "玄武岩", "Vermeesch (2006)" }, "TiO2-Zr-Y-Sr",
                 NormalPlotTemplate.Vermessch_2006_b, NormalPlotMethod.Vermessch_2006_b_PlotAsync,
                 "Vermessch_2006_b.rtf", new string[] { "Group", "TiO2", "Zr", "Y", "Sr", });
-            _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "玄武岩", "Vermeesch (2006)" }, "Ti-Y",
-                NormalPlotTemplate.Vermessch_2006_c, NormalPlotMethod.Vermessch_2006_b_PlotAsync,
-                "Vermessch_2006_c.rtf", new string[] { "Group", "TiO2", "Zr", "Y", "Sr", });
+
+            //_registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "玄武岩", "Vermeesch (2006)" }, "Ti-Y",
+            //    NormalPlotTemplate.Vermessch_2006_c, NormalPlotMethod.Vermessch_2006_b_PlotAsync,
+            //    "Vermessch_2006_c.rtf", new string[] { "Group", "TiO2", "Zr", "Y", "Sr", });
+
             _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "玄武岩", "Saccani (2015)" }, "Th-Nb",
                 NormalPlotTemplate.Saccani_2015, NormalPlotMethod.Saccani_2015_PlotAsync,
                 "Saccani_2015.rtf", new string[] { "Group", "Th", "Nb" });
@@ -2034,9 +2036,28 @@ namespace GeoChemistryNexus.ViewModels
 
         // 导出图片
         [RelayCommand]
-        public void ExportImg()
+        public void ExportImg(string fileType)
         {
 
+            string tempFileName = "OutPut_fig." + fileType;
+
+            // 读取默认文件保存位置
+            string temp;
+            if (ConfigHelper.GetConfig("database_location_path") == "")
+            {
+                temp = FileHelper.GetSaveFilePath(tempFileName);
+                if (temp == string.Empty) { return; }
+            }
+            else
+            {
+                temp = FileHelper.GetSaveFilePath(tempFileName, ConfigHelper.GetConfig("database_location_path"));
+                if (temp == string.Empty) { return; }
+                //temp = Path.Combine(temp, tempFileName);
+            }
+
+            int tempWidth = (int)WpfPlot1.Plot.LastRender.DataRect.Width;
+            int tempHeight = (int)WpfPlot1.Plot.LastRender.DataRect.Height;
+            WpfPlot1.Plot.Save(temp, (int)(tempWidth*1.25), (int)(tempHeight*1.25));
         }
     }
 }

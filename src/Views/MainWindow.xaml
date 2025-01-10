@@ -91,14 +91,14 @@
                                     <TextBlock Text="温度计" Foreground="White"/>
                                 </WrapPanel>
                             </RadioButton>
-                            <RadioButton Name="RadioButton3" Style="{DynamicResource SideControlBar}" GroupName="SideBar"
+                            <!--<RadioButton Name="RadioButton3" Style="{DynamicResource SideControlBar}" GroupName="SideBar"
                                      Width="60" Height="60" Margin="-200,0,0,0" Command="{Binding ModelPage}">
                                 <WrapPanel Orientation="Vertical">
                                     <TextBlock Text="&#xe6b0;" Foreground="White" FontFamily="../Data/Icon/#iconfont"
                                            HorizontalAlignment="Center" FontSize="24"/>
                                     <TextBlock Text="科学计算" Foreground="White"/>
                                 </WrapPanel>
-                            </RadioButton>
+                            </RadioButton>-->
                             <!--<RadioButton Name="RadioButton5" Style="{DynamicResource SideControlBar}" GroupName="SideBar"
                                      Width="60" Height="60" Margin="-200,0,0,0">
                             <WrapPanel Orientation="Vertical">
@@ -109,7 +109,7 @@
                         </RadioButton>-->
                         </StackPanel>
 
-                        <RadioButton Name="RadioButton4" Style="{DynamicResource SideControlBar}" Grid.Row="1" GroupName="SideBar"
+                        <RadioButton Name="RadioButton3" Style="{DynamicResource SideControlBar}" Grid.Row="1" GroupName="SideBar"
                                      Width="60" Height="60" Margin="-200,0,0,0" Command="{Binding SettingPage}">
                             <WrapPanel Orientation="Vertical">
                                 <TextBlock Text="&#xe60f;" Foreground="White" FontFamily="../Data/Icon/#iconfont"

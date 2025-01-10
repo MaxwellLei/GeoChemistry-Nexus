@@ -80,26 +80,26 @@ namespace GeoChemistryNexus.ViewModels.GeothermometerViewModel
             dataTable.Columns.Add(fSColumn25);
             dataTable.Columns.Add(temperatureCColumn);
 
-            DataRow dataRow = dataTable.NewRow();
-            dataRow[0] = 37.663;
-            dataRow[1] = 0.045;
-            dataRow[2] = 23.254;
-            dataRow[3] = 12.791;
-            dataRow[4] = 0.058;
-            dataRow[5] = 0.032;
-            dataRow[6] = 23.047;
-            dataRow[7] = 0.024;
-            dataRow[8] = 0;
-            dataRow[9] = 0;
-            dataRow[10] = 0;
-            dataRow[11] = 0;
-            dataRow[12] = 0;
-            dataRow[13] = 0;
-            dataRow[14] = 0;
-            dataRow[15] = 0;
-            dataRow[16] = 0;
+            //DataRow dataRow = dataTable.NewRow();
+            //dataRow[0] = 37.663;
+            //dataRow[1] = 0.045;
+            //dataRow[2] = 23.254;
+            //dataRow[3] = 12.791;
+            //dataRow[4] = 0.058;
+            //dataRow[5] = 0.032;
+            //dataRow[6] = 23.047;
+            //dataRow[7] = 0.024;
+            //dataRow[8] = 0;
+            //dataRow[9] = 0;
+            //dataRow[10] = 0;
+            //dataRow[11] = 0;
+            //dataRow[12] = 0;
+            //dataRow[13] = 0;
+            //dataRow[14] = 0;
+            //dataRow[15] = 0;
+            //dataRow[16] = 0;
 
-            dataTable.Rows.Add(dataRow);
+            //dataTable.Rows.Add(dataRow);
 
             ExcelData = dataTable;
         }

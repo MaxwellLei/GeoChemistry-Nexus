@@ -29,6 +29,8 @@ namespace GeoChemistryNexus
     /// </summary>
     public partial class MainWindow
     {
+        private bool isFlipped = false;
+
         public MainWindow()
         {
             // 初始化窗体
@@ -104,7 +106,7 @@ namespace GeoChemistryNexus
                 To = new Thickness(0, 0, 0, 0),
                 EasingFunction = new QuadraticEase()
             };
-            for (int i = 1; i < 5; i++)
+            for (int i = 1; i < 4; i++)
             {
                 Storyboard.SetTargetName(marginAnim, "RadioButton" + i);
                 Storyboard.SetTargetProperty(marginAnim, new PropertyPath(MarginProperty));
@@ -142,7 +144,11 @@ namespace GeoChemistryNexus
         //彩蛋
         private void Stinger_Click(object sender, RoutedEventArgs e)
         {
-
+            // 获取当前日期和时间
+            DateTime now = DateTime.Now;
+            // 获取当前年份
+            int currentYear = now.Year;
+            MessageHelper.Success($"感谢您的使用🌹\n祝您 {currentYear} 年科研，生活一帆风顺！");
         }
 
         //关闭窗口

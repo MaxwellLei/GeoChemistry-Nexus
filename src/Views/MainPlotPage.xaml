@@ -97,13 +97,25 @@
                                     <TextBlock Text="定位轴"/>
                                 </StackPanel>
                             </Button>
-                            <Button Height="60" Margin="5">
-                                <StackPanel>
-                                    <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe644;" 
-                                               HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
-                                    <TextBlock Text="导出图片"/>
-                                </StackPanel>
-                            </Button>
+                            <hc:SplitButton  Height="60" Margin="5">
+                                <hc:SplitButton.Content>
+                                    <StackPanel>
+                                        <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe644;" 
+                                                   HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
+                                        <TextBlock Text="导出图片"/>
+                                    </StackPanel>
+                                </hc:SplitButton.Content>
+
+                                <hc:SplitButton.DropDownContent>
+                                    <StackPanel>
+                                        <MenuItem Header="导出 PNG" Command="{Binding ExportImgCommand}" CommandParameter="png"/>
+                                        <MenuItem Header="导出 JPG" Command="{Binding ExportImgCommand}" CommandParameter="jpg"/>
+                                        <MenuItem Header="导出 BMP" Command="{Binding ExportImgCommand}" CommandParameter="bmp"/>
+                                        <MenuItem Header="导出 Webp" Command="{Binding ExportImgCommand}" CommandParameter="webp"/>
+                                        <MenuItem Header="导出 SVG" Command="{Binding ExportImgCommand}" CommandParameter="svg"/>
+                                    </StackPanel>
+                                </hc:SplitButton.DropDownContent>
+                            </hc:SplitButton>
                             <Button Height="60" Command="{Binding LegendSettingCommand}">
                                 <StackPanel>
                                     <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe602;"

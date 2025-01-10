@@ -218,6 +218,36 @@ public class FileHelper
         }
     }
 
+    // 获取保存图片路径
+    public static string GetSaveFilePath(string defaultFileName, string initialDirectory = null)
+    {
+        // 创建文件保存对话框的实例
+        var dialog = new VistaSaveFileDialog
+        {
+            FileName = defaultFileName, // 设置默认文件名
+            Filter = "All Files (*.*)|*.*", // 文件类型过滤器
+            Title = "保存文件" // 对话框标题
+        };
+
+        // 如果提供了初始目录，则设置它
+        if (!string.IsNullOrWhiteSpace(initialDirectory) && Directory.Exists(initialDirectory))
+        {
+            dialog.InitialDirectory = initialDirectory;
+        }
+
+        // 显示对话框并检查结果
+        bool? result = dialog.ShowDialog();
+
+        // 如果用户点击了“保存”按钮，返回完整的文件路径
+        if (result == true)
+        {
+            return dialog.FileName;
+        }
+
+        // 用户取消操作，返回一个空字符串或其他指示性值
+        return string.Empty;
+    }
+
     //获取文件路径——不带格式限制
     public static string GetFilePath()
     {

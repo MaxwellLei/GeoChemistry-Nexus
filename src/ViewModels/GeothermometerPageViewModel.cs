@@ -52,6 +52,13 @@ namespace GeoChemistryNexus.ViewModels
             CurrentView = QuatzTiPageView.GetPage();
         }
 
+        // 毒砂 温度计
+        [RelayCommand]
+        public void ArsenopyriteM(string typeK)
+        {
+            CurrentView = ArsenopyritePageView.GetPage(typeK);
+        }
+
         // 角闪石 - 主量温度计
         [RelayCommand]
         public void AmphiboleM()
