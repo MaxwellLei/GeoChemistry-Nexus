@@ -66,10 +66,10 @@ namespace GeoChemistryNexus.ViewModels.GeothermometerViewModel
             DataColumn fSColumn251;
             DataColumn temperatureCColumn;
 
-            if (TitleX == "黑云母温度计")
+            if (TitleX == I18n.GetString("BiotiteGTM"))
             {
-                TitleP = "原子量标准";
-                TitleC = "默认";
+                TitleP = I18n.GetString("AtomicMassStd");
+                TitleC = I18n.GetString("DefaultImport");
                 feSColumn = new DataColumn("Ti", typeof(double));
                 fSColumn25 = new DataColumn("Mg", typeof(double));
                 fSColumn251 = new DataColumn("Fe", typeof(double));
@@ -81,8 +81,8 @@ namespace GeoChemistryNexus.ViewModels.GeothermometerViewModel
             }
             else
             {
-                TitleP = "矿物组合";
-                TitleC = "毒砂";
+                TitleP = I18n.GetString("MineralAssemblage");
+                TitleC = I18n.GetString("Arsenopyrite");
                 feSColumn = new DataColumn("Arsenopyrite", typeof(double));
                 fSColumn25 = new DataColumn("Logf(S2)", typeof(double));
                 temperatureCColumn = new DataColumn("T(℃)", typeof(string));
@@ -244,7 +244,7 @@ namespace GeoChemistryNexus.ViewModels.GeothermometerViewModel
             // 重置表格数据
             InitDataExcel();
             // 通知前端
-            MessageHelper.Success("重置成功");
+            MessageHelper.Success(I18n.GetString("ResetSuccess"));
         }
 
         // 导出数据

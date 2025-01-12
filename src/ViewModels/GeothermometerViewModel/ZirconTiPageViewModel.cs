@@ -120,7 +120,7 @@ namespace GeoChemistryNexus.ViewModels.GeothermometerViewModel
             // 重置表格数据
             InitDataExcel();
             // 通知前端
-            MessageHelper.Success("重置成功");
+            MessageHelper.Success(I18n.GetString("ResetSuccess"));
         }
 
         // 导出数据

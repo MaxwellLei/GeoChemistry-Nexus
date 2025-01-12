@@ -10,14 +10,16 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="SCommonPageView">
-    <Grid Margin="10 30 10 30">
+    <Grid Margin="10 30 10 10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <hc:ScrollViewer HorizontalAlignment="Stretch" Padding="120 0">
             <VirtualizingStackPanel HorizontalAlignment="Stretch" Margin="0 0 10 0">
-                <hc:Divider Content="文件路径" HorizontalContentAlignment="Left" FontSize="20" FontWeight="Bold" LineStrokeThickness="5"/>
-                <GroupBox Header="保存文件位置" Style="{StaticResource GroupBoxOriginal}" hc:TitleElement.TitlePlacement="Left" 
+                <!--文件路径-->
+                <hc:Divider Content="{DynamicResource FilePath}" HorizontalContentAlignment="Left" FontSize="20" FontWeight="Bold" LineStrokeThickness="5"/>
+                <!--保存文件位置-->
+                <GroupBox Header="{DynamicResource FileSavePath}" Style="{StaticResource GroupBoxOriginal}" hc:TitleElement.TitlePlacement="Left" 
                               FontSize="16" Margin="0 0 0 5">
                     <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Right">
                         <ComboBox SelectedIndex="{Binding DbLocation,Mode=TwoWay}" FontSize="12">
@@ -27,11 +29,11 @@
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                             <ComboBox.Items>
-                                <sys:String>默认位置</sys:String>
-                                <sys:String>自定义文件位置</sys:String>
+                                <TextBlock Text="{DynamicResource DefaultPath}"/>
+                                <TextBlock Text="{DynamicResource CustomPath}"/>
                             </ComboBox.Items>
                         </ComboBox>
-                        <Button Content="打开文件位置" Margin="10 0 0 0" Command="{Binding OpenDbFolderCommand}"/>
+                        <Button Content="{DynamicResource OpenFileLocation}" Margin="10 0 0 0" Command="{Binding OpenDbFolderCommand}"/>
                     </WrapPanel>
                 </GroupBox>
                 <!--<GroupBox Header="{DynamicResource WorkspacePath}" Style="{StaticResource GroupBoxOriginal}" hc:TitleElement.TitlePlacement="Left" 
@@ -51,9 +53,26 @@
                         <Button Content="{DynamicResource OpenFileLocation}" Margin="10 0 0 0" Command="{Binding OpenWsFolderCommand}"/>
                     </WrapPanel>
                 </GroupBox>-->
-                <hc:Divider Content="国际化 &amp; 个性化" HorizontalContentAlignment="Left" FontSize="20" FontWeight="Bold" 
+                <!--国际化 & 个性化-->
+                <hc:Divider Content="{DynamicResource InternationalizationAndPersonalization}" HorizontalContentAlignment="Left" FontSize="20" FontWeight="Bold" 
                             LineStrokeThickness="5"/>
-                <GroupBox Header="主题" Style="{StaticResource GroupBoxOriginal}" hc:TitleElement.TitlePlacement="Left" 
+                <!--主题-->
+                <GroupBox Header="{DynamicResource Theme}" Style="{StaticResource GroupBoxOriginal}" hc:TitleElement.TitlePlacement="Left" 
+                              FontSize="16" Margin="0 0 0 5">
+                    <ComboBox SelectedIndex="0" FontSize="12" VerticalAlignment="Center" 
+                              HorizontalAlignment="Right">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction Command="{Binding LanguageChangedCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <ComboBox.Items>
+                            <TextBlock Text="{DynamicResource Default}"/>
+                        </ComboBox.Items>
+                    </ComboBox>
+                </GroupBox>
+                <!--语言-->
+                <GroupBox Header="{DynamicResource Language}" Style="{StaticResource GroupBoxOriginal}" hc:TitleElement.TitlePlacement="Left" 
                               FontSize="16" Margin="0 0 0 5">
                     <ComboBox SelectedIndex="{Binding Language}" FontSize="12" VerticalAlignment="Center" 
                               HorizontalAlignment="Right">
@@ -63,40 +82,28 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <ComboBox.Items>
-                            <sys:String>默认</sys:String>
+                            <TextBlock Text="{DynamicResource ChineseS}"/>
+                            <TextBlock Text="{DynamicResource EnglishUS}"/>
                         </ComboBox.Items>
                     </ComboBox>
                 </GroupBox>
-                <GroupBox Header="语言" Style="{StaticResource GroupBoxOriginal}" hc:TitleElement.TitlePlacement="Left" 
-                              FontSize="16" Margin="0 0 0 5">
-                    <ComboBox SelectedIndex="{Binding Language}" FontSize="12" VerticalAlignment="Center" 
-                              HorizontalAlignment="Right">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="SelectionChanged">
-                                <i:InvokeCommandAction Command="{Binding LanguageChangedCommand}"/>
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                        <ComboBox.Items>
-                            <sys:String>简体中文</sys:String>
-                            <sys:String>English(US)</sys:String>
-                        </ComboBox.Items>
-                    </ComboBox>
-                </GroupBox>
-                <GroupBox Header="字体" Style="{StaticResource GroupBoxOriginal}" hc:TitleElement.TitlePlacement="Left" 
+                <!--<GroupBox Header="字体" Style="{StaticResource GroupBoxOriginal}" hc:TitleElement.TitlePlacement="Left" 
                               FontSize="16" Margin="0 0 0 5">
                     <ComboBox SelectedIndex="{Binding Font}" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Right">
                         <ComboBox.Items>
                             <sys:String>默认</sys:String>
                         </ComboBox.Items>
                     </ComboBox>
-                </GroupBox>
-                <GroupBox Header="启动背景图" Style="{StaticResource GroupBoxOriginal}" hc:TitleElement.TitlePlacement="Left" 
+                </GroupBox>-->
+                <!--启动背景图-->
+                <GroupBox Header="{DynamicResource StartBackgroundImages}" Style="{StaticResource GroupBoxOriginal}" hc:TitleElement.TitlePlacement="Left" 
                               FontSize="16" Margin="0 0 0 5">
                     <StackPanel>
                         <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Right">
                             <ComboBox SelectedIndex="0" FontSize="12" >
                                 <ComboBox.Items>
-                                    <sys:String>默认随机</sys:String>
+                                    <TextBlock Text="{DynamicResource DefaultRandom}"/>
+                                    <!--<sys:String>默认随机</sys:String>-->
                                     <!--<sys:String>固定显示当前</sys:String>-->
                                 </ComboBox.Items>
                             </ComboBox>
@@ -105,9 +112,11 @@
                     </StackPanel>
                 </GroupBox>
                 <hc:CoverFlow x:Name="CoverFlow" VerticalAlignment="Stretch" Height="200"/>
-                <hc:Divider Content="消息通知" HorizontalContentAlignment="Left" 
+                <!--消息通知-->
+                <hc:Divider Content="{DynamicResource MessageNotification}" HorizontalContentAlignment="Left" 
                             FontSize="20" FontWeight="Bold" LineStrokeThickness="5"/>
-                <GroupBox Header="自动关闭时间" Style="{StaticResource GroupBoxOriginal}" 
+                <!--自动关闭时间-->
+                <GroupBox Header="{DynamicResource MessageAutoClose}" Style="{StaticResource GroupBoxOriginal}" 
                               hc:TitleElement.TitlePlacement="Left" FontSize="16" Margin="0 0 0 5">
                     <ComboBox SelectedIndex="{Binding AutoOffTime}" FontSize="12" VerticalAlignment="Center" 
                               HorizontalAlignment="Right">
@@ -117,29 +126,34 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <ComboBox.Items>
-                            <sys:String>5 秒</sys:String>
-                            <sys:String>4 秒</sys:String>
-                            <sys:String>3 秒</sys:String>
-                            <sys:String>2 秒</sys:String>
+                            <TextBlock Text="{DynamicResource MessageAutoClose5}"/>
+                            <TextBlock Text="{DynamicResource MessageAutoClose4}"/>
+                            <TextBlock Text="{DynamicResource MessageAutoClose3}"/>
+                            <TextBlock Text="{DynamicResource MessageAutoClose2}"/>
                         </ComboBox.Items>
                     </ComboBox>
                 </GroupBox>
-                <hc:Divider Content="其他" HorizontalContentAlignment="Left" FontSize="20" FontWeight="Bold" LineStrokeThickness="5"/>
-                <GroupBox Header="开机启动" Style="{StaticResource GroupBoxOriginal}" 
+                <!--其他-->
+                <hc:Divider Content="{DynamicResource Other}" HorizontalContentAlignment="Left" FontSize="20" FontWeight="Bold" LineStrokeThickness="5"/>
+                <!--开机启动-->
+                <GroupBox Header="{DynamicResource Boot}" Style="{StaticResource GroupBoxOriginal}" 
                           hc:TitleElement.TitlePlacement="Left" FontSize="16" Margin="0 0 0 5" >
                     <ToggleButton Style="{StaticResource ToggleButtonSwitch}" IsChecked="{Binding Boot}" 
                                   HorizontalAlignment="Right"/>
                 </GroupBox>
-                <GroupBox Header="自动检查更新" Style="{StaticResource GroupBoxOriginal}" 
+                <!--自动检查更新-->
+                <GroupBox Header="{DynamicResource AutoCheckUpdate}" Style="{StaticResource GroupBoxOriginal}" 
                           hc:TitleElement.TitlePlacement="Left" FontSize="16" Margin="0 0 0 5">
                     <StackPanel>
                         <ToggleButton Style="{StaticResource ToggleButtonSwitch}" HorizontalAlignment="Right" 
                                       IsChecked="{Binding AutoCheck}"/>
-                        <Button Width="125" Content="检查更新" HorizontalAlignment="Right" 
+                        <!--检查更新-->
+                        <Button  Content="{DynamicResource CheckUpdate}" HorizontalAlignment="Right" 
                                 Margin="0 10 0 5" Command="{Binding CheckUpdateCommand}"/>
                     </StackPanel>
                 </GroupBox>
-                <GroupBox Header="退出程序方法" Style="{StaticResource GroupBoxOriginal}" 
+                <!--退出程序方法-->
+                <GroupBox Header="{DynamicResource QuitAppMode}" Style="{StaticResource GroupBoxOriginal}" 
                           hc:TitleElement.TitlePlacement="Left" FontSize="16" Margin="0 0 0 5">
                     <ComboBox SelectedIndex="{Binding ExitMode}" FontSize="12" VerticalAlignment="Center" 
                               HorizontalAlignment="Right">
@@ -149,8 +163,8 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <ComboBox.Items>
-                            <sys:String>最小化到托盘</sys:String>
-                            <sys:String>直接退出</sys:String>
+                            <TextBlock Text="{DynamicResource MinimizeTray}"/>
+                            <TextBlock Text="{DynamicResource Quit}"/>
                         </ComboBox.Items>
                     </ComboBox>
                 </GroupBox>

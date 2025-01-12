@@ -1,0 +1,224 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:s="clr-namespace:System;assembly=mscorlib">
+    <!--托盘菜单-->
+    <s:String x:Key="Show">显示界面</s:String>
+    <s:String x:Key="Exit">退出程序</s:String>
+
+    <!--菜单-->
+    <s:String x:Key="SmashIt">🔨砸一下？</s:String>
+    <s:String x:Key="SmashItC">里面会有什么呢？也许你可以尝试砸一下</s:String>
+
+    <!--启动窗体-->
+    <s:String x:Key="StartStatus">启动中...</s:String>
+
+    <!--主窗体侧边栏-->
+    <s:String x:Key="Home">主页</s:String>
+    <s:String x:Key="Plot">绘图</s:String>
+    <s:String x:Key="Geothermometer">温度计</s:String>
+    <s:String x:Key="Setting">设置</s:String>
+
+    <!--=====================绘图页面=========================-->
+    <!--绘图部分-->
+    <s:String x:Key="ImportData">导入数据</s:String>
+    <s:String x:Key="ResetPlot">重置绘图</s:String>
+    <s:String x:Key="ResetVision">视图复位</s:String>
+    <s:String x:Key="CancelSelected">取消选中</s:String>
+    <s:String x:Key="LocationAxis">定位轴</s:String>
+    <s:String x:Key="ExportImage">导出图片</s:String>
+    <s:String x:Key="ExportImagePNG">导出 PNG 格式</s:String>
+    <s:String x:Key="ExportImageJPG">导出 JPG 格式</s:String>
+    <s:String x:Key="ExportImageBMP">导出 BMP 格式</s:String>
+    <s:String x:Key="ExportImageWebp">导出 Webp 格式</s:String>
+    <s:String x:Key="ExportImageSVG">导出 SVG 格式</s:String>
+    <s:String x:Key="LegendSetting">图例设置</s:String>
+    <s:String x:Key="PlotSetting">绘图设置</s:String>
+
+    <!--绘图底图-->
+    <s:String x:Key="IgneousRock">岩浆岩</s:String>
+    <s:String x:Key="TectonicSetting">构造环境</s:String>
+    <s:String x:Key="Basalt">玄武岩</s:String>
+    <s:String x:Key="RockClassification">岩石分类</s:String>
+    <s:String x:Key="GTMP">温度绘图</s:String>
+
+    <!--选项卡标题-->
+    <s:String x:Key="Guide">指南</s:String>
+    <s:String x:Key="BorderLine">边界</s:String>
+    <s:String x:Key="PlotText">注释</s:String>
+    <s:String x:Key="PlotAxies">坐标轴</s:String>
+    <s:String x:Key="PlotLeftAxies">左侧坐标轴</s:String>
+    <s:String x:Key="PlotBottomAxies">底部坐标轴</s:String>
+    <s:String x:Key="PlotData">数据</s:String>
+    <s:String x:Key="MajorAxes">主刻度轴</s:String>
+    <s:String x:Key="MinorAxes">次刻度轴</s:String>
+    <s:String x:Key="Legend">图例</s:String>
+    <s:String x:Key="Background">背景</s:String>
+    <s:String x:Key="Calculate">计算</s:String>
+
+    <!--属性面板-->
+    <s:String x:Key="IsShow">是否可见</s:String>
+    <s:String x:Key="FontFamily">字体</s:String>
+    <s:String x:Key="FontStyle">字体样式</s:String>
+    <s:String x:Key="FontNormal">默认</s:String>
+    <s:String x:Key="FontBold">加粗</s:String>
+    <s:String x:Key="FontItalic">斜体</s:String>
+    <s:String x:Key="FontSize">字体大小</s:String>
+    <s:String x:Key="FontColor">字体颜色</s:String>
+    <s:String x:Key="TextContent">内容</s:String>
+    
+    <s:String x:Key="LineStyle">线条样式</s:String>
+    <s:String x:Key="LineSolid">实线</s:String>
+    <s:String x:Key="LineDash">虚线</s:String>
+    <s:String x:Key="LineDashDot">点线</s:String>
+    <s:String x:Key="LineDenselyDashed">密集虚线</s:String>
+    <s:String x:Key="LineWidth">宽度</s:String>
+    <s:String x:Key="LineColor">颜色</s:String>
+    <s:String x:Key="PointStyle">点样式</s:String>
+    <s:String x:Key="PointCircle">圆形</s:String>
+    <s:String x:Key="PointHollowCircle">空心圆形</s:String>
+    <s:String x:Key="PointSquare">方形</s:String>
+    <s:String x:Key="PointFilledTriangleUp">上三角形</s:String>
+    <s:String x:Key="PointFilledTriangleDown">下三角形</s:String>
+    <s:String x:Key="PointDiamond">菱形</s:String>
+    <s:String x:Key="PointEks">叉号</s:String>
+    <s:String x:Key="PointCross">十字形</s:String>
+    <s:String x:Key="PointStar">星形</s:String>
+    <s:String x:Key="Size">大小</s:String>
+
+    <s:String x:Key="IsShowAxes">显示轴</s:String>
+    <s:String x:Key="IsShowAxesTick">隐藏主刻度</s:String>
+    <s:String x:Key="AxesStyle">刻度轴样式</s:String>
+    <s:String x:Key="AxesStyleNormal">常规</s:String>
+    <s:String x:Key="AxesStyleLog10">Log(10)</s:String>
+    <s:String x:Key="AxesTickFont">刻度轴字体</s:String>
+    <s:String x:Key="AxesTickFontSize">刻度字体大小</s:String>
+    <s:String x:Key="AxesTickSpacing">刻度间距</s:String>
+    <s:String x:Key="AxesTickUpLimit">刻度上限</s:String>
+    <s:String x:Key="AxesTickDownLimit">刻度下限</s:String>
+    <s:String x:Key="AxesTickColor">刻度颜色</s:String>
+    <s:String x:Key="IsShowMinorAxes">隐藏次刻度</s:String>
+
+    <s:String x:Key="IsShowLegend">是否显示图例</s:String>
+    <s:String x:Key="LegendPosition">图例位置</s:String>
+    <s:String x:Key="LegendPositionRU">右上角</s:String>
+    <s:String x:Key="LegendPositionRD">右下角</s:String>
+    <s:String x:Key="LegendPositionLU">左上角</s:String>
+    <s:String x:Key="LegendPositionLD">左下角</s:String>
+    <s:String x:Key="LegendDirection">图例方向</s:String>
+    <s:String x:Key="LegendVertical">纵向</s:String>
+    <s:String x:Key="LegendHorizontal">横向</s:String>
+
+    <s:String x:Key="PlotTitle">绘图标题</s:String>
+    <s:String x:Key="PlotTitleFont">标题字体</s:String>
+    <s:String x:Key="PlotTitleFontSize">标题字体大小</s:String>
+    <s:String x:Key="PlotTitleColor">标题颜色</s:String>
+    <s:String x:Key="PlotAxesTitle1">坐标轴标题1</s:String>
+    <s:String x:Key="PlotAxesTitle2">坐标轴标题2</s:String>
+    <s:String x:Key="PlotAxesTitleFont">轴标题字体</s:String>
+    <s:String x:Key="PlotAxesTitleFontSize">轴标题字体大小</s:String>
+    <s:String x:Key="PlotAxesTitleColor">轴标题颜色</s:String>
+
+    <s:String x:Key="PlotShowGrid">显示网格</s:String>
+    <s:String x:Key="PlotMajorGridColor">主网格颜色</s:String>
+    <s:String x:Key="PlotMajorGridWidth">主网格宽度</s:String>
+    <s:String x:Key="PlotShowMinorGrid">显示次网格</s:String>
+    <s:String x:Key="PlotMinorGridColor">次网格颜色</s:String>
+    <s:String x:Key="PlotMinorGridWidth">次网格宽度</s:String>
+    <s:String x:Key="PlotSwitchFilledColor">反转填充颜色</s:String>
+    <s:String x:Key="PlotFilledColor1">填充区域颜色1</s:String>
+    <s:String x:Key="PlotFilledColor2">填充区域颜色2</s:String>
+
+    <!--=====================温度计页面=========================-->
+    <!--温度计部分-->
+    <s:String x:Key="Zircon">锆石</s:String>
+    <s:String x:Key="Sphalerite">闪锌矿</s:String>
+    <s:String x:Key="Quartz">石英</s:String>
+    <s:String x:Key="Arsenopyrite">毒砂</s:String>
+    <s:String x:Key="Chlorite">绿泥石</s:String>
+    <s:String x:Key="Biotite">黑云母</s:String>
+    <s:String x:Key="Amphibole">角闪石</s:String>
+
+    <s:String x:Key="Reset">重置</s:String>
+    <s:String x:Key="ExportResult">导出结果</s:String>
+    <s:String x:Key="TGMInfo">点击 或者 拖拽文件到此处</s:String>
+    <s:String x:Key="CalTarget">计算目标</s:String>
+    <s:String x:Key="CalTarget1">饱和温度</s:String>
+    <s:String x:Key="CalTarget2">主量温度</s:String>
+    <s:String x:Key="AtomicMassStd">原子量标准</s:String>
+    <s:String x:Key="Pressure">压力(Mpa)</s:String>
+    <s:String x:Key="ActivityTiO2">活度(TiO2)</s:String>
+    <s:String x:Key="ActivitySiO2">活度(SiO2)</s:String>
+    <s:String x:Key="fS">硫逸度</s:String>
+    <s:String x:Key="fSInfo">硫逸度自动计算方法</s:String>
+    <s:String x:Key="DefaultImport">默认导入</s:String>
+    <s:String x:Key="ShowError">误差范围显示</s:String>
+    <s:String x:Key="MineralAssemblage">矿物组合</s:String>
+    <s:String x:Key="AmphiboleGTM">角闪石温度计</s:String>
+    <s:String x:Key="BiotiteGTM">黑云母温度计</s:String>
+    <s:String x:Key="ChloriteGTM">绿泥石温度计</s:String>
+    <s:String x:Key="ArsenopyriteGTM">毒砂温度计</s:String>
+    <s:String x:Key="QuartzGTM">石英 Ti 温度计</s:String>
+    <s:String x:Key="SphaleriteGTM">闪锌矿 FeS 温度计</s:String>
+    <s:String x:Key="SphaleriteGGIMFisGTM">闪锌矿 GGIMFis 温度计</s:String>
+    <s:String x:Key="ZirconTiGTM">锆石 Ti 温度计</s:String>
+    <s:String x:Key="ZirconZrGTM">锆石 Zr 温度计</s:String>
+
+    <!--步骤条-->
+    <s:String x:Key="Step1">导入 / 填入数据</s:String>
+    <s:String x:Key="Step2">检查参数</s:String>
+    <s:String x:Key="Step3">计算结果</s:String>
+
+
+    <!--=====================设置页面=========================-->
+    <!--设置-->
+    <s:String x:Key="NormalSetting">常规设置</s:String>
+    <s:String x:Key="About">关于</s:String>
+    <s:String x:Key="FilePath">文件路径</s:String>
+    <s:String x:Key="FileSavePath">保存文件位置</s:String>
+    <s:String x:Key="DefaultPath">默认位置</s:String>
+    <s:String x:Key="CustomPath">自定义文件夹位置</s:String>
+    <s:String x:Key="OpenFileLocation">打开文件夹位置</s:String>
+    <s:String x:Key="InternationalizationAndPersonalization">国际化 &amp; 个性化</s:String>
+    <s:String x:Key="Theme">主题</s:String>
+    <s:String x:Key="Default">默认</s:String>
+    <s:String x:Key="Language">语言</s:String>
+    <s:String x:Key="ChineseS">中文(简体)</s:String>
+    <s:String x:Key="EnglishUS">English(US)</s:String>
+    <s:String x:Key="StartBackgroundImages">启动背景图</s:String>
+    <s:String x:Key="DefaultRandom">默认随机</s:String>
+    <s:String x:Key="MessageNotification">消息通知</s:String>
+    <s:String x:Key="MessageAutoClose">自动关闭时间</s:String>
+    <s:String x:Key="MessageAutoClose5">5 秒</s:String>
+    <s:String x:Key="MessageAutoClose4">4 秒</s:String>
+    <s:String x:Key="MessageAutoClose3">3 秒</s:String>
+    <s:String x:Key="MessageAutoClose2">2 秒</s:String>
+    <s:String x:Key="Other">其他</s:String>
+    <s:String x:Key="Boot">开机自启</s:String>
+    <s:String x:Key="AutoCheckUpdate">自动检查更新</s:String>
+    <s:String x:Key="CheckUpdate">检查更新</s:String>
+    <s:String x:Key="QuitAppMode">退出程序方法</s:String>
+    <s:String x:Key="MinimizeTray">最小化到托盘</s:String>
+    <s:String x:Key="Quit">直接退出</s:String>
+    <s:String x:Key="AboutInfo1">本项目通过利用地球化学数据进行相关图表绘制、计算与分析，对地质学数据进行高效处理，旨在帮助地球科学研究人员加速数据分析流程，提升研究效率。</s:String>
+    <s:String x:Key="AboutInfo2">如果您对本项目感兴趣，欢迎点个 Star 支持一下！如果您觉得对您有帮助，也可以请我喝杯咖啡☕</s:String>
+    <s:String x:Key="AboutInfo3"  xml:space="preserve">我们欢迎更多的研究人员加入！&#xA;一起维护和更新地球化学计算的方法，还有更多的绘图底图模板！&#xA;让软件变得更强大，更好用！</s:String>
+    <s:String x:Key="ThankSupport">感谢支持</s:String>
+    <s:String x:Key="Support1">📌控件支持: </s:String>
+    <s:String x:Key="Support2">📌图表支持: </s:String>
+    <s:String x:Key="Support3">📌文档支持: </s:String>
+    <s:String x:Key="Support4">📌计算支持: </s:String>
+    <s:String x:Key="Support5">📌工具支持: </s:String>
+    
+    <!--=====================ViewModel页面=========================-->
+    <!--绘图ViewModel-->
+    <s:String x:Key="PlotBoder">边界</s:String>
+
+    <!--温度计ViewModel-->
+    <s:String x:Key="ResetSuccess">重置成功</s:String>
+
+    <!--设置ViewModel-->
+    <s:String x:Key="ModifedSuccess">修改成功</s:String>
+    <s:String x:Key="ModifedCanceled">取消修改</s:String>
+    <s:String x:Key="Info1">请前往官网查看，该功能开发中....</s:String>
+
+</ResourceDictionary>

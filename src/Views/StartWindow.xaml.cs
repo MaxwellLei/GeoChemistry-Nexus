@@ -28,6 +28,7 @@ namespace GeoChemistryNexus.Views
 
         public StartWindow()
         {
+            LanguageHelper.InitializeLanguage();        // 初始化语言
             InitializeComponent();
             //LanguageHelper.InitializeLanguage();
             // 异步执行启动过程

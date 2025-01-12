@@ -13,5 +13,6 @@ namespace GeoChemistryNexus
     /// </summary>
     public partial class App : Application
     {
+
     }
 }

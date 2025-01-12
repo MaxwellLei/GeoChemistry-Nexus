@@ -12,6 +12,8 @@
     <None Remove="Data\Cursors\pointer.cur" />
     <None Remove="Data\Icon\iconfont.ttf" />
     <None Remove="Data\Icon\logo.png" />
+    <None Remove="Data\Icon\T_Icon\Arsenopyrite.png" />
+    <None Remove="Data\Icon\T_Icon\Biotite.png" />
     <None Remove="Data\Icon\T_Icon\Quartz.png" />
     <None Remove="Data\Icon\T_Icon\Sphalerite.png" />
     <None Remove="Data\Icon\T_Icon\Zircon.png" />
@@ -39,6 +41,9 @@
     </Content>
     <Content Include="Data\Icon\logo.ico" />
     <Content Include="Data\Icon\logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Icon\T_Icon\Biotite.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\Icon\T_Icon\Quartz.png">
@@ -84,6 +89,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\PlotData\PlotData.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Data\Icon\T_Icon\Arsenopyrite.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

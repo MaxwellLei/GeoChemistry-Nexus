@@ -38,7 +38,7 @@ namespace GeoChemistryNexus.Helpers
             {
                 dictionaryList.Add(dictionary);
             }
-            string requestedCulture = @"/TimberValueEvaluationSystem;component/Resources/Language/" + language + ".xaml";
+            string requestedCulture = @"/GeoChemistryNexus;component/Data/Language/" + language + ".xaml";
             ResourceDictionary resourceDictionary = dictionaryList.FirstOrDefault(d => d.Source.OriginalString.Equals(requestedCulture));
             Application.Current.Resources.MergedDictionaries.Remove(resourceDictionary);
             Application.Current.Resources.MergedDictionaries.Add(resourceDictionary);

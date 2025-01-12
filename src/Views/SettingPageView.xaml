@@ -22,7 +22,8 @@
                     <WrapPanel HorizontalAlignment="Center" Orientation="Horizontal">
                         <TextBlock Text="&#xe616;" Foreground="Black" FontFamily="../Data/Icon/#iconfont" FontSize="20"
                             VerticalAlignment="Center" Margin="0 0 8 0"/>
-                        <TextBlock FontSize="16" Text="常规设置" Foreground="Black" VerticalAlignment="Center"/>
+                        <!--常规设置-->
+                        <TextBlock FontSize="16" Text="{DynamicResource NormalSetting}" Foreground="Black" VerticalAlignment="Center"/>
                     </WrapPanel>
                 </RadioButton>
             </Border>
@@ -42,7 +43,8 @@
                     <WrapPanel HorizontalAlignment="Center" Orientation="Horizontal">
                         <TextBlock Text="&#xe61d;" Foreground="Black" FontFamily="../Data/Icon/#iconfont" FontSize="20"
                             VerticalAlignment="Center" Margin="0 0 8 0"/>
-                        <TextBlock FontSize="16" Text="关于" Foreground="Black" VerticalAlignment="Center"/>
+                        <!--关于-->
+                        <TextBlock FontSize="16" Text="{DynamicResource About}" Foreground="Black" VerticalAlignment="Center"/>
                     </WrapPanel>
                 </RadioButton>
             </Border>

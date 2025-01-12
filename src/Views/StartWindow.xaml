@@ -12,7 +12,7 @@
     <!--启动页面，异步启动-->
     <Border Name="Basemap" CornerRadius="8">
         <Grid>
-            <hc:SimpleText Foreground="Wheat" Text="正在启动.." FontWeight="Bold" FontSize="16" Margin="0 0 0 8" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+            <hc:SimpleText Foreground="Wheat" Text="{DynamicResource StartStatus}" FontWeight="Bold" FontSize="16" Margin="0 0 0 8" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
             <ProgressBar Grid.Row="1"  Style="{DynamicResource ProgressBarFlat}" x:Name="progressBar" 
                              Minimum="0" Maximum="100" Value="0" Width="790" Height="5" Margin="3 0"
                              HorizontalAlignment="Center" VerticalAlignment="Bottom"/>

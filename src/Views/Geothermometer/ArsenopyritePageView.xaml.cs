@@ -45,11 +45,11 @@ namespace GeoChemistryNexus.Views.Geothermometer
 
             if (tempType == "biotite")
             {
-                ((ArsenopyritePageViewModel)commonPage.DataContext).TitleX = "黑云母温度计";
+                ((ArsenopyritePageViewModel)commonPage.DataContext).TitleX = I18n.GetString("BiotiteGTM");
             }
             else
             {
-                ((ArsenopyritePageViewModel)commonPage.DataContext).TitleX = "毒砂温度计";
+                ((ArsenopyritePageViewModel)commonPage.DataContext).TitleX = I18n.GetString("ArsenopyriteGTM");
             }
             return commonPage;
         }
@@ -127,7 +127,7 @@ namespace GeoChemistryNexus.Views.Geothermometer
             // 定义需要检查和复制的列标题
             Dictionary<string, string> columnNames;
             
-            if(((ArsenopyritePageViewModel)commonPage.DataContext).TitleX == "黑云母温度计")
+            if(((ArsenopyritePageViewModel)commonPage.DataContext).TitleX == I18n.GetString("BiotiteGTM"))
             {
                 columnNames = new Dictionary<string, string>
                 {

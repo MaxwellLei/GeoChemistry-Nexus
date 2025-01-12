@@ -16,8 +16,8 @@
             <RowDefinition/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <!--标题-->
-        <hc:Divider Content="绿泥石 温度计" HorizontalContentAlignment="Left" FontSize="20" 
+        <!--标题  绿泥石温度计-->
+        <hc:Divider Content="{DynamicResource ChloriteGTM}" HorizontalContentAlignment="Left" FontSize="20" 
                     FontWeight="Bold" LineStrokeThickness="5"/>
         <!--设置部分-->
         <Grid Grid.Row="1">
@@ -37,27 +37,27 @@
                         </VisualBrush.Visual>
                     </VisualBrush>
                 </Border.BorderBrush>
-                <TextBlock Text="点击 或者 拖拽文件到此处" VerticalAlignment="Center" HorizontalAlignment="Center"
+                <TextBlock Text="{DynamicResource TGMInfo}" VerticalAlignment="Center" HorizontalAlignment="Center"
                                FontSize="18"/>
             </Border>
             <!--设置属性-->
             <StackPanel Grid.Column="1" Margin="10 0">
                 <Border BorderThickness="1" BorderBrush="#E5E5E5" CornerRadius="8" Height="50" Background="#FBFBFB">
                     <DockPanel VerticalAlignment="Center" Margin="10 0">
-                        <TextBlock Text="原子量标准" VerticalAlignment="Center"  FontSize="14"/>
+                        <TextBlock Text="{DynamicResource AtomicMassStd}" VerticalAlignment="Center"  FontSize="14"/>
                             <ComboBox SelectedIndex="0" Width="120" HorizontalAlignment="Right">
-                            <ComboBoxItem Content="默认导入"/>
+                            <ComboBoxItem Content="{DynamicResource DefaultImport}"/>
                         </ComboBox>
                     </DockPanel>
                 </Border>
                 <DockPanel Margin="0 5" Height="50">
-                    <Button Content="重置" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                    <Button Content="{DynamicResource Reset}" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
                             Height="42" Width="80" Margin="0 0 5 0" Command="{Binding ReSetCommand}"
                             Style="{StaticResource ButtonDanger}"/>
-                    <Button Content="计算" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                    <Button Content="{DynamicResource Calculate}" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
                             Height="42" Width="120" Margin="0 0 5 0" Command="{Binding CalTemCommand}"
                             Style="{StaticResource ButtonSuccess}"/>
-                    <Button Content="导出结果" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                    <Button Content="{DynamicResource ExportResult}" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
                             Height="42" Style="{StaticResource ButtonPrimary}" Command="{Binding Export_DataCommand}"/>
                 </DockPanel>
             </StackPanel>
@@ -68,9 +68,9 @@
                   ColumnWidth="*" CanUserSortColumns="False" CellEditEnding="DataGrid_CellEditEnding"/>
         <!--步骤条-->
         <hc:StepBar Grid.Row="3" StepIndex="{Binding StepIndex}" >
-            <hc:StepBarItem Content="导入 / 填入数据"/>
-            <hc:StepBarItem Content="检查设置"/>
-            <hc:StepBarItem Content="计算结果"/>
+            <hc:StepBarItem Content="{DynamicResource Step1}"/>
+            <hc:StepBarItem Content="{DynamicResource Step2}"/>
+            <hc:StepBarItem Content="{DynamicResource Step3}"/>
         </hc:StepBar>
     </Grid>
 </Page>

@@ -37,7 +37,7 @@
                         </VisualBrush.Visual>
                     </VisualBrush>
                 </Border.BorderBrush>
-                <TextBlock Text="点击 或者 拖拽文件到此处" VerticalAlignment="Center" HorizontalAlignment="Center"
+                <TextBlock Text="{DynamicResource TGMInfo}" VerticalAlignment="Center" HorizontalAlignment="Center"
                                FontSize="18"/>
             </Border>
             <!--设置属性-->
@@ -51,13 +51,13 @@
                     </DockPanel>
                 </Border>
                 <DockPanel Margin="0 5" Height="50">
-                    <Button Content="重置" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                    <Button Content="{DynamicResource Reset}" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
                             Height="42" Width="80" Margin="0 0 5 0" Command="{Binding ReSetCommand}"
                             Style="{StaticResource ButtonDanger}"/>
-                    <Button Content="计算" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                    <Button Content="{DynamicResource Calculate}" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
                             Height="42" Width="120" Margin="0 0 5 0" Command="{Binding CalTemCommand}"
                             Style="{StaticResource ButtonSuccess}"/>
-                    <Button Content="导出结果" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                    <Button Content="{DynamicResource ExportResult}" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
                             Height="42" Style="{StaticResource ButtonPrimary}" Command="{Binding Export_DataCommand}"/>
                 </DockPanel>
             </StackPanel>
@@ -68,9 +68,9 @@
                   ColumnWidth="*" CanUserSortColumns="False" CellEditEnding="DataGrid_CellEditEnding"/>
         <!--步骤条-->
         <hc:StepBar Grid.Row="3" StepIndex="{Binding StepIndex}" >
-            <hc:StepBarItem Content="导入 / 填入数据"/>
-            <hc:StepBarItem Content="检查设置"/>
-            <hc:StepBarItem Content="计算结果"/>
+            <hc:StepBarItem Content="{DynamicResource Step1}"/>
+            <hc:StepBarItem Content="{DynamicResource Step2}"/>
+            <hc:StepBarItem Content="{DynamicResource Step3}"/>
         </hc:StepBar>
     </Grid>
 </Page>

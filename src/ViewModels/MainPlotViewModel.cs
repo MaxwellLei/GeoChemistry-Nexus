@@ -36,7 +36,7 @@ namespace GeoChemistryNexus.ViewModels
     {
 
         // 注册绘图模板列表
-        private PlotTemplateRegistry _registry = new PlotTemplateRegistry();
+        private PlotTemplateRegistry _registry;
 
         // 图层选中列表
         private IList<PlotItemModel> _previousSelectedItems;
@@ -306,7 +306,7 @@ namespace GeoChemistryNexus.ViewModels
 
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;     // 初始化 excel 相关协议
             RegisterPlotTemplates();    // 注册绘图模板
-            RootTreeNode = _registry.GenerateTreeStructure();       // 注册模板列表
+            
 
             // 获取系统所有字体
             PlotTextFontNames = System.Drawing.FontFamily.Families
@@ -314,24 +314,27 @@ namespace GeoChemistryNexus.ViewModels
                 .OrderBy(name => name)
                 .ToList();
 
-            // 映射字典
-            translations = new Dictionary<string, string>
-            {
-                { "Left", "左侧" },
-                { "Bottom", "底部" }
-            };
+
         }
 
         // 注册绘图模板
-        private void RegisterPlotTemplates()
+        public void RegisterPlotTemplates()
         {
-            _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "玄武岩", "Pearce and Gale (1977)" }, "Ti-Zr-Y",
+            _registry = new PlotTemplateRegistry();
+            var tempTitle1 = I18n.GetString("IgneousRock");      // 岩浆岩
+            var tempTitle12 = I18n.GetString("TectonicSetting");      // 构造环境
+            var tempTitle13 = I18n.GetString("Basalt");      // 玄武岩
+            var tempTitle2 = I18n.GetString("RockClassification");      // 岩石分类
+            var tempTitle31 = I18n.GetString("GTMP");      // 温度绘图
+
+            // 岩浆岩-构造环境-玄武岩
+            _registry.RegisterTemplate(new[] { tempTitle1, tempTitle12, tempTitle13, "Pearce and Gale (1977)" }, "Ti-Zr-Y",
                 NormalPlotTemplate.Pearce_and_Gale_1977, NormalPlotMethod.Vermessch_2006_PlotAsync,
                 "Vermessch_2006.rtf", new string[] { "Group", "Ti", "Zr", "Y" });
-            _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "玄武岩", "Vermeesch (2006)" }, "Major Elements (-Fe)",
+            _registry.RegisterTemplate(new[] { tempTitle1, tempTitle12, tempTitle13, "Vermeesch (2006)" }, "Major Elements (-Fe)",
                 NormalPlotTemplate.Vermessch_2006, NormalPlotMethod.Vermessch_2006_PlotAsync,
                 "Vermessch_2006.rtf", new string[] { "Group", "SiO2", "Al2O3", "TiO2", "CaO", "MgO", "MnO", "K2O", "Na2O" });
-            _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "玄武岩", "Vermeesch (2006)" }, "TiO2-Zr-Y-Sr",
+            _registry.RegisterTemplate(new[] { tempTitle1, tempTitle12, tempTitle13, "Vermeesch (2006)" }, "TiO2-Zr-Y-Sr",
                 NormalPlotTemplate.Vermessch_2006_b, NormalPlotMethod.Vermessch_2006_b_PlotAsync,
                 "Vermessch_2006_b.rtf", new string[] { "Group", "TiO2", "Zr", "Y", "Sr", });
 
@@ -339,22 +342,36 @@ namespace GeoChemistryNexus.ViewModels
             //    NormalPlotTemplate.Vermessch_2006_c, NormalPlotMethod.Vermessch_2006_b_PlotAsync,
             //    "Vermessch_2006_c.rtf", new string[] { "Group", "TiO2", "Zr", "Y", "Sr", });
 
-            _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "玄武岩", "Saccani (2015)" }, "Th-Nb",
+            _registry.RegisterTemplate(new[] { tempTitle1, tempTitle12, tempTitle13, "Saccani (2015)" }, "Th-Nb",
                 NormalPlotTemplate.Saccani_2015, NormalPlotMethod.Saccani_2015_PlotAsync,
                 "Saccani_2015.rtf", new string[] { "Group", "Th", "Nb" });
-            _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "玄武岩", "Saccani (2015)" }, "Yb-Dy",
+            _registry.RegisterTemplate(new[] { tempTitle1, tempTitle12, tempTitle13, "Saccani (2015)" }, "Yb-Dy",
                 NormalPlotTemplate.Saccani_2015_b, NormalPlotMethod.Saccani_2015_b_PlotAsync,
                 "Saccani_2015.rtf", new string[] { "Group", "Yb", "Dy" });
-            _registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "玄武岩", "Saccani (2015)" }, "Ce-Dy-Yb",
+            _registry.RegisterTemplate(new[] { tempTitle1, tempTitle12, tempTitle13, "Saccani (2015)" }, "Ce-Dy-Yb",
                 NormalPlotTemplate.Saccani_2015_c, NormalPlotMethod.Saccani_2015_c_PlotAsync,
                 "Saccani_2015.rtf", new string[] { "Group", "Ce", "Yb", "Dy" });
-            _registry.RegisterTemplate(new[] { "岩浆岩", "岩石分类" }, "TAS",
+
+            // 岩浆岩 - 岩石分类 - TAS
+            _registry.RegisterTemplate(new[] { tempTitle1, tempTitle2 }, "TAS",
                 NormalPlotTemplate.TAS, NormalPlotMethod.TAS_PlotAsync,
                 "Saccani_2015.rtf", new string[] { "Group", "K2O", "Na2O", "SiO2" });
-            // 临时
-            _registry.RegisterTemplate(new[] { "其他", "温度绘图" }, "毒砂",
+
+            // 其他 - 温度绘图 - 毒砂
+            _registry.RegisterTemplate(new[] { I18n.GetString("Other"), tempTitle31 }, I18n.GetString("Arsenopyrite"),
                 NormalPlotTemplate.ArsenicT, NormalPlotMethod.TAS_PlotAsync,
                 "Saccani_2015.rtf", new string[] { "Group", "K2O", "Na2O", "SiO2" });
+            RootTreeNode = _registry.GenerateTreeStructure();       // 注册模板列表
+
+            // 映射字典
+            translations = new Dictionary<string, string>
+            {
+                { "Left", I18n.GetString("PlotLeftAxies")},
+                { "Bottom", I18n.GetString("PlotBottomAxies") }
+            };
+
+            // 刷新图层列表
+            PopulatePlotItems((List<IPlottable>)WpfPlot1.Plot.GetPlottables());
         }
 
         // 设置显示属性
@@ -456,6 +473,7 @@ namespace GeoChemistryNexus.ViewModels
         // 字典映射
         private string Translate(string input, Dictionary<string, string> translations)
         {
+
             if (translations.TryGetValue(input, out string translation))
             {
                 return translation;
@@ -471,6 +489,8 @@ namespace GeoChemistryNexus.ViewModels
         {
             AxesList.Clear();
             var testdata = WpfPlot1.Plot.Axes.GetAxes();
+
+
             foreach (var axis in WpfPlot1.Plot.Axes.GetAxes())
             {
                 var test = axis.Edge.ToString();
@@ -504,7 +524,7 @@ namespace GeoChemistryNexus.ViewModels
 
                 if (plottableType == "LinePlot")
                 {
-                    displayName = "边界";
+                    displayName = I18n.GetString("PlotBoder");
                     BasePlotItems.Add(new PlotItemModel
                     {
                         Plottable = plottable,

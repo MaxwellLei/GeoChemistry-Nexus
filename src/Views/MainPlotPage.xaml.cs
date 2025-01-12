@@ -1,4 +1,5 @@
-﻿using GeoChemistryNexus.ViewModels;
+﻿using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.ViewModels;
 using HandyControl.Controls;
 using ScottPlot;
 using ScottPlot.Plottables;
@@ -29,6 +30,9 @@ namespace GeoChemistryNexus.Views
 
         private MainPlotViewModel viewModel;
 
+        // 语言变量 0-简体中文 1-英文（美国）
+        private string lg;
+
         public MainPlotPage()
         {
             InitializeComponent();
@@ -51,8 +55,21 @@ namespace GeoChemistryNexus.Views
             if (homePage == null)
             {
                 homePage = new MainPlotPage();
+                //homePage.lg = ConfigHelper.GetConfig("language");
             }
+            homePage.viewModel.RegisterPlotTemplates();
             return homePage;
+        }
+
+        // 语言自适应
+        private void AutoChangeLg()
+        {
+            var tempvalue = ConfigHelper.GetConfig("language");
+            if (homePage.lg == "1")
+            {
+                viewModel.RegisterPlotTemplates();
+                homePage.lg = tempvalue;
+            }
         }
 
         private void Color_Pick(object sender, RoutedEventArgs e)

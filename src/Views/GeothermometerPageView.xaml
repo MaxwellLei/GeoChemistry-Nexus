@@ -14,57 +14,66 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <hc:SideMenu BorderThickness="1" VerticalAlignment="Stretch" Background="#F3F3F3">
-            <hc:SideMenuItem Header="锆石" Background="#F3F3F3">
+            <!--锆石-->
+            <hc:SideMenuItem Header="{DynamicResource Zircon}" Background="#F3F3F3">
                 <hc:SideMenuItem.Icon>
                     <Image Source="/GeoChemistryNexus;component/Data/Icon/T_Icon/Zircon.png" Width="24" Height="24"/>
                 </hc:SideMenuItem.Icon>
-                <hc:SideMenuItem Header="Ti 温度计" Command="{Binding ZirconTiCommand}" Background="#F3F3F3"/>
-                <hc:SideMenuItem Header="Zr 温度计" Command="{Binding ZirconZrCommand}" Background="#F3F3F3"/>
+                <hc:SideMenuItem Header="Watson and Harrison (1983)" Command="{Binding ZirconZrCommand}" Background="#F3F3F3"/>
+                <hc:SideMenuItem Header="Loucks et al. (2020)" Command="{Binding ZirconTiCommand}" Background="#F3F3F3"/>
             </hc:SideMenuItem>
-            <hc:SideMenuItem Header="闪锌矿" Background="#F3F3F3">
+            <!--闪锌矿-->
+            <hc:SideMenuItem Header="{DynamicResource Sphalerite}" Background="#F3F3F3">
                 <hc:SideMenuItem.Icon>
                     <Image Source="/GeoChemistryNexus;component/Data/Icon/T_Icon/Sphalerite.png" Width="24" Height="24"/>
                 </hc:SideMenuItem.Icon>
-                <hc:SideMenuItem Header="FeS,硫逸度 温度计" Command="{Binding SphaleriteFeSCommand}" Background="#F3F3F3"/>
-                <hc:SideMenuItem Header="GGIMFis 温度计" Command="{Binding SphaleriteGGIMFisCommand}" Background="#F3F3F3"/>
+                <hc:SideMenuItem Header="Scoot and Barnes (1971)" Command="{Binding SphaleriteFeSCommand}" Background="#F3F3F3"/>
+                <hc:SideMenuItem Header="Frenzel et al. (2016)" Command="{Binding SphaleriteGGIMFisCommand}" Background="#F3F3F3"/>
             </hc:SideMenuItem>
-            <hc:SideMenuItem Header="石英" Background="#F3F3F3">
+            <!--石英-->
+            <hc:SideMenuItem Header="{DynamicResource Quartz}" Background="#F3F3F3">
                 <hc:SideMenuItem.Icon>
                     <Image Source="/GeoChemistryNexus;component/Data/Icon/T_Icon/Quartz.png" Width="24" Height="24"/>
                 </hc:SideMenuItem.Icon>
-                <hc:SideMenuItem Header="TitaniQ 温度计" Command="{Binding QuatzTiCommand}" Background="#F3F3F3"/>
+                <hc:SideMenuItem Header="Wark and Watson (2006)" Command="{Binding QuatzTiCommand}" Background="#F3F3F3"/>
             </hc:SideMenuItem>
-            <hc:SideMenuItem Header="毒砂" Background="#F3F3F3">
+            <!--毒砂-->
+            <hc:SideMenuItem Header="{DynamicResource Arsenopyrite}" Background="#F3F3F3">
                 <hc:SideMenuItem.Icon>
-                    <Image Source="/GeoChemistryNexus;component/Data/Icon/T_Icon/Sphalerite.png" Width="24" Height="24"/>
+                    <Image Source="/GeoChemistryNexus;component/Data/Icon/T_Icon/Arsenopyrite.png" Width="24" Height="24"/>
                 </hc:SideMenuItem.Icon>
-                <hc:SideMenuItem Header="毒砂" Command="{Binding ArsenopyriteMCommand}" Background="#F3F3F3"/>
+                <hc:SideMenuItem Header="Sharp et. al. (1985)" Command="{Binding ArsenopyriteMCommand}" Background="#F3F3F3"/>
             </hc:SideMenuItem>
-            <hc:SideMenuItem Header="绿泥石" Background="#F3F3F3">
+            <!--绿泥石-->
+            <hc:SideMenuItem Header="{DynamicResource Chlorite}" Background="#F3F3F3">
                 <hc:SideMenuItem.Icon>
-                    <Image Source="/GeoChemistryNexus;component/Data/Icon/T_Icon/Sphalerite.png" Width="24" Height="24"/>
+                    <Image Source="/GeoChemistryNexus;component/Data/Icon/logo.png" Width="24" Height="24"/>
                 </hc:SideMenuItem.Icon>
                 <hc:SideMenuItem Header="Jowett (1991)" Command="{Binding ChloriteMCommand}" Background="#F3F3F3"/>
             </hc:SideMenuItem>
-            <hc:SideMenuItem Header="黑云母" Background="#F3F3F3">
+            <!--黑云母-->
+            <hc:SideMenuItem Header="{DynamicResource Biotite}" Background="#F3F3F3">
                 <hc:SideMenuItem.Icon>
-                    <Image Source="/GeoChemistryNexus;component/Data/Icon/T_Icon/Sphalerite.png" Width="24" Height="24"/>
+                    <Image Source="/GeoChemistryNexus;component/Data/Icon/T_Icon/Biotite.png" Width="24" Height="24"/>
                 </hc:SideMenuItem.Icon>
-                <hc:SideMenuItem Header="黑云母" Command="{Binding ArsenopyriteMCommand}" CommandParameter="biotite" Background="#F3F3F3"/>
+                <hc:SideMenuItem Header="Henry et. al. (2005)" Command="{Binding ArsenopyriteMCommand}" CommandParameter="biotite" Background="#F3F3F3"/>
             </hc:SideMenuItem>
-            <hc:SideMenuItem Header="角闪石" Background="#F3F3F3">
+            <!--角闪石-->
+            <hc:SideMenuItem Header="{DynamicResource Amphibole}" Background="#F3F3F3">
                 <hc:SideMenuItem.Icon>
-                    <Image Source="/GeoChemistryNexus;component/Data/Icon/T_Icon/Sphalerite.png" Width="24" Height="24"/>
+                    <Image Source="/GeoChemistryNexus;component/Data/Icon/logo.png" Width="24" Height="24"/>
                 </hc:SideMenuItem.Icon>
-                <hc:SideMenuItem Header="角闪石" Command="{Binding AmphiboleMCommand}" Background="#F3F3F3"/>
+                <hc:SideMenuItem Header="Ridolfi et. al. (2010)" Command="{Binding AmphiboleMCommand}" Background="#F3F3F3"/>
             </hc:SideMenuItem>
         </hc:SideMenu>
         
         <TabControl Grid.Column="1">
-            <TabItem Header="计算">
+            <!--计算-->
+            <TabItem Header="{DynamicResource Calculate}">
                 <Frame BorderThickness="0" Content="{Binding CurrentView}" Margin="32 0 32 10"/>
             </TabItem>
-            <TabItem Header="指南"/>
+            <!--指南-->
+            <TabItem Header="{DynamicResource Guide}"/>
         </TabControl>
 
         

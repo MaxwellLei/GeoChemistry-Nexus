@@ -84,7 +84,7 @@ namespace GeoChemistryNexus
         //帮助按钮
         private void Help_Click(object sender, RoutedEventArgs e)
         {
-            string url = "https://github.com/L-Seraphine/TimberValueEvaluationSystem/wiki/";
+            string url = "https://geo-thermometer.vercel.app/";
             //拉起浏览器
             try
             {

@@ -128,7 +128,7 @@ namespace GeoChemistryNexus.ViewModels.GeothermometerViewModel
             StepIndex = 0;
 
             // 通知前端
-            MessageHelper.Success("重置成功");
+            MessageHelper.Success(I18n.GetString("ResetSuccess"));
         }
 
         // 导出数据

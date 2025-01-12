@@ -6,6 +6,10 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                
+                <!--多语言-->
+                <ResourceDictionary Source="/GeoChemistryNexus;component/Data/Language/en-US.xaml"/>
+                <ResourceDictionary Source="/GeoChemistryNexus;component/Data/Language/zh-CN.xaml"/>
 
                 <!--HandyControl控件库引用-->
                 <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDefault.xaml"/>
