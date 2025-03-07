@@ -1,10 +1,14 @@
 ﻿using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Models;
 using GeoChemistryNexus.ViewModels;
 using HandyControl.Controls;
 using ScottPlot;
+using ScottPlot.Interactivity;
 using ScottPlot.Plottables;
+using ScottPlot.WPF;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,8 +34,21 @@ namespace GeoChemistryNexus.Views
 
         private MainPlotViewModel viewModel;
 
+        // 添加状态 -1 无状态; 0 添加点； 1 添加线条； 2 添加多边形； 3 添加注释；
+        private int status = -1;
+
         // 语言变量 0-简体中文 1-英文（美国）
         private string lg;
+
+        private bool PonintEnd = false;
+
+        // 线段起始点
+        private Coordinates pointStart;
+        // 临时点
+        private IPlottable temp;
+        // 临时数组存储点
+        private List<double> pointsX;
+        private List<double> pointsY;
 
         public MainPlotPage()
         {
@@ -120,6 +137,20 @@ namespace GeoChemistryNexus.Views
             ColorPicker3.IsOpen = true;
         }
 
+        public (float x, float y) GetLocation(MouseEventArgs e)
+        {
+            // 从 WpfPlot 和鼠标事件中获取鼠标的像素位置
+            double mousePixelX = e.GetPosition(WpfPlot1).X * WpfPlot1.DisplayScale;
+            double mousePixelY = e.GetPosition(WpfPlot1).Y * WpfPlot1.DisplayScale;
+            ScottPlot.Pixel mousePixel = new(mousePixelX, mousePixelY);
+
+            // 将像素转换为坐标（Plot 的坐标）
+            var coordinates = WpfPlot1.Plot.GetCoordinates(mousePixel);
+
+            // 返回 (X, Y)，使用 float 类型
+            return ((float)coordinates.X, (float)coordinates.Y);
+        }
+
         // 坐标显示
         private void PlotLocationShow(object sender, MouseEventArgs e)
         {
@@ -192,5 +223,173 @@ namespace GeoChemistryNexus.Views
             WpfPlot1.Refresh(); // 刷新图表
         }
 
+        // 自定义坐标轴-切换状态添加点
+        private void AddPointStatus(object sender, RoutedEventArgs e)
+        {
+            status = 0;
+        }
+
+
+
+        // 添加点-鼠标点击
+        private void AddPoint(object sender, MouseButtonEventArgs e)
+        {
+            if (status == 0) { return; }
+
+            if (status == 0)
+            {
+                var (x, y) = GetLocation(e);
+                double[] x1 = new double[] { x };
+                double[] y1 = new double[] { y };
+                WpfPlot1.Plot.Add.ScatterPoints(x1, y1);
+                WpfPlot1.Refresh();
+                status = -1;
+            }
+            if (status == 1)
+            {
+                if(PonintEnd)
+                {
+                    AddEnd(e);
+                    PonintEnd = false;
+                    status = -1;
+                }
+                else
+                {
+                    AddStart(e);
+                    PonintEnd = true;
+                }
+            }
+            if (status == 2)
+            {
+                AddPolygonR(e);
+            }
+            if (status == 3)
+            {
+                AddTextR(e);
+                status = -1;
+            }
+        }
+
+        // 添加线段
+        private void AddBorder(object sender, RoutedEventArgs e)
+        {
+            status = 1;
+
+            //viewModel._basePlotConfig.Lines.Add(new LineConfig() { start = new PointConfig() { x = 0, y = 0 }, end = new PointConfig() { x = 0, y = 0 } });
+            
+        }
+
+        // 添加注释
+        private void AddTextR(MouseButtonEventArgs e)
+        {
+            var (x, y) = GetLocation(e);
+            pointStart = new Coordinates(x, y);
+            temp = WpfPlot1.Plot.Add.Text("Text", pointStart);
+            viewModel.Refresh();
+        }
+
+        // 添加多边形-实际
+        private void AddPolygonR(MouseButtonEventArgs e)
+        {
+            var (x, y) = GetLocation(e);
+            pointsX.Add(x);
+            pointsY.Add(y);
+        }
+
+        // 添加起始点
+        private void AddStart(MouseButtonEventArgs e)
+        {
+            var (x, y) = GetLocation(e);
+            pointStart = new Coordinates(x, y);
+            Coordinates[] coordinates = new Coordinates[] { pointStart };
+            temp = WpfPlot1.Plot.Add.ScatterPoints(coordinates);
+                //var lines = viewModel._basePlotConfig.Lines;
+                //var lastIndex = lines.Count - 1;
+                //lines[lastIndex].start.x = x;
+                //lines[lastIndex].start.y = y;
+                //viewModel.X1 = x;
+                //viewModel.Y1 = y;
+                //// 加载底图
+                //PlotLoader.LoadBasePlot(WpfPlot1.Plot, viewModel._basePlotConfig);
+            WpfPlot1.Refresh();
+        }
+
+        // 添加终止点
+        private void AddEnd(MouseButtonEventArgs e)
+        {
+            // 获取指针位置
+            var (x, y) = GetLocation(e);
+            // 创建线段
+            var templine = WpfPlot1.Plot.Add.Line(pointStart.X, pointStart.Y, x, y);
+            templine.LineWidth = 2;
+            var tempPlotItem = new PlotItemModel()
+            {
+                Plottable = templine,
+                Name = "LinePlot",
+                ObjectType = "LinePlot",
+            };
+            // 选中列表
+            viewModel._previousSelectedItems.Clear();
+            // 清空选中列表
+            viewModel._previousSelectedItems.Add(tempPlotItem);
+            WpfPlot1.Plot.Remove(temp);
+            //var lines = viewModel._basePlotConfig.Lines;
+            //var lastIndex = lines.Count - 1;
+            //lines[lastIndex].end.x = x;
+            //lines[lastIndex].end.y = y;
+            //viewModel.X2 = x;
+            //viewModel.Y2 = y;
+            //// 加载底图
+            //PlotLoader.LoadBasePlot(WpfPlot1.Plot, viewModel._basePlotConfig);
+            viewModel.PopulatePlotItems((List<IPlottable>)WpfPlot1.Plot.GetPlottables());
+            WpfPlot1.Refresh();
+        }
+
+        // 删除添加对象（点，线段，多边形，注释）
+        private void DeleteLine(object sender, RoutedEventArgs e)
+        {
+
+            //if (viewModel._basePlotConfig.Lines.Count > 0)
+            //{
+            //    int lastIndex = viewModel._basePlotConfig.Lines.Count - 1;
+            //    viewModel._basePlotConfig.Lines.RemoveAt(lastIndex);
+            //}
+            //// 加载底图
+            //PlotLoader.LoadBasePlot(WpfPlot1.Plot, viewModel._basePlotConfig);
+            // 删除选中项
+            foreach(PlotItemModel temp in viewModel._previousSelectedItems)
+            {
+                WpfPlot1.Plot.Remove((IPlottable)temp.Plottable);
+            }
+            viewModel.PopulatePlotItems((List<IPlottable>)WpfPlot1.Plot.GetPlottables());
+            WpfPlot1.Refresh();
+        }
+
+        // 添加注释
+        private void AddText(object sender, RoutedEventArgs e)
+        {
+            status = 3;
+        }
+
+        // 添加多边形
+        private void AddPolygon(object sender, RoutedEventArgs e)
+        {
+            status = 2;
+            pointsX = new List<double>();
+            pointsY = new List<double>();
+        }
+
+        // 右键确认  创建多边形
+        private void ConfirmCreate(object sender, MouseButtonEventArgs e)
+        {
+            if(pointsX!= null && pointsX.Count != 0)
+            {
+                WpfPlot1.Plot.Add.Polygon(pointsX, pointsY);
+                WpfPlot1.Refresh();
+                pointsX = null;
+                pointsY = null;
+            }
+            status = -1;
+        }
     }
 }

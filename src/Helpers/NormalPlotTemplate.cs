@@ -83,7 +83,7 @@ namespace GeoChemistryNexus.Helpers
 
 
             // 绘制从中心点到每个其他点的线
-            var newline1 = plot.Add.Line(centerPoint, point1).LineWidth =3;
+            var newline1 = plot.Add.Line(centerPoint, point1).LineWidth = 3;
             var newline2 = plot.Add.Line(centerPoint, point2).LineWidth = 3;
             var newline3 = plot.Add.Line(centerPoint, point3).LineWidth = 3;
 
@@ -599,7 +599,7 @@ namespace GeoChemistryNexus.Helpers
             var text2 = plot.Add.Text("Arsenopyrite", 17, -13.240);
             text2.LabelRotation = -53;
             text2.FontSize = 20;
-            var text3 = plot.Add.Text("AArsenopyrite + Pyrite", 7.098, -13.342);
+            var text3 = plot.Add.Text("Arsenopyrite + Pyrite", 7.098, -13.342);
             text3.LabelRotation = -49;
             text3.FontSize = 20;
             var text4 = plot.Add.Text("Pyrite + L", 60.308, -5.45);

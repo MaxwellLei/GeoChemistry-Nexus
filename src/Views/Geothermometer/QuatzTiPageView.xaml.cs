@@ -76,10 +76,10 @@ namespace GeoChemistryNexus.Views.Geothermometer
                     string extension = System.IO.Path.GetExtension(filePath).ToLower();
                     if (extension == ".xlsx" || extension == ".xls" || extension == ".csv")
                     {
-                        MessageHelper.Success($"读取文件成功");
                         if (CopyTiO2Values(FileHelper.ReadFile(filePath)))
                         {
                             viewModel.StepIndex += 1;
+                            MessageHelper.Success($"读取文件成功");
                         }
                     }
                     else

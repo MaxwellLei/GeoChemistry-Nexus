@@ -1,0 +1,8 @@
+{
+  "listNodeConfigs": [
+    {
+      "rootNode": [ "岩浆岩", "岩石类别", "TAS" ],
+      "baseMapPath": "岩浆岩_岩石类别_TAS.json"
+    }
+  ]
+}

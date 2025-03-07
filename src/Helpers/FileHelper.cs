@@ -94,7 +94,24 @@ public class FileHelper
                 // Read header
                 for (int col = 1; col <= colCount; col++)
                 {
-                    dataTable.Columns.Add(worksheet.Cells[1, col].Value?.ToString() ?? $"Column{col}");
+                    //dataTable.Columns.Add(worksheet.Cells[1, col].Value?.ToString() ?? $"Column{col}");
+                    var columnName = worksheet.Cells[1, col].Value?.ToString() ?? $"Column{col}";
+                    if (!dataTable.Columns.Contains(columnName))
+                    {
+                        dataTable.Columns.Add(columnName);
+                    }
+                    else
+                    {
+                        // 处理列名重复，添加序号后缀
+                        int suffix = 1;
+                        string newColumnName = columnName + "_" + suffix;
+                        while (dataTable.Columns.Contains(newColumnName))
+                        {
+                            suffix++;
+                            newColumnName = columnName + "_" + suffix;
+                        }
+                        dataTable.Columns.Add(newColumnName);
+                    }
                 }
 
                 // Read data
@@ -104,6 +121,7 @@ public class FileHelper
                     for (int col = 1; col <= colCount; col++)
                     {
                         dataRow[col - 1] = worksheet.Cells[row, col].Value;
+                        var test = worksheet.Cells[row, col].Value;
                     }
                     dataTable.Rows.Add(dataRow);
                 }
@@ -382,20 +400,6 @@ public class FileHelper
         }
     }
 
-    //复制文件到目标路径
-    public static bool CopyFile(string sourcePath, string targetPath)
-    {
-        try
-        {
-            System.IO.File.Copy(sourcePath, targetPath);
-            return true;
-        }
-        catch (Exception)
-        {
-            return false;
-        }
-    }
-
     //获取当前运行 程序所在路径
     public static string GetAppPath()
     {
@@ -427,5 +431,49 @@ public class FileHelper
 
         // 如果用户取消了选择，返回空字符串或其他默认值
         return null;
+    }
+
+    // 复制文件到目标路径
+    public static bool CopyFile(string sourcePath, string targetDir)
+    {
+        try
+        {
+            // 检查源文件是否存在
+            if (!File.Exists(sourcePath))
+            {
+                Console.WriteLine($"错误：源文件 {sourcePath} 不存在");
+                return false;
+            }
+
+            // 确保目标目录存在
+            if (!string.IsNullOrEmpty(targetDir) && !Directory.Exists(targetDir))
+            {
+                Directory.CreateDirectory(targetDir);
+            }
+
+            // 获取源文件的文件名，并构造目标文件的完整路径
+            string fileName = Path.GetFileName(sourcePath);
+            string targetPath = Path.Combine(targetDir, fileName);
+
+            // 执行文件复制
+            File.Copy(sourcePath, targetPath, true); // true表示如果目标文件存在则覆盖
+            Console.WriteLine($"文件已成功从 {sourcePath} 复制到 {targetPath}");
+            return true;
+        }
+        catch (UnauthorizedAccessException)
+        {
+            Console.WriteLine("错误：权限不足，无法复制文件");
+            return false;
+        }
+        catch (IOException ex)
+        {
+            Console.WriteLine($"复制文件时发生IO错误: {ex.Message}");
+            return false;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"复制文件时发生错误: {ex.Message}");
+            return false;
+        }
     }
 }

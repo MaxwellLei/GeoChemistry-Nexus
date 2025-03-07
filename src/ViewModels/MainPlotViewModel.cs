@@ -1,10 +1,17 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Models;
+using HandyControl.Controls;
+using HandyControl.Tools.Extension;
+using Jint;
+using Jint.Runtime;
+using Microsoft.Win32;
 using OfficeOpenXml;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using ScottPlot;
+using ScottPlot.AxisPanels;
 using ScottPlot.Colormaps;
 using ScottPlot.Grids;
 using ScottPlot.Plottables;
@@ -15,31 +22,37 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Reflection;
 using System.Reflection.Metadata;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
+using System.Windows.Shapes;
 using static OfficeOpenXml.ExcelErrorValue;
+using static SkiaSharp.HarfBuzz.SKShaper;
 using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace GeoChemistryNexus.ViewModels
 {
     public partial class MainPlotViewModel : ObservableObject
     {
-
         // 注册绘图模板列表
         private PlotTemplateRegistry _registry;
 
         // 图层选中列表
-        private IList<PlotItemModel> _previousSelectedItems;
+        public IList<PlotItemModel> _previousSelectedItems;
 
         // 当前选中模板
         public static TreeNode _previousSelectedNode;
@@ -62,13 +75,16 @@ namespace GeoChemistryNexus.ViewModels
         // 选中对象提示
         public static ScottPlot.Plottables.Marker myHighlightMarker; // 高亮标记
 
+        // 选中对象信息
+        public static BaseInfo _selectedBaseInfo;
+
         // 绘图模板列表
         [ObservableProperty]
         private TreeNode _rootTreeNode;
 
         // 边界列表
         [ObservableProperty]
-        private ObservableCollection<PlotItemModel> _basePlotItems;
+        public ObservableCollection<PlotItemModel> _basePlotItems;
 
         // 注释列表
         [ObservableProperty]
@@ -85,6 +101,35 @@ namespace GeoChemistryNexus.ViewModels
         // 切换属性对象
         [ObservableProperty]
         private int _switchLayer;
+
+        // 自定义底图
+        [ObservableProperty]
+        public BasePlotConfig _basePlotConfigObject;
+
+        // 是否是编辑模式
+        [ObservableProperty]
+        private bool isEditMode = false;
+
+        // 是否是绘图模式
+        [ObservableProperty]
+        private bool isPlotMode = true;
+
+        // 需要参数内容
+        [ObservableProperty]
+        private string _needParamContent;
+
+        // Js 脚本内容
+        [ObservableProperty]
+        private string _jsScriptContent;
+
+        // 新建底图名称
+        [ObservableProperty]
+        private string _newBasePlotName;
+
+        // 底图类别
+        [ObservableProperty]
+        private string _basePlotType;
+
 
         /// <summary>
         /// ========================================公共属性
@@ -292,6 +337,37 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private bool _plotLegendShow = false;
 
+        // 是否显示脚本设置属性
+        [ObservableProperty]
+        private bool _plotScriptShow = false;
+
+        // 是否显示弹窗
+        [ObservableProperty]
+        private bool _plotPopupShow = false;
+
+        // 自定义底图
+        /// <summary>
+        /// =========================================自定义底图
+        /// </summary>
+        /// 
+
+        // 起始点1
+        [ObservableProperty]
+        private double _x1;
+
+        // 起始点1
+        [ObservableProperty]
+        private double _y1;
+
+        // 起始点2
+        [ObservableProperty]
+        private double _x2;
+
+        // 起始点2
+        [ObservableProperty]
+        private double _y2;
+
+
         // 初始化
         public MainPlotViewModel(WpfPlot wpfPlot, RichTextBox richTextBox)
         {
@@ -305,63 +381,82 @@ namespace GeoChemistryNexus.ViewModels
             _plotTextFontNames = new List<string>();        // 字体集合
 
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;     // 初始化 excel 相关协议
+
+            _registry = new PlotTemplateRegistry();
             RegisterPlotTemplates();    // 注册绘图模板
             
+
 
             // 获取系统所有字体
             PlotTextFontNames = System.Drawing.FontFamily.Families
                 .Select(f => f.Name)
                 .OrderBy(name => name)
                 .ToList();
-
-
         }
 
         // 注册绘图模板
-        public void RegisterPlotTemplates()
+        public void RegisterPlotTemplates(bool editList = false)
         {
-            _registry = new PlotTemplateRegistry();
-            var tempTitle1 = I18n.GetString("IgneousRock");      // 岩浆岩
-            var tempTitle12 = I18n.GetString("TectonicSetting");      // 构造环境
-            var tempTitle13 = I18n.GetString("Basalt");      // 玄武岩
-            var tempTitle2 = I18n.GetString("RockClassification");      // 岩石分类
-            var tempTitle31 = I18n.GetString("GTMP");      // 温度绘图
+            // 加载底图列表
+            var listPath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "PlotList.json");
+            if (editList)
+            {
+                listPath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "PlotListCustom.json");
+            }
+            
 
-            // 岩浆岩-构造环境-玄武岩
-            _registry.RegisterTemplate(new[] { tempTitle1, tempTitle12, tempTitle13, "Pearce and Gale (1977)" }, "Ti-Zr-Y",
-                NormalPlotTemplate.Pearce_and_Gale_1977, NormalPlotMethod.Vermessch_2006_PlotAsync,
-                "Vermessch_2006.rtf", new string[] { "Group", "Ti", "Zr", "Y" });
-            _registry.RegisterTemplate(new[] { tempTitle1, tempTitle12, tempTitle13, "Vermeesch (2006)" }, "Major Elements (-Fe)",
-                NormalPlotTemplate.Vermessch_2006, NormalPlotMethod.Vermessch_2006_PlotAsync,
-                "Vermessch_2006.rtf", new string[] { "Group", "SiO2", "Al2O3", "TiO2", "CaO", "MgO", "MnO", "K2O", "Na2O" });
-            _registry.RegisterTemplate(new[] { tempTitle1, tempTitle12, tempTitle13, "Vermeesch (2006)" }, "TiO2-Zr-Y-Sr",
-                NormalPlotTemplate.Vermessch_2006_b, NormalPlotMethod.Vermessch_2006_b_PlotAsync,
-                "Vermessch_2006_b.rtf", new string[] { "Group", "TiO2", "Zr", "Y", "Sr", });
+            // todo: 这里应该判断一下底图列表是否存在，不存在就提示有问题，然后检查是否存在底图文件如果存在可以重建，不存在就警告
 
-            //_registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "玄武岩", "Vermeesch (2006)" }, "Ti-Y",
-            //    NormalPlotTemplate.Vermessch_2006_c, NormalPlotMethod.Vermessch_2006_b_PlotAsync,
-            //    "Vermessch_2006_c.rtf", new string[] { "Group", "TiO2", "Zr", "Y", "Sr", });
+            // 反序列化底图列表
+            PlotListConfig plotListConfigs = PlotLoader.LoadBasePlotList(listPath);
 
-            _registry.RegisterTemplate(new[] { tempTitle1, tempTitle12, tempTitle13, "Saccani (2015)" }, "Th-Nb",
-                NormalPlotTemplate.Saccani_2015, NormalPlotMethod.Saccani_2015_PlotAsync,
-                "Saccani_2015.rtf", new string[] { "Group", "Th", "Nb" });
-            _registry.RegisterTemplate(new[] { tempTitle1, tempTitle12, tempTitle13, "Saccani (2015)" }, "Yb-Dy",
-                NormalPlotTemplate.Saccani_2015_b, NormalPlotMethod.Saccani_2015_b_PlotAsync,
-                "Saccani_2015.rtf", new string[] { "Group", "Yb", "Dy" });
-            _registry.RegisterTemplate(new[] { tempTitle1, tempTitle12, tempTitle13, "Saccani (2015)" }, "Ce-Dy-Yb",
-                NormalPlotTemplate.Saccani_2015_c, NormalPlotMethod.Saccani_2015_c_PlotAsync,
-                "Saccani_2015.rtf", new string[] { "Group", "Ce", "Yb", "Dy" });
+            // 如果不是空列表
+            if(plotListConfigs.listNodeConfigs.Count != 0)
+            {
+                RootTreeNode = _registry.GenerateListFromConfig(plotListConfigs);
+            }
+            //var tempTitle1 = I18n.GetString("IgneousRock");      // 岩浆岩
+            //var tempTitle12 = I18n.GetString("TectonicSetting");      // 构造环境
+            //var tempTitle13 = I18n.GetString("Basalt");      // 玄武岩
+            //var tempTitle2 = I18n.GetString("RockClassification");      // 岩石分类
+            //var tempTitle31 = I18n.GetString("GTMP");      // 温度绘图
 
-            // 岩浆岩 - 岩石分类 - TAS
-            _registry.RegisterTemplate(new[] { tempTitle1, tempTitle2 }, "TAS",
-                NormalPlotTemplate.TAS, NormalPlotMethod.TAS_PlotAsync,
-                "Saccani_2015.rtf", new string[] { "Group", "K2O", "Na2O", "SiO2" });
+            //// 岩浆岩-构造环境-玄武岩
+            //_registry.RegisterTemplate(new[] { tempTitle1, tempTitle12, tempTitle13, "Pearce and Gale (1977)" }, "Ti-Zr-Y",
+            //    NormalPlotTemplate.Pearce_and_Gale_1977, NormalPlotMethod.Vermessch_2006_PlotAsync,
+            //    "Vermessch_2006.rtf", new string[] { "Group", "Ti", "Zr", "Y" });
+            //_registry.RegisterTemplate(new[] { tempTitle1, tempTitle12, tempTitle13, "Vermeesch (2006)" }, "Major Elements (-Fe)",
+            //    NormalPlotTemplate.Vermessch_2006, NormalPlotMethod.Vermessch_2006_PlotAsync,
+            //    "Vermessch_2006.rtf", new string[] { "Group", "SiO2", "Al2O3", "TiO2", "CaO", "MgO", "MnO", "K2O", "Na2O" });
+            //_registry.RegisterTemplate(new[] { tempTitle1, tempTitle12, tempTitle13, "Vermeesch (2006)" }, "TiO2-Zr-Y-Sr",
+            //    NormalPlotTemplate.Vermessch_2006_b, NormalPlotMethod.Vermessch_2006_b_PlotAsync,
+            //    "Vermessch_2006_b.rtf", new string[] { "Group", "TiO2", "Zr", "Y", "Sr", });
 
-            // 其他 - 温度绘图 - 毒砂
-            _registry.RegisterTemplate(new[] { I18n.GetString("Other"), tempTitle31 }, I18n.GetString("Arsenopyrite"),
-                NormalPlotTemplate.ArsenicT, NormalPlotMethod.TAS_PlotAsync,
-                "Saccani_2015.rtf", new string[] { "Group", "K2O", "Na2O", "SiO2" });
-            RootTreeNode = _registry.GenerateTreeStructure();       // 注册模板列表
+            ////_registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "玄武岩", "Vermeesch (2006)" }, "Ti-Y",
+            ////    NormalPlotTemplate.Vermessch_2006_c, NormalPlotMethod.Vermessch_2006_b_PlotAsync,
+            ////    "Vermessch_2006_c.rtf", new string[] { "Group", "TiO2", "Zr", "Y", "Sr", });
+
+            //_registry.RegisterTemplate(new[] { tempTitle1, tempTitle12, tempTitle13, "Saccani (2015)" }, "Th-Nb",
+            //    NormalPlotTemplate.Saccani_2015, NormalPlotMethod.Saccani_2015_PlotAsync,
+            //    "Saccani_2015.rtf", new string[] { "Group", "Th", "Nb" });
+            //_registry.RegisterTemplate(new[] { tempTitle1, tempTitle12, tempTitle13, "Saccani (2015)" }, "Yb-Dy",
+            //    NormalPlotTemplate.Saccani_2015_b, NormalPlotMethod.Saccani_2015_b_PlotAsync,
+            //    "Saccani_2015.rtf", new string[] { "Group", "Yb", "Dy" });
+            //_registry.RegisterTemplate(new[] { tempTitle1, tempTitle12, tempTitle13, "Saccani (2015)" }, "Ce-Dy-Yb",
+            //    NormalPlotTemplate.Saccani_2015_c, NormalPlotMethod.Saccani_2015_c_PlotAsync,
+            //    "Saccani_2015.rtf", new string[] { "Group", "Ce", "Yb", "Dy" });
+
+            //// 岩浆岩 - 岩石分类 - TAS
+            //_registry.RegisterTemplate(new[] { tempTitle1, tempTitle2 }, "TAS",
+            //    NormalPlotTemplate.TAS, NormalPlotMethod.TAS_PlotAsync,
+            //    "Saccani_2015.rtf", new string[] { "Group", "K2O", "Na2O", "SiO2" });
+
+            //// 其他 - 温度绘图 - 毒砂
+            //_registry.RegisterTemplate(new[] { I18n.GetString("Other"), tempTitle31 }, I18n.GetString("Arsenopyrite"),
+            //    NormalPlotTemplate.ArsenicT, NormalPlotMethod.TAS_PlotAsync,
+            //    "Saccani_2015.rtf", new string[] { "Group", "K2O", "Na2O", "SiO2" });
+            //RootTreeNode = _registry.GenerateTreeStructure();       // 注册模板列表
+
 
             // 映射字典
             translations = new Dictionary<string, string>
@@ -377,70 +472,29 @@ namespace GeoChemistryNexus.ViewModels
         // 设置显示属性
         private void SetTrue(string key)
         {
-            if (key == null)
-            {
-                PlotLineShow = false;
-                PlotTextShow = false;
-                PlotDataShow = false;
-                PlotAxisShow = false;
-                PlotMainShow = false;
-                PlotLegendShow = false;
-                return;
-            }
+            // 先全部重置为false
+            PlotLineShow = false;
+            PlotTextShow = false;
+            PlotDataShow = false;
+            PlotAxisShow = false;
+            PlotMainShow = false;
+            PlotLegendShow = false;
+            PlotScriptShow = false;
+            PlotPopupShow = false;
 
-            if (key == "PlotLine")
+            if (key == null) return;
+
+            // 根据key设置对应属性为true
+            switch (key)
             {
-                PlotLineShow = true;
-                PlotTextShow = false;
-                PlotDataShow = false;
-                PlotAxisShow = false;
-                PlotMainShow = false;
-                PlotLegendShow = false;
-            }
-            else if (key == "Scatter")
-            {
-                PlotLineShow = false;
-                PlotTextShow = false;
-                PlotDataShow = true;
-                PlotAxisShow = false;
-                PlotMainShow = false;
-                PlotLegendShow = false;
-            }
-            else if (key == "Axis")
-            {
-                PlotLineShow = false;
-                PlotTextShow = false;
-                PlotDataShow = false;
-                PlotAxisShow = true;
-                PlotMainShow = false;
-                PlotLegendShow = false;
-            }
-            else if (key == "Legend")
-            {
-                PlotLineShow = false;
-                PlotTextShow = false;
-                PlotDataShow = false;
-                PlotAxisShow = false;
-                PlotMainShow = false;
-                PlotLegendShow = true;
-            }
-            else if (key == "Main")
-            {
-                PlotLineShow = false;
-                PlotTextShow = false;
-                PlotDataShow = false;
-                PlotAxisShow = false;
-                PlotMainShow = true;
-                PlotLegendShow = false;
-            }
-            else
-            {
-                PlotLineShow = false;
-                PlotTextShow = true;
-                PlotDataShow = false;
-                PlotAxisShow = false;
-                PlotMainShow = false;
-                PlotLegendShow = false;
+                case "PlotLine": PlotLineShow = true; break;
+                case "Scatter": PlotDataShow = true; break;
+                case "Axis": PlotAxisShow = true; break;
+                case "Legend": PlotLegendShow = true; break;
+                case "Main": PlotMainShow = true; break;
+                case "Script": PlotScriptShow = true; break;
+                case "Popup": PlotPopupShow = true; break;
+                default: PlotTextShow = true; break;
             }
         }
 
@@ -508,7 +562,7 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         // 刷新图层列表
-        private void PopulatePlotItems(List<IPlottable> plottables)
+        public void PopulatePlotItems(List<IPlottable> plottables)
         {
             if (plottables == null)
                 throw new ArgumentNullException(nameof(plottables));
@@ -594,6 +648,12 @@ namespace GeoChemistryNexus.ViewModels
             }
             // 所有字符串都完全匹配
             return 1;
+        }
+
+        // 当进入编辑模式
+        partial void OnIsEditModeChanged(bool value)
+        {
+            Refresh(true,true);
         }
 
         // 改变 选择图层 内容
@@ -963,7 +1023,6 @@ namespace GeoChemistryNexus.ViewModels
             {
                 foreach (var item in _previousSelectedItems)
                 {
-
                     var tempAxis = (IAxis)item.Plottable;
                     var majortick = new ScottPlot.TickGenerators.NumericFixedInterval(value);
                     tempAxis.TickGenerator = majortick;
@@ -1033,6 +1092,129 @@ namespace GeoChemistryNexus.ViewModels
                 WpfPlot1.Refresh();
             }
         }
+
+        /// <summary>
+        /// ========================================LinePlot 位置
+        /// </summary>
+        /// 
+
+        // 起始 X1 改变
+        partial void OnX1Changed(double value)
+        {
+            // 如果是在更新属性值，则不执行更新
+            if (_isUpdatingLineWidth)
+                return;
+
+            if (_previousSelectedItems != null && _previousSelectedItems.Any())
+            {
+                foreach (var item in _previousSelectedItems)
+                {
+                    if (item.ObjectType == "LinePlot")
+                    {
+                        var linePlot = (LinePlot)item.Plottable;
+                        linePlot.Start = new Coordinates(value, Y1);
+                    }
+                    if (item.ObjectType == "Text")
+                    {
+                        var text = (ScottPlot.Plottables.Text)item.Plottable;
+                        text.Location = new Coordinates(value, Y1);
+                    }
+                    if (item.ObjectType == "Scatter")
+                    {
+                        //var scatter = (ScottPlot.Plottables.Scatter)item.Plottable;
+                        //scatter.MarkerColor = value;
+                    }
+                    else if (item.ObjectType == "Axis")
+                    {
+                        //var tempAxis = (IAxis)item.Plottable;
+                        //tempAxis.Label.ForeColor = value;
+                    }
+                }
+                // 刷新图形
+                WpfPlot1.Refresh();
+            }
+        }
+
+        // 起始 Y1 改变
+        partial void OnY1Changed(double value)
+        {
+            // 如果是在更新属性值，则不执行更新
+            if (_isUpdatingLineWidth)
+                return;
+
+            if (_previousSelectedItems != null && _previousSelectedItems.Any())
+            {
+                foreach (var item in _previousSelectedItems)
+                {
+                    if (item.ObjectType == "LinePlot")
+                    {
+                        ((LinePlot)item.Plottable).Start = new Coordinates(X1, value);
+                    }
+                    if (item.ObjectType == "Text")
+                    {
+                        var text = (ScottPlot.Plottables.Text)item.Plottable;
+                        text.Location = new Coordinates(X1, value);
+                    }
+                    if (item.ObjectType == "Scatter")
+                    {
+                        //var scatter = (ScottPlot.Plottables.Scatter)item.Plottable;
+                        //scatter.MarkerColor = value;
+                    }
+                    else if (item.ObjectType == "Axis")
+                    {
+                        //var tempAxis = (IAxis)item.Plottable;
+                        //tempAxis.Label.ForeColor = value;
+                    }
+                }
+                // 刷新图形
+                WpfPlot1.Refresh();
+            }
+        }
+
+        // 起始 X2 改变
+        partial void OnX2Changed(double value)
+        {
+            // 如果是在更新属性值，则不执行更新
+            if (_isUpdatingLineWidth)
+                return;
+
+            if (_previousSelectedItems != null && _previousSelectedItems.Any())
+            {
+                foreach (var item in _previousSelectedItems)
+                {
+                    if (item.ObjectType == "LinePlot")
+                    {
+                        var linePlot = (LinePlot)item.Plottable;
+                        linePlot.End = new Coordinates(value, Y2);
+                    }
+                }
+                // 刷新图形
+                WpfPlot1.Refresh();
+            }
+        }
+
+        // 起始 Y2 改变
+        partial void OnY2Changed(double value)
+        {
+            // 如果是在更新属性值，则不执行更新
+            if (_isUpdatingLineWidth)
+                return;
+
+            if (_previousSelectedItems != null && _previousSelectedItems.Any())
+            {
+                foreach (var item in _previousSelectedItems)
+                {
+                    if (item.ObjectType == "LinePlot")
+                    {
+                        var linePlot = (LinePlot)item.Plottable;
+                        linePlot.End = new Coordinates(X2, value);
+                    }
+                }
+                // 刷新图形
+                WpfPlot1.Refresh();
+            }
+        }
+
 
         /// <summary>
         /// ========================================图例设置
@@ -1433,6 +1615,10 @@ namespace GeoChemistryNexus.ViewModels
                 if (linePlot.LinePattern.Name == LinePattern.Dashed.Name) { PlotType = 1; }
                 if (linePlot.LinePattern.Name == LinePattern.DenselyDashed.Name) { PlotType = 2; }
                 if (linePlot.LinePattern.Name == LinePattern.Dotted.Name) { PlotType = 3; }
+                X1 = linePlot.Start.X;
+                Y1 = linePlot.Start.Y;
+                X2 = linePlot.End.X;
+                Y2 = linePlot.End.Y;
                 PlotVisible = linePlot.IsVisible;       // 匹配可见性
                 //OnPropertyChanged(nameof(PlotLineWidth));  // 手动触发属性更新
             }
@@ -1466,6 +1652,8 @@ namespace GeoChemistryNexus.ViewModels
                 PlotColor = text.LabelFontColor;        // 匹配字体颜色
                 PlotTextContent = text.LabelText;       // 匹配文本内容
 
+                X1 = text.Location.X;
+                Y1 = text.Location.Y;
 
             }
             finally
@@ -1658,6 +1846,181 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
+        // ===============================基础功能
+
+        // 刷新操作-刷新底图，刷新底图列表
+        public void Refresh(bool isClearPlot = false, bool isRestPlot = false, bool isOnlyRefreshPlot = false)
+        {
+            // 清空底图
+            if (isClearPlot) { WpfPlot1.Plot.Clear(); }
+            // 清空画布
+            if (isRestPlot) { WpfPlot1.Reset(); }
+            // 刷新关闭属性面板
+            SetTrue(null);
+            if (!isOnlyRefreshPlot)
+            {
+                // 刷新坐标轴列表
+                GetAxisList();
+                // 刷新图层列表
+                PopulatePlotItems((List<IPlottable>)WpfPlot1.Plot.GetPlottables());
+            }
+            // 刷新底图
+            WpfPlot1.Refresh();
+        }
+
+        // 检查参数格式是否正确
+        private (string,bool) CheckParameter(string parameter)
+        {
+            if (string.IsNullOrEmpty(parameter) || parameter == "")
+            {
+                return ("参数为空",false);
+            }
+
+            // 正则表达式，确保只包含字母、数字和英文逗号，并且没有多余的空格
+            string pattern = @"^([a-zA-Z0-9]+(,[a-zA-Z0-9]+)*)?$";
+            if (!Regex.IsMatch(parameter, pattern))
+            {
+                return ("参数格式不正确",false);
+            }
+
+            return ("参数格式正确",true);
+
+        }
+
+        // 检查 Js 脚本是否正确
+        private string CheckJsScript(string script)
+        {
+            try
+            {
+                var engine = new Engine();
+                var (x,y) = CheckParameter(NeedParamContent);
+                if (y)
+                {
+                    // 按逗号分隔字符串并去除多余的空格
+                    string[] variables = NeedParamContent.Split(',').Select(v => v.Trim()).ToArray();
+                    // 将每个变量添加到 Jint 中
+                    foreach (string variable in variables)
+                    {
+                        engine.SetValue(variable, 1);
+                    }
+                }
+                engine.Execute(script);
+                // 脚本执行成功,语法正确
+                return "脚本正确";
+            }
+            catch (JavaScriptException ex)
+            {
+                // 捕获到异常,说明脚本存在语法错误
+                return ($"脚本错误: {ex.Message}");
+            }
+        }
+
+        // 新建底图
+        private void NewPlot()
+        {
+            // 刷新绘图
+            Refresh(false, true);
+            // 进入底图编辑模式
+            IsEditMode = true;
+            IsPlotMode = false;
+        }
+
+        // 使用正则表达式检查字符串是否为空且只包含正常语言字符
+        public bool IsValidLanguageString(string input)
+        {
+            // 检查字符串是否为空
+            if (string.IsNullOrEmpty(input))
+            {
+                return false;
+            }
+
+            // 使用正则表达式验证是否只包含Unicode字母、数字和下划线
+            string pattern = @"^[\p{L}0-9_]*$";
+            return Regex.IsMatch(input, pattern);
+        }
+
+        // 是否符合 xxx,xxx,xxxx,xxx 格式
+        public bool IsValidCommaSeparatedString(string input)
+        {
+            // 检查字符串是否为 null 或空
+            if (string.IsNullOrEmpty(input))
+            {
+                return false;
+            }
+
+            // 检查是否包含空格
+            if (input.Contains(" "))
+            {
+                return false;
+            }
+
+            // 按逗号分隔字符串
+            string[] parts = input.Split(',');
+
+            // 检查每部分是否都不为空
+            foreach (string part in parts)
+            {
+                if (string.IsNullOrEmpty(part))
+                {
+                    return false; // 如果有空部分，说明有连续逗号或开头/结尾有逗号
+                }
+            }
+
+            return true;
+        }
+
+
+        /// <summary>
+        /// 比较两个rootNode数组是否相同
+        /// </summary>
+        private static bool CompareRootNode(string[] nodeA, string[] nodeB)
+        {
+            if (nodeA == null || nodeB == null)
+                return false;
+
+            if (nodeA.Length != nodeB.Length)
+                return false;
+
+            for (int i = 0; i < nodeA.Length; i++)
+            {
+                if (nodeA[i] != nodeB[i])
+                    return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// 根据ListNodeConfig查找对应的TreeNode
+        /// </summary>
+        /// <param name="rootNode">开始搜索的根节点</param>
+        /// <param name="config">要查找的节点配置</param>
+        /// <returns>找到的TreeNode，未找到则返回null</returns>
+        public static TreeNode FindTreeNodeByConfig(TreeNode rootNode, ListNodeConfig config)
+        {
+            if (rootNode == null || config == null || config.rootNode == null)
+                return null;
+
+            // 检查当前节点是否匹配
+            if (CompareRootNode(rootNode.rootNode, config.rootNode))
+            {
+                return rootNode;
+            }
+
+            // 递归搜索子节点
+            foreach (var child in rootNode.Children)
+            {
+                var result = FindTreeNodeByConfig(child, config);
+                if (result != null)
+                    return result;
+            }
+
+            return null;
+        }
+
+
+        // ==================================绑定命令
+
         // 文本更新改变
         [RelayCommand]
         public void RefreshText()
@@ -1741,8 +2104,8 @@ namespace GeoChemistryNexus.ViewModels
         //    WpfPlot1.Refresh();
         //}
 
-        // 坐标轴对象选择
-
+        
+        // 除了坐标轴之外的图层对象选择
         [RelayCommand]
         public void LayersSelection(IList selectedItems)
         {
@@ -1767,8 +2130,10 @@ namespace GeoChemistryNexus.ViewModels
                 }
             }
 
+
             // 更新选中状态
             _previousSelectedItems = selectedItems.Cast<PlotItemModel>().ToList();
+
             // 刷新绘图
             WpfPlot1.Refresh();
         }
@@ -1844,6 +2209,62 @@ namespace GeoChemistryNexus.ViewModels
             SetItemsOpacity(1f); // 恢复为不透明
         }
 
+
+        // 添加底图到底图列表
+        public static void AddOrFindPath(TreeNode rootNode, BaseInfo baseInfo, string path)
+        {
+            TreeNode currentNode = rootNode;
+            foreach (string category in baseInfo.rootNode)
+            {
+                TreeNode childNode = currentNode.Children.FirstOrDefault(child => child.Name == category);
+
+                if (childNode == null)
+                {
+                    childNode = new TreeNode { Name = category };
+                    childNode.PlotTemplate = new PlotTemplate();
+
+                    childNode.PlotTemplate.PlotMethod = null;   // 标识是 Json 格式
+                    childNode.PlotTemplate.Description = path;      // 标识 Json文件路径
+                    childNode.PlotTemplate.RequiredElements = baseInfo.requiredElements;    // 获取判别元素
+
+                    currentNode.Children.Add(childNode);
+                }
+
+                currentNode = childNode;
+            }
+        }
+
+        // 删除节点
+        public bool RemoveNode(TreeNode root, TreeNode nodeToRemove)
+        {
+            if (root == null)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < root.Children.Count; i++)
+            {
+                if (root.Children[i] == nodeToRemove)
+                {
+                    root.Children.RemoveAt(i);
+                    return (root.Children.Count == 0);
+                }
+            }
+
+            foreach (var child in root.Children)
+            {
+                bool shouldRemoveThisChild = RemoveNode(child, nodeToRemove);
+                if (shouldRemoveThisChild)
+                {
+                    root.Children.Remove(child);
+                    return (root.Children.Count == 0);
+                }
+            }
+
+            return false;
+        }
+
+        // 坐标轴图层对象选择
         [RelayCommand]
         public void AxisSelection(IList selectedItems)
         {
@@ -1870,30 +2291,53 @@ namespace GeoChemistryNexus.ViewModels
 
         // 点击选择绘图模板
         [RelayCommand]
-        private async void SelectTreeViewItem(object parameter)
+        private void SelectTreeViewItem(object parameter)
         {
-            if (parameter is TreeNode node && node.PlotTemplate != null)
+            if (parameter is TreeNode node && node.PlotTemplate != null && node.PlotTemplate.PlotMethod != null)
             {
-                await Task.Run(() =>
-                {
-                    WpfPlot1.Plot.Clear();
-                    SetTrue(null);      // 显示属性
-                    _previousSelectedNode = (TreeNode)parameter;
-                    node.PlotTemplate.DrawMethod(WpfPlot1.Plot);        // 获取选择对象
-                    LoadRtfContent(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "PlotData", "PlotData.zip"),
-                        ((TreeNode)parameter).PlotTemplate.Description);
 
-                    // 使用 Dispatcher 在 UI 线程上更新 UI 元素
-                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        // 刷新图层列表
-                        PopulatePlotItems((List<IPlottable>)WpfPlot1.Plot.GetPlottables());
-                        // 获取坐标轴对象
-                        GetAxisList();
-                        // 刷新图形界面
-                        WpfPlot1.Refresh();
-                    });
-                });
+                WpfPlot1.Plot.Clear();
+                SetTrue(null);      // 显示属性
+                _previousSelectedNode = (TreeNode)parameter;        // 获取当前选中模板对象
+                node.PlotTemplate.DrawMethod(WpfPlot1.Plot);        // 获取选择对象
+                LoadRtfContent(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "PlotData", "PlotData.zip"),
+                    ((TreeNode)parameter).PlotTemplate.Description);
+
+                // 刷新图层列表
+                PopulatePlotItems((List<IPlottable>)WpfPlot1.Plot.GetPlottables());
+                // 获取坐标轴对象
+                GetAxisList();
+                // 刷新图形界面
+                WpfPlot1.Refresh();
+            }
+
+            // 如果是 null 则表示是 json 导入进来的
+            if (parameter is TreeNode node1 && node1.PlotTemplate == null && node1.Children.Count == 0)
+            {
+
+                //_previousSelectedNode = (TreeNode)parameter;        // 获取当前选中模板对象
+
+                // 排除创建底图对象但是没有保存底图配置文件
+                if (node1.BaseMapPath != null)
+                {
+                    Refresh(true, true);
+                    SetTrue(null);      // 关闭显示属性
+                    _previousSelectedNode = (TreeNode)parameter;        // 获取当前选中模板对象
+                    NewBasePlotName = _previousSelectedNode.Name;       // 获取当前对象
+                    _richTextBox.Document.Blocks.Clear();       // 清除当前的内容
+
+                    // 加载底图
+                    _selectedBaseInfo = PlotLoader.LoadBasePlot(WpfPlot1.Plot,
+                        System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Default", node1.BaseMapPath)
+                        , _richTextBox);
+
+
+
+                    //LoadRtfContent(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "PlotData", "PlotData.zip"),
+                    //    ((TreeNode)parameter).PlotTemplate.Description);
+
+                    Refresh();
+                }
             }
         }
 
@@ -1910,13 +2354,66 @@ namespace GeoChemistryNexus.ViewModels
                 }
                 else
                 {
-                    var tempNum = ContainsAllStrings(fileContent, _previousSelectedNode.PlotTemplate.RequiredElements);
+                    // 判别参数是否符合需求
+                    var tempNum = ContainsAllStrings(fileContent, _selectedBaseInfo.requiredElements);
+                    // 匹配成功
                     if (tempNum == 1)
                     {
-                        // 计算投点
-                        await _previousSelectedNode.PlotTemplate.PlotMethod(WpfPlot1.Plot, fileContent);
-                        // 刷新绘图
-                        WpfPlot1.Refresh();
+                        // 如果是 Json 文件投点
+                        if(_previousSelectedNode.PlotTemplate == null)
+                        {
+                            // 计算好的数据
+                            var groupedData = new Dictionary<string, List<(double, double)>>();
+                            // 错误读取的数据
+                            int skippedRows = 0;
+                            // 获取投点计算结果
+                            foreach (DataRow row in fileContent.Rows)
+                            {
+                                // 提取数据
+                                var (success, values) = NormalPlotMethod.ExtractValues(row);
+                                if (!success)
+                                {
+                                    skippedRows++;
+                                    continue;
+                                }
+
+                                // 确保 "Group" 键存在且是字符串
+                                if (!values.TryGetValue("Group", out var groupObj) || !(groupObj is string group))
+                                {
+                                    skippedRows++;
+                                    continue;
+                                }
+
+                                // 调用计算脚本
+                                var engine = new Engine();
+                                // 将字典中的值设置到 JavaScript 环境中
+                                foreach (var kvp in values)
+                                {
+                                    engine.SetValue(kvp.Key, kvp.Value);
+                                }
+                                // 执行脚本  "var result1 = K2O * Na2O; var result2 = SiO2; [result1, result2]"
+                                var script = _selectedBaseInfo.script;
+                                var results = engine.Evaluate(script).ToObject() as object[];
+
+                                //var (df1, df2) = calculatePoints(values);       // 计算数据
+
+                                if (!groupedData.ContainsKey(group))
+                                {
+                                    groupedData[group] = new List<(double, double)>();
+                                }
+                                // 添加数据
+                                groupedData[group].Add(((double)results[0], (double)results[1]));
+                            }
+
+                            NormalPlotMethod.PlotData(WpfPlot1.Plot, groupedData);
+
+                        }
+                        else
+                        {
+                            // 计算投点
+                            await _previousSelectedNode.PlotTemplate.PlotMethod(WpfPlot1.Plot, fileContent);
+                        }
+                        
                         // 添加数据
                         foreach (var kvp in NormalPlotMethod.pointObject)
                         {
@@ -1927,6 +2424,9 @@ namespace GeoChemistryNexus.ViewModels
                                 ObjectType = "Scatter"
                             });
                         }
+
+                        // 刷新绘图
+                        WpfPlot1.Refresh();
                     }
                     else
                     {
@@ -1946,11 +2446,11 @@ namespace GeoChemistryNexus.ViewModels
                     return;
                 }
 
-                await Task.Run(() =>
-                {
-                    DataTable dataTable = new DataTable();
-                    _previousSelectedNode.PlotTemplate.PlotMethod(WpfPlot1.Plot, dataTable);
-                });
+                //await Task.Run(() =>
+                //{
+                //    DataTable dataTable = new DataTable();
+                //    _previousSelectedNode.PlotTemplate.PlotMethod(WpfPlot1.Plot, dataTable);
+                //});
                 // 使用 Dispatcher 在 UI 线程上更新 UI 元素
                 System.Windows.Application.Current.Dispatcher.Invoke(() =>
                 {
@@ -1964,32 +2464,26 @@ namespace GeoChemistryNexus.ViewModels
 
         // 恢复默认绘图
         [RelayCommand]
-        public async void ReSetDefault()
+        public void ReSetDefault()
         {
-            await Task.Run(() =>
+            if (_previousSelectedNode != null)
             {
-                if (_previousSelectedNode != null)
+                // 如果是 Json 格式的文件
+                if(_previousSelectedNode.PlotTemplate == null)
                 {
-                    WpfPlot1.Plot.Clear();
-                    _previousSelectedNode.PlotTemplate.DrawMethod(WpfPlot1.Plot);
-                    // 使用 Dispatcher 在 UI 线程上更新 UI 元素
-                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        // 刷新属性
-                        SetTrue(null);
-                        // 加载绘图
-                        //NormalPlotTemplate.Vermessch_2006(WpfPlot1.Plot);
-                        // 获取坐标轴对象
-                        GetAxisList();
-                        // 刷新图层列表
-                        PopulatePlotItems((List<IPlottable>)WpfPlot1.Plot.GetPlottables());
-                        // 刷新图形界面
-                        WpfPlot1.Refresh();
-                    });
+                    SelectTreeViewItem(_previousSelectedNode);
                 }
-            });
-
-
+                else
+                {
+                    _previousSelectedNode.PlotTemplate.DrawMethod(WpfPlot1.Plot);
+                }
+                    
+                //// 使用 Dispatcher 在 UI 线程上更新 UI 元素
+                //System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                //{
+                Refresh(true);
+                //});
+            }
         }
 
         // 视图复位
@@ -2078,6 +2572,429 @@ namespace GeoChemistryNexus.ViewModels
             int tempWidth = (int)WpfPlot1.Plot.LastRender.DataRect.Width;
             int tempHeight = (int)WpfPlot1.Plot.LastRender.DataRect.Height;
             WpfPlot1.Plot.Save(temp, (int)(tempWidth*1.25), (int)(tempHeight*1.25));
+        }
+
+        // ========================================================
+        // ======================自定义底图========================
+        // ========================================================
+
+        // 检查脚本
+        [RelayCommand]
+        public void CheckContent()
+        {
+            string output = "";
+            // 检查参数
+            if (NeedParamContent == "" || NeedParamContent == null)
+            {
+                output += "参数为空";
+            }
+            else
+            {
+                output += CheckParameter(NeedParamContent);
+            }
+            // 检查脚本
+            if (JsScriptContent == "" || JsScriptContent == null)
+            {
+                output += "\n脚本为空";
+            }
+            else
+            {
+                output += "\n" + CheckJsScript(JsScriptContent);
+            }
+            MessageHelper.Info(output);
+        }
+
+        // 新建底图
+        [RelayCommand]
+        public void NewBasemap()
+        {
+            // 显示弹窗
+            SetTrue("Popup");
+
+            
+        }
+
+        // 确认新建底图
+        [RelayCommand]
+        public void ConfirmNewBasemap()
+        {
+            // todo: 参数检查
+            //if (!IsValidLanguageString(NewBasePlotName))
+            //{
+            //    MessageHelper.Info("名称：格式错误");
+            //    return;
+            //}
+
+            if (!IsValidCommaSeparatedString(BasePlotType))
+            {
+                MessageHelper.Info("类别：格式错误");
+                return;
+            }
+
+            // 获取对象
+            ListNodeConfig listNodeConfig = new ListNodeConfig();
+            listNodeConfig.rootNode = BasePlotType.Split(',', StringSplitOptions.RemoveEmptyEntries);
+            listNodeConfig.baseMapPath = BasePlotType.Replace(",","_") + ".json";
+
+            // 获取文件路径
+            string tempNewPath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "PlotListCustom.json");
+            // Json文件添加内容保存
+            JsonHelper.AddToJsonFile(listNodeConfig, tempNewPath);
+
+            RegisterPlotTemplates(true);
+
+            // 新建底图
+            NewPlot();
+
+            _previousSelectedNode = FindTreeNodeByConfig(RootTreeNode, listNodeConfig);
+
+            // 通知
+            MessageHelper.Info("新建底图成功");
+
+            // 关闭弹窗
+            SetTrue(null);
+        }
+
+        // 取消新建底图
+        [RelayCommand]
+        public void CancelNewBasemap()
+        {
+            // 关闭弹窗
+            SetTrue(null);
+        }
+
+        // 导入底图
+        [RelayCommand]
+        public void LoadBasemap()
+        {
+            // 获取底图路径
+            string filter = "JSON Files (*.json)|*.json|All Files (*.*)|*.*";
+            var filePath = FileHelper.GetFilePath(filter);
+
+            if(filePath != null)
+            {
+                BasePlotConfig config = null;
+
+                if (!File.Exists(filePath))
+                {
+                    Console.WriteLine($"文件不存在：{filePath}");
+                    return;
+                }
+                // 读取JSON文件并反序列化
+                string json = File.ReadAllText(filePath);
+                config = JsonHelper.Deserialize<BasePlotConfig>(json);
+                if (config == null)
+                {
+                    Console.WriteLine("反序列化失败");
+                    return;
+                }
+
+                // 判断底图版本
+                double mapVersion = Convert.ToDouble(System.Diagnostics.FileVersionInfo.GetVersionInfo(
+                    System.Reflection.Assembly.GetExecutingAssembly().Location).FileVersion);
+                if (Convert.ToDouble(config.BaseMapVersion) >= mapVersion)
+                {
+                    // todo: 判断导入的底图是否已存在
+
+                    // 加载底图
+                    BaseInfo baseInfo = PlotLoader.LoadBasePlot(WpfPlot1.Plot, filePath, _richTextBox);
+
+                    // 复制文件到指定路径
+                    var targetPath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Default");
+                    FileHelper.CopyFile(filePath, targetPath);
+
+                    ListNodeConfig listNodeConfig = new ListNodeConfig();
+                    listNodeConfig.rootNode = baseInfo.rootNode;
+                    listNodeConfig.baseMapPath = System.IO.Path.GetFileName(filePath);
+
+                    targetPath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "PlotList.json");
+
+                    // 写入列表
+                    JsonHelper.AddToJsonFile(listNodeConfig, targetPath);
+
+                    // 加载侧边列表
+                    //AddOrFindPath(RootTreeNode, baseInfo, filePath);
+                    RegisterPlotTemplates();
+
+                    // 设置当前选中底图为当前
+                    _previousSelectedNode = FindTreeNodeByConfig(RootTreeNode, listNodeConfig);
+
+                    // 刷新底图
+                    Refresh();
+                }
+                else
+                {
+                    MessageHelper.Info($"导入的底图版本过低，请使用版本大于{mapVersion}的底图");
+                }
+            }
+        }
+
+        // 退出编辑
+        [RelayCommand]
+        public void ExitEditModel()
+        {
+            // 判断是否修改了底图属性，如果修改了提示保存
+            
+            // 清除底图文件内存
+            BasePlotConfigObject = null;
+
+            //退出底图编辑模式
+            IsEditMode = false;
+            IsPlotMode = true;
+
+            // 加载正常的底图列表
+            RegisterPlotTemplates();
+
+            // 刷新绘图
+            Refresh(false, true);
+
+            // 恢复右键菜单
+            WpfPlot1.UserInputProcessor.IsEnabled = true;// 禁用右键菜单
+
+            // 刷新绘图
+            Refresh(true);
+        }
+
+        // 保存底图
+        [RelayCommand]
+        public void SaveBaseMap()
+        {
+            BasePlotConfigObject = new BasePlotConfig();
+            BasePlotConfigObject.Title = WpfPlot1.Plot.Axes.Title.Label.Text;    // 绘图标题
+
+            BasePlotConfigObject.BaseMapVersion =
+                System.Diagnostics.FileVersionInfo.GetVersionInfo(
+                    System.Reflection.Assembly.GetExecutingAssembly().Location).FileVersion;    // 图表Json版本号
+
+            // 保存类别名称
+            BasePlotConfigObject.baseInfo.rootNode = _previousSelectedNode.rootNode;
+
+            // 保存需要的参数和脚本
+            //BasePlotConfigObject.baseInfo.requiredElements = new string[] { "Group", "K2O", "Na2O", "SiO2" };
+            if (NeedParamContent == null || NeedParamContent =="")
+            {
+                // 通知
+                MessageHelper.Info("投图参数未填写");
+            }
+            else
+            {
+                BasePlotConfigObject.baseInfo.requiredElements = NeedParamContent.Split(",");
+            };
+
+            if (JsScriptContent == null || JsScriptContent == "")
+            {
+                // 通知
+                MessageHelper.Info("投图脚本未填写");
+            }
+            else
+            {
+                BasePlotConfigObject.baseInfo.script = JsScriptContent;
+            };
+
+            //坐标轴标题
+            BasePlotConfigObject.PlotConfig = new PlotConfig()
+            {
+                title = WpfPlot1.Plot.Axes.Title.Label.Text,                        // 图表标题
+                titleFontSize = WpfPlot1.Plot.Axes.Title.Label.FontSize,            // 图表标题字体大小
+                titleColor = WpfPlot1.Plot.Axes.Title.Label.ForeColor.ToHex(),      // 图表标题颜色
+                x = WpfPlot1.Plot.Axes.Bottom.Label.Text,                           // X 轴标题
+                xFontSize = WpfPlot1.Plot.Axes.Bottom.Label.FontSize,               // X 标题大小   
+                y = WpfPlot1.Plot.Axes.Left.Label.Text,                             // Y 轴标题
+                yFontSize = WpfPlot1.Plot.Axes.Left.Label.FontSize,                 // Y 标题大小
+                axisTitleColor = WpfPlot1.Plot.Axes.Left.Label.ForeColor.ToHex(),    // 轴标题颜色 
+
+                // 背景
+                isShowMainGrid = WpfPlot1.Plot.Grid.IsVisible,                          // 是否显示网格
+                mainGridColor = WpfPlot1.Plot.Grid.MajorLineColor.ToHex(),              // 主网格颜色
+                mainGridSize = WpfPlot1.Plot.Grid.XAxisStyle.MajorLineStyle.Width,      // 主网格宽度
+                isShowMinorGrid = (WpfPlot1.Plot.Grid.XAxisStyle.MinorLineStyle.Width > 0),       // 是否显示网格
+                minorGridColor = WpfPlot1.Plot.Grid.XAxisStyle.MinorLineStyle.Color.ToHex(),          // 是否显示网格
+                minorGridSize = WpfPlot1.Plot.Grid.XAxisStyle.MinorLineStyle.Width,               // 是否显示网格
+            };
+
+            // X 坐标轴
+            BasePlotConfigObject.PlotAxes.XAxes = new AxesConfig()
+            {
+                isShowMinorGrid = WpfPlot1.Plot.Axes.Bottom.IsVisible,
+                axesTickFontSize = WpfPlot1.Plot.Axes.Bottom.Label.FontSize,
+                //axesTickSpacing = ((ScottPlot.TickGenerators.NumericAutomatic)WpfPlot1.Plot.Axes.Bottom.TickGenerator).Interval,
+                Limit = new double[] { WpfPlot1.Plot.Axes.Bottom.GetRange().Min, WpfPlot1.Plot.Axes.Bottom.GetRange().Max },
+                axesColor = WpfPlot1.Plot.Axes.Bottom.TickLabelStyle.ForeColor.ToHex(),
+                //yLimit = new double[] { WpfPlot1.Plot.Axes.Left.GetRange().Min, WpfPlot1.Plot.Axes.Left.GetRange().Max, }
+            };
+
+            // Y 坐标轴
+            BasePlotConfigObject.PlotAxes.XAxes = new AxesConfig()
+            {
+                isShowMinorGrid = WpfPlot1.Plot.Axes.Left.IsVisible,
+                axesTickFontSize = WpfPlot1.Plot.Axes.Left.Label.FontSize,
+                //axesTickSpacing = ((ScottPlot.TickGenerators.NumericFixedInterval)WpfPlot1.Plot.Axes.Left.TickGenerator).Interval,
+                Limit = new double[] { WpfPlot1.Plot.Axes.Left.GetRange().Min, WpfPlot1.Plot.Axes.Left.GetRange().Max },
+                axesColor = WpfPlot1.Plot.Axes.Left.TickLabelStyle.ForeColor.ToHex(),
+                //yLimit = new double[] { WpfPlot1.Plot.Axes.Left.GetRange().Min, WpfPlot1.Plot.Axes.Left.GetRange().Max, }
+            };
+
+            // 图表 线段 多边形 注释 存储
+            foreach (var tempItem in WpfPlot1.Plot.GetPlottables())
+            {
+                // 查找到一个多边形就存储一个
+                if (tempItem.GetType().Name == "Polygon")
+                {
+                    // 创建多边形对象
+                    var tempPolygon = new PolygonConfig()
+                    {
+                        Points = new List<PointConfig>(),
+                        fillColor = ((ScottPlot.Plottables.Polygon)tempItem).FillColor.ToHex(),
+                    };
+                    // 记录点位
+                    foreach(var point in ((ScottPlot.Plottables.Polygon)tempItem).Coordinates)
+                    {
+                        tempPolygon.Points.Add(new PointConfig() { x = point.X, y = point.Y});
+                    }
+                    // 存储多边形
+                    BasePlotConfigObject.Polygons.Add(tempPolygon);
+                }
+
+                // 存储线段对象
+                if (tempItem.GetType().Name == "LinePlot")
+                {
+                    LinePlot linePlot = ((LinePlot)tempItem);
+                    // 创建线段对象
+                    var tempLine = new LineConfig()
+                    {
+                        isShow = linePlot.IsVisible,
+                        start = new PointConfig() { x = linePlot.Start.X, y = linePlot.Start.Y },
+                        end = new PointConfig() { x = linePlot.End.X, y = linePlot.End.Y },
+                        color = linePlot.LineColor.ToHex(),
+                        linewidth = linePlot.LineWidth,
+                    };
+                    // 匹配线的样式
+                    if (linePlot.LinePattern.Name == LinePattern.Solid.Name) { tempLine.lineType = 0; }
+                    if (linePlot.LinePattern.Name == LinePattern.Dashed.Name) { tempLine.lineType = 1; }
+                    if (linePlot.LinePattern.Name == LinePattern.DenselyDashed.Name) { tempLine.lineType = 2; }
+                    if (linePlot.LinePattern.Name == LinePattern.Dotted.Name) { tempLine.lineType = 3; }
+                    // 存储线段
+                    BasePlotConfigObject.Lines.Add(tempLine);
+                }
+
+                // 存储文本对象
+                if (tempItem.GetType().Name == "Text")
+                {
+                    ScottPlot.Plottables.Text text = ((ScottPlot.Plottables.Text)tempItem);
+                    // 创建线段对象
+                    var tempLine = new TextConfig()
+                    {
+                        isShow = text.IsVisible,
+                        text = text.LabelText,                  // 存储文本内容
+                        x = text.Location.X,                    // 存储文本 X 坐标
+                        y = text.Location.Y,                    // 存储文本 Y 坐标
+                        rotation = text.LabelRotation,          // 存储文本旋转
+                        fontSize = text.LabelFontSize,          // 存储文本大小
+                        color = text.LabelFontColor.ToHex(),             // 存储文本颜色
+                    };
+                    // 存储线段
+                    BasePlotConfigObject.Texts.Add(tempLine);
+                }
+            }
+
+            // 保存指南
+            if(_richTextBox.Document != null)
+            {
+                BasePlotConfigObject.Description = DocumentHelper.CompressRichTextBoxContent(_richTextBox);
+            }
+            
+
+            // 获取对象文件路径
+            string tempNewPath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Custom", _previousSelectedNode.BaseMapPath.ToString());
+
+            // 序列化对象
+            JsonHelper.SerializeToJsonFile(BasePlotConfigObject, tempNewPath);
+
+            // 通知前端
+            MessageHelper.Success("保存底图模板成功");
+        }
+
+        // 脚本设置
+        [RelayCommand]
+        public void ScriptSetting()
+        {
+            SetTrue("Script");
+        }
+
+        // 确认保存脚本
+        [RelayCommand]
+        public void ConfirmSaveScript()
+        {
+            // 关闭脚本设置
+            SetTrue(null);
+            // 通知前端
+            MessageHelper.Success("保存成功");
+        }
+
+        // 取消脚本
+        [RelayCommand]
+        public void CancelSaveScript()
+        {
+            JsScriptContent = null;
+            NeedParamContent = null;
+            // 关闭脚本设置
+            SetTrue(null);
+        }
+
+        // 编辑模式
+        [RelayCommand]
+        public void EditMode()
+        {
+            IsPlotMode = false;
+            IsEditMode = true;
+            RegisterPlotTemplates(true);
+            // 禁用右键菜单
+            WpfPlot1.UserInputProcessor.IsEnabled = false;// 禁用右键菜单
+            _richTextBox.Document.Blocks.Clear();       // 清除当前的内容
+            //NormalPlotTemplate.TAS(WpfPlot1.Plot);    // 调试视图
+        }
+
+        // 移动位置
+        [RelayCommand]
+        public void MovePosition()
+        {
+
+        }
+
+        // 删除底图
+        [RelayCommand]
+        public void DeleteBasemap()
+        {
+            // 用户选中了节点
+            if(_previousSelectedNode != null)
+            {
+                // 删除节点
+                RemoveNode(RootTreeNode, _previousSelectedNode);
+
+                // 删除Json列表
+                string basePath = FileHelper.GetAppPath();
+                string tempNewPath = System.IO.Path.Combine(basePath, "Data", "PlotData", "PlotListCustom.json");
+                if (IsEditMode == false)
+                {
+                    tempNewPath = System.IO.Path.Combine(basePath, "Data", "PlotData", "PlotList.json");
+                }
+                JsonHelper.RemoveNodeFromJson(tempNewPath, _previousSelectedNode.rootNode);
+
+                // 获取文件路径
+                tempNewPath = System.IO.Path.Combine(basePath, "Data", "PlotData", "Custom", _previousSelectedNode.BaseMapPath);
+                if (IsEditMode == false)
+                {
+                    tempNewPath = System.IO.Path.Combine(basePath, "Data", "PlotData", "Default", _previousSelectedNode.BaseMapPath);
+                }
+                // 删除底图 Json 文件
+                if (FileHelper.IsFileExist(tempNewPath))
+                {
+                    FileHelper.DeleteFile(tempNewPath);
+                }
+
+                // 刷新列表
+                Refresh(true,true);
+            }
         }
     }
 }

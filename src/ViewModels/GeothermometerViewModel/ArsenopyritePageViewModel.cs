@@ -192,7 +192,7 @@ namespace GeoChemistryNexus.ViewModels.GeothermometerViewModel
                 throw new DivideByZeroException("分母不合法，计算为 0");
             }
 
-            double result = Math.Pow(numerator / denominator, 1.0 / 3.0);
+            double result = Math.Pow(numerator / denominator, 0.333);
 
             return result;
         }

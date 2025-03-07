@@ -5,8 +5,10 @@ using HandyControl.Controls;
 using ScottPlot;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -45,6 +47,9 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private int exitMode;    // 退出方式(0是最小化到托盘;1是退出程序)
 
+        [ObservableProperty]
+        private string version;     // 软件版本
+
         public RelayCommand OpenDbFolderCommand { get; private set; }   // 打开存储文件夹命令
         public RelayCommand DbLocationChangedCommand { get; private set; }   // 修改存储文件位置命令
         public RelayCommand AutoOffTimeChangedCommand { get; private set; }   // 修改通知自动关闭时间命令
@@ -65,6 +70,10 @@ namespace GeoChemistryNexus.ViewModels
             AddStartImgCommand = new RelayCommand(ExecuteAddStartImgCommand);
             ReadConfig();   // 读取配置文件
             changeConfig = true;
+
+            // 获取版本信息
+            Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                
         }
 
         // 退出程序方式

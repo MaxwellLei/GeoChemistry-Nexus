@@ -84,7 +84,7 @@ namespace GeoChemistryNexus
         //帮助按钮
         private void Help_Click(object sender, RoutedEventArgs e)
         {
-            string url = "https://geo-thermometer.vercel.app/";
+            string url = "https://geonweb.pages.dev/";
             //拉起浏览器
             try
             {

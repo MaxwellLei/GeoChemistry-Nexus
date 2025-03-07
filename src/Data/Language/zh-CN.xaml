@@ -19,6 +19,9 @@
     <s:String x:Key="Setting">设置</s:String>
 
     <!--=====================绘图页面=========================-->
+    <!--绘图侧边列表菜单-->
+    
+    
     <!--绘图部分-->
     <s:String x:Key="ImportData">导入数据</s:String>
     <s:String x:Key="ResetPlot">重置绘图</s:String>

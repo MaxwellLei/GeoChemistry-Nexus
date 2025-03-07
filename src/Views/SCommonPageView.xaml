@@ -147,9 +147,11 @@
                     <StackPanel>
                         <ToggleButton Style="{StaticResource ToggleButtonSwitch}" HorizontalAlignment="Right" 
                                       IsChecked="{Binding AutoCheck}"/>
-                        <!--检查更新-->
-                        <Button  Content="{DynamicResource CheckUpdate}" HorizontalAlignment="Right" 
-                                Margin="0 10 0 5" Command="{Binding CheckUpdateCommand}"/>
+                        <WrapPanel Margin="0 10 0 5" HorizontalAlignment="Right"  >
+                            <TextBlock Text="{Binding Version}" VerticalAlignment="Center" FontSize="12" Margin="0 0 5 0"/>
+                            <!--检查更新-->
+                            <Button Content="{DynamicResource CheckUpdate}" Command="{Binding CheckUpdateCommand}"/>
+                        </WrapPanel>
                     </StackPanel>
                 </GroupBox>
                 <!--退出程序方法-->

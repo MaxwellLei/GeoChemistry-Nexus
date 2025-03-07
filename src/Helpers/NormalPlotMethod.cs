@@ -45,10 +45,10 @@ public static class NormalPlotMethod
     }
 
     // 提取行数据的辅助方法
-    private static (bool success, Dictionary<string, object> values) ExtractValues(DataRow row)
+    public static (bool success, Dictionary<string, object> values) ExtractValues(DataRow row)
     {
         var values = new Dictionary<string, object>();
-        foreach (string column in MainPlotViewModel._previousSelectedNode.PlotTemplate.RequiredElements)
+        foreach (string column in MainPlotViewModel._selectedBaseInfo.requiredElements)
         {
             // 如果列名是 "Group"，允许任何字符串值
             if (column == "Group")
@@ -70,7 +70,7 @@ public static class NormalPlotMethod
     }
 
     // 通用的绘图方法
-    private static void PlotData(ScottPlot.Plot plot, Dictionary<string, List<(double, double)>> groupedData)
+    public static void PlotData(ScottPlot.Plot plot, Dictionary<string, List<(double, double)>> groupedData)
     {
         pointObject.Clear();
         plot.Legend.IsVisible = true;

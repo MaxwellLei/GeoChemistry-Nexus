@@ -26,6 +26,7 @@ namespace GeoChemistryNexus.Models
             };
         }
 
+
         public TreeNode GenerateTreeStructure()
         {
             var root = new TreeNode { Name = "绘图类型" };
@@ -63,6 +64,53 @@ namespace GeoChemistryNexus.Models
             }
 
             AddToTree(categoryNode, categories.Skip(1).ToArray(), templateName, template);
+        }
+
+        public TreeNode GenerateListFromConfig(PlotListConfig config)
+        {
+            // 创建根节点
+            var root = new TreeNode { Name = "绘图类型" };
+
+            // 遍历所有 ListNodeConfig 对象
+            foreach (var nodeConfig in config.listNodeConfigs)
+            {
+                // 当前节点从根节点开始
+                var currentNode = root;
+                var path = nodeConfig.rootNode;
+
+                // 遍历路径中的所有元素（除了最后一个）
+                for (int i = 0; i < path.Length - 1; i++)
+                {
+                    var category = path[i];
+                    // 查找是否已存在该分类节点
+                    var childNode = currentNode.Children.FirstOrDefault(c => c.Name == category);
+                    if (childNode == null)
+                    {
+                        // 不存在则创建新节点
+                        childNode = new TreeNode { Name = category };
+                        currentNode.Children.Add(childNode);
+                    }
+                    // 更新当前节点为子节点
+                    currentNode = childNode;
+                }
+
+                // 创建叶子节点
+                var leafName = path.Last();
+                var leafNode = new TreeNode
+                {
+                    Name = leafName,
+                    BaseMapPath = nodeConfig.baseMapPath,
+                    rootNode = nodeConfig.rootNode
+
+                    //PlotTemplate = new PlotTemplate
+                    //{
+                    //    RequiredElements = nodeConfig.
+                    //}
+                };
+                currentNode.Children.Add(leafNode);
+            }
+
+            return root;
         }
     }
 }

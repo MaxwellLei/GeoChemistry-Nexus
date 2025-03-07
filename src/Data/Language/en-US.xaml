@@ -15,7 +15,7 @@
     <!--主窗体侧边栏-->
     <s:String x:Key="Home">Home</s:String>
     <s:String x:Key="Plot">Plot</s:String>
-    <s:String x:Key="Geothermometer">Geothermometer</s:String>
+    <s:String x:Key="Geothermometer">GTM</s:String>
     <s:String x:Key="Setting">Settings</s:String>
 
     <!--=====================绘图页面=========================-->
@@ -182,7 +182,7 @@
     <s:String x:Key="Theme">Theme</s:String>
     <s:String x:Key="Default">Default</s:String>
     <s:String x:Key="Language">Language</s:String>
-    <s:String x:Key="ChineseS">Chinese (Simplified)</s:String>
+    <s:String x:Key="ChineseS">中文 (简体)</s:String>
     <s:String x:Key="EnglishUS">English (US)</s:String>
     <s:String x:Key="StartBackgroundImages">Startup Background Image</s:String>
     <s:String x:Key="DefaultRandom">Default Random</s:String>

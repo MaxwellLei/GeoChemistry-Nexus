@@ -127,20 +127,22 @@ namespace GeoChemistryNexus.Views.Geothermometer
             // 定义需要检查和复制的列标题
             Dictionary<string, string> columnNames;
             
-            if(((ArsenopyritePageViewModel)commonPage.DataContext).TitleX == I18n.GetString("BiotiteGTM"))
-            {
-                columnNames = new Dictionary<string, string>
-                {
-                    { "Arsenopyrit", "Arsenopyrit" },
-                };
-            }
-            else
+            if(((ArsenopyritePageViewModel)commonPage.DataContext).TitleX == "黑云母温度计" ||
+               ((ArsenopyritePageViewModel)commonPage.DataContext).TitleX == "Biotite Geothermometer")
             {
                 columnNames = new Dictionary<string, string>
                 {
                     { "Ti", "Ti" },
                     { "Mg", "Mg" },
                     { "Fe", "Fe" },
+                };
+ 
+            }
+            else
+            {
+                columnNames = new Dictionary<string, string>
+                {
+                    { "Arsenopyrit", "Arsenopyrit" },
                 };
             }
 
