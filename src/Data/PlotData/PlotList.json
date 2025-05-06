@@ -1,8 +1,12 @@
 {
   "listNodeConfigs": [
     {
-      "rootNode": [ "岩浆岩", "岩石类别", "TAS" ],
-      "baseMapPath": "岩浆岩_岩石类别_TAS.json"
+      "rootNode": [ "简体中文", "岩浆岩", "岩石类别", "TAS" ],
+      "baseMapPath": "简体中文_岩浆岩_岩石类别_TAS.json"
+    },
+    {
+      "rootNode": [ "English", "Igneous Rock", "Rock Category", "TAS" ],
+      "baseMapPath": "English_Igneous Rock_Rock Category_TAS.json"
     }
   ]
 }

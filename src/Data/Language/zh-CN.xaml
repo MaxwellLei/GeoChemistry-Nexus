@@ -20,7 +20,16 @@
 
     <!--=====================绘图页面=========================-->
     <!--绘图侧边列表菜单-->
-    
+    <s:String x:Key="File">文件</s:String>
+    <s:String x:Key="Edit">编辑</s:String>
+    <s:String x:Key="Expand">拓展</s:String>
+    <s:String x:Key="EditMode">编辑模式</s:String>
+    <s:String x:Key="NewBasemap">新建底图</s:String>
+    <s:String x:Key="SaveBasemap">保存底图</s:String>
+    <s:String x:Key="ImportBasemap">导入底图</s:String>
+    <s:String x:Key="ExportBasemap">导出底图</s:String>
+    <s:String x:Key="DeleteBasemap">删除底图</s:String>
+    <s:String x:Key="GetMoreBasemap">获取更多底图</s:String>
     
     <!--绘图部分-->
     <s:String x:Key="ImportData">导入数据</s:String>
@@ -36,6 +45,14 @@
     <s:String x:Key="ExportImageSVG">导出 SVG 格式</s:String>
     <s:String x:Key="LegendSetting">图例设置</s:String>
     <s:String x:Key="PlotSetting">绘图设置</s:String>
+    
+    <!--编辑模式-->
+    <s:String x:Key="AddLine">添加线条</s:String>
+    <s:String x:Key="AddPolygons">添加多边形</s:String>
+    <s:String x:Key="AddText">添加注释</s:String>
+    <s:String x:Key="JsSetting">脚本设置</s:String>
+    <s:String x:Key="Save">保存</s:String>
+    <s:String x:Key="QuitEdit">退出编辑</s:String>
 
     <!--绘图底图-->
     <s:String x:Key="IgneousRock">岩浆岩</s:String>
@@ -59,6 +76,9 @@
     <s:String x:Key="Calculate">计算</s:String>
 
     <!--属性面板-->
+    <s:String x:Key="Delete">删除</s:String>
+    <s:String x:Key="Confirm">确认</s:String>
+    <s:String x:Key="Cancel">取消</s:String>
     <s:String x:Key="IsShow">是否可见</s:String>
     <s:String x:Key="FontFamily">字体</s:String>
     <s:String x:Key="FontStyle">字体样式</s:String>
@@ -130,6 +150,30 @@
     <s:String x:Key="PlotSwitchFilledColor">反转填充颜色</s:String>
     <s:String x:Key="PlotFilledColor1">填充区域颜色1</s:String>
     <s:String x:Key="PlotFilledColor2">填充区域颜色2</s:String>
+    
+    <!--脚本设置属性面板-->
+    <s:String x:Key="Parameters">所需参数</s:String>
+    <s:String x:Key="Js">Js 脚本</s:String>
+    <s:String x:Key="CheckJs">检查脚本</s:String>
+
+    <!--消息通知-->
+    <s:String x:Key="Undelete_Message">已取消删除</s:String>
+    <s:String x:Key="DeleteingBasemapConfirm1_Message">正在删除底图</s:String>
+    <s:String x:Key="DeleteingBasemapConfirm2_Message">是否确认删除？</s:String>
+    <s:String x:Key="SaveSuccess">保存成功</s:String>
+    <s:String x:Key="ParameterNotFilledIn">投图参数未填写</s:String>
+    <s:String x:Key="ScNotFilledIn">投图脚本未填写</s:String>
+    <s:String x:Key="BasemapVersionToLow1">导入的底图版本过低，请使用版本大于</s:String>
+    <s:String x:Key="BasemapVersionToLow2">的底图</s:String>
+    <s:String x:Key="CancelImport">已取消导入</s:String>
+    <s:String x:Key="BasemapExisted">底图文件已经存在，是否覆盖？</s:String>
+    <s:String x:Key="NewBasemapSuccess">新建底图成功</s:String>
+    <s:String x:Key="CategoryFormatError">类别格式错误</s:String>
+    <s:String x:Key="ParameterNull">参数为空</s:String>
+    <s:String x:Key="JsNull">脚本为空</s:String>
+    
+    <!--弹窗-->
+    <s:String x:Key="BasemapCategories">底图类别</s:String>
 
     <!--=====================温度计页面=========================-->
     <!--温度计部分-->

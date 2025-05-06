@@ -41,10 +41,6 @@ namespace GeoChemistryNexus.ViewModels
 
             //FunInit();
         }
-
-
-
-
         //切换主页命令
         private void ExecuteHomePage()
         {

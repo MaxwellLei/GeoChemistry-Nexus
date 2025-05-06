@@ -19,6 +19,18 @@
     <s:String x:Key="Setting">Settings</s:String>
 
     <!--=====================绘图页面=========================-->
+    <!--绘图侧边列表菜单-->
+    <s:String x:Key="File">File</s:String>
+    <s:String x:Key="Edit">Edit</s:String>
+    <s:String x:Key="Expand">Expand</s:String>
+    <s:String x:Key="EditMode">Edit Mode</s:String>
+    <s:String x:Key="NewBasemap">New Basemap</s:String>
+    <s:String x:Key="SaveBasemap">Save Basemap</s:String>
+    <s:String x:Key="ImportBasemap">Import Basemap</s:String>
+    <s:String x:Key="ExportBasemap">Export Basemap</s:String>
+    <s:String x:Key="DeleteBasemap">Delete Basemap</s:String>
+    <s:String x:Key="GetMoreBasemap">Get More Basemaps</s:String>
+
     <!--绘图部分-->
     <s:String x:Key="ImportData">Import Data</s:String>
     <s:String x:Key="ResetPlot">Reset Plot</s:String>
@@ -33,6 +45,14 @@
     <s:String x:Key="ExportImageSVG">Export as SVG</s:String>
     <s:String x:Key="LegendSetting">Legend</s:String>
     <s:String x:Key="PlotSetting">Plot Settings</s:String>
+
+    <!--编辑模式-->
+    <s:String x:Key="AddLine">Add Line</s:String>
+    <s:String x:Key="AddPolygons">Add Polygons</s:String>
+    <s:String x:Key="AddText">Add Text</s:String>
+    <s:String x:Key="JsSetting">Script Settings</s:String>
+    <s:String x:Key="Save">Save</s:String>
+    <s:String x:Key="QuitEdit">Quit Edit</s:String>
 
     <!--绘图底图-->
     <s:String x:Key="IgneousRock">Igneous Rock</s:String>
@@ -56,6 +76,10 @@
     <s:String x:Key="Calculate">Calculate</s:String>
 
     <!--属性面板-->
+    <s:String x:Key="Delete">Delete</s:String>
+    <s:String x:Key="Confirm">Confirm</s:String>
+    <s:String x:Key="Cancel">Cancel</s:String>
+    
     <s:String x:Key="IsShow">Visible</s:String>
     <s:String x:Key="FontFamily">Font Family</s:String>
     <s:String x:Key="FontStyle">Font Style</s:String>
@@ -127,6 +151,30 @@
     <s:String x:Key="PlotSwitchFilledColor">Invert Fill Color</s:String>
     <s:String x:Key="PlotFilledColor1">Fill Color 1</s:String>
     <s:String x:Key="PlotFilledColor2">Fill Color 2</s:String>
+
+    <!--脚本设置属性面板-->
+    <s:String x:Key="Parameters">Required Parameters</s:String>
+    <s:String x:Key="Js">Js Script</s:String>
+    <s:String x:Key="CheckJs">Check Script</s:String>
+
+    <!--消息通知-->
+    <s:String x:Key="Undelete_Message">Delete Canceled</s:String>
+    <s:String x:Key="DeleteingBasemapConfirm1_Message">Deleting Basemap</s:String>
+    <s:String x:Key="DeleteingBasemapConfirm2_Message">Are you sure you want to delete?</s:String>
+    <s:String x:Key="SaveSuccess">Save Successful</s:String>
+    <s:String x:Key="ParameterNotFilledIn">Mapping parameters not filled in</s:String>
+    <s:String x:Key="ScNotFilledIn">Mapping script not filled in</s:String>
+    <s:String x:Key="BasemapVersionToLow1">The imported basemap version is too low, please use a version higher than</s:String>
+    <s:String x:Key="BasemapVersionToLow2">version</s:String>
+    <s:String x:Key="CancelImport">Import Canceled</s:String>
+    <s:String x:Key="BasemapExisted">Basemap file already exists, do you want to overwrite?</s:String>
+    <s:String x:Key="NewBasemapSuccess">New Basemap Created Successfully</s:String>
+    <s:String x:Key="CategoryFormatError">Category format error</s:String>
+    <s:String x:Key="ParameterNull">Parameter is null</s:String>
+    <s:String x:Key="JsNull">Script is empty</s:String>
+
+    <!--弹窗-->
+    <s:String x:Key="BasemapCategories">Basemap Categories</s:String>
 
     <!--=====================温度计页面=========================-->
     <!--温度计部分-->

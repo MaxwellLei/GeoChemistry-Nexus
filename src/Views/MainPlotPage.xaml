@@ -38,24 +38,35 @@
                 <Grid>
                     <!--菜单栏-->
                     <Menu VerticalAlignment="Center" HorizontalAlignment="Left" FlowDirection="RightToLeft">
-                        <MenuItem Header="拓展">
-                            <MenuItem Header="获取更多底图" Command="{Binding NewBasemapCommand}" IsEnabled="False"/>
+                        <!--拓展-->
+                        <MenuItem Header="{DynamicResource Expand}">
+                            <!--获取更多底图-->
+                            <MenuItem Header="{DynamicResource GetMoreBasemap}" Command="{Binding NewBasemapCommand}" IsEnabled="False"/>
                         </MenuItem>
-                        <MenuItem Header="编辑">
+                        <!--编辑-->
+                        <MenuItem Header="{DynamicResource Edit}">
                             <!--<MenuItem Header="移动位置" Command="{Binding MovePositionCommand}"/>-->
                             <!--<Separator/>-->
-                            <MenuItem Header="删除底图" Command="{Binding DeleteBasemapCommand}"/>
+                            <!--删除底图-->
+                            <MenuItem Header="{DynamicResource DeleteBasemap}" Command="{Binding DeleteBasemapCommand}"/>
                         </MenuItem>
-                        <MenuItem Header="文件">
-                            <MenuItem Header="编辑模式" Command="{Binding EditModeCommand}"
+                        <!--文件-->
+                        <MenuItem Header="{DynamicResource File}">
+                            <!--编辑模式-->
+                            <MenuItem Header="{DynamicResource EditMode}" Command="{Binding EditModeCommand}"
                                       IsEnabled="{Binding IsPlotMode}"/>
-                            <MenuItem Header="新建底图" Command="{Binding NewBasemapCommand}"
+                            <!--新建底图-->
+                            <MenuItem Header="{DynamicResource NewBasemap}" Command="{Binding NewBasemapCommand}"
                                       IsEnabled="{Binding IsEditMode}"/>
-                            <MenuItem Header="保存底图" Command="{Binding SaveBaseMapCommand}"
+                            <!--保存底图-->
+                            <MenuItem Header="{DynamicResource SaveBasemap}" Command="{Binding SaveBaseMapCommand}"
                                   IsEnabled="{Binding BasePlotConfigObject, Converter={StaticResource NullToEnableConverter}}"/>
                             <Separator/>
-                            <MenuItem Header="导入底图" Command="{Binding LoadBasemapCommand}"/>
-                            <MenuItem Header="导出底图" Command="{Binding NewBasemapCommand}"
+                            <!--导入底图-->
+                            <MenuItem Header="{DynamicResource ImportBasemap}" Command="{Binding LoadBasemapCommand}"
+                                      />
+                            <!--导出底图-->
+                            <MenuItem Header="{DynamicResource ExportBasemap}" Command="{Binding NewBasemapCommand}"
                                   IsEnabled="False"/>
                         </MenuItem>
 
@@ -71,7 +82,8 @@
                             <!--<MenuItem Header="移动"/>-->
                             <!--<MenuItem Header="导出"/>-->
                             <!--<Separator />-->
-                            <MenuItem Header="删除" Command="{Binding DeleteBasemapCommand}"/>
+                            <!--删除底图-->
+                            <MenuItem Header="{DynamicResource DeleteBasemap}" Command="{Binding DeleteBasemapCommand}"/>
                         </ContextMenu>
                     </TreeView.ContextMenu>
                     <TreeView.ItemTemplate>
@@ -205,55 +217,55 @@
                                     <StackPanel>
                                         <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe619;"
                                                HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
-                                        <TextBlock Text="添加线条" />
+                                        <TextBlock Text="{DynamicResource AddLine}" />
                                     </StackPanel>
                                 </Button>
                                 <!--添加多边形-->
-                                <Button Height="60" Click="AddPolygon" Foreground="Blue">
+                                <!--<Button Height="60" Click="AddPolygon" Foreground="Blue">
                                     <StackPanel>
                                         <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe6ed;"
                                                HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
-                                        <TextBlock Text="添加多边形"/>
+                                        <TextBlock Text="{DynamicResource AddPolygons}"/>
                                     </StackPanel>
-                                </Button>
+                                </Button>-->
                                 <!--添加注释-->
-                                <Button Height="60" Click="AddText" Margin="5" Foreground="Blue">
+                                <Button Height="60" Click="AddText" Foreground="Blue">
                                     <StackPanel>
                                         <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe603;"
                                                HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
-                                        <TextBlock Text="添加注释"/>
+                                        <TextBlock Text="{DynamicResource AddText}"/>
                                     </StackPanel>
                                 </Button>
                                 <!--脚本设置-->
-                                <Button Height="60"  Command="{Binding ScriptSettingCommand}">
+                                <Button Height="60" Margin="5" Command="{Binding ScriptSettingCommand}">
                                     <StackPanel>
                                         <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe614;"
                                                HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
-                                        <TextBlock Text="脚本设置"/>
+                                        <TextBlock Text="{DynamicResource JsSetting}"/>
                                     </StackPanel>
                                 </Button>
-                                <Button Height="60" Command="{Binding PlotSettingCommand}" Margin="5">
+                                <Button Height="60" Command="{Binding PlotSettingCommand}" >
                                     <!--绘图设置-->
                                     <StackPanel>
                                         <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe60f;"
                                                HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
-                                        <TextBlock Text="绘图设置"/>
+                                        <TextBlock Text="{DynamicResource PlotSetting}"/>
                                     </StackPanel>
                                 </Button>
-                                <Button Height="60" Command="{Binding SaveBaseMapCommand}">
+                                <Button Height="60" Command="{Binding SaveBaseMapCommand}" Margin="5">
                                     <!--保存-->
                                     <StackPanel>
                                         <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe782;"
                                                HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
-                                        <TextBlock Text="保存"/>
+                                        <TextBlock Text="{DynamicResource Save}"/>
                                     </StackPanel>
                                 </Button>
-                                <Button Height="60" Command="{Binding ExitEditModelCommand}" Margin="5">
+                                <Button Height="60" Command="{Binding ExitEditModelCommand}">
                                     <!--退出编辑-->
                                     <StackPanel>
                                         <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe667;"
                                                HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
-                                        <TextBlock Text="退出编辑"/>
+                                        <TextBlock Text="{DynamicResource QuitEdit}"/>
                                     </StackPanel>
                                 </Button>
                             </WrapPanel>
@@ -414,8 +426,9 @@
                                 <Button Content="&#xe601;" FontFamily="../Data/Icon/#iconfont" Grid.Column="1"/>
                             </Grid>
                             <UniformGrid Rows="1" Columns="2">
-                                <Button Content="确定" HorizontalAlignment="Stretch" Width="Auto" Margin="5"/>
-                                <Button Content="删除" HorizontalAlignment="Stretch" Width="Auto" Margin="5" Click="DeleteLine"/>
+                                <!--<Button Content="确定" HorizontalAlignment="Stretch" Width="Auto" Margin="5"/>-->
+                                <!--删除-->
+                                <Button Content="{DynamicResource Delete}" HorizontalAlignment="Stretch" Width="Auto" Margin="5" Click="DeleteLine"/>
                             </UniformGrid>
 
                         </StackPanel>
@@ -505,8 +518,9 @@
                                 <Button Content="&#xe601;" FontFamily="../Data/Icon/#iconfont" Grid.Column="1"/>
                             </Grid>
                             <UniformGrid Rows="1" Columns="2">
-                                <Button Content="确定" HorizontalAlignment="Stretch" Width="Auto" Margin="5"/>
-                                <Button Content="删除" HorizontalAlignment="Stretch" Width="Auto" Margin="5"
+                                <!--<Button Content="确定" HorizontalAlignment="Stretch" Width="Auto" Margin="5"/>-->
+                                <!--删除-->
+                                <Button Content="{DynamicResource Delete}" HorizontalAlignment="Stretch" Width="Auto" Margin="5"
                                 Click="DeleteLine"/>
                             </UniformGrid>
 
@@ -855,19 +869,19 @@
                     <!--脚本设置面板-->
                     <StackPanel Margin="8" Visibility="{Binding PlotScriptShow,Converter={StaticResource BoolToVisibilityConverter}}">
                         <!--必要参数-->
-                        <TextBlock Text="参数" VerticalAlignment="Center"/>
+                        <TextBlock Text="{DynamicResource Parameters}" VerticalAlignment="Center"/>
                         <hc:TextBox Margin="0 5" Text="{Binding NeedParamContent}"/>
                         <!--Js 脚本-->
-                        <TextBlock Text="Js 脚本" VerticalAlignment="Top"/>
+                        <TextBlock Text="{DynamicResource Js}" VerticalAlignment="Top"/>
                         <TextBox AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"  
                                 Margin="0 5" Height="150" VerticalContentAlignment="Top" Padding="8"
                              Text="{Binding JsScriptContent}"/>
                         <UniformGrid Columns="3">
-                            <Button Content="检查" HorizontalAlignment="Stretch" Margin="5" Style="{StaticResource ButtonPrimary}"
+                            <Button Content="{DynamicResource CheckJs}" HorizontalAlignment="Stretch" Margin="5" Style="{StaticResource ButtonPrimary}"
                                 Command="{Binding CheckContentCommand}"/>
-                            <Button Content="确定" HorizontalAlignment="Stretch" Margin="5" Style="{StaticResource ButtonSuccess}"
+                            <Button Content="{DynamicResource Confirm}" HorizontalAlignment="Stretch" Margin="5" Style="{StaticResource ButtonSuccess}"
                                 Command="{Binding ConfirmSaveScriptCommand}"/>
-                            <Button Content="取消" HorizontalAlignment="Stretch" Margin="5" Style="{StaticResource ButtonDanger}"
+                            <Button Content="{DynamicResource Cancel}" HorizontalAlignment="Stretch" Margin="5" Style="{StaticResource ButtonDanger}"
                                 Command="{Binding CancelSaveScriptCommand}"/>
                         </UniformGrid>
                     </StackPanel>
@@ -981,18 +995,18 @@
                 <StackPanel>
                     <!--<TextBlock Text="底图名称" FontSize="18" Foreground="#333333"/>
                     <TextBox Text="{Binding NewBasePlotName}" Margin="0 5"/>-->
-                    <TextBlock Text="底图信息" FontSize="18" Foreground="#333333"/>
+                    <TextBlock Text="{DynamicResource BasemapCategories}" FontSize="18" Foreground="#333333"/>
                     <TextBox Text="{Binding BasePlotType}" Margin="0 5"/>
                     <UniformGrid Columns="2" Margin="0 8 0 0">
-                        <Button Content="确认" HorizontalAlignment="Stretch" Margin="0 0 5 0"
+                        <Button Content="{DynamicResource Confirm}" HorizontalAlignment="Stretch" Margin="0 0 5 0"
                         Style="{StaticResource ButtonSuccess}" Command="{Binding ConfirmNewBasemapCommand}"/>
-                        <Button Content="取消" HorizontalAlignment="Stretch" Margin="5 0 0 0"
+                        <!--取消-->
+                        <Button Content="{DynamicResource Cancel}" HorizontalAlignment="Stretch" Margin="5 0 0 0"
                         Style="{StaticResource ButtonDanger}" Command="{Binding CancelNewBasemapCommand}"/>
                     </UniformGrid>
                 </StackPanel>
             </Border>
         </Grid>
-
     </Grid>
 
 </Page>

@@ -15,6 +15,11 @@
 
     <!--主窗体-->
     <Border CornerRadius="8" Background="#35383e">
+        <!--窗体阴影-->
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="8" Direction="315" 
+                             ShadowDepth="6" Opacity="0.5" Color="Gray"/>
+        </Border.Effect>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="36"/>

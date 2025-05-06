@@ -415,6 +415,10 @@ namespace GeoChemistryNexus.ViewModels
             {
                 RootTreeNode = _registry.GenerateListFromConfig(plotListConfigs);
             }
+            else
+            {
+                RootTreeNode = new TreeNode();
+            }
             //var tempTitle1 = I18n.GetString("IgneousRock");      // 岩浆岩
             //var tempTitle12 = I18n.GetString("TectonicSetting");      // 构造环境
             //var tempTitle13 = I18n.GetString("Basalt");      // 玄武岩
@@ -2018,6 +2022,23 @@ namespace GeoChemistryNexus.ViewModels
             return null;
         }
 
+        // 删除节点
+        private void RemoveBaseMapNode()
+        {
+            // 删除Json列表
+            string basePath = FileHelper.GetAppPath();
+            string tempNewPath;
+            if (IsEditMode)
+            {
+                tempNewPath = System.IO.Path.Combine(basePath, "Data", "PlotData", "PlotListCustom.json");
+            }
+            else
+            {
+                tempNewPath = System.IO.Path.Combine(basePath, "Data", "PlotData", "PlotList.json");
+            }
+            JsonHelper.RemoveNodeFromJson(tempNewPath, _previousSelectedNode.rootNode);
+        }
+
 
         // ==================================绑定命令
 
@@ -2315,21 +2336,35 @@ namespace GeoChemistryNexus.ViewModels
             if (parameter is TreeNode node1 && node1.PlotTemplate == null && node1.Children.Count == 0)
             {
 
-                //_previousSelectedNode = (TreeNode)parameter;        // 获取当前选中模板对象
+                _previousSelectedNode = (TreeNode)parameter;        // 获取当前选中模板对象
+
+                // 加载底图
+                _selectedBaseInfo = PlotLoader.LoadBasePlot(WpfPlot1.Plot,
+                    System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Default", node1.BaseMapPath)
+                    , _richTextBox);
 
                 // 排除创建底图对象但是没有保存底图配置文件
-                if (node1.BaseMapPath != null)
+                if (_selectedBaseInfo != null)
                 {
                     Refresh(true, true);
                     SetTrue(null);      // 关闭显示属性
-                    _previousSelectedNode = (TreeNode)parameter;        // 获取当前选中模板对象
+                    //_previousSelectedNode = (TreeNode)parameter;        // 获取当前选中模板对象
                     NewBasePlotName = _previousSelectedNode.Name;       // 获取当前对象
                     _richTextBox.Document.Blocks.Clear();       // 清除当前的内容
 
-                    // 加载底图
-                    _selectedBaseInfo = PlotLoader.LoadBasePlot(WpfPlot1.Plot,
-                        System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Default", node1.BaseMapPath)
-                        , _richTextBox);
+
+
+
+                    if( _selectedBaseInfo.requiredElements != null )
+                    {
+                        NeedParamContent = string.Join(",", _selectedBaseInfo.requiredElements);
+                    }
+
+                    if (_selectedBaseInfo.script != null)
+                    {
+                        JsScriptContent = _selectedBaseInfo.script;
+                    }
+                    
 
 
 
@@ -2337,6 +2372,25 @@ namespace GeoChemistryNexus.ViewModels
                     //    ((TreeNode)parameter).PlotTemplate.Description);
 
                     Refresh();
+                }
+                else
+                {
+                    // 底图文件丢失询问是否删除
+                    Growl.Ask("底图文件丢失,是否删除该底图？", isConfirmed =>
+                    {
+                        if (isConfirmed)
+                        {
+                            RemoveBaseMapNode();
+                            RegisterPlotTemplates(true);
+                        }
+                        else
+                        {
+                            // 通知：已取消导入
+                            MessageHelper.Info("取消加载");
+                        }
+
+                        return true;
+                    });
                 }
             }
         }
@@ -2586,7 +2640,8 @@ namespace GeoChemistryNexus.ViewModels
             // 检查参数
             if (NeedParamContent == "" || NeedParamContent == null)
             {
-                output += "参数为空";
+                // 通知：参数为空
+                output += I18n.GetString("ParameterNull");
             }
             else
             {
@@ -2595,7 +2650,8 @@ namespace GeoChemistryNexus.ViewModels
             // 检查脚本
             if (JsScriptContent == "" || JsScriptContent == null)
             {
-                output += "\n脚本为空";
+                // 脚本为空
+                output += "\n" + I18n.GetString("JsNull");
             }
             else
             {
@@ -2610,8 +2666,6 @@ namespace GeoChemistryNexus.ViewModels
         {
             // 显示弹窗
             SetTrue("Popup");
-
-            
         }
 
         // 确认新建底图
@@ -2627,7 +2681,8 @@ namespace GeoChemistryNexus.ViewModels
 
             if (!IsValidCommaSeparatedString(BasePlotType))
             {
-                MessageHelper.Info("类别：格式错误");
+                // 通知：类别格式错误
+                MessageHelper.Info(I18n.GetString("CategoryFormatError"));
                 return;
             }
 
@@ -2648,8 +2703,8 @@ namespace GeoChemistryNexus.ViewModels
 
             _previousSelectedNode = FindTreeNodeByConfig(RootTreeNode, listNodeConfig);
 
-            // 通知
-            MessageHelper.Info("新建底图成功");
+            // 通知:新建底图成功
+            MessageHelper.Info(I18n.GetString("NewBasemapSuccess"));
 
             // 关闭弹窗
             SetTrue(null);
@@ -2694,37 +2749,104 @@ namespace GeoChemistryNexus.ViewModels
                     System.Reflection.Assembly.GetExecutingAssembly().Location).FileVersion);
                 if (Convert.ToDouble(config.BaseMapVersion) >= mapVersion)
                 {
-                    // todo: 判断导入的底图是否已存在
-
-                    // 加载底图
-                    BaseInfo baseInfo = PlotLoader.LoadBasePlot(WpfPlot1.Plot, filePath, _richTextBox);
-
-                    // 复制文件到指定路径
-                    var targetPath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Default");
-                    FileHelper.CopyFile(filePath, targetPath);
-
                     ListNodeConfig listNodeConfig = new ListNodeConfig();
-                    listNodeConfig.rootNode = baseInfo.rootNode;
-                    listNodeConfig.baseMapPath = System.IO.Path.GetFileName(filePath);
 
-                    targetPath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "PlotList.json");
+                    string tempFolder = "Default";
 
-                    // 写入列表
-                    JsonHelper.AddToJsonFile(listNodeConfig, targetPath);
+                    // 如果是编辑模式导入的底图
+                    if (IsEditMode)
+                    {
+                        tempFolder = "Custom";
+                    }
 
-                    // 加载侧边列表
-                    //AddOrFindPath(RootTreeNode, baseInfo, filePath);
-                    RegisterPlotTemplates();
+                    string tempPath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", tempFolder, 
+                        FileHelper.GetFileName(filePath));
 
-                    // 设置当前选中底图为当前
-                    _previousSelectedNode = FindTreeNodeByConfig(RootTreeNode, listNodeConfig);
+                    // 判断导入的底图是否已存在
+                    if (FileHelper.IsFileExist(tempPath))
+                    {
+                        Growl.Ask(I18n.GetString("BasemapExisted"), isConfirmed =>
+                        {
+                            if (isConfirmed)
+                            {
+                                // 加载底图
+                                BaseInfo baseInfo = PlotLoader.LoadBasePlot(WpfPlot1.Plot, filePath, _richTextBox);
 
-                    // 刷新底图
-                    Refresh();
+                                // 复制文件到指定路径
+                                var targetPath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", tempFolder);
+                                FileHelper.CopyFile(filePath, targetPath);
+
+                                // 加载侧边列表
+                                RegisterPlotTemplates();
+
+                                // 设置当前选中底图为当前
+                                _previousSelectedNode = FindTreeNodeByConfig(RootTreeNode, listNodeConfig);
+
+                                // 视角居中
+                                CenterPlot();
+
+                                // 刷新底图
+                                //Refresh();
+                            }
+                            else
+                            {
+                                // 通知：已取消导入
+                                MessageHelper.Info(I18n.GetString("CancelImport"));
+                            }
+
+                            return true;
+                        });
+                    }
+                    else
+                    {
+                        // 加载底图
+                        BaseInfo baseInfo = PlotLoader.LoadBasePlot(WpfPlot1.Plot, filePath, _richTextBox);
+
+                        // 复制文件到指定路径
+                        var targetPath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", tempFolder);
+                        FileHelper.CopyFile(filePath, targetPath);
+
+                        
+                        listNodeConfig.rootNode = baseInfo.rootNode;
+                        listNodeConfig.baseMapPath = System.IO.Path.GetFileName(filePath);
+
+                        
+
+                        // 如果是编辑模式导入的底图
+                        if (IsEditMode)
+                        {
+                            targetPath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "PlotListCustom.json");
+                        }
+                        else
+                        {
+                            targetPath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "PlotList.json");
+                        }
+
+                        // 写入列表
+                        JsonHelper.AddToJsonFile(listNodeConfig, targetPath);
+
+                        // 加载侧边列表
+                        //AddOrFindPath(RootTreeNode, baseInfo, filePath);
+                        RegisterPlotTemplates();
+
+                        // 设置当前选中底图为当前
+                        _previousSelectedNode = FindTreeNodeByConfig(RootTreeNode, listNodeConfig);
+
+                        // 视角居中
+                        CenterPlot();
+
+                        // 刷新底图
+                        //Refresh();
+                    }
+
+
+
                 }
                 else
                 {
-                    MessageHelper.Info($"导入的底图版本过低，请使用版本大于{mapVersion}的底图");
+                    // 通知：导入的底图版本过低，请使用版本大于" + mapVersion + "的底图
+                    MessageHelper.Warning(I18n.GetString("BasemapVersionToLow1") + mapVersion +
+                        I18n.GetString("BasemapVersionToLow2"));
                 }
             }
         }
@@ -2773,8 +2895,8 @@ namespace GeoChemistryNexus.ViewModels
             //BasePlotConfigObject.baseInfo.requiredElements = new string[] { "Group", "K2O", "Na2O", "SiO2" };
             if (NeedParamContent == null || NeedParamContent =="")
             {
-                // 通知
-                MessageHelper.Info("投图参数未填写");
+                // 通知:投图参数未填写
+                MessageHelper.Info(I18n.GetString("ParameterNotFilledIn"));
             }
             else
             {
@@ -2783,8 +2905,8 @@ namespace GeoChemistryNexus.ViewModels
 
             if (JsScriptContent == null || JsScriptContent == "")
             {
-                // 通知
-                MessageHelper.Info("投图脚本未填写");
+                // 通知:投图脚本未填写
+                MessageHelper.Info(I18n.GetString("ScNotFilledIn"));
             }
             else
             {
@@ -2911,7 +3033,7 @@ namespace GeoChemistryNexus.ViewModels
             JsonHelper.SerializeToJsonFile(BasePlotConfigObject, tempNewPath);
 
             // 通知前端
-            MessageHelper.Success("保存底图模板成功");
+            MessageHelper.Success(I18n.GetString("SaveSuccess"));
         }
 
         // 脚本设置
@@ -2928,7 +3050,7 @@ namespace GeoChemistryNexus.ViewModels
             // 关闭脚本设置
             SetTrue(null);
             // 通知前端
-            MessageHelper.Success("保存成功");
+            MessageHelper.Success(I18n.GetString("SaveSuccess"));
         }
 
         // 取消脚本
@@ -2949,7 +3071,7 @@ namespace GeoChemistryNexus.ViewModels
             IsEditMode = true;
             RegisterPlotTemplates(true);
             // 禁用右键菜单
-            WpfPlot1.UserInputProcessor.IsEnabled = false;// 禁用右键菜单
+            //WpfPlot1.UserInputProcessor.IsEnabled = false;// 禁用右键菜单
             _richTextBox.Document.Blocks.Clear();       // 清除当前的内容
             //NormalPlotTemplate.TAS(WpfPlot1.Plot);    // 调试视图
         }
@@ -2968,32 +3090,49 @@ namespace GeoChemistryNexus.ViewModels
             // 用户选中了节点
             if(_previousSelectedNode != null)
             {
-                // 删除节点
-                RemoveNode(RootTreeNode, _previousSelectedNode);
-
-                // 删除Json列表
-                string basePath = FileHelper.GetAppPath();
-                string tempNewPath = System.IO.Path.Combine(basePath, "Data", "PlotData", "PlotListCustom.json");
-                if (IsEditMode == false)
+                // 通知：正在删除底图  xxx ，是否确认删除
+                Growl.Ask(I18n.GetString("DeleteingBasemapConfirm1_Message") + 
+                    _previousSelectedNode.rootNode[_previousSelectedNode.rootNode.Length-1]+
+                    I18n.GetString("DeleteingBasemapConfirm2_Message"), 
+                isConfirmed =>
                 {
-                    tempNewPath = System.IO.Path.Combine(basePath, "Data", "PlotData", "PlotList.json");
-                }
-                JsonHelper.RemoveNodeFromJson(tempNewPath, _previousSelectedNode.rootNode);
+                    if (isConfirmed)
+                    {
+                        // 删除节点
+                        RemoveNode(RootTreeNode, _previousSelectedNode);
 
-                // 获取文件路径
-                tempNewPath = System.IO.Path.Combine(basePath, "Data", "PlotData", "Custom", _previousSelectedNode.BaseMapPath);
-                if (IsEditMode == false)
-                {
-                    tempNewPath = System.IO.Path.Combine(basePath, "Data", "PlotData", "Default", _previousSelectedNode.BaseMapPath);
-                }
-                // 删除底图 Json 文件
-                if (FileHelper.IsFileExist(tempNewPath))
-                {
-                    FileHelper.DeleteFile(tempNewPath);
-                }
+                        // 删除Json列表
+                        string basePath = FileHelper.GetAppPath();
+                        string tempNewPath = System.IO.Path.Combine(basePath, "Data", "PlotData", "PlotListCustom.json");
+                        if (IsEditMode == false)
+                        {
+                            tempNewPath = System.IO.Path.Combine(basePath, "Data", "PlotData", "PlotList.json");
+                        }
+                        JsonHelper.RemoveNodeFromJson(tempNewPath, _previousSelectedNode.rootNode);
 
-                // 刷新列表
-                Refresh(true,true);
+                        // 获取文件路径
+                        tempNewPath = System.IO.Path.Combine(basePath, "Data", "PlotData", "Custom", _previousSelectedNode.BaseMapPath);
+                        if (IsEditMode == false)
+                        {
+                            tempNewPath = System.IO.Path.Combine(basePath, "Data", "PlotData", "Default", _previousSelectedNode.BaseMapPath);
+                        }
+                        // 删除底图 Json 文件
+                        if (FileHelper.IsFileExist(tempNewPath))
+                        {
+                            FileHelper.DeleteFile(tempNewPath);
+                        }
+
+                        // 刷新列表
+                        Refresh(true, true);
+                    }
+                    else
+                    {
+                        // 通知：取消删除
+                        MessageHelper.Info(I18n.GetString("Undelete_Message"));
+                    }
+                    return true;
+                });
+                
             }
         }
     }

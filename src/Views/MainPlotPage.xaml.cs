@@ -172,6 +172,8 @@ namespace GeoChemistryNexus.Views
 
                 WpfPlot1.Refresh();
             }
+
+
             // 输出相关信息
             loca.Text = $"X={coordinates.X:N3}, Y={coordinates.Y:N3}";
 

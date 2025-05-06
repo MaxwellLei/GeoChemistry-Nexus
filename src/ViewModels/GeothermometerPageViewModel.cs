@@ -8,13 +8,40 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace GeoChemistryNexus.ViewModels
 {
     public partial class GeothermometerPageViewModel : ObservableObject
     {
+        // 导航对象
         [ObservableProperty]
         private object? currentView;
+        
+        // 遮罩显示
+        [ObservableProperty]
+        private bool isMaskVisible = true;
+
+        private RichTextBox _richTextBox;
+
+        // 初始化
+        public GeothermometerPageViewModel(RichTextBox richTextBox)
+        {
+            _richTextBox = richTextBox;
+        }
+
+        // 加载到了计算方法触发
+        partial void OnCurrentViewChanged(object value)
+        {
+            if (currentView == null)
+            {
+                IsMaskVisible = true;
+            }
+            else
+            {
+                IsMaskVisible = false;
+            }
+        }
 
 
         // 锆石微量 - Zr 温度计

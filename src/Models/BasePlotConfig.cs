@@ -55,6 +55,13 @@ namespace GeoChemistryNexus.Models
         public string script { get; set; }           // 计算的脚本       return {x:data.Zr／ data.Ti，y:data.Y／data.Ti};
     }
 
+    // 多语言
+    public class MultiLanguageText
+    {
+        public string en_US { get; set; } // 英文
+        public string zh_Hans { get; set; } // 中文
+    }
+
     public class PlotConfig
     {
         // 绘图设置-绘图

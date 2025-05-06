@@ -476,4 +476,20 @@ public class FileHelper
             return false;
         }
     }
+
+    /// <summary>
+    /// 获取指定文件路径的文件名称（包括扩展名）。
+    /// </summary>
+    /// <param name="filePath">文件的完整路径。</param>
+    /// <returns>文件名称（包含扩展名）。</returns>
+    /// <exception cref="ArgumentException">当文件路径为空或为 null 时抛出。</exception>
+    public static string GetFileName(string filePath)
+    {
+        if (string.IsNullOrEmpty(filePath))
+        {
+            throw new ArgumentException("文件路径不能为空", nameof(filePath));
+        }
+
+        return Path.GetFileName(filePath);
+    }
 }

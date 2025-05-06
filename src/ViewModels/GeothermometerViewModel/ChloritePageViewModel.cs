@@ -115,7 +115,8 @@ namespace GeoChemistryNexus.ViewModels.GeothermometerViewModel
         // ========================================计算温度
         private string CalculateTValue(double B219)
         {
-            return (319 * B219 - 69).ToString();
+            // 修复 69 为 68.7
+            return (319 * B219 - 68.7).ToString();
         }
 
         // B199

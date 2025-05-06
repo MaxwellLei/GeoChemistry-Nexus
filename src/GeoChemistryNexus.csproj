@@ -7,7 +7,7 @@
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Data\Icon\logo.ico</ApplicationIcon>
 	<!--软件版本号-->
-    <AssemblyVersion>0.3.0.2</AssemblyVersion>
+    <AssemblyVersion>0.3.1.2</AssemblyVersion>
 	<!--图表版本号-->
     <FileVersion>0.1</FileVersion>
     <Copyright>Copyright ©️ 2024</Copyright>
@@ -33,6 +33,8 @@
     <None Remove="Data\Image\StartPic\7.jpg" />
     <None Remove="Data\Image\StartPic\8.jpg" />
     <None Remove="Data\Image\StartPic\9.jpg" />
+    <None Remove="Data\PlotData\Default\English_Igneous Rock_Rock Category_TAS.json" />
+    <None Remove="Data\PlotData\Default\简体中文_岩浆岩_岩石类别_TAS.json" />
     <None Remove="Data\PlotData\PlotD.zip" />
     <None Remove="Data\PlotData\PlotData.zip" />
     <None Remove="Data\PlotData\PlotList.json" />
@@ -96,6 +98,12 @@
     <Content Include="Data\Image\StartPic\9.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Data\PlotData\Default\English_Igneous Rock_Rock Category_TAS.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\PlotData\Default\简体中文_岩浆岩_岩石类别_TAS.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\PlotData\PlotData.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -109,9 +117,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\PlotData\PlotList.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\PlotData\Default\TestBaseMap.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
