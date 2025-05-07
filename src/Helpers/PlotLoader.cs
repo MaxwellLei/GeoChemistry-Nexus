@@ -51,7 +51,7 @@ namespace GeoChemistryNexus.Helpers
                 return null;
             }
 
-            // 重置 plot（例如清空已有内容）
+            // 重置 plot
             plot.Clear();
 
             // 设置图表标题
@@ -67,7 +67,7 @@ namespace GeoChemistryNexus.Helpers
                 var xAxes = config.PlotAxes.XAxes;
                 plot.Axes.Bottom.TickLabelStyle.FontSize = xAxes.axesTickFontSize;    // 匹配字体大小
                 plot.Axes.Bottom.TickLabelStyle.ForeColor = 
-                    new ScottPlot.Color(System.Drawing.ColorTranslator.FromHtml(xAxes.axesColor));   // 匹配字体大小
+                  new ScottPlot.Color(System.Drawing.ColorTranslator.FromHtml(xAxes.axesColor));   // 匹配字体大小
                 //plot.Axes.Bottom.TickGenerator = new ScottPlot.TickGenerators.NumericFixedInterval(xAxes.axesTickSpacing);
                 // 不为空且有起点和终点
                 if (xAxes.Limit != null && xAxes.Limit.Length >= 2)

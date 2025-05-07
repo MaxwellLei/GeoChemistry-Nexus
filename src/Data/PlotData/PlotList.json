@@ -1,12 +1,12 @@
 {
   "listNodeConfigs": [
     {
-      "rootNode": [ "简体中文", "岩浆岩", "岩石类别", "TAS" ],
-      "baseMapPath": "简体中文_岩浆岩_岩石类别_TAS.json"
+      "rootNode": [ "Igneous Rock", "Rock Category", "TAS" ],
+      "baseMapPath": "Igneous Rock_Rock Category_TAS.json"
     },
-    {
-      "rootNode": [ "English", "Igneous Rock", "Rock Category", "TAS" ],
-      "baseMapPath": "English_Igneous Rock_Rock Category_TAS.json"
+	{
+      "rootNode": [ "Igneous Rock", "Rock Category", "Ewart (1982)" ],
+      "baseMapPath": "Igneous Rock_Rock Category_Ewart (1982).json"
     }
   ]
 }

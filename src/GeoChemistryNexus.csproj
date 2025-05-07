@@ -33,7 +33,11 @@
     <None Remove="Data\Image\StartPic\7.jpg" />
     <None Remove="Data\Image\StartPic\8.jpg" />
     <None Remove="Data\Image\StartPic\9.jpg" />
+    <None Remove="Data\PlotData\Default\en-US\Igneous Rock_Rock Category_Ewart %281982%29.json" />
+    <None Remove="Data\PlotData\Default\en-US\Igneous Rock_Rock Category_TAS.json" />
+    <None Remove="Data\PlotData\Default\en-US\TAS.json" />
     <None Remove="Data\PlotData\Default\English_Igneous Rock_Rock Category_TAS.json" />
+    <None Remove="Data\PlotData\Default\zh-Hans\简体中文_岩浆岩_岩石类别_TAS.json" />
     <None Remove="Data\PlotData\Default\简体中文_岩浆岩_岩石类别_TAS.json" />
     <None Remove="Data\PlotData\PlotD.zip" />
     <None Remove="Data\PlotData\PlotData.zip" />
@@ -98,10 +102,13 @@
     <Content Include="Data\Image\StartPic\9.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\PlotData\Default\English_Igneous Rock_Rock Category_TAS.json">
+    <Content Include="Data\PlotData\Default\en-US\Igneous Rock_Rock Category_Ewart (1982).json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\PlotData\Default\简体中文_岩浆岩_岩石类别_TAS.json">
+    <Content Include="Data\PlotData\Default\en-US\Igneous Rock_Rock Category_TAS.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\PlotData\Default\zh-Hans\简体中文_岩浆岩_岩石类别_TAS.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\PlotData\PlotData.zip">

@@ -2338,45 +2338,50 @@ namespace GeoChemistryNexus.ViewModels
 
                 _previousSelectedNode = (TreeNode)parameter;        // 获取当前选中模板对象
 
-                // 加载底图
-                _selectedBaseInfo = PlotLoader.LoadBasePlot(WpfPlot1.Plot,
-                    System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Default", node1.BaseMapPath)
-                    , _richTextBox);
+                string lgFolder = "zh-Hans";
+                if (ConfigHelper.GetConfig("language") == "1")
+                {
+                    lgFolder = "en-US";
+                }
+
+                var basemapFilePath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Default", lgFolder, node1.BaseMapPath);
+
 
                 // 排除创建底图对象但是没有保存底图配置文件
-                if (_selectedBaseInfo != null)
+                if (FileHelper.IsFileExist(basemapFilePath))
                 {
+                    // 清空画布
                     Refresh(true, true);
-                    SetTrue(null);      // 关闭显示属性
+
+                    // 根据语言-加载底图
+                    _selectedBaseInfo = PlotLoader.LoadBasePlot(WpfPlot1.Plot, basemapFilePath, _richTextBox);
+
                     //_previousSelectedNode = (TreeNode)parameter;        // 获取当前选中模板对象
                     NewBasePlotName = _previousSelectedNode.Name;       // 获取当前对象
                     _richTextBox.Document.Blocks.Clear();       // 清除当前的内容
 
-
-
-
+                    // 获取脚本对象
                     if( _selectedBaseInfo.requiredElements != null )
                     {
                         NeedParamContent = string.Join(",", _selectedBaseInfo.requiredElements);
                     }
 
+                    // 获取脚本内容
                     if (_selectedBaseInfo.script != null)
                     {
                         JsScriptContent = _selectedBaseInfo.script;
                     }
-                    
-
-
 
                     //LoadRtfContent(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "PlotData", "PlotData.zip"),
                     //    ((TreeNode)parameter).PlotTemplate.Description);
 
+                    // 刷新底图
                     Refresh();
                 }
                 else
                 {
                     // 底图文件丢失询问是否删除
-                    Growl.Ask("底图文件丢失,是否删除该底图？", isConfirmed =>
+                    Growl.Ask("当前语言底图文件丢失,是否删除该底图？", isConfirmed =>
                     {
                         if (isConfirmed)
                         {
