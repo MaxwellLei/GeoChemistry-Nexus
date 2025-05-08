@@ -2230,7 +2230,6 @@ namespace GeoChemistryNexus.ViewModels
             SetItemsOpacity(1f); // 恢复为不透明
         }
 
-
         // 添加底图到底图列表
         public static void AddOrFindPath(TreeNode rootNode, BaseInfo baseInfo, string path)
         {
@@ -2764,7 +2763,13 @@ namespace GeoChemistryNexus.ViewModels
                         tempFolder = "Custom";
                     }
 
-                    string tempPath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", tempFolder, 
+                    string lgFolder = "zh-Hans";
+                    if (ConfigHelper.GetConfig("language") == "1")
+                    {
+                        lgFolder = "en-US";
+                    }
+
+                    string tempPath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", tempFolder, lgFolder,
                         FileHelper.GetFileName(filePath));
 
                     // 判断导入的底图是否已存在
@@ -2778,7 +2783,7 @@ namespace GeoChemistryNexus.ViewModels
                                 BaseInfo baseInfo = PlotLoader.LoadBasePlot(WpfPlot1.Plot, filePath, _richTextBox);
 
                                 // 复制文件到指定路径
-                                var targetPath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", tempFolder);
+                                var targetPath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", tempFolder, lgFolder);
                                 FileHelper.CopyFile(filePath, targetPath);
 
                                 // 加载侧边列表
@@ -2808,7 +2813,7 @@ namespace GeoChemistryNexus.ViewModels
                         BaseInfo baseInfo = PlotLoader.LoadBasePlot(WpfPlot1.Plot, filePath, _richTextBox);
 
                         // 复制文件到指定路径
-                        var targetPath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", tempFolder);
+                        var targetPath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", tempFolder, lgFolder);
                         FileHelper.CopyFile(filePath, targetPath);
 
                         
