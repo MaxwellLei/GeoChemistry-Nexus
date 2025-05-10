@@ -991,12 +991,17 @@
         <!--弹窗-->
         <Grid Visibility="{Binding PlotPopupShow,Converter={StaticResource BoolToVisibilityConverter}}" Grid.RowSpan="2">
             <Border Background="#666666" Opacity="0.65"/>
-            <Border CornerRadius="5" Background="#FFFFFF" Width="360" Height="120" Padding="12">
+            <Border CornerRadius="5" Background="#FFFFFF" Width="400" Height="180" Padding="12">
                 <StackPanel>
                     <!--<TextBlock Text="底图名称" FontSize="18" Foreground="#333333"/>
                     <TextBox Text="{Binding NewBasePlotName}" Margin="0 5"/>-->
                     <TextBlock Text="{DynamicResource BasemapCategories}" FontSize="18" Foreground="#333333"/>
                     <TextBox Text="{Binding BasePlotType}" Margin="0 5"/>
+                    <!--<TextBlock Text="{DynamicResource BasemapLanguage}" FontSize="18" Foreground="#333333"/>
+                    <ComboBox SelectedIndex="{Binding BasePlotLanguage}" Margin="0 5">
+                        <ComboBoxItem Content="简体中文" IsSelected="True"/>
+                        <ComboBoxItem Content="English"/>
+                    </ComboBox>-->
                     <UniformGrid Columns="2" Margin="0 8 0 0">
                         <Button Content="{DynamicResource Confirm}" HorizontalAlignment="Stretch" Margin="0 0 5 0"
                         Style="{StaticResource ButtonSuccess}" Command="{Binding ConfirmNewBasemapCommand}"/>

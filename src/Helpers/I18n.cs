@@ -14,5 +14,12 @@ namespace GeoChemistryNexus.Helpers
         {
             return (string)Application.Current.Resources[key];
         }
+
+        // 根据传入的值返回对应的字符
+        public static string GetLanguageFolder(int id)
+        {
+            if (id == 0) return "zh-Hans";
+            return "en-US";
+        }
     }
 }

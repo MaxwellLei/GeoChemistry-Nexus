@@ -175,6 +175,7 @@
 
     <!--弹窗-->
     <s:String x:Key="BasemapCategories">Basemap Categories</s:String>
+    <s:String x:Key="BasemapLanguage">Basemap Language</s:String>
 
     <!--=====================温度计页面=========================-->
     <!--温度计部分-->

@@ -130,6 +130,10 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private string _basePlotType;
 
+        // 底图对应的语言
+        [ObservableProperty]
+        private string _basePlotLanguage;
+
 
         /// <summary>
         /// ========================================公共属性
@@ -2694,6 +2698,7 @@ namespace GeoChemistryNexus.ViewModels
             ListNodeConfig listNodeConfig = new ListNodeConfig();
             listNodeConfig.rootNode = BasePlotType.Split(',', StringSplitOptions.RemoveEmptyEntries);
             listNodeConfig.baseMapPath = BasePlotType.Replace(",","_") + ".json";
+            listNodeConfig.baseMapLg = BasePlotLanguage;    // 获取语言
 
             // 获取文件路径
             string tempNewPath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "PlotListCustom.json");
@@ -3034,7 +3039,6 @@ namespace GeoChemistryNexus.ViewModels
             {
                 BasePlotConfigObject.Description = DocumentHelper.CompressRichTextBoxContent(_richTextBox);
             }
-            
 
             // 获取对象文件路径
             string tempNewPath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Custom", _previousSelectedNode.BaseMapPath.ToString());

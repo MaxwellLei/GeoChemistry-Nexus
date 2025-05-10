@@ -20,5 +20,7 @@ namespace GeoChemistryNexus.Models
         public string[] rootNode { get; set; }
         // 模板底图路径 其实就是文件名称
         public string baseMapPath { get; set; }
+        // 模板底图语言
+        public object baseMapLg { get; set; }
     }
 }
