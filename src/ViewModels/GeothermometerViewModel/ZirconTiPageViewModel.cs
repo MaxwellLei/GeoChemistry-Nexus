@@ -33,7 +33,7 @@ namespace GeoChemistryNexus.ViewModels.GeothermometerViewModel
         [ObservableProperty]
         private float a_SiO2;
 
-        // 初始化 
+        // 初始化
         public ZirconTiPageViewModel()
         {
             // 初始化表格

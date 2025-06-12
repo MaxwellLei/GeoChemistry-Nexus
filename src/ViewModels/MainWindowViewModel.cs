@@ -25,7 +25,8 @@ namespace GeoChemistryNexus.ViewModels
     {
         private Frame Nav;  //导航对象
         public RelayCommand HomePage { get; private set; }  //切换主页命令
-        public RelayCommand GeothermometerPage { get; private set; }  //切换模型命令
+        public RelayCommand GeothermometerPage { get; private set; }  //切换温度计命令
+        public RelayCommand GeothermometerNewPage { get; private set; }  //切换温度计命令
         public RelayCommand SettingPage { get; private set; }  //切换设置命令
 
         //初始化
@@ -35,7 +36,7 @@ namespace GeoChemistryNexus.ViewModels
             //MapPage = new RelayCommand(ExecuteMapPage);
             HomePage = new RelayCommand(ExecuteHomePage);
             GeothermometerPage = new RelayCommand(ExecuteTepPage);
-            //DataPage = new RelayCommand(ExecuteDataPage);
+            GeothermometerNewPage = new RelayCommand(ExecuteTepNewPage);
             SettingPage = new RelayCommand(ExecuteSettingPage);
             //ThemeModeChange = new RelayCommand(ExecuteThemeModeChange);
 
@@ -51,6 +52,12 @@ namespace GeoChemistryNexus.ViewModels
         private void ExecuteTepPage()
         {
             Nav.Navigate(GeothermometerPageView.GetPage());
+        }
+
+        //切换新温度计计算命令
+        private void ExecuteTepNewPage()
+        {
+            Nav.Navigate(GeothermomrNewPageView.GetPage());
         }
 
         //切换科学计算命令

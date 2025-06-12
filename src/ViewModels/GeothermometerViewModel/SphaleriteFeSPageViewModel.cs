@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GeoChemistryNexus.Helpers;
-using MathNet.Numerics.RootFinding;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -79,12 +78,13 @@ namespace GeoChemistryNexus.ViewModels.GeothermometerViewModel
             float upperBound = 2000f; // 设定上界
             float accuracy = 1e-6f; // 设定精度
 
-            return (float)Brent.FindRoot(
-                x => (double)equation((float)x),
-                (double)lowerBound,
-                (double)upperBound,
-                (double)accuracy,
-                100);
+            return 0;
+            //return (float)Brent.FindRoot(
+            //    x => (double)equation((float)x),
+            //    (double)lowerBound,
+            //    (double)upperBound,
+            //    (double)accuracy,
+            //    100);
         }
 
         // 计算温度计

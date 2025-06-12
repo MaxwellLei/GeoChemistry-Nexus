@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GeoChemistryNexus.Helpers;
-using MathNet.Numerics.Distributions;
 using Ookii.Dialogs.Wpf;
 using System;
 using System.Collections.Generic;

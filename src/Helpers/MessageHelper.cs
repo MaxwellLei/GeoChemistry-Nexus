@@ -48,5 +48,18 @@ namespace GeoChemistryNexus.Helpers
             growlInfo.Message = message;
             Growl.Error(growlInfo);
         }
+
+        public static Task<bool> ShowAsyncDialog(string message)
+        {
+            var tcs = new TaskCompletionSource<bool>();
+
+            Growl.Ask(message, isConfirmed =>
+            {
+                tcs.SetResult(isConfirmed);
+                return true;
+            });
+
+            return tcs.Task;
+        }
     }
 }
