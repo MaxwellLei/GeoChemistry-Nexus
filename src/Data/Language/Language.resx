@@ -1,0 +1,757 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+		Microsoft ResX Schema
+
+		Version 1.3
+
+		The primary goals of this format is to allow a simple XML format 
+		that is mostly human readable. The generation and parsing of the 
+		various data types are done through the TypeConverter classes 
+		associated with the data types.
+
+		Example:
+
+		... ado.net/XML headers & schema ...
+		<resheader name="resmimetype">text/microsoft-resx</resheader>
+		<resheader name="version">1.3</resheader>
+		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+		<data name="Name1">this is my long string</data>
+		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+			[base64 mime encoded serialized .NET Framework object]
+		</data>
+		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+			[base64 mime encoded string representing a byte array form of the .NET Framework object]
+		</data>
+
+		There are any number of "resheader" rows that contain simple 
+		name/value pairs.
+
+		Each data row contains a name, and value. The row also contains a 
+		type or mimetype. Type corresponds to a .NET class that support 
+		text/value conversion through the TypeConverter architecture. 
+		Classes that don't support this are serialized and stored with the 
+		mimetype set.
+
+		The mimetype is used for serialized objects, and tells the 
+		ResXResourceReader how to depersist the object. This is currently not 
+		extensible. For a given mimetype the value must be set accordingly:
+
+		Note - application/x-microsoft.net.object.binary.base64 is the format 
+		that the ResXResourceWriter will generate, however the reader can 
+		read any of the formats listed below.
+
+		mimetype: application/x-microsoft.net.object.binary.base64
+		value   : The object must be serialized with 
+			: System.Serialization.Formatters.Binary.BinaryFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.soap.base64
+		value   : The object must be serialized with 
+			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.bytearray.base64
+		value   : The object must be serialized into a byte array 
+			: using a System.ComponentModel.TypeConverter
+			: and then encoded with base64 encoding.
+	-->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="StartStatus" xml:space="preserve">
+    <value>Starting...</value>
+  </data>
+  <data name="Show" xml:space="preserve">
+    <value>Show</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="SmashIt" xml:space="preserve">
+    <value>🔨Smash It?</value>
+  </data>
+  <data name="SmashItC" xml:space="preserve">
+    <value>What's inside? Maybe you can try smashing it</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Plot" xml:space="preserve">
+    <value>Plot</value>
+  </data>
+  <data name="Geothermometer" xml:space="preserve">
+    <value>GTM</value>
+  </data>
+  <data name="Setting" xml:space="preserve">
+    <value>Setting</value>
+  </data>
+  <data name="File" xml:space="preserve">
+    <value>_File(F)</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Expand" xml:space="preserve">
+    <value>Expand</value>
+  </data>
+  <data name="EditMode" xml:space="preserve">
+    <value>Edit Mode</value>
+  </data>
+  <data name="NewBasemap" xml:space="preserve">
+    <value>New Basemap</value>
+  </data>
+  <data name="SaveBasemap" xml:space="preserve">
+    <value>Save Basemap</value>
+  </data>
+  <data name="ImportBasemap" xml:space="preserve">
+    <value>Import Basemap</value>
+  </data>
+  <data name="ExportBasemap" xml:space="preserve">
+    <value>Export Basemap</value>
+  </data>
+  <data name="DeleteBasemap" xml:space="preserve">
+    <value>Delete Basemap</value>
+  </data>
+  <data name="GetMoreBasemap" xml:space="preserve">
+    <value>Get More Basemaps</value>
+  </data>
+  <data name="ImportData" xml:space="preserve">
+    <value>Import Data</value>
+  </data>
+  <data name="ResetPlot" xml:space="preserve">
+    <value>Reset Plot</value>
+  </data>
+  <data name="ResetVision" xml:space="preserve">
+    <value>Reset View</value>
+  </data>
+  <data name="CancelSelected" xml:space="preserve">
+    <value>Deselect</value>
+  </data>
+  <data name="LocationAxis" xml:space="preserve">
+    <value>Locate</value>
+  </data>
+  <data name="ExportImage" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="ExportImagePNG" xml:space="preserve">
+    <value>Export as PNG</value>
+  </data>
+  <data name="ExportImageJPG" xml:space="preserve">
+    <value>Export as JPG</value>
+  </data>
+  <data name="ExportImageBMP" xml:space="preserve">
+    <value>Export as BMP</value>
+  </data>
+  <data name="ExportImageWebp" xml:space="preserve">
+    <value>Export as Webp</value>
+  </data>
+  <data name="ExportImageSVG" xml:space="preserve">
+    <value>Export as SVG</value>
+  </data>
+  <data name="LegendSetting" xml:space="preserve">
+    <value>Legend</value>
+  </data>
+  <data name="PlotSetting" xml:space="preserve">
+    <value>Plot Settings</value>
+  </data>
+  <data name="AddLine" xml:space="preserve">
+    <value>Add Line</value>
+  </data>
+  <data name="AddPolygons" xml:space="preserve">
+    <value>Add Polygons</value>
+  </data>
+  <data name="AddText" xml:space="preserve">
+    <value>Add Text</value>
+  </data>
+  <data name="JsSetting" xml:space="preserve">
+    <value>Script Settings</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="QuitEdit" xml:space="preserve">
+    <value>Quit Edit</value>
+  </data>
+  <data name="IgneousRock" xml:space="preserve">
+    <value>Igneous Rock</value>
+  </data>
+  <data name="TectonicSetting" xml:space="preserve">
+    <value>Tectonic Setting</value>
+  </data>
+  <data name="Basalt" xml:space="preserve">
+    <value>Basalt</value>
+  </data>
+  <data name="RockClassification" xml:space="preserve">
+    <value>Rock Classification</value>
+  </data>
+  <data name="GTMP" xml:space="preserve">
+    <value>Temperature Plot</value>
+  </data>
+  <data name="Guide" xml:space="preserve">
+    <value>Guide</value>
+  </data>
+  <data name="BorderLine" xml:space="preserve">
+    <value>Border</value>
+  </data>
+  <data name="PlotText" xml:space="preserve">
+    <value>Annotation</value>
+  </data>
+  <data name="PlotAxies" xml:space="preserve">
+    <value>Axes</value>
+  </data>
+  <data name="PlotLeftAxies" xml:space="preserve">
+    <value>Left Axis</value>
+  </data>
+  <data name="PlotBottomAxies" xml:space="preserve">
+    <value>Bottom Axis</value>
+  </data>
+  <data name="PlotData" xml:space="preserve">
+    <value>Data</value>
+  </data>
+  <data name="MajorAxes" xml:space="preserve">
+    <value>Major Axes</value>
+  </data>
+  <data name="MinorAxes" xml:space="preserve">
+    <value>Minor Axes</value>
+  </data>
+  <data name="Legend" xml:space="preserve">
+    <value>Legend</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>Background</value>
+  </data>
+  <data name="Calculate" xml:space="preserve">
+    <value>Calculate</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="IsShow" xml:space="preserve">
+    <value>Visible</value>
+  </data>
+  <data name="FontFamily" xml:space="preserve">
+    <value>Font Family</value>
+  </data>
+  <data name="FontStyle" xml:space="preserve">
+    <value>Font Style</value>
+  </data>
+  <data name="FontNormal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="FontBold" xml:space="preserve">
+    <value>Bold</value>
+  </data>
+  <data name="FontItalic" xml:space="preserve">
+    <value>Italic</value>
+  </data>
+  <data name="FontSize" xml:space="preserve">
+    <value>Font Size</value>
+  </data>
+  <data name="FontColor" xml:space="preserve">
+    <value>Font Color</value>
+  </data>
+  <data name="TextContent" xml:space="preserve">
+    <value>Content</value>
+  </data>
+  <data name="LineStyle" xml:space="preserve">
+    <value>Line Style</value>
+  </data>
+  <data name="LineSolid" xml:space="preserve">
+    <value>Solid</value>
+  </data>
+  <data name="LineDash" xml:space="preserve">
+    <value>Dashed</value>
+  </data>
+  <data name="LineDashDot" xml:space="preserve">
+    <value>Dash-Dot</value>
+  </data>
+  <data name="LineDenselyDashed" xml:space="preserve">
+    <value>Densely Dashed</value>
+  </data>
+  <data name="LineWidth" xml:space="preserve">
+    <value>Width</value>
+  </data>
+  <data name="LineColor" xml:space="preserve">
+    <value>Color</value>
+  </data>
+  <data name="PointStyle" xml:space="preserve">
+    <value>Point Style</value>
+  </data>
+  <data name="PointCircle" xml:space="preserve">
+    <value>Circle</value>
+  </data>
+  <data name="PointHollowCircle" xml:space="preserve">
+    <value>Hollow Circle</value>
+  </data>
+  <data name="PointSquare" xml:space="preserve">
+    <value>Square</value>
+  </data>
+  <data name="PointFilledTriangleUp" xml:space="preserve">
+    <value>Filled Triangle Up</value>
+  </data>
+  <data name="PointFilledTriangleDown" xml:space="preserve">
+    <value>Filled Triangle Down</value>
+  </data>
+  <data name="PointDiamond" xml:space="preserve">
+    <value>Diamond</value>
+  </data>
+  <data name="PointEks" xml:space="preserve">
+    <value>X</value>
+  </data>
+  <data name="PointCross" xml:space="preserve">
+    <value>Cross</value>
+  </data>
+  <data name="PointStar" xml:space="preserve">
+    <value>Star</value>
+  </data>
+  <data name="Size" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="IsShowAxes" xml:space="preserve">
+    <value>Show Axes</value>
+  </data>
+  <data name="IsShowAxesTick" xml:space="preserve">
+    <value>Hide Major Ticks</value>
+  </data>
+  <data name="AxesStyle" xml:space="preserve">
+    <value>Axis Style</value>
+  </data>
+  <data name="AxesStyleNormal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="AxesStyleLog10" xml:space="preserve">
+    <value>Log(10)</value>
+  </data>
+  <data name="AxesTickFont" xml:space="preserve">
+    <value>Tick Font</value>
+  </data>
+  <data name="AxesTickFontSize" xml:space="preserve">
+    <value>Tick Font Size</value>
+  </data>
+  <data name="AxesTickSpacing" xml:space="preserve">
+    <value>Tick Spacing</value>
+  </data>
+  <data name="AxesTickUpLimit" xml:space="preserve">
+    <value>Upper Limit</value>
+  </data>
+  <data name="AxesTickDownLimit" xml:space="preserve">
+    <value>Lower Limit</value>
+  </data>
+  <data name="AxesTickColor" xml:space="preserve">
+    <value>Tick Color</value>
+  </data>
+  <data name="IsShowMinorAxes" xml:space="preserve">
+    <value>Hide Minor Ticks</value>
+  </data>
+  <data name="IsShowLegend" xml:space="preserve">
+    <value>Show Legend</value>
+  </data>
+  <data name="LegendPosition" xml:space="preserve">
+    <value>Legend Position</value>
+  </data>
+  <data name="LegendPositionRU" xml:space="preserve">
+    <value>Top Right</value>
+  </data>
+  <data name="LegendPositionRD" xml:space="preserve">
+    <value>Bottom Right</value>
+  </data>
+  <data name="LegendPositionLU" xml:space="preserve">
+    <value>Top Left</value>
+  </data>
+  <data name="LegendPositionLD" xml:space="preserve">
+    <value>Bottom Left</value>
+  </data>
+  <data name="LegendDirection" xml:space="preserve">
+    <value>Legend Direction</value>
+  </data>
+  <data name="LegendVertical" xml:space="preserve">
+    <value>Vertical</value>
+  </data>
+  <data name="LegendHorizontal" xml:space="preserve">
+    <value>Horizontal</value>
+  </data>
+  <data name="PlotTitle" xml:space="preserve">
+    <value>Plot Title</value>
+  </data>
+  <data name="PlotTitleFont" xml:space="preserve">
+    <value>Title Font</value>
+  </data>
+  <data name="PlotTitleFontSize" xml:space="preserve">
+    <value>Title Font Size</value>
+  </data>
+  <data name="PlotTitleColor" xml:space="preserve">
+    <value>Title Color</value>
+  </data>
+  <data name="PlotAxesTitle1" xml:space="preserve">
+    <value>Axis Title 1</value>
+  </data>
+  <data name="PlotAxesTitle2" xml:space="preserve">
+    <value>Axis Title 2</value>
+  </data>
+  <data name="PlotAxesTitleFont" xml:space="preserve">
+    <value>Axis Title Font</value>
+  </data>
+  <data name="PlotAxesTitleFontSize" xml:space="preserve">
+    <value>Axis Title Font Size</value>
+  </data>
+  <data name="PlotAxesTitleColor" xml:space="preserve">
+    <value>Axis Title Color</value>
+  </data>
+  <data name="PlotShowGrid" xml:space="preserve">
+    <value>Show Grid</value>
+  </data>
+  <data name="PlotMajorGridColor" xml:space="preserve">
+    <value>Major Grid Color</value>
+  </data>
+  <data name="PlotMajorGridWidth" xml:space="preserve">
+    <value>Major Grid Width</value>
+  </data>
+  <data name="PlotShowMinorGrid" xml:space="preserve">
+    <value>Show Minor Grid</value>
+  </data>
+  <data name="PlotMinorGridColor" xml:space="preserve">
+    <value>Minor Grid Color</value>
+  </data>
+  <data name="PlotMinorGridWidth" xml:space="preserve">
+    <value>Minor Grid Width</value>
+  </data>
+  <data name="PlotSwitchFilledColor" xml:space="preserve">
+    <value>Invert Fill Color</value>
+  </data>
+  <data name="PlotFilledColor1" xml:space="preserve">
+    <value>Fill Color 1</value>
+  </data>
+  <data name="PlotFilledColor2" xml:space="preserve">
+    <value>Fill Color 2</value>
+  </data>
+  <data name="Parameters" xml:space="preserve">
+    <value>Required Parameters</value>
+  </data>
+  <data name="Js" xml:space="preserve">
+    <value>Js Script</value>
+  </data>
+  <data name="CheckJs" xml:space="preserve">
+    <value>Check Script</value>
+  </data>
+  <data name="Undelete_Message" xml:space="preserve">
+    <value>Delete Canceled</value>
+  </data>
+  <data name="DeleteingBasemapConfirm1_Message" xml:space="preserve">
+    <value>Deleting Basemap</value>
+  </data>
+  <data name="DeleteingBasemapConfirm2_Message" xml:space="preserve">
+    <value>Are you sure you want to delete?</value>
+  </data>
+  <data name="SaveSuccess" xml:space="preserve">
+    <value>Save Successful</value>
+  </data>
+  <data name="ParameterNotFilledIn" xml:space="preserve">
+    <value>Mapping parameters not filled in</value>
+  </data>
+  <data name="ScNotFilledIn" xml:space="preserve">
+    <value>Mapping script not filled in</value>
+  </data>
+  <data name="BasemapVersionToLow1" xml:space="preserve">
+    <value>The imported basemap version is too low, please use a version higher than</value>
+  </data>
+  <data name="BasemapVersionToLow2" xml:space="preserve">
+    <value>version</value>
+  </data>
+  <data name="CancelImport" xml:space="preserve">
+    <value>Import Canceled</value>
+  </data>
+  <data name="BasemapExisted" xml:space="preserve">
+    <value>Basemap file already exists, do you want to overwrite?</value>
+  </data>
+  <data name="NewBasemapSuccess" xml:space="preserve">
+    <value>New Basemap Created Successfully</value>
+  </data>
+  <data name="CategoryFormatError" xml:space="preserve">
+    <value>Category format error</value>
+  </data>
+  <data name="ParameterNull" xml:space="preserve">
+    <value>Parameter is null</value>
+  </data>
+  <data name="JsNull" xml:space="preserve">
+    <value>Script is empty</value>
+  </data>
+  <data name="BasemapCategories" xml:space="preserve">
+    <value>Basemap Categories</value>
+  </data>
+  <data name="BasemapLanguage" xml:space="preserve">
+    <value>Basemap Language</value>
+  </data>
+  <data name="Zircon" xml:space="preserve">
+    <value>Zircon</value>
+  </data>
+  <data name="Sphalerite" xml:space="preserve">
+    <value>Sphalerite</value>
+  </data>
+  <data name="Quartz" xml:space="preserve">
+    <value>Quartz</value>
+  </data>
+  <data name="Arsenopyrite" xml:space="preserve">
+    <value>Arsenopyrite</value>
+  </data>
+  <data name="Chlorite" xml:space="preserve">
+    <value>Chlorite</value>
+  </data>
+  <data name="Biotite" xml:space="preserve">
+    <value>Biotite</value>
+  </data>
+  <data name="Amphibole" xml:space="preserve">
+    <value>Amphibole</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="ExportResult" xml:space="preserve">
+    <value>Export Results</value>
+  </data>
+  <data name="TGMInfo" xml:space="preserve">
+    <value>Click or drag files here</value>
+  </data>
+  <data name="CalTarget" xml:space="preserve">
+    <value>Calculation Target</value>
+  </data>
+  <data name="CalTarget1" xml:space="preserve">
+    <value>Saturation Temperature</value>
+  </data>
+  <data name="CalTarget2" xml:space="preserve">
+    <value>Major Element Temperature</value>
+  </data>
+  <data name="AtomicMassStd" xml:space="preserve">
+    <value>Atomic Mass Standard</value>
+  </data>
+  <data name="Pressure" xml:space="preserve">
+    <value>Pressure (MPa)</value>
+  </data>
+  <data name="ActivityTiO2" xml:space="preserve">
+    <value>Activity (TiO2)</value>
+  </data>
+  <data name="ActivitySiO2" xml:space="preserve">
+    <value>Activity (SiO2)</value>
+  </data>
+  <data name="fS" xml:space="preserve">
+    <value>Sulfur Fugacity</value>
+  </data>
+  <data name="fSInfo" xml:space="preserve">
+    <value>Automatic Calculation Method for Sulfur Fugacity</value>
+  </data>
+  <data name="DefaultImport" xml:space="preserve">
+    <value>Default Import</value>
+  </data>
+  <data name="ShowError" xml:space="preserve">
+    <value>Show Error Range</value>
+  </data>
+  <data name="MineralAssemblage" xml:space="preserve">
+    <value>Mineral Assemblage</value>
+  </data>
+  <data name="AmphiboleGTM" xml:space="preserve">
+    <value>Amphibole Geothermometer</value>
+  </data>
+  <data name="BiotiteGTM" xml:space="preserve">
+    <value>Biotite Geothermometer</value>
+  </data>
+  <data name="ChloriteGTM" xml:space="preserve">
+    <value>Chlorite Geothermometer</value>
+  </data>
+  <data name="ArsenopyriteGTM" xml:space="preserve">
+    <value>Arsenopyrite Geothermometer</value>
+  </data>
+  <data name="QuartzGTM" xml:space="preserve">
+    <value>Quartz Ti Geothermometer</value>
+  </data>
+  <data name="SphaleriteGTM" xml:space="preserve">
+    <value>Sphalerite FeS Geothermometer</value>
+  </data>
+  <data name="SphaleriteGGIMFisGTM" xml:space="preserve">
+    <value>Sphalerite GGIMFis Geothermometer</value>
+  </data>
+  <data name="ZirconTiGTM" xml:space="preserve">
+    <value>Zircon Ti Geothermometer</value>
+  </data>
+  <data name="ZirconZrGTM" xml:space="preserve">
+    <value>Zircon Zr Geothermometer</value>
+  </data>
+  <data name="Step1" xml:space="preserve">
+    <value>Import / Enter Data</value>
+  </data>
+  <data name="Step2" xml:space="preserve">
+    <value>Check Parameters</value>
+  </data>
+  <data name="Step3" xml:space="preserve">
+    <value>Calculate Results</value>
+  </data>
+  <data name="NormalSetting" xml:space="preserve">
+    <value>General Settings</value>
+  </data>
+  <data name="About" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="FilePath" xml:space="preserve">
+    <value>File Path</value>
+  </data>
+  <data name="FileSavePath" xml:space="preserve">
+    <value>Save File Location</value>
+  </data>
+  <data name="DefaultPath" xml:space="preserve">
+    <value>Default Location</value>
+  </data>
+  <data name="CustomPath" xml:space="preserve">
+    <value>Custom Folder Location</value>
+  </data>
+  <data name="OpenFileLocation" xml:space="preserve">
+    <value>Open Folder Location</value>
+  </data>
+  <data name="InternationalizationAndPersonalization" xml:space="preserve">
+    <value>Internationalization &amp; Personalization</value>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="Language_" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="ChineseS" xml:space="preserve">
+    <value>中文 (简体)</value>
+  </data>
+  <data name="EnglishUS" xml:space="preserve">
+    <value>English (US</value>
+  </data>
+  <data name="StartBackgroundImages" xml:space="preserve">
+    <value>Startup Background Image</value>
+  </data>
+  <data name="DefaultRandom" xml:space="preserve">
+    <value>Default Random</value>
+  </data>
+  <data name="MessageNotification" xml:space="preserve">
+    <value>Message Notification</value>
+  </data>
+  <data name="MessageAutoClose" xml:space="preserve">
+    <value>Auto-close Time</value>
+  </data>
+  <data name="MessageAutoClose5" xml:space="preserve">
+    <value>5 seconds</value>
+  </data>
+  <data name="MessageAutoClose4" xml:space="preserve">
+    <value>4 seconds</value>
+  </data>
+  <data name="MessageAutoClose3" xml:space="preserve">
+    <value>3 seconds</value>
+  </data>
+  <data name="MessageAutoClose2" xml:space="preserve">
+    <value>2 seconds</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="Boot" xml:space="preserve">
+    <value>Start with System</value>
+  </data>
+  <data name="AutoCheckUpdate" xml:space="preserve">
+    <value>Auto-check for Updates</value>
+  </data>
+  <data name="CheckUpdate" xml:space="preserve">
+    <value>Check for Updates</value>
+  </data>
+  <data name="QuitAppMode" xml:space="preserve">
+    <value>Exit Method</value>
+  </data>
+  <data name="MinimizeTray" xml:space="preserve">
+    <value>Minimize to Tray</value>
+  </data>
+  <data name="Quit" xml:space="preserve">
+    <value>Quit Directly</value>
+  </data>
+  <data name="AboutInfo1" xml:space="preserve">
+    <value>This project utilizes geochemical data for related chart plotting, calculation, and analysis, aiming to efficiently process geological data and help earth science researchers accelerate their data analysis workflow and improve research efficiency.</value>
+  </data>
+  <data name="AboutInfo2" xml:space="preserve">
+    <value>If you're interested in this project, please consider giving it a Star for support! If you find it helpful, you can also buy me a coffee☕</value>
+  </data>
+  <data name="AboutInfo3" xml:space="preserve">
+    <value>We welcome more researchers to join!&amp;#xA;Let's maintain and update geochemical calculation methods together, and create more plotting templates!&amp;#xA;Make the software more powerful and user-friendly!</value>
+  </data>
+  <data name="ThankSupport" xml:space="preserve">
+    <value>Thanks for the Support</value>
+  </data>
+  <data name="Support1" xml:space="preserve">
+    <value>📌Control Support:</value>
+  </data>
+  <data name="Support2" xml:space="preserve">
+    <value>📌Chart Support:</value>
+  </data>
+  <data name="Support3" xml:space="preserve">
+    <value>📌Documentation Support:</value>
+  </data>
+  <data name="Support4" xml:space="preserve">
+    <value>📌Calculation Support:</value>
+  </data>
+  <data name="Support5" xml:space="preserve">
+    <value>📌Tool Support:</value>
+  </data>
+  <data name="PlotBoder" xml:space="preserve">
+    <value>Border</value>
+  </data>
+  <data name="ResetSuccess" xml:space="preserve">
+    <value>Reset Successful</value>
+  </data>
+  <data name="ModifedSuccess" xml:space="preserve">
+    <value>Modified Successfully</value>
+  </data>
+  <data name="ModifedCanceled" xml:space="preserve">
+    <value>Modification Canceled</value>
+  </data>
+  <data name="Info1" xml:space="preserve">
+    <value>Please visit the official website, this feature is under development....</value>
+  </data>
+</root>

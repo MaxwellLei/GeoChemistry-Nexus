@@ -469,8 +469,8 @@ namespace GeoChemistryNexus.ViewModels
             // 映射字典
             translations = new Dictionary<string, string>
             {
-                { "Left", I18n.GetString("PlotLeftAxies")},
-                { "Bottom", I18n.GetString("PlotBottomAxies") }
+                { "Left", LanguageService.Instance["PlotLeftAxies"]},
+                { "Bottom", LanguageService.Instance["PlotBottomAxies"]}
             };
 
             // 刷新图层列表
@@ -586,7 +586,7 @@ namespace GeoChemistryNexus.ViewModels
 
                 if (plottableType == "LinePlot")
                 {
-                    displayName = I18n.GetString("PlotBoder");
+                    displayName = LanguageService.Instance["PlotBoder"];
                     BasePlotItems.Add(new PlotItemModel
                     {
                         Plottable = plottable,
@@ -2649,7 +2649,7 @@ namespace GeoChemistryNexus.ViewModels
             if (NeedParamContent == "" || NeedParamContent == null)
             {
                 // 通知：参数为空
-                output += I18n.GetString("ParameterNull");
+                output += LanguageService.Instance["ParameterNull"];
             }
             else
             {
@@ -2659,7 +2659,7 @@ namespace GeoChemistryNexus.ViewModels
             if (JsScriptContent == "" || JsScriptContent == null)
             {
                 // 脚本为空
-                output += "\n" + I18n.GetString("JsNull");
+                output += "\n" + LanguageService.Instance["JsNull"];
             }
             else
             {
@@ -2690,7 +2690,7 @@ namespace GeoChemistryNexus.ViewModels
             if (!IsValidCommaSeparatedString(BasePlotType))
             {
                 // 通知：类别格式错误
-                MessageHelper.Info(I18n.GetString("CategoryFormatError"));
+                MessageHelper.Info(LanguageService.Instance["CategoryFormatError"]);
                 return;
             }
 
@@ -2713,7 +2713,7 @@ namespace GeoChemistryNexus.ViewModels
             _previousSelectedNode = FindTreeNodeByConfig(RootTreeNode, listNodeConfig);
 
             // 通知:新建底图成功
-            MessageHelper.Info(I18n.GetString("NewBasemapSuccess"));
+            MessageHelper.Info(LanguageService.Instance["NewBasemapSuccess"]);
 
             // 关闭弹窗
             SetTrue(null);
@@ -2780,7 +2780,7 @@ namespace GeoChemistryNexus.ViewModels
                     // 判断导入的底图是否已存在
                     if (FileHelper.IsFileExist(tempPath))
                     {
-                        Growl.Ask(I18n.GetString("BasemapExisted"), isConfirmed =>
+                        Growl.Ask(LanguageService.Instance["BasemapExisted"], isConfirmed =>
                         {
                             if (isConfirmed)
                             {
@@ -2806,7 +2806,7 @@ namespace GeoChemistryNexus.ViewModels
                             else
                             {
                                 // 通知：已取消导入
-                                MessageHelper.Info(I18n.GetString("CancelImport"));
+                                MessageHelper.Info(LanguageService.Instance["CancelImport"]);
                             }
 
                             return true;
@@ -2860,8 +2860,8 @@ namespace GeoChemistryNexus.ViewModels
                 else
                 {
                     // 通知：导入的底图版本过低，请使用版本大于" + mapVersion + "的底图
-                    MessageHelper.Warning(I18n.GetString("BasemapVersionToLow1") + mapVersion +
-                        I18n.GetString("BasemapVersionToLow2"));
+                    MessageHelper.Warning(LanguageService.Instance["BasemapVersionToLow1"] + mapVersion +
+                        LanguageService.Instance["BasemapVersionToLow2"]);
                 }
             }
         }
@@ -2911,7 +2911,7 @@ namespace GeoChemistryNexus.ViewModels
             if (NeedParamContent == null || NeedParamContent =="")
             {
                 // 通知:投图参数未填写
-                MessageHelper.Info(I18n.GetString("ParameterNotFilledIn"));
+                MessageHelper.Info(LanguageService.Instance["ParameterNotFilledIn"]);
             }
             else
             {
@@ -2921,7 +2921,7 @@ namespace GeoChemistryNexus.ViewModels
             if (JsScriptContent == null || JsScriptContent == "")
             {
                 // 通知:投图脚本未填写
-                MessageHelper.Info(I18n.GetString("ScNotFilledIn"));
+                MessageHelper.Info(LanguageService.Instance["ScNotFilledIn"]);
             }
             else
             {
@@ -3047,7 +3047,7 @@ namespace GeoChemistryNexus.ViewModels
             JsonHelper.SerializeToJsonFile(BasePlotConfigObject, tempNewPath);
 
             // 通知前端
-            MessageHelper.Success(I18n.GetString("SaveSuccess"));
+            MessageHelper.Success(LanguageService.Instance["SaveSuccess"]);
         }
 
         // 脚本设置
@@ -3064,7 +3064,7 @@ namespace GeoChemistryNexus.ViewModels
             // 关闭脚本设置
             SetTrue(null);
             // 通知前端
-            MessageHelper.Success(I18n.GetString("SaveSuccess"));
+            MessageHelper.Success(LanguageService.Instance["SaveSuccess"]);
         }
 
         // 取消脚本
@@ -3105,9 +3105,9 @@ namespace GeoChemistryNexus.ViewModels
             if(_previousSelectedNode != null)
             {
                 // 通知：正在删除底图  xxx ，是否确认删除
-                Growl.Ask(I18n.GetString("DeleteingBasemapConfirm1_Message") + 
+                Growl.Ask(LanguageService.Instance["DeleteingBasemapConfirm1_Message"] + 
                     _previousSelectedNode.rootNode[_previousSelectedNode.rootNode.Length-1]+
-                    I18n.GetString("DeleteingBasemapConfirm2_Message"), 
+                    LanguageService.Instance["DeleteingBasemapConfirm2_Message"], 
                 isConfirmed =>
                 {
                     if (isConfirmed)
@@ -3142,7 +3142,7 @@ namespace GeoChemistryNexus.ViewModels
                     else
                     {
                         // 通知：取消删除
-                        MessageHelper.Info(I18n.GetString("Undelete_Message"));
+                        MessageHelper.Info(LanguageService.Instance["Undelete_Message"]);
                     }
                     return true;
                 });

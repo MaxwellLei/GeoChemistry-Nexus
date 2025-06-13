@@ -20,7 +20,7 @@
 
     <!--=====================绘图页面=========================-->
     <!--绘图侧边列表菜单-->
-    <s:String x:Key="File">文件</s:String>
+    <s:String x:Key="File">文件</s:String> 
     <s:String x:Key="Edit">编辑</s:String>
     <s:String x:Key="Expand">拓展</s:String>
     <s:String x:Key="EditMode">编辑模式</s:String>

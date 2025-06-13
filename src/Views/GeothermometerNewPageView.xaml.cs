@@ -18,23 +18,23 @@ using System.Windows.Shapes;
 namespace GeoChemistryNexus.Views
 {
     /// <summary>
-    /// GeothermometerPageView.xaml 的交互逻辑
+    /// GeothermomrNewPageView.xaml 的交互逻辑
     /// </summary>
-    public partial class GeothermometerPageView : Page
+    public partial class GeothermometerNewPageView : Page
     {
-        private static GeothermometerPageView commonPage = null;
+        private static GeothermometerNewPageView commonPage = null;
 
-        public GeothermometerPageView()
+        public GeothermometerNewPageView()
         {
             InitializeComponent();
-            this.DataContext = new GeothermometerPageViewModel(richTextBox);
+            this.DataContext = new GeothermometerNewPageViewModel();
         }
 
         public static Page GetPage()
         {
             if (commonPage == null)
             {
-                commonPage = new GeothermometerPageView();
+                commonPage = new GeothermometerNewPageView();
             }
             return commonPage;
         }

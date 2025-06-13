@@ -80,13 +80,13 @@ namespace GeoChemistryNexus.ViewModels
         private void ExecuteExitProgrmModeCommand()
         {
             ConfigHelper.SetConfig("exit_program_mode", ExitMode.ToString());
-            MessageHelper.Success(I18n.GetString("ModifedSuccess"));
+            MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
         }
 
         // 检查更新
         private void ExecuteCheckUpdateCommand()
         {
-            MessageHelper.Success(I18n.GetString("Info1"));
+            MessageHelper.Success(LanguageService.Instance["Info1"]);
             //UpdateHelper.CheckForUpdatesAsync();
         }
 
@@ -95,14 +95,14 @@ namespace GeoChemistryNexus.ViewModels
         {
             BootHelper.SetAutoRun(Boot);
             ConfigHelper.SetConfig("boot", Boot.ToString());
-            MessageHelper.Success(I18n.GetString("ModifedSuccess"));
+            MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
         }
 
         // 是否检查更新
         partial void OnAutoCheckChanged(bool value)
         {
             ConfigHelper.SetConfig("auto_check_update", AutoCheck.ToString());
-            MessageHelper.Success(I18n.GetString("ModifedSuccess"));
+            MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
         }
 
         // 修改消息通知时间
@@ -123,7 +123,7 @@ namespace GeoChemistryNexus.ViewModels
                     MessageHelper.waitTime = 2;
                     break;
             }
-            MessageHelper.Success(I18n.GetString("ModifedSuccess"));
+            MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
         }
 
         // 修改语言
@@ -131,16 +131,18 @@ namespace GeoChemistryNexus.ViewModels
         {
             if (Language == 0)
             {
-                LanguageHelper.ChangeLanguage("zh-CN");
-                ConfigHelper.SetConfig("language", "0");
+                //LanguageHelper.ChangeLanguage("zh-CN");
+                //ConfigHelper.SetConfig("language", "0");
+                LanguageService.Instance.ChangeLanguage(new System.Globalization.CultureInfo("zh-CN"));
             }
             else
             {
-                LanguageHelper.ChangeLanguage("en-US");
-                ConfigHelper.SetConfig("language", "1");
+                //LanguageHelper.ChangeLanguage("en-US");
+                //ConfigHelper.SetConfig("language", "1");
+                LanguageService.Instance.ChangeLanguage(new System.Globalization.CultureInfo("en-US"));
             }
 
-            MessageHelper.Success(I18n.GetString("ModifedSuccess"));
+            MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
         }
 
         // 修改数据库位置
@@ -153,7 +155,7 @@ namespace GeoChemistryNexus.ViewModels
                 {
                     Helpers.ConfigHelper.SetConfig("database_location", "0");
                     Helpers.ConfigHelper.SetConfig("database_location_path", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));  //如果是默认设置，则删除配置文件中的数据库位置
-                    MessageHelper.Success(I18n.GetString("ModifedSuccess"));
+                    MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
                 }
                 isInsideChange = false;
             }
@@ -164,13 +166,13 @@ namespace GeoChemistryNexus.ViewModels
                 {
                     Helpers.ConfigHelper.SetConfig("database_location", "1");
                     Helpers.ConfigHelper.SetConfig("database_location_path", dbLocationPath);  //如果是自定义设置，则保存配置文件中的数据库位置
-                    MessageHelper.Success(I18n.GetString("ModifedSuccess"));
+                    MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
                 }
                 else
                 {
                     isInsideChange = true;
                     DbLocation = 0;
-                    MessageHelper.Warning(I18n.GetString("ModifedCanceled"));
+                    MessageHelper.Warning(LanguageService.Instance["ModifedCanceled"]);
                 }
             }
         }
@@ -179,7 +181,7 @@ namespace GeoChemistryNexus.ViewModels
         private void ExecuteOpenDbFolderCommand()
         {
             FileHelper.Openxplorer(ConfigHelper.GetConfig("database_location_path"));
-            MessageHelper.Success(I18n.GetString("ModifedSuccess"));
+            MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
         }
 
         // 读取配置文件
@@ -234,7 +236,7 @@ namespace GeoChemistryNexus.ViewModels
                     MessageHelper.Warning((string)Application.Current.Resources["StartImageCopyError"] + ex.Message);
                 }
             }
-            MessageHelper.Success(I18n.GetString("ModifedSuccess"));
+            MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
         }
 
         // 获取启动封面图

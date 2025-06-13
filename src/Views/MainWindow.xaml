@@ -5,21 +5,28 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GeoChemistryNexus"
+        xmlns:lg="clr-namespace:GeoChemistryNexus.Helpers"
         xmlns:hc="https://handyorg.github.io/handycontrol"
         WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" Closing="Window_Closing" 
         Title="MainWindow" Height="760" Width="1300" BorderThickness="1">
     <WindowChrome.WindowChrome>
-        <WindowChrome CaptionHeight="38"/>
+        <WindowChrome CaptionHeight="55"/>
     </WindowChrome.WindowChrome>
 
     <!--主窗体-->
-    <Border CornerRadius="8" Background="#35383e">
-        <!--窗体阴影-->
+    <Border CornerRadius="8" Margin="20">
+        <Border.Background>
+            <SolidColorBrush Color="#FF333333"/>
+        </Border.Background>
+
         <Border.Effect>
-            <DropShadowEffect BlurRadius="8" Direction="315" 
-                             ShadowDepth="6" Opacity="0.5" Color="Gray"/>
+            <DropShadowEffect ShadowDepth="0" 
+                              BlurRadius="15" 
+                              Opacity="0.5" 
+                              Color="Black"/>
         </Border.Effect>
+
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="36"/>
@@ -30,9 +37,9 @@
                            Icon="../Data/Icon/logo.png">
                 <hc:NotifyIcon.ContextMenu>
                     <ContextMenu Width="160" Placement="Right">
-                        <MenuItem Header="{DynamicResource Show}" Click="ShowWindow"/>
+                        <MenuItem Header="{Binding [Show],Source={x:Static lg:LanguageService.Instance}}" Click="ShowWindow"/>
                         <Separator/>
-                        <MenuItem Header="{DynamicResource Exit}" Click="ShutDownWindow"/>
+                        <MenuItem Header="{Binding [Exit],Source={x:Static lg:LanguageService.Instance}}" Click="ShutDownWindow"/>
                     </ContextMenu>
                 </hc:NotifyIcon.ContextMenu>
             </hc:NotifyIcon>
@@ -45,11 +52,11 @@
                         <!--彩蛋部分-->
                             <TextBlock.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="{DynamicResource SmashIt}" Click="Stinger_Click"/>
+                                <MenuItem Header="{Binding [SmashIt],Source={x:Static lg:LanguageService.Instance}}" Click="Stinger_Click"/>
                             </ContextMenu>
                         </TextBlock.ContextMenu>
                         <TextBlock.ToolTip>
-                            <TextBlock Text="{DynamicResource SmashItC}" />
+                            <TextBlock Text="{Binding [SmashItC],Source={x:Static lg:LanguageService.Instance}}" />
                         </TextBlock.ToolTip>
                     </TextBlock>
                     <TextBlock Text="Geo-Thermometer" Foreground="White" FontWeight="Bold" FontSize="16"
@@ -87,7 +94,7 @@
                                 <WrapPanel Orientation="Vertical">
                                     <TextBlock Text="&#xe639;" Foreground="White" FontFamily="../Data/Icon/#iconfont"
                                            HorizontalAlignment="Center" FontSize="24"/>
-                                    <TextBlock Text="{DynamicResource Plot}" Foreground="White"/>
+                                    <TextBlock Text="{Binding [Plot],Source={x:Static lg:LanguageService.Instance}}" Foreground="White"/>
                                 </WrapPanel>
                             </RadioButton>
                             <!--温度计侧边栏-->
@@ -96,7 +103,7 @@
                                 <WrapPanel Orientation="Vertical">
                                     <TextBlock Text="&#xe716;" Foreground="White" FontFamily="../Data/Icon/#iconfont"
                                            HorizontalAlignment="Center" FontSize="24"/>
-                                    <TextBlock Text="{DynamicResource Geothermometer}" Foreground="White"/>
+                                    <TextBlock Text="{Binding [Geothermometer],Source={x:Static lg:LanguageService.Instance}}" Foreground="White"/>
                                 </WrapPanel>
                             </RadioButton>
                             <!--<RadioButton Name="RadioButton3" Style="{DynamicResource SideControlBar}" GroupName="SideBar"
@@ -122,7 +129,7 @@
                             <WrapPanel Orientation="Vertical">
                                 <TextBlock Text="&#xe60f;" Foreground="White" FontFamily="../Data/Icon/#iconfont"
                                            HorizontalAlignment="Center" FontSize="24"/>
-                                <TextBlock Text="{DynamicResource Setting}" Foreground="White"/>
+                                <TextBlock Text="{Binding [Setting],Source={x:Static lg:LanguageService.Instance}}" Foreground="White"/>
                             </WrapPanel>
                         </RadioButton>
                     </Grid>
@@ -136,6 +143,10 @@
                     <!--消息通知-->
                     <ScrollViewer VerticalScrollBarVisibility="Hidden" VerticalAlignment="Top" 
                                   HorizontalAlignment="Right">
+                        <ScrollViewer.Effect>
+                            <DropShadowEffect Color="#CCCCCC" Direction="270" ShadowDepth="5"
+                                              BlurRadius="15" Opacity="0.4"/>
+                        </ScrollViewer.Effect>
                         <VirtualizingStackPanel  hc:Growl.GrowlParent="True" VerticalAlignment="Top"
                                                  Margin="5"/>
                     </ScrollViewer>

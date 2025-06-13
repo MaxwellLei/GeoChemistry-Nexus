@@ -7,6 +7,7 @@
       xmlns:local="clr-namespace:GeoChemistryNexus.Views"
       xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
       xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+      xmlns:lg="clr-namespace:GeoChemistryNexus.Helpers"
       xmlns:ScottPlot="clr-namespace:ScottPlot.WPF;assembly=ScottPlot.WPF"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
@@ -39,34 +40,34 @@
                     <!--菜单栏-->
                     <Menu VerticalAlignment="Center" HorizontalAlignment="Left" FlowDirection="RightToLeft">
                         <!--拓展-->
-                        <MenuItem Header="{DynamicResource Expand}">
+                        <MenuItem Header="{Binding [Expand],Source={x:Static lg:LanguageService.Instance}}">
                             <!--获取更多底图-->
-                            <MenuItem Header="{DynamicResource GetMoreBasemap}" Command="{Binding NewBasemapCommand}" IsEnabled="False"/>
+                            <MenuItem Header="{Binding [GetMoreBasemap],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding NewBasemapCommand}" IsEnabled="False"/>
                         </MenuItem>
                         <!--编辑-->
-                        <MenuItem Header="{DynamicResource Edit}">
+                        <MenuItem Header="{Binding [Edit],Source={x:Static lg:LanguageService.Instance}}">
                             <!--<MenuItem Header="移动位置" Command="{Binding MovePositionCommand}"/>-->
                             <!--<Separator/>-->
                             <!--删除底图-->
-                            <MenuItem Header="{DynamicResource DeleteBasemap}" Command="{Binding DeleteBasemapCommand}"/>
+                            <MenuItem Header="{Binding [DeleteBasemap],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding DeleteBasemapCommand}"/>
                         </MenuItem>
                         <!--文件-->
-                        <MenuItem Header="{DynamicResource File}">
+                        <MenuItem Header="{Binding [File],Source={x:Static lg:LanguageService.Instance}}">
                             <!--编辑模式-->
-                            <MenuItem Header="{DynamicResource EditMode}" Command="{Binding EditModeCommand}"
+                            <MenuItem Header="{Binding [EditMode],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding EditModeCommand}"
                                       IsEnabled="{Binding IsPlotMode}"/>
                             <!--新建底图-->
-                            <MenuItem Header="{DynamicResource NewBasemap}" Command="{Binding NewBasemapCommand}"
+                            <MenuItem Header="{Binding [NewBasemap],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding NewBasemapCommand}"
                                       IsEnabled="{Binding IsEditMode}"/>
                             <!--保存底图-->
-                            <MenuItem Header="{DynamicResource SaveBasemap}" Command="{Binding SaveBaseMapCommand}"
+                            <MenuItem Header="{Binding [SaveBasemap],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding SaveBaseMapCommand}"
                                   IsEnabled="{Binding BasePlotConfigObject, Converter={StaticResource NullToEnableConverter}}"/>
                             <Separator/>
                             <!--导入底图-->
-                            <MenuItem Header="{DynamicResource ImportBasemap}" Command="{Binding LoadBasemapCommand}"
+                            <MenuItem Header="{Binding [ImportBasemap],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding LoadBasemapCommand}"
                                       />
                             <!--导出底图-->
-                            <MenuItem Header="{DynamicResource ExportBasemap}" Command="{Binding NewBasemapCommand}"
+                            <MenuItem Header="{Binding [ExportBasemap],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding NewBasemapCommand}"
                                   IsEnabled="False"/>
                         </MenuItem>
 
@@ -83,12 +84,12 @@
                             <!--<MenuItem Header="导出"/>-->
                             <!--<Separator />-->
                             <!--删除底图-->
-                            <MenuItem Header="{DynamicResource DeleteBasemap}" Command="{Binding DeleteBasemapCommand}"/>
+                            <MenuItem Header="{Binding [DeleteBasemap],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding DeleteBasemapCommand}"/>
                         </ContextMenu>
                     </TreeView.ContextMenu>
                     <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                            <TextBlock Text="{Binding Name}"/>
+                            <TextBlock Text="{Binding [Name],Source={x:Static lg:LanguageService.Instance}}"/>
                         </HierarchicalDataTemplate>
                     </TreeView.ItemTemplate>
                     <i:Interaction.Triggers>
@@ -111,7 +112,7 @@
                 </Grid.RowDefinitions>
                 <TabControl>
                     <!--选项卡标题-->
-                    <TabItem Header="{DynamicResource Plot}">
+                    <TabItem Header="{Binding [Plot],Source={x:Static lg:LanguageService.Instance}}">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto"/>
@@ -128,7 +129,7 @@
                                     <StackPanel>
                                         <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe653;"
                                                HorizontalAlignment="Center" FontSize="24"/>
-                                        <TextBlock Text="{DynamicResource ImportData}"/>
+                                        <TextBlock Text="{Binding [ImportData],Source={x:Static lg:LanguageService.Instance}}"/>
                                     </StackPanel>
                                 </Button>
                                 <!--重置绘图按钮-->
@@ -145,7 +146,7 @@
                                     <StackPanel>
                                         <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe601;"
                                                HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
-                                        <TextBlock Text="{DynamicResource ResetVision}"/>
+                                        <TextBlock Text="{Binding [ResetVision],Source={x:Static lg:LanguageService.Instance}}"/>
                                     </StackPanel>
                                 </Button>
                                 <!--取消选中-->
@@ -153,7 +154,7 @@
                                     <StackPanel>
                                         <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe6a5;"
                                                HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
-                                        <TextBlock Text="{DynamicResource CancelSelected}"/>
+                                        <TextBlock Text="{Binding [CancelSelected],Source={x:Static lg:LanguageService.Instance}}"/>
                                     </StackPanel>
                                 </Button>
                                 <!--定位轴-->
@@ -161,7 +162,7 @@
                                     <StackPanel>
                                         <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe61e;"
                                                HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
-                                        <TextBlock Text="{DynamicResource LocationAxis}"/>
+                                        <TextBlock Text="{Binding [LocationAxis],Source={x:Static lg:LanguageService.Instance}}"/>
                                     </StackPanel>
                                 </Button>
                                 <!--导出图片-->
@@ -170,17 +171,17 @@
                                         <StackPanel>
                                             <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe644;" 
                                                    HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
-                                            <TextBlock Text="{DynamicResource ExportImage}"/>
+                                            <TextBlock Text="{Binding [ExportImage],Source={x:Static lg:LanguageService.Instance}}"/>
                                         </StackPanel>
                                     </hc:SplitButton.Content>
 
                                     <hc:SplitButton.DropDownContent>
                                         <StackPanel>
-                                            <MenuItem Header="{DynamicResource ExportImagePNG}" Command="{Binding ExportImgCommand}" CommandParameter="png"/>
-                                            <MenuItem Header="{DynamicResource ExportImageJPG}" Command="{Binding ExportImgCommand}" CommandParameter="jpg"/>
-                                            <MenuItem Header="{DynamicResource ExportImageBMP}" Command="{Binding ExportImgCommand}" CommandParameter="bmp"/>
-                                            <MenuItem Header="{DynamicResource ExportImageWebp}" Command="{Binding ExportImgCommand}" CommandParameter="webp"/>
-                                            <MenuItem Header="{DynamicResource ExportImageSVG}" Command="{Binding ExportImgCommand}" CommandParameter="svg"/>
+                                            <MenuItem Header="{Binding [ExportImagePNG],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding ExportImgCommand}" CommandParameter="png"/>
+                                            <MenuItem Header="{Binding [ExportImageJPG],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding ExportImgCommand}" CommandParameter="jpg"/>
+                                            <MenuItem Header="{Binding [ExportImageBMP],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding ExportImgCommand}" CommandParameter="bmp"/>
+                                            <MenuItem Header="{Binding [ExportImageWebp],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding ExportImgCommand}" CommandParameter="webp"/>
+                                            <MenuItem Header="{Binding [ExportImageSVG],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding ExportImgCommand}" CommandParameter="svg"/>
                                         </StackPanel>
                                     </hc:SplitButton.DropDownContent>
                                 </hc:SplitButton>
@@ -189,7 +190,7 @@
                                     <StackPanel>
                                         <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe602;"
                                                HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
-                                        <TextBlock Text="{DynamicResource LegendSetting}"/>
+                                        <TextBlock Text="{Binding [LegendSetting],Source={x:Static lg:LanguageService.Instance}}"/>
                                     </StackPanel>
                                 </Button>
                                 <Button Height="60" Command="{Binding PlotSettingCommand}">
@@ -197,7 +198,7 @@
                                     <StackPanel>
                                         <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe60f;"
                                                HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
-                                        <TextBlock Text="{DynamicResource PlotSetting}"/>
+                                        <TextBlock Text="{Binding [PlotSetting],Source={x:Static lg:LanguageService.Instance}}"/>
                                     </StackPanel>
                                 </Button>
                             </WrapPanel>
@@ -217,7 +218,7 @@
                                     <StackPanel>
                                         <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe619;"
                                                HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
-                                        <TextBlock Text="{DynamicResource AddLine}" />
+                                        <TextBlock Text="{Binding [AddLine],Source={x:Static lg:LanguageService.Instance}}" />
                                     </StackPanel>
                                 </Button>
                                 <!--添加多边形-->
@@ -233,7 +234,7 @@
                                     <StackPanel>
                                         <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe603;"
                                                HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
-                                        <TextBlock Text="{DynamicResource AddText}"/>
+                                        <TextBlock Text="{Binding [AddText],Source={x:Static lg:LanguageService.Instance}}"/>
                                     </StackPanel>
                                 </Button>
                                 <!--脚本设置-->
@@ -241,7 +242,7 @@
                                     <StackPanel>
                                         <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe614;"
                                                HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
-                                        <TextBlock Text="{DynamicResource JsSetting}"/>
+                                        <TextBlock Text="{Binding [JsSetting],Source={x:Static lg:LanguageService.Instance}}"/>
                                     </StackPanel>
                                 </Button>
                                 <Button Height="60" Command="{Binding PlotSettingCommand}" >
@@ -249,7 +250,7 @@
                                     <StackPanel>
                                         <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe60f;"
                                                HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
-                                        <TextBlock Text="{DynamicResource PlotSetting}"/>
+                                        <TextBlock Text="{Binding [PlotSetting],Source={x:Static lg:LanguageService.Instance}}"/>
                                     </StackPanel>
                                 </Button>
                                 <Button Height="60" Command="{Binding SaveBaseMapCommand}" Margin="5">
@@ -257,7 +258,7 @@
                                     <StackPanel>
                                         <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe782;"
                                                HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
-                                        <TextBlock Text="{DynamicResource Save}"/>
+                                        <TextBlock Text="{Binding [Save],Source={x:Static lg:LanguageService.Instance}}"/>
                                     </StackPanel>
                                 </Button>
                                 <Button Height="60" Command="{Binding ExitEditModelCommand}">
@@ -265,14 +266,14 @@
                                     <StackPanel>
                                         <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe667;"
                                                HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
-                                        <TextBlock Text="{DynamicResource QuitEdit}"/>
+                                        <TextBlock Text="{Binding [QuitEdit],Source={x:Static lg:LanguageService.Instance}}"/>
                                     </StackPanel>
                                 </Button>
                             </WrapPanel>
                         </Grid>
                     </TabItem>
                     <!--指南选项卡-->
-                    <TabItem Header="{DynamicResource Guide}">
+                    <TabItem Header="{Binding [Guide],Source={x:Static lg:LanguageService.Instance}}">
                         <RichTextBox x:Name="Drichtextbox" IsReadOnly="{Binding IsPlotMode}" BorderThickness="0"
                                  Margin="32 10"/>
                     </TabItem>
@@ -291,7 +292,7 @@
                 </Grid.RowDefinitions>
                 <TabControl Background="White" SelectedIndex="{Binding SwitchLayer}" BorderThickness="0">
                     <!--线条/边界-->
-                    <TabItem Header="{DynamicResource BorderLine}">
+                    <TabItem Header="{Binding [BorderLine],Source={x:Static lg:LanguageService.Instance}}">
                         <ListBox ItemsSource="{Binding BasePlotItems}" DisplayMemberPath="Name" 
                                      SelectionMode="Extended" BorderThickness="0">
                             <i:Interaction.Triggers>
@@ -304,7 +305,7 @@
                         </ListBox>
                     </TabItem>
                     <!--文本/注释-->
-                    <TabItem Header="{DynamicResource PlotText}">
+                    <TabItem Header="{Binding [PlotText],Source={x:Static lg:LanguageService.Instance}}">
                         <ListBox ItemsSource="{Binding BaseTextItems}" DisplayMemberPath="Name"
                                      SelectionMode="Extended" BorderThickness="0">
                             <i:Interaction.Triggers>
@@ -317,7 +318,7 @@
                         </ListBox>
                     </TabItem>
                     <!--坐标轴-->
-                    <TabItem Header="{DynamicResource PlotAxies}">
+                    <TabItem Header="{Binding [PlotAxies],Source={x:Static lg:LanguageService.Instance}}">
                         <ListBox ItemsSource="{Binding AxesList}" DisplayMemberPath="Name"
                                      SelectionMode="Extended" BorderThickness="0">
                             <i:Interaction.Triggers>
@@ -330,7 +331,7 @@
                         </ListBox>
                     </TabItem>
                     <!--数据-->
-                    <TabItem Header="{DynamicResource PlotData}">
+                    <TabItem Header="{Binding [PlotData],Source={x:Static lg:LanguageService.Instance}}">
                         <ListBox ItemsSource="{Binding BaseDataItems}" DisplayMemberPath="Name"
                                      SelectionMode="Extended" BorderThickness="0">
                             <i:Interaction.Triggers>
@@ -366,14 +367,14 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
                             <!--是否可见-->
-                            <TextBlock Text="{DynamicResource IsShow}" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding [IsShow],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"/>
                             <CheckBox Grid.Column="1" IsChecked="{Binding PlotVisible}"/>
                             <!--字体-->
-                            <TextBlock Text="{DynamicResource FontFamily}" VerticalAlignment="Center" Grid.Row="1" Margin="0 5"/>
+                            <TextBlock Text="{Binding [FontFamily],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="1" Margin="0 5"/>
                             <ComboBox Grid.Column="1" SelectedIndex="{Binding PlotTextFontName}" Grid.Row="1" 
                                           ItemsSource="{Binding PlotTextFontNames}" Margin="0 5"/>
                             <!--字体样式-->
-                            <TextBlock Text="{DynamicResource FontStyle}" VerticalAlignment="Center" Grid.Row="2"/>
+                            <TextBlock Text="{Binding [FontStyle],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="2"/>
                             <ComboBox Grid.Column="1" SelectedIndex="{Binding PlotType}" Grid.Row="2">
                                 <ComboBox.Items>
                                     <ComboBoxItem Content="{DynamicResource FontNormal}"/>
@@ -382,16 +383,16 @@
                                 </ComboBox.Items>
                             </ComboBox>
                             <!--字体大小-->
-                            <TextBlock Text="{DynamicResource FontSize}" VerticalAlignment="Center" Grid.Row="3" Margin="0 5"/>
+                            <TextBlock Text="{Binding [FontSize],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="3" Margin="0 5"/>
                             <hc:NumericUpDown Grid.Row="3" Grid.Column="1" Value="{Binding PlotWidth,Mode=TwoWay}"
                                                 Margin="0 5"/>
                             <!--字体颜色-->
-                            <TextBlock Text="{DynamicResource FontColor}" VerticalAlignment="Center" Grid.Row="4" />
+                            <TextBlock Text="{Binding [FontColor],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="4" />
                             <Button Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                                 Content="" Click="Color_Pick" BorderThickness="0"
                                 Background="{Binding PlotColor, Converter={StaticResource BackgroundColorConverter}}"/>
                             <!--文本内容-->
-                            <TextBlock Text="{DynamicResource TextContent}" VerticalAlignment="Center" Grid.Row="5" Margin="0 5"/>
+                            <TextBlock Text="{Binding [TextContent],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="5" Margin="0 5"/>
                             <TextBox Grid.Row="5" Grid.Column="1" Margin="0 5" Text="{Binding PlotTextContent,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  AcceptsReturn="True" >
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="TextChanged">
@@ -428,7 +429,7 @@
                             <UniformGrid Rows="1" Columns="2">
                                 <!--<Button Content="确定" HorizontalAlignment="Stretch" Width="Auto" Margin="5"/>-->
                                 <!--删除-->
-                                <Button Content="{DynamicResource Delete}" HorizontalAlignment="Stretch" Width="Auto" Margin="5" Click="DeleteLine"/>
+                                <Button Content="{Binding [Delete],Source={x:Static lg:LanguageService.Instance}}" HorizontalAlignment="Stretch" Width="Auto" Margin="5" Click="DeleteLine"/>
                             </UniformGrid>
 
                         </StackPanel>
@@ -449,10 +450,10 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
                             <!--线条是否可见-->
-                            <TextBlock Text="{DynamicResource IsShow}" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding [IsShow],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"/>
                             <CheckBox Grid.Column="1" IsChecked="{Binding PlotVisible}"/>
                             <!--线条样式-->
-                            <TextBlock Text="{DynamicResource LineStyle}" VerticalAlignment="Center" Grid.Row="1" Margin="0 5"/>
+                            <TextBlock Text="{Binding [LineStyle],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="1" Margin="0 5"/>
                             <ComboBox Grid.Column="1" SelectedIndex="{Binding PlotType}" Grid.Row="1" Margin="0 5">
                                 <ComboBox.Items>
                                     <ComboBoxItem Content="{DynamicResource LineSolid}"/>
@@ -462,10 +463,10 @@
                                 </ComboBox.Items>
                             </ComboBox>
                             <!--线条宽度-->
-                            <TextBlock Text="{DynamicResource LineWidth}" VerticalAlignment="Center" Grid.Row="2"/>
+                            <TextBlock Text="{Binding [LineWidth],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="2"/>
                             <hc:NumericUpDown Grid.Row="2" Grid.Column="1" Value="{Binding PlotWidth,Mode=TwoWay}"/>
                             <!--线条颜色-->
-                            <TextBlock Text="{DynamicResource LineColor}" VerticalAlignment="Center" Grid.Row="3" Margin="0 5"/>
+                            <TextBlock Text="{Binding [LineColor],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="3" Margin="0 5"/>
                             <Button Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                                 Content="" Click="Color_Pick" BorderThickness="0"
                                 Background="{Binding PlotColor, Converter={StaticResource BackgroundColorConverter}}"/>
@@ -520,7 +521,7 @@
                             <UniformGrid Rows="1" Columns="2">
                                 <!--<Button Content="确定" HorizontalAlignment="Stretch" Width="Auto" Margin="5"/>-->
                                 <!--删除-->
-                                <Button Content="{DynamicResource Delete}" HorizontalAlignment="Stretch" Width="Auto" Margin="5"
+                                <Button Content="{Binding [Delete],Source={x:Static lg:LanguageService.Instance}}" HorizontalAlignment="Stretch" Width="Auto" Margin="5"
                                 Click="DeleteLine"/>
                             </UniformGrid>
 
@@ -542,10 +543,10 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
                             <!--是否可见-->
-                            <TextBlock Text="{DynamicResource IsShow}" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding [IsShow],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"/>
                             <CheckBox Grid.Column="1" IsChecked="{Binding PlotVisible}"/>
                             <!--点样式-->
-                            <TextBlock Text="{DynamicResource PointStyle}" VerticalAlignment="Center" Grid.Row="1" Margin="0 5"/>
+                            <TextBlock Text="{Binding [PointStyle],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="1" Margin="0 5"/>
                             <ComboBox Grid.Column="1" SelectedIndex="{Binding PlotType}" Grid.Row="1" Margin="0 5">
                                 <ComboBox.Items>
                                     <ComboBoxItem Content="{DynamicResource PointCircle}"/>
@@ -560,10 +561,10 @@
                                 </ComboBox.Items>
                             </ComboBox>
                             <!--大小-->
-                            <TextBlock Text="{DynamicResource Size}" VerticalAlignment="Center" Grid.Row="2"/>
+                            <TextBlock Text="{Binding [Size],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="2"/>
                             <hc:NumericUpDown Grid.Row="2" Grid.Column="1" Value="{Binding PlotWidth,Mode=TwoWay}"/>
                             <!--颜色-->
-                            <TextBlock Text="{DynamicResource LineColor}" VerticalAlignment="Center" Grid.Row="3" Margin="0 5"/>
+                            <TextBlock Text="{Binding [LineColor],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="3" Margin="0 5"/>
                             <Button Grid.Row="3" Grid.Column="1" Margin="0 5" HorizontalAlignment="Stretch" 
                                 VerticalAlignment="Stretch" 
                                 Content="" Click="Color_Pick" BorderThickness="0"
@@ -596,13 +597,13 @@
                                         <RowDefinition/>
                                     </Grid.RowDefinitions>
                                     <!--是否显示轴-->
-                                    <TextBlock Text="{DynamicResource IsShowAxes}" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding [IsShowAxes],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"/>
                                     <CheckBox Grid.Column="1" IsChecked="{Binding PlotVisible}" Margin="0 0 0 5"/>
                                     <!--隐藏主刻度-->
                                     <!--<TextBlock Text="{DynamicResource IsShowAxesTick}" VerticalAlignment="Center" Grid.Row="1" Margin="0 5"/>
                                     <CheckBox Grid.Column="1" IsChecked="{Binding ReverseAxis}" Grid.Row="1" Margin="0 5"/>-->
                                     <!--刻度轴样式-->
-                                    <TextBlock Text="{DynamicResource AxesStyle}" VerticalAlignment="Center" Grid.Row="2"/>
+                                    <TextBlock Text="{Binding [AxesStyle],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="2"/>
                                     <ComboBox Grid.Column="1" SelectedIndex="{Binding PlotType}" Grid.Row="2">
                                         <ComboBox.Items>
                                             <ComboBoxItem Content="{DynamicResource AxesStyleNormal}"/>
@@ -610,11 +611,11 @@
                                         </ComboBox.Items>
                                     </ComboBox>
                                     <!--刻度轴字体-->
-                                    <TextBlock Text="{DynamicResource AxesTickFont}" VerticalAlignment="Center" Grid.Row="3" Margin="0 5"/>
+                                    <TextBlock Text="{Binding [AxesTickFont],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="3" Margin="0 5"/>
                                     <ComboBox Grid.Column="1" SelectedIndex="{Binding AxisTickFontName}" Grid.Row="3"
                                                   ItemsSource="{Binding PlotTextFontNames}" Margin="0 5"/>
                                     <!--刻度字体大小-->
-                                    <TextBlock Text="{DynamicResource AxesTickFontSize}" VerticalAlignment="Center" Grid.Row="4"/>
+                                    <TextBlock Text="{Binding [AxesTickFontSize],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="4"/>
                                     <hc:NumericUpDown Grid.Row="4" Grid.Column="1"
                                                             Value="{Binding AxisTickFontSize,Mode=TwoWay}"/>
                                     <!--刻度间距-->
@@ -622,15 +623,15 @@
                                     <hc:NumericUpDown Grid.Row="5" Grid.Column="1" Margin="0 5"
                                                             Value="{Binding AxisTickSpan,Mode=TwoWay}"/>-->
                                     <!--刻度上限-->
-                                    <TextBlock Text="{DynamicResource AxesTickUpLimit}" VerticalAlignment="Center" Grid.Row="6"/>
+                                    <TextBlock Text="{Binding [AxesTickUpLimit],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="6"/>
                                     <hc:NumericUpDown Grid.Row="6" Grid.Column="1"
                                                             Value="{Binding AxisTickUpLimit,Mode=TwoWay}"/>
                                     <!--刻度下限-->
-                                    <TextBlock Text="{DynamicResource AxesTickDownLimit}" VerticalAlignment="Center" Grid.Row="7" Margin="0 5"/>
+                                    <TextBlock Text="{Binding [AxesTickDownLimit],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="7" Margin="0 5"/>
                                     <hc:NumericUpDown Grid.Row="7" Grid.Column="1" Margin="0 5"
                                                             Value="{Binding AxisTickDownLimit,Mode=TwoWay}"/>
                                     <!--刻度颜色-->
-                                    <TextBlock Text="{DynamicResource AxesTickColor}" VerticalAlignment="Center" Grid.Row="8"/>
+                                    <TextBlock Text="{Binding [AxesTickColor],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="8"/>
                                     <Button Grid.Row="8" Grid.Column="1" HorizontalAlignment="Stretch" 
                                         VerticalAlignment="Stretch" Content="" Click="Color_Pick0000" BorderThickness="0"
                                         Background="{Binding AxisPlotColor, Converter={StaticResource BackgroundColorConverter}}"/>
@@ -651,7 +652,7 @@
                                         <RowDefinition/>
                                         <RowDefinition/>
                                     </Grid.RowDefinitions>
-                                    <TextBlock Text="{DynamicResource IsShowMinorAxes}" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding [IsShowMinorAxes],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"/>
                                     <CheckBox Grid.Column="1" IsChecked="{Binding SecondTickShow}"/>
 
                                     <!--<TextBlock Text="刻度间距" VerticalAlignment="Center" Grid.Row="5" Margin="0 5"/>
@@ -665,7 +666,7 @@
                     <!--图例设置面板-->
                     <TabControl Visibility="{Binding PlotLegendShow,Converter={StaticResource BoolToVisibilityConverter}}">
                         <!--图例-->
-                        <TabItem Header="{DynamicResource Legend}">
+                        <TabItem Header="{Binding [Legend],Source={x:Static lg:LanguageService.Instance}}">
                             <StackPanel Margin="8">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -681,10 +682,10 @@
                                         <RowDefinition/>
                                     </Grid.RowDefinitions>
                                     <!--是否显示图例-->
-                                    <TextBlock Text="{DynamicResource IsShowLegend}" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding [IsShowLegend],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"/>
                                     <CheckBox Grid.Column="1" IsChecked="{Binding ShowLegends,Mode=TwoWay}"/>
                                     <!--图例位置-->
-                                    <TextBlock Text="{DynamicResource LegendPosition}" VerticalAlignment="Center" Grid.Row="1" Margin="0 5"/>
+                                    <TextBlock Text="{Binding [LegendPosition],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="1" Margin="0 5"/>
                                     <ComboBox Grid.Column="1" SelectedIndex="{Binding LegendsLocation}" 
                                                   Grid.Row="1" Margin="0 5">
                                         <ComboBoxItem Content="{DynamicResource LegendPositionRU}"/>
@@ -693,7 +694,7 @@
                                         <ComboBoxItem Content="{DynamicResource LegendPositionLD}"/>
                                     </ComboBox>
                                     <!--图例方向-->
-                                    <TextBlock Text="{DynamicResource LegendDirection}" VerticalAlignment="Center" Grid.Row="2"/>
+                                    <TextBlock Text="{Binding [LegendDirection],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="2"/>
                                     <ComboBox Grid.Column="1" SelectedIndex="{Binding LegendsO}" 
                                                   Grid.Row="2">
                                         <ComboBoxItem Content="{DynamicResource LegendVertical}"/>
@@ -720,7 +721,7 @@
                     <!--绘图设置面板-->
                     <TabControl Visibility="{Binding PlotMainShow,Converter={StaticResource BoolToVisibilityConverter}}">
                         <!--绘图-->
-                        <TabItem Header="{DynamicResource Plot}">
+                        <TabItem Header="{Binding [Plot],Source={x:Static lg:LanguageService.Instance}}">
                             <StackPanel Margin="8">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -739,18 +740,18 @@
                                         <RowDefinition/>
                                     </Grid.RowDefinitions>
                                     <!--绘图标题-->
-                                    <TextBlock Text="{DynamicResource PlotTitle}" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding [PlotTitle],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"/>
                                     <TextBox Grid.Column="1" Text="{Binding AxisTitle,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  AcceptsReturn="True"/>
                                     <!--标题字体-->
-                                    <TextBlock Text="{DynamicResource PlotTitleFont}" VerticalAlignment="Center" Grid.Row="1" Margin="0 5"/>
+                                    <TextBlock Text="{Binding [PlotTitleFont],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="1" Margin="0 5"/>
                                     <ComboBox Grid.Column="1" SelectedIndex="{Binding AxisTitleFontName}" 
                                                   Grid.Row="1" Margin="0 5" ItemsSource="{Binding PlotTextFontNames}"/>
                                     <!--标题字体大小-->
-                                    <TextBlock Text="{DynamicResource PlotTitleFontSize}" VerticalAlignment="Center" Grid.Row="2"/>
+                                    <TextBlock Text="{Binding [PlotTitleFontSize],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="2"/>
                                     <hc:NumericUpDown Grid.Row="2" Grid.Column="1" 
                                                             Value="{Binding AxisTitleFontSize,Mode=TwoWay}"/>
                                     <!--标题颜色-->
-                                    <TextBlock Text="{DynamicResource PlotTitleColor}" VerticalAlignment="Center" Grid.Row="3" Margin="0 5"/>
+                                    <TextBlock Text="{Binding [PlotTitleColor],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="3" Margin="0 5"/>
                                     <Button Grid.Row="3" Grid.Column="1" Margin="0 5" HorizontalAlignment="Stretch" 
                                         VerticalAlignment="Stretch" Content="" Click="Color_Pick000" BorderThickness="0"
                                         Background="{Binding AxisTitleColor, Converter={StaticResource BackgroundColorConverter}}"/>
@@ -758,22 +759,22 @@
                                               SelectedBrush="{Binding AxisTitleColor,Mode=TwoWay,
                                               Converter={StaticResource ColorConverter}}"/>-->
                                     <!--坐标轴标题1-->
-                                    <TextBlock Text="{DynamicResource PlotAxesTitle1}" VerticalAlignment="Center" Grid.Row="4"/>
+                                    <TextBlock Text="{Binding [PlotAxesTitle1],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="4"/>
                                     <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding XAxisTitle,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  AcceptsReturn="True"/>
                                     <!--坐标轴标题2-->
-                                    <TextBlock Text="{DynamicResource PlotAxesTitle2}" VerticalAlignment="Center" Grid.Row="5" Margin="0 5"/>
+                                    <TextBlock Text="{Binding [PlotAxesTitle2],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="5" Margin="0 5"/>
                                     <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding YAxisTitle,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  AcceptsReturn="True"
                                                  Margin="0 5"/>
                                     <!--轴标题字体-->
-                                    <TextBlock Text="{DynamicResource PlotAxesTitleFont}" VerticalAlignment="Center" Grid.Row="6"/>
+                                    <TextBlock Text="{Binding [PlotAxesTitleFont],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="6"/>
                                     <ComboBox Grid.Column="1" SelectedIndex="{Binding AxisTitleFontName}" 
                                                   Grid.Row="6" ItemsSource="{Binding PlotTextFontNames}"/>
                                     <!--轴标题字体大小-->
-                                    <TextBlock Text="{DynamicResource PlotAxesTitleFontSize}" VerticalAlignment="Center" Grid.Row="7" Margin="0 5"/>
+                                    <TextBlock Text="{Binding [PlotAxesTitleFontSize],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="7" Margin="0 5"/>
                                     <hc:NumericUpDown Grid.Row="7" Grid.Column="1" Margin="0 5"
                                                             Value="{Binding AxisXYTitleFontSize,Mode=TwoWay}"/>
                                     <!--轴标题颜色-->
-                                    <TextBlock Text="{DynamicResource PlotAxesTitleColor}" VerticalAlignment="Center" Grid.Row="8"/>
+                                    <TextBlock Text="{Binding [PlotAxesTitleColor],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="8"/>
                                     <Button Grid.Row="8" Grid.Column="1" HorizontalAlignment="Stretch" 
                                         VerticalAlignment="Stretch" Content="" Click="Color_Pick00" BorderThickness="0"
                                         Background="{Binding AxisXYTitleColor, Converter={StaticResource BackgroundColorConverter}}"/>
@@ -784,7 +785,7 @@
                             </StackPanel>
                         </TabItem>
                         <!--背景-->
-                        <TabItem Header="{DynamicResource Background}">
+                        <TabItem Header="{Binding [Background],Source={x:Static lg:LanguageService.Instance}}">
                             <StackPanel Margin="8">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -804,10 +805,10 @@
                                         <RowDefinition/>
                                     </Grid.RowDefinitions>
                                     <!--显示网格-->
-                                    <TextBlock Text="{DynamicResource PlotShowGrid}" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding [PlotShowGrid],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"/>
                                     <CheckBox Grid.Column="1" IsChecked="{Binding FirstGridShow}"/>
                                     <!--主网格颜色-->
-                                    <TextBlock Text="{DynamicResource PlotMajorGridColor}" VerticalAlignment="Center" Grid.Row="1" Margin="0 5"/>
+                                    <TextBlock Text="{Binding [PlotMajorGridColor],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="1" Margin="0 5"/>
                                     <Button Grid.Row="1" Grid.Column="1" Margin="0 5" HorizontalAlignment="Stretch" 
                                         VerticalAlignment="Stretch" Content="" Click="Color_Pick0" BorderThickness="0"
                                         Background="{Binding FirstGridColor, Converter={StaticResource BackgroundColorConverter}}"/>
@@ -815,15 +816,15 @@
                                               SelectedBrush="{Binding FirstGridColor,Mode=TwoWay,
                                               Converter={StaticResource ColorConverter}}"/>-->
                                     <!--主网格宽度-->
-                                    <TextBlock Text="{DynamicResource PlotMajorGridWidth}" VerticalAlignment="Center" Grid.Row="2"/>
+                                    <TextBlock Text="{Binding [PlotMajorGridWidth],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="2"/>
                                     <hc:NumericUpDown Grid.Row="2" Grid.Column="1" 
                                                             Value="{Binding FirstGridWidth,Mode=TwoWay}"/>
                                     <!--显示次网格-->
-                                    <TextBlock Text="{DynamicResource PlotShowMinorGrid}" Grid.Row="4" VerticalAlignment="Center" Margin="0 5"/>
+                                    <TextBlock Text="{Binding [PlotShowMinorGrid],Source={x:Static lg:LanguageService.Instance}}" Grid.Row="4" VerticalAlignment="Center" Margin="0 5"/>
                                     <CheckBox Grid.Column="1" Grid.Row="4" Margin="0 5"
                                                   IsChecked="{Binding SecondGridShow}"/>
                                     <!--次网格颜色-->
-                                    <TextBlock Text="{DynamicResource PlotMinorGridColor}" VerticalAlignment="Center" Grid.Row="5"/>
+                                    <TextBlock Text="{Binding [PlotMinorGridColor],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="5"/>
                                     <Button Grid.Row="5" Grid.Column="1" HorizontalAlignment="Stretch" 
                                         VerticalAlignment="Stretch" Content="" Click="Color_Pick1" BorderThickness="0"
                                         Background="{Binding SecondGridColor, 
@@ -832,7 +833,7 @@
                                               SelectedBrush="{Binding SecondGridColor,Mode=TwoWay,
                                               Converter={StaticResource ColorConverter}}"/>-->
                                     <!--次网格宽度-->
-                                    <TextBlock Text="{DynamicResource PlotMinorGridWidth}" VerticalAlignment="Center" Grid.Row="6" Margin="0 5"/>
+                                    <TextBlock Text="{Binding [PlotMinorGridWidth],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="6" Margin="0 5"/>
                                     <hc:NumericUpDown Grid.Row="6" Grid.Column="1" Margin="0 5"
                                                             Value="{Binding SecondGridWidth,Mode=TwoWay}"/>
                                     <!--反转填充颜色-->
@@ -869,19 +870,19 @@
                     <!--脚本设置面板-->
                     <StackPanel Margin="8" Visibility="{Binding PlotScriptShow,Converter={StaticResource BoolToVisibilityConverter}}">
                         <!--必要参数-->
-                        <TextBlock Text="{DynamicResource Parameters}" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding [Parameters],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"/>
                         <hc:TextBox Margin="0 5" Text="{Binding NeedParamContent}"/>
                         <!--Js 脚本-->
-                        <TextBlock Text="{DynamicResource Js}" VerticalAlignment="Top"/>
+                        <TextBlock Text="{Binding [Js],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Top"/>
                         <TextBox AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"  
                                 Margin="0 5" Height="150" VerticalContentAlignment="Top" Padding="8"
                              Text="{Binding JsScriptContent}"/>
                         <UniformGrid Columns="3">
-                            <Button Content="{DynamicResource CheckJs}" HorizontalAlignment="Stretch" Margin="5" Style="{StaticResource ButtonPrimary}"
+                            <Button Content="{Binding [CheckJs],Source={x:Static lg:LanguageService.Instance}}" HorizontalAlignment="Stretch" Margin="5" Style="{StaticResource ButtonPrimary}"
                                 Command="{Binding CheckContentCommand}"/>
-                            <Button Content="{DynamicResource Confirm}" HorizontalAlignment="Stretch" Margin="5" Style="{StaticResource ButtonSuccess}"
+                            <Button Content="{Binding [Confirm],Source={x:Static lg:LanguageService.Instance}}" HorizontalAlignment="Stretch" Margin="5" Style="{StaticResource ButtonSuccess}"
                                 Command="{Binding ConfirmSaveScriptCommand}"/>
-                            <Button Content="{DynamicResource Cancel}" HorizontalAlignment="Stretch" Margin="5" Style="{StaticResource ButtonDanger}"
+                            <Button Content="{Binding [Cancel],Source={x:Static lg:LanguageService.Instance}}" HorizontalAlignment="Stretch" Margin="5" Style="{StaticResource ButtonDanger}"
                                 Command="{Binding CancelSaveScriptCommand}"/>
                         </UniformGrid>
                     </StackPanel>
@@ -995,7 +996,7 @@
                 <StackPanel>
                     <!--<TextBlock Text="底图名称" FontSize="18" Foreground="#333333"/>
                     <TextBox Text="{Binding NewBasePlotName}" Margin="0 5"/>-->
-                    <TextBlock Text="{DynamicResource BasemapCategories}" FontSize="18" Foreground="#333333"/>
+                    <TextBlock Text="{Binding [BasemapCategories],Source={x:Static lg:LanguageService.Instance}}" FontSize="18" Foreground="#333333"/>
                     <TextBox Text="{Binding BasePlotType}" Margin="0 5"/>
                     <!--<TextBlock Text="{DynamicResource BasemapLanguage}" FontSize="18" Foreground="#333333"/>
                     <ComboBox SelectedIndex="{Binding BasePlotLanguage}" Margin="0 5">
@@ -1003,10 +1004,10 @@
                         <ComboBoxItem Content="English"/>
                     </ComboBox>-->
                     <UniformGrid Columns="2" Margin="0 8 0 0">
-                        <Button Content="{DynamicResource Confirm}" HorizontalAlignment="Stretch" Margin="0 0 5 0"
+                        <Button Content="{Binding [Confirm],Source={x:Static lg:LanguageService.Instance}}" HorizontalAlignment="Stretch" Margin="0 0 5 0"
                         Style="{StaticResource ButtonSuccess}" Command="{Binding ConfirmNewBasemapCommand}"/>
                         <!--取消-->
-                        <Button Content="{DynamicResource Cancel}" HorizontalAlignment="Stretch" Margin="5 0 0 0"
+                        <Button Content="{Binding [Cancel],Source={x:Static lg:LanguageService.Instance}}" HorizontalAlignment="Stretch" Margin="5 0 0 0"
                         Style="{StaticResource ButtonDanger}" Command="{Binding CancelNewBasemapCommand}"/>
                     </UniformGrid>
                 </StackPanel>

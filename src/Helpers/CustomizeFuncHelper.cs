@@ -14,6 +14,7 @@ namespace GeoChemistryNexus.Helpers
         public static void RegisterAllFunctions()
         {
             // 锆石 Zr 温度计算，主量
+            // Loucks et al. (2020)
             FormulaExtension.CustomFunctions["Zircon_Zr_Principal_Watson_and_Harrison_1983"] = (cell, args) =>
             {
                 // 检查参数数量
@@ -67,6 +68,7 @@ namespace GeoChemistryNexus.Helpers
             };
 
             // 锆石 Zr 温度计算，饱和温度
+            // Watson and Harrison (1983)
             FormulaExtension.CustomFunctions["Zircon_Zr_Saturation_Watson_and_Harrison_1983"] = (cell, args) =>
             {
                 if (args.Length < 6)
@@ -106,6 +108,7 @@ namespace GeoChemistryNexus.Helpers
             };
 
             // 闪锌矿 GGIMFis 温度计算
+            // Frenzel et al. (2016)
             FormulaExtension.CustomFunctions["Sphalerite_GGIMFis_Frenzel_2016"] = (cell, args) =>
             {
                 if (args.Length < 5)
@@ -181,9 +184,9 @@ namespace GeoChemistryNexus.Helpers
                 try
                 {
                     // 获取Ti
-                    double titaniumConcentration = (double)args[0];
-                    // 获取二氧化钛活度参数
-                    double titaniumDioxideActivity = (double)args[1];
+                    double titaniumConcentration = Convert.ToDouble(args[0]);
+                    // 获取TiO2活度参数
+                    double titaniumDioxideActivity = Convert.ToDouble(args[1]);
                     // 参数验证
                     if (titaniumConcentration <= 0) { return "Ti必须是正数"; }
                     if (titaniumDioxideActivity <= 0 || titaniumDioxideActivity > 1) { return "TiO2活度必须在(0,1]范围内"; }
@@ -510,6 +513,90 @@ namespace GeoChemistryNexus.Helpers
 
                     // 计算最终温度
                     return 319 * tValueInput - 68.7;
+                }
+                catch
+                {
+                    // HACK: 需要优化提示
+                    return null;
+                }
+            };
+
+            // 毒砂矿物组合
+            FormulaExtension.CustomFunctions["DefineArsenopyriteAssemblage"] = (cell, args) => {
+                try
+                {
+                    if (args.Length < 1) return null;
+                    string assemblageName = Convert.ToString(args[0]).ToUpper();
+                    switch (assemblageName)
+                    {
+                        case "ASP_PO_LO": return 0;
+                        case "ASP_PY_PO": return 1;
+                        case "ASP_PY_AS": return 2;
+                        case "ASP_PO_L": return 3;
+                        default: return null;
+                    }
+                }catch { return "Error"; }
+
+            };
+
+            // 毒砂温度计计算
+            FormulaExtension.CustomFunctions["Arsenopyrite_Assemblage_Kretschmar_and_Scott_1976"] = (cell, args) =>
+            {
+                if (args.Length < 2)
+                {
+                    // HACK: 需要优化提示
+                    return null;
+                }
+
+                try
+                {
+                    double atomicPercentAs;
+                    int assemblage;
+
+                    if (!double.TryParse(Convert.ToString(args[0]), out atomicPercentAs)) return null;
+                    if (!int.TryParse(Convert.ToString(args[1]), out assemblage)) return null;
+
+                    double temperature = double.NaN;
+
+                    switch (assemblage)
+                    {
+                        case 0: // Asp_Po_Lo
+                            if (atomicPercentAs >= 33.5 && atomicPercentAs <= 38.7)
+                            {
+                                temperature = 77.30 * atomicPercentAs - 2289;
+                            }
+                            break;
+
+                        case 1: // Asp_Py_Po
+                            if (atomicPercentAs >= 30.9 && atomicPercentAs <= 33.0)
+                            {
+                                temperature = 61.0 * atomicPercentAs - 1522;
+                            }
+                            break;
+
+                        case 2: // Asp_Py_As
+                            if (atomicPercentAs < 30.2 && atomicPercentAs > 29.0)
+                            {
+                                temperature = 90 * atomicPercentAs - 2355;
+                            }
+                            break;
+
+                        case 3: // Asp_Po_L
+                            if (atomicPercentAs >= 33.0 && atomicPercentAs <= 38.7)
+                            {
+                                if (atomicPercentAs >= 34.5)
+                                {
+                                    temperature = 43.8 * atomicPercentAs - 960;
+                                }
+                                else
+                                {
+                                    temperature = 27.5 * atomicPercentAs - 416.5;
+                                }
+                            }
+                            break;
+                    }
+
+                    return double.IsNaN(temperature) ? null : (object)temperature;
                 }
                 catch
                 {

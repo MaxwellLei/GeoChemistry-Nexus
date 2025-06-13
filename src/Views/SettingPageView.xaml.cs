@@ -62,7 +62,7 @@ namespace GeoChemistryNexus.Views
                 Storyboard.SetTargetProperty(marginAnim, new PropertyPath(MarginProperty));
 
                 //延迟动画时间
-                marginAnim.Duration = TimeSpan.FromSeconds(0.5 + i * 0.05);
+                marginAnim.Duration = TimeSpan.FromSeconds(0.4 + i * 0.05);
 
                 //创建动画版播放动画
                 var sb = new Storyboard();

@@ -3,6 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:lg="clr-namespace:GeoChemistryNexus.Helpers"
       xmlns:local="clr-namespace:GeoChemistryNexus.Views"
       xmlns:hc="https://handyorg.github.io/handycontrol"
       mc:Ignorable="d" 
@@ -17,7 +18,7 @@
             <hc:ScrollViewer HorizontalAlignment="Stretch" Padding="120 0">
                 <VirtualizingStackPanel HorizontalAlignment="Stretch" Margin="0 0 10 0">
                     <!--关于-->
-                    <hc:Divider Content="{DynamicResource About}" HorizontalContentAlignment="Left" FontSize="20" FontWeight="Bold" LineStrokeThickness="5"/>
+                    <hc:Divider Content="{Binding [About],Source={x:Static lg:LanguageService.Instance}}" HorizontalContentAlignment="Left" FontSize="20" FontWeight="Bold" LineStrokeThickness="5"/>
                     <StackPanel>
                         <Grid>
                             <!--<Grid.ColumnDefinitions>
@@ -55,31 +56,31 @@
                                     <hc:Shield Subject="Windows" Status=">=7.0" Margin="4,0,0,0" Color="#ea4335"/>
                                 </WrapPanel>
                                 <!--本项目通过利用地球化学数据进行相关图表绘制、计算与分析，对地质学数据进行高效处理，-->
-                                <TextBlock Text="{DynamicResource AboutInfo1}"
+                                <TextBlock Text="{Binding [AboutInfo1],Source={x:Static lg:LanguageService.Instance}}"
                                    FontSize="16" Margin="0 10 0 0" TextWrapping="Wrap"/>
                                 <!--如果您对本项目感兴趣，欢迎点个 Star 支持一下！如果您觉得对您有帮助，也可以请我喝-->
-                                <TextBlock Text="{DynamicResource AboutInfo2}" Foreground="Blue" FontSize="16" 
+                                <TextBlock Text="{Binding [AboutInfo2],Source={x:Static lg:LanguageService.Instance}}" Foreground="Blue" FontSize="16" 
                                    Margin="0 5 0 0" FontWeight="Bold" TextWrapping="Wrap"/>
                                 <!--感谢支持-->
-                                <TextBlock Text="{DynamicResource ThankSupport}" FontSize="20" FontWeight="Bold" Margin="0 10 0 0"/>
+                                <TextBlock Text="{Binding [ThankSupport],Source={x:Static lg:LanguageService.Instance}}" FontSize="20" FontWeight="Bold" Margin="0 10 0 0"/>
                                 <WrapPanel Margin="0 5 0 0">
-                                    <TextBlock Text="{DynamicResource Support1}" FontSize="16"/>
+                                    <TextBlock Text="{Binding [Support1],Source={x:Static lg:LanguageService.Instance}}" FontSize="16"/>
                                     <TextBlock Text=" HandyControl" FontSize="16" Foreground="#1182c3"/>
                                 </WrapPanel>
                                 <WrapPanel Margin="0 5 0 0">
-                                    <TextBlock Text="{DynamicResource Support2}" FontSize="16"/>
+                                    <TextBlock Text="{Binding [Support2],Source={x:Static lg:LanguageService.Instance}}" FontSize="16"/>
                                     <TextBlock Text=" Scottplot" FontSize="16" Foreground="#1182c3"/>
                                 </WrapPanel>
                                 <WrapPanel Margin="0 5 0 0">
-                                    <TextBlock Text="{DynamicResource Support3}" FontSize="16"/>
+                                    <TextBlock Text="{Binding [Support3],Source={x:Static lg:LanguageService.Instance}}" FontSize="16"/>
                                     <TextBlock Text=" EPPlus" FontSize="16" Foreground="#1182c3"/>
                                 </WrapPanel>
                                 <WrapPanel Margin="0 5 0 0">
-                                    <TextBlock Text="{DynamicResource Support4}" FontSize="16"/>
+                                    <TextBlock Text="{Binding [Support4],Source={x:Static lg:LanguageService.Instance}}" FontSize="16"/>
                                     <TextBlock Text=" MathNet.Numerics" FontSize="16" Foreground="#1182c3"/>
                                 </WrapPanel>
                                 <WrapPanel Margin="0 5 0 0">
-                                    <TextBlock Text="{DynamicResource Support5}" FontSize="16"/>
+                                    <TextBlock Text="{Binding [Support5],Source={x:Static lg:LanguageService.Instance}}" FontSize="16"/>
                                     <TextBlock Text=" Community.Toolkit.Mvvm" FontSize="16" Foreground="#1182c3"/>
                                     <TextBlock Text=" Microsoft.Xaml.Behaviors.Wpf" FontSize="16" Foreground="#1182c3"
                                            Margin="102 0 0 0"/>
@@ -91,7 +92,7 @@
                     <Border Style="{StaticResource BorderRegion}" Margin="0 10"
                                 BorderThickness="5 0 0 0" BorderBrush="#42b983" Background="#ecf8f2">
                         <WrapPanel>
-                            <TextBlock Text="{DynamicResource AboutInfo3}" VerticalAlignment="Center"
+                            <TextBlock Text="{Binding [AboutInfo3],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"
                                HorizontalAlignment="Stretch" Foreground="Black" FontSize="15" TextWrapping="Wrap"
                                        LineHeight="28"/>
                         </WrapPanel>

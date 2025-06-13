@@ -236,7 +236,7 @@ public class FileHelper
         }
     }
 
-    // 获取保存图片路径
+    // 获取保存文件路径  —— 不带文件过滤器
     public static string GetSaveFilePath(string defaultFileName, string initialDirectory = null)
     {
         // 创建文件保存对话框的实例
@@ -292,6 +292,41 @@ public class FileHelper
         else
         {
             return null;    //用户直接关闭了窗口
+        }
+    }
+
+    /// <summary>
+    /// 获取文件保存路径 —— 带文件过滤器
+    /// </summary>
+    /// <param name="title">对话框标题</param>
+    /// <param name="filter">文件类型过滤器</param>
+    /// <param name="defaultExt">默认文件扩展名</param>
+    /// <returns>选择的文件保存路径，如果用户取消则返回null</returns>
+    public static string GetSaveFilePath2(string title = "保存文件", string filter = "所有文件|*.*", string defaultExt = "", string defaultFileName = "")
+    {
+        try
+        {
+            var dialog = new VistaSaveFileDialog
+            {
+                Title = title,
+                Filter = filter,
+                DefaultExt = defaultExt,
+                AddExtension = true,
+                FileName = defaultFileName
+            };
+
+            bool? result = dialog.ShowDialog();
+
+            if (result == true)
+            {
+                return dialog.FileName;
+            }
+
+            return null;
+        }
+        catch (Exception ex)
+        {
+            return null;
         }
     }
 

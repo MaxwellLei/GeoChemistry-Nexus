@@ -1,0 +1,791 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="StartStatus" xml:space="preserve">
+    <value>启动中...</value>
+    <comment>软件启动界面</comment>
+  </data>
+  <data name="Show" xml:space="preserve">
+    <value>显示界面</value>
+    <comment>托盘菜单右键</comment>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>退出程序</value>
+    <comment>托盘菜单右键</comment>
+  </data>
+  <data name="SmashIt" xml:space="preserve">
+    <value>🔨砸一下？</value>
+    <comment>彩蛋</comment>
+  </data>
+  <data name="SmashItC" xml:space="preserve">
+    <value>里面会有什么呢？也许你可以尝试砸一下</value>
+    <comment>彩蛋</comment>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>主页</value>
+    <comment>主窗体侧边栏</comment>
+  </data>
+  <data name="Plot" xml:space="preserve">
+    <value>绘图</value>
+    <comment>主窗体侧边栏</comment>
+  </data>
+  <data name="Geothermometer" xml:space="preserve">
+    <value>温度计</value>
+    <comment>主窗体侧边栏</comment>
+  </data>
+  <data name="Setting" xml:space="preserve">
+    <value>设置</value>
+    <comment>主窗体侧边栏</comment>
+  </data>
+  <data name="File" xml:space="preserve">
+    <value>_文件(F)</value>
+    <comment>绘图界面</comment>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>编辑</value>
+    <comment>绘图界面</comment>
+  </data>
+  <data name="Expand" xml:space="preserve">
+    <value>拓展</value>
+    <comment>绘图界面</comment>
+  </data>
+  <data name="EditMode" xml:space="preserve">
+    <value>编辑模式</value>
+    <comment>绘图界面</comment>
+  </data>
+  <data name="NewBasemap" xml:space="preserve">
+    <value>新建底图</value>
+    <comment>绘图界面</comment>
+  </data>
+  <data name="SaveBasemap" xml:space="preserve">
+    <value>保存底图</value>
+  </data>
+  <data name="ImportBasemap" xml:space="preserve">
+    <value>导入底图</value>
+  </data>
+  <data name="ExportBasemap" xml:space="preserve">
+    <value>导出底图</value>
+  </data>
+  <data name="DeleteBasemap" xml:space="preserve">
+    <value>删除底图</value>
+  </data>
+  <data name="GetMoreBasemap" xml:space="preserve">
+    <value>获取更多底图</value>
+  </data>
+  <data name="ImportData" xml:space="preserve">
+    <value>导入数据</value>
+  </data>
+  <data name="ResetPlot" xml:space="preserve">
+    <value>重置绘图</value>
+  </data>
+  <data name="ResetVision" xml:space="preserve">
+    <value>视图复位</value>
+  </data>
+  <data name="CancelSelected" xml:space="preserve">
+    <value>取消选中</value>
+  </data>
+  <data name="LocationAxis" xml:space="preserve">
+    <value>定位轴</value>
+  </data>
+  <data name="ExportImage" xml:space="preserve">
+    <value>导出图片</value>
+  </data>
+  <data name="ExportImagePNG" xml:space="preserve">
+    <value>导出 PNG 格式</value>
+  </data>
+  <data name="ExportImageJPG" xml:space="preserve">
+    <value>导出 JPG 格式</value>
+  </data>
+  <data name="ExportImageBMP" xml:space="preserve">
+    <value>导出 BMP 格式</value>
+  </data>
+  <data name="ExportImageWebp" xml:space="preserve">
+    <value>导出 Webp 格式</value>
+  </data>
+  <data name="ExportImageSVG" xml:space="preserve">
+    <value>导出 SVG 格式</value>
+  </data>
+  <data name="LegendSetting" xml:space="preserve">
+    <value>图例设置</value>
+  </data>
+  <data name="PlotSetting" xml:space="preserve">
+    <value>绘图设置</value>
+  </data>
+  <data name="AddLine" xml:space="preserve">
+    <value>添加线条</value>
+  </data>
+  <data name="AddPolygons" xml:space="preserve">
+    <value>添加多边形</value>
+  </data>
+  <data name="AddText" xml:space="preserve">
+    <value>添加注释</value>
+  </data>
+  <data name="JsSetting" xml:space="preserve">
+    <value>脚本设置</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="QuitEdit" xml:space="preserve">
+    <value>退出编辑</value>
+  </data>
+  <data name="IgneousRock" xml:space="preserve">
+    <value>岩浆岩</value>
+  </data>
+  <data name="TectonicSetting" xml:space="preserve">
+    <value>构造环境</value>
+  </data>
+  <data name="Basalt" xml:space="preserve">
+    <value>玄武岩</value>
+  </data>
+  <data name="RockClassification" xml:space="preserve">
+    <value>岩石分类</value>
+  </data>
+  <data name="GTMP" xml:space="preserve">
+    <value>温度绘图</value>
+  </data>
+  <data name="Guide" xml:space="preserve">
+    <value>指南</value>
+  </data>
+  <data name="BorderLine" xml:space="preserve">
+    <value>边界</value>
+  </data>
+  <data name="PlotText" xml:space="preserve">
+    <value>注释</value>
+  </data>
+  <data name="PlotAxies" xml:space="preserve">
+    <value>坐标轴</value>
+  </data>
+  <data name="PlotLeftAxies" xml:space="preserve">
+    <value>左侧坐标轴</value>
+  </data>
+  <data name="PlotBottomAxies" xml:space="preserve">
+    <value>底部坐标轴</value>
+  </data>
+  <data name="PlotData" xml:space="preserve">
+    <value>数据</value>
+  </data>
+  <data name="MajorAxes" xml:space="preserve">
+    <value>主刻度轴</value>
+  </data>
+  <data name="MinorAxes" xml:space="preserve">
+    <value>次刻度轴</value>
+  </data>
+  <data name="Legend" xml:space="preserve">
+    <value>图例</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>背景</value>
+  </data>
+  <data name="Calculate" xml:space="preserve">
+    <value>计算</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>确认</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="IsShow" xml:space="preserve">
+    <value>IsShow</value>
+  </data>
+  <data name="FontFamily" xml:space="preserve">
+    <value>字体</value>
+  </data>
+  <data name="FontStyle" xml:space="preserve">
+    <value>字体样式</value>
+  </data>
+  <data name="FontNormal" xml:space="preserve">
+    <value>默认</value>
+  </data>
+  <data name="FontBold" xml:space="preserve">
+    <value>加粗</value>
+  </data>
+  <data name="FontItalic" xml:space="preserve">
+    <value>斜体</value>
+  </data>
+  <data name="FontSize" xml:space="preserve">
+    <value>字体大小</value>
+  </data>
+  <data name="FontColor" xml:space="preserve">
+    <value>字体颜色</value>
+  </data>
+  <data name="TextContent" xml:space="preserve">
+    <value>内容</value>
+  </data>
+  <data name="LineStyle" xml:space="preserve">
+    <value>线条样式</value>
+  </data>
+  <data name="LineSolid" xml:space="preserve">
+    <value>实线</value>
+  </data>
+  <data name="LineDash" xml:space="preserve">
+    <value>虚线</value>
+  </data>
+  <data name="LineDashDot" xml:space="preserve">
+    <value>点线</value>
+  </data>
+  <data name="LineDenselyDashed" xml:space="preserve">
+    <value>密集虚线</value>
+  </data>
+  <data name="LineWidth" xml:space="preserve">
+    <value>宽度</value>
+  </data>
+  <data name="LineColor" xml:space="preserve">
+    <value>颜色</value>
+  </data>
+  <data name="PointStyle" xml:space="preserve">
+    <value>点样式</value>
+  </data>
+  <data name="PointCircle" xml:space="preserve">
+    <value>圆形</value>
+  </data>
+  <data name="PointHollowCircle" xml:space="preserve">
+    <value>空心圆形</value>
+  </data>
+  <data name="PointSquare" xml:space="preserve">
+    <value>方形</value>
+  </data>
+  <data name="PointFilledTriangleUp" xml:space="preserve">
+    <value>上三角形</value>
+  </data>
+  <data name="PointFilledTriangleDown" xml:space="preserve">
+    <value>下三角形</value>
+  </data>
+  <data name="PointDiamond" xml:space="preserve">
+    <value>菱形</value>
+  </data>
+  <data name="PointEks" xml:space="preserve">
+    <value>叉号</value>
+  </data>
+  <data name="PointCross" xml:space="preserve">
+    <value>十字形</value>
+  </data>
+  <data name="PointStar" xml:space="preserve">
+    <value>星形</value>
+  </data>
+  <data name="Size" xml:space="preserve">
+    <value>大小</value>
+  </data>
+  <data name="IsShowAxes" xml:space="preserve">
+    <value>显示轴</value>
+  </data>
+  <data name="IsShowAxesTick" xml:space="preserve">
+    <value>隐藏主刻度</value>
+  </data>
+  <data name="AxesStyle" xml:space="preserve">
+    <value>刻度轴样式</value>
+  </data>
+  <data name="AxesStyleNormal" xml:space="preserve">
+    <value>常规</value>
+  </data>
+  <data name="AxesStyleLog10" xml:space="preserve">
+    <value>Log(10)</value>
+  </data>
+  <data name="AxesTickFont" xml:space="preserve">
+    <value>刻度轴字体</value>
+  </data>
+  <data name="AxesTickFontSize" xml:space="preserve">
+    <value>刻度字体大小</value>
+  </data>
+  <data name="AxesTickSpacing" xml:space="preserve">
+    <value>刻度间距</value>
+  </data>
+  <data name="AxesTickUpLimit" xml:space="preserve">
+    <value>刻度上限</value>
+  </data>
+  <data name="AxesTickDownLimit" xml:space="preserve">
+    <value>刻度下限</value>
+  </data>
+  <data name="AxesTickColor" xml:space="preserve">
+    <value>刻度颜色</value>
+  </data>
+  <data name="IsShowMinorAxes" xml:space="preserve">
+    <value>隐藏次刻度</value>
+  </data>
+  <data name="IsShowLegend" xml:space="preserve">
+    <value>是否显示图例</value>
+  </data>
+  <data name="LegendPosition" xml:space="preserve">
+    <value>图例位置</value>
+  </data>
+  <data name="LegendPositionRU" xml:space="preserve">
+    <value>右上角</value>
+  </data>
+  <data name="LegendPositionRD" xml:space="preserve">
+    <value>右下角</value>
+  </data>
+  <data name="LegendPositionLU" xml:space="preserve">
+    <value>左上角</value>
+  </data>
+  <data name="LegendPositionLD" xml:space="preserve">
+    <value>左下角</value>
+  </data>
+  <data name="LegendDirection" xml:space="preserve">
+    <value>图例方向</value>
+  </data>
+  <data name="LegendVertical" xml:space="preserve">
+    <value>纵向</value>
+  </data>
+  <data name="LegendHorizontal" xml:space="preserve">
+    <value>横向</value>
+  </data>
+  <data name="PlotTitle" xml:space="preserve">
+    <value>绘图标题</value>
+  </data>
+  <data name="PlotTitleFont" xml:space="preserve">
+    <value>标题字体</value>
+  </data>
+  <data name="PlotTitleFontSize" xml:space="preserve">
+    <value>标题字体大小</value>
+  </data>
+  <data name="PlotTitleColor" xml:space="preserve">
+    <value>标题颜色</value>
+  </data>
+  <data name="PlotAxesTitle1" xml:space="preserve">
+    <value>坐标轴标题1</value>
+  </data>
+  <data name="PlotAxesTitle2" xml:space="preserve">
+    <value>坐标轴标题2</value>
+  </data>
+  <data name="PlotAxesTitleFont" xml:space="preserve">
+    <value>轴标题字体</value>
+  </data>
+  <data name="PlotAxesTitleFontSize" xml:space="preserve">
+    <value>轴标题字体大小</value>
+  </data>
+  <data name="PlotAxesTitleColor" xml:space="preserve">
+    <value>轴标题颜色</value>
+  </data>
+  <data name="PlotShowGrid" xml:space="preserve">
+    <value>显示网格</value>
+  </data>
+  <data name="PlotMajorGridColor" xml:space="preserve">
+    <value>主网格颜色</value>
+  </data>
+  <data name="PlotMajorGridWidth" xml:space="preserve">
+    <value>主网格宽度</value>
+  </data>
+  <data name="PlotShowMinorGrid" xml:space="preserve">
+    <value>显示次网格</value>
+  </data>
+  <data name="PlotMinorGridColor" xml:space="preserve">
+    <value>次网格颜色</value>
+  </data>
+  <data name="PlotMinorGridWidth" xml:space="preserve">
+    <value>次网格宽度</value>
+  </data>
+  <data name="PlotSwitchFilledColor" xml:space="preserve">
+    <value>反转填充颜色</value>
+  </data>
+  <data name="PlotFilledColor1" xml:space="preserve">
+    <value>填充区域颜色1</value>
+  </data>
+  <data name="PlotFilledColor2" xml:space="preserve">
+    <value>填充区域颜色2</value>
+  </data>
+  <data name="Parameters" xml:space="preserve">
+    <value>所需参数</value>
+  </data>
+  <data name="Js" xml:space="preserve">
+    <value>Js 脚本</value>
+  </data>
+  <data name="CheckJs" xml:space="preserve">
+    <value>检查脚本</value>
+  </data>
+  <data name="Undelete_Message" xml:space="preserve">
+    <value>已取消删除</value>
+  </data>
+  <data name="DeleteingBasemapConfirm1_Message" xml:space="preserve">
+    <value>正在删除底图</value>
+  </data>
+  <data name="DeleteingBasemapConfirm2_Message" xml:space="preserve">
+    <value>是否确认删除？</value>
+  </data>
+  <data name="SaveSuccess" xml:space="preserve">
+    <value>保存成功</value>
+  </data>
+  <data name="ParameterNotFilledIn" xml:space="preserve">
+    <value>投图参数未填写</value>
+  </data>
+  <data name="ScNotFilledIn" xml:space="preserve">
+    <value>投图脚本未填写</value>
+  </data>
+  <data name="BasemapVersionToLow1" xml:space="preserve">
+    <value>导入的底图版本过低，请使用版本大于</value>
+  </data>
+  <data name="BasemapVersionToLow2" xml:space="preserve">
+    <value>的底图</value>
+  </data>
+  <data name="CancelImport" xml:space="preserve">
+    <value>已取消导入</value>
+  </data>
+  <data name="BasemapExisted" xml:space="preserve">
+    <value>底图文件已经存在，是否覆盖？</value>
+  </data>
+  <data name="NewBasemapSuccess" xml:space="preserve">
+    <value>新建底图成功</value>
+  </data>
+  <data name="CategoryFormatError" xml:space="preserve">
+    <value>类别格式错误</value>
+  </data>
+  <data name="ParameterNull" xml:space="preserve">
+    <value>参数为空</value>
+  </data>
+  <data name="JsNull" xml:space="preserve">
+    <value>脚本为空</value>
+  </data>
+  <data name="BasemapCategories" xml:space="preserve">
+    <value>底图类别</value>
+  </data>
+  <data name="BasemapLanguage" xml:space="preserve">
+    <value>底图语言</value>
+  </data>
+  <data name="Zircon" xml:space="preserve">
+    <value>锆石</value>
+  </data>
+  <data name="Sphalerite" xml:space="preserve">
+    <value>闪锌矿</value>
+  </data>
+  <data name="Quartz" xml:space="preserve">
+    <value>石英</value>
+  </data>
+  <data name="Arsenopyrite" xml:space="preserve">
+    <value>毒砂</value>
+  </data>
+  <data name="Chlorite" xml:space="preserve">
+    <value>绿泥石</value>
+  </data>
+  <data name="Biotite" xml:space="preserve">
+    <value>黑云母</value>
+  </data>
+  <data name="Amphibole" xml:space="preserve">
+    <value>角闪石</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>重置</value>
+  </data>
+  <data name="ExportResult" xml:space="preserve">
+    <value>导出结果</value>
+  </data>
+  <data name="TGMInfo" xml:space="preserve">
+    <value>点击 或者 拖拽文件到此处</value>
+  </data>
+  <data name="CalTarget" xml:space="preserve">
+    <value>计算目标</value>
+  </data>
+  <data name="CalTarget1" xml:space="preserve">
+    <value>饱和温度</value>
+  </data>
+  <data name="CalTarget2" xml:space="preserve">
+    <value>主量温度</value>
+  </data>
+  <data name="AtomicMassStd" xml:space="preserve">
+    <value>原子量标准</value>
+  </data>
+  <data name="Pressure" xml:space="preserve">
+    <value>压力(Mpa)</value>
+  </data>
+  <data name="ActivityTiO2" xml:space="preserve">
+    <value>活度(TiO2)</value>
+  </data>
+  <data name="ActivitySiO2" xml:space="preserve">
+    <value>活度(SiO2)</value>
+  </data>
+  <data name="fS" xml:space="preserve">
+    <value>硫逸度</value>
+  </data>
+  <data name="fSInfo" xml:space="preserve">
+    <value>硫逸度自动计算方法</value>
+  </data>
+  <data name="DefaultImport" xml:space="preserve">
+    <value>默认导入</value>
+  </data>
+  <data name="ShowError" xml:space="preserve">
+    <value>误差范围显示</value>
+  </data>
+  <data name="MineralAssemblage" xml:space="preserve">
+    <value>矿物组合</value>
+  </data>
+  <data name="AmphiboleGTM" xml:space="preserve">
+    <value>角闪石温度计</value>
+  </data>
+  <data name="BiotiteGTM" xml:space="preserve">
+    <value>黑云母温度计</value>
+  </data>
+  <data name="ChloriteGTM" xml:space="preserve">
+    <value>绿泥石温度计</value>
+  </data>
+  <data name="ArsenopyriteGTM" xml:space="preserve">
+    <value>毒砂温度计</value>
+  </data>
+  <data name="QuartzGTM" xml:space="preserve">
+    <value>石英 Ti 温度计</value>
+  </data>
+  <data name="SphaleriteGTM" xml:space="preserve">
+    <value>闪锌矿 FeS 温度计</value>
+  </data>
+  <data name="SphaleriteGGIMFisGTM" xml:space="preserve">
+    <value>闪锌矿 GGIMFis 温度计</value>
+  </data>
+  <data name="ZirconTiGTM" xml:space="preserve">
+    <value>锆石 Ti 温度计</value>
+  </data>
+  <data name="ZirconZrGTM" xml:space="preserve">
+    <value>锆石 Zr 温度计</value>
+  </data>
+  <data name="Step1" xml:space="preserve">
+    <value>导入 / 填入数据</value>
+  </data>
+  <data name="Step2" xml:space="preserve">
+    <value>检查参数</value>
+  </data>
+  <data name="Step3" xml:space="preserve">
+    <value>计算结果</value>
+  </data>
+  <data name="NormalSetting" xml:space="preserve">
+    <value>常规设置</value>
+  </data>
+  <data name="About" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <data name="FilePath" xml:space="preserve">
+    <value>文件路径</value>
+  </data>
+  <data name="FileSavePath" xml:space="preserve">
+    <value>保存文件位置</value>
+  </data>
+  <data name="DefaultPath" xml:space="preserve">
+    <value>默认位置</value>
+  </data>
+  <data name="CustomPath" xml:space="preserve">
+    <value>自定义文件夹位置</value>
+  </data>
+  <data name="OpenFileLocation" xml:space="preserve">
+    <value>打开文件夹位置</value>
+  </data>
+  <data name="InternationalizationAndPersonalization" xml:space="preserve">
+    <value>国际化 &amp; 个性化</value>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>主题</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>默认</value>
+  </data>
+  <data name="Language_" xml:space="preserve">
+    <value>语言</value>
+  </data>
+  <data name="EnglishUS" xml:space="preserve">
+    <value>English(US)</value>
+  </data>
+  <data name="ChineseS" xml:space="preserve">
+    <value>中文(简体)</value>
+  </data>
+  <data name="StartBackgroundImages" xml:space="preserve">
+    <value>启动背景图</value>
+  </data>
+  <data name="DefaultRandom" xml:space="preserve">
+    <value>默认随机</value>
+  </data>
+  <data name="MessageNotification" xml:space="preserve">
+    <value>消息通知</value>
+  </data>
+  <data name="MessageAutoClose" xml:space="preserve">
+    <value>自动关闭时间</value>
+  </data>
+  <data name="MessageAutoClose5" xml:space="preserve">
+    <value>5 秒</value>
+  </data>
+  <data name="MessageAutoClose4" xml:space="preserve">
+    <value>4 秒</value>
+  </data>
+  <data name="MessageAutoClose3" xml:space="preserve">
+    <value>3 秒</value>
+  </data>
+  <data name="MessageAutoClose2" xml:space="preserve">
+    <value>2 秒</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>其他</value>
+  </data>
+  <data name="Boot" xml:space="preserve">
+    <value>开机自启</value>
+  </data>
+  <data name="AutoCheckUpdate" xml:space="preserve">
+    <value>自动检查更新</value>
+  </data>
+  <data name="CheckUpdate" xml:space="preserve">
+    <value>检查更新</value>
+  </data>
+  <data name="QuitAppMode" xml:space="preserve">
+    <value>退出程序方法</value>
+  </data>
+  <data name="MinimizeTray" xml:space="preserve">
+    <value>最小化到托盘</value>
+  </data>
+  <data name="Quit" xml:space="preserve">
+    <value>直接退出</value>
+  </data>
+  <data name="AboutInfo1" xml:space="preserve">
+    <value>本项目通过利用地球化学数据进行相关图表绘制、计算与分析，对地质学数据进行高效处理，旨在帮助地球科学研究人员加速数据分析流程，提升研究效率。</value>
+  </data>
+  <data name="AboutInfo2" xml:space="preserve">
+    <value>如果您对本项目感兴趣，欢迎点个 Star 支持一下！如果您觉得对您有帮助，也可以请我喝杯咖啡☕</value>
+  </data>
+  <data name="AboutInfo3" xml:space="preserve">
+    <value>我们欢迎更多的研究人员加入！&amp;#xA;一起维护和更新地球化学计算的方法，还有更多的绘图底图模板！&amp;#xA;让软件变得更强大，更好用！</value>
+  </data>
+  <data name="ThankSupport" xml:space="preserve">
+    <value>感谢支持</value>
+  </data>
+  <data name="Support1" xml:space="preserve">
+    <value>📌控件支持:</value>
+  </data>
+  <data name="Support3" xml:space="preserve">
+    <value>📌文档支持:</value>
+  </data>
+  <data name="Support4" xml:space="preserve">
+    <value>📌计算支持:</value>
+  </data>
+  <data name="Support2" xml:space="preserve">
+    <value>📌图表支持: </value>
+  </data>
+  <data name="Support5" xml:space="preserve">
+    <value>📌工具支持:</value>
+  </data>
+  <data name="PlotBoder" xml:space="preserve">
+    <value>边界</value>
+  </data>
+  <data name="ResetSuccess" xml:space="preserve">
+    <value>重置成功</value>
+  </data>
+  <data name="ModifedSuccess" xml:space="preserve">
+    <value>修改成功</value>
+  </data>
+  <data name="ModifedCanceled" xml:space="preserve">
+    <value>取消修改</value>
+  </data>
+  <data name="Info1" xml:space="preserve">
+    <value>请前往官网查看，该功能开发中....</value>
+  </data>
+</root>

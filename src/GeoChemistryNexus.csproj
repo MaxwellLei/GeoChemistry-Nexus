@@ -141,31 +141,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\Geothermometer\ArsenopyritePageView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\Geothermometer\ChloritePageView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\Geothermometer\AmphiboleMPageView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\Geothermometer\SphaleriteFeSPageView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\Geothermometer\SphaleriteGGIMFisPageView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\Geothermometer\QuatzTiPageView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\Geothermometer\ZirconZrPageView.xaml.cs">
-      <SubType>Code</SubType>
+    <Folder Include="Data\PlotData\Custom\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Data\Language\Language.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Language.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\PlotData\Custom\" />
+    <EmbeddedResource Update="Data\Language\Language.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Language.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

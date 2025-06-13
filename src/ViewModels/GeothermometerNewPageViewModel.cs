@@ -20,17 +20,12 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private object? currentView;
 
-        // 表格对象
-        [ObservableProperty]
-        private ReoGridControl _reoGridControl;
-
         // 初始化
         public GeothermometerNewPageViewModel()
         {
             // 注册自定义函数
             CustomizeFuncHelper.RegisterAllFunctions();
         }
-
 
         /// <summary>
         /// 检查是否选中大于两个以上的区域
@@ -201,15 +196,22 @@ namespace GeoChemistryNexus.ViewModels
 
                 // 获取当前工作表
                 Worksheet worksheet = reoGridControl.CurrentWorksheet;
-                // 保存当前的缩放比例
-                var currentScale = worksheet.ScaleFactor;
+
                 // 清空工作表
-                if (!isConfirmed) { worksheet.DeleteRangeData(RangePosition.EntireRange); }
-                // 恢复缩放比例
-                worksheet.ScaleFactor = currentScale;
+                if (!isConfirmed) 
+                {
+                    // 保存当前的缩放比例
+                    var currentScale = worksheet.ScaleFactor;
+                    // 重置表格
+                    worksheet.Reset();
+                    //worksheet.DeleteRangeData(RangePosition.EntireRange); 
+                    // 恢复缩放比例
+                    worksheet.ScaleFactor = currentScale;
+                }
+
                 // 隐藏行列
-                worksheet.SetSettings(WorksheetSettings.View_ShowRowHeader, false);
-                worksheet.SetSettings(WorksheetSettings.View_ShowColumnHeader, false);
+                //worksheet.SetSettings(WorksheetSettings.View_ShowRowHeader, false);
+                //worksheet.SetSettings(WorksheetSettings.View_ShowColumnHeader, false);
 
                 //MessageHelper.Info($"工作表数量: {reoGridControl.Worksheets.Count}");
                 //MessageHelper.Info($"当前工作表名称: {reoGridControl.CurrentWorksheet?.Name}");
@@ -269,6 +271,97 @@ namespace GeoChemistryNexus.ViewModels
                 System.Diagnostics.Debug.WriteLine($"创建表格时发生错误: {ex.Message}");
             }
 
+        }
+
+
+        // TODO：完善读取 xlsx, xls 和 csv 文件
+        [RelayCommand]
+        public void OpenExcelFile(ReoGridControl reoGridControl)
+        {
+            string filePath = FileHelper.GetFilePath("CSV文件|*.csv");
+            if (filePath != null) { reoGridControl.Load(filePath); MessageHelper.Success("文件导入成功"); }
+            MessageHelper.Info("取消导入");
+        }
+
+
+        /// <summary>
+        /// 保存当前工作表为 CSV 文件
+        /// </summary>
+        /// <param name="reoGridControl">当前工作簿</param>
+        [RelayCommand]
+        public void ExportWorksheet(ReoGridControl reoGridControl)
+        {
+            // 获取当前活动的工作表
+            var worksheet = reoGridControl.CurrentWorksheet;
+            if (worksheet == null) return;
+
+            string tempFilePath = FileHelper.GetSaveFilePath2(title: "保存为csv文件", filter: "CSV文件|*.csv",
+                                                                defaultExt: ".csv", defaultFileName:worksheet.Name);
+            if (string.IsNullOrEmpty(tempFilePath)) return;
+
+            try
+            {
+                // 获取数据范围
+                var range = worksheet.UsedRange;
+                var csvBuilder = new StringBuilder();
+
+                // 遍历数据
+                for (int r = range.Row; r <= range.EndRow; r++)
+                {
+                    var rowValues = new List<string>();
+                    for (int c = range.Col; c <= range.EndCol; c++)
+                    {
+                        // 获取单元格显示的文本，如果为空则返回空字符串
+                        string cellValue = worksheet.GetCellText(r, c) ?? "";
+
+                        // CSV转义处理
+                        if (cellValue.Contains(",") || cellValue.Contains("\""))
+                        {
+                            cellValue = $"\"{cellValue.Replace("\"", "\"\"")}\"";
+                        }
+                        rowValues.Add(cellValue);
+                    }
+                    csvBuilder.AppendLine(string.Join(",", rowValues));
+                }
+
+                // 写入文件
+                System.IO.File.WriteAllText(tempFilePath, csvBuilder.ToString(), new UTF8Encoding(true));
+
+                MessageHelper.Success("导出成功！");
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.Error($"导出失败: {ex.Message}");
+            }
+        }
+
+
+        /// <summary>
+        /// 新建工作表并插入到末尾
+        /// </summary>
+        /// <param name="reoGridControl">工作簿</param>
+        /// <exception cref="Exception">创建失败抛出</exception>
+        [RelayCommand]
+        public void CreateWorkSheet(ReoGridControl reoGridControl)
+        {
+            try
+            {
+                // 生成唯一的工作表名称
+                //string uniqueName = GetUniqueWorksheetName(reoGridControl, "Sheet");
+
+                // 创建新工作表
+                Worksheet newWorksheet= reoGridControl.CreateWorksheet();
+                
+                // 添加到末尾
+                reoGridControl.Worksheets.Add(newWorksheet);
+
+                // 激活新创建的工作表
+                reoGridControl.CurrentWorksheet = newWorksheet;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"创建工作表失败: {ex.Message}", ex);
+            }
         }
 
 
@@ -406,7 +499,7 @@ namespace GeoChemistryNexus.ViewModels
 
 
         /// <summary>
-        /// 模板：绿泥石 
+        /// 模板：绿泥石温度计,  Jowett (1991)
         /// </summary>
         /// <param name="reoGridControl"></param>
         /// <returns></returns>
@@ -416,7 +509,7 @@ namespace GeoChemistryNexus.ViewModels
             await ExecuteCreateGridHeader(reoGridControl
                     , new List<string> { "ID", "SiO2(wt.%)", "TiO2(wt.%)", "Al2O3(wt.%)", "FeO(wt.%)", "MnO(wt.%)"
                                             , "MgO(wt.%)", "CaO(wt.%)", "Na2O(wt.%)", "K2O(wt.%)", "BaO(wt.%)"
-                                            , "Rb2O(wt.%)", "CsO(wt.%)", "ZnO(wt.%)", "F(wt.%)", "Cl(wt.%)"
+                                            , "Rb2O(wt.%)", "Cs2O(wt.%)", "ZnO(wt.%)", "F(wt.%)", "Cl(wt.%)"
                                             , "Cr2O3(wt.%)", "NiO(wt.%)", "T(K)", "T(℃)"}
                     , new List<string> { "Example", "37.663","0.045","23.254","12.791","0.058"
                                             ,"0.032","23.047","0.024","0","0"
@@ -426,6 +519,21 @@ namespace GeoChemistryNexus.ViewModels
         }
 
 
+        /// <summary>
+        /// 模板：毒砂温度计, Kretschmar and Scott (1976)
+        /// </summary>
+        /// <param name="reoGridControl"></param>
+        /// <returns></returns>
+        [RelayCommand]
+        public async Task Arsenopyrite_Assemblage_Kretschmar_and_Scott_1976(ReoGridControl reoGridControl)
+        {
+            await ExecuteCreateGridHeader(reoGridControl
+                    , new List<string> { "ID", "AtomicPercentAs(at.%)", "Assemblage"
+                                            , "T(K)", "T(℃)"}
+                    , new List<string> { "Example", "32.4","Asp_Py_Po"
+                                            ,"=Arsenopyrite_Assemblage_Kretschmar_and_Scott_1976(B2,DefineArsenopyriteAssemblage(C2))+273.15", "=D2-273.15" }
+                    , "Arsenopyrite_Assemblage_1976");
+        }
 
     }
 }
