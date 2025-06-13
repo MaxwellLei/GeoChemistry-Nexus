@@ -17,54 +17,154 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace GeoChemistryNexus.ViewModels
 {
     public partial class MainWindowViewModel: ObservableObject
     {
-        private Frame Nav;  //导航对象
-        public RelayCommand HomePage { get; private set; }  //切换主页命令
-        public RelayCommand GeothermometerNewPage { get; private set; }  //切换温度计命令
-        public RelayCommand SettingPage { get; private set; }  //切换设置命令
 
         //初始化
-        public MainWindowViewModel(Frame nav)
+        public MainWindowViewModel()
         {
-            Nav = nav;
-            //MapPage = new RelayCommand(ExecuteMapPage);
-            HomePage = new RelayCommand(ExecuteHomePage);
-            GeothermometerNewPage = new RelayCommand(ExecuteTepNewPage);
-            SettingPage = new RelayCommand(ExecuteSettingPage);
-            //ThemeModeChange = new RelayCommand(ExecuteThemeModeChange);
 
             //FunInit();
         }
-        //切换主页命令
-        private void ExecuteHomePage()
+
+        /// <summary>
+        /// 最小化窗口
+        /// </summary>
+        /// <param name="window">当前窗体</param>
+        [RelayCommand]
+        private void MinimizeWindow(Window window)
         {
-            Nav.Navigate(MainPlotPage.GetPage());
+            if (window != null)
+                window.WindowState = WindowState.Minimized;
         }
 
-        //切换新温度计计算命令
-        private void ExecuteTepNewPage()
+        /// <summary>
+        /// 最大化/还原窗口
+        /// </summary>
+        /// <param name="window">当前窗体</param>
+        [RelayCommand]
+        private void MaximizeWindow(Window window)
         {
-            Nav.Navigate(GeothermometerNewPageView.GetPage());
+            if (window == null) return;
+
+            if (window.WindowState != WindowState.Maximized)
+            {
+                window.WindowState = WindowState.Maximized;
+                window.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+                window.MaxWidth = SystemParameters.MaximizedPrimaryScreenWidth;
+            }
+            else
+            {
+                window.WindowState = WindowState.Normal;
+            }
         }
 
-        //切换科学计算命令
-        private void ExecuteSCICalPage()
+        /// <summary>
+        /// 关闭窗口
+        /// </summary>
+        /// <param name="window">当前窗体</param>
+        [RelayCommand]
+        private void CloseWindow(Window window)
         {
-            //Nav.Navigate(ModelPageView.GetPage());
-            //ModelPageView.RefeshAn();
+            window?.Close();
         }
 
-        //切换设置命令
-        private void ExecuteSettingPage()
+
+        /// <summary>
+        /// 彩蛋
+        /// </summary>
+        [RelayCommand]
+        private void Stinger()
         {
-            Nav.Navigate(SettingPageView.GetPage());
+            // 获取当前日期和时间
+            DateTime now = DateTime.Now;
+            // 获取当前年份
+            int currentYear = now.Year;
+            MessageHelper.Success($"感谢您的使用🌹\n祝您 {currentYear} 年科研，生活一帆风顺！");
+        }
+
+        /// <summary>
+        /// 切换主页命令
+        /// </summary>
+        /// <param name="nav">导航</param>
+        [RelayCommand]
+        private void HomePage(Frame nav)
+        {
+            nav.Navigate(MainPlotPage.GetPage());
+        }
+
+        /// <summary>
+        /// 切换新温度计计算命令
+        /// </summary>
+        /// <param name="nav">导航</param>
+        [RelayCommand]
+        private void GTMNewPage(Frame nav)
+        {
+            nav.Navigate(GeothermometerNewPageView.GetPage());
+        }
+
+        /// <summary>
+        /// 切换科学计算命令
+        /// </summary>
+        //[RelayCommand]
+        //private void ExecuteSCICalPage()
+        //{
+        //    //Nav.Navigate(ModelPageView.GetPage());
+        //    //ModelPageView.RefeshAn();
+        //}
+
+
+        ///切换设置命令
+        [RelayCommand]
+        private void SettingPage(Frame nav)
+        {
+            nav.Navigate(SettingPageView.GetPage());
             SettingPageView.RefeshAn();
         }
+
+
+        /// <summary>
+        /// 托盘菜单显示主窗体
+        /// </summary>
+        [RelayCommand]
+        private void ShowWindow(Window window)
+        {
+            // 显示窗口并将其置于屏幕的最顶层
+            window.Show();
+            window.WindowState = WindowState.Normal;
+            window.Topmost = true;
+            window.Activate();
+
+            // 将置顶属性重置为 false，在窗口获得焦点时再次激活
+            //Dispatcher.BeginInvoke(new Action(() => { window.Topmost = false; }));
+        }
+
+
+        /// <summary>
+        /// 帮助按钮
+        /// </summary>
+        [RelayCommand]
+        private void Help()
+        {
+            string url = "https://geonweb.pages.dev/";
+            //拉起浏览器
+            try
+            {
+                Process.Start(new ProcessStartInfo("cmd", $"/c start {url}") { CreateNoWindow = true });
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.Warning((string)System.Windows.Application.Current.Resources["OpenBrowserError"] + ex.Message);
+            }
+        }
+
 
         ////功能初始化
         //private void FunInit()

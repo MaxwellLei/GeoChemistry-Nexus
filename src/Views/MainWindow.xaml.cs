@@ -36,36 +36,8 @@ namespace GeoChemistryNexus
             // 初始化窗体
             InitializeComponent();
             // 链接 ViewModel
-            this.DataContext = new MainWindowViewModel(this.Nav);
-            Nav.Navigate(MainPlotPage.GetPage());
-        }
-
-        //关闭
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
-
-        //最小化窗体
-        private void MinButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.WindowState = WindowState.Minimized;
-        }
-
-        //最大化
-        private void MaxMinButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (this.WindowState != WindowState.Maximized)
-            {
-                this.WindowState = WindowState.Maximized;
-                this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
-                this.MaxWidth = SystemParameters.MaximizedPrimaryScreenWidth;
-            }
-            else
-            {
-                this.WindowState = WindowState.Normal;
-
-            }
+            this.DataContext = new MainWindowViewModel();
+            MyNav.Navigate(MainPlotPage.GetPage());
         }
 
         //显示窗口
@@ -79,21 +51,6 @@ namespace GeoChemistryNexus
 
             // 将置顶属性重置为 false，在窗口获得焦点时再次激活
             Dispatcher.BeginInvoke(new Action(() => { this.Topmost = false; }));
-        }
-
-        //帮助按钮
-        private void Help_Click(object sender, RoutedEventArgs e)
-        {
-            string url = "https://geonweb.pages.dev/";
-            //拉起浏览器
-            try
-            {
-                Process.Start(new ProcessStartInfo("cmd", $"/c start {url}") { CreateNoWindow = true });
-            }
-            catch (Exception ex)
-            {
-                MessageHelper.Warning((string)System.Windows.Application.Current.Resources["OpenBrowserError"] + ex.Message);
-            }
         }
 
         //窗体加载完成后的按钮动画

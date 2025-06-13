@@ -9,12 +9,12 @@
       "baseMapPath": "Igneous Rock_Rock Category_Ewart (1982).json"
     },
     {
-      "rootNode": [ "Igneous Rock", "Rock Category", "Ewart (1982)", "Ewart (1982)" ],
+      "rootNode": [ "Igneous Rock", "Rock Category", "Irvine & Baragar (1971)" ],
       "baseMapPath": "Igneous Rock_Rock Category_Irvine & Baragar (1971)_SiO2-Na2O-K2O.json"
     },
     {
-      "rootNode": [ "Igneous Rock", "Rock Category", "Ewart (1982)" ],
-      "baseMapPath": "Igneous Rock_Rock Category_Ewart (1982).json"
+      "rootNode": [ "Igneous Rock", "Rock Category", "newbasemap" ],
+      "baseMapPath": "Igneous Rock_Rock Category_newbasemap.json"
     }
   ]
 }

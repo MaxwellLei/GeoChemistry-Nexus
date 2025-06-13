@@ -390,7 +390,6 @@ namespace GeoChemistryNexus.ViewModels
             RegisterPlotTemplates();    // 注册绘图模板
             
 
-
             // 获取系统所有字体
             PlotTextFontNames = System.Drawing.FontFamily.Families
                 .Select(f => f.Name)
@@ -401,8 +400,14 @@ namespace GeoChemistryNexus.ViewModels
         // 注册绘图模板
         public void RegisterPlotTemplates(bool editList = false)
         {
+            string lgFolder = "zh-CN";
+            if (ConfigHelper.GetConfig("language") == "1")
+            {
+                lgFolder = "en-US";
+            }
+
             // 加载底图列表
-            var listPath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "PlotList.json");
+            var listPath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData","Default", lgFolder, "PlotList.json");
             if (editList)
             {
                 listPath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "PlotListCustom.json");
@@ -423,6 +428,7 @@ namespace GeoChemistryNexus.ViewModels
             {
                 RootTreeNode = new TreeNode();
             }
+
             //var tempTitle1 = I18n.GetString("IgneousRock");      // 岩浆岩
             //var tempTitle12 = I18n.GetString("TectonicSetting");      // 构造环境
             //var tempTitle13 = I18n.GetString("Basalt");      // 玄武岩
@@ -2341,7 +2347,7 @@ namespace GeoChemistryNexus.ViewModels
 
                 _previousSelectedNode = (TreeNode)parameter;        // 获取当前选中模板对象
 
-                string lgFolder = "zh-Hans";
+                string lgFolder = "zh-CN";
                 if (ConfigHelper.GetConfig("language") == "1")
                 {
                     lgFolder = "en-US";

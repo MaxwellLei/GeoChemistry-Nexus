@@ -84,12 +84,12 @@
                             <!--<MenuItem Header="导出"/>-->
                             <!--<Separator />-->
                             <!--删除底图-->
-                            <MenuItem Header="{Binding [DeleteBasemap],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding DeleteBasemapCommand}"/>
+                            <MenuItem Header="{Binding DeleteBasemap}" Command="{Binding DeleteBasemapCommand}"/>
                         </ContextMenu>
                     </TreeView.ContextMenu>
                     <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                            <TextBlock Text="{Binding [Name],Source={x:Static lg:LanguageService.Instance}}"/>
+                            <TextBlock Text="{Binding Name}"/>
                         </HierarchicalDataTemplate>
                     </TreeView.ItemTemplate>
                     <i:Interaction.Triggers>
@@ -1014,5 +1014,4 @@
             </Border>
         </Grid>
     </Grid>
-
 </Page>

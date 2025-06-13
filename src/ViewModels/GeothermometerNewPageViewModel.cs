@@ -274,7 +274,11 @@ namespace GeoChemistryNexus.ViewModels
         }
 
 
-        // TODO：完善读取 xlsx, xls 和 csv 文件
+        /// <summary>
+        /// 打开读取数据文件
+        /// TODO：完善读取 xlsx, xls 和 csv 文件
+        /// </summary>
+        /// <param name="reoGridControl"></param>
         [RelayCommand]
         public void OpenExcelFile(ReoGridControl reoGridControl)
         {
@@ -373,7 +377,8 @@ namespace GeoChemistryNexus.ViewModels
         public async Task Zircon_Ti_Loucks_2020(ReoGridControl reoGridControl)
         {
             await ExecuteCreateGridHeader(reoGridControl
-                    ,new List<string> { "ID", "Ti(ppm)", "P(MPa)", "α(TiO2)", "α(SiO2)", "T(K)", "T(℃)"}
+                    ,new List<string> { "ID", "Ti(ppm)", "P(MPa)", "α(TiO2)", "α(SiO2)", "T(K)", "T(℃)"
+                    ,"Loucks, R. R., O'Connell, R. J., Zanazzi, P. F., & Kelemen, P. B. (2020). \"The role of zircon in tracing Ti diffusion and temperature in metamorphic rocks.\""}
                     ,new List<string> { "Example", "4.12", "300", "0.8", "1", 
                                         "=((-4800+(0.4748*(C2-1000)))/(LOG10(B2)-5.711-LOG10(D2)+LOG10(E2)))", "=F2-273.15"}
                     ,"Zircon_Ti_2020");

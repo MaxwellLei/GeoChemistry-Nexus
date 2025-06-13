@@ -132,13 +132,13 @@ namespace GeoChemistryNexus.ViewModels
             if (Language == 0)
             {
                 //LanguageHelper.ChangeLanguage("zh-CN");
-                //ConfigHelper.SetConfig("language", "0");
+                ConfigHelper.SetConfig("language", "0");
                 LanguageService.Instance.ChangeLanguage(new System.Globalization.CultureInfo("zh-CN"));
             }
             else
             {
                 //LanguageHelper.ChangeLanguage("en-US");
-                //ConfigHelper.SetConfig("language", "1");
+                ConfigHelper.SetConfig("language", "1");
                 LanguageService.Instance.ChangeLanguage(new System.Globalization.CultureInfo("en-US"));
             }
 

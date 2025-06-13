@@ -34,14 +34,16 @@
     <None Remove="Data\Image\StartPic\8.jpg" />
     <None Remove="Data\Image\StartPic\9.jpg" />
     <None Remove="Data\PlotData\Default\en-US\Igneous Rock_Rock Category_Ewart %281982%29.json" />
+    <None Remove="Data\PlotData\Default\en-US\Igneous Rock_Rock Category_Irvine &amp; Baragar %281971%29_SiO2-Na2O-K2O.json" />
     <None Remove="Data\PlotData\Default\en-US\Igneous Rock_Rock Category_TAS.json" />
+    <None Remove="Data\PlotData\Default\en-US\PlotList.json" />
     <None Remove="Data\PlotData\Default\en-US\TAS.json" />
     <None Remove="Data\PlotData\Default\English_Igneous Rock_Rock Category_TAS.json" />
-    <None Remove="Data\PlotData\Default\zh-Hans\简体中文_岩浆岩_岩石类别_TAS.json" />
+    <None Remove="Data\PlotData\Default\zh-CN\PlotList.json" />
+    <None Remove="Data\PlotData\Default\zh-CN\简体中文_岩浆岩_岩石类别_TAS.json" />
     <None Remove="Data\PlotData\Default\简体中文_岩浆岩_岩石类别_TAS.json" />
     <None Remove="Data\PlotData\PlotD.zip" />
     <None Remove="Data\PlotData\PlotData.zip" />
-    <None Remove="Data\PlotData\PlotList.json" />
     <None Remove="Data\PlotData\PlotListCustom.json" />
     <None Remove="Data\PlotData\TestBaseMap.json" />
   </ItemGroup>
@@ -105,10 +107,19 @@
     <Content Include="Data\PlotData\Default\en-US\Igneous Rock_Rock Category_Ewart (1982).json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Data\PlotData\Default\en-US\Igneous Rock_Rock Category_Irvine &amp; Baragar (1971)_SiO2-Na2O-K2O.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\PlotData\Default\en-US\Igneous Rock_Rock Category_TAS.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\PlotData\Default\zh-Hans\简体中文_岩浆岩_岩石类别_TAS.json">
+    <Content Include="Data\PlotData\Default\en-US\PlotList.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\PlotData\Default\zh-CN\PlotList.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\PlotData\Default\zh-CN\简体中文_岩浆岩_岩石类别_TAS.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\PlotData\PlotData.zip">
@@ -121,9 +132,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\PlotData\PlotListCustom.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\PlotData\PlotList.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
