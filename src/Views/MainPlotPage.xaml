@@ -31,48 +31,41 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <!--投图类型选择-->
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="0.045*"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Grid>
-                    <!--菜单栏-->
-                    <Menu VerticalAlignment="Center" HorizontalAlignment="Left" FlowDirection="RightToLeft">
-                        <!--拓展-->
-                        <MenuItem Header="{Binding [Expand],Source={x:Static lg:LanguageService.Instance}}">
-                            <!--获取更多底图-->
-                            <MenuItem Header="{Binding [GetMoreBasemap],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding NewBasemapCommand}" IsEnabled="False"/>
-                        </MenuItem>
-                        <!--编辑-->
-                        <MenuItem Header="{Binding [Edit],Source={x:Static lg:LanguageService.Instance}}">
-                            <!--<MenuItem Header="移动位置" Command="{Binding MovePositionCommand}"/>-->
-                            <!--<Separator/>-->
-                            <!--删除底图-->
-                            <MenuItem Header="{Binding [DeleteBasemap],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding DeleteBasemapCommand}"/>
-                        </MenuItem>
-                        <!--文件-->
-                        <MenuItem Header="{Binding [File],Source={x:Static lg:LanguageService.Instance}}">
-                            <!--编辑模式-->
-                            <MenuItem Header="{Binding [EditMode],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding EditModeCommand}"
+            <DockPanel>
+                <!--菜单栏-->
+                <Menu DockPanel.Dock="Top">
+                    <!--文件-->
+                    <MenuItem Header="{Binding [File],Source={x:Static lg:LanguageService.Instance}}">
+                        <!--编辑模式-->
+                        <MenuItem Header="{Binding [EditMode],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding EditModeCommand}"
                                       IsEnabled="{Binding IsPlotMode}"/>
-                            <!--新建底图-->
-                            <MenuItem Header="{Binding [NewBasemap],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding NewBasemapCommand}"
+                        <!--新建底图-->
+                        <MenuItem Header="{Binding [NewBasemap],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding NewBasemapCommand}"
                                       IsEnabled="{Binding IsEditMode}"/>
-                            <!--保存底图-->
-                            <MenuItem Header="{Binding [SaveBasemap],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding SaveBaseMapCommand}"
+                        <!--保存底图-->
+                        <MenuItem Header="{Binding [SaveBasemap],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding SaveBaseMapCommand}"
                                   IsEnabled="{Binding BasePlotConfigObject, Converter={StaticResource NullToEnableConverter}}"/>
-                            <Separator/>
-                            <!--导入底图-->
-                            <MenuItem Header="{Binding [ImportBasemap],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding LoadBasemapCommand}"
+                        <Separator/>
+                        <!--导入底图-->
+                        <MenuItem Header="{Binding [ImportBasemap],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding LoadBasemapCommand}"
                                       />
-                            <!--导出底图-->
-                            <MenuItem Header="{Binding [ExportBasemap],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding NewBasemapCommand}"
+                        <!--导出底图-->
+                        <MenuItem Header="{Binding [ExportBasemap],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding NewBasemapCommand}"
                                   IsEnabled="False"/>
-                        </MenuItem>
-
-                    </Menu>
-                </Grid>
+                    </MenuItem>
+                    <!--编辑-->
+                    <MenuItem Header="{Binding [Edit],Source={x:Static lg:LanguageService.Instance}}">
+                        <!--<MenuItem Header="移动位置" Command="{Binding MovePositionCommand}"/>-->
+                        <!--<Separator/>-->
+                        <!--删除底图-->
+                        <MenuItem Header="{Binding [DeleteBasemap],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding DeleteBasemapCommand}"/>
+                    </MenuItem>
+                    <!--拓展-->
+                    <MenuItem Header="{Binding [Expand],Source={x:Static lg:LanguageService.Instance}}">
+                        <!--获取更多底图-->
+                        <MenuItem Header="{Binding [GetMoreBasemap],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding NewBasemapCommand}" IsEnabled="False"/>
+                    </MenuItem>
+                </Menu>
                 <!--绘图对象层级列表-->
                 <TreeView Grid.Row="1" 
                           ItemsSource="{Binding RootTreeNode.Children}" 
@@ -100,7 +93,7 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </TreeView>
-            </Grid>
+            </DockPanel>
             <!-- GridSplitter 用于调整上下行的高度 -->
             <GridSplitter Grid.Column="1" Width="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                      ResizeBehavior="PreviousAndNext"/>

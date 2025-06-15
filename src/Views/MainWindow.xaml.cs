@@ -98,16 +98,6 @@ namespace GeoChemistryNexus
             }
         }
 
-        //彩蛋
-        private void Stinger_Click(object sender, RoutedEventArgs e)
-        {
-            // 获取当前日期和时间
-            DateTime now = DateTime.Now;
-            // 获取当前年份
-            int currentYear = now.Year;
-            MessageHelper.Success($"感谢您的使用🌹\n祝您 {currentYear} 年科研，生活一帆风顺！");
-        }
-
         //关闭窗口
         private void ShutDownWindow(object sender, RoutedEventArgs e)
         {
