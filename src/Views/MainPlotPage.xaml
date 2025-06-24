@@ -5,7 +5,10 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:hc="https://handyorg.github.io/handycontrol"
       xmlns:local="clr-namespace:GeoChemistryNexus.Views"
+      xmlns:tools="clr-namespace:GeoChemistryNexus.Helpers"
+      xmlns:uc="clr-namespace:GeoChemistryNexus.Controls"
       xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
+      xmlns:layerModels="clr-namespace:GeoChemistryNexus.ViewModels"
       xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
       xmlns:lg="clr-namespace:GeoChemistryNexus.Helpers"
       xmlns:ScottPlot="clr-namespace:ScottPlot.WPF;assembly=ScottPlot.WPF"
@@ -13,10 +16,41 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="MainPlotPage">
     <Page.Resources>
-        <cvs:ColorConverter x:Key="ColorConverter"/>
-        <cvs:BackgroundColorConverter x:Key="BackgroundColorConverter"/>
         <cvs:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-        <cvs:NullToEnableConverter x:Key="NullToEnableConverter"/>
+        <cvs:GraphMapPathToIconConverter x:Key="GraphMapPathToIconConverter"/>
+
+        <!-- 现代化分割按钮样式 -->
+        <Style x:Key="ModernRibbonButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Padding" Value="6,4"/>
+            <Setter Property="Margin" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                           BorderBrush="{TemplateBinding BorderBrush}"
+                           BorderThickness="{TemplateBinding BorderThickness}"
+                           CornerRadius="4"
+                           Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#F3F4F6"/>
+                                <Setter Property="BorderBrush" Value="#D1D5DB"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#E5E7EB"/>
+                                <Setter Property="BorderBrush" Value="#9CA3AF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
         <Style x:Key="ExpandCollapseToggleStyle" TargetType="ToggleButton">
             <Setter Property="Focusable" Value="False"/>
@@ -30,6 +64,8 @@
                               Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=TreeViewItem}}"
                               StrokeThickness="1.5"
                               SnapsToDevicePixels="True"
+                              VerticalAlignment="Center"
+                              HorizontalAlignment="Center"
                               Data="M 0 0 L 4 4 L 0 8">
                                 <Path.RenderTransform>
                                     <RotateTransform Angle="0" CenterX="2" CenterY="4"/>
@@ -65,9 +101,8 @@
 
         <Style x:Key="ModernTreeViewItemStyle" TargetType="TreeViewItem">
             <Setter Property="Margin" Value="0,2,0,0"/>
-
             <Setter Property="Padding" Value="2"/>
-
+            <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
             <Setter Property="Background" Value="Transparent"/>
             <EventSetter Event="MouseLeftButtonUp" Handler="OnTreeViewItemMouseLeftButtonUp"/>
             <Setter Property="Foreground" Value="#333"/>
@@ -143,994 +178,778 @@
             </Setter>
         </Style>
 
+        <Style x:Key="RibbonGroupStyle" TargetType="GroupBox">
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Foreground" Value="#6C757D"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="GroupBox">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <ContentPresenter Grid.Row="0" Margin="{TemplateBinding Padding}"/>
+                            <TextBlock Grid.Row="1" Text="{TemplateBinding Header}" 
+                              FontSize="{TemplateBinding FontSize}"
+                              Foreground="{TemplateBinding Foreground}"
+                              HorizontalAlignment="Center" 
+                              Margin="0,2,0,0"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="RibbonLargeButton" TargetType="Button" BasedOn="{StaticResource ModernRibbonButton}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Padding" Value="2"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#E5F3FF"/>
+                    <Setter Property="BorderBrush" Value="#CCE7FF"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#CCE7FF"/>
+                    <Setter Property="BorderBrush" Value="#99D1FF"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="RibbonSmallButton" TargetType="Button" BasedOn="{StaticResource ModernRibbonButton}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="2"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#E5F3FF"/>
+                    <Setter Property="BorderBrush" Value="#CCE7FF"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#CCE7FF"/>
+                    <Setter Property="BorderBrush" Value="#99D1FF"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="RibbonSmallToggleButton" TargetType="ToggleButton">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="2"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsMouseOver" Value="True"/>
+                        <Condition Property="IsChecked" Value="False"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="Background" Value="#E5F3FF"/>
+                    <Setter Property="BorderBrush" Value="#CCE7FF"/>
+                </MultiTrigger>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Background" Value="#CCE7FF"/>
+                    <Setter Property="BorderBrush" Value="#99D1FF"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        <Style x:Key="ModernRibbonButton2" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Padding" Value="6,4"/>
+            <Setter Property="Margin" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                           BorderBrush="{TemplateBinding BorderBrush}"
+                           BorderThickness="{TemplateBinding BorderThickness}"
+                           CornerRadius="4"
+                           Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#F3F4F6"/>
+                                <Setter Property="BorderBrush" Value="#D1D5DB"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#E5E7EB"/>
+                                <Setter Property="BorderBrush" Value="#9CA3AF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="RibbonSplitButton" TargetType="hc:SplitButton" BasedOn="{StaticResource SplitButtonBaseStyle}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="2"/>
+            <Setter Property="hc:BorderElement.CornerRadius" Value="4"/>
+            <Setter Property="Foreground" Value="#323130"/>
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value="1.0" />
+                    <Setter Property="Background" Value="#E5F3FF"/>
+                    <Setter Property="BorderBrush" Value="#CCE7FF"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Opacity" Value="1.0" />
+                    <Setter Property="Background" Value="#CCE7FF"/>
+                    <Setter Property="BorderBrush" Value="#99D1FF"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.4"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- 模板卡片样式 -->
+        <Style x:Key="TemplateCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="RenderTransformOrigin" Value="0.5, 0.5"/>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="1.0" ScaleY="1.0"/>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush" Value="#0078D4"/>
+                    <Setter Property="Background" Value="#F8F9FA"/>
+
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)"
+                                                 To="1.05" 
+                                                 Duration="0:0:0.2">
+                                    <DoubleAnimation.EasingFunction>
+                                        <CubicEase EasingMode="EaseOut"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)"
+                                                 To="1.05" 
+                                                 Duration="0:0:0.2">
+                                    <DoubleAnimation.EasingFunction>
+                                        <CubicEase EasingMode="EaseOut"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)"
+                                                 To="1.0" 
+                                                 Duration="0:0:0.2">
+                                    <DoubleAnimation.EasingFunction>
+                                        <CubicEase EasingMode="EaseOut"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)"
+                                                 To="1.0" 
+                                                 Duration="0:0:0.2">
+                                    <DoubleAnimation.EasingFunction>
+                                        <CubicEase EasingMode="EaseOut"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Page.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="0*"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <Grid Grid.RowSpan="2">
+        <!-- 模板浏览模式 -->
+        <Grid Visibility="{Binding IsTemplateMode, Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="2"/>
-                <ColumnDefinition Width="2.5*"/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <!--投图类型选择-->
-            <DockPanel>
-                <!--菜单栏-->
+
+            <!-- 左侧模板分类树 -->
+            <DockPanel Grid.Column="0">
+                <!-- 菜单栏 -->
                 <Menu DockPanel.Dock="Top">
-                    <!--文件-->
                     <MenuItem Header="{Binding [File],Source={x:Static lg:LanguageService.Instance}}">
-                        <!--编辑模式-->
-                        <MenuItem Header="{Binding [EditMode],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding EditModeCommand}"
-                                      IsEnabled="{Binding IsPlotMode}"/>
-                        <!--新建底图-->
-                        <MenuItem Header="{Binding [NewBasemap],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding NewBasemapCommand}"
-                                      IsEnabled="{Binding IsEditMode}"/>
-                        <!--保存底图-->
-                        <MenuItem Header="{Binding [SaveBasemap],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding SaveBaseMapCommand}"
-                                  IsEnabled="{Binding BasePlotConfigObject, Converter={StaticResource NullToEnableConverter}}"/>
-                        <Separator/>
-                        <!--导入底图-->
-                        <MenuItem Header="{Binding [ImportBasemap],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding LoadBasemapCommand}"
-                                      />
-                        <!--导出底图-->
-                        <MenuItem Header="{Binding [ExportBasemap],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding NewBasemapCommand}"
-                                  IsEnabled="False"/>
-                    </MenuItem>
-                    <!--编辑-->
-                    <MenuItem Header="{Binding [Edit],Source={x:Static lg:LanguageService.Instance}}">
-                        <!--<MenuItem Header="移动位置" Command="{Binding MovePositionCommand}"/>-->
-                        <!--<Separator/>-->
-                        <!--删除底图-->
-                        <MenuItem Header="{Binding [DeleteBasemap],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding DeleteBasemapCommand}"/>
-                    </MenuItem>
-                    <!--拓展-->
-                    <MenuItem Header="{Binding [Expand],Source={x:Static lg:LanguageService.Instance}}">
-                        <!--获取更多底图-->
-                        <MenuItem Header="{Binding [GetMoreBasemap],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding NewBasemapCommand}" IsEnabled="False"/>
+                        <!--导入模板-->
+                        <MenuItem Header="{Binding [import_template],Source={x:Static lg:LanguageService.Instance}}" 
+                                  Command="{Binding LoadBasemapCommand}" IsEnabled="False"/>
+                        <!--新建模板-->
+                        <MenuItem Header="{Binding [new_template],Source={x:Static lg:LanguageService.Instance}}" 
+                                  Command="{Binding NewBasemapCommand}" IsEnabled="False"/>
                     </MenuItem>
                 </Menu>
-                <!--绘图对象层级列表-->
-                <TreeView Grid.Row="1" 
-                          ItemsSource="{Binding RootTreeNode.Children}" 
-                          Background="#F3F3F3" ItemContainerStyle="{StaticResource ModernTreeViewItemStyle}"
+
+                <!-- 模板分类树 -->
+                <TreeView ItemsSource="{Binding GraphMapTemplateNode.Children}"
+                          Background="#F8F9FA" 
+                          ItemContainerStyle="{StaticResource ModernTreeViewItemStyle}"
                           BorderThickness="0">
-                    <TreeView.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Header="移动"/>
-                            <MenuItem Header="导出"/>
-                            <Separator />
-                            <!--删除底图-->
-                            <MenuItem Header="{Binding DeleteBasemap}" Command="{Binding DeleteBasemapCommand}"/>
-                        </ContextMenu>
-                    </TreeView.ContextMenu>
                     <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                            <TextBlock Text="{Binding Name}"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding GraphMapPath, Converter={StaticResource GraphMapPathToIconConverter}}" 
+                                          FontSize="14" Margin="0,0,8,0"/>
+                                <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+                            </StackPanel>
                         </HierarchicalDataTemplate>
                     </TreeView.ItemTemplate>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectedItemChanged">
                             <i:InvokeCommandAction Command="{Binding SelectTreeViewItemCommand}"
-                                      CommandParameter="{Binding SelectedItem, 
-                                      RelativeSource={RelativeSource AncestorType=TreeView}}"/>
+                                                  CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType=TreeView}}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </TreeView>
             </DockPanel>
-            <!-- GridSplitter 用于调整上下行的高度 -->
-            <GridSplitter Grid.Column="1" Width="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                     ResizeBehavior="PreviousAndNext"/>
-            <!--绘图/数据区域-->
-            <Grid Grid.Column="2" Margin="0 1 0 1">
+
+            <!-- 分隔条 -->
+            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Center" 
+                          VerticalAlignment="Stretch" Background="LightGray"/>
+
+            <!-- 右侧模板卡片展示区域 -->
+            <Grid Grid.Column="2" Background="#F5F5F5">
                 <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <TabControl>
-                    <!--选项卡标题-->
+
+                <!-- 面包屑导航 -->
+                <Border Grid.Row="0" Background="White" BorderBrush="#E0E0E0" 
+                        BorderThickness="0,0,0,1" Padding="20,15">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding [template_library],Source={x:Static lg:LanguageService.Instance}}" FontSize="18" FontWeight="Bold" 
+                                  Foreground="#333" Margin="0,0,20,0"/>
+                        <ItemsControl ItemsSource="{Binding Breadcrumbs}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Content="{Binding Name}" 
+                                               Command="{Binding DataContext.NavigateToBreadcrumbCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                               CommandParameter="{Binding}"
+                                               Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                                               Foreground="#0078D4" FontSize="14"/>
+                                        <TextBlock Text=" > " Margin="5,0" FontSize="14" 
+                                                  Foreground="#999" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <!-- 模板卡片网格 -->
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" 
+                              HorizontalScrollBarVisibility="Disabled">
+                    <ItemsControl ItemsSource="{Binding TemplateCards}" Margin="10">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="3"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Style="{StaticResource TemplateCardStyle}" MinHeight="200">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseLeftButtonUp">
+                                            <i:InvokeCommandAction Command="{Binding DataContext.SelectTemplateCardCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                                  CommandParameter="{Binding}"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+
+                                        <!--缩略图--> 
+                                        <Border Grid.Row="0" Background="#F8F9FA" CornerRadius="6,6,0,0" Margin="8,8,8,0">
+                                            <Image Source="{Binding ThumbnailPath}" 
+                                                  Stretch="Uniform" 
+                                                  HorizontalAlignment="Center" 
+                                                  VerticalAlignment="Center"
+                                                  MaxHeight="120"/>
+                                        </Border>
+
+                                        <!--模板名称和分类--> 
+                                        <StackPanel Grid.Row="1" Margin="12" HorizontalAlignment="Center">
+                                            <TextBlock Text="{Binding Name}" 
+                                                      FontWeight="Bold" FontSize="14" 
+                                                      Foreground="#333" TextAlignment="Center"
+                                                      TextWrapping="Wrap"/>
+                                            <TextBlock Text="{Binding Category}" 
+                                                      FontSize="12" Foreground="#666" 
+                                                      TextAlignment="Center" Margin="0,4,0,0"
+                                                      TextWrapping="Wrap"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+        </Grid>
+
+        <!-- 绘图模式 -->
+        <Grid Visibility="{Binding IsPlotMode, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.75*"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="2.4*"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="1.1*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- 左侧图层列表 -->
+            <DockPanel Grid.Column="0">
+                <!-- 返回按钮 -->
+                <Border DockPanel.Dock="Top" Background="#0078D4" Padding="10">
+                    <Button Command="{Binding BackToTemplateModeCommand}" 
+                            Style="{StaticResource ModernRibbonButton}"
+                            Background="White" Foreground="#0078D4" 
+                            HorizontalAlignment="Left">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="←" 
+                                      FontSize="14" Margin="0,0,8,0"/>
+                            <!--返回模板库-->
+                            <TextBlock Text="{Binding [return_to_template_library ],Source={x:Static lg:LanguageService.Instance}}"/>
+                        </StackPanel>
+                    </Button>
+                </Border>
+
+                <!-- 图层树视图 -->
+                <TreeView ItemsSource="{Binding LayerTree}" Name="LayerTreeView"
+                          Background="#F8F9FA" 
+                          ItemContainerStyle="{StaticResource ModernTreeViewItemStyle}"
+                          BorderThickness="0">
+                    <TreeView.Resources>
+                        <HierarchicalDataTemplate DataType="{x:Type layerModels:LayerItemViewModel}" ItemsSource="{Binding Children}">
+                            <StackPanel Orientation="Horizontal">
+                                <CheckBox IsChecked="{Binding IsVisible}" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="5,0"/>
+                            </StackPanel>
+                        </HierarchicalDataTemplate>
+                    </TreeView.Resources>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectedItemChanged">
+                            <i:InvokeCommandAction Command="{Binding SelectLayerCommand}"
+                                                   CommandParameter="{Binding SelectedItem, ElementName=LayerTreeView}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </TreeView>
+            </DockPanel>
+
+            <!-- 左侧分隔条 -->
+            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Center" 
+                          VerticalAlignment="Stretch" Background="LightGray"/>
+
+            <!-- 中间绘图区域 -->
+            <Grid Grid.Column="2" Margin="0,1">
+                <TabControl TabStripPlacement="Bottom" Style="{StaticResource TabControlInLine}"
+                           TabIndex="{Binding TabIndex}">
                     <TabItem Header="{Binding [Plot],Source={x:Static lg:LanguageService.Instance}}">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
 
-                            <ScottPlot:WpfPlot Name="WpfPlot1" Grid.Row="1" Margin="10 0" MouseMove="PlotLocationShow"
-                                           MouseLeftButtonDown="AddPoint" MouseRightButtonDown="ConfirmCreate"/>
+                            <!-- Ribbon 标签页 -->
+                            <Border Grid.Row="0" Background="#F1F1F1" BorderBrush="#D4D4D4" BorderThickness="0,0,0,1">
+                                <Grid Height="32">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
 
-                            <!--绘图操作按钮-->
-                            <WrapPanel Visibility="{Binding IsPlotMode, Converter={StaticResource BoolToVisibilityConverter}}">
-                                <!--导入数据按钮-->
-                                <Button Command="{Binding ImportDataPlotCommand}" Height="60" Margin="5 0 0 0">
-                                    <StackPanel>
-                                        <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe653;"
-                                               HorizontalAlignment="Center" FontSize="24"/>
-                                        <TextBlock Text="{Binding [ImportData],Source={x:Static lg:LanguageService.Instance}}"/>
+                                    <!-- 左侧快速访问工具栏 -->
+                                    <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="10,2" VerticalAlignment="Center">
+                                        <Button Style="{StaticResource ModernRibbonButton}" Width="26" Height="26" 
+                                                Margin="2,0" Command="{Binding CopyToClipboardCommand}">
+                                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe76e;" FontSize="12" Foreground="#323130"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ModernRibbonButton}" Width="26" Height="26" 
+                                                Margin="2,0">
+                                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe82e;" FontSize="12" Foreground="#323130"/>
+                                        </Button>
                                     </StackPanel>
-                                </Button>
-                                <!--重置绘图按钮-->
-                                <!--<Button Height="60" Margin="5" Command="{Binding ReSetDefaultCommand}" Foreground="Red">
-                                    <StackPanel>
-                                        <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe600;"
-                                               HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
-                                        <TextBlock Text="{DynamicResource ResetPlot}" />
+
+                                    <!-- 中间标签页选项卡 -->
+                                    <TabControl Grid.Column="1" Name="RibbonTabControl"
+                                       Background="Transparent" BorderThickness="0"
+                                       TabStripPlacement="Top" Margin="5,0" VerticalAlignment="Bottom">
+                                        <TabControl.Resources>
+                                            <Style TargetType="TabItem">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="TabItem">
+                                                            <Border Name="Border" Background="Transparent"
+                                                           BorderThickness="1,1,1,0" CornerRadius="3,3,0,0"
+                                                           Padding="16,6,16,8" Margin="1,0" Height="28"
+                                                           VerticalAlignment="Bottom">
+                                                                <ContentPresenter ContentSource="Header"
+                                                                        HorizontalAlignment="Center"
+                                                                        VerticalAlignment="Center"/>
+                                                            </Border>
+                                                            <ControlTemplate.Triggers>
+                                                                <Trigger Property="IsSelected" Value="True">
+                                                                    <Setter TargetName="Border" Property="Background" Value="White"/>
+                                                                    <Setter TargetName="Border" Property="BorderBrush" Value="#D4D4D4"/>
+                                                                </Trigger>
+                                                                <Trigger Property="IsMouseOver" Value="True">
+                                                                    <Setter TargetName="Border" Property="Background" Value="#E5F3FF"/>
+                                                                </Trigger>
+                                                            </ControlTemplate.Triggers>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Setter Property="FontSize" Value="12"/>
+                                                <Setter Property="Foreground" Value="#323130"/>
+                                            </Style>
+                                        </TabControl.Resources>
+
+                                        <!-- 绘图选项卡 -->
+                                        <TabItem Header="{Binding [Plot],Source={x:Static lg:LanguageService.Instance}}"/>
+                                        <!-- 编辑选项卡 -->
+                                        <TabItem Header="{Binding [Edit],Source={x:Static lg:LanguageService.Instance}}"/>
+                                    </TabControl>
+
+                                    <!-- 右侧功能区选项 -->
+                                    <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="10,2" VerticalAlignment="Center">
+                                        <Button Content="?" Style="{StaticResource ModernRibbonButton}"
+                                        Width="26" Height="26" Margin="2,0" FontSize="12"/>
+                                        <!--<Button Content="⚙" Style="{StaticResource ModernRibbonButton}"
+                                        Width="26" Height="26" Margin="2,0" FontSize="12"/>-->
                                     </StackPanel>
-                                </Button>-->
-                                <!--视图复位-->
-                                <Button Height="60" Margin="5"
-                                            Command="{Binding CenterPlotCommand}">
-                                    <StackPanel>
-                                        <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe601;"
-                                               HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
-                                        <TextBlock Text="{Binding [ResetVision],Source={x:Static lg:LanguageService.Instance}}"/>
-                                    </StackPanel>
-                                </Button>
-                                <!--取消选中-->
-                                <Button Height="60" Command="{Binding CancelSelectedCommand}">
-                                    <StackPanel>
-                                        <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe6a5;"
-                                               HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
-                                        <TextBlock Text="{Binding [CancelSelected],Source={x:Static lg:LanguageService.Instance}}"/>
-                                    </StackPanel>
-                                </Button>
-                                <!--定位轴-->
-                                <Button Height="60"  Command="{Binding LocationAxisCommand}" Margin="5">
-                                    <StackPanel>
-                                        <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe61e;"
-                                               HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
-                                        <TextBlock Text="{Binding [LocationAxis],Source={x:Static lg:LanguageService.Instance}}"/>
-                                    </StackPanel>
-                                </Button>
-                                <!--导出图片-->
-                                <hc:SplitButton  Height="60">
-                                    <hc:SplitButton.Content>
-                                        <StackPanel>
-                                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe644;" 
-                                                   HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
-                                            <TextBlock Text="{Binding [ExportImage],Source={x:Static lg:LanguageService.Instance}}"/>
+                                </Grid>
+                            </Border>
+
+                            <!-- Ribbon 功能区内容 -->
+                            <Border Grid.Row="1" Background="White" BorderBrush="#D4D4D4" BorderThickness="0,0,0,1" Height="92">
+                                <Grid>
+                                    <ScrollViewer x:Name="PlottingRibbon" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                                        <ScrollViewer.Style>
+                                            <Style TargetType="ScrollViewer">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ElementName=RibbonTabControl, Path=SelectedIndex}" Value="0">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ScrollViewer.Style>
+                                        <StackPanel Orientation="Horizontal" Margin="8,3" Height="86">
+                                            <!-- 数据组 -->
+                                            <GroupBox Header="{Binding [Data],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource RibbonGroupStyle}">
+                                                <Grid Width="106" Height="68" Margin="2">
+                                                    <StackPanel VerticalAlignment="Top" Margin="3,2">
+                                                        <Button Command="{Binding ImportDataPlotCommand}"
+                                                                Style="{StaticResource RibbonSmallButton}"
+                                                                Width="100" Height="28" Margin="0,1">
+                                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe653;"
+                                                                           FontSize="16" Foreground="#0078D4" Margin="4,0,6,0"
+                                                                           VerticalAlignment="Center"/>
+                                                                <!--导入数据-->
+                                                                <TextBlock Text="{Binding [import_data],Source={x:Static lg:LanguageService.Instance}}" 
+                                                                           FontSize="11" VerticalAlignment="Center"/>
+                                                            </StackPanel>
+                                                        </Button>
+                                                        <Button Command="{Binding ClearImportedDataCommand}"
+                                                                Style="{StaticResource RibbonSmallButton}"
+                                                                Width="100" Height="28" Margin="0,1">
+                                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe734;"
+                                                                           FontSize="16" Foreground="#D62728" Margin="4,0,6,0"
+                                                                           VerticalAlignment="Center"/>
+                                                                <!--清除数据-->
+                                                                <TextBlock Text="{Binding [clear_data ],Source={x:Static lg:LanguageService.Instance}}" 
+                                                                           FontSize="11" VerticalAlignment="Center"/>
+                                                            </StackPanel>
+                                                        </Button>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </GroupBox>
+                                            <Rectangle Fill="#E1E5E9" Width="1" Margin="8,12,8,18" VerticalAlignment="Stretch"/>
+                                            <!-- 视图组 -->
+                                            <GroupBox Header="{Binding [view],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource RibbonGroupStyle}">
+                                                <Grid Width="106" Height="68" Margin="2">
+                                                    <StackPanel VerticalAlignment="Top" Margin="3,2">
+                                                        <Button Command="{Binding CenterPlotCommand}"
+                                                                Style="{StaticResource RibbonSmallButton}"
+                                                                Width="100" Height="28" Margin="0,1">
+                                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe601;"
+                                                                           FontSize="14" Foreground="#0078D4" Margin="4,0,6,0"
+                                                                           VerticalAlignment="Center"/>
+                                                                <!--复位视图-->
+                                                                <TextBlock Text="{Binding [reset_view],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" VerticalAlignment="Center"/>
+                                                            </StackPanel>
+                                                        </Button>
+                                                        <ToggleButton Command="{Binding LocationAxisCommand}"
+                                                                      IsChecked="{Binding IsCrosshairVisible, Mode=OneWay}"
+                                                                      Style="{StaticResource RibbonSmallToggleButton}"
+                                                                      Width="100" Height="28" Margin="0,1">
+                                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe61e;"
+                                                                           FontSize="16" Foreground="#0078D4" Margin="4,0,6,0"
+                                                                           VerticalAlignment="Center"/>
+                                                                <!--坐标定位-->
+                                                                <TextBlock Text="{Binding [coordinate_positioning],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" VerticalAlignment="Center"/>
+                                                            </StackPanel>
+                                                        </ToggleButton>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </GroupBox>
+                                            <Rectangle Fill="#E1E5E9" Width="1" Margin="8,12,8,18" VerticalAlignment="Stretch"/>
+                                            <!-- 选择组 -->
+                                            <GroupBox Header="{Binding [select],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource RibbonGroupStyle}">
+                                                <Grid Width="68" Height="68" Margin="2">
+                                                    <Button Command="{Binding CancelSelectedCommand}"
+                                                            Style="{StaticResource RibbonLargeButton}"
+                                                            Width="64" Height="64" VerticalAlignment="Top">
+                                                        <StackPanel HorizontalAlignment="Center">
+                                                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe6a5;"
+                                                                       FontSize="24" Foreground="#D83B01" Margin="0,4"
+                                                                       HorizontalAlignment="Center"/>
+                                                            <!--取消选择-->
+                                                            <TextBlock Text="{Binding [deselect],Source={x:Static lg:LanguageService.Instance}}" FontSize="10" TextAlignment="Center"
+                                                                       Foreground="#323130" TextWrapping="Wrap"/>
+                                                        </StackPanel>
+                                                    </Button>
+                                                </Grid>
+                                            </GroupBox>
+                                            <Rectangle Fill="#E1E5E9" Width="1" Margin="8,12,8,18" VerticalAlignment="Stretch"/>
+                                            <!-- 导出组 -->
+                                            <GroupBox Header="{Binding [export],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource RibbonGroupStyle}">
+                                                <Grid Width="100" Height="68" Margin="2">
+                                                    <hc:SplitButton Width="100" Height="64" VerticalAlignment="Top" 
+                                                        Style="{StaticResource RibbonSplitButton}">
+                                                        <hc:SplitButton.Content>
+                                                            <StackPanel HorizontalAlignment="Center">
+                                                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe644;"
+                                                                           FontSize="24" Foreground="#107C10" Margin="0,4" 
+                                                                           HorizontalAlignment="Center"/>
+                                                                <!--导出图片-->
+                                                                <TextBlock Text="{Binding [export_image],Source={x:Static lg:LanguageService.Instance}}" FontSize="10" TextAlignment="Center"
+                                                                           Foreground="#323130" TextWrapping="Wrap"/>
+                                                            </StackPanel>
+                                                        </hc:SplitButton.Content>
+                                                        <hc:SplitButton.DropDownContent>
+                                                            <StackPanel Background="White" MinWidth="120">
+                                                                <MenuItem Header="{Binding [png_format],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding ExportImgCommand}" CommandParameter="png" Icon="📷"/>
+                                                                <MenuItem Header="{Binding [jpg_format],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding ExportImgCommand}" CommandParameter="jpg" Icon="📷"/>
+                                                                <MenuItem Header="{Binding [bmp_format],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding ExportImgCommand}" CommandParameter="bmp" Icon="📷"/>
+                                                                <MenuItem Header="{Binding [webp_format],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding ExportImgCommand}" CommandParameter="webp" Icon="📷"/>
+                                                                <MenuItem Header="{Binding [svg_format],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding ExportImgCommand}" CommandParameter="svg" Icon="📷"/>
+                                                            </StackPanel>
+                                                        </hc:SplitButton.DropDownContent>
+                                                    </hc:SplitButton>
+                                                </Grid>
+                                            </GroupBox>
+                                            <Rectangle Fill="#E1E5E9" Width="1" Margin="8,12,8,18" VerticalAlignment="Stretch"/>
+                                            <!-- 设置组 -->
+                                            <GroupBox Header="{Binding [Setting],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource RibbonGroupStyle}">
+                                                <Grid Width="176" Height="68" Margin="2">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition/>
+                                                        <ColumnDefinition/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel VerticalAlignment="Top" Margin="3,2">
+                                                        <Button Command="{Binding LegendSettingCommand}"
+                                                                Style="{StaticResource RibbonSmallButton}"
+                                                                Width="82" Height="28" Margin="0,1">
+                                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe602;"
+                                                                           FontSize="16" Foreground="#8A2BE2" Margin="4,0,6,0"
+                                                                           VerticalAlignment="Center"/>
+                                                                <!--图例设置-->
+                                                                <TextBlock Text="{Binding [legend_settings],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" VerticalAlignment="Center"/>
+                                                            </StackPanel>
+                                                        </Button>
+                                                        <Button Command="{Binding GridSettingCommand}"
+                                                                Style="{StaticResource RibbonSmallButton}"
+                                                                Width="82" Height="28" Margin="0,1">
+                                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe67b;"
+                                                                FontSize="16" Foreground="#FF8C00" Margin="4,0,6,0"
+                                                                VerticalAlignment="Center"/>
+                                                                <!--网格设置-->
+                                                                <TextBlock Text="{Binding [grid_settings],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" VerticalAlignment="Center"/>
+                                                            </StackPanel>
+                                                        </Button>
+                                                    </StackPanel>
+                                                    <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="3,2">
+                                                        <Button Command="{Binding ScriptSettingCommand}"
+                                                                Style="{StaticResource RibbonSmallButton}"
+                                                                Width="82" Height="28" Margin="0,1">
+                                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe614;"
+                                                                           FontSize="16" Foreground="#FF4500" Margin="4,0,6,0"
+                                                                           VerticalAlignment="Center"/>
+                                                                <!--脚本设置-->
+                                                                <TextBlock Text="{Binding [script_settings],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" VerticalAlignment="Center"/>
+                                                            </StackPanel>
+                                                        </Button>
+                                                        <Button Command="{Binding PlotSettingCommand}"
+                                                                Style="{StaticResource RibbonSmallButton}"
+                                                                Width="82" Height="28" Margin="0,1">
+                                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe616;"
+                                                                FontSize="16" Foreground="#20B2AA" Margin="4,0,6,0"
+                                                                VerticalAlignment="Center"/>
+                                                                <!--绘图设置-->
+                                                                <TextBlock Text="{Binding [plot_settings],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" VerticalAlignment="Center"/>
+                                                            </StackPanel>
+                                                        </Button>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </GroupBox>
                                         </StackPanel>
-                                    </hc:SplitButton.Content>
+                                    </ScrollViewer>
 
-                                    <hc:SplitButton.DropDownContent>
-                                        <StackPanel>
-                                            <MenuItem Header="{Binding [ExportImagePNG],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding ExportImgCommand}" CommandParameter="png"/>
-                                            <MenuItem Header="{Binding [ExportImageJPG],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding ExportImgCommand}" CommandParameter="jpg"/>
-                                            <MenuItem Header="{Binding [ExportImageBMP],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding ExportImgCommand}" CommandParameter="bmp"/>
-                                            <MenuItem Header="{Binding [ExportImageWebp],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding ExportImgCommand}" CommandParameter="webp"/>
-                                            <MenuItem Header="{Binding [ExportImageSVG],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding ExportImgCommand}" CommandParameter="svg"/>
+                                    <!-- 编辑模式功能区 -->
+                                    <ScrollViewer x:Name="EditingRibbon" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                                        <ScrollViewer.Style>
+                                            <Style TargetType="ScrollViewer">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ElementName=RibbonTabControl, Path=SelectedIndex}" Value="1">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ScrollViewer.Style>
+                                        <StackPanel Orientation="Horizontal" Margin="8,3" Height="86">
+                                            <!-- 插入组 -->
+                                            <GroupBox Header="插入" Style="{StaticResource RibbonGroupStyle}">
+                                                <Grid Width="88" Height="68" Margin="2">
+                                                    <StackPanel VerticalAlignment="Top" Margin="3,2">
+                                                        <Button Style="{StaticResource RibbonSmallButton}"
+                                                                Width="82" Height="28" Margin="0,1">
+                                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe619;"
+                                                                           FontSize="16" Foreground="#0078D4" Margin="4,0,6,0"
+                                                                           VerticalAlignment="Center"/>
+                                                                <TextBlock Text="添加线条" FontSize="11" VerticalAlignment="Center"/>
+                                                            </StackPanel>
+                                                        </Button>
+                                                        <Button Style="{StaticResource RibbonSmallButton}"
+                                                                Width="82" Height="28" Margin="0,1">
+                                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe603;"
+                                                                           FontSize="16" Foreground="#0078D4" Margin="4,0,6,0"
+                                                                           VerticalAlignment="Center"/>
+                                                                <TextBlock Text="添加注释" FontSize="11" VerticalAlignment="Center"/>
+                                                            </StackPanel>
+                                                        </Button>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </GroupBox>
+                                            <Rectangle Fill="#E1E5E9" Width="1" Margin="8,12,8,18" VerticalAlignment="Stretch"/>
+                                            <!-- 文件组 -->
+                                            <GroupBox Header="文件" Style="{StaticResource RibbonGroupStyle}">
+                                                <Grid Width="88" Height="68" Margin="2">
+                                                    <StackPanel VerticalAlignment="Top" Margin="3,2">
+                                                        <Button Command="{Binding SaveBaseMapCommand}"
+                                                                Style="{StaticResource RibbonSmallButton}"
+                                                                Width="82" Height="28" Margin="0,1">
+                                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe782;"
+                                                      FontSize="16" Foreground="#107C10" Margin="4,0,6,0"
+                                                      VerticalAlignment="Center"/>
+                                                                <TextBlock Text="保存" FontSize="11" VerticalAlignment="Center"/>
+                                                            </StackPanel>
+                                                        </Button>
+                                                        <Button Command="{Binding ExitEditModelCommand}"
+                                                                Style="{StaticResource RibbonSmallButton}"
+                                                                Width="82" Height="28" Margin="0,1">
+                                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe667;"
+                                                      FontSize="16" Foreground="#D83B01" Margin="4,0,6,0"
+                                                      VerticalAlignment="Center"/>
+                                                                <TextBlock Text="退出编辑" FontSize="11" VerticalAlignment="Center"/>
+                                                            </StackPanel>
+                                                        </Button>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </GroupBox>
                                         </StackPanel>
-                                    </hc:SplitButton.DropDownContent>
-                                </hc:SplitButton>
-                                <Button Height="60" Command="{Binding LegendSettingCommand}" Margin="5">
-                                    <!--图例设置-->
-                                    <StackPanel>
-                                        <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe602;"
-                                               HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
-                                        <TextBlock Text="{Binding [LegendSetting],Source={x:Static lg:LanguageService.Instance}}"/>
-                                    </StackPanel>
-                                </Button>
-                                <Button Height="60" Command="{Binding PlotSettingCommand}">
-                                    <!--绘图设置-->
-                                    <StackPanel>
-                                        <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe60f;"
-                                               HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
-                                        <TextBlock Text="{Binding [PlotSetting],Source={x:Static lg:LanguageService.Instance}}"/>
-                                    </StackPanel>
-                                </Button>
-                            </WrapPanel>
+                                    </ScrollViewer>
+                                </Grid>
+                            </Border>
 
-                            <!--编辑绘图操作按钮-->
-                            <WrapPanel Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisibilityConverter}}">
-                                <!--添加点-->
-                                <!--<Button Click="AddPointStatus" Height="60" Margin="5 0 0 0">
-                                <StackPanel>
-                                    <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe604;"
-                                               HorizontalAlignment="Center" FontSize="18"/>
-                                    <TextBlock Text="添加点"/>
-                                </StackPanel>
-                            </Button>-->
-                                <!--添加线条-->
-                                <Button Height="60" Margin="5" Click="AddBorder" Foreground="Blue">
-                                    <StackPanel>
-                                        <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe619;"
-                                               HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
-                                        <TextBlock Text="{Binding [AddLine],Source={x:Static lg:LanguageService.Instance}}" />
-                                    </StackPanel>
-                                </Button>
-                                <!--添加多边形-->
-                                <!--<Button Height="60" Click="AddPolygon" Foreground="Blue">
-                                    <StackPanel>
-                                        <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe6ed;"
-                                               HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
-                                        <TextBlock Text="{DynamicResource AddPolygons}"/>
-                                    </StackPanel>
-                                </Button>-->
-                                <!--添加注释-->
-                                <Button Height="60" Click="AddText" Foreground="Blue">
-                                    <StackPanel>
-                                        <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe603;"
-                                               HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
-                                        <TextBlock Text="{Binding [AddText],Source={x:Static lg:LanguageService.Instance}}"/>
-                                    </StackPanel>
-                                </Button>
-                                <!--脚本设置-->
-                                <Button Height="60" Margin="5" Command="{Binding ScriptSettingCommand}">
-                                    <StackPanel>
-                                        <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe614;"
-                                               HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
-                                        <TextBlock Text="{Binding [JsSetting],Source={x:Static lg:LanguageService.Instance}}"/>
-                                    </StackPanel>
-                                </Button>
-                                <Button Height="60" Command="{Binding PlotSettingCommand}" >
-                                    <!--绘图设置-->
-                                    <StackPanel>
-                                        <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe60f;"
-                                               HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
-                                        <TextBlock Text="{Binding [PlotSetting],Source={x:Static lg:LanguageService.Instance}}"/>
-                                    </StackPanel>
-                                </Button>
-                                <Button Height="60" Command="{Binding SaveBaseMapCommand}" Margin="5">
-                                    <!--保存-->
-                                    <StackPanel>
-                                        <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe782;"
-                                               HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
-                                        <TextBlock Text="{Binding [Save],Source={x:Static lg:LanguageService.Instance}}"/>
-                                    </StackPanel>
-                                </Button>
-                                <Button Height="60" Command="{Binding ExitEditModelCommand}">
-                                    <!--退出编辑-->
-                                    <StackPanel>
-                                        <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe667;"
-                                               HorizontalAlignment="Center" Height="20" Width="20" FontSize="18"/>
-                                        <TextBlock Text="{Binding [QuitEdit],Source={x:Static lg:LanguageService.Instance}}"/>
-                                    </StackPanel>
-                                </Button>
-                            </WrapPanel>
+                            <!-- ScottPlot 控件 -->
+                            <ScottPlot:WpfPlot Name="WpfPlot1" Grid.Row="2" Margin="8"/>
                         </Grid>
                     </TabItem>
-                    <!--指南选项卡-->
-                    <TabItem Header="{Binding [Guide],Source={x:Static lg:LanguageService.Instance}}">
-                        <RichTextBox x:Name="Drichtextbox" IsReadOnly="{Binding IsPlotMode}" BorderThickness="0"
-                                 Margin="32 10"/>
+                    <TabItem Header="{Binding [Guide],Source={x:Static lg:LanguageService.Instance}}" >
+                        <RichTextBox x:Name="Drichtextbox" IsReadOnly="{Binding IsPlotMode}" 
+                                    BorderThickness="0" Margin="32,10"/>
                     </TabItem>
                 </TabControl>
-
-                <Border Grid.Row="1" Height="20" Padding="8 0">
-                    <TextBlock Name="loca" VerticalAlignment="Center"/>
-                </Border>
             </Grid>
-            <!--图层面板-->
-            <Grid Grid.Column="3" Margin="0 1 0 1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="0.5*"/>
-                    <RowDefinition Height="5"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <TabControl Background="White" SelectedIndex="{Binding SwitchLayer}" BorderThickness="0">
-                    <!--线条/边界-->
-                    <TabItem Header="{Binding [BorderLine],Source={x:Static lg:LanguageService.Instance}}">
-                        <ListBox ItemsSource="{Binding BasePlotItems}" DisplayMemberPath="Name" 
-                                     SelectionMode="Extended" BorderThickness="0">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="SelectionChanged">
-                                    <i:InvokeCommandAction Command="{Binding LayersSelectionCommand}"
-                                                               CommandParameter="{Binding SelectedItems, 
-                                                               RelativeSource={RelativeSource AncestorType=ListBox}}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </ListBox>
-                    </TabItem>
-                    <!--文本/注释-->
-                    <TabItem Header="{Binding [PlotText],Source={x:Static lg:LanguageService.Instance}}">
-                        <ListBox ItemsSource="{Binding BaseTextItems}" DisplayMemberPath="Name"
-                                     SelectionMode="Extended" BorderThickness="0">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="SelectionChanged">
-                                    <i:InvokeCommandAction Command="{Binding LayersSelectionCommand}"
-                                                               CommandParameter="{Binding SelectedItems, 
-                                                               RelativeSource={RelativeSource AncestorType=ListBox}}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </ListBox>
-                    </TabItem>
-                    <!--坐标轴-->
-                    <TabItem Header="{Binding [PlotAxies],Source={x:Static lg:LanguageService.Instance}}">
-                        <ListBox ItemsSource="{Binding AxesList}" DisplayMemberPath="Name"
-                                     SelectionMode="Extended" BorderThickness="0">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="SelectionChanged">
-                                    <i:InvokeCommandAction Command="{Binding AxisSelectionCommand}"
-                                                               CommandParameter="{Binding SelectedItems, 
-                                                                                  RelativeSource={RelativeSource AncestorType=ListBox}}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </ListBox>
-                    </TabItem>
-                    <!--数据-->
-                    <TabItem Header="{Binding [PlotData],Source={x:Static lg:LanguageService.Instance}}">
-                        <ListBox ItemsSource="{Binding BaseDataItems}" DisplayMemberPath="Name"
-                                     SelectionMode="Extended" BorderThickness="0">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="SelectionChanged">
-                                    <i:InvokeCommandAction Command="{Binding LayersSelectionCommand}"
-                                                               CommandParameter="{Binding SelectedItems, 
-                                                               RelativeSource={RelativeSource AncestorType=ListBox}}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </ListBox>
-                    </TabItem>
-                </TabControl>
-                <!-- GridSplitter 用于调整上下行的高度 -->
-                <GridSplitter Grid.Row="1" Height="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                     ResizeBehavior="PreviousAndNext"/>
-                <Grid  Grid.Row="2">
-                    <!--<hc:PropertyGrid Width="500"/>-->
 
-                    <!--文本属性设置面板-->
-                    <StackPanel Margin="8" Visibility="{Binding PlotTextShow, 
-                            Converter={StaticResource BoolToVisibilityConverter}}">
-                        <Grid Name="MainGrid">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="0.5*"/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <!--是否可见-->
-                            <TextBlock Text="{Binding [IsShow],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"/>
-                            <CheckBox Grid.Column="1" IsChecked="{Binding PlotVisible}"/>
-                            <!--字体-->
-                            <TextBlock Text="{Binding [FontFamily],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="1" Margin="0 5"/>
-                            <ComboBox Grid.Column="1" SelectedIndex="{Binding PlotTextFontName}" Grid.Row="1" 
-                                          ItemsSource="{Binding PlotTextFontNames}" Margin="0 5"/>
-                            <!--字体样式-->
-                            <TextBlock Text="{Binding [FontStyle],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="2"/>
-                            <ComboBox Grid.Column="1" SelectedIndex="{Binding PlotType}" Grid.Row="2">
-                                <ComboBox.Items>
-                                    <ComboBoxItem Content="{DynamicResource FontNormal}"/>
-                                    <ComboBoxItem Content="{DynamicResource FontBold}"/>
-                                    <ComboBoxItem Content="{DynamicResource FontItalic}"/>
-                                </ComboBox.Items>
-                            </ComboBox>
-                            <!--字体大小-->
-                            <TextBlock Text="{Binding [FontSize],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="3" Margin="0 5"/>
-                            <hc:NumericUpDown Grid.Row="3" Grid.Column="1" Value="{Binding PlotWidth,Mode=TwoWay}"
-                                                Margin="0 5"/>
-                            <!--字体颜色-->
-                            <TextBlock Text="{Binding [FontColor],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="4" />
-                            <Button Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                                Content="" Click="Color_Pick" BorderThickness="0"
-                                Background="{Binding PlotColor, Converter={StaticResource BackgroundColorConverter}}"/>
-                            <!--文本内容-->
-                            <TextBlock Text="{Binding [TextContent],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="5" Margin="0 5"/>
-                            <TextBox Grid.Row="5" Grid.Column="1" Margin="0 5" Text="{Binding PlotTextContent,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  AcceptsReturn="True" >
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="TextChanged">
-                                        <i:InvokeCommandAction Command="{Binding RefreshTextCommand}"/>
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                            </TextBox>
-                        </Grid>
+            <!-- 右侧分隔条 -->
+            <GridSplitter Grid.Column="3" Width="5" HorizontalAlignment="Center" 
+                          VerticalAlignment="Stretch" Background="LightGray"/>
 
-                        <!--自定义底图-添加文本-->
-                        <StackPanel Margin="0 5" Visibility="{Binding IsEditMode,Converter={StaticResource BoolToVisibilityConverter}}">
-                            <!--起始点-->
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition Width="0.25*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition Width="1.4*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Text="X" VerticalAlignment="Center" />
-                                    <TextBlock Text="Y" VerticalAlignment="Center" Grid.Row="1"/>
-                                    <hc:NumericUpDown Value="{Binding X1}" Grid.Column="1"/>
-                                    <hc:NumericUpDown Value="{Binding Y1}" Grid.Column="1" Grid.Row="1" Margin="0 5"/>
-                                </Grid>
-                                <Button Content="&#xe601;" FontFamily="../Data/Icon/#iconfont" Grid.Column="1"/>
-                            </Grid>
-                            <UniformGrid Rows="1" Columns="2">
-                                <!--<Button Content="确定" HorizontalAlignment="Stretch" Width="Auto" Margin="5"/>-->
-                                <!--删除-->
-                                <Button Content="{Binding [Delete],Source={x:Static lg:LanguageService.Instance}}" HorizontalAlignment="Stretch" Width="Auto" Margin="5" Click="DeleteLine"/>
-                            </UniformGrid>
+            <!-- 右侧属性编辑器 -->
+            <hc:PropertyGrid Grid.Column="4" Width="auto" MaxTitleWidth="1" 
+                            SelectedObject="{Binding PropertyGridModel}" Margin="0,1"/>
 
-                        </StackPanel>
-                    </StackPanel>
-
-                    <!--边界设置面板-->
-                    <StackPanel Margin="8" Visibility="{Binding PlotLineShow, 
-                            Converter={StaticResource BoolToVisibilityConverter}}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="0.5*"/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <!--线条是否可见-->
-                            <TextBlock Text="{Binding [IsShow],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"/>
-                            <CheckBox Grid.Column="1" IsChecked="{Binding PlotVisible}"/>
-                            <!--线条样式-->
-                            <TextBlock Text="{Binding [LineStyle],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="1" Margin="0 5"/>
-                            <ComboBox Grid.Column="1" SelectedIndex="{Binding PlotType}" Grid.Row="1" Margin="0 5">
-                                <ComboBox.Items>
-                                    <ComboBoxItem Content="{DynamicResource LineSolid}"/>
-                                    <ComboBoxItem Content="{DynamicResource LineDash}"/>
-                                    <ComboBoxItem Content="{DynamicResource LineDashDot}"/>
-                                    <ComboBoxItem Content="{DynamicResource LineDenselyDashed}"/>
-                                </ComboBox.Items>
-                            </ComboBox>
-                            <!--线条宽度-->
-                            <TextBlock Text="{Binding [LineWidth],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="2"/>
-                            <hc:NumericUpDown Grid.Row="2" Grid.Column="1" Value="{Binding PlotWidth,Mode=TwoWay}"/>
-                            <!--线条颜色-->
-                            <TextBlock Text="{Binding [LineColor],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="3" Margin="0 5"/>
-                            <Button Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                                Content="" Click="Color_Pick" BorderThickness="0"
-                                Background="{Binding PlotColor, Converter={StaticResource BackgroundColorConverter}}"/>
-                        </Grid>
-                        <!--自定义底图-添加点-->
-                        <StackPanel Margin="0 5" 
-                                Visibility="{Binding IsEditMode,Converter={StaticResource BoolToVisibilityConverter}}">
-                            <!--起始点-->
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition Width="0.25*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition Width="1.4*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Text="Start X" VerticalAlignment="Center" />
-                                    <TextBlock Text="Start Y" VerticalAlignment="Center" Grid.Row="1"/>
-                                    <hc:NumericUpDown Value="{Binding X1}" Grid.Column="1"/>
-                                    <hc:NumericUpDown Value="{Binding Y1}" Grid.Column="1" Grid.Row="1" Margin="0 5"/>
-                                </Grid>
-                                <Button Content="&#xe601;" FontFamily="../Data/Icon/#iconfont" Grid.Column="1"/>
-                            </Grid>
-                            <!--终点-->
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition Width="0.25*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition Width="1.4*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Text="End X" VerticalAlignment="Center" />
-                                    <TextBlock Text="End Y" VerticalAlignment="Center" Grid.Row="1"/>
-                                    <hc:NumericUpDown Value="{Binding X2}" Grid.Column="1"/>
-                                    <hc:NumericUpDown Value="{Binding Y2}" Grid.Column="1" Grid.Row="1" Margin="0 5"/>
-                                </Grid>
-                                <Button Content="&#xe601;" FontFamily="../Data/Icon/#iconfont" Grid.Column="1"/>
-                            </Grid>
-                            <UniformGrid Rows="1" Columns="2">
-                                <!--<Button Content="确定" HorizontalAlignment="Stretch" Width="Auto" Margin="5"/>-->
-                                <!--删除-->
-                                <Button Content="{Binding [Delete],Source={x:Static lg:LanguageService.Instance}}" HorizontalAlignment="Stretch" Width="Auto" Margin="5"
-                                Click="DeleteLine"/>
-                            </UniformGrid>
-
-                        </StackPanel>
-                    </StackPanel>
-
-                    <!--数据点设置面板-->
-                    <StackPanel Margin="8" Visibility="{Binding PlotDataShow, 
-                            Converter={StaticResource BoolToVisibilityConverter}}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="0.5*"/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <!--是否可见-->
-                            <TextBlock Text="{Binding [IsShow],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"/>
-                            <CheckBox Grid.Column="1" IsChecked="{Binding PlotVisible}"/>
-                            <!--点样式-->
-                            <TextBlock Text="{Binding [PointStyle],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="1" Margin="0 5"/>
-                            <ComboBox Grid.Column="1" SelectedIndex="{Binding PlotType}" Grid.Row="1" Margin="0 5">
-                                <ComboBox.Items>
-                                    <ComboBoxItem Content="{DynamicResource PointCircle}"/>
-                                    <ComboBoxItem Content="{DynamicResource PointHollowCircle}"/>
-                                    <ComboBoxItem Content="{DynamicResource PointSquare}"/>
-                                    <ComboBoxItem Content="{DynamicResource PointFilledTriangleUp}"/>
-                                    <ComboBoxItem Content="{DynamicResource PointFilledTriangleDown}"/>
-                                    <ComboBoxItem Content="{DynamicResource PointDiamond}"/>
-                                    <ComboBoxItem Content="{DynamicResource PointEks}"/>
-                                    <ComboBoxItem Content="{DynamicResource PointCross}"/>
-                                    <ComboBoxItem Content="{DynamicResource PointStar}"/>
-                                </ComboBox.Items>
-                            </ComboBox>
-                            <!--大小-->
-                            <TextBlock Text="{Binding [Size],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="2"/>
-                            <hc:NumericUpDown Grid.Row="2" Grid.Column="1" Value="{Binding PlotWidth,Mode=TwoWay}"/>
-                            <!--颜色-->
-                            <TextBlock Text="{Binding [LineColor],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="3" Margin="0 5"/>
-                            <Button Grid.Row="3" Grid.Column="1" Margin="0 5" HorizontalAlignment="Stretch" 
-                                VerticalAlignment="Stretch" 
-                                Content="" Click="Color_Pick" BorderThickness="0"
-                                Background="{Binding PlotColor, Converter={StaticResource BackgroundColorConverter}}"/>
-                            <!--<hc:ColorPicker Grid.Row="3" Grid.Column="1" Margin="0 5"
-                                              SelectedBrush="{Binding PlotColor,Mode=TwoWay,
-                                              Converter={StaticResource ColorConverter}}"/>-->
-                        </Grid>
-                    </StackPanel>
-
-                    <!--坐标轴设置面板-->
-                    <TabControl Visibility="{Binding PlotAxisShow,Converter={StaticResource BoolToVisibilityConverter}}">
-                        <!--主刻度轴-->
-                        <TabItem Header="{DynamicResource MajorAxes}">
-                            <StackPanel Margin="8">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="0.8*"/>
-                                        <ColumnDefinition/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-                                    <!--是否显示轴-->
-                                    <TextBlock Text="{Binding [IsShowAxes],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"/>
-                                    <CheckBox Grid.Column="1" IsChecked="{Binding PlotVisible}" Margin="0 0 0 5"/>
-                                    <!--隐藏主刻度-->
-                                    <!--<TextBlock Text="{DynamicResource IsShowAxesTick}" VerticalAlignment="Center" Grid.Row="1" Margin="0 5"/>
-                                    <CheckBox Grid.Column="1" IsChecked="{Binding ReverseAxis}" Grid.Row="1" Margin="0 5"/>-->
-                                    <!--刻度轴样式-->
-                                    <TextBlock Text="{Binding [AxesStyle],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="2"/>
-                                    <ComboBox Grid.Column="1" SelectedIndex="{Binding PlotType}" Grid.Row="2">
-                                        <ComboBox.Items>
-                                            <ComboBoxItem Content="{DynamicResource AxesStyleNormal}"/>
-                                            <!--<ComboBoxItem Content="{DynamicResource AxesStyleLog10}"/>-->
-                                        </ComboBox.Items>
-                                    </ComboBox>
-                                    <!--刻度轴字体-->
-                                    <TextBlock Text="{Binding [AxesTickFont],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="3" Margin="0 5"/>
-                                    <ComboBox Grid.Column="1" SelectedIndex="{Binding AxisTickFontName}" Grid.Row="3"
-                                                  ItemsSource="{Binding PlotTextFontNames}" Margin="0 5"/>
-                                    <!--刻度字体大小-->
-                                    <TextBlock Text="{Binding [AxesTickFontSize],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="4"/>
-                                    <hc:NumericUpDown Grid.Row="4" Grid.Column="1"
-                                                            Value="{Binding AxisTickFontSize,Mode=TwoWay}"/>
-                                    <!--刻度间距-->
-                                    <!--<TextBlock Text="{DynamicResource AxesTickSpacing}" VerticalAlignment="Center" Grid.Row="5" Margin="0 5"/>
-                                    <hc:NumericUpDown Grid.Row="5" Grid.Column="1" Margin="0 5"
-                                                            Value="{Binding AxisTickSpan,Mode=TwoWay}"/>-->
-                                    <!--刻度上限-->
-                                    <TextBlock Text="{Binding [AxesTickUpLimit],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="6"/>
-                                    <hc:NumericUpDown Grid.Row="6" Grid.Column="1"
-                                                            Value="{Binding AxisTickUpLimit,Mode=TwoWay}"/>
-                                    <!--刻度下限-->
-                                    <TextBlock Text="{Binding [AxesTickDownLimit],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="7" Margin="0 5"/>
-                                    <hc:NumericUpDown Grid.Row="7" Grid.Column="1" Margin="0 5"
-                                                            Value="{Binding AxisTickDownLimit,Mode=TwoWay}"/>
-                                    <!--刻度颜色-->
-                                    <TextBlock Text="{Binding [AxesTickColor],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="8"/>
-                                    <Button Grid.Row="8" Grid.Column="1" HorizontalAlignment="Stretch" 
-                                        VerticalAlignment="Stretch" Content="" Click="Color_Pick0000" BorderThickness="0"
-                                        Background="{Binding AxisPlotColor, Converter={StaticResource BackgroundColorConverter}}"/>
-                                    <!--<hc:ColorPicker Grid.Row="8" Grid.Column="1"
-                                              SelectedBrush="{Binding AxisPlotColor,Mode=TwoWay,
-                                              Converter={StaticResource ColorConverter}}"/>-->
-                                </Grid>
-                            </StackPanel>
-                        </TabItem>
-                        <TabItem Header="{DynamicResource MinorAxes}">
-                            <StackPanel Margin="8">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="0.8*"/>
-                                        <ColumnDefinition/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Text="{Binding [IsShowMinorAxes],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"/>
-                                    <CheckBox Grid.Column="1" IsChecked="{Binding SecondTickShow}"/>
-
-                                    <!--<TextBlock Text="刻度间距" VerticalAlignment="Center" Grid.Row="5" Margin="0 5"/>
-                                        <mahc:NumericUpDown Grid.Row="5" Grid.Column="1" Margin="0 5"
-                                                            Value="{Binding AxisTickSpan,Mode=TwoWay}"/>-->
-                                </Grid>
-                            </StackPanel>
-                        </TabItem>
-                    </TabControl>
-
-                    <!--图例设置面板-->
-                    <TabControl Visibility="{Binding PlotLegendShow,Converter={StaticResource BoolToVisibilityConverter}}">
-                        <!--图例-->
-                        <TabItem Header="{Binding [Legend],Source={x:Static lg:LanguageService.Instance}}">
-                            <StackPanel Margin="8">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="0.8*"/>
-                                        <ColumnDefinition/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-                                    <!--是否显示图例-->
-                                    <TextBlock Text="{Binding [IsShowLegend],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"/>
-                                    <CheckBox Grid.Column="1" IsChecked="{Binding ShowLegends,Mode=TwoWay}"/>
-                                    <!--图例位置-->
-                                    <TextBlock Text="{Binding [LegendPosition],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="1" Margin="0 5"/>
-                                    <ComboBox Grid.Column="1" SelectedIndex="{Binding LegendsLocation}" 
-                                                  Grid.Row="1" Margin="0 5">
-                                        <ComboBoxItem Content="{DynamicResource LegendPositionRU}"/>
-                                        <ComboBoxItem Content="{DynamicResource LegendPositionRD}"/>
-                                        <ComboBoxItem Content="{DynamicResource LegendPositionLU}"/>
-                                        <ComboBoxItem Content="{DynamicResource LegendPositionLD}"/>
-                                    </ComboBox>
-                                    <!--图例方向-->
-                                    <TextBlock Text="{Binding [LegendDirection],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="2"/>
-                                    <ComboBox Grid.Column="1" SelectedIndex="{Binding LegendsO}" 
-                                                  Grid.Row="2">
-                                        <ComboBoxItem Content="{DynamicResource LegendVertical}"/>
-                                        <ComboBoxItem Content="{DynamicResource LegendHorizontal}"/>
-                                    </ComboBox>
-
-                                    <!--<TextBlock Text="图例字体" VerticalAlignment="Center" Grid.Row="3" Margin="0 5"/>
-                                <ComboBox Grid.Column="1" SelectedIndex="{Binding LegendsFonts}" 
-                                                  Grid.Row="3" ItemsSource="{Binding PlotTextFontNames}" Margin="0 5"/>
-
-                                <TextBlock Text="图例字体大小" VerticalAlignment="Center" Grid.Row="4"/>
-                                <hc:NumericUpDown Grid.Row="4" Grid.Column="1" 
-                                                            Value="{Binding LegendsFontSize,Mode=TwoWay}"/>
-
-                                <TextBlock Text="图例字体颜色" VerticalAlignment="Center" Grid.Row="5" Margin="0 5"/>
-                                <Button Grid.Row="5" Grid.Column="1" Margin="0 5" HorizontalAlignment="Stretch" 
-                                        VerticalAlignment="Stretch" Content="" Click="Color_Pick000" BorderThickness="1"
-                                        Background="{Binding LegendsFontColor, Converter={StaticResource BackgroundColorConverter}}"/>-->
-                                </Grid>
-                            </StackPanel>
-                        </TabItem>
-                    </TabControl>
-
-                    <!--绘图设置面板-->
-                    <TabControl Visibility="{Binding PlotMainShow,Converter={StaticResource BoolToVisibilityConverter}}">
-                        <!--绘图-->
-                        <TabItem Header="{Binding [Plot],Source={x:Static lg:LanguageService.Instance}}">
-                            <StackPanel Margin="8">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="0.8*"/>
-                                        <ColumnDefinition/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-                                    <!--绘图标题-->
-                                    <TextBlock Text="{Binding [PlotTitle],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"/>
-                                    <TextBox Grid.Column="1" Text="{Binding AxisTitle,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  AcceptsReturn="True"/>
-                                    <!--标题字体-->
-                                    <TextBlock Text="{Binding [PlotTitleFont],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="1" Margin="0 5"/>
-                                    <ComboBox Grid.Column="1" SelectedIndex="{Binding AxisTitleFontName}" 
-                                                  Grid.Row="1" Margin="0 5" ItemsSource="{Binding PlotTextFontNames}"/>
-                                    <!--标题字体大小-->
-                                    <TextBlock Text="{Binding [PlotTitleFontSize],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="2"/>
-                                    <hc:NumericUpDown Grid.Row="2" Grid.Column="1" 
-                                                            Value="{Binding AxisTitleFontSize,Mode=TwoWay}"/>
-                                    <!--标题颜色-->
-                                    <TextBlock Text="{Binding [PlotTitleColor],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="3" Margin="0 5"/>
-                                    <Button Grid.Row="3" Grid.Column="1" Margin="0 5" HorizontalAlignment="Stretch" 
-                                        VerticalAlignment="Stretch" Content="" Click="Color_Pick000" BorderThickness="0"
-                                        Background="{Binding AxisTitleColor, Converter={StaticResource BackgroundColorConverter}}"/>
-                                    <!--<hc:ColorPicker Grid.Row="3" Grid.Column="1" Margin="0 5"
-                                              SelectedBrush="{Binding AxisTitleColor,Mode=TwoWay,
-                                              Converter={StaticResource ColorConverter}}"/>-->
-                                    <!--坐标轴标题1-->
-                                    <TextBlock Text="{Binding [PlotAxesTitle1],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="4"/>
-                                    <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding XAxisTitle,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  AcceptsReturn="True"/>
-                                    <!--坐标轴标题2-->
-                                    <TextBlock Text="{Binding [PlotAxesTitle2],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="5" Margin="0 5"/>
-                                    <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding YAxisTitle,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  AcceptsReturn="True"
-                                                 Margin="0 5"/>
-                                    <!--轴标题字体-->
-                                    <TextBlock Text="{Binding [PlotAxesTitleFont],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="6"/>
-                                    <ComboBox Grid.Column="1" SelectedIndex="{Binding AxisTitleFontName}" 
-                                                  Grid.Row="6" ItemsSource="{Binding PlotTextFontNames}"/>
-                                    <!--轴标题字体大小-->
-                                    <TextBlock Text="{Binding [PlotAxesTitleFontSize],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="7" Margin="0 5"/>
-                                    <hc:NumericUpDown Grid.Row="7" Grid.Column="1" Margin="0 5"
-                                                            Value="{Binding AxisXYTitleFontSize,Mode=TwoWay}"/>
-                                    <!--轴标题颜色-->
-                                    <TextBlock Text="{Binding [PlotAxesTitleColor],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="8"/>
-                                    <Button Grid.Row="8" Grid.Column="1" HorizontalAlignment="Stretch" 
-                                        VerticalAlignment="Stretch" Content="" Click="Color_Pick00" BorderThickness="0"
-                                        Background="{Binding AxisXYTitleColor, Converter={StaticResource BackgroundColorConverter}}"/>
-                                    <!--<hc:ColorPicker Grid.Row="8" Grid.Column="1"
-                                              SelectedBrush="{Binding AxisXYTitleColor,Mode=TwoWay,
-                                              Converter={StaticResource ColorConverter}}"/>-->
-                                </Grid>
-                            </StackPanel>
-                        </TabItem>
-                        <!--背景-->
-                        <TabItem Header="{Binding [Background],Source={x:Static lg:LanguageService.Instance}}">
-                            <StackPanel Margin="8">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="0.8*"/>
-                                        <ColumnDefinition/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-                                    <!--显示网格-->
-                                    <TextBlock Text="{Binding [PlotShowGrid],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"/>
-                                    <CheckBox Grid.Column="1" IsChecked="{Binding FirstGridShow}"/>
-                                    <!--主网格颜色-->
-                                    <TextBlock Text="{Binding [PlotMajorGridColor],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="1" Margin="0 5"/>
-                                    <Button Grid.Row="1" Grid.Column="1" Margin="0 5" HorizontalAlignment="Stretch" 
-                                        VerticalAlignment="Stretch" Content="" Click="Color_Pick0" BorderThickness="0"
-                                        Background="{Binding FirstGridColor, Converter={StaticResource BackgroundColorConverter}}"/>
-                                    <!--<hc:ColorPicker Grid.Row="1" Grid.Column="1" Margin="0 5"
-                                              SelectedBrush="{Binding FirstGridColor,Mode=TwoWay,
-                                              Converter={StaticResource ColorConverter}}"/>-->
-                                    <!--主网格宽度-->
-                                    <TextBlock Text="{Binding [PlotMajorGridWidth],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="2"/>
-                                    <hc:NumericUpDown Grid.Row="2" Grid.Column="1" 
-                                                            Value="{Binding FirstGridWidth,Mode=TwoWay}"/>
-                                    <!--显示次网格-->
-                                    <TextBlock Text="{Binding [PlotShowMinorGrid],Source={x:Static lg:LanguageService.Instance}}" Grid.Row="4" VerticalAlignment="Center" Margin="0 5"/>
-                                    <CheckBox Grid.Column="1" Grid.Row="4" Margin="0 5"
-                                                  IsChecked="{Binding SecondGridShow}"/>
-                                    <!--次网格颜色-->
-                                    <TextBlock Text="{Binding [PlotMinorGridColor],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="5"/>
-                                    <Button Grid.Row="5" Grid.Column="1" HorizontalAlignment="Stretch" 
-                                        VerticalAlignment="Stretch" Content="" Click="Color_Pick1" BorderThickness="0"
-                                        Background="{Binding SecondGridColor, 
-                                        Converter={StaticResource BackgroundColorConverter}}"/>
-                                    <!--<hc:ColorPicker Grid.Row="5" Grid.Column="1"
-                                              SelectedBrush="{Binding SecondGridColor,Mode=TwoWay,
-                                              Converter={StaticResource ColorConverter}}"/>-->
-                                    <!--次网格宽度-->
-                                    <TextBlock Text="{Binding [PlotMinorGridWidth],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Grid.Row="6" Margin="0 5"/>
-                                    <hc:NumericUpDown Grid.Row="6" Grid.Column="1" Margin="0 5"
-                                                            Value="{Binding SecondGridWidth,Mode=TwoWay}"/>
-                                    <!--反转填充颜色-->
-                                    <!--
-                                    <TextBlock Text="{DynamicResource PlotSwitchFilledColor}" VerticalAlignment="Center" Grid.Row="7"/>
-                                    <CheckBox Grid.Column="1" Grid.Row="7" IsChecked="{Binding SwichtFillColor}"/>
-                                    -->
-                                    <!--填充区域颜色1-->
-                                    <!--
-                                    <TextBlock Text="{DynamicResource PlotFilledColor1}" VerticalAlignment="Center" Grid.Row="8" Margin="0 5"/>
-                                    <Button Grid.Row="8" Grid.Column="1" Margin="0 5" HorizontalAlignment="Stretch" 
-                                        VerticalAlignment="Stretch" Content="" Click="Color_Pick2" BorderThickness="0"
-                                        Background="{Binding GridFillColor1, 
-                                        Converter={StaticResource BackgroundColorConverter}}"/>
-                                    -->
-                                    <!--<hc:ColorPicker Grid.Row="8" Grid.Column="1" Margin="0 5"
-                                              SelectedBrush="{Binding GridFillColor1,Mode=TwoWay,
-                                              Converter={StaticResource ColorConverter}}"/>-->
-                                    <!--填充区域颜色2-->
-                                    <!--
-                                    <TextBlock Text="{DynamicResource PlotFilledColor2}" VerticalAlignment="Center" Grid.Row="9"/>
-                                    <Button Grid.Row="9" Grid.Column="1" HorizontalAlignment="Stretch" 
-                                        VerticalAlignment="Stretch" Content="" Click="Color_Pick3" BorderThickness="0"
-                                        Background="{Binding GridFillColor2, 
-                                        Converter={StaticResource BackgroundColorConverter}}"/>-->
-                                    <!--<hc:ColorPicker Grid.Row="9" Grid.Column="1"
-                                              SelectedBrush="{Binding GridFillColor2,Mode=TwoWay,
-                                              Converter={StaticResource ColorConverter}}"/>-->
-                                </Grid>
-                            </StackPanel>
-                        </TabItem>
-                    </TabControl>
-
-                    <!--脚本设置面板-->
-                    <StackPanel Margin="8" Visibility="{Binding PlotScriptShow,Converter={StaticResource BoolToVisibilityConverter}}">
-                        <!--必要参数-->
-                        <TextBlock Text="{Binding [Parameters],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"/>
-                        <hc:TextBox Margin="0 5" Text="{Binding NeedParamContent}"/>
-                        <!--Js 脚本-->
-                        <TextBlock Text="{Binding [Js],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Top"/>
-                        <TextBox AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"  
-                                Margin="0 5" Height="150" VerticalContentAlignment="Top" Padding="8"
-                             Text="{Binding JsScriptContent}"/>
-                        <UniformGrid Columns="3">
-                            <Button Content="{Binding [CheckJs],Source={x:Static lg:LanguageService.Instance}}" HorizontalAlignment="Stretch" Margin="5" Style="{StaticResource ButtonPrimary}"
-                                Command="{Binding CheckContentCommand}"/>
-                            <Button Content="{Binding [Confirm],Source={x:Static lg:LanguageService.Instance}}" HorizontalAlignment="Stretch" Margin="5" Style="{StaticResource ButtonSuccess}"
-                                Command="{Binding ConfirmSaveScriptCommand}"/>
-                            <Button Content="{Binding [Cancel],Source={x:Static lg:LanguageService.Instance}}" HorizontalAlignment="Stretch" Margin="5" Style="{StaticResource ButtonDanger}"
-                                Command="{Binding CancelSaveScriptCommand}"/>
-                        </UniformGrid>
-                    </StackPanel>
-
-                    <!--自定义底图-添加点-->
-                    <!--<StackPanel Margin="8">
-                    -->
-                    <!--起始点-->
-                    <!--
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="0.2*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <TextBlock Text="Start X" VerticalAlignment="Center" />
-                            <TextBlock Text="Start Y" VerticalAlignment="Center" Grid.Row="1"/>
-                            <hc:NumericUpDown Value="{Binding X1}" Grid.Column="1"/>
-                            <hc:NumericUpDown Value="{Binding Y1}" Grid.Column="1" Grid.Row="1" Margin="0 5"/>
-                        </Grid>
-                        <Button Content="&#xe601;" FontFamily="../Data/Icon/#iconfont" Grid.Column="1"/>
-                    </Grid>
-                    -->
-                    <!--终点-->
-                    <!--
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="0.2*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <TextBlock Text="End X" VerticalAlignment="Center" />
-                            <TextBlock Text="End Y" VerticalAlignment="Center" Grid.Row="1"/>
-                            <hc:NumericUpDown Value="{Binding X2}" Grid.Column="1"/>
-                            <hc:NumericUpDown Value="{Binding Y2}" Grid.Column="1" Grid.Row="1" Margin="0 5"/>
-                        </Grid>
-                        <Button Content="&#xe601;" FontFamily="../Data/Icon/#iconfont" Grid.Column="1"/>
-                    </Grid>
-                    <UniformGrid Rows="1" Columns="2">
-                        <Button Content="确定" HorizontalAlignment="Stretch" Width="Auto" Margin="5"/>
-                        <Button Content="删除" HorizontalAlignment="Stretch" Width="Auto" Margin="5"
-                                Click="DeleteLine"/>
-                    </UniformGrid>
-
-                </StackPanel>-->
-                </Grid>
-                <Popup x:Name="ColorPicker" StaysOpen="False" 
-               Placement="Mouse" AllowsTransparency="True">
-                    <hc:ColorPicker SelectedBrush="{Binding PlotColor,Mode=TwoWay,
-                                Converter={StaticResource BackgroundColorConverter}}"/>
-                </Popup>
-                <Popup x:Name="ColorPicker0000" StaysOpen="False" 
-               Placement="Mouse" AllowsTransparency="True">
-                    <hc:ColorPicker SelectedBrush="{Binding AxisPlotColor,Mode=TwoWay,
-                                Converter={StaticResource BackgroundColorConverter}}"/>
-                </Popup>
-                <Popup x:Name="ColorPicker000" StaysOpen="False" 
-               Placement="Mouse" AllowsTransparency="True">
-                    <hc:ColorPicker SelectedBrush="{Binding AxisTitleColor,Mode=TwoWay,
-                                Converter={StaticResource BackgroundColorConverter}}"/>
-                </Popup>
-                <Popup x:Name="ColorPicker00" StaysOpen="False" 
-               Placement="Mouse" AllowsTransparency="True">
-                    <hc:ColorPicker SelectedBrush="{Binding AxisXYTitleColor,Mode=TwoWay,
-                                Converter={StaticResource BackgroundColorConverter}}"/>
-                </Popup>
-                <Popup x:Name="ColorPicker0" StaysOpen="False" 
-               Placement="Mouse" AllowsTransparency="True">
-                    <hc:ColorPicker SelectedBrush="{Binding FirstGridColor,Mode=TwoWay,
-                                Converter={StaticResource BackgroundColorConverter}}"/>
-                </Popup>
-                <Popup x:Name="ColorPicker1" StaysOpen="False" 
-               Placement="Mouse" AllowsTransparency="True">
-                    <hc:ColorPicker SelectedBrush="{Binding SecondGridColor,Mode=TwoWay,
-                                Converter={StaticResource BackgroundColorConverter}}"/>
-                </Popup>
-                <Popup x:Name="ColorPicker2" StaysOpen="False" 
-               Placement="Mouse" AllowsTransparency="True">
-                    <hc:ColorPicker SelectedBrush="{Binding GridFillColor1,Mode=TwoWay,
-                                Converter={StaticResource BackgroundColorConverter}}"/>
-                </Popup>
-                <Popup x:Name="ColorPicker3" StaysOpen="False" 
-               Placement="Mouse" AllowsTransparency="True">
-                    <hc:ColorPicker SelectedBrush="{Binding GridFillColor2,Mode=TwoWay,
-                                Converter={StaticResource BackgroundColorConverter}}"/>
-                </Popup>
-
-            </Grid>
-        </Grid>
-
-        <!--弹窗-->
-        <Grid Visibility="{Binding PlotPopupShow,Converter={StaticResource BoolToVisibilityConverter}}" Grid.RowSpan="2">
-            <Border Background="#666666" Opacity="0.65"/>
-            <Border CornerRadius="5" Background="#FFFFFF" Width="400" Height="180" Padding="12">
-                <StackPanel>
-                    <!--<TextBlock Text="底图名称" FontSize="18" Foreground="#333333"/>
-                    <TextBox Text="{Binding NewBasePlotName}" Margin="0 5"/>-->
-                    <TextBlock Text="{Binding [BasemapCategories],Source={x:Static lg:LanguageService.Instance}}" FontSize="18" Foreground="#333333"/>
-                    <TextBox Text="{Binding BasePlotType}" Margin="0 5"/>
-                    <!--<TextBlock Text="{DynamicResource BasemapLanguage}" FontSize="18" Foreground="#333333"/>
-                    <ComboBox SelectedIndex="{Binding BasePlotLanguage}" Margin="0 5">
-                        <ComboBoxItem Content="简体中文" IsSelected="True"/>
-                        <ComboBoxItem Content="English"/>
-                    </ComboBox>-->
-                    <UniformGrid Columns="2" Margin="0 8 0 0">
-                        <Button Content="{Binding [Confirm],Source={x:Static lg:LanguageService.Instance}}" HorizontalAlignment="Stretch" Margin="0 0 5 0"
-                        Style="{StaticResource ButtonSuccess}" Command="{Binding ConfirmNewBasemapCommand}"/>
-                        <!--取消-->
-                        <Button Content="{Binding [Cancel],Source={x:Static lg:LanguageService.Instance}}" HorizontalAlignment="Stretch" Margin="5 0 0 0"
-                        Style="{StaticResource ButtonDanger}" Command="{Binding CancelNewBasemapCommand}"/>
-                    </UniformGrid>
-                </StackPanel>
-            </Border>
+            <uc:ScriptDefinitionControl Grid.Column="4" Padding="10 45 10 10"
+                                        ScriptDefinition="{Binding CurrentScript}"
+                                        Visibility="{Binding ScriptsPropertyGrid, Converter={StaticResource BoolToVisibilityConverter}}"/>
         </Grid>
     </Grid>
 </Page>

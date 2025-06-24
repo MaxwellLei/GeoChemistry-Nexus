@@ -593,31 +593,31 @@
     <value>Mineral Assemblage</value>
   </data>
   <data name="AmphiboleGTM" xml:space="preserve">
-    <value>Amphibole Geothermometer</value>
+    <value>Si Geothermometer</value>
   </data>
   <data name="BiotiteGTM" xml:space="preserve">
-    <value>Biotite Geothermometer</value>
+    <value>Ti Geothermometer</value>
   </data>
   <data name="ChloriteGTM" xml:space="preserve">
-    <value>Chlorite Geothermometer</value>
+    <value>Al4 Geothermometer</value>
   </data>
   <data name="ArsenopyriteGTM" xml:space="preserve">
     <value>Arsenopyrite Geothermometer</value>
   </data>
   <data name="QuartzGTM" xml:space="preserve">
-    <value>Quartz Ti Geothermometer</value>
+    <value>TitaniQ Geothermometer</value>
   </data>
   <data name="SphaleriteGTM" xml:space="preserve">
-    <value>Sphalerite FeS Geothermometer</value>
+    <value>FeS Geothermometer</value>
   </data>
   <data name="SphaleriteGGIMFisGTM" xml:space="preserve">
-    <value>Sphalerite GGIMFis Geothermometer</value>
+    <value>GGIMFis Geothermometer</value>
   </data>
   <data name="ZirconTiGTM" xml:space="preserve">
-    <value>Zircon Ti Geothermometer</value>
+    <value>Ti Geothermometer</value>
   </data>
   <data name="ZirconZrGTM" xml:space="preserve">
-    <value>Zircon Zr Geothermometer</value>
+    <value>Zr Geothermometer</value>
   </data>
   <data name="Step1" xml:space="preserve">
     <value>Import / Enter Data</value>
@@ -753,5 +753,260 @@
   </data>
   <data name="Info1" xml:space="preserve">
     <value>Please visit the official website, this feature is under development....</value>
+  </data>
+  <data name="import_template" xml:space="preserve">
+    <value>Import Template</value>
+  </data>
+  <data name="new_template" xml:space="preserve">
+    <value>New Template</value>
+  </data>
+  <data name="template_library" xml:space="preserve">
+    <value>Template Library</value>
+  </data>
+  <data name="return_to_template_library" xml:space="preserve">
+    <value>Template Library</value>
+  </data>
+  <data name="Data" xml:space="preserve">
+    <value>Data</value>
+  </data>
+  <data name="import_data" xml:space="preserve">
+    <value>Import Data</value>
+  </data>
+  <data name="clear_data" xml:space="preserve">
+    <value>Clear Data</value>
+  </data>
+  <data name="view" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="reset_view" xml:space="preserve">
+    <value>Reset View</value>
+  </data>
+  <data name="coordinate_positioning" xml:space="preserve">
+    <value>Coordinate</value>
+  </data>
+  <data name="select" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="deselect" xml:space="preserve">
+    <value>Deselect</value>
+  </data>
+  <data name="export" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="export_image" xml:space="preserve">
+    <value>Export Image</value>
+  </data>
+  <data name="png_format" xml:space="preserve">
+    <value>PNG Format</value>
+  </data>
+  <data name="jpg_format" xml:space="preserve">
+    <value>JPG Format</value>
+  </data>
+  <data name="bmp_format" xml:space="preserve">
+    <value>BMP Format</value>
+  </data>
+  <data name="webp_format" xml:space="preserve">
+    <value>WebP Format</value>
+  </data>
+  <data name="svg_format" xml:space="preserve">
+    <value>SVG Format</value>
+  </data>
+  <data name="legend_settings" xml:space="preserve">
+    <value>Legend</value>
+  </data>
+  <data name="grid_settings" xml:space="preserve">
+    <value>Grid</value>
+  </data>
+  <data name="script_settings" xml:space="preserve">
+    <value>Script</value>
+  </data>
+  <data name="plot_settings" xml:space="preserve">
+    <value>Plot</value>
+  </data>
+  <data name="all_templates" xml:space="preserve">
+    <value>All Templates</value>
+  </data>
+  <data name="uncategorized" xml:space="preserve">
+    <value>Uncategorized</value>
+  </data>
+  <data name="disallow_modify_data_point_position" xml:space="preserve">
+    <value>Disallow Modification of Data Point Position</value>
+  </data>
+  <data name="load_valid_template_with_script" xml:space="preserve">
+    <value>Please load a valid chart template. The template must include calculation script configurations</value>
+  </data>
+  <data name="incomplete_script_config" xml:space="preserve">
+    <value>The script configuration in the template is incomplete. Please check RequiredDataSeries and ScriptBody</value>
+  </data>
+  <data name="select_data_file" xml:space="preserve">
+    <value>Select Data File</value>
+  </data>
+  <data name="data_file_filter" xml:space="preserve">
+    <value>Data Files (*.csv, *.xls, *.xlsx)|*.csv;*.xls;*.xlsx</value>
+  </data>
+  <data name="no_valid_workbook_or_data_found" xml:space="preserve">
+    <value>No valid workbook or data found in the file</value>
+  </data>
+  <data name="read_file_failed" xml:space="preserve">
+    <value>Failed to Read File</value>
+  </data>
+  <data name="script_config_error_required_data_series" xml:space="preserve">
+    <value>Script configuration error: RequiredDataSeries must contain at least one category column and one data column</value>
+  </data>
+  <data name="excel_missing_required_columns" xml:space="preserve">
+    <value>The Excel file is missing the following required columns</value>
+  </data>
+  <data name="data_point" xml:space="preserve">
+    <value>Data Point</value>
+  </data>
+  <data name="failed_to_parse_category_group" xml:space="preserve">
+    <value>Failed to parse valid category groupings from the file. Please check the category column data</value>
+  </data>
+  <data name="error_calculating_data_point_coordinates" xml:space="preserve">
+    <value>Error calculating data point coordinates:</value>
+  </data>
+  <data name="data_import_successful" xml:space="preserve">
+    <value>Data Import Successful</value>
+  </data>
+  <data name="script_execution_failed" xml:space="preserve">
+    <value>Script execution failed:</value>
+  </data>
+  <data name="axes" xml:space="preserve">
+    <value>Axes</value>
+  </data>
+  <data name="point" xml:space="preserve">
+    <value>Point</value>
+  </data>
+  <data name="line" xml:space="preserve">
+    <value>Line</value>
+  </data>
+  <data name="text" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="annotation" xml:space="preserve">
+    <value>Annotation</value>
+  </data>
+  <data name="image_copied_to_clipboard" xml:space="preserve">
+    <value>Image copied to clipboard successfully</value>
+  </data>
+  <data name="copy_failed" xml:space="preserve">
+    <value>Copy failed:</value>
+  </data>
+  <data name="confirm_clear_data_points" xml:space="preserve">
+    <value>Clear data points?</value>
+  </data>
+  <data name="no_imported_data_to_clear" xml:space="preserve">
+    <value>There is no imported data to clear</value>
+  </data>
+  <data name="all_imported_data_cleared" xml:space="preserve">
+    <value>All imported data has been cleared</value>
+  </data>
+  <data name="left_y_axis" xml:space="preserve">
+    <value>Left Y-Axis</value>
+  </data>
+  <data name="right_y_axis" xml:space="preserve">
+    <value>Right Y-Axis</value>
+  </data>
+  <data name="bottom_x_axis" xml:space="preserve">
+    <value>Bottom X-Axis</value>
+  </data>
+  <data name="top_x_axis" xml:space="preserve">
+    <value>Top X-Axis</value>
+  </data>
+  <data name="unknown_axis" xml:space="preserve">
+    <value>Unknown Axis</value>
+  </data>
+  <data name="content_and_position" xml:space="preserve">
+    <value>Content and Position</value>
+  </data>
+  <data name="script_definition" xml:space="preserve">
+    <value>Script Definition</value>
+  </data>
+  <data name="script_language" xml:space="preserve">
+    <value>Script Language:</value>
+  </data>
+  <data name="data_series" xml:space="preserve">
+    <value>Data Series</value>
+  </data>
+  <data name="multiple_data_series_hint" xml:space="preserve">
+    <value>Separate multiple data series with commas, e.g., SiO2, K2O</value>
+  </data>
+  <data name="script_content" xml:space="preserve">
+    <value>Script Content:</value>
+  </data>
+  <data name="ready" xml:space="preserve">
+    <value>Ready</value>
+  </data>
+  <data name="validate_syntax" xml:space="preserve">
+    <value>Validate Syntax</value>
+  </data>
+  <data name="row" xml:space="preserve">
+    <value>Row:</value>
+  </data>
+  <data name="column" xml:space="preserve">
+    <value>Column:</value>
+  </data>
+  <data name="code_formatted" xml:space="preserve">
+    <value>Code Formatted</value>
+  </data>
+  <data name="format_failed" xml:space="preserve">
+    <value>Format failed:</value>
+  </data>
+  <data name="script_content_is_empty" xml:space="preserve">
+    <value>Script content is empty</value>
+  </data>
+  <data name="validation_failed" xml:space="preserve">
+    <value>Validation failed:</value>
+  </data>
+  <data name="data_parameters_are_empty" xml:space="preserve">
+    <value>Data parameters are empty</value>
+  </data>
+  <data name="invalid_data_parameter_format" xml:space="preserve">
+    <value>Data parameter format is incorrect</value>
+  </data>
+  <data name="parameter_format_correct" xml:space="preserve">
+    <value>Parameter format is correct</value>
+  </data>
+  <data name="syntax_validation_passed" xml:space="preserve">
+    <value>Syntax validation passed</value>
+  </data>
+  <data name="error" xml:space="preserve">
+    <value>Error:</value>
+  </data>
+  <data name="new" xml:space="preserve">
+    <value>_New(N)</value>
+  </data>
+  <data name="open" xml:space="preserve">
+    <value>_Open(O)</value>
+  </data>
+  <data name="export_current_worksheet" xml:space="preserve">
+    <value>_Export Current Worksheet(R)</value>
+  </data>
+  <data name="geological_thermometer" xml:space="preserve">
+    <value>_Geological Thermometer(T)</value>
+  </data>
+  <data name="confirm_new_worksheet" xml:space="preserve">
+    <value>Create a new worksheet?</value>
+  </data>
+  <data name="error_creating_table" xml:space="preserve">
+    <value>Error creating table:</value>
+  </data>
+  <data name="file_import_successful" xml:space="preserve">
+    <value>File Import Successful</value>
+  </data>
+  <data name="cancel_import" xml:space="preserve">
+    <value>Cancel Import</value>
+  </data>
+  <data name="export_successful" xml:space="preserve">
+    <value>Export Successful</value>
+  </data>
+  <data name="export_failed" xml:space="preserve">
+    <value>Export failed:</value>
+  </data>
+  <data name="create_worksheet_failed" xml:space="preserve">
+    <value>Failed to create worksheet:</value>
+  </data>
+  <data name="row_1_column_1" xml:space="preserve">
+    <value>Row: 1, Column: 1</value>
   </data>
 </root>

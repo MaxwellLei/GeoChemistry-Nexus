@@ -57,8 +57,8 @@ namespace GeoChemistryNexus.ViewModels
             if (window.WindowState != WindowState.Maximized)
             {
                 window.WindowState = WindowState.Maximized;
-                window.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
-                window.MaxWidth = SystemParameters.MaximizedPrimaryScreenWidth;
+                window.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight+2;
+                window.MaxWidth = SystemParameters.MaximizedPrimaryScreenWidth+2;
             }
             else
             {

@@ -11,6 +11,7 @@ namespace GeoChemistryNexus.Helpers
 {
     public class LanguageService : INotifyPropertyChanged
     {
+        public static string CurrentLanguage { get; set; } = "en-US";
         private readonly ResourceManager _resourceManager;
 
         // 使用线程安全的单例模式
@@ -32,10 +33,12 @@ namespace GeoChemistryNexus.Helpers
                 if (Convert.ToInt32(language) == 0)
                 {
                     LanguageService.Instance.ChangeLanguage(new System.Globalization.CultureInfo("zh-CN"));
+                    CurrentLanguage = "zh-CN";
                 }
                 else if (Convert.ToInt32(language) == 1)
                 {
                     LanguageService.Instance.ChangeLanguage(new System.Globalization.CultureInfo("en-US"));
+                    CurrentLanguage = "en-US";
                 }
             }
             else
@@ -44,6 +47,23 @@ namespace GeoChemistryNexus.Helpers
             }
         }
 
+        // 主动获取语言设置
+        public static string GetLanguage()
+        {
+            string language = ConfigHelper.GetConfig("language");
+            if (language != "")
+            {
+                if (Convert.ToInt32(language) == 0)
+                {
+                    return "zh-CN";
+                }
+                else if (Convert.ToInt32(language) == 1)
+                {
+                    return "en-US";
+                }
+            }
+            return string.Empty;
+        }
 
         public string this[string name]
         {
@@ -59,6 +79,7 @@ namespace GeoChemistryNexus.Helpers
 
         public void ChangeLanguage(CultureInfo cultureInfo)
         {
+            CurrentLanguage = cultureInfo.Name;
             CultureInfo.CurrentCulture = cultureInfo;
             CultureInfo.CurrentUICulture = cultureInfo;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("item[]"));  //字符串集合，对应资源的值

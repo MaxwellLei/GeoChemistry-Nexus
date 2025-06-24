@@ -28,9 +28,13 @@ namespace GeoChemistryNexus.Views
 
         public StartWindow()
         {
+
             LanguageService.InitializeLanguage();        // 初始化语言
+
+            _ = Task.Run(() => FontManager.GetFontNames());
+
             InitializeComponent();
-            //LanguageHelper.InitializeLanguage();
+
             // 异步执行启动过程
             Task.Run(() =>
             {

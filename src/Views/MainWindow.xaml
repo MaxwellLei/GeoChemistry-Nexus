@@ -11,7 +11,7 @@
         WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" Closing="Window_Closing" 
         Title="MainWindow" Height="760" Width="1300" BorderThickness="1">
     <WindowChrome.WindowChrome>
-        <WindowChrome CaptionHeight="55" ResizeBorderThickness="6"/>
+        <WindowChrome CaptionHeight="55" ResizeBorderThickness="22 5 22 22"/>
     </WindowChrome.WindowChrome>
 
     <!--主窗体-->

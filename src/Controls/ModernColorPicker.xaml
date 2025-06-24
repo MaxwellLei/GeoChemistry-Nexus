@@ -1,0 +1,115 @@
+﻿<UserControl x:Class="GeoChemistryNexus.Controls.ModernColorPicker"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style x:Key="ColorButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="28"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Margin" Value="3"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#CCCCCC"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush" Value="#666666"/>
+                    <Setter Property="BorderThickness" Value="2"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="36"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- 当前颜色显示和点击区域 -->
+        <Border Grid.Column="0" x:Name="ColorDisplay"
+                BorderBrush="#CCCCCC" BorderThickness="1"
+                CornerRadius="4" Margin="0,0,2,0"
+                Background="{Binding SelectedBrush, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                Cursor="Hand">
+            <Border.InputBindings>
+                <MouseBinding MouseAction="LeftClick" Command="{Binding ShowColorDialogCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+            </Border.InputBindings>
+        </Border>
+
+        <!-- 下拉箭头按钮 -->
+        <Button Grid.Column="1" x:Name="DropDownButton" Height="32"
+                BorderBrush="#CCCCCC" BorderThickness="1" Background="#F5F5F5" Click="DropDownButton_Click">
+            <Path Data="M0,0 L8,8 L16,0 Z" Fill="#666666" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="None"/>
+        </Button>
+
+        <!-- 快速颜色选择弹出面板 -->
+        <Popup x:Name="ColorPopup" 
+               PlacementTarget="{Binding ElementName=ColorDisplay}"
+               Placement="Bottom"
+               StaysOpen="False"
+               AllowsTransparency="True">
+            <Border Background="White" 
+                    BorderBrush="#CCCCCC" 
+                    BorderThickness="1"
+                    CornerRadius="6"
+                    Padding="12"
+                    MinWidth="280">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="2" Color="Gray" Opacity="0.3"/>
+                </Border.Effect>
+
+                <StackPanel>
+                    <!-- 基础颜色 -->
+                    <TextBlock Text="基础颜色" FontSize="12" Foreground="#666" Margin="0,0,0,8"/>
+                    <UniformGrid Columns="8" Margin="0,0,0,12">
+                        <Button Style="{StaticResource ColorButtonStyle}" Background="#FF0000" Click="QuickColorButton_Click" Tag="#FFFF0000"/>
+                        <Button Style="{StaticResource ColorButtonStyle}" Background="#FFA500" Click="QuickColorButton_Click" Tag="#FFFFA500"/>
+                        <Button Style="{StaticResource ColorButtonStyle}" Background="#FFFF00" Click="QuickColorButton_Click" Tag="#FFFFFF00"/>
+                        <Button Style="{StaticResource ColorButtonStyle}" Background="#00FF00" Click="QuickColorButton_Click" Tag="#FF00FF00"/>
+                        <Button Style="{StaticResource ColorButtonStyle}" Background="#00FFFF" Click="QuickColorButton_Click" Tag="#FF00FFFF"/>
+                        <Button Style="{StaticResource ColorButtonStyle}" Background="#0000FF" Click="QuickColorButton_Click" Tag="#FF0000FF"/>
+                        <Button Style="{StaticResource ColorButtonStyle}" Background="#FF00FF" Click="QuickColorButton_Click" Tag="#FFFF00FF"/>
+                        <Button Style="{StaticResource ColorButtonStyle}" Background="#800080" Click="QuickColorButton_Click" Tag="#FF800080"/>
+                    </UniformGrid>
+
+                    <!-- 灰度颜色 -->
+                    <TextBlock Text="灰度" FontSize="12" Foreground="#666" Margin="0,0,0,8"/>
+                    <UniformGrid Columns="8" Margin="0,0,0,12">
+                        <Button Style="{StaticResource ColorButtonStyle}" Background="#000000" Click="QuickColorButton_Click" Tag="#FF000000"/>
+                        <Button Style="{StaticResource ColorButtonStyle}" Background="#333333" Click="QuickColorButton_Click" Tag="#FF333333"/>
+                        <Button Style="{StaticResource ColorButtonStyle}" Background="#666666" Click="QuickColorButton_Click" Tag="#FF666666"/>
+                        <Button Style="{StaticResource ColorButtonStyle}" Background="#999999" Click="QuickColorButton_Click" Tag="#FF999999"/>
+                        <Button Style="{StaticResource ColorButtonStyle}" Background="#BBBBBB" Click="QuickColorButton_Click" Tag="#FFBBBBBB"/>
+                        <Button Style="{StaticResource ColorButtonStyle}" Background="#DDDDDD" Click="QuickColorButton_Click" Tag="#FFDDDDDD"/>
+                        <Button Style="{StaticResource ColorButtonStyle}" Background="#F0F0F0" Click="QuickColorButton_Click" Tag="#FFF0F0F0"/>
+                        <Button Style="{StaticResource ColorButtonStyle}" Background="#FFFFFF" Click="QuickColorButton_Click" Tag="#FFFFFFFF"/>
+                    </UniformGrid>
+
+                    <!-- 更多颜色按钮 -->
+                    <Button Content="更多颜色..." 
+                            Height="28" 
+                            Background="Transparent"
+                            BorderBrush="#CCCCCC"
+                            BorderThickness="1"
+                            FontSize="12"
+                            Click="MoreColorsButton_Click"/>
+                </StackPanel>
+            </Border>
+        </Popup>
+    </Grid>
+</UserControl>

@@ -13,42 +13,50 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="{Binding [File],Source={x:Static lg:LanguageService.Instance}}">
-                <MenuItem Header="_新建(N)" Command="{Binding CreateWorkSheetCommand}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
-                <MenuItem Header="_打开(O)" Command="{Binding OpenExcelFileCommand}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
+                <MenuItem Header="{Binding [new],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding CreateWorkSheetCommand}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
+                <MenuItem Header="{Binding [open],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding OpenExcelFileCommand}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
                 <Separator />
-                <MenuItem Header="_导出当前工作表(R)" Command="{Binding ExportWorksheetCommand}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
+                <MenuItem Header="{Binding [export_current_worksheet],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding ExportWorksheetCommand}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
                 <!--<MenuItem Header="_导出工作簿(R)"/>-->
             </MenuItem>
             <!--<MenuItem Header="_编辑(E)">
                 <MenuItem Header="_撤销(U)"/>
                 <MenuItem Header="_重做(R)"/>
             </MenuItem>-->
-            <MenuItem Header="_温度计(T)">
-                <MenuItem Header="锆石">
-                    <MenuItem Header="Ti 温度计" Command="{Binding Zircon_Ti_Loucks_2020Command}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
-                    <MenuItem Header="Zr 温度计">
-                        <MenuItem Header="饱和温度计" Command="{Binding Zircon_Zr_Saturation_Watson_and_Harrison_1983Command}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
-                        <MenuItem Header="主量温度计" Command="{Binding Zircon_Zr_Principal_Watson_and_Harrison_1983Command}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
+            <MenuItem Header="{Binding [geological_thermometer],Source={x:Static lg:LanguageService.Instance}}">
+                <!--锆石-->
+                <MenuItem Header="{Binding [Zircon],Source={x:Static lg:LanguageService.Instance}}">
+                    <MenuItem Header="{Binding [ZirconTiGTM],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding Zircon_Ti_Loucks_2020Command}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
+                    <MenuItem Header="{Binding [ZirconZrGTM],Source={x:Static lg:LanguageService.Instance}}">
+                        <!--饱和温度-->
+                        <MenuItem Header="{Binding [CalTarget1],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding Zircon_Zr_Saturation_Watson_and_Harrison_1983Command}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
+                        <MenuItem Header="{Binding [CalTarget2],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding Zircon_Zr_Principal_Watson_and_Harrison_1983Command}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
                     </MenuItem>
                 </MenuItem>
-                <MenuItem Header="闪锌矿">
-                    <MenuItem Header="GGIMFis 温度计" Command="{Binding Sphalerite_GGIMFis_Frenzel_2016Command}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
-                    <MenuItem Header="ΔFeS 温度计" Command="{Binding Sphalerite_FeS_Scott_and_Barne_1971Command}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
+                <!--闪锌矿-->
+                <MenuItem Header="{Binding [Sphalerite],Source={x:Static lg:LanguageService.Instance}}">
+                    <MenuItem Header="{Binding [SphaleriteGGIMFisGTM],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding Sphalerite_GGIMFis_Frenzel_2016Command}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
+                    <MenuItem Header="{Binding [SphaleriteGTM],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding Sphalerite_FeS_Scott_and_Barne_1971Command}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
                 </MenuItem>
-                <MenuItem Header="石英">
-                    <MenuItem Header="TitaniQ 温度计" Command="{Binding Quatz_Ti_Wark_and_Watson_2006Command}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
+                <!--石英-->
+                <MenuItem Header="{Binding [Quartz],Source={x:Static lg:LanguageService.Instance}}">
+                    <MenuItem Header="{Binding [QuartzGTM],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding Quatz_Ti_Wark_and_Watson_2006Command}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
                 </MenuItem>
-                <MenuItem Header="黑云母">
-                    <MenuItem Header="Ti 温度计" Command="{Binding Biotite_Ti_Henry_2005Command}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
+                <!--黑云母-->
+                <MenuItem Header="{Binding [Biotite],Source={x:Static lg:LanguageService.Instance}}">
+                    <MenuItem Header="{Binding [BiotiteGTM],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding Biotite_Ti_Henry_2005Command}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
                 </MenuItem>
-                <MenuItem Header="角闪石">
-                    <MenuItem Header="Si 温度计" Command="{Binding Amphibole_Si_Ridolfi_2010Command}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
+                <!--角闪石-->
+                <MenuItem Header="{Binding [Amphibole],Source={x:Static lg:LanguageService.Instance}}">
+                    <MenuItem Header="{Binding [AmphiboleGTM],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding Amphibole_Si_Ridolfi_2010Command}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
                 </MenuItem>
-                <MenuItem Header="绿泥石">
-                    <MenuItem Header="Al4 温度计" Command="{Binding Chlorite_Al4_Jowett_1991Command}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
+                <!--绿泥石-->
+                <MenuItem Header="{Binding [Chlorite],Source={x:Static lg:LanguageService.Instance}}">
+                    <MenuItem Header="{Binding [ChloriteGTM],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding Chlorite_Al4_Jowett_1991Command}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
                 </MenuItem>
-                <MenuItem Header="毒砂">
-                    <MenuItem Header="温度计" Command="{Binding Arsenopyrite_Assemblage_Kretschmar_and_Scott_1976Command}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
+                <!--毒砂-->
+                <MenuItem Header="{Binding [Arsenopyrite],Source={x:Static lg:LanguageService.Instance}}">
+                    <MenuItem Header="{Binding [ArsenopyriteGTM],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding Arsenopyrite_Assemblage_Kretschmar_and_Scott_1976Command}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
                 </MenuItem>
             </MenuItem>
             <!--<MenuItem Header="_帮助(H)">

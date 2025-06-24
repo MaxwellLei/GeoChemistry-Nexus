@@ -627,31 +627,31 @@
     <value>矿物组合</value>
   </data>
   <data name="AmphiboleGTM" xml:space="preserve">
-    <value>角闪石温度计</value>
+    <value>Si 温度计</value>
   </data>
   <data name="BiotiteGTM" xml:space="preserve">
-    <value>黑云母温度计</value>
+    <value>Ti 温度计</value>
   </data>
   <data name="ChloriteGTM" xml:space="preserve">
-    <value>绿泥石温度计</value>
+    <value>Al4 温度计</value>
   </data>
   <data name="ArsenopyriteGTM" xml:space="preserve">
     <value>毒砂温度计</value>
   </data>
   <data name="QuartzGTM" xml:space="preserve">
-    <value>石英 Ti 温度计</value>
+    <value>TitaniQ  温度计</value>
   </data>
   <data name="SphaleriteGTM" xml:space="preserve">
-    <value>闪锌矿 FeS 温度计</value>
+    <value>FeS 温度计</value>
   </data>
   <data name="SphaleriteGGIMFisGTM" xml:space="preserve">
-    <value>闪锌矿 GGIMFis 温度计</value>
+    <value>GGIMFis 温度计</value>
   </data>
   <data name="ZirconTiGTM" xml:space="preserve">
-    <value>锆石 Ti 温度计</value>
+    <value>Ti 温度计</value>
   </data>
   <data name="ZirconZrGTM" xml:space="preserve">
-    <value>锆石 Zr 温度计</value>
+    <value>Zr 温度计</value>
   </data>
   <data name="Step1" xml:space="preserve">
     <value>导入 / 填入数据</value>
@@ -768,7 +768,7 @@
     <value>📌计算支持:</value>
   </data>
   <data name="Support2" xml:space="preserve">
-    <value>📌图表支持: </value>
+    <value>📌图表支持:</value>
   </data>
   <data name="Support5" xml:space="preserve">
     <value>📌工具支持:</value>
@@ -787,5 +787,261 @@
   </data>
   <data name="Info1" xml:space="preserve">
     <value>请前往官网查看，该功能开发中....</value>
+  </data>
+  <data name="import_template" xml:space="preserve">
+    <value>导入模板</value>
+  </data>
+  <data name="new_template" xml:space="preserve">
+    <value>新建模板</value>
+  </data>
+  <data name="template_library" xml:space="preserve">
+    <value>模板库</value>
+  </data>
+  <data name="return_to_template_library" xml:space="preserve">
+    <value>返回模板库</value>
+  </data>
+  <data name="Data" xml:space="preserve">
+    <value>数据</value>
+  </data>
+  <data name="import_data" xml:space="preserve">
+    <value>导入数据</value>
+  </data>
+  <data name="clear_data" xml:space="preserve">
+    <value>清除数据</value>
+  </data>
+  <data name="view" xml:space="preserve">
+    <value>视图</value>
+  </data>
+  <data name="reset_view" xml:space="preserve">
+    <value>复位视图</value>
+  </data>
+  <data name="coordinate_positioning" xml:space="preserve">
+    <value>坐标定位</value>
+  </data>
+  <data name="select" xml:space="preserve">
+    <value>选择</value>
+  </data>
+  <data name="deselect" xml:space="preserve">
+    <value>取消选中</value>
+  </data>
+  <data name="export" xml:space="preserve">
+    <value>导出</value>
+  </data>
+  <data name="export_image" xml:space="preserve">
+    <value>导出图片</value>
+  </data>
+  <data name="png_format" xml:space="preserve">
+    <value>PNG 格式</value>
+  </data>
+  <data name="bmp_format" xml:space="preserve">
+    <value>BMP 格式</value>
+  </data>
+  <data name="jpg_format" xml:space="preserve">
+    <value>JPG 格式</value>
+  </data>
+  <data name="webp_format" xml:space="preserve">
+    <value>WebP 格式</value>
+  </data>
+  <data name="svg_format" xml:space="preserve">
+    <value>SVG 格式</value>
+  </data>
+  <data name="legend_settings" xml:space="preserve">
+    <value>图例设置</value>
+  </data>
+  <data name="grid_settings" xml:space="preserve">
+    <value>网格设置</value>
+  </data>
+  <data name="script_settings" xml:space="preserve">
+    <value>脚本设置</value>
+  </data>
+  <data name="plot_settings" xml:space="preserve">
+    <value>绘图设置</value>
+  </data>
+  <data name="all_templates" xml:space="preserve">
+    <value>全部模板</value>
+  </data>
+  <data name="uncategorized" xml:space="preserve">
+    <value>未分类</value>
+  </data>
+  <data name="disallow_modify_data_point_position" xml:space="preserve">
+    <value>不允许修改数据点位置</value>
+  </data>
+  <data name="load_valid_template_with_script" xml:space="preserve">
+    <value>请先加载有效的图表模板，模板中必须包含计算脚本配置</value>
+  </data>
+  <data name="incomplete_script_config" xml:space="preserve">
+    <value>模板中的脚本配置不完整，请检查RequiredDataSeries和ScriptBody</value>
+  </data>
+  <data name="select_data_file" xml:space="preserve">
+    <value>请选择数据文件</value>
+  </data>
+  <data name="data_file_filter" xml:space="preserve">
+    <value>数据文件 (*.csv, *.xls, *.xlsx)|*.csv;*.xls;*.xlsx</value>
+  </data>
+  <data name="no_valid_workbook_or_data_found" xml:space="preserve">
+    <value>无法在文件中找到任何有效的工作簿或数据</value>
+  </data>
+  <data name="read_file_failed" xml:space="preserve">
+    <value>读取文件失败</value>
+  </data>
+  <data name="script_config_error_required_data_series" xml:space="preserve">
+    <value>脚本配置错误：RequiredDataSeries至少需要包含类别列和一个数据列</value>
+  </data>
+  <data name="excel_missing_required_columns" xml:space="preserve">
+    <value>Excel文件缺少以下必需的列</value>
+  </data>
+  <data name="data_point" xml:space="preserve">
+    <value>数据点</value>
+  </data>
+  <data name="failed_to_parse_category_group" xml:space="preserve">
+    <value>未能从文件中解析出有效的类别分组。请检查类别列数据</value>
+  </data>
+  <data name="error_calculating_data_point_coordinates" xml:space="preserve">
+    <value>计算数据点坐标时出错:</value>
+  </data>
+  <data name="data_import_successful" xml:space="preserve">
+    <value>数据导入成功</value>
+  </data>
+  <data name="script_execution_failed" xml:space="preserve">
+    <value>脚本执行失败:</value>
+  </data>
+  <data name="axes" xml:space="preserve">
+    <value>坐标轴</value>
+  </data>
+  <data name="point" xml:space="preserve">
+    <value>点</value>
+  </data>
+  <data name="line" xml:space="preserve">
+    <value>线</value>
+  </data>
+  <data name="text" xml:space="preserve">
+    <value>文本</value>
+  </data>
+  <data name="annotation" xml:space="preserve">
+    <value>注释</value>
+  </data>
+  <data name="image_copied_to_clipboard" xml:space="preserve">
+    <value>图像已成功复制到剪贴板</value>
+  </data>
+  <data name="copy_failed" xml:space="preserve">
+    <value>复制失败:</value>
+  </data>
+  <data name="confirm_clear_data_points" xml:space="preserve">
+    <value>是否清除数据点？</value>
+  </data>
+  <data name="no_imported_data_to_clear" xml:space="preserve">
+    <value>当前没有可清除的导入数据</value>
+  </data>
+  <data name="all_imported_data_cleared" xml:space="preserve">
+    <value>已清除所有导入的数据</value>
+  </data>
+  <data name="left_y_axis" xml:space="preserve">
+    <value>左 Y 轴</value>
+  </data>
+  <data name="right_y_axis" xml:space="preserve">
+    <value>右 Y 轴</value>
+  </data>
+  <data name="bottom_x_axis" xml:space="preserve">
+    <value>下 X 轴</value>
+  </data>
+  <data name="top_x_axis" xml:space="preserve">
+    <value>上 X 轴</value>
+  </data>
+  <data name="unknown_axis" xml:space="preserve">
+    <value>未知坐标轴</value>
+  </data>
+  <data name="content_and_position" xml:space="preserve">
+    <value>内容与位置</value>
+    <comment>属性面板-文本对象</comment>
+  </data>
+  <data name="script_definition" xml:space="preserve">
+    <value>脚本定义</value>
+  </data>
+  <data name="script_language" xml:space="preserve">
+    <value>脚本语言:</value>
+  </data>
+  <data name="data_series" xml:space="preserve">
+    <value>数据系列</value>
+  </data>
+  <data name="multiple_data_series_hint" xml:space="preserve">
+    <value>多个数据系列请用逗号分隔，例如：SiO2,TiO2</value>
+  </data>
+  <data name="script_content" xml:space="preserve">
+    <value>脚本内容:</value>
+  </data>
+  <data name="ready" xml:space="preserve">
+    <value>就绪</value>
+  </data>
+  <data name="validate_syntax" xml:space="preserve">
+    <value>验证语法</value>
+  </data>
+  <data name="row" xml:space="preserve">
+    <value>行:</value>
+  </data>
+  <data name="column" xml:space="preserve">
+    <value>列:</value>
+  </data>
+  <data name="code_formatted" xml:space="preserve">
+    <value>代码已格式化</value>
+  </data>
+  <data name="format_failed" xml:space="preserve">
+    <value>格式化失败:</value>
+  </data>
+  <data name="script_content_is_empty" xml:space="preserve">
+    <value>脚本内容为空</value>
+  </data>
+  <data name="validation_failed" xml:space="preserve">
+    <value>验证失败:</value>
+  </data>
+  <data name="data_parameters_are_empty" xml:space="preserve">
+    <value>数据参数为空</value>
+  </data>
+  <data name="invalid_data_parameter_format" xml:space="preserve">
+    <value>数据参数格式不正确</value>
+  </data>
+  <data name="parameter_format_correct" xml:space="preserve">
+    <value>参数格式正确</value>
+  </data>
+  <data name="syntax_validation_passed" xml:space="preserve">
+    <value>语法验证通过</value>
+  </data>
+  <data name="error" xml:space="preserve">
+    <value>错误:</value>
+  </data>
+  <data name="new" xml:space="preserve">
+    <value>_新建(N)</value>
+  </data>
+  <data name="open" xml:space="preserve">
+    <value>_打开(O)</value>
+  </data>
+  <data name="export_current_worksheet" xml:space="preserve">
+    <value>_导出当前工作表(R)</value>
+  </data>
+  <data name="geological_thermometer" xml:space="preserve">
+    <value>_地质温度计(T)</value>
+  </data>
+  <data name="confirm_new_worksheet" xml:space="preserve">
+    <value>是否新建工作表？</value>
+  </data>
+  <data name="error_creating_table" xml:space="preserve">
+    <value>创建表格时发生错误:</value>
+  </data>
+  <data name="file_import_successful" xml:space="preserve">
+    <value>文件导入成功</value>
+  </data>
+  <data name="cancel_import" xml:space="preserve">
+    <value>取消导入</value>
+  </data>
+  <data name="export_successful" xml:space="preserve">
+    <value>导出成功</value>
+  </data>
+  <data name="export_failed" xml:space="preserve">
+    <value>导出失败:</value>
+  </data>
+  <data name="create_worksheet_failed" xml:space="preserve">
+    <value>创建工作表失败:</value>
+  </data>
+  <data name="row_1_column_1" xml:space="preserve">
+    <value>行: 1, 列: 1</value>
   </data>
 </root>

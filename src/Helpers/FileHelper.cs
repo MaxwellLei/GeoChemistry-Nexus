@@ -527,4 +527,66 @@ public class FileHelper
 
         return Path.GetFileName(filePath);
     }
+
+
+    /// <summary>
+    /// 查找文件夹返回文件，查找不到则第一个同类型文件
+    /// </summary>
+    /// <param name="folderPath">查找文件的文件夹</param>
+    /// <param name="fileName">文件名称</param>
+    /// <param name="fileExtension">文件后缀</param>
+    /// <param name="includeSubfolders">子文件查找</param>
+    /// <returns></returns>
+    /// <exception cref="UnauthorizedAccessException"></exception>
+    /// <exception cref="Exception"></exception>
+    public static string FindFileOrGetFirstWithExtension(string folderPath, string fileName, string fileExtension, bool includeSubfolders = false)
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(folderPath) || string.IsNullOrWhiteSpace(fileName) || string.IsNullOrWhiteSpace(fileExtension))
+            {
+                throw new ArgumentException("参数不能为空或null");
+            }
+
+            if (!Directory.Exists(folderPath))
+            {
+                throw new DirectoryNotFoundException($"文件夹不存在: {folderPath}");
+            }
+
+            if (!fileExtension.StartsWith("."))
+            {
+                fileExtension = "." + fileExtension;
+            }
+
+            // 设置搜索选项
+            SearchOption searchOption = includeSubfolders ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+
+            // 构建完整的目标文件路径
+            string targetFilePath = Path.Combine(folderPath, fileName + fileExtension);
+
+            // 检查目标文件是否存在
+            if (File.Exists(targetFilePath))
+            {
+                return targetFilePath;
+            }
+
+            // 如果目标文件不存在，查找第一个具有相同扩展名的文件
+            string[] filesWithExtension = Directory.GetFiles(folderPath, "*" + fileExtension, searchOption);
+
+            if (filesWithExtension.Length > 0)
+            {
+                return filesWithExtension[0];
+            }
+
+            return null;
+        }
+        catch (UnauthorizedAccessException)
+        {
+            throw new UnauthorizedAccessException($"没有权限访问文件夹: {folderPath}");
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"搜索文件时发生错误: {ex.Message}");
+        }
+    }
 }

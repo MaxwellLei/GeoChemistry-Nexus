@@ -183,7 +183,10 @@ namespace GeoChemistryNexus.ViewModels
         {
             try
             {
-                bool isConfirmed = await MessageHelper.ShowAsyncDialog("是否新建工作表？");
+                bool isConfirmed = await MessageHelper.ShowAsyncDialog(
+                    LanguageService.Instance["confirm_new_worksheet"],
+                    LanguageService.Instance["Cancel"],
+                    LanguageService.Instance["Confirm"]);
                 if (isConfirmed)
                 {
                     // 处理重名工作表
@@ -268,7 +271,7 @@ namespace GeoChemistryNexus.ViewModels
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"创建表格时发生错误: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine(LanguageService.Instance["error_creating_table"] + ex.Message);
             }
 
         }
@@ -283,8 +286,8 @@ namespace GeoChemistryNexus.ViewModels
         public void OpenExcelFile(ReoGridControl reoGridControl)
         {
             string filePath = FileHelper.GetFilePath("CSV文件|*.csv");
-            if (filePath != null) { reoGridControl.Load(filePath); MessageHelper.Success("文件导入成功"); }
-            MessageHelper.Info("取消导入");
+            if (filePath != null) { reoGridControl.Load(filePath); MessageHelper.Success(LanguageService.Instance["file_import_successful"]); }
+            MessageHelper.Info(LanguageService.Instance["cancel_import"]);
         }
 
 
@@ -331,11 +334,11 @@ namespace GeoChemistryNexus.ViewModels
                 // 写入文件
                 System.IO.File.WriteAllText(tempFilePath, csvBuilder.ToString(), new UTF8Encoding(true));
 
-                MessageHelper.Success("导出成功！");
+                MessageHelper.Success(LanguageService.Instance["export_successful"]);
             }
             catch (Exception ex)
             {
-                MessageHelper.Error($"导出失败: {ex.Message}");
+                MessageHelper.Error(LanguageService.Instance["export_failed"] + ex.Message);
             }
         }
 
@@ -364,7 +367,7 @@ namespace GeoChemistryNexus.ViewModels
             }
             catch (Exception ex)
             {
-                throw new Exception($"创建工作表失败: {ex.Message}", ex);
+                throw new Exception(LanguageService.Instance["create_worksheet_failed"] + ex.Message);
             }
         }
 

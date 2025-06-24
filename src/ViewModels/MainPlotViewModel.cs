@@ -1,2619 +1,1787 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
 using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Models;
 using HandyControl.Controls;
-using HandyControl.Tools.Extension;
 using Jint;
-using Jint.Runtime;
-using Microsoft.Win32;
 using OfficeOpenXml;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
+using Ookii.Dialogs.Wpf;
 using ScottPlot;
-using ScottPlot.AxisPanels;
 using ScottPlot.Colormaps;
-using ScottPlot.Grids;
 using ScottPlot.Plottables;
-using ScottPlot.TickGenerators;
 using ScottPlot.WPF;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
-using System.Reflection;
-using System.Reflection.Metadata;
 using System.Text;
-using System.Text.RegularExpressions;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.TextFormatting;
-using System.Windows.Shapes;
-using static OfficeOpenXml.ExcelErrorValue;
-using static SkiaSharp.HarfBuzz.SKShaper;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using System.Windows.Media.Imaging;
+using System.Xml.Serialization;
 
 namespace GeoChemistryNexus.ViewModels
 {
     public partial class MainPlotViewModel : ObservableObject
     {
-        // 注册绘图模板列表
-        private PlotTemplateRegistry _registry;
 
-        // 图层选中列表
-        public IList<PlotItemModel> _previousSelectedItems;
+        // 属性编辑器属性对象
+        [ObservableProperty]
+        private object _propertyGridModel;
 
-        // 当前选中模板
-        public static TreeNode _previousSelectedNode;
+        // 模板列表绑定
+        [ObservableProperty]
+        private GraphMapTemplateNode _graphMapTemplateNode;
 
-        // 添加一个标志来防止递归更新属性
-        private bool _isUpdatingLineWidth = false;
+        // 绑定到图层列表的数据源
+        [ObservableProperty]
+        private ObservableCollection<LayerItemViewModel> _layerTree = new ObservableCollection<LayerItemViewModel>();
 
-        // 映射字典
-        Dictionary<string, string> translations;
+        // 当前加载的、完整的模板数据
+        [ObservableProperty]
+        private GraphMapTemplate _currentTemplate;
 
         // 绘图控件
         private WpfPlot WpfPlot1;
 
-        // 描述控件
-        private RichTextBox _richTextBox;
+        // 说明控件
+        private System.Windows.Controls.RichTextBox _richTextBox;
 
-        // 定位轴显示
-        public static Crosshair crosshair;
-
-        // 选中对象提示
-        public static ScottPlot.Plottables.Marker myHighlightMarker; // 高亮标记
-
-        // 选中对象信息
-        public static BaseInfo _selectedBaseInfo;
-
-        // 绘图模板列表
-        [ObservableProperty]
-        private TreeNode _rootTreeNode;
-
-        // 边界列表
-        [ObservableProperty]
-        public ObservableCollection<PlotItemModel> _basePlotItems;
-
-        // 注释列表
-        [ObservableProperty]
-        private ObservableCollection<PlotItemModel> _baseTextItems;
-
-        // 坐标轴列表
-        [ObservableProperty]
-        private ObservableCollection<PlotItemModel> _axesList;
-
-        //数据列表
-        [ObservableProperty]
-        private ObservableCollection<PlotItemModel> _baseDataItems;
-
-        // 切换属性对象
-        [ObservableProperty]
-        private int _switchLayer;
-
-        // 自定义底图
-        [ObservableProperty]
-        public BasePlotConfig _basePlotConfigObject;
-
-        // 是否是编辑模式
-        [ObservableProperty]
-        private bool isEditMode = false;
-
-        // 是否是绘图模式
-        [ObservableProperty]
-        private bool isPlotMode = true;
-
-        // 需要参数内容
-        [ObservableProperty]
-        private string _needParamContent;
-
-        // Js 脚本内容
-        [ObservableProperty]
-        private string _jsScriptContent;
-
-        // 新建底图名称
-        [ObservableProperty]
-        private string _newBasePlotName;
-
-        // 底图类别
-        [ObservableProperty]
-        private string _basePlotType;
-
-        // 底图对应的语言
-        [ObservableProperty]
-        private string _basePlotLanguage;
-
-
-        /// <summary>
-        /// ========================================公共属性
-        /// </summary>
-
-        // 绘图对象是否可见
-        [ObservableProperty]
-        private bool _plotVisible;
-
-        // 绘图对象 宽度-大小-轴标题大小
-        [ObservableProperty]
-        private float _plotWidth;
-
-        // 线条/字体类型
-        [ObservableProperty]
-        private int _plotType;
-
-        // 绘图对象绘制颜色-坐标轴标题颜色
-        [ObservableProperty]
-        private ScottPlot.Color _plotColor;
-
-        // 当前文本-标题字体
-        [ObservableProperty]
-        private int _plotTextFontName;
-
-        // 文本字体-轴标题列表
-        [ObservableProperty]
-        private List<string> _plotTextFontNames;
-
-        // 当前文本-轴标题内容
-        [ObservableProperty]
-        private string _plotTextContent;
-
-
-        /// <summary>
-        /// ========================================坐标轴属性
-        /// </summary>
-
-        // 显示刻度
-        [ObservableProperty]
-        private bool _reverseAxis;
-
-        // 显示次刻度
-        [ObservableProperty]
-        private bool _SecondTickShow;
-
-        // 刻度字体
-        [ObservableProperty]
-        private int _axisTickFontName;
-
-        // 刻度字体大小
-        [ObservableProperty]
-        private float _axisTickFontSize;
-
-        // 主刻度间距
-        [ObservableProperty]
-        private double _axisTickSpan;
-
-        // 刻度上限
+        // 当前模式（模板浏览 或 绘图模式）
         [ObservableProperty]
-        private double _axisTickUpLimit;
+        private bool _isTemplateMode = true; // 默认为模板浏览模式
 
-        // 刻度下限
         [ObservableProperty]
-        private double _axisTickDownLimit;
+        private bool _isPlotMode = false; // 绘图模式
 
-        // 刻度颜色
+        // 卡片展示用的模板集合
         [ObservableProperty]
-        private ScottPlot.Color _axisPlotColor;
+        private ObservableCollection<TemplateCardViewModel> _templateCards = new();
 
-        /// <summary>
-        /// ========================================图例设置
-        /// </summary>
-
-        // 是否显示图例
-        [ObservableProperty]
-        private bool _showLegends;
-
-        // 图例位置
-        [ObservableProperty]
-        private int _legendsLocation;
-
-        // 图例方向
-        [ObservableProperty]
-        private int _legendsO;
-
-        // 图例字体
-        [ObservableProperty]
-        private int _legendsFonts;
-
-        // 图例字体大小
-        [ObservableProperty]
-        private float _legendsFontSize;
-
-        // 图例字体颜色
-        [ObservableProperty]
-        private ScottPlot.Color _legendsFontColor;
-
-        /// <summary>
-        /// ========================================绘图设置
-        /// </summary>
-
-        // 绘图标题
-        [ObservableProperty]
-        private string _axisTitle;
-
-        // 标题字体大小
-        [ObservableProperty]
-        private float _axisTitleFontSize;
-
-        // 标题字体
-        [ObservableProperty]
-        private int _axisTitleFontName;
-
-        // 轴标题颜色
-        [ObservableProperty]
-        private ScottPlot.Color _axisTitleColor;
-
-        // 坐标x轴标题
-        [ObservableProperty]
-        private string _xAxisTitle;
-
-        // 坐标y轴标题
-        [ObservableProperty]
-        private string _yAxisTitle;
-
-        // 轴标题字体大小
-        [ObservableProperty]
-        private float _axisXYTitleFontSize;
-
-        // 轴标题字体
-        [ObservableProperty]
-        private int _axisXYTitleFontName;
-
-        // 轴标题颜色
-        [ObservableProperty]
-        private ScottPlot.Color _axisXYTitleColor;
-
-        /// <summary>
-        /// ========================================背景设置
-        /// </summary>
-
-        // 显示主网格
-        [ObservableProperty]
-        private bool _firstGridShow;
-
-        // 主网格颜色
-        [ObservableProperty]
-        private ScottPlot.Color _firstGridColor;
-
-        // 主网格宽度
-        [ObservableProperty]
-        private float _firstGridWidth;
-
-        // 显示次网格
-        [ObservableProperty]
-        private bool _secondGridShow;
-
-        // 次网格颜色
-        [ObservableProperty]
-        private ScottPlot.Color _secondGridColor;
-
-        // 次网格宽度
-        [ObservableProperty]
-        private float _secondGridWidth;
-
-        // 反转填充颜色
-        [ObservableProperty]
-        private bool _swichtFillColor = false;
-
-        // 填充区域颜色1
-        [ObservableProperty]
-        private ScottPlot.Color _gridFillColor1;
-
-        // 填充区域颜色2
-        [ObservableProperty]
-        private ScottPlot.Color _gridFillColor2;
-
-        /// <summary>
-        /// =========================================这是分隔符
-        /// </summary>
-        /// 
-
-        // 是否显示边界属性
-        [ObservableProperty]
-        private bool _plotLineShow = false;
-
-        // 是否显示文本属性
+        // 当前显示的模板路径（用于面包屑导航）
         [ObservableProperty]
-        private bool _plotTextShow = false;
+        private string _currentTemplatePath = "";
 
-        // 是否显示数据点属性
+        // 面包屑导航
         [ObservableProperty]
-        private bool _plotDataShow = false;
+        private ObservableCollection<BreadcrumbItem> _breadcrumbs = new();
 
-        // 是否显示坐标轴属性
+        // 脚本属性面板显示
         [ObservableProperty]
-        private bool _plotAxisShow = false;
+        private bool _scriptsPropertyGrid = false;
 
-        // 是否显示绘图设置属性
+        // 脚本对象
         [ObservableProperty]
-        private bool _plotMainShow = false;
+        private ScriptDefinition _currentScript;
 
-        // 是否显示图例设置属性
-        [ObservableProperty]
-        private bool _plotLegendShow = false;
+        // 十字轴
+        private Crosshair CrosshairPlot { get; set; }
 
-        // 是否显示脚本设置属性
+        // 十字轴显示
         [ObservableProperty]
-        private bool _plotScriptShow = false;
+        private bool _isCrosshairVisible = true;
 
-        // 是否显示弹窗
-        [ObservableProperty]
-        private bool _plotPopupShow = false;
+        // 追踪当前在TreeView中被选中的图层ViewModel
+        private LayerItemViewModel _selectedLayer;
 
-        // 自定义底图
-        /// <summary>
-        /// =========================================自定义底图
-        /// </summary>
-        /// 
+        // 空属性编辑对象占位
+        private object nullObject = new object();
 
-        // 起始点1
+        // 选项卡index
         [ObservableProperty]
-        private double _x1;
+        private int tabIndex = 0;
 
-        // 起始点1
-        [ObservableProperty]
-        private double _y1;
 
-        // 起始点2
-        [ObservableProperty]
-        private double _x2;
+        //  ==============================
+        //              测试区域
+        //  ==============================
 
-        // 起始点2
-        [ObservableProperty]
-        private double _y2;
 
 
         // 初始化
-        public MainPlotViewModel(WpfPlot wpfPlot, RichTextBox richTextBox)
+        public MainPlotViewModel(WpfPlot wpfPlot, System.Windows.Controls.RichTextBox richTextBox)
         {
-            WpfPlot1 = wpfPlot;     // 获取绘图控件
-            _richTextBox = richTextBox;     // 获取内容控件
-            BasePlotItems = new ObservableCollection<PlotItemModel>();      // 初始化边界列表
-            BaseTextItems = new ObservableCollection<PlotItemModel>();      // 初始化注释列表
-            BaseDataItems = new ObservableCollection<PlotItemModel>();      // 初始化数据列表
-            _axesList = new();  // 初始化坐标轴列表
-            _previousSelectedItems = new List<PlotItemModel>();     // 初始化图层选中对象
-            _plotTextFontNames = new List<string>();        // 字体集合
+            // 获取模板列表
+            GraphMapTemplateNode = GraphMapTemplateParser.Parse(
+                JsonHelper.ReadJsonFile(
+                Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "GraphMapList.json")), LanguageService.CurrentLanguage);
 
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;     // 初始化 excel 相关协议
+            WpfPlot1 = wpfPlot;      // 获取绘图控件
+            _richTextBox = richTextBox;      // 富文本框
 
-            _registry = new PlotTemplateRegistry();
-            RegisterPlotTemplates();    // 注册绘图模板
-            
+            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;      // 初始化 excel 相关协议
 
-            // 获取系统所有字体
-            PlotTextFontNames = System.Drawing.FontFamily.Families
-                .Select(f => f.Name)
-                .OrderBy(name => name)
-                .ToList();
+            InitializeBreadcrumbs(); // 初始化面包屑
+            LoadAllTemplateCards();  // 加载所有模板卡片
+
+            // 初始化十字轴并设置样式
+            CrosshairPlot = WpfPlot1.Plot.Add.Crosshair(0, 0);
+            CrosshairPlot.IsVisible = true;
+            CrosshairPlot.TextColor = ScottPlot.Colors.White;
+            CrosshairPlot.TextBackgroundColor = CrosshairPlot.HorizontalLine.Color;
+
+            // 订阅绘图控件的鼠标事件
+            WpfPlot1.MouseEnter += WpfPlot1_MouseEnter;
+            WpfPlot1.MouseLeave += WpfPlot1_MouseLeave;
+            WpfPlot1.MouseMove += WpfPlot1_MouseMove;
         }
 
-        // 注册绘图模板
-        public void RegisterPlotTemplates(bool editList = false)
+        // 刷新模板列表
+        public void InitTemplate()
         {
-            string lgFolder = "zh-CN";
-            if (ConfigHelper.GetConfig("language") == "1")
-            {
-                lgFolder = "en-US";
-            }
-
-            // 加载底图列表
-            var listPath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData","Default", lgFolder, "PlotList.json");
-            if (editList)
-            {
-                listPath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "PlotListCustom.json");
-            }
-            
-
-            // todo: 这里应该判断一下底图列表是否存在，不存在就提示有问题，然后检查是否存在底图文件如果存在可以重建，不存在就警告
-
-            // 反序列化底图列表
-            PlotListConfig plotListConfigs = PlotLoader.LoadBasePlotList(listPath);
-
-            // 如果不是空列表
-            if(plotListConfigs.listNodeConfigs.Count != 0)
-            {
-                RootTreeNode = _registry.GenerateListFromConfig(plotListConfigs);
-            }
-            else
-            {
-                RootTreeNode = new TreeNode();
-            }
-
-            //var tempTitle1 = I18n.GetString("IgneousRock");      // 岩浆岩
-            //var tempTitle12 = I18n.GetString("TectonicSetting");      // 构造环境
-            //var tempTitle13 = I18n.GetString("Basalt");      // 玄武岩
-            //var tempTitle2 = I18n.GetString("RockClassification");      // 岩石分类
-            //var tempTitle31 = I18n.GetString("GTMP");      // 温度绘图
-
-            //// 岩浆岩-构造环境-玄武岩
-            //_registry.RegisterTemplate(new[] { tempTitle1, tempTitle12, tempTitle13, "Pearce and Gale (1977)" }, "Ti-Zr-Y",
-            //    NormalPlotTemplate.Pearce_and_Gale_1977, NormalPlotMethod.Vermessch_2006_PlotAsync,
-            //    "Vermessch_2006.rtf", new string[] { "Group", "Ti", "Zr", "Y" });
-            //_registry.RegisterTemplate(new[] { tempTitle1, tempTitle12, tempTitle13, "Vermeesch (2006)" }, "Major Elements (-Fe)",
-            //    NormalPlotTemplate.Vermessch_2006, NormalPlotMethod.Vermessch_2006_PlotAsync,
-            //    "Vermessch_2006.rtf", new string[] { "Group", "SiO2", "Al2O3", "TiO2", "CaO", "MgO", "MnO", "K2O", "Na2O" });
-            //_registry.RegisterTemplate(new[] { tempTitle1, tempTitle12, tempTitle13, "Vermeesch (2006)" }, "TiO2-Zr-Y-Sr",
-            //    NormalPlotTemplate.Vermessch_2006_b, NormalPlotMethod.Vermessch_2006_b_PlotAsync,
-            //    "Vermessch_2006_b.rtf", new string[] { "Group", "TiO2", "Zr", "Y", "Sr", });
-
-            ////_registry.RegisterTemplate(new[] { "岩浆岩", "构造环境", "玄武岩", "Vermeesch (2006)" }, "Ti-Y",
-            ////    NormalPlotTemplate.Vermessch_2006_c, NormalPlotMethod.Vermessch_2006_b_PlotAsync,
-            ////    "Vermessch_2006_c.rtf", new string[] { "Group", "TiO2", "Zr", "Y", "Sr", });
-
-            //_registry.RegisterTemplate(new[] { tempTitle1, tempTitle12, tempTitle13, "Saccani (2015)" }, "Th-Nb",
-            //    NormalPlotTemplate.Saccani_2015, NormalPlotMethod.Saccani_2015_PlotAsync,
-            //    "Saccani_2015.rtf", new string[] { "Group", "Th", "Nb" });
-            //_registry.RegisterTemplate(new[] { tempTitle1, tempTitle12, tempTitle13, "Saccani (2015)" }, "Yb-Dy",
-            //    NormalPlotTemplate.Saccani_2015_b, NormalPlotMethod.Saccani_2015_b_PlotAsync,
-            //    "Saccani_2015.rtf", new string[] { "Group", "Yb", "Dy" });
-            //_registry.RegisterTemplate(new[] { tempTitle1, tempTitle12, tempTitle13, "Saccani (2015)" }, "Ce-Dy-Yb",
-            //    NormalPlotTemplate.Saccani_2015_c, NormalPlotMethod.Saccani_2015_c_PlotAsync,
-            //    "Saccani_2015.rtf", new string[] { "Group", "Ce", "Yb", "Dy" });
-
-            //// 岩浆岩 - 岩石分类 - TAS
-            //_registry.RegisterTemplate(new[] { tempTitle1, tempTitle2 }, "TAS",
-            //    NormalPlotTemplate.TAS, NormalPlotMethod.TAS_PlotAsync,
-            //    "Saccani_2015.rtf", new string[] { "Group", "K2O", "Na2O", "SiO2" });
-
-            //// 其他 - 温度绘图 - 毒砂
-            //_registry.RegisterTemplate(new[] { I18n.GetString("Other"), tempTitle31 }, I18n.GetString("Arsenopyrite"),
-            //    NormalPlotTemplate.ArsenicT, NormalPlotMethod.TAS_PlotAsync,
-            //    "Saccani_2015.rtf", new string[] { "Group", "K2O", "Na2O", "SiO2" });
-            //RootTreeNode = _registry.GenerateTreeStructure();       // 注册模板列表
-
-
-            // 映射字典
-            translations = new Dictionary<string, string>
-            {
-                { "Left", LanguageService.Instance["PlotLeftAxies"]},
-                { "Bottom", LanguageService.Instance["PlotBottomAxies"]}
-            };
-
-            // 刷新图层列表
-            PopulatePlotItems((List<IPlottable>)WpfPlot1.Plot.GetPlottables());
+            // 获取模板列表
+            GraphMapTemplateNode = GraphMapTemplateParser.Parse(
+                JsonHelper.ReadJsonFile(
+                Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "GraphMapList.json")), LanguageService.CurrentLanguage);
         }
 
-        // 设置显示属性
-        private void SetTrue(string key)
+        /// <summary>
+        /// 当鼠标进入绘图区域时调用
+        /// </summary>
+        private void WpfPlot1_MouseEnter(object? sender, MouseEventArgs e)
         {
-            // 先全部重置为false
-            PlotLineShow = false;
-            PlotTextShow = false;
-            PlotDataShow = false;
-            PlotAxisShow = false;
-            PlotMainShow = false;
-            PlotLegendShow = false;
-            PlotScriptShow = false;
-            PlotPopupShow = false;
-
-            if (key == null) return;
-
-            // 根据key设置对应属性为true
-            switch (key)
+            // 仅当追踪模式开启时，才显示十字轴
+            if (IsCrosshairVisible)
             {
-                case "PlotLine": PlotLineShow = true; break;
-                case "Scatter": PlotDataShow = true; break;
-                case "Axis": PlotAxisShow = true; break;
-                case "Legend": PlotLegendShow = true; break;
-                case "Main": PlotMainShow = true; break;
-                case "Script": PlotScriptShow = true; break;
-                case "Popup": PlotPopupShow = true; break;
-                default: PlotTextShow = true; break;
-            }
-        }
-
-        // 查找字体
-        private int FindFontNameIndex(string currentFontName)
-        {
-            // 如果当前字体名为空，返回0或其他默认值
-            if (string.IsNullOrEmpty(currentFontName))
-                return 0;
-
-            // 在字体列表中查找当前字体的索引
-            int index = PlotTextFontNames.FindIndex(name =>
-                name.Equals(currentFontName, StringComparison.OrdinalIgnoreCase));
-
-            // 如果找不到，返回0或其他默认值
-            return index >= 0 ? index : 0;
-        }
-
-        // 去掉转义字符
-        private string RemoveNewlines(string str)
-        {
-            if (str == null)
-            {
-                throw new ArgumentNullException(nameof(str), "输入字符串不能为 null。");
-            }
-
-            return str.Replace("\n", string.Empty);
-        }
-
-        // 字典映射
-        private string Translate(string input, Dictionary<string, string> translations)
-        {
-
-            if (translations.TryGetValue(input, out string translation))
-            {
-                return translation;
-            }
-            else
-            {
-                return "映射Key未找到"; // "Translation not found"
-            }
-        }
-
-        // 刷新坐标轴列表
-        private void GetAxisList()
-        {
-            AxesList.Clear();
-            var testdata = WpfPlot1.Plot.Axes.GetAxes();
-
-
-            foreach (var axis in WpfPlot1.Plot.Axes.GetAxes())
-            {
-                var test = axis.Edge.ToString();
-                var test2 = Equals(axis.Edge.ToString(), "Top");
-                if (axis.Edge.ToString() != "Right" && axis.Edge.ToString() != "Top")
-                {
-                    AxesList.Add(new PlotItemModel()
-                    {
-                        Name = Translate(axis.Edge.ToString(), translations),
-                        ObjectType = "Axis",
-                        Plottable = axis,
-                    });
-                }
-            }
-        }
-
-        // 刷新图层列表
-        public void PopulatePlotItems(List<IPlottable> plottables)
-        {
-            if (plottables == null)
-                throw new ArgumentNullException(nameof(plottables));
-
-            BasePlotItems.Clear();
-            BaseTextItems.Clear();
-            BaseDataItems.Clear();
-            foreach (IPlottable plottable in plottables)
-            {
-                // 获取绘图名称
-                string plottableType = plottable.GetType().Name;
-                string displayName = "Error Type";
-
-                if (plottableType == "LinePlot")
-                {
-                    displayName = LanguageService.Instance["PlotBoder"];
-                    BasePlotItems.Add(new PlotItemModel
-                    {
-                        Plottable = plottable,
-                        Name = displayName,
-                        ObjectType = plottableType
-                    });
-                }
-                if (plottableType == "Text")
-                {
-                    // 添加注释对象
-                    displayName = RemoveNewlines(((ScottPlot.Plottables.Text)plottable).LabelText);
-                    BaseTextItems.Add(new PlotItemModel
-                    {
-                        Plottable = plottable,
-                        Name = displayName,
-                        ObjectType = plottableType
-                    });
-                }
-                if (plottableType == "Scatter")
-                {
-                    // 添加数据对象
-                    displayName = ((Scatter)plottable).LegendText;
-                    BaseDataItems.Add(new PlotItemModel
-                    {
-                        Plottable = plottable,
-                        Name = displayName,
-                        ObjectType = plottableType
-                    });
-                }
-
-
-
-            }
-        }
-
-        // 检查字符完全匹配
-        private int ContainsAllStrings(DataTable dataTable, string[] stringsToCheck)
-        {
-            if (dataTable == null || stringsToCheck == null || stringsToCheck.Length == 0)
-            {
-                return -1;      // 输入数据参数错误
-            }
-            // 检查 DataTable 是否有列
-            if (dataTable.Columns.Count == 0 || dataTable.Rows.Count == 0)
-            {
-                return 0;       // DataTable 内容为空
-            }
-            // 遍历要检查的字符串
-            foreach (var str in stringsToCheck)
-            {
-                bool found = false;
-                // 遍历所有列名
-                foreach (DataColumn column in dataTable.Columns)
-                {
-                    // 检查当前列名是否完全匹配目标字符串（区分大小写）
-                    if (column.ColumnName == str)
-                    {
-                        found = true;
-                        break;
-                    }
-                }
-                // 如果当前字符串没有在列名中找到，返回 false
-                if (!found)
-                {
-                    return -2;      // 匹配失败
-                }
-            }
-            // 所有字符串都完全匹配
-            return 1;
-        }
-
-        // 当进入编辑模式
-        partial void OnIsEditModeChanged(bool value)
-        {
-            Refresh(true,true);
-        }
-
-        // 改变 选择图层 内容
-        partial void OnSwitchLayerChanged(int value)
-        {
-            // 取消属性显示
-            LayersSelection(null);
-            // 取消属性面板展示
-            SetTrue(null);
-            // 刷新图层列表
-            PopulatePlotItems((List<IPlottable>)WpfPlot1.Plot.GetPlottables());
-            // 刷新坐标轴列表
-            GetAxisList();
-        }
-
-        // 改变 Text 文本内容
-        partial void OnPlotTextContentChanged(string value)
-        {
-            // 如果是在更新属性值，则不执行更新_plotLineType
-            if (_isUpdatingLineWidth)
-                return;
-
-            // 更新当前选中图层的线宽
-            if (_previousSelectedItems != null && _previousSelectedItems.Any())
-            {
-                foreach (var item in _previousSelectedItems)
-                {
-                    if (item.ObjectType == "Text")
-                    {
-                        var text = (ScottPlot.Plottables.Text)item.Plottable;
-                        text.LabelText = value;
-                    }
-                    else if (item.ObjectType == "Axis")
-                    {
-                        var tempAxis = (IAxis)item.Plottable;
-                        tempAxis.Label.Text = value;
-                    }
-                }
-                // 刷新图形
-                WpfPlot1.Refresh();
-            }
-        }
-
-        // 改变 Text 文本字体
-        partial void OnPlotTextFontNameChanged(int value)
-        {
-            // 如果是在更新属性值，则不执行更新_plotLineType
-            if (_isUpdatingLineWidth)
-                return;
-
-            // 更新当前选中图层的线宽
-            if (_previousSelectedItems != null && _previousSelectedItems.Any())
-            {
-                foreach (var item in _previousSelectedItems)
-                {
-                    if (item.ObjectType == "Text")
-                    {
-                        var text = (ScottPlot.Plottables.Text)item.Plottable;
-                        text.LabelFontName = PlotTextFontNames[value];
-                    }
-                    else if (item.ObjectType == "Axis")
-                    {
-                        var tempAxis = (IAxis)item.Plottable;
-                        tempAxis.Label.FontName = PlotTextFontNames[value];
-                    }
-                }
-                // 刷新图形
-                WpfPlot1.Refresh();
-            }
-        }
-
-        // 改变 绘图对象 可见性
-        partial void OnPlotVisibleChanged(bool value)
-        {
-            // 如果是在更新属性值，则不执行更新_plotLineType
-            if (_isUpdatingLineWidth)
-                return;
-
-            // 更新当前选中图层的线宽
-            if (_previousSelectedItems != null && _previousSelectedItems.Any())
-            {
-                foreach (var item in _previousSelectedItems)
-                {
-                    if (item.ObjectType == "LinePlot")
-                    {
-                        var linePlot = (LinePlot)item.Plottable;
-                        linePlot.IsVisible = value;
-                    }
-                    else if (item.ObjectType == "Text")
-                    {
-                        var text = (ScottPlot.Plottables.Text)item.Plottable;
-                        text.IsVisible = value;
-                    }
-                    else if (item.ObjectType == "Scatter")
-                    {
-                        var scatter = (ScottPlot.Plottables.Scatter)item.Plottable;
-                        scatter.IsVisible = value;
-                    }
-                    else if (item.ObjectType == "Axis")
-                    {
-                        var tempAxis = (IAxis)item.Plottable;
-                        tempAxis.IsVisible = value;
-                    }
-                }
-                // 刷新图形
-                WpfPlot1.Refresh();
-            }
-
-        }
-
-        // 改变 绘图对象 类型
-        partial void OnPlotTypeChanged(int value)
-        {
-            // 如果是在更新属性值，则不执行更新_plotLineType
-            if (_isUpdatingLineWidth)
-                return;
-
-            // 更新当前选中图层的线宽
-            if (_previousSelectedItems != null && _previousSelectedItems.Any())
-            {
-                foreach (var item in _previousSelectedItems)
-                {
-                    if (item.ObjectType == "LinePlot")
-                    {
-                        var linePlot = (LinePlot)item.Plottable;
-                        if (PlotType == 0) { linePlot.LineStyle.Pattern = LinePattern.Solid; }
-                        if (PlotType == 1) { linePlot.LineStyle.Pattern = LinePattern.Dashed; }
-                        if (PlotType == 2) { linePlot.LineStyle.Pattern = LinePattern.DenselyDashed; }
-                        if (PlotType == 3) { linePlot.LineStyle.Pattern = LinePattern.Dotted; }
-                    }
-
-                    if (item.ObjectType == "Text")
-                    {
-                        var text = (ScottPlot.Plottables.Text)item.Plottable;
-                        if (PlotType == 0) { text.LabelStyle.Bold = false; text.LabelStyle.Italic = false; }
-                        if (PlotType == 1) { text.LabelStyle.Bold = true; }
-                        if (PlotType == 2) { text.LabelStyle.Italic = true; }
-                    }
-
-                    if (item.ObjectType == "Scatter")
-                    {
-                        var scatter = (ScottPlot.Plottables.Scatter)item.Plottable;
-                        if (PlotType == 0) { scatter.MarkerShape = MarkerShape.FilledCircle; }
-                        if (PlotType == 1) { scatter.MarkerShape = MarkerShape.OpenCircle; }
-                        if (PlotType == 2) { scatter.MarkerShape = MarkerShape.FilledSquare; }
-                        if (PlotType == 3) { scatter.MarkerShape = MarkerShape.FilledTriangleUp; }
-                        if (PlotType == 4) { scatter.MarkerShape = MarkerShape.FilledTriangleDown; }
-                        if (PlotType == 5) { scatter.MarkerShape = MarkerShape.FilledDiamond; }
-                        if (PlotType == 6) { scatter.MarkerShape = MarkerShape.Eks; }
-                        if (PlotType == 7) { scatter.MarkerShape = MarkerShape.Cross; }
-                        if (PlotType == 8) { scatter.MarkerShape = MarkerShape.Asterisk; }
-                    }
-                }
-                // 刷新图形
-                WpfPlot1.Refresh();
-            }
-        }
-
-        // 改变 绘图对象 宽度-大小
-        partial void OnPlotWidthChanged(float value)
-        {
-            // 如果是在更新属性值，则不执行更新
-            if (_isUpdatingLineWidth)
-                return;
-
-            // 更新当前选中图层的线宽
-            if (_previousSelectedItems != null && _previousSelectedItems.Any())
-            {
-                foreach (var item in _previousSelectedItems)
-                {
-                    if (item.ObjectType == "LinePlot")
-                    {
-                        var linePlot = (LinePlot)item.Plottable;
-                        linePlot.LineWidth = value;
-                    }
-                    if (item.ObjectType == "Text")
-                    {
-                        var text = (ScottPlot.Plottables.Text)item.Plottable;
-                        text.LabelFontSize = value;
-                    }
-                    if (item.ObjectType == "Scatter")
-                    {
-                        var scatter = (ScottPlot.Plottables.Scatter)item.Plottable;
-                        scatter.MarkerSize = value;
-                    }
-                    else if (item.ObjectType == "Axis")
-                    {
-                        var tempAxis = (IAxis)item.Plottable;
-                        tempAxis.Label.FontSize = value;
-                    }
-                }
-                // 刷新图形
-                WpfPlot1.Refresh();
-            }
-        }
-
-        // 改变 绘图对象 颜色
-        partial void OnPlotColorChanged(ScottPlot.Color value)
-        {
-            // 如果是在更新属性值，则不执行更新
-            if (_isUpdatingLineWidth)
-                return;
-
-            // 更新当前选中图层的颜色
-            if (_previousSelectedItems != null && _previousSelectedItems.Any())
-            {
-                foreach (var item in _previousSelectedItems)
-                {
-                    if (item.ObjectType == "LinePlot")
-                    {
-                        var linePlot = (LinePlot)item.Plottable;
-                        linePlot.LineColor = value;
-                    }
-                    if (item.ObjectType == "Text")
-                    {
-                        var text = (ScottPlot.Plottables.Text)item.Plottable;
-                        text.LabelFontColor = value;
-                    }
-                    if (item.ObjectType == "Scatter")
-                    {
-                        var scatter = (ScottPlot.Plottables.Scatter)item.Plottable;
-                        scatter.MarkerColor = value;
-                    }
-                    else if (item.ObjectType == "Axis")
-                    {
-                        var tempAxis = (IAxis)item.Plottable;
-                        tempAxis.Label.ForeColor = value;
-                    }
-                }
-                // 刷新图形
-                WpfPlot1.Refresh();
-            }
-        }
-
-        // 主刻度是否显示
-        partial void OnReverseAxisChanged(bool value)
-        {
-            // 如果是在更新属性值，则不执行更新
-            if (_isUpdatingLineWidth)
-                return;
-
-            // 更新当前选中图层的颜色
-            if (_previousSelectedItems != null && _previousSelectedItems.Any())
-            {
-                foreach (var item in _previousSelectedItems)
-                {
-                    var tempAxis = (IAxis)item.Plottable;
-                    if (value == true)
-                    {
-                        tempAxis.MajorTickStyle = new TickMarkStyle()
-                        {
-                            Length = 0,
-                            Width = 0,
-                        };
-                    }
-                    else
-                    {
-                        tempAxis.MajorTickStyle = new TickMarkStyle()
-                        {
-                            Length = 4,
-                            Width = 1,
-                            Color = ScottPlot.Colors.Black,
-                        };
-                    }
-
-                }
-                // 刷新图形
-                WpfPlot1.Refresh();
-            }
-        }
-
-        // 次刻度是否显示
-        partial void OnSecondTickShowChanged(bool value)
-        {
-            // 如果是在更新属性值，则不执行更新
-            if (_isUpdatingLineWidth)
-                return;
-
-            // 更新当前选中图层的颜色
-            if (_previousSelectedItems != null && _previousSelectedItems.Any())
-            {
-                foreach (var item in _previousSelectedItems)
-                {
-                    var tempAxis = (IAxis)item.Plottable;
-                    if (value == true)
-                    {
-                        List<Tick> wwee = tempAxis.TickGenerator.Ticks.ToList();
-                        wwee.Add(new Tick(-9, "-9", false));
-                        var tewew = tempAxis.TickGenerator;
-                        if (tempAxis.TickGenerator is ScottPlot.TickGenerators.NumericFixedInterval)
-                        {
-                            ((ScottPlot.TickGenerators.NumericFixedInterval)tempAxis.TickGenerator).Ticks = wwee.ToArray();
-                        }
-
-                        //tempAxis.SetTicks(wwee.Select(tick => tick.Position).ToArray(), wwee.Select(tick => tick.Label).ToArray()) ;
-                        //tempAxis.MinorTickStyle = new TickMarkStyle()
-                        //{
-                        //    Length = 0,
-                        //    Width = 0,
-                        //};
-                    }
-                    else
-                    {
-                        tempAxis.MinorTickStyle = new TickMarkStyle()
-                        {
-                            Length = 2,
-                            Width = 1,
-                            Color = ScottPlot.Colors.Black,
-                        };
-                    }
-
-                }
-                // 刷新图形
-                WpfPlot1.Refresh();
-            }
-        }
-
-        // 改变 刻度轴字体
-        partial void OnAxisTickFontNameChanged(int value)
-        {
-            // 如果是在更新属性值，则不执行更新
-            if (_isUpdatingLineWidth)
-                return;
-
-            // 更新当前选中图层的颜色
-            if (_previousSelectedItems != null && _previousSelectedItems.Any())
-            {
-                foreach (var item in _previousSelectedItems)
-                {
-                    var tempAxis = (IAxis)item.Plottable;
-                    tempAxis.TickLabelStyle.FontName = PlotTextFontNames[value];
-                }
-                // 刷新图形
-                WpfPlot1.Refresh();
-            }
-        }
-
-        // 改变 刻度轴字体大小
-        partial void OnAxisTickFontSizeChanged(float value)
-        {
-            // 如果是在更新属性值，则不执行更新
-            if (_isUpdatingLineWidth)
-                return;
-
-            // 更新当前选中图层的颜色
-            if (_previousSelectedItems != null && _previousSelectedItems.Any())
-            {
-                foreach (var item in _previousSelectedItems)
-                {
-                    var tempAxis = (IAxis)item.Plottable;
-                    tempAxis.TickLabelStyle.FontSize = value;
-                }
-                // 刷新图形
-                WpfPlot1.Refresh();
-            }
-        }
-
-        // 改变 主刻度间距
-        partial void OnAxisTickSpanChanged(double value)
-        {
-            // 如果是在更新属性值，则不执行更新
-            if (_isUpdatingLineWidth)
-                return;
-
-            // 更新当前选中图层的颜色
-            if (_previousSelectedItems != null && _previousSelectedItems.Any())
-            {
-                foreach (var item in _previousSelectedItems)
-                {
-                    var tempAxis = (IAxis)item.Plottable;
-                    var majortick = new ScottPlot.TickGenerators.NumericFixedInterval(value);
-                    tempAxis.TickGenerator = majortick;
-                }
-                // 刷新图形
-                WpfPlot1.Refresh();
-            }
-
-        }
-
-        // 改变 刻度轴上限
-        partial void OnAxisTickUpLimitChanged(double value)
-        {
-            // 如果是在更新属性值，则不执行更新
-            if (_isUpdatingLineWidth)
-                return;
-
-            // 更新当前选中图层的颜色
-            if (_previousSelectedItems != null && _previousSelectedItems.Any())
-            {
-                foreach (var item in _previousSelectedItems)
-                {
-                    var tempAxis = (IAxis)item.Plottable;
-                    tempAxis.Max = value;
-                }
-                // 刷新图形
-                WpfPlot1.Refresh();
-            }
-        }
-
-        // 改变 刻度轴下限
-        partial void OnAxisTickDownLimitChanged(double value)
-        {
-            // 如果是在更新属性值，则不执行更新
-            if (_isUpdatingLineWidth)
-                return;
-
-            // 更新当前选中图层的颜色
-            if (_previousSelectedItems != null && _previousSelectedItems.Any())
-            {
-                foreach (var item in _previousSelectedItems)
-                {
-                    var tempAxis = (IAxis)item.Plottable;
-                    tempAxis.Min = value;
-                }
-                // 刷新图形
-                WpfPlot1.Refresh();
-            }
-        }
-
-        // 改变 刻度轴的颜色
-        partial void OnAxisPlotColorChanged(ScottPlot.Color value)
-        {
-            // 如果是在更新属性值，则不执行更新
-            if (_isUpdatingLineWidth)
-                return;
-
-            // 更新当前选中图层的颜色
-            if (_previousSelectedItems != null && _previousSelectedItems.Any())
-            {
-                foreach (var item in _previousSelectedItems)
-                {
-                    var tempAxis = (IAxis)item.Plottable;
-                    tempAxis.TickLabelStyle.ForeColor = value;
-                }
-                // 刷新图形
+                CrosshairPlot.IsVisible = true;
                 WpfPlot1.Refresh();
             }
         }
 
         /// <summary>
-        /// ========================================LinePlot 位置
+        /// 当鼠标离开绘图区域时调用
         /// </summary>
-        /// 
-
-        // 起始 X1 改变
-        partial void OnX1Changed(double value)
+        private void WpfPlot1_MouseLeave(object? sender, MouseEventArgs e)
         {
-            // 如果是在更新属性值，则不执行更新
-            if (_isUpdatingLineWidth)
-                return;
-
-            if (_previousSelectedItems != null && _previousSelectedItems.Any())
+            // 仅当追踪模式开启时，才隐藏十字轴
+            if (IsCrosshairVisible)
             {
-                foreach (var item in _previousSelectedItems)
-                {
-                    if (item.ObjectType == "LinePlot")
-                    {
-                        var linePlot = (LinePlot)item.Plottable;
-                        linePlot.Start = new Coordinates(value, Y1);
-                    }
-                    if (item.ObjectType == "Text")
-                    {
-                        var text = (ScottPlot.Plottables.Text)item.Plottable;
-                        text.Location = new Coordinates(value, Y1);
-                    }
-                    if (item.ObjectType == "Scatter")
-                    {
-                        //var scatter = (ScottPlot.Plottables.Scatter)item.Plottable;
-                        //scatter.MarkerColor = value;
-                    }
-                    else if (item.ObjectType == "Axis")
-                    {
-                        //var tempAxis = (IAxis)item.Plottable;
-                        //tempAxis.Label.ForeColor = value;
-                    }
-                }
-                // 刷新图形
+                CrosshairPlot.IsVisible = false;
                 WpfPlot1.Refresh();
             }
         }
-
-        // 起始 Y1 改变
-        partial void OnY1Changed(double value)
-        {
-            // 如果是在更新属性值，则不执行更新
-            if (_isUpdatingLineWidth)
-                return;
-
-            if (_previousSelectedItems != null && _previousSelectedItems.Any())
-            {
-                foreach (var item in _previousSelectedItems)
-                {
-                    if (item.ObjectType == "LinePlot")
-                    {
-                        ((LinePlot)item.Plottable).Start = new Coordinates(X1, value);
-                    }
-                    if (item.ObjectType == "Text")
-                    {
-                        var text = (ScottPlot.Plottables.Text)item.Plottable;
-                        text.Location = new Coordinates(X1, value);
-                    }
-                    if (item.ObjectType == "Scatter")
-                    {
-                        //var scatter = (ScottPlot.Plottables.Scatter)item.Plottable;
-                        //scatter.MarkerColor = value;
-                    }
-                    else if (item.ObjectType == "Axis")
-                    {
-                        //var tempAxis = (IAxis)item.Plottable;
-                        //tempAxis.Label.ForeColor = value;
-                    }
-                }
-                // 刷新图形
-                WpfPlot1.Refresh();
-            }
-        }
-
-        // 起始 X2 改变
-        partial void OnX2Changed(double value)
-        {
-            // 如果是在更新属性值，则不执行更新
-            if (_isUpdatingLineWidth)
-                return;
-
-            if (_previousSelectedItems != null && _previousSelectedItems.Any())
-            {
-                foreach (var item in _previousSelectedItems)
-                {
-                    if (item.ObjectType == "LinePlot")
-                    {
-                        var linePlot = (LinePlot)item.Plottable;
-                        linePlot.End = new Coordinates(value, Y2);
-                    }
-                }
-                // 刷新图形
-                WpfPlot1.Refresh();
-            }
-        }
-
-        // 起始 Y2 改变
-        partial void OnY2Changed(double value)
-        {
-            // 如果是在更新属性值，则不执行更新
-            if (_isUpdatingLineWidth)
-                return;
-
-            if (_previousSelectedItems != null && _previousSelectedItems.Any())
-            {
-                foreach (var item in _previousSelectedItems)
-                {
-                    if (item.ObjectType == "LinePlot")
-                    {
-                        var linePlot = (LinePlot)item.Plottable;
-                        linePlot.End = new Coordinates(X2, value);
-                    }
-                }
-                // 刷新图形
-                WpfPlot1.Refresh();
-            }
-        }
-
 
         /// <summary>
-        /// ========================================图例设置
+        /// 当鼠标在绘图区域移动时调用
         /// </summary>
-
-        // 改变 图例对象 可见性
-        partial void OnShowLegendsChanged(bool value)
+        private void WpfPlot1_MouseMove(object? sender, MouseEventArgs e)
         {
-            if (value)
-            {
-                WpfPlot1.Plot.ShowLegend();
-            }
-            else
-            {
-                WpfPlot1.Plot.HideLegend();
-            }
-            WpfPlot1.Refresh();
+            // 如果追踪模式未开启，则不执行任何操作
+            if (!IsCrosshairVisible) return;
 
-        }
+            // 将WPF的鼠标位置转换为ScottPlot的像素单位
+            Pixel mousePixel = new(e.GetPosition(WpfPlot1).X * WpfPlot1.DisplayScale,
+                                  e.GetPosition(WpfPlot1).Y * WpfPlot1.DisplayScale);
 
-        // 改变 图例 的位置
-        partial void OnLegendsLocationChanged(int value)
-        {
-            // 右上角
-            if (value == 0)
-            {
-                WpfPlot1.Plot.Legend.Alignment = Alignment.UpperRight;
-            }
+            // 将像素位置转换为图表的坐标单位
+            Coordinates mouseCoordinates = WpfPlot1.Plot.GetCoordinates(mousePixel);
 
-            // 右下角
-            if (value == 1)
-            {
-                WpfPlot1.Plot.Legend.Alignment = Alignment.LowerRight;
-            }
+            // 更新十字轴的位置
+            CrosshairPlot.Position = mouseCoordinates;
 
-            // 左上角
-            if (value == 2)
-            {
-                WpfPlot1.Plot.Legend.Alignment = Alignment.UpperLeft;
-            }
+            // 更新十字轴上的文本标签以显示实时坐标 (N3格式化为保留3位小数的数字)
+            CrosshairPlot.VerticalLine.Text = $"{mouseCoordinates.X:N3}";
+            CrosshairPlot.HorizontalLine.Text = $"{mouseCoordinates.Y:N3}";
 
-            if (value == 3)
-            {
-                WpfPlot1.Plot.Legend.Alignment = Alignment.LowerLeft;
-
-            }
-
-            // 刷新绘图
+            // 刷新图表以应用更改
             WpfPlot1.Refresh();
         }
-
-        // 改变 图例 的排序展示方向
-        partial void OnLegendsOChanged(int value)
-        {
-            // 默认纵向展示
-            if (value == 0)
-            {
-                WpfPlot1.Plot.Legend.Orientation = ScottPlot.Orientation.Vertical;
-            }
-            else
-            {
-                WpfPlot1.Plot.Legend.Orientation = ScottPlot.Orientation.Horizontal;
-            }
-            // 刷新图形
-            WpfPlot1.Refresh();
-        }
-
-        // 改变 图例 字体
-        partial void OnLegendsFontsChanged(int value)
-        {
-
-            // 匹配字体
-            foreach(var temp in WpfPlot1.Plot.Legend.LegendItems)
-            {
-                temp.LabelFontName = PlotTextFontNames[value];
-            }
-            // 刷新图形
-            WpfPlot1.Refresh();
-        }
-
-        // 改变 图例 字体大小
-        partial void OnLegendsFontSizeChanged(float value)
-        {
-            // 匹配字体大小
-            foreach (var temp in WpfPlot1.Plot.Legend.LegendItems)
-            {
-                temp.LabelFontSize = value;
-            }
-
-            // 刷新图形
-            WpfPlot1.Refresh();
-        }
-
-        // 改变 图例 颜色
-        partial void OnLegendsFontColorChanged(ScottPlot.Color value)
-        {
-            // 匹配字体
-            foreach (var temp in WpfPlot1.Plot.Legend.LegendItems)
-            {
-                temp.LabelFontColor = value;
-            }
-
-            // 刷新图形
-            WpfPlot1.Refresh();
-        }
-
 
         /// <summary>
-        /// ========================================绘图设置
+        /// 初始化面包屑导航
         /// </summary>
-
-        // 改变 绘图设置 绘图标题
-        partial void OnAxisTitleChanged(string value)
+        private void InitializeBreadcrumbs()
         {
-            // 如果是在更新属性值，则不执行更新
-            if (_isUpdatingLineWidth)
-                return;
-
-            // 更新标题
-            WpfPlot1.Plot.Axes.Title.Label.Text = value;
-
-            // 刷新图形
-            WpfPlot1.Refresh();
+            Breadcrumbs.Clear();
+            Breadcrumbs.Add(new BreadcrumbItem { Name = LanguageService.Instance["all_templates"] });
         }
 
-        // 改变 绘图设置 绘图标题字体大小
-        partial void OnAxisTitleFontSizeChanged(float value)
+        /// <summary>
+        /// 加载所有模板卡片
+        /// </summary>
+        private void LoadAllTemplateCards()
         {
-            // 如果是在更新属性值，则不执行更新
-            if (_isUpdatingLineWidth)
-                return;
-
-            // 更新标题
-            WpfPlot1.Plot.Axes.Title.Label.FontSize = value;
-
-            // 刷新图形
-            WpfPlot1.Refresh();
+            TemplateCards.Clear();
+            CollectTemplatesFromNode(GraphMapTemplateNode);
         }
 
-        // 改变 绘图设置 绘图标题字体
-        partial void OnAxisTitleFontNameChanged(int value)
+        /// <summary>
+        /// 递归收集节点下的所有模板
+        /// </summary>
+        private void CollectTemplatesFromNode(GraphMapTemplateNode node)
         {
-            // 如果是在更新属性值，则不执行更新
-            if (_isUpdatingLineWidth)
-                return;
+            if (node?.Children == null) return;
 
-            // 更新标题
-            WpfPlot1.Plot.Axes.Title.Label.FontName = PlotTextFontNames[value];
-
-            // 刷新图形
-            WpfPlot1.Refresh();
-        }
-
-        // 改变 绘图设置 绘图标题颜色
-        partial void OnAxisTitleColorChanged(ScottPlot.Color value)
-        {
-            // 如果是在更新属性值，则不执行更新
-            if (_isUpdatingLineWidth)
-                return;
-
-            // 更新标题
-            WpfPlot1.Plot.Axes.Title.Label.ForeColor = value;
-
-            // 刷新图形
-            WpfPlot1.Refresh();
-        }
-
-        // 改变 绘图设置 X轴标题
-        partial void OnXAxisTitleChanged(string value)
-        {
-            // 如果是在更新属性值，则不执行更新
-            if (_isUpdatingLineWidth)
-                return;
-
-            // 更新标题
-            WpfPlot1.Plot.Axes.Bottom.Label.Text = value;
-
-            // 刷新图形
-            WpfPlot1.Refresh();
-        }
-
-        // 改变 绘图设置 Y轴标题
-        partial void OnYAxisTitleChanged(string value)
-        {
-            // 如果是在更新属性值，则不执行更新
-            if (_isUpdatingLineWidth)
-                return;
-
-            // 更新标题
-            WpfPlot1.Plot.Axes.Left.Label.Text = value;
-
-            // 刷新图形
-            WpfPlot1.Refresh();
-        }
-
-        // 改变 绘图设置 轴标题字体大小
-        partial void OnAxisXYTitleFontSizeChanged(float value)
-        {
-            // 如果是在更新属性值，则不执行更新
-            if (_isUpdatingLineWidth)
-                return;
-
-            // 更新标题
-            WpfPlot1.Plot.Axes.Left.Label.FontSize = value;
-            WpfPlot1.Plot.Axes.Bottom.Label.FontSize = value;
-
-            // 刷新图形
-            WpfPlot1.Refresh();
-        }
-
-        // 改变 绘图设置 轴标题字体
-        partial void OnAxisXYTitleFontNameChanged(int value)
-        {
-            // 如果是在更新属性值，则不执行更新
-            if (_isUpdatingLineWidth)
-                return;
-
-            // 更新标题
-            WpfPlot1.Plot.Axes.Left.Label.FontName = PlotTextFontNames[value];
-            WpfPlot1.Plot.Axes.Bottom.Label.FontName = PlotTextFontNames[value];
-
-            // 刷新图形
-            WpfPlot1.Refresh();
-        }
-
-        // 改变 绘图设置 轴标题颜色
-        partial void OnAxisXYTitleColorChanged(ScottPlot.Color value)
-        {
-            // 如果是在更新属性值，则不执行更新
-            if (_isUpdatingLineWidth)
-                return;
-
-            // 更新标题
-            WpfPlot1.Plot.Axes.Left.Label.ForeColor = value;
-            WpfPlot1.Plot.Axes.Bottom.Label.ForeColor = value;
-
-            // 刷新图形
-            WpfPlot1.Refresh();
-        }
-
-        // 改变 背景设置 显示主网格
-        partial void OnFirstGridShowChanged(bool value)
-        {
-            // 如果是在更新属性值，则不执行更新
-            if (_isUpdatingLineWidth)
-                return;
-
-            if (value)
+            foreach (var child in node.Children)
             {
-                WpfPlot1.Plot.ShowGrid();
-            }
-            else
-            {
-                WpfPlot1.Plot.HideGrid();
-            }
-
-            // 刷新图形
-            WpfPlot1.Refresh();
-        }
-
-        // 改变 背景设置 主网格颜色
-        partial void OnFirstGridColorChanged(ScottPlot.Color value)
-        {
-            // 如果是在更新属性值，则不执行更新
-            if (_isUpdatingLineWidth)
-                return;
-
-            WpfPlot1.Plot.Grid.MajorLineColor = value;
-            //WpfPlot1.Plot.Grid.YAxisStyle.MajorLineStyle.Color = value;
-
-            // 刷新图形
-            WpfPlot1.Refresh();
-        }
-
-        // 改变 背景设置 主网格宽度
-        partial void OnFirstGridWidthChanged(float value)
-        {
-            // 如果是在更新属性值，则不执行更新
-            if (_isUpdatingLineWidth)
-                return;
-
-            WpfPlot1.Plot.Grid.MajorLineWidth = value;
-
-            // 刷新图形
-            WpfPlot1.Refresh();
-        }
-
-        // 改变 背景设置 显示次网格
-        partial void OnSecondGridShowChanged(bool value)
-        {
-            // 如果是在更新属性值，则不执行更新
-            if (_isUpdatingLineWidth)
-                return;
-
-            if (value)
-            {
-                WpfPlot1.Plot.Grid.MinorLineWidth = 1;
-            }
-            else
-            {
-                WpfPlot1.Plot.Grid.MinorLineWidth = 0;
-            }
-
-            // 刷新图形
-            WpfPlot1.Refresh();
-        }
-
-        // 改变 背景设置 次网格颜色
-        partial void OnSecondGridColorChanged(ScottPlot.Color value)
-        {
-            // 如果是在更新属性值，则不执行更新
-            if (_isUpdatingLineWidth)
-                return;
-
-            WpfPlot1.Plot.Grid.MinorLineColor = value;
-
-            // 刷新图形
-            WpfPlot1.Refresh();
-        }
-
-        // 改变 背景设置 主网格宽度
-        partial void OnSecondGridWidthChanged(float value)
-        {
-            // 如果是在更新属性值，则不执行更新
-            if (_isUpdatingLineWidth)
-                return;
-
-            WpfPlot1.Plot.Grid.MinorLineWidth = value;
-
-            // 刷新图形
-            WpfPlot1.Refresh();
-        }
-
-        // 改变 背景设置 反转填充颜色
-        partial void OnSwichtFillColorChanged(bool value)
-        {
-            // 如果是在更新属性值，则不执行更新
-            if (_isUpdatingLineWidth)
-                return;
-
-            if (value)
-            {
-                WpfPlot1.Plot.Grid.YAxisStyle.FillColor1 = GridFillColor1;
-                WpfPlot1.Plot.Grid.YAxisStyle.FillColor2 = GridFillColor2;
-                WpfPlot1.Plot.Grid.XAxisStyle.FillColor1 = ScottPlot.Colors.Transparent;
-                WpfPlot1.Plot.Grid.XAxisStyle.FillColor2 = ScottPlot.Colors.Transparent;
-            }
-            else
-            {
-                WpfPlot1.Plot.Grid.YAxisStyle.FillColor1 = ScottPlot.Colors.Transparent;
-                WpfPlot1.Plot.Grid.YAxisStyle.FillColor2 = ScottPlot.Colors.Transparent;
-                WpfPlot1.Plot.Grid.XAxisStyle.FillColor1 = GridFillColor1;
-                WpfPlot1.Plot.Grid.XAxisStyle.FillColor2 = GridFillColor2;
-            }
-
-            // 刷新图形
-            WpfPlot1.Refresh();
-        }
-
-        // 改变 背景设置 填充颜色1
-        partial void OnGridFillColor1Changed(ScottPlot.Color value)
-        {
-            // 如果是在更新属性值，则不执行更新
-            if (_isUpdatingLineWidth)
-                return;
-
-            WpfPlot1.Plot.Grid.XAxisStyle.FillColor1 = value;
-            //WpfPlot1.Plot.Grid.YAxisStyle.MajorLineStyle.Color = value;
-
-            // 刷新图形
-            WpfPlot1.Refresh();
-        }
-
-        // 改变 背景设置 填充颜色2
-        partial void OnGridFillColor2Changed(ScottPlot.Color value)
-        {
-            // 如果是在更新属性值，则不执行更新
-            if (_isUpdatingLineWidth)
-                return;
-
-            WpfPlot1.Plot.Grid.XAxisStyle.FillColor2 = value;
-            //WpfPlot1.Plot.Grid.YAxisStyle.MajorLineStyle.Color = value;
-
-            // 刷新图形
-            WpfPlot1.Refresh();
-        }
-
-        // LinePlot 属性匹配
-        private void GetLinePlotAttributeMapping(LinePlot linePlot)
-        {
-            _isUpdatingLineWidth = true;  // 设置标志，防止触发更新
-            try
-            {
-                PlotWidth = linePlot.LineWidth;     // 匹配线宽
-                PlotColor = linePlot.LineColor;     // 匹配线的颜色
-                // 匹配线的样式
-                if (linePlot.LinePattern.Name == LinePattern.Solid.Name) { PlotType = 0; }
-                if (linePlot.LinePattern.Name == LinePattern.Dashed.Name) { PlotType = 1; }
-                if (linePlot.LinePattern.Name == LinePattern.DenselyDashed.Name) { PlotType = 2; }
-                if (linePlot.LinePattern.Name == LinePattern.Dotted.Name) { PlotType = 3; }
-                X1 = linePlot.Start.X;
-                Y1 = linePlot.Start.Y;
-                X2 = linePlot.End.X;
-                Y2 = linePlot.End.Y;
-                PlotVisible = linePlot.IsVisible;       // 匹配可见性
-                //OnPropertyChanged(nameof(PlotLineWidth));  // 手动触发属性更新
-            }
-            finally
-            {
-                _isUpdatingLineWidth = false;  // 确保标志被重置
-            }
-        }
-
-        // Text 属性匹配
-        private void GetTextAttributeMapping(ScottPlot.Plottables.Text text)
-        {
-            _isUpdatingLineWidth = true;  // 设置标志，防止触发更新
-            try
-            {
-                PlotVisible = text.IsVisible;       // 匹配可见性
-
-                PlotWidth = text.LabelFontSize;     // 匹配文本大小
-
-                // 当前字体
-                PlotTextFontName = FindFontNameIndex(text.LabelFontName);
-
-                // 匹配字体的样式
-                if (text.LabelStyle.Italic == true) { PlotType = 2; }
-                if (text.LabelStyle.Bold == true) { PlotType = 1; }
-                else
+                if (!string.IsNullOrEmpty(child.GraphMapPath))
                 {
-                    PlotType = 0;
-                }
+                    var thumbnailPath = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Default"
+                                                    , child.GraphMapPath, "thumbnail.jpg");
 
-                PlotColor = text.LabelFontColor;        // 匹配字体颜色
-                PlotTextContent = text.LabelText;       // 匹配文本内容
-
-                X1 = text.Location.X;
-                Y1 = text.Location.Y;
-
-            }
-            finally
-            {
-                _isUpdatingLineWidth = false;  // 确保标志被重置
-            }
-        }
-
-        // 数据点 属性匹配
-        private void GetDataAttributeMapping(ScottPlot.Plottables.Scatter scatter)
-        {
-            _isUpdatingLineWidth = true;  // 设置标志，防止触发更新
-            try
-            {
-
-                PlotWidth = scatter.MarkerSize;     // 匹配线宽
-                PlotColor = scatter.MarkerColor;     // 匹配线的颜色
-                //// 匹配线的样式
-                if (scatter.MarkerShape.ToString() == MarkerShape.FilledCircle.ToString()) { PlotType = 0; }
-                if (scatter.MarkerShape.ToString() == MarkerShape.OpenCircle.ToString()) { PlotType = 1; }
-                if (scatter.MarkerShape.ToString() == MarkerShape.FilledSquare.ToString()) { PlotType = 2; }
-                if (scatter.MarkerShape.ToString() == MarkerShape.FilledTriangleUp.ToString()) { PlotType = 3; }
-                if (scatter.MarkerShape.ToString() == MarkerShape.FilledTriangleDown.ToString()) { PlotType = 4; }
-                if (scatter.MarkerShape.ToString() == MarkerShape.FilledDiamond.ToString()) { PlotType = 5; }
-                if (scatter.MarkerShape.ToString() == MarkerShape.Eks.ToString()) { PlotType = 6; }
-                if (scatter.MarkerShape.ToString() == MarkerShape.Cross.ToString()) { PlotType = 7; }
-                if (scatter.MarkerShape.ToString() == MarkerShape.Asterisk.ToString()) { PlotType = 8; }
-                PlotVisible = scatter.IsVisible;       // 匹配可见性
-            }
-            finally
-            {
-                _isUpdatingLineWidth = false;  // 确保标志被重置
-            }
-        }
-
-        // 坐标轴属性匹配
-        private void GetAxisAttributeMapping(IAxis axes)
-        {
-            _isUpdatingLineWidth = true;  // 设置标志，防止触发更新
-            try
-            {
-                PlotVisible = axes.IsVisible;       // 匹配可见性
-                ReverseAxis = axes.IsInverted();    // 匹配轴反转
-                AxisTitle = axes.Label.Text;        // 匹配轴标题
-                PlotTextFontName = FindFontNameIndex(axes.Label.FontName);      // 匹配当前字体
-                PlotWidth = axes.Label.FontSize;        //匹配轴标题字体大小
-                PlotColor = axes.Label.ForeColor;     // 匹配标题的颜色
-                AxisTickFontName = FindFontNameIndex(axes.TickLabelStyle.FontName);        // 匹配刻度轴字体
-                AxisTickFontSize = axes.TickLabelStyle.FontSize;       // 匹配刻度轴字体大小
-                if (axes.TickGenerator is ScottPlot.TickGenerators.NumericFixedInterval)
-                {
-                    // 匹配刻度间隔
-                    AxisTickSpan = ((ScottPlot.TickGenerators.NumericFixedInterval)axes.TickGenerator).Interval;
+                    if (File.Exists(thumbnailPath))
+                    {
+                        TemplateCards.Add(new TemplateCardViewModel
+                        {
+                            Name = child.Name,
+                            TemplatePath = child.GraphMapPath,
+                            ThumbnailPath = thumbnailPath,
+                            Category = GetNodePath(child)
+                        });
+                    }
                 }
                 else
                 {
-                    AxisTickSpan = 1;
-                }
-                AxisTickUpLimit = axes.GetRange().Max;      // 匹配刻度上限
-                AxisTickDownLimit = axes.GetRange().Min;        // 匹配刻度下限
-                AxisPlotColor = axes.TickLabelStyle.ForeColor;     // 匹配刻度的颜色
-            }
-            finally
-            {
-                _isUpdatingLineWidth = false;  // 确保标志被重置
-            }
-        }
-
-        // 绘图设置匹配
-        private void GetPlotAttributeMapping()
-        {
-            _isUpdatingLineWidth = true;  // 设置标志，防止触发更新
-            try
-            {
-                // 这是绘图部分
-                AxisTitle = WpfPlot1.Plot.Axes.Title.Label.Text;        // 匹配绘图标题
-                AxisTitleFontSize = WpfPlot1.Plot.Axes.Title.Label.FontSize;        // 匹配绘图标题大小
-                AxisTitleFontName = FindFontNameIndex(WpfPlot1.Plot.Axes.Title.Label.FontName); // 匹配绘图标题字体
-                AxisTitleColor = WpfPlot1.Plot.Axes.Title.Label.ForeColor; // 匹配绘图标题字体
-
-                YAxisTitle = WpfPlot1.Plot.Axes.Left.Label.Text;        // 匹配左侧轴标题
-                XAxisTitle = WpfPlot1.Plot.Axes.Bottom.Label.Text;        // 匹配左侧轴标题
-                AxisXYTitleColor = WpfPlot1.Plot.Axes.Left.Label.ForeColor;     // 匹配轴标题的颜色
-                AxisXYTitleFontName = FindFontNameIndex(WpfPlot1.Plot.Axes.Left.Label.FontName);      // 匹配轴标题字体
-                AxisXYTitleFontSize = WpfPlot1.Plot.Axes.Left.Label.FontSize;        //匹配轴标题字体大小
-
-
-                // 这是背景部分
-                if (WpfPlot1.Plot.Grid.XAxisStyle.MajorLineStyle.Width > 0)
-                {
-                    FirstGridShow = true;       // 匹配显示主网格
-                }
-                FirstGridColor = WpfPlot1.Plot.Grid.XAxisStyle.MajorLineStyle.Color;    // 匹配主网格颜色
-                FirstGridWidth = WpfPlot1.Plot.Grid.XAxisStyle.MajorLineStyle.Width;    // 匹配主网格宽度
-                if (WpfPlot1.Plot.Grid.XAxisStyle.MinorLineStyle.Width > 0)
-                {
-                    SecondGridShow = true;       // 匹配显示次网格
-                }
-                SecondGridColor = WpfPlot1.Plot.Grid.XAxisStyle.MinorLineStyle.Color;    // 匹配主网格颜色
-                SecondGridWidth = WpfPlot1.Plot.Grid.XAxisStyle.MinorLineStyle.Width;    // 匹配主网格宽度
-                GridFillColor1 = WpfPlot1.Plot.Grid.XAxisStyle.FillColor1;      // 匹配填充颜色1
-                GridFillColor2 = WpfPlot1.Plot.Grid.XAxisStyle.FillColor2;      // 匹配填充颜色1
-            }
-            finally
-            {
-                _isUpdatingLineWidth = false;  // 确保标志被重置
-            }
-        }
-
-        // 图例设置匹配
-        private void GetLegendAttributeMapping()
-        {
-            ShowLegends = WpfPlot1.Plot.Legend.IsVisible;      // 是否显示
-
-            // 右上角
-            if (WpfPlot1.Plot.Legend.Alignment == Alignment.UpperRight)
-            {
-                _legendsLocation = 0;
-            }
-
-            // 右下角
-            if (WpfPlot1.Plot.Legend.Alignment == Alignment.LowerRight)
-            {
-                _legendsLocation = 1;
-            }
-
-            // 左上角
-            if (WpfPlot1.Plot.Legend.Alignment == Alignment.UpperLeft)
-            {
-                _legendsLocation = 2;
-            }
-            else
-            {
-                _legendsLocation = 3;
-            }
-
-            // 默认纵向展示
-            if (WpfPlot1.Plot.Legend.Orientation == ScottPlot.Orientation.Vertical)
-            {
-                _legendsO = 0;
-            }
-            else
-            {
-                _legendsO = 1;
-            }
-            //// 匹配字体
-            //_legendsFonts = FindFontNameIndex(WpfPlot1.Plot.Legend.LegendItems.First().LabelFontName);
-
-            //// 匹配字体大小
-            //_legendsFontSize = (float)WpfPlot1.Plot.Legend.LegendItems.First().LabelFontSize;
-
-            //// 匹配字体颜色
-            //_legendsFontColor = (ScottPlot.Color)WpfPlot1.Plot.Legend.LegendItems.First().LabelFontColor;
-        }
-
-        // 解压缩
-        private string ReadRtfFromZip(string zipFilePath, string rtfFileName)
-        {
-            using (ZipArchive archive = ZipFile.OpenRead(zipFilePath))
-            {
-                ZipArchiveEntry entry = archive.GetEntry(rtfFileName);
-                if (entry != null)
-                {
-                    using (Stream stream = entry.Open())
-                    using (StreamReader reader = new StreamReader(stream))
-                    {
-                        return reader.ReadToEnd();
-                    }
+                    // 递归处理子分类
+                    CollectTemplatesFromNode(child);
                 }
             }
-            return null;
-        }
-
-        // 加载绘图说明内容
-        private void LoadRtfContent(string zipFilePath, string rtfFileName)
-        {
-            string rtfContent = ReadRtfFromZip(zipFilePath, rtfFileName);
-            if (rtfContent != null)
-            {
-                TextRange textRange = new TextRange(_richTextBox.Document.ContentStart, _richTextBox.Document.ContentEnd);
-                using (MemoryStream stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(rtfContent)))
-                {
-                    // 使用 Dispatcher 在 UI 线程上更新 UI 元素
-                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        textRange.Load(stream, DataFormats.Rtf);
-                    });
-
-                }
-            }
-        }
-
-        // ===============================基础功能
-
-        // 刷新操作-刷新底图，刷新底图列表
-        public void Refresh(bool isClearPlot = false, bool isRestPlot = false, bool isOnlyRefreshPlot = false)
-        {
-            // 清空底图
-            if (isClearPlot) { WpfPlot1.Plot.Clear(); }
-            // 清空画布
-            if (isRestPlot) { WpfPlot1.Reset(); }
-            // 刷新关闭属性面板
-            SetTrue(null);
-            if (!isOnlyRefreshPlot)
-            {
-                // 刷新坐标轴列表
-                GetAxisList();
-                // 刷新图层列表
-                PopulatePlotItems((List<IPlottable>)WpfPlot1.Plot.GetPlottables());
-            }
-            // 刷新底图
-            WpfPlot1.Refresh();
-        }
-
-        // 检查参数格式是否正确
-        private (string,bool) CheckParameter(string parameter)
-        {
-            if (string.IsNullOrEmpty(parameter) || parameter == "")
-            {
-                return ("参数为空",false);
-            }
-
-            // 正则表达式，确保只包含字母、数字和英文逗号，并且没有多余的空格
-            string pattern = @"^([a-zA-Z0-9]+(,[a-zA-Z0-9]+)*)?$";
-            if (!Regex.IsMatch(parameter, pattern))
-            {
-                return ("参数格式不正确",false);
-            }
-
-            return ("参数格式正确",true);
-
-        }
-
-        // 检查 Js 脚本是否正确
-        private string CheckJsScript(string script)
-        {
-            try
-            {
-                var engine = new Engine();
-                var (x,y) = CheckParameter(NeedParamContent);
-                if (y)
-                {
-                    // 按逗号分隔字符串并去除多余的空格
-                    string[] variables = NeedParamContent.Split(',').Select(v => v.Trim()).ToArray();
-                    // 将每个变量添加到 Jint 中
-                    foreach (string variable in variables)
-                    {
-                        engine.SetValue(variable, 1);
-                    }
-                }
-                engine.Execute(script);
-                // 脚本执行成功,语法正确
-                return "脚本正确";
-            }
-            catch (JavaScriptException ex)
-            {
-                // 捕获到异常,说明脚本存在语法错误
-                return ($"脚本错误: {ex.Message}");
-            }
-        }
-
-        // 新建底图
-        private void NewPlot()
-        {
-            // 刷新绘图
-            Refresh(false, true);
-            // 进入底图编辑模式
-            IsEditMode = true;
-            IsPlotMode = false;
-        }
-
-        // 使用正则表达式检查字符串是否为空且只包含正常语言字符
-        public bool IsValidLanguageString(string input)
-        {
-            // 检查字符串是否为空
-            if (string.IsNullOrEmpty(input))
-            {
-                return false;
-            }
-
-            // 使用正则表达式验证是否只包含Unicode字母、数字和下划线
-            string pattern = @"^[\p{L}0-9_]*$";
-            return Regex.IsMatch(input, pattern);
-        }
-
-        // 是否符合 xxx,xxx,xxxx,xxx 格式
-        public bool IsValidCommaSeparatedString(string input)
-        {
-            // 检查字符串是否为 null 或空
-            if (string.IsNullOrEmpty(input))
-            {
-                return false;
-            }
-
-            // 检查是否包含空格
-            if (input.Contains(" "))
-            {
-                return false;
-            }
-
-            // 按逗号分隔字符串
-            string[] parts = input.Split(',');
-
-            // 检查每部分是否都不为空
-            foreach (string part in parts)
-            {
-                if (string.IsNullOrEmpty(part))
-                {
-                    return false; // 如果有空部分，说明有连续逗号或开头/结尾有逗号
-                }
-            }
-
-            return true;
-        }
-
-
-        /// <summary>
-        /// 比较两个rootNode数组是否相同
-        /// </summary>
-        private static bool CompareRootNode(string[] nodeA, string[] nodeB)
-        {
-            if (nodeA == null || nodeB == null)
-                return false;
-
-            if (nodeA.Length != nodeB.Length)
-                return false;
-
-            for (int i = 0; i < nodeA.Length; i++)
-            {
-                if (nodeA[i] != nodeB[i])
-                    return false;
-            }
-
-            return true;
         }
 
         /// <summary>
-        /// 根据ListNodeConfig查找对应的TreeNode
+        /// 点击模板分类节点
         /// </summary>
-        /// <param name="rootNode">开始搜索的根节点</param>
-        /// <param name="config">要查找的节点配置</param>
-        /// <returns>找到的TreeNode，未找到则返回null</returns>
-        public static TreeNode FindTreeNodeByConfig(TreeNode rootNode, ListNodeConfig config)
+        [RelayCommand]
+        private void SelectTreeViewItem(GraphMapTemplateNode graphMapTemplateNode)
         {
-            if (rootNode == null || config == null || config.rootNode == null)
-                return null;
+            if (graphMapTemplateNode == null) return;
 
-            // 检查当前节点是否匹配
-            if (CompareRootNode(rootNode.rootNode, config.rootNode))
+            // 如果是模板文件（叶子节点）
+            if (!string.IsNullOrEmpty(graphMapTemplateNode.GraphMapPath))
             {
-                return rootNode;
-            }
-
-            // 递归搜索子节点
-            foreach (var child in rootNode.Children)
-            {
-                var result = FindTreeNodeByConfig(child, config);
-                if (result != null)
-                    return result;
-            }
-
-            return null;
-        }
-
-        // 删除节点
-        private void RemoveBaseMapNode()
-        {
-            // 删除Json列表
-            string basePath = FileHelper.GetAppPath();
-            string tempNewPath;
-            if (IsEditMode)
-            {
-                tempNewPath = System.IO.Path.Combine(basePath, "Data", "PlotData", "PlotListCustom.json");
+                // 显示单个模板卡片
+                ShowSingleTemplateCard(graphMapTemplateNode);
             }
             else
             {
-                tempNewPath = System.IO.Path.Combine(basePath, "Data", "PlotData", "PlotList.json");
-            }
-            JsonHelper.RemoveNodeFromJson(tempNewPath, _previousSelectedNode.rootNode);
-        }
-
-
-        // ==================================绑定命令
-
-        // 文本更新改变
-        [RelayCommand]
-        public void RefreshText()
-        {
-            OnPlotTextContentChanged(PlotTextContent);
-        }
-
-        //// 图层对象选择
-        //[RelayCommand]
-        //public void LayersSelection(IList selectedItems)
-        //{
-        //    // 如果没有选中项，恢复所有对象的正常显示
-        //    if (selectedItems == null || selectedItems.Count == 0)
-        //    {
-        //        foreach (var item in BasePlotItems)
-        //        {
-        //            SetTrue(null);
-        //            if (item.ObjectType == "LinePlot")
-        //            {
-        //                var linePlot = (LinePlot)item.Plottable;
-        //                linePlot.LineColor = linePlot.LineColor.WithAlpha(1f); // 恢复完全不透明
-        //            }
-        //            else if (item.ObjectType == "Text")
-        //            {
-        //                var text = (ScottPlot.Plottables.Text)item.Plottable;
-        //                text.Color = text.Color.WithAlpha(1f); // 恢复完全不透明
-        //            }
-        //        }
-        //        _previousSelectedItems.Clear();
-        //        WpfPlot1.Refresh();
-        //        return;
-        //    }
-
-        //    // 先将所有对象设置为暗淡效果
-        //    foreach (var item in BasePlotItems)
-        //    {
-        //        if (item.ObjectType == "LinePlot")
-        //        {
-        //            var linePlot = (LinePlot)item.Plottable;
-        //            linePlot.LineColor = linePlot.LineColor.WithAlpha(0.5f); // 降低透明度
-        //        }
-        //        else if (item.ObjectType == "Text")
-        //        {
-        //            var text = (ScottPlot.Plottables.Text)item.Plottable;
-        //            text.Color = text.Color.WithAlpha(0.3f); // 降低透明度
-        //        }
-        //    }
-
-        //    // 恢复选中项的完全不透明效果
-        //    foreach (var item in selectedItems)
-        //    {
-        //        if (item is PlotItemModel plotItem)
-        //        {
-        //            if (plotItem.ObjectType == "LinePlot")
-        //            {
-        //                var linePlot = (LinePlot)plotItem.Plottable;
-        //                linePlot.LineColor = linePlot.LineColor.WithAlpha(1f); // 完全不透明
-        //                SetTrue("PlotLine");
-        //                GetLinePlotAttributeMapping(linePlot);
-        //            }
-        //            else if (plotItem.ObjectType == "Text")
-        //            {
-        //                var text = (ScottPlot.Plottables.Text)plotItem.Plottable;
-        //                text.Color = text.Color.WithAlpha(1f); // 完全不透明
-        //                SetTrue("PlotText");
-        //                GetTextAttributeMapping(text);
-        //            }
-        //            else if (plotItem.ObjectType == "Scatter")
-        //            {
-        //                var markers = (ScottPlot.Plottables.Scatter)plotItem.Plottable;
-        //                markers.Color = markers.Color.WithAlpha(1f); // 完全不透明
-        //                SetTrue("Scatter");
-        //                GetDataAttributeMapping(markers);
-        //            }
-        //        }
-        //    }
-
-        //    // 更新选中状态
-        //    _previousSelectedItems = selectedItems.Cast<PlotItemModel>().ToList();
-        //    // 刷新绘图
-        //    WpfPlot1.Refresh();
-        //}
-
-        
-        // 除了坐标轴之外的图层对象选择
-        [RelayCommand]
-        public void LayersSelection(IList selectedItems)
-        {
-            // 如果没有选中项，恢复所有对象的正常显示
-            if (selectedItems == null || selectedItems.Count == 0)
-            {
-                ResetAllItemsOpacity();
-                _previousSelectedItems.Clear();
-                WpfPlot1.Refresh();
-                return;
-            }
-
-            // 将所有对象设置为暗淡效果
-            SetItemsOpacity(0.2f);
-
-            // 恢复所有选中项的完全不透明效果
-            foreach (var selectedItem in selectedItems)
-            {
-                if (selectedItem is PlotItemModel plotItem)
-                {
-                    RestoreItemOpacity(plotItem);
-                }
-            }
-
-
-            // 更新选中状态
-            _previousSelectedItems = selectedItems.Cast<PlotItemModel>().ToList();
-
-            // 刷新绘图
-            WpfPlot1.Refresh();
-        }
-
-        // 将所有图层的透明度设置为指定值
-        private void SetItemsOpacity(float alpha)
-        {
-            foreach (var item in BasePlotItems)
-            {
-                SetItemOpacity(item, alpha);
-            }
-
-            foreach (var item in BaseTextItems)
-            {
-                SetItemOpacity(item, alpha);
-            }
-
-            foreach (var item in BaseDataItems)
-            {
-                SetItemOpacity(item, alpha);
+                // 显示分类下的所有模板卡片
+                ShowCategoryTemplateCards(graphMapTemplateNode);
             }
         }
 
-        // 设置单个图层的透明度
-        private void SetItemOpacity(PlotItemModel item, float alpha)
+        /// <summary>
+        /// 显示单个模板卡片
+        /// </summary>
+        private void ShowSingleTemplateCard(GraphMapTemplateNode templateNode)
         {
-            if (item.ObjectType == "LinePlot")
-            {
-                var linePlot = (LinePlot)item.Plottable;
-                linePlot.LineColor = linePlot.LineColor.WithAlpha(alpha);
-            }
-            else if (item.ObjectType == "Text")
-            {
-                var text = (ScottPlot.Plottables.Text)item.Plottable;
-                text.LabelFontColor = text.LabelFontColor.WithAlpha(alpha);
-            }
-            else if (item.ObjectType == "Scatter")
-            {
-                var scatter = (ScottPlot.Plottables.Scatter)item.Plottable;
-                scatter.Color = scatter.Color.WithAlpha(alpha);
-            }
-        }
+            TemplateCards.Clear();
 
-        // 恢复选中项的透明度
-        private void RestoreItemOpacity(PlotItemModel selectedItem)
-        {
-            if (selectedItem.ObjectType == "LinePlot")
+            var thumbnailPath = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Default"
+                                            , templateNode.GraphMapPath, "thumbnail.jpg");
+            if (File.Exists(thumbnailPath))
             {
-                var linePlot = (LinePlot)selectedItem.Plottable;
-                linePlot.LineColor = linePlot.LineColor.WithAlpha(1f);
-                SetTrue("PlotLine");
-                GetLinePlotAttributeMapping(linePlot);
-            }
-            else if (selectedItem.ObjectType == "Text")
-            {
-                var text = (ScottPlot.Plottables.Text)selectedItem.Plottable;
-                text.LabelFontColor = text.LabelFontColor.WithAlpha(1f);
-                SetTrue("PlotText");
-                GetTextAttributeMapping(text);
-            }
-            else if (selectedItem.ObjectType == "Scatter")
-            {
-                var markers = (ScottPlot.Plottables.Scatter)selectedItem.Plottable;
-                markers.Color = markers.Color.WithAlpha(1f);
-                SetTrue("Scatter");
-                GetDataAttributeMapping(markers);
-            }
-        }
-
-        // 重置所有对象的透明度
-        private void ResetAllItemsOpacity()
-        {
-            SetItemsOpacity(1f); // 恢复为不透明
-        }
-
-        // 添加底图到底图列表
-        public static void AddOrFindPath(TreeNode rootNode, BaseInfo baseInfo, string path)
-        {
-            TreeNode currentNode = rootNode;
-            foreach (string category in baseInfo.rootNode)
-            {
-                TreeNode childNode = currentNode.Children.FirstOrDefault(child => child.Name == category);
-
-                if (childNode == null)
+                TemplateCards.Add(new TemplateCardViewModel
                 {
-                    childNode = new TreeNode { Name = category };
-                    childNode.PlotTemplate = new PlotTemplate();
-
-                    childNode.PlotTemplate.PlotMethod = null;   // 标识是 Json 格式
-                    childNode.PlotTemplate.Description = path;      // 标识 Json文件路径
-                    childNode.PlotTemplate.RequiredElements = baseInfo.requiredElements;    // 获取判别元素
-
-                    currentNode.Children.Add(childNode);
-                }
-
-                currentNode = childNode;
-            }
-        }
-
-        // 删除节点
-        public bool RemoveNode(TreeNode root, TreeNode nodeToRemove)
-        {
-            if (root == null)
-            {
-                return false;
-            }
-
-            for (int i = 0; i < root.Children.Count; i++)
-            {
-                if (root.Children[i] == nodeToRemove)
-                {
-                    root.Children.RemoveAt(i);
-                    return (root.Children.Count == 0);
-                }
-            }
-
-            foreach (var child in root.Children)
-            {
-                bool shouldRemoveThisChild = RemoveNode(child, nodeToRemove);
-                if (shouldRemoveThisChild)
-                {
-                    root.Children.Remove(child);
-                    return (root.Children.Count == 0);
-                }
-            }
-
-            return false;
-        }
-
-        // 坐标轴图层对象选择
-        [RelayCommand]
-        public void AxisSelection(IList selectedItems)
-        {
-            // 如果存在对象
-            if (selectedItems != null || selectedItems.Count != 0)
-            {
-                foreach (var item in selectedItems)
-                {
-                    SetTrue("Axis");
-                    var tempAxis = ((PlotItemModel)item).Plottable;
-                    GetAxisAttributeMapping((IAxis)tempAxis);
-                }
-                WpfPlot1.Refresh();
-                // 更新选中状态
-                _previousSelectedItems = selectedItems.Cast<PlotItemModel>().ToList();
-                return;
-            }
-            else
-            {
-                _previousSelectedItems.Clear();
-                SetTrue("null");
-            }
-        }
-
-        // 点击选择绘图模板
-        [RelayCommand]
-        private void SelectTreeViewItem(object parameter)
-        {
-            if (parameter is TreeNode node && node.PlotTemplate != null && node.PlotTemplate.PlotMethod != null)
-            {
-
-                WpfPlot1.Plot.Clear();
-                SetTrue(null);      // 显示属性
-                _previousSelectedNode = (TreeNode)parameter;        // 获取当前选中模板对象
-                node.PlotTemplate.DrawMethod(WpfPlot1.Plot);        // 获取选择对象
-                LoadRtfContent(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "PlotData", "PlotData.zip"),
-                    ((TreeNode)parameter).PlotTemplate.Description);
-
-                // 刷新图层列表
-                PopulatePlotItems((List<IPlottable>)WpfPlot1.Plot.GetPlottables());
-                // 获取坐标轴对象
-                GetAxisList();
-                // 刷新图形界面
-                WpfPlot1.Refresh();
-            }
-
-            // 如果是 null 则表示是 json 导入进来的
-            if (parameter is TreeNode node1 && node1.PlotTemplate == null && node1.Children.Count == 0)
-            {
-
-                _previousSelectedNode = (TreeNode)parameter;        // 获取当前选中模板对象
-
-                string lgFolder = "zh-CN";
-                if (ConfigHelper.GetConfig("language") == "1")
-                {
-                    lgFolder = "en-US";
-                }
-
-                var basemapFilePath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Default", lgFolder, node1.BaseMapPath);
-
-
-                // 排除创建底图对象但是没有保存底图配置文件
-                if (FileHelper.IsFileExist(basemapFilePath))
-                {
-                    // 清空画布
-                    Refresh(true, true);
-
-                    // 根据语言-加载底图
-                    _selectedBaseInfo = PlotLoader.LoadBasePlot(WpfPlot1.Plot, basemapFilePath, _richTextBox);
-
-                    //_previousSelectedNode = (TreeNode)parameter;        // 获取当前选中模板对象
-                    NewBasePlotName = _previousSelectedNode.Name;       // 获取当前对象
-                    _richTextBox.Document.Blocks.Clear();       // 清除当前的内容
-
-                    // 获取脚本对象
-                    if( _selectedBaseInfo.requiredElements != null )
-                    {
-                        NeedParamContent = string.Join(",", _selectedBaseInfo.requiredElements);
-                    }
-
-                    // 获取脚本内容
-                    if (_selectedBaseInfo.script != null)
-                    {
-                        JsScriptContent = _selectedBaseInfo.script;
-                    }
-
-                    //LoadRtfContent(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "PlotData", "PlotData.zip"),
-                    //    ((TreeNode)parameter).PlotTemplate.Description);
-
-                    // 刷新底图
-                    Refresh();
-                }
-                else
-                {
-                    // 底图文件丢失询问是否删除
-                    Growl.Ask("当前语言底图文件丢失,是否删除该底图？", isConfirmed =>
-                    {
-                        if (isConfirmed)
-                        {
-                            RemoveBaseMapNode();
-                            RegisterPlotTemplates(true);
-                        }
-                        else
-                        {
-                            // 通知：已取消导入
-                            MessageHelper.Info("取消加载");
-                        }
-
-                        return true;
-                    });
-                }
-            }
-        }
-
-        // 点击选择导入数据投图
-        [RelayCommand]
-        private async void ImportDataPlot()
-        {
-            if (_previousSelectedNode != null)
-            {
-                var fileContent = FileHelper.ReadFile();
-                if (fileContent == null)
-                {
-                    //await _dialogCoordinator.ShowMessageAsync(this, "说明", "未选择文件\n文件存在问题");
-                }
-                else
-                {
-                    // 判别参数是否符合需求
-                    var tempNum = ContainsAllStrings(fileContent, _selectedBaseInfo.requiredElements);
-                    // 匹配成功
-                    if (tempNum == 1)
-                    {
-                        // 如果是 Json 文件投点
-                        if(_previousSelectedNode.PlotTemplate == null)
-                        {
-                            // 计算好的数据
-                            var groupedData = new Dictionary<string, List<(double, double)>>();
-                            // 错误读取的数据
-                            int skippedRows = 0;
-                            // 获取投点计算结果
-                            foreach (DataRow row in fileContent.Rows)
-                            {
-                                // 提取数据
-                                var (success, values) = NormalPlotMethod.ExtractValues(row);
-                                if (!success)
-                                {
-                                    skippedRows++;
-                                    continue;
-                                }
-
-                                // 确保 "Group" 键存在且是字符串
-                                if (!values.TryGetValue("Group", out var groupObj) || !(groupObj is string group))
-                                {
-                                    skippedRows++;
-                                    continue;
-                                }
-
-                                // 调用计算脚本
-                                var engine = new Engine();
-                                // 将字典中的值设置到 JavaScript 环境中
-                                foreach (var kvp in values)
-                                {
-                                    engine.SetValue(kvp.Key, kvp.Value);
-                                }
-                                // 执行脚本  "var result1 = K2O * Na2O; var result2 = SiO2; [result1, result2]"
-                                var script = _selectedBaseInfo.script;
-                                var results = engine.Evaluate(script).ToObject() as object[];
-
-                                //var (df1, df2) = calculatePoints(values);       // 计算数据
-
-                                if (!groupedData.ContainsKey(group))
-                                {
-                                    groupedData[group] = new List<(double, double)>();
-                                }
-                                // 添加数据
-                                groupedData[group].Add(((double)results[0], (double)results[1]));
-                            }
-
-                            NormalPlotMethod.PlotData(WpfPlot1.Plot, groupedData);
-
-                        }
-                        else
-                        {
-                            // 计算投点
-                            await _previousSelectedNode.PlotTemplate.PlotMethod(WpfPlot1.Plot, fileContent);
-                        }
-                        
-                        // 添加数据
-                        foreach (var kvp in NormalPlotMethod.pointObject)
-                        {
-                            BaseDataItems.Add(new PlotItemModel
-                            {
-                                Name = kvp.Key, // 组别的名称
-                                Plottable = (IPlottable)kvp.Value, // 对应的散点图对象
-                                ObjectType = "Scatter"
-                            });
-                        }
-
-                        // 刷新绘图
-                        WpfPlot1.Refresh();
-                    }
-                    else
-                    {
-                        if (tempNum == -2)
-                        {
-                            //await _dialogCoordinator.ShowMessageAsync(this, "说明", "匹配失败，请检查表头");
-                        }
-                        else if (tempNum == 0)
-                        {
-                            //await _dialogCoordinator.ShowMessageAsync(this, "说明", "读取表格数据为空");
-                        }
-                        else if (tempNum == -1)
-                        {
-                            //await _dialogCoordinator.ShowMessageAsync(this, "说明", "输入数据参数错误");
-                        }
-                    }
-                    return;
-                }
-
-                //await Task.Run(() =>
-                //{
-                //    DataTable dataTable = new DataTable();
-                //    _previousSelectedNode.PlotTemplate.PlotMethod(WpfPlot1.Plot, dataTable);
-                //});
-                // 使用 Dispatcher 在 UI 线程上更新 UI 元素
-                System.Windows.Application.Current.Dispatcher.Invoke(() =>
-                {
-                    // 刷新图层列表
-                    PopulatePlotItems((List<IPlottable>)WpfPlot1.Plot.GetPlottables());
-                    // 刷新图形界面
-                    WpfPlot1.Refresh();
+                    Name = templateNode.Name,
+                    TemplatePath = templateNode.GraphMapPath,
+                    ThumbnailPath = thumbnailPath,
+                    Category = GetNodePath(templateNode)
                 });
             }
+
+            UpdateBreadcrumbs(templateNode);
+            
         }
 
-        // 恢复默认绘图
-        [RelayCommand]
-        public void ReSetDefault()
+        /// <summary>
+        /// 显示分类下的模板卡片
+        /// </summary>
+        private void ShowCategoryTemplateCards(GraphMapTemplateNode categoryNode)
         {
-            if (_previousSelectedNode != null)
+            TemplateCards.Clear();
+            // 递归收集该节点下的所有模板文件
+            CollectTemplatesFromNode(categoryNode);
+            UpdateBreadcrumbs(categoryNode);
+        }
+
+        /// <summary>
+        /// 更新面包屑导航
+        /// </summary>
+        private void UpdateBreadcrumbs(GraphMapTemplateNode currentNode)
+        {
+            if (currentNode == null)
             {
-                // 如果是 Json 格式的文件
-                if(_previousSelectedNode.PlotTemplate == null)
-                {
-                    SelectTreeViewItem(_previousSelectedNode);
-                }
-                else
-                {
-                    _previousSelectedNode.PlotTemplate.DrawMethod(WpfPlot1.Plot);
-                }
-                    
-                //// 使用 Dispatcher 在 UI 线程上更新 UI 元素
-                //System.Windows.Application.Current.Dispatcher.Invoke(() =>
-                //{
-                Refresh(true);
-                //});
+                InitializeBreadcrumbs(); // 如果当前节点为空，则只显示根节点
+                return;
+            }
+
+            // 创建一个列表，用来存放从当前节点到其父节点的完整路径
+            var path = new List<GraphMapTemplateNode>();
+            var current = currentNode;
+
+            // 从当前节点开始，利用Parent属性向上遍历，直到某个节点的Parent为空
+            while (current != null && current.Parent != null)
+            {
+                path.Add(current);
+                current = current.Parent;
+            }
+
+            path.Reverse();
+
+            // 清空并重新构建面包屑集合
+            Breadcrumbs.Clear();
+            Breadcrumbs.Add(new BreadcrumbItem { Name = LanguageService.Instance["all_templates"] });
+
+            // 将路径上的所有节点添加到面包屑集合中
+            foreach (var node in path)
+            {
+                Breadcrumbs.Add(new BreadcrumbItem { Name = node.Name, Node = node });
             }
         }
 
-        // 视图复位
+        /// <summary>
+        /// 获取节点路径
+        /// </summary>
+        private string GetNodePath(GraphMapTemplateNode node)
+        {
+            // 获取父节点作为类别
+            // 如果父节点为空，则返回一个默认值
+            return node?.Parent?.Name ?? LanguageService.Instance["uncategorized"];
+        }
+
+        /// <summary>
+        /// 点击模板卡片，进入绘图模式
+        /// </summary>
         [RelayCommand]
-        public void CenterPlot()
+        private async Task SelectTemplateCard(TemplateCardViewModel card)
+        {
+            if (card == null) return;
+            TabIndex = 0;
+
+            // 切换到绘图模式
+            IsTemplateMode = false;
+            IsPlotMode = true;
+
+            // 加载模板文件
+            var templateFilePath = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Default"
+                                            , card.TemplatePath, $"{card.TemplatePath}.json");
+            await LoadAndBuildLayers(templateFilePath);
+
+            var tempRTFfile = FileHelper.FindFileOrGetFirstWithExtension(
+                    Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Default",
+                    card.TemplatePath), LanguageService.CurrentLanguage,".rtf");
+            RtfHelper.LoadRtfToRichTextBox(tempRTFfile, _richTextBox);
+        }
+
+        /// <summary>
+        /// 返回模板浏览模式
+        /// </summary>
+        [RelayCommand]
+        private void BackToTemplateMode()
+        {
+            IsTemplateMode = true;
+            IsPlotMode = false;
+
+            // 清空绘图
+            WpfPlot1?.Plot.Clear();
+            WpfPlot1?.Refresh();
+
+            // 清空图层树
+            LayerTree.Clear();
+            PropertyGridModel = null;
+
+            InitializeBreadcrumbs(); // 重置面包屑到初始状态
+            LoadAllTemplateCards();  // 重新加载全部模板卡片
+        }
+
+        /// <summary>
+        /// 面包屑导航点击
+        /// </summary>
+        [RelayCommand]
+        private void NavigateToBreadcrumb(BreadcrumbItem item)
+        {
+            if (item == null) return;
+
+            if (item.Node == null)
+            {
+                // 返回全部模板
+                LoadAllTemplateCards();
+                InitializeBreadcrumbs();
+            }
+            else
+            {
+                // 获取对应的节点
+                var targetNode = item.Node;
+
+                ShowCategoryTemplateCards(targetNode);
+            }
+        }
+
+        private static IEnumerable<LayerItemViewModel> FlattenTree(IEnumerable<LayerItemViewModel> nodes)
+        {
+            foreach (var node in nodes)
+            {
+                yield return node;
+                foreach (var child in FlattenTree(node.Children))
+                {
+                    yield return child;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 属性面板对象改变时触发
+        /// </summary>
+        /// <param name="oldValue"></param>
+        /// <param name="newValue"></param>
+        partial void OnPropertyGridModelChanged(object oldValue, object newValue)
+        {
+            // 取消显示脚本面板
+            ScriptsPropertyGrid = false;
+
+            // 如果旧的对象不为空且实现了 INotifyPropertyChanged，就取消订阅，防止内存泄漏
+            if (oldValue is INotifyPropertyChanged oldModel)
+            {
+                oldModel.PropertyChanged -= PropertyGridModel_PropertyChanged;
+            }
+
+            // 如果新的对象不为空且实现了 INotifyPropertyChanged，就订阅它的 PropertyChanged 事件
+            if (newValue is INotifyPropertyChanged newModel)
+            {
+                newModel.PropertyChanged += PropertyGridModel_PropertyChanged;
+            }
+        }
+
+        /// <summary>
+        /// 当属性面板中的值改变时，此方法被调用实现更新
+        /// </summary>
+        private void PropertyGridModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (sender == null) return;
+
+            bool needsRefresh = true;
+
+            // 坐标轴单独处理
+            if (sender is AxisDefinition axisDef)
+            {
+                needsRefresh = AxisPropertyChanged(axisDef, e);
+            }
+
+            // 网格单独处理
+            if (sender is GridDefinition gridDef)
+            {
+                needsRefresh = GridPropertyChanged(gridDef, e);
+            }
+
+            // 图例单独处理
+            if (sender is LegendDefinition legendDef)
+            {
+                needsRefresh = LegendPropertyChanged(legendDef, e);
+            }
+
+            // 标题单独处理
+            if (sender is TitleDefinition titleDef)
+            {
+                needsRefresh = TitlePropertyChanged(titleDef, e);
+            }
+
+            // 刷新 UI
+            if (needsRefresh)
+            {
+                WpfPlot1.Refresh();
+            }
+
+            var targetLayer = _selectedLayer;
+
+            // 如果图层当前不可见或未找到，则不进行任何操作
+            if (targetLayer?.Plottable == null) return;
+
+            // 处理其他 Plottable 对象的逻辑
+            if (targetLayer.Plottable != null)
+            {
+                switch (targetLayer.Plottable)
+                {
+                    // 线条
+                    case ScottPlot.Plottables.LinePlot linePlot:
+                        needsRefresh = LinePropertyChanged(linePlot, sender, e);
+                        break;
+
+                    // 文本
+                    case ScottPlot.Plottables.Text textPlot:
+                        needsRefresh = TextPropertyChanged(textPlot, sender, e);
+                        break;
+
+                    case ScottPlot.Plottables.Scatter scatterPlot:
+                        needsRefresh = ScatterPropertyChanged(scatterPlot, sender, e);
+                        break;
+                }
+            }
+
+            // 如果有必要，仅刷新一次UI
+            if (needsRefresh)
+            {
+                WpfPlot1.Refresh();
+            }
+        }
+
+        /// <summary>
+        /// 数据点对象属性更新，触发
+        /// </summary>
+        /// <param name="scatterPlot"></param>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <returns></returns>
+        private bool ScatterPropertyChanged(ScottPlot.Plottables.Scatter scatterPlot, object sender,
+            PropertyChangedEventArgs e)
+        {
+            var scatterDef = (ScatterDefinition)sender;
+            switch (e.PropertyName)
+            {
+                // 更新散点大小
+                case nameof(ScatterDefinition.StartAndEnd):
+                    MessageHelper.Info(LanguageService.Instance["disallow_modify_data_point_position"]);
+                    break;
+
+                // 更新散点大小
+                case nameof(ScatterDefinition.Size):
+                    scatterPlot.MarkerSize = scatterDef.Size;
+                    break;
+
+                // 更新散点颜色
+                case nameof(ScatterDefinition.Color):
+                    scatterPlot.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(scatterDef.Color));
+                    break;
+
+                // 更新散点标记的形状
+                case nameof(ScatterDefinition.MarkerShape):
+                    scatterPlot.MarkerShape = scatterDef.MarkerShape;
+                    break;
+                default:
+                    return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// 标题对象属性
+        /// </summary>
+        /// <param name="titleDef">标题对象</param>
+        /// <param name="e"></param>
+        /// <returns>是否刷新视图</returns>
+        private bool TitlePropertyChanged(TitleDefinition titleDef, PropertyChangedEventArgs e)
+        {
+            // 根据变化的属性名更新坐标轴
+            switch (e.PropertyName)
+            {
+                // 图表标题内容
+                case nameof(titleDef.Label):
+                    WpfPlot1.Plot.Axes.Title.Label.Text = titleDef.Label.Get();
+                    break;
+                // 图表标题字体
+                case nameof(titleDef.Family):
+                    WpfPlot1.Plot.Axes.Title.Label.FontName = titleDef.Family;
+                    break;
+                // 图表标题字体大小
+                case nameof(titleDef.Size):
+                    WpfPlot1.Plot.Axes.Title.Label.FontSize = titleDef.Size;
+                    break;
+                // 图表标题字体颜色
+                case nameof(titleDef.Color):
+                    WpfPlot1.Plot.Axes.Title.Label.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(titleDef.Color));
+                    break;
+                // 图表标题粗体
+                case nameof(titleDef.IsBold):
+                    WpfPlot1.Plot.Axes.Title.Label.Bold = titleDef.IsBold;
+                    break;
+                // 图表标题斜体
+                case nameof(titleDef.IsItalic):
+                    WpfPlot1.Plot.Axes.Title.Label.Italic = titleDef.IsItalic;
+                    break;
+
+                default:
+                    return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// 文本对象属性更新，触发
+        /// </summary>
+        /// <param name="textPlot">文本对象</param>
+        /// <param name="sender"></param>
+        private bool TextPropertyChanged(ScottPlot.Plottables.Text textPlot, object sender,
+            PropertyChangedEventArgs e)
+        {
+            var textDef = (TextDefinition)sender;
+            switch (e.PropertyName)
+            {
+                // =================================================
+                //                           内容与位置
+                // =================================================
+                // 文本位置
+                case nameof(TextDefinition.StartAndEnd):
+                    textPlot.Location = new Coordinates(textDef.StartAndEnd.X, textDef.StartAndEnd.Y);
+                    break;
+                // 文本内容
+                case nameof(TextDefinition.Content):
+                    textPlot.LabelText = textDef.Content.Get();
+                    break;
+                // 水平对齐方式
+                case nameof(TextDefinition.ContentHorizontalAlignment):
+                    switch (textDef.ContentHorizontalAlignment)
+                    {
+                        case System.Windows.HorizontalAlignment.Left:
+                            textPlot.LabelAlignment = ScottPlot.Alignment.LowerRight;
+                            break;
+                        case System.Windows.HorizontalAlignment.Center:
+                            textPlot.LabelAlignment = ScottPlot.Alignment.LowerCenter;
+                            break;
+                        case System.Windows.HorizontalAlignment.Right:
+                            textPlot.LabelAlignment = ScottPlot.Alignment.LowerLeft;
+                            break;
+                        case System.Windows.HorizontalAlignment.Stretch:
+                        default:
+                            textPlot.LabelAlignment = ScottPlot.Alignment.MiddleCenter;
+                            break;
+                    }
+                    break;
+
+                // =================================================
+                //                           字体样式
+                // =================================================
+                // 文本字体
+                case nameof(TextDefinition.Family):
+                    textPlot.LabelFontName = textDef.Family;
+                    break;
+                // 文本字体大小
+                case nameof(TextDefinition.Size):
+                    textPlot.LabelFontSize = textDef.Size;
+                    break;
+                // 文本旋转角度
+                case nameof(TextDefinition.Rotation):
+                    textPlot.LabelRotation = textDef.Rotation;
+                    break;
+                // 文本字体颜色
+                case nameof(TextDefinition.Color):
+                    textPlot.LabelFontColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(textDef.Color));
+                    break;
+                // 文本斜体
+                case nameof(TextDefinition.IsItalic):
+                    textPlot.LabelItalic = textDef.IsItalic;
+                    break;
+                // 文本粗体
+                case nameof(TextDefinition.IsBold):
+                    textPlot.LabelBold = textDef.IsBold;
+                    break;
+
+                // =================================================
+                //                           背景与边框
+                // =================================================
+                // 背景颜色
+                case nameof(TextDefinition.BackgroundColor):
+                    textPlot.LabelBackgroundColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(textDef.BackgroundColor));
+                    break;
+                // 边框颜色
+                case nameof(TextDefinition.BorderColor):
+                    textPlot.LabelBorderColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(textDef.BorderColor));
+                    break;
+                // 边框宽度
+                case nameof(TextDefinition.BorderWidth):
+                    textPlot.LabelBorderWidth = textDef.BorderWidth;
+                    break;
+                // 圆角半径
+                case nameof(TextDefinition.FilletRadius):
+                    textPlot.LabelBorderRadius = textDef.FilletRadius;
+                    break;
+
+                // =================================================
+                //                           高级渲染
+                // =================================================
+                // 抗锯齿
+                case nameof(TextDefinition.AntiAliasEnable):
+                    textPlot.LabelStyle.AntiAliasText = textDef.AntiAliasEnable;
+                    break;
+                default:
+                    return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// 线条对象属性更新，触发
+        /// </summary>
+        /// <param name="linePlot">线条对象</param>
+        /// <param name="sender"></param>
+        private bool LinePropertyChanged(ScottPlot.Plottables.LinePlot linePlot, object sender,
+            PropertyChangedEventArgs e)
+        {
+            var lineDef = (LineDefinition)sender;
+            switch (e.PropertyName)
+            {
+                case nameof(LineDefinition.Color):
+                    linePlot.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(lineDef.Color));
+                    break;
+                case nameof(LineDefinition.Width):
+                    linePlot.LineWidth = lineDef.Width;
+                    break;
+                case nameof(LineDefinition.Style):
+                    linePlot.LinePattern = GraphMapTemplateParser.GetLinePattern(lineDef.Style.ToString());
+                    break;
+                case nameof(LineDefinition.Start):
+                    linePlot.Line = new CoordinateLine(lineDef.Start.X, lineDef.Start.Y, lineDef.End.X, lineDef.End.Y);
+                    break;
+                case nameof(LineDefinition.End):
+                    linePlot.Line = new CoordinateLine(lineDef.Start.X, lineDef.Start.Y, lineDef.End.X, lineDef.End.Y);
+                    break;
+                default:
+                    return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// 坐标轴对象属性更新，触发
+        /// </summary>
+        /// <param name="axisDef"></param>
+        private bool GridPropertyChanged(GridDefinition gridDef, PropertyChangedEventArgs e)
+        {
+            // 根据变化的属性名更新坐标轴
+            switch (e.PropertyName)
+            {
+                // =================================================
+                //                           主网格线
+                // =================================================
+                case nameof(GridDefinition.MajorGridLineIsVisible):
+                    WpfPlot1.Plot.Grid.XAxisStyle.MajorLineStyle.IsVisible = gridDef.MajorGridLineIsVisible;
+                    WpfPlot1.Plot.Grid.YAxisStyle.MajorLineStyle.IsVisible = gridDef.MajorGridLineIsVisible;
+                    break;
+
+                case nameof(GridDefinition.MajorGridLineColor):
+                    WpfPlot1.Plot.Grid.XAxisStyle.MajorLineStyle.Color = ScottPlot.Color.FromHex(
+                        GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(gridDef.MajorGridLineColor));
+                    WpfPlot1.Plot.Grid.YAxisStyle.MajorLineStyle.Color = ScottPlot.Color.FromHex(
+                        GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(gridDef.MajorGridLineColor));
+                    break;
+
+                case nameof(GridDefinition.MajorGridLineWidth):
+                    WpfPlot1.Plot.Grid.XAxisStyle.MajorLineStyle.Width = gridDef.MajorGridLineWidth;
+                    WpfPlot1.Plot.Grid.YAxisStyle.MajorLineStyle.Width = gridDef.MajorGridLineWidth;
+                    break;
+
+                case nameof(GridDefinition.MajorGridLinePattern):
+                    WpfPlot1.Plot.Grid.XAxisStyle.MajorLineStyle.Pattern = GraphMapTemplateParser.GetLinePattern(gridDef.MajorGridLinePattern.ToString());
+                    WpfPlot1.Plot.Grid.YAxisStyle.MajorLineStyle.Pattern = GraphMapTemplateParser.GetLinePattern(gridDef.MajorGridLinePattern.ToString());
+                    break;
+
+                case nameof(GridDefinition.MajorGridLineAntiAlias):
+                    WpfPlot1.Plot.Grid.XAxisStyle.MajorLineStyle.AntiAlias = gridDef.MajorGridLineAntiAlias;
+                    WpfPlot1.Plot.Grid.YAxisStyle.MajorLineStyle.AntiAlias = gridDef.MajorGridLineAntiAlias;
+                    break;
+
+
+                // =================================================
+                //                           次网格线
+                // =================================================
+                case nameof(GridDefinition.MinorGridLineIsVisible):
+                    WpfPlot1.Plot.Grid.XAxisStyle.MinorLineStyle.IsVisible = gridDef.MinorGridLineIsVisible;
+                    WpfPlot1.Plot.Grid.YAxisStyle.MinorLineStyle.IsVisible = gridDef.MinorGridLineIsVisible;
+                    break;
+
+                case nameof(GridDefinition.MinorGridLineColor):
+                    WpfPlot1.Plot.Grid.XAxisStyle.MinorLineStyle.Color = ScottPlot.Color.FromHex(
+                        GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(gridDef.MinorGridLineColor));
+                    WpfPlot1.Plot.Grid.YAxisStyle.MinorLineStyle.Color = ScottPlot.Color.FromHex(
+                        GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(gridDef.MinorGridLineColor));
+                    break;
+
+                case nameof(GridDefinition.MinorGridLineWidth):
+                    WpfPlot1.Plot.Grid.XAxisStyle.MinorLineStyle.Width = gridDef.MinorGridLineWidth;
+                    WpfPlot1.Plot.Grid.YAxisStyle.MinorLineStyle.Width = gridDef.MinorGridLineWidth;
+                    break;
+
+                case nameof(GridDefinition.MinorGridLinePattern):
+                    WpfPlot1.Plot.Grid.XAxisStyle.MinorLineStyle.Pattern = GraphMapTemplateParser.GetLinePattern(gridDef.MinorGridLinePattern.ToString());
+                    WpfPlot1.Plot.Grid.YAxisStyle.MinorLineStyle.Pattern = GraphMapTemplateParser.GetLinePattern(gridDef.MinorGridLinePattern.ToString());
+                    break;
+
+                case nameof(GridDefinition.MinorGridLineAntiAlias):
+                    WpfPlot1.Plot.Grid.XAxisStyle.MinorLineStyle.AntiAlias = gridDef.MinorGridLineAntiAlias;
+                    WpfPlot1.Plot.Grid.YAxisStyle.MinorLineStyle.AntiAlias = gridDef.MinorGridLineAntiAlias;
+                    break;
+
+
+                // =================================================
+                //                           背景填充
+                // =================================================
+                case nameof(GridDefinition.GridAlternateFillingIsEnable):
+                case nameof(GridDefinition.GridFillColor1):
+                case nameof(GridDefinition.GridFillColor2):
+                    if (gridDef.GridAlternateFillingIsEnable)
+                    {
+                        WpfPlot1.Plot.Grid.XAxisStyle.FillColor1 = ScottPlot.Color.FromHex(
+                                    GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(gridDef.GridFillColor1));
+                        WpfPlot1.Plot.Grid.YAxisStyle.FillColor1 = ScottPlot.Color.FromHex(
+                                    GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(gridDef.GridFillColor1));
+                        WpfPlot1.Plot.Grid.XAxisStyle.FillColor2 = ScottPlot.Color.FromHex(
+                                    GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(gridDef.GridFillColor2));
+                        WpfPlot1.Plot.Grid.YAxisStyle.FillColor2 = ScottPlot.Color.FromHex(
+                                    GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(gridDef.GridFillColor2));
+                    }
+                    else
+                    {
+                        // 设置为透明以禁用填充
+                        WpfPlot1.Plot.Grid.XAxisStyle.FillColor1 = ScottPlot.Colors.Transparent;
+                        WpfPlot1.Plot.Grid.YAxisStyle.FillColor1 = ScottPlot.Colors.Transparent;
+                        WpfPlot1.Plot.Grid.XAxisStyle.FillColor2 = ScottPlot.Colors.Transparent;
+                        WpfPlot1.Plot.Grid.YAxisStyle.FillColor2 = ScottPlot.Colors.Transparent;
+                    }
+                    break;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// 图例对象属性更新，触发
+        /// </summary>
+        /// <param name="legendDef">图例对象</param>
+        /// <param name="e">点击属性</param>
+        /// <returns></returns>
+        private bool LegendPropertyChanged(LegendDefinition legendDef, PropertyChangedEventArgs e)
+        {
+            // 根据变化的属性名更新坐标轴
+            switch (e.PropertyName)
+            {
+                // 图例排列方向，横向或者纵向
+                case nameof(legendDef.Orientation):
+                    WpfPlot1.Plot.Legend.Orientation = legendDef.Orientation;
+                    break;
+
+                // 图例是否显示
+                case nameof(legendDef.IsVisible):
+                    WpfPlot1.Plot.Legend.IsVisible = legendDef.IsVisible;
+                    break;
+
+                // 图例位置
+                case nameof(legendDef.Alignment):
+                    WpfPlot1.Plot.Legend.Alignment = legendDef.Alignment;
+                    break;
+
+                // 字体族
+                case nameof(legendDef.Font):
+                    WpfPlot1.Plot.Legend.FontName = legendDef.Font;
+                    break;
+
+                default:
+                    return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// 坐标轴对象属性更新，触发
+        /// </summary>
+        /// <param name="axisDef"></param>
+        private bool AxisPropertyChanged(AxisDefinition axisDef, PropertyChangedEventArgs e)
+        {
+            // 根据 AxisDefinition 的 Type 获取对应的坐标轴对象
+            ScottPlot.IAxis? targetAxis = axisDef.Type switch
+            {
+                "Left" => WpfPlot1.Plot.Axes.Left,
+                "Right" => WpfPlot1.Plot.Axes.Right,
+                "Bottom" => WpfPlot1.Plot.Axes.Bottom,
+                "Top" => WpfPlot1.Plot.Axes.Top,
+                _ => null
+            };
+
+            if (targetAxis == null) return false;
+
+            // 根据变化的属性名更新坐标轴
+            switch (e.PropertyName)
+            {
+                // =================================================
+                //                           坐标轴标题
+                // =================================================
+                // 标签文本内容
+                case nameof(AxisDefinition.Label):
+                    targetAxis.Label.Text = axisDef.Label.Get();
+                    break;
+
+                // 字体族
+                case nameof(AxisDefinition.Family):
+                    targetAxis.Label.FontName = axisDef.Family;
+                    break;
+
+                // 字体大小
+                case nameof(AxisDefinition.Size):
+                    targetAxis.Label.FontSize = axisDef.Size;
+                    break;
+
+                // 字体颜色
+                case nameof(AxisDefinition.Color):
+                    targetAxis.Label.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(axisDef.Color));
+                    break;
+
+                // 粗体
+                case nameof(AxisDefinition.IsBold):
+                    targetAxis.Label.Bold = axisDef.IsBold;
+                    break;
+
+                // 斜体
+                case nameof(AxisDefinition.IsItalic):
+                    targetAxis.Label.Italic = axisDef.IsItalic;
+                    break;
+
+                // 刻度间隔
+                case nameof(AxisDefinition.TickInterval):
+                    if (axisDef.TickInterval.HasValue && axisDef.TickInterval > 0)
+                    {
+                        targetAxis.TickGenerator = new ScottPlot.TickGenerators.NumericFixedInterval(axisDef.TickInterval.Value);
+                    }
+                    else
+                    {
+                        targetAxis.TickGenerator = new ScottPlot.TickGenerators.NumericAutomatic();
+                    }
+                    break;
+
+                // =================================================
+                //                               主刻度
+                // =================================================
+                // 主刻度长度
+                case nameof(AxisDefinition.MajorTickLength):
+                    targetAxis.MajorTickStyle.Length = axisDef.MajorTickLength;
+                    break;
+
+                // 主刻度宽度
+                case nameof(AxisDefinition.MajorTickWidth):
+                    targetAxis.MajorTickStyle.Width = axisDef.MajorTickWidth;
+                    break;
+
+                // 主刻度颜色
+                case nameof(AxisDefinition.MajorTickWidthColor):
+                    targetAxis.MajorTickStyle.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(axisDef.MajorTickWidthColor));
+                    break;
+
+                // 主刻度抗锯齿
+                case nameof(AxisDefinition.MajorTickAntiAlias):
+                    targetAxis.MajorTickStyle.AntiAlias = axisDef.MajorTickAntiAlias;
+                    break;
+
+                // =================================================
+                //                               次刻度
+                // =================================================
+                // 次刻度长度
+                case nameof(AxisDefinition.MinorTickLength):
+                    targetAxis.MinorTickStyle.Length = axisDef.MinorTickLength;
+                    break;
+
+                // 次刻度宽度
+                case nameof(AxisDefinition.MinorTickWidth):
+                    targetAxis.MinorTickStyle.Width = axisDef.MinorTickWidth;
+                    break;
+
+                // 次刻度颜色
+                case nameof(AxisDefinition.MinorTickColor):
+                    targetAxis.MinorTickStyle.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(axisDef.MinorTickColor));
+                    break;
+
+                // 次刻度抗锯齿
+                case nameof(AxisDefinition.MinorTickAntiAlias):
+                    targetAxis.MinorTickStyle.AntiAlias = axisDef.MinorTickAntiAlias;
+                    break;
+                default:
+                    return false;
+
+                // =================================================
+                //                               刻度标签
+                // =================================================
+
+                // 刻度标签字体
+                case nameof(AxisDefinition.TickLableFamily):
+                    targetAxis.TickLabelStyle.FontName = axisDef.TickLableFamily;
+                    break;
+
+                // 刻度标签字体大小
+                case nameof(AxisDefinition.TickLablesize):
+                    targetAxis.TickLabelStyle.FontSize = axisDef.TickLablesize;
+                    break;
+
+                // 刻度标签字体颜色
+                case nameof(AxisDefinition.TickLablecolor):
+                    targetAxis.TickLabelStyle.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(axisDef.TickLablecolor));
+                    break;
+
+                // 刻度标签粗体
+                case nameof(AxisDefinition.TickLableisBold):
+                    targetAxis.TickLabelStyle.Bold = axisDef.TickLableisBold;
+                    break;
+
+                // 刻度标签斜体
+                case nameof(AxisDefinition.TickLableisItalic):
+                    targetAxis.TickLabelStyle.Italic = axisDef.TickLableisItalic;
+                    break;
+            }
+
+            return true;
+
+        }
+
+        /// <summary>
+        /// 点击图层对象, 在图上高亮显示, 并在属性面板显示其属性
+        /// </summary>
+        /// <param name="selectedItem">当前选中的图层对象</param>
+        [RelayCommand]
+        private void SelectLayer(LayerItemViewModel selectedItem)
+        {
+            // 获取所有可绘制的图层 (叶子节点)
+            var allPlottableLayers = FlattenTree(LayerTree)
+                                       .Where(l => l.Plottable != null && l.Children.Count == 0)
+                                       .ToList();
+
+            // 如果没有选中任何项, 或者选中的是分类文件夹
+            if (selectedItem == null || selectedItem.Children.Count > 0)
+            {
+                // 恢复所有图层的原始样式
+                foreach (var layer in allPlottableLayers)
+                {
+                    RevertLayerStyle(layer);
+                }
+
+                // 如果是分类文件夹，清空属性面板
+                PropertyGridModel = nullObject;
+                _selectedLayer = selectedItem; // 更新引用
+                WpfPlot1.Refresh();
+                return;
+            }
+
+            // --- 如果选中了一个可绘制的图层 ---
+
+            // 更新当前选中的图层引用
+            _selectedLayer = selectedItem;
+
+            // 在属性面板中显示该图层的属性
+            object? objectToInspect = selectedItem switch
+            {
+                PointLayerItemViewModel pointLayer => pointLayer.PointDefinition,
+                LineLayerItemViewModel lineLayer => lineLayer.LineDefinition,
+                TextLayerItemViewModel textLayer => textLayer.TextDefinition,
+                PolygonLayerItemViewModel polygonLayer => polygonLayer.PolygonDefinition,
+                AxisLayerItemViewModel axisLayer => axisLayer.AxisDefinition,
+                LegendLayerItemViewModel legendLayer => legendLayer.LegendDefinition,
+                ScatterLayerItemViewModel scatterLayer => scatterLayer.ScatterDefinition,
+                _ => nullObject
+            };
+            PropertyGridModel = objectToInspect;
+
+            // 应用新的高亮样式：选中的恢复原样，其他的变暗
+            foreach (var layer in allPlottableLayers)
+            {
+                if (layer == selectedItem)
+                {
+                    // 确保选中的图层是其原始样式
+                    RevertLayerStyle(layer);
+                }
+                else
+                {
+                    // 将其他图层变暗
+                    DimLayer(layer);
+                }
+            }
+
+            WpfPlot1.Refresh();
+        }
+
+        /// <summary>
+        /// 导入数据，根据类别分组，并为每个数据点创建独立图层
+        /// </summary>
+        [RelayCommand]
+        private void ImportDataPlot()
+        {
+            // 检查当前模板是否有效
+            if (CurrentTemplate?.Script == null)
+            {
+                MessageHelper.Error(LanguageService.Instance["load_valid_template_with_script"]);
+                return;
+            }
+
+            var scriptDefinition = CurrentTemplate.Script;
+
+            // 验证脚本配置
+            if (string.IsNullOrEmpty(scriptDefinition.RequiredDataSeries) ||
+                string.IsNullOrEmpty(scriptDefinition.ScriptBody))
+            {
+                MessageHelper.Error(LanguageService.Instance["incomplete_script_config"]);
+                return;
+            }
+
+            // 弹窗让用户选择文件
+            var openFileDialog = new VistaOpenFileDialog
+            {
+                Title = LanguageService.Instance["select_data_file"],
+                Filter = LanguageService.Instance["data_file_filter"],
+                Multiselect = false
+            };
+
+            if (openFileDialog.ShowDialog() != true)
+            {
+                return;
+            }
+
+            string filePath = openFileDialog.FileName;
+            DataTable dataTable;
+
+            // 使用 EPPlus 从 Excel 文件读取数据到 DataTable
+            try
+            {
+                using (var package = new ExcelPackage(new FileInfo(filePath)))
+                {
+                    var worksheet = package.Workbook.Worksheets.FirstOrDefault();
+                    if (worksheet == null || worksheet.Dimension == null)
+                    {
+                        MessageHelper.Error(LanguageService.Instance["no_valid_workbook_or_data_found"]);
+                        return;
+                    }
+
+                    dataTable = new DataTable();
+                    foreach (var firstRowCell in worksheet.Cells[1, 1, 1, worksheet.Dimension.End.Column])
+                    {
+                        dataTable.Columns.Add(firstRowCell.Text);
+                    }
+                    for (var rowNumber = 2; rowNumber <= worksheet.Dimension.End.Row; rowNumber++)
+                    {
+                        var row = worksheet.Cells[rowNumber, 1, rowNumber, worksheet.Dimension.End.Column];
+                        var newRow = dataTable.NewRow();
+                        foreach (var cell in row)
+                        {
+                            newRow[cell.Start.Column - 1] = cell.Text;
+                        }
+                        dataTable.Rows.Add(newRow);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.Error(LanguageService.Instance["read_file_failed"] + ":" + ex.Message);
+                return;
+            }
+
+            // 解析脚本中需要的数据列
+            var requiredColumns = scriptDefinition.RequiredDataSeries
+                .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                .Select(s => s.Trim())
+                .ToList();
+
+            if (requiredColumns.Count < 2)
+            {
+                MessageHelper.Error(LanguageService.Instance["script_config_error_required_data_series"]);
+                return;
+            }
+
+            // 验证Excel文件是否包含所需的列
+            var missingColumns = requiredColumns.Where(col => !dataTable.Columns.Contains(col)).ToList();
+            if (missingColumns.Any())
+            {
+                MessageHelper.Error(LanguageService.Instance["excel_missing_required_columns"] + ":" + string.Join(", ", missingColumns));
+                return;
+            }
+
+            // 提取类别列（第一个列）和其他数据列
+            string categoryColumn = requiredColumns[0];
+            var dataColumns = requiredColumns.Skip(1).ToList();
+
+            // 准备图层树的根节点和绘图样式
+            var rootDataNode = LayerTree.FirstOrDefault(c => c.Name == LanguageService.Instance["data_point"]) as CategoryLayerItemViewModel;
+            if (rootDataNode == null)
+            {
+                rootDataNode = new CategoryLayerItemViewModel(LanguageService.Instance["data_point"]);
+                LayerTree.Add(rootDataNode);
+            }
+            rootDataNode.IsExpanded = true;
+
+            var palette = new ScottPlot.Palettes.Category10();
+            int colorIndex = 0;
+
+            // 按类别列对数据进行分组
+            var groupedData = dataTable.AsEnumerable()
+                .Where(row => row[categoryColumn] != null && !string.IsNullOrEmpty(row[categoryColumn].ToString()))
+                .GroupBy(row => row.Field<string>(categoryColumn));
+
+            if (!groupedData.Any())
+            {
+                // 未能从文件中解析出有效的类别分组。请检查类别列数据
+                MessageHelper.Warning(LanguageService.Instance["failed_to_parse_category_group"]);
+                return;
+            }
+
+            // 遍历每个类别分组，为每个数据点创建图层和绘图对象
+            foreach (var group in groupedData)
+            {
+                string categoryName = group.Key;
+                if (string.IsNullOrWhiteSpace(categoryName)) continue;
+
+                // 在图层树中为该类别创建一个父节点
+                var categoryViewModel = new CategoryLayerItemViewModel(categoryName)
+                {
+                    IsExpanded = false
+                };
+                rootDataNode.Children.Add(categoryViewModel);
+
+                // 为这个类别的所有点确定一个统一的颜色
+                var groupColor = palette.GetColor(colorIndex++);
+
+                // 循环处理该类别下的每一个数据点
+                bool isFirstPointInGroup = true;
+                foreach (DataRow row in group)
+                {
+                    try
+                    {
+                        // 使用脚本计算坐标
+                        var coordinates = CalculateCoordinatesUsingScript(row, dataColumns, scriptDefinition.ScriptBody);
+                        if (coordinates == null || coordinates.Length != 2)
+                        {
+                            continue; // 跳过计算失败的数据点
+                        }
+
+                        double x = coordinates[0];
+                        double y = coordinates[1];
+
+                        // 创建 ScatterDefinition 来定义此数据点的属性
+                        var scatterDefinition = new ScatterDefinition
+                        {
+                            Color = groupColor.ToHex(),
+                        };
+                        scatterDefinition.StartAndEnd.X = x;
+                        scatterDefinition.StartAndEnd.Y = y;
+
+                        // 在ScottPlot图表上为这一个点添加散点图对象
+                        var scatterPlot = WpfPlot1.Plot.Add.Scatter(new[] { x }, new[] { y });
+
+                        WpfPlot1.Plot.MoveToBottom(scatterPlot);
+
+                        scatterPlot.Color = groupColor;
+                        scatterPlot.MarkerSize = scatterDefinition.Size;
+                        scatterPlot.MarkerShape = scatterDefinition.MarkerShape;
+
+                        // 只为每组的第一个点添加标签
+                        if (isFirstPointInGroup)
+                        {
+                            scatterPlot.Label = categoryName;
+                            isFirstPointInGroup = false;
+                        }
+                        else
+                        {
+                            scatterPlot.Label = null;
+                        }
+
+                        // 创建 ScatterLayerItemViewModel 来代表图层列表中的这一个点
+                        var scatterLayerItem = new ScatterLayerItemViewModel(scatterDefinition)
+                        {
+                            Name = $"点 ({x:F2}, {y:F2})",
+                            Plottable = scatterPlot,
+                            IsVisible = true,
+                        };
+
+                        scatterLayerItem.PropertyChanged += (s, e) =>
+                        {
+                            // 订阅视图可见
+                            if (e.PropertyName == nameof(ScatterLayerItemViewModel.IsVisible))
+                            {
+                                var layer = s as ScatterLayerItemViewModel;
+                                if (layer?.Plottable != null)
+                                {
+                                    // 直接控制图表上对应元素的可见性
+                                    layer.Plottable.IsVisible = layer.IsVisible;
+                                    // 刷新
+                                    WpfPlot1.Refresh();
+                                }
+                            }
+                        };
+
+                        // 将单个点的图层添加到对应类别的子节点下
+                        categoryViewModel.Children.Add(scatterLayerItem);
+                    }
+                    catch (Exception ex)
+                    {
+                        // 记录但不中断处理过程
+                        System.Diagnostics.Debug.WriteLine(LanguageService.Instance["error_calculating_data_point_coordinates"] + ex.Message);
+                    }
+                }
+            }
+
+            // 刷新图表和图例
+            WpfPlot1.Plot.Legend.IsVisible = true;
+            WpfPlot1.Plot.Axes.AutoScale();
+            WpfPlot1.Refresh();
+            MessageHelper.Success(LanguageService.Instance["data_import_successful"]);
+        }
+
+        /// <summary>
+        /// 使用JavaScript脚本计算坐标
+        /// </summary>
+        /// <param name="dataRow">数据行</param>
+        /// <param name="dataColumns">参与计算的数据列名</param>
+        /// <param name="scriptBody">脚本内容</param>
+        /// <returns>返回[x, y]坐标数组，失败时返回null</returns>
+        private double[] CalculateCoordinatesUsingScript(DataRow dataRow, List<string> dataColumns, string scriptBody)
+        {
+            try
+            {
+                var engine = new Jint.Engine();
+
+                // 将数据列的值注入到JavaScript环境中
+                foreach (string columnName in dataColumns)
+                {
+                    if (double.TryParse(dataRow[columnName]?.ToString(), out double value))
+                    {
+                        engine.SetValue(columnName, value);
+                    }
+                    else
+                    {
+                        // 如果无法解析为数字，注入null或0
+                        engine.SetValue(columnName, 0);
+                    }
+                }
+
+                // 执行脚本并获取结果
+                var result = engine.Evaluate(scriptBody);
+
+                // 判断返回结果类型
+                if (result.IsArray())
+                {
+                    var array = result.AsArray();
+                    if (array.Length >= 2)
+                    {
+                        var x = Convert.ToDouble(array[0].AsNumber());
+                        var y = Convert.ToDouble(array[1].AsNumber());
+                        return new double[] { x, y };
+                    }
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(LanguageService.Instance["script_execution_failed"] + ex.Message);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 降低指定图层透明度，实现遮罩效果
+        /// </summary>
+        private void DimLayer(LayerItemViewModel layer)
+            {
+                if (layer?.Plottable == null) return;
+
+                // 遮罩透明度值
+                byte dimAlpha = 60;
+
+                switch (layer.Plottable)
+                {
+                    // 线条变暗
+                    case ScottPlot.Plottables.LinePlot linePlot:
+                        linePlot.Color = linePlot.Color.WithAlpha(dimAlpha);
+                        break;
+
+                    // 文本变暗
+                    case ScottPlot.Plottables.Text textPlot:
+                        // 如果有背景色，也变暗
+                        if (textPlot.LabelBackgroundColor != Colors.Transparent)
+                        {
+                            textPlot.LabelBackgroundColor = textPlot.LabelBackgroundColor.WithAlpha(dimAlpha);
+                        }
+                        // 如果有边框，也变暗
+                        if (textPlot.LabelBorderColor != Colors.Transparent)
+                        {
+                            textPlot.LabelBorderColor = textPlot.LabelBorderColor.WithAlpha(dimAlpha);
+                        }
+                        // 文字颜色变暗
+                        textPlot.LabelFontColor = textPlot.LabelFontColor.WithAlpha(dimAlpha);
+                        break;
+
+                        // TODO: 添加其他图层类型（如点、多边形）变暗逻辑
+                }
+            }
+
+        /// <summary>
+        /// 将图层元素的样式恢复到其原始定义的状态
+        /// </summary>
+        private void RevertLayerStyle(LayerItemViewModel layer)
+        {
+            if (layer?.Plottable == null) return;
+
+            // 根据不同的图层类型恢复其原始样式
+            switch (layer.Plottable)
+            {
+                // 恢复线条样式
+                case ScottPlot.Plottables.LinePlot linePlot:
+                    var lineDef = (layer as LineLayerItemViewModel)?.LineDefinition;
+                    if (lineDef == null) break;
+                    // 从其定义对象中读取原始属性并应用
+                    linePlot.LineWidth = lineDef.Width;
+                    linePlot.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(lineDef.Color));
+                    break;
+
+                // 恢复文本样式
+                case ScottPlot.Plottables.Text textPlot:
+                    var textDef = (layer as TextLayerItemViewModel)?.TextDefinition;
+                    if (textDef == null) break;
+
+                    // 恢复原始颜色
+                    textPlot.LabelFontColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(textDef.Color));
+                    textPlot.LabelBackgroundColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(textDef.BackgroundColor));
+                    textPlot.LabelBorderColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(textDef.BorderColor));
+                    textPlot.LabelBorderWidth = textDef.BorderWidth;
+                    break;
+
+                    // TODO: 在此为其他图层类型（如点、多边形）添加恢复逻辑
+            }
+        }
+
+        /// <summary>
+        /// 加载模板、构建图层树并刷新绘图
+        /// </summary>
+        /// <param name="templatePath">模板文件的路径</param>
+        private async Task LoadAndBuildLayers(string templatePath)
+        {
+            if (!File.Exists(templatePath))
+            {
+                // 文件不存在
+                return;
+            }
+
+            // 读取并反序列化模板文件
+            var templateJsonContent = File.ReadAllText(templatePath);
+            var options = new JsonSerializerOptions { 
+                PropertyNameCaseInsensitive = true,
+                Converters = { new System.Text.Json.Serialization.JsonStringEnumConverter() }
+            };
+            CurrentTemplate = JsonSerializer.Deserialize<GraphMapTemplate>(templateJsonContent, options);
+
+            if (CurrentTemplate == null) return;
+
+            // 根据加载的模板数据，构建【图层树】
+            BuildLayerTreeFromTemplate(CurrentTemplate);
+
+            // 根据新建的【图层树】来渲染前端
+            RefreshPlotFromLayers();
+        }
+
+        /// <summary>
+        /// 使用当前加载的模板数据填充 LayerTree 集合
+        /// 负责添加图层对象
+        /// </summary>
+        private void BuildLayerTreeFromTemplate(GraphMapTemplate template)
+        {
+            LayerTree.Clear();
+            var info = template.Info;
+
+            // 坐标轴图层
+            var axesCategory = new CategoryLayerItemViewModel(LanguageService.Instance["axes"]);
+            // 遍历添加坐标轴对象
+            foreach (var axis in info.Axes)
+            {
+                var axisLayer = new AxisLayerItemViewModel(axis);
+
+                // 监听 IsVisible 属性的变化，当它改变时，刷新整个图表
+                axisLayer.PropertyChanged += (s, e) =>
+                {
+                    if (e.PropertyName == nameof(AxisLayerItemViewModel.IsVisible))
+                    {
+                        RefreshPlotFromLayers();
+                    }
+                };
+                axesCategory.Children.Add(axisLayer);
+            }
+            // 空对象不添加图层
+            if (axesCategory.Children.Any()) LayerTree.Add(axesCategory);
+
+            // 点图层
+            var pointsCategory = new CategoryLayerItemViewModel(LanguageService.Instance["point"]);
+            for (int i = 0; i < info.Points.Count; i++)
+            {
+                var pointLayer = new PointLayerItemViewModel(info.Points[i], i);
+                // 监听每个图层的 IsVisible 变化，自动刷新
+                pointLayer.PropertyChanged += (s, e) => { 
+                    if (e.PropertyName == nameof(PointLayerItemViewModel.IsVisible)) RefreshPlotFromLayers(); };
+                pointsCategory.Children.Add(pointLayer);
+            }
+            if (pointsCategory.Children.Any()) LayerTree.Add(pointsCategory);
+
+            // 线图层
+            var linesCategory = new CategoryLayerItemViewModel(LanguageService.Instance["line"]);
+            for (int i = 0; i < info.Lines.Count; i++)
+            {
+                var lineLayer = new LineLayerItemViewModel(info.Lines[i], i);
+                lineLayer.PropertyChanged += (s, e) => { 
+                    if (e.PropertyName == nameof(LineLayerItemViewModel.IsVisible)) 
+                        RefreshPlotFromLayers(); };
+                linesCategory.Children.Add(lineLayer);
+            }
+            if (linesCategory.Children.Any()) LayerTree.Add(linesCategory);
+
+
+            // 文本图层
+            var textCategory = new CategoryLayerItemViewModel(LanguageService.Instance["text"]);
+            for (int i = 0; i < info.Texts.Count; i++)
+            {
+                var textLayer = new TextLayerItemViewModel(info.Texts[i], i);
+                // 监听每个图层的 IsVisible 变化，自动刷新
+                textLayer.PropertyChanged += (s, e) => { if (e.PropertyName == nameof(TextLayerItemViewModel.IsVisible)) RefreshPlotFromLayers(); };
+                textCategory.Children.Add(textLayer);
+            }
+            if (textCategory.Children.Any()) LayerTree.Add(textCategory);
+
+
+            // 注释图层
+            var annotationCategory = new CategoryLayerItemViewModel(LanguageService.Instance["annotation"]);
+            for (int i = 0; i < info.Annotations.Count; i++)
+            {
+                var annotationLayer = new AnnotationLayerItemViewModel(info.Annotations[i], i);
+                // 监听每个图层的 IsVisible 变化，自动刷新
+                annotationLayer.PropertyChanged += (s, e) => { if (e.PropertyName == nameof(AnnotationLayerItemViewModel.IsVisible)) RefreshPlotFromLayers(); };
+                annotationCategory.Children.Add(annotationLayer);
+            }
+            if (annotationCategory.Children.Any()) LayerTree.Add(annotationCategory);
+
+            // todo: 添加对其他绘图对象的处理
+        }
+
+        /// <summary>
+        /// 根据当前的 LayerTree 状态，完全重绘 ScottPlot 图表
+        /// 负责根据图层对象绘制图像，第一次加载对象
+        /// </summary>
+        public void RefreshPlotFromLayers()
+        {
+            if (WpfPlot1 == null) return;
+
+            WpfPlot1.Plot.Clear();
+
+            WpfPlot1.Plot.Add.Plottable(CrosshairPlot);
+
+            var allNodes = FlattenTree(LayerTree); // 使用辅助方法获取所有节点
+
+            // 单独处理坐标轴
+            foreach (var item in allNodes)
+            {
+                if (item is AxisLayerItemViewModel axisLayer)
+                {
+                    ApplyAxisSettings(axisLayer);
+                    continue;
+                }
+
+                item.Plottable = null; // 清空旧引用
+
+                if (!item.IsVisible) continue;      // 如果图层不可见就跳过处理
+
+
+                if (item is LineLayerItemViewModel lineLayer)
+                {
+                    CreateLinePlottable(lineLayer);
+                }
+                else if (item is TextLayerItemViewModel textLayer)
+                {
+                    CreateTextPlottable(textLayer);
+                }
+                else if (item is ScatterLayerItemViewModel scatterLayer)
+                {
+
+                    return;
+                }
+                // todo: 添加对其他绘图对象的处理
+            }
+
+
+            // 处理图例
+            WpfPlot1.Plot.Legend.Alignment = CurrentTemplate.Info.Legend.Alignment;
+            WpfPlot1.Plot.Legend.FontName = (LanguageService.CurrentLanguage == "zh-CN") ?
+                "微软雅黑" : CurrentTemplate.Info.Legend.Font;
+            WpfPlot1.Plot.Legend.Orientation = CurrentTemplate.Info.Legend.Orientation;
+            WpfPlot1.Plot.Legend.IsVisible = CurrentTemplate.Info.Legend.IsVisible;
+
+            // 处理标题
+            WpfPlot1.Plot.Axes.Title.Label.Text = CurrentTemplate.Info.Title.Label.Get();
+            // 图表标题字体
+            WpfPlot1.Plot.Axes.Title.Label.FontName = (LanguageService.CurrentLanguage == "zh-CN") ? 
+                "微软雅黑" : CurrentTemplate.Info.Title.Family;
+            // 图表标题字体大小
+            WpfPlot1.Plot.Axes.Title.Label.FontSize = CurrentTemplate.Info.Title.Size;
+            // 图表标题字体颜色
+            WpfPlot1.Plot.Axes.Title.Label.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(CurrentTemplate.Info.Title.Color));
+            // 图表标题粗体
+            WpfPlot1.Plot.Axes.Title.Label.Bold = CurrentTemplate.Info.Title.IsBold;
+            // 图表标题斜体
+            WpfPlot1.Plot.Axes.Title.Label.Italic = CurrentTemplate.Info.Title.IsItalic;
+
+            // 获取脚本对象
+            CurrentScript = CurrentTemplate.Script;
+
+            WpfPlot1.Plot.Axes.AutoScale();
+            WpfPlot1.Refresh();
+        }
+
+        // 设置坐标轴
+        private void ApplyAxisSettings(AxisLayerItemViewModel axisLayer)
+        {
+            var axisDef = axisLayer.AxisDefinition;
+
+            // 根据类型获取 ScottPlot 中的坐标轴对象
+            ScottPlot.IAxis? targetAxis = axisDef.Type switch
+            {
+                "Left" => WpfPlot1.Plot.Axes.Left,
+                "Right" => WpfPlot1.Plot.Axes.Right,
+                "Bottom" => WpfPlot1.Plot.Axes.Bottom,
+                "Top" => WpfPlot1.Plot.Axes.Top,
+                _ => null
+            };
+
+            if (targetAxis == null) return;
+
+            // 将 ViewModel 中的 IsVisible 状态同步到坐标轴
+            targetAxis.IsVisible = axisLayer.IsVisible;
+
+            // 如果坐标轴可见，才应用其他详细样式
+            if (axisLayer.IsVisible)
+            {
+                if (LanguageService.CurrentLanguage == "zh-CN")
+                {
+                    targetAxis.Label.FontName = "微软雅黑";
+                }
+                else
+                {
+                    targetAxis.Label.FontName = axisDef.Family;
+                }
+                targetAxis.Label.Text = axisDef.Label.Get();
+                targetAxis.Label.FontSize = axisDef.Size;
+                targetAxis.Label.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(axisDef.Color));
+                targetAxis.Label.Bold = axisDef.IsBold;
+                targetAxis.Label.Italic = axisDef.IsItalic;
+
+                if (axisDef.TickInterval.HasValue && axisDef.TickInterval > 0)
+                {
+                    targetAxis.TickGenerator = new ScottPlot.TickGenerators.NumericFixedInterval(axisDef.TickInterval.Value);
+                }
+                else
+                {
+                    targetAxis.TickGenerator = new ScottPlot.TickGenerators.NumericAutomatic();
+                }
+            }
+        }
+
+        // 创建线条绘图对象
+        private void CreateLinePlottable(LineLayerItemViewModel lineLayer)
+        {
+            var lineDef = lineLayer.LineDefinition;
+            if (lineDef.Start == null || lineDef.End == null) return;
+            var linePlot = WpfPlot1.Plot.Add.Line(lineDef.Start.X, lineDef.Start.Y, lineDef.End.X, lineDef.End.Y);
+
+            // 应用样式
+            linePlot.LineWidth = lineDef.Width;
+            linePlot.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(lineDef.Color));
+            linePlot.LinePattern = GraphMapTemplateParser.GetLinePattern(lineDef.Style.ToString());
+
+            // 存储引用
+            lineLayer.Plottable = linePlot;
+        }
+
+        // 创建文本绘图对象
+        private void CreateTextPlottable(TextLayerItemViewModel textLayer)
+        {
+            var textDef = textLayer.TextDefinition;
+            var textPlot = WpfPlot1.Plot.Add.Text(textDef.Content.Get(), new Coordinates(textDef.StartAndEnd.X, textDef.StartAndEnd.Y));
+
+            // 应用样式
+            textPlot.LabelFontName = (LanguageService.CurrentLanguage == "zh-CN") ? "微软雅黑" : textDef.Family;
+            textPlot.LabelText = textDef.Content.Get();
+            textPlot.LabelFontSize = textDef.Size;
+            textPlot.LabelFontColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex((textDef.Color)));
+            textPlot.LabelBold = textDef.IsBold;
+            textPlot.LabelItalic = textDef.IsItalic;
+
+            // 存储引用
+            textLayer.Plottable = textPlot;
+        }
+
+        /// <summary>
+        /// 视图复位
+        /// </summary>
+        [RelayCommand]
+        private void CenterPlot()
         {
             WpfPlot1.Plot.Axes.AutoScale();
             WpfPlot1.Refresh();
         }
 
-        // 取消选中
+        /// <summary>
+        /// 取消选择
+        /// </summary>
         [RelayCommand]
-        public void CancelSelected()
+        private void CancelSelected()
         {
-            // 取消选择图层对象
-            LayersSelection(null);
-            // 刷新属性
-            SetTrue(null);
-            // 获取坐标轴对象
-            GetAxisList();
-            // 刷新图层列表
-            PopulatePlotItems((List<IPlottable>)WpfPlot1.Plot.GetPlottables());
-        }
+            // 获取所有可绘制的图层
+            var allPlottableLayers = FlattenTree(LayerTree)
+                                       .Where(l => l.Plottable != null && l.Children.Count == 0)
+                                       .ToList();
 
-        // 图例设置
-        [RelayCommand]
-        public void LegendSetting()
-        {
-            SetTrue("Legend");
-            GetLegendAttributeMapping();
-        }
-
-        // 绘图设置
-        [RelayCommand]
-        public void PlotSetting()
-        {
-            SetTrue("Main");
-            GetPlotAttributeMapping();
-        }
-
-        // 展示定位轴
-        [RelayCommand]
-        public void LocationAxis()
-        {
-            if(crosshair == null)
+            // 恢复所有图层的原始样式
+            foreach (var layer in allPlottableLayers)
             {
-                crosshair = WpfPlot1.Plot.Add.Crosshair(0, 0);
+                RevertLayerStyle(layer);
             }
-            else
-            {
-                if(crosshair.IsVisible == false)
-                {
-                    crosshair.IsVisible = true;
-                }
-                else
-                {
-                    WpfPlot1.Plot.Remove(crosshair);
-                    crosshair = null;
-                }
 
-            }
             WpfPlot1.Refresh();
+            // 清楚图层列表选中状态
+            if (_selectedLayer != null)
+            {
+                _selectedLayer.IsSelected = false;
+                _selectedLayer = null;
+            }
+            PropertyGridModel = nullObject;   // 取消属性编辑器
+            ScriptsPropertyGrid = false;
+        }
+
+        /// <summary>
+        /// 切换十字定位轴的显示/隐藏状态
+        /// </summary>
+        [RelayCommand]
+        private void LocationAxis()
+        {
+
+            // 切换追踪模式的状态
+            IsCrosshairVisible = !IsCrosshairVisible;
+        }
+
+        /// <summary>
+        /// 图例设置
+        /// </summary>
+        [RelayCommand]
+        private void LegendSetting()
+        {
+            PropertyGridModel = CurrentTemplate.Info.Legend;
+        }
+
+        /// <summary>
+        /// 网格设置
+        /// </summary>
+        [RelayCommand]
+        private void GridSetting()
+        {
+            PropertyGridModel = CurrentTemplate.Info.Grid;
+        }
+
+        /// <summary>
+        /// 脚本设置
+        /// </summary>
+        [RelayCommand]
+        private void ScriptSetting()
+        {
+            // 清空属性面板
+            PropertyGridModel = nullObject;
+            ScriptsPropertyGrid = !ScriptsPropertyGrid;
+        }
+
+        /// <summary>
+        /// 标题属性
+        /// </summary>
+        [RelayCommand]
+        private void PlotSetting()
+        {
+            PropertyGridModel = CurrentTemplate.Info.Title;
         }
 
         // 导出图片
@@ -2639,520 +1807,104 @@ namespace GeoChemistryNexus.ViewModels
 
             int tempWidth = (int)WpfPlot1.Plot.LastRender.DataRect.Width;
             int tempHeight = (int)WpfPlot1.Plot.LastRender.DataRect.Height;
-            WpfPlot1.Plot.Save(temp, (int)(tempWidth*1.25), (int)(tempHeight*1.25));
+            WpfPlot1.Plot.Save(temp, (int)(tempWidth * 1.25), (int)(tempHeight * 1.25));
         }
 
-        // ========================================================
-        // ======================自定义底图========================
-        // ========================================================
-
-        // 检查脚本
+        /// <summary>
+        /// 将当前图像复制到系统剪贴板
+        /// </summary>
         [RelayCommand]
-        public void CheckContent()
+        private void CopyToClipboard()
         {
-            string output = "";
-            // 检查参数
-            if (NeedParamContent == "" || NeedParamContent == null)
+            if (WpfPlot1 == null)
             {
-                // 通知：参数为空
-                output += LanguageService.Instance["ParameterNull"];
-            }
-            else
-            {
-                output += CheckParameter(NeedParamContent);
-            }
-            // 检查脚本
-            if (JsScriptContent == "" || JsScriptContent == null)
-            {
-                // 脚本为空
-                output += "\n" + LanguageService.Instance["JsNull"];
-            }
-            else
-            {
-                output += "\n" + CheckJsScript(JsScriptContent);
-            }
-            MessageHelper.Info(output);
-        }
-
-        // 新建底图
-        [RelayCommand]
-        public void NewBasemap()
-        {
-            // 显示弹窗
-            SetTrue("Popup");
-        }
-
-        // 确认新建底图
-        [RelayCommand]
-        public void ConfirmNewBasemap()
-        {
-            // todo: 参数检查
-            //if (!IsValidLanguageString(NewBasePlotName))
-            //{
-            //    MessageHelper.Info("名称：格式错误");
-            //    return;
-            //}
-
-            if (!IsValidCommaSeparatedString(BasePlotType))
-            {
-                // 通知：类别格式错误
-                MessageHelper.Info(LanguageService.Instance["CategoryFormatError"]);
+                // 如果绘图控件为空，则不执行任何操作
                 return;
             }
 
-            // 获取对象
-            ListNodeConfig listNodeConfig = new ListNodeConfig();
-            listNodeConfig.rootNode = BasePlotType.Split(',', StringSplitOptions.RemoveEmptyEntries);
-            listNodeConfig.baseMapPath = BasePlotType.Replace(",","_") + ".json";
-            listNodeConfig.baseMapLg = BasePlotLanguage;    // 获取语言
-
-            // 获取文件路径
-            string tempNewPath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "PlotListCustom.json");
-            // Json文件添加内容保存
-            JsonHelper.AddToJsonFile(listNodeConfig, tempNewPath);
-
-            RegisterPlotTemplates(true);
-
-            // 新建底图
-            NewPlot();
-
-            _previousSelectedNode = FindTreeNodeByConfig(RootTreeNode, listNodeConfig);
-
-            // 通知:新建底图成功
-            MessageHelper.Info(LanguageService.Instance["NewBasemapSuccess"]);
-
-            // 关闭弹窗
-            SetTrue(null);
-        }
-
-        // 取消新建底图
-        [RelayCommand]
-        public void CancelNewBasemap()
-        {
-            // 关闭弹窗
-            SetTrue(null);
-        }
-
-        // 导入底图
-        [RelayCommand]
-        public void LoadBasemap()
-        {
-            // 获取底图路径
-            string filter = "JSON Files (*.json)|*.json|All Files (*.*)|*.*";
-            var filePath = FileHelper.GetFilePath(filter);
-
-            if(filePath != null)
+            try
             {
-                BasePlotConfig config = null;
+                int tempWidth = (int)WpfPlot1.Plot.LastRender.DataRect.Width;
+                int tempHeight = (int)WpfPlot1.Plot.LastRender.DataRect.Height;
+                // 从 ScottPlot 控件获取图像的字节数据
+                byte[] imageBytes = WpfPlot1.Plot.GetImageBytes((int)(tempWidth * 1.25), (int)(tempHeight * 1.25));
 
-                if (!File.Exists(filePath))
+                // 将字节数组转换为 WPF 的 BitmapSource
+                var bitmapImage = new BitmapImage();
+                using (var stream = new MemoryStream(imageBytes))
                 {
-                    Console.WriteLine($"文件不存在：{filePath}");
+                    stream.Position = 0; // 重置流的位置
+                    bitmapImage.BeginInit();
+                    bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmapImage.StreamSource = stream;
+                    bitmapImage.EndInit();
+                }
+
+                // 冻结图像，使其可以安全地被其他线程访问
+                bitmapImage.Freeze();
+
+                // 将图像放置到剪贴板
+                Clipboard.SetImage(bitmapImage);
+
+                // 前端通知
+                MessageHelper.Success(LanguageService.Instance["image_copied_to_clipboard"]);
+            }
+            catch (Exception ex)
+            {
+
+                MessageHelper.Error(LanguageService.Instance["copy_failed"] + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 清除所有导入的数据点
+        /// </summary>
+        [RelayCommand]
+        private async Task ClearImportedDataAsync()
+        {
+            bool isConfirmed = await MessageHelper.ShowAsyncDialog(
+                LanguageService.Instance["confirm_clear_data_points"],
+                LanguageService.Instance["Cancel"],
+                LanguageService.Instance["Confirm"]);
+
+            if(isConfirmed )
+            {
+                // 在图层列表中查找名为 "数据点" 的根分类图层
+                var dataRootNode = LayerTree.FirstOrDefault(node => node is CategoryLayerItemViewModel vm && vm.Name == "数据点");
+
+                // 如果没有找到该节点，说明没有导入数据
+                if (dataRootNode == null)
+                {
+                    MessageHelper.Info(LanguageService.Instance["no_imported_data_to_clear"]);
                     return;
                 }
-                // 读取JSON文件并反序列化
-                string json = File.ReadAllText(filePath);
-                config = JsonHelper.Deserialize<BasePlotConfig>(json);
-                if (config == null)
+
+                // 使用辅助方法 `FlattenTree` 获取 "数据点" 分类下的所有子图层
+                var allDataLayers = FlattenTree(dataRootNode.Children).ToList();
+
+                // 遍历所有找到的数据点图层，并从 ScottPlot 图表中移除它们对应的 Plottable 对象
+                foreach (var layer in allDataLayers)
                 {
-                    Console.WriteLine("反序列化失败");
-                    return;
+                    if (layer.Plottable != null)
+                    {
+                        WpfPlot1.Plot.Remove(layer.Plottable);
+                    }
                 }
 
-                // 判断底图版本
-                double mapVersion = Convert.ToDouble(System.Diagnostics.FileVersionInfo.GetVersionInfo(
-                    System.Reflection.Assembly.GetExecutingAssembly().Location).FileVersion);
-                if (Convert.ToDouble(config.BaseMapVersion) >= mapVersion)
+                // 从图层树的根集合中移除 "数据点" 这个顶级分类节点
+                LayerTree.Remove(dataRootNode);
+
+                // 检查属性面板当前是否正在显示某个已被删除的图层
+                // 如果是，则清空属性面板，避免悬空引用
+                if (_selectedLayer != null && (allDataLayers.Contains(_selectedLayer) || _selectedLayer == dataRootNode))
                 {
-                    ListNodeConfig listNodeConfig = new ListNodeConfig();
-
-                    string tempFolder = "Default";
-
-                    // 如果是编辑模式导入的底图
-                    if (IsEditMode)
-                    {
-                        tempFolder = "Custom";
-                    }
-
-                    string lgFolder = "zh-Hans";
-                    if (ConfigHelper.GetConfig("language") == "1")
-                    {
-                        lgFolder = "en-US";
-                    }
-
-                    string tempPath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", tempFolder, lgFolder,
-                        FileHelper.GetFileName(filePath));
-
-                    // 判断导入的底图是否已存在
-                    if (FileHelper.IsFileExist(tempPath))
-                    {
-                        Growl.Ask(LanguageService.Instance["BasemapExisted"], isConfirmed =>
-                        {
-                            if (isConfirmed)
-                            {
-                                // 加载底图
-                                BaseInfo baseInfo = PlotLoader.LoadBasePlot(WpfPlot1.Plot, filePath, _richTextBox);
-
-                                // 复制文件到指定路径
-                                var targetPath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", tempFolder, lgFolder);
-                                FileHelper.CopyFile(filePath, targetPath);
-
-                                // 加载侧边列表
-                                RegisterPlotTemplates();
-
-                                // 设置当前选中底图为当前
-                                _previousSelectedNode = FindTreeNodeByConfig(RootTreeNode, listNodeConfig);
-
-                                // 视角居中
-                                CenterPlot();
-
-                                // 刷新底图
-                                //Refresh();
-                            }
-                            else
-                            {
-                                // 通知：已取消导入
-                                MessageHelper.Info(LanguageService.Instance["CancelImport"]);
-                            }
-
-                            return true;
-                        });
-                    }
-                    else
-                    {
-                        // 加载底图
-                        BaseInfo baseInfo = PlotLoader.LoadBasePlot(WpfPlot1.Plot, filePath, _richTextBox);
-
-                        // 复制文件到指定路径
-                        var targetPath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", tempFolder, lgFolder);
-                        FileHelper.CopyFile(filePath, targetPath);
-
-                        
-                        listNodeConfig.rootNode = baseInfo.rootNode;
-                        listNodeConfig.baseMapPath = System.IO.Path.GetFileName(filePath);
-
-                        
-
-                        // 如果是编辑模式导入的底图
-                        if (IsEditMode)
-                        {
-                            targetPath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "PlotListCustom.json");
-                        }
-                        else
-                        {
-                            targetPath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "PlotList.json");
-                        }
-
-                        // 写入列表
-                        JsonHelper.AddToJsonFile(listNodeConfig, targetPath);
-
-                        // 加载侧边列表
-                        //AddOrFindPath(RootTreeNode, baseInfo, filePath);
-                        RegisterPlotTemplates();
-
-                        // 设置当前选中底图为当前
-                        _previousSelectedNode = FindTreeNodeByConfig(RootTreeNode, listNodeConfig);
-
-                        // 视角居中
-                        CenterPlot();
-
-                        // 刷新底图
-                        //Refresh();
-                    }
-
-
-
-                }
-                else
-                {
-                    // 通知：导入的底图版本过低，请使用版本大于" + mapVersion + "的底图
-                    MessageHelper.Warning(LanguageService.Instance["BasemapVersionToLow1"] + mapVersion +
-                        LanguageService.Instance["BasemapVersionToLow2"]);
-                }
-            }
-        }
-
-        // 退出编辑
-        [RelayCommand]
-        public void ExitEditModel()
-        {
-            // 判断是否修改了底图属性，如果修改了提示保存
-            
-            // 清除底图文件内存
-            BasePlotConfigObject = null;
-
-            //退出底图编辑模式
-            IsEditMode = false;
-            IsPlotMode = true;
-
-            // 加载正常的底图列表
-            RegisterPlotTemplates();
-
-            // 刷新绘图
-            Refresh(false, true);
-
-            // 恢复右键菜单
-            WpfPlot1.UserInputProcessor.IsEnabled = true;// 禁用右键菜单
-
-            // 刷新绘图
-            Refresh(true);
-        }
-
-        // 保存底图
-        [RelayCommand]
-        public void SaveBaseMap()
-        {
-            BasePlotConfigObject = new BasePlotConfig();
-            BasePlotConfigObject.Title = WpfPlot1.Plot.Axes.Title.Label.Text;    // 绘图标题
-
-            BasePlotConfigObject.BaseMapVersion =
-                System.Diagnostics.FileVersionInfo.GetVersionInfo(
-                    System.Reflection.Assembly.GetExecutingAssembly().Location).FileVersion;    // 图表Json版本号
-
-            // 保存类别名称
-            BasePlotConfigObject.baseInfo.rootNode = _previousSelectedNode.rootNode;
-
-            // 保存需要的参数和脚本
-            //BasePlotConfigObject.baseInfo.requiredElements = new string[] { "Group", "K2O", "Na2O", "SiO2" };
-            if (NeedParamContent == null || NeedParamContent =="")
-            {
-                // 通知:投图参数未填写
-                MessageHelper.Info(LanguageService.Instance["ParameterNotFilledIn"]);
-            }
-            else
-            {
-                BasePlotConfigObject.baseInfo.requiredElements = NeedParamContent.Split(",");
-            };
-
-            if (JsScriptContent == null || JsScriptContent == "")
-            {
-                // 通知:投图脚本未填写
-                MessageHelper.Info(LanguageService.Instance["ScNotFilledIn"]);
-            }
-            else
-            {
-                BasePlotConfigObject.baseInfo.script = JsScriptContent;
-            };
-
-            //坐标轴标题
-            BasePlotConfigObject.PlotConfig = new PlotConfig()
-            {
-                title = WpfPlot1.Plot.Axes.Title.Label.Text,                        // 图表标题
-                titleFontSize = WpfPlot1.Plot.Axes.Title.Label.FontSize,            // 图表标题字体大小
-                titleColor = WpfPlot1.Plot.Axes.Title.Label.ForeColor.ToHex(),      // 图表标题颜色
-                x = WpfPlot1.Plot.Axes.Bottom.Label.Text,                           // X 轴标题
-                xFontSize = WpfPlot1.Plot.Axes.Bottom.Label.FontSize,               // X 标题大小   
-                y = WpfPlot1.Plot.Axes.Left.Label.Text,                             // Y 轴标题
-                yFontSize = WpfPlot1.Plot.Axes.Left.Label.FontSize,                 // Y 标题大小
-                axisTitleColor = WpfPlot1.Plot.Axes.Left.Label.ForeColor.ToHex(),    // 轴标题颜色 
-
-                // 背景
-                isShowMainGrid = WpfPlot1.Plot.Grid.IsVisible,                          // 是否显示网格
-                mainGridColor = WpfPlot1.Plot.Grid.MajorLineColor.ToHex(),              // 主网格颜色
-                mainGridSize = WpfPlot1.Plot.Grid.XAxisStyle.MajorLineStyle.Width,      // 主网格宽度
-                isShowMinorGrid = (WpfPlot1.Plot.Grid.XAxisStyle.MinorLineStyle.Width > 0),       // 是否显示网格
-                minorGridColor = WpfPlot1.Plot.Grid.XAxisStyle.MinorLineStyle.Color.ToHex(),          // 是否显示网格
-                minorGridSize = WpfPlot1.Plot.Grid.XAxisStyle.MinorLineStyle.Width,               // 是否显示网格
-            };
-
-            // X 坐标轴
-            BasePlotConfigObject.PlotAxes.XAxes = new AxesConfig()
-            {
-                isShowMinorGrid = WpfPlot1.Plot.Axes.Bottom.IsVisible,
-                axesTickFontSize = WpfPlot1.Plot.Axes.Bottom.Label.FontSize,
-                //axesTickSpacing = ((ScottPlot.TickGenerators.NumericAutomatic)WpfPlot1.Plot.Axes.Bottom.TickGenerator).Interval,
-                Limit = new double[] { WpfPlot1.Plot.Axes.Bottom.GetRange().Min, WpfPlot1.Plot.Axes.Bottom.GetRange().Max },
-                axesColor = WpfPlot1.Plot.Axes.Bottom.TickLabelStyle.ForeColor.ToHex(),
-                //yLimit = new double[] { WpfPlot1.Plot.Axes.Left.GetRange().Min, WpfPlot1.Plot.Axes.Left.GetRange().Max, }
-            };
-
-            // Y 坐标轴
-            BasePlotConfigObject.PlotAxes.XAxes = new AxesConfig()
-            {
-                isShowMinorGrid = WpfPlot1.Plot.Axes.Left.IsVisible,
-                axesTickFontSize = WpfPlot1.Plot.Axes.Left.Label.FontSize,
-                //axesTickSpacing = ((ScottPlot.TickGenerators.NumericFixedInterval)WpfPlot1.Plot.Axes.Left.TickGenerator).Interval,
-                Limit = new double[] { WpfPlot1.Plot.Axes.Left.GetRange().Min, WpfPlot1.Plot.Axes.Left.GetRange().Max },
-                axesColor = WpfPlot1.Plot.Axes.Left.TickLabelStyle.ForeColor.ToHex(),
-                //yLimit = new double[] { WpfPlot1.Plot.Axes.Left.GetRange().Min, WpfPlot1.Plot.Axes.Left.GetRange().Max, }
-            };
-
-            // 图表 线段 多边形 注释 存储
-            foreach (var tempItem in WpfPlot1.Plot.GetPlottables())
-            {
-                // 查找到一个多边形就存储一个
-                if (tempItem.GetType().Name == "Polygon")
-                {
-                    // 创建多边形对象
-                    var tempPolygon = new PolygonConfig()
-                    {
-                        Points = new List<PointConfig>(),
-                        fillColor = ((ScottPlot.Plottables.Polygon)tempItem).FillColor.ToHex(),
-                    };
-                    // 记录点位
-                    foreach(var point in ((ScottPlot.Plottables.Polygon)tempItem).Coordinates)
-                    {
-                        tempPolygon.Points.Add(new PointConfig() { x = point.X, y = point.Y});
-                    }
-                    // 存储多边形
-                    BasePlotConfigObject.Polygons.Add(tempPolygon);
+                    PropertyGridModel = nullObject;
+                    _selectedLayer = null;
                 }
 
-                // 存储线段对象
-                if (tempItem.GetType().Name == "LinePlot")
-                {
-                    LinePlot linePlot = ((LinePlot)tempItem);
-                    // 创建线段对象
-                    var tempLine = new LineConfig()
-                    {
-                        isShow = linePlot.IsVisible,
-                        start = new PointConfig() { x = linePlot.Start.X, y = linePlot.Start.Y },
-                        end = new PointConfig() { x = linePlot.End.X, y = linePlot.End.Y },
-                        color = linePlot.LineColor.ToHex(),
-                        linewidth = linePlot.LineWidth,
-                    };
-                    // 匹配线的样式
-                    if (linePlot.LinePattern.Name == LinePattern.Solid.Name) { tempLine.lineType = 0; }
-                    if (linePlot.LinePattern.Name == LinePattern.Dashed.Name) { tempLine.lineType = 1; }
-                    if (linePlot.LinePattern.Name == LinePattern.DenselyDashed.Name) { tempLine.lineType = 2; }
-                    if (linePlot.LinePattern.Name == LinePattern.Dotted.Name) { tempLine.lineType = 3; }
-                    // 存储线段
-                    BasePlotConfigObject.Lines.Add(tempLine);
-                }
-
-                // 存储文本对象
-                if (tempItem.GetType().Name == "Text")
-                {
-                    ScottPlot.Plottables.Text text = ((ScottPlot.Plottables.Text)tempItem);
-                    // 创建线段对象
-                    var tempLine = new TextConfig()
-                    {
-                        isShow = text.IsVisible,
-                        text = text.LabelText,                  // 存储文本内容
-                        x = text.Location.X,                    // 存储文本 X 坐标
-                        y = text.Location.Y,                    // 存储文本 Y 坐标
-                        rotation = text.LabelRotation,          // 存储文本旋转
-                        fontSize = text.LabelFontSize,          // 存储文本大小
-                        color = text.LabelFontColor.ToHex(),             // 存储文本颜色
-                    };
-                    // 存储线段
-                    BasePlotConfigObject.Texts.Add(tempLine);
-                }
-            }
-
-            // 保存指南
-            if(_richTextBox.Document != null)
-            {
-                BasePlotConfigObject.Description = DocumentHelper.CompressRichTextBoxContent(_richTextBox);
-            }
-
-            // 获取对象文件路径
-            string tempNewPath = System.IO.Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Custom", _previousSelectedNode.BaseMapPath.ToString());
-
-            // 序列化对象
-            JsonHelper.SerializeToJsonFile(BasePlotConfigObject, tempNewPath);
-
-            // 通知前端
-            MessageHelper.Success(LanguageService.Instance["SaveSuccess"]);
-        }
-
-        // 脚本设置
-        [RelayCommand]
-        public void ScriptSetting()
-        {
-            SetTrue("Script");
-        }
-
-        // 确认保存脚本
-        [RelayCommand]
-        public void ConfirmSaveScript()
-        {
-            // 关闭脚本设置
-            SetTrue(null);
-            // 通知前端
-            MessageHelper.Success(LanguageService.Instance["SaveSuccess"]);
-        }
-
-        // 取消脚本
-        [RelayCommand]
-        public void CancelSaveScript()
-        {
-            JsScriptContent = null;
-            NeedParamContent = null;
-            // 关闭脚本设置
-            SetTrue(null);
-        }
-
-        // 编辑模式
-        [RelayCommand]
-        public void EditMode()
-        {
-            IsPlotMode = false;
-            IsEditMode = true;
-            RegisterPlotTemplates(true);
-            // 禁用右键菜单
-            //WpfPlot1.UserInputProcessor.IsEnabled = false;// 禁用右键菜单
-            _richTextBox.Document.Blocks.Clear();       // 清除当前的内容
-            //NormalPlotTemplate.TAS(WpfPlot1.Plot);    // 调试视图
-        }
-
-        // 移动位置
-        [RelayCommand]
-        public void MovePosition()
-        {
-
-        }
-
-        // 删除底图
-        [RelayCommand]
-        public void DeleteBasemap()
-        {
-            // 用户选中了节点
-            if(_previousSelectedNode != null)
-            {
-                // 通知：正在删除底图  xxx ，是否确认删除
-                Growl.Ask(LanguageService.Instance["DeleteingBasemapConfirm1_Message"] + 
-                    _previousSelectedNode.rootNode[_previousSelectedNode.rootNode.Length-1]+
-                    LanguageService.Instance["DeleteingBasemapConfirm2_Message"], 
-                isConfirmed =>
-                {
-                    if (isConfirmed)
-                    {
-                        // 删除节点
-                        RemoveNode(RootTreeNode, _previousSelectedNode);
-
-                        // 删除Json列表
-                        string basePath = FileHelper.GetAppPath();
-                        string tempNewPath = System.IO.Path.Combine(basePath, "Data", "PlotData", "PlotListCustom.json");
-                        if (IsEditMode == false)
-                        {
-                            tempNewPath = System.IO.Path.Combine(basePath, "Data", "PlotData", "PlotList.json");
-                        }
-                        JsonHelper.RemoveNodeFromJson(tempNewPath, _previousSelectedNode.rootNode);
-
-                        // 获取文件路径
-                        tempNewPath = System.IO.Path.Combine(basePath, "Data", "PlotData", "Custom", _previousSelectedNode.BaseMapPath);
-                        if (IsEditMode == false)
-                        {
-                            tempNewPath = System.IO.Path.Combine(basePath, "Data", "PlotData", "Default", _previousSelectedNode.BaseMapPath);
-                        }
-                        // 删除底图 Json 文件
-                        if (FileHelper.IsFileExist(tempNewPath))
-                        {
-                            FileHelper.DeleteFile(tempNewPath);
-                        }
-
-                        // 刷新列表
-                        Refresh(true, true);
-                    }
-                    else
-                    {
-                        // 通知：取消删除
-                        MessageHelper.Info(LanguageService.Instance["Undelete_Message"]);
-                    }
-                    return true;
-                });
-                
+                // 刷新绘图控件以应用所有更改
+                WpfPlot1.Refresh();
+                MessageHelper.Success(LanguageService.Instance["all_imported_data_cleared"]);
             }
         }
     }

@@ -39,9 +39,13 @@
     <None Remove="Data\PlotData\Default\en-US\PlotList.json" />
     <None Remove="Data\PlotData\Default\en-US\TAS.json" />
     <None Remove="Data\PlotData\Default\English_Igneous Rock_Rock Category_TAS.json" />
-    <None Remove="Data\PlotData\Default\zh-CN\PlotList.json" />
-    <None Remove="Data\PlotData\Default\zh-CN\简体中文_岩浆岩_岩石类别_TAS.json" />
+    <None Remove="Data\PlotData\Default\TAS\en-US.rtf" />
+    <None Remove="Data\PlotData\Default\TAS\TAS.json" />
+    <None Remove="Data\PlotData\Default\TAS\Thumbnail.jpg" />
+    <None Remove="Data\PlotData\Default\TAS\zh-CN.rtf" />
     <None Remove="Data\PlotData\Default\简体中文_岩浆岩_岩石类别_TAS.json" />
+    <None Remove="Data\PlotData\GraphMapList - 复制.json" />
+    <None Remove="Data\PlotData\GraphMapList.json" />
     <None Remove="Data\PlotData\PlotD.zip" />
     <None Remove="Data\PlotData\PlotData.zip" />
     <None Remove="Data\PlotData\PlotListCustom.json" />
@@ -116,10 +120,16 @@
     <Content Include="Data\PlotData\Default\en-US\PlotList.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\PlotData\Default\zh-CN\PlotList.json">
+    <Content Include="Data\PlotData\Default\TAS\en-US.rtf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\PlotData\Default\zh-CN\简体中文_岩浆岩_岩石类别_TAS.json">
+    <Content Include="Data\PlotData\Default\TAS\TAS.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\PlotData\Default\TAS\Thumbnail.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\PlotData\Default\TAS\zh-CN.rtf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\PlotData\PlotData.zip">
@@ -129,6 +139,9 @@
 
   <ItemGroup>
     <Content Include="Data\Icon\T_Icon\Arsenopyrite.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\PlotData\GraphMapList.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\PlotData\PlotListCustom.json">

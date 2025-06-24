@@ -11,6 +11,37 @@ namespace GeoChemistryNexus.Helpers
 {
     public static class JsonHelper
     {
+        // 从 JSON 文件读取和反序列化内容
+        public static String ReadJsonFile(string filePath)
+        {
+            try
+            {
+                // 检查文件是否存在
+                if (!File.Exists(filePath))
+                {
+                    Console.WriteLine($"文件未找到: {filePath}");
+                    return null;
+                }
+
+                // 读取 JSON 文件内容
+                string jsonString = File.ReadAllText(filePath);
+
+                // 如果文件内容为空，则返回一个默认的空对象
+                if (string.IsNullOrWhiteSpace(jsonString))
+                {
+                    Console.WriteLine("JSON 文件为空.");
+                    return null;
+                }
+
+                return jsonString;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"从 JSON 文件读取时发生错误: {ex.Message}");
+                return null;
+            }
+        }
+
         // 将对象序列化为 JSON 字符串
         public static string Serialize<T>(T obj)
         {
@@ -76,50 +107,7 @@ namespace GeoChemistryNexus.Helpers
             }
         }
 
-        // 将新对象添加到现有 JSON 文件中的数组
-        public static void AddToJsonFile(ListNodeConfig newNode, string filePath)
-        {
-            try
-            {
-                PlotListConfig config;
 
-                // 如果文件不存在，创建一个新的 PlotListConfig 对象
-                if (!File.Exists(filePath))
-                {
-                    config = new PlotListConfig
-                    {
-                        listNodeConfigs = new List<ListNodeConfig> { newNode }
-                    };
-                }
-                else
-                {
-                    // 读取现有文件内容
-                    string existingJson = File.ReadAllText(filePath);
-
-                    // 反序列化为 PlotListConfig 对象
-                    config = Deserialize<PlotListConfig>(existingJson) ?? new PlotListConfig();
-
-                    // 如果 listNodeConfigs 为 null，初始化它
-                    if (config.listNodeConfigs == null)
-                    {
-                        config.listNodeConfigs = new List<ListNodeConfig>();
-                    }
-
-                    // 添加新节点
-                    config.listNodeConfigs.Add(newNode);
-                }
-
-                // 序列化并写回文件
-                string updatedJson = JsonSerializer.Serialize(config);
-                File.WriteAllText(filePath, updatedJson);
-
-                Console.WriteLine("新节点已成功添加到 JSON 文件.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"AddToJsonFile Error: {ex.Message}");
-            }
-        }
 
         // 压缩字符串
         public static string CompressString(string text)
@@ -162,37 +150,6 @@ namespace GeoChemistryNexus.Helpers
             }
         }
 
-        // 删除json文件中的节点
-        public static void RemoveNodeFromJson(string jsonFilePath, string[] targetRootNode)
-        {
-            try
-            {
-                // 读取 JSON 文件内容
-                string jsonString = File.ReadAllText(jsonFilePath);
-
-                // 反序列化为 PlotListConfig 对象
-                PlotListConfig config = JsonHelper.Deserialize<PlotListConfig>(jsonString);
-
-                if (config == null || config.listNodeConfigs == null)
-                {
-                    Console.WriteLine("No nodes to remove.");
-                    return;
-                }
-
-                // 查找并移除目标节点
-                config.listNodeConfigs.RemoveAll(node => AreNodesEqual(node.rootNode, targetRootNode));
-
-                // 序列化更新后的对象并写回文件
-                string updatedJson = JsonHelper.Serialize(config);
-                File.WriteAllText(jsonFilePath, updatedJson);
-
-                Console.WriteLine("Node removed successfully if it existed.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error in RemoveNodeFromJson: {ex.Message}");
-            }
-        }
 
         // 比较两个字符串数组是否相等
         private static bool AreNodesEqual(string[] node1, string[] node2)
