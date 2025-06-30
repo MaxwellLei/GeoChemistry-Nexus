@@ -397,7 +397,9 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        
     </Page.Resources>
+    
     <Grid>
         <!-- 模板浏览模式 -->
         <Grid Visibility="{Binding IsTemplateMode, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -415,9 +417,13 @@
                         <!--导入模板-->
                         <MenuItem Header="{Binding [import_template],Source={x:Static lg:LanguageService.Instance}}" 
                                   Command="{Binding LoadBasemapCommand}" IsEnabled="False"/>
+                        <Separator/>
                         <!--新建模板-->
                         <MenuItem Header="{Binding [new_template],Source={x:Static lg:LanguageService.Instance}}" 
-                                  Command="{Binding NewBasemapCommand}" IsEnabled="False"/>
+                                  Command="{Binding NewTemplateCommand}"/>
+                        <!--打开模板-->
+                        <MenuItem Header="{Binding [open_template],Source={x:Static lg:LanguageService.Instance}}" 
+                                  Command="{Binding OpenTemplateCommand}"/>
                     </MenuItem>
                 </Menu>
 
@@ -511,10 +517,10 @@
                                         <!--缩略图--> 
                                         <Border Grid.Row="0" Background="#F8F9FA" CornerRadius="6,6,0,0" Margin="8,8,8,0">
                                             <Image Source="{Binding ThumbnailPath}" 
-                                                  Stretch="Uniform" 
+                                                  Stretch="Fill"
                                                   HorizontalAlignment="Center" 
                                                   VerticalAlignment="Center"
-                                                  MaxHeight="120"/>
+                                                  MaxHeight="200"/>
                                         </Border>
 
                                         <!--模板名称和分类--> 
@@ -676,6 +682,7 @@
                             <!-- Ribbon 功能区内容 -->
                             <Border Grid.Row="1" Background="White" BorderBrush="#D4D4D4" BorderThickness="0,0,0,1" Height="92">
                                 <Grid>
+                                    <!--绘图模式功能区-->
                                     <ScrollViewer x:Name="PlottingRibbon" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
                                         <ScrollViewer.Style>
                                             <Style TargetType="ScrollViewer">
@@ -870,26 +877,28 @@
                                             </Style>
                                         </ScrollViewer.Style>
                                         <StackPanel Orientation="Horizontal" Margin="8,3" Height="86">
-                                            <!-- 插入组 -->
-                                            <GroupBox Header="插入" Style="{StaticResource RibbonGroupStyle}">
-                                                <Grid Width="88" Height="68" Margin="2">
+                                            <!-- 添加组 -->
+                                            <GroupBox Header="{Binding [add],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource RibbonGroupStyle}">
+                                                <Grid Width="106" Height="68" Margin="2">
                                                     <StackPanel VerticalAlignment="Top" Margin="3,2">
                                                         <Button Style="{StaticResource RibbonSmallButton}"
-                                                                Width="82" Height="28" Margin="0,1">
+                                                                Width="100" Height="28" Margin="0,1" Command="{Binding AddLineCommand}">
                                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe619;"
                                                                            FontSize="16" Foreground="#0078D4" Margin="4,0,6,0"
                                                                            VerticalAlignment="Center"/>
-                                                                <TextBlock Text="添加线条" FontSize="11" VerticalAlignment="Center"/>
+                                                                <!--添加线条-->
+                                                                <TextBlock Text="{Binding [add_line],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" VerticalAlignment="Center"/>
                                                             </StackPanel>
                                                         </Button>
                                                         <Button Style="{StaticResource RibbonSmallButton}"
-                                                                Width="82" Height="28" Margin="0,1">
+                                                                Width="100" Height="28" Margin="0,1" Command="{Binding AddTextCommand}">
                                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe603;"
                                                                            FontSize="16" Foreground="#0078D4" Margin="4,0,6,0"
                                                                            VerticalAlignment="Center"/>
-                                                                <TextBlock Text="添加注释" FontSize="11" VerticalAlignment="Center"/>
+                                                                <!--添加文本-->
+                                                                <TextBlock Text="{Binding [add_text],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" VerticalAlignment="Center"/>
                                                             </StackPanel>
                                                         </Button>
                                                     </StackPanel>
@@ -897,7 +906,7 @@
                                             </GroupBox>
                                             <Rectangle Fill="#E1E5E9" Width="1" Margin="8,12,8,18" VerticalAlignment="Stretch"/>
                                             <!-- 文件组 -->
-                                            <GroupBox Header="文件" Style="{StaticResource RibbonGroupStyle}">
+                                            <GroupBox Header="{Binding [file_],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource RibbonGroupStyle}">
                                                 <Grid Width="88" Height="68" Margin="2">
                                                     <StackPanel VerticalAlignment="Top" Margin="3,2">
                                                         <Button Command="{Binding SaveBaseMapCommand}"
@@ -905,21 +914,21 @@
                                                                 Width="82" Height="28" Margin="0,1">
                                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe782;"
-                                                      FontSize="16" Foreground="#107C10" Margin="4,0,6,0"
-                                                      VerticalAlignment="Center"/>
-                                                                <TextBlock Text="保存" FontSize="11" VerticalAlignment="Center"/>
+                                                                           FontSize="16" Foreground="#107C10" Margin="4,0,6,0"
+                                                                           VerticalAlignment="Center"/>
+                                                                <TextBlock Text="{Binding [Save],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" VerticalAlignment="Center"/>
                                                             </StackPanel>
                                                         </Button>
-                                                        <Button Command="{Binding ExitEditModelCommand}"
+                                                        <!--<Button Command="{Binding ExitEditModelCommand}"
                                                                 Style="{StaticResource RibbonSmallButton}"
                                                                 Width="82" Height="28" Margin="0,1">
                                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe667;"
-                                                      FontSize="16" Foreground="#D83B01" Margin="4,0,6,0"
-                                                      VerticalAlignment="Center"/>
-                                                                <TextBlock Text="退出编辑" FontSize="11" VerticalAlignment="Center"/>
+                                                                           FontSize="16" Foreground="#D83B01" Margin="4,0,6,0"
+                                                                           VerticalAlignment="Center"/>
+                                                                <TextBlock Text="打包模板" FontSize="11" VerticalAlignment="Center"/>
                                                             </StackPanel>
-                                                        </Button>
+                                                        </Button>-->
                                                     </StackPanel>
                                                 </Grid>
                                             </GroupBox>
@@ -951,5 +960,17 @@
                                         ScriptDefinition="{Binding CurrentScript}"
                                         Visibility="{Binding ScriptsPropertyGrid, Converter={StaticResource BoolToVisibilityConverter}}"/>
         </Grid>
+        
+        <!--新建绘图模板-->
+        <Grid Background="#80000000" Visibility="{Binding IsNewTemplateMode, Converter={StaticResource BoolToVisibilityConverter}}">
+            <uc:NewTemplateControl HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   ConfirmCommand="{Binding ConfirmNewTemplateCommand}"
+                                   CancelCommand="{Binding CancelNewTemplateCommand}">
+                <uc:NewTemplateControl.Effect>
+                    <DropShadowEffect ShadowDepth="0" BlurRadius="20" Color="Black" Opacity="0.3"/>
+                </uc:NewTemplateControl.Effect>
+            </uc:NewTemplateControl>
+        </Grid>
+        
     </Grid>
 </Page>

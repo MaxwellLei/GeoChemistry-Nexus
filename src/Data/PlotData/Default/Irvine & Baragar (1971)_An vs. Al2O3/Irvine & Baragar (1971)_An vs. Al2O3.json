@@ -1,0 +1,307 @@
+{
+  "Version": "0.1",
+  "DefaultLanguage": "en-US",
+  "TemplateType": "Cartesian",
+  "NodeList": {
+    "Default": "en-US",
+    "Translations": {
+      "zh-CN": "Igneous Petrology > Rock Classification Diagrams > Irvine & Baragar (1971) > An vs. Al2O3",
+      "en-US": "岩浆岩石学 > 岩石分类图解 > Irvine & Baragar (1971) > An vs. Al2O3"
+    }
+  },
+  "Info": {
+    "Points": [],
+    "Lines": [
+      {
+        "Start": {
+          "X": 100,
+          "Y": 20
+        },
+        "End": {
+          "X": 90,
+          "Y": 19.2
+        },
+        "Color": "#FF010101",
+        "Width": 2,
+        "Style": "Solid"
+      },
+      {
+        "Start": {
+          "X": 90,
+          "Y": 19.2
+        },
+        "End": {
+          "X": 80,
+          "Y": 18.4
+        },
+        "Color": "#FF010101",
+        "Width": 2,
+        "Style": "Solid"
+      },
+      {
+        "Start": {
+          "X": 80,
+          "Y": 18.4
+        },
+        "End": {
+          "X": 70,
+          "Y": 17.6
+        },
+        "Color": "#FF010101",
+        "Width": 2,
+        "Style": "Solid"
+      },
+      {
+        "Start": {
+          "X": 70,
+          "Y": 17.6
+        },
+        "End": {
+          "X": 60,
+          "Y": 16.8
+        },
+        "Color": "#FF010101",
+        "Width": 2,
+        "Style": "Solid"
+      },
+      {
+        "Start": {
+          "X": 60,
+          "Y": 16.8
+        },
+        "End": {
+          "X": 50,
+          "Y": 16
+        },
+        "Color": "#FF010101",
+        "Width": 2,
+        "Style": "Solid"
+      },
+      {
+        "Start": {
+          "X": 50,
+          "Y": 16
+        },
+        "End": {
+          "X": 40,
+          "Y": 15.2
+        },
+        "Color": "#FF010101",
+        "Width": 2,
+        "Style": "Solid"
+      }
+    ],
+    "Polygons": [],
+    "Texts": [
+      {
+        "StartAndEnd": {
+          "X": 57.0792,
+          "Y": 21.28
+        },
+        "Content": {
+          "Default": "en-US",
+          "Translations": {
+            "en-US": "Calc-alkaline series",
+            "zh-CN": "钙碱性系列"
+          }
+        },
+        "ContentHorizontalAlignment": "Left",
+        "Family": "Arial",
+        "Size": 32,
+        "Rotation": 0,
+        "Color": "#FF010101",
+        "IsBold": false,
+        "IsItalic": false,
+        "BackgroundColor": "#00FFFFFF",
+        "BorderColor": "#00FFFFFF",
+        "BorderWidth": 0,
+        "FilletRadius": 0,
+        "AntiAliasEnable": true
+      },
+      {
+        "StartAndEnd": {
+          "X": 60.3083,
+          "Y": 13.24
+        },
+        "Content": {
+          "Default": "en-US",
+          "Translations": {
+            "en-US": "Tholeiitic series",
+            "zh-CN": "拉斑系列"
+          }
+        },
+        "ContentHorizontalAlignment": "Left",
+        "Family": "Arial",
+        "Size": 32,
+        "Rotation": 0,
+        "Color": "#FF010101",
+        "IsBold": false,
+        "IsItalic": false,
+        "BackgroundColor": "#00FFFFFF",
+        "BorderColor": "#00FFFFFF",
+        "BorderWidth": 0,
+        "FilletRadius": 0,
+        "AntiAliasEnable": true
+      }
+    ],
+    "Annotations": [],
+    "Axes": [
+      {
+        "Type": "Bottom",
+        "Label": {
+          "Default": "en-US",
+          "Translations": {
+            "en-US": "Normative plagioclase An%",
+            "zh-CN": ""
+          }
+        },
+        "Family": "Arial",
+        "Size": 16,
+        "Color": "#FF000000",
+        "IsBold": false,
+        "IsItalic": false,
+        "TickInterval": null,
+        "MajorTickLength": 4,
+        "MajorTickWidth": 1,
+        "MajorTickWidthColor": "#FF000000",
+        "MajorTickAntiAlias": false,
+        "MinorTickLength": 4,
+        "MinorTickWidth": 1,
+        "MinorTickColor": "#FF000000",
+        "MinorTickAntiAlias": false,
+        "TickLableFamily": "Arial",
+        "TickLablesize": 16,
+        "TickLablecolor": "#FF000000",
+        "TickLableisBold": false,
+        "TickLableisItalic": false
+      },
+      {
+        "Type": "Left",
+        "Label": {
+          "Default": "en-US",
+          "Translations": {
+            "en-US": "Al2O3",
+            "zh-CN": ""
+          }
+        },
+        "Family": "Arial",
+        "Size": 16,
+        "Color": "#FF000000",
+        "IsBold": false,
+        "IsItalic": false,
+        "TickInterval": null,
+        "MajorTickLength": 4,
+        "MajorTickWidth": 1,
+        "MajorTickWidthColor": "#FF000000",
+        "MajorTickAntiAlias": false,
+        "MinorTickLength": 4,
+        "MinorTickWidth": 1,
+        "MinorTickColor": "#FF000000",
+        "MinorTickAntiAlias": false,
+        "TickLableFamily": "Arial",
+        "TickLablesize": 16,
+        "TickLablecolor": "#FF000000",
+        "TickLableisBold": false,
+        "TickLableisItalic": false
+      },
+      {
+        "Type": "Top",
+        "Label": {
+          "Default": "en-US",
+          "Translations": {
+            "en-US": "",
+            "zh-CN": ""
+          }
+        },
+        "Family": "Arial",
+        "Size": 12,
+        "Color": "#FF000000",
+        "IsBold": false,
+        "IsItalic": false,
+        "TickInterval": null,
+        "MajorTickLength": 4,
+        "MajorTickWidth": 1,
+        "MajorTickWidthColor": "#FF000000",
+        "MajorTickAntiAlias": false,
+        "MinorTickLength": 4,
+        "MinorTickWidth": 1,
+        "MinorTickColor": "#FF000000",
+        "MinorTickAntiAlias": false,
+        "TickLableFamily": "Arial",
+        "TickLablesize": 12,
+        "TickLablecolor": "#FF000000",
+        "TickLableisBold": false,
+        "TickLableisItalic": false
+      },
+      {
+        "Type": "Right",
+        "Label": {
+          "Default": "en-US",
+          "Translations": {
+            "en-US": "",
+            "zh-CN": ""
+          }
+        },
+        "Family": "Arial",
+        "Size": 12,
+        "Color": "#FF000000",
+        "IsBold": false,
+        "IsItalic": false,
+        "TickInterval": null,
+        "MajorTickLength": 4,
+        "MajorTickWidth": 1,
+        "MajorTickWidthColor": "#FF000000",
+        "MajorTickAntiAlias": false,
+        "MinorTickLength": 4,
+        "MinorTickWidth": 1,
+        "MinorTickColor": "#FF000000",
+        "MinorTickAntiAlias": false,
+        "TickLableFamily": "Arial",
+        "TickLablesize": 12,
+        "TickLablecolor": "#FF000000",
+        "TickLableisBold": false,
+        "TickLableisItalic": false
+      }
+    ],
+    "Title": {
+      "Label": {
+        "Default": "en-US",
+        "Translations": {
+          "en-US": "Irvine & Baragar (1971)",
+          "zh-CN": "Irvine & Baragar (1971)"
+        }
+      },
+      "Family": "Arial",
+      "Size": 16,
+      "Color": "#FF000000",
+      "IsBold": false,
+      "IsItalic": false
+    },
+    "Grid": {
+      "MajorGridLineIsVisible": false,
+      "MajorGridLineColor": "#19010101",
+      "MajorGridLineWidth": 1,
+      "MajorGridLinePattern": "Solid",
+      "MajorGridLineAntiAlias": false,
+      "MinorGridLineIsVisible": false,
+      "MinorGridLineColor": "#0C010101",
+      "MinorGridLineWidth": 0,
+      "MinorGridLinePattern": "Solid",
+      "MinorGridLineAntiAlias": false,
+      "GridAlternateFillingIsEnable": false,
+      "GridFillColor1": "#00FFFFFF",
+      "GridFillColor2": "#00FFFFFF"
+    },
+    "Legend": {
+      "Alignment": "UpperLeft",
+      "Orientation": "Horizontal",
+      "IsVisible": false,
+      "Font": "Arial"
+    }
+  },
+  "Script": {
+    "Language": "JavaScript",
+    "RequiredDataSeries": "Category,An,Al2O3",
+    "ScriptBody": "var result1 = An;\r\nvar result2 = Al2O3;\r\n[result1, result2]"
+  }
+}

@@ -627,31 +627,31 @@
     <value>矿物组合</value>
   </data>
   <data name="AmphiboleGTM" xml:space="preserve">
-    <value>Si 温度计</value>
+    <value>Si 温度计 (Ridolfi et al., 2010)</value>
   </data>
   <data name="BiotiteGTM" xml:space="preserve">
-    <value>Ti 温度计</value>
+    <value>Ti 温度计 (Henry et al., 2005)</value>
   </data>
   <data name="ChloriteGTM" xml:space="preserve">
-    <value>Al4 温度计</value>
+    <value>Al4 温度计 (Jowett, 1991)</value>
   </data>
   <data name="ArsenopyriteGTM" xml:space="preserve">
-    <value>毒砂温度计</value>
+    <value>毒砂温度计 (Kretschmar and Scott, 1976)</value>
   </data>
   <data name="QuartzGTM" xml:space="preserve">
-    <value>TitaniQ  温度计</value>
+    <value>TitaniQ  温度计 (Wark and Watson, 2006)</value>
   </data>
   <data name="SphaleriteGTM" xml:space="preserve">
-    <value>FeS 温度计</value>
+    <value>FeS 温度计 (Scott and Barnes, 1971)</value>
   </data>
   <data name="SphaleriteGGIMFisGTM" xml:space="preserve">
-    <value>GGIMFis 温度计</value>
+    <value>GGIMFis 温度计 (Frenzel et al., 2016)</value>
   </data>
   <data name="ZirconTiGTM" xml:space="preserve">
-    <value>Ti 温度计</value>
+    <value>Ti 温度计 (Loucks et al., 2020)</value>
   </data>
   <data name="ZirconZrGTM" xml:space="preserve">
-    <value>Zr 温度计</value>
+    <value>Zr 温度计 (Watson and Harrison, 1983)</value>
   </data>
   <data name="Step1" xml:space="preserve">
     <value>导入 / 填入数据</value>
@@ -1043,5 +1043,295 @@
   </data>
   <data name="row_1_column_1" xml:space="preserve">
     <value>行: 1, 列: 1</value>
+  </data>
+  <data name="missing_parameters" xml:space="preserve">
+    <value>缺少参数</value>
+    <comment>自定义函数提示</comment>
+  </data>
+  <data name="input_out_of_range" xml:space="preserve">
+    <value>输入值超出范围</value>
+    <comment>自定义函数提示</comment>
+  </data>
+  <data name="must_be_positive_number" xml:space="preserve">
+    <value>必须是正数</value>
+    <comment>自定义函数提示</comment>
+  </data>
+  <data name="tio2_activity_range" xml:space="preserve">
+    <value>TiO2活度必须在(0,1]范围内</value>
+    <comment>自定义函数提示</comment>
+  </data>
+  <data name="oxygen_atom_benchmark_zero" xml:space="preserve">
+    <value>氧原子数基准值为零</value>
+    <comment>自定义函数提示</comment>
+  </data>
+  <data name="normalization_factor_is_zero" xml:space="preserve">
+    <value>归一化因子为零</value>
+    <comment>自定义函数提示</comment>
+  </data>
+  <data name="temperature_calculation_denominator_zero" xml:space="preserve">
+    <value>温度计算分母为零</value>
+    <comment>自定义函数提示</comment>
+  </data>
+  <data name="color" xml:space="preserve">
+    <value>颜色</value>
+    <comment>属性面板</comment>
+  </data>
+  <data name="style" xml:space="preserve">
+    <value>样式</value>
+    <comment>属性面板</comment>
+  </data>
+  <data name="width" xml:space="preserve">
+    <value>宽度</value>
+    <comment>属性面板</comment>
+  </data>
+  <data name="Enum_LineType_Solid" xml:space="preserve">
+    <value>实线</value>
+    <comment>属性面板</comment>
+  </data>
+  <data name="type" xml:space="preserve">
+    <value>类型</value>
+    <comment>属性面板</comment>
+  </data>
+  <data name="position" xml:space="preserve">
+    <value>属性</value>
+    <comment>属性面板</comment>
+  </data>
+  <data name="start_coordinates" xml:space="preserve">
+    <value>起始坐标</value>
+    <comment>属性面板</comment>
+  </data>
+  <data name="end_coordinates" xml:space="preserve">
+    <value>终止坐标</value>
+    <comment>属性面板</comment>
+  </data>
+  <data name="content" xml:space="preserve">
+    <value>内容</value>
+  </data>
+  <data name="alignment" xml:space="preserve">
+    <value>对齐方式</value>
+  </data>
+  <data name="font_style" xml:space="preserve">
+    <value>字体样式</value>
+  </data>
+  <data name="font_name" xml:space="preserve">
+    <value>字体名称</value>
+  </data>
+  <data name="font_size" xml:space="preserve">
+    <value>字体大小</value>
+  </data>
+  <data name="font_rotation" xml:space="preserve">
+    <value>字体旋转</value>
+  </data>
+  <data name="font_color" xml:space="preserve">
+    <value>字体颜色</value>
+  </data>
+  <data name="bold" xml:space="preserve">
+    <value>粗体</value>
+  </data>
+  <data name="italic" xml:space="preserve">
+    <value>斜体</value>
+  </data>
+  <data name="background_and_border" xml:space="preserve">
+    <value>背景与边框</value>
+  </data>
+  <data name="background_color" xml:space="preserve">
+    <value>背景颜色</value>
+  </data>
+  <data name="border_color" xml:space="preserve">
+    <value>边框颜色</value>
+  </data>
+  <data name="border_width" xml:space="preserve">
+    <value>边框宽度</value>
+  </data>
+  <data name="corner_radius" xml:space="preserve">
+    <value>圆角半径</value>
+  </data>
+  <data name="advanced_rendering" xml:space="preserve">
+    <value>高级渲染</value>
+  </data>
+  <data name="anti_aliasing" xml:space="preserve">
+    <value>抗锯齿</value>
+  </data>
+  <data name="axis_style" xml:space="preserve">
+    <value>坐标轴样式</value>
+  </data>
+  <data name="axis_title" xml:space="preserve">
+    <value>坐标轴标题</value>
+  </data>
+  <data name="font_family" xml:space="preserve">
+    <value>字体</value>
+  </data>
+  <data name="tick_style" xml:space="preserve">
+    <value>刻度样式</value>
+  </data>
+  <data name="tick_interval" xml:space="preserve">
+    <value>刻度间隔</value>
+  </data>
+  <data name="major_tick_style" xml:space="preserve">
+    <value>主刻度样式</value>
+  </data>
+  <data name="length" xml:space="preserve">
+    <value>长度</value>
+  </data>
+  <data name="minor_tick_style" xml:space="preserve">
+    <value>次刻度样式</value>
+  </data>
+  <data name="tick_labels" xml:space="preserve">
+    <value>刻度标签</value>
+  </data>
+  <data name="location" xml:space="preserve">
+    <value>位置</value>
+  </data>
+  <data name="orientation" xml:space="preserve">
+    <value>排列方式</value>
+  </data>
+  <data name="is_visible" xml:space="preserve">
+    <value>是否隐藏</value>
+  </data>
+  <data name="font" xml:space="preserve">
+    <value>字体</value>
+  </data>
+  <data name="major_grid_line" xml:space="preserve">
+    <value>主网格线</value>
+  </data>
+  <data name="pattern" xml:space="preserve">
+    <value>线型</value>
+  </data>
+  <data name="enable_anti_alias" xml:space="preserve">
+    <value>启用抗锯齿</value>
+  </data>
+  <data name="background_fill" xml:space="preserve">
+    <value>背景填充</value>
+  </data>
+  <data name="enable_alternating_fill" xml:space="preserve">
+    <value>启用交替填充</value>
+  </data>
+  <data name="background_fill_1" xml:space="preserve">
+    <value>背景填充</value>
+  </data>
+  <data name="fill_color_1" xml:space="preserve">
+    <value>填充颜色 1</value>
+  </data>
+  <data name="fill_color_2" xml:space="preserve">
+    <value>填充颜色 2</value>
+  </data>
+  <data name="coordinates" xml:space="preserve">
+    <value>坐标</value>
+  </data>
+  <data name="x_coordinate" xml:space="preserve">
+    <value>X 坐标</value>
+  </data>
+  <data name="y_coordinate" xml:space="preserve">
+    <value>Y 坐标</value>
+  </data>
+  <data name="start_and_end_coordinates" xml:space="preserve">
+    <value>起始坐标</value>
+  </data>
+  <data name="chart_title_style" xml:space="preserve">
+    <value>图表标题样式</value>
+  </data>
+  <data name="is_bold" xml:space="preserve">
+    <value>粗体</value>
+  </data>
+  <data name="is_italic" xml:space="preserve">
+    <value>斜体</value>
+  </data>
+  <data name="background_fill_2" xml:space="preserve">
+    <value>背景填充</value>
+  </data>
+  <data name="minor_grid_Line" xml:space="preserve">
+    <value>次网格线</value>
+  </data>
+  <data name="open_template" xml:space="preserve">
+    <value>打开模板</value>
+  </data>
+  <data name="new_version_available_github" xml:space="preserve">
+    <value>发现新版本！请前往GitHub Release页面下载更新。</value>
+  </data>
+  <data name="go_to_download" xml:space="preserve">
+    <value>去下载</value>
+  </data>
+  <data name="enter_supported_languages" xml:space="preserve">
+    <value>输入支持语言</value>
+    <comment>新疆模板</comment>
+  </data>
+  <data name="delete_this_item" xml:space="preserve">
+    <value>删除此项</value>
+    <comment>新疆模板</comment>
+  </data>
+  <data name="enter_language_add" xml:space="preserve">
+    <value>输入一个语言后按 Enter 键添加。</value>
+    <comment>新疆模板</comment>
+  </data>
+  <data name="enter_category_structure" xml:space="preserve">
+    <value>输入分类结构</value>
+    <comment>新疆模板</comment>
+  </data>
+  <data name="enter_level_add" xml:space="preserve">
+    <value>输入一个层级后按 Enter 键添加。</value>
+    <comment>新疆模板</comment>
+  </data>
+  <data name="plot_type" xml:space="preserve">
+    <value>绘图类型</value>
+    <comment>新疆模板</comment>
+  </data>
+  <data name="two_dimensional_coordinate_plot" xml:space="preserve">
+    <value>二维坐标图</value>
+    <comment>新疆模板</comment>
+  </data>
+  <data name="template_file_save_path" xml:space="preserve">
+    <value>模板文件保存路径</value>
+    <comment>新疆模板</comment>
+  </data>
+  <data name="browse_ellipsis" xml:space="preserve">
+    <value>浏览...</value>
+    <comment>新疆模板</comment>
+  </data>
+  <data name="all_fields_required" xml:space="preserve">
+    <value>所有字段均为必填项！</value>
+    <comment>新疆模板</comment>
+  </data>
+  <data name="category_structure_min_two" xml:space="preserve">
+    <value>分类结构必须大于等于2！</value>
+    <comment>新疆模板</comment>
+  </data>
+  <data name="no_template_or_path_specified" xml:space="preserve">
+    <value>没有可保存的模板或未指定保存路径。请先新建或打开一个模板.</value>
+    <comment>新疆模板</comment>
+  </data>
+  <data name="template_saved_successfully" xml:space="preserve">
+    <value>模板已成功保存！</value>
+    <comment>新疆模板</comment>
+  </data>
+  <data name="save_template_failed" xml:space="preserve">
+    <value>保存模板失败:</value>
+    <comment>新疆模板</comment>
+  </data>
+  <data name="thank_you_and_wishes" xml:space="preserve">
+    <value>感谢您的使用🌹\n 祝您</value>
+    <comment>彩蛋</comment>
+  </data>
+  <data name="research_life_smooth_sailing" xml:space="preserve">
+    <value>年科研，生活一帆风顺！</value>
+    <comment>彩蛋</comment>
+  </data>
+  <data name="add" xml:space="preserve">
+    <value>添加</value>
+    <comment>绘图-编辑</comment>
+  </data>
+  <data name="add_line" xml:space="preserve">
+    <value>添加线条</value>
+    <comment>绘图-编辑</comment>
+  </data>
+  <data name="add_text" xml:space="preserve">
+    <value>添加文本</value>
+    <comment>绘图-编辑</comment>
+  </data>
+  <data name="file_" xml:space="preserve">
+    <value>文件</value>
+    <comment>绘图-编辑</comment>
+  </data>
+  <data name="template_loaded_successfully" xml:space="preserve">
+    <value>模板文件打开成功</value>
   </data>
 </root>

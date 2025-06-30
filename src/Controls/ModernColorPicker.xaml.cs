@@ -72,7 +72,7 @@ namespace GeoChemistryNexus.Controls
                 }
                 catch
                 {
-                    // 颜色转换失败，忽略
+                    // 颜色转换失败
                 }
             }
         }

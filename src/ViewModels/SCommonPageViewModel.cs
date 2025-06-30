@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using unvell.ReoGrid;
 
 namespace GeoChemistryNexus.ViewModels
 {
@@ -65,7 +66,7 @@ namespace GeoChemistryNexus.ViewModels
             DbLocationChangedCommand = new RelayCommand(ExecuteDbLocationChangedCommand);
             LanguageChangedCommand = new RelayCommand(ExecuteLanguageChangedCommand);
             AutoOffTimeChangedCommand = new RelayCommand(ExecuteAutoOffTimeChangedCommand);
-            CheckUpdateCommand = new RelayCommand(ExecuteCheckUpdateCommand);
+            CheckUpdateCommand = new RelayCommand(ExecuteCheckUpdateCommandAsync);
             ExitProgrmModeCommand = new RelayCommand(ExecuteExitProgrmModeCommand);
             AddStartImgCommand = new RelayCommand(ExecuteAddStartImgCommand);
             ReadConfig();   // 读取配置文件
@@ -84,10 +85,41 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         // 检查更新
-        private void ExecuteCheckUpdateCommand()
+        private async void ExecuteCheckUpdateCommandAsync()
         {
-            MessageHelper.Success(LanguageService.Instance["Info1"]);
-            //UpdateHelper.CheckForUpdatesAsync();
+            //MessageHelper.Success(LanguageService.Instance["Info1"]);
+            //MessageHelper.Info("正在检查更新，请稍候...");
+            try
+            {
+                // 使用 await 异步等待结果，避免UI线程阻塞
+                bool hasUpdate = await UpdateHelper.CheckForUpdateAsync(Assembly.GetExecutingAssembly().GetName().Version.ToString());
+
+                if (hasUpdate)
+                {
+                    bool isConfirmed = await MessageHelper.ShowAsyncDialog(
+                                LanguageService.Instance["new_version_available_github"],
+                                LanguageService.Instance["Cancel"],
+                                LanguageService.Instance["go_to_download"]);
+                    if (isConfirmed)
+                    {
+                        string url = "https://github.com/MaxwellLei/GeoChemistry-Nexus/releases/latest";
+                        //拉起浏览器
+                        try
+                        {
+                            Process.Start(new ProcessStartInfo("cmd", $"/c start {url}") { CreateNoWindow = true });
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageHelper.Warning((string)System.Windows.Application.Current.Resources["OpenBrowserError"] + ex.Message);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // 添加一个最终的异常捕获，以防 UpdateHelper 中有未处理的异常
+                MessageHelper.Error($"检查更新时发生未知错误: {ex.Message}");
+            }
         }
 
         // 是否开机启动

@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using GeoChemistryNexus.PropertyEditor;
 using ScottPlot.Plottables;
+using GeoChemistryNexus.Helpers;
 using HandyControl.Controls;
 using ScottPlot;
 
@@ -11,8 +12,8 @@ namespace GeoChemistryNexus.Models
     {
         // 坐标位置
         [ObservableProperty]
-        [property: Category("Position")] // 位置
-        [property: DisplayName("Start and End Coordinates")] // 起始坐标
+        [property: LocalizedCategory("position")] // 位置
+        [property: LocalizedDisplayName("start_and_end_coordinates")] // 起始坐标
         [property: Editor(typeof(PointDefinitionPropertyEditor), typeof(PropertyEditorBase))]
         private PointDefinition _startAndEnd = new PointDefinition();
 
@@ -20,16 +21,16 @@ namespace GeoChemistryNexus.Models
         /// 散点大小
         /// </summary>
         [ObservableProperty]
-        [property: Category("Style")] // 样式
-        [property: DisplayName("Size")] // 大小
+        [property: LocalizedCategory("style")] // 样式
+        [property: LocalizedDisplayName("size")] // 大小
         private float _size = 12;
 
         /// <summary>
         /// 散点颜色
         /// </summary>
         [ObservableProperty]
-        [property: Category("Style")] // 样式
-        [property: DisplayName("Color")] // 颜色
+        [property: LocalizedCategory("style")] // 样式
+        [property: LocalizedDisplayName("color")] // 颜色
         [property: Editor(typeof(ColorPropertyEditor), typeof(ColorPropertyEditor))]
         private string _color = "#000000";
 
@@ -37,8 +38,8 @@ namespace GeoChemistryNexus.Models
         /// 散点类型
         /// </summary>
         [ObservableProperty]
-        [property: Category("Style")] // 样式
-        [property: DisplayName("Type")] // 类型
+        [property: LocalizedCategory("style")] // 样式
+        [property: LocalizedDisplayName("type")] // 类型
         private MarkerShape _markerShape = MarkerShape.FilledSquare;
     }
 }

@@ -342,7 +342,6 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
-
         /// <summary>
         /// 新建工作表并插入到末尾
         /// </summary>
@@ -371,7 +370,6 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
-
         /// <summary>
         /// 模板：锆石 Ti 温度，Loucks et al. (2020)
         /// </summary>
@@ -380,10 +378,9 @@ namespace GeoChemistryNexus.ViewModels
         public async Task Zircon_Ti_Loucks_2020(ReoGridControl reoGridControl)
         {
             await ExecuteCreateGridHeader(reoGridControl
-                    ,new List<string> { "ID", "Ti(ppm)", "P(MPa)", "α(TiO2)", "α(SiO2)", "T(K)", "T(℃)"
-                    ,"Loucks, R. R., O'Connell, R. J., Zanazzi, P. F., & Kelemen, P. B. (2020). \"The role of zircon in tracing Ti diffusion and temperature in metamorphic rocks.\""}
-                    ,new List<string> { "Example", "4.12", "300", "0.8", "1", 
-                                        "=((-4800+(0.4748*(C2-1000)))/(LOG10(B2)-5.711-LOG10(D2)+LOG10(E2)))", "=F2-273.15"}
+                    ,new List<string> { "ID", "Ti(ppm)", "P(MPa)", "α(TiO2)", "α(SiO2)", "T(K)", "T(℃)"}
+                    ,new List<string> { "Example", "4.12", "300", "0.8", "1",
+                                        "=Zircon_Ti_Loucks_2020(B2,C2,D2,E2)", "=F2-273.15"}
                     ,"Zircon_Ti_2020");
         }
 
@@ -416,10 +413,9 @@ namespace GeoChemistryNexus.ViewModels
                     , new List<string> { "ID", "Zr(ppm)", "SiO2(ppm)", "Al2O3(ppm)", "CaO(ppm)",
                                             "K2O(ppm)", "Na2O(ppm)", "T(K)", "T(℃)" }
                     , new List<string> { "Example", "99", "65.11", "15.68", "3.42",
-                                            "3.12","3.85", "=Zircon_Zr_Saturation_Watson_and_Harrison_1983(B2,C2,D2,E2,F2,G2)", "=G2-273.15" }
+                                            "3.12","3.85", "=Zircon_Zr_Saturation_Watson_and_Harrison_1983(B2,C2,D2,E2,F2,G2)", "=H2-273.15" }
                     , "Zircon_Zr_1983");
         }
-
 
         /// <summary>
         /// 模板：闪锌矿 GGIMGis 温度，Frenzel et al. (2016)
@@ -433,7 +429,7 @@ namespace GeoChemistryNexus.ViewModels
                     , new List<string> { "ID", "Ga(ppm)", "Ge(ppm)", "Fe*(ppm)", "Mn(ppm)", "In(ppm)",
                                             "T(K)", "T(℃)" }
                     , new List<string> { "Example", "202.9", "237.5", "7.465", "33.27", "20.46",
-                                            "=Sphalerite_GGIMFis_Frenzel_2016(B2,C2,D2,E2,F2)+273.15", "=G2-273.15" }
+                                            "=Sphalerite_GGIMFis_Frenzel_2016(B2,C2,D2,E2,F2)", "=G2-273.15" }
                     , "Sphalerite_GGIMFis_2016");
         }
 
@@ -449,7 +445,7 @@ namespace GeoChemistryNexus.ViewModels
             await ExecuteCreateGridHeader(reoGridControl
                     , new List<string> { "ID", "ΔFeS(mol%)","T(K)", "T(℃)" }
                     , new List<string> { "Example", "2.2", 
-                                            "=Sphalerite_FeS_Scott_and_Barne_1971(B2)+273.15", "=C2-273.15" }
+                                            "=Sphalerite_FeS_Scott_and_Barne_1971(B2)", "=C2-273.15" }
                     , "Sphalerite_FeS_1971");
         }
 
@@ -479,9 +475,9 @@ namespace GeoChemistryNexus.ViewModels
         public async Task Biotite_Ti_Henry_2005(ReoGridControl reoGridControl)
         {
             await ExecuteCreateGridHeader(reoGridControl
-                    , new List<string> { "ID", "Ti(apfu)", "xMg", "T(K)", "T(℃)" }
-                    , new List<string> { "Example", "0.53", "0.57",
-                                            "=Biotite_Ti_Henry_2005(B2,C2)+273.15", "=D2-273.15" }
+                    , new List<string> { "ID", "Ti(apfu)", "Mg(apfu)", "Fe(apfu)", "T(K)", "T(℃)" }
+                    , new List<string> { "Example", "0.484", "3.195", "1.984",
+                                            "=Biotite_Ti_Henry_2005(B2,C2,D2)", "=E2-273.15" }
                     , "Biotite_Ti_2005");
         }
 
@@ -501,7 +497,7 @@ namespace GeoChemistryNexus.ViewModels
                     , new List<string> { "Example", "45.47", "2.53", "9.07", "0.03", "12.68"
                                             , "0.24", "14.21", "11.32", "2.04", "0.62"
                                             , "0.17", "0.07"
-                                            , "=Amphibole_Si_Ridolfi_2010(B2,C2,D2,E2,F2,G2,H2,I2,J2,K2,L2,M2)+273.15", "=N2-273.15" }
+                                            , "=Amphibole_Si_Ridolfi_2010(B2,C2,D2,E2,F2,G2,H2,I2,J2,K2,L2,M2)", "=N2-273.15" }
                     , "Amphibole_Si_2010");
         }
 
@@ -522,7 +518,7 @@ namespace GeoChemistryNexus.ViewModels
                     , new List<string> { "Example", "37.663","0.045","23.254","12.791","0.058"
                                             ,"0.032","23.047","0.024","0","0"
                                             ,"0","0","0","0","0","0","0"
-                                            ,"=Chlorite_Al4_Jowett_1991(B2,C2,D2,E2,F2,G2,H2,I2,J2,K2,L2,M2,N2,O2,P2,Q2,R2)+273.15", "=S2-273.15" }
+                                            ,"=Chlorite_Al4_Jowett_1991(B2,C2,D2,E2,F2,G2,H2,I2,J2,K2,L2,M2,N2,O2,P2,Q2,R2)", "=S2-273.15" }
                     , "Chlorite_Al4_1991");
         }
 
@@ -539,7 +535,7 @@ namespace GeoChemistryNexus.ViewModels
                     , new List<string> { "ID", "AtomicPercentAs(at.%)", "Assemblage"
                                             , "T(K)", "T(℃)"}
                     , new List<string> { "Example", "32.4","Asp_Py_Po"
-                                            ,"=Arsenopyrite_Assemblage_Kretschmar_and_Scott_1976(B2,DefineArsenopyriteAssemblage(C2))+273.15", "=D2-273.15" }
+                                            ,"=Arsenopyrite_Assemblage_Kretschmar_and_Scott_1976(B2,DefineArsenopyriteAssemblage(C2))", "=D2-273.15" }
                     , "Arsenopyrite_Assemblage_1976");
         }
 

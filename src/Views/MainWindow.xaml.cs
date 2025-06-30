@@ -29,8 +29,6 @@ namespace GeoChemistryNexus
     /// </summary>
     public partial class MainWindow
     {
-        private bool isFlipped = false;
-
         public MainWindow()
         {
             // 初始化窗体

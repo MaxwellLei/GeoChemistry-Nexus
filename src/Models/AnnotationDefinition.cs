@@ -32,10 +32,5 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         private LocalizedString _content = new LocalizedString();
 
-        /// <summary>
-        /// 字体样式
-        /// </summary>
-        [ObservableProperty]
-        private FontDefinition _font = new FontDefinition();
     }
 }

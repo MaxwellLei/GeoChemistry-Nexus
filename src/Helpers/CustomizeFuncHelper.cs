@@ -6,21 +6,54 @@ using System.Threading.Tasks;
 using static SkiaSharp.HarfBuzz.SKShaper;
 using unvell.ReoGrid;
 using unvell.ReoGrid.Formula;
+using HandyControl.Tools.Extension;
 
 namespace GeoChemistryNexus.Helpers
 {
+    /// <summary>
+    /// 自定义函数
+    /// </summary>
     public static class CustomizeFuncHelper
     {
         public static void RegisterAllFunctions()
         {
-            // 锆石 Zr 温度计算，主量
+            // 锆石 Ti 温度计算，主量
             // Loucks et al. (2020)
+            FormulaExtension.CustomFunctions["Zircon_Ti_Loucks_2020"] = (cell, args) =>
+            {
+                // 检查参数数量
+                if (args.Length < 4)
+                {
+                    return LanguageService.Instance["missing_parameters"];
+                }
+
+                try
+                {
+                    // 计算各种化合物的原子质量
+                    double ti = Convert.ToDouble(args[0]);
+                    double p = Convert.ToDouble(args[1]);
+                    double aTiO2 = Convert.ToDouble(args[2]);
+                    double aSiO2 = Convert.ToDouble(args[3]);
+
+                    // 计算温度，单位 K
+                    double temperature = ((-4800 + (0.4748 * (p - 1000))) / (Math.Log10(ti) - 5.711 - Math.Log10(aTiO2) + Math.Log10(aSiO2)));
+
+                    return temperature;
+                }
+                catch
+                {
+                    return null;
+                }
+            };
+
+            // 锆石 Zr 温度计算，主量
+            // Watson and Harrison (1983)
             FormulaExtension.CustomFunctions["Zircon_Zr_Principal_Watson_and_Harrison_1983"] = (cell, args) =>
             {
                 // 检查参数数量
                 if (args.Length < 10)
                 {
-                    return null;
+                    return LanguageService.Instance["missing_parameters"];
                 }
 
                 try
@@ -73,7 +106,7 @@ namespace GeoChemistryNexus.Helpers
             {
                 if (args.Length < 6)
                 {
-                    return null;
+                    return LanguageService.Instance["missing_parameters"];
                 }
 
                 try
@@ -99,6 +132,7 @@ namespace GeoChemistryNexus.Helpers
                     // 计算开尔文温度
                     float tK = (float)(12900 / (Math.Log(496000 / row0) + 0.85 * tempRsM + 2.95));
 
+                    // 返回温度 K
                     return tK;
                 }
                 catch
@@ -113,8 +147,7 @@ namespace GeoChemistryNexus.Helpers
             {
                 if (args.Length < 5)
                 {
-                    // HACK: 需要优化提示
-                    return null;
+                    return LanguageService.Instance["missing_parameters"];
                 }
 
                 try
@@ -129,9 +162,9 @@ namespace GeoChemistryNexus.Helpers
                     float pc1Star = (float)((Math.Log(ga) * 0.22 + Math.Log(ge) * 0.22) -
                                            Math.Log(fe) * 0.37 - Math.Log(mn) * 0.20 -
                                            Math.Log(inConcentration) * 0.11);
-                    // 计算温度 T
-                    float temperature = (float)(-54.4 * pc1Star + 208);
-                    return temperature;
+                    // 计算温度 T-K
+                    float tK = (float)((-54.4 * pc1Star + 208) + 273.15);
+                    return tK;
                 }
                 catch
                 {
@@ -145,8 +178,7 @@ namespace GeoChemistryNexus.Helpers
             {
                 if (args.Length < 1)
                 {
-                    // HACK: 需要优化提示
-                    return null;
+                    return LanguageService.Instance["missing_parameters"];
                 }
 
                 try
@@ -156,18 +188,18 @@ namespace GeoChemistryNexus.Helpers
                     // 检查输入值范围
                     if (deltaMolePercentFeS < 0.0 || deltaMolePercentFeS > 4.4)
                     {
-                        return "输入值超出范围(0.0-4.4)";
+                        // 输入值超出范围
+                        return LanguageService.Instance["input_out_of_range"] + "(0.0-4.4)";
                     }
 
                     // 计算温度
                     const double slope = -39.7727;
                     const double intercept = 525.0;
-                    double temperature = (slope * deltaMolePercentFeS) + intercept;
-                    return temperature;
+                    double tK = (slope * deltaMolePercentFeS) + intercept + 273.15;
+                    return tK;
                 }
                 catch
                 {
-                    // HACK: 需要优化提示
                     return null;
                 }
             };
@@ -177,8 +209,7 @@ namespace GeoChemistryNexus.Helpers
             {
                 if (args.Length < 2)
                 {
-                    // HACK: 需要优化提示
-                    return null;
+                    return LanguageService.Instance["missing_parameters"];
                 }
 
                 try
@@ -188,18 +219,18 @@ namespace GeoChemistryNexus.Helpers
                     // 获取TiO2活度参数
                     double titaniumDioxideActivity = Convert.ToDouble(args[1]);
                     // 参数验证
-                    if (titaniumConcentration <= 0) { return "Ti必须是正数"; }
-                    if (titaniumDioxideActivity <= 0 || titaniumDioxideActivity > 1) { return "TiO2活度必须在(0,1]范围内"; }
+                    if (titaniumConcentration <= 0) 
+                        { return "Ti" + LanguageService.Instance["must_be_positive_number"]; }  // Ti 必须是正数
+                    if (titaniumDioxideActivity <= 0 || titaniumDioxideActivity > 1) 
+                        { return ""; }     // TiO2活度必须在(0,1]范围内
 
                     // 计算温度 - 基于Wark和Watson (2006)公式
-                    // T(°C) = (-3765 / (log(X_Ti_qtz / a_TiO2) - 5.69))
                     double logValue = Math.Log10(titaniumConcentration / titaniumDioxideActivity);
-                    double temperatureCelsius = (-3765 / (logValue - 5.69));
-                    return temperatureCelsius;
+                    double tK = (-3765 / (logValue - 5.69));
+                    return tK;
                 }
                 catch
                 {
-                    // HACK: 需要优化提示
                     return null;
                 }
             };
@@ -209,8 +240,7 @@ namespace GeoChemistryNexus.Helpers
             {
                 if (args.Length < 2)
                 {
-                    // HACK: 需要优化提示
-                    return null;
+                    return LanguageService.Instance["missing_parameters"];
                 }
 
                 try
@@ -218,7 +248,8 @@ namespace GeoChemistryNexus.Helpers
 
                     // 获取输入参数
                     double ti = Convert.ToDouble(args[0]);
-                    double xMg = Convert.ToDouble(args[1]);
+                    double mg = Convert.ToDouble(args[1]);
+                    double fe = Convert.ToDouble(args[2]);
 
                     // 常数定义
                     const double a = -2.3594;
@@ -226,14 +257,14 @@ namespace GeoChemistryNexus.Helpers
                     const double c = -1.7283;
 
                     // 计算温度
+                    double xMg = mg / (mg + fe);
                     double numerator = Math.Log(ti) - a - c * Math.Pow(xMg, 3);
-                    double temp = Math.Pow(numerator / b, 1.0 / 3.0);
+                    double tK = Math.Pow(numerator / b, 1.0 / 3.0) + 273.15;
 
-                    return temp;
+                    return tK;
                 }
                 catch
                 {
-                    // HACK: 需要优化提示
                     return null;
                 }
             };
@@ -243,8 +274,7 @@ namespace GeoChemistryNexus.Helpers
             {
                 if (args.Length < 12)
                 {
-                    // HACK: 需要优化提示
-                    return null;
+                    return LanguageService.Instance["missing_parameters"];
                 }
 
                 try
@@ -261,7 +291,7 @@ namespace GeoChemistryNexus.Helpers
                     double k2o = Convert.ToDouble(args[9]);   // K2O
                     double f = Convert.ToDouble(args[10]);    // F
                     double cl = Convert.ToDouble(args[11]);   // Cl
-                    if (sio2 == 0) return "Error";  // 如果主要成分为0则返回空
+                    if (sio2 == 0) return LanguageService.Instance["error"];  // 如果主要成分为0则返回空
 
                     // 氧化物摩尔质量常量
                     const double MOL_SIO2 = 60.084;
@@ -303,9 +333,9 @@ namespace GeoChemistryNexus.Helpers
 
                     // 阳离子数求和
                     double b62 = b45 + b46 + b47 + b48 + b49 + b50 + b51;
-                    if (b62 == 0) return "Error";
+                    if (b62 == 0) return LanguageService.Instance["error"];
                     double b78 = b62 + b52;
-                    if (b78 == 0) return "Error";
+                    if (b78 == 0) return LanguageService.Instance["error"];
 
                     // 以13或15个阳离子为基础进行归一化计算
                     double b63 = (b45 * 13) / b62; double b79 = (b45 * 15) / b78;
@@ -329,7 +359,7 @@ namespace GeoChemistryNexus.Helpers
 
                     double b102 = is_sum_lt_8 ? b84 : b68;
                     double b103 = is_sum_lt_8 ? b85 : b69;
-                    double b104 = (b63 + b64 + b65) < 8 ? b86 : b70; // B104的独立判断逻辑
+                    double b104 = (b63 + b64 + b65) < 8 ? b86 : b70;
                     double b105 = is_sum_lt_8 ? b87 : b71;
                     double b106 = is_sum_lt_8 ? b88 : b72;
 
@@ -416,8 +446,8 @@ namespace GeoChemistryNexus.Helpers
                         return "invalid";
                     }
 
-                    double temperature = -151.487 * b164 + 2041;
-                    return temperature;
+                    double tK = -151.487 * b164 + 2041 + 273.15;
+                    return tK;
                 }
                 catch
                 {
@@ -431,8 +461,7 @@ namespace GeoChemistryNexus.Helpers
             {
                 if (args.Length < 17)
                 {
-                    // HACK: 需要优化提示
-                    return null;
+                    return LanguageService.Instance["missing_parameters"];
                 }
 
                 try
@@ -463,7 +492,8 @@ namespace GeoChemistryNexus.Helpers
                                            (k2o / 94.22) + (bao / 153.36) + (rb2o / 186.936) + (f * 0.5 / 19) +
                                            (cl * 0.5 / 35.45);
 
-                    if (oxygenBasisSum == 0) return "Error: 氧原子数基准值为零";
+                    // 氧原子数基准值为零
+                    if (oxygenBasisSum == 0) return LanguageService.Instance["oxygen_atom_benchmark_zero"];
 
                     // 计算Fe阳离子数
                     double feCation = 28 * (feo / 71.85) / oxygenBasisSum;
@@ -494,7 +524,8 @@ namespace GeoChemistryNexus.Helpers
                                              (28 * (bao / 153.36) / oxygenBasisSum) + (28 * (rb2o * 2 / 186.936) / oxygenBasisSum) +
                                              (28 * (f / 19) / oxygenBasisSum) + (28 * (cl / 35.45) / oxygenBasisSum);
 
-                    if (oxygenNormFactor == 0) return "Error: 归一化因子为零";
+                    // 归一化因子为零
+                    if (oxygenNormFactor == 0) return LanguageService.Instance["normalization_factor_is_zero"];
 
                     // 计算四面体中的Si和Al
                     double siInTetrahedral = (((28 * (sio2 / 60.09) / oxygenBasisSum) * 2) * (28 / oxygenNormFactor)) / 2;
@@ -507,12 +538,13 @@ namespace GeoChemistryNexus.Helpers
                     double mgCation_normalized = (28 * (mgo / 40.31) / oxygenBasisSum) * (28 / oxygenNormFactor);
                     double denominator = feOctahedral_normalized + mgCation_normalized / 2;
 
-                    if (denominator == 0) return "Error: 温度计算分母为零";
+                    // 温度计算分母为零
+                    if (denominator == 0) return LanguageService.Instance["temperature_calculation_denominator_zero"];
 
                     double tValueInput = (alInTetrahedral / 2) + 0.1 * (feOctahedral_normalized / denominator);
 
                     // 计算最终温度
-                    return 319 * tValueInput - 68.7;
+                    return 319 * tValueInput - 68.7 + 273.15;
                 }
                 catch
                 {
@@ -533,9 +565,11 @@ namespace GeoChemistryNexus.Helpers
                         case "ASP_PY_PO": return 1;
                         case "ASP_PY_AS": return 2;
                         case "ASP_PO_L": return 3;
+                        case "ASP_AS_Lo": return 4;
+                        case "ASP_AY_L": return 5;
                         default: return null;
                     }
-                }catch { return "Error"; }
+                }catch { return LanguageService.Instance["error"]; }
 
             };
 
@@ -544,8 +578,7 @@ namespace GeoChemistryNexus.Helpers
             {
                 if (args.Length < 2)
                 {
-                    // HACK: 需要优化提示
-                    return null;
+                    return LanguageService.Instance["missing_parameters"];
                 }
 
                 try
@@ -561,42 +594,47 @@ namespace GeoChemistryNexus.Helpers
                     switch (assemblage)
                     {
                         case 0: // Asp_Po_Lo
-                            if (atomicPercentAs >= 33.5 && atomicPercentAs <= 38.7)
+                            if (atomicPercentAs >= 33.61 && atomicPercentAs <= 38.68)
                             {
-                                temperature = 77.30 * atomicPercentAs - 2289;
+                                temperature = 79.29 * atomicPercentAs - 2364.93;
                             }
                             break;
 
                         case 1: // Asp_Py_Po
-                            if (atomicPercentAs >= 30.9 && atomicPercentAs <= 33.0)
+                            if (atomicPercentAs >= 29.98 && atomicPercentAs <= 33.1)
                             {
-                                temperature = 61.0 * atomicPercentAs - 1522;
+                                temperature = 61.22 * atomicPercentAs - 1535.31;
                             }
                             break;
 
                         case 2: // Asp_Py_As
-                            if (atomicPercentAs < 30.2 && atomicPercentAs > 29.0)
+                            if (atomicPercentAs <= 30.22 && atomicPercentAs >= 29.12)
                             {
-                                temperature = 90 * atomicPercentAs - 2355;
+                                temperature = 57.27 * atomicPercentAs - 1367.78;
                             }
                             break;
 
                         case 3: // Asp_Po_L
-                            if (atomicPercentAs >= 33.0 && atomicPercentAs <= 38.7)
+                            if (atomicPercentAs >= 33.1 && atomicPercentAs <= 38.68)
                             {
-                                if (atomicPercentAs >= 34.5)
-                                {
-                                    temperature = 43.8 * atomicPercentAs - 960;
-                                }
-                                else
-                                {
-                                    temperature = 27.5 * atomicPercentAs - 416.5;
-                                }
+                                temperature = 37.81 * atomicPercentAs - 760.63;
+                            }
+                            break;
+                        case 4: // Asp_As_Lo
+                            if (atomicPercentAs >= 33.61 && atomicPercentAs <= 38.68)
+                            {
+                                temperature = 74.72 * atomicPercentAs - 2188.22;
+                            }
+                            break;
+                        case 5: // Asp_Py_L
+                            if (atomicPercentAs >= 33.22 && atomicPercentAs <= 33.1)
+                            {
+                                temperature = 44.44 * atomicPercentAs - 980.11;
                             }
                             break;
                     }
 
-                    return double.IsNaN(temperature) ? null : (object)temperature;
+                    return double.IsNaN(temperature) ? null : temperature + 273.15;
                 }
                 catch
                 {

@@ -1,0 +1,151 @@
+﻿<UserControl x:Class="GeoChemistryNexus.Controls.NewTemplateControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
+             xmlns:lg="clr-namespace:GeoChemistryNexus.Helpers"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style x:Key="TransparentButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Border Padding="20" BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="5" Background="#F9F9F9">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Margin="0,0,0,20">
+                <!--输入支持的语言-->
+                <TextBlock Text="{Binding [enter_supported_languages],Source={x:Static lg:LanguageService.Instance}}" FontWeight="Bold" Margin="0,0,0,5"/>
+                <Border BorderBrush="#ABADB3" BorderThickness="1" Padding="5" CornerRadius="3" Background="White">
+                    <DockPanel LastChildFill="True">
+                        <ItemsControl x:Name="LanguageItemsControl" DockPanel.Dock="Left">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="#E0E0E0" CornerRadius="8" Margin="0,2,5,2">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding}" VerticalAlignment="Center" Margin="10,0,5,0" />
+                                            <Button Tag="{Binding}" Click="RemoveLanguageButton_Click" Cursor="Hand"
+                                                    Style="{StaticResource TransparentButtonStyle}" 
+                                                    ToolTip="{Binding [delete_this_item],Source={x:Static lg:LanguageService.Instance}}">
+                                                <TextBlock Text="×" Margin="0,-2,8,0" FontSize="16" VerticalAlignment="Center" FontWeight="Bold" Foreground="#555555"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                        <TextBox x:Name="NewLanguageTextBox"
+                                 MinWidth="150"
+                                 BorderThickness="0"
+                                 Background="Transparent"
+                                 VerticalAlignment="Center"
+                                 KeyDown="NewLanguageTextBox_KeyDown"
+                                 AcceptsReturn="False"/>
+                    </DockPanel>
+                </Border>
+                <!--输入一个语言后按 Enter 键添加。-->
+                <TextBlock Text="{Binding [enter_language_add],Source={x:Static lg:LanguageService.Instance}}" FontSize="12" Foreground="Gray" Margin="0,5,0,0"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Margin="0,0,0,20">
+                <!--输入分类结构-->
+                <TextBlock Text="{Binding [enter_category_structure],Source={x:Static lg:LanguageService.Instance}}" FontWeight="Bold" Margin="0,0,0,5"/>
+                <Border BorderBrush="#ABADB3" BorderThickness="1" Padding="5" CornerRadius="3" Background="White">
+                    <DockPanel LastChildFill="True">
+                        <ItemsControl x:Name="CategoryItemsControl" DockPanel.Dock="Left">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="#E0E0E0" CornerRadius="8" Margin="0,2,5,2">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding}" VerticalAlignment="Center" Margin="10,0,5,0" />
+                                            <Button Tag="{Binding}" Click="RemoveCategoryButton_Click" Cursor="Hand"
+                                                    Style="{StaticResource TransparentButtonStyle}" 
+                                                    ToolTip="{Binding [delete_this_item],Source={x:Static lg:LanguageService.Instance}}">
+                                                <TextBlock Text="×" Margin="0,-2,8,0" FontSize="16" VerticalAlignment="Center" FontWeight="Bold" Foreground="#555555"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                        <TextBox x:Name="NewCategoryTextBox"
+                                 MinWidth="150"
+                                 BorderThickness="0"
+                                 Background="Transparent"
+                                 VerticalAlignment="Center"
+                                 KeyDown="NewCategoryTextBox_KeyDown"
+                                 AcceptsReturn="False"/>
+                    </DockPanel>
+                </Border>
+                <!--输入一个层级后按 Enter 键添加。-->
+                <TextBlock Text="{Binding [enter_level_add],Source={x:Static lg:LanguageService.Instance}}" FontSize="12" Foreground="Gray" Margin="0,5,0,0"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="2" Margin="0,0,0,20">
+                <!--绘图类型-->
+                <TextBlock Text="{Binding [plot_type],Source={x:Static lg:LanguageService.Instance}}" FontWeight="Bold" Margin="0,0,0,5"/>
+                <ComboBox x:Name="PlotTypeComboBox" Padding="5" BorderBrush="#ABADB3" BorderThickness="1">
+                    <!--二维坐标图-->
+                    <ComboBoxItem Content="{Binding [two_dimensional_coordinate_plot],Source={x:Static lg:LanguageService.Instance}}"/>
+                    <!--<ComboBoxItem Content="三元图"/>-->
+                </ComboBox>
+            </StackPanel>
+
+            <StackPanel Grid.Row="3">
+                <!--文件保存路径-->
+                <TextBlock Text="{Binding [template_file_save_path],Source={x:Static lg:LanguageService.Instance}}" FontWeight="Bold" Margin="0,0,0,5"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="FilePathTextBox" Grid.Column="0" IsReadOnly="True" Padding="5" 
+                             BorderBrush="#ABADB3" BorderThickness="1" Background="#EEEEEE"/>
+                    <!--浏览...-->
+                    <Button x:Name="BrowseButton" Grid.Column="1" Content="{Binding [browse_ellipsis],Source={x:Static lg:LanguageService.Instance}}" Margin="10,0,0,0" 
+                            Padding="10,5" Click="BrowseButton_Click"/>
+                </Grid>
+            </StackPanel>
+
+            <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20 0 0" >
+                <!--确定-->
+                <Button x:Name="ConfirmButton" Content="{Binding [Confirm],Source={x:Static lg:LanguageService.Instance}}" Width="100" Padding="5" Margin="0,0,10,0" 
+                        Background="#007ACC" Foreground="White" BorderThickness="0" Click="ConfirmButton_Click"/>
+                <!--确定-->
+                <Button x:Name="CancelButton" Content="{Binding [Cancel],Source={x:Static lg:LanguageService.Instance}}" Width="100" Padding="5" Click="CancelButton_Click"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

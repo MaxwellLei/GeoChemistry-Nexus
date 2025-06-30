@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using GeoChemistryNexus.PropertyEditor;
 using HandyControl.Controls;
+using GeoChemistryNexus.Helpers;
 
 namespace GeoChemistryNexus.Models
 {
@@ -10,9 +11,9 @@ namespace GeoChemistryNexus.Models
         /// <summary>
         /// 起始点
         /// </summary>
-        [ObservableProperty]    
-        [property: Category("Position")]      // 位置
-        [property: DisplayName("Start Coordinates")]     // 起始坐标
+        [ObservableProperty]
+        [property: LocalizedCategory("position")]      // 位置
+        [property: LocalizedDisplayName("start_coordinates")]     // 起始坐标
         [property: Editor(typeof(PointDefinitionPropertyEditor), typeof(PropertyEditorBase))]
         private PointDefinition _start = new PointDefinition();
 
@@ -20,8 +21,8 @@ namespace GeoChemistryNexus.Models
         /// 终止点
         /// </summary>
         [ObservableProperty]
-        [property: Category("Position")]      // 位置
-        [property: DisplayName("End Coordinates")]      // 终止坐标
+        [property: LocalizedCategory("position")]      // 位置
+        [property: LocalizedDisplayName("end_coordinates")]      // 终止坐标
         [property: Editor(typeof(PointDefinitionPropertyEditor), typeof(PropertyEditorBase))]
         private PointDefinition _end = new PointDefinition();
 
@@ -29,8 +30,8 @@ namespace GeoChemistryNexus.Models
         /// 颜色
         /// </summary>
         [ObservableProperty]
-        [property: Category("Style")]       // 样式
-        [property: DisplayName("Color")]        // 颜色
+        [property: LocalizedCategory("style")]       // 样式
+        [property: LocalizedDisplayName("color")]        // 颜色
         [property: Editor(typeof(ColorPropertyEditor), typeof(ColorPropertyEditor))]
         private string _color = "#000000";
 
@@ -38,8 +39,8 @@ namespace GeoChemistryNexus.Models
         /// 宽度
         /// </summary>
         [ObservableProperty]
-        [property: Category("Style")]       // 样式
-        [property: DisplayName("Width")]    // 宽度
+        [property: LocalizedCategory("style")]       // 样式
+        [property: LocalizedDisplayName("width")]    // 宽度
         private float _width = 1.5f;
 
 
@@ -47,8 +48,8 @@ namespace GeoChemistryNexus.Models
         /// 线条的样式，例如：虚线，点线等
         /// </summary>
         [ObservableProperty]
-        [property: Category("Style")]       // 样式
-        [property: DisplayName("Type")]     // 类型
+        [property: LocalizedCategory("style")]       // 样式
+        [property: LocalizedDisplayName("type")]     // 类型
         public LineType _style;
 
         // 枚举类型

@@ -18,16 +18,16 @@ namespace GeoChemistryNexus.Models
         /// Axis type ("Left", "Right", "Bottom", "Top")
         /// </summary>
         [ObservableProperty]
-        [property: Category("Axis Style")] // 坐标轴样式
-        [property: DisplayName("Type")] // 类型
+        [property: LocalizedCategory("axis_style")] // 坐标轴样式
+        [property: LocalizedDisplayName("type")] // 类型
         private string type;
 
         /// <summary>
         /// Axis label
         /// </summary>
         [ObservableProperty]
-        [property: Category("Axis Title")] // 坐标轴标题
-        [property: DisplayName("Content")] // 内容
+        [property: LocalizedCategory("axis_title")] // 坐标轴标题
+        [property: LocalizedDisplayName("content")] // 内容
         [property: Editor(typeof(LocalizedStringPropertyEditor), typeof(PropertyEditorBase))]
         private LocalizedString _label = new LocalizedString();
 
@@ -35,8 +35,8 @@ namespace GeoChemistryNexus.Models
         /// Font family
         /// </summary>
         [ObservableProperty]
-        [property: Category("Axis Title")] // 坐标轴标题
-        [property: DisplayName("Font Family")] // 字体
+        [property: LocalizedCategory("axis_title")] // 坐标轴标题
+        [property: LocalizedDisplayName("font_family")] // 字体
         [property: Editor(typeof(FontFamilyPropertyEditor), typeof(PropertyEditorBase))]
         private string _family = "Arial";
 
@@ -44,16 +44,16 @@ namespace GeoChemistryNexus.Models
         /// Font size
         /// </summary>
         [ObservableProperty]
-        [property: Category("Axis Title")] // 坐标轴标题
-        [property: DisplayName("Font Size")] // 字体大小
+        [property: LocalizedCategory("axis_title")] // 坐标轴标题
+        [property: LocalizedDisplayName("font_size")] // 字体大小
         private float _size = 12;
 
         /// <summary>
         /// Font color
         /// </summary>
         [ObservableProperty]
-        [property: Category("Axis Title")] // 坐标轴标题
-        [property: DisplayName("Font Color")] // 字体颜色
+        [property: LocalizedCategory("axis_title")] // 坐标轴标题
+        [property: LocalizedDisplayName("font_color")] // 字体颜色
         [property: Editor(typeof(ColorPropertyEditor), typeof(ColorPropertyEditor))]
         private string _color = "#000000";
 
@@ -61,48 +61,48 @@ namespace GeoChemistryNexus.Models
         /// Bold style
         /// </summary>
         [ObservableProperty]
-        [property: Category("Axis Title")] // 坐标轴标题
-        [property: DisplayName("Bold")] // 粗体
+        [property: LocalizedCategory("axis_title")] // 坐标轴标题
+        [property: LocalizedDisplayName("bold")] // 粗体
         private bool _isBold = false;
 
         /// <summary>
         /// Italic style
         /// </summary>
         [ObservableProperty]
-        [property: Category("Axis Title")] // 坐标轴标题
-        [property: DisplayName("Italic")] // 斜体
+        [property: LocalizedCategory("axis_title")] // 坐标轴标题
+        [property: LocalizedDisplayName("italic")] // 斜体
         private bool _isItalic = false;
 
         /// <summary>
         /// Axis tick interval
         /// </summary>
         [ObservableProperty]
-        [property: Category("Tick Style")] // 刻度样式
-        [property: DisplayName("Tick Interval")] // 刻度间隔
+        [property: LocalizedCategory("tick_style")] // 刻度样式
+        [property: LocalizedDisplayName("tick_interval")] // 刻度间隔
         private double? _tickInterval;
 
         /// <summary>
         /// Axis major tick length
         /// </summary>
         [ObservableProperty]
-        [property: Category("Major Tick Style")] // 主刻度样式
-        [property: DisplayName("Length")] // 长度
+        [property: LocalizedCategory("major_tick_style")] // 主刻度样式
+        [property: LocalizedDisplayName("length")] // 长度
         private float _majorTickLength = 4;
 
         /// <summary>
         /// Axis major tick width
         /// </summary>
         [ObservableProperty]
-        [property: Category("Major Tick Style")] // 主刻度样式
-        [property: DisplayName("Width")] // 宽度
+        [property: LocalizedCategory("major_tick_style")] // 主刻度样式
+        [property: LocalizedDisplayName("width")] // 宽度
         private float _majorTickWidth = 1;
 
         /// <summary>
         /// Axis major tick color
         /// </summary>
         [ObservableProperty]
-        [property: Category("Major Tick Style")] // 主刻度样式
-        [property: DisplayName("Color")] // 颜色
+        [property: LocalizedCategory("major_tick_style")] // 主刻度样式
+        [property: LocalizedDisplayName("color")] // 颜色
         [property: Editor(typeof(ColorPropertyEditor), typeof(ColorPropertyEditor))]
         private string _majorTickWidthColor = "#000000";
 
@@ -110,32 +110,32 @@ namespace GeoChemistryNexus.Models
         /// Axis major tick anti-aliasing enabled
         /// </summary>
         [ObservableProperty]
-        [property: Category("Major Tick Style")] // 主刻度样式
-        [property: DisplayName("Anti-aliasing")] // 抗锯齿
+        [property: LocalizedCategory("major_tick_style")] // 主刻度样式
+        [property: LocalizedDisplayName("anti_aliasing")] // 抗锯齿
         private bool _majorTickAntiAlias = false;
 
         /// <summary>
         /// Axis minor tick length
         /// </summary>
         [ObservableProperty]
-        [property: Category("Minor Tick Style")] // 次刻度样式
-        [property: DisplayName("Length")] // 长度
+        [property: LocalizedCategory("minor_tick_style")] // 次刻度样式
+        [property: LocalizedDisplayName("length")] // 长度
         private float _minorTickLength = 4;
 
         /// <summary>
         /// Axis minor tick width
         /// </summary>
         [ObservableProperty]
-        [property: Category("Minor Tick Style")] // 次刻度样式
-        [property: DisplayName("Width")] // 宽度
+        [property: LocalizedCategory("minor_tick_style")] // 次刻度样式
+        [property: LocalizedDisplayName("width")] // 宽度
         private float _minorTickWidth = 1;
 
         /// <summary>
         /// Axis minor tick color
         /// </summary>
         [ObservableProperty]
-        [property: Category("Minor Tick Style")] // 次刻度样式
-        [property: DisplayName("Color")] // 颜色
+        [property: LocalizedCategory("minor_tick_style")] // 次刻度样式
+        [property: LocalizedDisplayName("color")] // 颜色
         [property: Editor(typeof(ColorPropertyEditor), typeof(ColorPropertyEditor))]
         private string _minorTickColor = "#000000"; // 例如灰色
 
@@ -143,16 +143,16 @@ namespace GeoChemistryNexus.Models
         /// Axis minor tick anti-aliasing enabled
         /// </summary>
         [ObservableProperty]
-        [property: Category("Minor Tick Style")] // 次刻度样式
-        [property: DisplayName("Anti-aliasing")] // 抗锯齿
+        [property: LocalizedCategory("minor_tick_style")] // 次刻度样式
+        [property: LocalizedDisplayName("anti_aliasing")] // 抗锯齿
         private bool _minorTickAntiAlias = false;
 
         /// <summary>
         /// Tick label font family
         /// </summary>
         [ObservableProperty]
-        [property: Category("Tick Labels")] // 刻度标签
-        [property: DisplayName("Font Family")] // 字体
+        [property: LocalizedCategory("tick_labels")] // 刻度标签
+        [property: LocalizedDisplayName("font_family")] // 字体
         [property: Editor(typeof(FontFamilyPropertyEditor), typeof(PropertyEditorBase))]
         private string _tickLableFamily = "Arial";
 
@@ -160,16 +160,16 @@ namespace GeoChemistryNexus.Models
         /// Font size
         /// </summary>
         [ObservableProperty]
-        [property: Category("Tick Labels")] // 刻度标签
-        [property: DisplayName("Font Size")] // 字体大小
+        [property: LocalizedCategory("tick_labels")] // 刻度标签
+        [property: LocalizedDisplayName("font_size")] // 字体大小
         private float _tickLablesize = 12;
 
         /// <summary>
         /// Font color
         /// </summary>
         [ObservableProperty]
-        [property: Category("Tick Labels")] // 刻度标签
-        [property: DisplayName("Font Color")] // 字体颜色
+        [property: LocalizedCategory("tick_labels")] // 刻度标签
+        [property: LocalizedDisplayName("font_color")] // 字体颜色
         [property: Editor(typeof(ColorPropertyEditor), typeof(ColorPropertyEditor))]
         private string _tickLablecolor = "#000000";
 
@@ -177,16 +177,16 @@ namespace GeoChemistryNexus.Models
         /// Bold style
         /// </summary>
         [ObservableProperty]
-        [property: Category("Tick Labels")] // 刻度标签
-        [property: DisplayName("Bold")] // 粗体
+        [property: LocalizedCategory("tick_labels")] // 刻度标签
+        [property: LocalizedDisplayName("bold")] // 粗体
         private bool _tickLableisBold = false;
 
         /// <summary>
         /// Italic style
         /// </summary>
         [ObservableProperty]
-        [property: Category("Tick Labels")] // 刻度标签
-        [property: DisplayName("Italic")] // 斜体
+        [property: LocalizedCategory("tick_labels")] // 刻度标签
+        [property: LocalizedDisplayName("italic")] // 斜体
         private bool _tickLableisItalic = false;
     }
 }

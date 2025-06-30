@@ -87,7 +87,7 @@ namespace GeoChemistryNexus.ViewModels
             DateTime now = DateTime.Now;
             // 获取当前年份
             int currentYear = now.Year;
-            MessageHelper.Success($"感谢您的使用🌹\n祝您 {currentYear} 年科研，生活一帆风顺！");
+            MessageHelper.Success(LanguageService.Instance["thank_you_and_wishes"] + currentYear + LanguageService.Instance["research_life_smooth_sailing"]);
         }
 
         /// <summary>

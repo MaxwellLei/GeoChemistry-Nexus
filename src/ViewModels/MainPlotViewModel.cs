@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using GeoChemistryNexus.Controls;
 using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Models;
 using HandyControl.Controls;
@@ -10,6 +11,7 @@ using ScottPlot;
 using ScottPlot.Colormaps;
 using ScottPlot.Plottables;
 using ScottPlot.WPF;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -52,13 +54,15 @@ namespace GeoChemistryNexus.ViewModels
 
         // 说明控件
         private System.Windows.Controls.RichTextBox _richTextBox;
-
-        // 当前模式（模板浏览 或 绘图模式）
+        
         [ObservableProperty]
         private bool _isTemplateMode = true; // 默认为模板浏览模式
 
         [ObservableProperty]
         private bool _isPlotMode = false; // 绘图模式
+
+        [ObservableProperty]
+        private bool _isNewTemplateMode = false; // 新建绘图遮罩
 
         // 卡片展示用的模板集合
         [ObservableProperty]
@@ -93,9 +97,21 @@ namespace GeoChemistryNexus.ViewModels
         // 空属性编辑对象占位
         private object nullObject = new object();
 
+        // 当前点击的模板列表节点
+        private GraphMapTemplateNode currentgraphMapTemplateNode;
+
         // 选项卡index
         [ObservableProperty]
         private int tabIndex = 0;
+
+        [ObservableProperty]
+        private bool _isAddingText = false; // 标记是否正处于添加文本的模式
+
+        [ObservableProperty]
+        private bool _isAddingLine = false; // 标记是否正处于添加线条的模式
+
+        private Coordinates? _lineStartPoint = null; // 用于存储线条的起点
+        private ScottPlot.Plottables.LinePlot? _tempLinePlot; // 用于实时预览的临时线条
 
 
         //  ==============================
@@ -104,13 +120,17 @@ namespace GeoChemistryNexus.ViewModels
 
 
 
+        // 用于存储当前正在编辑的模板的完整文件路径
+        private string _currentTemplateFilePath;
+
+
         // 初始化
         public MainPlotViewModel(WpfPlot wpfPlot, System.Windows.Controls.RichTextBox richTextBox)
         {
             // 获取模板列表
             GraphMapTemplateNode = GraphMapTemplateParser.Parse(
                 JsonHelper.ReadJsonFile(
-                Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "GraphMapList.json")), LanguageService.CurrentLanguage);
+                Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "GraphMapList.json")));
 
             WpfPlot1 = wpfPlot;      // 获取绘图控件
             _richTextBox = richTextBox;      // 富文本框
@@ -130,15 +150,205 @@ namespace GeoChemistryNexus.ViewModels
             WpfPlot1.MouseEnter += WpfPlot1_MouseEnter;
             WpfPlot1.MouseLeave += WpfPlot1_MouseLeave;
             WpfPlot1.MouseMove += WpfPlot1_MouseMove;
+
+            // 订阅线条绘制事件
+            WpfPlot1.MouseUp += WpfPlot1_MouseUp;
+            WpfPlot1.MouseRightButtonUp += WpfPlot1_MouseRightButtonUp;
         }
 
-        // 刷新模板列表
+        /// <summary>
+        /// 鼠标左键抬起事件，用于确定线条的起点和终点
+        /// </summary>
+        private void WpfPlot1_MouseUp(object? sender, MouseButtonEventArgs e)
+        {
+            // 如果不是画线模式或添加文本模式，或不是鼠标左键点击，则忽略
+            if ((!IsAddingLine && !IsAddingText) || e.ChangedButton != MouseButton.Left)
+                return;
+
+            var mousePos = e.GetPosition(WpfPlot1);
+            Coordinates mouseCoordinates = WpfPlot1.Plot.GetCoordinates(new Pixel(mousePos.X * WpfPlot1.DisplayScale, mousePos.Y * WpfPlot1.DisplayScale));
+
+            // 添加线条
+            if (IsAddingLine)
+            {
+                if (!_lineStartPoint.HasValue)
+                {
+                    // 第一次点击：设置起点
+                    _lineStartPoint = mouseCoordinates;
+                    MessageHelper.Info("起点已确认，请点击设置终点");
+                }
+                else
+                {
+                    // 第二次点击：设置终点，正式创建线条
+                    var startPoint = _lineStartPoint.Value;
+                    var endPoint = mouseCoordinates;
+
+                    // 在图层树中找到 "线" 分类
+                    var linesCategory = LayerTree.FirstOrDefault(c => c is CategoryLayerItemViewModel vm && vm.Name == LanguageService.Instance["line"]) as CategoryLayerItemViewModel;
+                    if (linesCategory == null)
+                    {
+                        // 如果 "线" 分类不存在，则创建一个
+                        linesCategory = new CategoryLayerItemViewModel(LanguageService.Instance["line"]);
+                        LayerTree.Add(linesCategory);
+                    }
+
+                    // 创建新的 LineDefinition 对象来存储线条的属性
+                    var newLineDef = new LineDefinition
+                    {
+                        Start = new PointDefinition { X = startPoint.X, Y = startPoint.Y },
+                        End = new PointDefinition { X = endPoint.X, Y = endPoint.Y },
+                        // 设置默认样式
+                        Color = "#0078D4", // 默认蓝色
+                        Width = 2,
+                        Style = LineDefinition.LineType.Solid
+                    };
+
+                    // 创建新的 LineLayerItemViewModel
+                    var lineLayer = new LineLayerItemViewModel(newLineDef, linesCategory.Children.Count);
+                    // 订阅可见性变化事件，以便在图层列表中勾选/取消勾选时刷新视图
+                    lineLayer.PropertyChanged += (s, ev) => { if (ev.PropertyName == nameof(LineLayerItemViewModel.IsVisible)) RefreshPlotFromLayers(); };
+
+                    // 将新图层添加到图层树
+                    linesCategory.Children.Add(lineLayer);
+
+                    // 刷新整个绘图（这将根据图层树重新绘制所有内容，包括新添加的线条）
+                    RefreshPlotFromLayers();
+
+                    // 重置画线状态
+                    if (_tempLinePlot != null)
+                    {
+                        WpfPlot1.Plot.Remove(_tempLinePlot);
+                        _tempLinePlot = null;
+                    }
+                    _lineStartPoint = null;
+                    IsAddingLine = false;
+                    WpfPlot1.Refresh(); // 最后刷新一次，确保临时线完全消失
+                }
+                return; // 处理完毕，直接返回
+            }
+
+            // 添加文本
+            if (IsAddingText)
+            {
+                var textCategory = LayerTree.FirstOrDefault(c => c is CategoryLayerItemViewModel vm && vm.Name == LanguageService.Instance["text"]) as CategoryLayerItemViewModel;
+                if (textCategory == null)
+                {
+                    textCategory = new CategoryLayerItemViewModel(LanguageService.Instance["text"]);
+                    LayerTree.Add(textCategory);
+                }
+
+                // 确定当前模板支持的语言和默认语言
+                string defaultLang;
+                List<string> allLangs;
+
+                if (CurrentTemplate != null && CurrentTemplate.NodeList.Translations.Any())
+                {
+                    // 从当前加载的模板中获取语言信息
+                    defaultLang = CurrentTemplate.DefaultLanguage;
+                    allLangs = CurrentTemplate.NodeList.Translations.Keys.ToList();
+                }
+                else
+                {
+                    // 如果没有当前模板或模板没有语言信息，回退方案
+                    defaultLang = "en-US";
+                    allLangs = new List<string> { "en-US", "zh-CN" }; // 通用回退
+                }
+
+                // 根据默认语言选择合适的占位符
+                string placeholder = defaultLang == "zh-CN" ? "请输入文本" : "Enter Text";
+
+                // 动态创建 LocalizedString 对象
+                var contentString = new LocalizedString
+                {
+                    Default = defaultLang,
+                    Translations = allLangs.ToDictionary(lang => lang, lang => placeholder)
+                };
+
+
+                // 创建新的 TextDefinition 对象来存储文本的属性
+                var newTextDef = new TextDefinition
+                {
+                    Content = contentString, // 使用动态生成的对象
+                    StartAndEnd = new PointDefinition { X = mouseCoordinates.X, Y = mouseCoordinates.Y },
+                    // 设置默认样式
+                    Color = "#FF000000",
+                    Size = 12,
+                    Family = "Microsoft YaHei",
+                    BackgroundColor = "#00FFFFFF",
+                    BorderColor = "#00FFFFFF"
+                };
+
+                // 创建新的 TextLayerItemViewModel
+                var textLayer = new TextLayerItemViewModel(newTextDef, textCategory.Children.Count);
+                textLayer.PropertyChanged += (s, ev) => { if (ev.PropertyName == nameof(TextLayerItemViewModel.IsVisible)) RefreshPlotFromLayers(); };
+                textCategory.Children.Add(textLayer);
+
+                RefreshPlotFromLayers();
+                IsAddingText = false;
+
+            }
+        }
+
+        /// <summary>
+        /// 鼠标右键抬起事件，用于取消画线操作
+        /// </summary>
+        private void WpfPlot1_MouseRightButtonUp(object? sender, MouseButtonEventArgs e)
+        {
+            if (IsAddingLine)
+            {
+                // 如果正在添加线条，右键点击则取消操作
+                if (_tempLinePlot != null)
+                {
+                    WpfPlot1.Plot.Remove(_tempLinePlot);
+                    _tempLinePlot = null;
+                }
+                _lineStartPoint = null;
+                IsAddingLine = false;
+                WpfPlot1.Refresh();
+                MessageHelper.Info("添加线条操作已取消");
+            }
+
+            // 取消添加文本
+            if (IsAddingText)
+            {
+                IsAddingText = false;
+                MessageHelper.Info("添加文本操作已取消");
+            }
+        }
+
+        /// <summary>
+        /// “添加线条”按钮的命令
+        /// </summary>
+        [RelayCommand]
+        private void AddLine()
+        {
+            // 进入添加线条模式
+            IsAddingLine = true;
+            _lineStartPoint = null; // 重置起点
+            //MessageHelper.Info("请在绘图区点击以设置线条的起点");
+        }
+
+        /// <summary>
+        /// “添加文本”按钮的命令
+        /// </summary>
+        [RelayCommand]
+        private void AddText()
+        {
+            // 进入添加文本模式
+            IsAddingText = true;
+            // 关闭其他可能开启的模式，以避免冲突
+            IsAddingLine = false;
+            _lineStartPoint = null;
+            //MessageHelper.Info("请在绘图区点击以设置文本的位置");
+        }
+
+        // 切换语言——刷新
         public void InitTemplate()
         {
-            // 获取模板列表
+            // 刷新模板列表
             GraphMapTemplateNode = GraphMapTemplateParser.Parse(
                 JsonHelper.ReadJsonFile(
-                Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "GraphMapList.json")), LanguageService.CurrentLanguage);
+                Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "GraphMapList.json")));
         }
 
         /// <summary>
@@ -172,9 +382,6 @@ namespace GeoChemistryNexus.ViewModels
         /// </summary>
         private void WpfPlot1_MouseMove(object? sender, MouseEventArgs e)
         {
-            // 如果追踪模式未开启，则不执行任何操作
-            if (!IsCrosshairVisible) return;
-
             // 将WPF的鼠标位置转换为ScottPlot的像素单位
             Pixel mousePixel = new(e.GetPosition(WpfPlot1).X * WpfPlot1.DisplayScale,
                                   e.GetPosition(WpfPlot1).Y * WpfPlot1.DisplayScale);
@@ -182,10 +389,29 @@ namespace GeoChemistryNexus.ViewModels
             // 将像素位置转换为图表的坐标单位
             Coordinates mouseCoordinates = WpfPlot1.Plot.GetCoordinates(mousePixel);
 
+            //  如果正在添加线条且起点已确定，则实时预览线条
+            if (IsAddingLine && _lineStartPoint.HasValue)
+            {
+                // 如果已存在临时预览线，先将其移除
+                if (_tempLinePlot != null)
+                {
+                    WpfPlot1.Plot.Remove(_tempLinePlot);
+                }
+                // 添加新的临时预览线
+                _tempLinePlot = WpfPlot1.Plot.Add.Line(_lineStartPoint.Value.X, _lineStartPoint.Value.Y, mouseCoordinates.X, mouseCoordinates.Y);
+                _tempLinePlot.Color = Colors.Red; // 设置预览线为红色虚线
+                _tempLinePlot.LinePattern = LinePattern.Dashed;
+                WpfPlot1.Refresh();
+                return;
+            }
+
+            // 如果追踪模式未开启，则不执行任何操作
+            if (!IsCrosshairVisible) return;
+
             // 更新十字轴的位置
             CrosshairPlot.Position = mouseCoordinates;
 
-            // 更新十字轴上的文本标签以显示实时坐标 (N3格式化为保留3位小数的数字)
+            // 更新十字轴上的文本标签以显示实时坐标 (保留3位小数的数字)
             CrosshairPlot.VerticalLine.Text = $"{mouseCoordinates.X:N3}";
             CrosshairPlot.HorizontalLine.Text = $"{mouseCoordinates.Y:N3}";
 
@@ -251,6 +477,7 @@ namespace GeoChemistryNexus.ViewModels
         private void SelectTreeViewItem(GraphMapTemplateNode graphMapTemplateNode)
         {
             if (graphMapTemplateNode == null) return;
+            currentgraphMapTemplateNode = graphMapTemplateNode;
 
             // 如果是模板文件（叶子节点）
             if (!string.IsNullOrEmpty(graphMapTemplateNode.GraphMapPath))
@@ -384,7 +611,7 @@ namespace GeoChemistryNexus.ViewModels
 
             // 清空图层树
             LayerTree.Clear();
-            PropertyGridModel = null;
+            PropertyGridModel = nullObject;
 
             InitializeBreadcrumbs(); // 重置面包屑到初始状态
             LoadAllTemplateCards();  // 重新加载全部模板卡片
@@ -1260,12 +1487,12 @@ namespace GeoChemistryNexus.ViewModels
                         // 只为每组的第一个点添加标签
                         if (isFirstPointInGroup)
                         {
-                            scatterPlot.Label = categoryName;
+                            scatterPlot.LegendText = categoryName;
                             isFirstPointInGroup = false;
                         }
                         else
                         {
-                            scatterPlot.Label = null;
+                            scatterPlot.LegendText = null;
                         }
 
                         // 创建 ScatterLayerItemViewModel 来代表图层列表中的这一个点
@@ -1488,6 +1715,13 @@ namespace GeoChemistryNexus.ViewModels
                 };
                 axesCategory.Children.Add(axisLayer);
             }
+
+            // TODO:网格对象加载
+            // TODO:绘图设置加载
+            // TODO:图例设置加载
+            // TODO:脚本设置加载
+
+
             // 空对象不添加图层
             if (axesCategory.Children.Any()) LayerTree.Add(axesCategory);
 
@@ -1594,19 +1828,23 @@ namespace GeoChemistryNexus.ViewModels
             WpfPlot1.Plot.Legend.Orientation = CurrentTemplate.Info.Legend.Orientation;
             WpfPlot1.Plot.Legend.IsVisible = CurrentTemplate.Info.Legend.IsVisible;
 
-            // 处理标题
-            WpfPlot1.Plot.Axes.Title.Label.Text = CurrentTemplate.Info.Title.Label.Get();
-            // 图表标题字体
-            WpfPlot1.Plot.Axes.Title.Label.FontName = (LanguageService.CurrentLanguage == "zh-CN") ? 
-                "微软雅黑" : CurrentTemplate.Info.Title.Family;
-            // 图表标题字体大小
-            WpfPlot1.Plot.Axes.Title.Label.FontSize = CurrentTemplate.Info.Title.Size;
-            // 图表标题字体颜色
-            WpfPlot1.Plot.Axes.Title.Label.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(CurrentTemplate.Info.Title.Color));
-            // 图表标题粗体
-            WpfPlot1.Plot.Axes.Title.Label.Bold = CurrentTemplate.Info.Title.IsBold;
-            // 图表标题斜体
-            WpfPlot1.Plot.Axes.Title.Label.Italic = CurrentTemplate.Info.Title.IsItalic;
+            if(CurrentTemplate.Info.Title.Label.Translations.Count != 0)
+            {
+                // 处理标题
+                WpfPlot1.Plot.Axes.Title.Label.Text = CurrentTemplate.Info.Title.Label.Get();
+                // 图表标题字体
+                WpfPlot1.Plot.Axes.Title.Label.FontName = (LanguageService.CurrentLanguage == "zh-CN") ?
+                    "微软雅黑" : CurrentTemplate.Info.Title.Family;
+                // 图表标题字体大小
+                WpfPlot1.Plot.Axes.Title.Label.FontSize = CurrentTemplate.Info.Title.Size;
+                // 图表标题字体颜色
+                WpfPlot1.Plot.Axes.Title.Label.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(CurrentTemplate.Info.Title.Color));
+                // 图表标题粗体
+                WpfPlot1.Plot.Axes.Title.Label.Bold = CurrentTemplate.Info.Title.IsBold;
+                // 图表标题斜体
+                WpfPlot1.Plot.Axes.Title.Label.Italic = CurrentTemplate.Info.Title.IsItalic;
+            }
+            
 
             // 获取脚本对象
             CurrentScript = CurrentTemplate.Script;
@@ -1689,6 +1927,7 @@ namespace GeoChemistryNexus.ViewModels
             textPlot.LabelFontName = (LanguageService.CurrentLanguage == "zh-CN") ? "微软雅黑" : textDef.Family;
             textPlot.LabelText = textDef.Content.Get();
             textPlot.LabelFontSize = textDef.Size;
+            textPlot.LabelRotation = textDef.Rotation;
             textPlot.LabelFontColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex((textDef.Color)));
             textPlot.LabelBold = textDef.IsBold;
             textPlot.LabelItalic = textDef.IsItalic;
@@ -1905,6 +2144,224 @@ namespace GeoChemistryNexus.ViewModels
                 // 刷新绘图控件以应用所有更改
                 WpfPlot1.Refresh();
                 MessageHelper.Success(LanguageService.Instance["all_imported_data_cleared"]);
+            }
+        }
+
+        /// <summary>
+        /// 确认新建图解模板
+        /// </summary>
+        /// <param name="newTemplateControl">自定义控件</param>
+        [RelayCommand]
+        private void ConfirmNewTemplate(NewTemplateControl newTemplateControl)
+        {
+            if (newTemplateControl == null) return;
+
+            // 获取数据
+            string language = newTemplateControl.Language;
+            string category = newTemplateControl.CategoryHierarchy;
+            string path = newTemplateControl.FilePath;
+            string plotType = newTemplateControl.PlotType;
+
+            // 检查数据是否有效
+            if (string.IsNullOrWhiteSpace(language) || string.IsNullOrWhiteSpace(category)
+                 || string.IsNullOrEmpty(plotType) || string.IsNullOrWhiteSpace(path))
+            {
+                // 所有字段均为必填项！
+                MessageHelper.Warning(LanguageService.Instance["all_fields_required"]);
+                return;
+            }
+
+            var allLanguages = language.Split(new[] { " > " }, StringSplitOptions.RemoveEmptyEntries)
+                                .Select(lang => lang.Trim())
+                                .ToList();
+
+            var allCategory = category.Split(new[] { " > " }, StringSplitOptions.RemoveEmptyEntries)
+                                .Select(lang => lang.Trim())
+                                .ToList();
+
+            if(allCategory.Count < 2)
+            {
+                // 分类结构必须大于等于2！
+                MessageHelper.Warning(LanguageService.Instance["category_structure_min_two"]);
+                return;
+            }
+
+            _currentTemplateFilePath = Path.Combine(path, $"{allCategory[allCategory.Count-2]}_{allCategory[allCategory.Count - 1]}.json");
+
+            // 创建新底图
+            CurrentTemplate = GraphMapTemplate.CreateDefault(allLanguages, plotType, category);
+
+            IsTemplateMode = false;
+            IsPlotMode = true;
+            IsNewTemplateMode = false;
+
+            BuildLayerTreeFromTemplate(CurrentTemplate);
+            RefreshPlotFromLayers();
+
+            // 清空数据
+            newTemplateControl.EmptyData();
+        }
+
+        /// <summary>
+        /// 取消新建图解模板
+        /// </summary>
+        [RelayCommand]
+        private void CancelNewTemplate(NewTemplateControl newTemplateControl)
+        {
+            if (newTemplateControl == null) return;
+
+            // 清空数据
+            newTemplateControl.EmptyData();
+
+            IsNewTemplateMode = false;
+        }
+
+        /// <summary>
+        /// 新建底图——弹窗新建
+        /// </summary>
+        [RelayCommand]
+        private void NewTemplate()
+        {
+            IsNewTemplateMode = true;
+        }
+
+        /// <summary>
+        /// 保存当前底图模板
+        /// </summary>
+        [RelayCommand]
+        private void SaveBaseMap()
+        {
+            // 确保有模板和路径可供保存
+            if (CurrentTemplate == null || string.IsNullOrWhiteSpace(_currentTemplateFilePath))
+            {
+                // 没有可保存的模板或未指定保存路径。请先新建或打开一个模板
+                MessageHelper.Error(LanguageService.Instance["no_template_or_path_specified"]);
+                return;
+            }
+
+            // 清空模板中原有的动态绘图元素列表
+            //    (坐标轴、标题等对象是直接修改属性，不需要清空)
+            CurrentTemplate.Info.Lines.Clear();
+            CurrentTemplate.Info.Texts.Clear();
+            CurrentTemplate.Info.Annotations.Clear();
+            CurrentTemplate.Info.Points.Clear();
+
+            // 遍历当前的图层列表，收集所有图元信息
+            var allLayers = FlattenTree(LayerTree); // 使用您已有的辅助方法获取所有图层
+            foreach (var layer in allLayers)
+            {
+                // 使用 switch 匹配不同类型的图层
+                switch (layer)
+                {
+                    // 如果是线条图层
+                    case LineLayerItemViewModel lineLayer:
+                        CurrentTemplate.Info.Lines.Add(lineLayer.LineDefinition);
+                        break;
+
+                    // 如果是文本图层
+                    case TextLayerItemViewModel textLayer:
+                        CurrentTemplate.Info.Texts.Add(textLayer.TextDefinition);
+                        break;
+
+                    // 如果是注释图层
+                    case AnnotationLayerItemViewModel annotationLayer:
+                        CurrentTemplate.Info.Annotations.Add(annotationLayer.AnnotationDefinition);
+                        break;
+
+                        // TODO:其他图元处理
+                }
+            }
+
+            // 将更新后的 CurrentTemplate 对象序列化为 JSON 字符串
+            var options = new JsonSerializerOptions
+            {
+                // 美化输出，使其易于阅读
+                WriteIndented = true,
+                // 解决中文字符被编码为 \uXXXX 的问题
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                // 将枚举类型转换为字符串而不是数字
+                Converters = { new System.Text.Json.Serialization.JsonStringEnumConverter() }
+            };
+
+            try
+            {
+                string jsonString = JsonSerializer.Serialize(CurrentTemplate, options);
+
+                // 将 JSON 字符串写入文件
+                // 确保目录存在
+                string directoryPath = Path.GetDirectoryName(_currentTemplateFilePath);
+                if (!Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
+
+                File.WriteAllText(_currentTemplateFilePath, jsonString);
+
+                // 更新或生成新的缩略图
+                string thumbnailPath = Path.Combine(directoryPath, "thumbnail.jpg");
+                WpfPlot1.Plot.Save(thumbnailPath, 400, 300); // 保存一个400x300的缩略图
+
+                // 模板已成功保存！
+                MessageHelper.Success(LanguageService.Instance["template_saved_successfully"]);
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.Error(LanguageService.Instance["save_template_failed"] + $": {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 打开一个已存在的模板文件
+        /// </summary>
+        [RelayCommand]
+        private async Task OpenTemplate()
+        {
+            // 配置并显示文件打开对话框
+            var openFileDialog = new VistaOpenFileDialog
+            {
+                Title = LanguageService.Instance["open_template"],
+                Filter = $"{LanguageService.Instance["template_files"]} (*.json)|*.json|{LanguageService.Instance["all_files"]} (*.*)|*.*",
+                DefaultExt = ".json",
+                CheckFileExists = true, // 确保文件存在
+                Multiselect = false
+            };
+
+            // 如果用户选择了一个文件并点击了 "确定"
+            if (openFileDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    // 获取用户选择的完整文件路径
+                    string filePath = openFileDialog.FileName;
+                    // 将当前编辑的文件路径更新为用户选择的路径，以便后续保存操作
+                    _currentTemplateFilePath = filePath;
+
+                    // 切换到绘图模式
+                    TabIndex = 0; // 确保显示的是绘图选项卡
+                    IsTemplateMode = false;
+                    IsPlotMode = true;
+
+                    // 异步加载模板文件，构建图层并刷新绘图
+                    await LoadAndBuildLayers(filePath);
+
+                    // 尝试加载与模板文件位于同一目录下的说明文件 (.rtf)
+                    string directoryPath = Path.GetDirectoryName(filePath);
+                    var tempRTFfile = FileHelper.FindFileOrGetFirstWithExtension(
+                                          directoryPath,
+                                          LanguageService.CurrentLanguage,
+                                          ".rtf");
+                    RtfHelper.LoadRtfToRichTextBox(tempRTFfile, _richTextBox);
+
+                    // 通知
+                    MessageHelper.Success(LanguageService.Instance["template_loaded_successfully"]);
+                }
+                catch (Exception ex)
+                {
+                    // 如果加载过程中出现任何错误，通知用户
+                    MessageHelper.Error($"{LanguageService.Instance["template_load_failed"]}: {ex.Message}");
+                    // 加载失败后，返回到模板选择界面
+                    BackToTemplateMode();
+                }
             }
         }
     }

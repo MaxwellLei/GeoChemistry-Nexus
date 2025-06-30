@@ -14,9 +14,8 @@ namespace GeoChemistryNexus.Helpers
         /// 【模板列表】解析绘图模板的JSON数据，并根据指定语言构建一个树形结构。
         /// </summary>
         /// <param name="jsonContent">包含模板数据的JSON字符串。</param>
-        /// <param name="lg">要使用的语言代码 (例如 "zh-CN", "en-US")。如果找不到，则使用默认语言。</param>
         /// <returns>根节点，其 Children 属性包含了所有顶层模板节点。</returns>
-        public static GraphMapTemplateNode Parse(string jsonContent, string lg)
+        public static GraphMapTemplateNode Parse(string jsonContent)
         {
             var rootNode = new GraphMapTemplateNode { Name = "Root" };
 
@@ -38,15 +37,8 @@ namespace GeoChemistryNexus.Helpers
 
             foreach (var item in templateList)
             {
-                // 如果默认节点列表为空，则跳过
-                if (string.IsNullOrWhiteSpace(item.NodeList?.Default)) continue;
-
-                // 获取翻译
-                if (!item.NodeList.Translations.TryGetValue(lg, out var selectedPath) || string.IsNullOrWhiteSpace(selectedPath))
-                {
-                    // 如果找不到或者为空，则使用默认路径
-                    selectedPath = item.NodeList.Default;
-                }
+                // 获取分类路径
+                string selectedPath = item.NodeList.Get();
 
                 // 分割选择的路径
                 var pathParts = selectedPath.Split(separator).Select(p => p.Trim()).ToArray();
@@ -192,15 +184,6 @@ namespace GeoChemistryNexus.Helpers
         {
             public LocalizedString NodeList { get; set; }
             public string GraphMapPath { get; set; }
-        }
-
-        /// <summary>
-        /// 用于反序列化多语言字符串的辅助类
-        /// </summary>
-        private class LocalizedString
-        {
-            public string Default { get; set; }
-            public Dictionary<string, string> Translations { get; set; } = new();
         }
     }
 }
