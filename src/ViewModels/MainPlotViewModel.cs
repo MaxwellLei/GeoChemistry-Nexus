@@ -154,6 +154,15 @@ namespace GeoChemistryNexus.ViewModels
             // 订阅线条绘制事件
             WpfPlot1.MouseUp += WpfPlot1_MouseUp;
             WpfPlot1.MouseRightButtonUp += WpfPlot1_MouseRightButtonUp;
+
+            WpfPlot1.Menu.Clear();      // 禁用原生右键菜单
+            // 禁用双击帧率显示
+            ScottPlot.Control.PlotActions customActions = ScottPlot.Control.PlotActions.Standard();
+            customActions.ToggleBenchmark = delegate { };
+            WpfPlot1.Interaction.Enable(customActions);
+
+
+            // 测试区域
         }
 
         /// <summary>

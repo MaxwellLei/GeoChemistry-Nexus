@@ -1264,4 +1264,22 @@
   <data name="template_loaded_successfully" xml:space="preserve">
     <value>Template Loaded Successfully</value>
   </data>
+  <data name="unknown_error_checking_for_updates" xml:space="preserve">
+    <value>An unknown error occurred while checking for updates</value>
+  </data>
+  <data name="already_latest_version" xml:space="preserve">
+    <value>Already the latest version</value>
+  </data>
+  <data name="cannot_parse_version_number_check_release_address" xml:space="preserve">
+    <value>Unable to parse the version number. Please check the release address</value>
+  </data>
+  <data name="network_request_error" xml:space="preserve">
+    <value>Network request error</value>
+  </data>
+  <data name="json_parse_error" xml:space="preserve">
+    <value>JSON parse error</value>
+  </data>
+  <data name="unknown_error_occurred" xml:space="preserve">
+    <value>An unknown error occurred</value>
+  </data>
 </root>

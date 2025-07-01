@@ -75,33 +75,33 @@ namespace GeoChemistryNexus.Helpers
                     // 如果最新版本号大于当前版本号，则有更新
                     if(latestVersion == currentVersion)
                     {
-                        MessageHelper.Info("当前已是最新版本");
+                        MessageHelper.Info(LanguageService.Instance["already_latest_version"]);
                         return false;
                     }
                     return latestVersion > currentVersion;
                 }
                 else
                 {
-                    MessageHelper.Warning("无法解析版本号。请前往发布地址查看");
+                    MessageHelper.Warning(LanguageService.Instance["cannot_parse_version_number_check_release_address"]);
                     return false;
                 }
             }
             catch (HttpRequestException ex)
             {
                 // 网络请求错误
-                MessageHelper.Error($"网络请求错误: {ex.Message}");
+                MessageHelper.Error(LanguageService.Instance["network_request_error"] + $": {ex.Message}");
                 return false;
             }
             catch (JsonException ex)
             {
                 // JSON 解析错误
-                MessageHelper.Error($"JSON 解析错误: {ex.Message}");
+                MessageHelper.Error(LanguageService.Instance["json_parse_error"] + $": {ex.Message}");
                 return false;
             }
             catch (Exception ex)
             {
                 // 其他未知错误
-                MessageHelper.Error($"发生未知错误: {ex.Message}");
+                MessageHelper.Error(LanguageService.Instance["unknown_error_occurred"] + $": {ex.Message}");
                 return false;
             }
         }

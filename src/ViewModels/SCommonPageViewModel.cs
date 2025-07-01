@@ -91,7 +91,7 @@ namespace GeoChemistryNexus.ViewModels
             //MessageHelper.Info("正在检查更新，请稍候...");
             try
             {
-                // 使用 await 异步等待结果，避免UI线程阻塞
+                // 异步等待结果
                 bool hasUpdate = await UpdateHelper.CheckForUpdateAsync(Assembly.GetExecutingAssembly().GetName().Version.ToString());
 
                 if (hasUpdate)
@@ -117,8 +117,7 @@ namespace GeoChemistryNexus.ViewModels
             }
             catch (Exception ex)
             {
-                // 添加一个最终的异常捕获，以防 UpdateHelper 中有未处理的异常
-                MessageHelper.Error($"检查更新时发生未知错误: {ex.Message}");
+                MessageHelper.Error(LanguageService.Instance["unknown_error_checking_for_updates"] + $": {ex.Message}");
             }
         }
 

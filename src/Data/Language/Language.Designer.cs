@@ -223,6 +223,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Already the latest version 的本地化字符串。
+        /// </summary>
+        internal static string already_latest_version {
+            get {
+                return ResourceManager.GetString("already_latest_version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Amphibole 的本地化字符串。
         /// </summary>
         internal static string Amphibole {
@@ -669,6 +678,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string CancelSelected {
             get {
                 return ResourceManager.GetString("CancelSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Unable to parse the version number. Please check the release address 的本地化字符串。
+        /// </summary>
+        internal static string cannot_parse_version_number_check_release_address {
+            get {
+                return ResourceManager.GetString("cannot_parse_version_number_check_release_address", resourceCulture);
             }
         }
         
@@ -1807,6 +1825,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 JSON parse error 的本地化字符串。
+        /// </summary>
+        internal static string json_parse_error {
+            get {
+                return ResourceManager.GetString("json_parse_error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Script Settings 的本地化字符串。
         /// </summary>
         internal static string JsSetting {
@@ -2208,6 +2235,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string must_be_positive_number {
             get {
                 return ResourceManager.GetString("must_be_positive_number", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Network request error 的本地化字符串。
+        /// </summary>
+        internal static string network_request_error {
+            get {
+                return ResourceManager.GetString("network_request_error", resourceCulture);
             }
         }
         
@@ -3468,6 +3504,24 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string unknown_axis {
             get {
                 return ResourceManager.GetString("unknown_axis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 An unknown error occurred while checking for updates 的本地化字符串。
+        /// </summary>
+        internal static string unknown_error_checking_for_updates {
+            get {
+                return ResourceManager.GetString("unknown_error_checking_for_updates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 An unknown error occurred 的本地化字符串。
+        /// </summary>
+        internal static string unknown_error_occurred {
+            get {
+                return ResourceManager.GetString("unknown_error_occurred", resourceCulture);
             }
         }
         

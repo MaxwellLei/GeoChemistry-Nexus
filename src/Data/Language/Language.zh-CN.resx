@@ -1247,9 +1247,11 @@
   </data>
   <data name="new_version_available_github" xml:space="preserve">
     <value>发现新版本！请前往GitHub Release页面下载更新。</value>
+    <comment>检查更新</comment>
   </data>
   <data name="go_to_download" xml:space="preserve">
     <value>去下载</value>
+    <comment>检查更新</comment>
   </data>
   <data name="enter_supported_languages" xml:space="preserve">
     <value>输入支持语言</value>
@@ -1333,5 +1335,30 @@
   </data>
   <data name="template_loaded_successfully" xml:space="preserve">
     <value>模板文件打开成功</value>
+    <comment>绘图页面</comment>
+  </data>
+  <data name="unknown_error_checking_for_updates" xml:space="preserve">
+    <value>检查更新时发生未知错误</value>
+    <comment>设置页面</comment>
+  </data>
+  <data name="already_latest_version" xml:space="preserve">
+    <value>当前已是最新版本</value>
+    <comment>检查更新</comment>
+  </data>
+  <data name="cannot_parse_version_number_check_release_address" xml:space="preserve">
+    <value>无法解析版本号。请前往发布地址查看</value>
+    <comment>检查更新</comment>
+  </data>
+  <data name="network_request_error" xml:space="preserve">
+    <value>网络请求错误</value>
+    <comment>检查更新</comment>
+  </data>
+  <data name="json_parse_error" xml:space="preserve">
+    <value>JSON 解析错误</value>
+    <comment>检查更新</comment>
+  </data>
+  <data name="unknown_error_occurred" xml:space="preserve">
+    <value>发生未知错误</value>
+    <comment>检查更新</comment>
   </data>
 </root>
