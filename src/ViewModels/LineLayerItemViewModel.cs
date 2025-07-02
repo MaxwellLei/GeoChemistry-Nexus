@@ -11,7 +11,7 @@ namespace GeoChemistryNexus.ViewModels
         public LineDefinition LineDefinition { get; }
 
         public LineLayerItemViewModel(LineDefinition lineDefinition, int index)
-            : base(LanguageService.Instance["line"] +  (index + 1))
+            : base(LanguageService.Instance["line"] + $" {index + 1}")
         {
             LineDefinition = lineDefinition;
         }

@@ -1282,4 +1282,19 @@
   <data name="unknown_error_occurred" xml:space="preserve">
     <value>An unknown error occurred</value>
   </data>
+  <data name="polygon" xml:space="preserve">
+    <value>Polygon</value>
+  </data>
+  <data name="not_enough_vertices_add_polygon_canceled" xml:space="preserve">
+    <value>Not enough vertices, add polygon operation canceled.</value>
+  </data>
+  <data name="add_line_operation_canceled" xml:space="preserve">
+    <value>Add line operation canceled.</value>
+  </data>
+  <data name="add_text_operation_canceled" xml:space="preserve">
+    <value>Add text operation canceled.</value>
+  </data>
+  <data name="language_setting_duplicate_found" xml:space="preserve">
+    <value>Duplicate items exist in language settings, please check!</value>
+  </data>
 </root>

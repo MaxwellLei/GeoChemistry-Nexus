@@ -113,15 +113,22 @@ namespace GeoChemistryNexus.ViewModels
         private Coordinates? _lineStartPoint = null; // 用于存储线条的起点
         private ScottPlot.Plottables.LinePlot? _tempLinePlot; // 用于实时预览的临时线条
 
+        [ObservableProperty]
+        private bool _isAddingPolygon = false; // 标记是否正处于添加多边形的模式
 
-        //  ==============================
-        //              测试区域
-        //  ==============================
+        private List<Coordinates> _polygonVertices = new(); // 用于存储多边形顶点的临时列表
+        private ScottPlot.Plottables.Polygon? _tempPreviewPolygon; // 用于实时预览的临时多边形
+        private ScottPlot.Plottables.LinePlot? _tempRubberBandLine; // 用于预览下一段连线的"橡皮筋"
 
 
 
         // 用于存储当前正在编辑的模板的完整文件路径
         private string _currentTemplateFilePath;
+
+
+        //  ==============================
+        //              测试区域
+        //  ==============================
 
 
         // 初始化
@@ -165,17 +172,43 @@ namespace GeoChemistryNexus.ViewModels
             // 测试区域
         }
 
+
         /// <summary>
         /// 鼠标左键抬起事件，用于确定线条的起点和终点
         /// </summary>
         private void WpfPlot1_MouseUp(object? sender, MouseButtonEventArgs e)
         {
-            // 如果不是画线模式或添加文本模式，或不是鼠标左键点击，则忽略
-            if ((!IsAddingLine && !IsAddingText) || e.ChangedButton != MouseButton.Left)
+            // 鼠标左键抬起事件
+            if (e.ChangedButton != MouseButton.Left)
                 return;
 
             var mousePos = e.GetPosition(WpfPlot1);
             Coordinates mouseCoordinates = WpfPlot1.Plot.GetCoordinates(new Pixel(mousePos.X * WpfPlot1.DisplayScale, mousePos.Y * WpfPlot1.DisplayScale));
+
+            // 如果正在添加多边形
+            if (IsAddingPolygon)
+            {
+                // 添加新顶点
+                _polygonVertices.Add(mouseCoordinates);
+
+                // 移除旧的预览多边形
+                if (_tempPreviewPolygon != null)
+                {
+                    WpfPlot1.Plot.Remove(_tempPreviewPolygon);
+                }
+
+                // 如果顶点数大于等于2，则可以开始预览
+                if (_polygonVertices.Count >= 2)
+                {
+                    _tempPreviewPolygon = WpfPlot1.Plot.Add.Polygon(_polygonVertices.ToArray());
+                    _tempPreviewPolygon.FillStyle.Color = Colors.Transparent; // 预览时内部透明
+                    _tempPreviewPolygon.LineStyle.Color = Colors.Red;
+                    _tempPreviewPolygon.LineStyle.Pattern = LinePattern.Dashed;
+                    _tempPreviewPolygon.LineStyle.Width = 1.5f;
+                }
+                WpfPlot1.Refresh();
+                return; // 处理完毕，直接返回
+            }
 
             // 添加线条
             if (IsAddingLine)
@@ -303,6 +336,64 @@ namespace GeoChemistryNexus.ViewModels
         /// </summary>
         private void WpfPlot1_MouseRightButtonUp(object? sender, MouseButtonEventArgs e)
         {
+            // 处理多边形绘制完成或取消
+            if (IsAddingPolygon)
+            {
+                // 清理预览用的"橡皮筋"线
+                if (_tempRubberBandLine != null)
+                {
+                    WpfPlot1.Plot.Remove(_tempRubberBandLine);
+                    _tempRubberBandLine = null;
+                }
+                // 清理预览用的多边形
+                if (_tempPreviewPolygon != null)
+                {
+                    WpfPlot1.Plot.Remove(_tempPreviewPolygon);
+                    _tempPreviewPolygon = null;
+                }
+
+                // 如果顶点数少于3，无法构成多边形，视为取消操作
+                if (_polygonVertices.Count < 3)
+                {
+                    IsAddingPolygon = false;
+                    _polygonVertices.Clear();
+                    WpfPlot1.Refresh();
+                    MessageHelper.Info(LanguageService.Instance["not_enough_vertices_add_polygon_canceled"]);
+                    return;
+                }
+
+                // 创建多边形
+                // 在图层树中找到 "多边形" 分类
+                var polygonsCategory = LayerTree.FirstOrDefault(c => c is CategoryLayerItemViewModel vm && vm.Name == LanguageService.Instance["polygon"]) as CategoryLayerItemViewModel;
+                if (polygonsCategory == null)
+                {
+                    polygonsCategory = new CategoryLayerItemViewModel(LanguageService.Instance["polygon"]);
+                    LayerTree.Add(polygonsCategory);
+                }
+
+                // 创建 PolygonDefinition 用于存储属性
+                var newPolygonDef = new PolygonDefinition
+                {
+                    Vertices = _polygonVertices.Select(c => new PointDefinition { X = c.X, Y = c.Y }).ToList(),
+                    // 使用默认样式
+                };
+
+                // 创建 PolygonLayerItemViewModel
+                var polygonLayer = new PolygonLayerItemViewModel(newPolygonDef, polygonsCategory.Children.Count);
+                polygonLayer.PropertyChanged += (s, ev) => { if (ev.PropertyName == nameof(PolygonLayerItemViewModel.IsVisible)) RefreshPlotFromLayers(); };
+                polygonsCategory.Children.Add(polygonLayer);
+
+                // 刷新整个绘图
+                RefreshPlotFromLayers();
+
+                // 重置状态
+                IsAddingPolygon = false;
+                _polygonVertices.Clear();
+                WpfPlot1.Refresh(); // 最后刷新，确保临时图形完全消失
+                //MessageHelper.Success("多边形添加成功！");
+                return;
+            }
+
             if (IsAddingLine)
             {
                 // 如果正在添加线条，右键点击则取消操作
@@ -314,15 +405,75 @@ namespace GeoChemistryNexus.ViewModels
                 _lineStartPoint = null;
                 IsAddingLine = false;
                 WpfPlot1.Refresh();
-                MessageHelper.Info("添加线条操作已取消");
+                MessageHelper.Info(LanguageService.Instance["add_line_operation_canceled"]);
             }
 
             // 取消添加文本
             if (IsAddingText)
             {
                 IsAddingText = false;
-                MessageHelper.Info("添加文本操作已取消");
+                MessageHelper.Info(LanguageService.Instance["add_text_operation_canceled"]);
             }
+        }
+
+        /// <summary>
+        /// “添加多边形”按钮的命令
+        /// </summary>
+        [RelayCommand]
+        private void AddPolygon()
+        {
+            // 进入添加多边形模式
+            IsAddingPolygon = true;
+            _polygonVertices.Clear(); // 清空旧的顶点
+
+            // 关闭其他可能开启的模式
+            IsAddingLine = false;
+            IsAddingText = false;
+
+            //MessageHelper.Info("请在绘图区连续左键点击设置顶点，右键完成绘制。");
+        }
+
+        // 创建多边形绘图对象
+        private void CreatePolygonPlottable(PolygonLayerItemViewModel polygonLayer)
+        {
+            var polygonDef = polygonLayer.PolygonDefinition;
+            if (polygonDef.Vertices == null || !polygonDef.Vertices.Any()) return;
+
+            var coordinates = polygonDef.Vertices.Select(p => new Coordinates(p.X, p.Y)).ToArray();
+            var polygonPlot = WpfPlot1.Plot.Add.Polygon(coordinates);
+
+            // 应用样式
+            polygonPlot.FillStyle.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(polygonDef.FillColor));
+            polygonPlot.LineStyle.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(polygonDef.BorderColor));
+            polygonPlot.LineStyle.Width = polygonDef.BorderWidth;
+
+            // 存储引用
+            polygonLayer.Plottable = polygonPlot;
+        }
+
+        // 多边形属性变更的处理器
+        private bool PolygonPropertyChanged(ScottPlot.Plottables.Polygon polygonPlot, object sender, PropertyChangedEventArgs e)
+        {
+            var polygonDef = (PolygonDefinition)sender;
+            switch (e.PropertyName)
+            {
+                case nameof(PolygonDefinition.Vertices):
+                    var newCoordinates = polygonDef.Vertices.Select(p => new Coordinates(p.X, p.Y)).ToArray();
+                    polygonPlot.UpdateCoordinates(newCoordinates);
+                    break;
+                case nameof(PolygonDefinition.FillColor):
+                    polygonPlot.FillStyle.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(polygonDef.FillColor));
+                    break;
+                case nameof(PolygonDefinition.BorderColor):
+                    polygonPlot.LineStyle.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(polygonDef.BorderColor));
+                    break;
+                case nameof(PolygonDefinition.BorderWidth):
+                    polygonPlot.LineStyle.Width = polygonDef.BorderWidth;
+                    break;
+                default:
+                    return false;
+            }
+            return true;
         }
 
         /// <summary>
@@ -412,6 +563,22 @@ namespace GeoChemistryNexus.ViewModels
                 _tempLinePlot.LinePattern = LinePattern.Dashed;
                 WpfPlot1.Refresh();
                 return;
+            }
+
+            // 处理添加多边形时的鼠标移动预览
+            if (IsAddingPolygon && _polygonVertices.Any())
+            {
+                // 如果已存在临时预览线，先将其移除
+                if (_tempRubberBandLine != null)
+                {
+                    WpfPlot1.Plot.Remove(_tempRubberBandLine);
+                }
+                // 从最后一个顶点到当前鼠标位置画一根"橡皮筋"线
+                var lastVertex = _polygonVertices.Last();
+                _tempRubberBandLine = WpfPlot1.Plot.Add.Line(lastVertex, mouseCoordinates);
+                _tempRubberBandLine.Color = Colors.Red;
+                _tempRubberBandLine.LinePattern = LinePattern.Dashed;
+                WpfPlot1.Refresh();
             }
 
             // 如果追踪模式未开启，则不执行任何操作
@@ -741,6 +908,11 @@ namespace GeoChemistryNexus.ViewModels
                     // 文本
                     case ScottPlot.Plottables.Text textPlot:
                         needsRefresh = TextPropertyChanged(textPlot, sender, e);
+                        break;
+
+                    // 多边形
+                    case ScottPlot.Plottables.Polygon polygonPlot:
+                        needsRefresh = PolygonPropertyChanged(polygonPlot, sender, e);
                         break;
 
                     case ScottPlot.Plottables.Scatter scatterPlot:
@@ -1782,6 +1954,15 @@ namespace GeoChemistryNexus.ViewModels
             }
             if (annotationCategory.Children.Any()) LayerTree.Add(annotationCategory);
 
+            // 多边形图层
+            var polygonsCategory = new CategoryLayerItemViewModel(LanguageService.Instance["polygon"]);
+            for (int i = 0; i < info.Polygons.Count; i++) // 假设 template.Info 中有 Polygons 列表
+            {
+                var polygonLayer = new PolygonLayerItemViewModel(info.Polygons[i], i);
+                polygonLayer.PropertyChanged += (s, e) => { if (e.PropertyName == nameof(PolygonLayerItemViewModel.IsVisible)) RefreshPlotFromLayers(); };
+                polygonsCategory.Children.Add(polygonLayer);
+            }
+            if (polygonsCategory.Children.Any()) LayerTree.Add(polygonsCategory);
             // todo: 添加对其他绘图对象的处理
         }
 
@@ -1795,48 +1976,73 @@ namespace GeoChemistryNexus.ViewModels
 
             WpfPlot1.Plot.Clear();
 
-            WpfPlot1.Plot.Add.Plottable(CrosshairPlot);
-
             var allNodes = FlattenTree(LayerTree); // 使用辅助方法获取所有节点
 
-            // 单独处理坐标轴
+            // 更新坐标轴样式
             foreach (var item in allNodes)
             {
                 if (item is AxisLayerItemViewModel axisLayer)
                 {
                     ApplyAxisSettings(axisLayer);
-                    continue;
                 }
+                else
+                {
+                    item.Plottable = null; // 清空旧的绘图对象引用
+                }
+            }
 
-                item.Plottable = null; // 清空旧引用
+            // 按从底层到顶层的顺序，分层添加绘图对象
+            // 渲染顺序: 多边形 (最底层)  -> 线条 -> 数据点-> 文本 (最顶层)
 
-                if (!item.IsVisible) continue;      // 如果图层不可见就跳过处理
+            // --- 绘制多边形 (Polygon) ---
+            foreach (var item in allNodes)
+            {
+                if (item is PolygonLayerItemViewModel polygonLayer && item.IsVisible)
+                {
+                    CreatePolygonPlottable(polygonLayer);
+                }
+            }
 
-
-                if (item is LineLayerItemViewModel lineLayer)
+            // --- 绘制线条 (Line) ---
+            foreach (var item in allNodes)
+            {
+                if (item is LineLayerItemViewModel lineLayer && item.IsVisible)
                 {
                     CreateLinePlottable(lineLayer);
                 }
-                else if (item is TextLayerItemViewModel textLayer)
+            }
+
+            // --- 绘制数据点 ---
+            foreach (var item in allNodes)
+            {
+                if (item is ScatterLayerItemViewModel scatterLayer && item.IsVisible)
+                {
+                    var scatterDef = scatterLayer.ScatterDefinition;
+                    var scatterPlot = WpfPlot1.Plot.Add.Scatter(new[] { scatterDef.StartAndEnd.X }, new[] { scatterDef.StartAndEnd.Y });
+                    scatterPlot.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(scatterDef.Color));
+                    scatterPlot.MarkerSize = scatterDef.Size;
+                    scatterPlot.MarkerShape = scatterDef.MarkerShape;
+                    scatterLayer.Plottable = scatterPlot;
+                }
+            }
+
+            // --- 绘制文本 (Text) ---
+            foreach (var item in allNodes)
+            {
+                if (item is TextLayerItemViewModel textLayer && item.IsVisible)
                 {
                     CreateTextPlottable(textLayer);
                 }
-                else if (item is ScatterLayerItemViewModel scatterLayer)
-                {
-
-                    return;
-                }
-                // todo: 添加对其他绘图对象的处理
             }
 
 
-            // 处理图例
+            // 全局设置——处理图例
             WpfPlot1.Plot.Legend.Alignment = CurrentTemplate.Info.Legend.Alignment;
             WpfPlot1.Plot.Legend.FontName = (LanguageService.CurrentLanguage == "zh-CN") ?
                 "微软雅黑" : CurrentTemplate.Info.Legend.Font;
             WpfPlot1.Plot.Legend.Orientation = CurrentTemplate.Info.Legend.Orientation;
             WpfPlot1.Plot.Legend.IsVisible = CurrentTemplate.Info.Legend.IsVisible;
-
+            // 全局设置——处理标题
             if(CurrentTemplate.Info.Title.Label.Translations.Count != 0)
             {
                 // 处理标题
@@ -1853,7 +2059,9 @@ namespace GeoChemistryNexus.ViewModels
                 // 图表标题斜体
                 WpfPlot1.Plot.Axes.Title.Label.Italic = CurrentTemplate.Info.Title.IsItalic;
             }
-            
+
+            // 最后添加坐标定位十字轴，确保在最顶层
+            WpfPlot1.Plot.Add.Plottable(CrosshairPlot);
 
             // 获取脚本对象
             CurrentScript = CurrentTemplate.Script;
@@ -2183,6 +2391,13 @@ namespace GeoChemistryNexus.ViewModels
             var allLanguages = language.Split(new[] { " > " }, StringSplitOptions.RemoveEmptyEntries)
                                 .Select(lang => lang.Trim())
                                 .ToList();
+            // 检查是否有重复语言key
+            if (allLanguages.Distinct().Count() != allLanguages.Count)
+            {
+                // 语言设置中存在重复项，请检查！
+                MessageHelper.Warning(LanguageService.Instance["language_setting_duplicate_found"]);
+                return;
+            }
 
             var allCategory = category.Split(new[] { " > " }, StringSplitOptions.RemoveEmptyEntries)
                                 .Select(lang => lang.Trim())
@@ -2254,6 +2469,7 @@ namespace GeoChemistryNexus.ViewModels
             CurrentTemplate.Info.Texts.Clear();
             CurrentTemplate.Info.Annotations.Clear();
             CurrentTemplate.Info.Points.Clear();
+            CurrentTemplate.Info.Polygons.Clear();
 
             // 遍历当前的图层列表，收集所有图元信息
             var allLayers = FlattenTree(LayerTree); // 使用您已有的辅助方法获取所有图层
@@ -2277,6 +2493,10 @@ namespace GeoChemistryNexus.ViewModels
                         CurrentTemplate.Info.Annotations.Add(annotationLayer.AnnotationDefinition);
                         break;
 
+                    // 如果是多边形
+                    case PolygonLayerItemViewModel polygonLayer:
+                        CurrentTemplate.Info.Polygons.Add(polygonLayer.PolygonDefinition);
+                        break;
                         // TODO:其他图元处理
                 }
             }

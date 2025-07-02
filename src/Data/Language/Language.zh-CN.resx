@@ -1361,4 +1361,24 @@
     <value>发生未知错误</value>
     <comment>检查更新</comment>
   </data>
+  <data name="polygon" xml:space="preserve">
+    <value>多边形</value>
+    <comment>图层列表</comment>
+  </data>
+  <data name="not_enough_vertices_add_polygon_canceled" xml:space="preserve">
+    <value>顶点数不足，添加多边形操作已取消.</value>
+    <comment>创建绘图对象通知</comment>
+  </data>
+  <data name="add_line_operation_canceled" xml:space="preserve">
+    <value>添加线条操作已取消.</value>
+    <comment>创建绘图对象通知</comment>
+  </data>
+  <data name="add_text_operation_canceled" xml:space="preserve">
+    <value>添加文本操作已取消.</value>
+    <comment>创建绘图对象通知</comment>
+  </data>
+  <data name="language_setting_duplicate_found" xml:space="preserve">
+    <value>语言设置中存在重复项，请检查！</value>
+    <comment>新建图解模板通知</comment>
+  </data>
 </root>

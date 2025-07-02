@@ -22,6 +22,7 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("样式")]        // 样式
         [property: LocalizedDisplayName("填充颜色")]     // 填充颜色
+        [property: Editor(typeof(ColorPropertyEditor), typeof(ColorPropertyEditor))]
         private string _fillColor = "#FFFF00";
 
         /// <summary>
@@ -30,6 +31,7 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("样式")]        // 样式
         [property: LocalizedDisplayName("边框颜色")]     // 边框颜色
+        [property: Editor(typeof(ColorPropertyEditor), typeof(ColorPropertyEditor))]
         public string _borderColor = "#FF0078D4";       // 默认蓝色
 
         /// <summary>

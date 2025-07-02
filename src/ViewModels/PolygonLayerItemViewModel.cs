@@ -1,9 +1,5 @@
 ﻿using GeoChemistryNexus.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using GeoChemistryNexus.Helpers;
 
 namespace GeoChemistryNexus.ViewModels
 {
@@ -15,7 +11,7 @@ namespace GeoChemistryNexus.ViewModels
         public PolygonDefinition PolygonDefinition { get; }
 
         public PolygonLayerItemViewModel(PolygonDefinition polygonDefinition, int index)
-            : base($"多边形 {index + 1}")
+            : base(LanguageService.Instance["polygon"] + $" {index + 1}")
         {
             PolygonDefinition = polygonDefinition;
         }

@@ -142,11 +142,29 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Add line operation canceled. 的本地化字符串。
+        /// </summary>
+        internal static string add_line_operation_canceled {
+            get {
+                return ResourceManager.GetString("add_line_operation_canceled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Add text 的本地化字符串。
         /// </summary>
         internal static string add_text {
             get {
                 return ResourceManager.GetString("add_text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Add text operation canceled. 的本地化字符串。
+        /// </summary>
+        internal static string add_text_operation_canceled {
+            get {
+                return ResourceManager.GetString("add_text_operation_canceled", resourceCulture);
             }
         }
         
@@ -1852,6 +1870,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Duplicate items exist in language settings, please check! 的本地化字符串。
+        /// </summary>
+        internal static string language_setting_duplicate_found {
+            get {
+                return ResourceManager.GetString("language_setting_duplicate_found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Left Y-Axis 的本地化字符串。
         /// </summary>
         internal static string left_y_axis {
@@ -2329,6 +2356,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Not enough vertices, add polygon operation canceled. 的本地化字符串。
+        /// </summary>
+        internal static string not_enough_vertices_add_polygon_canceled {
+            get {
+                return ResourceManager.GetString("not_enough_vertices_add_polygon_canceled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 _Open(O) 的本地化字符串。
         /// </summary>
         internal static string open {
@@ -2784,6 +2820,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string PointStyle {
             get {
                 return ResourceManager.GetString("PointStyle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Polygon 的本地化字符串。
+        /// </summary>
+        internal static string polygon {
+            get {
+                return ResourceManager.GetString("polygon", resourceCulture);
             }
         }
         

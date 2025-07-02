@@ -13,7 +13,7 @@ namespace GeoChemistryNexus.ViewModels
         public TextDefinition TextDefinition { get; }
 
         public TextLayerItemViewModel(TextDefinition textDefinition, int index)
-            : base(LanguageService.Instance["text"] + (index + 1))
+            : base(LanguageService.Instance["text"] + $" {index + 1}")
         {
             TextDefinition = textDefinition;
         }
