@@ -1381,4 +1381,8 @@
     <value>语言设置中存在重复项，请检查！</value>
     <comment>新建图解模板通知</comment>
   </data>
+  <data name="add_polygon" xml:space="preserve">
+    <value>添加多边形</value>
+    <comment>绘图功能区</comment>
+  </data>
 </root>

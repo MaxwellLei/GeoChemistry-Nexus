@@ -904,7 +904,7 @@
                                                             <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xf2b3;"
                                                                        FontSize="16" Foreground="#0078D4" Margin="4,0,6,0"
                                                                        VerticalAlignment="Center"/>
-                                                            <TextBlock Text="添加多边形" FontSize="11" VerticalAlignment="Center"/>
+                                                            <TextBlock Text="{Binding [add_polygon],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" VerticalAlignment="Center"/>
                                                         </StackPanel>
                                                     </Button>
                                                 </UniformGrid>

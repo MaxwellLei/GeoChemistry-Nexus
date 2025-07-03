@@ -1297,4 +1297,7 @@
   <data name="language_setting_duplicate_found" xml:space="preserve">
     <value>Duplicate items exist in language settings, please check!</value>
   </data>
+  <data name="add_polygon" xml:space="preserve">
+    <value>Add Polygon</value>
+  </data>
 </root>

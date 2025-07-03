@@ -151,6 +151,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Add Polygon 的本地化字符串。
+        /// </summary>
+        internal static string add_polygon {
+            get {
+                return ResourceManager.GetString("add_polygon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Add text 的本地化字符串。
         /// </summary>
         internal static string add_text {

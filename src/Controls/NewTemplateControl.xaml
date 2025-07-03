@@ -119,7 +119,7 @@
                 <ComboBox x:Name="PlotTypeComboBox" Padding="5" BorderBrush="#ABADB3" BorderThickness="1">
                     <!--二维坐标图-->
                     <ComboBoxItem Content="{Binding [two_dimensional_coordinate_plot],Source={x:Static lg:LanguageService.Instance}}"/>
-                    <!--<ComboBoxItem Content="三元图"/>-->
+                    <ComboBoxItem Content="三元图"/>
                 </ComboBox>
             </StackPanel>
 

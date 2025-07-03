@@ -9,6 +9,7 @@ using OfficeOpenXml;
 using Ookii.Dialogs.Wpf;
 using ScottPlot;
 using ScottPlot.Colormaps;
+using ScottPlot.Interactivity.UserActionResponses;
 using ScottPlot.Plottables;
 using ScottPlot.WPF;
 using SkiaSharp;
@@ -19,6 +20,7 @@ using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -163,10 +165,9 @@ namespace GeoChemistryNexus.ViewModels
             WpfPlot1.MouseRightButtonUp += WpfPlot1_MouseRightButtonUp;
 
             WpfPlot1.Menu.Clear();      // 禁用原生右键菜单
+
             // 禁用双击帧率显示
-            ScottPlot.Control.PlotActions customActions = ScottPlot.Control.PlotActions.Standard();
-            customActions.ToggleBenchmark = delegate { };
-            WpfPlot1.Interaction.Enable(customActions);
+            WpfPlot1.UserInputProcessor.DoubleLeftClickBenchmark(false);
 
 
             // 测试区域
@@ -374,7 +375,7 @@ namespace GeoChemistryNexus.ViewModels
                 // 创建 PolygonDefinition 用于存储属性
                 var newPolygonDef = new PolygonDefinition
                 {
-                    Vertices = _polygonVertices.Select(c => new PointDefinition { X = c.X, Y = c.Y }).ToList(),
+                    Vertices = new ObservableCollection<PointDefinition>(_polygonVertices.Select(c => new PointDefinition { X = c.X, Y = c.Y })),
                     // 使用默认样式
                 };
 
@@ -1347,6 +1348,33 @@ namespace GeoChemistryNexus.ViewModels
                     }
                     break;
 
+                // 刻度生成器-线性刻度和对数刻度
+                case nameof(AxisDefinition.ScaleType):
+                    if (axisDef.ScaleType == AxisScaleType.Logarithmic)
+                    {
+                        // 创建一个用于对数刻度的次要刻度生成器
+                        var minorTickGen = new ScottPlot.TickGenerators.LogMinorTickGenerator();
+
+                        // 创建主要刻度生成器并使用自定义的次要刻度生成器
+                        var tickGen = new ScottPlot.TickGenerators.NumericAutomatic();
+                        tickGen.MinorTickGenerator = minorTickGen;
+
+                        // 设置主刻度只显示在整数位置
+                        tickGen.IntegerTicksOnly = true;
+
+                        // 设置自定义标签格式化器
+                        tickGen.LabelFormatter = y => $"{Math.Pow(10, y):N0}";
+
+                        // 应用到目标轴
+                        targetAxis.TickGenerator = tickGen;
+                    }
+                    else
+                    {
+                        // 恢复为默认的线性刻度生成器
+                        targetAxis.TickGenerator = new ScottPlot.TickGenerators.NumericAutomatic();
+                    }
+                    break;
+
                 // =================================================
                 //                               主刻度
                 // =================================================
@@ -2106,6 +2134,17 @@ namespace GeoChemistryNexus.ViewModels
                 targetAxis.Label.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(axisDef.Color));
                 targetAxis.Label.Bold = axisDef.IsBold;
                 targetAxis.Label.Italic = axisDef.IsItalic;
+
+                // 在处理坐标轴样式时增加对数刻度的处理
+                if (axisDef.ScaleType == AxisScaleType.Logarithmic)
+                {
+                    var minorTickGen = new ScottPlot.TickGenerators.LogMinorTickGenerator();
+                    var tickGen = new ScottPlot.TickGenerators.NumericAutomatic();
+                    tickGen.MinorTickGenerator = minorTickGen;
+                    tickGen.IntegerTicksOnly = true;
+                    tickGen.LabelFormatter = y => $"{Math.Pow(10, y):N0}";
+                    targetAxis.TickGenerator = tickGen;
+                }
 
                 if (axisDef.TickInterval.HasValue && axisDef.TickInterval > 0)
                 {

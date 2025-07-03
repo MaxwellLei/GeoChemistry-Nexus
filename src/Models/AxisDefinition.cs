@@ -188,5 +188,44 @@ namespace GeoChemistryNexus.Models
         [property: LocalizedCategory("tick_labels")] // 刻度标签
         [property: LocalizedDisplayName("italic")] // 斜体
         private bool _tickLableisItalic = false;
+
+
+        /// <summary>
+        /// 坐标轴类型 (线性/对数)
+        /// </summary>
+        [ObservableProperty]
+        [property: LocalizedCategory("测试")] // 坐标轴样式
+        [property: LocalizedDisplayName("缩放类型")] // 缩放类型
+        private AxisScaleType _scaleType = AxisScaleType.Linear;
+
+        ///// <summary>
+        ///// 坐标轴最小值
+        ///// </summary>
+        //[ObservableProperty]
+        //[property: LocalizedCategory("测试")] // 坐标轴范围
+        //[property: LocalizedDisplayName("最小值")] // 最小值
+        //private double _minimum;
+
+        ///// <summary>
+        ///// 坐标轴最大值
+        ///// </summary>
+        //[ObservableProperty]
+        //[property: LocalizedCategory("测试")] // 坐标轴范围
+        //[property: LocalizedDisplayName("最大值")] // 最大值
+        //private double? _maximum;
+
+        ///// <summary>
+        ///// 是否反转坐标轴方向
+        ///// </summary>
+        //[ObservableProperty]
+        //[property: LocalizedCategory("测试")] // 坐标轴样式
+        //[property: LocalizedDisplayName("反转坐标轴")] // 反转
+        //private bool _isInverted = false;
+    }
+
+    public enum AxisScaleType
+    {
+        Linear,
+        Logarithmic
     }
 }
