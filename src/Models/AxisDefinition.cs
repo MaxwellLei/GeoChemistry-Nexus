@@ -20,6 +20,7 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("axis_style")] // 坐标轴样式
         [property: LocalizedDisplayName("type")] // 类型
+        [property: Browsable(false)]        // 取消属性面板展示该属性
         private string type;
 
         /// <summary>

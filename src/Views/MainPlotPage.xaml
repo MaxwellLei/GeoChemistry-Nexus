@@ -876,40 +876,62 @@
                                                 </Style.Triggers>
                                             </Style>
                                         </ScrollViewer.Style>
-                                        <GroupBox Header="{Binding [add],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource RibbonGroupStyle}">
-                                            <Grid Width="212" Height="68" Margin="2">
-                                                <UniformGrid Columns="2" Rows="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                    <Button Style="{StaticResource RibbonSmallButton}"
-                                                            Width="100" Height="28" Margin="1" Command="{Binding AddLineCommand}">
-                                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe619;"
-                                                                       FontSize="16" Foreground="#0078D4" Margin="4,0,6,0"
-                                                                       VerticalAlignment="Center"/>
-                                                            <TextBlock Text="{Binding [add_line],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" VerticalAlignment="Center"/>
-                                                        </StackPanel>
-                                                    </Button>
-                                                    <Button Style="{StaticResource RibbonSmallButton}"
-                                                            Width="100" Height="28" Margin="1" Command="{Binding AddTextCommand}">
-                                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe603;"
-                                                                       FontSize="16" Foreground="#0078D4" Margin="4,0,6,0"
-                                                                       VerticalAlignment="Center"/>
-                                                            <TextBlock Text="{Binding [add_text],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" VerticalAlignment="Center"/>
-                                                        </StackPanel>
-                                                    </Button>
+                                        <StackPanel Orientation="Horizontal" Margin="8,3" Height="86">
 
-                                                    <Button Style="{StaticResource RibbonSmallButton}"
-                                                            Width="100" Height="28" Margin="1" Command="{Binding AddPolygonCommand}">
-                                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xf2b3;"
-                                                                       FontSize="16" Foreground="#0078D4" Margin="4,0,6,0"
-                                                                       VerticalAlignment="Center"/>
-                                                            <TextBlock Text="{Binding [add_polygon],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" VerticalAlignment="Center"/>
-                                                        </StackPanel>
-                                                    </Button>
-                                                </UniformGrid>
-                                            </Grid>
-                                        </GroupBox>
+                                            <GroupBox Header="{Binding [file_],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource RibbonGroupStyle}">
+                                                <Grid Width="88" Height="68" Margin="2">
+                                                    <StackPanel VerticalAlignment="Top" Margin="3,2">
+                                                        <Button Command="{Binding SaveBaseMapCommand}"
+                                                             Style="{StaticResource RibbonSmallButton}"
+                                                             Width="82" Height="28" Margin="0,1">
+                                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe782;"
+                                                                        FontSize="16" Foreground="#107C10" Margin="4,0,6,0"
+                                                                        VerticalAlignment="Center"/>
+                                                                <TextBlock Text="{Binding [Save],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" VerticalAlignment="Center"/>
+                                                            </StackPanel>
+                                                        </Button>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </GroupBox>
+
+                                            <Rectangle Fill="#E1E5E9" Width="1" Margin="8,12,8,18" VerticalAlignment="Stretch"/>
+
+                                            <GroupBox Header="{Binding [add],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource RibbonGroupStyle}">
+                                                <Grid Width="212" Height="68" Margin="2">
+                                                    <UniformGrid Columns="2" Rows="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                        <Button Style="{StaticResource RibbonSmallButton}"
+                                                             Width="100" Height="28" Margin="1" Command="{Binding AddLineCommand}">
+                                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe619;"
+                                                                        FontSize="16" Foreground="#0078D4" Margin="4,0,6,0"
+                                                                        VerticalAlignment="Center"/>
+                                                                <TextBlock Text="{Binding [add_line],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" VerticalAlignment="Center"/>
+                                                            </StackPanel>
+                                                        </Button>
+                                                        <Button Style="{StaticResource RibbonSmallButton}"
+                                                             Width="100" Height="28" Margin="1" Command="{Binding AddTextCommand}">
+                                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe603;"
+                                                                        FontSize="16" Foreground="#0078D4" Margin="4,0,6,0"
+                                                                        VerticalAlignment="Center"/>
+                                                                <TextBlock Text="{Binding [add_text],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" VerticalAlignment="Center"/>
+                                                            </StackPanel>
+                                                        </Button>
+
+                                                        <Button Style="{StaticResource RibbonSmallButton}"
+                                                             Width="100" Height="28" Margin="1" Command="{Binding AddPolygonCommand}">
+                                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xf2b3;"
+                                                                        FontSize="16" Foreground="#0078D4" Margin="4,0,6,0"
+                                                                        VerticalAlignment="Center"/>
+                                                                <TextBlock Text="{Binding [add_polygon],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" VerticalAlignment="Center"/>
+                                                            </StackPanel>
+                                                        </Button>
+                                                    </UniformGrid>
+                                                </Grid>
+                                            </GroupBox>
+                                        </StackPanel>
                                     </ScrollViewer>
                                 </Grid>
                             </Border>

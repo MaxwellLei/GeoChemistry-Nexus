@@ -118,8 +118,10 @@
                 <TextBlock Text="{Binding [plot_type],Source={x:Static lg:LanguageService.Instance}}" FontWeight="Bold" Margin="0,0,0,5"/>
                 <ComboBox x:Name="PlotTypeComboBox" Padding="5" BorderBrush="#ABADB3" BorderThickness="1">
                     <!--二维坐标图-->
-                    <ComboBoxItem Content="{Binding [two_dimensional_coordinate_plot],Source={x:Static lg:LanguageService.Instance}}"/>
-                    <ComboBoxItem Content="三元图"/>
+                    <ComboBoxItem Content="{Binding [two_dimensional_coordinate_plot],Source={x:Static lg:LanguageService.Instance}}"
+                                  Tag="2D_Plot"/>
+                    <ComboBoxItem Content="{Binding [ternary_phase_diagram],Source={x:Static lg:LanguageService.Instance}}"
+                                  Tag="Ternary_Plot"/>
                 </ComboBox>
             </StackPanel>
 

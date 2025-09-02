@@ -51,6 +51,13 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private GraphMapTemplate _currentTemplate;
 
+        // 全局变量-指示底图类型，方便三元图的坐标转换显示
+        // 底图类型：笛卡尔坐标系(Cartesian)，三元坐标系(Ternary)
+        public static string BaseMapType = String.Empty;
+
+        // 全局变量-指示三元图是否是顺时针或者逆时针
+        public static bool Clockwise = true;
+
         // 绘图控件
         private WpfPlot WpfPlot1;
 
@@ -121,7 +128,6 @@ namespace GeoChemistryNexus.ViewModels
         private List<Coordinates> _polygonVertices = new(); // 用于存储多边形顶点的临时列表
         private ScottPlot.Plottables.Polygon? _tempPreviewPolygon; // 用于实时预览的临时多边形
         private ScottPlot.Plottables.LinePlot? _tempRubberBandLine; // 用于预览下一段连线的"橡皮筋"
-
 
 
         // 用于存储当前正在编辑的模板的完整文件路径
@@ -214,6 +220,7 @@ namespace GeoChemistryNexus.ViewModels
             // 添加线条
             if (IsAddingLine)
             {
+
                 if (!_lineStartPoint.HasValue)
                 {
                     // 第一次点击：设置起点
@@ -1830,8 +1837,14 @@ namespace GeoChemistryNexus.ViewModels
                         textPlot.LabelFontColor = textPlot.LabelFontColor.WithAlpha(dimAlpha);
                         break;
 
-                        // TODO: 添加其他图层类型（如点、多边形）变暗逻辑
-                }
+                    // 多边形变暗
+                    case ScottPlot.Plottables.Polygon polygonPlot:
+                        // 将填充色和边框色都变暗
+                        polygonPlot.FillStyle.Color = polygonPlot.FillStyle.Color.WithAlpha(dimAlpha);
+                        polygonPlot.LineStyle.Color = polygonPlot.LineStyle.Color.WithAlpha(dimAlpha);
+                        break;
+                    // TODO: 添加其他图层类型变暗逻辑
+            }
             }
 
         /// <summary>
@@ -1865,6 +1878,15 @@ namespace GeoChemistryNexus.ViewModels
                     textPlot.LabelBorderWidth = textDef.BorderWidth;
                     break;
 
+                // 多边形恢复
+                case ScottPlot.Plottables.Polygon polygonPlot:
+                    var polygonDef = (layer as PolygonLayerItemViewModel)?.PolygonDefinition;
+                    if (polygonDef == null) break;
+                    // 从其定义对象中读取原始属性并应用
+                    polygonPlot.FillStyle.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(polygonDef.FillColor));
+                    polygonPlot.LineStyle.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(polygonDef.BorderColor));
+                    polygonPlot.LineStyle.Width = polygonDef.BorderWidth;
+                    break;
                     // TODO: 在此为其他图层类型（如点、多边形）添加恢复逻辑
             }
         }
@@ -1998,16 +2020,43 @@ namespace GeoChemistryNexus.ViewModels
         /// 根据当前的 LayerTree 状态，完全重绘 ScottPlot 图表
         /// 负责根据图层对象绘制图像，第一次加载对象
         /// </summary>
-        public void RefreshPlotFromLayers()
+        public void RefreshPlotFromLayers()
         {
-            if (WpfPlot1 == null) return;
+            if (WpfPlot1 == null || CurrentTemplate == null) return;
 
             WpfPlot1.Plot.Clear();
 
-            var allNodes = FlattenTree(LayerTree); // 使用辅助方法获取所有节点
+            BaseMapType = CurrentTemplate.TemplateType;
 
-            // 更新坐标轴样式
-            foreach (var item in allNodes)
+            // 根据模板类型选择渲染路径
+            if (CurrentTemplate.TemplateType == "Ternary")
+            {
+                RenderTernaryPlot();
+            }
+            else // 默认处理笛卡尔坐标系
+            {
+                RenderCartesianPlot();
+            }
+
+            // 最后添加坐标定位十字轴，确保在最顶层
+            WpfPlot1.Plot.Add.Plottable(CrosshairPlot);
+
+            // 获取脚本对象
+            CurrentScript = CurrentTemplate.Script;
+
+            WpfPlot1.Plot.Axes.AutoScale();
+            WpfPlot1.Refresh();
+        }
+
+        /// <summary>
+        /// 渲染标准笛卡尔坐标系图表
+        /// </summary>
+        private void RenderCartesianPlot()
+        {
+            var allNodes = FlattenTree(LayerTree);
+
+            // 更新坐标轴样式
+            foreach (var item in allNodes)
             {
                 if (item is AxisLayerItemViewModel axisLayer)
                 {
@@ -2016,86 +2065,153 @@ namespace GeoChemistryNexus.ViewModels
                 else
                 {
                     item.Plottable = null; // 清空旧的绘图对象引用
+                }
+            }
+
+            // --- 绘制多边形 (Polygon) ---
+            foreach (var item in allNodes.OfType<PolygonLayerItemViewModel>().Where(l => l.IsVisible))
+            {
+                CreatePolygonPlottable(item);
+            }
+
+            // --- 绘制线条 (Line) ---
+            foreach (var item in allNodes.OfType<LineLayerItemViewModel>().Where(l => l.IsVisible))
+            {
+                CreateLinePlottable(item);
+            }
+
+            // --- 绘制数据点 ---
+            foreach (var item in allNodes.OfType<ScatterLayerItemViewModel>().Where(l => l.IsVisible))
+            {
+                var scatterDef = item.ScatterDefinition;
+                var scatterPlot = WpfPlot1.Plot.Add.Scatter(new[] { scatterDef.StartAndEnd.X }, new[] { scatterDef.StartAndEnd.Y });
+                scatterPlot.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(scatterDef.Color));
+                scatterPlot.MarkerSize = scatterDef.Size;
+                scatterPlot.MarkerShape = scatterDef.MarkerShape;
+                item.Plottable = scatterPlot;
+            }
+
+            // --- 绘制文本 (Text) ---
+            foreach (var item in allNodes.OfType<TextLayerItemViewModel>().Where(l => l.IsVisible))
+            {
+                CreateTextPlottable(item);
+            }
+
+            // 全局设置——处理图例
+            WpfPlot1.Plot.Legend.Alignment = CurrentTemplate.Info.Legend.Alignment;
+            WpfPlot1.Plot.Legend.FontName = (LanguageService.CurrentLanguage == "zh-CN") ? "微软雅黑" : CurrentTemplate.Info.Legend.Font;
+            WpfPlot1.Plot.Legend.Orientation = CurrentTemplate.Info.Legend.Orientation;
+            WpfPlot1.Plot.Legend.IsVisible = CurrentTemplate.Info.Legend.IsVisible;
+
+            // 全局设置——处理标题
+            if (CurrentTemplate.Info.Title.Label.Translations.Any())
+            {
+                WpfPlot1.Plot.Axes.Title.Label.Text = CurrentTemplate.Info.Title.Label.Get();
+                WpfPlot1.Plot.Axes.Title.Label.FontName = Fonts.Detect(WpfPlot1.Plot.Axes.Title.Label.Text);
+                WpfPlot1.Plot.Axes.Title.Label.FontSize = CurrentTemplate.Info.Title.Size;
+                WpfPlot1.Plot.Axes.Title.Label.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(CurrentTemplate.Info.Title.Color));
+                WpfPlot1.Plot.Axes.Title.Label.Bold = CurrentTemplate.Info.Title.IsBold;
+                WpfPlot1.Plot.Axes.Title.Label.Italic = CurrentTemplate.Info.Title.IsItalic;
+            }
+        }
+
+        /// <summary>
+        /// 渲染三元相图
+        /// </summary>
+        private void RenderTernaryPlot()
+        {
+            // 添加三角坐标轴到图表，并获取其引用
+            var triangularAxis = WpfPlot1.Plot.Add.TriangularAxis();
+
+            // 应用模板中的网格和背景样式
+            var gridDef = CurrentTemplate.Info.Grid;
+            if (gridDef != null)
+            {
+                // 应用网格线样式
+                triangularAxis.GridLineStyle.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(gridDef.MajorGridLineColor));
+                triangularAxis.GridLineStyle.Width = gridDef.MajorGridLineWidth;
+                triangularAxis.GridLineStyle.Pattern = GraphMapTemplateParser.GetLinePattern(gridDef.MajorGridLinePattern.ToString());
+
+                // 应用背景填充样式 (TriangularAxis只有一个FillStyle)
+                if (gridDef.GridAlternateFillingIsEnable)
+                {
+                    // 使用FillColor1作为其填充色
+                    triangularAxis.FillStyle.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(gridDef.GridFillColor1));
+                }
+                else
+                {
+                    triangularAxis.FillStyle.Color = Colors.Transparent;
                 }
             }
 
-            // 按从底层到顶层的顺序，分层添加绘图对象
-            // 渲染顺序: 多边形 (最底层)  -> 线条 -> 数据点-> 文本 (最顶层)
+            // 遍历所有图层节点
+            var allNodes = FlattenTree(LayerTree);
 
-            // --- 绘制多边形 (Polygon) ---
-            foreach (var item in allNodes)
+            // 设置坐标轴标题和样式
+            foreach (var item in allNodes.OfType<AxisLayerItemViewModel>().Where(l => l.IsVisible))
             {
-                if (item is PolygonLayerItemViewModel polygonLayer && item.IsVisible)
+                var axisDef = item.AxisDefinition;
+                switch (axisDef.Type)
                 {
-                    CreatePolygonPlottable(polygonLayer);
-                }
-            }
-
-            // --- 绘制线条 (Line) ---
-            foreach (var item in allNodes)
-            {
-                if (item is LineLayerItemViewModel lineLayer && item.IsVisible)
-                {
-                    CreateLinePlottable(lineLayer);
+                    case "Bottom":
+                        triangularAxis.Bottom.LabelText = axisDef.Label.Get();
+                        triangularAxis.Bottom.Color(ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(axisDef.Color)));
+                        break;
+                    case "Left":
+                        triangularAxis.Left.LabelText = axisDef.Label.Get();
+                        triangularAxis.Left.Color(ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(axisDef.Color)));
+                        break;
+                    case "Right":
+                        triangularAxis.Right.LabelText = axisDef.Label.Get();
+                        triangularAxis.Right.Color(ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(axisDef.Color)));
+                        break;
                 }
             }
 
             // --- 绘制数据点 ---
-            foreach (var item in allNodes)
+            // 在三元图中，我们假设ScatterLayerItemViewModel中的X和Y分别代表底轴和左轴的比例
+            foreach (var item in allNodes.OfType<ScatterLayerItemViewModel>().Where(l => l.IsVisible))
             {
-                if (item is ScatterLayerItemViewModel scatterLayer && item.IsVisible)
-                {
-                    var scatterDef = scatterLayer.ScatterDefinition;
-                    var scatterPlot = WpfPlot1.Plot.Add.Scatter(new[] { scatterDef.StartAndEnd.X }, new[] { scatterDef.StartAndEnd.Y });
-                    scatterPlot.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(scatterDef.Color));
-                    scatterPlot.MarkerSize = scatterDef.Size;
-                    scatterPlot.MarkerShape = scatterDef.MarkerShape;
-                    scatterLayer.Plottable = scatterPlot;
-                }
+                var scatterDef = item.ScatterDefinition;
+
+                // 使用三角轴的GetCoordinates方法将分数坐标转换为笛卡尔坐标
+                // X代表底轴比例，Y代表左轴比例。第三个轴的比例将自动计算。
+                var cartesianCoords = triangularAxis.GetCoordinates(scatterDef.StartAndEnd.X, scatterDef.StartAndEnd.Y);
+
+                // 在计算出的笛卡尔坐标上添加散点
+                var scatterPlot = WpfPlot1.Plot.Add.Scatter(new[] { cartesianCoords });
+
+                // 应用样式
+                scatterPlot.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(scatterDef.Color));
+                scatterPlot.MarkerSize = scatterDef.Size;
+                scatterPlot.MarkerShape = scatterDef.MarkerShape;
+
+                // 将创建的Plottable对象关联回图层项
+                item.Plottable = scatterPlot;
+            }
+
+            // --- 绘制其他类型的图层  ---
+
+            // --- 绘制多边形 (Polygon) ---
+            foreach (var item in allNodes.OfType<PolygonLayerItemViewModel>().Where(l => l.IsVisible))
+            {
+                CreatePolygonPlottable(item);
+            }
+
+            // --- 绘制线条 (Line) ---
+            foreach (var item in allNodes.OfType<LineLayerItemViewModel>().Where(l => l.IsVisible))
+            {
+                CreateLinePlottable(item);
             }
 
             // --- 绘制文本 (Text) ---
-            foreach (var item in allNodes)
+            foreach (var item in allNodes.OfType<TextLayerItemViewModel>().Where(l => l.IsVisible))
             {
-                if (item is TextLayerItemViewModel textLayer && item.IsVisible)
-                {
-                    CreateTextPlottable(textLayer);
-                }
+                CreateTextPlottable(item);
             }
 
-
-            // 全局设置——处理图例
-            WpfPlot1.Plot.Legend.Alignment = CurrentTemplate.Info.Legend.Alignment;
-            WpfPlot1.Plot.Legend.FontName = (LanguageService.CurrentLanguage == "zh-CN") ?
-                "微软雅黑" : CurrentTemplate.Info.Legend.Font;
-            WpfPlot1.Plot.Legend.Orientation = CurrentTemplate.Info.Legend.Orientation;
-            WpfPlot1.Plot.Legend.IsVisible = CurrentTemplate.Info.Legend.IsVisible;
-            // 全局设置——处理标题
-            if(CurrentTemplate.Info.Title.Label.Translations.Count != 0)
-            {
-                // 处理标题
-                WpfPlot1.Plot.Axes.Title.Label.Text = CurrentTemplate.Info.Title.Label.Get();
-                // 图表标题字体
-                WpfPlot1.Plot.Axes.Title.Label.FontName = (LanguageService.CurrentLanguage == "zh-CN") ?
-                    "微软雅黑" : CurrentTemplate.Info.Title.Family;
-                // 图表标题字体大小
-                WpfPlot1.Plot.Axes.Title.Label.FontSize = CurrentTemplate.Info.Title.Size;
-                // 图表标题字体颜色
-                WpfPlot1.Plot.Axes.Title.Label.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(CurrentTemplate.Info.Title.Color));
-                // 图表标题粗体
-                WpfPlot1.Plot.Axes.Title.Label.Bold = CurrentTemplate.Info.Title.IsBold;
-                // 图表标题斜体
-                WpfPlot1.Plot.Axes.Title.Label.Italic = CurrentTemplate.Info.Title.IsItalic;
-            }
-
-            // 最后添加坐标定位十字轴，确保在最顶层
-            WpfPlot1.Plot.Add.Plottable(CrosshairPlot);
-
-            // 获取脚本对象
-            CurrentScript = CurrentTemplate.Script;
-
-            WpfPlot1.Plot.Axes.AutoScale();
-            WpfPlot1.Refresh();
+            // 三角图通常需要方形坐标轴以避免变形
+            WpfPlot1.Plot.Axes.SquareUnits();
         }
 
         // 设置坐标轴
@@ -2180,8 +2296,8 @@ namespace GeoChemistryNexus.ViewModels
             var textPlot = WpfPlot1.Plot.Add.Text(textDef.Content.Get(), new Coordinates(textDef.StartAndEnd.X, textDef.StartAndEnd.Y));
 
             // 应用样式
-            textPlot.LabelFontName = (LanguageService.CurrentLanguage == "zh-CN") ? "微软雅黑" : textDef.Family;
             textPlot.LabelText = textDef.Content.Get();
+            textPlot.LabelFontName = Fonts.Detect(textPlot.LabelText);      // 自适应字体
             textPlot.LabelFontSize = textDef.Size;
             textPlot.LabelRotation = textDef.Rotation;
             textPlot.LabelFontColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex((textDef.Color)));
@@ -2271,7 +2387,7 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 标题属性
+        /// 绘图设置——标题属性
         /// </summary>
         [RelayCommand]
         private void PlotSetting()
@@ -2430,6 +2546,7 @@ namespace GeoChemistryNexus.ViewModels
             var allLanguages = language.Split(new[] { " > " }, StringSplitOptions.RemoveEmptyEntries)
                                 .Select(lang => lang.Trim())
                                 .ToList();
+
             // 检查是否有重复语言key
             if (allLanguages.Distinct().Count() != allLanguages.Count)
             {
@@ -2632,5 +2749,63 @@ namespace GeoChemistryNexus.ViewModels
                 }
             }
         }
+
+        /// <summary>
+        /// 将二维笛卡尔坐标转换为三元坐标。
+        /// </summary>
+        /// <param name="x">二维X坐标</param>
+        /// <param name="y">二维Y坐标</param>
+        /// <param name="clockwise">您的三元图是否为顺时针</param>
+        /// <returns>三元坐标值</returns>
+        public static (double,double) ToTernary(double x, double y, bool clockwise)
+        {
+            if (clockwise)
+            {
+                double leftFraction = (2 * y) / Math.Sqrt(3);
+                double rightFraction = x - (y / Math.Sqrt(3));
+                double bottomFraction = 1 - leftFraction - rightFraction;
+                return (bottomFraction, leftFraction);
+            }
+            else // Counter-clockwise
+            {
+                double rightFraction = (2 * y) / Math.Sqrt(3);
+                double bottomFraction = x - (y / Math.Sqrt(3));
+                double leftFraction = 1 - bottomFraction - rightFraction;
+                return (bottomFraction, leftFraction);
+            }
+        }
+
+        /// <summary>
+        /// 将三元坐标转换为二维笛卡尔坐标系
+        /// </summary>
+        /// <param name="bottomFraction">三元图底部坐标轴</param>
+        /// <param name="leftFraction">三元图左侧坐标轴</param>
+        /// <param name="rightFraction">三元图右侧坐标轴</param>
+        /// <returns>转换后的二维笛卡尔坐标系</returns>
+        /// <exception cref="ArgumentException"></exception>
+        public static (double,double) ToCartesian(double bottomFraction, double leftFraction, double rightFraction)
+        {
+
+            if (Math.Abs(bottomFraction + leftFraction + rightFraction - 1) > 1e-6)
+            {
+                throw new ArgumentException("三元相图之和必须为 1.");
+            }
+
+            double x, y;
+
+            if (!Clockwise)
+            {
+                x = 0.5 * (2 * bottomFraction + rightFraction);
+                y = (Math.Sqrt(3) / 2) * rightFraction;
+            }
+            else
+            {
+                x = 0.5 * (2 * rightFraction + leftFraction);
+                y = (Math.Sqrt(3) / 2) * leftFraction;
+            }
+
+            return (x, y);
+        }
+
     }
 }

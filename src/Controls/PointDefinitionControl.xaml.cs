@@ -1,7 +1,9 @@
 ﻿using GeoChemistryNexus.Models;
+using GeoChemistryNexus.ViewModels;
 using HandyControl.Controls;
 using HandyControl.Data;
 using HandyControl.Tools.Extension;
+using ScottPlot.Plottables;
 using ScottPlot.WPF;
 using System;
 using System.ComponentModel;
@@ -49,8 +51,17 @@ namespace GeoChemistryNexus.Controls
             control._isUpdatingFromSource = true;
             if (newPoint != null)
             {
-                control.NumericUpDownX.Value = newPoint.X;
-                control.NumericUpDownY.Value = newPoint.Y;
+                // 如果是三元图就转换坐标为三元值
+                if(MainPlotViewModel.BaseMapType == "Ternary")
+                {
+                    (control.NumericUpDownX.Value, control.NumericUpDownY.Value) 
+                        = MainPlotViewModel.ToTernary(newPoint.X, newPoint.Y, MainPlotViewModel.Clockwise);
+                }
+                else
+                {
+                    control.NumericUpDownX.Value = newPoint.X;
+                    control.NumericUpDownY.Value = newPoint.Y;
+                }
             }
             else
             {
@@ -69,12 +80,26 @@ namespace GeoChemistryNexus.Controls
             // 如果UI的更新是代码触发的，则直接返回
             if (_isUpdatingFromSource) return;
 
-            // 创建一个新的PointDefinition实例并更新依赖属性
-            PointValue = new PointDefinition
+            // 如果是三元图就转换坐标为笛卡尔值
+            if(MainPlotViewModel.BaseMapType == "Ternary")
             {
-                X = NumericUpDownX.Value,
-                Y = NumericUpDownY.Value
-            };
+                (Double tempX,Double tempY) = MainPlotViewModel.ToCartesian(NumericUpDownX.Value, NumericUpDownY.Value,
+                    1 - NumericUpDownY.Value - NumericUpDownX.Value);
+                PointValue = new PointDefinition
+                {
+                    X = tempX,
+                    Y = tempY
+                };
+            }
+            else
+            {
+                // 创建一个新的PointDefinition实例并更新依赖属性
+                PointValue = new PointDefinition
+                {
+                    X = NumericUpDownX.Value,
+                    Y = NumericUpDownY.Value
+                };
+            }
         }
     }
 }

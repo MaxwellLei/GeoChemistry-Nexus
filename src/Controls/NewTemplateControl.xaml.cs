@@ -28,7 +28,7 @@ namespace GeoChemistryNexus.Controls
         // 修改 Language 属性以从标签集合生成字符串
         public string Language => string.Join(" > ", _languageParts);
         public string CategoryHierarchy => string.Join(" > ", _categoryParts);
-        public string PlotType => (PlotTypeComboBox.SelectedItem as ComboBoxItem)?.Content.ToString() ?? PlotTypeComboBox.Text;
+        public string PlotType => (PlotTypeComboBox.SelectedItem as ComboBoxItem)?.Tag.ToString() ?? PlotTypeComboBox.Text;
         public string FilePath => FilePathTextBox.Text;
 
         #region ConfirmCommand Dependency Property

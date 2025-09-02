@@ -1300,4 +1300,19 @@
   <data name="add_polygon" xml:space="preserve">
     <value>Add Polygon</value>
   </data>
+  <data name="line_type_solid" xml:space="preserve">
+    <value>Solid</value>
+  </data>
+  <data name="line_type_dash" xml:space="preserve">
+    <value>Dash</value>
+  </data>
+  <data name="line_type_densely_dashed" xml:space="preserve">
+    <value>DenselyDashed</value>
+  </data>
+  <data name="line_type_dot" xml:space="preserve">
+    <value>Dot</value>
+  </data>
+  <data name="ternary_phase_diagram" xml:space="preserve">
+    <value>Ternary Phase Diagram</value>
+  </data>
 </root>

@@ -3,6 +3,7 @@ using System.ComponentModel;
 using GeoChemistryNexus.PropertyEditor;
 using HandyControl.Controls;
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Converter;
 
 namespace GeoChemistryNexus.Models
 {
@@ -53,11 +54,16 @@ namespace GeoChemistryNexus.Models
         public LineType _style;
 
         // 枚举类型
+        [TypeConverter(typeof(EnumLocalizationConverter))]
         public enum LineType
         {
+            [LocalizedDescription("line_type_solid")]
             Solid,
+            [LocalizedDescription("line_type_dash")]
             Dash,
+            [LocalizedDescription("line_type_densely_dashed")]
             DenselyDashed,
+            [LocalizedDescription("line_type_dot")]
             Dot
         }
     }

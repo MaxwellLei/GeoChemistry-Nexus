@@ -1385,4 +1385,24 @@
     <value>添加多边形</value>
     <comment>绘图功能区</comment>
   </data>
+  <data name="line_type_solid" xml:space="preserve">
+    <value>实线</value>
+    <comment>线条对象属性</comment>
+  </data>
+  <data name="line_type_dash" xml:space="preserve">
+    <value>虚线</value>
+    <comment>线条对象属性</comment>
+  </data>
+  <data name="line_type_densely_dashed" xml:space="preserve">
+    <value>密集虚线</value>
+    <comment>线条对象属性</comment>
+  </data>
+  <data name="line_type_dot" xml:space="preserve">
+    <value>点线</value>
+    <comment>线条对象属性</comment>
+  </data>
+  <data name="ternary_phase_diagram" xml:space="preserve">
+    <value>三元相图</value>
+    <comment>新建图解模板</comment>
+  </data>
 </root>

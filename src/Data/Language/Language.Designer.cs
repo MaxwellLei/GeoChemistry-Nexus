@@ -2014,6 +2014,42 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Dash 的本地化字符串。
+        /// </summary>
+        internal static string line_type_dash {
+            get {
+                return ResourceManager.GetString("line_type_dash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 DenselyDashed 的本地化字符串。
+        /// </summary>
+        internal static string line_type_densely_dashed {
+            get {
+                return ResourceManager.GetString("line_type_densely_dashed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Dot 的本地化字符串。
+        /// </summary>
+        internal static string line_type_dot {
+            get {
+                return ResourceManager.GetString("line_type_dot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Solid 的本地化字符串。
+        /// </summary>
+        internal static string line_type_solid {
+            get {
+                return ResourceManager.GetString("line_type_solid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Color 的本地化字符串。
         /// </summary>
         internal static string LineColor {
@@ -3414,6 +3450,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string template_saved_successfully {
             get {
                 return ResourceManager.GetString("template_saved_successfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Ternary Phase Diagram 的本地化字符串。
+        /// </summary>
+        internal static string ternary_phase_diagram {
+            get {
+                return ResourceManager.GetString("ternary_phase_diagram", resourceCulture);
             }
         }
         
