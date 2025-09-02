@@ -1,0 +1,2 @@
+# 将富文本文件标记为“文档”，排除在语言统计外
+*.rtf linguist-documentation
