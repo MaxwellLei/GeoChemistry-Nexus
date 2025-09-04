@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:GeoChemistryNexus"
              StartupUri="Views/StartWindow.xaml">
     <Application.Resources>
+        
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
 
@@ -149,8 +150,7 @@
                 <Setter Property="FontSize" Value="18"/>
                 <Setter Property="Margin" Value="2 0"/>
             </Style>
-            
-            
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

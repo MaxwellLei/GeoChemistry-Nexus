@@ -285,7 +285,7 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         public void OpenExcelFile(ReoGridControl reoGridControl)
         {
-            string filePath = FileHelper.GetFilePath("CSV文件|*.csv");
+            string filePath = FileHelper.GetFilePath(LanguageService.Instance["csv_file_filter"]);
             if (filePath != null) { reoGridControl.Load(filePath); MessageHelper.Success(LanguageService.Instance["file_import_successful"]); }
             MessageHelper.Info(LanguageService.Instance["cancel_import"]);
         }
@@ -302,8 +302,8 @@ namespace GeoChemistryNexus.ViewModels
             var worksheet = reoGridControl.CurrentWorksheet;
             if (worksheet == null) return;
 
-            string tempFilePath = FileHelper.GetSaveFilePath2(title: "保存为csv文件", filter: "CSV文件|*.csv",
-                                                                defaultExt: ".csv", defaultFileName:worksheet.Name);
+            string tempFilePath = FileHelper.GetSaveFilePath2(title: LanguageService.Instance["Save as CSV File"], 
+                filter: LanguageService.Instance["csv_file_filter"], defaultExt: ".csv", defaultFileName:worksheet.Name);
             if (string.IsNullOrEmpty(tempFilePath)) return;
 
             try

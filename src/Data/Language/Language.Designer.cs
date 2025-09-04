@@ -898,6 +898,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Copy Plot Image to Clipboard 的本地化字符串。
+        /// </summary>
+        internal static string copy_plot_to_clipboard {
+            get {
+                return ResourceManager.GetString("copy_plot_to_clipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Corner Radius 的本地化字符串。
         /// </summary>
         internal static string corner_radius {
@@ -916,6 +925,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 CSV File|*.csv 的本地化字符串。
+        /// </summary>
+        internal static string csv_file_filter {
+            get {
+                return ResourceManager.GetString("csv_file_filter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Custom Folder Location 的本地化字符串。
         /// </summary>
         internal static string CustomPath {
@@ -930,6 +948,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string Data {
             get {
                 return ResourceManager.GetString("Data", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Data Export 的本地化字符串。
+        /// </summary>
+        internal static string data_export {
+            get {
+                return ResourceManager.GetString("data_export", resourceCulture);
             }
         }
         
@@ -957,6 +984,24 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string data_parameters_are_empty {
             get {
                 return ResourceManager.GetString("data_parameters_are_empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Data Plotting 的本地化字符串。
+        /// </summary>
+        internal static string data_plotting {
+            get {
+                return ResourceManager.GetString("data_plotting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Data plotting successful 的本地化字符串。
+        /// </summary>
+        internal static string data_plotting_successful {
+            get {
+                return ResourceManager.GetString("data_plotting_successful", resourceCulture);
             }
         }
         
@@ -1632,6 +1677,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string Guide {
             get {
                 return ResourceManager.GetString("Guide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 When enabled, hovering the mouse over a plot object (point, line, area, etc.) will automatically highlight it, and you can click to view information 的本地化字符串。
+        /// </summary>
+        internal static string highlight_on_hover {
+            get {
+                return ResourceManager.GetString("highlight_on_hover", resourceCulture);
             }
         }
         
@@ -2356,6 +2410,24 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 No data columns defined 的本地化字符串。
+        /// </summary>
+        internal static string no_data_columns_defined {
+            get {
+                return ResourceManager.GetString("no_data_columns_defined", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 No data, please add data 的本地化字符串。
+        /// </summary>
+        internal static string no_data_please_add_data {
+            get {
+                return ResourceManager.GetString("no_data_please_add_data", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 There is no imported data to clear 的本地化字符串。
         /// </summary>
         internal static string no_imported_data_to_clear {
@@ -3067,6 +3139,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Save as CSV File 的本地化字符串。
+        /// </summary>
+        internal static string save_as_csv_file {
+            get {
+                return ResourceManager.GetString("save_as_csv_file", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Failed to save template: 的本地化字符串。
         /// </summary>
         internal static string save_template_failed {
@@ -3213,9 +3294,9 @@ namespace GeoChemistryNexus.Data.Language {
         /// <summary>
         ///   查找类似 Size 的本地化字符串。
         /// </summary>
-        internal static string Size {
+        internal static string size {
             get {
-                return ResourceManager.GetString("Size", resourceCulture);
+                return ResourceManager.GetString("size", resourceCulture);
             }
         }
         
@@ -3621,6 +3702,24 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string unknown_error_occurred {
             get {
                 return ResourceManager.GetString("unknown_error_occurred", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Update Data 的本地化字符串。
+        /// </summary>
+        internal static string update_data {
+            get {
+                return ResourceManager.GetString("update_data", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Help Manual 的本地化字符串。
+        /// </summary>
+        internal static string use_help {
+            get {
+                return ResourceManager.GetString("use_help", resourceCulture);
             }
         }
         

@@ -2,7 +2,6 @@
 using System.Data;
 using System.IO;
 using Microsoft.Win32;
-using OfficeOpenXml;
 using HandyControl.Controls;
 using Ookii.Dialogs.Wpf;
 using System.Linq;
@@ -11,132 +10,6 @@ using GeoChemistryNexus.Helpers;
 
 public class FileHelper
 {
-    // 读取 数据 文件
-    public static DataTable? ReadFile()
-    {
-        ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-
-        OpenFileDialog openFileDialog = new OpenFileDialog
-        {
-            Filter = "Excel Files|*.xlsx;*.xls|CSV Files|*.csv",
-            Title = "Select a file"
-        };
-
-        if (openFileDialog.ShowDialog() == true)
-        {
-            string filePath = openFileDialog.FileName;
-            string fileExtension = Path.GetExtension(filePath).ToLower();
-
-            FileInfo fileInfo = new FileInfo(filePath);
-            if (fileInfo.Length == 0)
-            {
-                return null; // 空文件
-            }
-
-            if (fileExtension == ".xlsx" || fileExtension == ".xls")
-            {
-                return ReadExcelFile(filePath);
-            }
-            else if (fileExtension == ".csv")
-            {
-                return ReadCsvFile(filePath);
-            }
-            else
-            {
-                throw new NotSupportedException("Unsupported file format.");
-            }
-        }
-
-        return null;
-    }
-
-    // 读取 数据 文件
-    public static DataTable? ReadFile(string filePath)
-    {
-        string fileExtension = Path.GetExtension(filePath).ToLower();
-
-        FileInfo fileInfo = new FileInfo(filePath);
-        if (fileInfo.Length == 0)
-        {
-            return null; // 空文件
-        }
-
-        if (fileExtension == ".xlsx" || fileExtension == ".xls")
-        {
-            return ReadExcelFile(filePath);
-        }
-        else if (fileExtension == ".csv")
-        {
-            return ReadCsvFile(filePath);
-        }
-        else
-        {
-            throw new NotSupportedException("Unsupported file format.");
-        }
-    }
-
-    private static DataTable? ReadExcelFile(string filePath)
-    {
-        try
-        {
-            DataTable dataTable = new DataTable();
-
-            using (var package = new ExcelPackage(new FileInfo(filePath)))
-            {
-                ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
-                if (worksheet.Dimension == null)
-                {
-                    return null;
-                }
-                int rowCount = worksheet.Dimension.Rows;
-                int colCount = worksheet.Dimension.Columns;
-
-                // Read header
-                for (int col = 1; col <= colCount; col++)
-                {
-                    //dataTable.Columns.Add(worksheet.Cells[1, col].Value?.ToString() ?? $"Column{col}");
-                    var columnName = worksheet.Cells[1, col].Value?.ToString() ?? $"Column{col}";
-                    if (!dataTable.Columns.Contains(columnName))
-                    {
-                        dataTable.Columns.Add(columnName);
-                    }
-                    else
-                    {
-                        // 处理列名重复，添加序号后缀
-                        int suffix = 1;
-                        string newColumnName = columnName + "_" + suffix;
-                        while (dataTable.Columns.Contains(newColumnName))
-                        {
-                            suffix++;
-                            newColumnName = columnName + "_" + suffix;
-                        }
-                        dataTable.Columns.Add(newColumnName);
-                    }
-                }
-
-                // Read data
-                for (int row = 2; row <= rowCount; row++)
-                {
-                    DataRow dataRow = dataTable.NewRow();
-                    for (int col = 1; col <= colCount; col++)
-                    {
-                        dataRow[col - 1] = worksheet.Cells[row, col].Value;
-                        var test = worksheet.Cells[row, col].Value;
-                    }
-                    dataTable.Rows.Add(dataRow);
-                }
-            }
-
-            return dataTable;
-        }
-        catch
-        {
-            MessageHelper.Error("文件不合法，请检查文件");
-            return null;
-        }
-
-    }
-
     private static DataTable ReadCsvFile(string filePath)
     {
         DataTable dataTable = new DataTable();
@@ -162,63 +35,6 @@ public class FileHelper
         }
 
         return dataTable;
-    }
-
-    // 导出 DataTable 到指定格式的文件
-    public static bool ExportDataTable(DataTable dataTable)
-    {
-        SaveFileDialog saveFileDialog = new SaveFileDialog
-        {
-            Filter = "Excel Files|*.xlsx;*.xls|CSV Files|*.csv",
-            Title = "Save DataTable as File",
-            FileName = "ExportedData" // 默认文件名
-        };
-
-        // 显示保存文件对话框
-        if (saveFileDialog.ShowDialog() == true)
-        {
-            string filePath = saveFileDialog.FileName;
-            string fileExtension = Path.GetExtension(filePath).ToLower();
-
-            try
-            {
-                if (fileExtension == ".xlsx" || fileExtension == ".xls")
-                {
-                    ExportToExcel(dataTable, filePath);
-                }
-                else if (fileExtension == ".csv")
-                {
-                    ExportToCsv(dataTable, filePath);
-                }
-                else
-                {
-                    throw new NotSupportedException("Unsupported file format.");
-                }
-                MessageHelper.Success("导出成功");
-                return true;
-            }
-            catch (Exception ex)
-            {
-                MessageHelper.Error($"Error exporting DataTable: {ex.Message}");
-                return false;
-            }
-        }
-
-        return false; // 用户取消了保存对话框
-    }
-
-    private static void ExportToExcel(DataTable dataTable, string filePath)
-    {
-        using (var package = new ExcelPackage())
-        {
-            var worksheet = package.Workbook.Worksheets.Add("Sheet1");
-
-            // Load the DataTable into the worksheet
-            worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
-
-            // Save the workbook to the specified file
-            package.SaveAs(new FileInfo(filePath));
-        }
     }
 
     private static void ExportToCsv(DataTable dataTable, string filePath)

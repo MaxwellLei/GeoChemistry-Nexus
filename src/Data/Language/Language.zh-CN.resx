@@ -383,7 +383,7 @@
   <data name="PointStar" xml:space="preserve">
     <value>星形</value>
   </data>
-  <data name="Size" xml:space="preserve">
+  <data name="size" xml:space="preserve">
     <value>大小</value>
   </data>
   <data name="IsShowAxes" xml:space="preserve">
@@ -1404,5 +1404,49 @@
   <data name="ternary_phase_diagram" xml:space="preserve">
     <value>三元相图</value>
     <comment>新建图解模板</comment>
+  </data>
+  <data name="copy_plot_to_clipboard" xml:space="preserve">
+    <value>复制绘图图像到剪切板</value>
+    <comment>绘图-工具栏-提示</comment>
+  </data>
+  <data name="use_help" xml:space="preserve">
+    <value>使用帮助</value>
+    <comment>绘图-工具栏-提示</comment>
+  </data>
+  <data name="no_data_please_add_data" xml:space="preserve">
+    <value>无数据，请添加数据</value>
+    <comment>绘图-数据-提示</comment>
+  </data>
+  <data name="no_data_columns_defined" xml:space="preserve">
+    <value>未定义数据列</value>
+    <comment>绘图-数据-提示</comment>
+  </data>
+  <data name="data_plotting_successful" xml:space="preserve">
+    <value>数据点绘图成功</value>
+    <comment>绘图-数据-提示</comment>
+  </data>
+  <data name="save_as_csv_file" xml:space="preserve">
+    <value>保存为CSV文件</value>
+    <comment>温度计-提示</comment>
+  </data>
+  <data name="csv_file_filter" xml:space="preserve">
+    <value>CSV文件|*.csv</value>
+    <comment>温度计-提示</comment>
+  </data>
+  <data name="data_export" xml:space="preserve">
+    <value>数据导出</value>
+    <comment>绘图-数据-按钮</comment>
+  </data>
+  <data name="update_data" xml:space="preserve">
+    <value>更新数据</value>
+    <comment>绘图-数据-按钮</comment>
+  </data>
+  <data name="data_plotting" xml:space="preserve">
+    <value>数据投点</value>
+    <comment>绘图-数据-按钮</comment>
+  </data>
+  <data name="highlight_on_hover" xml:space="preserve">
+    <value>开启后，鼠标移到绘图对象（点、线、面等）上方时会自动高亮，点击可查看信息</value>
+    <comment>绘图-工具栏-提示</comment>
   </data>
 </root>

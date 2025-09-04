@@ -39,7 +39,7 @@ namespace GeoChemistryNexus.Views
         {
             InitializeComponent();
             // 链接 ViewModel
-            viewModel = new MainPlotViewModel(this.WpfPlot1, this.Drichtextbox);
+            viewModel = new MainPlotViewModel(this.WpfPlot1, this.Drichtextbox, this.DataGrid);
             this.DataContext = viewModel;
         }
 

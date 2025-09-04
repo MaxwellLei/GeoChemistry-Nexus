@@ -4,8 +4,6 @@ using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Models;
 using GeoChemistryNexus.Views;
 using HandyControl.Tools;
-using OfficeOpenXml;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using ScottPlot;
 using ScottPlot.Colormaps;
 using ScottPlot.Grids;

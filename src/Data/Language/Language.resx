@@ -349,7 +349,7 @@
   <data name="PointStar" xml:space="preserve">
     <value>Star</value>
   </data>
-  <data name="Size" xml:space="preserve">
+  <data name="size" xml:space="preserve">
     <value>Size</value>
   </data>
   <data name="IsShowAxes" xml:space="preserve">
@@ -1314,5 +1314,38 @@
   </data>
   <data name="ternary_phase_diagram" xml:space="preserve">
     <value>Ternary Phase Diagram</value>
+  </data>
+  <data name="copy_plot_to_clipboard" xml:space="preserve">
+    <value>Copy Plot Image to Clipboard</value>
+  </data>
+  <data name="use_help" xml:space="preserve">
+    <value>Help Manual</value>
+  </data>
+  <data name="no_data_please_add_data" xml:space="preserve">
+    <value>No data, please add data</value>
+  </data>
+  <data name="no_data_columns_defined" xml:space="preserve">
+    <value>No data columns defined</value>
+  </data>
+  <data name="data_plotting_successful" xml:space="preserve">
+    <value>Data plotting successful</value>
+  </data>
+  <data name="save_as_csv_file" xml:space="preserve">
+    <value>Save as CSV File</value>
+  </data>
+  <data name="csv_file_filter" xml:space="preserve">
+    <value>CSV File|*.csv</value>
+  </data>
+  <data name="data_export" xml:space="preserve">
+    <value>Data Export</value>
+  </data>
+  <data name="update_data" xml:space="preserve">
+    <value>Update Data</value>
+  </data>
+  <data name="data_plotting" xml:space="preserve">
+    <value>Data Plotting</value>
+  </data>
+  <data name="highlight_on_hover" xml:space="preserve">
+    <value>When enabled, hovering the mouse over a plot object (point, line, area, etc.) will automatically highlight it, and you can click to view information</value>
   </data>
 </root>

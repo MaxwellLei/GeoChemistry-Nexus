@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:hc="https://handyorg.github.io/handycontrol"
+      xmlns:rg="clr-namespace:unvell.ReoGrid;assembly=unvell.ReoGrid"
       xmlns:local="clr-namespace:GeoChemistryNexus.Views"
       xmlns:tools="clr-namespace:GeoChemistryNexus.Helpers"
       xmlns:uc="clr-namespace:GeoChemistryNexus.Controls"
@@ -27,6 +28,8 @@
             <Setter Property="Padding" Value="6,4"/>
             <Setter Property="Margin" Value="1"/>
             <Setter Property="Cursor" Value="Hand"/>
+            <!--设置提示文本显示时间是360毫秒-->
+            <Setter Property="ToolTipService.InitialShowDelay" Value="360"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -245,8 +248,10 @@
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
-            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="Padding" Value="2"/>
+            <!--设置提示文本显示时间是360毫秒-->
+            <Setter Property="ToolTipService.InitialShowDelay" Value="360"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -514,13 +519,9 @@
                                             <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
 
-                                        <!--缩略图--> 
+                                        <!--缩略图-->
                                         <Border Grid.Row="0" Background="#F8F9FA" CornerRadius="6,6,0,0" Margin="8,8,8,0">
-                                            <Image Source="{Binding ThumbnailPath}" 
-                                                  Stretch="Fill"
-                                                  HorizontalAlignment="Center" 
-                                                  VerticalAlignment="Center"
-                                                  MaxHeight="200"/>
+                                            <Image Source="{Binding ThumbnailPath}"  Stretch="Uniform" />
                                         </Border>
 
                                         <!--模板名称和分类--> 
@@ -619,18 +620,22 @@
 
                                     <!-- 左侧快速访问工具栏 -->
                                     <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="10,2" VerticalAlignment="Center">
+                                        <!-- 复制绘图到剪贴板 -->
                                         <Button Style="{StaticResource ModernRibbonButton}" Width="26" Height="26" 
-                                                Margin="2,0" Command="{Binding CopyToClipboardCommand}">
+                                                Margin="2,0" Command="{Binding CopyToClipboardCommand}"
+                                                ToolTip="{Binding [copy_plot_to_clipboard],Source={x:Static lg:LanguageService.Instance}}">
                                             <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe76e;" FontSize="12" Foreground="#323130"/>
                                         </Button>
-                                        <Button Style="{StaticResource ModernRibbonButton}" Width="26" Height="26" 
-                                                Margin="2,0">
+                                        <!-- 开启吸附选择 -->
+                                        <ToggleButton Style="{StaticResource RibbonSmallToggleButton}" Width="26" Height="26" 
+                                                Margin="2,0" IsChecked="{Binding IsSnapSelectionEnabled, Mode=TwoWay}"
+                                                ToolTip="{Binding [highlight_on_hover],Source={x:Static lg:LanguageService.Instance}}">
                                             <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe82e;" FontSize="12" Foreground="#323130"/>
-                                        </Button>
+                                        </ToggleButton>
                                     </StackPanel>
 
                                     <!-- 中间标签页选项卡 -->
-                                    <TabControl Grid.Column="1" Name="RibbonTabControl"
+                                    <TabControl Grid.Column="1" Name="RibbonTabControl" SelectedIndex="{Binding RibbonTabIndex}"
                                        Background="Transparent" BorderThickness="0"
                                        TabStripPlacement="Top" Margin="5,0" VerticalAlignment="Bottom">
                                         <TabControl.Resources>
@@ -665,6 +670,8 @@
 
                                         <!-- 绘图选项卡 -->
                                         <TabItem Header="{Binding [Plot],Source={x:Static lg:LanguageService.Instance}}"/>
+                                        <!-- 数据选项卡 -->
+                                        <TabItem Header="{Binding [Data],Source={x:Static lg:LanguageService.Instance}}"/>
                                         <!-- 编辑选项卡 -->
                                         <TabItem Header="{Binding [Edit],Source={x:Static lg:LanguageService.Instance}}"/>
                                     </TabControl>
@@ -672,7 +679,8 @@
                                     <!-- 右侧功能区选项 -->
                                     <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="10,2" VerticalAlignment="Center">
                                         <Button Content="?" Style="{StaticResource ModernRibbonButton}"
-                                        Width="26" Height="26" Margin="2,0" FontSize="12"/>
+                                        Width="26" Height="26" Margin="2,0" FontSize="12"
+                                        ToolTip="{Binding [use_help],Source={x:Static lg:LanguageService.Instance}}"/>
                                         <!--<Button Content="⚙" Style="{StaticResource ModernRibbonButton}"
                                         Width="26" Height="26" Margin="2,0" FontSize="12"/>-->
                                     </StackPanel>
@@ -748,7 +756,7 @@
                                                                       Width="100" Height="28" Margin="0,1">
                                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe61e;"
-                                                                           FontSize="16" Foreground="#0078D4" Margin="4,0,6,0"
+                                                                           FontSize="14" Foreground="#0078D4" Margin="4,0,6,0"
                                                                            VerticalAlignment="Center"/>
                                                                 <!--坐标定位-->
                                                                 <TextBlock Text="{Binding [coordinate_positioning],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" VerticalAlignment="Center"/>
@@ -864,13 +872,100 @@
                                         </StackPanel>
                                     </ScrollViewer>
 
+                                    <!--数据模式功能区-->
+                                    <ScrollViewer x:Name="DataRibbon" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                                        <ScrollViewer.Style>
+                                            <Style TargetType="ScrollViewer">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ElementName=RibbonTabControl, Path=SelectedIndex}" Value="1">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ScrollViewer.Style>
+                                        <StackPanel Orientation="Horizontal" Margin="8,3" Height="86">
+
+                                            <!-- 数据点导入 -->
+                                            <GroupBox Header="{Binding [Data],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource RibbonGroupStyle}">
+                                                <Grid Width="68" Height="68" Margin="2">
+                                                    <Button Command="{Binding PlotDataFromGridCommand}" CommandParameter="{Binding ElementName=DataGrid}"
+                                                            Style="{StaticResource RibbonLargeButton}"
+                                                            Width="64" Height="64" VerticalAlignment="Top">
+                                                        <StackPanel HorizontalAlignment="Center">
+                                                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe683;"
+                                                                       FontSize="24" Foreground="#0078D4" Margin="0,4"
+                                                                       HorizontalAlignment="Center"/>
+                                                            <!--数据投点-->
+                                                            <TextBlock Text="{Binding [data_plotting],Source={x:Static lg:LanguageService.Instance}}" FontSize="10" TextAlignment="Center"
+                                                                       Foreground="#323130" TextWrapping="Wrap"/>
+                                                        </StackPanel>
+                                                    </Button>
+                                                </Grid>
+                                            </GroupBox>
+
+                                            <Rectangle Fill="#E1E5E9" Width="1" Margin="8,12" VerticalAlignment="Stretch"/>
+
+                                            <!-- 编辑 -->
+                                            <GroupBox Header="{Binding [Edit],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource RibbonGroupStyle}">
+                                                <Grid Width="212" Height="68" Margin="2">
+                                                    <UniformGrid Columns="2" Rows="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                        <Button Command="{Binding UpdateDataCommand}"
+                                                                Style="{StaticResource RibbonSmallButton}"
+                                                                Width="auto" Height="28" Margin="0,1">
+                                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe74b;"
+                                                                        FontSize="16" Foreground="#0078D4" Margin="4,0,6,0"
+                                                                        VerticalAlignment="Center"/>
+                                                                <TextBlock Text="{Binding [update_data],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" TextAlignment="Center"
+                                                                           Foreground="#323130" TextWrapping="Wrap"/>
+                                                            </StackPanel>
+                                                        </Button>
+                                                        <Button Command="{Binding ClearAllDataCommand}"
+                                                                Style="{StaticResource RibbonSmallButton}"
+                                                                Width="auto" Height="28" Margin="0,1">
+                                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe734;"
+                                                                        FontSize="16" Foreground="#D92C2C	" Margin="4,0,6,0"
+                                                                        VerticalAlignment="Center"/>
+                                                                <TextBlock Text="{Binding [clear_data],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" TextAlignment="Center"
+                                                                           Foreground="#323130" TextWrapping="Wrap"/>
+                                                            </StackPanel>
+                                                        </Button>
+                                                    </UniformGrid>
+                                                </Grid>
+                                            </GroupBox>
+
+                                            <Rectangle Fill="#E1E5E9" Width="1" Margin="8,12" VerticalAlignment="Stretch"/>
+
+                                            <!--导出-->
+                                            <GroupBox Header="{Binding [export],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource RibbonGroupStyle}">
+                                                <Grid Width="68" Height="68" Margin="2">
+                                                    <Button Command="{Binding ExportWorksheetCommand}" CommandParameter="{Binding ElementName=DataGrid}"
+                                                            Style="{StaticResource RibbonLargeButton}"
+                                                            Width="64" Height="64" VerticalAlignment="Top">
+                                                        <StackPanel HorizontalAlignment="Center">
+                                                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe656;"
+                                                                       FontSize="30" Foreground="#107C10" Margin="0,2"
+                                                                       HorizontalAlignment="Center"/>
+                                                            <!--保存-->
+                                                            <TextBlock Text="{Binding [data_export],Source={x:Static lg:LanguageService.Instance}}" FontSize="10" TextAlignment="Center"
+                                                                       Foreground="#323130" TextWrapping="Wrap"/>
+                                                        </StackPanel>
+                                                    </Button>
+                                                </Grid>
+                                            </GroupBox>
+
+                                        </StackPanel>
+                                    </ScrollViewer>
+
                                     <!-- 编辑模式功能区 -->
                                     <ScrollViewer x:Name="EditingRibbon" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
                                         <ScrollViewer.Style>
                                             <Style TargetType="ScrollViewer">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=RibbonTabControl, Path=SelectedIndex}" Value="1">
+                                                    <DataTrigger Binding="{Binding ElementName=RibbonTabControl, Path=SelectedIndex}" Value="2">
                                                         <Setter Property="Visibility" Value="Visible"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -937,9 +1032,37 @@
                             </Border>
 
                             <!-- ScottPlot 控件 -->
-                            <ScottPlot:WpfPlot Name="WpfPlot1" Grid.Row="2" Margin="8"/>
+                            <ScottPlot:WpfPlot Name="WpfPlot1" Grid.Row="2" Margin="8">
+                                <ScottPlot:WpfPlot.Style>
+                                    <Style TargetType="ScottPlot:WpfPlot">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=RibbonTabControl, Path=SelectedIndex}" Value="1">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ScottPlot:WpfPlot.Style>
+                            </ScottPlot:WpfPlot>
+
+                            <!--数据表格控件-->
+                            <rg:ReoGridControl x:Name="DataGrid" Grid.Row="2" SheetTabVisible="False"
+                                               ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                                <rg:ReoGridControl.Style>
+                                    <Style TargetType="rg:ReoGridControl">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=RibbonTabControl, Path=SelectedIndex}" Value="1">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </rg:ReoGridControl.Style>
+                            </rg:ReoGridControl>
                         </Grid>
                     </TabItem>
+
+                    <!--指南模块-->
                     <TabItem Header="{Binding [Guide],Source={x:Static lg:LanguageService.Instance}}" >
                         <RichTextBox x:Name="Drichtextbox" IsReadOnly="{Binding IsPlotMode}" 
                                     BorderThickness="0" Margin="32,10"/>
