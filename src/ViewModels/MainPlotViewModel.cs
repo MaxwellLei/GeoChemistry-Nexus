@@ -195,6 +195,43 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
+        /// 根据 AxisDefinition 对象中的设置，更新实际坐标轴的范围
+        /// </summary>
+        private void UpdateAxisLimitsFromModel(AxisDefinition axisDef, IAxis targetAxis)
+        {
+            // 如果用户在属性面板清空了最大值和最小值（变为NaN），则执行自动缩放
+            if (double.IsNaN(axisDef.Minimum) && double.IsNaN(axisDef.Maximum))
+            {
+                WpfPlot1.Plot.Axes.AutoScale();
+                return;
+            }
+
+            var currentLimits = targetAxis.Range;
+
+            // 优先使用模型中的值，如果模型值为NaN，则保持坐标轴当前的值
+            var newMin = !double.IsNaN(axisDef.Minimum) ? axisDef.Minimum : currentLimits.Min;
+            var newMax = !double.IsNaN(axisDef.Maximum) ? axisDef.Maximum : currentLimits.Max;
+
+            // 如果是对数坐标轴，对范围值取对数
+            if (axisDef.ScaleType == AxisScaleType.Logarithmic)
+            {
+                if (!double.IsNaN(axisDef.Minimum))
+                {
+                    // 对数轴的最小值必须大于0
+                    newMin = axisDef.Minimum > 0 ? Math.Log10(axisDef.Minimum) : currentLimits.Min;
+                }
+                if (!double.IsNaN(axisDef.Maximum))
+                {
+                    // 对数轴的最大值必须大于0
+                    newMax = axisDef.Maximum > 0 ? Math.Log10(axisDef.Maximum) : currentLimits.Max;
+                }
+            }
+
+            // 设置最终的坐标轴范围
+            targetAxis.Range.Set(newMin, newMax);
+        }
+
+        /// <summary>
         /// 将图层恢复到其在当前选择状态下应有的样式
         /// 先恢复原始样式，再根据情况应用遮罩
         /// </summary>
@@ -385,7 +422,6 @@ namespace GeoChemistryNexus.ViewModels
 
             return ptPixel.DistanceFrom(closestPoint);
         }
-
 
         /// <summary>
         /// 判断一个点是否在多边形内部（射线法）
@@ -1689,42 +1725,82 @@ namespace GeoChemistryNexus.ViewModels
                     targetAxis.Label.Italic = axisDef.IsItalic;
                     break;
 
-                // 刻度间隔
-                case nameof(AxisDefinition.TickInterval):
-                    if (axisDef.TickInterval.HasValue && axisDef.TickInterval > 0)
-                    {
-                        targetAxis.TickGenerator = new ScottPlot.TickGenerators.NumericFixedInterval(axisDef.TickInterval.Value);
-                    }
-                    else
-                    {
-                        targetAxis.TickGenerator = new ScottPlot.TickGenerators.NumericAutomatic();
-                    }
-                    break;
-
                 // 刻度生成器-线性刻度和对数刻度
                 case nameof(AxisDefinition.ScaleType):
                     if (axisDef.ScaleType == AxisScaleType.Logarithmic)
                     {
-                        // 创建一个用于对数刻度的次要刻度生成器
                         var minorTickGen = new ScottPlot.TickGenerators.LogMinorTickGenerator();
-
-                        // 创建主要刻度生成器并使用自定义的次要刻度生成器
-                        var tickGen = new ScottPlot.TickGenerators.NumericAutomatic();
-                        tickGen.MinorTickGenerator = minorTickGen;
-
-                        // 设置主刻度只显示在整数位置
-                        tickGen.IntegerTicksOnly = true;
-
-                        // 设置自定义标签格式化器
-                        tickGen.LabelFormatter = y => $"{Math.Pow(10, y):N0}";
-
-                        // 应用到目标轴
+                        var tickGen = new ScottPlot.TickGenerators.NumericAutomatic
+                        {
+                            MinorTickGenerator = minorTickGen,
+                            IntegerTicksOnly = true,
+                            LabelFormatter = y => $"{Math.Pow(10, y):N0}"
+                        };
                         targetAxis.TickGenerator = tickGen;
                     }
                     else
                     {
-                        // 恢复为默认的线性刻度生成器
-                        targetAxis.TickGenerator = new ScottPlot.TickGenerators.NumericAutomatic();
+                        var autoTickGen2 = new ScottPlot.TickGenerators.NumericAutomatic();
+                        int intervalCount = Math.Max(1, axisDef.MinorTicksPerMajorTick + 1);
+                        var minorTickGen = new ScottPlot.TickGenerators.EvenlySpacedMinorTickGenerator(intervalCount);
+                        autoTickGen2.MinorTickGenerator = minorTickGen;
+                        targetAxis.TickGenerator = autoTickGen2;
+                    }
+                    // 切换类型后，重新计算和设置坐标轴范围
+                    UpdateAxisLimitsFromModel(axisDef, targetAxis);
+                    break;
+
+                //  次刻度间隔
+                case nameof(AxisDefinition.MinorTicksPerMajorTick):
+                    // 只有当刻度生成器是 NumericAutomatic 时，才能设置次刻度生成器
+                    if (targetAxis.TickGenerator is ScottPlot.TickGenerators.NumericAutomatic autoTickGen)
+                    {
+                        // 计算需要将主刻度分割的区间数
+                        // - 用户输入N，期望得到N个次刻度，需要分割成 N+1 个区间
+                        // - 如果用户输入0或负数，我们期望0个次刻度，需要分割成 1 个区间
+                        int intervalCount = Math.Max(1, axisDef.MinorTicksPerMajorTick + 1);
+
+                        // 创建并应用次刻度生成器
+                        var minorTickGen = new ScottPlot.TickGenerators.EvenlySpacedMinorTickGenerator(intervalCount);
+                        autoTickGen.MinorTickGenerator = minorTickGen;
+                    }
+                    break;
+
+
+                // =================================================
+                //                 坐标轴范围
+                // =================================================
+                case nameof(AxisDefinition.Minimum):
+                case nameof(AxisDefinition.Maximum):
+                    var currentLimits = targetAxis.Range;
+
+                    // 如果用户输入的值不是NaN，则使用它；否则，保持当前值
+                    var newMin = !double.IsNaN(axisDef.Minimum) ? axisDef.Minimum : currentLimits.Min;
+                    var newMax = !double.IsNaN(axisDef.Maximum) ? axisDef.Maximum : currentLimits.Max;
+
+                    // 如果是对数坐标轴，对范围值取对数
+                    if (axisDef.ScaleType == AxisScaleType.Logarithmic)
+                    {
+                        // 检查值是否大于0，因为log(0)和负数是无效的
+                        if (!double.IsNaN(axisDef.Minimum))
+                        {
+                            newMin = axisDef.Minimum > 0 ? Math.Log10(axisDef.Minimum) : double.NaN;
+                        }
+                        if (!double.IsNaN(axisDef.Maximum))
+                        {
+                            newMax = axisDef.Maximum > 0 ? Math.Log10(axisDef.Maximum) : double.NaN;
+                        }
+                    }
+
+                    // 如果两个值都变成了NaN，说明用户可能想恢复自动缩放
+                    if (double.IsNaN(newMin) && double.IsNaN(newMax))
+                    {
+                        WpfPlot1.Plot.Axes.AutoScale();
+                    }
+                    else
+                    {
+                        // 使用经过（可能）对数转换后的值来设置范围
+                        targetAxis.Range.Set(newMin, newMax);
                     }
                     break;
 
@@ -2307,15 +2383,8 @@ namespace GeoChemistryNexus.ViewModels
             // 如果坐标轴可见，才应用其他详细样式
             if (axisLayer.IsVisible)
             {
-                if (LanguageService.CurrentLanguage == "zh-CN")
-                {
-                    targetAxis.Label.FontName = "微软雅黑";
-                }
-                else
-                {
-                    targetAxis.Label.FontName = axisDef.Family;
-                }
                 targetAxis.Label.Text = axisDef.Label.Get();
+                targetAxis.Label.FontName = Fonts.Detect(targetAxis.Label.Text);        // 自动检测字体
                 targetAxis.Label.FontSize = axisDef.Size;
                 targetAxis.Label.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(axisDef.Color));
                 targetAxis.Label.Bold = axisDef.IsBold;
@@ -2332,13 +2401,10 @@ namespace GeoChemistryNexus.ViewModels
                     targetAxis.TickGenerator = tickGen;
                 }
 
-                if (axisDef.TickInterval.HasValue && axisDef.TickInterval > 0)
+                // 设置初始的坐标轴范围
+                if (!double.IsNaN(axisDef.Minimum) && !double.IsNaN(axisDef.Maximum))
                 {
-                    targetAxis.TickGenerator = new ScottPlot.TickGenerators.NumericFixedInterval(axisDef.TickInterval.Value);
-                }
-                else
-                {
-                    targetAxis.TickGenerator = new ScottPlot.TickGenerators.NumericAutomatic();
+                    targetAxis.Range.Set(axisDef.Minimum, axisDef.Maximum);
                 }
             }
         }

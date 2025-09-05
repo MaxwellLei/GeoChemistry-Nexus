@@ -1449,4 +1449,20 @@
     <value>开启后，鼠标移到绘图对象（点、线、面等）上方时会自动高亮，点击可查看信息</value>
     <comment>绘图-工具栏-提示</comment>
   </data>
+  <data name="count" xml:space="preserve">
+    <value>次刻度数量</value>
+    <comment>属性-坐标轴-次刻度样式</comment>
+  </data>
+  <data name="zoom_type" xml:space="preserve">
+    <value>缩放类型</value>
+    <comment>属性-坐标轴-坐标轴样式</comment>
+  </data>
+  <data name="from" xml:space="preserve">
+    <value>从</value>
+    <comment>属性-坐标轴-坐标轴样式</comment>
+  </data>
+  <data name="to" xml:space="preserve">
+    <value>到</value>
+    <comment>属性-坐标轴-坐标轴样式</comment>
+  </data>
 </root>

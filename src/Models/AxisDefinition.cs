@@ -75,12 +75,12 @@ namespace GeoChemistryNexus.Models
         private bool _isItalic = false;
 
         /// <summary>
-        /// Axis tick interval
+        /// 每个主刻度之间的次刻度数量
         /// </summary>
         [ObservableProperty]
-        [property: LocalizedCategory("tick_style")] // 刻度样式
-        [property: LocalizedDisplayName("tick_interval")] // 刻度间隔
-        private double? _tickInterval;
+        [property: LocalizedCategory("minor_tick_style")] // 次刻度样式
+        [property: LocalizedDisplayName("count")] // 数量
+        private int _minorTicksPerMajorTick = 1;
 
         /// <summary>
         /// Axis major tick length
@@ -195,25 +195,25 @@ namespace GeoChemistryNexus.Models
         /// 坐标轴类型 (线性/对数)
         /// </summary>
         [ObservableProperty]
-        [property: LocalizedCategory("测试")] // 坐标轴样式
-        [property: LocalizedDisplayName("缩放类型")] // 缩放类型
+        [property: LocalizedCategory("axis_style")] // 坐标轴样式
+        [property: LocalizedDisplayName("zoom_type")] // 缩放类型
         private AxisScaleType _scaleType = AxisScaleType.Linear;
 
-        ///// <summary>
-        ///// 坐标轴最小值
-        ///// </summary>
-        //[ObservableProperty]
-        //[property: LocalizedCategory("测试")] // 坐标轴范围
-        //[property: LocalizedDisplayName("最小值")] // 最小值
-        //private double _minimum;
+        /// <summary>
+        /// 坐标轴最小值
+        /// </summary>
+        [ObservableProperty]
+        [property: LocalizedCategory("axis_style")] // 坐标轴范围
+        [property: LocalizedDisplayName("from")] // 最小值
+        private double _minimum = double.NaN;
 
-        ///// <summary>
-        ///// 坐标轴最大值
-        ///// </summary>
-        //[ObservableProperty]
-        //[property: LocalizedCategory("测试")] // 坐标轴范围
-        //[property: LocalizedDisplayName("最大值")] // 最大值
-        //private double? _maximum;
+        /// <summary>
+        /// 坐标轴最大值
+        /// </summary>
+        [ObservableProperty]
+        [property: LocalizedCategory("axis_style")] // 坐标轴范围
+        [property: LocalizedDisplayName("to")] // 最大值
+        private double _maximum = double.NaN;
 
         ///// <summary>
         ///// 是否反转坐标轴方向

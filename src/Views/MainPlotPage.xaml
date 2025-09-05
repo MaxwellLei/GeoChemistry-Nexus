@@ -667,7 +667,6 @@
                                                 <Setter Property="Foreground" Value="#323130"/>
                                             </Style>
                                         </TabControl.Resources>
-
                                         <!-- 绘图选项卡 -->
                                         <TabItem Header="{Binding [Plot],Source={x:Static lg:LanguageService.Instance}}"/>
                                         <!-- 数据选项卡 -->

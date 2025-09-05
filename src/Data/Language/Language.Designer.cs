@@ -916,6 +916,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Count 的本地化字符串。
+        /// </summary>
+        internal static string count {
+            get {
+                return ResourceManager.GetString("count", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Failed to create worksheet: 的本地化字符串。
         /// </summary>
         internal static string create_worksheet_failed {
@@ -1596,6 +1605,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string format_failed {
             get {
                 return ResourceManager.GetString("format_failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 From 的本地化字符串。
+        /// </summary>
+        internal static string from {
+            get {
+                return ResourceManager.GetString("from", resourceCulture);
             }
         }
         
@@ -3634,6 +3652,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 To 的本地化字符串。
+        /// </summary>
+        internal static string to {
+            get {
+                return ResourceManager.GetString("to", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Top X-Axis 的本地化字符串。
         /// </summary>
         internal static string top_x_axis {
@@ -3810,6 +3837,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string ZirconZrGTM {
             get {
                 return ResourceManager.GetString("ZirconZrGTM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Zoom Type 的本地化字符串。
+        /// </summary>
+        internal static string zoom_type {
+            get {
+                return ResourceManager.GetString("zoom_type", resourceCulture);
             }
         }
     }

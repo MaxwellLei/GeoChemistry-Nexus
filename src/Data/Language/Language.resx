@@ -1348,4 +1348,16 @@
   <data name="highlight_on_hover" xml:space="preserve">
     <value>When enabled, hovering the mouse over a plot object (point, line, area, etc.) will automatically highlight it, and you can click to view information</value>
   </data>
+  <data name="count" xml:space="preserve">
+    <value>Count</value>
+  </data>
+  <data name="zoom_type" xml:space="preserve">
+    <value>Zoom Type</value>
+  </data>
+  <data name="from" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="to" xml:space="preserve">
+    <value>To</value>
+  </data>
 </root>
