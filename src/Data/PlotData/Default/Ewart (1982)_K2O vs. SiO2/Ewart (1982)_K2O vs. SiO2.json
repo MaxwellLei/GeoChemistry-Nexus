@@ -2,6 +2,7 @@
   "Version": "0.1",
   "DefaultLanguage": "en-US",
   "TemplateType": "Cartesian",
+  "Clockwise": true,
   "NodeList": {
     "Default": "en-US",
     "Translations": {
@@ -725,6 +726,7 @@
     "Annotations": [],
     "Axes": [
       {
+        "$type": "cartesian",
         "Type": "Bottom",
         "Label": {
           "Default": "en-US",
@@ -738,22 +740,26 @@
         "Color": "#FF000000",
         "IsBold": false,
         "IsItalic": false,
-        "TickInterval": 0,
-        "MajorTickLength": 4,
         "MajorTickWidth": 1,
         "MajorTickWidthColor": "#FF000000",
         "MajorTickAntiAlias": false,
-        "MinorTickLength": 4,
-        "MinorTickWidth": 1,
-        "MinorTickColor": "#FF000000",
-        "MinorTickAntiAlias": false,
         "TickLableFamily": "Arial",
         "TickLablesize": 16,
         "TickLablecolor": "#FF000000",
         "TickLableisBold": false,
-        "TickLableisItalic": false
+        "TickLableisItalic": false,
+        "ScaleType": "Linear",
+        "Minimum": 0,
+        "Maximum": 0,
+        "MajorTickLength": 4,
+        "MinorTicksPerMajorTick": 1,
+        "MinorTickLength": 4,
+        "MinorTickWidth": 1,
+        "MinorTickColor": "#FF000000",
+        "MinorTickAntiAlias": false
       },
       {
+        "$type": "cartesian",
         "Type": "Left",
         "Label": {
           "Default": "en-US",
@@ -767,20 +773,23 @@
         "Color": "#FF000000",
         "IsBold": false,
         "IsItalic": false,
-        "TickInterval": null,
-        "MajorTickLength": 4,
         "MajorTickWidth": 1,
         "MajorTickWidthColor": "#FF000000",
         "MajorTickAntiAlias": false,
-        "MinorTickLength": 4,
-        "MinorTickWidth": 1,
-        "MinorTickColor": "#FF000000",
-        "MinorTickAntiAlias": false,
         "TickLableFamily": "Arial",
         "TickLablesize": 12,
         "TickLablecolor": "#FF000000",
         "TickLableisBold": false,
-        "TickLableisItalic": false
+        "TickLableisItalic": false,
+        "ScaleType": "Linear",
+        "Minimum": 0,
+        "Maximum": 0,
+        "MajorTickLength": 4,
+        "MinorTicksPerMajorTick": 1,
+        "MinorTickLength": 4,
+        "MinorTickWidth": 1,
+        "MinorTickColor": "#FF000000",
+        "MinorTickAntiAlias": false
       }
     ],
     "Title": {

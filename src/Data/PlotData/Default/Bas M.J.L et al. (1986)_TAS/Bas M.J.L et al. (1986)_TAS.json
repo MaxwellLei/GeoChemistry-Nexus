@@ -1,51 +1,57 @@
 {
   "Version": "0.1",
+  "DefaultLanguage": "en-US",
   "TemplateType": "Cartesian",
+  "Clockwise": true,
+  "NodeList": {
+    "Default": "en-US",
+    "Translations": {}
+  },
   "Info": {
     "Points": [],
     "Lines": [
       {
         "Start": {
-          "X": 41.0,
-          "Y": 3.0
+          "X": 41,
+          "Y": 3
         },
         "End": {
-          "X": 41.0,
-          "Y": 7.0
+          "X": 41,
+          "Y": 7
         },
         "Color": "#000000",
-        "Width": 3.0,
+        "Width": 3,
         "Style": "Solid"
       },
       {
         "Start": {
-          "X": 41.0,
-          "Y": 3.0
+          "X": 41,
+          "Y": 3
         },
         "End": {
-          "X": 45.0,
-          "Y": 3.0
+          "X": 45,
+          "Y": 3
         },
         "Color": "#000000",
-        "Width": 3.0,
+        "Width": 3,
         "Style": "Solid"
       },
       {
         "Start": {
-          "X": 41.0,
-          "Y": 7.0
+          "X": 41,
+          "Y": 7
         },
         "End": {
-          "X": 45.0,
+          "X": 45,
           "Y": 9.4
         },
         "Color": "#000000",
-        "Width": 3.0,
+        "Width": 3,
         "Style": "Solid"
       },
       {
         "Start": {
-          "X": 45.0,
+          "X": 45,
           "Y": 9.4
         },
         "End": {
@@ -53,7 +59,7 @@
           "Y": 11.5
         },
         "Color": "#000000",
-        "Width": 3.0,
+        "Width": 3,
         "Style": "Solid"
       },
       {
@@ -63,62 +69,49 @@
         },
         "End": {
           "X": 52.5,
-          "Y": 14.0
+          "Y": 14
         },
         "Color": "#000000",
-        "Width": 3.0,
+        "Width": 3,
         "Style": "Solid"
       },
       {
         "Start": {
-          "X": 45.0,
-          "Y": 3.0
+          "X": 45,
+          "Y": 3
         },
         "End": {
-          "X": 45.0,
-          "Y": 5.0
+          "X": 45,
+          "Y": 5
         },
         "Color": "#000000",
-        "Width": 3.0,
+        "Width": 3,
         "Style": "Solid"
       },
       {
         "Start": {
-          "X": 45.0,
-          "Y": 5.0
+          "X": 45,
+          "Y": 5
         },
         "End": {
           "X": 49.4,
           "Y": 7.3
         },
         "Color": "#000000",
-        "Width": 3.0,
+        "Width": 3,
         "Style": "Solid"
       },
       {
         "Start": {
-          "X": 45.0,
-          "Y": 5.0
+          "X": 45,
+          "Y": 5
         },
         "End": {
-          "X": 52.0,
-          "Y": 5.0
+          "X": 52,
+          "Y": 5
         },
         "Color": "#000000",
-        "Width": 3.0,
-        "Style": "Solid"
-      },
-      {
-        "Start": {
-          "X": 49.4,
-          "Y": 7.3
-        },
-        "End": {
-          "X": 52.0,
-          "Y": 5.0
-        },
-        "Color": "#000000",
-        "Width": 3.0,
+        "Width": 3,
         "Style": "Solid"
       },
       {
@@ -127,16 +120,29 @@
           "Y": 7.3
         },
         "End": {
-          "X": 53.0,
+          "X": 52,
+          "Y": 5
+        },
+        "Color": "#000000",
+        "Width": 3,
+        "Style": "Solid"
+      },
+      {
+        "Start": {
+          "X": 49.4,
+          "Y": 7.3
+        },
+        "End": {
+          "X": 53,
           "Y": 9.3
         },
         "Color": "#000000",
-        "Width": 3.0,
+        "Width": 3,
         "Style": "Solid"
       },
       {
         "Start": {
-          "X": 53.0,
+          "X": 53,
           "Y": 9.3
         },
         "End": {
@@ -144,7 +150,7 @@
           "Y": 11.7
         },
         "Color": "#000000",
-        "Width": 3.0,
+        "Width": 3,
         "Style": "Solid"
       },
       {
@@ -153,24 +159,24 @@
           "Y": 11.7
         },
         "End": {
-          "X": 61.0,
+          "X": 61,
           "Y": 13.5
         },
         "Color": "#000000",
-        "Width": 3.0,
+        "Width": 3,
         "Style": "Solid"
       },
       {
         "Start": {
-          "X": 53.0,
+          "X": 53,
           "Y": 9.3
         },
         "End": {
-          "X": 57.0,
+          "X": 57,
           "Y": 5.9
         },
         "Color": "#000000",
-        "Width": 3.0,
+        "Width": 3,
         "Style": "Solid"
       },
       {
@@ -179,29 +185,29 @@
           "Y": 11.7
         },
         "End": {
-          "X": 63.0,
-          "Y": 7.0
+          "X": 63,
+          "Y": 7
         },
         "Color": "#000000",
-        "Width": 3.0,
+        "Width": 3,
         "Style": "Solid"
       },
       {
         "Start": {
-          "X": 63.0,
-          "Y": 7.0
+          "X": 63,
+          "Y": 7
         },
         "End": {
-          "X": 69.0,
-          "Y": 8.0
+          "X": 69,
+          "Y": 8
         },
         "Color": "#000000",
-        "Width": 3.0,
+        "Width": 3,
         "Style": "Solid"
       },
       {
         "Start": {
-          "X": 45.0,
+          "X": 45,
           "Y": 9.4
         },
         "End": {
@@ -209,7 +215,7 @@
           "Y": 7.3
         },
         "Color": "#000000",
-        "Width": 3.0,
+        "Width": 3,
         "Style": "Solid"
       },
       {
@@ -218,107 +224,107 @@
           "Y": 11.5
         },
         "End": {
-          "X": 53.0,
+          "X": 53,
           "Y": 9.3
         },
         "Color": "#000000",
-        "Width": 3.0,
+        "Width": 3,
         "Style": "Solid"
       },
       {
         "Start": {
           "X": 52.5,
-          "Y": 14.0
+          "Y": 14
         },
         "End": {
           "X": 57.6,
           "Y": 11.7
         },
         "Color": "#000000",
-        "Width": 3.0,
+        "Width": 3,
         "Style": "Solid"
       },
       {
         "Start": {
-          "X": 41.0,
-          "Y": 3.0
+          "X": 41,
+          "Y": 3
         },
         "End": {
-          "X": 41.0,
+          "X": 41,
           "Y": 0.33
         },
         "Color": "#000000",
-        "Width": 3.0,
+        "Width": 3,
         "Style": "Solid"
       },
       {
         "Start": {
-          "X": 45.0,
-          "Y": 3.0
+          "X": 45,
+          "Y": 3
         },
         "End": {
-          "X": 45.0,
+          "X": 45,
           "Y": 0.33
         },
         "Color": "#000000",
-        "Width": 3.0,
+        "Width": 3,
         "Style": "Solid"
       },
       {
         "Start": {
-          "X": 52.0,
-          "Y": 5.0
+          "X": 52,
+          "Y": 5
         },
         "End": {
-          "X": 52.0,
+          "X": 52,
           "Y": 0.33
         },
         "Color": "#000000",
-        "Width": 3.0,
+        "Width": 3,
         "Style": "Solid"
       },
       {
         "Start": {
-          "X": 57.0,
+          "X": 57,
           "Y": 5.9
         },
         "End": {
-          "X": 57.0,
+          "X": 57,
           "Y": 0.33
         },
         "Color": "#000000",
-        "Width": 3.0,
+        "Width": 3,
         "Style": "Solid"
       },
       {
         "Start": {
-          "X": 69.0,
-          "Y": 8.0
+          "X": 69,
+          "Y": 8
         },
         "End": {
-          "X": 69.0,
+          "X": 69,
           "Y": 12.56
         },
         "Color": "#000000",
-        "Width": 3.0,
+        "Width": 3,
         "Style": "Solid"
       },
       {
         "Start": {
-          "X": 69.0,
-          "Y": 8.0
+          "X": 69,
+          "Y": 8
         },
         "End": {
           "X": 76.6,
           "Y": 0.33
         },
         "Color": "#000000",
-        "Width": 3.0,
+        "Width": 3,
         "Style": "Solid"
       },
       {
         "Start": {
-          "X": 61.0,
+          "X": 61,
           "Y": 13.5
         },
         "End": {
@@ -326,59 +332,59 @@
           "Y": 14.83
         },
         "Color": "#000000",
-        "Width": 3.0,
+        "Width": 3,
         "Style": "Solid"
       },
       {
         "Start": {
           "X": 52.5,
-          "Y": 14.0
+          "Y": 14
         },
         "End": {
-          "X": 50.0,
+          "X": 50,
           "Y": 15.43
         },
         "Color": "#000000",
-        "Width": 3.0,
+        "Width": 3,
         "Style": "Solid"
       },
       {
         "Start": {
-          "X": 52.0,
-          "Y": 5.0
+          "X": 52,
+          "Y": 5
         },
         "End": {
-          "X": 57.0,
+          "X": 57,
           "Y": 5.9
         },
         "Color": "#000000",
-        "Width": 3.0,
+        "Width": 3,
         "Style": "Solid"
       },
       {
         "Start": {
-          "X": 57.0,
+          "X": 57,
           "Y": 5.9
         },
         "End": {
-          "X": 63.0,
-          "Y": 7.0
+          "X": 63,
+          "Y": 7
         },
         "Color": "#000000",
-        "Width": 3.0,
+        "Width": 3,
         "Style": "Solid"
       },
       {
         "Start": {
-          "X": 63.0,
-          "Y": 7.0
+          "X": 63,
+          "Y": 7
         },
         "End": {
-          "X": 63.0,
+          "X": 63,
           "Y": 0.33
         },
         "Color": "#000000",
-        "Width": 3.0,
+        "Width": 3,
         "Style": "Solid"
       }
     ],
@@ -396,15 +402,17 @@
             "zh-CN": "副长岩"
           }
         },
+        "ContentHorizontalAlignment": "Left",
         "Family": "Arial",
-        "Size": 14.0,
-        "Rotation": 0.0,
+        "Size": 14,
+        "Rotation": 0,
         "Color": "#000000",
         "IsBold": false,
         "IsItalic": false,
         "BackgroundColor": "#00FFFFFF",
         "BorderColor": "#00FFFFFF",
-        "BorderWidth": 0.0,
+        "BorderWidth": 0,
+        "FilletRadius": 0,
         "AntiAliasEnable": true
       },
       {
@@ -419,20 +427,22 @@
             "zh-CN": "苦橄\n玄武岩"
           }
         },
+        "ContentHorizontalAlignment": "Left",
         "Family": "Arial",
-        "Size": 14.0,
-        "Rotation": 0.0,
+        "Size": 14,
+        "Rotation": 0,
         "Color": "#000000",
         "IsBold": false,
         "IsItalic": false,
         "BackgroundColor": "#00FFFFFF",
         "BorderColor": "#00FFFFFF",
-        "BorderWidth": 0.0,
+        "BorderWidth": 0,
+        "FilletRadius": 0,
         "AntiAliasEnable": true
       },
       {
         "StartAndEnd": {
-          "X": 47.0,
+          "X": 47,
           "Y": 2.5
         },
         "Content": {
@@ -442,20 +452,22 @@
             "zh-CN": "玄武岩"
           }
         },
+        "ContentHorizontalAlignment": "Left",
         "Family": "Arial",
-        "Size": 14.0,
-        "Rotation": 0.0,
+        "Size": 14,
+        "Rotation": 0,
         "Color": "#000000",
         "IsBold": false,
         "IsItalic": false,
         "BackgroundColor": "#00FFFFFF",
         "BorderColor": "#00FFFFFF",
-        "BorderWidth": 0.0,
+        "BorderWidth": 0,
+        "FilletRadius": 0,
         "AntiAliasEnable": true
       },
       {
         "StartAndEnd": {
-          "X": 53.0,
+          "X": 53,
           "Y": 3.4
         },
         "Content": {
@@ -465,20 +477,22 @@
             "zh-CN": "玄武\n安山岩"
           }
         },
+        "ContentHorizontalAlignment": "Left",
         "Family": "Arial",
-        "Size": 14.0,
-        "Rotation": 0.0,
+        "Size": 14,
+        "Rotation": 0,
         "Color": "#000000",
         "IsBold": false,
         "IsItalic": false,
         "BackgroundColor": "#00FFFFFF",
         "BorderColor": "#00FFFFFF",
-        "BorderWidth": 0.0,
+        "BorderWidth": 0,
+        "FilletRadius": 0,
         "AntiAliasEnable": true
       },
       {
         "StartAndEnd": {
-          "X": 58.0,
+          "X": 58,
           "Y": 3.8
         },
         "Content": {
@@ -488,20 +502,22 @@
             "zh-CN": "安山岩"
           }
         },
+        "ContentHorizontalAlignment": "Left",
         "Family": "Arial",
-        "Size": 14.0,
-        "Rotation": 0.0,
+        "Size": 14,
+        "Rotation": 0,
         "Color": "#000000",
         "IsBold": false,
         "IsItalic": false,
         "BackgroundColor": "#00FFFFFF",
         "BorderColor": "#00FFFFFF",
-        "BorderWidth": 0.0,
+        "BorderWidth": 0,
+        "FilletRadius": 0,
         "AntiAliasEnable": true
       },
       {
         "StartAndEnd": {
-          "X": 66.0,
+          "X": 66,
           "Y": 4.1
         },
         "Content": {
@@ -511,21 +527,23 @@
             "zh-CN": "英安岩"
           }
         },
+        "ContentHorizontalAlignment": "Left",
         "Family": "Arial",
-        "Size": 14.0,
-        "Rotation": 0.0,
+        "Size": 14,
+        "Rotation": 0,
         "Color": "#000000",
         "IsBold": false,
         "IsItalic": false,
         "BackgroundColor": "#00FFFFFF",
         "BorderColor": "#00FFFFFF",
-        "BorderWidth": 0.0,
+        "BorderWidth": 0,
+        "FilletRadius": 0,
         "AntiAliasEnable": true
       },
       {
         "StartAndEnd": {
-          "X": 75.0,
-          "Y": 5.0
+          "X": 75,
+          "Y": 5
         },
         "Content": {
           "Default": "en-US",
@@ -534,15 +552,17 @@
             "zh-CN": "流纹岩"
           }
         },
+        "ContentHorizontalAlignment": "Left",
         "Family": "Arial",
-        "Size": 14.0,
-        "Rotation": 0.0,
+        "Size": 14,
+        "Rotation": 0,
         "Color": "#000000",
         "IsBold": false,
         "IsItalic": false,
         "BackgroundColor": "#00FFFFFF",
         "BorderColor": "#00FFFFFF",
-        "BorderWidth": 0.0,
+        "BorderWidth": 0,
+        "FilletRadius": 0,
         "AntiAliasEnable": true
       },
       {
@@ -557,15 +577,17 @@
             "zh-CN": "玄武\n粗安岩"
           }
         },
+        "ContentHorizontalAlignment": "Left",
         "Family": "Arial",
-        "Size": 14.0,
-        "Rotation": 0.0,
+        "Size": 14,
+        "Rotation": 0,
         "Color": "#000000",
         "IsBold": false,
         "IsItalic": false,
         "BackgroundColor": "#00FFFFFF",
         "BorderColor": "#00FFFFFF",
-        "BorderWidth": 0.0,
+        "BorderWidth": 0,
+        "FilletRadius": 0,
         "AntiAliasEnable": true
       },
       {
@@ -580,20 +602,22 @@
             "zh-CN": "玄武\n粗安岩"
           }
         },
+        "ContentHorizontalAlignment": "Left",
         "Family": "Arial",
-        "Size": 14.0,
-        "Rotation": 0.0,
+        "Size": 14,
+        "Rotation": 0,
         "Color": "#000000",
         "IsBold": false,
         "IsItalic": false,
         "BackgroundColor": "#00FFFFFF",
         "BorderColor": "#00FFFFFF",
-        "BorderWidth": 0.0,
+        "BorderWidth": 0,
+        "FilletRadius": 0,
         "AntiAliasEnable": true
       },
       {
         "StartAndEnd": {
-          "X": 56.0,
+          "X": 56,
           "Y": 8.8
         },
         "Content": {
@@ -603,20 +627,22 @@
             "zh-CN": "粗安岩"
           }
         },
+        "ContentHorizontalAlignment": "Left",
         "Family": "Arial",
-        "Size": 14.0,
-        "Rotation": 0.0,
+        "Size": 14,
+        "Rotation": 0,
         "Color": "#000000",
         "IsBold": false,
         "IsItalic": false,
         "BackgroundColor": "#00FFFFFF",
         "BorderColor": "#00FFFFFF",
-        "BorderWidth": 0.0,
+        "BorderWidth": 0,
+        "FilletRadius": 0,
         "AntiAliasEnable": true
       },
       {
         "StartAndEnd": {
-          "X": 47.0,
+          "X": 47,
           "Y": 9.5
         },
         "Content": {
@@ -626,15 +652,17 @@
             "zh-CN": "响岩质碱玄岩"
           }
         },
+        "ContentHorizontalAlignment": "Left",
         "Family": "Arial",
-        "Size": 14.0,
-        "Rotation": 0.0,
+        "Size": 14,
+        "Rotation": 0,
         "Color": "#000000",
         "IsBold": false,
         "IsItalic": false,
         "BackgroundColor": "#00FFFFFF",
         "BorderColor": "#00FFFFFF",
-        "BorderWidth": 0.0,
+        "BorderWidth": 0,
+        "FilletRadius": 0,
         "AntiAliasEnable": true
       },
       {
@@ -649,21 +677,23 @@
             "zh-CN": "碱玄质响岩"
           }
         },
+        "ContentHorizontalAlignment": "Left",
         "Family": "Arial",
-        "Size": 14.0,
-        "Rotation": 0.0,
+        "Size": 14,
+        "Rotation": 0,
         "Color": "#000000",
         "IsBold": false,
         "IsItalic": false,
         "BackgroundColor": "#00FFFFFF",
         "BorderColor": "#00FFFFFF",
-        "BorderWidth": 0.0,
+        "BorderWidth": 0,
+        "FilletRadius": 0,
         "AntiAliasEnable": true
       },
       {
         "StartAndEnd": {
           "X": 55.8,
-          "Y": 14.0
+          "Y": 14
         },
         "Content": {
           "Default": "en-US",
@@ -672,20 +702,22 @@
             "zh-CN": "响岩"
           }
         },
+        "ContentHorizontalAlignment": "Left",
         "Family": "Arial",
-        "Size": 14.0,
-        "Rotation": 0.0,
+        "Size": 14,
+        "Rotation": 0,
         "Color": "#000000",
         "IsBold": false,
         "IsItalic": false,
         "BackgroundColor": "#00FFFFFF",
         "BorderColor": "#00FFFFFF",
-        "BorderWidth": 0.0,
+        "BorderWidth": 0,
+        "FilletRadius": 0,
         "AntiAliasEnable": true
       },
       {
         "StartAndEnd": {
-          "X": 40.0,
+          "X": 40,
           "Y": 11.3
         },
         "Content": {
@@ -695,20 +727,22 @@
             "zh-CN": "副长岩"
           }
         },
+        "ContentHorizontalAlignment": "Left",
         "Family": "Arial",
-        "Size": 14.0,
-        "Rotation": 0.0,
+        "Size": 14,
+        "Rotation": 0,
         "Color": "#000000",
         "IsBold": false,
         "IsItalic": false,
         "BackgroundColor": "#00FFFFFF",
         "BorderColor": "#00FFFFFF",
-        "BorderWidth": 0.0,
+        "BorderWidth": 0,
+        "FilletRadius": 0,
         "AntiAliasEnable": true
       },
       {
         "StartAndEnd": {
-          "X": 60.0,
+          "X": 60,
           "Y": 10.7
         },
         "Content": {
@@ -718,15 +752,17 @@
             "zh-CN": "粗面岩"
           }
         },
+        "ContentHorizontalAlignment": "Left",
         "Family": "Arial",
-        "Size": 14.0,
-        "Rotation": 0.0,
+        "Size": 14,
+        "Rotation": 0,
         "Color": "#000000",
         "IsBold": false,
         "IsItalic": false,
         "BackgroundColor": "#00FFFFFF",
         "BorderColor": "#00FFFFFF",
-        "BorderWidth": 0.0,
+        "BorderWidth": 0,
+        "FilletRadius": 0,
         "AntiAliasEnable": true
       },
       {
@@ -741,21 +777,58 @@
             "zh-CN": "粗面英安岩"
           }
         },
+        "ContentHorizontalAlignment": "Left",
         "Family": "Arial",
-        "Size": 14.0,
-        "Rotation": 0.0,
+        "Size": 14,
+        "Rotation": 0,
         "Color": "#000000",
         "IsBold": false,
         "IsItalic": false,
         "BackgroundColor": "#00FFFFFF",
         "BorderColor": "#00FFFFFF",
-        "BorderWidth": 0.0,
+        "BorderWidth": 0,
+        "FilletRadius": 0,
+        "AntiAliasEnable": true
+      },
+      {
+        "StartAndEnd": {
+          "X": 42.315558069698874,
+          "Y": 6.5
+        },
+        "Content": {
+          "Default": "en-US",
+          "Translations": {
+            "en-US": "Tephrite\r\nbasanite",
+            "zh-CN": "碱玄岩\n碧玄岩"
+          }
+        },
+        "ContentHorizontalAlignment": "Left",
+        "Family": "Microsoft YaHei",
+        "Size": 14,
+        "Rotation": 0,
+        "Color": "#FF000000",
+        "IsBold": false,
+        "IsItalic": false,
+        "BackgroundColor": "#00FFFFFF",
+        "BorderColor": "#00FFFFFF",
+        "BorderWidth": 0,
+        "FilletRadius": 0,
         "AntiAliasEnable": true
       }
     ],
     "Annotations": [],
     "Axes": [
       {
+        "$type": "cartesian",
+        "ScaleType": "Linear",
+        "Minimum": 0,
+        "Maximum": 0,
+        "MajorTickLength": 4,
+        "MinorTicksPerMajorTick": 1,
+        "MinorTickLength": 4,
+        "MinorTickWidth": 1,
+        "MinorTickColor": "#000000",
+        "MinorTickAntiAlias": false,
         "Type": "Bottom",
         "Label": {
           "Default": "en-US",
@@ -765,23 +838,30 @@
           }
         },
         "Family": "Arial",
-        "Size": 16.0,
+        "Size": 16,
         "Color": "#000000",
         "IsBold": false,
         "IsItalic": false,
-        "MajorTickLength": 4.0,
-        "MajorTickWidth": 1.0,
+        "MajorTickWidth": 1,
         "MajorTickWidthColor": "#000000",
-        "MinorTickLength": 4.0,
-        "MinorTickWidth": 1.0,
-        "MinorTickColor": "#000000",
+        "MajorTickAntiAlias": false,
         "TickLableFamily": "Arial",
-        "TickLablesize": 16.0,
+        "TickLablesize": 16,
         "TickLablecolor": "#000000",
         "TickLableisBold": false,
         "TickLableisItalic": false
       },
       {
+        "$type": "cartesian",
+        "ScaleType": "Linear",
+        "Minimum": 0,
+        "Maximum": 0,
+        "MajorTickLength": 4,
+        "MinorTicksPerMajorTick": 1,
+        "MinorTickLength": 4,
+        "MinorTickWidth": 1,
+        "MinorTickColor": "#000000",
+        "MinorTickAntiAlias": false,
         "Type": "Left",
         "Label": {
           "Default": "en-US",
@@ -791,18 +871,15 @@
           }
         },
         "Family": "Arial",
-        "Size": 16.0,
+        "Size": 16,
         "Color": "#000000",
         "IsBold": false,
         "IsItalic": false,
-        "MajorTickLength": 4.0,
-        "MajorTickWidth": 1.0,
+        "MajorTickWidth": 1,
         "MajorTickWidthColor": "#000000",
-        "MinorTickLength": 4.0,
-        "MinorTickWidth": 1.0,
-        "MinorTickColor": "#000000",
+        "MajorTickAntiAlias": false,
         "TickLableFamily": "Arial",
-        "TickLablesize": 16.0,
+        "TickLablesize": 16,
         "TickLablecolor": "#000000",
         "TickLableisBold": false,
         "TickLableisItalic": false
@@ -817,7 +894,7 @@
         }
       },
       "Family": "Arial",
-      "Size": 18.0,
+      "Size": 18,
       "Color": "#000000",
       "IsBold": false,
       "IsItalic": false
@@ -825,17 +902,23 @@
     "Grid": {
       "MajorGridLineIsVisible": true,
       "MajorGridLineColor": "#01010119",
-      "MajorGridLineWidth": 1.0,
+      "MajorGridLineWidth": 1,
       "MajorGridLinePattern": "Solid",
+      "MajorGridLineAntiAlias": false,
       "MinorGridLineIsVisible": true,
       "MinorGridLineColor": "#0101010C",
-      "MinorGridLineWidth": 0.0,
-      "MinorGridLinePattern": "Solid"
+      "MinorGridLineWidth": 0,
+      "MinorGridLinePattern": "Solid",
+      "MinorGridLineAntiAlias": false,
+      "GridAlternateFillingIsEnable": false,
+      "GridFillColor1": "#01010100",
+      "GridFillColor2": "#01010100"
     },
     "Legend": {
-      "IsVisible": true,
       "Alignment": "UpperRight",
-      "Orientation": "Vertical"
+      "Orientation": "Vertical",
+      "IsVisible": true,
+      "Font": "Arial"
     }
   },
   "Script": {

@@ -194,10 +194,11 @@ namespace GeoChemistryNexus.ViewModels
             _dataGrid = dataGrid;
         }
 
+
         /// <summary>
-        /// 根据 AxisDefinition 对象中的设置，更新实际坐标轴的范围
+        /// 根据 CartesianAxisDefinition 对象中的设置，更新实际坐标轴的范围
         /// </summary>
-        private void UpdateAxisLimitsFromModel(AxisDefinition axisDef, IAxis targetAxis)
+        private void UpdateAxisLimitsFromModel(CartesianAxisDefinition axisDef, IAxis targetAxis)
         {
             // 如果用户在属性面板清空了最大值和最小值（变为NaN），则执行自动缩放
             if (double.IsNaN(axisDef.Minimum) && double.IsNaN(axisDef.Maximum))
@@ -1251,9 +1252,9 @@ namespace GeoChemistryNexus.ViewModels
             bool needsRefresh = true;
 
             // 坐标轴单独处理
-            if (sender is AxisDefinition axisDef)
+            if (sender is BaseAxisDefinition baseAxisDef)
             {
-                needsRefresh = AxisPropertyChanged(axisDef, e);
+                needsRefresh = AxisPropertyChanged(baseAxisDef, e);
             }
 
             // 网格单独处理
@@ -1672,218 +1673,219 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 坐标轴对象属性更新，触发
+        /// 坐标轴对象属性更新，触发。
         /// </summary>
-        /// <param name="axisDef"></param>
-        private bool AxisPropertyChanged(AxisDefinition axisDef, PropertyChangedEventArgs e)
+        /// <param name="axisDef">传入的坐标轴定义对象，可以是 TernaryAxisDefinition 或 CartesianAxisDefinition</param>
+        /// <param name="e">属性变更事件参数</param>
+        /// <returns>如果UI需要刷新，则返回 true</returns>
+        private bool AxisPropertyChanged(BaseAxisDefinition axisDef, PropertyChangedEventArgs e)
         {
-            // 根据 AxisDefinition 的 Type 获取对应的坐标轴对象
-            ScottPlot.IAxis? targetAxis = axisDef.Type switch
+            // =========================================================================
+            //  三元相图 (Ternary Plot) 的处理逻辑
+            // =========================================================================
+            if (axisDef is TernaryAxisDefinition ternaryAxisDef)
             {
-                "Left" => WpfPlot1.Plot.Axes.Left,
-                "Right" => WpfPlot1.Plot.Axes.Right,
-                "Bottom" => WpfPlot1.Plot.Axes.Bottom,
-                "Top" => WpfPlot1.Plot.Axes.Top,
-                _ => null
-            };
+                // 从图表中找到 TriangularAxis 对象
+                var triangularAxis = WpfPlot1.Plot.GetPlottables().OfType<ScottPlot.Plottables.TriangularAxis>().FirstOrDefault();
+                if (triangularAxis == null) return false;
 
-            if (targetAxis == null) return false;
+                // 根据类型获取对应的 TriangularAxisEdge
+                ScottPlot.TriangularAxisEdge? targetEdge = ternaryAxisDef.Type switch
+                {
+                    "Left" => triangularAxis.Left,
+                    "Right" => triangularAxis.Right,
+                    "Bottom" => triangularAxis.Bottom,
+                    _ => null
+                };
 
-            // 根据变化的属性名更新坐标轴
-            switch (e.PropertyName)
+                if (targetEdge == null) return false;
+
+                // 更新 TriangularAxisEdge 的属性
+                switch (e.PropertyName)
+                {
+                    // --- 坐标轴标题 ---
+                    case nameof(TernaryAxisDefinition.Label):
+                        targetEdge.LabelText = ternaryAxisDef.Label.Get();
+                        break;
+                    case nameof(TernaryAxisDefinition.Family):
+                        targetEdge.LabelStyle.FontName = ternaryAxisDef.Family;
+                        // 同时更新刻度标签字体
+                        targetEdge.TickLabelStyle.FontName = ternaryAxisDef.TickLableFamily;
+                        break;
+                    case nameof(TernaryAxisDefinition.Size):
+                        targetEdge.LabelStyle.FontSize = ternaryAxisDef.Size;
+                        break;
+                    case nameof(TernaryAxisDefinition.Color):
+                        targetEdge.LabelStyle.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(ternaryAxisDef.Color));
+                        break;
+                    case nameof(TernaryAxisDefinition.IsBold):
+                        targetEdge.LabelStyle.Bold = ternaryAxisDef.IsBold;
+                        break;
+                    case nameof(TernaryAxisDefinition.IsItalic):
+                        targetEdge.LabelStyle.Italic = ternaryAxisDef.IsItalic;
+                        break;
+
+                    // --- 主刻度样式 (三元图只有主刻度) ---
+                    case nameof(TernaryAxisDefinition.MajorTickWidth):
+                        targetEdge.TickMarkStyle.Width = ternaryAxisDef.MajorTickWidth;
+                        break;
+                    case nameof(TernaryAxisDefinition.MajorTickWidthColor):
+                        targetEdge.TickMarkStyle.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(ternaryAxisDef.MajorTickWidthColor));
+                        break;
+
+                    // --- 刻度标签样式 ---
+                    case nameof(TernaryAxisDefinition.TickLableFamily):
+                        targetEdge.TickLabelStyle.FontName = ternaryAxisDef.TickLableFamily;
+                        break;
+                    case nameof(TernaryAxisDefinition.TickLablesize):
+                        targetEdge.TickLabelStyle.FontSize = ternaryAxisDef.TickLablesize;
+                        break;
+                    case nameof(TernaryAxisDefinition.TickLablecolor):
+                        targetEdge.TickLabelStyle.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(ternaryAxisDef.TickLablecolor));
+                        break;
+                    case nameof(TernaryAxisDefinition.TickLableisBold):
+                        targetEdge.TickLabelStyle.Bold = ternaryAxisDef.TickLableisBold;
+                        break;
+                    case nameof(TernaryAxisDefinition.TickLableisItalic):
+                        targetEdge.TickLabelStyle.Italic = ternaryAxisDef.TickLableisItalic;
+                        break;
+
+                    default:
+                        // 如果属性名未匹配，则不刷新
+                        return false;
+                }
+                return true; // 返回true表示需要刷新
+            }
+            // =========================================================================
+            //  笛卡尔坐标系 (Cartesian Plot) 的处理逻辑
+            // =========================================================================
+            else if (axisDef is CartesianAxisDefinition cartesianAxisDef)
             {
-                // =================================================
-                //                           坐标轴标题
-                // =================================================
-                // 标签文本内容
-                case nameof(AxisDefinition.Label):
-                    targetAxis.Label.Text = axisDef.Label.Get();
-                    break;
+                // 根据 AxisDefinition 的 Type 获取对应的坐标轴对象
+                ScottPlot.IAxis? targetAxis = cartesianAxisDef.Type switch
+                {
+                    "Left" => WpfPlot1.Plot.Axes.Left,
+                    "Right" => WpfPlot1.Plot.Axes.Right,
+                    "Bottom" => WpfPlot1.Plot.Axes.Bottom,
+                    "Top" => WpfPlot1.Plot.Axes.Top,
+                    _ => null
+                };
 
-                // 字体族
-                case nameof(AxisDefinition.Family):
-                    targetAxis.Label.FontName = axisDef.Family;
-                    break;
+                if (targetAxis == null) return false;
 
-                // 字体大小
-                case nameof(AxisDefinition.Size):
-                    targetAxis.Label.FontSize = axisDef.Size;
-                    break;
+                // 根据变化的属性名更新坐标轴
+                switch (e.PropertyName)
+                {
+                    // === 坐标轴标题 (继承自 BaseAxisDefinition) ===
+                    case nameof(CartesianAxisDefinition.Label):
+                        targetAxis.Label.Text = cartesianAxisDef.Label.Get();
+                        break;
+                    case nameof(CartesianAxisDefinition.Family):
+                        targetAxis.Label.FontName = cartesianAxisDef.Family;
+                        break;
+                    case nameof(CartesianAxisDefinition.Size):
+                        targetAxis.Label.FontSize = cartesianAxisDef.Size;
+                        break;
+                    case nameof(CartesianAxisDefinition.Color):
+                        targetAxis.Label.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(cartesianAxisDef.Color));
+                        break;
+                    case nameof(CartesianAxisDefinition.IsBold):
+                        targetAxis.Label.Bold = cartesianAxisDef.IsBold;
+                        break;
+                    case nameof(CartesianAxisDefinition.IsItalic):
+                        targetAxis.Label.Italic = cartesianAxisDef.IsItalic;
+                        break;
 
-                // 字体颜色
-                case nameof(AxisDefinition.Color):
-                    targetAxis.Label.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(axisDef.Color));
-                    break;
-
-                // 粗体
-                case nameof(AxisDefinition.IsBold):
-                    targetAxis.Label.Bold = axisDef.IsBold;
-                    break;
-
-                // 斜体
-                case nameof(AxisDefinition.IsItalic):
-                    targetAxis.Label.Italic = axisDef.IsItalic;
-                    break;
-
-                // 刻度生成器-线性刻度和对数刻度
-                case nameof(AxisDefinition.ScaleType):
-                    if (axisDef.ScaleType == AxisScaleType.Logarithmic)
-                    {
-                        var minorTickGen = new ScottPlot.TickGenerators.LogMinorTickGenerator();
-                        var tickGen = new ScottPlot.TickGenerators.NumericAutomatic
+                    // === 刻度生成器与范围 (CartesianAxisDefinition 特有) ===
+                    case nameof(CartesianAxisDefinition.ScaleType):
+                        if (cartesianAxisDef.ScaleType == AxisScaleType.Logarithmic)
                         {
-                            MinorTickGenerator = minorTickGen,
-                            IntegerTicksOnly = true,
-                            LabelFormatter = y => $"{Math.Pow(10, y):N0}"
-                        };
-                        targetAxis.TickGenerator = tickGen;
-                    }
-                    else
-                    {
-                        var autoTickGen2 = new ScottPlot.TickGenerators.NumericAutomatic();
-                        int intervalCount = Math.Max(1, axisDef.MinorTicksPerMajorTick + 1);
-                        var minorTickGen = new ScottPlot.TickGenerators.EvenlySpacedMinorTickGenerator(intervalCount);
-                        autoTickGen2.MinorTickGenerator = minorTickGen;
-                        targetAxis.TickGenerator = autoTickGen2;
-                    }
-                    // 切换类型后，重新计算和设置坐标轴范围
-                    UpdateAxisLimitsFromModel(axisDef, targetAxis);
-                    break;
-
-                //  次刻度间隔
-                case nameof(AxisDefinition.MinorTicksPerMajorTick):
-                    // 只有当刻度生成器是 NumericAutomatic 时，才能设置次刻度生成器
-                    if (targetAxis.TickGenerator is ScottPlot.TickGenerators.NumericAutomatic autoTickGen)
-                    {
-                        // 计算需要将主刻度分割的区间数
-                        // - 用户输入N，期望得到N个次刻度，需要分割成 N+1 个区间
-                        // - 如果用户输入0或负数，我们期望0个次刻度，需要分割成 1 个区间
-                        int intervalCount = Math.Max(1, axisDef.MinorTicksPerMajorTick + 1);
-
-                        // 创建并应用次刻度生成器
-                        var minorTickGen = new ScottPlot.TickGenerators.EvenlySpacedMinorTickGenerator(intervalCount);
-                        autoTickGen.MinorTickGenerator = minorTickGen;
-                    }
-                    break;
-
-
-                // =================================================
-                //                 坐标轴范围
-                // =================================================
-                case nameof(AxisDefinition.Minimum):
-                case nameof(AxisDefinition.Maximum):
-                    var currentLimits = targetAxis.Range;
-
-                    // 如果用户输入的值不是NaN，则使用它；否则，保持当前值
-                    var newMin = !double.IsNaN(axisDef.Minimum) ? axisDef.Minimum : currentLimits.Min;
-                    var newMax = !double.IsNaN(axisDef.Maximum) ? axisDef.Maximum : currentLimits.Max;
-
-                    // 如果是对数坐标轴，对范围值取对数
-                    if (axisDef.ScaleType == AxisScaleType.Logarithmic)
-                    {
-                        // 检查值是否大于0，因为log(0)和负数是无效的
-                        if (!double.IsNaN(axisDef.Minimum))
-                        {
-                            newMin = axisDef.Minimum > 0 ? Math.Log10(axisDef.Minimum) : double.NaN;
+                            var minorTickGen = new ScottPlot.TickGenerators.LogMinorTickGenerator();
+                            var tickGen = new ScottPlot.TickGenerators.NumericAutomatic
+                            {
+                                MinorTickGenerator = minorTickGen,
+                                IntegerTicksOnly = true,
+                                LabelFormatter = y => $"{Math.Pow(10, y):N0}"
+                            };
+                            targetAxis.TickGenerator = tickGen;
                         }
-                        if (!double.IsNaN(axisDef.Maximum))
+                        else
                         {
-                            newMax = axisDef.Maximum > 0 ? Math.Log10(axisDef.Maximum) : double.NaN;
+                            var autoTickGen2 = new ScottPlot.TickGenerators.NumericAutomatic();
+                            int intervalCount = Math.Max(1, cartesianAxisDef.MinorTicksPerMajorTick + 1);
+                            var minorTickGen = new ScottPlot.TickGenerators.EvenlySpacedMinorTickGenerator(intervalCount);
+                            autoTickGen2.MinorTickGenerator = minorTickGen;
+                            targetAxis.TickGenerator = autoTickGen2;
                         }
-                    }
+                        UpdateAxisLimitsFromModel(cartesianAxisDef, targetAxis);
+                        break;
+                    case nameof(CartesianAxisDefinition.MinorTicksPerMajorTick):
+                        if (targetAxis.TickGenerator is ScottPlot.TickGenerators.NumericAutomatic autoTickGen)
+                        {
+                            int intervalCount = Math.Max(1, cartesianAxisDef.MinorTicksPerMajorTick + 1);
+                            var minorTickGen = new ScottPlot.TickGenerators.EvenlySpacedMinorTickGenerator(intervalCount);
+                            autoTickGen.MinorTickGenerator = minorTickGen;
+                        }
+                        break;
+                    case nameof(CartesianAxisDefinition.Minimum):
+                    case nameof(CartesianAxisDefinition.Maximum):
+                        UpdateAxisLimitsFromModel(cartesianAxisDef, targetAxis);
+                        break;
 
-                    // 如果两个值都变成了NaN，说明用户可能想恢复自动缩放
-                    if (double.IsNaN(newMin) && double.IsNaN(newMax))
-                    {
-                        WpfPlot1.Plot.Axes.AutoScale();
-                    }
-                    else
-                    {
-                        // 使用经过（可能）对数转换后的值来设置范围
-                        targetAxis.Range.Set(newMin, newMax);
-                    }
-                    break;
+                    // === 主刻度 (继承自 BaseAxisDefinition) ===
+                    case nameof(CartesianAxisDefinition.MajorTickLength):
+                        targetAxis.MajorTickStyle.Length = cartesianAxisDef.MajorTickLength;
+                        break;
+                    case nameof(CartesianAxisDefinition.MajorTickWidth):
+                        targetAxis.MajorTickStyle.Width = cartesianAxisDef.MajorTickWidth;
+                        break;
+                    case nameof(CartesianAxisDefinition.MajorTickWidthColor):
+                        targetAxis.MajorTickStyle.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(cartesianAxisDef.MajorTickWidthColor));
+                        break;
+                    case nameof(CartesianAxisDefinition.MajorTickAntiAlias):
+                        targetAxis.MajorTickStyle.AntiAlias = cartesianAxisDef.MajorTickAntiAlias;
+                        break;
 
-                // =================================================
-                //                               主刻度
-                // =================================================
-                // 主刻度长度
-                case nameof(AxisDefinition.MajorTickLength):
-                    targetAxis.MajorTickStyle.Length = axisDef.MajorTickLength;
-                    break;
+                    // === 次刻度 (CartesianAxisDefinition 特有) ===
+                    case nameof(CartesianAxisDefinition.MinorTickLength):
+                        targetAxis.MinorTickStyle.Length = cartesianAxisDef.MinorTickLength;
+                        break;
+                    case nameof(CartesianAxisDefinition.MinorTickWidth):
+                        targetAxis.MinorTickStyle.Width = cartesianAxisDef.MinorTickWidth;
+                        break;
+                    case nameof(CartesianAxisDefinition.MinorTickColor):
+                        targetAxis.MinorTickStyle.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(cartesianAxisDef.MinorTickColor));
+                        break;
+                    case nameof(CartesianAxisDefinition.MinorTickAntiAlias):
+                        targetAxis.MinorTickStyle.AntiAlias = cartesianAxisDef.MinorTickAntiAlias;
+                        break;
 
-                // 主刻度宽度
-                case nameof(AxisDefinition.MajorTickWidth):
-                    targetAxis.MajorTickStyle.Width = axisDef.MajorTickWidth;
-                    break;
+                    // === 刻度标签 (继承自 BaseAxisDefinition) ===
+                    case nameof(CartesianAxisDefinition.TickLableFamily):
+                        targetAxis.TickLabelStyle.FontName = cartesianAxisDef.TickLableFamily;
+                        break;
+                    case nameof(CartesianAxisDefinition.TickLablesize):
+                        targetAxis.TickLabelStyle.FontSize = cartesianAxisDef.TickLablesize;
+                        break;
+                    case nameof(CartesianAxisDefinition.TickLablecolor):
+                        targetAxis.TickLabelStyle.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(cartesianAxisDef.TickLablecolor));
+                        break;
+                    case nameof(CartesianAxisDefinition.TickLableisBold):
+                        targetAxis.TickLabelStyle.Bold = cartesianAxisDef.TickLableisBold;
+                        break;
+                    case nameof(CartesianAxisDefinition.TickLableisItalic):
+                        targetAxis.TickLabelStyle.Italic = cartesianAxisDef.TickLableisItalic;
+                        break;
 
-                // 主刻度颜色
-                case nameof(AxisDefinition.MajorTickWidthColor):
-                    targetAxis.MajorTickStyle.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(axisDef.MajorTickWidthColor));
-                    break;
+                    default:
+                        return false;
+                }
 
-                // 主刻度抗锯齿
-                case nameof(AxisDefinition.MajorTickAntiAlias):
-                    targetAxis.MajorTickStyle.AntiAlias = axisDef.MajorTickAntiAlias;
-                    break;
-
-                // =================================================
-                //                               次刻度
-                // =================================================
-                // 次刻度长度
-                case nameof(AxisDefinition.MinorTickLength):
-                    targetAxis.MinorTickStyle.Length = axisDef.MinorTickLength;
-                    break;
-
-                // 次刻度宽度
-                case nameof(AxisDefinition.MinorTickWidth):
-                    targetAxis.MinorTickStyle.Width = axisDef.MinorTickWidth;
-                    break;
-
-                // 次刻度颜色
-                case nameof(AxisDefinition.MinorTickColor):
-                    targetAxis.MinorTickStyle.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(axisDef.MinorTickColor));
-                    break;
-
-                // 次刻度抗锯齿
-                case nameof(AxisDefinition.MinorTickAntiAlias):
-                    targetAxis.MinorTickStyle.AntiAlias = axisDef.MinorTickAntiAlias;
-                    break;
-                default:
-                    return false;
-
-                // =================================================
-                //                               刻度标签
-                // =================================================
-
-                // 刻度标签字体
-                case nameof(AxisDefinition.TickLableFamily):
-                    targetAxis.TickLabelStyle.FontName = axisDef.TickLableFamily;
-                    break;
-
-                // 刻度标签字体大小
-                case nameof(AxisDefinition.TickLablesize):
-                    targetAxis.TickLabelStyle.FontSize = axisDef.TickLablesize;
-                    break;
-
-                // 刻度标签字体颜色
-                case nameof(AxisDefinition.TickLablecolor):
-                    targetAxis.TickLabelStyle.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(axisDef.TickLablecolor));
-                    break;
-
-                // 刻度标签粗体
-                case nameof(AxisDefinition.TickLableisBold):
-                    targetAxis.TickLabelStyle.Bold = axisDef.TickLableisBold;
-                    break;
-
-                // 刻度标签斜体
-                case nameof(AxisDefinition.TickLableisItalic):
-                    targetAxis.TickLabelStyle.Italic = axisDef.TickLableisItalic;
-                    break;
+                return true;
             }
 
-            return true;
-
+            // 如果对象既不是 TernaryAxisDefinition 也不是 CartesianAxisDefinition，则不处理
+            return false;
         }
 
         /// <summary>
@@ -2077,6 +2079,7 @@ namespace GeoChemistryNexus.ViewModels
 
             // 坐标轴图层
             var axesCategory = new CategoryLayerItemViewModel(LanguageService.Instance["axes"]);
+
             // 遍历添加坐标轴对象
             foreach (var axis in info.Axes)
             {
@@ -2379,19 +2382,18 @@ namespace GeoChemistryNexus.ViewModels
 
             // 将 ViewModel 中的 IsVisible 状态同步到坐标轴
             targetAxis.IsVisible = axisLayer.IsVisible;
+            targetAxis.Label.Text = axisDef.Label.Get();
+            targetAxis.Label.FontName = axisDef.Family;
+            targetAxis.Label.FontSize = axisDef.Size;
+            targetAxis.Label.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(axisDef.Color));
+            targetAxis.Label.Bold = axisDef.IsBold;
+            targetAxis.Label.Italic = axisDef.IsItalic;
 
-            // 如果坐标轴可见，才应用其他详细样式
-            if (axisLayer.IsVisible)
+            // 检查是否为笛卡尔坐标轴
+            if (axisDef is CartesianAxisDefinition cartesianAxisDef)
             {
-                targetAxis.Label.Text = axisDef.Label.Get();
-                targetAxis.Label.FontName = Fonts.Detect(targetAxis.Label.Text);        // 自动检测字体
-                targetAxis.Label.FontSize = axisDef.Size;
-                targetAxis.Label.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(axisDef.Color));
-                targetAxis.Label.Bold = axisDef.IsBold;
-                targetAxis.Label.Italic = axisDef.IsItalic;
-
                 // 在处理坐标轴样式时增加对数刻度的处理
-                if (axisDef.ScaleType == AxisScaleType.Logarithmic)
+                if (cartesianAxisDef.ScaleType == AxisScaleType.Logarithmic)
                 {
                     var minorTickGen = new ScottPlot.TickGenerators.LogMinorTickGenerator();
                     var tickGen = new ScottPlot.TickGenerators.NumericAutomatic();
@@ -2402,9 +2404,9 @@ namespace GeoChemistryNexus.ViewModels
                 }
 
                 // 设置初始的坐标轴范围
-                if (!double.IsNaN(axisDef.Minimum) && !double.IsNaN(axisDef.Maximum))
+                if (!double.IsNaN(cartesianAxisDef.Minimum) && !double.IsNaN(cartesianAxisDef.Maximum))
                 {
-                    targetAxis.Range.Set(axisDef.Minimum, axisDef.Maximum);
+                    targetAxis.Range.Set(cartesianAxisDef.Minimum, cartesianAxisDef.Maximum);
                 }
             }
         }

@@ -104,13 +104,20 @@ namespace GeoChemistryNexus.Models
                 {
                     Label = CreateLocalized(titlePlaceholder)
                 };
-                template.Info.Axes = new List<AxisDefinition>
-        {
-                    // 为三元图的三个边定义坐标轴
-                    new AxisDefinition { Type = "Bottom", Label = CreateLocalized(componentAPlaceholder) },
-          new AxisDefinition { Type = "Left", Label = CreateLocalized(componentBPlaceholder) },
-          new AxisDefinition { Type = "Right", Label = CreateLocalized(componentCPlaceholder) }
-        };
+                template.Info.Axes = new List<BaseAxisDefinition>
+                {
+                    // 为三元图的三个边定义坐标轴
+                    new TernaryAxisDefinition { Type = "Bottom", Label = CreateLocalized(componentAPlaceholder) },
+                    new TernaryAxisDefinition { Type = "Left", Label = CreateLocalized(componentBPlaceholder) },
+                    new TernaryAxisDefinition { Type = "Right", Label = CreateLocalized(componentCPlaceholder) }
+                };
+                //template.Info.Axes = new List<AxisDefinition>
+                //{
+                //    // 为三元图的三个边定义坐标轴
+                //    new AxisDefinition { Type = "Bottom", Label = CreateLocalized(componentAPlaceholder) },
+                //    new AxisDefinition { Type = "Left", Label = CreateLocalized(componentBPlaceholder) },
+                //    new AxisDefinition { Type = "Right", Label = CreateLocalized(componentCPlaceholder) }
+                //};
                 template.Script = new ScriptDefinition
                 {
                     // 脚本需要A,B,C三个组分数据来计算二维坐标
@@ -129,13 +136,20 @@ namespace GeoChemistryNexus.Models
                 {
                     Label = CreateLocalized(titlePlaceholder)
                 };
-                template.Info.Axes = new List<AxisDefinition>
+                template.Info.Axes = new List<BaseAxisDefinition>
                 {
-                  new AxisDefinition { Type = "Bottom", Label = CreateLocalized(xAxisPlaceholder) },
-                  new AxisDefinition { Type = "Left", Label = CreateLocalized(yAxisPlaceholder) },
-                  new AxisDefinition { Type = "Top", Label = CreateLocalized("") },
-                  new AxisDefinition { Type = "Right", Label = CreateLocalized("") }
+                    new CartesianAxisDefinition { Type = "Bottom", Label = CreateLocalized(xAxisPlaceholder) },
+                    new CartesianAxisDefinition { Type = "Left", Label = CreateLocalized(yAxisPlaceholder) },
+                    new CartesianAxisDefinition { Type = "Top", Label = CreateLocalized("") },
+                    new CartesianAxisDefinition { Type = "Right", Label = CreateLocalized("") }
                 };
+                //template.Info.Axes = new List<AxisDefinition>
+                //{
+                //  new AxisDefinition { Type = "Bottom", Label = CreateLocalized(xAxisPlaceholder) },
+                //  new AxisDefinition { Type = "Left", Label = CreateLocalized(yAxisPlaceholder) },
+                //  new AxisDefinition { Type = "Top", Label = CreateLocalized("") },
+                //  new AxisDefinition { Type = "Right", Label = CreateLocalized("") }
+                //};
                 template.Script = new ScriptDefinition
                 {
                     RequiredDataSeries = "Category,X,Y",

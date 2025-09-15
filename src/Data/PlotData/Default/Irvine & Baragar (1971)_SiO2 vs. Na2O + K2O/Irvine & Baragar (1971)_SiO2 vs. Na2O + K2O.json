@@ -2,6 +2,7 @@
   "Version": "0.1",
   "DefaultLanguage": "en-US",
   "TemplateType": "Cartesian",
+  "Clockwise": true,
   "NodeList": {
     "Default": "en-US",
     "Translations": {
@@ -10,154 +11,7 @@
     }
   },
   "Info": {
-    "Title": {
-      "Label": {
-        "Default": "en-US",
-        "Translations": {
-          "zh-CN": "Irvine & Baragar (1971)",
-          "en-US": "Irvine & Baragar (1971)"
-        }
-      },
-      "Family": "Microsoft YaHei",
-      "Size": 16,
-      "Color": "#FF000000",
-      "IsBold": false,
-      "IsItalic": false
-    },
-    "Axes": [
-      {
-        "Type": "Bottom",
-        "Label": {
-          "Default": "en-US",
-          "Translations": {
-            "zh-CN": "SiO2",
-            "en-US": "SiO2"
-          }
-        },
-        "Family": "Arial",
-        "Size": 16,
-        "Color": "#FF000000",
-        "IsBold": false,
-        "IsItalic": false,
-        "TickInterval": 0,
-        "MajorTickLength": 4,
-        "MajorTickWidth": 1,
-        "MajorTickWidthColor": "#FF000000",
-        "MajorTickAntiAlias": false,
-        "MinorTickLength": 4,
-        "MinorTickWidth": 1,
-        "MinorTickColor": "#FF000000",
-        "MinorTickAntiAlias": false,
-        "TickLableFamily": "Arial",
-        "TickLablesize": 16,
-        "TickLablecolor": "#FF000000",
-        "TickLableisBold": false,
-        "TickLableisItalic": false
-      },
-      {
-        "Type": "Left",
-        "Label": {
-          "Default": "en-US",
-          "Translations": {
-            "zh-CN": "Na2O + K2O",
-            "en-US": "Na2O + K2O"
-          }
-        },
-        "Family": "Arial",
-        "Size": 16,
-        "Color": "#FF000000",
-        "IsBold": false,
-        "IsItalic": false,
-        "TickInterval": null,
-        "MajorTickLength": 4,
-        "MajorTickWidth": 1,
-        "MajorTickWidthColor": "#FF000000",
-        "MajorTickAntiAlias": false,
-        "MinorTickLength": 4,
-        "MinorTickWidth": 1,
-        "MinorTickColor": "#FF000000",
-        "MinorTickAntiAlias": false,
-        "TickLableFamily": "Arial",
-        "TickLablesize": 12,
-        "TickLablecolor": "#FF000000",
-        "TickLableisBold": false,
-        "TickLableisItalic": false
-      },
-      {
-        "Type": "Top",
-        "Label": {
-          "Default": "en-US",
-          "Translations": {
-            "zh-CN": "",
-            "en-US": ""
-          }
-        },
-        "Family": "Arial",
-        "Size": 12,
-        "Color": "#FF000000",
-        "IsBold": false,
-        "IsItalic": false,
-        "TickInterval": null,
-        "MajorTickLength": 4,
-        "MajorTickWidth": 1,
-        "MajorTickWidthColor": "#FF000000",
-        "MajorTickAntiAlias": false,
-        "MinorTickLength": 4,
-        "MinorTickWidth": 1,
-        "MinorTickColor": "#FF000000",
-        "MinorTickAntiAlias": false,
-        "TickLableFamily": "Arial",
-        "TickLablesize": 12,
-        "TickLablecolor": "#FF000000",
-        "TickLableisBold": false,
-        "TickLableisItalic": false
-      },
-      {
-        "Type": "Right",
-        "Label": {
-          "Default": "en-US",
-          "Translations": {
-            "zh-CN": "",
-            "en-US": ""
-          }
-        },
-        "Family": "Arial",
-        "Size": 12,
-        "Color": "#FF000000",
-        "IsBold": false,
-        "IsItalic": false,
-        "TickInterval": null,
-        "MajorTickLength": 4,
-        "MajorTickWidth": 1,
-        "MajorTickWidthColor": "#FF000000",
-        "MajorTickAntiAlias": false,
-        "MinorTickLength": 4,
-        "MinorTickWidth": 1,
-        "MinorTickColor": "#FF000000",
-        "MinorTickAntiAlias": false,
-        "TickLableFamily": "Arial",
-        "TickLablesize": 12,
-        "TickLablecolor": "#FF000000",
-        "TickLableisBold": false,
-        "TickLableisItalic": false
-      }
-    ],
-    "Legend": {},
-    "Grid": {
-      "MajorGridLineIsVisible": true,
-      "MajorGridLineColor": "#19010101",
-      "MajorGridLineWidth": 1,
-      "MajorGridLinePattern": "Solid",
-      "MajorGridLineAntiAlias": false,
-      "MinorGridLineIsVisible": true,
-      "MinorGridLineColor": "#0C010101",
-      "MinorGridLineWidth": 0,
-      "MinorGridLinePattern": "Solid",
-      "MinorGridLineAntiAlias": false,
-      "GridAlternateFillingIsEnable": false,
-      "GridFillColor1": "#00FFFFFF",
-      "GridFillColor2": "#00FFFFFF"
-    },
+    "Points": [],
     "Lines": [
       {
         "Start": {
@@ -225,6 +79,7 @@
         "Style": "Solid"
       }
     ],
+    "Polygons": [],
     "Texts": [
       {
         "StartAndEnd": {
@@ -276,11 +131,176 @@
         "FilletRadius": 0,
         "AntiAliasEnable": true
       }
-    ]
+    ],
+    "Annotations": [],
+    "Axes": [
+      {
+        "$type": "cartesian",
+        "ScaleType": "Linear",
+        "Minimum": 0,
+        "Maximum": 0,
+        "MajorTickLength": 4,
+        "MinorTicksPerMajorTick": 1,
+        "MinorTickLength": 4,
+        "MinorTickWidth": 1,
+        "MinorTickColor": "#FF000000",
+        "MinorTickAntiAlias": false,
+        "Type": "Bottom",
+        "Label": {
+          "Default": "en-US",
+          "Translations": {
+            "zh-CN": "SiO2",
+            "en-US": "SiO2"
+          }
+        },
+        "Family": "Arial",
+        "Size": 16,
+        "Color": "#FF000000",
+        "IsBold": false,
+        "IsItalic": false,
+        "MajorTickWidth": 1,
+        "MajorTickWidthColor": "#FF000000",
+        "MajorTickAntiAlias": false,
+        "TickLableFamily": "Arial",
+        "TickLablesize": 16,
+        "TickLablecolor": "#FF000000",
+        "TickLableisBold": false,
+        "TickLableisItalic": false
+      },
+      {
+        "$type": "cartesian",
+        "ScaleType": "Linear",
+        "Minimum": 0,
+        "Maximum": 0,
+        "MajorTickLength": 4,
+        "MinorTicksPerMajorTick": 1,
+        "MinorTickLength": 4,
+        "MinorTickWidth": 1,
+        "MinorTickColor": "#FF000000",
+        "MinorTickAntiAlias": false,
+        "Type": "Left",
+        "Label": {
+          "Default": "en-US",
+          "Translations": {
+            "zh-CN": "Na2O + K2O",
+            "en-US": "Na2O + K2O"
+          }
+        },
+        "Family": "Arial",
+        "Size": 16,
+        "Color": "#FF000000",
+        "IsBold": false,
+        "IsItalic": false,
+        "MajorTickWidth": 1,
+        "MajorTickWidthColor": "#FF000000",
+        "MajorTickAntiAlias": false,
+        "TickLableFamily": "Arial",
+        "TickLablesize": 12,
+        "TickLablecolor": "#FF000000",
+        "TickLableisBold": false,
+        "TickLableisItalic": false
+      },
+      {
+        "$type": "cartesian",
+        "ScaleType": "Linear",
+        "Minimum": 0,
+        "Maximum": 0,
+        "MajorTickLength": 4,
+        "MinorTicksPerMajorTick": 1,
+        "MinorTickLength": 4,
+        "MinorTickWidth": 1,
+        "MinorTickColor": "#FF000000",
+        "MinorTickAntiAlias": false,
+        "Type": "Top",
+        "Label": {
+          "Default": "en-US",
+          "Translations": {
+            "zh-CN": "",
+            "en-US": ""
+          }
+        },
+        "Family": "Arial",
+        "Size": 12,
+        "Color": "#FF000000",
+        "IsBold": false,
+        "IsItalic": false,
+        "MajorTickWidth": 1,
+        "MajorTickWidthColor": "#FF000000",
+        "MajorTickAntiAlias": false,
+        "TickLableFamily": "Arial",
+        "TickLablesize": 12,
+        "TickLablecolor": "#FF000000",
+        "TickLableisBold": false,
+        "TickLableisItalic": false
+      },
+      {
+        "$type": "cartesian",
+        "ScaleType": "Linear",
+        "Minimum": 0,
+        "Maximum": 0,
+        "MajorTickLength": 4,
+        "MinorTicksPerMajorTick": 1,
+        "MinorTickLength": 4,
+        "MinorTickWidth": 1,
+        "MinorTickColor": "#FF000000",
+        "MinorTickAntiAlias": false,
+        "Type": "Right",
+        "Label": {
+          "Default": "en-US",
+          "Translations": {
+            "zh-CN": "",
+            "en-US": ""
+          }
+        },
+        "Family": "Arial",
+        "Size": 12,
+        "Color": "#FF000000",
+        "IsBold": false,
+        "IsItalic": false,
+        "MajorTickWidth": 1,
+        "MajorTickWidthColor": "#FF000000",
+        "MajorTickAntiAlias": false,
+        "TickLableFamily": "Arial",
+        "TickLablesize": 12,
+        "TickLablecolor": "#FF000000",
+        "TickLableisBold": false,
+        "TickLableisItalic": false
+      }
+    ],
+    "Title": {
+      "Label": {
+        "Default": "en-US",
+        "Translations": {
+          "zh-CN": "Irvine & Baragar (1971)",
+          "en-US": "Irvine & Baragar (1971)"
+        }
+      },
+      "Family": "Microsoft YaHei",
+      "Size": 16,
+      "Color": "#FF000000",
+      "IsBold": false,
+      "IsItalic": false
+    },
+    "Grid": {
+      "MajorGridLineIsVisible": true,
+      "MajorGridLineColor": "#19010101",
+      "MajorGridLineWidth": 1,
+      "MajorGridLinePattern": "Solid",
+      "MajorGridLineAntiAlias": false,
+      "MinorGridLineIsVisible": true,
+      "MinorGridLineColor": "#0C010101",
+      "MinorGridLineWidth": 0,
+      "MinorGridLinePattern": "Solid",
+      "MinorGridLineAntiAlias": false,
+      "GridAlternateFillingIsEnable": false,
+      "GridFillColor1": "#00FFFFFF",
+      "GridFillColor2": "#00FFFFFF"
+    },
+    "Legend": {}
   },
   "Script": {
     "Language": "JavaScript",
     "RequiredDataSeries": "Category,SiO2,Na2O,K2O",
-    "ScriptBody": "var result1 = SiO2;\r\nvar result2 = Na2O + K2O;\r\n[result1, result2]"
+    "ScriptBody": "var result1 = SiO2;\r\nvar result2 = Na2O + K2O;\r\nreturn [result1, result2];"
   }
 }

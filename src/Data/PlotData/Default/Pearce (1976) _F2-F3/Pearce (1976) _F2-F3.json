@@ -2,6 +2,7 @@
   "Version": "0.1",
   "DefaultLanguage": "en-US",
   "TemplateType": "Cartesian",
+  "Clockwise": true,
   "NodeList": {
     "Default": "en-US",
     "Translations": {
@@ -234,6 +235,16 @@
     "Annotations": [],
     "Axes": [
       {
+        "$type": "cartesian",
+        "ScaleType": "Linear",
+        "Minimum": 0,
+        "Maximum": 0,
+        "MajorTickLength": 4,
+        "MinorTicksPerMajorTick": 1,
+        "MinorTickLength": 4,
+        "MinorTickWidth": 1,
+        "MinorTickColor": "#000000",
+        "MinorTickAntiAlias": false,
         "Type": "Bottom",
         "Label": {
           "Default": "en-US",
@@ -243,9 +254,30 @@
           }
         },
         "Family": "Arial",
-        "Size": 16
+        "Size": 16,
+        "Color": "#000000",
+        "IsBold": false,
+        "IsItalic": false,
+        "MajorTickWidth": 1,
+        "MajorTickWidthColor": "#000000",
+        "MajorTickAntiAlias": false,
+        "TickLableFamily": "Arial",
+        "TickLablesize": 12,
+        "TickLablecolor": "#000000",
+        "TickLableisBold": false,
+        "TickLableisItalic": false
       },
       {
+        "$type": "cartesian",
+        "ScaleType": "Linear",
+        "Minimum": 0,
+        "Maximum": 0,
+        "MajorTickLength": 4,
+        "MinorTicksPerMajorTick": 1,
+        "MinorTickLength": 4,
+        "MinorTickWidth": 1,
+        "MinorTickColor": "#000000",
+        "MinorTickAntiAlias": false,
         "Type": "Left",
         "Label": {
           "Default": "en-US",
@@ -255,7 +287,18 @@
           }
         },
         "Family": "Arial",
-        "Size": 16
+        "Size": 16,
+        "Color": "#000000",
+        "IsBold": false,
+        "IsItalic": false,
+        "MajorTickWidth": 1,
+        "MajorTickWidthColor": "#000000",
+        "MajorTickAntiAlias": false,
+        "TickLableFamily": "Arial",
+        "TickLablesize": 12,
+        "TickLablecolor": "#000000",
+        "TickLableisBold": false,
+        "TickLableisItalic": false
       }
     ],
     "Title": {
@@ -269,6 +312,12 @@
       "Family": "Arial",
       "Size": 18,
       "IsBold": true
+    },
+    "Grid": {
+      
+    },
+    "Legend": {
+      
     }
   },
   "Script": {

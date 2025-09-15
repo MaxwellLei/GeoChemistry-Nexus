@@ -13,9 +13,9 @@ namespace GeoChemistryNexus.ViewModels
     /// </summary>
     public partial class AxisLayerItemViewModel : LayerItemViewModel
     {
-        public AxisDefinition AxisDefinition { get; }
+        public BaseAxisDefinition AxisDefinition { get; }
 
-        public AxisLayerItemViewModel(AxisDefinition axisDefinition)
+        public AxisLayerItemViewModel(BaseAxisDefinition axisDefinition)
             : base(GetAxisName(axisDefinition.Type)) // 根据坐标轴类型设置名称
         {
             AxisDefinition = axisDefinition;

@@ -35,7 +35,7 @@ namespace GeoChemistryNexus.Models
         /// <summary>
         /// 坐标轴列表
         /// </summary>
-        public List<AxisDefinition> Axes { get; set; } = new List<AxisDefinition>();
+        public List<BaseAxisDefinition> Axes { get; set; } = new List<BaseAxisDefinition>();
 
         /// <summary>
         /// 绘图标题

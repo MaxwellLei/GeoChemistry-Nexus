@@ -147,6 +147,7 @@
     "Annotations": [],
     "Axes": [
       {
+        "$type": "cartesian",
         "Type": "Bottom",
         "Label": {
           "Default": "en-US",
@@ -160,7 +161,6 @@
         "Color": "#FF000000",
         "IsBold": false,
         "IsItalic": false,
-        "TickInterval": null,
         "MajorTickLength": 4,
         "MajorTickWidth": 1,
         "MajorTickWidthColor": "#FF000000",
@@ -176,6 +176,7 @@
         "TickLableisItalic": false
       },
       {
+        "$type": "cartesian",
         "Type": "Left",
         "Label": {
           "Default": "en-US",
@@ -189,7 +190,6 @@
         "Color": "#FF000000",
         "IsBold": false,
         "IsItalic": false,
-        "TickInterval": null,
         "MajorTickLength": 4,
         "MajorTickWidth": 1,
         "MajorTickWidthColor": "#FF000000",
@@ -205,6 +205,7 @@
         "TickLableisItalic": false
       },
       {
+        "$type": "cartesian",
         "Type": "Top",
         "Label": {
           "Default": "en-US",
@@ -218,7 +219,6 @@
         "Color": "#FF000000",
         "IsBold": false,
         "IsItalic": false,
-        "TickInterval": null,
         "MajorTickLength": 4,
         "MajorTickWidth": 1,
         "MajorTickWidthColor": "#FF000000",
@@ -234,6 +234,7 @@
         "TickLableisItalic": false
       },
       {
+        "$type": "cartesian",
         "Type": "Right",
         "Label": {
           "Default": "en-US",
@@ -247,7 +248,6 @@
         "Color": "#FF000000",
         "IsBold": false,
         "IsItalic": false,
-        "TickInterval": null,
         "MajorTickLength": 4,
         "MajorTickWidth": 1,
         "MajorTickWidthColor": "#FF000000",
