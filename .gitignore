@@ -10,8 +10,13 @@ obj/
 # NuGet 包
 *.nupkg
 packages/
-# 如果运行`dotnet restore`，不需要将packages.lock.json加入版本控制
 #dependencies.lock.json
+
+# 排除 NuGet 包的解压缓存
+!packages/repositories.config
+
+# 忽略包含敏感信息的用户特定发布配置文件
+*.pubxml.user
 
 # .NET 项目的编译输出
 project.lock.json

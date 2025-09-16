@@ -2620,7 +2620,7 @@ namespace GeoChemistryNexus.ViewModels
                     {
                         // --- 应用所有标题样式 ---
                         targetEdge.LabelText = ternaryAxisDef.Label.Get();
-                        targetEdge.LabelStyle.FontName = ternaryAxisDef.Family;
+                        targetEdge.LabelStyle.FontName = Fonts.Detect(ternaryAxisDef.Label.Get());
                         targetEdge.LabelStyle.FontSize = ternaryAxisDef.Size;
                         targetEdge.LabelStyle.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(ternaryAxisDef.Color));
                         targetEdge.LabelStyle.Bold = ternaryAxisDef.IsBold;
@@ -3631,7 +3631,6 @@ namespace GeoChemistryNexus.ViewModels
 
         /// <summary>
         /// 删除当前选中的绘图对象。
-        /// 【新功能】如果删除的是分类下的最后一个对象，则连同分类一起删除。
         /// </summary>
         [RelayCommand]
         private void DeleteSelectedObject()

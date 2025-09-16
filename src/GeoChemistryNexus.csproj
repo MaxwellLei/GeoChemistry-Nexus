@@ -52,6 +52,10 @@
     <None Remove="Data\PlotData\Default\Pearce %281976%29 _F2-F3\Pearce %281976%29 _F2-F3.json" />
     <None Remove="Data\PlotData\Default\Pearce %281976%29 _F2-F3\thumbnail.jpg" />
     <None Remove="Data\PlotData\Default\Pearce %281976%29 _F2-F3\zh-CN.rtf" />
+    <None Remove="Data\PlotData\Default\Streckeisen %281967%29_Qtz-Af-Pf\Streckeisen %281967%29_Qtz-Af-Pf.json" />
+    <None Remove="Data\PlotData\Default\Streckeisen %281967%29_Qtz-Af-Pf\thumbnail.jpg" />
+    <None Remove="Data\PlotData\Default\Streckeisen (1967)_Qtz-Af-Pf\en-US.rtf" />
+    <None Remove="Data\PlotData\Default\Streckeisen (1967)_Qtz-Af-Pf\zh-CN.rtf" />
     <None Remove="Data\PlotData\Default\简体中文_岩浆岩_岩石类别_TAS.json" />
     <None Remove="Data\PlotData\GraphMapList - 复制.json" />
     <None Remove="Data\PlotData\GraphMapList.json" />
@@ -170,6 +174,18 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\PlotData\Default\Pearce (1976) _F2-F3\zh-CN.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\PlotData\Default\Streckeisen (1967)_Qtz-Af-Pf\en-US.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\PlotData\Default\Streckeisen (1967)_Qtz-Af-Pf\Streckeisen (1967)_Qtz-Af-Pf.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\PlotData\Default\Streckeisen (1967)_Qtz-Af-Pf\thumbnail.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\PlotData\Default\Streckeisen (1967)_Qtz-Af-Pf\zh-CN.rtf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -23,6 +23,16 @@
     "NodeList": {
       "Default": "en-US",
       "Translations": {
+        "zh-CN": "岩浆岩石学 > 岩石分类图解 > Streckeisen (1967) > Qtz-Af-Pf",
+        "en-US": "Igneous Petrology > Rock Classification Diagrams > Streckeisen (1967) > Qtz-Af-Pf"
+      }
+    },
+    "GraphMapPath": "Streckeisen (1967)_Qtz-Af-Pf"
+  },
+  {
+    "NodeList": {
+      "Default": "en-US",
+      "Translations": {
         "zh-CN": "岩浆岩石学 > 岩石分类图解 > Irvine & Baragar (1971) > An vs. Al2O3",
         "en-US": "Igneous Petrology > Rock Classification Diagrams > Irvine & Baragar (1971) > An vs. Al2O3"
       }
