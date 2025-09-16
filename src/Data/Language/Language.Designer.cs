@@ -124,11 +124,29 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 (actual sum 的本地化字符串。
+        /// </summary>
+        internal static string actual_sum_is {
+            get {
+                return ResourceManager.GetString("actual_sum_is", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Add 的本地化字符串。
         /// </summary>
         internal static string add {
             get {
                 return ResourceManager.GetString("add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Add Arrow 的本地化字符串。
+        /// </summary>
+        internal static string add_arrow {
+            get {
+                return ResourceManager.GetString("add_arrow", resourceCulture);
             }
         }
         
@@ -223,6 +241,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 All data cleared 的本地化字符串。
+        /// </summary>
+        internal static string all_data_cleared {
+            get {
+                return ResourceManager.GetString("all_data_cleared", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 All fields are required! 的本地化字符串。
         /// </summary>
         internal static string all_fields_required {
@@ -291,6 +318,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string anti_aliasing {
             get {
                 return ResourceManager.GetString("anti_aliasing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Arrow 的本地化字符串。
+        /// </summary>
+        internal static string arrow {
+            get {
+                return ResourceManager.GetString("arrow", resourceCulture);
             }
         }
         
@@ -709,6 +745,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Cannot delete base layers. 的本地化字符串。
+        /// </summary>
+        internal static string cannot_delete_base_layers {
+            get {
+                return ResourceManager.GetString("cannot_delete_base_layers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Unable to parse the version number. Please check the release address 的本地化字符串。
         /// </summary>
         internal static string cannot_parse_version_number_check_release_address {
@@ -799,6 +844,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Clear Data Points 的本地化字符串。
+        /// </summary>
+        internal static string clear_data_points {
+            get {
+                return ResourceManager.GetString("clear_data_points", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Code Formatted 的本地化字符串。
         /// </summary>
         internal static string code_formatted {
@@ -831,6 +885,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string Confirm {
             get {
                 return ResourceManager.GetString("Confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Clear table data (including plot data points)? 的本地化字符串。
+        /// </summary>
+        internal static string confirm_clear_all_data {
+            get {
+                return ResourceManager.GetString("confirm_clear_all_data", resourceCulture);
             }
         }
         
@@ -1074,6 +1137,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string Delete {
             get {
                 return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Delete Object 的本地化字符串。
+        /// </summary>
+        internal static string delete_object {
+            get {
+                return ResourceManager.GetString("delete_object", resourceCulture);
             }
         }
         
@@ -1834,6 +1906,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 is not 1 的本地化字符串。
+        /// </summary>
+        internal static string is_not_one {
+            get {
+                return ResourceManager.GetString("is_not_one", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Is Visible 的本地化字符串。
         /// </summary>
         internal static string is_visible {
@@ -2122,6 +2203,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Linear 的本地化字符串。
+        /// </summary>
+        internal static string linear {
+            get {
+                return ResourceManager.GetString("linear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Color 的本地化字符串。
         /// </summary>
         internal static string LineColor {
@@ -2208,6 +2298,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string LocationAxis {
             get {
                 return ResourceManager.GetString("LocationAxis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Logarithmic 的本地化字符串。
+        /// </summary>
+        internal static string logarithmic {
+            get {
+                return ResourceManager.GetString("logarithmic", resourceCulture);
             }
         }
         
@@ -2455,7 +2554,7 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 No template available for saving or no save path specified. Please create a new template or open an existing one first. 的本地化字符串。
+        ///   查找类似 No savable template or save path specified. Please use Save As to save. 的本地化字符串。
         /// </summary>
         internal static string no_template_or_path_specified {
             get {
@@ -2496,6 +2595,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string not_enough_vertices_add_polygon_canceled {
             get {
                 return ResourceManager.GetString("not_enough_vertices_add_polygon_canceled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Object deleted successfully. 的本地化字符串。
+        /// </summary>
+        internal static string object_deleted_successfully {
+            get {
+                return ResourceManager.GetString("object_deleted_successfully", resourceCulture);
             }
         }
         
@@ -2595,6 +2703,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string pattern {
             get {
                 return ResourceManager.GetString("pattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Please select an object to delete first. 的本地化字符串。
+        /// </summary>
+        internal static string please_select_an_object_to_delete_first {
+            get {
+                return ResourceManager.GetString("please_select_an_object_to_delete_first", resourceCulture);
             }
         }
         
@@ -3157,6 +3274,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Save as 的本地化字符串。
+        /// </summary>
+        internal static string save_as {
+            get {
+                return ResourceManager.GetString("save_as", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Save as CSV File 的本地化字符串。
         /// </summary>
         internal static string save_as_csv_file {
@@ -3333,6 +3459,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string SmashItC {
             get {
                 return ResourceManager.GetString("SmashItC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Some data failed validation and has been skipped for plotting 的本地化字符串。
+        /// </summary>
+        internal static string some_data_failed_validation {
+            get {
+                return ResourceManager.GetString("some_data_failed_validation", resourceCulture);
             }
         }
         
@@ -3562,6 +3697,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 The sum of a ternary phase diagram must be 1. 的本地化字符串。
+        /// </summary>
+        internal static string ternary_phase_diagram_sum_must_be_one {
+            get {
+                return ResourceManager.GetString("ternary_phase_diagram_sum_must_be_one", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Text 的本地化字符串。
         /// </summary>
         internal static string text {
@@ -3603,6 +3747,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string ThankSupport {
             get {
                 return ResourceManager.GetString("ThankSupport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 The sum of row 的本地化字符串。
+        /// </summary>
+        internal static string the_sum_of_row {
+            get {
+                return ResourceManager.GetString("the_sum_of_row", resourceCulture);
             }
         }
         

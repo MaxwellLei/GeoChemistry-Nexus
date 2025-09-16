@@ -4,6 +4,7 @@ using GeoChemistryNexus.PropertyEditor;
 using HandyControl.Controls;
 using System.ComponentModel;
 using System.Text.Json.Serialization;
+using GeoChemistryNexus.Converter;
 
 namespace GeoChemistryNexus.Models
 {
@@ -146,9 +147,12 @@ namespace GeoChemistryNexus.Models
     /// <summary>
     /// 坐标轴的缩放类型
     /// </summary>
+    [TypeConverter(typeof(EnumLocalizationConverter))]
     public enum AxisScaleType
     {
+        [LocalizedDescription("linear")]
         Linear,
+        [LocalizedDescription("linear")]
         Logarithmic
     }
 }

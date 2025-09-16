@@ -1,5 +1,6 @@
 ﻿using GeoChemistryNexus.Helpers;
 using OpenTK.Graphics.OpenGL;
+using ScottPlot;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -96,9 +97,9 @@ namespace GeoChemistryNexus.Models
             {
                 // 三元相图的特定设置
                 string titlePlaceholder = defaultLanguage == "zh-CN" ? "新建三元相图" : "New Ternary Plot";
-                string componentAPlaceholder = "组分A";
-                string componentBPlaceholder = "组分B";
-                string componentCPlaceholder = "组分C";
+                string componentAPlaceholder = "A";
+                string componentBPlaceholder = "B";
+                string componentCPlaceholder = "C";
 
                 template.Info.Title = new TitleDefinition
                 {
@@ -107,22 +108,15 @@ namespace GeoChemistryNexus.Models
                 template.Info.Axes = new List<BaseAxisDefinition>
                 {
                     // 为三元图的三个边定义坐标轴
-                    new TernaryAxisDefinition { Type = "Bottom", Label = CreateLocalized(componentAPlaceholder) },
+                    new TernaryAxisDefinition { Type = "Bottom", Label = CreateLocalized(componentAPlaceholder)  },
                     new TernaryAxisDefinition { Type = "Left", Label = CreateLocalized(componentBPlaceholder) },
                     new TernaryAxisDefinition { Type = "Right", Label = CreateLocalized(componentCPlaceholder) }
                 };
-                //template.Info.Axes = new List<AxisDefinition>
-                //{
-                //    // 为三元图的三个边定义坐标轴
-                //    new AxisDefinition { Type = "Bottom", Label = CreateLocalized(componentAPlaceholder) },
-                //    new AxisDefinition { Type = "Left", Label = CreateLocalized(componentBPlaceholder) },
-                //    new AxisDefinition { Type = "Right", Label = CreateLocalized(componentCPlaceholder) }
-                //};
                 template.Script = new ScriptDefinition
                 {
                     // 脚本需要A,B,C三个组分数据来计算二维坐标
                     RequiredDataSeries = "Category,A,B,C",
-                    // 注意：此脚本为占位符，用户需要提供从(A,B,C)到(x,y)的正确转换逻辑
+                    // 注意：此脚本为占位符
                     ScriptBody = "var y = B * Math.sin(Math.PI / 3);\nvar x = A + B * Math.cos(Math.PI / 3);\nreturn [x, y];"
                 };
             }
@@ -143,13 +137,6 @@ namespace GeoChemistryNexus.Models
                     new CartesianAxisDefinition { Type = "Top", Label = CreateLocalized("") },
                     new CartesianAxisDefinition { Type = "Right", Label = CreateLocalized("") }
                 };
-                //template.Info.Axes = new List<AxisDefinition>
-                //{
-                //  new AxisDefinition { Type = "Bottom", Label = CreateLocalized(xAxisPlaceholder) },
-                //  new AxisDefinition { Type = "Left", Label = CreateLocalized(yAxisPlaceholder) },
-                //  new AxisDefinition { Type = "Top", Label = CreateLocalized("") },
-                //  new AxisDefinition { Type = "Right", Label = CreateLocalized("") }
-                //};
                 template.Script = new ScriptDefinition
                 {
                     RequiredDataSeries = "Category,X,Y",

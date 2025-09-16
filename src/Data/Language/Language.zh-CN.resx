@@ -753,7 +753,7 @@
     <value>如果您对本项目感兴趣，欢迎点个 Star 支持一下！如果您觉得对您有帮助，也可以请我喝杯咖啡☕</value>
   </data>
   <data name="AboutInfo3" xml:space="preserve">
-    <value>我们欢迎更多的研究人员加入！&amp;#xA;一起维护和更新地球化学计算的方法，还有更多的绘图底图模板！&amp;#xA;让软件变得更强大，更好用！</value>
+    <value>我们欢迎更多的研究人员加入！一起维护和更新地球化学计算的方法，还有更多的绘图底图模板！让软件变得更强大，更好用！</value>
   </data>
   <data name="ThankSupport" xml:space="preserve">
     <value>感谢支持</value>
@@ -1298,7 +1298,7 @@
     <comment>新疆模板</comment>
   </data>
   <data name="no_template_or_path_specified" xml:space="preserve">
-    <value>没有可保存的模板或未指定保存路径。请先新建或打开一个模板.</value>
+    <value>没有可保存的模板或未指定保存路径。请使用另存为保存.</value>
     <comment>新疆模板</comment>
   </data>
   <data name="template_saved_successfully" xml:space="preserve">
@@ -1464,5 +1464,73 @@
   <data name="to" xml:space="preserve">
     <value>到</value>
     <comment>属性-坐标轴-坐标轴样式</comment>
+  </data>
+  <data name="ternary_phase_diagram_sum_must_be_one" xml:space="preserve">
+    <value>三元相图之和必须为 1.</value>
+    <comment>新建-三元图-模板</comment>
+  </data>
+  <data name="save_as" xml:space="preserve">
+    <value>另存为</value>
+    <comment>绘图-工具栏-编辑</comment>
+  </data>
+  <data name="all_data_cleared" xml:space="preserve">
+    <value>所有数据已清除</value>
+    <comment>绘图-数据-清除数据-提示</comment>
+  </data>
+  <data name="confirm_clear_all_data" xml:space="preserve">
+    <value>是否清除表格数据（包括绘图数据点）？</value>
+    <comment>绘图-数据-清除数据-提示</comment>
+  </data>
+  <data name="clear_data_points" xml:space="preserve">
+    <value>清除数据点</value>
+    <comment>绘图-数据-清除数据点</comment>
+  </data>
+  <data name="linear" xml:space="preserve">
+    <value>线性</value>
+    <comment>绘图-坐标轴-属性-缩放类型</comment>
+  </data>
+  <data name="logarithmic" xml:space="preserve">
+    <value>对数</value>
+    <comment>绘图-坐标轴-属性-缩放类型</comment>
+  </data>
+  <data name="some_data_failed_validation" xml:space="preserve">
+    <value>部分数据未通过校验，已跳过绘制</value>
+    <comment>绘图-数据-投点校验提示</comment>
+  </data>
+  <data name="the_sum_of_row" xml:space="preserve">
+    <value>第</value>
+    <comment>绘图-数据-投点校验提示</comment>
+  </data>
+  <data name="is_not_one" xml:space="preserve">
+    <value>条数据和不为1</value>
+    <comment>绘图-数据-投点校验提示</comment>
+  </data>
+  <data name="actual_sum_is" xml:space="preserve">
+    <value>(实际和为</value>
+    <comment>绘图-数据-投点校验提示</comment>
+  </data>
+  <data name="arrow" xml:space="preserve">
+    <value>箭头</value>
+    <comment>绘图-图层-箭头</comment>
+  </data>
+  <data name="add_arrow" xml:space="preserve">
+    <value>添加箭头</value>
+    <comment>绘图-编辑-添加箭头</comment>
+  </data>
+  <data name="delete_object" xml:space="preserve">
+    <value>删除对象</value>
+    <comment>绘图-编辑-删除功能</comment>
+  </data>
+  <data name="please_select_an_object_to_delete_first" xml:space="preserve">
+    <value>请先选择一个要删除的对象.</value>
+    <comment>绘图-编辑-删除提示</comment>
+  </data>
+  <data name="object_deleted_successfully" xml:space="preserve">
+    <value>对象已成功删除.</value>
+    <comment>绘图-编辑-删除提示</comment>
+  </data>
+  <data name="cannot_delete_base_layers" xml:space="preserve">
+    <value>无法删除基础图层.</value>
+    <comment>绘图-编辑-删除提示</comment>
   </data>
 </root>

@@ -21,17 +21,15 @@ namespace GeoChemistryNexus.Converter
                 throw new JsonException();
             }
 
-            // 使用 JsonDocument 解析 JSON 对象，以便我们可以检查其属性
+            // 使用 JsonDocument 解析 JSON 对象
             using (var jsonDoc = JsonDocument.ParseValue(ref reader))
             {
                 var root = jsonDoc.RootElement;
 
                 // === 类型判断逻辑 ===
-                // 我们通过检查是否存在笛卡尔坐标系特有的属性（如 "ScaleType"）来判断类型。
-                // 这是一个可靠的“类型鉴别器”。
                 if (root.TryGetProperty("ScaleType", out _))
                 {
-                    // 如果存在 "ScaleType" 属性，我们认定它是一个 CartesianAxisDefinition
+                    // 如果存在 "ScaleType" 属性，认定它是一个 CartesianAxisDefinition
                     // 然后使用对象的原始文本重新进行反序列化为具体类型
                     return JsonSerializer.Deserialize<CartesianAxisDefinition>(root.GetRawText(), options);
                 }
@@ -45,8 +43,7 @@ namespace GeoChemistryNexus.Converter
 
         public override void Write(Utf8JsonWriter writer, BaseAxisDefinition value, JsonSerializerOptions options)
         {
-            // 在写入时，我们根据对象的实际运行时类型进行序列化
-            // 这样可以确保所有子类的属性都被正确写入
+            // 在写入时，根据对象的实际运行时类型进行序列化
             switch (value)
             {
                 case CartesianAxisDefinition cartesian:

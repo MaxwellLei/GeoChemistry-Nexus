@@ -66,24 +66,24 @@
                                 <WrapPanel Margin="0 5 0 0">
                                     <TextBlock Text="{Binding [Support1],Source={x:Static lg:LanguageService.Instance}}" FontSize="16"/>
                                     <TextBlock Text=" HandyControl" FontSize="16" Foreground="#1182c3"/>
+                                    <TextBlock Text=" Ookii.Dialogs.Wpf" FontSize="16" Foreground="#1182c3" Margin="10 0 0 0"/>
                                 </WrapPanel>
                                 <WrapPanel Margin="0 5 0 0">
                                     <TextBlock Text="{Binding [Support2],Source={x:Static lg:LanguageService.Instance}}" FontSize="16"/>
                                     <TextBlock Text=" Scottplot" FontSize="16" Foreground="#1182c3"/>
-                                </WrapPanel>
-                                <WrapPanel Margin="0 5 0 0">
-                                    <TextBlock Text="{Binding [Support3],Source={x:Static lg:LanguageService.Instance}}" FontSize="16"/>
-                                    <TextBlock Text=" EPPlus" FontSize="16" Foreground="#1182c3"/>
+                                    <TextBlock Text=" ReoGrid" FontSize="16" Foreground="#1182c3" Margin="10 0 0 0"/>
                                 </WrapPanel>
                                 <WrapPanel Margin="0 5 0 0">
                                     <TextBlock Text="{Binding [Support4],Source={x:Static lg:LanguageService.Instance}}" FontSize="16"/>
-                                    <TextBlock Text=" MathNet.Numerics" FontSize="16" Foreground="#1182c3"/>
+                                    <TextBlock Text=" Jint" FontSize="16" Foreground="#1182c3"/>
                                 </WrapPanel>
                                 <WrapPanel Margin="0 5 0 0">
                                     <TextBlock Text="{Binding [Support5],Source={x:Static lg:LanguageService.Instance}}" FontSize="16"/>
                                     <TextBlock Text=" Community.Toolkit.Mvvm" FontSize="16" Foreground="#1182c3"/>
                                     <TextBlock Text=" Microsoft.Xaml.Behaviors.Wpf" FontSize="16" Foreground="#1182c3"
-                                           Margin="102 0 0 0"/>
+                                           Margin="10 0 0 0"/>
+                                    <TextBlock Text=" System.Text.Json" FontSize="16" Foreground="#1182c3"
+                                           Margin="90 0 0 0"/>
                                 </WrapPanel>
                             </StackPanel>
                         </Grid>

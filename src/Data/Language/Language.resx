@@ -1235,7 +1235,7 @@
     <value>Category structure must be greater than or equal to 2!</value>
   </data>
   <data name="no_template_or_path_specified" xml:space="preserve">
-    <value>No template available for saving or no save path specified. Please create a new template or open an existing one first.</value>
+    <value>No savable template or save path specified. Please use Save As to save.</value>
   </data>
   <data name="template_saved_successfully" xml:space="preserve">
     <value>Template saved successfully!</value>
@@ -1359,5 +1359,56 @@
   </data>
   <data name="to" xml:space="preserve">
     <value>To</value>
+  </data>
+  <data name="ternary_phase_diagram_sum_must_be_one" xml:space="preserve">
+    <value>The sum of a ternary phase diagram must be 1.</value>
+  </data>
+  <data name="save_as" xml:space="preserve">
+    <value>Save as</value>
+  </data>
+  <data name="all_data_cleared" xml:space="preserve">
+    <value>All data cleared</value>
+  </data>
+  <data name="confirm_clear_all_data" xml:space="preserve">
+    <value>Clear table data (including plot data points)?</value>
+  </data>
+  <data name="clear_data_points" xml:space="preserve">
+    <value>Clear Data Points</value>
+  </data>
+  <data name="linear" xml:space="preserve">
+    <value>Linear</value>
+  </data>
+  <data name="logarithmic" xml:space="preserve">
+    <value>Logarithmic</value>
+  </data>
+  <data name="some_data_failed_validation" xml:space="preserve">
+    <value>Some data failed validation and has been skipped for plotting</value>
+  </data>
+  <data name="the_sum_of_row" xml:space="preserve">
+    <value>The sum of row</value>
+  </data>
+  <data name="is_not_one" xml:space="preserve">
+    <value>is not 1</value>
+  </data>
+  <data name="actual_sum_is" xml:space="preserve">
+    <value>(actual sum</value>
+  </data>
+  <data name="arrow" xml:space="preserve">
+    <value>Arrow</value>
+  </data>
+  <data name="add_arrow" xml:space="preserve">
+    <value>Add Arrow</value>
+  </data>
+  <data name="delete_object" xml:space="preserve">
+    <value>Delete Object</value>
+  </data>
+  <data name="please_select_an_object_to_delete_first" xml:space="preserve">
+    <value>Please select an object to delete first.</value>
+  </data>
+  <data name="object_deleted_successfully" xml:space="preserve">
+    <value>Object deleted successfully.</value>
+  </data>
+  <data name="cannot_delete_base_layers" xml:space="preserve">
+    <value>Cannot delete base layers.</value>
   </data>
 </root>

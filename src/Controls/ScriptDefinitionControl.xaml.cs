@@ -199,8 +199,8 @@ namespace GeoChemistryNexus.Controls
                 return (LanguageService.Instance["data_parameters_are_empty"], false);
             }
 
-            // 正则表达式，确保只包含字母、数字和英文逗号，并且没有多余的空格
-            string pattern = @"^([a-zA-Z0-9]+(,[a-zA-Z0-9]+)*)?$";
+            // 正则表达式，确保只包含字母、数字、下划线和英文逗号
+            string pattern = @"^([a-zA-Z0-9_]+(,[a-zA-Z0-9_]+)*)?$";
             if (!Regex.IsMatch(parameter, pattern))
             {
                 return (LanguageService.Instance["invalid_data_parameter_format"], false);

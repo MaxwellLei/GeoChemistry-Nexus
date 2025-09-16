@@ -33,6 +33,11 @@ namespace GeoChemistryNexus.Models
         public List<AnnotationDefinition> Annotations { get; set; } = new List<AnnotationDefinition>();
 
         /// <summary>
+        /// 箭头列表
+        /// </summary>
+        public List<ArrowDefinition> Arrows { get; set; } = new List<ArrowDefinition>();
+
+        /// <summary>
         /// 坐标轴列表
         /// </summary>
         public List<BaseAxisDefinition> Axes { get; set; } = new List<BaseAxisDefinition>();

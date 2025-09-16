@@ -68,8 +68,6 @@ namespace GeoChemistryNexus.ViewModels
         // 说明控件
         private System.Windows.Controls.RichTextBox _richTextBox;
 
-
-        // =============================
         // 用于追踪当前鼠标悬浮的绘图对象及其对应的图层
         private ScottPlot.IPlottable? _lastHoveredPlottable;
         private LayerItemViewModel? _lastHoveredLayer;
@@ -147,14 +145,16 @@ namespace GeoChemistryNexus.ViewModels
         private ScottPlot.Plottables.Polygon? _tempPreviewPolygon; // 用于实时预览的临时多边形
         private ScottPlot.Plottables.LinePlot? _tempRubberBandLine; // 用于预览下一段连线的"橡皮筋"
 
-
         // 用于存储当前正在编辑的模板的完整文件路径
         private string _currentTemplateFilePath;
 
 
-        //  ==============================
-        //              测试区域
-        //  ==============================
+
+        // 测试
+        [ObservableProperty]
+        private bool _isAddingArrow = false; // 标记是否处于添加箭头模式
+        private Coordinates? _arrowStartPoint = null; // 存储箭头的起点
+        private ScottPlot.Plottables.Arrow? _tempArrowPlot; // 用于实时预览箭头
 
 
         // 初始化
@@ -168,6 +168,7 @@ namespace GeoChemistryNexus.ViewModels
             WpfPlot1 = wpfPlot;      // 获取绘图控件
             _richTextBox = richTextBox;      // 富文本框
             _dataGrid = dataGrid;        // 获取数据表格控件
+            IsSnapSelectionEnabled = true;  // 吸附选择开启
 
             InitializeBreadcrumbs(); // 初始化面包屑
             LoadAllTemplateCards();  // 加载所有模板卡片
@@ -187,13 +188,60 @@ namespace GeoChemistryNexus.ViewModels
             WpfPlot1.MouseUp += WpfPlot1_MouseUp;
             WpfPlot1.MouseRightButtonUp += WpfPlot1_MouseRightButtonUp;
 
+            // 订阅数据表格行数自动扩充
+            if (_dataGrid.CurrentWorksheet != null)
+            {
+                _dataGrid.CurrentWorksheet.BeforePaste += CurrentWorksheet_BeforePaste;
+            }
+
             WpfPlot1.Menu.Clear();      // 禁用原生右键菜单
 
             // 禁用双击帧率显示
             WpfPlot1.UserInputProcessor.DoubleLeftClickBenchmark(false);
-            _dataGrid = dataGrid;
+
         }
 
+        /// <summary>
+        /// 在粘贴操作发生前处理的事件。
+        /// 用于检查粘贴数据的行数并根据需要自动扩展表格。
+        /// </summary>
+        /// <param name="sender">事件发送者，即 Worksheet 对象</param>
+        /// <param name="e">事件参数</param>
+        private void CurrentWorksheet_BeforePaste(object sender, unvell.ReoGrid.Events.BeforeRangeOperationEventArgs e)
+        {
+            var worksheet = sender as Worksheet;
+            if (worksheet == null) return;
+
+            // 1. 从剪贴板获取将要粘贴的文本数据
+            if (!Clipboard.ContainsText()) return;
+            string pasteText = Clipboard.GetText();
+            if (string.IsNullOrEmpty(pasteText)) return;
+
+            // 2. 计算粘贴文本包含的行数
+            var lines = pasteText.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+            int pastedRowCount = lines.Length;
+
+            // 如果粘贴的文本以换行符结尾，Split会产生一个额外的空数组元素，需要排除掉
+            if (string.IsNullOrEmpty(lines.Last()))
+            {
+                pastedRowCount--;
+            }
+
+            if (pastedRowCount <= 0) return;
+
+            // 3. 获取粘贴操作的目标起始行
+            int startRow = worksheet.SelectionRange.Row;
+
+            // 4. 计算粘贴完成后所需要的总行数
+            int requiredTotalRows = startRow + pastedRowCount;
+
+            // 5. 如果需要的总行数大于当前表格的总行数，则扩展表格
+            if (requiredTotalRows > worksheet.RowCount)
+            {
+                // 动态设置工作表的总行数
+                worksheet.RowCount = requiredTotalRows;
+            }
+        }
 
         /// <summary>
         /// 根据 CartesianAxisDefinition 对象中的设置，更新实际坐标轴的范围
@@ -280,6 +328,11 @@ namespace GeoChemistryNexus.ViewModels
                     scatterPlot.MarkerStyle.OutlineWidth = highlightWidthIncrease;
                     break;
 
+                case ScottPlot.Plottables.Arrow arrowPlot:
+                    arrowPlot.ArrowFillColor = highlightColor;
+                    arrowPlot.ArrowWidth += highlightWidthIncrease;
+                    break;
+
                 case ScottPlot.Plottables.Polygon polygonPlot:
                     polygonPlot.LineStyle.Color = highlightColor;
                     polygonPlot.LineStyle.Width += highlightWidthIncrease;
@@ -360,6 +413,15 @@ namespace GeoChemistryNexus.ViewModels
 
                         // 5. 判断“反向旋转”后的鼠标点是否在文本未旋转的相对矩形内
                         if (relativeRect.Contains(mouseX_relative, mouseY_relative))
+                        {
+                            isHovered = true;
+                        }
+                        break;
+
+                    // 箭头处理
+                    case ScottPlot.Plottables.Arrow arrowPlot:
+                        double distanceToArrow = GetDistanceToLineSegment(mouseCoordinates, arrowPlot.Base, arrowPlot.Tip);
+                        if (distanceToArrow <= radius)
                         {
                             isHovered = true;
                         }
@@ -486,11 +548,12 @@ namespace GeoChemistryNexus.ViewModels
             for (int i = 0; i < requiredColumns.Count; i++)
             {
                 worksheet.ColumnHeaders[i].Text = requiredColumns[i];
+                worksheet.AutoFitColumnWidth(i, true);
             }
         }
 
         /// <summary>
-        /// 鼠标左键抬起事件，用于确定线条的起点和终点
+        /// 鼠标左键抬起事件，用于确定绘图对象的起点和终点
         /// </summary>
         private void WpfPlot1_MouseUp(object? sender, MouseButtonEventArgs e)
         {
@@ -513,7 +576,7 @@ namespace GeoChemistryNexus.ViewModels
             var mousePos = e.GetPosition(WpfPlot1);
             Coordinates mouseCoordinates = WpfPlot1.Plot.GetCoordinates(new Pixel(mousePos.X * WpfPlot1.DisplayScale, mousePos.Y * WpfPlot1.DisplayScale));
 
-            // 如果正在添加多边形
+            // 添加多边形
             if (IsAddingPolygon)
             {
                 // 添加新顶点
@@ -546,7 +609,7 @@ namespace GeoChemistryNexus.ViewModels
                 {
                     // 第一次点击：设置起点
                     _lineStartPoint = mouseCoordinates;
-                    MessageHelper.Info("起点已确认，请点击设置终点");
+                    //MessageHelper.Info("起点已确认，请点击设置终点");
                 }
                 else
                 {
@@ -658,6 +721,67 @@ namespace GeoChemistryNexus.ViewModels
                 IsAddingText = false;
 
             }
+
+            // 添加箭头
+            if (IsAddingArrow)
+            {
+                if (!_arrowStartPoint.HasValue)
+                {
+                    _arrowStartPoint = mouseCoordinates;
+                }
+                else
+                {
+                    var startPoint = _arrowStartPoint.Value;
+                    var endPoint = mouseCoordinates;
+
+                    // 如果是三元图，需要将笛卡尔坐标转换为三元坐标进行存储
+                    if (BaseMapType == "Ternary")
+                    {
+                        // Clockwise 参数需要根据您的三元图设置来确定
+                        var ternaryStart = ToTernary(startPoint.X, startPoint.Y, Clockwise);
+                        var ternaryEnd = ToTernary(endPoint.X, endPoint.Y, Clockwise);
+
+                        // 将转换后的三元坐标（底轴和左轴的分量）存入PointDefinition
+                        startPoint = new Coordinates(ternaryStart.Item1, ternaryStart.Item2);
+                        endPoint = new Coordinates(ternaryEnd.Item1, ternaryEnd.Item2);
+                    }
+
+                    var arrowsCategory = LayerTree.FirstOrDefault(c => c is CategoryLayerItemViewModel vm && vm.Name == LanguageService.Instance["arrow"]) as CategoryLayerItemViewModel;
+                    if (arrowsCategory == null)
+                    {
+                        arrowsCategory = new CategoryLayerItemViewModel(LanguageService.Instance["arrow"]);
+                        LayerTree.Add(arrowsCategory);
+                    }
+
+                    var newArrowDef = new ArrowDefinition
+                    {
+                        Start = new PointDefinition { X = startPoint.X, Y = startPoint.Y },
+                        End = new PointDefinition { X = endPoint.X, Y = endPoint.Y },
+                        Color = "#000000",
+                        ArrowWidth = 1.5f,
+                        ArrowheadWidth = 18f,
+                        ArrowheadLength = 18f
+                    };
+
+                    var arrowLayer = new ArrowLayerItemViewModel(newArrowDef, arrowsCategory.Children.Count);
+                    arrowLayer.PropertyChanged += (s, ev) => { if (ev.PropertyName == nameof(ArrowLayerItemViewModel.IsVisible)) RefreshPlotFromLayers(); };
+                    arrowsCategory.Children.Add(arrowLayer);
+
+                    RefreshPlotFromLayers();
+
+                    // Reset arrow drawing state
+                    if (_tempArrowPlot != null)
+                    {
+                        WpfPlot1.Plot.Remove(_tempArrowPlot);
+                        _tempArrowPlot = null;
+                    }
+                    _arrowStartPoint = null;
+                    IsAddingArrow = false;
+                    WpfPlot1.Refresh();
+                }
+                return;
+            }
+
         }
 
         /// <summary>
@@ -665,6 +789,14 @@ namespace GeoChemistryNexus.ViewModels
         /// </summary>
         private void WpfPlot1_MouseRightButtonUp(object? sender, MouseButtonEventArgs e)
         {
+            // 如果当前是高亮状态，鼠标右键单击就是取消选择
+            if (_selectedLayer != null)
+            {
+                // 取消选择
+                CancelSelected();
+                return;
+            }
+
             // 处理多边形绘制完成或取消
             if (IsAddingPolygon)
             {
@@ -718,7 +850,7 @@ namespace GeoChemistryNexus.ViewModels
                 // 重置状态
                 IsAddingPolygon = false;
                 _polygonVertices.Clear();
-                WpfPlot1.Refresh(); // 最后刷新，确保临时图形完全消失
+                WpfPlot1.Refresh();
                 //MessageHelper.Success("多边形添加成功！");
                 return;
             }
@@ -743,6 +875,20 @@ namespace GeoChemistryNexus.ViewModels
                 IsAddingText = false;
                 MessageHelper.Info(LanguageService.Instance["add_text_operation_canceled"]);
             }
+
+            // 取消添加箭头
+            if (IsAddingArrow)
+            {
+                if (_tempArrowPlot != null)
+                {
+                    WpfPlot1.Plot.Remove(_tempArrowPlot);
+                    _tempArrowPlot = null;
+                }
+                _arrowStartPoint = null;
+                IsAddingArrow = false;
+                WpfPlot1.Refresh();
+                MessageHelper.Info(LanguageService.Instance["add_arrow_operation_canceled"]);
+            }
         }
 
         /// <summary>
@@ -751,6 +897,9 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private void AddPolygon()
         {
+            // 取消高亮选择
+            CancelSelected();
+
             // 进入添加多边形模式
             IsAddingPolygon = true;
             _polygonVertices.Clear(); // 清空旧的顶点
@@ -811,6 +960,9 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private void AddLine()
         {
+            // 取消高亮选择
+            CancelSelected();
+
             // 进入添加线条模式
             IsAddingLine = true;
             _lineStartPoint = null; // 重置起点
@@ -823,6 +975,9 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private void AddText()
         {
+            // 取消高亮选择
+            CancelSelected();
+
             // 进入添加文本模式
             IsAddingText = true;
             // 关闭其他可能开启的模式，以避免冲突
@@ -944,6 +1099,19 @@ namespace GeoChemistryNexus.ViewModels
                 _tempLinePlot = WpfPlot1.Plot.Add.Line(_lineStartPoint.Value.X, _lineStartPoint.Value.Y, mouseCoordinates.X, mouseCoordinates.Y);
                 _tempLinePlot.Color = Colors.Red; // 设置预览线为红色虚线
                 _tempLinePlot.LinePattern = LinePattern.Dashed;
+                WpfPlot1.Refresh();
+                return;
+            }
+
+            // 实时预览箭头
+            if (IsAddingArrow && _arrowStartPoint.HasValue)
+            {
+                if (_tempArrowPlot != null)
+                {
+                    WpfPlot1.Plot.Remove(_tempArrowPlot);
+                }
+                _tempArrowPlot = WpfPlot1.Plot.Add.Arrow(_arrowStartPoint.Value, mouseCoordinates);
+                _tempArrowPlot.ArrowFillColor = Colors.Red;
                 WpfPlot1.Refresh();
                 return;
             }
@@ -1165,20 +1333,12 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private void BackToTemplateMode()
         {
+            // 在返回模板库之前，完全重置绘图状态
+            ResetPlotStateToDefault();
+
             IsTemplateMode = true;
             IsPlotMode = false;
             RibbonTabIndex = 0;
-
-            // 清空绘图
-            WpfPlot1?.Plot.Clear();
-            WpfPlot1?.Refresh();
-
-            // 清空图层树
-            LayerTree.Clear();
-            PropertyGridModel = nullObject;
-
-            // 清空数据表格
-            _dataGrid.Worksheets[0].Reset();
 
             InitializeBreadcrumbs(); // 重置面包屑到初始状态
             LoadAllTemplateCards();  // 重新加载全部模板卡片
@@ -1243,6 +1403,38 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
+        /// 箭头对象属性更新，触发
+        /// </summary>
+        private bool ArrowPropertyChanged(ScottPlot.Plottables.Arrow arrowPlot, object sender, PropertyChangedEventArgs e)
+        {
+            var arrowDef = (ArrowDefinition)sender;
+            switch (e.PropertyName)
+            {
+                case nameof(ArrowDefinition.Start):
+                    arrowPlot.Base = new Coordinates(arrowDef.Start.X, arrowDef.Start.Y);
+                    break;
+                case nameof(ArrowDefinition.End):
+                    arrowPlot.Tip = new Coordinates(arrowDef.End.X, arrowDef.End.Y);
+                    break;
+                case nameof(ArrowDefinition.Color):
+                    arrowPlot.ArrowFillColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(arrowDef.Color));
+                    break;
+                case nameof(ArrowDefinition.ArrowWidth):
+                    arrowPlot.ArrowWidth = arrowDef.ArrowWidth;
+                    break;
+                case nameof(ArrowDefinition.ArrowheadWidth):
+                    arrowPlot.ArrowheadWidth = arrowDef.ArrowheadWidth;
+                    break;
+                case nameof(ArrowDefinition.ArrowheadLength):
+                    arrowPlot.ArrowheadLength = arrowDef.ArrowheadLength;
+                    break;
+                default:
+                    return false;
+            }
+            return true;
+        }
+
+        /// <summary>
         /// 当属性面板中的值改变时，此方法被调用实现更新
         /// </summary>
         private void PropertyGridModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -1301,11 +1493,17 @@ namespace GeoChemistryNexus.ViewModels
                         needsRefresh = TextPropertyChanged(textPlot, sender, e);
                         break;
 
+                    // 箭头
+                    case ScottPlot.Plottables.Arrow arrowPlot:
+                        needsRefresh = ArrowPropertyChanged(arrowPlot, sender, e);
+                        break;
+
                     // 多边形
                     case ScottPlot.Plottables.Polygon polygonPlot:
                         needsRefresh = PolygonPropertyChanged(polygonPlot, sender, e);
                         break;
 
+                    // 数据点
                     case ScottPlot.Plottables.Scatter scatterPlot:
                         needsRefresh = ScatterPropertyChanged(scatterPlot, sender, e);
                         break;
@@ -1611,26 +1809,26 @@ namespace GeoChemistryNexus.ViewModels
                 case nameof(GridDefinition.GridAlternateFillingIsEnable):
                 case nameof(GridDefinition.GridFillColor1):
                 case nameof(GridDefinition.GridFillColor2):
-                    if (gridDef.GridAlternateFillingIsEnable)
-                    {
-                        WpfPlot1.Plot.Grid.XAxisStyle.FillColor1 = ScottPlot.Color.FromHex(
-                                    GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(gridDef.GridFillColor1));
-                        WpfPlot1.Plot.Grid.YAxisStyle.FillColor1 = ScottPlot.Color.FromHex(
-                                    GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(gridDef.GridFillColor1));
-                        WpfPlot1.Plot.Grid.XAxisStyle.FillColor2 = ScottPlot.Color.FromHex(
-                                    GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(gridDef.GridFillColor2));
-                        WpfPlot1.Plot.Grid.YAxisStyle.FillColor2 = ScottPlot.Color.FromHex(
-                                    GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(gridDef.GridFillColor2));
-                    }
-                    else
-                    {
-                        // 设置为透明以禁用填充
-                        WpfPlot1.Plot.Grid.XAxisStyle.FillColor1 = ScottPlot.Colors.Transparent;
-                        WpfPlot1.Plot.Grid.YAxisStyle.FillColor1 = ScottPlot.Colors.Transparent;
-                        WpfPlot1.Plot.Grid.XAxisStyle.FillColor2 = ScottPlot.Colors.Transparent;
-                        WpfPlot1.Plot.Grid.YAxisStyle.FillColor2 = ScottPlot.Colors.Transparent;
-                    }
-                    break;
+                if (gridDef.GridAlternateFillingIsEnable)
+                {
+                    WpfPlot1.Plot.Grid.XAxisStyle.FillColor1 = ScottPlot.Color.FromHex(
+                                GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(gridDef.GridFillColor1));
+                    WpfPlot1.Plot.Grid.YAxisStyle.FillColor1 = ScottPlot.Color.FromHex(
+                                GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(gridDef.GridFillColor1));
+                    WpfPlot1.Plot.Grid.XAxisStyle.FillColor2 = ScottPlot.Color.FromHex(
+                                GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(gridDef.GridFillColor2));
+                    WpfPlot1.Plot.Grid.YAxisStyle.FillColor2 = ScottPlot.Color.FromHex(
+                                GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(gridDef.GridFillColor2));
+                }
+                else
+                {
+                    // 设置为透明以禁用填充
+                    WpfPlot1.Plot.Grid.XAxisStyle.FillColor1 = ScottPlot.Colors.Transparent;
+                    WpfPlot1.Plot.Grid.YAxisStyle.FillColor1 = ScottPlot.Colors.Transparent;
+                    WpfPlot1.Plot.Grid.XAxisStyle.FillColor2 = ScottPlot.Colors.Transparent;
+                    WpfPlot1.Plot.Grid.YAxisStyle.FillColor2 = ScottPlot.Colors.Transparent;
+                }
+                break;
             }
             return true;
         }
@@ -1894,8 +2092,8 @@ namespace GeoChemistryNexus.ViewModels
         /// <param name="dataRow">数据行</param>
         /// <param name="dataColumns">参与计算的数据列名</param>
         /// <param name="scriptBody">脚本内容</param>
-        /// <returns>返回[x, y]坐标数组，失败时返回null</returns>
-        private double[] CalculateCoordinatesUsingScript(DataRow dataRow, List<string> dataColumns, string scriptBody)
+        /// <returns>返回计算结果的double数组，如果计算失败或返回类型不正确则返回null</returns>
+        private double[]? CalculateCoordinatesUsingScript(DataRow dataRow, List<string> dataColumns, string scriptBody)
         {
             try
             {
@@ -1918,16 +2116,25 @@ namespace GeoChemistryNexus.ViewModels
                 // 执行脚本并获取结果
                 var result = engine.Evaluate(scriptBody);
 
-                // 判断返回结果类型
+                // 检查返回结果是否为数组
                 if (result.IsArray())
                 {
                     var array = result.AsArray();
-                    if (array.Length >= 2)
+                    // 将JavaScript数组转换为C#的double数组
+                    var values = new double[array.Length];
+                    for (int i = 0; i < array.Length; i++)
                     {
-                        var x = Convert.ToDouble(array[0].AsNumber());
-                        var y = Convert.ToDouble(array[1].AsNumber());
-                        return new double[] { x, y };
+                        if (array[i].IsNumber())
+                        {
+                            values[i] = array[i].AsNumber();
+                        }
+                        else
+                        {
+                            // 如果数组中有任何一个元素不是数字，则认为结果无效
+                            return null;
+                        }
                     }
+                    return values; // 返回包含所有数值的数组
                 }
 
                 return null;
@@ -1938,7 +2145,7 @@ namespace GeoChemistryNexus.ViewModels
                 return null;
             }
         }
-
+        
         /// <summary>
         /// 降低指定图层透明度，实现遮罩效果
         /// </summary>
@@ -1970,6 +2177,10 @@ namespace GeoChemistryNexus.ViewModels
                     }
                     // 文字颜色变暗
                     textPlot.LabelFontColor = textPlot.LabelFontColor.WithAlpha(dimAlpha);
+                    break;
+
+                case ScottPlot.Plottables.Arrow arrowPlot:
+                    arrowPlot.ArrowFillColor = arrowPlot.ArrowFillColor.WithAlpha(dimAlpha);
                     break;
 
                 // 数据点变暗
@@ -2024,6 +2235,17 @@ namespace GeoChemistryNexus.ViewModels
                     if (scatterDef == null) break;
                     // 从其定义对象中读取原始颜色并应用
                     scatterPlot.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(scatterDef.Color));
+                    scatterPlot.MarkerStyle.OutlineWidth = 0;
+                    break;
+
+                // 恢复箭头样式
+                case ScottPlot.Plottables.Arrow arrowPlot:
+                    var arrowDef = (layer as ArrowLayerItemViewModel)?.ArrowDefinition;
+                    if (arrowDef == null) break;
+                    arrowPlot.ArrowFillColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(arrowDef.Color));
+                    arrowPlot.ArrowWidth = arrowDef.ArrowWidth;
+                    arrowPlot.ArrowheadWidth = arrowDef.ArrowheadWidth;
+                    arrowPlot.ArrowheadLength = arrowDef.ArrowheadLength;
                     break;
 
                 // 多边形恢复
@@ -2096,12 +2318,6 @@ namespace GeoChemistryNexus.ViewModels
                 axesCategory.Children.Add(axisLayer);
             }
 
-            // TODO:网格对象加载
-            // TODO:绘图设置加载
-            // TODO:图例设置加载
-            // TODO:脚本设置加载
-
-
             // 空对象不添加图层
             if (axesCategory.Children.Any()) LayerTree.Add(axesCategory);
 
@@ -2141,6 +2357,15 @@ namespace GeoChemistryNexus.ViewModels
             }
             if (textCategory.Children.Any()) LayerTree.Add(textCategory);
 
+            // 箭头图层
+            var arrowsCategory = new CategoryLayerItemViewModel(LanguageService.Instance["arrow"]);
+            for (int i = 0; i < template.Info.Arrows.Count; i++)
+            {
+                var arrowLayer = new ArrowLayerItemViewModel(template.Info.Arrows[i], i);
+                arrowLayer.PropertyChanged += (s, e) => { if (e.PropertyName == nameof(ArrowLayerItemViewModel.IsVisible)) RefreshPlotFromLayers(); };
+                arrowsCategory.Children.Add(arrowLayer);
+            }
+            if (arrowsCategory.Children.Any()) LayerTree.Add(arrowsCategory);
 
             // 注释图层
             var annotationCategory = new CategoryLayerItemViewModel(LanguageService.Instance["annotation"]);
@@ -2177,10 +2402,13 @@ namespace GeoChemistryNexus.ViewModels
 
             BaseMapType = CurrentTemplate.TemplateType;
 
+            Clockwise = CurrentTemplate.Clockwise;
+
             // 根据模板类型选择渲染路径
             if (CurrentTemplate.TemplateType == "Ternary")
             {
                 RenderTernaryPlot();
+                WpfPlot1.Plot.Axes.AutoScale();
             }
             else // 默认处理笛卡尔坐标系
             {
@@ -2193,8 +2421,28 @@ namespace GeoChemistryNexus.ViewModels
             // 获取脚本对象
             CurrentScript = CurrentTemplate.Script;
 
-            WpfPlot1.Plot.Axes.AutoScale();
+            //WpfPlot1.Plot.Axes.AutoScale();
             WpfPlot1.Refresh();
+        }
+
+        // 创建箭头绘图对象
+        private void CreateArrowPlottable(ArrowLayerItemViewModel arrowLayer)
+        {
+            var arrowDef = arrowLayer.ArrowDefinition;
+            if (arrowDef.Start == null || arrowDef.End == null) return;
+            var arrowPlot = WpfPlot1.Plot.Add.Arrow(new Coordinates(arrowDef.Start.X, arrowDef.Start.Y), new Coordinates(arrowDef.End.X, arrowDef.End.Y));
+
+            // 应用样式
+            arrowPlot.ArrowFillColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(arrowDef.Color));
+            arrowPlot.ArrowWidth = arrowDef.ArrowWidth;
+            arrowPlot.ArrowheadWidth = arrowDef.ArrowheadWidth;
+            arrowPlot.ArrowheadLength = arrowDef.ArrowheadLength;
+
+            // 隐藏属性-箭头描边颜色
+            arrowPlot.ArrowLineColor = Colors.Transparent;
+
+            // 存储引用
+            arrowLayer.Plottable = arrowPlot;
         }
 
         /// <summary>
@@ -2217,16 +2465,22 @@ namespace GeoChemistryNexus.ViewModels
                 }
             }
 
-            // --- 绘制多边形 (Polygon) ---
+            // --- 绘制多边形 ---
             foreach (var item in allNodes.OfType<PolygonLayerItemViewModel>().Where(l => l.IsVisible))
             {
                 CreatePolygonPlottable(item);
             }
 
-            // --- 绘制线条 (Line) ---
+            // --- 绘制线条 ---
             foreach (var item in allNodes.OfType<LineLayerItemViewModel>().Where(l => l.IsVisible))
             {
                 CreateLinePlottable(item);
+            }
+
+            // --- 绘制箭头 ---
+            foreach (var item in allNodes.OfType<ArrowLayerItemViewModel>().Where(l => l.IsVisible))
+            {
+                CreateArrowPlottable(item);
             }
 
             // --- 绘制数据点 ---
@@ -2240,7 +2494,7 @@ namespace GeoChemistryNexus.ViewModels
                 item.Plottable = scatterPlot;
             }
 
-            // --- 绘制文本 (Text) ---
+            // --- 绘制文本 ---
             foreach (var item in allNodes.OfType<TextLayerItemViewModel>().Where(l => l.IsVisible))
             {
                 CreateTextPlottable(item);
@@ -2262,6 +2516,51 @@ namespace GeoChemistryNexus.ViewModels
                 WpfPlot1.Plot.Axes.Title.Label.Bold = CurrentTemplate.Info.Title.IsBold;
                 WpfPlot1.Plot.Axes.Title.Label.Italic = CurrentTemplate.Info.Title.IsItalic;
             }
+
+            // 设置网格样式
+            if (CurrentTemplate?.Info?.Grid != null)
+            {
+                var gridDef = CurrentTemplate.Info.Grid;
+                var grid = WpfPlot1.Plot.Grid; // 获取 ScottPlot 的默认网格对象
+
+                // 应用主网格线样式
+                grid.XAxisStyle.MajorLineStyle.IsVisible = gridDef.MajorGridLineIsVisible;
+                grid.YAxisStyle.MajorLineStyle.IsVisible = gridDef.MajorGridLineIsVisible;
+                grid.MajorLineColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(gridDef.MajorGridLineColor));
+                grid.MajorLineWidth = gridDef.MajorGridLineWidth;
+                grid.MajorLinePattern = GraphMapTemplateParser.GetLinePattern(gridDef.MajorGridLinePattern.ToString());
+                grid.XAxisStyle.MajorLineStyle.AntiAlias = gridDef.MajorGridLineAntiAlias;
+                grid.YAxisStyle.MajorLineStyle.AntiAlias = gridDef.MajorGridLineAntiAlias;
+
+
+                // 应用次网格线样式
+                grid.XAxisStyle.MinorLineStyle.IsVisible = gridDef.MinorGridLineIsVisible;
+                grid.YAxisStyle.MinorLineStyle.IsVisible = gridDef.MinorGridLineIsVisible;
+                grid.MinorLineColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(gridDef.MinorGridLineColor));
+                grid.MinorLineWidth = gridDef.MinorGridLineWidth;
+                grid.XAxisStyle.MinorLineStyle.AntiAlias = gridDef.MinorGridLineAntiAlias;
+                grid.YAxisStyle.MinorLineStyle.AntiAlias = gridDef.MinorGridLineAntiAlias;
+
+                // 应用交替填充背景
+                if (gridDef.GridAlternateFillingIsEnable)
+                {
+                    grid.XAxisStyle.FillColor1 = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(gridDef.GridFillColor1));
+                    grid.YAxisStyle.FillColor1 = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(gridDef.GridFillColor1));
+                    grid.XAxisStyle.FillColor2 = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(gridDef.GridFillColor2));
+                    grid.YAxisStyle.FillColor2 = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(gridDef.GridFillColor2));
+                }
+                else
+                {
+                    // 如果禁用，则设置为透明
+                    grid.XAxisStyle.FillColor1 = Colors.Transparent;
+                    grid.YAxisStyle.FillColor1 = Colors.Transparent;
+                    grid.XAxisStyle.FillColor2 = Colors.Transparent;
+                    grid.YAxisStyle.FillColor2 = Colors.Transparent;
+                }
+
+                // 根据API文档，DefaultGrid也有一个总的IsVisible属性，确保它也被设置
+                grid.IsVisible = gridDef.MajorGridLineIsVisible || gridDef.MinorGridLineIsVisible;
+            }
         }
 
         /// <summary>
@@ -2270,7 +2569,7 @@ namespace GeoChemistryNexus.ViewModels
         private void RenderTernaryPlot()
         {
             // 添加三角坐标轴到图表，并获取其引用
-            var triangularAxis = WpfPlot1.Plot.Add.TriangularAxis();
+            var triangularAxis = WpfPlot1.Plot.Add.TriangularAxis(clockwise: CurrentTemplate.Clockwise);
 
             // 应用模板中的网格和背景样式
             var gridDef = CurrentTemplate.Info.Grid;
@@ -2299,26 +2598,50 @@ namespace GeoChemistryNexus.ViewModels
             // 设置坐标轴标题和样式
             foreach (var item in allNodes.OfType<AxisLayerItemViewModel>().Where(l => l.IsVisible))
             {
-                var axisDef = item.AxisDefinition;
-                switch (axisDef.Type)
+                // 确保 axisDef 是 TernaryAxisDefinition 类型
+                if (item.AxisDefinition is TernaryAxisDefinition ternaryAxisDef)
                 {
-                    case "Bottom":
-                        triangularAxis.Bottom.LabelText = axisDef.Label.Get();
-                        triangularAxis.Bottom.Color(ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(axisDef.Color)));
-                        break;
-                    case "Left":
-                        triangularAxis.Left.LabelText = axisDef.Label.Get();
-                        triangularAxis.Left.Color(ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(axisDef.Color)));
-                        break;
-                    case "Right":
-                        triangularAxis.Right.LabelText = axisDef.Label.Get();
-                        triangularAxis.Right.Color(ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(axisDef.Color)));
-                        break;
+                    ScottPlot.TriangularAxisEdge? targetEdge = null;
+
+                    switch (ternaryAxisDef.Type)
+                    {
+                        case "Bottom":
+                            targetEdge = triangularAxis.Bottom;
+                            break;
+                        case "Left":
+                            targetEdge = triangularAxis.Left;
+                            break;
+                        case "Right":
+                            targetEdge = triangularAxis.Right;
+                            break;
+                    }
+
+                    if (targetEdge != null)
+                    {
+                        // --- 应用所有标题样式 ---
+                        targetEdge.LabelText = ternaryAxisDef.Label.Get();
+                        targetEdge.LabelStyle.FontName = ternaryAxisDef.Family;
+                        targetEdge.LabelStyle.FontSize = ternaryAxisDef.Size;
+                        targetEdge.LabelStyle.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(ternaryAxisDef.Color));
+                        targetEdge.LabelStyle.Bold = ternaryAxisDef.IsBold;
+                        targetEdge.LabelStyle.Italic = ternaryAxisDef.IsItalic;
+
+                        // --- 应用所有刻度样式 ---
+                        targetEdge.TickMarkStyle.Width = ternaryAxisDef.MajorTickWidth;
+                        targetEdge.TickMarkStyle.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(ternaryAxisDef.MajorTickWidthColor));
+
+                        // --- 应用所有刻度标签样式 ---
+                        targetEdge.TickLabelStyle.FontName = ternaryAxisDef.TickLableFamily;
+                        targetEdge.TickLabelStyle.FontSize = ternaryAxisDef.TickLablesize;
+                        targetEdge.TickLabelStyle.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(ternaryAxisDef.TickLablecolor));
+                        targetEdge.TickLabelStyle.Bold = ternaryAxisDef.TickLableisBold;
+                        targetEdge.TickLabelStyle.Italic = ternaryAxisDef.TickLableisItalic;
+                    }
                 }
             }
 
             // --- 绘制数据点 ---
-            // 在三元图中，我们假设ScatterLayerItemViewModel中的X和Y分别代表底轴和左轴的比例
+            // 在三元图中，ScatterLayerItemViewModel中的X和Y分别代表底轴和左轴的比例
             foreach (var item in allNodes.OfType<ScatterLayerItemViewModel>().Where(l => l.IsVisible))
             {
                 var scatterDef = item.ScatterDefinition;
@@ -2339,7 +2662,11 @@ namespace GeoChemistryNexus.ViewModels
                 item.Plottable = scatterPlot;
             }
 
-            // --- 绘制其他类型的图层  ---
+            // --- 绘制箭头 (Arrow) ---
+            foreach (var item in allNodes.OfType<ArrowLayerItemViewModel>().Where(l => l.IsVisible))
+            {
+                CreateTernaryArrowPlottable(item, triangularAxis);
+            }
 
             // --- 绘制多边形 (Polygon) ---
             foreach (var item in allNodes.OfType<PolygonLayerItemViewModel>().Where(l => l.IsVisible))
@@ -2359,8 +2686,47 @@ namespace GeoChemistryNexus.ViewModels
                 CreateTextPlottable(item);
             }
 
-            // 三角图通常需要方形坐标轴以避免变形
+            // 三角图需要方形坐标轴以避免变形
             WpfPlot1.Plot.Axes.SquareUnits();
+        }
+
+        /// <summary>
+        /// 在三元坐标系下创建箭头绘图对象。
+        /// 此方法会处理从存储的三元坐标到绘图所需的笛卡尔坐标的转换。
+        /// </summary>
+        /// <param name="arrowLayer">包含箭头定义的图层ViewModel</param>
+        /// <param name="triangularAxis">用于坐标转换的三元轴对象</param>
+        private void CreateTernaryArrowPlottable(ArrowLayerItemViewModel arrowLayer, ScottPlot.Plottables.TriangularAxis triangularAxis)
+        {
+            var arrowDef = arrowLayer.ArrowDefinition;
+            if (arrowDef.Start == null || arrowDef.End == null) return;
+
+            // 从存储的三元坐标分量中获取起点和终点
+            // 假设 X 存储 bottomFraction, Y 存储 leftFraction
+            double startBottom = arrowDef.Start.X;
+            double startLeft = arrowDef.Start.Y;
+            double startRight = 1 - startBottom - startLeft; // 计算第三个分量
+
+            double endBottom = arrowDef.End.X;
+            double endLeft = arrowDef.End.Y;
+            double endRight = 1 - endBottom - endLeft; // 计算第三个分量
+
+            // 使用三角轴对象将三元坐标转换为笛卡尔坐标
+            var startCartesian = triangularAxis.GetCoordinates(startBottom, startLeft, startRight);
+            var endCartesian = triangularAxis.GetCoordinates(endBottom, endLeft, endRight);
+
+            // 使用转换后的笛卡尔坐标创建箭头
+            var arrowPlot = WpfPlot1.Plot.Add.Arrow(startCartesian, endCartesian);
+
+            // 应用样式
+            arrowPlot.ArrowFillColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(arrowDef.Color));
+            arrowPlot.ArrowWidth = arrowDef.ArrowWidth;
+            arrowPlot.ArrowheadWidth = arrowDef.ArrowheadWidth;
+            arrowPlot.ArrowheadLength = arrowDef.ArrowheadLength;
+            arrowPlot.ArrowLineColor = Colors.Transparent;
+
+            // 存储引用
+            arrowLayer.Plottable = arrowPlot;
         }
 
         // 设置坐标轴
@@ -2487,6 +2853,8 @@ namespace GeoChemistryNexus.ViewModels
         private void ImportDataPlot()
         {
             RibbonTabIndex = 1;
+            // 取消遮罩选择
+            CancelSelected();
         }
 
         /// <summary>
@@ -2528,6 +2896,7 @@ namespace GeoChemistryNexus.ViewModels
                 PointLayerItemViewModel pointLayer => pointLayer.PointDefinition,
                 LineLayerItemViewModel lineLayer => lineLayer.LineDefinition,
                 TextLayerItemViewModel textLayer => textLayer.TextDefinition,
+                ArrowLayerItemViewModel arrowLayer => arrowLayer.ArrowDefinition,
                 PolygonLayerItemViewModel polygonLayer => polygonLayer.PolygonDefinition,
                 AxisLayerItemViewModel axisLayer => axisLayer.AxisDefinition,
                 LegendLayerItemViewModel legendLayer => legendLayer.LegendDefinition,
@@ -2555,7 +2924,7 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 清空所有数据（包括数据表格和图上的数据点）
+        /// 清空所有数据（包括数据表格和图上的数据点）清除数据
         /// </summary>
         [RelayCommand]
         private async Task ClearAllData()
@@ -2760,55 +3129,12 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 清除所有导入的数据点
+        /// 清除绘图中的数据点，但是不会清除数据表格
         /// </summary>
         [RelayCommand]
-        private async Task ClearImportedDataAsync()
+        private void ClearPlotDataPoints()
         {
-            bool isConfirmed = await MessageHelper.ShowAsyncDialog(
-                LanguageService.Instance["confirm_clear_data_points"],
-                LanguageService.Instance["Cancel"],
-                LanguageService.Instance["Confirm"]);
-
-            if(isConfirmed)
-            {
-                // 在图层列表中查找名为 "数据点" 的根分类图层
-                var dataRootNode = LayerTree.FirstOrDefault(node => node is CategoryLayerItemViewModel vm && vm.Name == LanguageService.Instance["data_point"]);
-
-                // 如果没有找到该节点，说明没有导入数据
-                if (dataRootNode == null)
-                {
-                    MessageHelper.Info(LanguageService.Instance["no_imported_data_to_clear"]);
-                    return;
-                }
-
-                // 使用辅助方法 `FlattenTree` 获取 "数据点" 分类下的所有子图层
-                var allDataLayers = FlattenTree(dataRootNode.Children).ToList();
-
-                // 遍历所有找到的数据点图层，并从 ScottPlot 图表中移除它们对应的 Plottable 对象
-                foreach (var layer in allDataLayers)
-                {
-                    if (layer.Plottable != null)
-                    {
-                        WpfPlot1.Plot.Remove(layer.Plottable);
-                    }
-                }
-
-                // 从图层树的根集合中移除 "数据点" 这个顶级分类节点
-                LayerTree.Remove(dataRootNode);
-
-                // 检查属性面板当前是否正在显示某个已被删除的图层
-                // 如果是，则清空属性面板，避免悬空引用
-                if (_selectedLayer != null && (allDataLayers.Contains(_selectedLayer) || _selectedLayer == dataRootNode))
-                {
-                    PropertyGridModel = nullObject;
-                    _selectedLayer = null;
-                }
-
-                // 刷新绘图控件以应用所有更改
-                WpfPlot1.Refresh();
-                MessageHelper.Success(LanguageService.Instance["all_imported_data_cleared"]);
-            }
+            ClearImportedDataAsync();
         }
 
         /// <summary>
@@ -2898,6 +3224,42 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
+        /// 将当前底图模板另存为新文件
+        /// </summary>
+        [RelayCommand]
+        private void SaveBaseMapAs()
+        {
+            // 确保有模板可以保存
+            if (CurrentTemplate == null)
+            {
+                MessageHelper.Error(LanguageService.Instance["no_template_or_path_specified"]);
+                return;
+            }
+
+            // 配置并显示文件保存对话框
+            var saveFileDialog = new VistaSaveFileDialog
+            {
+                Title = LanguageService.Instance["save_template_as"], // "模板另存为..."
+                Filter = $"{LanguageService.Instance["template_files"]} (*.json)|*.json|{LanguageService.Instance["all_files"]} (*.*)|*.*",
+                DefaultExt = ".json",
+                FileName = Path.GetFileName(_currentTemplateFilePath) ?? "NewTemplate.json" // 默认文件名
+            };
+
+            // 如果用户选择了路径并点击了 "保存"
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                // 获取用户选择的完整文件路径
+                string newFilePath = saveFileDialog.FileName;
+
+                // 更新当前ViewModel内部的模板文件路径
+                _currentTemplateFilePath = newFilePath;
+
+                // 调用核心保存逻辑
+                PerformSave(newFilePath);
+            }
+        }
+
+        /// <summary>
         /// 保存当前底图模板
         /// </summary>
         [RelayCommand]
@@ -2906,85 +3268,13 @@ namespace GeoChemistryNexus.ViewModels
             // 确保有模板和路径可供保存
             if (CurrentTemplate == null || string.IsNullOrWhiteSpace(_currentTemplateFilePath))
             {
-                // 没有可保存的模板或未指定保存路径。请先新建或打开一个模板
+                // 没有可保存的模板或未指定保存路径。请使用另存为保存
                 MessageHelper.Error(LanguageService.Instance["no_template_or_path_specified"]);
                 return;
             }
 
-            // 清空模板中原有的动态绘图元素列表
-            //    (坐标轴、标题等对象是直接修改属性，不需要清空)
-            CurrentTemplate.Info.Lines.Clear();
-            CurrentTemplate.Info.Texts.Clear();
-            CurrentTemplate.Info.Annotations.Clear();
-            CurrentTemplate.Info.Points.Clear();
-            CurrentTemplate.Info.Polygons.Clear();
-
-            // 遍历当前的图层列表，收集所有图元信息
-            var allLayers = FlattenTree(LayerTree); // 使用您已有的辅助方法获取所有图层
-            foreach (var layer in allLayers)
-            {
-                // 使用 switch 匹配不同类型的图层
-                switch (layer)
-                {
-                    // 如果是线条图层
-                    case LineLayerItemViewModel lineLayer:
-                        CurrentTemplate.Info.Lines.Add(lineLayer.LineDefinition);
-                        break;
-
-                    // 如果是文本图层
-                    case TextLayerItemViewModel textLayer:
-                        CurrentTemplate.Info.Texts.Add(textLayer.TextDefinition);
-                        break;
-
-                    // 如果是注释图层
-                    case AnnotationLayerItemViewModel annotationLayer:
-                        CurrentTemplate.Info.Annotations.Add(annotationLayer.AnnotationDefinition);
-                        break;
-
-                    // 如果是多边形
-                    case PolygonLayerItemViewModel polygonLayer:
-                        CurrentTemplate.Info.Polygons.Add(polygonLayer.PolygonDefinition);
-                        break;
-                        // TODO:其他图元处理
-                }
-            }
-
-            // 将更新后的 CurrentTemplate 对象序列化为 JSON 字符串
-            var options = new JsonSerializerOptions
-            {
-                // 美化输出，使其易于阅读
-                WriteIndented = true,
-                // 解决中文字符被编码为 \uXXXX 的问题
-                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-                // 将枚举类型转换为字符串而不是数字
-                Converters = { new System.Text.Json.Serialization.JsonStringEnumConverter() }
-            };
-
-            try
-            {
-                string jsonString = JsonSerializer.Serialize(CurrentTemplate, options);
-
-                // 将 JSON 字符串写入文件
-                // 确保目录存在
-                string directoryPath = Path.GetDirectoryName(_currentTemplateFilePath);
-                if (!Directory.Exists(directoryPath))
-                {
-                    Directory.CreateDirectory(directoryPath);
-                }
-
-                File.WriteAllText(_currentTemplateFilePath, jsonString);
-
-                // 更新或生成新的缩略图
-                string thumbnailPath = Path.Combine(directoryPath, "thumbnail.jpg");
-                WpfPlot1.Plot.Save(thumbnailPath, 400, 300); // 保存一个400x300的缩略图
-
-                // 模板已成功保存！
-                MessageHelper.Success(LanguageService.Instance["template_saved_successfully"]);
-            }
-            catch (Exception ex)
-            {
-                MessageHelper.Error(LanguageService.Instance["save_template_failed"] + $": {ex.Message}");
-            }
+            // 如果路径存在，直接在原路径上保存
+            PerformSave(_currentTemplateFilePath);
         }
 
         /// <summary>
@@ -3028,6 +3318,9 @@ namespace GeoChemistryNexus.ViewModels
                                           LanguageService.CurrentLanguage,
                                           ".rtf");
                     RtfHelper.LoadRtfToRichTextBox(tempRTFfile, _richTextBox);
+
+                    // 加载数据表格控件
+                    PrepareDataGridForInput();
 
                     // 通知
                     MessageHelper.Success(LanguageService.Instance["template_loaded_successfully"]);
@@ -3106,22 +3399,22 @@ namespace GeoChemistryNexus.ViewModels
             }
 
             // 清除之前导入的数据点
-            //ClearImportedData(false);
+            ClearExistingPlottedData();
 
             string categoryColumn = requiredColumns[0];
             var dataColumns = requiredColumns.Skip(1).ToList();
 
-            // 先对数据进行分组
+            // 先对数据进行分组，并附加行号（从1开始）
             var groupedData = dataTable.AsEnumerable()
-                .Where(row => row[categoryColumn] != null && !string.IsNullOrEmpty(row[categoryColumn].ToString()))
-                .GroupBy(row => row.Field<string>(categoryColumn));
+                .Select((row, index) => new { Row = row, Index = index + 1 })
+                .Where(x => x.Row[categoryColumn] != null && !string.IsNullOrEmpty(x.Row[categoryColumn].ToString()))
+                .GroupBy(x => x.Row.Field<string>(categoryColumn));
 
-            // 检查分组是否成功。如果没有有效的分组，则提示并直接返回，不创建任何图层。
+            // 检查分组是否成功
             if (!groupedData.Any())
             {
-                // 未能从文件中解析出有效的类别分组。请检查类别列数据
                 MessageHelper.Warning(LanguageService.Instance["failed_to_parse_category_group"]);
-                return; // 直接返回，避免创建空的父节点
+                return;
             }
 
             // 确认数据有效后，再创建“数据点”的根节点
@@ -3136,77 +3429,173 @@ namespace GeoChemistryNexus.ViewModels
             var palette = new ScottPlot.Palettes.Category10();
             int colorIndex = 0;
 
-            // 遍历每个类别分组
-            foreach (var group in groupedData)
+            // ===================================
+            //  根据图表类型选择不同的投点逻辑
+            // ===================================
+            if (BaseMapType == "Ternary")
             {
-                string categoryName = group.Key;
-                if (string.IsNullOrWhiteSpace(categoryName)) continue;
-
-                var groupColor = palette.GetColor(colorIndex++);
-
-                // 1. 准备两个列表，用于收集本类别的所有点坐标
-                List<double> xs = new List<double>();
-                List<double> ys = new List<double>();
-
-                // 遍历该类别下的每一行数据
-                foreach (DataRow row in group)
+                // --- 三元图投点逻辑 ---
+                var triangularAxis = WpfPlot1.Plot.GetPlottables().OfType<ScottPlot.Plottables.TriangularAxis>().FirstOrDefault();
+                if (triangularAxis == null)
                 {
-                    try
-                    {
-                        var coordinates = CalculateCoordinatesUsingScript(row, dataColumns, scriptDefinition.ScriptBody);
-                        if (coordinates != null && coordinates.Length == 2)
-                        {
-                            // 2. 将计算出的坐标加入列表
-                            xs.Add(coordinates[0]);
-                            ys.Add(coordinates[1]);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        System.Diagnostics.Debug.WriteLine($"计算坐标时出错: {ex.Message}");
-                    }
+                    MessageHelper.Error("错误：在图中找不到三元坐标轴对象。");
+                    return;
                 }
 
-                // 如果这个类别下没有任何有效的点，则跳过
-                if (!xs.Any()) continue;
+                // 用于保存校验失败的数据信息
+                var validationErrors = new List<string>();
 
-                // 3. 为整个类别创建一个 Scatter 对象
-                var scatterPlotForCategory = WpfPlot1.Plot.Add.ScatterPoints(xs.ToArray(), ys.ToArray());
-
-                // 4. 设置这个数据点对象的样式和图例
-                scatterPlotForCategory.Color = groupColor;
-                scatterPlotForCategory.MarkerSize = 10;
-                scatterPlotForCategory.LegendText = categoryName;
-
-                // 5. 创建一个代表该类别的 ScatterDefinition 对象
-                var scatterDefForCategory = new ScatterDefinition
+                foreach (var group in groupedData)
                 {
-                    Color = groupColor.ToHex(),
-                    Size = 10
-                };
+                    string categoryName = group.Key;
+                    if (string.IsNullOrWhiteSpace(categoryName)) continue;
+                    var groupColor = palette.GetColor(colorIndex++);
+                    var cartesianCoords = new List<Coordinates>();
 
-                // 6. 创建类别图层节点，并将 Plottable 和 Definition 赋给它
-                var categoryViewModel = new ScatterLayerItemViewModel(scatterDefForCategory)
-                {
-                    Name = categoryName,
-                    Plottable = scatterPlotForCategory, // Plottable 在类别节点上
-                    IsVisible = true
-                };
-
-                // 订阅可见性变化等事件
-                categoryViewModel.PropertyChanged += (s, e) =>
-                {
-                    if (e.PropertyName == nameof(ScatterLayerItemViewModel.IsVisible))
+                    foreach (var item in group)
                     {
-                        if (categoryViewModel.Plottable != null)
+                        DataRow row = item.Row;
+                        int rowIndex = item.Index; // 获取原始数据行号（从1开始）
+                        try
                         {
-                            categoryViewModel.Plottable.IsVisible = categoryViewModel.IsVisible;
-                            WpfPlot1.Refresh();
+                            var ternaryValues = CalculateCoordinatesUsingScript(row, dataColumns, scriptDefinition.ScriptBody);
+                            // 脚本必须为三元图返回三个值
+                            if (ternaryValues != null && ternaryValues.Length == 3)
+                            {
+                                double bottomVal = ternaryValues[0];
+                                double leftVal = ternaryValues[1];
+                                double rightVal = ternaryValues[2];
+
+                                // 计算三个分量的和
+                                double sum = bottomVal + leftVal + rightVal;
+
+                                // 如果和接近0，视为无效数据，跳过
+                                if (Math.Abs(sum) < 1e-9)
+                                {
+                                    continue;
+                                }
+
+                                // 如果和显著大于1（例如，接近100），则认为是百分比整数形式，进行归一化
+                                if (sum > 1.1)
+                                {
+                                    bottomVal /= sum;
+                                    leftVal /= sum;
+                                    rightVal /= sum;
+                                }
+
+                                // 将三元坐标转换为笛卡尔坐标
+                                var cartesianCoord = triangularAxis.GetCoordinates(bottomVal, leftVal, rightVal);
+                                cartesianCoords.Add(cartesianCoord);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"计算三元坐标时出错: {ex.Message}");
                         }
                     }
-                };
 
-                rootDataNode.Children.Add(categoryViewModel);
+                    if (!cartesianCoords.Any()) continue;
+
+                    var scatterPlotForCategory = WpfPlot1.Plot.Add.ScatterPoints(cartesianCoords.ToArray());
+                    scatterPlotForCategory.Color = groupColor;
+                    scatterPlotForCategory.MarkerSize = 10;
+                    scatterPlotForCategory.LegendText = categoryName;
+
+                    var scatterDefForCategory = new ScatterDefinition
+                    {
+                        Color = groupColor.ToHex(),
+                        Size = 10
+                    };
+
+                    var categoryViewModel = new ScatterLayerItemViewModel(scatterDefForCategory)
+                    {
+                        Name = categoryName,
+                        Plottable = scatterPlotForCategory,
+                        IsVisible = true
+                    };
+                    categoryViewModel.PropertyChanged += (s, e) =>
+                    {
+                        if (e.PropertyName == nameof(ScatterLayerItemViewModel.IsVisible))
+                        {
+                            if (categoryViewModel.Plottable != null)
+                            {
+                                categoryViewModel.Plottable.IsVisible = categoryViewModel.IsVisible;
+                                WpfPlot1.Refresh();
+                            }
+                        }
+                    };
+                    rootDataNode.Children.Add(categoryViewModel);
+                }
+
+                // 如果存在校验失败的数据，则进行提示
+                if (validationErrors.Any())
+                {
+                    string fullErrorMessage = LanguageService.Instance["some_data_failed_validation"] + "：\n" + string.Join("\n", validationErrors);
+                    MessageHelper.Warning(fullErrorMessage);
+                }
+            }
+            else // --- 笛卡尔坐标系投点逻辑 ---
+            {
+                foreach (var group in groupedData)
+                {
+                    string categoryName = group.Key;
+                    if (string.IsNullOrWhiteSpace(categoryName)) continue;
+
+                    var groupColor = palette.GetColor(colorIndex++);
+                    var xs = new List<double>();
+                    var ys = new List<double>();
+
+                    foreach (var item in group) // item 包含 Row 和 Index
+                    {
+                        DataRow row = item.Row;
+                        try
+                        {
+                            var coordinates = CalculateCoordinatesUsingScript(row, dataColumns, scriptDefinition.ScriptBody);
+                            // 脚本必须为笛卡尔坐标图返回两个值
+                            if (coordinates != null && coordinates.Length == 2)
+                            {
+                                xs.Add(coordinates[0]);
+                                ys.Add(coordinates[1]);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"计算坐标时出错: {ex.Message}");
+                        }
+                    }
+
+                    if (!xs.Any()) continue;
+
+                    var scatterPlotForCategory = WpfPlot1.Plot.Add.ScatterPoints(xs.ToArray(), ys.ToArray());
+                    scatterPlotForCategory.Color = groupColor;
+                    scatterPlotForCategory.MarkerSize = 10;
+                    scatterPlotForCategory.LegendText = categoryName;
+
+                    var scatterDefForCategory = new ScatterDefinition
+                    {
+                        Color = groupColor.ToHex(),
+                        Size = 10
+                    };
+
+                    var categoryViewModel = new ScatterLayerItemViewModel(scatterDefForCategory)
+                    {
+                        Name = categoryName,
+                        Plottable = scatterPlotForCategory,
+                        IsVisible = true
+                    };
+                    categoryViewModel.PropertyChanged += (s, e) =>
+                    {
+                        if (e.PropertyName == nameof(ScatterLayerItemViewModel.IsVisible))
+                        {
+                            if (categoryViewModel.Plottable != null)
+                            {
+                                categoryViewModel.Plottable.IsVisible = categoryViewModel.IsVisible;
+                                WpfPlot1.Refresh();
+                            }
+                        }
+                    };
+                    rootDataNode.Children.Add(categoryViewModel);
+                }
             }
 
             // 刷新图表和图例
@@ -3217,6 +3606,277 @@ namespace GeoChemistryNexus.ViewModels
 
             // 投点后自动切回绘图选项卡
             RibbonTabIndex = 0;
+        }
+
+        /// <summary>
+        /// “添加箭头”按钮的命令
+        /// </summary>
+        [RelayCommand]
+        private void AddArrow()
+        {
+            // 取消高亮选择
+            CancelSelected();
+
+            // 进入添加箭头模式
+            IsAddingArrow = true;
+            _arrowStartPoint = null; // 重置起点
+
+            // 关闭其他模式
+            IsAddingLine = false;
+            IsAddingPolygon = false;
+            IsAddingText = false;
+
+            //MessageHelper.Info("请在绘图区点击设置箭头的起点");
+        }
+
+        /// <summary>
+        /// 删除当前选中的绘图对象。
+        /// 【新功能】如果删除的是分类下的最后一个对象，则连同分类一起删除。
+        /// </summary>
+        [RelayCommand]
+        private void DeleteSelectedObject()
+        {
+            // 检查是否有选中的图层
+            if (_selectedLayer == null)
+            {
+                MessageHelper.Warning(LanguageService.Instance["please_select_an_object_to_delete_first"]);
+                return;
+            }
+
+            // 禁止删除坐标轴等基础图层
+            if (_selectedLayer is AxisLayerItemViewModel)
+            {
+                MessageHelper.Warning(LanguageService.Instance["cannot_delete_base_layers"]);
+                return;
+            }
+
+            // 从ScottPlot的绘图对象集合中移除
+            if (_selectedLayer.Plottable != null)
+            {
+                WpfPlot1.Plot.Remove(_selectedLayer.Plottable);
+            }
+
+            // 查找父图层
+            var parentLayer = FindParentLayer(LayerTree, _selectedLayer);
+
+            // 从数据源中移除选中的图层
+            if (parentLayer != null)
+            {
+                // 如果有父图层，则从父图层的子集和中移除
+                parentLayer.Children.Remove(_selectedLayer);
+
+                // 检查父图层是否为空，如果为空则一并移除
+                if (parentLayer.Children.Count == 0)
+                {
+                    // 假设所有分类图层都在根级别，直接从LayerTree移除
+                    LayerTree.Remove(parentLayer);
+                }
+            }
+            else
+            {
+                // 如果没有父图层，说明是顶级图层，直接从根集合移除
+                LayerTree.Remove(_selectedLayer);
+            }
+
+            // 重置选中状态和属性面板
+            _selectedLayer = null;
+            PropertyGridModel = nullObject;
+
+            // 取消所有对象的高亮/遮罩效果
+            CancelSelected();
+
+            // 刷新绘图控件
+            WpfPlot1.Refresh();
+
+            // 显示成功提示
+            MessageHelper.Success(LanguageService.Instance["object_deleted_successfully"]);
+        }
+
+        /// <summary>
+        /// 递归地在图层树中查找指定子项的父项。
+        /// </summary>
+        /// <param name="collection">要搜索的图层集合</param>
+        /// <param name="childToFind">要查找父项的目标子项</param>
+        /// <returns>找到的父图层项，如果未找到则返回 null</returns>
+        private CategoryLayerItemViewModel? FindParentLayer(ObservableCollection<LayerItemViewModel> collection, LayerItemViewModel childToFind)
+        {
+            foreach (var item in collection)
+            {
+                // 检查当前项是否是 Category 类型并且其子项包含目标
+                if (item is CategoryLayerItemViewModel category && category.Children.Contains(childToFind))
+                {
+                    return category;
+                }
+
+                // 如果当前项还有子项，则递归进入其子项中查找
+                if (item.Children.Any())
+                {
+                    var parent = FindParentLayer(item.Children, childToFind);
+                    if (parent != null)
+                    {
+                        return parent;
+                    }
+                }
+            }
+            return null; // 在当前层级和所有子层级都未找到
+        }
+
+        /// <summary>
+        /// 清除所有导入的数据点
+        /// </summary>
+        private async Task ClearImportedDataAsync()
+        {
+            bool isConfirmed = await MessageHelper.ShowAsyncDialog(
+                LanguageService.Instance["confirm_clear_data_points"],
+                LanguageService.Instance["Cancel"],
+                LanguageService.Instance["Confirm"]);
+
+            if (isConfirmed)
+            {
+                // 在图层列表中查找名为 "数据点" 的根分类图层
+                var dataRootNode = LayerTree.FirstOrDefault(node => node is CategoryLayerItemViewModel vm && vm.Name == LanguageService.Instance["data_point"]);
+
+                // 如果没有找到该节点，说明没有导入数据
+                if (dataRootNode == null)
+                {
+                    MessageHelper.Info(LanguageService.Instance["no_imported_data_to_clear"]);
+                    return;
+                }
+
+                // 使用辅助方法 `FlattenTree` 获取 "数据点" 分类下的所有子图层
+                var allDataLayers = FlattenTree(dataRootNode.Children).ToList();
+
+                // 遍历所有找到的数据点图层，并从 ScottPlot 图表中移除它们对应的 Plottable 对象
+                foreach (var layer in allDataLayers)
+                {
+                    if (layer.Plottable != null)
+                    {
+                        WpfPlot1.Plot.Remove(layer.Plottable);
+                    }
+                }
+
+                // 从图层树的根集合中移除 "数据点" 这个顶级分类节点
+                LayerTree.Remove(dataRootNode);
+
+                // 检查属性面板当前是否正在显示某个已被删除的图层
+                // 如果是，则清空属性面板，避免悬空引用
+                if (_selectedLayer != null && (allDataLayers.Contains(_selectedLayer) || _selectedLayer == dataRootNode))
+                {
+                    PropertyGridModel = nullObject;
+                    _selectedLayer = null;
+                }
+
+                // 刷新绘图控件以应用所有更改
+                WpfPlot1.Refresh();
+                MessageHelper.Success(LanguageService.Instance["all_imported_data_cleared"]);
+            }
+        }
+
+        /// <summary>
+        /// 将绘图控件的状态重置为默认值，以确保在加载新模板时有一个干净的环境。
+        /// 这个方法会清除所有绘图对象，并重置坐标轴、布局和所有特殊规则。
+        /// </summary>
+        private void ResetPlotStateToDefault()
+        {
+            // 清除所有绘图对象
+            WpfPlot1.Plot.Clear();
+
+            // 重置坐标轴布局为默认值
+            WpfPlot1.Plot.Layout.Default();
+
+            // 移除所有与轴相关的自定义规则
+            WpfPlot1.Plot.Axes.UnlinkAll();
+            WpfPlot1.Plot.Axes.Rules.Clear();
+
+            // 重新添加十字轴，确保它存在且在最上层
+            WpfPlot1.Plot.Add.Plottable(CrosshairPlot);
+
+            // 确保将全局变量重置为默认状态
+            MainPlotViewModel.BaseMapType = String.Empty;
+            MainPlotViewModel.Clockwise = true;
+
+            // 清除图层树和属性面板的绑定
+            LayerTree.Clear();
+            PropertyGridModel = null;
+            _selectedLayer = null;
+
+            // 清除数据表格
+            _dataGrid.Worksheets[0].Reset();
+
+            // 刷新一次以应用所有重置
+            WpfPlot1.Refresh();
+        }
+
+        /// <summary>
+        /// 执行核心的保存操作，将CurrentTemplate保存到指定路径
+        /// </summary>
+        /// <param name="filePath">要保存到的完整文件路径</param>
+        private void PerformSave(string filePath)
+        {
+            // 清空模板中原有的动态绘图元素列表
+            CurrentTemplate.Info.Lines.Clear();
+            CurrentTemplate.Info.Texts.Clear();
+            CurrentTemplate.Info.Annotations.Clear();
+            CurrentTemplate.Info.Points.Clear();
+            CurrentTemplate.Info.Polygons.Clear();
+            CurrentTemplate.Info.Arrows.Clear();
+
+            // 遍历当前的图层列表，收集所有图元信息
+            var allLayers = FlattenTree(LayerTree);
+            foreach (var layer in allLayers)
+            {
+                switch (layer)
+                {
+                    case LineLayerItemViewModel lineLayer:
+                        CurrentTemplate.Info.Lines.Add(lineLayer.LineDefinition);
+                        break;
+                    case TextLayerItemViewModel textLayer:
+                        CurrentTemplate.Info.Texts.Add(textLayer.TextDefinition);
+                        break;
+                    case AnnotationLayerItemViewModel annotationLayer:
+                        CurrentTemplate.Info.Annotations.Add(annotationLayer.AnnotationDefinition);
+                        break;
+                    case ArrowLayerItemViewModel arrowLayer:
+                        CurrentTemplate.Info.Arrows.Add(arrowLayer.ArrowDefinition);
+                        break;
+                    case PolygonLayerItemViewModel polygonLayer:
+                        CurrentTemplate.Info.Polygons.Add(polygonLayer.PolygonDefinition);
+                        break;
+                        // TODO:其他图元处理
+                }
+            }
+
+            // 将更新后的 CurrentTemplate 对象序列化为 JSON 字符串
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                Converters = { new System.Text.Json.Serialization.JsonStringEnumConverter() }
+            };
+
+            try
+            {
+                string jsonString = JsonSerializer.Serialize(CurrentTemplate, options);
+
+                // 将 JSON 字符串写入文件
+                string directoryPath = Path.GetDirectoryName(filePath);
+                if (!Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
+
+                File.WriteAllText(filePath, jsonString);
+
+                // 更新或生成新的缩略图
+                string thumbnailPath = Path.Combine(directoryPath, "thumbnail.jpg");
+                WpfPlot1.Plot.Save(thumbnailPath, 400, 300);
+
+                MessageHelper.Success(LanguageService.Instance["template_saved_successfully"]);
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.Error(LanguageService.Instance["save_template_failed"] + $": {ex.Message}");
+            }
         }
 
         /// <summary>
@@ -3257,7 +3917,7 @@ namespace GeoChemistryNexus.ViewModels
 
             if (Math.Abs(bottomFraction + leftFraction + rightFraction - 1) > 1e-6)
             {
-                throw new ArgumentException("三元相图之和必须为 1.");
+                throw new ArgumentException(LanguageService.Instance["ternary_phase_diagram_sum_must_be_one"]);
             }
 
             double x, y;

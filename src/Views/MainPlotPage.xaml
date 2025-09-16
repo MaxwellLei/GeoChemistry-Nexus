@@ -907,31 +907,47 @@
 
                                             <!-- 编辑 -->
                                             <GroupBox Header="{Binding [Edit],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource RibbonGroupStyle}">
-                                                <Grid Width="212" Height="68" Margin="2">
-                                                    <UniformGrid Columns="2" Rows="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <Grid Width="auto" Height="68" Margin="2">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition/>
+                                                        <ColumnDefinition/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <StackPanel Grid.Column="0" VerticalAlignment="Top" Margin="3,2">
                                                         <Button Command="{Binding UpdateDataCommand}"
-                                                                Style="{StaticResource RibbonSmallButton}"
-                                                                Width="auto" Height="28" Margin="0,1">
+                                                            Style="{StaticResource RibbonSmallButton}"
+                                                            Width="100" Height="28" Margin="0,1">
                                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe74b;"
-                                                                        FontSize="16" Foreground="#0078D4" Margin="4,0,6,0"
-                                                                        VerticalAlignment="Center"/>
-                                                                <TextBlock Text="{Binding [update_data],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" TextAlignment="Center"
-                                                                           Foreground="#323130" TextWrapping="Wrap"/>
+                                                                       FontSize="16" Foreground="#0078D4" Margin="4,0,6,0"
+                                                                       VerticalAlignment="Center"/>
+                                                                <TextBlock Text="{Binding [update_data],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" VerticalAlignment="Center"/>
                                                             </StackPanel>
                                                         </Button>
                                                         <Button Command="{Binding ClearAllDataCommand}"
-                                                                Style="{StaticResource RibbonSmallButton}"
-                                                                Width="auto" Height="28" Margin="0,1">
+                                                            Style="{StaticResource RibbonSmallButton}"
+                                                            Width="100" Height="28" Margin="0,1">
                                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe734;"
-                                                                        FontSize="16" Foreground="#D92C2C	" Margin="4,0,6,0"
-                                                                        VerticalAlignment="Center"/>
-                                                                <TextBlock Text="{Binding [clear_data],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" TextAlignment="Center"
-                                                                           Foreground="#323130" TextWrapping="Wrap"/>
+                                                                       FontSize="16" Foreground="#D92C2C" Margin="4,0,6,0"
+                                                                       VerticalAlignment="Center"/>
+                                                                <TextBlock Text="{Binding [clear_data],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" VerticalAlignment="Center"/>
                                                             </StackPanel>
                                                         </Button>
-                                                    </UniformGrid>
+                                                    </StackPanel>
+
+                                                    <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="3,2">
+                                                        <Button Command="{Binding ClearPlotDataPointsCommand}"
+                                                            Style="{StaticResource RibbonSmallButton}"
+                                                            Width="auto" Height="28" Margin="0,1">
+                                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe606;"
+                                                                       FontSize="16" Foreground="#D83B01" Margin="4,0,6,0"
+                                                                       VerticalAlignment="Center"/>
+                                                                <TextBlock Text="{Binding [clear_data_points],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                                                            </StackPanel>
+                                                        </Button>
+                                                    </StackPanel>
                                                 </Grid>
                                             </GroupBox>
 
@@ -985,6 +1001,16 @@
                                                                 <TextBlock Text="{Binding [Save],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" VerticalAlignment="Center"/>
                                                             </StackPanel>
                                                         </Button>
+                                                        <Button Command="{Binding SaveBaseMapAsCommand}"
+                                                             Style="{StaticResource RibbonSmallButton}"
+                                                             Width="82" Height="28" Margin="0,1">
+                                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe697;"
+                                                                        FontSize="16" Foreground="#107C10" Margin="4,0,6,0"
+                                                                        VerticalAlignment="Center"/>
+                                                                <TextBlock Text="{Binding [save_as],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" VerticalAlignment="Center"/>
+                                                            </StackPanel>
+                                                        </Button>
                                                     </StackPanel>
                                                 </Grid>
                                             </GroupBox>
@@ -994,6 +1020,7 @@
                                             <GroupBox Header="{Binding [add],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource RibbonGroupStyle}">
                                                 <Grid Width="212" Height="68" Margin="2">
                                                     <UniformGrid Columns="2" Rows="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                        <!--添加线条-->
                                                         <Button Style="{StaticResource RibbonSmallButton}"
                                                              Width="100" Height="28" Margin="1" Command="{Binding AddLineCommand}">
                                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
@@ -1003,6 +1030,7 @@
                                                                 <TextBlock Text="{Binding [add_line],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" VerticalAlignment="Center"/>
                                                             </StackPanel>
                                                         </Button>
+                                                        <!--添加文本-->
                                                         <Button Style="{StaticResource RibbonSmallButton}"
                                                              Width="100" Height="28" Margin="1" Command="{Binding AddTextCommand}">
                                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
@@ -1012,7 +1040,7 @@
                                                                 <TextBlock Text="{Binding [add_text],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" VerticalAlignment="Center"/>
                                                             </StackPanel>
                                                         </Button>
-
+                                                        <!--添加多边形-->
                                                         <Button Style="{StaticResource RibbonSmallButton}"
                                                              Width="100" Height="28" Margin="1" Command="{Binding AddPolygonCommand}">
                                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
@@ -1022,7 +1050,37 @@
                                                                 <TextBlock Text="{Binding [add_polygon],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" VerticalAlignment="Center"/>
                                                             </StackPanel>
                                                         </Button>
+                                                        <!--添加箭头-->
+                                                        <Button Style="{StaticResource RibbonSmallButton}"
+                                                             Width="100" Height="28" Margin="1" Command="{Binding AddArrowCommand}">
+                                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe6d5;"
+                                                                        FontSize="16" Foreground="#0078D4" Margin="4,0,6,0"
+                                                                        VerticalAlignment="Center"/>
+                                                                <TextBlock Text="{Binding [add_arrow],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" VerticalAlignment="Center"/>
+                                                            </StackPanel>
+                                                        </Button>
                                                     </UniformGrid>
+                                                </Grid>
+                                            </GroupBox>
+
+                                            <Rectangle Fill="#E1E5E9" Width="1" Margin="8,12,8,18" VerticalAlignment="Stretch"/>
+
+                                            <!-- 删除绘图对象 -->
+                                            <GroupBox Header="{Binding [Edit],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource RibbonGroupStyle}">
+                                                <Grid Width="68" Height="68" Margin="2">
+                                                    <Button Command="{Binding DeleteSelectedObjectCommand}" CommandParameter="{Binding ElementName=DataGrid}"
+                                                            Style="{StaticResource RibbonLargeButton}"
+                                                            Width="64" Height="64" VerticalAlignment="Top">
+                                                        <StackPanel HorizontalAlignment="Center">
+                                                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe6a2;"
+                                                                       FontSize="24" Foreground="#D92C2C" Margin="0,4"
+                                                                       HorizontalAlignment="Center"/>
+                                                            <!--删除对象-->
+                                                            <TextBlock Text="{Binding [delete_object],Source={x:Static lg:LanguageService.Instance}}" FontSize="10" TextAlignment="Center"
+                                                                       Foreground="#323130" TextWrapping="Wrap"/>
+                                                        </StackPanel>
+                                                    </Button>
                                                 </Grid>
                                             </GroupBox>
                                         </StackPanel>
