@@ -134,8 +134,8 @@ namespace GeoChemistryNexus.Models
                 {
                     new CartesianAxisDefinition { Type = "Bottom", Label = CreateLocalized(xAxisPlaceholder) },
                     new CartesianAxisDefinition { Type = "Left", Label = CreateLocalized(yAxisPlaceholder) },
-                    new CartesianAxisDefinition { Type = "Top", Label = CreateLocalized("") },
-                    new CartesianAxisDefinition { Type = "Right", Label = CreateLocalized("") }
+                    //new CartesianAxisDefinition { Type = "Top", Label = CreateLocalized("") },
+                    //new CartesianAxisDefinition { Type = "Right", Label = CreateLocalized("") }
                 };
                 template.Script = new ScriptDefinition
                 {

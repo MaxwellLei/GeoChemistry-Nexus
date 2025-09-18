@@ -1054,7 +1054,6 @@ namespace GeoChemistryNexus.ViewModels
                     // 1. 恢复上一个高亮的对象
                     if (_lastHoveredLayer != null)
                     {
-                        // *** 修改点：使用新的恢复方法 ***
                         RestoreLayerToCorrectState(_lastHoveredLayer);
                         _lastHoveredLayer = null;
                     }
@@ -1138,9 +1137,34 @@ namespace GeoChemistryNexus.ViewModels
             // 更新十字轴的位置
             CrosshairPlot.Position = mouseCoordinates;
 
+            // 默认情况下，显示的值就是鼠标的坐标值
+            double xValueToDisplay = mouseCoordinates.X;
+            double yValueToDisplay = mouseCoordinates.Y;
+
+            // 查找当前主X轴（通常是Bottom）和主Y轴（通常是Left）的定义
+            var xAxisDef = CurrentTemplate?.Info?.Axes
+                .OfType<CartesianAxisDefinition>()
+                .FirstOrDefault(ax => ax.Type == "Bottom");
+
+            var yAxisDef = CurrentTemplate?.Info?.Axes
+                .OfType<CartesianAxisDefinition>()
+                .FirstOrDefault(ax => ax.Type == "Left");
+
+            // 如果X轴是对数坐标，则进行反对数转换 (10^x)
+            if (xAxisDef?.ScaleType == AxisScaleType.Logarithmic)
+            {
+                xValueToDisplay = Math.Pow(10, mouseCoordinates.X);
+            }
+
+            // 如果Y轴是对数坐标，则进行反对数转换 (10^y)
+            if (yAxisDef?.ScaleType == AxisScaleType.Logarithmic)
+            {
+                yValueToDisplay = Math.Pow(10, mouseCoordinates.Y);
+            }
+
             // 更新十字轴上的文本标签以显示实时坐标 (保留3位小数的数字)
-            CrosshairPlot.VerticalLine.Text = $"{mouseCoordinates.X:N3}";
-            CrosshairPlot.HorizontalLine.Text = $"{mouseCoordinates.Y:N3}";
+            CrosshairPlot.VerticalLine.Text = $"{xValueToDisplay:N3}";
+            CrosshairPlot.HorizontalLine.Text = $"{yValueToDisplay:N3}";
 
             // 刷新图表以应用更改
             WpfPlot1.Refresh();
@@ -2003,7 +2027,7 @@ namespace GeoChemistryNexus.ViewModels
                             {
                                 MinorTickGenerator = minorTickGen,
                                 IntegerTicksOnly = true,
-                                LabelFormatter = y => $"{Math.Pow(10, y):N0}"
+                                LabelFormatter = y => $"{Math.Pow(10, y)}"
                             };
                             targetAxis.TickGenerator = tickGen;
                         }
@@ -2765,15 +2789,12 @@ namespace GeoChemistryNexus.ViewModels
                     var tickGen = new ScottPlot.TickGenerators.NumericAutomatic();
                     tickGen.MinorTickGenerator = minorTickGen;
                     tickGen.IntegerTicksOnly = true;
-                    tickGen.LabelFormatter = y => $"{Math.Pow(10, y):N0}";
+                    tickGen.LabelFormatter = y => $"{Math.Pow(10, y)}";
                     targetAxis.TickGenerator = tickGen;
                 }
 
                 // 设置初始的坐标轴范围
-                if (!double.IsNaN(cartesianAxisDef.Minimum) && !double.IsNaN(cartesianAxisDef.Maximum))
-                {
-                    targetAxis.Range.Set(cartesianAxisDef.Minimum, cartesianAxisDef.Maximum);
-                }
+                UpdateAxisLimitsFromModel(cartesianAxisDef, targetAxis);
             }
         }
 
@@ -3773,7 +3794,7 @@ namespace GeoChemistryNexus.ViewModels
 
         /// <summary>
         /// 将绘图控件的状态重置为默认值，以确保在加载新模板时有一个干净的环境。
-        /// 这个方法会清除所有绘图对象，并重置坐标轴、布局和所有特殊规则。
+        /// 清除所有绘图对象，并重置坐标轴、布局和所有特殊规则。
         /// </summary>
         private void ResetPlotStateToDefault()
         {

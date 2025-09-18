@@ -152,7 +152,7 @@ namespace GeoChemistryNexus.Models
     {
         [LocalizedDescription("linear")]
         Linear,
-        [LocalizedDescription("linear")]
+        [LocalizedDescription("logarithmic")]
         Logarithmic
     }
 }
