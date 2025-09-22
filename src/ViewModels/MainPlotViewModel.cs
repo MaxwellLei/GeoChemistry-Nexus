@@ -2773,7 +2773,7 @@ namespace GeoChemistryNexus.ViewModels
             // 将 ViewModel 中的 IsVisible 状态同步到坐标轴
             targetAxis.IsVisible = axisLayer.IsVisible;
             targetAxis.Label.Text = axisDef.Label.Get();
-            targetAxis.Label.FontName = axisDef.Family;
+            targetAxis.Label.FontName = Fonts.Detect(targetAxis.Label.Text);
             targetAxis.Label.FontSize = axisDef.Size;
             targetAxis.Label.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(axisDef.Color));
             targetAxis.Label.Bold = axisDef.IsBold;
