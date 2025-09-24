@@ -2474,6 +2474,9 @@ namespace GeoChemistryNexus.ViewModels
         /// </summary>
         private void RenderCartesianPlot()
         {
+            WpfPlot1.Plot.Axes.Title.IsVisible = true;
+            WpfPlot1.Plot.Axes.AddTopAxis();
+
             var allNodes = FlattenTree(LayerTree);
 
             // 更新坐标轴样式
