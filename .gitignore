@@ -1,3 +1,23 @@
+# 静态网页依赖
+/web/node_modules
+
+# 静态网页编译
+/web/build
+
+# Docusaurus临时文件
+/web/.docusaurus
+/web/.cache-loader
+
+# 环境变量文件
+/web/.env
+/web/.env.local
+
+# Log文件
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
 # Visual Studio相关文件
 .vs/
 *.user
