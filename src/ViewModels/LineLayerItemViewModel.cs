@@ -2,6 +2,7 @@
 using GeoChemistryNexus.Interfaces;
 using GeoChemistryNexus.Models;
 using ScottPlot;
+using System;
 
 namespace GeoChemistryNexus.ViewModels
 {
@@ -24,12 +25,25 @@ namespace GeoChemistryNexus.ViewModels
             // 数据校验：如果起点或终点为空，则不绘制
             if (LineDefinition?.Start == null || LineDefinition?.End == null) return;
 
-            // 在传入的 plot 对象上添加线条
-            var linePlot = plot.Add.Line(
+            // 如果当前是对数轴，会自动取 Log10
+            var startNode = PlotTransformHelper.ToRenderCoordinates(
+                plot,
                 LineDefinition.Start.X,
-                LineDefinition.Start.Y,
+                LineDefinition.Start.Y
+            );
+
+            var endNode = PlotTransformHelper.ToRenderCoordinates(
+                plot,
                 LineDefinition.End.X,
                 LineDefinition.End.Y
+            );
+
+            // 在传入的 plot 对象上添加线条 (使用转换后的坐标)
+            var linePlot = plot.Add.Line(
+                startNode.X,
+                startNode.Y,
+                endNode.X,
+                endNode.Y
             );
 
             // --- 应用样式 ---

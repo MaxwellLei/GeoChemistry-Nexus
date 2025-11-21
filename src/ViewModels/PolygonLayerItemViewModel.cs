@@ -25,12 +25,12 @@ namespace GeoChemistryNexus.ViewModels
             if (PolygonDefinition?.Vertices == null || !PolygonDefinition.Vertices.Any()) return;
 
             // 转换坐标点 (从 ObservableCollection<PointDefinition> 转为 Coordinates 数组)
-            var coordinates = PolygonDefinition.Vertices
-                .Select(p => new Coordinates(p.X, p.Y))
-                .ToArray();
+            var plotCoordinates = PolygonDefinition.Vertices
+                    .Select(v => PlotTransformHelper.ToRenderCoordinates(plot, v.X, v.Y))
+                    .ToArray();
 
             // 添加多边形到 Plot
-            var polygonPlot = plot.Add.Polygon(coordinates);
+            var polygonPlot = plot.Add.Polygon(plotCoordinates);
 
             // --- 应用样式 ---
 

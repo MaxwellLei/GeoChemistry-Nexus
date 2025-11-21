@@ -26,8 +26,12 @@ namespace GeoChemistryNexus.ViewModels
             if (DataPoints == null || !DataPoints.Any()) return;
 
             // --- 绘图逻辑 ---
-            // 直接使用存储的坐标点进行绘制
-            var scatterPlot = plot.Add.ScatterPoints(DataPoints.ToArray());
+            // 将“真实数据”转换为“渲染坐标”
+            var renderPoints = DataPoints
+                            .Select(p => PlotTransformHelper.ToRenderCoordinates(plot, p))
+                            .ToArray();
+
+            var scatterPlot = plot.Add.ScatterPoints(renderPoints);
 
             // 设置图例
             scatterPlot.LegendText = this.Name;

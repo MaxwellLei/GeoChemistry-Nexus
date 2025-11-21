@@ -28,9 +28,15 @@ namespace GeoChemistryNexus.ViewModels
             // 获取文本内容（多语言）
             string content = TextDefinition.Content.Get();
 
-            // 添加文本对象
-            var textPlot = plot.Add.Text(content,
-                new Coordinates(TextDefinition.StartAndEnd.X, TextDefinition.StartAndEnd.Y));
+            // 将存储的真实数据坐标转换为绘图坐标（处理 Log 逻辑）
+            var renderLocation = PlotTransformHelper.ToRenderCoordinates(
+                plot,
+                TextDefinition.StartAndEnd.X,
+                TextDefinition.StartAndEnd.Y
+            );
+
+            // 使用转换后的坐标添加文本对象
+            var textPlot = plot.Add.Text(content, renderLocation);
 
             // --- 应用样式 ---
             textPlot.LabelText = content;

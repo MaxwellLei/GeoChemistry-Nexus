@@ -51,10 +51,10 @@ namespace GeoChemistryNexus.ViewModels
         /// </summary>
         private void RenderCartesianArrow(Plot plot)
         {
-            var arrowPlot = plot.Add.Arrow(
-                new Coordinates(ArrowDefinition.Start.X, ArrowDefinition.Start.Y),
-                new Coordinates(ArrowDefinition.End.X, ArrowDefinition.End.Y)
-            );
+            var startPixel = PlotTransformHelper.ToRenderCoordinates(plot, ArrowDefinition.Start.X, ArrowDefinition.Start.Y);
+            var endPixel = PlotTransformHelper.ToRenderCoordinates(plot, ArrowDefinition.End.X, ArrowDefinition.End.Y);
+
+            var arrowPlot = plot.Add.Arrow(startPixel, endPixel);
 
             ApplyCommonStyle(arrowPlot);
 

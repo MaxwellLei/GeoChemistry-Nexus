@@ -68,7 +68,7 @@ namespace GeoChemistryNexus.ViewModels
                     targetAxis.TickGenerator = new ScottPlot.TickGenerators.NumericAutomatic();
                 }
 
-                // 应用轴范围限制 (逻辑封装在私有方法中)
+                // 应用轴范围限制
                 UpdateAxisLimits(plot, cartesianAxisDef, targetAxis);
 
                 // 主刻度样式
@@ -92,9 +92,6 @@ namespace GeoChemistryNexus.ViewModels
                     GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(cartesianAxisDef.TickLablecolor));
                 targetAxis.TickLabelStyle.Bold = cartesianAxisDef.TickLableisBold;
                 targetAxis.TickLabelStyle.Italic = cartesianAxisDef.TickLableisItalic;
-
-                // 对于坐标轴，我们不设置 this.Plottable，因为 Axis 不是 IPlottable
-                // this.Plottable = null; 
             }
 
             // 2. 处理三元坐标轴 (Ternary)

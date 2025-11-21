@@ -43,15 +43,6 @@ namespace GeoChemistryNexus.Models
         /// </summary>
         public ScriptDefinition Script { get; set; } = new ScriptDefinition();
 
-
-        /// <summary>
-        /// 静态工厂——生成最小化类对象
-        /// </summary>
-        /// <param name="languages">底图支持的语言列表，第一个为默认语言</param>
-        /// <param name="type">底图类型</param>
-        /// <param name="category">底图分类的占位符文本</param>
-        /// <returns></returns>
-        /// <summary>
         /// 静态工厂——生成最小化类对象
         /// </summary>
         /// <param name="languages">底图支持的语言列表，第一个为默认语言</param>

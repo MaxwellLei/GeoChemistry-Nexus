@@ -12,7 +12,8 @@
                 <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDefault.xaml"/>
                 <!--<ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDark.xaml"/>-->
                 <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/>
-
+                <!--本地资源-->
+                <ResourceDictionary Source="pack://application:,,,/GeoChemistryNexus;component/Themes/Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <!--侧边栏按钮样式-->
@@ -150,6 +151,8 @@
                 <Setter Property="FontSize" Value="18"/>
                 <Setter Property="Margin" Value="2 0"/>
             </Style>
+            
+
 
         </ResourceDictionary>
     </Application.Resources>

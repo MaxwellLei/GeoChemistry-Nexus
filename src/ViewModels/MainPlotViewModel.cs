@@ -567,13 +567,15 @@ namespace GeoChemistryNexus.ViewModels
                 {
                     // 第一次点击：设置起点
                     _lineStartPoint = mouseCoordinates;
-                    //MessageHelper.Info("起点已确认，请点击设置终点");
                 }
                 else
                 {
                     // 第二次点击：设置终点，正式创建线条
-                    var startPoint = _lineStartPoint.Value;
-                    var endPoint = mouseCoordinates;
+
+                    // 获取起点的真实数据值
+                    var realStart = PlotTransformHelper.ToRealDataCoordinates(WpfPlot1.Plot, _lineStartPoint.Value);
+                    // 获取终点的真实数据值
+                    var realEnd = PlotTransformHelper.ToRealDataCoordinates(WpfPlot1.Plot, mouseCoordinates);
 
                     // 在图层树中找到 "线" 分类
                     var linesCategory = LayerTree.FirstOrDefault(c => c is CategoryLayerItemViewModel vm && vm.Name == LanguageService.Instance["line"]) as CategoryLayerItemViewModel;
@@ -587,8 +589,9 @@ namespace GeoChemistryNexus.ViewModels
                     // 创建新的 LineDefinition 对象来存储线条的属性
                     var newLineDef = new LineDefinition
                     {
-                        Start = new PointDefinition { X = startPoint.X, Y = startPoint.Y },
-                        End = new PointDefinition { X = endPoint.X, Y = endPoint.Y },
+                        // 转换后的真实坐标
+                        Start = new PointDefinition { X = realStart.X, Y = realStart.Y },
+                        End = new PointDefinition { X = realEnd.X, Y = realEnd.Y },
                         // 设置默认样式
                         Color = "#0078D4", // 默认蓝色
                         Width = 2,
@@ -598,13 +601,13 @@ namespace GeoChemistryNexus.ViewModels
                     // 创建新的 LineLayerItemViewModel
                     var lineLayer = new LineLayerItemViewModel(newLineDef, linesCategory.Children.Count);
                     // 订阅可见性变化事件，以便在图层列表中勾选/取消勾选时刷新视图
-                    lineLayer.PropertyChanged += (s, ev) => { if (ev.PropertyName == nameof(LineLayerItemViewModel.IsVisible)) RefreshPlotFromLayers(); };
+                    lineLayer.PropertyChanged += (s, ev) => { if (ev.PropertyName == nameof(LineLayerItemViewModel.IsVisible)) RefreshPlotFromLayers(true); };
 
                     // 将新图层添加到图层树
                     linesCategory.Children.Add(lineLayer);
 
                     // 刷新整个绘图（这将根据图层树重新绘制所有内容，包括新添加的线条）
-                    RefreshPlotFromLayers();
+                    RefreshPlotFromLayers(true);
 
                     // 重置画线状态
                     if (_tempLinePlot != null)
@@ -657,13 +660,18 @@ namespace GeoChemistryNexus.ViewModels
                 };
 
 
+                // 将鼠标点击坐标转换为真实数据坐标
+                var realLocation = PlotTransformHelper.ToRealDataCoordinates(WpfPlot1.Plot, mouseCoordinates);
+
                 // 创建新的 TextDefinition 对象来存储文本的属性
                 var newTextDef = new TextDefinition
                 {
-                    Content = contentString, // 使用动态生成的对象
-                    StartAndEnd = new PointDefinition { X = mouseCoordinates.X, Y = mouseCoordinates.Y },
-                    // 设置默认样式
-                    Color = "#FF000000",
+                    Content = contentString,
+                    // 使用转换后的【真实坐标】进行存储
+                    StartAndEnd = new PointDefinition { X = realLocation.X, Y = realLocation.Y },
+
+                    // 设置默认样式
+                    Color = "#FF000000",
                     Size = 12,
                     Family = "Microsoft YaHei",
                     BackgroundColor = "#00FFFFFF",
@@ -672,10 +680,10 @@ namespace GeoChemistryNexus.ViewModels
 
                 // 创建新的 TextLayerItemViewModel
                 var textLayer = new TextLayerItemViewModel(newTextDef, textCategory.Children.Count);
-                textLayer.PropertyChanged += (s, ev) => { if (ev.PropertyName == nameof(TextLayerItemViewModel.IsVisible)) RefreshPlotFromLayers(); };
+                textLayer.PropertyChanged += (s, ev) => { if (ev.PropertyName == nameof(TextLayerItemViewModel.IsVisible)) RefreshPlotFromLayers(true); };
                 textCategory.Children.Add(textLayer);
 
-                RefreshPlotFromLayers();
+                RefreshPlotFromLayers(true);
                 IsAddingText = false;
 
             }
@@ -689,19 +697,30 @@ namespace GeoChemistryNexus.ViewModels
                 }
                 else
                 {
-                    var startPoint = _arrowStartPoint.Value;
-                    var endPoint = mouseCoordinates;
+                    var startCoord = _arrowStartPoint.Value;
+                    var endCoord = mouseCoordinates;
 
-                    // 如果是三元图，需要将笛卡尔坐标转换为三元坐标进行存储
+                    PointDefinition finalStartPoint;
+                    PointDefinition finalEndPoint;
+
+                    // 如果是三元图，将笛卡尔坐标转换为三元坐标进行存储
                     if (BaseMapType == "Ternary")
                     {
-                        // Clockwise 参数需要根据您的三元图设置来确定
-                        var ternaryStart = ToTernary(startPoint.X, startPoint.Y, Clockwise);
-                        var ternaryEnd = ToTernary(endPoint.X, endPoint.Y, Clockwise);
+                        // 三元图 使用绘图坐标进行三角转换
+                        var ternaryStart = ToTernary(startCoord.X, startCoord.Y, Clockwise);
+                        var ternaryEnd = ToTernary(endCoord.X, endCoord.Y, Clockwise);
 
-                        // 将转换后的三元坐标（底轴和左轴的分量）存入PointDefinition
-                        startPoint = new Coordinates(ternaryStart.Item1, ternaryStart.Item2);
-                        endPoint = new Coordinates(ternaryEnd.Item1, ternaryEnd.Item2);
+                        finalStartPoint = new PointDefinition { X = ternaryStart.Item1, Y = ternaryStart.Item2 };
+                        finalEndPoint = new PointDefinition { X = ternaryEnd.Item1, Y = ternaryEnd.Item2 };
+                    }
+                    else
+                    {
+                        // 笛卡尔坐标系：绘图坐标(Log) -> 真实坐标(Real)
+                        var realStart = PlotTransformHelper.ToRealDataCoordinates(WpfPlot1.Plot, startCoord);
+                        var realEnd = PlotTransformHelper.ToRealDataCoordinates(WpfPlot1.Plot, endCoord);
+
+                        finalStartPoint = new PointDefinition { X = realStart.X, Y = realStart.Y };
+                        finalEndPoint = new PointDefinition { X = realEnd.X, Y = realEnd.Y };
                     }
 
                     var arrowsCategory = LayerTree.FirstOrDefault(c => c is CategoryLayerItemViewModel vm && vm.Name == LanguageService.Instance["arrow"]) as CategoryLayerItemViewModel;
@@ -713,8 +732,8 @@ namespace GeoChemistryNexus.ViewModels
 
                     var newArrowDef = new ArrowDefinition
                     {
-                        Start = new PointDefinition { X = startPoint.X, Y = startPoint.Y },
-                        End = new PointDefinition { X = endPoint.X, Y = endPoint.Y },
+                        Start = finalStartPoint,
+                        End = finalEndPoint,
                         Color = "#000000",
                         ArrowWidth = 1.5f,
                         ArrowheadWidth = 18f,
@@ -722,10 +741,10 @@ namespace GeoChemistryNexus.ViewModels
                     };
 
                     var arrowLayer = new ArrowLayerItemViewModel(newArrowDef, arrowsCategory.Children.Count);
-                    arrowLayer.PropertyChanged += (s, ev) => { if (ev.PropertyName == nameof(ArrowLayerItemViewModel.IsVisible)) RefreshPlotFromLayers(); };
+                    arrowLayer.PropertyChanged += (s, ev) => { if (ev.PropertyName == nameof(ArrowLayerItemViewModel.IsVisible)) RefreshPlotFromLayers(true); };
                     arrowsCategory.Children.Add(arrowLayer);
 
-                    RefreshPlotFromLayers();
+                    RefreshPlotFromLayers(true);
 
                     // Reset arrow drawing state
                     if (_tempArrowPlot != null)
@@ -792,20 +811,24 @@ namespace GeoChemistryNexus.ViewModels
                     LayerTree.Add(polygonsCategory);
                 }
 
+                // 使用 PlotTransformHelper 将临时绘图坐标转换为真实数据坐标
+                var realVertices = _polygonVertices.Select(c => PlotTransformHelper.ToRealDataCoordinates(WpfPlot1.Plot, c));
+
                 // 创建 PolygonDefinition 用于存储属性
                 var newPolygonDef = new PolygonDefinition
                 {
-                    Vertices = new ObservableCollection<PointDefinition>(_polygonVertices.Select(c => new PointDefinition { X = c.X, Y = c.Y })),
+                    // 现在存入的是真实数据（比如 0.001, 10000 等）
+                    Vertices = new ObservableCollection<PointDefinition>(realVertices.Select(c => new PointDefinition { X = c.X, Y = c.Y })),
                     // 使用默认样式
                 };
 
                 // 创建 PolygonLayerItemViewModel
                 var polygonLayer = new PolygonLayerItemViewModel(newPolygonDef, polygonsCategory.Children.Count);
-                polygonLayer.PropertyChanged += (s, ev) => { if (ev.PropertyName == nameof(PolygonLayerItemViewModel.IsVisible)) RefreshPlotFromLayers(); };
+                polygonLayer.PropertyChanged += (s, ev) => { if (ev.PropertyName == nameof(PolygonLayerItemViewModel.IsVisible)) RefreshPlotFromLayers(true); };
                 polygonsCategory.Children.Add(polygonLayer);
 
                 // 刷新整个绘图
-                RefreshPlotFromLayers();
+                RefreshPlotFromLayers(true);
 
                 // 重置状态
                 IsAddingPolygon = false;
@@ -1387,8 +1410,10 @@ namespace GeoChemistryNexus.ViewModels
         {
             if (sender == null) return;
 
+            bool isAxisChange = sender is BaseAxisDefinition;
+
             // 全量重绘
-            RefreshPlotFromLayers();
+            RefreshPlotFromLayers(!isAxisChange);
 
             // 恢复遮罩
             ReapplySelectionVisualState();
@@ -1515,7 +1540,7 @@ namespace GeoChemistryNexus.ViewModels
                 {
                     if (e.PropertyName == nameof(AxisLayerItemViewModel.IsVisible))
                     {
-                        RefreshPlotFromLayers();
+                        RefreshPlotFromLayers(true);    // 切换显隐不重置缩放
                     }
                 };
                 axesCategory.Children.Add(axisLayer);
@@ -1597,9 +1622,16 @@ namespace GeoChemistryNexus.ViewModels
         /// 根据当前的 LayerTree 状态，完全重绘 ScottPlot 图表
         /// 负责根据图层对象绘制图像，第一次加载对象
         /// </summary>
-        public void RefreshPlotFromLayers()
+        public void RefreshPlotFromLayers(bool preserveAxisLimits = false)
         {
             if (WpfPlot1 == null || CurrentTemplate == null) return;
+
+            // 选择性保留视图，规避自动适应缩放视角
+            ScottPlot.AxisLimits? currentAxisLimits = null;
+            if (preserveAxisLimits)
+            {
+                currentAxisLimits = WpfPlot1.Plot.Axes.GetLimits();
+            }
 
             WpfPlot1.Plot.Clear();
 
@@ -1632,7 +1664,12 @@ namespace GeoChemistryNexus.ViewModels
             // 获取脚本对象
             CurrentScript = CurrentTemplate.Script;
 
-            //WpfPlot1.Plot.Axes.AutoScale();
+            // 只在需要“保留视图”且并非三元图时，才恢复范围
+            if (preserveAxisLimits && currentAxisLimits.HasValue && BaseMapType != "Ternary")
+            {
+                WpfPlot1.Plot.Axes.SetLimits(currentAxisLimits.Value);
+            }
+
             WpfPlot1.Refresh();
         }
 
