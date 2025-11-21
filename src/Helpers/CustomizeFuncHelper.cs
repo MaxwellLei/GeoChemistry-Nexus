@@ -553,24 +553,28 @@ namespace GeoChemistryNexus.Helpers
                 }
             };
 
-            // 毒砂矿物组合
+            // 毒砂矿物组合定义
             FormulaExtension.CustomFunctions["DefineArsenopyriteAssemblage"] = (cell, args) => {
                 try
                 {
                     if (args.Length < 1) return null;
                     string assemblageName = Convert.ToString(args[0]).ToUpper();
+                    // 移除可能存在的空格以便匹配
+                    assemblageName = assemblageName.Replace(" ", "").Replace("+", "_");
+
                     switch (assemblageName)
                     {
-                        case "ASP_PO_LO": return 0;
-                        case "ASP_PY_PO": return 1;
-                        case "ASP_PY_AS": return 2;
-                        case "ASP_PO_L": return 3;
-                        case "ASP_AS_Lo": return 4;
-                        case "ASP_AY_L": return 5;
+                        case "ASP_PO_LO": return 0;  
+                        case "ASP_PY_PO": return 1;  
+                        case "ASP_PY_AS": return 2;  
+                        case "ASP_PO_L": return 3;   
+                        case "ASP_AS_L": return 4;   
+                        case "ASP_AS_LO": return 4;  
+                        case "ASP_PY_L": return 5;   
                         default: return null;
                     }
-                }catch { return LanguageService.Instance["error"]; }
-
+                }
+                catch { return LanguageService.Instance["error"]; }
             };
 
             // 毒砂温度计计算
@@ -593,47 +597,56 @@ namespace GeoChemistryNexus.Helpers
 
                     switch (assemblage)
                     {
-                        case 0: // Asp_Po_Lo
-                            if (atomicPercentAs >= 33.61 && atomicPercentAs <= 38.68)
+                        case 0: // 【1】 Asp + Po + Lo
+                                // Range: 33.58875219683655 - 38.68937000657703
+                            if (atomicPercentAs >= 33.58875219683655 && atomicPercentAs <= 38.68937000657703)
                             {
-                                temperature = 79.29 * atomicPercentAs - 2364.93;
+                                temperature = 78.7989470836 * atomicPercentAs - 2346.68161985;
                             }
                             break;
 
-                        case 1: // Asp_Py_Po
-                            if (atomicPercentAs >= 29.98 && atomicPercentAs <= 33.1)
+                        case 1: // 【3】 Asp + Py + Po
+                                // Range: 29.982425307557115 - 33.04999622629303
+                            if (atomicPercentAs >= 29.982425307557115 && atomicPercentAs <= 33.04999622629303)
                             {
-                                temperature = 61.22 * atomicPercentAs - 1535.31;
+                                temperature = 62.2982482 * atomicPercentAs - 1567.7758864;
                             }
                             break;
 
-                        case 2: // Asp_Py_As
-                            if (atomicPercentAs <= 30.22 && atomicPercentAs >= 29.12)
+                        case 2: // 【4】 Asp + Py + As
+                                // Range: 29.180792909743708 - 30.210594412757285
+                            if (atomicPercentAs >= 29.180792909743708 && atomicPercentAs <= 30.210594412757285)
                             {
-                                temperature = 57.27 * atomicPercentAs - 1367.78;
+                                temperature = 57.861529038539935 * atomicPercentAs - 1384.610940486535;
                             }
                             break;
 
-                        case 3: // Asp_Po_L
-                            if (atomicPercentAs >= 33.1 && atomicPercentAs <= 38.68)
+                        case 3: // 【2】 Asp + Po + L
+                                // Range: 33.04999622629303 - 38.68937000657703
+                            if (atomicPercentAs >= 33.04999622629303 && atomicPercentAs <= 38.68937000657703)
                             {
-                                temperature = 37.81 * atomicPercentAs - 760.63;
+                                temperature = 37.219139254543215 * atomicPercentAs - 738.9114303134363;
                             }
                             break;
-                        case 4: // Asp_As_Lo
-                            if (atomicPercentAs >= 33.61 && atomicPercentAs <= 38.68)
+
+                        case 4: // 【6】 Asp + As + L
+                                // Range: 31.311072056239013 - 38.66828037564557
+                            if (atomicPercentAs >= 31.311072056239013 && atomicPercentAs <= 38.66828037564557)
                             {
-                                temperature = 74.72 * atomicPercentAs - 2188.22;
+                                temperature = 54.50395246 * atomicPercentAs - 1406.500496;
                             }
                             break;
-                        case 5: // Asp_Py_L
-                            if (atomicPercentAs >= 33.22 && atomicPercentAs <= 33.1)
+
+                        case 5: // 【5】 Asp + Py + L
+                                // Range: 30.210626758816996 - 33.028906595361576
+                            if (atomicPercentAs >= 30.210626758816996 && atomicPercentAs <= 33.028906595361576)
                             {
-                                temperature = 44.44 * atomicPercentAs - 980.11;
+                                temperature = 45.5233523473 * atomicPercentAs - 1012.40557099;
                             }
                             break;
                     }
 
+                    // 如果温度计算结果无效(NaN)，返回null；否则返回 摄氏度 + 273.15 (转开尔文)
                     return double.IsNaN(temperature) ? null : temperature + 273.15;
                 }
                 catch

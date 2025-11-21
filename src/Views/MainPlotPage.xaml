@@ -750,7 +750,7 @@
                                                             </StackPanel>
                                                         </Button>
                                                         <ToggleButton Command="{Binding LocationAxisCommand}"
-                                                                      IsChecked="{Binding IsCrosshairVisible, Mode=OneWay}"
+                                                                      IsChecked="{Binding IsCrosshairVisible, Mode=TwoWay}"
                                                                       Style="{StaticResource RibbonSmallToggleButton}"
                                                                       Width="100" Height="28" Margin="0,1">
                                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">

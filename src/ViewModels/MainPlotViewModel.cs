@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using GeoChemistryNexus.Controls;
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Interfaces;
 using GeoChemistryNexus.Models;
 using HandyControl.Controls;
 using Jint;
@@ -35,6 +36,10 @@ namespace GeoChemistryNexus.ViewModels
 {
     public partial class MainPlotViewModel : ObservableObject
     {
+        // 用于鼠标命中测试的节流控制
+        private long _lastHitTestTimeTicks = 0;
+        // 定义检测间隔，40ms 大概是 25FPS
+        private const long HitTestIntervalTicks = 40 * 10000;
 
         // 属性编辑器属性对象
         [ObservableProperty]
@@ -156,7 +161,6 @@ namespace GeoChemistryNexus.ViewModels
         private Coordinates? _arrowStartPoint = null; // 存储箭头的起点
         private ScottPlot.Plottables.Arrow? _tempArrowPlot; // 用于实时预览箭头
 
-
         // 初始化
         public MainPlotViewModel(WpfPlot wpfPlot, System.Windows.Controls.RichTextBox richTextBox, unvell.ReoGrid.ReoGridControl dataGrid)
         {
@@ -244,59 +248,22 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 根据 CartesianAxisDefinition 对象中的设置，更新实际坐标轴的范围
-        /// </summary>
-        private void UpdateAxisLimitsFromModel(CartesianAxisDefinition axisDef, IAxis targetAxis)
-        {
-            // 如果用户在属性面板清空了最大值和最小值（变为NaN），则执行自动缩放
-            if (double.IsNaN(axisDef.Minimum) && double.IsNaN(axisDef.Maximum))
-            {
-                WpfPlot1.Plot.Axes.AutoScale();
-                return;
-            }
-
-            var currentLimits = targetAxis.Range;
-
-            // 优先使用模型中的值，如果模型值为NaN，则保持坐标轴当前的值
-            var newMin = !double.IsNaN(axisDef.Minimum) ? axisDef.Minimum : currentLimits.Min;
-            var newMax = !double.IsNaN(axisDef.Maximum) ? axisDef.Maximum : currentLimits.Max;
-
-            // 如果是对数坐标轴，对范围值取对数
-            if (axisDef.ScaleType == AxisScaleType.Logarithmic)
-            {
-                if (!double.IsNaN(axisDef.Minimum))
-                {
-                    // 对数轴的最小值必须大于0
-                    newMin = axisDef.Minimum > 0 ? Math.Log10(axisDef.Minimum) : currentLimits.Min;
-                }
-                if (!double.IsNaN(axisDef.Maximum))
-                {
-                    // 对数轴的最大值必须大于0
-                    newMax = axisDef.Maximum > 0 ? Math.Log10(axisDef.Maximum) : currentLimits.Max;
-                }
-            }
-
-            // 设置最终的坐标轴范围
-            targetAxis.Range.Set(newMin, newMax);
-        }
-
-        /// <summary>
         /// 将图层恢复到其在当前选择状态下应有的样式
         /// 先恢复原始样式，再根据情况应用遮罩
         /// </summary>
         private void RestoreLayerToCorrectState(LayerItemViewModel layerToRestore)
         {
-            if (layerToRestore?.Plottable == null)
+            if (layerToRestore is not IPlotLayer plotLayer || plotLayer.Plottable == null)
                 return;
 
-            // 先将图层恢复到其最原始的定义样式
-            RevertLayerStyle(layerToRestore);
+            // 恢复原始样式
+            plotLayer.Restore();
 
             // 判断是否需要应用遮罩
+            // 如果当前有选中的图层，且正在恢复的图层不是选中的那个，说明它应该处于“变暗”状态
             if (_selectedLayer != null && layerToRestore != _selectedLayer)
             {
-                // 应用遮罩
-                DimLayer(layerToRestore);
+                plotLayer.Dim();
             }
         }
 
@@ -305,38 +272,9 @@ namespace GeoChemistryNexus.ViewModels
         /// </summary>
         private void HighlightLayer(LayerItemViewModel layer)
         {
-            if (layer?.Plottable == null) return;
-
-            // 定义高亮样式
-            var highlightColor = ScottPlot.Colors.Red;
-            float highlightWidthIncrease = 2;
-
-            switch (layer.Plottable)
+            if (layer is IPlotLayer plotLayer)
             {
-                case ScottPlot.Plottables.LinePlot linePlot:
-                    linePlot.Color = highlightColor;
-                    linePlot.LineWidth += highlightWidthIncrease;
-                    break;
-
-                case ScottPlot.Plottables.Text textPlot:
-                    textPlot.LabelBorderColor = highlightColor;
-                    textPlot.LabelBorderWidth = 2;
-                    break;
-
-                case ScottPlot.Plottables.Scatter scatterPlot:
-                    scatterPlot.MarkerStyle.OutlineColor = highlightColor;
-                    scatterPlot.MarkerStyle.OutlineWidth = highlightWidthIncrease;
-                    break;
-
-                case ScottPlot.Plottables.Arrow arrowPlot:
-                    arrowPlot.ArrowFillColor = highlightColor;
-                    arrowPlot.ArrowWidth += highlightWidthIncrease;
-                    break;
-
-                case ScottPlot.Plottables.Polygon polygonPlot:
-                    polygonPlot.LineStyle.Color = highlightColor;
-                    polygonPlot.LineStyle.Width += highlightWidthIncrease;
-                    break;
+                plotLayer.Highlight();
             }
         }
 
@@ -493,6 +431,26 @@ namespace GeoChemistryNexus.ViewModels
         {
             if (polygonVertices == null || polygonVertices.Length < 3)
                 return false;
+
+            // 包围盒预检查 (性能优化)
+            double minX = polygonVertices[0].X;
+            double maxX = polygonVertices[0].X;
+            double minY = polygonVertices[0].Y;
+            double maxY = polygonVertices[0].Y;
+
+            for (int i = 1; i < polygonVertices.Length; i++)
+            {
+                if (polygonVertices[i].X < minX) minX = polygonVertices[i].X;
+                if (polygonVertices[i].X > maxX) maxX = polygonVertices[i].X;
+                if (polygonVertices[i].Y < minY) minY = polygonVertices[i].Y;
+                if (polygonVertices[i].Y > maxY) maxY = polygonVertices[i].Y;
+            }
+
+            // 如果点不在包围盒内，直接返回 false，避免进行射线运算
+            if (point.X < minX || point.X > maxX || point.Y < minY || point.Y > maxY)
+            {
+                return false;
+            }
 
             bool isInside = false;
             int j = polygonVertices.Length - 1;
@@ -789,6 +747,8 @@ namespace GeoChemistryNexus.ViewModels
         /// </summary>
         private void WpfPlot1_MouseRightButtonUp(object? sender, MouseButtonEventArgs e)
         {
+            WpfPlot1.Focus();
+
             // 如果当前是高亮状态，鼠标右键单击就是取消选择
             if (_selectedLayer != null)
             {
@@ -911,49 +871,6 @@ namespace GeoChemistryNexus.ViewModels
             //MessageHelper.Info("请在绘图区连续左键点击设置顶点，右键完成绘制。");
         }
 
-        // 创建多边形绘图对象
-        private void CreatePolygonPlottable(PolygonLayerItemViewModel polygonLayer)
-        {
-            var polygonDef = polygonLayer.PolygonDefinition;
-            if (polygonDef.Vertices == null || !polygonDef.Vertices.Any()) return;
-
-            var coordinates = polygonDef.Vertices.Select(p => new Coordinates(p.X, p.Y)).ToArray();
-            var polygonPlot = WpfPlot1.Plot.Add.Polygon(coordinates);
-
-            // 应用样式
-            polygonPlot.FillStyle.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(polygonDef.FillColor));
-            polygonPlot.LineStyle.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(polygonDef.BorderColor));
-            polygonPlot.LineStyle.Width = polygonDef.BorderWidth;
-
-            // 存储引用
-            polygonLayer.Plottable = polygonPlot;
-        }
-
-        // 多边形属性变更的处理器
-        private bool PolygonPropertyChanged(ScottPlot.Plottables.Polygon polygonPlot, object sender, PropertyChangedEventArgs e)
-        {
-            var polygonDef = (PolygonDefinition)sender;
-            switch (e.PropertyName)
-            {
-                case nameof(PolygonDefinition.Vertices):
-                    var newCoordinates = polygonDef.Vertices.Select(p => new Coordinates(p.X, p.Y)).ToArray();
-                    polygonPlot.UpdateCoordinates(newCoordinates);
-                    break;
-                case nameof(PolygonDefinition.FillColor):
-                    polygonPlot.FillStyle.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(polygonDef.FillColor));
-                    break;
-                case nameof(PolygonDefinition.BorderColor):
-                    polygonPlot.LineStyle.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(polygonDef.BorderColor));
-                    break;
-                case nameof(PolygonDefinition.BorderWidth):
-                    polygonPlot.LineStyle.Width = polygonDef.BorderWidth;
-                    break;
-                default:
-                    return false;
-            }
-            return true;
-        }
-
         /// <summary>
         /// “添加线条”按钮的命令
         /// </summary>
@@ -1043,9 +960,15 @@ namespace GeoChemistryNexus.ViewModels
             // 将像素位置转换为图表的坐标单位
             Coordinates mouseCoordinates = WpfPlot1.Plot.GetCoordinates(mousePixel);
 
-            // 处理吸附选择
-            if (IsSnapSelectionEnabled)
+            // 获取当前时间 Tick
+            long currentTicks = DateTime.Now.Ticks;
+
+            // 只有当开启吸附，且距离上次检测超过 40ms 时，才执行命中测试
+            if (IsSnapSelectionEnabled && (currentTicks - _lastHitTestTimeTicks > HitTestIntervalTicks))
             {
+                // 更新最后检测时间
+                _lastHitTestTimeTicks = currentTicks;
+
                 var currentHoveredPlottable = GetPlottableAtPixel(mousePixel, 10);
                 if (currentHoveredPlottable is Crosshair) currentHoveredPlottable = null;
 
@@ -1083,7 +1006,9 @@ namespace GeoChemistryNexus.ViewModels
             }
             else
             {
-                WpfPlot1.Cursor = Cursors.Arrow;
+                // 如果关闭了吸附，确保鼠标变回箭头
+                if (WpfPlot1.Cursor != Cursors.Arrow)
+                    WpfPlot1.Cursor = Cursors.Arrow;
             }
 
             //  如果正在添加线条且起点已确定，则实时预览线条
@@ -1427,35 +1352,32 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 箭头对象属性更新，触发
+        /// 根据当前的选中状态 (_selectedLayer)，重新应用高亮或遮罩效果
+        /// 在全量重绘后调用
         /// </summary>
-        private bool ArrowPropertyChanged(ScottPlot.Plottables.Arrow arrowPlot, object sender, PropertyChangedEventArgs e)
+        private void ReapplySelectionVisualState()
         {
-            var arrowDef = (ArrowDefinition)sender;
-            switch (e.PropertyName)
+            // 如果当前没有选中任何图层，什么都不用做（Render 默认就是正常状态）
+            if (_selectedLayer == null) return;
+
+            // 获取所有实现了 IPlotLayer 的图层
+            var allPlotLayers = FlattenTree(LayerTree).OfType<IPlotLayer>();
+
+            foreach (var layer in allPlotLayers)
             {
-                case nameof(ArrowDefinition.Start):
-                    arrowPlot.Base = new Coordinates(arrowDef.Start.X, arrowDef.Start.Y);
-                    break;
-                case nameof(ArrowDefinition.End):
-                    arrowPlot.Tip = new Coordinates(arrowDef.End.X, arrowDef.End.Y);
-                    break;
-                case nameof(ArrowDefinition.Color):
-                    arrowPlot.ArrowFillColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(arrowDef.Color));
-                    break;
-                case nameof(ArrowDefinition.ArrowWidth):
-                    arrowPlot.ArrowWidth = arrowDef.ArrowWidth;
-                    break;
-                case nameof(ArrowDefinition.ArrowheadWidth):
-                    arrowPlot.ArrowheadWidth = arrowDef.ArrowheadWidth;
-                    break;
-                case nameof(ArrowDefinition.ArrowheadLength):
-                    arrowPlot.ArrowheadLength = arrowDef.ArrowheadLength;
-                    break;
-                default:
-                    return false;
+                // 因为 LayerItemViewModel 实现了 IPlotLayer，所以可以直接比较引用
+                if (layer == _selectedLayer)
+                {
+                    // 选中项：恢复正常显示 (这样你修改颜色后能立即看到新颜色)
+                    // 如果你希望选中项有红色边框高亮，这里也可以改调 layer.Highlight();
+                    layer.Restore();
+                }
+                else
+                {
+                    // 非选中项：变暗
+                    layer.Dim();
+                }
             }
-            return true;
         }
 
         /// <summary>
@@ -1465,649 +1387,11 @@ namespace GeoChemistryNexus.ViewModels
         {
             if (sender == null) return;
 
-            bool needsRefresh = true;
+            // 全量重绘
+            RefreshPlotFromLayers();
 
-            // 坐标轴单独处理
-            if (sender is BaseAxisDefinition baseAxisDef)
-            {
-                needsRefresh = AxisPropertyChanged(baseAxisDef, e);
-            }
-
-            // 网格单独处理
-            if (sender is GridDefinition gridDef)
-            {
-                needsRefresh = GridPropertyChanged(gridDef, e);
-            }
-
-            // 图例单独处理
-            if (sender is LegendDefinition legendDef)
-            {
-                needsRefresh = LegendPropertyChanged(legendDef, e);
-            }
-
-            // 标题单独处理
-            if (sender is TitleDefinition titleDef)
-            {
-                needsRefresh = TitlePropertyChanged(titleDef, e);
-            }
-
-            // 刷新 UI
-            if (needsRefresh)
-            {
-                WpfPlot1.Refresh();
-            }
-
-            var targetLayer = _selectedLayer;
-
-            // 如果图层当前不可见或未找到，则不进行任何操作
-            if (targetLayer?.Plottable == null) return;
-
-            // 处理其他 Plottable 对象的逻辑
-            if (targetLayer.Plottable != null)
-            {
-                switch (targetLayer.Plottable)
-                {
-                    // 线条
-                    case ScottPlot.Plottables.LinePlot linePlot:
-                        needsRefresh = LinePropertyChanged(linePlot, sender, e);
-                        break;
-
-                    // 文本
-                    case ScottPlot.Plottables.Text textPlot:
-                        needsRefresh = TextPropertyChanged(textPlot, sender, e);
-                        break;
-
-                    // 箭头
-                    case ScottPlot.Plottables.Arrow arrowPlot:
-                        needsRefresh = ArrowPropertyChanged(arrowPlot, sender, e);
-                        break;
-
-                    // 多边形
-                    case ScottPlot.Plottables.Polygon polygonPlot:
-                        needsRefresh = PolygonPropertyChanged(polygonPlot, sender, e);
-                        break;
-
-                    // 数据点
-                    case ScottPlot.Plottables.Scatter scatterPlot:
-                        needsRefresh = ScatterPropertyChanged(scatterPlot, sender, e);
-                        break;
-                }
-            }
-
-            // 如果有必要，仅刷新一次UI
-            if (needsRefresh)
-            {
-                WpfPlot1.Refresh();
-            }
-        }
-
-        /// <summary>
-        /// 数据点对象属性更新，触发
-        /// </summary>
-        /// <param name="scatterPlot"></param>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        /// <returns></returns>
-        private bool ScatterPropertyChanged(ScottPlot.Plottables.Scatter scatterPlot, object sender,
-            PropertyChangedEventArgs e)
-        {
-            var scatterDef = (ScatterDefinition)sender;
-            switch (e.PropertyName)
-            {
-                // 更新散点大小
-                case nameof(ScatterDefinition.StartAndEnd):
-                    MessageHelper.Info(LanguageService.Instance["disallow_modify_data_point_position"]);
-                    break;
-
-                // 更新散点大小
-                case nameof(ScatterDefinition.Size):
-                    scatterPlot.MarkerSize = scatterDef.Size;
-                    break;
-
-                // 更新散点颜色
-                case nameof(ScatterDefinition.Color):
-                    scatterPlot.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(scatterDef.Color));
-                    break;
-
-                // 更新散点标记的形状
-                case nameof(ScatterDefinition.MarkerShape):
-                    scatterPlot.MarkerShape = scatterDef.MarkerShape;
-                    break;
-                default:
-                    return false;
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// 标题对象属性
-        /// </summary>
-        /// <param name="titleDef">标题对象</param>
-        /// <param name="e"></param>
-        /// <returns>是否刷新视图</returns>
-        private bool TitlePropertyChanged(TitleDefinition titleDef, PropertyChangedEventArgs e)
-        {
-            // 根据变化的属性名更新坐标轴
-            switch (e.PropertyName)
-            {
-                // 图表标题内容
-                case nameof(titleDef.Label):
-                    WpfPlot1.Plot.Axes.Title.Label.Text = titleDef.Label.Get();
-                    break;
-                // 图表标题字体
-                case nameof(titleDef.Family):
-                    WpfPlot1.Plot.Axes.Title.Label.FontName = titleDef.Family;
-                    break;
-                // 图表标题字体大小
-                case nameof(titleDef.Size):
-                    WpfPlot1.Plot.Axes.Title.Label.FontSize = titleDef.Size;
-                    break;
-                // 图表标题字体颜色
-                case nameof(titleDef.Color):
-                    WpfPlot1.Plot.Axes.Title.Label.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(titleDef.Color));
-                    break;
-                // 图表标题粗体
-                case nameof(titleDef.IsBold):
-                    WpfPlot1.Plot.Axes.Title.Label.Bold = titleDef.IsBold;
-                    break;
-                // 图表标题斜体
-                case nameof(titleDef.IsItalic):
-                    WpfPlot1.Plot.Axes.Title.Label.Italic = titleDef.IsItalic;
-                    break;
-
-                default:
-                    return false;
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// 文本对象属性更新，触发
-        /// </summary>
-        /// <param name="textPlot">文本对象</param>
-        /// <param name="sender"></param>
-        private bool TextPropertyChanged(ScottPlot.Plottables.Text textPlot, object sender,
-            PropertyChangedEventArgs e)
-        {
-            var textDef = (TextDefinition)sender;
-            switch (e.PropertyName)
-            {
-                // =================================================
-                //                           内容与位置
-                // =================================================
-                // 文本位置
-                case nameof(TextDefinition.StartAndEnd):
-                    textPlot.Location = new Coordinates(textDef.StartAndEnd.X, textDef.StartAndEnd.Y);
-                    break;
-                // 文本内容
-                case nameof(TextDefinition.Content):
-                    textPlot.LabelText = textDef.Content.Get();
-                    break;
-                // 水平对齐方式
-                case nameof(TextDefinition.ContentHorizontalAlignment):
-                    switch (textDef.ContentHorizontalAlignment)
-                    {
-                        case System.Windows.HorizontalAlignment.Left:
-                            textPlot.LabelAlignment = ScottPlot.Alignment.LowerRight;
-                            break;
-                        case System.Windows.HorizontalAlignment.Center:
-                            textPlot.LabelAlignment = ScottPlot.Alignment.LowerCenter;
-                            break;
-                        case System.Windows.HorizontalAlignment.Right:
-                            textPlot.LabelAlignment = ScottPlot.Alignment.LowerLeft;
-                            break;
-                        case System.Windows.HorizontalAlignment.Stretch:
-                        default:
-                            textPlot.LabelAlignment = ScottPlot.Alignment.MiddleCenter;
-                            break;
-                    }
-                    break;
-
-                // =================================================
-                //                           字体样式
-                // =================================================
-                // 文本字体
-                case nameof(TextDefinition.Family):
-                    textPlot.LabelFontName = textDef.Family;
-                    break;
-                // 文本字体大小
-                case nameof(TextDefinition.Size):
-                    textPlot.LabelFontSize = textDef.Size;
-                    break;
-                // 文本旋转角度
-                case nameof(TextDefinition.Rotation):
-                    textPlot.LabelRotation = textDef.Rotation;
-                    break;
-                // 文本字体颜色
-                case nameof(TextDefinition.Color):
-                    textPlot.LabelFontColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(textDef.Color));
-                    break;
-                // 文本斜体
-                case nameof(TextDefinition.IsItalic):
-                    textPlot.LabelItalic = textDef.IsItalic;
-                    break;
-                // 文本粗体
-                case nameof(TextDefinition.IsBold):
-                    textPlot.LabelBold = textDef.IsBold;
-                    break;
-
-                // =================================================
-                //                           背景与边框
-                // =================================================
-                // 背景颜色
-                case nameof(TextDefinition.BackgroundColor):
-                    textPlot.LabelBackgroundColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(textDef.BackgroundColor));
-                    break;
-                // 边框颜色
-                case nameof(TextDefinition.BorderColor):
-                    textPlot.LabelBorderColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(textDef.BorderColor));
-                    break;
-                // 边框宽度
-                case nameof(TextDefinition.BorderWidth):
-                    textPlot.LabelBorderWidth = textDef.BorderWidth;
-                    break;
-                // 圆角半径
-                case nameof(TextDefinition.FilletRadius):
-                    textPlot.LabelBorderRadius = textDef.FilletRadius;
-                    break;
-
-                // =================================================
-                //                           高级渲染
-                // =================================================
-                // 抗锯齿
-                case nameof(TextDefinition.AntiAliasEnable):
-                    textPlot.LabelStyle.AntiAliasText = textDef.AntiAliasEnable;
-                    break;
-                default:
-                    return false;
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// 线条对象属性更新，触发
-        /// </summary>
-        /// <param name="linePlot">线条对象</param>
-        /// <param name="sender"></param>
-        private bool LinePropertyChanged(ScottPlot.Plottables.LinePlot linePlot, object sender,
-            PropertyChangedEventArgs e)
-        {
-            var lineDef = (LineDefinition)sender;
-            switch (e.PropertyName)
-            {
-                case nameof(LineDefinition.Color):
-                    linePlot.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(lineDef.Color));
-                    break;
-                case nameof(LineDefinition.Width):
-                    linePlot.LineWidth = lineDef.Width;
-                    break;
-                case nameof(LineDefinition.Style):
-                    linePlot.LinePattern = GraphMapTemplateParser.GetLinePattern(lineDef.Style.ToString());
-                    break;
-                case nameof(LineDefinition.Start):
-                    linePlot.Line = new CoordinateLine(lineDef.Start.X, lineDef.Start.Y, lineDef.End.X, lineDef.End.Y);
-                    break;
-                case nameof(LineDefinition.End):
-                    linePlot.Line = new CoordinateLine(lineDef.Start.X, lineDef.Start.Y, lineDef.End.X, lineDef.End.Y);
-                    break;
-                default:
-                    return false;
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// 坐标轴对象属性更新，触发
-        /// </summary>
-        /// <param name="axisDef"></param>
-        private bool GridPropertyChanged(GridDefinition gridDef, PropertyChangedEventArgs e)
-        {
-            // 根据变化的属性名更新坐标轴
-            switch (e.PropertyName)
-            {
-                // =================================================
-                //                           主网格线
-                // =================================================
-                case nameof(GridDefinition.MajorGridLineIsVisible):
-                    WpfPlot1.Plot.Grid.XAxisStyle.MajorLineStyle.IsVisible = gridDef.MajorGridLineIsVisible;
-                    WpfPlot1.Plot.Grid.YAxisStyle.MajorLineStyle.IsVisible = gridDef.MajorGridLineIsVisible;
-                    break;
-
-                case nameof(GridDefinition.MajorGridLineColor):
-                    WpfPlot1.Plot.Grid.XAxisStyle.MajorLineStyle.Color = ScottPlot.Color.FromHex(
-                        GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(gridDef.MajorGridLineColor));
-                    WpfPlot1.Plot.Grid.YAxisStyle.MajorLineStyle.Color = ScottPlot.Color.FromHex(
-                        GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(gridDef.MajorGridLineColor));
-                    break;
-
-                case nameof(GridDefinition.MajorGridLineWidth):
-                    WpfPlot1.Plot.Grid.XAxisStyle.MajorLineStyle.Width = gridDef.MajorGridLineWidth;
-                    WpfPlot1.Plot.Grid.YAxisStyle.MajorLineStyle.Width = gridDef.MajorGridLineWidth;
-                    break;
-
-                case nameof(GridDefinition.MajorGridLinePattern):
-                    WpfPlot1.Plot.Grid.XAxisStyle.MajorLineStyle.Pattern = GraphMapTemplateParser.GetLinePattern(gridDef.MajorGridLinePattern.ToString());
-                    WpfPlot1.Plot.Grid.YAxisStyle.MajorLineStyle.Pattern = GraphMapTemplateParser.GetLinePattern(gridDef.MajorGridLinePattern.ToString());
-                    break;
-
-                case nameof(GridDefinition.MajorGridLineAntiAlias):
-                    WpfPlot1.Plot.Grid.XAxisStyle.MajorLineStyle.AntiAlias = gridDef.MajorGridLineAntiAlias;
-                    WpfPlot1.Plot.Grid.YAxisStyle.MajorLineStyle.AntiAlias = gridDef.MajorGridLineAntiAlias;
-                    break;
-
-
-                // =================================================
-                //                           次网格线
-                // =================================================
-                case nameof(GridDefinition.MinorGridLineIsVisible):
-                    WpfPlot1.Plot.Grid.XAxisStyle.MinorLineStyle.IsVisible = gridDef.MinorGridLineIsVisible;
-                    WpfPlot1.Plot.Grid.YAxisStyle.MinorLineStyle.IsVisible = gridDef.MinorGridLineIsVisible;
-                    break;
-
-                case nameof(GridDefinition.MinorGridLineColor):
-                    WpfPlot1.Plot.Grid.XAxisStyle.MinorLineStyle.Color = ScottPlot.Color.FromHex(
-                        GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(gridDef.MinorGridLineColor));
-                    WpfPlot1.Plot.Grid.YAxisStyle.MinorLineStyle.Color = ScottPlot.Color.FromHex(
-                        GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(gridDef.MinorGridLineColor));
-                    break;
-
-                case nameof(GridDefinition.MinorGridLineWidth):
-                    WpfPlot1.Plot.Grid.XAxisStyle.MinorLineStyle.Width = gridDef.MinorGridLineWidth;
-                    WpfPlot1.Plot.Grid.YAxisStyle.MinorLineStyle.Width = gridDef.MinorGridLineWidth;
-                    break;
-
-                case nameof(GridDefinition.MinorGridLinePattern):
-                    WpfPlot1.Plot.Grid.XAxisStyle.MinorLineStyle.Pattern = GraphMapTemplateParser.GetLinePattern(gridDef.MinorGridLinePattern.ToString());
-                    WpfPlot1.Plot.Grid.YAxisStyle.MinorLineStyle.Pattern = GraphMapTemplateParser.GetLinePattern(gridDef.MinorGridLinePattern.ToString());
-                    break;
-
-                case nameof(GridDefinition.MinorGridLineAntiAlias):
-                    WpfPlot1.Plot.Grid.XAxisStyle.MinorLineStyle.AntiAlias = gridDef.MinorGridLineAntiAlias;
-                    WpfPlot1.Plot.Grid.YAxisStyle.MinorLineStyle.AntiAlias = gridDef.MinorGridLineAntiAlias;
-                    break;
-
-
-                // =================================================
-                //                           背景填充
-                // =================================================
-                case nameof(GridDefinition.GridAlternateFillingIsEnable):
-                case nameof(GridDefinition.GridFillColor1):
-                case nameof(GridDefinition.GridFillColor2):
-                if (gridDef.GridAlternateFillingIsEnable)
-                {
-                    WpfPlot1.Plot.Grid.XAxisStyle.FillColor1 = ScottPlot.Color.FromHex(
-                                GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(gridDef.GridFillColor1));
-                    WpfPlot1.Plot.Grid.YAxisStyle.FillColor1 = ScottPlot.Color.FromHex(
-                                GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(gridDef.GridFillColor1));
-                    WpfPlot1.Plot.Grid.XAxisStyle.FillColor2 = ScottPlot.Color.FromHex(
-                                GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(gridDef.GridFillColor2));
-                    WpfPlot1.Plot.Grid.YAxisStyle.FillColor2 = ScottPlot.Color.FromHex(
-                                GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(gridDef.GridFillColor2));
-                }
-                else
-                {
-                    // 设置为透明以禁用填充
-                    WpfPlot1.Plot.Grid.XAxisStyle.FillColor1 = ScottPlot.Colors.Transparent;
-                    WpfPlot1.Plot.Grid.YAxisStyle.FillColor1 = ScottPlot.Colors.Transparent;
-                    WpfPlot1.Plot.Grid.XAxisStyle.FillColor2 = ScottPlot.Colors.Transparent;
-                    WpfPlot1.Plot.Grid.YAxisStyle.FillColor2 = ScottPlot.Colors.Transparent;
-                }
-                break;
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// 图例对象属性更新，触发
-        /// </summary>
-        /// <param name="legendDef">图例对象</param>
-        /// <param name="e">点击属性</param>
-        /// <returns></returns>
-        private bool LegendPropertyChanged(LegendDefinition legendDef, PropertyChangedEventArgs e)
-        {
-            // 根据变化的属性名更新坐标轴
-            switch (e.PropertyName)
-            {
-                // 图例排列方向，横向或者纵向
-                case nameof(legendDef.Orientation):
-                    WpfPlot1.Plot.Legend.Orientation = legendDef.Orientation;
-                    break;
-
-                // 图例是否显示
-                case nameof(legendDef.IsVisible):
-                    WpfPlot1.Plot.Legend.IsVisible = legendDef.IsVisible;
-                    break;
-
-                // 图例位置
-                case nameof(legendDef.Alignment):
-                    WpfPlot1.Plot.Legend.Alignment = legendDef.Alignment;
-                    break;
-
-                // 字体族
-                case nameof(legendDef.Font):
-                    WpfPlot1.Plot.Legend.FontName = legendDef.Font;
-                    break;
-
-                default:
-                    return false;
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// 坐标轴对象属性更新，触发。
-        /// </summary>
-        /// <param name="axisDef">传入的坐标轴定义对象，可以是 TernaryAxisDefinition 或 CartesianAxisDefinition</param>
-        /// <param name="e">属性变更事件参数</param>
-        /// <returns>如果UI需要刷新，则返回 true</returns>
-        private bool AxisPropertyChanged(BaseAxisDefinition axisDef, PropertyChangedEventArgs e)
-        {
-            // =========================================================================
-            //  三元相图 (Ternary Plot) 的处理逻辑
-            // =========================================================================
-            if (axisDef is TernaryAxisDefinition ternaryAxisDef)
-            {
-                // 从图表中找到 TriangularAxis 对象
-                var triangularAxis = WpfPlot1.Plot.GetPlottables().OfType<ScottPlot.Plottables.TriangularAxis>().FirstOrDefault();
-                if (triangularAxis == null) return false;
-
-                // 根据类型获取对应的 TriangularAxisEdge
-                ScottPlot.TriangularAxisEdge? targetEdge = ternaryAxisDef.Type switch
-                {
-                    "Left" => triangularAxis.Left,
-                    "Right" => triangularAxis.Right,
-                    "Bottom" => triangularAxis.Bottom,
-                    _ => null
-                };
-
-                if (targetEdge == null) return false;
-
-                // 更新 TriangularAxisEdge 的属性
-                switch (e.PropertyName)
-                {
-                    // --- 坐标轴标题 ---
-                    case nameof(TernaryAxisDefinition.Label):
-                        targetEdge.LabelText = ternaryAxisDef.Label.Get();
-                        break;
-                    case nameof(TernaryAxisDefinition.Family):
-                        targetEdge.LabelStyle.FontName = ternaryAxisDef.Family;
-                        // 同时更新刻度标签字体
-                        targetEdge.TickLabelStyle.FontName = ternaryAxisDef.TickLableFamily;
-                        break;
-                    case nameof(TernaryAxisDefinition.Size):
-                        targetEdge.LabelStyle.FontSize = ternaryAxisDef.Size;
-                        break;
-                    case nameof(TernaryAxisDefinition.Color):
-                        targetEdge.LabelStyle.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(ternaryAxisDef.Color));
-                        break;
-                    case nameof(TernaryAxisDefinition.IsBold):
-                        targetEdge.LabelStyle.Bold = ternaryAxisDef.IsBold;
-                        break;
-                    case nameof(TernaryAxisDefinition.IsItalic):
-                        targetEdge.LabelStyle.Italic = ternaryAxisDef.IsItalic;
-                        break;
-
-                    // --- 主刻度样式 (三元图只有主刻度) ---
-                    case nameof(TernaryAxisDefinition.MajorTickWidth):
-                        targetEdge.TickMarkStyle.Width = ternaryAxisDef.MajorTickWidth;
-                        break;
-                    case nameof(TernaryAxisDefinition.MajorTickWidthColor):
-                        targetEdge.TickMarkStyle.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(ternaryAxisDef.MajorTickWidthColor));
-                        break;
-
-                    // --- 刻度标签样式 ---
-                    case nameof(TernaryAxisDefinition.TickLableFamily):
-                        targetEdge.TickLabelStyle.FontName = ternaryAxisDef.TickLableFamily;
-                        break;
-                    case nameof(TernaryAxisDefinition.TickLablesize):
-                        targetEdge.TickLabelStyle.FontSize = ternaryAxisDef.TickLablesize;
-                        break;
-                    case nameof(TernaryAxisDefinition.TickLablecolor):
-                        targetEdge.TickLabelStyle.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(ternaryAxisDef.TickLablecolor));
-                        break;
-                    case nameof(TernaryAxisDefinition.TickLableisBold):
-                        targetEdge.TickLabelStyle.Bold = ternaryAxisDef.TickLableisBold;
-                        break;
-                    case nameof(TernaryAxisDefinition.TickLableisItalic):
-                        targetEdge.TickLabelStyle.Italic = ternaryAxisDef.TickLableisItalic;
-                        break;
-
-                    default:
-                        // 如果属性名未匹配，则不刷新
-                        return false;
-                }
-                return true; // 返回true表示需要刷新
-            }
-            // =========================================================================
-            //  笛卡尔坐标系 (Cartesian Plot) 的处理逻辑
-            // =========================================================================
-            else if (axisDef is CartesianAxisDefinition cartesianAxisDef)
-            {
-                // 根据 AxisDefinition 的 Type 获取对应的坐标轴对象
-                ScottPlot.IAxis? targetAxis = cartesianAxisDef.Type switch
-                {
-                    "Left" => WpfPlot1.Plot.Axes.Left,
-                    "Right" => WpfPlot1.Plot.Axes.Right,
-                    "Bottom" => WpfPlot1.Plot.Axes.Bottom,
-                    "Top" => WpfPlot1.Plot.Axes.Top,
-                    _ => null
-                };
-
-                if (targetAxis == null) return false;
-
-                // 根据变化的属性名更新坐标轴
-                switch (e.PropertyName)
-                {
-                    // === 坐标轴标题 (继承自 BaseAxisDefinition) ===
-                    case nameof(CartesianAxisDefinition.Label):
-                        targetAxis.Label.Text = cartesianAxisDef.Label.Get();
-                        break;
-                    case nameof(CartesianAxisDefinition.Family):
-                        targetAxis.Label.FontName = cartesianAxisDef.Family;
-                        break;
-                    case nameof(CartesianAxisDefinition.Size):
-                        targetAxis.Label.FontSize = cartesianAxisDef.Size;
-                        break;
-                    case nameof(CartesianAxisDefinition.Color):
-                        targetAxis.Label.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(cartesianAxisDef.Color));
-                        break;
-                    case nameof(CartesianAxisDefinition.IsBold):
-                        targetAxis.Label.Bold = cartesianAxisDef.IsBold;
-                        break;
-                    case nameof(CartesianAxisDefinition.IsItalic):
-                        targetAxis.Label.Italic = cartesianAxisDef.IsItalic;
-                        break;
-
-                    // === 刻度生成器与范围 (CartesianAxisDefinition 特有) ===
-                    case nameof(CartesianAxisDefinition.ScaleType):
-                        if (cartesianAxisDef.ScaleType == AxisScaleType.Logarithmic)
-                        {
-                            var minorTickGen = new ScottPlot.TickGenerators.LogMinorTickGenerator();
-                            var tickGen = new ScottPlot.TickGenerators.NumericAutomatic
-                            {
-                                MinorTickGenerator = minorTickGen,
-                                IntegerTicksOnly = true,
-                                LabelFormatter = y => $"{Math.Pow(10, y)}"
-                            };
-                            targetAxis.TickGenerator = tickGen;
-                        }
-                        else
-                        {
-                            var autoTickGen2 = new ScottPlot.TickGenerators.NumericAutomatic();
-                            int intervalCount = Math.Max(1, cartesianAxisDef.MinorTicksPerMajorTick + 1);
-                            var minorTickGen = new ScottPlot.TickGenerators.EvenlySpacedMinorTickGenerator(intervalCount);
-                            autoTickGen2.MinorTickGenerator = minorTickGen;
-                            targetAxis.TickGenerator = autoTickGen2;
-                        }
-                        UpdateAxisLimitsFromModel(cartesianAxisDef, targetAxis);
-                        break;
-                    case nameof(CartesianAxisDefinition.MinorTicksPerMajorTick):
-                        if (targetAxis.TickGenerator is ScottPlot.TickGenerators.NumericAutomatic autoTickGen)
-                        {
-                            int intervalCount = Math.Max(1, cartesianAxisDef.MinorTicksPerMajorTick + 1);
-                            var minorTickGen = new ScottPlot.TickGenerators.EvenlySpacedMinorTickGenerator(intervalCount);
-                            autoTickGen.MinorTickGenerator = minorTickGen;
-                        }
-                        break;
-                    case nameof(CartesianAxisDefinition.Minimum):
-                    case nameof(CartesianAxisDefinition.Maximum):
-                        UpdateAxisLimitsFromModel(cartesianAxisDef, targetAxis);
-                        break;
-
-                    // === 主刻度 (继承自 BaseAxisDefinition) ===
-                    case nameof(CartesianAxisDefinition.MajorTickLength):
-                        targetAxis.MajorTickStyle.Length = cartesianAxisDef.MajorTickLength;
-                        break;
-                    case nameof(CartesianAxisDefinition.MajorTickWidth):
-                        targetAxis.MajorTickStyle.Width = cartesianAxisDef.MajorTickWidth;
-                        break;
-                    case nameof(CartesianAxisDefinition.MajorTickWidthColor):
-                        targetAxis.MajorTickStyle.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(cartesianAxisDef.MajorTickWidthColor));
-                        break;
-                    case nameof(CartesianAxisDefinition.MajorTickAntiAlias):
-                        targetAxis.MajorTickStyle.AntiAlias = cartesianAxisDef.MajorTickAntiAlias;
-                        break;
-
-                    // === 次刻度 (CartesianAxisDefinition 特有) ===
-                    case nameof(CartesianAxisDefinition.MinorTickLength):
-                        targetAxis.MinorTickStyle.Length = cartesianAxisDef.MinorTickLength;
-                        break;
-                    case nameof(CartesianAxisDefinition.MinorTickWidth):
-                        targetAxis.MinorTickStyle.Width = cartesianAxisDef.MinorTickWidth;
-                        break;
-                    case nameof(CartesianAxisDefinition.MinorTickColor):
-                        targetAxis.MinorTickStyle.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(cartesianAxisDef.MinorTickColor));
-                        break;
-                    case nameof(CartesianAxisDefinition.MinorTickAntiAlias):
-                        targetAxis.MinorTickStyle.AntiAlias = cartesianAxisDef.MinorTickAntiAlias;
-                        break;
-
-                    // === 刻度标签 (继承自 BaseAxisDefinition) ===
-                    case nameof(CartesianAxisDefinition.TickLableFamily):
-                        targetAxis.TickLabelStyle.FontName = cartesianAxisDef.TickLableFamily;
-                        break;
-                    case nameof(CartesianAxisDefinition.TickLablesize):
-                        targetAxis.TickLabelStyle.FontSize = cartesianAxisDef.TickLablesize;
-                        break;
-                    case nameof(CartesianAxisDefinition.TickLablecolor):
-                        targetAxis.TickLabelStyle.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(cartesianAxisDef.TickLablecolor));
-                        break;
-                    case nameof(CartesianAxisDefinition.TickLableisBold):
-                        targetAxis.TickLabelStyle.Bold = cartesianAxisDef.TickLableisBold;
-                        break;
-                    case nameof(CartesianAxisDefinition.TickLableisItalic):
-                        targetAxis.TickLabelStyle.Italic = cartesianAxisDef.TickLableisItalic;
-                        break;
-
-                    default:
-                        return false;
-                }
-
-                return true;
-            }
-
-            // 如果对象既不是 TernaryAxisDefinition 也不是 CartesianAxisDefinition，则不处理
-            return false;
+            // 恢复遮罩
+            ReapplySelectionVisualState();
         }
 
         /// <summary>
@@ -2117,11 +1401,10 @@ namespace GeoChemistryNexus.ViewModels
         /// <param name="dataColumns">参与计算的数据列名</param>
         /// <param name="scriptBody">脚本内容</param>
         /// <returns>返回计算结果的double数组，如果计算失败或返回类型不正确则返回null</returns>
-        private double[]? CalculateCoordinatesUsingScript(DataRow dataRow, List<string> dataColumns, string scriptBody)
+        private double[]? CalculateCoordinatesUsingScript(Jint.Engine engine, DataRow dataRow, List<string> dataColumns, string scriptBody)
         {
             try
             {
-                var engine = new Jint.Engine();
 
                 // 将数据列的值注入到JavaScript环境中
                 foreach (string columnName in dataColumns)
@@ -2175,113 +1458,9 @@ namespace GeoChemistryNexus.ViewModels
         /// </summary>
         private void DimLayer(LayerItemViewModel layer)
         {
-            if (layer?.Plottable == null) return;
-
-            // 遮罩透明度值
-            byte dimAlpha = 60;
-
-            switch (layer.Plottable)
+            if (layer is IPlotLayer plotLayer)
             {
-                // 线条变暗
-                case ScottPlot.Plottables.LinePlot linePlot:
-                    linePlot.Color = linePlot.Color.WithAlpha(dimAlpha);
-                    break;
-
-                // 文本变暗
-                case ScottPlot.Plottables.Text textPlot:
-                    // 如果有背景色，也变暗
-                    if (textPlot.LabelBackgroundColor != Colors.Transparent)
-                    {
-                        textPlot.LabelBackgroundColor = textPlot.LabelBackgroundColor.WithAlpha(dimAlpha);
-                    }
-                    // 如果有边框，也变暗
-                    if (textPlot.LabelBorderColor != Colors.Transparent)
-                    {
-                        textPlot.LabelBorderColor = textPlot.LabelBorderColor.WithAlpha(dimAlpha);
-                    }
-                    // 文字颜色变暗
-                    textPlot.LabelFontColor = textPlot.LabelFontColor.WithAlpha(dimAlpha);
-                    break;
-
-                case ScottPlot.Plottables.Arrow arrowPlot:
-                    arrowPlot.ArrowFillColor = arrowPlot.ArrowFillColor.WithAlpha(dimAlpha);
-                    break;
-
-                // 数据点变暗
-                case ScottPlot.Plottables.Scatter scatterPlot:
-                    scatterPlot.Color = scatterPlot.Color.WithAlpha(dimAlpha);
-                    break;
-
-                // 多边形变暗
-                case ScottPlot.Plottables.Polygon polygonPlot:
-                    // 将填充色和边框色都变暗
-                    polygonPlot.FillStyle.Color = polygonPlot.FillStyle.Color.WithAlpha(dimAlpha);
-                    polygonPlot.LineStyle.Color = polygonPlot.LineStyle.Color.WithAlpha(dimAlpha);
-                    break;
-                // TODO: 添加其他图层类型变暗逻辑
-        }
-        }
-
-        /// <summary>
-        /// 将图层元素的样式恢复到其原始定义的状态
-        /// </summary>
-        private void RevertLayerStyle(LayerItemViewModel layer)
-        {
-            if (layer?.Plottable == null) return;
-
-            // 根据不同的图层类型恢复其原始样式
-            switch (layer.Plottable)
-            {
-                // 恢复线条样式
-                case ScottPlot.Plottables.LinePlot linePlot:
-                    var lineDef = (layer as LineLayerItemViewModel)?.LineDefinition;
-                    if (lineDef == null) break;
-                    // 从其定义对象中读取原始属性并应用
-                    linePlot.LineWidth = lineDef.Width;
-                    linePlot.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(lineDef.Color));
-                    break;
-
-                // 恢复文本样式
-                case ScottPlot.Plottables.Text textPlot:
-                    var textDef = (layer as TextLayerItemViewModel)?.TextDefinition;
-                    if (textDef == null) break;
-
-                    // 恢复原始颜色
-                    textPlot.LabelFontColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(textDef.Color));
-                    textPlot.LabelBackgroundColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(textDef.BackgroundColor));
-                    textPlot.LabelBorderColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(textDef.BorderColor));
-                    textPlot.LabelBorderWidth = textDef.BorderWidth;
-                    break;
-
-                // 恢复数据点样式
-                case ScottPlot.Plottables.Scatter scatterPlot:
-                    var scatterDef = (layer as ScatterLayerItemViewModel)?.ScatterDefinition;
-                    if (scatterDef == null) break;
-                    // 从其定义对象中读取原始颜色并应用
-                    scatterPlot.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(scatterDef.Color));
-                    scatterPlot.MarkerStyle.OutlineWidth = 0;
-                    break;
-
-                // 恢复箭头样式
-                case ScottPlot.Plottables.Arrow arrowPlot:
-                    var arrowDef = (layer as ArrowLayerItemViewModel)?.ArrowDefinition;
-                    if (arrowDef == null) break;
-                    arrowPlot.ArrowFillColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(arrowDef.Color));
-                    arrowPlot.ArrowWidth = arrowDef.ArrowWidth;
-                    arrowPlot.ArrowheadWidth = arrowDef.ArrowheadWidth;
-                    arrowPlot.ArrowheadLength = arrowDef.ArrowheadLength;
-                    break;
-
-                // 多边形恢复
-                case ScottPlot.Plottables.Polygon polygonPlot:
-                    var polygonDef = (layer as PolygonLayerItemViewModel)?.PolygonDefinition;
-                    if (polygonDef == null) break;
-                    // 从其定义对象中读取原始属性并应用
-                    polygonPlot.FillStyle.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(polygonDef.FillColor));
-                    polygonPlot.LineStyle.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(polygonDef.BorderColor));
-                    polygonPlot.LineStyle.Width = polygonDef.BorderWidth;
-                    break;
-                    // TODO: 在此为其他图层类型（如点、多边形）添加恢复逻辑
+                plotLayer.Dim();
             }
         }
 
@@ -2432,15 +1611,23 @@ namespace GeoChemistryNexus.ViewModels
             if (CurrentTemplate.TemplateType == "Ternary")
             {
                 RenderTernaryPlot();
-                WpfPlot1.Plot.Axes.AutoScale();
+                //WpfPlot1.Plot.Axes.AutoScale();
             }
             else // 默认处理笛卡尔坐标系
             {
                 RenderCartesianPlot();
             }
 
-            // 最后添加坐标定位十字轴，确保在最顶层
-            WpfPlot1.Plot.Add.Plottable(CrosshairPlot);
+            // 如果是三元图，直接修改属性，关闭十字轴
+            if (BaseMapType == "Ternary")
+            {
+                IsCrosshairVisible = false;
+            }
+            else
+            {
+                // 最后添加坐标定位十字轴，确保在最顶层
+                WpfPlot1.Plot.Add.Plottable(CrosshairPlot);
+            }
 
             // 获取脚本对象
             CurrentScript = CurrentTemplate.Script;
@@ -2449,82 +1636,24 @@ namespace GeoChemistryNexus.ViewModels
             WpfPlot1.Refresh();
         }
 
-        // 创建箭头绘图对象
-        private void CreateArrowPlottable(ArrowLayerItemViewModel arrowLayer)
-        {
-            var arrowDef = arrowLayer.ArrowDefinition;
-            if (arrowDef.Start == null || arrowDef.End == null) return;
-            var arrowPlot = WpfPlot1.Plot.Add.Arrow(new Coordinates(arrowDef.Start.X, arrowDef.Start.Y), new Coordinates(arrowDef.End.X, arrowDef.End.Y));
-
-            // 应用样式
-            arrowPlot.ArrowFillColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(arrowDef.Color));
-            arrowPlot.ArrowWidth = arrowDef.ArrowWidth;
-            arrowPlot.ArrowheadWidth = arrowDef.ArrowheadWidth;
-            arrowPlot.ArrowheadLength = arrowDef.ArrowheadLength;
-
-            // 隐藏属性-箭头描边颜色
-            arrowPlot.ArrowLineColor = Colors.Transparent;
-
-            // 存储引用
-            arrowLayer.Plottable = arrowPlot;
-        }
-
         /// <summary>
         /// 渲染标准笛卡尔坐标系图表
         /// </summary>
         private void RenderCartesianPlot()
         {
+            // 从三元图回来的时候会隐藏上和右侧边框，需要手动显示出来
+            WpfPlot1.Plot.Axes.Right.IsVisible = true;
+            WpfPlot1.Plot.Axes.Top.IsVisible = true;
+
             WpfPlot1.Plot.Axes.Title.IsVisible = true;
-            WpfPlot1.Plot.Axes.AddTopAxis();
 
             var allNodes = FlattenTree(LayerTree);
 
-            // 更新坐标轴样式
-            foreach (var item in allNodes)
+            // --- 刷新渲染绘图对象 ---
+            // 线条，文本，多边形，箭头，数据点，坐标轴
+            foreach (var layer in allNodes.OfType<IPlotLayer>().Where(l => ((LayerItemViewModel)l).IsVisible))
             {
-                if (item is AxisLayerItemViewModel axisLayer)
-                {
-                    ApplyAxisSettings(axisLayer);
-                }
-                else
-                {
-                    item.Plottable = null; // 清空旧的绘图对象引用
-                }
-            }
-
-            // --- 绘制多边形 ---
-            foreach (var item in allNodes.OfType<PolygonLayerItemViewModel>().Where(l => l.IsVisible))
-            {
-                CreatePolygonPlottable(item);
-            }
-
-            // --- 绘制线条 ---
-            foreach (var item in allNodes.OfType<LineLayerItemViewModel>().Where(l => l.IsVisible))
-            {
-                CreateLinePlottable(item);
-            }
-
-            // --- 绘制箭头 ---
-            foreach (var item in allNodes.OfType<ArrowLayerItemViewModel>().Where(l => l.IsVisible))
-            {
-                CreateArrowPlottable(item);
-            }
-
-            // --- 绘制数据点 ---
-            foreach (var item in allNodes.OfType<ScatterLayerItemViewModel>().Where(l => l.IsVisible))
-            {
-                var scatterDef = item.ScatterDefinition;
-                var scatterPlot = WpfPlot1.Plot.Add.Scatter(new[] { scatterDef.StartAndEnd.X }, new[] { scatterDef.StartAndEnd.Y });
-                scatterPlot.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(scatterDef.Color));
-                scatterPlot.MarkerSize = scatterDef.Size;
-                scatterPlot.MarkerShape = scatterDef.MarkerShape;
-                item.Plottable = scatterPlot;
-            }
-
-            // --- 绘制文本 ---
-            foreach (var item in allNodes.OfType<TextLayerItemViewModel>().Where(l => l.IsVisible))
-            {
-                CreateTextPlottable(item);
+                layer.Render(WpfPlot1.Plot);
             }
 
             // 全局设置——处理图例
@@ -2622,218 +1751,16 @@ namespace GeoChemistryNexus.ViewModels
             // 遍历所有图层节点
             var allNodes = FlattenTree(LayerTree);
 
-            // 设置坐标轴标题和样式
-            foreach (var item in allNodes.OfType<AxisLayerItemViewModel>().Where(l => l.IsVisible))
+
+            // --- 刷新渲染绘图对象 ---
+            // 线条，文本，多边形，箭头，数据点
+            foreach (var layer in allNodes.OfType<IPlotLayer>().Where(l => ((LayerItemViewModel)l).IsVisible))
             {
-                // 确保 axisDef 是 TernaryAxisDefinition 类型
-                if (item.AxisDefinition is TernaryAxisDefinition ternaryAxisDef)
-                {
-                    ScottPlot.TriangularAxisEdge? targetEdge = null;
-
-                    switch (ternaryAxisDef.Type)
-                    {
-                        case "Bottom":
-                            targetEdge = triangularAxis.Bottom;
-                            break;
-                        case "Left":
-                            targetEdge = triangularAxis.Left;
-                            break;
-                        case "Right":
-                            targetEdge = triangularAxis.Right;
-                            break;
-                    }
-
-                    if (targetEdge != null)
-                    {
-                        // --- 应用所有标题样式 ---
-                        targetEdge.LabelText = ternaryAxisDef.Label.Get();
-                        targetEdge.LabelStyle.FontName = Fonts.Detect(ternaryAxisDef.Label.Get());
-                        targetEdge.LabelStyle.FontSize = ternaryAxisDef.Size;
-                        targetEdge.LabelStyle.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(ternaryAxisDef.Color));
-                        targetEdge.LabelStyle.Bold = ternaryAxisDef.IsBold;
-                        targetEdge.LabelStyle.Italic = ternaryAxisDef.IsItalic;
-
-                        // --- 应用所有刻度样式 ---
-                        targetEdge.TickMarkStyle.Width = ternaryAxisDef.MajorTickWidth;
-                        targetEdge.TickMarkStyle.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(ternaryAxisDef.MajorTickWidthColor));
-
-                        // --- 应用所有刻度标签样式 ---
-                        targetEdge.TickLabelStyle.FontName = ternaryAxisDef.TickLableFamily;
-                        targetEdge.TickLabelStyle.FontSize = ternaryAxisDef.TickLablesize;
-                        targetEdge.TickLabelStyle.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(ternaryAxisDef.TickLablecolor));
-                        targetEdge.TickLabelStyle.Bold = ternaryAxisDef.TickLableisBold;
-                        targetEdge.TickLabelStyle.Italic = ternaryAxisDef.TickLableisItalic;
-                    }
-                }
-            }
-
-            // --- 绘制数据点 ---
-            // 在三元图中，ScatterLayerItemViewModel中的X和Y分别代表底轴和左轴的比例
-            foreach (var item in allNodes.OfType<ScatterLayerItemViewModel>().Where(l => l.IsVisible))
-            {
-                var scatterDef = item.ScatterDefinition;
-
-                // 使用三角轴的GetCoordinates方法将分数坐标转换为笛卡尔坐标
-                // X代表底轴比例，Y代表左轴比例。第三个轴的比例将自动计算。
-                var cartesianCoords = triangularAxis.GetCoordinates(scatterDef.StartAndEnd.X, scatterDef.StartAndEnd.Y);
-
-                // 在计算出的笛卡尔坐标上添加散点
-                var scatterPlot = WpfPlot1.Plot.Add.Scatter(new[] { cartesianCoords });
-
-                // 应用样式
-                scatterPlot.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(scatterDef.Color));
-                scatterPlot.MarkerSize = scatterDef.Size;
-                scatterPlot.MarkerShape = scatterDef.MarkerShape;
-
-                // 将创建的Plottable对象关联回图层项
-                item.Plottable = scatterPlot;
-            }
-
-            // --- 绘制箭头 (Arrow) ---
-            foreach (var item in allNodes.OfType<ArrowLayerItemViewModel>().Where(l => l.IsVisible))
-            {
-                CreateTernaryArrowPlottable(item, triangularAxis);
-            }
-
-            // --- 绘制多边形 (Polygon) ---
-            foreach (var item in allNodes.OfType<PolygonLayerItemViewModel>().Where(l => l.IsVisible))
-            {
-                CreatePolygonPlottable(item);
-            }
-
-            // --- 绘制线条 (Line) ---
-            foreach (var item in allNodes.OfType<LineLayerItemViewModel>().Where(l => l.IsVisible))
-            {
-                CreateLinePlottable(item);
-            }
-
-            // --- 绘制文本 (Text) ---
-            foreach (var item in allNodes.OfType<TextLayerItemViewModel>().Where(l => l.IsVisible))
-            {
-                CreateTextPlottable(item);
+                layer.Render(WpfPlot1.Plot);
             }
 
             // 三角图需要方形坐标轴以避免变形
             WpfPlot1.Plot.Axes.SquareUnits();
-        }
-
-        /// <summary>
-        /// 在三元坐标系下创建箭头绘图对象。
-        /// 此方法会处理从存储的三元坐标到绘图所需的笛卡尔坐标的转换。
-        /// </summary>
-        /// <param name="arrowLayer">包含箭头定义的图层ViewModel</param>
-        /// <param name="triangularAxis">用于坐标转换的三元轴对象</param>
-        private void CreateTernaryArrowPlottable(ArrowLayerItemViewModel arrowLayer, ScottPlot.Plottables.TriangularAxis triangularAxis)
-        {
-            var arrowDef = arrowLayer.ArrowDefinition;
-            if (arrowDef.Start == null || arrowDef.End == null) return;
-
-            // 从存储的三元坐标分量中获取起点和终点
-            // 假设 X 存储 bottomFraction, Y 存储 leftFraction
-            double startBottom = arrowDef.Start.X;
-            double startLeft = arrowDef.Start.Y;
-            double startRight = 1 - startBottom - startLeft; // 计算第三个分量
-
-            double endBottom = arrowDef.End.X;
-            double endLeft = arrowDef.End.Y;
-            double endRight = 1 - endBottom - endLeft; // 计算第三个分量
-
-            // 使用三角轴对象将三元坐标转换为笛卡尔坐标
-            var startCartesian = triangularAxis.GetCoordinates(startBottom, startLeft, startRight);
-            var endCartesian = triangularAxis.GetCoordinates(endBottom, endLeft, endRight);
-
-            // 使用转换后的笛卡尔坐标创建箭头
-            var arrowPlot = WpfPlot1.Plot.Add.Arrow(startCartesian, endCartesian);
-
-            // 应用样式
-            arrowPlot.ArrowFillColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(arrowDef.Color));
-            arrowPlot.ArrowWidth = arrowDef.ArrowWidth;
-            arrowPlot.ArrowheadWidth = arrowDef.ArrowheadWidth;
-            arrowPlot.ArrowheadLength = arrowDef.ArrowheadLength;
-            arrowPlot.ArrowLineColor = Colors.Transparent;
-
-            // 存储引用
-            arrowLayer.Plottable = arrowPlot;
-        }
-
-        // 设置坐标轴
-        private void ApplyAxisSettings(AxisLayerItemViewModel axisLayer)
-        {
-            var axisDef = axisLayer.AxisDefinition;
-
-            // 根据类型获取 ScottPlot 中的坐标轴对象
-            ScottPlot.IAxis? targetAxis = axisDef.Type switch
-            {
-                "Left" => WpfPlot1.Plot.Axes.Left,
-                "Right" => WpfPlot1.Plot.Axes.Right,
-                "Bottom" => WpfPlot1.Plot.Axes.Bottom,
-                "Top" => WpfPlot1.Plot.Axes.Top,
-                _ => null
-            };
-
-            if (targetAxis == null) return;
-
-            // 将 ViewModel 中的 IsVisible 状态同步到坐标轴
-            targetAxis.IsVisible = axisLayer.IsVisible;
-            targetAxis.Label.Text = axisDef.Label.Get();
-            targetAxis.Label.FontName = Fonts.Detect(targetAxis.Label.Text);
-            targetAxis.Label.FontSize = axisDef.Size;
-            targetAxis.Label.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(axisDef.Color));
-            targetAxis.Label.Bold = axisDef.IsBold;
-            targetAxis.Label.Italic = axisDef.IsItalic;
-
-            // 检查是否为笛卡尔坐标轴
-            if (axisDef is CartesianAxisDefinition cartesianAxisDef)
-            {
-                // 在处理坐标轴样式时增加对数刻度的处理
-                if (cartesianAxisDef.ScaleType == AxisScaleType.Logarithmic)
-                {
-                    var minorTickGen = new ScottPlot.TickGenerators.LogMinorTickGenerator();
-                    var tickGen = new ScottPlot.TickGenerators.NumericAutomatic();
-                    tickGen.MinorTickGenerator = minorTickGen;
-                    tickGen.IntegerTicksOnly = true;
-                    tickGen.LabelFormatter = y => $"{Math.Pow(10, y)}";
-                    targetAxis.TickGenerator = tickGen;
-                }
-
-                // 设置初始的坐标轴范围
-                UpdateAxisLimitsFromModel(cartesianAxisDef, targetAxis);
-            }
-        }
-
-        // 创建线条绘图对象
-        private void CreateLinePlottable(LineLayerItemViewModel lineLayer)
-        {
-            var lineDef = lineLayer.LineDefinition;
-            if (lineDef.Start == null || lineDef.End == null) return;
-            var linePlot = WpfPlot1.Plot.Add.Line(lineDef.Start.X, lineDef.Start.Y, lineDef.End.X, lineDef.End.Y);
-
-            // 应用样式
-            linePlot.LineWidth = lineDef.Width;
-            linePlot.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(lineDef.Color));
-            linePlot.LinePattern = GraphMapTemplateParser.GetLinePattern(lineDef.Style.ToString());
-
-            // 存储引用
-            lineLayer.Plottable = linePlot;
-        }
-
-        // 创建文本绘图对象
-        private void CreateTextPlottable(TextLayerItemViewModel textLayer)
-        {
-            var textDef = textLayer.TextDefinition;
-            var textPlot = WpfPlot1.Plot.Add.Text(textDef.Content.Get(), new Coordinates(textDef.StartAndEnd.X, textDef.StartAndEnd.Y));
-
-            // 应用样式
-            textPlot.LabelText = textDef.Content.Get();
-            textPlot.LabelFontName = Fonts.Detect(textPlot.LabelText);      // 自适应字体
-            textPlot.LabelFontSize = textDef.Size;
-            textPlot.LabelRotation = textDef.Rotation;
-            textPlot.LabelFontColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex((textDef.Color)));
-            textPlot.LabelBold = textDef.IsBold;
-            textPlot.LabelItalic = textDef.IsItalic;
-
-            // 存储引用
-            textLayer.Plottable = textPlot;
         }
 
         /// <summary>
@@ -2899,7 +1826,11 @@ namespace GeoChemistryNexus.ViewModels
                 // 恢复所有图层的原始样式
                 foreach (var layer in allPlottableLayers)
                 {
-                    RevertLayerStyle(layer);
+                    // 判断是否实现了 IPlotLayer 接口
+                    if (layer is IPlotLayer plotLayer)
+                    {
+                         plotLayer.Restore();
+                    }
                 }
 
                 // 如果是分类文件夹，清空属性面板
@@ -2923,7 +1854,6 @@ namespace GeoChemistryNexus.ViewModels
                 ArrowLayerItemViewModel arrowLayer => arrowLayer.ArrowDefinition,
                 PolygonLayerItemViewModel polygonLayer => polygonLayer.PolygonDefinition,
                 AxisLayerItemViewModel axisLayer => axisLayer.AxisDefinition,
-                LegendLayerItemViewModel legendLayer => legendLayer.LegendDefinition,
                 ScatterLayerItemViewModel scatterLayer => scatterLayer.ScatterDefinition,
                 _ => nullObject
             };
@@ -2932,15 +1862,19 @@ namespace GeoChemistryNexus.ViewModels
             // 应用新的高亮样式：选中的恢复原样，其他的变暗
             foreach (var layer in allPlottableLayers)
             {
-                if (layer == selectedItem)
+                // 判断是否实现了 IPlotLayer 接口
+                if (layer is IPlotLayer plotLayer)
                 {
-                    // 确保选中的图层是其原始样式
-                    RevertLayerStyle(layer);
-                }
-                else
-                {
-                    // 将其他图层变暗
-                    DimLayer(layer);
+                    if (layer == selectedItem)
+                    {
+                        // 恢复原始样式
+                        plotLayer.Restore();
+                    }
+                    else
+                    {
+                        // 变暗
+                        plotLayer.Dim();
+                    }
                 }
             }
 
@@ -2986,10 +1920,10 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private void UpdateData()
         {
-            // 1. 清除当前绘图中的所有由数据导入的点
+            // 清除当前绘图中的所有由数据导入的点
             ClearExistingPlottedData();
 
-            // 2. 根据当前数据表格中的数据重新进行投点
+            // 根据当前数据表格中的数据重新进行投点
             PlotDataFromGrid();
         }
 
@@ -3017,7 +1951,10 @@ namespace GeoChemistryNexus.ViewModels
             // 恢复所有图层的原始样式
             foreach (var layer in allPlottableLayers)
             {
-                RevertLayerStyle(layer);
+                if (layer is IPlotLayer plotLayer)
+                {
+                    plotLayer.Restore();
+                }
             }
 
             WpfPlot1.Refresh();
@@ -3037,6 +1974,13 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private void LocationAxis()
         {
+            // 三元图状态下用户手动开启提示
+            if (BaseMapType == "Ternary")
+            {
+                IsCrosshairVisible = false;
+                MessageHelper.Warning("三元相图暂不支持定位功能");
+                return;
+            }
 
             // 切换追踪模式的状态
             IsCrosshairVisible = !IsCrosshairVisible;
@@ -3453,6 +2397,8 @@ namespace GeoChemistryNexus.ViewModels
             var palette = new ScottPlot.Palettes.Category10();
             int colorIndex = 0;
 
+            var engine = new Jint.Engine();
+
             // ===================================
             //  根据图表类型选择不同的投点逻辑
             // ===================================
@@ -3482,7 +2428,7 @@ namespace GeoChemistryNexus.ViewModels
                         int rowIndex = item.Index; // 获取原始数据行号（从1开始）
                         try
                         {
-                            var ternaryValues = CalculateCoordinatesUsingScript(row, dataColumns, scriptDefinition.ScriptBody);
+                            var ternaryValues = CalculateCoordinatesUsingScript(engine, row, dataColumns, scriptDefinition.ScriptBody);
                             // 脚本必须为三元图返回三个值
                             if (ternaryValues != null && ternaryValues.Length == 3)
                             {
@@ -3520,11 +2466,6 @@ namespace GeoChemistryNexus.ViewModels
 
                     if (!cartesianCoords.Any()) continue;
 
-                    var scatterPlotForCategory = WpfPlot1.Plot.Add.ScatterPoints(cartesianCoords.ToArray());
-                    scatterPlotForCategory.Color = groupColor;
-                    scatterPlotForCategory.MarkerSize = 10;
-                    scatterPlotForCategory.LegendText = categoryName;
-
                     var scatterDefForCategory = new ScatterDefinition
                     {
                         Color = groupColor.ToHex(),
@@ -3534,20 +2475,11 @@ namespace GeoChemistryNexus.ViewModels
                     var categoryViewModel = new ScatterLayerItemViewModel(scatterDefForCategory)
                     {
                         Name = categoryName,
-                        Plottable = scatterPlotForCategory,
+                        //Plottable = scatterPlotForCategory,
+                        DataPoints = cartesianCoords,
                         IsVisible = true
                     };
-                    categoryViewModel.PropertyChanged += (s, e) =>
-                    {
-                        if (e.PropertyName == nameof(ScatterLayerItemViewModel.IsVisible))
-                        {
-                            if (categoryViewModel.Plottable != null)
-                            {
-                                categoryViewModel.Plottable.IsVisible = categoryViewModel.IsVisible;
-                                WpfPlot1.Refresh();
-                            }
-                        }
-                    };
+
                     rootDataNode.Children.Add(categoryViewModel);
                 }
 
@@ -3574,7 +2506,7 @@ namespace GeoChemistryNexus.ViewModels
                         DataRow row = item.Row;
                         try
                         {
-                            var coordinates = CalculateCoordinatesUsingScript(row, dataColumns, scriptDefinition.ScriptBody);
+                            var coordinates = CalculateCoordinatesUsingScript(engine, row, dataColumns, scriptDefinition.ScriptBody);
                             // 脚本必须为笛卡尔坐标图返回两个值
                             if (coordinates != null && coordinates.Length == 2)
                             {
@@ -3590,10 +2522,12 @@ namespace GeoChemistryNexus.ViewModels
 
                     if (!xs.Any()) continue;
 
-                    var scatterPlotForCategory = WpfPlot1.Plot.Add.ScatterPoints(xs.ToArray(), ys.ToArray());
-                    scatterPlotForCategory.Color = groupColor;
-                    scatterPlotForCategory.MarkerSize = 10;
-                    scatterPlotForCategory.LegendText = categoryName;
+                    // 准备坐标点列表
+                    var points = new List<Coordinates>();
+                    for (int i = 0; i < xs.Count; i++)
+                    {
+                        points.Add(new Coordinates(xs[i], ys[i]));
+                    }
 
                     var scatterDefForCategory = new ScatterDefinition
                     {
@@ -3604,19 +2538,9 @@ namespace GeoChemistryNexus.ViewModels
                     var categoryViewModel = new ScatterLayerItemViewModel(scatterDefForCategory)
                     {
                         Name = categoryName,
-                        Plottable = scatterPlotForCategory,
+                        //Plottable = scatterPlotForCategory,
+                        DataPoints = points,
                         IsVisible = true
-                    };
-                    categoryViewModel.PropertyChanged += (s, e) =>
-                    {
-                        if (e.PropertyName == nameof(ScatterLayerItemViewModel.IsVisible))
-                        {
-                            if (categoryViewModel.Plottable != null)
-                            {
-                                categoryViewModel.Plottable.IsVisible = categoryViewModel.IsVisible;
-                                WpfPlot1.Refresh();
-                            }
-                        }
                     };
                     rootDataNode.Children.Add(categoryViewModel);
                 }
@@ -3625,7 +2549,8 @@ namespace GeoChemistryNexus.ViewModels
             // 刷新图表和图例
             WpfPlot1.Plot.Legend.IsVisible = true;
             WpfPlot1.Plot.Axes.AutoScale();
-            WpfPlot1.Refresh();
+            //WpfPlot1.Refresh();
+            RefreshPlotFromLayers();
             MessageHelper.Success(LanguageService.Instance["data_plotting_successful"]);
 
             // 投点后自动切回绘图选项卡
@@ -3813,6 +2738,10 @@ namespace GeoChemistryNexus.ViewModels
 
             // 重新添加十字轴，确保它存在且在最上层
             WpfPlot1.Plot.Add.Plottable(CrosshairPlot);
+            // 解决从三元图(被隐藏)切回二维图后，对象依然处于隐藏状态的问题
+            CrosshairPlot.IsVisible = true;
+            // 默认功能开关重置为开启
+            IsCrosshairVisible = true;
 
             // 确保将全局变量重置为默认状态
             MainPlotViewModel.BaseMapType = String.Empty;
