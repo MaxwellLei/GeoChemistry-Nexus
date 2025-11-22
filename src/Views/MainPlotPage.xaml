@@ -419,16 +419,19 @@
                 <!-- 菜单栏 -->
                 <Menu DockPanel.Dock="Top">
                     <MenuItem Header="{Binding [File],Source={x:Static lg:LanguageService.Instance}}">
-                        <!--导入模板-->
-                        <MenuItem Header="{Binding [import_template],Source={x:Static lg:LanguageService.Instance}}" 
-                                  Command="{Binding LoadBasemapCommand}" IsEnabled="False"/>
-                        <Separator/>
                         <!--新建模板-->
                         <MenuItem Header="{Binding [new_template],Source={x:Static lg:LanguageService.Instance}}" 
                                   Command="{Binding NewTemplateCommand}"/>
                         <!--打开模板-->
                         <MenuItem Header="{Binding [open_template],Source={x:Static lg:LanguageService.Instance}}" 
                                   Command="{Binding OpenTemplateCommand}"/>
+                    </MenuItem>
+
+                    <MenuItem Header="{Binding [template],Source={x:Static lg:LanguageService.Instance}}">
+                        <MenuItem Header="{Binding [import_template], Source={x:Static lg:LanguageService.Instance}}" 
+                                  Command="{Binding LoadBasemapCommand}" IsEnabled="False"/>
+                        <Separator/>
+                        <MenuItem Header="{Binding [check_for_template_updates], Source={x:Static lg:LanguageService.Instance}}" Command="{Binding CheckForTemplateUpdatesCommand}"/>
                     </MenuItem>
                 </Menu>
 
@@ -509,8 +512,9 @@
                                 <Border Style="{StaticResource TemplateCardStyle}" MinHeight="200">
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="MouseLeftButtonUp">
-                                            <i:InvokeCommandAction Command="{Binding DataContext.SelectTemplateCardCommand, RelativeSource={RelativeSource AncestorType=Page}}"
-                                                                  CommandParameter="{Binding}"/>
+                                            <!--<i:InvokeCommandAction Command="{Binding DataContext.SelectTemplateCardCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                                  CommandParameter="{Binding}"/>-->
+                                            <i:InvokeCommandAction Command="{Binding CardClickCommand}"/>
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                     <Grid>
@@ -520,9 +524,93 @@
                                         </Grid.RowDefinitions>
 
                                         <!--缩略图-->
-                                        <Border Grid.Row="0" Background="#F8F9FA" CornerRadius="6,6,0,0" Margin="8,8,8,0">
-                                            <Image Source="{Binding ThumbnailPath}"  Stretch="Uniform" />
-                                        </Border>
+                                        <Grid Grid.Row="0" Margin="8,8,8,0">
+                                            <Border CornerRadius="6,6,0,0" Background="#F8F9FA" ClipToBounds="True">
+                                                <Image Source="{Binding ThumbnailImage}" Stretch="Uniform"/>
+                                            </Border>
+
+                                            <Border CornerRadius="6,6,0,0" Background="#80000000">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding State}" Value="NotDownloaded">
+                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding State}" Value="UpdateAvailable">
+                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding State}" Value="Downloading">
+                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding State}" Value="Error">
+                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+
+                                                <Grid>
+                                                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                        <StackPanel.Style>
+                                                            <Style TargetType="StackPanel">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding State}" Value="NotDownloaded">
+                                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding State}" Value="UpdateAvailable">
+                                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding State}" Value="Error">
+                                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </StackPanel.Style>
+
+                                                        <TextBlock Text="⬇" FontSize="30" Foreground="White" 
+                                           HorizontalAlignment="Center" Margin="0,0,0,5"/>
+
+                                                        <TextBlock Text="{Binding StateText}" Foreground="White" 
+                                           FontSize="14" FontWeight="Bold"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel VerticalAlignment="Center" Margin="20,0">
+                                                        <StackPanel.Style>
+                                                            <Style TargetType="StackPanel">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding State}" Value="Downloading">
+                                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </StackPanel.Style>
+
+                                                        <TextBlock Text="正在下载..." Foreground="White" Margin="0,0,0,5" HorizontalAlignment="Center"/>
+                                                        <ProgressBar Value="{Binding DownloadProgress}" Maximum="100" Height="10" BorderThickness="0"/>
+                                                        <TextBlock Text="{Binding DownloadProgress, StringFormat={}{0:0}%}" 
+                                           Foreground="White" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                                                    </StackPanel>
+
+                                                    <Border HorizontalAlignment="Right" VerticalAlignment="Top" Background="#D83B01" 
+                                    CornerRadius="0,6,0,6" Padding="8,4" Margin="0,-1,-1,0">
+                                                        <Border.Style>
+                                                            <Style TargetType="Border">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding State}" Value="UpdateAvailable">
+                                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Border.Style>
+                                                        <TextBlock Text="NEW" Foreground="White" FontSize="10" FontWeight="Bold"/>
+                                                    </Border>
+                                                </Grid>
+                                            </Border>
+                                        </Grid>
 
                                         <!--模板名称和分类--> 
                                         <StackPanel Grid.Row="1" Margin="12" HorizontalAlignment="Center">

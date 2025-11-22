@@ -32,5 +32,10 @@ namespace GeoChemistryNexus.Models
         /// </summary>
         public string GraphMapPath { get; set; }
 
+        // 模板列表文件哈希值
+        // 更新逻辑核心依赖
+        [JsonPropertyName("file_hash")]
+        public string FileHash { get; set; }
+
     }
 }

@@ -1411,4 +1411,40 @@
   <data name="cannot_delete_base_layers" xml:space="preserve">
     <value>Cannot delete base layers.</value>
   </data>
+  <data name="template" xml:space="preserve">
+    <value>_Template(T)</value>
+  </data>
+  <data name="check_for_template_updates" xml:space="preserve">
+    <value>Check for Template Updates</value>
+  </data>
+  <data name="template_ready" xml:space="preserve">
+    <value>Template Ready!</value>
+  </data>
+  <data name="download_template_failed" xml:space="preserve">
+    <value>Download Template Failed:</value>
+  </data>
+  <data name="downloaded_file_hash_mismatch" xml:space="preserve">
+    <value>The downloaded file hash does not match the server's. The file may be corrupt or tampered with.</value>
+  </data>
+  <data name="downloaded_content_not_valid_json" xml:space="preserve">
+    <value>The downloaded content is not in a valid JSON format.</value>
+  </data>
+  <data name="template_list_update_success_refreshing" xml:space="preserve">
+    <value>Template list updated successfully! Refreshing...</value>
+  </data>
+  <data name="update_list_file_failed" xml:space="preserve">
+    <value>Failed to Update List File</value>
+  </data>
+  <data name="new_drawing_template_library_version_detected" xml:space="preserve">
+    <value>A new version of the drawing template library has been detected. Do you want to update the list now?</value>
+  </data>
+  <data name="current_template_list_latest_version" xml:space="preserve">
+    <value>The current template list is already the latest version.</value>
+  </data>
+  <data name="network_connection_failed_cannot_check_for_updates" xml:space="preserve">
+    <value>Network connection failed, cannot check for updates:</value>
+  </data>
+  <data name="error_occurred_while_checking_for_updates" xml:space="preserve">
+    <value>An error occurred while checking for updates:</value>
+  </data>
 </root>

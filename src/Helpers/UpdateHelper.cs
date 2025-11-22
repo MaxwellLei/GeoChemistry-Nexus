@@ -6,6 +6,7 @@ using System.IO.Compression;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -28,8 +29,35 @@ namespace GeoChemistryNexus.Helpers
         // 仓库的 API URL
         private const string GitHubApiUrl = "https://api.github.com/repos/MaxwellLei/GeoChemistry-Nexus/releases/latest";
 
+        // 服务器信息 URL 常量
+        private const string ServerInfoUrl = "https://geochemistrynexus-1303234197.cos.ap-hongkong.myqcloud.com/server_info.json";
+
         // 使用静态 HttpClient 实例
         private static readonly HttpClient httpClient = new HttpClient();
+
+        // 计算文件的 MD5 哈希值 (小写 hex 字符串)
+        public static string ComputeFileMd5(string filePath)
+        {
+            if (!File.Exists(filePath)) return string.Empty;
+
+            using (var md5 = MD5.Create())
+            using (var stream = File.OpenRead(filePath))
+            {
+                byte[] hashBytes = md5.ComputeHash(stream);
+                return BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();
+            }
+        }
+
+        // 简单的 GET 请求获取 JSON 字符串
+        public static async Task<string> GetUrlContentAsync(string url = ServerInfoUrl)
+        {
+            using (var client = new HttpClient())
+            {
+                // 可以设置超时时间
+                client.Timeout = TimeSpan.FromSeconds(10);
+                return await client.GetStringAsync(url);
+            }
+        }
 
         /// <summary>
         /// 异步检查是否有新版本发布。
@@ -103,6 +131,37 @@ namespace GeoChemistryNexus.Helpers
                 // 其他未知错误
                 MessageHelper.Error(LanguageService.Instance["unknown_error_occurred"] + $": {ex.Message}");
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// 带进度的文件下载
+        /// </summary>
+        public static async Task DownloadFileAsync(string url, string destinationPath, IProgress<double> progress = null)
+        {
+            using var client = new HttpClient();
+            using var response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
+            response.EnsureSuccessStatusCode();
+
+            var totalBytes = response.Content.Headers.ContentLength ?? -1L;
+            var canReportProgress = totalBytes != -1 && progress != null;
+
+            using var contentStream = await response.Content.ReadAsStreamAsync();
+            using var fileStream = new FileStream(destinationPath, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true);
+
+            var buffer = new byte[8192];
+            long totalRead = 0;
+            int bytesRead;
+
+            while ((bytesRead = await contentStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+            {
+                await fileStream.WriteAsync(buffer, 0, bytesRead);
+                totalRead += bytesRead;
+
+                if (canReportProgress)
+                {
+                    progress.Report((double)totalRead / totalBytes * 100);
+                }
             }
         }
     }

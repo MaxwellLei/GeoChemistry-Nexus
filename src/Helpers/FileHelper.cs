@@ -7,6 +7,8 @@ using Ookii.Dialogs.Wpf;
 using System.Linq;
 using System.Windows;
 using GeoChemistryNexus.Helpers;
+using System.Windows.Media.Imaging;
+using System.Windows.Media;
 
 public class FileHelper
 {
@@ -344,7 +346,6 @@ public class FileHelper
         return Path.GetFileName(filePath);
     }
 
-
     /// <summary>
     /// 查找文件夹返回文件，查找不到则第一个同类型文件
     /// </summary>
@@ -403,6 +404,50 @@ public class FileHelper
         catch (Exception ex)
         {
             throw new Exception($"搜索文件时发生错误: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// 无锁加载图片 + 尺寸优化 + (可选)灰度优化
+    /// </summary>
+    /// <param name="path">图片路径</param>
+    /// <param name="decodeWidth">解码宽度，默认400</param>
+    /// <param name="toGray">是否转为灰度图以极致节省内存</param>
+    public static BitmapSource LoadBitmapNoLock(string path, int decodeWidth = 400, bool toGray = true)
+    {
+        if (!File.Exists(path)) return null;
+
+        try
+        {
+            // 按尺寸优化加载
+            var bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.DecodePixelWidth = decodeWidth;
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.UriSource = new Uri(path);
+            bitmap.EndInit();
+
+            if (toGray)
+            {
+                // 如果需要灰度，进行格式转换
+                var grayBitmap = new FormatConvertedBitmap();
+                grayBitmap.BeginInit();
+                grayBitmap.Source = bitmap; // 源
+                grayBitmap.DestinationFormat = PixelFormats.Gray8; // 转换为 8位灰度
+                grayBitmap.EndInit();
+
+                grayBitmap.Freeze(); // 冻结灰度图
+                return grayBitmap;
+            }
+            else
+            {
+                bitmap.Freeze();
+                return bitmap;
+            }
+        }
+        catch
+        {
+            return null;
         }
     }
 }

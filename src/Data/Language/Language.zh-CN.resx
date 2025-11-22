@@ -1533,4 +1533,52 @@
     <value>无法删除基础图层.</value>
     <comment>绘图-编辑-删除提示</comment>
   </data>
+  <data name="template" xml:space="preserve">
+    <value>_模板(T)</value>
+    <comment>绘图-菜单栏</comment>
+  </data>
+  <data name="check_for_template_updates" xml:space="preserve">
+    <value>检查模板更新</value>
+    <comment>绘图-菜单栏</comment>
+  </data>
+  <data name="template_ready" xml:space="preserve">
+    <value>模板就绪！</value>
+    <comment>模板更新提示</comment>
+  </data>
+  <data name="download_template_failed" xml:space="preserve">
+    <value>下载模板失败:</value>
+    <comment>模板更新提示</comment>
+  </data>
+  <data name="downloaded_file_hash_mismatch" xml:space="preserve">
+    <value>下载的文件哈希值与服务器不匹配，文件可能已损坏或遭到篡改。</value>
+    <comment>模板更新提示</comment>
+  </data>
+  <data name="downloaded_content_not_valid_json" xml:space="preserve">
+    <value>下载的内容不是有效的 JSON 格式。</value>
+    <comment>模板更新提示</comment>
+  </data>
+  <data name="template_list_update_success_refreshing" xml:space="preserve">
+    <value>模板列表更新成功！正在刷新...</value>
+    <comment>模板更新提示</comment>
+  </data>
+  <data name="update_list_file_failed" xml:space="preserve">
+    <value>更新列表文件失败</value>
+    <comment>模板更新提示</comment>
+  </data>
+  <data name="new_drawing_template_library_version_detected" xml:space="preserve">
+    <value>检测到绘图模板库有新版本，是否立即更新列表？</value>
+    <comment>模板更新提示</comment>
+  </data>
+  <data name="current_template_list_latest_version" xml:space="preserve">
+    <value>当前模板列表已是最新版本。</value>
+    <comment>模板更新提示</comment>
+  </data>
+  <data name="network_connection_failed_cannot_check_for_updates" xml:space="preserve">
+    <value>网络连接失败，无法检查更新：</value>
+    <comment>模板更新提示</comment>
+  </data>
+  <data name="error_occurred_while_checking_for_updates" xml:space="preserve">
+    <value>检查更新时发生错误：</value>
+    <comment>模板更新提示</comment>
+  </data>
 </root>

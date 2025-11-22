@@ -790,6 +790,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Check for Template Updates 的本地化字符串。
+        /// </summary>
+        internal static string check_for_template_updates {
+            get {
+                return ResourceManager.GetString("check_for_template_updates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Check Script 的本地化字符串。
         /// </summary>
         internal static string CheckJs {
@@ -1006,6 +1015,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 The current template list is already the latest version. 的本地化字符串。
+        /// </summary>
+        internal static string current_template_list_latest_version {
+            get {
+                return ResourceManager.GetString("current_template_list_latest_version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Custom Folder Location 的本地化字符串。
         /// </summary>
         internal static string CustomPath {
@@ -1204,6 +1222,33 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Download Template Failed: 的本地化字符串。
+        /// </summary>
+        internal static string download_template_failed {
+            get {
+                return ResourceManager.GetString("download_template_failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 The downloaded content is not in a valid JSON format. 的本地化字符串。
+        /// </summary>
+        internal static string downloaded_content_not_valid_json {
+            get {
+                return ResourceManager.GetString("downloaded_content_not_valid_json", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 The downloaded file hash does not match the server&apos;s. The file may be corrupt or tampered with. 的本地化字符串。
+        /// </summary>
+        internal static string downloaded_file_hash_mismatch {
+            get {
+                return ResourceManager.GetString("downloaded_file_hash_mismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Edit 的本地化字符串。
         /// </summary>
         internal static string Edit {
@@ -1326,6 +1371,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string error_creating_table {
             get {
                 return ResourceManager.GetString("error_creating_table", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 An error occurred while checking for updates: 的本地化字符串。
+        /// </summary>
+        internal static string error_occurred_while_checking_for_updates {
+            get {
+                return ResourceManager.GetString("error_occurred_while_checking_for_updates", resourceCulture);
             }
         }
         
@@ -2482,11 +2536,29 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Network connection failed, cannot check for updates: 的本地化字符串。
+        /// </summary>
+        internal static string network_connection_failed_cannot_check_for_updates {
+            get {
+                return ResourceManager.GetString("network_connection_failed_cannot_check_for_updates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Network request error 的本地化字符串。
         /// </summary>
         internal static string network_request_error {
             get {
                 return ResourceManager.GetString("network_request_error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 A new version of the drawing template library has been detected. Do you want to update the list now? 的本地化字符串。
+        /// </summary>
+        internal static string new_drawing_template_library_version_detected {
+            get {
+                return ResourceManager.GetString("new_drawing_template_library_version_detected", resourceCulture);
             }
         }
         
@@ -3652,6 +3724,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 _Template(T) 的本地化字符串。
+        /// </summary>
+        internal static string template {
+            get {
+                return ResourceManager.GetString("template", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Template file save path 的本地化字符串。
         /// </summary>
         internal static string template_file_save_path {
@@ -3670,11 +3751,29 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Template list updated successfully! Refreshing... 的本地化字符串。
+        /// </summary>
+        internal static string template_list_update_success_refreshing {
+            get {
+                return ResourceManager.GetString("template_list_update_success_refreshing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Template Loaded Successfully 的本地化字符串。
         /// </summary>
         internal static string template_loaded_successfully {
             get {
                 return ResourceManager.GetString("template_loaded_successfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Template Ready! 的本地化字符串。
+        /// </summary>
+        internal static string template_ready {
+            get {
+                return ResourceManager.GetString("template_ready", resourceCulture);
             }
         }
         
@@ -3891,6 +3990,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string update_data {
             get {
                 return ResourceManager.GetString("update_data", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Failed to Update List File 的本地化字符串。
+        /// </summary>
+        internal static string update_list_file_failed {
+            get {
+                return ResourceManager.GetString("update_list_file_failed", resourceCulture);
             }
         }
         

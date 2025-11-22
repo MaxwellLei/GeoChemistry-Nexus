@@ -71,6 +71,8 @@ namespace GeoChemistryNexus.Helpers
 
                 // 将模板路径赋值给叶子节点
                 currentNode.GraphMapPath = item.GraphMapPath;
+                // 获取哈希值
+                currentNode.FileHash = item.FileHash;
             }
 
             return rootNode;
@@ -184,6 +186,7 @@ namespace GeoChemistryNexus.Helpers
         {
             public LocalizedString NodeList { get; set; }
             public string GraphMapPath { get; set; }
+            public string FileHash { get; set; }
         }
     }
 }
