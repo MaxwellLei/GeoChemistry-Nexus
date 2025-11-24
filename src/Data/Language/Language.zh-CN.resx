@@ -594,10 +594,10 @@
     <value>计算目标</value>
   </data>
   <data name="CalTarget1" xml:space="preserve">
-    <value>饱和温度</value>
+    <value>Zr 饱和温度 (Watson and Harrison, 1983)</value>
   </data>
   <data name="CalTarget2" xml:space="preserve">
-    <value>主量温度</value>
+    <value>Zr 主量温度  (Watson and Harrison, 1983)</value>
   </data>
   <data name="AtomicMassStd" xml:space="preserve">
     <value>原子量标准</value>
@@ -696,7 +696,7 @@
     <value>语言</value>
   </data>
   <data name="EnglishUS" xml:space="preserve">
-    <value>English(US)</value>
+    <value>English (US)</value>
   </data>
   <data name="ChineseS" xml:space="preserve">
     <value>中文(简体)</value>
@@ -789,10 +789,10 @@
     <value>请前往官网查看，该功能开发中....</value>
   </data>
   <data name="import_template" xml:space="preserve">
-    <value>导入模板</value>
+    <value>导入绘图模板</value>
   </data>
   <data name="new_template" xml:space="preserve">
-    <value>新建模板</value>
+    <value>新建绘图模板</value>
   </data>
   <data name="template_library" xml:space="preserve">
     <value>模板库</value>
@@ -1018,7 +1018,7 @@
     <value>_导出当前工作表(R)</value>
   </data>
   <data name="geological_thermometer" xml:space="preserve">
-    <value>_地质温度计(T)</value>
+    <value>地质温度计</value>
   </data>
   <data name="confirm_new_worksheet" xml:space="preserve">
     <value>是否新建工作表？</value>
@@ -1243,7 +1243,7 @@
     <value>次网格线</value>
   </data>
   <data name="open_template" xml:space="preserve">
-    <value>打开模板</value>
+    <value>打开绘图模板</value>
   </data>
   <data name="new_version_available_github" xml:space="preserve">
     <value>发现新版本！请前往GitHub Release页面下载更新。</value>
@@ -1580,5 +1580,17 @@
   <data name="error_occurred_while_checking_for_updates" xml:space="preserve">
     <value>检查更新时发生错误：</value>
     <comment>模板更新提示</comment>
+  </data>
+  <data name="help_instructions" xml:space="preserve">
+    <value>帮助说明</value>
+    <comment>温度计-帮助说明</comment>
+  </data>
+  <data name="view_help_docs" xml:space="preserve">
+    <value>查看帮助文档</value>
+    <comment>温度计-帮助说明按钮提示</comment>
+  </data>
+  <data name="German_Germany" xml:space="preserve">
+    <value>Deutsch (Deutschland)</value>
+    <comment>设置-常规设置-语言</comment>
   </data>
 </root>

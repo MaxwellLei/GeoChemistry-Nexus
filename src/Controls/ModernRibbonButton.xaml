@@ -1,0 +1,96 @@
+﻿<UserControl x:Class="GeoChemistryNexus.Controls.ModernRibbonButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <!-- 现代化按钮样式 -->
+        <Style x:Key="RibbonToggleButtonStyle" TargetType="ToggleButton">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="4,2"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#E5F3FF"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="#CCE8FF"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#CCE8FF"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="#99D1FF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <!-- 主按钮 -->
+        <ToggleButton x:Name="MainToggle"
+                      Style="{StaticResource RibbonToggleButtonStyle}"
+                      Height="Auto" 
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch">
+
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <!-- 图标部分 -->
+                <TextBlock Text="{Binding IconCode, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                           FontFamily="{Binding IconFontFamily, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                           Foreground="{Binding IconBrush, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                           FontSize="28"
+                           HorizontalAlignment="Center"
+                           Margin="0,4,0,2"
+                           TextAlignment="Center"/>
+
+                <!-- 文字部分 -->
+                <TextBlock Text="{Binding Text, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                           FontSize="11"
+                           Foreground="#444444"
+                           TextAlignment="Center"
+                           TextWrapping="NoWrap"
+                           Margin="0,0,0,4"/>
+
+                <Path Data="M0,0 L4,4 L8,0" Stroke="#888888" StrokeThickness="1" 
+                      HorizontalAlignment="Center" Margin="0,2,0,2"/>
+            </StackPanel>
+        </ToggleButton>
+
+        <!-- 下拉菜单 -->
+        <Popup IsOpen="{Binding IsChecked, ElementName=MainToggle, Mode=TwoWay}"
+               StaysOpen="False"
+               PlacementTarget="{Binding ElementName=MainToggle}"
+               Placement="Bottom"
+               PopupAnimation="Slide"
+               AllowsTransparency="True">
+            <Border Background="White" 
+                    BorderBrush="#D4D4D4" 
+                    BorderThickness="1" 
+                    CornerRadius="4" 
+                    Padding="2"
+                    MenuItem.Click="OnMenuItemClick">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="2" Direction="270" Color="#20000000" Opacity="0.4"/>
+                </Border.Effect>
+
+                <!-- 菜单内容绑定 -->
+                <ContentPresenter Content="{Binding MenuContent, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+            </Border>
+        </Popup>
+    </Grid>
+</UserControl>

@@ -691,7 +691,7 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Saturation Temperature 的本地化字符串。
+        ///   查找类似 Zr Saturation Temperature (Watson and Harrison, 1983) 的本地化字符串。
         /// </summary>
         internal static string CalTarget1 {
             get {
@@ -700,7 +700,7 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Major Element Temperature 的本地化字符串。
+        ///   查找类似 Zr Major Element Temperature (Watson and Harrison, 1983) 的本地化字符串。
         /// </summary>
         internal static string CalTarget2 {
             get {
@@ -1294,7 +1294,7 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 English (US 的本地化字符串。
+        ///   查找类似 English (US) 的本地化字符串。
         /// </summary>
         internal static string EnglishUS {
             get {
@@ -1762,7 +1762,7 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 _Geological Thermometer(T) 的本地化字符串。
+        ///   查找类似 Geological Thermometer 的本地化字符串。
         /// </summary>
         internal static string geological_thermometer {
             get {
@@ -1776,6 +1776,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string Geothermometer {
             get {
                 return ResourceManager.GetString("Geothermometer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Deutsch (Deutschland) 的本地化字符串。
+        /// </summary>
+        internal static string German_Germany {
+            get {
+                return ResourceManager.GetString("German_Germany", resourceCulture);
             }
         }
         
@@ -1825,6 +1834,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Help Instructions 的本地化字符串。
+        /// </summary>
+        internal static string help_instructions {
+            get {
+                return ResourceManager.GetString("help_instructions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 When enabled, hovering the mouse over a plot object (point, line, area, etc.) will automatically highlight it, and you can click to view information 的本地化字符串。
         /// </summary>
         internal static string highlight_on_hover {
@@ -1870,7 +1888,7 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Import Template 的本地化字符串。
+        ///   查找类似 Import Plotting Template 的本地化字符串。
         /// </summary>
         internal static string import_template {
             get {
@@ -2563,7 +2581,7 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 New Template 的本地化字符串。
+        ///   查找类似 New Plotting Template 的本地化字符串。
         /// </summary>
         internal static string new_template {
             get {
@@ -2689,7 +2707,7 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Open Template 的本地化字符串。
+        ///   查找类似 Open Plotting Template 的本地化字符串。
         /// </summary>
         internal static string open_template {
             get {
@@ -4035,6 +4053,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string view {
             get {
                 return ResourceManager.GetString("view", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 View Help Documentation 的本地化字符串。
+        /// </summary>
+        internal static string view_help_docs {
+            get {
+                return ResourceManager.GetString("view_help_docs", resourceCulture);
             }
         }
         

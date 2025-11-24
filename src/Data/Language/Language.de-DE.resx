@@ -153,4 +153,85 @@
   <data name="error_occurred_while_checking_for_updates" xml:space="preserve">
     <value>Beim Prüfen auf Aktualisierungen ist ein Fehler aufgetreten:</value>
   </data>
+  <data name="StartStatus" xml:space="preserve">
+    <value>Wird gestartet...</value>
+  </data>
+  <data name="Show" xml:space="preserve">
+    <value>Oberfläche anzeigen</value>
+  </data>
+  <data name="SmashIt" xml:space="preserve">
+    <value>🔨Klick?</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>Programm beenden</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Startseite</value>
+  </data>
+  <data name="SmashItC" xml:space="preserve">
+    <value>Was könnte drin sein? Vielleicht solltest du es versuchen</value>
+  </data>
+  <data name="Plot" xml:space="preserve">
+    <value>Zeichnen</value>
+  </data>
+  <data name="Geothermometer" xml:space="preserve">
+    <value>GTM</value>
+  </data>
+  <data name="Setting" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="File" xml:space="preserve">
+    <value>_Datei(D)</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Bearbeiten</value>
+  </data>
+  <data name="Expand" xml:space="preserve">
+    <value>Erweiterungen</value>
+  </data>
+  <data name="EditMode" xml:space="preserve">
+    <value>Bearbeitungsmodus</value>
+  </data>
+  <data name="NewBasemap" xml:space="preserve">
+    <value>Neue Grundkarte</value>
+  </data>
+  <data name="SaveBasemap" xml:space="preserve">
+    <value>Grundkarte speichern</value>
+  </data>
+  <data name="ImportBasemap" xml:space="preserve">
+    <value>Grundkarte importieren</value>
+  </data>
+  <data name="ExportBasemap" xml:space="preserve">
+    <value>Grundkarte exportieren</value>
+  </data>
+  <data name="CalTarget2" xml:space="preserve">
+    <value>Zr-Hauptkomponententemperatur (Watson und Harrison, 1983)</value>
+  </data>
+  <data name="CalTarget1" xml:space="preserve">
+    <value>Zr-Sättigungstemperatur (Watson und Harrison, 1983)</value>
+  </data>
+  <data name="EnglishUS" xml:space="preserve">
+    <value>English (US)</value>
+  </data>
+  <data name="geological_thermometer" xml:space="preserve">
+    <value>Geothermie-Thermometer</value>
+  </data>
+  <data name="open_template" xml:space="preserve">
+    <value>Zeichnungsvorlage öffnen</value>
+  </data>
+  <data name="import_template" xml:space="preserve">
+    <value>Zeichnungsvorlage importieren</value>
+  </data>
+  <data name="new_template" xml:space="preserve">
+    <value>Neue Zeichnungsvorlage erstellen</value>
+  </data>
+  <data name="help_instructions" xml:space="preserve">
+    <value>Hilfe und Anweisungen</value>
+  </data>
+  <data name="view_help_docs" xml:space="preserve">
+    <value>Hilfedokumentation anzeigen</value>
+  </data>
+  <data name="German_Germany" xml:space="preserve">
+    <value>Deutsch (Deutschland)</value>
+  </data>
 </root>

@@ -402,7 +402,6 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        
     </Page.Resources>
     
     <Grid>
@@ -421,17 +420,20 @@
                     <MenuItem Header="{Binding [File],Source={x:Static lg:LanguageService.Instance}}">
                         <!--新建模板-->
                         <MenuItem Header="{Binding [new_template],Source={x:Static lg:LanguageService.Instance}}" 
-                                  Command="{Binding NewTemplateCommand}"/>
+                                  Command="{Binding NewTemplateCommand}"
+                                  Icon="📄"/>
                         <!--打开模板-->
                         <MenuItem Header="{Binding [open_template],Source={x:Static lg:LanguageService.Instance}}" 
-                                  Command="{Binding OpenTemplateCommand}"/>
+                                  Command="{Binding OpenTemplateCommand}"
+                                  Icon="📂"/>
                     </MenuItem>
 
                     <MenuItem Header="{Binding [template],Source={x:Static lg:LanguageService.Instance}}">
                         <MenuItem Header="{Binding [import_template], Source={x:Static lg:LanguageService.Instance}}" 
                                   Command="{Binding LoadBasemapCommand}" IsEnabled="False"/>
                         <Separator/>
-                        <MenuItem Header="{Binding [check_for_template_updates], Source={x:Static lg:LanguageService.Instance}}" Command="{Binding CheckForTemplateUpdatesCommand}"/>
+                        <MenuItem Header="{Binding [check_for_template_updates], Source={x:Static lg:LanguageService.Instance}}" 
+                                  Command="{Binding CheckForTemplateUpdatesCommand}" Icon="🔄"/>
                     </MenuItem>
                 </Menu>
 

@@ -560,10 +560,10 @@
     <value>Calculation Target</value>
   </data>
   <data name="CalTarget1" xml:space="preserve">
-    <value>Saturation Temperature</value>
+    <value>Zr Saturation Temperature (Watson and Harrison, 1983)</value>
   </data>
   <data name="CalTarget2" xml:space="preserve">
-    <value>Major Element Temperature</value>
+    <value>Zr Major Element Temperature (Watson and Harrison, 1983)</value>
   </data>
   <data name="AtomicMassStd" xml:space="preserve">
     <value>Atomic Mass Standard</value>
@@ -665,7 +665,7 @@
     <value>中文 (简体)</value>
   </data>
   <data name="EnglishUS" xml:space="preserve">
-    <value>English (US</value>
+    <value>English (US)</value>
   </data>
   <data name="StartBackgroundImages" xml:space="preserve">
     <value>Startup Background Image</value>
@@ -755,10 +755,10 @@
     <value>Please visit the official website, this feature is under development....</value>
   </data>
   <data name="import_template" xml:space="preserve">
-    <value>Import Template</value>
+    <value>Import Plotting Template</value>
   </data>
   <data name="new_template" xml:space="preserve">
-    <value>New Template</value>
+    <value>New Plotting Template</value>
   </data>
   <data name="template_library" xml:space="preserve">
     <value>Template Library</value>
@@ -983,7 +983,7 @@
     <value>_Export Current Worksheet(R)</value>
   </data>
   <data name="geological_thermometer" xml:space="preserve">
-    <value>_Geological Thermometer(T)</value>
+    <value>Geological Thermometer</value>
   </data>
   <data name="confirm_new_worksheet" xml:space="preserve">
     <value>Create a new worksheet?</value>
@@ -1193,7 +1193,7 @@
     <value>Advanced Rendering</value>
   </data>
   <data name="open_template" xml:space="preserve">
-    <value>Open Template</value>
+    <value>Open Plotting Template</value>
   </data>
   <data name="new_version_available_github" xml:space="preserve">
     <value>New version found! Please go to the GitHub Release page to download the update.</value>
@@ -1446,5 +1446,14 @@
   </data>
   <data name="error_occurred_while_checking_for_updates" xml:space="preserve">
     <value>An error occurred while checking for updates:</value>
+  </data>
+  <data name="help_instructions" xml:space="preserve">
+    <value>Help Instructions</value>
+  </data>
+  <data name="view_help_docs" xml:space="preserve">
+    <value>View Help Documentation</value>
+  </data>
+  <data name="German_Germany" xml:space="preserve">
+    <value>Deutsch (Deutschland)</value>
   </data>
 </root>

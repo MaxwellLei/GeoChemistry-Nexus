@@ -30,8 +30,8 @@
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                             <ComboBox.Items>
-                                <TextBlock Text="{Binding [DefaultPath],Source={x:Static lg:LanguageService.Instance}}"/>
-                                <TextBlock Text="{Binding [CustomPath],Source={x:Static lg:LanguageService.Instance}}"/>
+                                <ComboBoxItem Content="{Binding [DefaultPath],Source={x:Static lg:LanguageService.Instance}}"/>
+                                <ComboBoxItem Content="{Binding [CustomPath],Source={x:Static lg:LanguageService.Instance}}"/>
                             </ComboBox.Items>
                         </ComboBox>
                         <Button Content="{Binding [OpenFileLocation],Source={x:Static lg:LanguageService.Instance}}" Margin="10 0 0 0" Command="{Binding OpenDbFolderCommand}"/>
@@ -68,7 +68,7 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <ComboBox.Items>
-                            <TextBlock Text="{Binding [Default],Source={x:Static lg:LanguageService.Instance}}"/>
+                            <ComboBoxItem Content="{Binding [Default],Source={x:Static lg:LanguageService.Instance}}"/>
                         </ComboBox.Items>
                     </ComboBox>
                 </GroupBox>
@@ -83,19 +83,12 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <ComboBox.Items>
-                            <TextBlock Text="{Binding [ChineseS],Source={x:Static lg:LanguageService.Instance}}"/>
-                            <TextBlock Text="{Binding [EnglishUS],Source={x:Static lg:LanguageService.Instance}}"/>
+                            <ComboBoxItem Content="{Binding [ChineseS],Source={x:Static lg:LanguageService.Instance}}"/>
+                            <ComboBoxItem Content="{Binding [EnglishUS],Source={x:Static lg:LanguageService.Instance}}"/>
+                            <ComboBoxItem Content="{Binding [German_Germany],Source={x:Static lg:LanguageService.Instance}}"/>
                         </ComboBox.Items>
                     </ComboBox>
                 </GroupBox>
-                <!--<GroupBox Header="字体" Style="{StaticResource GroupBoxOriginal}" hc:TitleElement.TitlePlacement="Left" 
-                              FontSize="16" Margin="0 0 0 5">
-                    <ComboBox SelectedIndex="{Binding Font}" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Right">
-                        <ComboBox.Items>
-                            <sys:String>默认</sys:String>
-                        </ComboBox.Items>
-                    </ComboBox>
-                </GroupBox>-->
                 <!--启动背景图-->
                 <GroupBox Header="{Binding [StartBackgroundImages],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource GroupBoxOriginal}" hc:TitleElement.TitlePlacement="Left" 
                               FontSize="16" Margin="0 0 0 5">
@@ -103,7 +96,7 @@
                         <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Right">
                             <ComboBox SelectedIndex="0" FontSize="12" >
                                 <ComboBox.Items>
-                                    <TextBlock Text="{Binding [DefaultRandom],Source={x:Static lg:LanguageService.Instance}}"/>
+                                    <ComboBoxItem Content="{Binding [DefaultRandom],Source={x:Static lg:LanguageService.Instance}}"/>
                                     <!--<sys:String>默认随机</sys:String>-->
                                     <!--<sys:String>固定显示当前</sys:String>-->
                                 </ComboBox.Items>
@@ -127,10 +120,10 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <ComboBox.Items>
-                            <TextBlock Text="{Binding [MessageAutoClose5],Source={x:Static lg:LanguageService.Instance}}"/>
-                            <TextBlock Text="{Binding [MessageAutoClose4],Source={x:Static lg:LanguageService.Instance}}"/>
-                            <TextBlock Text="{Binding [MessageAutoClose3],Source={x:Static lg:LanguageService.Instance}}"/>
-                            <TextBlock Text="{Binding [MessageAutoClose2],Source={x:Static lg:LanguageService.Instance}}"/>
+                            <ComboBoxItem Content="{Binding [MessageAutoClose5],Source={x:Static lg:LanguageService.Instance}}"/>
+                            <ComboBoxItem Content="{Binding [MessageAutoClose4],Source={x:Static lg:LanguageService.Instance}}"/>
+                            <ComboBoxItem Content="{Binding [MessageAutoClose3],Source={x:Static lg:LanguageService.Instance}}"/>
+                            <ComboBoxItem Content="{Binding [MessageAutoClose2],Source={x:Static lg:LanguageService.Instance}}"/>
                         </ComboBox.Items>
                     </ComboBox>
                 </GroupBox>
@@ -149,7 +142,7 @@
                         <ToggleButton Style="{StaticResource ToggleButtonSwitch}" HorizontalAlignment="Right" 
                                       IsChecked="{Binding AutoCheck}"/>
                         <WrapPanel Margin="0 10 0 5" HorizontalAlignment="Right"  >
-                            <TextBlock Text="{Binding Version}" VerticalAlignment="Center" FontSize="12" Margin="0 0 5 0"/>
+                            <ComboBoxItem Content="{Binding Version}" VerticalAlignment="Center" FontSize="12" Margin="0 0 5 0"/>
                             <!--检查更新-->
                             <Button Content="{Binding [CheckUpdate],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding CheckUpdateCommand}"/>
                         </WrapPanel>
@@ -166,8 +159,8 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <ComboBox.Items>
-                            <TextBlock Text="{Binding [MinimizeTray],Source={x:Static lg:LanguageService.Instance}}"/>
-                            <TextBlock Text="{Binding [Quit],Source={x:Static lg:LanguageService.Instance}}"/>
+                            <ComboBoxItem Content="{Binding [MinimizeTray],Source={x:Static lg:LanguageService.Instance}}"/>
+                            <ComboBoxItem Content="{Binding [Quit],Source={x:Static lg:LanguageService.Instance}}"/>
                         </ComboBox.Items>
                     </ComboBox>
                 </GroupBox>

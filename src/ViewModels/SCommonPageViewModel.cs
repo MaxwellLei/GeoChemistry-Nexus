@@ -21,6 +21,10 @@ namespace GeoChemistryNexus.ViewModels
         private bool changeConfig = false;  // 是否第一次进入设置页面
         private bool isInsideChange = false;    //是否是代码层面改变设置的值
 
+        // 定义语言代码映射数组(索引对应 ComboBox)
+        // 0 -> zh-CN; 1 -> en-US; 2 -> de-DE
+        private readonly string[] _languageCodes = { "zh-CN", "en-US", "de-DE" };
+
         private string dbLocationPath;  //数据库路径
 
         //封面流
@@ -160,16 +164,22 @@ namespace GeoChemistryNexus.ViewModels
         // 修改语言
         private void ExecuteLanguageChangedCommand()
         {
-            if (Language == 0)
+            // 确保索引在有效范围内
+            if (Language >= 0 && Language < _languageCodes.Length)
             {
-                //LanguageHelper.ChangeLanguage("zh-CN");
-                ConfigHelper.SetConfig("language", "0");
-                LanguageService.Instance.ChangeLanguage(new System.Globalization.CultureInfo("zh-CN"));
+                // 获取当前选中的索引对应的语言代码
+                string selectedCode = _languageCodes[Language];
+
+                // 将字符串代码保存到配置文件
+                ConfigHelper.SetConfig("language", selectedCode);
+
+                // 语言切换
+                LanguageService.Instance.ChangeLanguage(new System.Globalization.CultureInfo(selectedCode));
             }
             else
             {
-                //LanguageHelper.ChangeLanguage("en-US");
-                ConfigHelper.SetConfig("language", "1");
+                // 异常处理：索引越界则默认回滚到中文
+                ConfigHelper.SetConfig("language", "en-US");
                 LanguageService.Instance.ChangeLanguage(new System.Globalization.CultureInfo("en-US"));
             }
 
@@ -224,7 +234,13 @@ namespace GeoChemistryNexus.ViewModels
             }
 
             DbLocation = int.Parse(Helpers.ConfigHelper.GetConfig("database_location"));   //读取数据文件设置
-            Language = int.Parse(Helpers.ConfigHelper.GetConfig("language"));  //读取语言
+                                             
+            // 读取语言设置
+            string langConfig = Helpers.ConfigHelper.GetConfig("language");
+            // 在数组中查找该字符串对应的索引
+            int langIndex = Array.IndexOf(_languageCodes, langConfig);
+            Language = (langIndex >= 0) ? langIndex : 1;
+
             AutoOffTime = int.Parse(Helpers.ConfigHelper.GetConfig("auto_off_time"));    //读取消息通知时间
             boot = bool.Parse(Helpers.ConfigHelper.GetConfig("boot"));     //读取是否自动开机
             autoCheck = bool.Parse(Helpers.ConfigHelper.GetConfig("auto_check_update"));   //读取是否自动检查更新

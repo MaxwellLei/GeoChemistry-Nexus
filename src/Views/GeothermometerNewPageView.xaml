@@ -4,68 +4,407 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:lg="clr-namespace:GeoChemistryNexus.Helpers"
-      xmlns:hc="clr-namespace:HandyControl.Data.Enum;assembly=HandyControl"
+      xmlns:hc="https://handyorg.github.io/handycontrol"
       xmlns:rg="clr-namespace:unvell.ReoGrid;assembly=unvell.ReoGrid"
       xmlns:local="clr-namespace:GeoChemistryNexus.Views"
+      xmlns:ctrl="clr-namespace:GeoChemistryNexus.Controls"
+      xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
+      xmlns:hp="clr-namespace:GeoChemistryNexus.Helpers"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="GeothermometerNewPageView">
-    <DockPanel>
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="{Binding [File],Source={x:Static lg:LanguageService.Instance}}">
-                <MenuItem Header="{Binding [new],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding CreateWorkSheetCommand}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
-                <MenuItem Header="{Binding [open],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding OpenExcelFileCommand}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
-                <Separator />
-                <MenuItem Header="{Binding [export_current_worksheet],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding ExportWorksheetCommand}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
-                <!--<MenuItem Header="_导出工作簿(R)"/>-->
-            </MenuItem>
-            <!--<MenuItem Header="_编辑(E)">
-                <MenuItem Header="_撤销(U)"/>
-                <MenuItem Header="_重做(R)"/>
-            </MenuItem>-->
-            <MenuItem Header="{Binding [geological_thermometer],Source={x:Static lg:LanguageService.Instance}}">
-                <!--锆石-->
-                <MenuItem Header="{Binding [Zircon],Source={x:Static lg:LanguageService.Instance}}">
-                    <MenuItem Header="{Binding [ZirconTiGTM],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding Zircon_Ti_Loucks_2020Command}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
-                    <MenuItem Header="{Binding [ZirconZrGTM],Source={x:Static lg:LanguageService.Instance}}">
-                        <!--饱和温度-->
-                        <MenuItem Header="{Binding [CalTarget1],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding Zircon_Zr_Saturation_Watson_and_Harrison_1983Command}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
-                        <MenuItem Header="{Binding [CalTarget2],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding Zircon_Zr_Principal_Watson_and_Harrison_1983Command}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
-                    </MenuItem>
-                </MenuItem>
-                <!--闪锌矿-->
-                <MenuItem Header="{Binding [Sphalerite],Source={x:Static lg:LanguageService.Instance}}">
-                    <MenuItem Header="{Binding [SphaleriteGGIMFisGTM],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding Sphalerite_GGIMFis_Frenzel_2016Command}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
-                    <MenuItem Header="{Binding [SphaleriteGTM],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding Sphalerite_FeS_Scott_and_Barne_1971Command}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
-                </MenuItem>
-                <!--石英-->
-                <MenuItem Header="{Binding [Quartz],Source={x:Static lg:LanguageService.Instance}}">
-                    <MenuItem Header="{Binding [QuartzGTM],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding Quatz_Ti_Wark_and_Watson_2006Command}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
-                </MenuItem>
-                <!--黑云母-->
-                <MenuItem Header="{Binding [Biotite],Source={x:Static lg:LanguageService.Instance}}">
-                    <MenuItem Header="{Binding [BiotiteGTM],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding Biotite_Ti_Henry_2005Command}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
-                </MenuItem>
-                <!--角闪石-->
-                <MenuItem Header="{Binding [Amphibole],Source={x:Static lg:LanguageService.Instance}}">
-                    <MenuItem Header="{Binding [AmphiboleGTM],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding Amphibole_Si_Ridolfi_2010Command}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
-                </MenuItem>
-                <!--绿泥石-->
-                <MenuItem Header="{Binding [Chlorite],Source={x:Static lg:LanguageService.Instance}}">
-                    <MenuItem Header="{Binding [ChloriteGTM],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding Chlorite_Al4_Jowett_1991Command}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
-                </MenuItem>
-                <!--毒砂-->
-                <MenuItem Header="{Binding [Arsenopyrite],Source={x:Static lg:LanguageService.Instance}}">
-                    <MenuItem Header="{Binding [ArsenopyriteGTM],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding Arsenopyrite_Assemblage_Kretschmar_and_Scott_1976Command}" CommandParameter="{Binding ElementName=MyReoGrid}"/>
-                </MenuItem>
-            </MenuItem>
-            <!--<MenuItem Header="_帮助(H)">
-                <MenuItem Header="_关于(A)" />
-            </MenuItem>-->
-        </Menu>
 
-        <Grid>
-            <rg:ReoGridControl x:Name="MyReoGrid"></rg:ReoGridControl>
+    <Page.Resources>
+        <cvs:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+
+        <hp:BindingProxy x:Key="GridProxy" Data="{Binding ElementName=MyReoGrid}" />
+
+        <Style TargetType="TabItem" x:Key="RibbonTabItemStyle">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border Name="Border" Background="Transparent"
+                                BorderThickness="1,1,1,0" CornerRadius="3,3,0,0"
+                                Padding="16,6,16,8" Margin="1,0" Height="28"
+                                VerticalAlignment="Bottom">
+                            <ContentPresenter ContentSource="Header"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="White"/>
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#D4D4D4"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#E5F3FF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="#323130"/>
+        </Style>
+
+        <!-- 自定义带帮助图标的 MenuItem 样式 -->
+        <Style x:Key="MenuItemWithHelpStyle" TargetType="MenuItem">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="MenuItem">
+                        <Border x:Name="Border" 
+                                Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                SnapsToDevicePixels="True">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- 菜单文本/内容 -->
+                                <ContentPresenter Content="{TemplateBinding Header}" 
+                                                  ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                                  VerticalAlignment="Center" 
+                                                  Margin="10,0,5,0"
+                                                  RecognizesAccessKey="True"/>
+
+                                <!-- 帮助按钮 (右侧) -->
+                                <!-- Tag 属性被用来传递 MenuItem 自身的 Tag (即文件路径) 到按钮的 Tag -->
+                                <Button Grid.Column="1" 
+                                        Width="24" Height="24" 
+                                        Margin="0,0,5,0"
+                                        Background="Transparent" 
+                                        BorderThickness="0"
+                                        Padding="0"
+                                        Command="{Binding LoadHelpDocumentCommand}"
+                                        CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"
+                                        Tag="{TemplateBinding Tag}"
+                                        ToolTip="{Binding [view_help_docs],Source={x:Static lg:LanguageService.Instance}}">
+                                    <Button.Content>
+                                        <Grid>
+                                            <Ellipse Fill="#E0E0E0" Width="18" Height="18"/>
+                                            <TextBlock Text="?" 
+                                                       Foreground="#666" 
+                                                       FontSize="12" 
+                                                       FontWeight="Bold"
+                                                       HorizontalAlignment="Center" 
+                                                       VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </Button.Content>
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="{TemplateBinding Background}">
+                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#F0F0F0"/>
+                                                    <Setter Property="Cursor" Value="Hand"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#F2F8FF"/>
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#CDE3FA"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="#F1F1F1" BorderBrush="#D4D4D4" BorderThickness="0,0,0,1">
+            <Grid Height="32">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Menu Grid.Column="0" Background="Transparent" VerticalAlignment="Stretch" Margin="2,5,0,0">
+                    <!-- File 根菜单 -->
+                    <MenuItem Header="{Binding [File],Source={x:Static lg:LanguageService.Instance}}">
+                        <!-- 子菜单项 -->
+                        <MenuItem Header="{Binding [new],Source={x:Static lg:LanguageService.Instance}}" 
+                              Command="{Binding CreateWorkSheetCommand}" 
+                              CommandParameter="{Binding ElementName=MyReoGrid}"
+                              Icon="📄"/>
+
+                        <MenuItem Header="{Binding [open],Source={x:Static lg:LanguageService.Instance}}" 
+                              Command="{Binding OpenExcelFileCommand}" 
+                              CommandParameter="{Binding ElementName=MyReoGrid}"
+                              Icon="📂"/>
+
+                        <Separator />
+
+                        <MenuItem Header="{Binding [export_current_worksheet],Source={x:Static lg:LanguageService.Instance}}" 
+                              Command="{Binding ExportWorksheetCommand}" 
+                              CommandParameter="{Binding ElementName=MyReoGrid}"
+                              Icon="💾"/>
+                    </MenuItem>
+                </Menu>
+
+                <TabControl Grid.Column="1" Name="RibbonTabControl" SelectedIndex="0"
+                            Background="Transparent" BorderThickness="0"
+                            TabStripPlacement="Top" Margin="5,0" VerticalAlignment="Bottom">
+                    <TabItem Header="{Binding [geological_thermometer],Source={x:Static lg:LanguageService.Instance}}" 
+                             Style="{StaticResource RibbonTabItemStyle}"/>
+                </TabControl>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="1" Background="White" BorderBrush="#D4D4D4" BorderThickness="0,0,0,1" Height="92">
+            <Grid>
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                    <StackPanel Orientation="Horizontal" Margin="8,3" Height="86">
+
+                        <!-- Zircon (锆石) -->
+                        <ctrl:ModernRibbonButton 
+                            Text="{Binding [Zircon], Source={x:Static lg:LanguageService.Instance}}"
+                            IconCode="&#xe60d;"
+                            IconBrush="#D97757"
+                            Width="70" Margin="2">
+                            <ctrl:ModernRibbonButton.MenuContent>
+                                <StackPanel MinWidth="150">
+                                    <!-- 使用 Tag 属性存储 RTF 文件路径 -->
+                                    <MenuItem Header="{Binding [ZirconTiGTM], Source={x:Static lg:LanguageService.Instance}}" 
+                                              Command="{Binding Zircon_Ti_Loucks_2020Command}" 
+                                              CommandParameter="{Binding Data, Source={StaticResource GridProxy}}"
+                                              Style="{StaticResource MenuItemWithHelpStyle}"
+                                              Tag="Data\Documents\GTM\Zircon_Loucks_et_al_2020"/>
+
+                                    <Separator/>
+
+                                    <MenuItem Header="{Binding [CalTarget1], Source={x:Static lg:LanguageService.Instance}}" 
+                                              Command="{Binding Zircon_Zr_Saturation_Watson_and_Harrison_1983Command}" 
+                                              CommandParameter="{Binding Data, Source={StaticResource GridProxy}}"
+                                              Style="{StaticResource MenuItemWithHelpStyle}"
+                                              Tag="Docs/Zircon_Zr_Saturation.rtf"/>
+
+                                    <MenuItem Header="{Binding [CalTarget2], Source={x:Static lg:LanguageService.Instance}}" 
+                                              Command="{Binding Zircon_Zr_Principal_Watson_and_Harrison_1983Command}" 
+                                              CommandParameter="{Binding Data, Source={StaticResource GridProxy}}"
+                                              Style="{StaticResource MenuItemWithHelpStyle}"
+                                              Tag="Docs/Zircon_Zr_Principal.rtf"/>
+                                </StackPanel>
+                            </ctrl:ModernRibbonButton.MenuContent>
+                        </ctrl:ModernRibbonButton>
+
+                        <Rectangle Fill="#E1E5E9" Width="1" Margin="4,12,4,18" VerticalAlignment="Stretch"/>
+
+                        <!-- Sphalerite (闪锌矿) -->
+                        <ctrl:ModernRibbonButton 
+                            Text="{Binding [Sphalerite], Source={x:Static lg:LanguageService.Instance}}"
+                            IconCode="&#xe60c;"
+                            IconBrush="#6D4C41"
+                            Width="70" Margin="2">
+                            <ctrl:ModernRibbonButton.MenuContent>
+                                <StackPanel MinWidth="150">
+                                    <MenuItem Header="{Binding [SphaleriteGGIMFisGTM], Source={x:Static lg:LanguageService.Instance}}" 
+                                              Command="{Binding Sphalerite_GGIMFis_Frenzel_2016Command}" 
+                                              CommandParameter="{Binding Data, Source={StaticResource GridProxy}}"
+                                              Style="{StaticResource MenuItemWithHelpStyle}"
+                                              Tag="Docs/Sphalerite_GGIMFis.rtf"/>
+
+                                    <MenuItem Header="{Binding [SphaleriteGTM], Source={x:Static lg:LanguageService.Instance}}" 
+                                              Command="{Binding Sphalerite_FeS_Scott_and_Barne_1971Command}" 
+                                              CommandParameter="{Binding Data, Source={StaticResource GridProxy}}"
+                                              Style="{StaticResource MenuItemWithHelpStyle}"
+                                              Tag="Docs/Sphalerite_FeS.rtf"/>
+                                </StackPanel>
+                            </ctrl:ModernRibbonButton.MenuContent>
+                        </ctrl:ModernRibbonButton>
+
+                        <Rectangle Fill="#E1E5E9" Width="1" Margin="4,12,4,18" VerticalAlignment="Stretch"/>
+
+                        <!-- Quartz (石英) -->
+                        <ctrl:ModernRibbonButton 
+                            Text="{Binding [Quartz], Source={x:Static lg:LanguageService.Instance}}"
+                            IconCode="&#xe60b;"
+                            IconBrush="#E1F5FF"
+                            Width="70" Margin="2">
+                            <ctrl:ModernRibbonButton.MenuContent>
+                                <StackPanel MinWidth="150">
+                                    <MenuItem Header="{Binding [QuartzGTM], Source={x:Static lg:LanguageService.Instance}}" 
+                                              Command="{Binding Quatz_Ti_Wark_and_Watson_2006Command}" 
+                                              CommandParameter="{Binding Data, Source={StaticResource GridProxy}}"
+                                              Style="{StaticResource MenuItemWithHelpStyle}"
+                                              Tag="Docs/Quatz_Ti.rtf"/>
+                                </StackPanel>
+                            </ctrl:ModernRibbonButton.MenuContent>
+                        </ctrl:ModernRibbonButton>
+
+                        <Rectangle Fill="#E1E5E9" Width="1" Margin="4,12,4,18" VerticalAlignment="Stretch"/>
+
+                        <!-- Biotite (黑云母) -->
+                        <ctrl:ModernRibbonButton 
+                            Text="{Binding [Biotite], Source={x:Static lg:LanguageService.Instance}}"
+                            IconCode="&#xe609;"
+                            IconBrush="#424242"
+                            Width="70" Margin="2">
+                            <ctrl:ModernRibbonButton.MenuContent>
+                                <StackPanel MinWidth="150">
+                                    <MenuItem Header="{Binding [BiotiteGTM], Source={x:Static lg:LanguageService.Instance}}" 
+                                              Command="{Binding Biotite_Ti_Henry_2005Command}" 
+                                              CommandParameter="{Binding Data, Source={StaticResource GridProxy}}"
+                                              Style="{StaticResource MenuItemWithHelpStyle}"
+                                              Tag="Docs/Biotite_Ti.rtf"/>
+                                </StackPanel>
+                            </ctrl:ModernRibbonButton.MenuContent>
+                        </ctrl:ModernRibbonButton>
+
+                        <!-- Amphibole (角闪石) -->
+                        <Rectangle Fill="#E1E5E9" Width="1" Margin="4,12,4,18" VerticalAlignment="Stretch"/>
+                        <ctrl:ModernRibbonButton 
+                            Text="{Binding [Amphibole], Source={x:Static lg:LanguageService.Instance}}"
+                            IconCode="&#xe60e;" IconBrush="#2F4F4F" Width="70" Margin="2">
+                            <ctrl:ModernRibbonButton.MenuContent>
+                                <StackPanel MinWidth="150">
+                                    <MenuItem Header="{Binding [AmphiboleGTM], Source={x:Static lg:LanguageService.Instance}}" Command="{Binding Amphibole_Si_Ridolfi_2010Command}"
+                                              CommandParameter="{Binding Data, Source={StaticResource GridProxy}}"
+                                              Style="{StaticResource MenuItemWithHelpStyle}" Tag="Docs/Amphibole.rtf"/>
+                                </StackPanel>
+                            </ctrl:ModernRibbonButton.MenuContent>
+                        </ctrl:ModernRibbonButton>
+
+                        <!-- Chlorite (绿泥石) -->
+                        <Rectangle Fill="#E1E5E9" Width="1" Margin="4,12,4,18" VerticalAlignment="Stretch"/>
+                        <ctrl:ModernRibbonButton 
+                            Text="{Binding [Chlorite], Source={x:Static lg:LanguageService.Instance}}"
+                            IconCode="&#xe60a;" IconBrush="#228B22" Width="70" Margin="2">
+                            <ctrl:ModernRibbonButton.MenuContent>
+                                <StackPanel MinWidth="150">
+                                    <MenuItem Header="{Binding [ChloriteGTM], Source={x:Static lg:LanguageService.Instance}}" Command="{Binding Chlorite_Al4_Jowett_1991Command}"
+                                              CommandParameter="{Binding Data, Source={StaticResource GridProxy}}"
+                                              Style="{StaticResource MenuItemWithHelpStyle}" Tag="Docs/Chlorite.rtf"/>
+                                </StackPanel>
+                            </ctrl:ModernRibbonButton.MenuContent>
+                        </ctrl:ModernRibbonButton>
+
+                        <!-- Arsenopyrite (毒砂) -->
+                        <Rectangle Fill="#E1E5E9" Width="1" Margin="4,12,4,18" VerticalAlignment="Stretch"/>
+                        <ctrl:ModernRibbonButton 
+                            Text="{Binding [Arsenopyrite], Source={x:Static lg:LanguageService.Instance}}"
+                            IconCode="&#xe608;" IconBrush="#708090" Width="70" Margin="2">
+                            <ctrl:ModernRibbonButton.MenuContent>
+                                <StackPanel MinWidth="150">
+                                    <MenuItem Header="{Binding [ArsenopyriteGTM], Source={x:Static lg:LanguageService.Instance}}" Command="{Binding Arsenopyrite_Assemblage_Kretschmar_and_Scott_1976Command}"
+                                              CommandParameter="{Binding Data, Source={StaticResource GridProxy}}"
+                                              Style="{StaticResource MenuItemWithHelpStyle}" Tag="Docs/Arsenopyrite.rtf"/>
+                                </StackPanel>
+                            </ctrl:ModernRibbonButton.MenuContent>
+                        </ctrl:ModernRibbonButton>
+
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="2">
+            <rg:ReoGridControl x:Name="MyReoGrid">
+                <rg:ReoGridControl.Resources>
+                    <ControlTemplate x:Key="ModernThumbTemplate" TargetType="Thumb">
+                        <Border x:Name="thumbBorder" Background="#9E9E9E" CornerRadius="4" BorderThickness="0"/>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="thumbBorder" Property="Background" Value="#6E6E6E"/>
+                            </Trigger>
+                            <Trigger Property="IsDragging" Value="True">
+                                <Setter TargetName="thumbBorder" Property="Background" Value="#424242"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                    <Style TargetType="{x:Type ScrollBar}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ScrollBar}">
+                                    <Grid x:Name="GridRoot" Background="Transparent">
+                                        <Track x:Name="PART_Track" IsDirectionReversed="true" Focusable="false">
+                                            <Track.DecreaseRepeatButton>
+                                                <RepeatButton Command="{x:Static ScrollBar.LineUpCommand}" Opacity="0" Background="Transparent" BorderThickness="0" Focusable="false"/>
+                                            </Track.DecreaseRepeatButton>
+                                            <Track.IncreaseRepeatButton>
+                                                <RepeatButton Command="{x:Static ScrollBar.LineDownCommand}" Opacity="0" Background="Transparent" BorderThickness="0" Focusable="false"/>
+                                            </Track.IncreaseRepeatButton>
+                                            <Track.Thumb>
+                                                <Thumb Template="{StaticResource ModernThumbTemplate}" Margin="1"/>
+                                            </Track.Thumb>
+                                        </Track>
+                                    </Grid>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="Orientation" Value="Horizontal">
+                                            <Setter TargetName="PART_Track" Property="Orientation" Value="Horizontal" />
+                                            <Setter TargetName="PART_Track" Property="IsDirectionReversed" Value="false" />
+                                            <Setter Property="Width" Value="NaN" />
+                                            <Setter Property="Height" Value="10" />
+                                            <Setter Property="Width" Value="Auto"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </rg:ReoGridControl.Resources>
+            </rg:ReoGridControl>
         </Grid>
-    </DockPanel>
+
+        <!-- 帮助文档弹出层 -->
+        <hc:Drawer Name="HelpDrawer" Dock="Right" ShowMode="Press" MaskCanClose="True" IsOpen="{Binding IsHelpDrawerOpen}">
+            <Border Width="400" Background="White" BorderBrush="#D4D4D4" BorderThickness="1,0,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- 标题栏 -->
+                    <Border Background="#F5F5F5" Padding="10" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="&#xe665;" FontFamily="../Data/Icon/#iconfont" Foreground="#666" 
+                                       FontSize="16" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <!--帮助说明-->
+                            <TextBlock Text="{Binding [help_instructions],Source={x:Static lg:LanguageService.Instance}}" 
+                                       FontSize="16" FontWeight="Bold" Foreground="#333"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- RTF 阅读器 -->
+                    <RichTextBox Grid.Row="1" Name="HelpRichTextBox" 
+                                 IsReadOnly="True" 
+                                 VerticalScrollBarVisibility="Auto" 
+                                 Padding="10" 
+                                 BorderThickness="0">
+                        <FlowDocument />
+                    </RichTextBox>
+                </Grid>
+            </Border>
+        </hc:Drawer>
+    </Grid>
 </Page>

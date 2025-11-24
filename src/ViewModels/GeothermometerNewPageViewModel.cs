@@ -6,9 +6,13 @@ using ScottPlot.Colormaps;
 using ScottPlot.Palettes;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Media;
 using unvell.ReoGrid;
 
 
@@ -19,6 +23,13 @@ namespace GeoChemistryNexus.ViewModels
         // 导航对象
         [ObservableProperty]
         private object? currentView;
+
+        // 帮助抽屉是否打开
+        [ObservableProperty]
+        private bool isHelpDrawerOpen;
+
+        // 引用 View 中的 RichTextBox 控件
+        private RichTextBox? _helpRichTextBox;
 
         // 初始化
         public GeothermometerNewPageViewModel()
@@ -278,6 +289,76 @@ namespace GeoChemistryNexus.ViewModels
 
 
         /// <summary>
+        /// 设置帮助文档显示的 RichTextBox 控件引用
+        /// </summary>
+        /// <param name="richTextBox">View 层传递进来的控件</param>
+        public void SetHelpRichTextBox(RichTextBox richTextBox)
+        {
+            _helpRichTextBox = richTextBox;
+        }
+
+        /// <summary>
+        /// 加载帮助文档命令
+        /// </summary>
+        /// <param name="relativePath">RTF 文档的相对路径</param>
+        [RelayCommand]
+        private void LoadHelpDocument(string? relativePath)
+        {
+            if (_helpRichTextBox == null)
+            {
+                MessageHelper.Error("RichTextBox 控件未初始化");
+                return;
+            }
+
+            try
+            {
+                // 组合绝对路径
+                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                string fullPath = string.Empty;
+                bool success;
+
+                if (!string.IsNullOrEmpty(relativePath))
+                {
+                    fullPath = System.IO.Path.Combine(baseDir, relativePath + "_" +
+                        LanguageService.GetLanguage() + ".rtf");
+                }
+
+                if (!string.IsNullOrEmpty(fullPath) && File.Exists(fullPath))
+                {
+                    // 加载文档
+                    success = RtfHelper.LoadRtfToRichTextBox(fullPath, _helpRichTextBox);
+                    if (!success)
+                    {
+                        // todo
+                    }
+                }
+                else
+                {
+                    fullPath = System.IO.Path.Combine(baseDir, relativePath + "_" + "en-US" + ".rtf");
+                    success = RtfHelper.LoadRtfToRichTextBox(fullPath, _helpRichTextBox);
+                    if (!success)
+                    {
+                        // 文件不存在
+                        _helpRichTextBox.Document.Blocks.Clear();
+                        var run = new Run($"未找到帮助文档：\n{relativePath ?? "路径为空"}")
+                        {
+                            Foreground = Brushes.Red
+                        };
+                        _helpRichTextBox.Document.Blocks.Add(new Paragraph(run));
+                    }
+                }
+
+                // 打开侧边抽屉
+                IsHelpDrawerOpen = true;
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.Error($"加载帮助文档失败: {ex.Message}");
+            }
+        }
+
+
+        /// <summary>
         /// 打开读取数据文件
         /// TODO：完善读取 xlsx, xls 和 csv 文件
         /// </summary>
@@ -286,8 +367,10 @@ namespace GeoChemistryNexus.ViewModels
         public void OpenExcelFile(ReoGridControl reoGridControl)
         {
             string filePath = FileHelper.GetFilePath(LanguageService.Instance["csv_file_filter"]);
-            if (filePath != null) { reoGridControl.Load(filePath); MessageHelper.Success(LanguageService.Instance["file_import_successful"]); }
-            MessageHelper.Info(LanguageService.Instance["cancel_import"]);
+            if (filePath != null) { reoGridControl.Load(filePath); MessageHelper.Success(LanguageService.Instance["file_import_successful"]); } else
+            {
+                MessageHelper.Info(LanguageService.Instance["cancel_import"]);
+            }
         }
 
 

@@ -1,6 +1,7 @@
 ﻿using GeoChemistryNexus.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,7 +29,11 @@ namespace GeoChemistryNexus.Views
         public GeothermometerNewPageView()
         {
             InitializeComponent();
-            this.DataContext = new GeothermometerNewPageViewModel();
+            var viewModel = new GeothermometerNewPageViewModel();
+            this.DataContext = viewModel;
+
+            // 将 RichTextBox 控件的引用传递给 ViewModel
+            viewModel.SetHelpRichTextBox(this.HelpRichTextBox);
         }
 
         public static Page GetPage()

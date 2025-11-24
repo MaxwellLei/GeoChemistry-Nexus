@@ -30,20 +30,12 @@ namespace GeoChemistryNexus.Helpers
             string language = ConfigHelper.GetConfig("language");
             if (language != "")
             {
-                if (Convert.ToInt32(language) == 0)
-                {
-                    LanguageService.Instance.ChangeLanguage(new System.Globalization.CultureInfo("zh-CN"));
-                    CurrentLanguage = "zh-CN";
-                }
-                else if (Convert.ToInt32(language) == 1)
-                {
-                    LanguageService.Instance.ChangeLanguage(new System.Globalization.CultureInfo("en-US"));
-                    CurrentLanguage = "en-US";
-                }
+                CurrentLanguage = language;
+                LanguageService.Instance.ChangeLanguage(new System.Globalization.CultureInfo(CurrentLanguage));
             }
             else
             {
-                LanguageService.Instance.ChangeLanguage(new System.Globalization.CultureInfo("zh-CN"));
+                LanguageService.Instance.ChangeLanguage(new System.Globalization.CultureInfo("en-US"));
             }
         }
 
@@ -53,14 +45,7 @@ namespace GeoChemistryNexus.Helpers
             string language = ConfigHelper.GetConfig("language");
             if (language != "")
             {
-                if (Convert.ToInt32(language) == 0)
-                {
-                    return "zh-CN";
-                }
-                else if (Convert.ToInt32(language) == 1)
-                {
-                    return "en-US";
-                }
+                return language;
             }
             return string.Empty;
         }
