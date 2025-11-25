@@ -19,7 +19,7 @@ namespace GeoChemistryNexus.Helpers
         {
             // 锆石 Ti 温度计算，主量
             // Loucks et al. (2020)
-            FormulaExtension.CustomFunctions["Zircon_Ti_Loucks_2020"] = (cell, args) =>
+            FormulaExtension.CustomFunctions["Zircon_Loucks_et_al_2020"] = (cell, args) =>
             {
                 // 检查参数数量
                 if (args.Length < 4)
@@ -48,7 +48,7 @@ namespace GeoChemistryNexus.Helpers
 
             // 锆石 Zr 温度计算，主量
             // Watson and Harrison (1983)
-            FormulaExtension.CustomFunctions["Zircon_Zr_Principal_Watson_and_Harrison_1983"] = (cell, args) =>
+            FormulaExtension.CustomFunctions["Zircon_Watson_and_Harrison_1983"] = (cell, args) =>
             {
                 // 检查参数数量
                 if (args.Length < 10)
@@ -100,50 +100,9 @@ namespace GeoChemistryNexus.Helpers
                 }
             };
 
-            // 锆石 Zr 温度计算，饱和温度
-            // Watson and Harrison (1983)
-            FormulaExtension.CustomFunctions["Zircon_Zr_Saturation_Watson_and_Harrison_1983"] = (cell, args) =>
-            {
-                if (args.Length < 6)
-                {
-                    return LanguageService.Instance["missing_parameters"];
-                }
-
-                try
-                {
-                    // 获取参数
-                    float row0 = Convert.ToSingle(args[0]);
-                    float row1 = Convert.ToSingle(args[1]);
-                    float row2 = Convert.ToSingle(args[2]);
-                    float row3 = Convert.ToSingle(args[3]);
-                    float row4 = Convert.ToSingle(args[4]);
-                    float row5 = Convert.ToSingle(args[5]);
-
-                    // 计算原子质量
-                    float tsiO2 = ChemicalHelper.CalAtomicMass(row1, 60.083f);
-                    float tal203 = ChemicalHelper.CalAtomicMass(row2, 101.961f, 2);
-                    float tcaO = ChemicalHelper.CalAtomicMass(row3, 56.077f);
-                    float tk20 = ChemicalHelper.CalAtomicMass(row4, 94.195f, 2);
-                    float tna2O = ChemicalHelper.CalAtomicMass(row5, 61.979f, 2);
-
-                    // 计算临时值
-                    float tempRsM = (2 * tcaO + tk20 + tna2O) / (tsiO2 * tal203);
-
-                    // 计算开尔文温度
-                    float tK = (float)(12900 / (Math.Log(496000 / row0) + 0.85 * tempRsM + 2.95));
-
-                    // 返回温度 K
-                    return tK;
-                }
-                catch
-                {
-                    return null;
-                }
-            };
-
             // 闪锌矿 GGIMFis 温度计算
             // Frenzel et al. (2016)
-            FormulaExtension.CustomFunctions["Sphalerite_GGIMFis_Frenzel_2016"] = (cell, args) =>
+            FormulaExtension.CustomFunctions["Sphalerite_Frenzel_2016"] = (cell, args) =>
             {
                 if (args.Length < 5)
                 {
@@ -155,7 +114,7 @@ namespace GeoChemistryNexus.Helpers
                     // 获取参数
                     float ga = Convert.ToSingle(args[0]);
                     float ge = Convert.ToSingle(args[1]);
-                    float fe = Convert.ToSingle(args[2]);
+                    float fe = Convert.ToSingle(args[2])/10000;     // 转换为 wt.%
                     float mn = Convert.ToSingle(args[3]);
                     float inConcentration = Convert.ToSingle(args[4]);
                     // 计算 PC1*
@@ -174,7 +133,7 @@ namespace GeoChemistryNexus.Helpers
             };
 
             // 闪锌矿 ΔFeS 温度计算
-            FormulaExtension.CustomFunctions["Sphalerite_FeS_Scott_and_Barne_1971"] = (cell, args) =>
+            FormulaExtension.CustomFunctions["Sphalerite_Scott_and_Barne_1971"] = (cell, args) =>
             {
                 if (args.Length < 1)
                 {
@@ -184,18 +143,14 @@ namespace GeoChemistryNexus.Helpers
                 try
                 {
                     double deltaMolePercentFeS = (double)args[0];
-
-                    // 检查输入值范围
-                    if (deltaMolePercentFeS < 0.0 || deltaMolePercentFeS > 4.4)
-                    {
-                        // 输入值超出范围
-                        return LanguageService.Instance["input_out_of_range"] + "(0.0-4.4)";
-                    }
+                    double deltaMolePercentFeS_patch = (double)args[1];
 
                     // 计算温度
-                    const double slope = -39.7727;
-                    const double intercept = 525.0;
-                    double tK = (slope * deltaMolePercentFeS) + intercept + 273.15;
+                    const double slope = 4.975;
+                    const double intercept = 59.54;
+                    deltaMolePercentFeS = Math.Abs(deltaMolePercentFeS - deltaMolePercentFeS_patch);    // 基质和斑块的差值
+                    double tK = (slope * deltaMolePercentFeS * deltaMolePercentFeS) 
+                                    - intercept * deltaMolePercentFeS + 526.6 + 273.15;
                     return tK;
                 }
                 catch
@@ -205,7 +160,7 @@ namespace GeoChemistryNexus.Helpers
             };
 
             // 石英 TitaniQ 温度计算
-            FormulaExtension.CustomFunctions["Quatz_Ti_Wark_and_Watson_2006"] = (cell, args) =>
+            FormulaExtension.CustomFunctions["Quatz_Wark_and_Watson_2006"] = (cell, args) =>
             {
                 if (args.Length < 2)
                 {
@@ -236,7 +191,7 @@ namespace GeoChemistryNexus.Helpers
             };
 
             // 黑云母 Ti 温度计算
-            FormulaExtension.CustomFunctions["Biotite_Ti_Henry_2005"] = (cell, args) =>
+            FormulaExtension.CustomFunctions["Biotite_Henry_et_al_2005"] = (cell, args) =>
             {
                 if (args.Length < 2)
                 {
@@ -270,7 +225,7 @@ namespace GeoChemistryNexus.Helpers
             };
 
             // 角闪石 Si* 温度计算
-            FormulaExtension.CustomFunctions["Amphibole_Si_Ridolfi_2010"] = (cell, args) =>
+            FormulaExtension.CustomFunctions["Amphibole_Ridolfi_et_al_2010"] = (cell, args) =>
             {
                 if (args.Length < 12)
                 {
@@ -457,7 +412,7 @@ namespace GeoChemistryNexus.Helpers
             };
 
             // 绿泥石 Al4 温度计算
-            FormulaExtension.CustomFunctions["Chlorite_Al4_Jowett_1991"] = (cell, args) =>
+            FormulaExtension.CustomFunctions["Chlorite_Jowett_1991"] = (cell, args) =>
             {
                 if (args.Length < 17)
                 {
@@ -578,7 +533,7 @@ namespace GeoChemistryNexus.Helpers
             };
 
             // 毒砂温度计计算
-            FormulaExtension.CustomFunctions["Arsenopyrite_Assemblage_Kretschmar_and_Scott_1976"] = (cell, args) =>
+            FormulaExtension.CustomFunctions["Arsenopyrite_Kretschmar_and_Scott_1976"] = (cell, args) =>
             {
                 if (args.Length < 2)
                 {

@@ -319,7 +319,7 @@ namespace GeoChemistryNexus.ViewModels
 
                 if (!string.IsNullOrEmpty(relativePath))
                 {
-                    fullPath = System.IO.Path.Combine(baseDir, relativePath + "_" +
+                    fullPath = System.IO.Path.Combine(baseDir, relativePath ,
                         LanguageService.GetLanguage() + ".rtf");
                 }
 
@@ -334,7 +334,7 @@ namespace GeoChemistryNexus.ViewModels
                 }
                 else
                 {
-                    fullPath = System.IO.Path.Combine(baseDir, relativePath + "_" + "en-US" + ".rtf");
+                    fullPath = System.IO.Path.Combine(baseDir, relativePath, "en-US" + ".rtf");
                     success = RtfHelper.LoadRtfToRichTextBox(fullPath, _helpRichTextBox);
                     if (!success)
                     {
@@ -463,7 +463,7 @@ namespace GeoChemistryNexus.ViewModels
             await ExecuteCreateGridHeader(reoGridControl
                     ,new List<string> { "ID", "Ti(ppm)", "P(MPa)", "α(TiO2)", "α(SiO2)", "T(K)", "T(℃)"}
                     ,new List<string> { "Example", "4.12", "300", "0.8", "1",
-                                        "=Zircon_Ti_Loucks_2020(B2,C2,D2,E2)", "=F2-273.15"}
+                                        "=Zircon_Loucks_et_al_2020(B2,C2,D2,E2)", "=F2-273.15"}
                     ,"Zircon_Ti_2020");
         }
 
@@ -479,24 +479,7 @@ namespace GeoChemistryNexus.ViewModels
                     , new List<string> { "ID", "Zr(ppm)", "SiO2(ppm)", "Al2O3(ppm)", "Fe2O3(ppm)", "FeO(ppm)", 
                                             "MgO(ppm)", "P2O5(ppm)", "CaO(ppm)", "K2O(ppm)", "Na2O(ppm)", "T(K)", "T(℃)" }
                     , new List<string> { "Example", "325.76", "67.89", "15.13", "4.1", "0", 
-                                            "0.08","0.14", "2.11", "4.86", "3.46", "=Zircon_Zr_Principal_Watson_and_Harrison_1983(B2,C2,D2,E2,F2,G2,H2,I2,J2,K2)", "=L2-273.15" }
-                    , "Zircon_Zr_1983");
-        }
-
-
-        /// <summary>
-        /// 模板：锆石 Zr 温度，饱和，Watson and Harrison (1983)
-        /// </summary>
-        /// <param name="reoGridControl">当前工作簿</param>
-        /// <returns>无</returns>
-        [RelayCommand]
-        public async Task Zircon_Zr_Saturation_Watson_and_Harrison_1983(ReoGridControl reoGridControl)
-        {
-            await ExecuteCreateGridHeader(reoGridControl
-                    , new List<string> { "ID", "Zr(ppm)", "SiO2(ppm)", "Al2O3(ppm)", "CaO(ppm)",
-                                            "K2O(ppm)", "Na2O(ppm)", "T(K)", "T(℃)" }
-                    , new List<string> { "Example", "99", "65.11", "15.68", "3.42",
-                                            "3.12","3.85", "=Zircon_Zr_Saturation_Watson_and_Harrison_1983(B2,C2,D2,E2,F2,G2)", "=H2-273.15" }
+                                            "0.08","0.14", "2.11", "4.86", "3.46", "=Zircon_Watson_and_Harrison_1983(B2,C2,D2,E2,F2,G2,H2,I2,J2,K2)", "=L2-273.15" }
                     , "Zircon_Zr_1983");
         }
 
@@ -509,16 +492,16 @@ namespace GeoChemistryNexus.ViewModels
         public async Task Sphalerite_GGIMFis_Frenzel_2016(ReoGridControl reoGridControl)
         {
             await ExecuteCreateGridHeader(reoGridControl
-                    , new List<string> { "ID", "Ga(ppm)", "Ge(ppm)", "Fe*(ppm)", "Mn(ppm)", "In(ppm)",
+                    , new List<string> { "ID", "Ga(ppm)", "Ge(ppm)", "Fe(ppm)", "Mn(ppm)", "In(ppm)",
                                             "T(K)", "T(℃)" }
                     , new List<string> { "Example", "202.9", "237.5", "7.465", "33.27", "20.46",
-                                            "=Sphalerite_GGIMFis_Frenzel_2016(B2,C2,D2,E2,F2)", "=G2-273.15" }
+                                            "=Sphalerite_Frenzel_2016(B2,C2,D2,E2,F2)", "=G2-273.15" }
                     , "Sphalerite_GGIMFis_2016");
         }
 
 
         /// <summary>
-        /// 模板：闪锌矿 ΔFeS 温度，Frenzel et al. (2016)
+        /// 模板：闪锌矿 ΔFeS 温度，Scott and Barnes (1971)
         /// </summary>
         /// <param name="reoGridControl">当前工作簿</param>
         /// <returns>无</returns>
@@ -526,9 +509,9 @@ namespace GeoChemistryNexus.ViewModels
         public async Task Sphalerite_FeS_Scott_and_Barne_1971(ReoGridControl reoGridControl)
         {
             await ExecuteCreateGridHeader(reoGridControl
-                    , new List<string> { "ID", "ΔFeS(mol%)","T(K)", "T(℃)" }
-                    , new List<string> { "Example", "2.2", 
-                                            "=Sphalerite_FeS_Scott_and_Barne_1971(B2)", "=C2-273.15" }
+                    , new List<string> { "ID", "FeS(mol%)_matrix", "FeS(mol%)_patch", "T(K)", "T(℃)" }
+                    , new List<string> { "Example", "19.3", "21.5",
+                                            "=Sphalerite_Scott_and_Barne_1971(B2,C2)", "=D2-273.15" }
                     , "Sphalerite_FeS_1971");
         }
 
@@ -544,7 +527,7 @@ namespace GeoChemistryNexus.ViewModels
             await ExecuteCreateGridHeader(reoGridControl
                     , new List<string> { "ID", "Ti(ppm)", "α(TiO2)", "T(K)", "T(℃)" }
                     , new List<string> { "Example", "2.2", "1",
-                                            "=Quatz_Ti_Wark_and_Watson_2006(B2,C2)", "=D2-273.15" }
+                                            "=Quatz_Wark_and_Watson_2006(B2,C2)", "=D2-273.15" }
                     , "Quatz_Ti_2006");
         }
 
@@ -560,7 +543,7 @@ namespace GeoChemistryNexus.ViewModels
             await ExecuteCreateGridHeader(reoGridControl
                     , new List<string> { "ID", "Ti(apfu)", "Mg(apfu)", "Fe(apfu)", "T(K)", "T(℃)" }
                     , new List<string> { "Example", "0.484", "3.195", "1.984",
-                                            "=Biotite_Ti_Henry_2005(B2,C2,D2)", "=E2-273.15" }
+                                            "=Biotite_Henry_et_al_2005(B2,C2,D2)", "=E2-273.15" }
                     , "Biotite_Ti_2005");
         }
 
@@ -580,7 +563,7 @@ namespace GeoChemistryNexus.ViewModels
                     , new List<string> { "Example", "45.47", "2.53", "9.07", "0.03", "12.68"
                                             , "0.24", "14.21", "11.32", "2.04", "0.62"
                                             , "0.17", "0.07"
-                                            , "=Amphibole_Si_Ridolfi_2010(B2,C2,D2,E2,F2,G2,H2,I2,J2,K2,L2,M2)", "=N2-273.15" }
+                                            , "=Amphibole_Ridolfi_et_al_2010(B2,C2,D2,E2,F2,G2,H2,I2,J2,K2,L2,M2)", "=N2-273.15" }
                     , "Amphibole_Si_2010");
         }
 
@@ -601,7 +584,7 @@ namespace GeoChemistryNexus.ViewModels
                     , new List<string> { "Example", "37.663","0.045","23.254","12.791","0.058"
                                             ,"0.032","23.047","0.024","0","0"
                                             ,"0","0","0","0","0","0","0"
-                                            ,"=Chlorite_Al4_Jowett_1991(B2,C2,D2,E2,F2,G2,H2,I2,J2,K2,L2,M2,N2,O2,P2,Q2,R2)", "=S2-273.15" }
+                                            ,"=Chlorite_Jowett_1991(B2,C2,D2,E2,F2,G2,H2,I2,J2,K2,L2,M2,N2,O2,P2,Q2,R2)", "=S2-273.15" }
                     , "Chlorite_Al4_1991");
         }
 
@@ -618,7 +601,7 @@ namespace GeoChemistryNexus.ViewModels
                     , new List<string> { "ID", "AtomicPercentAs(at.%)", "Assemblage"
                                             , "T(K)", "T(℃)"}
                     , new List<string> { "Example", "32.4","Asp_Py_Po"
-                                            ,"=Arsenopyrite_Assemblage_Kretschmar_and_Scott_1976(B2,DefineArsenopyriteAssemblage(C2))", "=D2-273.15" }
+                                            ,"=Arsenopyrite_Kretschmar_and_Scott_1976(B2,DefineArsenopyriteAssemblage(C2))", "=D2-273.15" }
                     , "Arsenopyrite_Assemblage_1976");
         }
 

@@ -84,6 +84,7 @@
                                         Command="{Binding LoadHelpDocumentCommand}"
                                         CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"
                                         Tag="{TemplateBinding Tag}"
+                                        Click="HelpButton_Click"
                                         ToolTip="{Binding [view_help_docs],Source={x:Static lg:LanguageService.Instance}}">
                                     <Button.Content>
                                         <Grid>
@@ -201,18 +202,12 @@
                                               Tag="Data\Documents\GTM\Zircon_Loucks_et_al_2020"/>
 
                                     <Separator/>
-
-                                    <MenuItem Header="{Binding [CalTarget1], Source={x:Static lg:LanguageService.Instance}}" 
-                                              Command="{Binding Zircon_Zr_Saturation_Watson_and_Harrison_1983Command}" 
-                                              CommandParameter="{Binding Data, Source={StaticResource GridProxy}}"
-                                              Style="{StaticResource MenuItemWithHelpStyle}"
-                                              Tag="Docs/Zircon_Zr_Saturation.rtf"/>
-
+                                    
                                     <MenuItem Header="{Binding [CalTarget2], Source={x:Static lg:LanguageService.Instance}}" 
                                               Command="{Binding Zircon_Zr_Principal_Watson_and_Harrison_1983Command}" 
                                               CommandParameter="{Binding Data, Source={StaticResource GridProxy}}"
                                               Style="{StaticResource MenuItemWithHelpStyle}"
-                                              Tag="Docs/Zircon_Zr_Principal.rtf"/>
+                                              Tag="Data\Documents\GTM\Zircon_Watson_and_Harrison_1983"/>
                                 </StackPanel>
                             </ctrl:ModernRibbonButton.MenuContent>
                         </ctrl:ModernRibbonButton>
@@ -231,13 +226,13 @@
                                               Command="{Binding Sphalerite_GGIMFis_Frenzel_2016Command}" 
                                               CommandParameter="{Binding Data, Source={StaticResource GridProxy}}"
                                               Style="{StaticResource MenuItemWithHelpStyle}"
-                                              Tag="Docs/Sphalerite_GGIMFis.rtf"/>
+                                              Tag="Data\Documents\GTM\Sphalerite_Frenzel_2016"/>
 
                                     <MenuItem Header="{Binding [SphaleriteGTM], Source={x:Static lg:LanguageService.Instance}}" 
                                               Command="{Binding Sphalerite_FeS_Scott_and_Barne_1971Command}" 
                                               CommandParameter="{Binding Data, Source={StaticResource GridProxy}}"
                                               Style="{StaticResource MenuItemWithHelpStyle}"
-                                              Tag="Docs/Sphalerite_FeS.rtf"/>
+                                              Tag="Data\Documents\GTM\Sphalerite_Scott_and_Barne_1971"/>
                                 </StackPanel>
                             </ctrl:ModernRibbonButton.MenuContent>
                         </ctrl:ModernRibbonButton>
@@ -256,7 +251,7 @@
                                               Command="{Binding Quatz_Ti_Wark_and_Watson_2006Command}" 
                                               CommandParameter="{Binding Data, Source={StaticResource GridProxy}}"
                                               Style="{StaticResource MenuItemWithHelpStyle}"
-                                              Tag="Docs/Quatz_Ti.rtf"/>
+                                              Tag="Data\Documents\GTM\Quatz_Wark_and_Watson_2006"/>
                                 </StackPanel>
                             </ctrl:ModernRibbonButton.MenuContent>
                         </ctrl:ModernRibbonButton>
@@ -275,7 +270,7 @@
                                               Command="{Binding Biotite_Ti_Henry_2005Command}" 
                                               CommandParameter="{Binding Data, Source={StaticResource GridProxy}}"
                                               Style="{StaticResource MenuItemWithHelpStyle}"
-                                              Tag="Docs/Biotite_Ti.rtf"/>
+                                              Tag="Data\Documents\GTM\Biotite_Henry_et_al_2005"/>
                                 </StackPanel>
                             </ctrl:ModernRibbonButton.MenuContent>
                         </ctrl:ModernRibbonButton>
@@ -289,7 +284,7 @@
                                 <StackPanel MinWidth="150">
                                     <MenuItem Header="{Binding [AmphiboleGTM], Source={x:Static lg:LanguageService.Instance}}" Command="{Binding Amphibole_Si_Ridolfi_2010Command}"
                                               CommandParameter="{Binding Data, Source={StaticResource GridProxy}}"
-                                              Style="{StaticResource MenuItemWithHelpStyle}" Tag="Docs/Amphibole.rtf"/>
+                                              Style="{StaticResource MenuItemWithHelpStyle}" Tag="Data\Documents\GTM\Amphibole_Ridolfi_et_al_2010"/>
                                 </StackPanel>
                             </ctrl:ModernRibbonButton.MenuContent>
                         </ctrl:ModernRibbonButton>
@@ -303,7 +298,7 @@
                                 <StackPanel MinWidth="150">
                                     <MenuItem Header="{Binding [ChloriteGTM], Source={x:Static lg:LanguageService.Instance}}" Command="{Binding Chlorite_Al4_Jowett_1991Command}"
                                               CommandParameter="{Binding Data, Source={StaticResource GridProxy}}"
-                                              Style="{StaticResource MenuItemWithHelpStyle}" Tag="Docs/Chlorite.rtf"/>
+                                              Style="{StaticResource MenuItemWithHelpStyle}" Tag="Data\Documents\GTM\Chlorite_Jowett_1991"/>
                                 </StackPanel>
                             </ctrl:ModernRibbonButton.MenuContent>
                         </ctrl:ModernRibbonButton>
@@ -317,7 +312,7 @@
                                 <StackPanel MinWidth="150">
                                     <MenuItem Header="{Binding [ArsenopyriteGTM], Source={x:Static lg:LanguageService.Instance}}" Command="{Binding Arsenopyrite_Assemblage_Kretschmar_and_Scott_1976Command}"
                                               CommandParameter="{Binding Data, Source={StaticResource GridProxy}}"
-                                              Style="{StaticResource MenuItemWithHelpStyle}" Tag="Docs/Arsenopyrite.rtf"/>
+                                              Style="{StaticResource MenuItemWithHelpStyle}" Tag="Data\Documents\GTM\Arsenopyrite_Kretschmar_and_Scott_1976"/>
                                 </StackPanel>
                             </ctrl:ModernRibbonButton.MenuContent>
                         </ctrl:ModernRibbonButton>
@@ -331,7 +326,7 @@
             <rg:ReoGridControl x:Name="MyReoGrid">
                 <rg:ReoGridControl.Resources>
                     <ControlTemplate x:Key="ModernThumbTemplate" TargetType="Thumb">
-                        <Border x:Name="thumbBorder" Background="#9E9E9E" CornerRadius="4" BorderThickness="0"/>
+                        <Border x:Name="thumbBorder" Background="#C2C3C9" CornerRadius="4" BorderThickness="0"/>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="thumbBorder" Property="Background" Value="#6E6E6E"/>
@@ -398,9 +393,17 @@
                     <!-- RTF 阅读器 -->
                     <RichTextBox Grid.Row="1" Name="HelpRichTextBox" 
                                  IsReadOnly="True" 
-                                 VerticalScrollBarVisibility="Auto" 
+                                 VerticalScrollBarVisibility="Auto"
+                                 HorizontalScrollBarVisibility="Auto"
                                  Padding="10" 
                                  BorderThickness="0">
+                        <RichTextBox.Resources>
+                            <Style TargetType="{x:Type FlowDocument}">
+                                <Setter Property="ColumnWidth" Value="999999" />
+                                <Setter Property="IsOptimalParagraphEnabled" Value="True"/>
+                                <Setter Property="PagePadding" Value="5"/>
+                            </Style>
+                        </RichTextBox.Resources>
                         <FlowDocument />
                     </RichTextBox>
                 </Grid>

@@ -15,8 +15,18 @@
 
   <ItemGroup>
     <None Remove="Data\Cursors\pointer.cur" />
+    <None Remove="Data\Documents\GTM\Amphibole_Ridolfi_et_al_2010\zh-CN.rtf" />
+    <None Remove="Data\Documents\GTM\Arsenopyrite_Kretschmar_and_Scott_1976\zh-CN.rtf" />
+    <None Remove="Data\Documents\GTM\Biotite_Henry_et_al_2005\zh-CN.rtf" />
     <None Remove="Data\Documents\GTM\ces.rtf" />
+    <None Remove="Data\Documents\GTM\Chlorite_Jowett_1991\zh-CN.rtf" />
+    <None Remove="Data\Documents\GTM\Quatz_Wark_and_Watson_2006\zh-CN.rtf" />
+    <None Remove="Data\Documents\GTM\Sphalerite_Frenzel_2016\zh-CN.rtf" />
+    <None Remove="Data\Documents\GTM\Sphalerite_Scott_and_Barne_1971\zh-CN.rtf" />
+    <None Remove="Data\Documents\GTM\Zircon_Loucks_et_al_2020\en-US.rtf" />
+    <None Remove="Data\Documents\GTM\Zircon_Loucks_et_al_2020\zh-CN.rtf" />
     <None Remove="Data\Documents\GTM\Zircon_Loucks_et_al_2020_en-US.rtf" />
+    <None Remove="Data\Documents\GTM\Zircon_Watson_and_Harrison_1983\zh-CN.rtf" />
     <None Remove="Data\Icon\iconfont.ttf" />
     <None Remove="Data\Icon\logo.png" />
     <None Remove="Data\Image\StartPic\1.jpg" />
@@ -69,7 +79,31 @@
     <Content Include="Data\Cursors\pointer.cur">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\Documents\GTM\Zircon_Loucks_et_al_2020_en-US.rtf">
+    <Content Include="Data\Documents\GTM\Amphibole_Ridolfi_et_al_2010\zh-CN.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Documents\GTM\Arsenopyrite_Kretschmar_and_Scott_1976\zh-CN.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Documents\GTM\Biotite_Henry_et_al_2005\zh-CN.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Documents\GTM\Chlorite_Jowett_1991\zh-CN.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Documents\GTM\Quatz_Wark_and_Watson_2006\zh-CN.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Documents\GTM\Sphalerite_Frenzel_2016\zh-CN.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Documents\GTM\Sphalerite_Scott_and_Barne_1971\zh-CN.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Documents\GTM\Zircon_Loucks_et_al_2020\zh-CN.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Documents\GTM\Zircon_Watson_and_Harrison_1983\zh-CN.rtf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\Icon\iconfont.ttf">

@@ -1157,7 +1157,7 @@ namespace GeoChemistryNexus.ViewModels
                         Name = child.Name,
                         TemplatePath = child.GraphMapPath,
                         Category = GetNodePath(child),
-                        ServerHash = child.FileHash, // 【重要】注入服务器哈希
+                        ServerHash = child.FileHash,    // 注入服务器哈希
 
                         // 注入回调
                         OpenHandler = (vm) => SelectTemplateCardCommand.ExecuteAsync(vm),

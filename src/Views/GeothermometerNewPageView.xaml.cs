@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using unvell.ReoGrid;
+using Button = System.Windows.Controls.Button;
 
 namespace GeoChemistryNexus.Views
 {
@@ -43,6 +44,21 @@ namespace GeoChemistryNexus.Views
                 commonPage = new GeothermometerNewPageView();
             }
             return commonPage;
+        }
+
+        /// <summary>
+        /// 处理帮助按钮点击事件
+        /// todo:移动到 viewmodel 里面
+        /// </summary>
+        private void HelpButton_Click(object sender, RoutedEventArgs e)
+        {
+            // 获取点击的按钮对象
+            if (sender is Button btn)
+            {
+                var args = new RoutedEventArgs(MenuItem.ClickEvent, btn);
+
+                btn.RaiseEvent(args);
+            }
         }
 
     }
