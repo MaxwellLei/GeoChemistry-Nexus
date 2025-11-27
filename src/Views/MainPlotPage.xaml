@@ -637,7 +637,7 @@
         <!-- 绘图模式 -->
         <Grid Visibility="{Binding IsPlotMode, Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.75*"/>
+                <ColumnDefinition Width="0.8*"/>
                 <ColumnDefinition Width="5"/>
                 <ColumnDefinition Width="2.4*"/>
                 <ColumnDefinition Width="5"/>
@@ -978,7 +978,7 @@
                                             <!-- 数据点导入 -->
                                             <GroupBox Header="{Binding [Data],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource RibbonGroupStyle}">
                                                 <Grid Width="68" Height="68" Margin="2">
-                                                    <Button Command="{Binding PlotDataFromGridCommand}" CommandParameter="{Binding ElementName=DataGrid}"
+                                                    <Button Command="{Binding UpdateDataCommand}" CommandParameter="{Binding ElementName=DataGrid}"
                                                             Style="{StaticResource RibbonLargeButton}"
                                                             Width="64" Height="64" VerticalAlignment="Top">
                                                         <StackPanel HorizontalAlignment="Center">
@@ -1004,16 +1004,7 @@
                                                     </Grid.ColumnDefinitions>
 
                                                     <StackPanel Grid.Column="0" VerticalAlignment="Top" Margin="3,2">
-                                                        <Button Command="{Binding UpdateDataCommand}"
-                                                            Style="{StaticResource RibbonSmallButton}"
-                                                            Width="100" Height="28" Margin="0,1">
-                                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe74b;"
-                                                                       FontSize="16" Foreground="#0078D4" Margin="4,0,6,0"
-                                                                       VerticalAlignment="Center"/>
-                                                                <TextBlock Text="{Binding [update_data],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" VerticalAlignment="Center"/>
-                                                            </StackPanel>
-                                                        </Button>
+
                                                         <Button Command="{Binding ClearAllDataCommand}"
                                                             Style="{StaticResource RibbonSmallButton}"
                                                             Width="100" Height="28" Margin="0,1">
@@ -1042,8 +1033,8 @@
                                             </GroupBox>
 
                                             <Rectangle Fill="#E1E5E9" Width="1" Margin="8,12" VerticalAlignment="Stretch"/>
-
-                                            <!--导出-->
+                                            
+                                            <!-- 导出 -->
                                             <GroupBox Header="{Binding [export],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource RibbonGroupStyle}">
                                                 <Grid Width="68" Height="68" Margin="2">
                                                     <Button Command="{Binding ExportWorksheetCommand}" CommandParameter="{Binding ElementName=DataGrid}"

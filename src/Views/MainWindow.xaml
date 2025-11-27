@@ -9,7 +9,7 @@
         xmlns:hc="https://handyorg.github.io/handycontrol"
         WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" Closing="Window_Closing" 
-        Title="MainWindow" Height="760" Width="1300" BorderThickness="1">
+        Title="MainWindow" Height="760" Width="1340" BorderThickness="1">
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="55" ResizeBorderThickness="22 5 22 22"/>
     </WindowChrome.WindowChrome>
