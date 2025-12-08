@@ -1,0 +1,5 @@
+# 忽略Documents文件夹
+Data/Documents/
+
+# 忽略PlotData文件夹下的Default文件夹
+Data/PlotData/Default/

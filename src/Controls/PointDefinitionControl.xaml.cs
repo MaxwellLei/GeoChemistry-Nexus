@@ -1,4 +1,4 @@
-﻿using GeoChemistryNexus.Models;
+using GeoChemistryNexus.Models;
 using GeoChemistryNexus.ViewModels;
 using HandyControl.Controls;
 using HandyControl.Data;
@@ -54,13 +54,14 @@ namespace GeoChemistryNexus.Controls
                 // 如果是三元图就转换坐标为三元值
                 if(MainPlotViewModel.BaseMapType == "Ternary")
                 {
-                    (control.NumericUpDownX.Value, control.NumericUpDownY.Value) 
-                        = MainPlotViewModel.ToTernary(newPoint.X, newPoint.Y, MainPlotViewModel.Clockwise);
+                    var ternary = MainPlotViewModel.ToTernary(newPoint.X, newPoint.Y, MainPlotViewModel.Clockwise);
+                    control.NumericUpDownX.Value = Math.Round(ternary.Item1, 4);
+                    control.NumericUpDownY.Value = Math.Round(ternary.Item2, 4);
                 }
                 else
                 {
-                    control.NumericUpDownX.Value = newPoint.X;
-                    control.NumericUpDownY.Value = newPoint.Y;
+                    control.NumericUpDownX.Value = Math.Round(newPoint.X, 4);
+                    control.NumericUpDownY.Value = Math.Round(newPoint.Y, 4);
                 }
             }
             else

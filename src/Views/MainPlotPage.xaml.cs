@@ -1,4 +1,4 @@
-﻿using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Models;
 using GeoChemistryNexus.ViewModels;
 using HandyControl.Controls;
@@ -85,6 +85,42 @@ namespace GeoChemistryNexus.Views
 
             // 停止事件冒泡
             e.Handled = true;
+        }
+
+        private void OnTreeViewItemPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is TreeViewItem item && item.DataContext is LayerItemViewModel layerItem)
+            {
+                var originalSource = e.OriginalSource as DependencyObject;
+
+                // 1. 确保点击的是当前 TreeViewItem，而不是其子项
+                // FindAncestor 会从点击点向上找，找到最近的一个 TreeViewItem
+                var clickedItem = FindAncestor<TreeViewItem>(originalSource);
+                if (clickedItem != item)
+                {
+                    // 如果找到的最近 TreeViewItem 不是当前的 sender，说明点击的是 sender 的子项
+                    // 此时应该忽略，让事件继续传递给子项去处理
+                    return;
+                }
+
+                // 2. 如果点击的是折叠/展开按钮，不处理选择
+                if (FindAncestor<ToggleButton>(originalSource) != null)
+                {
+                    return;
+                }
+
+                // 执行 ViewModel 的选择逻辑
+                if (viewModel.SelectLayerCommand.CanExecute(layerItem))
+                {
+                    viewModel.SelectLayerCommand.Execute(layerItem);
+                }
+
+                // 阻止 TreeView 原生的单选逻辑
+                e.Handled = true;
+                
+                // 尝试让 Item 获得焦点以支持键盘操作（可选）
+                item.Focus();
+            }
         }
 
         /// <summary>

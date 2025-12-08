@@ -1,6 +1,4 @@
-﻿using GeoChemistryNexus.Helpers;
-using OpenTK.Graphics.OpenGL;
-using ScottPlot;
+using GeoChemistryNexus.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -43,28 +41,29 @@ namespace GeoChemistryNexus.Models
         /// </summary>
         public ScriptDefinition Script { get; set; } = new ScriptDefinition();
 
-        /// 静态工厂——生成最小化类对象
-        /// </summary>
-        /// <param name="languages">底图支持的语言列表，第一个为默认语言</param>
-        /// <param name="type">底图类型: "2D_Plot" 或 "Ternary_Plot"</param>
-        /// <param name="category">底图分类的占位符文本</param>
-        /// <returns></returns>
-        public static GraphMapTemplate CreateDefault(List<string> languages, string type, string category)
+        /// <summary>
+        /// 静态工厂——生成最小化类对象
+        /// </summary>
+        /// <param name="languages">底图支持的语言列表，第一个为默认语言</param>
+        /// <param name="type">底图类型: "2D_Plot" 或 "Ternary_Plot"</param>
+        /// <param name="category">底图分类的占位符文本</param>
+        /// <returns></returns>
+        public static GraphMapTemplate CreateDefault(List<string> languages, string type, string category)
         {
-            // 如果语言列表为空，则提供一个默认值
-            if (languages == null || !languages.Any())
+            // 如果语言列表为空，则提供一个默认值
+            if (languages == null || !languages.Any())
             {
                 languages = new List<string> { "en-US" };
             }
 
-            // 将列表的第一个语言作为默认语言
-            string defaultLanguage = languages.First();
+            // 将列表的第一个语言作为默认语言
+            string defaultLanguage = languages.First();
 
-            // 定义一个本地辅助函数，用于根据语言列表和占位符文本创建 LocalizedString 对象
-            LocalizedString CreateLocalized(string placeholderText)
+            // 定义一个本地辅助函数，用于根据语言列表和占位符文本创建 LocalizedString 对象
+            LocalizedString CreateLocalized(string placeholderText)
             {
-                // 使用 Linq 的 ToDictionary 方法快速创建翻译字典
-                var translations = languages.ToDictionary(lang => lang, lang => placeholderText);
+                // 使用 Linq 的 ToDictionary 方法快速创建翻译字典
+                var translations = languages.ToDictionary(lang => lang, lang => placeholderText);
                 return new LocalizedString
                 {
                     Default = defaultLanguage,
@@ -72,22 +71,22 @@ namespace GeoChemistryNexus.Models
                 };
             }
 
-            // 创建模板基础结构
-            var template = new GraphMapTemplate
+            // 创建模板基础结构
+            var template = new GraphMapTemplate
             {
                 DefaultLanguage = defaultLanguage,
-                // 根据传入的type设置模板类型
-                TemplateType = type == "Ternary_Plot" ? "Ternary" : "Cartesian",
+                // 根据传入的type设置模板类型
+                TemplateType = type == "Ternary_Plot" ? "Ternary" : "Cartesian",
                 NodeList = CreateLocalized(category),
                 Script = new ScriptDefinition(),
                 Info = new GraphMapInfo()
             };
 
-            // 根据模板类型配置不同的默认值
-            if (template.TemplateType == "Ternary")
+            // 根据模板类型配置不同的默认值
+            if (template.TemplateType == "Ternary")
             {
-                // 三元相图的特定设置
-                string titlePlaceholder = defaultLanguage == "zh-CN" ? "新建三元相图" : "New Ternary Plot";
+                // 三元相图的特定设置
+                string titlePlaceholder = defaultLanguage == "zh-CN" ? "新建三元相图" : "New Ternary Plot";
                 string componentAPlaceholder = "A";
                 string componentBPlaceholder = "B";
                 string componentCPlaceholder = "C";
@@ -105,14 +104,14 @@ namespace GeoChemistryNexus.Models
                 };
                 template.Script = new ScriptDefinition
                 {
-                    // 脚本需要A,B,C三个组分数据来计算二维坐标
-                    RequiredDataSeries = "Category,A,B,C",
-                    // 注意：此脚本为占位符
-                    ScriptBody = "var y = B * Math.sin(Math.PI / 3);\nvar x = A + B * Math.cos(Math.PI / 3);\nreturn [x, y];"
+                    // 脚本需要A,B,C三个组分数据来计算二维坐标
+                    RequiredDataSeries = "Category,A,B,C",
+                    // 注意：此脚本为占位符
+                    ScriptBody = "var y = B * Math.sin(Math.PI / 3);\nvar x = A + B * Math.cos(Math.PI / 3);\nreturn [x, y];"
                 };
             }
             else // 默认处理笛卡尔坐标系 (2D_Plot)
-            {
+            {
                 string titlePlaceholder = defaultLanguage == "zh-CN" ? "新建图表" : "New Chart";
                 string xAxisPlaceholder = defaultLanguage == "zh-CN" ? "X轴" : "X-Axis";
                 string yAxisPlaceholder = defaultLanguage == "zh-CN" ? "Y轴" : "Y-Axis";
@@ -135,8 +134,8 @@ namespace GeoChemistryNexus.Models
                 };
             }
 
-            // 通用设置
-            template.Info.Legend = new LegendDefinition();
+            // 通用设置
+            template.Info.Legend = new LegendDefinition();
             template.Info.Grid = new GridDefinition();
 
             return template;
