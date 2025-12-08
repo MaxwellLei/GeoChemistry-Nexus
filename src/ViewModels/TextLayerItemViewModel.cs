@@ -1,4 +1,4 @@
-using GeoChemistryNexus.Helpers;
+﻿using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Interfaces;
 using GeoChemistryNexus.Models;
 using ScottPlot;
@@ -8,41 +8,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using System.ComponentModel;
-
 namespace GeoChemistryNexus.ViewModels
 {
     public class TextLayerItemViewModel : LayerItemViewModel, IPlotLayer
     {
         public TextDefinition TextDefinition { get; }
-        private readonly int _index;
 
         public TextLayerItemViewModel(TextDefinition textDefinition, int index)
-            : base(GetName(textDefinition, index))
+            : base(LanguageService.Instance["text"] + $" {index + 1}")
         {
             TextDefinition = textDefinition;
-            _index = index;
-            PropertyChangedEventManager.AddHandler(TextDefinition, OnTextDefinitionChanged, string.Empty);
-        }
-
-        private static string GetName(TextDefinition textDefinition, int index)
-        {
-            var content = textDefinition.Content.Get();
-            if (string.IsNullOrWhiteSpace(content))
-            {
-                return LanguageService.Instance["text"] + $" {index + 1}";
-            }
-
-            // Replace newlines with spaces to keep the name on a single line
-            return content.Replace("\r\n", " ").Replace("\n", " ").Replace("\r", " ");
-        }
-
-        private void OnTextDefinitionChanged(object? sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(TextDefinition.Content))
-            {
-                Name = GetName(TextDefinition, _index);
-            }
         }
 
         public void Render(Plot plot)

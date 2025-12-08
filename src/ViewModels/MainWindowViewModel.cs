@@ -74,23 +74,6 @@ namespace GeoChemistryNexus.ViewModels
             window?.Close();
         }
 
-        /// <summary>
-        /// 拖动窗口命令
-        /// </summary>
-        /// <param name="window">当前窗体</param>
-        [RelayCommand]
-        private void MoveWindow(Window window)
-        {
-            // 只有当鼠标左键按下时才触发拖动
-            if (System.Windows.Input.Mouse.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
-            {
-                if (window.WindowState == WindowState.Normal)
-                {
-                    window.DragMove();
-                }
-            }
-        }
-
 
         /// <summary>
         /// 彩蛋
@@ -125,6 +108,15 @@ namespace GeoChemistryNexus.ViewModels
             nav.Navigate(GeothermometerNewPageView.GetPage());
         }
 
+        /// <summary>
+        /// 切换科学计算命令
+        /// </summary>
+        //[RelayCommand]
+        //private void ExecuteSCICalPage()
+        //{
+        //    //Nav.Navigate(ModelPageView.GetPage());
+        //    //ModelPageView.RefeshAn();
+        //}
 
 
         ///切换设置命令
