@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.IO;
 using Microsoft.Win32;
@@ -12,47 +12,7 @@ using System.Windows.Media;
 
 public class FileHelper
 {
-    private static DataTable ReadCsvFile(string filePath)
-    {
-        DataTable dataTable = new DataTable();
 
-        using (var reader = new StreamReader(filePath))
-        {
-            string[] headers = reader.ReadLine().Split(',');
-            foreach (string header in headers)
-            {
-                dataTable.Columns.Add(header);
-            }
-
-            while (!reader.EndOfStream)
-            {
-                string[] rows = reader.ReadLine().Split(',');
-                DataRow dataRow = dataTable.NewRow();
-                for (int i = 0; i < headers.Length; i++)
-                {
-                    dataRow[i] = rows[i];
-                }
-                dataTable.Rows.Add(dataRow);
-            }
-        }
-
-        return dataTable;
-    }
-
-    private static void ExportToCsv(DataTable dataTable, string filePath)
-    {
-        using (var writer = new StreamWriter(filePath))
-        {
-            // Write the header line
-            writer.WriteLine(string.Join(",", dataTable.Columns.Cast<DataColumn>().Select(col => col.ColumnName)));
-
-            // Write each data row
-            foreach (DataRow row in dataTable.Rows)
-            {
-                writer.WriteLine(string.Join(",", row.ItemArray));
-            }
-        }
-    }
 
     // 获取保存文件路径  —— 不带文件过滤器
     public static string GetSaveFilePath(string defaultFileName, string initialDirectory = null)

@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GeoChemistryNexus.Controls;
 using GeoChemistryNexus.Helpers;
@@ -89,6 +89,9 @@ namespace GeoChemistryNexus.ViewModels
         private bool _isPlotMode = false; // 绘图模式
 
         [ObservableProperty]
+        private bool _isShowTemplateInfo = false;   // 显示绘图模板的说明帮助
+
+        [ObservableProperty]
         private bool _isNewTemplateMode = false; // 新建绘图遮罩
 
         // 卡片展示用的模板集合
@@ -127,13 +130,34 @@ namespace GeoChemistryNexus.ViewModels
         // 当前点击的模板列表节点
         private GraphMapTemplateNode currentgraphMapTemplateNode;
 
-        // 选项卡index
-        [ObservableProperty]
-        private int tabIndex = 0;
+        // 标记是否已经确认过进入编辑模式
+        private bool _hasConfirmedEditMode = false;
 
         // Ribbon 选项卡 Index
-        [ObservableProperty]
-        private int ribbonTabIndex = 0;
+        private int _ribbonTabIndex = 0;
+        public int RibbonTabIndex
+        {
+            get => _ribbonTabIndex;
+            set
+            {
+                if (_ribbonTabIndex == value) return;
+
+                // 如果尝试切换到编辑标签页 (Index = 2)
+                if (value == 2 && !_hasConfirmedEditMode)
+                {
+                    var result = HandyControl.Controls.MessageBox.Show("确定要进入编辑模式吗？这将允许您修改底图。", "提示", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (result != MessageBoxResult.Yes)
+                    {
+                        // 强制通知 UI 属性值未改变，以恢复 RadioButton 的选中状态
+                        OnPropertyChanged(nameof(RibbonTabIndex));
+                        return;
+                    }
+                    _hasConfirmedEditMode = true;
+                }
+
+                SetProperty(ref _ribbonTabIndex, value);
+            }
+        }
 
         [ObservableProperty]
         private bool _isAddingText = false; // 标记是否正处于添加文本的模式
@@ -172,6 +196,7 @@ namespace GeoChemistryNexus.ViewModels
             _richTextBox = richTextBox;      // 富文本框
             _dataGrid = dataGrid;        // 获取数据表格控件
             IsSnapSelectionEnabled = true;  // 吸附选择开启
+            IsShowTemplateInfo = false;
 
             InitializeBreadcrumbs(); // 初始化面包屑
             LoadAllTemplateCards();  // 加载所有模板卡片
@@ -505,7 +530,12 @@ namespace GeoChemistryNexus.ViewModels
             for (int i = 0; i < requiredColumns.Count; i++)
             {
                 worksheet.ColumnHeaders[i].Text = requiredColumns[i];
+                // 自适应列宽，包含表头
                 worksheet.AutoFitColumnWidth(i, true);
+
+                // 稍微增加一点内边距，避免太紧凑
+                var currentWidth = worksheet.GetColumnWidth(i);
+                worksheet.SetColumnsWidth(i, 1, (ushort)(currentWidth + 10));
             }
         }
 
@@ -1109,9 +1139,9 @@ namespace GeoChemistryNexus.ViewModels
                 yValueToDisplay = Math.Pow(10, mouseCoordinates.Y);
             }
 
-            // 更新十字轴上的文本标签以显示实时坐标 (保留3位小数的数字)
-            CrosshairPlot.VerticalLine.Text = $"{xValueToDisplay:N3}";
-            CrosshairPlot.HorizontalLine.Text = $"{yValueToDisplay:N3}";
+            // 更新十字轴上的文本标签以显示实时坐标 (保留4位小数的数字)
+            CrosshairPlot.VerticalLine.Text = $"{xValueToDisplay:N4}";
+            CrosshairPlot.HorizontalLine.Text = $"{yValueToDisplay:N4}";
 
             // 刷新图表以应用更改
             WpfPlot1.Refresh();
@@ -1344,7 +1374,6 @@ namespace GeoChemistryNexus.ViewModels
         private async Task SelectTemplateCard(TemplateCardViewModel card)
         {
             if (card == null) return;
-            TabIndex = 0;
 
             // 切换到绘图模式
             IsTemplateMode = false;
@@ -1355,6 +1384,8 @@ namespace GeoChemistryNexus.ViewModels
                                             , card.TemplatePath, $"{card.TemplatePath}.json");
             await LoadAndBuildLayers(templateFilePath);
 
+            CenterPlot();   // 视图复位
+
             // 加载底图模板的说明文件
             var tempRTFfile = FileHelper.FindFileOrGetFirstWithExtension(
                     Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Default",
@@ -1363,6 +1394,15 @@ namespace GeoChemistryNexus.ViewModels
 
             // 加载数据表格控件
             PrepareDataGridForInput();
+        }
+
+        /// <summary>
+        /// 显示绘图模板的帮助说明
+        /// </summary>
+        [RelayCommand]
+        private void ShowTemplateInfo()
+        {
+            IsShowTemplateInfo = !IsShowTemplateInfo;
         }
 
         /// <summary>
@@ -1561,6 +1601,10 @@ namespace GeoChemistryNexus.ViewModels
         /// <param name="templatePath">模板文件的路径</param>
         private async Task LoadAndBuildLayers(string templatePath)
         {
+            // 重置编辑确认状态和标签页索引
+            _hasConfirmedEditMode = false;
+            RibbonTabIndex = 0;
+
             if (!File.Exists(templatePath))
             {
                 // 文件不存在
@@ -1911,8 +1955,12 @@ namespace GeoChemistryNexus.ViewModels
             CancelSelected();
         }
 
+        // 用于存储多选的图层集合
+        public ObservableCollection<LayerItemViewModel> SelectedLayers { get; } = new();
+
         /// <summary>
         /// 点击图层对象, 在图上高亮显示, 并在属性面板显示其属性
+        /// 支持 Ctrl/Shift 多选
         /// </summary>
         /// <param name="selectedItem">当前选中的图层对象</param>
         [RelayCommand]
@@ -1926,30 +1974,248 @@ namespace GeoChemistryNexus.ViewModels
             // 如果没有选中任何项, 或者选中的是分类文件夹
             if (selectedItem == null || selectedItem.Children.Count > 0)
             {
-                // 恢复所有图层的原始样式
-                foreach (var layer in allPlottableLayers)
-                {
-                    // 判断是否实现了 IPlotLayer 接口
-                    if (layer is IPlotLayer plotLayer)
-                    {
-                         plotLayer.Restore();
-                    }
-                }
-
+                CancelSelected();
                 // 如果是分类文件夹，清空属性面板
                 PropertyGridModel = nullObject;
-                _selectedLayer = selectedItem; // 更新引用
+                
+                if (selectedItem != null)
+                {
+                    _selectedLayer = selectedItem; // 更新引用
+                    _selectedLayer.IsSelected = true;
+                }
+                
                 WpfPlot1.Refresh();
                 return;
             }
 
-            // --- 如果选中了一个可绘制的图层 ---
+            // 获取当前选中项的父级分类
+            var newParent = LayerTree.FirstOrDefault(c => c.Children.Contains(selectedItem));
 
-            // 更新当前选中的图层引用
-            _selectedLayer = selectedItem;
+            // --- 处理多选逻辑 ---
+            bool isCtrl = (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control;
+            bool isShift = (Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift;
 
-            // 在属性面板中显示该图层的属性
-            object? objectToInspect = selectedItem switch
+            if (isCtrl)
+            {
+                // 检查跨父类多选
+                if (SelectedLayers.Count > 0)
+                {
+                    var firstSelected = SelectedLayers.First();
+                    var firstParent = LayerTree.FirstOrDefault(c => c.Children.Contains(firstSelected));
+
+                    if (newParent != firstParent)
+                    {
+                        // 如果跨父类，清除旧的选择
+                        foreach (var layer in SelectedLayers.ToList())
+                        {
+                            layer.IsSelected = false;
+                            SelectedLayers.Remove(layer);
+                        }
+                        if (_selectedLayer != null)
+                        {
+                            _selectedLayer.IsSelected = false;
+                        }
+                    }
+                }
+
+                if (SelectedLayers.Contains(selectedItem))
+                {
+                    // 反选
+                    selectedItem.IsSelected = false;
+                    SelectedLayers.Remove(selectedItem);
+                    // 如果取消的是主选定项，转移主选定项
+                    if (_selectedLayer == selectedItem)
+                    {
+                        _selectedLayer = SelectedLayers.LastOrDefault();
+                    }
+                }
+                else
+                {
+                    // 加选
+                    SelectedLayers.Add(selectedItem);
+                    _selectedLayer = selectedItem;
+                }
+            }
+            else if (isShift && _selectedLayer != null)
+            {
+                // 范围选择
+                var linearList = FlattenTree(LayerTree).ToList();
+                int start = linearList.IndexOf(_selectedLayer);
+                int end = linearList.IndexOf(selectedItem);
+
+                // 检查 Shift 选择是否跨父类
+                var anchorParent = LayerTree.FirstOrDefault(c => c.Children.Contains(_selectedLayer));
+                if (anchorParent != newParent)
+                {
+                    // 跨父类：清除旧的选择（包括锚点），只保留新父类中的选中项
+                    foreach (var item in SelectedLayers.ToList())
+                    {
+                        item.IsSelected = false;
+                        SelectedLayers.Remove(item);
+                    }
+                    if (_selectedLayer != null) _selectedLayer.IsSelected = false;
+                }
+
+                if (start != -1 && end != -1)
+                {
+                    int min = Math.Min(start, end);
+                    int max = Math.Max(start, end);
+
+                    // 清除范围外的选择
+                    var toRemove = SelectedLayers.Where(l => {
+                        int idx = linearList.IndexOf(l);
+                        return idx < min || idx > max;
+                    }).ToList();
+
+                    foreach (var item in toRemove)
+                    {
+                        item.IsSelected = false;
+                        SelectedLayers.Remove(item);
+                    }
+
+                    for (int i = min; i <= max; i++)
+                    {
+                        var item = linearList[i];
+                        // 只选择叶子节点
+                        if (item.Children.Count == 0)
+                        {
+                            // 限制：只允许选择属于 newParent 的项
+                            var itemParent = LayerTree.FirstOrDefault(c => c.Children.Contains(item));
+                            
+                            if (itemParent == newParent)
+                            {
+                                if (!SelectedLayers.Contains(item))
+                                {
+                                    SelectedLayers.Add(item);
+                                    item.IsSelected = true;
+                                }
+                            }
+                            else
+                            {
+                                // 如果范围内的项不属于当前父类，确保其未被选中
+                                if (SelectedLayers.Contains(item))
+                                {
+                                    item.IsSelected = false;
+                                    SelectedLayers.Remove(item);
+                                }
+                            }
+                        }
+                    }
+                    _selectedLayer = selectedItem; // 更新主选中项为当前点击项
+                }
+            }
+            else
+            {
+                // 如果之前的选中项是分类文件夹，且不在多选列表中，需要手动取消选中
+                if (_selectedLayer != null && !SelectedLayers.Contains(_selectedLayer) && _selectedLayer != selectedItem)
+                {
+                    _selectedLayer.IsSelected = false;
+                }
+
+                // 单选：清除其他
+                foreach (var layer in SelectedLayers.ToList())
+                {
+                    if (layer != selectedItem)
+                    {
+                        layer.IsSelected = false;
+                        SelectedLayers.Remove(layer);
+                    }
+                }
+                if (!SelectedLayers.Contains(selectedItem))
+                {
+                    SelectedLayers.Add(selectedItem);
+                }
+                _selectedLayer = selectedItem;
+            }
+
+            // 强制刷新选中状态（对抗TreeView的原生单选行为）
+            foreach (var layer in SelectedLayers)
+            {
+                if (!layer.IsSelected) layer.IsSelected = true;
+            }
+            
+            // 如果没有选中项了
+            if (_selectedLayer == null)
+            {
+                CancelSelected();
+                return;
+            }
+
+            IsShowTemplateInfo = false;
+
+            // 在属性面板中显示主选中图层的属性
+            // 先解绑旧事件
+            if (PropertyGridModel is INotifyPropertyChanged oldProp)
+            {
+                oldProp.PropertyChanged -= OnPropertyGridModelChanged;
+            }
+
+            object? objectToInspect = GetLayerDefinition(_selectedLayer);
+            PropertyGridModel = objectToInspect;
+
+            // 绑定新事件用于同步修改
+            if (PropertyGridModel is INotifyPropertyChanged newProp)
+            {
+                newProp.PropertyChanged += OnPropertyGridModelChanged;
+            }
+
+            // 应用高亮样式：选中的恢复原样，其他的变暗
+            foreach (var layer in allPlottableLayers)
+            {
+                if (layer is IPlotLayer plotLayer)
+                {
+                    if (SelectedLayers.Contains(layer))
+                    {
+                        plotLayer.Restore();
+                    }
+                    else
+                    {
+                        plotLayer.Dim();
+                    }
+                }
+            }
+
+            WpfPlot1.Refresh();
+        }
+
+        /// <summary>
+        /// 当属性面板绑定的对象属性发生变化时触发，用于同步多选对象的属性
+        /// </summary>
+        private void OnPropertyGridModelChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (SelectedLayers.Count <= 1 || sender == null) return;
+
+            // 使用反射获取变更的属性值
+            var propInfo = sender.GetType().GetProperty(e.PropertyName);
+            if (propInfo == null || !propInfo.CanRead || !propInfo.CanWrite) return;
+
+            var newValue = propInfo.GetValue(sender);
+
+            // 遍历其他选中项并应用更改
+            foreach (var layer in SelectedLayers)
+            {
+                if (layer == _selectedLayer) continue;
+
+                var def = GetLayerDefinition(layer);
+                // 确保类型匹配
+                if (def != null && def.GetType() == sender.GetType())
+                {
+                    try
+                    {
+                        propInfo.SetValue(def, newValue);
+                    }
+                    catch
+                    {
+                        // 忽略设置失败（例如某些属性不可写或验证失败）
+                    }
+                }
+            }
+            WpfPlot1.Refresh();
+        }
+
+        private object? GetLayerDefinition(LayerItemViewModel layer)
+        {
+             return layer switch
             {
                 PointLayerItemViewModel pointLayer => pointLayer.PointDefinition,
                 LineLayerItemViewModel lineLayer => lineLayer.LineDefinition,
@@ -1960,28 +2226,6 @@ namespace GeoChemistryNexus.ViewModels
                 ScatterLayerItemViewModel scatterLayer => scatterLayer.ScatterDefinition,
                 _ => nullObject
             };
-            PropertyGridModel = objectToInspect;
-
-            // 应用新的高亮样式：选中的恢复原样，其他的变暗
-            foreach (var layer in allPlottableLayers)
-            {
-                // 判断是否实现了 IPlotLayer 接口
-                if (layer is IPlotLayer plotLayer)
-                {
-                    if (layer == selectedItem)
-                    {
-                        // 恢复原始样式
-                        plotLayer.Restore();
-                    }
-                    else
-                    {
-                        // 变暗
-                        plotLayer.Dim();
-                    }
-                }
-            }
-
-            WpfPlot1.Refresh();
         }
 
         /// <summary>
@@ -2067,8 +2311,24 @@ namespace GeoChemistryNexus.ViewModels
                 _selectedLayer.IsSelected = false;
                 _selectedLayer = null;
             }
+
+            // 清除多选状态
+            foreach (var layer in SelectedLayers)
+            {
+                layer.IsSelected = false;
+            }
+            SelectedLayers.Clear();
+
+            // 解绑属性变更事件
+            if (PropertyGridModel is INotifyPropertyChanged prop)
+            {
+                prop.PropertyChanged -= OnPropertyGridModelChanged;
+            }
+
             PropertyGridModel = nullObject;   // 取消属性编辑器
             ScriptsPropertyGrid = false;
+
+            IsShowTemplateInfo = false;     // 取消绘图模板指南显示
         }
 
         /// <summary>
@@ -2375,7 +2635,6 @@ namespace GeoChemistryNexus.ViewModels
                     _currentTemplateFilePath = filePath;
 
                     // 切换到绘图模式
-                    TabIndex = 0; // 确保显示的是绘图选项卡
                     IsTemplateMode = false;
                     IsPlotMode = true;
 
@@ -2823,52 +3082,58 @@ namespace GeoChemistryNexus.ViewModels
         private void DeleteSelectedObject()
         {
             // 检查是否有选中的图层
-            if (_selectedLayer == null)
+            if (_selectedLayer == null && SelectedLayers.Count == 0)
             {
                 MessageHelper.Warning(LanguageService.Instance["please_select_an_object_to_delete_first"]);
                 return;
             }
 
             // 禁止删除坐标轴等基础图层
-            if (_selectedLayer is AxisLayerItemViewModel)
+            if (SelectedLayers.Any(l => l is AxisLayerItemViewModel) || (_selectedLayer is AxisLayerItemViewModel))
             {
                 MessageHelper.Warning(LanguageService.Instance["cannot_delete_base_layers"]);
                 return;
             }
 
-            // 从ScottPlot的绘图对象集合中移除
-            if (_selectedLayer.Plottable != null)
+            // 确定要删除的图层列表
+            var layersToDelete = SelectedLayers.ToList();
+            if (layersToDelete.Count == 0 && _selectedLayer != null)
             {
-                WpfPlot1.Plot.Remove(_selectedLayer.Plottable);
+                layersToDelete.Add(_selectedLayer);
             }
 
-            // 查找父图层
-            var parentLayer = FindParentLayer(LayerTree, _selectedLayer);
-
-            // 从数据源中移除选中的图层
-            if (parentLayer != null)
+            foreach (var layer in layersToDelete)
             {
-                // 如果有父图层，则从父图层的子集和中移除
-                parentLayer.Children.Remove(_selectedLayer);
-
-                // 检查父图层是否为空，如果为空则一并移除
-                if (parentLayer.Children.Count == 0)
+                // 从ScottPlot的绘图对象集合中移除
+                if (layer.Plottable != null)
                 {
-                    // 假设所有分类图层都在根级别，直接从LayerTree移除
-                    LayerTree.Remove(parentLayer);
+                    WpfPlot1.Plot.Remove(layer.Plottable);
                 }
-            }
-            else
-            {
-                // 如果没有父图层，说明是顶级图层，直接从根集合移除
-                LayerTree.Remove(_selectedLayer);
+
+                // 查找父图层
+                var parentLayer = FindParentLayer(LayerTree, layer);
+
+                // 从数据源中移除选中的图层
+                if (parentLayer != null)
+                {
+                    // 如果有父图层，则从父图层的子集和中移除
+                    parentLayer.Children.Remove(layer);
+
+                    // 检查父图层是否为空，如果为空则一并移除
+                    if (parentLayer.Children.Count == 0)
+                    {
+                        // 假设所有分类图层都在根级别，直接从LayerTree移除
+                        LayerTree.Remove(parentLayer);
+                    }
+                }
+                else
+                {
+                    // 如果没有父图层，说明是顶级图层，直接从根集合移除
+                    LayerTree.Remove(layer);
+                }
             }
 
             // 重置选中状态和属性面板
-            _selectedLayer = null;
-            PropertyGridModel = nullObject;
-
-            // 取消所有对象的高亮/遮罩效果
             CancelSelected();
 
             // 刷新绘图控件
@@ -2964,6 +3229,9 @@ namespace GeoChemistryNexus.ViewModels
         /// </summary>
         private void ResetPlotStateToDefault()
         {
+            // 重置编辑确认状态
+            _hasConfirmedEditMode = false;
+
             // 清除所有绘图对象
             WpfPlot1.Plot.Clear();
 

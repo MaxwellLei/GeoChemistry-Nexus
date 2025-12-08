@@ -11,7 +11,7 @@
         WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" Closing="Window_Closing" 
         Title="MainWindow" Height="760" Width="1340" BorderThickness="1">
     <WindowChrome.WindowChrome>
-        <WindowChrome CaptionHeight="55" ResizeBorderThickness="22 5 22 22"/>
+        <WindowChrome CaptionHeight="0" ResizeBorderThickness="22 5 22 22"/>
     </WindowChrome.WindowChrome>
 
     <!--主窗体-->
@@ -33,6 +33,7 @@
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource AncestorType=Window}}" Value="Maximized">
                         <Setter Property="Margin" Value="0"/>
+                        <Setter Property="CornerRadius" Value="0"/>
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
@@ -56,6 +57,18 @@
             </hc:NotifyIcon>
             <!--标题栏-->
             <Border Background="#35383e" CornerRadius="8 8 0 0">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseLeftButtonDown">
+                        <i:InvokeCommandAction Command="{Binding MoveWindowCommand}" 
+                                               CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+                <Border.InputBindings>
+                    <MouseBinding Gesture="LeftDoubleClick" 
+                                  Command="{Binding MaximizeWindowCommand}"
+                                  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
+                </Border.InputBindings>
                 <Grid>
                     <TextBlock Text="&#xe794;" Foreground="White"  Margin="20 5 0 0" FontSize="24" 
                                FontFamily="../Data/Icon/#iconfont" VerticalAlignment="Center"
