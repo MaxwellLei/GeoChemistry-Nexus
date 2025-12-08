@@ -18,6 +18,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# 其他无关 IDE 相关配置文件
+src/.trae/
+
 # Visual Studio相关文件
 .vs/
 *.user
