@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.PropertyEditor;
 using HandyControl.Controls;
@@ -42,6 +42,12 @@ namespace GeoChemistryNexus.Models
         [property: LocalizedCategory("major_tick_style")] // 主刻度样式
         [property: LocalizedDisplayName("length")] // 长度
         private float _majorTickLength = 4;
+
+        [ObservableProperty]
+        [property: LocalizedCategory("major_tick_style")] // 主刻度样式
+        [property: LocalizedDisplayName("interval")] // 间隔
+        private double _majorTickInterval = 0;
+
 
         /// <summary>
         /// 每个主刻度之间的次刻度数量

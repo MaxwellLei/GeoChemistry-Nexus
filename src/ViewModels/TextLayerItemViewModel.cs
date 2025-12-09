@@ -151,6 +151,12 @@ namespace GeoChemistryNexus.ViewModels
                 // 恢复边框
                 textPlot.LabelBorderColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(TextDefinition.BorderColor));
                 textPlot.LabelBorderWidth = TextDefinition.BorderWidth;
+
+                // 恢复字体样式
+                textPlot.LabelFontSize = TextDefinition.Size;
+                textPlot.LabelRotation = TextDefinition.Rotation;
+                textPlot.LabelBold = TextDefinition.IsBold;
+                textPlot.LabelItalic = TextDefinition.IsItalic;
             }
         }
     }

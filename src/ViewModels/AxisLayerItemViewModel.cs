@@ -1,4 +1,4 @@
-﻿using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Interfaces;
 using GeoChemistryNexus.Models;
 using ScottPlot;
@@ -39,6 +39,7 @@ namespace GeoChemistryNexus.ViewModels
                 };
 
                 if (targetAxis == null) return;
+                var viewLimits = plot.Axes.GetLimits();
 
                 // --- 应用样式 ---
                 targetAxis.IsVisible = IsVisible; // 使用 ViewModel 自身的 IsVisible
@@ -52,24 +53,79 @@ namespace GeoChemistryNexus.ViewModels
                 targetAxis.Label.Bold = cartesianAxisDef.IsBold;
                 targetAxis.Label.Italic = cartesianAxisDef.IsItalic;
 
+                // 应用轴范围限制
+                UpdateAxisLimits(plot, cartesianAxisDef, targetAxis);
+
                 // 对数刻度与常规刻度处理
                 if (cartesianAxisDef.ScaleType == AxisScaleType.Logarithmic)
                 {
-                    var minorTickGen = new ScottPlot.TickGenerators.LogMinorTickGenerator();
                     var tickGen = new ScottPlot.TickGenerators.NumericAutomatic();
-                    tickGen.MinorTickGenerator = minorTickGen;
+                    var hideMinor = cartesianAxisDef.MinorTickWidth <= 0 || cartesianAxisDef.MinorTickLength <= 0;
+                    tickGen.MinorTickGenerator = hideMinor
+                        ? new ScottPlot.TickGenerators.EvenlySpacedMinorTickGenerator(0)
+                        : new ScottPlot.TickGenerators.LogMinorTickGenerator();
                     tickGen.IntegerTicksOnly = true;
-                    tickGen.LabelFormatter = y => $"{Math.Pow(10, y)}"; // 简单的对数格式化
+                    tickGen.LabelFormatter = y => $"{Math.Pow(10, y)}";
                     targetAxis.TickGenerator = tickGen;
                 }
                 else
                 {
-                    // 强制恢复默认刻度生成器
-                    targetAxis.TickGenerator = new ScottPlot.TickGenerators.NumericAutomatic();
-                }
+                    var minorCount = Math.Max(0, cartesianAxisDef.MinorTicksPerMajorTick);
+                    if (cartesianAxisDef.MinorTickWidth <= 0 || cartesianAxisDef.MinorTickLength <= 0)
+                        minorCount = 0;
+                    else
+                        minorCount += 1;
 
-                // 应用轴范围限制
-                UpdateAxisLimits(plot, cartesianAxisDef, targetAxis);
+                    if (cartesianAxisDef.MajorTickInterval > 0)
+                    {
+                        double interval = cartesianAxisDef.MajorTickInterval;
+                        // 使用更新后的轴范围
+                        double min = targetAxis.Range.Min;
+                        double max = targetAxis.Range.Max;
+
+                        if (double.IsFinite(min) && double.IsFinite(max) && max > min)
+                        {
+                            var manual = new ScottPlot.TickGenerators.NumericManual();
+                            // 确保从刻度网格对齐的位置开始
+                            double start = Math.Floor(min / interval) * interval;
+                            // 稍微扩展一点范围以确保覆盖边界，或者严格控制
+                            // 这里保持原有的逻辑，但起始点计算稍微优化一下，用 Floor 确保包含下边界
+                            
+                            // 注意：原代码是 Math.Ceiling(min / interval) * interval
+                            // 如果 min=0.5, interval=1, Ceiling -> 1. start=1. 0.5~1之间就没有刻度了。
+                            // 如果 min=1.5, interval=1, Ceiling -> 2. start=2.
+                            // 通常我们希望刻度包含 min，或者从 min 之后的第一个刻度开始。
+                            // 让我们保持原有的 Ceiling 逻辑，或者根据用户习惯调整。
+                            // 如果用户希望 0, 1, 2... 而范围是 0.5~9.5，那么第一个刻度应该是 1。Ceiling 是对的。
+                            // 但如果范围是 0~10，min=0, Ceiling(0)=0. start=0. 正确。
+                            
+                            start = Math.Ceiling(min / interval) * interval;
+                            
+                            // 为了防止浮点误差导致少绘制最后一个刻度，可以给 max 加一个微小的 epsilon
+                            for (double pos = start; pos <= max + 1e-10; pos += interval)
+                            {
+                                manual.AddMajor(pos, pos.ToString());
+                                if (minorCount > 0)
+                                {
+                                    double step = interval / (minorCount + 1);
+                                    for (int j = 1; j <= minorCount; j++)
+                                    {
+                                        double minorPos = pos + j * step;
+                                        if (minorPos <= max + 1e-10) 
+                                            manual.AddMinor(minorPos);
+                                    }
+                                }
+                            }
+                            targetAxis.TickGenerator = manual;
+                        }
+                    }
+                    else
+                    {
+                        var tickGen = new ScottPlot.TickGenerators.NumericAutomatic();
+                        tickGen.MinorTickGenerator = new ScottPlot.TickGenerators.EvenlySpacedMinorTickGenerator(minorCount);
+                        targetAxis.TickGenerator = tickGen;
+                    }
+                }
 
                 // 主刻度样式
                 targetAxis.MajorTickStyle.Length = cartesianAxisDef.MajorTickLength;

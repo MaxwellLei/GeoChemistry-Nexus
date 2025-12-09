@@ -1,8 +1,10 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using GeoChemistryNexus.Controls;
 using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Interfaces;
+using GeoChemistryNexus.Messages;
 using GeoChemistryNexus.Models;
 using HandyControl.Controls;
 using Jint;
@@ -29,14 +31,22 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using System.Xml.Serialization;
 using unvell.ReoGrid;
 
 namespace GeoChemistryNexus.ViewModels
 {
-    public partial class MainPlotViewModel : ObservableObject
+    public partial class MainPlotViewModel : ObservableObject, IRecipient<PickPointRequestMessage>
     {
+        // 拾取点模式
+        [ObservableProperty]
+        private bool _isPickingPointMode = false;
+
+        // 待更新的 PointDefinition 对象
+        private PointDefinition? _targetPointDefinition;
+
         // 用于鼠标命中测试的节流控制
         private long _lastHitTestTimeTicks = 0;
         // 定义检测间隔，40ms 大概是 25FPS
@@ -98,6 +108,14 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private ObservableCollection<TemplateCardViewModel> _templateCards = new();
 
+        [ObservableProperty]
+        private string _templateSearchText = string.Empty;
+
+        public ICollectionView TemplateCardsView { get; private set; }
+
+        [ObservableProperty]
+        private bool _isTemplateSearchVisible = false;
+
         // 当前显示的模板路径（用于面包屑导航）
         [ObservableProperty]
         private string _currentTemplatePath = "";
@@ -120,6 +138,27 @@ namespace GeoChemistryNexus.ViewModels
         // 十字轴显示
         [ObservableProperty]
         private bool _isCrosshairVisible = true;
+
+        partial void OnIsCrosshairVisibleChanged(bool value)
+        {
+            if (CrosshairPlot != null)
+            {
+                if (!value)
+                {
+                    CrosshairPlot.IsVisible = false;
+                    WpfPlot1.Refresh();
+                }
+                else
+                {
+                    // 如果开启，且鼠标在控件内（通过 IsMouseOver 判断），则显示
+                    if (WpfPlot1.IsMouseOver)
+                    {
+                        CrosshairPlot.IsVisible = true;
+                        WpfPlot1.Refresh();
+                    }
+                }
+            }
+        }
 
         // 追踪当前在TreeView中被选中的图层ViewModel
         private LayerItemViewModel _selectedLayer;
@@ -184,6 +223,12 @@ namespace GeoChemistryNexus.ViewModels
         private Coordinates? _arrowStartPoint = null; // 存储箭头的起点
         private ScottPlot.Plottables.Arrow? _tempArrowPlot; // 用于实时预览箭头
 
+        // 吸附标记
+        private ScottPlot.Plottables.Marker? _snapMarker;
+
+        // 存储所有潜在吸附点的标记（提示用）
+        private List<ScottPlot.Plottables.Marker> _potentialSnapMarkers = new();
+
         // 初始化
         public MainPlotViewModel(WpfPlot wpfPlot, System.Windows.Controls.RichTextBox richTextBox, unvell.ReoGrid.ReoGridControl dataGrid)
         {
@@ -198,14 +243,26 @@ namespace GeoChemistryNexus.ViewModels
             IsSnapSelectionEnabled = true;  // 吸附选择开启
             IsShowTemplateInfo = false;
 
-            InitializeBreadcrumbs(); // 初始化面包屑
-            LoadAllTemplateCards();  // 加载所有模板卡片
+            TemplateCardsView = CollectionViewSource.GetDefaultView(TemplateCards);
+            TemplateCardsView.Filter = FilterTemplateCards;
+
+            InitializeBreadcrumbs();
+            LoadAllTemplateCards();
+            TemplateCardsView.Refresh();
 
             // 初始化十字轴并设置样式
             CrosshairPlot = WpfPlot1.Plot.Add.Crosshair(0, 0);
             CrosshairPlot.IsVisible = true;
             CrosshairPlot.TextColor = ScottPlot.Colors.White;
             CrosshairPlot.TextBackgroundColor = CrosshairPlot.HorizontalLine.Color;
+
+            // 初始化吸附标记
+            _snapMarker = WpfPlot1.Plot.Add.Marker(0, 0);
+            _snapMarker.IsVisible = false;
+            _snapMarker.Color = Colors.Orange; // 使用醒目的橙色
+            _snapMarker.Size = 15; // 稍微大一点
+            _snapMarker.Shape = MarkerShape.OpenCircle;
+            _snapMarker.LineWidth = 3; // 加粗
 
             // 订阅绘图控件的鼠标事件
             WpfPlot1.MouseEnter += WpfPlot1_MouseEnter;
@@ -227,6 +284,36 @@ namespace GeoChemistryNexus.ViewModels
             // 禁用双击帧率显示
             WpfPlot1.UserInputProcessor.DoubleLeftClickBenchmark(false);
 
+            // 注册消息接收
+            WeakReferenceMessenger.Default.RegisterAll(this);
+        }
+
+        [RelayCommand]
+        private void ShowTemplateSearch()
+        {
+            IsTemplateSearchVisible = true;
+        }
+
+        [RelayCommand]
+        private void HideTemplateSearch()
+        {
+            IsTemplateSearchVisible = false;
+        }
+
+        partial void OnTemplateSearchTextChanged(string value)
+        {
+            TemplateCardsView?.Refresh();
+        }
+
+        private bool FilterTemplateCards(object obj)
+        {
+            if (obj is not TemplateCardViewModel card) return false;
+            if (string.IsNullOrWhiteSpace(TemplateSearchText)) return true;
+
+            var query = TemplateSearchText.Trim();
+            return (card.Name?.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0)
+                   || (card.Category?.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0)
+                   || (card.TemplatePath?.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0);
         }
 
         /// <summary>
@@ -285,9 +372,34 @@ namespace GeoChemistryNexus.ViewModels
 
             // 判断是否需要应用遮罩
             // 如果当前有选中的图层，且正在恢复的图层不是选中的那个，说明它应该处于“变暗”状态
-            if (_selectedLayer != null && layerToRestore != _selectedLayer)
+            // 排除选中项为 CategoryLayerItemViewModel 的情况（选中父类不应触发遮罩）
+            bool isSelectionActive = _selectedLayer != null && !(_selectedLayer is CategoryLayerItemViewModel);
+            bool isLayerSelected = layerToRestore == _selectedLayer || SelectedLayers.Contains(layerToRestore);
+
+            if (isSelectionActive && !isLayerSelected)
             {
                 plotLayer.Dim();
+            }
+        }
+
+        /// <summary>
+        /// 接收到拾取点请求消息
+        /// </summary>
+        public void Receive(PickPointRequestMessage message)
+        {
+            if (message.Value == null) return;
+
+            // 进入拾取模式
+            IsPickingPointMode = true;
+            _targetPointDefinition = message.Value;
+
+            // 提示用户
+            MessageHelper.Info("请在绘图区域点击以拾取坐标");
+
+            // 改变鼠标光标为十字准星
+            if (WpfPlot1 != null)
+            {
+                WpfPlot1.Cursor = Cursors.Cross;
             }
         }
 
@@ -548,20 +660,64 @@ namespace GeoChemistryNexus.ViewModels
             if (e.ChangedButton != MouseButton.Left)
                 return;
 
-            // 处理吸附选择的点击逻辑
-            if (IsSnapSelectionEnabled && _lastHoveredLayer != null)
+            // 处理拾取点模式
+            if (IsPickingPointMode)
             {
-                // 如果当前有悬浮高亮的图层，则执行选中操作
+                var pickMousePos = e.GetPosition(WpfPlot1);
+                Pixel pickMousePixel = new(pickMousePos.X * WpfPlot1.DisplayScale, pickMousePos.Y * WpfPlot1.DisplayScale);
+                Coordinates pickMouseCoordinates = WpfPlot1.Plot.GetCoordinates(pickMousePixel);
+
+                // 尝试吸附
+                var snapPoint = GetSnapPoint(pickMousePixel);
+                if (snapPoint.HasValue)
+                {
+                    pickMouseCoordinates = snapPoint.Value;
+                }
+                
+                if (_targetPointDefinition != null)
+                {
+                    _targetPointDefinition.X = pickMouseCoordinates.X;
+                    _targetPointDefinition.Y = pickMouseCoordinates.Y;
+                    MessageHelper.Success("坐标拾取成功！");
+
+                    // 刷新绘图
+                    RefreshPlotFromLayers(true);
+                    ReapplySelectionVisualState();
+                }
+                
+                // 退出拾取模式
+                IsPickingPointMode = false;
+                _targetPointDefinition = null;
+                WpfPlot1.Cursor = Cursors.Arrow;
+                // 隐藏吸附标记
+                if (_snapMarker != null) _snapMarker.IsVisible = false;
+                return;
+            }
+
+            // 处理吸附选择的点击逻辑（在添加/拾取模式下不触发选中）
+            bool isDrawingOrAdding = IsPickingPointMode || IsAddingLine || IsAddingArrow || IsAddingPolygon || IsAddingText;
+            if (!isDrawingOrAdding && IsSnapSelectionEnabled && _lastHoveredLayer != null)
+            {
                 if (SelectLayerCommand.CanExecute(_lastHoveredLayer))
                 {
                     SelectLayerCommand.Execute(_lastHoveredLayer);
                 }
-                // 选中后，直接返回，不再执行后续的添加点/线/多边形等操作
                 return;
             }
 
             var mousePos = e.GetPosition(WpfPlot1);
-            Coordinates mouseCoordinates = WpfPlot1.Plot.GetCoordinates(new Pixel(mousePos.X * WpfPlot1.DisplayScale, mousePos.Y * WpfPlot1.DisplayScale));
+            Pixel mousePixel = new(mousePos.X * WpfPlot1.DisplayScale, mousePos.Y * WpfPlot1.DisplayScale);
+            Coordinates mouseCoordinates = WpfPlot1.Plot.GetCoordinates(mousePixel);
+
+            // 绘图时的吸附逻辑
+            if (IsAddingLine || IsAddingArrow || IsAddingPolygon)
+            {
+                var snapPoint = GetSnapPoint(mousePixel);
+                if (snapPoint.HasValue)
+                {
+                    mouseCoordinates = snapPoint.Value;
+                }
+            }
 
             // 添加多边形
             if (IsAddingPolygon)
@@ -638,6 +794,22 @@ namespace GeoChemistryNexus.ViewModels
                     // 刷新整个绘图（这将根据图层树重新绘制所有内容，包括新添加的线条）
                     RefreshPlotFromLayers(true);
 
+                    // 选中新添加的图层
+                    SelectLayer(lineLayer);
+
+                    // 记录 Undo/Redo
+                    Action undoLine = () => {
+                        if (linesCategory.Children.Contains(lineLayer)) linesCategory.Children.Remove(lineLayer);
+                        if (linesCategory.Children.Count == 0 && LayerTree.Contains(linesCategory)) LayerTree.Remove(linesCategory);
+                        RefreshPlotFromLayers(true);
+                    };
+                    Action redoLine = () => {
+                        if (!LayerTree.Contains(linesCategory)) LayerTree.Add(linesCategory);
+                        if (!linesCategory.Children.Contains(lineLayer)) linesCategory.Children.Add(lineLayer);
+                        RefreshPlotFromLayers(true);
+                    };
+                    AddUndoState(undoLine, redoLine);
+
                     // 重置画线状态
                     if (_tempLinePlot != null)
                     {
@@ -645,7 +817,7 @@ namespace GeoChemistryNexus.ViewModels
                         _tempLinePlot = null;
                     }
                     _lineStartPoint = null;
-                    IsAddingLine = false;
+                    // IsAddingLine = false; // 保持添加模式
                     WpfPlot1.Refresh(); // 最后刷新一次，确保临时线完全消失
                 }
                 return; // 处理完毕，直接返回
@@ -713,7 +885,24 @@ namespace GeoChemistryNexus.ViewModels
                 textCategory.Children.Add(textLayer);
 
                 RefreshPlotFromLayers(true);
-                IsAddingText = false;
+
+                // 选中新添加的图层
+                SelectLayer(textLayer);
+
+                // 记录 Undo/Redo
+                Action undoText = () => {
+                    if (textCategory.Children.Contains(textLayer)) textCategory.Children.Remove(textLayer);
+                    if (textCategory.Children.Count == 0 && LayerTree.Contains(textCategory)) LayerTree.Remove(textCategory);
+                    RefreshPlotFromLayers(true);
+                };
+                Action redoText = () => {
+                    if (!LayerTree.Contains(textCategory)) LayerTree.Add(textCategory);
+                    if (!textCategory.Children.Contains(textLayer)) textCategory.Children.Add(textLayer);
+                    RefreshPlotFromLayers(true);
+                };
+                AddUndoState(undoText, redoText);
+
+                // IsAddingText = false; // 保持添加模式
 
             }
 
@@ -775,6 +964,22 @@ namespace GeoChemistryNexus.ViewModels
 
                     RefreshPlotFromLayers(true);
 
+                    // 选中新添加的图层
+                    SelectLayer(arrowLayer);
+
+                    // 记录 Undo/Redo
+                    Action undoArrow = () => {
+                        if (arrowsCategory.Children.Contains(arrowLayer)) arrowsCategory.Children.Remove(arrowLayer);
+                        if (arrowsCategory.Children.Count == 0 && LayerTree.Contains(arrowsCategory)) LayerTree.Remove(arrowsCategory);
+                        RefreshPlotFromLayers(true);
+                    };
+                    Action redoArrow = () => {
+                        if (!LayerTree.Contains(arrowsCategory)) LayerTree.Add(arrowsCategory);
+                        if (!arrowsCategory.Children.Contains(arrowLayer)) arrowsCategory.Children.Add(arrowLayer);
+                        RefreshPlotFromLayers(true);
+                    };
+                    AddUndoState(undoArrow, redoArrow);
+
                     // Reset arrow drawing state
                     if (_tempArrowPlot != null)
                     {
@@ -782,7 +987,7 @@ namespace GeoChemistryNexus.ViewModels
                         _tempArrowPlot = null;
                     }
                     _arrowStartPoint = null;
-                    IsAddingArrow = false;
+                    // IsAddingArrow = false; // 保持添加模式
                     WpfPlot1.Refresh();
                 }
                 return;
@@ -797,6 +1002,16 @@ namespace GeoChemistryNexus.ViewModels
         {
             WpfPlot1.Focus();
 
+            // 如果正在拾取点，右键取消
+            if (IsPickingPointMode)
+            {
+                IsPickingPointMode = false;
+                _targetPointDefinition = null;
+                WpfPlot1.Cursor = Cursors.Arrow;
+                MessageHelper.Info("拾取操作已取消");
+                return;
+            }
+
             // 如果当前是高亮状态，鼠标右键单击就是取消选择
             if (_selectedLayer != null)
             {
@@ -808,6 +1023,15 @@ namespace GeoChemistryNexus.ViewModels
             // 处理多边形绘制完成或取消
             if (IsAddingPolygon)
             {
+                // 如果没有顶点，说明处于空闲添加状态，右键直接退出
+                if (_polygonVertices.Count == 0)
+                {
+                    IsAddingPolygon = false;
+                    WpfPlot1.Refresh();
+                    MessageHelper.Info(LanguageService.Instance["not_enough_vertices_add_polygon_canceled"]);
+                    return;
+                }
+
                 // 清理预览用的"橡皮筋"线
                 if (_tempRubberBandLine != null)
                 {
@@ -824,7 +1048,7 @@ namespace GeoChemistryNexus.ViewModels
                 // 如果顶点数少于3，无法构成多边形，视为取消操作
                 if (_polygonVertices.Count < 3)
                 {
-                    IsAddingPolygon = false;
+                    // IsAddingPolygon = false; // 保持模式
                     _polygonVertices.Clear();
                     WpfPlot1.Refresh();
                     MessageHelper.Info(LanguageService.Instance["not_enough_vertices_add_polygon_canceled"]);
@@ -859,8 +1083,24 @@ namespace GeoChemistryNexus.ViewModels
                 // 刷新整个绘图
                 RefreshPlotFromLayers(true);
 
+                // 选中新添加的图层
+                SelectLayer(polygonLayer);
+
+                // 记录 Undo/Redo
+                Action undoPolygon = () => {
+                    if (polygonsCategory.Children.Contains(polygonLayer)) polygonsCategory.Children.Remove(polygonLayer);
+                    if (polygonsCategory.Children.Count == 0 && LayerTree.Contains(polygonsCategory)) LayerTree.Remove(polygonsCategory);
+                    RefreshPlotFromLayers(true);
+                };
+                Action redoPolygon = () => {
+                    if (!LayerTree.Contains(polygonsCategory)) LayerTree.Add(polygonsCategory);
+                    if (!polygonsCategory.Children.Contains(polygonLayer)) polygonsCategory.Children.Add(polygonLayer);
+                    RefreshPlotFromLayers(true);
+                };
+                AddUndoState(undoPolygon, redoPolygon);
+
                 // 重置状态
-                IsAddingPolygon = false;
+                // IsAddingPolygon = false; // 保持添加模式
                 _polygonVertices.Clear();
                 WpfPlot1.Refresh();
                 //MessageHelper.Success("多边形添加成功！");
@@ -870,15 +1110,24 @@ namespace GeoChemistryNexus.ViewModels
             if (IsAddingLine)
             {
                 // 如果正在添加线条，右键点击则取消操作
-                if (_tempLinePlot != null)
+                if (_lineStartPoint != null)
                 {
-                    WpfPlot1.Plot.Remove(_tempLinePlot);
-                    _tempLinePlot = null;
+                    if (_tempLinePlot != null)
+                    {
+                        WpfPlot1.Plot.Remove(_tempLinePlot);
+                        _tempLinePlot = null;
+                    }
+                    _lineStartPoint = null;
+                    WpfPlot1.Refresh();
+                    // MessageHelper.Info("本次线条添加已取消");
                 }
-                _lineStartPoint = null;
-                IsAddingLine = false;
-                WpfPlot1.Refresh();
-                MessageHelper.Info(LanguageService.Instance["add_line_operation_canceled"]);
+                else
+                {
+                    // 空闲状态，退出模式
+                    IsAddingLine = false;
+                    WpfPlot1.Refresh();
+                    MessageHelper.Info(LanguageService.Instance["add_line_operation_canceled"]);
+                }
             }
 
             // 取消添加文本
@@ -891,15 +1140,22 @@ namespace GeoChemistryNexus.ViewModels
             // 取消添加箭头
             if (IsAddingArrow)
             {
-                if (_tempArrowPlot != null)
+                if (_arrowStartPoint != null)
                 {
-                    WpfPlot1.Plot.Remove(_tempArrowPlot);
-                    _tempArrowPlot = null;
+                    if (_tempArrowPlot != null)
+                    {
+                        WpfPlot1.Plot.Remove(_tempArrowPlot);
+                        _tempArrowPlot = null;
+                    }
+                    _arrowStartPoint = null;
+                    WpfPlot1.Refresh();
                 }
-                _arrowStartPoint = null;
-                IsAddingArrow = false;
-                WpfPlot1.Refresh();
-                MessageHelper.Info(LanguageService.Instance["add_arrow_operation_canceled"]);
+                else
+                {
+                    IsAddingArrow = false;
+                    WpfPlot1.Refresh();
+                    MessageHelper.Info(LanguageService.Instance["add_arrow_operation_canceled"]);
+                }
             }
         }
 
@@ -1000,6 +1256,186 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
+        // 缓存的坐标轴定义，避免在 MouseMove 中频繁查询
+        private CartesianAxisDefinition? _cachedXAxisDef;
+        private CartesianAxisDefinition? _cachedYAxisDef;
+
+        private void UpdateAxisCache()
+        {
+            _cachedXAxisDef = CurrentTemplate?.Info?.Axes
+                .OfType<CartesianAxisDefinition>()
+                .FirstOrDefault(ax => ax.Type == "Bottom");
+
+            _cachedYAxisDef = CurrentTemplate?.Info?.Axes
+                .OfType<CartesianAxisDefinition>()
+                .FirstOrDefault(ax => ax.Type == "Left");
+        }
+
+        /// <summary>
+        /// 更新所有潜在吸附点的显示
+        /// </summary>
+        /// <param name="isVisible">是否显示</param>
+        private void UpdatePotentialSnapPoints(bool isVisible)
+        {
+            if (WpfPlot1?.Plot == null) return;
+
+            // 1. 如果不可见，或者要求隐藏，则清理所有标记
+            if (!isVisible)
+            {
+                if (_potentialSnapMarkers.Any())
+                {
+                    foreach (var marker in _potentialSnapMarkers)
+                    {
+                        WpfPlot1.Plot.Remove(marker);
+                    }
+                    _potentialSnapMarkers.Clear();
+                    WpfPlot1.Refresh();
+                }
+                return;
+            }
+
+            // 2. 如果要求显示，且已经显示了，先不重复添加（除非列表为空）
+            // 但是为了应对图层变化，最好是先清理再添加
+            if (_potentialSnapMarkers.Any())
+            {
+                foreach (var marker in _potentialSnapMarkers)
+                {
+                    WpfPlot1.Plot.Remove(marker);
+                }
+                _potentialSnapMarkers.Clear();
+            }
+
+            // 3. 收集所有可见图层的端点（排除散点图，防止过密）
+            var visibleLayers = FlattenTree(LayerTree).Where(l => l.IsVisible && l.Plottable != null);
+            List<Coordinates> pointsToShow = new List<Coordinates>();
+
+            foreach (var layer in visibleLayers)
+            {
+                if (layer is LineLayerItemViewModel lineLayer && lineLayer.Plottable is ScottPlot.Plottables.LinePlot linePlot)
+                {
+                    pointsToShow.Add(linePlot.Start);
+                    pointsToShow.Add(linePlot.End);
+                }
+                else if (layer is ArrowLayerItemViewModel arrowLayer && arrowLayer.Plottable is ScottPlot.Plottables.Arrow arrowPlot)
+                {
+                    pointsToShow.Add(arrowPlot.Base);
+                    pointsToShow.Add(arrowPlot.Tip);
+                }
+                else if (layer is PolygonLayerItemViewModel polygonLayer)
+                {
+                    if (polygonLayer.PolygonDefinition?.Vertices != null)
+                    {
+                        foreach (var v in polygonLayer.PolygonDefinition.Vertices)
+                        {
+                            pointsToShow.Add(PlotTransformHelper.ToRenderCoordinates(WpfPlot1.Plot, v.X, v.Y));
+                        }
+                    }
+                }
+            }
+
+            // 4. 为每个端点添加灰色圆圈标记
+            foreach (var pt in pointsToShow)
+            {
+                var marker = WpfPlot1.Plot.Add.Marker(pt);
+                marker.Shape = MarkerShape.OpenCircle;
+                marker.Size = 6;
+                marker.Color = Colors.Gray.WithAlpha(150); // 半透明灰色
+                marker.LineWidth = 1;
+                
+                _potentialSnapMarkers.Add(marker);
+            }
+
+            WpfPlot1.Refresh();
+        }
+
+        // 监听绘图模式属性变化，自动更新潜在吸附点显示
+
+        partial void OnIsPickingPointModeChanged(bool value)
+        {
+            UpdatePotentialSnapPoints(value || IsAddingLine || IsAddingArrow || IsAddingPolygon);
+        }
+
+        partial void OnIsAddingLineChanged(bool value)
+        {
+            UpdatePotentialSnapPoints(value || IsPickingPointMode || IsAddingArrow || IsAddingPolygon);
+        }
+
+        partial void OnIsAddingArrowChanged(bool value)
+        {
+            UpdatePotentialSnapPoints(value || IsPickingPointMode || IsAddingLine || IsAddingPolygon);
+        }
+
+        partial void OnIsAddingPolygonChanged(bool value)
+        {
+            UpdatePotentialSnapPoints(value || IsPickingPointMode || IsAddingLine || IsAddingArrow);
+        }
+
+        /// <summary>
+        /// 获取吸附点
+        /// </summary>
+        /// <param name="mousePixel">鼠标像素位置</param>
+        /// <param name="snapDistancePixels">吸附距离阈值</param>
+        /// <returns>吸附点的坐标，如果没有吸附则返回 null</returns>
+        private Coordinates? GetSnapPoint(Pixel mousePixel, double snapDistancePixels = 10)
+        {
+            Coordinates? bestSnap = null;
+            double minDistanceSq = snapDistancePixels * snapDistancePixels;
+
+            var visibleLayers = FlattenTree(LayerTree).Where(l => l.IsVisible && l.Plottable != null);
+
+            foreach (var layer in visibleLayers)
+            {
+                List<Coordinates> pointsToCheck = new List<Coordinates>();
+
+                if (layer is LineLayerItemViewModel lineLayer && lineLayer.Plottable is ScottPlot.Plottables.LinePlot linePlot)
+                {
+                    pointsToCheck.Add(linePlot.Start);
+                    pointsToCheck.Add(linePlot.End);
+                }
+                else if (layer is ArrowLayerItemViewModel arrowLayer && arrowLayer.Plottable is ScottPlot.Plottables.Arrow arrowPlot)
+                {
+                    pointsToCheck.Add(arrowPlot.Base);
+                    pointsToCheck.Add(arrowPlot.Tip);
+                }
+                else if (layer is PolygonLayerItemViewModel polygonLayer)
+                {
+                    if (polygonLayer.PolygonDefinition?.Vertices != null)
+                    {
+                        foreach (var v in polygonLayer.PolygonDefinition.Vertices)
+                        {
+                            pointsToCheck.Add(PlotTransformHelper.ToRenderCoordinates(WpfPlot1.Plot, v.X, v.Y));
+                        }
+                    }
+                }
+                else if (layer is ScatterLayerItemViewModel scatterLayer)
+                {
+                    if (scatterLayer.DataPoints != null)
+                    {
+                        foreach (var p in scatterLayer.DataPoints)
+                        {
+                            pointsToCheck.Add(PlotTransformHelper.ToRenderCoordinates(WpfPlot1.Plot, p));
+                        }
+                    }
+                }
+
+                foreach (var pt in pointsToCheck)
+                {
+                    Pixel ptPixel = WpfPlot1.Plot.GetPixel(pt);
+                    double dx = ptPixel.X - mousePixel.X;
+                    double dy = ptPixel.Y - mousePixel.Y;
+                    double distSq = dx * dx + dy * dy;
+
+                    if (distSq < minDistanceSq)
+                    {
+                        minDistanceSq = distSq;
+                        bestSnap = pt;
+                    }
+                }
+            }
+
+            return bestSnap;
+        }
+
         /// <summary>
         /// 当鼠标在绘图区域移动时调用
         /// </summary>
@@ -1012,11 +1448,51 @@ namespace GeoChemistryNexus.ViewModels
             // 将像素位置转换为图表的坐标单位
             Coordinates mouseCoordinates = WpfPlot1.Plot.GetCoordinates(mousePixel);
 
+            // 吸附逻辑
+            bool isDrawingOrPicking = IsPickingPointMode || IsAddingLine || IsAddingArrow || IsAddingPolygon;
+            bool snapChanged = false;
+
+            if (isDrawingOrPicking)
+            {
+                var snapPoint = GetSnapPoint(mousePixel);
+                if (snapPoint.HasValue)
+                {
+                    mouseCoordinates = snapPoint.Value;
+                    if (_snapMarker != null)
+                    {
+                        if (!_snapMarker.IsVisible || _snapMarker.Location.X != mouseCoordinates.X || _snapMarker.Location.Y != mouseCoordinates.Y)
+                        {
+                            _snapMarker.Location = mouseCoordinates;
+                            _snapMarker.IsVisible = true;
+                            snapChanged = true;
+                        }
+                    }
+                }
+                else
+                {
+                    if (_snapMarker != null && _snapMarker.IsVisible)
+                    {
+                        _snapMarker.IsVisible = false;
+                        snapChanged = true;
+                    }
+                }
+            }
+            else
+            {
+                if (_snapMarker != null && _snapMarker.IsVisible)
+                {
+                    _snapMarker.IsVisible = false;
+                    snapChanged = true;
+                }
+            }
+
+            if (snapChanged) WpfPlot1.Refresh();
+
             // 获取当前时间 Tick
             long currentTicks = DateTime.Now.Ticks;
 
             // 只有当开启吸附，且距离上次检测超过 40ms 时，才执行命中测试
-            if (IsSnapSelectionEnabled && (currentTicks - _lastHitTestTimeTicks > HitTestIntervalTicks))
+            if (IsSnapSelectionEnabled && !(IsPickingPointMode || IsAddingLine || IsAddingArrow || IsAddingPolygon || IsAddingText) && (currentTicks - _lastHitTestTimeTicks > HitTestIntervalTicks))
             {
                 // 更新最后检测时间
                 _lastHitTestTimeTicks = currentTicks;
@@ -1066,15 +1542,18 @@ namespace GeoChemistryNexus.ViewModels
             //  如果正在添加线条且起点已确定，则实时预览线条
             if (IsAddingLine && _lineStartPoint.HasValue)
             {
-                // 如果已存在临时预览线，先将其移除
-                if (_tempLinePlot != null)
+                // 如果尚未创建临时预览线，则创建
+                if (_tempLinePlot == null)
                 {
-                    WpfPlot1.Plot.Remove(_tempLinePlot);
+                    _tempLinePlot = WpfPlot1.Plot.Add.Line(_lineStartPoint.Value, mouseCoordinates);
+                    _tempLinePlot.Color = Colors.Red; // 设置预览线为红色虚线
+                    _tempLinePlot.LinePattern = LinePattern.Dashed;
                 }
-                // 添加新的临时预览线
-                _tempLinePlot = WpfPlot1.Plot.Add.Line(_lineStartPoint.Value.X, _lineStartPoint.Value.Y, mouseCoordinates.X, mouseCoordinates.Y);
-                _tempLinePlot.Color = Colors.Red; // 设置预览线为红色虚线
-                _tempLinePlot.LinePattern = LinePattern.Dashed;
+                else
+                {
+                    // 如果已存在，直接更新终点坐标，避免重复创建和移除对象
+                    _tempLinePlot.End = mouseCoordinates;
+                }
                 WpfPlot1.Refresh();
                 return;
             }
@@ -1082,12 +1561,15 @@ namespace GeoChemistryNexus.ViewModels
             // 实时预览箭头
             if (IsAddingArrow && _arrowStartPoint.HasValue)
             {
-                if (_tempArrowPlot != null)
+                if (_tempArrowPlot == null)
                 {
-                    WpfPlot1.Plot.Remove(_tempArrowPlot);
+                    _tempArrowPlot = WpfPlot1.Plot.Add.Arrow(_arrowStartPoint.Value, mouseCoordinates);
+                    _tempArrowPlot.ArrowFillColor = Colors.Red;
                 }
-                _tempArrowPlot = WpfPlot1.Plot.Add.Arrow(_arrowStartPoint.Value, mouseCoordinates);
-                _tempArrowPlot.ArrowFillColor = Colors.Red;
+                else
+                {
+                    _tempArrowPlot.Tip = mouseCoordinates;
+                }
                 WpfPlot1.Refresh();
                 return;
             }
@@ -1095,21 +1577,27 @@ namespace GeoChemistryNexus.ViewModels
             // 处理添加多边形时的鼠标移动预览
             if (IsAddingPolygon && _polygonVertices.Any())
             {
-                // 如果已存在临时预览线，先将其移除
-                if (_tempRubberBandLine != null)
-                {
-                    WpfPlot1.Plot.Remove(_tempRubberBandLine);
-                }
-                // 从最后一个顶点到当前鼠标位置画一根"橡皮筋"线
                 var lastVertex = _polygonVertices.Last();
-                _tempRubberBandLine = WpfPlot1.Plot.Add.Line(lastVertex, mouseCoordinates);
-                _tempRubberBandLine.Color = Colors.Red;
-                _tempRubberBandLine.LinePattern = LinePattern.Dashed;
+                // 如果橡皮筋线未创建，则创建
+                if (_tempRubberBandLine == null)
+                {
+                    _tempRubberBandLine = WpfPlot1.Plot.Add.Line(lastVertex, mouseCoordinates);
+                    _tempRubberBandLine.Color = Colors.Red;
+                    _tempRubberBandLine.LinePattern = LinePattern.Dashed;
+                }
+                else
+                {
+                    // 仅更新终点
+                    _tempRubberBandLine.End = mouseCoordinates;
+                }
                 WpfPlot1.Refresh();
             }
 
             // 如果追踪模式未开启，则不执行任何操作
             if (!IsCrosshairVisible) return;
+
+            // 确保十字轴可见
+            if (!CrosshairPlot.IsVisible) CrosshairPlot.IsVisible = true;
 
             // 更新十字轴的位置
             CrosshairPlot.Position = mouseCoordinates;
@@ -1119,13 +1607,9 @@ namespace GeoChemistryNexus.ViewModels
             double yValueToDisplay = mouseCoordinates.Y;
 
             // 查找当前主X轴（通常是Bottom）和主Y轴（通常是Left）的定义
-            var xAxisDef = CurrentTemplate?.Info?.Axes
-                .OfType<CartesianAxisDefinition>()
-                .FirstOrDefault(ax => ax.Type == "Bottom");
-
-            var yAxisDef = CurrentTemplate?.Info?.Axes
-                .OfType<CartesianAxisDefinition>()
-                .FirstOrDefault(ax => ax.Type == "Left");
+            // 使用缓存的坐标轴定义
+            var xAxisDef = _cachedXAxisDef;
+            var yAxisDef = _cachedYAxisDef;
 
             // 如果X轴是对数坐标，则进行反对数转换 (10^x)
             if (xAxisDef?.ScaleType == AxisScaleType.Logarithmic)
@@ -1382,6 +1866,7 @@ namespace GeoChemistryNexus.ViewModels
             // 加载模板文件
             var templateFilePath = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Default"
                                             , card.TemplatePath, $"{card.TemplatePath}.json");
+            _currentTemplateFilePath = templateFilePath;
             await LoadAndBuildLayers(templateFilePath);
 
             CenterPlot();   // 视图复位
@@ -1487,7 +1972,8 @@ namespace GeoChemistryNexus.ViewModels
         private void ReapplySelectionVisualState()
         {
             // 如果当前没有选中任何图层，什么都不用做（Render 默认就是正常状态）
-            if (_selectedLayer == null) return;
+            // 如果选中的是分类文件夹，也不应用遮罩
+            if (_selectedLayer == null || _selectedLayer is CategoryLayerItemViewModel) return;
 
             // 获取所有实现了 IPlotLayer 的图层
             var allPlotLayers = FlattenTree(LayerTree).OfType<IPlotLayer>();
@@ -1495,7 +1981,8 @@ namespace GeoChemistryNexus.ViewModels
             foreach (var layer in allPlotLayers)
             {
                 // 因为 LayerItemViewModel 实现了 IPlotLayer，所以可以直接比较引用
-                if (layer == _selectedLayer)
+                // 检查是否是主选中项或者在多选列表中
+                if (layer == _selectedLayer || (layer is LayerItemViewModel vm && SelectedLayers.Contains(vm)))
                 {
                     // 选中项：恢复正常显示 (这样你修改颜色后能立即看到新颜色)
                     // 如果你希望选中项有红色边框高亮，这里也可以改调 layer.Highlight();
@@ -1635,6 +2122,7 @@ namespace GeoChemistryNexus.ViewModels
         private void BuildLayerTreeFromTemplate(GraphMapTemplate template)
         {
             LayerTree.Clear();
+            UpdateAxisCache(); // 更新坐标轴缓存
             var info = template.Info;
 
             // 坐标轴图层
@@ -1744,6 +2232,25 @@ namespace GeoChemistryNexus.ViewModels
             }
 
             WpfPlot1.Plot.Clear();
+            
+            // 重新添加吸附标记
+            if (_snapMarker != null)
+            {
+                // 确保它是不可见的，直到被触发
+                _snapMarker.IsVisible = false;
+                WpfPlot1.Plot.Add.Plottable(_snapMarker);
+            }
+
+            // 如果处于吸附/绘图模式，重新添加潜在吸附点标记
+            if (IsPickingPointMode || IsAddingLine || IsAddingArrow || IsAddingPolygon)
+            {
+                // 此时 _potentialSnapMarkers 可能还是旧的引用，已经被 Clear 了
+                // 我们需要重新生成它们并添加到新的 Plot 中
+                // 先清空旧列表，因为 Plot.Clear() 已经移除了它们
+                _potentialSnapMarkers.Clear();
+                // 重新调用 UpdatePotentialSnapPoints(true) 来生成并添加
+                UpdatePotentialSnapPoints(true);
+            }
 
             BaseMapType = CurrentTemplate.TemplateType;
 
@@ -2183,7 +2690,7 @@ namespace GeoChemistryNexus.ViewModels
         /// </summary>
         private void OnPropertyGridModelChanged(object? sender, PropertyChangedEventArgs e)
         {
-            if (SelectedLayers.Count <= 1 || sender == null) return;
+            if (sender == null) return;
 
             // 使用反射获取变更的属性值
             var propInfo = sender.GetType().GetProperty(e.PropertyName);
@@ -2192,25 +2699,44 @@ namespace GeoChemistryNexus.ViewModels
             var newValue = propInfo.GetValue(sender);
 
             // 遍历其他选中项并应用更改
-            foreach (var layer in SelectedLayers)
+            if (SelectedLayers.Count > 1)
             {
-                if (layer == _selectedLayer) continue;
-
-                var def = GetLayerDefinition(layer);
-                // 确保类型匹配
-                if (def != null && def.GetType() == sender.GetType())
+                foreach (var layer in SelectedLayers)
                 {
-                    try
+                    if (layer == _selectedLayer) continue;
+
+                    var def = GetLayerDefinition(layer);
+                    // 确保类型匹配
+                    if (def != null && def.GetType() == sender.GetType())
                     {
-                        propInfo.SetValue(def, newValue);
-                    }
-                    catch
-                    {
-                        // 忽略设置失败（例如某些属性不可写或验证失败）
+                        try
+                        {
+                            propInfo.SetValue(def, newValue);
+                            // 应用修改后，恢复显示状态（这将把新的 def 属性应用到 Plottable）
+                            if (layer is IPlotLayer plotLayer)
+                            {
+                                plotLayer.Restore();
+                            }
+                        }
+                        catch
+                        {
+                            // 忽略设置失败（例如某些属性不可写或验证失败）
+                        }
                     }
                 }
             }
-            WpfPlot1.Refresh();
+
+            // 决定是否保留当前视图范围
+            // 如果修改的是坐标轴范围，则不保留（使用新设置的范围），否则保留当前平移缩放状态
+            bool preserveLimits = true;
+            if (sender is Models.CartesianAxisDefinition && (e.PropertyName == "Minimum" || e.PropertyName == "Maximum"))
+            {
+                preserveLimits = false;
+            }
+
+            // 对于单选或多选，都需要刷新整个图表以应用更改（特别是对于像坐标轴这样需要重运行 Render 逻辑的对象）
+            // 仅仅调用 WpfPlot1.Refresh() 是不够的，因为坐标轴的刻度生成逻辑在 ViewModel 的 Render 方法中
+            RefreshPlotFromLayers(preserveLimits);
         }
 
         private object? GetLayerDefinition(LayerItemViewModel layer)
@@ -2346,7 +2872,7 @@ namespace GeoChemistryNexus.ViewModels
             }
 
             // 切换追踪模式的状态
-            IsCrosshairVisible = !IsCrosshairVisible;
+            // IsCrosshairVisible = !IsCrosshairVisible; // 双向绑定已自动更新，此处无需手动切换
         }
 
         /// <summary>
@@ -3075,6 +3601,64 @@ namespace GeoChemistryNexus.ViewModels
             //MessageHelper.Info("请在绘图区点击设置箭头的起点");
         }
 
+        // 撤销/重做 栈
+        private readonly Stack<(Action Undo, Action Redo)> _undoStack = new();
+        private readonly Stack<(Action Undo, Action Redo)> _redoStack = new();
+        private const int UndoRedoLimit = 10;
+
+        private void TrimStack(Stack<(Action Undo, Action Redo)> stack)
+        {
+            if (stack.Count <= UndoRedoLimit) return;
+            var temp = new Stack<(Action Undo, Action Redo)>();
+            while (stack.Count > 0) temp.Push(stack.Pop());
+            temp.Pop();
+            while (temp.Count > 0) stack.Push(temp.Pop());
+        }
+
+        /// <summary>
+        /// 添加撤销/重做状态
+        /// </summary>
+        public void AddUndoState(Action undo, Action redo)
+        {
+            _undoStack.Push((undo, redo));
+            _redoStack.Clear();
+            TrimStack(_undoStack);
+            UndoCommand.NotifyCanExecuteChanged();
+            RedoCommand.NotifyCanExecuteChanged();
+        }
+
+        [RelayCommand(CanExecute = nameof(CanUndo))]
+        private void Undo()
+        {
+            if (_undoStack.TryPop(out var action))
+            {
+                action.Undo();
+                _redoStack.Push(action);
+                TrimStack(_redoStack);
+                UndoCommand.NotifyCanExecuteChanged();
+                RedoCommand.NotifyCanExecuteChanged();
+                WpfPlot1.Refresh();
+            }
+        }
+
+        private bool CanUndo() => _undoStack.Count > 0;
+
+        [RelayCommand(CanExecute = nameof(CanRedo))]
+        private void Redo()
+        {
+            if (_redoStack.TryPop(out var action))
+            {
+                action.Redo();
+                _undoStack.Push(action);
+                TrimStack(_undoStack);
+                UndoCommand.NotifyCanExecuteChanged();
+                RedoCommand.NotifyCanExecuteChanged();
+                WpfPlot1.Refresh();
+            }
+        }
+
+        private bool CanRedo() => _redoStack.Count > 0;
+
         /// <summary>
         /// 删除当前选中的绘图对象。
         /// </summary>
@@ -3102,44 +3686,114 @@ namespace GeoChemistryNexus.ViewModels
                 layersToDelete.Add(_selectedLayer);
             }
 
+            // --- 捕获删除前的状态 ---
+            // 存储每个被删图层的信息：(图层对象, ScottPlot对象, 父图层, 在父图层中的索引, 父图层是否因为空而被删, 父图层在根中的索引)
+            var deletedInfos = new List<(LayerItemViewModel Layer, ScottPlot.IPlottable? Plottable, CategoryLayerItemViewModel? Parent, int Index, bool ParentRemoved, int ParentIndex)>();
+
             foreach (var layer in layersToDelete)
             {
-                // 从ScottPlot的绘图对象集合中移除
-                if (layer.Plottable != null)
+                var parent = FindParentLayer(LayerTree, layer);
+                int index = parent != null ? parent.Children.IndexOf(layer) : LayerTree.IndexOf(layer);
+                
+                bool parentRemoved = false;
+                int parentIndex = -1;
+
+                if (parent != null)
                 {
-                    WpfPlot1.Plot.Remove(layer.Plottable);
+                    // 预测父节点是否会被删除：如果当前子节点数 <= 1 (且包含当前节点)，删除后变为0
+                    // 注意：如果有多个节点在同一个父节点下被选中删除，需要小心处理。
+                    // 这里的预测只是为了 Undo 时知道是否需要恢复父节点。
+                    // 实际上，我们可以在 Redo 逻辑中记录真正发生了什么，但为了结构简单，我们在 Redo 中执行标准逻辑，
+                    // 在 Undo 中检查父节点是否存在。
+                    // 为了更准确，我们记录父节点在 LayerTree 的索引（如果是根分类）
+                    parentIndex = LayerTree.IndexOf(parent);
+                    
+                    // 只有当父节点只剩这一个将被删除的子节点时，它才会被删除
+                    // 但考虑到批量删除，这个预测比较复杂。
+                    // 简化策略：Undo 时，如果 Parent 不在 LayerTree 且不在任何其他位置，就加回去。
                 }
 
-                // 查找父图层
-                var parentLayer = FindParentLayer(LayerTree, layer);
-
-                // 从数据源中移除选中的图层
-                if (parentLayer != null)
-                {
-                    // 如果有父图层，则从父图层的子集和中移除
-                    parentLayer.Children.Remove(layer);
-
-                    // 检查父图层是否为空，如果为空则一并移除
-                    if (parentLayer.Children.Count == 0)
-                    {
-                        // 假设所有分类图层都在根级别，直接从LayerTree移除
-                        LayerTree.Remove(parentLayer);
-                    }
-                }
-                else
-                {
-                    // 如果没有父图层，说明是顶级图层，直接从根集合移除
-                    LayerTree.Remove(layer);
-                }
+                deletedInfos.Add((layer, layer.Plottable, parent, index, false, parentIndex));
             }
 
-            // 重置选中状态和属性面板
-            CancelSelected();
+            // 定义 Redo 操作 (执行删除)
+            Action redo = () =>
+            {
+                foreach (var info in deletedInfos)
+                {
+                    // 从图层树移除
+                    if (info.Parent != null)
+                    {
+                        if (info.Parent.Children.Contains(info.Layer))
+                            info.Parent.Children.Remove(info.Layer);
 
-            // 刷新绘图控件
-            WpfPlot1.Refresh();
+                        // 检查父图层是否为空
+                        if (info.Parent.Children.Count == 0 && LayerTree.Contains(info.Parent))
+                        {
+                            LayerTree.Remove(info.Parent);
+                        }
+                    }
+                    else
+                    {
+                        if (LayerTree.Contains(info.Layer))
+                            LayerTree.Remove(info.Layer);
+                    }
+                }
+                
+                // 重置选中状态
+                CancelSelected();
+                RefreshPlotFromLayers(true);
+            };
 
-            // 显示成功提示
+            // 定义 Undo 操作 (恢复删除)
+            Action undo = () =>
+            {
+                // 逆序恢复，以保持顺序
+                for (int i = deletedInfos.Count - 1; i >= 0; i--)
+                {
+                    var info = deletedInfos[i];
+
+                    // 恢复 Layer
+                    if (info.Parent != null)
+                    {
+                        // 检查父节点是否需要恢复
+                        if (!LayerTree.Contains(info.Parent))
+                        {
+                            // 尝试恢复到原来的位置
+                            if (info.ParentIndex >= 0 && info.ParentIndex <= LayerTree.Count)
+                                LayerTree.Insert(info.ParentIndex, info.Parent);
+                            else
+                                LayerTree.Add(info.Parent);
+                        }
+
+                        // 将图层加回父节点
+                        if (!info.Parent.Children.Contains(info.Layer))
+                        {
+                            if (info.Index >= 0 && info.Index <= info.Parent.Children.Count)
+                                info.Parent.Children.Insert(info.Index, info.Layer);
+                            else
+                                info.Parent.Children.Add(info.Layer);
+                        }
+                    }
+                    else
+                    {
+                        // 顶级图层
+                        if (!LayerTree.Contains(info.Layer))
+                        {
+                            if (info.Index >= 0 && info.Index <= LayerTree.Count)
+                                LayerTree.Insert(info.Index, info.Layer);
+                            else
+                                LayerTree.Add(info.Layer);
+                        }
+                    }
+                }
+                RefreshPlotFromLayers(true);
+            };
+
+            // 记录并执行
+            AddUndoState(undo, redo);
+            redo();
+
             MessageHelper.Success(LanguageService.Instance["object_deleted_successfully"]);
         }
 
@@ -3232,6 +3886,12 @@ namespace GeoChemistryNexus.ViewModels
             // 重置编辑确认状态
             _hasConfirmedEditMode = false;
 
+            // 清空撤销/重做栈
+            _undoStack.Clear();
+            _redoStack.Clear();
+            UndoCommand.NotifyCanExecuteChanged();
+            RedoCommand.NotifyCanExecuteChanged();
+
             // 清除所有绘图对象
             WpfPlot1.Plot.Clear();
 
@@ -3255,7 +3915,7 @@ namespace GeoChemistryNexus.ViewModels
 
             // 清除图层树和属性面板的绑定
             LayerTree.Clear();
-            PropertyGridModel = null;
+            PropertyGridModel = nullObject;
             _selectedLayer = null;
 
             // 清除数据表格

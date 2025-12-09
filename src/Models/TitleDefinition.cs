@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.PropertyEditor;
 using HandyControl.Controls;
@@ -32,7 +32,7 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("chart_title_style")] // 图表标题样式
         [property: LocalizedDisplayName("font_size")] // 字体大小
-        private float _size = 12;
+        private float _size = 20;
 
         /// <summary>
         /// 图表标题样式 字体颜色
@@ -49,7 +49,7 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("chart_title_style")] // 图表标题样式
         [property: LocalizedDisplayName("is_bold")] // 粗体
-        private bool _isBold = false;
+        private bool _isBold = true;
 
         /// <summary>
         /// 图表标题样式 斜体样式

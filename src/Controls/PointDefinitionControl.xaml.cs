@@ -1,3 +1,5 @@
+using CommunityToolkit.Mvvm.Messaging;
+using GeoChemistryNexus.Messages;
 using GeoChemistryNexus.Models;
 using GeoChemistryNexus.ViewModels;
 using HandyControl.Controls;
@@ -45,32 +47,60 @@ namespace GeoChemistryNexus.Controls
         private static void OnPointValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var control = (PointDefinitionControl)d;
+            var oldPoint = e.OldValue as PointDefinition;
             var newPoint = e.NewValue as PointDefinition;
 
-            // 标志位，表示本次UI更新来源于数据源，避免触发循环更新
-            control._isUpdatingFromSource = true;
+            // 解绑旧对象
+            if (oldPoint != null)
+            {
+                oldPoint.PropertyChanged -= control.OnPointPropertyChanged;
+            }
+
+            // 绑定新对象
             if (newPoint != null)
+            {
+                newPoint.PropertyChanged += control.OnPointPropertyChanged;
+            }
+
+            // 更新 UI
+            control.UpdateUIFromPoint(newPoint);
+        }
+
+        private void OnPointPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(PointDefinition.X) || e.PropertyName == nameof(PointDefinition.Y))
+            {
+                // 在 UI 线程更新
+                Dispatcher.Invoke(() => UpdateUIFromPoint(PointValue));
+            }
+        }
+
+        private void UpdateUIFromPoint(PointDefinition? point)
+        {
+            // 标志位，表示本次UI更新来源于数据源，避免触发循环更新
+            _isUpdatingFromSource = true;
+            if (point != null)
             {
                 // 如果是三元图就转换坐标为三元值
                 if(MainPlotViewModel.BaseMapType == "Ternary")
                 {
-                    var ternary = MainPlotViewModel.ToTernary(newPoint.X, newPoint.Y, MainPlotViewModel.Clockwise);
-                    control.NumericUpDownX.Value = Math.Round(ternary.Item1, 4);
-                    control.NumericUpDownY.Value = Math.Round(ternary.Item2, 4);
+                    var ternary = MainPlotViewModel.ToTernary(point.X, point.Y, MainPlotViewModel.Clockwise);
+                    NumericUpDownX.Value = Math.Round(ternary.Item1, 4);
+                    NumericUpDownY.Value = Math.Round(ternary.Item2, 4);
                 }
                 else
                 {
-                    control.NumericUpDownX.Value = Math.Round(newPoint.X, 4);
-                    control.NumericUpDownY.Value = Math.Round(newPoint.Y, 4);
+                    NumericUpDownX.Value = Math.Round(point.X, 4);
+                    NumericUpDownY.Value = Math.Round(point.Y, 4);
                 }
             }
             else
             {
                 // 如果源为空，可以清空或设置为默认值
-                control.NumericUpDownX.Value = 0;
-                control.NumericUpDownY.Value = 0;
+                NumericUpDownX.Value = 0;
+                NumericUpDownY.Value = 0;
             }
-            control._isUpdatingFromSource = false;
+            _isUpdatingFromSource = false;
         }
 
         /// <summary>
@@ -100,6 +130,15 @@ namespace GeoChemistryNexus.Controls
                     X = NumericUpDownX.Value,
                     Y = NumericUpDownY.Value
                 };
+            }
+        }
+
+        private void PickPointButton_Click(object sender, RoutedEventArgs e)
+        {
+            // 发送拾取点请求
+            if (PointValue != null)
+            {
+                WeakReferenceMessenger.Default.Send(new PickPointRequestMessage(PointValue));
             }
         }
     }
