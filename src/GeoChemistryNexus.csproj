@@ -29,6 +29,7 @@
     <None Remove="Data\Documents\GTM\Zircon_Watson_and_Harrison_1983\zh-CN.rtf" />
     <None Remove="Data\Icon\iconfont.ttf" />
     <None Remove="Data\Icon\logo.png" />
+    <None Remove="Data\Image\HomePic\Default.jpg" />
     <None Remove="Data\Image\StartPic\1.jpg" />
     <None Remove="Data\Image\StartPic\10.jpg" />
     <None Remove="Data\Image\StartPic\2.jpg" />
@@ -72,6 +73,7 @@
     <None Remove="Data\PlotData\GraphMapList - 复制.json" />
     <None Remove="Data\PlotData\GraphMapList.json" />
     <None Remove="Data\PlotData\PlotD.zip" />
+    <None Remove="Data\PlotData\PlotTemplateCategories.json" />
     <None Remove="Data\PlotData\TestBaseMap.json" />
   </ItemGroup>
 
@@ -111,6 +113,9 @@
     </Content>
     <Content Include="Data\Icon\logo.ico" />
     <Content Include="Data\Icon\logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Image\HomePic\Default.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\Image\StartPic\1.jpg">
@@ -233,10 +238,14 @@
     <Content Include="Data\PlotData\GraphMapList.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Data\PlotData\PlotTemplateCategories.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+    <PackageReference Include="gong-wpf-dragdrop" Version="4.0.0" />
     <PackageReference Include="HandyControl" Version="3.5.1" />
     <PackageReference Include="Jint" Version="4.2.0" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />

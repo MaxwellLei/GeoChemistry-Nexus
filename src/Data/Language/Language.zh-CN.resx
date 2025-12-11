@@ -1593,4 +1593,12 @@
     <value>Deutsch (Deutschland)</value>
     <comment>设置-常规设置-语言</comment>
   </data>
+  <data name="custom_templates" xml:space="preserve">
+    <value>自定义模板</value>
+    <comment>绘图-模板列表</comment>
+  </data>
+  <data name="check_for_category_updates" xml:space="preserve">
+    <value>检查分类结构更新</value>
+    <comment>绘图-菜单栏-更新分类结构</comment>
+  </data>
 </root>

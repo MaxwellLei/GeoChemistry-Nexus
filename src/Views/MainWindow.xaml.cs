@@ -35,7 +35,7 @@ namespace GeoChemistryNexus
             InitializeComponent();
             // 链接 ViewModel
             this.DataContext = new MainWindowViewModel();
-            MyNav.Navigate(MainPlotPage.GetPage());
+            MyNav.Navigate(HomePageView.GetPage());
         }
 
         //显示窗口
@@ -61,7 +61,7 @@ namespace GeoChemistryNexus
                 To = new Thickness(0, 0, 0, 0),
                 EasingFunction = new QuadraticEase()
             };
-            for (int i = 1; i < 4; i++)
+            for (int i = 1; i < 5; i++)
             {
                 Storyboard.SetTargetName(marginAnim, "RadioButton" + i);
                 Storyboard.SetTargetProperty(marginAnim, new PropertyPath(MarginProperty));

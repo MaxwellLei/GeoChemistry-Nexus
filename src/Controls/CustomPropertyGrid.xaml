@@ -1,0 +1,202 @@
+<UserControl x:Class="GeoChemistryNexus.Controls.CustomPropertyGrid"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
+             xmlns:vm="clr-namespace:GeoChemistryNexus.ViewModels"
+             xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="300">
+    <UserControl.Resources>
+        <cvs:StringColorConverter x:Key="StringColorConverter"/>
+        <cvs:EnumTypeToValuesConverter x:Key="EnumTypeToValuesConverter"/>
+        <cvs:EnumToDisplayStringConverter x:Key="EnumToDisplayStringConverter"/>
+        <cvs:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+
+        <!-- String Editor -->
+        <DataTemplate x:Key="StringEditorTemplate">
+            <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" 
+                     IsEnabled="{Binding IsEnabled}"
+                     VerticalContentAlignment="Center"/>
+        </DataTemplate>
+        
+        <!-- Bool Editor -->
+        <DataTemplate x:Key="BoolEditorTemplate">
+            <CheckBox IsChecked="{Binding Value, UpdateSourceTrigger=PropertyChanged}" 
+                      IsEnabled="{Binding IsEnabled}"/>
+        </DataTemplate>
+
+        <!-- Int/Double Editor -->
+        <DataTemplate x:Key="NumericEditorTemplate">
+            <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" 
+                     IsEnabled="{Binding IsEnabled}"
+                     VerticalContentAlignment="Center"/>
+        </DataTemplate>
+
+        <!-- Enum Editor -->
+        <DataTemplate x:Key="EnumEditorTemplate">
+            <ComboBox ItemsSource="{Binding PropertyType, Converter={StaticResource EnumTypeToValuesConverter}}"
+                      SelectedItem="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
+                      IsEnabled="{Binding IsEnabled}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Converter={StaticResource EnumToDisplayStringConverter}}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </DataTemplate>
+
+        <!-- Color Editor -->
+        <DataTemplate x:Key="ColorEditorTemplate">
+            <local:ModernColorPicker SelectedColor="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringColorConverter}}" 
+                                     IsEnabled="{Binding IsEnabled}"/>
+        </DataTemplate>
+
+        <!-- LocalizedString Editor -->
+        <DataTemplate x:Key="LocalizedStringEditorTemplate">
+            <local:LocalizedStringControl Value="{Binding Value, Mode=TwoWay}" 
+                                          IsEnabled="{Binding IsEnabled}"/>
+        </DataTemplate>
+
+        <!-- PointDefinition Editor -->
+        <DataTemplate x:Key="PointDefinitionEditorTemplate">
+             <!-- Assuming PointDefinitionControl can bind via DataContext -->
+             <local:PointDefinitionControl PointValue="{Binding Value}" IsEnabled="{Binding IsEnabled}"/>
+        </DataTemplate>
+
+        <!-- FontFamily Editor -->
+        <DataTemplate x:Key="FontFamilyEditorTemplate">
+            <!-- FontFamilyControl expects FontFamilyName property binding -->
+            <local:FontFamilyControl FontFamilyName="{Binding Value, Mode=TwoWay}" IsEnabled="{Binding IsEnabled}"/>
+        </DataTemplate>
+
+        <!-- ScriptDefinition Editor -->
+        <DataTemplate x:Key="ScriptDefinitionEditorTemplate">
+            <local:ScriptDefinitionControl ScriptDefinition="{Binding Value, Mode=TwoWay}" 
+                                           Visibility="{Binding IsEnabled, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        </DataTemplate>
+
+        <local:PropertyEditorTemplateSelector x:Key="EditorTemplateSelector"
+                                        StringTemplate="{StaticResource StringEditorTemplate}"
+                                        BoolTemplate="{StaticResource BoolEditorTemplate}"
+                                        NumericTemplate="{StaticResource NumericEditorTemplate}"
+                                        EnumTemplate="{StaticResource EnumEditorTemplate}"
+                                        ColorTemplate="{StaticResource ColorEditorTemplate}"
+                                        LocalizedStringTemplate="{StaticResource LocalizedStringEditorTemplate}"
+                                        PointDefinitionTemplate="{StaticResource PointDefinitionEditorTemplate}"
+                                        FontFamilyTemplate="{StaticResource FontFamilyEditorTemplate}"
+                                        ScriptDefinitionTemplate="{StaticResource ScriptDefinitionEditorTemplate}"
+                                        />
+
+    </UserControl.Resources>
+    
+    <Grid>
+        <Border Background="White" CornerRadius="4" BorderBrush="#E0E0E0" BorderThickness="1">
+            <Border.Effect>
+                <DropShadowEffect Color="Black" BlurRadius="8" ShadowDepth="2" Opacity="0.05"/>
+            </Border.Effect>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <!-- Title Header -->
+                <Border Background="#F1F1F1" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1" Padding="15,6.5" CornerRadius="4,4,0,0">
+                    <TextBlock Text="{Binding Title, RelativeSource={RelativeSource AncestorType=local:CustomPropertyGrid}}" 
+                               FontWeight="Bold" FontSize="15" Foreground="#333333"/>
+                </Border>
+
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="0">
+                    <ItemsControl ItemsSource="{Binding Properties, RelativeSource={RelativeSource AncestorType=local:CustomPropertyGrid}}"
+                                  Grid.IsSharedSizeScope="True">
+                        <ItemsControl.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.ContainerStyle>
+                                    <Style TargetType="{x:Type GroupItem}">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type GroupItem}">
+                                                    <Expander IsExpanded="True" Background="Transparent" BorderThickness="0,0,0,1" BorderBrush="#EEEEEE">
+                                                        <Expander.Header>
+                                                            <Grid Margin="0,6">
+                                                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold" Foreground="#444444" FontSize="13" VerticalAlignment="Center"/>
+                                                            </Grid>
+                                                        </Expander.Header>
+                                                        <ItemsPresenter Margin="0,0,0,5" />
+                                                    </Expander>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </GroupStyle.ContainerStyle>
+                            </GroupStyle>
+                        </ItemsControl.GroupStyle>
+                        
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border x:Name="ItemBorder" Padding="20,6,15,6" Background="Transparent">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition x:Name="Col0" Width="130"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <TextBlock x:Name="LabelText"
+                                                   Text="{Binding DisplayName}" 
+                                                   ToolTip="{Binding Description}"
+                                                   VerticalAlignment="Center" 
+                                                   Margin="0,0,10,0"
+                                                   Foreground="#666666"
+                                                   TextTrimming="CharacterEllipsis"/>
+                                                   
+                                        <ContentControl x:Name="EditorContent" 
+                                                        Content="{Binding}" 
+                                                        ContentTemplateSelector="{StaticResource EditorTemplateSelector}"
+                                                        VerticalAlignment="Center"/>
+                                    </Grid>
+                                </Border>
+                                <DataTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="ItemBorder" Property="Background" Value="#F8F9FA"/>
+                                    </Trigger>
+                                    
+                                    <!-- Horizontal Layout (Default) -->
+                                    <DataTrigger Binding="{Binding Layout}" Value="Horizontal">
+                                        <Setter TargetName="LabelText" Property="Grid.Row" Value="0"/>
+                                        <Setter TargetName="LabelText" Property="Grid.Column" Value="0"/>
+                                        <Setter TargetName="LabelText" Property="Grid.ColumnSpan" Value="1"/>
+                                        
+                                        <Setter TargetName="EditorContent" Property="Grid.Row" Value="0"/>
+                                        <Setter TargetName="EditorContent" Property="Grid.Column" Value="1"/>
+                                        <Setter TargetName="EditorContent" Property="Grid.ColumnSpan" Value="1"/>
+                                        
+                                        <Setter TargetName="Col0" Property="Width" Value="130"/>
+                                    </DataTrigger>
+                                    
+                                    <!-- Vertical Layout -->
+                                    <DataTrigger Binding="{Binding Layout}" Value="Vertical">
+                                        <Setter TargetName="LabelText" Property="Grid.Row" Value="0"/>
+                                        <Setter TargetName="LabelText" Property="Grid.Column" Value="0"/>
+                                        <Setter TargetName="LabelText" Property="Grid.ColumnSpan" Value="2"/>
+                                        <Setter TargetName="LabelText" Property="Margin" Value="0,0,0,6"/>
+                                        
+                                        <Setter TargetName="EditorContent" Property="Grid.Row" Value="1"/>
+                                        <Setter TargetName="EditorContent" Property="Grid.Column" Value="0"/>
+                                        <Setter TargetName="EditorContent" Property="Grid.ColumnSpan" Value="2"/>
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

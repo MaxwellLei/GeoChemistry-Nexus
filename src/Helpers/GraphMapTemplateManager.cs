@@ -1,4 +1,4 @@
-﻿using GeoChemistryNexus.Models;
+using GeoChemistryNexus.Models;
 using ScottPlot;
 using System;
 using System.Collections.Generic;
@@ -76,6 +76,51 @@ namespace GeoChemistryNexus.Helpers
             }
 
             return rootNode;
+        }
+
+        /// <summary>
+        /// 解析并将模板数据合并到现有的根节点中。
+        /// </summary>
+        /// <param name="rootNode">现有的根节点。</param>
+        /// <param name="jsonContent">包含模板数据的JSON字符串。</param>
+        /// <param name="isCustom">是否为自定义模板数据。</param>
+        public static void ParseAndMerge(GraphMapTemplateNode rootNode, string jsonContent, bool isCustom = false)
+        {
+            if (rootNode == null) throw new ArgumentNullException(nameof(rootNode));
+            if (string.IsNullOrWhiteSpace(jsonContent)) return;
+
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            var templateList = JsonSerializer.Deserialize<List<JsonTemplateItem>>(jsonContent, options);
+
+            if (templateList == null) return;
+
+            const string separator = ">";
+
+            foreach (var item in templateList)
+            {
+                string selectedPath = item.NodeList.Get();
+                var pathParts = selectedPath.Split(separator).Select(p => p.Trim()).ToArray();
+                var currentNode = rootNode;
+
+                foreach (var partName in pathParts)
+                {
+                    var existingChild = currentNode.Children.FirstOrDefault(c => c.Name == partName);
+                    if (existingChild == null)
+                    {
+                        var newChild = new GraphMapTemplateNode { Name = partName, Parent = currentNode };
+                        currentNode.Children.Add(newChild);
+                        currentNode = newChild;
+                    }
+                    else
+                    {
+                        currentNode = existingChild;
+                    }
+                }
+
+                currentNode.GraphMapPath = item.GraphMapPath;
+                currentNode.FileHash = item.FileHash;
+                currentNode.IsCustomTemplate = isCustom;
+            }
         }
 
         /// <summary>
@@ -182,11 +227,91 @@ namespace GeoChemistryNexus.Helpers
         /// <summary>
         /// 用于临时匹配 JSON 结构的辅助类
         /// </summary>
-        private class JsonTemplateItem
+        public class JsonTemplateItem
         {
             public LocalizedString NodeList { get; set; }
             public string GraphMapPath { get; set; }
             public string FileHash { get; set; }
+        }
+
+        /// <summary>
+        /// 向自定义模板列表添加新项
+        /// </summary>
+        public static void AddCustomTemplateEntry(string listPath, LocalizedString nodeList, string graphMapPath, string fileHash)
+        {
+            List<JsonTemplateItem> list;
+            if (System.IO.File.Exists(listPath))
+            {
+                try 
+                {
+                    string json = System.IO.File.ReadAllText(listPath);
+                    list = JsonSerializer.Deserialize<List<JsonTemplateItem>>(json) ?? new List<JsonTemplateItem>();
+                }
+                catch 
+                {
+                    list = new List<JsonTemplateItem>();
+                }
+            }
+            else
+            {
+                list = new List<JsonTemplateItem>();
+            }
+
+            // 检查是否已存在
+            var existing = list.FirstOrDefault(x => x.GraphMapPath == graphMapPath);
+            if (existing != null)
+            {
+                existing.NodeList = nodeList;
+                existing.FileHash = fileHash;
+            }
+            else
+            {
+                list.Add(new JsonTemplateItem
+                {
+                    NodeList = nodeList,
+                    GraphMapPath = graphMapPath,
+                    FileHash = fileHash
+                });
+            }
+
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            string output = JsonSerializer.Serialize(list, options);
+            
+            // 确保目录存在
+            string dir = System.IO.Path.GetDirectoryName(listPath);
+            if (!System.IO.Directory.Exists(dir)) System.IO.Directory.CreateDirectory(dir);
+            
+            System.IO.File.WriteAllText(listPath, output);
+        }
+
+        /// <summary>
+        /// 从自定义模板列表中移除项
+        /// </summary>
+        public static void RemoveCustomTemplateEntry(string listPath, string graphMapPath)
+        {
+            if (!System.IO.File.Exists(listPath)) return;
+
+            try
+            {
+                string json = System.IO.File.ReadAllText(listPath);
+                var list = JsonSerializer.Deserialize<List<JsonTemplateItem>>(json) ?? new List<JsonTemplateItem>();
+
+                // 查找并移除
+                var itemToRemove = list.FirstOrDefault(x => x.GraphMapPath == graphMapPath);
+                if (itemToRemove != null)
+                {
+                    list.Remove(itemToRemove);
+                    
+                    var options = new JsonSerializerOptions { WriteIndented = true };
+                    string output = JsonSerializer.Serialize(list, options);
+                    
+                    System.IO.File.WriteAllText(listPath, output);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error removing custom template entry: {ex.Message}");
+            }
         }
     }
 }

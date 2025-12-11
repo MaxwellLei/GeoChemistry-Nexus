@@ -51,6 +51,10 @@
                         <MenuItem Header="{Binding [open_template],Source={x:Static lg:LanguageService.Instance}}" 
                                   Command="{Binding OpenTemplateCommand}"
                                   Icon="📂"/>
+                        <!--导入自定义模板-->
+                        <MenuItem Header="导入自定义绘图模板" 
+                                  Command="{Binding ImportCustomTemplateCommand}"
+                                  Icon="📥"/>
                     </MenuItem>
 
                     <MenuItem Header="{Binding [template],Source={x:Static lg:LanguageService.Instance}}">
@@ -59,6 +63,8 @@
                         <Separator/>-->
                         <MenuItem Header="{Binding [check_for_template_updates], Source={x:Static lg:LanguageService.Instance}}" 
                                   Command="{Binding CheckForTemplateUpdatesCommand}" Icon="🔄"/>
+                        <MenuItem Header="{Binding [check_for_category_updates], Source={x:Static lg:LanguageService.Instance}}" 
+                                  Command="{Binding CheckForCategoryUpdatesCommand}" Icon="🔄"/>
                     </MenuItem>
                 </Menu>
 
@@ -66,6 +72,7 @@
 
                 <!-- 模板分类树 -->
                 <TreeView ItemsSource="{Binding GraphMapTemplateNode.Children}"
+                          x:Name="TemplateTreeView"
                           Background="#F8F9FA" 
                           ItemContainerStyle="{StaticResource ModernTreeViewItemStyle}"
                           BorderThickness="0">
@@ -130,7 +137,7 @@
                 <!-- 模板卡片网格 -->
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" 
                               HorizontalScrollBarVisibility="Disabled">
-                    <ItemsControl ItemsSource="{Binding TemplateCardsView}" Margin="10">
+                    <ItemsControl ItemsSource="{Binding TemplateCardsView}" Margin="10" x:Name="TemplateCardsControl">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <UniformGrid Columns="3"/>
@@ -139,6 +146,21 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border Style="{StaticResource TemplateCardStyle}" MinHeight="200">
+                                    <Border.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="打开文件位置" 
+                                                      Command="{Binding DataContext.OpenTemplateLocationCommand, Source={x:Reference TemplateCardsControl}}"
+                                                      CommandParameter="{Binding}"/>
+                                            <MenuItem Header="导出模板" 
+                                                      Command="{Binding DataContext.ExportCustomTemplateCommand, Source={x:Reference TemplateCardsControl}}"
+                                                      CommandParameter="{Binding}"
+                                                      Visibility="{Binding IsCustomTemplate, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                            <MenuItem Header="删除" 
+                                                      Command="{Binding DataContext.DeleteCustomTemplateCommand, Source={x:Reference TemplateCardsControl}}"
+                                                      CommandParameter="{Binding}"
+                                                      Visibility="{Binding IsCustomTemplate, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                        </ContextMenu>
+                                    </Border.ContextMenu>
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="MouseLeftButtonUp">
                                             <!--<i:InvokeCommandAction Command="{Binding DataContext.SelectTemplateCardCommand, RelativeSource={RelativeSource AncestorType=Page}}"

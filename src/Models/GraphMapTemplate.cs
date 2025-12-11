@@ -46,9 +46,9 @@ namespace GeoChemistryNexus.Models
         /// </summary>
         /// <param name="languages">底图支持的语言列表，第一个为默认语言</param>
         /// <param name="type">底图类型: "2D_Plot" 或 "Ternary_Plot"</param>
-        /// <param name="category">底图分类的占位符文本</param>
+        /// <param name="categoryNodeList">底图分类的本地化对象</param>
         /// <returns></returns>
-        public static GraphMapTemplate CreateDefault(List<string> languages, string type, string category)
+        public static GraphMapTemplate CreateDefault(List<string> languages, string type, LocalizedString categoryNodeList)
         {
             // 如果语言列表为空，则提供一个默认值
             if (languages == null || !languages.Any())
@@ -77,7 +77,7 @@ namespace GeoChemistryNexus.Models
                 DefaultLanguage = defaultLanguage,
                 // 根据传入的type设置模板类型
                 TemplateType = type == "Ternary_Plot" ? "Ternary" : "Cartesian",
-                NodeList = CreateLocalized(category),
+                NodeList = categoryNodeList,
                 Script = new ScriptDefinition(),
                 Info = new GraphMapInfo()
             };

@@ -106,13 +106,23 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 切换主页命令
+        /// 切换绘图页命令
         /// </summary>
         /// <param name="nav">导航</param>
         [RelayCommand]
         private void HomePage(Frame nav)
         {
             nav.Navigate(MainPlotPage.GetPage());
+        }
+
+        /// <summary>
+        /// 切换主页命令
+        /// </summary>
+        /// <param name="nav">导航</param>
+        [RelayCommand]
+        private void StartPage(Frame nav)
+        {
+            nav.Navigate(HomePageView.GetPage());
         }
 
         /// <summary>

@@ -1,0 +1,171 @@
+<Page x:Class="GeoChemistryNexus.Views.HomePageView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:hc="https://handyorg.github.io/handycontrol"
+      xmlns:models="clr-namespace:GeoChemistryNexus.Models"
+      xmlns:helpers="clr-namespace:GeoChemistryNexus.Helpers"
+      xmlns:dd="urn:gong-wpf-dragdrop"
+      mc:Ignorable="d"
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="HomePageView">
+    <Page.Background>
+        <ImageBrush ImageSource="../Data/Image/HomePic/Default.jpg"/>
+    </Page.Background>
+    
+    <Page.Resources>
+        <helpers:BindingProxy x:Key="VmProxy" Data="{Binding}" />
+        
+        <!-- Template for WebLink and Widget -->
+        <DataTemplate x:Key="AppItemTemplate">
+            <Grid Margin="15" Cursor="Hand" Width="80">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+                <Grid.InputBindings>
+                    <!-- Disable default open command when in edit mode -->
+                    <!-- We can achieve this by using a condition or simply not binding it here if we want to rely on the edit button.
+                         However, to "prioritize drag", we might want to make the click only work when NOT in edit mode.
+                         A simple way is to use a DataTrigger in Style to unset the command, or bind CommandParameter to something that check IsEditMode.
+                         But MouseBinding doesn't support DataTrigger easily.
+                         Alternatively, we can handle the command in ViewModel and check IsEditMode. -->
+                    <MouseBinding MouseAction="LeftClick" Command="{Binding Data.OpenAppCommand, Source={StaticResource VmProxy}}" CommandParameter="{Binding}"/>
+                </Grid.InputBindings>
+                
+                <Grid.ContextMenu>
+                    <ContextMenu Width="180">
+                        <MenuItem Header="删除" Command="{Binding Data.RemoveAppCommand, Source={StaticResource VmProxy}}" CommandParameter="{Binding}">
+                            <MenuItem.Icon>
+                                <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </ContextMenu>
+                </Grid.ContextMenu>
+
+                <!-- Icon Container -->
+                <Border Grid.Row="0" Width="60" Height="60" Background="White" CornerRadius="12" Effect="{DynamicResource EffectShadow2}"
+                        ToolTipService.InitialShowDelay="300" ToolTipService.Placement="Top">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Description}" Value="">
+                                    <Setter Property="ToolTipService.IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Description}" Value="{x:Null}">
+                                    <Setter Property="ToolTipService.IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                            <Setter Property="ToolTip" Value="{Binding Description}"/>
+                        </Style>
+                    </Border.Style>
+                     <Grid>
+                         <Viewbox Margin="12">
+                            <TextBlock Text="{Binding Icon}" FontFamily="Segoe MDL2 Assets" Foreground="#333"/>
+                        </Viewbox>
+                        
+                        <!-- Edit Mode Indicator (Small Pencil at Top-Right) -->
+                        <Border Background="#2196F3" CornerRadius="8" Width="16" Height="16" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-4,-4,0"
+                                Visibility="{Binding Data.IsEditMode, Source={StaticResource VmProxy}, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <TextBlock Text="&#xE70F;" FontFamily="Segoe MDL2 Assets" Foreground="White" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                             <Border.InputBindings>
+                                <MouseBinding MouseAction="LeftClick" Command="{Binding Data.EditAppCommand, Source={StaticResource VmProxy}}" CommandParameter="{Binding}"/>
+                            </Border.InputBindings>
+                        </Border>
+                     </Grid>
+                </Border>
+                
+                <!-- Widget Style Trigger (using Style because DataTemplate triggers are limited for structural changes, but here we just change size) -->
+                <!-- Actually, for Widgets we might want a different layout. 
+                     If Type is Widget, we make it wider. 
+                     Since we are inside a DataTemplate, we can use a Grid style or wrapper style. -->
+                     
+                <!-- Title -->
+                <TextBlock Grid.Row="1" Text="{Binding Title}" Margin="0,5,0,0" HorizontalAlignment="Center" TextAlignment="Center"
+                           TextTrimming="CharacterEllipsis" FontWeight="Bold" Foreground="White" FontSize="13">
+                     <TextBlock.Effect>
+                        <DropShadowEffect BlurRadius="2" ShadowDepth="0" Color="Black" Opacity="0.8"/>
+                     </TextBlock.Effect>
+                </TextBlock>
+            </Grid>
+        </DataTemplate>
+        
+        <!-- Widget Template Selector or just a Style trigger on the root element size? 
+             The user said "similar to Android app icon layout". 
+             For widgets, they are usually larger. 
+             Let's use a style on the root Grid of the DataTemplate to adjust Width based on Type.
+        -->
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" VerticalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Name="Timer" Text="{Binding CurrentTime}" Foreground="White" FontSize="64" FontWeight="Bold"
+                       HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+
+            <TextBlock Name="DayTimer" Text="{Binding CurrentDate}" Foreground="White" FontSize="20"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Margin="0 0 0 20"/>
+
+            <hc:SearchBar Height="10" Width="500" Style="{StaticResource SearchBarPlus}" Grid.Row="2"
+                           Name="SearchBar" Text="{Binding SearchString}" Command="{Binding SearchStartedCommand}"/>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="20,-80,20,20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- App List -->
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,30,0,0">
+                <ItemsControl ItemsSource="{Binding HomeApps}" ItemTemplate="{StaticResource AppItemTemplate}"
+                              dd:DragDrop.IsDragSource="{Binding IsEditMode}"
+                              dd:DragDrop.IsDropTarget="{Binding IsEditMode}"
+                              dd:DragDrop.DropHandler="{Binding}"
+                              dd:DragDrop.UseDefaultDragAdorner="True">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" Width="800"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </ScrollViewer>
+
+            <!-- Floating Action Buttons -->
+            <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,20">
+                <Button Command="{Binding ToggleEditModeCommand}" Style="{StaticResource ButtonPrimary}" 
+                        Width="40" Height="40" Margin="0,0,0,10" ToolTip="编辑模式" Padding="0" hc:BorderElement.CornerRadius="20">
+                    <Button.Content>
+                         <Grid>
+                             <TextBlock Text="&#xE70F;" FontFamily="Segoe MDL2 Assets" FontSize="16" Visibility="{Binding IsEditMode, Converter={StaticResource BooleanToVisibilityReConverter}}"/>
+                             <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="16" Visibility="{Binding IsEditMode, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                         </Grid>
+                    </Button.Content>
+                </Button>
+                
+                <StackPanel Visibility="{Binding IsEditMode, Converter={StaticResource BooleanToVisibilityReConverter}}">
+                    <Button Command="{Binding AddWebLinkCommand}" Style="{StaticResource ButtonPrimary}" 
+                            Width="40" Height="40" Margin="0,0,0,10" ToolTip="添加链接" Padding="0" hc:BorderElement.CornerRadius="20">
+                        <TextBlock Text="&#xE71B;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                    </Button>
+                    <Button Command="{Binding AddWidgetCommand}" Style="{StaticResource ButtonPrimary}" 
+                            Width="40" Height="40" ToolTip="添加小组件" Padding="0" hc:BorderElement.CornerRadius="20">
+                        <TextBlock Text="&#xE74C;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Page>

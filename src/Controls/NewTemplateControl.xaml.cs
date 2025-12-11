@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -13,9 +13,19 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Models;
+using CommunityToolkit.Mvvm.Messaging;
+using GeoChemistryNexus.Messages;
 
 namespace GeoChemistryNexus.Controls
 {
+    public class CategoryPartModel
+    {
+        public string DisplayName { get; set; }
+        public Dictionary<string, string> LocalizedNames { get; set; } // Null if manual input
+    }
+
     /// <summary>
     /// NewTemplateControl.xaml 的交互逻辑
     /// </summary>
@@ -23,13 +33,19 @@ namespace GeoChemistryNexus.Controls
     {
         // 为语言和分类层级分别创建集合
         private readonly ObservableCollection<string> _languageParts = new ObservableCollection<string>();
-        private readonly ObservableCollection<string> _categoryParts = new ObservableCollection<string>();
-
+        // Change from string to CategoryPartModel
+        private readonly ObservableCollection<CategoryPartModel> _categoryParts = new ObservableCollection<CategoryPartModel>();
+        
+        // 存储加载的分类数据
+        private PlotTemplateCategoryConfig _categoryConfig;
+        
         // 修改 Language 属性以从标签集合生成字符串
         public string Language => string.Join(" > ", _languageParts);
-        public string CategoryHierarchy => string.Join(" > ", _categoryParts);
+        
+        // Use DisplayName for the string representation
+        public string CategoryHierarchy => string.Join(" > ", _categoryParts.Select(p => p.DisplayName));
+
         public string PlotType => (PlotTypeComboBox.SelectedItem as ComboBoxItem)?.Tag.ToString() ?? PlotTypeComboBox.Text;
-        public string FilePath => FilePathTextBox.Text;
 
         #region ConfirmCommand Dependency Property
 
@@ -63,6 +79,87 @@ namespace GeoChemistryNexus.Controls
             // 分别为两个 ItemsControl 设置数据源
             LanguageItemsControl.ItemsSource = _languageParts;
             CategoryItemsControl.ItemsSource = _categoryParts;
+            
+            // 监听分类集合变化，更新下拉框
+            _categoryParts.CollectionChanged += (s, e) => UpdateCategoryComboBoxSource();
+            
+            InitializeBuiltInLanguages();
+            LoadCategories();
+
+            // 注册消息接收
+            WeakReferenceMessenger.Default.Register<CategoryConfigUpdatedMessage>(this, (r, m) =>
+            {
+                // 在 UI 线程上重新加载配置
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    LoadCategories();
+                });
+            });
+
+            // 默认选中第一个绘图类型
+            PlotTypeComboBox.SelectedIndex = 0;
+        }
+
+        private void LoadCategories()
+        {
+            _categoryConfig = PlotCategoryHelper.LoadConfig();
+            UpdateCategoryComboBoxSource();
+        }
+        
+        // Expose method to get the rich category parts
+        public IEnumerable<CategoryPartModel> GetCategoryParts()
+        {
+            return _categoryParts;
+        }
+
+        private void UpdateCategoryComboBoxSource()
+        {
+            if (_categoryConfig == null) return;
+            
+            List<Dictionary<string, string>> sourceList = null;
+            
+            // 动态确定当前是第几级
+            int currentLevelIndex = _categoryParts.Count + 1; // 0个已选 -> Level 1, 1个已选 -> Level 2
+            string levelKey = $"Level{currentLevelIndex}";
+
+            // 尝试从字典中获取对应的层级列表
+            if (_categoryConfig.ContainsKey(levelKey))
+            {
+                sourceList = _categoryConfig[levelKey];
+            }
+            
+            if (sourceList != null)
+            {
+                var displayItems = sourceList.Select(c => new CategoryDisplayItem 
+                { 
+                    DisplayName = PlotCategoryHelper.GetName(c),
+                    OriginalObject = c 
+                }).ToList();
+                PresetCategoryComboBox.ItemsSource = displayItems;
+            }
+            else
+            {
+                PresetCategoryComboBox.ItemsSource = null;
+            }
+        }
+        
+        private void PresetCategoryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (PresetCategoryComboBox.SelectedItem is CategoryDisplayItem selectedItem)
+            {
+                 string name = selectedItem.DisplayName;
+                 if (!string.IsNullOrWhiteSpace(name))
+                 {
+                     // Add CategoryPartModel with localized data
+                     _categoryParts.Add(new CategoryPartModel 
+                     { 
+                         DisplayName = name,
+                         LocalizedNames = selectedItem.OriginalObject as Dictionary<string, string>
+                     });
+                 }
+                 // 清空选择，以便下次还能选同一个（虽然不太可能，但为了交互体验）
+                 PresetCategoryComboBox.SelectedIndex = -1;
+            }
         }
 
         public void EmptyData()
@@ -70,8 +167,11 @@ namespace GeoChemistryNexus.Controls
             // 清空所有数据
             _languageParts.Clear();
             _categoryParts.Clear();
-            FilePathTextBox.Text = string.Empty;
-            PlotTypeComboBox.SelectedIndex = -1;
+            
+            NewCategoryTextBox.Text = string.Empty;
+            PresetCategoryComboBox.SelectedIndex = -1;
+
+            PlotTypeComboBox.SelectedIndex = 0;
         }
 
         /// <summary>
@@ -84,7 +184,10 @@ namespace GeoChemistryNexus.Controls
                 string text = NewLanguageTextBox.Text.Trim();
                 if (!string.IsNullOrEmpty(text))
                 {
-                    _languageParts.Add(text);
+                    if (!_languageParts.Contains(text))
+                    {
+                        _languageParts.Add(text);
+                    }
                     NewLanguageTextBox.Clear();
                 }
                 e.Handled = true;
@@ -101,9 +204,9 @@ namespace GeoChemistryNexus.Controls
                 _languageParts.Remove(languageToRemove);
             }
         }
-
+        
         /// <summary>
-        /// 添加分类层级标签
+        /// 添加分类标签
         /// </summary>
         private void NewCategoryTextBox_KeyDown(object sender, KeyEventArgs e)
         {
@@ -112,7 +215,12 @@ namespace GeoChemistryNexus.Controls
                 string text = NewCategoryTextBox.Text.Trim();
                 if (!string.IsNullOrEmpty(text))
                 {
-                    _categoryParts.Add(text);
+                    // Add CategoryPartModel without localized data (manual input)
+                    _categoryParts.Add(new CategoryPartModel 
+                    { 
+                        DisplayName = text,
+                        LocalizedNames = null
+                    });
                     NewCategoryTextBox.Clear();
                 }
                 e.Handled = true;
@@ -120,25 +228,14 @@ namespace GeoChemistryNexus.Controls
         }
 
         /// <summary>
-        /// 删除分类层级标签
+        /// 删除分类标签
         /// </summary>
         private void RemoveCategoryButton_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is Button button && button.Tag is string categoryToRemove)
+            // Update to handle CategoryPartModel
+            if (sender is Button button && button.Tag is CategoryPartModel categoryToRemove)
             {
                 _categoryParts.Remove(categoryToRemove);
-            }
-        }
-
-        /// <summary>
-        /// 点击“浏览”按钮。
-        /// </summary>
-        private void BrowseButton_Click(object sender, RoutedEventArgs e)
-        {
-            string? selectedPath = FileHelper.GetFolderPath();
-            if (!string.IsNullOrEmpty(selectedPath))
-            {
-                FilePathTextBox.Text = selectedPath;
             }
         }
 
@@ -161,6 +258,49 @@ namespace GeoChemistryNexus.Controls
             if (CancelCommand?.CanExecute(this) ?? false)
             {
                 CancelCommand.Execute(this);
+            }
+        }
+
+        private class LanguageOption
+        {
+            public string Name { get; set; } = string.Empty;
+            public string Code { get; set; } = string.Empty;
+        }
+        
+        private class CategoryDisplayItem
+        {
+            public string DisplayName { get; set; }
+            public object OriginalObject { get; set; }
+        }
+
+        private void InitializeBuiltInLanguages()
+        {
+            var builtIns = new List<LanguageOption>
+            {
+                new LanguageOption { Name = "简体中文 (zh-CN)", Code = "zh-CN" },
+                new LanguageOption { Name = "繁体中文 (zh-TW)", Code = "zh-TW" },
+                new LanguageOption { Name = "美式英文 (en-US)", Code = "en-US" },
+                new LanguageOption { Name = "日语 (ja-JP)", Code = "ja-JP" },
+                new LanguageOption { Name = "俄语 (ru-RU)", Code = "ru-RU" },
+                new LanguageOption { Name = "韩语 (ko-KR)", Code = "ko-KR" },
+                new LanguageOption { Name = "德语 (de-DE)", Code = "de-DE" },
+                new LanguageOption { Name = "西班牙语 (es-ES)", Code = "es-ES" }
+            };
+
+            BuiltInLanguageComboBox.ItemsSource = builtIns;
+        }
+
+        private void BuiltInLanguageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var code = BuiltInLanguageComboBox.SelectedValue as string;
+            if (!string.IsNullOrWhiteSpace(code))
+            {
+                if (!_languageParts.Contains(code))
+                {
+                    _languageParts.Add(code);
+                }
+                // Reset selection to allow re-selecting the same item if deleted
+                BuiltInLanguageComboBox.SelectedIndex = -1;
             }
         }
     }

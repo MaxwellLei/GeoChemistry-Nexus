@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +14,12 @@ namespace GeoChemistryNexus.Models
         /// </summary>
         [JsonPropertyName("list_hash")]
         public string ListHash { get; set; }
+
+        /// <summary>
+        /// 服务器端类别结构文件的哈希值
+        /// </summary>
+        [JsonPropertyName("list_PlotCategories_hash")]
+        public string ListPlotCategoriesHash { get; set; }
 
         /// <summary>
         /// 服务器公告信息

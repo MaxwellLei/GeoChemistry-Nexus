@@ -21,6 +21,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection.Emit;
@@ -233,9 +234,7 @@ namespace GeoChemistryNexus.ViewModels
         public MainPlotViewModel(WpfPlot wpfPlot, System.Windows.Controls.RichTextBox richTextBox, unvell.ReoGrid.ReoGridControl dataGrid)
         {
             // 获取模板列表
-            GraphMapTemplateNode = GraphMapTemplateParser.Parse(
-                JsonHelper.ReadJsonFile(
-                Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "GraphMapList.json")));
+            InitTemplate();
 
             WpfPlot1 = wpfPlot;      // 获取绘图控件
             _richTextBox = richTextBox;      // 富文本框
@@ -327,12 +326,12 @@ namespace GeoChemistryNexus.ViewModels
             var worksheet = sender as Worksheet;
             if (worksheet == null) return;
 
-            // 1. 从剪贴板获取将要粘贴的文本数据
+            // 从剪贴板获取将要粘贴的文本数据
             if (!Clipboard.ContainsText()) return;
             string pasteText = Clipboard.GetText();
             if (string.IsNullOrEmpty(pasteText)) return;
 
-            // 2. 计算粘贴文本包含的行数
+            // 计算粘贴文本包含的行数
             var lines = pasteText.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
             int pastedRowCount = lines.Length;
 
@@ -344,13 +343,13 @@ namespace GeoChemistryNexus.ViewModels
 
             if (pastedRowCount <= 0) return;
 
-            // 3. 获取粘贴操作的目标起始行
+            // 获取粘贴操作的目标起始行
             int startRow = worksheet.SelectionRange.Row;
 
-            // 4. 计算粘贴完成后所需要的总行数
+            // 计算粘贴完成后所需要的总行数
             int requiredTotalRows = startRow + pastedRowCount;
 
-            // 5. 如果需要的总行数大于当前表格的总行数，则扩展表格
+            // 如果需要的总行数大于当前表格的总行数，则扩展表格
             if (requiredTotalRows > worksheet.RowCount)
             {
                 // 动态设置工作表的总行数
@@ -1175,8 +1174,6 @@ namespace GeoChemistryNexus.ViewModels
             // 关闭其他可能开启的模式
             IsAddingLine = false;
             IsAddingText = false;
-
-            //MessageHelper.Info("请在绘图区连续左键点击设置顶点，右键完成绘制。");
         }
 
         /// <summary>
@@ -1191,7 +1188,6 @@ namespace GeoChemistryNexus.ViewModels
             // 进入添加线条模式
             IsAddingLine = true;
             _lineStartPoint = null; // 重置起点
-            //MessageHelper.Info("请在绘图区点击以设置线条的起点");
         }
 
         /// <summary>
@@ -1208,16 +1204,45 @@ namespace GeoChemistryNexus.ViewModels
             // 关闭其他可能开启的模式，以避免冲突
             IsAddingLine = false;
             _lineStartPoint = null;
-            //MessageHelper.Info("请在绘图区点击以设置文本的位置");
         }
 
         // 切换语言——刷新
         public void InitTemplate()
         {
             // 刷新模板列表
-            GraphMapTemplateNode = GraphMapTemplateParser.Parse(
-                JsonHelper.ReadJsonFile(
-                Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "GraphMapList.json")));
+            // 读取默认模板列表
+            string defaultListPath = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "GraphMapList.json");
+            string defaultJson = JsonHelper.ReadJsonFile(defaultListPath);
+
+            // 读取自定义模板列表
+            string customListPath = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "GraphMapCustomList.json");
+            string customJson = File.Exists(customListPath) ? JsonHelper.ReadJsonFile(customListPath) : "[]";
+
+            // 解析并合并
+            // 解析默认列表
+            GraphMapTemplateNode = GraphMapTemplateParser.Parse(defaultJson);
+
+            // 创建“自定义模板”根节点
+            string customNodeName = "Custom Templates";
+            if (LanguageService.Instance != null && LanguageService.Instance["custom_templates"] != null)
+            {
+                customNodeName = LanguageService.Instance["custom_templates"];
+            }
+
+            var customRoot = new GraphMapTemplateNode
+            {
+                Name = customNodeName,
+                Parent = GraphMapTemplateNode
+            };
+
+            // 将自定义列表解析并合并到“自定义模板”节点下
+            GraphMapTemplateParser.ParseAndMerge(customRoot, customJson, true);
+
+            // 只有当自定义列表不为空时，才将 customRoot 添加到主树中
+            if (customRoot.Children.Count > 0)
+            {
+                GraphMapTemplateNode.Children.Add(customRoot);
+            }
         }
 
         /// <summary>
@@ -1279,7 +1304,7 @@ namespace GeoChemistryNexus.ViewModels
         {
             if (WpfPlot1?.Plot == null) return;
 
-            // 1. 如果不可见，或者要求隐藏，则清理所有标记
+            // 如果不可见，或者要求隐藏，则清理所有标记
             if (!isVisible)
             {
                 if (_potentialSnapMarkers.Any())
@@ -1294,8 +1319,7 @@ namespace GeoChemistryNexus.ViewModels
                 return;
             }
 
-            // 2. 如果要求显示，且已经显示了，先不重复添加（除非列表为空）
-            // 但是为了应对图层变化，最好是先清理再添加
+            // 如果要求显示，且已经显示了，先不重复添加（除非列表为空）
             if (_potentialSnapMarkers.Any())
             {
                 foreach (var marker in _potentialSnapMarkers)
@@ -1305,7 +1329,7 @@ namespace GeoChemistryNexus.ViewModels
                 _potentialSnapMarkers.Clear();
             }
 
-            // 3. 收集所有可见图层的端点（排除散点图，防止过密）
+            // 收集所有可见图层的端点（排除散点图，防止过密）
             var visibleLayers = FlattenTree(LayerTree).Where(l => l.IsVisible && l.Plottable != null);
             List<Coordinates> pointsToShow = new List<Coordinates>();
 
@@ -1333,7 +1357,7 @@ namespace GeoChemistryNexus.ViewModels
                 }
             }
 
-            // 4. 为每个端点添加灰色圆圈标记
+            // 为每个端点添加灰色圆圈标记
             foreach (var pt in pointsToShow)
             {
                 var marker = WpfPlot1.Plot.Add.Marker(pt);
@@ -1606,7 +1630,7 @@ namespace GeoChemistryNexus.ViewModels
             double xValueToDisplay = mouseCoordinates.X;
             double yValueToDisplay = mouseCoordinates.Y;
 
-            // 查找当前主X轴（通常是Bottom）和主Y轴（通常是Left）的定义
+            // 查找当前主X轴（Bottom）和主Y轴（Left）
             // 使用缓存的坐标轴定义
             var xAxisDef = _cachedXAxisDef;
             var yAxisDef = _cachedYAxisDef;
@@ -1650,6 +1674,17 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
+        /// 获取模板所在的目录（优先查找 Custom 目录，如果不存在则返回 Default 目录）
+        /// </summary>
+        private string GetTemplateDirectory(string templatePath)
+        {
+            var customDir = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Custom", templatePath);
+            if (Directory.Exists(customDir)) return customDir;
+
+            return Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Default", templatePath);
+        }
+
+        /// <summary>
         /// 递归收集节点下的所有模板
         /// </summary>
         private void CollectTemplatesFromNode(GraphMapTemplateNode node)
@@ -1658,20 +1693,44 @@ namespace GeoChemistryNexus.ViewModels
 
             foreach (var child in node.Children)
             {
-                if (!string.IsNullOrEmpty(child.GraphMapPath))
+                if (!string.IsNullOrEmpty(child.GraphMapPath) || child.IsCustomTemplate)
                 {
-                    // 1. 构建本地路径
-                    var localDir = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Default", child.GraphMapPath);
-                    var localJsonPath = Path.Combine(localDir, $"{child.GraphMapPath}.json");
-                    var localThumbPath = Path.Combine(localDir, "thumbnail.jpg");
+                    string localJsonPath;
+                    string localThumbPath = null;
+
+                    if (child.IsCustomTemplate)
+                    {
+                        // 自定义模板路径构建逻辑：Custom/{GraphMapPath}/{GraphMapPath}.json
+                        if (!string.IsNullOrEmpty(child.GraphMapPath))
+                        {
+                            var customRoot = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Custom");
+                            var templateDir = Path.Combine(customRoot, child.GraphMapPath);
+                            
+                            localJsonPath = Path.Combine(templateDir, $"{child.GraphMapPath}.json");
+                            localThumbPath = Path.Combine(templateDir, "thumbnail.jpg");
+                        }
+                        else
+                        {
+                            // 异常情况，保持原样或跳过
+                            localJsonPath = string.Empty;
+                        }
+                    }
+                    else
+                    {
+                        // 1. 构建本地路径
+                        var localDir = GetTemplateDirectory(child.GraphMapPath);
+                        localJsonPath = Path.Combine(localDir, $"{child.GraphMapPath}.json");
+                        localThumbPath = Path.Combine(localDir, "thumbnail.jpg");
+                    }
 
                     // 2. 初始化 ViewModel
                     var cardVm = new TemplateCardViewModel
                     {
                         Name = child.Name,
-                        TemplatePath = child.GraphMapPath,
+                        TemplatePath = child.GraphMapPath, // 使用相对路径
                         Category = GetNodePath(child),
                         ServerHash = child.FileHash,    // 注入服务器哈希
+                        IsCustomTemplate = child.IsCustomTemplate,
 
                         // 注入回调
                         OpenHandler = (vm) => SelectTemplateCardCommand.ExecuteAsync(vm),
@@ -1682,23 +1741,31 @@ namespace GeoChemistryNexus.ViewModels
                     if (!File.Exists(localJsonPath))
                     {
                         cardVm.State = TemplateState.NotDownloaded;
-                        // 设置一个默认的占位图（请确保项目里有这个资源，或者留空显示纯色）
+                        // 占位图
                         cardVm.ThumbnailImage = null;
                     }
                     else
                     {
-                        // 文件存在，校验哈希
-                        string localHash = UpdateHelper.ComputeFileMd5(localJsonPath);
-
-                        // 如果 ServerHash 为空(旧列表可能没有)，则默认为 Ready
-                        if (string.IsNullOrEmpty(cardVm.ServerHash) ||
-                            string.Equals(localHash, cardVm.ServerHash, StringComparison.OrdinalIgnoreCase))
+                        // 是自定义模板，不检查更新
+                        if (child.IsCustomTemplate)
                         {
                             cardVm.State = TemplateState.Ready;
                         }
                         else
                         {
-                            cardVm.State = TemplateState.UpdateAvailable;
+                            // 文件存在，校验哈希
+                            string localHash = UpdateHelper.ComputeFileMd5(localJsonPath);
+
+                            // 如果 ServerHash 为空(旧列表可能没有)，则默认为 Ready
+                            if (string.IsNullOrEmpty(cardVm.ServerHash) ||
+                                string.Equals(localHash, cardVm.ServerHash, StringComparison.OrdinalIgnoreCase))
+                            {
+                                cardVm.State = TemplateState.Ready;
+                            }
+                            else
+                            {
+                                cardVm.State = TemplateState.UpdateAvailable;
+                            }
                         }
 
                         // 文件存在，使用真实的缩略图
@@ -1711,6 +1778,121 @@ namespace GeoChemistryNexus.ViewModels
                 {
                     CollectTemplatesFromNode(child);
                 }
+            }
+        }
+
+        /// <summary>
+        /// 删除自定义模板
+        /// </summary>
+        [RelayCommand]
+        private async Task DeleteCustomTemplate(TemplateCardViewModel card)
+        {
+            if (card == null || !card.IsCustomTemplate) return;
+
+            bool confirm = await MessageHelper.ShowAsyncDialog(
+                "确定要删除该自定义模板吗？",
+                LanguageService.Instance["Cancel"],
+                LanguageService.Instance["Confirm"]);
+
+            if (!confirm) return;
+
+            try
+            {
+                // 1. 确定要删除的路径
+                // card.TemplatePath 是相对路径
+                string customRoot = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Custom");
+                string folderToDelete = Path.Combine(customRoot, card.TemplatePath);
+                string graphMapPathToRemove = card.TemplatePath;
+
+                // 2. 删除文件目录
+                if (Directory.Exists(folderToDelete))
+                {
+                    Directory.Delete(folderToDelete, true);
+                }
+
+                // 3. 更新列表 JSON
+                string customListPath = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "GraphMapCustomList.json");
+                GraphMapTemplateParser.RemoveCustomTemplateEntry(customListPath, graphMapPathToRemove);
+
+                // 4. 刷新界面
+                // 重新加载所有模板（包括更新后的自定义列表）
+                InitTemplate();
+
+                InitializeBreadcrumbs(); // 重置面包屑到初始状态
+                LoadAllTemplateCards();  // 重新加载全部模板卡片
+
+                MessageHelper.Success("模板删除成功");
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.Error($"删除失败: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 导出自定义模板
+        /// </summary>
+        [RelayCommand]
+        private void ExportCustomTemplate(TemplateCardViewModel card)
+        {
+            if (card == null || !card.IsCustomTemplate) return;
+
+            try
+            {
+                // 1. 确定源目录
+                string customRoot = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Custom");
+                string sourceDir = Path.Combine(customRoot, card.TemplatePath);
+
+                if (!Directory.Exists(sourceDir))
+                {
+                    MessageHelper.Error("模板源文件不存在");
+                    return;
+                }
+
+                // 2. 选择保存位置
+                var dialog = new VistaSaveFileDialog();
+                dialog.Filter = "Zip Files (*.zip)|*.zip";
+                dialog.DefaultExt = "zip";
+                dialog.FileName = $"{card.Name}.zip";
+
+                if (dialog.ShowDialog() == true)
+                {
+                    string destinationPath = dialog.FileName;
+
+                    // 如果目标文件已存在，删除它（ZipFile.CreateFromDirectory 不会覆盖）
+                    if (File.Exists(destinationPath))
+                    {
+                        File.Delete(destinationPath);
+                    }
+
+                    // 3. 打包
+                    System.IO.Compression.ZipFile.CreateFromDirectory(sourceDir, destinationPath);
+
+                    MessageHelper.Success("模板导出成功");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.Error($"导出失败: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 打开模板所在位置
+        /// </summary>
+        [RelayCommand]
+        private void OpenTemplateLocation(TemplateCardViewModel card)
+        {
+            if (card == null) return;
+
+            string path = GetTemplateDirectory(card.TemplatePath);
+            if (Directory.Exists(path))
+            {
+                System.Diagnostics.Process.Start("explorer.exe", path);
+            }
+            else
+            {
+                MessageHelper.Warning("目录不存在");
             }
         }
 
@@ -1743,10 +1925,32 @@ namespace GeoChemistryNexus.ViewModels
         {
             TemplateCards.Clear();
 
-            // 构建基础路径
-            var baseDir = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Default", templateNode.GraphMapPath);
-            var thumbnailPath = Path.Combine(baseDir, "thumbnail.jpg");
-            var jsonPath = Path.Combine(baseDir, $"{templateNode.GraphMapPath}.json");
+            string jsonPath;
+            string thumbnailPath = null;
+
+            if (templateNode.IsCustomTemplate)
+            {
+                // 自定义模板路径构建逻辑：Custom/{GraphMapPath}/{GraphMapPath}.json
+                if (!string.IsNullOrEmpty(templateNode.GraphMapPath))
+                {
+                    var customRoot = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Custom");
+                    var templateDir = Path.Combine(customRoot, templateNode.GraphMapPath);
+
+                    jsonPath = Path.Combine(templateDir, $"{templateNode.GraphMapPath}.json");
+                    thumbnailPath = Path.Combine(templateDir, "thumbnail.jpg");
+                }
+                else
+                {
+                    jsonPath = string.Empty;
+                }
+            }
+            else
+            {
+                // 构建基础路径
+                var baseDir = GetTemplateDirectory(templateNode.GraphMapPath);
+                thumbnailPath = Path.Combine(baseDir, "thumbnail.jpg");
+                jsonPath = Path.Combine(baseDir, $"{templateNode.GraphMapPath}.json");
+            }
 
             // 初始化 ViewModel
             var cardVm = new TemplateCardViewModel
@@ -1755,6 +1959,7 @@ namespace GeoChemistryNexus.ViewModels
                 TemplatePath = templateNode.GraphMapPath,
                 Category = GetNodePath(templateNode),
                 ServerHash = templateNode.FileHash,
+                IsCustomTemplate = templateNode.IsCustomTemplate,
 
                 // 注入回调
                 OpenHandler = (vm) => SelectTemplateCardCommand.ExecuteAsync(vm),
@@ -1764,17 +1969,25 @@ namespace GeoChemistryNexus.ViewModels
             // 判断文件状态并加载图片
             if (File.Exists(jsonPath))
             {
-                // 计算哈希以确定是否需要更新（逻辑保持与 LoadAllTemplateCards 一致）
-                string localHash = UpdateHelper.ComputeFileMd5(jsonPath);
-
-                if (string.IsNullOrEmpty(cardVm.ServerHash) ||
-                    string.Equals(localHash, cardVm.ServerHash, StringComparison.OrdinalIgnoreCase))
+                // 是自定义模板，不检查更新
+                if (templateNode.IsCustomTemplate)
                 {
                     cardVm.State = TemplateState.Ready;
                 }
                 else
                 {
-                    cardVm.State = TemplateState.UpdateAvailable;
+                    // 计算哈希以确定是否需要更新（逻辑保持与 LoadAllTemplateCards 一致）
+                    string localHash = UpdateHelper.ComputeFileMd5(jsonPath);
+
+                    if (string.IsNullOrEmpty(cardVm.ServerHash) ||
+                        string.Equals(localHash, cardVm.ServerHash, StringComparison.OrdinalIgnoreCase))
+                    {
+                        cardVm.State = TemplateState.Ready;
+                    }
+                    else
+                    {
+                        cardVm.State = TemplateState.UpdateAvailable;
+                    }
                 }
 
                 // 加载图片
@@ -1864,8 +2077,8 @@ namespace GeoChemistryNexus.ViewModels
             IsPlotMode = true;
 
             // 加载模板文件
-            var templateFilePath = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Default"
-                                            , card.TemplatePath, $"{card.TemplatePath}.json");
+            var baseDir = GetTemplateDirectory(card.TemplatePath);
+            var templateFilePath = Path.Combine(baseDir, $"{card.TemplatePath}.json");
             _currentTemplateFilePath = templateFilePath;
             await LoadAndBuildLayers(templateFilePath);
 
@@ -1873,8 +2086,7 @@ namespace GeoChemistryNexus.ViewModels
 
             // 加载底图模板的说明文件
             var tempRTFfile = FileHelper.FindFileOrGetFirstWithExtension(
-                    Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Default",
-                    card.TemplatePath), LanguageService.CurrentLanguage,".rtf");
+                    baseDir, LanguageService.CurrentLanguage, ".rtf");
             RtfHelper.LoadRtfToRichTextBox(tempRTFfile, _richTextBox);
 
             // 加载数据表格控件
@@ -1902,6 +2114,9 @@ namespace GeoChemistryNexus.ViewModels
             IsTemplateMode = true;
             IsPlotMode = false;
             RibbonTabIndex = 0;
+
+            // 重新加载所有模板（包括更新后的自定义列表）
+            InitTemplate();
 
             InitializeBreadcrumbs(); // 重置面包屑到初始状态
             LoadAllTemplateCards();  // 重新加载全部模板卡片
@@ -1980,12 +2195,10 @@ namespace GeoChemistryNexus.ViewModels
 
             foreach (var layer in allPlotLayers)
             {
-                // 因为 LayerItemViewModel 实现了 IPlotLayer，所以可以直接比较引用
                 // 检查是否是主选中项或者在多选列表中
                 if (layer == _selectedLayer || (layer is LayerItemViewModel vm && SelectedLayers.Contains(vm)))
                 {
-                    // 选中项：恢复正常显示 (这样你修改颜色后能立即看到新颜色)
-                    // 如果你希望选中项有红色边框高亮，这里也可以改调 layer.Highlight();
+                    // 选中项：恢复正常显示
                     layer.Restore();
                 }
                 else
@@ -2286,6 +2499,9 @@ namespace GeoChemistryNexus.ViewModels
             {
                 WpfPlot1.Plot.Axes.SetLimits(currentAxisLimits.Value);
             }
+
+            // 重新应用选中状态的高亮/遮罩效果
+            ReapplySelectionVisualState();
 
             WpfPlot1.Refresh();
         }
@@ -2734,8 +2950,7 @@ namespace GeoChemistryNexus.ViewModels
                 preserveLimits = false;
             }
 
-            // 对于单选或多选，都需要刷新整个图表以应用更改（特别是对于像坐标轴这样需要重运行 Render 逻辑的对象）
-            // 仅仅调用 WpfPlot1.Refresh() 是不够的，因为坐标轴的刻度生成逻辑在 ViewModel 的 Render 方法中
+            // 对于单选或多选，都需要刷新整个图表
             RefreshPlotFromLayers(preserveLimits);
         }
 
@@ -3006,12 +3221,11 @@ namespace GeoChemistryNexus.ViewModels
             // 获取数据
             string language = newTemplateControl.Language;
             string category = newTemplateControl.CategoryHierarchy;
-            string path = newTemplateControl.FilePath;
             string plotType = newTemplateControl.PlotType;
 
             // 检查数据是否有效
             if (string.IsNullOrWhiteSpace(language) || string.IsNullOrWhiteSpace(category)
-                 || string.IsNullOrEmpty(plotType) || string.IsNullOrWhiteSpace(path))
+                 || string.IsNullOrEmpty(plotType))
             {
                 // 所有字段均为必填项！
                 MessageHelper.Warning(LanguageService.Instance["all_fields_required"]);
@@ -3030,21 +3244,70 @@ namespace GeoChemistryNexus.ViewModels
                 return;
             }
 
-            var allCategory = category.Split(new[] { " > " }, StringSplitOptions.RemoveEmptyEntries)
-                                .Select(lang => lang.Trim())
-                                .ToList();
+            // 获取富文本形式的分类层级数据
+            var categoryParts = newTemplateControl.GetCategoryParts().ToList();
 
-            if(allCategory.Count < 2)
+            if (categoryParts.Count < 2)
             {
                 // 分类结构必须大于等于2！
                 MessageHelper.Warning(LanguageService.Instance["category_structure_min_two"]);
                 return;
             }
 
-            _currentTemplateFilePath = Path.Combine(path, $"{allCategory[allCategory.Count-2]}_{allCategory[allCategory.Count - 1]}.json");
+            // 1. 确定默认语言
+            string defaultLanguage = allLanguages.First();
 
-            // 创建新底图
-            CurrentTemplate = GraphMapTemplate.CreateDefault(allLanguages, plotType, category);
+            // 2. 为所有支持的语言构建分类路径字符串
+            var categoryTranslations = new Dictionary<string, string>();
+
+            foreach (var lang in allLanguages)
+            {
+                var pathParts = new List<string>();
+
+                foreach (var part in categoryParts)
+                {
+                    string partName = string.Empty;
+
+                    // 尝试获取本地化名称
+                    if (part.LocalizedNames != null && part.LocalizedNames.ContainsKey(lang))
+                    {
+                        partName = part.LocalizedNames[lang];
+                    }
+                    else
+                    {
+                        // 如果没有对应的本地化名称（或者是手动输入的），则使用默认显示名称
+                        partName = part.DisplayName;
+                    }
+                    
+                    pathParts.Add(partName);
+                }
+
+                // 组合成路径字符串
+                categoryTranslations[lang] = string.Join(" > ", pathParts);
+            }
+
+            // 3. 构建 NodeList 对象
+            var localizedCategory = new LocalizedString
+            {
+                Default = defaultLanguage,
+                Translations = categoryTranslations
+            };
+
+            // 使用最后两级作为文件名的一部分（使用默认语言或显示名称）
+            string lastPart = categoryParts[categoryParts.Count - 1].DisplayName;
+            string secondLastPart = categoryParts[categoryParts.Count - 2].DisplayName;
+            string folderName = $"{secondLastPart}_{lastPart}";
+
+            // 使用自定义模板文件夹路径
+            string customDir = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Custom");
+            
+            // 构建路径：Custom/A_B/A_B.json
+            string directoryPath = Path.Combine(customDir, folderName);
+
+            _currentTemplateFilePath = Path.Combine(directoryPath, $"{folderName}.json");
+
+            // 创建新底图，传入 LocalizedString
+            CurrentTemplate = GraphMapTemplate.CreateDefault(allLanguages, plotType, localizedCategory);
 
             IsTemplateMode = false;
             IsPlotMode = true;
@@ -3132,6 +3395,183 @@ namespace GeoChemistryNexus.ViewModels
 
             // 如果路径存在，直接在原路径上保存
             PerformSave(_currentTemplateFilePath);
+        }
+
+        private class GraphMapListItem
+        {
+            public LocalizedString NodeList { get; set; }
+            public string GraphMapPath { get; set; }
+            public string FileHash { get; set; }
+        }
+
+        /// <summary>
+        /// 导入自定义绘图模板
+        /// </summary>
+        [RelayCommand]
+        private async Task ImportCustomTemplate()
+        {
+            var openFileDialog = new VistaOpenFileDialog
+            {
+                Title = "导入自定义绘图模板",
+                Filter = "Zip Files (*.zip)|*.zip|All Files (*.*)|*.*",
+                DefaultExt = ".zip",
+                CheckFileExists = true,
+                Multiselect = false
+            };
+
+            if (openFileDialog.ShowDialog() != true) return;
+
+            try
+            {
+                string zipPath = openFileDialog.FileName;
+                
+                // 1. 验证 ZIP 包
+                string validTemplateName = null;
+                GraphMapTemplate template = null;
+                
+                await Task.Run(() => 
+                {
+                    try
+                    {
+                        using (var archive = ZipFile.OpenRead(zipPath))
+                        {
+                            foreach (var entry in archive.Entries)
+                            {
+                                if (entry.FullName.EndsWith(".json", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    try 
+                                    {
+                                        using (var stream = entry.Open())
+                                        using (var reader = new StreamReader(stream))
+                                        {
+                                            string jsonContent = reader.ReadToEnd();
+                                            var options = new JsonSerializerOptions 
+                                            { 
+                                                PropertyNameCaseInsensitive = true, 
+                                                Converters = { new System.Text.Json.Serialization.JsonStringEnumConverter() }
+                                            };
+                                            var tempTemplate = JsonSerializer.Deserialize<GraphMapTemplate>(jsonContent, options);
+                                            
+                                            // 简单验证：检查关键属性是否不为空
+                                            if (tempTemplate != null && tempTemplate.Info != null)
+                                            {
+                                                template = tempTemplate;
+                                                // 使用 JSON 文件名作为模板名
+                                                validTemplateName = Path.GetFileNameWithoutExtension(entry.Name);
+                                                break; 
+                                            }
+                                        }
+                                    }
+                                    catch
+                                    {
+                                        // 忽略解析失败的文件
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        // ZIP 打开失败
+                    }
+                });
+
+                if (string.IsNullOrEmpty(validTemplateName) || template == null)
+                {
+                    MessageHelper.Error("模板文件已损坏或未包含有效的模板 JSON 文件。");
+                    return;
+                }
+
+                // 2. 准备目标路径
+                string fileNameNoExt = validTemplateName;
+                string customDir = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Custom", fileNameNoExt);
+                
+                if (Directory.Exists(customDir))
+                {
+                    bool confirm = await MessageHelper.ShowAsyncDialog(
+                        $"自定义模板 '{fileNameNoExt}' 已存在，是否覆盖？",
+                        "取消",
+                        "覆盖");
+
+                    if (!confirm) return;
+
+                    try
+                    {
+                        Directory.Delete(customDir, true);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageHelper.Error($"无法删除旧目录: {ex.Message}");
+                        return;
+                    }
+                }
+
+                Directory.CreateDirectory(customDir);
+
+                // 3. 解压所有内容
+                await Task.Run(() =>
+                {
+                    ZipFile.ExtractToDirectory(zipPath, customDir);
+                });
+
+                // 4. 更新列表记录 (GraphMapCustomList.json)
+                // 确保 NodeList 完整性
+                if (template.NodeList == null) template.NodeList = new LocalizedString();
+
+                // 确保有中文路径
+                if (!template.NodeList.Translations.ContainsKey("zh-CN"))
+                {
+                    template.NodeList.Translations["zh-CN"] = fileNameNoExt;
+                }
+
+                // 确保有英文路径
+                if (!template.NodeList.Translations.ContainsKey("en-US"))
+                {
+                    template.NodeList.Translations["en-US"] = fileNameNoExt;
+                }
+                template.NodeList.Default = "en-US";
+
+                string customListPath = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "GraphMapCustomList.json");
+                var options = new JsonSerializerOptions 
+                { 
+                    PropertyNameCaseInsensitive = true, 
+                    WriteIndented = true,
+                    Converters = { new System.Text.Json.Serialization.JsonStringEnumConverter() }
+                };
+                
+                string listJson = File.Exists(customListPath) ? await File.ReadAllTextAsync(customListPath) : "[]";
+                var list = JsonSerializer.Deserialize<List<GraphMapListItem>>(listJson, options) ?? new List<GraphMapListItem>();
+
+                // 移除旧项（如果存在）
+                var existingItem = list.FirstOrDefault(x => x.GraphMapPath.Equals(fileNameNoExt, StringComparison.OrdinalIgnoreCase));
+                if (existingItem != null)
+                {
+                    list.Remove(existingItem);
+                }
+
+                // 添加新项
+                list.Add(new GraphMapListItem
+                {
+                    NodeList = template.NodeList,
+                    GraphMapPath = fileNameNoExt,
+                    FileHash = "" 
+                });
+
+                // 保存列表
+                string newListJson = JsonSerializer.Serialize(list, options);
+                await File.WriteAllTextAsync(customListPath, newListJson);
+
+                // 5. 刷新界面
+                InitTemplate();
+                LoadAllTemplateCards();
+                InitializeBreadcrumbs();
+
+                MessageHelper.Success(LanguageService.Instance["template_saved_successfully"]);
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.Error(LanguageService.Instance["save_template_failed"] + $": {ex.Message}");
+            }
         }
 
         /// <summary>
@@ -3581,6 +4021,125 @@ namespace GeoChemistryNexus.ViewModels
 
 
         /// <summary>
+        /// 检查类别结构更新的命令
+        /// </summary>
+        [RelayCommand]
+        private async Task CheckForCategoryUpdates()
+        {
+            try
+            {
+                // 获取本地 PlotTemplateCategories.json
+                string localListPath = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "PlotTemplateCategories.json");
+
+                // 计算本地文件的哈希值
+                string localHash = UpdateHelper.ComputeFileMd5(localListPath);
+
+                // 从服务器获取 server_info.json
+                string jsonContent = await UpdateHelper.GetUrlContentAsync();
+
+                // 反序列化 JSON
+                var serverInfo = JsonSerializer.Deserialize<ServerInfo>(jsonContent);
+
+                if (serverInfo == null) return;
+
+                // 对比哈希值 (不区分大小写)
+                if (!string.Equals(localHash, serverInfo.ListPlotCategoriesHash, StringComparison.OrdinalIgnoreCase))
+                {
+                    // 哈希不匹配，提示用户更新
+                    bool confirmUpdate = await MessageHelper.ShowAsyncDialog(
+                        LanguageService.Instance["new_drawing_template_library_version_detected"], // Reusing the same string or I should have added a new one? User said "same logic", so reusing "new version detected" is probably fine or generic enough.
+                        LanguageService.Instance["Cancel"],
+                        LanguageService.Instance["Confirm"]);
+
+                    if (confirmUpdate)
+                    {
+                        await PerformCategoryListUpdate(serverInfo.ListPlotCategoriesHash);
+                    }
+                }
+                else
+                {
+                    // 当前列表已是最新版本。
+                    MessageHelper.Success(LanguageService.Instance["current_template_list_latest_version"]);
+                }
+            }
+            catch (HttpRequestException netEx)
+            {
+                MessageHelper.Error(LanguageService.Instance["network_connection_failed_cannot_check_for_updates"] + $"{netEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.Error(LanguageService.Instance["error_occurred_while_checking_for_updates"] + $"{ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 执行具体的类别列表更新逻辑
+        /// </summary>
+        /// <param name="expectedHash">从服务器 server_info.json 获取的期望哈希值</param>
+        private async Task PerformCategoryListUpdate(string expectedHash = null)
+        {
+            // 生成一个唯一的临时文件路径
+            string tempFilePath = Path.GetTempFileName();
+            string localListPath = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "PlotTemplateCategories.json");
+
+            try
+            {
+                // 服务器端的 PlotTemplateCategories.json 下载地址
+                string listDownloadUrl = "https://geochemistrynexus-1303234197.cos.ap-hongkong.myqcloud.com/PlotTemplateCategories.json";
+
+                // 下载到临时文件
+                await UpdateHelper.DownloadFileAsync(listDownloadUrl, tempFilePath);
+
+                // 校验数据完整性
+                if (!string.IsNullOrEmpty(expectedHash))
+                {
+                    string downloadedHash = UpdateHelper.ComputeFileMd5(tempFilePath);
+                    if (!string.Equals(downloadedHash, expectedHash, StringComparison.OrdinalIgnoreCase))
+                    {
+                        throw new Exception(LanguageService.Instance["downloaded_file_hash_mismatch"]);
+                    }
+                }
+
+                // JSON 格式校验
+                try
+                {
+                    string jsonContent = File.ReadAllText(tempFilePath);
+                    JsonDocument.Parse(jsonContent);
+                }
+                catch (JsonException)
+                {
+                    throw new Exception(LanguageService.Instance["downloaded_content_not_valid_json"]);
+                }
+
+                // 校验通过，安全覆盖本地文件
+                string dir = Path.GetDirectoryName(localListPath);
+                if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
+
+                File.Move(tempFilePath, localListPath, true);
+                
+                MessageHelper.Success(LanguageService.Instance["template_list_update_success_refreshing"]);
+
+                // 发送消息通知 UI 重新加载配置
+                WeakReferenceMessenger.Default.Send(new CategoryConfigUpdatedMessage("Updated"));
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.Error(LanguageService.Instance["update_list_file_failed"] + $" {ex.Message}");
+            }
+            finally
+            {
+                if (File.Exists(tempFilePath))
+                {
+                    try
+                    {
+                        File.Delete(tempFilePath);
+                    }
+                    catch { }
+                }
+            }
+        }
+
+        /// <summary>
         /// “添加箭头”按钮的命令
         /// </summary>
         [RelayCommand]
@@ -3700,17 +4259,8 @@ namespace GeoChemistryNexus.ViewModels
 
                 if (parent != null)
                 {
-                    // 预测父节点是否会被删除：如果当前子节点数 <= 1 (且包含当前节点)，删除后变为0
-                    // 注意：如果有多个节点在同一个父节点下被选中删除，需要小心处理。
-                    // 这里的预测只是为了 Undo 时知道是否需要恢复父节点。
-                    // 实际上，我们可以在 Redo 逻辑中记录真正发生了什么，但为了结构简单，我们在 Redo 中执行标准逻辑，
-                    // 在 Undo 中检查父节点是否存在。
-                    // 为了更准确，我们记录父节点在 LayerTree 的索引（如果是根分类）
+                    // 记录父节点在 LayerTree 的索引
                     parentIndex = LayerTree.IndexOf(parent);
-                    
-                    // 只有当父节点只剩这一个将被删除的子节点时，它才会被删除
-                    // 但考虑到批量删除，这个预测比较复杂。
-                    // 简化策略：Undo 时，如果 Parent 不在 LayerTree 且不在任何其他位置，就加回去。
                 }
 
                 deletedInfos.Add((layer, layer.Plottable, parent, index, false, parentIndex));
@@ -3988,6 +4538,29 @@ namespace GeoChemistryNexus.ViewModels
                 // 更新或生成新的缩略图
                 string thumbnailPath = Path.Combine(directoryPath, "thumbnail.jpg");
                 WpfPlot1.Plot.Save(thumbnailPath, 400, 300);
+
+                // 同步信息到 GraphMapCustomList.json
+                string appPath = FileHelper.GetAppPath();
+                string customRoot = Path.Combine(appPath, "Data", "PlotData", "Custom");
+                
+                // 检查是否在 Custom 目录下
+                if (filePath.StartsWith(customRoot, StringComparison.OrdinalIgnoreCase))
+                {
+                    // 获取模板文件夹名（假设结构为 Custom/TemplateName/TemplateName.json）
+                    string relativePath = Path.GetRelativePath(customRoot, filePath);
+                    string[] parts = relativePath.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+
+                    if (parts.Length >= 2)
+                    {
+                        // 取第一层目录名作为 GraphMapPath (即 A_B 文件夹)
+                        string graphMapPath = parts[0];
+                        
+                        string listPath = Path.Combine(appPath, "Data", "PlotData", "GraphMapCustomList.json");
+                        string fileHash = UpdateHelper.ComputeFileMd5(filePath);
+                        
+                        GraphMapTemplateParser.AddCustomTemplateEntry(listPath, CurrentTemplate.NodeList, graphMapPath, fileHash);
+                    }
+                }
 
                 MessageHelper.Success(LanguageService.Instance["template_saved_successfully"]);
             }

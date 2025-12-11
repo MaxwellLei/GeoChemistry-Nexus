@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
@@ -19,6 +19,8 @@ namespace GeoChemistryNexus.ViewModels
 
         // 服务器端哈希 (用于校验)
         public string ServerHash { get; set; }
+
+        public bool IsCustomTemplate { get; set; }
 
         [ObservableProperty]
         private ImageSource _thumbnailImage; // 支持动态修改（下载前是默认图，下载后是真实图）

@@ -790,6 +790,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Check for Category Updates 的本地化字符串。
+        /// </summary>
+        internal static string check_for_category_updates {
+            get {
+                return ResourceManager.GetString("check_for_category_updates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Check for Template Updates 的本地化字符串。
         /// </summary>
         internal static string check_for_template_updates {
@@ -1020,6 +1029,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string current_template_list_latest_version {
             get {
                 return ResourceManager.GetString("current_template_list_latest_version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Custom Templates 的本地化字符串。
+        /// </summary>
+        internal static string custom_templates {
+            get {
+                return ResourceManager.GetString("custom_templates", resourceCulture);
             }
         }
         

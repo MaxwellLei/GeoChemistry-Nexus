@@ -1,4 +1,4 @@
-﻿using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -37,5 +37,9 @@ namespace GeoChemistryNexus.Models
         [JsonPropertyName("file_hash")]
         public string FileHash { get; set; }
 
+        /// <summary>
+        /// 标识是否为自定义模板
+        /// </summary>
+        public bool IsCustomTemplate { get; set; }
     }
 }

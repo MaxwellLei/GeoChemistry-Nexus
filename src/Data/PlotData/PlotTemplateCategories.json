@@ -1,0 +1,32 @@
+{
+  "Level1": [
+    {
+      "en-US": "Igneous Petrology",
+      "zh-CN": "岩浆岩石学"
+    }
+  ],
+  "Level2": [
+    {
+      "en-US": "Rock Classification Diagrams",
+      "zh-CN": "岩石分类图解"
+    },
+    {
+      "en-US": "Tectonic Discrimination Diagrams",
+      "zh-CN": "构造环境判别图解"
+    }
+  ],
+  "Level3": [
+    {
+      "en-US": "Granitoids",
+      "zh-CN": "花岗岩类"
+    },
+    {
+      "en-US": "Andesitic Rocks",
+      "zh-CN": "安山岩类"
+    },
+    {
+      "en-US": "Basaltic Rocks",
+      "zh-CN": "玄武岩类"
+    }
+  ]
+}
