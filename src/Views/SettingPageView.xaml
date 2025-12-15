@@ -1,4 +1,4 @@
-﻿<Grid x:Class="GeoChemistryNexus.Views.SettingPageView"
+<Grid x:Class="GeoChemistryNexus.Views.SettingPageView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -28,18 +28,19 @@
                     </WrapPanel>
                 </RadioButton>
             </Border>
-            <!--<Border Height="60" Margin="20 0 20 0">
-                <RadioButton Name="RadioButton2" Style="{StaticResource SideControlBar2}" GroupName="SettingSideBar"
-                                    Margin="0,0,-300,0" Command="{Binding ExteriorPage}" >
-                    <WrapPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                        <TextBlock Text="&#xe9b9;" Foreground="Black" FontFamily="../Data/Icon/#iconfont" FontSize="20"
-                            VerticalAlignment="Center" Margin="0 0 8 0"/>
-                        <TextBlock FontSize="16" Text="个性化" Foreground="Black" VerticalAlignment="Center"/>
-                    </WrapPanel>
-                </RadioButton>
-            </Border>-->
             <Border Height="60" Margin="20 0 20 0">
                 <RadioButton Name="RadioButton2" Style="{StaticResource SideControlBar2}" GroupName="SettingSideBar"
+                                    Margin="0,0,-300,0" Command="{Binding PlotPage}">
+                    <WrapPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                        <TextBlock Text="&#xe66f;" Foreground="Black" FontFamily="../Data/Icon/#iconfont" FontSize="20"
+                            VerticalAlignment="Center" Margin="0 0 8 0"/>
+                        <!--绘图设置-->
+                        <TextBlock FontSize="16" Text="{Binding [PlotSetting],Source={x:Static lg:LanguageService.Instance}}" Foreground="Black" VerticalAlignment="Center"/>
+                    </WrapPanel>
+                </RadioButton>
+            </Border>
+            <Border Height="60" Margin="20 0 20 0">
+                <RadioButton Name="RadioButton3" Style="{StaticResource SideControlBar2}" GroupName="SettingSideBar"
                                     Margin="0,0,-300,0" Command="{Binding AboutPage}" >
                     <WrapPanel HorizontalAlignment="Center" Orientation="Horizontal">
                         <TextBlock Text="&#xe61d;" Foreground="Black" FontFamily="../Data/Icon/#iconfont" FontSize="20"

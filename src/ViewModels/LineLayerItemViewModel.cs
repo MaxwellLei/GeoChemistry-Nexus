@@ -1,4 +1,4 @@
-﻿using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Interfaces;
 using GeoChemistryNexus.Models;
 using ScottPlot;
@@ -17,6 +17,19 @@ namespace GeoChemistryNexus.ViewModels
             : base(LanguageService.Instance["line"] + $" {index + 1}")
         {
             LineDefinition = lineDefinition;
+            // 监听 Model 变化
+            LineDefinition.PropertyChanged += (s, e) => OnRefreshRequired();
+            // 监听子对象
+            if (LineDefinition.Start != null) LineDefinition.Start.PropertyChanged += (s, e) => OnRefreshRequired();
+            if (LineDefinition.End != null) LineDefinition.End.PropertyChanged += (s, e) => OnRefreshRequired();
+            
+            // 监听 Start/End 对象本身的替换
+            LineDefinition.PropertyChanged += (s, e) => {
+                if (e.PropertyName == nameof(LineDefinition.Start) && LineDefinition.Start != null)
+                    LineDefinition.Start.PropertyChanged += (sender, args) => OnRefreshRequired();
+                if (e.PropertyName == nameof(LineDefinition.End) && LineDefinition.End != null)
+                    LineDefinition.End.PropertyChanged += (sender, args) => OnRefreshRequired();
+            };
         }
 
         // 渲染自己

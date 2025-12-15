@@ -1,4 +1,4 @@
-﻿using GeoChemistryNexus.Models;
+using GeoChemistryNexus.Models;
 using Jint.Runtime;
 using Jint;
 using System;
@@ -35,9 +35,6 @@ namespace GeoChemistryNexus.Controls
             get { return (ScriptDefinition)GetValue(ScriptDefinitionProperty); }
             set { SetValue(ScriptDefinitionProperty, value); }
         }
-
-        // 用于追踪内容是否展开的状态变量，默认为展开
-        private bool _isExpanded = true;
 
         public ScriptDefinitionControl()
         {
@@ -83,47 +80,6 @@ namespace GeoChemistryNexus.Controls
             ScriptBodyTextBox.SelectionChanged += ScriptBodyTextBox_SelectionChanged;
         }
 
-        /// <summary>
-        /// 处理标题栏点击事件，用于展开/折叠内容
-        /// </summary>
-        private void TitleHeader_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            // 切换展开/折叠状态
-            _isExpanded = !_isExpanded;
-            ToggleContentArea();
-        }
-
-        /// <summary>
-        /// 根据状态展开或折叠内容区域，并应用动画
-        /// </summary>
-        private void ToggleContentArea()
-        {
-            double targetAngle;
-
-            if (_isExpanded)
-            {
-                // 展开内容
-                ContentBorder.Visibility = Visibility.Visible;
-                targetAngle = 0; // 箭头朝下
-            }
-            else
-            {
-                // 折叠内容
-                ContentBorder.Visibility = Visibility.Collapsed;
-                targetAngle = -90; // 箭头朝右
-            }
-
-            // 创建并应用旋转动画，使箭头变化更平滑
-            var rotateAnimation = new DoubleAnimation
-            {
-                To = targetAngle,
-                Duration = TimeSpan.FromMilliseconds(200),
-                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
-            };
-
-            ArrowRotation.BeginAnimation(RotateTransform.AngleProperty, rotateAnimation);
-        }
-
         private void ScriptBodyTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             UpdateStatus("已修改");
@@ -152,22 +108,6 @@ namespace GeoChemistryNexus.Controls
         private void UpdateStatus(string status)
         {
             StatusTextBlock.Text = status;
-        }
-
-        private void FormatButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                ScriptBodyTextBox.Text = "";
-
-                // 格式化成功
-                UpdateStatus(LanguageService.Instance["code_formatted"]);
-            }
-            catch (Exception ex)
-            {
-                // 格式化失败
-                UpdateStatus(LanguageService.Instance["format_failed"] + ex.Message);
-            }
         }
 
         private void ValidateButton_Click(object sender, RoutedEventArgs e)

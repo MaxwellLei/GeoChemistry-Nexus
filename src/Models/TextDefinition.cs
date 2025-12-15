@@ -1,8 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using GeoChemistryNexus.Helpers;
-using GeoChemistryNexus.PropertyEditor;
 using System.ComponentModel;
-using HandyControl.Controls;
 using GeoChemistryNexus.Converter;
 using System.Windows;
 using ScottPlot;
@@ -20,7 +18,6 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("content_and_position")]       // 内容与位置
         [property: LocalizedDisplayName("start_coordinates")]     // 起始坐标
-        [property: Editor(typeof(PointDefinitionPropertyEditor), typeof(PropertyEditorBase))]
         private PointDefinition _startAndEnd = new PointDefinition();
 
         /// <summary>
@@ -29,7 +26,6 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("content_and_position")]       // 内容与位置
         [property: LocalizedDisplayName("content")]       // 内容
-        [property: Editor(typeof(LocalizedStringPropertyEditor), typeof(PropertyEditorBase))]
         private LocalizedString _content = new LocalizedString();
 
         /// <summary>
@@ -38,7 +34,7 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("content_and_position")]       // 内容与位置
         [property: LocalizedDisplayName("alignment")]     // 对齐方式
-        private System.Windows.HorizontalAlignment _contentHorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+        private TextAlignment _contentHorizontalAlignment = TextAlignment.Left;
 
 
         /// <summary>
@@ -47,7 +43,6 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("font_style")]        // 字体样式
         [property: LocalizedDisplayName("font_name")]     // 字体名称
-        [property: Editor(typeof(FontFamilyPropertyEditor), typeof(PropertyEditorBase))]
         private string _family = "Arial";
 
 
@@ -73,7 +68,6 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("font_style")]        // 字体样式
         [property: LocalizedDisplayName("font_color")]    //字体颜色
-        [property: Editor(typeof(ColorPropertyEditor), typeof(ColorPropertyEditor))]
         private string _color = "#000000";
 
         /// <summary>
@@ -98,7 +92,6 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("background_and_border")]       // 背景与边框
         [property: LocalizedDisplayName("background_color")]     // 背景颜色
-        [property: Editor(typeof(ColorPropertyEditor), typeof(ColorPropertyEditor))]
         private string _backgroundColor = Colors.Transparent.ToHex();
 
         /// <summary>
@@ -107,7 +100,6 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("background_and_border")]       // 背景与边框
         [property: LocalizedDisplayName("border_color")]     // 边框颜色
-        [property: Editor(typeof(ColorPropertyEditor), typeof(ColorPropertyEditor))]
         private string _borderColor = Colors.Transparent.ToHex();
 
         /// <summary>
@@ -133,5 +125,12 @@ namespace GeoChemistryNexus.Models
         [property: LocalizedCategory("advanced_rendering")]        // 高级渲染
         [property: LocalizedDisplayName("anti_aliasing")]      // 抗锯齿
         private bool _antiAliasEnable = true;
+    }
+
+    public enum TextAlignment
+    {
+        Left,
+        Center,
+        Right
     }
 }

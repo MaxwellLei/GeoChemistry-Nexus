@@ -30,7 +30,7 @@
 
         <!-- Int/Double Editor -->
         <DataTemplate x:Key="NumericEditorTemplate">
-            <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" 
+            <hc:NumericUpDown Value="{Binding Value, UpdateSourceTrigger=PropertyChanged}" 
                      IsEnabled="{Binding IsEnabled}"
                      VerticalContentAlignment="Center"/>
         </DataTemplate>

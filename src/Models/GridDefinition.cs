@@ -1,7 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using ScottPlot;
 using System.ComponentModel;
-using GeoChemistryNexus.PropertyEditor;
 using GeoChemistryNexus.Helpers;
 using static GeoChemistryNexus.Models.LineDefinition;
 
@@ -23,7 +22,6 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("major_grid_line")] // 主网格线
         [property: LocalizedDisplayName("color")] // 颜色
-        [property: Editor(typeof(ColorPropertyEditor), typeof(ColorPropertyEditor))]
         private string _majorGridLineColor = "#1A000000";
 
         /// <summary>
@@ -65,7 +63,6 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("minor_grid_Line")] // 次网格线
         [property: LocalizedDisplayName("color")] // 颜色
-        [property: Editor(typeof(ColorPropertyEditor), typeof(ColorPropertyEditor))]
         private string _minorGridLineColor = "#0D000000";
 
         /// <summary>
@@ -108,7 +105,6 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("background_fill_1")] // 背景填充
         [property: LocalizedDisplayName("fill_color_1")] // 填充颜色 1
-        [property: Editor(typeof(ColorPropertyEditor), typeof(ColorPropertyEditor))]
         private string _gridFillColor1 = Colors.Transparent.ToHex();
 
 
@@ -118,7 +114,6 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("background_fill_2")] // 背景填充
         [property: LocalizedDisplayName("fill_color_2")] // 填充颜色 2
-        [property: Editor(typeof(ColorPropertyEditor), typeof(ColorPropertyEditor))]
         private string _gridFillColor2 = Colors.Transparent.ToHex();
     }
 }

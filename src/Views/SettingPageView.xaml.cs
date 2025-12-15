@@ -1,4 +1,4 @@
-﻿using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.ViewModels;
 using ScottPlot.Statistics;
 using System;
@@ -56,7 +56,7 @@ namespace GeoChemistryNexus.Views
                 To = new Thickness(0, 0, 0, 0),
                 EasingFunction = new QuadraticEase()
             };
-            for (int i = 1; i < 3; i++)
+            for (int i = 1; i < 4; i++)
             {
                 Storyboard.SetTargetName(marginAnim, "RadioButton" + i);
                 Storyboard.SetTargetProperty(marginAnim, new PropertyPath(MarginProperty));

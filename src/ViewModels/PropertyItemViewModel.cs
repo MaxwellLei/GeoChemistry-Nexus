@@ -131,9 +131,27 @@ namespace GeoChemistryNexus.ViewModels
             get => PropertyInfo.GetValue(_target);
             set
             {
-                if (!Equals(PropertyInfo.GetValue(_target), value))
+                object newValue = value;
+                try
                 {
-                    PropertyInfo.SetValue(_target, value);
+                    // Handle numeric conversions from double (common in UI controls like NumericUpDown)
+                    if (value is double d)
+                    {
+                        if (PropertyType == typeof(int)) newValue = Convert.ToInt32(d);
+                        else if (PropertyType == typeof(float)) newValue = Convert.ToSingle(d);
+                        else if (PropertyType == typeof(short)) newValue = Convert.ToInt16(d);
+                        else if (PropertyType == typeof(long)) newValue = Convert.ToInt64(d);
+                        else if (PropertyType == typeof(byte)) newValue = Convert.ToByte(d);
+                    }
+                }
+                catch
+                {
+                    // If conversion fails, keep original value
+                }
+
+                if (!Equals(PropertyInfo.GetValue(_target), newValue))
+                {
+                    PropertyInfo.SetValue(_target, newValue);
                     OnPropertyChanged(nameof(Value));
                 }
             }

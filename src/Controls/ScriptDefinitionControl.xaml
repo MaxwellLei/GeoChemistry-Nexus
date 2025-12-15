@@ -1,140 +1,147 @@
-﻿<UserControl x:Class="GeoChemistryNexus.Controls.ScriptDefinitionControl"
+<UserControl x:Class="GeoChemistryNexus.Controls.ScriptDefinitionControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:lg="clr-namespace:GeoChemistryNexus.Helpers"
              xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:models="clr-namespace:GeoChemistryNexus.Models"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Border BorderBrush="#DADADA" BorderThickness="1" CornerRadius="6" Background="White">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+             d:DesignHeight="600" d:DesignWidth="300">
+    <UserControl.Resources>
+        <Style TargetType="TextBlock" x:Key="LabelStyle">
+            <Setter Property="Foreground" Value="#666666"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
 
-            <Border Grid.Row="0" 
-                    x:Name="TitleHeader"
-                    Background="#EEEEEE" 
-                    BorderBrush="#DADADA" 
-                    BorderThickness="0,0,0,1"
-                    CornerRadius="4,4,0,0"
-                    Cursor="Hand"
-                    MouseLeftButtonDown="TitleHeader_MouseLeftButtonDown">
+        <Style TargetType="Expander" BasedOn="{StaticResource ExpanderBaseStyle}">
+            <Setter Property="IsExpanded" Value="True"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+        </Style>
 
-                <Grid Height="26" Margin="12,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+        <Style x:Key="ButtonIcon" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#F3F3F3"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#E0E0E0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
 
-                    <TextBlock Grid.Column="0" 
-                               Text="{Binding [script_definition],Source={x:Static lg:LanguageService.Instance}}" 
-                               FontWeight="SemiBold" 
-                               FontSize="12"
-                               VerticalAlignment="Center"
-                               Foreground="#333333"/>
+    <Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="15">
+                <!-- Header -->
+                <DockPanel LastChildFill="False" Margin="0,0,0,15">
+                    <TextBlock Text="{Binding [script_definition],Source={x:Static lg:LanguageService.Instance}}" FontWeight="Bold" FontSize="16" Foreground="#333"/>
+                </DockPanel>
 
-                    <Path Grid.Column="1" 
-                          x:Name="ExpandArrow"
-                          Data="M0,0 L4,4 L8,0 Z" 
-                          Fill="#666666" 
-                          VerticalAlignment="Center"
-                          RenderTransformOrigin="0.5,0.5">
-                        <Path.RenderTransform>
-                            <RotateTransform x:Name="ArrowRotation" Angle="0"/>
-                        </Path.RenderTransform>
-                    </Path>
-                </Grid>
-            </Border>
+                <!-- Settings -->
+                <Expander Header="{Binding [script_settings],Source={x:Static lg:LanguageService.Instance}}">
+                    <StackPanel Margin="8,5,8,5">
+                        <!-- Language -->
+                        <TextBlock Text="{Binding [script_language],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}" FontSize="10"/>
+                        <ComboBox x:Name="LanguageComboBox" 
+                                  Margin="0,0,0,10"
+                                  SelectedValue="{Binding ScriptDefinition.Language, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                  DisplayMemberPath="DisplayName"
+                                  SelectedValuePath="Value"/>
 
-            <Border Grid.Row="1" 
-                    x:Name="ContentBorder"
-                    CornerRadius="0,0,6,6"
-                    ClipToBounds="True">
-                <StackPanel x:Name="ContentPanel" Margin="12">
-                    <TextBlock Text="{Binding [script_language],Source={x:Static lg:LanguageService.Instance}}" FontWeight="SemiBold" Margin="0,0,0,8"/>
-                    <ComboBox x:Name="LanguageComboBox" 
-                              Height="32"
-                              Margin="0,0,0,16"
-                              SelectedValue="{Binding ScriptDefinition.Language, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                              DisplayMemberPath="DisplayName"
-                              SelectedValuePath="Value"/>
-
-                    <TextBlock Text="{Binding [data_series],Source={x:Static lg:LanguageService.Instance}}" FontWeight="SemiBold" Margin="0,0,0,8"/>
-                    <TextBox x:Name="RequiredDataSeriesTextBox"
-                             Text="{Binding ScriptDefinition.RequiredDataSeries, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                             Height="auto"
-                             Margin="0,0,0,4"
-                             VerticalScrollBarVisibility="Auto"
-                             Padding="8"/>
-                    <TextBlock Text="{Binding [multiple_data_series_hint],Source={x:Static lg:LanguageService.Instance}}" 
-                               FontSize="11" TextWrapping="Wrap"
-                               Foreground="#666666" 
-                               Margin="0,0,0,16"/>
-
-                    <TextBlock Text="{Binding [script_content],Source={x:Static lg:LanguageService.Instance}}" FontWeight="SemiBold" Margin="0,0,0,8"/>
-                    <Border BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="3" Margin="0,0,0,12">
-                        <TextBox x:Name="ScriptBodyTextBox"
-                                 Text="{Binding ScriptDefinition.ScriptBody, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                 Height="200"
-                                 AcceptsReturn="True"
-                                 AcceptsTab="True"
-                                 FontFamily="Consolas, Courier New"
-                                 FontSize="12"
-                                 TextWrapping="NoWrap"
-                                 VerticalScrollBarVisibility="Auto"
-                                 HorizontalScrollBarVisibility="Auto"
-                                 Background="#FAFAFA"
-                                 Padding="8"
-                                 VerticalContentAlignment="Top"/>
-                    </Border>
-
-                    <Border Background="#F5F5F5" 
-                            BorderBrush="#E0E0E0" 
-                            BorderThickness="1" 
-                            CornerRadius="3" 
-                            Padding="8,6">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock x:Name="StatusTextBlock" 
-                                       Grid.Column="0"
-                                       Text="{Binding [ready],Source={x:Static lg:LanguageService.Instance}}" 
-                                       FontSize="11" 
-                                       Foreground="#666666"
-                                       VerticalAlignment="Center"
-                                       TextWrapping="Wrap"/>
-
-                            <TextBlock x:Name="LineColumnTextBlock"
-                                       Grid.Column="1" 
-                                       Text="{Binding [row_1_column_1],Source={x:Static lg:LanguageService.Instance}}" 
-                                       FontSize="11" 
-                                       Foreground="#666666"
-                                       VerticalAlignment="Center"/>
-                        </Grid>
-                    </Border>
-
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,8,0,0">
-                        <!--<Button x:Name="FormatButton" 
-                                Content="格式化" 
-                                Padding="12,6" 
-                                Margin="0,0,8,0" 
-                                MinWidth="80"
-                                Click="FormatButton_Click"/>-->
-                        <Button x:Name="ValidateButton" 
-                                Content="{Binding [validate_syntax],Source={x:Static lg:LanguageService.Instance}}" 
-                                Padding="12,6" 
-                                Margin="0,0,8,0" 
-                                MinWidth="100"
-                                Click="ValidateButton_Click"/>
+                        <!-- Data Series -->
+                        <TextBlock Text="{Binding [data_series],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}" FontSize="10"/>
+                        <hc:TextBox x:Name="RequiredDataSeriesTextBox"
+                                    Text="{Binding ScriptDefinition.RequiredDataSeries, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    Margin="0,0,0,4"
+                                    hc:InfoElement.Placeholder="e.g. x, y, z"/>
+                        
+                        <TextBlock Text="{Binding [multiple_data_series_hint],Source={x:Static lg:LanguageService.Instance}}" 
+                                   FontSize="10" TextWrapping="Wrap"
+                                   Foreground="#999999" 
+                                   Margin="0,0,0,10"/>
                     </StackPanel>
-                </StackPanel>
-            </Border>
-        </Grid>
-    </Border>
+                </Expander>
+
+                <!-- Script Content -->
+                <Expander Header="{Binding [script_content],Source={x:Static lg:LanguageService.Instance}}">
+                    <StackPanel Margin="8,5,8,5">
+                        <Border BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="4" Margin="0,0,0,10">
+                            <TextBox x:Name="ScriptBodyTextBox"
+                                     Text="{Binding ScriptDefinition.ScriptBody, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                     Height="200"
+                                     AcceptsReturn="True"
+                                     AcceptsTab="True"
+                                     FontFamily="Consolas, Courier New"
+                                     FontSize="12"
+                                     TextWrapping="NoWrap"
+                                     VerticalScrollBarVisibility="Auto"
+                                     HorizontalScrollBarVisibility="Auto"
+                                     Background="#FAFAFA"
+                                     Padding="8"
+                                     VerticalContentAlignment="Top"
+                                     BorderThickness="0"/>
+                        </Border>
+
+                        <!-- Status Bar -->
+                        <Border Background="#F5F5F5" 
+                                BorderBrush="#E0E0E0" 
+                                BorderThickness="1" 
+                                CornerRadius="4" 
+                                Padding="8,6"
+                                Margin="0,0,0,10">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock x:Name="StatusTextBlock" 
+                                           Grid.Column="0"
+                                           Text="{Binding [ready],Source={x:Static lg:LanguageService.Instance}}" 
+                                           FontSize="11" 
+                                           Foreground="#666666"
+                                           VerticalAlignment="Center"
+                                           TextWrapping="Wrap"/>
+
+                                <TextBlock x:Name="LineColumnTextBlock"
+                                           Grid.Column="1" 
+                                           Text="{Binding [row_1_column_1],Source={x:Static lg:LanguageService.Instance}}" 
+                                           FontSize="11" 
+                                           Foreground="#666666"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- Actions -->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button x:Name="ValidateButton" 
+                                    Content="{Binding [validate_syntax],Source={x:Static lg:LanguageService.Instance}}" 
+                                    Style="{StaticResource ButtonPrimary}"
+                                    Padding="12,6" 
+                                    Click="ValidateButton_Click"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Expander>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
 </UserControl>

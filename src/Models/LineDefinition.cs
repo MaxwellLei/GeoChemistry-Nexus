@@ -1,7 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System.ComponentModel;
-using GeoChemistryNexus.PropertyEditor;
-using HandyControl.Controls;
 using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Converter;
 
@@ -15,7 +13,6 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("position")]      // 位置
         [property: LocalizedDisplayName("start_coordinates")]     // 起始坐标
-        [property: Editor(typeof(PointDefinitionPropertyEditor), typeof(PropertyEditorBase))]
         private PointDefinition _start = new PointDefinition();
 
         /// <summary>
@@ -24,7 +21,6 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("position")]      // 位置
         [property: LocalizedDisplayName("end_coordinates")]      // 终止坐标
-        [property: Editor(typeof(PointDefinitionPropertyEditor), typeof(PropertyEditorBase))]
         private PointDefinition _end = new PointDefinition();
 
         /// <summary>
@@ -33,7 +29,6 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("style")]       // 样式
         [property: LocalizedDisplayName("color")]        // 颜色
-        [property: Editor(typeof(ColorPropertyEditor), typeof(ColorPropertyEditor))]
         private string _color = "#000000";
 
         /// <summary>

@@ -124,12 +124,20 @@ namespace GeoChemistryNexus.Controls
             }
             else
             {
-                // 创建一个新的PointDefinition实例并更新依赖属性
-                PointValue = new PointDefinition
+                // 直接更新属性，而不是创建新对象，保持对象引用一致
+                if (PointValue != null)
                 {
-                    X = NumericUpDownX.Value,
-                    Y = NumericUpDownY.Value
-                };
+                    PointValue.X = NumericUpDownX.Value;
+                    PointValue.Y = NumericUpDownY.Value;
+                }
+                else
+                {
+                    PointValue = new PointDefinition
+                    {
+                        X = NumericUpDownX.Value,
+                        Y = NumericUpDownY.Value
+                    };
+                }
             }
         }
 

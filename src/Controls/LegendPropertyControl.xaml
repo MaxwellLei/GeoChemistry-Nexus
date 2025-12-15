@@ -1,0 +1,94 @@
+<UserControl x:Class="GeoChemistryNexus.Controls.LegendPropertyControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:models="clr-namespace:GeoChemistryNexus.Models"
+             xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:lg="clr-namespace:GeoChemistryNexus.Helpers"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="300">
+    <UserControl.Resources>
+        <cvs:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
+        <cvs:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <cvs:DoublePrecisionConverter x:Key="DoublePrecisionConverter" Precision="4"/>
+        <cvs:EnumTypeToValuesConverter x:Key="EnumTypeToValuesConverter"/>
+        <cvs:EnumToDisplayStringConverter x:Key="EnumToDisplayStringConverter"/>
+        
+        <Style TargetType="TextBlock" x:Key="LabelStyle">
+            <Setter Property="Foreground" Value="#666666"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="Expander" BasedOn="{StaticResource ExpanderBaseStyle}">
+            <Setter Property="IsExpanded" Value="True"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+        </Style>
+
+        <Style x:Key="ToggleButtonSwitch" TargetType="ToggleButton" BasedOn="{StaticResource ToggleButtonSwitch}">
+        </Style>
+    </UserControl.Resources>
+
+    <Grid DataContext="{Binding SelectedObject, RelativeSource={RelativeSource AncestorType=local:LegendPropertyControl}}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="15">
+                <!-- Header -->
+                <DockPanel LastChildFill="False" Margin="0,0,0,15">
+                    <TextBlock Text="{Binding [legend],Source={x:Static lg:LanguageService.Instance}}" FontWeight="Bold" FontSize="16" Foreground="#333"/>
+                </DockPanel>
+
+                <!-- Style -->
+                <Expander Header="{Binding [style],Source={x:Static lg:LanguageService.Instance}}">
+                    <StackPanel Margin="8,5,8,5">
+                        
+                        <!-- Visibility -->
+                        <DockPanel Margin="0,0,0,10">
+                            <TextBlock Text="{Binding [is_visible],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}" VerticalAlignment="Center"/>
+                            <ToggleButton Style="{StaticResource ToggleButtonSwitch}" HorizontalAlignment="Right" IsChecked="{Binding IsVisible, Mode=TwoWay}"/>
+                        </DockPanel>
+
+                        <!-- Orientation -->
+                        <TextBlock Text="{Binding [orientation],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}" FontSize="10"/>
+                        <ComboBox ItemsSource="{Binding Orientation, Converter={StaticResource EnumTypeToValuesConverter}}"
+                                  SelectedItem="{Binding Orientation, Mode=TwoWay}"
+                                  Margin="0,0,0,10">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource EnumToDisplayStringConverter}}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <!-- Alignment -->
+                        <TextBlock Text="{Binding [location],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}" FontSize="10"/>
+                        <ComboBox ItemsSource="{Binding Alignment, Converter={StaticResource EnumTypeToValuesConverter}}"
+                                  SelectedItem="{Binding Alignment, Mode=TwoWay}"
+                                  Margin="0,0,0,10">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource EnumToDisplayStringConverter}}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
+                </Expander>
+
+                <!-- Font -->
+                <Expander Header="{Binding [font],Source={x:Static lg:LanguageService.Instance}}">
+                    <StackPanel Margin="8,5,8,5">
+                        <!-- Font Family -->
+                        <TextBlock Text="{Binding [font_name],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}" FontSize="10"/>
+                        <local:FontFamilyControl FontFamilyName="{Binding Font, Mode=TwoWay}" Margin="0,0,0,10"/>
+                    </StackPanel>
+                </Expander>
+                
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

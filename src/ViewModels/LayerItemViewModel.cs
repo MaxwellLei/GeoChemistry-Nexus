@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using ScottPlot;
 using System;
 using System.Collections.Generic;
@@ -50,6 +50,17 @@ namespace GeoChemistryNexus.ViewModels
             {
                 child.IsVisible = value;
             }
+            OnRefreshRequired();
+        }
+
+        /// <summary>
+        /// 请求刷新图表事件
+        /// </summary>
+        public event EventHandler RequestRefresh;
+
+        protected void OnRefreshRequired()
+        {
+            RequestRefresh?.Invoke(this, EventArgs.Empty);
         }
     }
 }

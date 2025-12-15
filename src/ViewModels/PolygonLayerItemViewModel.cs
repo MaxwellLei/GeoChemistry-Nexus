@@ -1,4 +1,4 @@
-﻿using GeoChemistryNexus.Models;
+using GeoChemistryNexus.Models;
 using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Interfaces;
 using ScottPlot;
@@ -17,6 +17,8 @@ namespace GeoChemistryNexus.ViewModels
             : base(LanguageService.Instance["polygon"] + $" {index + 1}")
         {
             PolygonDefinition = polygonDefinition;
+            // 监听 Model 变化
+            PolygonDefinition.PropertyChanged += (s, e) => OnRefreshRequired();
         }
 
         public void Render(Plot plot)

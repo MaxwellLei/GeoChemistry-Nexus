@@ -1,0 +1,217 @@
+<UserControl x:Class="GeoChemistryNexus.Controls.LinePropertyControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:models="clr-namespace:GeoChemistryNexus.Models"
+             xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:lg="clr-namespace:GeoChemistryNexus.Helpers"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="300">
+    <UserControl.Resources>
+        <cvs:NumericTypeConverter x:Key="NumericTypeConverter"/>
+        <cvs:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
+        <cvs:StringColorConverter x:Key="StringColorConverter"/>
+        <cvs:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <cvs:DoublePrecisionConverter x:Key="DoublePrecisionConverter" Precision="4"/>
+        <cvs:EnumToDisplayStringConverter x:Key="EnumToDisplayStringConverter"/>
+        <cvs:EnumTypeToValuesConverter x:Key="EnumTypeToValuesConverter"/>
+        
+        <Style TargetType="TextBlock" x:Key="LabelStyle">
+            <Setter Property="Foreground" Value="#666666"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="Expander" BasedOn="{StaticResource ExpanderBaseStyle}">
+            <Setter Property="IsExpanded" Value="True"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+        </Style>
+
+        <Style x:Key="ToggleButtonIcon" TargetType="ToggleButton">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Background" Value="#E5F1FB"/>
+                                <Setter Property="Foreground" Value="#0078D4"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#F3F3F3"/>
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsChecked" Value="True"/>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" Value="#CDE4F7"/>
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style x:Key="ButtonIcon" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#F3F3F3"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#E0E0E0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid DataContext="{Binding SelectedObject, RelativeSource={RelativeSource AncestorType=local:LinePropertyControl}}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="15">
+                <!-- Header -->
+                <DockPanel LastChildFill="False" Margin="0,0,0,15">
+                    <TextBlock Text="{Binding [line],Source={x:Static lg:LanguageService.Instance}}" FontWeight="Bold" FontSize="16" Foreground="#333"/>
+                </DockPanel>
+
+                <!-- Position -->
+                <Expander Header="{Binding [position],Source={x:Static lg:LanguageService.Instance}}">
+                    <StackPanel Margin="8,5,8,5">
+                        
+                        <!-- Start Point -->
+                        <Grid Margin="0,0,0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                             <TextBlock Text="{Binding [start_coordinates],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}" FontSize="10"/>
+                             
+                             <!-- Pick Point Button for Start -->
+                             <Button Grid.Column="1"
+                                    Width="20" Height="20" 
+                                    Margin="0,0,0,4"
+                                    Padding="0"
+                                    Style="{StaticResource ButtonIcon}"
+                                    ToolTip="{Binding [coordinate_positioning],Source={x:Static lg:LanguageService.Instance}}"
+                                    Click="PickStartPointButton_Click">
+                                <Path Data="M12,9 A3,3 0 1,1 12,15 A3,3 0 1,1 12,9 Z M12,4 A8,8 0 1,1 12,20 A8,8 0 1,1 12,4 Z M12,6 A6,6 0 1,0 12,18 A6,6 0 1,0 12,6 Z M11,4 L11,2 A1,1 0 0,1 13,2 L13,4 Z M11,20 L13,20 L13,22 A1,1 0 0,1 11,22 Z M4,11 L2,11 A1,1 0 0,1 2,13 L4,13 Z M20,11 L22,11 A1,1 0 0,1 22,13 L20,13 Z" 
+                                      Fill="#666" 
+                                      Stretch="Uniform" 
+                                      Width="12" 
+                                      Height="12"/>
+                            </Button>
+                        </Grid>
+                        
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <hc:NumericUpDown Grid.Column="0" Value="{Binding Start.X, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
+                                      hc:InfoElement.Title="X" hc:InfoElement.TitlePlacement="Left"
+                                      hc:InfoElement.Placeholder="0.0"/>
+                                      
+                            <hc:NumericUpDown Grid.Column="2" Value="{Binding Start.Y, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
+                                      hc:InfoElement.Title="Y" hc:InfoElement.TitlePlacement="Left"
+                                      hc:InfoElement.Placeholder="0.0"/>
+                        </Grid>
+
+                        <!-- End Point -->
+                         <Grid Margin="0,0,0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                             <TextBlock Text="{Binding [end_coordinates],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}" FontSize="10"/>
+                             
+                             <!-- Pick Point Button for End -->
+                             <Button Grid.Column="1"
+                                    Width="20" Height="20" 
+                                    Margin="0,0,0,4"
+                                    Padding="0"
+                                    Style="{StaticResource ButtonIcon}"
+                                    ToolTip="{Binding [coordinate_positioning],Source={x:Static lg:LanguageService.Instance}}"
+                                    Click="PickEndPointButton_Click">
+                                <Path Data="M12,9 A3,3 0 1,1 12,15 A3,3 0 1,1 12,9 Z M12,4 A8,8 0 1,1 12,20 A8,8 0 1,1 12,4 Z M12,6 A6,6 0 1,0 12,18 A6,6 0 1,0 12,6 Z M11,4 L11,2 A1,1 0 0,1 13,2 L13,4 Z M11,20 L13,20 L13,22 A1,1 0 0,1 11,22 Z M4,11 L2,11 A1,1 0 0,1 2,13 L4,13 Z M20,11 L22,11 A1,1 0 0,1 22,13 L20,13 Z" 
+                                      Fill="#666" 
+                                      Stretch="Uniform" 
+                                      Width="12" 
+                                      Height="12"/>
+                            </Button>
+                        </Grid>
+
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <hc:NumericUpDown Grid.Column="0" Value="{Binding End.X, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
+                                      hc:InfoElement.Title="X" hc:InfoElement.TitlePlacement="Left"
+                                      hc:InfoElement.Placeholder="0.0"/>
+                                      
+                            <hc:NumericUpDown Grid.Column="2" Value="{Binding End.Y, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
+                                      hc:InfoElement.Title="Y" hc:InfoElement.TitlePlacement="Left"
+                                      hc:InfoElement.Placeholder="0.0"/>
+                        </Grid>
+
+                    </StackPanel>
+                </Expander>
+
+                <!-- Style -->
+                <Expander Header="{Binding [style],Source={x:Static lg:LanguageService.Instance}}">
+                    <StackPanel Margin="8,5,8,5">
+                         <!-- Color -->
+                        <TextBlock Text="{Binding [color],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}" FontSize="10"/>
+                         <local:TextPropertyColorPicker 
+                               SelectedColor="{Binding Color, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" 
+                               HorizontalAlignment="Left"
+                               Width="150"
+                               Margin="0,0,0,10"/>
+
+                        <!-- Width -->
+                        <TextBlock Text="{Binding [width],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}" FontSize="10"/>
+                        <hc:NumericUpDown Value="{Binding Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
+                                    hc:InfoElement.Placeholder="1.5" Margin="0,0,0,10"/>
+
+                        <!-- Line Type -->
+                        <TextBlock Text="{Binding [type],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}" FontSize="10"/>
+                        <ComboBox ItemsSource="{Binding Source={x:Type models:LineDefinition+LineType}, Converter={StaticResource EnumTypeToValuesConverter}}"
+                                  SelectedItem="{Binding Style, Mode=TwoWay}">
+                             <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource EnumToDisplayStringConverter}}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
+                </Expander>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

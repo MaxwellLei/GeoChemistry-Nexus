@@ -1,0 +1,80 @@
+<UserControl x:Class="GeoChemistryNexus.Controls.PolygonPropertyControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:models="clr-namespace:GeoChemistryNexus.Models"
+             xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:lg="clr-namespace:GeoChemistryNexus.Helpers"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="300">
+    <UserControl.Resources>
+        <cvs:NumericTypeConverter x:Key="NumericTypeConverter"/>
+        <cvs:StringColorConverter x:Key="StringColorConverter"/>
+        <cvs:DoublePrecisionConverter x:Key="DoublePrecisionConverter" Precision="2"/>
+        
+        <Style TargetType="TextBlock" x:Key="LabelStyle">
+            <Setter Property="Foreground" Value="#666666"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="Expander" BasedOn="{StaticResource ExpanderBaseStyle}">
+            <Setter Property="IsExpanded" Value="True"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid DataContext="{Binding SelectedObject, RelativeSource={RelativeSource AncestorType=local:PolygonPropertyControl}}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="15">
+                <!-- Header -->
+                <DockPanel LastChildFill="False" Margin="0,0,0,15">
+                    <TextBlock Text="{Binding [polygon],Source={x:Static lg:LanguageService.Instance}}" FontWeight="Bold" FontSize="16" Foreground="#333"/>
+                </DockPanel>
+
+                <!-- Vertices -->
+                <Expander Header="Vertices">
+                    <StackPanel Margin="8,5,8,5">
+                         <!-- 注意：VerticesEditorControl 也需要支持精度控制，假设它内部已经处理或者不是 NumericUpDown -->
+                         <local:VerticesEditorControl VerticesValue="{Binding Vertices}"/>
+                    </StackPanel>
+                </Expander>
+
+                <!-- Style -->
+                <Expander Header="{Binding [style],Source={x:Static lg:LanguageService.Instance}}">
+                    <StackPanel Margin="8,5,8,5">
+                        
+                        <!-- Fill Color -->
+                        <TextBlock Text="Fill Color" Style="{StaticResource LabelStyle}" FontSize="10"/>
+                        <local:TextPropertyColorPicker 
+                            SelectedColor="{Binding FillColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" 
+                            HorizontalAlignment="Left"
+                            Width="150"
+                            Margin="0,0,0,10"/>
+
+                        <!-- Border Color -->
+                        <TextBlock Text="Border Color" Style="{StaticResource LabelStyle}" FontSize="10"/>
+                        <local:TextPropertyColorPicker 
+                            SelectedColor="{Binding BorderColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" 
+                            HorizontalAlignment="Left"
+                            Width="150"
+                            Margin="0,0,0,10"/>
+
+                        <!-- Border Width -->
+                        <TextBlock Text="Border Width" Style="{StaticResource LabelStyle}" FontSize="10"/>
+                        <hc:NumericUpDown Value="{Binding BorderWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
+                                    hc:InfoElement.Placeholder="1.0" Margin="0,0,0,10"/>
+
+                    </StackPanel>
+                </Expander>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

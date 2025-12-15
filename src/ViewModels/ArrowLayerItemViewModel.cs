@@ -1,4 +1,4 @@
-﻿using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Interfaces;
 using GeoChemistryNexus.Models;
 using ScottPlot.Plottables;
@@ -19,6 +19,19 @@ namespace GeoChemistryNexus.ViewModels
             : base(LanguageService.Instance["arrow"] + $" {index + 1}")
         {
             ArrowDefinition = arrowDefinition;
+            // 监听 Model 变化
+            ArrowDefinition.PropertyChanged += (s, e) => OnRefreshRequired();
+            // 监听子对象
+            if (ArrowDefinition.Start != null) ArrowDefinition.Start.PropertyChanged += (s, e) => OnRefreshRequired();
+            if (ArrowDefinition.End != null) ArrowDefinition.End.PropertyChanged += (s, e) => OnRefreshRequired();
+
+            // 监听 Start/End 对象本身的替换
+            ArrowDefinition.PropertyChanged += (s, e) => {
+                if (e.PropertyName == nameof(ArrowDefinition.Start) && ArrowDefinition.Start != null)
+                    ArrowDefinition.Start.PropertyChanged += (sender, args) => OnRefreshRequired();
+                if (e.PropertyName == nameof(ArrowDefinition.End) && ArrowDefinition.End != null)
+                    ArrowDefinition.End.PropertyChanged += (sender, args) => OnRefreshRequired();
+            };
         }
 
         public void Render(Plot plot)

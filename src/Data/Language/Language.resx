@@ -112,7 +112,7 @@
   <data name="SmashItC" xml:space="preserve">
     <value>What's inside? Maybe you can try smashing it</value>
   </data>
-  <data name="Home" xml:space="preserve">
+  <data name="home" xml:space="preserve">
     <value>Home</value>
   </data>
   <data name="Plot" xml:space="preserve">
@@ -253,7 +253,7 @@
   <data name="MinorAxes" xml:space="preserve">
     <value>Minor Axes</value>
   </data>
-  <data name="Legend" xml:space="preserve">
+  <data name="legend" xml:space="preserve">
     <value>Legend</value>
   </data>
   <data name="Background" xml:space="preserve">
@@ -920,7 +920,7 @@
     <value>Content and Position</value>
   </data>
   <data name="script_definition" xml:space="preserve">
-    <value>Script Definition</value>
+    <value>Script</value>
   </data>
   <data name="script_language" xml:space="preserve">
     <value>Script Language:</value>
@@ -1461,5 +1461,41 @@
   </data>
   <data name="custom_templates" xml:space="preserve">
     <value>Custom Templates</value>
+  </data>
+  <data name="cannot_delete_protected_column" xml:space="preserve">
+    <value>Cannot delete protected column</value>
+  </data>
+  <data name="add_column_left" xml:space="preserve">
+    <value>Add Column (Left)</value>
+  </data>
+  <data name="add_column_right" xml:space="preserve">
+    <value>Add Column (Right)</value>
+  </data>
+  <data name="delete_row" xml:space="preserve">
+    <value>Delete Row</value>
+  </data>
+  <data name="delete_column" xml:space="preserve">
+    <value>Delete Column</value>
+  </data>
+  <data name="missing_columns" xml:space="preserve">
+    <value>Missing Columns</value>
+  </data>
+  <data name="add_row_up" xml:space="preserve">
+    <value>Add Row Above</value>
+  </data>
+  <data name="add_row_down" xml:space="preserve">
+    <value>Add Row Below</value>
+  </data>
+  <data name="confirm_delete_row" xml:space="preserve">
+    <value>Are you sure you want to delete the selected row(s)?</value>
+  </data>
+  <data name="confirm_delete_column" xml:space="preserve">
+    <value>Are you sure you want to delete the selected column(s)?</value>
+  </data>
+  <data name="axis" xml:space="preserve">
+    <value>Axis</value>
+  </data>
+  <data name="grid" xml:space="preserve">
+    <value>Grid</value>
   </data>
 </root>

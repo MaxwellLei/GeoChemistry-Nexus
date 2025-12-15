@@ -165,7 +165,7 @@
   <data name="Exit" xml:space="preserve">
     <value>Programm beenden</value>
   </data>
-  <data name="Home" xml:space="preserve">
+  <data name="home" xml:space="preserve">
     <value>Startseite</value>
   </data>
   <data name="SmashItC" xml:space="preserve">
@@ -239,5 +239,11 @@
   </data>
   <data name="check_for_category_updates" xml:space="preserve">
     <value>Nach Kategorienaktualisierungen suchen</value>
+  </data>
+  <data name="axis" xml:space="preserve">
+    <value>Achsen</value>
+  </data>
+  <data name="grid" xml:space="preserve">
+    <value>Gitter</value>
   </data>
 </root>

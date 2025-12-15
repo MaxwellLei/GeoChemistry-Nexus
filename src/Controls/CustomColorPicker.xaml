@@ -1,0 +1,229 @@
+<UserControl x:Class="GeoChemistryNexus.Controls.CustomColorPicker"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="270" Width="270">
+    <UserControl.Resources>
+        <Style TargetType="Thumb" x:Key="ColorThumbStyle">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Grid>
+                            <Ellipse Width="12" Height="12" Stroke="White" StrokeThickness="2" Fill="Transparent"/>
+                            <Ellipse Width="10" Height="10" Stroke="Black" StrokeThickness="1" Fill="Transparent"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style TargetType="Thumb" x:Key="SliderThumbStyle">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Border Background="White" BorderBrush="#E0E0E0" BorderThickness="1" Width="10" Height="16" CornerRadius="2">
+                             <Border.Effect>
+                                <DropShadowEffect Color="Black" BlurRadius="2" ShadowDepth="1" Opacity="0.2"/>
+                            </Border.Effect>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ColorButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="24"/>
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="#666666"/>
+                                <Setter Property="BorderThickness" Value="2"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="180"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Saturation / Value Area -->
+        <Grid Grid.Row="0" Margin="0,0,0,10">
+            <!-- Base Color (Hue) -->
+            <Border x:Name="HueMonitor" Background="Red"/>
+            <!-- Saturation Gradient (White to Transparent) -->
+            <Border>
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop Color="White" Offset="0"/>
+                        <GradientStop Color="#00FFFFFF" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+            <!-- Value Gradient (Transparent to Black) -->
+            <Border>
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#00000000" Offset="0"/>
+                        <GradientStop Color="Black" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+            
+            <!-- Selection Thumb -->
+            <Canvas x:Name="SvCanvas" Background="Transparent" MouseLeftButtonDown="SvCanvas_MouseLeftButtonDown" MouseLeftButtonUp="SvCanvas_MouseLeftButtonUp" MouseMove="SvCanvas_MouseMove">
+                <Thumb x:Name="SvThumb" Style="{StaticResource ColorThumbStyle}" Canvas.Left="0" Canvas.Top="0" DragDelta="SvThumb_DragDelta"/>
+            </Canvas>
+        </Grid>
+
+        <!-- Hue Slider -->
+        <Grid Grid.Row="1" Margin="0,0,0,10">
+            <Border Height="12" CornerRadius="6">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop Color="#FF0000" Offset="0.0"/>
+                        <GradientStop Color="#FFFF00" Offset="0.167"/>
+                        <GradientStop Color="#00FF00" Offset="0.333"/>
+                        <GradientStop Color="#00FFFF" Offset="0.5"/>
+                        <GradientStop Color="#0000FF" Offset="0.667"/>
+                        <GradientStop Color="#FF00FF" Offset="0.833"/>
+                        <GradientStop Color="#FF0000" Offset="1.0"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+            <Canvas Height="12" x:Name="HueCanvas" Background="Transparent" MouseLeftButtonDown="HueCanvas_MouseLeftButtonDown" MouseLeftButtonUp="HueCanvas_MouseLeftButtonUp" MouseMove="HueCanvas_MouseMove">
+                 <Thumb x:Name="HueThumb" Canvas.Left="0" Style="{StaticResource SliderThumbStyle}" Height="16" Margin="-5,-2,0,0" DragDelta="HueThumb_DragDelta"/>
+            </Canvas>
+        </Grid>
+
+        <!-- Alpha Slider -->
+        <Grid Grid.Row="2" Margin="0,0,0,10">
+            <Border Height="12" CornerRadius="6">
+                <Border.Background>
+                    <DrawingBrush TileMode="Tile" Viewport="0,0,6,6" ViewportUnits="Absolute">
+                        <DrawingBrush.Drawing>
+                            <DrawingGroup>
+                                <GeometryDrawing Brush="White">
+                                    <GeometryDrawing.Geometry>
+                                        <RectangleGeometry Rect="0,0,6,6"/>
+                                    </GeometryDrawing.Geometry>
+                                </GeometryDrawing>
+                                <GeometryDrawing Brush="#EEEEEE">
+                                    <GeometryDrawing.Geometry>
+                                        <GeometryGroup>
+                                            <RectangleGeometry Rect="0,0,3,3"/>
+                                            <RectangleGeometry Rect="3,3,3,3"/>
+                                        </GeometryGroup>
+                                    </GeometryDrawing.Geometry>
+                                </GeometryDrawing>
+                            </DrawingGroup>
+                        </DrawingBrush.Drawing>
+                    </DrawingBrush>
+                </Border.Background>
+            </Border>
+            <Border Height="12" CornerRadius="6">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop Color="#00FFFFFF" Offset="0.0"/>
+                        <GradientStop Color="#FFFFFFFF" Offset="1.0" x:Name="AlphaGradientStop"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+            <Canvas Height="12" x:Name="AlphaCanvas" Background="Transparent" MouseLeftButtonDown="AlphaCanvas_MouseLeftButtonDown" MouseLeftButtonUp="AlphaCanvas_MouseLeftButtonUp" MouseMove="AlphaCanvas_MouseMove">
+                 <Thumb x:Name="AlphaThumb" Canvas.Left="0" Style="{StaticResource SliderThumbStyle}" Height="16" Margin="-5,-2,0,0" DragDelta="AlphaThumb_DragDelta"/>
+            </Canvas>
+        </Grid>
+
+        <!-- Preview and Inputs -->
+        <Grid Grid.Row="3" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <!-- Preview Box -->
+            <Border Width="30" Height="30" CornerRadius="4" BorderBrush="#E0E0E0" BorderThickness="1" Margin="0,0,10,0">
+                <Border.Background>
+                    <DrawingBrush TileMode="Tile" Viewport="0,0,10,10" ViewportUnits="Absolute">
+                        <DrawingBrush.Drawing>
+                            <DrawingGroup>
+                                <GeometryDrawing Brush="White">
+                                    <GeometryDrawing.Geometry>
+                                        <RectangleGeometry Rect="0,0,10,10"/>
+                                    </GeometryDrawing.Geometry>
+                                </GeometryDrawing>
+                                <GeometryDrawing Brush="#EEEEEE">
+                                    <GeometryDrawing.Geometry>
+                                        <GeometryGroup>
+                                            <RectangleGeometry Rect="0,0,5,5"/>
+                                            <RectangleGeometry Rect="5,5,5,5"/>
+                                        </GeometryGroup>
+                                    </GeometryDrawing.Geometry>
+                                </GeometryDrawing>
+                            </DrawingGroup>
+                        </DrawingBrush.Drawing>
+                    </DrawingBrush>
+                </Border.Background>
+                <Border Background="{Binding SelectedBrush, RelativeSource={RelativeSource AncestorType=local:CustomColorPicker}}"/>
+            </Border>
+
+            <!-- RGB / Hex Inputs -->
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <TextBlock Text="A:" VerticalAlignment="Center" Margin="0,0,4,0" Foreground="#666"/>
+                <hc:TextBox Text="{Binding A, RelativeSource={RelativeSource AncestorType=local:CustomColorPicker}, Mode=TwoWay}" Width="30" Margin="0,0,8,0" Padding="2"/>
+                <TextBlock Text="R:" VerticalAlignment="Center" Margin="0,0,4,0" Foreground="#666"/>
+                <hc:TextBox Text="{Binding R, RelativeSource={RelativeSource AncestorType=local:CustomColorPicker}, Mode=TwoWay}" Width="30" Margin="0,0,8,0" Padding="2"/>
+                <TextBlock Text="G:" VerticalAlignment="Center" Margin="0,0,4,0" Foreground="#666"/>
+                <hc:TextBox Text="{Binding G, RelativeSource={RelativeSource AncestorType=local:CustomColorPicker}, Mode=TwoWay}" Width="30" Margin="0,0,8,0" Padding="2"/>
+                <TextBlock Text="B:" VerticalAlignment="Center" Margin="0,0,4,0" Foreground="#666"/>
+                <hc:TextBox Text="{Binding B, RelativeSource={RelativeSource AncestorType=local:CustomColorPicker}, Mode=TwoWay}" Width="30" Padding="2"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Quick Colors -->
+        <Grid Grid.Row="4">
+             <UniformGrid Columns="8" Rows="2">
+                <Button Style="{StaticResource ColorButtonStyle}" Background="#FF0000" Click="QuickColor_Click" Tag="#FFFF0000"/>
+                <Button Style="{StaticResource ColorButtonStyle}" Background="#FFA500" Click="QuickColor_Click" Tag="#FFFFA500"/>
+                <Button Style="{StaticResource ColorButtonStyle}" Background="#FFFF00" Click="QuickColor_Click" Tag="#FFFFFF00"/>
+                <Button Style="{StaticResource ColorButtonStyle}" Background="#00FF00" Click="QuickColor_Click" Tag="#FF00FF00"/>
+                <Button Style="{StaticResource ColorButtonStyle}" Background="#00FFFF" Click="QuickColor_Click" Tag="#FF00FFFF"/>
+                <Button Style="{StaticResource ColorButtonStyle}" Background="#0000FF" Click="QuickColor_Click" Tag="#FF0000FF"/>
+                <Button Style="{StaticResource ColorButtonStyle}" Background="#800080" Click="QuickColor_Click" Tag="#FF800080"/>
+                <Button Style="{StaticResource ColorButtonStyle}" Background="#000000" Click="QuickColor_Click" Tag="#FF000000"/>
+                
+                <Button Style="{StaticResource ColorButtonStyle}" Background="#FFFFFF" Click="QuickColor_Click" Tag="#FFFFFFFF"/>
+                <Button Style="{StaticResource ColorButtonStyle}" Background="#CCCCCC" Click="QuickColor_Click" Tag="#FFCCCCCC"/>
+                <Button Style="{StaticResource ColorButtonStyle}" Background="#888888" Click="QuickColor_Click" Tag="#FF888888"/>
+                <Button Style="{StaticResource ColorButtonStyle}" Background="#FF00FF" Click="QuickColor_Click" Tag="#FFFF00FF"/>
+                <Button Style="{StaticResource ColorButtonStyle}" Background="#008080" Click="QuickColor_Click" Tag="#FF008080"/>
+                <Button Style="{StaticResource ColorButtonStyle}" Background="#800000" Click="QuickColor_Click" Tag="#FF800000"/>
+                <Button Style="{StaticResource ColorButtonStyle}" Background="#008000" Click="QuickColor_Click" Tag="#FF008000"/>
+                <Button Style="{StaticResource ColorButtonStyle}" Background="#000080" Click="QuickColor_Click" Tag="#FF000080"/>
+            </UniformGrid>
+        </Grid>
+    </Grid>
+</UserControl>

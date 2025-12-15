@@ -1,7 +1,5 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using GeoChemistryNexus.Helpers;
-using GeoChemistryNexus.PropertyEditor;
-using HandyControl.Controls;
 using System.ComponentModel;
 using System.Text.Json.Serialization;
 using GeoChemistryNexus.Converter;
@@ -31,7 +29,6 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("axis_title")] // 坐标轴标题
         [property: LocalizedDisplayName("content")] // 内容
-        [property: Editor(typeof(LocalizedStringPropertyEditor), typeof(PropertyEditorBase))]
         private LocalizedString _label = new LocalizedString();
 
         /// <summary>
@@ -40,7 +37,6 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("axis_title")] // 坐标轴标题
         [property: LocalizedDisplayName("font_family")] // 字体
-        [property: Editor(typeof(FontFamilyPropertyEditor), typeof(PropertyEditorBase))]
         private string _family = "Arial";
 
         /// <summary>
@@ -57,7 +53,6 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("axis_title")] // 坐标轴标题
         [property: LocalizedDisplayName("font_color")] // 字体颜色
-        [property: Editor(typeof(ColorPropertyEditor), typeof(ColorPropertyEditor))]
         private string _color = "#000000";
 
         /// <summary>
@@ -90,7 +85,6 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("major_tick_style")] // 主刻度样式
         [property: LocalizedDisplayName("color")] // 颜色
-        [property: Editor(typeof(ColorPropertyEditor), typeof(ColorPropertyEditor))]
         private string _majorTickWidthColor = "#000000";
 
         /// <summary>
@@ -107,7 +101,6 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("tick_labels")] // 刻度标签
         [property: LocalizedDisplayName("font_family")] // 字体
-        [property: Editor(typeof(FontFamilyPropertyEditor), typeof(PropertyEditorBase))]
         private string _tickLableFamily = "Arial";
 
         /// <summary>
@@ -124,7 +117,6 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("tick_labels")] // 刻度标签
         [property: LocalizedDisplayName("font_color")] // 字体颜色
-        [property: Editor(typeof(ColorPropertyEditor), typeof(ColorPropertyEditor))]
         private string _tickLablecolor = "#000000";
 
         /// <summary>

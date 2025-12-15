@@ -151,6 +151,45 @@ namespace GeoChemistryNexus.ViewModels
                     };
                     window.Show();
                 }
+                else if (app.WidgetKey == "TemplateRepairWidget")
+                {
+                    var window = new Window
+                    {
+                        Title = "模板修复工具",
+                        Width = 600,
+                        Height = 400,
+                        Content = new TemplateRepairWidget { DataContext = new TemplateRepairViewModel() },
+                        Owner = Application.Current.MainWindow,
+                        WindowStartupLocation = WindowStartupLocation.CenterOwner
+                    };
+                    window.Show();
+                }
+                else if (app.WidgetKey == "AnnouncementWidget")
+                {
+                    var window = new Window
+                    {
+                        Title = "服务器公告",
+                        Width = 500,
+                        Height = 350,
+                        Content = new AnnouncementWidget { DataContext = new AnnouncementViewModel() },
+                        Owner = Application.Current.MainWindow,
+                        WindowStartupLocation = WindowStartupLocation.CenterOwner
+                    };
+                    window.Show();
+                }
+                else if (app.WidgetKey == "DeveloperToolWidget")
+                {
+                    var window = new Window
+                    {
+                        Title = "开发者维护工具",
+                        Width = 1200,
+                        Height = 600,
+                        Content = new GeoChemistryNexus.Views.DeveloperToolView(), // Ensure correct namespace
+                        Owner = Application.Current.MainWindow,
+                        WindowStartupLocation = WindowStartupLocation.CenterOwner
+                    };
+                    window.Show();
+                }
             }
         }
 
@@ -190,8 +229,7 @@ namespace GeoChemistryNexus.ViewModels
                 var widget = dialog.SelectedWidget;
                 if (widget != null)
                 {
-                    // Create a new instance/copy so we can have multiple of the same widget if desired,
-                    // or just to give it a unique ID.
+                    // 创建一个新的实例
                     var newItem = new HomeAppItem
                     {
                         Type = HomeAppType.Widget,

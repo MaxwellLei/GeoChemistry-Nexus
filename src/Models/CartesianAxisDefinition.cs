@@ -1,7 +1,5 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using GeoChemistryNexus.Helpers;
-using GeoChemistryNexus.PropertyEditor;
-using HandyControl.Controls;
 using System.ComponentModel;
 
 namespace GeoChemistryNexus.Models
@@ -79,7 +77,6 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("minor_tick_style")] // 次刻度样式
         [property: LocalizedDisplayName("color")] // 颜色
-        [property: Editor(typeof(ColorPropertyEditor), typeof(ColorPropertyEditor))]
         private string _minorTickColor = "#000000"; // 例如灰色
 
         /// <summary>

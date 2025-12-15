@@ -1,0 +1,219 @@
+<UserControl x:Class="GeoChemistryNexus.Controls.AxisPropertyControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:models="clr-namespace:GeoChemistryNexus.Models"
+             xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:lg="clr-namespace:GeoChemistryNexus.Helpers"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="300">
+    <UserControl.Resources>
+        <cvs:NumericTypeConverter x:Key="NumericTypeConverter"/>
+        <cvs:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
+        <cvs:StringColorConverter x:Key="StringColorConverter"/>
+        <cvs:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <cvs:DoublePrecisionConverter x:Key="DoublePrecisionConverter" Precision="4"/>
+        <cvs:EnumToDisplayStringConverter x:Key="EnumToDisplayStringConverter"/>
+        <cvs:EnumTypeToValuesConverter x:Key="EnumTypeToValuesConverter"/>
+        
+        <Style TargetType="TextBlock" x:Key="LabelStyle">
+            <Setter Property="Foreground" Value="#666666"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="Expander" BasedOn="{StaticResource ExpanderBaseStyle}">
+            <Setter Property="IsExpanded" Value="True"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+        </Style>
+
+
+    </UserControl.Resources>
+
+    <Grid DataContext="{Binding SelectedObject, RelativeSource={RelativeSource AncestorType=local:AxisPropertyControl}}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="15">
+                <!-- Header -->
+                <DockPanel LastChildFill="False" Margin="0,0,0,15">
+                    <TextBlock Text="{Binding [axis_style],Source={x:Static lg:LanguageService.Instance}}" FontWeight="Bold" FontSize="16" Foreground="#333"/>
+                </DockPanel>
+
+                <!-- Axis Title -->
+                <Expander Header="{Binding [axis_title],Source={x:Static lg:LanguageService.Instance}}">
+                    <StackPanel Margin="0,10,0,0">
+                        <!-- Content -->
+                        <TextBlock Text="{Binding [content],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
+                        <local:LocalizedStringControl Value="{Binding Label, Mode=TwoWay}" Margin="0,0,0,10"/>
+
+                        <!-- Font Family -->
+                        <TextBlock Text="{Binding [font_family],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
+                        <local:FontFamilyControl FontFamilyName="{Binding Family, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10"/>
+
+                        <!-- Font Size & Color -->
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{Binding [font_size],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
+                                <hc:NumericUpDown Value="{Binding Size, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="{Binding [font_color],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
+                                <local:TextPropertyColorPicker SelectedColor="{Binding Color, Mode=TwoWay, Converter={StaticResource StringColorConverter}}"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Bold & Italic -->
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <ToggleButton Grid.Column="0" IsChecked="{Binding IsBold}" Style="{StaticResource FontStyleToggleButtonStyle}" ToolTip="{Binding [bold],Source={x:Static lg:LanguageService.Instance}}">
+                                <TextBlock Text="B" FontWeight="Bold"/>
+                            </ToggleButton>
+
+                            <ToggleButton Grid.Column="2" IsChecked="{Binding IsItalic}" Style="{StaticResource FontStyleToggleButtonStyle}" ToolTip="{Binding [italic],Source={x:Static lg:LanguageService.Instance}}">
+                                <TextBlock Text="I" FontStyle="Italic" FontWeight="Bold" FontFamily="Times New Roman"/>
+                            </ToggleButton>
+                        </Grid>
+                    </StackPanel>
+                </Expander>
+
+                <!-- Axis Range & Scale -->
+                <Expander Header="{Binding [axis_style],Source={x:Static lg:LanguageService.Instance}}">
+                    <StackPanel Margin="0,10,0,0">
+                         <!-- Scale Type -->
+                        <TextBlock Text="{Binding [zoom_type],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
+                        <ComboBox SelectedItem="{Binding ScaleType}" 
+                                  ItemsSource="{Binding ScaleType, Converter={StaticResource EnumTypeToValuesConverter}}"
+                                  Margin="0,0,0,10">
+                             <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource EnumToDisplayStringConverter}}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <!-- Min & Max -->
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{Binding [from],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
+                                <hc:NumericUpDown Value="{Binding Minimum, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="{Binding [to],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
+                                <hc:NumericUpDown Value="{Binding Maximum, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" />
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Expander>
+
+                <!-- Major Tick Style -->
+                <Expander Header="{Binding [major_tick_style],Source={x:Static lg:LanguageService.Instance}}">
+                    <StackPanel Margin="0,10,0,0">
+                         <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{Binding [length],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
+                                <hc:NumericUpDown Value="{Binding MajorTickLength, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" />
+                            </StackPanel>
+
+                             <StackPanel Grid.Column="2">
+                                <TextBlock Text="{Binding [width],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
+                                <hc:NumericUpDown Value="{Binding MajorTickWidth, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" />
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{Binding [interval],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
+                                <hc:NumericUpDown Value="{Binding MajorTickInterval, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" />
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="{Binding [color],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
+                                <local:TextPropertyColorPicker SelectedColor="{Binding MajorTickWidthColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}"/>
+                            </StackPanel>
+                        </Grid>
+                         <CheckBox IsChecked="{Binding MajorTickAntiAlias}" Content="{Binding [anti_aliasing],Source={x:Static lg:LanguageService.Instance}}" Margin="0,0,0,10"/>
+                    </StackPanel>
+                </Expander>
+
+                <!-- Minor Tick Style -->
+                <Expander Header="{Binding [minor_tick_style],Source={x:Static lg:LanguageService.Instance}}">
+                     <StackPanel Margin="0,10,0,0">
+                         <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{Binding [length],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
+                                <TextBox Text="{Binding MinorTickLength, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+
+                             <StackPanel Grid.Column="2">
+                                <TextBlock Text="{Binding [width],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
+                                <TextBox Text="{Binding MinorTickWidth, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{Binding [count],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
+                                <TextBox Text="{Binding MinorTicksPerMajorTick, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="{Binding [color],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
+                                <local:TextPropertyColorPicker SelectedColor="{Binding MinorTickColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}"/>
+                            </StackPanel>
+                        </Grid>
+                         <CheckBox IsChecked="{Binding MinorTickAntiAlias}" Content="{Binding [anti_aliasing],Source={x:Static lg:LanguageService.Instance}}" Margin="0,0,0,10"/>
+                    </StackPanel>
+                </Expander>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

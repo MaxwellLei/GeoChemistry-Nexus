@@ -1,8 +1,7 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using GeoChemistryNexus.Helpers;
 using System;
 using System.Collections.Generic;
-using GeoChemistryNexus.PropertyEditor;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;

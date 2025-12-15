@@ -23,6 +23,15 @@ namespace GeoChemistryNexus.ViewModels
             TextDefinition = textDefinition;
             _index = index;
             PropertyChangedEventManager.AddHandler(TextDefinition, OnTextDefinitionChanged, string.Empty);
+            
+            // 监听 Model 变化触发刷新
+            TextDefinition.PropertyChanged += (s, e) => OnRefreshRequired();
+            if (TextDefinition.StartAndEnd != null) TextDefinition.StartAndEnd.PropertyChanged += (s, e) => OnRefreshRequired();
+            
+            TextDefinition.PropertyChanged += (s, e) => {
+                if (e.PropertyName == nameof(TextDefinition.StartAndEnd) && TextDefinition.StartAndEnd != null)
+                    TextDefinition.StartAndEnd.PropertyChanged += (sender, args) => OnRefreshRequired();
+            };
         }
 
         private static string GetName(TextDefinition textDefinition, int index)
@@ -89,22 +98,21 @@ namespace GeoChemistryNexus.ViewModels
             textPlot.LabelItalic = TextDefinition.IsItalic;
 
             // 对齐方式处理
-            // 有个小 BUG 需要处理 todo
-            //switch (TextDefinition.ContentHorizontalAlignment)
-            //{
-            //    case System.Windows.HorizontalAlignment.Left:
-            //        textPlot.LabelAlignment = Alignment.LowerRight;
-            //        break;
-            //    case System.Windows.HorizontalAlignment.Center:
-            //        textPlot.LabelAlignment = Alignment.LowerCenter;
-            //        break;
-            //    case System.Windows.HorizontalAlignment.Right:
-            //        textPlot.LabelAlignment = Alignment.LowerLeft;
-            //        break;
-            //    default:
-            //        textPlot.LabelAlignment = Alignment.MiddleCenter;
-            //        break;
-            //}
+            switch (TextDefinition.ContentHorizontalAlignment)
+            {
+                case TextAlignment.Left:
+                    textPlot.LabelAlignment = Alignment.UpperLeft;
+                    break;
+                case TextAlignment.Center:
+                    textPlot.LabelAlignment = Alignment.UpperCenter;
+                    break;
+                case TextAlignment.Right:
+                    textPlot.LabelAlignment = Alignment.UpperRight;
+                    break;
+                default:
+                    textPlot.LabelAlignment = Alignment.UpperLeft;
+                    break;
+            }
 
             // 高级渲染：抗锯齿
             textPlot.LabelStyle.AntiAliasText = TextDefinition.AntiAliasEnable;

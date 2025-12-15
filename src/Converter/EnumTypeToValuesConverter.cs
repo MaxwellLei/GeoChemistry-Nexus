@@ -12,6 +12,12 @@ namespace GeoChemistryNexus.Converter
             {
                 return Enum.GetValues(type);
             }
+
+            if (value != null && value.GetType().IsEnum)
+            {
+                return Enum.GetValues(value.GetType());
+            }
+
             return null;
         }
 

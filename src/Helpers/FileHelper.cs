@@ -379,30 +379,33 @@ public class FileHelper
 
         try
         {
-            // 按尺寸优化加载
-            var bitmap = new BitmapImage();
-            bitmap.BeginInit();
-            bitmap.DecodePixelWidth = decodeWidth;
-            bitmap.CacheOption = BitmapCacheOption.OnLoad;
-            bitmap.UriSource = new Uri(path);
-            bitmap.EndInit();
-
-            if (toGray)
+            using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
-                // 如果需要灰度，进行格式转换
-                var grayBitmap = new FormatConvertedBitmap();
-                grayBitmap.BeginInit();
-                grayBitmap.Source = bitmap; // 源
-                grayBitmap.DestinationFormat = PixelFormats.Gray8; // 转换为 8位灰度
-                grayBitmap.EndInit();
+                // 按尺寸优化加载
+                var bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.DecodePixelWidth = decodeWidth;
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.StreamSource = stream;
+                bitmap.EndInit();
 
-                grayBitmap.Freeze(); // 冻结灰度图
-                return grayBitmap;
-            }
-            else
-            {
-                bitmap.Freeze();
-                return bitmap;
+                if (toGray)
+                {
+                    // 如果需要灰度，进行格式转换
+                    var grayBitmap = new FormatConvertedBitmap();
+                    grayBitmap.BeginInit();
+                    grayBitmap.Source = bitmap; // 源
+                    grayBitmap.DestinationFormat = PixelFormats.Gray8; // 转换为 8位灰度
+                    grayBitmap.EndInit();
+
+                    grayBitmap.Freeze(); // 冻结灰度图
+                    return grayBitmap;
+                }
+                else
+                {
+                    bitmap.Freeze();
+                    return bitmap;
+                }
             }
         }
         catch

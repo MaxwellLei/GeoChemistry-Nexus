@@ -18,6 +18,7 @@ namespace GeoChemistryNexus.Models
 
         /// <summary>
         /// 底图类型：笛卡尔坐标系(Cartesian)，三元坐标系(Ternary)
+        /// 后续可能增加其他类型
         /// </summary>
         public string TemplateType { get; set; } = "Cartesian";
 
@@ -105,7 +106,7 @@ namespace GeoChemistryNexus.Models
                 template.Script = new ScriptDefinition
                 {
                     // 脚本需要A,B,C三个组分数据来计算二维坐标
-                    RequiredDataSeries = "Category,A,B,C",
+                    RequiredDataSeries = "A,B,C",
                     // 注意：此脚本为占位符
                     ScriptBody = "var y = B * Math.sin(Math.PI / 3);\nvar x = A + B * Math.cos(Math.PI / 3);\nreturn [x, y];"
                 };
@@ -129,7 +130,7 @@ namespace GeoChemistryNexus.Models
                 };
                 template.Script = new ScriptDefinition
                 {
-                    RequiredDataSeries = "Category,X,Y",
+                    RequiredDataSeries = "X,Y",
                     ScriptBody = "return [X, Y];"
                 };
             }

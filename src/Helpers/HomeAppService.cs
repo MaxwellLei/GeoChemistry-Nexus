@@ -62,6 +62,30 @@ namespace GeoChemistryNexus.Helpers
                     Description = "编辑绘图模板的多语言翻译",
                     WidgetKey = "TemplateTranslatorWidget",
                     Icon = "\ue8c1"
+                },
+                new HomeAppItem
+                {
+                    Type = HomeAppType.Widget,
+                    Title = "模板修复工具",
+                    Description = "修复丢失或损坏的绘图模板及列表",
+                    WidgetKey = "TemplateRepairWidget",
+                    Icon = "\ue82f" 
+                },
+                new HomeAppItem
+                {
+                    Type = HomeAppType.Widget,
+                    Title = "服务器公告",
+                    Description = "查看服务器发布的最新公告信息",
+                    WidgetKey = "AnnouncementWidget",
+                    Icon = "\ue789" // Info or Announcement icon
+                },
+                new HomeAppItem
+                {
+                    Type = HomeAppType.Widget,
+                    Title = "开发者工具",
+                    Description = "维护服务器配置与模板文件",
+                    WidgetKey = "DeveloperToolWidget",
+                    Icon = "\ue90f" // Tool/Wrench icon
                 }
             };
         }

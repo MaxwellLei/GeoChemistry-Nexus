@@ -1,7 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System.ComponentModel;
-using GeoChemistryNexus.PropertyEditor;
-using HandyControl.Controls;
 using ScottPlot;
 using GeoChemistryNexus.Helpers;
 
@@ -39,7 +37,6 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("style")] // 样式
         [property: LocalizedDisplayName("font")] // 是否隐藏
-        [property: Editor(typeof(FontFamilyPropertyEditor), typeof(PropertyEditorBase))]
         private string _font = "Arial";
     }
 }

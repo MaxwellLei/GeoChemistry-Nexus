@@ -137,7 +137,7 @@
     <value>里面会有什么呢？也许你可以尝试砸一下</value>
     <comment>彩蛋</comment>
   </data>
-  <data name="Home" xml:space="preserve">
+  <data name="home" xml:space="preserve">
     <value>主页</value>
     <comment>主窗体侧边栏</comment>
   </data>
@@ -287,7 +287,7 @@
   <data name="MinorAxes" xml:space="preserve">
     <value>次刻度轴</value>
   </data>
-  <data name="Legend" xml:space="preserve">
+  <data name="legend" xml:space="preserve">
     <value>图例</value>
   </data>
   <data name="Background" xml:space="preserve">
@@ -955,7 +955,7 @@
     <comment>属性面板-文本对象</comment>
   </data>
   <data name="script_definition" xml:space="preserve">
-    <value>脚本定义</value>
+    <value>脚本</value>
   </data>
   <data name="script_language" xml:space="preserve">
     <value>脚本语言:</value>
@@ -1082,6 +1082,10 @@
   </data>
   <data name="width" xml:space="preserve">
     <value>宽度</value>
+    <comment>属性面板</comment>
+  </data>
+  <data name="line_width" xml:space="preserve">
+    <value>线条宽度</value>
     <comment>属性面板</comment>
   </data>
   <data name="Enum_LineType_Solid" xml:space="preserve">
@@ -1513,6 +1517,14 @@
     <value>箭头</value>
     <comment>绘图-图层-箭头</comment>
   </data>
+  <data name="arrowhead_width" xml:space="preserve">
+    <value>箭头宽度</value>
+    <comment>绘图-图层-箭头</comment>
+  </data>
+  <data name="arrowhead_length" xml:space="preserve">
+    <value>箭头长度</value>
+    <comment>绘图-图层-箭头</comment>
+  </data>
   <data name="add_arrow" xml:space="preserve">
     <value>添加箭头</value>
     <comment>绘图-编辑-添加箭头</comment>
@@ -1600,5 +1612,43 @@
   <data name="check_for_category_updates" xml:space="preserve">
     <value>检查分类结构更新</value>
     <comment>绘图-菜单栏-更新分类结构</comment>
+  </data>
+  <data name="cannot_delete_protected_column" xml:space="preserve">
+    <value>无法删除受保护的列</value>
+  </data>
+  <data name="add_column_left" xml:space="preserve">
+    <value>添加列(左)</value>
+  </data>
+  <data name="add_column_right" xml:space="preserve">
+    <value>添加列(右)</value>
+  </data>
+  <data name="delete_row" xml:space="preserve">
+    <value>删除行</value>
+  </data>
+  <data name="delete_column" xml:space="preserve">
+    <value>删除列</value>
+  </data>
+  <data name="missing_columns" xml:space="preserve">
+    <value>缺少列</value>
+  </data>
+  <data name="add_row_up" xml:space="preserve">
+    <value>上方插入行</value>
+  </data>
+  <data name="add_row_down" xml:space="preserve">
+    <value>下方插入行</value>
+  </data>
+  <data name="confirm_delete_row" xml:space="preserve">
+    <value>确定要删除选中的行吗？</value>
+  </data>
+  <data name="confirm_delete_column" xml:space="preserve">
+    <value>确定要删除选中的列吗？</value>
+  </data>
+  <data name="axis" xml:space="preserve">
+    <value>坐标轴</value>
+    <comment>绘图-属性面板</comment>
+  </data>
+  <data name="grid" xml:space="preserve">
+    <value>网格</value>
+    <comment>绘图-属性面板</comment>
   </data>
 </root>

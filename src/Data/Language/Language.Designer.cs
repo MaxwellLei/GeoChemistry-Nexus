@@ -151,6 +151,24 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Add Column (Left) 的本地化字符串。
+        /// </summary>
+        internal static string add_column_left {
+            get {
+                return ResourceManager.GetString("add_column_left", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Add Column (Right) 的本地化字符串。
+        /// </summary>
+        internal static string add_column_right {
+            get {
+                return ResourceManager.GetString("add_column_right", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Add line 的本地化字符串。
         /// </summary>
         internal static string add_line {
@@ -174,6 +192,24 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string add_polygon {
             get {
                 return ResourceManager.GetString("add_polygon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Add Row Below 的本地化字符串。
+        /// </summary>
+        internal static string add_row_down {
+            get {
+                return ResourceManager.GetString("add_row_down", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Add Row Above 的本地化字符串。
+        /// </summary>
+        internal static string add_row_up {
+            get {
+                return ResourceManager.GetString("add_row_up", resourceCulture);
             }
         }
         
@@ -453,6 +489,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string AxesTickUpLimit {
             get {
                 return ResourceManager.GetString("AxesTickUpLimit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Axis 的本地化字符串。
+        /// </summary>
+        internal static string axis {
+            get {
+                return ResourceManager.GetString("axis", resourceCulture);
             }
         }
         
@@ -754,6 +799,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Cannot delete protected column 的本地化字符串。
+        /// </summary>
+        internal static string cannot_delete_protected_column {
+            get {
+                return ResourceManager.GetString("cannot_delete_protected_column", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Unable to parse the version number. Please check the release address 的本地化字符串。
         /// </summary>
         internal static string cannot_parse_version_number_check_release_address {
@@ -921,6 +975,24 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string confirm_clear_data_points {
             get {
                 return ResourceManager.GetString("confirm_clear_data_points", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Are you sure you want to delete the selected column(s)? 的本地化字符串。
+        /// </summary>
+        internal static string confirm_delete_column {
+            get {
+                return ResourceManager.GetString("confirm_delete_column", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Are you sure you want to delete the selected row(s)? 的本地化字符串。
+        /// </summary>
+        internal static string confirm_delete_row {
+            get {
+                return ResourceManager.GetString("confirm_delete_row", resourceCulture);
             }
         }
         
@@ -1177,11 +1249,29 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Delete Column 的本地化字符串。
+        /// </summary>
+        internal static string delete_column {
+            get {
+                return ResourceManager.GetString("delete_column", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Delete Object 的本地化字符串。
         /// </summary>
         internal static string delete_object {
             get {
                 return ResourceManager.GetString("delete_object", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Delete Row 的本地化字符串。
+        /// </summary>
+        internal static string delete_row {
+            get {
+                return ResourceManager.GetString("delete_row", resourceCulture);
             }
         }
         
@@ -1827,6 +1917,15 @@ namespace GeoChemistryNexus.Data.Language {
         /// <summary>
         ///   查找类似 Grid 的本地化字符串。
         /// </summary>
+        internal static string grid {
+            get {
+                return ResourceManager.GetString("grid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Grid 的本地化字符串。
+        /// </summary>
         internal static string grid_settings {
             get {
                 return ResourceManager.GetString("grid_settings", resourceCulture);
@@ -1872,9 +1971,9 @@ namespace GeoChemistryNexus.Data.Language {
         /// <summary>
         ///   查找类似 Home 的本地化字符串。
         /// </summary>
-        internal static string Home {
+        internal static string home {
             get {
-                return ResourceManager.GetString("Home", resourceCulture);
+                return ResourceManager.GetString("home", resourceCulture);
             }
         }
         
@@ -2142,9 +2241,9 @@ namespace GeoChemistryNexus.Data.Language {
         /// <summary>
         ///   查找类似 Legend 的本地化字符串。
         /// </summary>
-        internal static string Legend {
+        internal static string legend {
             get {
-                return ResourceManager.GetString("Legend", resourceCulture);
+                return ResourceManager.GetString("legend", resourceCulture);
             }
         }
         
@@ -2523,6 +2622,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string MinorAxes {
             get {
                 return ResourceManager.GetString("MinorAxes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Missing Columns 的本地化字符串。
+        /// </summary>
+        internal static string missing_columns {
+            get {
+                return ResourceManager.GetString("missing_columns", resourceCulture);
             }
         }
         
@@ -3463,7 +3571,7 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Script Definition 的本地化字符串。
+        ///   查找类似 Script 的本地化字符串。
         /// </summary>
         internal static string script_definition {
             get {

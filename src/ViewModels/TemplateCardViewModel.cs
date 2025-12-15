@@ -14,7 +14,7 @@ namespace GeoChemistryNexus.ViewModels
     {
         public string Name { get; set; }
         public string TemplatePath { get; set; }
-        //public string ThumbnailPath { get; set; }
+        public string ThumbnailPath { get; set; }
         public string Category { get; set; }
 
         // 服务器端哈希 (用于校验)
@@ -32,7 +32,7 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private double _downloadProgress;
 
-        // 辅助文本，用于前端显示提示（可选）
+        // 辅助文本，用于前端显示提示
         public string StateText => State switch
         {
             TemplateState.NotDownloaded => "点击下载",
@@ -43,7 +43,7 @@ namespace GeoChemistryNexus.ViewModels
         };
 
         // --- 委托事件 ---
-        // 为了解耦，我们将具体的“打开”和“下载”逻辑交给 MainViewModel 实现
+        // 将具体的“打开”和“下载”逻辑交给 MainViewModel 实现
         public Func<TemplateCardViewModel, Task> DownloadHandler { get; set; }
         public Action<TemplateCardViewModel> OpenHandler { get; set; }
 

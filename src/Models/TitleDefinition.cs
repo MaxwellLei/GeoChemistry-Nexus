@@ -1,7 +1,5 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using GeoChemistryNexus.Helpers;
-using GeoChemistryNexus.PropertyEditor;
-using HandyControl.Controls;
 using System.ComponentModel;
 
 namespace GeoChemistryNexus.Models
@@ -14,7 +12,6 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("chart_title_style")] // 图表标题样式
         [property: LocalizedDisplayName("content")] // 内容
-        [property: Editor(typeof(LocalizedStringPropertyEditor), typeof(PropertyEditorBase))]
         private LocalizedString _label = new LocalizedString();
 
         /// <summary>
@@ -23,7 +20,6 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("chart_title_style")] // 图表标题样式
         [property: LocalizedDisplayName("font_family")] // 字体
-        [property: Editor(typeof(FontFamilyPropertyEditor), typeof(PropertyEditorBase))]
         private string _family = "Arial";
 
         /// <summary>
@@ -40,7 +36,6 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("chart_title_style")] // 图表标题样式
         [property: LocalizedDisplayName("font_color")] // 字体颜色
-        [property: Editor(typeof(ColorPropertyEditor), typeof(ColorPropertyEditor))]
         private string _color = "#000000";
 
         /// <summary>
