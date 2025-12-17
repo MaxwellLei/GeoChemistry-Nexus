@@ -4,17 +4,22 @@ sidebar_position: 3
 
 # 🛣️ Roadmap
 
-## **🌍 Earth Science Mapping and Visualization (In Progress) ✏️**
-Integrating various geological mapping and visualization methods developed by global earth scientists, we have created a unified toolkit that supports users in selecting appropriate methods based on their specific needs and achieving one-click visualization operations. This module not only accelerates the generation process of routine graphics in scientific research but also promotes the standardization and broader application of various geological methods and tools, enhancing overall efficiency in geological research.
+## 🌍 **Earth Science Plotting (In Progress)** ✏️
 
-## **🌡️ Thermometers and Barometers Calculations (In Progress) 📊**
-We have integrated multiple geological thermometer and barometer calculation models to compute physical parameters such as temperature and pressure. The system provides detailed calculation processes and results explanations, and outputs corresponding phase diagrams and temperature-pressure graphs to assist users in conducting in-depth geological interpretations and analyses, meeting the refined demands of geological research and applications.
+Integrates various geological plotting and mapping methods developed by earth scientists worldwide into a unified toolkit. This enables users to select methods tailored to their specific needs and achieve one-click plotting operations. This module not only accelerates the routine generation of figures in scientific research but also promotes the standardization and widespread application of various geological methods and tools, enhancing the overall efficiency of geological research.
 
-## **🤖 AI Assistant 💡**
-Responsible for parsing and suggesting specific content in the vectorized base map guidelines, the AI assistant aims to help users propose foundational data requirements and core datasets when faced with ambiguous discriminative analysis scenarios. Through intelligent analysis, the assistant recommends optimal analysis strategies based on the data features provided by users. The ultimate goal is to simplify operational complexity and significantly enhance analysis efficiency and accuracy.
+## 🌡️ **Geothermometer & Geobarometer Calculations (In Progress)** 📊
 
-## **📈 Machine Learning Data Analysis 🔍**
-Based on machine learning algorithms, we conduct in-depth analysis of users' geochemical data. Users can customize their choice of machine learning models, and the system supports automated hyperparameter tuning, model training, and evaluation. The final outputs include model performance evaluations, variable importance analysis, and related visualizations, such as ROC curves, confusion matrices, and feature importance bar charts, helping users to comprehensively understand analysis results.
+Integrates multiple geological geothermometer and geobarometer calculation models to compute physical parameters such as temperature and pressure. The system provides detailed calculation processes and result interpretations, outputting corresponding phase diagrams and P-T (pressure-temperature) diagrams. This assists users in deep-level geological interpretation and analysis, meeting the refined demands of geological research and applications.
 
-## **⚗️ Geochemical Relevant Scientific Calculations 🧪**
-We provide a specialized set of scientific calculation tools for geochemical data, covering functionalities such as element correlation analysis, isotope ratio calculations, and rare earth element distribution pattern analysis. This toolkit supports batch processing of data, complex formula calculations, and result visualizations, assisting researchers in efficiently handling and interpreting geochemical data, ensuring the accuracy and repeatability of research outcomes.
+## 🤖 **AI Assistant** 💡
+
+Responsible for parsing and offering suggestions on specific content within the vectorized basemap guidelines. It aims to assist users in scenarios where discriminant analysis is unclear by proposing basic data requirements and core datasets. Through intelligent analysis, the assistant recommends optimal analysis schemes based on user-provided data characteristics. The ultimate goal is to simplify operational complexity and significantly improve analysis efficiency and accuracy.
+
+## 📈 **Machine Learning Data Analysis** 🔍
+
+Conducts in-depth analysis of user geochemical data based on machine learning algorithms. Users can customize the selection of machine learning models, and the system supports automated hyperparameter tuning, model training, and evaluation. The final output includes model performance evaluation, variable importance analysis, and relevant visualization charts—such as ROC curves, confusion matrices, and feature importance bar charts—helping users fully comprehend the analysis results.
+
+## ⚗️ **Geochemistry-Related Scientific Calculations** 🧪
+
+Provides a professional scientific calculation toolkit tailored for geochemical data, covering functions such as elemental correlation analysis, isotope ratio calculations, and rare earth element (REE) distribution pattern analysis. The toolkit supports batch data processing, complex formula calculations, and result visualization, helping researchers efficiently complete the processing and interpretation of geochemical data while ensuring the accuracy and reproducibility of scientific research results.

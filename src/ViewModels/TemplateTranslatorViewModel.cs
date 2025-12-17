@@ -138,6 +138,13 @@ namespace GeoChemistryNexus.ViewModels
                     return;
                 }
 
+                // 版本校验
+                if (!GraphMapTemplateParser.IsVersionCompatible(_currentTemplate))
+                {
+                    StatusMessage = LanguageService.Instance["template_version_too_high"];
+                    return;
+                }
+
                 CurrentFilePath = filePath;
                 LoadDataToTable();
                 IsFileLoaded = true;

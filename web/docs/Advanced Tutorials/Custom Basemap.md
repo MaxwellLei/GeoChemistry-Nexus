@@ -2,79 +2,164 @@
 sidebar_position: 1
 ---
 
-# 🎨 Custom Basemap
+# 🎨 Custom Diagram Templates
 
-For mapping, we have recently redesigned the logic of the basemap files from the ground up. Now we can freely create, modify, import, and delete basemaps through the software.
-:::info
-We encourage contributors to create relevant basemaps, participate in contributions, and work together to build a better software.
-We plan to create a community-like environment shortly, providing services for uploading and downloading basemaps to facilitate widespread dissemination.
-:::
+For diagram templates not available in the built-in library, users can choose to create custom diagram templates. By customizing a template and packaging it into a template bundle, you can quickly share it with other researchers.
 
-## Edit Mode
-You can now enter edit mode by clicking on `File` -> `Edit Mode` in the upper left corner, as shown in the image below:
-![](https://geo-1303234197.cos.ap-hongkong.myqcloud.com/EditModeMenu.png)
-Once you enter edit mode, there will be three changes:
-1. The previous toolbar has been replaced with edit mode-specific convenience tools.
-   ![](https://geo-1303234197.cos.ap-hongkong.myqcloud.com/EditModeToolBar.png)
-2. Edit mode has its own specific project list, meaning that it is different from the drawing list in the default drawing mode. This can be understood as a project list for editing custom basemaps.
-3. Certain properties of drawing elements will display relevant properties such as drawing location.
-## Custom Basemap
-You can now create a new basemap via `File` -> `Edit Mode`, as shown in the image below:
-![](https://geo-1303234197.cos.ap-hongkong.myqcloud.com/NewBasemap.png)
-Creating a new basemap will open a dialog box, as shown below. You need to fill in the category parameters for the basemap, which can be understood as a "special project name." The entered content must meet the following format requirements:
-1. Use the English character `,` as a separator.
-2. The primary category is recommended to be in the native language, for example: `English` or `简体中文`.
-3. Subsequent categories can be flexible, but it is suggested that the secondary categories are named as `Igneous Rock`, `Metamorphic Rock`, `Sedimentary Rock`, `Others`, etc., tertiary categories are to be named by function (e.g., `Tectonic Environment`), quaternary categories by the author’s name + date (e.g., `Lucy (2020)`), and quinary categories by the required elements (e.g., `TiO2-SiO2-Y`).
-For a normal name example: `English,Igneous Rock,Rock Category,TAS`. The final category will be displayed in a straightforward manner based on the following rules:
-![](https://geo-1303234197.cos.ap-hongkong.myqcloud.com/NameRule.png)
-Please note that after creating a project file, the basemap file will not be created immediately; it will only be created after clicking the save button. The format of the basemap file is `json`. The naming rule for the file is based on the classification path; for this example, it would be `English_Igneous Rock_Rock Category_TAS.json`. 
-The storage path of the basemap file is: based on the installation location of the program -> `Data` -> `PlotData` -> `Custom` folder.
-It should be noted that a complete basemap file needs to meet the following requirements:
-1. **Basemap Drawing**: that is, completing the drawing of the basemap.
-2. **Script Settings**: fill in the parameters and execution scripts required for plotting the basemap.
-3. **Guide Writing**: write the guide content for the basemap according to a certain format.
-### Basemap Drawing
-Basemap drawing relies mainly on the toolbar and the property panel.
-![](https://geo-1303234197.cos.ap-hongkong.myqcloud.com/EditModeToolBar.png)
-* **Add Lines**: Lines, also known as border, can be created by clicking the add line button, then clicking the starting and ending points on the drawing. Although this method may be a bit rough, you can adjust the position in the property panel after selecting the recently created boundary in the layer panel.
-* **Add Annotations**: Annotations, also known as text, can be created similarly by clicking the add text button, then clicking a specified position in the drawing. The default annotation text is `Text`, and modifications to the text position or content can also be done from the property position in the layer panel.
-* **Add Polygons**: This feature is similar to the previous ones; you can create a closed polygon by consecutively clicking points with the left mouse button and closing the shape with the right mouse button.
-* **Script Settings**: Fill in some necessary parameters and rules for plotting. Detailed content will be discussed in future documentation.
-* **Save**: Save the basemap; clicking the save button is the only way to create the corresponding basemap file.
-* **Exit Edit Mode**: Exit edit mode and return to the default drawing interface.
-#### Adding Lines
-Here is an example of the property panel for adding lines. Through the property panel, you can make fine adjustments to the position and other properties of the lines. The positioning icon on the right, when triggered, sets the position to the clicked location in the drawing area (this feature is still under development).
-![](https://geo-1303234197.cos.ap-hongkong.myqcloud.com/ShuXinMianBan.png)
+You can also choose to upload your templates to our community for open-source sharing or provide them to developers for inclusion in the built-in library. We sincerely appreciate contributions from anyone involved.
+
+> Note: The diagram template community platform is currently in the planning stages and will be deployed online at a later date. Please stay tuned.
+
+## Creating a New Diagram Template
+
+You can now customize a diagram template via the menu bar by selecting `File` -> `New Drawing Template`, as shown below:
+
+![plot_new_template_1](../Tutodials/imgs/plot_new_template_1.png)
+
+After clicking 【New Drawing Template】, a pop-up window for creating a new diagram template will appear:
+
+![plot_new_template_2](../Tutodials/imgs/plot_new_template_2.png)
+
+For a new custom diagram template, there are three main parts to configure:
+
+1.  **Default Supported Languages**: You can select built-in language shortcuts from the selection box on the right. We provide: Simplified Chinese, Traditional Chinese, American English, Japanese, Russian, Korean, German, and Spanish. You can also manually enter a language code for custom settings. For specific language codes, refer to: [Table of Language Culture Names](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-lcid/a9eac961-e77d-41a6-90a5-ce1a8b0cdb9c)
+
+    > Note: Among the default supported languages, the first language entered will be the default language for the diagram. If other languages are not translated or encounter an error, the system will fall back to this default language.
+
+2.  **Diagram Template Classification (Hierarchy)**: Similarly, we provide built-in shortcut classification structures. This setting affects the hierarchical position of your template within the diagram template list.
+
+3.  **Diagram Template Type**: Currently, two types are supported: **2D Coordinate System** and Ternary Plot.
+
+After completing the settings, click 【OK】 to enter the custom drawing interface. Next, we will focus our operations on the 【Edit】 functional bar. After clicking 【Edit】, the system will display a secondary confirmation dialog for editing the diagram. Once confirmed, you will enter Edit Mode, where you can view and use the various tools in the edit functional bar.
+
+![plot_new_template_edit](../Tutodials/imgs/plot_new_template_edit.png)
+
+## Customizing Diagram Templates
+
+Under the edit functional bar, the following actions are permitted:
+
+![plot_new_template_edittoobar](../Tutodials/imgs/plot_new_template_edittoobar.png)
+
+* **Save**: Saves the diagram template. After clicking, the program will generate a corresponding thumbnail based on the current drawing state by default.
+* **Save As**: Saves the diagram template to a different file location.
+* **Add Line**: When enabled, enters "Add Line" mode. Click the first point in the drawing area to start the line, and click a second point to finalize the line object.
+* **Add Text**: Also known as annotations. When enabled, enters "Add Text" mode. Click a specific position in the drawing to create it. The default text is `Text`. You can modify the position or content via the properties section in the Layers panel.
+* **Add Polygon**: When enabled, enters "Add Polygon" mode. Add a closed polygon by continuously left-clicking to create vertices and right-clicking to close the shape.
+* **Add Arrow**: When enabled, enters "Add Arrow" mode. The addition process is similar to creating a line.
+* **Add Function**: Upon clicking, a default function `sin(x)` is added with a domain range of [-10, 10]. You can customize your formula in the properties panel.
+* **Undo/Redo**: These are disabled if no drawing objects have been created or deleted. By default, only the last 10 operations are stored in the history.
+* **Delete**: Deletes drawing objects. First, select the object (e.g., text), then click Delete to remove it.
+
+### Adding Lines
+
+Below is an example of the property panel for adding a line. Through the property panel, you can precisely adjust the position and other attributes of the line.
+
+The location icon button above each coordinate allows you to re-adjust and capture coordinates in the drawing area. Once triggered, left-clicking in the drawing area will automatically set the coordinate to that clicked position.
+
+![plot_line_attribute](../Tutodials/imgs/plot_line_attribute.png)
+
+### Adding Polygons
+
+Below is an example of the property panel for adding a polygon. Polygon objects have a vertex list. A confirmation pop-up will appear when deleting a vertex. You can hold the `Ctrl` key while left-clicking the delete button to delete vertices continuously.
+
+![plot_polygon_attribute](../Tutodials/imgs/plot_polygon_attribute.png)
+
+### Adding Text
+
+Below is an example of the property panel for adding text. For text objects, by default, the added text will use the first language set during template creation (the default language) as the initial content.
+
+Since diagrams natively support multiple languages, the settings for multi-language text content will be explained later.
+
+![plot_text_attribute](../Tutodials/imgs/plot_text_attribute.png)
+
+### Adding Functions
+
+Below is an example of the property panel for adding a function. The default function used is `sin(x)`. You only need to enter a formula related to $x$. The default is $y = \text{Formula Content}$.
+
+For a function object, the two most important parameters are: **Domain** and **Sampling Points**. The domain defines the display range of the function. The sampling points control the precision of the function drawing, which in turn affects the accuracy of the mouse-snapping selection algorithm. The default value is `1000`.
+
+![plot_func_attribute](../Tutodials/imgs/plot_func_attribute.png)
+
+## Complete Templates
+
+After completing the basic graphical drawing, a complete template also requires:
+
+1.  **Script Settings**: Defines the input data for the template and the data calculation/plotting algorithm.
+2.  **Guide Writing**: Documentation for the diagram's instructions.
+3.  **Multi-language**: If the template is set to support multiple languages, the corresponding sections must be filled. This includes both in-diagram text and the diagram guide documentation.
+
 ### Script Settings
-Script settings are a crucial part of plotting, determining the custom plotting logic. Two parameters are required: plotting parameters and scripts. As shown in the image below:
-![](https://geo-1303234197.cos.ap-hongkong.myqcloud.com/JsSetting.png)
-For the script parameters, you need to specify which columns of data in the plotting data file (`xlsx`, `xls`, `csv`) should be read. The input rule is to separate them with English `,`. 
-**Currently, the first parameter must be `Group`**; it will categorize different data points during plotting, thereby influencing the display of legend categories. The remaining parameters should be based on the needs of the custom basemap.
-Scripts are written in `JavaScript`. For basic syntax details, you can refer to related documentation and we won’t elaborate here. 
-For example, parameter input: `Group,SiO2,Na2O,K2O`. The script content is as follows:
+
+Script setting is a crucial part of plotting, as it defines the custom plotting logic.
+
+Two parameters are required: **Diagram Variable Parameters** and **Calculation Script**, as shown below:
+
+![plot_scripts](../Tutodials/imgs/plot_scripts.png)
+
+Scripts are written in `JavaScript` by default. Basic `JavaScript` syntax is not covered here.
+
+For **Data Parameters**, these represent which columns of data need to be read from the data list. **The input rule uses an English comma `,` as a separator.**
+
+**By default, the first parameter can be the `Group` variable**. If not added, the program will add this variable in the background. Its role is to distinguish different data point categories during plotting, thereby affecting the legend display. The remaining parameters should be defined according to the needs of the custom base map.
+
+The script content involves using the aforementioned data parameters (predefined variables) to write calculation algorithms that return the final $[x, y]$ values to project points onto the diagram.
+
+For example, for a TAS diagram, the parameters should be: `SiO2, Na2O, K2O`. The script content would be:
 
 ```javascript
 // Calculate using variables K2O + Na2O
 var result1 = K2O + Na2O;
-// Calculate using SiO2
+// Use SiO2
 var result2 = SiO2;
-// Return the two calculated values. Note that for the default two-dimensional coordinate axis image, there are only two return values.
-// The first position represents the return value for X, and the second position is for Y.
+// Return two calculated values. Note that for default 2D coordinate images, there are only two return values.
+// The first position represents the X return value, and the second represents the Y return value.
 [result2, result1]
 ```
-### Guide Writing
-Guide writing is also an important task as it allows ordinary users to quickly understand the basic information and usage of the basemap. Write the guide content at the position shown in the image below.
-![](https://geo-1303234197.cos.ap-hongkong.myqcloud.com/GuideContent.png)
-You can choose to write it directly, but we prefer using Office or WPS to create an `rtf` file, write the content within it, and then copy and paste it here. As shown in the image below:
-![](https://geo-1303234197.cos.ap-hongkong.myqcloud.com/RTFGuide.png)
-For the format of guide writing, we recommend the following standard:
 
-* Intro: Responsible for introducing some basic concepts and functions of the basemap, helping users quickly understand it.
-* Data Format: Specifies what the input data format is; that is, what the column headers should be for valid data reading.
-* References: Related content referring to the creation of this basemap and its related material.
+Alternatively, you can write the script as follows:
 
-Contributors: Names or nicknames of individuals involved in the creation of this basemap, depending on your interest; you could even include your personal website, which is highly encouraged.
+```javascript
+var result = K2O + Na2O
+[SiO2, result]
+```
+
+Note that the positions of the return values are fixed. In `[x, y]`, the first value will always be X (bottom axis) and the second will be Y (left axis).
+
 :::info
-Some functions may not yet be fully implemented; we are working to improve them to provide a better user experience. ✨
+
+For Ternary Plots, the final return format is `[x, y, z]`, where the first value is X (bottom axis), the second is Y (left axis), and the third is Z (right axis).
+
 :::
 
+### Guide Writing
+
+Writing a guide is an essential step to help other researchers quickly understand the basic information and usage of the base map.
+
+Write the guide in the location shown below. We provide simple toolbar functions to meet regular documentation needs. You can also click `Office Word` on the right to open the guide file in Word for more advanced formatting and features.
+
+> Note: Editing the content in the Diagram Guide panel is only permitted after confirming entry into Edit Mode.
+
+For the guide format, we recommend the following standards:
+
+* **Introduction**: Explains the basic concepts and functions of the base map to help users understand it quickly.
+* **Data Format**: Specifies the required input data format and column headers for valid data reading.
+* **References**: Lists the references used to create the base map and its content.
+* **Contributors**: Names or nicknames of those involved in the base map. You are even encouraged to include your personal website.
+
+### Multi-language
+
+We have established two ways to set up multiple languages:
+
+The first is to use the **Switch Language** option within the drawing functional bar. This allows you to set specific content for a second language.
+
+The second method is to use our homepage widget; we provide a multi-language component to facilitate template localization.
+
+The third method is to directly edit the source file of the diagram template.
+
+> These methods are still being documented...
+
+:::info
+
+Some functions may not yet be fully implemented; we are working to improve them to provide a better user experience. ✨
+
+:::

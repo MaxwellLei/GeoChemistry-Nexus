@@ -1,48 +1,58 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 ---
 
-# 🌡️ Geological Thermometer
+# 🌡️ Geothermometers
 
-The Geological Thermometer page in the software is abbreviated as **GTM**. Currently, this page includes thermometric calculations for minerals such as zircon, sphalerite, quartz, arsenopyrite, chlorite, and biotite.
+The Geothermometer page in the software is abbreviated as **GTM**. This page currently includes geothermometer calculations for minerals such as zircon, sphalerite, quartz, xenotime, chlorite, and biotite.
 
 :::tip
 
-We have completely revamped the UI and implementation logic of the plotting module, making it fundamentally different from versions prior to `v0.5.0.0`.
-
-In the future, we plan to add more features, including but not limited to thermobarometric calculations, data and plot interaction functionalities (referencing Origin plotting software).
+Please note that the current Geothermometer module features a temporary UI. It will be adjusted as the functionality of the thermometers is enhanced.
 
 :::
 
 ## 🌟 Features
 
-Our geological thermometer module now adopts an Excel-like interface, greatly lowering the usage barrier. There are two ways to perform thermometric calculations:
+Our Geothermometer module now utilizes an Excel-like interface, significantly lowering the learning curve. Calculations can be performed in two ways:
 
-1. Directly use functions in cells, just like using Excel functions. We have pre-defined several calculation functions for thermometers. For detailed information about these functions, please refer to the Advanced Tutorial and Custom Functions sections.
-2. Use built-in geological thermometer templates. This method is more straightforward and requires no programming background.
+1.  **Using functions directly in cells**, identical to using Excel functions. We have pre-defined several calculation functions for various thermometers. For specific function details, please refer to the "Custom Functions" section in the Advanced Tutorials.
+2.  **Using built-in geothermometer templates**, which is more direct and faster, requiring no programming knowledge.
 
-![GTM UI](https://geo-1303234197.cos.ap-hongkong.myqcloud.com/V0_5_0_0/GTM_UI.png)
+![gtm_ui](imgs/gtm_ui.png)
 
-## Usage Example
+## Usage Examples
 
 ### Custom Functions
 
-Custom functions are used exactly like in Excel. Simply input `=FuncName(args)` in a cell to call them. For more details on custom functions, please refer to the Advanced Tutorial.
+The use of custom functions is consistent with Excel; simply enter a format like `=FuncName(args)` into a cell to call them.
+
+Refer to the Advanced Tutorials for specific custom function references.
 
 ### Using Built-in Templates
 
-First, in the Geological Thermometer module, select the corresponding thermometer calculation template from the menu bar:
+First, within the Geothermometer module, select the corresponding calculation template from the menu bar:
 
-![](https://geo-1303234197.cos.ap-hongkong.myqcloud.com/V0_5_0_0/GTM_Cal.png)
+![gtm_select_m](imgs/gtm_select_m.png)
 
-A confirmation window will then pop up to ask whether you want to create a new worksheet for the calculation. If you already have data in your current worksheet and do not want to overwrite it, please select "OK." Otherwise, if you do not have any data, select "Cancel."
+A pop-up window will then appear asking to confirm whether to create a new sheet for the calculation.
+
+If your current sheet contains data you do not want to overwrite, please select **OK**. Conversely, if you want to overwrite the current sheet, select **Cancel**.
 
 ![Notification](https://geo-1303234197.cos.ap-hongkong.myqcloud.com/V0_5_0_0/GTM_New_Sheet.png)
 
-A sample thermometer template will then appear. Users simply need to fill in the corresponding data, then use Excel-like drag and fill operations to auto-calculate (as shown in the GIF below).
+Next, a sample template for the thermometer will appear. Users only need to fill in the corresponding data and then use the "click-and-drag" fill handle (similar to Excel) to automatically complete the calculations (as shown in the animated example below).
 
 ![](https://geo-1303234197.cos.ap-hongkong.myqcloud.com/V0_5_0_0/Example.gif)
 
------
+## Intermediate Calculation Processes
 
-We warmly welcome contributors to join us and help create a better software experience together. 🤝😊
+:::tip
+
+We have already taken this into account. We understand that petrologists need to perform verification or view intermediate processes. We are currently designing a new UI and algorithms to implement this functionality.
+
+:::
+
+---
+
+We cordially invite contributors to join us in creating a better software experience. 🤝😊

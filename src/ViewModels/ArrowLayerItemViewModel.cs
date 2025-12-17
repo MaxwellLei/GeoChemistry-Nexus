@@ -73,6 +73,24 @@ namespace GeoChemistryNexus.ViewModels
 
             // 绑定引用
             this.Plottable = arrowPlot;
+
+            // --- 绘制高亮顶点 ---
+            if (ArrowDefinition.Start.IsHighlighted)
+            {
+                var marker = plot.Add.Marker(startPixel.X, startPixel.Y);
+                marker.Color = ScottPlot.Colors.Red;
+                marker.Size = 10;
+                marker.Shape = MarkerShape.OpenCircle;
+                marker.LineWidth = 2;
+            }
+            if (ArrowDefinition.End.IsHighlighted)
+            {
+                var marker = plot.Add.Marker(endPixel.X, endPixel.Y);
+                marker.Color = ScottPlot.Colors.Red;
+                marker.Size = 10;
+                marker.Shape = MarkerShape.OpenCircle;
+                marker.LineWidth = 2;
+            }
         }
 
         /// <summary>
@@ -100,6 +118,24 @@ namespace GeoChemistryNexus.ViewModels
 
             // 绑定引用
             this.Plottable = arrowPlot;
+
+            // --- 绘制高亮顶点 ---
+            if (ArrowDefinition.Start.IsHighlighted)
+            {
+                var marker = plot.Add.Marker(startCartesian.X, startCartesian.Y);
+                marker.Color = ScottPlot.Colors.Red;
+                marker.Size = 10;
+                marker.Shape = MarkerShape.OpenCircle;
+                marker.LineWidth = 2;
+            }
+            if (ArrowDefinition.End.IsHighlighted)
+            {
+                var marker = plot.Add.Marker(endCartesian.X, endCartesian.Y);
+                marker.Color = ScottPlot.Colors.Red;
+                marker.Size = 10;
+                marker.Shape = MarkerShape.OpenCircle;
+                marker.LineWidth = 2;
+            }
         }
 
         /// <summary>

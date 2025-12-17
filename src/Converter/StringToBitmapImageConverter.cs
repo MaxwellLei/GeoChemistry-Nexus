@@ -16,8 +16,8 @@ namespace GeoChemistryNexus.Converter
                     var bitmap = new BitmapImage();
                     bitmap.BeginInit();
                     bitmap.UriSource = new Uri(path, UriKind.RelativeOrAbsolute);
-                    bitmap.CacheOption = BitmapCacheOption.OnDemand;
-                    bitmap.CreateOptions = BitmapCreateOptions.DelayCreation;
+                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmap.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
                     
                     // Allow parameter to override DecodePixelWidth
                     if (parameter is string widthStr && int.TryParse(widthStr, out int width))

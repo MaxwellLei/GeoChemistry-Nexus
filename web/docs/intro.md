@@ -2,45 +2,45 @@
 sidebar_position: 1
 ---
 
-# 🌍 Tutorial Introduction
+# 🌍 Introduction
 
-Let's get started with **Geo-Thermometer** in **5 minutes** ⏱️.
+Let's get started with **GeoChemistry Nexus** in **5 minutes** ⏱️.
 
-## Preparation 🛠️
+## Prerequisites 🛠️
 
-Before getting started, please ensure you have downloaded and installed the .NET 6 SDK on your operating system. Follow these steps:
+Before you begin, please follow these steps:
 
-1. **Choose the Download Option** 🌐:
-   You can obtain the required files through any of the following methods:
-   - Visit the [Official .NET 6 Download Page (Click Here)](https://dotnet.microsoft.com/en-us/download/dotnet/6.0), and select the installer suitable for your operating system version.
-   - During software operation, follow the system prompts to automatically redirect to the download page and complete the framework installation.
-   - Choose the standalone package we provide (no additional runtime installation needed).
-2. **Determine Your Operating System Type** 💻:
-   - For Windows systems, first confirm whether your OS is `32-bit` or `64-bit`, and choose the corresponding version to install.
+1. **Select Download Option** 🌐:
+   You can obtain the required content in one of the following ways:
+   - **Manual Installation**: Visit the [.NET 6 Official Download Page (Click Here)](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) directly and select the appropriate installer for your operating system version.
+   - **Follow Prompts**: During software execution, follow the system prompts to automatically jump to the download page to complete the framework installation.
+   - **No Manual Configuration Required: Choose the standalone package we provide (no additional runtime framework installation needed)**.
+2. **Determine Operating System Type** 💻:
+   - For Windows systems, please first determine whether your operating system is `32-bit` or `64-bit`, and select the corresponding version to install.
 
 :::tip
 
-**Windows Users**: Please ensure your operating system is at least Windows 7.
+**Windows Users**: Please ensure your operating system version is at least Windows 7.
 
 :::
 
 ## Getting Started 🚀
 
-[Click here](https://github.com/MaxwellLei/GeoChemistry-Nexus/releases) to visit the download page. Select the appropriate version, download it, and extract the files. Then, double-click to run `Geo-Thermometer.exe` 🖱️.
+[Click here](https://github.com/MaxwellLei/GeoChemistry-Nexus/releases) to visit the download page. Select the appropriate version, download, and unzip it. Then, double-click to run `GeoChemistry Nexus.exe` 🖱️.
 
 ### Package Naming Convention 📦:
 
-**Package names follow the format:** `SoftwareName_Abbreviation_Version_Dependencies_OS_Architecture`
+**Package naming follows this format: `SoftwareName_Abbreviation_Version_Dependency_OS_Architecture`**
 
-- If the name contains `d`, it indicates that this software depends on **.NET 6 SDK** and requires a separate install. 🔍
-- If `d` is missing, the software includes all necessary components and requires no additional installation. ✅
+- If the name contains `d`, it indicates that the software depends on the **.NET 6 SDK**, which needs to be installed separately. 🔍
+- If `d` is missing, the software already includes necessary components and requires no further installation. ✅
 
-### Notes for Linux and Mac Users 🐧🍏:
+### Note for Linux and Mac Users 🐧🍏:
 
-Currently, there are no detailed instructions for Linux and Mac. It is recommended to run the program via a virtual machine. Future updates will consider migrating to `Avalonia` for fully cross-platform support. 📅
+Currently, there are no detailed instructions for Linux and Mac. It is recommended to prioritize using a virtual machine to run the program. We plan to migrate to `Avalonia` in the future to achieve full cross-platform compatibility. 📅
 
 ![User Interface Example](https://geo-1303234197.cos.ap-hongkong.myqcloud.com/V0_5_0_0/GeoT_UI.png)
 
 ----
 
-Happy exploring! 🎉 If you have questions, join our community or raise issues on [GitHub](https://github.com/MaxwellLei/GeoChemistry-Nexus).
+Happy exploring! 🎉 If you have questions, please join our community or submit an issue on [GitHub](https://github.com/MaxwellLei/GeoChemistry-Nexus).

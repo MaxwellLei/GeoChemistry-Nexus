@@ -39,10 +39,9 @@
                 </DockPanel>
 
                 <!-- Vertices -->
-                <Expander Header="Vertices">
+                <Expander Header="{Binding [vertices],Source={x:Static lg:LanguageService.Instance}}">
                     <StackPanel Margin="8,5,8,5">
-                         <!-- 注意：VerticesEditorControl 也需要支持精度控制，假设它内部已经处理或者不是 NumericUpDown -->
-                         <local:VerticesEditorControl VerticesValue="{Binding Vertices}"/>
+                        <local:VerticesEditorControl VerticesValue="{Binding Vertices}"/>
                     </StackPanel>
                 </Expander>
 

@@ -32,11 +32,94 @@
         <cvs:GraphMapPathToIconConverter x:Key="GraphMapPathToIconConverter"/>
         <cvs:IndexToBooleanConverter x:Key="IndexToBooleanConverter"/>
         <cvs:StringToBitmapImageConverter x:Key="StringToBitmapImageConverter"/>
+
+        <Storyboard x:Key="SwitchToPlotModeStoryboard">
+            <!-- TemplateGrid Fade Out & Slide Left -->
+            <DoubleAnimation Storyboard.TargetName="TemplateGrid" Storyboard.TargetProperty="Opacity"
+                             To="0" Duration="0:0:0.3">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseIn"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="TemplateGrid" Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                             To="-100" Duration="0:0:0.3">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseIn"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="TemplateGrid" Storyboard.TargetProperty="Visibility" BeginTime="0:0:0.3">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Collapsed}"/>
+            </ObjectAnimationUsingKeyFrames>
+
+            <!-- PlotGrid Fade In & Slide From Right -->
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PlotGrid" Storyboard.TargetProperty="Visibility" Duration="0:0:0">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Visible}"/>
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimation Storyboard.TargetName="PlotGrid" Storyboard.TargetProperty="Opacity"
+                             From="0" To="1" Duration="0:0:0.3" BeginTime="0:0:0.1">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="PlotGrid" Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                             From="100" To="0" Duration="0:0:0.3" BeginTime="0:0:0.1">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+
+        <Storyboard x:Key="SwitchToTemplateModeStoryboard">
+            <!-- PlotGrid Fade Out & Slide Right -->
+            <DoubleAnimation Storyboard.TargetName="PlotGrid" Storyboard.TargetProperty="Opacity"
+                             To="0" Duration="0:0:0.3">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseIn"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="PlotGrid" Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                             To="100" Duration="0:0:0.3">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseIn"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PlotGrid" Storyboard.TargetProperty="Visibility" BeginTime="0:0:0.3">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Collapsed}"/>
+            </ObjectAnimationUsingKeyFrames>
+
+            <!-- TemplateGrid Fade In & Slide From Left -->
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="TemplateGrid" Storyboard.TargetProperty="Visibility" Duration="0:0:0">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Visible}"/>
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimation Storyboard.TargetName="TemplateGrid" Storyboard.TargetProperty="Opacity"
+                             From="0" To="1" Duration="0:0:0.3" BeginTime="0:0:0.1">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="TemplateGrid" Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                             From="-100" To="0" Duration="0:0:0.3" BeginTime="0:0:0.1">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
     </Page.Resources>
 
     <Grid>
+        <i:Interaction.Triggers>
+            <i:DataTrigger Binding="{Binding IsPlotMode}" Value="True">
+                <i:ControlStoryboardAction Storyboard="{StaticResource SwitchToPlotModeStoryboard}"/>
+            </i:DataTrigger>
+            <i:DataTrigger Binding="{Binding IsPlotMode}" Value="False">
+                <i:ControlStoryboardAction Storyboard="{StaticResource SwitchToTemplateModeStoryboard}"/>
+            </i:DataTrigger>
+        </i:Interaction.Triggers>
         <!-- 模板浏览模式 -->
-        <Grid Visibility="{Binding IsTemplateMode, Converter={StaticResource BoolToVisibilityConverter}}">
+        <Grid x:Name="TemplateGrid" Visibility="Visible" Opacity="1" RenderTransformOrigin="0.5,0.5">
+            <Grid.RenderTransform>
+                <TranslateTransform/>
+            </Grid.RenderTransform>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="285"/>
                 <ColumnDefinition Width="4"/>
@@ -83,11 +166,32 @@
                           BorderThickness="0">
                     <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding GraphMapPath, Converter={StaticResource GraphMapPathToIconConverter}}" 
-                                          FontSize="14" Margin="0,0,8,0"/>
-                                <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
-                            </StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding GraphMapPath, Converter={StaticResource GraphMapPathToIconConverter}}" 
+                                               FontSize="14" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                                <Border Grid.Column="1" Background="#E9E9EF" CornerRadius="10" Padding="6,2" Margin="8,0,0,0" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding TemplateCount}" Foreground="#555" FontSize="12">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Style.Triggers>
+                                                    <!-- 仅在有子项（分类节点）时显示数量；叶子模板隐藏 -->
+                                                    <DataTrigger Binding="{Binding Children.Count}" Value="0">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Border>
+                            </Grid>
                         </HierarchicalDataTemplate>
                     </TreeView.ItemTemplate>
                     <i:Interaction.Triggers>
@@ -319,7 +423,10 @@
         </Grid>
 
         <!-- 绘图模式 -->
-        <Grid Visibility="{Binding IsPlotMode, Converter={StaticResource BoolToVisibilityConverter}}">
+        <Grid x:Name="PlotGrid" Visibility="Collapsed" Opacity="0" RenderTransformOrigin="0.5,0.5">
+            <Grid.RenderTransform>
+                <TranslateTransform/>
+            </Grid.RenderTransform>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -327,7 +434,10 @@
             </Grid.RowDefinitions>
 
             <!-- Ribbon 标签页 -->
-            <Border Grid.Row="0" Background="#F1F1F1" BorderBrush="#D4D4D4" BorderThickness="0,0,0,1">
+            <Grid Grid.Row="0" Background="#F1F1F1">
+                <!-- 底部边框线 (位于底层) -->
+                <Border BorderBrush="#D4D4D4" BorderThickness="0,0,0,1" VerticalAlignment="Bottom"/>
+                
                 <Grid Height="32">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -391,7 +501,7 @@
                                     Command="{Binding ShowTemplateInfoCommand}"/>
                     </StackPanel>
                 </Grid>
-            </Border>
+            </Grid>
 
             <!-- Ribbon 功能区内容 -->
             <Border Grid.Row="1" Background="White" BorderBrush="#D4D4D4" BorderThickness="0,0,0,1" Height="92">
@@ -411,11 +521,11 @@
                         <StackPanel Orientation="Horizontal" Margin="8,3" Height="86">
                             <!-- 数据组 -->
                             <GroupBox Header="{Binding [Data],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource RibbonGroupStyle}">
-                                <Grid Width="106" Height="68" Margin="2">
+                                <Grid Width="Auto" Height="68" Margin="2">
                                     <StackPanel VerticalAlignment="Top" Margin="3,2">
                                         <Button Command="{Binding ImportDataPlotCommand}"
                                                                 Style="{StaticResource RibbonSmallButton}"
-                                                                Width="100" Height="28" Margin="0,1">
+                                                                Height="28" Margin="0,1" Padding="8,0">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe653;"
                                                                            FontSize="16" Foreground="#0078D4" Margin="4,0,6,0"
@@ -427,7 +537,7 @@
                                         </Button>
                                         <Button Command="{Binding ClearPlotDataPointsCommand}"
                                                                 Style="{StaticResource RibbonSmallButton}"
-                                                                Width="100" Height="28" Margin="0,1">
+                                                                Height="28" Margin="0,1" Padding="8,0">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe734;"
                                                                            FontSize="16" Foreground="#D62728" Margin="4,0,6,0"
@@ -443,11 +553,11 @@
                             <Rectangle Fill="#E1E5E9" Width="1" Margin="8,12,8,18" VerticalAlignment="Stretch"/>
                             <!-- 视图组 -->
                             <GroupBox Header="{Binding [view],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource RibbonGroupStyle}">
-                                <Grid Width="106" Height="68" Margin="2">
+                                <Grid Width="Auto" Height="68" Margin="2">
                                     <StackPanel VerticalAlignment="Top" Margin="3,2">
                                         <Button Command="{Binding CenterPlotCommand}"
                                                                 Style="{StaticResource RibbonSmallButton}"
-                                                                Width="100" Height="28" Margin="0,1">
+                                                                Height="28" Margin="0,1" Padding="8,0">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe601;"
                                                                            FontSize="14" Foreground="#0078D4" Margin="4,0,6,0"
@@ -459,7 +569,7 @@
                                         <ToggleButton Command="{Binding LocationAxisCommand}"
                                                           IsChecked="{Binding IsCrosshairVisible, Mode=TwoWay}"
                                                           Style="{StaticResource RibbonSmallToggleButton}"
-                                                          Width="100" Height="28" Margin="0,1">
+                                                          Height="28" Margin="0,1" Padding="8,0">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe61e;"
                                                                            FontSize="14" Foreground="#0078D4" Margin="4,0,6,0"
@@ -474,10 +584,10 @@
                             <Rectangle Fill="#E1E5E9" Width="1" Margin="8,12,8,18" VerticalAlignment="Stretch"/>
                             <!-- 选择组 -->
                             <GroupBox Header="{Binding [select],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource RibbonGroupStyle}">
-                                <Grid Width="68" Height="68" Margin="2">
+                                <Grid Width="Auto" Height="68" Margin="2">
                                     <Button Command="{Binding CancelSelectedCommand}"
                                                             Style="{StaticResource RibbonLargeButton}"
-                                                            Width="64" Height="64" VerticalAlignment="Top">
+                                                            Height="64" VerticalAlignment="Top" Padding="8,0">
                                         <StackPanel HorizontalAlignment="Center">
                                             <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe6a5;"
                                                                        FontSize="24" Foreground="#D83B01" Margin="0,4"
@@ -514,15 +624,15 @@
                             <Rectangle Fill="#E1E5E9" Width="1" Margin="8,12,8,18" VerticalAlignment="Stretch"/>
                             <!-- 设置组 -->
                             <GroupBox Header="{Binding [Setting],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource RibbonGroupStyle}">
-                                <Grid Width="176" Height="68" Margin="2">
+                                <Grid Width="Auto" Height="68" Margin="2">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
                                     <StackPanel VerticalAlignment="Top" Margin="3,2">
                                         <Button Command="{Binding LegendSettingCommand}"
                                                                 Style="{StaticResource RibbonSmallButton}"
-                                                                Width="82" Height="28" Margin="0,1">
+                                                                Height="28" Margin="0,1" Padding="8,0">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe602;"
                                                                            FontSize="16" Foreground="#8A2BE2" Margin="4,0,6,0"
@@ -533,7 +643,7 @@
                                         </Button>
                                         <Button Command="{Binding GridSettingCommand}"
                                                                 Style="{StaticResource RibbonSmallButton}"
-                                                                Width="82" Height="28" Margin="0,1">
+                                                                Height="28" Margin="0,1" Padding="8,0">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe67b;"
                                                                 FontSize="16" Foreground="#FF8C00" Margin="4,0,6,0"
@@ -546,7 +656,7 @@
                                     <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="3,2">
                                         <Button Command="{Binding ScriptSettingCommand}"
                                                                 Style="{StaticResource RibbonSmallButton}"
-                                                                Width="82" Height="28" Margin="0,1">
+                                                                Height="28" Margin="0,1" Padding="8,0">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe614;"
                                                                            FontSize="16" Foreground="#FF4500" Margin="4,0,6,0"
@@ -557,7 +667,7 @@
                                         </Button>
                                         <Button Command="{Binding PlotSettingCommand}"
                                                                 Style="{StaticResource RibbonSmallButton}"
-                                                                Width="82" Height="28" Margin="0,1">
+                                                                Height="28" Margin="0,1" Padding="8,0">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe616;"
                                                                 FontSize="16" Foreground="#20B2AA" Margin="4,0,6,0"
@@ -572,10 +682,10 @@
                             <Rectangle Fill="#E1E5E9" Width="1" Margin="8,12,8,18" VerticalAlignment="Stretch"/>
                             <!-- 语言组 -->
                             <GroupBox Header="{Binding [Language_],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource RibbonGroupStyle}">
-                                <Grid Width="68" Height="68" Margin="2">
+                                <Grid Width="Auto" Height="68" Margin="2">
                                     <Button Command="{Binding SwitchTemplateLanguageCommand}"
                                                 Style="{StaticResource RibbonLargeButton}"
-                                                Width="64" Height="64" VerticalAlignment="Top">
+                                                Height="64" VerticalAlignment="Top" Padding="8,0">
                                         <StackPanel HorizontalAlignment="Center">
                                             <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe6b4;"
                                                            FontSize="24" Foreground="#0078D4" Margin="0,4"
@@ -588,7 +698,7 @@
                             </GroupBox>
                             <Rectangle Fill="#E1E5E9" Width="1" Margin="8,12,8,18" VerticalAlignment="Stretch"/>
                             <!-- 第三方组 -->
-                            <GroupBox Header="第三方" Style="{StaticResource RibbonGroupStyle}">
+                            <GroupBox Header="{Binding [third_party],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource RibbonGroupStyle}">
                                 <Grid Width="Auto" Height="68" Margin="2">
                                     <StackPanel VerticalAlignment="Center" Margin="3,2">
                                         <ComboBox ItemsSource="{Binding ThirdPartyApps}" 
@@ -596,12 +706,12 @@
                                                       Width="120" Height="26" Margin="0,0,0,4"/>
                                         <Button Command="{Binding OpenWithThirdPartyCommand}"
                                                     Style="{StaticResource RibbonSmallButton}"
-                                                    Width="120" Height="26">
+                                                    Height="26" Padding="8,0">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe612;"
                                                                FontSize="16" Foreground="#0078D4" Margin="4,0,6,0"
                                                                VerticalAlignment="Center"/>
-                                                <TextBlock Text="通过第三方打开" FontSize="11" VerticalAlignment="Center"/>
+                                                <TextBlock Text="{Binding [open_via_third_party],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" VerticalAlignment="Center"/>
                                             </StackPanel>
                                         </Button>
                                     </StackPanel>
@@ -626,10 +736,10 @@
 
                             <!-- 数据点导入 -->
                             <GroupBox Header="{Binding [Data],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource RibbonGroupStyle}">
-                                <Grid Width="68" Height="68" Margin="2">
+                                <Grid Width="Auto" Height="68" Margin="2">
                                     <Button Command="{Binding UpdateDataCommand}" CommandParameter="{Binding ElementName=DataGrid}"
                                                             Style="{StaticResource RibbonLargeButton}"
-                                                            Width="64" Height="64" VerticalAlignment="Top">
+                                                            Height="64" VerticalAlignment="Top" Padding="8,0">
                                         <StackPanel HorizontalAlignment="Center">
                                             <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe683;"
                                                                        FontSize="24" Foreground="#0078D4" Margin="0,4"
@@ -646,10 +756,10 @@
 
                             <!-- 导出 -->
                             <GroupBox Header="{Binding [export],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource RibbonGroupStyle}">
-                                <Grid Width="68" Height="68" Margin="2">
+                                <Grid Width="Auto" Height="68" Margin="2">
                                     <Button Command="{Binding ExportWorksheetCommand}" CommandParameter="{Binding ElementName=DataGrid}"
                                                             Style="{StaticResource RibbonLargeButton}"
-                                                            Width="64" Height="64" VerticalAlignment="Top">
+                                                            Height="64" VerticalAlignment="Top" Padding="8,0">
                                         <StackPanel HorizontalAlignment="Center">
                                             <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe656;"
                                                                        FontSize="30" Foreground="#107C10" Margin="0,2"
@@ -677,7 +787,7 @@
                                     <StackPanel Grid.Column="0" VerticalAlignment="Top" Margin="3,2">
                                         <Button Command="{Binding AddRowUpCommand}"
                                                             Style="{StaticResource RibbonSmallButton}"
-                                                            MinWidth="100" Height="28" Margin="0,1">
+                                                            Height="28" Margin="0,1" Padding="8,0">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe615;"
                                                                        FontSize="16" Foreground="#0078D4" Margin="4,0,6,0"
@@ -687,7 +797,7 @@
                                         </Button>
                                         <Button Command="{Binding AddRowDownCommand}"
                                                             Style="{StaticResource RibbonSmallButton}"
-                                                            MinWidth="100" Height="28" Margin="0,1">
+                                                            Height="28" Margin="0,1" Padding="8,0">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe613;"
                                                                        FontSize="16" Foreground="#0078D4" Margin="4,0,6,0"
@@ -700,7 +810,7 @@
                                     <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="3,2">
                                         <Button Command="{Binding DeleteRowCommand}"
                                                             Style="{StaticResource RibbonSmallButton}"
-                                                            MinWidth="100" Height="28" Margin="0,1">
+                                                            Height="28" Margin="0,1" Padding="8,0">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe89f;"
                                                                        FontSize="16" Foreground="#D92C2C" Margin="4,0,6,0"
@@ -710,7 +820,7 @@
                                         </Button>
                                         <Button Command="{Binding DeleteColumnCommand}"
                                                             Style="{StaticResource RibbonSmallButton}"
-                                                            MinWidth="100" Height="28" Margin="0,1">
+                                                            Height="28" Margin="0,1" Padding="8,0">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe907;"
                                                                        FontSize="16" Foreground="#D92C2C" Margin="4,0,6,0"
@@ -723,7 +833,7 @@
                                     <StackPanel Grid.Column="2" VerticalAlignment="Top" Margin="3,2">
                                         <Button Command="{Binding AddColumnLeftCommand}"
                                                             Style="{StaticResource RibbonSmallButton}"
-                                                            MinWidth="100" Height="28" Margin="0,1">
+                                                            Height="28" Margin="0,1" Padding="8,0">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe611;"
                                                                        FontSize="16" Foreground="#0078D4" Margin="4,0,6,0"
@@ -733,7 +843,7 @@
                                         </Button>
                                         <Button Command="{Binding AddColumnRightCommand}"
                                                             Style="{StaticResource RibbonSmallButton}"
-                                                            MinWidth="100" Height="28" Margin="0,1">
+                                                            Height="28" Margin="0,1" Padding="8,0">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe610;"
                                                                        FontSize="16" Foreground="#0078D4" Margin="4,0,6,0"
@@ -747,7 +857,7 @@
 
                                         <Button Command="{Binding ClearAllDataCommand}"
                                                             Style="{StaticResource RibbonSmallButton}"
-                                                            MinWidth="100" Height="28" Margin="0,1">
+                                                            Height="28" Margin="0,1" Padding="8,0">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe734;"
                                                                        FontSize="16" Foreground="#D92C2C" Margin="4,0,6,0"
@@ -758,7 +868,7 @@
 
                                         <Button Command="{Binding ClearPlotDataPointsCommand}"
                                                             Style="{StaticResource RibbonSmallButton}"
-                                                            MinWidth="100" Height="28" Margin="0,1">
+                                                            Height="28" Margin="0,1" Padding="8,0">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe606;"
                                                                        FontSize="16" Foreground="#D83B01" Margin="4,0,6,0"
@@ -788,11 +898,11 @@
                         <StackPanel Orientation="Horizontal" Margin="8,3" Height="86">
 
                             <GroupBox Header="{Binding [file_],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource RibbonGroupStyle}">
-                                <Grid Width="88" Height="68" Margin="2">
+                                <Grid Width="Auto" Height="68" Margin="2">
                                     <StackPanel VerticalAlignment="Top" Margin="3,2">
                                         <Button Command="{Binding SaveBaseMapCommand}"
                                                              Style="{StaticResource RibbonSmallButton}"
-                                                             Width="82" Height="28" Margin="0,1">
+                                                             Height="28" Margin="0,1" Padding="8,0">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe782;"
                                                                         FontSize="16" Foreground="#107C10" Margin="4,0,6,0"
@@ -802,7 +912,7 @@
                                         </Button>
                                         <Button Command="{Binding SaveBaseMapAsCommand}"
                                                              Style="{StaticResource RibbonSmallButton}"
-                                                             Width="82" Height="28" Margin="0,1">
+                                                             Height="28" Margin="0,1" Padding="8,0">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe697;"
                                                                         FontSize="16" Foreground="#107C10" Margin="4,0,6,0"
@@ -817,11 +927,11 @@
                             <Rectangle Fill="#E1E5E9" Width="1" Margin="8,12,8,18" VerticalAlignment="Stretch"/>
 
                             <GroupBox Header="{Binding [add],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource RibbonGroupStyle}">
-                                <Grid Width="212" Height="68" Margin="2">
-                                    <UniformGrid Columns="2" Rows="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Grid Width="Auto" Height="68" Margin="2">
+                                    <UniformGrid Columns="3" Rows="2" HorizontalAlignment="Center" VerticalAlignment="Center">
                                         <!--添加线条-->
                                         <ToggleButton Style="{StaticResource RibbonSmallToggleButton}"
-                                                          Width="100" Height="28" Margin="1"
+                                                          Height="28" Margin="1" Padding="8,0"
                                                           IsChecked="{Binding IsAddingLine, Mode=TwoWay}">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe619;"
@@ -837,7 +947,7 @@
                                         </ToggleButton>
                                         <!--添加文本-->
                                         <ToggleButton Style="{StaticResource RibbonSmallToggleButton}"
-                                                          Width="100" Height="28" Margin="1"
+                                                          Height="28" Margin="1" Padding="8,0"
                                                           IsChecked="{Binding IsAddingText, Mode=TwoWay}">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe603;"
@@ -851,9 +961,20 @@
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
                                         </ToggleButton>
+                                        <!--添加函数-->
+                                        <Button Style="{StaticResource RibbonSmallButton}"
+                                                Height="28" Margin="1" Padding="8,0"
+                                                Command="{Binding AddFunctionCommand}">
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe63a;" 
+                                                           FontSize="16" Foreground="#0078D4" Margin="4,0,6,0"
+                                                           VerticalAlignment="Center"/>
+                                                <TextBlock Text="{Binding [add_function],Source={x:Static lg:LanguageService.Instance}, FallbackValue='Add Function'}" FontSize="11" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Button>
                                         <!--添加多边形-->
                                         <ToggleButton Style="{StaticResource RibbonSmallToggleButton}"
-                                                          Width="100" Height="28" Margin="1"
+                                                          Height="28" Margin="1" Padding="8,0"
                                                           IsChecked="{Binding IsAddingPolygon, Mode=TwoWay}">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xf2b3;"
@@ -869,7 +990,7 @@
                                         </ToggleButton>
                                         <!--添加箭头-->
                                         <ToggleButton Style="{StaticResource RibbonSmallToggleButton}"
-                                                          Width="100" Height="28" Margin="1"
+                                                          Height="28" Margin="1" Padding="8,0"
                                                           IsChecked="{Binding IsAddingArrow, Mode=TwoWay}">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe6d5;"
@@ -889,44 +1010,44 @@
 
                             <Rectangle Fill="#E1E5E9" Width="1" Margin="8,12,8,18" VerticalAlignment="Stretch"/>
 
-                            <!-- 删除绘图对象 -->
+                            
                             <GroupBox Header="{Binding [Edit],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource RibbonGroupStyle}">
                                 <StackPanel Orientation="Horizontal" Margin="2" Height="68">
                                     <!-- 撤销/重做 -->
                                     <UniformGrid Columns="1" Rows="2" Margin="0,0,4,0">
                                         <Button Command="{Binding UndoCommand}" ToolTip="Ctrl+Z"
                                                     Style="{StaticResource RibbonSmallButton}"
-                                                    Width="64" Height="28" Margin="0,1">
+                                                    Height="28" Margin="0,1" Padding="8,0">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                 <TextBlock Text="&#x21A9;" FontFamily="Segoe UI Symbol"
                                                                FontSize="14" Foreground="#0078D4" Margin="4,0,4,0"
                                                                VerticalAlignment="Center"/>
-                                                <TextBlock Text="撤回" FontSize="11" VerticalAlignment="Center"/>
+                                                <TextBlock Text="{Binding [undo],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" VerticalAlignment="Center"/>
                                             </StackPanel>
                                         </Button>
                                         <Button Command="{Binding RedoCommand}" ToolTip="Ctrl+Y"
                                                     Style="{StaticResource RibbonSmallButton}"
-                                                    Width="64" Height="28" Margin="0,1">
+                                                    Height="28" Margin="0,1" Padding="8,0">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                 <TextBlock Text="&#x21AA;" FontFamily="Segoe UI Symbol"
                                                                FontSize="14" Foreground="#0078D4" Margin="4,0,4,0"
                                                                VerticalAlignment="Center"/>
-                                                <TextBlock Text="重做" FontSize="11" VerticalAlignment="Center"/>
+                                                <TextBlock Text="{Binding [undo],Source={x:Static lg:LanguageService.Instance}}" FontSize="11" VerticalAlignment="Center"/>
                                             </StackPanel>
                                         </Button>
                                     </UniformGrid>
 
                                     <Rectangle Fill="#E1E5E9" Width="1" Margin="2,4" VerticalAlignment="Stretch"/>
 
-                                    <Grid Width="68" Height="68">
+                                    <!-- 删除绘图对象 -->
+                                    <Grid Width="Auto" Height="68">
                                         <Button Command="{Binding DeleteSelectedObjectCommand}" CommandParameter="{Binding ElementName=DataGrid}"
                                                     Style="{StaticResource RibbonLargeButton}"
-                                                    Width="64" Height="64" VerticalAlignment="Top">
+                                                    Height="64" VerticalAlignment="Top" Padding="8,0">
                                             <StackPanel HorizontalAlignment="Center">
                                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe6a2;"
                                                                FontSize="24" Foreground="#D92C2C" Margin="0,4"
                                                                HorizontalAlignment="Center"/>
-                                                <!--删除对象-->
                                                 <TextBlock Text="{Binding [delete_object],Source={x:Static lg:LanguageService.Instance}}" FontSize="10" TextAlignment="Center"
                                                                Foreground="#323130" TextWrapping="Wrap"/>
                                             </StackPanel>
@@ -1031,7 +1152,7 @@
                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe63d;" 
                                        FontSize="48" Foreground="#CCCCCC" 
                                        HorizontalAlignment="Center" Margin="0,0,0,10"/>
-                                <TextBlock Text="请选择一个对象" FontSize="14" Foreground="#999999" 
+                                <TextBlock Text="{Binding [select_an_object],Source={x:Static lg:LanguageService.Instance}}" FontSize="14" Foreground="#999999" 
                                        HorizontalAlignment="Center"/>
                             </StackPanel>
                         </ControlTemplate>
@@ -1065,6 +1186,9 @@
                             <DataTemplate DataType="{x:Type models:CartesianAxisDefinition}">
                                 <uc:AxisPropertyControl SelectedObject="{Binding}"/>
                             </DataTemplate>
+                            <DataTemplate DataType="{x:Type models:TernaryAxisDefinition}">
+                                <uc:TernaryAxisPropertyControl SelectedObject="{Binding}"/>
+                            </DataTemplate>
                             <DataTemplate DataType="{x:Type models:GridDefinition}">
                                 <uc:GridPropertyControl SelectedObject="{Binding}"/>
                             </DataTemplate>
@@ -1073,6 +1197,9 @@
                             </DataTemplate>
                             <DataTemplate DataType="{x:Type models:TitleDefinition}">
                                 <uc:TitlePropertyControl SelectedObject="{Binding}"/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type models:FunctionDefinition}">
+                                <uc:FunctionPropertyControl SelectedObject="{Binding}"/>
                             </DataTemplate>
                             <DataTemplate DataType="{x:Type models:ScatterDefinition}">
                                 <uc:ScatterPropertyControl SelectedObject="{Binding}"/>

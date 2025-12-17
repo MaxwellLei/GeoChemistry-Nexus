@@ -4,17 +4,17 @@ sidebar_position: 1
 
 # 🌍 教程简介
 
-让我们在 **5分钟内** ⏱️ 开始使用**Geo-Thermometer**。
+让我们在 **5分钟内** ⏱️ 开始使用**GeoChemistry Nexus**。
 
 ## 准备工作 🛠️
 
-在开始之前，请确保您已经在操作系统上下载并安装了 .NET 6 SDK。请按照以下步骤进行：
+在开始之前，请按照以下步骤进行：
 
 1. **选择下载选项** 🌐:
    您可以通过以下任一方式获取所需内容：
-   - 直接访问 [.NET 6 官方下载页面(点我) ](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)，并根据您的操作系统版本选择合适的安装程序。
-   - 在软件运行过程中，根据系统提示自动跳转至下载页面完成框架安装。
-   - 选择我们提供的独立程序包（无需额外安装运行框架）。
+   - **手动安装**：直接访问 [.NET 6 官方下载页面(点我) ](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)，并根据您的操作系统版本选择合适的安装程序。
+   - **根据提示**：在软件运行过程中，根据系统提示自动跳转至下载页面完成框架安装。
+   - **无需手动配置：选择我们提供的独立程序包（无需额外安装运行框架）**。
 2. **确定操作系统类型** 💻:
    - 对于 Windows 系统，请首先确定您的操作系统是 `32位` 还是 `64位`，并选择相应的版本进行安装。
 
@@ -26,7 +26,7 @@ sidebar_position: 1
 
 ## 开始使用 🚀
 
-[点击这里](https://github.com/MaxwellLei/GeoChemistry-Nexus/releases)访问下载页面。选择合适的版本，下载并解压缩。然后，双击运行 `Geo-Thermometer.exe` 🖱️。
+[点击这里](https://github.com/MaxwellLei/GeoChemistry-Nexus/releases)访问下载页面。选择合适的版本，下载并解压缩。然后，双击运行 `GeoChemistry Nexus.exe` 🖱️。
 
 ### 包命名说明 📦:
 

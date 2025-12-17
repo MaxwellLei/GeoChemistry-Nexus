@@ -1,4 +1,4 @@
-﻿using Jint;
+using Jint;
 using Jint.Native;
 using Jint.Runtime;
 using System;
@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace GeoChemistryNexus.Helpers
 {
@@ -15,6 +16,53 @@ namespace GeoChemistryNexus.Helpers
     /// </summary>
     public static class JintHelper
     {
+        public static bool IsValidFunctionExpression(string expression)
+        {
+            if (string.IsNullOrWhiteSpace(expression)) return false;
+            var expr = expression.Trim();
+
+            if (!HasBalancedParentheses(expr)) return false;
+
+            var compact = Regex.Replace(expr, @"\s+", "");
+            if (Regex.IsMatch(compact, @"[+\-*/^]$")) return false;
+            if (!Regex.IsMatch(compact, @"^[0-9a-zA-ZxX+\-*/^().,]+$")) return false;
+            if (Regex.IsMatch(compact, @"x\d|\dx")) return false;
+            if (Regex.IsMatch(compact, @"x\(")) return false;
+            if (Regex.IsMatch(compact, @"\)x")) return false;
+
+            try
+            {
+                var engine = new Engine();
+                engine.Execute("var sin=Math.sin; var cos=Math.cos; var tan=Math.tan; var abs=Math.abs; var sqrt=Math.sqrt; var pow=Math.pow; var log=Math.log; var log10=Math.log10; var exp=Math.exp; var PI=Math.PI;");
+                // 将用户输入的公式包装成 JS 函数 f(x)
+                engine.Execute($"function f(x) {{ return {expr}; }}");
+
+                // 尝试调用一次函数，确保公式中没有未定义的变量（例如用户输入 "xa" 时，JS语法正确但运行时会报错）
+                engine.Invoke("f", 0);
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private static bool HasBalancedParentheses(string s)
+        {
+            int count = 0;
+            foreach (var ch in s)
+            {
+                if (ch == '(') count++;
+                else if (ch == ')')
+                {
+                    if (count == 0) return false;
+                    count--;
+                }
+            }
+            return count == 0;
+        }
+
         /// <summary>
         /// 加载并执行多个 JavaScript 文件到指定的 Jint 引擎中。
         /// </summary>

@@ -246,4 +246,58 @@
   <data name="grid" xml:space="preserve">
     <value>Gitter</value>
   </data>
+  <data name="formula" xml:space="preserve">
+    <value>Formel</value>
+  </data>
+  <data name="range" xml:space="preserve">
+    <value>Bereich</value>
+  </data>
+  <data name="domain" xml:space="preserve">
+    <value>Definitionsbereich</value>
+  </data>
+  <data name="point_count" xml:space="preserve">
+    <value>Stützstelle</value>
+  </data>
+  <data name="line_width" xml:space="preserve">
+    <value>Linienbreite</value>
+  </data>
+  <data name="arrowhead_width" xml:space="preserve">
+    <value>Pfeilspitzenbreite</value>
+  </data>
+  <data name="arrowhead_length" xml:space="preserve">
+    <value>Pfeilspitzenlänge</value>
+  </data>
+  <data name="vertices" xml:space="preserve">
+    <value>Scheitelpunkte</value>
+  </data>
+  <data name="template_file_corrupted" xml:space="preserve">
+    <value>Vorlagendatei ist beschädigt</value>
+  </data>
+  <data name="template_version_too_high" xml:space="preserve">
+    <value>Die Vorlagenversion ist höher als die aktuelle Softwareversion. Bitte aktualisieren Sie die Software.</value>
+  </data>
+  <data name="error_loading_template" xml:space="preserve">
+    <value>Fehler beim Laden der Vorlage</value>
+  </data>
+  <data name="template_upgrade_warning" xml:space="preserve">
+    <value>Die aktuelle Vorlagenversion ist älter. Durch das Speichern wird die Vorlagenversion aktualisiert, was dazu führen kann, dass sie in älteren Softwareversionen nicht mehr verwendet werden kann. Fortfahren?</value>
+  </data>
+  <data name="add_function" xml:space="preserve">
+    <value>Funktion hinzufügen</value>
+  </data>
+  <data name="third_party" xml:space="preserve">
+    <value>Drittanbieter</value>
+  </data>
+  <data name="open_via_third_party" xml:space="preserve">
+    <value>Über Drittanbieter öffnen</value>
+  </data>
+  <data name="select_an_object" xml:space="preserve">
+    <value>Bitte ein Objekt auswählen</value>
+  </data>
+  <data name="undo" xml:space="preserve">
+    <value>Rückgängig machen</value>
+  </data>
+  <data name="redo" xml:space="preserve">
+    <value>Wiederholen</value>
+  </data>
 </root>

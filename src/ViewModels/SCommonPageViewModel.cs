@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GeoChemistryNexus.Helpers;
 using HandyControl.Controls;
@@ -77,7 +77,7 @@ namespace GeoChemistryNexus.ViewModels
             changeConfig = true;
 
             // 获取版本信息
-            Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            Version = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
                 
         }
 
@@ -96,7 +96,7 @@ namespace GeoChemistryNexus.ViewModels
             try
             {
                 // 异步等待结果
-                bool hasUpdate = await UpdateHelper.CheckForUpdateAsync(Assembly.GetExecutingAssembly().GetName().Version.ToString());
+                bool hasUpdate = await UpdateHelper.CheckForUpdateAsync(Assembly.GetExecutingAssembly().GetName().Version.ToString(3));
 
                 if (hasUpdate)
                 {

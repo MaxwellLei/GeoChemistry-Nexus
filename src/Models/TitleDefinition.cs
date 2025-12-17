@@ -28,7 +28,7 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("chart_title_style")] // 图表标题样式
         [property: LocalizedDisplayName("font_size")] // 字体大小
-        private float _size = 20;
+        private float _size = 18;
 
         /// <summary>
         /// 图表标题样式 字体颜色

@@ -38,5 +38,21 @@ namespace GeoChemistryNexus.Controls
                 WeakReferenceMessenger.Default.Send(new PickPointRequestMessage(lineDef.End));
             }
         }
+
+        private void Coordinate_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement element && element.Tag is PointDefinition point)
+            {
+                point.IsHighlighted = true;
+            }
+        }
+
+        private void Coordinate_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement element && element.Tag is PointDefinition point)
+            {
+                point.IsHighlighted = false;
+            }
+        }
     }
 }

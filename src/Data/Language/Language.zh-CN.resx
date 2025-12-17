@@ -1651,4 +1651,99 @@
     <value>网格</value>
     <comment>绘图-属性面板</comment>
   </data>
+  <data name="formula" xml:space="preserve">
+    <value>公式</value>
+    <comment>绘图-属性-函数</comment>
+  </data>
+  <data name="range" xml:space="preserve">
+    <value>范围</value>
+    <comment>绘图-属性-函数</comment>
+  </data>
+  <data name="domain" xml:space="preserve">
+    <value>定义域</value>
+    <comment>绘图-属性-函数</comment>
+  </data>
+  <data name="point_count" xml:space="preserve">
+    <value>采样点</value>
+    <comment>绘图-属性-函数</comment>
+  </data>
+  <data name="vertices" xml:space="preserve">
+    <value>顶点</value>
+    <comment>绘图-属性-多边形</comment>
+  </data>
+  <data name="template_file_corrupted" xml:space="preserve">
+    <value>模板文件已损坏</value>
+  </data>
+  <data name="template_version_too_high" xml:space="preserve">
+    <value>模板版本高于当前软件版本，请升级软件后打开.</value>
+  </data>
+  <data name="error_loading_template" xml:space="preserve">
+    <value>加载模板时发生错误</value>
+  </data>
+  <data name="template_upgrade_warning" xml:space="preserve">
+    <value>当前模板版本较低，保存后将升级模板版本，可能会导致低版本软件无法使用该模板。是否继续？</value>
+  </data>
+  <data name="offset" xml:space="preserve">
+    <value>偏移量</value>
+  </data>
+  <data name="offset_x" xml:space="preserve">
+    <value>偏移量 X</value>
+  </data>
+  <data name="offset_y" xml:space="preserve">
+    <value>偏移量 Y</value>
+  </data>
+  <data name="add_function" xml:space="preserve">
+    <value>添加函数</value>
+    <comment>绘图-编辑</comment>
+  </data>
+  <data name="Placeholder_Text" xml:space="preserve">
+    <value>请输入文本</value>
+  </data>
+  <data name="Placeholder_Axis_Title" xml:space="preserve">
+    <value>轴标题</value>
+  </data>
+  <data name="Placeholder_Chart_Title" xml:space="preserve">
+    <value>图表标题</value>
+  </data>
+  <data name="Placeholder_Ternary_Title" xml:space="preserve">
+    <value>新建三元相图</value>
+  </data>
+  <data name="Placeholder_Chart_Title_Default" xml:space="preserve">
+    <value>新建图表</value>
+  </data>
+  <data name="Placeholder_Axis_X" xml:space="preserve">
+    <value>X轴</value>
+  </data>
+  <data name="Placeholder_Axis_Y" xml:space="preserve">
+    <value>Y轴</value>
+  </data>
+  <data name="Placeholder_Component_A" xml:space="preserve">
+    <value>A</value>
+  </data>
+  <data name="Placeholder_Component_B" xml:space="preserve">
+    <value>B</value>
+  </data>
+  <data name="Placeholder_Component_C" xml:space="preserve">
+    <value>C</value>
+  </data>
+  <data name="third_party" xml:space="preserve">
+    <value>第三方</value>
+    <comment>绘图-菜单栏-绘图</comment>
+  </data>
+  <data name="open_via_third_party" xml:space="preserve">
+    <value>通过第三方打开</value>
+    <comment>绘图-菜单栏-绘图</comment>
+  </data>
+  <data name="select_an_object" xml:space="preserve">
+    <value>请选择一个对象</value>
+    <comment>绘图-属性面板</comment>
+  </data>
+  <data name="undo" xml:space="preserve">
+    <value>撤回</value>
+    <comment>绘图-撤回</comment>
+  </data>
+  <data name="redo" xml:space="preserve">
+    <value>重做</value>
+    <comment>绘图-重做</comment>
+  </data>
 </root>

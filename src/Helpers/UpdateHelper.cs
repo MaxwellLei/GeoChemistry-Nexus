@@ -1,4 +1,4 @@
-﻿using HandyControl.Controls;
+using HandyControl.Controls;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -34,6 +34,51 @@ namespace GeoChemistryNexus.Helpers
 
         // 使用静态 HttpClient 实例
         private static readonly HttpClient httpClient = new HttpClient();
+
+        /// <summary>
+        /// 获取当前应用程序的版本号（Float格式，取前两位，例如 1.2）
+        /// 使用 FileVersion 而不是 AssemblyVersion
+        /// </summary>
+        public static float GetCurrentVersionFloat()
+        {
+            try
+            {
+                var attr = System.Reflection.Assembly.GetExecutingAssembly()
+                    .GetCustomAttribute<System.Reflection.AssemblyFileVersionAttribute>();
+                
+                if (attr != null && !string.IsNullOrEmpty(attr.Version))
+                {
+                    if (Version.TryParse(attr.Version, out Version v))
+                    {
+                        string versionStr = $"{v.Major}.{v.Minor}";
+                        if (float.TryParse(versionStr, out float result))
+                        {
+                            return result;
+                        }
+                    }
+                    // 备用：尝试直接解析
+                    if (float.TryParse(attr.Version, out float directResult))
+                    {
+                        return directResult;
+                    }
+                }
+            }
+            catch
+            {
+                // ignore
+            }
+
+            // Fallback: 如果获取 FileVersion 失败，尝试获取 AssemblyVersion
+            var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            if (version == null) return 1.0f;
+            
+            string fallbackStr = $"{version.Major}.{version.Minor}";
+            if (float.TryParse(fallbackStr, out float fallbackResult))
+            {
+                return fallbackResult;
+            }
+            return 1.0f;
+        }
 
         // 计算文件的 MD5 哈希值 (小写 hex 字符串)
         public static string ComputeFileMd5(string filePath)
@@ -99,6 +144,11 @@ namespace GeoChemistryNexus.Helpers
                 if (Version.TryParse(cleanedLatestVersionString, out Version latestVersion) &&
                     Version.TryParse(cleanedCurrentVersionString, out Version currentVersion))
                 {
+                    // 强制转换为3位版本号 (忽略 Revision)
+                    // 如果 Build 为 -1 (即只有两位版本号)，则默认为 0
+                    latestVersion = new Version(latestVersion.Major, latestVersion.Minor, latestVersion.Build >= 0 ? latestVersion.Build : 0);
+                    currentVersion = new Version(currentVersion.Major, currentVersion.Minor, currentVersion.Build >= 0 ? currentVersion.Build : 0);
+
                     // 比较版本号
                     // 如果最新版本号大于当前版本号，则有更新
                     if(latestVersion == currentVersion)

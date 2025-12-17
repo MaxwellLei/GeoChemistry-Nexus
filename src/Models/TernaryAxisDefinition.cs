@@ -1,4 +1,6 @@
-﻿using System;
+using CommunityToolkit.Mvvm.ComponentModel;
+using GeoChemistryNexus.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +13,20 @@ namespace GeoChemistryNexus.Models
     /// </summary>
     public partial class TernaryAxisDefinition : BaseAxisDefinition
     {
-        // 不需要额外的属性
+        /// <summary>
+        /// Label offset X
+        /// </summary>
+        [ObservableProperty]
+        [property: LocalizedCategory("axis_title")]
+        [property: LocalizedDisplayName("offset_x")]
+        private double _labelOffsetX;
+
+        /// <summary>
+        /// Label offset Y
+        /// </summary>
+        [ObservableProperty]
+        [property: LocalizedCategory("axis_title")]
+        [property: LocalizedDisplayName("offset_y")]
+        private double _labelOffsetY;
     }
 }

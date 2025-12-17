@@ -20,7 +20,7 @@
     "description": "The generated-index page title for category 📝 Tutorial in sidebar tutorialSidebar"
   },
   "version.label": {
-    "message": "v0.5.0.0",
+    "message": "v0.6.0.0",
     "description": "The label for version current"
   }
 }

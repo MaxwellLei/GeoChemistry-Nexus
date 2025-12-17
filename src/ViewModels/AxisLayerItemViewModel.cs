@@ -175,6 +175,8 @@ namespace GeoChemistryNexus.ViewModels
                         GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(ternaryAxisDef.Color));
                     targetEdge.LabelStyle.Bold = ternaryAxisDef.IsBold;
                     targetEdge.LabelStyle.Italic = ternaryAxisDef.IsItalic;
+                    targetEdge.LabelStyle.OffsetX = (float)ternaryAxisDef.LabelOffsetX;
+                    targetEdge.LabelStyle.OffsetY = (float)ternaryAxisDef.LabelOffsetY;
 
                     // 刻度样式
                     targetEdge.TickMarkStyle.Width = ternaryAxisDef.MajorTickWidth;
@@ -188,6 +190,19 @@ namespace GeoChemistryNexus.ViewModels
                         GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(ternaryAxisDef.TickLablecolor));
                     targetEdge.TickLabelStyle.Bold = ternaryAxisDef.TickLableisBold;
                     targetEdge.TickLabelStyle.Italic = ternaryAxisDef.TickLableisItalic;
+
+                    // 修改刻度标签为 0-1
+                    targetEdge.Ticks.Clear();
+                    int ticksPerEdge = 10;
+                    for (int i = 0; i <= ticksPerEdge; i++)
+                    {
+                        double fraction = i / (double)ticksPerEdge;
+                        double tickX = targetEdge.Start.X + fraction * (targetEdge.End.X - targetEdge.Start.X);
+                        double tickY = targetEdge.Start.Y + fraction * (targetEdge.End.Y - targetEdge.Start.Y);
+                        ScottPlot.Coordinates tickPoint = new(tickX, tickY);
+                        string tickLabel = $"{fraction:0.#}";
+                        targetEdge.Ticks.Add((tickPoint, tickLabel));
+                    }
                 }
             }
         }

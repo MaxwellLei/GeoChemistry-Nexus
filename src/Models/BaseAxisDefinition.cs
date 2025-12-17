@@ -45,7 +45,7 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("axis_title")] // 坐标轴标题
         [property: LocalizedDisplayName("font_size")] // 字体大小
-        private float _size = 20;
+        private float _size = 18;
 
         /// <summary>
         /// Font color

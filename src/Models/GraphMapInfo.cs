@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace GeoChemistryNexus.Models
 {
@@ -16,6 +16,11 @@ namespace GeoChemistryNexus.Models
         /// 线列表
         /// </summary>
         public List<LineDefinition> Lines { get; set; } = new List<LineDefinition>();
+
+        /// <summary>
+        /// 函数列表
+        /// </summary>
+        public List<FunctionDefinition> Functions { get; set; } = new List<FunctionDefinition>();
 
         /// <summary>
         /// 多边形列表

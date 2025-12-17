@@ -144,11 +144,35 @@ namespace GeoChemistryNexus.Helpers
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
             // 反序列化为单个 GraphMapTemplate 对象
-            var template = JsonSerializer.Deserialize<GraphMapTemplate>(templateJsonContent, options);
+            GraphMapTemplate template = null;
+            try
+            {
+                template = JsonSerializer.Deserialize<GraphMapTemplate>(templateJsonContent, options);
+            }
+            catch (JsonException ex)
+            {
+                // 解析失败，提示用户模板文件已损坏
+                MessageHelper.Error(LanguageService.Instance["template_file_corrupted"] + $": {ex.Message}");
+                return;
+            }
+            catch (Exception ex)
+            {
+                // 其他异常
+                MessageHelper.Error(LanguageService.Instance["error_loading_template"] + $": {ex.Message}");
+                return;
+            }
 
             if (template == null || template.Info == null)
             {
                 return; // 无效的模板或信息
+            }
+
+            // 版本校验：如果模板版本高于当前程序版本，提示用户升级软件或无法打开
+            if (!IsVersionCompatible(template))
+            {
+                 // 提示版本过低，建议升级软件
+                 MessageHelper.Error(LanguageService.Instance["template_version_too_high"]);
+                 return;
             }
 
             var info = template.Info;
@@ -312,6 +336,18 @@ namespace GeoChemistryNexus.Helpers
             {
                 System.Diagnostics.Debug.WriteLine($"Error removing custom template entry: {ex.Message}");
             }
+        }
+
+        /// <summary>
+        /// 验证模板版本是否兼容
+        /// </summary>
+        /// <param name="template">模板对象</param>
+        /// <returns>如果是 true 则兼容，否则不兼容</returns>
+        public static bool IsVersionCompatible(GraphMapTemplate template)
+        {
+            if (template == null) return false;
+            float currentVersion = UpdateHelper.GetCurrentVersionFloat();
+            return template.Version <= currentVersion;
         }
     }
 }

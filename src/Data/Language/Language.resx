@@ -1498,4 +1498,97 @@
   <data name="grid" xml:space="preserve">
     <value>Grid</value>
   </data>
+  <data name="formula" xml:space="preserve">
+    <value>Formula</value>
+  </data>
+  <data name="range" xml:space="preserve">
+    <value>Range</value>
+  </data>
+  <data name="domain" xml:space="preserve">
+    <value>Domain</value>
+  </data>
+  <data name="point_count" xml:space="preserve">
+    <value>Sampling point</value>
+  </data>
+  <data name="line_width" xml:space="preserve">
+    <value>Line Width</value>
+  </data>
+  <data name="arrowhead_width" xml:space="preserve">
+    <value>Arrow Head Width</value>
+  </data>
+  <data name="arrowhead_length" xml:space="preserve">
+    <value>Arrow Head Length</value>
+  </data>
+  <data name="vertices" xml:space="preserve">
+    <value>Vertices</value>
+  </data>
+  <data name="template_file_corrupted" xml:space="preserve">
+    <value>Template file is corrupted</value>
+  </data>
+  <data name="template_version_too_high" xml:space="preserve">
+    <value>Template version is higher than current software version. Please upgrade software to open.</value>
+  </data>
+  <data name="error_loading_template" xml:space="preserve">
+    <value>Error loading template</value>
+  </data>
+  <data name="template_upgrade_warning" xml:space="preserve">
+    <value>The current template version is older. Saving will upgrade the template version, which may make it unusable in older versions of the software. Continue?</value>
+  </data>
+  <data name="offset" xml:space="preserve">
+    <value>Offset</value>
+  </data>
+  <data name="offset_x" xml:space="preserve">
+    <value>Offset X</value>
+  </data>
+  <data name="offset_y" xml:space="preserve">
+    <value>Offset Y</value>
+  </data>
+  <data name="add_function" xml:space="preserve">
+    <value>Add Function</value>
+  </data>
+  <data name="Placeholder_Text" xml:space="preserve">
+    <value>Enter Text</value>
+  </data>
+  <data name="Placeholder_Axis_Title" xml:space="preserve">
+    <value>Axis Title</value>
+  </data>
+  <data name="Placeholder_Chart_Title" xml:space="preserve">
+    <value>Chart Title</value>
+  </data>
+  <data name="Placeholder_Ternary_Title" xml:space="preserve">
+    <value>New Ternary Plot</value>
+  </data>
+  <data name="Placeholder_Chart_Title_Default" xml:space="preserve">
+    <value>New Chart</value>
+  </data>
+  <data name="Placeholder_Axis_X" xml:space="preserve">
+    <value>X-Axis</value>
+  </data>
+  <data name="Placeholder_Axis_Y" xml:space="preserve">
+    <value>Y-Axis</value>
+  </data>
+  <data name="Placeholder_Component_A" xml:space="preserve">
+    <value>A</value>
+  </data>
+  <data name="Placeholder_Component_B" xml:space="preserve">
+    <value>B</value>
+  </data>
+  <data name="Placeholder_Component_C" xml:space="preserve">
+    <value>C</value>
+  </data>
+  <data name="third_party" xml:space="preserve">
+    <value>Third-party</value>
+  </data>
+  <data name="open_via_third_party" xml:space="preserve">
+    <value>Open via third-party</value>
+  </data>
+  <data name="select_an_object" xml:space="preserve">
+    <value>Please select an object</value>
+  </data>
+  <data name="undo" xml:space="preserve">
+    <value>Undo</value>
+  </data>
+  <data name="redo" xml:space="preserve">
+    <value>Redo</value>
+  </data>
 </root>

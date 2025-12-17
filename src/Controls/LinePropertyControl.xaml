@@ -133,11 +133,17 @@
                             
                             <hc:NumericUpDown Grid.Column="0" Value="{Binding Start.X, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
                                       hc:InfoElement.Title="X" hc:InfoElement.TitlePlacement="Left"
-                                      hc:InfoElement.Placeholder="0.0"/>
+                                      hc:InfoElement.Placeholder="0.0"
+                                      Tag="{Binding Start}"
+                                      GotFocus="Coordinate_GotFocus"
+                                      LostFocus="Coordinate_LostFocus"/>
                                       
                             <hc:NumericUpDown Grid.Column="2" Value="{Binding Start.Y, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
                                       hc:InfoElement.Title="Y" hc:InfoElement.TitlePlacement="Left"
-                                      hc:InfoElement.Placeholder="0.0"/>
+                                      hc:InfoElement.Placeholder="0.0"
+                                      Tag="{Binding Start}"
+                                      GotFocus="Coordinate_GotFocus"
+                                      LostFocus="Coordinate_LostFocus"/>
                         </Grid>
 
                         <!-- End Point -->
@@ -173,11 +179,17 @@
                             
                             <hc:NumericUpDown Grid.Column="0" Value="{Binding End.X, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
                                       hc:InfoElement.Title="X" hc:InfoElement.TitlePlacement="Left"
-                                      hc:InfoElement.Placeholder="0.0"/>
+                                      hc:InfoElement.Placeholder="0.0"
+                                      Tag="{Binding End}"
+                                      GotFocus="Coordinate_GotFocus"
+                                      LostFocus="Coordinate_LostFocus"/>
                                       
                             <hc:NumericUpDown Grid.Column="2" Value="{Binding End.Y, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
                                       hc:InfoElement.Title="Y" hc:InfoElement.TitlePlacement="Left"
-                                      hc:InfoElement.Placeholder="0.0"/>
+                                      hc:InfoElement.Placeholder="0.0"
+                                      Tag="{Binding End}"
+                                      GotFocus="Coordinate_GotFocus"
+                                      LostFocus="Coordinate_LostFocus"/>
                         </Grid>
 
                     </StackPanel>

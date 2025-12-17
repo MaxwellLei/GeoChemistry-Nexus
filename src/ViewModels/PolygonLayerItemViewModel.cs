@@ -49,6 +49,20 @@ namespace GeoChemistryNexus.ViewModels
 
             // 赋值给基类的 Plottable 属性
             this.Plottable = polygonPlot;
+
+            // --- 绘制高亮顶点 ---
+            foreach (var vertex in PolygonDefinition.Vertices)
+            {
+                if (vertex.IsHighlighted)
+                {
+                    var p = PlotTransformHelper.ToRenderCoordinates(plot, vertex.X, vertex.Y);
+                    var marker = plot.Add.Marker(p.X, p.Y);
+                    marker.Color = ScottPlot.Colors.Red;
+                    marker.Size = 10;
+                    marker.Shape = MarkerShape.OpenCircle;
+                    marker.LineWidth = 2;
+                }
+            }
         }
 
         public void Highlight()

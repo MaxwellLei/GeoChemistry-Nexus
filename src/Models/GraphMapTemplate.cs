@@ -1,6 +1,7 @@
 using GeoChemistryNexus.Helpers;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 
 namespace GeoChemistryNexus.Models
 {
@@ -9,7 +10,8 @@ namespace GeoChemistryNexus.Models
         /// <summary>
         /// 底图版本
         /// </summary>
-        public string Version { get; set; } = "1.0";
+        [JsonConverter(typeof(StringToFloatConverter))]
+        public float Version { get; set; } = 1.0f;
 
         /// <summary>
         /// 默认语言
@@ -60,21 +62,10 @@ namespace GeoChemistryNexus.Models
             // 将列表的第一个语言作为默认语言
             string defaultLanguage = languages.First();
 
-            // 定义一个本地辅助函数，用于根据语言列表和占位符文本创建 LocalizedString 对象
-            LocalizedString CreateLocalized(string placeholderText)
-            {
-                // 使用 Linq 的 ToDictionary 方法快速创建翻译字典
-                var translations = languages.ToDictionary(lang => lang, lang => placeholderText);
-                return new LocalizedString
-                {
-                    Default = defaultLanguage,
-                    Translations = translations
-                };
-            }
-
             // 创建模板基础结构
             var template = new GraphMapTemplate
             {
+                Version = UpdateHelper.GetCurrentVersionFloat(),
                 DefaultLanguage = defaultLanguage,
                 // 根据传入的type设置模板类型
                 TemplateType = type == "Ternary_Plot" ? "Ternary" : "Cartesian",
@@ -86,22 +77,16 @@ namespace GeoChemistryNexus.Models
             // 根据模板类型配置不同的默认值
             if (template.TemplateType == "Ternary")
             {
-                // 三元相图的特定设置
-                string titlePlaceholder = defaultLanguage == "zh-CN" ? "新建三元相图" : "New Ternary Plot";
-                string componentAPlaceholder = "A";
-                string componentBPlaceholder = "B";
-                string componentCPlaceholder = "C";
-
                 template.Info.Title = new TitleDefinition
                 {
-                    Label = CreateLocalized(titlePlaceholder)
+                    Label = LocalizedPlaceholderFactory.Create("Placeholder_Ternary_Title", defaultLanguage, languages)
                 };
                 template.Info.Axes = new List<BaseAxisDefinition>
                 {
                     // 为三元图的三个边定义坐标轴
-                    new TernaryAxisDefinition { Type = "Bottom", Label = CreateLocalized(componentAPlaceholder)  },
-                    new TernaryAxisDefinition { Type = "Left", Label = CreateLocalized(componentBPlaceholder) },
-                    new TernaryAxisDefinition { Type = "Right", Label = CreateLocalized(componentCPlaceholder) }
+                    new TernaryAxisDefinition { Type = "Bottom", Label = LocalizedPlaceholderFactory.Create("Placeholder_Component_A", defaultLanguage, languages), LabelOffsetX = 0, LabelOffsetY = 20 },
+                    new TernaryAxisDefinition { Type = "Left", Label = LocalizedPlaceholderFactory.Create("Placeholder_Component_B", defaultLanguage, languages), LabelOffsetX = -20, LabelOffsetY = -10 },
+                    new TernaryAxisDefinition { Type = "Right", Label = LocalizedPlaceholderFactory.Create("Placeholder_Component_C", defaultLanguage, languages), LabelOffsetX = 20, LabelOffsetY = -10 }
                 };
                 template.Script = new ScriptDefinition
                 {
@@ -113,18 +98,14 @@ namespace GeoChemistryNexus.Models
             }
             else // 默认处理笛卡尔坐标系 (2D_Plot)
             {
-                string titlePlaceholder = defaultLanguage == "zh-CN" ? "新建图表" : "New Chart";
-                string xAxisPlaceholder = defaultLanguage == "zh-CN" ? "X轴" : "X-Axis";
-                string yAxisPlaceholder = defaultLanguage == "zh-CN" ? "Y轴" : "Y-Axis";
-
                 template.Info.Title = new TitleDefinition
                 {
-                    Label = CreateLocalized(titlePlaceholder)
+                    Label = LocalizedPlaceholderFactory.Create("Placeholder_Chart_Title_Default", defaultLanguage, languages)
                 };
                 template.Info.Axes = new List<BaseAxisDefinition>
                 {
-                    new CartesianAxisDefinition { Type = "Bottom", Label = CreateLocalized(xAxisPlaceholder) },
-                    new CartesianAxisDefinition { Type = "Left", Label = CreateLocalized(yAxisPlaceholder) },
+                    new CartesianAxisDefinition { Type = "Bottom", Label = LocalizedPlaceholderFactory.Create("Placeholder_Axis_X", defaultLanguage, languages) },
+                    new CartesianAxisDefinition { Type = "Left", Label = LocalizedPlaceholderFactory.Create("Placeholder_Axis_Y", defaultLanguage, languages) },
                     //new CartesianAxisDefinition { Type = "Top", Label = CreateLocalized("") },
                     //new CartesianAxisDefinition { Type = "Right", Label = CreateLocalized("") }
                 };
