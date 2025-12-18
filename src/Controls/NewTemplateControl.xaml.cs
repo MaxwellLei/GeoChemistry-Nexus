@@ -17,6 +17,7 @@ using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Models;
 using CommunityToolkit.Mvvm.Messaging;
 using GeoChemistryNexus.Messages;
+using System.IO;
 
 namespace GeoChemistryNexus.Controls
 {
@@ -26,13 +27,24 @@ namespace GeoChemistryNexus.Controls
         public Dictionary<string, string> LocalizedNames { get; set; } // Null if manual input
     }
 
+    public class LanguageTagModel : CommunityToolkit.Mvvm.ComponentModel.ObservableObject
+    {
+        private bool _isDefault;
+        public string Text { get; set; }
+        public bool IsDefault 
+        { 
+            get => _isDefault;
+            set => SetProperty(ref _isDefault, value);
+        }
+    }
+
     /// <summary>
     /// NewTemplateControl.xaml 的交互逻辑
     /// </summary>
     public partial class NewTemplateControl : UserControl
     {
         // 为语言和分类层级分别创建集合
-        private readonly ObservableCollection<string> _languageParts = new ObservableCollection<string>();
+        private readonly ObservableCollection<LanguageTagModel> _languageParts = new ObservableCollection<LanguageTagModel>();
         // Change from string to CategoryPartModel
         private readonly ObservableCollection<CategoryPartModel> _categoryParts = new ObservableCollection<CategoryPartModel>();
         
@@ -40,7 +52,7 @@ namespace GeoChemistryNexus.Controls
         private PlotTemplateCategoryConfig _categoryConfig;
         
         // 修改 Language 属性以从标签集合生成字符串
-        public string Language => string.Join(" > ", _languageParts);
+        public string Language => string.Join(" > ", _languageParts.Select(x => x.Text));
         
         // Use DisplayName for the string representation
         public string CategoryHierarchy => string.Join(" > ", _categoryParts.Select(p => p.DisplayName));
@@ -135,17 +147,141 @@ namespace GeoChemistryNexus.Controls
                     DisplayName = PlotCategoryHelper.GetName(c),
                     OriginalObject = c 
                 }).ToList();
-                PresetCategoryComboBox.ItemsSource = displayItems;
+                CategoryInputComboBox.ItemsSource = displayItems;
             }
             else
             {
-                PresetCategoryComboBox.ItemsSource = null;
+                CategoryInputComboBox.ItemsSource = null;
             }
         }
         
-        private void PresetCategoryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        // Remove old methods
+
+
+        public void EmptyData()
         {
-            if (PresetCategoryComboBox.SelectedItem is CategoryDisplayItem selectedItem)
+            // 清空所有数据
+            _languageParts.Clear();
+            _categoryParts.Clear();
+            
+            CategoryInputComboBox.SelectedIndex = -1;
+            CategoryInputComboBox.Text = string.Empty;
+
+            LanguageInputComboBox.SelectedIndex = -1;
+            LanguageInputComboBox.Text = string.Empty;
+
+            PlotTypeComboBox.SelectedIndex = 0;
+        }
+
+        private void UpdateLanguageDefaultStatus()
+        {
+            if (_languageParts.Count == 0) return;
+            
+            // First item is default, others are not
+            for (int i = 0; i < _languageParts.Count; i++)
+            {
+                _languageParts[i].IsDefault = (i == 0);
+            }
+        }
+
+        /// <summary>
+        /// 添加语言标签 (Selection or Enter)
+        /// </summary>
+        private void LanguageInputComboBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                var comboBox = sender as ComboBox;
+                string text = comboBox?.Text?.Trim();
+                
+                if (!string.IsNullOrEmpty(text))
+                {
+                    // Check if it's already added
+                    if (!_languageParts.Any(p => p.Text.Equals(text, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        _languageParts.Add(new LanguageTagModel { Text = text });
+                        UpdateLanguageDefaultStatus();
+                    }
+                    comboBox.Text = string.Empty;
+                }
+                e.Handled = true;
+            }
+        }
+
+        private void LanguageInputComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var comboBox = sender as ComboBox;
+            var selectedCode = comboBox?.SelectedValue as string;
+            
+            if (!string.IsNullOrWhiteSpace(selectedCode))
+            {
+                if (!_languageParts.Any(p => p.Text.Equals(selectedCode, StringComparison.OrdinalIgnoreCase)))
+                {
+                    _languageParts.Add(new LanguageTagModel { Text = selectedCode });
+                    UpdateLanguageDefaultStatus();
+                }
+                
+                // Clear selection and text
+                comboBox.SelectedIndex = -1;
+                comboBox.Text = string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// 删除语言标签
+        /// </summary>
+        private void RemoveLanguageButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.Tag is LanguageTagModel itemToRemove)
+            {
+                _languageParts.Remove(itemToRemove);
+                UpdateLanguageDefaultStatus();
+            }
+        }
+        
+        /// <summary>
+        /// 添加分类标签 (Selection or Enter)
+        /// </summary>
+        private void CategoryInputComboBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                var comboBox = sender as ComboBox;
+                string text = comboBox?.Text?.Trim();
+
+                if (!string.IsNullOrEmpty(text))
+                {
+                    // Check for invalid path chars
+                    var invalidChars = System.IO.Path.GetInvalidFileNameChars();
+                    if (text.IndexOfAny(invalidChars) >= 0)
+                    {
+                        HandyControl.Controls.MessageBox.Show(
+                            LanguageService.Instance["invalid_filename_char"], 
+                            LanguageService.Instance["error"], 
+                            MessageBoxButton.OK, 
+                            MessageBoxImage.Error);
+                        e.Handled = true;
+                        return;
+                    }
+
+                    // Manual input (no localized object)
+                    _categoryParts.Add(new CategoryPartModel 
+                    { 
+                        DisplayName = text,
+                        LocalizedNames = null
+                    });
+                    
+                    comboBox.Text = string.Empty;
+                }
+                e.Handled = true;
+            }
+        }
+        
+        private void CategoryInputComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var comboBox = sender as ComboBox;
+            
+            if (comboBox?.SelectedItem is CategoryDisplayItem selectedItem)
             {
                  string name = selectedItem.DisplayName;
                  if (!string.IsNullOrWhiteSpace(name))
@@ -157,73 +293,9 @@ namespace GeoChemistryNexus.Controls
                          LocalizedNames = selectedItem.OriginalObject as Dictionary<string, string>
                      });
                  }
-                 // 清空选择，以便下次还能选同一个（虽然不太可能，但为了交互体验）
-                 PresetCategoryComboBox.SelectedIndex = -1;
-            }
-        }
-
-        public void EmptyData()
-        {
-            // 清空所有数据
-            _languageParts.Clear();
-            _categoryParts.Clear();
-            
-            NewCategoryTextBox.Text = string.Empty;
-            PresetCategoryComboBox.SelectedIndex = -1;
-
-            PlotTypeComboBox.SelectedIndex = 0;
-        }
-
-        /// <summary>
-        /// 添加语言标签
-        /// </summary>
-        private void NewLanguageTextBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                string text = NewLanguageTextBox.Text.Trim();
-                if (!string.IsNullOrEmpty(text))
-                {
-                    if (!_languageParts.Contains(text))
-                    {
-                        _languageParts.Add(text);
-                    }
-                    NewLanguageTextBox.Clear();
-                }
-                e.Handled = true;
-            }
-        }
-
-        /// <summary>
-        /// 删除语言标签
-        /// </summary>
-        private void RemoveLanguageButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button button && button.Tag is string languageToRemove)
-            {
-                _languageParts.Remove(languageToRemove);
-            }
-        }
-        
-        /// <summary>
-        /// 添加分类标签
-        /// </summary>
-        private void NewCategoryTextBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                string text = NewCategoryTextBox.Text.Trim();
-                if (!string.IsNullOrEmpty(text))
-                {
-                    // Add CategoryPartModel without localized data (manual input)
-                    _categoryParts.Add(new CategoryPartModel 
-                    { 
-                        DisplayName = text,
-                        LocalizedNames = null
-                    });
-                    NewCategoryTextBox.Clear();
-                }
-                e.Handled = true;
+                 // 清空选择
+                 comboBox.SelectedIndex = -1;
+                 comboBox.Text = string.Empty;
             }
         }
 
@@ -287,21 +359,10 @@ namespace GeoChemistryNexus.Controls
                 new LanguageOption { Name = "西班牙语 (es-ES)", Code = "es-ES" }
             };
 
-            BuiltInLanguageComboBox.ItemsSource = builtIns;
+            LanguageInputComboBox.ItemsSource = builtIns;
         }
 
-        private void BuiltInLanguageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var code = BuiltInLanguageComboBox.SelectedValue as string;
-            if (!string.IsNullOrWhiteSpace(code))
-            {
-                if (!_languageParts.Contains(code))
-                {
-                    _languageParts.Add(code);
-                }
-                // Reset selection to allow re-selecting the same item if deleted
-                BuiltInLanguageComboBox.SelectedIndex = -1;
-            }
-        }
+        // Remove old methods
+
     }
 }

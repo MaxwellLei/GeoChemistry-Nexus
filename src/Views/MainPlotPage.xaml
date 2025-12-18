@@ -1374,16 +1374,7 @@
             </Grid>
         </Grid>
 
-        <!--新建绘图模板-->
-        <Grid Background="#80000000" Visibility="{Binding IsNewTemplateMode, Converter={StaticResource BoolToVisibilityConverter}}">
-            <uc:NewTemplateControl HorizontalAlignment="Center" VerticalAlignment="Center"
-                                   ConfirmCommand="{Binding ConfirmNewTemplateCommand}"
-                                   CancelCommand="{Binding CancelNewTemplateCommand}">
-                <uc:NewTemplateControl.Effect>
-                    <DropShadowEffect ShadowDepth="0" BlurRadius="20" Color="Black" Opacity="0.3"/>
-                </uc:NewTemplateControl.Effect>
-            </uc:NewTemplateControl>
-        </Grid>
+
 
     </Grid>
 </Page>

@@ -300,4 +300,10 @@
   <data name="redo" xml:space="preserve">
     <value>Wiederholen</value>
   </data>
+  <data name="interval" xml:space="preserve">
+    <value>Skalenschritt</value>
+  </data>
+  <data name="count" xml:space="preserve">
+    <value>Anzahl der Unterteilungen</value>
+  </data>
 </root>

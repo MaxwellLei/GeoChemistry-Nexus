@@ -311,25 +311,35 @@
     "description": "The title of the tag list page"
   },
   "home.button.content": {
-    "message": "开始 Geo-Thermometer 教程 - 5min ⏱️",
-    "description": "Link label for the Geo-Thermometer tutorial"
+    "message": "开始 GeoChemistry Nexus 教程 - 5min ⏱️",
+    "description": "Link label for the GeoChemistry Nexus tutorial"
   },
-  "Easy to Use": {
-    "message": "易于使用"
+  "home.button.getStarted": {
+    "message": "开始使用"
   },
-  "The Geo-Thermometer is designed from the ground up to be easy to install and use, allowing you to quickly get started and accelerate your research process.": {
-    "message": "Geo-Thermometer 从头开始设计，易于安装和使用，让您能够快速入门，加速您的研究过程。"
+  "home.button.github": {
+    "message": "查看 GitHub"
   },
-  "Focus on What Matters": {
-    "message": "关注重要事项"
+  "home.tagline": {
+    "message": "下一代地球化学与岩石学判别图解及计算工具 —— 地球科学家的最佳伙伴",
+    "description": "The tagline of the site"
   },
-  "Geo-Thermometer allows you to focus on the intricacies of scientific research, while we handle the tedious calculations and plotting for you.": {
-    "message": "Geo-Thermometer 让您能够专注于科学研究的复杂性，而我们为您处理繁琐的计算和绘图。"
+  "Comprehensive Plotting Toolkit": {
+    "message": "全面的绘图工具箱"
   },
-  "Powered by .NET": {
-    "message": "由 .NET 驱动"
+  "GeoChemistry Nexus includes a built-in Geoscience Illustrated Plotting Module with templates for Tectonic Setting Discrimination, Rock Classification, and more. It offers a complete workflow from data import to publication-quality export (SVG supported).": {
+    "message": "GeoChemistry Nexus 内置地球科学绘图模块，包含构造环境判别、岩石分类等模板。提供从数据导入到出版级导出（支持 SVG）的完整工作流。"
   },
-  "Utilizing .NET technology, the software features a more modern user interface and provides a smooth operating experience.": {
-    "message": "利用 .NET 技术，该软件具有更现代化的用户界面，提供流畅的操作体验。"
+  "Excel-like Geothermometers": {
+    "message": "类 Excel 地质温度计"
+  },
+  "Perform geothermometer calculations for minerals like Zircon and Biotite using an intuitive, Excel-like interface. Use built-in templates or custom functions (e.g., =FuncName(args)) to speed up your research without needing programming skills.": {
+    "message": "使用直观的类 Excel 界面进行锆石、黑云母等矿物的地质温度计计算。使用内置模板或自定义函数（如 =FuncName(args)）加速您的研究，无需编程技能。"
+  },
+  "Customizable & Extensible": {
+    "message": "高度可定制与扩展"
+  },
+  "Create and share your own diagram templates using our JSON/ZIP based extension system. The platform supports multi-language templates, custom scripting (JavaScript), and seamless integration with third-party software like Inkscape and CorelDRAW.": {
+    "message": "使用我们基于 JSON/ZIP 的扩展系统创建并分享您自己的图表模板。平台支持多语言模板、自定义脚本（JavaScript），并与 Inkscape 和 CorelDRAW 等第三方软件无缝集成。"
   }
 }

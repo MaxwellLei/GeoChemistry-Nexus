@@ -1349,7 +1349,7 @@
     <value>When enabled, hovering the mouse over a plot object (point, line, area, etc.) will automatically highlight it, and you can click to view information</value>
   </data>
   <data name="count" xml:space="preserve">
-    <value>Count</value>
+    <value>Number of minor ticks</value>
   </data>
   <data name="zoom_type" xml:space="preserve">
     <value>Zoom Type</value>
@@ -1590,5 +1590,8 @@
   </data>
   <data name="redo" xml:space="preserve">
     <value>Redo</value>
+  </data>
+  <data name="interval" xml:space="preserve">
+    <value>Interval</value>
   </data>
 </root>

@@ -1096,7 +1096,7 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Count 的本地化字符串。
+        ///   查找类似 Number of minor ticks 的本地化字符串。
         /// </summary>
         internal static string count {
             get {
@@ -2118,6 +2118,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string InternationalizationAndPersonalization {
             get {
                 return ResourceManager.GetString("InternationalizationAndPersonalization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Interval 的本地化字符串。
+        /// </summary>
+        internal static string interval {
+            get {
+                return ResourceManager.GetString("interval", resourceCulture);
             }
         }
         

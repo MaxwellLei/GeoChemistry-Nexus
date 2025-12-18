@@ -2,52 +2,52 @@ import clsx from 'clsx';
 import Heading from '@theme/Heading';
 import styles from './styles.module.css';
 import Translate, {translate} from '@docusaurus/Translate';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
 const FeatureList = [
   {
-    title: <Translate>Easy to Use</Translate>,
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    title: <Translate>Comprehensive Plotting Toolkit</Translate>,
+    // Placeholder image for Plotting Toolkit
+    image: '/img/plotting_toolkit.webp', 
     description: (
-      <>
-        <Translate>
-          The Geo-Thermometer is designed from the ground up to be easy to install and use, allowing you to quickly get started and accelerate your research process.
-        </Translate>
-      </>
+      <Translate>
+        GeoChemistry Nexus includes a built-in Geoscience Illustrated Plotting Module with templates for Tectonic Setting Discrimination, Rock Classification, and more. It offers a complete workflow from data import to publication-quality export (SVG supported).
+      </Translate>
     ),
   },
   {
-    title: <Translate>Focus on What Matters</Translate>,
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    title: <Translate>Excel-like Geothermometers</Translate>,
+    // Placeholder image for Geothermometers
+    image: '/img/excel_like_geothermometers.webp',
     description: (
-      <>
-        <Translate>
-          Geo-Thermometer allows you to focus on the intricacies of scientific research, while we handle the tedious calculations and plotting for you.
-        </Translate>
-      </>
+      <Translate>
+        Perform geothermometer calculations for minerals like Zircon and Biotite using an intuitive, Excel-like interface. Use built-in templates or custom functions (e.g., =FuncName(args)) to speed up your research without needing programming skills.
+      </Translate>
     ),
   },
   {
-    title: <Translate>Powered by .NET</Translate>,
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    title: <Translate>Customizable & Extensible</Translate>,
+    // Placeholder image for Customizability
+    image: '/img/customizable_extensible.webp',
     description: (
-      <>
-        <Translate>
-          Utilizing .NET technology, the software features a more modern user interface and provides a smooth operating experience.
-        </Translate>
-      </>
+      <Translate>
+        Create and share your own diagram templates using our JSON/ZIP based extension system. The platform supports multi-language templates, custom scripting (JavaScript), and seamless integration with third-party software like Inkscape and CorelDRAW.
+      </Translate>
     ),
   },
 ];
 
-function Feature({Svg, title, description}) {
+function Feature({image, title, description}) {
   return (
-    <div className={clsx('col col--4')}>
-      <div className="text--center">
-        <Svg className={styles.featureSvg} role="img" />
+    <div className={styles.featureSection}>
+      <div className={styles.featureContent}>
+        <Heading as="h2" className={styles.featureTitle}>
+          {title}
+        </Heading>
+        <p className={styles.featureDescription}>{description}</p>
       </div>
-      <div className="text--center padding-horiz--md">
-        <Heading as="h3">{title}</Heading>
-        <p>{description}</p>
+      <div className={styles.featureImageContainer}>
+        <img src={useBaseUrl(image)} alt={title} className={styles.featureImage} />
       </div>
     </div>
   );
@@ -57,11 +57,9 @@ export default function HomepageFeatures() {
   return (
     <section className={styles.features}>
       <div className="container">
-        <div className="row">
-          {FeatureList.map((props, idx) => (
-            <Feature key={idx} {...props} />
-          ))}
-        </div>
+        {FeatureList.map((props, idx) => (
+          <Feature key={idx} {...props} />
+        ))}
       </div>
     </section>
   );

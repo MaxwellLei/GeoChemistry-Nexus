@@ -1746,4 +1746,8 @@
     <value>重做</value>
     <comment>绘图-重做</comment>
   </data>
+  <data name="interval" xml:space="preserve">
+    <value>刻度步长</value>
+    <comment>绘图-属性-二维坐标轴</comment>
+  </data>
 </root>

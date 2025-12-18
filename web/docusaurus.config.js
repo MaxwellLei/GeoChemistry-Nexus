@@ -11,8 +11,8 @@ import {themes as prismThemes} from 'prism-react-renderer';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Geo-Thermometer',
-  tagline: 'A geological thermometer calculation and plotting software with a modern user interface',
+  title: 'GeoChemistry Nexus',
+  tagline: 'Next-Gen Geochemistry & Petrology Discrimination Diagrams and Calculation Tool — A Geoscientist\'s Best Friend',
   favicon: 'img/logo.ico',
 
   // Set the production url of your site here
@@ -34,7 +34,7 @@ const config = {
   // may want to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'en',
-    locales: ['en','zh-Hans'],
+    locales: ['en', 'zh-Hans', 'zh-Hant', 'de-DE'],
     path: 'i18n',
     localeConfigs: {
       en: {
@@ -50,6 +50,20 @@ const config = {
         htmlLang: 'zh-cn',
         calendar: 'gregory',
         path: 'zh',
+      },
+      'zh-Hant': {
+        label: '繁體中文',
+        direction: 'ltr',
+        htmlLang: 'zh-tw',
+        calendar: 'gregory',
+        path: 'zh-Hant',
+      },
+      'de-DE': {
+        label: 'Deutsch',
+        direction: 'ltr',
+        htmlLang: 'de-DE',
+        calendar: 'gregory',
+        path: 'de',
       },
     }
   },
@@ -67,14 +81,18 @@ const config = {
           // Remove this to remove the "edit this page" links.
           editUrl:
             'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-          lastVersion: 'current', // 将 'current' (即最新版本) 作为默认显示的版本。
+          lastVersion: 'current',
           versions: {
             current: {
-              label: 'v0.5.0.0', // 这是你希望在下拉菜单中看到的版本号标签
+              label: 'v0.6.0',
+            },
+            '0.5.0.0': {
+              label: 'v0.5.0.0',
+              path: '0.5.0.0',
             },
             '0.3.1.2': {
-              label: 'v0.3.1.2', // 这是你希望在下拉菜单中看到的版本号标签
-              path: '0.3.1.2',  // 这是该版本对应的URL路径, 例如 /docs/0.3.1.2/intro
+              label: 'v0.3.1.2',
+              path: '0.3.1.2',
             },
           },
         },
@@ -106,7 +124,7 @@ const config = {
       // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
       navbar: {
-        title: 'Geo-Thermometer',
+        title: 'GeoChemistry Nexus',
         logo: {
           alt: 'My Site Logo',
           src: 'img/logo.ico',
@@ -177,7 +195,7 @@ const config = {
         //     ],
         //   },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Geo-Thermometer, Inc.`,
+        copyright: 'Copyright © 2024-2025 GeoChemistry Nexus',
       },
       prism: {
         theme: prismThemes.github,

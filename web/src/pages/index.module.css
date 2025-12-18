@@ -1,23 +1,80 @@
-/**
- * CSS files with the .module.css suffix will be treated as CSS modules
- * and scoped locally.
- */
-
 .heroBanner {
-  padding: 4rem 0;
+  padding: 6rem 0;
   text-align: center;
   position: relative;
   overflow: hidden;
+  background: var(--ifm-background-color);
 }
 
-@media screen and (max-width: 996px) {
-  .heroBanner {
-    padding: 2rem;
-  }
+.heroTitle {
+  font-size: 4.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, var(--ifm-color-primary), var(--ifm-color-primary-darker));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.heroSubtitle {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--ifm-color-content-secondary);
+  max-width: 800px;
+  margin: 0 auto 2rem;
+  line-height: 1.4;
 }
 
 .buttons {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 4rem;
+}
+
+.buttonPrimary {
+  border-radius: 980px; /* Pill shape */
+  padding: 12px 28px;
+  font-weight: 500;
+  font-size: 1.1rem;
+  transition: all 0.2s ease;
+}
+
+.buttonSecondary {
+  color: var(--ifm-color-primary);
+  font-weight: 500;
+  font-size: 1.1rem;
+  text-decoration: none;
+}
+.buttonSecondary:hover {
+  text-decoration: underline;
+}
+
+.heroImageContainer {
+  margin: 0 auto;
+  max-width: 1000px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  border: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.heroImage {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media screen and (max-width: 996px) {
+  .heroBanner {
+    padding: 4rem 2rem;
+  }
+  .heroTitle {
+    font-size: 3rem;
+  }
+  .heroSubtitle {
+    font-size: 1.25rem;
+  }
 }

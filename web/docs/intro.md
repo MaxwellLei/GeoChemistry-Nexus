@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # 🌍 Introduction
 
-Let's get started with **GeoChemistry Nexus** in **5 minutes** ⏱️.
+**Note:** We have officially renamed the software from **Geo-Thermometer** to **GeoChemistry Nexus**. Let's get started with **GeoChemistry Nexus** in **5 minutes** ⏱️.
 
 ## Prerequisites 🛠️
 

@@ -38,6 +38,7 @@ using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using System.Xml.Serialization;
 using unvell.ReoGrid;
+using GeoChemistryNexus.Views;
 
 namespace GeoChemistryNexus.ViewModels
 {
@@ -111,8 +112,7 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private bool _isShowTemplateInfo = false;   // 显示绘图模板的说明帮助
 
-        [ObservableProperty]
-        private bool _isNewTemplateMode = false; // 新建绘图遮罩
+
 
         // 卡片展示用的模板集合
         [ObservableProperty]
@@ -4458,13 +4458,12 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 确认新建图解模板
+        /// 尝试新建图解模板
         /// </summary>
-        /// <param name="newTemplateControl">自定义控件</param>
-        [RelayCommand]
-        private void ConfirmNewTemplate(NewTemplateControl newTemplateControl)
+        /// <returns>是否创建成功</returns>
+        private bool TryCreateNewTemplate(NewTemplateControl newTemplateControl)
         {
-            if (newTemplateControl == null) return;
+            if (newTemplateControl == null) return false;
 
             // 获取数据
             string language = newTemplateControl.Language;
@@ -4477,7 +4476,7 @@ namespace GeoChemistryNexus.ViewModels
             {
                 // 所有字段均为必填项！
                 MessageHelper.Warning(LanguageService.Instance["all_fields_required"]);
-                return;
+                return false;
             }
 
             var allLanguages = language.Split(new[] { " > " }, StringSplitOptions.RemoveEmptyEntries)
@@ -4489,7 +4488,7 @@ namespace GeoChemistryNexus.ViewModels
             {
                 // 语言设置中存在重复项，请检查！
                 MessageHelper.Warning(LanguageService.Instance["language_setting_duplicate_found"]);
-                return;
+                return false;
             }
 
             // 获取富文本形式的分类层级数据
@@ -4499,7 +4498,7 @@ namespace GeoChemistryNexus.ViewModels
             {
                 // 分类结构必须大于等于2！
                 MessageHelper.Warning(LanguageService.Instance["category_structure_min_two"]);
-                return;
+                return false;
             }
 
             // 1. 确定默认语言
@@ -4563,7 +4562,7 @@ namespace GeoChemistryNexus.ViewModels
 
                 if (result == MessageBoxResult.No)
                 {
-                    return;
+                    return false;
                 }
             }
 
@@ -4609,7 +4608,6 @@ namespace GeoChemistryNexus.ViewModels
 
             IsTemplateMode = false;
             IsPlotMode = true;
-            IsNewTemplateMode = false;
 
             BuildLayerTreeFromTemplate(CurrentTemplate);
             RefreshPlotFromLayers();
@@ -4617,22 +4615,7 @@ namespace GeoChemistryNexus.ViewModels
             // 自动保存新建的模板
             PerformSave(_currentTemplateFilePath);
 
-            // 清空数据
-            newTemplateControl.EmptyData();
-        }
-
-        /// <summary>
-        /// 取消新建图解模板
-        /// </summary>
-        [RelayCommand]
-        private void CancelNewTemplate(NewTemplateControl newTemplateControl)
-        {
-            if (newTemplateControl == null) return;
-
-            // 清空数据
-            newTemplateControl.EmptyData();
-
-            IsNewTemplateMode = false;
+            return true;
         }
 
         /// <summary>
@@ -4641,7 +4624,26 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private void NewTemplate()
         {
-            IsNewTemplateMode = true;
+            var window = new NewTemplateWindow();
+            
+            var confirmCommand = new RelayCommand<NewTemplateControl>((control) =>
+            {
+                if (TryCreateNewTemplate(control))
+                {
+                    window.Close();
+                }
+            });
+
+            var cancelCommand = new RelayCommand<NewTemplateControl>((control) =>
+            {
+                window.Close();
+            });
+
+            window.ConfirmCommand = confirmCommand;
+            window.CancelCommand = cancelCommand;
+            
+            window.Owner = Application.Current.MainWindow;
+            window.ShowDialog();
         }
 
         /// <summary>

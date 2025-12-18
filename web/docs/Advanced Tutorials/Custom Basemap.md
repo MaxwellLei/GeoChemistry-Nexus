@@ -74,7 +74,7 @@ Since diagrams natively support multiple languages, the settings for multi-langu
 
 ### Adding Functions
 
-Below is an example of the property panel for adding a function. The default function used is `sin(x)`. You only need to enter a formula related to $x$. The default is $y = \text{Formula Content}$.
+Below is an example of the property panel for adding a function. The default function used is `sin(x)`. You only need to enter a formula related to $x$. The default is `y = Formula Content`.
 
 For a function object, the two most important parameters are: **Domain** and **Sampling Points**. The domain defines the display range of the function. The sampling points control the precision of the function drawing, which in turn affects the accuracy of the mouse-snapping selection algorithm. The default value is `1000`.
 

@@ -201,7 +201,7 @@
 
                             <StackPanel Grid.Column="0">
                                 <TextBlock Text="{Binding [count],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
-                                <TextBox Text="{Binding MinorTicksPerMajorTick, UpdateSourceTrigger=PropertyChanged}" />
+                                <hc:NumericUpDown Value="{Binding MinorTicksPerMajorTick, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" />
                             </StackPanel>
                             
                             <StackPanel Grid.Column="2">

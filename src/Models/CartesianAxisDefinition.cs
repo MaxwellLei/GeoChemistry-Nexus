@@ -53,7 +53,7 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("minor_tick_style")] // 次刻度样式
         [property: LocalizedDisplayName("count")] // 数量
-        private int _minorTicksPerMajorTick = 1;
+        private int _minorTicksPerMajorTick = 0;
 
         /// <summary>
         /// Axis minor tick length
