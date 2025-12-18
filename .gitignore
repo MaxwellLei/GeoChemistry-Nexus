@@ -39,6 +39,7 @@ packages/
 !packages/repositories.config
 
 # 忽略包含敏感信息的用户特定发布配置文件
+*.pubxml
 *.pubxml.user
 
 # .NET 项目的编译输出
