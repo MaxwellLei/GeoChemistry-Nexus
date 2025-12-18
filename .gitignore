@@ -68,6 +68,7 @@ ehthumbs.db
 desktop.ini
 
 # 备份文件
+*Backup*.csproj
 *.bak
 *.swp
 *~
