@@ -1,4 +1,5 @@
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Services;
 using GeoChemistryNexus.Interfaces;
 using GeoChemistryNexus.Models;
 using ScottPlot;
@@ -70,7 +71,7 @@ namespace GeoChemistryNexus.ViewModels
                 }
                 catch
                 {
-                    // 运行时错误 (例如除以0等)
+                    // 运行时错误
                 }
             }
 
@@ -79,8 +80,8 @@ namespace GeoChemistryNexus.ViewModels
             var scatter = plot.Add.ScatterLine(xs.ToArray(), ys.ToArray());
             
             scatter.LineWidth = FunctionDefinition.Width;
-            scatter.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(FunctionDefinition.Color));
-            scatter.LinePattern = GraphMapTemplateParser.GetLinePattern(FunctionDefinition.Style.ToString());
+            scatter.Color = ScottPlot.Color.FromHex(GraphMapTemplateService.ConvertWpfHexToScottPlotHex(FunctionDefinition.Color));
+            scatter.LinePattern = GraphMapTemplateService.GetLinePattern(FunctionDefinition.Style.ToString());
 
             this.Plottable = scatter;
             _scatterPlot = scatter;
@@ -107,7 +108,7 @@ namespace GeoChemistryNexus.ViewModels
         {
              if (_scatterPlot != null)
              {
-                 _scatterPlot.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(FunctionDefinition.Color));
+                 _scatterPlot.Color = ScottPlot.Color.FromHex(GraphMapTemplateService.ConvertWpfHexToScottPlotHex(FunctionDefinition.Color));
                  _scatterPlot.LineWidth = FunctionDefinition.Width;
              }
         }

@@ -1,4 +1,5 @@
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,7 +52,7 @@ namespace GeoChemistryNexus.Controls
 
             if (localizedString != null)
             {
-                // 使用 LocalizedString 自身的 Get 方法，它已经处理了 OverrideLanguage
+                // 使用 LocalizedString 自身的 Get 方法
                 control.DisplayTextBox.Text = localizedString.Get();
             }
             else
@@ -79,11 +80,6 @@ namespace GeoChemistryNexus.Controls
             string targetLang = !string.IsNullOrEmpty(LocalizedString.OverrideLanguage) 
                 ? LocalizedString.OverrideLanguage 
                 : LanguageService.CurrentLanguage;
-
-            // 调用 Set 方法来更新字典（Set 方法现在已经能够处理 OverrideLanguage，但在这里我们显式处理更清晰，
-            // 或者直接调用 Value.Set(null, newText) 如果我们修改了 Set 的签名）
-            // 由于 Value 是引用类型，直接修改它的 Translations 字典即可
-            // 但是为了触发属性变更通知（如果有的话），或者遵循不可变模式，我们创建一个新实例
             
             // 创建一个新实例
             var newLocalizedString = new LocalizedString
@@ -93,7 +89,7 @@ namespace GeoChemistryNexus.Controls
                 Translations = new Dictionary<string, string>(Value.Translations)
             };
             
-            // 使用 Set 方法的逻辑手动更新（因为 Set 方法是 void，不返回新对象）
+            // 使用 Set 方法的逻辑手动更新
             newLocalizedString.Translations[targetLang] = newText;
 
             // 将新实例赋值给依赖属性

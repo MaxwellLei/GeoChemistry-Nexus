@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Services;
 
 namespace GeoChemistryNexus.Controls
 {
@@ -66,7 +67,7 @@ namespace GeoChemistryNexus.Controls
 
                 if (!isCtrlPressed)
                 {
-                    // 使用右侧边栏弹窗 (Growl.Ask)
+                    // 弹窗
                     bool isConfirmed = await MessageHelper.ShowAsyncDialog(
                         LanguageService.Instance["DeleteingBasemapConfirm2_Message"],
                         LanguageService.Instance["Cancel"],

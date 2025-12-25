@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GeoChemistryNexus.Services;
 
 namespace GeoChemistryNexus.Helpers
 {
@@ -42,9 +43,8 @@ namespace GeoChemistryNexus.Helpers
         // 用于设置当前语言的文本
         public void Set(string languageCode, string content)
         {
-            // 优先使用覆盖语言（如果已设置），否则使用传入的 languageCode（通常是当前语言）
-            // 注意：LocalizedStringControl 通常不传递 languageCode，或者传递的是 Default
-            // 实际上，我们应该总是根据当前的显示语言来决定更新哪个 Key
+            // 优先使用覆盖语言（如果已设置），否则使用传入的 languageCode（当前语言）
+            // 应该总是根据当前的显示语言来决定更新哪个 Key
             
             string targetLang = !string.IsNullOrEmpty(OverrideLanguage) 
                 ? OverrideLanguage 

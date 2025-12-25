@@ -1,11 +1,12 @@
-<hc:Window x:Class="GeoChemistryNexus.Views.AddWidgetWindow"
+<hc:Window x:Class="GeoChemistryNexus.Views.Widgets.AddWidgetWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
         mc:Ignorable="d"
-        Title="添加小组件" Height="400" Width="500"
+        Title="{Binding [add_widget],Source={x:Static lg:LanguageService.Instance}}" Height="400" Width="500"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False">
 
     <Grid Margin="20">
@@ -15,7 +16,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="请选择要添加的组件：" Margin="0,0,0,10" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextBrush}"/>
+        <TextBlock Text="{Binding [please_select_widget_to_add],Source={x:Static lg:LanguageService.Instance}}" Margin="0,0,0,10" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextBrush}"/>
 
         <ListBox Name="WidgetList" Grid.Row="1" Margin="0,0,0,20">
             <ListBox.ItemContainerStyle>
@@ -92,8 +93,10 @@
         </ListBox>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="取消" Click="Cancel_Click" Margin="0,0,10,0"/>
-            <Button Content="添加" Style="{StaticResource ButtonPrimary}" Click="Ok_Click"/>
+            <!-- 取消 -->
+            <Button Content="{Binding [Cancel],Source={x:Static lg:LanguageService.Instance}}" Click="Cancel_Click" Margin="0,0,10,0"/>
+            <!-- 添加 -->
+            <Button Content="{Binding [add],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ButtonPrimary}" Click="Ok_Click"/>
         </StackPanel>
     </Grid>
 </hc:Window>

@@ -54,7 +54,7 @@ namespace GeoChemistryNexus.Controls
 
         private void ShowColorPicker()
         {
-            if (DateTime.Now.Ticks - _lastClosedTicks < 200 * 10000) return; // 200ms debounce
+            if (DateTime.Now.Ticks - _lastClosedTicks < 200 * 10000) return;  // 200ºÁÃë·À¶¶
             ColorPopup.IsOpen = true;
         }
 

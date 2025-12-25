@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.Generic;
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Attributes;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 
@@ -44,7 +45,7 @@ namespace GeoChemistryNexus.Models
         /// <summary>
         /// 当 Vertices 属性本身被一个新的集合替换时调用。
         /// </summary>
-        partial void OnVerticesChanged(ObservableCollection<PointDefinition> oldValue, ObservableCollection<PointDefinition> newValue)
+        partial void OnVerticesChanged(ObservableCollection<PointDefinition>? oldValue, ObservableCollection<PointDefinition> newValue)
         {
             // 为旧集合解绑事件
             if (oldValue != null)

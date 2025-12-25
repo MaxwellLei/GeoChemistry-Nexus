@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Windows;
 using GeoChemistryNexus.Models;
+using GeoChemistryNexus.Services;
 
-namespace GeoChemistryNexus.Views
+namespace GeoChemistryNexus.Views.Widgets
 {
     public partial class AddWidgetWindow : HandyControl.Controls.Window
     {
@@ -24,7 +25,7 @@ namespace GeoChemistryNexus.Views
             }
             else
             {
-                HandyControl.Controls.Growl.Warning("请选择一个组件");
+                HandyControl.Controls.Growl.Warning(LanguageService.Instance["please_select_a_widget"]);
             }
         }
 

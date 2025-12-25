@@ -57,6 +57,27 @@ namespace GeoChemistryNexus.Models
         public bool IsCustomTemplate { get; set; }
 
         /// <summary>
+        /// 是否展开
+        /// </summary>
+        private bool _isExpanded;
+        public bool IsExpanded
+        {
+            get => _isExpanded;
+            set => SetProperty(ref _isExpanded, value);
+        }
+
+        /// <summary>
+        /// 是否选中
+        /// </summary>
+        private bool _isSelected;
+        [JsonIgnore]
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set => SetProperty(ref _isSelected, value);
+        }
+
+        /// <summary>
         /// 当前类别下的模板数量（递归统计叶子模板数）
         /// 叶子节点（具体模板）计为 1；分类节点为其所有子孙模板数之和
         /// </summary>

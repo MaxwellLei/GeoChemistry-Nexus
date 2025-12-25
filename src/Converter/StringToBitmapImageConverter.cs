@@ -18,19 +18,19 @@ namespace GeoChemistryNexus.Converter
                     bitmap.UriSource = new Uri(path, UriKind.RelativeOrAbsolute);
                     bitmap.CacheOption = BitmapCacheOption.OnLoad;
                     bitmap.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
-                    
-                    // Allow parameter to override DecodePixelWidth
+
+                    // 允许通过参数覆盖 DecodePixelWidth
                     if (parameter is string widthStr && int.TryParse(widthStr, out int width))
                     {
                         bitmap.DecodePixelWidth = width;
                     }
                     else
                     {
-                        bitmap.DecodePixelWidth = 300; // Default width
+                        bitmap.DecodePixelWidth = 640; // Default width
                     }
                     
                     bitmap.EndInit();
-                    bitmap.Freeze(); // Freeze for cross-thread access and performance
+                    bitmap.Freeze(); // 冻结对象，确保跨线程访问安全并提升性能
                     return bitmap;
                 }
                 catch

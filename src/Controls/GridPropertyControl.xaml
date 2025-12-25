@@ -1,4 +1,4 @@
-<UserControl x:Class="GeoChemistryNexus.Controls.GridPropertyControl"
+﻿<UserControl x:Class="GeoChemistryNexus.Controls.GridPropertyControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -8,9 +8,10 @@
              xmlns:models="clr-namespace:GeoChemistryNexus.Models"
              xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             xmlns:lg="clr-namespace:GeoChemistryNexus.Helpers"
+             xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="300">
+             d:DesignHeight="800" d:DesignWidth="300"
+             Background="#F5F5F7">
     <UserControl.Resources>
         <cvs:NumericTypeConverter x:Key="NumericTypeConverter"/>
         <cvs:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
@@ -20,54 +21,52 @@
         <cvs:EnumToDisplayStringConverter x:Key="EnumToDisplayStringConverter"/>
         <cvs:EnumTypeToValuesConverter x:Key="EnumTypeToValuesConverter"/>
         
-        <Style TargetType="TextBlock" x:Key="LabelStyle">
-            <Setter Property="Foreground" Value="#666666"/>
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Margin" Value="0,0,0,4"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-        </Style>
-
-        <Style TargetType="Expander" BasedOn="{StaticResource ExpanderBaseStyle}">
-            <Setter Property="IsExpanded" Value="True"/>
-            <Setter Property="Margin" Value="0,0,0,10"/>
+        <Style x:Key="ToggleButtonSwitch" TargetType="ToggleButton" BasedOn="{StaticResource ToggleButtonSwitch}">
         </Style>
     </UserControl.Resources>
 
     <Grid DataContext="{Binding SelectedObject, RelativeSource={RelativeSource AncestorType=local:GridPropertyControl}}">
         <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel Margin="15">
+            <StackPanel Margin="10,12,10,12">
                 <!-- Header -->
-                <DockPanel LastChildFill="False" Margin="0,0,0,15">
-                    <TextBlock Text="{Binding [grid],Source={x:Static lg:LanguageService.Instance}}" FontWeight="Bold" FontSize="16" Foreground="#333"/>
-                </DockPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                    <TextBlock Text="&#xe67b;" FontFamily="../Data/Icon/#iconfont" FontSize="24" Foreground="#1D1D1F" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBlock Text="{Binding [grid],Source={x:Static lg:LanguageService.Instance}}" 
+                               FontSize="22" FontWeight="Bold" Foreground="#1D1D1F" VerticalAlignment="Center"/>
+                </StackPanel>
 
                 <!-- Major Grid Line -->
-                <Expander Header="{Binding [major_grid_line],Source={x:Static lg:LanguageService.Instance}}">
-                    <StackPanel Margin="0,10,0,0">
-                        <CheckBox IsChecked="{Binding MajorGridLineIsVisible}" Content="{Binding [is_visible],Source={x:Static lg:LanguageService.Instance}}" Margin="0,0,0,10"/>
+                <TextBlock Text="{Binding [major_grid_line],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernSettingsGroupTitle}" Margin="4,10,0,6"/>
+                <Border Style="{StaticResource ModernCardStyle}" Margin="0,0,0,8">
+                    <StackPanel Margin="10">
+                        <DockPanel Margin="0,0,0,16">
+                            <TextBlock Text="{Binding [is_visible],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}" VerticalAlignment="Center" Margin="0"/>
+                            <ToggleButton Style="{StaticResource ToggleButtonSwitch}" HorizontalAlignment="Right" IsChecked="{Binding MajorGridLineIsVisible, Mode=TwoWay}"/>
+                        </DockPanel>
                         
-                        <Grid Margin="0,0,0,10">
+                        <Grid Margin="0,0,0,16">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="12"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             
                             <StackPanel Grid.Column="0">
-                                <TextBlock Text="{Binding [width],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
-                                <hc:NumericUpDown Value="{Binding MajorGridLineWidth, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" />
+                                <TextBlock Text="{Binding [width],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
+                                <hc:NumericUpDown Value="{Binding MajorGridLineWidth, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
+                                                  Style="{StaticResource ModernNumericUpDownStyle}"/>
                             </StackPanel>
 
                             <StackPanel Grid.Column="2">
-                                <TextBlock Text="{Binding [color],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
-                                <local:TextPropertyColorPicker SelectedColor="{Binding MajorGridLineColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}"/>
+                                <TextBlock Text="{Binding [color],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
+                                <local:TextPropertyColorPicker SelectedColor="{Binding MajorGridLineColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" Height="32"/>
                             </StackPanel>
                         </Grid>
 
-                        <TextBlock Text="{Binding [pattern],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
+                        <TextBlock Text="{Binding [pattern],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
                         <ComboBox ItemsSource="{Binding Source={x:Type models:LineDefinition+LineType}, Converter={StaticResource EnumTypeToValuesConverter}}"
-                                  SelectedItem="{Binding MajorGridLinePattern, Mode=TwoWay}" Margin="0,0,0,10">
+                                  SelectedItem="{Binding MajorGridLinePattern, Mode=TwoWay}" Margin="0,0,0,16"
+                                  Style="{StaticResource ModernComboBoxStyle}">
                              <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Converter={StaticResource EnumToDisplayStringConverter}}"/>
@@ -75,36 +74,45 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
                         
-                        <CheckBox IsChecked="{Binding MajorGridLineAntiAlias}" Content="{Binding [enable_anti_alias],Source={x:Static lg:LanguageService.Instance}}" Margin="0,0,0,10"/>
+                        <DockPanel>
+                            <TextBlock Text="{Binding [enable_anti_alias],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}" VerticalAlignment="Center" Margin="0"/>
+                            <ToggleButton Style="{StaticResource ToggleButtonSwitch}" HorizontalAlignment="Right" IsChecked="{Binding MajorGridLineAntiAlias, Mode=TwoWay}"/>
+                        </DockPanel>
                     </StackPanel>
-                </Expander>
+                </Border>
 
                 <!-- Minor Grid Line -->
-                <Expander Header="{Binding [minor_grid_Line],Source={x:Static lg:LanguageService.Instance}}">
-                    <StackPanel Margin="0,10,0,0">
-                        <CheckBox IsChecked="{Binding MinorGridLineIsVisible}" Content="{Binding [is_visible],Source={x:Static lg:LanguageService.Instance}}" Margin="0,0,0,10"/>
+                <TextBlock Text="{Binding [minor_grid_Line],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernSettingsGroupTitle}" Margin="4,10,0,6"/>
+                <Border Style="{StaticResource ModernCardStyle}" Margin="0,0,0,8">
+                    <StackPanel Margin="10">
+                        <DockPanel Margin="0,0,0,16">
+                            <TextBlock Text="{Binding [is_visible],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}" VerticalAlignment="Center" Margin="0"/>
+                            <ToggleButton Style="{StaticResource ToggleButtonSwitch}" HorizontalAlignment="Right" IsChecked="{Binding MinorGridLineIsVisible, Mode=TwoWay}"/>
+                        </DockPanel>
                         
-                        <Grid Margin="0,0,0,10">
+                        <Grid Margin="0,0,0,16">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="12"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             
                             <StackPanel Grid.Column="0">
-                                <TextBlock Text="{Binding [width],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
-                                <hc:NumericUpDown Value="{Binding MinorGridLineWidth, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" />
+                                <TextBlock Text="{Binding [width],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
+                                <hc:NumericUpDown Value="{Binding MinorGridLineWidth, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
+                                                  Style="{StaticResource ModernNumericUpDownStyle}"/>
                             </StackPanel>
 
                             <StackPanel Grid.Column="2">
-                                <TextBlock Text="{Binding [color],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
-                                <local:TextPropertyColorPicker SelectedColor="{Binding MinorGridLineColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}"/>
+                                <TextBlock Text="{Binding [color],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
+                                <local:TextPropertyColorPicker SelectedColor="{Binding MinorGridLineColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" Height="32"/>
                             </StackPanel>
                         </Grid>
 
-                        <TextBlock Text="{Binding [pattern],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
+                        <TextBlock Text="{Binding [pattern],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
                         <ComboBox ItemsSource="{Binding Source={x:Type models:LineDefinition+LineType}, Converter={StaticResource EnumTypeToValuesConverter}}"
-                                  SelectedItem="{Binding MinorGridLinePattern, Mode=TwoWay}" Margin="0,0,0,10">
+                                  SelectedItem="{Binding MinorGridLinePattern, Mode=TwoWay}" Margin="0,0,0,16"
+                                  Style="{StaticResource ModernComboBoxStyle}">
                              <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Converter={StaticResource EnumToDisplayStringConverter}}"/>
@@ -112,34 +120,41 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
                         
-                        <CheckBox IsChecked="{Binding MinorGridLineAntiAlias}" Content="{Binding [enable_anti_alias],Source={x:Static lg:LanguageService.Instance}}" Margin="0,0,0,10"/>
+                        <DockPanel>
+                            <TextBlock Text="{Binding [enable_anti_alias],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}" VerticalAlignment="Center" Margin="0"/>
+                            <ToggleButton Style="{StaticResource ToggleButtonSwitch}" HorizontalAlignment="Right" IsChecked="{Binding MinorGridLineAntiAlias, Mode=TwoWay}"/>
+                        </DockPanel>
                     </StackPanel>
-                </Expander>
+                </Border>
                 
                 <!-- Background Fill -->
-                <Expander Header="{Binding [background_fill],Source={x:Static lg:LanguageService.Instance}}">
-                    <StackPanel Margin="0,10,0,0">
-                        <CheckBox IsChecked="{Binding GridAlternateFillingIsEnable}" Content="{Binding [enable_alternating_fill],Source={x:Static lg:LanguageService.Instance}}" Margin="0,0,0,10"/>
+                <TextBlock Text="{Binding [background_fill],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernSettingsGroupTitle}" Margin="4,10,0,6"/>
+                <Border Style="{StaticResource ModernCardStyle}" Margin="0,0,0,8">
+                    <StackPanel Margin="10">
+                        <DockPanel Margin="0,0,0,16">
+                            <TextBlock Text="{Binding [enable_alternating_fill],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}" VerticalAlignment="Center" Margin="0"/>
+                            <ToggleButton Style="{StaticResource ToggleButtonSwitch}" HorizontalAlignment="Right" IsChecked="{Binding GridAlternateFillingIsEnable, Mode=TwoWay}"/>
+                        </DockPanel>
                         
-                        <Grid Margin="0,0,0,10">
+                        <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="12"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             
                             <StackPanel Grid.Column="0">
-                                <TextBlock Text="{Binding [fill_color_1],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
-                                <local:TextPropertyColorPicker SelectedColor="{Binding GridFillColor1, Mode=TwoWay, Converter={StaticResource StringColorConverter}}"/>
+                                <TextBlock Text="{Binding [fill_color_1],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
+                                <local:TextPropertyColorPicker SelectedColor="{Binding GridFillColor1, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" Height="32"/>
                             </StackPanel>
 
                             <StackPanel Grid.Column="2">
-                                <TextBlock Text="{Binding [fill_color_2],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
-                                <local:TextPropertyColorPicker SelectedColor="{Binding GridFillColor2, Mode=TwoWay, Converter={StaticResource StringColorConverter}}"/>
+                                <TextBlock Text="{Binding [fill_color_2],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
+                                <local:TextPropertyColorPicker SelectedColor="{Binding GridFillColor2, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" Height="32"/>
                             </StackPanel>
                         </Grid>
                     </StackPanel>
-                </Expander>
+                </Border>
 
             </StackPanel>
         </ScrollViewer>

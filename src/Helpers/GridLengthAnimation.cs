@@ -5,7 +5,7 @@ using System.Windows.Media.Animation;
 namespace GeoChemistryNexus.Helpers
 {
     /// <summary>
-    /// 支持 GridLength (GridUnitType.Star 或 Pixel) 的动画
+    /// 支持 GridLength 的动画
     /// </summary>
     public class GridLengthAnimation : AnimationTimeline
     {
@@ -48,7 +48,7 @@ namespace GeoChemistryNexus.Helpers
             double fromVal = From.Value;
             double toVal = To.Value;
 
-            // 如果单位类型不一致，无法进行插值动画，直接返回目标值
+            // 如果单位类型不一致，无法进行插值动画
             // 注意：这里只处理 Pixel-Pixel 或 Star-Star 的情况
             // Auto 不支持动画
             if (From.GridUnitType != To.GridUnitType)

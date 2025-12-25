@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using GeoChemistryNexus.Converter;
 using System.ComponentModel;
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Attributes;
 
 namespace GeoChemistryNexus.Models
 {

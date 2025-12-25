@@ -1,5 +1,6 @@
 using GeoChemistryNexus.Models;
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Services;
 using GeoChemistryNexus.Interfaces;
 using ScottPlot;
 using System.Linq;
@@ -38,11 +39,11 @@ namespace GeoChemistryNexus.ViewModels
 
             // 填充颜色
             polygonPlot.FillStyle.Color = ScottPlot.Color.FromHex(
-                GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(PolygonDefinition.FillColor));
+                GraphMapTemplateService.ConvertWpfHexToScottPlotHex(PolygonDefinition.FillColor));
 
             // 边框颜色
             polygonPlot.LineStyle.Color = ScottPlot.Color.FromHex(
-                GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(PolygonDefinition.BorderColor));
+                GraphMapTemplateService.ConvertWpfHexToScottPlotHex(PolygonDefinition.BorderColor));
 
             // 边框宽度
             polygonPlot.LineStyle.Width = PolygonDefinition.BorderWidth;
@@ -88,8 +89,8 @@ namespace GeoChemistryNexus.ViewModels
         {
             if (Plottable is ScottPlot.Plottables.Polygon polygonPlot)
             {
-                polygonPlot.FillStyle.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(PolygonDefinition.FillColor));
-                polygonPlot.LineStyle.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(PolygonDefinition.BorderColor));
+                polygonPlot.FillStyle.Color = ScottPlot.Color.FromHex(GraphMapTemplateService.ConvertWpfHexToScottPlotHex(PolygonDefinition.FillColor));
+                polygonPlot.LineStyle.Color = ScottPlot.Color.FromHex(GraphMapTemplateService.ConvertWpfHexToScottPlotHex(PolygonDefinition.BorderColor));
                 polygonPlot.LineStyle.Width = PolygonDefinition.BorderWidth;
             }
         }

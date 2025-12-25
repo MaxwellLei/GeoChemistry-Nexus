@@ -1,9 +1,7 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GeoChemistryNexus.Helpers;
-using HandyControl.Controls;
-using ScottPlot.Colormaps;
-using ScottPlot.Palettes;
+using GeoChemistryNexus.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,10 +18,6 @@ namespace GeoChemistryNexus.ViewModels
 {
     public partial class GeothermometerNewPageViewModel : ObservableObject
     {
-        // 导航对象
-        [ObservableProperty]
-        private object? currentView;
-
         // 帮助抽屉是否打开
         [ObservableProperty]
         private bool isHelpDrawerOpen;
@@ -36,112 +30,6 @@ namespace GeoChemistryNexus.ViewModels
         {
             // 注册自定义函数
             CustomizeFuncHelper.RegisterAllFunctions();
-        }
-
-        /// <summary>
-        /// 检查是否选中大于两个以上的区域
-        /// </summary>
-        /// <param name="selection">用户选中的区域</param>
-        /// <returns>返回校验结果</returns>
-        private bool CheckSelectedArea(RangePosition selection)
-        {
-            // 确保选区不为空
-            if (selection.IsEmpty)
-            {
-                MessageHelper.Error("请先在表格中选中要计算的区域");
-                return false;
-            }
-
-            // 确保选区足够大
-            if (selection.Cols <= 2 && selection.Rows == 1)
-            {
-                MessageHelper.Error("选区范围太小");
-                return false;
-            }
-            return true;
-        }
-
-
-        /// <summary>
-        /// 检查表头是否包含所需的特征列
-        /// </summary>
-        /// <param name="worksheet">当前激活的表格</param>
-        /// <param name="requiredHeaders">需要的特征列名称列表</param>
-        /// <returns>符合条件返回 True</returns>
-        private bool ValidateHeaders(Worksheet worksheet, List<string> requiredHeaders)
-        {
-            RangePosition selection = worksheet.SelectionRange;
-            // 从选中区域的第一行提取所有表头文本
-            var actualHeaders = new HashSet<string>();
-            for (int col = selection.Col; col <= selection.EndCol; col++)
-            {
-                var cellData = worksheet.GetCellData(selection.Row, col)?.ToString();
-                if (!string.IsNullOrWhiteSpace(cellData))
-                {
-                    actualHeaders.Add(cellData.Trim());
-                }
-            }
-            // 找出缺失的表头
-            var missingHeaders = requiredHeaders.Except(actualHeaders).ToList();
-            if (missingHeaders.Any())
-            {
-                MessageHelper.Error($"操作失败：选区的第一行缺少以下必需的特征列：\n{string.Join(", ", missingHeaders)}");
-                return false;
-            }
-            return true;
-        }
-
-
-        /// <summary>
-        /// 检查选区内容是否为空值或者非数值类型
-        /// </summary>
-        /// <param name="worksheet">当前激活的表格</param>
-        /// <returns>不存在非法值，返回 True</returns>
-        private bool ValidateDataBody(Worksheet worksheet)
-        {
-            RangePosition selection = worksheet.SelectionRange;
-            // 从选区的第二行开始遍历
-            for (int r = selection.Row + 1; r <= selection.EndRow; r++)
-            {
-                for (int c = selection.Col; c <= selection.EndCol; c++)
-                {
-                    var cell = worksheet.Cells[r, c];
-                    var cellData = cell.Data;
-
-                    // 检查空值
-                    if (cellData == null || cellData is DBNull || string.IsNullOrWhiteSpace(cellData.ToString()))
-                    {
-                        MessageHelper.Error($"数据错误：单元格 {cell.Position.ToAddress()} 的内容不能为空。");
-                        return false;
-                    }
-
-                    // 检查是否为数值
-                    if (!double.TryParse(cellData.ToString(), out _))
-                    {
-                        MessageHelper.Error($"数据错误：单元格 {cell.Position.ToAddress()} 的内容 “{cellData}” 不是有效的数值。");
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-
-
-        /// <summary>
-        /// 进行数据和选区校验
-        /// </summary>
-        /// <param name="worksheet">当前激活的表格</param>
-        /// <returns>无误，返回 True</returns>
-        private bool DataValidation(Worksheet worksheet, List<string> requiredHeaders)
-        {
-            // 数据不为空
-            if (worksheet == null) { MessageHelper.Error("选区数据为空"); return false; }
-            // 选择区域不为空且足够大
-            if (!CheckSelectedArea(worksheet.SelectionRange))   return false;
-            // 选择区域包含计算的特征列
-            if (!ValidateHeaders(worksheet, requiredHeaders))   return false;
-            // 数据没问题
-            return true;
         }
 
         /// <summary>
@@ -278,6 +166,17 @@ namespace GeoChemistryNexus.ViewModels
                     // 增加额外宽度
                     var extraWidth = 10;
                     worksheet.SetColumnsWidth(i, 1, (ushort)(currentWidth + extraWidth));
+
+                    // 检查是否是温度列，如果是则设置保留一位小数
+                    if (requiredHeaders[i].Contains("T(K)") || requiredHeaders[i].Contains("T(℃)"))
+                    {
+                        var range = new RangePosition(1, i, worksheet.RowCount - 1, 1);
+                        worksheet.SetRangeDataFormat(range, unvell.ReoGrid.DataFormat.CellDataFormatFlag.Number,
+                            new unvell.ReoGrid.DataFormat.NumberDataFormatter.NumberFormatArgs
+                            {
+                                DecimalPlaces = 1
+                            });
+                    }
                 }
             }
             catch (Exception ex)

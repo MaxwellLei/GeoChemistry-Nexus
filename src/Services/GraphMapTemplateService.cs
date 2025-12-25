@@ -5,10 +5,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using GeoChemistryNexus.Services;
+using GeoChemistryNexus.Helpers;
 
-namespace GeoChemistryNexus.Helpers
+namespace GeoChemistryNexus.Services
 {
-    public static class GraphMapTemplateParser
+    public static class GraphMapTemplateService
     {
         /// <summary>
         /// 【模板列表】解析绘图模板的JSON数据，并根据指定语言构建一个树形结构。
@@ -121,89 +123,6 @@ namespace GeoChemistryNexus.Helpers
                 currentNode.FileHash = item.FileHash;
                 currentNode.IsCustomTemplate = isCustom;
             }
-        }
-
-        /// <summary>
-        /// 【绘制底图】根据单个模板的JSON内容，将底图元素加载到 ScottPlot 控件上。
-        /// </summary>
-        /// <param name="plot">要绘制图形的 ScottPlot.Plot 对象。</param>
-        /// <param name="templateJsonContent">单个 GraphMapTemplate 对象的JSON字符串。</param>
-        public static void LoadMap(Plot plot, string templateJsonContent)
-        {
-            if (plot == null)
-            {
-                throw new ArgumentNullException(nameof(plot));
-            }
-
-            if (string.IsNullOrWhiteSpace(templateJsonContent))
-            {
-                return; // 如果没有内容，则不执行任何操作
-            }
-
-            // 设置反序列化选项
-            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-
-            // 反序列化为单个 GraphMapTemplate 对象
-            GraphMapTemplate template = null;
-            try
-            {
-                template = JsonSerializer.Deserialize<GraphMapTemplate>(templateJsonContent, options);
-            }
-            catch (JsonException ex)
-            {
-                // 解析失败，提示用户模板文件已损坏
-                MessageHelper.Error(LanguageService.Instance["template_file_corrupted"] + $": {ex.Message}");
-                return;
-            }
-            catch (Exception ex)
-            {
-                // 其他异常
-                MessageHelper.Error(LanguageService.Instance["error_loading_template"] + $": {ex.Message}");
-                return;
-            }
-
-            if (template == null || template.Info == null)
-            {
-                return; // 无效的模板或信息
-            }
-
-            // 版本校验：如果模板版本高于当前程序版本，提示用户升级软件或无法打开
-            if (!IsVersionCompatible(template))
-            {
-                 // 提示版本过低，建议升级软件
-                 MessageHelper.Error(LanguageService.Instance["template_version_too_high"]);
-                 return;
-            }
-
-            var info = template.Info;
-
-            // 清空现有的 Plottable 对象，开始绘制新底图
-            plot.Clear();
-
-            // 绘制线条
-            if (info.Lines != null)
-            {
-                foreach (var lineDef in info.Lines)
-                {
-                    if (lineDef.Start == null || lineDef.End == null) continue;
-
-                    var linePlot = plot.Add.Line(lineDef.Start.X, lineDef.Start.Y, lineDef.End.X, lineDef.End.Y);
-
-                    // 设置样式
-                    linePlot.LineWidth = lineDef.Width;
-                    linePlot.Color = Color.FromHex(lineDef.Color);
-                    linePlot.LinePattern = GetLinePattern(lineDef.Style.ToString());
-                }
-            }
-
-            // 可以在这里添加对其他图形元素（点、多边形、注释等）的处理
-            // 例如：
-            // 2. 绘制多边形 (Polygons)
-            // 3. 绘制点 (Points)
-            // 4. 绘制注释 (Annotations)
-
-            // 最终调整坐标轴等
-            plot.Axes.AutoScale();
         }
 
         /// <summary>

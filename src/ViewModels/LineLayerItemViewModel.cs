@@ -1,4 +1,5 @@
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Services;
 using GeoChemistryNexus.Interfaces;
 using GeoChemistryNexus.Models;
 using ScottPlot;
@@ -66,11 +67,11 @@ namespace GeoChemistryNexus.ViewModels
 
             // 设置颜色 (使用辅助类转换 Hex 字符串)
             linePlot.Color = ScottPlot.Color.FromHex(
-                GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(LineDefinition.Color)
+                GraphMapTemplateService.ConvertWpfHexToScottPlotHex(LineDefinition.Color)
             );
 
             // 设置线型 (实线、虚线等)
-            linePlot.LinePattern = GraphMapTemplateParser.GetLinePattern(
+            linePlot.LinePattern = GraphMapTemplateService.GetLinePattern(
                 LineDefinition.Style.ToString()
             );
 
@@ -120,7 +121,7 @@ namespace GeoChemistryNexus.ViewModels
                 // 恢复原始定义中的属性
                 linePlot.LineWidth = LineDefinition.Width;
                 linePlot.Color = ScottPlot.Color.FromHex(
-                    GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(LineDefinition.Color));
+                    GraphMapTemplateService.ConvertWpfHexToScottPlotHex(LineDefinition.Color));
             }
         }
     }

@@ -1,4 +1,5 @@
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Services;
 using GeoChemistryNexus.Interfaces;
 using GeoChemistryNexus.Models;
 using ScottPlot;
@@ -49,7 +50,7 @@ namespace GeoChemistryNexus.ViewModels
 
             // --- 应用样式 ---
             scatterPlot.Color = ScottPlot.Color.FromHex(
-                GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(ScatterDefinition.Color));
+                GraphMapTemplateService.ConvertWpfHexToScottPlotHex(ScatterDefinition.Color));
 
             scatterPlot.MarkerSize = ScatterDefinition.Size;
             scatterPlot.MarkerShape = ScatterDefinition.MarkerShape;
@@ -79,7 +80,7 @@ namespace GeoChemistryNexus.ViewModels
         {
             if (Plottable is ScottPlot.Plottables.Scatter scatterPlot)
             {
-                scatterPlot.Color = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(ScatterDefinition.Color));
+                scatterPlot.Color = ScottPlot.Color.FromHex(GraphMapTemplateService.ConvertWpfHexToScottPlotHex(ScatterDefinition.Color));
                 // 恢复时去掉高亮轮廓
                 scatterPlot.MarkerStyle.OutlineWidth = 0;
             }

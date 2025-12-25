@@ -1,6 +1,8 @@
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Services;
 using GeoChemistryNexus.Interfaces;
 using GeoChemistryNexus.Models;
+using GeoChemistryNexus.Extensions.ScottPlotExtensions;
 using ScottPlot;
 using System;
 using System.Collections.Generic;
@@ -39,6 +41,37 @@ namespace GeoChemistryNexus.ViewModels
                 };
 
                 if (targetAxis == null) return;
+
+                // 使用自定义坐标轴以支持子标题
+                if (cartesianAxisDef.Type == "Left" && targetAxis is not LeftAxisWithSubtitle)
+                {
+                    plot.Axes.Remove(targetAxis);
+                    var newAxis = new LeftAxisWithSubtitle();
+                    plot.Axes.AddLeftAxis(newAxis);
+                    targetAxis = newAxis;
+                }
+                else if (cartesianAxisDef.Type == "Right" && targetAxis is not RightAxisWithSubtitle)
+                {
+                    plot.Axes.Remove(targetAxis);
+                    var newAxis = new RightAxisWithSubtitle();
+                    plot.Axes.AddRightAxis(newAxis);
+                    targetAxis = newAxis;
+                }
+                else if (cartesianAxisDef.Type == "Bottom" && targetAxis is not BottomAxisWithSubtitle)
+                {
+                    plot.Axes.Remove(targetAxis);
+                    var newAxis = new BottomAxisWithSubtitle();
+                    plot.Axes.AddBottomAxis(newAxis);
+                    targetAxis = newAxis;
+                }
+                else if (cartesianAxisDef.Type == "Top" && targetAxis is not TopAxisWithSubtitle)
+                {
+                    plot.Axes.Remove(targetAxis);
+                    var newAxis = new TopAxisWithSubtitle();
+                    plot.Axes.AddTopAxis(newAxis);
+                    targetAxis = newAxis;
+                }
+
                 var viewLimits = plot.Axes.GetLimits();
 
                 // --- 应用样式 ---
@@ -49,7 +82,7 @@ namespace GeoChemistryNexus.ViewModels
                 targetAxis.Label.FontName = Fonts.Detect(targetAxis.Label.Text);
                 targetAxis.Label.FontSize = cartesianAxisDef.Size;
                 targetAxis.Label.ForeColor = ScottPlot.Color.FromHex(
-                    GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(cartesianAxisDef.Color));
+                    GraphMapTemplateService.ConvertWpfHexToScottPlotHex(cartesianAxisDef.Color));
                 targetAxis.Label.Bold = cartesianAxisDef.IsBold;
                 targetAxis.Label.Italic = cartesianAxisDef.IsItalic;
 
@@ -76,7 +109,7 @@ namespace GeoChemistryNexus.ViewModels
 
                     if (cartesianAxisDef.MajorTickInterval > 0)
                     {
-                        targetAxis.TickGenerator = new GeoChemistryNexus.Helpers.FixedIntervalTickGenerator(
+                        targetAxis.TickGenerator = new FixedIntervalTickGenerator(
                             cartesianAxisDef.MajorTickInterval, 
                             minorCount);
                     }
@@ -84,8 +117,7 @@ namespace GeoChemistryNexus.ViewModels
                     {
                         var tickGen = new ScottPlot.TickGenerators.NumericAutomatic();
                         // 自动刻度生成器下，ScottPlot 的 EvenlySpacedMinorTickGenerator 参数是“分段数”而不是“刻度数”
-                        // 例如设置为 1，则分为 1 段（没有次刻度）。设置为 2，分为 2 段（中间有 1 个次刻度）。
-                        // 所以这里需要 +1
+                        // 这里需要 +1
                         int divisions = minorCount > 0 ? minorCount + 1 : 0;
                         tickGen.MinorTickGenerator = new ScottPlot.TickGenerators.EvenlySpacedMinorTickGenerator(divisions);
                         targetAxis.TickGenerator = tickGen;
@@ -96,23 +128,45 @@ namespace GeoChemistryNexus.ViewModels
                 targetAxis.MajorTickStyle.Length = cartesianAxisDef.MajorTickLength;
                 targetAxis.MajorTickStyle.Width = cartesianAxisDef.MajorTickWidth;
                 targetAxis.MajorTickStyle.Color = ScottPlot.Color.FromHex(
-                    GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(cartesianAxisDef.MajorTickWidthColor));
+                    GraphMapTemplateService.ConvertWpfHexToScottPlotHex(cartesianAxisDef.MajorTickWidthColor));
                 targetAxis.MajorTickStyle.AntiAlias = cartesianAxisDef.MajorTickAntiAlias;
 
                 // 次刻度样式
                 targetAxis.MinorTickStyle.Length = cartesianAxisDef.MinorTickLength;
                 targetAxis.MinorTickStyle.Width = cartesianAxisDef.MinorTickWidth;
                 targetAxis.MinorTickStyle.Color = ScottPlot.Color.FromHex(
-                    GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(cartesianAxisDef.MinorTickColor));
+                    GraphMapTemplateService.ConvertWpfHexToScottPlotHex(cartesianAxisDef.MinorTickColor));
                 targetAxis.MinorTickStyle.AntiAlias = cartesianAxisDef.MinorTickAntiAlias;
 
                 // 刻度标签样式
                 targetAxis.TickLabelStyle.FontName = cartesianAxisDef.TickLableFamily;
                 targetAxis.TickLabelStyle.FontSize = cartesianAxisDef.TickLablesize;
                 targetAxis.TickLabelStyle.ForeColor = ScottPlot.Color.FromHex(
-                    GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(cartesianAxisDef.TickLablecolor));
+                    GraphMapTemplateService.ConvertWpfHexToScottPlotHex(cartesianAxisDef.TickLablecolor));
                 targetAxis.TickLabelStyle.Bold = cartesianAxisDef.TickLableisBold;
                 targetAxis.TickLabelStyle.Italic = cartesianAxisDef.TickLableisItalic;
+
+                // 子标题样式
+                if (targetAxis is LeftAxisWithSubtitle leftSub)
+                {
+                    ConfigureSubtitle(leftSub.SubLabelStyle, cartesianAxisDef);
+                    leftSub.SubLabelText = cartesianAxisDef.SubLabel.Get();
+                }
+                else if (targetAxis is RightAxisWithSubtitle rightSub)
+                {
+                    ConfigureSubtitle(rightSub.SubLabelStyle, cartesianAxisDef);
+                    rightSub.SubLabelText = cartesianAxisDef.SubLabel.Get();
+                }
+                else if (targetAxis is BottomAxisWithSubtitle bottomSub)
+                {
+                    ConfigureSubtitle(bottomSub.SubLabelStyle, cartesianAxisDef);
+                    bottomSub.SubLabelText = cartesianAxisDef.SubLabel.Get();
+                }
+                else if (targetAxis is TopAxisWithSubtitle topSub)
+                {
+                    ConfigureSubtitle(topSub.SubLabelStyle, cartesianAxisDef);
+                    topSub.SubLabelText = cartesianAxisDef.SubLabel.Get();
+                }
             }
 
             // 2. 处理三元坐标轴 (Ternary)
@@ -137,7 +191,7 @@ namespace GeoChemistryNexus.ViewModels
                     targetEdge.LabelStyle.FontName = Fonts.Detect(targetEdge.LabelText);
                     targetEdge.LabelStyle.FontSize = ternaryAxisDef.Size;
                     targetEdge.LabelStyle.ForeColor = ScottPlot.Color.FromHex(
-                        GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(ternaryAxisDef.Color));
+                        GraphMapTemplateService.ConvertWpfHexToScottPlotHex(ternaryAxisDef.Color));
                     targetEdge.LabelStyle.Bold = ternaryAxisDef.IsBold;
                     targetEdge.LabelStyle.Italic = ternaryAxisDef.IsItalic;
                     targetEdge.LabelStyle.OffsetX = (float)ternaryAxisDef.LabelOffsetX;
@@ -146,13 +200,13 @@ namespace GeoChemistryNexus.ViewModels
                     // 刻度样式
                     targetEdge.TickMarkStyle.Width = ternaryAxisDef.MajorTickWidth;
                     targetEdge.TickMarkStyle.Color = ScottPlot.Color.FromHex(
-                        GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(ternaryAxisDef.MajorTickWidthColor));
+                        GraphMapTemplateService.ConvertWpfHexToScottPlotHex(ternaryAxisDef.MajorTickWidthColor));
 
                     // 刻度标签样式
                     targetEdge.TickLabelStyle.FontName = ternaryAxisDef.TickLableFamily;
                     targetEdge.TickLabelStyle.FontSize = ternaryAxisDef.TickLablesize;
                     targetEdge.TickLabelStyle.ForeColor = ScottPlot.Color.FromHex(
-                        GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(ternaryAxisDef.TickLablecolor));
+                        GraphMapTemplateService.ConvertWpfHexToScottPlotHex(ternaryAxisDef.TickLablecolor));
                     targetEdge.TickLabelStyle.Bold = ternaryAxisDef.TickLableisBold;
                     targetEdge.TickLabelStyle.Italic = ternaryAxisDef.TickLableisItalic;
 
@@ -180,9 +234,6 @@ namespace GeoChemistryNexus.ViewModels
             // 如果最大值最小值都是 NaN，则自动缩放
             if (double.IsNaN(axisDef.Minimum) && double.IsNaN(axisDef.Maximum))
             {
-                // 注意：这里可能需要在全部渲染完成后再调用 AutoScale，
-                // 但单独设置 Axis Range 为 Auto 也是一种方式，ScottPlot 默认就是 Auto
-                // 这里我们只处理设定了具体数值的情况
                 return;
             }
 
@@ -203,5 +254,14 @@ namespace GeoChemistryNexus.ViewModels
         public void Highlight() { /* 坐标轴不参与高亮 */ }
         public void Dim() { /* 坐标轴不参与遮罩 */ }
         public void Restore() { }
+
+        private void ConfigureSubtitle(ScottPlot.LabelStyle style, CartesianAxisDefinition def)
+        {
+            style.FontName = Fonts.Detect(def.SubLabel.Get());
+            style.FontSize = def.SubLabelSize;
+            style.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateService.ConvertWpfHexToScottPlotHex(def.SubLabelColor));
+            style.Bold = def.SubLabelBold;
+            style.Italic = def.SubLabelItalic;
+        }
     }
 }

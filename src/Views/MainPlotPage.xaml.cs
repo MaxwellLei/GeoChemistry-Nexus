@@ -24,6 +24,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using System.Windows.Media.Animation;
+using GeoChemistryNexus.Services;
 
 namespace GeoChemistryNexus.Views
 {
@@ -46,6 +47,10 @@ namespace GeoChemistryNexus.Views
 
             viewModel.PropertyChanged += ViewModel_PropertyChanged;
 
+            // 页面加载时检查更新
+            this.Loaded += (s, e) => viewModel.CheckUpdatesIfNeeded();
+
+            /*
             var dpd = System.ComponentModel.DependencyPropertyDescriptor.FromProperty(CustomColorPicker.SelectedColorProperty, typeof(CustomColorPicker));
             dpd.AddValueChanged(RichTextColorPicker, (s, e) =>
             {
@@ -63,13 +68,83 @@ namespace GeoChemistryNexus.Views
                     Drichtextbox.Selection.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(color));
                 }
             });
+            */
+        }
+
+        private void OnSwitchRadioButtonChecked(object sender, RoutedEventArgs e)
+        {
+            UpdateSwitchSlider();
+        }
+
+        private void OnSwitchRadioButtonLoaded(object sender, RoutedEventArgs e)
+        {
+            // Use Dispatcher to ensure layout is ready
+            Dispatcher.BeginInvoke(new Action(() => UpdateSwitchSlider()), System.Windows.Threading.DispatcherPriority.ContextIdle);
+        }
+
+        private void OnSwitchContainerIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue is bool isVisible && isVisible)
+            {
+                Dispatcher.BeginInvoke(new Action(() => UpdateSwitchSlider()), System.Windows.Threading.DispatcherPriority.ContextIdle);
+            }
+        }
+
+        private void UpdateSwitchSlider()
+        {
+            if (SwitchContainer == null || SwitchSlider == null) return;
+
+            RadioButton checkedButton = null;
+            foreach (var child in SwitchContainer.Children)
+            {
+                if (child is RadioButton rb && rb.IsChecked == true)
+                {
+                    checkedButton = rb;
+                    break;
+                }
+            }
+
+            if (checkedButton != null)
+            {
+                try
+                {
+                    // Calculate position relative to the container
+                    var transform = checkedButton.TransformToAncestor(SwitchContainer);
+                    var point = transform.Transform(new Point(0, 0));
+
+                    var targetMargin = new Thickness(point.X, 0, 0, 0);
+                    var targetWidth = checkedButton.ActualWidth;
+                    
+                    if (targetWidth <= 0) return;
+
+                    // Animate Margin
+                    var marginAnim = new ThicknessAnimation(targetMargin, TimeSpan.FromMilliseconds(250));
+                    marginAnim.EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut };
+                    SwitchSlider.BeginAnimation(Border.MarginProperty, marginAnim);
+
+                    // Animate Width
+                    var widthAnim = new DoubleAnimation(targetWidth, TimeSpan.FromMilliseconds(250));
+                    widthAnim.EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut };
+                    SwitchSlider.BeginAnimation(Border.WidthProperty, widthAnim);
+                }
+                catch (Exception)
+                {
+                    // Ignore visual tree issues
+                }
+            }
         }
 
         // 记录切换前的宽度状态，用于恢复
-        private GridLength _lastOuterRightWidth = new GridLength(300);
-        private GridLength _lastInnerLeftWidth = new GridLength(0.3, GridUnitType.Star);
+        private GridLength _lastOuterRightWidth = new GridLength(320);
+        private GridLength _lastInnerLeftWidth = new GridLength(280);
+        
+        // 标记当前是否处于折叠模式（数据表格模式）
+        private bool _isCollapsedMode = false;
 
-        private async void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        // 标记当前是否处于稳定展开状态（非动画中且未折叠）
+        private bool _isStableExpanded = true;
+
+        private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(MainPlotViewModel.RibbonTabIndex))
             {
@@ -77,45 +152,143 @@ namespace GeoChemistryNexus.Views
                 {
                     // 切换到数据表格模式
                     
-                    // 1. 保存当前状态 (如果当前有宽度)
-                    if (OuterRightCol.Width.Value > 0)
+                    // 使用 Dispatcher 确保布局计算准确
+                    Dispatcher.BeginInvoke(new Action(() => 
                     {
-                        _lastOuterRightWidth = OuterRightCol.Width;
-                    }
-                    if (InnerLeftCol.Width.Value > 0)
-                    {
-                        _lastInnerLeftWidth = InnerLeftCol.Width;
-                    }
+                        // 1. 仅在稳定展开状态下保存当前状态，避免在动画过程中保存中间值导致状态损坏
+                        if (_isStableExpanded)
+                        {
+                            if (OuterRightCol.Width.GridUnitType == GridUnitType.Pixel)
+                            {
+                                _lastOuterRightWidth = OuterRightCol.Width;
+                            }
+                            if (InnerLeftCol.Width.GridUnitType == GridUnitType.Pixel)
+                            {
+                                _lastInnerLeftWidth = InnerLeftCol.Width;
+                            }
+                        }
 
-                    // 2. 准备动画目标
-                    // 保持单位类型一致以确保动画平滑 (Star -> 0*, Pixel -> 0px)
-                    var targetRight = OuterRightCol.Width.IsStar 
-                        ? new GridLength(0, GridUnitType.Star) 
-                        : new GridLength(0);
-                    
-                    // 左侧目标设为较大的比例 (0.923*)
-                    // 如果当前是 Pixel，这里可能会有跳变，但通常左侧较少被手动调整为 Pixel
-                    var targetLeft = new GridLength(0.923077, GridUnitType.Star);
+                        // 标记不再稳定展开
+                        _isStableExpanded = false;
 
-                    // 3. 解除最小宽度限制以便折叠
-                    OuterRightCol.MinWidth = 0;
+                        // 2. 解除限制以便动画
+                        OuterRightCol.MinWidth = 0;
+                        InnerLeftCol.MaxWidth = double.PositiveInfinity;
 
-                    // 4. 执行动画
-                    AnimateColumn(OuterRightCol, targetRight);
-                    AnimateColumn(InnerLeftCol, targetLeft);
+                        // 3. 计算目标像素宽度 (4.8 / 10 的比例)
+                        double gridWidth = MainLayoutGrid.ActualWidth;
+
+                        // 检查 Grid 是否已加载且有宽度
+                        if (gridWidth <= 0)
+                        {
+                             if (PlotColumn != null) PlotColumn.Width = new GridLength(1, GridUnitType.Star);
+                             InnerLeftCol.Width = new GridLength(0.923077, GridUnitType.Star);
+                             OuterRightCol.Width = new GridLength(0);
+                             _isCollapsedMode = true;
+                             return;
+                        }
+
+                        double splitterWidth = 8; // 两个Splitter各4px
+                        double availableWidth = Math.Max(0, gridWidth - splitterWidth);
+                        double targetLeftPx = availableWidth * 0.48;
+
+                        // 4. 创建像素到像素的动画
+                        // 左侧：当前像素 -> 目标像素
+                        var animLeft = new GridLengthAnimation
+                        {
+                            From = new GridLength(InnerLeftCol.ActualWidth, GridUnitType.Pixel),
+                            To = new GridLength(targetLeftPx, GridUnitType.Pixel),
+                            Duration = TimeSpan.FromSeconds(0.5),
+                            EasingFunction = new CubicEase { EasingMode = EasingMode.EaseInOut }
+                        };
+
+                        // 右侧：当前像素 -> 0像素
+                        var animRight = new GridLengthAnimation
+                        {
+                            From = new GridLength(OuterRightCol.ActualWidth, GridUnitType.Pixel),
+                            To = new GridLength(0, GridUnitType.Pixel),
+                            Duration = TimeSpan.FromSeconds(0.5),
+                            EasingFunction = new CubicEase { EasingMode = EasingMode.EaseInOut }
+                        };
+
+                        // 5. 动画完成后切换到 Star 单位以保持响应式布局
+                        animLeft.Completed += (s, _) =>
+                        {
+                            // 清除动画绑定，使本地值生效
+                            InnerLeftCol.BeginAnimation(ColumnDefinition.WidthProperty, null);
+                            
+                            // 修复：重置中间列宽度为 1*，确保比例正确
+                            if (PlotColumn != null)
+                            {
+                                PlotColumn.Width = new GridLength(1, GridUnitType.Star);
+                            }
+
+                            // 设置为 Star 单位 (4.8/5.2 = 0.923077)
+                            InnerLeftCol.Width = new GridLength(0.923077, GridUnitType.Star);
+                        };
+
+                        animRight.Completed += (s, _) =>
+                        {
+                            OuterRightCol.BeginAnimation(ColumnDefinition.WidthProperty, null);
+                            OuterRightCol.Width = new GridLength(0);
+                        };
+
+                        // 6. 开始动画
+                        InnerLeftCol.BeginAnimation(ColumnDefinition.WidthProperty, animLeft);
+                        OuterRightCol.BeginAnimation(ColumnDefinition.WidthProperty, animRight);
+                        
+                        _isCollapsedMode = true;
+                    }));
                 }
                 else
                 {
-                    // 切换回绘图模式
-                    
-                    // 1. 恢复宽度
-                    AnimateColumn(OuterRightCol, _lastOuterRightWidth);
-                    AnimateColumn(InnerLeftCol, _lastInnerLeftWidth);
+                    // 切换回绘图模式或其他模式
+                    if (_isCollapsedMode)
+                    {
+                        // 1. 创建像素到像素的动画 (从当前状态恢复到之前的固定宽度)
+                        
+                        // 左侧：当前实际像素 -> 之前的固定像素
+                        var animLeft = new GridLengthAnimation
+                        {
+                            From = new GridLength(InnerLeftCol.ActualWidth, GridUnitType.Pixel),
+                            To = _lastInnerLeftWidth,
+                            Duration = TimeSpan.FromSeconds(0.5),
+                            EasingFunction = new CubicEase { EasingMode = EasingMode.EaseInOut }
+                        };
 
-                    // 2. 等待动画完成后恢复最小宽度限制
-                    // 动画时长为 0.5s，这里等待 0.5s
-                    await Task.Delay(500);
-                    OuterRightCol.MinWidth = 280;
+                        // 右侧：当前实际像素(0) -> 之前的固定像素
+                        var animRight = new GridLengthAnimation
+                        {
+                            From = new GridLength(OuterRightCol.ActualWidth, GridUnitType.Pixel),
+                            To = _lastOuterRightWidth,
+                            Duration = TimeSpan.FromSeconds(0.5),
+                            EasingFunction = new CubicEase { EasingMode = EasingMode.EaseInOut }
+                        };
+
+                        // 2. 动画完成后恢复约束
+                        animLeft.Completed += (s, _) =>
+                        {
+                            InnerLeftCol.BeginAnimation(ColumnDefinition.WidthProperty, null);
+                            InnerLeftCol.Width = _lastInnerLeftWidth;
+                            InnerLeftCol.MaxWidth = 500;
+                        };
+
+                        animRight.Completed += (s, _) =>
+                        {
+                            OuterRightCol.BeginAnimation(ColumnDefinition.WidthProperty, null);
+                            OuterRightCol.Width = _lastOuterRightWidth;
+                            OuterRightCol.MinWidth = 250;
+                            
+                            // 标记为稳定展开
+                            _isStableExpanded = true;
+                        };
+
+                        // 3. 开始动画
+                        InnerLeftCol.BeginAnimation(ColumnDefinition.WidthProperty, animLeft);
+                        OuterRightCol.BeginAnimation(ColumnDefinition.WidthProperty, animRight);
+                        
+                        _isCollapsedMode = false;
+                    }
                 }
             }
         }
@@ -140,8 +313,9 @@ namespace GeoChemistryNexus.Views
                 homePage = new MainPlotPage();
                 //homePage.lg = ConfigHelper.GetConfig("language");
             }
-            homePage.viewModel.InitTemplate();
-            homePage.viewModel.LoadSettings();
+            // 这里不需要等待，让其在后台初始化
+            //_ = homePage.viewModel.InitializeAsync();
+            //homePage.viewModel.LoadSettings();
             return homePage;
         }
 
@@ -340,8 +514,84 @@ namespace GeoChemistryNexus.Views
                 SuperscriptButton.IsChecked = (alignment != DependencyProperty.UnsetValue) && ((BaselineAlignment)alignment == BaselineAlignment.Superscript);
             if (SubscriptButton != null)
                 SubscriptButton.IsChecked = (alignment != DependencyProperty.UnsetValue) && ((BaselineAlignment)alignment == BaselineAlignment.Subscript);
+            
+            // Font Size
+            var size = Drichtextbox.Selection.GetPropertyValue(TextElement.FontSizeProperty);
+            if (FontSizeComboBox != null)
+            {
+                if (size != DependencyProperty.UnsetValue && size is double dSize)
+                {
+                    FontSizeComboBox.Text = dSize.ToString("0.#");
+                }
+                else
+                {
+                    FontSizeComboBox.Text = "";
+                }
+            }
         }
 
         #endregion
+
+        private Window _popOutWindow = null;
+
+        private void OnPopOutPlotClick(object sender, RoutedEventArgs e)
+        {
+            // 如果窗口已经存在，则激活它
+            if (_popOutWindow != null)
+            {
+                _popOutWindow.Activate();
+                return;
+            }
+
+            // 1. 从当前父容器移除 WpfPlot1
+            if (PlotContainer.Children.Contains(WpfPlot1))
+            {
+                PlotContainer.Children.Remove(WpfPlot1);
+            }
+
+            // 2. 创建新窗口
+            _popOutWindow = new Window
+            {
+                Title = LanguageService.Instance["independent_diagram_window"],     // 独立图解窗口
+                Width = 800,
+                Height = 600,
+                WindowStartupLocation = WindowStartupLocation.CenterScreen
+            };
+
+            // 尝试设置 Owner
+            var mainWindow = Application.Current.MainWindow;
+            if (mainWindow != null && mainWindow.IsVisible)
+            {
+                _popOutWindow.Owner = mainWindow;
+            }
+
+            // 3. 将 WpfPlot1 放入新窗口
+            // 为了保持样式，最好包一层 Grid
+            var grid = new Grid();
+            grid.Children.Add(WpfPlot1);
+            _popOutWindow.Content = grid;
+
+            // 4. 处理关闭事件
+            _popOutWindow.Closed += (s, args) =>
+            {
+                // 移除 Content 防止引用
+                if (_popOutWindow.Content is Grid g)
+                {
+                    g.Children.Remove(WpfPlot1);
+                }
+                _popOutWindow.Content = null;
+
+                // 恢复到主界面
+                if (!PlotContainer.Children.Contains(WpfPlot1))
+                {
+                    PlotContainer.Children.Insert(0, WpfPlot1);
+                    Grid.SetRow(WpfPlot1, 0);
+                }
+
+                _popOutWindow = null;
+            };
+
+            _popOutWindow.Show();
+        }
     }
 }

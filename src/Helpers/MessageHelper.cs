@@ -1,10 +1,6 @@
-﻿using HandyControl.Controls;
-using HandyControl.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using GeoChemistryNexus.Services;
+using GeoChemistryNexus.ViewModels;
 
 namespace GeoChemistryNexus.Helpers
 {
@@ -16,56 +12,30 @@ namespace GeoChemistryNexus.Helpers
         //普通消息通知
         public static void Info(string message)
         {
-            GrowlInfo growlInfo = new GrowlInfo();
-            growlInfo.WaitTime = waitTime;
-            growlInfo.Message = message;
-            Growl.Info(growlInfo);
+            NotificationManager.Instance.Show("Info", message, NotificationType.Info, waitTime);
         }
 
         //成功消息通知
         public static void Success(string message)
         {
-            GrowlInfo growlInfo = new GrowlInfo();
-            growlInfo.WaitTime = waitTime;
-            growlInfo.Message = message;
-            Growl.Success(growlInfo);
+            NotificationManager.Instance.Show("Success", message, NotificationType.Success, waitTime);
         }
 
         //警告消息通知
         public static void Warning(string message)
         {
-            GrowlInfo growlInfo = new GrowlInfo();
-            growlInfo.WaitTime = waitTime;
-            growlInfo.Message = message;
-            Growl.Warning(growlInfo);
+            NotificationManager.Instance.Show("Warning", message, NotificationType.Warning, waitTime);
         }
 
         //错误消息通知
         public static void Error(string message)
         {
-            GrowlInfo growlInfo = new GrowlInfo();
-            growlInfo.WaitTime = waitTime;
-            growlInfo.Message = message;
-            Growl.Error(growlInfo);
+            NotificationManager.Instance.Show("Error", message, NotificationType.Error, waitTime);
         }
 
         public static Task<bool> ShowAsyncDialog(string message, string cancelText, string confirmText)
         {
-            var tcs = new TaskCompletionSource<bool>();
-
-            Growl.Ask(new GrowlInfo
-            {
-                Message = message,
-                CancelStr = cancelText,
-                ConfirmStr = confirmText,
-                ActionBeforeClose = isConfirmed =>
-                {
-                    tcs.SetResult(isConfirmed);
-                    return true;
-                }
-            });
-
-            return tcs.Task;
+            return NotificationManager.Instance.ShowDialogAsync("Confirm", message, confirmText, cancelText);
         }
     }
 }

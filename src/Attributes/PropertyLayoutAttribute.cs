@@ -4,8 +4,8 @@ namespace GeoChemistryNexus.Attributes
 {
     public enum PropertyLayout
     {
-        Horizontal, // Default: Label left, Editor right
-        Vertical    // Label top, Editor bottom (full width)
+        Horizontal, // 默认：标签在左，编辑器在右
+        Vertical    // 标签在上，编辑器在下（占满整宽）
     }
 
     [AttributeUsage(AttributeTargets.Property)]

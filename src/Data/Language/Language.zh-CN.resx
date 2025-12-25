@@ -129,24 +129,16 @@
     <value>退出程序</value>
     <comment>托盘菜单右键</comment>
   </data>
-  <data name="SmashIt" xml:space="preserve">
-    <value>🔨砸一下？</value>
-    <comment>彩蛋</comment>
-  </data>
-  <data name="SmashItC" xml:space="preserve">
-    <value>里面会有什么呢？也许你可以尝试砸一下</value>
-    <comment>彩蛋</comment>
-  </data>
   <data name="home" xml:space="preserve">
     <value>主页</value>
     <comment>主窗体侧边栏</comment>
   </data>
   <data name="Plot" xml:space="preserve">
-    <value>绘图</value>
+    <value>图解绘图</value>
     <comment>主窗体侧边栏</comment>
   </data>
   <data name="Geothermometer" xml:space="preserve">
-    <value>温度计</value>
+    <value>地质温度计</value>
     <comment>主窗体侧边栏</comment>
   </data>
   <data name="Setting" xml:space="preserve">
@@ -599,32 +591,8 @@
   <data name="CalTarget2" xml:space="preserve">
     <value>Zr 主量温度  (Watson and Harrison, 1983)</value>
   </data>
-  <data name="AtomicMassStd" xml:space="preserve">
-    <value>原子量标准</value>
-  </data>
   <data name="Pressure" xml:space="preserve">
     <value>压力(Mpa)</value>
-  </data>
-  <data name="ActivityTiO2" xml:space="preserve">
-    <value>活度(TiO2)</value>
-  </data>
-  <data name="ActivitySiO2" xml:space="preserve">
-    <value>活度(SiO2)</value>
-  </data>
-  <data name="fS" xml:space="preserve">
-    <value>硫逸度</value>
-  </data>
-  <data name="fSInfo" xml:space="preserve">
-    <value>硫逸度自动计算方法</value>
-  </data>
-  <data name="DefaultImport" xml:space="preserve">
-    <value>默认导入</value>
-  </data>
-  <data name="ShowError" xml:space="preserve">
-    <value>误差范围显示</value>
-  </data>
-  <data name="MineralAssemblage" xml:space="preserve">
-    <value>矿物组合</value>
   </data>
   <data name="AmphiboleGTM" xml:space="preserve">
     <value>Si 温度计 (Ridolfi et al., 2010)</value>
@@ -701,9 +669,6 @@
   <data name="ChineseS" xml:space="preserve">
     <value>中文(简体)</value>
   </data>
-  <data name="StartBackgroundImages" xml:space="preserve">
-    <value>启动背景图</value>
-  </data>
   <data name="DefaultRandom" xml:space="preserve">
     <value>默认随机</value>
   </data>
@@ -753,7 +718,9 @@
     <value>如果您对本项目感兴趣，欢迎点个 Star 支持一下！如果您觉得对您有帮助，也可以请我喝杯咖啡☕</value>
   </data>
   <data name="AboutInfo3" xml:space="preserve">
-    <value>我们欢迎更多的研究人员加入！一起维护和更新地球化学计算的方法，还有更多的绘图底图模板！让软件变得更强大，更好用！</value>
+    <value>我们欢迎更多的研究人员加入！
+	一起维护和更新地球化学计算的方法，还有更多的绘图底图模板！
+	让软件变得更强大，更好用！</value>
   </data>
   <data name="ThankSupport" xml:space="preserve">
     <value>感谢支持</value>
@@ -791,14 +758,14 @@
   <data name="import_template" xml:space="preserve">
     <value>导入绘图模板</value>
   </data>
-  <data name="new_template" xml:space="preserve">
-    <value>新建绘图模板</value>
+  <data name="create_new_diagram_template" xml:space="preserve">
+    <value>新建图解模板</value>
   </data>
   <data name="template_library" xml:space="preserve">
     <value>模板库</value>
   </data>
   <data name="return_to_template_library" xml:space="preserve">
-    <value>返回模板库</value>
+    <value>返回</value>
   </data>
   <data name="Data" xml:space="preserve">
     <value>数据</value>
@@ -1246,8 +1213,8 @@
   <data name="minor_grid_Line" xml:space="preserve">
     <value>次网格线</value>
   </data>
-  <data name="open_template" xml:space="preserve">
-    <value>打开绘图模板</value>
+  <data name="open_diagram_template" xml:space="preserve">
+    <value>打开图解模板</value>
   </data>
   <data name="new_version_available_github" xml:space="preserve">
     <value>发现新版本！请前往GitHub Release页面下载更新。</value>
@@ -1414,7 +1381,7 @@
     <comment>绘图-工具栏-提示</comment>
   </data>
   <data name="use_help" xml:space="preserve">
-    <value>使用帮助</value>
+    <value>图解指南</value>
     <comment>绘图-工具栏-提示</comment>
   </data>
   <data name="no_data_please_add_data" xml:space="preserve">
@@ -1545,8 +1512,8 @@
     <value>无法删除基础图层.</value>
     <comment>绘图-编辑-删除提示</comment>
   </data>
-  <data name="template" xml:space="preserve">
-    <value>_模板(T)</value>
+  <data name="update" xml:space="preserve">
+    <value>_更新(T)</value>
     <comment>绘图-菜单栏</comment>
   </data>
   <data name="check_for_template_updates" xml:space="preserve">
@@ -1749,5 +1716,358 @@
   <data name="interval" xml:space="preserve">
     <value>刻度步长</value>
     <comment>绘图-属性-二维坐标轴</comment>
+  </data>
+  <data name="pick_coordinate" xml:space="preserve">
+    <value>拾取坐标</value>
+    <comment>绘图-属性-多边形</comment>
+  </data>
+  <data name="remove_point" xml:space="preserve">
+    <value>删除此顶点</value>
+    <comment>绘图-属性-多边形</comment>
+  </data>
+  <data name="vertex_add_new" xml:space="preserve">
+    <value>添加新顶点</value>
+    <comment>绘图-属性-多边形</comment>
+  </data>
+  <data name="subtitle" xml:space="preserve">
+    <value>子标题</value>
+  </data>
+  <data name="subtitle_font_size" xml:space="preserve">
+    <value>子标题字号</value>
+  </data>
+  <data name="subtitle_color" xml:space="preserve">
+    <value>子标题颜色</value>
+  </data>
+  <data name="subtitle_bold" xml:space="preserve">
+    <value>子标题粗体</value>
+  </data>
+  <data name="subtitle_italic" xml:space="preserve">
+    <value>子标题斜体</value>
+  </data>
+  <data name="edit_link" xml:space="preserve">
+    <value>编辑链接</value>
+  </data>
+  <data name="template_translator" xml:space="preserve">
+    <value>图解模板翻译器</value>
+  </data>
+  <data name="diagram_template_repair_tool" xml:space="preserve">
+    <value>图解模板修复工具</value>
+    <comment>主页-小组件-模板修复工具</comment>
+  </data>
+  <data name="server_announcement" xml:space="preserve">
+    <value>服务器公告</value>
+  </data>
+  <data name="developer_maintenance_tool" xml:space="preserve">
+    <value>开发者维护工具</value>
+  </data>
+  <data name="copy_content" xml:space="preserve">
+    <value>复制内容</value>
+    <comment>窗体-通知系统</comment>
+  </data>
+  <data name="modified_successfully" xml:space="preserve">
+    <value>已修改</value>
+    <comment>绘图-脚本-属性面板</comment>
+  </data>
+  <data name="error_loading_rtf_file" xml:space="preserve">
+    <value>加载RTF文件时出错:</value>
+    <comment>绘图-通知-rtfhelper</comment>
+  </data>
+  <data name="file_path_cannot_be_empty" xml:space="preserve">
+    <value>文件路径不能为空</value>
+    <comment>绘图-通知-rtfhelper</comment>
+  </data>
+  <data name="richtextbox_control_cannot_be_null" xml:space="preserve">
+    <value>RichTextBox控件不能为null</value>
+    <comment>绘图-通知-rtfhelper</comment>
+  </data>
+  <data name="file_does_not_exist" xml:space="preserve">
+    <value>文件不存在:</value>
+    <comment>绘图-通知-rtfhelper</comment>
+  </data>
+  <data name="error_saving_rtf_file" xml:space="preserve">
+    <value>保存RTF文件时出错:</value>
+    <comment>绘图-通知-rtfhelper</comment>
+  </data>
+  <data name="unable_to_get_latest_release_info" xml:space="preserve">
+    <value>无法获取最新发布版本信息</value>
+    <comment>设置-通知-更新</comment>
+  </data>
+  <data name="invalid_formula" xml:space="preserve">
+    <value>公式不合法</value>
+    <comment>设置-属性-函数</comment>
+  </data>
+  <data name="loading_announcements" xml:space="preserve">
+    <value>正在加载公告...</value>
+    <comment>主页-小组件-公告</comment>
+  </data>
+  <data name="no_announcements" xml:space="preserve">
+    <value>暂无公告。</value>
+    <comment>主页-小组件-公告</comment>
+  </data>
+  <data name="unable_to_get_announcements" xml:space="preserve">
+    <value>无法获取公告信息。</value>
+    <comment>主页-小组件-公告</comment>
+  </data>
+  <data name="failed_to_get_announcements" xml:space="preserve">
+    <value>获取公告失败:</value>
+    <comment>主页-小组件-公告</comment>
+  </data>
+  <data name="error_loading_template_list" xml:space="preserve">
+    <value>加载模板列表出错:</value>
+  </data>
+  <data name="unable_to_open_link" xml:space="preserve">
+    <value>无法打开链接:</value>
+    <comment>设置-about</comment>
+  </data>
+  <data name="add_link" xml:space="preserve">
+    <value>添加链接</value>
+    <comment>主页-添加链接</comment>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>名称</value>
+    <comment>主页-添加链接</comment>
+  </data>
+  <data name="link_url" xml:space="preserve">
+    <value>链接 (URL)</value>
+    <comment>主页-添加链接</comment>
+  </data>
+  <data name="description" xml:space="preserve">
+    <value>描述</value>
+    <comment>主页-添加链接</comment>
+  </data>
+  <data name="icon" xml:space="preserve">
+    <value>图标</value>
+    <comment>主页-添加链接</comment>
+  </data>
+  <data name="please_enter_name" xml:space="preserve">
+    <value>请输入名称</value>
+    <comment>主页-添加链接</comment>
+  </data>
+  <data name="please_enter_link" xml:space="preserve">
+    <value>请输入链接</value>
+    <comment>主页-添加链接</comment>
+  </data>
+  <data name="add_widget" xml:space="preserve">
+    <value>添加小组件</value>
+    <comment>主页-添加小组件</comment>
+  </data>
+  <data name="please_select_widget_to_add" xml:space="preserve">
+    <value>请选择要添加的组件：</value>
+    <comment>主页-添加小组件</comment>
+  </data>
+  <data name="please_select_a_widget" xml:space="preserve">
+    <value>请选择一个组件</value>
+    <comment>主页-添加小组件</comment>
+  </data>
+  <data name="server_announcements" xml:space="preserve">
+    <value>服务器公告</value>
+    <comment>主页-小组件-公告</comment>
+  </data>
+  <data name="refresh" xml:space="preserve">
+    <value>刷新</value>
+    <comment>主页-小组件-公告</comment>
+  </data>
+  <data name="developer_maintenance_tools" xml:space="preserve">
+    <value>开发者维护工具</value>
+    <comment>主页-小组件-开发者工具</comment>
+  </data>
+  <data name="drawing_template_repair_tool" xml:space="preserve">
+    <value>图解模板修复工具</value>
+    <comment>主页-小组件-模板修复工具</comment>
+  </data>
+  <data name="start_check_and_repair" xml:space="preserve">
+    <value>开始检查与修复</value>
+    <comment>主页-小组件-模板修复工具</comment>
+  </data>
+  <data name="close_file" xml:space="preserve">
+    <value>关闭文件</value>
+    <comment>主页-小组件-翻译组件</comment>
+  </data>
+  <data name="open_import" xml:space="preserve">
+    <value>打开导入</value>
+    <comment>主页-小组件-翻译组件</comment>
+  </data>
+  <data name="add_language_column" xml:space="preserve">
+    <value>添加语言列</value>
+    <comment>主页-小组件-翻译组件</comment>
+  </data>
+  <data name="swap_language_columns" xml:space="preserve">
+    <value>交换语言列</value>
+    <comment>主页-小组件-翻译组件</comment>
+  </data>
+  <data name="delete_language_column" xml:space="preserve">
+    <value>删除语言列</value>
+    <comment>主页-小组件-翻译组件</comment>
+  </data>
+  <data name="click_or_drag_template_json_here" xml:space="preserve">
+    <value>点击或拖拽模板文件(JSON)到此处</value>
+    <comment>主页-小组件-翻译组件</comment>
+  </data>
+  <data name="support_json_format" xml:space="preserve">
+    <value>支持 .json 格式</value>
+    <comment>主页-小组件-翻译组件</comment>
+  </data>
+  <data name="save_changes" xml:space="preserve">
+    <value>保存更改</value>
+    <comment>主页-小组件-翻译组件</comment>
+  </data>
+  <data name="select_drawing_template_file" xml:space="preserve">
+    <value>选择绘图模板文件</value>
+  </data>
+  <data name="edit_menu_bar_item" xml:space="preserve">
+    <value>编辑菜单栏项</value>
+    <comment>主页-右键菜单</comment>
+  </data>
+  <data name="import_custom_diagram_template" xml:space="preserve">
+    <value>导入自定义图解模板</value>
+  </data>
+  <data name="open_file_location" xml:space="preserve">
+    <value>打开文件位置</value>
+    <comment>绘图-卡片-右键菜单</comment>
+  </data>
+  <data name="export_diagram_template" xml:space="preserve">
+    <value>导出图解模板</value>
+  </data>
+  <data name="downloading_ellipsis" xml:space="preserve">
+    <value>正在下载...</value>
+    <comment>绘图-卡片-更新</comment>
+  </data>
+  <data name="initializing_language_service_ellipsis" xml:space="preserve">
+    <value>正在初始化语言服务...</value>
+    <comment>启动窗体</comment>
+  </data>
+  <data name="loading_font_resources_ellipsis" xml:space="preserve">
+    <value>正在加载字体资源...</value>
+  </data>
+  <data name="reading_user_configuration_ellipsis" xml:space="preserve">
+    <value>正在读取用户配置...</value>
+  </data>
+  <data name="loading_drawing_module_ellipsis" xml:space="preserve">
+    <value>正在加载绘图模块...</value>
+  </data>
+  <data name="loading_main_interface_components_ellipsis" xml:space="preserve">
+    <value>正在加载主界面组件...</value>
+  </data>
+  <data name="entering_soon_ellipsis" xml:space="preserve">
+    <value>即将进入...</value>
+  </data>
+  <data name="completed" xml:space="preserve">
+    <value>完成</value>
+  </data>
+  <data name="error_occurred_during_startup" xml:space="preserve">
+    <value>启动过程中发生错误:</value>
+  </data>
+  <data name="language_apperarance" xml:space="preserve">
+    <value>语言与外观</value>
+  </data>
+  <data name="startup_background_image" xml:space="preserve">
+    <value>启动背景图片</value>
+  </data>
+  <data name="add_image" xml:space="preserve">
+    <value>添加图片</value>
+  </data>
+  <data name="external_applications" xml:space="preserve">
+    <value>外部应用程序</value>
+  </data>
+  <data name="custom_app" xml:space="preserve">
+    <value>自定义应用</value>
+  </data>
+  <data name="plot_defaults" xml:space="preserve">
+    <value>绘图默认设置</value>
+  </data>
+  <data name="default_diagram_expand_level" xml:space="preserve">
+    <value>默认图解展开层级</value>
+  </data>
+  <data name="default_third_party_editor" xml:space="preserve">
+    <value>默认第三方编辑程序</value>
+  </data>
+  <data name="automatic_updates" xml:space="preserve">
+    <value>自动更新</value>
+  </data>
+  <data name="auto_check_diagram_template_updates" xml:space="preserve">
+    <value>自动检查图解模板更新</value>
+  </data>
+  <data name="community" xml:space="preserve">
+    <value>社区</value>
+  </data>
+  <data name="export_and_tools" xml:space="preserve">
+    <value>导出/工具</value>
+  </data>
+  <data name="format" xml:space="preserve">
+    <value>格式</value>
+  </data>
+  <data name="third_party_software" xml:space="preserve">
+    <value>第三方软件</value>
+  </data>
+  <data name="select_software" xml:space="preserve">
+    <value>选择软件</value>
+  </data>
+  <data name="open_with_third_party_software" xml:space="preserve">
+    <value>第三方软件打开</value>
+  </data>
+  <data name="confirm_enter_edit_mode_base_map" xml:space="preserve">
+    <value>确定要进入编辑模式吗？这将允许您修改底图。</value>
+  </data>
+  <data name="information" xml:space="preserve">
+    <value>提示</value>
+  </data>
+  <data name="click_to_pick_coordinates" xml:space="preserve">
+    <value>请在绘图区域点击以拾取坐标</value>
+  </data>
+  <data name="picking_operation_cancelled" xml:space="preserve">
+    <value>拾取操作已取消</value>
+  </data>
+  <data name="diagram" xml:space="preserve">
+    <value>图解</value>
+    <comment>绘图-功能栏</comment>
+  </data>
+  <data name="official_website" xml:space="preserve">
+    <value>官网</value>
+  </data>
+  <data name="minimize" xml:space="preserve">
+    <value>最小化</value>
+  </data>
+  <data name="maximize" xml:space="preserve">
+    <value>最大化</value>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="diagram_title_properties" xml:space="preserve">
+    <value>图解标题属性</value>
+    <comment>绘图-快捷按钮-tooltip</comment>
+  </data>
+  <data name="diagram_script_properties" xml:space="preserve">
+    <value>图解脚本属性</value>
+    <comment>绘图-快捷按钮-tooltip</comment>
+  </data>
+  <data name="diagram_legend_properties" xml:space="preserve">
+    <value>图解图例属性</value>
+  </data>
+  <data name="diagram_grid_properties" xml:space="preserve">
+    <value>图解网格属性</value>
+  </data>
+  <data name="switch_diagram_language" xml:space="preserve">
+    <value>切换图解语言</value>
+  </data>
+  <data name="popup_diagram_window" xml:space="preserve">
+    <value>弹出图解窗口</value>
+    <comment>绘图-快捷按钮-tooltip</comment>
+  </data>
+  <data name="independent_diagram_window" xml:space="preserve">
+    <value>独立图解窗口</value>
+  </data>
+  <data name="edit_drawing_template_translations" xml:space="preserve">
+    <value>编辑绘图模板的多语言翻译</value>
+    <comment>主页-小组件-图解模板翻译器</comment>
+  </data>
+  <data name="repair_missing_or_damaged_templates_and_lists" xml:space="preserve">
+    <value>修复丢失或损坏的绘图模板及列表</value>
+  </data>
+  <data name="view_latest_server_announcements" xml:space="preserve">
+    <value>查看服务器发布的最新公告信息</value>
+  </data>
+  <data name="maintain_server_config_and_templates" xml:space="preserve">
+    <value>维护服务器配置与模板文件</value>
   </data>
 </root>

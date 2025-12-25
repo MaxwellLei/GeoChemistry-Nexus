@@ -2,7 +2,7 @@ using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace GeoChemistryNexus.Helpers
+namespace GeoChemistryNexus.Converter
 {
     /// <summary>
     /// JSON转换器：兼容读取 String 或 Number 类型的 float 值

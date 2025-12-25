@@ -1,12 +1,11 @@
-﻿// 新建一个字体管理器类
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GeoChemistryNexus.Helpers
+namespace GeoChemistryNexus.Services
 {
-    public static class FontManager
+    public static class FontService
     {
         private static List<string> _cachedFontNames;
         private static readonly object _lock = new object();

@@ -102,7 +102,7 @@ public class FileHelper
 
             return null;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return null;
         }

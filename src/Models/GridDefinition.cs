@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using ScottPlot;
 using System.ComponentModel;
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Attributes;
 using static GeoChemistryNexus.Models.LineDefinition;
 
 namespace GeoChemistryNexus.Models
@@ -95,7 +96,7 @@ namespace GeoChemistryNexus.Models
         /// </summary>
         [ObservableProperty]
         [property: LocalizedCategory("background_fill")] // 背景填充
-        [property: LocalizedDisplayName("enable_alternating_fill")] // 启用填充 (更准确的翻译为 "启用交替填充")
+        [property: LocalizedDisplayName("enable_alternating_fill")] // 启用交替填充
         private bool _gridAlternateFillingIsEnable = false;
 
 

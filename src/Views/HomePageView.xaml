@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:hc="https://handyorg.github.io/handycontrol"
+      xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
       xmlns:models="clr-namespace:GeoChemistryNexus.Models"
       xmlns:helpers="clr-namespace:GeoChemistryNexus.Helpers"
       xmlns:dd="urn:gong-wpf-dragdrop"
@@ -24,20 +25,22 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                
+
                 <Grid.InputBindings>
-                    <!-- Disable default open command when in edit mode -->
-                    <!-- We can achieve this by using a condition or simply not binding it here if we want to rely on the edit button.
-                         However, to "prioritize drag", we might want to make the click only work when NOT in edit mode.
-                         A simple way is to use a DataTrigger in Style to unset the command, or bind CommandParameter to something that check IsEditMode.
-                         But MouseBinding doesn't support DataTrigger easily.
-                         Alternatively, we can handle the command in ViewModel and check IsEditMode. -->
                     <MouseBinding MouseAction="LeftClick" Command="{Binding Data.OpenAppCommand, Source={StaticResource VmProxy}}" CommandParameter="{Binding}"/>
                 </Grid.InputBindings>
                 
                 <Grid.ContextMenu>
                     <ContextMenu Width="180">
-                        <MenuItem Header="删除" Command="{Binding Data.RemoveAppCommand, Source={StaticResource VmProxy}}" CommandParameter="{Binding}">
+                        <!-- 编辑 -->
+                        <MenuItem Header="{Binding [Edit],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding Data.EditAppCommand, Source={StaticResource VmProxy}}" CommandParameter="{Binding}"
+                                  Visibility="{Binding IsWebLink, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <MenuItem.Icon>
+                                <TextBlock Text="&#xE70F;" FontFamily="Segoe MDL2 Assets"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <!-- 删除 -->
+                        <MenuItem Header="{Binding [Delete],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding Data.RemoveAppCommand, Source={StaticResource VmProxy}}" CommandParameter="{Binding}">
                             <MenuItem.Icon>
                                 <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets"/>
                             </MenuItem.Icon>
@@ -66,7 +69,7 @@
                             <TextBlock Text="{Binding Icon}" FontFamily="Segoe MDL2 Assets" Foreground="#333"/>
                         </Viewbox>
                         
-                        <!-- Edit Mode Indicator (Small Pencil at Top-Right) -->
+                        <!-- Edit Mode Indicator -->
                         <Border Background="#2196F3" CornerRadius="8" Width="16" Height="16" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-4,-4,0"
                                 Visibility="{Binding Data.IsEditMode, Source={StaticResource VmProxy}, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <TextBlock Text="&#xE70F;" FontFamily="Segoe MDL2 Assets" Foreground="White" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -77,10 +80,6 @@
                      </Grid>
                 </Border>
                 
-                <!-- Widget Style Trigger (using Style because DataTemplate triggers are limited for structural changes, but here we just change size) -->
-                <!-- Actually, for Widgets we might want a different layout. 
-                     If Type is Widget, we make it wider. 
-                     Since we are inside a DataTemplate, we can use a Grid style or wrapper style. -->
                      
                 <!-- Title -->
                 <TextBlock Grid.Row="1" Text="{Binding Title}" Margin="0,5,0,0" HorizontalAlignment="Center" TextAlignment="Center"
@@ -92,17 +91,12 @@
             </Grid>
         </DataTemplate>
         
-        <!-- Widget Template Selector or just a Style trigger on the root element size? 
-             The user said "similar to Android app icon layout". 
-             For widgets, they are usually larger. 
-             Let's use a style on the root Grid of the DataTemplate to adjust Width based on Type.
-        -->
     </Page.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="3.5*"/>
+            <RowDefinition Height="6.5*"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" VerticalAlignment="Center">
@@ -119,17 +113,40 @@
                        HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Margin="0 0 0 20"/>
 
             <hc:SearchBar Height="10" Width="500" Style="{StaticResource SearchBarPlus}" Grid.Row="2"
-                           Name="SearchBar" Text="{Binding SearchString}" Command="{Binding SearchStartedCommand}"/>
+                           Name="SearchBar" Text="{Binding SearchString, UpdateSourceTrigger=PropertyChanged}" Command="{Binding SearchStartedCommand}"/>
         </Grid>
 
-        <Grid Grid.Row="1" Margin="20,-80,20,20">
+        <Grid Grid.Row="1" Margin="20,-40,20,20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <!-- App List -->
-            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,30,0,0">
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,30,0,0" Background="Transparent">
+                <ScrollViewer.ContextMenu>
+                    <ContextMenu>
+                        <!--添加链接-->
+                        <MenuItem Header="{Binding [add_link],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding AddWebLinkCommand}">
+                            <MenuItem.Icon>
+                                <TextBlock Text="&#xE71B;" FontFamily="Segoe MDL2 Assets"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <!--添加小组件-->
+                        <MenuItem Header="{Binding [add_widget],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding AddWidgetCommand}">
+                            <MenuItem.Icon>
+                                <TextBlock Text="&#xE74C;" FontFamily="Segoe MDL2 Assets"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator/>
+                        <!--编辑菜单栏项-->
+                        <MenuItem Header="{Binding [edit_menu_bar_item],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding ToggleEditModeCommand}">
+                            <MenuItem.Icon>
+                                <TextBlock Text="&#xE70F;" FontFamily="Segoe MDL2 Assets"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </ContextMenu>
+                </ScrollViewer.ContextMenu>
                 <ItemsControl ItemsSource="{Binding HomeApps}" ItemTemplate="{StaticResource AppItemTemplate}"
                               dd:DragDrop.IsDragSource="{Binding IsEditMode}"
                               dd:DragDrop.IsDropTarget="{Binding IsEditMode}"
@@ -143,28 +160,17 @@
                 </ItemsControl>
             </ScrollViewer>
 
-            <!-- Floating Action Buttons -->
-            <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,20">
+            <!-- Exit Edit Mode Button -->
+            <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,20"
+                        Visibility="{Binding IsEditMode, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <Button Command="{Binding ToggleEditModeCommand}" Style="{StaticResource ButtonPrimary}" 
-                        Width="40" Height="40" Margin="0,0,0,10" ToolTip="编辑模式" Padding="0" hc:BorderElement.CornerRadius="20">
+                        Width="40" Height="40" Margin="0,0,0,10" ToolTip="{Binding [QuitEdit],Source={x:Static lg:LanguageService.Instance}}" Padding="0" hc:BorderElement.CornerRadius="20">
                     <Button.Content>
                          <Grid>
-                             <TextBlock Text="&#xE70F;" FontFamily="Segoe MDL2 Assets" FontSize="16" Visibility="{Binding IsEditMode, Converter={StaticResource BooleanToVisibilityReConverter}}"/>
-                             <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="16" Visibility="{Binding IsEditMode, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                             <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
                          </Grid>
                     </Button.Content>
                 </Button>
-                
-                <StackPanel Visibility="{Binding IsEditMode, Converter={StaticResource BooleanToVisibilityReConverter}}">
-                    <Button Command="{Binding AddWebLinkCommand}" Style="{StaticResource ButtonPrimary}" 
-                            Width="40" Height="40" Margin="0,0,0,10" ToolTip="添加链接" Padding="0" hc:BorderElement.CornerRadius="20">
-                        <TextBlock Text="&#xE71B;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
-                    </Button>
-                    <Button Command="{Binding AddWidgetCommand}" Style="{StaticResource ButtonPrimary}" 
-                            Width="40" Height="40" ToolTip="添加小组件" Padding="0" hc:BorderElement.CornerRadius="20">
-                        <TextBlock Text="&#xE74C;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
-                    </Button>
-                </StackPanel>
             </StackPanel>
         </Grid>
     </Grid>

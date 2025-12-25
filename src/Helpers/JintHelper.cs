@@ -37,7 +37,7 @@ namespace GeoChemistryNexus.Helpers
                 // 将用户输入的公式包装成 JS 函数 f(x)
                 engine.Execute($"function f(x) {{ return {expr}; }}");
 
-                // 尝试调用一次函数，确保公式中没有未定义的变量（例如用户输入 "xa" 时，JS语法正确但运行时会报错）
+                // 尝试调用一次函数，确保公式中没有未定义的变量
                 engine.Invoke("f", 0);
 
                 return true;

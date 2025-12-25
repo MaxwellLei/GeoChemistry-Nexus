@@ -4,7 +4,7 @@
              xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:lg="clr-namespace:GeoChemistryNexus.Helpers"
+             xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
              xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
              x:Name="RootControl"
              mc:Ignorable="d" 
@@ -34,11 +34,7 @@
                     Margin="0,0,4,0"
                     ToolTip="{Binding [coordinate_positioning],Source={x:Static lg:LanguageService.Instance}}"
                     Click="PickPointButton_Click">
-                <Path Data="M12,9 A3,3 0 1,1 12,15 A3,3 0 1,1 12,9 Z M12,4 A8,8 0 1,1 12,20 A8,8 0 1,1 12,4 Z M12,6 A6,6 0 1,0 12,18 A6,6 0 1,0 12,6 Z M11,4 L11,2 A1,1 0 0,1 13,2 L13,4 Z M11,20 L13,20 L13,22 A1,1 0 0,1 11,22 Z M4,11 L2,11 A1,1 0 0,1 2,13 L4,13 Z M20,11 L22,11 A1,1 0 0,1 22,13 L20,13 Z" 
-                      Fill="#444444" 
-                      Stretch="Uniform" 
-                      Width="16" 
-                      Height="16"/>
+                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe601;" FontSize="16" Foreground="#444444"/>
             </Button>
         </StackPanel>
     </Grid>

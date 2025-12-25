@@ -1,11 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Services;
 
-namespace GeoChemistryNexus.Helpers
+namespace GeoChemistryNexus.Attributes
 {
     /// <summary>
     /// 自定义 DisplayNameAttribute，

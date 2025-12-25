@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
              xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
              xmlns:models="clr-namespace:GeoChemistryNexus.Models"
              xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
              x:Name="RootControl"
@@ -88,13 +89,9 @@
                                 <!-- 拾取坐标按钮 -->
                                 <Button Width="20" Height="20" Margin="0,0,4,0"
                                         Style="{StaticResource ButtonIcon}"
-                                        ToolTip="拾取坐标"
+                                        ToolTip="{Binding [pick_coordinate],Source={x:Static lg:LanguageService.Instance}}"
                                         Click="PickPointButton_Click">
-                                    <Path Data="M12,9 A3,3 0 1,1 12,15 A3,3 0 1,1 12,9 Z M12,4 A8,8 0 1,1 12,20 A8,8 0 1,1 12,4 Z M12,6 A6,6 0 1,0 12,18 A6,6 0 1,0 12,6 Z M11,4 L11,2 A1,1 0 0,1 13,2 L13,4 Z M11,20 L13,20 L13,22 A1,1 0 0,1 11,22 Z M4,11 L2,11 A1,1 0 0,1 2,13 L4,13 Z M20,11 L22,11 A1,1 0 0,1 22,13 L20,13 Z" 
-                                          Fill="#666" 
-                                          Stretch="Uniform" 
-                                          Width="12" 
-                                          Height="12"/>
+                                    <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe601;" FontSize="14" Foreground="#666"/>
                                 </Button>
 
                                 <!-- 删除按钮 -->
@@ -102,7 +99,7 @@
                                         Width="20" Height="20"
                                         Style="{StaticResource ButtonIcon}"
                                         Click="DeleteButton_Click"
-                                        ToolTip="删除此顶点">
+                                        ToolTip="{Binding [remove_point],Source={x:Static lg:LanguageService.Instance}}">
                                     <Path Data="M19,6.41L17.59,5 12,10.59 6.41,5 5,6.41 10.59,12 5,17.59 6.41,19 12,13.41 17.59,19 19,17.59 13.41,12z" 
                                           Fill="#666" 
                                           Stretch="Uniform" 
@@ -119,7 +116,7 @@
         <Button Grid.Row="1" 
                 x:Name="AddButton"
                 Click="AddButton_Click"
-                Content="添加新顶点" 
+                Content="{Binding [remove_point],Source={x:Static lg:LanguageService.Instance}}" 
                 Margin="0,8,0,0"
                 HorizontalAlignment="Stretch"/>
     </Grid>

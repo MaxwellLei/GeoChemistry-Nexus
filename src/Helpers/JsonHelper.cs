@@ -30,7 +30,6 @@ namespace GeoChemistryNexus.Helpers
             }
             catch
             {
-                // 这里可以选择记录日志，或者维持原样不抛出异常
                 return null;
             }
         }
@@ -63,7 +62,7 @@ namespace GeoChemistryNexus.Helpers
             }
             catch
             {
-                // 这里可以选择记录日志
+
             }
         }
 

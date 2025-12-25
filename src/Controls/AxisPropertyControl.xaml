@@ -1,4 +1,4 @@
-<UserControl x:Class="GeoChemistryNexus.Controls.AxisPropertyControl"
+﻿<UserControl x:Class="GeoChemistryNexus.Controls.AxisPropertyControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -8,9 +8,10 @@
              xmlns:models="clr-namespace:GeoChemistryNexus.Models"
              xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             xmlns:lg="clr-namespace:GeoChemistryNexus.Helpers"
+             xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="300">
+             d:DesignHeight="800" d:DesignWidth="300"
+             Background="#F5F5F7">
     <UserControl.Resources>
         <cvs:NumericTypeConverter x:Key="NumericTypeConverter"/>
         <cvs:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
@@ -20,65 +21,57 @@
         <cvs:EnumToDisplayStringConverter x:Key="EnumToDisplayStringConverter"/>
         <cvs:EnumTypeToValuesConverter x:Key="EnumTypeToValuesConverter"/>
         
-        <Style TargetType="TextBlock" x:Key="LabelStyle">
-            <Setter Property="Foreground" Value="#666666"/>
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Margin" Value="0,0,0,4"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
+        <Style x:Key="ToggleButtonSwitch" TargetType="ToggleButton" BasedOn="{StaticResource ToggleButtonSwitch}">
         </Style>
-
-        <Style TargetType="Expander" BasedOn="{StaticResource ExpanderBaseStyle}">
-            <Setter Property="IsExpanded" Value="True"/>
-            <Setter Property="Margin" Value="0,0,0,10"/>
-        </Style>
-
-
     </UserControl.Resources>
 
     <Grid DataContext="{Binding SelectedObject, RelativeSource={RelativeSource AncestorType=local:AxisPropertyControl}}">
         <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel Margin="15">
+            <StackPanel Margin="10,12,10,12">
                 <!-- Header -->
-                <DockPanel LastChildFill="False" Margin="0,0,0,15">
-                    <TextBlock Text="{Binding [axis_style],Source={x:Static lg:LanguageService.Instance}}" FontWeight="Bold" FontSize="16" Foreground="#333"/>
-                </DockPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                    <TextBlock Text="&#xe605;" FontFamily="../Data/Icon/#iconfont" FontSize="24" Foreground="#1D1D1F" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBlock Text="{Binding [axis_style],Source={x:Static lg:LanguageService.Instance}}" 
+                               FontSize="22" FontWeight="Bold" Foreground="#1D1D1F" VerticalAlignment="Center"/>
+                </StackPanel>
 
                 <!-- Axis Title -->
-                <Expander Header="{Binding [axis_title],Source={x:Static lg:LanguageService.Instance}}">
-                    <StackPanel Margin="0,10,0,0">
+                <TextBlock Text="{Binding [axis_title],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernSettingsGroupTitle}" Margin="4,10,0,6"/>
+                <Border Style="{StaticResource ModernCardStyle}" Margin="0,0,0,8">
+                    <StackPanel Margin="10">
                         <!-- Content -->
-                        <TextBlock Text="{Binding [content],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
-                        <local:LocalizedStringControl Value="{Binding Label, Mode=TwoWay}" Margin="0,0,0,10"/>
+                        <TextBlock Text="{Binding [content],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
+                        <local:LocalizedStringControl Value="{Binding Label, Mode=TwoWay}" Margin="0,0,0,16"/>
 
                         <!-- Font Family -->
-                        <TextBlock Text="{Binding [font_family],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
-                        <local:FontFamilyControl FontFamilyName="{Binding Family, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10"/>
+                        <TextBlock Text="{Binding [font_family],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
+                        <local:FontFamilyControl FontFamilyName="{Binding Family, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,16"/>
 
                         <!-- Font Size & Color -->
-                        <Grid Margin="0,0,0,10">
+                        <Grid Margin="0,0,0,16">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="12"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             
                             <StackPanel Grid.Column="0">
-                                <TextBlock Text="{Binding [font_size],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
-                                <hc:NumericUpDown Value="{Binding Size, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" />
+                                <TextBlock Text="{Binding [font_size],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
+                                <hc:NumericUpDown Value="{Binding Size, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
+                                                  Style="{StaticResource ModernNumericUpDownStyle}"/>
                             </StackPanel>
 
                             <StackPanel Grid.Column="2">
-                                <TextBlock Text="{Binding [font_color],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
-                                <local:TextPropertyColorPicker SelectedColor="{Binding Color, Mode=TwoWay, Converter={StaticResource StringColorConverter}}"/>
+                                <TextBlock Text="{Binding [font_color],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
+                                <local:TextPropertyColorPicker SelectedColor="{Binding Color, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" Height="32"/>
                             </StackPanel>
                         </Grid>
 
                         <!-- Bold & Italic -->
-                        <Grid Margin="0,0,0,10">
+                        <Grid Margin="0,0,0,16">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="12"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
@@ -90,17 +83,59 @@
                                 <TextBlock Text="I" FontStyle="Italic" FontWeight="Bold" FontFamily="Times New Roman"/>
                             </ToggleButton>
                         </Grid>
+
+                        <!-- Subtitle Configuration -->
+                        <TextBlock Text="{Binding [subtitle],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
+                        <local:LocalizedStringControl Value="{Binding SubLabel, Mode=TwoWay}" Margin="0,0,0,16"/>
+
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="12"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{Binding [subtitle_font_size],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
+                                <hc:NumericUpDown Value="{Binding SubLabelSize, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
+                                                  Style="{StaticResource ModernNumericUpDownStyle}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="{Binding [subtitle_color],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
+                                <local:TextPropertyColorPicker SelectedColor="{Binding SubLabelColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" Height="32"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="12"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <ToggleButton Grid.Column="0" IsChecked="{Binding SubLabelBold}" Style="{StaticResource FontStyleToggleButtonStyle}" ToolTip="{Binding [subtitle_bold],Source={x:Static lg:LanguageService.Instance}}">
+                                <TextBlock Text="B" FontWeight="Bold"/>
+                            </ToggleButton>
+
+                            <ToggleButton Grid.Column="2" IsChecked="{Binding SubLabelItalic}" Style="{StaticResource FontStyleToggleButtonStyle}" ToolTip="{Binding [subtitle_italic],Source={x:Static lg:LanguageService.Instance}}">
+                                <TextBlock Text="I" FontStyle="Italic" FontWeight="Bold" FontFamily="Times New Roman"/>
+                            </ToggleButton>
+                        </Grid>
+
                     </StackPanel>
-                </Expander>
+                </Border>
 
                 <!-- Axis Range & Scale -->
-                <Expander Header="{Binding [axis_style],Source={x:Static lg:LanguageService.Instance}}">
-                    <StackPanel Margin="0,10,0,0">
+                <TextBlock Text="{Binding [axis_style],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernSettingsGroupTitle}" Margin="4,10,0,6"/>
+                <Border Style="{StaticResource ModernCardStyle}" Margin="0,0,0,8">
+                    <StackPanel Margin="10">
                          <!-- Scale Type -->
-                        <TextBlock Text="{Binding [zoom_type],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
+                        <TextBlock Text="{Binding [zoom_type],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
                         <ComboBox SelectedItem="{Binding ScaleType}" 
                                   ItemsSource="{Binding ScaleType, Converter={StaticResource EnumTypeToValuesConverter}}"
-                                  Margin="0,0,0,10">
+                                  Margin="0,0,0,16"
+                                  Style="{StaticResource ModernComboBoxStyle}">
                              <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Converter={StaticResource EnumToDisplayStringConverter}}"/>
@@ -109,109 +144,125 @@
                         </ComboBox>
 
                         <!-- Min & Max -->
-                        <Grid Margin="0,0,0,10">
+                        <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="12"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             
                             <StackPanel Grid.Column="0">
-                                <TextBlock Text="{Binding [from],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
-                                <hc:NumericUpDown Value="{Binding Minimum, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" />
+                                <TextBlock Text="{Binding [from],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
+                                <hc:NumericUpDown Value="{Binding Minimum, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" Minimum="{Binding AllowedInputMinimum}" 
+                                                  Style="{StaticResource ModernNumericUpDownStyle}"/>
                             </StackPanel>
 
                             <StackPanel Grid.Column="2">
-                                <TextBlock Text="{Binding [to],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
-                                <hc:NumericUpDown Value="{Binding Maximum, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" />
+                                <TextBlock Text="{Binding [to],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
+                                <hc:NumericUpDown Value="{Binding Maximum, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" Minimum="{Binding AllowedInputMinimum}" 
+                                                  Style="{StaticResource ModernNumericUpDownStyle}"/>
                             </StackPanel>
                         </Grid>
                     </StackPanel>
-                </Expander>
+                </Border>
 
                 <!-- Major Tick Style -->
-                <Expander Header="{Binding [major_tick_style],Source={x:Static lg:LanguageService.Instance}}">
-                    <StackPanel Margin="0,10,0,0">
-                         <Grid Margin="0,0,0,10">
+                <TextBlock Text="{Binding [major_tick_style],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernSettingsGroupTitle}" Margin="4,10,0,6"/>
+                <Border Style="{StaticResource ModernCardStyle}" Margin="0,0,0,8">
+                    <StackPanel Margin="10">
+                         <Grid Margin="0,0,0,16">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="12"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             
                             <StackPanel Grid.Column="0">
-                                <TextBlock Text="{Binding [length],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
-                                <hc:NumericUpDown Value="{Binding MajorTickLength, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" />
+                                <TextBlock Text="{Binding [length],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
+                                <hc:NumericUpDown Value="{Binding MajorTickLength, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
+                                                  Style="{StaticResource ModernNumericUpDownStyle}"/>
                             </StackPanel>
 
-                             <StackPanel Grid.Column="2">
-                                <TextBlock Text="{Binding [width],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
-                                <hc:NumericUpDown Value="{Binding MajorTickWidth, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" />
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="{Binding [width],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
+                                <hc:NumericUpDown Value="{Binding MajorTickWidth, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
+                                                  Style="{StaticResource ModernNumericUpDownStyle}"/>
                             </StackPanel>
                         </Grid>
 
-                        <Grid Margin="0,0,0,10">
+                        <Grid Margin="0,0,0,16">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="12"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
                             <StackPanel Grid.Column="0">
-                                <TextBlock Text="{Binding [interval],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
-                                <hc:NumericUpDown Value="{Binding MajorTickInterval, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" />
+                                <TextBlock Text="{Binding [interval],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
+                                <hc:NumericUpDown Value="{Binding MajorTickInterval, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
+                                                  Style="{StaticResource ModernNumericUpDownStyle}"/>
                             </StackPanel>
                             
                             <StackPanel Grid.Column="2">
-                                <TextBlock Text="{Binding [color],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
-                                <local:TextPropertyColorPicker SelectedColor="{Binding MajorTickWidthColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}"/>
+                                <TextBlock Text="{Binding [color],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
+                                <local:TextPropertyColorPicker SelectedColor="{Binding MajorTickWidthColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" Height="32"/>
                             </StackPanel>
                         </Grid>
-                         <CheckBox IsChecked="{Binding MajorTickAntiAlias}" Content="{Binding [anti_aliasing],Source={x:Static lg:LanguageService.Instance}}" Margin="0,0,0,10"/>
+                         <DockPanel>
+                             <TextBlock Text="{Binding [anti_aliasing],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}" VerticalAlignment="Center" Margin="0"/>
+                             <ToggleButton Style="{StaticResource ToggleButtonSwitch}" HorizontalAlignment="Right" IsChecked="{Binding MajorTickAntiAlias, Mode=TwoWay}"/>
+                         </DockPanel>
                     </StackPanel>
-                </Expander>
+                </Border>
 
                 <!-- Minor Tick Style -->
-                <Expander Header="{Binding [minor_tick_style],Source={x:Static lg:LanguageService.Instance}}">
-                     <StackPanel Margin="0,10,0,0">
-                         <Grid Margin="0,0,0,10">
+                <TextBlock Text="{Binding [minor_tick_style],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernSettingsGroupTitle}" Margin="4,10,0,6"/>
+                <Border Style="{StaticResource ModernCardStyle}" Margin="0,0,0,8">
+                     <StackPanel Margin="10">
+                         <Grid Margin="0,0,0,16">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="12"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             
                             <StackPanel Grid.Column="0">
-                                <TextBlock Text="{Binding [length],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
-                                <TextBox Text="{Binding MinorTickLength, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock Text="{Binding [length],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
+                                <TextBox Text="{Binding MinorTickLength, UpdateSourceTrigger=PropertyChanged}" 
+                                         Background="#F2F2F7" BorderThickness="0" Padding="8,6" hc:BorderElement.CornerRadius="6"/>
                             </StackPanel>
 
                              <StackPanel Grid.Column="2">
-                                <TextBlock Text="{Binding [width],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
-                                <TextBox Text="{Binding MinorTickWidth, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock Text="{Binding [width],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
+                                <TextBox Text="{Binding MinorTickWidth, UpdateSourceTrigger=PropertyChanged}" 
+                                         Background="#F2F2F7" BorderThickness="0" Padding="8,6" hc:BorderElement.CornerRadius="6"/>
                             </StackPanel>
                         </Grid>
 
-                        <Grid Margin="0,0,0,10">
+                        <Grid Margin="0,0,0,16">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="12"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
                             <StackPanel Grid.Column="0">
-                                <TextBlock Text="{Binding [count],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
-                                <hc:NumericUpDown Value="{Binding MinorTicksPerMajorTick, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" />
+                                <TextBlock Text="{Binding [count],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
+                                <hc:NumericUpDown Value="{Binding MinorTicksPerMajorTick, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
+                                                  Style="{StaticResource ModernNumericUpDownStyle}"/>
                             </StackPanel>
                             
                             <StackPanel Grid.Column="2">
-                                <TextBlock Text="{Binding [color],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource LabelStyle}"/>
-                                <local:TextPropertyColorPicker SelectedColor="{Binding MinorTickColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}"/>
+                                <TextBlock Text="{Binding [color],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
+                                <local:TextPropertyColorPicker SelectedColor="{Binding MinorTickColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" Height="32"/>
                             </StackPanel>
                         </Grid>
-                         <CheckBox IsChecked="{Binding MinorTickAntiAlias}" Content="{Binding [anti_aliasing],Source={x:Static lg:LanguageService.Instance}}" Margin="0,0,0,10"/>
+                         <DockPanel>
+                             <TextBlock Text="{Binding [anti_aliasing],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}" VerticalAlignment="Center" Margin="0"/>
+                             <ToggleButton Style="{StaticResource ToggleButtonSwitch}" HorizontalAlignment="Right" IsChecked="{Binding MinorTickAntiAlias, Mode=TwoWay}"/>
+                         </DockPanel>
                     </StackPanel>
-                </Expander>
+                </Border>
 
             </StackPanel>
         </ScrollViewer>

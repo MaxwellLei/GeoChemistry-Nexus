@@ -1,4 +1,5 @@
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Services;
 using GeoChemistryNexus.Interfaces;
 using GeoChemistryNexus.Models;
 using ScottPlot.Plottables;
@@ -40,21 +41,16 @@ namespace GeoChemistryNexus.ViewModels
             if (ArrowDefinition?.Start == null || ArrowDefinition?.End == null) return;
 
             // 判断当前是否为三元相图
-            // 尝试在当前图表中寻找三角轴对象
             var triangularAxis = plot.GetPlottables().OfType<TriangularAxis>().FirstOrDefault();
 
             if (triangularAxis != null)
             {
-                // ==========================
-                //  三元图绘制逻辑
-                // ==========================
+                // 三元图绘制逻辑
                 RenderTernaryArrow(plot, triangularAxis);
             }
             else
             {
-                // ==========================
-                //  普通直角坐标系逻辑
-                // ==========================
+                // 普通直角坐标系逻辑
                 RenderCartesianArrow(plot);
             }
         }
@@ -144,7 +140,7 @@ namespace GeoChemistryNexus.ViewModels
         private void ApplyCommonStyle(ScottPlot.Plottables.Arrow arrowPlot)
         {
             arrowPlot.ArrowFillColor = ScottPlot.Color.FromHex(
-                GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(ArrowDefinition.Color));
+                GraphMapTemplateService.ConvertWpfHexToScottPlotHex(ArrowDefinition.Color));
 
             arrowPlot.ArrowWidth = ArrowDefinition.ArrowWidth;
             arrowPlot.ArrowheadWidth = ArrowDefinition.ArrowheadWidth;
@@ -175,7 +171,7 @@ namespace GeoChemistryNexus.ViewModels
         {
             if (Plottable is ScottPlot.Plottables.Arrow arrowPlot)
             {
-                arrowPlot.ArrowFillColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(ArrowDefinition.Color));
+                arrowPlot.ArrowFillColor = ScottPlot.Color.FromHex(GraphMapTemplateService.ConvertWpfHexToScottPlotHex(ArrowDefinition.Color));
                 arrowPlot.ArrowWidth = ArrowDefinition.ArrowWidth;
                 arrowPlot.ArrowheadWidth = ArrowDefinition.ArrowheadWidth;
                 arrowPlot.ArrowheadLength = ArrowDefinition.ArrowheadLength;

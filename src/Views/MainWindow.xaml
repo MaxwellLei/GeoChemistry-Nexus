@@ -5,48 +5,264 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GeoChemistryNexus"
-        xmlns:lg="clr-namespace:GeoChemistryNexus.Helpers"
+        xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
+        xmlns:services="clr-namespace:GeoChemistryNexus.Services"
+        xmlns:controls="clr-namespace:GeoChemistryNexus.Controls"
         xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:converter="clr-namespace:GeoChemistryNexus.Converter"
         WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        UseLayoutRounding="True" TextOptions.TextFormattingMode="Display"
         WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" Closing="Window_Closing" 
-        Title="MainWindow" Height="760" Width="1280" BorderThickness="1">
+        Title="MainWindow" Height="760" Width="1332" BorderThickness="0">
+    
     <WindowChrome.WindowChrome>
-        <WindowChrome CaptionHeight="0" ResizeBorderThickness="22 5 22 22"/>
+        <WindowChrome CaptionHeight="40" ResizeBorderThickness="5" GlassFrameThickness="1"/>
     </WindowChrome.WindowChrome>
 
-    <!--主窗体-->
-    <Border CornerRadius="8">
-        <Border.Background>
-            <SolidColorBrush Color="#FF333333"/>
-        </Border.Background>
+    <Window.Resources>
+        <!-- Modern-style Sidebar Button -->
+        <Style x:Key="ModernSideButton" TargetType="{x:Type RadioButton}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#4A4A4A"/>
+            <Setter Property="Padding" Value="15,12"/>
+            <Setter Property="Margin" Value="10,2"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RadioButton}">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="8" SnapsToDevicePixels="True">
+                            <Grid>
+                                <ContentPresenter Margin="{TemplateBinding Padding}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" TargetName="border" Value="#E5E5EA"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Background" TargetName="border" Value="#007AFF"/> <!-- macOS Blue -->
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-        <Border.Effect>
-            <DropShadowEffect ShadowDepth="0" 
-                              BlurRadius="15" 
-                              Opacity="0.5" 
-                              Color="Black"/>
-        </Border.Effect>
+        <!-- Window Control Button Style (Dark Text) -->
+        <Style x:Key="ModernWinBtn" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#333"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontFamily" Value="../Data/Icon/#iconfont"/>
+            <Setter Property="Width" Value="46"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#E5E5E5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style x:Key="ModernCloseBtn" TargetType="{x:Type Button}">
+             <Setter Property="Background" Value="Transparent"/>
+             <Setter Property="Foreground" Value="#333"/>
+             <Setter Property="FontSize" Value="14"/>
+             <Setter Property="FontFamily" Value="../Data/Icon/#iconfont"/>
+             <Setter Property="Width" Value="46"/>
+             <Setter Property="Height" Value="40"/>
+             <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True"/>
+             <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" SnapsToDevicePixels="True" CornerRadius="0,10,0,0">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#E81123"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+             </Setter>
+        </Style>
+    </Window.Resources>
 
+    <!-- Main Container with Rounded Corners and Shadow Simulation -->
+    <Border>
         <Border.Style>
             <Style TargetType="Border">
-                <Setter Property="Margin" Value="20"/>
+                <Setter Property="Background" Value="#F5F5F7"/>
+                <Setter Property="CornerRadius" Value="10"/>
+                <Setter Property="BorderBrush" Value="#D1D1D1"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Margin" Value="15"/>
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect Color="Black" BlurRadius="20" ShadowDepth="0" Opacity="0.3"/>
+                    </Setter.Value>
+                </Setter>
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource AncestorType=Window}}" Value="Maximized">
-                        <Setter Property="Margin" Value="0"/>
+                        <Setter Property="Margin" Value="8"/>
                         <Setter Property="CornerRadius" Value="0"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Effect" Value="{x:Null}"/>
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
         </Border.Style>
-
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="36"/>
-                <RowDefinition/>
+                <RowDefinition Height="Auto"/> <!-- Title Bar -->
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <!--托盘菜单右键-->
-            <hc:NotifyIcon Name="notifyIcon" Text="Geo-Thermometer" IsBlink="False" Visibility="Visible"
-                           Icon="../Data/Icon/logo.png">
+
+            <!-- Custom Title Bar -->
+            <Grid Grid.Row="0" Height="40">
+                <!-- Drag Handle -->
+                <Border Background="Transparent">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonDown">
+                            <i:InvokeCommandAction Command="{Binding MoveWindowCommand}" 
+                                                   CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <Border.InputBindings>
+                        <MouseBinding Gesture="LeftDoubleClick" 
+                                      Command="{Binding MaximizeWindowCommand}"
+                                      CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
+                    </Border.InputBindings>
+                </Border>
+
+                <!-- Content -->
+                <Grid>
+                    <!-- Left: Hamburger Menu & Title -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15,0,0,0">
+                        <!-- Hamburger Menu Button -->
+                        <Button Command="{Binding ToggleSideBarCommand}" Background="Transparent" BorderThickness="0" 
+                                WindowChrome.IsHitTestVisibleInChrome="True" Cursor="Hand" Margin="0,0,15,0">
+                            <Path Data="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" Fill="#333" Stretch="Uniform" Width="18" Height="14"/>
+                        </Button>
+                        
+                        <!-- App Title -->
+                        <TextBlock Text="GeoChemistry Nexus" Foreground="#333" FontWeight="SemiBold" FontSize="14" VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <!-- Right: Window Controls -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+                        <Button Content="&#xe622;" Style="{StaticResource ModernWinBtn}" Command="{Binding HelpCommand}" ToolTip="{Binding [official_website],Source={x:Static lg:LanguageService.Instance}}"/>
+                        <Button Content="&#xe67a;" Style="{StaticResource ModernWinBtn}" Command="{Binding MinimizeWindowCommand}" 
+                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                                ToolTip="{Binding [minimize],Source={x:Static lg:LanguageService.Instance}}"/>
+                        <Button Content="&#xf2b2;" Style="{StaticResource ModernWinBtn}" Command="{Binding MaximizeWindowCommand}" 
+                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                                ToolTip="{Binding [maximize],Source={x:Static lg:LanguageService.Instance}}"/>
+                        <Button Content="&#xeaf2;" Style="{StaticResource ModernCloseBtn}" Command="{Binding CloseWindowCommand}" 
+                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                                ToolTip="{Binding [close],Source={x:Static lg:LanguageService.Instance}}"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+
+            <!-- Main Content Area -->
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Collapsible Sidebar -->
+                <Border Background="#F0F0F5" Width="240" CornerRadius="0,12,0,10" Margin="0,0,15,0"
+                        Visibility="{Binding IsSideBarVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Grid>
+                        <StackPanel Margin="0,20,0,0" VerticalAlignment="Top">
+                            <!-- Home -->
+                            <RadioButton Name="RadioButton1" Style="{StaticResource ModernSideButton}" GroupName="SideBar" 
+                                         Command="{Binding StartPageCommand}" CommandParameter="{Binding ElementName=MyNav}" IsChecked="True">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xe635;" FontFamily="../Data/Icon/#iconfont" FontSize="18" Width="30" TextAlignment="Center" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding [home],Source={x:Static lg:LanguageService.Instance}}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </RadioButton>
+                            
+                            <!-- Plot -->
+                            <RadioButton Name="RadioButton2" Style="{StaticResource ModernSideButton}" GroupName="SideBar" 
+                                         Command="{Binding HomePageCommand}" CommandParameter="{Binding ElementName=MyNav}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xe639;" FontFamily="../Data/Icon/#iconfont" FontSize="18" Width="30" TextAlignment="Center" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding [Plot],Source={x:Static lg:LanguageService.Instance}}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </RadioButton>
+                            
+                            <!-- Geothermometer -->
+                            <RadioButton Name="RadioButton3" Style="{StaticResource ModernSideButton}" GroupName="SideBar" 
+                                         Command="{Binding GTMNewPageCommand}" CommandParameter="{Binding ElementName=MyNav}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xe716;" FontFamily="../Data/Icon/#iconfont" FontSize="18" Width="30" TextAlignment="Center" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding [Geothermometer],Source={x:Static lg:LanguageService.Instance}}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </RadioButton>
+                        </StackPanel>
+
+                        <!-- Settings at the bottom -->
+                        <StackPanel VerticalAlignment="Bottom" Margin="0,0,0,20">
+                            <RadioButton Name="RadioButton4" Style="{StaticResource ModernSideButton}" GroupName="SideBar" 
+                                         Command="{Binding SettingPageCommand}" CommandParameter="{Binding ElementName=MyNav}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xe60f;" FontFamily="../Data/Icon/#iconfont" FontSize="18" Width="30" TextAlignment="Center" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding [Setting],Source={x:Static lg:LanguageService.Instance}}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </RadioButton>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Navigation Content -->
+                <Grid Grid.Column="1" Margin="0,0,0,0">
+                    <Frame Name="MyNav" NavigationUIVisibility="Hidden" Background="White" ClipToBounds="True"/>
+                </Grid>
+            </Grid>
+            
+            <!-- Modal Mask -->
+            <Border Grid.Row="1" Background="#40000000" 
+                    Visibility="{Binding IsModal, Source={x:Static services:NotificationManager.Instance}, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    IsHitTestVisible="True"/>
+
+            <!-- Notification Area -->
+            <ScrollViewer Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,20,20,0"
+                          MaxHeight="650" VerticalScrollBarVisibility="Hidden" PanningMode="VerticalOnly"
+                          IsHitTestVisible="True" BorderThickness="0" Background="Transparent">
+                <ItemsControl ItemsSource="{Binding Notifications, Source={x:Static services:NotificationManager.Instance}}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel VerticalAlignment="Top"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <controls:NotificationItem/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+
+            <!-- Notify Icon (Tray) -->
+            <hc:NotifyIcon Name="notifyIcon" Text="Geo-Thermometer" IsBlink="False" Visibility="Visible" Icon="../Data/Icon/logo.png">
                 <hc:NotifyIcon.ContextMenu>
                     <ContextMenu Width="160" Placement="Right">
                         <MenuItem Header="{Binding [Show],Source={x:Static lg:LanguageService.Instance}}" Click="ShowWindow"/>
@@ -55,138 +271,8 @@
                     </ContextMenu>
                 </hc:NotifyIcon.ContextMenu>
             </hc:NotifyIcon>
-            <!--标题栏-->
-            <Border Background="#35383e" CornerRadius="8 8 0 0">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseLeftButtonDown">
-                        <i:InvokeCommandAction Command="{Binding MoveWindowCommand}" 
-                                               CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
 
-                <Border.InputBindings>
-                    <MouseBinding Gesture="LeftDoubleClick" 
-                                  Command="{Binding MaximizeWindowCommand}"
-                                  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
-                </Border.InputBindings>
-                <Grid>
-                    <TextBlock Text="&#xe794;" Foreground="White"  Margin="20 5 0 0" FontSize="24" 
-                               FontFamily="../Data/Icon/#iconfont" VerticalAlignment="Center"
-                               WindowChrome.IsHitTestVisibleInChrome="True" HorizontalAlignment="Left">
-                        <!--彩蛋部分-->
-                            <TextBlock.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Header="{Binding [SmashIt],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding StingerCommand}"/>
-                            </ContextMenu>
-                        </TextBlock.ContextMenu>
-                        <TextBlock.ToolTip>
-                            <TextBlock Text="{Binding [SmashItC],Source={x:Static lg:LanguageService.Instance}}" />
-                        </TextBlock.ToolTip>
-                    </TextBlock>
-                    <TextBlock Text="GeoChemistry Nexus" Foreground="White" FontWeight="Bold" FontSize="16"
-                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 5 0">
-                        <Button Content="&#xe607;" WindowChrome.IsHitTestVisibleInChrome="True"
-                                Style="{StaticResource TitleButtonStyle2}" Command="{Binding HelpCommand}"/>
-                        <Button Content="&#xe67a;" WindowChrome.IsHitTestVisibleInChrome="True"
-                                Style="{StaticResource TitleButtonStyle2}" Command="{Binding MinimizeWindowCommand}"
-                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
-                        <Button Content="&#xf2b2;" WindowChrome.IsHitTestVisibleInChrome="True"
-                                Style="{StaticResource TitleButtonStyle2}" Command="{Binding MaximizeWindowCommand}"
-                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
-                        <Button Content="&#xeaf2;" WindowChrome.IsHitTestVisibleInChrome="True"
-                                Style="{StaticResource TitleButtonStyle}" Command="{Binding CloseWindowCommand}"
-                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
-                    </WrapPanel>
-                </Grid>
-            </Border>
-
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="65"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-
-                <!--左侧控制栏-->
-                <Border Background="#35383e" CornerRadius="0 0 0 8" >
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition Height="0.1*"/>
-                        </Grid.RowDefinitions>
-                        <StackPanel>
-                            <RadioButton Name="RadioButton1" Style="{DynamicResource SideControlBar}" GroupName="SideBar"
-                                     Width="60" Height="60" Margin="-200,0,0,0" IsChecked="True" Command="{Binding StartPageCommand}" CommandParameter="{Binding ElementName=MyNav}">
-                                <WrapPanel Orientation="Vertical">
-                                    <TextBlock Text="&#xe635;" Foreground="White" FontFamily="../Data/Icon/#iconfont"
-                                           HorizontalAlignment="Center" FontSize="24"/>
-                                    <TextBlock Text="{Binding [home],Source={x:Static lg:LanguageService.Instance}}" Foreground="White"/>
-                                </WrapPanel>
-                            </RadioButton>
-                            <!--绘图侧边栏-->
-                            <RadioButton Name="RadioButton2" Style="{DynamicResource SideControlBar}" GroupName="SideBar"
-                                     Width="60" Height="60" Margin="-200,0,0,0" Command="{Binding HomePageCommand}" CommandParameter="{Binding ElementName=MyNav}">
-                                <WrapPanel Orientation="Vertical">
-                                    <TextBlock Text="&#xe639;" Foreground="White" FontFamily="../Data/Icon/#iconfont"
-                                           HorizontalAlignment="Center" FontSize="24"/>
-                                    <TextBlock Text="{Binding [Plot],Source={x:Static lg:LanguageService.Instance}}" Foreground="White"/>
-                                </WrapPanel>
-                            </RadioButton>
-                            <!--温度计侧边栏-->
-                            <RadioButton Name="RadioButton3" Style="{DynamicResource SideControlBar}" GroupName="SideBar"
-                                     Width="60" Height="60" Margin="-200,0,0,0" Command="{Binding GTMNewPageCommand}" CommandParameter="{Binding ElementName=MyNav}">
-                                <WrapPanel Orientation="Vertical">
-                                    <TextBlock Text="&#xe716;" Foreground="White" FontFamily="../Data/Icon/#iconfont"
-                                           HorizontalAlignment="Center" FontSize="24"/>
-                                    <TextBlock Text="{Binding [Geothermometer],Source={x:Static lg:LanguageService.Instance}}" Foreground="White"/>
-                                </WrapPanel>
-                            </RadioButton>
-                            <!--<RadioButton Name="RadioButton3" Style="{DynamicResource SideControlBar}" GroupName="SideBar"
-                                     Width="60" Height="60" Margin="-200,0,0,0" Command="{Binding GeothermometerNewPage}">
-                                <WrapPanel Orientation="Vertical">
-                                    <TextBlock Text="&#xe6b0;" Foreground="White" FontFamily="../Data/Icon/#iconfont"
-                                           HorizontalAlignment="Center" FontSize="24"/>
-                                    <TextBlock Text="科学计算" Foreground="White"/>
-                                </WrapPanel>
-                            </RadioButton>-->
-                            <!--<RadioButton Name="RadioButton5" Style="{DynamicResource SideControlBar}" GroupName="SideBar"
-                                     Width="60" Height="60" Margin="-200,0,0,0">
-                            <WrapPanel Orientation="Vertical">
-                                <TextBlock Text="&#xe640;" Foreground="White" FontFamily="../Resources/Icon/#iconfont"
-                                           HorizontalAlignment="Center" FontSize="24"/>
-                                <TextBlock Text="导出" Foreground="White"/>
-                            </WrapPanel>
-                        </RadioButton>-->
-                        </StackPanel>
-                        <!--设置侧边栏-->
-                        <RadioButton Name="RadioButton4" Style="{DynamicResource SideControlBar}" Grid.Row="1" GroupName="SideBar"
-                                     Width="60" Height="60" Margin="-200,0,0,0" Command="{Binding SettingPageCommand}" CommandParameter="{Binding ElementName=MyNav}">
-                            <WrapPanel Orientation="Vertical">
-                                <TextBlock Text="&#xe60f;" Foreground="White" FontFamily="../Data/Icon/#iconfont"
-                                           HorizontalAlignment="Center" FontSize="24"/>
-                                <TextBlock Text="{Binding [Setting],Source={x:Static lg:LanguageService.Instance}}" Foreground="White"/>
-                            </WrapPanel>
-                        </RadioButton>
-                    </Grid>
-                </Border>
-
-                <!--主窗体-->
-                <Grid Grid.Column="1">
-                    <Frame Name="MyNav" BorderThickness="0" NavigationUIVisibility="Hidden"  ClipToBounds="True"
-                           Background="White"/>
-
-                    <!--消息通知-->
-                    <ScrollViewer VerticalScrollBarVisibility="Hidden" VerticalAlignment="Top" 
-                                  HorizontalAlignment="Right">
-                        <ScrollViewer.Effect>
-                            <DropShadowEffect Color="#CCCCCC" Direction="270" ShadowDepth="5"
-                                              BlurRadius="15" Opacity="0.4"/>
-                        </ScrollViewer.Effect>
-                        <VirtualizingStackPanel  hc:Growl.GrowlParent="True" VerticalAlignment="Top"
-                                                 Margin="5"/>
-                    </ScrollViewer>
-                </Grid>
-            </Grid>
         </Grid>
     </Border>
 </Window>
+

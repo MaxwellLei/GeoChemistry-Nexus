@@ -50,25 +50,25 @@ namespace GeoChemistryNexus.Views
         public static void RefeshAn()
         {
             //创建动画过程
-            var marginAnim = new ThicknessAnimation()
-            {
-                From = new Thickness(0, 0, -300, 0),
-                To = new Thickness(0, 0, 0, 0),
-                EasingFunction = new QuadraticEase()
-            };
-            for (int i = 1; i < 4; i++)
-            {
-                Storyboard.SetTargetName(marginAnim, "RadioButton" + i);
-                Storyboard.SetTargetProperty(marginAnim, new PropertyPath(MarginProperty));
+            //var marginAnim = new ThicknessAnimation()
+            //{
+            //    From = new Thickness(0, 0, -300, 0),
+            //    To = new Thickness(0, 0, 0, 0),
+            //    EasingFunction = new QuadraticEase()
+            //};
+            //for (int i = 1; i < 4; i++)
+            //{
+            //    Storyboard.SetTargetName(marginAnim, "RadioButton" + i);
+            //    Storyboard.SetTargetProperty(marginAnim, new PropertyPath(MarginProperty));
 
-                //延迟动画时间
-                marginAnim.Duration = TimeSpan.FromSeconds(0.4 + i * 0.05);
+            //    //延迟动画时间
+            //    marginAnim.Duration = TimeSpan.FromSeconds(0.4 + i * 0.05);
 
-                //创建动画版播放动画
-                var sb = new Storyboard();
-                sb.Children.Add(marginAnim);
-                sb.Begin(settingPage);
-            }
+            //    //创建动画版播放动画
+            //    var sb = new Storyboard();
+            //    sb.Children.Add(marginAnim);
+            //    sb.Begin(settingPage);
+            //}
         }
 
     }

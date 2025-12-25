@@ -18,6 +18,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Text.RegularExpressions;
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Services;
 
 namespace GeoChemistryNexus.Controls
 {
@@ -42,7 +43,7 @@ namespace GeoChemistryNexus.Controls
             InitializeLanguageComboBox();
             InitializeEventHandlers();
 
-            // 如果没有脚本定义对象，创建一个默认的
+            // 如果没有脚本定义对象，默认创建
             if (ScriptDefinition == null)
             {
                 ScriptDefinition = new ScriptDefinition();
@@ -55,7 +56,7 @@ namespace GeoChemistryNexus.Controls
             var control = d as ScriptDefinitionControl;
             if (control != null)
             {
-                // 延迟调用或确保控件加载完毕后调用更新
+                // 延迟调用,确保控件加载完毕后调用更新
                 control.Dispatcher.InvokeAsync(() =>
                 {
                     control.UpdateLineColumn();
@@ -82,7 +83,7 @@ namespace GeoChemistryNexus.Controls
 
         private void ScriptBodyTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            UpdateStatus("已修改");
+            UpdateStatus(LanguageService.Instance["modified_successfully"]);
             UpdateLineColumn();
         }
 
@@ -197,7 +198,7 @@ namespace GeoChemistryNexus.Controls
             }
             catch (Exception ex)
             {
-                // 捕获其他可能的异常（例如执行超时等），尽管对于纯语法检查不太可能发生。
+                // 捕获其他可能的异常
                 UpdateStatus(LanguageService.Instance["error"] + ex.Message);
             }
         }

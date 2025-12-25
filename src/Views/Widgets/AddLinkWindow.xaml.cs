@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Windows;
 using GeoChemistryNexus.Models;
+using GeoChemistryNexus.Services;
 
-namespace GeoChemistryNexus.Views
+namespace GeoChemistryNexus.Views.Widgets
 {
     public partial class AddLinkWindow : HandyControl.Controls.Window
     {
@@ -39,13 +40,15 @@ namespace GeoChemistryNexus.Views
         {
             if (string.IsNullOrWhiteSpace(TitleBox.Text))
             {
-                HandyControl.Controls.Growl.Warning("请输入名称");
+                // 请输入名称
+                HandyControl.Controls.Growl.Warning(LanguageService.Instance["please_enter_name"]);
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(UrlBox.Text))
             {
-                HandyControl.Controls.Growl.Warning("请输入链接");
+                // 请输入链接
+                HandyControl.Controls.Growl.Warning(LanguageService.Instance["please_enter_link"]);
                 return;
             }
 

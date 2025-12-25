@@ -1,8 +1,10 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.ComponentModel;
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Attributes;
 using GeoChemistryNexus.Converter;
 using System.Text.RegularExpressions;
+using GeoChemistryNexus.Services;
 
 namespace GeoChemistryNexus.Models
 {
@@ -87,7 +89,7 @@ namespace GeoChemistryNexus.Models
             else
             {
                 HasFormulaError = true;
-                FormulaErrorMessage = "公式不合法";
+                FormulaErrorMessage = LanguageService.Instance["invalid_formula"];
             }
         }
     }

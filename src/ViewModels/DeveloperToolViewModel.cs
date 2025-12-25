@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using GeoChemistryNexus.Services;
 using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Models;
 using HandyControl.Controls;
@@ -30,13 +31,13 @@ namespace GeoChemistryNexus.ViewModels
         private string _internalGraphMapPath;
 
         [ObservableProperty]
-        private GraphMapTemplateParser.JsonTemplateItem _targetTemplateItem;
+        private GraphMapTemplateService.JsonTemplateItem _targetTemplateItem;
 
         [ObservableProperty]
         private string _status;
 
         // Shared source for the ComboBox
-        public ObservableCollection<GraphMapTemplateParser.JsonTemplateItem> AvailableTemplates { get; set; }
+        public ObservableCollection<GraphMapTemplateService.JsonTemplateItem> AvailableTemplates { get; set; }
     }
 
     public partial class DeveloperToolViewModel : ObservableObject
@@ -62,10 +63,10 @@ namespace GeoChemistryNexus.ViewModels
         private List<string> _zipFiles = new List<string>();
 
         [ObservableProperty]
-        private ObservableCollection<GraphMapTemplateParser.JsonTemplateItem> _templateList;
+        private ObservableCollection<GraphMapTemplateService.JsonTemplateItem> _templateList;
 
         [ObservableProperty]
-        private GraphMapTemplateParser.JsonTemplateItem _selectedTemplateItem; // Kept for reference but mostly replaced by PendingChanges
+        private GraphMapTemplateService.JsonTemplateItem _selectedTemplateItem; // Kept for reference but mostly replaced by PendingChanges
 
         [ObservableProperty]
         private string _logText;
@@ -89,17 +90,18 @@ namespace GeoChemistryNexus.ViewModels
                 if (File.Exists(path))
                 {
                     string json = File.ReadAllText(path);
-                    var list = JsonSerializer.Deserialize<List<GraphMapTemplateParser.JsonTemplateItem>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                    TemplateList = new ObservableCollection<GraphMapTemplateParser.JsonTemplateItem>(list ?? new List<GraphMapTemplateParser.JsonTemplateItem>());
+                    var list = JsonSerializer.Deserialize<List<GraphMapTemplateService.JsonTemplateItem>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    TemplateList = new ObservableCollection<GraphMapTemplateService.JsonTemplateItem>(list ?? new List<GraphMapTemplateService.JsonTemplateItem>());
                 }
                 else
                 {
-                    TemplateList = new ObservableCollection<GraphMapTemplateParser.JsonTemplateItem>();
+                    TemplateList = new ObservableCollection<GraphMapTemplateService.JsonTemplateItem>();
                 }
             }
             catch (Exception ex)
             {
-                Log($"Error loading template list: {ex.Message}");
+                // 加载模板列表出错:
+                Log(LanguageService.Instance["error_loading_template_list"] + $" {ex.Message}");
             }
         }
 
@@ -376,7 +378,7 @@ namespace GeoChemistryNexus.ViewModels
                     if (IsUpdateMode)
                     {
                         // Add New Logic
-                        var newItem = new GraphMapTemplateParser.JsonTemplateItem
+                        var newItem = new GraphMapTemplateService.JsonTemplateItem
                         {
                             NodeList = templateObj.NodeList,
                             GraphMapPath = graphMapPath,

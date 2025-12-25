@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GeoChemistryNexus.Helpers
+namespace GeoChemistryNexus.Extensions.ScottPlotExtensions
 {
     public class FixedIntervalTickGenerator : ITickGenerator
     {
@@ -35,16 +35,8 @@ namespace GeoChemistryNexus.Helpers
                 return;
             }
 
-            // 确保 start 包含在 range 内或者稍微在左边（用于 minor ticks），但主要刻度应该在视图内
-            // ScottPlot 的 Range 通常是 View Range。
-            
-            // 为了安全起见，从稍微小于 Min 的位置开始尝试，直到大于 Max
-            // 或者直接计算第一个大于等于 Min 的刻度
-            
             // 第一个主刻度
             double firstMajor = Math.Ceiling(range.Min / Interval) * Interval;
-            // 如果正好在边界上，可能因为浮点误差需要微调，但通常 Ceiling 是安全的。
-            // 例如 Min=0, Interval=1 => firstMajor=0.
             
             // 生成主刻度
             for (double pos = firstMajor; pos <= range.Max + 1e-10; pos += Interval)
@@ -57,7 +49,7 @@ namespace GeoChemistryNexus.Helpers
             {
                 double minorStep = Interval / (MinorTickCount + 1);
                 
-                // 我们需要覆盖整个范围，包括第一个主刻度之前和最后一个主刻度之后的部分
+                // 覆盖整个范围，包括第一个主刻度之前和最后一个主刻度之后的部分
                 double rangeStart = Math.Floor(range.Min / Interval) * Interval;
                 double rangeEnd = Math.Ceiling(range.Max / Interval) * Interval;
 
@@ -68,7 +60,7 @@ namespace GeoChemistryNexus.Helpers
                         double minorPos = majorPos + i * minorStep;
                         if (minorPos >= range.Min - 1e-10 && minorPos <= range.Max + 1e-10)
                         {
-                            // 避免和主刻度重叠（理论上不会，因为是等分的）
+                             // 避免和主刻度重叠
                              ticks.Add(new Tick(minorPos, "", isMajor: false));
                         }
                     }

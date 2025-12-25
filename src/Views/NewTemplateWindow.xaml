@@ -4,15 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:uc="clr-namespace:GeoChemistryNexus.Controls"
-        xmlns:lg="clr-namespace:GeoChemistryNexus.Helpers"
+        xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
         mc:Ignorable="d"
         Title="{Binding [new_template],Source={x:Static lg:LanguageService.Instance}}"
         Height="550" Width="800"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner"
         WindowStyle="SingleBorderWindow"
-        Background="#F5F5F5">
-    <Grid Margin="10">
+        Background="#F5F5F7">
+    <Grid>
         <uc:NewTemplateControl x:Name="TemplateControl"
                                ConfirmCommand="{Binding ConfirmCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                CancelCommand="{Binding CancelCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -6,8 +6,9 @@ using System.Linq;
 using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
+using GeoChemistryNexus.Helpers;
 
-namespace GeoChemistryNexus.Helpers
+namespace GeoChemistryNexus.Services
 {
     public class LanguageService : INotifyPropertyChanged
     {
@@ -17,7 +18,7 @@ namespace GeoChemistryNexus.Helpers
         // 使用线程安全的单例模式
         private static readonly Lazy<LanguageService> _lazy = new Lazy<LanguageService>(() => new LanguageService());
         public static LanguageService Instance => _lazy.Value;
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public LanguageService()
         {
@@ -67,7 +68,25 @@ namespace GeoChemistryNexus.Helpers
             CurrentLanguage = cultureInfo.Name;
             CultureInfo.CurrentCulture = cultureInfo;
             CultureInfo.CurrentUICulture = cultureInfo;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("item[]"));  //字符串集合，对应资源的值
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Item[]"));  //字符串集合，对应资源的值
+        }
+
+        public static void RefreshCurrentCulture()
+        {
+            if (!string.IsNullOrEmpty(CurrentLanguage))
+            {
+                var culture = new CultureInfo(CurrentLanguage);
+                CultureInfo.CurrentCulture = culture;
+                CultureInfo.CurrentUICulture = culture;
+                // DefaultThreadCurrentCulture 只能影响新线程，对当前线程无效
+                CultureInfo.DefaultThreadCurrentCulture = culture;
+                CultureInfo.DefaultThreadCurrentUICulture = culture;
+                
+                // 通知UI更新绑定
+                Instance.PropertyChanged?.Invoke(Instance, new PropertyChangedEventArgs("Item[]"));
+            }
         }
     }
 }

@@ -1,3 +1,4 @@
+using GeoChemistryNexus.Services;
 using GeoChemistryNexus.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -7,9 +8,9 @@ using System.Windows.Input;
 
 namespace GeoChemistryNexus.Views.Widgets
 {
-    public partial class TemplateTranslatorControl : UserControl
+    public partial class TemplateTranslatorWidget : UserControl
     {
-        public TemplateTranslatorControl()
+        public TemplateTranslatorWidget()
         {
             InitializeComponent();
         }
@@ -34,7 +35,7 @@ namespace GeoChemistryNexus.Views.Widgets
             var openFileDialog = new Microsoft.Win32.OpenFileDialog
             {
                 Filter = "JSON Files (*.json)|*.json|All Files (*.*)|*.*",
-                Title = "选择绘图模板文件"
+                Title = LanguageService.Instance["select_drawing_template_file"]        // 选择绘图模板文件
             };
 
             if (openFileDialog.ShowDialog() == true)

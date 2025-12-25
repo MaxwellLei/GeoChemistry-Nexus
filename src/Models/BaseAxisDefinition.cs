@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Attributes;
 using System.ComponentModel;
 using System.Text.Json.Serialization;
 using GeoChemistryNexus.Converter;

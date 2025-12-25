@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Attributes;
 using System.ComponentModel;
 
 namespace GeoChemistryNexus.Models
@@ -16,6 +17,19 @@ namespace GeoChemistryNexus.Models
         [property: LocalizedCategory("axis_style")] // 坐标轴样式
         [property: LocalizedDisplayName("zoom_type")] // 缩放类型
         private AxisScaleType _scaleType = AxisScaleType.Linear;
+
+        // 优化切换对数缩放类型默认值
+        partial void OnScaleTypeChanged(AxisScaleType value)
+        {
+            if (value == AxisScaleType.Logarithmic)
+            {
+                Minimum = 0.1;
+                Maximum = 100000;
+            }
+            OnPropertyChanged(nameof(AllowedInputMinimum));
+        }
+
+        public double AllowedInputMinimum => ScaleType == AxisScaleType.Logarithmic ? 1E-9 : double.MinValue;
 
         /// <summary>
         /// 坐标轴最小值
@@ -86,5 +100,47 @@ namespace GeoChemistryNexus.Models
         [property: LocalizedCategory("minor_tick_style")] // 次刻度样式
         [property: LocalizedDisplayName("anti_aliasing")] // 抗锯齿
         private bool _minorTickAntiAlias = false;
+
+        #region Subtitle / SubLabel
+        /// <summary>
+        /// Sub-label text
+        /// </summary>
+        [ObservableProperty]
+        [property: LocalizedCategory("axis_title")]
+        [property: LocalizedDisplayName("subtitle")]
+        private LocalizedString _subLabel = new LocalizedString();
+
+        /// <summary>
+        /// Sub-label font size
+        /// </summary>
+        [ObservableProperty]
+        [property: LocalizedCategory("axis_title")]
+        [property: LocalizedDisplayName("subtitle_font_size")]
+        private float _subLabelSize = 14;
+
+        /// <summary>
+        /// Sub-label font color
+        /// </summary>
+        [ObservableProperty]
+        [property: LocalizedCategory("axis_title")]
+        [property: LocalizedDisplayName("subtitle_color")]
+        private string _subLabelColor = "#000000";
+
+        /// <summary>
+        /// Sub-label bold
+        /// </summary>
+        [ObservableProperty]
+        [property: LocalizedCategory("axis_title")]
+        [property: LocalizedDisplayName("subtitle_bold")]
+        private bool _subLabelBold = false;
+
+        /// <summary>
+        /// Sub-label italic
+        /// </summary>
+        [ObservableProperty]
+        [property: LocalizedCategory("axis_title")]
+        [property: LocalizedDisplayName("subtitle_italic")]
+        private bool _subLabelItalic = false;
+        #endregion
     }
 }

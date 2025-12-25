@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Models;
+using GeoChemistryNexus.Services;
 using System;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -29,7 +30,7 @@ namespace GeoChemistryNexus.ViewModels
         {
             if (IsBusy) return;
             IsBusy = true;
-            AnnouncementText = "正在加载公告...";
+            AnnouncementText = LanguageService.Instance["loading_announcements"];   // 正在加载公告....
 
             try
             {
@@ -43,17 +44,20 @@ namespace GeoChemistryNexus.ViewModels
                     }
                     else
                     {
-                        AnnouncementText = "暂无公告。";
+                        // 暂无公告
+                        AnnouncementText = LanguageService.Instance["no_announcements"];
                     }
                 }
                 else
                 {
-                    AnnouncementText = "无法获取公告信息。";
+                    // 无法获取公告信息。
+                    AnnouncementText = LanguageService.Instance["unable_to_get_announcements"];
                 }
             }
             catch (Exception ex)
             {
-                AnnouncementText = $"获取公告失败: {ex.Message}";
+                // 获取公告失败: Message
+                AnnouncementText = LanguageService.Instance["failed_to_get_announcements"] + $" {ex.Message}";
             }
             finally
             {

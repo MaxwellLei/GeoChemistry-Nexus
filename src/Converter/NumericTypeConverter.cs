@@ -8,7 +8,7 @@ namespace GeoChemistryNexus.Converter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            // Model -> View (NumericUpDown expects double)
+            // double
             if (value == null) return 0.0;
             
             double result = 0.0;
@@ -26,7 +26,6 @@ namespace GeoChemistryNexus.Converter
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            // View (NumericUpDown returns double) -> Model
             if (value is double d)
             {
                 if (targetType == typeof(int)) return System.Convert.ToInt32(d);

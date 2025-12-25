@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Attributes;
 
 namespace GeoChemistryNexus.Models
 {
@@ -19,7 +20,7 @@ namespace GeoChemistryNexus.Models
         private double _y = 0;
 
         /// <summary>
-        /// 是否处于高亮状态（例如在属性面板中被聚焦）
+        /// 是否处于高亮状态
         /// </summary>
         [ObservableProperty]
         [property: System.Text.Json.Serialization.JsonIgnore]

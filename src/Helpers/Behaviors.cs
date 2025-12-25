@@ -7,7 +7,7 @@ using Microsoft.Xaml.Behaviors;
 
 namespace GeoChemistryNexus.Helpers
 {
-    // 修改继承自 FrameworkElement 以便可以附加到 Border 或 StackPanel
+    // 继承自 FrameworkElement 以便附加到 Border 或 StackPanel
     public class TreeViewItemExpandBehavior : Behavior<FrameworkElement>
     {
         protected override void OnAttached()
@@ -24,7 +24,7 @@ namespace GeoChemistryNexus.Helpers
 
         private void OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            // 尝试获取 TemplatedParent，即 TreeViewItem
+            // 尝试获取 TreeViewItem
             var treeViewItem = AssociatedObject.TemplatedParent as TreeViewItem;
             if (treeViewItem == null)
             {
@@ -34,7 +34,7 @@ namespace GeoChemistryNexus.Helpers
 
             if (treeViewItem == null) return;
 
-            // 检查是否点击了 ToggleButton (Expander)，如果是则不处理，交由 ToggleButton 自身处理
+            // 检查是否点击了 Expander，如果是则不处理，交由 ToggleButton 自身处理
             var originalSource = e.OriginalSource as DependencyObject;
             if (FindAncestor<ToggleButton>(originalSource) != null)
             {

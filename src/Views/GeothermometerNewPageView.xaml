@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:lg="clr-namespace:GeoChemistryNexus.Helpers"
+      xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
       xmlns:hc="https://handyorg.github.io/handycontrol"
       xmlns:rg="clr-namespace:unvell.ReoGrid;assembly=unvell.ReoGrid"
       xmlns:local="clr-namespace:GeoChemistryNexus.Views"

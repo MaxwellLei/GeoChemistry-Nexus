@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -7,10 +7,11 @@
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Data\Icon\logo.ico</ApplicationIcon>
 	<!--软件版本号-->
-    <AssemblyVersion>0.5.26</AssemblyVersion>
+    <AssemblyVersion>0.6.0</AssemblyVersion>
 	<!--图表版本号-->
     <FileVersion>1.0</FileVersion>
     <Copyright>Copyright ©️ 2024</Copyright>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <ItemGroup>

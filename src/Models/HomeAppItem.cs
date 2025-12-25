@@ -9,15 +9,6 @@ namespace GeoChemistryNexus.Models
         WebLink,
         Widget
     }
-
-    // Base class for polymorphic deserialization if needed, 
-    // but for simple JSON, we might just use a single class or custom converter.
-    // Given the simple requirements, a single class might suffice if properties are nullable, 
-    // but inheritance is cleaner for MVVM.
-    // Let's use a single class for JSON storage simplicity to avoid complex polymorphic JSON handling 
-    // unless we need very different behaviors.
-    
-    // However, the user asked for "similar to Android app icon layout".
     
     public partial class HomeAppItem : ObservableObject
     {
@@ -37,11 +28,14 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         private string icon;
 
-        // For Widget
+        // 用于小部件
         public string WidgetKey { get; set; }
 
-        // Display properties (not stored in JSON potentially, or just part of the model)
         [JsonIgnore]
-        public object WidgetContent { get; set; } // The actual UI element for the widget
+        public bool IsWebLink => Type == HomeAppType.WebLink;
+
+        //  显示属性
+        [JsonIgnore]
+        public object WidgetContent { get; set; } // 小组件对象
     }
 }

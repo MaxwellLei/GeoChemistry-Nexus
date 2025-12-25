@@ -1,10 +1,10 @@
 using System.Windows.Controls;
 
-namespace GeoChemistryNexus.Views
+namespace GeoChemistryNexus.Views.Widgets
 {
-    public partial class DeveloperToolView : UserControl
+    public partial class DeveloperToolWidget : UserControl
     {
-        public DeveloperToolView()
+        public DeveloperToolWidget()
         {
             InitializeComponent();
             this.DataContext = new GeoChemistryNexus.ViewModels.DeveloperToolViewModel();

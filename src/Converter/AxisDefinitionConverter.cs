@@ -1,4 +1,4 @@
-﻿using GeoChemistryNexus.Models;
+using GeoChemistryNexus.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,7 @@ namespace GeoChemistryNexus.Converter
     {
         public override BaseAxisDefinition Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            // 创建 reader 的一个副本，用于预读和判断类型，而不影响主 reader 的状态
+            // 创建 reader 的一个副本，用于预读和判断类型
             var readerClone = reader;
 
             if (readerClone.TokenType != JsonTokenType.StartObject)
@@ -26,17 +26,15 @@ namespace GeoChemistryNexus.Converter
             {
                 var root = jsonDoc.RootElement;
 
-                // === 类型判断逻辑 ===
-                if (root.TryGetProperty("ScaleType", out _))
+                // 如果 TemplateType 为 "Ternary"，认定它是一个 TernaryAxisDefinition
+                if (root.TryGetProperty("TemplateType", out var typeProperty) && typeProperty.GetString() == "Ternary")
                 {
-                    // 如果存在 "ScaleType" 属性，认定它是一个 CartesianAxisDefinition
-                    // 然后使用对象的原始文本重新进行反序列化为具体类型
-                    return JsonSerializer.Deserialize<CartesianAxisDefinition>(root.GetRawText(), options);
+                    return JsonSerializer.Deserialize<TernaryAxisDefinition>(root.GetRawText(), options);
                 }
                 else
                 {
-                    // 否则，我们认为它是一个 TernaryAxisDefinition
-                    return JsonSerializer.Deserialize<TernaryAxisDefinition>(root.GetRawText(), options);
+                    // 否则，默认认定它是一个 CartesianAxisDefinition
+                    return JsonSerializer.Deserialize<CartesianAxisDefinition>(root.GetRawText(), options);
                 }
             }
         }

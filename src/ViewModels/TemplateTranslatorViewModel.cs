@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Services;
 using GeoChemistryNexus.Models;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,7 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private GraphMapTemplate _currentTemplate;
 
+        [ObservableProperty]
         private List<LocalizedString> _localizedStrings;
 
         private readonly JsonSerializerOptions _jsonOptions;
@@ -139,7 +141,7 @@ namespace GeoChemistryNexus.ViewModels
                 }
 
                 // 版本校验
-                if (!GraphMapTemplateParser.IsVersionCompatible(_currentTemplate))
+                if (!GraphMapTemplateService.IsVersionCompatible(_currentTemplate))
                 {
                     StatusMessage = LanguageService.Instance["template_version_too_high"];
                     return;
@@ -367,8 +369,7 @@ namespace GeoChemistryNexus.ViewModels
                         }
                         else
                         {
-                            // 如果值为空，可以选择保留空字符串，或者删除该 key
-                            // 这里选择写入空字符串，以保持 key 的存在
+
                              locString.Translations[langKey] = string.Empty;
                         }
                     }

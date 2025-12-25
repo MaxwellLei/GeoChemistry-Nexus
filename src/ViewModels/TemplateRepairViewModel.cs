@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using GeoChemistryNexus.Services;
 using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Models;
 using System;
@@ -81,7 +82,7 @@ namespace GeoChemistryNexus.ViewModels
                 try
                 {
                     string json = File.ReadAllText(path);
-                    JsonSerializer.Deserialize<List<GraphMapTemplateParser.JsonTemplateItem>>(json);
+                    JsonSerializer.Deserialize<List<GraphMapTemplateService.JsonTemplateItem>>(json);
                 }
                 catch
                 {
@@ -147,11 +148,11 @@ namespace GeoChemistryNexus.ViewModels
 
             var json = File.ReadAllText(listPath);
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            var list = JsonSerializer.Deserialize<List<GraphMapTemplateParser.JsonTemplateItem>>(json, options);
+            var list = JsonSerializer.Deserialize<List<GraphMapTemplateService.JsonTemplateItem>>(json, options);
 
             if (list == null) return;
 
-            var itemsToRemove = new List<GraphMapTemplateParser.JsonTemplateItem>();
+            var itemsToRemove = new List<GraphMapTemplateService.JsonTemplateItem>();
             string defaultDir = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Default");
 
             foreach (var item in list)
@@ -204,10 +205,10 @@ namespace GeoChemistryNexus.ViewModels
 
             var json = File.ReadAllText(listPath);
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            List<GraphMapTemplateParser.JsonTemplateItem> list;
+            List<GraphMapTemplateService.JsonTemplateItem> list;
             try
             {
-                list = JsonSerializer.Deserialize<List<GraphMapTemplateParser.JsonTemplateItem>>(json, options);
+                list = JsonSerializer.Deserialize<List<GraphMapTemplateService.JsonTemplateItem>>(json, options);
             }
             catch
             {
@@ -217,7 +218,7 @@ namespace GeoChemistryNexus.ViewModels
 
             if (list == null) return;
 
-            var itemsToRemove = new List<GraphMapTemplateParser.JsonTemplateItem>();
+            var itemsToRemove = new List<GraphMapTemplateService.JsonTemplateItem>();
             string customDir = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Custom");
 
             foreach (var item in list)

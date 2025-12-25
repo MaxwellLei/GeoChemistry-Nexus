@@ -24,7 +24,7 @@ namespace GeoChemistryNexus.Helpers
             set { SetValue(DataProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for Data.
+        // 使用 DependencyProperty 作为 Data 的后台存储
         public static readonly DependencyProperty DataProperty =
             DependencyProperty.Register("Data", typeof(object), typeof(BindingProxy), new PropertyMetadata(null));
     }

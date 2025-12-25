@@ -54,30 +54,7 @@ namespace GeoChemistryNexus
         //窗体加载完成后的按钮动画
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //创建动画过程
-            var marginAnim = new ThicknessAnimation()
-            {
-                From = new Thickness(-200, 0, 0, 0),
-                To = new Thickness(0, 0, 0, 0),
-                EasingFunction = new QuadraticEase()
-            };
-            for (int i = 1; i < 5; i++)
-            {
-                Storyboard.SetTargetName(marginAnim, "RadioButton" + i);
-                Storyboard.SetTargetProperty(marginAnim, new PropertyPath(MarginProperty));
-
-                //延迟动画时间
-                marginAnim.Duration = TimeSpan.FromSeconds(0.5 + i * 0.25);
-
-                //创建动画版播放动画
-                var sb = new Storyboard();
-                sb.Children.Add(marginAnim);
-                sb.Begin(this);
-
-            }
-
-
-
+            
             //加载自定义的鼠标样式
             //System.Windows.Input.Cursor myCursor = new System.Windows.Input.Cursor(@"Data/Cursors/pointer.cur");
             //rootborder.Cursor = myCursor;

@@ -1,4 +1,5 @@
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Services;
 using GeoChemistryNexus.Interfaces;
 using GeoChemistryNexus.Models;
 using ScottPlot;
@@ -82,15 +83,15 @@ namespace GeoChemistryNexus.ViewModels
 
             // 颜色转换
             textPlot.LabelFontColor = ScottPlot.Color.FromHex(
-                GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(TextDefinition.Color));
+                GraphMapTemplateService.ConvertWpfHexToScottPlotHex(TextDefinition.Color));
 
             // 背景色
             textPlot.LabelBackgroundColor = ScottPlot.Color.FromHex(
-                GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(TextDefinition.BackgroundColor));
+                GraphMapTemplateService.ConvertWpfHexToScottPlotHex(TextDefinition.BackgroundColor));
 
             // 边框色
             textPlot.LabelBorderColor = ScottPlot.Color.FromHex(
-                GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(TextDefinition.BorderColor));
+                GraphMapTemplateService.ConvertWpfHexToScottPlotHex(TextDefinition.BorderColor));
 
             textPlot.LabelBorderWidth = TextDefinition.BorderWidth;
             textPlot.LabelBorderRadius = TextDefinition.FilletRadius;
@@ -151,13 +152,13 @@ namespace GeoChemistryNexus.ViewModels
             if (Plottable is ScottPlot.Plottables.Text textPlot)
             {
                 // 恢复颜色
-                textPlot.LabelFontColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(TextDefinition.Color));
+                textPlot.LabelFontColor = ScottPlot.Color.FromHex(GraphMapTemplateService.ConvertWpfHexToScottPlotHex(TextDefinition.Color));
 
                 // 恢复背景
-                textPlot.LabelBackgroundColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(TextDefinition.BackgroundColor));
+                textPlot.LabelBackgroundColor = ScottPlot.Color.FromHex(GraphMapTemplateService.ConvertWpfHexToScottPlotHex(TextDefinition.BackgroundColor));
 
                 // 恢复边框
-                textPlot.LabelBorderColor = ScottPlot.Color.FromHex(GraphMapTemplateParser.ConvertWpfHexToScottPlotHex(TextDefinition.BorderColor));
+                textPlot.LabelBorderColor = ScottPlot.Color.FromHex(GraphMapTemplateService.ConvertWpfHexToScottPlotHex(TextDefinition.BorderColor));
                 textPlot.LabelBorderWidth = TextDefinition.BorderWidth;
 
                 // 恢复字体样式

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +7,7 @@ using static SkiaSharp.HarfBuzz.SKShaper;
 using unvell.ReoGrid;
 using unvell.ReoGrid.Formula;
 using HandyControl.Tools.Extension;
+using GeoChemistryNexus.Services;
 
 namespace GeoChemistryNexus.Helpers
 {

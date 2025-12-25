@@ -1,3 +1,4 @@
+using GeoChemistryNexus.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,18 +26,20 @@ namespace GeoChemistryNexus.Helpers
                 // 检查参数
                 if (string.IsNullOrEmpty(rtfFilePath))
                 {
-                    throw new ArgumentException("文件路径不能为空", nameof(rtfFilePath));
+                    // 文件路径不能为空
+                    throw new ArgumentException(LanguageService.Instance["file_path_cannot_be_empty"], nameof(rtfFilePath));
                 }
 
                 if (richTextBox == null)
                 {
-                    throw new ArgumentNullException(nameof(richTextBox), "RichTextBox控件不能为null");
+                    // RichTextBox控件不能为null
+                    throw new ArgumentNullException(nameof(richTextBox), LanguageService.Instance["richtextbox_control_cannot_be_null"]);
                 }
 
                 // 检查文件是否存在
                 if (!File.Exists(rtfFilePath))
                 {
-                    throw new FileNotFoundException($"文件不存在: {rtfFilePath}");
+                    throw new FileNotFoundException(LanguageService.Instance["file_does_not_exist"] + $"{rtfFilePath}");
                 }
 
                 // 读取RTF文件内容
@@ -54,7 +57,7 @@ namespace GeoChemistryNexus.Helpers
             }
             catch (Exception ex)
             {
-                MessageHelper.Error($"加载RTF文件时出错: {ex.Message}");
+                MessageHelper.Error(LanguageService.Instance["error_loading_rtf_file"] + $"{ex.Message}");
                 return false;
             }
         }
@@ -72,18 +75,18 @@ namespace GeoChemistryNexus.Helpers
                 // 检查参数
                 if (string.IsNullOrEmpty(rtfFilePath))
                 {
-                    throw new ArgumentException("文件路径不能为空", nameof(rtfFilePath));
+                    throw new ArgumentException(LanguageService.Instance["file_path_cannot_be_empty"], nameof(rtfFilePath));
                 }
 
                 if (richTextBox == null)
                 {
-                    throw new ArgumentNullException(nameof(richTextBox), "RichTextBox控件不能为null");
+                    throw new ArgumentNullException(nameof(richTextBox), LanguageService.Instance["richtextbox_control_cannot_be_null"]);
                 }
 
                 // 检查文件是否存在
                 if (!File.Exists(rtfFilePath))
                 {
-                    throw new FileNotFoundException($"文件不存在: {rtfFilePath}");
+                    throw new FileNotFoundException(LanguageService.Instance["file_does_not_exist"] + $"{rtfFilePath}");
                 }
 
                 // 异步读取文件内容
@@ -114,7 +117,7 @@ namespace GeoChemistryNexus.Helpers
             }
             catch (Exception ex)
             {
-                MessageHelper.Error($"加载RTF文件时出错: {ex.Message}");
+                MessageHelper.Error(LanguageService.Instance["error_loading_rtf_file"] + $"{ex.Message}");
                 return false;
             }
         }
@@ -132,12 +135,12 @@ namespace GeoChemistryNexus.Helpers
                 // 检查参数
                 if (richTextBox == null)
                 {
-                    throw new ArgumentNullException(nameof(richTextBox), "RichTextBox控件不能为null");
+                    throw new ArgumentNullException(nameof(richTextBox), LanguageService.Instance["richtextbox_control_cannot_be_null"]);
                 }
 
                 if (string.IsNullOrEmpty(rtfFilePath))
                 {
-                    throw new ArgumentException("文件路径不能为空", nameof(rtfFilePath));
+                    throw new ArgumentException(LanguageService.Instance["file_path_cannot_be_empty"], nameof(rtfFilePath));
                 }
 
                 // 获取RichTextBox的RTF内容
@@ -154,7 +157,7 @@ namespace GeoChemistryNexus.Helpers
             }
             catch (Exception ex)
             {
-                MessageHelper.Error($"保存RTF文件时出错: {ex.Message}");
+                MessageHelper.Error(LanguageService.Instance["error_saving_rtf_file"] + $"{ex.Message}");
                 return false;
             }
         }

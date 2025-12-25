@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Linq;
+using GeoChemistryNexus.Helpers;
 
-namespace GeoChemistryNexus.Helpers
+namespace GeoChemistryNexus.Services
 {
     public class HomeAppService
     {
@@ -58,32 +59,32 @@ namespace GeoChemistryNexus.Helpers
                 new HomeAppItem
                 {
                     Type = HomeAppType.Widget,
-                    Title = "模板翻译器",
-                    Description = "编辑绘图模板的多语言翻译",
+                    Title = LanguageService.Instance["template_translator"],        // 图解模板翻译器
+                    Description = LanguageService.Instance["edit_drawing_template_translations"],       // 编辑绘图模板的多语言翻译
                     WidgetKey = "TemplateTranslatorWidget",
                     Icon = "\ue8c1"
                 },
                 new HomeAppItem
                 {
                     Type = HomeAppType.Widget,
-                    Title = "模板修复工具",
-                    Description = "修复丢失或损坏的绘图模板及列表",
+                    Title = LanguageService.Instance["diagram_template_repair_tool"],
+                    Description = LanguageService.Instance["repair_missing_or_damaged_templates_and_lists"],        // 修复丢失或损坏的绘图模板及列表
                     WidgetKey = "TemplateRepairWidget",
                     Icon = "\ue82f" 
                 },
                 new HomeAppItem
                 {
                     Type = HomeAppType.Widget,
-                    Title = "服务器公告",
-                    Description = "查看服务器发布的最新公告信息",
+                    Title = LanguageService.Instance["server_announcements"],       // 服务器公告
+                    Description = LanguageService.Instance["view_latest_server_announcements"],     // 查看服务器发布的最新公告信息
                     WidgetKey = "AnnouncementWidget",
                     Icon = "\ue789" // Info or Announcement icon
                 },
                 new HomeAppItem
                 {
                     Type = HomeAppType.Widget,
-                    Title = "开发者工具",
-                    Description = "维护服务器配置与模板文件",
+                    Title = LanguageService.Instance["developer_maintenance_tools"],        // 开发者工具
+                    Description = LanguageService.Instance["maintain_server_config_and_templates"],       // 维护服务器配置与模板文件
                     WidgetKey = "DeveloperToolWidget",
                     Icon = "\ue90f" // Tool/Wrench icon
                 }

@@ -1,4 +1,5 @@
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Attributes;
 using System;
 using System.Globalization;
 using System.Reflection;

@@ -106,20 +106,14 @@
   <data name="Exit" xml:space="preserve">
     <value>Exit</value>
   </data>
-  <data name="SmashIt" xml:space="preserve">
-    <value>🔨Smash It?</value>
-  </data>
-  <data name="SmashItC" xml:space="preserve">
-    <value>What's inside? Maybe you can try smashing it</value>
-  </data>
   <data name="home" xml:space="preserve">
     <value>Home</value>
   </data>
   <data name="Plot" xml:space="preserve">
-    <value>Plot</value>
+    <value>Diagram Plot</value>
   </data>
   <data name="Geothermometer" xml:space="preserve">
-    <value>GTM</value>
+    <value>Geothermometer</value>
   </data>
   <data name="Setting" xml:space="preserve">
     <value>Setting</value>
@@ -565,32 +559,8 @@
   <data name="CalTarget2" xml:space="preserve">
     <value>Zr Major Element Temperature (Watson and Harrison, 1983)</value>
   </data>
-  <data name="AtomicMassStd" xml:space="preserve">
-    <value>Atomic Mass Standard</value>
-  </data>
   <data name="Pressure" xml:space="preserve">
     <value>Pressure (MPa)</value>
-  </data>
-  <data name="ActivityTiO2" xml:space="preserve">
-    <value>Activity (TiO2)</value>
-  </data>
-  <data name="ActivitySiO2" xml:space="preserve">
-    <value>Activity (SiO2)</value>
-  </data>
-  <data name="fS" xml:space="preserve">
-    <value>Sulfur Fugacity</value>
-  </data>
-  <data name="fSInfo" xml:space="preserve">
-    <value>Automatic Calculation Method for Sulfur Fugacity</value>
-  </data>
-  <data name="DefaultImport" xml:space="preserve">
-    <value>Default Import</value>
-  </data>
-  <data name="ShowError" xml:space="preserve">
-    <value>Show Error Range</value>
-  </data>
-  <data name="MineralAssemblage" xml:space="preserve">
-    <value>Mineral Assemblage</value>
   </data>
   <data name="AmphiboleGTM" xml:space="preserve">
     <value>Si Geothermometer (Ridolfi et al., 2010)</value>
@@ -667,14 +637,11 @@
   <data name="EnglishUS" xml:space="preserve">
     <value>English (US)</value>
   </data>
-  <data name="StartBackgroundImages" xml:space="preserve">
-    <value>Startup Background Image</value>
-  </data>
   <data name="DefaultRandom" xml:space="preserve">
     <value>Default Random</value>
   </data>
   <data name="MessageNotification" xml:space="preserve">
-    <value>Message Notification</value>
+    <value>MESSAGE NOTIFICATION</value>
   </data>
   <data name="MessageAutoClose" xml:space="preserve">
     <value>Auto-close Time</value>
@@ -692,7 +659,7 @@
     <value>2 seconds</value>
   </data>
   <data name="Other" xml:space="preserve">
-    <value>Other</value>
+    <value>OTHER</value>
   </data>
   <data name="Boot" xml:space="preserve">
     <value>Start with System</value>
@@ -719,7 +686,9 @@
     <value>If you're interested in this project, please consider giving it a Star for support! If you find it helpful, you can also buy me a coffee☕</value>
   </data>
   <data name="AboutInfo3" xml:space="preserve">
-    <value>We welcome more researchers to join!&amp;#xA;Let's maintain and update geochemical calculation methods together, and create more plotting templates!&amp;#xA;Make the software more powerful and user-friendly!</value>
+    <value>We welcome more researchers to join!
+	Let's maintain and update geochemical calculation methods together, and create more plotting templates!
+	Make the software more powerful and user-friendly!</value>
   </data>
   <data name="ThankSupport" xml:space="preserve">
     <value>Thanks for the Support</value>
@@ -757,14 +726,14 @@
   <data name="import_template" xml:space="preserve">
     <value>Import Plotting Template</value>
   </data>
-  <data name="new_template" xml:space="preserve">
-    <value>New Plotting Template</value>
+  <data name="create_new_diagram_template" xml:space="preserve">
+    <value>New Diagram Template</value>
   </data>
   <data name="template_library" xml:space="preserve">
     <value>Template Library</value>
   </data>
   <data name="return_to_template_library" xml:space="preserve">
-    <value>Template Library</value>
+    <value>Back</value>
   </data>
   <data name="Data" xml:space="preserve">
     <value>Data</value>
@@ -1192,8 +1161,8 @@
   <data name="advanced_rendering" xml:space="preserve">
     <value>Advanced Rendering</value>
   </data>
-  <data name="open_template" xml:space="preserve">
-    <value>Open Plotting Template</value>
+  <data name="open_diagram_template" xml:space="preserve">
+    <value>Open Diagram Template</value>
   </data>
   <data name="new_version_available_github" xml:space="preserve">
     <value>New version found! Please go to the GitHub Release page to download the update.</value>
@@ -1319,7 +1288,7 @@
     <value>Copy Plot Image to Clipboard</value>
   </data>
   <data name="use_help" xml:space="preserve">
-    <value>Help Manual</value>
+    <value>Diagram Guide</value>
   </data>
   <data name="no_data_please_add_data" xml:space="preserve">
     <value>No data, please add data</value>
@@ -1411,8 +1380,8 @@
   <data name="cannot_delete_base_layers" xml:space="preserve">
     <value>Cannot delete base layers.</value>
   </data>
-  <data name="template" xml:space="preserve">
-    <value>_Template(T)</value>
+  <data name="update" xml:space="preserve">
+    <value>_Update(U)</value>
   </data>
   <data name="check_for_template_updates" xml:space="preserve">
     <value>Check for Template Updates</value>
@@ -1593,5 +1562,308 @@
   </data>
   <data name="interval" xml:space="preserve">
     <value>Interval</value>
+  </data>
+  <data name="pick_coordinate" xml:space="preserve">
+    <value>Pick Coordinates</value>
+  </data>
+  <data name="remove_point" xml:space="preserve">
+    <value>Delete this vertex</value>
+  </data>
+  <data name="vertex_add_new" xml:space="preserve">
+    <value>Add new vertex</value>
+  </data>
+  <data name="subtitle" xml:space="preserve">
+    <value>Subtitle</value>
+  </data>
+  <data name="subtitle_font_size" xml:space="preserve">
+    <value>Subtitle Size</value>
+  </data>
+  <data name="subtitle_color" xml:space="preserve">
+    <value>Subtitle Color</value>
+  </data>
+  <data name="subtitle_bold" xml:space="preserve">
+    <value>Subtitle Bold</value>
+  </data>
+  <data name="subtitle_italic" xml:space="preserve">
+    <value>Subtitle Italic</value>
+  </data>
+  <data name="edit_link" xml:space="preserve">
+    <value>Edit link</value>
+  </data>
+  <data name="template_translator" xml:space="preserve">
+    <value>Diagram Template Translator</value>
+  </data>
+  <data name="diagram_template_repair_tool" xml:space="preserve">
+    <value>Diagram Template Repair Tool</value>
+  </data>
+  <data name="server_announcement" xml:space="preserve">
+    <value>Server Announcement</value>
+  </data>
+  <data name="developer_maintenance_tool" xml:space="preserve">
+    <value>Developer Maintenance Tool</value>
+  </data>
+  <data name="copy_content" xml:space="preserve">
+    <value>Copy Content</value>
+  </data>
+  <data name="modified_successfully" xml:space="preserve">
+    <value>Modified</value>
+  </data>
+  <data name="error_loading_rtf_file" xml:space="preserve">
+    <value>Error loading RTF file:</value>
+  </data>
+  <data name="file_path_cannot_be_empty" xml:space="preserve">
+    <value>File path cannot be empty</value>
+  </data>
+  <data name="richtextbox_control_cannot_be_null" xml:space="preserve">
+    <value>RichTextBox control cannot be null</value>
+  </data>
+  <data name="file_does_not_exist" xml:space="preserve">
+    <value>File does not exist:</value>
+  </data>
+  <data name="error_saving_rtf_file" xml:space="preserve">
+    <value>Error saving RTF file:</value>
+  </data>
+  <data name="unable_to_get_latest_release_info" xml:space="preserve">
+    <value>Unable to get latest release information</value>
+  </data>
+  <data name="invalid_formula" xml:space="preserve">
+    <value>Invalid formula</value>
+  </data>
+  <data name="loading_announcements" xml:space="preserve">
+    <value>Loading announcements...</value>
+  </data>
+  <data name="no_announcements" xml:space="preserve">
+    <value>No announcements available.</value>
+  </data>
+  <data name="unable_to_get_announcements" xml:space="preserve">
+    <value>Unable to get announcement information.</value>
+  </data>
+  <data name="failed_to_get_announcements" xml:space="preserve">
+    <value>Failed to get announcements:</value>
+  </data>
+  <data name="error_loading_template_list" xml:space="preserve">
+    <value>Error loading template list:</value>
+  </data>
+  <data name="unable_to_open_link" xml:space="preserve">
+    <value>Unable to open link:</value>
+  </data>
+  <data name="add_link" xml:space="preserve">
+    <value>Add Link</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="link_url" xml:space="preserve">
+    <value>Link (URL)</value>
+  </data>
+  <data name="description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="icon" xml:space="preserve">
+    <value>Icon</value>
+  </data>
+  <data name="please_enter_name" xml:space="preserve">
+    <value>Please enter a name</value>
+  </data>
+  <data name="please_enter_link" xml:space="preserve">
+    <value>Please enter a link</value>
+  </data>
+  <data name="add_widget" xml:space="preserve">
+    <value>Add Widget</value>
+  </data>
+  <data name="please_select_widget_to_add" xml:space="preserve">
+    <value>Please select a widget to add:</value>
+  </data>
+  <data name="please_select_a_widget" xml:space="preserve">
+    <value>Please select a widget</value>
+  </data>
+  <data name="server_announcements" xml:space="preserve">
+    <value>Server Announcements</value>
+  </data>
+  <data name="refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="developer_maintenance_tools" xml:space="preserve">
+    <value>Developer Maintenance Tools</value>
+  </data>
+  <data name="drawing_template_repair_tool" xml:space="preserve">
+    <value>Diagram Template Repair Tool</value>
+  </data>
+  <data name="start_check_and_repair" xml:space="preserve">
+    <value>Start Check and Repair</value>
+  </data>
+  <data name="close_file" xml:space="preserve">
+    <value>Close File</value>
+  </data>
+  <data name="open_import" xml:space="preserve">
+    <value>Open Import</value>
+  </data>
+  <data name="add_language_column" xml:space="preserve">
+    <value>Add Language Column</value>
+  </data>
+  <data name="swap_language_columns" xml:space="preserve">
+    <value>Swap Language Columns</value>
+  </data>
+  <data name="delete_language_column" xml:space="preserve">
+    <value>Delete Language Column</value>
+  </data>
+  <data name="click_or_drag_template_json_here" xml:space="preserve">
+    <value>Click or drag template file (JSON) here</value>
+  </data>
+  <data name="support_json_format" xml:space="preserve">
+    <value>Supports .json format</value>
+  </data>
+  <data name="save_changes" xml:space="preserve">
+    <value>Save Changes</value>
+  </data>
+  <data name="select_drawing_template_file" xml:space="preserve">
+    <value>Select Drawing Template File</value>
+  </data>
+  <data name="edit_menu_bar_item" xml:space="preserve">
+    <value>Edit Menu Bar Item</value>
+  </data>
+  <data name="import_custom_diagram_template" xml:space="preserve">
+    <value>Import Custom Diagram Template</value>
+  </data>
+  <data name="open_file_location" xml:space="preserve">
+    <value>Open File Location</value>
+  </data>
+  <data name="export_diagram_template" xml:space="preserve">
+    <value>Export Diagram Template</value>
+  </data>
+  <data name="downloading_ellipsis" xml:space="preserve">
+    <value>Downloading...</value>
+  </data>
+  <data name="initializing_language_service_ellipsis" xml:space="preserve">
+    <value>Initializing language service...</value>
+  </data>
+  <data name="loading_font_resources_ellipsis" xml:space="preserve">
+    <value>Loading font resources...</value>
+  </data>
+  <data name="reading_user_configuration_ellipsis" xml:space="preserve">
+    <value>Reading user configuration...</value>
+  </data>
+  <data name="loading_drawing_module_ellipsis" xml:space="preserve">
+    <value>Loading drawing module...</value>
+  </data>
+  <data name="loading_main_interface_components_ellipsis" xml:space="preserve">
+    <value>Loading main interface components...</value>
+  </data>
+  <data name="entering_soon_ellipsis" xml:space="preserve">
+    <value>Entering soon...</value>
+  </data>
+  <data name="completed" xml:space="preserve">
+    <value>Completed</value>
+  </data>
+  <data name="error_occurred_during_startup" xml:space="preserve">
+    <value>An error occurred during startup:</value>
+  </data>
+  <data name="language_apperarance" xml:space="preserve">
+    <value>LANGUAGE &amp; APPEARANCE</value>
+  </data>
+  <data name="startup_background_image" xml:space="preserve">
+    <value>Startup Background Image</value>
+  </data>
+  <data name="add_image" xml:space="preserve">
+    <value>Add Image</value>
+  </data>
+  <data name="external_applications" xml:space="preserve">
+    <value>EXTERNAL APPLICATIONS</value>
+  </data>
+  <data name="custom_app" xml:space="preserve">
+    <value>Custom App</value>
+  </data>
+  <data name="plot_defaults" xml:space="preserve">
+    <value>PLOT DEFAULTS</value>
+  </data>
+  <data name="default_diagram_expand_level" xml:space="preserve">
+    <value>Default Diagram Expand Level</value>
+  </data>
+  <data name="default_third_party_editor" xml:space="preserve">
+    <value>Default Third-Party Editor</value>
+  </data>
+  <data name="automatic_updates" xml:space="preserve">
+    <value>AUTOMATIC UPDATES</value>
+  </data>
+  <data name="auto_check_diagram_template_updates" xml:space="preserve">
+    <value>Auto Check Diagram Template Updates</value>
+  </data>
+  <data name="community" xml:space="preserve">
+    <value>COMMUNITY</value>
+  </data>
+  <data name="export_and_tools" xml:space="preserve">
+    <value>Export / Tools</value>
+  </data>
+  <data name="format" xml:space="preserve">
+    <value>Format</value>
+  </data>
+  <data name="third_party_software" xml:space="preserve">
+    <value>Third Party Apps</value>
+  </data>
+  <data name="select_software" xml:space="preserve">
+    <value>Select Software</value>
+  </data>
+  <data name="open_with_third_party_software" xml:space="preserve">
+    <value>Open with Third-Party Software</value>
+  </data>
+  <data name="confirm_enter_edit_mode_base_map" xml:space="preserve">
+    <value>Are you sure you want to enter edit mode? This will allow you to modify the base map.</value>
+  </data>
+  <data name="information" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="click_to_pick_coordinates" xml:space="preserve">
+    <value>Please click in the drawing area to pick coordinates</value>
+  </data>
+  <data name="picking_operation_cancelled" xml:space="preserve">
+    <value>Picking operation cancelled</value>
+  </data>
+  <data name="diagram" xml:space="preserve">
+    <value>Diagram</value>
+  </data>
+  <data name="official_website" xml:space="preserve">
+    <value>Official Website</value>
+  </data>
+  <data name="minimize" xml:space="preserve">
+    <value>Minimize</value>
+  </data>
+  <data name="maximize" xml:space="preserve">
+    <value>Maximize</value>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="diagram_title_properties" xml:space="preserve">
+    <value>Diagram Title Properties</value>
+  </data>
+  <data name="diagram_script_properties" xml:space="preserve">
+    <value>Diagram Script Properties</value>
+  </data>
+  <data name="diagram_legend_properties" xml:space="preserve">
+    <value>Diagram Legend Properties</value>
+  </data>
+  <data name="diagram_grid_properties" xml:space="preserve">
+    <value>Diagram Grid Properties</value>
+  </data>
+  <data name="switch_diagram_language" xml:space="preserve">
+    <value>Switch Diagram Language</value>
+  </data>
+  <data name="popup_diagram_window" xml:space="preserve">
+    <value>Pop-up Diagram Window</value>
+  </data>
+  <data name="independent_diagram_window" xml:space="preserve">
+    <value>Independent Diagram Window</value>
+  </data>
+  <data name="edit_drawing_template_translations" xml:space="preserve">
+    <value>Edit Drawing Template Translations</value>
+  </data>
+  <data name="repair_missing_or_damaged_templates_and_lists" xml:space="preserve">
+    <value>Repair missing or damaged drawing templates and lists</value>
+  </data>
+  <data name="view_latest_server_announcements" xml:space="preserve">
+    <value>View the latest announcements from the server</value>
+  </data>
+  <data name="maintain_server_config_and_templates" xml:space="preserve">
+    <value>Maintain server configurations and template files</value>
   </data>
 </root>

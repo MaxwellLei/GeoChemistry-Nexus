@@ -1,11 +1,13 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Services;
 using GeoChemistryNexus.Models;
 using GeoChemistryNexus.Views;
 using GeoChemistryNexus.Views.Widgets;
 using GongSolutions.Wpf.DragDrop;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -33,6 +35,28 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private ObservableCollection<HomeAppItem> homeApps = new();
 
+        private List<HomeAppItem> _allApps = new();
+
+        partial void OnSearchStringChanged(string value)
+        {
+            UpdateHomeApps();
+        }
+
+        private void UpdateHomeApps()
+        {
+            if (string.IsNullOrWhiteSpace(SearchString))
+            {
+                HomeApps = new ObservableCollection<HomeAppItem>(_allApps);
+            }
+            else
+            {
+                var q = SearchString.Trim();
+                var filtered = _allApps.Where(a => (a.Title?.Contains(q, StringComparison.OrdinalIgnoreCase) ?? false) || 
+                                                   (a.Description?.Contains(q, StringComparison.OrdinalIgnoreCase) ?? false));
+                HomeApps = new ObservableCollection<HomeAppItem>(filtered);
+            }
+        }
+
         public HomePageViewModel()
         {
             UpdateNow();
@@ -52,10 +76,12 @@ namespace GeoChemistryNexus.ViewModels
             var filtered = apps.Where(a => !(a.Type == HomeAppType.Widget &&
                                              (string.Equals(a.WidgetKey, "CalendarWidget", StringComparison.OrdinalIgnoreCase)
                                               || string.Equals(a.WidgetKey, "SystemInfoWidget", StringComparison.OrdinalIgnoreCase)))).ToList();
-            HomeApps = new ObservableCollection<HomeAppItem>(filtered);
+            _allApps = filtered;
+            UpdateHomeApps();
+
             if (filtered.Count != apps.Count)
             {
-                HomeAppService.SaveApps(HomeApps);
+                HomeAppService.SaveApps(_allApps);
             }
         }
 
@@ -79,11 +105,12 @@ namespace GeoChemistryNexus.ViewModels
             if (app.Type == HomeAppType.WebLink)
             {
                 var dialog = new AddLinkWindow();
+                dialog.Owner = Application.Current.MainWindow;
                 dialog.TitleBox.Text = app.Title;
                 dialog.UrlBox.Text = app.Url;
                 dialog.DescBox.Text = app.Description;
                 dialog.IconBox.SelectedValue = app.Icon;
-                dialog.Title = "编辑链接";
+                dialog.Title = LanguageService.Instance["edit_link"];
 
                 if (dialog.ShowDialog() == true)
                 {
@@ -93,7 +120,7 @@ namespace GeoChemistryNexus.ViewModels
                     app.Icon = dialog.Result.Icon;
                     
                     // Trigger update if needed, though ObservableObject handles property changes
-                    HomeAppService.SaveApps(HomeApps);
+                    HomeAppService.SaveApps(_allApps);
                 }
             }
             // Widgets editing logic if needed
@@ -101,7 +128,7 @@ namespace GeoChemistryNexus.ViewModels
 
         public void SaveOrder()
         {
-            HomeAppService.SaveApps(HomeApps);
+            HomeAppService.SaveApps(_allApps);
         }
 
         [RelayCommand]
@@ -138,57 +165,69 @@ namespace GeoChemistryNexus.ViewModels
             }
             else if (app.Type == HomeAppType.Widget)
             {
-                if (app.WidgetKey == "TemplateTranslatorWidget")
+                try
                 {
-                    var window = new Window
+                    Window window = null;
+
+                    if (app.WidgetKey == "TemplateTranslatorWidget")
                     {
-                        Title = "模板翻译器",
-                        Width = 900,
-                        Height = 600,
-                        Content = new TemplateTranslatorControl { DataContext = new TemplateTranslatorViewModel() },
-                        Owner = Application.Current.MainWindow,
-                        WindowStartupLocation = WindowStartupLocation.CenterOwner
-                    };
-                    window.Show();
+                        window = new Window
+                        {
+                            Title = LanguageService.Instance["template_translator"],
+                            Width = 900,
+                            Height = 600,
+                            Content = new TemplateTranslatorWidget { DataContext = new TemplateTranslatorViewModel() }
+                        };
+                    }
+                    else if (app.WidgetKey == "TemplateRepairWidget")
+                    {
+                        window = new Window
+                        {
+                            Title = LanguageService.Instance["diagram_template_repair_tool"],
+                            Width = 600,
+                            Height = 400,
+                            Content = new TemplateRepairWidget { DataContext = new TemplateRepairViewModel() }
+                        };
+                    }
+                    else if (app.WidgetKey == "AnnouncementWidget")
+                    {
+                        window = new Window
+                        {
+                            Title = LanguageService.Instance["server_announcement"],
+                            Width = 500,
+                            Height = 350,
+                            Content = new AnnouncementWidget { DataContext = new AnnouncementViewModel() }
+                        };
+                    }
+                    else if (app.WidgetKey == "DeveloperToolWidget")
+                    {
+                        window = new Window
+                        {
+                            Title = LanguageService.Instance["developer_maintenance_tool"],
+                            Width = 1200,
+                            Height = 600,
+                            Content = new GeoChemistryNexus.Views.Widgets.DeveloperToolWidget() // Ensure correct namespace
+                        };
+                    }
+
+                    if (window != null)
+                    {
+                        var mainWindow = Application.Current.MainWindow;
+                        if (mainWindow != null && mainWindow.IsVisible)
+                        {
+                            window.Owner = mainWindow;
+                            window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                        }
+                        else
+                        {
+                            window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                        }
+                        window.Show();
+                    }
                 }
-                else if (app.WidgetKey == "TemplateRepairWidget")
+                catch (Exception ex)
                 {
-                    var window = new Window
-                    {
-                        Title = "模板修复工具",
-                        Width = 600,
-                        Height = 400,
-                        Content = new TemplateRepairWidget { DataContext = new TemplateRepairViewModel() },
-                        Owner = Application.Current.MainWindow,
-                        WindowStartupLocation = WindowStartupLocation.CenterOwner
-                    };
-                    window.Show();
-                }
-                else if (app.WidgetKey == "AnnouncementWidget")
-                {
-                    var window = new Window
-                    {
-                        Title = "服务器公告",
-                        Width = 500,
-                        Height = 350,
-                        Content = new AnnouncementWidget { DataContext = new AnnouncementViewModel() },
-                        Owner = Application.Current.MainWindow,
-                        WindowStartupLocation = WindowStartupLocation.CenterOwner
-                    };
-                    window.Show();
-                }
-                else if (app.WidgetKey == "DeveloperToolWidget")
-                {
-                    var window = new Window
-                    {
-                        Title = "开发者维护工具",
-                        Width = 1200,
-                        Height = 600,
-                        Content = new GeoChemistryNexus.Views.DeveloperToolView(), // Ensure correct namespace
-                        Owner = Application.Current.MainWindow,
-                        WindowStartupLocation = WindowStartupLocation.CenterOwner
-                    };
-                    window.Show();
+                    MessageHelper.Error("Failed to open widget: " + ex.Message + "\n" + ex.StackTrace);
                 }
             }
         }
@@ -196,10 +235,11 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private void RemoveApp(HomeAppItem app)
         {
-            if (app != null && HomeApps.Contains(app))
+            if (app != null && _allApps.Contains(app))
             {
-                HomeApps.Remove(app);
-                HomeAppService.SaveApps(HomeApps);
+                _allApps.Remove(app);
+                UpdateHomeApps();
+                HomeAppService.SaveApps(_allApps);
             }
         }
 
@@ -207,13 +247,15 @@ namespace GeoChemistryNexus.ViewModels
         private void AddWebLink()
         {
             var dialog = new AddLinkWindow();
+            dialog.Owner = Application.Current.MainWindow;
             if (dialog.ShowDialog() == true)
             {
                 var newItem = dialog.Result;
                 if (newItem != null)
                 {
-                    HomeApps.Add(newItem);
-                    HomeAppService.SaveApps(HomeApps);
+                    _allApps.Add(newItem);
+                    UpdateHomeApps();
+                    HomeAppService.SaveApps(_allApps);
                 }
             }
         }
@@ -223,6 +265,7 @@ namespace GeoChemistryNexus.ViewModels
         {
             var widgets = HomeAppService.GetAvailableWidgets();
             var dialog = new AddWidgetWindow(widgets);
+            dialog.Owner = Application.Current.MainWindow;
             
             if (dialog.ShowDialog() == true)
             {
@@ -238,13 +281,16 @@ namespace GeoChemistryNexus.ViewModels
                         WidgetKey = widget.WidgetKey,
                         Icon = widget.Icon
                     };
-                    HomeApps.Add(newItem);
-                    HomeAppService.SaveApps(HomeApps);
+                    _allApps.Add(newItem);
+                    UpdateHomeApps();
+                    HomeAppService.SaveApps(_allApps);
                 }
             }
         }
         void IDropTarget.DragOver(IDropInfo dropInfo)
         {
+            if (!string.IsNullOrEmpty(SearchString)) return;
+
             if (IsEditMode && dropInfo.Data is HomeAppItem && dropInfo.TargetItem is HomeAppItem)
             {
                 dropInfo.DropTargetAdorner = DropTargetAdorners.Insert;
@@ -262,7 +308,12 @@ namespace GeoChemistryNexus.ViewModels
                 if (sourceIndex != -1 && targetIndex != -1)
                 {
                     HomeApps.Move(sourceIndex, targetIndex);
-                    HomeAppService.SaveApps(HomeApps);
+                    
+                    if (string.IsNullOrEmpty(SearchString))
+                    {
+                        _allApps = new System.Collections.Generic.List<HomeAppItem>(HomeApps);
+                        HomeAppService.SaveApps(_allApps);
+                    }
                 }
             }
         }

@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Services;
 using GeoChemistryNexus.Models;
 using CommunityToolkit.Mvvm.Messaging;
 using GeoChemistryNexus.Messages;
@@ -52,7 +53,7 @@ namespace GeoChemistryNexus.Controls
         private PlotTemplateCategoryConfig _categoryConfig;
         
         // 修改 Language 属性以从标签集合生成字符串
-        public string Language => string.Join(" > ", _languageParts.Select(x => x.Text));
+        public string SelectedLanguages => string.Join(" > ", _languageParts.Select(x => x.Text));
         
         // Use DisplayName for the string representation
         public string CategoryHierarchy => string.Join(" > ", _categoryParts.Select(p => p.DisplayName));
@@ -154,8 +155,6 @@ namespace GeoChemistryNexus.Controls
                 CategoryInputComboBox.ItemsSource = null;
             }
         }
-        
-        // Remove old methods
 
 
         public void EmptyData()
@@ -361,8 +360,6 @@ namespace GeoChemistryNexus.Controls
 
             LanguageInputComboBox.ItemsSource = builtIns;
         }
-
-        // Remove old methods
 
     }
 }

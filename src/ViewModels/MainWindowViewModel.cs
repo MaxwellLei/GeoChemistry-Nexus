@@ -28,8 +28,17 @@ namespace GeoChemistryNexus.ViewModels
         //初始化
         public MainWindowViewModel()
         {
-
+            IsSideBarVisible = true;
             //FunInit();
+        }
+
+        [ObservableProperty]
+        private bool _isSideBarVisible;
+
+        [RelayCommand]
+        private void ToggleSideBar()
+        {
+            IsSideBarVisible = !IsSideBarVisible;
         }
 
         /// <summary>
@@ -91,20 +100,6 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
-
-        /// <summary>
-        /// 彩蛋
-        /// </summary>
-        [RelayCommand]
-        private void Stinger()
-        {
-            // 获取当前日期和时间
-            DateTime now = DateTime.Now;
-            // 获取当前年份
-            int currentYear = now.Year;
-            MessageHelper.Success(LanguageService.Instance["thank_you_and_wishes"] + currentYear + LanguageService.Instance["research_life_smooth_sailing"]);
-        }
-
         /// <summary>
         /// 切换绘图页命令
         /// </summary>
@@ -113,6 +108,7 @@ namespace GeoChemistryNexus.ViewModels
         private void HomePage(Frame nav)
         {
             nav.Navigate(MainPlotPage.GetPage());
+            IsSideBarVisible = false;
         }
 
         /// <summary>
@@ -133,6 +129,7 @@ namespace GeoChemistryNexus.ViewModels
         private void GTMNewPage(Frame nav)
         {
             nav.Navigate(GeothermometerNewPageView.GetPage());
+            IsSideBarVisible = false;
         }
 
 
@@ -157,9 +154,6 @@ namespace GeoChemistryNexus.ViewModels
             window.WindowState = WindowState.Normal;
             window.Topmost = true;
             window.Activate();
-
-            // 将置顶属性重置为 false，在窗口获得焦点时再次激活
-            //Dispatcher.BeginInvoke(new Action(() => { window.Topmost = false; }));
         }
 
 
@@ -169,7 +163,7 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private void Help()
         {
-            string url = "https://geonweb.pages.dev/";
+            string url = "https://geochemistry-nexus.pages.dev/";
             //拉起浏览器
             try
             {
@@ -180,20 +174,6 @@ namespace GeoChemistryNexus.ViewModels
                 MessageHelper.Warning((string)System.Windows.Application.Current.Resources["OpenBrowserError"] + ex.Message);
             }
         }
-
-
-        ////功能初始化
-        //private void FunInit()
-        //{
-        //    //初始化自动关闭时间
-        //    MessageHelper.waitTime = Convert.ToInt32(
-        //        ConfigHelper.GetConfig("auto_off_time"));
-        //    //自动更新
-        //    if (ConfigHelper.GetConfig("auto_check_update") == "True")
-        //    {
-        //        UpdateHelper.CheckForUpdatesAsync();
-        //    }
-        //}
 
     }
 }

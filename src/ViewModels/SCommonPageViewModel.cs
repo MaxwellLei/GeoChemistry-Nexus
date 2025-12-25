@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Services;
 using HandyControl.Controls;
 using ScottPlot;
 using System;
@@ -18,21 +19,15 @@ namespace GeoChemistryNexus.ViewModels
 {
     partial class SCommonPageViewModel : ObservableObject
     {
-        private bool changeConfig = false;  // 是否第一次进入设置页面
-        private bool isInsideChange = false;    //是否是代码层面改变设置的值
-
         // 定义语言代码映射数组(索引对应 ComboBox)
         // 0 -> zh-CN; 1 -> en-US; 2 -> de-DE
         private readonly string[] _languageCodes = { "zh-CN", "en-US", "de-DE" };
 
-        private string dbLocationPath;  //数据库路径
+
 
         //封面流
         [ObservableProperty]
         private CoverFlow coverFlowMain;
-
-        [ObservableProperty]     
-        private int dbLocation;      // 数据库位置设置(0是默认位置，即文档；1是自定义位置)
 
         [ObservableProperty]
         private int language;     // 语言设置(0是中文;1是英文)
@@ -55,8 +50,6 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private string version;     // 软件版本
 
-        public RelayCommand OpenDbFolderCommand { get; private set; }   // 打开存储文件夹命令
-        public RelayCommand DbLocationChangedCommand { get; private set; }   // 修改存储文件位置命令
         public RelayCommand AutoOffTimeChangedCommand { get; private set; }   // 修改通知自动关闭时间命令
         public RelayCommand LanguageChangedCommand { get; private set; }   // 修改语言命令
         public RelayCommand CheckUpdateCommand { get; private set; }   // 检查更新命令
@@ -66,15 +59,12 @@ namespace GeoChemistryNexus.ViewModels
         // 初始化
         public SCommonPageViewModel()
         {
-            OpenDbFolderCommand = new RelayCommand(ExecuteOpenDbFolderCommand);
-            DbLocationChangedCommand = new RelayCommand(ExecuteDbLocationChangedCommand);
             LanguageChangedCommand = new RelayCommand(ExecuteLanguageChangedCommand);
             AutoOffTimeChangedCommand = new RelayCommand(ExecuteAutoOffTimeChangedCommand);
             CheckUpdateCommand = new RelayCommand(ExecuteCheckUpdateCommandAsync);
             ExitProgrmModeCommand = new RelayCommand(ExecuteExitProgrmModeCommand);
             AddStartImgCommand = new RelayCommand(ExecuteAddStartImgCommand);
             ReadConfig();   // 读取配置文件
-            changeConfig = true;
 
             // 获取版本信息
             Version = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
@@ -117,6 +107,10 @@ namespace GeoChemistryNexus.ViewModels
                             MessageHelper.Warning((string)System.Windows.Application.Current.Resources["OpenBrowserError"] + ex.Message);
                         }
                     }
+                }
+                else
+                {
+                    MessageHelper.Success(LanguageService.Instance["already_latest_version"]);
                 }
             }
             catch (Exception ex)
@@ -186,55 +180,11 @@ namespace GeoChemistryNexus.ViewModels
             MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
         }
 
-        // 修改数据库位置
-        private void ExecuteDbLocationChangedCommand()
-        {
-            //保存数据库位置设置
-            if (DbLocation == 0)
-            {
-                if (!isInsideChange)
-                {
-                    Helpers.ConfigHelper.SetConfig("database_location", "0");
-                    Helpers.ConfigHelper.SetConfig("database_location_path", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));  //如果是默认设置，则删除配置文件中的数据库位置
-                    MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
-                }
-                isInsideChange = false;
-            }
-            else
-            {
-                dbLocationPath = FileHelper.GetFolderPath();  //获取文件夹路径
-                if (dbLocationPath != null)
-                {
-                    Helpers.ConfigHelper.SetConfig("database_location", "1");
-                    Helpers.ConfigHelper.SetConfig("database_location_path", dbLocationPath);  //如果是自定义设置，则保存配置文件中的数据库位置
-                    MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
-                }
-                else
-                {
-                    isInsideChange = true;
-                    DbLocation = 0;
-                    MessageHelper.Warning(LanguageService.Instance["ModifedCanceled"]);
-                }
-            }
-        }
 
-        // 打开指定数据库文件夹
-        private void ExecuteOpenDbFolderCommand()
-        {
-            FileHelper.Openxplorer(ConfigHelper.GetConfig("database_location_path"));
-            MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
-        }
 
         // 读取配置文件
         void ReadConfig()
         {
-            if (ConfigHelper.GetConfig("database_location_path") == "")
-            {
-                Helpers.ConfigHelper.SetConfig("database_location_path", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));  //如果是默认设置，则删除配置文件中的数据库位置
-            }
-
-            DbLocation = int.Parse(Helpers.ConfigHelper.GetConfig("database_location"));   //读取数据文件设置
-                                             
             // 读取语言设置
             string langConfig = Helpers.ConfigHelper.GetConfig("language");
             // 在数组中查找该字符串对应的索引

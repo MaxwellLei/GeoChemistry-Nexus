@@ -74,7 +74,7 @@
         <Grid Grid.Row="0" Margin="0,0,0,10">
             <!-- Base Color (Hue) -->
             <Border x:Name="HueMonitor" Background="Red"/>
-            <!-- Saturation Gradient (White to Transparent) -->
+            
             <Border>
                 <Border.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
@@ -83,7 +83,7 @@
                     </LinearGradientBrush>
                 </Border.Background>
             </Border>
-            <!-- Value Gradient (Transparent to Black) -->
+            
             <Border>
                 <Border.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">

@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using System.ComponentModel;
 using ScottPlot.Plottables;
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Attributes;
 using ScottPlot;
 
 namespace GeoChemistryNexus.Models

@@ -4,167 +4,157 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-      xmlns:lg="clr-namespace:GeoChemistryNexus.Helpers"
+      xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
       xmlns:hc="https://handyorg.github.io/handycontrol"
       xmlns:local="clr-namespace:GeoChemistryNexus.Views"
       xmlns:sys="clr-namespace:System;assembly=mscorlib"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="SCommonPageView">
-    <Grid Margin="10 30 10 10">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <hc:ScrollViewer HorizontalAlignment="Stretch" Padding="120 0">
-            <VirtualizingStackPanel HorizontalAlignment="Stretch" Margin="0 0 10 0">
-                <!--文件路径-->
-                <hc:Divider Content="{Binding [FilePath],Source={x:Static lg:LanguageService.Instance}}" HorizontalContentAlignment="Left" FontSize="20" FontWeight="Bold" LineStrokeThickness="5"/>
-                <!--保存文件位置-->
-                <GroupBox Header="{Binding [FileSavePath],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource GroupBoxOriginal}" hc:TitleElement.TitlePlacement="Left" 
-                              FontSize="16" Margin="0 0 0 5">
-                    <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Right">
-                        <ComboBox SelectedIndex="{Binding DbLocation,Mode=TwoWay}" FontSize="12">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="SelectionChanged">
-                                    <i:InvokeCommandAction Command="{Binding DbLocationChangedCommand}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                            <ComboBox.Items>
-                                <ComboBoxItem Content="{Binding [DefaultPath],Source={x:Static lg:LanguageService.Instance}}"/>
-                                <ComboBoxItem Content="{Binding [CustomPath],Source={x:Static lg:LanguageService.Instance}}"/>
-                            </ComboBox.Items>
-                        </ComboBox>
-                        <Button Content="{Binding [OpenFileLocation],Source={x:Static lg:LanguageService.Instance}}" Margin="10 0 0 0" Command="{Binding OpenDbFolderCommand}"/>
-                    </WrapPanel>
-                </GroupBox>
-                <!--<GroupBox Header="{DynamicResource WorkspacePath}" Style="{StaticResource GroupBoxOriginal}" hc:TitleElement.TitlePlacement="Left" 
-                              FontSize="16" Margin="0 0 0 5">
-                    <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Right">
-                        <ComboBox SelectedIndex="{Binding WpLocation}" FontSize="12">
-                            --><!--<i:Interaction.Triggers>
-                                <i:EventTrigger EventName="SelectionChanged">
-                                    <cmd:EventToCommand Command="{Binding WsLocationChangedCommand}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>--><!--
-                            <ComboBox.Items>
-                                <TextBlock Text="{DynamicResource DefaultPath}"/>
-                                <TextBlock Text="{DynamicResource CustomPath}"/>
-                            </ComboBox.Items>
-                        </ComboBox>
-                        <Button Content="{DynamicResource OpenFileLocation}" Margin="10 0 0 0" Command="{Binding OpenWsFolderCommand}"/>
-                    </WrapPanel>
-                </GroupBox>-->
-                <!--国际化 & 个性化-->
-                <hc:Divider Content="{Binding [InternationalizationAndPersonalization],Source={x:Static lg:LanguageService.Instance}}" HorizontalContentAlignment="Left" FontSize="20" FontWeight="Bold" 
-                            LineStrokeThickness="5"/>
-                <!--主题-->
-                <GroupBox Header="{Binding [Theme],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource GroupBoxOriginal}" hc:TitleElement.TitlePlacement="Left" 
-                              FontSize="16" Margin="0 0 0 5">
-                    <ComboBox SelectedIndex="0" FontSize="12" VerticalAlignment="Center" 
-                              HorizontalAlignment="Right">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="SelectionChanged">
-                                <i:InvokeCommandAction Command="{Binding LanguageChangedCommand}"/>
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                        <ComboBox.Items>
-                            <ComboBoxItem Content="{Binding [Default],Source={x:Static lg:LanguageService.Instance}}"/>
-                        </ComboBox.Items>
-                    </ComboBox>
-                </GroupBox>
-                <!--语言-->
-                <GroupBox Header="{Binding [Language_],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource GroupBoxOriginal}" hc:TitleElement.TitlePlacement="Left" 
-                              FontSize="16" Margin="0 0 0 5">
-                    <ComboBox SelectedIndex="{Binding Language}" FontSize="12" VerticalAlignment="Center" 
-                              HorizontalAlignment="Right">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="SelectionChanged">
-                                <i:InvokeCommandAction Command="{Binding LanguageChangedCommand}"/>
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                        <ComboBox.Items>
-                            <ComboBoxItem Content="{Binding [ChineseS],Source={x:Static lg:LanguageService.Instance}}"/>
-                            <ComboBoxItem Content="{Binding [EnglishUS],Source={x:Static lg:LanguageService.Instance}}"/>
-                            <ComboBoxItem Content="{Binding [German_Germany],Source={x:Static lg:LanguageService.Instance}}"/>
-                        </ComboBox.Items>
-                    </ComboBox>
-                </GroupBox>
-                <!--启动背景图-->
-                <GroupBox Header="{Binding [StartBackgroundImages],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource GroupBoxOriginal}" hc:TitleElement.TitlePlacement="Left" 
-                              FontSize="16" Margin="0 0 0 5">
+      d:DesignHeight="800" d:DesignWidth="600"
+      Title="SCommonPageView"
+      UseLayoutRounding="True" TextOptions.TextFormattingMode="Display">
+
+    <Grid>
+        <hc:ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Margin="20,20,20,40" MaxWidth="800" HorizontalAlignment="Stretch">
+                
+
+                <!-- LANGUAGE & APPEARANCE -->
+                <TextBlock Text="{Binding [language_apperarance],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernSettingsGroupTitle}"/>
+                <Border Style="{StaticResource ModernSettingsCard}">
                     <StackPanel>
-                        <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Right">
-                            <ComboBox SelectedIndex="0" FontSize="12" >
-                                <ComboBox.Items>
-                                    <ComboBoxItem Content="{Binding [DefaultRandom],Source={x:Static lg:LanguageService.Instance}}"/>
-                                    <!--<sys:String>默认随机</sys:String>-->
-                                    <!--<sys:String>固定显示当前</sys:String>-->
-                                </ComboBox.Items>
+                        <!-- Language -->
+                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding [Language_],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" FontSize="14"/>
+                            <ComboBox SelectedIndex="{Binding Language,Mode=TwoWay}" Width="140" Height="30" Grid.Column="1" VerticalAlignment="Center">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding LanguageChangedCommand}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <ComboBoxItem Content="简体中文"/>
+                                <ComboBoxItem Content="English (US)"/>
+                                <ComboBoxItem Content="Deutsch"/>
                             </ComboBox>
-                            <!--<Button Content="添加启动图" Margin="10 0 0 0" Command="{Binding AddStartImgCommand}"/>-->
-                        </WrapPanel>
+                        </Grid>
+                        
+                        <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
+
+                        <!-- Start Image -->
+                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding [startup_background_image],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" FontSize="14"/>
+                            <Button Grid.Column="1" Content="{Binding [add_image],Source={x:Static lg:LanguageService.Instance}}" 
+                                    Command="{Binding AddStartImgCommand}" Width="100" Height="30"/>
+                        </Grid>
+                        
+                        <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
+
+                        <!-- Cover Flow -->
+                        <Grid Margin="16,10" Height="140">
+                             <hc:CoverFlow x:Name="CoverFlow" Margin="0"/>
+                        </Grid>
                     </StackPanel>
-                </GroupBox>
-                <hc:CoverFlow x:Name="CoverFlow" VerticalAlignment="Stretch" Height="200"/>
-                <!--消息通知-->
-                <hc:Divider Content="{Binding [MessageNotification],Source={x:Static lg:LanguageService.Instance}}" HorizontalContentAlignment="Left" 
-                            FontSize="20" FontWeight="Bold" LineStrokeThickness="5"/>
-                <!--自动关闭时间-->
-                <GroupBox Header="{Binding [MessageAutoClose],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource GroupBoxOriginal}" 
-                              hc:TitleElement.TitlePlacement="Left" FontSize="16" Margin="0 0 0 5">
-                    <ComboBox SelectedIndex="{Binding AutoOffTime}" FontSize="12" VerticalAlignment="Center" 
-                              HorizontalAlignment="Right">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="SelectionChanged">
-                                <i:InvokeCommandAction Command="{Binding AutoOffTimeChangedCommand}"/>
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                        <ComboBox.Items>
-                            <ComboBoxItem Content="{Binding [MessageAutoClose5],Source={x:Static lg:LanguageService.Instance}}"/>
-                            <ComboBoxItem Content="{Binding [MessageAutoClose4],Source={x:Static lg:LanguageService.Instance}}"/>
-                            <ComboBoxItem Content="{Binding [MessageAutoClose3],Source={x:Static lg:LanguageService.Instance}}"/>
-                            <ComboBoxItem Content="{Binding [MessageAutoClose2],Source={x:Static lg:LanguageService.Instance}}"/>
-                        </ComboBox.Items>
-                    </ComboBox>
-                </GroupBox>
-                <!--其他-->
-                <hc:Divider Content="{Binding [Other],Source={x:Static lg:LanguageService.Instance}}" HorizontalContentAlignment="Left" FontSize="20" FontWeight="Bold" LineStrokeThickness="5"/>
-                <!--开机启动-->
-                <GroupBox Header="{Binding [Boot],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource GroupBoxOriginal}" 
-                          hc:TitleElement.TitlePlacement="Left" FontSize="16" Margin="0 0 0 5" >
-                    <ToggleButton Style="{StaticResource ToggleButtonSwitch}" IsChecked="{Binding Boot}" 
-                                  HorizontalAlignment="Right"/>
-                </GroupBox>
-                <!--自动检查更新-->
-                <GroupBox Header="{Binding [AutoCheckUpdate],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource GroupBoxOriginal}" 
-                          hc:TitleElement.TitlePlacement="Left" FontSize="16" Margin="0 0 0 5">
+                </Border>
+
+                <!-- NOTIFICATIONS -->
+                <TextBlock Text="{Binding [MessageNotification],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernSettingsGroupTitle}"/>
+                <Border Style="{StaticResource ModernSettingsCard}">
                     <StackPanel>
-                        <ToggleButton Style="{StaticResource ToggleButtonSwitch}" HorizontalAlignment="Right" 
-                                      IsChecked="{Binding AutoCheck}"/>
-                        <WrapPanel Margin="0 10 0 5" HorizontalAlignment="Right"  >
-                            <ComboBoxItem Content="{Binding Version}" VerticalAlignment="Center" FontSize="12" Margin="0 0 5 0"/>
-                            <!--检查更新-->
-                            <Button Content="{Binding [CheckUpdate],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding CheckUpdateCommand}"/>
-                        </WrapPanel>
+                        <!-- Auto Off Time -->
+                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding [MessageAutoClose],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" FontSize="14"/>
+                            <ComboBox SelectedIndex="{Binding AutoOffTime,Mode=TwoWay}" Width="120" Height="30" Grid.Column="1" VerticalAlignment="Center">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding AutoOffTimeChangedCommand}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <ComboBoxItem Content="{Binding [MessageAutoClose5],Source={x:Static lg:LanguageService.Instance}}"/>
+                                <ComboBoxItem Content="{Binding [MessageAutoClose4],Source={x:Static lg:LanguageService.Instance}}"/>
+                                <ComboBoxItem Content="{Binding [MessageAutoClose3],Source={x:Static lg:LanguageService.Instance}}"/>
+                                <ComboBoxItem Content="{Binding [MessageAutoClose2],Source={x:Static lg:LanguageService.Instance}}"/>
+                            </ComboBox>
+                        </Grid>
                     </StackPanel>
-                </GroupBox>
-                <!--退出程序方法-->
-                <GroupBox Header="{Binding [QuitAppMode],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource GroupBoxOriginal}" 
-                          hc:TitleElement.TitlePlacement="Left" FontSize="16" Margin="0 0 0 5">
-                    <ComboBox SelectedIndex="{Binding ExitMode}" FontSize="12" VerticalAlignment="Center" 
-                              HorizontalAlignment="Right">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="SelectionChanged">
-                                <i:InvokeCommandAction Command="{Binding ExitProgrmModeCommand}"/>
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                        <ComboBox.Items>
-                            <ComboBoxItem Content="{Binding [MinimizeTray],Source={x:Static lg:LanguageService.Instance}}"/>
-                            <ComboBoxItem Content="{Binding [Quit],Source={x:Static lg:LanguageService.Instance}}"/>
-                        </ComboBox.Items>
-                    </ComboBox>
-                </GroupBox>
-            </VirtualizingStackPanel>
+                </Border>
+
+                <!-- SYSTEM & UPDATES -->
+                <TextBlock Text="{Binding [Other],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernSettingsGroupTitle}"/>
+                <Border Style="{StaticResource ModernSettingsCard}">
+                    <StackPanel>
+                        <!-- Boot -->
+                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding [Boot],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" FontSize="14"/>
+                            <ToggleButton IsChecked="{Binding Boot}" Grid.Column="1" Style="{StaticResource ToggleButtonSwitch}"/>
+                        </Grid>
+                        
+                        <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
+
+                        <!-- Auto Check Update -->
+                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding [AutoCheckUpdate],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" FontSize="14"/>
+                            <ToggleButton IsChecked="{Binding AutoCheck}" Grid.Column="1" Style="{StaticResource ToggleButtonSwitch}"/>
+                        </Grid>
+
+                         <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
+
+                        <!-- Check Update Button -->
+                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding [CheckUpdate],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" FontSize="14"/>
+                            <Button Content="{Binding [CheckUpdate],Source={x:Static lg:LanguageService.Instance}}" 
+                                    Command="{Binding CheckUpdateCommand}" Grid.Column="1" Width="Auto" Padding="15,0" Height="30"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                 <!-- EXIT MODE -->
+                <TextBlock Text="EXIT" Style="{StaticResource ModernSettingsGroupTitle}"/>
+                <Border Style="{StaticResource ModernSettingsCard}">
+                    <StackPanel>
+                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding [QuitAppMode],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" FontSize="14"/>
+                            <ComboBox SelectedIndex="{Binding ExitMode,Mode=TwoWay}" Width="160" Height="30" Grid.Column="1" VerticalAlignment="Center">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding ExitProgrmModeCommand}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <ComboBoxItem Content="{Binding [MinimizeTray],Source={x:Static lg:LanguageService.Instance}}"/>
+                                <ComboBoxItem Content="{Binding [Quit],Source={x:Static lg:LanguageService.Instance}}"/>
+                            </ComboBox>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
         </hc:ScrollViewer>
     </Grid>
 </Page>
+

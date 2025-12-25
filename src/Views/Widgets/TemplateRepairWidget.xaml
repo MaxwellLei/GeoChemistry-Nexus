@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Margin="20">
@@ -13,23 +14,14 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="绘图模板修复工具" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
+        <TextBlock Text="{Binding [drawing_template_repair_tool],Source={x:Static lg:LanguageService.Instance}}" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
 
         <hc:ScrollViewer Grid.Row="1" Margin="0,0,0,10" Background="#F5F5F5" Padding="10">
             <TextBlock Text="{Binding LogText}" TextWrapping="Wrap"/>
         </hc:ScrollViewer>
 
-        <Button Grid.Row="2" Content="开始检查与修复" Command="{Binding CheckAndRepairCommand}" 
+        <Button Grid.Row="2" Content="{Binding [start_check_and_repair],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding CheckAndRepairCommand}" 
                 Style="{StaticResource ButtonPrimary}" HorizontalAlignment="Right"
                 IsEnabled="{Binding IsNotBusy}"/>
-                <!-- Note: BooleanToVisibilityReConverter converts True -> Collapsed? No, usually True -> Visible. 
-                     I want IsEnabled = !IsBusy. 
-                     If I don't have an InverseBooleanConverter, I can just rely on the Command's CanExecute if I implemented it, 
-                     but I used [RelayCommand] which handles CanExecute based on method signature or property? 
-                     Actually RelayCommand usually always executable unless configured.
-                     Let's check converters. App.xaml has BooleanToVisibilityReConverter.
-                     Usually ReConverter means Reverse? Or BooleanToVisibility?
-                     Let's check App.xaml again.
-                -->
     </Grid>
 </UserControl>

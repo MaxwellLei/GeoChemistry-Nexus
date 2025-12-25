@@ -1,4 +1,4 @@
-﻿using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,47 +28,7 @@ namespace GeoChemistryNexus.Views
 
         public StartWindow()
         {
-
-            LanguageService.InitializeLanguage();        // 初始化语言
-
-            _ = Task.Run(() => FontManager.GetFontNames());
-
             InitializeComponent();
-
-            // 异步执行启动过程
-            Task.Run(() =>
-            {
-                // 模拟启动过程，更新进度条的进度
-                for (int i = 0; i <= 100; i++)
-                {
-                    // 更新进度条的进度
-                    this.Dispatcher.Invoke(() =>
-                    {
-                        progressBar.Value = i;
-                    });
-
-                    // 模拟一段耗时的操作
-                    Thread.Sleep(20);
-                }
-
-                // 启动过程完成，关闭窗口并打开主界面
-                this.Dispatcher.Invoke(() =>
-                {
-                    Window mainWindow = new MainWindow();
-                    mainWindow.Show();
-                    this.Close();
-                });
-            });
-
-            // 为进度条添加动画效果
-            DoubleAnimation animation = new()
-            {
-                From = 0,
-                To = 100,
-                Duration = new Duration(TimeSpan.FromSeconds(5))
-            };
-            progressBar.BeginAnimation(ProgressBar.ValueProperty, animation);
-
             DisplayRandomImage();
         }
 
@@ -103,13 +63,14 @@ namespace GeoChemistryNexus.Views
         //窗体启动动画
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            DoubleAnimation animation = new()
-            {
-                From = 0,
-                To = 1,
-                Duration = TimeSpan.FromSeconds(1)
-            };
-            this.BeginAnimation(UIElement.OpacityProperty, animation);
+            // 移除启动渐入动画
+            // DoubleAnimation animation = new()
+            // {
+            //     From = 0,
+            //     To = 1,
+            //     Duration = TimeSpan.FromSeconds(1)
+            // };
+            // this.BeginAnimation(UIElement.OpacityProperty, animation);
         }
         //鼠标按下
         private void Window_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)

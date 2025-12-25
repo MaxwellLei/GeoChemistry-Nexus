@@ -4,15 +4,16 @@ using System.Globalization;
 using System.Linq;
 using System.Resources;
 using GeoChemistryNexus.Data.Language;
+using GeoChemistryNexus.Services;
 
 namespace GeoChemistryNexus.Helpers
 {
     /// <summary>
-    /// ÓÃÓÚ´Ó×ÊÔ´´´½¨´øÕ¼Î»·ûµÄ LocalizedString ¶ÔÏóµÄ¹¤³§ 
+    /// ç”¨äºä»èµ„æºæ–‡ä»¶åˆ›å»ºå¸¦æœ‰å ä½ç¬¦çš„ LocalizedString å¯¹è±¡çš„å·¥å‚ç±»
     /// </summary>
     public static class LocalizedPlaceholderFactory
     {
-        // ¶¨ÒåÕ¼Î»·ûÖ§³ÖµÄÓïÑÔ
+        // å ä½ç¬¦æ”¯æŒçš„è¯­è¨€åˆ—è¡¨
         private static readonly List<string> _supportedLanguages = new List<string>
         {
             "en-US",
@@ -29,12 +30,12 @@ namespace GeoChemistryNexus.Helpers
             new ResourceManager("GeoChemistryNexus.Data.Language.Language", typeof(LanguageService).Assembly);
 
         /// <summary>
-        /// ¸ù¾İ¸ø¶¨µÄ×ÊÔ´¼ü£¬´´½¨Ò»¸öÒÑÌî³ä¶ÔÓ¦·­ÒëµÄ LocalizedString ¶ÔÏó
+        /// æ ¹æ®ç»™å®šçš„èµ„æºé”®åˆ›å»ºä¸€ä¸ªåŒ…å«å¯¹åº”ç¿»è¯‘çš„ LocalizedString å¯¹è±¡
         /// </summary>
-        /// <param name="resourceKey">The key in the resource file (e.g., "Placeholder_Text").</param>
-        /// <param name="defaultLanguage">The default language code. If null, uses the current application language.</param>
-        /// <param name="targetLanguages">Optional list of languages to populate. If null, uses all supported languages.</param>
-        /// <returns>A populated LocalizedString object.</returns>
+        /// <param name="resourceKey">èµ„æºæ–‡ä»¶ä¸­çš„é”®ï¼ˆä¾‹å¦‚ "Placeholder_Text"ï¼‰ã€‚</param>
+        /// <param name="defaultLanguage">é»˜è®¤è¯­è¨€ä»£ç ã€‚å¦‚æœä¸º nullï¼Œåˆ™ä½¿ç”¨å½“å‰åº”ç”¨ç¨‹åºè¯­è¨€ã€‚</param>
+        /// <param name="targetLanguages">å¯é€‰çš„éœ€è¦å¡«å……çš„è¯­è¨€åˆ—è¡¨ã€‚å¦‚æœä¸º nullï¼Œåˆ™ä½¿ç”¨æ‰€æœ‰æ”¯æŒçš„è¯­è¨€ã€‚</param>
+        /// <returns>å·²å¡«å……çš„ LocalizedString å¯¹è±¡ã€‚</returns>
         public static LocalizedString Create(string resourceKey, string defaultLanguage = null, IEnumerable<string> targetLanguages = null)
         {
             if (string.IsNullOrEmpty(defaultLanguage))
@@ -57,8 +58,8 @@ namespace GeoChemistryNexus.Helpers
                     var culture = new CultureInfo(langCode);
                     var value = _resourceManager.GetString(resourceKey, culture);
 
-                    // Èç¹û×ÊÔ´È±Ê§£¬GetString »á·µ»Ø null
-                    // Èô·µ»Ø null£¬»ØÍËµ½Ó¢ÎÄ
+                    // å¦‚æœèµ„æºç¼ºå¤±ï¼ŒGetString ä¼šè¿”å› null
+                    // å¦‚æœä¸º nullï¼Œå›é€€åˆ°è‹±è¯­
                     if (string.IsNullOrEmpty(value))
                     {
                         value = _resourceManager.GetString(resourceKey, new CultureInfo("en-US"));
@@ -71,8 +72,8 @@ namespace GeoChemistryNexus.Helpers
                 }
                 catch (Exception)
                 {
-                    // ´¦Àí CultureInfo ÎŞĞ§»ò×ÊÔ´È±Ê§µÄÇé¿ö  
-                    // Èç¹û¿ÉÄÜ£¬»ØÍËµ½Ó¢ÎÄ¼üÖµ
+                    // å¿½ç•¥æ— æ•ˆçš„ CultureInfo æˆ–ç¼ºå¤±çš„èµ„æº
+                    // å°è¯•å›é€€åˆ°è‹±è¯­é”®å€¼
                     var fallbackValue = _resourceManager.GetString(resourceKey, new CultureInfo("en-US"));
                     if (!string.IsNullOrEmpty(fallbackValue))
                     {
@@ -85,7 +86,7 @@ namespace GeoChemistryNexus.Helpers
         }
 
         /// <summary>
-        /// Helper to get the list of supported languages if needed elsewhere.
+        /// è·å–æ”¯æŒè¯­è¨€åˆ—è¡¨çš„è¾…åŠ©å±æ€§ï¼Œä»¥å¤‡ä»–ç”¨ã€‚
         /// </summary>
         public static IReadOnlyList<string> SupportedLanguages => _supportedLanguages.AsReadOnly();
     }

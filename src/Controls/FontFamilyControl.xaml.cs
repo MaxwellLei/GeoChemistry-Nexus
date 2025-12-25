@@ -1,4 +1,5 @@
-﻿using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +37,7 @@ namespace GeoChemistryNexus.Controls
             InitializeComponent();
 
             // 获取字体列表
-            _fontNames = FontManager.GetFontNames();
+            _fontNames = FontService.GetFontNames();
 
             FontComboBox.ItemsSource = _fontNames;
             FontComboBox.SelectionChanged += OnComboBoxSelectionChanged;
@@ -96,7 +97,7 @@ namespace GeoChemistryNexus.Controls
                 }
                 else
                 {
-                    // 如果仍然没有找到，设置为默认字体（通常是 Arial）
+                    // 如果仍然没有找到，设置为默认字体
                     var defaultFont = _fontNames.FirstOrDefault(f =>
                         string.Equals(f, "Arial", StringComparison.OrdinalIgnoreCase));
                     if (!string.IsNullOrEmpty(defaultFont))

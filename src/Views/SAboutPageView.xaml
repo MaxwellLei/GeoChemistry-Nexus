@@ -3,102 +3,103 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:lg="clr-namespace:GeoChemistryNexus.Helpers"
-      xmlns:local="clr-namespace:GeoChemistryNexus.Views"
+      xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
       xmlns:hc="https://handyorg.github.io/handycontrol"
+      xmlns:vm="clr-namespace:GeoChemistryNexus.ViewModels"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="SAboutPageView">
-
+      d:DesignHeight="800" d:DesignWidth="600"
+      Title="SAboutPageView"
+      UseLayoutRounding="True" TextOptions.TextFormattingMode="Display">
+    
     <Grid>
-        <Grid Margin="10 30 10 30">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <hc:ScrollViewer HorizontalAlignment="Stretch" Padding="120 0">
-                <VirtualizingStackPanel HorizontalAlignment="Stretch" Margin="0 0 10 0">
-                    <!--关于-->
-                    <hc:Divider Content="{Binding [About],Source={x:Static lg:LanguageService.Instance}}" HorizontalContentAlignment="Left" FontSize="20" FontWeight="Bold" LineStrokeThickness="5"/>
+        <hc:ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Margin="20,20,20,40" MaxWidth="800" HorizontalAlignment="Stretch">
+                
+                <!-- Group 1: Header/Info -->
+                <TextBlock Text="GeoChemistry Nexus" Style="{StaticResource ModernSettingsGroupTitle}"/>
+                <Border Style="{StaticResource ModernSettingsCard}">
                     <StackPanel>
-                        <Grid>
-                            <!--<Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="0.6*"/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>-->
+                        <!-- App Icon & Name -->
+                        <Grid Margin="16" Height="Auto">
+                             <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                                 <Image Source="/GeoChemistryNexus;component/Data/Icon/logo.png" Width="80" Height="80" RenderOptions.BitmapScalingMode="HighQuality" Margin="0,0,0,15"/>
+                                 <TextBlock Text="GeoChemistry Nexus" FontSize="22" FontWeight="SemiBold" Foreground="#1D1D1F" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                      <TextBlock Text="Version " FontSize="14" Foreground="#86868B"/>
+                                      <TextBlock Text="{Binding Version}" FontSize="14" Foreground="#86868B"/>
+                                 </StackPanel>
+                             </StackPanel>
+                        </Grid>
+                        
+                        <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
 
-                            <!--<Image  Width="240" Height="320" Source="../Data/Image/Other/Seraphine1.jpg"/>-->
+                        <!-- Description -->
+                        <Grid Margin="16">
+                             <TextBlock Text="{Binding [AboutInfo1],Source={x:Static lg:LanguageService.Instance}}" 
+                                        FontSize="14" Foreground="#1D1D1F" TextWrapping="Wrap" LineHeight="20"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
 
-                            <!--左侧图片-->
-                            <!--<hc:CompareSlider Value="0" Width="240" Height="320">
-                            <hc:CompareSlider.TargetContent>
-                                <Border>
-                                    <Border.Background>
-                                        <ImageBrush ImageSource="../Resources/Image/Other/Seraphine2.jpg"/>
-                                    </Border.Background>
-                                </Border>
-                            </hc:CompareSlider.TargetContent>
-                            <hc:CompareSlider.SourceContent>
-                                <Border>
-                                    <Border.Background>
-                                        <ImageBrush ImageSource="../Resources/Image/Other/Seraphine1.jpg"/>
-                                    </Border.Background>
-                                </Border>
-                            </hc:CompareSlider.SourceContent>
-                        </hc:CompareSlider>-->
-
-                            <!--右侧文本-->
-                            <StackPanel Grid.Column="1" Margin="10 0 0 0">
-                                <TextBlock Text="Geo-Thermometer" FontSize="20" FontWeight="Bold" />
-                                <WrapPanel Margin="0 10 0 0">
-                                    <hc:Shield Subject=".NET" Status="6.0" Color="#1182c3"/>
-                                    <hc:Shield Subject="WPF" Status="MVVM" Margin="4,0,0,0" Color="#4db99a"/>
-                                    <hc:Shield Subject="C#" Status="MIT" Margin="4,0,0,0" Color="#fbbc05"/>
-                                    <hc:Shield Subject="Windows" Status=">=7.0" Margin="4,0,0,0" Color="#ea4335"/>
-                                </WrapPanel>
-                                <!--本项目通过利用地球化学数据进行相关图表绘制、计算与分析，对地质学数据进行高效处理，-->
-                                <TextBlock Text="{Binding [AboutInfo1],Source={x:Static lg:LanguageService.Instance}}"
-                                   FontSize="16" Margin="0 10 0 0" TextWrapping="Wrap"/>
-                                <!--如果您对本项目感兴趣，欢迎点个 Star 支持一下！如果您觉得对您有帮助，也可以请我喝-->
-                                <TextBlock Text="{Binding [AboutInfo2],Source={x:Static lg:LanguageService.Instance}}" Foreground="Blue" FontSize="16" 
-                                   Margin="0 5 0 0" FontWeight="Bold" TextWrapping="Wrap"/>
-                                <!--感谢支持-->
-                                <TextBlock Text="{Binding [ThankSupport],Source={x:Static lg:LanguageService.Instance}}" FontSize="20" FontWeight="Bold" Margin="0 10 0 0"/>
-                                <WrapPanel Margin="0 5 0 0">
-                                    <TextBlock Text="{Binding [Support1],Source={x:Static lg:LanguageService.Instance}}" FontSize="16"/>
-                                    <TextBlock Text=" HandyControl" FontSize="16" Foreground="#1182c3"/>
-                                    <TextBlock Text=" Ookii.Dialogs.Wpf" FontSize="16" Foreground="#1182c3" Margin="10 0 0 0"/>
-                                </WrapPanel>
-                                <WrapPanel Margin="0 5 0 0">
-                                    <TextBlock Text="{Binding [Support2],Source={x:Static lg:LanguageService.Instance}}" FontSize="16"/>
-                                    <TextBlock Text=" Scottplot" FontSize="16" Foreground="#1182c3"/>
-                                    <TextBlock Text=" ReoGrid" FontSize="16" Foreground="#1182c3" Margin="10 0 0 0"/>
-                                </WrapPanel>
-                                <WrapPanel Margin="0 5 0 0">
-                                    <TextBlock Text="{Binding [Support4],Source={x:Static lg:LanguageService.Instance}}" FontSize="16"/>
-                                    <TextBlock Text=" Jint" FontSize="16" Foreground="#1182c3"/>
-                                </WrapPanel>
-                                <WrapPanel Margin="0 5 0 0">
-                                    <TextBlock Text="{Binding [Support5],Source={x:Static lg:LanguageService.Instance}}" FontSize="16"/>
-                                    <TextBlock Text=" Community.Toolkit.Mvvm" FontSize="16" Foreground="#1182c3"/>
-                                    <TextBlock Text=" Microsoft.Xaml.Behaviors.Wpf" FontSize="16" Foreground="#1182c3"
-                                           Margin="10 0 0 0"/>
-                                    <TextBlock Text=" System.Text.Json" FontSize="16" Foreground="#1182c3"
-                                           Margin="90 0 0 0"/>
-                                </WrapPanel>
-                            </StackPanel>
+                <!-- Group 2: Community -->
+                <TextBlock Text="Community" Style="{StaticResource ModernSettingsGroupTitle}"/> 
+                <Border Style="{StaticResource ModernSettingsCard}">
+                    <StackPanel>
+                         <!-- GitHub -->
+                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="GitHub" VerticalAlignment="Center" FontSize="14"/>
+                            <Button Grid.Column="1" Content="View" 
+                                    Command="{Binding OpenUrlCommand}" 
+                                    CommandParameter="https://github.com/MaxwellLei/GeoChemistry-Nexus"
+                                    Width="80" Height="30"/>
                         </Grid>
 
+                        <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
+
+                        <!-- Star Request -->
+                        <Grid Margin="16">
+                             <TextBlock Text="{Binding [AboutInfo2],Source={x:Static lg:LanguageService.Instance}}" 
+                                        FontSize="13" Foreground="#0066CC" TextWrapping="Wrap"/>
+                        </Grid>
                     </StackPanel>
-                    <Border Style="{StaticResource BorderRegion}" Margin="0 10"
-                                BorderThickness="5 0 0 0" BorderBrush="#42b983" Background="#ecf8f2">
-                        <WrapPanel>
-                            <TextBlock Text="{Binding [AboutInfo3],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"
-                               HorizontalAlignment="Stretch" Foreground="Black" FontSize="15" TextWrapping="Wrap"
-                                       LineHeight="28"/>
-                        </WrapPanel>
-                    </Border>
-                </VirtualizingStackPanel>
-            </hc:ScrollViewer>
-        </Grid>
+                </Border>
+
+                <!-- Group 3: Credits -->
+                <TextBlock Text="{Binding [ThankSupport],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernSettingsGroupTitle}"/>
+                <Border Style="{StaticResource ModernSettingsCard}">
+                    <StackPanel>
+                        <!-- Shields -->
+                        <Grid Margin="16">
+                            <WrapPanel HorizontalAlignment="Center">
+                                 <hc:Shield Subject=".NET" Status="6.0" Color="#512BD4" Margin="4"/>
+                                 <hc:Shield Subject="WPF" Status="MVVM" Color="#0078D7" Margin="4"/>
+                                 <hc:Shield Subject="License" Status="MIT" Color="#28A745" Margin="4"/>
+                                 <hc:Shield Subject="Windows" Status=">=7.0" Color="#ea4335" Margin="4"/>
+                            </WrapPanel>
+                        </Grid>
+
+                        <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
+
+                        <!-- Libraries -->
+                         <Grid Margin="16">
+                             <StackPanel>
+                                <TextBlock Text="HandyControl, Ookii.Dialogs.Wpf, gong-wpf-dragdrop, VirtualizingWrapPanel" Foreground="#86868B" FontSize="13" HorizontalAlignment="Center" Margin="0,2"/>
+                                 <TextBlock Text="ScottPlot, ReoGrid, Jint" Foreground="#86868B" FontSize="13" HorizontalAlignment="Center" Margin="0,2"/>
+                                 <TextBlock Text="CommunityToolkit.Mvvm, Microsoft.Xaml.Behaviors.Wpf, System.Text.Json" Foreground="#86868B" FontSize="13" HorizontalAlignment="Center" Margin="0,2"/>
+                             </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Footer -->
+                <TextBlock Text="{Binding [AboutInfo3],Source={x:Static lg:LanguageService.Instance}}" 
+                           FontSize="12" Foreground="#86868B" TextWrapping="Wrap" TextAlignment="Center" Margin="0,20,0,0" HorizontalAlignment="Center"/>
+
+            </StackPanel>
+        </hc:ScrollViewer>
     </Grid>
 </Page>

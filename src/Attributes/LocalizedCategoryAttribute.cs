@@ -4,8 +4,10 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Services;
 
-namespace GeoChemistryNexus.Helpers
+namespace GeoChemistryNexus.Attributes
 {
     [AttributeUsage(AttributeTargets.Property)]
     public class LocalizedCategoryAttribute : CategoryAttribute

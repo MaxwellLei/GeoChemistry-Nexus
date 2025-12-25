@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="400">
     <Grid Margin="20">
@@ -13,13 +14,13 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="服务器公告" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
+        <TextBlock Text="{Binding [server_announcements],Source={x:Static lg:LanguageService.Instance}}" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
 
         <hc:ScrollViewer Grid.Row="1" Margin="0,0,0,10" Background="#F5F5F5" Padding="15">
             <TextBlock Text="{Binding AnnouncementText}" TextWrapping="Wrap" FontSize="14" LineHeight="24"/>
         </hc:ScrollViewer>
 
-        <Button Grid.Row="2" Content="刷新" Command="{Binding LoadAnnouncementCommand}" 
+        <Button Grid.Row="2" Content="{Binding [refresh],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding LoadAnnouncementCommand}" 
                 Style="{StaticResource ButtonPrimary}" HorizontalAlignment="Right"
                 IsEnabled="{Binding IsNotBusy}"/>
     </Grid>

@@ -1,3 +1,4 @@
+using GeoChemistryNexus.Services;
 using HandyControl.Controls;
 using System;
 using System.Diagnostics;
@@ -130,7 +131,7 @@ namespace GeoChemistryNexus.Helpers
 
                 if (latestRelease == null)
                 {
-                    MessageHelper.Warning("无法获取最新发布版本信息。");
+                    MessageHelper.Warning(LanguageService.Instance["unable_to_get_latest_release_info"]);
                     return false;
                 }
 
@@ -145,7 +146,7 @@ namespace GeoChemistryNexus.Helpers
                     Version.TryParse(cleanedCurrentVersionString, out Version currentVersion))
                 {
                     // 强制转换为3位版本号 (忽略 Revision)
-                    // 如果 Build 为 -1 (即只有两位版本号)，则默认为 0
+                    // 如果只有两位版本号，则默认为 0
                     latestVersion = new Version(latestVersion.Major, latestVersion.Minor, latestVersion.Build >= 0 ? latestVersion.Build : 0);
                     currentVersion = new Version(currentVersion.Major, currentVersion.Minor, currentVersion.Build >= 0 ? currentVersion.Build : 0);
 
@@ -153,7 +154,6 @@ namespace GeoChemistryNexus.Helpers
                     // 如果最新版本号大于当前版本号，则有更新
                     if(latestVersion == currentVersion)
                     {
-                        MessageHelper.Info(LanguageService.Instance["already_latest_version"]);
                         return false;
                     }
                     return latestVersion > currentVersion;
