@@ -20,8 +20,8 @@ namespace GeoChemistryNexus.ViewModels
     partial class SCommonPageViewModel : ObservableObject
     {
         // 定义语言代码映射数组(索引对应 ComboBox)
-        // 0 -> zh-CN; 1 -> en-US; 2 -> de-DE
-        private readonly string[] _languageCodes = { "zh-CN", "en-US", "de-DE" };
+        // 0 -> zh-CN; 1 -> en-US; 2 -> de-DE; 3 -> es-ES; 4 -> ja-JP; 5 -> ko-KR; 6 -> ru-RU
+        private readonly string[] _languageCodes = { "zh-CN", "en-US", "de-DE", "es-ES", "ja-JP", "ko-KR", "ru-RU" };
 
 
 
@@ -200,11 +200,15 @@ namespace GeoChemistryNexus.ViewModels
         // 保存修改后的配置文件
         void SaveConfig()
         {
-            Helpers.ConfigHelper.SetConfig("language", Language.ToString());  //保存语言设置
-            Helpers.ConfigHelper.SetConfig("auto_off_time", AutoOffTime.ToString());  //保存消息通知时间设置
-            Helpers.ConfigHelper.SetConfig("boot", Boot.ToString());  //保存是否自动开机设置
-            Helpers.ConfigHelper.SetConfig("auto_check_update", AutoCheck.ToString());  //保存是否自动检查更新设置
-            Helpers.ConfigHelper.SetConfig("exit_program_mode", ExitMode.ToString());  //保存退出方式设置
+            var settings = new Dictionary<string, string>
+            {
+                { "language", Language.ToString() },
+                { "auto_off_time", AutoOffTime.ToString() },
+                { "boot", Boot.ToString() },
+                { "auto_check_update", AutoCheck.ToString() },
+                { "exit_program_mode", ExitMode.ToString() }
+            };
+            Helpers.ConfigHelper.SetConfigs(settings);
         }
 
         // 添加启动图

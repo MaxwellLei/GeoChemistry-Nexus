@@ -19,11 +19,15 @@
 
             <hc:NumericUpDown x:Name="NumericUpDownX"
                               hc:InfoElement.Title="X" hc:InfoElement.TitlePlacement="Left"
-                              hc:InfoElement.Placeholder="0.0"/>
+                              hc:InfoElement.Placeholder="0.0"
+                              GotFocus="Coordinate_GotFocus"
+                              LostFocus="Coordinate_LostFocus"/>
 
             <hc:NumericUpDown x:Name="NumericUpDownY" Margin="0,4,0,0"
                               hc:InfoElement.Title="Y" hc:InfoElement.TitlePlacement="Left"
-                              hc:InfoElement.Placeholder="0.0"/>
+                              hc:InfoElement.Placeholder="0.0"
+                              GotFocus="Coordinate_GotFocus"
+                              LostFocus="Coordinate_LostFocus"/>
 
         </StackPanel>
 

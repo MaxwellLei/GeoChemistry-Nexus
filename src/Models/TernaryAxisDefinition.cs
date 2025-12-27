@@ -29,5 +29,21 @@ namespace GeoChemistryNexus.Models
         [property: LocalizedCategory("axis_title")]
         [property: LocalizedDisplayName("offset_y")]
         private double _labelOffsetY;
+
+        /// <summary>
+        /// Show tick labels
+        /// </summary>
+        [ObservableProperty]
+        [property: LocalizedCategory("tick_labels")]
+        [property: LocalizedDisplayName("show_tick_labels")]
+        private bool _isShowTickLabels = true;
+
+        /// <summary>
+        /// Show major ticks
+        /// </summary>
+        [ObservableProperty]
+        [property: LocalizedCategory("major_tick_style")]
+        [property: LocalizedDisplayName("show_major_ticks")]
+        private bool _isShowMajorTicks = true;
     }
 }

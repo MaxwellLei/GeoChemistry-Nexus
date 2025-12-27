@@ -19,6 +19,8 @@ using System.Windows.Shapes;
 using System.Text.RegularExpressions;
 using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Services;
+using CommunityToolkit.Mvvm.Messaging;
+using GeoChemistryNexus.Messages;
 
 namespace GeoChemistryNexus.Controls
 {
@@ -106,9 +108,10 @@ namespace GeoChemistryNexus.Controls
             }
         }
 
-        private void UpdateStatus(string status)
+        private void UpdateStatus(string status, Brush? color = null)
         {
             StatusTextBlock.Text = status;
+            StatusTextBlock.Foreground = color ?? new SolidColorBrush((Color)ColorConverter.ConvertFromString("#666666"));
         }
 
         private void ValidateButton_Click(object sender, RoutedEventArgs e)
@@ -118,7 +121,7 @@ namespace GeoChemistryNexus.Controls
                 var script = ScriptDefinition?.ScriptBody ?? "";
                 if (string.IsNullOrWhiteSpace(script))
                 {
-                    UpdateStatus(LanguageService.Instance["script_content_is_empty"]);
+                    UpdateStatus(LanguageService.Instance["script_content_is_empty"], Brushes.Red);
                     return;
                 }
 
@@ -127,7 +130,7 @@ namespace GeoChemistryNexus.Controls
             }
             catch (Exception ex)
             {
-                UpdateStatus(LanguageService.Instance["validation_failed"] + ex.Message);
+                UpdateStatus(LanguageService.Instance["validation_failed"] + ex.Message, Brushes.Red);
             }
         }
 
@@ -174,7 +177,7 @@ namespace GeoChemistryNexus.Controls
                 (string,bool) res = CheckParameter(RequiredDataSeriesTextBox.Text);
                 if (!res.Item2)
                 {
-                    UpdateStatus(res.Item1);
+                    UpdateStatus(res.Item1, Brushes.Red);
                     return;
                 }
 
@@ -194,12 +197,15 @@ namespace GeoChemistryNexus.Controls
                 engine.Execute(script);
 
                 // 如果没有异常抛出，说明语法是有效的。
-                UpdateStatus(LanguageService.Instance["syntax_validation_passed"]);
+                UpdateStatus(LanguageService.Instance["syntax_validation_passed"], Brushes.Green);
+                
+                // 发送验证通过消息，通知 MainPlotViewModel 更新数据表格
+                WeakReferenceMessenger.Default.Send(new ScriptValidatedMessage(true));
             }
             catch (Exception ex)
             {
                 // 捕获其他可能的异常
-                UpdateStatus(LanguageService.Instance["error"] + ex.Message);
+                UpdateStatus(LanguageService.Instance["error"] + ex.Message, Brushes.Red);
             }
         }
     }

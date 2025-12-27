@@ -1,6 +1,9 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Messages;
 using GeoChemistryNexus.Models;
 using GeoChemistryNexus.Views;
 using HandyControl.Tools;
@@ -30,7 +33,23 @@ namespace GeoChemistryNexus.ViewModels
         {
             IsSideBarVisible = true;
             //FunInit();
+
+            // 注册未保存更改的消息
+            WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>>(this, (r, m) =>
+            {
+                if (m.Value)
+                {
+                    Title = "MainWindow *";
+                }
+                else
+                {
+                    Title = "MainWindow";
+                }
+            });
         }
+
+        [ObservableProperty]
+        private string _title = "MainWindow";
 
         [ObservableProperty]
         private bool _isSideBarVisible;
@@ -101,13 +120,29 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
+        /// 导航并清除历史记录（防止内存堆积）
+        /// </summary>
+        private void NavigateToPage(Frame nav, object pageContent)
+        {
+            nav.Navigate(pageContent);
+            // 清除后退栈，防止页面在内存中堆积
+            while (nav.CanGoBack)
+            {
+                nav.RemoveBackEntry();
+            }
+            // 强制垃圾回收以释放未被引用的页面内存
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+        }
+
+        /// <summary>
         /// 切换绘图页命令
         /// </summary>
         /// <param name="nav">导航</param>
         [RelayCommand]
         private void HomePage(Frame nav)
         {
-            nav.Navigate(MainPlotPage.GetPage());
+            NavigateToPage(nav, MainPlotPage.GetPage());
             IsSideBarVisible = false;
         }
 
@@ -118,7 +153,7 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private void StartPage(Frame nav)
         {
-            nav.Navigate(HomePageView.GetPage());
+            NavigateToPage(nav, HomePageView.GetPage());
         }
 
         /// <summary>
@@ -128,7 +163,7 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private void GTMNewPage(Frame nav)
         {
-            nav.Navigate(GeothermometerNewPageView.GetPage());
+            NavigateToPage(nav, GeothermometerNewPageView.GetPage());
             IsSideBarVisible = false;
         }
 

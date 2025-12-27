@@ -118,1443 +118,1571 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="StartStatus" xml:space="preserve">
-    <value>Starten...</value>
+    <value>起動中...</value>
+    <comment>软件启动界面</comment>
   </data>
   <data name="Show" xml:space="preserve">
-    <value>Oberfläche anzeigen</value>
+    <value>表示する</value>
+    <comment>托盘菜单右键</comment>
   </data>
   <data name="Exit" xml:space="preserve">
-    <value>Programm beenden</value>
+    <value>終了</value>
+    <comment>托盘菜单右键</comment>
   </data>
   <data name="home" xml:space="preserve">
-    <value>Startseite</value>
+    <value>ホーム</value>
+    <comment>主窗体侧边栏</comment>
   </data>
   <data name="Plot" xml:space="preserve">
-    <value>Diagramm zeichnen</value>
+    <value>図解描画</value>
+    <comment>主窗体侧边栏</comment>
   </data>
   <data name="Geothermometer" xml:space="preserve">
-    <value>Geothermometer</value>
+    <value>地質温度計</value>
+    <comment>主窗体侧边栏</comment>
   </data>
   <data name="Setting" xml:space="preserve">
-    <value>Einstellungen</value>
+    <value>設定</value>
+    <comment>主窗体侧边栏</comment>
   </data>
   <data name="File" xml:space="preserve">
-    <value>_Datei(F)</value>
+    <value>ファイル(_F)</value>
+    <comment>绘图界面</comment>
   </data>
   <data name="Edit" xml:space="preserve">
-    <value>Bearbeiten</value>
+    <value>編集</value>
+    <comment>绘图界面</comment>
   </data>
   <data name="Expand" xml:space="preserve">
-    <value>Erweiterungen</value>
+    <value>拡張</value>
+    <comment>绘图界面</comment>
   </data>
   <data name="EditMode" xml:space="preserve">
-    <value>Bearbeitungsmodus</value>
+    <value>編集モード</value>
+    <comment>绘图界面</comment>
   </data>
   <data name="NewBasemap" xml:space="preserve">
-    <value>Neue Grundkarte</value>
+    <value>新規ベースマップ</value>
+    <comment>绘图界面</comment>
   </data>
   <data name="SaveBasemap" xml:space="preserve">
-    <value>Grundkarte speichern</value>
+    <value>ベースマップを保存</value>
   </data>
   <data name="ImportBasemap" xml:space="preserve">
-    <value>Grundkarte importieren</value>
+    <value>ベースマップをインポート</value>
   </data>
   <data name="ExportBasemap" xml:space="preserve">
-    <value>Grundkarte exportieren</value>
+    <value>ベースマップをエクスポート</value>
   </data>
   <data name="DeleteBasemap" xml:space="preserve">
-    <value>Grundkarte löschen</value>
+    <value>ベースマップを削除</value>
   </data>
   <data name="GetMoreBasemap" xml:space="preserve">
-    <value>Mehr Grundkarten abrufen</value>
+    <value>他のベースマップを取得</value>
   </data>
   <data name="ImportData" xml:space="preserve">
-    <value>Daten importieren</value>
+    <value>データをインポート</value>
   </data>
   <data name="ResetPlot" xml:space="preserve">
-    <value>Diagramm zurücksetzen</value>
+    <value>描画をリセット</value>
   </data>
   <data name="ResetVision" xml:space="preserve">
-    <value>Ansicht zurücksetzen</value>
+    <value>ビューをリセット</value>
   </data>
   <data name="CancelSelected" xml:space="preserve">
-    <value>Auswahl aufheben</value>
+    <value>選択解除</value>
   </data>
   <data name="LocationAxis" xml:space="preserve">
-    <value>Positionsachse</value>
+    <value>軸の位置合わせ</value>
   </data>
   <data name="ExportImage" xml:space="preserve">
-    <value>Bild exportieren</value>
+    <value>画像をエクスポート</value>
   </data>
   <data name="ExportImagePNG" xml:space="preserve">
-    <value>Als PNG exportieren</value>
+    <value>PNG 形式でエクスポート</value>
   </data>
   <data name="ExportImageJPG" xml:space="preserve">
-    <value>Als JPG exportieren</value>
+    <value>JPG 形式でエクスポート</value>
   </data>
   <data name="ExportImageBMP" xml:space="preserve">
-    <value>Als BMP exportieren</value>
+    <value>BMP 形式でエクスポート</value>
   </data>
   <data name="ExportImageWebp" xml:space="preserve">
-    <value>Als Webp exportieren</value>
+    <value>WebP 形式でエクスポート</value>
   </data>
   <data name="ExportImageSVG" xml:space="preserve">
-    <value>Als SVG exportieren</value>
+    <value>SVG 形式でエクスポート</value>
   </data>
   <data name="LegendSetting" xml:space="preserve">
-    <value>Legendeneinstellungen</value>
+    <value>凡例設定</value>
   </data>
   <data name="PlotSetting" xml:space="preserve">
-    <value>Diagrammeinstellungen</value>
+    <value>描画設定</value>
   </data>
   <data name="AddLine" xml:space="preserve">
-    <value>Linie hinzufügen</value>
+    <value>線を追加</value>
   </data>
   <data name="AddPolygons" xml:space="preserve">
-    <value>Polygon hinzufügen</value>
+    <value>ポリゴンを追加</value>
   </data>
   <data name="AddText" xml:space="preserve">
-    <value>Kommentar hinzufügen</value>
+    <value>注釈を追加</value>
   </data>
   <data name="JsSetting" xml:space="preserve">
-    <value>Skripteinstellungen</value>
+    <value>スクリプト設定</value>
   </data>
   <data name="Save" xml:space="preserve">
-    <value>Speichern</value>
+    <value>保存</value>
   </data>
   <data name="QuitEdit" xml:space="preserve">
-    <value>Bearbeitung beenden</value>
+    <value>編集を終了</value>
   </data>
   <data name="IgneousRock" xml:space="preserve">
-    <value>Magmatisches Gestein</value>
+    <value>火成岩</value>
   </data>
   <data name="TectonicSetting" xml:space="preserve">
-    <value>Tektonisches Umfeld</value>
+    <value>構造環境</value>
   </data>
   <data name="Basalt" xml:space="preserve">
-    <value>Basalt</value>
+    <value>玄武岩</value>
   </data>
   <data name="RockClassification" xml:space="preserve">
-    <value>Gesteinsklassifikation</value>
+    <value>岩石分類</value>
   </data>
   <data name="GTMP" xml:space="preserve">
-    <value>Temperaturdiagramm</value>
+    <value>温度プロット</value>
   </data>
   <data name="Guide" xml:space="preserve">
-    <value>Anleitung</value>
+    <value>ガイド</value>
   </data>
   <data name="BorderLine" xml:space="preserve">
-    <value>Grenze</value>
+    <value>境界線</value>
   </data>
   <data name="PlotText" xml:space="preserve">
-    <value>Kommentar</value>
+    <value>注釈</value>
   </data>
   <data name="PlotAxies" xml:space="preserve">
-    <value>Koordinatenachse</value>
+    <value>座標軸</value>
   </data>
   <data name="PlotLeftAxies" xml:space="preserve">
-    <value>Linke Achse</value>
+    <value>左側座標軸</value>
   </data>
   <data name="PlotBottomAxies" xml:space="preserve">
-    <value>Untere Achse</value>
+    <value>下部座標軸</value>
   </data>
   <data name="PlotData" xml:space="preserve">
-    <value>Daten</value>
+    <value>データ</value>
   </data>
   <data name="MajorAxes" xml:space="preserve">
-    <value>Hauptachse</value>
+    <value>主目盛軸</value>
   </data>
   <data name="MinorAxes" xml:space="preserve">
-    <value>Nebenachse</value>
+    <value>副目盛軸</value>
   </data>
   <data name="legend" xml:space="preserve">
-    <value>Legende</value>
+    <value>凡例</value>
   </data>
   <data name="Background" xml:space="preserve">
-    <value>Hintergrund</value>
+    <value>背景</value>
   </data>
   <data name="Calculate" xml:space="preserve">
-    <value>Berechnen</value>
+    <value>計算</value>
   </data>
   <data name="Delete" xml:space="preserve">
-    <value>Löschen</value>
+    <value>削除</value>
   </data>
   <data name="Confirm" xml:space="preserve">
-    <value>Bestätigen</value>
+    <value>確認</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Abbrechen</value>
+    <value>キャンセル</value>
   </data>
   <data name="IsShow" xml:space="preserve">
-    <value>Anzeigen</value>
+    <value>表示する</value>
   </data>
   <data name="FontFamily" xml:space="preserve">
-    <value>Schriftart</value>
+    <value>フォント</value>
   </data>
   <data name="FontStyle" xml:space="preserve">
-    <value>Schriftstil</value>
+    <value>フォントスタイル</value>
   </data>
   <data name="FontNormal" xml:space="preserve">
-    <value>Standard</value>
+    <value>標準</value>
   </data>
   <data name="FontBold" xml:space="preserve">
-    <value>Fett</value>
+    <value>太字</value>
   </data>
   <data name="FontItalic" xml:space="preserve">
-    <value>Kursiv</value>
+    <value>斜体</value>
   </data>
   <data name="FontSize" xml:space="preserve">
-    <value>Schriftgröße</value>
+    <value>フォントサイズ</value>
   </data>
   <data name="FontColor" xml:space="preserve">
-    <value>Schriftfarbe</value>
+    <value>フォントの色</value>
   </data>
   <data name="TextContent" xml:space="preserve">
-    <value>Inhalt</value>
+    <value>内容</value>
   </data>
   <data name="LineStyle" xml:space="preserve">
-    <value>Linienstil</value>
+    <value>線のスタイル</value>
   </data>
   <data name="LineSolid" xml:space="preserve">
-    <value>Durchgezogen</value>
+    <value>実線</value>
   </data>
   <data name="LineDash" xml:space="preserve">
-    <value>Gestrichelt</value>
+    <value>破線</value>
   </data>
   <data name="LineDashDot" xml:space="preserve">
-    <value>Strichpunkt</value>
+    <value>一点鎖線</value>
   </data>
   <data name="LineDenselyDashed" xml:space="preserve">
-    <value>Dicht gestrichelt</value>
+    <value>密集破線</value>
   </data>
   <data name="LineWidth" xml:space="preserve">
-    <value>Breite</value>
+    <value>幅</value>
   </data>
   <data name="LineColor" xml:space="preserve">
-    <value>Farbe</value>
+    <value>色</value>
   </data>
   <data name="PointStyle" xml:space="preserve">
-    <value>Punktstil</value>
+    <value>点のスタイル</value>
   </data>
   <data name="PointCircle" xml:space="preserve">
-    <value>Kreis</value>
+    <value>円形</value>
   </data>
   <data name="PointHollowCircle" xml:space="preserve">
-    <value>Hohler Kreis</value>
+    <value>中空円</value>
   </data>
   <data name="PointSquare" xml:space="preserve">
-    <value>Quadrat</value>
+    <value>正方形</value>
   </data>
   <data name="PointFilledTriangleUp" xml:space="preserve">
-    <value>Dreieck oben</value>
+    <value>上向き三角形</value>
   </data>
   <data name="PointFilledTriangleDown" xml:space="preserve">
-    <value>Dreieck unten</value>
+    <value>下向き三角形</value>
   </data>
   <data name="PointDiamond" xml:space="preserve">
-    <value>Raute</value>
+    <value>菱形</value>
   </data>
   <data name="PointEks" xml:space="preserve">
-    <value>Kreuz (X)</value>
+    <value>バツ印 (X)</value>
   </data>
   <data name="PointCross" xml:space="preserve">
-    <value>Kreuz (+)</value>
+    <value>十字</value>
   </data>
   <data name="PointStar" xml:space="preserve">
-    <value>Stern</value>
+    <value>星形</value>
   </data>
   <data name="size" xml:space="preserve">
-    <value>Größe</value>
+    <value>サイズ</value>
   </data>
   <data name="IsShowAxes" xml:space="preserve">
-    <value>Achsen anzeigen</value>
+    <value>軸を表示</value>
   </data>
   <data name="IsShowAxesTick" xml:space="preserve">
-    <value>Hauptstriche ausblenden</value>
+    <value>主目盛を隠す</value>
   </data>
   <data name="AxesStyle" xml:space="preserve">
-    <value>Achsenstil</value>
+    <value>軸のスタイル</value>
   </data>
   <data name="AxesStyleNormal" xml:space="preserve">
-    <value>Normal</value>
+    <value>通常</value>
   </data>
   <data name="AxesStyleLog10" xml:space="preserve">
     <value>Log(10)</value>
   </data>
   <data name="AxesTickFont" xml:space="preserve">
-    <value>Achsenschriftart</value>
+    <value>目盛のフォント</value>
   </data>
   <data name="AxesTickFontSize" xml:space="preserve">
-    <value>Achsenschriftgröße</value>
+    <value>目盛のサイズ</value>
   </data>
   <data name="AxesTickSpacing" xml:space="preserve">
-    <value>Achsenabstand</value>
+    <value>目盛の間隔</value>
   </data>
   <data name="AxesTickUpLimit" xml:space="preserve">
-    <value>Obergrenze</value>
+    <value>目盛の上限</value>
   </data>
   <data name="AxesTickDownLimit" xml:space="preserve">
-    <value>Untergrenze</value>
+    <value>目盛の下限</value>
   </data>
   <data name="AxesTickColor" xml:space="preserve">
-    <value>Achsenfarbe</value>
+    <value>目盛の色</value>
   </data>
   <data name="IsShowMinorAxes" xml:space="preserve">
-    <value>Nebenstriche ausblenden</value>
+    <value>副目盛を隠す</value>
   </data>
   <data name="IsShowLegend" xml:space="preserve">
-    <value>Legende anzeigen</value>
+    <value>凡例を表示</value>
   </data>
   <data name="LegendPosition" xml:space="preserve">
-    <value>Legendenposition</value>
+    <value>凡例の位置</value>
   </data>
   <data name="LegendPositionRU" xml:space="preserve">
-    <value>Rechts oben</value>
+    <value>右上</value>
   </data>
   <data name="LegendPositionRD" xml:space="preserve">
-    <value>Rechts unten</value>
+    <value>右下</value>
   </data>
   <data name="LegendPositionLU" xml:space="preserve">
-    <value>Links oben</value>
+    <value>左上</value>
   </data>
   <data name="LegendPositionLD" xml:space="preserve">
-    <value>Links unten</value>
+    <value>左下</value>
   </data>
   <data name="LegendDirection" xml:space="preserve">
-    <value>Legendenausrichtung</value>
+    <value>凡例の方向</value>
   </data>
   <data name="LegendVertical" xml:space="preserve">
-    <value>Vertikal</value>
+    <value>縦方向</value>
   </data>
   <data name="LegendHorizontal" xml:space="preserve">
-    <value>Horizontal</value>
+    <value>横方向</value>
   </data>
   <data name="PlotTitle" xml:space="preserve">
-    <value>Diagrammtitel</value>
+    <value>図のタイトル</value>
   </data>
   <data name="PlotTitleFont" xml:space="preserve">
-    <value>Titelschriftart</value>
+    <value>タイトルのフォント</value>
   </data>
   <data name="PlotTitleFontSize" xml:space="preserve">
-    <value>Titelschriftgröße</value>
+    <value>タイトルのサイズ</value>
   </data>
   <data name="PlotTitleColor" xml:space="preserve">
-    <value>Titelfarbe</value>
+    <value>タイトルの色</value>
   </data>
   <data name="PlotAxesTitle1" xml:space="preserve">
-    <value>Achsentitel 1</value>
+    <value>軸タイトル1</value>
   </data>
   <data name="PlotAxesTitle2" xml:space="preserve">
-    <value>Achsentitel 2</value>
+    <value>軸タイトル2</value>
   </data>
   <data name="PlotAxesTitleFont" xml:space="preserve">
-    <value>Achsentitelschriftart</value>
+    <value>軸タイトルのフォント</value>
   </data>
   <data name="PlotAxesTitleFontSize" xml:space="preserve">
-    <value>Achsentitelschriftgröße</value>
+    <value>軸タイトルのサイズ</value>
   </data>
   <data name="PlotAxesTitleColor" xml:space="preserve">
-    <value>Achsentitelfarbe</value>
+    <value>軸タイトルの色</value>
   </data>
   <data name="PlotShowGrid" xml:space="preserve">
-    <value>Gitter anzeigen</value>
+    <value>グリッドを表示</value>
   </data>
   <data name="PlotMajorGridColor" xml:space="preserve">
-    <value>Hauptgitterfarbe</value>
+    <value>主グリッドの色</value>
   </data>
   <data name="PlotMajorGridWidth" xml:space="preserve">
-    <value>Hauptgitterbreite</value>
+    <value>主グリッドの幅</value>
   </data>
   <data name="PlotShowMinorGrid" xml:space="preserve">
-    <value>Nebengitter anzeigen</value>
+    <value>副グリッドを表示</value>
   </data>
   <data name="PlotMinorGridColor" xml:space="preserve">
-    <value>Nebengitterfarbe</value>
+    <value>副グリッドの色</value>
   </data>
   <data name="PlotMinorGridWidth" xml:space="preserve">
-    <value>Nebengitterbreite</value>
+    <value>副グリッドの幅</value>
   </data>
   <data name="PlotSwitchFilledColor" xml:space="preserve">
-    <value>Füllfarbe umkehren</value>
+    <value>塗りつぶし色を反転</value>
   </data>
   <data name="PlotFilledColor1" xml:space="preserve">
-    <value>Füllbereichsfarbe 1</value>
+    <value>領域の塗りつぶし色1</value>
   </data>
   <data name="PlotFilledColor2" xml:space="preserve">
-    <value>Füllbereichsfarbe 2</value>
+    <value>領域の塗りつぶし色2</value>
   </data>
   <data name="Parameters" xml:space="preserve">
-    <value>Erforderliche Parameter</value>
+    <value>必須パラメータ</value>
   </data>
   <data name="Js" xml:space="preserve">
-    <value>Js Skript</value>
+    <value>JSスクリプト</value>
   </data>
   <data name="CheckJs" xml:space="preserve">
-    <value>Skript prüfen</value>
+    <value>スクリプトを確認</value>
   </data>
   <data name="Undelete_Message" xml:space="preserve">
-    <value>Löschen rückgängig gemacht</value>
+    <value>削除を取り消しました</value>
   </data>
   <data name="DeleteingBasemapConfirm1_Message" xml:space="preserve">
-    <value>Lösche Grundkarte</value>
+    <value>ベースマップを削除中</value>
   </data>
   <data name="DeleteingBasemapConfirm2_Message" xml:space="preserve">
-    <value>Wirklich löschen?</value>
+    <value>削除してもよろしいですか？</value>
   </data>
   <data name="SaveSuccess" xml:space="preserve">
-    <value>Erfolgreich gespeichert</value>
+    <value>保存に成功しました</value>
   </data>
   <data name="ParameterNotFilledIn" xml:space="preserve">
-    <value>Plot-Parameter nicht ausgefüllt</value>
+    <value>プロットパラメータが未入力です</value>
   </data>
   <data name="ScNotFilledIn" xml:space="preserve">
-    <value>Plot-Skript nicht ausgefüllt</value>
+    <value>プロットスクリプトが未入力です</value>
   </data>
   <data name="BasemapVersionToLow1" xml:space="preserve">
-    <value>Importierte Grundkartenversion zu niedrig, bitte verwenden Sie eine Version höher als</value>
+    <value>インポートされたベースマップのバージョンが低すぎます。バージョン</value>
   </data>
   <data name="BasemapVersionToLow2" xml:space="preserve">
-    <value>der Grundkarte</value>
+    <value>以上のベースマップを使用してください</value>
   </data>
   <data name="CancelImport" xml:space="preserve">
-    <value>Import abgebrochen</value>
+    <value>インポートを取り消しました</value>
   </data>
   <data name="BasemapExisted" xml:space="preserve">
-    <value>Grundkartendatei existiert bereits. Überschreiben?</value>
+    <value>ベースマップファイルは既に存在します。上書きしますか？</value>
   </data>
   <data name="NewBasemapSuccess" xml:space="preserve">
-    <value>Neue Grundkarte erfolgreich erstellt</value>
+    <value>新規ベースマップの作成に成功しました</value>
   </data>
   <data name="CategoryFormatError" xml:space="preserve">
-    <value>Kategorieformatfehler</value>
+    <value>カテゴリの形式エラー</value>
   </data>
   <data name="ParameterNull" xml:space="preserve">
-    <value>Parameter ist leer</value>
+    <value>パラメータが空です</value>
   </data>
   <data name="JsNull" xml:space="preserve">
-    <value>Skript ist leer</value>
+    <value>スクリプトが空です</value>
   </data>
   <data name="BasemapCategories" xml:space="preserve">
-    <value>Grundkartenkategorie</value>
+    <value>ベースマップのカテゴリ</value>
   </data>
   <data name="BasemapLanguage" xml:space="preserve">
-    <value>Grundkartensprache</value>
+    <value>ベースマップの言語</value>
   </data>
   <data name="Zircon" xml:space="preserve">
-    <value>Zirkon</value>
+    <value>ジルコン</value>
   </data>
   <data name="Sphalerite" xml:space="preserve">
-    <value>Sphalerit</value>
+    <value>閃亜鉛鉱</value>
   </data>
   <data name="Quartz" xml:space="preserve">
-    <value>Quarz</value>
+    <value>石英</value>
   </data>
   <data name="Arsenopyrite" xml:space="preserve">
-    <value>Arsenopyrit</value>
+    <value>硫砒鉄鉱</value>
   </data>
   <data name="Chlorite" xml:space="preserve">
-    <value>Chlorit</value>
+    <value>緑泥石</value>
   </data>
   <data name="Biotite" xml:space="preserve">
-    <value>Biotit</value>
+    <value>黒雲母</value>
   </data>
   <data name="Amphibole" xml:space="preserve">
-    <value>Amphibol</value>
+    <value>角閃石</value>
   </data>
   <data name="Reset" xml:space="preserve">
-    <value>Zurücksetzen</value>
+    <value>リセット</value>
   </data>
   <data name="ExportResult" xml:space="preserve">
-    <value>Ergebnis exportieren</value>
+    <value>結果をエクスポート</value>
   </data>
   <data name="TGMInfo" xml:space="preserve">
-    <value>Hier klicken oder Datei hierher ziehen</value>
+    <value>クリックするか、ファイルをここにドラッグしてください</value>
   </data>
   <data name="CalTarget" xml:space="preserve">
-    <value>Berechnungsziel</value>
+    <value>計算対象</value>
   </data>
   <data name="CalTarget1" xml:space="preserve">
-    <value>Zr-Sättigungstemperatur (Watson und Harrison, 1983)</value>
+    <value>Zr 飽和温度 (Watson and Harrison, 1983)</value>
   </data>
   <data name="CalTarget2" xml:space="preserve">
-    <value>Zr-Haupttemperatur (Watson und Harrison, 1983)</value>
+    <value>Zr 主成分温度 (Watson and Harrison, 1983)</value>
   </data>
   <data name="Pressure" xml:space="preserve">
-    <value>Druck(Mpa)</value>
+    <value>圧力(Mpa)</value>
   </data>
   <data name="AmphiboleGTM" xml:space="preserve">
-    <value>Si-Thermometer (Ridolfi et al., 2010)</value>
+    <value>Si 温度計 (Ridolfi et al., 2010)</value>
   </data>
   <data name="BiotiteGTM" xml:space="preserve">
-    <value>Ti-Thermometer (Henry et al., 2005)</value>
+    <value>Ti 温度計 (Henry et al., 2005)</value>
   </data>
   <data name="ChloriteGTM" xml:space="preserve">
-    <value>Al4-Thermometer (Jowett, 1991)</value>
+    <value>Al4 温度計 (Jowett, 1991)</value>
   </data>
   <data name="ArsenopyriteGTM" xml:space="preserve">
-    <value>Arsenopyrit-Thermometer (Kretschmar und Scott, 1976)</value>
+    <value>硫砒鉄鉱温度計 (Kretschmar and Scott, 1976)</value>
   </data>
   <data name="QuartzGTM" xml:space="preserve">
-    <value>TitaniQ-Thermometer (Wark und Watson, 2006)</value>
+    <value>TitaniQ 温度計 (Wark and Watson, 2006)</value>
   </data>
   <data name="SphaleriteGTM" xml:space="preserve">
-    <value>FeS-Thermometer (Scott und Barnes, 1971)</value>
+    <value>FeS 温度計 (Scott and Barnes, 1971)</value>
   </data>
   <data name="SphaleriteGGIMFisGTM" xml:space="preserve">
-    <value>GGIMFis-Thermometer (Frenzel et al., 2016)</value>
+    <value>GGIMFis 温度計 (Frenzel et al., 2016)</value>
   </data>
   <data name="ZirconTiGTM" xml:space="preserve">
-    <value>Ti-Thermometer (Loucks et al., 2020)</value>
+    <value>Ti 温度計 (Loucks et al., 2020)</value>
   </data>
   <data name="ZirconZrGTM" xml:space="preserve">
-    <value>Zr-Thermometer (Watson und Harrison, 1983)</value>
+    <value>Zr 温度計 (Watson and Harrison, 1983)</value>
   </data>
   <data name="Step1" xml:space="preserve">
-    <value>Daten importieren / eingeben</value>
+    <value>データのインポート / 入力</value>
   </data>
   <data name="Step2" xml:space="preserve">
-    <value>Parameter prüfen</value>
+    <value>パラメータの確認</value>
   </data>
   <data name="Step3" xml:space="preserve">
-    <value>Ergebnis berechnen</value>
+    <value>結果の計算</value>
   </data>
   <data name="NormalSetting" xml:space="preserve">
-    <value>Allgemeine Einstellungen</value>
+    <value>一般設定</value>
   </data>
   <data name="About" xml:space="preserve">
-    <value>Über</value>
+    <value>バージョン情報</value>
   </data>
   <data name="FilePath" xml:space="preserve">
-    <value>Dateipfad</value>
+    <value>ファイルパス</value>
   </data>
   <data name="FileSavePath" xml:space="preserve">
-    <value>Speicherort</value>
+    <value>保存先</value>
   </data>
   <data name="DefaultPath" xml:space="preserve">
-    <value>Standardpfad</value>
+    <value>デフォルトの場所</value>
   </data>
   <data name="CustomPath" xml:space="preserve">
-    <value>Benutzerdefinierter Ordner</value>
+    <value>カスタムフォルダの場所</value>
   </data>
   <data name="OpenFileLocation" xml:space="preserve">
-    <value>Dateispeicherort öffnen</value>
+    <value>フォルダの場所を開く</value>
   </data>
   <data name="InternationalizationAndPersonalization" xml:space="preserve">
-    <value>Internationalisierung &amp; Personalisierung</value>
+    <value>国際化とパーソナライズ</value>
   </data>
   <data name="Theme" xml:space="preserve">
-    <value>Thema</value>
+    <value>テーマ</value>
   </data>
   <data name="Default" xml:space="preserve">
-    <value>Standard</value>
+    <value>デフォルト</value>
   </data>
   <data name="Language_" xml:space="preserve">
-    <value>Sprache</value>
+    <value>言語</value>
   </data>
   <data name="EnglishUS" xml:space="preserve">
     <value>English (US)</value>
   </data>
   <data name="ChineseS" xml:space="preserve">
-    <value>Chinesisch (Vereinfacht)</value>
+    <value>中文(简体)</value>
   </data>
   <data name="DefaultRandom" xml:space="preserve">
-    <value>Standard zufällig</value>
+    <value>デフォルトランダム</value>
   </data>
   <data name="MessageNotification" xml:space="preserve">
-    <value>Benachrichtigungen</value>
+    <value>メッセージ通知</value>
   </data>
   <data name="MessageAutoClose" xml:space="preserve">
-    <value>Automatische Schließzeit</value>
+    <value>自動的に閉じる時間</value>
   </data>
   <data name="MessageAutoClose5" xml:space="preserve">
-    <value>5 Sekunden</value>
+    <value>5 秒</value>
   </data>
   <data name="MessageAutoClose4" xml:space="preserve">
-    <value>4 Sekunden</value>
+    <value>4 秒</value>
   </data>
   <data name="MessageAutoClose3" xml:space="preserve">
-    <value>3 Sekunden</value>
+    <value>3 秒</value>
   </data>
   <data name="MessageAutoClose2" xml:space="preserve">
-    <value>2 Sekunden</value>
+    <value>2 秒</value>
   </data>
   <data name="Other" xml:space="preserve">
-    <value>Sonstiges</value>
+    <value>その他</value>
   </data>
   <data name="Boot" xml:space="preserve">
-    <value>Autostart beim Booten</value>
+    <value>起動時に実行</value>
   </data>
   <data name="AutoCheckUpdate" xml:space="preserve">
-    <value>Automatisch nach Updates suchen</value>
+    <value>更新を自動的に確認</value>
   </data>
   <data name="CheckUpdate" xml:space="preserve">
-    <value>Nach Updates suchen</value>
+    <value>更新を確認</value>
   </data>
   <data name="QuitAppMode" xml:space="preserve">
-    <value>Beenden-Modus</value>
+    <value>プログラムの終了方法</value>
   </data>
   <data name="MinimizeTray" xml:space="preserve">
-    <value>In Systemtray minimieren</value>
+    <value>システムトレイに最小化</value>
   </data>
   <data name="Quit" xml:space="preserve">
-    <value>Direkt beenden</value>
+    <value>直接終了</value>
   </data>
   <data name="AboutInfo1" xml:space="preserve">
-    <value>Dieses Projekt nutzt geochemische Daten für Diagrammerstellung, Berechnung und Analyse zur effizienten Verarbeitung geologischer Daten. Ziel ist es, Geowissenschaftlern zu helfen, den Datenanalyseprozess zu beschleunigen und die Forschungseffizienz zu verbessern.</value>
+    <value>本プロジェクトは、地球化学データを利用した関連図表の作成、計算、分析を通じて、地質学データを効率的に処理し、地球科学研究者のデータ分析プロセスを加速させ、研究効率を向上させることを目的としています。</value>
   </data>
   <data name="AboutInfo2" xml:space="preserve">
-    <value>Wenn Ihnen dieses Projekt gefällt, geben Sie uns bitte einen Stern zur Unterstützung! Wenn Sie es hilfreich finden, können Sie mir auch einen Kaffee spendieren ☕</value>
+    <value>もし本プロジェクトに興味をお持ちでしたら、ぜひStarをつけて応援してください！お役に立ちましたら、コーヒーを一杯奢っていただけると嬉しいです☕</value>
   </data>
   <data name="AboutInfo3" xml:space="preserve">
-    <value>Wir begrüßen weitere Forscher!
-    Lassen Sie uns gemeinsam geochemische Berechnungsmethoden und weitere Diagrammvorlagen pflegen und aktualisieren!
-    Damit die Software leistungsfähiger und benutzerfreundlicher wird!</value>
+    <value>より多くの研究者の皆様の参加を歓迎します！
+	地球化学計算手法や、より多くの描画ベースマップテンプレートを一緒に維持・更新しましょう！
+	ソフトウェアをより強力で使いやすいものにしていきましょう！</value>
   </data>
   <data name="ThankSupport" xml:space="preserve">
-    <value>Danke für die Unterstützung</value>
+    <value>ご支援ありがとうございます</value>
   </data>
   <data name="Support1" xml:space="preserve">
-    <value>📌Steuerelemente:</value>
+    <value>📌コントロールのサポート:</value>
   </data>
   <data name="Support3" xml:space="preserve">
-    <value>📌Dokumentation:</value>
+    <value>📌ドキュメントのサポート:</value>
   </data>
   <data name="Support4" xml:space="preserve">
-    <value>📌Berechnung:</value>
+    <value>📌計算のサポート:</value>
   </data>
   <data name="Support2" xml:space="preserve">
-    <value>📌Diagramme:</value>
+    <value>📌チャートのサポート:</value>
   </data>
   <data name="Support5" xml:space="preserve">
-    <value>📌Tools:</value>
+    <value>📌ツールのサポート:</value>
   </data>
   <data name="PlotBoder" xml:space="preserve">
-    <value>Rahmen</value>
+    <value>境界</value>
   </data>
   <data name="ResetSuccess" xml:space="preserve">
-    <value>Erfolgreich zurückgesetzt</value>
+    <value>リセットしました</value>
   </data>
   <data name="ModifedSuccess" xml:space="preserve">
-    <value>Erfolgreich geändert</value>
+    <value>変更しました</value>
   </data>
   <data name="ModifedCanceled" xml:space="preserve">
-    <value>Änderung abgebrochen</value>
+    <value>変更を取り消しました</value>
   </data>
   <data name="Info1" xml:space="preserve">
-    <value>Bitte besuchen Sie die offizielle Website, Funktion in Entwicklung...</value>
+    <value>公式サイトをご覧ください。この機能は開発中です...</value>
   </data>
   <data name="import_template" xml:space="preserve">
-    <value>Diagrammvorlage importieren</value>
+    <value>描画テンプレートをインポート</value>
   </data>
   <data name="create_new_diagram_template" xml:space="preserve">
-    <value>Neue Diagrammvorlage erstellen</value>
+    <value>図解テンプレートを新規作成</value>
   </data>
   <data name="template_library" xml:space="preserve">
-    <value>Vorlagenbibliothek</value>
+    <value>テンプレートライブラリ</value>
   </data>
   <data name="return_to_template_library" xml:space="preserve">
-    <value>Zurück</value>
+    <value>戻る</value>
   </data>
   <data name="Data" xml:space="preserve">
-    <value>Daten</value>
+    <value>データ</value>
   </data>
   <data name="import_data" xml:space="preserve">
-    <value>Daten importieren</value>
+    <value>データをインポート</value>
   </data>
   <data name="clear_data" xml:space="preserve">
-    <value>Daten löschen</value>
+    <value>データをクリア</value>
   </data>
   <data name="view" xml:space="preserve">
-    <value>Ansicht</value>
+    <value>表示</value>
   </data>
   <data name="reset_view" xml:space="preserve">
-    <value>Ansicht zurücksetzen</value>
+    <value>ビューをリセット</value>
   </data>
   <data name="coordinate_positioning" xml:space="preserve">
-    <value>Koordinatenpositionierung</value>
+    <value>座標位置合わせ</value>
   </data>
   <data name="select" xml:space="preserve">
-    <value>Auswählen</value>
+    <value>選択</value>
   </data>
   <data name="deselect" xml:space="preserve">
-    <value>Auswahl aufheben</value>
+    <value>選択解除</value>
   </data>
   <data name="export" xml:space="preserve">
-    <value>Exportieren</value>
+    <value>エクスポート</value>
   </data>
   <data name="export_image" xml:space="preserve">
-    <value>Bild exportieren</value>
+    <value>画像をエクスポート</value>
   </data>
   <data name="png_format" xml:space="preserve">
-    <value>PNG-Format</value>
+    <value>PNG 形式</value>
   </data>
   <data name="bmp_format" xml:space="preserve">
-    <value>BMP-Format</value>
+    <value>BMP 形式</value>
   </data>
   <data name="jpg_format" xml:space="preserve">
-    <value>JPG-Format</value>
+    <value>JPG 形式</value>
   </data>
   <data name="webp_format" xml:space="preserve">
-    <value>WebP-Format</value>
+    <value>WebP 形式</value>
   </data>
   <data name="svg_format" xml:space="preserve">
-    <value>SVG-Format</value>
+    <value>SVG 形式</value>
   </data>
   <data name="legend_settings" xml:space="preserve">
-    <value>Legendeneinstellungen</value>
+    <value>凡例設定</value>
   </data>
   <data name="grid_settings" xml:space="preserve">
-    <value>Gittereinstellungen</value>
+    <value>グリッド設定</value>
   </data>
   <data name="script_settings" xml:space="preserve">
-    <value>Skripteinstellungen</value>
+    <value>スクリプト設定</value>
   </data>
   <data name="plot_settings" xml:space="preserve">
-    <value>Diagrammeinstellungen</value>
+    <value>描画設定</value>
   </data>
   <data name="all_templates" xml:space="preserve">
-    <value>Alle Vorlagen</value>
+    <value>全てのテンプレート</value>
   </data>
   <data name="uncategorized" xml:space="preserve">
-    <value>Unkategorisiert</value>
+    <value>未分類</value>
   </data>
   <data name="disallow_modify_data_point_position" xml:space="preserve">
-    <value>Änderung der Datenpunktposition nicht erlaubt</value>
+    <value>データポイント位置の変更を許可しない</value>
   </data>
   <data name="load_valid_template_with_script" xml:space="preserve">
-    <value>Bitte laden Sie zuerst eine gültige Vorlage mit Skriptkonfiguration</value>
+    <value>まず有効なチャートテンプレートを読み込んでください。テンプレートには計算スクリプトの設定が含まれている必要があります。</value>
   </data>
   <data name="incomplete_script_config" xml:space="preserve">
-    <value>Unvollständige Skriptkonfiguration in der Vorlage, bitte prüfen Sie RequiredDataSeries und ScriptBody</value>
+    <value>テンプレートのスクリプト設定が不完全です。RequiredDataSeriesとScriptBodyを確認してください。</value>
   </data>
   <data name="select_data_file" xml:space="preserve">
-    <value>Bitte Datendatei auswählen</value>
+    <value>データファイルを選択してください</value>
   </data>
   <data name="data_file_filter" xml:space="preserve">
-    <value>Datendatei (*.csv, *.xls, *.xlsx)|*.csv;*.xls;*.xlsx</value>
+    <value>データファイル (*.csv, *.xls, *.xlsx)|*.csv;*.xls;*.xlsx</value>
   </data>
   <data name="no_valid_workbook_or_data_found" xml:space="preserve">
-    <value>Keine gültige Arbeitsmappe oder Daten in der Datei gefunden</value>
+    <value>ファイル内に有効なワークブックまたはデータが見つかりません</value>
   </data>
   <data name="read_file_failed" xml:space="preserve">
-    <value>Lesen der Datei fehlgeschlagen</value>
+    <value>ファイルの読み込みに失敗しました</value>
   </data>
   <data name="script_config_error_required_data_series" xml:space="preserve">
-    <value>Skriptkonfigurationsfehler: RequiredDataSeries muss mindestens eine Kategoriespalte und eine Datenspalte enthalten</value>
+    <value>スクリプト設定エラー：RequiredDataSeriesには、少なくともカテゴリ列と1つのデータ列が必要です。</value>
   </data>
   <data name="excel_missing_required_columns" xml:space="preserve">
-    <value>Excel-Datei fehlen erforderliche Spalten</value>
+    <value>Excelファイルに以下の必須列が不足しています</value>
   </data>
   <data name="data_point" xml:space="preserve">
-    <value>Datenpunkt</value>
+    <value>データポイント</value>
   </data>
   <data name="failed_to_parse_category_group" xml:space="preserve">
-    <value>Konnte keine gültige Kategoriegruppe aus der Datei parsen. Bitte Kategoriespaltendaten prüfen</value>
+    <value>ファイルから有効なカテゴリグループを解析できませんでした。カテゴリ列のデータを確認してください。</value>
   </data>
   <data name="error_calculating_data_point_coordinates" xml:space="preserve">
-    <value>Fehler beim Berechnen der Datenpunktkoordinaten:</value>
+    <value>データポイント座標の計算中にエラーが発生しました:</value>
   </data>
   <data name="data_import_successful" xml:space="preserve">
-    <value>Datenimport erfolgreich</value>
+    <value>データのインポートに成功しました</value>
   </data>
   <data name="script_execution_failed" xml:space="preserve">
-    <value>Skriptausführung fehlgeschlagen:</value>
+    <value>スクリプトの実行に失敗しました:</value>
   </data>
   <data name="axes" xml:space="preserve">
-    <value>Achsen</value>
+    <value>座標軸</value>
   </data>
   <data name="point" xml:space="preserve">
-    <value>Punkt</value>
+    <value>点</value>
   </data>
   <data name="line" xml:space="preserve">
-    <value>Linie</value>
+    <value>線</value>
   </data>
   <data name="text" xml:space="preserve">
-    <value>Text</value>
+    <value>テキスト</value>
   </data>
   <data name="annotation" xml:space="preserve">
-    <value>Anmerkung</value>
+    <value>注釈</value>
   </data>
   <data name="image_copied_to_clipboard" xml:space="preserve">
-    <value>Bild erfolgreich in die Zwischenablage kopiert</value>
+    <value>画像がクリップボードにコピーされました</value>
   </data>
   <data name="copy_failed" xml:space="preserve">
-    <value>Kopieren fehlgeschlagen:</value>
+    <value>コピーに失敗しました:</value>
   </data>
   <data name="confirm_clear_data_points" xml:space="preserve">
-    <value>Datenpunkte löschen?</value>
+    <value>データポイントをクリアしますか？</value>
   </data>
   <data name="no_imported_data_to_clear" xml:space="preserve">
-    <value>Keine importierten Daten zum Löschen vorhanden</value>
+    <value>クリアするインポートデータがありません</value>
   </data>
   <data name="all_imported_data_cleared" xml:space="preserve">
-    <value>Alle importierten Daten gelöscht</value>
+    <value>すべてのインポートデータがクリアされました</value>
   </data>
   <data name="left_y_axis" xml:space="preserve">
-    <value>Linke Y-Achse</value>
+    <value>左 Y 軸</value>
   </data>
   <data name="right_y_axis" xml:space="preserve">
-    <value>Rechte Y-Achse</value>
+    <value>右 Y 軸</value>
   </data>
   <data name="bottom_x_axis" xml:space="preserve">
-    <value>Untere X-Achse</value>
+    <value>下 X 軸</value>
   </data>
   <data name="top_x_axis" xml:space="preserve">
-    <value>Obere X-Achse</value>
+    <value>上 X 軸</value>
   </data>
   <data name="unknown_axis" xml:space="preserve">
-    <value>Unbekannte Achse</value>
+    <value>不明な座標軸</value>
   </data>
   <data name="content_and_position" xml:space="preserve">
-    <value>Inhalt und Position</value>
+    <value>内容と位置</value>
+    <comment>属性面板-文本对象</comment>
   </data>
   <data name="script_definition" xml:space="preserve">
-    <value>Skriptdefinition</value>
+    <value>スクリプト</value>
   </data>
   <data name="script_language" xml:space="preserve">
-    <value>Skriptsprache:</value>
+    <value>スクリプト言語:</value>
   </data>
   <data name="data_series" xml:space="preserve">
-    <value>Datenserie</value>
+    <value>データ系列</value>
   </data>
   <data name="multiple_data_series_hint" xml:space="preserve">
-    <value>Mehrere Datenserien bitte mit Komma trennen, z.B.: SiO2,TiO2</value>
+    <value>複数のデータ系列はカンマで区切ってください（例：SiO2,TiO2）</value>
   </data>
   <data name="script_content" xml:space="preserve">
-    <value>Skriptinhalt:</value>
+    <value>スクリプト内容:</value>
   </data>
   <data name="ready" xml:space="preserve">
-    <value>Bereit</value>
+    <value>準備完了</value>
   </data>
   <data name="validate_syntax" xml:space="preserve">
-    <value>Syntax prüfen</value>
+    <value>構文を検証</value>
   </data>
   <data name="row" xml:space="preserve">
-    <value>Zeile:</value>
+    <value>行:</value>
   </data>
   <data name="column" xml:space="preserve">
-    <value>Spalte:</value>
+    <value>列:</value>
   </data>
   <data name="code_formatted" xml:space="preserve">
-    <value>Code formatiert</value>
+    <value>コードを整形しました</value>
   </data>
   <data name="format_failed" xml:space="preserve">
-    <value>Formatierung fehlgeschlagen:</value>
+    <value>整形に失敗しました:</value>
   </data>
   <data name="script_content_is_empty" xml:space="preserve">
-    <value>Skriptinhalt ist leer</value>
+    <value>スクリプトの内容が空です</value>
   </data>
   <data name="validation_failed" xml:space="preserve">
-    <value>Validierung fehlgeschlagen:</value>
+    <value>検証に失敗しました:</value>
   </data>
   <data name="data_parameters_are_empty" xml:space="preserve">
-    <value>Datenparameter sind leer</value>
+    <value>データパラメータが空です</value>
   </data>
   <data name="invalid_data_parameter_format" xml:space="preserve">
-    <value>Ungültiges Datenparameterformat</value>
+    <value>データパラメータの形式が正しくありません</value>
   </data>
   <data name="parameter_format_correct" xml:space="preserve">
-    <value>Parameterformat korrekt</value>
+    <value>パラメータ形式は正しいです</value>
   </data>
   <data name="syntax_validation_passed" xml:space="preserve">
-    <value>Syntaxvalidierung bestanden</value>
+    <value>構文検証に合格しました</value>
   </data>
   <data name="error" xml:space="preserve">
-    <value>Fehler:</value>
+    <value>エラー:</value>
   </data>
   <data name="new" xml:space="preserve">
-    <value>_Neu(N)</value>
+    <value>新規作成(_N)</value>
   </data>
   <data name="open" xml:space="preserve">
-    <value>_Öffnen(O)</value>
+    <value>開く(_O)</value>
   </data>
   <data name="export_current_worksheet" xml:space="preserve">
-    <value>_Aktuelles Arbeitsblatt exportieren(R)</value>
+    <value>現在のワークシートをエクスポート(_R)</value>
   </data>
   <data name="geological_thermometer" xml:space="preserve">
-    <value>Geologisches Thermometer</value>
+    <value>地質温度計</value>
   </data>
   <data name="confirm_new_worksheet" xml:space="preserve">
-    <value>Neues Arbeitsblatt erstellen?</value>
+    <value>ワークシートを新規作成しますか？</value>
   </data>
   <data name="error_creating_table" xml:space="preserve">
-    <value>Fehler beim Erstellen der Tabelle:</value>
+    <value>テーブル作成中にエラーが発生しました:</value>
   </data>
   <data name="file_import_successful" xml:space="preserve">
-    <value>Dateiimport erfolgreich</value>
+    <value>ファイルのインポートに成功しました</value>
   </data>
   <data name="cancel_import" xml:space="preserve">
-    <value>Import abbrechen</value>
+    <value>インポートをキャンセル</value>
   </data>
   <data name="export_successful" xml:space="preserve">
-    <value>Export erfolgreich</value>
+    <value>エクスポートに成功しました</value>
   </data>
   <data name="export_failed" xml:space="preserve">
-    <value>Export fehlgeschlagen:</value>
+    <value>エクスポートに失敗しました:</value>
   </data>
   <data name="create_worksheet_failed" xml:space="preserve">
-    <value>Arbeitsblatterstellung fehlgeschlagen:</value>
+    <value>ワークシートの作成に失敗しました:</value>
   </data>
   <data name="row_1_column_1" xml:space="preserve">
-    <value>Zeile: 1, Spalte: 1</value>
+    <value>行: 1, 列: 1</value>
   </data>
   <data name="missing_parameters" xml:space="preserve">
-    <value>Fehlende Parameter</value>
+    <value>パラメータが不足しています</value>
+    <comment>自定义函数提示</comment>
   </data>
   <data name="input_out_of_range" xml:space="preserve">
-    <value>Eingabewert außerhalb des Bereichs</value>
+    <value>入力値が範囲外です</value>
+    <comment>自定义函数提示</comment>
   </data>
   <data name="must_be_positive_number" xml:space="preserve">
-    <value>Muss eine positive Zahl sein</value>
+    <value>正の数である必要があります</value>
+    <comment>自定义函数提示</comment>
   </data>
   <data name="tio2_activity_range" xml:space="preserve">
-    <value>TiO2-Aktivität muss im Bereich (0,1] liegen</value>
+    <value>TiO2活量は (0,1] の範囲内である必要があります</value>
+    <comment>自定义函数提示</comment>
   </data>
   <data name="oxygen_atom_benchmark_zero" xml:space="preserve">
-    <value>Sauerstoffatom-Basiswert ist null</value>
+    <value>酸素原子数の基準値がゼロです</value>
+    <comment>自定义函数提示</comment>
   </data>
   <data name="normalization_factor_is_zero" xml:space="preserve">
-    <value>Normalisierungsfaktor ist null</value>
+    <value>正規化係数がゼロです</value>
+    <comment>自定义函数提示</comment>
   </data>
   <data name="temperature_calculation_denominator_zero" xml:space="preserve">
-    <value>Nenner bei Temperaturberechnung ist null</value>
+    <value>温度計算の分母がゼロです</value>
+    <comment>自定义函数提示</comment>
   </data>
   <data name="color" xml:space="preserve">
-    <value>Farbe</value>
+    <value>色</value>
+    <comment>属性面板</comment>
   </data>
   <data name="style" xml:space="preserve">
-    <value>Stil</value>
+    <value>スタイル</value>
+    <comment>属性面板</comment>
   </data>
   <data name="width" xml:space="preserve">
-    <value>Breite</value>
+    <value>幅</value>
+    <comment>属性面板</comment>
   </data>
   <data name="line_width" xml:space="preserve">
-    <value>Linienbreite</value>
+    <value>線の幅</value>
+    <comment>属性面板</comment>
   </data>
   <data name="Enum_LineType_Solid" xml:space="preserve">
-    <value>Durchgezogen</value>
+    <value>実線</value>
+    <comment>属性面板</comment>
   </data>
   <data name="type" xml:space="preserve">
-    <value>Typ</value>
+    <value>タイプ</value>
+    <comment>属性面板</comment>
   </data>
   <data name="position" xml:space="preserve">
-    <value>Position</value>
+    <value>プロパティ</value>
+    <comment>属性面板</comment>
   </data>
   <data name="start_coordinates" xml:space="preserve">
-    <value>Startkoordinaten</value>
+    <value>開始座標</value>
+    <comment>属性面板</comment>
   </data>
   <data name="end_coordinates" xml:space="preserve">
-    <value>Endkoordinaten</value>
+    <value>終了座標</value>
+    <comment>属性面板</comment>
   </data>
   <data name="content" xml:space="preserve">
-    <value>Inhalt</value>
+    <value>内容</value>
   </data>
   <data name="alignment" xml:space="preserve">
-    <value>Ausrichtung</value>
+    <value>アンカー位置</value>
   </data>
   <data name="font_style" xml:space="preserve">
-    <value>Schriftstil</value>
+    <value>フォントスタイル</value>
   </data>
   <data name="font_name" xml:space="preserve">
-    <value>Schriftartname</value>
+    <value>フォント名</value>
   </data>
   <data name="font_size" xml:space="preserve">
-    <value>Schriftgröße</value>
+    <value>フォントサイズ</value>
   </data>
   <data name="font_rotation" xml:space="preserve">
-    <value>Schriftrotation</value>
+    <value>フォントの回転</value>
   </data>
   <data name="font_color" xml:space="preserve">
-    <value>Schriftfarbe</value>
+    <value>フォントの色</value>
   </data>
   <data name="bold" xml:space="preserve">
-    <value>Fett</value>
+    <value>太字</value>
   </data>
   <data name="italic" xml:space="preserve">
-    <value>Kursiv</value>
+    <value>斜体</value>
   </data>
   <data name="background_and_border" xml:space="preserve">
-    <value>Hintergrund und Rahmen</value>
+    <value>背景と枠線</value>
   </data>
   <data name="background_color" xml:space="preserve">
-    <value>Hintergrundfarbe</value>
+    <value>背景色</value>
   </data>
   <data name="border_color" xml:space="preserve">
-    <value>Rahmenfarbe</value>
+    <value>枠線の色</value>
   </data>
   <data name="border_width" xml:space="preserve">
-    <value>Rahmenbreite</value>
+    <value>枠線の幅</value>
   </data>
   <data name="corner_radius" xml:space="preserve">
-    <value>Eckenradius</value>
+    <value>角丸の半径</value>
   </data>
   <data name="advanced_rendering" xml:space="preserve">
-    <value>Erweitertes Rendering</value>
+    <value>高度なレンダリング</value>
   </data>
   <data name="anti_aliasing" xml:space="preserve">
-    <value>Anti-Aliasing</value>
+    <value>アンチエイリアス</value>
   </data>
   <data name="axis_style" xml:space="preserve">
-    <value>Achsenstil</value>
+    <value>座標軸のスタイル</value>
   </data>
   <data name="axis_title" xml:space="preserve">
-    <value>Achsentitel</value>
+    <value>座標軸のタイトル</value>
   </data>
   <data name="font_family" xml:space="preserve">
-    <value>Schriftfamilie</value>
+    <value>フォントファミリ</value>
   </data>
   <data name="tick_style" xml:space="preserve">
-    <value>Strichstil</value>
+    <value>目盛のスタイル</value>
   </data>
   <data name="tick_interval" xml:space="preserve">
-    <value>Strichintervall</value>
+    <value>目盛の間隔</value>
   </data>
   <data name="major_tick_style" xml:space="preserve">
-    <value>Hauptstrichstil</value>
+    <value>主目盛のスタイル</value>
   </data>
   <data name="length" xml:space="preserve">
-    <value>Länge</value>
+    <value>長さ</value>
   </data>
   <data name="minor_tick_style" xml:space="preserve">
-    <value>Nebenstrichstil</value>
+    <value>副目盛のスタイル</value>
   </data>
   <data name="tick_labels" xml:space="preserve">
-    <value>Strichbeschriftungen</value>
+    <value>目盛ラベル</value>
   </data>
   <data name="location" xml:space="preserve">
-    <value>Ort</value>
+    <value>位置</value>
   </data>
   <data name="orientation" xml:space="preserve">
-    <value>Orientierung</value>
+    <value>配置方向</value>
   </data>
   <data name="is_visible" xml:space="preserve">
-    <value>Sichtbar</value>
+    <value>表示するか</value>
   </data>
   <data name="font" xml:space="preserve">
-    <value>Schrift</value>
+    <value>フォント</value>
   </data>
   <data name="major_grid_line" xml:space="preserve">
-    <value>Hauptgitterlinie</value>
+    <value>主グリッド線</value>
   </data>
   <data name="pattern" xml:space="preserve">
-    <value>Muster</value>
+    <value>パターン</value>
   </data>
   <data name="enable_anti_alias" xml:space="preserve">
-    <value>Anti-Aliasing aktivieren</value>
+    <value>アンチエイリアスを有効化</value>
   </data>
   <data name="background_fill" xml:space="preserve">
-    <value>Hintergrundfüllung</value>
+    <value>背景の塗りつぶし</value>
   </data>
   <data name="enable_alternating_fill" xml:space="preserve">
-    <value>Alternierende Füllung aktivieren</value>
+    <value>交互塗りつぶしを有効化</value>
   </data>
   <data name="background_fill_1" xml:space="preserve">
-    <value>Hintergrundfüllung</value>
+    <value>背景の塗りつぶし</value>
   </data>
   <data name="fill_color_1" xml:space="preserve">
-    <value>Füllfarbe 1</value>
+    <value>塗りつぶし色 1</value>
   </data>
   <data name="fill_color_2" xml:space="preserve">
-    <value>Füllfarbe 2</value>
+    <value>塗りつぶし色 2</value>
   </data>
   <data name="coordinates" xml:space="preserve">
-    <value>Koordinaten</value>
+    <value>座標</value>
   </data>
   <data name="x_coordinate" xml:space="preserve">
-    <value>X-Koordinate</value>
+    <value>X 座標</value>
   </data>
   <data name="y_coordinate" xml:space="preserve">
-    <value>Y-Koordinate</value>
+    <value>Y 座標</value>
   </data>
   <data name="start_and_end_coordinates" xml:space="preserve">
-    <value>Start- und Endkoordinaten</value>
+    <value>開始座標</value>
   </data>
   <data name="chart_title_style" xml:space="preserve">
-    <value>Diagrammtitelstil</value>
+    <value>チャートタイトルのスタイル</value>
   </data>
   <data name="is_bold" xml:space="preserve">
-    <value>Fett</value>
+    <value>太字</value>
   </data>
   <data name="is_italic" xml:space="preserve">
-    <value>Kursiv</value>
+    <value>斜体</value>
   </data>
   <data name="background_fill_2" xml:space="preserve">
-    <value>Hintergrundfüllung 2</value>
+    <value>背景の塗りつぶし</value>
   </data>
   <data name="minor_grid_Line" xml:space="preserve">
-    <value>Nebengitterlinie</value>
+    <value>副グリッド線</value>
   </data>
   <data name="open_diagram_template" xml:space="preserve">
-    <value>Diagrammvorlage öffnen</value>
+    <value>図解テンプレートを開く</value>
   </data>
   <data name="new_version_available_github" xml:space="preserve">
-    <value>Neue Version gefunden! Bitte laden Sie das Update von der GitHub Release-Seite herunter.</value>
+    <value>新しいバージョンが見つかりました！GitHub Releaseページからダウンロードして更新してください。</value>
+    <comment>检查更新</comment>
   </data>
   <data name="go_to_download" xml:space="preserve">
-    <value>Zum Download</value>
+    <value>ダウンロードへ</value>
+    <comment>检查更新</comment>
   </data>
   <data name="enter_supported_languages" xml:space="preserve">
-    <value>Unterstützte Sprachen eingeben</value>
+    <value>サポート言語を入力</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="delete_this_item" xml:space="preserve">
-    <value>Dieses Element löschen</value>
+    <value>この項目を削除</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="enter_language_add" xml:space="preserve">
-    <value>Sprache eingeben und Enter drücken.</value>
+    <value>言語を入力してEnterキーを押すと追加されます。</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="enter_category_structure" xml:space="preserve">
-    <value>Kategoriestruktur eingeben</value>
+    <value>カテゴリ構造を入力</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="enter_level_add" xml:space="preserve">
-    <value>Ebene eingeben und Enter drücken.</value>
+    <value>レベルを入力してEnterキーを押すと追加されます。</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="plot_type" xml:space="preserve">
-    <value>Diagrammtyp</value>
+    <value>プロットタイプ</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="two_dimensional_coordinate_plot" xml:space="preserve">
-    <value>2D-Koordinatendiagramm</value>
+    <value>2次元座標プロット</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="template_file_save_path" xml:space="preserve">
-    <value>Speicherpfad der Vorlagendatei</value>
+    <value>テンプレートファイルの保存パス</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="browse_ellipsis" xml:space="preserve">
-    <value>Durchsuchen...</value>
+    <value>参照...</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="all_fields_required" xml:space="preserve">
-    <value>Alle Felder sind erforderlich!</value>
+    <value>すべてのフィールドが必須です！</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="category_structure_min_two" xml:space="preserve">
-    <value>Kategoriestruktur muss mindestens 2 Ebenen haben!</value>
+    <value>分類構造は2以上である必要があります！</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="no_template_or_path_specified" xml:space="preserve">
-    <value>Keine Vorlage oder Pfad angegeben. Bitte 'Speichern unter' verwenden.</value>
+    <value>保存するテンプレートがないか、保存パスが指定されていません。「名前を付けて保存」を使用してください。</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="template_saved_successfully" xml:space="preserve">
-    <value>Vorlage erfolgreich gespeichert!</value>
+    <value>テンプレートが正常に保存されました！</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="save_template_failed" xml:space="preserve">
-    <value>Speichern der Vorlage fehlgeschlagen:</value>
+    <value>テンプレートの保存に失敗しました:</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="thank_you_and_wishes" xml:space="preserve">
-    <value>Danke, dass Sie uns nutzen🌹\n Wir wünschen</value>
+    <value>ご利用ありがとうございます🌹\n あなたの</value>
+    <comment>彩蛋</comment>
   </data>
   <data name="research_life_smooth_sailing" xml:space="preserve">
-    <value>viel Erfolg in Forschung und Leben!</value>
+    <value>研究生活が順風満帆でありますように！</value>
+    <comment>彩蛋</comment>
   </data>
   <data name="add" xml:space="preserve">
-    <value>Hinzufügen</value>
+    <value>追加</value>
+    <comment>绘图-编辑</comment>
   </data>
   <data name="add_line" xml:space="preserve">
-    <value>Linie hinzufügen</value>
+    <value>線を追加</value>
+    <comment>绘图-编辑</comment>
   </data>
   <data name="add_text" xml:space="preserve">
-    <value>Text hinzufügen</value>
+    <value>テキストを追加</value>
+    <comment>绘图-编辑</comment>
   </data>
   <data name="file_" xml:space="preserve">
-    <value>Datei</value>
+    <value>ファイル</value>
+    <comment>绘图-编辑</comment>
   </data>
   <data name="template_loaded_successfully" xml:space="preserve">
-    <value>Vorlage erfolgreich geladen</value>
+    <value>テンプレートファイルが開かれました</value>
+    <comment>绘图页面</comment>
   </data>
   <data name="unknown_error_checking_for_updates" xml:space="preserve">
-    <value>Unbekannter Fehler bei der Update-Prüfung</value>
+    <value>更新確認中に不明なエラーが発生しました</value>
+    <comment>设置页面</comment>
   </data>
   <data name="already_latest_version" xml:space="preserve">
-    <value>Bereits die neueste Version</value>
+    <value>既に最新バージョンです</value>
+    <comment>检查更新</comment>
   </data>
   <data name="cannot_parse_version_number_check_release_address" xml:space="preserve">
-    <value>Versionsnummer konnte nicht geparst werden. Bitte Release-Seite prüfen.</value>
+    <value>バージョン番号を解析できません。リリース先を確認してください</value>
+    <comment>检查更新</comment>
   </data>
   <data name="network_request_error" xml:space="preserve">
-    <value>Netzwerkanfragefehler</value>
+    <value>ネットワークリクエストエラー</value>
+    <comment>检查更新</comment>
   </data>
   <data name="json_parse_error" xml:space="preserve">
-    <value>JSON-Parse-Fehler</value>
+    <value>JSON 解析エラー</value>
+    <comment>检查更新</comment>
   </data>
   <data name="unknown_error_occurred" xml:space="preserve">
-    <value>Unbekannter Fehler aufgetreten</value>
+    <value>不明なエラーが発生しました</value>
+    <comment>检查更新</comment>
   </data>
   <data name="polygon" xml:space="preserve">
-    <value>Polygon</value>
+    <value>ポリゴン</value>
+    <comment>图层列表</comment>
   </data>
   <data name="not_enough_vertices_add_polygon_canceled" xml:space="preserve">
-    <value>Nicht genügend Eckpunkte, Polygon-Erstellung abgebrochen.</value>
+    <value>頂点が不足しているため、ポリゴンの追加がキャンセルされました。</value>
+    <comment>创建绘图对象通知</comment>
   </data>
   <data name="add_line_operation_canceled" xml:space="preserve">
-    <value>Linien-Erstellung abgebrochen.</value>
+    <value>線の追加操作がキャンセルされました。</value>
+    <comment>创建绘图对象通知</comment>
   </data>
   <data name="add_text_operation_canceled" xml:space="preserve">
-    <value>Text-Erstellung abgebrochen.</value>
+    <value>テキストの追加操作がキャンセルされました。</value>
+    <comment>创建绘图对象通知</comment>
   </data>
   <data name="language_setting_duplicate_found" xml:space="preserve">
-    <value>Doppelte Einträge in den Spracheinstellungen gefunden, bitte prüfen!</value>
+    <value>言語設定に重複項目があります。確認してください！</value>
+    <comment>新建图解模板通知</comment>
   </data>
   <data name="add_polygon" xml:space="preserve">
-    <value>Polygon hinzufügen</value>
+    <value>ポリゴンを追加</value>
+    <comment>绘图功能区</comment>
   </data>
   <data name="line_type_solid" xml:space="preserve">
-    <value>Durchgezogen</value>
+    <value>実線</value>
+    <comment>线条对象属性</comment>
   </data>
   <data name="line_type_dash" xml:space="preserve">
-    <value>Gestrichelt</value>
+    <value>破線</value>
+    <comment>线条对象属性</comment>
   </data>
   <data name="line_type_densely_dashed" xml:space="preserve">
-    <value>Dicht gestrichelt</value>
+    <value>密集破線</value>
+    <comment>线条对象属性</comment>
   </data>
   <data name="line_type_dot" xml:space="preserve">
-    <value>Gepunktet</value>
+    <value>点線</value>
+    <comment>线条对象属性</comment>
   </data>
   <data name="ternary_phase_diagram" xml:space="preserve">
-    <value>Ternäres Phasendiagramm</value>
+    <value>三元相図</value>
+    <comment>新建图解模板</comment>
   </data>
   <data name="copy_plot_to_clipboard" xml:space="preserve">
-    <value>Diagramm in die Zwischenablage kopieren</value>
+    <value>プロット画像をクリップボードにコピー</value>
+    <comment>绘图-工具栏-提示</comment>
   </data>
   <data name="use_help" xml:space="preserve">
-    <value>Diagramm-Anleitung</value>
+    <value>図解ガイド</value>
+    <comment>绘图-工具栏-提示</comment>
   </data>
   <data name="no_data_please_add_data" xml:space="preserve">
-    <value>Keine Daten, bitte Daten hinzufügen</value>
+    <value>データがありません。データを追加してください</value>
+    <comment>绘图-数据-提示</comment>
   </data>
   <data name="no_data_columns_defined" xml:space="preserve">
-    <value>Keine Datenspalten definiert</value>
+    <value>データ列が定義されていません</value>
+    <comment>绘图-数据-提示</comment>
   </data>
   <data name="data_plotting_successful" xml:space="preserve">
-    <value>Datenpunkte erfolgreich gezeichnet</value>
+    <value>データポイントの描画に成功しました</value>
+    <comment>绘图-数据-提示</comment>
   </data>
   <data name="save_as_csv_file" xml:space="preserve">
-    <value>Als CSV speichern</value>
+    <value>CSVファイルとして保存</value>
+    <comment>温度计-提示</comment>
   </data>
   <data name="csv_file_filter" xml:space="preserve">
-    <value>CSV-Datei|*.csv</value>
+    <value>CSVファイル|*.csv</value>
+    <comment>温度计-提示</comment>
   </data>
   <data name="data_export" xml:space="preserve">
-    <value>Datenexport</value>
+    <value>データのエクスポート</value>
+    <comment>绘图-数据-按钮</comment>
   </data>
   <data name="update_data" xml:space="preserve">
-    <value>Daten aktualisieren</value>
+    <value>データを更新</value>
+    <comment>绘图-数据-按钮</comment>
   </data>
   <data name="data_plotting" xml:space="preserve">
-    <value>Daten plotten</value>
+    <value>データをプロット</value>
+    <comment>绘图-数据-按钮</comment>
   </data>
   <data name="highlight_on_hover" xml:space="preserve">
-    <value>Wenn aktiviert, werden Elemente beim Überfahren hervorgehoben und Details beim Klicken angezeigt</value>
+    <value>有効にすると、マウスを描画オブジェクト（点、線、面など）の上に置いたときに自動的にハイライトされ、クリックして情報を表示できます</value>
+    <comment>绘图-工具栏-提示</comment>
   </data>
   <data name="count" xml:space="preserve">
-    <value>Anzahl</value>
+    <value>副目盛の数</value>
+    <comment>属性-坐标轴-次刻度样式</comment>
   </data>
   <data name="zoom_type" xml:space="preserve">
-    <value>Zoomtyp</value>
+    <value>ズームタイプ</value>
+    <comment>属性-坐标轴-坐标轴样式</comment>
   </data>
   <data name="from" xml:space="preserve">
-    <value>Von</value>
+    <value>開始</value>
+    <comment>属性-坐标轴-坐标轴样式</comment>
   </data>
   <data name="to" xml:space="preserve">
-    <value>Bis</value>
+    <value>終了</value>
+    <comment>属性-坐标轴-坐标轴样式</comment>
   </data>
   <data name="ternary_phase_diagram_sum_must_be_one" xml:space="preserve">
-    <value>Summe im ternären Diagramm muss 1 sein.</value>
+    <value>三元相図の合計は 1 でなければなりません。</value>
+    <comment>新建-三元图-模板</comment>
   </data>
   <data name="save_as" xml:space="preserve">
-    <value>Speichern unter</value>
+    <value>名前を付けて保存</value>
+    <comment>绘图-工具栏-编辑</comment>
   </data>
   <data name="all_data_cleared" xml:space="preserve">
-    <value>Alle Daten gelöscht</value>
+    <value>すべてのデータがクリアされました</value>
+    <comment>绘图-数据-清除数据-提示</comment>
   </data>
   <data name="confirm_clear_all_data" xml:space="preserve">
-    <value>Alle Tabellendaten löschen (inkl. Plot-Punkte)?</value>
+    <value>テーブルデータ（描画データポイントを含む）をクリアしてもよろしいですか？</value>
+    <comment>绘图-数据-清除数据-提示</comment>
   </data>
   <data name="clear_data_points" xml:space="preserve">
-    <value>Datenpunkte löschen</value>
+    <value>データポイントをクリア</value>
+    <comment>绘图-数据-清除数据点</comment>
   </data>
   <data name="linear" xml:space="preserve">
-    <value>Linear</value>
+    <value>線形</value>
+    <comment>绘图-坐标轴-属性-缩放类型</comment>
   </data>
   <data name="logarithmic" xml:space="preserve">
-    <value>Logarithmisch</value>
+    <value>対数</value>
+    <comment>绘图-坐标轴-属性-缩放类型</comment>
   </data>
   <data name="some_data_failed_validation" xml:space="preserve">
-    <value>Einige Daten haben die Validierung nicht bestanden und wurden übersprungen</value>
+    <value>一部のデータが検証に合格しなかったため、描画をスキップしました</value>
+    <comment>绘图-数据-投点校验提示</comment>
   </data>
   <data name="the_sum_of_row" xml:space="preserve">
-    <value>Zeile</value>
+    <value>第</value>
+    <comment>绘图-数据-投点校验提示</comment>
   </data>
   <data name="is_not_one" xml:space="preserve">
-    <value>Datensumme ist nicht 1</value>
+    <value>行のデータの合計が1ではありません</value>
+    <comment>绘图-数据-投点校验提示</comment>
   </data>
   <data name="actual_sum_is" xml:space="preserve">
-    <value>(Tatsächliche Summe:</value>
+    <value>(実際の合計:</value>
+    <comment>绘图-数据-投点校验提示</comment>
   </data>
   <data name="arrow" xml:space="preserve">
-    <value>Pfeil</value>
+    <value>矢印</value>
+    <comment>绘图-图层-箭头</comment>
   </data>
   <data name="arrowhead_width" xml:space="preserve">
-    <value>Pfeilspitzenbreite</value>
+    <value>矢印の幅</value>
+    <comment>绘图-图层-箭头</comment>
   </data>
   <data name="arrowhead_length" xml:space="preserve">
-    <value>Pfeilspitzenlänge</value>
+    <value>矢印の長さ</value>
+    <comment>绘图-图层-箭头</comment>
   </data>
   <data name="add_arrow" xml:space="preserve">
-    <value>Pfeil hinzufügen</value>
+    <value>矢印を追加</value>
+    <comment>绘图-编辑-添加箭头</comment>
   </data>
   <data name="delete_object" xml:space="preserve">
-    <value>Objekt löschen</value>
+    <value>オブジェクトを削除</value>
+    <comment>绘图-编辑-删除功能</comment>
   </data>
   <data name="please_select_an_object_to_delete_first" xml:space="preserve">
-    <value>Bitte zuerst ein Objekt zum Löschen auswählen.</value>
+    <value>削除するオブジェクトを先に選択してください。</value>
+    <comment>绘图-编辑-删除提示</comment>
   </data>
   <data name="object_deleted_successfully" xml:space="preserve">
-    <value>Objekt erfolgreich gelöscht.</value>
+    <value>オブジェクトが正常に削除されました。</value>
+    <comment>绘图-编辑-删除提示</comment>
   </data>
   <data name="cannot_delete_base_layers" xml:space="preserve">
-    <value>Basisebenen können nicht gelöscht werden.</value>
+    <value>ベースレイヤーは削除できません。</value>
+    <comment>绘图-编辑-删除提示</comment>
   </data>
   <data name="update" xml:space="preserve">
-    <value>_Aktualisieren(T)</value>
+    <value>更新(_T)</value>
+    <comment>绘图-菜单栏</comment>
   </data>
   <data name="check_for_template_updates" xml:space="preserve">
-    <value>Auf Vorlagenupdates prüfen</value>
+    <value>テンプレートの更新を確認</value>
+    <comment>绘图-菜单栏</comment>
   </data>
   <data name="template_ready" xml:space="preserve">
-    <value>Vorlage bereit!</value>
+    <value>テンプレートの準備ができました！</value>
+    <comment>模板更新提示</comment>
   </data>
   <data name="download_template_failed" xml:space="preserve">
-    <value>Vorlagendownload fehlgeschlagen:</value>
+    <value>テンプレートのダウンロードに失敗しました:</value>
+    <comment>模板更新提示</comment>
   </data>
   <data name="downloaded_file_hash_mismatch" xml:space="preserve">
-    <value>Hash-Mismatch der heruntergeladenen Datei, Datei könnte beschädigt oder manipuliert sein.</value>
+    <value>ダウンロードされたファイルのハッシュ値がサーバーと一致しません。ファイルが破損しているか、改ざんされている可能性があります。</value>
+    <comment>模板更新提示</comment>
   </data>
   <data name="downloaded_content_not_valid_json" xml:space="preserve">
-    <value>Heruntergeladener Inhalt ist kein gültiges JSON-Format.</value>
+    <value>ダウンロードされたコンテンツは有効なJSON形式ではありません。</value>
+    <comment>模板更新提示</comment>
   </data>
   <data name="template_list_update_success_refreshing" xml:space="preserve">
-    <value>Vorlagenliste erfolgreich aktualisiert! Wird neu geladen...</value>
+    <value>テンプレートリストが更新されました！更新中...</value>
+    <comment>模板更新提示</comment>
   </data>
   <data name="update_list_file_failed" xml:space="preserve">
-    <value>Aktualisierung der Listendatei fehlgeschlagen</value>
+    <value>リストファイルの更新に失敗しました</value>
+    <comment>模板更新提示</comment>
   </data>
   <data name="new_drawing_template_library_version_detected" xml:space="preserve">
-    <value>Neue Version der Zeichenvorlagenbibliothek erkannt. Jetzt aktualisieren?</value>
+    <value>描画テンプレートライブラリの新しいバージョンが検出されました。リストを今すぐ更新しますか？</value>
+    <comment>模板更新提示</comment>
   </data>
   <data name="current_template_list_latest_version" xml:space="preserve">
-    <value>Die aktuelle Vorlagenliste ist bereits die neueste Version.</value>
+    <value>現在のテンプレートリストは最新です。</value>
+    <comment>模板更新提示</comment>
   </data>
   <data name="network_connection_failed_cannot_check_for_updates" xml:space="preserve">
-    <value>Netzwerkverbindung fehlgeschlagen, Updates können nicht geprüft werden:</value>
+    <value>ネットワーク接続に失敗したため、更新を確認できません:</value>
+    <comment>模板更新提示</comment>
   </data>
   <data name="error_occurred_while_checking_for_updates" xml:space="preserve">
-    <value>Fehler beim Prüfen auf Updates:</value>
+    <value>更新確認中にエラーが発生しました:</value>
+    <comment>模板更新提示</comment>
   </data>
   <data name="help_instructions" xml:space="preserve">
-    <value>Hilfeanweisungen</value>
+    <value>ヘルプの説明</value>
+    <comment>温度计-帮助说明</comment>
   </data>
   <data name="view_help_docs" xml:space="preserve">
-    <value>Hilfedokumentation anzeigen</value>
+    <value>ヘルプドキュメントを表示</value>
+    <comment>温度计-帮助说明按钮提示</comment>
   </data>
   <data name="German_Germany" xml:space="preserve">
     <value>Deutsch (Deutschland)</value>
+    <comment>设置-常规设置-语言</comment>
   </data>
   <data name="custom_templates" xml:space="preserve">
-    <value>Benutzerdefinierte Vorlagen</value>
+    <value>カスタムテンプレート</value>
+    <comment>绘图-模板列表</comment>
   </data>
   <data name="check_for_category_updates" xml:space="preserve">
-    <value>Nach Kategoriestruktur-Updates suchen</value>
+    <value>カテゴリ構造の更新を確認</value>
+    <comment>绘图-菜单栏-更新分类结构</comment>
   </data>
   <data name="cannot_delete_protected_column" xml:space="preserve">
-    <value>Geschützte Spalte kann nicht gelöscht werden</value>
+    <value>保護された列は削除できません</value>
   </data>
   <data name="add_column_left" xml:space="preserve">
-    <value>Spalte links hinzufügen</value>
+    <value>列を追加 (左)</value>
   </data>
   <data name="add_column_right" xml:space="preserve">
-    <value>Spalte rechts hinzufügen</value>
+    <value>列を追加 (右)</value>
   </data>
   <data name="delete_row" xml:space="preserve">
-    <value>Zeile löschen</value>
+    <value>行を削除</value>
   </data>
   <data name="delete_column" xml:space="preserve">
-    <value>Spalte löschen</value>
+    <value>列を削除</value>
   </data>
   <data name="missing_columns" xml:space="preserve">
-    <value>Fehlende Spalten</value>
+    <value>列が不足しています</value>
   </data>
   <data name="add_row_up" xml:space="preserve">
-    <value>Zeile oben einfügen</value>
+    <value>上に行を挿入</value>
   </data>
   <data name="add_row_down" xml:space="preserve">
-    <value>Zeile unten einfügen</value>
+    <value>下に行を挿入</value>
   </data>
   <data name="confirm_delete_row" xml:space="preserve">
-    <value>Ausgewählte Zeile(n) wirklich löschen?</value>
+    <value>選択した行を削除してもよろしいですか？</value>
   </data>
   <data name="confirm_delete_column" xml:space="preserve">
-    <value>Ausgewählte Spalte(n) wirklich löschen?</value>
+    <value>選択した列を削除してもよろしいですか？</value>
   </data>
   <data name="axis" xml:space="preserve">
-    <value>Achse</value>
+    <value>座標軸</value>
+    <comment>绘图-属性面板</comment>
   </data>
   <data name="grid" xml:space="preserve">
-    <value>Gitter</value>
+    <value>グリッド</value>
+    <comment>绘图-属性面板</comment>
   </data>
   <data name="formula" xml:space="preserve">
-    <value>Formel</value>
+    <value>数式</value>
+    <comment>绘图-属性-函数</comment>
   </data>
   <data name="range" xml:space="preserve">
-    <value>Bereich</value>
+    <value>範囲</value>
+    <comment>绘图-属性-函数</comment>
   </data>
   <data name="domain" xml:space="preserve">
-    <value>Definitionsbereich</value>
+    <value>定義域</value>
+    <comment>绘图-属性-函数</comment>
   </data>
   <data name="point_count" xml:space="preserve">
-    <value>Stützstellen</value>
+    <value>サンプリング点</value>
+    <comment>绘图-属性-函数</comment>
   </data>
   <data name="vertices" xml:space="preserve">
-    <value>Eckpunkte</value>
+    <value>頂点</value>
+    <comment>绘图-属性-多边形</comment>
   </data>
   <data name="template_file_corrupted" xml:space="preserve">
-    <value>Vorlagendatei ist beschädigt</value>
+    <value>テンプレートファイルが破損しています</value>
   </data>
   <data name="template_version_too_high" xml:space="preserve">
-    <value>Vorlagenversion ist höher als die aktuelle Softwareversion. Bitte Software aktualisieren.</value>
+    <value>テンプレートのバージョンが現在のソフトウェアバージョンより高いため、ソフトウェアをアップグレードして開いてください。</value>
   </data>
   <data name="error_loading_template" xml:space="preserve">
-    <value>Fehler beim Laden der Vorlage</value>
+    <value>テンプレートの読み込み中にエラーが発生しました</value>
   </data>
   <data name="template_upgrade_warning" xml:space="preserve">
-    <value>Die aktuelle Vorlagenversion ist älter. Speichern aktualisiert die Version, was die Kompatibilität mit älteren Softwareversionen beeinträchtigen kann. Fortfahren?</value>
+    <value>現在のテンプレートバージョンは古いです。保存するとバージョンがアップグレードされ、古いバージョンのソフトウェアでは使用できなくなる可能性があります。続行しますか？</value>
   </data>
   <data name="offset" xml:space="preserve">
-    <value>Versatz</value>
+    <value>オフセット</value>
   </data>
   <data name="offset_x" xml:space="preserve">
-    <value>Versatz X</value>
+    <value>オフセット X</value>
   </data>
   <data name="offset_y" xml:space="preserve">
-    <value>Versatz Y</value>
+    <value>オフセット Y</value>
   </data>
   <data name="add_function" xml:space="preserve">
-    <value>Funktion hinzufügen</value>
+    <value>関数を追加</value>
+    <comment>绘图-编辑</comment>
   </data>
   <data name="Placeholder_Text" xml:space="preserve">
-    <value>Bitte Text eingeben</value>
+    <value>テキストを入力してください</value>
   </data>
   <data name="Placeholder_Axis_Title" xml:space="preserve">
-    <value>Achsentitel</value>
+    <value>軸タイトル</value>
   </data>
   <data name="Placeholder_Chart_Title" xml:space="preserve">
-    <value>Diagrammtitel</value>
+    <value>チャートタイトル</value>
   </data>
   <data name="Placeholder_Ternary_Title" xml:space="preserve">
-    <value>Neues ternäres Phasendiagramm</value>
+    <value>新規三元相図</value>
   </data>
   <data name="Placeholder_Chart_Title_Default" xml:space="preserve">
-    <value>Neues Diagramm</value>
+    <value>新規チャート</value>
   </data>
   <data name="Placeholder_Axis_X" xml:space="preserve">
-    <value>X-Achse</value>
+    <value>X軸</value>
   </data>
   <data name="Placeholder_Axis_Y" xml:space="preserve">
-    <value>Y-Achse</value>
+    <value>Y軸</value>
   </data>
   <data name="Placeholder_Component_A" xml:space="preserve">
     <value>A</value>
@@ -1566,558 +1694,615 @@
     <value>C</value>
   </data>
   <data name="third_party" xml:space="preserve">
-    <value>Drittanbieter</value>
+    <value>サードパーティ</value>
+    <comment>绘图-菜单栏-绘图</comment>
   </data>
   <data name="open_via_third_party" xml:space="preserve">
-    <value>Über Drittanbieter öffnen</value>
+    <value>サードパーティで開く</value>
+    <comment>绘图-菜单栏-绘图</comment>
   </data>
   <data name="select_an_object" xml:space="preserve">
-    <value>Bitte ein Objekt auswählen</value>
+    <value>オブジェクトを選択してください</value>
+    <comment>绘图-属性面板</comment>
   </data>
   <data name="undo" xml:space="preserve">
-    <value>Rückgängig</value>
+    <value>元に戻す</value>
+    <comment>绘图-撤回</comment>
   </data>
   <data name="redo" xml:space="preserve">
-    <value>Wiederholen</value>
+    <value>やり直し</value>
+    <comment>绘图-重做</comment>
   </data>
   <data name="interval" xml:space="preserve">
-    <value>Skalenintervall</value>
+    <value>目盛の間隔</value>
+    <comment>绘图-属性-二维坐标轴</comment>
   </data>
   <data name="pick_coordinate" xml:space="preserve">
-    <value>Koordinate wählen</value>
+    <value>座標をピック</value>
+    <comment>绘图-属性-多边形</comment>
   </data>
   <data name="remove_point" xml:space="preserve">
-    <value>Diesen Eckpunkt entfernen</value>
+    <value>この頂点を削除</value>
+    <comment>绘图-属性-多边形</comment>
   </data>
   <data name="vertex_add_new" xml:space="preserve">
-    <value>Neuen Eckpunkt hinzufügen</value>
+    <value>新しい頂点を追加</value>
+    <comment>绘图-属性-多边形</comment>
   </data>
   <data name="subtitle" xml:space="preserve">
-    <value>Untertitel</value>
+    <value>サブタイトル</value>
   </data>
   <data name="subtitle_font_size" xml:space="preserve">
-    <value>Untertitel-Schriftgröße</value>
+    <value>サブタイトルのフォントサイズ</value>
   </data>
   <data name="subtitle_color" xml:space="preserve">
-    <value>Untertitel-Farbe</value>
+    <value>サブタイトルの色</value>
   </data>
   <data name="subtitle_bold" xml:space="preserve">
-    <value>Untertitel fett</value>
+    <value>サブタイトル太字</value>
   </data>
   <data name="subtitle_italic" xml:space="preserve">
-    <value>Untertitel kursiv</value>
+    <value>サブタイトル斜体</value>
   </data>
   <data name="edit_link" xml:space="preserve">
-    <value>Link bearbeiten</value>
+    <value>リンクを編集</value>
   </data>
   <data name="template_translator" xml:space="preserve">
-    <value>Vorlagenübersetzer</value>
+    <value>図解テンプレート翻訳機</value>
   </data>
   <data name="diagram_template_repair_tool" xml:space="preserve">
-    <value>Vorlagenreparaturtool</value>
+    <value>図解テンプレート修復ツール</value>
+    <comment>主页-小组件-模板修复工具</comment>
   </data>
   <data name="server_announcement" xml:space="preserve">
-    <value>Serverankündigung</value>
+    <value>サーバーからのお知らせ</value>
   </data>
   <data name="developer_maintenance_tool" xml:space="preserve">
-    <value>Entwicklerwartungstool</value>
+    <value>開発者メンテナンスツール</value>
   </data>
   <data name="copy_content" xml:space="preserve">
-    <value>Inhalt kopieren</value>
+    <value>コンテンツをコピー</value>
+    <comment>窗体-通知系统</comment>
   </data>
   <data name="modified_successfully" xml:space="preserve">
-    <value>Erfolgreich geändert</value>
+    <value>変更されました</value>
+    <comment>绘图-脚本-属性面板</comment>
   </data>
   <data name="error_loading_rtf_file" xml:space="preserve">
-    <value>Fehler beim Laden der RTF-Datei:</value>
+    <value>RTFファイルの読み込み中にエラーが発生しました:</value>
+    <comment>绘图-通知-rtfhelper</comment>
   </data>
   <data name="file_path_cannot_be_empty" xml:space="preserve">
-    <value>Dateipfad darf nicht leer sein</value>
+    <value>ファイルパスを空にすることはできません</value>
+    <comment>绘图-通知-rtfhelper</comment>
   </data>
   <data name="richtextbox_control_cannot_be_null" xml:space="preserve">
-    <value>RichTextBox-Steuerelement darf nicht null sein</value>
+    <value>RichTextBoxコントロールをnullにすることはできません</value>
+    <comment>绘图-通知-rtfhelper</comment>
   </data>
   <data name="file_does_not_exist" xml:space="preserve">
-    <value>Datei existiert nicht:</value>
+    <value>ファイルが存在しません:</value>
+    <comment>绘图-通知-rtfhelper</comment>
   </data>
   <data name="error_saving_rtf_file" xml:space="preserve">
-    <value>Fehler beim Speichern der RTF-Datei:</value>
+    <value>RTFファイルの保存中にエラーが発生しました:</value>
+    <comment>绘图-通知-rtfhelper</comment>
   </data>
   <data name="unable_to_get_latest_release_info" xml:space="preserve">
-    <value>Neueste Release-Info nicht abrufbar</value>
+    <value>最新のリリース情報を取得できません</value>
+    <comment>设置-通知-更新</comment>
   </data>
   <data name="invalid_formula" xml:space="preserve">
-    <value>Ungültige Formel</value>
+    <value>数式が無効です</value>
+    <comment>设置-属性-函数</comment>
   </data>
   <data name="loading_announcements" xml:space="preserve">
-    <value>Lade Ankündigungen...</value>
+    <value>お知らせを読み込み中...</value>
+    <comment>主页-小组件-公告</comment>
   </data>
   <data name="no_announcements" xml:space="preserve">
-    <value>Keine Ankündigungen.</value>
+    <value>お知らせはありません。</value>
+    <comment>主页-小组件-公告</comment>
   </data>
   <data name="unable_to_get_announcements" xml:space="preserve">
-    <value>Ankündigungen nicht abrufbar.</value>
+    <value>お知らせ情報を取得できません。</value>
+    <comment>主页-小组件-公告</comment>
   </data>
   <data name="failed_to_get_announcements" xml:space="preserve">
-    <value>Abrufen der Ankündigungen fehlgeschlagen:</value>
+    <value>お知らせの取得に失敗しました:</value>
+    <comment>主页-小组件-公告</comment>
   </data>
   <data name="error_loading_template_list" xml:space="preserve">
-    <value>Fehler beim Laden der Vorlagenliste:</value>
+    <value>テンプレートリストの読み込みエラー:</value>
   </data>
   <data name="unable_to_open_link" xml:space="preserve">
-    <value>Link kann nicht geöffnet werden:</value>
+    <value>リンクを開けません:</value>
+    <comment>设置-about</comment>
   </data>
   <data name="add_link" xml:space="preserve">
-    <value>Link hinzufügen</value>
+    <value>リンクを追加</value>
+    <comment>主页-添加链接</comment>
   </data>
   <data name="name" xml:space="preserve">
-    <value>Name</value>
+    <value>名前</value>
+    <comment>主页-添加链接</comment>
   </data>
   <data name="link_url" xml:space="preserve">
-    <value>Link (URL)</value>
+    <value>リンク (URL)</value>
+    <comment>主页-添加链接</comment>
   </data>
   <data name="description" xml:space="preserve">
-    <value>Beschreibung</value>
+    <value>説明</value>
+    <comment>主页-添加链接</comment>
   </data>
   <data name="icon" xml:space="preserve">
-    <value>Icon</value>
+    <value>アイコン</value>
+    <comment>主页-添加链接</comment>
   </data>
   <data name="please_enter_name" xml:space="preserve">
-    <value>Bitte Name eingeben</value>
+    <value>名前を入力してください</value>
+    <comment>主页-添加链接</comment>
   </data>
   <data name="please_enter_link" xml:space="preserve">
-    <value>Bitte Link eingeben</value>
+    <value>リンクを入力してください</value>
+    <comment>主页-添加链接</comment>
   </data>
   <data name="add_widget" xml:space="preserve">
-    <value>Widget hinzufügen</value>
+    <value>ウィジェットを追加</value>
+    <comment>主页-添加小组件</comment>
   </data>
   <data name="please_select_widget_to_add" xml:space="preserve">
-    <value>Bitte Widget zum Hinzufügen auswählen:</value>
+    <value>追加するウィジェットを選択してください：</value>
+    <comment>主页-添加小组件</comment>
   </data>
   <data name="please_select_a_widget" xml:space="preserve">
-    <value>Bitte ein Widget auswählen</value>
+    <value>ウィジェットを選択してください</value>
+    <comment>主页-添加小组件</comment>
   </data>
   <data name="server_announcements" xml:space="preserve">
-    <value>Serverankündigungen</value>
+    <value>サーバーからのお知らせ</value>
+    <comment>主页-小组件-公告</comment>
   </data>
   <data name="refresh" xml:space="preserve">
-    <value>Aktualisieren</value>
+    <value>更新</value>
+    <comment>主页-小组件-公告</comment>
   </data>
   <data name="developer_maintenance_tools" xml:space="preserve">
-    <value>Entwicklerwartungstools</value>
+    <value>開発者メンテナンスツール</value>
+    <comment>主页-小组件-开发者工具</comment>
   </data>
   <data name="drawing_template_repair_tool" xml:space="preserve">
-    <value>Zeichenvorlagenreparaturtool</value>
+    <value>図解テンプレート修復ツール</value>
+    <comment>主页-小组件-模板修复工具</comment>
   </data>
   <data name="start_check_and_repair" xml:space="preserve">
-    <value>Prüfung und Reparatur starten</value>
+    <value>チェックと修復を開始</value>
+    <comment>主页-小组件-模板修复工具</comment>
   </data>
   <data name="close_file" xml:space="preserve">
-    <value>Datei schließen</value>
+    <value>ファイルを閉じる</value>
+    <comment>主页-小组件-翻译组件</comment>
   </data>
   <data name="open_import" xml:space="preserve">
-    <value>Import öffnen</value>
+    <value>インポートを開く</value>
+    <comment>主页-小组件-翻译组件</comment>
   </data>
   <data name="add_language_column" xml:space="preserve">
-    <value>Sprachspalte hinzufügen</value>
+    <value>言語列を追加</value>
+    <comment>主页-小组件-翻译组件</comment>
   </data>
   <data name="swap_language_columns" xml:space="preserve">
-    <value>Sprachspalten tauschen</value>
+    <value>言語列を入れ替え</value>
+    <comment>主页-小组件-翻译组件</comment>
   </data>
   <data name="delete_language_column" xml:space="preserve">
-    <value>Sprachspalte löschen</value>
+    <value>言語列を削除</value>
+    <comment>主页-小组件-翻译组件</comment>
   </data>
   <data name="click_or_drag_template_json_here" xml:space="preserve">
-    <value>Klicken oder JSON-Vorlagendatei hierher ziehen</value>
+    <value>テンプレートファイル(JSON)をクリックまたはドラッグしてください</value>
+    <comment>主页-小组件-翻译组件</comment>
   </data>
   <data name="support_json_format" xml:space="preserve">
-    <value>Unterstützt .json Format</value>
+    <value>.json 形式をサポート</value>
+    <comment>主页-小组件-翻译组件</comment>
   </data>
   <data name="save_changes" xml:space="preserve">
-    <value>Änderungen speichern</value>
+    <value>変更を保存</value>
+    <comment>主页-小组件-翻译组件</comment>
   </data>
   <data name="select_drawing_template_file" xml:space="preserve">
-    <value>Zeichenvorlagendatei auswählen</value>
+    <value>描画テンプレートファイルを選択</value>
   </data>
   <data name="edit_menu_bar_item" xml:space="preserve">
-    <value>Menüleisteneintrag bearbeiten</value>
+    <value>メニューバー項目を編集</value>
+    <comment>主页-右键菜单</comment>
   </data>
   <data name="import_custom_diagram_template" xml:space="preserve">
-    <value>Benutzerdefinierte Diagrammvorlage importieren</value>
+    <value>カスタム図解テンプレートをインポート</value>
   </data>
   <data name="open_file_location" xml:space="preserve">
-    <value>Dateispeicherort öffnen</value>
+    <value>ファイルの場所を開く</value>
+    <comment>绘图-卡片-右键菜单</comment>
   </data>
   <data name="export_diagram_template" xml:space="preserve">
-    <value>Diagrammvorlage exportieren</value>
+    <value>図解テンプレートをエクスポート</value>
   </data>
   <data name="downloading_ellipsis" xml:space="preserve">
-    <value>Wird heruntergeladen...</value>
+    <value>ダウンロード中...</value>
+    <comment>绘图-卡片-更新</comment>
   </data>
   <data name="initializing_language_service_ellipsis" xml:space="preserve">
-    <value>Initialisiere Sprachdienst...</value>
+    <value>言語サービスを初期化中...</value>
+    <comment>启动窗体</comment>
   </data>
   <data name="loading_font_resources_ellipsis" xml:space="preserve">
-    <value>Lade Schriftarten...</value>
+    <value>フォントリソースを読み込み中...</value>
   </data>
   <data name="reading_user_configuration_ellipsis" xml:space="preserve">
-    <value>Lese Benutzerkonfiguration...</value>
+    <value>ユーザー設定を読み込み中...</value>
   </data>
   <data name="loading_drawing_module_ellipsis" xml:space="preserve">
-    <value>Lade Zeichenmodul...</value>
+    <value>描画モジュールを読み込み中...</value>
   </data>
   <data name="loading_main_interface_components_ellipsis" xml:space="preserve">
-    <value>Lade Hauptkomponenten...</value>
+    <value>メインインターフェイスコンポーネントを読み込み中...</value>
   </data>
   <data name="entering_soon_ellipsis" xml:space="preserve">
-    <value>Gleich fertig...</value>
+    <value>まもなく開始します...</value>
   </data>
   <data name="completed" xml:space="preserve">
-    <value>Abgeschlossen</value>
+    <value>完了</value>
   </data>
   <data name="error_occurred_during_startup" xml:space="preserve">
-    <value>Fehler beim Starten:</value>
+    <value>起動中にエラーが発生しました:</value>
   </data>
   <data name="language_apperarance" xml:space="preserve">
-    <value>Sprache und Erscheinungsbild</value>
+    <value>言語と外観</value>
   </data>
   <data name="startup_background_image" xml:space="preserve">
-    <value>Start-Hintergrundbild</value>
+    <value>起動時の背景画像</value>
   </data>
   <data name="add_image" xml:space="preserve">
-    <value>Bild hinzufügen</value>
+    <value>画像を追加</value>
   </data>
   <data name="external_applications" xml:space="preserve">
-    <value>Externe Anwendungen</value>
+    <value>外部アプリケーション</value>
   </data>
   <data name="custom_app" xml:space="preserve">
-    <value>Benutzerdefinierte App</value>
+    <value>カスタムアプリ</value>
   </data>
   <data name="plot_defaults" xml:space="preserve">
-    <value>Plot-Standardeinstellungen</value>
+    <value>描画のデフォルト設定</value>
   </data>
   <data name="default_diagram_expand_level" xml:space="preserve">
-    <value>Standard-Erweiterungsebene</value>
+    <value>デフォルトの図解展開レベル</value>
   </data>
   <data name="default_third_party_editor" xml:space="preserve">
-    <value>Standard-Drittanbieter-Editor</value>
+    <value>デフォルトのサードパーティエディタ</value>
   </data>
   <data name="automatic_updates" xml:space="preserve">
-    <value>Automatische Updates</value>
+    <value>自動更新</value>
   </data>
   <data name="auto_check_diagram_template_updates" xml:space="preserve">
-    <value>Automatisch nach Vorlagenupdates suchen</value>
+    <value>図解テンプレートの更新を自動的に確認</value>
   </data>
   <data name="community" xml:space="preserve">
-    <value>Community</value>
+    <value>コミュニティ</value>
   </data>
   <data name="export_and_tools" xml:space="preserve">
-    <value>Export/Tools</value>
+    <value>エクスポート/ツール</value>
   </data>
   <data name="format" xml:space="preserve">
-    <value>Format</value>
+    <value>形式</value>
   </data>
   <data name="third_party_software" xml:space="preserve">
-    <value>Drittanbietersoftware</value>
+    <value>サードパーティソフトウェア</value>
   </data>
   <data name="select_software" xml:space="preserve">
-    <value>Software auswählen</value>
+    <value>ソフトウェアを選択</value>
   </data>
   <data name="open_with_third_party_software" xml:space="preserve">
-    <value>Mit Drittanbietersoftware öffnen</value>
+    <value>サードパーティソフトウェアで開く</value>
   </data>
   <data name="confirm_enter_edit_mode_base_map" xml:space="preserve">
-    <value>Möchten Sie wirklich in den Bearbeitungsmodus wechseln? Dies erlaubt das Ändern der Grundkarte.</value>
+    <value>編集モードに入ってもよろしいですか？これにより、ベースマップを変更できるようになります。</value>
   </data>
   <data name="information" xml:space="preserve">
-    <value>Info</value>
+    <value>情報</value>
   </data>
   <data name="click_to_pick_coordinates" xml:space="preserve">
-    <value>Bitte in den Zeichenbereich klicken, um Koordinaten zu wählen</value>
+    <value>描画領域をクリックして座標をピックしてください</value>
   </data>
   <data name="picking_operation_cancelled" xml:space="preserve">
-    <value>Auswahlvorgang abgebrochen</value>
+    <value>ピック操作がキャンセルされました</value>
   </data>
   <data name="diagram" xml:space="preserve">
-    <value>Diagramm</value>
+    <value>図解</value>
+    <comment>绘图-功能栏</comment>
   </data>
   <data name="official_website" xml:space="preserve">
-    <value>Offizielle Website</value>
+    <value>公式サイト</value>
   </data>
   <data name="minimize" xml:space="preserve">
-    <value>Minimieren</value>
+    <value>最小化</value>
   </data>
   <data name="maximize" xml:space="preserve">
-    <value>Maximieren</value>
+    <value>最大化</value>
   </data>
   <data name="close" xml:space="preserve">
-    <value>Schließen</value>
+    <value>閉じる</value>
   </data>
   <data name="diagram_title_properties" xml:space="preserve">
-    <value>Diagrammtiteleigenschaften</value>
+    <value>図解タイトルプロパティ</value>
+    <comment>绘图-快捷按钮-tooltip</comment>
   </data>
   <data name="diagram_script_properties" xml:space="preserve">
-    <value>Diagrammskripteigenschaften</value>
+    <value>図解スクリプトプロパティ</value>
+    <comment>绘图-快捷按钮-tooltip</comment>
   </data>
   <data name="diagram_legend_properties" xml:space="preserve">
-    <value>Diagrammlegendeneigenschaften</value>
+    <value>図解凡例プロパティ</value>
   </data>
   <data name="diagram_grid_properties" xml:space="preserve">
-    <value>Diagrammgittereigenschaften</value>
+    <value>図解グリッドプロパティ</value>
   </data>
   <data name="switch_diagram_language" xml:space="preserve">
-    <value>Diagrammsprache wechseln</value>
+    <value>図解言語を切り替え</value>
   </data>
   <data name="popup_diagram_window" xml:space="preserve">
-    <value>Diagrammfenster ausklappen</value>
+    <value>図解ウィンドウをポップアップ</value>
+    <comment>绘图-快捷按钮-tooltip</comment>
   </data>
   <data name="independent_diagram_window" xml:space="preserve">
-    <value>Unabhängiges Diagrammfenster</value>
+    <value>独立した図解ウィンドウ</value>
   </data>
   <data name="edit_drawing_template_translations" xml:space="preserve">
-    <value>Übersetzungen der Zeichenvorlage bearbeiten</value>
+    <value>描画テンプレートの多言語翻訳を編集</value>
+    <comment>主页-小组件-图解模板翻译器</comment>
   </data>
   <data name="repair_missing_or_damaged_templates_and_lists" xml:space="preserve">
-    <value>Fehlende oder beschädigte Vorlagen und Listen reparieren</value>
+    <value>紛失または破損した描画テンプレートとリストを修復</value>
   </data>
   <data name="view_latest_server_announcements" xml:space="preserve">
-    <value>Neueste Serverankündigungen anzeigen</value>
+    <value>サーバーからの最新のお知らせを表示</value>
   </data>
   <data name="maintain_server_config_and_templates" xml:space="preserve">
-    <value>Serverkonfiguration und Vorlagen warten</value>
+    <value>サーバー構成とテンプレートファイルを保守</value>
   </data>
   <data name="stroke_width" xml:space="preserve">
-    <value>Strichbreite</value>
+    <value>ストローク幅</value>
   </data>
   <data name="stroke_color" xml:space="preserve">
-    <value>Strichfarbe</value>
+    <value>ストローク色</value>
   </data>
   <data name="template_type_not_supported_please_update" xml:space="preserve">
-    <value>Vorlagentyp nicht unterstützt, bitte Software aktualisieren.</value>
+    <value>現在の図解テンプレートタイプはサポートされていません。ソフトウェアを更新してください。</value>
   </data>
   <data name="diagram_guide" xml:space="preserve">
-    <value>Diagramm-Assistent</value>
+    <value>図解ガイド</value>
+    <comment>绘图-图解-帮助</comment>
   </data>
   <data name="click_help_for_guide" xml:space="preserve">
-    <value>Klicken für Diagrammdokumentation</value>
+    <value>ボタンをクリックして図解ドキュメントを表示</value>
   </data>
   <data name="Alignment_UpperLeft" xml:space="preserve">
-    <value>Oben links</value>
+    <value>左上</value>
   </data>
   <data name="Alignment_UpperCenter" xml:space="preserve">
-    <value>Oben mitte</value>
+    <value>中上</value>
   </data>
   <data name="Alignment_UpperRight" xml:space="preserve">
-    <value>Oben rechts</value>
+    <value>右上</value>
   </data>
   <data name="Alignment_MiddleLeft" xml:space="preserve">
-    <value>Mitte links</value>
+    <value>左中</value>
   </data>
   <data name="Alignment_MiddleCenter" xml:space="preserve">
-    <value>Mitte zentriert</value>
+    <value>中央</value>
   </data>
   <data name="Alignment_MiddleRight" xml:space="preserve">
-    <value>Mitte rechts</value>
+    <value>右中</value>
   </data>
   <data name="Alignment_LowerLeft" xml:space="preserve">
-    <value>Unten links</value>
+    <value>左下</value>
   </data>
   <data name="Alignment_LowerCenter" xml:space="preserve">
-    <value>Unten mitte</value>
+    <value>中下</value>
   </data>
   <data name="Alignment_LowerRight" xml:space="preserve">
-    <value>Unten rechts</value>
+    <value>右下</value>
   </data>
   <data name="Orientation_Horizontal" xml:space="preserve">
-    <value>Horizontal</value>
+    <value>横方向</value>
   </data>
   <data name="Orientation_Vertical" xml:space="preserve">
-    <value>Vertikal</value>
+    <value>縦方向</value>
   </data>
   <data name="show_tick_labels" xml:space="preserve">
-    <value>Skalenbeschriftungen anzeigen</value>
+    <value>目盛ラベルを表示</value>
   </data>
   <data name="show_major_ticks" xml:space="preserve">
-    <value>Hauptskalen anzeigen</value>
+    <value>主目盛を表示</value>
   </data>
   <data name="recently_used" xml:space="preserve">
-    <value>Zuletzt verwendet</value>
+    <value>最近使用したもの</value>
   </data>
   <data name="all_fonts" xml:space="preserve">
-    <value>Alle Schriftarten</value>
+    <value>すべてのフォント</value>
   </data>
   <data name="failed_to_open_widget" xml:space="preserve">
-    <value>Widget konnte nicht geöffnet werden:</value>
+    <value>ウィジェットを開けませんでした：</value>
   </data>
   <data name="coordinates_picked_success" xml:space="preserve">
-    <value>Koordinaten erfolgreich erfasst!</value>
+    <value>座標のピックに成功しました！</value>
   </data>
   <data name="unsaved_diagram_template_prompt" xml:space="preserve">
-    <value>Die aktuelle Diagrammvorlage enthält nicht gespeicherte Änderungen. Möchten Sie diese speichern?</value>
+    <value>現在の図解テンプレートに未保存の内容があります。保存しますか？</value>
   </data>
   <data name="tips" xml:space="preserve">
-    <value>Tips</value>
+    <value>ヒント</value>
   </data>
   <data name="template_no_multilingual_info" xml:space="preserve">
-    <value>Die aktuelle Vorlage enthält keine mehrsprachigen Informationen</value>
+    <value>現在のテンプレートには多言語情報がありません</value>
   </data>
   <data name="language_switch_success" xml:space="preserve">
-    <value>Sprache erfolgreich geändert</value>
+    <value>言語の切り替えに成功しました</value>
   </data>
   <data name="language_switch_error" xml:space="preserve">
-    <value>Beim Umschalten der Sprache ist ein Fehler aufgetreten:</value>
+    <value>言語切り替え中にエラーが発生しました：</value>
   </data>
   <data name="auto_datapoint_projection_failed" xml:space="preserve">
-    <value>Automatische Datenpunktprojektion fehlgeschlagen:</value>
+    <value>自動データポイント投影に失敗しました：</value>
   </data>
   <data name="failed_to_delete_row" xml:space="preserve">
-    <value>Zeile konnte nicht gelöscht werden:</value>
+    <value>行を削除できませんでした：</value>
   </data>
   <data name="diagram_template_not_found_repair_hint" xml:space="preserve">
-    <value>Diagrammvorlagendatei nicht gefunden. Bitte versuchen Sie, diese mit dem „Vorlagen-Reparatur-Tool“ auf der Startseite zu reparieren.</value>
+    <value>図解テンプレートファイルが見つかりません。ホームページの「テンプレート修復ツール」を使用して修復を試みてください。</value>
   </data>
   <data name="confirm_delete_custom_diagram_template" xml:space="preserve">
-    <value>Sind Sie sicher, dass Sie diese benutzerdefinierte Diagrammvorlage löschen möchten?</value>
+    <value>このカスタム図解テンプレートを削除してもよろしいですか？</value>
   </data>
   <data name="template_delete_success" xml:space="preserve">
-    <value>Vorlage erfolgreich gelöscht</value>
+    <value>テンプレートの削除に成功しました</value>
   </data>
   <data name="delete_failed" xml:space="preserve">
-    <value>Löschen fehlgeschlagen:</value>
+    <value>削除に失敗しました：</value>
   </data>
   <data name="missing_drawing_objects_error" xml:space="preserve">
-    <value>• Fehlende Zeichenobjekte: Die Vorlage enthält keine Linien, Polygone, Texte oder Pfeile.</value>
+    <value>• 描画オブジェクト欠落：テンプレートに線、ポリゴン、テキスト、または矢印が含まれていません。</value>
   </data>
   <data name="invalid_script_variable_name" xml:space="preserve">
-    <value>• Ungültiges Format des Skriptvariablennamens: ’</value>
+    <value>• スクリプト変数名の形式エラー：’</value>
   </data>
   <data name="is_not_a_valid_variable_name" xml:space="preserve">
-    <value>’ ist kein gültiger Variablenname.</value>
+    <value>‘ は有効な変数名ではありません。</value>
   </data>
   <data name="script_return_value_error_must_be_array" xml:space="preserve">
-    <value>• Skript-Rückgabewertfehler: Das Skript muss ein Array zurückgeben.</value>
+    <value>• スクリプト戻り値エラー：スクリプトは配列を返す必要があります。</value>
   </data>
   <data name="script_return_value_length_error" xml:space="preserve">
-    <value>• Fehler in der Länge des Skript-Rückgabewerts: Aktueller Wert ist</value>
+    <value>• スクリプト戻り値の長さエラー：現在は</value>
   </data>
   <data name="return_type_mismatch_error" xml:space="preserve">
-    <value>Typ, sollte zurückgeben</value>
+    <value>型ですが、返す必要があるのは</value>
   </data>
   <data name="elements_actual_returned" xml:space="preserve">
-    <value>Elemente, aber tatsächlich zurückgegeben wurden</value>
+    <value>要素ですが、実際に返されたのは</value>
   </data>
   <data name="elements_count_suffix" xml:space="preserve">
-    <value>Elemente.</value>
+    <value>個です。</value>
   </data>
   <data name="missing_translation_warning" xml:space="preserve">
-    <value>• Fehlende Übersetzung: Einige Texte verfügen über keine mehrsprachigen Übersetzungen.</value>
+    <value>• 翻訳欠落：一部のテキストに多言語翻訳がありません。</value>
   </data>
   <data name="diagram_template_source_missing" xml:space="preserve">
-    <value>Quelldatei der Diagrammvorlage existiert nicht</value>
+    <value>図解テンプレートのソースファイルが存在しません</value>
   </data>
   <data name="template_potential_issues_detected" xml:space="preserve">
-    <value>Folgende potenzielle Probleme wurden in der Vorlage erkannt:</value>
+    <value>テンプレートに以下の潜在的な問題が検出されました：</value>
   </data>
   <data name="ignore_issues_and_continue_export" xml:space="preserve">
-    <value>Diese Probleme ignorieren und mit dem Export fortfahren?</value>
+    <value>これらの問題を無視してエクスポートを続けますか？</value>
   </data>
   <data name="completeness_check" xml:space="preserve">
-    <value>Vollständigkeitsprüfung</value>
+    <value>完全性チェック</value>
   </data>
   <data name="diagram_template_export_success" xml:space="preserve">
-    <value>Diagrammvorlage erfolgreich exportiert</value>
+    <value>図解テンプレートのエクスポートに成功しました</value>
   </data>
   <data name="directory_not_exist" xml:space="preserve">
-    <value>Verzeichnis existiert nicht</value>
+    <value>ディレクトリが存在しません</value>
   </data>
   <data name="diagram_template_directory_not_found" xml:space="preserve">
-    <value>Verzeichnis für Diagrammvorlagen existiert nicht:</value>
+    <value>図解テンプレートのディレクトリが存在しません：</value>
   </data>
   <data name="failed_to_load_diagram_template" xml:space="preserve">
-    <value>Diagrammvorlage konnte nicht geladen werden:</value>
+    <value>図解テンプレートを読み込めませんでした：</value>
   </data>
   <data name="unsaved_template_changes_confirm" xml:space="preserve">
-    <value>Die aktuelle Vorlage enthält nicht gespeicherte Änderungen. Möchten Sie diese speichern?</value>
+    <value>現在のテンプレートに未保存の内容があります。保存しますか？</value>
   </data>
   <data name="ternary_diagram_crosshair_not_supported" xml:space="preserve">
-    <value>Fadenkreuz-Positionierung wird für Ternärdiagramme derzeit nicht unterstützt.</value>
+    <value>三元相図では、現在十字位置合わせ機能はサポートされていません。</value>
   </data>
   <data name="attempting_to_start" xml:space="preserve">
-    <value>Startversuch läuft</value>
+    <value>起動を試みています</value>
   </data>
   <data name="coreldraw_env_not_found_select_program" xml:space="preserve">
-    <value>CorelDRAW-Umgebungsvariable nicht gefunden. Bitte wählen Sie das zu öffnende Programm aus.</value>
+    <value>CorelDRAW環境変数が見つかりません。開くプログラムを選択してください。</value>
   </data>
   <data name="failed_to_open" xml:space="preserve">
-    <value>Öffnen fehlgeschlagen:</value>
+    <value>開くのに失敗しました：</value>
   </data>
   <data name="inkscape_env_not_found_select_program" xml:space="preserve">
-    <value>Inkscape-Umgebungsvariable nicht gefunden. Bitte wählen Sie das zu öffnende Programm aus.</value>
+    <value>Inkscape環境変数が見つかりません。開くプログラムを選択してください。</value>
   </data>
   <data name="illustrator_not_found_check_path" xml:space="preserve">
-    <value>Adobe Illustrator nicht gefunden. Bitte prüfen Sie die Pfadeinstellungen oder wählen Sie das zu öffnende Programm aus.</value>
+    <value>Adobe Illustratorが見つかりません。パス設定を確認するか、開くプログラムを選択してください。</value>
   </data>
   <data name="custom_path_not_set_configure_in_settings" xml:space="preserve">
-    <value>Benutzerdefinierter Programmpfad nicht festgelegt. Bitte in den Einstellungen konfigurieren.</value>
+    <value>カスタムプログラムのパスが設定されていません。設定で構成してください。</value>
   </data>
   <data name="custom_program_start_failed" xml:space="preserve">
-    <value>Starten des benutzerdefinierten Programms fehlgeschlagen:</value>
+    <value>カスタムプログラムの起動に失敗しました：</value>
   </data>
   <data name="help_file_not_found" xml:space="preserve">
-    <value>Hilfedokumentation konnte nicht gefunden werden.</value>
+    <value>ヘルプファイルが見つかりません。</value>
   </data>
   <data name="refresh_successful" xml:space="preserve">
-    <value>Erfolgreich aktualisiert</value>
+    <value>更新に成功しました</value>
   </data>
   <data name="refresh_failed" xml:space="preserve">
-    <value>Aktualisierung fehlgeschlagen:</value>
+    <value>更新に失敗しました：</value>
   </data>
   <data name="diagram_help_path_undefined_save_template" xml:space="preserve">
-    <value>Pfad der Diagramm-Hilfedatei konnte nicht ermittelt werden. Bitte versuchen Sie zuerst, die Vorlage zu speichern.</value>
+    <value>図解ヘルプファイルのパスを特定できません。先にテンプレートを保存してみてください。</value>
   </data>
   <data name="failed_to_open_file" xml:space="preserve">
-    <value>Datei konnte nicht geöffnet werden:</value>
+    <value>ファイルを開けませんでした：</value>
   </data>
   <data name="error_creating_new_template" xml:space="preserve">
-    <value>Fehler beim Erstellen der neuen Vorlage:</value>
+    <value>新規テンプレート作成中にエラーが発生しました：</value>
   </data>
   <data name="import_failed" xml:space="preserve">
-    <value>Import fehlgeschlagen:</value>
+    <value>インポートに失敗しました：</value>
   </data>
   <data name="failed_to_open_zip_file" xml:space="preserve">
-    <value>ZIP-Datei konnte nicht geöffnet werden</value>
+    <value>ZIPファイルを開けませんでした</value>
   </data>
   <data name="diagram_template_corrupted_or_invalid" xml:space="preserve">
-    <value>Die Diagrammvorlagendatei ist beschädigt oder enthält keine gültige JSON-Diagrammvorlagendatei.</value>
+    <value>図解テンプレートファイルが破損しているか、有効な図解テンプレートJSONファイルが含まれていません。</value>
   </data>
   <data name="failed_to_parse_diagram_template_json" xml:space="preserve">
-    <value>Die JSON-Datei der Diagrammvorlage konnte nicht analysiert werden</value>
+    <value>図解テンプレートJSONファイルを解析できませんでした</value>
   </data>
   <data name="invalid_diagram_template_file" xml:space="preserve">
-    <value>Ungültige Diagrammvorlagendatei</value>
+    <value>無効な図解テンプレートファイル</value>
   </data>
   <data name="custom_diagram_template" xml:space="preserve">
-    <value>Benutzerdefinierte Diagrammvorlage</value>
+    <value>カスタム図解テンプレート</value>
   </data>
   <data name="already_exists_overwrite_confirm" xml:space="preserve">
-    <value>Bereits vorhanden. Möchten Sie es überschreiben?</value>
+    <value>既に存在します。上書きしますか？</value>
   </data>
   <data name="overwrite" xml:space="preserve">
-    <value>Überschreiben</value>
+    <value>上書き</value>
   </data>
   <data name="failed_to_delete_old_directory" xml:space="preserve">
-    <value>Altes Verzeichnis konnte nicht gelöscht werden:</value>
+    <value>古いディレクトリを削除できませんでした：</value>
   </data>
   <data name="invalid_diagram_template_no_json" xml:space="preserve">
-    <value>Ungültige Diagrammvorlagendatei: Diagramm-JSON-Datei nicht gefunden.</value>
+    <value>無効な図解テンプレートファイルです。図解JSONファイルが見つかりません。</value>
   </data>
   <data name="template_load_failed" xml:space="preserve">
-    <value>Laden der Vorlage fehlgeschlagen</value>
+    <value>図解テンプレートの読み込みに失敗しました</value>
   </data>
   <data name="script_not_defined_in_template" xml:space="preserve">
-    <value>Kein Skript in der Diagrammvorlage definiert</value>
+    <value>図解テンプレートでスクリプトが定義されていません</value>
   </data>
   <data name="function" xml:space="preserve">
-    <value>Funktion</value>
+    <value>関数</value>
   </data>
 </root>

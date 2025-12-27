@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -12,13 +12,11 @@ namespace GeoChemistryNexus.Helpers
         //private static string configPath = FileHelper.GetFilePath();  //配置文件路径
 
 
-        //获取配置文件中的值
-        //传入 key 返回 value
+        //获取配置文件中的值（传入 key 返回 value
         public static string GetConfig(string key)
         {
-            Configuration configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            // 移除多余的 OpenExeConfiguration 调用
             return ConfigurationManager.AppSettings[key];
-            //return configuration.AppSettings.Settings[key].Value;
         }
 
         //设置配置文件中的值
@@ -34,6 +32,30 @@ namespace GeoChemistryNexus.Helpers
             {
                 config.AppSettings.Settings[key].Value = value;
             }
+            config.Save();
+            ConfigurationManager.RefreshSection("appSettings");
+        }
+
+        // 批量设置配置文件中的值
+        // 传入 Dictionary<string, string> 批量写入并刷新
+        public static void SetConfigs(Dictionary<string, string> settings)
+        {
+            if (settings == null || settings.Count == 0) return;
+
+            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            
+            foreach (var item in settings)
+            {
+                if (config.AppSettings.Settings[item.Key] == null)
+                {
+                    config.AppSettings.Settings.Add(item.Key, item.Value);
+                }
+                else
+                {
+                    config.AppSettings.Settings[item.Key].Value = item.Value;
+                }
+            }
+            
             config.Save();
             ConfigurationManager.RefreshSection("appSettings");
         }

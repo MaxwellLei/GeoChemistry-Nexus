@@ -149,5 +149,21 @@ namespace GeoChemistryNexus.Controls
                 WeakReferenceMessenger.Default.Send(new PickPointRequestMessage(PointValue));
             }
         }
+
+        private void Coordinate_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (PointValue != null)
+            {
+                PointValue.IsHighlighted = true;
+            }
+        }
+
+        private void Coordinate_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (PointValue != null)
+            {
+                PointValue.IsHighlighted = false;
+            }
+        }
     }
 }

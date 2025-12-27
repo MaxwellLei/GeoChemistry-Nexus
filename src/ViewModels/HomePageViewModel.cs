@@ -9,9 +9,11 @@ using GongSolutions.Wpf.DragDrop;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Threading;
 
 namespace GeoChemistryNexus.ViewModels
@@ -19,6 +21,10 @@ namespace GeoChemistryNexus.ViewModels
     public partial class HomePageViewModel : ObservableObject, IDropTarget
     {
         private readonly DispatcherTimer _timer;
+        private readonly ObservableCollection<HomeAppItem> _sourceApps = new();
+        private readonly Dictionary<string, Window> _openedWindows = new();
+
+        public ICollectionView HomeApps { get; }
 
         [ObservableProperty]
         private string currentTime = string.Empty;
@@ -32,42 +38,51 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private bool isEditMode = false;
 
-        [ObservableProperty]
-        private ObservableCollection<HomeAppItem> homeApps = new();
-
-        private List<HomeAppItem> _allApps = new();
-
         partial void OnSearchStringChanged(string value)
         {
-            UpdateHomeApps();
-        }
-
-        private void UpdateHomeApps()
-        {
-            if (string.IsNullOrWhiteSpace(SearchString))
-            {
-                HomeApps = new ObservableCollection<HomeAppItem>(_allApps);
-            }
-            else
-            {
-                var q = SearchString.Trim();
-                var filtered = _allApps.Where(a => (a.Title?.Contains(q, StringComparison.OrdinalIgnoreCase) ?? false) || 
-                                                   (a.Description?.Contains(q, StringComparison.OrdinalIgnoreCase) ?? false));
-                HomeApps = new ObservableCollection<HomeAppItem>(filtered);
-            }
+            HomeApps.Refresh();
         }
 
         public HomePageViewModel()
         {
-            UpdateNow();
             _timer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromSeconds(1)
             };
             _timer.Tick += (s, e) => UpdateNow();
-            _timer.Start();
+
+            // Initialize CollectionView
+            HomeApps = CollectionViewSource.GetDefaultView(_sourceApps);
+            HomeApps.Filter = FilterApps;
 
             LoadApps();
+            UpdateNow();
+        }
+
+        private bool FilterApps(object obj)
+        {
+            if (string.IsNullOrWhiteSpace(SearchString)) return true;
+
+            if (obj is HomeAppItem app)
+            {
+                var q = SearchString.Trim();
+                return (app.Title?.Contains(q, StringComparison.OrdinalIgnoreCase) ?? false) || 
+                       (app.Description?.Contains(q, StringComparison.OrdinalIgnoreCase) ?? false);
+            }
+            return false;
+        }
+
+        [RelayCommand]
+        private void Loaded()
+        {
+            UpdateNow();
+            _timer.Start();
+        }
+
+        [RelayCommand]
+        private void Unloaded()
+        {
+            _timer.Stop();
         }
 
         private void LoadApps()
@@ -76,12 +91,16 @@ namespace GeoChemistryNexus.ViewModels
             var filtered = apps.Where(a => !(a.Type == HomeAppType.Widget &&
                                              (string.Equals(a.WidgetKey, "CalendarWidget", StringComparison.OrdinalIgnoreCase)
                                               || string.Equals(a.WidgetKey, "SystemInfoWidget", StringComparison.OrdinalIgnoreCase)))).ToList();
-            _allApps = filtered;
-            UpdateHomeApps();
+            
+            _sourceApps.Clear();
+            foreach (var app in filtered)
+            {
+                _sourceApps.Add(app);
+            }
 
             if (filtered.Count != apps.Count)
             {
-                HomeAppService.SaveApps(_allApps);
+                HomeAppService.SaveApps(_sourceApps);
             }
         }
 
@@ -119,16 +138,14 @@ namespace GeoChemistryNexus.ViewModels
                     app.Description = dialog.Result.Description;
                     app.Icon = dialog.Result.Icon;
                     
-                    // Trigger update if needed, though ObservableObject handles property changes
-                    HomeAppService.SaveApps(_allApps);
+                    HomeAppService.SaveApps(_sourceApps);
                 }
             }
-            // Widgets editing logic if needed
         }
 
         public void SaveOrder()
         {
-            HomeAppService.SaveApps(_allApps);
+            HomeAppService.SaveApps(_sourceApps);
         }
 
         [RelayCommand]
@@ -150,7 +167,7 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private void OpenApp(HomeAppItem app)
         {
-            if (app == null || IsEditMode) return; // Prevent opening when in edit mode
+            if (app == null || IsEditMode) return;
 
             if (app.Type == HomeAppType.WebLink && !string.IsNullOrWhiteSpace(app.Url))
             {
@@ -167,6 +184,22 @@ namespace GeoChemistryNexus.ViewModels
             {
                 try
                 {
+                    // 检查窗口是否已打开
+                    if (!string.IsNullOrEmpty(app.WidgetKey) && _openedWindows.TryGetValue(app.WidgetKey, out var existingWindow))
+                    {
+                        if (existingWindow.IsLoaded)
+                        {
+                            if (existingWindow.WindowState == WindowState.Minimized)
+                                existingWindow.WindowState = WindowState.Normal;
+                            existingWindow.Activate();
+                            return;
+                        }
+                        else
+                        {
+                            _openedWindows.Remove(app.WidgetKey);
+                        }
+                    }
+
                     Window window = null;
 
                     if (app.WidgetKey == "TemplateTranslatorWidget")
@@ -206,7 +239,7 @@ namespace GeoChemistryNexus.ViewModels
                             Title = LanguageService.Instance["developer_maintenance_tool"],
                             Width = 1200,
                             Height = 600,
-                            Content = new GeoChemistryNexus.Views.Widgets.DeveloperToolWidget() // Ensure correct namespace
+                            Content = new GeoChemistryNexus.Views.Widgets.DeveloperToolWidget()
                         };
                     }
 
@@ -222,12 +255,20 @@ namespace GeoChemistryNexus.ViewModels
                         {
                             window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                         }
+                        
                         window.Show();
+
+                        if (!string.IsNullOrEmpty(app.WidgetKey))
+                        {
+                            _openedWindows[app.WidgetKey] = window;
+                            window.Closed += (s, e) => _openedWindows.Remove(app.WidgetKey);
+                        }
                     }
                 }
                 catch (Exception ex)
                 {
-                    MessageHelper.Error("Failed to open widget: " + ex.Message + "\n" + ex.StackTrace);
+                    // 打开小组件失败
+                    MessageHelper.Error(LanguageService.Instance["failed_to_open_widget"] + ex.Message + "\n" + ex.StackTrace);
                 }
             }
         }
@@ -235,11 +276,10 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private void RemoveApp(HomeAppItem app)
         {
-            if (app != null && _allApps.Contains(app))
+            if (app != null && _sourceApps.Contains(app))
             {
-                _allApps.Remove(app);
-                UpdateHomeApps();
-                HomeAppService.SaveApps(_allApps);
+                _sourceApps.Remove(app);
+                HomeAppService.SaveApps(_sourceApps);
             }
         }
 
@@ -253,9 +293,8 @@ namespace GeoChemistryNexus.ViewModels
                 var newItem = dialog.Result;
                 if (newItem != null)
                 {
-                    _allApps.Add(newItem);
-                    UpdateHomeApps();
-                    HomeAppService.SaveApps(_allApps);
+                    _sourceApps.Add(newItem);
+                    HomeAppService.SaveApps(_sourceApps);
                 }
             }
         }
@@ -281,12 +320,12 @@ namespace GeoChemistryNexus.ViewModels
                         WidgetKey = widget.WidgetKey,
                         Icon = widget.Icon
                     };
-                    _allApps.Add(newItem);
-                    UpdateHomeApps();
-                    HomeAppService.SaveApps(_allApps);
+                    _sourceApps.Add(newItem);
+                    HomeAppService.SaveApps(_sourceApps);
                 }
             }
         }
+
         void IDropTarget.DragOver(IDropInfo dropInfo)
         {
             if (!string.IsNullOrEmpty(SearchString)) return;
@@ -302,17 +341,16 @@ namespace GeoChemistryNexus.ViewModels
         {
             if (IsEditMode && dropInfo.Data is HomeAppItem sourceItem && dropInfo.TargetItem is HomeAppItem targetItem)
             {
-                int sourceIndex = HomeApps.IndexOf(sourceItem);
-                int targetIndex = HomeApps.IndexOf(targetItem);
+                int sourceIndex = _sourceApps.IndexOf(sourceItem);
+                int targetIndex = _sourceApps.IndexOf(targetItem);
 
                 if (sourceIndex != -1 && targetIndex != -1)
                 {
-                    HomeApps.Move(sourceIndex, targetIndex);
+                    _sourceApps.Move(sourceIndex, targetIndex);
                     
                     if (string.IsNullOrEmpty(SearchString))
                     {
-                        _allApps = new System.Collections.Generic.List<HomeAppItem>(HomeApps);
-                        HomeAppService.SaveApps(_allApps);
+                        HomeAppService.SaveApps(_sourceApps);
                     }
                 }
             }

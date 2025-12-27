@@ -54,13 +54,39 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 请求刷新图表事件
+        /// 请求刷新图表事件 (全量重建)
         /// </summary>
         public event EventHandler RequestRefresh;
+
+        /// <summary>
+        /// 请求更新图表样式事件 (仅重绘，不重建)
+        /// </summary>
+        public event EventHandler RequestStyleUpdate;
 
         protected void OnRefreshRequired()
         {
             RequestRefresh?.Invoke(this, EventArgs.Empty);
+        }
+
+        protected void OnStyleUpdateRequired()
+        {
+            // 如果绘图对象为空，说明还没渲染，直接走全量刷新
+            if (Plottable == null)
+            {
+                OnRefreshRequired();
+                return;
+            }
+
+            UpdateStyle();
+            RequestStyleUpdate?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// 更新样式的虚方法，子类应重写此方法以直接修改 Plottable 属性
+        /// </summary>
+        public virtual void UpdateStyle()
+        {
+            // 默认不做任何事
         }
     }
 }

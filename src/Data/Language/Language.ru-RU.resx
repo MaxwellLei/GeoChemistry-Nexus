@@ -118,1443 +118,1571 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="StartStatus" xml:space="preserve">
-    <value>Starten...</value>
+    <value>Запуск...</value>
+    <comment>软件启动界面</comment>
   </data>
   <data name="Show" xml:space="preserve">
-    <value>Oberfläche anzeigen</value>
+    <value>Показать интерфейс</value>
+    <comment>托盘菜单右键</comment>
   </data>
   <data name="Exit" xml:space="preserve">
-    <value>Programm beenden</value>
+    <value>Выход</value>
+    <comment>托盘菜单右键</comment>
   </data>
   <data name="home" xml:space="preserve">
-    <value>Startseite</value>
+    <value>Главная</value>
+    <comment>主窗体侧边栏</comment>
   </data>
   <data name="Plot" xml:space="preserve">
-    <value>Diagramm zeichnen</value>
+    <value>Построение диаграмм</value>
+    <comment>主窗体侧边栏</comment>
   </data>
   <data name="Geothermometer" xml:space="preserve">
-    <value>Geothermometer</value>
+    <value>Геотермометр</value>
+    <comment>主窗体侧边栏</comment>
   </data>
   <data name="Setting" xml:space="preserve">
-    <value>Einstellungen</value>
+    <value>Настройки</value>
+    <comment>主窗体侧边栏</comment>
   </data>
   <data name="File" xml:space="preserve">
-    <value>_Datei(F)</value>
+    <value>_Файл(F)</value>
+    <comment>绘图界面</comment>
   </data>
   <data name="Edit" xml:space="preserve">
-    <value>Bearbeiten</value>
+    <value>Правка</value>
+    <comment>绘图界面</comment>
   </data>
   <data name="Expand" xml:space="preserve">
-    <value>Erweiterungen</value>
+    <value>Расширить</value>
+    <comment>绘图界面</comment>
   </data>
   <data name="EditMode" xml:space="preserve">
-    <value>Bearbeitungsmodus</value>
+    <value>Режим редактирования</value>
+    <comment>绘图界面</comment>
   </data>
   <data name="NewBasemap" xml:space="preserve">
-    <value>Neue Grundkarte</value>
+    <value>Новая подложка</value>
+    <comment>绘图界面</comment>
   </data>
   <data name="SaveBasemap" xml:space="preserve">
-    <value>Grundkarte speichern</value>
+    <value>Сохранить подложку</value>
   </data>
   <data name="ImportBasemap" xml:space="preserve">
-    <value>Grundkarte importieren</value>
+    <value>Импорт подложки</value>
   </data>
   <data name="ExportBasemap" xml:space="preserve">
-    <value>Grundkarte exportieren</value>
+    <value>Экспорт подложки</value>
   </data>
   <data name="DeleteBasemap" xml:space="preserve">
-    <value>Grundkarte löschen</value>
+    <value>Удалить подложку</value>
   </data>
   <data name="GetMoreBasemap" xml:space="preserve">
-    <value>Mehr Grundkarten abrufen</value>
+    <value>Больше подложек</value>
   </data>
   <data name="ImportData" xml:space="preserve">
-    <value>Daten importieren</value>
+    <value>Импорт данных</value>
   </data>
   <data name="ResetPlot" xml:space="preserve">
-    <value>Diagramm zurücksetzen</value>
+    <value>Сброс графика</value>
   </data>
   <data name="ResetVision" xml:space="preserve">
-    <value>Ansicht zurücksetzen</value>
+    <value>Сброс вида</value>
   </data>
   <data name="CancelSelected" xml:space="preserve">
-    <value>Auswahl aufheben</value>
+    <value>Снять выделение</value>
   </data>
   <data name="LocationAxis" xml:space="preserve">
-    <value>Positionsachse</value>
+    <value>Ось координат</value>
   </data>
   <data name="ExportImage" xml:space="preserve">
-    <value>Bild exportieren</value>
+    <value>Экспорт изображения</value>
   </data>
   <data name="ExportImagePNG" xml:space="preserve">
-    <value>Als PNG exportieren</value>
+    <value>Экспорт в PNG</value>
   </data>
   <data name="ExportImageJPG" xml:space="preserve">
-    <value>Als JPG exportieren</value>
+    <value>Экспорт в JPG</value>
   </data>
   <data name="ExportImageBMP" xml:space="preserve">
-    <value>Als BMP exportieren</value>
+    <value>Экспорт в BMP</value>
   </data>
   <data name="ExportImageWebp" xml:space="preserve">
-    <value>Als Webp exportieren</value>
+    <value>Экспорт в WebP</value>
   </data>
   <data name="ExportImageSVG" xml:space="preserve">
-    <value>Als SVG exportieren</value>
+    <value>Экспорт в SVG</value>
   </data>
   <data name="LegendSetting" xml:space="preserve">
-    <value>Legendeneinstellungen</value>
+    <value>Настройки легенды</value>
   </data>
   <data name="PlotSetting" xml:space="preserve">
-    <value>Diagrammeinstellungen</value>
+    <value>Настройки графика</value>
   </data>
   <data name="AddLine" xml:space="preserve">
-    <value>Linie hinzufügen</value>
+    <value>Добавить линию</value>
   </data>
   <data name="AddPolygons" xml:space="preserve">
-    <value>Polygon hinzufügen</value>
+    <value>Добавить полигон</value>
   </data>
   <data name="AddText" xml:space="preserve">
-    <value>Kommentar hinzufügen</value>
+    <value>Добавить примечание</value>
   </data>
   <data name="JsSetting" xml:space="preserve">
-    <value>Skripteinstellungen</value>
+    <value>Настройки скрипта</value>
   </data>
   <data name="Save" xml:space="preserve">
-    <value>Speichern</value>
+    <value>Сохранить</value>
   </data>
   <data name="QuitEdit" xml:space="preserve">
-    <value>Bearbeitung beenden</value>
+    <value>Выйти из редактирования</value>
   </data>
   <data name="IgneousRock" xml:space="preserve">
-    <value>Magmatisches Gestein</value>
+    <value>Магматические породы</value>
   </data>
   <data name="TectonicSetting" xml:space="preserve">
-    <value>Tektonisches Umfeld</value>
+    <value>Тектоническая обстановка</value>
   </data>
   <data name="Basalt" xml:space="preserve">
-    <value>Basalt</value>
+    <value>Базальт</value>
   </data>
   <data name="RockClassification" xml:space="preserve">
-    <value>Gesteinsklassifikation</value>
+    <value>Классификация пород</value>
   </data>
   <data name="GTMP" xml:space="preserve">
-    <value>Temperaturdiagramm</value>
+    <value>Температурный график</value>
   </data>
   <data name="Guide" xml:space="preserve">
-    <value>Anleitung</value>
+    <value>Руководство</value>
   </data>
   <data name="BorderLine" xml:space="preserve">
-    <value>Grenze</value>
+    <value>Граница</value>
   </data>
   <data name="PlotText" xml:space="preserve">
-    <value>Kommentar</value>
+    <value>Примечание</value>
   </data>
   <data name="PlotAxies" xml:space="preserve">
-    <value>Koordinatenachse</value>
+    <value>Оси координат</value>
   </data>
   <data name="PlotLeftAxies" xml:space="preserve">
-    <value>Linke Achse</value>
+    <value>Левая ось</value>
   </data>
   <data name="PlotBottomAxies" xml:space="preserve">
-    <value>Untere Achse</value>
+    <value>Нижняя ось</value>
   </data>
   <data name="PlotData" xml:space="preserve">
-    <value>Daten</value>
+    <value>Данные</value>
   </data>
   <data name="MajorAxes" xml:space="preserve">
-    <value>Hauptachse</value>
+    <value>Основные деления</value>
   </data>
   <data name="MinorAxes" xml:space="preserve">
-    <value>Nebenachse</value>
+    <value>Вспомогательные деления</value>
   </data>
   <data name="legend" xml:space="preserve">
-    <value>Legende</value>
+    <value>Легенда</value>
   </data>
   <data name="Background" xml:space="preserve">
-    <value>Hintergrund</value>
+    <value>Фон</value>
   </data>
   <data name="Calculate" xml:space="preserve">
-    <value>Berechnen</value>
+    <value>Вычислить</value>
   </data>
   <data name="Delete" xml:space="preserve">
-    <value>Löschen</value>
+    <value>Удалить</value>
   </data>
   <data name="Confirm" xml:space="preserve">
-    <value>Bestätigen</value>
+    <value>Подтвердить</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Abbrechen</value>
+    <value>Отмена</value>
   </data>
   <data name="IsShow" xml:space="preserve">
-    <value>Anzeigen</value>
+    <value>Показывать</value>
   </data>
   <data name="FontFamily" xml:space="preserve">
-    <value>Schriftart</value>
+    <value>Шрифт</value>
   </data>
   <data name="FontStyle" xml:space="preserve">
-    <value>Schriftstil</value>
+    <value>Стиль шрифта</value>
   </data>
   <data name="FontNormal" xml:space="preserve">
-    <value>Standard</value>
+    <value>Обычный</value>
   </data>
   <data name="FontBold" xml:space="preserve">
-    <value>Fett</value>
+    <value>Жирный</value>
   </data>
   <data name="FontItalic" xml:space="preserve">
-    <value>Kursiv</value>
+    <value>Курсив</value>
   </data>
   <data name="FontSize" xml:space="preserve">
-    <value>Schriftgröße</value>
+    <value>Размер шрифта</value>
   </data>
   <data name="FontColor" xml:space="preserve">
-    <value>Schriftfarbe</value>
+    <value>Цвет шрифта</value>
   </data>
   <data name="TextContent" xml:space="preserve">
-    <value>Inhalt</value>
+    <value>Содержание</value>
   </data>
   <data name="LineStyle" xml:space="preserve">
-    <value>Linienstil</value>
+    <value>Стиль линии</value>
   </data>
   <data name="LineSolid" xml:space="preserve">
-    <value>Durchgezogen</value>
+    <value>Сплошная</value>
   </data>
   <data name="LineDash" xml:space="preserve">
-    <value>Gestrichelt</value>
+    <value>Штриховая</value>
   </data>
   <data name="LineDashDot" xml:space="preserve">
-    <value>Strichpunkt</value>
+    <value>Штрихпунктирная</value>
   </data>
   <data name="LineDenselyDashed" xml:space="preserve">
-    <value>Dicht gestrichelt</value>
+    <value>Частая штриховая</value>
   </data>
   <data name="LineWidth" xml:space="preserve">
-    <value>Breite</value>
+    <value>Ширина</value>
   </data>
   <data name="LineColor" xml:space="preserve">
-    <value>Farbe</value>
+    <value>Цвет</value>
   </data>
   <data name="PointStyle" xml:space="preserve">
-    <value>Punktstil</value>
+    <value>Стиль точки</value>
   </data>
   <data name="PointCircle" xml:space="preserve">
-    <value>Kreis</value>
+    <value>Круг</value>
   </data>
   <data name="PointHollowCircle" xml:space="preserve">
-    <value>Hohler Kreis</value>
+    <value>Пустой круг</value>
   </data>
   <data name="PointSquare" xml:space="preserve">
-    <value>Quadrat</value>
+    <value>Квадрат</value>
   </data>
   <data name="PointFilledTriangleUp" xml:space="preserve">
-    <value>Dreieck oben</value>
+    <value>Треугольник вверх</value>
   </data>
   <data name="PointFilledTriangleDown" xml:space="preserve">
-    <value>Dreieck unten</value>
+    <value>Треугольник вниз</value>
   </data>
   <data name="PointDiamond" xml:space="preserve">
-    <value>Raute</value>
+    <value>Ромб</value>
   </data>
   <data name="PointEks" xml:space="preserve">
-    <value>Kreuz (X)</value>
+    <value>Крест (X)</value>
   </data>
   <data name="PointCross" xml:space="preserve">
-    <value>Kreuz (+)</value>
+    <value>Плюс (+)</value>
   </data>
   <data name="PointStar" xml:space="preserve">
-    <value>Stern</value>
+    <value>Звезда</value>
   </data>
   <data name="size" xml:space="preserve">
-    <value>Größe</value>
+    <value>Размер</value>
   </data>
   <data name="IsShowAxes" xml:space="preserve">
-    <value>Achsen anzeigen</value>
+    <value>Показать оси</value>
   </data>
   <data name="IsShowAxesTick" xml:space="preserve">
-    <value>Hauptstriche ausblenden</value>
+    <value>Скрыть основные деления</value>
   </data>
   <data name="AxesStyle" xml:space="preserve">
-    <value>Achsenstil</value>
+    <value>Стиль осей</value>
   </data>
   <data name="AxesStyleNormal" xml:space="preserve">
-    <value>Normal</value>
+    <value>Обычный</value>
   </data>
   <data name="AxesStyleLog10" xml:space="preserve">
     <value>Log(10)</value>
   </data>
   <data name="AxesTickFont" xml:space="preserve">
-    <value>Achsenschriftart</value>
+    <value>Шрифт делений</value>
   </data>
   <data name="AxesTickFontSize" xml:space="preserve">
-    <value>Achsenschriftgröße</value>
+    <value>Размер шрифта делений</value>
   </data>
   <data name="AxesTickSpacing" xml:space="preserve">
-    <value>Achsenabstand</value>
+    <value>Интервал делений</value>
   </data>
   <data name="AxesTickUpLimit" xml:space="preserve">
-    <value>Obergrenze</value>
+    <value>Верхний предел</value>
   </data>
   <data name="AxesTickDownLimit" xml:space="preserve">
-    <value>Untergrenze</value>
+    <value>Нижний предел</value>
   </data>
   <data name="AxesTickColor" xml:space="preserve">
-    <value>Achsenfarbe</value>
+    <value>Цвет делений</value>
   </data>
   <data name="IsShowMinorAxes" xml:space="preserve">
-    <value>Nebenstriche ausblenden</value>
+    <value>Скрыть вспомогательные деления</value>
   </data>
   <data name="IsShowLegend" xml:space="preserve">
-    <value>Legende anzeigen</value>
+    <value>Показать легенду</value>
   </data>
   <data name="LegendPosition" xml:space="preserve">
-    <value>Legendenposition</value>
+    <value>Позиция легенды</value>
   </data>
   <data name="LegendPositionRU" xml:space="preserve">
-    <value>Rechts oben</value>
+    <value>Справа сверху</value>
   </data>
   <data name="LegendPositionRD" xml:space="preserve">
-    <value>Rechts unten</value>
+    <value>Справа снизу</value>
   </data>
   <data name="LegendPositionLU" xml:space="preserve">
-    <value>Links oben</value>
+    <value>Слева сверху</value>
   </data>
   <data name="LegendPositionLD" xml:space="preserve">
-    <value>Links unten</value>
+    <value>Слева снизу</value>
   </data>
   <data name="LegendDirection" xml:space="preserve">
-    <value>Legendenausrichtung</value>
+    <value>Ориентация легенды</value>
   </data>
   <data name="LegendVertical" xml:space="preserve">
-    <value>Vertikal</value>
+    <value>Вертикальная</value>
   </data>
   <data name="LegendHorizontal" xml:space="preserve">
-    <value>Horizontal</value>
+    <value>Горизонтальная</value>
   </data>
   <data name="PlotTitle" xml:space="preserve">
-    <value>Diagrammtitel</value>
+    <value>Заголовок графика</value>
   </data>
   <data name="PlotTitleFont" xml:space="preserve">
-    <value>Titelschriftart</value>
+    <value>Шрифт заголовка</value>
   </data>
   <data name="PlotTitleFontSize" xml:space="preserve">
-    <value>Titelschriftgröße</value>
+    <value>Размер шрифта заголовка</value>
   </data>
   <data name="PlotTitleColor" xml:space="preserve">
-    <value>Titelfarbe</value>
+    <value>Цвет заголовка</value>
   </data>
   <data name="PlotAxesTitle1" xml:space="preserve">
-    <value>Achsentitel 1</value>
+    <value>Заголовок оси 1</value>
   </data>
   <data name="PlotAxesTitle2" xml:space="preserve">
-    <value>Achsentitel 2</value>
+    <value>Заголовок оси 2</value>
   </data>
   <data name="PlotAxesTitleFont" xml:space="preserve">
-    <value>Achsentitelschriftart</value>
+    <value>Шрифт заголовка оси</value>
   </data>
   <data name="PlotAxesTitleFontSize" xml:space="preserve">
-    <value>Achsentitelschriftgröße</value>
+    <value>Размер шрифта заголовка оси</value>
   </data>
   <data name="PlotAxesTitleColor" xml:space="preserve">
-    <value>Achsentitelfarbe</value>
+    <value>Цвет заголовка оси</value>
   </data>
   <data name="PlotShowGrid" xml:space="preserve">
-    <value>Gitter anzeigen</value>
+    <value>Показать сетку</value>
   </data>
   <data name="PlotMajorGridColor" xml:space="preserve">
-    <value>Hauptgitterfarbe</value>
+    <value>Цвет основной сетки</value>
   </data>
   <data name="PlotMajorGridWidth" xml:space="preserve">
-    <value>Hauptgitterbreite</value>
+    <value>Ширина основной сетки</value>
   </data>
   <data name="PlotShowMinorGrid" xml:space="preserve">
-    <value>Nebengitter anzeigen</value>
+    <value>Показать вспомогательную сетку</value>
   </data>
   <data name="PlotMinorGridColor" xml:space="preserve">
-    <value>Nebengitterfarbe</value>
+    <value>Цвет вспомогательной сетки</value>
   </data>
   <data name="PlotMinorGridWidth" xml:space="preserve">
-    <value>Nebengitterbreite</value>
+    <value>Ширина вспомогательной сетки</value>
   </data>
   <data name="PlotSwitchFilledColor" xml:space="preserve">
-    <value>Füllfarbe umkehren</value>
+    <value>Инвертировать цвет заливки</value>
   </data>
   <data name="PlotFilledColor1" xml:space="preserve">
-    <value>Füllbereichsfarbe 1</value>
+    <value>Цвет заливки 1</value>
   </data>
   <data name="PlotFilledColor2" xml:space="preserve">
-    <value>Füllbereichsfarbe 2</value>
+    <value>Цвет заливки 2</value>
   </data>
   <data name="Parameters" xml:space="preserve">
-    <value>Erforderliche Parameter</value>
+    <value>Требуемые параметры</value>
   </data>
   <data name="Js" xml:space="preserve">
-    <value>Js Skript</value>
+    <value>JS скрипт</value>
   </data>
   <data name="CheckJs" xml:space="preserve">
-    <value>Skript prüfen</value>
+    <value>Проверить скрипт</value>
   </data>
   <data name="Undelete_Message" xml:space="preserve">
-    <value>Löschen rückgängig gemacht</value>
+    <value>Удаление отменено</value>
   </data>
   <data name="DeleteingBasemapConfirm1_Message" xml:space="preserve">
-    <value>Lösche Grundkarte</value>
+    <value>Удаление подложки</value>
   </data>
   <data name="DeleteingBasemapConfirm2_Message" xml:space="preserve">
-    <value>Wirklich löschen?</value>
+    <value>Вы уверены, что хотите удалить?</value>
   </data>
   <data name="SaveSuccess" xml:space="preserve">
-    <value>Erfolgreich gespeichert</value>
+    <value>Успешно сохранено</value>
   </data>
   <data name="ParameterNotFilledIn" xml:space="preserve">
-    <value>Plot-Parameter nicht ausgefüllt</value>
+    <value>Параметры графика не заполнены</value>
   </data>
   <data name="ScNotFilledIn" xml:space="preserve">
-    <value>Plot-Skript nicht ausgefüllt</value>
+    <value>Скрипт графика не заполнен</value>
   </data>
   <data name="BasemapVersionToLow1" xml:space="preserve">
-    <value>Importierte Grundkartenversion zu niedrig, bitte verwenden Sie eine Version höher als</value>
+    <value>Версия импортируемой подложки слишком старая, пожалуйста, используйте версию выше</value>
   </data>
   <data name="BasemapVersionToLow2" xml:space="preserve">
-    <value>der Grundkarte</value>
+    <value></value>
   </data>
   <data name="CancelImport" xml:space="preserve">
-    <value>Import abgebrochen</value>
+    <value>Импорт отменен</value>
   </data>
   <data name="BasemapExisted" xml:space="preserve">
-    <value>Grundkartendatei existiert bereits. Überschreiben?</value>
+    <value>Файл подложки уже существует, перезаписать?</value>
   </data>
   <data name="NewBasemapSuccess" xml:space="preserve">
-    <value>Neue Grundkarte erfolgreich erstellt</value>
+    <value>Подложка успешно создана</value>
   </data>
   <data name="CategoryFormatError" xml:space="preserve">
-    <value>Kategorieformatfehler</value>
+    <value>Ошибка формата категории</value>
   </data>
   <data name="ParameterNull" xml:space="preserve">
-    <value>Parameter ist leer</value>
+    <value>Параметр пуст</value>
   </data>
   <data name="JsNull" xml:space="preserve">
-    <value>Skript ist leer</value>
+    <value>Скрипт пуст</value>
   </data>
   <data name="BasemapCategories" xml:space="preserve">
-    <value>Grundkartenkategorie</value>
+    <value>Категории подложки</value>
   </data>
   <data name="BasemapLanguage" xml:space="preserve">
-    <value>Grundkartensprache</value>
+    <value>Язык подложки</value>
   </data>
   <data name="Zircon" xml:space="preserve">
-    <value>Zirkon</value>
+    <value>Циркон</value>
   </data>
   <data name="Sphalerite" xml:space="preserve">
-    <value>Sphalerit</value>
+    <value>Сфалерит</value>
   </data>
   <data name="Quartz" xml:space="preserve">
-    <value>Quarz</value>
+    <value>Кварц</value>
   </data>
   <data name="Arsenopyrite" xml:space="preserve">
-    <value>Arsenopyrit</value>
+    <value>Арсенопирит</value>
   </data>
   <data name="Chlorite" xml:space="preserve">
-    <value>Chlorit</value>
+    <value>Хлорит</value>
   </data>
   <data name="Biotite" xml:space="preserve">
-    <value>Biotit</value>
+    <value>Биотит</value>
   </data>
   <data name="Amphibole" xml:space="preserve">
-    <value>Amphibol</value>
+    <value>Амфибол</value>
   </data>
   <data name="Reset" xml:space="preserve">
-    <value>Zurücksetzen</value>
+    <value>Сброс</value>
   </data>
   <data name="ExportResult" xml:space="preserve">
-    <value>Ergebnis exportieren</value>
+    <value>Экспорт результата</value>
   </data>
   <data name="TGMInfo" xml:space="preserve">
-    <value>Hier klicken oder Datei hierher ziehen</value>
+    <value>Нажмите или перетащите файл сюда</value>
   </data>
   <data name="CalTarget" xml:space="preserve">
-    <value>Berechnungsziel</value>
+    <value>Цель расчета</value>
   </data>
   <data name="CalTarget1" xml:space="preserve">
-    <value>Zr-Sättigungstemperatur (Watson und Harrison, 1983)</value>
+    <value>Температура насыщения Zr (Watson and Harrison, 1983)</value>
   </data>
   <data name="CalTarget2" xml:space="preserve">
-    <value>Zr-Haupttemperatur (Watson und Harrison, 1983)</value>
+    <value>Основная температура Zr (Watson and Harrison, 1983)</value>
   </data>
   <data name="Pressure" xml:space="preserve">
-    <value>Druck(Mpa)</value>
+    <value>Давление (МПа)</value>
   </data>
   <data name="AmphiboleGTM" xml:space="preserve">
-    <value>Si-Thermometer (Ridolfi et al., 2010)</value>
+    <value>Si Термометр (Ridolfi et al., 2010)</value>
   </data>
   <data name="BiotiteGTM" xml:space="preserve">
-    <value>Ti-Thermometer (Henry et al., 2005)</value>
+    <value>Ti Термометр (Henry et al., 2005)</value>
   </data>
   <data name="ChloriteGTM" xml:space="preserve">
-    <value>Al4-Thermometer (Jowett, 1991)</value>
+    <value>Al4 Термометр (Jowett, 1991)</value>
   </data>
   <data name="ArsenopyriteGTM" xml:space="preserve">
-    <value>Arsenopyrit-Thermometer (Kretschmar und Scott, 1976)</value>
+    <value>Арсенопиритовый термометр (Kretschmar and Scott, 1976)</value>
   </data>
   <data name="QuartzGTM" xml:space="preserve">
-    <value>TitaniQ-Thermometer (Wark und Watson, 2006)</value>
+    <value>Термометр TitaniQ (Wark and Watson, 2006)</value>
   </data>
   <data name="SphaleriteGTM" xml:space="preserve">
-    <value>FeS-Thermometer (Scott und Barnes, 1971)</value>
+    <value>FeS Термометр (Scott and Barnes, 1971)</value>
   </data>
   <data name="SphaleriteGGIMFisGTM" xml:space="preserve">
-    <value>GGIMFis-Thermometer (Frenzel et al., 2016)</value>
+    <value>GGIMFis Термометр (Frenzel et al., 2016)</value>
   </data>
   <data name="ZirconTiGTM" xml:space="preserve">
-    <value>Ti-Thermometer (Loucks et al., 2020)</value>
+    <value>Ti Термометр (Loucks et al., 2020)</value>
   </data>
   <data name="ZirconZrGTM" xml:space="preserve">
-    <value>Zr-Thermometer (Watson und Harrison, 1983)</value>
+    <value>Zr Термометр (Watson and Harrison, 1983)</value>
   </data>
   <data name="Step1" xml:space="preserve">
-    <value>Daten importieren / eingeben</value>
+    <value>Импорт / Ввод данных</value>
   </data>
   <data name="Step2" xml:space="preserve">
-    <value>Parameter prüfen</value>
+    <value>Проверка параметров</value>
   </data>
   <data name="Step3" xml:space="preserve">
-    <value>Ergebnis berechnen</value>
+    <value>Расчет результатов</value>
   </data>
   <data name="NormalSetting" xml:space="preserve">
-    <value>Allgemeine Einstellungen</value>
+    <value>Общие настройки</value>
   </data>
   <data name="About" xml:space="preserve">
-    <value>Über</value>
+    <value>О программе</value>
   </data>
   <data name="FilePath" xml:space="preserve">
-    <value>Dateipfad</value>
+    <value>Путь к файлу</value>
   </data>
   <data name="FileSavePath" xml:space="preserve">
-    <value>Speicherort</value>
+    <value>Путь сохранения файла</value>
   </data>
   <data name="DefaultPath" xml:space="preserve">
-    <value>Standardpfad</value>
+    <value>Путь по умолчанию</value>
   </data>
   <data name="CustomPath" xml:space="preserve">
-    <value>Benutzerdefinierter Ordner</value>
+    <value>Пользовательская папка</value>
   </data>
   <data name="OpenFileLocation" xml:space="preserve">
-    <value>Dateispeicherort öffnen</value>
+    <value>Открыть расположение папки</value>
   </data>
   <data name="InternationalizationAndPersonalization" xml:space="preserve">
-    <value>Internationalisierung &amp; Personalisierung</value>
+    <value>Язык и персонализация</value>
   </data>
   <data name="Theme" xml:space="preserve">
-    <value>Thema</value>
+    <value>Тема</value>
   </data>
   <data name="Default" xml:space="preserve">
-    <value>Standard</value>
+    <value>По умолчанию</value>
   </data>
   <data name="Language_" xml:space="preserve">
-    <value>Sprache</value>
+    <value>Язык</value>
   </data>
   <data name="EnglishUS" xml:space="preserve">
     <value>English (US)</value>
   </data>
   <data name="ChineseS" xml:space="preserve">
-    <value>Chinesisch (Vereinfacht)</value>
+    <value>中文(简体)</value>
   </data>
   <data name="DefaultRandom" xml:space="preserve">
-    <value>Standard zufällig</value>
+    <value>Случайно по умолчанию</value>
   </data>
   <data name="MessageNotification" xml:space="preserve">
-    <value>Benachrichtigungen</value>
+    <value>Уведомления</value>
   </data>
   <data name="MessageAutoClose" xml:space="preserve">
-    <value>Automatische Schließzeit</value>
+    <value>Время автозакрытия</value>
   </data>
   <data name="MessageAutoClose5" xml:space="preserve">
-    <value>5 Sekunden</value>
+    <value>5 сек</value>
   </data>
   <data name="MessageAutoClose4" xml:space="preserve">
-    <value>4 Sekunden</value>
+    <value>4 сек</value>
   </data>
   <data name="MessageAutoClose3" xml:space="preserve">
-    <value>3 Sekunden</value>
+    <value>3 сек</value>
   </data>
   <data name="MessageAutoClose2" xml:space="preserve">
-    <value>2 Sekunden</value>
+    <value>2 сек</value>
   </data>
   <data name="Other" xml:space="preserve">
-    <value>Sonstiges</value>
+    <value>Другое</value>
   </data>
   <data name="Boot" xml:space="preserve">
-    <value>Autostart beim Booten</value>
+    <value>Запуск при загрузке</value>
   </data>
   <data name="AutoCheckUpdate" xml:space="preserve">
-    <value>Automatisch nach Updates suchen</value>
+    <value>Автопроверка обновлений</value>
   </data>
   <data name="CheckUpdate" xml:space="preserve">
-    <value>Nach Updates suchen</value>
+    <value>Проверить обновления</value>
   </data>
   <data name="QuitAppMode" xml:space="preserve">
-    <value>Beenden-Modus</value>
+    <value>Способ выхода</value>
   </data>
   <data name="MinimizeTray" xml:space="preserve">
-    <value>In Systemtray minimieren</value>
+    <value>Свернуть в трей</value>
   </data>
   <data name="Quit" xml:space="preserve">
-    <value>Direkt beenden</value>
+    <value>Выйти</value>
   </data>
   <data name="AboutInfo1" xml:space="preserve">
-    <value>Dieses Projekt nutzt geochemische Daten für Diagrammerstellung, Berechnung und Analyse zur effizienten Verarbeitung geologischer Daten. Ziel ist es, Geowissenschaftlern zu helfen, den Datenanalyseprozess zu beschleunigen und die Forschungseffizienz zu verbessern.</value>
+    <value>Этот проект использует геохимические данные для построения графиков, расчетов и анализа, помогая исследователям в области наук о Земле ускорить процесс анализа данных и повысить эффективность исследований.</value>
   </data>
   <data name="AboutInfo2" xml:space="preserve">
-    <value>Wenn Ihnen dieses Projekt gefällt, geben Sie uns bitte einen Stern zur Unterstützung! Wenn Sie es hilfreich finden, können Sie mir auch einen Kaffee spendieren ☕</value>
+    <value>Если вам интересен этот проект, поставьте звездочку (Star)! Если вы считаете его полезным, можете угостить меня кофе ☕</value>
   </data>
   <data name="AboutInfo3" xml:space="preserve">
-    <value>Wir begrüßen weitere Forscher!
-    Lassen Sie uns gemeinsam geochemische Berechnungsmethoden und weitere Diagrammvorlagen pflegen und aktualisieren!
-    Damit die Software leistungsfähiger und benutzerfreundlicher wird!</value>
+    <value>Мы приглашаем исследователей присоединиться!
+	Вместе мы будем поддерживать и обновлять методы геохимических расчетов и шаблоны диаграмм!
+	Сделаем программное обеспечение более мощным и удобным!</value>
   </data>
   <data name="ThankSupport" xml:space="preserve">
-    <value>Danke für die Unterstützung</value>
+    <value>Спасибо за поддержку</value>
   </data>
   <data name="Support1" xml:space="preserve">
-    <value>📌Steuerelemente:</value>
+    <value>📌Элементы управления:</value>
   </data>
   <data name="Support3" xml:space="preserve">
-    <value>📌Dokumentation:</value>
+    <value>📌Документация:</value>
   </data>
   <data name="Support4" xml:space="preserve">
-    <value>📌Berechnung:</value>
+    <value>📌Расчеты:</value>
   </data>
   <data name="Support2" xml:space="preserve">
-    <value>📌Diagramme:</value>
+    <value>📌Диаграммы:</value>
   </data>
   <data name="Support5" xml:space="preserve">
-    <value>📌Tools:</value>
+    <value>📌Инструменты:</value>
   </data>
   <data name="PlotBoder" xml:space="preserve">
-    <value>Rahmen</value>
+    <value>Граница</value>
   </data>
   <data name="ResetSuccess" xml:space="preserve">
-    <value>Erfolgreich zurückgesetzt</value>
+    <value>Сброс выполнен успешно</value>
   </data>
   <data name="ModifedSuccess" xml:space="preserve">
-    <value>Erfolgreich geändert</value>
+    <value>Изменено успешно</value>
   </data>
   <data name="ModifedCanceled" xml:space="preserve">
-    <value>Änderung abgebrochen</value>
+    <value>Изменение отменено</value>
   </data>
   <data name="Info1" xml:space="preserve">
-    <value>Bitte besuchen Sie die offizielle Website, Funktion in Entwicklung...</value>
+    <value>Пожалуйста, посетите официальный сайт, функция в разработке...</value>
   </data>
   <data name="import_template" xml:space="preserve">
-    <value>Diagrammvorlage importieren</value>
+    <value>Импорт шаблона диаграммы</value>
   </data>
   <data name="create_new_diagram_template" xml:space="preserve">
-    <value>Neue Diagrammvorlage erstellen</value>
+    <value>Создать шаблон диаграммы</value>
   </data>
   <data name="template_library" xml:space="preserve">
-    <value>Vorlagenbibliothek</value>
+    <value>Библиотека шаблонов</value>
   </data>
   <data name="return_to_template_library" xml:space="preserve">
-    <value>Zurück</value>
+    <value>Вернуться</value>
   </data>
   <data name="Data" xml:space="preserve">
-    <value>Daten</value>
+    <value>Данные</value>
   </data>
   <data name="import_data" xml:space="preserve">
-    <value>Daten importieren</value>
+    <value>Импорт данных</value>
   </data>
   <data name="clear_data" xml:space="preserve">
-    <value>Daten löschen</value>
+    <value>Очистить данные</value>
   </data>
   <data name="view" xml:space="preserve">
-    <value>Ansicht</value>
+    <value>Вид</value>
   </data>
   <data name="reset_view" xml:space="preserve">
-    <value>Ansicht zurücksetzen</value>
+    <value>Сбросить вид</value>
   </data>
   <data name="coordinate_positioning" xml:space="preserve">
-    <value>Koordinatenpositionierung</value>
+    <value>Координаты</value>
   </data>
   <data name="select" xml:space="preserve">
-    <value>Auswählen</value>
+    <value>Выбрать</value>
   </data>
   <data name="deselect" xml:space="preserve">
-    <value>Auswahl aufheben</value>
+    <value>Отменить выбор</value>
   </data>
   <data name="export" xml:space="preserve">
-    <value>Exportieren</value>
+    <value>Экспорт</value>
   </data>
   <data name="export_image" xml:space="preserve">
-    <value>Bild exportieren</value>
+    <value>Экспорт изображения</value>
   </data>
   <data name="png_format" xml:space="preserve">
-    <value>PNG-Format</value>
+    <value>Формат PNG</value>
   </data>
   <data name="bmp_format" xml:space="preserve">
-    <value>BMP-Format</value>
+    <value>Формат BMP</value>
   </data>
   <data name="jpg_format" xml:space="preserve">
-    <value>JPG-Format</value>
+    <value>Формат JPG</value>
   </data>
   <data name="webp_format" xml:space="preserve">
-    <value>WebP-Format</value>
+    <value>Формат WebP</value>
   </data>
   <data name="svg_format" xml:space="preserve">
-    <value>SVG-Format</value>
+    <value>Формат SVG</value>
   </data>
   <data name="legend_settings" xml:space="preserve">
-    <value>Legendeneinstellungen</value>
+    <value>Настройки легенды</value>
   </data>
   <data name="grid_settings" xml:space="preserve">
-    <value>Gittereinstellungen</value>
+    <value>Настройки сетки</value>
   </data>
   <data name="script_settings" xml:space="preserve">
-    <value>Skripteinstellungen</value>
+    <value>Настройки скрипта</value>
   </data>
   <data name="plot_settings" xml:space="preserve">
-    <value>Diagrammeinstellungen</value>
+    <value>Настройки графика</value>
   </data>
   <data name="all_templates" xml:space="preserve">
-    <value>Alle Vorlagen</value>
+    <value>Все шаблоны</value>
   </data>
   <data name="uncategorized" xml:space="preserve">
-    <value>Unkategorisiert</value>
+    <value>Без категории</value>
   </data>
   <data name="disallow_modify_data_point_position" xml:space="preserve">
-    <value>Änderung der Datenpunktposition nicht erlaubt</value>
+    <value>Изменение позиции точек данных запрещено</value>
   </data>
   <data name="load_valid_template_with_script" xml:space="preserve">
-    <value>Bitte laden Sie zuerst eine gültige Vorlage mit Skriptkonfiguration</value>
+    <value>Пожалуйста, сначала загрузите допустимый шаблон диаграммы с конфигурацией скрипта</value>
   </data>
   <data name="incomplete_script_config" xml:space="preserve">
-    <value>Unvollständige Skriptkonfiguration in der Vorlage, bitte prüfen Sie RequiredDataSeries und ScriptBody</value>
+    <value>Конфигурация скрипта в шаблоне неполная, проверьте RequiredDataSeries и ScriptBody</value>
   </data>
   <data name="select_data_file" xml:space="preserve">
-    <value>Bitte Datendatei auswählen</value>
+    <value>Выберите файл данных</value>
   </data>
   <data name="data_file_filter" xml:space="preserve">
-    <value>Datendatei (*.csv, *.xls, *.xlsx)|*.csv;*.xls;*.xlsx</value>
+    <value>Файлы данных (*.csv, *.xls, *.xlsx)|*.csv;*.xls;*.xlsx</value>
   </data>
   <data name="no_valid_workbook_or_data_found" xml:space="preserve">
-    <value>Keine gültige Arbeitsmappe oder Daten in der Datei gefunden</value>
+    <value>Допустимые рабочие книги или данные в файле не найдены</value>
   </data>
   <data name="read_file_failed" xml:space="preserve">
-    <value>Lesen der Datei fehlgeschlagen</value>
+    <value>Ошибка чтения файла</value>
   </data>
   <data name="script_config_error_required_data_series" xml:space="preserve">
-    <value>Skriptkonfigurationsfehler: RequiredDataSeries muss mindestens eine Kategoriespalte und eine Datenspalte enthalten</value>
+    <value>Ошибка конфигурации скрипта: RequiredDataSeries должен содержать столбец категории и хотя бы один столбец данных</value>
   </data>
   <data name="excel_missing_required_columns" xml:space="preserve">
-    <value>Excel-Datei fehlen erforderliche Spalten</value>
+    <value>В файле Excel отсутствуют следующие обязательные столбцы</value>
   </data>
   <data name="data_point" xml:space="preserve">
-    <value>Datenpunkt</value>
+    <value>Точка данных</value>
   </data>
   <data name="failed_to_parse_category_group" xml:space="preserve">
-    <value>Konnte keine gültige Kategoriegruppe aus der Datei parsen. Bitte Kategoriespaltendaten prüfen</value>
+    <value>Не удалось разобрать группы категорий из файла. Проверьте данные столбца категорий</value>
   </data>
   <data name="error_calculating_data_point_coordinates" xml:space="preserve">
-    <value>Fehler beim Berechnen der Datenpunktkoordinaten:</value>
+    <value>Ошибка при расчете координат точки данных:</value>
   </data>
   <data name="data_import_successful" xml:space="preserve">
-    <value>Datenimport erfolgreich</value>
+    <value>Импорт данных успешен</value>
   </data>
   <data name="script_execution_failed" xml:space="preserve">
-    <value>Skriptausführung fehlgeschlagen:</value>
+    <value>Ошибка выполнения скрипта:</value>
   </data>
   <data name="axes" xml:space="preserve">
-    <value>Achsen</value>
+    <value>Оси</value>
   </data>
   <data name="point" xml:space="preserve">
-    <value>Punkt</value>
+    <value>Точка</value>
   </data>
   <data name="line" xml:space="preserve">
-    <value>Linie</value>
+    <value>Линия</value>
   </data>
   <data name="text" xml:space="preserve">
-    <value>Text</value>
+    <value>Текст</value>
   </data>
   <data name="annotation" xml:space="preserve">
-    <value>Anmerkung</value>
+    <value>Аннотация</value>
   </data>
   <data name="image_copied_to_clipboard" xml:space="preserve">
-    <value>Bild erfolgreich in die Zwischenablage kopiert</value>
+    <value>Изображение скопировано в буфер обмена</value>
   </data>
   <data name="copy_failed" xml:space="preserve">
-    <value>Kopieren fehlgeschlagen:</value>
+    <value>Ошибка копирования:</value>
   </data>
   <data name="confirm_clear_data_points" xml:space="preserve">
-    <value>Datenpunkte löschen?</value>
+    <value>Очистить точки данных?</value>
   </data>
   <data name="no_imported_data_to_clear" xml:space="preserve">
-    <value>Keine importierten Daten zum Löschen vorhanden</value>
+    <value>Нет импортированных данных для очистки</value>
   </data>
   <data name="all_imported_data_cleared" xml:space="preserve">
-    <value>Alle importierten Daten gelöscht</value>
+    <value>Все импортированные данные очищены</value>
   </data>
   <data name="left_y_axis" xml:space="preserve">
-    <value>Linke Y-Achse</value>
+    <value>Левая ось Y</value>
   </data>
   <data name="right_y_axis" xml:space="preserve">
-    <value>Rechte Y-Achse</value>
+    <value>Правая ось Y</value>
   </data>
   <data name="bottom_x_axis" xml:space="preserve">
-    <value>Untere X-Achse</value>
+    <value>Нижняя ось X</value>
   </data>
   <data name="top_x_axis" xml:space="preserve">
-    <value>Obere X-Achse</value>
+    <value>Верхняя ось X</value>
   </data>
   <data name="unknown_axis" xml:space="preserve">
-    <value>Unbekannte Achse</value>
+    <value>Неизвестная ось</value>
   </data>
   <data name="content_and_position" xml:space="preserve">
-    <value>Inhalt und Position</value>
+    <value>Содержание и позиция</value>
+    <comment>属性面板-文本对象</comment>
   </data>
   <data name="script_definition" xml:space="preserve">
-    <value>Skriptdefinition</value>
+    <value>Скрипт</value>
   </data>
   <data name="script_language" xml:space="preserve">
-    <value>Skriptsprache:</value>
+    <value>Язык скрипта:</value>
   </data>
   <data name="data_series" xml:space="preserve">
-    <value>Datenserie</value>
+    <value>Серии данных</value>
   </data>
   <data name="multiple_data_series_hint" xml:space="preserve">
-    <value>Mehrere Datenserien bitte mit Komma trennen, z.B.: SiO2,TiO2</value>
+    <value>Разделяйте несколько серий данных запятыми, например: SiO2,TiO2</value>
   </data>
   <data name="script_content" xml:space="preserve">
-    <value>Skriptinhalt:</value>
+    <value>Содержание скрипта:</value>
   </data>
   <data name="ready" xml:space="preserve">
-    <value>Bereit</value>
+    <value>Готово</value>
   </data>
   <data name="validate_syntax" xml:space="preserve">
-    <value>Syntax prüfen</value>
+    <value>Проверить синтаксис</value>
   </data>
   <data name="row" xml:space="preserve">
-    <value>Zeile:</value>
+    <value>Стр:</value>
   </data>
   <data name="column" xml:space="preserve">
-    <value>Spalte:</value>
+    <value>Кол:</value>
   </data>
   <data name="code_formatted" xml:space="preserve">
-    <value>Code formatiert</value>
+    <value>Код отформатирован</value>
   </data>
   <data name="format_failed" xml:space="preserve">
-    <value>Formatierung fehlgeschlagen:</value>
+    <value>Ошибка форматирования:</value>
   </data>
   <data name="script_content_is_empty" xml:space="preserve">
-    <value>Skriptinhalt ist leer</value>
+    <value>Скрипт пуст</value>
   </data>
   <data name="validation_failed" xml:space="preserve">
-    <value>Validierung fehlgeschlagen:</value>
+    <value>Проверка не удалась:</value>
   </data>
   <data name="data_parameters_are_empty" xml:space="preserve">
-    <value>Datenparameter sind leer</value>
+    <value>Параметры данных пусты</value>
   </data>
   <data name="invalid_data_parameter_format" xml:space="preserve">
-    <value>Ungültiges Datenparameterformat</value>
+    <value>Неверный формат параметров данных</value>
   </data>
   <data name="parameter_format_correct" xml:space="preserve">
-    <value>Parameterformat korrekt</value>
+    <value>Формат параметров верен</value>
   </data>
   <data name="syntax_validation_passed" xml:space="preserve">
-    <value>Syntaxvalidierung bestanden</value>
+    <value>Синтаксис корректен</value>
   </data>
   <data name="error" xml:space="preserve">
-    <value>Fehler:</value>
+    <value>Ошибка:</value>
   </data>
   <data name="new" xml:space="preserve">
-    <value>_Neu(N)</value>
+    <value>_Новый(N)</value>
   </data>
   <data name="open" xml:space="preserve">
-    <value>_Öffnen(O)</value>
+    <value>_Открыть(O)</value>
   </data>
   <data name="export_current_worksheet" xml:space="preserve">
-    <value>_Aktuelles Arbeitsblatt exportieren(R)</value>
+    <value>_Экспорт текущего листа(R)</value>
   </data>
   <data name="geological_thermometer" xml:space="preserve">
-    <value>Geologisches Thermometer</value>
+    <value>Геологический термометр</value>
   </data>
   <data name="confirm_new_worksheet" xml:space="preserve">
-    <value>Neues Arbeitsblatt erstellen?</value>
+    <value>Создать новый рабочий лист?</value>
   </data>
   <data name="error_creating_table" xml:space="preserve">
-    <value>Fehler beim Erstellen der Tabelle:</value>
+    <value>Ошибка при создании таблицы:</value>
   </data>
   <data name="file_import_successful" xml:space="preserve">
-    <value>Dateiimport erfolgreich</value>
+    <value>Файл успешно импортирован</value>
   </data>
   <data name="cancel_import" xml:space="preserve">
-    <value>Import abbrechen</value>
+    <value>Отменить импорт</value>
   </data>
   <data name="export_successful" xml:space="preserve">
-    <value>Export erfolgreich</value>
+    <value>Экспорт успешен</value>
   </data>
   <data name="export_failed" xml:space="preserve">
-    <value>Export fehlgeschlagen:</value>
+    <value>Ошибка экспорта:</value>
   </data>
   <data name="create_worksheet_failed" xml:space="preserve">
-    <value>Arbeitsblatterstellung fehlgeschlagen:</value>
+    <value>Ошибка создания листа:</value>
   </data>
   <data name="row_1_column_1" xml:space="preserve">
-    <value>Zeile: 1, Spalte: 1</value>
+    <value>Стр: 1, Кол: 1</value>
   </data>
   <data name="missing_parameters" xml:space="preserve">
-    <value>Fehlende Parameter</value>
+    <value>Отсутствуют параметры</value>
+    <comment>自定义函数提示</comment>
   </data>
   <data name="input_out_of_range" xml:space="preserve">
-    <value>Eingabewert außerhalb des Bereichs</value>
+    <value>Значение вне диапазона</value>
+    <comment>自定义函数提示</comment>
   </data>
   <data name="must_be_positive_number" xml:space="preserve">
-    <value>Muss eine positive Zahl sein</value>
+    <value>Должно быть положительным числом</value>
+    <comment>自定义函数提示</comment>
   </data>
   <data name="tio2_activity_range" xml:space="preserve">
-    <value>TiO2-Aktivität muss im Bereich (0,1] liegen</value>
+    <value>Активность TiO2 должна быть в диапазоне (0,1]</value>
+    <comment>自定义函数提示</comment>
   </data>
   <data name="oxygen_atom_benchmark_zero" xml:space="preserve">
-    <value>Sauerstoffatom-Basiswert ist null</value>
+    <value>Базовое значение атомов кислорода равно нулю</value>
+    <comment>自定义函数提示</comment>
   </data>
   <data name="normalization_factor_is_zero" xml:space="preserve">
-    <value>Normalisierungsfaktor ist null</value>
+    <value>Коэффициент нормализации равен нулю</value>
+    <comment>自定义函数提示</comment>
   </data>
   <data name="temperature_calculation_denominator_zero" xml:space="preserve">
-    <value>Nenner bei Temperaturberechnung ist null</value>
+    <value>Знаменатель в расчете температуры равен нулю</value>
+    <comment>自定义函数提示</comment>
   </data>
   <data name="color" xml:space="preserve">
-    <value>Farbe</value>
+    <value>Цвет</value>
+    <comment>属性面板</comment>
   </data>
   <data name="style" xml:space="preserve">
-    <value>Stil</value>
+    <value>Стиль</value>
+    <comment>属性面板</comment>
   </data>
   <data name="width" xml:space="preserve">
-    <value>Breite</value>
+    <value>Ширина</value>
+    <comment>属性面板</comment>
   </data>
   <data name="line_width" xml:space="preserve">
-    <value>Linienbreite</value>
+    <value>Ширина линии</value>
+    <comment>属性面板</comment>
   </data>
   <data name="Enum_LineType_Solid" xml:space="preserve">
-    <value>Durchgezogen</value>
+    <value>Сплошная</value>
+    <comment>属性面板</comment>
   </data>
   <data name="type" xml:space="preserve">
-    <value>Typ</value>
+    <value>Тип</value>
+    <comment>属性面板</comment>
   </data>
   <data name="position" xml:space="preserve">
-    <value>Position</value>
+    <value>Свойства</value>
+    <comment>属性面板</comment>
   </data>
   <data name="start_coordinates" xml:space="preserve">
-    <value>Startkoordinaten</value>
+    <value>Начальные координаты</value>
+    <comment>属性面板</comment>
   </data>
   <data name="end_coordinates" xml:space="preserve">
-    <value>Endkoordinaten</value>
+    <value>Конечные координаты</value>
+    <comment>属性面板</comment>
   </data>
   <data name="content" xml:space="preserve">
-    <value>Inhalt</value>
+    <value>Содержание</value>
   </data>
   <data name="alignment" xml:space="preserve">
-    <value>Ausrichtung</value>
+    <value>Привязка</value>
   </data>
   <data name="font_style" xml:space="preserve">
-    <value>Schriftstil</value>
+    <value>Стиль шрифта</value>
   </data>
   <data name="font_name" xml:space="preserve">
-    <value>Schriftartname</value>
+    <value>Название шрифта</value>
   </data>
   <data name="font_size" xml:space="preserve">
-    <value>Schriftgröße</value>
+    <value>Размер шрифта</value>
   </data>
   <data name="font_rotation" xml:space="preserve">
-    <value>Schriftrotation</value>
+    <value>Вращение шрифта</value>
   </data>
   <data name="font_color" xml:space="preserve">
-    <value>Schriftfarbe</value>
+    <value>Цвет шрифта</value>
   </data>
   <data name="bold" xml:space="preserve">
-    <value>Fett</value>
+    <value>Жирный</value>
   </data>
   <data name="italic" xml:space="preserve">
-    <value>Kursiv</value>
+    <value>Курсив</value>
   </data>
   <data name="background_and_border" xml:space="preserve">
-    <value>Hintergrund und Rahmen</value>
+    <value>Фон и границы</value>
   </data>
   <data name="background_color" xml:space="preserve">
-    <value>Hintergrundfarbe</value>
+    <value>Цвет фона</value>
   </data>
   <data name="border_color" xml:space="preserve">
-    <value>Rahmenfarbe</value>
+    <value>Цвет границы</value>
   </data>
   <data name="border_width" xml:space="preserve">
-    <value>Rahmenbreite</value>
+    <value>Ширина границы</value>
   </data>
   <data name="corner_radius" xml:space="preserve">
-    <value>Eckenradius</value>
+    <value>Радиус скругления</value>
   </data>
   <data name="advanced_rendering" xml:space="preserve">
-    <value>Erweitertes Rendering</value>
+    <value>Расширенный рендеринг</value>
   </data>
   <data name="anti_aliasing" xml:space="preserve">
-    <value>Anti-Aliasing</value>
+    <value>Сглаживание</value>
   </data>
   <data name="axis_style" xml:space="preserve">
-    <value>Achsenstil</value>
+    <value>Стиль осей</value>
   </data>
   <data name="axis_title" xml:space="preserve">
-    <value>Achsentitel</value>
+    <value>Заголовок оси</value>
   </data>
   <data name="font_family" xml:space="preserve">
-    <value>Schriftfamilie</value>
+    <value>Шрифт</value>
   </data>
   <data name="tick_style" xml:space="preserve">
-    <value>Strichstil</value>
+    <value>Стиль делений</value>
   </data>
   <data name="tick_interval" xml:space="preserve">
-    <value>Strichintervall</value>
+    <value>Интервал делений</value>
   </data>
   <data name="major_tick_style" xml:space="preserve">
-    <value>Hauptstrichstil</value>
+    <value>Стиль основных делений</value>
   </data>
   <data name="length" xml:space="preserve">
-    <value>Länge</value>
+    <value>Длина</value>
   </data>
   <data name="minor_tick_style" xml:space="preserve">
-    <value>Nebenstrichstil</value>
+    <value>Стиль вспомогательных делений</value>
   </data>
   <data name="tick_labels" xml:space="preserve">
-    <value>Strichbeschriftungen</value>
+    <value>Метки делений</value>
   </data>
   <data name="location" xml:space="preserve">
-    <value>Ort</value>
+    <value>Расположение</value>
   </data>
   <data name="orientation" xml:space="preserve">
-    <value>Orientierung</value>
+    <value>Ориентация</value>
   </data>
   <data name="is_visible" xml:space="preserve">
-    <value>Sichtbar</value>
+    <value>Видимость</value>
   </data>
   <data name="font" xml:space="preserve">
-    <value>Schrift</value>
+    <value>Шрифт</value>
   </data>
   <data name="major_grid_line" xml:space="preserve">
-    <value>Hauptgitterlinie</value>
+    <value>Основная сетка</value>
   </data>
   <data name="pattern" xml:space="preserve">
-    <value>Muster</value>
+    <value>Шаблон</value>
   </data>
   <data name="enable_anti_alias" xml:space="preserve">
-    <value>Anti-Aliasing aktivieren</value>
+    <value>Включить сглаживание</value>
   </data>
   <data name="background_fill" xml:space="preserve">
-    <value>Hintergrundfüllung</value>
+    <value>Заливка фона</value>
   </data>
   <data name="enable_alternating_fill" xml:space="preserve">
-    <value>Alternierende Füllung aktivieren</value>
+    <value>Включить чередующуюся заливку</value>
   </data>
   <data name="background_fill_1" xml:space="preserve">
-    <value>Hintergrundfüllung</value>
+    <value>Заливка фона</value>
   </data>
   <data name="fill_color_1" xml:space="preserve">
-    <value>Füllfarbe 1</value>
+    <value>Цвет заливки 1</value>
   </data>
   <data name="fill_color_2" xml:space="preserve">
-    <value>Füllfarbe 2</value>
+    <value>Цвет заливки 2</value>
   </data>
   <data name="coordinates" xml:space="preserve">
-    <value>Koordinaten</value>
+    <value>Координаты</value>
   </data>
   <data name="x_coordinate" xml:space="preserve">
-    <value>X-Koordinate</value>
+    <value>Координата X</value>
   </data>
   <data name="y_coordinate" xml:space="preserve">
-    <value>Y-Koordinate</value>
+    <value>Координата Y</value>
   </data>
   <data name="start_and_end_coordinates" xml:space="preserve">
-    <value>Start- und Endkoordinaten</value>
+    <value>Начальные координаты</value>
   </data>
   <data name="chart_title_style" xml:space="preserve">
-    <value>Diagrammtitelstil</value>
+    <value>Стиль заголовка диаграммы</value>
   </data>
   <data name="is_bold" xml:space="preserve">
-    <value>Fett</value>
+    <value>Жирный</value>
   </data>
   <data name="is_italic" xml:space="preserve">
-    <value>Kursiv</value>
+    <value>Курсив</value>
   </data>
   <data name="background_fill_2" xml:space="preserve">
-    <value>Hintergrundfüllung 2</value>
+    <value>Заливка фона</value>
   </data>
   <data name="minor_grid_Line" xml:space="preserve">
-    <value>Nebengitterlinie</value>
+    <value>Вспомогательная сетка</value>
   </data>
   <data name="open_diagram_template" xml:space="preserve">
-    <value>Diagrammvorlage öffnen</value>
+    <value>Открыть шаблон диаграммы</value>
   </data>
   <data name="new_version_available_github" xml:space="preserve">
-    <value>Neue Version gefunden! Bitte laden Sie das Update von der GitHub Release-Seite herunter.</value>
+    <value>Найдена новая версия! Пожалуйста, скачайте обновление на странице релизов GitHub.</value>
+    <comment>检查更新</comment>
   </data>
   <data name="go_to_download" xml:space="preserve">
-    <value>Zum Download</value>
+    <value>Скачать</value>
+    <comment>检查更新</comment>
   </data>
   <data name="enter_supported_languages" xml:space="preserve">
-    <value>Unterstützte Sprachen eingeben</value>
+    <value>Введите поддерживаемые языки</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="delete_this_item" xml:space="preserve">
-    <value>Dieses Element löschen</value>
+    <value>Удалить этот элемент</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="enter_language_add" xml:space="preserve">
-    <value>Sprache eingeben und Enter drücken.</value>
+    <value>Введите язык и нажмите Enter для добавления.</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="enter_category_structure" xml:space="preserve">
-    <value>Kategoriestruktur eingeben</value>
+    <value>Введите структуру категорий</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="enter_level_add" xml:space="preserve">
-    <value>Ebene eingeben und Enter drücken.</value>
+    <value>Введите уровень и нажмите Enter для добавления.</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="plot_type" xml:space="preserve">
-    <value>Diagrammtyp</value>
+    <value>Тип графика</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="two_dimensional_coordinate_plot" xml:space="preserve">
-    <value>2D-Koordinatendiagramm</value>
+    <value>2D График</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="template_file_save_path" xml:space="preserve">
-    <value>Speicherpfad der Vorlagendatei</value>
+    <value>Путь сохранения файла шаблона</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="browse_ellipsis" xml:space="preserve">
-    <value>Durchsuchen...</value>
+    <value>Обзор...</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="all_fields_required" xml:space="preserve">
-    <value>Alle Felder sind erforderlich!</value>
+    <value>Все поля обязательны!</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="category_structure_min_two" xml:space="preserve">
-    <value>Kategoriestruktur muss mindestens 2 Ebenen haben!</value>
+    <value>Структура категорий должна быть >= 2!</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="no_template_or_path_specified" xml:space="preserve">
-    <value>Keine Vorlage oder Pfad angegeben. Bitte 'Speichern unter' verwenden.</value>
+    <value>Нет шаблона или не указан путь. Используйте "Сохранить как".</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="template_saved_successfully" xml:space="preserve">
-    <value>Vorlage erfolgreich gespeichert!</value>
+    <value>Шаблон успешно сохранен!</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="save_template_failed" xml:space="preserve">
-    <value>Speichern der Vorlage fehlgeschlagen:</value>
+    <value>Ошибка сохранения шаблона:</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="thank_you_and_wishes" xml:space="preserve">
-    <value>Danke, dass Sie uns nutzen🌹\n Wir wünschen</value>
+    <value>Спасибо за использование 🌹\n Желаю вам</value>
+    <comment>彩蛋</comment>
   </data>
   <data name="research_life_smooth_sailing" xml:space="preserve">
-    <value>viel Erfolg in Forschung und Leben!</value>
+    <value>успехов в исследованиях и гладкой жизни!</value>
+    <comment>彩蛋</comment>
   </data>
   <data name="add" xml:space="preserve">
-    <value>Hinzufügen</value>
+    <value>Добавить</value>
+    <comment>绘图-编辑</comment>
   </data>
   <data name="add_line" xml:space="preserve">
-    <value>Linie hinzufügen</value>
+    <value>Добавить линию</value>
+    <comment>绘图-编辑</comment>
   </data>
   <data name="add_text" xml:space="preserve">
-    <value>Text hinzufügen</value>
+    <value>Добавить текст</value>
+    <comment>绘图-编辑</comment>
   </data>
   <data name="file_" xml:space="preserve">
-    <value>Datei</value>
+    <value>Файл</value>
+    <comment>绘图-编辑</comment>
   </data>
   <data name="template_loaded_successfully" xml:space="preserve">
-    <value>Vorlage erfolgreich geladen</value>
+    <value>Файл шаблона успешно открыт</value>
+    <comment>绘图页面</comment>
   </data>
   <data name="unknown_error_checking_for_updates" xml:space="preserve">
-    <value>Unbekannter Fehler bei der Update-Prüfung</value>
+    <value>Неизвестная ошибка при проверке обновлений</value>
+    <comment>设置页面</comment>
   </data>
   <data name="already_latest_version" xml:space="preserve">
-    <value>Bereits die neueste Version</value>
+    <value>Уже установлена последняя версия</value>
+    <comment>检查更新</comment>
   </data>
   <data name="cannot_parse_version_number_check_release_address" xml:space="preserve">
-    <value>Versionsnummer konnte nicht geparst werden. Bitte Release-Seite prüfen.</value>
+    <value>Не удалось разобрать номер версии. Проверьте адрес релиза</value>
+    <comment>检查更新</comment>
   </data>
   <data name="network_request_error" xml:space="preserve">
-    <value>Netzwerkanfragefehler</value>
+    <value>Ошибка сетевого запроса</value>
+    <comment>检查更新</comment>
   </data>
   <data name="json_parse_error" xml:space="preserve">
-    <value>JSON-Parse-Fehler</value>
+    <value>Ошибка разбора JSON</value>
+    <comment>检查更新</comment>
   </data>
   <data name="unknown_error_occurred" xml:space="preserve">
-    <value>Unbekannter Fehler aufgetreten</value>
+    <value>Произошла неизвестная ошибка</value>
+    <comment>检查更新</comment>
   </data>
   <data name="polygon" xml:space="preserve">
-    <value>Polygon</value>
+    <value>Полигон</value>
+    <comment>图层列表</comment>
   </data>
   <data name="not_enough_vertices_add_polygon_canceled" xml:space="preserve">
-    <value>Nicht genügend Eckpunkte, Polygon-Erstellung abgebrochen.</value>
+    <value>Недостаточно вершин, добавление полигона отменено.</value>
+    <comment>创建绘图对象通知</comment>
   </data>
   <data name="add_line_operation_canceled" xml:space="preserve">
-    <value>Linien-Erstellung abgebrochen.</value>
+    <value>Добавление линии отменено.</value>
+    <comment>创建绘图对象通知</comment>
   </data>
   <data name="add_text_operation_canceled" xml:space="preserve">
-    <value>Text-Erstellung abgebrochen.</value>
+    <value>Добавление текста отменено.</value>
+    <comment>创建绘图对象通知</comment>
   </data>
   <data name="language_setting_duplicate_found" xml:space="preserve">
-    <value>Doppelte Einträge in den Spracheinstellungen gefunden, bitte prüfen!</value>
+    <value>Найдены дубликаты в настройках языка, пожалуйста, проверьте!</value>
+    <comment>新建图解模板通知</comment>
   </data>
   <data name="add_polygon" xml:space="preserve">
-    <value>Polygon hinzufügen</value>
+    <value>Добавить полигон</value>
+    <comment>绘图功能区</comment>
   </data>
   <data name="line_type_solid" xml:space="preserve">
-    <value>Durchgezogen</value>
+    <value>Сплошная</value>
+    <comment>线条对象属性</comment>
   </data>
   <data name="line_type_dash" xml:space="preserve">
-    <value>Gestrichelt</value>
+    <value>Штриховая</value>
+    <comment>线条对象属性</comment>
   </data>
   <data name="line_type_densely_dashed" xml:space="preserve">
-    <value>Dicht gestrichelt</value>
+    <value>Частая штриховая</value>
+    <comment>线条对象属性</comment>
   </data>
   <data name="line_type_dot" xml:space="preserve">
-    <value>Gepunktet</value>
+    <value>Точечная</value>
+    <comment>线条对象属性</comment>
   </data>
   <data name="ternary_phase_diagram" xml:space="preserve">
-    <value>Ternäres Phasendiagramm</value>
+    <value>Тройная диаграмма</value>
+    <comment>新建图解模板</comment>
   </data>
   <data name="copy_plot_to_clipboard" xml:space="preserve">
-    <value>Diagramm in die Zwischenablage kopieren</value>
+    <value>Скопировать график в буфер обмена</value>
+    <comment>绘图-工具栏-提示</comment>
   </data>
   <data name="use_help" xml:space="preserve">
-    <value>Diagramm-Anleitung</value>
+    <value>Руководство по диаграммам</value>
+    <comment>绘图-工具栏-提示</comment>
   </data>
   <data name="no_data_please_add_data" xml:space="preserve">
-    <value>Keine Daten, bitte Daten hinzufügen</value>
+    <value>Нет данных, пожалуйста, добавьте данные</value>
+    <comment>绘图-数据-提示</comment>
   </data>
   <data name="no_data_columns_defined" xml:space="preserve">
-    <value>Keine Datenspalten definiert</value>
+    <value>Столбцы данных не определены</value>
+    <comment>绘图-数据-提示</comment>
   </data>
   <data name="data_plotting_successful" xml:space="preserve">
-    <value>Datenpunkte erfolgreich gezeichnet</value>
+    <value>Точки данных успешно построены</value>
+    <comment>绘图-数据-提示</comment>
   </data>
   <data name="save_as_csv_file" xml:space="preserve">
-    <value>Als CSV speichern</value>
+    <value>Сохранить как CSV</value>
+    <comment>温度计-提示</comment>
   </data>
   <data name="csv_file_filter" xml:space="preserve">
-    <value>CSV-Datei|*.csv</value>
+    <value>Файл CSV|*.csv</value>
+    <comment>温度计-提示</comment>
   </data>
   <data name="data_export" xml:space="preserve">
-    <value>Datenexport</value>
+    <value>Экспорт данных</value>
+    <comment>绘图-数据-按钮</comment>
   </data>
   <data name="update_data" xml:space="preserve">
-    <value>Daten aktualisieren</value>
+    <value>Обновить данные</value>
+    <comment>绘图-数据-按钮</comment>
   </data>
   <data name="data_plotting" xml:space="preserve">
-    <value>Daten plotten</value>
+    <value>Построить точки</value>
+    <comment>绘图-数据-按钮</comment>
   </data>
   <data name="highlight_on_hover" xml:space="preserve">
-    <value>Wenn aktiviert, werden Elemente beim Überfahren hervorgehoben und Details beim Klicken angezeigt</value>
+    <value>При включении, объекты под курсором будут подсвечиваться, кликните для информации</value>
+    <comment>绘图-工具栏-提示</comment>
   </data>
   <data name="count" xml:space="preserve">
-    <value>Anzahl</value>
+    <value>Количество</value>
+    <comment>属性-坐标轴-次刻度样式</comment>
   </data>
   <data name="zoom_type" xml:space="preserve">
-    <value>Zoomtyp</value>
+    <value>Тип масштабирования</value>
+    <comment>属性-坐标轴-坐标轴样式</comment>
   </data>
   <data name="from" xml:space="preserve">
-    <value>Von</value>
+    <value>От</value>
+    <comment>属性-坐标轴-坐标轴样式</comment>
   </data>
   <data name="to" xml:space="preserve">
-    <value>Bis</value>
+    <value>До</value>
+    <comment>属性-坐标轴-坐标轴样式</comment>
   </data>
   <data name="ternary_phase_diagram_sum_must_be_one" xml:space="preserve">
-    <value>Summe im ternären Diagramm muss 1 sein.</value>
+    <value>Сумма тройной диаграммы должна быть равна 1.</value>
+    <comment>新建-三元图-模板</comment>
   </data>
   <data name="save_as" xml:space="preserve">
-    <value>Speichern unter</value>
+    <value>Сохранить как</value>
+    <comment>绘图-工具栏-编辑</comment>
   </data>
   <data name="all_data_cleared" xml:space="preserve">
-    <value>Alle Daten gelöscht</value>
+    <value>Все данные очищены</value>
+    <comment>绘图-数据-清除数据-提示</comment>
   </data>
   <data name="confirm_clear_all_data" xml:space="preserve">
-    <value>Alle Tabellendaten löschen (inkl. Plot-Punkte)?</value>
+    <value>Очистить данные таблицы (включая точки графика)?</value>
+    <comment>绘图-数据-清除数据-提示</comment>
   </data>
   <data name="clear_data_points" xml:space="preserve">
-    <value>Datenpunkte löschen</value>
+    <value>Очистить точки данных</value>
+    <comment>绘图-数据-清除数据点</comment>
   </data>
   <data name="linear" xml:space="preserve">
-    <value>Linear</value>
+    <value>Линейный</value>
+    <comment>绘图-坐标轴-属性-缩放类型</comment>
   </data>
   <data name="logarithmic" xml:space="preserve">
-    <value>Logarithmisch</value>
+    <value>Логарифмический</value>
+    <comment>绘图-坐标轴-属性-缩放类型</comment>
   </data>
   <data name="some_data_failed_validation" xml:space="preserve">
-    <value>Einige Daten haben die Validierung nicht bestanden und wurden übersprungen</value>
+    <value>Некоторые данные не прошли проверку, пропущены</value>
+    <comment>绘图-数据-投点校验提示</comment>
   </data>
   <data name="the_sum_of_row" xml:space="preserve">
-    <value>Zeile</value>
+    <value>Сумма строки</value>
+    <comment>绘图-数据-投点校验提示</comment>
   </data>
   <data name="is_not_one" xml:space="preserve">
-    <value>Datensumme ist nicht 1</value>
+    <value>не равна 1</value>
+    <comment>绘图-数据-投点校验提示</comment>
   </data>
   <data name="actual_sum_is" xml:space="preserve">
-    <value>(Tatsächliche Summe:</value>
+    <value>(Фактическая сумма:</value>
+    <comment>绘图-数据-投点校验提示</comment>
   </data>
   <data name="arrow" xml:space="preserve">
-    <value>Pfeil</value>
+    <value>Стрелка</value>
+    <comment>绘图-图层-箭头</comment>
   </data>
   <data name="arrowhead_width" xml:space="preserve">
-    <value>Pfeilspitzenbreite</value>
+    <value>Ширина стрелки</value>
+    <comment>绘图-图层-箭头</comment>
   </data>
   <data name="arrowhead_length" xml:space="preserve">
-    <value>Pfeilspitzenlänge</value>
+    <value>Длина стрелки</value>
+    <comment>绘图-图层-箭头</comment>
   </data>
   <data name="add_arrow" xml:space="preserve">
-    <value>Pfeil hinzufügen</value>
+    <value>Добавить стрелку</value>
+    <comment>绘图-编辑-添加箭头</comment>
   </data>
   <data name="delete_object" xml:space="preserve">
-    <value>Objekt löschen</value>
+    <value>Удалить объект</value>
+    <comment>绘图-编辑-删除功能</comment>
   </data>
   <data name="please_select_an_object_to_delete_first" xml:space="preserve">
-    <value>Bitte zuerst ein Objekt zum Löschen auswählen.</value>
+    <value>Пожалуйста, выберите объект для удаления.</value>
+    <comment>绘图-编辑-删除提示</comment>
   </data>
   <data name="object_deleted_successfully" xml:space="preserve">
-    <value>Objekt erfolgreich gelöscht.</value>
+    <value>Объект успешно удален.</value>
+    <comment>绘图-编辑-删除提示</comment>
   </data>
   <data name="cannot_delete_base_layers" xml:space="preserve">
-    <value>Basisebenen können nicht gelöscht werden.</value>
+    <value>Невозможно удалить базовые слои.</value>
+    <comment>绘图-编辑-删除提示</comment>
   </data>
   <data name="update" xml:space="preserve">
-    <value>_Aktualisieren(T)</value>
+    <value>_Обновить(T)</value>
+    <comment>绘图-菜单栏</comment>
   </data>
   <data name="check_for_template_updates" xml:space="preserve">
-    <value>Auf Vorlagenupdates prüfen</value>
+    <value>Проверить обновления шаблонов</value>
+    <comment>绘图-菜单栏</comment>
   </data>
   <data name="template_ready" xml:space="preserve">
-    <value>Vorlage bereit!</value>
+    <value>Шаблон готов!</value>
+    <comment>模板更新提示</comment>
   </data>
   <data name="download_template_failed" xml:space="preserve">
-    <value>Vorlagendownload fehlgeschlagen:</value>
+    <value>Ошибка загрузки шаблона:</value>
+    <comment>模板更新提示</comment>
   </data>
   <data name="downloaded_file_hash_mismatch" xml:space="preserve">
-    <value>Hash-Mismatch der heruntergeladenen Datei, Datei könnte beschädigt oder manipuliert sein.</value>
+    <value>Хэш скачанного файла не совпадает, файл может быть поврежден.</value>
+    <comment>模板更新提示</comment>
   </data>
   <data name="downloaded_content_not_valid_json" xml:space="preserve">
-    <value>Heruntergeladener Inhalt ist kein gültiges JSON-Format.</value>
+    <value>Скачанное содержимое не является допустимым JSON.</value>
+    <comment>模板更新提示</comment>
   </data>
   <data name="template_list_update_success_refreshing" xml:space="preserve">
-    <value>Vorlagenliste erfolgreich aktualisiert! Wird neu geladen...</value>
+    <value>Список шаблонов обновлен! Обновление...</value>
+    <comment>模板更新提示</comment>
   </data>
   <data name="update_list_file_failed" xml:space="preserve">
-    <value>Aktualisierung der Listendatei fehlgeschlagen</value>
+    <value>Ошибка обновления файла списка</value>
+    <comment>模板更新提示</comment>
   </data>
   <data name="new_drawing_template_library_version_detected" xml:space="preserve">
-    <value>Neue Version der Zeichenvorlagenbibliothek erkannt. Jetzt aktualisieren?</value>
+    <value>Обнаружена новая версия библиотеки шаблонов, обновить список?</value>
+    <comment>模板更新提示</comment>
   </data>
   <data name="current_template_list_latest_version" xml:space="preserve">
-    <value>Die aktuelle Vorlagenliste ist bereits die neueste Version.</value>
+    <value>Текущий список шаблонов актуален.</value>
+    <comment>模板更新提示</comment>
   </data>
   <data name="network_connection_failed_cannot_check_for_updates" xml:space="preserve">
-    <value>Netzwerkverbindung fehlgeschlagen, Updates können nicht geprüft werden:</value>
+    <value>Ошибка сети, невозможно проверить обновления：</value>
+    <comment>模板更新提示</comment>
   </data>
   <data name="error_occurred_while_checking_for_updates" xml:space="preserve">
-    <value>Fehler beim Prüfen auf Updates:</value>
+    <value>Ошибка при проверке обновлений：</value>
+    <comment>模板更新提示</comment>
   </data>
   <data name="help_instructions" xml:space="preserve">
-    <value>Hilfeanweisungen</value>
+    <value>Инструкции</value>
+    <comment>温度计-帮助说明</comment>
   </data>
   <data name="view_help_docs" xml:space="preserve">
-    <value>Hilfedokumentation anzeigen</value>
+    <value>Смотреть документацию</value>
+    <comment>温度计-帮助说明按钮提示</comment>
   </data>
   <data name="German_Germany" xml:space="preserve">
     <value>Deutsch (Deutschland)</value>
+    <comment>设置-常规设置-语言</comment>
   </data>
   <data name="custom_templates" xml:space="preserve">
-    <value>Benutzerdefinierte Vorlagen</value>
+    <value>Пользовательские шаблоны</value>
+    <comment>绘图-模板列表</comment>
   </data>
   <data name="check_for_category_updates" xml:space="preserve">
-    <value>Nach Kategoriestruktur-Updates suchen</value>
+    <value>Проверить обновления категорий</value>
+    <comment>绘图-菜单栏-更新分类结构</comment>
   </data>
   <data name="cannot_delete_protected_column" xml:space="preserve">
-    <value>Geschützte Spalte kann nicht gelöscht werden</value>
+    <value>Невозможно удалить защищенный столбец</value>
   </data>
   <data name="add_column_left" xml:space="preserve">
-    <value>Spalte links hinzufügen</value>
+    <value>Добавить столбец (слева)</value>
   </data>
   <data name="add_column_right" xml:space="preserve">
-    <value>Spalte rechts hinzufügen</value>
+    <value>Добавить столбец (справа)</value>
   </data>
   <data name="delete_row" xml:space="preserve">
-    <value>Zeile löschen</value>
+    <value>Удалить строку</value>
   </data>
   <data name="delete_column" xml:space="preserve">
-    <value>Spalte löschen</value>
+    <value>Удалить столбец</value>
   </data>
   <data name="missing_columns" xml:space="preserve">
-    <value>Fehlende Spalten</value>
+    <value>Отсутствуют столбцы</value>
   </data>
   <data name="add_row_up" xml:space="preserve">
-    <value>Zeile oben einfügen</value>
+    <value>Вставить строку сверху</value>
   </data>
   <data name="add_row_down" xml:space="preserve">
-    <value>Zeile unten einfügen</value>
+    <value>Вставить строку снизу</value>
   </data>
   <data name="confirm_delete_row" xml:space="preserve">
-    <value>Ausgewählte Zeile(n) wirklich löschen?</value>
+    <value>Удалить выбранные строки?</value>
   </data>
   <data name="confirm_delete_column" xml:space="preserve">
-    <value>Ausgewählte Spalte(n) wirklich löschen?</value>
+    <value>Удалить выбранные столбцы?</value>
   </data>
   <data name="axis" xml:space="preserve">
-    <value>Achse</value>
+    <value>Ось</value>
+    <comment>绘图-属性面板</comment>
   </data>
   <data name="grid" xml:space="preserve">
-    <value>Gitter</value>
+    <value>Сетка</value>
+    <comment>绘图-属性面板</comment>
   </data>
   <data name="formula" xml:space="preserve">
-    <value>Formel</value>
+    <value>Формула</value>
+    <comment>绘图-属性-函数</comment>
   </data>
   <data name="range" xml:space="preserve">
-    <value>Bereich</value>
+    <value>Диапазон</value>
+    <comment>绘图-属性-函数</comment>
   </data>
   <data name="domain" xml:space="preserve">
-    <value>Definitionsbereich</value>
+    <value>Область определения</value>
+    <comment>绘图-属性-函数</comment>
   </data>
   <data name="point_count" xml:space="preserve">
-    <value>Stützstellen</value>
+    <value>Количество точек</value>
+    <comment>绘图-属性-函数</comment>
   </data>
   <data name="vertices" xml:space="preserve">
-    <value>Eckpunkte</value>
+    <value>Вершины</value>
+    <comment>绘图-属性-多边形</comment>
   </data>
   <data name="template_file_corrupted" xml:space="preserve">
-    <value>Vorlagendatei ist beschädigt</value>
+    <value>Файл шаблона поврежден</value>
   </data>
   <data name="template_version_too_high" xml:space="preserve">
-    <value>Vorlagenversion ist höher als die aktuelle Softwareversion. Bitte Software aktualisieren.</value>
+    <value>Версия шаблона выше текущей версии ПО, пожалуйста, обновитесь.</value>
   </data>
   <data name="error_loading_template" xml:space="preserve">
-    <value>Fehler beim Laden der Vorlage</value>
+    <value>Ошибка загрузки шаблона</value>
   </data>
   <data name="template_upgrade_warning" xml:space="preserve">
-    <value>Die aktuelle Vorlagenversion ist älter. Speichern aktualisiert die Version, was die Kompatibilität mit älteren Softwareversionen beeinträchtigen kann. Fortfahren?</value>
+    <value>Версия шаблона устарела, сохранение обновит её. Продолжить?</value>
   </data>
   <data name="offset" xml:space="preserve">
-    <value>Versatz</value>
+    <value>Смещение</value>
   </data>
   <data name="offset_x" xml:space="preserve">
-    <value>Versatz X</value>
+    <value>Смещение X</value>
   </data>
   <data name="offset_y" xml:space="preserve">
-    <value>Versatz Y</value>
+    <value>Смещение Y</value>
   </data>
   <data name="add_function" xml:space="preserve">
-    <value>Funktion hinzufügen</value>
+    <value>Добавить функцию</value>
+    <comment>绘图-编辑</comment>
   </data>
   <data name="Placeholder_Text" xml:space="preserve">
-    <value>Bitte Text eingeben</value>
+    <value>Введите текст</value>
   </data>
   <data name="Placeholder_Axis_Title" xml:space="preserve">
-    <value>Achsentitel</value>
+    <value>Заголовок оси</value>
   </data>
   <data name="Placeholder_Chart_Title" xml:space="preserve">
-    <value>Diagrammtitel</value>
+    <value>Заголовок диаграммы</value>
   </data>
   <data name="Placeholder_Ternary_Title" xml:space="preserve">
-    <value>Neues ternäres Phasendiagramm</value>
+    <value>Новая тройная диаграмма</value>
   </data>
   <data name="Placeholder_Chart_Title_Default" xml:space="preserve">
-    <value>Neues Diagramm</value>
+    <value>Новая диаграмма</value>
   </data>
   <data name="Placeholder_Axis_X" xml:space="preserve">
-    <value>X-Achse</value>
+    <value>Ось X</value>
   </data>
   <data name="Placeholder_Axis_Y" xml:space="preserve">
-    <value>Y-Achse</value>
+    <value>Ось Y</value>
   </data>
   <data name="Placeholder_Component_A" xml:space="preserve">
     <value>A</value>
@@ -1566,558 +1694,615 @@
     <value>C</value>
   </data>
   <data name="third_party" xml:space="preserve">
-    <value>Drittanbieter</value>
+    <value>Стороннее ПО</value>
+    <comment>绘图-菜单栏-绘图</comment>
   </data>
   <data name="open_via_third_party" xml:space="preserve">
-    <value>Über Drittanbieter öffnen</value>
+    <value>Открыть через стороннее ПО</value>
+    <comment>绘图-菜单栏-绘图</comment>
   </data>
   <data name="select_an_object" xml:space="preserve">
-    <value>Bitte ein Objekt auswählen</value>
+    <value>Выберите объект</value>
+    <comment>绘图-属性面板</comment>
   </data>
   <data name="undo" xml:space="preserve">
-    <value>Rückgängig</value>
+    <value>Отменить</value>
+    <comment>绘图-撤回</comment>
   </data>
   <data name="redo" xml:space="preserve">
-    <value>Wiederholen</value>
+    <value>Повторить</value>
+    <comment>绘图-重做</comment>
   </data>
   <data name="interval" xml:space="preserve">
-    <value>Skalenintervall</value>
+    <value>Шаг деления</value>
+    <comment>绘图-属性-二维坐标轴</comment>
   </data>
   <data name="pick_coordinate" xml:space="preserve">
-    <value>Koordinate wählen</value>
+    <value>Взять координаты</value>
+    <comment>绘图-属性-多边形</comment>
   </data>
   <data name="remove_point" xml:space="preserve">
-    <value>Diesen Eckpunkt entfernen</value>
+    <value>Удалить вершину</value>
+    <comment>绘图-属性-多边形</comment>
   </data>
   <data name="vertex_add_new" xml:space="preserve">
-    <value>Neuen Eckpunkt hinzufügen</value>
+    <value>Добавить вершину</value>
+    <comment>绘图-属性-多边形</comment>
   </data>
   <data name="subtitle" xml:space="preserve">
-    <value>Untertitel</value>
+    <value>Подзаголовок</value>
   </data>
   <data name="subtitle_font_size" xml:space="preserve">
-    <value>Untertitel-Schriftgröße</value>
+    <value>Размер шрифта подзаголовка</value>
   </data>
   <data name="subtitle_color" xml:space="preserve">
-    <value>Untertitel-Farbe</value>
+    <value>Цвет подзаголовка</value>
   </data>
   <data name="subtitle_bold" xml:space="preserve">
-    <value>Untertitel fett</value>
+    <value>Жирный подзаголовок</value>
   </data>
   <data name="subtitle_italic" xml:space="preserve">
-    <value>Untertitel kursiv</value>
+    <value>Курсив подзаголовка</value>
   </data>
   <data name="edit_link" xml:space="preserve">
-    <value>Link bearbeiten</value>
+    <value>Редактировать ссылку</value>
   </data>
   <data name="template_translator" xml:space="preserve">
-    <value>Vorlagenübersetzer</value>
+    <value>Переводчик шаблонов</value>
   </data>
   <data name="diagram_template_repair_tool" xml:space="preserve">
-    <value>Vorlagenreparaturtool</value>
+    <value>Инструмент восстановления шаблонов</value>
+    <comment>主页-小组件-模板修复工具</comment>
   </data>
   <data name="server_announcement" xml:space="preserve">
-    <value>Serverankündigung</value>
+    <value>Объявление сервера</value>
   </data>
   <data name="developer_maintenance_tool" xml:space="preserve">
-    <value>Entwicklerwartungstool</value>
+    <value>Инструменты разработчика</value>
   </data>
   <data name="copy_content" xml:space="preserve">
-    <value>Inhalt kopieren</value>
+    <value>Копировать содержимое</value>
+    <comment>窗体-通知系统</comment>
   </data>
   <data name="modified_successfully" xml:space="preserve">
-    <value>Erfolgreich geändert</value>
+    <value>Изменено</value>
+    <comment>绘图-脚本-属性面板</comment>
   </data>
   <data name="error_loading_rtf_file" xml:space="preserve">
-    <value>Fehler beim Laden der RTF-Datei:</value>
+    <value>Ошибка загрузки RTF:</value>
+    <comment>绘图-通知-rtfhelper</comment>
   </data>
   <data name="file_path_cannot_be_empty" xml:space="preserve">
-    <value>Dateipfad darf nicht leer sein</value>
+    <value>Путь не может быть пустым</value>
+    <comment>绘图-通知-rtfhelper</comment>
   </data>
   <data name="richtextbox_control_cannot_be_null" xml:space="preserve">
-    <value>RichTextBox-Steuerelement darf nicht null sein</value>
+    <value>RichTextBox не может быть null</value>
+    <comment>绘图-通知-rtfhelper</comment>
   </data>
   <data name="file_does_not_exist" xml:space="preserve">
-    <value>Datei existiert nicht:</value>
+    <value>Файл не существует:</value>
+    <comment>绘图-通知-rtfhelper</comment>
   </data>
   <data name="error_saving_rtf_file" xml:space="preserve">
-    <value>Fehler beim Speichern der RTF-Datei:</value>
+    <value>Ошибка сохранения RTF:</value>
+    <comment>绘图-通知-rtfhelper</comment>
   </data>
   <data name="unable_to_get_latest_release_info" xml:space="preserve">
-    <value>Neueste Release-Info nicht abrufbar</value>
+    <value>Не удалось получить информацию о последней версии</value>
+    <comment>设置-通知-更新</comment>
   </data>
   <data name="invalid_formula" xml:space="preserve">
-    <value>Ungültige Formel</value>
+    <value>Неверная формула</value>
+    <comment>设置-属性-函数</comment>
   </data>
   <data name="loading_announcements" xml:space="preserve">
-    <value>Lade Ankündigungen...</value>
+    <value>Загрузка объявлений...</value>
+    <comment>主页-小组件-公告</comment>
   </data>
   <data name="no_announcements" xml:space="preserve">
-    <value>Keine Ankündigungen.</value>
+    <value>Нет объявлений.</value>
+    <comment>主页-小组件-公告</comment>
   </data>
   <data name="unable_to_get_announcements" xml:space="preserve">
-    <value>Ankündigungen nicht abrufbar.</value>
+    <value>Не удалось получить объявления.</value>
+    <comment>主页-小组件-公告</comment>
   </data>
   <data name="failed_to_get_announcements" xml:space="preserve">
-    <value>Abrufen der Ankündigungen fehlgeschlagen:</value>
+    <value>Ошибка получения объявлений:</value>
+    <comment>主页-小组件-公告</comment>
   </data>
   <data name="error_loading_template_list" xml:space="preserve">
-    <value>Fehler beim Laden der Vorlagenliste:</value>
+    <value>Ошибка загрузки списка шаблонов:</value>
   </data>
   <data name="unable_to_open_link" xml:space="preserve">
-    <value>Link kann nicht geöffnet werden:</value>
+    <value>Невозможно открыть ссылку:</value>
+    <comment>设置-about</comment>
   </data>
   <data name="add_link" xml:space="preserve">
-    <value>Link hinzufügen</value>
+    <value>Добавить ссылку</value>
+    <comment>主页-添加链接</comment>
   </data>
   <data name="name" xml:space="preserve">
-    <value>Name</value>
+    <value>Имя</value>
+    <comment>主页-添加链接</comment>
   </data>
   <data name="link_url" xml:space="preserve">
-    <value>Link (URL)</value>
+    <value>Ссылка (URL)</value>
+    <comment>主页-添加链接</comment>
   </data>
   <data name="description" xml:space="preserve">
-    <value>Beschreibung</value>
+    <value>Описание</value>
+    <comment>主页-添加链接</comment>
   </data>
   <data name="icon" xml:space="preserve">
-    <value>Icon</value>
+    <value>Иконка</value>
+    <comment>主页-添加链接</comment>
   </data>
   <data name="please_enter_name" xml:space="preserve">
-    <value>Bitte Name eingeben</value>
+    <value>Введите имя</value>
+    <comment>主页-添加链接</comment>
   </data>
   <data name="please_enter_link" xml:space="preserve">
-    <value>Bitte Link eingeben</value>
+    <value>Введите ссылку</value>
+    <comment>主页-添加链接</comment>
   </data>
   <data name="add_widget" xml:space="preserve">
-    <value>Widget hinzufügen</value>
+    <value>Добавить виджет</value>
+    <comment>主页-添加小组件</comment>
   </data>
   <data name="please_select_widget_to_add" xml:space="preserve">
-    <value>Bitte Widget zum Hinzufügen auswählen:</value>
+    <value>Выберите виджет:</value>
+    <comment>主页-添加小组件</comment>
   </data>
   <data name="please_select_a_widget" xml:space="preserve">
-    <value>Bitte ein Widget auswählen</value>
+    <value>Выберите виджет</value>
+    <comment>主页-添加小组件</comment>
   </data>
   <data name="server_announcements" xml:space="preserve">
-    <value>Serverankündigungen</value>
+    <value>Объявления сервера</value>
+    <comment>主页-小组件-公告</comment>
   </data>
   <data name="refresh" xml:space="preserve">
-    <value>Aktualisieren</value>
+    <value>Обновить</value>
+    <comment>主页-小组件-公告</comment>
   </data>
   <data name="developer_maintenance_tools" xml:space="preserve">
-    <value>Entwicklerwartungstools</value>
+    <value>Инструменты разработчика</value>
+    <comment>主页-小组件-开发者工具</comment>
   </data>
   <data name="drawing_template_repair_tool" xml:space="preserve">
-    <value>Zeichenvorlagenreparaturtool</value>
+    <value>Инструмент восстановления шаблонов</value>
+    <comment>主页-小组件-模板修复工具</comment>
   </data>
   <data name="start_check_and_repair" xml:space="preserve">
-    <value>Prüfung und Reparatur starten</value>
+    <value>Начать проверку и восстановление</value>
+    <comment>主页-小组件-模板修复工具</comment>
   </data>
   <data name="close_file" xml:space="preserve">
-    <value>Datei schließen</value>
+    <value>Закрыть файл</value>
+    <comment>主页-小组件-翻译组件</comment>
   </data>
   <data name="open_import" xml:space="preserve">
-    <value>Import öffnen</value>
+    <value>Открыть импорт</value>
+    <comment>主页-小组件-翻译组件</comment>
   </data>
   <data name="add_language_column" xml:space="preserve">
-    <value>Sprachspalte hinzufügen</value>
+    <value>Добавить столбец языка</value>
+    <comment>主页-小组件-翻译组件</comment>
   </data>
   <data name="swap_language_columns" xml:space="preserve">
-    <value>Sprachspalten tauschen</value>
+    <value>Поменять столбцы языка</value>
+    <comment>主页-小组件-翻译组件</comment>
   </data>
   <data name="delete_language_column" xml:space="preserve">
-    <value>Sprachspalte löschen</value>
+    <value>Удалить столбец языка</value>
+    <comment>主页-小组件-翻译组件</comment>
   </data>
   <data name="click_or_drag_template_json_here" xml:space="preserve">
-    <value>Klicken oder JSON-Vorlagendatei hierher ziehen</value>
+    <value>Нажмите или перетащите файл шаблона (JSON) сюда</value>
+    <comment>主页-小组件-翻译组件</comment>
   </data>
   <data name="support_json_format" xml:space="preserve">
-    <value>Unterstützt .json Format</value>
+    <value>Поддержка .json</value>
+    <comment>主页-小组件-翻译组件</comment>
   </data>
   <data name="save_changes" xml:space="preserve">
-    <value>Änderungen speichern</value>
+    <value>Сохранить изменения</value>
+    <comment>主页-小组件-翻译组件</comment>
   </data>
   <data name="select_drawing_template_file" xml:space="preserve">
-    <value>Zeichenvorlagendatei auswählen</value>
+    <value>Выберите файл шаблона</value>
   </data>
   <data name="edit_menu_bar_item" xml:space="preserve">
-    <value>Menüleisteneintrag bearbeiten</value>
+    <value>Редактировать пункт меню</value>
+    <comment>主页-右键菜单</comment>
   </data>
   <data name="import_custom_diagram_template" xml:space="preserve">
-    <value>Benutzerdefinierte Diagrammvorlage importieren</value>
+    <value>Импорт пользовательского шаблона</value>
   </data>
   <data name="open_file_location" xml:space="preserve">
-    <value>Dateispeicherort öffnen</value>
+    <value>Открыть расположение файла</value>
+    <comment>绘图-卡片-右键菜单</comment>
   </data>
   <data name="export_diagram_template" xml:space="preserve">
-    <value>Diagrammvorlage exportieren</value>
+    <value>Экспорт шаблона диаграммы</value>
   </data>
   <data name="downloading_ellipsis" xml:space="preserve">
-    <value>Wird heruntergeladen...</value>
+    <value>Загрузка...</value>
+    <comment>绘图-卡片-更新</comment>
   </data>
   <data name="initializing_language_service_ellipsis" xml:space="preserve">
-    <value>Initialisiere Sprachdienst...</value>
+    <value>Инициализация языковой службы...</value>
+    <comment>启动窗体</comment>
   </data>
   <data name="loading_font_resources_ellipsis" xml:space="preserve">
-    <value>Lade Schriftarten...</value>
+    <value>Загрузка шрифтов...</value>
   </data>
   <data name="reading_user_configuration_ellipsis" xml:space="preserve">
-    <value>Lese Benutzerkonfiguration...</value>
+    <value>Чтение конфигурации пользователя...</value>
   </data>
   <data name="loading_drawing_module_ellipsis" xml:space="preserve">
-    <value>Lade Zeichenmodul...</value>
+    <value>Загрузка модуля рисования...</value>
   </data>
   <data name="loading_main_interface_components_ellipsis" xml:space="preserve">
-    <value>Lade Hauptkomponenten...</value>
+    <value>Загрузка компонентов интерфейса...</value>
   </data>
   <data name="entering_soon_ellipsis" xml:space="preserve">
-    <value>Gleich fertig...</value>
+    <value>Скоро вход...</value>
   </data>
   <data name="completed" xml:space="preserve">
-    <value>Abgeschlossen</value>
+    <value>Готово</value>
   </data>
   <data name="error_occurred_during_startup" xml:space="preserve">
-    <value>Fehler beim Starten:</value>
+    <value>Ошибка при запуске:</value>
   </data>
   <data name="language_apperarance" xml:space="preserve">
-    <value>Sprache und Erscheinungsbild</value>
+    <value>Язык и вид</value>
   </data>
   <data name="startup_background_image" xml:space="preserve">
-    <value>Start-Hintergrundbild</value>
+    <value>Фоновое изображение запуска</value>
   </data>
   <data name="add_image" xml:space="preserve">
-    <value>Bild hinzufügen</value>
+    <value>Добавить изображение</value>
   </data>
   <data name="external_applications" xml:space="preserve">
-    <value>Externe Anwendungen</value>
+    <value>Внешние приложения</value>
   </data>
   <data name="custom_app" xml:space="preserve">
-    <value>Benutzerdefinierte App</value>
+    <value>Пользовательское приложение</value>
   </data>
   <data name="plot_defaults" xml:space="preserve">
-    <value>Plot-Standardeinstellungen</value>
+    <value>Настройки графика по умолчанию</value>
   </data>
   <data name="default_diagram_expand_level" xml:space="preserve">
-    <value>Standard-Erweiterungsebene</value>
+    <value>Уровень развертывания диаграммы по умолчанию</value>
   </data>
   <data name="default_third_party_editor" xml:space="preserve">
-    <value>Standard-Drittanbieter-Editor</value>
+    <value>Сторонний редактор по умолчанию</value>
   </data>
   <data name="automatic_updates" xml:space="preserve">
-    <value>Automatische Updates</value>
+    <value>Автообновление</value>
   </data>
   <data name="auto_check_diagram_template_updates" xml:space="preserve">
-    <value>Automatisch nach Vorlagenupdates suchen</value>
+    <value>Автопроверка обновлений шаблонов</value>
   </data>
   <data name="community" xml:space="preserve">
-    <value>Community</value>
+    <value>Сообщество</value>
   </data>
   <data name="export_and_tools" xml:space="preserve">
-    <value>Export/Tools</value>
+    <value>Экспорт/Инструменты</value>
   </data>
   <data name="format" xml:space="preserve">
-    <value>Format</value>
+    <value>Формат</value>
   </data>
   <data name="third_party_software" xml:space="preserve">
-    <value>Drittanbietersoftware</value>
+    <value>Стороннее ПО</value>
   </data>
   <data name="select_software" xml:space="preserve">
-    <value>Software auswählen</value>
+    <value>Выбрать ПО</value>
   </data>
   <data name="open_with_third_party_software" xml:space="preserve">
-    <value>Mit Drittanbietersoftware öffnen</value>
+    <value>Открыть в стороннем ПО</value>
   </data>
   <data name="confirm_enter_edit_mode_base_map" xml:space="preserve">
-    <value>Möchten Sie wirklich in den Bearbeitungsmodus wechseln? Dies erlaubt das Ändern der Grundkarte.</value>
+    <value>Вы уверены, что хотите войти в режим редактирования? Это позволит изменять подложку.</value>
   </data>
   <data name="information" xml:space="preserve">
-    <value>Info</value>
+    <value>Информация</value>
   </data>
   <data name="click_to_pick_coordinates" xml:space="preserve">
-    <value>Bitte in den Zeichenbereich klicken, um Koordinaten zu wählen</value>
+    <value>Кликните в области графика для получения координат</value>
   </data>
   <data name="picking_operation_cancelled" xml:space="preserve">
-    <value>Auswahlvorgang abgebrochen</value>
+    <value>Операция отменена</value>
   </data>
   <data name="diagram" xml:space="preserve">
-    <value>Diagramm</value>
+    <value>Диаграмма</value>
+    <comment>绘图-功能栏</comment>
   </data>
   <data name="official_website" xml:space="preserve">
-    <value>Offizielle Website</value>
+    <value>Официальный сайт</value>
   </data>
   <data name="minimize" xml:space="preserve">
-    <value>Minimieren</value>
+    <value>Свернуть</value>
   </data>
   <data name="maximize" xml:space="preserve">
-    <value>Maximieren</value>
+    <value>Развернуть</value>
   </data>
   <data name="close" xml:space="preserve">
-    <value>Schließen</value>
+    <value>Закрыть</value>
   </data>
   <data name="diagram_title_properties" xml:space="preserve">
-    <value>Diagrammtiteleigenschaften</value>
+    <value>Свойства заголовка диаграммы</value>
+    <comment>绘图-快捷按钮-tooltip</comment>
   </data>
   <data name="diagram_script_properties" xml:space="preserve">
-    <value>Diagrammskripteigenschaften</value>
+    <value>Свойства скрипта диаграммы</value>
+    <comment>绘图-快捷按钮-tooltip</comment>
   </data>
   <data name="diagram_legend_properties" xml:space="preserve">
-    <value>Diagrammlegendeneigenschaften</value>
+    <value>Свойства легенды диаграммы</value>
   </data>
   <data name="diagram_grid_properties" xml:space="preserve">
-    <value>Diagrammgittereigenschaften</value>
+    <value>Свойства сетки диаграммы</value>
   </data>
   <data name="switch_diagram_language" xml:space="preserve">
-    <value>Diagrammsprache wechseln</value>
+    <value>Переключить язык диаграммы</value>
   </data>
   <data name="popup_diagram_window" xml:space="preserve">
-    <value>Diagrammfenster ausklappen</value>
+    <value>Всплывающее окно диаграммы</value>
+    <comment>绘图-快捷按钮-tooltip</comment>
   </data>
   <data name="independent_diagram_window" xml:space="preserve">
-    <value>Unabhängiges Diagrammfenster</value>
+    <value>Отдельное окно диаграммы</value>
   </data>
   <data name="edit_drawing_template_translations" xml:space="preserve">
-    <value>Übersetzungen der Zeichenvorlage bearbeiten</value>
+    <value>Редактировать переводы шаблона</value>
+    <comment>主页-小组件-图解模板翻译器</comment>
   </data>
   <data name="repair_missing_or_damaged_templates_and_lists" xml:space="preserve">
-    <value>Fehlende oder beschädigte Vorlagen und Listen reparieren</value>
+    <value>Восстановить утерянные или поврежденные шаблоны</value>
   </data>
   <data name="view_latest_server_announcements" xml:space="preserve">
-    <value>Neueste Serverankündigungen anzeigen</value>
+    <value>Просмотр последних объявлений сервера</value>
   </data>
   <data name="maintain_server_config_and_templates" xml:space="preserve">
-    <value>Serverkonfiguration und Vorlagen warten</value>
+    <value>Обслуживание конфигурации и шаблонов</value>
   </data>
   <data name="stroke_width" xml:space="preserve">
-    <value>Strichbreite</value>
+    <value>Ширина обводки</value>
   </data>
   <data name="stroke_color" xml:space="preserve">
-    <value>Strichfarbe</value>
+    <value>Цвет обводки</value>
   </data>
   <data name="template_type_not_supported_please_update" xml:space="preserve">
-    <value>Vorlagentyp nicht unterstützt, bitte Software aktualisieren.</value>
+    <value>Тип шаблона не поддерживается, пожалуйста, обновите ПО.</value>
   </data>
   <data name="diagram_guide" xml:space="preserve">
-    <value>Diagramm-Assistent</value>
+    <value>Мастер диаграмм</value>
+    <comment>绘图-图解-帮助</comment>
   </data>
   <data name="click_help_for_guide" xml:space="preserve">
-    <value>Klicken für Diagrammdokumentation</value>
+    <value>Нажмите для просмотра документации</value>
   </data>
   <data name="Alignment_UpperLeft" xml:space="preserve">
-    <value>Oben links</value>
+    <value>Слева сверху</value>
   </data>
   <data name="Alignment_UpperCenter" xml:space="preserve">
-    <value>Oben mitte</value>
+    <value>Сверху по центру</value>
   </data>
   <data name="Alignment_UpperRight" xml:space="preserve">
-    <value>Oben rechts</value>
+    <value>Справа сверху</value>
   </data>
   <data name="Alignment_MiddleLeft" xml:space="preserve">
-    <value>Mitte links</value>
+    <value>Слева по центру</value>
   </data>
   <data name="Alignment_MiddleCenter" xml:space="preserve">
-    <value>Mitte zentriert</value>
+    <value>В центре</value>
   </data>
   <data name="Alignment_MiddleRight" xml:space="preserve">
-    <value>Mitte rechts</value>
+    <value>Справа по центру</value>
   </data>
   <data name="Alignment_LowerLeft" xml:space="preserve">
-    <value>Unten links</value>
+    <value>Слева снизу</value>
   </data>
   <data name="Alignment_LowerCenter" xml:space="preserve">
-    <value>Unten mitte</value>
+    <value>Снизу по центру</value>
   </data>
   <data name="Alignment_LowerRight" xml:space="preserve">
-    <value>Unten rechts</value>
+    <value>Справа снизу</value>
   </data>
   <data name="Orientation_Horizontal" xml:space="preserve">
-    <value>Horizontal</value>
+    <value>Горизонтально</value>
   </data>
   <data name="Orientation_Vertical" xml:space="preserve">
-    <value>Vertikal</value>
+    <value>Вертикально</value>
   </data>
   <data name="show_tick_labels" xml:space="preserve">
-    <value>Skalenbeschriftungen anzeigen</value>
+    <value>Показать метки делений</value>
   </data>
   <data name="show_major_ticks" xml:space="preserve">
-    <value>Hauptskalen anzeigen</value>
+    <value>Показать основные деления</value>
   </data>
   <data name="recently_used" xml:space="preserve">
-    <value>Zuletzt verwendet</value>
+    <value>Недавно использованные</value>
   </data>
   <data name="all_fonts" xml:space="preserve">
-    <value>Alle Schriftarten</value>
+    <value>Все шрифты</value>
   </data>
   <data name="failed_to_open_widget" xml:space="preserve">
-    <value>Widget konnte nicht geöffnet werden:</value>
+    <value>Не удалось открыть виджет：</value>
   </data>
   <data name="coordinates_picked_success" xml:space="preserve">
-    <value>Koordinaten erfolgreich erfasst!</value>
+    <value>Координаты получены！</value>
   </data>
   <data name="unsaved_diagram_template_prompt" xml:space="preserve">
-    <value>Die aktuelle Diagrammvorlage enthält nicht gespeicherte Änderungen. Möchten Sie diese speichern?</value>
+    <value>В шаблоне есть несохраненные изменения, сохранить?</value>
   </data>
   <data name="tips" xml:space="preserve">
-    <value>Tips</value>
+    <value>Подсказка</value>
   </data>
   <data name="template_no_multilingual_info" xml:space="preserve">
-    <value>Die aktuelle Vorlage enthält keine mehrsprachigen Informationen</value>
+    <value>В шаблоне нет многоязычной информации</value>
   </data>
   <data name="language_switch_success" xml:space="preserve">
-    <value>Sprache erfolgreich geändert</value>
+    <value>Язык успешно переключен</value>
   </data>
   <data name="language_switch_error" xml:space="preserve">
-    <value>Beim Umschalten der Sprache ist ein Fehler aufgetreten:</value>
+    <value>Ошибка переключения языка：</value>
   </data>
   <data name="auto_datapoint_projection_failed" xml:space="preserve">
-    <value>Automatische Datenpunktprojektion fehlgeschlagen:</value>
+    <value>Ошибка автопроекции точек：</value>
   </data>
   <data name="failed_to_delete_row" xml:space="preserve">
-    <value>Zeile konnte nicht gelöscht werden:</value>
+    <value>Не удалось удалить строку：</value>
   </data>
   <data name="diagram_template_not_found_repair_hint" xml:space="preserve">
-    <value>Diagrammvorlagendatei nicht gefunden. Bitte versuchen Sie, diese mit dem „Vorlagen-Reparatur-Tool“ auf der Startseite zu reparieren.</value>
+    <value>Шаблон не найден, попробуйте 'Инструмент восстановления' на главной.</value>
   </data>
   <data name="confirm_delete_custom_diagram_template" xml:space="preserve">
-    <value>Sind Sie sicher, dass Sie diese benutzerdefinierte Diagrammvorlage löschen möchten?</value>
+    <value>Удалить этот пользовательский шаблон?</value>
   </data>
   <data name="template_delete_success" xml:space="preserve">
-    <value>Vorlage erfolgreich gelöscht</value>
+    <value>Шаблон удален</value>
   </data>
   <data name="delete_failed" xml:space="preserve">
-    <value>Löschen fehlgeschlagen:</value>
+    <value>Ошибка удаления：</value>
   </data>
   <data name="missing_drawing_objects_error" xml:space="preserve">
-    <value>• Fehlende Zeichenobjekte: Die Vorlage enthält keine Linien, Polygone, Texte oder Pfeile.</value>
+    <value>• Отсутствуют объекты рисования: шаблон не содержит линий, полигонов, текста или стрелок.</value>
   </data>
   <data name="invalid_script_variable_name" xml:space="preserve">
-    <value>• Ungültiges Format des Skriptvariablennamens: ’</value>
+    <value>• Неверный формат имени переменной скрипта：’</value>
   </data>
   <data name="is_not_a_valid_variable_name" xml:space="preserve">
-    <value>’ ist kein gültiger Variablenname.</value>
+    <value>‘ не является допустимым именем.</value>
   </data>
   <data name="script_return_value_error_must_be_array" xml:space="preserve">
-    <value>• Skript-Rückgabewertfehler: Das Skript muss ein Array zurückgeben.</value>
+    <value>• Ошибка возврата скрипта: должен возвращать массив.</value>
   </data>
   <data name="script_return_value_length_error" xml:space="preserve">
-    <value>• Fehler in der Länge des Skript-Rückgabewerts: Aktueller Wert ist</value>
+    <value>• Ошибка длины возврата скрипта: сейчас</value>
   </data>
   <data name="return_type_mismatch_error" xml:space="preserve">
-    <value>Typ, sollte zurückgeben</value>
+    <value>тип, должен быть</value>
   </data>
   <data name="elements_actual_returned" xml:space="preserve">
-    <value>Elemente, aber tatsächlich zurückgegeben wurden</value>
+    <value>элементов, возвращено</value>
   </data>
   <data name="elements_count_suffix" xml:space="preserve">
-    <value>Elemente.</value>
+    <value>.</value>
   </data>
   <data name="missing_translation_warning" xml:space="preserve">
-    <value>• Fehlende Übersetzung: Einige Texte verfügen über keine mehrsprachigen Übersetzungen.</value>
+    <value>• Пропущен перевод: у некоторых текстов нет перевода.</value>
   </data>
   <data name="diagram_template_source_missing" xml:space="preserve">
-    <value>Quelldatei der Diagrammvorlage existiert nicht</value>
+    <value>Исходный файл шаблона отсутствует</value>
   </data>
   <data name="template_potential_issues_detected" xml:space="preserve">
-    <value>Folgende potenzielle Probleme wurden in der Vorlage erkannt:</value>
+    <value>Обнаружены потенциальные проблемы в шаблоне：</value>
   </data>
   <data name="ignore_issues_and_continue_export" xml:space="preserve">
-    <value>Diese Probleme ignorieren und mit dem Export fortfahren?</value>
+    <value>Игнорировать и продолжить экспорт?</value>
   </data>
   <data name="completeness_check" xml:space="preserve">
-    <value>Vollständigkeitsprüfung</value>
+    <value>Проверка полноты</value>
   </data>
   <data name="diagram_template_export_success" xml:space="preserve">
-    <value>Diagrammvorlage erfolgreich exportiert</value>
+    <value>Экспорт шаблона успешен</value>
   </data>
   <data name="directory_not_exist" xml:space="preserve">
-    <value>Verzeichnis existiert nicht</value>
+    <value>Каталог не существует</value>
   </data>
   <data name="diagram_template_directory_not_found" xml:space="preserve">
-    <value>Verzeichnis für Diagrammvorlagen existiert nicht:</value>
+    <value>Каталог шаблонов не найден：</value>
   </data>
   <data name="failed_to_load_diagram_template" xml:space="preserve">
-    <value>Diagrammvorlage konnte nicht geladen werden:</value>
+    <value>Не удалось загрузить шаблон：</value>
   </data>
   <data name="unsaved_template_changes_confirm" xml:space="preserve">
-    <value>Die aktuelle Vorlage enthält nicht gespeicherte Änderungen. Möchten Sie diese speichern?</value>
+    <value>В шаблоне есть несохраненные изменения, сохранить?</value>
   </data>
   <data name="ternary_diagram_crosshair_not_supported" xml:space="preserve">
-    <value>Fadenkreuz-Positionierung wird für Ternärdiagramme derzeit nicht unterstützt.</value>
+    <value>Тройные диаграммы пока не поддерживают перекрестие.</value>
   </data>
   <data name="attempting_to_start" xml:space="preserve">
-    <value>Startversuch läuft</value>
+    <value>Попытка запуска</value>
   </data>
   <data name="coreldraw_env_not_found_select_program" xml:space="preserve">
-    <value>CorelDRAW-Umgebungsvariable nicht gefunden. Bitte wählen Sie das zu öffnende Programm aus.</value>
+    <value>Переменная среды CorelDRAW не найдена, выберите программу.</value>
   </data>
   <data name="failed_to_open" xml:space="preserve">
-    <value>Öffnen fehlgeschlagen:</value>
+    <value>Ошибка открытия：</value>
   </data>
   <data name="inkscape_env_not_found_select_program" xml:space="preserve">
-    <value>Inkscape-Umgebungsvariable nicht gefunden. Bitte wählen Sie das zu öffnende Programm aus.</value>
+    <value>Переменная среды Inkscape не найдена, выберите программу.</value>
   </data>
   <data name="illustrator_not_found_check_path" xml:space="preserve">
-    <value>Adobe Illustrator nicht gefunden. Bitte prüfen Sie die Pfadeinstellungen oder wählen Sie das zu öffnende Programm aus.</value>
+    <value>Adobe Illustrator не найден, проверьте путь или выберите программу.</value>
   </data>
   <data name="custom_path_not_set_configure_in_settings" xml:space="preserve">
-    <value>Benutzerdefinierter Programmpfad nicht festgelegt. Bitte in den Einstellungen konfigurieren.</value>
+    <value>Путь к пользовательской программе не задан, настройте в параметрах.</value>
   </data>
   <data name="custom_program_start_failed" xml:space="preserve">
-    <value>Starten des benutzerdefinierten Programms fehlgeschlagen:</value>
+    <value>Ошибка запуска программы：</value>
   </data>
   <data name="help_file_not_found" xml:space="preserve">
-    <value>Hilfedokumentation konnte nicht gefunden werden.</value>
+    <value>Файл справки не найден.</value>
   </data>
   <data name="refresh_successful" xml:space="preserve">
-    <value>Erfolgreich aktualisiert</value>
+    <value>Обновление успешно</value>
   </data>
   <data name="refresh_failed" xml:space="preserve">
-    <value>Aktualisierung fehlgeschlagen:</value>
+    <value>Ошибка обновления：</value>
   </data>
   <data name="diagram_help_path_undefined_save_template" xml:space="preserve">
-    <value>Pfad der Diagramm-Hilfedatei konnte nicht ermittelt werden. Bitte versuchen Sie zuerst, die Vorlage zu speichern.</value>
+    <value>Путь к справке не определен, сначала сохраните шаблон.</value>
   </data>
   <data name="failed_to_open_file" xml:space="preserve">
-    <value>Datei konnte nicht geöffnet werden:</value>
+    <value>Не удалось открыть файл：</value>
   </data>
   <data name="error_creating_new_template" xml:space="preserve">
-    <value>Fehler beim Erstellen der neuen Vorlage:</value>
+    <value>Ошибка создания шаблона：</value>
   </data>
   <data name="import_failed" xml:space="preserve">
-    <value>Import fehlgeschlagen:</value>
+    <value>Ошибка импорта：</value>
   </data>
   <data name="failed_to_open_zip_file" xml:space="preserve">
-    <value>ZIP-Datei konnte nicht geöffnet werden</value>
+    <value>Не удалось открыть ZIP</value>
   </data>
   <data name="diagram_template_corrupted_or_invalid" xml:space="preserve">
-    <value>Die Diagrammvorlagendatei ist beschädigt oder enthält keine gültige JSON-Diagrammvorlagendatei.</value>
+    <value>Файл шаблона поврежден или не содержит допустимый JSON.</value>
   </data>
   <data name="failed_to_parse_diagram_template_json" xml:space="preserve">
-    <value>Die JSON-Datei der Diagrammvorlage konnte nicht analysiert werden</value>
+    <value>Не удалось разобрать JSON шаблона</value>
   </data>
   <data name="invalid_diagram_template_file" xml:space="preserve">
-    <value>Ungültige Diagrammvorlagendatei</value>
+    <value>Недопустимый файл шаблона</value>
   </data>
   <data name="custom_diagram_template" xml:space="preserve">
-    <value>Benutzerdefinierte Diagrammvorlage</value>
+    <value>Пользовательский шаблон</value>
   </data>
   <data name="already_exists_overwrite_confirm" xml:space="preserve">
-    <value>Bereits vorhanden. Möchten Sie es überschreiben?</value>
+    <value>Уже существует, перезаписать?</value>
   </data>
   <data name="overwrite" xml:space="preserve">
-    <value>Überschreiben</value>
+    <value>Перезаписать</value>
   </data>
   <data name="failed_to_delete_old_directory" xml:space="preserve">
-    <value>Altes Verzeichnis konnte nicht gelöscht werden:</value>
+    <value>Не удалось удалить старый каталог：</value>
   </data>
   <data name="invalid_diagram_template_no_json" xml:space="preserve">
-    <value>Ungültige Diagrammvorlagendatei: Diagramm-JSON-Datei nicht gefunden.</value>
+    <value>Недопустимый файл, json не найден.</value>
   </data>
   <data name="template_load_failed" xml:space="preserve">
-    <value>Laden der Vorlage fehlgeschlagen</value>
+    <value>Ошибка загрузки шаблона</value>
   </data>
   <data name="script_not_defined_in_template" xml:space="preserve">
-    <value>Kein Skript in der Diagrammvorlage definiert</value>
+    <value>Скрипт не определен в шаблоне</value>
   </data>
   <data name="function" xml:space="preserve">
-    <value>Funktion</value>
+    <value>Функция</value>
   </data>
 </root>

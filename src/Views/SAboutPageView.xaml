@@ -42,7 +42,7 @@
                 </Border>
 
                 <!-- Group 2: Community -->
-                <TextBlock Text="Community" Style="{StaticResource ModernSettingsGroupTitle}"/> 
+                <TextBlock Text="{Binding [community],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernSettingsGroupTitle}"/> 
                 <Border Style="{StaticResource ModernSettingsCard}">
                     <StackPanel>
                          <!-- GitHub -->

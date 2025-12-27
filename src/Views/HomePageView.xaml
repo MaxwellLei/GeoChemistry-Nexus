@@ -8,9 +8,18 @@
       xmlns:models="clr-namespace:GeoChemistryNexus.Models"
       xmlns:helpers="clr-namespace:GeoChemistryNexus.Helpers"
       xmlns:dd="urn:gong-wpf-dragdrop"
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800"
       Title="HomePageView">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadedCommand}"/>
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Unloaded">
+            <i:InvokeCommandAction Command="{Binding UnloadedCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Page.Background>
         <ImageBrush ImageSource="../Data/Image/HomePic/Default.jpg"/>
     </Page.Background>

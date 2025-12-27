@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -13,8 +13,10 @@ namespace GeoChemistryNexus.Converter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            bool isInverse = parameter != null && parameter.ToString() == "Inverse";
             if (value is bool boolValue)
             {
+                if (isInverse) boolValue = !boolValue;
                 return boolValue ? Visibility.Visible : Visibility.Collapsed;
             }
 

@@ -77,7 +77,7 @@ namespace GeoChemistryNexus.ViewModels
             textPlot.LabelText = content;
 
             // 字体自适应检测
-            textPlot.LabelFontName = Fonts.Detect(content);
+            textPlot.LabelFontName = TextDefinition.Family;
             textPlot.LabelFontSize = TextDefinition.Size;
             textPlot.LabelRotation = TextDefinition.Rotation;
 

@@ -116,5 +116,12 @@ namespace GeoChemistryNexus.Models
         [property: LocalizedCategory("background_fill_2")] // 背景填充
         [property: LocalizedDisplayName("fill_color_2")] // 填充颜色 2
         private string _gridFillColor2 = Colors.Transparent.ToHex();
+        [System.Text.Json.Serialization.JsonIgnore]
+        [ObservableProperty]
+        private bool _isMinorGridSupported = true;
+
+        [System.Text.Json.Serialization.JsonIgnore]
+        [ObservableProperty]
+        private bool _isAlternatingFillSupported = true;
     }
 }

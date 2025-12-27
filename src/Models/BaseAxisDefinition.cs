@@ -73,14 +73,6 @@ namespace GeoChemistryNexus.Models
         private bool _isItalic = false;
 
         /// <summary>
-        /// Axis major tick width
-        /// </summary>
-        [ObservableProperty]
-        [property: LocalizedCategory("major_tick_style")] // 主刻度样式
-        [property: LocalizedDisplayName("width")] // 宽度
-        private float _majorTickWidth = 1;
-
-        /// <summary>
         /// Axis major tick color
         /// </summary>
         [ObservableProperty]

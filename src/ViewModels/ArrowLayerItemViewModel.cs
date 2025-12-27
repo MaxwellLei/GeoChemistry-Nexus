@@ -71,6 +71,7 @@ namespace GeoChemistryNexus.ViewModels
             this.Plottable = arrowPlot;
 
             // --- 绘制高亮顶点 ---
+            // 绘制起点高亮圆圈
             if (ArrowDefinition.Start.IsHighlighted)
             {
                 var marker = plot.Add.Marker(startPixel.X, startPixel.Y);
@@ -79,6 +80,7 @@ namespace GeoChemistryNexus.ViewModels
                 marker.Shape = MarkerShape.OpenCircle;
                 marker.LineWidth = 2;
             }
+            // 绘制终点高亮圆圈
             if (ArrowDefinition.End.IsHighlighted)
             {
                 var marker = plot.Add.Marker(endPixel.X, endPixel.Y);

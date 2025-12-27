@@ -1079,7 +1079,7 @@
     <value>内容</value>
   </data>
   <data name="alignment" xml:space="preserve">
-    <value>对齐方式</value>
+    <value>锚点位置</value>
   </data>
   <data name="font_style" xml:space="preserve">
     <value>字体样式</value>
@@ -1157,7 +1157,7 @@
     <value>排列方式</value>
   </data>
   <data name="is_visible" xml:space="preserve">
-    <value>是否隐藏</value>
+    <value>是否可见</value>
   </data>
   <data name="font" xml:space="preserve">
     <value>字体</value>
@@ -2069,5 +2069,240 @@
   </data>
   <data name="maintain_server_config_and_templates" xml:space="preserve">
     <value>维护服务器配置与模板文件</value>
+  </data>
+  <data name="stroke_width" xml:space="preserve">
+    <value>描边宽度</value>
+  </data>
+  <data name="stroke_color" xml:space="preserve">
+    <value>描边颜色</value>
+  </data>
+  <data name="template_type_not_supported_please_update" xml:space="preserve">
+    <value>当前图解模板类型不支持，请更新软件。</value>
+  </data>
+  <data name="diagram_guide" xml:space="preserve">
+    <value>图解向导</value>
+    <comment>绘图-图解-帮助</comment>
+  </data>
+  <data name="click_help_for_guide" xml:space="preserve">
+    <value>点击按钮查看图解文档</value>
+  </data>
+  <data name="Alignment_UpperLeft" xml:space="preserve">
+    <value>左上角</value>
+  </data>
+  <data name="Alignment_UpperCenter" xml:space="preserve">
+    <value>中上</value>
+  </data>
+  <data name="Alignment_UpperRight" xml:space="preserve">
+    <value>右上角</value>
+  </data>
+  <data name="Alignment_MiddleLeft" xml:space="preserve">
+    <value>左中</value>
+  </data>
+  <data name="Alignment_MiddleCenter" xml:space="preserve">
+    <value>正中</value>
+  </data>
+  <data name="Alignment_MiddleRight" xml:space="preserve">
+    <value>右中</value>
+  </data>
+  <data name="Alignment_LowerLeft" xml:space="preserve">
+    <value>左下角</value>
+  </data>
+  <data name="Alignment_LowerCenter" xml:space="preserve">
+    <value>中下</value>
+  </data>
+  <data name="Alignment_LowerRight" xml:space="preserve">
+    <value>右下角</value>
+  </data>
+  <data name="Orientation_Horizontal" xml:space="preserve">
+    <value>横向</value>
+  </data>
+  <data name="Orientation_Vertical" xml:space="preserve">
+    <value>纵向</value>
+  </data>
+  <data name="show_tick_labels" xml:space="preserve">
+    <value>显示刻度标签</value>
+  </data>
+  <data name="show_major_ticks" xml:space="preserve">
+    <value>显示主刻度</value>
+  </data>
+  <data name="recently_used" xml:space="preserve">
+    <value>最近使用</value>
+  </data>
+  <data name="all_fonts" xml:space="preserve">
+    <value>所有字体</value>
+  </data>
+  <data name="failed_to_open_widget" xml:space="preserve">
+    <value>打开组件失败：</value>
+  </data>
+  <data name="coordinates_picked_success" xml:space="preserve">
+    <value>坐标拾取成功！</value>
+  </data>
+  <data name="unsaved_diagram_template_prompt" xml:space="preserve">
+    <value>当前图解模板有未保存的内容，是否保存？</value>
+  </data>
+  <data name="tips" xml:space="preserve">
+    <value>提示</value>
+  </data>
+  <data name="template_no_multilingual_info" xml:space="preserve">
+    <value>当前模板没有多语言信息</value>
+  </data>
+  <data name="language_switch_success" xml:space="preserve">
+    <value>语言切换成功</value>
+  </data>
+  <data name="language_switch_error" xml:space="preserve">
+    <value>切换语言时发生错误：</value>
+  </data>
+  <data name="auto_datapoint_projection_failed" xml:space="preserve">
+    <value>自动数据点投影失败：</value>
+  </data>
+  <data name="failed_to_delete_row" xml:space="preserve">
+    <value>无法删除行：</value>
+  </data>
+  <data name="diagram_template_not_found_repair_hint" xml:space="preserve">
+    <value>找不到文件图解模板，请尝试在主页使用'模板修复工具'进行修复。</value>
+  </data>
+  <data name="confirm_delete_custom_diagram_template" xml:space="preserve">
+    <value>确定要删除该自定义图解模板吗？</value>
+  </data>
+  <data name="template_delete_success" xml:space="preserve">
+    <value>模板删除成功</value>
+  </data>
+  <data name="delete_failed" xml:space="preserve">
+    <value>删除失败：</value>
+  </data>
+  <data name="missing_drawing_objects_error" xml:space="preserve">
+    <value>• 绘图对象缺失：模板中未包含任何线、多边形、文本或箭头。</value>
+  </data>
+  <data name="invalid_script_variable_name" xml:space="preserve">
+    <value>• 脚本变量名格式错误：’</value>
+  </data>
+  <data name="is_not_a_valid_variable_name" xml:space="preserve">
+    <value>‘ 不是有效的变量名。</value>
+  </data>
+  <data name="script_return_value_error_must_be_array" xml:space="preserve">
+    <value>• 脚本返回值错误：脚本必须返回一个数组。</value>
+  </data>
+  <data name="script_return_value_length_error" xml:space="preserve">
+    <value>• 脚本返回值长度错误：当前为</value>
+  </data>
+  <data name="return_type_mismatch_error" xml:space="preserve">
+    <value>类型，应返回</value>
+  </data>
+  <data name="elements_actual_returned" xml:space="preserve">
+    <value>个元素，实际返回</value>
+  </data>
+  <data name="elements_count_suffix" xml:space="preserve">
+    <value>个。</value>
+  </data>
+  <data name="missing_translation_warning" xml:space="preserve">
+    <value>• 翻译缺失：部分文本缺少多语言翻译。</value>
+  </data>
+  <data name="diagram_template_source_missing" xml:space="preserve">
+    <value>图解模板源文件不存在</value>
+  </data>
+  <data name="template_potential_issues_detected" xml:space="preserve">
+    <value>检测到模板存在以下潜在问题：</value>
+  </data>
+  <data name="ignore_issues_and_continue_export" xml:space="preserve">
+    <value>是否忽略这些问题并继续导出？</value>
+  </data>
+  <data name="completeness_check" xml:space="preserve">
+    <value>完整度检查</value>
+  </data>
+  <data name="diagram_template_export_success" xml:space="preserve">
+    <value>图解模板导出成功</value>
+  </data>
+  <data name="directory_not_exist" xml:space="preserve">
+    <value>目录不存在</value>
+  </data>
+  <data name="diagram_template_directory_not_found" xml:space="preserve">
+    <value>图解模板目录不存在：</value>
+  </data>
+  <data name="failed_to_load_diagram_template" xml:space="preserve">
+    <value>无法加载图解模板：</value>
+  </data>
+  <data name="unsaved_template_changes_confirm" xml:space="preserve">
+    <value>当前模板有未保存的内容，是否保存？</value>
+  </data>
+  <data name="ternary_diagram_crosshair_not_supported" xml:space="preserve">
+    <value>三元相图暂不支持十字定位功能。</value>
+  </data>
+  <data name="attempting_to_start" xml:space="preserve">
+    <value>正在尝试启动</value>
+  </data>
+  <data name="coreldraw_env_not_found_select_program" xml:space="preserve">
+    <value>未找到 CorelDRAW 环境变量，请选择打开程序。</value>
+  </data>
+  <data name="failed_to_open" xml:space="preserve">
+    <value>打开失败：</value>
+  </data>
+  <data name="inkscape_env_not_found_select_program" xml:space="preserve">
+    <value>未找到 Inkscape 环境变量，请选择打开程序。</value>
+  </data>
+  <data name="illustrator_not_found_check_path" xml:space="preserve">
+    <value>未找到 Adobe Illustrator，请检查路径设置或选择打开程序。</value>
+  </data>
+  <data name="custom_path_not_set_configure_in_settings" xml:space="preserve">
+    <value>未设置自定义程序路径，请在设置中配置。</value>
+  </data>
+  <data name="custom_program_start_failed" xml:space="preserve">
+    <value>启动自定义程序失败：</value>
+  </data>
+  <data name="help_file_not_found" xml:space="preserve">
+    <value>无法找到帮助说明文件。</value>
+  </data>
+  <data name="refresh_successful" xml:space="preserve">
+    <value>刷新成功</value>
+  </data>
+  <data name="refresh_failed" xml:space="preserve">
+    <value>刷新失败：</value>
+  </data>
+  <data name="diagram_help_path_undefined_save_template" xml:space="preserve">
+    <value>无法确定图解帮助文件路径，请尝试先保存模板。</value>
+  </data>
+  <data name="failed_to_open_file" xml:space="preserve">
+    <value>无法打开文件：</value>
+  </data>
+  <data name="error_creating_new_template" xml:space="preserve">
+    <value>新建模板时发生错误：</value>
+  </data>
+  <data name="import_failed" xml:space="preserve">
+    <value>导入失败：</value>
+  </data>
+  <data name="failed_to_open_zip_file" xml:space="preserve">
+    <value>无法打开ZIP文件</value>
+  </data>
+  <data name="diagram_template_corrupted_or_invalid" xml:space="preserve">
+    <value>图解模板文件已损坏或未包含有效的图解模板 JSON 文件。</value>
+  </data>
+  <data name="failed_to_parse_diagram_template_json" xml:space="preserve">
+    <value>无法解析图解模板 JSON 文件</value>
+  </data>
+  <data name="invalid_diagram_template_file" xml:space="preserve">
+    <value>无效的图解模板文件</value>
+  </data>
+  <data name="custom_diagram_template" xml:space="preserve">
+    <value>自定义图解模板</value>
+  </data>
+  <data name="already_exists_overwrite_confirm" xml:space="preserve">
+    <value>已存在，是否覆盖？</value>
+  </data>
+  <data name="overwrite" xml:space="preserve">
+    <value>覆盖</value>
+  </data>
+  <data name="failed_to_delete_old_directory" xml:space="preserve">
+    <value>无法删除旧目录：</value>
+  </data>
+  <data name="invalid_diagram_template_no_json" xml:space="preserve">
+    <value>无效的图解模板文件，未找到图解 json 文件。</value>
+  </data>
+  <data name="template_load_failed" xml:space="preserve">
+    <value>图解模板加载失败</value>
+  </data>
+  <data name="script_not_defined_in_template" xml:space="preserve">
+    <value>图解模板中未定义脚本</value>
+  </data>
+  <data name="function" xml:space="preserve">
+    <value>函数</value>
   </data>
 </root>

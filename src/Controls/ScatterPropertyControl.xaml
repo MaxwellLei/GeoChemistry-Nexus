@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="GeoChemistryNexus.Controls.ScatterPropertyControl"
+<UserControl x:Class="GeoChemistryNexus.Controls.ScatterPropertyControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -111,6 +111,29 @@
                                           SelectedValue="{Binding MarkerShape, Mode=TwoWay}"
                                           DisplayMemberPath="."
                                           Style="{StaticResource ModernComboBoxStyle}"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Stroke Width & Color Grid -->
+                        <Grid Margin="0,16,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="12"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Stroke Width -->
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{Binding [stroke_width],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
+                                <hc:NumericUpDown Value="{Binding StrokeWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
+                                                  hc:InfoElement.Placeholder="pt" 
+                                                  Style="{StaticResource ModernNumericUpDownStyle}"/>
+                            </StackPanel>
+
+                            <!-- Stroke Color -->
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="{Binding [stroke_color],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
+                                <local:TextPropertyColorPicker SelectedColor="{Binding StrokeColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" Height="32"/>
                             </StackPanel>
                         </Grid>
 

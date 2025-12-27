@@ -14,7 +14,7 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("style")] // 样式
         [property: LocalizedDisplayName("location")] // 位置
-        private Alignment _alignment;
+        private Alignment _alignment = Alignment.UpperRight;
 
         /// <summary>
         /// 图例条目排列方式
@@ -22,22 +22,22 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("style")] // 样式
         [property: LocalizedDisplayName("orientation")] // 排列方式
-        private Orientation _orientation;
+        private Orientation _orientation = Orientation.Horizontal;
 
         /// <summary>
         /// 图例是否可见
         /// </summary>
         [ObservableProperty]
         [property: LocalizedCategory("style")] // 样式
-        [property: LocalizedDisplayName("is_visible")] // 是否隐藏
-        private bool _isVisible;
+        [property: LocalizedDisplayName("is_visible")] // 是否可见
+        private bool _isVisible = true;
 
         /// <summary>
-        /// 图例是否可见
+        /// 字体
         /// </summary>
         [ObservableProperty]
         [property: LocalizedCategory("style")] // 样式
-        [property: LocalizedDisplayName("font")] // 是否隐藏
+        [property: LocalizedDisplayName("font")] // 字体
         private string _font = "Arial";
     }
 }

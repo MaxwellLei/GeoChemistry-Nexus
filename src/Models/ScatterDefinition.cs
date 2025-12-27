@@ -38,5 +38,21 @@ namespace GeoChemistryNexus.Models
         [property: LocalizedCategory("style")] // 样式
         [property: LocalizedDisplayName("type")] // 类型
         private MarkerShape _markerShape = MarkerShape.FilledSquare;
+
+        /// <summary>
+        /// 描边宽度
+        /// </summary>
+        [ObservableProperty]
+        [property: LocalizedCategory("style")] // 样式
+        [property: LocalizedDisplayName("stroke_width")] // 描边宽度
+        private float _strokeWidth = 0;
+
+        /// <summary>
+        /// 描边颜色
+        /// </summary>
+        [ObservableProperty]
+        [property: LocalizedCategory("style")] // 样式
+        [property: LocalizedDisplayName("stroke_color")] // 描边颜色
+        private string _strokeColor = "#000000";
     }
 }

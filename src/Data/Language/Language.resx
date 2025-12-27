@@ -1027,7 +1027,7 @@
     <value>Content</value>
   </data>
   <data name="alignment" xml:space="preserve">
-    <value>Alignment</value>
+    <value>Anchor Position</value>
   </data>
   <data name="font_style" xml:space="preserve">
     <value>Font Style</value>
@@ -1865,5 +1865,239 @@
   </data>
   <data name="maintain_server_config_and_templates" xml:space="preserve">
     <value>Maintain server configurations and template files</value>
+  </data>
+  <data name="stroke_width" xml:space="preserve">
+    <value>Stroke Width</value>
+  </data>
+  <data name="stroke_color" xml:space="preserve">
+    <value>Stroke Color</value>
+  </data>
+  <data name="template_type_not_supported_please_update" xml:space="preserve">
+    <value>The current diagram template type is not supported. Please update the software.</value>
+  </data>
+  <data name="diagram_guide" xml:space="preserve">
+    <value>Diagram Wizard</value>
+  </data>
+  <data name="click_help_for_guide" xml:space="preserve">
+    <value>Click the button to view diagram documentation</value>
+  </data>
+  <data name="Alignment_UpperLeft" xml:space="preserve">
+    <value>Top Left</value>
+  </data>
+  <data name="Alignment_UpperCenter" xml:space="preserve">
+    <value>Top Center</value>
+  </data>
+  <data name="Alignment_UpperRight" xml:space="preserve">
+    <value>Top Right</value>
+  </data>
+  <data name="Alignment_MiddleLeft" xml:space="preserve">
+    <value>Middle Left</value>
+  </data>
+  <data name="Alignment_MiddleCenter" xml:space="preserve">
+    <value>Middle Center</value>
+  </data>
+  <data name="Alignment_MiddleRight" xml:space="preserve">
+    <value>Middle Right</value>
+  </data>
+  <data name="Alignment_LowerLeft" xml:space="preserve">
+    <value>Bottom Left</value>
+  </data>
+  <data name="Alignment_LowerCenter" xml:space="preserve">
+    <value>Bottom Center</value>
+  </data>
+  <data name="Alignment_LowerRight" xml:space="preserve">
+    <value>Bottom Right</value>
+  </data>
+  <data name="Orientation_Horizontal" xml:space="preserve">
+    <value>Horizontal</value>
+  </data>
+  <data name="Orientation_Vertical" xml:space="preserve">
+    <value>Vertical</value>
+  </data>
+  <data name="show_tick_labels" xml:space="preserve">
+    <value>Show Tick Labels</value>
+  </data>
+  <data name="show_major_ticks" xml:space="preserve">
+    <value>Show Major Ticks</value>
+  </data>
+  <data name="recently_used" xml:space="preserve">
+    <value>Recently Used</value>
+  </data>
+  <data name="all_fonts" xml:space="preserve">
+    <value>All Fonts</value>
+  </data>
+  <data name="failed_to_open_widget" xml:space="preserve">
+    <value>Failed to open widget:</value>
+  </data>
+  <data name="coordinates_picked_success" xml:space="preserve">
+    <value>Coordinates picked successfully!</value>
+  </data>
+  <data name="unsaved_diagram_template_prompt" xml:space="preserve">
+    <value>The current diagram template has unsaved changes. Do you want to save them?</value>
+  </data>
+  <data name="tips" xml:space="preserve">
+    <value>Tips</value>
+  </data>
+  <data name="template_no_multilingual_info" xml:space="preserve">
+    <value>The current template has no multilingual information</value>
+  </data>
+  <data name="language_switch_success" xml:space="preserve">
+    <value>Language switched successfully</value>
+  </data>
+  <data name="language_switch_error" xml:space="preserve">
+    <value>An error occurred while switching languages:</value>
+  </data>
+  <data name="auto_datapoint_projection_failed" xml:space="preserve">
+    <value>Automatic data point projection failed:</value>
+  </data>
+  <data name="failed_to_delete_row" xml:space="preserve">
+    <value>Failed to delete row:</value>
+  </data>
+  <data name="diagram_template_not_found_repair_hint" xml:space="preserve">
+    <value>Diagram template file not found. Please try using the 'Template Repair Tool' on the home page to fix it.</value>
+  </data>
+  <data name="confirm_delete_custom_diagram_template" xml:space="preserve">
+    <value>Are you sure you want to delete this custom diagram template?</value>
+  </data>
+  <data name="template_delete_success" xml:space="preserve">
+    <value>Template deleted successfully</value>
+  </data>
+  <data name="delete_failed" xml:space="preserve">
+    <value>Delete failed:</value>
+  </data>
+  <data name="missing_drawing_objects_error" xml:space="preserve">
+    <value>• Missing drawing objects: The template does not contain any lines, polygons, text, or arrows.</value>
+  </data>
+  <data name="invalid_script_variable_name" xml:space="preserve">
+    <value>• Invalid script variable name format: ‘</value>
+  </data>
+  <data name="is_not_a_valid_variable_name" xml:space="preserve">
+    <value>‘ is not a valid variable name.</value>
+  </data>
+  <data name="script_return_value_error_must_be_array" xml:space="preserve">
+    <value>• Script return value error: The script must return an array.</value>
+  </data>
+  <data name="script_return_value_length_error" xml:space="preserve">
+    <value>• Script return value length error: Current value is</value>
+  </data>
+  <data name="return_type_mismatch_error" xml:space="preserve">
+    <value>type, should return</value>
+  </data>
+  <data name="elements_actual_returned" xml:space="preserve">
+    <value>elements, but actually returned</value>
+  </data>
+  <data name="elements_count_suffix" xml:space="preserve">
+    <value>elements.</value>
+  </data>
+  <data name="missing_translation_warning" xml:space="preserve">
+    <value>• Missing translation: Some texts are missing multilingual translations.</value>
+  </data>
+  <data name="diagram_template_source_missing" xml:space="preserve">
+    <value>Diagram template source file does not exist</value>
+  </data>
+  <data name="template_potential_issues_detected" xml:space="preserve">
+    <value>The following potential issues were detected in the template:</value>
+  </data>
+  <data name="ignore_issues_and_continue_export" xml:space="preserve">
+    <value>Ignore these issues and continue exporting?</value>
+  </data>
+  <data name="completeness_check" xml:space="preserve">
+    <value>Completeness Check</value>
+  </data>
+  <data name="diagram_template_export_success" xml:space="preserve">
+    <value>Diagram template exported successfully</value>
+  </data>
+  <data name="directory_not_exist" xml:space="preserve">
+    <value>Directory does not exist</value>
+  </data>
+  <data name="diagram_template_directory_not_found" xml:space="preserve">
+    <value>Diagram template directory does not exist:</value>
+  </data>
+  <data name="failed_to_load_diagram_template" xml:space="preserve">
+    <value>Failed to load diagram template:</value>
+  </data>
+  <data name="unsaved_template_changes_confirm" xml:space="preserve">
+    <value>The current template has unsaved changes. Do you want to save them?</value>
+  </data>
+  <data name="ternary_diagram_crosshair_not_supported" xml:space="preserve">
+    <value>Crosshair positioning is currently not supported for ternary diagrams.</value>
+  </data>
+  <data name="attempting_to_start" xml:space="preserve">
+    <value>Attempting to start</value>
+  </data>
+  <data name="coreldraw_env_not_found_select_program" xml:space="preserve">
+    <value>CorelDRAW environment variable not found. Please select the application to open.</value>
+  </data>
+  <data name="failed_to_open" xml:space="preserve">
+    <value>Failed to open:</value>
+  </data>
+  <data name="inkscape_env_not_found_select_program" xml:space="preserve">
+    <value>Inkscape environment variable not found. Please select the application to open.</value>
+  </data>
+  <data name="illustrator_not_found_check_path" xml:space="preserve">
+    <value>Adobe Illustrator not found. Please check the path settings or select the application to open.</value>
+  </data>
+  <data name="custom_path_not_set_configure_in_settings" xml:space="preserve">
+    <value>Custom program path not set. Please configure it in the settings.</value>
+  </data>
+  <data name="custom_program_start_failed" xml:space="preserve">
+    <value>Failed to start custom program:</value>
+  </data>
+  <data name="help_file_not_found" xml:space="preserve">
+    <value>The help documentation file could not be found.</value>
+  </data>
+  <data name="refresh_successful" xml:space="preserve">
+    <value>Refreshed successfully</value>
+  </data>
+  <data name="refresh_failed" xml:space="preserve">
+    <value>Refresh failed:</value>
+  </data>
+  <data name="diagram_help_path_undefined_save_template" xml:space="preserve">
+    <value>Unable to determine the diagram help file path. Please try saving the template first.</value>
+  </data>
+  <data name="failed_to_open_file" xml:space="preserve">
+    <value>Failed to open file:</value>
+  </data>
+  <data name="error_creating_new_template" xml:space="preserve">
+    <value>An error occurred while creating the new template:</value>
+  </data>
+  <data name="import_failed" xml:space="preserve">
+    <value>Import failed:</value>
+  </data>
+  <data name="failed_to_open_zip_file" xml:space="preserve">
+    <value>Failed to open ZIP file</value>
+  </data>
+  <data name="diagram_template_corrupted_or_invalid" xml:space="preserve">
+    <value>The diagram template file is corrupted or does not contain a valid diagram template JSON file.</value>
+  </data>
+  <data name="failed_to_parse_diagram_template_json" xml:space="preserve">
+    <value>Failed to parse diagram template JSON file</value>
+  </data>
+  <data name="invalid_diagram_template_file" xml:space="preserve">
+    <value>Invalid diagram template file</value>
+  </data>
+  <data name="custom_diagram_template" xml:space="preserve">
+    <value>Custom Diagram Template</value>
+  </data>
+  <data name="already_exists_overwrite_confirm" xml:space="preserve">
+    <value>Already exists. Do you want to overwrite it?</value>
+  </data>
+  <data name="overwrite" xml:space="preserve">
+    <value>Overwrite</value>
+  </data>
+  <data name="failed_to_delete_old_directory" xml:space="preserve">
+    <value>Failed to delete the old directory:</value>
+  </data>
+  <data name="invalid_diagram_template_no_json" xml:space="preserve">
+    <value>Invalid diagram template file: diagram JSON file not found.</value>
+  </data>
+  <data name="template_load_failed" xml:space="preserve">
+    <value>Failed to load template</value>
+  </data>
+  <data name="script_not_defined_in_template" xml:space="preserve">
+    <value>Script not defined in the diagram template</value>
+  </data>
+  <data name="function" xml:space="preserve">
+    <value>Function</value>
   </data>
 </root>

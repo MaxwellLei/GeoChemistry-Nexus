@@ -118,262 +118,274 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="StartStatus" xml:space="preserve">
-    <value>Starten...</value>
+    <value>Iniciando...</value>
+    <comment>软件启动界面</comment>
   </data>
   <data name="Show" xml:space="preserve">
-    <value>Oberfläche anzeigen</value>
+    <value>Mostrar interfaz</value>
+    <comment>托盘菜单右键</comment>
   </data>
   <data name="Exit" xml:space="preserve">
-    <value>Programm beenden</value>
+    <value>Salir</value>
+    <comment>托盘菜单右键</comment>
   </data>
   <data name="home" xml:space="preserve">
-    <value>Startseite</value>
+    <value>Inicio</value>
+    <comment>主窗体侧边栏</comment>
   </data>
   <data name="Plot" xml:space="preserve">
-    <value>Diagramm zeichnen</value>
+    <value>Gráfico</value>
+    <comment>主窗体侧边栏</comment>
   </data>
   <data name="Geothermometer" xml:space="preserve">
-    <value>Geothermometer</value>
+    <value>Geotermómetro</value>
+    <comment>主窗体侧边栏</comment>
   </data>
   <data name="Setting" xml:space="preserve">
-    <value>Einstellungen</value>
+    <value>Configuración</value>
+    <comment>主窗体侧边栏</comment>
   </data>
   <data name="File" xml:space="preserve">
-    <value>_Datei(F)</value>
+    <value>_Archivo(F)</value>
+    <comment>绘图界面</comment>
   </data>
   <data name="Edit" xml:space="preserve">
-    <value>Bearbeiten</value>
+    <value>Editar</value>
+    <comment>绘图界面</comment>
   </data>
   <data name="Expand" xml:space="preserve">
-    <value>Erweiterungen</value>
+    <value>Expandir</value>
+    <comment>绘图界面</comment>
   </data>
   <data name="EditMode" xml:space="preserve">
-    <value>Bearbeitungsmodus</value>
+    <value>Modo de edición</value>
+    <comment>绘图界面</comment>
   </data>
   <data name="NewBasemap" xml:space="preserve">
-    <value>Neue Grundkarte</value>
+    <value>Nuevo mapa base</value>
+    <comment>绘图界面</comment>
   </data>
   <data name="SaveBasemap" xml:space="preserve">
-    <value>Grundkarte speichern</value>
+    <value>Guardar mapa base</value>
   </data>
   <data name="ImportBasemap" xml:space="preserve">
-    <value>Grundkarte importieren</value>
+    <value>Importar mapa base</value>
   </data>
   <data name="ExportBasemap" xml:space="preserve">
-    <value>Grundkarte exportieren</value>
+    <value>Exportar mapa base</value>
   </data>
   <data name="DeleteBasemap" xml:space="preserve">
-    <value>Grundkarte löschen</value>
+    <value>Eliminar mapa base</value>
   </data>
   <data name="GetMoreBasemap" xml:space="preserve">
-    <value>Mehr Grundkarten abrufen</value>
+    <value>Obtener más mapas base</value>
   </data>
   <data name="ImportData" xml:space="preserve">
-    <value>Daten importieren</value>
+    <value>Importar datos</value>
   </data>
   <data name="ResetPlot" xml:space="preserve">
-    <value>Diagramm zurücksetzen</value>
+    <value>Restablecer gráfico</value>
   </data>
   <data name="ResetVision" xml:space="preserve">
-    <value>Ansicht zurücksetzen</value>
+    <value>Restablecer vista</value>
   </data>
   <data name="CancelSelected" xml:space="preserve">
-    <value>Auswahl aufheben</value>
+    <value>Deseleccionar</value>
   </data>
   <data name="LocationAxis" xml:space="preserve">
-    <value>Positionsachse</value>
+    <value>Eje de ubicación</value>
   </data>
   <data name="ExportImage" xml:space="preserve">
-    <value>Bild exportieren</value>
+    <value>Exportar imagen</value>
   </data>
   <data name="ExportImagePNG" xml:space="preserve">
-    <value>Als PNG exportieren</value>
+    <value>Exportar como PNG</value>
   </data>
   <data name="ExportImageJPG" xml:space="preserve">
-    <value>Als JPG exportieren</value>
+    <value>Exportar como JPG</value>
   </data>
   <data name="ExportImageBMP" xml:space="preserve">
-    <value>Als BMP exportieren</value>
+    <value>Exportar como BMP</value>
   </data>
   <data name="ExportImageWebp" xml:space="preserve">
-    <value>Als Webp exportieren</value>
+    <value>Exportar como WebP</value>
   </data>
   <data name="ExportImageSVG" xml:space="preserve">
-    <value>Als SVG exportieren</value>
+    <value>Exportar como SVG</value>
   </data>
   <data name="LegendSetting" xml:space="preserve">
-    <value>Legendeneinstellungen</value>
+    <value>Configuración de leyenda</value>
   </data>
   <data name="PlotSetting" xml:space="preserve">
-    <value>Diagrammeinstellungen</value>
+    <value>Configuración de trazado</value>
   </data>
   <data name="AddLine" xml:space="preserve">
-    <value>Linie hinzufügen</value>
+    <value>Agregar línea</value>
   </data>
   <data name="AddPolygons" xml:space="preserve">
-    <value>Polygon hinzufügen</value>
+    <value>Agregar polígono</value>
   </data>
   <data name="AddText" xml:space="preserve">
-    <value>Kommentar hinzufügen</value>
+    <value>Agregar nota</value>
   </data>
   <data name="JsSetting" xml:space="preserve">
-    <value>Skripteinstellungen</value>
+    <value>Configuración de script</value>
   </data>
   <data name="Save" xml:space="preserve">
-    <value>Speichern</value>
+    <value>Guardar</value>
   </data>
   <data name="QuitEdit" xml:space="preserve">
-    <value>Bearbeitung beenden</value>
+    <value>Salir de edición</value>
   </data>
   <data name="IgneousRock" xml:space="preserve">
-    <value>Magmatisches Gestein</value>
+    <value>Roca ígnea</value>
   </data>
   <data name="TectonicSetting" xml:space="preserve">
-    <value>Tektonisches Umfeld</value>
+    <value>Entorno tectónico</value>
   </data>
   <data name="Basalt" xml:space="preserve">
-    <value>Basalt</value>
+    <value>Basalto</value>
   </data>
   <data name="RockClassification" xml:space="preserve">
-    <value>Gesteinsklassifikation</value>
+    <value>Clasificación de rocas</value>
   </data>
   <data name="GTMP" xml:space="preserve">
-    <value>Temperaturdiagramm</value>
+    <value>Gráfico de temperatura</value>
   </data>
   <data name="Guide" xml:space="preserve">
-    <value>Anleitung</value>
+    <value>Guía</value>
   </data>
   <data name="BorderLine" xml:space="preserve">
-    <value>Grenze</value>
+    <value>Límite</value>
   </data>
   <data name="PlotText" xml:space="preserve">
-    <value>Kommentar</value>
+    <value>Comentarios</value>
   </data>
   <data name="PlotAxies" xml:space="preserve">
-    <value>Koordinatenachse</value>
+    <value>Ejes</value>
   </data>
   <data name="PlotLeftAxies" xml:space="preserve">
-    <value>Linke Achse</value>
+    <value>Eje izquierdo</value>
   </data>
   <data name="PlotBottomAxies" xml:space="preserve">
-    <value>Untere Achse</value>
+    <value>Eje inferior</value>
   </data>
   <data name="PlotData" xml:space="preserve">
-    <value>Daten</value>
+    <value>Datos</value>
   </data>
   <data name="MajorAxes" xml:space="preserve">
-    <value>Hauptachse</value>
+    <value>Eje principal</value>
   </data>
   <data name="MinorAxes" xml:space="preserve">
-    <value>Nebenachse</value>
+    <value>Eje secundario</value>
   </data>
   <data name="legend" xml:space="preserve">
-    <value>Legende</value>
+    <value>Leyenda</value>
   </data>
   <data name="Background" xml:space="preserve">
-    <value>Hintergrund</value>
+    <value>Fondo</value>
   </data>
   <data name="Calculate" xml:space="preserve">
-    <value>Berechnen</value>
+    <value>Calcular</value>
   </data>
   <data name="Delete" xml:space="preserve">
-    <value>Löschen</value>
+    <value>Eliminar</value>
   </data>
   <data name="Confirm" xml:space="preserve">
-    <value>Bestätigen</value>
+    <value>Confirmar</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Abbrechen</value>
+    <value>Cancelar</value>
   </data>
   <data name="IsShow" xml:space="preserve">
-    <value>Anzeigen</value>
+    <value>Visible</value>
   </data>
   <data name="FontFamily" xml:space="preserve">
-    <value>Schriftart</value>
+    <value>Fuente</value>
   </data>
   <data name="FontStyle" xml:space="preserve">
-    <value>Schriftstil</value>
+    <value>Estilo de fuente</value>
   </data>
   <data name="FontNormal" xml:space="preserve">
-    <value>Standard</value>
+    <value>Normal</value>
   </data>
   <data name="FontBold" xml:space="preserve">
-    <value>Fett</value>
+    <value>Negrita</value>
   </data>
   <data name="FontItalic" xml:space="preserve">
-    <value>Kursiv</value>
+    <value>Cursiva</value>
   </data>
   <data name="FontSize" xml:space="preserve">
-    <value>Schriftgröße</value>
+    <value>Tamaño de fuente</value>
   </data>
   <data name="FontColor" xml:space="preserve">
-    <value>Schriftfarbe</value>
+    <value>Color de fuente</value>
   </data>
   <data name="TextContent" xml:space="preserve">
-    <value>Inhalt</value>
+    <value>Contenido</value>
   </data>
   <data name="LineStyle" xml:space="preserve">
-    <value>Linienstil</value>
+    <value>Estilo de línea</value>
   </data>
   <data name="LineSolid" xml:space="preserve">
-    <value>Durchgezogen</value>
+    <value>Sólida</value>
   </data>
   <data name="LineDash" xml:space="preserve">
-    <value>Gestrichelt</value>
+    <value>Guiones</value>
   </data>
   <data name="LineDashDot" xml:space="preserve">
-    <value>Strichpunkt</value>
+    <value>Punto y raya</value>
   </data>
   <data name="LineDenselyDashed" xml:space="preserve">
-    <value>Dicht gestrichelt</value>
+    <value>Guiones densos</value>
   </data>
   <data name="LineWidth" xml:space="preserve">
-    <value>Breite</value>
+    <value>Ancho</value>
   </data>
   <data name="LineColor" xml:space="preserve">
-    <value>Farbe</value>
+    <value>Color</value>
   </data>
   <data name="PointStyle" xml:space="preserve">
-    <value>Punktstil</value>
+    <value>Estilo de punto</value>
   </data>
   <data name="PointCircle" xml:space="preserve">
-    <value>Kreis</value>
+    <value>Círculo</value>
   </data>
   <data name="PointHollowCircle" xml:space="preserve">
-    <value>Hohler Kreis</value>
+    <value>Círculo hueco</value>
   </data>
   <data name="PointSquare" xml:space="preserve">
-    <value>Quadrat</value>
+    <value>Cuadrado</value>
   </data>
   <data name="PointFilledTriangleUp" xml:space="preserve">
-    <value>Dreieck oben</value>
+    <value>Triángulo hacia arriba</value>
   </data>
   <data name="PointFilledTriangleDown" xml:space="preserve">
-    <value>Dreieck unten</value>
+    <value>Triángulo hacia abajo</value>
   </data>
   <data name="PointDiamond" xml:space="preserve">
-    <value>Raute</value>
+    <value>Rombo</value>
   </data>
   <data name="PointEks" xml:space="preserve">
-    <value>Kreuz (X)</value>
+    <value>Cruz (X)</value>
   </data>
   <data name="PointCross" xml:space="preserve">
-    <value>Kreuz (+)</value>
+    <value>Cruz (+)</value>
   </data>
   <data name="PointStar" xml:space="preserve">
-    <value>Stern</value>
+    <value>Estrella</value>
   </data>
   <data name="size" xml:space="preserve">
-    <value>Größe</value>
+    <value>Tamaño</value>
   </data>
   <data name="IsShowAxes" xml:space="preserve">
-    <value>Achsen anzeigen</value>
+    <value>Mostrar ejes</value>
   </data>
   <data name="IsShowAxesTick" xml:space="preserve">
-    <value>Hauptstriche ausblenden</value>
+    <value>Ocultar marcas principales</value>
   </data>
   <data name="AxesStyle" xml:space="preserve">
-    <value>Achsenstil</value>
+    <value>Estilo de eje</value>
   </data>
   <data name="AxesStyleNormal" xml:space="preserve">
     <value>Normal</value>
@@ -382,1179 +394,1295 @@
     <value>Log(10)</value>
   </data>
   <data name="AxesTickFont" xml:space="preserve">
-    <value>Achsenschriftart</value>
+    <value>Fuente de marcas de eje</value>
   </data>
   <data name="AxesTickFontSize" xml:space="preserve">
-    <value>Achsenschriftgröße</value>
+    <value>Tamaño de fuente de marcas</value>
   </data>
   <data name="AxesTickSpacing" xml:space="preserve">
-    <value>Achsenabstand</value>
+    <value>Espaciado de marcas</value>
   </data>
   <data name="AxesTickUpLimit" xml:space="preserve">
-    <value>Obergrenze</value>
+    <value>Límite superior de escala</value>
   </data>
   <data name="AxesTickDownLimit" xml:space="preserve">
-    <value>Untergrenze</value>
+    <value>Límite inferior de escala</value>
   </data>
   <data name="AxesTickColor" xml:space="preserve">
-    <value>Achsenfarbe</value>
+    <value>Color de marcas</value>
   </data>
   <data name="IsShowMinorAxes" xml:space="preserve">
-    <value>Nebenstriche ausblenden</value>
+    <value>Ocultar marcas secundarias</value>
   </data>
   <data name="IsShowLegend" xml:space="preserve">
-    <value>Legende anzeigen</value>
+    <value>Mostrar leyenda</value>
   </data>
   <data name="LegendPosition" xml:space="preserve">
-    <value>Legendenposition</value>
+    <value>Posición de leyenda</value>
   </data>
   <data name="LegendPositionRU" xml:space="preserve">
-    <value>Rechts oben</value>
+    <value>Superior derecha</value>
   </data>
   <data name="LegendPositionRD" xml:space="preserve">
-    <value>Rechts unten</value>
+    <value>Inferior derecha</value>
   </data>
   <data name="LegendPositionLU" xml:space="preserve">
-    <value>Links oben</value>
+    <value>Superior izquierda</value>
   </data>
   <data name="LegendPositionLD" xml:space="preserve">
-    <value>Links unten</value>
+    <value>Inferior izquierda</value>
   </data>
   <data name="LegendDirection" xml:space="preserve">
-    <value>Legendenausrichtung</value>
+    <value>Dirección de leyenda</value>
   </data>
   <data name="LegendVertical" xml:space="preserve">
-    <value>Vertikal</value>
+    <value>Vertical</value>
   </data>
   <data name="LegendHorizontal" xml:space="preserve">
     <value>Horizontal</value>
   </data>
   <data name="PlotTitle" xml:space="preserve">
-    <value>Diagrammtitel</value>
+    <value>Título del gráfico</value>
   </data>
   <data name="PlotTitleFont" xml:space="preserve">
-    <value>Titelschriftart</value>
+    <value>Fuente del título</value>
   </data>
   <data name="PlotTitleFontSize" xml:space="preserve">
-    <value>Titelschriftgröße</value>
+    <value>Tamaño de fuente del título</value>
   </data>
   <data name="PlotTitleColor" xml:space="preserve">
-    <value>Titelfarbe</value>
+    <value>Color del título</value>
   </data>
   <data name="PlotAxesTitle1" xml:space="preserve">
-    <value>Achsentitel 1</value>
+    <value>Título del eje 1</value>
   </data>
   <data name="PlotAxesTitle2" xml:space="preserve">
-    <value>Achsentitel 2</value>
+    <value>Título del eje 2</value>
   </data>
   <data name="PlotAxesTitleFont" xml:space="preserve">
-    <value>Achsentitelschriftart</value>
+    <value>Fuente del título del eje</value>
   </data>
   <data name="PlotAxesTitleFontSize" xml:space="preserve">
-    <value>Achsentitelschriftgröße</value>
+    <value>Tamaño de fuente del título del eje</value>
   </data>
   <data name="PlotAxesTitleColor" xml:space="preserve">
-    <value>Achsentitelfarbe</value>
+    <value>Color del título del eje</value>
   </data>
   <data name="PlotShowGrid" xml:space="preserve">
-    <value>Gitter anzeigen</value>
+    <value>Mostrar cuadrícula</value>
   </data>
   <data name="PlotMajorGridColor" xml:space="preserve">
-    <value>Hauptgitterfarbe</value>
+    <value>Color de cuadrícula principal</value>
   </data>
   <data name="PlotMajorGridWidth" xml:space="preserve">
-    <value>Hauptgitterbreite</value>
+    <value>Ancho de cuadrícula principal</value>
   </data>
   <data name="PlotShowMinorGrid" xml:space="preserve">
-    <value>Nebengitter anzeigen</value>
+    <value>Mostrar cuadrícula secundaria</value>
   </data>
   <data name="PlotMinorGridColor" xml:space="preserve">
-    <value>Nebengitterfarbe</value>
+    <value>Color de cuadrícula secundaria</value>
   </data>
   <data name="PlotMinorGridWidth" xml:space="preserve">
-    <value>Nebengitterbreite</value>
+    <value>Ancho de cuadrícula secundaria</value>
   </data>
   <data name="PlotSwitchFilledColor" xml:space="preserve">
-    <value>Füllfarbe umkehren</value>
+    <value>Invertir color de relleno</value>
   </data>
   <data name="PlotFilledColor1" xml:space="preserve">
-    <value>Füllbereichsfarbe 1</value>
+    <value>Color de relleno 1</value>
   </data>
   <data name="PlotFilledColor2" xml:space="preserve">
-    <value>Füllbereichsfarbe 2</value>
+    <value>Color de relleno 2</value>
   </data>
   <data name="Parameters" xml:space="preserve">
-    <value>Erforderliche Parameter</value>
+    <value>Parámetros requeridos</value>
   </data>
   <data name="Js" xml:space="preserve">
-    <value>Js Skript</value>
+    <value>Script Js</value>
   </data>
   <data name="CheckJs" xml:space="preserve">
-    <value>Skript prüfen</value>
+    <value>Comprobar script</value>
   </data>
   <data name="Undelete_Message" xml:space="preserve">
-    <value>Löschen rückgängig gemacht</value>
+    <value>Eliminación cancelada</value>
   </data>
   <data name="DeleteingBasemapConfirm1_Message" xml:space="preserve">
-    <value>Lösche Grundkarte</value>
+    <value>Eliminando mapa base</value>
   </data>
   <data name="DeleteingBasemapConfirm2_Message" xml:space="preserve">
-    <value>Wirklich löschen?</value>
+    <value>¿Confirmar eliminación?</value>
   </data>
   <data name="SaveSuccess" xml:space="preserve">
-    <value>Erfolgreich gespeichert</value>
+    <value>Guardado con éxito</value>
   </data>
   <data name="ParameterNotFilledIn" xml:space="preserve">
-    <value>Plot-Parameter nicht ausgefüllt</value>
+    <value>Parámetros de trazado no completados</value>
   </data>
   <data name="ScNotFilledIn" xml:space="preserve">
-    <value>Plot-Skript nicht ausgefüllt</value>
+    <value>Script de trazado no completado</value>
   </data>
   <data name="BasemapVersionToLow1" xml:space="preserve">
-    <value>Importierte Grundkartenversion zu niedrig, bitte verwenden Sie eine Version höher als</value>
+    <value>La versión del mapa base importado es demasiado antigua, utilice una versión superior a</value>
   </data>
   <data name="BasemapVersionToLow2" xml:space="preserve">
-    <value>der Grundkarte</value>
+    <value>.</value>
   </data>
   <data name="CancelImport" xml:space="preserve">
-    <value>Import abgebrochen</value>
+    <value>Importación cancelada</value>
   </data>
   <data name="BasemapExisted" xml:space="preserve">
-    <value>Grundkartendatei existiert bereits. Überschreiben?</value>
+    <value>El archivo de mapa base ya existe, ¿sobrescribirlo?</value>
   </data>
   <data name="NewBasemapSuccess" xml:space="preserve">
-    <value>Neue Grundkarte erfolgreich erstellt</value>
+    <value>Mapa base creado con éxito</value>
   </data>
   <data name="CategoryFormatError" xml:space="preserve">
-    <value>Kategorieformatfehler</value>
+    <value>Error de formato de categoría</value>
   </data>
   <data name="ParameterNull" xml:space="preserve">
-    <value>Parameter ist leer</value>
+    <value>El parámetro está vacío</value>
   </data>
   <data name="JsNull" xml:space="preserve">
-    <value>Skript ist leer</value>
+    <value>El script está vacío</value>
   </data>
   <data name="BasemapCategories" xml:space="preserve">
-    <value>Grundkartenkategorie</value>
+    <value>Categorías de mapa base</value>
   </data>
   <data name="BasemapLanguage" xml:space="preserve">
-    <value>Grundkartensprache</value>
+    <value>Idioma del mapa base</value>
   </data>
   <data name="Zircon" xml:space="preserve">
-    <value>Zirkon</value>
+    <value>Circón</value>
   </data>
   <data name="Sphalerite" xml:space="preserve">
-    <value>Sphalerit</value>
+    <value>Esfalerita</value>
   </data>
   <data name="Quartz" xml:space="preserve">
-    <value>Quarz</value>
+    <value>Cuarzo</value>
   </data>
   <data name="Arsenopyrite" xml:space="preserve">
-    <value>Arsenopyrit</value>
+    <value>Arsenopirita</value>
   </data>
   <data name="Chlorite" xml:space="preserve">
-    <value>Chlorit</value>
+    <value>Clorita</value>
   </data>
   <data name="Biotite" xml:space="preserve">
-    <value>Biotit</value>
+    <value>Biotita</value>
   </data>
   <data name="Amphibole" xml:space="preserve">
-    <value>Amphibol</value>
+    <value>Anfíbol</value>
   </data>
   <data name="Reset" xml:space="preserve">
-    <value>Zurücksetzen</value>
+    <value>Restablecer</value>
   </data>
   <data name="ExportResult" xml:space="preserve">
-    <value>Ergebnis exportieren</value>
+    <value>Exportar resultados</value>
   </data>
   <data name="TGMInfo" xml:space="preserve">
-    <value>Hier klicken oder Datei hierher ziehen</value>
+    <value>Haga clic o arrastre el archivo aquí</value>
   </data>
   <data name="CalTarget" xml:space="preserve">
-    <value>Berechnungsziel</value>
+    <value>Objetivo de cálculo</value>
   </data>
   <data name="CalTarget1" xml:space="preserve">
-    <value>Zr-Sättigungstemperatur (Watson und Harrison, 1983)</value>
+    <value>Temp. saturación Zr (Watson y Harrison, 1983)</value>
   </data>
   <data name="CalTarget2" xml:space="preserve">
-    <value>Zr-Haupttemperatur (Watson und Harrison, 1983)</value>
+    <value>Temp. principal Zr (Watson y Harrison, 1983)</value>
   </data>
   <data name="Pressure" xml:space="preserve">
-    <value>Druck(Mpa)</value>
+    <value>Presión (MPa)</value>
   </data>
   <data name="AmphiboleGTM" xml:space="preserve">
-    <value>Si-Thermometer (Ridolfi et al., 2010)</value>
+    <value>Termómetro Si (Ridolfi et al., 2010)</value>
   </data>
   <data name="BiotiteGTM" xml:space="preserve">
-    <value>Ti-Thermometer (Henry et al., 2005)</value>
+    <value>Termómetro Ti (Henry et al., 2005)</value>
   </data>
   <data name="ChloriteGTM" xml:space="preserve">
-    <value>Al4-Thermometer (Jowett, 1991)</value>
+    <value>Termómetro Al4 (Jowett, 1991)</value>
   </data>
   <data name="ArsenopyriteGTM" xml:space="preserve">
-    <value>Arsenopyrit-Thermometer (Kretschmar und Scott, 1976)</value>
+    <value>Termómetro de Arsenopirita (Kretschmar y Scott, 1976)</value>
   </data>
   <data name="QuartzGTM" xml:space="preserve">
-    <value>TitaniQ-Thermometer (Wark und Watson, 2006)</value>
+    <value>Termómetro TitaniQ (Wark y Watson, 2006)</value>
   </data>
   <data name="SphaleriteGTM" xml:space="preserve">
-    <value>FeS-Thermometer (Scott und Barnes, 1971)</value>
+    <value>Termómetro FeS (Scott y Barnes, 1971)</value>
   </data>
   <data name="SphaleriteGGIMFisGTM" xml:space="preserve">
-    <value>GGIMFis-Thermometer (Frenzel et al., 2016)</value>
+    <value>Termómetro GGIMFis (Frenzel et al., 2016)</value>
   </data>
   <data name="ZirconTiGTM" xml:space="preserve">
-    <value>Ti-Thermometer (Loucks et al., 2020)</value>
+    <value>Termómetro Ti (Loucks et al., 2020)</value>
   </data>
   <data name="ZirconZrGTM" xml:space="preserve">
-    <value>Zr-Thermometer (Watson und Harrison, 1983)</value>
+    <value>Termómetro Zr (Watson y Harrison, 1983)</value>
   </data>
   <data name="Step1" xml:space="preserve">
-    <value>Daten importieren / eingeben</value>
+    <value>Importar / Rellenar datos</value>
   </data>
   <data name="Step2" xml:space="preserve">
-    <value>Parameter prüfen</value>
+    <value>Comprobar parámetros</value>
   </data>
   <data name="Step3" xml:space="preserve">
-    <value>Ergebnis berechnen</value>
+    <value>Calcular resultados</value>
   </data>
   <data name="NormalSetting" xml:space="preserve">
-    <value>Allgemeine Einstellungen</value>
+    <value>Configuración general</value>
   </data>
   <data name="About" xml:space="preserve">
-    <value>Über</value>
+    <value>Acerca de</value>
   </data>
   <data name="FilePath" xml:space="preserve">
-    <value>Dateipfad</value>
+    <value>Ruta del archivo</value>
   </data>
   <data name="FileSavePath" xml:space="preserve">
-    <value>Speicherort</value>
+    <value>Ruta de guardado</value>
   </data>
   <data name="DefaultPath" xml:space="preserve">
-    <value>Standardpfad</value>
+    <value>Ubicación predeterminada</value>
   </data>
   <data name="CustomPath" xml:space="preserve">
-    <value>Benutzerdefinierter Ordner</value>
+    <value>Carpeta personalizada</value>
   </data>
   <data name="OpenFileLocation" xml:space="preserve">
-    <value>Dateispeicherort öffnen</value>
+    <value>Abrir ubicación de carpeta</value>
   </data>
   <data name="InternationalizationAndPersonalization" xml:space="preserve">
-    <value>Internationalisierung &amp; Personalisierung</value>
+    <value>Internacionalización y personalización</value>
   </data>
   <data name="Theme" xml:space="preserve">
-    <value>Thema</value>
+    <value>Tema</value>
   </data>
   <data name="Default" xml:space="preserve">
-    <value>Standard</value>
+    <value>Predeterminado</value>
   </data>
   <data name="Language_" xml:space="preserve">
-    <value>Sprache</value>
+    <value>Idioma</value>
   </data>
   <data name="EnglishUS" xml:space="preserve">
     <value>English (US)</value>
   </data>
   <data name="ChineseS" xml:space="preserve">
-    <value>Chinesisch (Vereinfacht)</value>
+    <value>中文(简体)</value>
   </data>
   <data name="DefaultRandom" xml:space="preserve">
-    <value>Standard zufällig</value>
+    <value>Aleatorio predeterminado</value>
   </data>
   <data name="MessageNotification" xml:space="preserve">
-    <value>Benachrichtigungen</value>
+    <value>Notificación de mensajes</value>
   </data>
   <data name="MessageAutoClose" xml:space="preserve">
-    <value>Automatische Schließzeit</value>
+    <value>Tiempo de cierre automático</value>
   </data>
   <data name="MessageAutoClose5" xml:space="preserve">
-    <value>5 Sekunden</value>
+    <value>5 segundos</value>
   </data>
   <data name="MessageAutoClose4" xml:space="preserve">
-    <value>4 Sekunden</value>
+    <value>4 segundos</value>
   </data>
   <data name="MessageAutoClose3" xml:space="preserve">
-    <value>3 Sekunden</value>
+    <value>3 segundos</value>
   </data>
   <data name="MessageAutoClose2" xml:space="preserve">
-    <value>2 Sekunden</value>
+    <value>2 segundos</value>
   </data>
   <data name="Other" xml:space="preserve">
-    <value>Sonstiges</value>
+    <value>Otros</value>
   </data>
   <data name="Boot" xml:space="preserve">
-    <value>Autostart beim Booten</value>
+    <value>Inicio automático al arrancar</value>
   </data>
   <data name="AutoCheckUpdate" xml:space="preserve">
-    <value>Automatisch nach Updates suchen</value>
+    <value>Comprobar actualizaciones automáticamente</value>
   </data>
   <data name="CheckUpdate" xml:space="preserve">
-    <value>Nach Updates suchen</value>
+    <value>Comprobar actualizaciones</value>
   </data>
   <data name="QuitAppMode" xml:space="preserve">
-    <value>Beenden-Modus</value>
+    <value>Método de salida</value>
   </data>
   <data name="MinimizeTray" xml:space="preserve">
-    <value>In Systemtray minimieren</value>
+    <value>Minimizar a la bandeja</value>
   </data>
   <data name="Quit" xml:space="preserve">
-    <value>Direkt beenden</value>
+    <value>Salir directamente</value>
   </data>
   <data name="AboutInfo1" xml:space="preserve">
-    <value>Dieses Projekt nutzt geochemische Daten für Diagrammerstellung, Berechnung und Analyse zur effizienten Verarbeitung geologischer Daten. Ziel ist es, Geowissenschaftlern zu helfen, den Datenanalyseprozess zu beschleunigen und die Forschungseffizienz zu verbessern.</value>
+    <value>Este proyecto utiliza datos geoquímicos para trazar gráficos, calcular y analizar, procesando datos geológicos de manera eficiente para ayudar a los investigadores en ciencias de la tierra a acelerar el flujo de trabajo de análisis de datos y mejorar la eficiencia de la investigación.</value>
   </data>
   <data name="AboutInfo2" xml:space="preserve">
-    <value>Wenn Ihnen dieses Projekt gefällt, geben Sie uns bitte einen Stern zur Unterstützung! Wenn Sie es hilfreich finden, können Sie mir auch einen Kaffee spendieren ☕</value>
+    <value>Si le interesa este proyecto, ¡por favor déle una Estrella para apoyarlo! Si le resulta útil, también puede invitarme a un café ☕</value>
   </data>
   <data name="AboutInfo3" xml:space="preserve">
-    <value>Wir begrüßen weitere Forscher!
-    Lassen Sie uns gemeinsam geochemische Berechnungsmethoden und weitere Diagrammvorlagen pflegen und aktualisieren!
-    Damit die Software leistungsfähiger und benutzerfreundlicher wird!</value>
+    <value>¡Damos la bienvenida a más investigadores para que se unan!
+	¡Juntos mantendremos y actualizaremos métodos de cálculo geoquímico y más plantillas de mapas base!
+	¡Hagamos que el software sea más potente y fácil de usar!</value>
   </data>
   <data name="ThankSupport" xml:space="preserve">
-    <value>Danke für die Unterstützung</value>
+    <value>Gracias por su apoyo</value>
   </data>
   <data name="Support1" xml:space="preserve">
-    <value>📌Steuerelemente:</value>
+    <value>📌 Soporte de controles:</value>
   </data>
   <data name="Support3" xml:space="preserve">
-    <value>📌Dokumentation:</value>
+    <value>📌 Soporte de documentación:</value>
   </data>
   <data name="Support4" xml:space="preserve">
-    <value>📌Berechnung:</value>
+    <value>📌 Soporte de cálculo:</value>
   </data>
   <data name="Support2" xml:space="preserve">
-    <value>📌Diagramme:</value>
+    <value>📌 Soporte de gráficos:</value>
   </data>
   <data name="Support5" xml:space="preserve">
-    <value>📌Tools:</value>
+    <value>📌 Soporte de herramientas:</value>
   </data>
   <data name="PlotBoder" xml:space="preserve">
-    <value>Rahmen</value>
+    <value>Borde</value>
   </data>
   <data name="ResetSuccess" xml:space="preserve">
-    <value>Erfolgreich zurückgesetzt</value>
+    <value>Restablecimiento exitoso</value>
   </data>
   <data name="ModifedSuccess" xml:space="preserve">
-    <value>Erfolgreich geändert</value>
+    <value>Modificación exitosa</value>
   </data>
   <data name="ModifedCanceled" xml:space="preserve">
-    <value>Änderung abgebrochen</value>
+    <value>Modificación cancelada</value>
   </data>
   <data name="Info1" xml:space="preserve">
-    <value>Bitte besuchen Sie die offizielle Website, Funktion in Entwicklung...</value>
+    <value>Por favor visite el sitio web oficial, esta función está en desarrollo...</value>
   </data>
   <data name="import_template" xml:space="preserve">
-    <value>Diagrammvorlage importieren</value>
+    <value>Importar plantilla de gráfico</value>
   </data>
   <data name="create_new_diagram_template" xml:space="preserve">
-    <value>Neue Diagrammvorlage erstellen</value>
+    <value>Crear nueva plantilla de diagrama</value>
   </data>
   <data name="template_library" xml:space="preserve">
-    <value>Vorlagenbibliothek</value>
+    <value>Biblioteca de plantillas</value>
   </data>
   <data name="return_to_template_library" xml:space="preserve">
-    <value>Zurück</value>
+    <value>Volver</value>
   </data>
   <data name="Data" xml:space="preserve">
-    <value>Daten</value>
+    <value>Datos</value>
   </data>
   <data name="import_data" xml:space="preserve">
-    <value>Daten importieren</value>
+    <value>Importar datos</value>
   </data>
   <data name="clear_data" xml:space="preserve">
-    <value>Daten löschen</value>
+    <value>Borrar datos</value>
   </data>
   <data name="view" xml:space="preserve">
-    <value>Ansicht</value>
+    <value>Vista</value>
   </data>
   <data name="reset_view" xml:space="preserve">
-    <value>Ansicht zurücksetzen</value>
+    <value>Restablecer vista</value>
   </data>
   <data name="coordinate_positioning" xml:space="preserve">
-    <value>Koordinatenpositionierung</value>
+    <value>Posicionamiento de coordenadas</value>
   </data>
   <data name="select" xml:space="preserve">
-    <value>Auswählen</value>
+    <value>Seleccionar</value>
   </data>
   <data name="deselect" xml:space="preserve">
-    <value>Auswahl aufheben</value>
+    <value>Deseleccionar</value>
   </data>
   <data name="export" xml:space="preserve">
-    <value>Exportieren</value>
+    <value>Exportar</value>
   </data>
   <data name="export_image" xml:space="preserve">
-    <value>Bild exportieren</value>
+    <value>Exportar imagen</value>
   </data>
   <data name="png_format" xml:space="preserve">
-    <value>PNG-Format</value>
+    <value>Formato PNG</value>
   </data>
   <data name="bmp_format" xml:space="preserve">
-    <value>BMP-Format</value>
+    <value>Formato BMP</value>
   </data>
   <data name="jpg_format" xml:space="preserve">
-    <value>JPG-Format</value>
+    <value>Formato JPG</value>
   </data>
   <data name="webp_format" xml:space="preserve">
-    <value>WebP-Format</value>
+    <value>Formato WebP</value>
   </data>
   <data name="svg_format" xml:space="preserve">
-    <value>SVG-Format</value>
+    <value>Formato SVG</value>
   </data>
   <data name="legend_settings" xml:space="preserve">
-    <value>Legendeneinstellungen</value>
+    <value>Configuración de leyenda</value>
   </data>
   <data name="grid_settings" xml:space="preserve">
-    <value>Gittereinstellungen</value>
+    <value>Configuración de cuadrícula</value>
   </data>
   <data name="script_settings" xml:space="preserve">
-    <value>Skripteinstellungen</value>
+    <value>Configuración de script</value>
   </data>
   <data name="plot_settings" xml:space="preserve">
-    <value>Diagrammeinstellungen</value>
+    <value>Configuración de trazado</value>
   </data>
   <data name="all_templates" xml:space="preserve">
-    <value>Alle Vorlagen</value>
+    <value>Todas las plantillas</value>
   </data>
   <data name="uncategorized" xml:space="preserve">
-    <value>Unkategorisiert</value>
+    <value>Sin categorizar</value>
   </data>
   <data name="disallow_modify_data_point_position" xml:space="preserve">
-    <value>Änderung der Datenpunktposition nicht erlaubt</value>
+    <value>No se permite modificar la posición del punto de datos</value>
   </data>
   <data name="load_valid_template_with_script" xml:space="preserve">
-    <value>Bitte laden Sie zuerst eine gültige Vorlage mit Skriptkonfiguration</value>
+    <value>Cargue primero una plantilla de gráfico válida, la plantilla debe contener la configuración del script de cálculo</value>
   </data>
   <data name="incomplete_script_config" xml:space="preserve">
-    <value>Unvollständige Skriptkonfiguration in der Vorlage, bitte prüfen Sie RequiredDataSeries und ScriptBody</value>
+    <value>Configuración de script incompleta en la plantilla, verifique RequiredDataSeries y ScriptBody</value>
   </data>
   <data name="select_data_file" xml:space="preserve">
-    <value>Bitte Datendatei auswählen</value>
+    <value>Seleccione el archivo de datos</value>
   </data>
   <data name="data_file_filter" xml:space="preserve">
-    <value>Datendatei (*.csv, *.xls, *.xlsx)|*.csv;*.xls;*.xlsx</value>
+    <value>Archivos de datos (*.csv, *.xls, *.xlsx)|*.csv;*.xls;*.xlsx</value>
   </data>
   <data name="no_valid_workbook_or_data_found" xml:space="preserve">
-    <value>Keine gültige Arbeitsmappe oder Daten in der Datei gefunden</value>
+    <value>No se encontró ningún libro de trabajo o datos válidos en el archivo</value>
   </data>
   <data name="read_file_failed" xml:space="preserve">
-    <value>Lesen der Datei fehlgeschlagen</value>
+    <value>Error al leer el archivo</value>
   </data>
   <data name="script_config_error_required_data_series" xml:space="preserve">
-    <value>Skriptkonfigurationsfehler: RequiredDataSeries muss mindestens eine Kategoriespalte und eine Datenspalte enthalten</value>
+    <value>Error de configuración de script: RequiredDataSeries debe contener al menos una columna de categoría y una columna de datos</value>
   </data>
   <data name="excel_missing_required_columns" xml:space="preserve">
-    <value>Excel-Datei fehlen erforderliche Spalten</value>
+    <value>Al archivo Excel le faltan las siguientes columnas requeridas</value>
   </data>
   <data name="data_point" xml:space="preserve">
-    <value>Datenpunkt</value>
+    <value>Punto de datos</value>
   </data>
   <data name="failed_to_parse_category_group" xml:space="preserve">
-    <value>Konnte keine gültige Kategoriegruppe aus der Datei parsen. Bitte Kategoriespaltendaten prüfen</value>
+    <value>No se pudo analizar un grupo de categorías válido del archivo. Verifique los datos de la columna de categoría</value>
   </data>
   <data name="error_calculating_data_point_coordinates" xml:space="preserve">
-    <value>Fehler beim Berechnen der Datenpunktkoordinaten:</value>
+    <value>Error al calcular las coordenadas del punto de datos:</value>
   </data>
   <data name="data_import_successful" xml:space="preserve">
-    <value>Datenimport erfolgreich</value>
+    <value>Importación de datos exitosa</value>
   </data>
   <data name="script_execution_failed" xml:space="preserve">
-    <value>Skriptausführung fehlgeschlagen:</value>
+    <value>Error en la ejecución del script:</value>
   </data>
   <data name="axes" xml:space="preserve">
-    <value>Achsen</value>
+    <value>Ejes</value>
   </data>
   <data name="point" xml:space="preserve">
-    <value>Punkt</value>
+    <value>Punto</value>
   </data>
   <data name="line" xml:space="preserve">
-    <value>Linie</value>
+    <value>Línea</value>
   </data>
   <data name="text" xml:space="preserve">
-    <value>Text</value>
+    <value>Texto</value>
   </data>
   <data name="annotation" xml:space="preserve">
-    <value>Anmerkung</value>
+    <value>Anotación</value>
   </data>
   <data name="image_copied_to_clipboard" xml:space="preserve">
-    <value>Bild erfolgreich in die Zwischenablage kopiert</value>
+    <value>Imagen copiada al portapapeles con éxito</value>
   </data>
   <data name="copy_failed" xml:space="preserve">
-    <value>Kopieren fehlgeschlagen:</value>
+    <value>Error al copiar:</value>
   </data>
   <data name="confirm_clear_data_points" xml:space="preserve">
-    <value>Datenpunkte löschen?</value>
+    <value>¿Borrar puntos de datos?</value>
   </data>
   <data name="no_imported_data_to_clear" xml:space="preserve">
-    <value>Keine importierten Daten zum Löschen vorhanden</value>
+    <value>No hay datos importados para borrar</value>
   </data>
   <data name="all_imported_data_cleared" xml:space="preserve">
-    <value>Alle importierten Daten gelöscht</value>
+    <value>Todos los datos importados han sido borrados</value>
   </data>
   <data name="left_y_axis" xml:space="preserve">
-    <value>Linke Y-Achse</value>
+    <value>Eje Y izquierdo</value>
   </data>
   <data name="right_y_axis" xml:space="preserve">
-    <value>Rechte Y-Achse</value>
+    <value>Eje Y derecho</value>
   </data>
   <data name="bottom_x_axis" xml:space="preserve">
-    <value>Untere X-Achse</value>
+    <value>Eje X inferior</value>
   </data>
   <data name="top_x_axis" xml:space="preserve">
-    <value>Obere X-Achse</value>
+    <value>Eje X superior</value>
   </data>
   <data name="unknown_axis" xml:space="preserve">
-    <value>Unbekannte Achse</value>
+    <value>Eje desconocido</value>
   </data>
   <data name="content_and_position" xml:space="preserve">
-    <value>Inhalt und Position</value>
+    <value>Contenido y posición</value>
+    <comment>属性面板-文本对象</comment>
   </data>
   <data name="script_definition" xml:space="preserve">
-    <value>Skriptdefinition</value>
+    <value>Definición del script</value>
   </data>
   <data name="script_language" xml:space="preserve">
-    <value>Skriptsprache:</value>
+    <value>Lenguaje de script:</value>
   </data>
   <data name="data_series" xml:space="preserve">
-    <value>Datenserie</value>
+    <value>Serie de datos</value>
   </data>
   <data name="multiple_data_series_hint" xml:space="preserve">
-    <value>Mehrere Datenserien bitte mit Komma trennen, z.B.: SiO2,TiO2</value>
+    <value>Separe múltiples series de datos con comas, por ejemplo: SiO2,TiO2</value>
   </data>
   <data name="script_content" xml:space="preserve">
-    <value>Skriptinhalt:</value>
+    <value>Contenido del script:</value>
   </data>
   <data name="ready" xml:space="preserve">
-    <value>Bereit</value>
+    <value>Listo</value>
   </data>
   <data name="validate_syntax" xml:space="preserve">
-    <value>Syntax prüfen</value>
+    <value>Validar sintaxis</value>
   </data>
   <data name="row" xml:space="preserve">
-    <value>Zeile:</value>
+    <value>Fila:</value>
   </data>
   <data name="column" xml:space="preserve">
-    <value>Spalte:</value>
+    <value>Columna:</value>
   </data>
   <data name="code_formatted" xml:space="preserve">
-    <value>Code formatiert</value>
+    <value>Código formateado</value>
   </data>
   <data name="format_failed" xml:space="preserve">
-    <value>Formatierung fehlgeschlagen:</value>
+    <value>Error de formato:</value>
   </data>
   <data name="script_content_is_empty" xml:space="preserve">
-    <value>Skriptinhalt ist leer</value>
+    <value>El contenido del script está vacío</value>
   </data>
   <data name="validation_failed" xml:space="preserve">
-    <value>Validierung fehlgeschlagen:</value>
+    <value>Validación fallida:</value>
   </data>
   <data name="data_parameters_are_empty" xml:space="preserve">
-    <value>Datenparameter sind leer</value>
+    <value>Los parámetros de datos están vacíos</value>
   </data>
   <data name="invalid_data_parameter_format" xml:space="preserve">
-    <value>Ungültiges Datenparameterformat</value>
+    <value>Formato de parámetro de datos incorrecto</value>
   </data>
   <data name="parameter_format_correct" xml:space="preserve">
-    <value>Parameterformat korrekt</value>
+    <value>Formato de parámetro correcto</value>
   </data>
   <data name="syntax_validation_passed" xml:space="preserve">
-    <value>Syntaxvalidierung bestanden</value>
+    <value>Validación de sintaxis aprobada</value>
   </data>
   <data name="error" xml:space="preserve">
-    <value>Fehler:</value>
+    <value>Error:</value>
   </data>
   <data name="new" xml:space="preserve">
-    <value>_Neu(N)</value>
+    <value>_Nuevo(N)</value>
   </data>
   <data name="open" xml:space="preserve">
-    <value>_Öffnen(O)</value>
+    <value>_Abrir(O)</value>
   </data>
   <data name="export_current_worksheet" xml:space="preserve">
-    <value>_Aktuelles Arbeitsblatt exportieren(R)</value>
+    <value>_Exportar hoja actual(R)</value>
   </data>
   <data name="geological_thermometer" xml:space="preserve">
-    <value>Geologisches Thermometer</value>
+    <value>Geotermómetro</value>
   </data>
   <data name="confirm_new_worksheet" xml:space="preserve">
-    <value>Neues Arbeitsblatt erstellen?</value>
+    <value>¿Crear nueva hoja de trabajo?</value>
   </data>
   <data name="error_creating_table" xml:space="preserve">
-    <value>Fehler beim Erstellen der Tabelle:</value>
+    <value>Error al crear la tabla:</value>
   </data>
   <data name="file_import_successful" xml:space="preserve">
-    <value>Dateiimport erfolgreich</value>
+    <value>Archivo importado con éxito</value>
   </data>
   <data name="cancel_import" xml:space="preserve">
-    <value>Import abbrechen</value>
+    <value>Cancelar importación</value>
   </data>
   <data name="export_successful" xml:space="preserve">
-    <value>Export erfolgreich</value>
+    <value>Exportación exitosa</value>
   </data>
   <data name="export_failed" xml:space="preserve">
-    <value>Export fehlgeschlagen:</value>
+    <value>Error de exportación:</value>
   </data>
   <data name="create_worksheet_failed" xml:space="preserve">
-    <value>Arbeitsblatterstellung fehlgeschlagen:</value>
+    <value>Error al crear hoja de trabajo:</value>
   </data>
   <data name="row_1_column_1" xml:space="preserve">
-    <value>Zeile: 1, Spalte: 1</value>
+    <value>Fila: 1, Col: 1</value>
   </data>
   <data name="missing_parameters" xml:space="preserve">
-    <value>Fehlende Parameter</value>
+    <value>Parámetros faltantes</value>
+    <comment>自定义函数提示</comment>
   </data>
   <data name="input_out_of_range" xml:space="preserve">
-    <value>Eingabewert außerhalb des Bereichs</value>
+    <value>Valor de entrada fuera de rango</value>
+    <comment>自定义函数提示</comment>
   </data>
   <data name="must_be_positive_number" xml:space="preserve">
-    <value>Muss eine positive Zahl sein</value>
+    <value>Debe ser un número positivo</value>
+    <comment>自定义函数提示</comment>
   </data>
   <data name="tio2_activity_range" xml:space="preserve">
-    <value>TiO2-Aktivität muss im Bereich (0,1] liegen</value>
+    <value>La actividad de TiO2 debe estar en el rango (0,1]</value>
+    <comment>自定义函数提示</comment>
   </data>
   <data name="oxygen_atom_benchmark_zero" xml:space="preserve">
-    <value>Sauerstoffatom-Basiswert ist null</value>
+    <value>El valor de referencia de átomos de oxígeno es cero</value>
+    <comment>自定义函数提示</comment>
   </data>
   <data name="normalization_factor_is_zero" xml:space="preserve">
-    <value>Normalisierungsfaktor ist null</value>
+    <value>El factor de normalización es cero</value>
+    <comment>自定义函数提示</comment>
   </data>
   <data name="temperature_calculation_denominator_zero" xml:space="preserve">
-    <value>Nenner bei Temperaturberechnung ist null</value>
+    <value>El denominador del cálculo de temperatura es cero</value>
+    <comment>自定义函数提示</comment>
   </data>
   <data name="color" xml:space="preserve">
-    <value>Farbe</value>
+    <value>Color</value>
+    <comment>属性面板</comment>
   </data>
   <data name="style" xml:space="preserve">
-    <value>Stil</value>
+    <value>Estilo</value>
+    <comment>属性面板</comment>
   </data>
   <data name="width" xml:space="preserve">
-    <value>Breite</value>
+    <value>Ancho</value>
+    <comment>属性面板</comment>
   </data>
   <data name="line_width" xml:space="preserve">
-    <value>Linienbreite</value>
+    <value>Ancho de línea</value>
+    <comment>属性面板</comment>
   </data>
   <data name="Enum_LineType_Solid" xml:space="preserve">
-    <value>Durchgezogen</value>
+    <value>Sólida</value>
+    <comment>属性面板</comment>
   </data>
   <data name="type" xml:space="preserve">
-    <value>Typ</value>
+    <value>Tipo</value>
+    <comment>属性面板</comment>
   </data>
   <data name="position" xml:space="preserve">
-    <value>Position</value>
+    <value>Propiedades</value>
+    <comment>属性面板</comment>
   </data>
   <data name="start_coordinates" xml:space="preserve">
-    <value>Startkoordinaten</value>
+    <value>Coordenadas de inicio</value>
+    <comment>属性面板</comment>
   </data>
   <data name="end_coordinates" xml:space="preserve">
-    <value>Endkoordinaten</value>
+    <value>Coordenadas finales</value>
+    <comment>属性面板</comment>
   </data>
   <data name="content" xml:space="preserve">
-    <value>Inhalt</value>
+    <value>Contenido</value>
   </data>
   <data name="alignment" xml:space="preserve">
-    <value>Ausrichtung</value>
+    <value>Alineación</value>
   </data>
   <data name="font_style" xml:space="preserve">
-    <value>Schriftstil</value>
+    <value>Estilo de fuente</value>
   </data>
   <data name="font_name" xml:space="preserve">
-    <value>Schriftartname</value>
+    <value>Nombre de fuente</value>
   </data>
   <data name="font_size" xml:space="preserve">
-    <value>Schriftgröße</value>
+    <value>Tamaño de fuente</value>
   </data>
   <data name="font_rotation" xml:space="preserve">
-    <value>Schriftrotation</value>
+    <value>Rotación de fuente</value>
   </data>
   <data name="font_color" xml:space="preserve">
-    <value>Schriftfarbe</value>
+    <value>Color de fuente</value>
   </data>
   <data name="bold" xml:space="preserve">
-    <value>Fett</value>
+    <value>Negrita</value>
   </data>
   <data name="italic" xml:space="preserve">
-    <value>Kursiv</value>
+    <value>Cursiva</value>
   </data>
   <data name="background_and_border" xml:space="preserve">
-    <value>Hintergrund und Rahmen</value>
+    <value>Fondo y borde</value>
   </data>
   <data name="background_color" xml:space="preserve">
-    <value>Hintergrundfarbe</value>
+    <value>Color de fondo</value>
   </data>
   <data name="border_color" xml:space="preserve">
-    <value>Rahmenfarbe</value>
+    <value>Color del borde</value>
   </data>
   <data name="border_width" xml:space="preserve">
-    <value>Rahmenbreite</value>
+    <value>Ancho del borde</value>
   </data>
   <data name="corner_radius" xml:space="preserve">
-    <value>Eckenradius</value>
+    <value>Radio de esquina</value>
   </data>
   <data name="advanced_rendering" xml:space="preserve">
-    <value>Erweitertes Rendering</value>
+    <value>Renderizado avanzado</value>
   </data>
   <data name="anti_aliasing" xml:space="preserve">
-    <value>Anti-Aliasing</value>
+    <value>Antialiasing</value>
   </data>
   <data name="axis_style" xml:space="preserve">
-    <value>Achsenstil</value>
+    <value>Estilo de eje</value>
   </data>
   <data name="axis_title" xml:space="preserve">
-    <value>Achsentitel</value>
+    <value>Título del eje</value>
   </data>
   <data name="font_family" xml:space="preserve">
-    <value>Schriftfamilie</value>
+    <value>Familia de fuentes</value>
   </data>
   <data name="tick_style" xml:space="preserve">
-    <value>Strichstil</value>
+    <value>Estilo de marca</value>
   </data>
   <data name="tick_interval" xml:space="preserve">
-    <value>Strichintervall</value>
+    <value>Intervalo de marcas</value>
   </data>
   <data name="major_tick_style" xml:space="preserve">
-    <value>Hauptstrichstil</value>
+    <value>Estilo de marca principal</value>
   </data>
   <data name="length" xml:space="preserve">
-    <value>Länge</value>
+    <value>Longitud</value>
   </data>
   <data name="minor_tick_style" xml:space="preserve">
-    <value>Nebenstrichstil</value>
+    <value>Estilo de marca secundaria</value>
   </data>
   <data name="tick_labels" xml:space="preserve">
-    <value>Strichbeschriftungen</value>
+    <value>Etiquetas de marca</value>
   </data>
   <data name="location" xml:space="preserve">
-    <value>Ort</value>
+    <value>Ubicación</value>
   </data>
   <data name="orientation" xml:space="preserve">
-    <value>Orientierung</value>
+    <value>Orientación</value>
   </data>
   <data name="is_visible" xml:space="preserve">
-    <value>Sichtbar</value>
+    <value>Es visible</value>
   </data>
   <data name="font" xml:space="preserve">
-    <value>Schrift</value>
+    <value>Fuente</value>
   </data>
   <data name="major_grid_line" xml:space="preserve">
-    <value>Hauptgitterlinie</value>
+    <value>Línea de cuadrícula principal</value>
   </data>
   <data name="pattern" xml:space="preserve">
-    <value>Muster</value>
+    <value>Patrón</value>
   </data>
   <data name="enable_anti_alias" xml:space="preserve">
-    <value>Anti-Aliasing aktivieren</value>
+    <value>Habilitar antialiasing</value>
   </data>
   <data name="background_fill" xml:space="preserve">
-    <value>Hintergrundfüllung</value>
+    <value>Relleno de fondo</value>
   </data>
   <data name="enable_alternating_fill" xml:space="preserve">
-    <value>Alternierende Füllung aktivieren</value>
+    <value>Habilitar relleno alternativo</value>
   </data>
   <data name="background_fill_1" xml:space="preserve">
-    <value>Hintergrundfüllung</value>
+    <value>Relleno de fondo</value>
   </data>
   <data name="fill_color_1" xml:space="preserve">
-    <value>Füllfarbe 1</value>
+    <value>Color de relleno 1</value>
   </data>
   <data name="fill_color_2" xml:space="preserve">
-    <value>Füllfarbe 2</value>
+    <value>Color de relleno 2</value>
   </data>
   <data name="coordinates" xml:space="preserve">
-    <value>Koordinaten</value>
+    <value>Coordenadas</value>
   </data>
   <data name="x_coordinate" xml:space="preserve">
-    <value>X-Koordinate</value>
+    <value>Coordenada X</value>
   </data>
   <data name="y_coordinate" xml:space="preserve">
-    <value>Y-Koordinate</value>
+    <value>Coordenada Y</value>
   </data>
   <data name="start_and_end_coordinates" xml:space="preserve">
-    <value>Start- und Endkoordinaten</value>
+    <value>Coordenadas de inicio</value>
   </data>
   <data name="chart_title_style" xml:space="preserve">
-    <value>Diagrammtitelstil</value>
+    <value>Estilo de título del gráfico</value>
   </data>
   <data name="is_bold" xml:space="preserve">
-    <value>Fett</value>
+    <value>Negrita</value>
   </data>
   <data name="is_italic" xml:space="preserve">
-    <value>Kursiv</value>
+    <value>Cursiva</value>
   </data>
   <data name="background_fill_2" xml:space="preserve">
-    <value>Hintergrundfüllung 2</value>
+    <value>Relleno de fondo</value>
   </data>
   <data name="minor_grid_Line" xml:space="preserve">
-    <value>Nebengitterlinie</value>
+    <value>Línea de cuadrícula secundaria</value>
   </data>
   <data name="open_diagram_template" xml:space="preserve">
-    <value>Diagrammvorlage öffnen</value>
+    <value>Abrir plantilla de diagrama</value>
   </data>
   <data name="new_version_available_github" xml:space="preserve">
-    <value>Neue Version gefunden! Bitte laden Sie das Update von der GitHub Release-Seite herunter.</value>
+    <value>¡Nueva versión encontrada! Por favor vaya a la página de lanzamientos de GitHub para descargar la actualización.</value>
+    <comment>检查更新</comment>
   </data>
   <data name="go_to_download" xml:space="preserve">
-    <value>Zum Download</value>
+    <value>Ir a descargar</value>
+    <comment>检查更新</comment>
   </data>
   <data name="enter_supported_languages" xml:space="preserve">
-    <value>Unterstützte Sprachen eingeben</value>
+    <value>Ingresar idiomas soportados</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="delete_this_item" xml:space="preserve">
-    <value>Dieses Element löschen</value>
+    <value>Eliminar este elemento</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="enter_language_add" xml:space="preserve">
-    <value>Sprache eingeben und Enter drücken.</value>
+    <value>Ingrese un idioma y presione Enter para agregar.</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="enter_category_structure" xml:space="preserve">
-    <value>Kategoriestruktur eingeben</value>
+    <value>Ingresar estructura de categoría</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="enter_level_add" xml:space="preserve">
-    <value>Ebene eingeben und Enter drücken.</value>
+    <value>Ingrese un nivel y presione Enter para agregar.</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="plot_type" xml:space="preserve">
-    <value>Diagrammtyp</value>
+    <value>Tipo de gráfico</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="two_dimensional_coordinate_plot" xml:space="preserve">
-    <value>2D-Koordinatendiagramm</value>
+    <value>Gráfico de coordenadas 2D</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="template_file_save_path" xml:space="preserve">
-    <value>Speicherpfad der Vorlagendatei</value>
+    <value>Ruta de guardado de plantilla</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="browse_ellipsis" xml:space="preserve">
-    <value>Durchsuchen...</value>
+    <value>Examinar...</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="all_fields_required" xml:space="preserve">
-    <value>Alle Felder sind erforderlich!</value>
+    <value>¡Todos los campos son obligatorios!</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="category_structure_min_two" xml:space="preserve">
-    <value>Kategoriestruktur muss mindestens 2 Ebenen haben!</value>
+    <value>¡La estructura de categoría debe ser mayor o igual a 2!</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="no_template_or_path_specified" xml:space="preserve">
-    <value>Keine Vorlage oder Pfad angegeben. Bitte 'Speichern unter' verwenden.</value>
+    <value>No hay plantilla para guardar o ruta no especificada. Use 'Guardar como'.</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="template_saved_successfully" xml:space="preserve">
-    <value>Vorlage erfolgreich gespeichert!</value>
+    <value>¡Plantilla guardada con éxito!</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="save_template_failed" xml:space="preserve">
-    <value>Speichern der Vorlage fehlgeschlagen:</value>
+    <value>Error al guardar plantilla:</value>
+    <comment>新疆模板</comment>
   </data>
   <data name="thank_you_and_wishes" xml:space="preserve">
-    <value>Danke, dass Sie uns nutzen🌹\n Wir wünschen</value>
+    <value>Gracias por usar 🌹\n Le deseamos</value>
+    <comment>彩蛋</comment>
   </data>
   <data name="research_life_smooth_sailing" xml:space="preserve">
-    <value>viel Erfolg in Forschung und Leben!</value>
+    <value>¡una vida de investigación y personal tranquila!</value>
+    <comment>彩蛋</comment>
   </data>
   <data name="add" xml:space="preserve">
-    <value>Hinzufügen</value>
+    <value>Agregar</value>
+    <comment>绘图-编辑</comment>
   </data>
   <data name="add_line" xml:space="preserve">
-    <value>Linie hinzufügen</value>
+    <value>Agregar línea</value>
+    <comment>绘图-编辑</comment>
   </data>
   <data name="add_text" xml:space="preserve">
-    <value>Text hinzufügen</value>
+    <value>Agregar texto</value>
+    <comment>绘图-编辑</comment>
   </data>
   <data name="file_" xml:space="preserve">
-    <value>Datei</value>
+    <value>Archivo</value>
+    <comment>绘图-编辑</comment>
   </data>
   <data name="template_loaded_successfully" xml:space="preserve">
-    <value>Vorlage erfolgreich geladen</value>
+    <value>Plantilla abierta con éxito</value>
+    <comment>绘图页面</comment>
   </data>
   <data name="unknown_error_checking_for_updates" xml:space="preserve">
-    <value>Unbekannter Fehler bei der Update-Prüfung</value>
+    <value>Error desconocido al buscar actualizaciones</value>
+    <comment>设置页面</comment>
   </data>
   <data name="already_latest_version" xml:space="preserve">
-    <value>Bereits die neueste Version</value>
+    <value>Ya está en la última versión</value>
+    <comment>检查更新</comment>
   </data>
   <data name="cannot_parse_version_number_check_release_address" xml:space="preserve">
-    <value>Versionsnummer konnte nicht geparst werden. Bitte Release-Seite prüfen.</value>
+    <value>No se pudo analizar el número de versión. Por favor verifique la dirección de lanzamiento.</value>
+    <comment>检查更新</comment>
   </data>
   <data name="network_request_error" xml:space="preserve">
-    <value>Netzwerkanfragefehler</value>
+    <value>Error de solicitud de red</value>
+    <comment>检查更新</comment>
   </data>
   <data name="json_parse_error" xml:space="preserve">
-    <value>JSON-Parse-Fehler</value>
+    <value>Error de análisis JSON</value>
+    <comment>检查更新</comment>
   </data>
   <data name="unknown_error_occurred" xml:space="preserve">
-    <value>Unbekannter Fehler aufgetreten</value>
+    <value>Ocurrió un error desconocido</value>
+    <comment>检查更新</comment>
   </data>
   <data name="polygon" xml:space="preserve">
-    <value>Polygon</value>
+    <value>Polígono</value>
+    <comment>图层列表</comment>
   </data>
   <data name="not_enough_vertices_add_polygon_canceled" xml:space="preserve">
-    <value>Nicht genügend Eckpunkte, Polygon-Erstellung abgebrochen.</value>
+    <value>Vértices insuficientes, operación de agregar polígono cancelada.</value>
+    <comment>创建绘图对象通知</comment>
   </data>
   <data name="add_line_operation_canceled" xml:space="preserve">
-    <value>Linien-Erstellung abgebrochen.</value>
+    <value>Operación de agregar línea cancelada.</value>
+    <comment>创建绘图对象通知</comment>
   </data>
   <data name="add_text_operation_canceled" xml:space="preserve">
-    <value>Text-Erstellung abgebrochen.</value>
+    <value>Operación de agregar texto cancelada.</value>
+    <comment>创建绘图对象通知</comment>
   </data>
   <data name="language_setting_duplicate_found" xml:space="preserve">
-    <value>Doppelte Einträge in den Spracheinstellungen gefunden, bitte prüfen!</value>
+    <value>¡Duplicado encontrado en la configuración de idioma, por favor verifique!</value>
+    <comment>新建图解模板通知</comment>
   </data>
   <data name="add_polygon" xml:space="preserve">
-    <value>Polygon hinzufügen</value>
+    <value>Agregar polígono</value>
+    <comment>绘图功能区</comment>
   </data>
   <data name="line_type_solid" xml:space="preserve">
-    <value>Durchgezogen</value>
+    <value>Sólida</value>
+    <comment>线条对象属性</comment>
   </data>
   <data name="line_type_dash" xml:space="preserve">
-    <value>Gestrichelt</value>
+    <value>Guiones</value>
+    <comment>线条对象属性</comment>
   </data>
   <data name="line_type_densely_dashed" xml:space="preserve">
-    <value>Dicht gestrichelt</value>
+    <value>Guiones densos</value>
+    <comment>线条对象属性</comment>
   </data>
   <data name="line_type_dot" xml:space="preserve">
-    <value>Gepunktet</value>
+    <value>Puntos</value>
+    <comment>线条对象属性</comment>
   </data>
   <data name="ternary_phase_diagram" xml:space="preserve">
-    <value>Ternäres Phasendiagramm</value>
+    <value>Diagrama de fase ternario</value>
+    <comment>新建图解模板</comment>
   </data>
   <data name="copy_plot_to_clipboard" xml:space="preserve">
-    <value>Diagramm in die Zwischenablage kopieren</value>
+    <value>Copiar imagen del gráfico al portapapeles</value>
+    <comment>绘图-工具栏-提示</comment>
   </data>
   <data name="use_help" xml:space="preserve">
-    <value>Diagramm-Anleitung</value>
+    <value>Guía del diagrama</value>
+    <comment>绘图-工具栏-提示</comment>
   </data>
   <data name="no_data_please_add_data" xml:space="preserve">
-    <value>Keine Daten, bitte Daten hinzufügen</value>
+    <value>Sin datos, por favor agregue datos</value>
+    <comment>绘图-数据-提示</comment>
   </data>
   <data name="no_data_columns_defined" xml:space="preserve">
-    <value>Keine Datenspalten definiert</value>
+    <value>Columnas de datos no definidas</value>
+    <comment>绘图-数据-提示</comment>
   </data>
   <data name="data_plotting_successful" xml:space="preserve">
-    <value>Datenpunkte erfolgreich gezeichnet</value>
+    <value>Puntos de datos trazados con éxito</value>
+    <comment>绘图-数据-提示</comment>
   </data>
   <data name="save_as_csv_file" xml:space="preserve">
-    <value>Als CSV speichern</value>
+    <value>Guardar como archivo CSV</value>
+    <comment>温度计-提示</comment>
   </data>
   <data name="csv_file_filter" xml:space="preserve">
-    <value>CSV-Datei|*.csv</value>
+    <value>Archivo CSV|*.csv</value>
+    <comment>温度计-提示</comment>
   </data>
   <data name="data_export" xml:space="preserve">
-    <value>Datenexport</value>
+    <value>Exportar datos</value>
+    <comment>绘图-数据-按钮</comment>
   </data>
   <data name="update_data" xml:space="preserve">
-    <value>Daten aktualisieren</value>
+    <value>Actualizar datos</value>
+    <comment>绘图-数据-按钮</comment>
   </data>
   <data name="data_plotting" xml:space="preserve">
-    <value>Daten plotten</value>
+    <value>Trazar datos</value>
+    <comment>绘图-数据-按钮</comment>
   </data>
   <data name="highlight_on_hover" xml:space="preserve">
-    <value>Wenn aktiviert, werden Elemente beim Überfahren hervorgehoben und Details beim Klicken angezeigt</value>
+    <value>Cuando está habilitado, al pasar el mouse sobre objetos de dibujo (puntos, líneas, áreas) se resaltarán automáticamente, haga clic para ver información.</value>
+    <comment>绘图-工具栏-提示</comment>
   </data>
   <data name="count" xml:space="preserve">
-    <value>Anzahl</value>
+    <value>Cantidad de marcas secundarias</value>
+    <comment>属性-坐标轴-次刻度样式</comment>
   </data>
   <data name="zoom_type" xml:space="preserve">
-    <value>Zoomtyp</value>
+    <value>Tipo de zoom</value>
+    <comment>属性-坐标轴-坐标轴样式</comment>
   </data>
   <data name="from" xml:space="preserve">
-    <value>Von</value>
+    <value>Desde</value>
+    <comment>属性-坐标轴-坐标轴样式</comment>
   </data>
   <data name="to" xml:space="preserve">
-    <value>Bis</value>
+    <value>Hasta</value>
+    <comment>属性-坐标轴-坐标轴样式</comment>
   </data>
   <data name="ternary_phase_diagram_sum_must_be_one" xml:space="preserve">
-    <value>Summe im ternären Diagramm muss 1 sein.</value>
+    <value>La suma del diagrama de fase ternario debe ser 1.</value>
+    <comment>新建-三元图-模板</comment>
   </data>
   <data name="save_as" xml:space="preserve">
-    <value>Speichern unter</value>
+    <value>Guardar como</value>
+    <comment>绘图-工具栏-编辑</comment>
   </data>
   <data name="all_data_cleared" xml:space="preserve">
-    <value>Alle Daten gelöscht</value>
+    <value>Todos los datos borrados</value>
+    <comment>绘图-数据-清除数据-提示</comment>
   </data>
   <data name="confirm_clear_all_data" xml:space="preserve">
-    <value>Alle Tabellendaten löschen (inkl. Plot-Punkte)?</value>
+    <value>¿Borrar datos de la tabla (incluidos los puntos de datos)?</value>
+    <comment>绘图-数据-清除数据-提示</comment>
   </data>
   <data name="clear_data_points" xml:space="preserve">
-    <value>Datenpunkte löschen</value>
+    <value>Borrar puntos de datos</value>
+    <comment>绘图-数据-清除数据点</comment>
   </data>
   <data name="linear" xml:space="preserve">
-    <value>Linear</value>
+    <value>Lineal</value>
+    <comment>绘图-坐标轴-属性-缩放类型</comment>
   </data>
   <data name="logarithmic" xml:space="preserve">
-    <value>Logarithmisch</value>
+    <value>Logarítmico</value>
+    <comment>绘图-坐标轴-属性-缩放类型</comment>
   </data>
   <data name="some_data_failed_validation" xml:space="preserve">
-    <value>Einige Daten haben die Validierung nicht bestanden und wurden übersprungen</value>
+    <value>Algunos datos no pasaron la validación, trazado omitido</value>
+    <comment>绘图-数据-投点校验提示</comment>
   </data>
   <data name="the_sum_of_row" xml:space="preserve">
-    <value>Zeile</value>
+    <value>Fila</value>
+    <comment>绘图-数据-投点校验提示</comment>
   </data>
   <data name="is_not_one" xml:space="preserve">
-    <value>Datensumme ist nicht 1</value>
+    <value>: suma de datos no es 1</value>
+    <comment>绘图-数据-投点校验提示</comment>
   </data>
   <data name="actual_sum_is" xml:space="preserve">
-    <value>(Tatsächliche Summe:</value>
+    <value>(suma real es</value>
+    <comment>绘图-数据-投点校验提示</comment>
   </data>
   <data name="arrow" xml:space="preserve">
-    <value>Pfeil</value>
+    <value>Flecha</value>
+    <comment>绘图-图层-箭头</comment>
   </data>
   <data name="arrowhead_width" xml:space="preserve">
-    <value>Pfeilspitzenbreite</value>
+    <value>Ancho de punta de flecha</value>
+    <comment>绘图-图层-箭头</comment>
   </data>
   <data name="arrowhead_length" xml:space="preserve">
-    <value>Pfeilspitzenlänge</value>
+    <value>Longitud de punta de flecha</value>
+    <comment>绘图-图层-箭头</comment>
   </data>
   <data name="add_arrow" xml:space="preserve">
-    <value>Pfeil hinzufügen</value>
+    <value>Agregar flecha</value>
+    <comment>绘图-编辑-添加箭头</comment>
   </data>
   <data name="delete_object" xml:space="preserve">
-    <value>Objekt löschen</value>
+    <value>Eliminar objeto</value>
+    <comment>绘图-编辑-删除功能</comment>
   </data>
   <data name="please_select_an_object_to_delete_first" xml:space="preserve">
-    <value>Bitte zuerst ein Objekt zum Löschen auswählen.</value>
+    <value>Seleccione primero un objeto para eliminar.</value>
+    <comment>绘图-编辑-删除提示</comment>
   </data>
   <data name="object_deleted_successfully" xml:space="preserve">
-    <value>Objekt erfolgreich gelöscht.</value>
+    <value>Objeto eliminado con éxito.</value>
+    <comment>绘图-编辑-删除提示</comment>
   </data>
   <data name="cannot_delete_base_layers" xml:space="preserve">
-    <value>Basisebenen können nicht gelöscht werden.</value>
+    <value>No se pueden eliminar las capas base.</value>
+    <comment>绘图-编辑-删除提示</comment>
   </data>
   <data name="update" xml:space="preserve">
-    <value>_Aktualisieren(T)</value>
+    <value>_Actualizar(T)</value>
+    <comment>绘图-菜单栏</comment>
   </data>
   <data name="check_for_template_updates" xml:space="preserve">
-    <value>Auf Vorlagenupdates prüfen</value>
+    <value>Comprobar actualizaciones de plantilla</value>
+    <comment>绘图-菜单栏</comment>
   </data>
   <data name="template_ready" xml:space="preserve">
-    <value>Vorlage bereit!</value>
+    <value>¡Plantilla lista!</value>
+    <comment>模板更新提示</comment>
   </data>
   <data name="download_template_failed" xml:space="preserve">
-    <value>Vorlagendownload fehlgeschlagen:</value>
+    <value>Error al descargar plantilla:</value>
+    <comment>模板更新提示</comment>
   </data>
   <data name="downloaded_file_hash_mismatch" xml:space="preserve">
-    <value>Hash-Mismatch der heruntergeladenen Datei, Datei könnte beschädigt oder manipuliert sein.</value>
+    <value>El hash del archivo descargado no coincide, el archivo puede estar dañado o manipulado.</value>
+    <comment>模板更新提示</comment>
   </data>
   <data name="downloaded_content_not_valid_json" xml:space="preserve">
-    <value>Heruntergeladener Inhalt ist kein gültiges JSON-Format.</value>
+    <value>El contenido descargado no es un JSON válido.</value>
+    <comment>模板更新提示</comment>
   </data>
   <data name="template_list_update_success_refreshing" xml:space="preserve">
-    <value>Vorlagenliste erfolgreich aktualisiert! Wird neu geladen...</value>
+    <value>¡Lista de plantillas actualizada con éxito! Actualizando...</value>
+    <comment>模板更新提示</comment>
   </data>
   <data name="update_list_file_failed" xml:space="preserve">
-    <value>Aktualisierung der Listendatei fehlgeschlagen</value>
+    <value>Error al actualizar el archivo de lista</value>
+    <comment>模板更新提示</comment>
   </data>
   <data name="new_drawing_template_library_version_detected" xml:space="preserve">
-    <value>Neue Version der Zeichenvorlagenbibliothek erkannt. Jetzt aktualisieren?</value>
+    <value>Nueva versión de biblioteca de plantillas detectada, ¿actualizar lista ahora?</value>
+    <comment>模板更新提示</comment>
   </data>
   <data name="current_template_list_latest_version" xml:space="preserve">
-    <value>Die aktuelle Vorlagenliste ist bereits die neueste Version.</value>
+    <value>La lista de plantillas actual ya es la última versión.</value>
+    <comment>模板更新提示</comment>
   </data>
   <data name="network_connection_failed_cannot_check_for_updates" xml:space="preserve">
-    <value>Netzwerkverbindung fehlgeschlagen, Updates können nicht geprüft werden:</value>
+    <value>Fallo de conexión de red, no se pueden buscar actualizaciones：</value>
+    <comment>模板更新提示</comment>
   </data>
   <data name="error_occurred_while_checking_for_updates" xml:space="preserve">
-    <value>Fehler beim Prüfen auf Updates:</value>
+    <value>Ocurrió un error al buscar actualizaciones：</value>
+    <comment>模板更新提示</comment>
   </data>
   <data name="help_instructions" xml:space="preserve">
-    <value>Hilfeanweisungen</value>
+    <value>Instrucciones de ayuda</value>
+    <comment>温度计-帮助说明</comment>
   </data>
   <data name="view_help_docs" xml:space="preserve">
-    <value>Hilfedokumentation anzeigen</value>
+    <value>Ver documentación de ayuda</value>
+    <comment>温度计-帮助说明按钮提示</comment>
   </data>
   <data name="German_Germany" xml:space="preserve">
-    <value>Deutsch (Deutschland)</value>
+    <value>Alemán (Alemania)</value>
+    <comment>设置-常规设置-语言</comment>
   </data>
   <data name="custom_templates" xml:space="preserve">
-    <value>Benutzerdefinierte Vorlagen</value>
+    <value>Plantillas personalizadas</value>
+    <comment>绘图-模板列表</comment>
   </data>
   <data name="check_for_category_updates" xml:space="preserve">
-    <value>Nach Kategoriestruktur-Updates suchen</value>
+    <value>Comprobar actualizaciones de estructura de categorías</value>
+    <comment>绘图-菜单栏-更新分类结构</comment>
   </data>
   <data name="cannot_delete_protected_column" xml:space="preserve">
-    <value>Geschützte Spalte kann nicht gelöscht werden</value>
+    <value>No se pueden eliminar columnas protegidas</value>
   </data>
   <data name="add_column_left" xml:space="preserve">
-    <value>Spalte links hinzufügen</value>
+    <value>Agregar columna (Izq)</value>
   </data>
   <data name="add_column_right" xml:space="preserve">
-    <value>Spalte rechts hinzufügen</value>
+    <value>Agregar columna (Der)</value>
   </data>
   <data name="delete_row" xml:space="preserve">
-    <value>Zeile löschen</value>
+    <value>Eliminar fila</value>
   </data>
   <data name="delete_column" xml:space="preserve">
-    <value>Spalte löschen</value>
+    <value>Eliminar columna</value>
   </data>
   <data name="missing_columns" xml:space="preserve">
-    <value>Fehlende Spalten</value>
+    <value>Columnas faltantes</value>
   </data>
   <data name="add_row_up" xml:space="preserve">
-    <value>Zeile oben einfügen</value>
+    <value>Insertar fila arriba</value>
   </data>
   <data name="add_row_down" xml:space="preserve">
-    <value>Zeile unten einfügen</value>
+    <value>Insertar fila abajo</value>
   </data>
   <data name="confirm_delete_row" xml:space="preserve">
-    <value>Ausgewählte Zeile(n) wirklich löschen?</value>
+    <value>¿Seguro que desea eliminar las filas seleccionadas?</value>
   </data>
   <data name="confirm_delete_column" xml:space="preserve">
-    <value>Ausgewählte Spalte(n) wirklich löschen?</value>
+    <value>¿Seguro que desea eliminar las columnas seleccionadas?</value>
   </data>
   <data name="axis" xml:space="preserve">
-    <value>Achse</value>
+    <value>Eje</value>
+    <comment>绘图-属性面板</comment>
   </data>
   <data name="grid" xml:space="preserve">
-    <value>Gitter</value>
+    <value>Cuadrícula</value>
+    <comment>绘图-属性面板</comment>
   </data>
   <data name="formula" xml:space="preserve">
-    <value>Formel</value>
+    <value>Fórmula</value>
+    <comment>绘图-属性-函数</comment>
   </data>
   <data name="range" xml:space="preserve">
-    <value>Bereich</value>
+    <value>Rango</value>
+    <comment>绘图-属性-函数</comment>
   </data>
   <data name="domain" xml:space="preserve">
-    <value>Definitionsbereich</value>
+    <value>Dominio</value>
+    <comment>绘图-属性-函数</comment>
   </data>
   <data name="point_count" xml:space="preserve">
-    <value>Stützstellen</value>
+    <value>Puntos de muestreo</value>
+    <comment>绘图-属性-函数</comment>
   </data>
   <data name="vertices" xml:space="preserve">
-    <value>Eckpunkte</value>
+    <value>Vértices</value>
+    <comment>绘图-属性-多边形</comment>
   </data>
   <data name="template_file_corrupted" xml:space="preserve">
-    <value>Vorlagendatei ist beschädigt</value>
+    <value>Archivo de plantilla dañado</value>
   </data>
   <data name="template_version_too_high" xml:space="preserve">
-    <value>Vorlagenversion ist höher als die aktuelle Softwareversion. Bitte Software aktualisieren.</value>
+    <value>Versión de plantilla superior a la del software, actualice el software.</value>
   </data>
   <data name="error_loading_template" xml:space="preserve">
-    <value>Fehler beim Laden der Vorlage</value>
+    <value>Error al cargar plantilla</value>
   </data>
   <data name="template_upgrade_warning" xml:space="preserve">
-    <value>Die aktuelle Vorlagenversion ist älter. Speichern aktualisiert die Version, was die Kompatibilität mit älteren Softwareversionen beeinträchtigen kann. Fortfahren?</value>
+    <value>Versión de plantilla antigua, guardarla la actualizará y puede que no funcione en versiones antiguas. ¿Continuar?</value>
   </data>
   <data name="offset" xml:space="preserve">
-    <value>Versatz</value>
+    <value>Desplazamiento</value>
   </data>
   <data name="offset_x" xml:space="preserve">
-    <value>Versatz X</value>
+    <value>Desplazamiento X</value>
   </data>
   <data name="offset_y" xml:space="preserve">
-    <value>Versatz Y</value>
+    <value>Desplazamiento Y</value>
   </data>
   <data name="add_function" xml:space="preserve">
-    <value>Funktion hinzufügen</value>
+    <value>Agregar función</value>
+    <comment>绘图-编辑</comment>
   </data>
   <data name="Placeholder_Text" xml:space="preserve">
-    <value>Bitte Text eingeben</value>
+    <value>Ingrese texto</value>
   </data>
   <data name="Placeholder_Axis_Title" xml:space="preserve">
-    <value>Achsentitel</value>
+    <value>Título del eje</value>
   </data>
   <data name="Placeholder_Chart_Title" xml:space="preserve">
-    <value>Diagrammtitel</value>
+    <value>Título del gráfico</value>
   </data>
   <data name="Placeholder_Ternary_Title" xml:space="preserve">
-    <value>Neues ternäres Phasendiagramm</value>
+    <value>Nuevo diagrama ternario</value>
   </data>
   <data name="Placeholder_Chart_Title_Default" xml:space="preserve">
-    <value>Neues Diagramm</value>
+    <value>Nuevo gráfico</value>
   </data>
   <data name="Placeholder_Axis_X" xml:space="preserve">
-    <value>X-Achse</value>
+    <value>Eje X</value>
   </data>
   <data name="Placeholder_Axis_Y" xml:space="preserve">
-    <value>Y-Achse</value>
+    <value>Eje Y</value>
   </data>
   <data name="Placeholder_Component_A" xml:space="preserve">
     <value>A</value>
@@ -1566,558 +1694,615 @@
     <value>C</value>
   </data>
   <data name="third_party" xml:space="preserve">
-    <value>Drittanbieter</value>
+    <value>Terceros</value>
+    <comment>绘图-菜单栏-绘图</comment>
   </data>
   <data name="open_via_third_party" xml:space="preserve">
-    <value>Über Drittanbieter öffnen</value>
+    <value>Abrir con terceros</value>
+    <comment>绘图-菜单栏-绘图</comment>
   </data>
   <data name="select_an_object" xml:space="preserve">
-    <value>Bitte ein Objekt auswählen</value>
+    <value>Seleccione un objeto</value>
+    <comment>绘图-属性面板</comment>
   </data>
   <data name="undo" xml:space="preserve">
-    <value>Rückgängig</value>
+    <value>Deshacer</value>
+    <comment>绘图-撤回</comment>
   </data>
   <data name="redo" xml:space="preserve">
-    <value>Wiederholen</value>
+    <value>Rehacer</value>
+    <comment>绘图-重做</comment>
   </data>
   <data name="interval" xml:space="preserve">
-    <value>Skalenintervall</value>
+    <value>Intervalo de marcas</value>
+    <comment>绘图-属性-二维坐标轴</comment>
   </data>
   <data name="pick_coordinate" xml:space="preserve">
-    <value>Koordinate wählen</value>
+    <value>Recoger coordenada</value>
+    <comment>绘图-属性-多边形</comment>
   </data>
   <data name="remove_point" xml:space="preserve">
-    <value>Diesen Eckpunkt entfernen</value>
+    <value>Eliminar este vértice</value>
+    <comment>绘图-属性-多边形</comment>
   </data>
   <data name="vertex_add_new" xml:space="preserve">
-    <value>Neuen Eckpunkt hinzufügen</value>
+    <value>Agregar nuevo vértice</value>
+    <comment>绘图-属性-多边形</comment>
   </data>
   <data name="subtitle" xml:space="preserve">
-    <value>Untertitel</value>
+    <value>Subtítulo</value>
   </data>
   <data name="subtitle_font_size" xml:space="preserve">
-    <value>Untertitel-Schriftgröße</value>
+    <value>Tamaño de fuente de subtítulo</value>
   </data>
   <data name="subtitle_color" xml:space="preserve">
-    <value>Untertitel-Farbe</value>
+    <value>Color de subtítulo</value>
   </data>
   <data name="subtitle_bold" xml:space="preserve">
-    <value>Untertitel fett</value>
+    <value>Subtítulo en negrita</value>
   </data>
   <data name="subtitle_italic" xml:space="preserve">
-    <value>Untertitel kursiv</value>
+    <value>Subtítulo en cursiva</value>
   </data>
   <data name="edit_link" xml:space="preserve">
-    <value>Link bearbeiten</value>
+    <value>Editar enlace</value>
   </data>
   <data name="template_translator" xml:space="preserve">
-    <value>Vorlagenübersetzer</value>
+    <value>Traductor de plantillas de diagrama</value>
   </data>
   <data name="diagram_template_repair_tool" xml:space="preserve">
-    <value>Vorlagenreparaturtool</value>
+    <value>Herramienta de reparación de plantillas</value>
+    <comment>主页-小组件-模板修复工具</comment>
   </data>
   <data name="server_announcement" xml:space="preserve">
-    <value>Serverankündigung</value>
+    <value>Anuncio del servidor</value>
   </data>
   <data name="developer_maintenance_tool" xml:space="preserve">
-    <value>Entwicklerwartungstool</value>
+    <value>Herramienta de mantenimiento del desarrollador</value>
   </data>
   <data name="copy_content" xml:space="preserve">
-    <value>Inhalt kopieren</value>
+    <value>Copiar contenido</value>
+    <comment>窗体-通知系统</comment>
   </data>
   <data name="modified_successfully" xml:space="preserve">
-    <value>Erfolgreich geändert</value>
+    <value>Modificado</value>
+    <comment>绘图-脚本-属性面板</comment>
   </data>
   <data name="error_loading_rtf_file" xml:space="preserve">
-    <value>Fehler beim Laden der RTF-Datei:</value>
+    <value>Error al cargar archivo RTF:</value>
+    <comment>绘图-通知-rtfhelper</comment>
   </data>
   <data name="file_path_cannot_be_empty" xml:space="preserve">
-    <value>Dateipfad darf nicht leer sein</value>
+    <value>La ruta del archivo no puede estar vacía</value>
+    <comment>绘图-通知-rtfhelper</comment>
   </data>
   <data name="richtextbox_control_cannot_be_null" xml:space="preserve">
-    <value>RichTextBox-Steuerelement darf nicht null sein</value>
+    <value>El control RichTextBox no puede ser nulo</value>
+    <comment>绘图-通知-rtfhelper</comment>
   </data>
   <data name="file_does_not_exist" xml:space="preserve">
-    <value>Datei existiert nicht:</value>
+    <value>El archivo no existe:</value>
+    <comment>绘图-通知-rtfhelper</comment>
   </data>
   <data name="error_saving_rtf_file" xml:space="preserve">
-    <value>Fehler beim Speichern der RTF-Datei:</value>
+    <value>Error al guardar archivo RTF:</value>
+    <comment>绘图-通知-rtfhelper</comment>
   </data>
   <data name="unable_to_get_latest_release_info" xml:space="preserve">
-    <value>Neueste Release-Info nicht abrufbar</value>
+    <value>No se pudo obtener información de la última versión</value>
+    <comment>设置-通知-更新</comment>
   </data>
   <data name="invalid_formula" xml:space="preserve">
-    <value>Ungültige Formel</value>
+    <value>Fórmula inválida</value>
+    <comment>设置-属性-函数</comment>
   </data>
   <data name="loading_announcements" xml:space="preserve">
-    <value>Lade Ankündigungen...</value>
+    <value>Cargando anuncios...</value>
+    <comment>主页-小组件-公告</comment>
   </data>
   <data name="no_announcements" xml:space="preserve">
-    <value>Keine Ankündigungen.</value>
+    <value>Sin anuncios.</value>
+    <comment>主页-小组件-公告</comment>
   </data>
   <data name="unable_to_get_announcements" xml:space="preserve">
-    <value>Ankündigungen nicht abrufbar.</value>
+    <value>No se pudo obtener información de anuncios.</value>
+    <comment>主页-小组件-公告</comment>
   </data>
   <data name="failed_to_get_announcements" xml:space="preserve">
-    <value>Abrufen der Ankündigungen fehlgeschlagen:</value>
+    <value>Error al obtener anuncios:</value>
+    <comment>主页-小组件-公告</comment>
   </data>
   <data name="error_loading_template_list" xml:space="preserve">
-    <value>Fehler beim Laden der Vorlagenliste:</value>
+    <value>Error al cargar lista de plantillas:</value>
   </data>
   <data name="unable_to_open_link" xml:space="preserve">
-    <value>Link kann nicht geöffnet werden:</value>
+    <value>No se pudo abrir el enlace:</value>
+    <comment>设置-about</comment>
   </data>
   <data name="add_link" xml:space="preserve">
-    <value>Link hinzufügen</value>
+    <value>Agregar enlace</value>
+    <comment>主页-添加链接</comment>
   </data>
   <data name="name" xml:space="preserve">
-    <value>Name</value>
+    <value>Nombre</value>
+    <comment>主页-添加链接</comment>
   </data>
   <data name="link_url" xml:space="preserve">
-    <value>Link (URL)</value>
+    <value>Enlace (URL)</value>
+    <comment>主页-添加链接</comment>
   </data>
   <data name="description" xml:space="preserve">
-    <value>Beschreibung</value>
+    <value>Descripción</value>
+    <comment>主页-添加链接</comment>
   </data>
   <data name="icon" xml:space="preserve">
-    <value>Icon</value>
+    <value>Icono</value>
+    <comment>主页-添加链接</comment>
   </data>
   <data name="please_enter_name" xml:space="preserve">
-    <value>Bitte Name eingeben</value>
+    <value>Ingrese nombre</value>
+    <comment>主页-添加链接</comment>
   </data>
   <data name="please_enter_link" xml:space="preserve">
-    <value>Bitte Link eingeben</value>
+    <value>Ingrese enlace</value>
+    <comment>主页-添加链接</comment>
   </data>
   <data name="add_widget" xml:space="preserve">
-    <value>Widget hinzufügen</value>
+    <value>Agregar widget</value>
+    <comment>主页-添加小组件</comment>
   </data>
   <data name="please_select_widget_to_add" xml:space="preserve">
-    <value>Bitte Widget zum Hinzufügen auswählen:</value>
+    <value>Seleccione el widget para agregar:</value>
+    <comment>主页-添加小组件</comment>
   </data>
   <data name="please_select_a_widget" xml:space="preserve">
-    <value>Bitte ein Widget auswählen</value>
+    <value>Seleccione un widget</value>
+    <comment>主页-添加小组件</comment>
   </data>
   <data name="server_announcements" xml:space="preserve">
-    <value>Serverankündigungen</value>
+    <value>Anuncios del servidor</value>
+    <comment>主页-小组件-公告</comment>
   </data>
   <data name="refresh" xml:space="preserve">
-    <value>Aktualisieren</value>
+    <value>Actualizar</value>
+    <comment>主页-小组件-公告</comment>
   </data>
   <data name="developer_maintenance_tools" xml:space="preserve">
-    <value>Entwicklerwartungstools</value>
+    <value>Herramientas de mantenimiento del desarrollador</value>
+    <comment>主页-小组件-开发者工具</comment>
   </data>
   <data name="drawing_template_repair_tool" xml:space="preserve">
-    <value>Zeichenvorlagenreparaturtool</value>
+    <value>Herramienta de reparación de plantillas</value>
+    <comment>主页-小组件-模板修复工具</comment>
   </data>
   <data name="start_check_and_repair" xml:space="preserve">
-    <value>Prüfung und Reparatur starten</value>
+    <value>Iniciar comprobación y reparación</value>
+    <comment>主页-小组件-模板修复工具</comment>
   </data>
   <data name="close_file" xml:space="preserve">
-    <value>Datei schließen</value>
+    <value>Cerrar archivo</value>
+    <comment>主页-小组件-翻译组件</comment>
   </data>
   <data name="open_import" xml:space="preserve">
-    <value>Import öffnen</value>
+    <value>Abrir importación</value>
+    <comment>主页-小组件-翻译组件</comment>
   </data>
   <data name="add_language_column" xml:space="preserve">
-    <value>Sprachspalte hinzufügen</value>
+    <value>Agregar columna de idioma</value>
+    <comment>主页-小组件-翻译组件</comment>
   </data>
   <data name="swap_language_columns" xml:space="preserve">
-    <value>Sprachspalten tauschen</value>
+    <value>Intercambiar columnas de idioma</value>
+    <comment>主页-小组件-翻译组件</comment>
   </data>
   <data name="delete_language_column" xml:space="preserve">
-    <value>Sprachspalte löschen</value>
+    <value>Eliminar columna de idioma</value>
+    <comment>主页-小组件-翻译组件</comment>
   </data>
   <data name="click_or_drag_template_json_here" xml:space="preserve">
-    <value>Klicken oder JSON-Vorlagendatei hierher ziehen</value>
+    <value>Haga clic o arrastre el archivo de plantilla (JSON) aquí</value>
+    <comment>主页-小组件-翻译组件</comment>
   </data>
   <data name="support_json_format" xml:space="preserve">
-    <value>Unterstützt .json Format</value>
+    <value>Soporta formato .json</value>
+    <comment>主页-小组件-翻译组件</comment>
   </data>
   <data name="save_changes" xml:space="preserve">
-    <value>Änderungen speichern</value>
+    <value>Guardar cambios</value>
+    <comment>主页-小组件-翻译组件</comment>
   </data>
   <data name="select_drawing_template_file" xml:space="preserve">
-    <value>Zeichenvorlagendatei auswählen</value>
+    <value>Seleccionar archivo de plantilla de dibujo</value>
   </data>
   <data name="edit_menu_bar_item" xml:space="preserve">
-    <value>Menüleisteneintrag bearbeiten</value>
+    <value>Editar elemento de barra de menú</value>
+    <comment>主页-右键菜单</comment>
   </data>
   <data name="import_custom_diagram_template" xml:space="preserve">
-    <value>Benutzerdefinierte Diagrammvorlage importieren</value>
+    <value>Importar plantilla personalizada</value>
   </data>
   <data name="open_file_location" xml:space="preserve">
-    <value>Dateispeicherort öffnen</value>
+    <value>Abrir ubicación de archivo</value>
+    <comment>绘图-卡片-右键菜单</comment>
   </data>
   <data name="export_diagram_template" xml:space="preserve">
-    <value>Diagrammvorlage exportieren</value>
+    <value>Exportar plantilla de diagrama</value>
   </data>
   <data name="downloading_ellipsis" xml:space="preserve">
-    <value>Wird heruntergeladen...</value>
+    <value>Descargando...</value>
+    <comment>绘图-卡片-更新</comment>
   </data>
   <data name="initializing_language_service_ellipsis" xml:space="preserve">
-    <value>Initialisiere Sprachdienst...</value>
+    <value>Inicializando servicio de idioma...</value>
+    <comment>启动窗体</comment>
   </data>
   <data name="loading_font_resources_ellipsis" xml:space="preserve">
-    <value>Lade Schriftarten...</value>
+    <value>Cargando recursos de fuentes...</value>
   </data>
   <data name="reading_user_configuration_ellipsis" xml:space="preserve">
-    <value>Lese Benutzerkonfiguration...</value>
+    <value>Leyendo configuración de usuario...</value>
   </data>
   <data name="loading_drawing_module_ellipsis" xml:space="preserve">
-    <value>Lade Zeichenmodul...</value>
+    <value>Cargando módulo de dibujo...</value>
   </data>
   <data name="loading_main_interface_components_ellipsis" xml:space="preserve">
-    <value>Lade Hauptkomponenten...</value>
+    <value>Cargando componentes de interfaz principal...</value>
   </data>
   <data name="entering_soon_ellipsis" xml:space="preserve">
-    <value>Gleich fertig...</value>
+    <value>Entrando pronto...</value>
   </data>
   <data name="completed" xml:space="preserve">
-    <value>Abgeschlossen</value>
+    <value>Completado</value>
   </data>
   <data name="error_occurred_during_startup" xml:space="preserve">
-    <value>Fehler beim Starten:</value>
+    <value>Ocurrió un error durante el inicio:</value>
   </data>
   <data name="language_apperarance" xml:space="preserve">
-    <value>Sprache und Erscheinungsbild</value>
+    <value>Idioma y apariencia</value>
   </data>
   <data name="startup_background_image" xml:space="preserve">
-    <value>Start-Hintergrundbild</value>
+    <value>Imagen de fondo de inicio</value>
   </data>
   <data name="add_image" xml:space="preserve">
-    <value>Bild hinzufügen</value>
+    <value>Agregar imagen</value>
   </data>
   <data name="external_applications" xml:space="preserve">
-    <value>Externe Anwendungen</value>
+    <value>Aplicaciones externas</value>
   </data>
   <data name="custom_app" xml:space="preserve">
-    <value>Benutzerdefinierte App</value>
+    <value>Aplicación personalizada</value>
   </data>
   <data name="plot_defaults" xml:space="preserve">
-    <value>Plot-Standardeinstellungen</value>
+    <value>Valores predeterminados de trazado</value>
   </data>
   <data name="default_diagram_expand_level" xml:space="preserve">
-    <value>Standard-Erweiterungsebene</value>
+    <value>Nivel de expansión predeterminado</value>
   </data>
   <data name="default_third_party_editor" xml:space="preserve">
-    <value>Standard-Drittanbieter-Editor</value>
+    <value>Editor de terceros predeterminado</value>
   </data>
   <data name="automatic_updates" xml:space="preserve">
-    <value>Automatische Updates</value>
+    <value>Actualizaciones automáticas</value>
   </data>
   <data name="auto_check_diagram_template_updates" xml:space="preserve">
-    <value>Automatisch nach Vorlagenupdates suchen</value>
+    <value>Comprobar actualizaciones de plantilla automáticamente</value>
   </data>
   <data name="community" xml:space="preserve">
-    <value>Community</value>
+    <value>Comunidad</value>
   </data>
   <data name="export_and_tools" xml:space="preserve">
-    <value>Export/Tools</value>
+    <value>Exportar/Herramientas</value>
   </data>
   <data name="format" xml:space="preserve">
-    <value>Format</value>
+    <value>Formato</value>
   </data>
   <data name="third_party_software" xml:space="preserve">
-    <value>Drittanbietersoftware</value>
+    <value>Software de terceros</value>
   </data>
   <data name="select_software" xml:space="preserve">
-    <value>Software auswählen</value>
+    <value>Seleccionar software</value>
   </data>
   <data name="open_with_third_party_software" xml:space="preserve">
-    <value>Mit Drittanbietersoftware öffnen</value>
+    <value>Abrir con software de terceros</value>
   </data>
   <data name="confirm_enter_edit_mode_base_map" xml:space="preserve">
-    <value>Möchten Sie wirklich in den Bearbeitungsmodus wechseln? Dies erlaubt das Ändern der Grundkarte.</value>
+    <value>¿Seguro que desea entrar en modo de edición? Esto le permitirá modificar el mapa base.</value>
   </data>
   <data name="information" xml:space="preserve">
-    <value>Info</value>
+    <value>Información</value>
   </data>
   <data name="click_to_pick_coordinates" xml:space="preserve">
-    <value>Bitte in den Zeichenbereich klicken, um Koordinaten zu wählen</value>
+    <value>Haga clic en el área de dibujo para recoger coordenadas</value>
   </data>
   <data name="picking_operation_cancelled" xml:space="preserve">
-    <value>Auswahlvorgang abgebrochen</value>
+    <value>Operación de recogida cancelada</value>
   </data>
   <data name="diagram" xml:space="preserve">
-    <value>Diagramm</value>
+    <value>Diagrama</value>
+    <comment>绘图-功能栏</comment>
   </data>
   <data name="official_website" xml:space="preserve">
-    <value>Offizielle Website</value>
+    <value>Sitio oficial</value>
   </data>
   <data name="minimize" xml:space="preserve">
-    <value>Minimieren</value>
+    <value>Minimizar</value>
   </data>
   <data name="maximize" xml:space="preserve">
-    <value>Maximieren</value>
+    <value>Maximizar</value>
   </data>
   <data name="close" xml:space="preserve">
-    <value>Schließen</value>
+    <value>Cerrar</value>
   </data>
   <data name="diagram_title_properties" xml:space="preserve">
-    <value>Diagrammtiteleigenschaften</value>
+    <value>Propiedades del título del diagrama</value>
+    <comment>绘图-快捷按钮-tooltip</comment>
   </data>
   <data name="diagram_script_properties" xml:space="preserve">
-    <value>Diagrammskripteigenschaften</value>
+    <value>Propiedades del script del diagrama</value>
+    <comment>绘图-快捷按钮-tooltip</comment>
   </data>
   <data name="diagram_legend_properties" xml:space="preserve">
-    <value>Diagrammlegendeneigenschaften</value>
+    <value>Propiedades de la leyenda del diagrama</value>
   </data>
   <data name="diagram_grid_properties" xml:space="preserve">
-    <value>Diagrammgittereigenschaften</value>
+    <value>Propiedades de la cuadrícula del diagrama</value>
   </data>
   <data name="switch_diagram_language" xml:space="preserve">
-    <value>Diagrammsprache wechseln</value>
+    <value>Cambiar idioma del diagrama</value>
   </data>
   <data name="popup_diagram_window" xml:space="preserve">
-    <value>Diagrammfenster ausklappen</value>
+    <value>Ventana emergente del diagrama</value>
+    <comment>绘图-快捷按钮-tooltip</comment>
   </data>
   <data name="independent_diagram_window" xml:space="preserve">
-    <value>Unabhängiges Diagrammfenster</value>
+    <value>Ventana de diagrama independiente</value>
   </data>
   <data name="edit_drawing_template_translations" xml:space="preserve">
-    <value>Übersetzungen der Zeichenvorlage bearbeiten</value>
+    <value>Editar traducciones de plantilla de dibujo</value>
+    <comment>主页-小组件-图解模板翻译器</comment>
   </data>
   <data name="repair_missing_or_damaged_templates_and_lists" xml:space="preserve">
-    <value>Fehlende oder beschädigte Vorlagen und Listen reparieren</value>
+    <value>Reparar plantillas y listas perdidas o dañadas</value>
   </data>
   <data name="view_latest_server_announcements" xml:space="preserve">
-    <value>Neueste Serverankündigungen anzeigen</value>
+    <value>Ver los últimos anuncios del servidor</value>
   </data>
   <data name="maintain_server_config_and_templates" xml:space="preserve">
-    <value>Serverkonfiguration und Vorlagen warten</value>
+    <value>Mantener configuración del servidor y archivos de plantilla</value>
   </data>
   <data name="stroke_width" xml:space="preserve">
-    <value>Strichbreite</value>
+    <value>Ancho de trazo</value>
   </data>
   <data name="stroke_color" xml:space="preserve">
-    <value>Strichfarbe</value>
+    <value>Color de trazo</value>
   </data>
   <data name="template_type_not_supported_please_update" xml:space="preserve">
-    <value>Vorlagentyp nicht unterstützt, bitte Software aktualisieren.</value>
+    <value>Tipo de plantilla de diagrama no soportado, actualice el software.</value>
   </data>
   <data name="diagram_guide" xml:space="preserve">
-    <value>Diagramm-Assistent</value>
+    <value>Guía de diagrama</value>
+    <comment>绘图-图解-帮助</comment>
   </data>
   <data name="click_help_for_guide" xml:space="preserve">
-    <value>Klicken für Diagrammdokumentation</value>
+    <value>Haga clic para ver documentación del diagrama</value>
   </data>
   <data name="Alignment_UpperLeft" xml:space="preserve">
-    <value>Oben links</value>
+    <value>Superior izquierda</value>
   </data>
   <data name="Alignment_UpperCenter" xml:space="preserve">
-    <value>Oben mitte</value>
+    <value>Centro superior</value>
   </data>
   <data name="Alignment_UpperRight" xml:space="preserve">
-    <value>Oben rechts</value>
+    <value>Superior derecha</value>
   </data>
   <data name="Alignment_MiddleLeft" xml:space="preserve">
-    <value>Mitte links</value>
+    <value>Centro izquierda</value>
   </data>
   <data name="Alignment_MiddleCenter" xml:space="preserve">
-    <value>Mitte zentriert</value>
+    <value>Centro</value>
   </data>
   <data name="Alignment_MiddleRight" xml:space="preserve">
-    <value>Mitte rechts</value>
+    <value>Centro derecha</value>
   </data>
   <data name="Alignment_LowerLeft" xml:space="preserve">
-    <value>Unten links</value>
+    <value>Inferior izquierda</value>
   </data>
   <data name="Alignment_LowerCenter" xml:space="preserve">
-    <value>Unten mitte</value>
+    <value>Centro inferior</value>
   </data>
   <data name="Alignment_LowerRight" xml:space="preserve">
-    <value>Unten rechts</value>
+    <value>Inferior derecha</value>
   </data>
   <data name="Orientation_Horizontal" xml:space="preserve">
     <value>Horizontal</value>
   </data>
   <data name="Orientation_Vertical" xml:space="preserve">
-    <value>Vertikal</value>
+    <value>Vertical</value>
   </data>
   <data name="show_tick_labels" xml:space="preserve">
-    <value>Skalenbeschriftungen anzeigen</value>
+    <value>Mostrar etiquetas de marca</value>
   </data>
   <data name="show_major_ticks" xml:space="preserve">
-    <value>Hauptskalen anzeigen</value>
+    <value>Mostrar marcas principales</value>
   </data>
   <data name="recently_used" xml:space="preserve">
-    <value>Zuletzt verwendet</value>
+    <value>Recientemente usado</value>
   </data>
   <data name="all_fonts" xml:space="preserve">
-    <value>Alle Schriftarten</value>
+    <value>Todas las fuentes</value>
   </data>
   <data name="failed_to_open_widget" xml:space="preserve">
-    <value>Widget konnte nicht geöffnet werden:</value>
+    <value>Error al abrir widget:</value>
   </data>
   <data name="coordinates_picked_success" xml:space="preserve">
-    <value>Koordinaten erfolgreich erfasst!</value>
+    <value>¡Coordenadas recogidas con éxito!</value>
   </data>
   <data name="unsaved_diagram_template_prompt" xml:space="preserve">
-    <value>Die aktuelle Diagrammvorlage enthält nicht gespeicherte Änderungen. Möchten Sie diese speichern?</value>
+    <value>La plantilla actual tiene cambios no guardados, ¿guardar?</value>
   </data>
   <data name="tips" xml:space="preserve">
-    <value>Tips</value>
+    <value>Consejos</value>
   </data>
   <data name="template_no_multilingual_info" xml:space="preserve">
-    <value>Die aktuelle Vorlage enthält keine mehrsprachigen Informationen</value>
+    <value>La plantilla actual no tiene información multilingüe</value>
   </data>
   <data name="language_switch_success" xml:space="preserve">
-    <value>Sprache erfolgreich geändert</value>
+    <value>Cambio de idioma exitoso</value>
   </data>
   <data name="language_switch_error" xml:space="preserve">
-    <value>Beim Umschalten der Sprache ist ein Fehler aufgetreten:</value>
+    <value>Error al cambiar de idioma:</value>
   </data>
   <data name="auto_datapoint_projection_failed" xml:space="preserve">
-    <value>Automatische Datenpunktprojektion fehlgeschlagen:</value>
+    <value>Proyección automática de puntos de datos fallida:</value>
   </data>
   <data name="failed_to_delete_row" xml:space="preserve">
-    <value>Zeile konnte nicht gelöscht werden:</value>
+    <value>No se pudo eliminar la fila:</value>
   </data>
   <data name="diagram_template_not_found_repair_hint" xml:space="preserve">
-    <value>Diagrammvorlagendatei nicht gefunden. Bitte versuchen Sie, diese mit dem „Vorlagen-Reparatur-Tool“ auf der Startseite zu reparieren.</value>
+    <value>No se encuentra la plantilla, intente usar 'Herramienta de reparación' en Inicio.</value>
   </data>
   <data name="confirm_delete_custom_diagram_template" xml:space="preserve">
-    <value>Sind Sie sicher, dass Sie diese benutzerdefinierte Diagrammvorlage löschen möchten?</value>
+    <value>¿Eliminar esta plantilla personalizada?</value>
   </data>
   <data name="template_delete_success" xml:space="preserve">
-    <value>Vorlage erfolgreich gelöscht</value>
+    <value>Plantilla eliminada con éxito</value>
   </data>
   <data name="delete_failed" xml:space="preserve">
-    <value>Löschen fehlgeschlagen:</value>
+    <value>Error al eliminar:</value>
   </data>
   <data name="missing_drawing_objects_error" xml:space="preserve">
-    <value>• Fehlende Zeichenobjekte: Die Vorlage enthält keine Linien, Polygone, Texte oder Pfeile.</value>
+    <value>• Faltan objetos de dibujo: La plantilla no contiene líneas, polígonos, texto o flechas.</value>
   </data>
   <data name="invalid_script_variable_name" xml:space="preserve">
-    <value>• Ungültiges Format des Skriptvariablennamens: ’</value>
+    <value>• Error de formato de nombre de variable de script: '</value>
   </data>
   <data name="is_not_a_valid_variable_name" xml:space="preserve">
-    <value>’ ist kein gültiger Variablenname.</value>
+    <value>' no es un nombre de variable válido.</value>
   </data>
   <data name="script_return_value_error_must_be_array" xml:space="preserve">
-    <value>• Skript-Rückgabewertfehler: Das Skript muss ein Array zurückgeben.</value>
+    <value>• Error de valor de retorno de script: El script debe devolver una matriz.</value>
   </data>
   <data name="script_return_value_length_error" xml:space="preserve">
-    <value>• Fehler in der Länge des Skript-Rückgabewerts: Aktueller Wert ist</value>
+    <value>• Error de longitud de valor de retorno de script: Actual es </value>
   </data>
   <data name="return_type_mismatch_error" xml:space="preserve">
-    <value>Typ, sollte zurückgeben</value>
+    <value> tipo, debería devolver </value>
   </data>
   <data name="elements_actual_returned" xml:space="preserve">
-    <value>Elemente, aber tatsächlich zurückgegeben wurden</value>
+    <value> elementos, devuelto real </value>
   </data>
   <data name="elements_count_suffix" xml:space="preserve">
-    <value>Elemente.</value>
+    <value>.</value>
   </data>
   <data name="missing_translation_warning" xml:space="preserve">
-    <value>• Fehlende Übersetzung: Einige Texte verfügen über keine mehrsprachigen Übersetzungen.</value>
+    <value>• Traducción faltante: A algunos textos les falta traducción.</value>
   </data>
   <data name="diagram_template_source_missing" xml:space="preserve">
-    <value>Quelldatei der Diagrammvorlage existiert nicht</value>
+    <value>El archivo fuente de la plantilla no existe</value>
   </data>
   <data name="template_potential_issues_detected" xml:space="preserve">
-    <value>Folgende potenzielle Probleme wurden in der Vorlage erkannt:</value>
+    <value>Posibles problemas detectados en la plantilla:</value>
   </data>
   <data name="ignore_issues_and_continue_export" xml:space="preserve">
-    <value>Diese Probleme ignorieren und mit dem Export fortfahren?</value>
+    <value>¿Ignorar problemas y continuar exportando?</value>
   </data>
   <data name="completeness_check" xml:space="preserve">
-    <value>Vollständigkeitsprüfung</value>
+    <value>Comprobación de integridad</value>
   </data>
   <data name="diagram_template_export_success" xml:space="preserve">
-    <value>Diagrammvorlage erfolgreich exportiert</value>
+    <value>Plantilla exportada con éxito</value>
   </data>
   <data name="directory_not_exist" xml:space="preserve">
-    <value>Verzeichnis existiert nicht</value>
+    <value>El directorio no existe</value>
   </data>
   <data name="diagram_template_directory_not_found" xml:space="preserve">
-    <value>Verzeichnis für Diagrammvorlagen existiert nicht:</value>
+    <value>Directorio de plantilla no encontrado:</value>
   </data>
   <data name="failed_to_load_diagram_template" xml:space="preserve">
-    <value>Diagrammvorlage konnte nicht geladen werden:</value>
+    <value>No se pudo cargar la plantilla:</value>
   </data>
   <data name="unsaved_template_changes_confirm" xml:space="preserve">
-    <value>Die aktuelle Vorlage enthält nicht gespeicherte Änderungen. Möchten Sie diese speichern?</value>
+    <value>Cambios no guardados en la plantilla, ¿guardar?</value>
   </data>
   <data name="ternary_diagram_crosshair_not_supported" xml:space="preserve">
-    <value>Fadenkreuz-Positionierung wird für Ternärdiagramme derzeit nicht unterstützt.</value>
+    <value>El diagrama ternario no soporta retícula actualmente.</value>
   </data>
   <data name="attempting_to_start" xml:space="preserve">
-    <value>Startversuch läuft</value>
+    <value>Intentando iniciar</value>
   </data>
   <data name="coreldraw_env_not_found_select_program" xml:space="preserve">
-    <value>CorelDRAW-Umgebungsvariable nicht gefunden. Bitte wählen Sie das zu öffnende Programm aus.</value>
+    <value>Variable de entorno CorelDRAW no encontrada, seleccione programa.</value>
   </data>
   <data name="failed_to_open" xml:space="preserve">
-    <value>Öffnen fehlgeschlagen:</value>
+    <value>Error al abrir:</value>
   </data>
   <data name="inkscape_env_not_found_select_program" xml:space="preserve">
-    <value>Inkscape-Umgebungsvariable nicht gefunden. Bitte wählen Sie das zu öffnende Programm aus.</value>
+    <value>Variable de entorno Inkscape no encontrada, seleccione programa.</value>
   </data>
   <data name="illustrator_not_found_check_path" xml:space="preserve">
-    <value>Adobe Illustrator nicht gefunden. Bitte prüfen Sie die Pfadeinstellungen oder wählen Sie das zu öffnende Programm aus.</value>
+    <value>Adobe Illustrator no encontrado, verifique la ruta o seleccione programa.</value>
   </data>
   <data name="custom_path_not_set_configure_in_settings" xml:space="preserve">
-    <value>Benutzerdefinierter Programmpfad nicht festgelegt. Bitte in den Einstellungen konfigurieren.</value>
+    <value>Ruta de programa personalizada no establecida, configure en ajustes.</value>
   </data>
   <data name="custom_program_start_failed" xml:space="preserve">
-    <value>Starten des benutzerdefinierten Programms fehlgeschlagen:</value>
+    <value>Error al iniciar programa personalizado:</value>
   </data>
   <data name="help_file_not_found" xml:space="preserve">
-    <value>Hilfedokumentation konnte nicht gefunden werden.</value>
+    <value>Archivo de ayuda no encontrado.</value>
   </data>
   <data name="refresh_successful" xml:space="preserve">
-    <value>Erfolgreich aktualisiert</value>
+    <value>Actualización exitosa</value>
   </data>
   <data name="refresh_failed" xml:space="preserve">
-    <value>Aktualisierung fehlgeschlagen:</value>
+    <value>Error al actualizar:</value>
   </data>
   <data name="diagram_help_path_undefined_save_template" xml:space="preserve">
-    <value>Pfad der Diagramm-Hilfedatei konnte nicht ermittelt werden. Bitte versuchen Sie zuerst, die Vorlage zu speichern.</value>
+    <value>Ruta de ayuda no definida, intente guardar la plantilla primero.</value>
   </data>
   <data name="failed_to_open_file" xml:space="preserve">
-    <value>Datei konnte nicht geöffnet werden:</value>
+    <value>No se pudo abrir el archivo:</value>
   </data>
   <data name="error_creating_new_template" xml:space="preserve">
-    <value>Fehler beim Erstellen der neuen Vorlage:</value>
+    <value>Error al crear nueva plantilla:</value>
   </data>
   <data name="import_failed" xml:space="preserve">
-    <value>Import fehlgeschlagen:</value>
+    <value>Error al importar:</value>
   </data>
   <data name="failed_to_open_zip_file" xml:space="preserve">
-    <value>ZIP-Datei konnte nicht geöffnet werden</value>
+    <value>No se pudo abrir archivo ZIP</value>
   </data>
   <data name="diagram_template_corrupted_or_invalid" xml:space="preserve">
-    <value>Die Diagrammvorlagendatei ist beschädigt oder enthält keine gültige JSON-Diagrammvorlagendatei.</value>
+    <value>Archivo de plantilla dañado o JSON inválido.</value>
   </data>
   <data name="failed_to_parse_diagram_template_json" xml:space="preserve">
-    <value>Die JSON-Datei der Diagrammvorlage konnte nicht analysiert werden</value>
+    <value>No se pudo analizar JSON de plantilla</value>
   </data>
   <data name="invalid_diagram_template_file" xml:space="preserve">
-    <value>Ungültige Diagrammvorlagendatei</value>
+    <value>Archivo de plantilla inválido</value>
   </data>
   <data name="custom_diagram_template" xml:space="preserve">
-    <value>Benutzerdefinierte Diagrammvorlage</value>
+    <value>Plantilla personalizada</value>
   </data>
   <data name="already_exists_overwrite_confirm" xml:space="preserve">
-    <value>Bereits vorhanden. Möchten Sie es überschreiben?</value>
+    <value>Ya existe, ¿sobrescribir?</value>
   </data>
   <data name="overwrite" xml:space="preserve">
-    <value>Überschreiben</value>
+    <value>Sobrescribir</value>
   </data>
   <data name="failed_to_delete_old_directory" xml:space="preserve">
-    <value>Altes Verzeichnis konnte nicht gelöscht werden:</value>
+    <value>No se pudo eliminar directorio antiguo:</value>
   </data>
   <data name="invalid_diagram_template_no_json" xml:space="preserve">
-    <value>Ungültige Diagrammvorlagendatei: Diagramm-JSON-Datei nicht gefunden.</value>
+    <value>Archivo de plantilla inválido, JSON no encontrado.</value>
   </data>
   <data name="template_load_failed" xml:space="preserve">
-    <value>Laden der Vorlage fehlgeschlagen</value>
+    <value>Error al cargar plantilla</value>
   </data>
   <data name="script_not_defined_in_template" xml:space="preserve">
-    <value>Kein Skript in der Diagrammvorlage definiert</value>
+    <value>Script no definido en la plantilla</value>
   </data>
   <data name="function" xml:space="preserve">
-    <value>Funktion</value>
+    <value>Función</value>
   </data>
 </root>

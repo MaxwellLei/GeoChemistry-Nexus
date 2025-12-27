@@ -1,4 +1,4 @@
-﻿<Page x:Class="GeoChemistryNexus.Views.SCommonPageView"
+<Page x:Class="GeoChemistryNexus.Views.SCommonPageView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -38,6 +38,10 @@
                                 <ComboBoxItem Content="简体中文"/>
                                 <ComboBoxItem Content="English (US)"/>
                                 <ComboBoxItem Content="Deutsch"/>
+                                <ComboBoxItem Content="Español"/>
+                                <ComboBoxItem Content="日本語"/>
+                                <ComboBoxItem Content="한국어"/>
+                                <ComboBoxItem Content="Русский"/>
                             </ComboBox>
                         </Grid>
                         
@@ -51,7 +55,7 @@
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="{Binding [startup_background_image],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" FontSize="14"/>
                             <Button Grid.Column="1" Content="{Binding [add_image],Source={x:Static lg:LanguageService.Instance}}" 
-                                    Command="{Binding AddStartImgCommand}" Width="100" Height="30"/>
+                                    Command="{Binding AddStartImgCommand}" Width="Auto" Padding="15,0" Height="30"/>
                         </Grid>
                         
                         <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>

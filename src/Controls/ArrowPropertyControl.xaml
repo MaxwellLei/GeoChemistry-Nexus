@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="GeoChemistryNexus.Controls.ArrowPropertyControl"
+<UserControl x:Class="GeoChemistryNexus.Controls.ArrowPropertyControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -68,11 +68,17 @@
                                 <hc:NumericUpDown Grid.Column="0" Value="{Binding Start.X, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
                                           hc:InfoElement.Title="X" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.TitleWidth="15"
                                           hc:InfoElement.Placeholder="0.0"
+                                          Tag="{Binding Start}"
+                                          GotFocus="Coordinate_GotFocus"
+                                          LostFocus="Coordinate_LostFocus"
                                           Style="{StaticResource ModernNumericUpDownStyle}"/>
                                       
                                 <hc:NumericUpDown Grid.Column="2" Value="{Binding Start.Y, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
                                           hc:InfoElement.Title="Y" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.TitleWidth="15"
                                           hc:InfoElement.Placeholder="0.0"
+                                          Tag="{Binding Start}"
+                                          GotFocus="Coordinate_GotFocus"
+                                          LostFocus="Coordinate_LostFocus"
                                           Style="{StaticResource ModernNumericUpDownStyle}"/>
                             </Grid>
                         </Grid>
@@ -112,11 +118,17 @@
                                 <hc:NumericUpDown Grid.Column="0" Value="{Binding End.X, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
                                           hc:InfoElement.Title="X" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.TitleWidth="15"
                                           hc:InfoElement.Placeholder="0.0"
+                                          Tag="{Binding End}"
+                                          GotFocus="Coordinate_GotFocus"
+                                          LostFocus="Coordinate_LostFocus"
                                           Style="{StaticResource ModernNumericUpDownStyle}"/>
                                       
                                 <hc:NumericUpDown Grid.Column="2" Value="{Binding End.Y, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
                                           hc:InfoElement.Title="Y" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.TitleWidth="15"
                                           hc:InfoElement.Placeholder="0.0"
+                                          Tag="{Binding End}"
+                                          GotFocus="Coordinate_GotFocus"
+                                          LostFocus="Coordinate_LostFocus"
                                           Style="{StaticResource ModernNumericUpDownStyle}"/>
                             </Grid>
                         </Grid>

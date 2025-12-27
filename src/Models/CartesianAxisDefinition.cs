@@ -55,11 +55,24 @@ namespace GeoChemistryNexus.Models
         [property: LocalizedDisplayName("length")] // 长度
         private float _majorTickLength = 4;
 
+        /// <summary>
+        /// Axis major tick width
+        /// </summary>
+        [ObservableProperty]
+        [property: LocalizedCategory("major_tick_style")] // 主刻度样式
+        [property: LocalizedDisplayName("width")] // 宽度
+        private float _majorTickWidth = 1;
+
         [ObservableProperty]
         [property: LocalizedCategory("major_tick_style")] // 主刻度样式
         [property: LocalizedDisplayName("interval")] // 间隔
         private double _majorTickInterval = 0;
 
+
+        partial void OnMajorTickIntervalChanged(double value)
+        {
+            if (value < 0) MajorTickInterval = 0;
+        }
 
         /// <summary>
         /// 每个主刻度之间的次刻度数量
@@ -68,6 +81,27 @@ namespace GeoChemistryNexus.Models
         [property: LocalizedCategory("minor_tick_style")] // 次刻度样式
         [property: LocalizedDisplayName("count")] // 数量
         private int _minorTicksPerMajorTick = 0;
+
+        /// <summary>
+        /// 是否自动调整次刻度数量
+        /// </summary>
+        [ObservableProperty]
+        private bool _isAutoMinorTickCount = true;
+
+        partial void OnMinorTicksPerMajorTickChanged(int value)
+        {
+            if (value < 0)
+            {
+                MinorTicksPerMajorTick = 0;
+                return;
+            }
+            if (value > 0) IsAutoMinorTickCount = false;
+        }
+
+        partial void OnIsAutoMinorTickCountChanged(bool value)
+        {
+            if (value) MinorTicksPerMajorTick = 0;
+        }
 
         /// <summary>
         /// Axis minor tick length

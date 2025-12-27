@@ -1,5 +1,6 @@
 using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Attributes;
+using GeoChemistryNexus.Services;
 using System;
 using System.Globalization;
 using System.Reflection;
@@ -15,6 +16,24 @@ namespace GeoChemistryNexus.Converter
 
             Type type = value.GetType();
             if (!type.IsEnum) return value.ToString();
+
+            // Handle ScottPlot enums for Legend properties
+            if (type.FullName == "ScottPlot.Alignment" || type.FullName == "ScottPlot.Orientation")
+            {
+                string key = $"{type.Name}_{value}";
+                try
+                {
+                    string localized = LanguageService.Instance[key];
+                    if (!string.IsNullOrEmpty(localized))
+                    {
+                        return localized;
+                    }
+                }
+                catch
+                {
+                    // todo
+                }
+            }
 
             FieldInfo fi = type.GetField(value.ToString());
             if (fi != null)

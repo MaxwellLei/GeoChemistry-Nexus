@@ -1,4 +1,4 @@
-﻿<Page x:Class="GeoChemistryNexus.Views.MainPlotPage"
+<Page x:Class="GeoChemistryNexus.Views.MainPlotPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -91,7 +91,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
         <Style x:Key="ToolbarButtonIconStyle" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
@@ -560,6 +560,8 @@
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe61f;" FontSize="16" Margin="0,1,6,0"/>
                                 <TextBlock Text="{Binding [return_to_template_library],Source={x:Static lg:LanguageService.Instance}}" FontWeight="SemiBold"/>
+                                <TextBlock Text="*" Foreground="Red" Margin="2,-8,0,0" FontWeight="Bold" FontSize="18"
+                                           Visibility="{Binding HasUnsavedChanges, Converter={StaticResource BoolToVisibilityConverter}}"/>
                             </StackPanel>
                         </Button>
 
@@ -593,30 +595,30 @@
 
                     <!-- Right: Tools -->
                     <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-                        
+
                         <!-- Common Tools -->
-                         <Button Command="{Binding CenterPlotCommand}" Style="{StaticResource ToolbarButtonIconStyle}" 
+                        <Button Command="{Binding CenterPlotCommand}" Style="{StaticResource ToolbarButtonIconStyle}" 
                                 ToolTip="{Binding [reset_view], Source={x:Static lg:LanguageService.Instance}}">
-                             <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe617;" FontSize="16"/>
-                         </Button>
+                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe617;" FontSize="16"/>
+                        </Button>
 
 
-                         
-                         <!-- Snap Selection -->
-                         <ToggleButton Style="{StaticResource ToolbarIconButtonStyle}" IsChecked="{Binding IsSnapSelectionEnabled, Mode=TwoWay}"
+
+                        <!-- Snap Selection -->
+                        <ToggleButton Style="{StaticResource ToolbarIconButtonStyle}" IsChecked="{Binding IsSnapSelectionEnabled, Mode=TwoWay}"
                                                 ToolTip="{Binding [highlight_on_hover],Source={x:Static lg:LanguageService.Instance}}">
                             <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe82e;" FontSize="14"/>
                         </ToggleButton>
 
-                         <ToggleButton IsChecked="{Binding IsCrosshairVisible}" Style="{StaticResource ToolbarIconButtonStyle}"
+                        <ToggleButton IsChecked="{Binding IsCrosshairVisible}" Style="{StaticResource ToolbarIconButtonStyle}"
                                        ToolTip="{Binding [coordinate_positioning], Source={x:Static lg:LanguageService.Instance}}">
-                             <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe61e;" FontSize="16"/>
-                         </ToggleButton>
+                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe61e;" FontSize="16"/>
+                        </ToggleButton>
 
-                         <Button Command="{Binding CancelSelectedCommand}" Style="{StaticResource ToolbarButtonIconStyle}" 
+                        <Button Command="{Binding CancelSelectedCommand}" Style="{StaticResource ToolbarButtonIconStyle}" 
                                 ToolTip="{Binding [deselect], Source={x:Static lg:LanguageService.Instance}}">
-                             <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xeaf2;" FontSize="16"/>
-                         </Button>
+                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xeaf2;" FontSize="16"/>
+                        </Button>
 
                         <Rectangle Width="1" Height="24" Fill="#D0D0D0" Margin="8,0"/>
 
@@ -635,11 +637,11 @@
                             <Button Command="{Binding SaveBaseMapCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [Save], Source={x:Static lg:LanguageService.Instance}}">
                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe61a;" FontSize="16" Foreground="#0078D4"/>
                             </Button>
-                             <Button Command="{Binding SaveBaseMapAsCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [save_as], Source={x:Static lg:LanguageService.Instance}}">
+                            <Button Command="{Binding SaveBaseMapAsCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [save_as], Source={x:Static lg:LanguageService.Instance}}">
                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe618;" FontSize="16"/>
                             </Button>
                             <Rectangle Width="1" Height="24" Fill="#D0D0D0" Margin="8,0"/>
-                            
+
                             <ToggleButton IsChecked="{Binding IsAddingLine}" Style="{StaticResource ToolbarIconButtonStyle}" ToolTip="{Binding [add_line], Source={x:Static lg:LanguageService.Instance}}">
                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe619;" FontSize="16"/>
                             </ToggleButton>
@@ -649,29 +651,29 @@
                             <ToggleButton IsChecked="{Binding IsAddingPolygon}" Style="{StaticResource ToolbarIconButtonStyle}" ToolTip="{Binding [add_polygon], Source={x:Static lg:LanguageService.Instance}}">
                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xf2b3;" FontSize="16"/>
                             </ToggleButton>
-                             <ToggleButton IsChecked="{Binding IsAddingArrow}" Style="{StaticResource ToolbarIconButtonStyle}" ToolTip="{Binding [add_arrow], Source={x:Static lg:LanguageService.Instance}}">
+                            <ToggleButton IsChecked="{Binding IsAddingArrow}" Style="{StaticResource ToolbarIconButtonStyle}" ToolTip="{Binding [add_arrow], Source={x:Static lg:LanguageService.Instance}}">
                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe6d5;" FontSize="16"/>
                             </ToggleButton>
                             <Button Command="{Binding AddFunctionCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [add_function], Source={x:Static lg:LanguageService.Instance}}">
                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe63a;" FontSize="16"/>
                             </Button>
-                            
+
                             <Rectangle Width="1" Height="24" Fill="#D0D0D0" Margin="8,0"/>
-                            
-                             <Button Command="{Binding UndoCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [undo], Source={x:Static lg:LanguageService.Instance}}">
+
+                            <Button Command="{Binding UndoCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [undo], Source={x:Static lg:LanguageService.Instance}}">
                                 <TextBlock FontFamily="Segoe UI Symbol" Text="&#x21A9;" FontSize="16"/>
                             </Button>
-                             <Button Command="{Binding RedoCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="Redo">
+                            <Button Command="{Binding RedoCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="Redo">
                                 <TextBlock FontFamily="Segoe UI Symbol" Text="&#x21AA;" FontSize="16"/>
                             </Button>
-                            
-                             <Rectangle Width="1" Height="24" Fill="#D0D0D0" Margin="8,0"/>
-                             
-                             <Button Command="{Binding DeleteSelectedObjectCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [delete_object], Source={x:Static lg:LanguageService.Instance}}">
-                                 <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe6a2;" FontSize="18" Foreground="#D92C2C"/>
-                             </Button>
-                             
-                             <Rectangle Width="1" Height="24" Fill="#D0D0D0" Margin="8,0"/>
+
+                            <Rectangle Width="1" Height="24" Fill="#D0D0D0" Margin="8,0"/>
+
+                            <Button Command="{Binding DeleteSelectedObjectCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [delete_object], Source={x:Static lg:LanguageService.Instance}}">
+                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe6a2;" FontSize="18" Foreground="#D92C2C"/>
+                            </Button>
+
+                            <Rectangle Width="1" Height="24" Fill="#D0D0D0" Margin="8,0"/>
                         </StackPanel>
 
                         <!-- Settings & Export -->
@@ -682,30 +684,30 @@
                             <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe614;" FontSize="16"/>
                         </Button>
                         <Button Command="{Binding LegendSettingCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [diagram_legend_properties], Source={x:Static lg:LanguageService.Instance}}">
-                             <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe6ae;" FontSize="16"/>
+                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe6ae;" FontSize="16"/>
                         </Button>
                         <Button Command="{Binding GridSettingCommand}" IsEnabled="{Binding IsGridSettingEnabled}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [diagram_grid_properties], Source={x:Static lg:LanguageService.Instance}}">
-                             <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe67b;" FontSize="16"/>
+                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe67b;" FontSize="16"/>
                         </Button>
                         <Button Command="{Binding SwitchTemplateLanguageCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [switch_diagram_language], Source={x:Static lg:LanguageService.Instance}}">
                             <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe6b4;" FontSize="16"/>
                         </Button>
-                        
+
                         <Rectangle Width="1" Height="24" Fill="#D0D0D0" Margin="8,0"/>
-                        
+
                         <!-- Copy Image to Clipboard -->
                         <Button Command="{Binding CopyToClipboardCommand}" Style="{StaticResource ToolbarButtonIconStyle}" 
                                 ToolTip="{Binding [copy_plot_to_clipboard], Source={x:Static lg:LanguageService.Instance}}">
                             <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe64d;" FontSize="16"/>
                         </Button>
-                        
+
                         <!-- Export / External Tools -->
                         <Button Command="{Binding ShowExportPanelCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [export_and_tools], Source={x:Static lg:LanguageService.Instance}, TargetNullValue='瀵煎嚭/宸ュ叿'}">
-                             <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe648;" FontSize="18"/>
+                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe648;" FontSize="18"/>
                         </Button>
 
                         <Rectangle Width="1" Height="24" Fill="#D0D0D0" Margin="8,0"/>
-                        
+
 
 
                     </StackPanel>
@@ -743,23 +745,23 @@
                                 </Style>
                             </Border.Style>
                             <StackPanel Orientation="Horizontal">
-                                 <Button Command="{Binding AddRowUpCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [add_row_above], Source={x:Static lg:LanguageService.Instance}}">
+                                <Button Command="{Binding AddRowUpCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [add_row_above], Source={x:Static lg:LanguageService.Instance}}">
                                     <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe615;" FontSize="16"/>
                                 </Button>
-                                 <Button Command="{Binding AddRowDownCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [add_row_below], Source={x:Static lg:LanguageService.Instance}}">
+                                <Button Command="{Binding AddRowDownCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [add_row_below], Source={x:Static lg:LanguageService.Instance}}">
                                     <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe613;" FontSize="16"/>
                                 </Button>
-                                 <Button Command="{Binding DeleteRowCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [delete_row], Source={x:Static lg:LanguageService.Instance}}">
+                                <Button Command="{Binding DeleteRowCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [delete_row], Source={x:Static lg:LanguageService.Instance}}">
                                     <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe89f;" FontSize="16" Foreground="#D92C2C"/>
                                 </Button>
                                 <Rectangle Width="1" Height="24" Fill="#D0D0D0" Margin="8,0"/>
-                                 <Button Command="{Binding AddColumnLeftCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [add_col_left], Source={x:Static lg:LanguageService.Instance}}">
+                                <Button Command="{Binding AddColumnLeftCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [add_col_left], Source={x:Static lg:LanguageService.Instance}}">
                                     <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe611;" FontSize="16"/>
                                 </Button>
-                                 <Button Command="{Binding AddColumnRightCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [add_col_right], Source={x:Static lg:LanguageService.Instance}}">
+                                <Button Command="{Binding AddColumnRightCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [add_col_right], Source={x:Static lg:LanguageService.Instance}}">
                                     <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe610;" FontSize="16"/>
                                 </Button>
-                                 <Button Command="{Binding DeleteColumnCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [delete_column], Source={x:Static lg:LanguageService.Instance}}">
+                                <Button Command="{Binding DeleteColumnCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [delete_column], Source={x:Static lg:LanguageService.Instance}}">
                                     <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe907;" FontSize="16" Foreground="#D92C2C"/>
                                 </Button>
                                 <Rectangle Width="1" Height="24" Fill="#D0D0D0" Margin="8,0"/>
@@ -769,14 +771,14 @@
                                 <Button Command="{Binding UpdateDataCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [update_chart], Source={x:Static lg:LanguageService.Instance}}">
                                     <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe71e;" FontSize="16" Foreground="#0078D4"/>
                                 </Button>
-                                 <Button Command="{Binding ClearAllDataCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [clear_all_data], Source={x:Static lg:LanguageService.Instance}}">
+                                <Button Command="{Binding ClearAllDataCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [clear_all_data], Source={x:Static lg:LanguageService.Instance}}">
                                     <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe734;" FontSize="16" Foreground="#D92C2C"/>
                                 </Button>
                             </StackPanel>
                         </Border>
 
-                         <!-- Layer Tree -->
-                         <TreeView Grid.Row="1" ItemsSource="{Binding LayerTree}" x:Name="LayerTreeView" Background="Transparent" BorderThickness="0">
+                        <!-- Layer Tree -->
+                        <TreeView Grid.Row="1" ItemsSource="{Binding LayerTree}" x:Name="LayerTreeView" Background="Transparent" BorderThickness="0">
                             <TreeView.Style>
                                 <Style TargetType="TreeView">
                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -798,31 +800,31 @@
                                     </StackPanel>
                                 </HierarchicalDataTemplate>
                             </TreeView.Resources>
-                             <TreeView.ItemContainerStyle>
+                            <TreeView.ItemContainerStyle>
                                 <Style BasedOn="{StaticResource ModernStyleTreeViewItemStyle}" TargetType="{x:Type TreeViewItem}">
                                     <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=OneWay}"/>
                                     <EventSetter Event="UIElement.PreviewMouseLeftButtonDown" Handler="OnTreeViewItemPreviewMouseLeftButtonDown"/>
                                     <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
                                 </Style>
                             </TreeView.ItemContainerStyle>
-                         </TreeView>
-                         
-                         <!-- Data Grid -->
-                          <rg:ReoGridControl Grid.Row="1" x:Name="DataGrid" SheetTabVisible="False" ScrollViewer.HorizontalScrollBarVisibility="Auto">
-                                <rg:ReoGridControl.Resources>
-                                    <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource ScrollBarBaseStyle}"/>
-                                </rg:ReoGridControl.Resources>
-                                <rg:ReoGridControl.Style>
-                                    <Style TargetType="rg:ReoGridControl">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding RibbonTabIndex}" Value="1">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </rg:ReoGridControl.Style>
-                          </rg:ReoGridControl>
+                        </TreeView>
+
+                        <!-- Data Grid -->
+                        <rg:ReoGridControl Grid.Row="1" x:Name="DataGrid" SheetTabVisible="False" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                            <rg:ReoGridControl.Resources>
+                                <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource ScrollBarBaseStyle}"/>
+                            </rg:ReoGridControl.Resources>
+                            <rg:ReoGridControl.Style>
+                                <Style TargetType="rg:ReoGridControl">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding RibbonTabIndex}" Value="1">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </rg:ReoGridControl.Style>
+                        </rg:ReoGridControl>
                     </Grid>
                 </Border>
 
@@ -834,9 +836,9 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    
+
                     <ScottPlot:WpfPlot Grid.Row="0" Name="WpfPlot1" Margin="10"/>
-                    
+
                     <Button Grid.Row="0" Style="{StaticResource ToolbarButtonIconStyle}" Click="OnPopOutPlotClick" 
                             ToolTip="{Binding [popup_diagram_window],Source={x:Static lg:LanguageService.Instance}}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" Panel.ZIndex="1">
                         <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe642;" FontSize="14"/>
@@ -846,24 +848,53 @@
                             ToolTip="{Binding [use_help], Source={x:Static lg:LanguageService.Instance}}" 
                             Style="{StaticResource ToolbarButtonIconStyle}"
                             HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" Panel.ZIndex="1">
-                         <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe621;" FontSize="16"/>
+                        <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe621;" FontSize="16"/>
                     </Button>
-                    
-                     <!-- Help Content Overlay  -->
-                     <Border Grid.Row="0" Background="White" Margin="0"
+
+                    <!-- Quest Reminder Overlay -->
+                    <Grid Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,45,2,0"
+                          Visibility="{Binding IsDataStateReminderVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                          Panel.ZIndex="99">
+                        <Grid.Effect>
+                            <DropShadowEffect BlurRadius="8" ShadowDepth="2" Direction="270" Color="#40000000" Opacity="0.2"/>
+                        </Grid.Effect>
+
+                        <!-- Arrow pointing up -->
+                        <Path Data="M 3,10 L 8,0 L 16,10 Z" Fill="#FFF4CE" Stroke="#F5C346" StrokeThickness="1.5"
+                              HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,14,0"/>
+
+                        <!-- Box -->
+                        <Border Background="#FFF4CE" BorderBrush="#F5C346" BorderThickness="1.5" CornerRadius="6" Padding="12,8" Margin="0,9,0,0">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <!-- Icon -->
+                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe698;" FontSize="20" Foreground="#D48806" VerticalAlignment="Center" Margin="0,0,8,0"/>
+
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding [diagram_guide], Source={x:Static lg:LanguageService.Instance}, TargetNullValue='图解向导'}" FontWeight="Bold" Foreground="#333" FontSize="13"/>
+                                    <TextBlock Text="{Binding [click_help_for_guide], Source={x:Static lg:LanguageService.Instance}, TargetNullValue='点击按钮查看帮助文档'}" Foreground="#555" FontSize="12" Margin="0,2,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Mask to hide the border line between arrow and box -->
+                        <Rectangle Fill="#FFF4CE" Height="3" Width="12" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,9,16,0"/>
+                    </Grid>
+
+                    <!-- Help Content Overlay  -->
+                    <Border Grid.Row="0" Background="White" Margin="0"
                              Visibility="{Binding IsShowTemplateInfo, Converter={StaticResource BoolToVisibilityConverter}}" 
                              Panel.ZIndex="100">
                         <Grid>
-                             <Grid.RowDefinitions>
-                                 <RowDefinition Height="Auto"/>
-                                 <RowDefinition Height="*"/>
-                             </Grid.RowDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
 
 
-                             <!-- Toolbar -->
-                             <Border Grid.Row="0" Background="#F9F9F9" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1" Padding="10,5">
-                                 <Grid>
-                                     <Grid.ColumnDefinitions>
+                            <!-- Toolbar -->
+                            <Border Grid.Row="0" Background="#F9F9F9" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1" Padding="10,5">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
@@ -871,6 +902,16 @@
 
                                     <!-- Editor Tools -->
                                     <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                        <StackPanel.Style>
+                                            <Style TargetType="StackPanel">
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsHelpDocReadOnly}" Value="True">
+                                                        <Setter Property="IsEnabled" Value="False"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </StackPanel.Style>
                                         <!-- Font Size -->
                                         <hc:ComboBox x:Name="FontSizeComboBox" Width="80" Height="28" 
                                                   SelectionChanged="FontSizeComboBox_SelectionChanged" IsEditable="True"
@@ -878,89 +919,94 @@
                                                   ToolTip="Font Size" Margin="0,0,8,0" VerticalAlignment="Center"
                                                   Padding="6,0">
                                             <ComboBoxItem Content="8"/>
-                                             <ComboBoxItem Content="9"/>
-                                             <ComboBoxItem Content="10"/>
-                                             <ComboBoxItem Content="11"/>
-                                             <ComboBoxItem Content="12"/>
-                                             <ComboBoxItem Content="14"/>
-                                             <ComboBoxItem Content="16"/>
-                                             <ComboBoxItem Content="18"/>
-                                             <ComboBoxItem Content="20"/>
-                                             <ComboBoxItem Content="24"/>
-                                             <ComboBoxItem Content="28"/>
-                                             <ComboBoxItem Content="32"/>
-                                             <ComboBoxItem Content="48"/>
-                                             <ComboBoxItem Content="72"/>
-                                         </hc:ComboBox>
-                                         
-                                         <Rectangle Width="1" Height="20" Fill="#D0D0D0" Margin="0,0,8,0"/>
+                                            <ComboBoxItem Content="9"/>
+                                            <ComboBoxItem Content="10"/>
+                                            <ComboBoxItem Content="11"/>
+                                            <ComboBoxItem Content="12"/>
+                                            <ComboBoxItem Content="14"/>
+                                            <ComboBoxItem Content="16"/>
+                                            <ComboBoxItem Content="18"/>
+                                            <ComboBoxItem Content="20"/>
+                                            <ComboBoxItem Content="24"/>
+                                            <ComboBoxItem Content="28"/>
+                                            <ComboBoxItem Content="32"/>
+                                            <ComboBoxItem Content="48"/>
+                                            <ComboBoxItem Content="72"/>
+                                        </hc:ComboBox>
 
-                                         <!-- Text Color -->
-                                         <ToggleButton x:Name="ColorButton" ToolTip="Text Color" Style="{StaticResource ToolbarIconButtonStyle}" Margin="0,0,4,0">
-                                             <Grid>
-                                                  <TextBlock Text="A" FontSize="16" FontWeight="Bold" Foreground="#333" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,3"/>
-                                                  <Border Height="3" VerticalAlignment="Bottom" Margin="4,0,4,4" Background="{Binding ElementName=RichTextColorPicker, Path=SelectedBrush}" CornerRadius="1"/>
-                                             </Grid>
-                                         </ToggleButton>
-                                         <Popup IsOpen="{Binding IsChecked, ElementName=ColorButton}" StaysOpen="False" PlacementTarget="{Binding ElementName=ColorButton}" Placement="Bottom" AllowsTransparency="True">
-                                             <Border Background="White" BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="4" Padding="5">
-                                                 <Border.Effect>
-                                                     <DropShadowEffect BlurRadius="10" ShadowDepth="2" Direction="270" Color="#20000000" Opacity="0.4"/>
-                                                 </Border.Effect>
-                                                 <uc:CustomColorPicker x:Name="RichTextColorPicker" Width="270" Height="Auto"/>
-                                             </Border>
-                                         </Popup>
+                                        <Rectangle Width="1" Height="20" Fill="#D0D0D0" Margin="0,0,8,0"/>
 
-                                         <!-- Text Style -->
-                                         <ToggleButton x:Name="BoldButton" Command="EditingCommands.ToggleBold" CommandTarget="{Binding ElementName=Drichtextbox}" ToolTip="Bold" Style="{StaticResource ToolbarIconButtonStyle}" Margin="0,0,4,0">
-                                             <TextBlock Text="B" FontWeight="Bold" FontSize="16" Foreground="#333"/>
-                                         </ToggleButton>
-                                         <ToggleButton x:Name="ItalicButton" Command="EditingCommands.ToggleItalic" CommandTarget="{Binding ElementName=Drichtextbox}" ToolTip="Italic" Style="{StaticResource ToolbarIconButtonStyle}" Margin="0,0,4,0">
-                                             <TextBlock Text="I" FontStyle="Italic" FontWeight="Bold" FontSize="16" FontFamily="Times New Roman" Foreground="#333"/>
-                                         </ToggleButton>
-                                         <ToggleButton x:Name="UnderlineButton" Command="EditingCommands.ToggleUnderline" CommandTarget="{Binding ElementName=Drichtextbox}" ToolTip="Underline" Style="{StaticResource ToolbarIconButtonStyle}" Margin="0,0,8,0">
-                                             <TextBlock Text="U" TextDecorations="Underline" FontWeight="Bold" FontSize="16" Foreground="#333"/>
-                                         </ToggleButton>
-                                         
-                                         <Rectangle Width="1" Height="20" Fill="#D0D0D0" Margin="0,0,8,0"/>
+                                        <!-- Text Color -->
+                                        <ToggleButton x:Name="ColorButton" ToolTip="Text Color" Style="{StaticResource ToolbarIconButtonStyle}" Margin="0,0,4,0">
+                                            <Grid>
+                                                <TextBlock Text="A" FontSize="16" FontWeight="Bold" Foreground="#333" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,3"/>
+                                                <Border Height="3" VerticalAlignment="Bottom" Margin="4,0,4,4" Background="{Binding ElementName=RichTextColorPicker, Path=SelectedBrush}" CornerRadius="1"/>
+                                            </Grid>
+                                        </ToggleButton>
+                                        <Popup IsOpen="{Binding IsChecked, ElementName=ColorButton}" StaysOpen="False" PlacementTarget="{Binding ElementName=ColorButton}" Placement="Bottom" AllowsTransparency="True">
+                                            <Border Background="White" BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="4" Padding="5">
+                                                <Border.Effect>
+                                                    <DropShadowEffect BlurRadius="10" ShadowDepth="2" Direction="270" Color="#20000000" Opacity="0.4"/>
+                                                </Border.Effect>
+                                                <uc:CustomColorPicker x:Name="RichTextColorPicker" Width="270" Height="Auto"/>
+                                            </Border>
+                                        </Popup>
 
-                                         <!-- Sub/Super Script -->
-                                         <ToggleButton x:Name="SubscriptButton" Click="SubscriptButton_Click" ToolTip="Subscript" Style="{StaticResource ToolbarIconButtonStyle}" Margin="0,0,4,0">
+                                        <!-- Text Style -->
+                                        <ToggleButton x:Name="BoldButton" Command="EditingCommands.ToggleBold" CommandTarget="{Binding ElementName=Drichtextbox}" ToolTip="Bold" Style="{StaticResource ToolbarIconButtonStyle}" Margin="0,0,4,0">
+                                            <TextBlock Text="B" FontWeight="Bold" FontSize="16" Foreground="#333"/>
+                                        </ToggleButton>
+                                        <ToggleButton x:Name="ItalicButton" Command="EditingCommands.ToggleItalic" CommandTarget="{Binding ElementName=Drichtextbox}" ToolTip="Italic" Style="{StaticResource ToolbarIconButtonStyle}" Margin="0,0,4,0">
+                                            <TextBlock Text="I" FontStyle="Italic" FontWeight="Bold" FontSize="16" FontFamily="Times New Roman" Foreground="#333"/>
+                                        </ToggleButton>
+                                        <ToggleButton x:Name="UnderlineButton" Command="EditingCommands.ToggleUnderline" CommandTarget="{Binding ElementName=Drichtextbox}" ToolTip="Underline" Style="{StaticResource ToolbarIconButtonStyle}" Margin="0,0,8,0">
+                                            <TextBlock Text="U" TextDecorations="Underline" FontWeight="Bold" FontSize="16" Foreground="#333"/>
+                                        </ToggleButton>
+
+                                        <Rectangle Width="1" Height="20" Fill="#D0D0D0" Margin="0,0,8,0"/>
+
+                                        <!-- Sub/Super Script -->
+                                        <ToggleButton x:Name="SubscriptButton" Click="SubscriptButton_Click" ToolTip="Subscript" Style="{StaticResource ToolbarIconButtonStyle}" Margin="0,0,4,0">
                                             <TextBlock Text="x₂" FontSize="16" Foreground="#333"/>
-                                         </ToggleButton>
-                                         <ToggleButton x:Name="SuperscriptButton" Click="SuperscriptButton_Click" ToolTip="Superscript" Style="{StaticResource ToolbarIconButtonStyle}" Margin="0,0,8,0">
+                                        </ToggleButton>
+                                        <ToggleButton x:Name="SuperscriptButton" Click="SuperscriptButton_Click" ToolTip="Superscript" Style="{StaticResource ToolbarIconButtonStyle}" Margin="0,0,8,0">
                                             <TextBlock Text="x²" FontSize="16" Foreground="#333"/>
-                                         </ToggleButton>
+                                        </ToggleButton>
 
-                                         <Rectangle Width="1" Height="20" Fill="#D0D0D0" Margin="0,0,8,0"/>
+                                        <Rectangle Width="1" Height="20" Fill="#D0D0D0" Margin="0,0,8,0"/>
 
-                                         <!-- Word -->
-                                         <Button Command="{Binding OpenHelpDocInWordCommand}" ToolTip="Open in Word" Style="{StaticResource ToolbarButtonIconStyle}">
-                                              <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe640;" FontSize="20"/> 
-                                         </Button>
-                                     </StackPanel>
+                                        <!-- Refresh -->
+                                        <Button Command="{Binding RefreshHelpDocCommand}" ToolTip="Refresh" Style="{StaticResource ToolbarButtonIconStyle}" Margin="0,0,4,0">
+                                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe74b;" FontSize="20"/>
+                                        </Button>
 
-                                     <!-- Close Button (Modern Style) -->
-                                     <Button Grid.Column="2" Command="{Binding ShowTemplateInfoCommand}" 
+                                        <!-- Word -->
+                                        <Button Command="{Binding OpenHelpDocInWordCommand}" ToolTip="Open in Word" Style="{StaticResource ToolbarButtonIconStyle}">
+                                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe640;" FontSize="20"/>
+                                        </Button>
+                                    </StackPanel>
+
+                                    <!-- Close Button (Modern Style) -->
+                                    <Button Grid.Column="2" Command="{Binding ShowTemplateInfoCommand}" 
                                              ToolTip="Close" 
                                              Width="28" Height="28" Background="Transparent" BorderThickness="0" Cursor="Hand">
-                                         <Button.Template>
-                                             <ControlTemplate TargetType="Button">
-                                                 <Border Background="{TemplateBinding Background}" CornerRadius="6">
-                                                     <TextBlock Text="&#xe61f;" FontFamily="../Data/Icon/#iconfont" Foreground="#666" FontSize="14" 
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                                                    <TextBlock Text="&#xe61f;" FontFamily="../Data/Icon/#iconfont" Foreground="#666" FontSize="14" 
                                                                 VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                                                 </Border>
-                                                 <ControlTemplate.Triggers>
-                                                     <Trigger Property="IsMouseOver" Value="True">
-                                                         <Setter Property="Background" Value="#E5E5E5"/>
-                                                         <Setter Property="Foreground" Value="#333"/>
-                                                     </Trigger>
-                                                 </ControlTemplate.Triggers>
-                                             </ControlTemplate>
-                                         </Button.Template>
-                                     </Button>
-                                 </Grid>
-                             </Border>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#E5E5E5"/>
+                                                        <Setter Property="Foreground" Value="#333"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                </Grid>
+                            </Border>
 
                             <RichTextBox Grid.Row="1" x:Name="Drichtextbox" IsReadOnly="{Binding IsHelpDocReadOnly}" 
                               BorderThickness="0" Background="Transparent" Margin="24"
@@ -969,7 +1015,7 @@
                               SelectionChanged="Drichtextbox_SelectionChanged"/>
                         </Grid>
                     </Border>
-                     <!-- Info Bar -->
+                    <!-- Info Bar -->
                     <Border Grid.Row="1" Background="#F9F9F9" Padding="10,4" BorderBrush="#E0E0E0" BorderThickness="0,1,0,0">
                         <Grid>
                             <TextBlock Text="{Binding DiagramLanguageStatus}" HorizontalAlignment="Left" Foreground="#888" FontSize="12"/>
@@ -982,12 +1028,12 @@
 
                 <!-- Right Panel: Inspector -->
                 <Border Grid.Column="4" Background="#F5F5F7" BorderBrush="#E0E0E0" BorderThickness="1,0,0,0">
-                     <Grid>
-                         <Grid.RowDefinitions>
-                             <RowDefinition Height="*"/>
-                         </Grid.RowDefinitions>
-                         
-                         <!-- Property Grid -->
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Property Grid -->
                         <Grid Grid.Row="0" Margin="0">
                             <Grid.Resources>
                                 <ControlTemplate x:Key="EmptyStateTemplate">
@@ -1058,7 +1104,7 @@
                         <uc:ScriptDefinitionControl Grid.Row="0"
                                          ScriptDefinition="{Binding CurrentScript}"
                                          Visibility="{Binding ScriptsPropertyGrid, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                     </Grid>
+                    </Grid>
                 </Border>
             </Grid>
         </Grid>

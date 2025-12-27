@@ -1,4 +1,4 @@
-﻿using GeoChemistryNexus.ViewModels;
+using GeoChemistryNexus.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
