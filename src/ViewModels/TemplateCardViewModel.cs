@@ -59,14 +59,20 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private async Task CardClick()
         {
-            if (State == TemplateState.Ready || State == TemplateState.Loading)
+            if (State == TemplateState.Ready || State == TemplateState.Loading || State == TemplateState.UpdateAvailable)
             {
                 if (OpenHandler != null) await OpenHandler(this);
             }
-            else if (State == TemplateState.NotDownloaded || State == TemplateState.UpdateAvailable || State == TemplateState.Error)
+            else if (State == TemplateState.NotDownloaded || State == TemplateState.Error)
             {
                 if (DownloadHandler != null) await DownloadHandler(this);
             }
+        }
+
+        [RelayCommand]
+        private async Task Update()
+        {
+            if (DownloadHandler != null) await DownloadHandler(this);
         }
 
         /// <summary>

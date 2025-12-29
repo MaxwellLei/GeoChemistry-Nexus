@@ -27,7 +27,7 @@ namespace GeoChemistryNexus.ViewModels
 
         //封面流
         [ObservableProperty]
-        private CoverFlow coverFlowMain;
+        private CoverFlow? coverFlowMain;
 
         [ObservableProperty]
         private int language;     // 语言设置(0是中文;1是英文)
@@ -81,7 +81,6 @@ namespace GeoChemistryNexus.ViewModels
         // 检查更新
         private async void ExecuteCheckUpdateCommandAsync()
         {
-            //MessageHelper.Success(LanguageService.Instance["Info1"]);
             //MessageHelper.Info("正在检查更新，请稍候...");
             try
             {
@@ -192,23 +191,9 @@ namespace GeoChemistryNexus.ViewModels
             Language = (langIndex >= 0) ? langIndex : 1;
 
             AutoOffTime = int.Parse(Helpers.ConfigHelper.GetConfig("auto_off_time"));    //读取消息通知时间
-            boot = bool.Parse(Helpers.ConfigHelper.GetConfig("boot"));     //读取是否自动开机
-            autoCheck = bool.Parse(Helpers.ConfigHelper.GetConfig("auto_check_update"));   //读取是否自动检查更新
+            Boot = bool.Parse(Helpers.ConfigHelper.GetConfig("boot"));     //读取是否自动开机
+            AutoCheck = bool.Parse(Helpers.ConfigHelper.GetConfig("auto_check_update"));   //读取是否自动检查更新
             ExitMode = int.Parse(Helpers.ConfigHelper.GetConfig("exit_program_mode"));  //读取退出方式
-        }
-
-        // 保存修改后的配置文件
-        void SaveConfig()
-        {
-            var settings = new Dictionary<string, string>
-            {
-                { "language", Language.ToString() },
-                { "auto_off_time", AutoOffTime.ToString() },
-                { "boot", Boot.ToString() },
-                { "auto_check_update", AutoCheck.ToString() },
-                { "exit_program_mode", ExitMode.ToString() }
-            };
-            Helpers.ConfigHelper.SetConfigs(settings);
         }
 
         // 添加启动图
@@ -249,7 +234,7 @@ namespace GeoChemistryNexus.ViewModels
             string[] files = Directory.GetFiles(folderPath); // 获取文件夹中的所有文件
             foreach (var file in files)
             {
-                CoverFlowMain.Add(file);
+                CoverFlowMain?.Add(file);
             }
         }
     }

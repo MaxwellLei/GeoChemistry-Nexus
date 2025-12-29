@@ -507,9 +507,6 @@
   <data name="Undelete_Message" xml:space="preserve">
     <value>삭제 취소됨</value>
   </data>
-  <data name="DeleteingBasemapConfirm1_Message" xml:space="preserve">
-    <value>베이스맵 삭제 중</value>
-  </data>
   <data name="DeleteingBasemapConfirm2_Message" xml:space="preserve">
     <value>삭제하시겠습니까?</value>
   </data>
@@ -521,12 +518,6 @@
   </data>
   <data name="ScNotFilledIn" xml:space="preserve">
     <value>플롯 스크립트가 입력되지 않았습니다</value>
-  </data>
-  <data name="BasemapVersionToLow1" xml:space="preserve">
-    <value>가져온 베이스맵 버전이 너무 낮습니다. 다음 버전보다 높은 버전을 사용하십시오:</value>
-  </data>
-  <data name="BasemapVersionToLow2" xml:space="preserve">
-    <value>의 베이스맵</value>
   </data>
   <data name="CancelImport" xml:space="preserve">
     <value>가져오기 취소됨</value>
@@ -752,9 +743,6 @@
   <data name="ModifedCanceled" xml:space="preserve">
     <value>수정 취소됨</value>
   </data>
-  <data name="Info1" xml:space="preserve">
-    <value>공식 웹사이트를 확인해 주세요. 이 기능은 개발 중입니다...</value>
-  </data>
   <data name="import_template" xml:space="preserve">
     <value>플롯 템플릿 가져오기</value>
   </data>
@@ -830,15 +818,6 @@
   <data name="uncategorized" xml:space="preserve">
     <value>분류되지 않음</value>
   </data>
-  <data name="disallow_modify_data_point_position" xml:space="preserve">
-    <value>데이터 포인트 위치 수정 허용 안 함</value>
-  </data>
-  <data name="load_valid_template_with_script" xml:space="preserve">
-    <value>먼저 유효한 차트 템플릿을 로드하십시오. 템플릿에는 계산 스크립트 구성이 포함되어야 합니다.</value>
-  </data>
-  <data name="incomplete_script_config" xml:space="preserve">
-    <value>템플릿의 스크립트 구성이 불완전합니다. RequiredDataSeries 및 ScriptBody를 확인하십시오.</value>
-  </data>
   <data name="select_data_file" xml:space="preserve">
     <value>데이터 파일을 선택하십시오</value>
   </data>
@@ -851,9 +830,6 @@
   <data name="read_file_failed" xml:space="preserve">
     <value>파일 읽기 실패</value>
   </data>
-  <data name="script_config_error_required_data_series" xml:space="preserve">
-    <value>스크립트 구성 오류: RequiredDataSeries에는 최소한 범주 열과 하나의 데이터 열이 포함되어야 합니다.</value>
-  </data>
   <data name="excel_missing_required_columns" xml:space="preserve">
     <value>Excel 파일에 다음 필수 열이 누락되었습니다</value>
   </data>
@@ -861,7 +837,7 @@
     <value>데이터 포인트</value>
   </data>
   <data name="failed_to_parse_category_group" xml:space="preserve">
-    <value>파일에서 유효한 범주 그룹을 구문 분석하지 못했습니다. 범주 열 데이터를 확인하십시오.</value>
+    <value>파일에서 유효한 범주 그룹을 구문 분석하지 못했습니다. 범주 열 데이터를 확인하십시오</value>
   </data>
   <data name="error_calculating_data_point_coordinates" xml:space="preserve">
     <value>데이터 포인트 좌표 계산 중 오류 발생:</value>
@@ -1280,10 +1256,6 @@
     <value>템플릿 저장 실패:</value>
     <comment>新疆模板</comment>
   </data>
-  <data name="thank_you_and_wishes" xml:space="preserve">
-    <value>이용해 주셔서 감사합니다🌹\n </value>
-    <comment>彩蛋</comment>
-  </data>
   <data name="research_life_smooth_sailing" xml:space="preserve">
     <value>년간 연구와 생활이 순조롭기를 바랍니다!</value>
     <comment>彩蛋</comment>
@@ -1317,7 +1289,7 @@
     <comment>检查更新</comment>
   </data>
   <data name="cannot_parse_version_number_check_release_address" xml:space="preserve">
-    <value>버전 번호를 구문 분석할 수 없습니다. 릴리스 주소에서 확인하십시오.</value>
+    <value>버전 번호를 구문 분석할 수 없습니다. 릴리스 주소에서 확인하십시오</value>
     <comment>检查更新</comment>
   </data>
   <data name="network_request_error" xml:space="preserve">
@@ -1417,7 +1389,7 @@
     <comment>绘图-数据-按钮</comment>
   </data>
   <data name="highlight_on_hover" xml:space="preserve">
-    <value>활성화하면 마우스가 플롯 개체(점, 선, 면 등) 위로 이동할 때 자동으로 강조 표시되며 클릭하여 정보를 볼 수 있습니다.</value>
+    <value>활성화하면 마우스가 플롯 개체(점, 선, 면 등) 위로 이동할 때 자동으로 강조 표시되며 클릭하여 정보를 볼 수 있습니다</value>
     <comment>绘图-工具栏-提示</comment>
   </data>
   <data name="count" xml:space="preserve">
@@ -1465,7 +1437,7 @@
     <comment>绘图-坐标轴-属性-缩放类型</comment>
   </data>
   <data name="some_data_failed_validation" xml:space="preserve">
-    <value>일부 데이터가 유효성 검사를 통과하지 못해 건너뛰었습니다.</value>
+    <value>일부 데이터가 유효성 검사를 통과하지 못해 건너뛰었습니다</value>
     <comment>绘图-数据-投点校验提示</comment>
   </data>
   <data name="the_sum_of_row" xml:space="preserve">
@@ -1477,7 +1449,7 @@
     <comment>绘图-数据-投点校验提示</comment>
   </data>
   <data name="actual_sum_is" xml:space="preserve">
-    <value>(실제 합계:</value>
+    <value>(실제 합계</value>
     <comment>绘图-数据-投点校验提示</comment>
   </data>
   <data name="arrow" xml:space="preserve">
@@ -1904,7 +1876,7 @@
     <comment>主页-小组件-翻译组件</comment>
   </data>
   <data name="support_json_format" xml:space="preserve">
-    <value>.json 형식 지원</value>
+    <value>json 형식 지원</value>
     <comment>主页-小组件-翻译组件</comment>
   </data>
   <data name="save_changes" xml:space="preserve">
@@ -2186,10 +2158,10 @@
     <value>• 스크립트 반환 값 길이 오류: 현재</value>
   </data>
   <data name="return_type_mismatch_error" xml:space="preserve">
-    <value>유형이며, 다음을 반환해야 함:</value>
+    <value>유형이며, 다음을 반환해야 함</value>
   </data>
   <data name="elements_actual_returned" xml:space="preserve">
-    <value>개 요소, 실제 반환:</value>
+    <value>개 요소, 실제 반환</value>
   </data>
   <data name="elements_count_suffix" xml:space="preserve">
     <value>개.</value>
@@ -2304,5 +2276,14 @@
   </data>
   <data name="function" xml:space="preserve">
     <value>함수</value>
+  </data>
+  <data name="new_template" xml:space="preserve">
+    <value>새 다이어그램 템플릿</value>
+  </data>
+  <data name="update_available_click_to_download" xml:space="preserve">
+    <value>새 버전을 사용할 수 있습니다. 클릭하여 업데이트하세요</value>
+  </data>
+  <data name="invalid_filename_char" xml:space="preserve">
+    <value>콘텐츠에 지원되지 않는 문자가 포함되어 있습니다</value>
   </data>
 </root>

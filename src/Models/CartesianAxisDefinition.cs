@@ -23,11 +23,18 @@ namespace GeoChemistryNexus.Models
         {
             if (value == AxisScaleType.Logarithmic)
             {
-                Minimum = 0.1;
-                Maximum = 100000;
+                // 如果设定的范围（From和to）不全是 0 且都大于 0 的话，就不使用默认的对数刻度范围
+                if (!(Minimum > 0 && Maximum > 0))
+                {
+                    Minimum = 0.1;
+                    Maximum = 100000;
+                }
             }
             OnPropertyChanged(nameof(AllowedInputMinimum));
+            OnPropertyChanged(nameof(IsLinearScale));
         }
+
+        public bool IsLinearScale => ScaleType == AxisScaleType.Linear;
 
         public double AllowedInputMinimum => ScaleType == AxisScaleType.Logarithmic ? 1E-9 : double.MinValue;
 

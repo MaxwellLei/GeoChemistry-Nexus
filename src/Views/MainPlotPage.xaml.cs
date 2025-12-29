@@ -25,6 +25,7 @@ using System.Windows.Shapes;
 
 using System.Windows.Media.Animation;
 using GeoChemistryNexus.Services;
+using System.Collections.Specialized;
 
 namespace GeoChemistryNexus.Views
 {
@@ -46,6 +47,7 @@ namespace GeoChemistryNexus.Views
             this.DataContext = viewModel;
 
             viewModel.PropertyChanged += ViewModel_PropertyChanged;
+            AttachBreadcrumbScrollBehavior();
 
             // 页面加载时检查更新
             this.Loaded += (s, e) => viewModel.CheckUpdatesIfNeeded();
@@ -146,6 +148,11 @@ namespace GeoChemistryNexus.Views
 
         private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
+            if (e.PropertyName == nameof(MainPlotViewModel.Breadcrumbs))
+            {
+                AttachBreadcrumbScrollBehavior();
+            }
+
             if (e.PropertyName == nameof(MainPlotViewModel.RibbonTabIndex))
             {
                 if (viewModel.RibbonTabIndex == 1)
@@ -592,6 +599,33 @@ namespace GeoChemistryNexus.Views
             };
 
             _popOutWindow.Show();
+        }
+
+        private void AttachBreadcrumbScrollBehavior()
+        {
+             if (viewModel.Breadcrumbs is INotifyCollectionChanged collection)
+             {
+                 collection.CollectionChanged -= Breadcrumbs_CollectionChanged;
+                 collection.CollectionChanged += Breadcrumbs_CollectionChanged;
+             }
+             ScrollBreadcrumbToEnd();
+        }
+
+        private void Breadcrumbs_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            ScrollBreadcrumbToEnd();
+        }
+
+        private void BreadcrumbScrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            ScrollBreadcrumbToEnd();
+        }
+
+        private void ScrollBreadcrumbToEnd()
+        {
+            Dispatcher.InvokeAsync(() => {
+                BreadcrumbScrollViewer?.ScrollToRightEnd();
+            }, System.Windows.Threading.DispatcherPriority.Loaded);
         }
     }
 }

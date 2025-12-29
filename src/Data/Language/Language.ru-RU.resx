@@ -507,9 +507,6 @@
   <data name="Undelete_Message" xml:space="preserve">
     <value>Удаление отменено</value>
   </data>
-  <data name="DeleteingBasemapConfirm1_Message" xml:space="preserve">
-    <value>Удаление подложки</value>
-  </data>
   <data name="DeleteingBasemapConfirm2_Message" xml:space="preserve">
     <value>Вы уверены, что хотите удалить?</value>
   </data>
@@ -521,12 +518,6 @@
   </data>
   <data name="ScNotFilledIn" xml:space="preserve">
     <value>Скрипт графика не заполнен</value>
-  </data>
-  <data name="BasemapVersionToLow1" xml:space="preserve">
-    <value>Версия импортируемой подложки слишком старая, пожалуйста, используйте версию выше</value>
-  </data>
-  <data name="BasemapVersionToLow2" xml:space="preserve">
-    <value></value>
   </data>
   <data name="CancelImport" xml:space="preserve">
     <value>Импорт отменен</value>
@@ -752,9 +743,6 @@
   <data name="ModifedCanceled" xml:space="preserve">
     <value>Изменение отменено</value>
   </data>
-  <data name="Info1" xml:space="preserve">
-    <value>Пожалуйста, посетите официальный сайт, функция в разработке...</value>
-  </data>
   <data name="import_template" xml:space="preserve">
     <value>Импорт шаблона диаграммы</value>
   </data>
@@ -830,15 +818,6 @@
   <data name="uncategorized" xml:space="preserve">
     <value>Без категории</value>
   </data>
-  <data name="disallow_modify_data_point_position" xml:space="preserve">
-    <value>Изменение позиции точек данных запрещено</value>
-  </data>
-  <data name="load_valid_template_with_script" xml:space="preserve">
-    <value>Пожалуйста, сначала загрузите допустимый шаблон диаграммы с конфигурацией скрипта</value>
-  </data>
-  <data name="incomplete_script_config" xml:space="preserve">
-    <value>Конфигурация скрипта в шаблоне неполная, проверьте RequiredDataSeries и ScriptBody</value>
-  </data>
   <data name="select_data_file" xml:space="preserve">
     <value>Выберите файл данных</value>
   </data>
@@ -850,9 +829,6 @@
   </data>
   <data name="read_file_failed" xml:space="preserve">
     <value>Ошибка чтения файла</value>
-  </data>
-  <data name="script_config_error_required_data_series" xml:space="preserve">
-    <value>Ошибка конфигурации скрипта: RequiredDataSeries должен содержать столбец категории и хотя бы один столбец данных</value>
   </data>
   <data name="excel_missing_required_columns" xml:space="preserve">
     <value>В файле Excel отсутствуют следующие обязательные столбцы</value>
@@ -1265,7 +1241,7 @@
     <comment>新疆模板</comment>
   </data>
   <data name="category_structure_min_two" xml:space="preserve">
-    <value>Структура категорий должна быть >= 2!</value>
+    <value>Структура категорий должна быть &gt;= 2!</value>
     <comment>新疆模板</comment>
   </data>
   <data name="no_template_or_path_specified" xml:space="preserve">
@@ -1279,10 +1255,6 @@
   <data name="save_template_failed" xml:space="preserve">
     <value>Ошибка сохранения шаблона:</value>
     <comment>新疆模板</comment>
-  </data>
-  <data name="thank_you_and_wishes" xml:space="preserve">
-    <value>Спасибо за использование 🌹\n Желаю вам</value>
-    <comment>彩蛋</comment>
   </data>
   <data name="research_life_smooth_sailing" xml:space="preserve">
     <value>успехов в исследованиях и гладкой жизни!</value>
@@ -1477,7 +1449,7 @@
     <comment>绘图-数据-投点校验提示</comment>
   </data>
   <data name="actual_sum_is" xml:space="preserve">
-    <value>(Фактическая сумма:</value>
+    <value>(Фактическая сумма</value>
     <comment>绘图-数据-投点校验提示</comment>
   </data>
   <data name="arrow" xml:space="preserve">
@@ -2192,7 +2164,7 @@
     <value>элементов, возвращено</value>
   </data>
   <data name="elements_count_suffix" xml:space="preserve">
-    <value>.</value>
+    <value>шт.</value>
   </data>
   <data name="missing_translation_warning" xml:space="preserve">
     <value>• Пропущен перевод: у некоторых текстов нет перевода.</value>
@@ -2304,5 +2276,14 @@
   </data>
   <data name="function" xml:space="preserve">
     <value>Функция</value>
+  </data>
+  <data name="new_template" xml:space="preserve">
+    <value>Новый шаблон диаграммы</value>
+  </data>
+  <data name="update_available_click_to_download" xml:space="preserve">
+    <value>Доступна новая версия, нажмите, чтобы обновить</value>
+  </data>
+  <data name="invalid_filename_char" xml:space="preserve">
+    <value>Содержимое содержит неподдерживаемые символы</value>
   </data>
 </root>

@@ -507,9 +507,6 @@
   <data name="Undelete_Message" xml:space="preserve">
     <value>Eliminación cancelada</value>
   </data>
-  <data name="DeleteingBasemapConfirm1_Message" xml:space="preserve">
-    <value>Eliminando mapa base</value>
-  </data>
   <data name="DeleteingBasemapConfirm2_Message" xml:space="preserve">
     <value>¿Confirmar eliminación?</value>
   </data>
@@ -521,12 +518,6 @@
   </data>
   <data name="ScNotFilledIn" xml:space="preserve">
     <value>Script de trazado no completado</value>
-  </data>
-  <data name="BasemapVersionToLow1" xml:space="preserve">
-    <value>La versión del mapa base importado es demasiado antigua, utilice una versión superior a</value>
-  </data>
-  <data name="BasemapVersionToLow2" xml:space="preserve">
-    <value>.</value>
   </data>
   <data name="CancelImport" xml:space="preserve">
     <value>Importación cancelada</value>
@@ -752,9 +743,6 @@
   <data name="ModifedCanceled" xml:space="preserve">
     <value>Modificación cancelada</value>
   </data>
-  <data name="Info1" xml:space="preserve">
-    <value>Por favor visite el sitio web oficial, esta función está en desarrollo...</value>
-  </data>
   <data name="import_template" xml:space="preserve">
     <value>Importar plantilla de gráfico</value>
   </data>
@@ -830,15 +818,6 @@
   <data name="uncategorized" xml:space="preserve">
     <value>Sin categorizar</value>
   </data>
-  <data name="disallow_modify_data_point_position" xml:space="preserve">
-    <value>No se permite modificar la posición del punto de datos</value>
-  </data>
-  <data name="load_valid_template_with_script" xml:space="preserve">
-    <value>Cargue primero una plantilla de gráfico válida, la plantilla debe contener la configuración del script de cálculo</value>
-  </data>
-  <data name="incomplete_script_config" xml:space="preserve">
-    <value>Configuración de script incompleta en la plantilla, verifique RequiredDataSeries y ScriptBody</value>
-  </data>
   <data name="select_data_file" xml:space="preserve">
     <value>Seleccione el archivo de datos</value>
   </data>
@@ -850,9 +829,6 @@
   </data>
   <data name="read_file_failed" xml:space="preserve">
     <value>Error al leer el archivo</value>
-  </data>
-  <data name="script_config_error_required_data_series" xml:space="preserve">
-    <value>Error de configuración de script: RequiredDataSeries debe contener al menos una columna de categoría y una columna de datos</value>
   </data>
   <data name="excel_missing_required_columns" xml:space="preserve">
     <value>Al archivo Excel le faltan las siguientes columnas requeridas</value>
@@ -1280,10 +1256,6 @@
     <value>Error al guardar plantilla:</value>
     <comment>新疆模板</comment>
   </data>
-  <data name="thank_you_and_wishes" xml:space="preserve">
-    <value>Gracias por usar 🌹\n Le deseamos</value>
-    <comment>彩蛋</comment>
-  </data>
   <data name="research_life_smooth_sailing" xml:space="preserve">
     <value>¡una vida de investigación y personal tranquila!</value>
     <comment>彩蛋</comment>
@@ -1317,7 +1289,7 @@
     <comment>检查更新</comment>
   </data>
   <data name="cannot_parse_version_number_check_release_address" xml:space="preserve">
-    <value>No se pudo analizar el número de versión. Por favor verifique la dirección de lanzamiento.</value>
+    <value>No se pudo analizar el número de versión. Por favor verifique la dirección de lanzamiento</value>
     <comment>检查更新</comment>
   </data>
   <data name="network_request_error" xml:space="preserve">
@@ -1417,7 +1389,7 @@
     <comment>绘图-数据-按钮</comment>
   </data>
   <data name="highlight_on_hover" xml:space="preserve">
-    <value>Cuando está habilitado, al pasar el mouse sobre objetos de dibujo (puntos, líneas, áreas) se resaltarán automáticamente, haga clic para ver información.</value>
+    <value>Cuando está habilitado, al pasar el mouse sobre objetos de dibujo (puntos, líneas, áreas) se resaltarán automáticamente, haga clic para ver información</value>
     <comment>绘图-工具栏-提示</comment>
   </data>
   <data name="count" xml:space="preserve">
@@ -1473,7 +1445,7 @@
     <comment>绘图-数据-投点校验提示</comment>
   </data>
   <data name="is_not_one" xml:space="preserve">
-    <value>: suma de datos no es 1</value>
+    <value>suma de datos no es 1</value>
     <comment>绘图-数据-投点校验提示</comment>
   </data>
   <data name="actual_sum_is" xml:space="preserve">
@@ -2183,16 +2155,16 @@
     <value>• Error de valor de retorno de script: El script debe devolver una matriz.</value>
   </data>
   <data name="script_return_value_length_error" xml:space="preserve">
-    <value>• Error de longitud de valor de retorno de script: Actual es </value>
+    <value>• Error de longitud de valor de retorno de script: Actual es</value>
   </data>
   <data name="return_type_mismatch_error" xml:space="preserve">
-    <value> tipo, debería devolver </value>
+    <value>tipo, debería devolver</value>
   </data>
   <data name="elements_actual_returned" xml:space="preserve">
-    <value> elementos, devuelto real </value>
+    <value>elementos, devuelto real</value>
   </data>
   <data name="elements_count_suffix" xml:space="preserve">
-    <value>.</value>
+    <value>unidad(es).</value>
   </data>
   <data name="missing_translation_warning" xml:space="preserve">
     <value>• Traducción faltante: A algunos textos les falta traducción.</value>
@@ -2304,5 +2276,14 @@
   </data>
   <data name="function" xml:space="preserve">
     <value>Función</value>
+  </data>
+  <data name="new_template" xml:space="preserve">
+    <value>Nueva plantilla de diagrama</value>
+  </data>
+  <data name="update_available_click_to_download" xml:space="preserve">
+    <value>Nueva versión disponible, haga clic para actualizar</value>
+  </data>
+  <data name="invalid_filename_char" xml:space="preserve">
+    <value>El contenido contiene caracteres no compatibles</value>
   </data>
 </root>

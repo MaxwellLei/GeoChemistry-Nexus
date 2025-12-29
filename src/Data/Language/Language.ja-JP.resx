@@ -507,9 +507,6 @@
   <data name="Undelete_Message" xml:space="preserve">
     <value>削除を取り消しました</value>
   </data>
-  <data name="DeleteingBasemapConfirm1_Message" xml:space="preserve">
-    <value>ベースマップを削除中</value>
-  </data>
   <data name="DeleteingBasemapConfirm2_Message" xml:space="preserve">
     <value>削除してもよろしいですか？</value>
   </data>
@@ -521,12 +518,6 @@
   </data>
   <data name="ScNotFilledIn" xml:space="preserve">
     <value>プロットスクリプトが未入力です</value>
-  </data>
-  <data name="BasemapVersionToLow1" xml:space="preserve">
-    <value>インポートされたベースマップのバージョンが低すぎます。バージョン</value>
-  </data>
-  <data name="BasemapVersionToLow2" xml:space="preserve">
-    <value>以上のベースマップを使用してください</value>
   </data>
   <data name="CancelImport" xml:space="preserve">
     <value>インポートを取り消しました</value>
@@ -752,9 +743,6 @@
   <data name="ModifedCanceled" xml:space="preserve">
     <value>変更を取り消しました</value>
   </data>
-  <data name="Info1" xml:space="preserve">
-    <value>公式サイトをご覧ください。この機能は開発中です...</value>
-  </data>
   <data name="import_template" xml:space="preserve">
     <value>描画テンプレートをインポート</value>
   </data>
@@ -830,15 +818,6 @@
   <data name="uncategorized" xml:space="preserve">
     <value>未分類</value>
   </data>
-  <data name="disallow_modify_data_point_position" xml:space="preserve">
-    <value>データポイント位置の変更を許可しない</value>
-  </data>
-  <data name="load_valid_template_with_script" xml:space="preserve">
-    <value>まず有効なチャートテンプレートを読み込んでください。テンプレートには計算スクリプトの設定が含まれている必要があります。</value>
-  </data>
-  <data name="incomplete_script_config" xml:space="preserve">
-    <value>テンプレートのスクリプト設定が不完全です。RequiredDataSeriesとScriptBodyを確認してください。</value>
-  </data>
   <data name="select_data_file" xml:space="preserve">
     <value>データファイルを選択してください</value>
   </data>
@@ -851,9 +830,6 @@
   <data name="read_file_failed" xml:space="preserve">
     <value>ファイルの読み込みに失敗しました</value>
   </data>
-  <data name="script_config_error_required_data_series" xml:space="preserve">
-    <value>スクリプト設定エラー：RequiredDataSeriesには、少なくともカテゴリ列と1つのデータ列が必要です。</value>
-  </data>
   <data name="excel_missing_required_columns" xml:space="preserve">
     <value>Excelファイルに以下の必須列が不足しています</value>
   </data>
@@ -861,7 +837,7 @@
     <value>データポイント</value>
   </data>
   <data name="failed_to_parse_category_group" xml:space="preserve">
-    <value>ファイルから有効なカテゴリグループを解析できませんでした。カテゴリ列のデータを確認してください。</value>
+    <value>ファイルから有効なカテゴリグループを解析できませんでした。カテゴリ列のデータを確認してください</value>
   </data>
   <data name="error_calculating_data_point_coordinates" xml:space="preserve">
     <value>データポイント座標の計算中にエラーが発生しました:</value>
@@ -1280,10 +1256,6 @@
     <value>テンプレートの保存に失敗しました:</value>
     <comment>新疆模板</comment>
   </data>
-  <data name="thank_you_and_wishes" xml:space="preserve">
-    <value>ご利用ありがとうございます🌹\n あなたの</value>
-    <comment>彩蛋</comment>
-  </data>
   <data name="research_life_smooth_sailing" xml:space="preserve">
     <value>研究生活が順風満帆でありますように！</value>
     <comment>彩蛋</comment>
@@ -1477,7 +1449,7 @@
     <comment>绘图-数据-投点校验提示</comment>
   </data>
   <data name="actual_sum_is" xml:space="preserve">
-    <value>(実際の合計:</value>
+    <value>(実際の合計</value>
     <comment>绘图-数据-投点校验提示</comment>
   </data>
   <data name="arrow" xml:space="preserve">
@@ -1904,7 +1876,7 @@
     <comment>主页-小组件-翻译组件</comment>
   </data>
   <data name="support_json_format" xml:space="preserve">
-    <value>.json 形式をサポート</value>
+    <value>json 形式をサポート</value>
     <comment>主页-小组件-翻译组件</comment>
   </data>
   <data name="save_changes" xml:space="preserve">
@@ -2304,5 +2276,14 @@
   </data>
   <data name="function" xml:space="preserve">
     <value>関数</value>
+  </data>
+  <data name="new_template" xml:space="preserve">
+    <value>新規図解テンプレート</value>
+  </data>
+  <data name="update_available_click_to_download" xml:space="preserve">
+    <value>新しいバージョンが利用可能です。クリックして更新してください</value>
+  </data>
+  <data name="invalid_filename_char" xml:space="preserve">
+    <value>内容にサポートされていない文字が含まれています</value>
   </data>
 </root>

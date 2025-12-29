@@ -250,7 +250,7 @@ namespace GeoChemistryNexus.Controls
 
                 if (!string.IsNullOrEmpty(text))
                 {
-                    // Check for invalid path chars
+                    // 检查无效路径字符
                     var invalidChars = System.IO.Path.GetInvalidFileNameChars();
                     if (text.IndexOfAny(invalidChars) >= 0)
                     {
@@ -350,12 +350,12 @@ namespace GeoChemistryNexus.Controls
             {
                 new LanguageOption { Name = "简体中文 (zh-CN)", Code = "zh-CN" },
                 new LanguageOption { Name = "繁体中文 (zh-TW)", Code = "zh-TW" },
-                new LanguageOption { Name = "美式英文 (en-US)", Code = "en-US" },
-                new LanguageOption { Name = "日语 (ja-JP)", Code = "ja-JP" },
-                new LanguageOption { Name = "俄语 (ru-RU)", Code = "ru-RU" },
-                new LanguageOption { Name = "韩语 (ko-KR)", Code = "ko-KR" },
-                new LanguageOption { Name = "德语 (de-DE)", Code = "de-DE" },
-                new LanguageOption { Name = "西班牙语 (es-ES)", Code = "es-ES" }
+                new LanguageOption { Name = "English (en-US)", Code = "en-US" },
+                new LanguageOption { Name = "日本語 (ja-JP)", Code = "ja-JP" },
+                new LanguageOption { Name = "Русский (ru-RU)", Code = "ru-RU" },
+                new LanguageOption { Name = "한국어 (ko-KR)", Code = "ko-KR" },
+                new LanguageOption { Name = "Deutsch (de-DE)", Code = "de-DE" },
+                new LanguageOption { Name = "Español (es-ES)", Code = "es-ES" }
             };
 
             LanguageInputComboBox.ItemsSource = builtIns;

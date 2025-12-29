@@ -253,6 +253,7 @@
     <PackageReference Include="gong-wpf-dragdrop" Version="4.0.0" />
     <PackageReference Include="HandyControl" Version="3.6.0-rc3" />
     <PackageReference Include="Jint" Version="4.2.0" />
+    <PackageReference Include="LiteDB" Version="5.0.21" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
     <PackageReference Include="net6.ReoGridWPF.dll" Version="3.0.3" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />

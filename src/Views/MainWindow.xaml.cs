@@ -59,6 +59,11 @@ namespace GeoChemistryNexus
             //System.Windows.Input.Cursor myCursor = new System.Windows.Input.Cursor(@"Data/Cursors/pointer.cur");
             //rootborder.Cursor = myCursor;
 
+            // 将窗口置顶
+            this.Topmost = true;
+            this.Activate();
+            // 将置顶属性重置为 false
+            Dispatcher.BeginInvoke(new Action(() => { this.Topmost = false; }));
         }
 
         //窗体关闭触发

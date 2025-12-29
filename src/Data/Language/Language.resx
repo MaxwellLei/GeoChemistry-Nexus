@@ -475,9 +475,6 @@
   <data name="Undelete_Message" xml:space="preserve">
     <value>Delete Canceled</value>
   </data>
-  <data name="DeleteingBasemapConfirm1_Message" xml:space="preserve">
-    <value>Deleting Basemap</value>
-  </data>
   <data name="DeleteingBasemapConfirm2_Message" xml:space="preserve">
     <value>Are you sure you want to delete?</value>
   </data>
@@ -489,12 +486,6 @@
   </data>
   <data name="ScNotFilledIn" xml:space="preserve">
     <value>Mapping script not filled in</value>
-  </data>
-  <data name="BasemapVersionToLow1" xml:space="preserve">
-    <value>The imported basemap version is too low, please use a version higher than</value>
-  </data>
-  <data name="BasemapVersionToLow2" xml:space="preserve">
-    <value>version</value>
   </data>
   <data name="CancelImport" xml:space="preserve">
     <value>Import Canceled</value>
@@ -720,9 +711,6 @@
   <data name="ModifedCanceled" xml:space="preserve">
     <value>Modification Canceled</value>
   </data>
-  <data name="Info1" xml:space="preserve">
-    <value>Please visit the official website, this feature is under development....</value>
-  </data>
   <data name="import_template" xml:space="preserve">
     <value>Import Plotting Template</value>
   </data>
@@ -798,15 +786,6 @@
   <data name="uncategorized" xml:space="preserve">
     <value>Uncategorized</value>
   </data>
-  <data name="disallow_modify_data_point_position" xml:space="preserve">
-    <value>Disallow Modification of Data Point Position</value>
-  </data>
-  <data name="load_valid_template_with_script" xml:space="preserve">
-    <value>Please load a valid chart template. The template must include calculation script configurations</value>
-  </data>
-  <data name="incomplete_script_config" xml:space="preserve">
-    <value>The script configuration in the template is incomplete. Please check RequiredDataSeries and ScriptBody</value>
-  </data>
   <data name="select_data_file" xml:space="preserve">
     <value>Select Data File</value>
   </data>
@@ -818,9 +797,6 @@
   </data>
   <data name="read_file_failed" xml:space="preserve">
     <value>Failed to Read File</value>
-  </data>
-  <data name="script_config_error_required_data_series" xml:space="preserve">
-    <value>Script configuration error: RequiredDataSeries must contain at least one category column and one data column</value>
   </data>
   <data name="excel_missing_required_columns" xml:space="preserve">
     <value>The Excel file is missing the following required columns</value>
@@ -1211,9 +1187,6 @@
   </data>
   <data name="save_template_failed" xml:space="preserve">
     <value>Failed to save template:</value>
-  </data>
-  <data name="thank_you_and_wishes" xml:space="preserve">
-    <value>Thank you for using! \n Wishing you</value>
   </data>
   <data name="research_life_smooth_sailing" xml:space="preserve">
     <value>years of research, wishing you smooth sailing in life!</value>
@@ -2099,5 +2072,71 @@
   </data>
   <data name="function" xml:space="preserve">
     <value>Function</value>
+  </data>
+  <data name="new_template" xml:space="preserve">
+    <value>New Diagram Template</value>
+  </data>
+  <data name="update_available_click_to_download" xml:space="preserve">
+    <value>New version available, click to update</value>
+  </data>
+  <data name="MarkerShape_FilledCircle" xml:space="preserve">
+    <value>Filled Circle</value>
+  </data>
+  <data name="MarkerShape_OpenCircle" xml:space="preserve">
+    <value>Open Circle</value>
+  </data>
+  <data name="MarkerShape_FilledSquare" xml:space="preserve">
+    <value>Filled Square</value>
+  </data>
+  <data name="MarkerShape_OpenSquare" xml:space="preserve">
+    <value>Open Square</value>
+  </data>
+  <data name="MarkerShape_FilledTriangleUp" xml:space="preserve">
+    <value>Filled Triangle Up</value>
+  </data>
+  <data name="MarkerShape_OpenTriangleUp" xml:space="preserve">
+    <value>Open Triangle Up</value>
+  </data>
+  <data name="MarkerShape_FilledTriangleDown" xml:space="preserve">
+    <value>Filled Triangle Down</value>
+  </data>
+  <data name="MarkerShape_OpenTriangleDown" xml:space="preserve">
+    <value>Open Triangle Down</value>
+  </data>
+  <data name="MarkerShape_FilledDiamond" xml:space="preserve">
+    <value>Filled Diamond</value>
+  </data>
+  <data name="MarkerShape_OpenDiamond" xml:space="preserve">
+    <value>Open Diamond</value>
+  </data>
+  <data name="MarkerShape_Cross" xml:space="preserve">
+    <value>Cross</value>
+  </data>
+  <data name="MarkerShape_Eks" xml:space="preserve">
+    <value>X Mark</value>
+  </data>
+  <data name="MarkerShape_Asterisk" xml:space="preserve">
+    <value>Asterisk</value>
+  </data>
+  <data name="MarkerShape_VerticalBar" xml:space="preserve">
+    <value>Vertical Bar</value>
+  </data>
+  <data name="MarkerShape_HorizontalBar" xml:space="preserve">
+    <value>Horizontal Bar</value>
+  </data>
+  <data name="MarkerShape_HashTag" xml:space="preserve">
+    <value>Hash</value>
+  </data>
+  <data name="MarkerShape_OpenCircleWithDot" xml:space="preserve">
+    <value>Open Circle with Dot</value>
+  </data>
+  <data name="MarkerShape_OpenCircleWithCross" xml:space="preserve">
+    <value>Open Circle with Cross</value>
+  </data>
+  <data name="MarkerShape_OpenCircleWithEks" xml:space="preserve">
+    <value>Open Circle with X</value>
+  </data>
+  <data name="invalid_filename_char" xml:space="preserve">
+    <value>Content contains unsupported characters</value>
   </data>
 </root>

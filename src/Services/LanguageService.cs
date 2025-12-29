@@ -51,6 +51,25 @@ namespace GeoChemistryNexus.Services
             return string.Empty;
         }
 
+        // 获取语言的友好显示名称
+        public static string GetLanguageDisplayName(string code)
+        {
+            if (string.IsNullOrEmpty(code)) return string.Empty;
+
+            return code switch
+            {
+                "zh-CN" => "简体中文 (zh-CN)",
+                "zh-TW" => "繁体中文 (zh-TW)",
+                "en-US" => "English (en-US)",
+                "ja-JP" => "日本語 (ja-JP)",
+                "ru-RU" => "Русский (ru-RU)",
+                "ko-KR" => "한국어 (ko-KR)",
+                "de-DE" => "Deutsch (de-DE)",
+                "es-ES" => "Español (es-ES)",
+                _ => code
+            };
+        }
+
         public string this[string name]
         {
             get

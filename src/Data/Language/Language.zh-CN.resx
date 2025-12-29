@@ -507,9 +507,6 @@
   <data name="Undelete_Message" xml:space="preserve">
     <value>已取消删除</value>
   </data>
-  <data name="DeleteingBasemapConfirm1_Message" xml:space="preserve">
-    <value>正在删除底图</value>
-  </data>
   <data name="DeleteingBasemapConfirm2_Message" xml:space="preserve">
     <value>是否确认删除？</value>
   </data>
@@ -521,12 +518,6 @@
   </data>
   <data name="ScNotFilledIn" xml:space="preserve">
     <value>投图脚本未填写</value>
-  </data>
-  <data name="BasemapVersionToLow1" xml:space="preserve">
-    <value>导入的底图版本过低，请使用版本大于</value>
-  </data>
-  <data name="BasemapVersionToLow2" xml:space="preserve">
-    <value>的底图</value>
   </data>
   <data name="CancelImport" xml:space="preserve">
     <value>已取消导入</value>
@@ -752,9 +743,6 @@
   <data name="ModifedCanceled" xml:space="preserve">
     <value>取消修改</value>
   </data>
-  <data name="Info1" xml:space="preserve">
-    <value>请前往官网查看，该功能开发中....</value>
-  </data>
   <data name="import_template" xml:space="preserve">
     <value>导入绘图模板</value>
   </data>
@@ -830,15 +818,6 @@
   <data name="uncategorized" xml:space="preserve">
     <value>未分类</value>
   </data>
-  <data name="disallow_modify_data_point_position" xml:space="preserve">
-    <value>不允许修改数据点位置</value>
-  </data>
-  <data name="load_valid_template_with_script" xml:space="preserve">
-    <value>请先加载有效的图表模板，模板中必须包含计算脚本配置</value>
-  </data>
-  <data name="incomplete_script_config" xml:space="preserve">
-    <value>模板中的脚本配置不完整，请检查RequiredDataSeries和ScriptBody</value>
-  </data>
   <data name="select_data_file" xml:space="preserve">
     <value>请选择数据文件</value>
   </data>
@@ -850,9 +829,6 @@
   </data>
   <data name="read_file_failed" xml:space="preserve">
     <value>读取文件失败</value>
-  </data>
-  <data name="script_config_error_required_data_series" xml:space="preserve">
-    <value>脚本配置错误：RequiredDataSeries至少需要包含类别列和一个数据列</value>
   </data>
   <data name="excel_missing_required_columns" xml:space="preserve">
     <value>Excel文件缺少以下必需的列</value>
@@ -1279,10 +1255,6 @@
   <data name="save_template_failed" xml:space="preserve">
     <value>保存模板失败:</value>
     <comment>新疆模板</comment>
-  </data>
-  <data name="thank_you_and_wishes" xml:space="preserve">
-    <value>感谢您的使用🌹\n 祝您</value>
-    <comment>彩蛋</comment>
   </data>
   <data name="research_life_smooth_sailing" xml:space="preserve">
     <value>年科研，生活一帆风顺！</value>
@@ -2304,5 +2276,71 @@
   </data>
   <data name="function" xml:space="preserve">
     <value>函数</value>
+  </data>
+  <data name="new_template" xml:space="preserve">
+    <value>新建图解模板</value>
+  </data>
+  <data name="update_available_click_to_download" xml:space="preserve">
+    <value>有新版本可用，点击更新</value>
+  </data>
+  <data name="MarkerShape_FilledCircle" xml:space="preserve">
+    <value>实心圆</value>
+  </data>
+  <data name="MarkerShape_OpenCircle" xml:space="preserve">
+    <value>空心圆</value>
+  </data>
+  <data name="MarkerShape_FilledSquare" xml:space="preserve">
+    <value>实心正方形</value>
+  </data>
+  <data name="MarkerShape_OpenSquare" xml:space="preserve">
+    <value>空心正方形</value>
+  </data>
+  <data name="MarkerShape_FilledTriangleUp" xml:space="preserve">
+    <value>实心上三角</value>
+  </data>
+  <data name="MarkerShape_OpenTriangleUp" xml:space="preserve">
+    <value>空心上三角</value>
+  </data>
+  <data name="MarkerShape_FilledTriangleDown" xml:space="preserve">
+    <value>实心下三角</value>
+  </data>
+  <data name="MarkerShape_OpenTriangleDown" xml:space="preserve">
+    <value>空心下三角</value>
+  </data>
+  <data name="MarkerShape_FilledDiamond" xml:space="preserve">
+    <value>实心菱形</value>
+  </data>
+  <data name="MarkerShape_OpenDiamond" xml:space="preserve">
+    <value>空心菱形</value>
+  </data>
+  <data name="MarkerShape_Cross" xml:space="preserve">
+    <value>十字</value>
+  </data>
+  <data name="MarkerShape_Eks" xml:space="preserve">
+    <value>X 形</value>
+  </data>
+  <data name="MarkerShape_Asterisk" xml:space="preserve">
+    <value>星号</value>
+  </data>
+  <data name="MarkerShape_VerticalBar" xml:space="preserve">
+    <value>竖线</value>
+  </data>
+  <data name="MarkerShape_HorizontalBar" xml:space="preserve">
+    <value>横线</value>
+  </data>
+  <data name="MarkerShape_HashTag" xml:space="preserve">
+    <value>井号</value>
+  </data>
+  <data name="MarkerShape_OpenCircleWithDot" xml:space="preserve">
+    <value>空心圆加点</value>
+  </data>
+  <data name="MarkerShape_OpenCircleWithCross" xml:space="preserve">
+    <value>空心圆加十字</value>
+  </data>
+  <data name="MarkerShape_OpenCircleWithEks" xml:space="preserve">
+    <value>空心圆加叉</value>
+  </data>
+  <data name="invalid_filename_char" xml:space="preserve">
+    <value>内容含有不支持的字符</value>
   </data>
 </root>

@@ -29,3 +29,13 @@ Our software is developed using `C#` and is based on a modern `MVVM` architectur
 ## 🌍 Translation
 
 To make our software accessible to more users worldwide, we aim to provide additional localized language versions. **If you are proficient in multiple languages and would like to participate in localization efforts, we enthusiastically welcome your contribution**. Your hard work will help us create a more inclusive and accessible product, attracting researchers from diverse linguistic backgrounds. Please reach out to us, and let’s work together to improve the software's usability!
+
+---
+
+## 🙏 Special Thanks
+
+See [Special Thanks](./Special%20Thanks).
+
+## ℹ️ About
+
+See [About](./About).

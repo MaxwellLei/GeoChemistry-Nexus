@@ -29,3 +29,13 @@ Unsere Software wird mit `C#` entwickelt und basiert auf einer modernen `MVVM`-A
 ## 🌍 Übersetzung
 
 Um unsere Software mehr Benutzern weltweit zugänglich zu machen, möchten wir weitere lokalisierte Sprachversionen anbieten. **Wenn Sie mehrere Sprachen beherrschen und an Lokalisierungsbemühungen teilnehmen möchten, begrüßen wir Ihren Beitrag mit Begeisterung**. Ihre harte Arbeit wird uns helfen, ein inklusiveres und zugänglicheres Produkt zu schaffen, das Forscher mit unterschiedlichem sprachlichen Hintergrund anzieht. Bitte kontaktieren Sie uns und lassen Sie uns zusammenarbeiten, um die Benutzerfreundlichkeit der Software zu verbessern!
+
+---
+
+## 🙏 Besonderer Dank
+
+Siehe [Besonderer Dank](./Special%20Thanks).
+
+## ℹ️ Über
+
+Siehe [Über](./About).

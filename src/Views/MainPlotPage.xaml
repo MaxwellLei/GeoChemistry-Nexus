@@ -342,30 +342,36 @@
                 <!-- 面包屑导航 -->
                 <Border Grid.Row="0" Background="White" BorderBrush="#E0E0E0" 
                         BorderThickness="0,0,0,1" Padding="20,15">
-                    <StackPanel Orientation="Horizontal">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
                         <TextBlock Text="{Binding [template_library],Source={x:Static lg:LanguageService.Instance}}" FontSize="18" FontWeight="Bold" 
-                                  Foreground="#333" Margin="0,0,20,0"/>
-                        <ItemsControl ItemsSource="{Binding Breadcrumbs}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal"/>
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Button Content="{Binding Name}" 
-                                               Command="{Binding DataContext.NavigateToBreadcrumbCommand, RelativeSource={RelativeSource AncestorType=Page}}"
-                                               CommandParameter="{Binding}"
-                                               Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
-                                               Foreground="#0078D4" FontSize="14"/>
-                                        <TextBlock Text=" > " Margin="5,0" FontSize="14" 
-                                                  Foreground="#999" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </StackPanel>
+                                  Foreground="#333" Margin="0,0,20,0" VerticalAlignment="Center"/>
+                        <ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled" x:Name="BreadcrumbScrollViewer" SizeChanged="BreadcrumbScrollViewer_SizeChanged">
+                            <ItemsControl ItemsSource="{Binding Breadcrumbs}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Content="{Binding Name}" 
+                                                   Command="{Binding DataContext.NavigateToBreadcrumbCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                   CommandParameter="{Binding}"
+                                                   Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                                                   Foreground="#0078D4" FontSize="14"/>
+                                            <TextBlock Text=" > " Margin="5,0" FontSize="14" 
+                                                      Foreground="#999" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Grid>
                 </Border>
 
                 <!-- 模板卡片网格 (虚拟化) -->
@@ -431,9 +437,48 @@
 
                                     <!-- Thumbnails -->
                                     <Grid Grid.Row="0" Margin="8,8,8,0">
-                                        <Border CornerRadius="6,6,0,0" Background="#F8F9FA" ClipToBounds="True">
+                                        <Border x:Name="ThumbnailBorder" CornerRadius="6,6,0,0" Background="#F8F9FA" ClipToBounds="True">
                                             <Image Source="{Binding ThumbnailPath, Converter={StaticResource StringToBitmapImageConverter}}" Stretch="Uniform"/>
                                         </Border>
+
+                                        <!-- Update Button -->
+                                        <Button VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0"
+                                                Width="{Binding ActualWidth, ElementName=ThumbnailBorder}"
+                                                Command="{Binding UpdateCommand}"
+                                                Padding="0,8" Background="#0078D4" Foreground="White"
+                                                BorderThickness="0" Cursor="Hand">
+                                            <Button.Style>
+                                                <Style TargetType="Button">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="Button">
+                                                                <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" CornerRadius="6,6,0,0">
+                                                                    <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                                                                </Border>
+                                                                <ControlTemplate.Triggers>
+                                                                     <Trigger Property="IsMouseOver" Value="True">
+                                                                         <Setter Property="Opacity" Value="0.9"/>
+                                                                     </Trigger>
+                                                                </ControlTemplate.Triggers>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding State}" Value="UpdateAvailable">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                            <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled" PanningMode="HorizontalOnly" IsHitTestVisible="False">
+                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                    <TextBlock Text="&#xE118;" FontFamily="Segoe MDL2 Assets" FontSize="12" Margin="0,1,6,0" VerticalAlignment="Center"/>
+                                                    <TextBlock Text="{Binding [update_available_click_to_download], Source={x:Static lg:LanguageService.Instance}, TargetNullValue='有新版本可用，点击更新'}" 
+                                                               FontWeight="SemiBold" FontSize="11" VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </ScrollViewer>
+                                        </Button>
 
                                         <Border CornerRadius="6,6,0,0" Background="#80000000">
                                             <Border.Style>
@@ -441,9 +486,6 @@
                                                     <Setter Property="Visibility" Value="Collapsed"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding State}" Value="NotDownloaded">
-                                                            <Setter Property="Visibility" Value="Visible"/>
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding State}" Value="UpdateAvailable">
                                                             <Setter Property="Visibility" Value="Visible"/>
                                                         </DataTrigger>
                                                         <DataTrigger Binding="{Binding State}" Value="Downloading">
@@ -463,9 +505,6 @@
                                                             <Setter Property="Visibility" Value="Collapsed"/>
                                                             <Style.Triggers>
                                                                 <DataTrigger Binding="{Binding State}" Value="NotDownloaded">
-                                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                                </DataTrigger>
-                                                                <DataTrigger Binding="{Binding State}" Value="UpdateAvailable">
                                                                     <Setter Property="Visibility" Value="Visible"/>
                                                                 </DataTrigger>
                                                                 <DataTrigger Binding="{Binding State}" Value="Error">
@@ -499,27 +538,12 @@
                                                     <TextBlock Text="{Binding DownloadProgress, StringFormat={}{0:0}%}" 
                                        Foreground="White" HorizontalAlignment="Center" Margin="0,5,0,0"/>
                                                 </StackPanel>
-
-                                                <Border HorizontalAlignment="Right" VerticalAlignment="Top" Background="#D83B01" 
-                                    CornerRadius="0,6,0,6" Padding="8,4" Margin="0,-1,-1,0">
-                                                    <Border.Style>
-                                                        <Style TargetType="Border">
-                                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding State}" Value="UpdateAvailable">
-                                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </Border.Style>
-                                                    <TextBlock Text="NEW" Foreground="White" FontSize="10" FontWeight="Bold"/>
-                                                </Border>
                                             </Grid>
                                         </Border>
                                     </Grid>
 
                                     <!--模板名称和分类-->
-                                    <StackPanel Grid.Row="1" Margin="12" HorizontalAlignment="Center">
+                                    <StackPanel Grid.Row="1" Margin="12,8,12,12" HorizontalAlignment="Stretch">
                                         <TextBlock Text="{Binding Name}" 
                                                   FontWeight="Bold" FontSize="14" 
                                                   Foreground="#333" TextAlignment="Center"

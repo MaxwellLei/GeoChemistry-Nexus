@@ -783,24 +783,6 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 The imported basemap version is too low, please use a version higher than 的本地化字符串。
-        /// </summary>
-        internal static string BasemapVersionToLow1 {
-            get {
-                return ResourceManager.GetString("BasemapVersionToLow1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 version 的本地化字符串。
-        /// </summary>
-        internal static string BasemapVersionToLow2 {
-            get {
-                return ResourceManager.GetString("BasemapVersionToLow2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Biotite 的本地化字符串。
         /// </summary>
         internal static string Biotite {
@@ -1656,15 +1638,6 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Deleting Basemap 的本地化字符串。
-        /// </summary>
-        internal static string DeleteingBasemapConfirm1_Message {
-            get {
-                return ResourceManager.GetString("DeleteingBasemapConfirm1_Message", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Are you sure you want to delete? 的本地化字符串。
         /// </summary>
         internal static string DeleteingBasemapConfirm2_Message {
@@ -1832,15 +1805,6 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string directory_not_exist {
             get {
                 return ResourceManager.GetString("directory_not_exist", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Disallow Modification of Data Point Position 的本地化字符串。
-        /// </summary>
-        internal static string disallow_modify_data_point_position {
-            get {
-                return ResourceManager.GetString("disallow_modify_data_point_position", resourceCulture);
             }
         }
         
@@ -2871,29 +2835,11 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 The script configuration in the template is incomplete. Please check RequiredDataSeries and ScriptBody 的本地化字符串。
-        /// </summary>
-        internal static string incomplete_script_config {
-            get {
-                return ResourceManager.GetString("incomplete_script_config", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Independent Diagram Window 的本地化字符串。
         /// </summary>
         internal static string independent_diagram_window {
             get {
                 return ResourceManager.GetString("independent_diagram_window", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Please visit the official website, this feature is under development.... 的本地化字符串。
-        /// </summary>
-        internal static string Info1 {
-            get {
-                return ResourceManager.GetString("Info1", resourceCulture);
             }
         }
         
@@ -2975,6 +2921,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string invalid_diagram_template_no_json {
             get {
                 return ResourceManager.GetString("invalid_diagram_template_no_json", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Content contains unsupported characters 的本地化字符串。
+        /// </summary>
+        internal static string invalid_filename_char {
+            get {
+                return ResourceManager.GetString("invalid_filename_char", resourceCulture);
             }
         }
         
@@ -3438,15 +3393,6 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Please load a valid chart template. The template must include calculation script configurations 的本地化字符串。
-        /// </summary>
-        internal static string load_valid_template_with_script {
-            get {
-                return ResourceManager.GetString("load_valid_template_with_script", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Loading announcements... 的本地化字符串。
         /// </summary>
         internal static string loading_announcements {
@@ -3542,6 +3488,177 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string MajorAxes {
             get {
                 return ResourceManager.GetString("MajorAxes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Asterisk 的本地化字符串。
+        /// </summary>
+        internal static string MarkerShape_Asterisk {
+            get {
+                return ResourceManager.GetString("MarkerShape_Asterisk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Cross 的本地化字符串。
+        /// </summary>
+        internal static string MarkerShape_Cross {
+            get {
+                return ResourceManager.GetString("MarkerShape_Cross", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 X Mark 的本地化字符串。
+        /// </summary>
+        internal static string MarkerShape_Eks {
+            get {
+                return ResourceManager.GetString("MarkerShape_Eks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Filled Circle 的本地化字符串。
+        /// </summary>
+        internal static string MarkerShape_FilledCircle {
+            get {
+                return ResourceManager.GetString("MarkerShape_FilledCircle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Filled Diamond 的本地化字符串。
+        /// </summary>
+        internal static string MarkerShape_FilledDiamond {
+            get {
+                return ResourceManager.GetString("MarkerShape_FilledDiamond", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Filled Square 的本地化字符串。
+        /// </summary>
+        internal static string MarkerShape_FilledSquare {
+            get {
+                return ResourceManager.GetString("MarkerShape_FilledSquare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Filled Triangle Down 的本地化字符串。
+        /// </summary>
+        internal static string MarkerShape_FilledTriangleDown {
+            get {
+                return ResourceManager.GetString("MarkerShape_FilledTriangleDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Filled Triangle Up 的本地化字符串。
+        /// </summary>
+        internal static string MarkerShape_FilledTriangleUp {
+            get {
+                return ResourceManager.GetString("MarkerShape_FilledTriangleUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Hash 的本地化字符串。
+        /// </summary>
+        internal static string MarkerShape_HashTag {
+            get {
+                return ResourceManager.GetString("MarkerShape_HashTag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Horizontal Bar 的本地化字符串。
+        /// </summary>
+        internal static string MarkerShape_HorizontalBar {
+            get {
+                return ResourceManager.GetString("MarkerShape_HorizontalBar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Open Circle 的本地化字符串。
+        /// </summary>
+        internal static string MarkerShape_OpenCircle {
+            get {
+                return ResourceManager.GetString("MarkerShape_OpenCircle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Open Circle with Cross 的本地化字符串。
+        /// </summary>
+        internal static string MarkerShape_OpenCircleWithCross {
+            get {
+                return ResourceManager.GetString("MarkerShape_OpenCircleWithCross", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Open Circle with Dot 的本地化字符串。
+        /// </summary>
+        internal static string MarkerShape_OpenCircleWithDot {
+            get {
+                return ResourceManager.GetString("MarkerShape_OpenCircleWithDot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Open Circle with X 的本地化字符串。
+        /// </summary>
+        internal static string MarkerShape_OpenCircleWithEks {
+            get {
+                return ResourceManager.GetString("MarkerShape_OpenCircleWithEks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Open Diamond 的本地化字符串。
+        /// </summary>
+        internal static string MarkerShape_OpenDiamond {
+            get {
+                return ResourceManager.GetString("MarkerShape_OpenDiamond", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Open Square 的本地化字符串。
+        /// </summary>
+        internal static string MarkerShape_OpenSquare {
+            get {
+                return ResourceManager.GetString("MarkerShape_OpenSquare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Open Triangle Down 的本地化字符串。
+        /// </summary>
+        internal static string MarkerShape_OpenTriangleDown {
+            get {
+                return ResourceManager.GetString("MarkerShape_OpenTriangleDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Open Triangle Up 的本地化字符串。
+        /// </summary>
+        internal static string MarkerShape_OpenTriangleUp {
+            get {
+                return ResourceManager.GetString("MarkerShape_OpenTriangleUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Vertical Bar 的本地化字符串。
+        /// </summary>
+        internal static string MarkerShape_VerticalBar {
+            get {
+                return ResourceManager.GetString("MarkerShape_VerticalBar", resourceCulture);
             }
         }
         
@@ -3767,6 +3884,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string new_drawing_template_library_version_detected {
             get {
                 return ResourceManager.GetString("new_drawing_template_library_version_detected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 New Diagram Template 的本地化字符串。
+        /// </summary>
+        internal static string new_template {
+            get {
+                return ResourceManager.GetString("new_template", resourceCulture);
             }
         }
         
@@ -4986,15 +5112,6 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Script configuration error: RequiredDataSeries must contain at least one category column and one data column 的本地化字符串。
-        /// </summary>
-        internal static string script_config_error_required_data_series {
-            get {
-                return ResourceManager.GetString("script_config_error_required_data_series", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Script Content: 的本地化字符串。
         /// </summary>
         internal static string script_content {
@@ -5661,15 +5778,6 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Thank you for using! \n Wishing you 的本地化字符串。
-        /// </summary>
-        internal static string thank_you_and_wishes {
-            get {
-                return ResourceManager.GetString("thank_you_and_wishes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Thanks for the Support 的本地化字符串。
         /// </summary>
         internal static string ThankSupport {
@@ -5900,6 +6008,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string update {
             get {
                 return ResourceManager.GetString("update", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 New version available, click to update 的本地化字符串。
+        /// </summary>
+        internal static string update_available_click_to_download {
+            get {
+                return ResourceManager.GetString("update_available_click_to_download", resourceCulture);
             }
         }
         

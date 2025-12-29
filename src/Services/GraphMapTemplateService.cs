@@ -39,8 +39,8 @@ namespace GeoChemistryNexus.Services
 
             foreach (var item in templateList)
             {
-                // 获取分类路径
-                string selectedPath = item.NodeList.Get();
+                // 获取分类路径 (强制使用当前APP语言，忽略 OverrideLanguage)
+                string selectedPath = GetPathForAppLanguage(item.NodeList);
 
                 // 分割选择的路径
                 var pathParts = selectedPath.Split(separator).Select(p => p.Trim()).ToArray();
@@ -100,7 +100,7 @@ namespace GeoChemistryNexus.Services
 
             foreach (var item in templateList)
             {
-                string selectedPath = item.NodeList.Get();
+                string selectedPath = GetPathForAppLanguage(item.NodeList);
                 var pathParts = selectedPath.Split(separator).Select(p => p.Trim()).ToArray();
                 var currentNode = rootNode;
 
@@ -180,7 +180,8 @@ namespace GeoChemistryNexus.Services
         /// <summary>
         /// 向自定义模板列表添加新项
         /// </summary>
-        public static void AddCustomTemplateEntry(string listPath, LocalizedString nodeList, string graphMapPath, string fileHash)
+        /// <returns>返回更新后的 JSON 字符串</returns>
+        public static string AddCustomTemplateEntry(string listPath, LocalizedString nodeList, string graphMapPath, string fileHash)
         {
             List<JsonTemplateItem> list;
             if (System.IO.File.Exists(listPath))
@@ -225,6 +226,8 @@ namespace GeoChemistryNexus.Services
             if (!System.IO.Directory.Exists(dir)) System.IO.Directory.CreateDirectory(dir);
             
             System.IO.File.WriteAllText(listPath, output);
+            
+            return output;
         }
 
         /// <summary>
@@ -255,6 +258,32 @@ namespace GeoChemistryNexus.Services
             {
                 System.Diagnostics.Debug.WriteLine($"Error removing custom template entry: {ex.Message}");
             }
+        }
+
+        /// <summary>
+        /// 获取当前APP语言对应的路径，忽略 LocalizedString.OverrideLanguage 设置。
+        /// </summary>
+        private static string GetPathForAppLanguage(LocalizedString localizedString)
+        {
+            if (localizedString == null) return string.Empty;
+
+            // 使用 LanguageService 获取当前界面语言
+            string appLang = LanguageService.CurrentLanguage;
+
+            if (localizedString.Translations != null && localizedString.Translations.ContainsKey(appLang))
+            {
+                return localizedString.Translations[appLang];
+            }
+
+            // 回退到默认语言
+            if (!string.IsNullOrEmpty(localizedString.Default) &&
+                localizedString.Translations != null &&
+                localizedString.Translations.ContainsKey(localizedString.Default))
+            {
+                return localizedString.Translations[localizedString.Default];
+            }
+
+            return string.Empty;
         }
 
         /// <summary>

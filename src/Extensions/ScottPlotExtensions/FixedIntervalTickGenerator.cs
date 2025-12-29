@@ -35,35 +35,51 @@ namespace GeoChemistryNexus.Extensions.ScottPlotExtensions
                 return;
             }
 
-            // 第一个主刻度
-            double firstMajor = Math.Ceiling(range.Min / Interval) * Interval;
-            
+            double epsilon = 1e-10;
+
+            // 使用整数索引循环以避免浮点累积误差
+            long firstIndex = (long)Math.Ceiling((range.Min - epsilon) / Interval);
+            long lastIndex = (long)Math.Floor((range.Max + epsilon) / Interval);
+
             // 生成主刻度
-            for (double pos = firstMajor; pos <= range.Max + 1e-10; pos += Interval)
+            for (long i = firstIndex; i <= lastIndex; i++)
             {
-                ticks.Add(new Tick(pos, pos.ToString(), isMajor: true));
+                double pos = i * Interval;
+                
+                // 格式化标签：对于常规间隔，舍入到10位小数以去除浮点噪声
+                // 如果间隔非常小（小于1e-7），则保留原始精度或使用更多位
+                string label;
+                if (Interval < 1e-7)
+                {
+                     label = pos.ToString();
+                }
+                else
+                {
+                     label = Math.Round(pos, 10).ToString();
+                }
+
+                ticks.Add(new Tick(pos, label, isMajor: true));
             }
 
             // 生成次刻度
             if (MinorTickCount > 0)
             {
-                double minorStep = Interval / (MinorTickCount + 1);
+                double minorInterval = Interval / (MinorTickCount + 1);
                 
-                // 覆盖整个范围，包括第一个主刻度之前和最后一个主刻度之后的部分
-                double rangeStart = Math.Floor(range.Min / Interval) * Interval;
-                double rangeEnd = Math.Ceiling(range.Max / Interval) * Interval;
+                // 计算次刻度的索引范围
+                long subFirstIndex = (long)Math.Ceiling((range.Min - epsilon) / minorInterval);
+                long subLastIndex = (long)Math.Floor((range.Max + epsilon) / minorInterval);
 
-                for (double majorPos = rangeStart; majorPos < rangeEnd + 1e-10; majorPos += Interval)
+                for (long j = subFirstIndex; j <= subLastIndex; j++)
                 {
-                    for (int i = 1; i <= MinorTickCount; i++)
+                    // 跳过与主刻度重叠的次刻度
+                    if (j % (MinorTickCount + 1) == 0)
                     {
-                        double minorPos = majorPos + i * minorStep;
-                        if (minorPos >= range.Min - 1e-10 && minorPos <= range.Max + 1e-10)
-                        {
-                             // 避免和主刻度重叠
-                             ticks.Add(new Tick(minorPos, "", isMajor: false));
-                        }
+                        continue;
                     }
+
+                    double pos = j * minorInterval;
+                    ticks.Add(new Tick(pos, "", isMajor: false));
                 }
             }
             

@@ -1815,21 +1815,40 @@ namespace GeoChemistryNexus.ViewModels
                     currentLang = languages.First();
                 }
 
-                // 处理默认语言显示（添加 ⭐ 前缀）
+                // 构建显示名称映射
+                var displayMap = new Dictionary<string, string>(); // DisplayName -> Code
+                var displayList = new List<string>();
                 string defaultLang = CurrentTemplate.DefaultLanguage;
-                var displayLanguages = languages.OrderBy(x => x).Select(lang => 
-                    (!string.IsNullOrEmpty(defaultLang) && lang == defaultLang) ? "⭐ " + lang : lang
-                );
-                
-                string displayCurrentLang = (!string.IsNullOrEmpty(defaultLang) && currentLang == defaultLang) ? "⭐ " + currentLang : currentLang;
+
+                foreach (var code in languages.OrderBy(x => x))
+                {
+                    string displayName = LanguageService.GetLanguageDisplayName(code);
+                    if (!string.IsNullOrEmpty(defaultLang) && code == defaultLang)
+                    {
+                        displayName = "⭐ " + displayName;
+                    }
+                    
+                    // 防止重复名称（虽然不太可能，但为了安全）
+                    if (!displayMap.ContainsKey(displayName))
+                    {
+                        displayMap[displayName] = code;
+                        displayList.Add(displayName);
+                    }
+                }
+
+                string currentDisplayName = LanguageService.GetLanguageDisplayName(currentLang);
+                if (!string.IsNullOrEmpty(defaultLang) && currentLang == defaultLang)
+                {
+                    currentDisplayName = "⭐ " + currentDisplayName;
+                }
 
                 // 异步显示语言选择通知
-                var selectedDisplayLanguage = await NotificationManager.Instance.ShowLanguageSelectionAsync(displayLanguages, displayCurrentLang);
+                var selectedDisplayName = await NotificationManager.Instance.ShowLanguageSelectionAsync(displayList, currentDisplayName);
 
-                if (!string.IsNullOrEmpty(selectedDisplayLanguage))
+                if (!string.IsNullOrEmpty(selectedDisplayName) && displayMap.ContainsKey(selectedDisplayName))
                 {
-                    // 还原语言代码（移除 ⭐ 前缀）
-                    string finalLanguage = selectedDisplayLanguage.StartsWith("⭐ ") ? selectedDisplayLanguage.Substring(2) : selectedDisplayLanguage;
+                    // 获取对应的语言代码
+                    string finalLanguage = displayMap[selectedDisplayName];
 
                     // 设置当前图解语言，触发 OnCurrentDiagramLanguageChanged 进行更新
                     CurrentDiagramLanguage = finalLanguage;
@@ -2024,13 +2043,13 @@ namespace GeoChemistryNexus.ViewModels
             worksheet.DeleteColumns(selection.Col, selection.Cols);
         }
 
-        public async Task InitializeAsync()
+        public async Task InitializeAsync(string customJsonContent = null)
         {
             // 计时开始
             //var stopwatch = System.Diagnostics.Stopwatch.StartNew();
 
             // 1. 异步加载模板列表
-            await InitTemplateAsync();
+            await InitTemplateAsync(customJsonContent);
 
             // 2. 初始化面包屑
             Application.Current.Dispatcher.Invoke(() =>
@@ -2055,7 +2074,7 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         // 切换语言——刷新
-        public async Task InitTemplateAsync()
+        public async Task InitTemplateAsync(string customJsonContent = null)
         {
             try
             {
@@ -2078,8 +2097,16 @@ namespace GeoChemistryNexus.ViewModels
                     string defaultJson = JsonHelper.ReadJsonFile(defaultListPath);
 
                     // 读取自定义模板列表
-                    string customListPath = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "GraphMapCustomList.json");
-                    string customJson = File.Exists(customListPath) ? JsonHelper.ReadJsonFile(customListPath) : "[]";
+                    string customJson;
+                    if (customJsonContent != null)
+                    {
+                        customJson = customJsonContent;
+                    }
+                    else
+                    {
+                        string customListPath = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "GraphMapCustomList.json");
+                        customJson = File.Exists(customListPath) ? JsonHelper.ReadJsonFile(customListPath) : "[]";
+                    }
 
                     // 解析并合并
                     // 解析默认列表
@@ -2420,11 +2447,52 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
+        private void ReloadHelpDocument(string language)
+        {
+            if (string.IsNullOrEmpty(_currentTemplateFilePath)) return;
+
+            try
+            {
+                var baseDir = Path.GetDirectoryName(_currentTemplateFilePath);
+                if (baseDir != null)
+                {
+                    // 1. 尝试当前语言
+                    string targetFile = Path.Combine(baseDir, language + ".rtf");
+
+                    // 2. 如果不存在，尝试模板默认语言
+                    if (!File.Exists(targetFile) && CurrentTemplate != null && !string.IsNullOrEmpty(CurrentTemplate.DefaultLanguage))
+                    {
+                        targetFile = Path.Combine(baseDir, CurrentTemplate.DefaultLanguage + ".rtf");
+                    }
+
+                    // 3. 如果还不存在，尝试 en-US
+                    if (!File.Exists(targetFile))
+                    {
+                        targetFile = Path.Combine(baseDir, "en-US.rtf");
+                    }
+
+                    // 4. 如果文件存在，则加载
+                    if (File.Exists(targetFile))
+                    {
+                        RtfHelper.LoadRtfToRichTextBox(targetFile, _richTextBox);
+                    }
+                    else
+                    {
+                        _richTextBox.Document.Blocks.Clear();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Failed to reload help doc: {ex.Message}");
+            }
+        }
+
         partial void OnCurrentDiagramLanguageChanged(string value)
         {
             if (string.IsNullOrEmpty(value)) return;
 
-            DiagramLanguageStatus = value;
+            DiagramLanguageStatus = LanguageService.GetLanguageDisplayName(value);
             LocalizedString.OverrideLanguage = value;
 
             // 自动根据内容检测并设置字体
@@ -2437,25 +2505,7 @@ namespace GeoChemistryNexus.ViewModels
             }
 
             // 刷新帮助文档
-            if (!string.IsNullOrEmpty(_currentTemplateFilePath))
-            {
-                try
-                {
-                    var baseDir = Path.GetDirectoryName(_currentTemplateFilePath);
-                    if (baseDir != null)
-                    {
-                        var tempRTFfile = FileHelper.FindFileOrGetFirstWithExtension(baseDir, value, ".rtf");
-                        if (!string.IsNullOrEmpty(tempRTFfile))
-                        {
-                            RtfHelper.LoadRtfToRichTextBox(tempRTFfile, _richTextBox);
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine($"Failed to reload help doc: {ex.Message}");
-                }
-            }
+            ReloadHelpDocument(value);
 
             RefreshPlotFromLayers(true);
         }
@@ -3450,19 +3500,7 @@ namespace GeoChemistryNexus.ViewModels
                 CenterPlot();   // 视图复位
 
                 // 加载底图模板的说明文件
-                try
-                {
-                    var tempRTFfile = FileHelper.FindFileOrGetFirstWithExtension(
-                        baseDir, LanguageService.CurrentLanguage, ".rtf");
-                    if (!string.IsNullOrEmpty(tempRTFfile))
-                    {
-                        RtfHelper.LoadRtfToRichTextBox(tempRTFfile, _richTextBox);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine($"加载说明文件失败: {ex.Message}");
-                }
+                ReloadHelpDocument(CurrentDiagramLanguage);
 
                 // 加载数据表格控件
                 PrepareDataGridForInput();
@@ -3628,14 +3666,23 @@ namespace GeoChemistryNexus.ViewModels
                 // 3. 序列化克隆对象，得到“当前完整状态”的 JSON
                 string finalJson = SerializeTemplate(clonedTemplate);
 
-                // 4. 与原始 JSON 对比
-                return finalJson != _originalTemplateJson;
+                // 4. 与原始 JSON 对比 (忽略字体相关属性的变化)
+                return NormalizeJsonForComparison(finalJson) != NormalizeJsonForComparison(_originalTemplateJson);
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"IsTemplateModified check failed: {ex.Message}");
                 return false;
             }
+        }
+
+        private string NormalizeJsonForComparison(string json)
+        {
+            if (string.IsNullOrEmpty(json)) return json;
+            // Ignore font related properties changes: "Family", "Font"
+            // We replace their values with a placeholder to ensure consistency
+            string pattern = "\"((Family)|(Font))\"\\s*:\\s*\"(.*?)\"";
+            return System.Text.RegularExpressions.Regex.Replace(json, pattern, "\"$1\": \"IGNORE\"", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
         }
 
         /// <summary>
@@ -3864,7 +3911,7 @@ namespace GeoChemistryNexus.ViewModels
             if (!string.IsNullOrEmpty(CurrentTemplate.DefaultLanguage))
             {
                 LocalizedString.OverrideLanguage = CurrentTemplate.DefaultLanguage;
-                DiagramLanguageStatus = CurrentTemplate.DefaultLanguage;
+                DiagramLanguageStatus = LanguageService.GetLanguageDisplayName(CurrentTemplate.DefaultLanguage);
                 
                 // 确保 ViewModel 属性同步
                 if (_currentDiagramLanguage != CurrentTemplate.DefaultLanguage)
@@ -4594,6 +4641,9 @@ namespace GeoChemistryNexus.ViewModels
 
             if (isConfirmed)
             {
+                // 先触发取消选择
+                CancelSelected();
+
                 // 2. 清除绘图中的数据点
                 ClearExistingPlottedData();
 
@@ -4619,6 +4669,9 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private void UpdateData()
         {
+            // 先触发取消选择
+            CancelSelected();
+
             // 清除当前绘图中的所有由数据导入的点
             ClearExistingPlottedData();
 
@@ -4632,7 +4685,153 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private void CenterPlot()
         {
-            WpfPlot1.Plot.Axes.AutoScale();
+            // 默认自动缩放
+            bool shouldAutoScale = true;
+
+            // 仅针对笛卡尔坐标系处理
+            if (CurrentTemplate?.TemplateType == "Cartesian" && CurrentTemplate.Info.Axes != null)
+            {
+                // 获取X和Y轴定义
+                var xAxisDef = CurrentTemplate.Info.Axes.FirstOrDefault(a => a.Type == "Bottom") as CartesianAxisDefinition;
+                var yAxisDef = CurrentTemplate.Info.Axes.FirstOrDefault(a => a.Type == "Left") as CartesianAxisDefinition;
+
+                // 检查是否有设定的范围 (最小值不等于最大值)
+                bool isXRangeSet = xAxisDef != null && Math.Abs(xAxisDef.Maximum - xAxisDef.Minimum) > 1e-9;
+                bool isYRangeSet = yAxisDef != null && Math.Abs(yAxisDef.Maximum - yAxisDef.Minimum) > 1e-9;
+
+                // 准备比较用的阈值变量
+                double xMin = xAxisDef?.Minimum ?? 0;
+                double xMax = xAxisDef?.Maximum ?? 0;
+                double yMin = yAxisDef?.Minimum ?? 0;
+                double yMax = yAxisDef?.Maximum ?? 0;
+
+                // 处理 Log 坐标转换：如果坐标轴是对数类型，需要将用户设定的线性值转换为对数值进行比较和设置
+                if (isXRangeSet && xAxisDef.ScaleType == AxisScaleType.Logarithmic)
+                {
+                    if (xMin > 0 && xMax > 0)
+                    {
+                        xMin = Math.Log10(xMin);
+                        xMax = Math.Log10(xMax);
+                    }
+                    else
+                    {
+                        // 非法的 Log 范围 (<=0)，视为未设定，回退到自动缩放
+                        isXRangeSet = false;
+                    }
+                }
+
+                if (isYRangeSet && yAxisDef.ScaleType == AxisScaleType.Logarithmic)
+                {
+                    if (yMin > 0 && yMax > 0)
+                    {
+                        yMin = Math.Log10(yMin);
+                        yMax = Math.Log10(yMax);
+                    }
+                    else
+                    {
+                        isYRangeSet = false;
+                    }
+                }
+
+                // 如果设定了范围
+                if (isXRangeSet || isYRangeSet)
+                {
+                    // 获取当前数据的边界
+                    double dataXMin = double.MaxValue;
+                    double dataXMax = double.MinValue;
+                    double dataYMin = double.MaxValue;
+                    double dataYMax = double.MinValue;
+                    bool hasData = false;
+                    
+                    // 获取所有可见的 Plottables
+                    var plottables = WpfPlot1.Plot.GetPlottables().Where(p => p.IsVisible);
+
+                    foreach (var plottable in plottables)
+                    {
+                         // 忽略一些辅助性的 plottable
+                         if (ReferenceEquals(plottable, CrosshairPlot)) continue;
+                         if (ReferenceEquals(plottable, _snapMarker)) continue;
+                         if (_potentialSnapMarkers != null && _potentialSnapMarkers.Any(m => ReferenceEquals(m, plottable))) continue;
+                         
+                         // 忽略 Grid 和 Axis
+                         string typeName = plottable.GetType().Name;
+                         if (typeName.Contains("Grid") || typeName.Contains("Axis")) continue;
+
+                         var limits = plottable.GetAxisLimits();
+                         var rect = limits.Rect;
+                         
+                         // 检查是否有有效范围
+                         if (rect.Left <= rect.Right && rect.Bottom <= rect.Top)
+                         {
+                             // 只有非默认/非无穷大的值才有效
+                             if (rect.Left > double.MinValue && rect.Right < double.MaxValue && 
+                                 rect.Bottom > double.MinValue && rect.Top < double.MaxValue)
+                             {
+                                 if (rect.Left < dataXMin) dataXMin = rect.Left;
+                                 if (rect.Right > dataXMax) dataXMax = rect.Right;
+                                 if (rect.Bottom < dataYMin) dataYMin = rect.Bottom;
+                                 if (rect.Top > dataYMax) dataYMax = rect.Top;
+                                 hasData = true;
+                             }
+                         }
+                    }
+
+                    // 检查是否超出范围
+                    bool outOfRange = false;
+
+                    if (hasData)
+                    {
+                        // 稍微增加一点容差
+                        double tolerance = 1e-9;
+                        
+                        if (isXRangeSet)
+                        {
+                            if (dataXMin < xMin - tolerance || dataXMax > xMax + tolerance)
+                            {
+                                outOfRange = true;
+                            }
+                        }
+                        
+                        if (isYRangeSet && !outOfRange)
+                        {
+                            if (dataYMin < yMin - tolerance || dataYMax > yMax + tolerance)
+                            {
+                                outOfRange = true;
+                            }
+                        }
+                    }
+
+                    // 如果有设定坐标轴范围且没有绘图对象超出了坐标轴范围，就设定缩放为当前的设定坐标轴范围
+                    if (!outOfRange)
+                    {
+                        shouldAutoScale = false;
+                        
+                        if (isXRangeSet)
+                        {
+                             WpfPlot1.Plot.Axes.SetLimitsX(xMin, xMax);
+                        }
+                        else
+                        {
+                             WpfPlot1.Plot.Axes.AutoScaleX();
+                        }
+                        
+                        if (isYRangeSet)
+                        {
+                             WpfPlot1.Plot.Axes.SetLimitsY(yMin, yMax);
+                        }
+                        else
+                        {
+                             WpfPlot1.Plot.Axes.AutoScaleY();
+                        }
+                    }
+                }
+            }
+
+            if (shouldAutoScale)
+            {
+                WpfPlot1.Plot.Axes.AutoScale();
+            }
+            
             WpfPlot1.Refresh();
         }
 
@@ -5274,6 +5473,12 @@ namespace GeoChemistryNexus.ViewModels
             IsTemplateMode = false;
             IsPlotMode = true;
 
+            // 修复：新建模板时，如果 CurrentDiagramLanguage 与新模板默认语言相同，
+            // OnCurrentDiagramLanguageChanged 不会触发，导致 OverrideLanguage 保持为 null (在方法开头被置空)。
+            // 这会导致图表语言跟随 APP 语言而不是模板默认语言。
+            // 因此这里显式设置 OverrideLanguage。
+            LocalizedString.OverrideLanguage = CurrentTemplate.DefaultLanguage;
+
             BuildLayerTreeFromTemplate(CurrentTemplate);
             RefreshPlotFromLayers();
 
@@ -5284,11 +5489,11 @@ namespace GeoChemistryNexus.ViewModels
             string customListPath = Path.Combine(FileHelper.GetAppPath(), 
                 "Data", "PlotData", "GraphMapCustomList.json");
             string fileHash = UpdateHelper.ComputeFileMd5(_currentTemplateFilePath);
-            GraphMapTemplateService.AddCustomTemplateEntry(customListPath, 
+            string updatedJson = GraphMapTemplateService.AddCustomTemplateEntry(customListPath, 
                 localizedCategory, folderName, fileHash);
 
             // 刷新模板列表缓存，确保返回列表时能看到新模板
-            await InitializeAsync();
+            await InitializeAsync(updatedJson);
 
             return true;
         }
@@ -6531,6 +6736,7 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand(CanExecute = nameof(CanUndo))]
         private void Undo()
         {
+            CancelSelected();
             if (_undoStack.TryPop(out var action))
             {
                 action.Undo();

@@ -495,9 +495,6 @@
   <data name="Undelete_Message" xml:space="preserve">
     <value>Löschen rückgängig gemacht</value>
   </data>
-  <data name="DeleteingBasemapConfirm1_Message" xml:space="preserve">
-    <value>Lösche Grundkarte</value>
-  </data>
   <data name="DeleteingBasemapConfirm2_Message" xml:space="preserve">
     <value>Wirklich löschen?</value>
   </data>
@@ -509,12 +506,6 @@
   </data>
   <data name="ScNotFilledIn" xml:space="preserve">
     <value>Plot-Skript nicht ausgefüllt</value>
-  </data>
-  <data name="BasemapVersionToLow1" xml:space="preserve">
-    <value>Importierte Grundkartenversion zu niedrig, bitte verwenden Sie eine Version höher als</value>
-  </data>
-  <data name="BasemapVersionToLow2" xml:space="preserve">
-    <value>der Grundkarte</value>
   </data>
   <data name="CancelImport" xml:space="preserve">
     <value>Import abgebrochen</value>
@@ -740,9 +731,6 @@
   <data name="ModifedCanceled" xml:space="preserve">
     <value>Änderung abgebrochen</value>
   </data>
-  <data name="Info1" xml:space="preserve">
-    <value>Bitte besuchen Sie die offizielle Website, Funktion in Entwicklung...</value>
-  </data>
   <data name="import_template" xml:space="preserve">
     <value>Diagrammvorlage importieren</value>
   </data>
@@ -818,15 +806,6 @@
   <data name="uncategorized" xml:space="preserve">
     <value>Unkategorisiert</value>
   </data>
-  <data name="disallow_modify_data_point_position" xml:space="preserve">
-    <value>Änderung der Datenpunktposition nicht erlaubt</value>
-  </data>
-  <data name="load_valid_template_with_script" xml:space="preserve">
-    <value>Bitte laden Sie zuerst eine gültige Vorlage mit Skriptkonfiguration</value>
-  </data>
-  <data name="incomplete_script_config" xml:space="preserve">
-    <value>Unvollständige Skriptkonfiguration in der Vorlage, bitte prüfen Sie RequiredDataSeries und ScriptBody</value>
-  </data>
   <data name="select_data_file" xml:space="preserve">
     <value>Bitte Datendatei auswählen</value>
   </data>
@@ -838,9 +817,6 @@
   </data>
   <data name="read_file_failed" xml:space="preserve">
     <value>Lesen der Datei fehlgeschlagen</value>
-  </data>
-  <data name="script_config_error_required_data_series" xml:space="preserve">
-    <value>Skriptkonfigurationsfehler: RequiredDataSeries muss mindestens eine Kategoriespalte und eine Datenspalte enthalten</value>
   </data>
   <data name="excel_missing_required_columns" xml:space="preserve">
     <value>Excel-Datei fehlen erforderliche Spalten</value>
@@ -1235,9 +1211,6 @@
   <data name="save_template_failed" xml:space="preserve">
     <value>Speichern der Vorlage fehlgeschlagen:</value>
   </data>
-  <data name="thank_you_and_wishes" xml:space="preserve">
-    <value>Danke, dass Sie uns nutzen🌹\n Wir wünschen</value>
-  </data>
   <data name="research_life_smooth_sailing" xml:space="preserve">
     <value>viel Erfolg in Forschung und Leben!</value>
   </data>
@@ -1263,7 +1236,7 @@
     <value>Bereits die neueste Version</value>
   </data>
   <data name="cannot_parse_version_number_check_release_address" xml:space="preserve">
-    <value>Versionsnummer konnte nicht geparst werden. Bitte Release-Seite prüfen.</value>
+    <value>Versionsnummer konnte nicht geparst werden. Bitte Release-Seite prüfen</value>
   </data>
   <data name="network_request_error" xml:space="preserve">
     <value>Netzwerkanfragefehler</value>
@@ -1383,7 +1356,7 @@
     <value>Datensumme ist nicht 1</value>
   </data>
   <data name="actual_sum_is" xml:space="preserve">
-    <value>(Tatsächliche Summe:</value>
+    <value>(Tatsächliche Summe</value>
   </data>
   <data name="arrow" xml:space="preserve">
     <value>Pfeil</value>
@@ -2119,5 +2092,14 @@
   </data>
   <data name="function" xml:space="preserve">
     <value>Funktion</value>
+  </data>
+  <data name="new_template" xml:space="preserve">
+    <value>Neue Diagrammvorlage</value>
+  </data>
+  <data name="update_available_click_to_download" xml:space="preserve">
+    <value>Neue Version verfügbar, zum Aktualisieren klicken</value>
+  </data>
+  <data name="invalid_filename_char" xml:space="preserve">
+    <value>Inhalt enthält nicht unterstützte Zeichen</value>
   </data>
 </root>

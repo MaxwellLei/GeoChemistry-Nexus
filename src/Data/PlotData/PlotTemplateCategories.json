@@ -7,15 +7,27 @@
   ],
   "Level2": [
     {
-      "en-US": "Rock Classification Diagrams",
-      "zh-CN": "岩石分类图解"
+      "en-US": "Rock Classification",
+      "zh-CN": "岩石分类"
     },
     {
-      "en-US": "Tectonic Discrimination Diagrams",
-      "zh-CN": "构造环境判别图解"
+      "en-US": "Tectonic Discrimination",
+      "zh-CN": "构造环境判别"
     }
   ],
   "Level3": [
+    {
+      "en-US": "Volcanic Rocks",
+      "zh-CN": "火山岩"
+    },
+    {
+      "en-US": "Plutonic Rocks",
+      "zh-CN": "侵入岩"
+    },
+    {
+      "en-US": "Magma Series",
+      "zh-CN": "岩浆系列"
+    },
     {
       "en-US": "Granitoids",
       "zh-CN": "花岗岩类"
@@ -27,6 +39,10 @@
     {
       "en-US": "Basaltic Rocks",
       "zh-CN": "玄武岩类"
+    },
+    {
+      "en-US": "Adakites & TTG",
+      "zh-CN": "埃达克岩与TTG岩系"
     }
   ]
 }

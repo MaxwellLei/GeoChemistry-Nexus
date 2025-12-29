@@ -86,9 +86,6 @@ namespace GeoChemistryNexus.ViewModels
                 targetAxis.Label.Bold = cartesianAxisDef.IsBold;
                 targetAxis.Label.Italic = cartesianAxisDef.IsItalic;
 
-                // 应用轴范围限制
-                UpdateAxisLimits(plot, cartesianAxisDef, targetAxis);
-
                 // 对数刻度与常规刻度处理
                 if (cartesianAxisDef.ScaleType == AxisScaleType.Logarithmic)
                 {
@@ -98,7 +95,12 @@ namespace GeoChemistryNexus.ViewModels
                         ? new ScottPlot.TickGenerators.EvenlySpacedMinorTickGenerator(0)
                         : new ScottPlot.TickGenerators.LogMinorTickGenerator();
                     tickGen.IntegerTicksOnly = true;
-                    tickGen.LabelFormatter = y => $"{Math.Pow(10, y)}";
+                    tickGen.LabelFormatter = y => 
+                    {
+                        double val = Math.Pow(10, y);
+                        // 使用 G10 格式化并移除可能出现的微小误差后缀
+                        return val.ToString("G10"); 
+                    };
                     targetAxis.TickGenerator = tickGen;
                 }
                 else
@@ -167,6 +169,9 @@ namespace GeoChemistryNexus.ViewModels
                     ConfigureSubtitle(topSub.SubLabelStyle, cartesianAxisDef);
                     topSub.SubLabelText = cartesianAxisDef.SubLabel.Get();
                 }
+
+                // 应用轴范围限制 (最后执行以确保覆盖 TickGenerator 可能带来的副作用)
+                UpdateAxisLimits(plot, cartesianAxisDef, targetAxis);
             }
 
             // 2. 处理三元坐标轴 (Ternary)

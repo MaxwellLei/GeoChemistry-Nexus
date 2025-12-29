@@ -507,9 +507,6 @@
   <data name="Undelete_Message" xml:space="preserve">
     <value>已取消刪除</value>
   </data>
-  <data name="DeleteingBasemapConfirm1_Message" xml:space="preserve">
-    <value>正在刪除底圖</value>
-  </data>
   <data name="DeleteingBasemapConfirm2_Message" xml:space="preserve">
     <value>是否確認刪除？</value>
   </data>
@@ -521,12 +518,6 @@
   </data>
   <data name="ScNotFilledIn" xml:space="preserve">
     <value>投圖腳本未填寫</value>
-  </data>
-  <data name="BasemapVersionToLow1" xml:space="preserve">
-    <value>匯入的底圖版本過低，請使用版本大於</value>
-  </data>
-  <data name="BasemapVersionToLow2" xml:space="preserve">
-    <value>的底圖</value>
   </data>
   <data name="CancelImport" xml:space="preserve">
     <value>已取消匯入</value>
@@ -752,9 +743,6 @@
   <data name="ModifedCanceled" xml:space="preserve">
     <value>取消修改</value>
   </data>
-  <data name="Info1" xml:space="preserve">
-    <value>請前往官網檢視，該功能開發中....</value>
-  </data>
   <data name="import_template" xml:space="preserve">
     <value>匯入繪圖範本</value>
   </data>
@@ -830,15 +818,6 @@
   <data name="uncategorized" xml:space="preserve">
     <value>未分類</value>
   </data>
-  <data name="disallow_modify_data_point_position" xml:space="preserve">
-    <value>不允許修改資料點位置</value>
-  </data>
-  <data name="load_valid_template_with_script" xml:space="preserve">
-    <value>請先載入有效的圖表範本，範本中必須包含計算腳本配置</value>
-  </data>
-  <data name="incomplete_script_config" xml:space="preserve">
-    <value>範本中的腳本配置不完整，請檢查RequiredDataSeries和ScriptBody</value>
-  </data>
   <data name="select_data_file" xml:space="preserve">
     <value>請選擇資料檔案</value>
   </data>
@@ -850,9 +829,6 @@
   </data>
   <data name="read_file_failed" xml:space="preserve">
     <value>讀取檔案失敗</value>
-  </data>
-  <data name="script_config_error_required_data_series" xml:space="preserve">
-    <value>腳本配置錯誤：RequiredDataSeries至少需要包含類別欄和一個資料欄</value>
   </data>
   <data name="excel_missing_required_columns" xml:space="preserve">
     <value>Excel檔案缺少以下必需的欄位</value>
@@ -1279,10 +1255,6 @@
   <data name="save_template_failed" xml:space="preserve">
     <value>儲存範本失敗:</value>
     <comment>新疆模板</comment>
-  </data>
-  <data name="thank_you_and_wishes" xml:space="preserve">
-    <value>感謝您的使用🌹\n 祝您</value>
-    <comment>彩蛋</comment>
   </data>
   <data name="research_life_smooth_sailing" xml:space="preserve">
     <value>年科研，生活一帆風順！</value>
@@ -2304,5 +2276,14 @@
   </data>
   <data name="function" xml:space="preserve">
     <value>函數</value>
+  </data>
+  <data name="new_template" xml:space="preserve">
+    <value>新建圖解模板</value>
+  </data>
+  <data name="update_available_click_to_download" xml:space="preserve">
+    <value>有新版本可用，點擊更新</value>
+  </data>
+  <data name="invalid_filename_char" xml:space="preserve">
+    <value>內容含有不支持的字元</value>
   </data>
 </root>

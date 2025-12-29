@@ -19,12 +19,6 @@
         <cvs:StringColorConverter x:Key="StringColorConverter"/>
         <cvs:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <cvs:DoublePrecisionConverter x:Key="DoublePrecisionConverter" Precision="4"/>
-        
-        <ObjectDataProvider x:Key="MarkerShapeEnum" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="scott:MarkerShape"/>
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
     </UserControl.Resources>
 
     <Grid DataContext="{Binding SelectedObject, RelativeSource={RelativeSource AncestorType=local:ScatterPropertyControl}}">
@@ -107,10 +101,34 @@
                             <!-- Type -->
                             <StackPanel Grid.Column="2">
                                 <TextBlock Text="{Binding [type],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
-                                <ComboBox ItemsSource="{Binding Source={StaticResource MarkerShapeEnum}}"
+                                <ComboBox ItemsSource="{Binding MarkerShapes, RelativeSource={RelativeSource AncestorType=local:ScatterPropertyControl}}"
                                           SelectedValue="{Binding MarkerShape, Mode=TwoWay}"
-                                          DisplayMemberPath="."
-                                          Style="{StaticResource ModernComboBoxStyle}"/>
+                                          SelectedValuePath="Shape"
+                                          Style="{StaticResource ModernComboBoxStyle}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Viewbox Width="12" Height="12" Margin="0,0,8,0">
+                                                    <Path Data="{Binding Icon}" 
+                                                          Stroke="#1D1D1F" 
+                                                          StrokeThickness="1">
+                                                        <Path.Style>
+                                                            <Style TargetType="Path">
+                                                                <Setter Property="Fill" Value="Transparent"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding IsFilled}" Value="True">
+                                                                        <Setter Property="Fill" Value="#1D1D1F"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Path.Style>
+                                                    </Path>
+                                                </Viewbox>
+                                                <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
                             </StackPanel>
                         </Grid>
 
