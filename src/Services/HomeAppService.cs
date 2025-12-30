@@ -79,14 +79,6 @@ namespace GeoChemistryNexus.Services
                     Description = LanguageService.Instance["view_latest_server_announcements"],     // 查看服务器发布的最新公告信息
                     WidgetKey = "AnnouncementWidget",
                     Icon = "\ue789" // Info or Announcement icon
-                },
-                new HomeAppItem
-                {
-                    Type = HomeAppType.Widget,
-                    Title = LanguageService.Instance["developer_maintenance_tools"],        // 开发者工具
-                    Description = LanguageService.Instance["maintain_server_config_and_templates"],       // 维护服务器配置与模板文件
-                    WidgetKey = "DeveloperToolWidget",
-                    Icon = "\ue90f" // Tool/Wrench icon
                 }
             };
         }

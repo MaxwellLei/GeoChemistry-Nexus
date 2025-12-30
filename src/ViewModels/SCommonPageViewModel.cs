@@ -1,5 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using GeoChemistryNexus.Messages;
 using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Services;
 using HandyControl.Controls;
@@ -50,6 +52,9 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private string version;     // 软件版本
 
+        [ObservableProperty]
+        private bool _developerMode; // 开发者模式
+
         public RelayCommand AutoOffTimeChangedCommand { get; private set; }   // 修改通知自动关闭时间命令
         public RelayCommand LanguageChangedCommand { get; private set; }   // 修改语言命令
         public RelayCommand CheckUpdateCommand { get; private set; }   // 检查更新命令
@@ -95,6 +100,15 @@ namespace GeoChemistryNexus.ViewModels
                                 LanguageService.Instance["go_to_download"]);
                     if (isConfirmed)
                     {
+                        try
+                        {
+                            await UpdateHelper.CheckAndUpdatePlotCategoriesAsync();
+                        }
+                        catch
+                        {
+                            // 忽略更新 PlotTemplateCategories.json 的错误
+                        }
+
                         string url = "https://github.com/MaxwellLei/GeoChemistry-Nexus/releases/latest";
                         //拉起浏览器
                         try
@@ -109,12 +123,41 @@ namespace GeoChemistryNexus.ViewModels
                 }
                 else
                 {
+                    try
+                    {
+                        await UpdateHelper.CheckAndUpdatePlotCategoriesAsync();
+                    }
+                    catch
+                    {
+                        // 忽略更新 PlotTemplateCategories.json 的错误
+                    }
                     MessageHelper.Success(LanguageService.Instance["already_latest_version"]);
                 }
             }
             catch (Exception ex)
             {
                 MessageHelper.Error(LanguageService.Instance["unknown_error_checking_for_updates"] + $": {ex.Message}");
+            }
+        }
+
+        // 开发者模式
+        partial void OnDeveloperModeChanged(bool value)
+        {
+            ConfigHelper.SetConfig("developer_mode", DeveloperMode.ToString());
+            WeakReferenceMessenger.Default.Send(new DeveloperModeChangedMessage(value));
+
+            if (value)
+            {
+                string warning = LanguageService.Instance["developer_mode_warning"];
+                if (string.IsNullOrEmpty(warning))
+                {
+                    warning = LanguageService.Instance["dev_mode_warning_non_developers"];
+                }
+                MessageHelper.Warning(warning);
+            }
+            else
+            {
+                MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
             }
         }
 
@@ -191,6 +234,12 @@ namespace GeoChemistryNexus.ViewModels
             Language = (langIndex >= 0) ? langIndex : 1;
 
             AutoOffTime = int.Parse(Helpers.ConfigHelper.GetConfig("auto_off_time"));    //读取消息通知时间
+            
+            if (bool.TryParse(Helpers.ConfigHelper.GetConfig("developer_mode"), out bool devMode))
+            {
+                DeveloperMode = devMode;
+            }
+
             Boot = bool.Parse(Helpers.ConfigHelper.GetConfig("boot"));     //读取是否自动开机
             AutoCheck = bool.Parse(Helpers.ConfigHelper.GetConfig("auto_check_update"));   //读取是否自动检查更新
             ExitMode = int.Parse(Helpers.ConfigHelper.GetConfig("exit_program_mode"));  //读取退出方式

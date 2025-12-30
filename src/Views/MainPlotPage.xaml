@@ -26,7 +26,6 @@
     </Page.InputBindings>
 
     <Page.Resources>
-        <cvs:TypeCheckConverter x:Key="TypeCheckConverter"/>
         <cvs:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <cvs:BoolToVisibilityReConverter x:Key="BoolToVisibilityReConverter"/>
         <cvs:GraphMapPathToIconConverter x:Key="GraphMapPathToIconConverter"/>
@@ -253,6 +252,13 @@
                         <MenuItem Header="{Binding [check_for_template_updates], Source={x:Static lg:LanguageService.Instance}}" 
                                   Command="{Binding CheckForTemplateUpdatesCommand}" Icon="🔄"/>
                     </MenuItem>
+
+                    <!--维护-->
+                    <MenuItem Header="{Binding [maintenance], Source={x:Static lg:LanguageService.Instance}, TargetNullValue='维护'}"
+                              Visibility="{Binding IsDeveloperMode, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <MenuItem Header="{Binding [export_update_list], Source={x:Static lg:LanguageService.Instance}, TargetNullValue='导出更新列表'}"
+                                  Command="{Binding ExportUpdateListCommand}"/>
+                    </MenuItem>
                 </Menu>
 
 
@@ -404,19 +410,49 @@
                     </ListBox.ItemContainerStyle>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Border Style="{StaticResource TemplateCardStyle}" Height="260" MinWidth="260">
+                            <Border Height="260" MinWidth="260" Tag="{Binding DataContext, ElementName=TemplateCardsControl}">
+                                <Border.Style>
+                                    <Style TargetType="Border" BasedOn="{StaticResource TemplateCardStyle}">
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding IsCustomTemplate}" Value="False"/>
+                                                    <!-- Use Tag binding for IsDeveloperMode because Border is not part of logical tree during binding evaluation inside style sometimes? No, ElementName works on Border itself usually, but let's be safe and consistent -->
+                                                    <Condition Binding="{Binding Tag.IsDeveloperMode, RelativeSource={RelativeSource Self}}" Value="True"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="BorderBrush" Value="DarkRed"/>
+                                                <Setter Property="BorderThickness" Value="2"/>
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
                                 <Border.ContextMenu>
                                     <ContextMenu>
-                                        <MenuItem Header="{Binding [open_file_location],Source={x:Static lg:LanguageService.Instance}}" 
-                                                  Command="{Binding DataContext.OpenTemplateLocationCommand, Source={x:Reference TemplateCardsControl}}"
-                                                  CommandParameter="{Binding}"/>
                                         <!--导出图解模板-->
                                         <MenuItem Header="{Binding [export_diagram_template],Source={x:Static lg:LanguageService.Instance}}" 
-                                                  Command="{Binding DataContext.ExportCustomTemplateCommand, Source={x:Reference TemplateCardsControl}}"
-                                                  CommandParameter="{Binding}"
-                                                  Visibility="{Binding IsCustomTemplate, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                  Command="{Binding PlacementTarget.Tag.ExportTemplateCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                  CommandParameter="{Binding}"/>
+                                        <!--转换为内置模板 (开发者模式)-->
+                                        <MenuItem Header="{Binding [convert_to_builtin_template],Source={x:Static lg:LanguageService.Instance}, TargetNullValue='转换为内置模板'}"
+                                                  Command="{Binding PlacementTarget.Tag.ConvertToBuiltInCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                  CommandParameter="{Binding}">
+                                            <MenuItem.Style>
+                                                <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <MultiDataTrigger>
+                                                            <MultiDataTrigger.Conditions>
+                                                                <Condition Binding="{Binding IsCustomTemplate}" Value="True"/>
+                                                                <Condition Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True"/>
+                                                            </MultiDataTrigger.Conditions>
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </MultiDataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </MenuItem.Style>
+                                        </MenuItem>
                                         <MenuItem Header="{Binding [Delete],Source={x:Static lg:LanguageService.Instance}}" 
-                                                  Command="{Binding DataContext.DeleteCustomTemplateCommand, Source={x:Reference TemplateCardsControl}}"
+                                                  Command="{Binding PlacementTarget.Tag.DeleteTemplateCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                                                   CommandParameter="{Binding}"
                                                   Visibility="{Binding IsCustomTemplate, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                     </ContextMenu>
@@ -438,7 +474,18 @@
                                     <!-- Thumbnails -->
                                     <Grid Grid.Row="0" Margin="8,8,8,0">
                                         <Border x:Name="ThumbnailBorder" CornerRadius="6,6,0,0" Background="#F8F9FA" ClipToBounds="True">
-                                            <Image Source="{Binding ThumbnailPath, Converter={StaticResource StringToBitmapImageConverter}}" Stretch="Uniform"/>
+                                            <Image Stretch="Uniform">
+                                                <Image.Style>
+                                                    <Style TargetType="Image">
+                                                        <Setter Property="Source" Value="{Binding ThumbnailImage}"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding ThumbnailImage}" Value="{x:Null}">
+                                                                <Setter Property="Source" Value="{Binding ThumbnailPath, Converter={StaticResource StringToBitmapImageConverter}}"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Image.Style>
+                                            </Image>
                                         </Border>
 
                                         <!-- Update Button -->

@@ -3,6 +3,7 @@ using System.ComponentModel;
 using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Attributes;
 using GeoChemistryNexus.Converter;
+using System.Text.Json.Serialization;
 
 namespace GeoChemistryNexus.Models
 {
@@ -51,6 +52,7 @@ namespace GeoChemistryNexus.Models
 
         // 枚举类型
         [TypeConverter(typeof(EnumLocalizationConverter))]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public enum LineType
         {
             [LocalizedDescription("line_type_solid")]

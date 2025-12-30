@@ -5,6 +5,7 @@ using System.ComponentModel;
 using GeoChemistryNexus.Converter;
 using System.Windows;
 using ScottPlot;
+using System.Text.Json.Serialization;
 
 namespace GeoChemistryNexus.Models
 {
@@ -128,6 +129,7 @@ namespace GeoChemistryNexus.Models
         private bool _antiAliasEnable = true;
     }
 
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum TextAlignment
     {
         Left,

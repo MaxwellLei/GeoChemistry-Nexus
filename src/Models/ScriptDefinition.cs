@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Text.Json.Serialization;
 
 namespace GeoChemistryNexus.Models
 {
@@ -26,6 +27,7 @@ namespace GeoChemistryNexus.Models
         private string _scriptBody = "";
     }
 
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum ScriptLanguage
     {
         JavaScript

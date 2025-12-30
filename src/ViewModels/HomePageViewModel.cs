@@ -90,7 +90,8 @@ namespace GeoChemistryNexus.ViewModels
             var apps = HomeAppService.LoadApps();
             var filtered = apps.Where(a => !(a.Type == HomeAppType.Widget &&
                                              (string.Equals(a.WidgetKey, "CalendarWidget", StringComparison.OrdinalIgnoreCase)
-                                              || string.Equals(a.WidgetKey, "SystemInfoWidget", StringComparison.OrdinalIgnoreCase)))).ToList();
+                                              || string.Equals(a.WidgetKey, "SystemInfoWidget", StringComparison.OrdinalIgnoreCase)
+                                              || string.Equals(a.WidgetKey, "DeveloperToolWidget", StringComparison.OrdinalIgnoreCase)))).ToList();
             
             _sourceApps.Clear();
             foreach (var app in filtered)
@@ -230,16 +231,6 @@ namespace GeoChemistryNexus.ViewModels
                             Width = 500,
                             Height = 350,
                             Content = new AnnouncementWidget { DataContext = new AnnouncementViewModel() }
-                        };
-                    }
-                    else if (app.WidgetKey == "DeveloperToolWidget")
-                    {
-                        window = new Window
-                        {
-                            Title = LanguageService.Instance["developer_maintenance_tool"],
-                            Width = 1200,
-                            Height = 600,
-                            Content = new GeoChemistryNexus.Views.Widgets.DeveloperToolWidget()
                         };
                     }
 

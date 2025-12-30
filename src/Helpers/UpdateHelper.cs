@@ -185,6 +185,54 @@ namespace GeoChemistryNexus.Helpers
         }
 
         /// <summary>
+        /// 检查并更新 PlotTemplateCategories.json
+        /// </summary>
+        public static async Task CheckAndUpdatePlotCategoriesAsync()
+        {
+            try
+            {
+                // 1. 获取 server_info.json
+                string serverInfoJson = await GetUrlContentAsync(ServerInfoUrl);
+                var serverInfo = JsonSerializer.Deserialize<GeoChemistryNexus.Models.ServerInfo>(serverInfoJson);
+
+                if (serverInfo == null || string.IsNullOrEmpty(serverInfo.ListPlotCategoriesHash))
+                {
+                    return;
+                }
+
+                // 2. 计算本地文件 Hash
+                string localPath = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "PlotTemplateCategories.json");
+                string localHash = string.Empty;
+
+                if (File.Exists(localPath))
+                {
+                    localHash = ComputeFileMd5(localPath);
+                }
+
+                // 3. 比较 Hash
+                if (!string.Equals(localHash, serverInfo.ListPlotCategoriesHash, StringComparison.OrdinalIgnoreCase))
+                {
+                    // 4. 下载更新
+                    string downloadUrl = ServerInfoUrl.Replace("server_info.json", "PlotTemplateCategories.json");
+
+                    // 确保目录存在
+                    string directory = Path.GetDirectoryName(localPath);
+                    if (!Directory.Exists(directory))
+                    {
+                        Directory.CreateDirectory(directory);
+                    }
+
+                    await DownloadFileAsync(downloadUrl, localPath);
+                }
+            }
+            catch (Exception ex)
+            {
+                // 更新失败不影响主流程
+                Debug.WriteLine($"Failed to update PlotTemplateCategories.json: {ex.Message}");
+            }
+        }
+
+        /// <summary>
         /// 带进度的文件下载
         /// </summary>
         public static async Task DownloadFileAsync(string url, string destinationPath, IProgress<double> progress = null)

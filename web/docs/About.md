@@ -4,9 +4,10 @@ sidebar_position: 6
 
 # ℹ️ About
 
-::: tip
+:::info
 
 **"I couldn't find the sports car of my dreams, so I built it myself." —— Ferdinand Porsche**
+
 :::
 
 **GeoChemistry Nexus** 是我第一个计划进行超长期维护的项目——至少未来五年内不会停止更新。

@@ -123,6 +123,33 @@ namespace GeoChemistryNexus.Helpers
         }
 
         /// <summary>
+        /// 获取RichTextBox的RTF字符串内容
+        /// </summary>
+        public static string GetRtfString(RichTextBox richTextBox)
+        {
+            if (richTextBox == null) return string.Empty;
+            TextRange textRange = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd);
+            using (MemoryStream ms = new MemoryStream())
+            {
+                textRange.Save(ms, DataFormats.Rtf);
+                return Encoding.UTF8.GetString(ms.ToArray());
+            }
+        }
+
+        /// <summary>
+        /// 将RTF字符串加载到RichTextBox
+        /// </summary>
+        public static void LoadRtfString(RichTextBox richTextBox, string rtfContent)
+        {
+             if (richTextBox == null || string.IsNullOrEmpty(rtfContent)) return;
+             TextRange textRange = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd);
+             using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(rtfContent)))
+             {
+                 textRange.Load(ms, DataFormats.Rtf);
+             }
+        }
+
+        /// <summary>
         /// 将RichTextBox内容保存为RTF文件
         /// </summary>
         /// <param name="richTextBox">源RichTextBox控件</param>

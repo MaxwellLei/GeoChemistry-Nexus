@@ -1098,6 +1098,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Click to download 的本地化字符串。
+        /// </summary>
+        internal static string click_to_download {
+            get {
+                return ResourceManager.GetString("click_to_download", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Please click in the drawing area to pick coordinates 的本地化字符串。
         /// </summary>
         internal static string click_to_pick_coordinates {
@@ -1422,7 +1431,7 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Custom Templates 的本地化字符串。
+        ///   查找类似 Personal Diagram Template 的本地化字符串。
         /// </summary>
         internal static string custom_templates {
             get {
@@ -1665,6 +1674,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Not recommended for non-developers; it may cause unnecessary issues. 的本地化字符串。
+        /// </summary>
+        internal static string dev_mode_warning_non_developers {
+            get {
+                return ResourceManager.GetString("dev_mode_warning_non_developers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Developer Maintenance Tool 的本地化字符串。
         /// </summary>
         internal static string developer_maintenance_tool {
@@ -1679,6 +1697,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string developer_maintenance_tools {
             get {
                 return ResourceManager.GetString("developer_maintenance_tools", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Developer Mode 的本地化字符串。
+        /// </summary>
+        internal static string developer_mode {
+            get {
+                return ResourceManager.GetString("developer_mode", resourceCulture);
             }
         }
         
@@ -1850,6 +1877,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string downloading_ellipsis {
             get {
                 return ResourceManager.GetString("downloading_ellipsis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Downloading... 的本地化字符串。
+        /// </summary>
+        internal static string downloading_status {
+            get {
+                return ResourceManager.GetString("downloading_status", resourceCulture);
             }
         }
         
@@ -2313,6 +2349,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Failed to load help document: 的本地化字符串。
+        /// </summary>
+        internal static string failed_to_load_help_document {
+            get {
+                return ResourceManager.GetString("failed_to_load_help_document", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Failed to open: 的本地化字符串。
         /// </summary>
         internal static string failed_to_open {
@@ -2696,6 +2741,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string Guide {
             get {
                 return ResourceManager.GetString("Guide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Help document not found: 的本地化字符串。
+        /// </summary>
+        internal static string help_document_not_found {
+            get {
+                return ResourceManager.GetString("help_document_not_found", resourceCulture);
             }
         }
         
@@ -3429,6 +3483,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Loading... 的本地化字符串。
+        /// </summary>
+        internal static string loading_status {
+            get {
+                return ResourceManager.GetString("loading_status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Location 的本地化字符串。
         /// </summary>
         internal static string location {
@@ -3906,6 +3969,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 New version found 的本地化字符串。
+        /// </summary>
+        internal static string new_version_found {
+            get {
+                return ResourceManager.GetString("new_version_found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 New Basemap 的本地化字符串。
         /// </summary>
         internal static string NewBasemap {
@@ -4199,6 +4271,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string Parameters {
             get {
                 return ResourceManager.GetString("Parameters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Path is empty 的本地化字符串。
+        /// </summary>
+        internal static string path_is_empty {
+            get {
+                return ResourceManager.GetString("path_is_empty", resourceCulture);
             }
         }
         
@@ -4973,6 +5054,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string ResetVision {
             get {
                 return ResourceManager.GetString("ResetVision", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Retry 的本地化字符串。
+        /// </summary>
+        internal static string retry_action {
+            get {
+                return ResourceManager.GetString("retry_action", resourceCulture);
             }
         }
         

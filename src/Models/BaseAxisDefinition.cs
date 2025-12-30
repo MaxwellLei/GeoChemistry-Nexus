@@ -1,9 +1,9 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using System.ComponentModel;
 using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Attributes;
-using System.ComponentModel;
-using System.Text.Json.Serialization;
 using GeoChemistryNexus.Converter;
+using System.Text.Json.Serialization;
 
 namespace GeoChemistryNexus.Models
 {
@@ -133,6 +133,7 @@ namespace GeoChemistryNexus.Models
     /// 坐标轴的缩放类型
     /// </summary>
     [TypeConverter(typeof(EnumLocalizationConverter))]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum AxisScaleType
     {
         [LocalizedDescription("linear")]

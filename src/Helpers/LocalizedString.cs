@@ -44,8 +44,7 @@ namespace GeoChemistryNexus.Helpers
         public void Set(string languageCode, string content)
         {
             // 优先使用覆盖语言（如果已设置），否则使用传入的 languageCode（当前语言）
-            // 应该总是根据当前的显示语言来决定更新哪个 Key
-            
+            // 根据当前的显示语言来决定更新哪个 Key
             string targetLang = !string.IsNullOrEmpty(OverrideLanguage) 
                 ? OverrideLanguage 
                 : languageCode;

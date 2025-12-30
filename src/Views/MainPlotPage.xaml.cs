@@ -318,11 +318,7 @@ namespace GeoChemistryNexus.Views
             if (homePage == null)
             {
                 homePage = new MainPlotPage();
-                //homePage.lg = ConfigHelper.GetConfig("language");
             }
-            // 这里不需要等待，让其在后台初始化
-            //_ = homePage.viewModel.InitializeAsync();
-            //homePage.viewModel.LoadSettings();
             return homePage;
         }
 
@@ -366,12 +362,10 @@ namespace GeoChemistryNexus.Views
                 var originalSource = e.OriginalSource as DependencyObject;
 
                 // 1. 确保点击的是当前 TreeViewItem，而不是其子项
-                // FindAncestor 会从点击点向上找，找到最近的一个 TreeViewItem
                 var clickedItem = FindAncestor<TreeViewItem>(originalSource);
                 if (clickedItem != item)
                 {
-                    // 如果找到的最近 TreeViewItem 不是当前的 sender，说明点击的是 sender 的子项
-                    // 此时应该忽略，让事件继续传递给子项去处理
+                    // 忽略
                     return;
                 }
 
@@ -390,7 +384,7 @@ namespace GeoChemistryNexus.Views
                 // 阻止 TreeView 原生的单选逻辑
                 e.Handled = true;
                 
-                // 尝试让 Item 获得焦点以支持键盘操作（可选）
+                // 尝试让 Item 获得焦点以支持键盘操作
                 item.Focus();
             }
         }

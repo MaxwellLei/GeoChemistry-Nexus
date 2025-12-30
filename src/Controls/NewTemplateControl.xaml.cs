@@ -175,8 +175,8 @@ namespace GeoChemistryNexus.Controls
         private void UpdateLanguageDefaultStatus()
         {
             if (_languageParts.Count == 0) return;
-            
-            // First item is default, others are not
+
+            // 第一个语言是默认语言，其余不是
             for (int i = 0; i < _languageParts.Count; i++)
             {
                 _languageParts[i].IsDefault = (i == 0);
@@ -184,7 +184,7 @@ namespace GeoChemistryNexus.Controls
         }
 
         /// <summary>
-        /// 添加语言标签 (Selection or Enter)
+        /// 添加语言标签
         /// </summary>
         private void LanguageInputComboBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -219,8 +219,8 @@ namespace GeoChemistryNexus.Controls
                     _languageParts.Add(new LanguageTagModel { Text = selectedCode });
                     UpdateLanguageDefaultStatus();
                 }
-                
-                // Clear selection and text
+
+                // 清除选中的内容和文字
                 comboBox.SelectedIndex = -1;
                 comboBox.Text = string.Empty;
             }

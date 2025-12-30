@@ -2286,4 +2286,91 @@
   <data name="invalid_filename_char" xml:space="preserve">
     <value>內容含有不支持的字元</value>
   </data>
+  <data name="developer_mode" xml:space="preserve">
+    <value>開發者模式</value>
+  </data>
+  <data name="help_document_not_found" xml:space="preserve">
+    <value>未找到幫助文檔：</value>
+  </data>
+  <data name="path_is_empty" xml:space="preserve">
+    <value>路徑為空</value>
+  </data>
+  <data name="failed_to_load_help_document" xml:space="preserve">
+    <value>載入幫助文檔失敗:</value>
+  </data>
+  <data name="dev_mode_warning_non_developers" xml:space="preserve">
+    <value>非開發者不建議開啟，可能會導致不必要的問題。</value>
+  </data>
+  <data name="click_to_download" xml:space="preserve">
+    <value>點擊下載</value>
+  </data>
+  <data name="new_version_found" xml:space="preserve">
+    <value>發現新版本</value>
+  </data>
+  <data name="downloading_status" xml:space="preserve">
+    <value>下載中...</value>
+  </data>
+  <data name="retry_action" xml:space="preserve">
+    <value>重試</value>
+  </data>
+  <data name="loading_status" xml:space="preserve">
+    <value>載入中...</value>
+  </data>
+  <data name="MarkerShape_FilledCircle" xml:space="preserve">
+    <value>實心圓</value>
+  </data>
+  <data name="MarkerShape_OpenCircle" xml:space="preserve">
+    <value>空心圓</value>
+  </data>
+  <data name="MarkerShape_FilledSquare" xml:space="preserve">
+    <value>實心方塊</value>
+  </data>
+  <data name="MarkerShape_OpenSquare" xml:space="preserve">
+    <value>空心方塊</value>
+  </data>
+  <data name="MarkerShape_FilledTriangleUp" xml:space="preserve">
+    <value>實心上三角形</value>
+  </data>
+  <data name="MarkerShape_OpenTriangleUp" xml:space="preserve">
+    <value>空心上三角</value>
+  </data>
+  <data name="MarkerShape_FilledTriangleDown" xml:space="preserve">
+    <value>實心下三角形</value>
+  </data>
+  <data name="MarkerShape_OpenTriangleDown" xml:space="preserve">
+    <value>空心下三角</value>
+  </data>
+  <data name="MarkerShape_FilledDiamond" xml:space="preserve">
+    <value>實心菱形</value>
+  </data>
+  <data name="MarkerShape_OpenDiamond" xml:space="preserve">
+    <value>空心菱形</value>
+  </data>
+  <data name="MarkerShape_Cross" xml:space="preserve">
+    <value>十字</value>
+  </data>
+  <data name="MarkerShape_Eks" xml:space="preserve">
+    <value>X 形</value>
+  </data>
+  <data name="MarkerShape_Asterisk" xml:space="preserve">
+    <value>星號</value>
+  </data>
+  <data name="MarkerShape_VerticalBar" xml:space="preserve">
+    <value>豎線</value>
+  </data>
+  <data name="MarkerShape_HorizontalBar" xml:space="preserve">
+    <value>橫線</value>
+  </data>
+  <data name="MarkerShape_HashTag" xml:space="preserve">
+    <value>井號</value>
+  </data>
+  <data name="MarkerShape_OpenCircleWithDot" xml:space="preserve">
+    <value>空心圓加點</value>
+  </data>
+  <data name="MarkerShape_OpenCircleWithCross" xml:space="preserve">
+    <value>空心圓加十字</value>
+  </data>
+  <data name="MarkerShape_OpenCircleWithEks" xml:space="preserve">
+    <value>空心圓加叉</value>
+  </data>
 </root>

@@ -109,6 +109,18 @@
                         
                         <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
 
+                        <!-- Developer Mode -->
+                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding [developer_mode],Source={x:Static lg:LanguageService.Instance}, TargetNullValue='开发者模式'}" VerticalAlignment="Center" FontSize="14"/>
+                            <ToggleButton IsChecked="{Binding DeveloperMode}" Grid.Column="1" Style="{StaticResource ToggleButtonSwitch}"/>
+                        </Grid>
+
+                        <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
+
                         <!-- Auto Check Update -->
                         <Grid Height="50" Background="Transparent" Margin="16,0">
                             <Grid.ColumnDefinitions>
@@ -119,7 +131,7 @@
                             <ToggleButton IsChecked="{Binding AutoCheck}" Grid.Column="1" Style="{StaticResource ToggleButtonSwitch}"/>
                         </Grid>
 
-                         <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
+                        <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
 
                         <!-- Check Update Button -->
                         <Grid Height="50" Background="Transparent" Margin="16,0">

@@ -31,6 +31,11 @@ namespace GeoChemistryNexus.Models
         public ObservableCollection<GraphMapTemplateNode> Children { get; } = new();
 
         /// <summary>
+        /// 关联的数据库实体 ID
+        /// </summary>
+        public Guid? TemplateId { get; set; }
+
+        /// <summary>
         /// 模板文件和缩略图路径，不含文件后缀
         /// </summary>
         private string _graphMapPath;
@@ -50,6 +55,11 @@ namespace GeoChemistryNexus.Models
         // 更新逻辑核心依赖
         [JsonPropertyName("file_hash")]
         public string FileHash { get; set; }
+
+        /// <summary>
+        /// 数据库记录的状态 (UP_TO_DATE, OUTDATED, NOT_INSTALLED 等)
+        /// </summary>
+        public string Status { get; set; }
 
         /// <summary>
         /// 标识是否为自定义模板

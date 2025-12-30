@@ -134,7 +134,7 @@ namespace GeoChemistryNexus.ViewModels
                 object newValue = value;
                 try
                 {
-                    // Handle numeric conversions from double (common in UI controls like NumericUpDown)
+                    // 处理从 double 的数值转换
                     if (value is double d)
                     {
                         if (PropertyType == typeof(int)) newValue = Convert.ToInt32(d);

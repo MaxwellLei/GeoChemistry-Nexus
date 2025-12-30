@@ -4,6 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace GeoChemistryNexus.Models
 {
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum HomeAppType
     {
         WebLink,
@@ -28,14 +29,14 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         private string icon;
 
-        // ÓÃÓÚĞ¡²¿¼ş
+        // å°ç»„ä»¶ Key
         public string WidgetKey { get; set; }
 
         [JsonIgnore]
         public bool IsWebLink => Type == HomeAppType.WebLink;
 
-        //  ÏÔÊ¾ÊôĞÔ
+        // å°ç»„ä»¶æç¤º
         [JsonIgnore]
-        public object WidgetContent { get; set; } // Ğ¡×é¼ş¶ÔÏó
+        public object WidgetContent { get; set; }
     }
 }

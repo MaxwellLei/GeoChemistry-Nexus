@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,6 +16,7 @@ namespace GeoChemistryNexus.ViewModels
     public partial class TemplateCardViewModel : ObservableObject
     {
         public string Name { get; set; }
+        public Guid? TemplateId { get; set; }
         public string TemplatePath { get; set; }
         
         // 本地 JSON 文件完整路径
@@ -28,7 +30,8 @@ namespace GeoChemistryNexus.ViewModels
         // 服务器端哈希 (用于校验)
         public string ServerHash { get; set; }
 
-        public bool IsCustomTemplate { get; set; }
+        [ObservableProperty]
+        private bool _isCustomTemplate;
 
         [ObservableProperty]
         private ImageSource _thumbnailImage; // 支持动态修改（下载前是默认图，下载后是真实图）
@@ -43,11 +46,16 @@ namespace GeoChemistryNexus.ViewModels
         // 辅助文本，用于前端显示提示
         public string StateText => State switch
         {
-            TemplateState.NotDownloaded => "点击下载",
-            TemplateState.UpdateAvailable => "发现新版本",
-            TemplateState.Downloading => "下载中...",
-            TemplateState.Error => "重试",
-            TemplateState.Loading => "加载中...",
+            // 点击下载
+            TemplateState.NotDownloaded => LanguageService.Instance["click_to_download"],
+            // 发现新版本
+            TemplateState.UpdateAvailable => LanguageService.Instance["new_version_found"],
+            // 下载中
+            TemplateState.Downloading => LanguageService.Instance["downloading_status"],
+            // 重试
+            TemplateState.Error => LanguageService.Instance["retry_action"],
+            // 加载中
+            TemplateState.Loading => LanguageService.Instance["loading_status"],
             _ => ""
         };
 
@@ -55,24 +63,45 @@ namespace GeoChemistryNexus.ViewModels
         // 将具体的“打开”和“下载”逻辑交给 MainViewModel 实现
         public Func<TemplateCardViewModel, Task> DownloadHandler { get; set; }
         public Func<TemplateCardViewModel, Task> OpenHandler { get; set; }
+        public Func<TemplateCardViewModel, Task> CheckUpdateHandler { get; set; }
+
+        private bool _isProcessing = false;
 
         [RelayCommand]
         private async Task CardClick()
         {
-            if (State == TemplateState.Ready || State == TemplateState.Loading || State == TemplateState.UpdateAvailable)
+            if (_isProcessing) return;
+            _isProcessing = true;
+            try
             {
-                if (OpenHandler != null) await OpenHandler(this);
+                if (State == TemplateState.Ready || State == TemplateState.Loading || State == TemplateState.UpdateAvailable)
+                {
+                    if (OpenHandler != null) await OpenHandler(this);
+                }
+                else if (State == TemplateState.NotDownloaded || State == TemplateState.Error)
+                {
+                    if (DownloadHandler != null) await DownloadHandler(this);
+                }
             }
-            else if (State == TemplateState.NotDownloaded || State == TemplateState.Error)
+            finally
             {
-                if (DownloadHandler != null) await DownloadHandler(this);
+                _isProcessing = false;
             }
         }
 
         [RelayCommand]
         private async Task Update()
         {
-            if (DownloadHandler != null) await DownloadHandler(this);
+            if (_isProcessing) return;
+            _isProcessing = true;
+            try
+            {
+                if (DownloadHandler != null) await DownloadHandler(this);
+            }
+            finally
+            {
+                _isProcessing = false;
+            }
         }
 
         /// <summary>
@@ -84,55 +113,36 @@ namespace GeoChemistryNexus.ViewModels
         {
             // 只有在 Loading 状态下才进行检查 (避免重复检查)
             if (State != TemplateState.Loading) return;
+            if (_isProcessing) return;
 
-            // 如果是自定义模板，始终为 Ready
-            if (IsCustomTemplate)
+            _isProcessing = true;
+            try
             {
-                State = TemplateState.Ready;
-                return;
-            }
+                if (CheckUpdateHandler != null)
+                {
+                    await CheckUpdateHandler(this);
+                    return;
+                }
 
-            // 如果没有设置本地路径，默认为未下载
-            if (string.IsNullOrEmpty(LocalFilePath))
-            {
+                // 如果是数据库模板，默认为 Ready (具体状态应由 CheckUpdateHandler 判断)
+                if (TemplateId.HasValue)
+                {
+                    State = TemplateState.Ready;
+                    return;
+                }
+
+                // 非数据库模板视为错误或未下载
                 State = TemplateState.NotDownloaded;
-                return;
             }
-
-            await Task.Run(() =>
+            finally
             {
-                if (!File.Exists(LocalFilePath))
-                {
-                    // 文件不存在
-                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        State = TemplateState.NotDownloaded;
-                    });
-                }
-                else
-                {
-                    // 文件存在，计算 MD5
-                    string localHash = UpdateHelper.ComputeFileMd5(LocalFilePath);
-
-                    // 只有哈希完全匹配才认为是 Ready
-                    
-                    bool isReady = false;
-                    if (!string.IsNullOrEmpty(ServerHash) && 
-                        string.Equals(localHash, ServerHash, StringComparison.OrdinalIgnoreCase))
-                    {
-                        isReady = true;
-                    }
-
-                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        State = isReady ? TemplateState.Ready : TemplateState.UpdateAvailable;
-                    });
-                }
-            });
+                _isProcessing = false;
+            }
         }
     }
 
     // 模板状态枚举
+    [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
     public enum TemplateState
     {
         Ready,          // 已就绪，可直接打开

@@ -4,22 +4,16 @@ sidebar_position: 3
 
 # 🛣️ Roadmap
 
-## 🌍 **Earth Science Plotting (In Progress)** ✏️
+# 当前
 
-Integrates various geological plotting and mapping methods developed by earth scientists worldwide into a unified toolkit. This enables users to select methods tailored to their specific needs and achieve one-click plotting operations. This module not only accelerates the routine generation of figures in scientific research but also promotes the standardization and widespread application of various geological methods and tools, enhancing the overall efficiency of geological research.
+- [x] 持续更新常见地质，地球化学图解
+- [ ] 持续更新常见的地质温度计，压力计
+- [ ] 地质年代学数据绘图
 
-## 🌡️ **Geothermometer & Geobarometer Calculations (In Progress)** 📊
+# 计划中
 
-Integrates multiple geological geothermometer and geobarometer calculation models to compute physical parameters such as temperature and pressure. The system provides detailed calculation processes and result interpretations, outputting corresponding phase diagrams and P-T (pressure-temperature) diagrams. This assists users in deep-level geological interpretation and analysis, meeting the refined demands of geological research and applications.
-
-## 🤖 **AI Assistant** 💡
-
-Responsible for parsing and offering suggestions on specific content within the vectorized basemap guidelines. It aims to assist users in scenarios where discriminant analysis is unclear by proposing basic data requirements and core datasets. Through intelligent analysis, the assistant recommends optimal analysis schemes based on user-provided data characteristics. The ultimate goal is to simplify operational complexity and significantly improve analysis efficiency and accuracy.
-
-## 📈 **Machine Learning Data Analysis** 🔍
-
-Conducts in-depth analysis of user geochemical data based on machine learning algorithms. Users can customize the selection of machine learning models, and the system supports automated hyperparameter tuning, model training, and evaluation. The final output includes model performance evaluation, variable importance analysis, and relevant visualization charts—such as ROC curves, confusion matrices, and feature importance bar charts—helping users fully comprehend the analysis results.
-
-## ⚗️ **Geochemistry-Related Scientific Calculations** 🧪
-
-Provides a professional scientific calculation toolkit tailored for geochemical data, covering functions such as elemental correlation analysis, isotope ratio calculations, and rare earth element (REE) distribution pattern analysis. The toolkit supports batch data processing, complex formula calculations, and result visualization, helping researchers efficiently complete the processing and interpretation of geochemical data while ensuring the accuracy and reproducibility of scientific research results.
+- [ ] 科研社区内容建设：我们将搭建一个专属科研社区，支持科研人员上传与分享自主制作的科研图解。同时，社区将配备问题反馈区及论坛讨论模块，便于成员互动交流、经验传递与方案改进。
+- [ ] 扩展地球化学计算工具：根据用户需求，不断更新与完善地球化学相关的科学计算方法，提供更丰富的计算功能，支持多样化的科研应用场景。
+- [ ] 机器学习数据分析功能：未来的软件版本将引入常用机器学习算法，辅助开展地球化学数据分析，为科研人员提供高效的智能化数据处理能力。
+- [ ] “新图解”式机器学习模型支持：随着大数据与机器学习的快速发展，许多模型已成为新的“判别图解”工具。软件将内置可扩展接口，支持快速加载与训练此类模型，科研人员无需掌握机器学习或 Python 等技术，避免安装繁杂的配置环境，即可直接应用“新图解”进行分析与判别。
+- [ ] AI 智能助手：借助内置帮助文档与知识嵌入大模型的技术，AI 助手在第一阶段即可根据科研人员提供的关键词与需求，生成针对性解决方案；在第二阶段，将进一步实现自动化的数据处理与分析，简化科研操作流程，提升工作效率。

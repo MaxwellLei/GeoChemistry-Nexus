@@ -2102,4 +2102,91 @@
   <data name="invalid_filename_char" xml:space="preserve">
     <value>Inhalt enthält nicht unterstützte Zeichen</value>
   </data>
+  <data name="developer_mode" xml:space="preserve">
+    <value>Entwicklermodus</value>
+  </data>
+  <data name="help_document_not_found" xml:space="preserve">
+    <value>Hilfedokument nicht gefunden:</value>
+  </data>
+  <data name="path_is_empty" xml:space="preserve">
+    <value>Pfad ist leer</value>
+  </data>
+  <data name="failed_to_load_help_document" xml:space="preserve">
+    <value>Fehler beim Laden des Hilfedokuments:</value>
+  </data>
+  <data name="dev_mode_warning_non_developers" xml:space="preserve">
+    <value>Nicht für Nicht-Entwickler empfohlen; dies kann zu unnötigen Problemen führen.</value>
+  </data>
+  <data name="click_to_download" xml:space="preserve">
+    <value>Zum Herunterladen klicken</value>
+  </data>
+  <data name="new_version_found" xml:space="preserve">
+    <value>Neue Version gefunden</value>
+  </data>
+  <data name="downloading_status" xml:space="preserve">
+    <value>Wird heruntergeladen...</value>
+  </data>
+  <data name="retry_action" xml:space="preserve">
+    <value>Wiederholen</value>
+  </data>
+  <data name="loading_status" xml:space="preserve">
+    <value>Laden...</value>
+  </data>
+  <data name="MarkerShape_FilledCircle" xml:space="preserve">
+    <value>Gefüllter Kreis</value>
+  </data>
+  <data name="MarkerShape_OpenCircle" xml:space="preserve">
+    <value>Leerer Kreis</value>
+  </data>
+  <data name="MarkerShape_FilledSquare" xml:space="preserve">
+    <value>Gefülltes Quadrat</value>
+  </data>
+  <data name="MarkerShape_OpenSquare" xml:space="preserve">
+    <value>Leeres Quadrat</value>
+  </data>
+  <data name="MarkerShape_FilledTriangleUp" xml:space="preserve">
+    <value>Gefülltes Dreieck nach oben</value>
+  </data>
+  <data name="MarkerShape_OpenTriangleUp" xml:space="preserve">
+    <value>Leeres Dreieck nach oben</value>
+  </data>
+  <data name="MarkerShape_FilledTriangleDown" xml:space="preserve">
+    <value>Gefülltes Dreieck nach unten</value>
+  </data>
+  <data name="MarkerShape_OpenTriangleDown" xml:space="preserve">
+    <value>Leeres Dreieck nach unten</value>
+  </data>
+  <data name="MarkerShape_FilledDiamond" xml:space="preserve">
+    <value>Gefüllte Raute</value>
+  </data>
+  <data name="MarkerShape_OpenDiamond" xml:space="preserve">
+    <value>Leere Raute</value>
+  </data>
+  <data name="MarkerShape_Cross" xml:space="preserve">
+    <value>Kreuz</value>
+  </data>
+  <data name="MarkerShape_Eks" xml:space="preserve">
+    <value>X-Form</value>
+  </data>
+  <data name="MarkerShape_Asterisk" xml:space="preserve">
+    <value>Sternchen</value>
+  </data>
+  <data name="MarkerShape_VerticalBar" xml:space="preserve">
+    <value>Vertikale Linie</value>
+  </data>
+  <data name="MarkerShape_HorizontalBar" xml:space="preserve">
+    <value>Horizontale Linie</value>
+  </data>
+  <data name="MarkerShape_HashTag" xml:space="preserve">
+    <value>Rautezeichen</value>
+  </data>
+  <data name="MarkerShape_OpenCircleWithDot" xml:space="preserve">
+    <value>Leerer Kreis mit Punkt</value>
+  </data>
+  <data name="MarkerShape_OpenCircleWithCross" xml:space="preserve">
+    <value>Leerer Kreis mit Kreuz</value>
+  </data>
+  <data name="MarkerShape_OpenCircleWithEks" xml:space="preserve">
+    <value>Leerer Kreis mit X</value>
+  </data>
 </root>

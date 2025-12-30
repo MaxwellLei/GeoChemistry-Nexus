@@ -2286,4 +2286,91 @@
   <data name="invalid_filename_char" xml:space="preserve">
     <value>콘텐츠에 지원되지 않는 문자가 포함되어 있습니다</value>
   </data>
+  <data name="developer_mode" xml:space="preserve">
+    <value>개발자 모드</value>
+  </data>
+  <data name="help_document_not_found" xml:space="preserve">
+    <value>도움말 문서를 찾을 수 없습니다:</value>
+  </data>
+  <data name="path_is_empty" xml:space="preserve">
+    <value>경로가 비어 있습니다</value>
+  </data>
+  <data name="failed_to_load_help_document" xml:space="preserve">
+    <value>도움말 문서를 로드하지 못했습니다:</value>
+  </data>
+  <data name="dev_mode_warning_non_developers" xml:space="preserve">
+    <value>개발자가 아닌 경우 권장하지 않으며, 불필요한 문제가 발생할 수 있습니다.</value>
+  </data>
+  <data name="click_to_download" xml:space="preserve">
+    <value>클릭하여 다운로드</value>
+  </data>
+  <data name="new_version_found" xml:space="preserve">
+    <value>새 버전 발견</value>
+  </data>
+  <data name="downloading_status" xml:space="preserve">
+    <value>다운로드 중...</value>
+  </data>
+  <data name="retry_action" xml:space="preserve">
+    <value>재시도</value>
+  </data>
+  <data name="loading_status" xml:space="preserve">
+    <value>로딩 중...</value>
+  </data>
+  <data name="MarkerShape_FilledCircle" xml:space="preserve">
+    <value>채워진 원</value>
+  </data>
+  <data name="MarkerShape_OpenCircle" xml:space="preserve">
+    <value>빈 원</value>
+  </data>
+  <data name="MarkerShape_FilledSquare" xml:space="preserve">
+    <value>채워진 사각형</value>
+  </data>
+  <data name="MarkerShape_OpenSquare" xml:space="preserve">
+    <value>빈 사각형</value>
+  </data>
+  <data name="MarkerShape_FilledTriangleUp" xml:space="preserve">
+    <value>채워진 위쪽 삼각형</value>
+  </data>
+  <data name="MarkerShape_OpenTriangleUp" xml:space="preserve">
+    <value>빈 위쪽 삼각형</value>
+  </data>
+  <data name="MarkerShape_FilledTriangleDown" xml:space="preserve">
+    <value>채워진 아래쪽 삼각형</value>
+  </data>
+  <data name="MarkerShape_OpenTriangleDown" xml:space="preserve">
+    <value>빈 아래쪽 삼각형</value>
+  </data>
+  <data name="MarkerShape_FilledDiamond" xml:space="preserve">
+    <value>채워진 마름모</value>
+  </data>
+  <data name="MarkerShape_OpenDiamond" xml:space="preserve">
+    <value>빈 마름모</value>
+  </data>
+  <data name="MarkerShape_Cross" xml:space="preserve">
+    <value>십자형</value>
+  </data>
+  <data name="MarkerShape_Eks" xml:space="preserve">
+    <value>X 모양</value>
+  </data>
+  <data name="MarkerShape_Asterisk" xml:space="preserve">
+    <value>별표</value>
+  </data>
+  <data name="MarkerShape_VerticalBar" xml:space="preserve">
+    <value>수직선</value>
+  </data>
+  <data name="MarkerShape_HorizontalBar" xml:space="preserve">
+    <value>수평선</value>
+  </data>
+  <data name="MarkerShape_HashTag" xml:space="preserve">
+    <value>우물 정자</value>
+  </data>
+  <data name="MarkerShape_OpenCircleWithDot" xml:space="preserve">
+    <value>가운데 점이 있는 원</value>
+  </data>
+  <data name="MarkerShape_OpenCircleWithCross" xml:space="preserve">
+    <value>십자가가 있는 원</value>
+  </data>
+  <data name="MarkerShape_OpenCircleWithEks" xml:space="preserve">
+    <value>X 표시가 있는 원</value>
+  </data>
 </root>

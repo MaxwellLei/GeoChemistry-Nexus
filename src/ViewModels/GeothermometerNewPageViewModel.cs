@@ -239,7 +239,9 @@ namespace GeoChemistryNexus.ViewModels
                     {
                         // 文件不存在
                         _helpRichTextBox.Document.Blocks.Clear();
-                        var run = new Run($"未找到帮助文档：\n{relativePath ?? "路径为空"}")
+                        // 未找到帮助文档,路径为空
+                        var run = new Run($"{LanguageService.Instance["help_document_not_found"]}" +
+                            $"\n{relativePath ?? LanguageService.Instance["path_is_empty"]}")
                         {
                             Foreground = Brushes.Red
                         };
@@ -252,7 +254,7 @@ namespace GeoChemistryNexus.ViewModels
             }
             catch (Exception ex)
             {
-                MessageHelper.Error($"加载帮助文档失败: {ex.Message}");
+                MessageHelper.Error($"{LanguageService.Instance["failed_to_load_help_document"]} {ex.Message}");
             }
         }
 

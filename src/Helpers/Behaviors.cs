@@ -28,7 +28,8 @@ namespace GeoChemistryNexus.Helpers
             var treeViewItem = AssociatedObject.TemplatedParent as TreeViewItem;
             if (treeViewItem == null)
             {
-                // 如果 AssociatedObject 不是模板的一部分，或者 TemplatedParent 不是 TreeViewItem，尝试向上查找
+                // 如果 AssociatedObject 不是模板的一部分，
+                // 或者 TemplatedParent 不是 TreeViewItem，尝试向上查找
                 treeViewItem = FindAncestor<TreeViewItem>(AssociatedObject);
             }
 

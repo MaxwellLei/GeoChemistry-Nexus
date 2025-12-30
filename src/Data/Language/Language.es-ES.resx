@@ -2286,4 +2286,91 @@
   <data name="invalid_filename_char" xml:space="preserve">
     <value>El contenido contiene caracteres no compatibles</value>
   </data>
+  <data name="developer_mode" xml:space="preserve">
+    <value>Modo de desarrollador</value>
+  </data>
+  <data name="help_document_not_found" xml:space="preserve">
+    <value>No se encontró el documento de ayuda:</value>
+  </data>
+  <data name="path_is_empty" xml:space="preserve">
+    <value>La ruta está vacía</value>
+  </data>
+  <data name="failed_to_load_help_document" xml:space="preserve">
+    <value>Error al cargar el documento de ayuda:</value>
+  </data>
+  <data name="dev_mode_warning_non_developers" xml:space="preserve">
+    <value>No se recomienda para personas que no sean desarrolladores; puede causar problemas innecesarios.</value>
+  </data>
+  <data name="click_to_download" xml:space="preserve">
+    <value>Haga clic para descargar</value>
+  </data>
+  <data name="new_version_found" xml:space="preserve">
+    <value>Nueva versión encontrada</value>
+  </data>
+  <data name="downloading_status" xml:space="preserve">
+    <value>Descargando...</value>
+  </data>
+  <data name="retry_action" xml:space="preserve">
+    <value>Reintentar</value>
+  </data>
+  <data name="loading_status" xml:space="preserve">
+    <value>Cargando...</value>
+  </data>
+  <data name="MarkerShape_FilledCircle" xml:space="preserve">
+    <value>Círculo relleno</value>
+  </data>
+  <data name="MarkerShape_OpenCircle" xml:space="preserve">
+    <value>Círculo vacío</value>
+  </data>
+  <data name="MarkerShape_FilledSquare" xml:space="preserve">
+    <value>Cuadrado relleno</value>
+  </data>
+  <data name="MarkerShape_OpenSquare" xml:space="preserve">
+    <value>Cuadrado vacío</value>
+  </data>
+  <data name="MarkerShape_FilledTriangleUp" xml:space="preserve">
+    <value>Triángulo relleno hacia arriba</value>
+  </data>
+  <data name="MarkerShape_OpenTriangleUp" xml:space="preserve">
+    <value>Triángulo vacío hacia arriba</value>
+  </data>
+  <data name="MarkerShape_FilledTriangleDown" xml:space="preserve">
+    <value>Triángulo relleno hacia abajo</value>
+  </data>
+  <data name="MarkerShape_OpenTriangleDown" xml:space="preserve">
+    <value>Triángulo vacío hacia abajo</value>
+  </data>
+  <data name="MarkerShape_FilledDiamond" xml:space="preserve">
+    <value>Diamante relleno</value>
+  </data>
+  <data name="MarkerShape_OpenDiamond" xml:space="preserve">
+    <value>Diamante vacío</value>
+  </data>
+  <data name="MarkerShape_Cross" xml:space="preserve">
+    <value>Cruz</value>
+  </data>
+  <data name="MarkerShape_Eks" xml:space="preserve">
+    <value>Forma en X</value>
+  </data>
+  <data name="MarkerShape_Asterisk" xml:space="preserve">
+    <value>Asterisco</value>
+  </data>
+  <data name="MarkerShape_VerticalBar" xml:space="preserve">
+    <value>Línea vertical</value>
+  </data>
+  <data name="MarkerShape_HorizontalBar" xml:space="preserve">
+    <value>Línea horizontal</value>
+  </data>
+  <data name="MarkerShape_HashTag" xml:space="preserve">
+    <value>Almohadilla</value>
+  </data>
+  <data name="MarkerShape_OpenCircleWithDot" xml:space="preserve">
+    <value>Círculo vacío con punto</value>
+  </data>
+  <data name="MarkerShape_OpenCircleWithCross" xml:space="preserve">
+    <value>Círculo vacío con cruz</value>
+  </data>
+  <data name="MarkerShape_OpenCircleWithEks" xml:space="preserve">
+    <value>Círculo vacío con X</value>
+  </data>
 </root>

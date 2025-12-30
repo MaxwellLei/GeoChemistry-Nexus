@@ -2286,4 +2286,91 @@
   <data name="invalid_filename_char" xml:space="preserve">
     <value>Содержимое содержит неподдерживаемые символы</value>
   </data>
+  <data name="developer_mode" xml:space="preserve">
+    <value>Режим разработчика</value>
+  </data>
+  <data name="help_document_not_found" xml:space="preserve">
+    <value>Справочный документ не найден:</value>
+  </data>
+  <data name="path_is_empty" xml:space="preserve">
+    <value>Путь пуст</value>
+  </data>
+  <data name="failed_to_load_help_document" xml:space="preserve">
+    <value>Не удалось загрузить справочный документ:</value>
+  </data>
+  <data name="dev_mode_warning_non_developers" xml:space="preserve">
+    <value>Не рекомендуется для обычных пользователей; это может привести к возникновению ненужных проблем.</value>
+  </data>
+  <data name="click_to_download" xml:space="preserve">
+    <value>Нажмите, чтобы скачать</value>
+  </data>
+  <data name="new_version_found" xml:space="preserve">
+    <value>Найдена новая версия</value>
+  </data>
+  <data name="downloading_status" xml:space="preserve">
+    <value>Загрузка...</value>
+  </data>
+  <data name="retry_action" xml:space="preserve">
+    <value>Повторить</value>
+  </data>
+  <data name="loading_status" xml:space="preserve">
+    <value>Загрузка...</value>
+  </data>
+  <data name="MarkerShape_FilledCircle" xml:space="preserve">
+    <value>Закрашенный круг</value>
+  </data>
+  <data name="MarkerShape_OpenCircle" xml:space="preserve">
+    <value>Пустой круг</value>
+  </data>
+  <data name="MarkerShape_FilledSquare" xml:space="preserve">
+    <value>Закрашенный квадрат</value>
+  </data>
+  <data name="MarkerShape_OpenSquare" xml:space="preserve">
+    <value>Пустой квадрат</value>
+  </data>
+  <data name="MarkerShape_FilledTriangleUp" xml:space="preserve">
+    <value>Закрашенный треугольник вверх</value>
+  </data>
+  <data name="MarkerShape_OpenTriangleUp" xml:space="preserve">
+    <value>Пустой треугольник вверх</value>
+  </data>
+  <data name="MarkerShape_FilledTriangleDown" xml:space="preserve">
+    <value>Закрашенный треугольник вниз</value>
+  </data>
+  <data name="MarkerShape_OpenTriangleDown" xml:space="preserve">
+    <value>Пустой треугольник вниз</value>
+  </data>
+  <data name="MarkerShape_FilledDiamond" xml:space="preserve">
+    <value>Закрашенный ромб</value>
+  </data>
+  <data name="MarkerShape_OpenDiamond" xml:space="preserve">
+    <value>Пустой ромб</value>
+  </data>
+  <data name="MarkerShape_Cross" xml:space="preserve">
+    <value>Крест</value>
+  </data>
+  <data name="MarkerShape_Eks" xml:space="preserve">
+    <value>X-образная форма</value>
+  </data>
+  <data name="MarkerShape_Asterisk" xml:space="preserve">
+    <value>Звездочка</value>
+  </data>
+  <data name="MarkerShape_VerticalBar" xml:space="preserve">
+    <value>Вертикальная линия</value>
+  </data>
+  <data name="MarkerShape_HorizontalBar" xml:space="preserve">
+    <value>Горизонтальная линия</value>
+  </data>
+  <data name="MarkerShape_HashTag" xml:space="preserve">
+    <value>Решетка</value>
+  </data>
+  <data name="MarkerShape_OpenCircleWithDot" xml:space="preserve">
+    <value>Пустой круг с точкой</value>
+  </data>
+  <data name="MarkerShape_OpenCircleWithCross" xml:space="preserve">
+    <value>Пустой круг с крестом</value>
+  </data>
+  <data name="MarkerShape_OpenCircleWithEks" xml:space="preserve">
+    <value>Пустой круг с иксом</value>
+  </data>
 </root>
