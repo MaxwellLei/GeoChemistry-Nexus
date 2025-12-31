@@ -2373,4 +2373,13 @@
   <data name="MarkerShape_OpenCircleWithEks" xml:space="preserve">
     <value>X 표시가 있는 원</value>
   </data>
+  <data name="exit_action" xml:space="preserve">
+    <value>종료</value>
+  </data>
+  <data name="maintenance" xml:space="preserve">
+    <value>_유지보수(M)</value>
+  </data>
+  <data name="export_update_list" xml:space="preserve">
+    <value>업데이트 목록 내보내기</value>
+  </data>
 </root>

@@ -2169,4 +2169,13 @@
   <data name="loading_status" xml:space="preserve">
     <value>Loading...</value>
   </data>
+  <data name="exit_action" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="maintenance" xml:space="preserve">
+    <value>_Maintenance(M)</value>
+  </data>
+  <data name="export_update_list" xml:space="preserve">
+    <value>Export Update List</value>
+  </data>
 </root>

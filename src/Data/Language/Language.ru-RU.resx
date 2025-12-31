@@ -2373,4 +2373,13 @@
   <data name="MarkerShape_OpenCircleWithEks" xml:space="preserve">
     <value>Пустой круг с иксом</value>
   </data>
+  <data name="exit_action" xml:space="preserve">
+    <value>Выход</value>
+  </data>
+  <data name="maintenance" xml:space="preserve">
+    <value>_Техническое обслуживание((M))</value>
+  </data>
+  <data name="export_update_list" xml:space="preserve">
+    <value>Экспортировать список обновлений</value>
+  </data>
 </root>

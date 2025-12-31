@@ -147,7 +147,7 @@
                 </Border>
 
                  <!-- EXIT MODE -->
-                <TextBlock Text="EXIT" Style="{StaticResource ModernSettingsGroupTitle}"/>
+                <TextBlock Text="{Binding [exit_action],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernSettingsGroupTitle}"/>
                 <Border Style="{StaticResource ModernSettingsCard}">
                     <StackPanel>
                         <Grid Height="50" Background="Transparent" Margin="16,0">

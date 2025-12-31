@@ -2373,4 +2373,13 @@
   <data name="MarkerShape_OpenCircleWithEks" xml:space="preserve">
     <value>X印付き白抜き円</value>
   </data>
+  <data name="exit_action" xml:space="preserve">
+    <value>終了</value>
+  </data>
+  <data name="maintenance" xml:space="preserve">
+    <value>_メンテナンス(M)</value>
+  </data>
+  <data name="export_update_list" xml:space="preserve">
+    <value>更新リストをエクスポート</value>
+  </data>
 </root>

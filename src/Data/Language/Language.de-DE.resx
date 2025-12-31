@@ -2189,4 +2189,13 @@
   <data name="MarkerShape_OpenCircleWithEks" xml:space="preserve">
     <value>Leerer Kreis mit X</value>
   </data>
+  <data name="exit_action" xml:space="preserve">
+    <value>Beenden</value>
+  </data>
+  <data name="maintenance" xml:space="preserve">
+    <value>_Wartung(M)</value>
+  </data>
+  <data name="export_update_list" xml:space="preserve">
+    <value>Update-Liste exportieren</value>
+  </data>
 </root>

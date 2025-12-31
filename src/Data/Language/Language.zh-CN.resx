@@ -2373,4 +2373,13 @@
   <data name="loading_status" xml:space="preserve">
     <value>加载中...</value>
   </data>
+  <data name="exit_action" xml:space="preserve">
+    <value>退出</value>
+  </data>
+  <data name="maintenance" xml:space="preserve">
+    <value>_维护(M)</value>
+  </data>
+  <data name="export_update_list" xml:space="preserve">
+    <value>导出更新列表</value>
+  </data>
 </root>

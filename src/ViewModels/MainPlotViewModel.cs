@@ -6169,29 +6169,49 @@ namespace GeoChemistryNexus.ViewModels
                 Filter = "Template Files (*.zip;*.json)|*.zip;*.json|Zip Files (*.zip)|*.zip|Json Files (*.json)|*.json|All Files (*.*)|*.*",
                 DefaultExt = ".zip",
                 CheckFileExists = true,
-                Multiselect = false
+                Multiselect = true
             };
 
             if (openFileDialog.ShowDialog() != true) return;
 
-            string selectedPath = openFileDialog.FileName;
-            string ext = Path.GetExtension(selectedPath).ToLower();
-
-            try
+            // 检查是否包含 JSON 文件且为多选
+            if (openFileDialog.FileNames.Length > 1 && openFileDialog.FileNames.Any(f => f.EndsWith(".json", StringComparison.OrdinalIgnoreCase)))
             {
-                if (ext == ".zip")
+                MessageHelper.Warning("json文件不支持多选批量添加。只支持zip文件多选批量添加。");
+                return;
+            }
+
+            // 标记是否进行了导入操作
+            bool imported = false;
+
+            foreach (var selectedPath in openFileDialog.FileNames)
+            {
+                string ext = Path.GetExtension(selectedPath).ToLower();
+
+                try
                 {
-                    await ImportZipTemplate(selectedPath);
+                    if (ext == ".zip")
+                    {
+                        await ImportZipTemplate(selectedPath);
+                        imported = true;
+                    }
+                    else if (ext == ".json")
+                    {
+                        await ImportJsonTemplate(selectedPath);
+                        imported = true;
+                    }
                 }
-                else if (ext == ".json")
+                catch (Exception ex)
                 {
-                    await ImportJsonTemplate(selectedPath);
+                    // 导入失败 + ex
+                    MessageHelper.Error($"{Path.GetFileName(selectedPath)}: {LanguageService.Instance["import_failed"]} {ex.Message}");
                 }
             }
-            catch (Exception ex)
+
+            if (imported)
             {
-                // 导入失败 + ex
-                MessageHelper.Error(LanguageService.Instance["import_failed"] + ex.Message);
+                // 刷新模板列表
+                await InitializeAsync();
             }
         }
 
@@ -6362,16 +6382,7 @@ namespace GeoChemistryNexus.ViewModels
             var existingId = GraphMapDatabaseService.GenerateId(templateName, true);
             var existingTemplate = await Task.Run(() => GraphMapDatabaseService.Instance.GetTemplate(existingId));
 
-            // 导入自定义模板不应该和内置模板（IsCustom=false）做查重
-            int conflictRetry = 0;
-            while (existingTemplate != null && !existingTemplate.IsCustom)
-            {
-                conflictRetry++;
-                // 生成一个新的确定性ID，确保不与内置模板ID冲突
-                // 使用确定性后缀，保证多次导入同一文件时ID一致
-                existingId = GraphMapDatabaseService.GenerateId($"{templateName}_custom_conflict_{conflictRetry}", true);
-                existingTemplate = await Task.Run(() => GraphMapDatabaseService.Instance.GetTemplate(existingId));
-            }
+
 
             if (existingTemplate != null)
             {

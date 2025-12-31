@@ -2160,6 +2160,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Exit 的本地化字符串。
+        /// </summary>
+        internal static string exit_action {
+            get {
+                return ResourceManager.GetString("exit_action", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Expand 的本地化字符串。
         /// </summary>
         internal static string Expand {
@@ -2228,6 +2237,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string export_successful {
             get {
                 return ResourceManager.GetString("export_successful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Export Update List 的本地化字符串。
+        /// </summary>
+        internal static string export_update_list {
+            get {
+                return ResourceManager.GetString("export_update_list", resourceCulture);
             }
         }
         
@@ -3524,6 +3542,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string maintain_server_config_and_templates {
             get {
                 return ResourceManager.GetString("maintain_server_config_and_templates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 _Maintenance(M) 的本地化字符串。
+        /// </summary>
+        internal static string maintenance {
+            get {
+                return ResourceManager.GetString("maintenance", resourceCulture);
             }
         }
         

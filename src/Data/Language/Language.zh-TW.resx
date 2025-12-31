@@ -2373,4 +2373,13 @@
   <data name="MarkerShape_OpenCircleWithEks" xml:space="preserve">
     <value>空心圓加叉</value>
   </data>
+  <data name="exit_action" xml:space="preserve">
+    <value>退出</value>
+  </data>
+  <data name="maintenance" xml:space="preserve">
+    <value>_維護(M)</value>
+  </data>
+  <data name="export_update_list" xml:space="preserve">
+    <value>匯出更新列表</value>
+  </data>
 </root>
