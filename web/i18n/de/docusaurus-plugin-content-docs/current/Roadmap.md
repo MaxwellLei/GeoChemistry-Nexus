@@ -4,22 +4,16 @@ sidebar_position: 3
 
 # 🛣️ Roadmap
 
-## 🌍 **Geowissenschaftliches Plotten (In Arbeit)** ✏️
+# Aktuell
 
-Integriert verschiedene geologische Plot- und Kartierungsmethoden, die von Geowissenschaftlern weltweit entwickelt wurden, in ein einheitliches Toolkit. Dies ermöglicht es Benutzern, Methoden auszuwählen, die auf ihre spezifischen Bedürfnisse zugeschnitten sind, und Plot-Operationen mit einem Klick durchzuführen. Dieses Modul beschleunigt nicht nur die routinemäßige Erstellung von Abbildungen in der wissenschaftlichen Forschung, sondern fördert auch die Standardisierung und breite Anwendung verschiedener geologischer Methoden und Werkzeuge, was die Gesamteffizienz der geologischen Forschung verbessert.
+- [x] Kontinuierliche Aktualisierung gängiger geologischer und geochemischer Diagramme
+- [ ] Kontinuierliche Aktualisierung gängiger Geothermometer und Geobarometer
+- [ ] Geochronologische Datenplots
 
-## 🌡️ **Geothermometer- & Geobarometer-Berechnungen (In Arbeit)** 📊
+# Geplant
 
-Integriert mehrere geologische Geothermometer- und Geobarometer-Berechnungsmodelle zur Berechnung physikalischer Parameter wie Temperatur und Druck. Das System bietet detaillierte Berechnungsprozesse und Ergebnisinterpretationen und gibt entsprechende Phasendiagramme und P-T-Diagramme (Druck-Temperatur) aus. Dies unterstützt Benutzer bei der tiefgehenden geologischen Interpretation und Analyse und erfüllt die verfeinerten Anforderungen geologischer Forschung und Anwendungen.
-
-## 🤖 **KI-Assistent** 💡
-
-Verantwortlich für das Parsen und Anbieten von Vorschlägen zu spezifischen Inhalten innerhalb der vektorisierten Basiskarten-Richtlinien. Ziel ist es, Benutzer in Szenarien zu unterstützen, in denen die Diskriminanzanalyse unklar ist, indem grundlegende Datenanforderungen und Kerndatensätze vorgeschlagen werden. Durch intelligente Analyse empfiehlt der Assistent optimale Analyseschemata basierend auf den vom Benutzer bereitgestellten Datenmerkmalen. Das ultimative Ziel ist es, die operative Komplexität zu vereinfachen und die Analyseeffizienz und -genauigkeit erheblich zu verbessern.
-
-## 📈 **Maschinelles Lernen Datenanalyse** 🔍
-
-Führt eine eingehende Analyse der geochemischen Daten des Benutzers basierend auf Algorithmen des maschinellen Lernens durch. Benutzer können die Auswahl der Modelle für maschinelles Lernen anpassen, und das System unterstützt automatisierte Hyperparameter-Optimierung, Modelltraining und -bewertung. Die endgültige Ausgabe umfasst Modellleistungsbewertung, Variablenwichtigkeitsanalyse und relevante Visualisierungsdiagramme – wie ROC-Kurven, Verwirrungsmatrizen und Balkendiagramme zur Merkmalswichtigkeit –, die Benutzern helfen, die Analyseergebnisse vollständig zu verstehen.
-
-## ⚗️ **Geochemie-bezogene wissenschaftliche Berechnungen** 🧪
-
-Bietet ein professionelles wissenschaftliches Berechnungs-Toolkit, das auf geochemische Daten zugeschnitten ist und Funktionen wie Elementkorrelationsanalyse, Isotopenverhältnisberechnungen und Analyse von Verteilungsmustern seltener Erden (REE) abdeckt. Das Toolkit unterstützt Stapeldatenverarbeitung, komplexe Formelberechnungen und Ergebnisvisualisierung und hilft Forschern, die Verarbeitung und Interpretation geochemischer Daten effizient abzuschließen und gleichzeitig die Genauigkeit und Reproduzierbarkeit wissenschaftlicher Forschungsergebnisse sicherzustellen.
+- [ ] **Aufbau einer Forschungsgemeinschaft**: Wir werden eine dedizierte Forschungsgemeinschaft aufbauen, um Forscher beim Hochladen und Teilen selbst erstellter wissenschaftlicher Diagramme zu unterstützen. Die Gemeinschaft wird auch mit einem Bereich für Problemfeedback und Forendiskussionsmodulen ausgestattet sein, um die Interaktion der Mitglieder, den Erfahrungsaustausch und die Lösungsverbesserung zu erleichtern.
+- [ ] **Erweiterung der geochemischen Berechnungswerkzeuge**: Basierend auf den Benutzerbedürfnissen werden wir wissenschaftliche Berechnungsmethoden im Zusammenhang mit Geochemie kontinuierlich aktualisieren und verbessern und reichhaltigere Berechnungsfunktionen bereitstellen, um diverse wissenschaftliche Forschungsanwendungsszenarien zu unterstützen.
+- [ ] **Maschinelles Lernen zur Datenanalyse**: Zukünftige Softwareversionen werden gängige Algorithmen für maschinelles Lernen einführen, um bei der geochemischen Datenanalyse zu helfen und Forschern effiziente und intelligente Datenverarbeitungsfähigkeiten bereitzustellen.
+- [ ] **Unterstützung für maschinelle Lernmodelle im "Neuen Diagramm"-Stil**: Mit der rasanten Entwicklung von Big Data und maschinellem Lernen sind viele Modelle zu neuen "Diskriminanzdiagramm"-Werkzeugen geworden. Die Software wird integrierte erweiterbare Schnittstellen enthalten, um das schnelle Laden und Trainieren solcher Modelle zu unterstützen. Forscher können "neue Diagramme" direkt zur Analyse und Diskriminierung anwenden, ohne maschinelles Lernen oder Technologien wie Python beherrschen zu müssen, wodurch komplexe Konfigurationsumgebungen vermieden werden.
+- [ ] **Intelligenter KI-Assistent**: Unter Nutzung integrierter Hilfedokumentation und wissenseingebetteter Großmodelltechnologie wird der KI-Assistent in der ersten Phase in der Lage sein, gezielte Lösungen basierend auf Schlüsselwörtern und Bedürfnissen zu generieren, die von Forschern bereitgestellt werden; in der zweiten Phase wird er die automatisierte Datenverarbeitung und -analyse weiter realisieren, wissenschaftliche Forschungsabläufe vereinfachen und die Effizienz verbessern.

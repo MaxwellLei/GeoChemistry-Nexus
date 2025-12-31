@@ -10,11 +10,13 @@ The initial design goal of the Home page is to integrate quick access to commonl
 
 ![plot_home_ui](../../static/img/v0.6.1/tutorial_home1.png)
 
-The Home page primarily features **Quick Links** and **Widgets**.
+The home page primarily displays **Quick Links** and **Widgets**. You can right-click to open the menu bar and view related operations.
 
-Currently, the software defaults to displaying the system date and time. It also includes a search bar, which acts as a simple link redirect. Any content entered into the search bar will open a Google search in your local browser.
+Regarding quick links, our design philosophy is that users can add commonly used professional websites in geology and geochemistry. Additionally, the software includes built-in recommended sites. If you would like your website to be added to the home page recommendations, please contact us via the "About" page.
 
-> The search function is currently unavailable.
+Currently, the home page displays the system date and time by default. It also features a search bar that can search and match user-added quick links and widgets for quick lookup and navigation.
+
+The design goal of widgets is to provide simple, independent, and basic calculation or operational functions to supplement commonly used peripheral tools, facilitating daily use for users.
 
 :::info
 

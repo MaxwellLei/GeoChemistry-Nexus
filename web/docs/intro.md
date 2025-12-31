@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # 🌍 Introduction
 
-**Note:** We have officially renamed the software from **Geo-Thermometer** to **GeoChemistry Nexus**. Let's get started with **GeoChemistry Nexus** in **5 minutes** ⏱️.
+Let's get started with **GeoChemistry Nexus** in **5 minutes** ⏱️.
 
 ## Prerequisites 🛠️
 
@@ -39,9 +39,11 @@ Before you begin, please follow these steps:
 
 Currently, there are no detailed instructions for Linux and Mac. It is recommended to prioritize using a virtual machine to run the program. We plan to migrate to `Avalonia` in the future to achieve full cross-platform compatibility. 📅
 
-![User Interface Example](/img/v0.6.1/intro_user_interface_example1.png)
+![User Interface Example](../static/img/v0.6.1/intro_user_interface_example1.png)
 
-![User Interface Example](/img/v0.6.1/intro_user_interface_example2.png)
+![User Interface Example](../static/img/v0.6.1/intro_user_interface_example2.png)
+
+![tutorial_plot0](../static/img/v0.6.1/tutorial_plot0.png)
 
 ----
 

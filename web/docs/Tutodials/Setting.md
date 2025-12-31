@@ -10,25 +10,16 @@ The settings section of the software is quite diverse and will be continuously u
 
 Settings are mainly divided into four parts: File Paths, Internationalization & Personalization, Message Notifications, and Others. Below is a brief description of the main settings:
 
-![Settings Interface](https://geo-1303234197.cos.ap-hongkong.myqcloud.com/Setting_UI.png)
+![tutorial_settings1](../../static/img/v0.6.1/tutorial_settings1.png)
 
-### 📁 File Paths
+### 🌍 Language & Appearance
 
-- **Save File Location**: Sets the default file save location. This path will be used when saving exported plot images or exporting geothermometer-related calculations to the default save folder. Of course, after setting this, you can still manually specify a different path when saving.
-
-### 🌍 Internationalization & Personalization
-
-- **Theme**: The theme of the software interface, including light and dark modes.
-- **Language**: Currently supports English (US) and Simplified Chinese.
+- **Language**: Currently supports Simplified Chinese, English, German, Spanish, Japanese, Korean and Russian.
 - **Startup Background Image**: The background image displayed when the software starts.
 
 :::info
 
-Regarding the **Theme** function, as we are in the early stages of development, Dark Mode has some UI compatibility issues; therefore, this mode will be hidden in the official version.
-
-For language support, if you wish to help provide localization support for your country, we warmly welcome you to participate in translation!
-
-More startup image styles will be added in future updates.
+For language support, if you’d like to help localize for your country, we warmly invite you to join our translation efforts! Most of the current translations have been assisted by AI, which means some parts may be inaccurate — your help is greatly needed and appreciated.
 
 :::
 
@@ -39,6 +30,7 @@ More startup image styles will be added in future updates.
 ### ⚙️ Others
 
 - **Start with System**: The software will start automatically when the system boots.
+- **Developer Mode**: This mode provides debugging features for developers. Non-developers are advised not to enable it to avoid unintended operations.
 - **Auto Check for Updates**: The software will automatically check for updates upon startup; however, due to server issues, this function is temporarily disabled and will be restored in a future version.
 - **Exit Method**: The software can be exited in two ways: Direct Exit or Minimize to System Tray. If you choose to minimize to the tray, you can right-click the tray icon and select Exit to close the software.
 
@@ -51,10 +43,10 @@ The plotting module settings specifically address functions within the plotting 
 * Default loading language for diagrams
 * Automatic updates for diagram templates and classification structures
 
-![setting_plot](imgs/setting_plot.png)
+![tutorial_settings2](../../static/img/v0.6.1/tutorial_settings2.png)
 
 ## About
 
 The About page of the program.
 
-![setting_about](imgs/setting_about.png)
+![tutorial_settings3](../../static/img/v0.6.1/tutorial_settings3.png)

@@ -4,57 +4,49 @@ sidebar_position: 4
 
 # ⚙️ Einstellungen
 
-Der Einstellungsbereich der Software ist sehr vielfältig und wird kontinuierlich mit mehr Personalisierungsoptionen aktualisiert, wenn die Funktionen erweitert werden.
+Der Einstellungsbereich der Software ist recht vielfältig und wird mit der Erweiterung der Funktionen kontinuierlich um weitere Personalisierungsoptionen aktualisiert.
 
 ## Allgemeine Programmeinstellungen
 
-Die Einstellungen sind hauptsächlich in vier Teile unterteilt: Dateipfade, Internationalisierung & Personalisierung, Nachrichtenbenachrichtigungen und Sonstiges. Unten finden Sie eine kurze Beschreibung der wichtigsten Einstellungen:
+Die Einstellungen sind hauptsächlich in vier Teile unterteilt: Dateipfade, Internationalisierung & Personalisierung, Benachrichtigungen und Sonstiges. Nachfolgend finden Sie eine kurze Beschreibung der wichtigsten Einstellungen:
 
-![Settings Interface](https://geo-1303234197.cos.ap-hongkong.myqcloud.com/Setting_UI.png)
+![tutorial_settings1](../../static/img/v0.6.1/tutorial_settings1.png)
 
-### 📁 Dateipfade
+### 🌍 Sprache & Aussehen
 
-- **Speicherort**: Legt den standardmäßigen Dateispeicherort fest. Dieser Pfad wird verwendet, wenn exportierte Plot-Bilder gespeichert oder Geothermometer-bezogene Berechnungen in den Standardspeicherordner exportiert werden. Natürlich können Sie nach dem Festlegen beim Speichern immer noch manuell einen anderen Pfad angeben.
-
-### 🌍 Internationalisierung & Personalisierung
-
-- **Thema**: Das Thema der Softwareoberfläche, einschließlich Hell- und Dunkelmodus.
-- **Sprache**: Derzeit werden Englisch (US) und Vereinfachtes Chinesisch unterstützt.
+- **Sprache**: Unterstützt derzeit Vereinfachtes Chinesisch, Englisch, Deutsch, Spanisch, Japanisch, Koreanisch und Russisch.
 - **Start-Hintergrundbild**: Das Hintergrundbild, das beim Start der Software angezeigt wird.
 
 :::info
 
-In Bezug auf die **Thema**-Funktion: Da wir uns in einem frühen Entwicklungsstadium befinden, weist der Dunkelmodus einige UI-Kompatibilitätsprobleme auf; daher wird dieser Modus in der offiziellen Version ausgeblendet.
-
-Für die Sprachunterstützung: Wenn Sie helfen möchten, Lokalisierungsunterstützung für Ihr Land bereitzustellen, heißen wir Sie herzlich willkommen, an der Übersetzung teilzunehmen!
-
-Weitere Stile für Startbilder werden in zukünftigen Updates hinzugefügt.
+Für die Sprachunterstützung: Wenn Sie helfen möchten, für Ihr Land zu lokalisieren, laden wir Sie herzlich ein, sich unseren Übersetzungsbemühungen anzuschließen! Die meisten aktuellen Übersetzungen wurden von KI unterstützt, was bedeutet, dass einige Teile ungenau sein können – Ihre Hilfe wird sehr benötigt und geschätzt.
 
 :::
 
-### 🗨️ Nachrichtenbenachrichtigungen
+### 🗨️ Benachrichtigungen
 
-- **Dauer für automatisches Schließen**: Die Dauer, für die Nachrichten-Popups während des Softwarebetriebs automatisch geschlossen werden. Bitte beachten Sie, dass Fehler- und Warnmeldungen manuell geschlossen werden müssen.
+- **Automatische Schließdauer**: Die Dauer, für die Benachrichtigungs-Popups während des Softwarebetriebs automatisch geschlossen werden. Bitte beachten Sie, dass Fehler- und Warnmeldungen manuell geschlossen werden müssen.
 
 ### ⚙️ Sonstiges
 
 - **Mit System starten**: Die Software startet automatisch, wenn das System hochfährt.
-- **Automatisch nach Updates suchen**: Die Software sucht beim Start automatisch nach Updates; aufgrund von Serverproblemen ist diese Funktion jedoch vorübergehend deaktiviert und wird in einer zukünftigen Version wiederhergestellt.
+- **Entwicklermodus**: Dieser Modus bietet Debugging-Funktionen für Entwickler. Nicht-Entwicklern wird geraten, ihn nicht zu aktivieren, um unbeabsichtigte Operationen zu vermeiden.
+- **Automatisch auf Updates prüfen**: Die Software prüft beim Start automatisch auf Updates; aufgrund von Serverproblemen ist diese Funktion jedoch vorübergehend deaktiviert und wird in einer zukünftigen Version wiederhergestellt.
 - **Beendigungsmethode**: Die Software kann auf zwei Arten beendet werden: Direktes Beenden oder Minimieren in die Taskleiste. Wenn Sie sich für das Minimieren in die Taskleiste entscheiden, können Sie mit der rechten Maustaste auf das Taskleistensymbol klicken und Beenden wählen, um die Software zu schließen.
 
-## Plot-Modul-Einstellungen
+## Einstellungen des Plot-Moduls
 
-Die Einstellungen des Plot-Moduls befassen sich speziell mit Funktionen innerhalb des Plot-Moduls, einschließlich, aber nicht beschränkt auf:
+Die Einstellungen des Plot-Moduls beziehen sich speziell auf Funktionen innerhalb des Plot-Moduls, einschließlich, aber nicht beschränkt auf:
 
-* Konfiguration des Pfads für Drittanbieterprogramme
-* Standardmäßige Drittanbieterprogramme
-* Standardladesprache für Diagramme
+* Pfadkonfiguration für Drittanbieterprogramme
+* Standard-Drittanbieterprogramme
+* Standard-Ladesprache für Diagramme
 * Automatische Updates für Diagrammvorlagen und Klassifizierungsstrukturen
 
-![setting_plot](imgs/setting_plot.png)
+![tutorial_settings2](../../static/img/v0.6.1/tutorial_settings2.png)
 
 ## Über
 
 Die Über-Seite des Programms.
 
-![setting_about](imgs/setting_about.png)
+![tutorial_settings3](../../static/img/v0.6.1/tutorial_settings3.png)

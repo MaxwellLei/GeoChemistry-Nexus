@@ -8,13 +8,15 @@ sidebar_position: 1
 
 Das ursprüngliche Designziel der Startseite ist es, den schnellen Zugriff auf häufig verwendete Websites im Bereich der Geowissenschaften zu integrieren und praktische Widgets zur Unterstützung verwandter Operationen und Berechnungen bereitzustellen, um letztendlich die Forschungseffizienz zu steigern.
 
-![plot_home_ui](imgs/plot_home_ui.png)
+![plot_home_ui](../../static/img/v0.6.1/tutorial_home1.png)
 
-Die Startseite bietet hauptsächlich **Schnelllinks** und **Widgets**.
+Die Startseite zeigt hauptsächlich **Schnelllinks** und **Widgets**. Sie können mit der rechten Maustaste klicken, um die Menüleiste zu öffnen und verwandte Operationen anzuzeigen.
 
-Derzeit zeigt die Software standardmäßig das Systemdatum und die Uhrzeit an. Sie enthält auch eine Suchleiste, die als einfache Link-Weiterleitung fungiert. Jeder in die Suchleiste eingegebene Inhalt öffnet eine Google-Suche in Ihrem lokalen Browser.
+Bezüglich der Schnelllinks ist unsere Designphilosophie, dass Benutzer häufig verwendete professionelle Websites in Geologie und Geochemie hinzufügen können. Zusätzlich enthält die Software integrierte empfohlene Websites. Wenn Sie möchten, dass Ihre Website zu den Empfehlungen der Startseite hinzugefügt wird, kontaktieren Sie uns bitte über die Seite "Über".
 
-> Die Suchfunktion ist derzeit nicht verfügbar.
+Derzeit zeigt die Startseite standardmäßig das Systemdatum und die Uhrzeit an. Sie verfügt auch über eine Suchleiste, die benutzerdefinierte Schnelllinks und Widgets suchen und abgleichen kann, um ein schnelles Nachschlagen und Navigieren zu ermöglichen.
+
+Das Designziel von Widgets ist es, einfache, unabhängige und grundlegende Berechnungs- oder Betriebsfunktionen bereitzustellen, um häufig verwendete periphere Werkzeuge zu ergänzen und den täglichen Gebrauch für Benutzer zu erleichtern.
 
 :::info
 

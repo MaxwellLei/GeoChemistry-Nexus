@@ -7,7 +7,7 @@
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Data\Icon\logo.ico</ApplicationIcon>
 	<!--软件版本号-->
-    <AssemblyVersion>0.6.0</AssemblyVersion>
+    <AssemblyVersion>0.6.1</AssemblyVersion>
 	<!--图表版本号-->
     <FileVersion>1.0</FileVersion>
     <Copyright>Copyright ©️ 2024</Copyright>

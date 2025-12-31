@@ -4,16 +4,16 @@ sidebar_position: 3
 
 # 🛣️ Roadmap
 
-# 当前
+# Current
 
-- [x] 持续更新常见地质，地球化学图解
-- [ ] 持续更新常见的地质温度计，压力计
-- [ ] 地质年代学数据绘图
+- [x] Continuously update common geological and geochemical diagrams
+- [ ] Continuously update common geothermometers and geobarometers
+- [ ] Geochronology data plotting
 
-# 计划中
+# Planned
 
-- [ ] 科研社区内容建设：我们将搭建一个专属科研社区，支持科研人员上传与分享自主制作的科研图解。同时，社区将配备问题反馈区及论坛讨论模块，便于成员互动交流、经验传递与方案改进。
-- [ ] 扩展地球化学计算工具：根据用户需求，不断更新与完善地球化学相关的科学计算方法，提供更丰富的计算功能，支持多样化的科研应用场景。
-- [ ] 机器学习数据分析功能：未来的软件版本将引入常用机器学习算法，辅助开展地球化学数据分析，为科研人员提供高效的智能化数据处理能力。
-- [ ] “新图解”式机器学习模型支持：随着大数据与机器学习的快速发展，许多模型已成为新的“判别图解”工具。软件将内置可扩展接口，支持快速加载与训练此类模型，科研人员无需掌握机器学习或 Python 等技术，避免安装繁杂的配置环境，即可直接应用“新图解”进行分析与判别。
-- [ ] AI 智能助手：借助内置帮助文档与知识嵌入大模型的技术，AI 助手在第一阶段即可根据科研人员提供的关键词与需求，生成针对性解决方案；在第二阶段，将进一步实现自动化的数据处理与分析，简化科研操作流程，提升工作效率。
+- [ ] **Research Community Construction**: We will build a dedicated research community to support researchers in uploading and sharing self-made scientific diagrams. The community will also be equipped with an issue feedback area and forum discussion modules to facilitate member interaction, experience sharing, and solution improvement.
+- [ ] **Expand Geochemical Calculation Tools**: Based on user needs, we will continuously update and improve scientific calculation methods related to geochemistry, providing richer calculation functions to support diverse scientific research application scenarios.
+- [ ] **Machine Learning Data Analysis**: Future software versions will introduce common machine learning algorithms to assist in geochemical data analysis, providing efficient and intelligent data processing capabilities for researchers.
+- [ ] **"New Diagram" Style Machine Learning Model Support**: With the rapid development of big data and machine learning, many models have become new "discriminant diagram" tools. The software will include built-in extensible interfaces to support the rapid loading and training of such models. Researchers can directly apply "new diagrams" for analysis and discrimination without needing to master machine learning or technologies like Python, avoiding complex configuration environments.
+- [ ] **AI Intelligent Assistant**: Leveraging built-in help documentation and knowledge-embedded large model technology, the AI assistant will be able to generate targeted solutions based on keywords and needs provided by researchers in the first phase; in the second phase, it will further realize automated data processing and analysis, simplifying scientific research workflows and improving efficiency.

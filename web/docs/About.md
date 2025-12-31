@@ -10,28 +10,28 @@ sidebar_position: 6
 
 :::
 
-**GeoChemistry Nexus** 是我第一个计划进行超长期维护的项目——至少未来五年内不会停止更新。
+**GeoChemistry Nexus** is my first project planned for ultra-long-term maintenance—I intend to keep updating it for at least the next five years.
 
-有趣的是，它最初的名字叫 **Geo-Thermometer**。起初，我只是想开发一个与地质温度计相关的基础程序，方便进行计算和绘图。但随着项目推进，尤其是在绘图模块完成后，我突然意识到，完全可以实现一个更宏大的目标。于是，这个项目在理念和功能上不断扩展，从 Geo-Thermometer 演变为 GeoChemistry Nexus。
+Interestingly, it was originally named **Geo-Thermometer**. Initially, I simply wanted to develop a basic program related to geological thermometers to facilitate calculation and plotting. However, as the project progressed, especially after the completion of the plotting module, I suddenly realized that a much grander goal was achievable. Consequently, the project expanded in both concept and functionality, evolving from Geo-Thermometer into GeoChemistry Nexus.
 
-在我看来，地质学和地球化学是相对小众的学科。在这一领域，我发现很多软件要么年久失修，早已停止更新；要么仍在更新，但编程门槛极高，阻碍了很多研究人员的使用。此外，在我的研究中还见过一些不够严谨的做法——例如，有人在绘制地质图解底图时，直接用 CorelDRAW 大致画出形状。虽然从视觉上看差别不大，但从科研的角度而言，这种方式违背了严谨的科学精神。
+In my view, geology and geochemistry are relatively niche disciplines. In this field, I found that many software tools are either in disrepair and have long stopped updating, or are still being updated but have an extremely high barrier to entry, hindering many researchers. Furthermore, I have seen some less-than-rigorous practices in my research—for example, some people use CorelDRAW to roughly sketch shapes when drawing geological diagram basemaps. Although visually there isn't much difference, from a scientific research perspective, this approach violates the rigorous spirit of science.
 
-于是我想：**为什么不自己开发一个工具？**
+So I thought: **Why not develop a tool myself?**
 
- 一个可以集成地质学、地球化学的大量图解模板，支持各类地质温压计计算，还能扩展至地球化学计算和当下热门的机器学习功能。如果没有现成的模板，提供可视化绘制工具，便于制作和分享。再辅以现代化的界面设计、多语言支持，让研究人员在一个软件里完成大部分科研绘图和计算的基础工作。
+A tool that can integrate a large number of geological and geochemical diagram templates, support various geothermometer/barometer calculations, and extend to geochemical calculations and currently popular machine learning functions. If ready-made templates are not available, it provides visual drawing tools to facilitate creation and sharing. Supplemented by modern interface design and multi-language support, it allows researchers to complete most of the basic work of scientific plotting and calculation within a single software.
 
-可视化界面可以显著降低操作难度，多语言支持则减少学习成本；内置的丰富模板和长期更新，将使这个程序成为真正有价值且可持续发展的科研工具。
+A visual interface can significantly reduce the difficulty of operation, while multi-language support reduces learning costs; built-in rich templates and long-term updates will make this program a truly valuable and sustainable scientific research tool.
 
-巧合的是，我本人熟悉 C#、Python 等编程语言，也掌握 WPF 等开发技术。因此在 2024 年12月，我开始着手开发一个 Demo。在最初的技术选型阶段，我曾认真考虑过：到底使用什么语言和架构才能最好地实现这个目标？
+Coincidentally, I am familiar with programming languages such as C# and Python, and I also master development technologies like WPF. Therefore, in December 2024, I began to develop a Demo. In the initial technology selection phase, I seriously considered: what language and architecture would best achieve this goal?
 
-最开始想到的是 Python——它能让我快速实现原型，对开发者而言是好消息。然而从用户的角度看却有致命缺陷：一是运行效率较低（虽然在小数据量下影响不大，但仍然存在性能差距）；二是会带来庞大的安装包。我曾用 Python 重构过一个原本用 WPF 写的简单程序，即使在全新虚拟环境下打包，成品依然高达数百 MB，而 .NET 打包后的程序只有十几 MB，两者差距巨大。为了简单功能却让用户承受数百 MB甚至数 GB的安装和复杂配置，这并不是最佳选择。
+My first thought was Python—it would allow me to quickly prototype, which is good news for developers. However, from the user's perspective, it has fatal flaws: first, low execution efficiency (although the impact is small with small data volumes, there is still a performance gap); second, it brings a massive installation package. I once refactored a simple program originally written in WPF using Python. Even when packaged in a fresh virtual environment, the finished product was as large as hundreds of MB, whereas the .NET packaged program was only a dozen MB—a huge difference. Forcing users to endure hundreds of MB or even GB of installation and complex configuration for simple functions is not the best choice.
 
-接着我考虑过网页开发，优点很明显——无需安装，打开即可使用。但问题在于：一方面我对网页技术掌握不够全面，另一方面服务器的长期高额费用超出了我的个人维护能力。因此，我最终还是将重心转向客户端开发。
+Then I considered web development. The advantages are obvious—no installation required, open and use. But the problem lies in: on one hand, my mastery of web technology is not comprehensive enough; on the other hand, the long-term high cost of servers exceeds my personal maintenance capability. Therefore, I ultimately turned my focus back to client-side development.
 
-客户端开发的技术方案很多，但相比基于 C++ 的 QT，我更熟悉 .NET。结合 .NET 较高的运行效率与 Windows 的普及性，我最终选择了 .NET 作为主要开发平台。起初我也考虑过使用 Avalonia 实现 Windows、Linux、MacOS 的跨平台支持，但在开发过程中发现，部分项目依赖并不兼容 Avalonia，导致迁移成本非常高。以我个人的力量，在早期阶段难以重构这些模块。因此，至少在目前阶段，我的工作仍以 Windows 平台为核心，跨平台版本或许会在未来某一天实现。
+There are many technical solutions for client-side development, but compared to QT based on C++, I am more familiar with .NET. Combining the high execution efficiency of .NET with the ubiquity of Windows, I finally chose .NET as the main development platform. Initially, I also considered using Avalonia to achieve cross-platform support for Windows, Linux, and MacOS, but during the development process, I found that some project dependencies were not compatible with Avalonia, resulting in very high migration costs. With my personal strength, it is difficult to refactor these modules in the early stages. Therefore, at least at the current stage, my work still focuses on the Windows platform, and cross-platform versions may be realized someday in the future.
 
-## 联系我
+## Contact Me
 
-如果你对软件开发感兴趣，愿意与我合作，或者希望提供意见与反馈、图解模板、算法支持，乃至开展商业合作，欢迎通过 **[maxwelllei@qq.com](mailto:maxwelllei@qq.com)** 与我联系。
+If you are interested in software development and willing to cooperate with me, or wish to provide suggestions and feedback, diagram templates, algorithm support, or even conduct commercial cooperation, please feel free to contact me via **[maxwelllei@qq.com](mailto:maxwelllei@qq.com)**.
 
-*在使用软件的过程中，如果您发现任何不足或问题，欢迎随时反馈。由于软件功能和复杂度不断增加，测试难以覆盖所有情况，可能会存在遗漏或不准确的地方。我会尽力进行修正和优化，为您提供更稳定、可靠的使用体验。*
+*If you find any deficiencies or issues while using the software, please feel free to provide feedback. Due to the increasing functionality and complexity of the software, testing is difficult to cover all situations, and there may be omissions or inaccuracies. I will try my best to correct and optimize it to provide you with a more stable and reliable user experience.*
