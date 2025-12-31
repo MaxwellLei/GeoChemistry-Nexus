@@ -12,7 +12,7 @@ sidebar_position: 2
 
 模板的分类逻辑目前按学科组织：
 
-![tutorial_plot1](../../static/img/v0.6.1/tutorial_plot1.png)
+![tutorial_plot1](/img/v0.6.1/tutorial_plot1.png)
 
 :::info
 
@@ -42,7 +42,7 @@ sidebar_position: 2
 *   **右上 - 导航栏**：根据模板列表中选择的层级更新，以显示不同级别的内容。
 *   **右下 - 模板卡片**：显示当前层级下的绘图卡片，包括名称和预览图像。
 
-![tutorial_plot2](../../static/img/v0.6.1/tutorial_plot2.png)
+![tutorial_plot2](/img/v0.6.1/tutorial_plot2.png)
 
 选择并点击模板卡片进入具体的绘图界面。
 
@@ -74,7 +74,7 @@ sidebar_position: 2
 -   **状态栏**：显示基本绘图信息，包括当前图表语言和坐标信息。
 -   **属性面板**：显示所选绘图元素（如颜色、大小）的属性，以实现所需的视觉效果。
 
-![tutorial_plot3](../../static/img/v0.6.1/tutorial_plot3.png)
+![tutorial_plot3](/img/v0.6.1/tutorial_plot3.png)
 
 #### 绘图工具栏
 
@@ -82,7 +82,7 @@ sidebar_position: 2
 
 默认情况下，系统显示绘图工具栏。普通用户通常不需要使用 **编辑工具栏**——这是一个用于创建和扩展模板的高级工具。
 
-![tutorial_plot4](../../static/img/v0.6.1/tutorial_plot4.png)
+![tutorial_plot4](/img/v0.6.1/tutorial_plot4.png)
 
 ### 图层列表
 
@@ -98,7 +98,7 @@ sidebar_position: 2
 
 **默认渲染顺序（从上到下）：`文本 > 箭头 > 点 > 函数 > 线条 > 多边形 > 坐标轴`**。
 
-![tutorial_plot5](../../static/img/v0.6.1/tutorial_plot5.png)
+![tutorial_plot5](/img/v0.6.1/tutorial_plot5.png)
 
 当你在图层面板中选择一个元素时，它将在画布上高亮显示，而其他元素变为半透明以减少干扰。属性面板随后将显示该元素的相关属性。 🔍
 
@@ -116,9 +116,9 @@ sidebar_position: 2
 
 1.  从 **模板库** 中选择一个模板进入绘图页面。
 2.  你可以点击绘图区域右上角的图表指南或切换到数据状态面板——两者都会给你提示。
-    ![tutorial_plot6](../../static/img/v0.6.1/tutorial_plot6.png)
+    ![tutorial_plot6](/img/v0.6.1/tutorial_plot6.png)
 
-    ![tutorial_plot7](../../static/img/v0.6.1/tutorial_plot7.png)
+    ![tutorial_plot7](/img/v0.6.1/tutorial_plot7.png)
     例如，一个模板可能需要四列：`Category`, `SiO2`, `K2O`, 和 `Na2O`。单位通常是 `wt.%`。`Category` 标题用于对数据进行分组并生成图例。
 3.  了解需求后，切换到 **数据** 选项卡并输入你的数据以绘制点。调整视觉设置后，**导出** 最终结果以完成工作流。
-    ![tutorial_plot8](../../static/img/v0.6.1/tutorial_plot8.png)
+    ![tutorial_plot8](/img/v0.6.1/tutorial_plot8.png)

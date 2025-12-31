@@ -8,7 +8,7 @@ sidebar_position: 1
 
 Das ursprüngliche Designziel der Startseite ist es, den schnellen Zugriff auf häufig verwendete Websites im Bereich der Geowissenschaften zu integrieren und praktische Widgets zur Unterstützung verwandter Operationen und Berechnungen bereitzustellen, um letztendlich die Forschungseffizienz zu steigern.
 
-![plot_home_ui](../../static/img/v0.6.1/tutorial_home1.png)
+![plot_home_ui](/img/v0.6.1/tutorial_home1.png)
 
 Die Startseite zeigt hauptsächlich **Schnelllinks** und **Widgets**. Sie können mit der rechten Maustaste klicken, um die Menüleiste zu öffnen und verwandte Operationen anzuzeigen.
 

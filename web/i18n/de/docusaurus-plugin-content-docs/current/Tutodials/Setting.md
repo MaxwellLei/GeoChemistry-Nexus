@@ -10,7 +10,7 @@ Der Einstellungsbereich der Software ist recht vielfältig und wird mit der Erwe
 
 Die Einstellungen sind hauptsächlich in vier Teile unterteilt: Dateipfade, Internationalisierung & Personalisierung, Benachrichtigungen und Sonstiges. Nachfolgend finden Sie eine kurze Beschreibung der wichtigsten Einstellungen:
 
-![tutorial_settings1](../../static/img/v0.6.1/tutorial_settings1.png)
+![tutorial_settings1](/img/v0.6.1/tutorial_settings1.png)
 
 ### 🌍 Sprache & Aussehen
 
@@ -43,10 +43,10 @@ Die Einstellungen des Plot-Moduls beziehen sich speziell auf Funktionen innerhal
 * Standard-Ladesprache für Diagramme
 * Automatische Updates für Diagrammvorlagen und Klassifizierungsstrukturen
 
-![tutorial_settings2](../../static/img/v0.6.1/tutorial_settings2.png)
+![tutorial_settings2](/img/v0.6.1/tutorial_settings2.png)
 
 ## Über
 
 Die Über-Seite des Programms.
 
-![tutorial_settings3](../../static/img/v0.6.1/tutorial_settings3.png)
+![tutorial_settings3](/img/v0.6.1/tutorial_settings3.png)

@@ -10,7 +10,7 @@ sidebar_position: 4
 
 設定主要分為四個部分：檔案路徑、國際化與個人化、訊息通知和其他。以下是主要設定的簡要說明：
 
-![tutorial_settings1](../../static/img/v0.6.1/tutorial_settings1.png)
+![tutorial_settings1](/img/v0.6.1/tutorial_settings1.png)
 
 ### 🌍 語言與外觀
 
@@ -43,10 +43,10 @@ sidebar_position: 4
 * 圖表預設載入語言
 * 圖表模板和分類結構的自動更新
 
-![tutorial_settings2](../../static/img/v0.6.1/tutorial_settings2.png)
+![tutorial_settings2](/img/v0.6.1/tutorial_settings2.png)
 
 ## 關於
 
 程式的關於頁面。
 
-![tutorial_settings3](../../static/img/v0.6.1/tutorial_settings3.png)
+![tutorial_settings3](/img/v0.6.1/tutorial_settings3.png)

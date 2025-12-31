@@ -10,7 +10,7 @@ sidebar_position: 4
 
 设置主要分为四个部分：文件路径、国际化与个性化、消息通知和其他。下面是对主要设置的简要说明：
 
-![tutorial_settings1](../../static/img/v0.6.1/tutorial_settings1.png)
+![tutorial_settings1](/img/v0.6.1/tutorial_settings1.png)
 
 ### 🌍 语言 & 外观
 
@@ -43,10 +43,10 @@ sidebar_position: 4
 *   图表默认加载语言
 *   图表模板和分类结构的自动更新
 
-![tutorial_settings2](../../static/img/v0.6.1/tutorial_settings2.png)
+![tutorial_settings2](/img/v0.6.1/tutorial_settings2.png)
 
 ## 关于
 
 程序的关于页面。
 
-![tutorial_settings3](../../static/img/v0.6.1/tutorial_settings3.png)
+![tutorial_settings3](/img/v0.6.1/tutorial_settings3.png)

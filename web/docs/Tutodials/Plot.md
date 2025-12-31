@@ -12,7 +12,7 @@ On the Illustrated Plotting page, we will integrate more fundamental geoscience 
 
 The classification logic for templates is currently organized by academic discipline:
 
-![tutorial_plot1](../../static/img/v0.6.1/tutorial_plot1.png)
+![tutorial_plot1](/img/v0.6.1/tutorial_plot1.png)
 
 :::info
 
@@ -42,7 +42,7 @@ By default, the plotting module displays the built-in Geoscience Template Librar
 * **Top Right - Navigation Bar**: Updates based on the selected hierarchy in the template list to show different levels of content.
 * **Bottom Right - Template Cards**: Displays the plotting cards under the current hierarchy, including names and preview images.
 
-![tutorial_plot2](../../static/img/v0.6.1/tutorial_plot2.png)
+![tutorial_plot2](/img/v0.6.1/tutorial_plot2.png)
 
 Select and click a template card to enter the specific plotting interface.
 
@@ -74,7 +74,7 @@ The plotting interface is divided into five main parts:
 - **Status Bar**: Displays basic plotting information, including the current diagram language and coordinate information.
 - **Property Panel**: Displays the attributes of the selected drawing element (e.g., color, size) to achieve the desired visual effect.
 
-![tutorial_plot3](../../static/img/v0.6.1/tutorial_plot3.png)
+![tutorial_plot3](/img/v0.6.1/tutorial_plot3.png)
 
 #### Plotting Toolbar
 
@@ -82,7 +82,7 @@ The toolbar consists of **Shortcut Buttons** and a **Menu Bar**. **Shortcut Butt
 
 By default, the system displays the Plotting Toolbar. General users typically do not need to use the **Editing Toolbar**—it is an advanced tool used for creating and extending templates.
 
-![tutorial_plot4](../../static/img/v0.6.1/tutorial_plot4.png)
+![tutorial_plot4](/img/v0.6.1/tutorial_plot4.png)
 
 ### Layer List
 
@@ -98,7 +98,7 @@ Drawing elements are categorized into 7 main types:
 
 **Default Rendering Order (Top to Bottom): `Text > Arrow > Point > Function > Line > Polygon > Axes`**.
 
-![tutorial_plot5](../../static/img/v0.6.1/tutorial_plot5.png)
+![tutorial_plot5](/img/v0.6.1/tutorial_plot5.png)
 
 When you select an element in the layer panel, it will be highlighted on the canvas while other elements become semi-transparent to reduce interference. The Property Panel will then display the relevant attributes for that element. 🔍
 
@@ -116,9 +116,9 @@ To deselect all elements, simply right-click anywhere on the canvas or use the *
 
 1. Select a template from the **Template Library** to enter the plotting page.
 2. You can either click the diagram guide in the upper-right corner of the drawing area or switch to the data status panel—both will give you a heads-up.
-   ![tutorial_plot6](../../static/img/v0.6.1/tutorial_plot6.png)
+![tutorial_plot6](/img/v0.6.1/tutorial_plot6.png)
    
-   ![tutorial_plot7](../../static/img/v0.6.1/tutorial_plot7.png)
+![tutorial_plot7](/img/v0.6.1/tutorial_plot7.png)
    For example, a template might require four columns: `Category`, `SiO2`, `K2O`, and `Na2O`. Units are usually in `wt.%`. The `Category` header is used to group data and generate legends.
 3. Once the requirements are understood, switch to the **Data** tab and input your data to plot the points. After adjusting visual settings, **Export** the final result to complete your workflow.
-   ![tutorial_plot8](../../static/img/v0.6.1/tutorial_plot8.png)
+![tutorial_plot8](/img/v0.6.1/tutorial_plot8.png)

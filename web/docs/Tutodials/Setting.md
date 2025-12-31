@@ -10,7 +10,7 @@ The settings section of the software is quite diverse and will be continuously u
 
 Settings are mainly divided into four parts: File Paths, Internationalization & Personalization, Message Notifications, and Others. Below is a brief description of the main settings:
 
-![tutorial_settings1](../../static/img/v0.6.1/tutorial_settings1.png)
+![tutorial_settings1](/img/v0.6.1/tutorial_settings1.png)
 
 ### 🌍 Language & Appearance
 
@@ -43,10 +43,10 @@ The plotting module settings specifically address functions within the plotting 
 * Default loading language for diagrams
 * Automatic updates for diagram templates and classification structures
 
-![tutorial_settings2](../../static/img/v0.6.1/tutorial_settings2.png)
+![tutorial_settings2](/img/v0.6.1/tutorial_settings2.png)
 
 ## About
 
 The About page of the program.
 
-![tutorial_settings3](../../static/img/v0.6.1/tutorial_settings3.png)
+![tutorial_settings3](/img/v0.6.1/tutorial_settings3.png)

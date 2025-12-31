@@ -12,7 +12,7 @@ Auf der Seite Illustrierte Diagrammerstellung werden wir weitere grundlegende ge
 
 Die Klassifizierungslogik für Vorlagen ist derzeit nach akademischer Disziplin organisiert:
 
-![tutorial_plot1](../../static/img/v0.6.1/tutorial_plot1.png)
+![tutorial_plot1](/img/v0.6.1/tutorial_plot1.png)
 
 :::info
 
@@ -42,7 +42,7 @@ Standardmäßig zeigt das Plot-Modul beim Betreten die integrierte Geowissenscha
 * **Oben Rechts - Navigationsleiste**: Aktualisiert sich basierend auf der ausgewählten Hierarchie in der Vorlagenliste, um verschiedene Inhaltsebenen anzuzeigen.
 * **Unten Rechts - Vorlagenkarten**: Zeigt die Plot-Karten unter der aktuellen Hierarchie an, einschließlich Namen und Vorschaubildern.
 
-![tutorial_plot2](../../static/img/v0.6.1/tutorial_plot2.png)
+![tutorial_plot2](/img/v0.6.1/tutorial_plot2.png)
 
 Wählen Sie eine Vorlagenkarte aus und klicken Sie darauf, um die spezifische Plot-Oberfläche aufzurufen.
 
@@ -74,7 +74,7 @@ Die Plot-Oberfläche ist in fünf Hauptteile unterteilt:
 - **Statusleiste**: Zeigt grundlegende Plot-Informationen an, einschließlich der aktuellen Diagrammsprache und Koordinateninformationen.
 - **Eigenschaftsfenster**: Zeigt die Attribute des ausgewählten Zeichnungselements (z. B. Farbe, Größe) an, um den gewünschten visuellen Effekt zu erzielen.
 
-![tutorial_plot3](../../static/img/v0.6.1/tutorial_plot3.png)
+![tutorial_plot3](/img/v0.6.1/tutorial_plot3.png)
 
 #### Plot-Symbolleiste
 
@@ -82,7 +82,7 @@ Die Symbolleiste besteht aus **Schnellzugriffsschaltflächen** und einer **Menü
 
 Standardmäßig zeigt das System die Plot-Symbolleiste an. Allgemeine Benutzer müssen normalerweise nicht die **Bearbeitungs-Symbolleiste** verwenden – dies ist ein fortgeschrittenes Werkzeug, das zum Erstellen und Erweitern von Vorlagen verwendet wird.
 
-![tutorial_plot4](../../static/img/v0.6.1/tutorial_plot4.png)
+![tutorial_plot4](/img/v0.6.1/tutorial_plot4.png)
 
 ### Ebenenliste
 

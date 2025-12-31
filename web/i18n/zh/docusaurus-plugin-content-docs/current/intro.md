@@ -39,11 +39,11 @@ sidebar_position: 1
 
 目前，尚无针对 Linux 和 Mac 的详细说明。建议优先使用虚拟机运行程序。我们计划在未来迁移到 `Avalonia` 以实现完全的跨平台兼容性。 📅
 
-![用户界面示例](../static/img/v0.6.1/intro_user_interface_example1.png)
+![用户界面示例](/img/v0.6.1/intro_user_interface_example1.png)
 
-![用户界面示例](../static/img/v0.6.1/intro_user_interface_example2.png)
+![用户界面示例](/img/v0.6.1/intro_user_interface_example2.png)
 
-![教程绘图0](../static/img/v0.6.1/tutorial_plot0.png)
+![教程绘图0](/img/v0.6.1/tutorial_plot0.png)
 
 ----
 

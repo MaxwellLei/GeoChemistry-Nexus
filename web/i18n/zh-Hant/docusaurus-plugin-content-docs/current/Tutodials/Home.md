@@ -8,7 +8,7 @@ sidebar_position: 1
 
 首頁的最初設計目標是整合地球科學領域常用網站的快速存取，並提供實用的小工具以支援相關操作和計算，最終提高研究效率。
 
-![plot_home_ui](../../static/img/v0.6.1/tutorial_home1.png)
+![plot_home_ui](/img/v0.6.1/tutorial_home1.png)
 
 首頁主要顯示 **快速連結** 和 **小工具**。你可以右鍵點擊打開選單列查看相關操作。
 

@@ -8,7 +8,7 @@ sidebar_position: 1
 
 首页的最初设计目标是整合地球科学领域常用网站的快速访问，并提供实用的小部件以支持相关操作和计算，最终提高研究效率。
 
-![plot_home_ui](../../static/img/v0.6.1/tutorial_home1.png)
+![plot_home_ui](/img/v0.6.1/tutorial_home1.png)
 
 首页主要显示 **快速链接** 和 **小部件**。你可以右键点击打开菜单栏查看相关操作。
 

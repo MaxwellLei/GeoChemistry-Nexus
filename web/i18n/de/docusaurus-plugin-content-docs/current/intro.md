@@ -39,11 +39,11 @@ Bevor Sie beginnen, befolgen Sie bitte diese Schritte:
 
 Derzeit gibt es keine detaillierten Anweisungen für Linux und Mac. Es wird empfohlen, vorrangig eine virtuelle Maschine zum Ausführen des Programms zu verwenden. Wir planen, in Zukunft auf `Avalonia` umzusteigen, um volle plattformübergreifende Kompatibilität zu erreichen. 📅
 
-![Benutzeroberflächen-Beispiel](../static/img/v0.6.1/intro_user_interface_example1.png)
+![Benutzeroberflächen-Beispiel](/img/v0.6.1/intro_user_interface_example1.png)
 
-![Benutzeroberflächen-Beispiel](../static/img/v0.6.1/intro_user_interface_example2.png)
+![Benutzeroberflächen-Beispiel](/img/v0.6.1/intro_user_interface_example2.png)
 
-![tutorial_plot0](../static/img/v0.6.1/tutorial_plot0.png)
+![tutorial_plot0](/img/v0.6.1/tutorial_plot0.png)
 
 ----
 

@@ -12,7 +12,7 @@ sidebar_position: 2
 
 模板的分類邏輯目前按學科組織：
 
-![tutorial_plot1](../../static/img/v0.6.1/tutorial_plot1.png)
+![tutorial_plot1](/img/v0.6.1/tutorial_plot1.png)
 
 :::info
 
@@ -42,7 +42,7 @@ sidebar_position: 2
 * **右上方 - 導覽列**：根據模板列表中選擇的階層更新，顯示不同層級的內容。
 * **右下方 - 模板卡片**：顯示目前階層下的繪圖卡片，包括名稱和預覽圖像。
 
-![tutorial_plot2](../../static/img/v0.6.1/tutorial_plot2.png)
+![tutorial_plot2](/img/v0.6.1/tutorial_plot2.png)
 
 選擇並點擊模板卡片以進入特定的繪圖介面。
 
@@ -74,7 +74,7 @@ sidebar_position: 2
 - **狀態列**：顯示基本繪圖資訊，包括目前圖表語言和座標資訊。
 - **屬性面板**：顯示所選繪圖元素的屬性（如顏色、大小），以達到所需的視覺效果。
 
-![tutorial_plot3](../../static/img/v0.6.1/tutorial_plot3.png)
+![tutorial_plot3](/img/v0.6.1/tutorial_plot3.png)
 
 #### 繪圖工具列
 
@@ -82,7 +82,7 @@ sidebar_position: 2
 
 預設情況下，系統顯示繪圖工具列。一般使用者通常不需要使用 **編輯工具列**——這是一個用於建立和擴充模板的進階工具。
 
-![tutorial_plot4](../../static/img/v0.6.1/tutorial_plot4.png)
+![tutorial_plot4](/img/v0.6.1/tutorial_plot4.png)
 
 ### 圖層列表
 
@@ -97,3 +97,28 @@ sidebar_position: 2
 - **資料點 (Data Point)**：代表匯入資料的元素。
 
 **預設渲染順序（從上到下）：`文字 > 箭頭 > 點 > 函數 > 線條 > 多邊形 > 座標軸`**。
+
+![tutorial_plot5](/img/v0.6.1/tutorial_plot5.png)
+
+當你在圖層面板中選擇一個元素時，它將在畫布上高亮顯示，而其他元素變為半透明以減少干擾。屬性面板隨後將顯示該元素的相關屬性。 🔍
+
+修改這些屬性以達到你想要的視覺風格。
+
+:::tip
+
+要取消選擇所有元素，只需在畫布上的任意位置右鍵點擊或使用工具列上的 **取消選擇** 按鈕。
+
+:::
+
+### 屬性面板 & 圖表指南
+
+## 範例工作流程
+
+1. 從 **模板庫** 中選擇一個模板進入繪圖頁面。
+2. 你可以點擊繪圖區域右上角的圖表指南或切換到資料狀態面板——兩者都會給你提示。
+   ![tutorial_plot6](/img/v0.6.1/tutorial_plot6.png)
+
+   ![tutorial_plot7](/img/v0.6.1/tutorial_plot7.png)
+   例如，一個模板可能需要四列：`Category`, `SiO2`, `K2O`, 和 `Na2O`。單位通常是 `wt.%`。`Category` 標題用於對資料進行分組並生成圖例。
+3. 了解需求後，切換到 **資料** 分頁並輸入你的資料以繪製點。調整視覺設定後，**匯出** 最終結果以完成工作流程。
+   ![tutorial_plot8](/img/v0.6.1/tutorial_plot8.png)
