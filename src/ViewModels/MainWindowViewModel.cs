@@ -32,24 +32,10 @@ namespace GeoChemistryNexus.ViewModels
         public MainWindowViewModel()
         {
             IsSideBarVisible = true;
-            //FunInit();
-
-            // 注册未保存更改的消息
-            WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>>(this, (r, m) =>
-            {
-                if (m.Value)
-                {
-                    Title = "MainWindow *";
-                }
-                else
-                {
-                    Title = "MainWindow";
-                }
-            });
         }
 
         [ObservableProperty]
-        private string _title = "MainWindow";
+        private string _title = "GeoChemistry Nexus";
 
         [ObservableProperty]
         private bool _isSideBarVisible;

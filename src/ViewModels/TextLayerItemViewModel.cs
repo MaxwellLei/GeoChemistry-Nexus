@@ -61,7 +61,12 @@ namespace GeoChemistryNexus.ViewModels
             if (TextDefinition?.StartAndEnd == null) return;
 
             // 获取文本内容（多语言）
+            // ScottPlot 不正确渲染 Windows 换行符 \r，导致显示方块，统一替换为 \n
             string content = TextDefinition.Content.Get();
+            if (!string.IsNullOrEmpty(content))
+            {
+                content = content.Replace("\r\n", "\n").Replace("\r", "\n");
+            }
 
             // 将存储的真实数据坐标转换为绘图坐标（处理 Log 逻辑）
             var renderLocation = PlotTransformHelper.ToRenderCoordinates(

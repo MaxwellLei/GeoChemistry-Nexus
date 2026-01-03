@@ -1151,7 +1151,10 @@ namespace GeoChemistryNexus.ViewModels
             WpfPlot1.Plot.Remove(_selectedDataPointMarker);
             WpfPlot1.Plot.Add.Plottable(_selectedDataPointMarker);
 
-            _selectedDataPointMarker.Location = location;
+            // 将真实坐标转换为绘图坐标（处理对数轴）
+            var renderLocation = PlotTransformHelper.ToRenderCoordinates(WpfPlot1.Plot, location);
+
+            _selectedDataPointMarker.Location = renderLocation;
             _selectedDataPointMarker.IsVisible = true;
             WpfPlot1.Refresh();
         }
@@ -1365,10 +1368,13 @@ namespace GeoChemistryNexus.ViewModels
                     pickMouseCoordinates = snapPoint.Value;
                 }
 
+                // 将绘图坐标转换为真实数据坐标（处理对数轴）
+                var realCoordinates = PlotTransformHelper.ToRealDataCoordinates(WpfPlot1.Plot, pickMouseCoordinates);
+
                 if (_targetPointDefinition != null)
                 {
-                    _targetPointDefinition.X = pickMouseCoordinates.X;
-                    _targetPointDefinition.Y = pickMouseCoordinates.Y;
+                    _targetPointDefinition.X = realCoordinates.X;
+                    _targetPointDefinition.Y = realCoordinates.Y;
                     // 坐标拾取成功
                     MessageHelper.Success(LanguageService.Instance["coordinates_picked_success"]);
 
@@ -2114,6 +2120,9 @@ namespace GeoChemistryNexus.ViewModels
                     // 获取对应的语言代码
                     string finalLanguage = displayMap[selectedDisplayName];
 
+                    // 切换语言前先取消选中对象
+                    CancelSelected();
+
                     // 设置当前图解语言，触发 OnCurrentDiagramLanguageChanged 进行更新
                     CurrentDiagramLanguage = finalLanguage;
                     MessageHelper.Success(LanguageService.Instance["language_switch_success"]);
@@ -2619,6 +2628,13 @@ namespace GeoChemistryNexus.ViewModels
                         }
                     }
                 }
+                else if (layer is TextLayerItemViewModel textLayer)
+                {
+                    if (textLayer.TextDefinition?.StartAndEnd != null)
+                    {
+                        pointsToShow.Add(PlotTransformHelper.ToRenderCoordinates(WpfPlot1.Plot, textLayer.TextDefinition.StartAndEnd.X, textLayer.TextDefinition.StartAndEnd.Y));
+                    }
+                }
             }
 
             // 为每个端点添加灰色圆圈标记
@@ -2647,10 +2663,12 @@ namespace GeoChemistryNexus.ViewModels
 
         /// <summary>
         /// 获取吸附点
+        /// 注意：所有的计算都基于 Render Coordinates (绘图坐标)，即线性化后的坐标。
+        /// 对于对数轴，这意味着是 Log(Value)。
         /// </summary>
         /// <param name="mousePixel">鼠标像素位置</param>
         /// <param name="snapDistancePixels">吸附距离阈值</param>
-        /// <returns>吸附点的坐标，如果没有吸附则返回 null</returns>
+        /// <returns>吸附点的坐标 (Render Coordinates)，如果没有吸附则返回 null</returns>
         private Coordinates? GetSnapPoint(Pixel mousePixel, double snapDistancePixels = 10)
         {
             Coordinates? bestSnap = null;
@@ -2664,11 +2682,13 @@ namespace GeoChemistryNexus.ViewModels
 
                 if (layer is LineLayerItemViewModel lineLayer && lineLayer.Plottable is ScottPlot.Plottables.LinePlot linePlot)
                 {
+                    // LinePlot 已经在 LineLayerItemViewModel 中被转换为 Render Coordinates
                     pointsToCheck.Add(linePlot.Start);
                     pointsToCheck.Add(linePlot.End);
                 }
                 else if (layer is ArrowLayerItemViewModel arrowLayer && arrowLayer.Plottable is ScottPlot.Plottables.Arrow arrowPlot)
                 {
+                    // ArrowPlot 已经在 ArrowLayerItemViewModel 中被转换为 Render Coordinates
                     pointsToCheck.Add(arrowPlot.Base);
                     pointsToCheck.Add(arrowPlot.Tip);
                 }
@@ -2690,6 +2710,13 @@ namespace GeoChemistryNexus.ViewModels
                         {
                             pointsToCheck.Add(PlotTransformHelper.ToRenderCoordinates(WpfPlot1.Plot, p));
                         }
+                    }
+                }
+                else if (layer is TextLayerItemViewModel textLayer)
+                {
+                    if (textLayer.TextDefinition?.StartAndEnd != null)
+                    {
+                        pointsToCheck.Add(PlotTransformHelper.ToRenderCoordinates(WpfPlot1.Plot, textLayer.TextDefinition.StartAndEnd.X, textLayer.TextDefinition.StartAndEnd.Y));
                     }
                 }
 

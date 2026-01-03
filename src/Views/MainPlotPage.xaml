@@ -1019,7 +1019,7 @@
                                                 <Border.Effect>
                                                     <DropShadowEffect BlurRadius="10" ShadowDepth="2" Direction="270" Color="#20000000" Opacity="0.4"/>
                                                 </Border.Effect>
-                                                <uc:CustomColorPicker x:Name="RichTextColorPicker" Width="270" Height="Auto"/>
+                                                <uc:CustomColorPicker x:Name="RichTextColorPicker" Width="270" Height="Auto" SelectedColor="Black"/>
                                             </Border>
                                         </Popup>
 
@@ -1083,6 +1083,7 @@
                               BorderThickness="0" Background="Transparent" Margin="24"
                               VerticalScrollBarVisibility="Auto"
                               HorizontalScrollBarVisibility="Auto"
+                              Foreground="Black"
                               SelectionChanged="Drichtextbox_SelectionChanged"/>
                         </Grid>
                     </Border>

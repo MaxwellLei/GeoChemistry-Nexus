@@ -92,6 +92,8 @@
 ## 💬 社群與交流
 
 * **聯絡電郵**: `maxwelllei@qq.com`
+* Discord: [![Discord](https://img.shields.io/discord/你的ServerID?style=for-the-badge&logo=discord&logoColor=white&label=Discord&color=5865F2)](https://discord.gg/3VNNzKMB)
+* QQ Group: 1076647740
 
 ## 👋 參與貢獻
 

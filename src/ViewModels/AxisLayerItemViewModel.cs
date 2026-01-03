@@ -152,22 +152,22 @@ namespace GeoChemistryNexus.ViewModels
                 if (targetAxis is LeftAxisWithSubtitle leftSub)
                 {
                     ConfigureSubtitle(leftSub.SubLabelStyle, cartesianAxisDef);
-                    leftSub.SubLabelText = cartesianAxisDef.SubLabel.Get();
+                    leftSub.SubLabelText = cartesianAxisDef.SubLabel.Get()?.Replace("\r\n", "\n").Replace("\r", "\n") ?? "";
                 }
                 else if (targetAxis is RightAxisWithSubtitle rightSub)
                 {
                     ConfigureSubtitle(rightSub.SubLabelStyle, cartesianAxisDef);
-                    rightSub.SubLabelText = cartesianAxisDef.SubLabel.Get();
+                    rightSub.SubLabelText = cartesianAxisDef.SubLabel.Get()?.Replace("\r\n", "\n").Replace("\r", "\n") ?? "";
                 }
                 else if (targetAxis is BottomAxisWithSubtitle bottomSub)
                 {
                     ConfigureSubtitle(bottomSub.SubLabelStyle, cartesianAxisDef);
-                    bottomSub.SubLabelText = cartesianAxisDef.SubLabel.Get();
+                    bottomSub.SubLabelText = cartesianAxisDef.SubLabel.Get()?.Replace("\r\n", "\n").Replace("\r", "\n") ?? "";
                 }
                 else if (targetAxis is TopAxisWithSubtitle topSub)
                 {
                     ConfigureSubtitle(topSub.SubLabelStyle, cartesianAxisDef);
-                    topSub.SubLabelText = cartesianAxisDef.SubLabel.Get();
+                    topSub.SubLabelText = cartesianAxisDef.SubLabel.Get()?.Replace("\r\n", "\n").Replace("\r", "\n") ?? "";
                 }
 
                 // 应用轴范围限制 (最后执行以确保覆盖 TickGenerator 可能带来的副作用)
@@ -192,7 +192,7 @@ namespace GeoChemistryNexus.ViewModels
                 if (targetEdge != null)
                 {
                     // 标题样式
-                    targetEdge.LabelText = ternaryAxisDef.Label.Get();
+                    targetEdge.LabelText = ternaryAxisDef.Label.Get()?.Replace("\r\n", "\n").Replace("\r", "\n") ?? "";
                     targetEdge.LabelStyle.FontName = ternaryAxisDef.Family;
                     targetEdge.LabelStyle.FontSize = ternaryAxisDef.Size;
                     targetEdge.LabelStyle.ForeColor = ScottPlot.Color.FromHex(

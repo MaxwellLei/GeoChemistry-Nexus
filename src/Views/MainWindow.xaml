@@ -262,7 +262,7 @@
             </ScrollViewer>
 
             <!-- Notify Icon (Tray) -->
-            <hc:NotifyIcon Name="notifyIcon" Text="Geo-Thermometer" IsBlink="False" Visibility="Visible" Icon="../Data/Icon/logo.png">
+            <hc:NotifyIcon Name="notifyIcon" Text="GeoChemistry Nexus" IsBlink="False" Visibility="Visible" Icon="../Data/Icon/logo.png">
                 <hc:NotifyIcon.ContextMenu>
                     <ContextMenu Width="160" Placement="Right">
                         <MenuItem Header="{Binding [Show],Source={x:Static lg:LanguageService.Instance}}" Click="ShowWindow"/>

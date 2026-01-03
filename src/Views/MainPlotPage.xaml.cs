@@ -52,25 +52,14 @@ namespace GeoChemistryNexus.Views
             // 页面加载时检查更新
             this.Loaded += (s, e) => viewModel.CheckUpdatesIfNeeded();
 
-            /*
             var dpd = System.ComponentModel.DependencyPropertyDescriptor.FromProperty(CustomColorPicker.SelectedColorProperty, typeof(CustomColorPicker));
             dpd.AddValueChanged(RichTextColorPicker, (s, e) =>
             {
                 if (Drichtextbox == null || Drichtextbox.IsReadOnly) return;
                 var color = RichTextColorPicker.SelectedColor;
 
-                // 更新按钮下划线颜色
-                if (ColorUnderline != null)
-                {
-                    ColorUnderline.Background = new SolidColorBrush(color);
-                }
-
-                if (!Drichtextbox.Selection.IsEmpty)
-                {
-                    Drichtextbox.Selection.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(color));
-                }
+                Drichtextbox.Selection.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(color));
             });
-            */
         }
 
         private void OnSwitchRadioButtonChecked(object sender, RoutedEventArgs e)
