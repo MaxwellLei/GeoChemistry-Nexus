@@ -5678,13 +5678,34 @@ namespace GeoChemistryNexus.ViewModels
                     System.Diagnostics.Debug.WriteLine($"Failed to render RTF content: {ex.Message}");
                 }
             }
-            else
+            // 3. 如果数据库没有内容，尝试从本地文件系统加载（用于外部临时文件模式）
+            if (string.IsNullOrEmpty(rtfContent))
             {
-                // 如果数据库中没有找到内容，尝试加载默认英文
-                if (languageCode != "en-US")
+                if (!string.IsNullOrEmpty(_currentTemplateFilePath))
                 {
-                    ReloadHelpDocument("en-US");
+                    string directory = Path.GetDirectoryName(_currentTemplateFilePath);
+                    
+                    // 尝试加载对应语言的 RTF 文件
+                    string fileRtfPath = FileHelper.FindFileOrGetFirstWithExtension(directory, languageCode, ".rtf");
+                    
+                    if (!string.IsNullOrEmpty(fileRtfPath))
+                    {
+                        RtfHelper.LoadRtfToRichTextBox(fileRtfPath, _richTextBox);
+                        _currentRtfFilePath = fileRtfPath;
+                        return; // 成功加载，直接返回
+                    }
                 }
+            }
+
+            // 4. 如果以上都失败，加载默认模板文件
+            if (string.IsNullOrEmpty(rtfContent))
+            {
+                 string defaultTemplatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "Documents", "template.rtf");
+                 if (File.Exists(defaultTemplatePath))
+                 {
+                     RtfHelper.LoadRtfToRichTextBox(defaultTemplatePath, _richTextBox);
+                     _currentRtfFilePath = defaultTemplatePath;
+                 }
             }
         }
 
@@ -6002,8 +6023,8 @@ namespace GeoChemistryNexus.ViewModels
             // 生成并保存缩略图
             try
             {
-                // 生成缩略图 (640*480)
-                byte[] thumbnailBytes = WpfPlot1.Plot.GetImageBytes(640, 480);
+                // 生成缩略图 (680*480)
+                byte[] thumbnailBytes = WpfPlot1.Plot.GetImageBytes(680, 480);
 
                 using (var stream = new MemoryStream(thumbnailBytes))
                 {
@@ -6627,6 +6648,9 @@ namespace GeoChemistryNexus.ViewModels
                     // 确保清除语言覆盖
                     LocalizedString.OverrideLanguage = null;
 
+                    // Clear Template ID since we are opening an external file
+                    _currentTemplateId = null;
+
                     // 获取用户选择的完整文件路径
                     string filePath = openFileDialog.FileName;
 
@@ -6709,6 +6733,17 @@ namespace GeoChemistryNexus.ViewModels
                                           directoryPath,
                                           CurrentDiagramLanguage,
                                           ".rtf");
+                    
+                    // 如果找不到对应的说明文件，则加载默认模板
+                    if (string.IsNullOrEmpty(tempRTFfile))
+                    {
+                        string defaultTemplatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "Documents", "template.rtf");
+                        if (File.Exists(defaultTemplatePath))
+                        {
+                            tempRTFfile = defaultTemplatePath;
+                        }
+                    }
+
                     _currentRtfFilePath = tempRTFfile;
                     RtfHelper.LoadRtfToRichTextBox(tempRTFfile, _richTextBox);
 
@@ -7725,6 +7760,57 @@ namespace GeoChemistryNexus.ViewModels
             // 清空模板中原有的动态绘图元素列表并从 LayerTree 更新
             UpdateTemplateInfoFromLayers(CurrentTemplate);
 
+            // 如果 _currentTemplateId 为空，说明是外部文件模式
+            if (_currentTemplateId == null)
+            {
+                if (!string.IsNullOrEmpty(_currentTemplateFilePath))
+                {
+                    try
+                    {
+                        // 1. 保存 JSON
+                        string jsonString = SerializeTemplate(CurrentTemplate);
+                        await File.WriteAllTextAsync(_currentTemplateFilePath, jsonString);
+
+                        // 2. 保存缩略图
+                        try
+                        {
+                            string thumbnailPath = Path.ChangeExtension(_currentTemplateFilePath, ".jpg");
+                            var imageBytes = WpfPlot1.Plot.GetImageBytes(640, 480, ScottPlot.ImageFormat.Jpeg);
+                            await File.WriteAllBytesAsync(thumbnailPath, imageBytes);
+                        }
+                        catch (Exception ex)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"Failed to save thumbnail: {ex.Message}");
+                        }
+
+                        // 3. 保存 RTF
+                        try
+                        {
+                            string directory = Path.GetDirectoryName(_currentTemplateFilePath);
+                            string lang = !string.IsNullOrEmpty(CurrentDiagramLanguage) ? CurrentDiagramLanguage : "en-US";
+                            string rtfPath = Path.Combine(directory, $"{lang}.rtf");
+                            
+                            RtfHelper.SaveRichTextBoxToRtf(_richTextBox, rtfPath);
+                        }
+                        catch (Exception ex)
+                        {
+                             System.Diagnostics.Debug.WriteLine($"Failed to save RTF: {ex.Message}");
+                        }
+
+                        _originalTemplateJson = jsonString;
+                        HasUnsavedChanges = false;
+                        WeakReferenceMessenger.Default.Send(new UnsavedChangesMessage(false));
+
+                        MessageHelper.Success(LanguageService.Instance["template_saved_successfully"]);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageHelper.Error(LanguageService.Instance["save_template_failed"] + $": {ex.Message}");
+                    }
+                }
+                return;
+            }
+
             try
             {
                 // 获取 Entity
@@ -7782,7 +7868,7 @@ namespace GeoChemistryNexus.ViewModels
                 {
                     using (var ms = new MemoryStream())
                     {
-                        var imageBytes = WpfPlot1.Plot.GetImageBytes(640, 480);
+                        var imageBytes = WpfPlot1.Plot.GetImageBytes(640, 480, ScottPlot.ImageFormat.Jpeg);
                         await ms.WriteAsync(imageBytes, 0, imageBytes.Length);
                         ms.Position = 0;
 
