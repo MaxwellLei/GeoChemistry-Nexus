@@ -467,8 +467,8 @@
                                 <Condition Property="IsSelected" Value="True"/>
                                 <Condition Property="IsSelectionActive" Value="False"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="Bd" Property="Background" Value="#D1D1D6"/> <!-- Modern Inactive Selection Gray -->
-                            <Setter Property="Foreground" Value="#000000"/>
+                            <Setter TargetName="Bd" Property="Background" Value="#0078D4"/> <!-- Modern Selection Blue - 保持与活动选中相同 -->
+                            <Setter Property="Foreground" Value="#FFFFFF"/>
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

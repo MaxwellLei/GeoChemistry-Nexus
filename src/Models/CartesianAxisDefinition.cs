@@ -23,15 +23,35 @@ namespace GeoChemistryNexus.Models
         {
             if (value == AxisScaleType.Logarithmic)
             {
-                // 如果设定的范围（From和to）不全是 0 且都大于 0 的话，就不使用默认的对数刻度范围
-                if (!(Minimum > 0 && Maximum > 0))
+                // 只有在范围未设定时，才设置默认的对数刻度范围
+                // 如果已经设定了合理的对数范围值，则保留设定
+                bool isMinSet = !double.IsNaN(Minimum) && Minimum > 0;
+                bool isMaxSet = !double.IsNaN(Maximum) && Maximum > 0;
+                
+                if (!isMinSet && !isMaxSet)
                 {
+                    // 两个值都未设定，使用默认对数范围
                     Minimum = 0.1;
                     Maximum = 100000;
                 }
+                else if (!isMinSet && isMaxSet)
+                {
+                    // 只有最小值未设定，设置一个合理的默认最小值
+                    Minimum = Maximum / 100000; // 设置为最大值的1/100000
+                    if (Minimum < 1E-9) Minimum = 1E-9; // 确保不小于允许的最小值
+                }
+                else if (isMinSet && !isMaxSet)
+                {
+                    // 只有最大值未设定，设置一个合理的默认最大值
+                    Maximum = Minimum * 100000; // 设置为最小值的100000倍
+                }
+                // 如果两个值都已设定且有效，不做任何修改
             }
             OnPropertyChanged(nameof(AllowedInputMinimum));
             OnPropertyChanged(nameof(IsLinearScale));
+            // 触发Minimum和Maximum的属性通知，确保UI和渲染逻辑能够响应ScaleType的变化
+            OnPropertyChanged(nameof(Minimum));
+            OnPropertyChanged(nameof(Maximum));
         }
 
         public bool IsLinearScale => ScaleType == AxisScaleType.Linear;
@@ -44,7 +64,7 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("axis_style")] // 坐标轴范围
         [property: LocalizedDisplayName("from")] // 最小值
-        private double _minimum = 0;
+        private double _minimum = double.NaN;
 
         /// <summary>
         /// 坐标轴最大值
@@ -52,7 +72,7 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("axis_style")] // 坐标轴范围
         [property: LocalizedDisplayName("to")] // 最大值
-        private double _maximum = 0;
+        private double _maximum = double.NaN;
 
         /// <summary>
         /// Axis major tick length

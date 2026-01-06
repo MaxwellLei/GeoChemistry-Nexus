@@ -1404,6 +1404,18 @@
   <data name="custom_templates" xml:space="preserve">
     <value>Personal Diagram Template</value>
   </data>
+  <data name="builtin_templates" xml:space="preserve">
+    <value>Official Built-in Templates</value>
+  </data>
+  <data name="search_templates" xml:space="preserve">
+    <value>Search templates...</value>
+  </data>
+  <data name="clear_search" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="filter_templates" xml:space="preserve">
+    <value>Filter Templates</value>
+  </data>
   <data name="cannot_delete_protected_column" xml:space="preserve">
     <value>Cannot delete protected column</value>
   </data>

@@ -1485,7 +1485,7 @@
     <comment>绘图-编辑-删除提示</comment>
   </data>
   <data name="update" xml:space="preserve">
-    <value>_Actualizar(T)</value>
+    <value>_Actualizar(U)</value>
     <comment>绘图-菜单栏</comment>
   </data>
   <data name="check_for_template_updates" xml:space="preserve">
@@ -2381,5 +2381,17 @@
   </data>
   <data name="export_update_list" xml:space="preserve">
     <value>Exportar lista de actualizaciones</value>
+  </data>
+  <data name="builtin_templates" xml:space="preserve">
+    <value>Plantillas oficiales integradas</value>
+  </data>
+  <data name="search_templates" xml:space="preserve">
+    <value>Buscar plantillas...</value>
+  </data>
+  <data name="clear_search" xml:space="preserve">
+    <value>Borrar</value>
+  </data>
+  <data name="filter_templates" xml:space="preserve">
+    <value>Filtrar plantillas</value>
   </data>
 </root>

@@ -20,9 +20,64 @@ namespace GeoChemistryNexus.ViewModels
         public BaseAxisDefinition AxisDefinition { get; }
 
         public AxisLayerItemViewModel(BaseAxisDefinition axisDefinition)
-            : base(axisDefinition.Label.Get()) // 根据坐标轴类型设置名称
+            : base(GetAxisDisplayName(axisDefinition)) // 根据坐标轴类型设置名称
         {
             AxisDefinition = axisDefinition;
+            // 监听 Label 属性的变化，及时更新图层列表名称
+            AxisDefinition.PropertyChanged += OnAxisDefinitionPropertyChanged;
+        }
+
+        /// <summary>
+        /// 监听坐标轴定义属性变化，更新显示名称
+        /// </summary>
+        private void OnAxisDefinitionPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(BaseAxisDefinition.Label))
+            {
+                UpdateDisplayName();
+            }
+        }
+
+        /// <summary>
+        /// 更新图层列表中的显示名称
+        /// </summary>
+        private void UpdateDisplayName()
+        {
+            Name = GetAxisDisplayName(AxisDefinition);
+        }
+
+        /// <summary>
+        /// 获取坐标轴的显示名称（添加前缀标识）
+        /// </summary>
+        private static string GetAxisDisplayName(BaseAxisDefinition axisDefinition)
+        {
+            var baseName = axisDefinition.Label.Get();
+            
+            // 为三元图坐标轴添加前缀
+            if (axisDefinition is TernaryAxisDefinition)
+            {
+                var prefix = axisDefinition.Type switch
+                {
+                    "Bottom" => "[A] ",
+                    "Left" => "[B] ",
+                    "Right" => "[C] ",
+                    _ => ""
+                };
+                return prefix + baseName;
+            }
+            // 为笛卡尔坐标轴添加前缀（仅底边和左边）
+            else if (axisDefinition is CartesianAxisDefinition)
+            {
+                var prefix = axisDefinition.Type switch
+                {
+                    "Bottom" => "[X] ",
+                    "Left" => "[Y] ",
+                    _ => ""
+                };
+                return prefix + baseName;
+            }
+            
+            return baseName;
         }
 
         public void Render(Plot plot)
@@ -241,14 +296,45 @@ namespace GeoChemistryNexus.ViewModels
             var newMin = !double.IsNaN(axisDef.Minimum) ? axisDef.Minimum : currentLimits.Min;
             var newMax = !double.IsNaN(axisDef.Maximum) ? axisDef.Maximum : currentLimits.Max;
 
+            // 检查用户是否明确设定了范围
+            bool isMinSet = !double.IsNaN(axisDef.Minimum);
+            bool isMaxSet = !double.IsNaN(axisDef.Maximum);
+
             // 对数处理
             if (axisDef.ScaleType == AxisScaleType.Logarithmic)
             {
-                if (!double.IsNaN(axisDef.Minimum)) newMin = axisDef.Minimum > 0 ? Math.Log10(axisDef.Minimum) : currentLimits.Min;
-                if (!double.IsNaN(axisDef.Maximum)) newMax = axisDef.Maximum > 0 ? Math.Log10(axisDef.Maximum) : currentLimits.Max;
+                if (isMinSet) newMin = axisDef.Minimum > 0 ? Math.Log10(axisDef.Minimum) : currentLimits.Min;
+                if (isMaxSet) newMax = axisDef.Maximum > 0 ? Math.Log10(axisDef.Maximum) : currentLimits.Max;
             }
 
-            targetAxis.Range.Set(newMin, newMax);
+            // 如果设定了范围，添加小的边距以确保边界标签完整显示
+            // padding比例为范围的2.5%，确保边界标签不被裁切
+            if (isMinSet && isMaxSet)
+            {
+                double rangeSpan = Math.Abs(newMax - newMin);
+                if (rangeSpan > 0)
+                {
+                    double padding = rangeSpan * 0.025; // 2.5%的padding
+                    
+                    // 判断是否为倒置范围（newMin > newMax）
+                    if (newMin > newMax)
+                    {
+                        // 倒置范围：Min增加padding，Max减少padding
+                        newMin += padding;
+                        newMax -= padding;
+                    }
+                    else
+                    {
+                        // 正常范围：Min减少padding，Max增加padding
+                        newMin -= padding;
+                        newMax += padding;
+                    }
+                }
+            }
+
+            // 支持倒置范围
+            targetAxis.Range.Min = newMin;
+            targetAxis.Range.Max = newMax;
         }
 
         public void Highlight() { /* 坐标轴不参与高亮 */ }

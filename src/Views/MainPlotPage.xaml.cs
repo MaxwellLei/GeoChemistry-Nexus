@@ -38,6 +38,7 @@ namespace GeoChemistryNexus.Views
         private static MainPlotPage homePage = null;
 
         private MainPlotViewModel viewModel;
+        private bool _isUpdatingToolbarState = false;
 
         public MainPlotPage()
         {
@@ -55,6 +56,9 @@ namespace GeoChemistryNexus.Views
             var dpd = System.ComponentModel.DependencyPropertyDescriptor.FromProperty(CustomColorPicker.SelectedColorProperty, typeof(CustomColorPicker));
             dpd.AddValueChanged(RichTextColorPicker, (s, e) =>
             {
+                // Skip if we're just updating toolbar state to reflect current selection
+                if (_isUpdatingToolbarState) return;
+                
                 if (Drichtextbox == null || Drichtextbox.IsReadOnly) return;
                 var color = RichTextColorPicker.SelectedColor;
 
@@ -483,40 +487,64 @@ namespace GeoChemistryNexus.Views
         {
             if (Drichtextbox == null) return;
 
-            // Bold
-            var weight = Drichtextbox.Selection.GetPropertyValue(TextElement.FontWeightProperty);
-            if (BoldButton != null)
-                BoldButton.IsChecked = (weight != DependencyProperty.UnsetValue) && (weight.Equals(FontWeights.Bold));
-
-            // Italic
-            var style = Drichtextbox.Selection.GetPropertyValue(TextElement.FontStyleProperty);
-            if (ItalicButton != null)
-                ItalicButton.IsChecked = (style != DependencyProperty.UnsetValue) && (style.Equals(FontStyles.Italic));
-
-            // Underline
-            var decoration = Drichtextbox.Selection.GetPropertyValue(Inline.TextDecorationsProperty);
-            if (UnderlineButton != null)
-                UnderlineButton.IsChecked = (decoration != DependencyProperty.UnsetValue) && (decoration == TextDecorations.Underline);
-
-            // Sub/Superscript
-            var alignment = Drichtextbox.Selection.GetPropertyValue(Inline.BaselineAlignmentProperty);
-            if (SuperscriptButton != null)
-                SuperscriptButton.IsChecked = (alignment != DependencyProperty.UnsetValue) && ((BaselineAlignment)alignment == BaselineAlignment.Superscript);
-            if (SubscriptButton != null)
-                SubscriptButton.IsChecked = (alignment != DependencyProperty.UnsetValue) && ((BaselineAlignment)alignment == BaselineAlignment.Subscript);
-            
-            // Font Size
-            var size = Drichtextbox.Selection.GetPropertyValue(TextElement.FontSizeProperty);
-            if (FontSizeComboBox != null)
+            _isUpdatingToolbarState = true;
+            try
             {
-                if (size != DependencyProperty.UnsetValue && size is double dSize)
+                // Bold
+                var weight = Drichtextbox.Selection.GetPropertyValue(TextElement.FontWeightProperty);
+                if (BoldButton != null)
+                    BoldButton.IsChecked = (weight != DependencyProperty.UnsetValue) && (weight.Equals(FontWeights.Bold));
+
+                // Italic
+                var style = Drichtextbox.Selection.GetPropertyValue(TextElement.FontStyleProperty);
+                if (ItalicButton != null)
+                    ItalicButton.IsChecked = (style != DependencyProperty.UnsetValue) && (style.Equals(FontStyles.Italic));
+
+                // Underline
+                var decoration = Drichtextbox.Selection.GetPropertyValue(Inline.TextDecorationsProperty);
+                if (UnderlineButton != null)
+                    UnderlineButton.IsChecked = (decoration != DependencyProperty.UnsetValue) && (decoration == TextDecorations.Underline);
+
+                // Sub/Superscript
+                var alignment = Drichtextbox.Selection.GetPropertyValue(Inline.BaselineAlignmentProperty);
+                if (SuperscriptButton != null)
+                    SuperscriptButton.IsChecked = (alignment != DependencyProperty.UnsetValue) && ((BaselineAlignment)alignment == BaselineAlignment.Superscript);
+                if (SubscriptButton != null)
+                    SubscriptButton.IsChecked = (alignment != DependencyProperty.UnsetValue) && ((BaselineAlignment)alignment == BaselineAlignment.Subscript);
+                
+                // Font Size
+                var size = Drichtextbox.Selection.GetPropertyValue(TextElement.FontSizeProperty);
+                if (FontSizeComboBox != null)
                 {
-                    FontSizeComboBox.Text = dSize.ToString("0.#");
+                    if (size != DependencyProperty.UnsetValue && size is double dSize)
+                    {
+                        FontSizeComboBox.Text = dSize.ToString("0.#");
+                    }
+                    else
+                    {
+                        FontSizeComboBox.Text = "";
+                    }
                 }
-                else
+
+                // Text Color - Update color picker to reflect current selection's color
+                if (RichTextColorPicker != null)
                 {
-                    FontSizeComboBox.Text = "";
+                    var foreground = Drichtextbox.Selection.GetPropertyValue(TextElement.ForegroundProperty);
+                    if (foreground != DependencyProperty.UnsetValue && foreground is SolidColorBrush brush)
+                    {
+                        // Update the color picker to show the current selection's color
+                        RichTextColorPicker.SelectedColor = brush.Color;
+                    }
+                    else
+                    {
+                        // Default to black if no color is set
+                        RichTextColorPicker.SelectedColor = System.Windows.Media.Colors.Black;
+                    }
                 }
+            }
+            finally
+            {
+                _isUpdatingToolbarState = false;
             }
         }
 
@@ -609,6 +637,18 @@ namespace GeoChemistryNexus.Views
             Dispatcher.InvokeAsync(() => {
                 BreadcrumbScrollViewer?.ScrollToRightEnd();
             }, System.Windows.Threading.DispatcherPriority.Loaded);
+        }
+
+        /// <summary>
+        /// 筛选按钮点击事件，显示上下文菜单
+        /// </summary>
+        private void FilterButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.ContextMenu != null)
+            {
+                button.ContextMenu.PlacementTarget = button;
+                button.ContextMenu.IsOpen = true;
+            }
         }
     }
 }

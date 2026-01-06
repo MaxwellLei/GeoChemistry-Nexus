@@ -873,6 +873,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Official Built-in Templates 的本地化字符串。
+        /// </summary>
+        internal static string builtin_templates {
+            get {
+                return ResourceManager.GetString("builtin_templates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Calculate 的本地化字符串。
         /// </summary>
         internal static string Calculate {
@@ -1076,6 +1085,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string clear_data_points {
             get {
                 return ResourceManager.GetString("clear_data_points", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Clear 的本地化字符串。
+        /// </summary>
+        internal static string clear_search {
+            get {
+                return ResourceManager.GetString("clear_search", resourceCulture);
             }
         }
         
@@ -2507,6 +2525,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string fill_color_2 {
             get {
                 return ResourceManager.GetString("fill_color_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Filter Templates 的本地化字符串。
+        /// </summary>
+        internal static string filter_templates {
+            get {
+                return ResourceManager.GetString("filter_templates", resourceCulture);
             }
         }
         
@@ -5306,6 +5333,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string script_settings {
             get {
                 return ResourceManager.GetString("script_settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Search templates... 的本地化字符串。
+        /// </summary>
+        internal static string search_templates {
+            get {
+                return ResourceManager.GetString("search_templates", resourceCulture);
             }
         }
         

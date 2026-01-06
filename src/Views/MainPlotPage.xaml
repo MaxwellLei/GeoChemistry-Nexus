@@ -14,6 +14,7 @@
       xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
       xmlns:ScottPlot="clr-namespace:ScottPlot.WPF;assembly=ScottPlot.WPF"
       xmlns:sys="clr-namespace:System;assembly=mscorlib"
+      xmlns:s="clr-namespace:System;assembly=mscorlib"
       xmlns:models="clr-namespace:GeoChemistryNexus.Models"
       xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
       mc:Ignorable="d" 
@@ -23,6 +24,7 @@
     <Page.InputBindings>
         <KeyBinding Key="Z" Modifiers="Control" Command="{Binding UndoCommand}"/>
         <KeyBinding Key="Y" Modifiers="Control" Command="{Binding RedoCommand}"/>
+        <KeyBinding Key="Delete" Command="{Binding DeleteSelectedObjectCommand}"/>
     </Page.InputBindings>
 
     <Page.Resources>
@@ -345,17 +347,19 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <!-- 面包屑导航 -->
+                <!-- 顶部栏（面包屑导航 + 标题和搜索工具） -->
                 <Border Grid.Row="0" Background="White" BorderBrush="#E0E0E0" 
-                        BorderThickness="0,0,0,1" Padding="20,15">
+                        BorderThickness="0,0,0,1" Padding="20,12">
                     <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding [template_library],Source={x:Static lg:LanguageService.Instance}}" FontSize="18" FontWeight="Bold" 
-                                  Foreground="#333" Margin="0,0,20,0" VerticalAlignment="Center"/>
-                        <ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled" x:Name="BreadcrumbScrollViewer" SizeChanged="BreadcrumbScrollViewer_SizeChanged">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- 第一行：面包屑导航 -->
+                        <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled" 
+                                      x:Name="BreadcrumbScrollViewer" SizeChanged="BreadcrumbScrollViewer_SizeChanged"
+                                      Margin="0,0,0,10">
                             <ItemsControl ItemsSource="{Binding Breadcrumbs}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
@@ -365,18 +369,146 @@
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
-                                            <Button Content="{Binding Name}" 
-                                                   Command="{Binding DataContext.NavigateToBreadcrumbCommand, RelativeSource={RelativeSource AncestorType=Page}}"
-                                                   CommandParameter="{Binding}"
-                                                   Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
-                                                   Foreground="#0078D4" FontSize="14"/>
-                                            <TextBlock Text=" > " Margin="5,0" FontSize="14" 
+                                            <TextBlock>
+                                                <Hyperlink Command="{Binding DataContext.NavigateToBreadcrumbCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                           CommandParameter="{Binding}"
+                                                           TextDecorations="None"
+                                                           Foreground="#666">
+                                                    <Run Text="{Binding Name}" FontSize="12"/>
+                                                </Hyperlink>
+                                            </TextBlock>
+                                            <TextBlock Text=" / " Margin="4,0" FontSize="12" 
                                                       Foreground="#999" VerticalAlignment="Center"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                         </ScrollViewer>
+
+                        <!-- 第二行：标题和搜索筛选工具栏 -->
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <!-- 左侧：模板库标题 -->
+                            <TextBlock Grid.Column="0" 
+                                       Text="{Binding [template_library],Source={x:Static lg:LanguageService.Instance}}" 
+                                       FontSize="20" FontWeight="SemiBold" 
+                                       Foreground="#333" 
+                                       VerticalAlignment="Center"/>
+                            
+                            <!-- 右侧：搜索框和筛选按钮 -->
+                            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                <!-- 搜索框 -->
+                                <TextBox Width="240" Height="32" Padding="8,6" 
+                                         Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" 
+                                         VerticalAlignment="Center" FontSize="13"
+                                         BorderBrush="#D0D0D0" BorderThickness="1">
+                                    <TextBox.Style>
+                                        <Style TargetType="TextBox">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="TextBox">
+                                                        <Border Background="{TemplateBinding Background}" 
+                                                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                                CornerRadius="4">
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="Auto"/>
+                                                                    <ColumnDefinition Width="*"/>
+                                                                </Grid.ColumnDefinitions>
+                                                                <!-- 搜索图标 -->
+                                                                <TextBlock Grid.Column="0" Text="&#xE721;" FontFamily="Segoe MDL2 Assets" 
+                                                                           FontSize="14" Foreground="#999" Margin="8,0,4,0" 
+                                                                           VerticalAlignment="Center"/>
+                                                                <!-- 占位符文本 -->
+                                                                <TextBlock Grid.Column="1" 
+                                                                           Text="{Binding [search_templates], Source={x:Static lg:LanguageService.Instance}, FallbackValue='搜索模板...'}" 
+                                                                           FontSize="13" Foreground="#999" 
+                                                                           Margin="10,0,8,0" VerticalAlignment="Center"
+                                                                           IsHitTestVisible="False">
+                                                                    <TextBlock.Style>
+                                                                        <Style TargetType="TextBlock">
+                                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                                            <Style.Triggers>
+                                                                                <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}" Value="">
+                                                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                                                </DataTrigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </TextBlock.Style>
+                                                                </TextBlock>
+                                                                <!-- 输入框 -->
+                                                                <ScrollViewer Grid.Column="1" x:Name="PART_ContentHost" 
+                                                                              VerticalAlignment="Center" 
+                                                                              Margin="0,0,8,0"/>
+                                                            </Grid>
+                                                        </Border>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsFocused" Value="True">
+                                                                <Setter Property="BorderBrush" Value="#0078D4"/>
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </TextBox.Style>
+                                </TextBox>
+                                
+                                <!-- 筛选按钮（漏斗图标） -->
+                                <Button Width="32" Height="32" Margin="8,0,0,0"
+                                        Background="White" BorderBrush="#D0D0D0" BorderThickness="1"
+                                        ToolTip="{Binding [filter_templates], Source={x:Static lg:LanguageService.Instance}, FallbackValue='筛选模板'}"
+                                        Click="FilterButton_Click"
+                                        Cursor="Hand">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="{TemplateBinding Background}" 
+                                                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                                CornerRadius="4">
+                                                            <TextBlock Text="&#xE71C;" FontFamily="Segoe MDL2 Assets" 
+                                                                       FontSize="14" Foreground="#666" 
+                                                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter Property="Background" Value="#F5F5F5"/>
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Button.Style>
+                                    <!-- 筛选菜单弹出 -->
+                                    <Button.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="{Binding [all_templates], Source={x:Static lg:LanguageService.Instance}, FallbackValue='全部模板'}" 
+                                                      Command="{Binding SetFilterTypeCommand}" CommandParameter="0"
+                                                      IsCheckable="True" IsChecked="{Binding FilterType, Converter={StaticResource IndexToBooleanConverter}, ConverterParameter=0, Mode=OneWay}"/>
+                                            <MenuItem Header="{Binding [custom_templates], Source={x:Static lg:LanguageService.Instance}, FallbackValue='自定义模板'}" 
+                                                      Command="{Binding SetFilterTypeCommand}" CommandParameter="1"
+                                                      IsCheckable="True" IsChecked="{Binding FilterType, Converter={StaticResource IndexToBooleanConverter}, ConverterParameter=1, Mode=OneWay}"/>
+                                            <MenuItem Header="{Binding [builtin_templates], Source={x:Static lg:LanguageService.Instance}, FallbackValue='内置模板'}" 
+                                                      Command="{Binding SetFilterTypeCommand}" CommandParameter="2"
+                                                      IsCheckable="True" IsChecked="{Binding FilterType, Converter={StaticResource IndexToBooleanConverter}, ConverterParameter=2, Mode=OneWay}"/>
+                                            <Separator/>
+                                            <MenuItem Header="{Binding [clear_search], Source={x:Static lg:LanguageService.Instance}, FallbackValue='清除筛选'}" 
+                                                      Command="{Binding ClearSearchCommand}"/>
+                                        </ContextMenu>
+                                    </Button.ContextMenu>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
                     </Grid>
                 </Border>
 
@@ -1045,11 +1177,6 @@
                                         </ToggleButton>
 
                                         <Rectangle Width="1" Height="20" Fill="#D0D0D0" Margin="0,0,8,0"/>
-
-                                        <!-- Refresh -->
-                                        <Button Command="{Binding RefreshHelpDocCommand}" ToolTip="Refresh" Style="{StaticResource ToolbarButtonIconStyle}" Margin="0,0,4,0">
-                                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe74b;" FontSize="20"/>
-                                        </Button>
 
                                         <!-- Word -->
                                         <Button Command="{Binding OpenHelpDocInWordCommand}" ToolTip="Open in Word" Style="{StaticResource ToolbarButtonIconStyle}">

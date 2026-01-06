@@ -1383,7 +1383,7 @@
     <value>Basisebenen können nicht gelöscht werden.</value>
   </data>
   <data name="update" xml:space="preserve">
-    <value>_Aktualisieren(T)</value>
+    <value>_Aktualisieren(U)</value>
   </data>
   <data name="check_for_template_updates" xml:space="preserve">
     <value>Auf Vorlagenupdates prüfen</value>
@@ -2197,5 +2197,17 @@
   </data>
   <data name="export_update_list" xml:space="preserve">
     <value>Update-Liste exportieren</value>
+  </data>
+  <data name="builtin_templates" xml:space="preserve">
+    <value>Offizielle integrierte Vorlagen</value>
+  </data>
+  <data name="search_templates" xml:space="preserve">
+    <value>Vorlagen suchen...</value>
+  </data>
+  <data name="clear_search" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="filter_templates" xml:space="preserve">
+    <value>Vorlagen filtern</value>
   </data>
 </root>

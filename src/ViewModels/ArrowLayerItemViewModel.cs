@@ -40,26 +40,7 @@ namespace GeoChemistryNexus.ViewModels
             // 基础校验
             if (ArrowDefinition?.Start == null || ArrowDefinition?.End == null) return;
 
-            // 判断当前是否为三元相图
-            var triangularAxis = plot.GetPlottables().OfType<TriangularAxis>().FirstOrDefault();
-
-            if (triangularAxis != null)
-            {
-                // 三元图绘制逻辑
-                RenderTernaryArrow(plot, triangularAxis);
-            }
-            else
-            {
-                // 普通直角坐标系逻辑
-                RenderCartesianArrow(plot);
-            }
-        }
-
-        /// <summary>
-        /// 绘制普通直角坐标系箭头
-        /// </summary>
-        private void RenderCartesianArrow(Plot plot)
-        {
+            // 内部存储的X/Y已经是笛卡尔坐标，直接使用PlotTransformHelper转换（处理对数轴）
             var startPixel = PlotTransformHelper.ToRenderCoordinates(plot, ArrowDefinition.Start.X, ArrowDefinition.Start.Y);
             var endPixel = PlotTransformHelper.ToRenderCoordinates(plot, ArrowDefinition.End.X, ArrowDefinition.End.Y);
 
@@ -71,7 +52,6 @@ namespace GeoChemistryNexus.ViewModels
             this.Plottable = arrowPlot;
 
             // --- 绘制高亮顶点 ---
-            // 绘制起点高亮圆圈
             if (ArrowDefinition.Start.IsHighlighted)
             {
                 var marker = plot.Add.Marker(startPixel.X, startPixel.Y);
@@ -80,55 +60,9 @@ namespace GeoChemistryNexus.ViewModels
                 marker.Shape = MarkerShape.OpenCircle;
                 marker.LineWidth = 2;
             }
-            // 绘制终点高亮圆圈
             if (ArrowDefinition.End.IsHighlighted)
             {
                 var marker = plot.Add.Marker(endPixel.X, endPixel.Y);
-                marker.Color = ScottPlot.Colors.Red;
-                marker.Size = 10;
-                marker.Shape = MarkerShape.OpenCircle;
-                marker.LineWidth = 2;
-            }
-        }
-
-        /// <summary>
-        /// 绘制三元相图箭头
-        /// </summary>
-        private void RenderTernaryArrow(Plot plot, TriangularAxis triangularAxis)
-        {
-            // 从存储的数据中获取三元分量
-            double startBottom = ArrowDefinition.Start.X;
-            double startLeft = ArrowDefinition.Start.Y;
-            double startRight = 1 - startBottom - startLeft; // 计算第三个分量
-
-            double endBottom = ArrowDefinition.End.X;
-            double endLeft = ArrowDefinition.End.Y;
-            double endRight = 1 - endBottom - endLeft;
-
-            // 使用三角轴工具将三元坐标转换为屏幕上的笛卡尔坐标
-            Coordinates startCartesian = triangularAxis.GetCoordinates(startBottom, startLeft, startRight);
-            Coordinates endCartesian = triangularAxis.GetCoordinates(endBottom, endLeft, endRight);
-
-            // 添加箭头
-            var arrowPlot = plot.Add.Arrow(startCartesian, endCartesian);
-
-            ApplyCommonStyle(arrowPlot);
-
-            // 绑定引用
-            this.Plottable = arrowPlot;
-
-            // --- 绘制高亮顶点 ---
-            if (ArrowDefinition.Start.IsHighlighted)
-            {
-                var marker = plot.Add.Marker(startCartesian.X, startCartesian.Y);
-                marker.Color = ScottPlot.Colors.Red;
-                marker.Size = 10;
-                marker.Shape = MarkerShape.OpenCircle;
-                marker.LineWidth = 2;
-            }
-            if (ArrowDefinition.End.IsHighlighted)
-            {
-                var marker = plot.Add.Marker(endCartesian.X, endCartesian.Y);
                 marker.Color = ScottPlot.Colors.Red;
                 marker.Size = 10;
                 marker.Shape = MarkerShape.OpenCircle;

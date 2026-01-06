@@ -11,7 +11,8 @@
              xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="300"
-             Background="#F5F5F7">
+             Background="#F5F5F7"
+             Loaded="UserControl_Loaded">
     <UserControl.Resources>
         <cvs:NumericTypeConverter x:Key="NumericTypeConverter"/>
         <cvs:StringColorConverter x:Key="StringColorConverter"/>
@@ -65,20 +66,22 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 
-                                <hc:NumericUpDown Grid.Column="0" Value="{Binding Start.X, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
+                                <hc:NumericUpDown x:Name="StartX" Grid.Column="0"
                                           hc:InfoElement.Title="X" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.TitleWidth="15"
                                           hc:InfoElement.Placeholder="0.0"
                                           Tag="{Binding Start}"
                                           GotFocus="Coordinate_GotFocus"
                                           LostFocus="Coordinate_LostFocus"
+                                          ValueChanged="StartCoordinate_ValueChanged"
                                           Style="{StaticResource ModernNumericUpDownStyle}"/>
                                       
-                                <hc:NumericUpDown Grid.Column="2" Value="{Binding Start.Y, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
+                                <hc:NumericUpDown x:Name="StartY" Grid.Column="2"
                                           hc:InfoElement.Title="Y" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.TitleWidth="15"
                                           hc:InfoElement.Placeholder="0.0"
                                           Tag="{Binding Start}"
                                           GotFocus="Coordinate_GotFocus"
                                           LostFocus="Coordinate_LostFocus"
+                                          ValueChanged="StartCoordinate_ValueChanged"
                                           Style="{StaticResource ModernNumericUpDownStyle}"/>
                             </Grid>
                         </Grid>
@@ -115,20 +118,22 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 
-                                <hc:NumericUpDown Grid.Column="0" Value="{Binding End.X, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
+                                <hc:NumericUpDown x:Name="EndX" Grid.Column="0"
                                           hc:InfoElement.Title="X" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.TitleWidth="15"
                                           hc:InfoElement.Placeholder="0.0"
                                           Tag="{Binding End}"
                                           GotFocus="Coordinate_GotFocus"
                                           LostFocus="Coordinate_LostFocus"
+                                          ValueChanged="EndCoordinate_ValueChanged"
                                           Style="{StaticResource ModernNumericUpDownStyle}"/>
                                       
-                                <hc:NumericUpDown Grid.Column="2" Value="{Binding End.Y, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
+                                <hc:NumericUpDown x:Name="EndY" Grid.Column="2"
                                           hc:InfoElement.Title="Y" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.TitleWidth="15"
                                           hc:InfoElement.Placeholder="0.0"
                                           Tag="{Binding End}"
                                           GotFocus="Coordinate_GotFocus"
                                           LostFocus="Coordinate_LostFocus"
+                                          ValueChanged="EndCoordinate_ValueChanged"
                                           Style="{StaticResource ModernNumericUpDownStyle}"/>
                             </Grid>
                         </Grid>

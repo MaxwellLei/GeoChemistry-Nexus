@@ -1485,7 +1485,7 @@
     <comment>绘图-编辑-删除提示</comment>
   </data>
   <data name="update" xml:space="preserve">
-    <value>_更新(T)</value>
+    <value>_更新(U)</value>
     <comment>绘图-菜单栏</comment>
   </data>
   <data name="check_for_template_updates" xml:space="preserve">
@@ -2381,5 +2381,17 @@
   </data>
   <data name="export_update_list" xml:space="preserve">
     <value>匯出更新列表</value>
+  </data>
+  <data name="builtin_templates" xml:space="preserve">
+    <value>官方內建範本</value>
+  </data>
+  <data name="search_templates" xml:space="preserve">
+    <value>搜尋範本...</value>
+  </data>
+  <data name="clear_search" xml:space="preserve">
+    <value>清除</value>
+  </data>
+  <data name="filter_templates" xml:space="preserve">
+    <value>篩選範本</value>
   </data>
 </root>

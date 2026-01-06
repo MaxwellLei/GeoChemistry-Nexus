@@ -1485,7 +1485,7 @@
     <comment>绘图-编辑-删除提示</comment>
   </data>
   <data name="update" xml:space="preserve">
-    <value>_更新(T)</value>
+    <value>_更新(U)</value>
     <comment>绘图-菜单栏</comment>
   </data>
   <data name="check_for_template_updates" xml:space="preserve">
@@ -1547,6 +1547,22 @@
   <data name="custom_templates" xml:space="preserve">
     <value>个人图解模板</value>
     <comment>绘图-模板列表</comment>
+  </data>
+  <data name="builtin_templates" xml:space="preserve">
+    <value>官方内置模板</value>
+    <comment>绘图-模板列表</comment>
+  </data>
+  <data name="search_templates" xml:space="preserve">
+    <value>搜索模板...</value>
+    <comment>绘图-模板库搜索</comment>
+  </data>
+  <data name="clear_search" xml:space="preserve">
+    <value>清除</value>
+    <comment>绘图-模板库搜索</comment>
+  </data>
+  <data name="filter_templates" xml:space="preserve">
+    <value>筛选模板</value>
+    <comment>绘图-模板库筛选</comment>
   </data>
   <data name="check_for_category_updates" xml:space="preserve">
     <value>检查分类结构更新</value>

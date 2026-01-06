@@ -28,6 +28,7 @@ namespace GeoChemistryNexus.ViewModels
             if (PolygonDefinition?.Vertices == null || !PolygonDefinition.Vertices.Any()) return;
 
             // 转换坐标点 (从 ObservableCollection<PointDefinition> 转为 Coordinates 数组)
+            // 内部存储的X/Y已经是笛卡尔坐标，直接使用PlotTransformHelper转换（处理对数轴）
             var plotCoordinates = PolygonDefinition.Vertices
                     .Select(v => PlotTransformHelper.ToRenderCoordinates(plot, v.X, v.Y))
                     .ToArray();

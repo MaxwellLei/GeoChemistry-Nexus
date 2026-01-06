@@ -243,7 +243,7 @@ namespace GeoChemistryNexus.Controls
         /// </summary>
         private void CategoryInputComboBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            if (e.Key == Key.Enter || e.Key == Key.Space)
             {
                 var comboBox = sender as ComboBox;
                 string text = comboBox?.Text?.Trim();
@@ -271,8 +271,18 @@ namespace GeoChemistryNexus.Controls
                     });
                     
                     comboBox.Text = string.Empty;
+                    e.Handled = true;
                 }
-                e.Handled = true;
+                else if (e.Key == Key.Space)
+                {
+                    // 如果文本为空且按下空格,不处理(允许输入空格)
+                    e.Handled = false;
+                }
+                else
+                {
+                    // Enter键但文本为空
+                    e.Handled = true;
+                }
             }
         }
         
@@ -282,19 +292,28 @@ namespace GeoChemistryNexus.Controls
             
             if (comboBox?.SelectedItem is CategoryDisplayItem selectedItem)
             {
-                 string name = selectedItem.DisplayName;
-                 if (!string.IsNullOrWhiteSpace(name))
-                 {
-                     // Add CategoryPartModel with localized data
-                     _categoryParts.Add(new CategoryPartModel 
-                     { 
-                         DisplayName = name,
-                         LocalizedNames = selectedItem.OriginalObject as Dictionary<string, string>
-                     });
-                 }
-                 // 清空选择
-                 comboBox.SelectedIndex = -1;
-                 comboBox.Text = string.Empty;
+                // 检查是否是用户通过鼠标或键盘方向键真正选择的项
+                // 如果是因为自动匹配导致的选择,不处理
+                if (!comboBox.IsDropDownOpen)
+                {
+                    // 下拉框已关闭,不是真正的选择操作,可能是自动匹配
+                    comboBox.SelectedIndex = -1;
+                    return;
+                }
+                
+                string name = selectedItem.DisplayName;
+                if (!string.IsNullOrWhiteSpace(name))
+                {
+                    // Add CategoryPartModel with localized data
+                    _categoryParts.Add(new CategoryPartModel 
+                    { 
+                        DisplayName = name,
+                        LocalizedNames = selectedItem.OriginalObject as Dictionary<string, string>
+                    });
+                }
+                // 清空选择
+                comboBox.SelectedIndex = -1;
+                comboBox.Text = string.Empty;
             }
         }
 

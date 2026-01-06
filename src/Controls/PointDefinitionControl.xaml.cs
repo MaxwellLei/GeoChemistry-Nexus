@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.Messaging;
+using GeoChemistryNexus.Converter;
 using GeoChemistryNexus.Messages;
 using GeoChemistryNexus.Models;
 using GeoChemistryNexus.ViewModels;
@@ -39,6 +40,26 @@ namespace GeoChemistryNexus.Controls
             // 监听UI控件的值变化事件
             NumericUpDownX.ValueChanged += OnNumericUpDownValueChanged;
             NumericUpDownY.ValueChanged += OnNumericUpDownValueChanged;
+        }
+
+        /// <summary>
+        /// 控件加载时更新坐标标签
+        /// </summary>
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            UpdateCoordinateLabels();
+        }
+
+        /// <summary>
+        /// 根据三元图模式更新坐标标签
+        /// </summary>
+        private void UpdateCoordinateLabels()
+        {
+            string xLabel = TernaryCoordinateHelper.XAxisLabel;
+            string yLabel = TernaryCoordinateHelper.YAxisLabel;
+
+            InfoElement.SetTitle(NumericUpDownX, xLabel);
+            InfoElement.SetTitle(NumericUpDownY, yLabel);
         }
 
         /// <summary>

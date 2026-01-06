@@ -4,6 +4,7 @@ using GeoChemistryNexus.Interfaces;
 using GeoChemistryNexus.Models;
 using ScottPlot;
 using System;
+using System.Linq;
 
 namespace GeoChemistryNexus.ViewModels
 {
@@ -39,7 +40,7 @@ namespace GeoChemistryNexus.ViewModels
             // 数据校验：如果起点或终点为空，则不绘制
             if (LineDefinition?.Start == null || LineDefinition?.End == null) return;
 
-            // 如果当前是对数轴，会自动取 Log10
+            // 内部存储的X/Y已经是笛卡尔坐标，直接使用PlotTransformHelper转换（处理对数轴）
             var startNode = PlotTransformHelper.ToRenderCoordinates(
                 plot,
                 LineDefinition.Start.X,

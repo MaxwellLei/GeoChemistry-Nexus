@@ -68,7 +68,7 @@ namespace GeoChemistryNexus.ViewModels
                 content = content.Replace("\r\n", "\n").Replace("\r", "\n");
             }
 
-            // 将存储的真实数据坐标转换为绘图坐标（处理 Log 逻辑）
+            // 内部存储的X/Y已经是笛卡尔坐标，直接使用PlotTransformHelper转换（处理对数轴）
             var renderLocation = PlotTransformHelper.ToRenderCoordinates(
                 plot,
                 TextDefinition.StartAndEnd.X,

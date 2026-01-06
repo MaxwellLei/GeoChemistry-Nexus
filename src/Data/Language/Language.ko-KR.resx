@@ -146,7 +146,7 @@
     <comment>主窗体侧边栏</comment>
   </data>
   <data name="File" xml:space="preserve">
-    <value>파일(_F)</value>
+    <value>_파일(F)</value>
     <comment>绘图界面</comment>
   </data>
   <data name="Edit" xml:space="preserve">
@@ -1485,7 +1485,7 @@
     <comment>绘图-编辑-删除提示</comment>
   </data>
   <data name="update" xml:space="preserve">
-    <value>업데이트(_T)</value>
+    <value>_업데이트(U)</value>
     <comment>绘图-菜单栏</comment>
   </data>
   <data name="check_for_template_updates" xml:space="preserve">
@@ -2381,5 +2381,17 @@
   </data>
   <data name="export_update_list" xml:space="preserve">
     <value>업데이트 목록 내보내기</value>
+  </data>
+  <data name="builtin_templates" xml:space="preserve">
+    <value>공식 내장 템플릿</value>
+  </data>
+  <data name="search_templates" xml:space="preserve">
+    <value>템플릿 검색...</value>
+  </data>
+  <data name="clear_search" xml:space="preserve">
+    <value>지우기</value>
+  </data>
+  <data name="filter_templates" xml:space="preserve">
+    <value>템플릿 필터링</value>
   </data>
 </root>

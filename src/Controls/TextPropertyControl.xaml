@@ -11,7 +11,8 @@
              xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="300"
-             Background="#F5F5F7">
+             Background="#F5F5F7"
+             Loaded="UserControl_Loaded">
     <UserControl.Resources>
         <cvs:NumericTypeConverter x:Key="NumericTypeConverter"/>
         <cvs:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
@@ -119,14 +120,16 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             
-                            <hc:NumericUpDown Grid.Column="0" Value="{Binding StartAndEnd.X, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
+                            <hc:NumericUpDown x:Name="PositionX" Grid.Column="0"
                                       hc:InfoElement.Title="X" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.TitleWidth="15"
                                       hc:InfoElement.Placeholder="0.0"
+                                      ValueChanged="PositionCoordinate_ValueChanged"
                                       Style="{StaticResource ModernNumericUpDownStyle}"/>
                                       
-                            <hc:NumericUpDown Grid.Column="2" Value="{Binding StartAndEnd.Y, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
+                            <hc:NumericUpDown x:Name="PositionY" Grid.Column="2"
                                       hc:InfoElement.Title="Y" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.TitleWidth="15"
                                       hc:InfoElement.Placeholder="0.0"
+                                      ValueChanged="PositionCoordinate_ValueChanged"
                                       Style="{StaticResource ModernNumericUpDownStyle}"/>
                         </Grid>
                     </StackPanel>
