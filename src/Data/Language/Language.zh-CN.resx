@@ -1916,6 +1916,48 @@
   <data name="export_diagram_template" xml:space="preserve">
     <value>导出图解模板</value>
   </data>
+  <data name="edit_diagram_template" xml:space="preserve">
+    <value>编辑图解模板</value>
+    <comment>图解模板库卡片右键菜单</comment>
+  </data>
+  <data name="favorite" xml:space="preserve">
+    <value>收藏</value>
+    <comment>绘图-卡片-右键菜单</comment>
+  </data>
+  <data name="unfavorite" xml:space="preserve">
+    <value>取消收藏</value>
+    <comment>绘图-卡片-右键菜单</comment>
+  </data>
+  <data name="personal_templates" xml:space="preserve">
+    <value>个人图解模板</value>
+    <comment>绘图-模板库-分类</comment>
+  </data>
+  <data name="favorite_templates" xml:space="preserve">
+    <value>收藏</value>
+    <comment>绘图-模板库-分类</comment>
+  </data>
+  <data name="official_templates" xml:space="preserve">
+    <value>官方图解模板</value>
+    <comment>绘图-模板库-分类</comment>
+  </data>
+  <data name="recents_templates" xml:space="preserve">
+    <value>最近使用</value>
+    <comment>绘图-模板库-分类</comment>
+  </data>
+  <data name="library_section" xml:space="preserve">
+    <value>资源库</value>
+    <comment>绘图-模板库-分组</comment>
+  </data>
+  <data name="workspace_section" xml:space="preserve">
+    <value>我的空间</value>
+    <comment>绘图-模板库-分组</comment>
+  </data>
+  <data name="favorite_added" xml:space="preserve">
+    <value>已添加到收藏</value>
+  </data>
+  <data name="favorite_removed" xml:space="preserve">
+    <value>已从收藏中移除</value>
+  </data>
   <data name="downloading_ellipsis" xml:space="preserve">
     <value>正在下载...</value>
     <comment>绘图-卡片-更新</comment>
@@ -2397,5 +2439,57 @@
   </data>
   <data name="export_update_list" xml:space="preserve">
     <value>导出更新列表</value>
+  </data>
+  <data name="batch_download_new_templates" xml:space="preserve">
+    <value>批量下载</value>
+    <comment>批量下载按钮文本</comment>
+  </data>
+  <data name="batch_download_new_templates_tooltip" xml:space="preserve">
+    <value>批量下载未安装的新模板</value>
+    <comment>批量下载按钮提示</comment>
+  </data>
+  <data name="batch_download_title" xml:space="preserve">
+    <value>批量下载</value>
+    <comment>批量下载弹窗标题</comment>
+  </data>
+  <data name="batch_download_confirm_message" xml:space="preserve">
+    <value>检测到 {0} 个未下载的新模板，是否批量下载？</value>
+    <comment>批量下载确认消息</comment>
+  </data>
+  <data name="no_new_templates_to_download" xml:space="preserve">
+    <value>没有需要下载的新模板</value>
+    <comment>批量下载提示</comment>
+  </data>
+  <data name="batch_download_success_count" xml:space="preserve">
+    <value>成功下载：{0} 个</value>
+    <comment>批量下载结果</comment>
+  </data>
+  <data name="batch_download_fail_count" xml:space="preserve">
+    <value>失败：{0} 个</value>
+    <comment>批量下载结果</comment>
+  </data>
+  <data name="batch_download_complete" xml:space="preserve">
+    <value>批量下载完成</value>
+    <comment>批量下载结果</comment>
+  </data>
+  <data name="failed_templates" xml:space="preserve">
+    <value>失败模板：</value>
+    <comment>批量下载结果</comment>
+  </data>
+  <data name="batch_download_failed" xml:space="preserve">
+    <value>批量下载失败</value>
+    <comment>批量下载错误</comment>
+  </data>
+  <data name="batch_downloading" xml:space="preserve">
+    <value>批量下载中</value>
+    <comment>批量下载遮罩层标题</comment>
+  </data>
+  <data name="batch_download_progress" xml:space="preserve">
+    <value>正在下载：{0}/{1} - {2}</value>
+    <comment>批量下载进度</comment>
+  </data>
+  <data name="batch_download_cancelled" xml:space="preserve">
+    <value>批量下载已取消</value>
+    <comment>批量下载取消提示</comment>
   </data>
 </root>

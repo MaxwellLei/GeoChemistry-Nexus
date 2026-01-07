@@ -9,6 +9,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Services;
+using GeoChemistryNexus.Converter;
+using HandyControl.Controls;
 
 namespace GeoChemistryNexus.Controls
 {
@@ -27,6 +29,65 @@ namespace GeoChemistryNexus.Controls
         public VerticesEditorControl()
         {
             InitializeComponent();
+            Loaded += VerticesEditorControl_Loaded;
+        }
+        
+        /// <summary>
+        /// 控件加载时设置数值输入框的最大值限制
+        /// </summary>
+        private void VerticesEditorControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            UpdateNumericUpDownMaximum();
+        }
+        
+        /// <summary>
+        /// 更新数值输入框的最大值限制
+        /// </summary>
+        private void UpdateNumericUpDownMaximum()
+        {
+            // 获取ItemsControl中的所有NumericUpDown控件
+            var itemsControl = this.FindName("VerticesItemsControl") as ItemsControl;
+            if (itemsControl == null) return;
+            
+            double maxValue = TernaryCoordinateHelper.IsTernaryMode ? 1.0 : double.MaxValue;
+            
+            // 遍历每个项目容器
+            for (int i = 0; i < itemsControl.Items.Count; i++)
+            {
+                var container = itemsControl.ItemContainerGenerator.ContainerFromIndex(i) as FrameworkElement;
+                if (container != null)
+                {
+                    // 查找NumericUpDown控件
+                    var numericUpDowns = FindVisualChildren<NumericUpDown>(container);
+                    foreach (var numericUpDown in numericUpDowns)
+                    {
+                        numericUpDown.Maximum = maxValue;
+                    }
+                }
+            }
+        }
+        
+        /// <summary>
+        /// 查找可视化树中的子元素
+        /// </summary>
+        private static IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
+        {
+            if (depObj != null)
+            {
+                for (int i = 0; i < System.Windows.Media.VisualTreeHelper.GetChildrenCount(depObj); i++)
+                {
+                    DependencyObject child = System.Windows.Media.VisualTreeHelper.GetChild(depObj, i);
+                    if (child != null && child is T)
+                    {
+                        yield return (T)child;
+                    }
+
+                    foreach (T childOfChild in FindVisualChildren<T>(child))
+                    {
+                        yield return childOfChild;
+                    }
+                }
+            }
         }
 
         /// <summary>

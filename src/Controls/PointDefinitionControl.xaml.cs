@@ -21,7 +21,7 @@ namespace GeoChemistryNexus.Controls
     /// </summary>
     public partial class PointDefinitionControl : UserControl
     {
-        // 防止在通过代码更新UI时，UI的ValueChanged事件又反过来更新属性
+        // 防止在通过代码更新UI时,UI的ValueChanged事件又反过来更新属性
         private bool _isUpdatingFromSource = false;
 
         public static readonly DependencyProperty PointValueProperty =
@@ -60,10 +60,22 @@ namespace GeoChemistryNexus.Controls
 
             InfoElement.SetTitle(NumericUpDownX, xLabel);
             InfoElement.SetTitle(NumericUpDownY, yLabel);
+            
+            // 三元图模式下限制最大值为1
+            if (TernaryCoordinateHelper.IsTernaryMode)
+            {
+                NumericUpDownX.Maximum = 1.0;
+                NumericUpDownY.Maximum = 1.0;
+            }
+            else
+            {
+                NumericUpDownX.Maximum = double.MaxValue;
+                NumericUpDownY.Maximum = double.MaxValue;
+            }
         }
 
         /// <summary>
-        /// 当PointValue依赖属性变化时，更新UI
+        /// 当PointValue依赖属性变化时,更新UI
         /// </summary>
         private static void OnPointValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -98,7 +110,7 @@ namespace GeoChemistryNexus.Controls
 
         private void UpdateUIFromPoint(PointDefinition? point)
         {
-            // 标志位，表示本次UI更新来源于数据源，避免触发循环更新
+            // 标志位,表示本次UI更新来源于数据源,避免触发循环更新
             _isUpdatingFromSource = true;
             if (point != null)
             {
@@ -117,7 +129,7 @@ namespace GeoChemistryNexus.Controls
             }
             else
             {
-                // 如果源为空，可以清空或设置为默认值
+                // 如果源为空,可以清空或设置为默认值
                 NumericUpDownX.Value = 0;
                 NumericUpDownY.Value = 0;
             }
@@ -125,11 +137,11 @@ namespace GeoChemistryNexus.Controls
         }
 
         /// <summary>
-        /// 当UI控件的值被用户修改时，更新PointValue依赖属性
+        /// 当UI控件的值被用户修改时,更新PointValue依赖属性
         /// </summary>
         private void OnNumericUpDownValueChanged(object sender, FunctionEventArgs<double> e)
         {
-            // 如果UI的更新是代码触发的，则直接返回
+            // 如果UI的更新是代码触发的,则直接返回
             if (_isUpdatingFromSource) return;
 
             // 如果是三元图就转换坐标为笛卡尔值
@@ -145,7 +157,7 @@ namespace GeoChemistryNexus.Controls
             }
             else
             {
-                // 直接更新属性，而不是创建新对象，保持对象引用一致
+                // 直接更新属性,而不是创建新对象,保持对象引用一致
                 if (PointValue != null)
                 {
                     PointValue.X = NumericUpDownX.Value;

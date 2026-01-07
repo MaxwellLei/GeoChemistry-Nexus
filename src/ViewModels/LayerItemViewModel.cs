@@ -17,6 +17,23 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private string _name; // 图层项的显示名称
 
+        /// <summary>
+        /// 截断过长的名称，超过60个字符时截断并添加....
+        /// </summary>
+        /// <param name="name">原始名称</param>
+        /// <returns>截断后的名称</returns>
+        protected static string TruncateName(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+                return name;
+
+            const int maxLength = 60;
+            if (name.Length <= maxLength)
+                return name;
+
+            return name.Substring(0, maxLength) + "....";
+        }
+
         [ObservableProperty]
         private bool _isVisible = true; // 控制该图层是否在ScottPlot图表上可见
 

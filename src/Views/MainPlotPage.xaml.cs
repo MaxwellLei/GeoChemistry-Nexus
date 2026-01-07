@@ -51,7 +51,17 @@ namespace GeoChemistryNexus.Views
             AttachBreadcrumbScrollBehavior();
 
             // 页面加载时检查更新
-            this.Loaded += (s, e) => viewModel.CheckUpdatesIfNeeded();
+            this.Loaded += (s, e) =>
+            {
+                viewModel.CheckUpdatesIfNeeded();
+                // 页面加载后，获取窗口并添加键盘事件监听
+                AttachKeyboardEvents();
+            };
+
+            this.Unloaded += (s, e) =>
+            {
+                DetachKeyboardEvents();
+            };
 
             var dpd = System.ComponentModel.DependencyPropertyDescriptor.FromProperty(CustomColorPicker.SelectedColorProperty, typeof(CustomColorPicker));
             dpd.AddValueChanged(RichTextColorPicker, (s, e) =>
@@ -649,6 +659,83 @@ namespace GeoChemistryNexus.Views
                 button.ContextMenu.PlacementTarget = button;
                 button.ContextMenu.IsOpen = true;
             }
+        }
+
+        private Window _parentWindow;
+
+        /// <summary>
+        /// 附加键盘事件到父窗口
+        /// </summary>
+        private void AttachKeyboardEvents()
+        {
+            _parentWindow = Window.GetWindow(this);
+            if (_parentWindow != null)
+            {
+                _parentWindow.PreviewKeyDown += Window_PreviewKeyDown;
+                _parentWindow.PreviewKeyUp += Window_PreviewKeyUp;
+            }
+        }
+
+        /// <summary>
+        /// 移除键盘事件
+        /// </summary>
+        private void DetachKeyboardEvents()
+        {
+            if (_parentWindow != null)
+            {
+                _parentWindow.PreviewKeyDown -= Window_PreviewKeyDown;
+                _parentWindow.PreviewKeyUp -= Window_PreviewKeyUp;
+                _parentWindow = null;
+            }
+        }
+
+        /// <summary>
+        /// Ctrl 键按下事件 - 显示卡片操作遮罩
+        /// </summary>
+        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            // 只在模板库模式下生效
+            if (!viewModel.IsPlotMode && (e.Key == System.Windows.Input.Key.LeftCtrl || e.Key == System.Windows.Input.Key.RightCtrl))
+            {
+                var count = viewModel.TemplateCardsView?.Cast<object>()?.Count() ?? 0;
+                System.Diagnostics.Debug.WriteLine($"Ctrl Key Down - IsPlotMode: {viewModel.IsPlotMode}, TemplateCardsView Count: {count}");
+                UpdateCtrlOverlayState(true);
+            }
+        }
+
+        /// <summary>
+        /// Ctrl 键释放事件 - 隐藏卡片操作遮罩
+        /// </summary>
+        private void Window_PreviewKeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.LeftCtrl || e.Key == System.Windows.Input.Key.RightCtrl)
+            {
+                System.Diagnostics.Debug.WriteLine($"Ctrl Key Up");
+                UpdateCtrlOverlayState(false);
+            }
+        }
+
+        /// <summary>
+        /// 更新所有卡片的 Ctrl 遮罩状态
+        /// </summary>
+        private void UpdateCtrlOverlayState(bool isVisible)
+        {
+            if (viewModel?.TemplateCardsView == null)
+            {
+                System.Diagnostics.Debug.WriteLine($"UpdateCtrlOverlayState - TemplateCardsView is null");
+                return;
+            }
+
+            int updatedCount = 0;
+            foreach (var card in viewModel.TemplateCardsView)
+            {
+                if (card is TemplateCardViewModel cardVm)
+                {
+                    cardVm.IsCtrlOverlayVisible = isVisible;
+                    updatedCount++;
+                }
+            }
+            System.Diagnostics.Debug.WriteLine($"UpdateCtrlOverlayState - Updated {updatedCount} cards to IsVisible={isVisible}");
         }
     }
 }

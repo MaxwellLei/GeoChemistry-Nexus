@@ -46,22 +46,16 @@ namespace GeoChemistryNexus.Services
             using var db = GetDatabase();
             var col = db.GetCollection<GraphMapTemplateEntity>(CollectionName);
             
-            // 投影查询：只选择需要的字段
-            return col.Query()
-                .Select(x => new GraphMapTemplateEntity
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    NodeList = x.NodeList,
-                    IsCustom = x.IsCustom,
-                    FileHash = x.FileHash,
-                    GraphMapPath = x.GraphMapPath,
-                    TemplateType = x.TemplateType,
-                    Version = x.Version,
-                    Status = x.Status,
-                    IsNewTemplate = x.IsNewTemplate
-                })
-                .ToList();
+            // 直接查询所有记录，然后清空 Content 字段
+            var allEntities = col.FindAll().ToList();
+            
+            // 清空重量级字段，减少内存占用
+            foreach (var entity in allEntities)
+            {
+                entity.Content = null;
+            }
+            
+            return allEntities;
         }
 
         /// <summary>

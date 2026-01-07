@@ -91,6 +91,18 @@ namespace GeoChemistryNexus.Controls
 
             InfoElement.SetTitle(PositionX, xLabel);
             InfoElement.SetTitle(PositionY, yLabel);
+            
+            // 三元图模式下限制最大值为1
+            if (TernaryCoordinateHelper.IsTernaryMode)
+            {
+                PositionX.Maximum = 1.0;
+                PositionY.Maximum = 1.0;
+            }
+            else
+            {
+                PositionX.Maximum = double.MaxValue;
+                PositionY.Maximum = double.MaxValue;
+            }
         }
 
         /// <summary>

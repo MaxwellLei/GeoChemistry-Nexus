@@ -142,6 +142,47 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
+        /// <summary>
+        /// 收藏模板
+        /// </summary>
+        [RelayCommand]
+        private async Task ToggleFavorite(TemplateCardViewModel card)
+        {
+            if (card == null || !card.TemplateId.HasValue) return;
+
+            try
+            {
+                var entity = GraphMapDatabaseService.Instance.GetTemplate(card.TemplateId.Value);
+                if (entity != null)
+                {
+                    // 切换收藏状态
+                    entity.IsFavorite = !entity.IsFavorite;
+                    GraphMapDatabaseService.Instance.UpsertTemplate(entity);
+
+                    // 更新卡片状态
+                    card.IsFavorite = entity.IsFavorite;
+
+                    // 提示
+                    string message = entity.IsFavorite 
+                        ? LanguageService.Instance["favorite_added"] ?? "已添加到收藏"
+                        : LanguageService.Instance["favorite_removed"] ?? "已从收藏中移除";
+                    MessageHelper.Success(message);
+
+                    // 如果当前在收藏列表中，刷新收藏列表
+                    if (IsFavoriteExpanded)
+                    {
+                        LoadFavoriteTemplates();
+                        // 重新加载卡片
+                        await ShowCategoryTemplateCards(FavoriteTemplatesNode);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.Error(ex.Message);
+            }
+        }
+
         [RelayCommand]
         private void ExportUpdateList()
         {
@@ -328,14 +369,11 @@ namespace GeoChemistryNexus.ViewModels
 
         public void Receive(DefaultTreeExpandLevelChangedMessage message)
         {
-            // 处理默认展开层级变更消息
-            if (GraphMapTemplateNode != null)
+            // 处理默认展开层级变更消息，仅对官方图解节点生效
+            if (OfficialTemplatesNode != null)
             {
-                // 先折叠所有节点，确保状态一致
-                // CollapseAll(GraphMapTemplateNode); 
-
                 // 重新展开到指定层级
-                ExpandNodes(GraphMapTemplateNode, 1, message.Value);
+                ExpandNodes(OfficialTemplatesNode, 1, message.Value);
             }
         }
 
@@ -381,6 +419,33 @@ namespace GeoChemistryNexus.ViewModels
         // 模板列表绑定
         [ObservableProperty]
         private GraphMapTemplateNode _graphMapTemplateNode;
+
+        // 三个主要分类节点
+        [ObservableProperty]
+        private GraphMapTemplateNode _personalTemplatesNode;
+
+        [ObservableProperty]
+        private GraphMapTemplateNode _favoriteTemplatesNode;
+
+        [ObservableProperty]
+        private GraphMapTemplateNode _officialTemplatesNode;
+
+        // 最近使用节点
+        [ObservableProperty]
+        private GraphMapTemplateNode _recentsTemplatesNode;
+
+        // 四个分类的展开状态
+        [ObservableProperty]
+        private bool _isPersonalExpanded = false;
+
+        [ObservableProperty]
+        private bool _isFavoriteExpanded = false;
+
+        [ObservableProperty]
+        private bool _isOfficialExpanded = true;
+
+        [ObservableProperty]
+        private bool _isRecentsExpanded = false;
 
         // 绑定到图层列表的数据源
         [ObservableProperty]
@@ -443,6 +508,10 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private ObservableCollection<BreadcrumbItem> _breadcrumbs = new();
 
+        // 当前选中的大类名称（用于顶部标题显示）
+        [ObservableProperty]
+        private string _currentCategoryName = string.Empty;
+
         // 搜索文本
         [ObservableProperty]
         private string _searchText = string.Empty;
@@ -450,6 +519,21 @@ namespace GeoChemistryNexus.ViewModels
         // 筛选类型：0-全部模板，1-自定义模板，2-内置模板
         [ObservableProperty]
         private int _filterType = 0;
+
+        // 批量下载按钮显示控制
+        [ObservableProperty]
+        private bool _isBatchDownloadButtonVisible = false;
+
+        // 批量下载遮罩层显示控制
+        [ObservableProperty]
+        private bool _isBatchDownloadOverlayVisible = false;
+
+        // 批量下载进度信息
+        [ObservableProperty]
+        private string _batchDownloadProgressText = string.Empty;
+
+        // 批量下载取消令牌
+        private CancellationTokenSource? _batchDownloadCts;
 
         // 当搜索文本或筛选条件变化时，重新应用过滤
         partial void OnSearchTextChanged(string value)
@@ -2469,9 +2553,14 @@ namespace GeoChemistryNexus.ViewModels
 
                 if (token.IsCancellationRequested) return;
 
-                // 3. 加载所有模板卡片（包含 UI 更新和后台检查）
-                var loadTask = await Application.Current.Dispatcher.InvokeAsync(() => LoadAllTemplateCardsAsync(token));
-                await loadTask;
+                // 3. 默认显示官方图解的卡片（而不是全部模板）
+                await Application.Current.Dispatcher.InvokeAsync(async () =>
+                {
+                    if (OfficialTemplatesNode != null)
+                    {
+                        await ShowCategoryTemplateCards(OfficialTemplatesNode);
+                    }
+                });
 
                 if (token.IsCancellationRequested) return;
 
@@ -2488,6 +2577,9 @@ namespace GeoChemistryNexus.ViewModels
                 if (!token.IsCancellationRequested)
                 {
                     _isTemplateLibraryDirty = false;
+                    
+                    // 6. 检查是否存在未安装的模板，更新批量下载按钮显示状态
+                    CheckForNewTemplatesDownload();
                 }
             }
             catch (OperationCanceledException)
@@ -2566,16 +2658,19 @@ namespace GeoChemistryNexus.ViewModels
                 {
                     GraphMapTemplateNode = newNode;
 
+                    // 分离三个大类
+                    SeparateTemplateCategories();
+
                     // 读取配置中的展开层级，默认为2
                     if (!int.TryParse(ConfigHelper.GetConfig("default_tree_expand_level"), out int expandLevel))
                     {
                         expandLevel = 2;
                     }
 
-                    // 递归展开
-                    if (GraphMapTemplateNode != null)
+                    // 递归展开官方图解节点
+                    if (OfficialTemplatesNode != null)
                     {
-                        ExpandNodes(GraphMapTemplateNode, 1, expandLevel);
+                        ExpandNodes(OfficialTemplatesNode, 1, expandLevel);
                     }
                 });
             }
@@ -2606,6 +2701,240 @@ namespace GeoChemistryNexus.ViewModels
             {
                 child.IsExpanded = true;
                 ExpandNodes(child, currentLevel + 1, targetLevel);
+            }
+        }
+
+        /// <summary>
+        /// 分离三个大类：个人图解、收藏、官方图解
+        /// </summary>
+        private void SeparateTemplateCategories()
+        {
+            if (GraphMapTemplateNode == null || GraphMapTemplateNode.Children == null)
+                return;
+
+            // 1. 个人图解：对应 "custom_templates" 或 "自定义模板" 节点
+            string customRoot = LanguageService.Instance["custom_templates"];
+            if (string.IsNullOrEmpty(customRoot)) customRoot = "Custom Templates";
+            
+            var personalNode = GraphMapTemplateNode.Children.FirstOrDefault(c => c.Name == customRoot);
+            if (personalNode != null)
+            {
+                PersonalTemplatesNode = personalNode;
+            }
+            else
+            {
+                // 如果没有个人图解，创建一个空节点
+                PersonalTemplatesNode = new GraphMapTemplateNode { Name = customRoot };
+            }
+
+            // 2. 收藏：从数据库加载 IsFavorite = true 的模板
+            LoadFavoriteTemplates();
+
+            // 3. 官方图解：所有非自定义模板
+            OfficialTemplatesNode = new GraphMapTemplateNode 
+            { 
+                Name = LanguageService.Instance["official_templates"] ?? "Official Templates"
+            };
+            
+            // 将非自定义的所有节点复制到官方节点
+            var officialChildren = GraphMapTemplateNode.Children
+                .Where(c => c != personalNode)
+                .ToList();
+            
+            foreach (var child in officialChildren)
+            {
+                OfficialTemplatesNode.Children.Add(child);
+            }
+
+            // 4. 初始化当前大类名称（默认为官方图解）
+            CurrentCategoryName = OfficialTemplatesNode?.Name ?? LanguageService.Instance["official_templates"];
+        }
+
+        /// <summary>
+        /// 加载收藏的模板
+        /// </summary>
+        private void LoadFavoriteTemplates()
+        {
+            FavoriteTemplatesNode = new GraphMapTemplateNode
+            {
+                Name = LanguageService.Instance["favorite_templates"] ?? "Favorites"
+            };
+
+            try
+            {
+                // 从数据库加载所有收藏的模板
+                var allTemplates = GraphMapDatabaseService.Instance.GetSummaries();
+                var favoriteTemplates = allTemplates.Where(t => t.IsFavorite).ToList();
+
+                foreach (var template in favoriteTemplates)
+                {
+                    var node = new GraphMapTemplateNode
+                    {
+                        Name = template.Name,
+                        GraphMapPath = template.GraphMapPath,
+                        TemplateId = template.Id,
+                        FileHash = template.FileHash,
+                        IsCustomTemplate = template.IsCustom,
+                        Status = template.Status,
+                        Parent = FavoriteTemplatesNode
+                    };
+                    FavoriteTemplatesNode.Children.Add(node);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Load favorite templates error: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 加载最近使用的模板
+        /// </summary>
+        private void LoadRecentsTemplates()
+        {
+            RecentsTemplatesNode = new GraphMapTemplateNode
+            {
+                Name = LanguageService.Instance["recents_templates"] ?? "Recents"
+            };
+
+            try
+            {
+                // 从配置文件加载最近使用的模板ID列表
+                var recentsConfig = ConfigHelper.GetConfig("recent_templates");
+                if (string.IsNullOrEmpty(recentsConfig))
+                    return;
+
+                var recentIds = recentsConfig.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(id => Guid.TryParse(id.Trim(), out var guid) ? guid : Guid.Empty)
+                    .Where(id => id != Guid.Empty)
+                    .Take(10) // 最多显示10个
+                    .ToList();
+
+                var allTemplates = GraphMapDatabaseService.Instance.GetSummaries();
+                var templateDict = allTemplates.ToDictionary(t => t.Id);
+
+                foreach (var id in recentIds)
+                {
+                    if (templateDict.TryGetValue(id, out var template))
+                    {
+                        var node = new GraphMapTemplateNode
+                        {
+                            Name = template.Name,
+                            GraphMapPath = template.GraphMapPath,
+                            TemplateId = template.Id,
+                            FileHash = template.FileHash,
+                            IsCustomTemplate = template.IsCustom,
+                            Status = template.Status,
+                            Parent = RecentsTemplatesNode
+                        };
+                        RecentsTemplatesNode.Children.Add(node);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Load recents templates error: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 记录模板使用记录
+        /// </summary>
+        private void RecordTemplateUsage(Guid templateId)
+        {
+            try
+            {
+                var recentsConfig = ConfigHelper.GetConfig("recent_templates") ?? string.Empty;
+                var recentIds = recentsConfig.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(id => id.Trim())
+                    .ToList();
+
+                var idString = templateId.ToString();
+                
+                // 如果已存在，先移除
+                recentIds.Remove(idString);
+                
+                // 添加到最前面
+                recentIds.Insert(0, idString);
+                
+                // 保留10条
+                if (recentIds.Count > 10)
+                {
+                    recentIds = recentIds.Take(10).ToList();
+                }
+                
+                // 保存
+                var newConfig = string.Join(",", recentIds);
+                ConfigHelper.SetConfig("recent_templates", newConfig);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Record template usage error: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 切换分类展开状态，确保同时只有一个展开
+        /// </summary>
+        [RelayCommand]
+        private async void ToggleCategoryExpansion(string category)
+        {
+            switch (category)
+            {
+                case "Personal":
+                    IsPersonalExpanded = !IsPersonalExpanded;
+                    if (IsPersonalExpanded)
+                    {
+                        IsFavoriteExpanded = false;
+                        IsOfficialExpanded = false;
+                        IsRecentsExpanded = false;
+                        // 更新标题和导航栏
+                        CurrentCategoryName = PersonalTemplatesNode?.Name ?? LanguageService.Instance["personal_templates"];
+                        await ShowCategoryTemplateCards(PersonalTemplatesNode);
+                    }
+                    break;
+                case "Favorite":
+                    IsFavoriteExpanded = !IsFavoriteExpanded;
+                    if (IsFavoriteExpanded)
+                    {
+                        IsPersonalExpanded = false;
+                        IsOfficialExpanded = false;
+                        IsRecentsExpanded = false;
+                        // 刷新收藏列表
+                        LoadFavoriteTemplates();
+                        // 更新标题和导航栏
+                        CurrentCategoryName = FavoriteTemplatesNode?.Name ?? LanguageService.Instance["favorite_templates"];
+                        // 显示收藏的模板卡片
+                        await ShowCategoryTemplateCards(FavoriteTemplatesNode);
+                    }
+                    break;
+                case "Official":
+                    IsOfficialExpanded = !IsOfficialExpanded;
+                    if (IsOfficialExpanded)
+                    {
+                        IsPersonalExpanded = false;
+                        IsFavoriteExpanded = false;
+                        IsRecentsExpanded = false;
+                        // 更新标题和导航栏
+                        CurrentCategoryName = OfficialTemplatesNode?.Name ?? LanguageService.Instance["official_templates"];
+                        await ShowCategoryTemplateCards(OfficialTemplatesNode);
+                    }
+                    break;
+                case "Recents":
+                    IsRecentsExpanded = !IsRecentsExpanded;
+                    if (IsRecentsExpanded)
+                    {
+                        IsPersonalExpanded = false;
+                        IsFavoriteExpanded = false;
+                        IsOfficialExpanded = false;
+                        // 刷新最近使用列表
+                        LoadRecentsTemplates();
+                        // 更新标题和导航栏
+                        CurrentCategoryName = RecentsTemplatesNode?.Name ?? LanguageService.Instance["recents_templates"];
+                        // 显示最近使用的模板卡片
+                        await ShowCategoryTemplateCards(RecentsTemplatesNode);
+                    }
+                    break;
             }
         }
 
@@ -3461,6 +3790,21 @@ namespace GeoChemistryNexus.ViewModels
             {
                 if (!string.IsNullOrEmpty(child.GraphMapPath) || child.IsCustomTemplate)
                 {
+                    // 获取收藏状态
+                    bool isFavorite = false;
+                    if (child.TemplateId.HasValue)
+                    {
+                        try
+                        {
+                            var entity = GraphMapDatabaseService.Instance.GetTemplate(child.TemplateId.Value);
+                            if (entity != null)
+                            {
+                                isFavorite = entity.IsFavorite;
+                            }
+                        }
+                        catch { }
+                    }
+
                     // 2. 初始化 ViewModel (轻量级)
                     var cardVm = new TemplateCardViewModel
                     {
@@ -3470,13 +3814,17 @@ namespace GeoChemistryNexus.ViewModels
                         Category = GetNodePath(child),
                         ServerHash = child.FileHash,    // 注入服务器哈希
                         IsCustomTemplate = child.IsCustomTemplate,
+                        IsFavorite = isFavorite,        // 设置收藏状态
                         State = TemplateState.Loading,  // 初始状态为 Loading
                         ThumbnailImage = null,          // 暂无图片
 
                         // 注入回调
                         OpenHandler = (vm) => SelectTemplateCardCommand.ExecuteAsync(vm),
-                        DownloadHandler = DownloadSingleTemplate,
-                        CheckUpdateHandler = CheckSingleTemplateUpdate
+                        DownloadHandler = (vm) => DownloadSingleTemplate(vm, showNotification: true),
+                        CheckUpdateHandler = CheckSingleTemplateUpdate,
+                        ToggleFavoriteHandler = ToggleFavorite,
+                        DeleteHandler = DeleteTemplate,
+                        EditHandler = EditTemplate
                     };
 
                     // 直接从 Node 状态映射，避免后续重复查库
@@ -3800,6 +4148,146 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
+        /// 编辑图解模板元数据（分类、语言）
+        /// </summary>
+        [RelayCommand]
+        private async Task EditTemplate(TemplateCardViewModel card)
+        {
+            if (card == null || !card.TemplateId.HasValue) return;
+
+            try
+            {
+                // 1. 获取模板数据
+                var entity = GraphMapDatabaseService.Instance.GetTemplate(card.TemplateId.Value);
+                if (entity == null || entity.Content == null)
+                {
+                    MessageHelper.Error(LanguageService.Instance["diagram_template_source_missing"]);
+                    return;
+                }
+
+                var template = entity.Content;
+
+                // 2. 创建编辑窗口
+                var editWindow = new NewTemplateWindow
+                {
+                    Owner = Application.Current.MainWindow,
+                    Title = LanguageService.Instance["edit_diagram_template"] ?? "编辑图解模板"
+                };
+
+                // 3. 准备初始数据
+                var control = editWindow.TemplateControl;
+
+                // 设置编辑模式，禁用绘图类型修改
+                control.PlotTypeComboBox.IsEnabled = false;
+                control.PlotTypeComboBox.SelectedIndex = template.TemplateType == "Ternary" ? 1 : 0;
+
+                // 加载现有语言
+                control.EmptyData();
+                if (template.NodeList != null && template.NodeList.Translations != null)
+                {
+                    var languages = template.NodeList.Translations.Keys.ToList();
+                    foreach (var lang in languages)
+                    {
+                        control._languageParts.Add(new LanguageTagModel { Text = lang });
+                    }
+                    control.UpdateLanguageDefaultStatus();
+
+                    // 加载现有分类
+                    var categoryParts = control.GetCategoryParts().ToList();
+                    control._categoryParts.Clear();
+
+                    // 获取默认语言的分类路径
+                    string defaultLang = template.DefaultLanguage;
+                    if (template.NodeList.Translations.ContainsKey(defaultLang))
+                    {
+                        var path = template.NodeList.Translations[defaultLang];
+                        var parts = path.Split('>', StringSplitOptions.RemoveEmptyEntries)
+                                       .Select(p => p.Trim())
+                                       .ToList();
+
+                        foreach (var part in parts)
+                        {
+                            control._categoryParts.Add(new CategoryPartModel
+                            {
+                                DisplayName = part,
+                                LocalizedNames = null
+                            });
+                        }
+                    }
+                }
+
+                // 4. 处理确认/取消命令
+                editWindow.ConfirmCommand = new RelayCommand<NewTemplateControl>(async (ctrl) =>
+                {
+                    if (ctrl == null) return;
+
+                    // 验证输入
+                    if (ctrl._languageParts.Count == 0)
+                    {
+                        MessageHelper.Warning(LanguageService.Instance["all_fields_required"]);
+                        return;
+                    }
+
+                    if (ctrl._categoryParts.Count < 2)
+                    {
+                        MessageHelper.Warning(LanguageService.Instance["category_structure_min_two"]);
+                        return;
+                    }
+
+                    // 更新 NodeList
+                    var newNodeList = new LocalizedString();
+                    var languages = ctrl._languageParts.Select(l => l.Text).ToList();
+
+                    foreach (var lang in languages)
+                    {
+                        // 构建分类路径
+                        var parts = new List<string>();
+                        foreach (var part in ctrl._categoryParts)
+                        {
+                            if (part.LocalizedNames != null && part.LocalizedNames.ContainsKey(lang))
+                            {
+                                parts.Add(part.LocalizedNames[lang]);
+                            }
+                            else
+                            {
+                                parts.Add(part.DisplayName);
+                            }
+                        }
+                        newNodeList.Translations[lang] = string.Join(" > ", parts);
+                    }
+
+                    // 更新 Entity
+                    entity.NodeList = newNodeList;
+                    entity.Content.NodeList = newNodeList;
+                    entity.Content.DefaultLanguage = languages.First();
+                    entity.LastModified = DateTime.Now;
+
+                    // 保存到数据库
+                    await Task.Run(() => GraphMapDatabaseService.Instance.UpsertTemplate(entity));
+
+                    // 刷新界面
+                    await InitializeAsync();
+
+                    MessageHelper.Success(LanguageService.Instance["ModifedSuccess"] ?? "修改成功");
+                    editWindow.Close();
+                });
+
+                editWindow.CancelCommand = new RelayCommand<NewTemplateControl>((ctrl) =>
+                {
+                    editWindow.Close();
+                });
+
+                editWindow.ShowDialog();
+
+                await Task.CompletedTask;
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.Error(LanguageService.Instance["edit_failed"] + ex.Message);
+            }
+        }
+
+        /// <summary>
         /// 点击模板分类节点
         /// </summary>
         [RelayCommand]
@@ -3846,7 +4334,7 @@ namespace GeoChemistryNexus.ViewModels
 
                 // 注入回调
                 OpenHandler = (vm) => SelectTemplateCardCommand.ExecuteAsync(vm),
-                DownloadHandler = DownloadSingleTemplate,
+                DownloadHandler = (vm) => DownloadSingleTemplate(vm, showNotification: true),
                 CheckUpdateHandler = CheckSingleTemplateUpdate
             };
 
@@ -3884,6 +4372,21 @@ namespace GeoChemistryNexus.ViewModels
             CollectTemplatesFromNode(categoryNode);
             UpdateBreadcrumbs(categoryNode);
 
+            // 检查是否为大类节点，如果是则更新标题，否则清空标题
+            bool isTopLevelCategory = categoryNode == PersonalTemplatesNode || 
+                                      categoryNode == FavoriteTemplatesNode || 
+                                      categoryNode == OfficialTemplatesNode || 
+                                      categoryNode == RecentsTemplatesNode;
+            if (isTopLevelCategory)
+            {
+                CurrentCategoryName = categoryNode?.Name ?? string.Empty;
+            }
+            else
+            {
+                // 如果不是大类节点，清空标题，显示默认的“模板库”
+                CurrentCategoryName = string.Empty;
+            }
+
             // 触发后台加载详情
             try
             {
@@ -3903,27 +4406,41 @@ namespace GeoChemistryNexus.ViewModels
                 return;
             }
 
-            // 创建一个列表，用来存放从当前节点到其父节点的完整路径
-            var path = new List<GraphMapTemplateNode>();
-            var current = currentNode;
-
-            // 从当前节点开始，利用Parent属性向上遍历，直到某个节点的Parent为空
-            while (current != null && current.Parent != null)
-            {
-                path.Add(current);
-                current = current.Parent;
-            }
-
-            path.Reverse();
-
             // 清空并重新构建面包屑集合
             Breadcrumbs.Clear();
             Breadcrumbs.Add(new BreadcrumbItem { Name = LanguageService.Instance["all_templates"] });
 
-            // 将路径上的所有节点添加到面包屑集合中
-            foreach (var node in path)
+            // 检查是否为大类节点（个人、收藏、官方、最近使用）
+            bool isTopLevelCategory = currentNode == PersonalTemplatesNode || 
+                                      currentNode == FavoriteTemplatesNode || 
+                                      currentNode == OfficialTemplatesNode || 
+                                      currentNode == RecentsTemplatesNode;
+
+            if (isTopLevelCategory)
             {
-                Breadcrumbs.Add(new BreadcrumbItem { Name = node.Name, Node = node });
+                // 如果是大类节点，只显示：全部模板 / 大类名称
+                Breadcrumbs.Add(new BreadcrumbItem { Name = currentNode.Name, Node = currentNode });
+            }
+            else
+            {
+                // 创建一个列表，用来存放从当前节点到其父节点的完整路径
+                var path = new List<GraphMapTemplateNode>();
+                var current = currentNode;
+
+                // 从当前节点开始，利用Parent属性向上遍历，直到某个节点的Parent为空
+                while (current != null && current.Parent != null)
+                {
+                    path.Add(current);
+                    current = current.Parent;
+                }
+
+                path.Reverse();
+
+                // 将路径上的所有节点添加到面包屑集合中
+                foreach (var node in path)
+                {
+                    Breadcrumbs.Add(new BreadcrumbItem { Name = node.Name, Node = node });
+                }
             }
         }
 
@@ -3947,6 +4464,12 @@ namespace GeoChemistryNexus.ViewModels
 
             try
             {
+                // 记录模板使用
+                if (card.TemplateId.HasValue)
+                {
+                    RecordTemplateUsage(card.TemplateId.Value);
+                }
+
                 // 确保清除语言覆盖，使用软件默认配置
                 LocalizedString.OverrideLanguage = null;
 
@@ -4253,6 +4776,9 @@ namespace GeoChemistryNexus.ViewModels
                 await LoadAllTemplateCardsAsync(default);
                 InitializeBreadcrumbs();
                 
+                // 清空当前大类名称，显示默认的“模板库”标题
+                CurrentCategoryName = string.Empty;
+                
                 // 清除 TreeView 选中项
                 ClearTreeViewSelection(GraphMapTemplateNode);
             }
@@ -4523,9 +5049,6 @@ namespace GeoChemistryNexus.ViewModels
                 CurrentTemplate.NodeList = entity.NodeList;
             }
 
-            // 初始化原始状态
-            _originalTemplateJson = SerializeTemplate(CurrentTemplate);
-
             // 检查模板类型
             if (CurrentTemplate.TemplateType != "Cartesian" && CurrentTemplate.TemplateType != "Ternary")
             {
@@ -4561,6 +5084,12 @@ namespace GeoChemistryNexus.ViewModels
 
             // 根据新建的【图层树】来渲染前端
             RefreshPlotFromLayers();
+            
+            // 在所有初始化完成后，再记录原始状态
+            _originalTemplateJson = SerializeTemplate(CurrentTemplate);
+            HasUnsavedChanges = false;
+            WeakReferenceMessenger.Default.Send(new UnsavedChangesMessage(false));
+            
             return true;
         }
 
@@ -7516,6 +8045,9 @@ namespace GeoChemistryNexus.ViewModels
                 // 刷新 UI (重新加载卡片)
                 _isTemplateLibraryDirty = true;
                 await BackToTemplateMode();
+                
+                // 检查是否有新模板可下载
+                CheckForNewTemplatesDownload();
             }
             catch (Exception ex)
             {
@@ -8329,7 +8861,7 @@ namespace GeoChemistryNexus.ViewModels
         /// <summary>
         /// 下载单个模板的具体实现 (Updated for LiteDB)
         /// </summary>
-        private async Task DownloadSingleTemplate(TemplateCardViewModel card)
+        private async Task DownloadSingleTemplate(TemplateCardViewModel card, bool showNotification = true)
         {
             try
             {
@@ -8453,13 +8985,208 @@ namespace GeoChemistryNexus.ViewModels
                     thumbStream.Dispose();
                 }
 
-                MessageHelper.Success($"{card.Name} " + LanguageService.Instance["template_ready"]);
+                // 仅在显示通知为true时显示成功通知
+                if (showNotification)
+                {
+                    MessageHelper.Success($"{card.Name} " + LanguageService.Instance["template_ready"]);
+                }
             }
             catch (Exception ex)
             {
                 card.State = TemplateState.Error;
-                MessageHelper.Error(LanguageService.Instance["download_template_failed"] + $" {ex.Message}");
+                // 仅在显示通知为true时显示错误通知
+                if (showNotification)
+                {
+                    MessageHelper.Error(LanguageService.Instance["download_template_failed"] + $" {ex.Message}");
+                }
             }
+        }
+
+        /// <summary>
+        /// 检查是否存在未安装的模板（仅本地不存在的，不包括云端有更新的）
+        /// </summary>
+        private void CheckForNewTemplatesDownload()
+        {
+            try
+            {
+                // 获取所有模板摘要
+                var allTemplates = GraphMapDatabaseService.Instance.GetSummaries();
+                
+                // 筛选出 Status 为 NOT_INSTALLED 且为官方模板的模板
+                var notInstalledTemplates = allTemplates.Where(t => 
+                    !t.IsCustom && 
+                    t.Status == "NOT_INSTALLED"
+                ).ToList();
+
+                // 更新按钮显示状态
+                IsBatchDownloadButtonVisible = notInstalledTemplates.Count > 0;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Check for new templates failed: {ex.Message}");
+                IsBatchDownloadButtonVisible = false;
+            }
+        }
+
+        /// <summary>
+        /// 批量下载所有未安装的模板
+        /// </summary>
+        [RelayCommand]
+        private async Task BatchDownloadNewTemplates()
+        {
+            try
+            {
+                // 获取所有未安装的模板
+                var allTemplates = GraphMapDatabaseService.Instance.GetSummaries();
+                var notInstalledTemplates = allTemplates.Where(t => 
+                    !t.IsCustom && 
+                    t.Status == "NOT_INSTALLED"
+                ).ToList();
+
+                if (notInstalledTemplates.Count == 0)
+                {
+                    MessageHelper.Info(LanguageService.Instance["no_new_templates_to_download"] ?? "没有需要下载的新模板");
+                    return;
+                }
+
+                // 弹窗确认
+                string confirmMessage = string.Format(
+                    LanguageService.Instance["batch_download_confirm_message"] ?? "检测到 {0} 个未下载的新模板，是否批量下载？",
+                    notInstalledTemplates.Count);
+
+                bool confirmed = await NotificationManager.Instance.ShowDialogAsync(
+                    LanguageService.Instance["batch_download_title"] ?? "批量下载",
+                    confirmMessage,
+                    LanguageService.Instance["Confirm"] ?? "确认",
+                    LanguageService.Instance["Cancel"] ?? "取消");
+
+                if (!confirmed) return;
+
+                // 创建取消令牌
+                _batchDownloadCts?.Cancel();
+                _batchDownloadCts = new CancellationTokenSource();
+                var token = _batchDownloadCts.Token;
+
+                // 显示遮罩层
+                IsBatchDownloadOverlayVisible = true;
+
+                // 开始批量下载
+                int successCount = 0;
+                int failCount = 0;
+                List<string> failedTemplates = new List<string>();
+                int totalCount = notInstalledTemplates.Count;
+
+                for (int i = 0; i < notInstalledTemplates.Count; i++)
+                {
+                    // 检查是否取消
+                    if (token.IsCancellationRequested)
+                    {
+                        break;
+                    }
+
+                    var template = notInstalledTemplates[i];
+
+                    // 更新进度信息
+                    BatchDownloadProgressText = string.Format(
+                        LanguageService.Instance["batch_download_progress"] ?? "正在下载：{0}/{1} - {2}",
+                        i + 1,
+                        totalCount,
+                        template.Name);
+
+                    try
+                    {
+                        // 创建临时卡片对象用于下载
+                        var tempCard = new TemplateCardViewModel
+                        {
+                            TemplateId = template.Id,
+                            Name = template.Name,
+                            TemplatePath = template.GraphMapPath,
+                            ServerHash = template.FileHash,
+                            State = TemplateState.Loading
+                        };
+
+                        // 执行下载（不显示单个通知）
+                        await DownloadSingleTemplate(tempCard, showNotification: false);
+                        
+                        if (tempCard.State == TemplateState.Ready)
+                        {
+                            successCount++;
+                        }
+                        else
+                        {
+                            failCount++;
+                            failedTemplates.Add(template.Name);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        failCount++;
+                        failedTemplates.Add(template.Name);
+                        Debug.WriteLine($"Download template {template.Name} failed: {ex.Message}");
+                    }
+                }
+
+                // 隐藏遮罩层
+                IsBatchDownloadOverlayVisible = false;
+
+                // 检查是否被取消
+                if (token.IsCancellationRequested)
+                {
+                    MessageHelper.Info(LanguageService.Instance["batch_download_cancelled"] ?? "批量下载已取消");
+                }
+                else
+                {
+                    // 显示结果
+                    StringBuilder resultMessage = new StringBuilder();
+                    resultMessage.AppendLine(string.Format(
+                        LanguageService.Instance["batch_download_success_count"] ?? "成功下载：{0} 个",
+                        successCount));
+                    
+                    if (failCount > 0)
+                    {
+                        resultMessage.AppendLine(string.Format(
+                            LanguageService.Instance["batch_download_fail_count"] ?? "失败：{0} 个",
+                            failCount));
+                        if (failedTemplates.Count > 0)
+                        {
+                            resultMessage.AppendLine(LanguageService.Instance["failed_templates"] ?? "失败模板：");
+                            resultMessage.AppendLine(string.Join(", ", failedTemplates.Take(5)));
+                            if (failedTemplates.Count > 5)
+                            {
+                                resultMessage.AppendLine("...");
+                            }
+                        }
+                    }
+
+                    NotificationManager.Instance.Show(
+                        LanguageService.Instance["batch_download_complete"] ?? "批量下载完成",
+                        resultMessage.ToString(),
+                        successCount == notInstalledTemplates.Count ? NotificationType.Success : NotificationType.Warning,
+                        0);
+                }
+
+                // 刷新模板库
+                _isTemplateLibraryDirty = true;
+                await BackToTemplateMode();
+                
+                // 重新检查批量下载按钮状态
+                CheckForNewTemplatesDownload();
+            }
+            catch (Exception ex)
+            {
+                // 隐藏遮罩层
+                IsBatchDownloadOverlayVisible = false;
+                MessageHelper.Error(LanguageService.Instance["batch_download_failed"] ?? "批量下载失败：" + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 取消批量下载
+        /// </summary>
+        [RelayCommand]
+        private void CancelBatchDownload()
+        {
+            _batchDownloadCts?.Cancel();
         }
 
         #region Layer Order Helpers

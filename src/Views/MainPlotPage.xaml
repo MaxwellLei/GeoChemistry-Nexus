@@ -19,7 +19,8 @@
       xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="MainPlotPage">
+      Title="MainPlotPage"
+      Focusable="True">
 
     <Page.InputBindings>
         <KeyBinding Key="Z" Modifiers="Control" Command="{Binding UndoCommand}"/>
@@ -28,6 +29,9 @@
     </Page.InputBindings>
 
     <Page.Resources>
+        <!-- 加载iconfont字体 -->
+        <FontFamily x:Key="IconFont">pack://application:,,,/Data/Icon/#iconfont</FontFamily>
+        
         <cvs:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <cvs:BoolToVisibilityReConverter x:Key="BoolToVisibilityReConverter"/>
         <cvs:GraphMapPathToIconConverter x:Key="GraphMapPathToIconConverter"/>
@@ -263,70 +267,481 @@
                     </MenuItem>
                 </Menu>
 
-
-
-                <!-- 模板分类树 -->
-                <TreeView ItemsSource="{Binding GraphMapTemplateNode.Children}"
-                          x:Name="TemplateTreeView"
-                          Background="Transparent" 
-                          ItemContainerStyle="{StaticResource TemplateTreeViewItemStyle}"
-                          BorderThickness="0">
-                    <TreeView.ItemTemplate>
-                        <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                            <Grid Background="Transparent">
+                <!-- 新的列表式侧边栏菜单 -->
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="0">
+                        <!-- 分组一：资源库 -->
+                        <TextBlock Text="{Binding [library_section],Source={x:Static lg:LanguageService.Instance}, FallbackValue='资源库'}" 
+                                   FontSize="11" FontWeight="SemiBold" 
+                                   Foreground="#666666"
+                                   Margin="16,16,16,8"/>
+                        
+                        <!-- 官方图解 -->
+                        <Button Background="Transparent" BorderThickness="0" 
+                                Padding="12,10" Cursor="Hand"
+                                HorizontalContentAlignment="Stretch"
+                                Command="{Binding ToggleCategoryExpansionCommand}"
+                                CommandParameter="Official">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border x:Name="BorderElement"
+                                                        Background="{TemplateBinding Background}" 
+                                                        Padding="{TemplateBinding Padding}"
+                                                        CornerRadius="6"
+                                                        Margin="8,0">
+                                                    <ContentPresenter/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="BorderElement" Property="Background" Value="#F0F0F0"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsOfficialExpanded}" Value="True">
+                                            <Setter Property="Background" Value="#E5E5E5"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                            <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding GraphMapPath, Converter={StaticResource GraphMapPathToIconConverter}}" 
-                                               FontSize="14" Margin="0,0,8,0"/>
-                                    <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
-                                </StackPanel>
-                                <Border Grid.Column="1" CornerRadius="10" Padding="6,2" Margin="8,0,0,0" VerticalAlignment="Center">
-                                    <Border.Style>
-                                        <Style TargetType="Border">
-                                            <Setter Property="Background" Value="#E9E9EF"/>
-                                            <Setter Property="Visibility" Value="Visible"/>
+                                <TextBlock Grid.Column="0" Text="&#xe8e1;" FontFamily="{StaticResource IconFont}" FontSize="16" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" 
+                                           Text="{Binding [official_templates],Source={x:Static lg:LanguageService.Instance}}" 
+                                           FontSize="14" 
+                                           Foreground="#333333"
+                                           VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="2" FontFamily="Segoe MDL2 Assets" 
+                                           FontSize="10" Foreground="#808080" 
+                                           VerticalAlignment="Center">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Text" Value="&#xE76C;"/>
+                                            <Setter Property="RenderTransform">
+                                                <Setter.Value>
+                                                    <RotateTransform Angle="0"/>
+                                                </Setter.Value>
+                                            </Setter>
                                             <Style.Triggers>
-                                                <!-- 仅在有子项（分类节点）时显示数量；叶子模板隐藏 -->
-                                                <DataTrigger Binding="{Binding Children.Count}" Value="0">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                <DataTrigger Binding="{Binding IsOfficialExpanded}" Value="True">
+                                                    <DataTrigger.EnterActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Angle" 
+                                                                                 To="90" Duration="0:0:0.15"/>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </DataTrigger.EnterActions>
+                                                    <DataTrigger.ExitActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Angle" 
+                                                                                 To="0" Duration="0:0:0.15"/>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </DataTrigger.ExitActions>
                                                 </DataTrigger>
-                                                <!-- Selected: White badge -->
-                                                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=TreeViewItem}}" Value="True">
-                                                    <Setter Property="Background" Value="White"/>
-                                                </DataTrigger>
-
                                             </Style.Triggers>
                                         </Style>
-                                    </Border.Style>
-                                    <TextBlock Text="{Binding TemplateCount}" FontSize="12">
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                                <Setter Property="Foreground" Value="#555"/>
-                                                <Style.Triggers>
-                                                    <!-- Selected: Blue Text -->
-                                                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=TreeViewItem}}" Value="True">
-                                                        <Setter Property="Foreground" Value="#0078D4"/>
-                                                    </DataTrigger>
-
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                </Border>
+                                    </TextBlock.Style>
+                                </TextBlock>
                             </Grid>
-                        </HierarchicalDataTemplate>
-                    </TreeView.ItemTemplate>
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="SelectedItemChanged">
-                            <i:InvokeCommandAction Command="{Binding SelectTreeViewItemCommand}"
-                                                  CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType=TreeView}}"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </TreeView>
+                        </Button>
+                        
+                        <!-- 官方图解子树 -->
+                        <Border x:Name="OfficialTreeBorder"
+                                ClipToBounds="True">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="MaxHeight" Value="0"/>
+                                    <Setter Property="Opacity" Value="0"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsOfficialExpanded}" Value="True">
+                                            <DataTrigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetProperty="MaxHeight" 
+                                                                         To="800" Duration="0:0:0.3">
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" 
+                                                                         To="1.0" Duration="0:0:0.25"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.EnterActions>
+                                            <DataTrigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetProperty="MaxHeight" 
+                                                                         To="0" Duration="0:0:0.25">
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseIn"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" 
+                                                                         To="0" Duration="0:0:0.2"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.ExitActions>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <TreeView ItemsSource="{Binding OfficialTemplatesNode.Children}"
+                                      Background="Transparent" 
+                                      ItemContainerStyle="{StaticResource TemplateTreeViewItemStyle}"
+                                      BorderThickness="0"
+                                      Margin="20,4,8,8">
+                                <TreeView.ItemTemplate>
+                                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                                        <Grid Background="Transparent">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding GraphMapPath, Converter={StaticResource GraphMapPathToIconConverter}}" 
+                                                           FontSize="14" Margin="0,0,8,0"/>
+                                                <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                            <Border Grid.Column="1" CornerRadius="10" Padding="6,2" Margin="8,0,0,0" VerticalAlignment="Center">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Background" Value="#E9E9EF"/>
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Children.Count}" Value="0">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=TreeViewItem}}" Value="True">
+                                                                <Setter Property="Background" Value="White"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <TextBlock Text="{Binding TemplateCount}" FontSize="12">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                            <Setter Property="Foreground" Value="#555"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=TreeViewItem}}" Value="True">
+                                                                    <Setter Property="Foreground" Value="#0078D4"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </Border>
+                                        </Grid>
+                                    </HierarchicalDataTemplate>
+                                </TreeView.ItemTemplate>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectedItemChanged">
+                                        <i:InvokeCommandAction Command="{Binding SelectTreeViewItemCommand}"
+                                                              CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType=TreeView}}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </TreeView>
+                        </Border>
+                        
+                        <!-- 分隔线 -->
+                        <Rectangle Height="1" Fill="#E0E0E0" Margin="16,12"/>
+                        
+                        <!-- 分组二：我的空间 -->
+                        <TextBlock Text="{Binding [workspace_section],Source={x:Static lg:LanguageService.Instance}, FallbackValue='我的空间'}" 
+                                   FontSize="11" FontWeight="SemiBold" 
+                                   Foreground="#666666"
+                                   Margin="16,8,16,8"/>
+                        
+                        <!-- 个人图解 -->
+                        <Button Background="Transparent" BorderThickness="0" 
+                                Padding="12,10" Cursor="Hand"
+                                HorizontalContentAlignment="Stretch"
+                                Command="{Binding ToggleCategoryExpansionCommand}"
+                                CommandParameter="Personal">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border x:Name="BorderElement"
+                                                        Background="{TemplateBinding Background}" 
+                                                        Padding="{TemplateBinding Padding}"
+                                                        CornerRadius="6"
+                                                        Margin="8,0">
+                                                    <ContentPresenter/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="BorderElement" Property="Background" Value="#F0F0F0"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsPersonalExpanded}" Value="True">
+                                            <Setter Property="Background" Value="#E5E5E5"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="&#xe623;" FontFamily="{StaticResource IconFont}" FontSize="16" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" 
+                                           Text="{Binding [personal_templates],Source={x:Static lg:LanguageService.Instance}}" 
+                                           FontSize="14" 
+                                           Foreground="#333333"
+                                           VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="2" FontFamily="Segoe MDL2 Assets" 
+                                           FontSize="10" Foreground="#808080" 
+                                           VerticalAlignment="Center">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Text" Value="&#xE76C;"/>
+                                            <Setter Property="RenderTransform">
+                                                <Setter.Value>
+                                                    <RotateTransform Angle="0"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsPersonalExpanded}" Value="True">
+                                                    <DataTrigger.EnterActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Angle" 
+                                                                                 To="90" Duration="0:0:0.15"/>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </DataTrigger.EnterActions>
+                                                    <DataTrigger.ExitActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Angle" 
+                                                                                 To="0" Duration="0:0:0.15"/>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </DataTrigger.ExitActions>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                        </Button>
+                        
+                        <!-- 个人图解子树 -->
+                        <Border x:Name="PersonalTreeBorder"
+                                ClipToBounds="True">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="MaxHeight" Value="0"/>
+                                    <Setter Property="Opacity" Value="0"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsPersonalExpanded}" Value="True">
+                                            <DataTrigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetProperty="MaxHeight" 
+                                                                         To="800" Duration="0:0:0.3">
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" 
+                                                                         To="1.0" Duration="0:0:0.25"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.EnterActions>
+                                            <DataTrigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetProperty="MaxHeight" 
+                                                                         To="0" Duration="0:0:0.25">
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseIn"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" 
+                                                                         To="0" Duration="0:0:0.2"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.ExitActions>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <TreeView ItemsSource="{Binding PersonalTemplatesNode.Children}"
+                                      Background="Transparent" 
+                                      ItemContainerStyle="{StaticResource TemplateTreeViewItemStyle}"
+                                      BorderThickness="0"
+                                      Margin="20,4,8,8">
+                                <TreeView.ItemTemplate>
+                                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                                        <Grid Background="Transparent">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding GraphMapPath, Converter={StaticResource GraphMapPathToIconConverter}}" 
+                                                           FontSize="14" Margin="0,0,8,0"/>
+                                                <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                            <Border Grid.Column="1" CornerRadius="10" Padding="6,2" Margin="8,0,0,0" VerticalAlignment="Center">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Background" Value="#E9E9EF"/>
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Children.Count}" Value="0">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=TreeViewItem}}" Value="True">
+                                                                <Setter Property="Background" Value="White"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <TextBlock Text="{Binding TemplateCount}" FontSize="12">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                            <Setter Property="Foreground" Value="#555"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=TreeViewItem}}" Value="True">
+                                                                    <Setter Property="Foreground" Value="#0078D4"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </Border>
+                                        </Grid>
+                                    </HierarchicalDataTemplate>
+                                </TreeView.ItemTemplate>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectedItemChanged">
+                                        <i:InvokeCommandAction Command="{Binding SelectTreeViewItemCommand}"
+                                                              CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType=TreeView}}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </TreeView>
+                        </Border>
+                        
+                        <!-- 收藏 -->
+                        <Button Background="Transparent" BorderThickness="0" 
+                                Padding="12,10" Cursor="Hand"
+                                HorizontalContentAlignment="Stretch"
+                                Command="{Binding ToggleCategoryExpansionCommand}"
+                                CommandParameter="Favorite">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border x:Name="BorderElement"
+                                                        Background="{TemplateBinding Background}" 
+                                                        Padding="{TemplateBinding Padding}"
+                                                        CornerRadius="6"
+                                                        Margin="8,0">
+                                                    <ContentPresenter/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="BorderElement" Property="Background" Value="#F0F0F0"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsFavoriteExpanded}" Value="True">
+                                            <Setter Property="Background" Value="#E5E5E5"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="&#xe649;" FontFamily="{StaticResource IconFont}" FontSize="16" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" 
+                                           Text="{Binding [favorite_templates],Source={x:Static lg:LanguageService.Instance}}" 
+                                           FontSize="14" 
+                                           Foreground="#333333"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+                        </Button>
+                        
+                        <!-- 最近使用 -->
+                        <Button Background="Transparent" BorderThickness="0" 
+                                Padding="12,10" Cursor="Hand"
+                                HorizontalContentAlignment="Stretch"
+                                Command="{Binding ToggleCategoryExpansionCommand}"
+                                CommandParameter="Recents">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border x:Name="BorderElement"
+                                                        Background="{TemplateBinding Background}" 
+                                                        Padding="{TemplateBinding Padding}"
+                                                        CornerRadius="6"
+                                                        Margin="8,0">
+                                                    <ContentPresenter/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="BorderElement" Property="Background" Value="#F0F0F0"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsRecentsExpanded}" Value="True">
+                                            <Setter Property="Background" Value="#E5E5E5"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="&#xe80d;" FontFamily="{StaticResource IconFont}" FontSize="16" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" 
+                                           Text="{Binding [recents_templates],Source={x:Static lg:LanguageService.Instance}, FallbackValue='最近使用'}" 
+                                           FontSize="14" 
+                                           Foreground="#333333"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+                        </Button>
+                    </StackPanel>
+                </ScrollViewer>
             </DockPanel>
 
             <!-- 分隔条 -->
@@ -395,13 +810,68 @@
                             
                             <!-- 左侧：模板库标题 -->
                             <TextBlock Grid.Column="0" 
-                                       Text="{Binding [template_library],Source={x:Static lg:LanguageService.Instance}}" 
                                        FontSize="20" FontWeight="SemiBold" 
                                        Foreground="#333" 
-                                       VerticalAlignment="Center"/>
+                                       VerticalAlignment="Center">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <!-- 默认显示 CurrentCategoryName，如果为空则显示“模板库” -->
+                                        <Setter Property="Text" Value="{Binding CurrentCategoryName}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding CurrentCategoryName}" Value="">
+                                                <Setter Property="Text" Value="{Binding [template_library],Source={x:Static lg:LanguageService.Instance}}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
                             
-                            <!-- 右侧：搜索框和筛选按钮 -->
+                            <!-- 右侧：批量下载按钮、搜索框和筛选按钮 -->
                             <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                <!-- 批量下载按钮 -->
+                                <Button Height="32" Padding="12,0" Margin="0,0,8,0"
+                                        Background="#0078D4" BorderBrush="#0078D4" BorderThickness="1"
+                                        Foreground="White"
+                                        Command="{Binding BatchDownloadNewTemplatesCommand}"
+                                        ToolTip="{Binding [batch_download_new_templates_tooltip], Source={x:Static lg:LanguageService.Instance}, FallbackValue='批量下载新模板'}"
+                                        Cursor="Hand"
+                                        Visibility="{Binding IsBatchDownloadButtonVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="{TemplateBinding Background}" 
+                                                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                                CornerRadius="4"
+                                                                Padding="{TemplateBinding Padding}">
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <TextBlock Text="&#xE896;" FontFamily="Segoe MDL2 Assets" 
+                                                                           FontSize="14" Foreground="{TemplateBinding Foreground}" 
+                                                                           VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                                                <TextBlock Text="{Binding [batch_download_new_templates], Source={x:Static lg:LanguageService.Instance}, FallbackValue='批量下载'}" 
+                                                                           FontSize="13" Foreground="{TemplateBinding Foreground}" 
+                                                                           VerticalAlignment="Center"/>
+                                                            </StackPanel>
+                                                        </Border>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter Property="Background" Value="#005A9E"/>
+                                                                <Setter Property="BorderBrush" Value="#005A9E"/>
+                                                            </Trigger>
+                                                            <Trigger Property="IsPressed" Value="True">
+                                                                <Setter Property="Background" Value="#004578"/>
+                                                                <Setter Property="BorderBrush" Value="#004578"/>
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                                
                                 <!-- 搜索框 -->
                                 <TextBox Width="240" Height="32" Padding="8,6" 
                                          Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" 
@@ -560,6 +1030,46 @@
                                 </Border.Style>
                                 <Border.ContextMenu>
                                     <ContextMenu>
+                                        <!--收藏/取消收藏-->
+                                        <MenuItem Command="{Binding PlacementTarget.Tag.ToggleFavoriteCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                  CommandParameter="{Binding}">
+                                            <MenuItem.Style>
+                                                <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                                                    <Setter Property="Header" Value="{Binding [favorite],Source={x:Static lg:LanguageService.Instance}}"/>
+                                                    <Style.Triggers>
+                                                        <!-- 如果已经收藏，显示"取消收藏" -->
+                                                        <DataTrigger Binding="{Binding IsFavorite}" Value="True">
+                                                            <Setter Property="Header" Value="{Binding [unfavorite],Source={x:Static lg:LanguageService.Instance}}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </MenuItem.Style>
+                                        </MenuItem>
+                                        <Separator/>
+                                        <!--编辑图解模板-->
+                                        <MenuItem Header="{Binding [edit_diagram_template],Source={x:Static lg:LanguageService.Instance}}" 
+                                                  Command="{Binding PlacementTarget.Tag.EditTemplateCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                  CommandParameter="{Binding}">
+                                            <MenuItem.Style>
+                                                <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <!-- 个人图解显示编辑选项 -->
+                                                        <DataTrigger Binding="{Binding IsCustomTemplate}" Value="True">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                        <!-- 开发者模式下非个人图解才显示编辑选项 -->
+                                                        <MultiDataTrigger>
+                                                            <MultiDataTrigger.Conditions>
+                                                                <Condition Binding="{Binding IsCustomTemplate}" Value="False"/>
+                                                                <Condition Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True"/>
+                                                            </MultiDataTrigger.Conditions>
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </MultiDataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </MenuItem.Style>
+                                        </MenuItem>
                                         <!--导出图解模板-->
                                         <MenuItem Header="{Binding [export_diagram_template],Source={x:Static lg:LanguageService.Instance}}" 
                                                   Command="{Binding PlacementTarget.Tag.ExportTemplateCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
@@ -620,7 +1130,68 @@
                                             </Image>
                                         </Border>
 
-                                        <!-- Update Button -->
+                                        <!-- 收藏图标按钮 -->
+                                        <Button VerticalAlignment="Top" HorizontalAlignment="Right" 
+                                                Width="28" Height="28" Margin="4"
+                                                Command="{Binding ToggleFavoriteCommand}"
+                                                Background="Transparent" BorderThickness="0" 
+                                                Cursor="Hand"
+                                                Opacity="0"
+                                                Panel.ZIndex="999">
+                                            <Button.Style>
+                                                <Style TargetType="Button">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="Button">
+                                                                <Border x:Name="FavoriteBorder" 
+                                                                        Background="{TemplateBinding Background}" 
+                                                                        CornerRadius="14"
+                                                                        Width="28" Height="28">
+                                                                    <TextBlock x:Name="FavoriteIcon" 
+                                                                               Text="&#xe649;" 
+                                                                               FontFamily="{StaticResource IconFont}" 
+                                                                               FontSize="16" 
+                                                                               Foreground="#999" 
+                                                                               HorizontalAlignment="Center" 
+                                                                               VerticalAlignment="Center"/>
+                                                                </Border>
+                                                                <ControlTemplate.Triggers>
+                                                                    <!-- 鼠标悬停效果 -->
+                                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                                        <Setter TargetName="FavoriteBorder" Property="Background" Value="#F0F0F0"/>
+                                                                    </Trigger>
+                                                                    <!-- 已收藏状态 - 高亮显示 -->
+                                                                    <DataTrigger Binding="{Binding IsFavorite}" Value="True">
+                                                                        <Setter TargetName="FavoriteIcon" Property="Foreground" Value="#FFD700"/>
+                                                                    </DataTrigger>
+                                                                </ControlTemplate.Triggers>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                    <!-- 卡片鼠标悬停时显示收藏按钮 -->
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Border}}" Value="True">
+                                                            <DataTrigger.EnterActions>
+                                                                <BeginStoryboard>
+                                                                    <Storyboard>
+                                                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" 
+                                                                                         To="1.0" Duration="0:0:0.2"/>
+                                                                    </Storyboard>
+                                                                </BeginStoryboard>
+                                                            </DataTrigger.EnterActions>
+                                                            <DataTrigger.ExitActions>
+                                                                <BeginStoryboard>
+                                                                    <Storyboard>
+                                                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" 
+                                                                                         To="0" Duration="0:0:0.2"/>
+                                                                    </Storyboard>
+                                                                </BeginStoryboard>
+                                                            </DataTrigger.ExitActions>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                        </Button>
                                         <Button VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0"
                                                 Width="{Binding ActualWidth, ElementName=ThumbnailBorder}"
                                                 Command="{Binding UpdateCommand}"
@@ -732,11 +1303,270 @@
                                                   TextAlignment="Center" Margin="0,4,0,0"
                                                   TextWrapping="Wrap"/>
                                     </StackPanel>
+
+                                    <!-- Ctrl 键遮罩层 -->
+                                    <Border Grid.Row="0" Grid.RowSpan="2" Background="#66000000" CornerRadius="6" 
+                                            Panel.ZIndex="1000">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsCtrlOverlayVisible}" Value="True">
+                                                        <DataTrigger.EnterActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility">
+                                                                        <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+                                                                    </ObjectAnimationUsingKeyFrames>
+                                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" 
+                                                                                     From="0" To="1" Duration="0:0:0.15"/>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </DataTrigger.EnterActions>
+                                                        <DataTrigger.ExitActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" 
+                                                                                     To="0" Duration="0:0:0.15"/>
+                                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility">
+                                                                        <DiscreteObjectKeyFrame KeyTime="0:0:0.15" Value="{x:Static Visibility.Collapsed}"/>
+                                                                    </ObjectAnimationUsingKeyFrames>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </DataTrigger.ExitActions>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- 左侧：删除区域 -->
+                                            <Button Grid.Column="0" Background="Transparent" BorderThickness="0" 
+                                                    Command="{Binding QuickDeleteCommand}" Cursor="Hand">
+                                                <Button.Style>
+                                                    <Style TargetType="Button">
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="Button">
+                                                                    <Border x:Name="DeleteArea" Background="#B0E53935" 
+                                                                            CornerRadius="6,0,0,6">
+                                                                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                                            <TextBlock Text="&#xE107;" FontFamily="Segoe MDL2 Assets" 
+                                                                                       FontSize="32" Foreground="White" 
+                                                                                       HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                                                                            <TextBlock Text="删除" FontSize="14" FontWeight="Bold" 
+                                                                                       Foreground="White" HorizontalAlignment="Center"/>
+                                                                        </StackPanel>
+                                                                    </Border>
+                                                                    <ControlTemplate.Triggers>
+                                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                                            <Setter TargetName="DeleteArea" Property="Background" Value="#E0E53935"/>
+                                                                        </Trigger>
+                                                                        <!-- 非自定义模板不能删除 -->
+                                                                        <DataTrigger Binding="{Binding IsCustomTemplate}" Value="False">
+                                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                                        </DataTrigger>
+                                                                    </ControlTemplate.Triggers>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Style>
+                                                </Button.Style>
+                                            </Button>
+
+                                            <!-- 右侧：收藏区域 -->
+                                            <Button Grid.Column="1" Background="Transparent" BorderThickness="0" 
+                                                    Command="{Binding QuickFavoriteCommand}" Cursor="Hand">
+                                                <Button.Style>
+                                                    <Style TargetType="Button">
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="Button">
+                                                                    <Border x:Name="FavoriteArea" Background="#B0FFA726" 
+                                                                            CornerRadius="0,6,6,0">
+                                                                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                                            <TextBlock x:Name="FavoriteIcon" 
+                                                                                       Text="&#xe649;" 
+                                                                                       FontFamily="{StaticResource IconFont}" 
+                                                                                       FontSize="32" Foreground="White" 
+                                                                                       HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                                                                            <TextBlock x:Name="FavoriteText" 
+                                                                                       Text="收藏" FontSize="14" FontWeight="Bold" 
+                                                                                       Foreground="White" HorizontalAlignment="Center"/>
+                                                                        </StackPanel>
+                                                                    </Border>
+                                                                    <ControlTemplate.Triggers>
+                                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                                            <Setter TargetName="FavoriteArea" Property="Background" Value="#E0FFA726"/>
+                                                                        </Trigger>
+                                                                        <!-- 已收藏状态 -->
+                                                                        <DataTrigger Binding="{Binding IsFavorite}" Value="True">
+                                                                            <Setter TargetName="FavoriteText" Property="Text" Value="取消收藏"/>
+                                                                            <Setter TargetName="FavoriteArea" Property="Background" Value="#B0FFD54F"/>
+                                                                        </DataTrigger>
+                                                                    </ControlTemplate.Triggers>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Style>
+                                                </Button.Style>
+                                            </Button>
+
+                                            <!-- 非自定义模板时，收藏区域占满整个宽度 -->
+                                            <Button Grid.Column="0" Grid.ColumnSpan="2" 
+                                                    Background="Transparent" BorderThickness="0" 
+                                                    Command="{Binding QuickFavoriteCommand}" Cursor="Hand">
+                                                <Button.Style>
+                                                    <Style TargetType="Button">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="Button">
+                                                                    <Border x:Name="FullFavoriteArea" Background="#B0FFA726" 
+                                                                            CornerRadius="6">
+                                                                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                                            <TextBlock x:Name="FullFavoriteIcon" 
+                                                                                       Text="&#xe649;" 
+                                                                                       FontFamily="{StaticResource IconFont}" 
+                                                                                       FontSize="32" Foreground="White" 
+                                                                                       HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                                                                            <TextBlock x:Name="FullFavoriteText" 
+                                                                                       Text="收藏" FontSize="14" FontWeight="Bold" 
+                                                                                       Foreground="White" HorizontalAlignment="Center"/>
+                                                                        </StackPanel>
+                                                                    </Border>
+                                                                    <ControlTemplate.Triggers>
+                                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                                            <Setter TargetName="FullFavoriteArea" Property="Background" Value="#E0FFA726"/>
+                                                                        </Trigger>
+                                                                        <!-- 已收藏状态 -->
+                                                                        <DataTrigger Binding="{Binding IsFavorite}" Value="True">
+                                                                            <Setter TargetName="FullFavoriteText" Property="Text" Value="取消收藏"/>
+                                                                            <Setter TargetName="FullFavoriteArea" Property="Background" Value="#B0FFD54F"/>
+                                                                        </DataTrigger>
+                                                                    </ControlTemplate.Triggers>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                        <Style.Triggers>
+                                                            <!-- 只有非自定义模板才显示全屏收藏按钮 -->
+                                                            <DataTrigger Binding="{Binding IsCustomTemplate}" Value="False">
+                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Button.Style>
+                                            </Button>
+                                        </Grid>
+                                    </Border>
                                 </Grid>
                             </Border>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
+                
+                <!-- 批量下载遮罩层 -->
+                <Border Background="#80000000" 
+                        Visibility="{Binding IsBatchDownloadOverlayVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                        Grid.RowSpan="2">
+                    <Border Background="White" CornerRadius="12" 
+                            Width="450" Height="280" 
+                            VerticalAlignment="Center" HorizontalAlignment="Center"
+                            Padding="40,30">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="20" ShadowDepth="0" Opacity="0.3"/>
+                        </Border.Effect>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            
+                            <!-- 标题 -->
+                            <TextBlock Grid.Row="0" Text="{Binding [batch_downloading], Source={x:Static lg:LanguageService.Instance}, FallbackValue='批量下载中'}" 
+                                       FontSize="20" FontWeight="SemiBold" 
+                                       Foreground="#333" 
+                                       HorizontalAlignment="Center"
+                                       Margin="0,0,0,25"/>
+                            
+                            <!-- 加载动画 -->
+                            <Grid Grid.Row="1" Width="60" Height="60" Margin="0,0,0,20" HorizontalAlignment="Center">
+                                <Ellipse Width="60" Height="60" 
+                                         Stroke="#0078D4" StrokeThickness="4" 
+                                         Opacity="0.2"/>
+                                <Ellipse Width="60" Height="60" 
+                                         Stroke="#0078D4" StrokeThickness="4" 
+                                         StrokeDashArray="8,4">
+                                    <Ellipse.RenderTransform>
+                                        <RotateTransform x:Name="LoadingRotation" CenterX="30" CenterY="30" Angle="0"/>
+                                    </Ellipse.RenderTransform>
+                                    <Ellipse.Triggers>
+                                        <EventTrigger RoutedEvent="Loaded">
+                                            <BeginStoryboard>
+                                                <Storyboard RepeatBehavior="Forever">
+                                                    <DoubleAnimation Storyboard.TargetName="LoadingRotation"
+                                                                   Storyboard.TargetProperty="Angle"
+                                                                   From="0" To="360" Duration="0:0:1.5"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                    </Ellipse.Triggers>
+                                </Ellipse>
+                            </Grid>
+                            
+                            <!-- 进度文本 -->
+                            <TextBlock Grid.Row="2" Text="{Binding BatchDownloadProgressText}" 
+                                       FontSize="14" Foreground="#666" 
+                                       TextAlignment="Center" TextWrapping="Wrap"
+                                       VerticalAlignment="Top"
+                                       MaxWidth="370"
+                                       Margin="0,0,0,20"/>
+                            
+                            <!-- 取消按钮 -->
+                            <Button Grid.Row="3" 
+                                    Content="{Binding [Cancel], Source={x:Static lg:LanguageService.Instance}, FallbackValue='取消'}" 
+                                    Command="{Binding CancelBatchDownloadCommand}"
+                                    Width="120" Height="38"
+                                    Background="#F0F0F0" 
+                                    BorderBrush="#D0D0D0" 
+                                    BorderThickness="1"
+                                    Cursor="Hand"
+                                    HorizontalAlignment="Center">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Border Background="{TemplateBinding Background}" 
+                                                            BorderBrush="{TemplateBinding BorderBrush}" 
+                                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                                            CornerRadius="6">
+                                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    </Border>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Background" Value="#E0E0E0"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsPressed" Value="True">
+                                                            <Setter Property="Background" Value="#D0D0D0"/>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                        </Grid>
+                    </Border>
+                </Border>
             </Grid>
         </Grid>
 

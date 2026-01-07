@@ -45,9 +45,9 @@ namespace GeoChemistryNexus.Controls
     public partial class NewTemplateControl : UserControl
     {
         // 为语言和分类层级分别创建集合
-        private readonly ObservableCollection<LanguageTagModel> _languageParts = new ObservableCollection<LanguageTagModel>();
+        public readonly ObservableCollection<LanguageTagModel> _languageParts = new ObservableCollection<LanguageTagModel>();
         // Change from string to CategoryPartModel
-        private readonly ObservableCollection<CategoryPartModel> _categoryParts = new ObservableCollection<CategoryPartModel>();
+        public readonly ObservableCollection<CategoryPartModel> _categoryParts = new ObservableCollection<CategoryPartModel>();
         
         // 存储加载的分类数据
         private PlotTemplateCategoryConfig _categoryConfig;
@@ -172,7 +172,7 @@ namespace GeoChemistryNexus.Controls
             PlotTypeComboBox.SelectedIndex = 0;
         }
 
-        private void UpdateLanguageDefaultStatus()
+        public void UpdateLanguageDefaultStatus()
         {
             if (_languageParts.Count == 0) return;
 

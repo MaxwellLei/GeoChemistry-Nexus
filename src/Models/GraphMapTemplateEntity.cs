@@ -81,5 +81,10 @@ namespace GeoChemistryNexus.Models
         /// 模板状态：NOT_INSTALLED, UP_TO_DATE, OUTDATED
         /// </summary>
         public string Status { get; set; }
+
+        /// <summary>
+        /// 是否收藏
+        /// </summary>
+        public bool IsFavorite { get; set; } = false;
     }
 }

@@ -34,6 +34,12 @@ namespace GeoChemistryNexus.ViewModels
         private bool _isCustomTemplate;
 
         [ObservableProperty]
+        private bool _isFavorite;
+
+        [ObservableProperty]
+        private bool _isCtrlOverlayVisible; // Ctrl键遮罩显示状态
+
+        [ObservableProperty]
         private ImageSource _thumbnailImage; // 支持动态修改（下载前是默认图，下载后是真实图）
 
         [ObservableProperty]
@@ -60,10 +66,13 @@ namespace GeoChemistryNexus.ViewModels
         };
 
         // --- 委托事件 ---
-        // 将具体的“打开”和“下载”逻辑交给 MainViewModel 实现
+        // 将具体的"打开"和"下载"逻辑交给 MainViewModel 实现
         public Func<TemplateCardViewModel, Task> DownloadHandler { get; set; }
         public Func<TemplateCardViewModel, Task> OpenHandler { get; set; }
         public Func<TemplateCardViewModel, Task> CheckUpdateHandler { get; set; }
+        public Func<TemplateCardViewModel, Task> ToggleFavoriteHandler { get; set; }
+        public Func<TemplateCardViewModel, Task> DeleteHandler { get; set; }
+        public Func<TemplateCardViewModel, Task> EditHandler { get; set; }
 
         private bool _isProcessing = false;
 
@@ -137,6 +146,43 @@ namespace GeoChemistryNexus.ViewModels
             finally
             {
                 _isProcessing = false;
+            }
+        }
+
+        /// <summary>
+        /// 切换收藏状态
+        /// </summary>
+        [RelayCommand]
+        private async Task ToggleFavorite()
+        {
+            if (ToggleFavoriteHandler != null)
+            {
+                await ToggleFavoriteHandler(this);
+            }
+        }
+
+        /// <summary>
+        /// 快捷收藏 - Ctrl+卡片右侧点击
+        /// </summary>
+        [RelayCommand]
+        private async Task QuickFavorite()
+        {
+            await ToggleFavorite();
+        }
+
+        /// <summary>
+        /// 快捷删除 - Ctrl+卡片左侧点击
+        /// </summary>
+        [RelayCommand]
+        private async Task QuickDelete()
+        {
+            // 只有自定义模板才能删除
+            if (!IsCustomTemplate || !TemplateId.HasValue) return;
+
+            // 直接调用删除处理，由 MainPlotViewModel 实现
+            if (DeleteHandler != null)
+            {
+                await DeleteHandler(this);
             }
         }
     }

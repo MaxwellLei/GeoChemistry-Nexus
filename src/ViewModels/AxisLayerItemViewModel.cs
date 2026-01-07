@@ -63,7 +63,8 @@ namespace GeoChemistryNexus.ViewModels
                     "Right" => "[C] ",
                     _ => ""
                 };
-                return prefix + baseName;
+                // 截断过长的名称，超过60个字符时截断并添加....
+                return TruncateName(prefix + baseName);
             }
             // 为笛卡尔坐标轴添加前缀（仅底边和左边）
             else if (axisDefinition is CartesianAxisDefinition)
@@ -74,10 +75,12 @@ namespace GeoChemistryNexus.ViewModels
                     "Left" => "[Y] ",
                     _ => ""
                 };
-                return prefix + baseName;
+                // 截断过长的名称，超过60个字符时截断并添加....
+                return TruncateName(prefix + baseName);
             }
             
-            return baseName;
+            // 截断过长的名称，超过60个字符时截断并添加....
+            return TruncateName(baseName);
         }
 
         public void Render(Plot plot)

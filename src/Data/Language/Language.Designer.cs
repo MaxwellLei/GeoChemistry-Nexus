@@ -783,6 +783,105 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Batch Download Cancelled 的本地化字符串。
+        /// </summary>
+        internal static string batch_download_cancelled {
+            get {
+                return ResourceManager.GetString("batch_download_cancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Batch Download Complete 的本地化字符串。
+        /// </summary>
+        internal static string batch_download_complete {
+            get {
+                return ResourceManager.GetString("batch_download_complete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Detected {0} new templates not downloaded, would you like to batch download them? 的本地化字符串。
+        /// </summary>
+        internal static string batch_download_confirm_message {
+            get {
+                return ResourceManager.GetString("batch_download_confirm_message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Failed: {0} 的本地化字符串。
+        /// </summary>
+        internal static string batch_download_fail_count {
+            get {
+                return ResourceManager.GetString("batch_download_fail_count", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Batch Download Failed 的本地化字符串。
+        /// </summary>
+        internal static string batch_download_failed {
+            get {
+                return ResourceManager.GetString("batch_download_failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Batch Download 的本地化字符串。
+        /// </summary>
+        internal static string batch_download_new_templates {
+            get {
+                return ResourceManager.GetString("batch_download_new_templates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Batch download new templates not installed 的本地化字符串。
+        /// </summary>
+        internal static string batch_download_new_templates_tooltip {
+            get {
+                return ResourceManager.GetString("batch_download_new_templates_tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Downloading: {0}/{1} - {2} 的本地化字符串。
+        /// </summary>
+        internal static string batch_download_progress {
+            get {
+                return ResourceManager.GetString("batch_download_progress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Successfully downloaded: {0} 的本地化字符串。
+        /// </summary>
+        internal static string batch_download_success_count {
+            get {
+                return ResourceManager.GetString("batch_download_success_count", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Batch Download 的本地化字符串。
+        /// </summary>
+        internal static string batch_download_title {
+            get {
+                return ResourceManager.GetString("batch_download_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Batch Downloading 的本地化字符串。
+        /// </summary>
+        internal static string batch_downloading {
+            get {
+                return ResourceManager.GetString("batch_downloading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Biotite 的本地化字符串。
         /// </summary>
         internal static string Biotite {
@@ -1926,6 +2025,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Edit Diagram Template 的本地化字符串。
+        /// </summary>
+        internal static string edit_diagram_template {
+            get {
+                return ResourceManager.GetString("edit_diagram_template", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Edit Drawing Template Translations 的本地化字符串。
         /// </summary>
         internal static string edit_drawing_template_translations {
@@ -2349,6 +2457,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Failed templates: 的本地化字符串。
+        /// </summary>
+        internal static string failed_templates {
+            get {
+                return ResourceManager.GetString("failed_templates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Failed to delete the old directory: 的本地化字符串。
         /// </summary>
         internal static string failed_to_delete_old_directory {
@@ -2444,6 +2561,42 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string failed_to_parse_diagram_template_json {
             get {
                 return ResourceManager.GetString("failed_to_parse_diagram_template_json", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Favorite 的本地化字符串。
+        /// </summary>
+        internal static string favorite {
+            get {
+                return ResourceManager.GetString("favorite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Added to favorites 的本地化字符串。
+        /// </summary>
+        internal static string favorite_added {
+            get {
+                return ResourceManager.GetString("favorite_added", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Removed from favorites 的本地化字符串。
+        /// </summary>
+        internal static string favorite_removed {
+            get {
+                return ResourceManager.GetString("favorite_removed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Favorites 的本地化字符串。
+        /// </summary>
+        internal static string favorite_templates {
+            get {
+                return ResourceManager.GetString("favorite_templates", resourceCulture);
             }
         }
         
@@ -3357,6 +3510,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 LIBRARY 的本地化字符串。
+        /// </summary>
+        internal static string library_section {
+            get {
+                return ResourceManager.GetString("library_section", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Line 的本地化字符串。
         /// </summary>
         internal static string line {
@@ -4086,6 +4248,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 No new templates to download 的本地化字符串。
+        /// </summary>
+        internal static string no_new_templates_to_download {
+            get {
+                return ResourceManager.GetString("no_new_templates_to_download", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 No savable template or save path specified. Please use Save As to save. 的本地化字符串。
         /// </summary>
         internal static string no_template_or_path_specified {
@@ -4136,6 +4307,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string object_deleted_successfully {
             get {
                 return ResourceManager.GetString("object_deleted_successfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Official Diagram Templates 的本地化字符串。
+        /// </summary>
+        internal static string official_templates {
+            get {
+                return ResourceManager.GetString("official_templates", resourceCulture);
             }
         }
         
@@ -4343,6 +4523,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string pattern {
             get {
                 return ResourceManager.GetString("pattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Personal Diagram Templates 的本地化字符串。
+        /// </summary>
+        internal static string personal_templates {
+            get {
+                return ResourceManager.GetString("personal_templates", resourceCulture);
             }
         }
         
@@ -5000,6 +5189,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string recently_used {
             get {
                 return ResourceManager.GetString("recently_used", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Recents 的本地化字符串。
+        /// </summary>
+        internal static string recents_templates {
+            get {
+                return ResourceManager.GetString("recents_templates", resourceCulture);
             }
         }
         
@@ -6111,6 +6309,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Unfavorite 的本地化字符串。
+        /// </summary>
+        internal static string unfavorite {
+            get {
+                return ResourceManager.GetString("unfavorite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Unknown Axis 的本地化字符串。
         /// </summary>
         internal static string unknown_axis {
@@ -6278,6 +6485,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string width {
             get {
                 return ResourceManager.GetString("width", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 WORKSPACE 的本地化字符串。
+        /// </summary>
+        internal static string workspace_section {
+            get {
+                return ResourceManager.GetString("workspace_section", resourceCulture);
             }
         }
         

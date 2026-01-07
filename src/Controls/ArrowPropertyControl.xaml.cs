@@ -102,6 +102,38 @@ namespace GeoChemistryNexus.Controls
             // 更新终点坐标标签
             InfoElement.SetTitle(EndX, xLabel);
             InfoElement.SetTitle(EndY, yLabel);
+            
+            // 三元图模式下限制最大值为1
+            if (TernaryCoordinateHelper.IsTernaryMode)
+            {
+                StartX.Maximum = 1.0;
+                StartY.Maximum = 1.0;
+                EndX.Maximum = 1.0;
+                EndY.Maximum = 1.0;
+            }
+            else
+            {
+                StartX.Maximum = double.MaxValue;
+                StartY.Maximum = double.MaxValue;
+                EndX.Maximum = double.MaxValue;
+                EndY.Maximum = double.MaxValue;
+            }
+            
+            // 三元图模式下限制最大值为1
+            if (TernaryCoordinateHelper.IsTernaryMode)
+            {
+                StartX.Maximum = 1.0;
+                StartY.Maximum = 1.0;
+                EndX.Maximum = 1.0;
+                EndY.Maximum = 1.0;
+            }
+            else
+            {
+                StartX.Maximum = double.MaxValue;
+                StartY.Maximum = double.MaxValue;
+                EndX.Maximum = double.MaxValue;
+                EndY.Maximum = double.MaxValue;
+            }
         }
 
         /// <summary>

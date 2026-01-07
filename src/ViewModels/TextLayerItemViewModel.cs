@@ -44,7 +44,10 @@ namespace GeoChemistryNexus.ViewModels
             }
 
             // Replace newlines with spaces to keep the name on a single line
-            return content.Replace("\r\n", " ").Replace("\n", " ").Replace("\r", " ");
+            var processedContent = content.Replace("\r\n", " ").Replace("\n", " ").Replace("\r", " ");
+            
+            // 截断过长的名称，超过60个字符时截断并添加....
+            return TruncateName(processedContent);
         }
 
         private void OnTextDefinitionChanged(object? sender, PropertyChangedEventArgs e)

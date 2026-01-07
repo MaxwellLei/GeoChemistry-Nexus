@@ -45,7 +45,7 @@
         </Grid.RowDefinitions>
 
         <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" MaxHeight="250">
-            <ItemsControl ItemsSource="{Binding ElementName=RootControl, Path=VerticesValue}">
+            <ItemsControl x:Name="VerticesItemsControl" ItemsSource="{Binding ElementName=RootControl, Path=VerticesValue}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="{x:Type models:PointDefinition}">
                         <Grid Margin="0,4,4,4">
