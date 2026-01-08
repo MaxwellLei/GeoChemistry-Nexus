@@ -25,7 +25,7 @@
             <StackPanel Margin="10,12,10,12">
                 <!-- Header -->
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                    <TextBlock Text="&#xe63a;" FontFamily="../Data/Icon/#iconfont" FontSize="24" Foreground="#1D1D1F" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBlock Text="&#xe63a;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="24" Foreground="#1D1D1F" VerticalAlignment="Center" Margin="0,0,10,0"/>
                     <TextBlock Text="Function" FontWeight="Bold" FontSize="22" Foreground="#1D1D1F" VerticalAlignment="Center"/>
                 </StackPanel>
 

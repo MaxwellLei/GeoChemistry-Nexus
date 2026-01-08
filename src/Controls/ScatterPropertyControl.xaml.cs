@@ -1,6 +1,4 @@
-using CommunityToolkit.Mvvm.Messaging;
 using GeoChemistryNexus.Helpers;
-using GeoChemistryNexus.Messages;
 using GeoChemistryNexus.Models;
 using GeoChemistryNexus.ViewModels;
 using System.Collections.Generic;
@@ -29,14 +27,6 @@ namespace GeoChemistryNexus.Controls
         public ScatterPropertyControl()
         {
             InitializeComponent();
-        }
-
-        private void PickPointButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (SelectedObject is ScatterDefinition scatterDef && scatterDef.StartAndEnd != null)
-            {
-                WeakReferenceMessenger.Default.Send(new PickPointRequestMessage(scatterDef.StartAndEnd));
-            }
         }
     }
 }

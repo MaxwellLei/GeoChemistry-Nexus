@@ -452,7 +452,7 @@
                         
                         <!-- Hover State -->
                         <Trigger SourceName="Bd" Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Bd" Property="Background" Value="#E0E0E5"/>
+                            <Setter TargetName="Bd" Property="Background" Value="#EAEAEA"/>
                         </Trigger>
 
                         <!-- Selected State (Active) -->

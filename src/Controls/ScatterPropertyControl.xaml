@@ -26,7 +26,7 @@
             <StackPanel Margin="10,12,10,12">
                 <!-- Header -->
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                    <TextBlock Text="&#xe602;" FontFamily="../Data/Icon/#iconfont" FontSize="24" Foreground="#1D1D1F" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBlock Text="&#xe602;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="24" Foreground="#1D1D1F" VerticalAlignment="Center" Margin="0,0,10,0"/>
                     <TextBlock Text="{Binding [point],Source={x:Static lg:LanguageService.Instance}}" 
                                FontSize="22" FontWeight="Bold" Foreground="#1D1D1F" VerticalAlignment="Center"/>
                 </StackPanel>
@@ -35,41 +35,11 @@
                 <TextBlock Text="{Binding [position],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernSettingsGroupTitle}" Margin="4,10,0,6"/>
                 <Border Style="{StaticResource ModernCardStyle}" Margin="0,0,0,8">
                     <StackPanel Margin="10">
-                        <!-- Coordinates Label & Pick Button -->
-                        <Grid Margin="0,0,0,8">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding [start_and_end_coordinates],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}" VerticalAlignment="Center" Margin="0"/>
-                            
-                            <Button Grid.Column="1"
-                                    Width="28" Height="28" 
-                                    Margin="0,0,0,4"
-                                    Style="{StaticResource ModernIconButtonStyle}"
-                                    ToolTip="{Binding [coordinate_positioning],Source={x:Static lg:LanguageService.Instance}}"
-                                    IsEnabled="False">
-                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe601;" FontSize="16" Foreground="#999"/>
-                            </Button>
-                        </Grid>
-
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="12"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            
-                            <hc:NumericUpDown Grid.Column="0" Value="{Binding StartAndEnd.X, Mode=OneWay, Converter={StaticResource NumericTypeConverter}}" 
-                                      hc:InfoElement.Title="X" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.TitleWidth="15"
-                                      hc:InfoElement.Placeholder="0.0" IsReadOnly="True"
-                                      Style="{StaticResource ModernNumericUpDownStyle}"/>
-                                      
-                            <hc:NumericUpDown Grid.Column="2" Value="{Binding StartAndEnd.Y, Mode=OneWay, Converter={StaticResource NumericTypeConverter}}" 
-                                      hc:InfoElement.Title="Y" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.TitleWidth="15"
-                                      hc:InfoElement.Placeholder="0.0" IsReadOnly="True"
-                                      Style="{StaticResource ModernNumericUpDownStyle}"/>
-                        </Grid>
+                        <!-- Coordinates Label -->
+                        <TextBlock Text="{Binding [start_and_end_coordinates],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}" Margin="0,0,0,8"/>
+                        
+                        <!-- Use PointDefinitionControl for coordinate display with ternary support -->
+                        <local:PointDefinitionControl PointValue="{Binding StartAndEnd, Mode=TwoWay}" IsReadOnly="True"/>
                     </StackPanel>
                 </Border>
 

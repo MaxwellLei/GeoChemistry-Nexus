@@ -12,35 +12,23 @@
              Loaded="UserControl_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="12"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center">
+        <hc:NumericUpDown x:Name="NumericUpDownX" Grid.Column="0"
+                          hc:InfoElement.Title="X" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.TitleWidth="15"
+                          hc:InfoElement.Placeholder="0.0"
+                          Style="{StaticResource ModernNumericUpDownStyle}"
+                          GotFocus="Coordinate_GotFocus"
+                          LostFocus="Coordinate_LostFocus"/>
 
-            <hc:NumericUpDown x:Name="NumericUpDownX"
-                              hc:InfoElement.Title="X" hc:InfoElement.TitlePlacement="Left"
-                              hc:InfoElement.Placeholder="0.0"
-                              GotFocus="Coordinate_GotFocus"
-                              LostFocus="Coordinate_LostFocus"/>
-
-            <hc:NumericUpDown x:Name="NumericUpDownY" Margin="0,4,0,0"
-                              hc:InfoElement.Title="Y" hc:InfoElement.TitlePlacement="Left"
-                              hc:InfoElement.Placeholder="0.0"
-                              GotFocus="Coordinate_GotFocus"
-                              LostFocus="Coordinate_LostFocus"/>
-
-        </StackPanel>
-
-        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="8,0,0,0">
-            <!-- 拾取坐标按钮 -->
-            <Button x:Name="PickPointButton"
-                    Width="36" Height="28" 
-                    Margin="0,0,4,0"
-                    ToolTip="{Binding [coordinate_positioning],Source={x:Static lg:LanguageService.Instance}}"
-                    Click="PickPointButton_Click">
-                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe601;" FontSize="16" Foreground="#444444"/>
-            </Button>
-        </StackPanel>
+        <hc:NumericUpDown x:Name="NumericUpDownY" Grid.Column="2"
+                          hc:InfoElement.Title="Y" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.TitleWidth="15"
+                          hc:InfoElement.Placeholder="0.0"
+                          Style="{StaticResource ModernNumericUpDownStyle}"
+                          GotFocus="Coordinate_GotFocus"
+                          LostFocus="Coordinate_LostFocus"/>
     </Grid>
 </UserControl>

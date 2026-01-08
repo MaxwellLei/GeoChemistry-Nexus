@@ -267,7 +267,7 @@
                     <!-- 标题栏 -->
                     <Border Background="#F5F5F5" Padding="10" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <TextBlock Text="&#xe665;" FontFamily="../Data/Icon/#iconfont" Foreground="#666" 
+                            <TextBlock Text="&#xe665;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Foreground="#666" 
                                        FontSize="16" VerticalAlignment="Center" Margin="0,0,8,0"/>
                             <!--帮助说明-->
                             <TextBlock Text="{Binding [help_instructions],Source={x:Static lg:LanguageService.Instance}}" 

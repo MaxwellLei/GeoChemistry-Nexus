@@ -24,7 +24,7 @@
             <StackPanel Margin="10,12,10,12">
                 <!-- Header -->
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                    <TextBlock Text="&#xe61c;" FontFamily="../Data/Icon/#iconfont" FontSize="24" Foreground="#1D1D1F" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBlock Text="&#xe61c;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="24" Foreground="#1D1D1F" VerticalAlignment="Center" Margin="0,0,10,0"/>
                     <TextBlock Text="{Binding [arrow],Source={x:Static lg:LanguageService.Instance}}" 
                                FontSize="22" FontWeight="Bold" Foreground="#1D1D1F" VerticalAlignment="Center"/>
                 </StackPanel>
@@ -56,7 +56,7 @@
                                     Style="{StaticResource ModernIconButtonStyle}"
                                     ToolTip="{Binding [coordinate_positioning],Source={x:Static lg:LanguageService.Instance}}"
                                     Click="PickStartPointButton_Click">
-                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe601;" FontSize="16" Foreground="#007AFF"/>
+                                <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe601;" FontSize="16" Foreground="#007AFF"/>
                             </Button>
 
                             <Grid Grid.Row="1" Grid.ColumnSpan="2">
@@ -108,7 +108,7 @@
                                     Style="{StaticResource ModernIconButtonStyle}"
                                     ToolTip="{Binding [coordinate_positioning],Source={x:Static lg:LanguageService.Instance}}"
                                     Click="PickEndPointButton_Click">
-                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe601;" FontSize="16" Foreground="#007AFF"/>
+                                <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe601;" FontSize="16" Foreground="#007AFF"/>
                             </Button>
 
                             <Grid Grid.Row="1" Grid.ColumnSpan="2">

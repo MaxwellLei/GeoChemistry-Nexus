@@ -34,6 +34,7 @@ using System.Net.Http;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using unvell.ReoGrid;
 
@@ -677,6 +678,9 @@ namespace GeoChemistryNexus.ViewModels
         // 标记模板库是否需要刷新 (Dirty Flag)
         private bool _isTemplateLibraryDirty = true; // 默认为 true，确保首次加载
 
+        // 记录模板库的上次选中状态（用于返回时恢复）
+        private string _lastSelectedCategory = "Official"; // 默认为官方图解
+
         private void UpdateHelpDocReadOnlyState()
         {
             // 在确认进入编辑模式下，且绘图模板为自定义模板，帮助文档的richtextbox设置为可编辑模式
@@ -808,6 +812,9 @@ namespace GeoChemistryNexus.ViewModels
         // 数据点高亮标记
         private ScottPlot.Plottables.Marker _selectedDataPointMarker;
 
+        // 数据点坐标标签
+        private ScottPlot.Plottables.Text? _selectedDataPointLabel;
+
         // 标志位：防止表格选择和绘图点击选择互相触发循环
         private bool _isSyncingSelection = false;
 
@@ -898,7 +905,7 @@ namespace GeoChemistryNexus.ViewModels
             // 初始化吸附标记
             _snapMarker = WpfPlot1.Plot.Add.Marker(0, 0);
             _snapMarker.IsVisible = false;
-            _snapMarker.Color = Colors.Orange; // 使用醒目的橙色
+            _snapMarker.Color = ScottPlot.Colors.Orange; // 使用醒目的橙色
             _snapMarker.Size = 15; // 稍微大一点
             _snapMarker.Shape = MarkerShape.OpenCircle;
             _snapMarker.LineWidth = 3; // 加粗
@@ -906,10 +913,22 @@ namespace GeoChemistryNexus.ViewModels
             // 初始化选中数据点标记
             _selectedDataPointMarker = WpfPlot1.Plot.Add.Marker(0, 0);
             _selectedDataPointMarker.IsVisible = false;
-            _selectedDataPointMarker.Color = Colors.Red; // 选中点使用红色
+            _selectedDataPointMarker.Color = ScottPlot.Colors.Red; // 选中点使用红色
             _selectedDataPointMarker.Size = 20; // 比数据点大（数据点通常是10）
             _selectedDataPointMarker.Shape = MarkerShape.OpenCircle; // 空心圆圈
             _selectedDataPointMarker.LineWidth = 2; // 线宽
+
+            // 初始化选中数据点坐标标签
+            _selectedDataPointLabel = WpfPlot1.Plot.Add.Text("", 0, 0);
+            _selectedDataPointLabel.IsVisible = false;
+            _selectedDataPointLabel.LabelFontColor = ScottPlot.Colors.Red;
+            _selectedDataPointLabel.LabelFontSize = 12;
+            _selectedDataPointLabel.LabelBold = true; // 加粗显示
+            _selectedDataPointLabel.LabelBackgroundColor = ScottPlot.Colors.Transparent; // 透明背景
+            _selectedDataPointLabel.LabelBorderColor = ScottPlot.Colors.Transparent; // 透明边框
+            _selectedDataPointLabel.LabelBorderWidth = 0; // 无边框
+            _selectedDataPointLabel.LabelAlignment = Alignment.MiddleCenter; // 标签居中对齐
+            _selectedDataPointLabel.OffsetY = -20; // 向上偏移20像素，确保在红色圆圈顶部
 
             // 订阅绘图控件的鼠标事件
             WpfPlot1.MouseEnter += WpfPlot1_MouseEnter;
@@ -1039,6 +1058,12 @@ namespace GeoChemistryNexus.ViewModels
         public void Receive(PickPointRequestMessage message)
         {
             if (message.Value == null) return;
+
+            // 如果之前有高亮的点，先取消高亮
+            if (_targetPointDefinition != null && _targetPointDefinition != message.Value)
+            {
+                _targetPointDefinition.IsHighlighted = false;
+            }
 
             // 进入拾取模式
             IsPickingPointMode = true;
@@ -1351,11 +1376,45 @@ namespace GeoChemistryNexus.ViewModels
             WpfPlot1.Plot.Remove(_selectedDataPointMarker);
             WpfPlot1.Plot.Add.Plottable(_selectedDataPointMarker);
 
+            // 如果有坐标标签，也移除并重新添加
+            if (_selectedDataPointLabel != null)
+            {
+                WpfPlot1.Plot.Remove(_selectedDataPointLabel);
+                WpfPlot1.Plot.Add.Plottable(_selectedDataPointLabel);
+            }
+
             // 将真实坐标转换为绘图坐标（处理对数轴）
             var renderLocation = PlotTransformHelper.ToRenderCoordinates(WpfPlot1.Plot, location);
 
             _selectedDataPointMarker.Location = renderLocation;
             _selectedDataPointMarker.IsVisible = true;
+
+            // 更新坐标标签
+            if (_selectedDataPointLabel != null)
+            {
+                string coordinateText;
+                
+                // 判断是否为三元图
+                if (BaseMapType == "Ternary")
+                {
+                    // 将笛卡尔坐标转换为三元坐标
+                    var (bottom, left) = ToTernary(location.X, location.Y, Clockwise);
+                    double right = 1 - bottom - left;
+                    
+                    // 格式化为 (a, b, c) 形式，保疙4位小数
+                    coordinateText = $"({bottom:F4}, {left:F4}, {right:F4})";
+                }
+                else
+                {
+                    // 笛卡尔坐标系，格式化为 (x, y) 形式
+                    coordinateText = $"({location.X:F4}, {location.Y:F4})";
+                }
+                
+                _selectedDataPointLabel.LabelText = coordinateText;
+                _selectedDataPointLabel.Location = renderLocation;
+                _selectedDataPointLabel.IsVisible = true;
+            }
+
             WpfPlot1.Refresh();
         }
 
@@ -1478,6 +1537,10 @@ namespace GeoChemistryNexus.ViewModels
                 if (_selectedDataPointMarker.IsVisible)
                 {
                     _selectedDataPointMarker.IsVisible = false;
+                    if (_selectedDataPointLabel != null)
+                    {
+                        _selectedDataPointLabel.IsVisible = false;
+                    }
                     WpfPlot1.Refresh();
                 }
             }
@@ -1492,6 +1555,10 @@ namespace GeoChemistryNexus.ViewModels
             if (_selectedDataPointMarker.IsVisible)
             {
                 _selectedDataPointMarker.IsVisible = false;
+                if (_selectedDataPointLabel != null)
+                {
+                    _selectedDataPointLabel.IsVisible = false;
+                }
                 WpfPlot1.Refresh();
             }
         }
@@ -1786,8 +1853,8 @@ namespace GeoChemistryNexus.ViewModels
                 if (_polygonVertices.Count >= 2)
                 {
                     _tempPreviewPolygon = WpfPlot1.Plot.Add.Polygon(_polygonVertices.ToArray());
-                    _tempPreviewPolygon.FillStyle.Color = Colors.Transparent; // 预览时内部透明
-                    _tempPreviewPolygon.LineStyle.Color = Colors.Red;
+                    _tempPreviewPolygon.FillStyle.Color = ScottPlot.Colors.Transparent; // 预览时内部透明
+                    _tempPreviewPolygon.LineStyle.Color = ScottPlot.Colors.Red;
                     _tempPreviewPolygon.LineStyle.Pattern = LinePattern.Dashed;
                     _tempPreviewPolygon.LineStyle.Width = 1.5f;
                 }
@@ -1916,7 +1983,7 @@ namespace GeoChemistryNexus.ViewModels
                     // 设置默认样式
                     Color = "#FF000000",
                     Size = 12,
-                    Family = Fonts.Detect(placeholder),     // 自动字体
+                    Family = ScottPlot.Fonts.Detect(placeholder),     // 自动字体
                     BackgroundColor = "#00FFFFFF",
                     BorderColor = "#00FFFFFF"
                 };
@@ -2553,13 +2620,10 @@ namespace GeoChemistryNexus.ViewModels
 
                 if (token.IsCancellationRequested) return;
 
-                // 3. 默认显示官方图解的卡片（而不是全部模板）
+                // 3. 根据保存的状态决定显示哪个分类（而不是默认显示官方图解）
                 await Application.Current.Dispatcher.InvokeAsync(async () =>
                 {
-                    if (OfficialTemplatesNode != null)
-                    {
-                        await ShowCategoryTemplateCards(OfficialTemplatesNode);
-                    }
+                    await RestoreTemplateLibraryState();
                 });
 
                 if (token.IsCancellationRequested) return;
@@ -2746,8 +2810,8 @@ namespace GeoChemistryNexus.ViewModels
                 OfficialTemplatesNode.Children.Add(child);
             }
 
-            // 4. 初始化当前大类名称（默认为官方图解）
-            CurrentCategoryName = OfficialTemplatesNode?.Name ?? LanguageService.Instance["official_templates"];
+            // 4. 初始化当前大类名称（后续会在 RestoreTemplateLibraryState 中根据保存的状态覆盖）
+            // CurrentCategoryName = OfficialTemplatesNode?.Name ?? LanguageService.Instance["official_templates"];
         }
 
         /// <summary>
@@ -2891,6 +2955,8 @@ namespace GeoChemistryNexus.ViewModels
                         // 更新标题和导航栏
                         CurrentCategoryName = PersonalTemplatesNode?.Name ?? LanguageService.Instance["personal_templates"];
                         await ShowCategoryTemplateCards(PersonalTemplatesNode);
+                        // 记录当前选中的分类
+                        _lastSelectedCategory = "Personal";
                     }
                     break;
                 case "Favorite":
@@ -2906,6 +2972,8 @@ namespace GeoChemistryNexus.ViewModels
                         CurrentCategoryName = FavoriteTemplatesNode?.Name ?? LanguageService.Instance["favorite_templates"];
                         // 显示收藏的模板卡片
                         await ShowCategoryTemplateCards(FavoriteTemplatesNode);
+                        // 记录当前选中的分类
+                        _lastSelectedCategory = "Favorite";
                     }
                     break;
                 case "Official":
@@ -2918,6 +2986,8 @@ namespace GeoChemistryNexus.ViewModels
                         // 更新标题和导航栏
                         CurrentCategoryName = OfficialTemplatesNode?.Name ?? LanguageService.Instance["official_templates"];
                         await ShowCategoryTemplateCards(OfficialTemplatesNode);
+                        // 记录当前选中的分类
+                        _lastSelectedCategory = "Official";
                     }
                     break;
                 case "Recents":
@@ -2933,7 +3003,80 @@ namespace GeoChemistryNexus.ViewModels
                         CurrentCategoryName = RecentsTemplatesNode?.Name ?? LanguageService.Instance["recents_templates"];
                         // 显示最近使用的模板卡片
                         await ShowCategoryTemplateCards(RecentsTemplatesNode);
+                        // 记录当前选中的分类
+                        _lastSelectedCategory = "Recents";
                     }
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// 保存模板库的当前选中状态
+        /// </summary>
+        private void SaveTemplateLibraryState()
+        {
+            // 根据当前展开的分类，保存状态
+            if (IsPersonalExpanded)
+            {
+                _lastSelectedCategory = "Personal";
+            }
+            else if (IsFavoriteExpanded)
+            {
+                _lastSelectedCategory = "Favorite";
+            }
+            else if (IsOfficialExpanded)
+            {
+                _lastSelectedCategory = "Official";
+            }
+            else if (IsRecentsExpanded)
+            {
+                _lastSelectedCategory = "Recents";
+            }
+        }
+
+        /// <summary>
+        /// 恢复模板库的上次选中状态
+        /// </summary>
+        private async Task RestoreTemplateLibraryState()
+        {
+            // 根据保存的状态，恢复对应的分类展开和卡片显示
+            switch (_lastSelectedCategory)
+            {
+                case "Personal":
+                    IsPersonalExpanded = true;
+                    IsFavoriteExpanded = false;
+                    IsOfficialExpanded = false;
+                    IsRecentsExpanded = false;
+                    CurrentCategoryName = PersonalTemplatesNode?.Name ?? LanguageService.Instance["personal_templates"];
+                    await ShowCategoryTemplateCards(PersonalTemplatesNode);
+                    break;
+                case "Favorite":
+                    IsPersonalExpanded = false;
+                    IsFavoriteExpanded = true;
+                    IsOfficialExpanded = false;
+                    IsRecentsExpanded = false;
+                    LoadFavoriteTemplates();
+                    CurrentCategoryName = FavoriteTemplatesNode?.Name ?? LanguageService.Instance["favorite_templates"];
+                    await ShowCategoryTemplateCards(FavoriteTemplatesNode);
+                    break;
+                case "Recents":
+                    IsPersonalExpanded = false;
+                    IsFavoriteExpanded = false;
+                    IsOfficialExpanded = false;
+                    IsRecentsExpanded = true;
+                    LoadRecentsTemplates();
+                    CurrentCategoryName = RecentsTemplatesNode?.Name ?? LanguageService.Instance["recents_templates"];
+                    await ShowCategoryTemplateCards(RecentsTemplatesNode);
+                    break;
+                case "Official":
+                default:
+                    // 默认显示官方图解
+                    IsPersonalExpanded = false;
+                    IsFavoriteExpanded = false;
+                    IsOfficialExpanded = true;
+                    IsRecentsExpanded = false;
+                    CurrentCategoryName = OfficialTemplatesNode?.Name ?? LanguageService.Instance["official_templates"];
+                    await ShowCategoryTemplateCards(OfficialTemplatesNode);
                     break;
             }
         }
@@ -3093,7 +3236,7 @@ namespace GeoChemistryNexus.ViewModels
                 var marker = WpfPlot1.Plot.Add.Marker(pt);
                 marker.Shape = MarkerShape.OpenCircle;
                 marker.Size = 6;
-                marker.Color = Colors.Gray.WithAlpha(150); // 半透明灰色
+                marker.Color = ScottPlot.Colors.Gray.WithAlpha(150); // 半透明灰色
                 marker.LineWidth = 1;
 
                 _potentialSnapMarkers.Add(marker);
@@ -3534,7 +3677,7 @@ namespace GeoChemistryNexus.ViewModels
                 if (_tempLinePlot == null)
                 {
                     _tempLinePlot = WpfPlot1.Plot.Add.Line(_lineStartPoint.Value, mouseCoordinates);
-                    _tempLinePlot.Color = Colors.Red; // 设置预览线为红色虚线
+                    _tempLinePlot.Color = ScottPlot.Colors.Red; // 设置预览线为红色虚线
                     _tempLinePlot.LinePattern = LinePattern.Dashed;
                 }
                 else
@@ -3550,7 +3693,7 @@ namespace GeoChemistryNexus.ViewModels
                 if (_tempArrowPlot == null)
                 {
                     _tempArrowPlot = WpfPlot1.Plot.Add.Arrow(_arrowStartPoint.Value, mouseCoordinates);
-                    _tempArrowPlot.ArrowFillColor = Colors.Red;
+                    _tempArrowPlot.ArrowFillColor = ScottPlot.Colors.Red;
                 }
                 else
                 {
@@ -3566,7 +3709,7 @@ namespace GeoChemistryNexus.ViewModels
                 if (_tempRubberBandLine == null)
                 {
                     _tempRubberBandLine = WpfPlot1.Plot.Add.Line(lastVertex, mouseCoordinates);
-                    _tempRubberBandLine.Color = Colors.Red;
+                    _tempRubberBandLine.Color = ScottPlot.Colors.Red;
                     _tempRubberBandLine.LinePattern = LinePattern.Dashed;
                 }
                 else
@@ -3790,8 +3933,9 @@ namespace GeoChemistryNexus.ViewModels
             {
                 if (!string.IsNullOrEmpty(child.GraphMapPath) || child.IsCustomTemplate)
                 {
-                    // 获取收藏状态
+                    // 获取收藏状态和最新的模板状态
                     bool isFavorite = false;
+                    TemplateState initialState = TemplateState.Loading;
                     if (child.TemplateId.HasValue)
                     {
                         try
@@ -3800,6 +3944,13 @@ namespace GeoChemistryNexus.ViewModels
                             if (entity != null)
                             {
                                 isFavorite = entity.IsFavorite;
+                                // 从数据库读取最新状态，而不是依赖Node的Status缓存
+                                if (!string.IsNullOrEmpty(entity.Status))
+                                {
+                                    if (entity.Status == "UP_TO_DATE") initialState = TemplateState.Ready;
+                                    else if (entity.Status == "OUTDATED") initialState = TemplateState.UpdateAvailable;
+                                    else if (entity.Status == "NOT_INSTALLED") initialState = TemplateState.NotDownloaded;
+                                }
                             }
                         }
                         catch { }
@@ -3815,7 +3966,7 @@ namespace GeoChemistryNexus.ViewModels
                         ServerHash = child.FileHash,    // 注入服务器哈希
                         IsCustomTemplate = child.IsCustomTemplate,
                         IsFavorite = isFavorite,        // 设置收藏状态
-                        State = TemplateState.Loading,  // 初始状态为 Loading
+                        State = initialState,           // 使用从数据库获取的最新状态
                         ThumbnailImage = null,          // 暂无图片
 
                         // 注入回调
@@ -3826,14 +3977,6 @@ namespace GeoChemistryNexus.ViewModels
                         DeleteHandler = DeleteTemplate,
                         EditHandler = EditTemplate
                     };
-
-                    // 直接从 Node 状态映射，避免后续重复查库
-                    if (!string.IsNullOrEmpty(child.Status))
-                    {
-                        if (child.Status == "UP_TO_DATE") cardVm.State = TemplateState.Ready;
-                        else if (child.Status == "OUTDATED") cardVm.State = TemplateState.UpdateAvailable;
-                        else if (child.Status == "NOT_INSTALLED") cardVm.State = TemplateState.NotDownloaded;
-                    }
 
                     TemplateCards.Add(cardVm);
                 }
@@ -4477,6 +4620,9 @@ namespace GeoChemistryNexus.ViewModels
                 _isCurrentTemplateCustom = card.IsCustomTemplate;
                 UpdateHelpDocReadOnlyState();
 
+                // 保存当前模板库的选中状态
+                SaveTemplateLibraryState();
+
                 // 切换到绘图模式
                 IsTemplateMode = false;
                 IsPlotMode = true;
@@ -4603,6 +4749,11 @@ namespace GeoChemistryNexus.ViewModels
             if (_isTemplateLibraryDirty)
             {
                 await InitializeAsync();
+            }
+            else
+            {
+                // 如果模板库没有变化，直接恢复之前的选中状态
+                await RestoreTemplateLibraryState();
             }
         }
 
@@ -5444,10 +5595,10 @@ namespace GeoChemistryNexus.ViewModels
                 else
                 {
                     // 如果禁用，则设置为透明
-                    grid.XAxisStyle.FillColor1 = Colors.Transparent;
-                    grid.YAxisStyle.FillColor1 = Colors.Transparent;
-                    grid.XAxisStyle.FillColor2 = Colors.Transparent;
-                    grid.YAxisStyle.FillColor2 = Colors.Transparent;
+                    grid.XAxisStyle.FillColor1 = ScottPlot.Colors.Transparent;
+                    grid.YAxisStyle.FillColor1 = ScottPlot.Colors.Transparent;
+                    grid.XAxisStyle.FillColor2 = ScottPlot.Colors.Transparent;
+                    grid.YAxisStyle.FillColor2 = ScottPlot.Colors.Transparent;
                 }
 
 
@@ -5482,7 +5633,7 @@ namespace GeoChemistryNexus.ViewModels
                 }
                 else
                 {
-                    _triangularAxis.FillStyle.Color = Colors.Transparent;
+                    _triangularAxis.FillStyle.Color = ScottPlot.Colors.Transparent;
                 }
             }
 
@@ -6079,6 +6230,10 @@ namespace GeoChemistryNexus.ViewModels
             if (_selectedDataPointMarker != null && _selectedDataPointMarker.IsVisible)
             {
                 _selectedDataPointMarker.IsVisible = false;
+                if (_selectedDataPointLabel != null)
+                {
+                    _selectedDataPointLabel.IsVisible = false;
+                }
                 WpfPlot1.Refresh();
             }
         }
@@ -6769,15 +6924,37 @@ namespace GeoChemistryNexus.ViewModels
             HasUnsavedChanges = false;
             WeakReferenceMessenger.Default.Send(new UnsavedChangesMessage(false));
 
-            // 生成并保存缩略图
+            // 生成并保存缩略图（680x480 灰度图）
             try
             {
-                // 生成缩略图 (680*480)
-                byte[] thumbnailBytes = WpfPlot1.Plot.GetImageBytes(680, 480);
+                var colorImageBytes = WpfPlot1.Plot.GetImageBytes(680, 480);
 
-                using (var stream = new MemoryStream(thumbnailBytes))
+                // 转换为灰度图
+                using (var ms = new MemoryStream(colorImageBytes))
                 {
-                    await Task.Run(() => GraphMapDatabaseService.Instance.UploadThumbnail(newEntity.Id, stream));
+                    var colorBitmap = new BitmapImage();
+                    colorBitmap.BeginInit();
+                    colorBitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    colorBitmap.StreamSource = ms;
+                    colorBitmap.EndInit();
+                    
+                    // 转换为 8 位灰度图
+                    var grayBitmap = new FormatConvertedBitmap();
+                    grayBitmap.BeginInit();
+                    grayBitmap.Source = colorBitmap;
+                    grayBitmap.DestinationFormat = PixelFormats.Gray8;
+                    grayBitmap.EndInit();
+                    
+                    // 编码为 JPEG 并上传到数据库
+                    var encoder = new JpegBitmapEncoder();
+                    encoder.Frames.Add(BitmapFrame.Create(grayBitmap));
+                    using (var uploadStream = new MemoryStream())
+                    {
+                        encoder.Save(uploadStream);
+                        uploadStream.Position = 0;
+                        
+                        await Task.Run(() => GraphMapDatabaseService.Instance.UploadThumbnail(newEntity.Id, uploadStream));
+                    }
                 }
             }
             catch (Exception ex)
@@ -7377,7 +7554,33 @@ namespace GeoChemistryNexus.ViewModels
                 if (template.TemplateType != "Ternary")
                     plot.Axes.AutoScale();
 
-                plot.SavePng(outputPath, 400, 300);
+                // 生成 680x480 灰度缩略图
+                var colorImageBytes = plot.GetImageBytes(680, 480, ScottPlot.ImageFormat.Jpeg);
+                
+                // 转换为灰度图
+                using (var ms = new MemoryStream(colorImageBytes))
+                {
+                    var colorBitmap = new BitmapImage();
+                    colorBitmap.BeginInit();
+                    colorBitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    colorBitmap.StreamSource = ms;
+                    colorBitmap.EndInit();
+                    
+                    // 转换为 8 位灰度图
+                    var grayBitmap = new FormatConvertedBitmap();
+                    grayBitmap.BeginInit();
+                    grayBitmap.Source = colorBitmap;
+                    grayBitmap.DestinationFormat = PixelFormats.Gray8;
+                    grayBitmap.EndInit();
+                    
+                    // 编码为 JPEG 并保存
+                    var encoder = new JpegBitmapEncoder();
+                    encoder.Frames.Add(BitmapFrame.Create(grayBitmap));
+                    using (var fileStream = new FileStream(outputPath, FileMode.Create))
+                    {
+                        encoder.Save(fileStream);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -8538,12 +8741,36 @@ namespace GeoChemistryNexus.ViewModels
                         string jsonString = SerializeTemplate(CurrentTemplate);
                         await File.WriteAllTextAsync(_currentTemplateFilePath, jsonString);
 
-                        // 2. 保存缩略图
+                        // 2. 保存缩略图（680x480 灰度图）
                         try
                         {
                             string thumbnailPath = Path.ChangeExtension(_currentTemplateFilePath, ".jpg");
-                            var imageBytes = WpfPlot1.Plot.GetImageBytes(640, 480, ScottPlot.ImageFormat.Jpeg);
-                            await File.WriteAllBytesAsync(thumbnailPath, imageBytes);
+                            var colorImageBytes = WpfPlot1.Plot.GetImageBytes(680, 480, ScottPlot.ImageFormat.Jpeg);
+                            
+                            // 转换为灰度图
+                            using (var ms = new MemoryStream(colorImageBytes))
+                            {
+                                var colorBitmap = new BitmapImage();
+                                colorBitmap.BeginInit();
+                                colorBitmap.CacheOption = BitmapCacheOption.OnLoad;
+                                colorBitmap.StreamSource = ms;
+                                colorBitmap.EndInit();
+                                
+                                // 转换为 8 位灰度图
+                                var grayBitmap = new FormatConvertedBitmap();
+                                grayBitmap.BeginInit();
+                                grayBitmap.Source = colorBitmap;
+                                grayBitmap.DestinationFormat = PixelFormats.Gray8;
+                                grayBitmap.EndInit();
+                                
+                                // 编码为 JPEG 并保存
+                                var encoder = new JpegBitmapEncoder();
+                                encoder.Frames.Add(BitmapFrame.Create(grayBitmap));
+                                using (var fileStream = new FileStream(thumbnailPath, FileMode.Create))
+                                {
+                                    encoder.Save(fileStream);
+                                }
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -8630,22 +8857,40 @@ namespace GeoChemistryNexus.ViewModels
                 HasUnsavedChanges = false;
                 WeakReferenceMessenger.Default.Send(new UnsavedChangesMessage(false));
 
-                // 更新或生成新的缩略图
+                // 更新或生成新的缩略图（680x480 灰度图）
                 try
                 {
-                    using (var ms = new MemoryStream())
+                    var colorImageBytes = WpfPlot1.Plot.GetImageBytes(680, 480, ScottPlot.ImageFormat.Jpeg);
+                    
+                    // 转换为灰度图
+                    using (var ms = new MemoryStream(colorImageBytes))
                     {
-                        var imageBytes = WpfPlot1.Plot.GetImageBytes(640, 480, ScottPlot.ImageFormat.Jpeg);
-                        await ms.WriteAsync(imageBytes, 0, imageBytes.Length);
-                        ms.Position = 0;
-
-                        await Task.Run(() =>
+                        var colorBitmap = new BitmapImage();
+                        colorBitmap.BeginInit();
+                        colorBitmap.CacheOption = BitmapCacheOption.OnLoad;
+                        colorBitmap.StreamSource = ms;
+                        colorBitmap.EndInit();
+                        
+                        // 转换为 8 位灰度图
+                        var grayBitmap = new FormatConvertedBitmap();
+                        grayBitmap.BeginInit();
+                        grayBitmap.Source = colorBitmap;
+                        grayBitmap.DestinationFormat = PixelFormats.Gray8;
+                        grayBitmap.EndInit();
+                        
+                        // 编码为 JPEG 并上传到数据库
+                        var encoder = new JpegBitmapEncoder();
+                        encoder.Frames.Add(BitmapFrame.Create(grayBitmap));
+                        using (var uploadStream = new MemoryStream())
                         {
-                            using (var uploadStream = new MemoryStream(imageBytes))
+                            encoder.Save(uploadStream);
+                            uploadStream.Position = 0;
+                            
+                            await Task.Run(() =>
                             {
                                 GraphMapDatabaseService.Instance.UploadThumbnail(entity.Id, uploadStream);
-                            }
-                        });
+                            });
+                        }
                     }
                 }
                 catch (Exception ex)

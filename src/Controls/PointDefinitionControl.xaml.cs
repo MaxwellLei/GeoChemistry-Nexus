@@ -28,10 +28,20 @@ namespace GeoChemistryNexus.Controls
             DependencyProperty.Register("PointValue", typeof(PointDefinition), typeof(PointDefinitionControl),
                 new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnPointValueChanged));
 
+        public static readonly DependencyProperty IsReadOnlyProperty =
+            DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(PointDefinitionControl),
+                new PropertyMetadata(false, OnIsReadOnlyChanged));
+
         public PointDefinition PointValue
         {
             get { return (PointDefinition)GetValue(PointValueProperty); }
             set { SetValue(PointValueProperty, value); }
+        }
+
+        public bool IsReadOnly
+        {
+            get { return (bool)GetValue(IsReadOnlyProperty); }
+            set { SetValue(IsReadOnlyProperty, value); }
         }
 
         public PointDefinitionControl()
@@ -40,6 +50,17 @@ namespace GeoChemistryNexus.Controls
             // 监听UI控件的值变化事件
             NumericUpDownX.ValueChanged += OnNumericUpDownValueChanged;
             NumericUpDownY.ValueChanged += OnNumericUpDownValueChanged;
+        }
+
+        /// <summary>
+        /// 当IsReadOnly属性变化时更新UI
+        /// </summary>
+        private static void OnIsReadOnlyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var control = (PointDefinitionControl)d;
+            bool isReadOnly = (bool)e.NewValue;
+            control.NumericUpDownX.IsReadOnly = isReadOnly;
+            control.NumericUpDownY.IsReadOnly = isReadOnly;
         }
 
         /// <summary>

@@ -296,7 +296,7 @@
                                                 </Border>
                                                 <ControlTemplate.Triggers>
                                                     <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter TargetName="BorderElement" Property="Background" Value="#F0F0F0"/>
+                                                        <Setter TargetName="BorderElement" Property="Background" Value="#EAEAEA"/>
                                                     </Trigger>
                                                 </ControlTemplate.Triggers>
                                             </ControlTemplate>
@@ -486,7 +486,7 @@
                                                 </Border>
                                                 <ControlTemplate.Triggers>
                                                     <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter TargetName="BorderElement" Property="Background" Value="#F0F0F0"/>
+                                                        <Setter TargetName="BorderElement" Property="Background" Value="#EAEAEA"/>
                                                     </Trigger>
                                                 </ControlTemplate.Triggers>
                                             </ControlTemplate>
@@ -667,7 +667,7 @@
                                                 </Border>
                                                 <ControlTemplate.Triggers>
                                                     <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter TargetName="BorderElement" Property="Background" Value="#F0F0F0"/>
+                                                        <Setter TargetName="BorderElement" Property="Background" Value="#EAEAEA"/>
                                                     </Trigger>
                                                 </ControlTemplate.Triggers>
                                             </ControlTemplate>
@@ -714,7 +714,7 @@
                                                 </Border>
                                                 <ControlTemplate.Triggers>
                                                     <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter TargetName="BorderElement" Property="Background" Value="#F0F0F0"/>
+                                                        <Setter TargetName="BorderElement" Property="Background" Value="#EAEAEA"/>
                                                     </Trigger>
                                                 </ControlTemplate.Triggers>
                                             </ControlTemplate>
@@ -1591,7 +1591,7 @@
                         <Button Command="{Binding BackToTemplateModeCommand}" Style="{StaticResource ToolbarButtonStyle}" 
                                 ToolTip="{Binding [return_to_template_library], Source={x:Static lg:LanguageService.Instance}}">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe61f;" FontSize="16" Margin="0,1,6,0"/>
+                                <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe61f;" FontSize="16" Margin="0,1,6,0"/>
                                 <TextBlock Text="{Binding [return_to_template_library],Source={x:Static lg:LanguageService.Instance}}" FontWeight="SemiBold"/>
                                 <TextBlock Text="*" Foreground="Red" Margin="2,-8,0,0" FontWeight="Bold" FontSize="18"
                                            Visibility="{Binding HasUnsavedChanges, Converter={StaticResource BoolToVisibilityConverter}}"/>
@@ -1632,7 +1632,7 @@
                         <!-- Common Tools -->
                         <Button Command="{Binding CenterPlotCommand}" Style="{StaticResource ToolbarButtonIconStyle}" 
                                 ToolTip="{Binding [reset_view], Source={x:Static lg:LanguageService.Instance}}">
-                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe617;" FontSize="16"/>
+                            <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe617;" FontSize="16"/>
                         </Button>
 
 
@@ -1640,17 +1640,17 @@
                         <!-- Snap Selection -->
                         <ToggleButton Style="{StaticResource ToolbarIconButtonStyle}" IsChecked="{Binding IsSnapSelectionEnabled, Mode=TwoWay}"
                                                 ToolTip="{Binding [highlight_on_hover],Source={x:Static lg:LanguageService.Instance}}">
-                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe82e;" FontSize="14"/>
+                            <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe82e;" FontSize="14"/>
                         </ToggleButton>
 
                         <ToggleButton IsChecked="{Binding IsCrosshairVisible}" Style="{StaticResource ToolbarIconButtonStyle}"
                                        ToolTip="{Binding [coordinate_positioning], Source={x:Static lg:LanguageService.Instance}}">
-                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe61e;" FontSize="16"/>
+                            <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe61e;" FontSize="16"/>
                         </ToggleButton>
 
                         <Button Command="{Binding CancelSelectedCommand}" Style="{StaticResource ToolbarButtonIconStyle}" 
                                 ToolTip="{Binding [deselect], Source={x:Static lg:LanguageService.Instance}}">
-                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xeaf2;" FontSize="16"/>
+                            <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xeaf2;" FontSize="16"/>
                         </Button>
 
                         <Rectangle Width="1" Height="24" Fill="#D0D0D0" Margin="8,0"/>
@@ -1668,27 +1668,27 @@
                                 </Style>
                             </StackPanel.Style>
                             <Button Command="{Binding SaveBaseMapCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [Save], Source={x:Static lg:LanguageService.Instance}}">
-                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe61a;" FontSize="16" Foreground="#0078D4"/>
+                                <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe61a;" FontSize="16" Foreground="#0078D4"/>
                             </Button>
                             <Button Command="{Binding SaveBaseMapAsCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [save_as], Source={x:Static lg:LanguageService.Instance}}">
-                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe618;" FontSize="16"/>
+                                <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe618;" FontSize="16"/>
                             </Button>
                             <Rectangle Width="1" Height="24" Fill="#D0D0D0" Margin="8,0"/>
 
                             <ToggleButton IsChecked="{Binding IsAddingLine}" Style="{StaticResource ToolbarIconButtonStyle}" ToolTip="{Binding [add_line], Source={x:Static lg:LanguageService.Instance}}">
-                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe619;" FontSize="16"/>
+                                <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe619;" FontSize="16"/>
                             </ToggleButton>
                             <ToggleButton IsChecked="{Binding IsAddingText}" Style="{StaticResource ToolbarIconButtonStyle}" ToolTip="{Binding [add_text], Source={x:Static lg:LanguageService.Instance}}">
-                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe603;" FontSize="16"/>
+                                <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe603;" FontSize="16"/>
                             </ToggleButton>
                             <ToggleButton IsChecked="{Binding IsAddingPolygon}" Style="{StaticResource ToolbarIconButtonStyle}" ToolTip="{Binding [add_polygon], Source={x:Static lg:LanguageService.Instance}}">
-                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xf2b3;" FontSize="16"/>
+                                <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xf2b3;" FontSize="16"/>
                             </ToggleButton>
                             <ToggleButton IsChecked="{Binding IsAddingArrow}" Style="{StaticResource ToolbarIconButtonStyle}" ToolTip="{Binding [add_arrow], Source={x:Static lg:LanguageService.Instance}}">
-                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe6d5;" FontSize="16"/>
+                                <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe6d5;" FontSize="16"/>
                             </ToggleButton>
                             <Button Command="{Binding AddFunctionCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [add_function], Source={x:Static lg:LanguageService.Instance}}">
-                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe63a;" FontSize="16"/>
+                                <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe63a;" FontSize="16"/>
                             </Button>
 
                             <Rectangle Width="1" Height="24" Fill="#D0D0D0" Margin="8,0"/>
@@ -1703,7 +1703,7 @@
                             <Rectangle Width="1" Height="24" Fill="#D0D0D0" Margin="8,0"/>
 
                             <Button Command="{Binding DeleteSelectedObjectCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [delete_object], Source={x:Static lg:LanguageService.Instance}}">
-                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe6a2;" FontSize="18" Foreground="#D92C2C"/>
+                                <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe6a2;" FontSize="18" Foreground="#D92C2C"/>
                             </Button>
 
                             <Rectangle Width="1" Height="24" Fill="#D0D0D0" Margin="8,0"/>
@@ -1711,19 +1711,19 @@
 
                         <!-- Settings & Export -->
                         <Button Command="{Binding PlotSettingCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [diagram_title_properties], Source={x:Static lg:LanguageService.Instance}}">
-                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe62b;" FontSize="16"/>
+                            <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe62b;" FontSize="16"/>
                         </Button>
                         <Button Command="{Binding ScriptSettingCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [diagram_script_properties], Source={x:Static lg:LanguageService.Instance}}">
-                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe614;" FontSize="16"/>
+                            <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe614;" FontSize="16"/>
                         </Button>
                         <Button Command="{Binding LegendSettingCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [diagram_legend_properties], Source={x:Static lg:LanguageService.Instance}}">
-                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe6ae;" FontSize="16"/>
+                            <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe6ae;" FontSize="16"/>
                         </Button>
                         <Button Command="{Binding GridSettingCommand}" IsEnabled="{Binding IsGridSettingEnabled}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [diagram_grid_properties], Source={x:Static lg:LanguageService.Instance}}">
-                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe67b;" FontSize="16"/>
+                            <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe67b;" FontSize="16"/>
                         </Button>
                         <Button Command="{Binding SwitchTemplateLanguageCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [switch_diagram_language], Source={x:Static lg:LanguageService.Instance}}">
-                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe6b4;" FontSize="16"/>
+                            <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe6b4;" FontSize="16"/>
                         </Button>
 
                         <Rectangle Width="1" Height="24" Fill="#D0D0D0" Margin="8,0"/>
@@ -1731,12 +1731,12 @@
                         <!-- Copy Image to Clipboard -->
                         <Button Command="{Binding CopyToClipboardCommand}" Style="{StaticResource ToolbarButtonIconStyle}" 
                                 ToolTip="{Binding [copy_plot_to_clipboard], Source={x:Static lg:LanguageService.Instance}}">
-                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe64d;" FontSize="16"/>
+                            <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe64d;" FontSize="16"/>
                         </Button>
 
                         <!-- Export / External Tools -->
                         <Button Command="{Binding ShowExportPanelCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [export_and_tools], Source={x:Static lg:LanguageService.Instance}, TargetNullValue='瀵煎嚭/宸ュ叿'}">
-                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe648;" FontSize="18"/>
+                            <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe648;" FontSize="18"/>
                         </Button>
 
                         <Rectangle Width="1" Height="24" Fill="#D0D0D0" Margin="8,0"/>
@@ -1779,33 +1779,33 @@
                             </Border.Style>
                             <StackPanel Orientation="Horizontal">
                                 <Button Command="{Binding AddRowUpCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [add_row_above], Source={x:Static lg:LanguageService.Instance}}">
-                                    <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe615;" FontSize="16"/>
+                                    <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe615;" FontSize="16"/>
                                 </Button>
                                 <Button Command="{Binding AddRowDownCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [add_row_below], Source={x:Static lg:LanguageService.Instance}}">
-                                    <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe613;" FontSize="16"/>
+                                    <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe613;" FontSize="16"/>
                                 </Button>
                                 <Button Command="{Binding DeleteRowCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [delete_row], Source={x:Static lg:LanguageService.Instance}}">
-                                    <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe89f;" FontSize="16" Foreground="#D92C2C"/>
+                                    <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe89f;" FontSize="16" Foreground="#D92C2C"/>
                                 </Button>
                                 <Rectangle Width="1" Height="24" Fill="#D0D0D0" Margin="8,0"/>
                                 <Button Command="{Binding AddColumnLeftCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [add_col_left], Source={x:Static lg:LanguageService.Instance}}">
-                                    <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe611;" FontSize="16"/>
+                                    <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe611;" FontSize="16"/>
                                 </Button>
                                 <Button Command="{Binding AddColumnRightCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [add_col_right], Source={x:Static lg:LanguageService.Instance}}">
-                                    <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe610;" FontSize="16"/>
+                                    <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe610;" FontSize="16"/>
                                 </Button>
                                 <Button Command="{Binding DeleteColumnCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [delete_column], Source={x:Static lg:LanguageService.Instance}}">
-                                    <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe907;" FontSize="16" Foreground="#D92C2C"/>
+                                    <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe907;" FontSize="16" Foreground="#D92C2C"/>
                                 </Button>
                                 <Rectangle Width="1" Height="24" Fill="#D0D0D0" Margin="8,0"/>
                                 <Button Command="{Binding ExportWorksheetCommand}" CommandParameter="{Binding ElementName=DataGrid}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [export_data], Source={x:Static lg:LanguageService.Instance}}">
-                                    <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe656;" FontSize="16" Foreground="#0078D4"/>
+                                    <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe656;" FontSize="16" Foreground="#0078D4"/>
                                 </Button>
                                 <Button Command="{Binding UpdateDataCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [update_chart], Source={x:Static lg:LanguageService.Instance}}">
-                                    <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe71e;" FontSize="16" Foreground="#0078D4"/>
+                                    <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe71e;" FontSize="16" Foreground="#0078D4"/>
                                 </Button>
                                 <Button Command="{Binding ClearAllDataCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [clear_all_data], Source={x:Static lg:LanguageService.Instance}}">
-                                    <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe734;" FontSize="16" Foreground="#D92C2C"/>
+                                    <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe734;" FontSize="16" Foreground="#D92C2C"/>
                                 </Button>
                             </StackPanel>
                         </Border>
@@ -1874,14 +1874,14 @@
 
                     <Button Grid.Row="0" Style="{StaticResource ToolbarButtonIconStyle}" Click="OnPopOutPlotClick" 
                             ToolTip="{Binding [popup_diagram_window],Source={x:Static lg:LanguageService.Instance}}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" Panel.ZIndex="1">
-                        <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe642;" FontSize="14"/>
+                        <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe642;" FontSize="14"/>
                     </Button>
 
                     <Button Grid.Row="0" Command="{Binding ShowTemplateInfoCommand}" 
                             ToolTip="{Binding [use_help], Source={x:Static lg:LanguageService.Instance}}" 
                             Style="{StaticResource ToolbarButtonIconStyle}"
                             HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" Panel.ZIndex="1">
-                        <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe621;" FontSize="16"/>
+                        <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe621;" FontSize="16"/>
                     </Button>
 
                     <!-- Quest Reminder Overlay -->
@@ -1900,7 +1900,7 @@
                         <Border Background="#FFF4CE" BorderBrush="#F5C346" BorderThickness="1.5" CornerRadius="6" Padding="12,8" Margin="0,9,0,0">
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                 <!-- Icon -->
-                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe698;" FontSize="20" Foreground="#D48806" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe698;" FontSize="20" Foreground="#D48806" VerticalAlignment="Center" Margin="0,0,8,0"/>
 
                                 <StackPanel VerticalAlignment="Center">
                                     <TextBlock Text="{Binding [diagram_guide], Source={x:Static lg:LanguageService.Instance}, TargetNullValue='图解向导'}" FontWeight="Bold" Foreground="#333" FontSize="13"/>
@@ -1950,7 +1950,7 @@
                                                   SelectionChanged="FontSizeComboBox_SelectionChanged" IsEditable="True"
                                                   KeyDown="FontSizeComboBox_KeyDown" LostFocus="FontSizeComboBox_LostFocus"
                                                   ToolTip="Font Size" Margin="0,0,8,0" VerticalAlignment="Center"
-                                                  Padding="6,0">
+                                                  Padding="6,0" Focusable="False">
                                             <ComboBoxItem Content="8"/>
                                             <ComboBoxItem Content="9"/>
                                             <ComboBoxItem Content="10"/>
@@ -1970,7 +1970,7 @@
                                         <Rectangle Width="1" Height="20" Fill="#D0D0D0" Margin="0,0,8,0"/>
 
                                         <!-- Text Color -->
-                                        <ToggleButton x:Name="ColorButton" ToolTip="Text Color" Style="{StaticResource ToolbarIconButtonStyle}" Margin="0,0,4,0">
+                                        <ToggleButton x:Name="ColorButton" ToolTip="Text Color" Style="{StaticResource ToolbarIconButtonStyle}" Margin="0,0,4,0" Focusable="False">
                                             <Grid>
                                                 <TextBlock Text="A" FontSize="16" FontWeight="Bold" Foreground="#333" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,3"/>
                                                 <Border Height="3" VerticalAlignment="Bottom" Margin="4,0,4,4" Background="{Binding ElementName=RichTextColorPicker, Path=SelectedBrush}" CornerRadius="1"/>
@@ -1986,31 +1986,31 @@
                                         </Popup>
 
                                         <!-- Text Style -->
-                                        <ToggleButton x:Name="BoldButton" Command="EditingCommands.ToggleBold" CommandTarget="{Binding ElementName=Drichtextbox}" ToolTip="Bold" Style="{StaticResource ToolbarIconButtonStyle}" Margin="0,0,4,0">
+                                        <ToggleButton x:Name="BoldButton" Command="EditingCommands.ToggleBold" CommandTarget="{Binding ElementName=Drichtextbox}" ToolTip="Bold" Style="{StaticResource ToolbarIconButtonStyle}" Margin="0,0,4,0" Focusable="False">
                                             <TextBlock Text="B" FontWeight="Bold" FontSize="16" Foreground="#333"/>
                                         </ToggleButton>
-                                        <ToggleButton x:Name="ItalicButton" Command="EditingCommands.ToggleItalic" CommandTarget="{Binding ElementName=Drichtextbox}" ToolTip="Italic" Style="{StaticResource ToolbarIconButtonStyle}" Margin="0,0,4,0">
+                                        <ToggleButton x:Name="ItalicButton" Command="EditingCommands.ToggleItalic" CommandTarget="{Binding ElementName=Drichtextbox}" ToolTip="Italic" Style="{StaticResource ToolbarIconButtonStyle}" Margin="0,0,4,0" Focusable="False">
                                             <TextBlock Text="I" FontStyle="Italic" FontWeight="Bold" FontSize="16" FontFamily="Times New Roman" Foreground="#333"/>
                                         </ToggleButton>
-                                        <ToggleButton x:Name="UnderlineButton" Command="EditingCommands.ToggleUnderline" CommandTarget="{Binding ElementName=Drichtextbox}" ToolTip="Underline" Style="{StaticResource ToolbarIconButtonStyle}" Margin="0,0,8,0">
+                                        <ToggleButton x:Name="UnderlineButton" Command="EditingCommands.ToggleUnderline" CommandTarget="{Binding ElementName=Drichtextbox}" ToolTip="Underline" Style="{StaticResource ToolbarIconButtonStyle}" Margin="0,0,8,0" Focusable="False">
                                             <TextBlock Text="U" TextDecorations="Underline" FontWeight="Bold" FontSize="16" Foreground="#333"/>
                                         </ToggleButton>
 
                                         <Rectangle Width="1" Height="20" Fill="#D0D0D0" Margin="0,0,8,0"/>
 
                                         <!-- Sub/Super Script -->
-                                        <ToggleButton x:Name="SubscriptButton" Click="SubscriptButton_Click" ToolTip="Subscript" Style="{StaticResource ToolbarIconButtonStyle}" Margin="0,0,4,0">
+                                        <ToggleButton x:Name="SubscriptButton" Click="SubscriptButton_Click" ToolTip="Subscript" Style="{StaticResource ToolbarIconButtonStyle}" Margin="0,0,4,0" Focusable="False">
                                             <TextBlock Text="x₂" FontSize="16" Foreground="#333"/>
                                         </ToggleButton>
-                                        <ToggleButton x:Name="SuperscriptButton" Click="SuperscriptButton_Click" ToolTip="Superscript" Style="{StaticResource ToolbarIconButtonStyle}" Margin="0,0,8,0">
+                                        <ToggleButton x:Name="SuperscriptButton" Click="SuperscriptButton_Click" ToolTip="Superscript" Style="{StaticResource ToolbarIconButtonStyle}" Margin="0,0,8,0" Focusable="False">
                                             <TextBlock Text="x²" FontSize="16" Foreground="#333"/>
                                         </ToggleButton>
 
                                         <Rectangle Width="1" Height="20" Fill="#D0D0D0" Margin="0,0,8,0"/>
 
                                         <!-- Word -->
-                                        <Button Command="{Binding OpenHelpDocInWordCommand}" ToolTip="Open in Word" Style="{StaticResource ToolbarButtonIconStyle}">
-                                            <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe640;" FontSize="20"/>
+                                        <Button Command="{Binding OpenHelpDocInWordCommand}" ToolTip="Open in Word" Style="{StaticResource ToolbarButtonIconStyle}" Focusable="False">
+                                            <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe640;" FontSize="20"/>
                                         </Button>
                                     </StackPanel>
 
@@ -2021,7 +2021,7 @@
                                         <Button.Template>
                                             <ControlTemplate TargetType="Button">
                                                 <Border Background="{TemplateBinding Background}" CornerRadius="6">
-                                                    <TextBlock Text="&#xe61f;" FontFamily="../Data/Icon/#iconfont" Foreground="#666" FontSize="14" 
+                                                    <TextBlock Text="&#xe61f;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Foreground="#666" FontSize="14" 
                                                                 VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                                 </Border>
                                                 <ControlTemplate.Triggers>
@@ -2067,7 +2067,7 @@
                             <Grid.Resources>
                                 <ControlTemplate x:Key="EmptyStateTemplate">
                                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe63d;" 
+                                        <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe63d;" 
                                         FontSize="48" Foreground="#CCCCCC" 
                                         HorizontalAlignment="Center" Margin="0,0,0,10"/>
                                         <TextBlock Text="{Binding [select_an_object],Source={x:Static lg:LanguageService.Instance}}" FontSize="14" Foreground="#999999" 

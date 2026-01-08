@@ -56,7 +56,7 @@
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="#333"/>
             <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontFamily" Value="../Data/Icon/#iconfont"/>
+            <Setter Property="FontFamily" Value="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont"/>
             <Setter Property="Width" Value="46"/>
             <Setter Property="Height" Value="40"/>
             <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True"/>
@@ -80,7 +80,7 @@
              <Setter Property="Background" Value="Transparent"/>
              <Setter Property="Foreground" Value="#333"/>
              <Setter Property="FontSize" Value="14"/>
-             <Setter Property="FontFamily" Value="../Data/Icon/#iconfont"/>
+             <Setter Property="FontFamily" Value="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont"/>
              <Setter Property="Width" Value="46"/>
              <Setter Property="Height" Value="40"/>
              <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True"/>
@@ -195,7 +195,7 @@
                             <RadioButton Name="RadioButton1" Style="{StaticResource ModernSideButton}" GroupName="SideBar" 
                                          Command="{Binding StartPageCommand}" CommandParameter="{Binding ElementName=MyNav}" IsChecked="True">
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="&#xe635;" FontFamily="../Data/Icon/#iconfont" FontSize="18" Width="30" TextAlignment="Center" VerticalAlignment="Center"/>
+                                    <TextBlock Text="&#xe635;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="18" Width="30" TextAlignment="Center" VerticalAlignment="Center"/>
                                     <TextBlock Text="{Binding [home],Source={x:Static lg:LanguageService.Instance}}" Margin="10,0,0,0" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </RadioButton>
@@ -204,7 +204,7 @@
                             <RadioButton Name="RadioButton2" Style="{StaticResource ModernSideButton}" GroupName="SideBar" 
                                          Command="{Binding HomePageCommand}" CommandParameter="{Binding ElementName=MyNav}">
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="&#xe639;" FontFamily="../Data/Icon/#iconfont" FontSize="18" Width="30" TextAlignment="Center" VerticalAlignment="Center"/>
+                                    <TextBlock Text="&#xe639;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="18" Width="30" TextAlignment="Center" VerticalAlignment="Center"/>
                                     <TextBlock Text="{Binding [Plot],Source={x:Static lg:LanguageService.Instance}}" Margin="10,0,0,0" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </RadioButton>
@@ -213,7 +213,7 @@
                             <RadioButton Name="RadioButton3" Style="{StaticResource ModernSideButton}" GroupName="SideBar" 
                                          Command="{Binding GTMNewPageCommand}" CommandParameter="{Binding ElementName=MyNav}">
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="&#xe716;" FontFamily="../Data/Icon/#iconfont" FontSize="18" Width="30" TextAlignment="Center" VerticalAlignment="Center"/>
+                                    <TextBlock Text="&#xe716;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="18" Width="30" TextAlignment="Center" VerticalAlignment="Center"/>
                                     <TextBlock Text="{Binding [Geothermometer],Source={x:Static lg:LanguageService.Instance}}" Margin="10,0,0,0" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </RadioButton>
@@ -224,7 +224,7 @@
                             <RadioButton Name="RadioButton4" Style="{StaticResource ModernSideButton}" GroupName="SideBar" 
                                          Command="{Binding SettingPageCommand}" CommandParameter="{Binding ElementName=MyNav}">
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="&#xe60f;" FontFamily="../Data/Icon/#iconfont" FontSize="18" Width="30" TextAlignment="Center" VerticalAlignment="Center"/>
+                                    <TextBlock Text="&#xe60f;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="18" Width="30" TextAlignment="Center" VerticalAlignment="Center"/>
                                     <TextBlock Text="{Binding [Setting],Source={x:Static lg:LanguageService.Instance}}" Margin="10,0,0,0" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </RadioButton>
@@ -262,7 +262,7 @@
             </ScrollViewer>
 
             <!-- Notify Icon (Tray) -->
-            <hc:NotifyIcon Name="notifyIcon" Text="GeoChemistry Nexus" IsBlink="False" Visibility="Visible" Icon="../Data/Icon/logo.png">
+            <hc:NotifyIcon Name="notifyIcon" Text="GeoChemistry Nexus" IsBlink="False" Visibility="Visible" Icon="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/logo.png">
                 <hc:NotifyIcon.ContextMenu>
                     <ContextMenu Width="160" Placement="Right">
                         <MenuItem Header="{Binding [Show],Source={x:Static lg:LanguageService.Instance}}" Click="ShowWindow"/>

@@ -72,6 +72,17 @@ namespace GeoChemistryNexus.Helpers
         /// </summary>
         public static Coordinates ToRealDataCoordinates(Plot plot, Coordinates mouseCoordinates)
         {
+            // 三元图模式下，坐标已经是笛卡尔坐标，不需要对数转换
+            var hasTriangularAxis = plot.GetPlottables()
+                .OfType<ScottPlot.Plottables.TriangularAxis>()
+                .Any();
+
+            if (hasTriangularAxis)
+            {
+                // 三元图模式：直接返回坐标，不进行对数转换
+                return new Coordinates(mouseCoordinates.X, mouseCoordinates.Y);
+            }
+
             var xAxis = plot.Axes.Bottom;
             var yAxis = plot.Axes.Left;
 

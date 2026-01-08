@@ -18,7 +18,7 @@
             <StackPanel Margin="10,12,10,12">
                 <!-- Header -->
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                    <TextBlock Text="&#xe614;" FontFamily="../Data/Icon/#iconfont" FontSize="24" Foreground="#1D1D1F" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBlock Text="&#xe614;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="24" Foreground="#1D1D1F" VerticalAlignment="Center" Margin="0,0,10,0"/>
                     <TextBlock Text="{Binding [script_definition],Source={x:Static lg:LanguageService.Instance}}" 
                                FontSize="22" FontWeight="Bold" Foreground="#1D1D1F" VerticalAlignment="Center"/>
                 </StackPanel>

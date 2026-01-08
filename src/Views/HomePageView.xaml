@@ -21,7 +21,7 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Page.Background>
-        <ImageBrush ImageSource="../Data/Image/HomePic/Default.jpg"/>
+        <ImageBrush ImageSource="pack://application:,,,/GeoChemistryNexus;component/Data/Image/HomePic/Default.jpg"/>
     </Page.Background>
     
     <Page.Resources>

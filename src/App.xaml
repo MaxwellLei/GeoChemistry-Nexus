@@ -88,7 +88,7 @@
                 <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="Foreground" Value="White"/>
                 <Setter Property="FontSize" Value="16"/>
-                <Setter Property="FontFamily" Value="../Data/Icon/#iconfont"/>
+                <Setter Property="FontFamily" Value="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont"/>
                 <Setter Property="Height" Value="25"/>
                 <Setter Property="Width" Value="25"/>
                 <Setter Property="Template">
@@ -116,7 +116,7 @@
                 <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="Foreground" Value="White"/>
                 <Setter Property="FontSize" Value="16"/>
-                <Setter Property="FontFamily" Value="../Data/Icon/#iconfont"/>
+                <Setter Property="FontFamily" Value="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont"/>
                 <Setter Property="Height" Value="25"/>
                 <Setter Property="Width" Value="25"/>
                 <Setter Property="Template">
@@ -141,7 +141,7 @@
 
             <!--图标样式-->
             <Style x:Key="CommonIcon" TargetType="TextBlock">
-                <Setter Property="FontFamily" Value="../Data/Icon/#iconfont"/>
+                <Setter Property="FontFamily" Value="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont"/>
                 <Setter Property="FontSize" Value="16"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>
             </Style>
@@ -149,7 +149,7 @@
             <!--工具栏图标样式-->
             <Style x:Key="ToolbarIcon" TargetType="Button">
                 <Setter Property="Background" Value="Transparent"/>
-                <Setter Property="FontFamily" Value="../Data/Icon/#iconfont"/>
+                <Setter Property="FontFamily" Value="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont"/>
                 <Setter Property="BorderThickness" Value="0"/>
                 <Setter Property="FontSize" Value="18"/>
                 <Setter Property="Margin" Value="2 0"/>

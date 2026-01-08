@@ -91,7 +91,7 @@
                                         Style="{StaticResource ButtonIcon}"
                                         ToolTip="{Binding [pick_coordinate],Source={x:Static lg:LanguageService.Instance}}"
                                         Click="PickPointButton_Click">
-                                    <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe601;" FontSize="14" Foreground="#666"/>
+                                    <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe601;" FontSize="14" Foreground="#666"/>
                                 </Button>
 
                                 <!-- 删除按钮 -->

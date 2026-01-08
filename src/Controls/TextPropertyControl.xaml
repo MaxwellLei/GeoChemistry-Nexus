@@ -59,7 +59,7 @@
             <StackPanel Margin="10,12,10,12">
                 <!-- Header -->
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                    <TextBlock Text="&#xe64b;" FontFamily="../Data/Icon/#iconfont" FontSize="24" Foreground="#1D1D1F" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBlock Text="&#xe64b;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="24" Foreground="#1D1D1F" VerticalAlignment="Center" Margin="0,0,10,0"/>
                     <TextBlock Text="{Binding [text],Source={x:Static lg:LanguageService.Instance}}" 
                                FontSize="22" FontWeight="Bold" Foreground="#1D1D1F" VerticalAlignment="Center"/>
                 </StackPanel>
@@ -75,17 +75,17 @@
                                 <RadioButton Style="{StaticResource AlignmentToggleButtonStyle}" 
                                             IsChecked="{Binding ContentHorizontalAlignment, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Left}"
                                             ToolTip="Left" Background="Transparent" BorderThickness="0">
-                                    <TextBlock Text="&#xe641;" FontFamily="../Data/Icon/#iconfont" FontSize="16" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"/>
+                                    <TextBlock Text="&#xe641;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="16" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"/>
                                 </RadioButton>
                                 <RadioButton Style="{StaticResource AlignmentToggleButtonStyle}" 
                                             IsChecked="{Binding ContentHorizontalAlignment, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Center}"
                                             ToolTip="Center" Background="Transparent" BorderThickness="0">
-                                    <TextBlock Text="&#xe627;" FontFamily="../Data/Icon/#iconfont" FontSize="16" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"/>
+                                    <TextBlock Text="&#xe627;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="16" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"/>
                                 </RadioButton>
                                 <RadioButton Style="{StaticResource AlignmentToggleButtonStyle}" 
                                             IsChecked="{Binding ContentHorizontalAlignment, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Right}"
                                             ToolTip="Right" Background="Transparent" BorderThickness="0">
-                                    <TextBlock Text="&#xe63c;" FontFamily="../Data/Icon/#iconfont" FontSize="16" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"/>
+                                    <TextBlock Text="&#xe63c;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="16" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"/>
                                 </RadioButton>
                             </UniformGrid>
                         </Border>
@@ -109,7 +109,7 @@
                                     Style="{StaticResource ModernIconButtonStyle}"
                                     ToolTip="{Binding [coordinate_positioning],Source={x:Static lg:LanguageService.Instance}}"
                                     Click="PickPointButton_Click">
-                                <TextBlock FontFamily="../Data/Icon/#iconfont" Text="&#xe601;" FontSize="16" Foreground="#007AFF"/>
+                                <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe601;" FontSize="16" Foreground="#007AFF"/>
                             </Button>
                         </Grid>
                         

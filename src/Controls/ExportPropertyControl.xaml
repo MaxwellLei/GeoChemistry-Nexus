@@ -15,7 +15,7 @@
         <StackPanel Margin="10,12,10,12">
             <!-- Header -->
             <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                <TextBlock Text="&#xe648;" FontFamily="../Data/Icon/#iconfont" FontSize="24" Foreground="#1D1D1F" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <TextBlock Text="&#xe648;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="24" Foreground="#1D1D1F" VerticalAlignment="Center" Margin="0,0,10,0"/>
                 <TextBlock Text="{Binding [export_and_tools], Source={x:Static lg:LanguageService.Instance}, TargetNullValue='导出/工具'}" 
                            FontSize="22" FontWeight="Bold" Foreground="#1D1D1F" VerticalAlignment="Center"/>
             </StackPanel>
@@ -48,7 +48,7 @@
                             Style="{StaticResource ModernButtonStyle}"
                             HorizontalAlignment="Stretch">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xe648;" FontFamily="../Data/Icon/#iconfont" Margin="0,1,8,0" FontSize="16"/>
+                            <TextBlock Text="&#xe648;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Margin="0,1,8,0" FontSize="16"/>
                             <TextBlock Text="{Binding [export_image], Source={x:Static lg:LanguageService.Instance}, TargetNullValue='导出图片'}"/>
                         </StackPanel>
                     </Button>
@@ -86,7 +86,7 @@
                             </Style>
                         </Button.Resources>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xe612;" FontFamily="../Data/Icon/#iconfont" Margin="0,1,8,0" FontSize="16"/>
+                            <TextBlock Text="&#xe612;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Margin="0,1,8,0" FontSize="16"/>
                             <TextBlock Text="{Binding [open_with_third_party_software], Source={x:Static lg:LanguageService.Instance}, TargetNullValue='打开'}"/>
                         </StackPanel>
                         <!-- Override hover color for green button -->

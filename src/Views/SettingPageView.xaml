@@ -27,7 +27,7 @@
             <RadioButton Style="{StaticResource ModernSidebarRadioButton}" GroupName="SettingSideBar"
                          IsChecked="True" Command="{Binding CommonPage}">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="&#xe616;" FontFamily="../Data/Icon/#iconfont" FontSize="18" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <TextBlock Text="&#xe616;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="18" VerticalAlignment="Center" Margin="0,0,12,0"/>
                     <TextBlock Text="{Binding [NormalSetting],Source={x:Static lg:LanguageService.Instance}}" FontSize="14" VerticalAlignment="Center"/>
                 </StackPanel>
             </RadioButton>
@@ -36,7 +36,7 @@
             <RadioButton Style="{StaticResource ModernSidebarRadioButton}" GroupName="SettingSideBar"
                          Command="{Binding PlotPage}">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="&#xe66f;" FontFamily="../Data/Icon/#iconfont" FontSize="18" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <TextBlock Text="&#xe66f;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="18" VerticalAlignment="Center" Margin="0,0,12,0"/>
                     <TextBlock Text="{Binding [PlotSetting],Source={x:Static lg:LanguageService.Instance}}" FontSize="14" VerticalAlignment="Center"/>
                 </StackPanel>
             </RadioButton>
@@ -45,7 +45,7 @@
             <RadioButton Style="{StaticResource ModernSidebarRadioButton}" GroupName="SettingSideBar"
                          Command="{Binding AboutPage}">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="&#xe61d;" FontFamily="../Data/Icon/#iconfont" FontSize="18" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <TextBlock Text="&#xe61d;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="18" VerticalAlignment="Center" Margin="0,0,12,0"/>
                     <TextBlock Text="{Binding [About],Source={x:Static lg:LanguageService.Instance}}" FontSize="14" VerticalAlignment="Center"/>
                 </StackPanel>
             </RadioButton>
