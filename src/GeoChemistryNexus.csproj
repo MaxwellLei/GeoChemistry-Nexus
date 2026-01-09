@@ -132,4 +132,8 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Others\" />
+  </ItemGroup>
+
 </Project>

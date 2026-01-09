@@ -21,6 +21,7 @@ yarn-error.log*
 # 其他无关 IDE 相关配置文件
 src/.trae/
 src/.qoder/
+src/Others/
 # Visual Studio相关文件
 .vs/
 *.user

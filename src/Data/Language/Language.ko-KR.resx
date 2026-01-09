@@ -297,6 +297,9 @@
   <data name="Cancel" xml:space="preserve">
     <value>취소</value>
   </data>
+  <data name="DontSave" xml:space="preserve">
+    <value>저장 안 함</value>
+  </data>
   <data name="IsShow" xml:space="preserve">
     <value>IsShow</value>
   </data>

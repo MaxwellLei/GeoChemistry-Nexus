@@ -285,6 +285,9 @@
   <data name="Cancel" xml:space="preserve">
     <value>Abbrechen</value>
   </data>
+  <data name="DontSave" xml:space="preserve">
+    <value>Nicht speichern</value>
+  </data>
   <data name="IsShow" xml:space="preserve">
     <value>Anzeigen</value>
   </data>

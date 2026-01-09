@@ -297,6 +297,9 @@
   <data name="Cancel" xml:space="preserve">
     <value>Отмена</value>
   </data>
+  <data name="DontSave" xml:space="preserve">
+    <value>Не сохранять</value>
+  </data>
   <data name="IsShow" xml:space="preserve">
     <value>Показывать</value>
   </data>

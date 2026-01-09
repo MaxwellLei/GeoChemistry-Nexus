@@ -50,9 +50,17 @@ namespace GeoChemistryNexus.ViewModels
         private string cancelText;
 
         [ObservableProperty]
+        private string thirdButtonText;
+
+        [ObservableProperty]
+        private bool isThreeButtonDialog;
+
+        [ObservableProperty]
         private bool isClosing;
 
         public Action<bool> DialogResultAction { get; set; }
+
+        public Action<int> ThreeButtonDialogResultAction { get; set; }
 
         [ObservableProperty]
         private bool _isLanguageSelection;
@@ -90,14 +98,35 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private async Task Confirm()
         {
-            DialogResultAction?.Invoke(true);
+            if (IsThreeButtonDialog)
+            {
+                ThreeButtonDialogResultAction?.Invoke(0); // 0 = Confirm/Save
+            }
+            else
+            {
+                DialogResultAction?.Invoke(true);
+            }
             await Close();
         }
 
         [RelayCommand]
         private async Task Cancel()
         {
-            DialogResultAction?.Invoke(false);
+            if (IsThreeButtonDialog)
+            {
+                ThreeButtonDialogResultAction?.Invoke(2); // 2 = Cancel
+            }
+            else
+            {
+                DialogResultAction?.Invoke(false);
+            }
+            await Close();
+        }
+
+        [RelayCommand]
+        private async Task ThirdButton()
+        {
+            ThreeButtonDialogResultAction?.Invoke(1); // 1 = Third Button (Don't Save)
             await Close();
         }
 

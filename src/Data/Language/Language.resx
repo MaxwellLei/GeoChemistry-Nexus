@@ -265,6 +265,9 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="DontSave" xml:space="preserve">
+    <value>Don't Save</value>
+  </data>
   <data name="IsShow" xml:space="preserve">
     <value>Visible</value>
   </data>

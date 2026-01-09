@@ -2290,20 +2290,22 @@ namespace GeoChemistryNexus.ViewModels
                 if (HasUnsavedChanges)
                 {
                     // 当前图解模板有未保存的内容，是否保存？
-                    var result = HandyControl.Controls.MessageBox.Show(
-                        LanguageService.Instance["unsaved_diagram_template_prompt"],
+                    var result = await NotificationManager.Instance.ShowThreeButtonDialogAsync(
                         LanguageService.Instance["tips"] ?? "tips",
-                        MessageBoxButton.YesNoCancel,
-                        MessageBoxImage.Question);
+                        LanguageService.Instance["unsaved_diagram_template_prompt"],
+                        LanguageService.Instance["Save"],
+                        LanguageService.Instance["DontSave"],
+                        LanguageService.Instance["Cancel"]);
 
-                    if (result == MessageBoxResult.Cancel)
+                    if (result == 2) // Cancel
                     {
                         return;
                     }
-                    else if (result == MessageBoxResult.Yes)
+                    else if (result == 0) // Save
                     {
                         await PerformSave();
                     }
+                    // If result == 1 (Don't Save), proceed without saving
                 }
 
                 // 1. 收集可用语言
@@ -3196,20 +3198,38 @@ namespace GeoChemistryNexus.ViewModels
             }
 
             // 收集所有可见图层的端点（排除散点图，防止过密）
-            var visibleLayers = FlattenTree(LayerTree).Where(l => l.IsVisible && l.Plottable != null);
-            List<Coordinates> pointsToShow = new List<Coordinates>();
+            var visibleLayers = FlattenTree(LayerTree).Where(l => l.IsVisible);
+            List<(Coordinates pt, bool isHighlighted)> pointsToShow = new List<(Coordinates, bool)>();
 
             foreach (var layer in visibleLayers)
             {
-                if (layer is LineLayerItemViewModel lineLayer && lineLayer.Plottable is ScottPlot.Plottables.LinePlot linePlot)
+                if (layer is LineLayerItemViewModel lineLayer)
                 {
-                    pointsToShow.Add(linePlot.Start);
-                    pointsToShow.Add(linePlot.End);
+                    // 从 LineDefinition 获取坐标，而不是 Plottable，以确保获取最新的坐标值
+                    if (lineLayer.LineDefinition?.Start != null)
+                    {
+                        var pt = PlotTransformHelper.ToRenderCoordinates(WpfPlot1.Plot, lineLayer.LineDefinition.Start.X, lineLayer.LineDefinition.Start.Y);
+                        pointsToShow.Add((pt, lineLayer.LineDefinition.Start.IsHighlighted));
+                    }
+                    if (lineLayer.LineDefinition?.End != null)
+                    {
+                        var pt = PlotTransformHelper.ToRenderCoordinates(WpfPlot1.Plot, lineLayer.LineDefinition.End.X, lineLayer.LineDefinition.End.Y);
+                        pointsToShow.Add((pt, lineLayer.LineDefinition.End.IsHighlighted));
+                    }
                 }
-                else if (layer is ArrowLayerItemViewModel arrowLayer && arrowLayer.Plottable is ScottPlot.Plottables.Arrow arrowPlot)
+                else if (layer is ArrowLayerItemViewModel arrowLayer)
                 {
-                    pointsToShow.Add(arrowPlot.Base);
-                    pointsToShow.Add(arrowPlot.Tip);
+                    // 从 ArrowDefinition 获取坐标，而不是 Plottable
+                    if (arrowLayer.ArrowDefinition?.Start != null)
+                    {
+                        var pt = PlotTransformHelper.ToRenderCoordinates(WpfPlot1.Plot, arrowLayer.ArrowDefinition.Start.X, arrowLayer.ArrowDefinition.Start.Y);
+                        pointsToShow.Add((pt, arrowLayer.ArrowDefinition.Start.IsHighlighted));
+                    }
+                    if (arrowLayer.ArrowDefinition?.End != null)
+                    {
+                        var pt = PlotTransformHelper.ToRenderCoordinates(WpfPlot1.Plot, arrowLayer.ArrowDefinition.End.X, arrowLayer.ArrowDefinition.End.Y);
+                        pointsToShow.Add((pt, arrowLayer.ArrowDefinition.End.IsHighlighted));
+                    }
                 }
                 else if (layer is PolygonLayerItemViewModel polygonLayer)
                 {
@@ -3217,7 +3237,8 @@ namespace GeoChemistryNexus.ViewModels
                     {
                         foreach (var v in polygonLayer.PolygonDefinition.Vertices)
                         {
-                            pointsToShow.Add(PlotTransformHelper.ToRenderCoordinates(WpfPlot1.Plot, v.X, v.Y));
+                            var pt = PlotTransformHelper.ToRenderCoordinates(WpfPlot1.Plot, v.X, v.Y);
+                            pointsToShow.Add((pt, v.IsHighlighted));
                         }
                     }
                 }
@@ -3225,19 +3246,32 @@ namespace GeoChemistryNexus.ViewModels
                 {
                     if (textLayer.TextDefinition?.StartAndEnd != null)
                     {
-                        pointsToShow.Add(PlotTransformHelper.ToRenderCoordinates(WpfPlot1.Plot, textLayer.TextDefinition.StartAndEnd.X, textLayer.TextDefinition.StartAndEnd.Y));
+                        var pt = PlotTransformHelper.ToRenderCoordinates(WpfPlot1.Plot, textLayer.TextDefinition.StartAndEnd.X, textLayer.TextDefinition.StartAndEnd.Y);
+                        pointsToShow.Add((pt, textLayer.TextDefinition.StartAndEnd.IsHighlighted));
                     }
                 }
             }
 
-            // 为每个端点添加灰色圆圈标记
-            foreach (var pt in pointsToShow)
+            // 为每个端点添加圆圈标记，高亮端点显示红色，非高亮端点显示灰色
+            foreach (var (pt, isHighlighted) in pointsToShow)
             {
                 var marker = WpfPlot1.Plot.Add.Marker(pt);
                 marker.Shape = MarkerShape.OpenCircle;
-                marker.Size = 6;
-                marker.Color = ScottPlot.Colors.Gray.WithAlpha(150); // 半透明灰色
-                marker.LineWidth = 1;
+                
+                if (isHighlighted)
+                {
+                    // 高亮端点：红色
+                    marker.Color = ScottPlot.Colors.Red;
+                    marker.Size = 10;
+                    marker.LineWidth = 2;
+                }
+                else
+                {
+                    // 普通端点：灰色
+                    marker.Color = ScottPlot.Colors.Gray.WithAlpha(150);
+                    marker.Size = 6;
+                    marker.LineWidth = 1;
+                }
 
                 _potentialSnapMarkers.Add(marker);
             }
@@ -3267,23 +3301,35 @@ namespace GeoChemistryNexus.ViewModels
             Coordinates? bestSnap = null;
             double minDistanceSq = snapDistancePixels * snapDistancePixels;
 
-            var visibleLayers = FlattenTree(LayerTree).Where(l => l.IsVisible && l.Plottable != null);
+            var visibleLayers = FlattenTree(LayerTree).Where(l => l.IsVisible);
 
             foreach (var layer in visibleLayers)
             {
                 List<Coordinates> pointsToCheck = new List<Coordinates>();
 
-                if (layer is LineLayerItemViewModel lineLayer && lineLayer.Plottable is ScottPlot.Plottables.LinePlot linePlot)
+                if (layer is LineLayerItemViewModel lineLayer)
                 {
-                    // LinePlot 已经在 LineLayerItemViewModel 中被转换为 Render Coordinates
-                    pointsToCheck.Add(linePlot.Start);
-                    pointsToCheck.Add(linePlot.End);
+                    // 从 LineDefinition 获取坐标，而不是 Plottable，以确保获取最新的坐标值
+                    if (lineLayer.LineDefinition?.Start != null)
+                    {
+                        pointsToCheck.Add(PlotTransformHelper.ToRenderCoordinates(WpfPlot1.Plot, lineLayer.LineDefinition.Start.X, lineLayer.LineDefinition.Start.Y));
+                    }
+                    if (lineLayer.LineDefinition?.End != null)
+                    {
+                        pointsToCheck.Add(PlotTransformHelper.ToRenderCoordinates(WpfPlot1.Plot, lineLayer.LineDefinition.End.X, lineLayer.LineDefinition.End.Y));
+                    }
                 }
-                else if (layer is ArrowLayerItemViewModel arrowLayer && arrowLayer.Plottable is ScottPlot.Plottables.Arrow arrowPlot)
+                else if (layer is ArrowLayerItemViewModel arrowLayer)
                 {
-                    // ArrowPlot 已经在 ArrowLayerItemViewModel 中被转换为 Render Coordinates
-                    pointsToCheck.Add(arrowPlot.Base);
-                    pointsToCheck.Add(arrowPlot.Tip);
+                    // 从 ArrowDefinition 获取坐标，而不是 Plottable
+                    if (arrowLayer.ArrowDefinition?.Start != null)
+                    {
+                        pointsToCheck.Add(PlotTransformHelper.ToRenderCoordinates(WpfPlot1.Plot, arrowLayer.ArrowDefinition.Start.X, arrowLayer.ArrowDefinition.Start.Y));
+                    }
+                    if (arrowLayer.ArrowDefinition?.End != null)
+                    {
+                        pointsToCheck.Add(PlotTransformHelper.ToRenderCoordinates(WpfPlot1.Plot, arrowLayer.ArrowDefinition.End.X, arrowLayer.ArrowDefinition.End.Y));
+                    }
                 }
                 else if (layer is PolygonLayerItemViewModel polygonLayer)
                 {
@@ -4719,21 +4765,22 @@ namespace GeoChemistryNexus.ViewModels
             if (_isCurrentTemplateCustom && HasUnsavedChanges)
             {
                 // 当前模板有未保存的内容，是否保存？
-                var result = HandyControl.Controls.MessageBox.Show(
-                    LanguageService.Instance["unsaved_template_changes_confirm"],
+                var result = await NotificationManager.Instance.ShowThreeButtonDialogAsync(
                     LanguageService.Instance["tips"] ?? "提示",
-                    MessageBoxButton.YesNoCancel,
-                    MessageBoxImage.Question);
+                    LanguageService.Instance["unsaved_template_changes_confirm"],
+                    LanguageService.Instance["Save"],
+                    LanguageService.Instance["DontSave"],
+                    LanguageService.Instance["Cancel"]);
 
-                if (result == MessageBoxResult.Cancel)
+                if (result == 2) // Cancel
                 {
                     return;
                 }
-                else if (result == MessageBoxResult.Yes)
+                else if (result == 0) // Save
                 {
                     await PerformSave();
                 }
-                // If No, proceed without saving
+                // If result == 1 (Don't Save), proceed without saving
             }
 
             // 1. 优先切换 UI 状态，提升响应速度
@@ -5474,15 +5521,6 @@ namespace GeoChemistryNexus.ViewModels
                 WpfPlot1.Plot.Add.Plottable(_snapMarker);
             }
 
-            // 如果处于吸附/绘图模式，重新添加潜在吸附点标记
-            if (IsPickingPointMode || IsAddingLine || IsAddingArrow || IsAddingPolygon)
-            {
-                // 清空旧列表
-                _potentialSnapMarkers.Clear();
-                // 重新调用 UpdatePotentialSnapPoints(true) 来生成并添加
-                UpdatePotentialSnapPoints(true);
-            }
-
             BaseMapType = CurrentTemplate.TemplateType;
 
             Clockwise = CurrentTemplate.Clockwise;
@@ -5495,6 +5533,15 @@ namespace GeoChemistryNexus.ViewModels
             else // 默认处理笛卡尔坐标系
             {
                 RenderCartesianPlot();
+            }
+
+            // 如果处于吸附/绘图模式，重新添加潜在吸附点标记（在渲染之后）
+            if (IsPickingPointMode || IsAddingLine || IsAddingArrow || IsAddingPolygon || IsAddingText)
+            {
+                // 清空旧列表
+                _potentialSnapMarkers.Clear();
+                // 重新调用 UpdatePotentialSnapPoints(true) 来生成并添加
+                UpdatePotentialSnapPoints(true);
             }
 
             // 如果是三元图，直接修改属性，关闭十字轴
@@ -7028,88 +7075,6 @@ namespace GeoChemistryNexus.ViewModels
                 MessageHelper.Error(LanguageService.Instance["error_creating_new_template"] +
                     ex.Message);
                 System.Diagnostics.Debug.WriteLine(ex);
-            }
-        }
-
-        /// <summary>
-        /// 将当前底图模板另存为新模板 (保存到数据库)
-        /// </summary>
-        [RelayCommand]
-        private async Task SaveBaseMapAs()
-        {
-            // 取消选中状态
-            CancelSelected();
-
-            // 确保有模板可以保存
-            if (CurrentTemplate == null)
-            {
-                MessageHelper.Error(LanguageService.Instance["no_template_or_path_specified"]);
-                return;
-            }
-
-            // 配置并显示文件保存对话框 (仅用于获取新名称)
-            var saveFileDialog = new VistaSaveFileDialog
-            {
-                Title = LanguageService.Instance["save_template_as"],
-                Filter = $"{LanguageService.Instance["template_files"]} (*.json)|*.json",
-                DefaultExt = ".json",
-                FileName = "NewTemplate.json"
-            };
-
-            // 如果用户选择了路径并点击了 "保存"
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                string newName = Path.GetFileNameWithoutExtension(saveFileDialog.FileName);
-
-                // 1. 生成新 ID (强制为自定义)
-                var newId = GraphMapDatabaseService.GenerateId(newName, true);
-
-                // 2. 检查是否重复
-                var existing = await Task.Run(() => GraphMapDatabaseService.Instance.GetTemplate(newId));
-                if (existing != null)
-                {
-                    // Ask overwrite
-                    bool overwrite = await MessageHelper.ShowAsyncDialog(
-                        LanguageService.Instance["BasemapExisted"],
-                        LanguageService.Instance["Cancel"],
-                        LanguageService.Instance["Confirm"]);
-
-                    if (!overwrite) return;
-                }
-
-                // 3. 准备新 Entity
-                // 获取当前 Entity 以复制帮助文档
-                var currentEntity = await Task.Run(() => GraphMapDatabaseService.Instance.GetTemplate(_currentTemplateId.GetValueOrDefault()));
-
-                var newEntity = new GraphMapTemplateEntity
-                {
-                    Id = newId,
-                    Name = newName,
-                    GraphMapPath = newName,
-                    IsCustom = true,
-                    LastModified = DateTime.Now,
-                    TemplateType = CurrentTemplate.TemplateType,
-                    Version = CurrentTemplate.Version,
-                    Content = CurrentTemplate,
-                    NodeList = CurrentTemplate.NodeList,
-                    HelpDocuments = currentEntity?.HelpDocuments != null
-                                    ? new Dictionary<string, string>(currentEntity.HelpDocuments)
-                                    : new Dictionary<string, string>()
-                };
-
-                // 4. 保存到 DB
-                await Task.Run(() => GraphMapDatabaseService.Instance.UpsertTemplate(newEntity));
-
-                // 5. 切换上下文
-                _currentTemplateId = newId;
-                _isCurrentTemplateCustom = true;
-                _currentTemplateFilePath = null;
-
-                // 6. 执行完整保存 (更新内容、缩略图、当前文档)
-                await PerformSave();
-
-                // 7. 刷新列表
-                await InitializeAsync();
             }
         }
 

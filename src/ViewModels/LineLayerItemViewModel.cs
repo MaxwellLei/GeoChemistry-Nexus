@@ -78,6 +78,24 @@ namespace GeoChemistryNexus.ViewModels
 
             // 将生成的 ScottPlot 对象赋值给基类的 Plottable 属性
             this.Plottable = linePlot;
+
+            // --- 绘制高亮顶点 ---
+            if (LineDefinition.Start.IsHighlighted)
+            {
+                var marker = plot.Add.Marker(startNode.X, startNode.Y);
+                marker.Color = ScottPlot.Colors.Red;
+                marker.Size = 10;
+                marker.Shape = MarkerShape.OpenCircle;
+                marker.LineWidth = 2;
+            }
+            if (LineDefinition.End.IsHighlighted)
+            {
+                var marker = plot.Add.Marker(endNode.X, endNode.Y);
+                marker.Color = ScottPlot.Colors.Red;
+                marker.Size = 10;
+                marker.Shape = MarkerShape.OpenCircle;
+                marker.LineWidth = 2;
+            }
         }
 
         public void Highlight()

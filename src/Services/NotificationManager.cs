@@ -78,6 +78,36 @@ namespace GeoChemistryNexus.Services
             return tcs.Task;
         }
 
+        /// <summary>
+        /// 显示三按钮对话框（保存/不保存/取消）
+        /// </summary>
+        /// <param name="title">对话框标题</param>
+        /// <param name="message">对话框消息</param>
+        /// <param name="confirmText">确认按钮文本（保存）</param>
+        /// <param name="thirdButtonText">第三个按钮文本（不保存）</param>
+        /// <param name="cancelText">取消按钮文本</param>
+        /// <returns>0=确认/保存, 1=第三个按钮/不保存, 2=取消</returns>
+        public Task<int> ShowThreeButtonDialogAsync(string title, string message, string confirmText, string thirdButtonText, string cancelText)
+        {
+            var tcs = new TaskCompletionSource<int>();
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                var vm = new NotificationViewModel(title, message, NotificationType.Info, RemoveNotification)
+                {
+                    IsInteractive = true,
+                    IsThreeButtonDialog = true,
+                    ConfirmText = confirmText,
+                    ThirdButtonText = thirdButtonText,
+                    CancelText = cancelText,
+                    ThreeButtonDialogResultAction = (result) => tcs.SetResult(result)
+                };
+                Notifications.Add(vm);
+            });
+
+            return tcs.Task;
+        }
+
         public Task<string?> ShowLanguageSelectionAsync(IEnumerable<string> languages, string currentLanguage)
         {
             var tcs = new TaskCompletionSource<string?>();

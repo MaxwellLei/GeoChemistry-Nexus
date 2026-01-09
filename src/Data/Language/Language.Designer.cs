@@ -1962,6 +1962,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Don&apos;t Save 的本地化字符串。
+        /// </summary>
+        internal static string DontSave {
+            get {
+                return ResourceManager.GetString("DontSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Download Template Failed: 的本地化字符串。
         /// </summary>
         internal static string download_template_failed {

@@ -26,6 +26,9 @@
         <KeyBinding Key="Z" Modifiers="Control" Command="{Binding UndoCommand}"/>
         <KeyBinding Key="Y" Modifiers="Control" Command="{Binding RedoCommand}"/>
         <KeyBinding Key="Delete" Command="{Binding DeleteSelectedObjectCommand}"/>
+        <KeyBinding Key="D0" Modifiers="Control" Command="{Binding CenterPlotCommand}"/>
+        <KeyBinding Key="NumPad0" Modifiers="Control" Command="{Binding CenterPlotCommand}"/>
+        <KeyBinding Key="S" Modifiers="Control" Command="{Binding SaveBaseMapCommand}"/>
     </Page.InputBindings>
 
     <Page.Resources>
@@ -1669,9 +1672,6 @@
                             </StackPanel.Style>
                             <Button Command="{Binding SaveBaseMapCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [Save], Source={x:Static lg:LanguageService.Instance}}">
                                 <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe61a;" FontSize="16" Foreground="#0078D4"/>
-                            </Button>
-                            <Button Command="{Binding SaveBaseMapAsCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [save_as], Source={x:Static lg:LanguageService.Instance}}">
-                                <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe618;" FontSize="16"/>
                             </Button>
                             <Rectangle Width="1" Height="24" Fill="#D0D0D0" Margin="8,0"/>
 
