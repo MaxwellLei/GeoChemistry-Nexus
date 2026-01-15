@@ -2469,4 +2469,34 @@
   <data name="batch_download_title" xml:space="preserve">
     <value>一括ダウンロード</value>
   </data>
+  <data name="confirm_clear_data_for_validation" xml:space="preserve">
+    <value>構文を確認すると、データテーブルとプロットデータポイントがクリアされます。続行しますか？</value>
+  </data>
+  <data name="toggle_details_expand_collapse" xml:space="preserve">
+    <value>詳細を展開/折りたたむ</value>
+  </data>
+  <data name="calculation_results" xml:space="preserve">
+    <value>計算結果</value>
+  </data>
+  <data name="script_no_detailed_calculation_description" xml:space="preserve">
+    <value>このスクリプトには詳細な計算プロセスの説明が含まれていません。</value>
+  </data>
+  <data name="trace_function_usage_tip" xml:space="preserve">
+    <value>スクリプト内で trace(...) 関数を使用して計算過程を記録できます。</value>
+  </data>
+  <data name="insufficient_script_return_values" xml:space="preserve">
+    <value>スクリプトの戻り値が不足しています</value>
+  </data>
+  <data name="ternary_script_return_value_requirement" xml:space="preserve">
+    <value>三角図（三元図）スクリプトは、少なくとも 3 つの値の配列 [A, B, C] を返す必要があります</value>
+  </data>
+  <data name="script_return_two_values_requirement" xml:space="preserve">
+    <value>スクリプトは、少なくとも 2 つの値の配列 [X, Y] を返す必要があります</value>
+  </data>
+  <data name="calculation_error" xml:space="preserve">
+    <value>計算エラー</value>
+  </data>
+  <data name="script_return_type_error" xml:space="preserve">
+    <value>スクリプトの戻り値の型が正しくありません</value>
+  </data>
 </root>

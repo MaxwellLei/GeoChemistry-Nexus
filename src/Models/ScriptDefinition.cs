@@ -25,6 +25,13 @@ namespace GeoChemistryNexus.Models
         /// </summary>
         [ObservableProperty]
         private string _scriptBody = "";
+
+        /// <summary>
+        /// 是否为只读模式（未进入编辑状态时为 true）
+        /// </summary>
+        [ObservableProperty]
+        [JsonIgnore] // 不序列化此属性
+        private bool _isReadOnly = true;
     }
 
     [JsonConverter(typeof(JsonStringEnumConverter))]

@@ -1427,6 +1427,10 @@
     <value>是否清除表格数据（包括绘图数据点）？</value>
     <comment>绘图-数据-清除数据-提示</comment>
   </data>
+  <data name="confirm_clear_data_for_validation" xml:space="preserve">
+    <value>验证语法将清空数据表格和绘图数据点，是否继续？</value>
+    <comment>绘图-脚本-验证提示</comment>
+  </data>
   <data name="clear_data_points" xml:space="preserve">
     <value>清除数据点</value>
     <comment>绘图-数据-清除数据点</comment>
@@ -2494,5 +2498,32 @@
   <data name="batch_download_cancelled" xml:space="preserve">
     <value>批量下载已取消</value>
     <comment>批量下载取消提示</comment>
+  </data>
+  <data name="toggle_details_expand_collapse" xml:space="preserve">
+    <value>展开/收缩详情</value>
+  </data>
+  <data name="calculation_results" xml:space="preserve">
+    <value>计算结果</value>
+  </data>
+  <data name="script_no_detailed_calculation_description" xml:space="preserve">
+    <value>该脚本未提供详细计算过程说明。</value>
+  </data>
+  <data name="trace_function_usage_tip" xml:space="preserve">
+    <value>可在脚本中使用 trace(...) 函数记录计算过程。</value>
+  </data>
+  <data name="insufficient_script_return_values" xml:space="preserve">
+    <value>脚本返回值不足</value>
+  </data>
+  <data name="ternary_script_return_value_requirement" xml:space="preserve">
+    <value>三元图脚本必须返回至少 3 个值的数组 [A, B, C]</value>
+  </data>
+  <data name="script_return_two_values_requirement" xml:space="preserve">
+    <value>脚本必须返回至少 2 个值的数组 [X, Y]</value>
+  </data>
+  <data name="calculation_error" xml:space="preserve">
+    <value>计算错误</value>
+  </data>
+  <data name="script_return_type_error" xml:space="preserve">
+    <value>脚本返回类型错误</value>
   </data>
 </root>

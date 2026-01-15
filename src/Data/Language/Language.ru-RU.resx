@@ -2469,4 +2469,34 @@
   <data name="batch_download_title" xml:space="preserve">
     <value>Пакетная загрузка</value>
   </data>
+  <data name="confirm_clear_data_for_validation" xml:space="preserve">
+    <value>Проверка синтаксиса очистит таблицу данных и точки на графике. Продолжить?</value>
+  </data>
+  <data name="toggle_details_expand_collapse" xml:space="preserve">
+    <value>Развернуть/свернуть детали</value>
+  </data>
+  <data name="calculation_results" xml:space="preserve">
+    <value>Результаты вычислений</value>
+  </data>
+  <data name="script_no_detailed_calculation_description" xml:space="preserve">
+    <value>Этот сценарий не содержит подробного описания процесса вычислений.</value>
+  </data>
+  <data name="trace_function_usage_tip" xml:space="preserve">
+    <value>Используйте функцию trace(...) для записи процесса вычислений в сценарии.</value>
+  </data>
+  <data name="insufficient_script_return_values" xml:space="preserve">
+    <value>Недостаточно возвращаемых значений сценария</value>
+  </data>
+  <data name="ternary_script_return_value_requirement" xml:space="preserve">
+    <value>Сценарии тройных диаграмм должны возвращать массив как минимум из 3 значений [A, B, C]</value>
+  </data>
+  <data name="script_return_two_values_requirement" xml:space="preserve">
+    <value>Сценарии должны возвращать массив как минимум из 2 значений [X, Y]</value>
+  </data>
+  <data name="calculation_error" xml:space="preserve">
+    <value>Ошибка вычисления</value>
+  </data>
+  <data name="script_return_type_error" xml:space="preserve">
+    <value>Ошибка типа возвращаемого значения сценария</value>
+  </data>
 </root>

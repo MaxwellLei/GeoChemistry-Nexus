@@ -2469,4 +2469,34 @@
   <data name="batch_download_title" xml:space="preserve">
     <value>Descarga por lotes</value>
   </data>
+  <data name="confirm_clear_data_for_validation" xml:space="preserve">
+    <value>La verificación de sintaxis borrará la tabla de datos y los puntos del gráfico. ¿Desea continuar?</value>
+  </data>
+  <data name="toggle_details_expand_collapse" xml:space="preserve">
+    <value>Expandir/Contraer detalles</value>
+  </data>
+  <data name="calculation_results" xml:space="preserve">
+    <value>Resultados del cálculo</value>
+  </data>
+  <data name="script_no_detailed_calculation_description" xml:space="preserve">
+    <value>Este script no proporciona una descripción detallada del proceso de cálculo.</value>
+  </data>
+  <data name="trace_function_usage_tip" xml:space="preserve">
+    <value>Puede usar la función trace(...) en el script para registrar el proceso de cálculo.</value>
+  </data>
+  <data name="insufficient_script_return_values" xml:space="preserve">
+    <value>Valores de retorno del script insuficientes</value>
+  </data>
+  <data name="ternary_script_return_value_requirement" xml:space="preserve">
+    <value>Los scripts de diagramas ternarios deben devolver una matriz de al menos 3 valores [A, B, C]</value>
+  </data>
+  <data name="script_return_two_values_requirement" xml:space="preserve">
+    <value>Los scripts deben devolver una matriz de al menos 2 valores [X, Y]</value>
+  </data>
+  <data name="calculation_error" xml:space="preserve">
+    <value>Error de cálculo</value>
+  </data>
+  <data name="script_return_type_error" xml:space="preserve">
+    <value>Error de tipo de retorno del script</value>
+  </data>
 </root>

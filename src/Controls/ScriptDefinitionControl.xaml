@@ -33,8 +33,17 @@
                                   Margin="0,0,0,16"
                                   SelectedValue="{Binding ScriptDefinition.Language, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                   DisplayMemberPath="DisplayName"
-                                  SelectedValuePath="Value"
-                                  Style="{StaticResource ModernComboBoxStyle}"/>
+                                  SelectedValuePath="Value">
+                            <ComboBox.Style>
+                                <Style TargetType="ComboBox" BasedOn="{StaticResource ModernComboBoxStyle}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ScriptDefinition.IsReadOnly, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
+                                            <Setter Property="IsEnabled" Value="False"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ComboBox.Style>
+                        </ComboBox>
 
                         <!-- Data Series -->
                         <TextBlock Text="{Binding [data_series],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
@@ -43,7 +52,17 @@
                                     Margin="0,0,0,8"
                                     Padding="10,8"
                                     Background="#F2F2F7" BorderThickness="0"
-                                    hc:BorderElement.CornerRadius="6"/>
+                                    hc:BorderElement.CornerRadius="6">
+                            <TextBox.Style>
+                                <Style TargetType="TextBox">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ScriptDefinition.IsReadOnly, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
+                                            <Setter Property="IsReadOnly" Value="True"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
                         
                         <TextBlock Text="{Binding [multiple_data_series_hint],Source={x:Static lg:LanguageService.Instance}}" 
                                    FontSize="11" TextWrapping="Wrap"
@@ -69,7 +88,17 @@
                                      Background="Transparent"
                                      Padding="12"
                                      VerticalContentAlignment="Top"
-                                     BorderThickness="0"/>
+                                     BorderThickness="0">
+                                <TextBox.Style>
+                                    <Style TargetType="TextBox">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ScriptDefinition.IsReadOnly, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
+                                                <Setter Property="IsReadOnly" Value="True"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
                         </Border>
 
                         <!-- Status Bar -->
@@ -104,9 +133,18 @@
                         <!-- Actions -->
                         <Button x:Name="ValidateButton" 
                                 Content="{Binding [validate_syntax],Source={x:Static lg:LanguageService.Instance}}" 
-                                Style="{StaticResource ModernButtonStyle}"
                                 HorizontalAlignment="Stretch"
-                                Click="ValidateButton_Click"/>
+                                Click="ValidateButton_Click">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource ModernButtonStyle}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ScriptDefinition.IsReadOnly, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
+                                            <Setter Property="IsEnabled" Value="False"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
                     </StackPanel>
                 </Border>
 

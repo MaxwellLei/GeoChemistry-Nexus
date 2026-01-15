@@ -822,5 +822,23 @@ namespace GeoChemistryNexus.Views
 
             return FindVisualParent<T>(parent);
         }
+
+        /// <summary>
+        /// 处理数据表格大小变化事件，动态计算验证区域的最大高度（为表格高度的 1/4）
+        /// </summary>
+        private void DataGrid_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (sender is unvell.ReoGrid.ReoGridControl dataGrid && viewModel != null)
+            {
+                // 计算验证区域的最大高度为数据表格高度的 1/4
+                double maxHeight = dataGrid.ActualHeight / 4.0;
+                // 确保有一个最小高度，避免过小
+                if (maxHeight < 100)
+                {
+                    maxHeight = 100;
+                }
+                viewModel.DataGridMaxVerificationHeight = maxHeight;
+            }
+        }
     }
 }

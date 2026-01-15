@@ -27,7 +27,7 @@ namespace GeoChemistryNexus.Controls
     /// <summary>
     /// ScriptDefinitionControl.xaml 的交互逻辑
     /// </summary>
-    public partial class ScriptDefinitionControl : UserControl
+    public partial class ScriptDefinitionControl : UserControl, IRecipient<ScriptValidationExecuteMessage>
     {
         public static readonly DependencyProperty ScriptDefinitionProperty =
             DependencyProperty.Register("ScriptDefinition", typeof(ScriptDefinition), typeof(ScriptDefinitionControl),
@@ -50,6 +50,9 @@ namespace GeoChemistryNexus.Controls
             {
                 ScriptDefinition = new ScriptDefinition();
             }
+            
+            // 注册消息接收
+            WeakReferenceMessenger.Default.Register<ScriptValidationExecuteMessage>(this);
         }
 
         private static void OnScriptDefinitionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -125,13 +128,29 @@ namespace GeoChemistryNexus.Controls
                     return;
                 }
 
-                var language = ScriptDefinition?.Language ?? ScriptLanguage.JavaScript;
-                ValidateScript(script, language);
+                // 发送验证请求消息，让 MainPlotViewModel 处理数据检查和确认
+                WeakReferenceMessenger.Default.Send(new Messages.ScriptValidationRequestMessage());
             }
             catch (Exception ex)
             {
                 UpdateStatus(LanguageService.Instance["validation_failed"] + ex.Message, Brushes.Red);
             }
+        }
+
+        // 执行实际的脚本验证逻辑（由 MainPlotViewModel 调用）
+        public void PerformValidation()
+        {
+            var script = ScriptDefinition?.ScriptBody ?? "";
+            var language = ScriptDefinition?.Language ?? ScriptLanguage.JavaScript;
+            ValidateScript(script, language);
+        }
+
+        /// <summary>
+        /// 接收脚本验证执行消息
+        /// </summary>
+        public void Receive(ScriptValidationExecuteMessage message)
+        {
+            PerformValidation();
         }
 
         // 检查参数格式是否正确
@@ -183,6 +202,8 @@ namespace GeoChemistryNexus.Controls
 
                 // 创建一个新的Jint引擎实例
                 var engine = new Engine();
+                var tempLogs = new List<string>();
+                Helpers.JintHelper.InjectTraceFunction(engine, tempLogs); // 注入trace函数避免验证失败
 
                 // 按逗号分隔字符串并去除多余的空格
                 string[] variables = RequiredDataSeriesTextBox.Text.Split(',').Select(v => v.Trim()).ToArray();

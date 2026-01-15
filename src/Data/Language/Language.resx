@@ -1317,6 +1317,9 @@
   <data name="confirm_clear_all_data" xml:space="preserve">
     <value>Clear table data (including plot data points)?</value>
   </data>
+  <data name="confirm_clear_data_for_validation" xml:space="preserve">
+    <value>Validating syntax will clear data table and plot data points. Continue?</value>
+  </data>
   <data name="clear_data_points" xml:space="preserve">
     <value>Clear Data Points</value>
   </data>
@@ -2277,5 +2280,32 @@
   </data>
   <data name="edit_diagram_template" xml:space="preserve">
     <value>Edit Diagram Template</value>
+  </data>
+  <data name="toggle_details_expand_collapse" xml:space="preserve">
+    <value>Expand/Collapse Details</value>
+  </data>
+  <data name="calculation_results" xml:space="preserve">
+    <value>Calculation Results</value>
+  </data>
+  <data name="script_no_detailed_calculation_description" xml:space="preserve">
+    <value>This script does not provide detailed calculation process descriptions.</value>
+  </data>
+  <data name="trace_function_usage_tip" xml:space="preserve">
+    <value>Use the trace(...) function in your script to log the calculation process.</value>
+  </data>
+  <data name="insufficient_script_return_values" xml:space="preserve">
+    <value>Insufficient script return values</value>
+  </data>
+  <data name="ternary_script_return_value_requirement" xml:space="preserve">
+    <value>Ternary plot scripts must return an array of at least 3 values [A, B, C]</value>
+  </data>
+  <data name="script_return_two_values_requirement" xml:space="preserve">
+    <value>Scripts must return an array of at least 2 values [X, Y]</value>
+  </data>
+  <data name="calculation_error" xml:space="preserve">
+    <value>Calculation Error</value>
+  </data>
+  <data name="script_return_type_error" xml:space="preserve">
+    <value>Script Return Type Error</value>
   </data>
 </root>

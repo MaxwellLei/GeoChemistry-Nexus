@@ -40,7 +40,7 @@ using unvell.ReoGrid;
 
 namespace GeoChemistryNexus.ViewModels
 {
-    public partial class MainPlotViewModel : ObservableObject, IRecipient<PickPointRequestMessage>, IRecipient<DefaultTreeExpandLevelChangedMessage>, IRecipient<ScriptValidatedMessage>, IRecipient<DeveloperModeChangedMessage>
+    public partial class MainPlotViewModel : ObservableObject, IRecipient<PickPointRequestMessage>, IRecipient<DefaultTreeExpandLevelChangedMessage>, IRecipient<ScriptValidatedMessage>, IRecipient<ScriptValidationRequestMessage>, IRecipient<DeveloperModeChangedMessage>
     {
         // 拾取点模式
         [ObservableProperty]
@@ -382,8 +382,99 @@ namespace GeoChemistryNexus.ViewModels
         {
             if (message.Value)
             {
+                // 0. 设置标志位，阻止 TreeView 自动选中节点
+                _isBlockingTreeViewSelection = true;
+
+                // 1. 清除数据表格（会触发选中事件，但此时数据点已清除）
                 PrepareDataGridForInput();
+                        
+                // 2. 清除数据点图例
+                ClearExistingPlottedData();
+                
+                // 3. 保存脚本面板状态，然后取消所有选中状态（防止选中坐标轴父类等对象）
+                bool wasScriptPanelOpen = ScriptsPropertyGrid;
+                CancelSelected();
+                // 恢复脚本面板状态（不论验证是否成功，脚本面板保持原状态）
+                if (wasScriptPanelOpen)
+                {
+                    ScriptsPropertyGrid = true;
+                }
+                        
+                // 4. 隐藏数据点选中标记（防止表格选中事件触发错误显示）
+                if (_selectedDataPointMarker != null)
+                {
+                    _selectedDataPointMarker.IsVisible = false;
+                }
+                if (_selectedDataPointLabel != null)
+                {
+                    _selectedDataPointLabel.IsVisible = false;
+                }
+                        
+                // 5. 隐藏计算验证区域（因为数据已清空）
+                IsCalculationVerificationVisible = false;
+                CalculationResultSummary = string.Empty;
+                CalculationLogs.Clear();
+                        
+                // 6. 刷新绘图（使用 RefreshPlotFromLayers 确保图例被正确更新）
+                RefreshPlotFromLayers();
+
+                // 7. 重置标志位（使用异步延迟确保所有清除操作完成后再解除阻止）
+                System.Windows.Application.Current?.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    _isBlockingTreeViewSelection = false;
+                }), System.Windows.Threading.DispatcherPriority.Background);
             }
+        }
+
+        /// <summary>
+        /// 处理脚本验证请求消息
+        /// </summary>
+        public async void Receive(ScriptValidationRequestMessage message)
+        {
+            // 检查数据表格是否有数据
+            bool hasData = false;
+            if (_dataGrid != null && _dataGrid.Worksheets.Count > 0)
+            {
+                var sheet = _dataGrid.Worksheets[0];
+                // 检查是否有非空行（排除表头行）
+                for (int row = 0; row < sheet.RowCount; row++)
+                {
+                    bool rowHasData = false;
+                    for (int col = 0; col < sheet.ColumnCount; col++)
+                    {
+                        var cellData = sheet[row, col];
+                        if (cellData != null && !string.IsNullOrWhiteSpace(cellData.ToString()))
+                        {
+                            rowHasData = true;
+                            break;
+                        }
+                    }
+                    if (rowHasData)
+                    {
+                        hasData = true;
+                        break;
+                    }
+                }
+            }
+
+            // 如果有数据，弹出确认对话框
+            if (hasData)
+            {
+                var result = await NotificationManager.Instance.ShowDialogAsync(
+                    LanguageService.Instance["information"],
+                    LanguageService.Instance["confirm_clear_data_for_validation"],
+                    LanguageService.Instance["Confirm"],
+                    LanguageService.Instance["Cancel"]);
+
+                if (!result)
+                {
+                    // 用户取消，不执行验证
+                    return;
+                }
+            }
+
+            // 执行验证（发送消息给 ScriptDefinitionControl 进行实际验证）
+            WeakReferenceMessenger.Default.Send(new ScriptValidationExecuteMessage());
         }
 
         private void LanguageService_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -482,6 +573,37 @@ namespace GeoChemistryNexus.ViewModels
         // 用于绑定吸附选择按钮的状态
         [ObservableProperty]
         private bool _isSnapSelectionEnabled = false;
+
+        // 计算过程验证区域相关属性
+        /// <summary>
+        /// 计算过程验证区域是否展开
+        /// </summary>
+        [ObservableProperty]
+        private bool _isCalculationDetailExpanded = false;
+
+        /// <summary>
+        /// 计算验证区域的最大高度（为数据表格高度的 1/4）
+        /// </summary>
+        [ObservableProperty]
+        private double _dataGridMaxVerificationHeight = 200;
+
+        /// <summary>
+        /// 当前选中行的计算结果摘要(X = xxx, Y = xxx)
+        /// </summary>
+        [ObservableProperty]
+        private string _calculationResultSummary = string.Empty;
+
+        /// <summary>
+        /// 详细计算过程日志列表(来自脚本中的 trace 调用)
+        /// </summary>
+        [ObservableProperty]
+        private ObservableCollection<string> _calculationLogs = new();
+
+        /// <summary>
+        /// 计算过程验证区域是否可见（二维坐标系和三元图均支持）
+        /// </summary>
+        [ObservableProperty]
+        private bool _isCalculationVerificationVisible = false;
 
         [ObservableProperty]
         private bool _isTemplateMode = true; // 默认为模板浏览模式
@@ -782,6 +904,12 @@ namespace GeoChemistryNexus.ViewModels
             {
                 _hasConfirmedEditMode = true;
                 RibbonTabIndex = 2;
+                
+                // 进入编辑状态，允许编辑脚本
+                if (CurrentTemplate?.Script != null)
+                {
+                    CurrentTemplate.Script.IsReadOnly = false;
+                }
             }
         }
 
@@ -826,6 +954,9 @@ namespace GeoChemistryNexus.ViewModels
 
         // 标志位：防止表格选择和绘图点击选择互相触发循环
         private bool _isSyncingSelection = false;
+
+        // 标志位：阻止脚本验证清除数据后 TreeView 自动选中其他节点
+        private bool _isBlockingTreeViewSelection = false;
 
         partial void OnIsAddingTextChanged(bool value)
         {
@@ -1505,6 +1636,9 @@ namespace GeoChemistryNexus.ViewModels
             {
                 _isSyncingSelection = true;
                 HighlightDataPointByRowIndex(e.Range.Row);
+                
+                // 计算并显示当前选中行的计算结果
+                CalculateAndDisplayResult(e.Range.Row);
             }
             finally
             {
@@ -2949,7 +3083,7 @@ namespace GeoChemistryNexus.ViewModels
                 var recentIds = recentsConfig.Split(',', StringSplitOptions.RemoveEmptyEntries)
                     .Select(id => Guid.TryParse(id.Trim(), out var guid) ? guid : Guid.Empty)
                     .Where(id => id != Guid.Empty)
-                    .Take(10) // 最多显示10个
+                    .Take(12) // 最多显示12个
                     .ToList();
 
                 var allTemplates = GraphMapDatabaseService.Instance.GetSummaries();
@@ -2999,10 +3133,10 @@ namespace GeoChemistryNexus.ViewModels
                 // 添加到最前面
                 recentIds.Insert(0, idString);
                 
-                // 保留10条
-                if (recentIds.Count > 10)
+                // 保留12条
+                if (recentIds.Count > 12)
                 {
-                    recentIds = recentIds.Take(10).ToList();
+                    recentIds = recentIds.Take(12).ToList();
                 }
                 
                 // 保存
@@ -3545,6 +3679,12 @@ namespace GeoChemistryNexus.ViewModels
 
                 // 设置当前图解语言为模板默认语言
                 CurrentDiagramLanguage = value.DefaultLanguage;
+                
+                // 重置脚本为只读状态（需要二次确认进入编辑模式）
+                if (value.Script != null)
+                {
+                    value.Script.IsReadOnly = true;
+                }
             }
             else
             {
@@ -4204,6 +4344,8 @@ namespace GeoChemistryNexus.ViewModels
                     try
                     {
                         var engine = new Jint.Engine();
+                        var tempLogs = new List<string>();
+                        JintHelper.InjectTraceFunction(engine, tempLogs); // 注入trace函数避免验证失败
                         foreach (var v in vars)
                         {
                             engine.SetValue(v, 1.0); // 测试数据
@@ -4242,6 +4384,8 @@ namespace GeoChemistryNexus.ViewModels
                     try
                     {
                         var engine = new Jint.Engine();
+                        var tempLogs = new List<string>();
+                        JintHelper.InjectTraceFunction(engine, tempLogs); // 注入trace函数避免验证失败
                         var result = engine.Evaluate(template.Script.ScriptBody);
                         if (result.IsArray())
                         {
@@ -5284,12 +5428,12 @@ namespace GeoChemistryNexus.ViewModels
         /// <param name="dataRow">数据行</param>
         /// <param name="dataColumns">参与计算的数据列名</param>
         /// <param name="scriptBody">脚本内容</param>
-        /// <returns>返回计算结果的double数组，如果计算失败或返回类型不正确则返回null</returns>
+        /// <returns>返回计算结果的double数组,如果计算失败或返回类型不正确则返回null</returns>
         private double[]? CalculateCoordinatesUsingScript(Jint.Engine engine, DataRow dataRow, List<string> dataColumns, string scriptBody)
         {
             try
             {
-
+        
                 // 将数据列的值注入到JavaScript环境中
                 foreach (string columnName in dataColumns)
                 {
@@ -5299,14 +5443,14 @@ namespace GeoChemistryNexus.ViewModels
                     }
                     else
                     {
-                        // 如果无法解析为数字，注入null或0
+                        // 如果无法解析为数字,注入null或0
                         engine.SetValue(columnName, 0);
                     }
                 }
-
+        
                 // 执行脚本并获取结果
                 var result = engine.Evaluate(scriptBody);
-
+        
                 // 检查返回结果是否为数组
                 if (result.IsArray())
                 {
@@ -5321,13 +5465,13 @@ namespace GeoChemistryNexus.ViewModels
                         }
                         else
                         {
-                            // 如果数组中有任何一个元素不是数字，则认为结果无效
+                            // 如果数组中有任何一个元素不是数字,则认为结果无效
                             return null;
                         }
                     }
                     return values; // 返回包含所有数值的数组
                 }
-
+        
                 return null;
             }
             catch (Exception ex)
@@ -5335,6 +5479,231 @@ namespace GeoChemistryNexus.ViewModels
                 System.Diagnostics.Debug.WriteLine(LanguageService.Instance["script_execution_failed"] + ex.Message);
                 return null;
             }
+        }
+        
+        /// <summary>
+        /// 计算并显示当前选中行的计算结果
+        /// </summary>
+        /// <param name="rowIndex">选中的行号</param>
+        private void CalculateAndDisplayResult(int rowIndex)
+        {
+            // 重置状态
+            CalculationResultSummary = string.Empty;
+            CalculationLogs.Clear();
+            IsCalculationVerificationVisible = false;
+        
+            // 检查是否为支持的坐标系类型（二维坐标系或三元图）
+            if (CurrentTemplate == null || 
+                (CurrentTemplate.TemplateType != "Cartesian" && CurrentTemplate.TemplateType != "Ternary"))
+            {
+                return;
+            }
+        
+            // 检查是否有脚本定义
+            if (CurrentTemplate.Script == null || string.IsNullOrWhiteSpace(CurrentTemplate.Script.ScriptBody))
+            {
+                return;
+            }
+        
+            // 获取数据表
+            if (_dataGrid == null || _dataGrid.Worksheets.Count == 0)
+            {
+                return;
+            }
+        
+            var sheet = _dataGrid.Worksheets[0];
+            if (rowIndex < 0 || rowIndex >= sheet.RowCount)
+            {
+                return;
+            }
+            
+            // 检查该行是否有实际数据（至少有一个非空单元格）
+            bool hasData = false;
+            for (int c = 0; c < sheet.ColumnCount; c++)
+            {
+                var cellData = sheet[rowIndex, c];
+                if (cellData != null && !string.IsNullOrWhiteSpace(cellData.ToString()))
+                {
+                    hasData = true;
+                    break;
+                }
+            }
+            
+            // 如果该行没有数据，不显示验证区域
+            if (!hasData)
+            {
+                return;
+            }
+        
+            // 显示计算验证区域
+            IsCalculationVerificationVisible = true;
+        
+            try
+            {
+                // 获取需要的数据列名
+                var requiredSeriesStr = CurrentTemplate.Script.RequiredDataSeries;
+                if (string.IsNullOrWhiteSpace(requiredSeriesStr))
+                {
+                    CalculationResultSummary = "未定义数据列";
+                    return;
+                }
+        
+                var dataColumns = requiredSeriesStr.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries)
+                                                   .Select(s => s.Trim())
+                                                   .ToList();
+        
+                // 准备日志收集列表
+                var logs = new List<string>();
+        
+                // 创建Jint引擎并注入trace函数
+                var engine = new Jint.Engine();
+                JintHelper.InjectTraceFunction(engine, logs);
+
+                // 将数据列的值注入到JavaScript环境中
+                foreach (string columnName in dataColumns)
+                {
+                    // 查找列索引
+                    int colIndex = -1;
+                    for (int c = 0; c < sheet.ColumnCount; c++)
+                    {
+                        var headerText = sheet.ColumnHeaders[c].Text;
+                        if (headerText == columnName)
+                        {
+                            colIndex = c;
+                            break;
+                        }
+                    }
+
+                    if (colIndex >= 0)
+                    {
+                        var cellData = sheet[rowIndex, colIndex];
+                        if (cellData != null && double.TryParse(cellData.ToString(), out double value))
+                        {
+                            engine.SetValue(columnName, value);
+                        }
+                        else
+                        {
+                            engine.SetValue(columnName, 0);
+                        }
+                    }
+                    else
+                    {
+                        engine.SetValue(columnName, 0);
+                    }
+                }
+
+                // 执行脚本并获取结果
+                var result = engine.Evaluate(CurrentTemplate.Script.ScriptBody);
+
+                // 检查返回结果是否为数组
+                if (result.IsArray())
+                {
+                    var array = result.AsArray();
+                    
+                    // 根据坐标系类型显示不同格式的结果
+                    if (CurrentTemplate.TemplateType == "Ternary")
+                    {
+                        // 三元图需要3个值：A, B, C
+                        if (array.Length >= 3)
+                        {
+                            double a = array[0].IsNumber() ? array[0].AsNumber() : 0;
+                            double b = array[1].IsNumber() ? array[1].AsNumber() : 0;
+                            double c = array[2].IsNumber() ? array[2].AsNumber() : 0;
+
+                            // 格式化结果摘要（三元图使用 A, B, C）
+                            CalculationResultSummary = LanguageService.Instance["calculation_results"] +
+                                $": A = {a:F4}, B = {b:F4}, C = {c:F4}";
+        
+                            // 更新日志
+                            foreach (var log in logs)
+                            {
+                                CalculationLogs.Add(log);
+                            }
+        
+                            // 如果没有日志,显示默认提示
+                            if (CalculationLogs.Count == 0)
+                            {
+                                // 该脚本未提供详细计算过程说明
+                                CalculationLogs.Add(LanguageService.Instance["script_no_detailed_calculation_description"]);
+                                // 可在脚本中使用 trace(...) 函数记录计算过程
+                                CalculationLogs.Add(LanguageService.Instance["trace_function_usage_tip"]);
+                            }
+                        }
+                        else
+                        {
+                            // 脚本返回值不足
+                            CalculationResultSummary = LanguageService.Instance["insufficient_script_return_values"];
+                            // 三元图脚本必须返回至少 3 个值的数组 [A, B, C]
+                            CalculationLogs.Add(LanguageService.Instance["ternary_script_return_value_requirement"]);
+                        }
+                    }
+                    else // Cartesian
+                    {
+                        // 二维坐标系需要2个值：X, Y
+                        if (array.Length >= 2)
+                        {
+                            double x = array[0].IsNumber() ? array[0].AsNumber() : 0;
+                            double y = array[1].IsNumber() ? array[1].AsNumber() : 0;
+
+                            // 格式化结果摘要（二维坐标系使用 X, Y）
+                            CalculationResultSummary = LanguageService.Instance["calculation_results"] + 
+                                $": X = {x:F4}, Y = {y:F4}";
+        
+                            // 更新日志
+                            foreach (var log in logs)
+                            {
+                                CalculationLogs.Add(log);
+                            }
+        
+                            // 如果没有日志,显示默认提示
+                            if (CalculationLogs.Count == 0)
+                            {
+                                // 该脚本未提供详细计算过程说明
+                                CalculationLogs.Add(LanguageService.Instance["script_no_detailed_calculation_description"]);
+                                // 可在脚本中使用 trace(...) 函数记录计算过程
+                                CalculationLogs.Add(LanguageService.Instance["trace_function_usage_tip"]);
+                            }
+                        }
+                        else
+                        {
+                            // 脚本返回值不足
+                            CalculationResultSummary = LanguageService.Instance["insufficient_script_return_values"];
+                            // 脚本必须返回至少 2 个值的数组 [X, Y]
+                            CalculationLogs.Add(LanguageService.Instance["script_return_two_values_requirement"]);
+                        }
+                    }
+                }
+                else
+                {
+                    // 脚本返回类型错误
+                    CalculationResultSummary = LanguageService.Instance["script_return_type_error"];
+                    if (CurrentTemplate.TemplateType == "Ternary")
+                    {
+                        // 三元图脚本必须返回至少 3 个值的数组 [A, B, C]
+                        CalculationLogs.Add(LanguageService.Instance["ternary_script_return_value_requirement"]);
+                    }
+                    else
+                    {
+                        // 脚本必须返回至少 2 个值的数组 [X, Y]
+                        CalculationLogs.Add(LanguageService.Instance["script_return_two_values_requirement"]);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // 计算错误
+                CalculationResultSummary = LanguageService.Instance["calculation_error"];
+                CalculationLogs.Add(LanguageService.Instance["error"] + $"{ex.Message}");
+            }
+        }
+        
+        /// <summary>
+        /// 切换计算过程详情展开/收缩状态
+        /// </summary>
+        [RelayCommand]
+        private void ToggleCalculationDetail()
+        {
+            IsCalculationDetailExpanded = !IsCalculationDetailExpanded;
         }
 
         /// <summary>
@@ -5892,6 +6261,12 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private void SelectLayer(LayerItemViewModel selectedItem)
         {
+            // 如果正在阻止选择（例如脚本验证清除数据后），忽略此次选择请求
+            if (_isBlockingTreeViewSelection)
+            {
+                return;
+            }
+
             // 获取所有可绘制的图层 (叶子节点)
             var allPlottableLayers = FlattenTree(LayerTree)
                                        .Where(l => l.Plottable != null && l.Children.Count == 0)
@@ -7962,7 +8337,10 @@ namespace GeoChemistryNexus.ViewModels
             var palette = new ScottPlot.Palettes.Category10();
             int colorIndex = 0;
 
+            // 创建Jint引擎并注入trace函数
             var engine = new Jint.Engine();
+            var engineLogs = new List<string>(); // 收集日志
+            JintHelper.InjectTraceFunction(engine, engineLogs);
 
             // ===================================
             //  根据图表类型选择不同的投点逻辑

@@ -186,20 +186,46 @@ namespace GeoChemistryNexus.Helpers
         /// 将多个值设置到 Jint 引擎的全局作用域中。
         /// </summary>
         /// <param name="engine">Jint 引擎实例。</param>
-        /// <param name="values">包含名称和对象的字典，用于设置到全局作用域。</param>
-        /// <exception cref="ArgumentNullException">如果 engine 或 values 为 null，则抛出。</exception>
+        /// <param name="values">包含名称和对象的字典,用于设置到全局作用域。</param>
+        /// <exception cref="ArgumentNullException">如果 engine 或 values 为 null,则抛出。</exception>
         /// <remarks>
-        /// 该方法便于一次性将多个 C# 对象暴露给 JavaScript，例如设置 console 或自定义对象。
+        /// 该方法便于一次性将多个 C# 对象暴露给 JavaScript,例如设置 console 或自定义对象。
         /// </remarks>
         public static void SetValues(Engine engine, IDictionary<string, object> values)
         {
             if (engine == null) throw new ArgumentNullException(nameof(engine));
             if (values == null) throw new ArgumentNullException(nameof(values));
-
+    
             foreach (var kvp in values)
             {
                 engine.SetValue(kvp.Key, kvp.Value);
             }
+        }
+    
+        /// <summary>
+        /// 为 Jint 引擎注入日志收集函数(trace),用于收集脚本中的计算过程说明。
+        /// </summary>
+        /// <param name="engine">Jint 引擎实例。</param>
+        /// <param name="logs">用于收集日志的列表,脚本中调用 trace(...) 时,内容会添加到此列表。</param>
+        /// <exception cref="ArgumentNullException">如果 engine 或 logs 为 null,则抛出。</exception>
+        /// <remarks>
+        /// 注入后,脚本中可以调用 trace(message) 来记录计算过程,例如:
+        /// trace(`X = ${K2O} + ${Na2O} = ${result1}`);
+        /// 所有调用都会被收集到 logs 列表中,供后续UI展示使用。
+        /// </remarks>
+        public static void InjectTraceFunction(Engine engine, List<string> logs)
+        {
+            if (engine == null) throw new ArgumentNullException(nameof(engine));
+            if (logs == null) throw new ArgumentNullException(nameof(logs));
+    
+            // 注入 trace 函数,将传入的消息添加到 logs 列表
+            engine.SetValue("trace", new Action<object>(message =>
+            {
+                if (message != null)
+                {
+                    logs.Add(message.ToString());
+                }
+            }));
         }
     }
 }

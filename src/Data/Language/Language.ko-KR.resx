@@ -2469,4 +2469,34 @@
   <data name="batch_download_title" xml:space="preserve">
     <value>일괄 다운로드</value>
   </data>
+  <data name="confirm_clear_data_for_validation" xml:space="preserve">
+    <value>구문 확인 시 데이터 테이블과 플롯 데이터 포인트가 모두 삭제됩니다. 계속하시겠습니까?</value>
+  </data>
+  <data name="toggle_details_expand_collapse" xml:space="preserve">
+    <value>상세 정보 펼치기/접기</value>
+  </data>
+  <data name="calculation_results" xml:space="preserve">
+    <value>계산 결과</value>
+  </data>
+  <data name="script_no_detailed_calculation_description" xml:space="preserve">
+    <value>이 스크립트는 상세 계산 과정 설명을 제공하지 않습니다.</value>
+  </data>
+  <data name="trace_function_usage_tip" xml:space="preserve">
+    <value>스크립트에서 trace(...) 함수를 사용하여 계산 과정을 기록할 수 있습니다.</value>
+  </data>
+  <data name="insufficient_script_return_values" xml:space="preserve">
+    <value>스크립트 반환 값이 부족합니다</value>
+  </data>
+  <data name="ternary_script_return_value_requirement" xml:space="preserve">
+    <value>삼원 도표(Ternary plot) 스크립트는 최소 3개의 값 [A, B, C]이 포함된 배열을 반환해야 합니다</value>
+  </data>
+  <data name="script_return_two_values_requirement" xml:space="preserve">
+    <value>스크립트는 최소 2개의 값 [X, Y]이 포함된 배열을 반환해야 합니다</value>
+  </data>
+  <data name="calculation_error" xml:space="preserve">
+    <value>계산 오류</value>
+  </data>
+  <data name="script_return_type_error" xml:space="preserve">
+    <value>스크립트 반환 유형 오류</value>
+  </data>
 </root>

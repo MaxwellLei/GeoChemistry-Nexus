@@ -1777,6 +1777,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
                         <!-- Data Toolbar -->
@@ -1858,7 +1859,7 @@
                         </TreeView>
 
                         <!-- Data Grid -->
-                        <rg:ReoGridControl Grid.Row="1" x:Name="DataGrid" SheetTabVisible="False" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                        <rg:ReoGridControl Grid.Row="1" x:Name="DataGrid" SheetTabVisible="False" ScrollViewer.HorizontalScrollBarVisibility="Auto" SizeChanged="DataGrid_SizeChanged">
                             <rg:ReoGridControl.Resources>
                                 <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource ScrollBarBaseStyle}"/>
                             </rg:ReoGridControl.Resources>
@@ -1873,6 +1874,91 @@
                                 </Style>
                             </rg:ReoGridControl.Style>
                         </rg:ReoGridControl>
+
+                        <!-- 计算过程验证区域 -->
+                        <Border Grid.Row="2" Background="#FAFAFA" BorderBrush="#E0E0E0" BorderThickness="0,1,0,0">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <!-- 仅在数据状态(RibbonTabIndex=1)且计算验证可见时显示 -->
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding RibbonTabIndex}" Value="1"/>
+                                                <Condition Binding="{Binding IsCalculationVerificationVisible}" Value="True"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- 收缩状态：显示计算结果摘要 -->
+                                <Border Grid.Row="0" Padding="10,0" Background="#FAFAFA">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- 结果摘要 -->
+                                        <TextBlock Grid.Column="0" Text="{Binding CalculationResultSummary}" 
+                                                   FontSize="12" Foreground="#333" VerticalAlignment="Center"
+                                                   TextTrimming="CharacterEllipsis"/>
+
+                                        <!-- 展开/收缩按钮 -->
+                                        <Button Grid.Column="1" Command="{Binding ToggleCalculationDetailCommand}" 
+                                                Width="24" Height="24" Background="Transparent" BorderThickness="0" Cursor="Hand"
+                                                ToolTip="{Binding [toggle_details_expand_collapse],Source={x:Static lg:LanguageService.Instance}}">
+                                            <Button.Template>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Border Background="{TemplateBinding Background}" CornerRadius="4">
+                                                        <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" 
+                                                                   Foreground="#666" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                            <TextBlock.Style>
+                                                                <Style TargetType="TextBlock">
+                                                                    <Setter Property="Text" Value="&#xe624;"/><!-- 展开图标 -->
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding IsCalculationDetailExpanded}" Value="True">
+                                                                            <Setter Property="Text" Value="&#xe8fc;"/><!-- 收起图标 -->
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </TextBlock.Style>
+                                                        </TextBlock>
+                                                    </Border>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Background" Value="#F0F0F0"/>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                        </Button>
+                                    </Grid>
+                                </Border>
+
+                                <!-- 展开状态：显示详细计算过程 -->
+                                <Border Grid.Row="1" Padding="10,0,10,10" Background="#FAFAFA"
+                                        Visibility="{Binding IsCalculationDetailExpanded, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <ScrollViewer MaxHeight="{Binding DataGridMaxVerificationHeight}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                                        <ItemsControl ItemsSource="{Binding CalculationLogs}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding}" FontSize="11" Foreground="#555" 
+                                                               FontFamily="Consolas" Margin="0,2" TextWrapping="Wrap"/>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </ScrollViewer>
+                                </Border>
+                            </Grid>
+                        </Border>
                     </Grid>
                 </Border>
 

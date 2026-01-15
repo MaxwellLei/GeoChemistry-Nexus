@@ -990,6 +990,24 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Calculation Error 的本地化字符串。
+        /// </summary>
+        internal static string calculation_error {
+            get {
+                return ResourceManager.GetString("calculation_error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Calculation Results 的本地化字符串。
+        /// </summary>
+        internal static string calculation_results {
+            get {
+                return ResourceManager.GetString("calculation_results", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Calculation Target 的本地化字符串。
         /// </summary>
         internal static string CalTarget {
@@ -1319,6 +1337,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string confirm_clear_all_data {
             get {
                 return ResourceManager.GetString("confirm_clear_all_data", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Validating syntax will clear data table and plot data points. Continue? 的本地化字符串。
+        /// </summary>
+        internal static string confirm_clear_data_for_validation {
+            get {
+                return ResourceManager.GetString("confirm_clear_data_for_validation", resourceCulture);
             }
         }
         
@@ -3137,6 +3164,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string input_out_of_range {
             get {
                 return ResourceManager.GetString("input_out_of_range", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Insufficient script return values 的本地化字符串。
+        /// </summary>
+        internal static string insufficient_script_return_values {
+            get {
+                return ResourceManager.GetString("insufficient_script_return_values", resourceCulture);
             }
         }
         
@@ -5508,11 +5544,38 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 This script does not provide detailed calculation process descriptions. 的本地化字符串。
+        /// </summary>
+        internal static string script_no_detailed_calculation_description {
+            get {
+                return ResourceManager.GetString("script_no_detailed_calculation_description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Script not defined in the diagram template 的本地化字符串。
         /// </summary>
         internal static string script_not_defined_in_template {
             get {
                 return ResourceManager.GetString("script_not_defined_in_template", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Scripts must return an array of at least 2 values [X, Y] 的本地化字符串。
+        /// </summary>
+        internal static string script_return_two_values_requirement {
+            get {
+                return ResourceManager.GetString("script_return_two_values_requirement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Script Return Type Error 的本地化字符串。
+        /// </summary>
+        internal static string script_return_type_error {
+            get {
+                return ResourceManager.GetString("script_return_type_error", resourceCulture);
             }
         }
         
@@ -6111,6 +6174,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Ternary plot scripts must return an array of at least 3 values [A, B, C] 的本地化字符串。
+        /// </summary>
+        internal static string ternary_script_return_value_requirement {
+            get {
+                return ResourceManager.GetString("ternary_script_return_value_requirement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Text 的本地化字符串。
         /// </summary>
         internal static string text {
@@ -6237,11 +6309,29 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Expand/Collapse Details 的本地化字符串。
+        /// </summary>
+        internal static string toggle_details_expand_collapse {
+            get {
+                return ResourceManager.GetString("toggle_details_expand_collapse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Top X-Axis 的本地化字符串。
         /// </summary>
         internal static string top_x_axis {
             get {
                 return ResourceManager.GetString("top_x_axis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Use the trace(...) function in your script to log the calculation process. 的本地化字符串。
+        /// </summary>
+        internal static string trace_function_usage_tip {
+            get {
+                return ResourceManager.GetString("trace_function_usage_tip", resourceCulture);
             }
         }
         

@@ -2285,4 +2285,34 @@
   <data name="batch_download_cancelled" xml:space="preserve">
     <value>Batch-Download abgebrochen</value>
   </data>
+  <data name="confirm_clear_data_for_validation" xml:space="preserve">
+    <value>Die Syntaxprüfung löscht die Datentabelle und die Diagrammdatenpunkte. Fortfahren?</value>
+  </data>
+  <data name="toggle_details_expand_collapse" xml:space="preserve">
+    <value>Details ein-/ausblenden</value>
+  </data>
+  <data name="calculation_results" xml:space="preserve">
+    <value>Berechnungsergebnisse</value>
+  </data>
+  <data name="script_no_detailed_calculation_description" xml:space="preserve">
+    <value>Dieses Skript enthält keine detaillierten Erläuterungen zum Berechnungsvorgang.</value>
+  </data>
+  <data name="trace_function_usage_tip" xml:space="preserve">
+    <value>Verwenden Sie die Funktion trace(...), um den Berechnungsvorgang im Skript zu protokollieren.</value>
+  </data>
+  <data name="insufficient_script_return_values" xml:space="preserve">
+    <value>Unzureichende Skript-Rückgabewerte</value>
+  </data>
+  <data name="ternary_script_return_value_requirement" xml:space="preserve">
+    <value>Ternäre Diagramm-Skripte müssen ein Array mit mindestens 3 Werten [A, B, C] zurückgeben</value>
+  </data>
+  <data name="script_return_two_values_requirement" xml:space="preserve">
+    <value>Skripte müssen ein Array mit mindestens 2 Werten [X, Y] zurückgeben</value>
+  </data>
+  <data name="calculation_error" xml:space="preserve">
+    <value>Berechnungsfehler</value>
+  </data>
+  <data name="script_return_type_error" xml:space="preserve">
+    <value>Skript-Rückgabetypfehler</value>
+  </data>
 </root>
