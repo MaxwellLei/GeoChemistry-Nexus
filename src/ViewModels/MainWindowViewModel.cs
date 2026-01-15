@@ -22,12 +22,12 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using System.Runtime.InteropServices;
 
 namespace GeoChemistryNexus.ViewModels
 {
     public partial class MainWindowViewModel: ObservableObject
     {
-
         //初始化
         public MainWindowViewModel()
         {
@@ -39,6 +39,9 @@ namespace GeoChemistryNexus.ViewModels
 
         [ObservableProperty]
         private bool _isSideBarVisible;
+
+        [ObservableProperty]
+        private bool _isWindowMaximized = false;
 
         [RelayCommand]
         private void ToggleSideBar()
@@ -66,15 +69,17 @@ namespace GeoChemistryNexus.ViewModels
         {
             if (window == null) return;
 
-            if (window.WindowState != WindowState.Maximized)
+            if (window.WindowState == WindowState.Normal)
             {
+                // 使用系统原生最大化
                 window.WindowState = WindowState.Maximized;
-                window.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight+2;
-                window.MaxWidth = SystemParameters.MaximizedPrimaryScreenWidth+2;
+                IsWindowMaximized = true;
             }
             else
             {
+                // 还原窗口
                 window.WindowState = WindowState.Normal;
+                IsWindowMaximized = false;
             }
         }
 
@@ -98,10 +103,25 @@ namespace GeoChemistryNexus.ViewModels
             // 只有当鼠标左键按下时才触发拖动
             if (System.Windows.Input.Mouse.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
             {
-                if (window.WindowState == WindowState.Normal)
+                // 如果窗口是最大化状态，先还原
+                if (window.WindowState == WindowState.Maximized)
                 {
-                    window.DragMove();
+                    // 计算鼠标在窗口中的相对位置比例
+                    var mouseX = System.Windows.Input.Mouse.GetPosition(window).X;
+                    var mouseRatio = mouseX / window.ActualWidth;
+                    
+                    // 还原窗口
+                    window.WindowState = WindowState.Normal;
+                    
+                    // 计算新的窗口位置，使鼠标保持在标题栏的相对位置
+                    var screenPoint = window.PointToScreen(System.Windows.Input.Mouse.GetPosition(window));
+                    window.Left = screenPoint.X - (window.ActualWidth * mouseRatio);
+                    window.Top = screenPoint.Y - 20; // 减去标题栏高度的一半
+                    
+                    IsWindowMaximized = false;
                 }
+                
+                window.DragMove();
             }
         }
 

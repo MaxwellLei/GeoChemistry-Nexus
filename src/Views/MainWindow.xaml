@@ -12,7 +12,7 @@
         xmlns:converter="clr-namespace:GeoChemistryNexus.Converter"
         WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         UseLayoutRounding="True" TextOptions.TextFormattingMode="Display"
-        WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" Closing="Window_Closing" 
+        WindowStartupLocation="Manual" Loaded="Window_Loaded" Closing="Window_Closing" SourceInitialized="Window_SourceInitialized"
         Title="{Binding Title}" Height="760" Width="1332" BorderThickness="0">
     
     <WindowChrome.WindowChrome>
@@ -87,7 +87,7 @@
              <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" SnapsToDevicePixels="True" CornerRadius="0,10,0,0">
+                        <Border x:Name="borderClose" Background="{TemplateBinding Background}" SnapsToDevicePixels="True" CornerRadius="0,10,0,0">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -95,6 +95,10 @@
                                 <Setter Property="Background" Value="#E81123"/>
                                 <Setter Property="Foreground" Value="White"/>
                             </Trigger>
+                            <!-- 最大化时去除圆角 -->
+                            <DataTrigger Binding="{Binding IsWindowMaximized}" Value="True">
+                                <Setter TargetName="borderClose" Property="CornerRadius" Value="0"/>
+                            </DataTrigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -117,8 +121,8 @@
                     </Setter.Value>
                 </Setter>
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource AncestorType=Window}}" Value="Maximized">
-                        <Setter Property="Margin" Value="8"/>
+                    <DataTrigger Binding="{Binding IsWindowMaximized}" Value="True">
+                        <Setter Property="Margin" Value="0"/>
                         <Setter Property="CornerRadius" Value="0"/>
                         <Setter Property="BorderThickness" Value="0"/>
                         <Setter Property="Effect" Value="{x:Null}"/>
@@ -135,18 +139,7 @@
             <!-- Custom Title Bar -->
             <Grid Grid.Row="0" Height="40">
                 <!-- Drag Handle -->
-                <Border Background="Transparent">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="MouseLeftButtonDown">
-                            <i:InvokeCommandAction Command="{Binding MoveWindowCommand}" 
-                                                   CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                    <Border.InputBindings>
-                        <MouseBinding Gesture="LeftDoubleClick" 
-                                      Command="{Binding MaximizeWindowCommand}"
-                                      CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
-                    </Border.InputBindings>
+                <Border Background="Transparent" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
                 </Border>
 
                 <!-- Content -->
@@ -169,7 +162,7 @@
                         <Button Content="&#xe67a;" Style="{StaticResource ModernWinBtn}" Command="{Binding MinimizeWindowCommand}" 
                                 CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
                                 ToolTip="{Binding [minimize],Source={x:Static lg:LanguageService.Instance}}"/>
-                        <Button Content="&#xf2b2;" Style="{StaticResource ModernWinBtn}" Command="{Binding MaximizeWindowCommand}" 
+                        <Button x:Name="MaximizeButton" Content="&#xf2b2;" Style="{StaticResource ModernWinBtn}" Command="{Binding MaximizeWindowCommand}" 
                                 CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
                                 ToolTip="{Binding [maximize],Source={x:Static lg:LanguageService.Instance}}"/>
                         <Button Content="&#xeaf2;" Style="{StaticResource ModernCloseBtn}" Command="{Binding CloseWindowCommand}" 

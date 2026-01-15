@@ -737,5 +737,90 @@ namespace GeoChemistryNexus.Views
             }
             System.Diagnostics.Debug.WriteLine($"UpdateCtrlOverlayState - Updated {updatedCount} cards to IsVisible={isVisible}");
         }
+
+        /// <summary>
+        /// 处理 TreeViewItem 的 RequestBringIntoView 事件，阻止横向自动滚动
+        /// </summary>
+        private void TreeViewItem_RequestBringIntoView(object sender, RequestBringIntoViewEventArgs e)
+        {
+            // 完全阻止自动滚动行为，保持滚动条在当前位置（默认最左侧）
+            e.Handled = true;
+        }
+
+        /// <summary>
+        /// 处理 TreeView 的鼠标滚轮事件，当 TreeView 滚动到边界时将事件传递给父级 ScrollViewer
+        /// </summary>
+        private void TreeView_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (sender is TreeView treeView)
+            {
+                var scrollViewer = FindVisualChild<ScrollViewer>(treeView);
+                if (scrollViewer != null)
+                {
+                    // 检查是否已经滚动到边界
+                    bool isAtTop = scrollViewer.VerticalOffset <= 0;
+                    bool isAtBottom = scrollViewer.VerticalOffset >= scrollViewer.ScrollableHeight;
+
+                    // 向上滚且已到顶部，或向下滚且已到底部时，将事件传递给父级
+                    if ((e.Delta > 0 && isAtTop) || (e.Delta < 0 && isAtBottom))
+                    {
+                        e.Handled = true;
+                        
+                        // 找到父级 ScrollViewer 并手动触发滚动
+                        var parentScrollViewer = FindVisualParent<ScrollViewer>(treeView);
+                        if (parentScrollViewer != null)
+                        {
+                            // 创建新的鼠标滚轮事件并在父级 ScrollViewer 上触发
+                            var newEventArgs = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta)
+                            {
+                                RoutedEvent = UIElement.MouseWheelEvent,
+                                Source = parentScrollViewer
+                            };
+                            parentScrollViewer.RaiseEvent(newEventArgs);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 在可视化树中查找指定类型的子控件
+        /// </summary>
+        private T FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
+        {
+            if (parent == null) return null;
+
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+                if (child is T result)
+                {
+                    return result;
+                }
+
+                var descendant = FindVisualChild<T>(child);
+                if (descendant != null)
+                {
+                    return descendant;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 在可视化树中向上查找指定类型的父控件
+        /// </summary>
+        private T FindVisualParent<T>(DependencyObject child) where T : DependencyObject
+        {
+            var parent = VisualTreeHelper.GetParent(child);
+            if (parent == null) return null;
+
+            if (parent is T result)
+            {
+                return result;
+            }
+
+            return FindVisualParent<T>(parent);
+        }
     }
 }

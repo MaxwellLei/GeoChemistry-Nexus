@@ -38,7 +38,7 @@ namespace GeoChemistryNexus.Services
 
         public void Show(string title, string message, NotificationType type, int durationSeconds = 3)
         {
-            // Warning and Error notifications should not auto-close
+            // 警告和错误通知不自动关闭
             if (type == NotificationType.Warning || type == NotificationType.Error)
             {
                 durationSeconds = 0;

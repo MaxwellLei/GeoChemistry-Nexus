@@ -29,6 +29,17 @@
         <KeyBinding Key="D0" Modifiers="Control" Command="{Binding CenterPlotCommand}"/>
         <KeyBinding Key="NumPad0" Modifiers="Control" Command="{Binding CenterPlotCommand}"/>
         <KeyBinding Key="S" Modifiers="Control" Command="{Binding SaveBaseMapCommand}"/>
+        <!-- 添加绘图对象快捷键 -->
+        <KeyBinding Key="D1" Modifiers="Control" Command="{Binding AddLineCommand}"/>
+        <KeyBinding Key="NumPad1" Modifiers="Control" Command="{Binding AddLineCommand}"/>
+        <KeyBinding Key="D2" Modifiers="Control" Command="{Binding AddTextCommand}"/>
+        <KeyBinding Key="NumPad2" Modifiers="Control" Command="{Binding AddTextCommand}"/>
+        <KeyBinding Key="D3" Modifiers="Control" Command="{Binding AddPolygonCommand}"/>
+        <KeyBinding Key="NumPad3" Modifiers="Control" Command="{Binding AddPolygonCommand}"/>
+        <KeyBinding Key="D4" Modifiers="Control" Command="{Binding AddArrowCommand}"/>
+        <KeyBinding Key="NumPad4" Modifiers="Control" Command="{Binding AddArrowCommand}"/>
+        <KeyBinding Key="D5" Modifiers="Control" Command="{Binding AddFunctionCommand}"/>
+        <KeyBinding Key="NumPad5" Modifiers="Control" Command="{Binding AddFunctionCommand}"/>
     </Page.InputBindings>
 
     <Page.Resources>
@@ -43,6 +54,7 @@
 
         <Style x:Key="TemplateTreeViewItemStyle" BasedOn="{StaticResource ModernStyleTreeViewItemStyle}" TargetType="TreeViewItem">
             <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+            <EventSetter Event="RequestBringIntoView" Handler="TreeViewItem_RequestBringIntoView"/>
         </Style>
 
         <!-- New Modern-Style Styles -->
@@ -406,7 +418,8 @@
                                       Background="Transparent" 
                                       ItemContainerStyle="{StaticResource TemplateTreeViewItemStyle}"
                                       BorderThickness="0"
-                                      Margin="20,4,8,8">
+                                      Margin="20,4,8,8"
+                                      PreviewMouseWheel="TreeView_PreviewMouseWheel">
                                 <TreeView.ItemTemplate>
                                     <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                                         <Grid Background="Transparent">
@@ -596,7 +609,8 @@
                                       Background="Transparent" 
                                       ItemContainerStyle="{StaticResource TemplateTreeViewItemStyle}"
                                       BorderThickness="0"
-                                      Margin="20,4,8,8">
+                                      Margin="20,4,8,8"
+                                      PreviewMouseWheel="TreeView_PreviewMouseWheel">
                                 <TreeView.ItemTemplate>
                                     <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                                         <Grid Background="Transparent">
@@ -1837,6 +1851,7 @@
                                 <Style BasedOn="{StaticResource ModernStyleTreeViewItemStyle}" TargetType="{x:Type TreeViewItem}">
                                     <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=OneWay}"/>
                                     <EventSetter Event="UIElement.PreviewMouseLeftButtonDown" Handler="OnTreeViewItemPreviewMouseLeftButtonDown"/>
+                                    <EventSetter Event="RequestBringIntoView" Handler="TreeViewItem_RequestBringIntoView"/>
                                     <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
                                 </Style>
                             </TreeView.ItemContainerStyle>
