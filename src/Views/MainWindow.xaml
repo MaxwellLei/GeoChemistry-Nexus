@@ -16,7 +16,7 @@
         Title="{Binding Title}" Height="760" Width="1332" BorderThickness="0">
     
     <WindowChrome.WindowChrome>
-        <WindowChrome CaptionHeight="40" ResizeBorderThickness="5" GlassFrameThickness="1"/>
+        <WindowChrome CaptionHeight="40" ResizeBorderThickness="15" GlassFrameThickness="1"/>
     </WindowChrome.WindowChrome>
 
     <Window.Resources>

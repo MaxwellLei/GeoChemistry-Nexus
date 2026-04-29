@@ -71,7 +71,7 @@ namespace GeoChemistryNexus.ViewModels
         public Func<TemplateCardViewModel, Task> OpenHandler { get; set; }
         public Func<TemplateCardViewModel, Task> CheckUpdateHandler { get; set; }
         public Func<TemplateCardViewModel, Task> ToggleFavoriteHandler { get; set; }
-        public Func<TemplateCardViewModel, Task> DeleteHandler { get; set; }
+        public Func<TemplateCardViewModel, bool, Task> DeleteHandler { get; set; }
         public Func<TemplateCardViewModel, Task> EditHandler { get; set; }
 
         private bool _isProcessing = false;
@@ -171,18 +171,18 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 快捷删除 - Ctrl+卡片左侧点击
+        /// 快捷删除 - Ctrl+卡片左侧点击（跳过二次确认）
         /// </summary>
         [RelayCommand]
         private async Task QuickDelete()
         {
-            // 只有自定义模板才能删除
+            // 仅自定义模板支持 Ctrl 快捷删除
             if (!IsCustomTemplate || !TemplateId.HasValue) return;
 
-            // 直接调用删除处理，由 MainPlotViewModel 实现
+            // 直接调用删除处理，由 MainPlotViewModel 实现，跳过二次确认
             if (DeleteHandler != null)
             {
-                await DeleteHandler(this);
+                await DeleteHandler(this, true);
             }
         }
     }

@@ -648,19 +648,6 @@ namespace GeoChemistryNexus.Views
                 BreadcrumbScrollViewer?.ScrollToRightEnd();
             }, System.Windows.Threading.DispatcherPriority.Loaded);
         }
-
-        /// <summary>
-        /// 筛选按钮点击事件，显示上下文菜单
-        /// </summary>
-        private void FilterButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button button && button.ContextMenu != null)
-            {
-                button.ContextMenu.PlacementTarget = button;
-                button.ContextMenu.IsOpen = true;
-            }
-        }
-
         private Window _parentWindow;
 
         /// <summary>

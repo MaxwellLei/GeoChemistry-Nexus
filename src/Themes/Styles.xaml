@@ -181,7 +181,7 @@
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="BorderBrush" Value="#0078D4"/>
-                <Setter Property="Background" Value="#F8F9FA"/>
+                <Setter Property="Background" Value="White"/>
                 <Trigger.EnterActions>
                     <BeginStoryboard>
                         <Storyboard>

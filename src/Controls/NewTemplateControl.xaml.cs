@@ -243,7 +243,7 @@ namespace GeoChemistryNexus.Controls
         /// </summary>
         private void CategoryInputComboBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter || e.Key == Key.Space)
+            if (e.Key == Key.Enter)
             {
                 var comboBox = sender as ComboBox;
                 string text = comboBox?.Text?.Trim();
@@ -271,18 +271,9 @@ namespace GeoChemistryNexus.Controls
                     });
                     
                     comboBox.Text = string.Empty;
-                    e.Handled = true;
                 }
-                else if (e.Key == Key.Space)
-                {
-                    // 如果文本为空且按下空格,不处理(允许输入空格)
-                    e.Handled = false;
-                }
-                else
-                {
-                    // Enter键但文本为空
-                    e.Handled = true;
-                }
+
+                e.Handled = true;
             }
         }
         

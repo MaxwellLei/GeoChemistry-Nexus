@@ -582,7 +582,7 @@ namespace GeoChemistryNexus.ViewModels
         private bool _isCalculationDetailExpanded = false;
 
         /// <summary>
-        /// 计算验证区域的最大高度（为数据表格高度的 1/4）
+        /// 计算验证区域的最大高度（数据表格高度的 1/4）
         /// </summary>
         [ObservableProperty]
         private double _dataGridMaxVerificationHeight = 200;
@@ -594,7 +594,7 @@ namespace GeoChemistryNexus.ViewModels
         private string _calculationResultSummary = string.Empty;
 
         /// <summary>
-        /// 详细计算过程日志列表(来自脚本中的 trace 调用)
+        /// 详细计算过程日志列表(图解脚本中的 trace 调用)
         /// </summary>
         [ObservableProperty]
         private ObservableCollection<string> _calculationLogs = new();
@@ -639,10 +639,6 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private string _searchText = string.Empty;
 
-        // 筛选类型：0-全部模板，1-自定义模板，2-内置模板
-        [ObservableProperty]
-        private int _filterType = 0;
-
         // 批量下载按钮显示控制
         [ObservableProperty]
         private bool _isBatchDownloadButtonVisible = false;
@@ -658,13 +654,8 @@ namespace GeoChemistryNexus.ViewModels
         // 批量下载取消令牌
         private CancellationTokenSource? _batchDownloadCts;
 
-        // 当搜索文本或筛选条件变化时，重新应用过滤
+        // 当搜索文本变化时，重新应用过滤
         partial void OnSearchTextChanged(string value)
-        {
-            ApplyTemplateFilter();
-        }
-
-        partial void OnFilterTypeChanged(int value)
         {
             ApplyTemplateFilter();
         }
@@ -677,13 +668,7 @@ namespace GeoChemistryNexus.ViewModels
             if (item is not TemplateCardViewModel card)
                 return true;
 
-            // 1. 筛选类型过滤：0-全部，1-自定义，2-内置
-            if (FilterType == 1 && !card.IsCustomTemplate)
-                return false;
-            if (FilterType == 2 && card.IsCustomTemplate)
-                return false;
-
-            // 2. 搜索文本过滤
+            // 搜索文本过滤
             if (!string.IsNullOrWhiteSpace(SearchText))
             {
                 string searchLower = SearchText.ToLower();
@@ -704,7 +689,7 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 应用模板筛选逻辑
+        /// 应用模板过滤逻辑
         /// </summary>
         private void ApplyTemplateFilter()
         {
@@ -715,29 +700,12 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 清除搜索和筛选
+        /// 清除搜索
         /// </summary>
         [RelayCommand]
         private void ClearSearch()
         {
             SearchText = string.Empty;
-            FilterType = 0;
-        }
-
-        /// <summary>
-        /// 设置筛选类型
-        /// </summary>
-        [RelayCommand]
-        private void SetFilterType(object parameter)
-        {
-            if (parameter is string strValue && int.TryParse(strValue, out int value))
-            {
-                FilterType = value;
-            }
-            else if (parameter is int intValue)
-            {
-                FilterType = intValue;
-            }
         }
 
         // 脚本属性面板显示
@@ -796,6 +764,10 @@ namespace GeoChemistryNexus.ViewModels
 
         // 标记是否正在加载帮助文档，用于防止加载时触发未保存检测
         private bool _isLoadingHelpDocument = false;
+
+        // 记录加载时的原始 RTF 内容，用于 IsHelpDocumentModified 比较
+        // 避免因 RichTextBox 规范化 RTF 内容导致误判
+        private string _originalHelpDocumentRtf = string.Empty;
 
         // 标记模板库是否需要刷新 (Dirty Flag)
         private bool _isTemplateLibraryDirty = true; // 默认为 true，确保首次加载
@@ -4254,7 +4226,7 @@ namespace GeoChemistryNexus.ViewModels
                         DownloadHandler = (vm) => DownloadSingleTemplate(vm, showNotification: true),
                         CheckUpdateHandler = CheckSingleTemplateUpdate,
                         ToggleFavoriteHandler = ToggleFavorite,
-                        DeleteHandler = DeleteTemplate,
+                        DeleteHandler = PerformDeleteTemplate,
                         EditHandler = EditTemplate
                     };
 
@@ -4273,23 +4245,46 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private async Task DeleteTemplate(TemplateCardViewModel card)
         {
-            if (card == null || !card.IsCustomTemplate || !card.TemplateId.HasValue) return;
+            await PerformDeleteTemplate(card, false);
+        }
 
-            // 确定要删除该自定义模板吗？
-            bool confirm = await MessageHelper.ShowAsyncDialog(
-                LanguageService.Instance["confirm_delete_custom_diagram_template"],
-                LanguageService.Instance["Cancel"],
-                LanguageService.Instance["Confirm"]);
+        /// <summary>
+        /// 执行删除模板操作
+        /// </summary>
+        /// <param name="card">模板卡片</param>
+        /// <param name="skipConfirmation">是否跳过二次确认（Ctrl快捷删除时为true）</param>
+        private async Task PerformDeleteTemplate(TemplateCardViewModel card, bool skipConfirmation)
+        {
+            if (card == null || (!card.IsCustomTemplate && !IsDeveloperMode) || !card.TemplateId.HasValue) return;
 
-            if (!confirm) return;
+            if (!skipConfirmation)
+            {
+                // 确定要删除该模板吗？
+                bool confirm = await MessageHelper.ShowAsyncDialog(
+                    LanguageService.Instance["confirm_delete_custom_diagram_template"],
+                    LanguageService.Instance["Cancel"],
+                    LanguageService.Instance["Confirm"]);
+
+                if (!confirm) return;
+            }
 
             try
             {
                 // 使用数据库服务删除
                 GraphMapDatabaseService.Instance.DeleteTemplate(card.TemplateId.Value);
 
+                // 如果删除的是官方模板（开发者模式），同步删除本地 GraphMapList.json
+                if (!card.IsCustomTemplate)
+                {
+                    string localListPath = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "GraphMapList.json");
+                    if (File.Exists(localListPath))
+                    {
+                        File.Delete(localListPath);
+                    }
+                }
+
                 // 4. 刷新界面
-                // 重新加载所有模板（包括更新后的自定义列表）
+                // 重新加载所有模板
                 await InitializeAsync();
 
                 // 模板删除成功
@@ -4683,14 +4678,95 @@ namespace GeoChemistryNexus.ViewModels
                         newNodeList.Translations[lang] = string.Join(" > ", parts);
                     }
 
-                    // 更新 Entity
+                    // 重新计算 GraphMapPath（使用最后两级的 DisplayName 拼接）
+                    var categoryParts = ctrl._categoryParts.ToList();
+                    string lastPart = categoryParts[categoryParts.Count - 1].DisplayName;
+                    string secondLastPart = categoryParts[categoryParts.Count - 2].DisplayName;
+                    string newGraphMapPath = $"{secondLastPart}_{lastPart}";
+
+                    // 根据新的 GraphMapPath 生成新的确定性 ID
+                    Guid oldId = entity.Id;
+                    Guid newId = GraphMapDatabaseService.GenerateId(newGraphMapPath, entity.IsCustom);
+
+                    // 检查新 ID 对应的模板是否已存在（排除当前模板自身）
+                    if (newId != oldId)
+                    {
+                        var existingTemplate = await Task.Run(() => GraphMapDatabaseService.Instance.GetTemplate(newId));
+                        if (existingTemplate != null)
+                        {
+                            MessageHelper.Warning(LanguageService.Instance["BasemapExisted"]);
+                            return;
+                        }
+                    }
+
+                    // 更新 Entity 字段
                     entity.NodeList = newNodeList;
                     entity.Content.NodeList = newNodeList;
                     entity.Content.DefaultLanguage = languages.First();
+                    entity.GraphMapPath = newGraphMapPath;
+                    entity.Name = newGraphMapPath;
                     entity.LastModified = DateTime.Now;
 
-                    // 保存到数据库
-                    await Task.Run(() => GraphMapDatabaseService.Instance.UpsertTemplate(entity));
+                    // 重新计算 FileHash
+                    try
+                    {
+                        using (var md5 = System.Security.Cryptography.MD5.Create())
+                        {
+                            var jsonBytes = System.Text.Encoding.UTF8.GetBytes(JsonSerializer.Serialize(entity.Content));
+                            var hashBytes = md5.ComputeHash(jsonBytes);
+                            entity.FileHash = BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Failed to calculate hash: {ex.Message}");
+                    }
+
+                    if (newId != oldId)
+                    {
+                        // ID 变更：需要迁移数据库记录和缩略图
+
+                        // 1. 备份缩略图
+                        byte[]? thumbnailBytes = null;
+                        using (var stream = GraphMapDatabaseService.Instance.GetThumbnail(oldId))
+                        {
+                            if (stream != null)
+                            {
+                                using (var ms = new MemoryStream())
+                                {
+                                    stream.CopyTo(ms);
+                                    thumbnailBytes = ms.ToArray();
+                                }
+                            }
+                        }
+
+                        // 2. 删除旧记录
+                        GraphMapDatabaseService.Instance.DeleteTemplate(oldId);
+
+                        // 3. 使用新 ID 保存
+                        entity.Id = newId;
+                        await Task.Run(() => GraphMapDatabaseService.Instance.UpsertTemplate(entity));
+
+                        // 4. 迁移缩略图
+                        if (thumbnailBytes != null)
+                        {
+                            using (var ms = new MemoryStream(thumbnailBytes))
+                            {
+                                GraphMapDatabaseService.Instance.UploadThumbnail(newId, ms);
+                            }
+                        }
+
+                        // 5. 同步当前绘图编辑器的模板 ID
+                        if (_currentTemplateId == oldId)
+                        {
+                            _currentTemplateId = newId;
+                        }
+                    }
+                    else
+                    {
+                        // ID 未变更：直接更新
+                        await Task.Run(() => GraphMapDatabaseService.Instance.UpsertTemplate(entity));
+                    }
 
                     // 刷新界面
                     await InitializeAsync();
@@ -5180,6 +5256,7 @@ namespace GeoChemistryNexus.ViewModels
 
         /// <summary>
         /// 检查图解帮助文档内容是否改变
+        /// 使用加载时存储的原始RTF与当前RTF比较，避免因 RichTextBox 规范化 RTF 导致误判
         /// </summary>
         private bool IsHelpDocumentModified()
         {
@@ -5188,22 +5265,14 @@ namespace GeoChemistryNexus.ViewModels
                 // 如果没有加载模板，或没有当前语言，则不检查
                 if (_currentTemplateId == null || string.IsNullOrEmpty(CurrentDiagramLanguage)) return false;
 
-                // 从数据库获取原始模板实体
-                var entity = GraphMapDatabaseService.Instance.GetTemplate(_currentTemplateId.Value);
-                if (entity == null || entity.HelpDocuments == null) return false;
-
-                // 获取原始的RTF内容
-                string originalRtf = "";
-                if (entity.HelpDocuments.ContainsKey(CurrentDiagramLanguage))
-                {
-                    originalRtf = entity.HelpDocuments[CurrentDiagramLanguage] ?? "";
-                }
-
                 // 获取当前RichTextBox的RTF内容
                 string currentRtf = RtfHelper.GetRtfString(_richTextBox);
 
-                // 比较RTF内容是否改变
-                return originalRtf != currentRtf;
+                // 使用加载时存储的原始RTF进行比较
+                // 需要注意的是：
+                // 不直接从数据库读取原始RTF来比较，因为 RichTextBox 在加载/保存 RTF 时
+                // 会进行规范化处理（如字体表重排、空白字符标准化等），导致保存后的RTF与原始RTF不一致
+                return _originalHelpDocumentRtf != currentRtf;
             }
             catch (Exception ex)
             {
@@ -5804,9 +5873,6 @@ namespace GeoChemistryNexus.ViewModels
 
             if (CurrentTemplate == null) return false;
 
-            // 初始化原始状态
-            _originalTemplateJson = SerializeTemplate(CurrentTemplate);
-
             // 检查模板类型
             if (CurrentTemplate.TemplateType != "Cartesian" && CurrentTemplate.TemplateType != "Ternary")
             {
@@ -5843,6 +5909,14 @@ namespace GeoChemistryNexus.ViewModels
 
             // 根据新建的【图层树】来渲染前端
             RefreshPlotFromLayers();
+
+            // 在所有初始化完成后，再记录原始状态
+            // 注意：必须在 AutoDetectFonts / BuildLayerTreeFromTemplate 等修改之后记录，
+            // 否则这些修改会导致 IsTemplateModified 误判
+            _originalTemplateJson = SerializeTemplate(CurrentTemplate);
+            HasUnsavedChanges = false;
+            WeakReferenceMessenger.Default.Send(new UnsavedChangesMessage(false));
+
             return true;
         }
 
@@ -7165,6 +7239,11 @@ namespace GeoChemistryNexus.ViewModels
             {
                 // 恢复加载标志
                 _isLoadingHelpDocument = false;
+
+                // 记录加载完成后的 RTF 内容作为基准，用于 IsHelpDocumentModified 比较
+                // 必须在 _isLoadingHelpDocument = false 之后获取，因为 RichTextBox 可能
+                // 在加载过程中规范化 RTF 内容，获取当前规范化后的内容确保基准一致
+                _originalHelpDocumentRtf = RtfHelper.GetRtfString(_richTextBox);
             }
         }
 
@@ -7459,6 +7538,7 @@ namespace GeoChemistryNexus.ViewModels
 
             // 初始化原始模板 JSON 基准（修复漏洞1：新建模板后首轮编辑未被检测）
             _originalTemplateJson = SerializeTemplate(CurrentTemplate);
+            _originalHelpDocumentRtf = RtfHelper.GetRtfString(_richTextBox);
             HasUnsavedChanges = false;
             WeakReferenceMessenger.Default.Send(new UnsavedChangesMessage(false));
 
@@ -9158,6 +9238,7 @@ namespace GeoChemistryNexus.ViewModels
 
             // 重置原始模板记录
             _originalTemplateJson = string.Empty;
+            _originalHelpDocumentRtf = string.Empty;
             HasUnsavedChanges = false;
             // 修复漏洞3：广播未保存状态清空消息，保持全局状态一致
             WeakReferenceMessenger.Default.Send(new UnsavedChangesMessage(false));
@@ -9251,6 +9332,7 @@ namespace GeoChemistryNexus.ViewModels
                         }
 
                         _originalTemplateJson = jsonString;
+                        _originalHelpDocumentRtf = RtfHelper.GetRtfString(_richTextBox);
                         HasUnsavedChanges = false;
                         WeakReferenceMessenger.Default.Send(new UnsavedChangesMessage(false));
 
@@ -9311,6 +9393,9 @@ namespace GeoChemistryNexus.ViewModels
 
                 // 更新原始状态记录
                 _originalTemplateJson = SerializeTemplate(CurrentTemplate);
+
+                // 同步更新帮助文档基准 RTF
+                _originalHelpDocumentRtf = RtfHelper.GetRtfString(_richTextBox);
 
                 // 重置未保存状态
                 HasUnsavedChanges = false;

@@ -292,13 +292,14 @@
                                    Margin="16,16,16,8"/>
                         
                         <!-- 官方图解 -->
-                        <Button Background="Transparent" BorderThickness="0" 
+                        <Button BorderThickness="0" 
                                 Padding="12,10" Cursor="Hand"
                                 HorizontalContentAlignment="Stretch"
                                 Command="{Binding ToggleCategoryExpansionCommand}"
                                 CommandParameter="Official">
                             <Button.Style>
                                 <Style TargetType="Button">
+                                    <Setter Property="Background" Value="Transparent"/>
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="Button">
@@ -319,7 +320,7 @@
                                     </Setter>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsOfficialExpanded}" Value="True">
-                                            <Setter Property="Background" Value="#E5E5E5"/>
+                                            <Setter Property="Background" Value="#EAEAEA"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -335,7 +336,18 @@
                                            Text="{Binding [official_templates],Source={x:Static lg:LanguageService.Instance}}" 
                                            FontSize="14" 
                                            Foreground="#333333"
-                                           VerticalAlignment="Center"/>
+                                           VerticalAlignment="Center">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="FontWeight" Value="Normal"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsOfficialExpanded}" Value="True">
+                                                    <Setter Property="FontWeight" Value="Bold"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
                                 <TextBlock Grid.Column="2" FontFamily="Segoe MDL2 Assets" 
                                            FontSize="10" Foreground="#808080" 
                                            VerticalAlignment="Center">
@@ -483,13 +495,14 @@
                                    Margin="16,8,16,8"/>
                         
                         <!-- 个人图解 -->
-                        <Button Background="Transparent" BorderThickness="0" 
+                        <Button BorderThickness="0" 
                                 Padding="12,10" Cursor="Hand"
                                 HorizontalContentAlignment="Stretch"
                                 Command="{Binding ToggleCategoryExpansionCommand}"
                                 CommandParameter="Personal">
                             <Button.Style>
                                 <Style TargetType="Button">
+                                    <Setter Property="Background" Value="Transparent"/>
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="Button">
@@ -510,7 +523,7 @@
                                     </Setter>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsPersonalExpanded}" Value="True">
-                                            <Setter Property="Background" Value="#E5E5E5"/>
+                                            <Setter Property="Background" Value="#EAEAEA"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -526,7 +539,18 @@
                                            Text="{Binding [personal_templates],Source={x:Static lg:LanguageService.Instance}}" 
                                            FontSize="14" 
                                            Foreground="#333333"
-                                           VerticalAlignment="Center"/>
+                                           VerticalAlignment="Center">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="FontWeight" Value="Normal"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsPersonalExpanded}" Value="True">
+                                                    <Setter Property="FontWeight" Value="Bold"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
                                 <TextBlock Grid.Column="2" FontFamily="Segoe MDL2 Assets" 
                                            FontSize="10" Foreground="#808080" 
                                            VerticalAlignment="Center">
@@ -665,13 +689,14 @@
                         </Border>
                         
                         <!-- 收藏 -->
-                        <Button Background="Transparent" BorderThickness="0" 
+                        <Button BorderThickness="0" 
                                 Padding="12,10" Cursor="Hand"
                                 HorizontalContentAlignment="Stretch"
                                 Command="{Binding ToggleCategoryExpansionCommand}"
                                 CommandParameter="Favorite">
                             <Button.Style>
                                 <Style TargetType="Button">
+                                    <Setter Property="Background" Value="Transparent"/>
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="Button">
@@ -692,7 +717,7 @@
                                     </Setter>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsFavoriteExpanded}" Value="True">
-                                            <Setter Property="Background" Value="#E5E5E5"/>
+                                            <Setter Property="Background" Value="#EAEAEA"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -707,18 +732,30 @@
                                            Text="{Binding [favorite_templates],Source={x:Static lg:LanguageService.Instance}}" 
                                            FontSize="14" 
                                            Foreground="#333333"
-                                           VerticalAlignment="Center"/>
+                                           VerticalAlignment="Center">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="FontWeight" Value="Normal"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsFavoriteExpanded}" Value="True">
+                                                    <Setter Property="FontWeight" Value="Bold"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
                             </Grid>
                         </Button>
                         
                         <!-- 最近使用 -->
-                        <Button Background="Transparent" BorderThickness="0" 
+                        <Button BorderThickness="0" 
                                 Padding="12,10" Cursor="Hand"
                                 HorizontalContentAlignment="Stretch"
                                 Command="{Binding ToggleCategoryExpansionCommand}"
                                 CommandParameter="Recents">
                             <Button.Style>
                                 <Style TargetType="Button">
+                                    <Setter Property="Background" Value="Transparent"/>
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="Button">
@@ -739,7 +776,7 @@
                                     </Setter>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsRecentsExpanded}" Value="True">
-                                            <Setter Property="Background" Value="#E5E5E5"/>
+                                            <Setter Property="Background" Value="#EAEAEA"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -754,7 +791,18 @@
                                            Text="{Binding [recents_templates],Source={x:Static lg:LanguageService.Instance}, FallbackValue='最近使用'}" 
                                            FontSize="14" 
                                            Foreground="#333333"
-                                           VerticalAlignment="Center"/>
+                                           VerticalAlignment="Center">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="FontWeight" Value="Normal"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsRecentsExpanded}" Value="True">
+                                                    <Setter Property="FontWeight" Value="Bold"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
                             </Grid>
                         </Button>
                     </StackPanel>
@@ -817,7 +865,7 @@
                             </ItemsControl>
                         </ScrollViewer>
 
-                        <!-- 第二行：标题和搜索筛选工具栏 -->
+                        <!-- 第二行：标题和搜索工具栏 -->
                         <Grid Grid.Row="1">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -843,7 +891,7 @@
                                 </TextBlock.Style>
                             </TextBlock>
                             
-                            <!-- 右侧：批量下载按钮、搜索框和筛选按钮 -->
+                            <!-- 右侧：批量下载按钮和搜索框 -->
                             <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
                                 <!-- 批量下载按钮 -->
                                 <Button Height="32" Padding="12,0" Margin="0,0,8,0"
@@ -947,53 +995,6 @@
                                     </TextBox.Style>
                                 </TextBox>
                                 
-                                <!-- 筛选按钮（漏斗图标） -->
-                                <Button Width="32" Height="32" Margin="8,0,0,0"
-                                        Background="White" BorderBrush="#D0D0D0" BorderThickness="1"
-                                        ToolTip="{Binding [filter_templates], Source={x:Static lg:LanguageService.Instance}, FallbackValue='筛选模板'}"
-                                        Click="FilterButton_Click"
-                                        Cursor="Hand">
-                                    <Button.Style>
-                                        <Style TargetType="Button">
-                                            <Setter Property="Template">
-                                                <Setter.Value>
-                                                    <ControlTemplate TargetType="Button">
-                                                        <Border Background="{TemplateBinding Background}" 
-                                                                BorderBrush="{TemplateBinding BorderBrush}" 
-                                                                BorderThickness="{TemplateBinding BorderThickness}"
-                                                                CornerRadius="4">
-                                                            <TextBlock Text="&#xE71C;" FontFamily="Segoe MDL2 Assets" 
-                                                                       FontSize="14" Foreground="#666" 
-                                                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                        </Border>
-                                                        <ControlTemplate.Triggers>
-                                                            <Trigger Property="IsMouseOver" Value="True">
-                                                                <Setter Property="Background" Value="#F5F5F5"/>
-                                                            </Trigger>
-                                                        </ControlTemplate.Triggers>
-                                                    </ControlTemplate>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </Style>
-                                    </Button.Style>
-                                    <!-- 筛选菜单弹出 -->
-                                    <Button.ContextMenu>
-                                        <ContextMenu>
-                                            <MenuItem Header="{Binding [all_templates], Source={x:Static lg:LanguageService.Instance}, FallbackValue='全部模板'}" 
-                                                      Command="{Binding SetFilterTypeCommand}" CommandParameter="0"
-                                                      IsCheckable="True" IsChecked="{Binding FilterType, Converter={StaticResource IndexToBooleanConverter}, ConverterParameter=0, Mode=OneWay}"/>
-                                            <MenuItem Header="{Binding [custom_templates], Source={x:Static lg:LanguageService.Instance}, FallbackValue='自定义模板'}" 
-                                                      Command="{Binding SetFilterTypeCommand}" CommandParameter="1"
-                                                      IsCheckable="True" IsChecked="{Binding FilterType, Converter={StaticResource IndexToBooleanConverter}, ConverterParameter=1, Mode=OneWay}"/>
-                                            <MenuItem Header="{Binding [builtin_templates], Source={x:Static lg:LanguageService.Instance}, FallbackValue='内置模板'}" 
-                                                      Command="{Binding SetFilterTypeCommand}" CommandParameter="2"
-                                                      IsCheckable="True" IsChecked="{Binding FilterType, Converter={StaticResource IndexToBooleanConverter}, ConverterParameter=2, Mode=OneWay}"/>
-                                            <Separator/>
-                                            <MenuItem Header="{Binding [clear_search], Source={x:Static lg:LanguageService.Instance}, FallbackValue='清除筛选'}" 
-                                                      Command="{Binding ClearSearchCommand}"/>
-                                        </ContextMenu>
-                                    </Button.ContextMenu>
-                                </Button>
                             </StackPanel>
                         </Grid>
                     </Grid>
@@ -1112,8 +1113,25 @@
                                         </MenuItem>
                                         <MenuItem Header="{Binding [Delete],Source={x:Static lg:LanguageService.Instance}}" 
                                                   Command="{Binding PlacementTarget.Tag.DeleteTemplateCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                                                  CommandParameter="{Binding}"
-                                                  Visibility="{Binding IsCustomTemplate, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                  CommandParameter="{Binding}">
+                                            <MenuItem.Style>
+                                                <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsCustomTemplate}" Value="True">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                        <MultiDataTrigger>
+                                                            <MultiDataTrigger.Conditions>
+                                                                <Condition Binding="{Binding IsCustomTemplate}" Value="False"/>
+                                                                <Condition Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True"/>
+                                                            </MultiDataTrigger.Conditions>
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </MultiDataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </MenuItem.Style>
+                                        </MenuItem>
                                     </ContextMenu>
                                 </Border.ContextMenu>
                                 <i:Interaction.Triggers>
@@ -1133,7 +1151,7 @@
                                     <!-- Thumbnails -->
                                     <Grid Grid.Row="0" Margin="8,8,8,0">
                                         <Border x:Name="ThumbnailBorder" CornerRadius="6,6,0,0" Background="#F8F9FA" ClipToBounds="True">
-                                            <Image Stretch="Uniform">
+                                            <Image Stretch="UniformToFill">
                                                 <Image.Style>
                                                     <Style TargetType="Image">
                                                         <Setter Property="Source" Value="{Binding ThumbnailImage}"/>
@@ -1384,7 +1402,7 @@
                                                                         <Trigger Property="IsMouseOver" Value="True">
                                                                             <Setter TargetName="DeleteArea" Property="Background" Value="#E0E53935"/>
                                                                         </Trigger>
-                                                                        <!-- 非自定义模板不能删除 -->
+                                                                        <!-- 非自定义模板隐藏快捷删除按钮（仅支持右键删除） -->
                                                                         <DataTrigger Binding="{Binding IsCustomTemplate}" Value="False">
                                                                             <Setter Property="Visibility" Value="Collapsed"/>
                                                                         </DataTrigger>
@@ -1396,11 +1414,12 @@
                                                 </Button.Style>
                                             </Button>
 
-                                            <!-- 右侧：收藏区域 -->
+                                            <!-- 右侧：收藏区域（仅自定义模板显示） -->
                                             <Button Grid.Column="1" Background="Transparent" BorderThickness="0" 
                                                     Command="{Binding QuickFavoriteCommand}" Cursor="Hand">
                                                 <Button.Style>
                                                     <Style TargetType="Button">
+                                                        <Setter Property="Visibility" Value="Visible"/>
                                                         <Setter Property="Template">
                                                             <Setter.Value>
                                                                 <ControlTemplate TargetType="Button">
@@ -1430,6 +1449,12 @@
                                                                 </ControlTemplate>
                                                             </Setter.Value>
                                                         </Setter>
+                                                        <Style.Triggers>
+                                                            <!-- 非自定义模板隐藏右侧收藏按钮，由全宽收藏按钮代替 -->
+                                                            <DataTrigger Binding="{Binding IsCustomTemplate}" Value="False">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
                                                     </Style>
                                                 </Button.Style>
                                             </Button>
