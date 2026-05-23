@@ -4,9 +4,461 @@
                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                     xmlns:helpers="clr-namespace:GeoChemistryNexus.Helpers"
                     xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
-                    xmlns:conv="clr-namespace:GeoChemistryNexus.Converter">
+                    xmlns:conv="clr-namespace:GeoChemistryNexus.Converter"
+                    xmlns:layerModels="clr-namespace:GeoChemistryNexus.ViewModels">
 
     <conv:ListBoxItemCornerRadiusConverter x:Key="ListBoxItemCornerRadiusConverter"/>
+
+    <Style x:Key="LayerIconContainerStyle" TargetType="Border">
+        <Setter Property="Width" Value="20"/>
+        <Setter Property="Height" Value="20"/>
+        <Setter Property="CornerRadius" Value="6"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+    </Style>
+
+    <Style x:Key="AxisChildIconTextStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource AxisIconForeground}"/>
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="FontFamily" Value="Segoe UI"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <Style x:Key="LayerVisibilityCheckBoxStyle" TargetType="CheckBox">
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Width" Value="24"/>
+        <Setter Property="Height" Value="24"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Foreground" Value="#6E6E73"/>
+        <Setter Property="ToolTip" Value="显示/隐藏"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CheckBox">
+                    <Border x:Name="Root"
+                            Width="{TemplateBinding Width}"
+                            Height="{TemplateBinding Height}"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="6"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            SnapsToDevicePixels="True">
+                        <Grid Width="17"
+                              Height="17"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center">
+                            <Path x:Name="EyeOutline"
+                                  Data="M 1.8 8.5 C 1.8 8.5 4.8 3.8 8.5 3.8 C 12.2 3.8 15.2 8.5 15.2 8.5 C 15.2 8.5 12.2 13.2 8.5 13.2 C 4.8 13.2 1.8 8.5 1.8 8.5 Z"
+                                  Stroke="{TemplateBinding Foreground}"
+                                  StrokeThickness="1.7"
+                                  StrokeStartLineCap="Round"
+                                  StrokeEndLineCap="Round"
+                                  StrokeLineJoin="Round"
+                                  Fill="Transparent"/>
+                            <Ellipse x:Name="EyePupil"
+                                     Width="4.8"
+                                     Height="4.8"
+                                     Stroke="{TemplateBinding Foreground}"
+                                     StrokeThickness="1.7"
+                                     Fill="Transparent"
+                                     HorizontalAlignment="Center"
+                                     VerticalAlignment="Center"/>
+                            <Path x:Name="EyeSlash"
+                                  Data="M 3 3 L 14 14"
+                                  Visibility="Collapsed"
+                                  Stroke="{TemplateBinding Foreground}"
+                                  StrokeThickness="1.8"
+                                  StrokeStartLineCap="Round"
+                                  StrokeEndLineCap="Round"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Root" Property="Background" Value="#11000000"/>
+                            <Setter Property="Foreground" Value="#1D1D1F"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Root" Property="Background" Value="#1A000000"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="False">
+                            <Setter Property="Foreground" Value="#A8A8AE"/>
+                            <Setter TargetName="EyeSlash" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="EyeOutline" Property="Opacity" Value="0.7"/>
+                            <Setter TargetName="EyePupil" Property="Opacity" Value="0.7"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsChecked" Value="False"/>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Foreground" Value="#6E6E73"/>
+                            <Setter TargetName="Root" Property="Background" Value="#11000000"/>
+                        </MultiTrigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.38"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <SolidColorBrush x:Key="LayerGroupIconBackground" Color="#26000000"/>
+    <SolidColorBrush x:Key="LayerGroupIconForeground" Color="#6E6E73"/>
+    <SolidColorBrush x:Key="LineIconBackground" Color="#26FF9500"/>
+    <SolidColorBrush x:Key="LineIconForeground" Color="#FF9500"/>
+    <SolidColorBrush x:Key="TextIconBackground" Color="#2634C759"/>
+    <SolidColorBrush x:Key="TextIconForeground" Color="#34C759"/>
+    <SolidColorBrush x:Key="PolygonIconBackground" Color="#265856D6"/>
+    <SolidColorBrush x:Key="PolygonIconForeground" Color="#5856D6"/>
+    <SolidColorBrush x:Key="ArrowIconBackground" Color="#26FF2D55"/>
+    <SolidColorBrush x:Key="ArrowIconForeground" Color="#FF2D55"/>
+    <SolidColorBrush x:Key="FunctionIconBackground" Color="#2600C7BE"/>
+    <SolidColorBrush x:Key="FunctionIconForeground" Color="#00AFA8"/>
+    <SolidColorBrush x:Key="AxisIconBackground" Color="#260A84FF"/>
+    <SolidColorBrush x:Key="AxisIconForeground" Color="#0A84FF"/>
+    <SolidColorBrush x:Key="PointIconBackground" Color="#2630B0C7"/>
+    <SolidColorBrush x:Key="PointIconForeground" Color="#1F8FA8"/>
+
+    <HierarchicalDataTemplate x:Key="LayerTreeItemTemplate" ItemsSource="{Binding Children}">
+        <Grid Margin="2,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="28"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <CheckBox Grid.Column="0"
+                      Style="{StaticResource LayerVisibilityCheckBoxStyle}"
+                      IsChecked="{Binding IsVisible}"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Left"
+                      Margin="0,0,4,0"/>
+
+            <Grid Grid.Column="1"
+                  Width="20"
+                  Height="20"
+                  Margin="0,0,8,0"
+                  VerticalAlignment="Center">
+                <Border x:Name="GroupIcon"
+                        Style="{StaticResource LayerIconContainerStyle}"
+                        Background="{StaticResource LayerGroupIconBackground}"
+                        Visibility="Collapsed">
+                    <Viewbox Width="14" Height="14">
+                        <Canvas Width="14" Height="14">
+                            <Rectangle Width="8.5"
+                                       Height="2"
+                                       RadiusX="1"
+                                       RadiusY="1"
+                                       Fill="{StaticResource LayerGroupIconForeground}"
+                                       Canvas.Left="2.75"
+                                       Canvas.Top="3"/>
+                            <Rectangle Width="8.5"
+                                       Height="2"
+                                       RadiusX="1"
+                                       RadiusY="1"
+                                       Fill="{StaticResource LayerGroupIconForeground}"
+                                       Canvas.Left="2.75"
+                                       Canvas.Top="6"/>
+                            <Rectangle Width="8.5"
+                                       Height="2"
+                                       RadiusX="1"
+                                       RadiusY="1"
+                                       Fill="{StaticResource LayerGroupIconForeground}"
+                                       Canvas.Left="2.75"
+                                       Canvas.Top="9"/>
+                        </Canvas>
+                    </Viewbox>
+                </Border>
+
+                <Border x:Name="LineIcon"
+                        Style="{StaticResource LayerIconContainerStyle}"
+                        Background="{StaticResource LineIconBackground}"
+                        Visibility="Collapsed">
+                    <Viewbox Width="14" Height="14">
+                        <Canvas Width="14" Height="14">
+                            <Line X1="3"
+                                  Y1="11"
+                                  X2="11"
+                                  Y2="3"
+                                  Stroke="{StaticResource LineIconForeground}"
+                                  StrokeThickness="2"
+                                  StrokeStartLineCap="Round"
+                                  StrokeEndLineCap="Round"/>
+                        </Canvas>
+                    </Viewbox>
+                </Border>
+
+                <Border x:Name="TextIcon"
+                        Style="{StaticResource LayerIconContainerStyle}"
+                        Background="{StaticResource TextIconBackground}"
+                        Visibility="Collapsed">
+                    <TextBlock Text="T"
+                               Foreground="{StaticResource TextIconForeground}"
+                               FontSize="13"
+                               FontWeight="SemiBold"
+                               FontFamily="Segoe UI"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Margin="0,-1,0,0"/>
+                </Border>
+
+                <Border x:Name="PolygonIcon"
+                        Style="{StaticResource LayerIconContainerStyle}"
+                        Background="{StaticResource PolygonIconBackground}"
+                        Visibility="Collapsed">
+                    <Viewbox Width="14" Height="14">
+                        <Canvas Width="14" Height="14">
+                            <Polygon Points="7,2 12,5.5 10.2,12 3.8,12 2,5.5"
+                                     Stroke="{StaticResource PolygonIconForeground}"
+                                     StrokeThickness="1.6"
+                                     StrokeLineJoin="Round"
+                                     Fill="#335856D6"/>
+                        </Canvas>
+                    </Viewbox>
+                </Border>
+
+                <Border x:Name="ArrowIcon"
+                        Style="{StaticResource LayerIconContainerStyle}"
+                        Background="{StaticResource ArrowIconBackground}"
+                        Visibility="Collapsed">
+                    <Viewbox Width="14" Height="14">
+                        <Canvas Width="14" Height="14">
+                            <Line X1="3"
+                                  Y1="11"
+                                  X2="10"
+                                  Y2="4"
+                                  Stroke="{StaticResource ArrowIconForeground}"
+                                  StrokeThickness="1.9"
+                                  StrokeStartLineCap="Round"
+                                  StrokeEndLineCap="Round"/>
+                            <Path Data="M 7.2 3.8 L 10.5 3.5 L 10.2 6.8"
+                                  Stroke="{StaticResource ArrowIconForeground}"
+                                  StrokeThickness="1.9"
+                                  StrokeStartLineCap="Round"
+                                  StrokeEndLineCap="Round"
+                                  StrokeLineJoin="Round"
+                                  Fill="Transparent"/>
+                        </Canvas>
+                    </Viewbox>
+                </Border>
+
+                <Border x:Name="FunctionIcon"
+                        Style="{StaticResource LayerIconContainerStyle}"
+                        Background="{StaticResource FunctionIconBackground}"
+                        Visibility="Collapsed">
+                    <Viewbox Width="14" Height="14">
+                        <Canvas Width="14" Height="14">
+                            <Path Data="M 2 10 C 4 3, 6 3, 7 7 C 8.2 11, 10 11, 12 4"
+                                  Stroke="{StaticResource FunctionIconForeground}"
+                                  StrokeThickness="1.8"
+                                  StrokeStartLineCap="Round"
+                                  StrokeEndLineCap="Round"
+                                  StrokeLineJoin="Round"
+                                  Fill="Transparent"/>
+                        </Canvas>
+                    </Viewbox>
+                </Border>
+
+                <Border x:Name="AxisIcon"
+                        Style="{StaticResource LayerIconContainerStyle}"
+                        Background="{StaticResource AxisIconBackground}"
+                        Visibility="Collapsed">
+                    <Viewbox Width="14" Height="14">
+                        <Canvas Width="14" Height="14">
+                            <Line X1="3"
+                                  Y1="10.5"
+                                  X2="11.5"
+                                  Y2="10.5"
+                                  Stroke="{StaticResource AxisIconForeground}"
+                                  StrokeThickness="1.6"
+                                  StrokeStartLineCap="Round"
+                                  StrokeEndLineCap="Round"/>
+                            <Line X1="3.5"
+                                  Y1="11"
+                                  X2="3.5"
+                                  Y2="2.5"
+                                  Stroke="{StaticResource AxisIconForeground}"
+                                  StrokeThickness="1.6"
+                                  StrokeStartLineCap="Round"
+                                  StrokeEndLineCap="Round"/>
+                            <Path Data="M 9.5 8.7 L 11.5 10.5 L 9.5 12.3"
+                                  Stroke="{StaticResource AxisIconForeground}"
+                                  StrokeThickness="1.6"
+                                  StrokeStartLineCap="Round"
+                                  StrokeEndLineCap="Round"
+                                  StrokeLineJoin="Round"
+                                  Fill="Transparent"/>
+                            <Path Data="M 1.7 4.5 L 3.5 2.5 L 5.3 4.5"
+                                  Stroke="{StaticResource AxisIconForeground}"
+                                  StrokeThickness="1.6"
+                                  StrokeStartLineCap="Round"
+                                  StrokeEndLineCap="Round"
+                                  StrokeLineJoin="Round"
+                                  Fill="Transparent"/>
+                        </Canvas>
+                    </Viewbox>
+                </Border>
+
+                <Border x:Name="AxisXIcon"
+                        Style="{StaticResource LayerIconContainerStyle}"
+                        Background="{StaticResource AxisIconBackground}"
+                        Visibility="Collapsed">
+                    <TextBlock Text="X"
+                               Style="{StaticResource AxisChildIconTextStyle}"/>
+                </Border>
+
+                <Border x:Name="AxisYIcon"
+                        Style="{StaticResource LayerIconContainerStyle}"
+                        Background="{StaticResource AxisIconBackground}"
+                        Visibility="Collapsed">
+                    <TextBlock Text="Y"
+                               Style="{StaticResource AxisChildIconTextStyle}"/>
+                </Border>
+
+                <Border x:Name="AxisAIcon"
+                        Style="{StaticResource LayerIconContainerStyle}"
+                        Background="{StaticResource AxisIconBackground}"
+                        Visibility="Collapsed">
+                    <TextBlock Text="A"
+                               Style="{StaticResource AxisChildIconTextStyle}"/>
+                </Border>
+
+                <Border x:Name="AxisBIcon"
+                        Style="{StaticResource LayerIconContainerStyle}"
+                        Background="{StaticResource AxisIconBackground}"
+                        Visibility="Collapsed">
+                    <TextBlock Text="B"
+                               Style="{StaticResource AxisChildIconTextStyle}"/>
+                </Border>
+
+                <Border x:Name="AxisCIcon"
+                        Style="{StaticResource LayerIconContainerStyle}"
+                        Background="{StaticResource AxisIconBackground}"
+                        Visibility="Collapsed">
+                    <TextBlock Text="C"
+                               Style="{StaticResource AxisChildIconTextStyle}"/>
+                </Border>
+
+                <Border x:Name="PointIcon"
+                        Style="{StaticResource LayerIconContainerStyle}"
+                        Background="{StaticResource PointIconBackground}"
+                        Visibility="Collapsed">
+                    <Viewbox Width="14" Height="14">
+                        <Canvas Width="14" Height="14">
+                            <Ellipse Width="5.5"
+                                     Height="5.5"
+                                     Fill="{StaticResource PointIconForeground}"
+                                     Canvas.Left="4.25"
+                                     Canvas.Top="4.25"/>
+                            <Ellipse Width="9"
+                                     Height="9"
+                                     Stroke="{StaticResource PointIconForeground}"
+                                     StrokeThickness="1.4"
+                                     Fill="Transparent"
+                                     Canvas.Left="2.5"
+                                     Canvas.Top="2.5"/>
+                        </Canvas>
+                    </Viewbox>
+                </Border>
+            </Grid>
+
+            <TextBlock Grid.Column="2"
+                       Text="{Binding Name}"
+                       ToolTip="{Binding Name}"
+                       MaxWidth="{Binding RelativeSource={RelativeSource AncestorType=TreeView}, Path=ActualWidth}"
+                       TextWrapping="NoWrap"
+                       VerticalAlignment="Center"
+                       TextTrimming="CharacterEllipsis">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="FontWeight" Value="Normal"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding HasChildren}" Value="True">
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
+            <Border Grid.Column="3"
+                    Margin="8,0,0,0"
+                    MinWidth="18"
+                    Height="18"
+                    Padding="6,0"
+                    VerticalAlignment="Center"
+                    Background="#E5E5EA"
+                    CornerRadius="999">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding HasChildren}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <TextBlock Text="{Binding ChildCount}"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="11"
+                           FontWeight="SemiBold"
+                           Foreground="#3A3A3C"
+                           TextAlignment="Center"/>
+            </Border>
+        </Grid>
+
+        <HierarchicalDataTemplate.Triggers>
+            <DataTrigger Binding="{Binding IconKind}" Value="{x:Static layerModels:LayerTreeIconKind.Group}">
+                <Setter TargetName="GroupIcon" Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IconKind}" Value="{x:Static layerModels:LayerTreeIconKind.Line}">
+                <Setter TargetName="LineIcon" Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IconKind}" Value="{x:Static layerModels:LayerTreeIconKind.Text}">
+                <Setter TargetName="TextIcon" Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IconKind}" Value="{x:Static layerModels:LayerTreeIconKind.Polygon}">
+                <Setter TargetName="PolygonIcon" Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IconKind}" Value="{x:Static layerModels:LayerTreeIconKind.Arrow}">
+                <Setter TargetName="ArrowIcon" Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IconKind}" Value="{x:Static layerModels:LayerTreeIconKind.Function}">
+                <Setter TargetName="FunctionIcon" Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IconKind}" Value="{x:Static layerModels:LayerTreeIconKind.Axis}">
+                <Setter TargetName="AxisIcon" Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IconKind}" Value="{x:Static layerModels:LayerTreeIconKind.AxisX}">
+                <Setter TargetName="AxisXIcon" Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IconKind}" Value="{x:Static layerModels:LayerTreeIconKind.AxisY}">
+                <Setter TargetName="AxisYIcon" Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IconKind}" Value="{x:Static layerModels:LayerTreeIconKind.AxisA}">
+                <Setter TargetName="AxisAIcon" Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IconKind}" Value="{x:Static layerModels:LayerTreeIconKind.AxisB}">
+                <Setter TargetName="AxisBIcon" Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IconKind}" Value="{x:Static layerModels:LayerTreeIconKind.AxisC}">
+                <Setter TargetName="AxisCIcon" Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IconKind}" Value="{x:Static layerModels:LayerTreeIconKind.Point}">
+                <Setter TargetName="PointIcon" Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+        </HierarchicalDataTemplate.Triggers>
+    </HierarchicalDataTemplate>
 
     <Style x:Key="ModernRibbonButton" TargetType="Button">
         <Setter Property="Background" Value="Transparent"/>
@@ -470,124 +922,6 @@
                             <Setter TargetName="Bd" Property="Background" Value="#0078D4"/> <!-- Modern Selection Blue - 保持与活动选中相同 -->
                             <Setter Property="Foreground" Value="#FFFFFF"/>
                         </MultiTrigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <!-- New Styles from GeothermometerNewPageView -->
-
-    <Style TargetType="TabItem" x:Key="RibbonTabItemStyle">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="TabItem">
-                    <Border Name="Border" Background="Transparent"
-                            BorderThickness="1,1,1,0" CornerRadius="3,3,0,0"
-                            Padding="16,6,16,8" Margin="1,0" Height="28"
-                            VerticalAlignment="Bottom">
-                        <ContentPresenter ContentSource="Header"
-                                          HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="White"/>
-                            <Setter TargetName="Border" Property="BorderBrush" Value="#D4D4D4"/>
-                        </Trigger>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="#E5F3FF"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="FontSize" Value="12"/>
-        <Setter Property="Foreground" Value="#323130"/>
-    </Style>
-
-    <Style x:Key="MenuItemWithHelpStyle" TargetType="MenuItem">
-        <Setter Property="HorizontalContentAlignment" Value="Left"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="Height" Value="30"/>
-        <Setter Property="FontSize" Value="12"/>
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="MenuItem">
-                    <Border x:Name="Border" 
-                            Background="{TemplateBinding Background}" 
-                            BorderBrush="{TemplateBinding BorderBrush}" 
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            SnapsToDevicePixels="True">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-
-                            <ContentPresenter Content="{TemplateBinding Header}" 
-                                              ContentTemplate="{TemplateBinding HeaderTemplate}"
-                                              VerticalAlignment="Center" 
-                                              Margin="10,0,5,0"
-                                              RecognizesAccessKey="True"/>
-
-                            <Button Grid.Column="1" 
-                                    Width="24" Height="24" 
-                                    Margin="0,0,5,0"
-                                    Background="Transparent" 
-                                    BorderThickness="0"
-                                    Padding="0"
-                                    Command="{Binding LoadHelpDocumentCommand}"
-                                    CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"
-                                    Tag="{TemplateBinding Tag}"
-                                    ToolTip="{Binding [view_help_docs],Source={x:Static lg:LanguageService.Instance}}">
-                                <Button.Content>
-                                    <Grid>
-                                        <Ellipse Fill="#E0E0E0" Width="18" Height="18"/>
-                                        <TextBlock Text="?" 
-                                                   Foreground="#666" 
-                                                   FontSize="12" 
-                                                   FontWeight="Bold"
-                                                   HorizontalAlignment="Center" 
-                                                   VerticalAlignment="Center"/>
-                                    </Grid>
-                                </Button.Content>
-                                <Button.Style>
-                                    <Style TargetType="Button">
-                                        <Setter Property="Template">
-                                            <Setter.Value>
-                                                <ControlTemplate TargetType="Button">
-                                                    <Border Background="{TemplateBinding Background}">
-                                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                    </Border>
-                                                </ControlTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                        <Style.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter Property="Background" Value="#F0F0F0"/>
-                                                <Setter Property="Cursor" Value="Hand"/>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Button.Style>
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="Click">
-                                        <helpers:RaiseMenuItemClickAction />
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                            </Button>
-                        </Grid>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="#F2F8FF"/>
-                            <Setter TargetName="Border" Property="BorderBrush" Value="#CDE3FA"/>
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Opacity" Value="0.5"/>
-                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

@@ -3,17 +3,37 @@ using ScottPlot;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace GeoChemistryNexus.ViewModels
 {
+    public enum LayerTreeIconKind
+    {
+        Group,
+        Line,
+        Text,
+        Polygon,
+        Arrow,
+        Function,
+        Axis,
+        AxisX,
+        AxisY,
+        AxisA,
+        AxisB,
+        AxisC,
+        Point
+    }
+
     /// <summary>
     /// TreeView 中所有图层项的抽象基类
     /// </summary>
     public abstract partial class LayerItemViewModel : ObservableObject
     {
+        private LayerTreeIconKind? _customIconKind;
+
         [ObservableProperty]
         private string _name; // 图层项的显示名称
 
@@ -46,9 +66,56 @@ namespace GeoChemistryNexus.ViewModels
         public IPlottable? Plottable { get; set; }      // 绘图对象
 
         /// <summary>
+        /// 通用附加数据，可用于存储关联的属性模型等
+        /// </summary>
+        public object? Tag { get; set; }
+
+        /// <summary>
         /// 子图层/子项目集合
         /// </summary>
         public ObservableCollection<LayerItemViewModel> Children { get; } = new ObservableCollection<LayerItemViewModel>();
+
+        /// <summary>
+        /// 当前节点是否包含子项，用于父节点样式显示。
+        /// </summary>
+        public bool HasChildren => Children.Count > 0;
+
+        /// <summary>
+        /// 当前节点的直属子项数量，用于图层树徽章显示。
+        /// </summary>
+        public int ChildCount => Children.Count;
+
+        /// <summary>
+        /// 图层列表中使用的对象图标类型
+        /// </summary>
+        public LayerTreeIconKind IconKind => _customIconKind ?? GetDefaultIconKind();
+
+        private LayerTreeIconKind GetDefaultIconKind() => this switch
+        {
+            CategoryLayerItemViewModel => LayerTreeIconKind.Group,
+            AxisLayerItemViewModel => LayerTreeIconKind.Axis,
+            LineLayerItemViewModel => LayerTreeIconKind.Line,
+            TextLayerItemViewModel => LayerTreeIconKind.Text,
+            AnnotationLayerItemViewModel => LayerTreeIconKind.Text,
+            PolygonLayerItemViewModel => LayerTreeIconKind.Polygon,
+            ArrowLayerItemViewModel => LayerTreeIconKind.Arrow,
+            FunctionLayerItemViewModel => LayerTreeIconKind.Function,
+            ScatterLayerItemViewModel => LayerTreeIconKind.Point,
+            PointLayerItemViewModel => LayerTreeIconKind.Point,
+            SpiderSampleLayerItemViewModel => LayerTreeIconKind.Line,
+            _ => LayerTreeIconKind.Group
+        };
+
+        protected void SetCustomIconKind(LayerTreeIconKind iconKind)
+        {
+            if (_customIconKind == iconKind)
+            {
+                return;
+            }
+
+            _customIconKind = iconKind;
+            OnPropertyChanged(nameof(IconKind));
+        }
 
         /// <summary>
         /// 构造函数
@@ -57,6 +124,13 @@ namespace GeoChemistryNexus.ViewModels
         protected LayerItemViewModel(string name)
         {
             _name = name;
+            Children.CollectionChanged += OnChildrenCollectionChanged;
+        }
+
+        private void OnChildrenCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(HasChildren));
+            OnPropertyChanged(nameof(ChildCount));
         }
 
         // IsVisible 状态变化,触发图表重绘

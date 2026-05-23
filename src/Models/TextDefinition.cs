@@ -126,7 +126,16 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("advanced_rendering")]        // 高级渲染
         [property: LocalizedDisplayName("anti_aliasing")]      // 抗锯齿
+        [property: Browsable(false)]
         private bool _antiAliasEnable = true;
+
+        partial void OnAntiAliasEnableChanged(bool value)
+        {
+            if (!value)
+            {
+                AntiAliasEnable = true;
+            }
+        }
     }
 
     [JsonConverter(typeof(JsonStringEnumConverter))]

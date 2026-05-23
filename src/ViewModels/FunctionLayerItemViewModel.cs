@@ -32,16 +32,21 @@ namespace GeoChemistryNexus.ViewModels
             
             double minX = FunctionDefinition.MinX;
             double maxX = FunctionDefinition.MaxX;
+            double minY = FunctionDefinition.MinY;
+            double maxY = FunctionDefinition.MaxY;
+            bool hasMinY = !double.IsNaN(minY);
+            bool hasMaxY = !double.IsNaN(maxY);
             int count = FunctionDefinition.PointCount;
             if (count < 2) count = 2;
             
             double step = (maxX - minX) / (count - 1);
+            bool previousPointSkipped = false;
             
             var engine = new Engine();
             // Pre-add common math functions aliases
             engine.Execute("var sin = Math.sin; var cos = Math.cos; var tan = Math.tan; var abs = Math.abs; var sqrt = Math.sqrt; var pow = Math.pow; var log = Math.log; var log10 = Math.log10; var exp = Math.exp; var PI = Math.PI;");
 
-            // 1. 尝试解析并定义为函数，如果解析失败则直接退出，避免在循环中重复抛出异常
+            // 1. 尝试解析并定义为函数，如果解析失败则直接退出
             try
             {
                 // 将用户输入的公式包装成 JS 函数 f(x)
@@ -49,7 +54,7 @@ namespace GeoChemistryNexus.ViewModels
             }
             catch
             {
-                // 公式语法错误（例如输入了一半 "x-"），直接返回不绘图
+                // 公式语法错误，直接返回不绘图
                 return;
             }
             
@@ -63,15 +68,35 @@ namespace GeoChemistryNexus.ViewModels
                     if (result.IsNumber())
                     {
                         double y = result.AsNumber();
+                        bool isInvalidNumber = double.IsNaN(y) || double.IsInfinity(y);
+                        bool isOutOfYRange = (hasMinY && y < minY) || (hasMaxY && y > maxY);
+
+                        if (isInvalidNumber || isOutOfYRange)
+                        {
+                            previousPointSkipped = xs.Count > 0;
+                            continue;
+                        }
+
+                        if (previousPointSkipped)
+                        {
+                            xs.Add(double.NaN);
+                            ys.Add(double.NaN);
+                            previousPointSkipped = false;
+                        }
                         
                         var renderCoord = PlotTransformHelper.ToRenderCoordinates(plot, x, y);
                         xs.Add(renderCoord.X);
                         ys.Add(renderCoord.Y);
                     }
+                    else
+                    {
+                        previousPointSkipped = xs.Count > 0;
+                    }
                 }
                 catch
                 {
                     // 运行时错误
+                    previousPointSkipped = xs.Count > 0;
                 }
             }
 

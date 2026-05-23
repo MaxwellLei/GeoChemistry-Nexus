@@ -378,6 +378,12 @@ namespace GeoChemistryNexus.Views
                     return;
                 }
 
+                // 复选框（图层显隐按钮）需要保留自身点击行为，不能被树节点选择逻辑拦截
+                if (FindAncestor<CheckBox>(originalSource) != null)
+                {
+                    return;
+                }
+
                 // 执行 ViewModel 的选择逻辑
                 if (viewModel.SelectLayerCommand.CanExecute(layerItem))
                 {

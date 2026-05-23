@@ -47,7 +47,8 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("major_grid_line")] // 主网格线
         [property: LocalizedDisplayName("enable_anti_alias")] // 启用抗锯齿
-        private bool _majorGridLineAntiAlias = false;
+        [property: Browsable(false)]
+        private bool _majorGridLineAntiAlias = true;
 
 
         /// <summary>
@@ -88,7 +89,8 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("minor_grid_Line")] // 次网格线
         [property: LocalizedDisplayName("enable_anti_alias")] // 启用抗锯齿
-        private bool _minorGridLineAntiAlias = false;
+        [property: Browsable(false)]
+        private bool _minorGridLineAntiAlias = true;
 
 
         /// <summary>
@@ -123,5 +125,21 @@ namespace GeoChemistryNexus.Models
         [System.Text.Json.Serialization.JsonIgnore]
         [ObservableProperty]
         private bool _isAlternatingFillSupported = true;
+
+        partial void OnMajorGridLineAntiAliasChanged(bool value)
+        {
+            if (!value)
+            {
+                MajorGridLineAntiAlias = true;
+            }
+        }
+
+        partial void OnMinorGridLineAntiAliasChanged(bool value)
+        {
+            if (!value)
+            {
+                MinorGridLineAntiAlias = true;
+            }
+        }
     }
 }

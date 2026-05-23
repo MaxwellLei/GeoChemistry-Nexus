@@ -61,6 +61,8 @@ namespace GeoChemistryNexus.ViewModels
         public RelayCommand ExitProgrmModeCommand { get; private set; }   // 退出程序方式命令
         public RelayCommand AddStartImgCommand { get; private set; }    // 添加启动图
 
+        private bool isLoading = true;
+
         // 初始化
         public SCommonPageViewModel()
         {
@@ -143,6 +145,7 @@ namespace GeoChemistryNexus.ViewModels
         // 开发者模式
         partial void OnDeveloperModeChanged(bool value)
         {
+            if (isLoading) return;
             ConfigHelper.SetConfig("developer_mode", DeveloperMode.ToString());
             WeakReferenceMessenger.Default.Send(new DeveloperModeChangedMessage(value));
 
@@ -164,6 +167,7 @@ namespace GeoChemistryNexus.ViewModels
         // 是否开机启动
         partial void OnBootChanged(bool value)
         {
+            if (isLoading) return;
             BootHelper.SetAutoRun(Boot);
             ConfigHelper.SetConfig("boot", Boot.ToString());
             MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
@@ -172,6 +176,7 @@ namespace GeoChemistryNexus.ViewModels
         // 是否检查更新
         partial void OnAutoCheckChanged(bool value)
         {
+            if (isLoading) return;
             ConfigHelper.SetConfig("auto_check_update", AutoCheck.ToString());
             MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
         }
@@ -243,6 +248,8 @@ namespace GeoChemistryNexus.ViewModels
             Boot = bool.Parse(Helpers.ConfigHelper.GetConfig("boot"));     //读取是否自动开机
             AutoCheck = bool.Parse(Helpers.ConfigHelper.GetConfig("auto_check_update"));   //读取是否自动检查更新
             ExitMode = int.Parse(Helpers.ConfigHelper.GetConfig("exit_program_mode"));  //读取退出方式
+
+            isLoading = false;
         }
 
         // 添加启动图
@@ -254,7 +261,8 @@ namespace GeoChemistryNexus.ViewModels
             {
                 string sourceFileName = System.IO.Path.GetFileName(sourceFilePath);
                 // 目标文件路径
-                string destinationFolderPath = System.IO.Path.Combine(Environment.CurrentDirectory, "Resources", "Image", "StartPic"); ;
+                string destinationFolderPath = System.IO.Path.Combine(Environment.CurrentDirectory, "Data", "Image", "StartPic");
+                Directory.CreateDirectory(destinationFolderPath);
                 // 创建目标文件路径
                 string destinationFilePath = System.IO.Path.Combine(destinationFolderPath, sourceFileName);
                 // 尝试复制文件

@@ -53,7 +53,7 @@ namespace GeoChemistryNexus.Services
                 {
                     Task.Delay(TimeSpan.FromSeconds(durationSeconds)).ContinueWith(_ =>
                     {
-                        Application.Current.Dispatcher.Invoke(async () => await vm.Close());
+                        Application.Current.Dispatcher.BeginInvoke(new Action(async () => await vm.Close()));
                     });
                 }
             });

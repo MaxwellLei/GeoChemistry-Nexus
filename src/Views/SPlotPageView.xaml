@@ -1,4 +1,4 @@
-﻿<Page x:Class="GeoChemistryNexus.Views.SPlotPageView"
+<Page x:Class="GeoChemistryNexus.Views.SPlotPageView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -114,6 +114,55 @@
                             <TextBlock Text="{Binding [default_third_party_editor],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" FontSize="14"/>
                             <ComboBox ItemsSource="{Binding ThirdPartyApps}" SelectedValue="{Binding SelectedThirdPartyApp}" 
                                       FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Right" Width="140" Height="30"/>
+                        </Grid>
+
+                        <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
+
+                        <!-- Object Selection Trigger -->
+                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding [object_selection_trigger],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" FontSize="14"/>
+                            <ComboBox SelectedValue="{Binding ObjectSelectionTrigger}" FontSize="12" VerticalAlignment="Center" 
+                                      HorizontalAlignment="Right" SelectedValuePath="Tag" Width="140" Height="30">
+                                <ComboBox.Items>
+                                    <ComboBoxItem Content="{Binding [single_click],Source={x:Static lg:LanguageService.Instance}}" Tag="SingleClick"/>
+                                    <ComboBoxItem Content="{Binding [double_click],Source={x:Static lg:LanguageService.Instance}}" Tag="DoubleClick"/>
+                                </ComboBox.Items>
+                            </ComboBox>
+                        </Grid>
+
+                        <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
+
+                        <!-- Mouse Snap Auto Recognition Frame Rate -->
+                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding [mouse_snap_auto_recognition_frame_rate],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" FontSize="14"/>
+                            <ComboBox ItemsSource="{Binding MouseSnapAutoRecognitionFrameRates}"
+                                      SelectedValue="{Binding MouseSnapAutoRecognitionFrameRate}"
+                                      FontSize="12"
+                                      VerticalAlignment="Center"
+                                      HorizontalAlignment="Right"
+                                      Width="100"
+                                      Height="30"/>
+                        </Grid>
+
+                        <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
+
+                        <!-- Current Diagram Version (Read-Only) -->
+                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding [current_diagram_version],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" FontSize="14"/>
+                            <TextBlock Grid.Column="1" Text="{Binding CurrentDiagramVersion}" VerticalAlignment="Center" 
+                                       FontSize="14" Foreground="Gray" HorizontalAlignment="Right"/>
                         </Grid>
                     </StackPanel>
                 </Border>

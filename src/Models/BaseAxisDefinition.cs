@@ -13,6 +13,7 @@ namespace GeoChemistryNexus.Models
     /// 处理多态序列化
     [JsonDerivedType(typeof(CartesianAxisDefinition), typeDiscriminator: "cartesian")]
     [JsonDerivedType(typeof(TernaryAxisDefinition), typeDiscriminator: "ternary")]
+    [JsonDerivedType(typeof(SpiderAxisDefinition), typeDiscriminator: "spider")]
     public abstract partial class BaseAxisDefinition : ObservableObject
     {
         /// <summary>
@@ -86,7 +87,8 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("major_tick_style")] // 主刻度样式
         [property: LocalizedDisplayName("anti_aliasing")] // 抗锯齿
-        private bool _majorTickAntiAlias = false;
+        [property: Browsable(false)]
+        private bool _majorTickAntiAlias = true;
 
         /// <summary>
         /// Tick label font family
@@ -127,6 +129,14 @@ namespace GeoChemistryNexus.Models
         [property: LocalizedCategory("tick_labels")] // 刻度标签
         [property: LocalizedDisplayName("italic")] // 斜体
         private bool _tickLableisItalic = false;
+
+        partial void OnMajorTickAntiAliasChanged(bool value)
+        {
+            if (!value)
+            {
+                MajorTickAntiAlias = true;
+            }
+        }
     }
 
     /// <summary>

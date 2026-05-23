@@ -10,6 +10,12 @@ namespace GeoChemistryNexus.Models
     /// </summary>
     public partial class CartesianAxisDefinition : BaseAxisDefinition
     {
+        public virtual bool ShowAxisStyleOptions => true;
+
+        public virtual bool ShowMajorTickStyleOptions => true;
+
+        public virtual bool ShowMinorTickStyleOptions => true;
+
         /// <summary>
         /// 坐标轴类型 (线性/对数)
         /// </summary>
@@ -160,7 +166,8 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         [property: LocalizedCategory("minor_tick_style")] // 次刻度样式
         [property: LocalizedDisplayName("anti_aliasing")] // 抗锯齿
-        private bool _minorTickAntiAlias = false;
+        [property: Browsable(false)]
+        private bool _minorTickAntiAlias = true;
 
         #region Subtitle / SubLabel
         /// <summary>
@@ -202,6 +209,14 @@ namespace GeoChemistryNexus.Models
         [property: LocalizedCategory("axis_title")]
         [property: LocalizedDisplayName("subtitle_italic")]
         private bool _subLabelItalic = false;
+
+        partial void OnMinorTickAntiAliasChanged(bool value)
+        {
+            if (!value)
+            {
+                MinorTickAntiAlias = true;
+            }
+        }
         #endregion
     }
 }

@@ -18,6 +18,7 @@
         <cvs:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <cvs:EnumToDisplayStringConverter x:Key="EnumToDisplayStringConverter"/>
         <cvs:EnumTypeToValuesConverter x:Key="EnumTypeToValuesConverter"/>
+        <cvs:LineTypeToStrokeDashArrayConverter x:Key="LineTypeToStrokeDashArrayConverter"/>
     </UserControl.Resources>
 
     <Grid DataContext="{Binding SelectedObject, RelativeSource={RelativeSource AncestorType=local:FunctionPropertyControl}}">
@@ -50,7 +51,7 @@
                 <TextBlock Text="{Binding [range],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernSettingsGroupTitle}" Margin="4,10,0,6"/>
                 <Border Style="{StaticResource ModernCardStyle}" Margin="0,0,0,8">
                     <StackPanel Margin="10">
-                        <TextBlock Text="{Binding [range],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
+                        <TextBlock Text="{Binding [x_coordinate],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
                         <Grid Margin="0,0,0,16">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -58,15 +59,40 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             
-                            <hc:NumericUpDown Grid.Column="0" Value="{Binding MinX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
-                                      hc:InfoElement.Title="{Binding [min_x],Source={x:Static lg:LanguageService.Instance}}" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.TitleWidth="20"
-                                      hc:InfoElement.Placeholder="-10.0"
-                                      Style="{StaticResource ModernNumericUpDownStyle}"/>
-                                      
-                            <hc:NumericUpDown Grid.Column="2" Value="{Binding MaxX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
-                                      hc:InfoElement.Title="{Binding [max_x],Source={x:Static lg:LanguageService.Instance}}" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.TitleWidth="20"
-                                      hc:InfoElement.Placeholder="10.0"
-                                      Style="{StaticResource ModernNumericUpDownStyle}"/>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{Binding [from],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
+                                <hc:NumericUpDown Value="{Binding MinX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
+                                                  hc:InfoElement.Placeholder="-10.0"
+                                                  Style="{StaticResource ModernNumericUpDownStyle}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="{Binding [to],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
+                                <hc:NumericUpDown Value="{Binding MaxX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
+                                                  hc:InfoElement.Placeholder="10.0"
+                                                  Style="{StaticResource ModernNumericUpDownStyle}"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <TextBlock Text="{Binding [y_coordinate],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="12"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{Binding [from],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
+                                <hc:NumericUpDown Value="{Binding MinY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
+                                                  Style="{StaticResource ModernNumericUpDownStyle}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="{Binding [to],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
+                                <hc:NumericUpDown Value="{Binding MaxY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
+                                                  Style="{StaticResource ModernNumericUpDownStyle}"/>
+                            </StackPanel>
                         </Grid>
 
                         <TextBlock Text="{Binding [point_count],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
@@ -102,7 +128,11 @@
                                   Style="{StaticResource ModernComboBoxStyle}">
                              <ComboBox.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Converter={StaticResource EnumToDisplayStringConverter}}"/>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <Line X1="0" Y1="0" X2="40" Y2="0" Stroke="#1D1D1F" StrokeThickness="2" VerticalAlignment="Center" Margin="0,2,8,0"
+                                              StrokeDashArray="{Binding Converter={StaticResource LineTypeToStrokeDashArrayConverter}}"/>
+                                        <TextBlock Text="{Binding Converter={StaticResource EnumToDisplayStringConverter}}" VerticalAlignment="Center"/>
+                                    </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>

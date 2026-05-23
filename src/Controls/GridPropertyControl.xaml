@@ -20,6 +20,7 @@
         <cvs:DoublePrecisionConverter x:Key="DoublePrecisionConverter" Precision="2"/>
         <cvs:EnumToDisplayStringConverter x:Key="EnumToDisplayStringConverter"/>
         <cvs:EnumTypeToValuesConverter x:Key="EnumTypeToValuesConverter"/>
+        <cvs:LineTypeToStrokeDashArrayConverter x:Key="LineTypeToStrokeDashArrayConverter"/>
         
         <Style x:Key="ToggleButtonSwitch" TargetType="ToggleButton" BasedOn="{StaticResource ToggleButtonSwitch}">
         </Style>
@@ -69,15 +70,15 @@
                                   Style="{StaticResource ModernComboBoxStyle}">
                              <ComboBox.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Converter={StaticResource EnumToDisplayStringConverter}}"/>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <Line X1="0" Y1="0" X2="40" Y2="0" Stroke="#1D1D1F" StrokeThickness="2" VerticalAlignment="Center" Margin="0,2,8,0"
+                                              StrokeDashArray="{Binding Converter={StaticResource LineTypeToStrokeDashArrayConverter}}"/>
+                                        <TextBlock Text="{Binding Converter={StaticResource EnumToDisplayStringConverter}}" VerticalAlignment="Center"/>
+                                    </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
                         
-                        <DockPanel>
-                            <TextBlock Text="{Binding [enable_anti_alias],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}" VerticalAlignment="Center" Margin="0"/>
-                            <ToggleButton Style="{StaticResource ToggleButtonSwitch}" HorizontalAlignment="Right" IsChecked="{Binding MajorGridLineAntiAlias, Mode=TwoWay}"/>
-                        </DockPanel>
                     </StackPanel>
                 </Border>
 
@@ -116,15 +117,15 @@
                                   Style="{StaticResource ModernComboBoxStyle}">
                              <ComboBox.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Converter={StaticResource EnumToDisplayStringConverter}}"/>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <Line X1="0" Y1="0" X2="40" Y2="0" Stroke="#1D1D1F" StrokeThickness="2" VerticalAlignment="Center" Margin="0,2,8,0"
+                                              StrokeDashArray="{Binding Converter={StaticResource LineTypeToStrokeDashArrayConverter}}"/>
+                                        <TextBlock Text="{Binding Converter={StaticResource EnumToDisplayStringConverter}}" VerticalAlignment="Center"/>
+                                    </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
                         
-                        <DockPanel>
-                            <TextBlock Text="{Binding [enable_anti_alias],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}" VerticalAlignment="Center" Margin="0"/>
-                            <ToggleButton Style="{StaticResource ToggleButtonSwitch}" HorizontalAlignment="Right" IsChecked="{Binding MinorGridLineAntiAlias, Mode=TwoWay}"/>
-                        </DockPanel>
                     </StackPanel>
                 </Border>
                 </StackPanel>

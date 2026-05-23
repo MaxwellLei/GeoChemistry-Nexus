@@ -21,6 +21,56 @@
         
         <Style x:Key="ToggleButtonSwitch" TargetType="ToggleButton" BasedOn="{StaticResource ToggleButtonSwitch}">
         </Style>
+
+        <Style x:Key="LegendSelectorCardStyle" TargetType="RadioButton">
+            <Setter Property="Background" Value="#FFFFFF"/>
+            <Setter Property="BorderBrush" Value="#E5E5EA"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="#3A3A3C"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Padding" Value="12,10"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="Root"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="10"
+                                Padding="{TemplateBinding Padding}"
+                                SnapsToDevicePixels="True">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Root" Property="Background" Value="#F7F9FC"/>
+                                <Setter TargetName="Root" Property="BorderBrush" Value="#D6D9E0"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Root" Property="Background" Value="#EEF6FF"/>
+                                <Setter TargetName="Root" Property="BorderBrush" Value="#0A84FF"/>
+                                <Setter Property="Foreground" Value="#0A84FF"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.45"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="LegendSelectorTitleStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,10,0,0"/>
+        </Style>
     </UserControl.Resources>
 
     <Grid DataContext="{Binding SelectedObject, RelativeSource={RelativeSource AncestorType=local:LegendPropertyControl}}">
@@ -46,28 +96,155 @@
 
                         <!-- Orientation -->
                         <TextBlock Text="{Binding [orientation],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
-                        <ComboBox ItemsSource="{Binding Orientation, Converter={StaticResource EnumTypeToValuesConverter}}"
-                                  SelectedItem="{Binding Orientation, Mode=TwoWay}"
-                                  Margin="0,0,0,16"
-                                  Style="{StaticResource ModernComboBoxStyle}">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Converter={StaticResource EnumToDisplayStringConverter}}"/>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
+                        <Border CornerRadius="12" BorderBrush="#ECECF0" BorderThickness="1" Background="#F8F8FA" Padding="6" Margin="0,0,0,16">
+                            <UniformGrid Columns="2">
+                                <RadioButton GroupName="LegendOrientation"
+                                             Style="{StaticResource LegendSelectorCardStyle}"
+                                             Margin="0,0,6,0"
+                                             IsChecked="{Binding Orientation, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Horizontal}">
+                                    <StackPanel>
+                                        <Border Width="54"
+                                                Height="30"
+                                                CornerRadius="8"
+                                                Background="#FFFFFF"
+                                                BorderBrush="#DADCE3"
+                                                BorderThickness="1"
+                                                Padding="6,0">
+                                            <StackPanel Orientation="Horizontal"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center">
+                                                <Border Width="8" Height="8" CornerRadius="4" Background="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" Margin="1,0"/>
+                                                <Border Width="8" Height="8" CornerRadius="4" Background="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" Margin="1,0"/>
+                                                <Border Width="8" Height="8" CornerRadius="4" Background="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" Margin="1,0"/>
+                                            </StackPanel>
+                                        </Border>
+                                        <TextBlock Text="{Binding [Orientation_Horizontal],Source={x:Static lg:LanguageService.Instance}}"
+                                                   Style="{StaticResource LegendSelectorTitleStyle}"/>
+                                    </StackPanel>
+                                </RadioButton>
+
+                                <RadioButton GroupName="LegendOrientation"
+                                             Style="{StaticResource LegendSelectorCardStyle}"
+                                             Margin="6,0,0,0"
+                                             IsChecked="{Binding Orientation, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Vertical}">
+                                    <StackPanel>
+                                        <Border Width="54"
+                                                Height="30"
+                                                CornerRadius="8"
+                                                Background="#FFFFFF"
+                                                BorderBrush="#DADCE3"
+                                                BorderThickness="1"
+                                                Padding="0,4">
+                                            <StackPanel Orientation="Vertical"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center">
+                                                <Border Width="8" Height="8" CornerRadius="4" Background="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" Margin="0,1"/>
+                                                <Border Width="8" Height="8" CornerRadius="4" Background="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" Margin="0,1"/>
+                                                <Border Width="8" Height="8" CornerRadius="4" Background="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" Margin="0,1"/>
+                                            </StackPanel>
+                                        </Border>
+                                        <TextBlock Text="{Binding [Orientation_Vertical],Source={x:Static lg:LanguageService.Instance}}"
+                                                   Style="{StaticResource LegendSelectorTitleStyle}"/>
+                                    </StackPanel>
+                                </RadioButton>
+                            </UniformGrid>
+                        </Border>
 
                         <!-- Alignment -->
                         <TextBlock Text="{Binding [location],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
-                        <ComboBox ItemsSource="{Binding Alignment, Converter={StaticResource EnumTypeToValuesConverter}}"
-                                  SelectedItem="{Binding Alignment, Mode=TwoWay}"
-                                  Style="{StaticResource ModernComboBoxStyle}">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Converter={StaticResource EnumToDisplayStringConverter}}"/>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
+                        <Border CornerRadius="12" BorderBrush="#ECECF0" BorderThickness="1" Background="#F8F8FA" Padding="6">
+                            <UniformGrid Columns="3">
+                                <RadioButton GroupName="LegendAlignment"
+                                             Style="{StaticResource LegendSelectorCardStyle}"
+                                             Margin="0,0,6,6"
+                                             IsChecked="{Binding Alignment, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=UpperLeft}">
+                                    <StackPanel>
+                                        <Border Width="58" Height="38" CornerRadius="8" Background="#FFFFFF" BorderBrush="#DADCE3" BorderThickness="1" Padding="4">
+                                            <Grid>
+                                                <Ellipse Width="8" Height="8" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                            </Grid>
+                                        </Border>
+                                        <TextBlock Text="{Binding [Alignment_UpperLeft],Source={x:Static lg:LanguageService.Instance}}"
+                                                   Style="{StaticResource LegendSelectorTitleStyle}"/>
+                                    </StackPanel>
+                                </RadioButton>
+
+                                <RadioButton GroupName="LegendAlignment"
+                                             Style="{StaticResource LegendSelectorCardStyle}"
+                                             Margin="0,0,6,6"
+                                             IsChecked="{Binding Alignment, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=UpperCenter}">
+                                    <StackPanel>
+                                        <Border Width="58" Height="38" CornerRadius="8" Background="#FFFFFF" BorderBrush="#DADCE3" BorderThickness="1" Padding="4">
+                                            <Grid>
+                                                <Ellipse Width="8" Height="8" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                                            </Grid>
+                                        </Border>
+                                        <TextBlock Text="{Binding [Alignment_UpperCenter],Source={x:Static lg:LanguageService.Instance}}"
+                                                   Style="{StaticResource LegendSelectorTitleStyle}"/>
+                                    </StackPanel>
+                                </RadioButton>
+
+                                <RadioButton GroupName="LegendAlignment"
+                                             Style="{StaticResource LegendSelectorCardStyle}"
+                                             Margin="0,0,0,6"
+                                             IsChecked="{Binding Alignment, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=UpperRight}">
+                                    <StackPanel>
+                                        <Border Width="58" Height="38" CornerRadius="8" Background="#FFFFFF" BorderBrush="#DADCE3" BorderThickness="1" Padding="4">
+                                            <Grid>
+                                                <Ellipse Width="8" Height="8" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                                            </Grid>
+                                        </Border>
+                                        <TextBlock Text="{Binding [Alignment_UpperRight],Source={x:Static lg:LanguageService.Instance}}"
+                                                   Style="{StaticResource LegendSelectorTitleStyle}"/>
+                                    </StackPanel>
+                                </RadioButton>
+
+                                <RadioButton GroupName="LegendAlignment"
+                                             Style="{StaticResource LegendSelectorCardStyle}"
+                                             Margin="0,0,6,0"
+                                             IsChecked="{Binding Alignment, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=LowerLeft}">
+                                    <StackPanel>
+                                        <Border Width="58" Height="38" CornerRadius="8" Background="#FFFFFF" BorderBrush="#DADCE3" BorderThickness="1" Padding="4">
+                                            <Grid>
+                                                <Ellipse Width="8" Height="8" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+                                            </Grid>
+                                        </Border>
+                                        <TextBlock Text="{Binding [Alignment_LowerLeft],Source={x:Static lg:LanguageService.Instance}}"
+                                                   Style="{StaticResource LegendSelectorTitleStyle}"/>
+                                    </StackPanel>
+                                </RadioButton>
+
+                                <RadioButton GroupName="LegendAlignment"
+                                             Style="{StaticResource LegendSelectorCardStyle}"
+                                             Margin="0,0,6,0"
+                                             IsChecked="{Binding Alignment, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=LowerCenter}">
+                                    <StackPanel>
+                                        <Border Width="58" Height="38" CornerRadius="8" Background="#FFFFFF" BorderBrush="#DADCE3" BorderThickness="1" Padding="4">
+                                            <Grid>
+                                                <Ellipse Width="8" Height="8" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+                                            </Grid>
+                                        </Border>
+                                        <TextBlock Text="{Binding [Alignment_LowerCenter],Source={x:Static lg:LanguageService.Instance}}"
+                                                   Style="{StaticResource LegendSelectorTitleStyle}"/>
+                                    </StackPanel>
+                                </RadioButton>
+
+                                <RadioButton GroupName="LegendAlignment"
+                                             Style="{StaticResource LegendSelectorCardStyle}"
+                                             Margin="0"
+                                             IsChecked="{Binding Alignment, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=LowerRight}">
+                                    <StackPanel>
+                                        <Border Width="58" Height="38" CornerRadius="8" Background="#FFFFFF" BorderBrush="#DADCE3" BorderThickness="1" Padding="4">
+                                            <Grid>
+                                                <Ellipse Width="8" Height="8" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                                            </Grid>
+                                        </Border>
+                                        <TextBlock Text="{Binding [Alignment_LowerRight],Source={x:Static lg:LanguageService.Instance}}"
+                                                   Style="{StaticResource LegendSelectorTitleStyle}"/>
+                                    </StackPanel>
+                                </RadioButton>
+                            </UniformGrid>
+                        </Border>
                     </StackPanel>
                 </Border>
 

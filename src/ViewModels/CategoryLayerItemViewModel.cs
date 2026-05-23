@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,8 +11,13 @@ namespace GeoChemistryNexus.ViewModels
     /// </summary>
     public partial class CategoryLayerItemViewModel : LayerItemViewModel
     {
-        public CategoryLayerItemViewModel(string name) : base(name)
+        public CategoryLayerItemViewModel(string name, LayerTreeIconKind? iconKind = null) : base(name)
         {
+            if (iconKind.HasValue)
+            {
+                SetCustomIconKind(iconKind.Value);
+            }
+
             IsExpanded = true; // 默认展开分类节点
         }
     }

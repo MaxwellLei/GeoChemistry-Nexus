@@ -124,7 +124,7 @@ namespace GeoChemistryNexus.ViewModels
             }
 
             // 高级渲染：抗锯齿
-            textPlot.LabelStyle.AntiAliasText = TextDefinition.AntiAliasEnable;
+            textPlot.LabelStyle.AntiAliasText = true;
 
             // 赋值给基类 Plottable
             this.Plottable = textPlot;

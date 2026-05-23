@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,380 +117,65 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="StartStatus" xml:space="preserve">
-    <value>启动中...</value>
-    <comment>软件启动界面</comment>
+  <data name="new_version_found" xml:space="preserve">
+    <value>发现新版本</value>
   </data>
-  <data name="Show" xml:space="preserve">
-    <value>显示界面</value>
-    <comment>托盘菜单右键</comment>
+  <data name="anti_aliasing" xml:space="preserve">
+    <value>抗锯齿</value>
   </data>
-  <data name="Exit" xml:space="preserve">
-    <value>退出程序</value>
-    <comment>托盘菜单右键</comment>
+  <data name="geo_msg_load_help_doc_failed" xml:space="preserve">
+    <value>加载帮助文档失败: {0}</value>
   </data>
-  <data name="home" xml:space="preserve">
-    <value>主页</value>
-    <comment>主窗体侧边栏</comment>
+  <data name="script_content" xml:space="preserve">
+    <value>脚本内容:</value>
   </data>
-  <data name="Plot" xml:space="preserve">
-    <value>图解绘图</value>
-    <comment>主窗体侧边栏</comment>
+  <data name="geo_field_mineral_category" xml:space="preserve">
+    <value>矿物分类 *</value>
   </data>
-  <data name="Geothermometer" xml:space="preserve">
-    <value>地质温度计</value>
-    <comment>主窗体侧边栏</comment>
+  <data name="unfavorite" xml:space="preserve">
+    <value>取消收藏</value>
   </data>
-  <data name="Setting" xml:space="preserve">
-    <value>设置</value>
-    <comment>主窗体侧边栏</comment>
+  <data name="select" xml:space="preserve">
+    <value>选择</value>
   </data>
-  <data name="File" xml:space="preserve">
-    <value>_文件(F)</value>
-    <comment>绘图界面</comment>
+  <data name="cipw_col_alumina_state" xml:space="preserve">
+    <value>Al2O3 状态</value>
   </data>
-  <data name="Edit" xml:space="preserve">
-    <value>编辑</value>
-    <comment>绘图界面</comment>
+  <data name="favorite" xml:space="preserve">
+    <value>收藏</value>
   </data>
-  <data name="Expand" xml:space="preserve">
-    <value>拓展</value>
-    <comment>绘图界面</comment>
+  <data name="search_templates" xml:space="preserve">
+    <value>搜索模板...</value>
   </data>
-  <data name="EditMode" xml:space="preserve">
-    <value>编辑模式</value>
-    <comment>绘图界面</comment>
-  </data>
-  <data name="NewBasemap" xml:space="preserve">
-    <value>新建底图</value>
-    <comment>绘图界面</comment>
-  </data>
-  <data name="SaveBasemap" xml:space="preserve">
-    <value>保存底图</value>
-  </data>
-  <data name="ImportBasemap" xml:space="preserve">
-    <value>导入底图</value>
-  </data>
-  <data name="ExportBasemap" xml:space="preserve">
-    <value>导出底图</value>
-  </data>
-  <data name="DeleteBasemap" xml:space="preserve">
-    <value>删除底图</value>
-  </data>
-  <data name="GetMoreBasemap" xml:space="preserve">
-    <value>获取更多底图</value>
-  </data>
-  <data name="ImportData" xml:space="preserve">
-    <value>导入数据</value>
-  </data>
-  <data name="ResetPlot" xml:space="preserve">
-    <value>重置绘图</value>
-  </data>
-  <data name="ResetVision" xml:space="preserve">
-    <value>视图复位</value>
-  </data>
-  <data name="CancelSelected" xml:space="preserve">
-    <value>取消选中</value>
-  </data>
-  <data name="LocationAxis" xml:space="preserve">
-    <value>定位轴</value>
-  </data>
-  <data name="ExportImage" xml:space="preserve">
-    <value>导出图片</value>
-  </data>
-  <data name="ExportImagePNG" xml:space="preserve">
-    <value>导出 PNG 格式</value>
-  </data>
-  <data name="ExportImageJPG" xml:space="preserve">
-    <value>导出 JPG 格式</value>
-  </data>
-  <data name="ExportImageBMP" xml:space="preserve">
-    <value>导出 BMP 格式</value>
-  </data>
-  <data name="ExportImageWebp" xml:space="preserve">
-    <value>导出 Webp 格式</value>
-  </data>
-  <data name="ExportImageSVG" xml:space="preserve">
-    <value>导出 SVG 格式</value>
-  </data>
-  <data name="LegendSetting" xml:space="preserve">
-    <value>图例设置</value>
-  </data>
-  <data name="PlotSetting" xml:space="preserve">
-    <value>绘图设置</value>
-  </data>
-  <data name="AddLine" xml:space="preserve">
-    <value>添加线条</value>
-  </data>
-  <data name="AddPolygons" xml:space="preserve">
-    <value>添加多边形</value>
-  </data>
-  <data name="AddText" xml:space="preserve">
-    <value>添加注释</value>
-  </data>
-  <data name="JsSetting" xml:space="preserve">
-    <value>脚本设置</value>
-  </data>
-  <data name="Save" xml:space="preserve">
-    <value>保存</value>
-  </data>
-  <data name="QuitEdit" xml:space="preserve">
-    <value>退出编辑</value>
-  </data>
-  <data name="IgneousRock" xml:space="preserve">
-    <value>岩浆岩</value>
-  </data>
-  <data name="TectonicSetting" xml:space="preserve">
-    <value>构造环境</value>
-  </data>
-  <data name="Basalt" xml:space="preserve">
-    <value>玄武岩</value>
-  </data>
-  <data name="RockClassification" xml:space="preserve">
-    <value>岩石分类</value>
-  </data>
-  <data name="GTMP" xml:space="preserve">
-    <value>温度绘图</value>
-  </data>
-  <data name="Guide" xml:space="preserve">
-    <value>指南</value>
-  </data>
-  <data name="BorderLine" xml:space="preserve">
-    <value>边界</value>
-  </data>
-  <data name="PlotText" xml:space="preserve">
-    <value>注释</value>
-  </data>
-  <data name="PlotAxies" xml:space="preserve">
-    <value>坐标轴</value>
-  </data>
-  <data name="PlotLeftAxies" xml:space="preserve">
-    <value>左侧坐标轴</value>
-  </data>
-  <data name="PlotBottomAxies" xml:space="preserve">
-    <value>底部坐标轴</value>
-  </data>
-  <data name="PlotData" xml:space="preserve">
-    <value>数据</value>
-  </data>
-  <data name="MajorAxes" xml:space="preserve">
-    <value>主刻度轴</value>
-  </data>
-  <data name="MinorAxes" xml:space="preserve">
-    <value>次刻度轴</value>
-  </data>
-  <data name="legend" xml:space="preserve">
-    <value>图例</value>
-  </data>
-  <data name="Background" xml:space="preserve">
-    <value>背景</value>
-  </data>
-  <data name="Calculate" xml:space="preserve">
-    <value>计算</value>
-  </data>
-  <data name="Delete" xml:space="preserve">
-    <value>删除</value>
-  </data>
-  <data name="Confirm" xml:space="preserve">
-    <value>确认</value>
-  </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>取消</value>
-  </data>
-  <data name="DontSave" xml:space="preserve">
-    <value>不保存</value>
-  </data>
-  <data name="IsShow" xml:space="preserve">
-    <value>IsShow</value>
-  </data>
-  <data name="FontFamily" xml:space="preserve">
-    <value>字体</value>
-  </data>
-  <data name="FontStyle" xml:space="preserve">
-    <value>字体样式</value>
-  </data>
-  <data name="FontNormal" xml:space="preserve">
-    <value>默认</value>
-  </data>
-  <data name="FontBold" xml:space="preserve">
-    <value>加粗</value>
-  </data>
-  <data name="FontItalic" xml:space="preserve">
-    <value>斜体</value>
-  </data>
-  <data name="FontSize" xml:space="preserve">
-    <value>字体大小</value>
-  </data>
-  <data name="FontColor" xml:space="preserve">
-    <value>字体颜色</value>
-  </data>
-  <data name="TextContent" xml:space="preserve">
-    <value>内容</value>
-  </data>
-  <data name="LineStyle" xml:space="preserve">
-    <value>线条样式</value>
-  </data>
-  <data name="LineSolid" xml:space="preserve">
-    <value>实线</value>
-  </data>
-  <data name="LineDash" xml:space="preserve">
-    <value>虚线</value>
-  </data>
-  <data name="LineDashDot" xml:space="preserve">
-    <value>点线</value>
-  </data>
-  <data name="LineDenselyDashed" xml:space="preserve">
-    <value>密集虚线</value>
-  </data>
-  <data name="LineWidth" xml:space="preserve">
-    <value>宽度</value>
-  </data>
-  <data name="LineColor" xml:space="preserve">
-    <value>颜色</value>
-  </data>
-  <data name="PointStyle" xml:space="preserve">
-    <value>点样式</value>
-  </data>
-  <data name="PointCircle" xml:space="preserve">
-    <value>圆形</value>
-  </data>
-  <data name="PointHollowCircle" xml:space="preserve">
-    <value>空心圆形</value>
-  </data>
-  <data name="PointSquare" xml:space="preserve">
-    <value>方形</value>
-  </data>
-  <data name="PointFilledTriangleUp" xml:space="preserve">
-    <value>上三角形</value>
-  </data>
-  <data name="PointFilledTriangleDown" xml:space="preserve">
-    <value>下三角形</value>
-  </data>
-  <data name="PointDiamond" xml:space="preserve">
-    <value>菱形</value>
-  </data>
-  <data name="PointEks" xml:space="preserve">
-    <value>叉号</value>
-  </data>
-  <data name="PointCross" xml:space="preserve">
-    <value>十字形</value>
-  </data>
-  <data name="PointStar" xml:space="preserve">
-    <value>星形</value>
-  </data>
-  <data name="size" xml:space="preserve">
-    <value>大小</value>
-  </data>
-  <data name="IsShowAxes" xml:space="preserve">
-    <value>显示轴</value>
-  </data>
-  <data name="IsShowAxesTick" xml:space="preserve">
-    <value>隐藏主刻度</value>
-  </data>
-  <data name="AxesStyle" xml:space="preserve">
-    <value>刻度轴样式</value>
-  </data>
-  <data name="AxesStyleNormal" xml:space="preserve">
-    <value>常规</value>
-  </data>
-  <data name="AxesStyleLog10" xml:space="preserve">
-    <value>Log(10)</value>
+  <data name="export_successful" xml:space="preserve">
+    <value>导出成功</value>
   </data>
   <data name="AxesTickFont" xml:space="preserve">
     <value>刻度轴字体</value>
   </data>
-  <data name="AxesTickFontSize" xml:space="preserve">
-    <value>刻度字体大小</value>
+  <data name="geo_validate_version_format" xml:space="preserve">
+    <value>版本格式不正确，只允许 x.x.x 格式（如 1.0.0、1.2.3）。</value>
   </data>
-  <data name="AxesTickSpacing" xml:space="preserve">
-    <value>刻度间距</value>
+  <data name="delete_this_item" xml:space="preserve">
+    <value>删除此项</value>
   </data>
-  <data name="AxesTickUpLimit" xml:space="preserve">
-    <value>刻度上限</value>
+  <data name="Placeholder_Chart_Title" xml:space="preserve">
+    <value>图表标题</value>
   </data>
-  <data name="AxesTickDownLimit" xml:space="preserve">
-    <value>刻度下限</value>
+  <data name="drawing_template_repair_tool" xml:space="preserve">
+    <value>图解模板修复工具</value>
   </data>
-  <data name="AxesTickColor" xml:space="preserve">
-    <value>刻度颜色</value>
+  <data name="category_structure_min_two" xml:space="preserve">
+    <value>分类结构必须大于等于2！</value>
   </data>
-  <data name="IsShowMinorAxes" xml:space="preserve">
-    <value>隐藏次刻度</value>
+  <data name="template_file_save_path" xml:space="preserve">
+    <value>模板文件保存路径</value>
   </data>
-  <data name="IsShowLegend" xml:space="preserve">
-    <value>是否显示图例</value>
+  <data name="jpg_format" xml:space="preserve">
+    <value>JPG 格式</value>
   </data>
-  <data name="LegendPosition" xml:space="preserve">
-    <value>图例位置</value>
-  </data>
-  <data name="LegendPositionRU" xml:space="preserve">
-    <value>右上角</value>
-  </data>
-  <data name="LegendPositionRD" xml:space="preserve">
-    <value>右下角</value>
-  </data>
-  <data name="LegendPositionLU" xml:space="preserve">
-    <value>左上角</value>
-  </data>
-  <data name="LegendPositionLD" xml:space="preserve">
-    <value>左下角</value>
-  </data>
-  <data name="LegendDirection" xml:space="preserve">
-    <value>图例方向</value>
-  </data>
-  <data name="LegendVertical" xml:space="preserve">
-    <value>纵向</value>
-  </data>
-  <data name="LegendHorizontal" xml:space="preserve">
-    <value>横向</value>
-  </data>
-  <data name="PlotTitle" xml:space="preserve">
-    <value>绘图标题</value>
-  </data>
-  <data name="PlotTitleFont" xml:space="preserve">
-    <value>标题字体</value>
-  </data>
-  <data name="PlotTitleFontSize" xml:space="preserve">
-    <value>标题字体大小</value>
-  </data>
-  <data name="PlotTitleColor" xml:space="preserve">
-    <value>标题颜色</value>
-  </data>
-  <data name="PlotAxesTitle1" xml:space="preserve">
-    <value>坐标轴标题1</value>
-  </data>
-  <data name="PlotAxesTitle2" xml:space="preserve">
-    <value>坐标轴标题2</value>
-  </data>
-  <data name="PlotAxesTitleFont" xml:space="preserve">
-    <value>轴标题字体</value>
-  </data>
-  <data name="PlotAxesTitleFontSize" xml:space="preserve">
-    <value>轴标题字体大小</value>
-  </data>
-  <data name="PlotAxesTitleColor" xml:space="preserve">
-    <value>轴标题颜色</value>
-  </data>
-  <data name="PlotShowGrid" xml:space="preserve">
-    <value>显示网格</value>
-  </data>
-  <data name="PlotMajorGridColor" xml:space="preserve">
-    <value>主网格颜色</value>
-  </data>
-  <data name="PlotMajorGridWidth" xml:space="preserve">
-    <value>主网格宽度</value>
-  </data>
-  <data name="PlotShowMinorGrid" xml:space="preserve">
-    <value>显示次网格</value>
-  </data>
-  <data name="PlotMinorGridColor" xml:space="preserve">
-    <value>次网格颜色</value>
-  </data>
-  <data name="PlotMinorGridWidth" xml:space="preserve">
-    <value>次网格宽度</value>
-  </data>
-  <data name="PlotSwitchFilledColor" xml:space="preserve">
-    <value>反转填充颜色</value>
+  <data name="TGMInfo" xml:space="preserve">
+    <value>点击 或者 拖拽文件到此处</value>
   </data>
   <data name="PlotFilledColor1" xml:space="preserve">
     <value>填充区域颜色1</value>
@@ -498,179 +183,1713 @@
   <data name="PlotFilledColor2" xml:space="preserve">
     <value>填充区域颜色2</value>
   </data>
-  <data name="Parameters" xml:space="preserve">
-    <value>所需参数</value>
+  <data name="create_worksheet_failed" xml:space="preserve">
+    <value>创建工作表失败:</value>
   </data>
-  <data name="Js" xml:space="preserve">
-    <value>Js 脚本</value>
+  <data name="geo_validate_year_required" xml:space="preserve">
+    <value>年份不能为空。</value>
   </data>
-  <data name="CheckJs" xml:space="preserve">
-    <value>检查脚本</value>
+  <data name="new_version_available_github" xml:space="preserve">
+    <value>发现新版本！请前往GitHub Release页面下载更新。</value>
   </data>
-  <data name="Undelete_Message" xml:space="preserve">
-    <value>已取消删除</value>
+  <data name="batch_download_fail_count" xml:space="preserve">
+    <value>失败：{0} 个</value>
   </data>
-  <data name="DeleteingBasemapConfirm2_Message" xml:space="preserve">
-    <value>是否确认删除？</value>
+  <data name="confirm_delete_column" xml:space="preserve">
+    <value>确定要删除选中的列吗？</value>
   </data>
-  <data name="SaveSuccess" xml:space="preserve">
-    <value>保存成功</value>
+  <data name="cipw_iron_missing" xml:space="preserve">
+    <value>缺失</value>
   </data>
-  <data name="ParameterNotFilledIn" xml:space="preserve">
-    <value>投图参数未填写</value>
+  <data name="batch_download_complete" xml:space="preserve">
+    <value>批量下载完成</value>
   </data>
-  <data name="ScNotFilledIn" xml:space="preserve">
-    <value>投图脚本未填写</value>
+  <data name="ternary_phase_diagram_sum_must_be_one" xml:space="preserve">
+    <value>三元相图之和必须为 1.</value>
   </data>
-  <data name="CancelImport" xml:space="preserve">
-    <value>已取消导入</value>
+  <data name="add_text_operation_canceled" xml:space="preserve">
+    <value>添加文本操作已取消.</value>
   </data>
-  <data name="BasemapExisted" xml:space="preserve">
-    <value>底图文件已经存在，是否覆盖？</value>
+  <data name="geo_validation_version_required" xml:space="preserve">
+    <value>版本为必填项</value>
   </data>
-  <data name="NewBasemapSuccess" xml:space="preserve">
-    <value>新建底图成功</value>
-  </data>
-  <data name="CategoryFormatError" xml:space="preserve">
-    <value>类别格式错误</value>
-  </data>
-  <data name="ParameterNull" xml:space="preserve">
-    <value>参数为空</value>
-  </data>
-  <data name="JsNull" xml:space="preserve">
-    <value>脚本为空</value>
-  </data>
-  <data name="BasemapCategories" xml:space="preserve">
-    <value>底图类别</value>
-  </data>
-  <data name="BasemapLanguage" xml:space="preserve">
-    <value>底图语言</value>
-  </data>
-  <data name="Zircon" xml:space="preserve">
-    <value>锆石</value>
-  </data>
-  <data name="Sphalerite" xml:space="preserve">
-    <value>闪锌矿</value>
-  </data>
-  <data name="Quartz" xml:space="preserve">
-    <value>石英</value>
-  </data>
-  <data name="Arsenopyrite" xml:space="preserve">
-    <value>毒砂</value>
-  </data>
-  <data name="Chlorite" xml:space="preserve">
-    <value>绿泥石</value>
-  </data>
-  <data name="Biotite" xml:space="preserve">
-    <value>黑云母</value>
-  </data>
-  <data name="Amphibole" xml:space="preserve">
-    <value>角闪石</value>
-  </data>
-  <data name="Reset" xml:space="preserve">
+  <data name="geo_btn_reset" xml:space="preserve">
     <value>重置</value>
   </data>
-  <data name="ExportResult" xml:space="preserve">
-    <value>导出结果</value>
+  <data name="is_visible" xml:space="preserve">
+    <value>是否可见</value>
   </data>
-  <data name="TGMInfo" xml:space="preserve">
-    <value>点击 或者 拖拽文件到此处</value>
+  <data name="trace_element_spider_diagram" xml:space="preserve">
+    <value>微量元素蛛网图</value>
+  </data>
+  <data name="geo_msg_batch_export_success" xml:space="preserve">
+    <value>官方温度计共 {0} 个，本次导出 {1} 个（新增/修改）
+目录: {2}</value>
+  </data>
+  <data name="tick_interval" xml:space="preserve">
+    <value>刻度间隔</value>
+  </data>
+  <data name="geo_btn_apply" xml:space="preserve">
+    <value>应用</value>
+  </data>
+  <data name="stroke_color" xml:space="preserve">
+    <value>描边颜色</value>
+  </data>
+  <data name="ImportData" xml:space="preserve">
+    <value>导入数据</value>
+  </data>
+  <data name="stroke_width" xml:space="preserve">
+    <value>描边宽度</value>
+  </data>
+  <data name="AutoCheckUpdate" xml:space="preserve">
+    <value>自动检查更新</value>
+  </data>
+  <data name="builtin_templates" xml:space="preserve">
+    <value>官方内置模板</value>
+  </data>
+  <data name="failed_to_open_zip_file" xml:space="preserve">
+    <value>无法打开ZIP文件</value>
+  </data>
+  <data name="Alignment_MiddleLeft" xml:space="preserve">
+    <value>左中</value>
+  </data>
+  <data name="subtitle" xml:space="preserve">
+    <value>子标题</value>
+  </data>
+  <data name="illustrator_not_found_check_path" xml:space="preserve">
+    <value>未找到 Adobe Illustrator，请检查路径设置或选择打开程序。</value>
+  </data>
+  <data name="json_parse_error" xml:space="preserve">
+    <value>JSON 解析错误</value>
+  </data>
+  <data name="cipw_step1_detail" xml:space="preserve">
+    <value>• 将输入的主量元素氧化物数据进行无水归一化（归一化到 100%）
+• 处理铁的配分：根据用户设定的 Fe³⁺/Fe 比值，将 FeOT 拆分为 FeO 和 Fe₂O₃
+• 将 MnO 按摩尔比转换为 FeO 等价值合并计算
+• 将所有氧化物的质量百分比转换为摩尔数</value>
+  </data>
+  <data name="script_return_value_error_must_be_array" xml:space="preserve">
+    <value>• 脚本返回值错误：脚本必须返回一个数组。</value>
+  </data>
+  <data name="MarkerShape_VerticalBar" xml:space="preserve">
+    <value>竖线</value>
+  </data>
+  <data name="MarkerShape_OpenDiamond" xml:space="preserve">
+    <value>空心菱形</value>
+  </data>
+  <data name="geo_script_javascript" xml:space="preserve">
+    <value>JavaScript 脚本</value>
+  </data>
+  <data name="Expand" xml:space="preserve">
+    <value>拓展</value>
+  </data>
+  <data name="Placeholder_Chart_Title_Default" xml:space="preserve">
+    <value>新建图表</value>
+  </data>
+  <data name="geo_msg_promoted" xml:space="preserve">
+    <value>已转换为官方温度计</value>
+  </data>
+  <data name="geo_msg_test_input_required" xml:space="preserve">
+    <value>请输入测试值。</value>
+  </data>
+  <data name="orientation" xml:space="preserve">
+    <value>排列方式</value>
+  </data>
+  <data name="downloading_ellipsis" xml:space="preserve">
+    <value>正在下载...</value>
+  </data>
+  <data name="geo_hint_no_custom" xml:space="preserve">
+    <value>暂无自定义温度计，点击 + 创建。</value>
   </data>
   <data name="CalTarget" xml:space="preserve">
     <value>计算目标</value>
   </data>
-  <data name="CalTarget1" xml:space="preserve">
-    <value>Zr 饱和温度 (Watson and Harrison, 1983)</value>
+  <data name="FontItalic" xml:space="preserve">
+    <value>斜体</value>
   </data>
-  <data name="CalTarget2" xml:space="preserve">
-    <value>Zr 主量温度  (Watson and Harrison, 1983)</value>
+  <data name="actual_sum_is" xml:space="preserve">
+    <value>(实际和为</value>
+  </data>
+  <data name="geo_msg_update_downloaded" xml:space="preserve">
+    <value>已下载 {0} 个地质温度计</value>
+  </data>
+  <data name="export_current_worksheet" xml:space="preserve">
+    <value>_导出当前工作表(R)</value>
+  </data>
+  <data name="use_help" xml:space="preserve">
+    <value>图解指南</value>
+  </data>
+  <data name="Enum_LineType_Solid" xml:space="preserve">
+    <value>实线</value>
+  </data>
+  <data name="geo_placeholder_help_read_confirm" xml:space="preserve">
+    <value>阅读文档后点击确认继续。</value>
+  </data>
+  <data name="ree_spider_diagram" xml:space="preserve">
+    <value>稀土元素蛛网图</value>
+  </data>
+  <data name="batch_downloading" xml:space="preserve">
+    <value>批量下载中</value>
+  </data>
+  <data name="subtitle_bold" xml:space="preserve">
+    <value>子标题粗体</value>
+  </data>
+  <data name="diagram_guide" xml:space="preserve">
+    <value>图解向导</value>
+  </data>
+  <data name="ExportImageBMP" xml:space="preserve">
+    <value>导出 BMP 格式</value>
+  </data>
+  <data name="ExportImageJPG" xml:space="preserve">
+    <value>导出 JPG 格式</value>
+  </data>
+  <data name="ExportImageSVG" xml:space="preserve">
+    <value>导出 SVG 格式</value>
+  </data>
+  <data name="ExportImagePNG" xml:space="preserve">
+    <value>导出 PNG 格式</value>
+  </data>
+  <data name="line_type_dot" xml:space="preserve">
+    <value>点线</value>
+  </data>
+  <data name="highlight_on_hover" xml:space="preserve">
+    <value>开启后，鼠标移到绘图对象（点、线、面等）上方时会自动高亮，点击可查看信息</value>
+  </data>
+  <data name="geo_help_delete_doc" xml:space="preserve">
+    <value>删除当前语言的帮助文档</value>
+  </data>
+  <data name="loading_status" xml:space="preserve">
+    <value>加载中...</value>
+  </data>
+  <data name="geo_menu_update" xml:space="preserve">
+    <value>更新</value>
+  </data>
+  <data name="PlotMinorGridColor" xml:space="preserve">
+    <value>次网格颜色</value>
+  </data>
+  <data name="MessageAutoClose" xml:space="preserve">
+    <value>自动关闭时间</value>
+  </data>
+  <data name="LegendDirection" xml:space="preserve">
+    <value>图例方向</value>
+  </data>
+  <data name="PlotMinorGridWidth" xml:space="preserve">
+    <value>次网格宽度</value>
+  </data>
+  <data name="please_enter_name" xml:space="preserve">
+    <value>请输入名称</value>
+  </data>
+  <data name="please_enter_link" xml:space="preserve">
+    <value>请输入链接</value>
+  </data>
+  <data name="add_text" xml:space="preserve">
+    <value>添加文本</value>
+  </data>
+  <data name="add_line" xml:space="preserve">
+    <value>添加线条</value>
+  </data>
+  <data name="add_link" xml:space="preserve">
+    <value>添加链接</value>
+  </data>
+  <data name="confirm_new_worksheet" xml:space="preserve">
+    <value>是否新建工作表？</value>
+  </data>
+  <data name="pattern" xml:space="preserve">
+    <value>线型</value>
+  </data>
+  <data name="geo_ctx_promote" xml:space="preserve">
+    <value>转换为官方</value>
+  </data>
+  <data name="geo_validation_reference_required" xml:space="preserve">
+    <value>参考文献为必填项</value>
+  </data>
+  <data name="validation_failed" xml:space="preserve">
+    <value>验证失败:</value>
+  </data>
+  <data name="Support2" xml:space="preserve">
+    <value>📌图表支持:</value>
+  </data>
+  <data name="Support3" xml:space="preserve">
+    <value>📌文档支持:</value>
+  </data>
+  <data name="Support1" xml:space="preserve">
+    <value>📌控件支持:</value>
+  </data>
+  <data name="Support4" xml:space="preserve">
+    <value>📌计算支持:</value>
+  </data>
+  <data name="Support5" xml:space="preserve">
+    <value>📌工具支持:</value>
+  </data>
+  <data name="geo_menu_maintenance" xml:space="preserve">
+    <value>维护</value>
+  </data>
+  <data name="geo_validate_headers_required" xml:space="preserve">
+    <value>表头不能为空。</value>
+  </data>
+  <data name="PlotTitleFontSize" xml:space="preserve">
+    <value>标题字体大小</value>
+  </data>
+  <data name="enter_level_add" xml:space="preserve">
+    <value>输入一个层级后按 Enter 键添加。</value>
+  </data>
+  <data name="background_and_border" xml:space="preserve">
+    <value>背景与边框</value>
+  </data>
+  <data name="DeleteBasemap" xml:space="preserve">
+    <value>删除底图</value>
+  </data>
+  <data name="all_imported_data_cleared" xml:space="preserve">
+    <value>已清除所有导入的数据</value>
+  </data>
+  <data name="grid_settings" xml:space="preserve">
+    <value>网格设置</value>
+  </data>
+  <data name="refresh_failed" xml:space="preserve">
+    <value>刷新失败：</value>
+  </data>
+  <data name="Biotite" xml:space="preserve">
+    <value>黑云母</value>
+  </data>
+  <data name="Arsenopyrite" xml:space="preserve">
+    <value>毒砂</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="polygon" xml:space="preserve">
+    <value>多边形</value>
+  </data>
+  <data name="fill_color_2" xml:space="preserve">
+    <value>填充颜色 2</value>
+  </data>
+  <data name="fill_color_1" xml:space="preserve">
+    <value>填充颜色 1</value>
   </data>
   <data name="Pressure" xml:space="preserve">
     <value>压力(Mpa)</value>
   </data>
-  <data name="AmphiboleGTM" xml:space="preserve">
-    <value>Si 温度计 (Ridolfi et al., 2010)</value>
+  <data name="start_check_and_repair" xml:space="preserve">
+    <value>开始检查与修复</value>
   </data>
-  <data name="BiotiteGTM" xml:space="preserve">
-    <value>Ti 温度计 (Henry et al., 2005)</value>
+  <data name="GetMoreBasemap" xml:space="preserve">
+    <value>获取更多底图</value>
   </data>
-  <data name="ChloriteGTM" xml:space="preserve">
-    <value>Al4 温度计 (Jowett, 1991)</value>
+  <data name="check_for_category_updates" xml:space="preserve">
+    <value>检查分类结构更新</value>
   </data>
-  <data name="ArsenopyriteGTM" xml:space="preserve">
-    <value>毒砂温度计 (Kretschmar and Scott, 1976)</value>
+  <data name="cipw_overview" xml:space="preserve">
+    <value>CIPW 标准矿物计算（又称 CIPW Norm）是由 Cross、Iddings、Pirsson 和 Washington 四位岩石学家于 1902 年提出的一种岩石化学计算方法。该方法根据全岩主量元素氧化物的化学分析数据，按照固定的优先顺序将氧化物分配到一组理想化的标准矿物中，用于岩石分类和对比研究。</value>
   </data>
-  <data name="QuartzGTM" xml:space="preserve">
-    <value>TitaniQ  温度计 (Wark and Watson, 2006)</value>
+  <data name="elements_count_suffix" xml:space="preserve">
+    <value>个。</value>
   </data>
-  <data name="SphaleriteGTM" xml:space="preserve">
-    <value>FeS 温度计 (Scott and Barnes, 1971)</value>
+  <data name="update_list_file_failed" xml:space="preserve">
+    <value>更新列表文件失败</value>
   </data>
-  <data name="SphaleriteGGIMFisGTM" xml:space="preserve">
-    <value>GGIMFis 温度计 (Frenzel et al., 2016)</value>
+  <data name="FontStyle" xml:space="preserve">
+    <value>字体样式</value>
+  </data>
+  <data name="save_as" xml:space="preserve">
+    <value>另存为</value>
+  </data>
+  <data name="click_help_for_guide" xml:space="preserve">
+    <value>点击按钮查看图解文档</value>
+  </data>
+  <data name="LegendVertical" xml:space="preserve">
+    <value>纵向</value>
+  </data>
+  <data name="Placeholder_Component_A" xml:space="preserve">
+    <value>A</value>
+  </data>
+  <data name="Placeholder_Component_C" xml:space="preserve">
+    <value>C</value>
+  </data>
+  <data name="Placeholder_Component_B" xml:space="preserve">
+    <value>B</value>
+  </data>
+  <data name="click_to_pick_coordinates" xml:space="preserve">
+    <value>请在绘图区域点击以拾取坐标</value>
+  </data>
+  <data name="FontColor" xml:space="preserve">
+    <value>字体颜色</value>
+  </data>
+  <data name="Basalt" xml:space="preserve">
+    <value>玄武岩</value>
+  </data>
+  <data name="annotation" xml:space="preserve">
+    <value>注释</value>
+  </data>
+  <data name="geo_dialog_apply_overwrite" xml:space="preserve">
+    <value>应用将会覆盖当前工作表内容，是否要继续？</value>
   </data>
   <data name="ZirconTiGTM" xml:space="preserve">
     <value>Ti 温度计 (Loucks et al., 2020)</value>
   </data>
+  <data name="ImportBasemap" xml:space="preserve">
+    <value>导入底图</value>
+  </data>
   <data name="ZirconZrGTM" xml:space="preserve">
     <value>Zr 温度计 (Watson and Harrison, 1983)</value>
   </data>
-  <data name="Step1" xml:space="preserve">
-    <value>导入 / 填入数据</value>
+  <data name="ResetSuccess" xml:space="preserve">
+    <value>重置成功</value>
   </data>
-  <data name="Step2" xml:space="preserve">
-    <value>检查参数</value>
+  <data name="geo_msg_save_failed" xml:space="preserve">
+    <value>保存失败: {0}</value>
   </data>
-  <data name="Step3" xml:space="preserve">
-    <value>计算结果</value>
+  <data name="geo_editor_title_new" xml:space="preserve">
+    <value>新建自定义温度计</value>
   </data>
-  <data name="NormalSetting" xml:space="preserve">
-    <value>常规设置</value>
+  <data name="BorderLine" xml:space="preserve">
+    <value>边界</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>关于</value>
+  <data name="switch_diagram_language" xml:space="preserve">
+    <value>切换图解语言</value>
   </data>
-  <data name="FilePath" xml:space="preserve">
-    <value>文件路径</value>
+  <data name="missing_columns" xml:space="preserve">
+    <value>缺少列</value>
   </data>
-  <data name="FileSavePath" xml:space="preserve">
-    <value>保存文件位置</value>
+  <data name="location" xml:space="preserve">
+    <value>位置</value>
   </data>
-  <data name="DefaultPath" xml:space="preserve">
-    <value>默认位置</value>
+  <data name="syntax_validation_passed" xml:space="preserve">
+    <value>语法验证通过</value>
   </data>
-  <data name="CustomPath" xml:space="preserve">
-    <value>自定义文件夹位置</value>
+  <data name="cipw_tooltip_expand" xml:space="preserve">
+    <value>展开 / 收缩</value>
   </data>
-  <data name="OpenFileLocation" xml:space="preserve">
-    <value>打开文件夹位置</value>
+  <data name="cipw_tooltip_export" xml:space="preserve">
+    <value>导出计算结果到 CSV 文件</value>
   </data>
-  <data name="InternationalizationAndPersonalization" xml:space="preserve">
-    <value>国际化 &amp; 个性化</value>
+  <data name="is_bold" xml:space="preserve">
+    <value>粗体</value>
   </data>
-  <data name="Theme" xml:space="preserve">
-    <value>主题</value>
+  <data name="legend_settings" xml:space="preserve">
+    <value>图例设置</value>
   </data>
-  <data name="Default" xml:space="preserve">
-    <value>默认</value>
+  <data name="Cancel" xml:space="preserve">
+    <value>取消</value>
   </data>
-  <data name="Language_" xml:space="preserve">
-    <value>语言</value>
+  <data name="geo_validation_author_required" xml:space="preserve">
+    <value>作者为必填项</value>
+  </data>
+  <data name="double_click" xml:space="preserve">
+    <value>双击</value>
+  </data>
+  <data name="delete_row" xml:space="preserve">
+    <value>删除行</value>
+  </data>
+  <data name="cipw_export_dialog_title" xml:space="preserve">
+    <value>导出 CIPW 计算结果</value>
+  </data>
+  <data name="geo_menu_import_zip" xml:space="preserve">
+    <value>导入地质温度计 (ZIP)</value>
+  </data>
+  <data name="read_file_failed" xml:space="preserve">
+    <value>读取文件失败</value>
+  </data>
+  <data name="developer_mode" xml:space="preserve">
+    <value>开发者模式</value>
+  </data>
+  <data name="BasemapCategories" xml:space="preserve">
+    <value>底图类别</value>
+  </data>
+  <data name="geo_validate_mineral_required" xml:space="preserve">
+    <value>矿物分类不能为空。</value>
+  </data>
+  <data name="object_selection_trigger" xml:space="preserve">
+    <value>选中对象触发方式</value>
+  </data>
+  <data name="filter_templates" xml:space="preserve">
+    <value>筛选模板</value>
+  </data>
+  <data name="geo_hint_select_data_row" xml:space="preserve">
+    <value>请选择数据行</value>
+  </data>
+  <data name="Setting" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="batch_download_progress" xml:space="preserve">
+    <value>正在下载：{0}/{1} - {2}</value>
+  </data>
+  <data name="oxygen_atom_benchmark_zero" xml:space="preserve">
+    <value>氧原子数基准值为零</value>
+  </data>
+  <data name="geo_msg_export_success" xml:space="preserve">
+    <value>导出成功</value>
+  </data>
+  <data name="LineDash" xml:space="preserve">
+    <value>虚线</value>
+  </data>
+  <data name="cipw_iron_measured" xml:space="preserve">
+    <value>实测值</value>
+  </data>
+  <data name="IsShowLegend" xml:space="preserve">
+    <value>是否显示图例</value>
+  </data>
+  <data name="library_section" xml:space="preserve">
+    <value>资源库</value>
+  </data>
+  <data name="server_announcement" xml:space="preserve">
+    <value>服务器公告</value>
+  </data>
+  <data name="failed_templates" xml:space="preserve">
+    <value>失败模板：</value>
+  </data>
+  <data name="font_rotation" xml:space="preserve">
+    <value>字体旋转</value>
+  </data>
+  <data name="toggle_details_expand_collapse" xml:space="preserve">
+    <value>展开/收缩详情</value>
+  </data>
+  <data name="PlotAxesTitleFontSize" xml:space="preserve">
+    <value>轴标题字体大小</value>
+  </data>
+  <data name="file_import_successful" xml:space="preserve">
+    <value>文件导入成功</value>
+  </data>
+  <data name="uncategorized" xml:space="preserve">
+    <value>未分类</value>
+  </data>
+  <data name="attempting_to_start" xml:space="preserve">
+    <value>正在尝试启动</value>
+  </data>
+  <data name="diagram" xml:space="preserve">
+    <value>图解</value>
+  </data>
+  <data name="geo_validation_year_range" xml:space="preserve">
+    <value>年份必须为四位数（1000-9999）</value>
+  </data>
+  <data name="geo_msg_checking_update" xml:space="preserve">
+    <value>正在检查更新...</value>
+  </data>
+  <data name="add_function" xml:space="preserve">
+    <value>添加函数</value>
+  </data>
+  <data name="edit_diagram_template" xml:space="preserve">
+    <value>编辑图解模板</value>
+  </data>
+  <data name="IsShow" xml:space="preserve">
+    <value>IsShow</value>
   </data>
   <data name="EnglishUS" xml:space="preserve">
     <value>English (US)</value>
   </data>
-  <data name="ChineseS" xml:space="preserve">
-    <value>中文(简体)</value>
+  <data name="cipw_references_content" xml:space="preserve">
+    <value>• Cross, W., Iddings, J.P., Pirsson, L.V., Washington, H.S. (1902). A Quantitative Chemico-Mineralogical Classification and Nomenclature of Igneous Rocks.
+• Le Maitre, R.W. (2002). Igneous Rocks: A Classification and Glossary of Terms. Cambridge University Press.
+• Kelsey, C.H. (1965). Calculation of the CIPW norm. Mineralogical Magazine, 34, 276-282.</value>
+  </data>
+  <data name="geo_ctx_demote" xml:space="preserve">
+    <value>降级为自定义</value>
+  </data>
+  <data name="geo_ctx_delete" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="cipw_step3_detail" xml:space="preserve">
+    <value>分配微量组分到副矿物中：
+• 锆石（Z）：ZrO₂ + SiO₂
+• 磷灰石（Ap）：P₂O₅ + CaO
+• 铬铁矿（Cm）：Cr₂O₃ + FeO
+• 钛铁矿（Ilm）：TiO₂ + FeO
+• 榍石（Tn）：TiO₂ + CaO + SiO₂
+• 金红石（Ru）：残余 TiO₂</value>
+  </data>
+  <data name="diagram_template_source_missing" xml:space="preserve">
+    <value>图解模板源文件不存在</value>
+  </data>
+  <data name="single_click" xml:space="preserve">
+    <value>单击</value>
+  </data>
+  <data name="element_order" xml:space="preserve">
+    <value>元素顺序</value>
+  </data>
+  <data name="diagram_help_path_undefined_save_template" xml:space="preserve">
+    <value>无法确定图解帮助文件路径，请尝试先保存模板。</value>
+  </data>
+  <data name="already_exists_overwrite_confirm" xml:space="preserve">
+    <value>已存在，是否覆盖？</value>
+  </data>
+  <data name="geo_editor_title_edit" xml:space="preserve">
+    <value>编辑温度计</value>
+  </data>
+  <data name="start_and_end_coordinates" xml:space="preserve">
+    <value>起始坐标</value>
+  </data>
+  <data name="official_templates" xml:space="preserve">
+    <value>官方图解模板</value>
+  </data>
+  <data name="ScNotFilledIn" xml:space="preserve">
+    <value>投图脚本未填写</value>
+  </data>
+  <data name="LegendPositionLU" xml:space="preserve">
+    <value>左上角</value>
+  </data>
+  <data name="LegendPositionLD" xml:space="preserve">
+    <value>左下角</value>
+  </data>
+  <data name="LegendPositionRD" xml:space="preserve">
+    <value>右下角</value>
+  </data>
+  <data name="LegendPositionRU" xml:space="preserve">
+    <value>右上角</value>
+  </data>
+  <data name="clear_data" xml:space="preserve">
+    <value>清除数据</value>
+  </data>
+  <data name="geo_validate_reference_required" xml:space="preserve">
+    <value>参考文献不能为空。</value>
+  </data>
+  <data name="diagram_script_properties" xml:space="preserve">
+    <value>图解脚本属性</value>
+  </data>
+  <data name="PlotMajorGridColor" xml:space="preserve">
+    <value>主网格颜色</value>
+  </data>
+  <data name="PlotAxesTitleFont" xml:space="preserve">
+    <value>轴标题字体</value>
+  </data>
+  <data name="zoom_type" xml:space="preserve">
+    <value>缩放类型</value>
+  </data>
+  <data name="pick_coordinate" xml:space="preserve">
+    <value>拾取坐标</value>
+  </data>
+  <data name="cipw_msg_export_failed" xml:space="preserve">
+    <value>导出失败: {0}</value>
+  </data>
+  <data name="trace_function_usage_tip" xml:space="preserve">
+    <value>可在脚本中使用 trace(...) 函数记录计算过程。</value>
+  </data>
+  <data name="PlotMajorGridWidth" xml:space="preserve">
+    <value>主网格宽度</value>
+  </data>
+  <data name="custom_app" xml:space="preserve">
+    <value>自定义应用</value>
+  </data>
+  <data name="PlotAxesTitleColor" xml:space="preserve">
+    <value>轴标题颜色</value>
+  </data>
+  <data name="JsNull" xml:space="preserve">
+    <value>脚本为空</value>
+  </data>
+  <data name="input_out_of_range" xml:space="preserve">
+    <value>输入值超出范围</value>
+  </data>
+  <data name="custom_templates" xml:space="preserve">
+    <value>个人图解模板</value>
+  </data>
+  <data name="entering_soon_ellipsis" xml:space="preserve">
+    <value>即将进入...</value>
+  </data>
+  <data name="geo_tooltip_minimize" xml:space="preserve">
+    <value>最小化</value>
+  </data>
+  <data name="template_load_failed" xml:space="preserve">
+    <value>图解模板加载失败</value>
+  </data>
+  <data name="template_saved_successfully" xml:space="preserve">
+    <value>模板已成功保存！</value>
+  </data>
+  <data name="geo_test_script_empty" xml:space="preserve">
+    <value>脚本内容为空</value>
+  </data>
+  <data name="favorite_added" xml:space="preserve">
+    <value>已添加到收藏</value>
+  </data>
+  <data name="geo_validation_version_format" xml:space="preserve">
+    <value>版本号格式应为 x.x.x（如 1.0.0）</value>
+  </data>
+  <data name="IsShowAxes" xml:space="preserve">
+    <value>显示轴</value>
+  </data>
+  <data name="geo_msg_delete_confirm" xml:space="preserve">
+    <value>确定删除{0}温度计「{1}」？</value>
+  </data>
+  <data name="geo_menu_new_custom" xml:space="preserve">
+    <value>新建自定义地质温度计</value>
+  </data>
+  <data name="OpenFileLocation" xml:space="preserve">
+    <value>打开文件夹位置</value>
+  </data>
+  <data name="Quartz" xml:space="preserve">
+    <value>石英</value>
+  </data>
+  <data name="import_custom_diagram_template" xml:space="preserve">
+    <value>导入自定义图解模板</value>
+  </data>
+  <data name="invalid_formula" xml:space="preserve">
+    <value>公式不合法</value>
+  </data>
+  <data name="PlotBoder" xml:space="preserve">
+    <value>边界</value>
+  </data>
+  <data name="subtitle_color" xml:space="preserve">
+    <value>子标题颜色</value>
+  </data>
+  <data name="cipw_diag_total_minerals" xml:space="preserve">
+    <value>矿物总量</value>
+  </data>
+  <data name="PlotAxies" xml:space="preserve">
+    <value>坐标轴</value>
+  </data>
+  <data name="DeleteingBasemapConfirm2_Message" xml:space="preserve">
+    <value>是否确认删除？</value>
+  </data>
+  <data name="no_valid_data_found" xml:space="preserve">
+    <value>未在数据表中找到有效数据。</value>
+  </data>
+  <data name="geo_validation_year_required" xml:space="preserve">
+    <value>年份为必填项</value>
+  </data>
+  <data name="error_occurred_while_checking_for_updates" xml:space="preserve">
+    <value>检查更新时发生错误：</value>
+  </data>
+  <data name="GeothermometerSetting" xml:space="preserve">
+    <value>地质温度计设置</value>
+  </data>
+  <data name="PlotTitle" xml:space="preserve">
+    <value>绘图标题</value>
+  </data>
+  <data name="MarkerShape_FilledTriangleUp" xml:space="preserve">
+    <value>实心上三角</value>
+  </data>
+  <data name="geo_btn_save_export_zip" xml:space="preserve">
+    <value>保存并导出 ZIP</value>
+  </data>
+  <data name="enable_normalization" xml:space="preserve">
+    <value>启用标准化</value>
+  </data>
+  <data name="geo_section_official" xml:space="preserve">
+    <value>官方温度计</value>
+  </data>
+  <data name="geo_validation_name_required" xml:space="preserve">
+    <value>名称为必填项</value>
+  </data>
+  <data name="geo_help_current_lang" xml:space="preserve">
+    <value>当前语言：</value>
+  </data>
+  <data name="new_drawing_template_library_version_detected" xml:space="preserve">
+    <value>检测到绘图模板库有新版本，是否立即更新列表？</value>
+  </data>
+  <data name="inkscape_env_not_found_select_program" xml:space="preserve">
+    <value>未找到 Inkscape 环境变量，请选择打开程序。</value>
+  </data>
+  <data name="cipw_select_row_hint" xml:space="preserve">
+    <value>选择数据行查看计算诊断详情</value>
+  </data>
+  <data name="loading_drawing_module_ellipsis" xml:space="preserve">
+    <value>正在加载绘图模块...</value>
+  </data>
+  <data name="template_list_update_success_refreshing" xml:space="preserve">
+    <value>模板列表更新成功！正在刷新...</value>
+  </data>
+  <data name="IgneousRock" xml:space="preserve">
+    <value>岩浆岩</value>
+  </data>
+  <data name="cipw_tooltip_clear" xml:space="preserve">
+    <value>清除所有输入和计算结果</value>
+  </data>
+  <data name="script_return_two_values_requirement" xml:space="preserve">
+    <value>脚本必须返回至少 2 个值的数组 [X, Y]</value>
+  </data>
+  <data name="Language_" xml:space="preserve">
+    <value>语言</value>
+  </data>
+  <data name="MarkerShape_HashTag" xml:space="preserve">
+    <value>井号</value>
+  </data>
+  <data name="cipw_btn_calculate" xml:space="preserve">
+    <value>执行计算</value>
+  </data>
+  <data name="AxesStyleNormal" xml:space="preserve">
+    <value>常规</value>
+  </data>
+  <data name="MarkerShape_OpenCircleWithDot" xml:space="preserve">
+    <value>空心圆加点</value>
+  </data>
+  <data name="MarkerShape_OpenCircleWithEks" xml:space="preserve">
+    <value>空心圆加叉</value>
+  </data>
+  <data name="normalization_factor_is_zero" xml:space="preserve">
+    <value>归一化因子为零</value>
+  </data>
+  <data name="svg_format" xml:space="preserve">
+    <value>SVG 格式</value>
+  </data>
+  <data name="cipw_diag_warnings" xml:space="preserve">
+    <value>── 警告 ──</value>
+  </data>
+  <data name="AxesTickColor" xml:space="preserve">
+    <value>刻度颜色</value>
+  </data>
+  <data name="all_templates" xml:space="preserve">
+    <value>全部模板</value>
+  </data>
+  <data name="personal_templates" xml:space="preserve">
+    <value>个人图解模板</value>
+  </data>
+  <data name="geo_step_basic" xml:space="preserve">
+    <value>基本信息</value>
+  </data>
+  <data name="cipw_step6_title" xml:space="preserve">
+    <value>形成铁氧化物</value>
+  </data>
+  <data name="failed_to_parse_category_group" xml:space="preserve">
+    <value>未能从文件中解析出有效的类别分组。请检查类别列数据</value>
+  </data>
+  <data name="clear_data_points" xml:space="preserve">
+    <value>清除数据点</value>
+  </data>
+  <data name="geo_help_font_size" xml:space="preserve">
+    <value>字号：</value>
+  </data>
+  <data name="geo_msg_test_input_invalid" xml:space="preserve">
+    <value>测试输入无效，请使用逗号分隔的数字。</value>
+  </data>
+  <data name="MarkerShape_FilledTriangleDown" xml:space="preserve">
+    <value>实心下三角</value>
+  </data>
+  <data name="Parameters" xml:space="preserve">
+    <value>所需参数</value>
+  </data>
+  <data name="missing_translation_warning" xml:space="preserve">
+    <value>• 翻译缺失：部分文本缺少多语言翻译。</value>
+  </data>
+  <data name="geo_btn_export" xml:space="preserve">
+    <value>导出</value>
+  </data>
+  <data name="developer_maintenance_tool" xml:space="preserve">
+    <value>开发者维护工具</value>
+  </data>
+  <data name="geo_help_underline" xml:space="preserve">
+    <value>下划线 (Ctrl+U)</value>
+  </data>
+  <data name="create_new_diagram_template" xml:space="preserve">
+    <value>新建图解模板</value>
+  </data>
+  <data name="ExportResult" xml:space="preserve">
+    <value>导出结果</value>
+  </data>
+  <data name="background_fill" xml:space="preserve">
+    <value>背景填充</value>
+  </data>
+  <data name="cipw_alumina_peralkaline" xml:space="preserve">
+    <value>过碱性</value>
+  </data>
+  <data name="geo_tooltip_version_format" xml:space="preserve">
+    <value>语义化版本号，如 1.0.0、1.2.3</value>
+  </data>
+  <data name="DontSave" xml:space="preserve">
+    <value>不保存</value>
+  </data>
+  <data name="geo_field_author" xml:space="preserve">
+    <value>作者 *</value>
+  </data>
+  <data name="cipw_tooltip_calculate" xml:space="preserve">
+    <value>对所有有数据的行执行 CIPW 标准矿物计算</value>
+  </data>
+  <data name="geo_btn_cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="logarithmic" xml:space="preserve">
+    <value>对数</value>
+  </data>
+  <data name="background_fill_1" xml:space="preserve">
+    <value>背景填充</value>
+  </data>
+  <data name="background_fill_2" xml:space="preserve">
+    <value>背景填充</value>
+  </data>
+  <data name="AxesTickSpacing" xml:space="preserve">
+    <value>刻度间距</value>
+  </data>
+  <data name="geo_test_input_invalid" xml:space="preserve">
+    <value>测试输入无效，请使用逗号分隔的数字。</value>
+  </data>
+  <data name="arrowhead_width" xml:space="preserve">
+    <value>箭头宽度</value>
+  </data>
+  <data name="geo_btn_prev" xml:space="preserve">
+    <value>上一步</value>
+  </data>
+  <data name="geo_btn_save" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="geo_btn_help" xml:space="preserve">
+    <value>帮助说明</value>
+  </data>
+  <data name="geo_btn_next" xml:space="preserve">
+    <value>下一步</value>
+  </data>
+  <data name="geo_field_description" xml:space="preserve">
+    <value>简要描述</value>
+  </data>
+  <data name="invalid_script_variable_name" xml:space="preserve">
+    <value>• 脚本变量名格式错误：’</value>
+  </data>
+  <data name="ExportImageWebp" xml:space="preserve">
+    <value>导出 Webp 格式</value>
+  </data>
+  <data name="geological_thermometer" xml:space="preserve">
+    <value>地质温度计</value>
+  </data>
+  <data name="browse_ellipsis" xml:space="preserve">
+    <value>浏览...</value>
+  </data>
+  <data name="open_with_third_party_software" xml:space="preserve">
+    <value>第三方软件打开</value>
+  </data>
+  <data name="bmp_format" xml:space="preserve">
+    <value>BMP 格式</value>
+  </data>
+  <data name="return_to_template_library" xml:space="preserve">
+    <value>返回</value>
+  </data>
+  <data name="fill_color" xml:space="preserve">
+    <value>填充颜色</value>
+  </data>
+  <data name="enter_supported_languages" xml:space="preserve">
+    <value>输入支持语言</value>
+  </data>
+  <data name="cipw_iron_inconsistent" xml:space="preserve">
+    <value>输入不一致</value>
+  </data>
+  <data name="export_image" xml:space="preserve">
+    <value>导出图片</value>
+  </data>
+  <data name="MarkerShape_FilledSquare" xml:space="preserve">
+    <value>实心正方形</value>
+  </data>
+  <data name="cipw_tooltip_example" xml:space="preserve">
+    <value>填充示例数据（花岗岩、玄武岩、安山岩）</value>
+  </data>
+  <data name="diagram_title_properties" xml:space="preserve">
+    <value>图解标题属性</value>
+  </data>
+  <data name="add_column_left" xml:space="preserve">
+    <value>添加列(左)</value>
+  </data>
+  <data name="update_available_click_to_download" xml:space="preserve">
+    <value>有新版本可用，点击更新</value>
+  </data>
+  <data name="developer_maintenance_tools" xml:space="preserve">
+    <value>开发者维护工具</value>
+  </data>
+  <data name="template_upgrade_warning" xml:space="preserve">
+    <value>当前模板版本较低，保存后将升级模板版本，可能会导致低版本软件无法使用该模板。是否继续？</value>
+  </data>
+  <data name="data_plotting_successful" xml:space="preserve">
+    <value>数据点绘图成功</value>
+  </data>
+  <data name="PlotAxesTitle1" xml:space="preserve">
+    <value>坐标轴标题1</value>
+  </data>
+  <data name="PlotAxesTitle2" xml:space="preserve">
+    <value>坐标轴标题2</value>
+  </data>
+  <data name="geo_section_calc_details" xml:space="preserve">
+    <value>计算详情</value>
+  </data>
+  <data name="geo_validate_formula_name_invalid" xml:space="preserve">
+    <value>公式名称只能包含字母、数字和下划线。</value>
+  </data>
+  <data name="border_width" xml:space="preserve">
+    <value>边框宽度</value>
+  </data>
+  <data name="geo_help_add_lang" xml:space="preserve">
+    <value>添加语言：</value>
+  </data>
+  <data name="copy_content" xml:space="preserve">
+    <value>复制内容</value>
+  </data>
+  <data name="ignore_issues_and_continue_export" xml:space="preserve">
+    <value>是否忽略这些问题并继续导出？</value>
+  </data>
+  <data name="file_does_not_exist" xml:space="preserve">
+    <value>文件不存在:</value>
+  </data>
+  <data name="cipw_msg_calc_partial_success" xml:space="preserve">
+    <value>计算完成：{0}/{1} 个样品成功</value>
+  </data>
+  <data name="border_color" xml:space="preserve">
+    <value>边框颜色</value>
+  </data>
+  <data name="language_switch_success" xml:space="preserve">
+    <value>语言切换成功</value>
+  </data>
+  <data name="ExportImage" xml:space="preserve">
+    <value>导出图片</value>
+  </data>
+  <data name="Zircon" xml:space="preserve">
+    <value>锆石</value>
+  </data>
+  <data name="left_y_axis" xml:space="preserve">
+    <value>左 Y 轴</value>
+  </data>
+  <data name="cipw_confirm_clear_msg" xml:space="preserve">
+    <value>确定要清除所有输入和计算结果吗？</value>
+  </data>
+  <data name="cipw_btn_help" xml:space="preserve">
+    <value>说明</value>
+  </data>
+  <data name="script_return_value_length_error" xml:space="preserve">
+    <value>• 脚本返回值长度错误：当前为</value>
+  </data>
+  <data name="AboutInfo2" xml:space="preserve">
+    <value>如果您对本项目感兴趣，欢迎点个 Star 支持一下！如果您觉得对您有帮助，也可以请我喝杯咖啡☕</value>
+  </data>
+  <data name="AboutInfo3" xml:space="preserve">
+    <value>我们欢迎更多的研究人员加入！
+	一起维护和更新地球化学计算的方法，还有更多的绘图底图模板！
+	让软件变得更强大，更好用！</value>
+  </data>
+  <data name="AboutInfo1" xml:space="preserve">
+    <value>本项目通过利用地球化学数据进行相关图表绘制、计算与分析，对地质学数据进行高效处理，旨在帮助地球科学研究人员加速数据分析流程，提升研究效率。</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>确认</value>
+  </data>
+  <data name="batch_download_failed" xml:space="preserve">
+    <value>批量下载失败</value>
+  </data>
+  <data name="data_plotting" xml:space="preserve">
+    <value>数据投点</value>
+  </data>
+  <data name="loading_font_resources_ellipsis" xml:space="preserve">
+    <value>正在加载字体资源...</value>
+  </data>
+  <data name="geo_msg_test_error" xml:space="preserve">
+    <value>错误: {0}</value>
+  </data>
+  <data name="auto_check_diagram_template_updates" xml:space="preserve">
+    <value>自动检查图解模板更新</value>
+  </data>
+  <data name="Sphalerite" xml:space="preserve">
+    <value>闪锌矿</value>
+  </data>
+  <data name="content" xml:space="preserve">
+    <value>内容</value>
+  </data>
+  <data name="completeness_check" xml:space="preserve">
+    <value>完整度检查</value>
+  </data>
+  <data name="LineDashDot" xml:space="preserve">
+    <value>点线</value>
+  </data>
+  <data name="TextContent" xml:space="preserve">
+    <value>内容</value>
+  </data>
+  <data name="MarkerShape_Eks" xml:space="preserve">
+    <value>X 形</value>
+  </data>
+  <data name="geo_script_sample_row" xml:space="preserve">
+    <value>示例行（逗号分隔）</value>
+  </data>
+  <data name="line_width" xml:space="preserve">
+    <value>线条宽度</value>
+  </data>
+  <data name="ModifedCanceled" xml:space="preserve">
+    <value>取消修改</value>
+  </data>
+  <data name="geo_help_add_doc" xml:space="preserve">
+    <value>添加该语言的帮助文档</value>
+  </data>
+  <data name="community" xml:space="preserve">
+    <value>社区</value>
+  </data>
+  <data name="geo_help_no_lang_hint" xml:space="preserve">
+    <value>请点击上方的 + 按钮添加语言，然后编辑帮助文档。</value>
+  </data>
+  <data name="error_loading_rtf_file" xml:space="preserve">
+    <value>加载RTF文件时出错:</value>
+  </data>
+  <data name="cipw_btn_close" xml:space="preserve">
+    <value>关闭</value>
+  </data>
+  <data name="cipw_btn_clear" xml:space="preserve">
+    <value>清除</value>
+  </data>
+  <data name="error_creating_table" xml:space="preserve">
+    <value>创建表格时发生错误:</value>
+  </data>
+  <data name="script_return_type_error" xml:space="preserve">
+    <value>脚本返回类型错误</value>
+  </data>
+  <data name="geo_msg_select_thermometer_first" xml:space="preserve">
+    <value>请先选择一个温度计。</value>
+  </data>
+  <data name="enter_language_add" xml:space="preserve">
+    <value>输入一个语言后按 Enter 键添加。</value>
+  </data>
+  <data name="Alignment_LowerLeft" xml:space="preserve">
+    <value>左下角</value>
+  </data>
+  <data name="Alignment_UpperLeft" xml:space="preserve">
+    <value>左上角</value>
+  </data>
+  <data name="geo_msg_import_failed_detail" xml:space="preserve">
+    <value>导入失败: {0}</value>
+  </data>
+  <data name="MarkerShape_OpenCircleWithCross" xml:space="preserve">
+    <value>空心圆加十字</value>
+  </data>
+  <data name="geo_validate_formula_name_required" xml:space="preserve">
+    <value>公式名称不能为空。</value>
+  </data>
+  <data name="subtitle_italic" xml:space="preserve">
+    <value>子标题斜体</value>
+  </data>
+  <data name="select_data_file" xml:space="preserve">
+    <value>请选择数据文件</value>
+  </data>
+  <data name="AxesStyle" xml:space="preserve">
+    <value>刻度轴样式</value>
+  </data>
+  <data name="current_template_list_latest_version" xml:space="preserve">
+    <value>当前模板列表已是最新版本。</value>
+  </data>
+  <data name="alignment" xml:space="preserve">
+    <value>锚点位置</value>
+  </data>
+  <data name="ChloriteGTM" xml:space="preserve">
+    <value>Al4 温度计 (Jowett, 1991)</value>
+  </data>
+  <data name="two_dimensional_coordinate_plot" xml:space="preserve">
+    <value>二维坐标图</value>
+  </data>
+  <data name="dev_mode_warning_non_developers" xml:space="preserve">
+    <value>非开发者不建议开启，可能会导致不必要的问题。</value>
+  </data>
+  <data name="NormalSetting" xml:space="preserve">
+    <value>常规设置</value>
+  </data>
+  <data name="cipw_step8_detail" xml:space="preserve">
+    <value>根据 SiO₂ 剩余情况判断并调整：
+
+▶ 过饱和（SiO₂ 有剩余）：形成石英（Q）
+▶ 饱和（SiO₂ 恰好用完）：无石英、无似长石
+▶ 不饱和（SiO₂ 不足）：按优先顺序反向调整矿物——
+    • 紫苏辉石（En+Fs） → 橄榄石（Fo+Fa）
+    • 正长石（Or） → 白榴石（Le）
+    • 白榴石（Le） → 假白榴石（Kp）
+    • 钠长石（Ab） → 霞石（Ne）</value>
+  </data>
+  <data name="no_data_columns_defined" xml:space="preserve">
+    <value>未定义数据列</value>
+  </data>
+  <data name="cipw_step2_title" xml:space="preserve">
+    <value>形成挥发分矿物</value>
+  </data>
+  <data name="geo_msg_csv_save_title" xml:space="preserve">
+    <value>另存为 CSV 文件</value>
+  </data>
+  <data name="geo_validation_formula_name_required" xml:space="preserve">
+    <value>公式名称为必填项</value>
+  </data>
+  <data name="language_switch_error" xml:space="preserve">
+    <value>切换语言时发生错误：</value>
+  </data>
+  <data name="unable_to_open_link" xml:space="preserve">
+    <value>无法打开链接:</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>背景</value>
+  </data>
+  <data name="Alignment_UpperCenter" xml:space="preserve">
+    <value>中上</value>
+  </data>
+  <data name="Undelete_Message" xml:space="preserve">
+    <value>已取消删除</value>
   </data>
   <data name="DefaultRandom" xml:space="preserve">
     <value>默认随机</value>
   </data>
-  <data name="MessageNotification" xml:space="preserve">
-    <value>消息通知</value>
+  <data name="geo_tooltip_headers" xml:space="preserve">
+    <value>例如: SiO2, TiO2, Al2O3, T(K)</value>
   </data>
-  <data name="MessageAutoClose" xml:space="preserve">
-    <value>自动关闭时间</value>
+  <data name="geo_validate_author_required" xml:space="preserve">
+    <value>作者不能为空。</value>
+  </data>
+  <data name="picking_operation_cancelled" xml:space="preserve">
+    <value>拾取操作已取消</value>
+  </data>
+  <data name="minimize" xml:space="preserve">
+    <value>最小化</value>
+  </data>
+  <data name="cipw_step5_title" xml:space="preserve">
+    <value>形成长石和碱金属硅酸盐</value>
+  </data>
+  <data name="failed_to_open_file" xml:space="preserve">
+    <value>无法打开文件：</value>
+  </data>
+  <data name="cipw_col_mass_balance_error" xml:space="preserve">
+    <value>质量平衡误差(%)</value>
+  </data>
+  <data name="template_no_multilingual_info" xml:space="preserve">
+    <value>当前模板没有多语言信息</value>
+  </data>
+  <data name="cipw_msg_no_data" xml:space="preserve">
+    <value>未检测到有效数据行，请先输入氧化物含量</value>
+  </data>
+  <data name="PointEks" xml:space="preserve">
+    <value>叉号</value>
+  </data>
+  <data name="current_diagram_version" xml:space="preserve">
+    <value>当前图解版本</value>
+  </data>
+  <data name="PointDiamond" xml:space="preserve">
+    <value>菱形</value>
+  </data>
+  <data name="SphaleriteGGIMFisGTM" xml:space="preserve">
+    <value>GGIMFis 温度计 (Frenzel et al., 2016)</value>
+  </data>
+  <data name="independent_diagram_window" xml:space="preserve">
+    <value>独立图解窗口</value>
+  </data>
+  <data name="QuartzGTM" xml:space="preserve">
+    <value>TitaniQ  温度计 (Wark and Watson, 2006)</value>
+  </data>
+  <data name="cipw_diag_alumina_saturation" xml:space="preserve">
+    <value>铝饱和度</value>
+  </data>
+  <data name="RockClassification" xml:space="preserve">
+    <value>岩石分类</value>
+  </data>
+  <data name="view_help_docs" xml:space="preserve">
+    <value>查看帮助文档</value>
+  </data>
+  <data name="MinimizeTray" xml:space="preserve">
+    <value>最小化到托盘</value>
+  </data>
+  <data name="geo_validate_name_required" xml:space="preserve">
+    <value>名称不能为空。</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>默认</value>
+  </data>
+  <data name="custom_path_not_set_configure_in_settings" xml:space="preserve">
+    <value>未设置自定义程序路径，请在设置中配置。</value>
+  </data>
+  <data name="add_line_operation_canceled" xml:space="preserve">
+    <value>添加线条操作已取消.</value>
+  </data>
+  <data name="directory_not_exist" xml:space="preserve">
+    <value>目录不存在</value>
+  </data>
+  <data name="show_major_ticks" xml:space="preserve">
+    <value>显示主刻度</value>
+  </data>
+  <data name="add_row_down" xml:space="preserve">
+    <value>下方插入行</value>
+  </data>
+  <data name="cipw_alumina_metaluminous" xml:space="preserve">
+    <value>准铝质</value>
+  </data>
+  <data name="geo_field_required_hint" xml:space="preserve">
+    <value>必填字段标有 *。版本号格式为 x.x.x（如 1.0.0）。</value>
+  </data>
+  <data name="invalid_data_parameter_format" xml:space="preserve">
+    <value>数据参数格式不正确</value>
+  </data>
+  <data name="coreldraw_env_not_found_select_program" xml:space="preserve">
+    <value>未找到 CorelDRAW 环境变量，请选择打开程序。</value>
+  </data>
+  <data name="bottom_x_axis" xml:space="preserve">
+    <value>下 X 轴</value>
+  </data>
+  <data name="mouse_snap_auto_recognition_frame_rate" xml:space="preserve">
+    <value>鼠标吸附自动识别帧率</value>
+  </data>
+  <data name="AxesTickFontSize" xml:space="preserve">
+    <value>刻度字体大小</value>
+  </data>
+  <data name="parameter_format_correct" xml:space="preserve">
+    <value>参数格式正确</value>
+  </data>
+  <data name="error_loading_template" xml:space="preserve">
+    <value>加载模板时发生错误</value>
+  </data>
+  <data name="MajorAxes" xml:space="preserve">
+    <value>主刻度轴</value>
+  </data>
+  <data name="error_calculating_data_point_coordinates" xml:space="preserve">
+    <value>计算数据点坐标时出错:</value>
+  </data>
+  <data name="Placeholder_Text" xml:space="preserve">
+    <value>请输入文本</value>
+  </data>
+  <data name="line_type_dash" xml:space="preserve">
+    <value>虚线</value>
+  </data>
+  <data name="import_failed" xml:space="preserve">
+    <value>导入失败：</value>
+  </data>
+  <data name="geo_msg_downloading_update" xml:space="preserve">
+    <value>正在下载...</value>
+  </data>
+  <data name="geo_test_input_required" xml:space="preserve">
+    <value>请输入测试值。</value>
+  </data>
+  <data name="CheckJs" xml:space="preserve">
+    <value>检查脚本</value>
+  </data>
+  <data name="LocationAxis" xml:space="preserve">
+    <value>定位轴</value>
+  </data>
+  <data name="cipw_btn_cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Alignment_MiddleRight" xml:space="preserve">
+    <value>右中</value>
+  </data>
+  <data name="vertex_add_new" xml:space="preserve">
+    <value>添加新顶点</value>
+  </data>
+  <data name="Placeholder_Ternary_Title" xml:space="preserve">
+    <value>新建三元相图</value>
+  </data>
+  <data name="MarkerShape_FilledCircle" xml:space="preserve">
+    <value>实心圆</value>
+  </data>
+  <data name="IsShowAxesTick" xml:space="preserve">
+    <value>隐藏主刻度</value>
+  </data>
+  <data name="position" xml:space="preserve">
+    <value>属性</value>
+  </data>
+  <data name="enable_alternating_fill" xml:space="preserve">
+    <value>启用交替填充</value>
+  </data>
+  <data name="delete_language_column" xml:space="preserve">
+    <value>删除语言列</value>
+  </data>
+  <data name="coordinates" xml:space="preserve">
+    <value>坐标</value>
+  </data>
+  <data name="geo_msg_export_dialog_title" xml:space="preserve">
+    <value>导出地质温度计</value>
+  </data>
+  <data name="edit_link" xml:space="preserve">
+    <value>编辑链接</value>
+  </data>
+  <data name="background_color" xml:space="preserve">
+    <value>背景颜色</value>
+  </data>
+  <data name="cipw_step4_detail" xml:space="preserve">
+    <value>根据剩余 Al₂O₃ 与碱金属 + CaO 的摩尔比判断铝饱和类型：
+• 过碱性（Peralkaline）：Na₂O + K₂O &gt; Al₂O₃
+• 准铝质（Metaluminous）：Al₂O₃ ≤ CaO + Na₂O + K₂O
+• 过铝质（Peraluminous）：Al₂O₃ &gt; CaO + Na₂O + K₂O</value>
+  </data>
+  <data name="cipw_msg_calc_all_success" xml:space="preserve">
+    <value>计算完成：{0} 个样品全部成功</value>
+  </data>
+  <data name="select_software" xml:space="preserve">
+    <value>选择软件</value>
+  </data>
+  <data name="modified_successfully" xml:space="preserve">
+    <value>已修改</value>
+  </data>
+  <data name="geo_validation_formula_name_format" xml:space="preserve">
+    <value>公式名称仅限字母、数字和下划线</value>
+  </data>
+  <data name="is_not_one" xml:space="preserve">
+    <value>条数据和不为1</value>
+  </data>
+  <data name="network_request_error" xml:space="preserve">
+    <value>网络请求错误</value>
+  </data>
+  <data name="script_no_detailed_calculation_description" xml:space="preserve">
+    <value>该脚本未提供详细计算过程说明。</value>
+  </data>
+  <data name="insufficient_script_return_values" xml:space="preserve">
+    <value>脚本返回值不足</value>
+  </data>
+  <data name="SphaleriteGTM" xml:space="preserve">
+    <value>FeS 温度计 (Scott and Barnes, 1971)</value>
+  </data>
+  <data name="ThankSupport" xml:space="preserve">
+    <value>感谢支持</value>
+  </data>
+  <data name="BasemapLanguage" xml:space="preserve">
+    <value>底图语言</value>
+  </data>
+  <data name="completed" xml:space="preserve">
+    <value>完成</value>
+  </data>
+  <data name="webp_format" xml:space="preserve">
+    <value>WebP 格式</value>
+  </data>
+  <data name="geo_validation_inputs_required" xml:space="preserve">
+    <value>输入列为必填项</value>
+  </data>
+  <data name="geo_validate_script_required" xml:space="preserve">
+    <value>JavaScript 脚本不能为空。</value>
+  </data>
+  <data name="excel_missing_required_columns" xml:space="preserve">
+    <value>Excel文件缺少以下必需的列</value>
+  </data>
+  <data name="automatic_updates" xml:space="preserve">
+    <value>自动更新</value>
+  </data>
+  <data name="failed_to_open_widget" xml:space="preserve">
+    <value>打开组件失败：</value>
+  </data>
+  <data name="MarkerShape_Cross" xml:space="preserve">
+    <value>十字</value>
+  </data>
+  <data name="failed_to_load_help_document" xml:space="preserve">
+    <value>加载帮助文档失败:</value>
+  </data>
+  <data name="template_type_not_supported_please_update" xml:space="preserve">
+    <value>当前图解模板类型不支持，请更新软件。</value>
+  </data>
+  <data name="geo_msg_delete_success" xml:space="preserve">
+    <value>删除成功</value>
+  </data>
+  <data name="research_life_smooth_sailing" xml:space="preserve">
+    <value>年科研，生活一帆风顺！</value>
+  </data>
+  <data name="geo_script_run_test" xml:space="preserve">
+    <value>运行测试</value>
+  </data>
+  <data name="script_settings" xml:space="preserve">
+    <value>脚本设置</value>
+  </data>
+  <data name="to" xml:space="preserve">
+    <value>到</value>
+  </data>
+  <data name="Js" xml:space="preserve">
+    <value>Js 脚本</value>
+  </data>
+  <data name="deselect_all" xml:space="preserve">
+    <value>取消全选</value>
+  </data>
+  <data name="cipw_btn_export" xml:space="preserve">
+    <value>导出</value>
+  </data>
+  <data name="check_for_template_updates" xml:space="preserve">
+    <value>检查模板更新</value>
+  </data>
+  <data name="geo_tooltip_new" xml:space="preserve">
+    <value>新建</value>
+  </data>
+  <data name="German_Germany" xml:space="preserve">
+    <value>Deutsch (Deutschland)</value>
+  </data>
+  <data name="Orientation_Horizontal" xml:space="preserve">
+    <value>横向</value>
+  </data>
+  <data name="initializing_language_service_ellipsis" xml:space="preserve">
+    <value>正在初始化语言服务...</value>
+  </data>
+  <data name="enter_category_structure" xml:space="preserve">
+    <value>输入分类结构</value>
+  </data>
+  <data name="reading_user_configuration_ellipsis" xml:space="preserve">
+    <value>正在读取用户配置...</value>
+  </data>
+  <data name="geo_section_custom" xml:space="preserve">
+    <value>自定义温度计</value>
+  </data>
+  <data name="Placeholder_Axis_Y" xml:space="preserve">
+    <value>Y轴</value>
+  </data>
+  <data name="Placeholder_Axis_X" xml:space="preserve">
+    <value>X轴</value>
+  </data>
+  <data name="network_connection_failed_cannot_check_for_updates" xml:space="preserve">
+    <value>网络连接失败，无法检查更新：</value>
+  </data>
+  <data name="help_document_not_found" xml:space="preserve">
+    <value>未找到帮助文档：</value>
+  </data>
+  <data name="geo_field_version" xml:space="preserve">
+    <value>版本 *</value>
+  </data>
+  <data name="FontSize" xml:space="preserve">
+    <value>字体大小</value>
+  </data>
+  <data name="FontBold" xml:space="preserve">
+    <value>加粗</value>
+  </data>
+  <data name="template_delete_success" xml:space="preserve">
+    <value>模板删除成功</value>
+  </data>
+  <data name="confirm_delete_custom_diagram_template" xml:space="preserve">
+    <value>确定要删除该自定义图解模板吗？</value>
+  </data>
+  <data name="Geothermometer" xml:space="preserve">
+    <value>地质温度计</value>
+  </data>
+  <data name="error_loading_template_list" xml:space="preserve">
+    <value>加载模板列表出错:</value>
+  </data>
+  <data name="confirm_clear_data_points" xml:space="preserve">
+    <value>是否清除数据点？</value>
+  </data>
+  <data name="PlotTitleColor" xml:space="preserve">
+    <value>标题颜色</value>
+  </data>
+  <data name="y_coordinate" xml:space="preserve">
+    <value>Y 坐标</value>
+  </data>
+  <data name="end_coordinates" xml:space="preserve">
+    <value>终止坐标</value>
+  </data>
+  <data name="script_content_is_empty" xml:space="preserve">
+    <value>脚本内容为空</value>
+  </data>
+  <data name="PlotSwitchFilledColor" xml:space="preserve">
+    <value>反转填充颜色</value>
+  </data>
+  <data name="export_failed" xml:space="preserve">
+    <value>导出失败:</value>
+  </data>
+  <data name="TectonicSetting" xml:space="preserve">
+    <value>构造环境</value>
+  </data>
+  <data name="must_be_positive_number" xml:space="preserve">
+    <value>必须是正数</value>
+  </data>
+  <data name="cipw_step4_title" xml:space="preserve">
+    <value>判断铝饱和状态</value>
+  </data>
+  <data name="font_color" xml:space="preserve">
+    <value>字体颜色</value>
+  </data>
+  <data name="default_third_party_editor" xml:space="preserve">
+    <value>默认第三方编辑程序</value>
+  </data>
+  <data name="failed_to_load_diagram_template" xml:space="preserve">
+    <value>无法加载图解模板：</value>
+  </data>
+  <data name="font_style" xml:space="preserve">
+    <value>字体样式</value>
+  </data>
+  <data name="error" xml:space="preserve">
+    <value>错误:</value>
+  </data>
+  <data name="some_data_failed_validation" xml:space="preserve">
+    <value>部分数据未通过校验，已跳过绘制</value>
+  </data>
+  <data name="arrow" xml:space="preserve">
+    <value>箭头</value>
+  </data>
+  <data name="file_" xml:space="preserve">
+    <value>文件</value>
+  </data>
+  <data name="please_select_a_widget" xml:space="preserve">
+    <value>请选择一个组件</value>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="color" xml:space="preserve">
+    <value>颜色</value>
+  </data>
+  <data name="count" xml:space="preserve">
+    <value>次刻度数量</value>
+  </data>
+  <data name="point" xml:space="preserve">
+    <value>点</value>
+  </data>
+  <data name="width" xml:space="preserve">
+    <value>宽度</value>
+  </data>
+  <data name="add" xml:space="preserve">
+    <value>添加</value>
+  </data>
+  <data name="new" xml:space="preserve">
+    <value>_新建(N)</value>
+  </data>
+  <data name="row" xml:space="preserve">
+    <value>行:</value>
+  </data>
+  <data name="ready" xml:space="preserve">
+    <value>就绪</value>
+  </data>
+  <data name="PointCircle" xml:space="preserve">
+    <value>圆形</value>
+  </data>
+  <data name="range" xml:space="preserve">
+    <value>范围</value>
+  </data>
+  <data name="style" xml:space="preserve">
+    <value>样式</value>
+  </data>
+  <data name="ternary_diagram_crosshair_not_supported" xml:space="preserve">
+    <value>三元相图暂不支持十字定位功能。</value>
+  </data>
+  <data name="cipw_references_title" xml:space="preserve">
+    <value>参考文献</value>
+  </data>
+  <data name="About" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <data name="Guide" xml:space="preserve">
+    <value>指南</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>其他</value>
+  </data>
+  <data name="cipw_step1_title" xml:space="preserve">
+    <value>数据预处理与归一化</value>
+  </data>
+  <data name="downloading_status" xml:space="preserve">
+    <value>下载中...</value>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>主题</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>重置</value>
+  </data>
+  <data name="Step3" xml:space="preserve">
+    <value>计算结果</value>
+  </data>
+  <data name="Step2" xml:space="preserve">
+    <value>检查参数</value>
+  </data>
+  <data name="Step1" xml:space="preserve">
+    <value>导入 / 填入数据</value>
+  </data>
+  <data name="please_select_an_object_to_delete_first" xml:space="preserve">
+    <value>请先选择一个要删除的对象.</value>
+  </data>
+  <data name="FileSavePath" xml:space="preserve">
+    <value>保存文件位置</value>
+  </data>
+  <data name="geo_placeholder_search" xml:space="preserve">
+    <value>搜索...</value>
+  </data>
+  <data name="recently_used" xml:space="preserve">
+    <value>最近使用</value>
+  </data>
+  <data name="JsSetting" xml:space="preserve">
+    <value>脚本设置</value>
+  </data>
+  <data name="geo_help_bold" xml:space="preserve">
+    <value>加粗 (Ctrl+B)</value>
+  </data>
+  <data name="ternary_phase_diagram" xml:space="preserve">
+    <value>三元相图</value>
+  </data>
+  <data name="all_data_cleared" xml:space="preserve">
+    <value>所有数据已清除</value>
+  </data>
+  <data name="Calculate" xml:space="preserve">
+    <value>计算</value>
+  </data>
+  <data name="failed_to_get_announcements" xml:space="preserve">
+    <value>获取公告失败:</value>
+  </data>
+  <data name="repair_missing_or_damaged_templates_and_lists" xml:space="preserve">
+    <value>修复丢失或损坏的绘图模板及列表</value>
+  </data>
+  <data name="MarkerShape_FilledDiamond" xml:space="preserve">
+    <value>实心菱形</value>
+  </data>
+  <data name="export_and_tools" xml:space="preserve">
+    <value>导出/工具</value>
+  </data>
+  <data name="select_drawing_template_file" xml:space="preserve">
+    <value>选择绘图模板文件</value>
+  </data>
+  <data name="update_data" xml:space="preserve">
+    <value>更新数据</value>
+  </data>
+  <data name="geo_tooltip_test_input_eg" xml:space="preserve">
+    <value>例如: 45.2, 0.8, 12.3</value>
+  </data>
+  <data name="swap_language_columns" xml:space="preserve">
+    <value>交换语言列</value>
+  </data>
+  <data name="unknown_error_occurred" xml:space="preserve">
+    <value>发生未知错误</value>
+  </data>
+  <data name="AddLine" xml:space="preserve">
+    <value>添加线条</value>
+  </data>
+  <data name="AddText" xml:space="preserve">
+    <value>添加注释</value>
+  </data>
+  <data name="PlotBottomAxies" xml:space="preserve">
+    <value>底部坐标轴</value>
+  </data>
+  <data name="cipw_silica_oversaturated" xml:space="preserve">
+    <value>过饱和</value>
+  </data>
+  <data name="auto_datapoint_projection_failed" xml:space="preserve">
+    <value>自动数据点投影失败：</value>
+  </data>
+  <data name="geo_label_custom_chip" xml:space="preserve">
+    <value>自定义</value>
+  </data>
+  <data name="AxesStyleLog10" xml:space="preserve">
+    <value>Log(10)</value>
+  </data>
+  <data name="copy_failed" xml:space="preserve">
+    <value>复制失败:</value>
+  </data>
+  <data name="failed_to_open" xml:space="preserve">
+    <value>打开失败：</value>
+  </data>
+  <data name="SaveBasemap" xml:space="preserve">
+    <value>保存底图</value>
+  </data>
+  <data name="geo_msg_import_failed" xml:space="preserve">
+    <value>导入失败</value>
+  </data>
+  <data name="CancelImport" xml:space="preserve">
+    <value>已取消导入</value>
+  </data>
+  <data name="template_version_too_high" xml:space="preserve">
+    <value>模板版本高于当前软件版本，请升级软件后打开.</value>
+  </data>
+  <data name="cipw_silica_saturated" xml:space="preserve">
+    <value>饱和</value>
+  </data>
+  <data name="custom_diagram_template" xml:space="preserve">
+    <value>自定义图解模板</value>
+  </data>
+  <data name="font_name" xml:space="preserve">
+    <value>字体名称</value>
+  </data>
+  <data name="font_size" xml:space="preserve">
+    <value>字体大小</value>
+  </data>
+  <data name="PointCross" xml:space="preserve">
+    <value>十字形</value>
+  </data>
+  <data name="close_file" xml:space="preserve">
+    <value>关闭文件</value>
+  </data>
+  <data name="temperature_calculation_denominator_zero" xml:space="preserve">
+    <value>温度计算分母为零</value>
+  </data>
+  <data name="ExportBasemap" xml:space="preserve">
+    <value>导出底图</value>
+  </data>
+  <data name="open_diagram_template" xml:space="preserve">
+    <value>打开图解模板</value>
+  </data>
+  <data name="PointStyle" xml:space="preserve">
+    <value>点样式</value>
+  </data>
+  <data name="cipw_msg_data_cleared" xml:space="preserve">
+    <value>数据已清除</value>
+  </data>
+  <data name="loading_announcements" xml:space="preserve">
+    <value>正在加载公告...</value>
+  </data>
+  <data name="format_failed" xml:space="preserve">
+    <value>格式化失败:</value>
+  </data>
+  <data name="no_announcements" xml:space="preserve">
+    <value>暂无公告。</value>
   </data>
   <data name="MessageAutoClose5" xml:space="preserve">
     <value>5 秒</value>
@@ -684,1846 +1903,1167 @@
   <data name="MessageAutoClose2" xml:space="preserve">
     <value>2 秒</value>
   </data>
-  <data name="Other" xml:space="preserve">
-    <value>其他</value>
-  </data>
-  <data name="Boot" xml:space="preserve">
-    <value>开机自启</value>
-  </data>
-  <data name="AutoCheckUpdate" xml:space="preserve">
-    <value>自动检查更新</value>
-  </data>
-  <data name="CheckUpdate" xml:space="preserve">
-    <value>检查更新</value>
-  </data>
-  <data name="QuitAppMode" xml:space="preserve">
-    <value>退出程序方法</value>
-  </data>
-  <data name="MinimizeTray" xml:space="preserve">
-    <value>最小化到托盘</value>
-  </data>
-  <data name="Quit" xml:space="preserve">
-    <value>直接退出</value>
-  </data>
-  <data name="AboutInfo1" xml:space="preserve">
-    <value>本项目通过利用地球化学数据进行相关图表绘制、计算与分析，对地质学数据进行高效处理，旨在帮助地球科学研究人员加速数据分析流程，提升研究效率。</value>
-  </data>
-  <data name="AboutInfo2" xml:space="preserve">
-    <value>如果您对本项目感兴趣，欢迎点个 Star 支持一下！如果您觉得对您有帮助，也可以请我喝杯咖啡☕</value>
-  </data>
-  <data name="AboutInfo3" xml:space="preserve">
-    <value>我们欢迎更多的研究人员加入！
-	一起维护和更新地球化学计算的方法，还有更多的绘图底图模板！
-	让软件变得更强大，更好用！</value>
-  </data>
-  <data name="ThankSupport" xml:space="preserve">
-    <value>感谢支持</value>
-  </data>
-  <data name="Support1" xml:space="preserve">
-    <value>📌控件支持:</value>
-  </data>
-  <data name="Support3" xml:space="preserve">
-    <value>📌文档支持:</value>
-  </data>
-  <data name="Support4" xml:space="preserve">
-    <value>📌计算支持:</value>
-  </data>
-  <data name="Support2" xml:space="preserve">
-    <value>📌图表支持:</value>
-  </data>
-  <data name="Support5" xml:space="preserve">
-    <value>📌工具支持:</value>
-  </data>
-  <data name="PlotBoder" xml:space="preserve">
-    <value>边界</value>
-  </data>
-  <data name="ResetSuccess" xml:space="preserve">
-    <value>重置成功</value>
-  </data>
-  <data name="ModifedSuccess" xml:space="preserve">
-    <value>修改成功</value>
-  </data>
-  <data name="ModifedCanceled" xml:space="preserve">
-    <value>取消修改</value>
-  </data>
-  <data name="import_template" xml:space="preserve">
-    <value>导入绘图模板</value>
-  </data>
-  <data name="create_new_diagram_template" xml:space="preserve">
-    <value>新建图解模板</value>
-  </data>
-  <data name="template_library" xml:space="preserve">
-    <value>模板库</value>
-  </data>
-  <data name="return_to_template_library" xml:space="preserve">
-    <value>返回</value>
-  </data>
-  <data name="Data" xml:space="preserve">
-    <value>数据</value>
-  </data>
-  <data name="import_data" xml:space="preserve">
-    <value>导入数据</value>
-  </data>
-  <data name="clear_data" xml:space="preserve">
-    <value>清除数据</value>
-  </data>
-  <data name="view" xml:space="preserve">
-    <value>视图</value>
-  </data>
-  <data name="reset_view" xml:space="preserve">
-    <value>复位视图</value>
-  </data>
-  <data name="coordinate_positioning" xml:space="preserve">
-    <value>坐标定位</value>
-  </data>
-  <data name="select" xml:space="preserve">
-    <value>选择</value>
-  </data>
-  <data name="deselect" xml:space="preserve">
-    <value>取消选中</value>
-  </data>
-  <data name="export" xml:space="preserve">
-    <value>导出</value>
-  </data>
-  <data name="export_image" xml:space="preserve">
-    <value>导出图片</value>
-  </data>
-  <data name="png_format" xml:space="preserve">
-    <value>PNG 格式</value>
-  </data>
-  <data name="bmp_format" xml:space="preserve">
-    <value>BMP 格式</value>
-  </data>
-  <data name="jpg_format" xml:space="preserve">
-    <value>JPG 格式</value>
-  </data>
-  <data name="webp_format" xml:space="preserve">
-    <value>WebP 格式</value>
-  </data>
-  <data name="svg_format" xml:space="preserve">
-    <value>SVG 格式</value>
-  </data>
-  <data name="legend_settings" xml:space="preserve">
-    <value>图例设置</value>
-  </data>
-  <data name="grid_settings" xml:space="preserve">
-    <value>网格设置</value>
-  </data>
-  <data name="script_settings" xml:space="preserve">
-    <value>脚本设置</value>
-  </data>
-  <data name="plot_settings" xml:space="preserve">
-    <value>绘图设置</value>
-  </data>
-  <data name="all_templates" xml:space="preserve">
-    <value>全部模板</value>
-  </data>
-  <data name="uncategorized" xml:space="preserve">
-    <value>未分类</value>
-  </data>
-  <data name="select_data_file" xml:space="preserve">
-    <value>请选择数据文件</value>
-  </data>
-  <data name="data_file_filter" xml:space="preserve">
-    <value>数据文件 (*.csv, *.xls, *.xlsx)|*.csv;*.xls;*.xlsx</value>
-  </data>
-  <data name="no_valid_workbook_or_data_found" xml:space="preserve">
-    <value>无法在文件中找到任何有效的工作簿或数据</value>
-  </data>
-  <data name="read_file_failed" xml:space="preserve">
-    <value>读取文件失败</value>
-  </data>
-  <data name="excel_missing_required_columns" xml:space="preserve">
-    <value>Excel文件缺少以下必需的列</value>
-  </data>
-  <data name="data_point" xml:space="preserve">
-    <value>数据点</value>
-  </data>
-  <data name="failed_to_parse_category_group" xml:space="preserve">
-    <value>未能从文件中解析出有效的类别分组。请检查类别列数据</value>
-  </data>
-  <data name="error_calculating_data_point_coordinates" xml:space="preserve">
-    <value>计算数据点坐标时出错:</value>
-  </data>
-  <data name="data_import_successful" xml:space="preserve">
-    <value>数据导入成功</value>
-  </data>
-  <data name="script_execution_failed" xml:space="preserve">
-    <value>脚本执行失败:</value>
-  </data>
-  <data name="axes" xml:space="preserve">
-    <value>坐标轴</value>
-  </data>
-  <data name="point" xml:space="preserve">
-    <value>点</value>
-  </data>
-  <data name="line" xml:space="preserve">
-    <value>线</value>
-  </data>
-  <data name="text" xml:space="preserve">
-    <value>文本</value>
-  </data>
-  <data name="annotation" xml:space="preserve">
-    <value>注释</value>
-  </data>
-  <data name="image_copied_to_clipboard" xml:space="preserve">
-    <value>图像已成功复制到剪贴板</value>
-  </data>
-  <data name="copy_failed" xml:space="preserve">
-    <value>复制失败:</value>
-  </data>
-  <data name="confirm_clear_data_points" xml:space="preserve">
-    <value>是否清除数据点？</value>
-  </data>
-  <data name="no_imported_data_to_clear" xml:space="preserve">
-    <value>当前没有可清除的导入数据</value>
-  </data>
-  <data name="all_imported_data_cleared" xml:space="preserve">
-    <value>已清除所有导入的数据</value>
-  </data>
-  <data name="left_y_axis" xml:space="preserve">
-    <value>左 Y 轴</value>
-  </data>
-  <data name="right_y_axis" xml:space="preserve">
-    <value>右 Y 轴</value>
-  </data>
-  <data name="bottom_x_axis" xml:space="preserve">
-    <value>下 X 轴</value>
-  </data>
-  <data name="top_x_axis" xml:space="preserve">
-    <value>上 X 轴</value>
-  </data>
-  <data name="unknown_axis" xml:space="preserve">
-    <value>未知坐标轴</value>
-  </data>
-  <data name="content_and_position" xml:space="preserve">
-    <value>内容与位置</value>
-    <comment>属性面板-文本对象</comment>
-  </data>
-  <data name="script_definition" xml:space="preserve">
-    <value>脚本</value>
-  </data>
-  <data name="script_language" xml:space="preserve">
-    <value>脚本语言:</value>
-  </data>
-  <data name="data_series" xml:space="preserve">
-    <value>数据系列</value>
-  </data>
-  <data name="multiple_data_series_hint" xml:space="preserve">
-    <value>多个数据系列请用逗号分隔，例如：SiO2,TiO2</value>
-  </data>
-  <data name="script_content" xml:space="preserve">
-    <value>脚本内容:</value>
-  </data>
-  <data name="ready" xml:space="preserve">
-    <value>就绪</value>
-  </data>
-  <data name="validate_syntax" xml:space="preserve">
-    <value>验证语法</value>
-  </data>
-  <data name="row" xml:space="preserve">
-    <value>行:</value>
-  </data>
-  <data name="column" xml:space="preserve">
-    <value>列:</value>
-  </data>
-  <data name="code_formatted" xml:space="preserve">
-    <value>代码已格式化</value>
-  </data>
-  <data name="format_failed" xml:space="preserve">
-    <value>格式化失败:</value>
-  </data>
-  <data name="script_content_is_empty" xml:space="preserve">
-    <value>脚本内容为空</value>
-  </data>
-  <data name="validation_failed" xml:space="preserve">
-    <value>验证失败:</value>
-  </data>
-  <data name="data_parameters_are_empty" xml:space="preserve">
-    <value>数据参数为空</value>
-  </data>
-  <data name="invalid_data_parameter_format" xml:space="preserve">
-    <value>数据参数格式不正确</value>
-  </data>
-  <data name="parameter_format_correct" xml:space="preserve">
-    <value>参数格式正确</value>
-  </data>
-  <data name="syntax_validation_passed" xml:space="preserve">
-    <value>语法验证通过</value>
-  </data>
-  <data name="error" xml:space="preserve">
-    <value>错误:</value>
-  </data>
-  <data name="new" xml:space="preserve">
-    <value>_新建(N)</value>
-  </data>
-  <data name="open" xml:space="preserve">
-    <value>_打开(O)</value>
-  </data>
-  <data name="export_current_worksheet" xml:space="preserve">
-    <value>_导出当前工作表(R)</value>
-  </data>
-  <data name="geological_thermometer" xml:space="preserve">
-    <value>地质温度计</value>
-  </data>
-  <data name="confirm_new_worksheet" xml:space="preserve">
-    <value>是否新建工作表？</value>
-  </data>
-  <data name="error_creating_table" xml:space="preserve">
-    <value>创建表格时发生错误:</value>
-  </data>
-  <data name="file_import_successful" xml:space="preserve">
-    <value>文件导入成功</value>
-  </data>
-  <data name="cancel_import" xml:space="preserve">
-    <value>取消导入</value>
-  </data>
-  <data name="export_successful" xml:space="preserve">
-    <value>导出成功</value>
-  </data>
-  <data name="export_failed" xml:space="preserve">
-    <value>导出失败:</value>
-  </data>
-  <data name="create_worksheet_failed" xml:space="preserve">
-    <value>创建工作表失败:</value>
-  </data>
-  <data name="row_1_column_1" xml:space="preserve">
-    <value>行: 1, 列: 1</value>
-  </data>
-  <data name="missing_parameters" xml:space="preserve">
-    <value>缺少参数</value>
-    <comment>自定义函数提示</comment>
-  </data>
-  <data name="input_out_of_range" xml:space="preserve">
-    <value>输入值超出范围</value>
-    <comment>自定义函数提示</comment>
-  </data>
-  <data name="must_be_positive_number" xml:space="preserve">
-    <value>必须是正数</value>
-    <comment>自定义函数提示</comment>
-  </data>
-  <data name="tio2_activity_range" xml:space="preserve">
-    <value>TiO2活度必须在(0,1]范围内</value>
-    <comment>自定义函数提示</comment>
-  </data>
-  <data name="oxygen_atom_benchmark_zero" xml:space="preserve">
-    <value>氧原子数基准值为零</value>
-    <comment>自定义函数提示</comment>
-  </data>
-  <data name="normalization_factor_is_zero" xml:space="preserve">
-    <value>归一化因子为零</value>
-    <comment>自定义函数提示</comment>
-  </data>
-  <data name="temperature_calculation_denominator_zero" xml:space="preserve">
-    <value>温度计算分母为零</value>
-    <comment>自定义函数提示</comment>
-  </data>
-  <data name="color" xml:space="preserve">
-    <value>颜色</value>
-    <comment>属性面板</comment>
-  </data>
-  <data name="style" xml:space="preserve">
-    <value>样式</value>
-    <comment>属性面板</comment>
-  </data>
-  <data name="width" xml:space="preserve">
-    <value>宽度</value>
-    <comment>属性面板</comment>
-  </data>
-  <data name="line_width" xml:space="preserve">
-    <value>线条宽度</value>
-    <comment>属性面板</comment>
-  </data>
-  <data name="Enum_LineType_Solid" xml:space="preserve">
-    <value>实线</value>
-    <comment>属性面板</comment>
-  </data>
-  <data name="type" xml:space="preserve">
-    <value>类型</value>
-    <comment>属性面板</comment>
-  </data>
-  <data name="position" xml:space="preserve">
-    <value>属性</value>
-    <comment>属性面板</comment>
-  </data>
-  <data name="start_coordinates" xml:space="preserve">
-    <value>起始坐标</value>
-    <comment>属性面板</comment>
-  </data>
-  <data name="end_coordinates" xml:space="preserve">
-    <value>终止坐标</value>
-    <comment>属性面板</comment>
-  </data>
-  <data name="content" xml:space="preserve">
-    <value>内容</value>
-  </data>
-  <data name="alignment" xml:space="preserve">
-    <value>锚点位置</value>
-  </data>
-  <data name="font_style" xml:space="preserve">
-    <value>字体样式</value>
-  </data>
-  <data name="font_name" xml:space="preserve">
-    <value>字体名称</value>
-  </data>
-  <data name="font_size" xml:space="preserve">
-    <value>字体大小</value>
-  </data>
-  <data name="font_rotation" xml:space="preserve">
-    <value>字体旋转</value>
-  </data>
-  <data name="font_color" xml:space="preserve">
-    <value>字体颜色</value>
-  </data>
-  <data name="bold" xml:space="preserve">
-    <value>粗体</value>
-  </data>
-  <data name="italic" xml:space="preserve">
-    <value>斜体</value>
-  </data>
-  <data name="background_and_border" xml:space="preserve">
-    <value>背景与边框</value>
-  </data>
-  <data name="background_color" xml:space="preserve">
-    <value>背景颜色</value>
-  </data>
-  <data name="border_color" xml:space="preserve">
-    <value>边框颜色</value>
-  </data>
-  <data name="border_width" xml:space="preserve">
-    <value>边框宽度</value>
-  </data>
-  <data name="corner_radius" xml:space="preserve">
-    <value>圆角半径</value>
-  </data>
-  <data name="advanced_rendering" xml:space="preserve">
-    <value>高级渲染</value>
-  </data>
-  <data name="anti_aliasing" xml:space="preserve">
-    <value>抗锯齿</value>
-  </data>
-  <data name="axis_style" xml:space="preserve">
-    <value>坐标轴样式</value>
-  </data>
-  <data name="axis_title" xml:space="preserve">
-    <value>坐标轴标题</value>
-  </data>
-  <data name="font_family" xml:space="preserve">
-    <value>字体</value>
-  </data>
-  <data name="tick_style" xml:space="preserve">
-    <value>刻度样式</value>
-  </data>
-  <data name="tick_interval" xml:space="preserve">
-    <value>刻度间隔</value>
-  </data>
-  <data name="major_tick_style" xml:space="preserve">
-    <value>主刻度样式</value>
-  </data>
-  <data name="length" xml:space="preserve">
-    <value>长度</value>
-  </data>
-  <data name="minor_tick_style" xml:space="preserve">
-    <value>次刻度样式</value>
-  </data>
-  <data name="tick_labels" xml:space="preserve">
-    <value>刻度标签</value>
-  </data>
-  <data name="location" xml:space="preserve">
-    <value>位置</value>
-  </data>
-  <data name="orientation" xml:space="preserve">
-    <value>排列方式</value>
-  </data>
-  <data name="is_visible" xml:space="preserve">
-    <value>是否可见</value>
-  </data>
-  <data name="font" xml:space="preserve">
-    <value>字体</value>
-  </data>
-  <data name="major_grid_line" xml:space="preserve">
-    <value>主网格线</value>
-  </data>
-  <data name="pattern" xml:space="preserve">
-    <value>线型</value>
-  </data>
-  <data name="enable_anti_alias" xml:space="preserve">
-    <value>启用抗锯齿</value>
-  </data>
-  <data name="background_fill" xml:space="preserve">
-    <value>背景填充</value>
-  </data>
-  <data name="enable_alternating_fill" xml:space="preserve">
-    <value>启用交替填充</value>
-  </data>
-  <data name="background_fill_1" xml:space="preserve">
-    <value>背景填充</value>
-  </data>
-  <data name="fill_color_1" xml:space="preserve">
-    <value>填充颜色 1</value>
-  </data>
-  <data name="fill_color_2" xml:space="preserve">
-    <value>填充颜色 2</value>
-  </data>
-  <data name="coordinates" xml:space="preserve">
-    <value>坐标</value>
-  </data>
-  <data name="x_coordinate" xml:space="preserve">
-    <value>X 坐标</value>
-  </data>
-  <data name="y_coordinate" xml:space="preserve">
-    <value>Y 坐标</value>
-  </data>
-  <data name="start_and_end_coordinates" xml:space="preserve">
-    <value>起始坐标</value>
-  </data>
-  <data name="chart_title_style" xml:space="preserve">
-    <value>图表标题样式</value>
-  </data>
-  <data name="is_bold" xml:space="preserve">
-    <value>粗体</value>
-  </data>
-  <data name="is_italic" xml:space="preserve">
-    <value>斜体</value>
-  </data>
-  <data name="background_fill_2" xml:space="preserve">
-    <value>背景填充</value>
-  </data>
-  <data name="minor_grid_Line" xml:space="preserve">
-    <value>次网格线</value>
-  </data>
-  <data name="open_diagram_template" xml:space="preserve">
-    <value>打开图解模板</value>
-  </data>
-  <data name="new_version_available_github" xml:space="preserve">
-    <value>发现新版本！请前往GitHub Release页面下载更新。</value>
-    <comment>检查更新</comment>
-  </data>
-  <data name="go_to_download" xml:space="preserve">
-    <value>去下载</value>
-    <comment>检查更新</comment>
-  </data>
-  <data name="enter_supported_languages" xml:space="preserve">
-    <value>输入支持语言</value>
-    <comment>新疆模板</comment>
-  </data>
-  <data name="delete_this_item" xml:space="preserve">
-    <value>删除此项</value>
-    <comment>新疆模板</comment>
-  </data>
-  <data name="enter_language_add" xml:space="preserve">
-    <value>输入一个语言后按 Enter 键添加。</value>
-    <comment>新疆模板</comment>
-  </data>
-  <data name="enter_category_structure" xml:space="preserve">
-    <value>输入分类结构</value>
-    <comment>新疆模板</comment>
-  </data>
-  <data name="enter_level_add" xml:space="preserve">
-    <value>输入一个层级后按 Enter 键添加。</value>
-    <comment>新疆模板</comment>
-  </data>
-  <data name="plot_type" xml:space="preserve">
-    <value>绘图类型</value>
-    <comment>新疆模板</comment>
-  </data>
-  <data name="two_dimensional_coordinate_plot" xml:space="preserve">
-    <value>二维坐标图</value>
-    <comment>新疆模板</comment>
-  </data>
-  <data name="template_file_save_path" xml:space="preserve">
-    <value>模板文件保存路径</value>
-    <comment>新疆模板</comment>
-  </data>
-  <data name="browse_ellipsis" xml:space="preserve">
-    <value>浏览...</value>
-    <comment>新疆模板</comment>
-  </data>
-  <data name="all_fields_required" xml:space="preserve">
-    <value>所有字段均为必填项！</value>
-    <comment>新疆模板</comment>
-  </data>
-  <data name="category_structure_min_two" xml:space="preserve">
-    <value>分类结构必须大于等于2！</value>
-    <comment>新疆模板</comment>
-  </data>
-  <data name="no_template_or_path_specified" xml:space="preserve">
-    <value>没有可保存的模板或未指定保存路径。请使用另存为保存.</value>
-    <comment>新疆模板</comment>
-  </data>
-  <data name="template_saved_successfully" xml:space="preserve">
-    <value>模板已成功保存！</value>
-    <comment>新疆模板</comment>
-  </data>
-  <data name="save_template_failed" xml:space="preserve">
-    <value>保存模板失败:</value>
-    <comment>新疆模板</comment>
-  </data>
-  <data name="research_life_smooth_sailing" xml:space="preserve">
-    <value>年科研，生活一帆风顺！</value>
-    <comment>彩蛋</comment>
-  </data>
-  <data name="add" xml:space="preserve">
-    <value>添加</value>
-    <comment>绘图-编辑</comment>
-  </data>
-  <data name="add_line" xml:space="preserve">
-    <value>添加线条</value>
-    <comment>绘图-编辑</comment>
-  </data>
-  <data name="add_text" xml:space="preserve">
-    <value>添加文本</value>
-    <comment>绘图-编辑</comment>
-  </data>
-  <data name="file_" xml:space="preserve">
-    <value>文件</value>
-    <comment>绘图-编辑</comment>
-  </data>
-  <data name="template_loaded_successfully" xml:space="preserve">
-    <value>模板文件打开成功</value>
-    <comment>绘图页面</comment>
-  </data>
-  <data name="unknown_error_checking_for_updates" xml:space="preserve">
-    <value>检查更新时发生未知错误</value>
-    <comment>设置页面</comment>
-  </data>
-  <data name="already_latest_version" xml:space="preserve">
-    <value>当前已是最新版本</value>
-    <comment>检查更新</comment>
-  </data>
-  <data name="cannot_parse_version_number_check_release_address" xml:space="preserve">
-    <value>无法解析版本号。请前往发布地址查看</value>
-    <comment>检查更新</comment>
-  </data>
-  <data name="network_request_error" xml:space="preserve">
-    <value>网络请求错误</value>
-    <comment>检查更新</comment>
-  </data>
-  <data name="json_parse_error" xml:space="preserve">
-    <value>JSON 解析错误</value>
-    <comment>检查更新</comment>
-  </data>
-  <data name="unknown_error_occurred" xml:space="preserve">
-    <value>发生未知错误</value>
-    <comment>检查更新</comment>
-  </data>
-  <data name="polygon" xml:space="preserve">
-    <value>多边形</value>
-    <comment>图层列表</comment>
-  </data>
-  <data name="not_enough_vertices_add_polygon_canceled" xml:space="preserve">
-    <value>顶点数不足，添加多边形操作已取消.</value>
-    <comment>创建绘图对象通知</comment>
-  </data>
-  <data name="add_line_operation_canceled" xml:space="preserve">
-    <value>添加线条操作已取消.</value>
-    <comment>创建绘图对象通知</comment>
-  </data>
-  <data name="add_text_operation_canceled" xml:space="preserve">
-    <value>添加文本操作已取消.</value>
-    <comment>创建绘图对象通知</comment>
-  </data>
-  <data name="language_setting_duplicate_found" xml:space="preserve">
-    <value>语言设置中存在重复项，请检查！</value>
-    <comment>新建图解模板通知</comment>
-  </data>
-  <data name="add_polygon" xml:space="preserve">
-    <value>添加多边形</value>
-    <comment>绘图功能区</comment>
-  </data>
-  <data name="line_type_solid" xml:space="preserve">
-    <value>实线</value>
-    <comment>线条对象属性</comment>
-  </data>
-  <data name="line_type_dash" xml:space="preserve">
-    <value>虚线</value>
-    <comment>线条对象属性</comment>
-  </data>
-  <data name="line_type_densely_dashed" xml:space="preserve">
-    <value>密集虚线</value>
-    <comment>线条对象属性</comment>
-  </data>
-  <data name="line_type_dot" xml:space="preserve">
-    <value>点线</value>
-    <comment>线条对象属性</comment>
-  </data>
-  <data name="ternary_phase_diagram" xml:space="preserve">
-    <value>三元相图</value>
-    <comment>新建图解模板</comment>
-  </data>
-  <data name="copy_plot_to_clipboard" xml:space="preserve">
-    <value>复制绘图图像到剪切板</value>
-    <comment>绘图-工具栏-提示</comment>
-  </data>
-  <data name="use_help" xml:space="preserve">
-    <value>图解指南</value>
-    <comment>绘图-工具栏-提示</comment>
-  </data>
-  <data name="no_data_please_add_data" xml:space="preserve">
-    <value>无数据，请添加数据</value>
-    <comment>绘图-数据-提示</comment>
-  </data>
-  <data name="no_data_columns_defined" xml:space="preserve">
-    <value>未定义数据列</value>
-    <comment>绘图-数据-提示</comment>
-  </data>
-  <data name="data_plotting_successful" xml:space="preserve">
-    <value>数据点绘图成功</value>
-    <comment>绘图-数据-提示</comment>
-  </data>
-  <data name="save_as_csv_file" xml:space="preserve">
-    <value>保存为CSV文件</value>
-    <comment>温度计-提示</comment>
-  </data>
-  <data name="csv_file_filter" xml:space="preserve">
-    <value>CSV文件|*.csv</value>
-    <comment>温度计-提示</comment>
-  </data>
-  <data name="data_export" xml:space="preserve">
-    <value>数据导出</value>
-    <comment>绘图-数据-按钮</comment>
-  </data>
-  <data name="update_data" xml:space="preserve">
-    <value>更新数据</value>
-    <comment>绘图-数据-按钮</comment>
-  </data>
-  <data name="data_plotting" xml:space="preserve">
-    <value>数据投点</value>
-    <comment>绘图-数据-按钮</comment>
-  </data>
-  <data name="highlight_on_hover" xml:space="preserve">
-    <value>开启后，鼠标移到绘图对象（点、线、面等）上方时会自动高亮，点击可查看信息</value>
-    <comment>绘图-工具栏-提示</comment>
-  </data>
-  <data name="count" xml:space="preserve">
-    <value>次刻度数量</value>
-    <comment>属性-坐标轴-次刻度样式</comment>
-  </data>
-  <data name="zoom_type" xml:space="preserve">
-    <value>缩放类型</value>
-    <comment>属性-坐标轴-坐标轴样式</comment>
-  </data>
-  <data name="from" xml:space="preserve">
-    <value>从</value>
-    <comment>属性-坐标轴-坐标轴样式</comment>
-  </data>
-  <data name="to" xml:space="preserve">
-    <value>到</value>
-    <comment>属性-坐标轴-坐标轴样式</comment>
-  </data>
-  <data name="ternary_phase_diagram_sum_must_be_one" xml:space="preserve">
-    <value>三元相图之和必须为 1.</value>
-    <comment>新建-三元图-模板</comment>
-  </data>
-  <data name="save_as" xml:space="preserve">
-    <value>另存为</value>
-    <comment>绘图-工具栏-编辑</comment>
-  </data>
-  <data name="all_data_cleared" xml:space="preserve">
-    <value>所有数据已清除</value>
-    <comment>绘图-数据-清除数据-提示</comment>
-  </data>
-  <data name="confirm_clear_all_data" xml:space="preserve">
-    <value>是否清除表格数据（包括绘图数据点）？</value>
-    <comment>绘图-数据-清除数据-提示</comment>
-  </data>
-  <data name="confirm_clear_data_for_validation" xml:space="preserve">
-    <value>验证语法将清空数据表格和绘图数据点，是否继续？</value>
-    <comment>绘图-脚本-验证提示</comment>
-  </data>
-  <data name="clear_data_points" xml:space="preserve">
-    <value>清除数据点</value>
-    <comment>绘图-数据-清除数据点</comment>
-  </data>
-  <data name="linear" xml:space="preserve">
-    <value>线性</value>
-    <comment>绘图-坐标轴-属性-缩放类型</comment>
-  </data>
-  <data name="logarithmic" xml:space="preserve">
-    <value>对数</value>
-    <comment>绘图-坐标轴-属性-缩放类型</comment>
-  </data>
-  <data name="some_data_failed_validation" xml:space="preserve">
-    <value>部分数据未通过校验，已跳过绘制</value>
-    <comment>绘图-数据-投点校验提示</comment>
-  </data>
-  <data name="the_sum_of_row" xml:space="preserve">
-    <value>第</value>
-    <comment>绘图-数据-投点校验提示</comment>
-  </data>
-  <data name="is_not_one" xml:space="preserve">
-    <value>条数据和不为1</value>
-    <comment>绘图-数据-投点校验提示</comment>
-  </data>
-  <data name="actual_sum_is" xml:space="preserve">
-    <value>(实际和为</value>
-    <comment>绘图-数据-投点校验提示</comment>
-  </data>
-  <data name="arrow" xml:space="preserve">
-    <value>箭头</value>
-    <comment>绘图-图层-箭头</comment>
-  </data>
-  <data name="arrowhead_width" xml:space="preserve">
-    <value>箭头宽度</value>
-    <comment>绘图-图层-箭头</comment>
-  </data>
-  <data name="arrowhead_length" xml:space="preserve">
-    <value>箭头长度</value>
-    <comment>绘图-图层-箭头</comment>
-  </data>
-  <data name="add_arrow" xml:space="preserve">
-    <value>添加箭头</value>
-    <comment>绘图-编辑-添加箭头</comment>
-  </data>
-  <data name="delete_object" xml:space="preserve">
-    <value>删除对象</value>
-    <comment>绘图-编辑-删除功能</comment>
-  </data>
-  <data name="please_select_an_object_to_delete_first" xml:space="preserve">
-    <value>请先选择一个要删除的对象.</value>
-    <comment>绘图-编辑-删除提示</comment>
-  </data>
-  <data name="object_deleted_successfully" xml:space="preserve">
-    <value>对象已成功删除.</value>
-    <comment>绘图-编辑-删除提示</comment>
-  </data>
-  <data name="cannot_delete_base_layers" xml:space="preserve">
-    <value>无法删除基础图层.</value>
-    <comment>绘图-编辑-删除提示</comment>
-  </data>
-  <data name="update" xml:space="preserve">
-    <value>_更新(U)</value>
-    <comment>绘图-菜单栏</comment>
-  </data>
-  <data name="check_for_template_updates" xml:space="preserve">
-    <value>检查模板更新</value>
-    <comment>绘图-菜单栏</comment>
-  </data>
-  <data name="template_ready" xml:space="preserve">
-    <value>模板就绪！</value>
-    <comment>模板更新提示</comment>
-  </data>
-  <data name="download_template_failed" xml:space="preserve">
-    <value>下载模板失败:</value>
-    <comment>模板更新提示</comment>
-  </data>
-  <data name="downloaded_file_hash_mismatch" xml:space="preserve">
-    <value>下载的文件哈希值与服务器不匹配，文件可能已损坏或遭到篡改。</value>
-    <comment>模板更新提示</comment>
-  </data>
-  <data name="downloaded_content_not_valid_json" xml:space="preserve">
-    <value>下载的内容不是有效的 JSON 格式。</value>
-    <comment>模板更新提示</comment>
-  </data>
-  <data name="template_list_update_success_refreshing" xml:space="preserve">
-    <value>模板列表更新成功！正在刷新...</value>
-    <comment>模板更新提示</comment>
-  </data>
-  <data name="update_list_file_failed" xml:space="preserve">
-    <value>更新列表文件失败</value>
-    <comment>模板更新提示</comment>
-  </data>
-  <data name="new_drawing_template_library_version_detected" xml:space="preserve">
-    <value>检测到绘图模板库有新版本，是否立即更新列表？</value>
-    <comment>模板更新提示</comment>
-  </data>
-  <data name="current_template_list_latest_version" xml:space="preserve">
-    <value>当前模板列表已是最新版本。</value>
-    <comment>模板更新提示</comment>
-  </data>
-  <data name="network_connection_failed_cannot_check_for_updates" xml:space="preserve">
-    <value>网络连接失败，无法检查更新：</value>
-    <comment>模板更新提示</comment>
-  </data>
-  <data name="error_occurred_while_checking_for_updates" xml:space="preserve">
-    <value>检查更新时发生错误：</value>
-    <comment>模板更新提示</comment>
-  </data>
-  <data name="help_instructions" xml:space="preserve">
-    <value>帮助说明</value>
-    <comment>温度计-帮助说明</comment>
-  </data>
-  <data name="view_help_docs" xml:space="preserve">
-    <value>查看帮助文档</value>
-    <comment>温度计-帮助说明按钮提示</comment>
-  </data>
-  <data name="German_Germany" xml:space="preserve">
-    <value>Deutsch (Deutschland)</value>
-    <comment>设置-常规设置-语言</comment>
-  </data>
-  <data name="custom_templates" xml:space="preserve">
-    <value>个人图解模板</value>
-    <comment>绘图-模板列表</comment>
-  </data>
-  <data name="builtin_templates" xml:space="preserve">
-    <value>官方内置模板</value>
-    <comment>绘图-模板列表</comment>
-  </data>
-  <data name="search_templates" xml:space="preserve">
-    <value>搜索模板...</value>
-    <comment>绘图-模板库搜索</comment>
-  </data>
-  <data name="clear_search" xml:space="preserve">
-    <value>清除</value>
-    <comment>绘图-模板库搜索</comment>
-  </data>
-  <data name="filter_templates" xml:space="preserve">
-    <value>筛选模板</value>
-    <comment>绘图-模板库筛选</comment>
-  </data>
-  <data name="check_for_category_updates" xml:space="preserve">
-    <value>检查分类结构更新</value>
-    <comment>绘图-菜单栏-更新分类结构</comment>
-  </data>
-  <data name="cannot_delete_protected_column" xml:space="preserve">
-    <value>无法删除受保护的列</value>
-  </data>
-  <data name="add_column_left" xml:space="preserve">
-    <value>添加列(左)</value>
-  </data>
-  <data name="add_column_right" xml:space="preserve">
-    <value>添加列(右)</value>
-  </data>
-  <data name="delete_row" xml:space="preserve">
-    <value>删除行</value>
-  </data>
-  <data name="delete_column" xml:space="preserve">
-    <value>删除列</value>
-  </data>
-  <data name="missing_columns" xml:space="preserve">
-    <value>缺少列</value>
-  </data>
-  <data name="add_row_up" xml:space="preserve">
-    <value>上方插入行</value>
-  </data>
-  <data name="add_row_down" xml:space="preserve">
-    <value>下方插入行</value>
-  </data>
-  <data name="confirm_delete_row" xml:space="preserve">
-    <value>确定要删除选中的行吗？</value>
-  </data>
-  <data name="confirm_delete_column" xml:space="preserve">
-    <value>确定要删除选中的列吗？</value>
-  </data>
-  <data name="axis" xml:space="preserve">
-    <value>坐标轴</value>
-    <comment>绘图-属性面板</comment>
-  </data>
-  <data name="grid" xml:space="preserve">
-    <value>网格</value>
-    <comment>绘图-属性面板</comment>
-  </data>
-  <data name="formula" xml:space="preserve">
-    <value>公式</value>
-    <comment>绘图-属性-函数</comment>
-  </data>
-  <data name="range" xml:space="preserve">
-    <value>范围</value>
-    <comment>绘图-属性-函数</comment>
-  </data>
-  <data name="domain" xml:space="preserve">
-    <value>定义域</value>
-    <comment>绘图-属性-函数</comment>
-  </data>
-  <data name="point_count" xml:space="preserve">
-    <value>采样点</value>
-    <comment>绘图-属性-函数</comment>
-  </data>
-  <data name="vertices" xml:space="preserve">
-    <value>顶点</value>
-    <comment>绘图-属性-多边形</comment>
-  </data>
-  <data name="template_file_corrupted" xml:space="preserve">
-    <value>模板文件已损坏</value>
-  </data>
-  <data name="template_version_too_high" xml:space="preserve">
-    <value>模板版本高于当前软件版本，请升级软件后打开.</value>
-  </data>
-  <data name="error_loading_template" xml:space="preserve">
-    <value>加载模板时发生错误</value>
-  </data>
-  <data name="template_upgrade_warning" xml:space="preserve">
-    <value>当前模板版本较低，保存后将升级模板版本，可能会导致低版本软件无法使用该模板。是否继续？</value>
-  </data>
-  <data name="offset" xml:space="preserve">
-    <value>偏移量</value>
-  </data>
-  <data name="offset_x" xml:space="preserve">
-    <value>偏移量 X</value>
-  </data>
-  <data name="offset_y" xml:space="preserve">
-    <value>偏移量 Y</value>
-  </data>
-  <data name="add_function" xml:space="preserve">
-    <value>添加函数</value>
-    <comment>绘图-编辑</comment>
-  </data>
-  <data name="Placeholder_Text" xml:space="preserve">
-    <value>请输入文本</value>
-  </data>
-  <data name="Placeholder_Axis_Title" xml:space="preserve">
-    <value>轴标题</value>
-  </data>
-  <data name="Placeholder_Chart_Title" xml:space="preserve">
-    <value>图表标题</value>
-  </data>
-  <data name="Placeholder_Ternary_Title" xml:space="preserve">
-    <value>新建三元相图</value>
-  </data>
-  <data name="Placeholder_Chart_Title_Default" xml:space="preserve">
-    <value>新建图表</value>
-  </data>
-  <data name="Placeholder_Axis_X" xml:space="preserve">
-    <value>X轴</value>
-  </data>
-  <data name="Placeholder_Axis_Y" xml:space="preserve">
-    <value>Y轴</value>
-  </data>
-  <data name="Placeholder_Component_A" xml:space="preserve">
-    <value>A</value>
-  </data>
-  <data name="Placeholder_Component_B" xml:space="preserve">
-    <value>B</value>
-  </data>
-  <data name="Placeholder_Component_C" xml:space="preserve">
-    <value>C</value>
-  </data>
-  <data name="third_party" xml:space="preserve">
-    <value>第三方</value>
-    <comment>绘图-菜单栏-绘图</comment>
-  </data>
-  <data name="open_via_third_party" xml:space="preserve">
-    <value>通过第三方打开</value>
-    <comment>绘图-菜单栏-绘图</comment>
-  </data>
-  <data name="select_an_object" xml:space="preserve">
-    <value>请选择一个对象</value>
-    <comment>绘图-属性面板</comment>
-  </data>
-  <data name="undo" xml:space="preserve">
-    <value>撤回</value>
-    <comment>绘图-撤回</comment>
-  </data>
-  <data name="redo" xml:space="preserve">
-    <value>重做</value>
-    <comment>绘图-重做</comment>
-  </data>
-  <data name="interval" xml:space="preserve">
-    <value>刻度步长</value>
-    <comment>绘图-属性-二维坐标轴</comment>
-  </data>
-  <data name="pick_coordinate" xml:space="preserve">
-    <value>拾取坐标</value>
-    <comment>绘图-属性-多边形</comment>
-  </data>
-  <data name="remove_point" xml:space="preserve">
-    <value>删除此顶点</value>
-    <comment>绘图-属性-多边形</comment>
-  </data>
-  <data name="vertex_add_new" xml:space="preserve">
-    <value>添加新顶点</value>
-    <comment>绘图-属性-多边形</comment>
-  </data>
-  <data name="subtitle" xml:space="preserve">
-    <value>子标题</value>
-  </data>
-  <data name="subtitle_font_size" xml:space="preserve">
-    <value>子标题字号</value>
-  </data>
-  <data name="subtitle_color" xml:space="preserve">
-    <value>子标题颜色</value>
-  </data>
-  <data name="subtitle_bold" xml:space="preserve">
-    <value>子标题粗体</value>
-  </data>
-  <data name="subtitle_italic" xml:space="preserve">
-    <value>子标题斜体</value>
-  </data>
-  <data name="edit_link" xml:space="preserve">
-    <value>编辑链接</value>
-  </data>
-  <data name="template_translator" xml:space="preserve">
-    <value>图解模板翻译器</value>
-  </data>
-  <data name="diagram_template_repair_tool" xml:space="preserve">
-    <value>图解模板修复工具</value>
-    <comment>主页-小组件-模板修复工具</comment>
-  </data>
-  <data name="server_announcement" xml:space="preserve">
-    <value>服务器公告</value>
-  </data>
-  <data name="developer_maintenance_tool" xml:space="preserve">
-    <value>开发者维护工具</value>
-  </data>
-  <data name="copy_content" xml:space="preserve">
-    <value>复制内容</value>
-    <comment>窗体-通知系统</comment>
-  </data>
-  <data name="modified_successfully" xml:space="preserve">
-    <value>已修改</value>
-    <comment>绘图-脚本-属性面板</comment>
-  </data>
-  <data name="error_loading_rtf_file" xml:space="preserve">
-    <value>加载RTF文件时出错:</value>
-    <comment>绘图-通知-rtfhelper</comment>
-  </data>
-  <data name="file_path_cannot_be_empty" xml:space="preserve">
-    <value>文件路径不能为空</value>
-    <comment>绘图-通知-rtfhelper</comment>
-  </data>
-  <data name="richtextbox_control_cannot_be_null" xml:space="preserve">
-    <value>RichTextBox控件不能为null</value>
-    <comment>绘图-通知-rtfhelper</comment>
-  </data>
-  <data name="file_does_not_exist" xml:space="preserve">
-    <value>文件不存在:</value>
-    <comment>绘图-通知-rtfhelper</comment>
-  </data>
-  <data name="error_saving_rtf_file" xml:space="preserve">
-    <value>保存RTF文件时出错:</value>
-    <comment>绘图-通知-rtfhelper</comment>
-  </data>
-  <data name="unable_to_get_latest_release_info" xml:space="preserve">
-    <value>无法获取最新发布版本信息</value>
-    <comment>设置-通知-更新</comment>
-  </data>
-  <data name="invalid_formula" xml:space="preserve">
-    <value>公式不合法</value>
-    <comment>设置-属性-函数</comment>
-  </data>
-  <data name="loading_announcements" xml:space="preserve">
-    <value>正在加载公告...</value>
-    <comment>主页-小组件-公告</comment>
-  </data>
-  <data name="no_announcements" xml:space="preserve">
-    <value>暂无公告。</value>
-    <comment>主页-小组件-公告</comment>
-  </data>
-  <data name="unable_to_get_announcements" xml:space="preserve">
-    <value>无法获取公告信息。</value>
-    <comment>主页-小组件-公告</comment>
-  </data>
-  <data name="failed_to_get_announcements" xml:space="preserve">
-    <value>获取公告失败:</value>
-    <comment>主页-小组件-公告</comment>
-  </data>
-  <data name="error_loading_template_list" xml:space="preserve">
-    <value>加载模板列表出错:</value>
-  </data>
-  <data name="unable_to_open_link" xml:space="preserve">
-    <value>无法打开链接:</value>
-    <comment>设置-about</comment>
-  </data>
-  <data name="add_link" xml:space="preserve">
-    <value>添加链接</value>
-    <comment>主页-添加链接</comment>
-  </data>
-  <data name="name" xml:space="preserve">
-    <value>名称</value>
-    <comment>主页-添加链接</comment>
-  </data>
-  <data name="link_url" xml:space="preserve">
-    <value>链接 (URL)</value>
-    <comment>主页-添加链接</comment>
-  </data>
-  <data name="description" xml:space="preserve">
-    <value>描述</value>
-    <comment>主页-添加链接</comment>
-  </data>
-  <data name="icon" xml:space="preserve">
-    <value>图标</value>
-    <comment>主页-添加链接</comment>
-  </data>
-  <data name="please_enter_name" xml:space="preserve">
-    <value>请输入名称</value>
-    <comment>主页-添加链接</comment>
-  </data>
-  <data name="please_enter_link" xml:space="preserve">
-    <value>请输入链接</value>
-    <comment>主页-添加链接</comment>
-  </data>
-  <data name="add_widget" xml:space="preserve">
-    <value>添加小组件</value>
-    <comment>主页-添加小组件</comment>
-  </data>
-  <data name="please_select_widget_to_add" xml:space="preserve">
-    <value>请选择要添加的组件：</value>
-    <comment>主页-添加小组件</comment>
-  </data>
-  <data name="please_select_a_widget" xml:space="preserve">
-    <value>请选择一个组件</value>
-    <comment>主页-添加小组件</comment>
-  </data>
-  <data name="server_announcements" xml:space="preserve">
-    <value>服务器公告</value>
-    <comment>主页-小组件-公告</comment>
-  </data>
-  <data name="refresh" xml:space="preserve">
-    <value>刷新</value>
-    <comment>主页-小组件-公告</comment>
-  </data>
-  <data name="developer_maintenance_tools" xml:space="preserve">
-    <value>开发者维护工具</value>
-    <comment>主页-小组件-开发者工具</comment>
-  </data>
-  <data name="drawing_template_repair_tool" xml:space="preserve">
-    <value>图解模板修复工具</value>
-    <comment>主页-小组件-模板修复工具</comment>
-  </data>
-  <data name="start_check_and_repair" xml:space="preserve">
-    <value>开始检查与修复</value>
-    <comment>主页-小组件-模板修复工具</comment>
-  </data>
-  <data name="close_file" xml:space="preserve">
-    <value>关闭文件</value>
-    <comment>主页-小组件-翻译组件</comment>
-  </data>
-  <data name="open_import" xml:space="preserve">
-    <value>打开导入</value>
-    <comment>主页-小组件-翻译组件</comment>
-  </data>
-  <data name="add_language_column" xml:space="preserve">
-    <value>添加语言列</value>
-    <comment>主页-小组件-翻译组件</comment>
-  </data>
-  <data name="swap_language_columns" xml:space="preserve">
-    <value>交换语言列</value>
-    <comment>主页-小组件-翻译组件</comment>
-  </data>
-  <data name="delete_language_column" xml:space="preserve">
-    <value>删除语言列</value>
-    <comment>主页-小组件-翻译组件</comment>
-  </data>
-  <data name="click_or_drag_template_json_here" xml:space="preserve">
-    <value>点击或拖拽模板文件(JSON)到此处</value>
-    <comment>主页-小组件-翻译组件</comment>
-  </data>
-  <data name="support_json_format" xml:space="preserve">
-    <value>支持 .json 格式</value>
-    <comment>主页-小组件-翻译组件</comment>
-  </data>
-  <data name="save_changes" xml:space="preserve">
-    <value>保存更改</value>
-    <comment>主页-小组件-翻译组件</comment>
-  </data>
-  <data name="select_drawing_template_file" xml:space="preserve">
-    <value>选择绘图模板文件</value>
-  </data>
-  <data name="edit_menu_bar_item" xml:space="preserve">
-    <value>编辑菜单栏项</value>
-    <comment>主页-右键菜单</comment>
-  </data>
-  <data name="import_custom_diagram_template" xml:space="preserve">
-    <value>导入自定义图解模板</value>
-  </data>
-  <data name="open_file_location" xml:space="preserve">
-    <value>打开文件位置</value>
-    <comment>绘图-卡片-右键菜单</comment>
-  </data>
-  <data name="export_diagram_template" xml:space="preserve">
-    <value>导出图解模板</value>
-  </data>
-  <data name="edit_diagram_template" xml:space="preserve">
-    <value>编辑图解模板</value>
-    <comment>图解模板库卡片右键菜单</comment>
-  </data>
-  <data name="favorite" xml:space="preserve">
-    <value>收藏</value>
-    <comment>绘图-卡片-右键菜单</comment>
-  </data>
-  <data name="unfavorite" xml:space="preserve">
-    <value>取消收藏</value>
-    <comment>绘图-卡片-右键菜单</comment>
-  </data>
-  <data name="personal_templates" xml:space="preserve">
-    <value>个人图解模板</value>
-    <comment>绘图-模板库-分类</comment>
-  </data>
-  <data name="favorite_templates" xml:space="preserve">
-    <value>收藏</value>
-    <comment>绘图-模板库-分类</comment>
-  </data>
-  <data name="official_templates" xml:space="preserve">
-    <value>官方图解模板</value>
-    <comment>绘图-模板库-分类</comment>
-  </data>
-  <data name="recents_templates" xml:space="preserve">
-    <value>最近使用</value>
-    <comment>绘图-模板库-分类</comment>
-  </data>
-  <data name="library_section" xml:space="preserve">
-    <value>资源库</value>
-    <comment>绘图-模板库-分组</comment>
-  </data>
-  <data name="workspace_section" xml:space="preserve">
-    <value>我的空间</value>
-    <comment>绘图-模板库-分组</comment>
-  </data>
-  <data name="favorite_added" xml:space="preserve">
-    <value>已添加到收藏</value>
-  </data>
-  <data name="favorite_removed" xml:space="preserve">
-    <value>已从收藏中移除</value>
-  </data>
-  <data name="downloading_ellipsis" xml:space="preserve">
-    <value>正在下载...</value>
-    <comment>绘图-卡片-更新</comment>
-  </data>
-  <data name="initializing_language_service_ellipsis" xml:space="preserve">
-    <value>正在初始化语言服务...</value>
-    <comment>启动窗体</comment>
-  </data>
-  <data name="loading_font_resources_ellipsis" xml:space="preserve">
-    <value>正在加载字体资源...</value>
-  </data>
-  <data name="reading_user_configuration_ellipsis" xml:space="preserve">
-    <value>正在读取用户配置...</value>
-  </data>
-  <data name="loading_drawing_module_ellipsis" xml:space="preserve">
-    <value>正在加载绘图模块...</value>
-  </data>
-  <data name="loading_main_interface_components_ellipsis" xml:space="preserve">
-    <value>正在加载主界面组件...</value>
-  </data>
-  <data name="entering_soon_ellipsis" xml:space="preserve">
-    <value>即将进入...</value>
-  </data>
-  <data name="completed" xml:space="preserve">
-    <value>完成</value>
-  </data>
-  <data name="error_occurred_during_startup" xml:space="preserve">
-    <value>启动过程中发生错误:</value>
-  </data>
-  <data name="language_apperarance" xml:space="preserve">
-    <value>语言与外观</value>
-  </data>
-  <data name="startup_background_image" xml:space="preserve">
-    <value>启动背景图片</value>
-  </data>
-  <data name="add_image" xml:space="preserve">
-    <value>添加图片</value>
-  </data>
-  <data name="external_applications" xml:space="preserve">
-    <value>外部应用程序</value>
-  </data>
-  <data name="custom_app" xml:space="preserve">
-    <value>自定义应用</value>
-  </data>
-  <data name="plot_defaults" xml:space="preserve">
-    <value>绘图默认设置</value>
-  </data>
-  <data name="default_diagram_expand_level" xml:space="preserve">
-    <value>默认图解展开层级</value>
-  </data>
-  <data name="default_third_party_editor" xml:space="preserve">
-    <value>默认第三方编辑程序</value>
-  </data>
-  <data name="automatic_updates" xml:space="preserve">
-    <value>自动更新</value>
-  </data>
-  <data name="auto_check_diagram_template_updates" xml:space="preserve">
-    <value>自动检查图解模板更新</value>
-  </data>
-  <data name="community" xml:space="preserve">
-    <value>社区</value>
-  </data>
-  <data name="export_and_tools" xml:space="preserve">
-    <value>导出/工具</value>
-  </data>
-  <data name="format" xml:space="preserve">
-    <value>格式</value>
-  </data>
-  <data name="third_party_software" xml:space="preserve">
-    <value>第三方软件</value>
-  </data>
-  <data name="select_software" xml:space="preserve">
-    <value>选择软件</value>
-  </data>
-  <data name="open_with_third_party_software" xml:space="preserve">
-    <value>第三方软件打开</value>
-  </data>
-  <data name="confirm_enter_edit_mode_base_map" xml:space="preserve">
-    <value>确定要进入编辑模式吗？这将允许您修改底图。</value>
-  </data>
-  <data name="information" xml:space="preserve">
-    <value>提示</value>
-  </data>
-  <data name="click_to_pick_coordinates" xml:space="preserve">
-    <value>请在绘图区域点击以拾取坐标</value>
-  </data>
-  <data name="picking_operation_cancelled" xml:space="preserve">
-    <value>拾取操作已取消</value>
-  </data>
-  <data name="diagram" xml:space="preserve">
-    <value>图解</value>
-    <comment>绘图-功能栏</comment>
-  </data>
-  <data name="official_website" xml:space="preserve">
-    <value>官网</value>
-  </data>
-  <data name="minimize" xml:space="preserve">
-    <value>最小化</value>
-  </data>
-  <data name="maximize" xml:space="preserve">
-    <value>最大化</value>
-  </data>
-  <data name="close" xml:space="preserve">
-    <value>Close</value>
-  </data>
-  <data name="diagram_title_properties" xml:space="preserve">
-    <value>图解标题属性</value>
-    <comment>绘图-快捷按钮-tooltip</comment>
-  </data>
-  <data name="diagram_script_properties" xml:space="preserve">
-    <value>图解脚本属性</value>
-    <comment>绘图-快捷按钮-tooltip</comment>
-  </data>
-  <data name="diagram_legend_properties" xml:space="preserve">
-    <value>图解图例属性</value>
-  </data>
-  <data name="diagram_grid_properties" xml:space="preserve">
-    <value>图解网格属性</value>
-  </data>
-  <data name="switch_diagram_language" xml:space="preserve">
-    <value>切换图解语言</value>
-  </data>
-  <data name="popup_diagram_window" xml:space="preserve">
-    <value>弹出图解窗口</value>
-    <comment>绘图-快捷按钮-tooltip</comment>
-  </data>
-  <data name="independent_diagram_window" xml:space="preserve">
-    <value>独立图解窗口</value>
-  </data>
   <data name="edit_drawing_template_translations" xml:space="preserve">
     <value>编辑绘图模板的多语言翻译</value>
-    <comment>主页-小组件-图解模板翻译器</comment>
-  </data>
-  <data name="repair_missing_or_damaged_templates_and_lists" xml:space="preserve">
-    <value>修复丢失或损坏的绘图模板及列表</value>
-  </data>
-  <data name="view_latest_server_announcements" xml:space="preserve">
-    <value>查看服务器发布的最新公告信息</value>
-  </data>
-  <data name="maintain_server_config_and_templates" xml:space="preserve">
-    <value>维护服务器配置与模板文件</value>
-  </data>
-  <data name="stroke_width" xml:space="preserve">
-    <value>描边宽度</value>
-  </data>
-  <data name="stroke_color" xml:space="preserve">
-    <value>描边颜色</value>
-  </data>
-  <data name="template_type_not_supported_please_update" xml:space="preserve">
-    <value>当前图解模板类型不支持，请更新软件。</value>
-  </data>
-  <data name="diagram_guide" xml:space="preserve">
-    <value>图解向导</value>
-    <comment>绘图-图解-帮助</comment>
-  </data>
-  <data name="click_help_for_guide" xml:space="preserve">
-    <value>点击按钮查看图解文档</value>
-  </data>
-  <data name="Alignment_UpperLeft" xml:space="preserve">
-    <value>左上角</value>
-  </data>
-  <data name="Alignment_UpperCenter" xml:space="preserve">
-    <value>中上</value>
-  </data>
-  <data name="Alignment_UpperRight" xml:space="preserve">
-    <value>右上角</value>
-  </data>
-  <data name="Alignment_MiddleLeft" xml:space="preserve">
-    <value>左中</value>
-  </data>
-  <data name="Alignment_MiddleCenter" xml:space="preserve">
-    <value>正中</value>
-  </data>
-  <data name="Alignment_MiddleRight" xml:space="preserve">
-    <value>右中</value>
-  </data>
-  <data name="Alignment_LowerLeft" xml:space="preserve">
-    <value>左下角</value>
-  </data>
-  <data name="Alignment_LowerCenter" xml:space="preserve">
-    <value>中下</value>
-  </data>
-  <data name="Alignment_LowerRight" xml:space="preserve">
-    <value>右下角</value>
-  </data>
-  <data name="Orientation_Horizontal" xml:space="preserve">
-    <value>横向</value>
-  </data>
-  <data name="Orientation_Vertical" xml:space="preserve">
-    <value>纵向</value>
-  </data>
-  <data name="show_tick_labels" xml:space="preserve">
-    <value>显示刻度标签</value>
-  </data>
-  <data name="show_major_ticks" xml:space="preserve">
-    <value>显示主刻度</value>
-  </data>
-  <data name="recently_used" xml:space="preserve">
-    <value>最近使用</value>
-  </data>
-  <data name="all_fonts" xml:space="preserve">
-    <value>所有字体</value>
-  </data>
-  <data name="failed_to_open_widget" xml:space="preserve">
-    <value>打开组件失败：</value>
-  </data>
-  <data name="coordinates_picked_success" xml:space="preserve">
-    <value>坐标拾取成功！</value>
-  </data>
-  <data name="unsaved_diagram_template_prompt" xml:space="preserve">
-    <value>当前图解模板有未保存的内容，是否保存？</value>
-  </data>
-  <data name="tips" xml:space="preserve">
-    <value>提示</value>
-  </data>
-  <data name="template_no_multilingual_info" xml:space="preserve">
-    <value>当前模板没有多语言信息</value>
-  </data>
-  <data name="language_switch_success" xml:space="preserve">
-    <value>语言切换成功</value>
-  </data>
-  <data name="language_switch_error" xml:space="preserve">
-    <value>切换语言时发生错误：</value>
-  </data>
-  <data name="auto_datapoint_projection_failed" xml:space="preserve">
-    <value>自动数据点投影失败：</value>
-  </data>
-  <data name="failed_to_delete_row" xml:space="preserve">
-    <value>无法删除行：</value>
-  </data>
-  <data name="diagram_template_not_found_repair_hint" xml:space="preserve">
-    <value>找不到文件图解模板，请尝试在主页使用'模板修复工具'进行修复。</value>
-  </data>
-  <data name="confirm_delete_custom_diagram_template" xml:space="preserve">
-    <value>确定要删除该自定义图解模板吗？</value>
-  </data>
-  <data name="template_delete_success" xml:space="preserve">
-    <value>模板删除成功</value>
-  </data>
-  <data name="delete_failed" xml:space="preserve">
-    <value>删除失败：</value>
-  </data>
-  <data name="missing_drawing_objects_error" xml:space="preserve">
-    <value>• 绘图对象缺失：模板中未包含任何线、多边形、文本或箭头。</value>
-  </data>
-  <data name="invalid_script_variable_name" xml:space="preserve">
-    <value>• 脚本变量名格式错误：’</value>
-  </data>
-  <data name="is_not_a_valid_variable_name" xml:space="preserve">
-    <value>‘ 不是有效的变量名。</value>
-  </data>
-  <data name="script_return_value_error_must_be_array" xml:space="preserve">
-    <value>• 脚本返回值错误：脚本必须返回一个数组。</value>
-  </data>
-  <data name="script_return_value_length_error" xml:space="preserve">
-    <value>• 脚本返回值长度错误：当前为</value>
-  </data>
-  <data name="return_type_mismatch_error" xml:space="preserve">
-    <value>类型，应返回</value>
-  </data>
-  <data name="elements_actual_returned" xml:space="preserve">
-    <value>个元素，实际返回</value>
-  </data>
-  <data name="elements_count_suffix" xml:space="preserve">
-    <value>个。</value>
-  </data>
-  <data name="missing_translation_warning" xml:space="preserve">
-    <value>• 翻译缺失：部分文本缺少多语言翻译。</value>
-  </data>
-  <data name="diagram_template_source_missing" xml:space="preserve">
-    <value>图解模板源文件不存在</value>
-  </data>
-  <data name="template_potential_issues_detected" xml:space="preserve">
-    <value>检测到模板存在以下潜在问题：</value>
-  </data>
-  <data name="ignore_issues_and_continue_export" xml:space="preserve">
-    <value>是否忽略这些问题并继续导出？</value>
-  </data>
-  <data name="completeness_check" xml:space="preserve">
-    <value>完整度检查</value>
-  </data>
-  <data name="diagram_template_export_success" xml:space="preserve">
-    <value>图解模板导出成功</value>
-  </data>
-  <data name="directory_not_exist" xml:space="preserve">
-    <value>目录不存在</value>
-  </data>
-  <data name="diagram_template_directory_not_found" xml:space="preserve">
-    <value>图解模板目录不存在：</value>
-  </data>
-  <data name="failed_to_load_diagram_template" xml:space="preserve">
-    <value>无法加载图解模板：</value>
-  </data>
-  <data name="unsaved_template_changes_confirm" xml:space="preserve">
-    <value>当前模板有未保存的内容，是否保存？</value>
-  </data>
-  <data name="ternary_diagram_crosshair_not_supported" xml:space="preserve">
-    <value>三元相图暂不支持十字定位功能。</value>
-  </data>
-  <data name="attempting_to_start" xml:space="preserve">
-    <value>正在尝试启动</value>
-  </data>
-  <data name="coreldraw_env_not_found_select_program" xml:space="preserve">
-    <value>未找到 CorelDRAW 环境变量，请选择打开程序。</value>
-  </data>
-  <data name="failed_to_open" xml:space="preserve">
-    <value>打开失败：</value>
-  </data>
-  <data name="inkscape_env_not_found_select_program" xml:space="preserve">
-    <value>未找到 Inkscape 环境变量，请选择打开程序。</value>
-  </data>
-  <data name="illustrator_not_found_check_path" xml:space="preserve">
-    <value>未找到 Adobe Illustrator，请检查路径设置或选择打开程序。</value>
-  </data>
-  <data name="custom_path_not_set_configure_in_settings" xml:space="preserve">
-    <value>未设置自定义程序路径，请在设置中配置。</value>
-  </data>
-  <data name="custom_program_start_failed" xml:space="preserve">
-    <value>启动自定义程序失败：</value>
-  </data>
-  <data name="help_file_not_found" xml:space="preserve">
-    <value>无法找到帮助说明文件。</value>
-  </data>
-  <data name="refresh_successful" xml:space="preserve">
-    <value>刷新成功</value>
-  </data>
-  <data name="refresh_failed" xml:space="preserve">
-    <value>刷新失败：</value>
-  </data>
-  <data name="diagram_help_path_undefined_save_template" xml:space="preserve">
-    <value>无法确定图解帮助文件路径，请尝试先保存模板。</value>
-  </data>
-  <data name="failed_to_open_file" xml:space="preserve">
-    <value>无法打开文件：</value>
-  </data>
-  <data name="error_creating_new_template" xml:space="preserve">
-    <value>新建模板时发生错误：</value>
-  </data>
-  <data name="import_failed" xml:space="preserve">
-    <value>导入失败：</value>
-  </data>
-  <data name="failed_to_open_zip_file" xml:space="preserve">
-    <value>无法打开ZIP文件</value>
-  </data>
-  <data name="diagram_template_corrupted_or_invalid" xml:space="preserve">
-    <value>图解模板文件已损坏或未包含有效的图解模板 JSON 文件。</value>
-  </data>
-  <data name="failed_to_parse_diagram_template_json" xml:space="preserve">
-    <value>无法解析图解模板 JSON 文件</value>
-  </data>
-  <data name="invalid_diagram_template_file" xml:space="preserve">
-    <value>无效的图解模板文件</value>
-  </data>
-  <data name="custom_diagram_template" xml:space="preserve">
-    <value>自定义图解模板</value>
-  </data>
-  <data name="already_exists_overwrite_confirm" xml:space="preserve">
-    <value>已存在，是否覆盖？</value>
-  </data>
-  <data name="overwrite" xml:space="preserve">
-    <value>覆盖</value>
-  </data>
-  <data name="failed_to_delete_old_directory" xml:space="preserve">
-    <value>无法删除旧目录：</value>
-  </data>
-  <data name="invalid_diagram_template_no_json" xml:space="preserve">
-    <value>无效的图解模板文件，未找到图解 json 文件。</value>
-  </data>
-  <data name="template_load_failed" xml:space="preserve">
-    <value>图解模板加载失败</value>
-  </data>
-  <data name="script_not_defined_in_template" xml:space="preserve">
-    <value>图解模板中未定义脚本</value>
-  </data>
-  <data name="function" xml:space="preserve">
-    <value>函数</value>
-  </data>
-  <data name="new_template" xml:space="preserve">
-    <value>新建图解模板</value>
-  </data>
-  <data name="update_available_click_to_download" xml:space="preserve">
-    <value>有新版本可用，点击更新</value>
-  </data>
-  <data name="MarkerShape_FilledCircle" xml:space="preserve">
-    <value>实心圆</value>
-  </data>
-  <data name="MarkerShape_OpenCircle" xml:space="preserve">
-    <value>空心圆</value>
-  </data>
-  <data name="MarkerShape_FilledSquare" xml:space="preserve">
-    <value>实心正方形</value>
-  </data>
-  <data name="MarkerShape_OpenSquare" xml:space="preserve">
-    <value>空心正方形</value>
-  </data>
-  <data name="MarkerShape_FilledTriangleUp" xml:space="preserve">
-    <value>实心上三角</value>
   </data>
   <data name="MarkerShape_OpenTriangleUp" xml:space="preserve">
     <value>空心上三角</value>
   </data>
-  <data name="MarkerShape_FilledTriangleDown" xml:space="preserve">
-    <value>实心下三角</value>
+  <data name="object_deleted_successfully" xml:space="preserve">
+    <value>对象已成功删除.</value>
   </data>
-  <data name="MarkerShape_OpenTriangleDown" xml:space="preserve">
-    <value>空心下三角</value>
+  <data name="geo_msg_batch_export_failed" xml:space="preserve">
+    <value>批量导出失败: {0}</value>
   </data>
-  <data name="MarkerShape_FilledDiamond" xml:space="preserve">
-    <value>实心菱形</value>
+  <data name="show_tick_labels" xml:space="preserve">
+    <value>显示刻度标签</value>
   </data>
-  <data name="MarkerShape_OpenDiamond" xml:space="preserve">
-    <value>空心菱形</value>
+  <data name="cipw_tooltip_help" xml:space="preserve">
+    <value>查看 CIPW 标准矿物计算的算法流程说明</value>
   </data>
-  <data name="MarkerShape_Cross" xml:space="preserve">
-    <value>十字</value>
+  <data name="row_1_column_1" xml:space="preserve">
+    <value>行: 1, 列: 1</value>
   </data>
-  <data name="MarkerShape_Eks" xml:space="preserve">
-    <value>X 形</value>
+  <data name="geo_field_formula_name" xml:space="preserve">
+    <value>公式名称 *</value>
   </data>
-  <data name="MarkerShape_Asterisk" xml:space="preserve">
-    <value>星号</value>
+  <data name="third_party_software" xml:space="preserve">
+    <value>第三方软件</value>
   </data>
-  <data name="MarkerShape_VerticalBar" xml:space="preserve">
-    <value>竖线</value>
+  <data name="information" xml:space="preserve">
+    <value>提示</value>
+  </data>
+  <data name="cannot_delete_protected_column" xml:space="preserve">
+    <value>无法删除受保护的列</value>
+  </data>
+  <data name="invalid_diagram_template_no_json" xml:space="preserve">
+    <value>无效的图解模板文件，未找到图解 json 文件。</value>
+  </data>
+  <data name="cipw_step9_detail" xml:space="preserve">
+    <value>• 将各矿物摩尔数乘以其摩尔质量，得到标准矿物的质量
+• 归一化为质量百分比（wt%）输出
+• 报告硅饱和度、铝饱和状态和质量平衡误差等诊断信息</value>
+  </data>
+  <data name="top_x_axis" xml:space="preserve">
+    <value>上 X 轴</value>
+  </data>
+  <data name="geo_script_test_input" xml:space="preserve">
+    <value>测试输入：</value>
+  </data>
+  <data name="cipw_diag_silica_saturation" xml:space="preserve">
+    <value>硅饱和度</value>
+  </data>
+  <data name="cipw_diag_mass_balance_error" xml:space="preserve">
+    <value>质量平衡误差</value>
+  </data>
+  <data name="geo_step_script" xml:space="preserve">
+    <value>公式脚本</value>
+  </data>
+  <data name="cipw_btn_example" xml:space="preserve">
+    <value>示例</value>
+  </data>
+  <data name="custom_program_start_failed" xml:space="preserve">
+    <value>启动自定义程序失败：</value>
+  </data>
+  <data name="geo_label_custom" xml:space="preserve">
+    <value>自定义</value>
+  </data>
+  <data name="Amphibole" xml:space="preserve">
+    <value>角闪石</value>
+  </data>
+  <data name="minor_grid_Line" xml:space="preserve">
+    <value>次网格线</value>
+  </data>
+  <data name="BiotiteGTM" xml:space="preserve">
+    <value>Ti 温度计 (Henry et al., 2005)</value>
+  </data>
+  <data name="all_fields_required" xml:space="preserve">
+    <value>所有字段均为必填项！</value>
+  </data>
+  <data name="startup_background_image" xml:space="preserve">
+    <value>启动背景图片</value>
   </data>
   <data name="MarkerShape_HorizontalBar" xml:space="preserve">
     <value>横线</value>
   </data>
-  <data name="MarkerShape_HashTag" xml:space="preserve">
-    <value>井号</value>
+  <data name="the_sum_of_row" xml:space="preserve">
+    <value>第</value>
   </data>
-  <data name="MarkerShape_OpenCircleWithDot" xml:space="preserve">
-    <value>空心圆加点</value>
+  <data name="cipw_step6_detail" xml:space="preserve">
+    <value>分配铁氧化物到矿物中：
+• 磁铁矿（Mt）：Fe₂O₃ + FeO
+• 赤铁矿（Hm）：残余 Fe₂O₃</value>
   </data>
-  <data name="MarkerShape_OpenCircleWithCross" xml:space="preserve">
-    <value>空心圆加十字</value>
+  <data name="cannot_delete_base_layers" xml:space="preserve">
+    <value>无法删除基础图层.</value>
   </data>
-  <data name="MarkerShape_OpenCircleWithEks" xml:space="preserve">
-    <value>空心圆加叉</value>
+  <data name="geo_msg_script_empty" xml:space="preserve">
+    <value>脚本内容为空</value>
   </data>
-  <data name="invalid_filename_char" xml:space="preserve">
-    <value>内容含有不支持的字符</value>
+  <data name="go_to_download" xml:space="preserve">
+    <value>去下载</value>
   </data>
-  <data name="developer_mode" xml:space="preserve">
-    <value>开发者模式</value>
+  <data name="geo_msg_create_table_failed" xml:space="preserve">
+    <value>创建表格失败: {0}</value>
   </data>
-  <data name="help_document_not_found" xml:space="preserve">
-    <value>未找到帮助文档：</value>
-  </data>
-  <data name="path_is_empty" xml:space="preserve">
-    <value>路径为空</value>
-  </data>
-  <data name="failed_to_load_help_document" xml:space="preserve">
-    <value>加载帮助文档失败:</value>
-  </data>
-  <data name="dev_mode_warning_non_developers" xml:space="preserve">
-    <value>非开发者不建议开启，可能会导致不必要的问题。</value>
+  <data name="link_url" xml:space="preserve">
+    <value>链接 (URL)</value>
   </data>
   <data name="click_to_download" xml:space="preserve">
     <value>点击下载</value>
   </data>
-  <data name="new_version_found" xml:space="preserve">
-    <value>发现新版本</value>
+  <data name="interval" xml:space="preserve">
+    <value>刻度步长</value>
   </data>
-  <data name="downloading_status" xml:space="preserve">
-    <value>下载中...</value>
+  <data name="font_family" xml:space="preserve">
+    <value>字体</value>
   </data>
-  <data name="retry_action" xml:space="preserve">
-    <value>重试</value>
+  <data name="vertices" xml:space="preserve">
+    <value>顶点</value>
   </data>
-  <data name="loading_status" xml:space="preserve">
-    <value>加载中...</value>
+  <data name="unknown_axis" xml:space="preserve">
+    <value>未知坐标轴</value>
   </data>
-  <data name="exit_action" xml:space="preserve">
-    <value>退出</value>
+  <data name="new_template" xml:space="preserve">
+    <value>新建图解模板</value>
   </data>
-  <data name="maintenance" xml:space="preserve">
-    <value>_维护(M)</value>
+  <data name="point_count" xml:space="preserve">
+    <value>采样点</value>
+  </data>
+  <data name="geo_label_official" xml:space="preserve">
+    <value>官方</value>
+  </data>
+  <data name="recents_templates" xml:space="preserve">
+    <value>最近使用</value>
+  </data>
+  <data name="downloaded_file_hash_mismatch" xml:space="preserve">
+    <value>下载的文件哈希值与服务器不匹配，文件可能已损坏或遭到篡改。</value>
+  </data>
+  <data name="batch_download_confirm_message" xml:space="preserve">
+    <value>检测到 {0} 个未下载的新模板，是否批量下载？</value>
+  </data>
+  <data name="cipw_silica_undersaturated" xml:space="preserve">
+    <value>不饱和</value>
+  </data>
+  <data name="data_parameters_are_empty" xml:space="preserve">
+    <value>数据参数为空</value>
+  </data>
+  <data name="StartStatus" xml:space="preserve">
+    <value>启动中...</value>
+  </data>
+  <data name="cipw_help_window_title" xml:space="preserve">
+    <value>CIPW 标准矿物计算 - 算法说明</value>
+  </data>
+  <data name="geo_tooltip_sample_row_eg" xml:space="preserve">
+    <value>例如: 45.2, 0.8, 12.3, =MyFormula(A2,B2,C2)</value>
+  </data>
+  <data name="geo_hint_select_thermometer" xml:space="preserve">
+    <value>请从左侧面板选择温度计</value>
+  </data>
+  <data name="delete_column" xml:space="preserve">
+    <value>删除列</value>
+  </data>
+  <data name="QuitEdit" xml:space="preserve">
+    <value>退出编辑</value>
+  </data>
+  <data name="clear_search" xml:space="preserve">
+    <value>清除</value>
+  </data>
+  <data name="spider_diagram_data_hint" xml:space="preserve">
+    <value>进入绘图模式后，在数据表中粘贴数据。每行代表一个样品，列名需与上方元素名称对应。</value>
+  </data>
+  <data name="popup_diagram_window" xml:space="preserve">
+    <value>弹出图解窗口</value>
+  </data>
+  <data name="geo_validation_mineral_required" xml:space="preserve">
+    <value>矿物分类为必填项</value>
+  </data>
+  <data name="geo_tooltip_inputs_eg" xml:space="preserve">
+    <value>例如: SiO2, TiO2, Al2O3</value>
+  </data>
+  <data name="default_diagram_expand_level" xml:space="preserve">
+    <value>默认图解展开层级</value>
+  </data>
+  <data name="failed_to_delete_old_directory" xml:space="preserve">
+    <value>无法删除旧目录：</value>
+  </data>
+  <data name="unsaved_template_changes_confirm" xml:space="preserve">
+    <value>当前模板有未保存的内容，是否保存？</value>
+  </data>
+  <data name="move_down" xml:space="preserve">
+    <value>下移</value>
+  </data>
+  <data name="save_changes" xml:space="preserve">
+    <value>保存更改</value>
+  </data>
+  <data name="MarkerShape_OpenTriangleDown" xml:space="preserve">
+    <value>空心下三角</value>
+  </data>
+  <data name="PlotLeftAxies" xml:space="preserve">
+    <value>左侧坐标轴</value>
+  </data>
+  <data name="InternationalizationAndPersonalization" xml:space="preserve">
+    <value>国际化 &amp; 个性化</value>
+  </data>
+  <data name="error_saving_rtf_file" xml:space="preserve">
+    <value>保存RTF文件时出错:</value>
+  </data>
+  <data name="support_json_format" xml:space="preserve">
+    <value>支持 .json 格式</value>
+  </data>
+  <data name="cipw_col_silica_saturation" xml:space="preserve">
+    <value>SiO2 饱和度</value>
+  </data>
+  <data name="validate_syntax" xml:space="preserve">
+    <value>验证语法</value>
+  </data>
+  <data name="add_row_up" xml:space="preserve">
+    <value>上方插入行</value>
+  </data>
+  <data name="delete_failed" xml:space="preserve">
+    <value>删除失败：</value>
+  </data>
+  <data name="PointFilledTriangleDown" xml:space="preserve">
+    <value>下三角形</value>
+  </data>
+  <data name="NewBasemap" xml:space="preserve">
+    <value>新建底图</value>
+  </data>
+  <data name="cipw_step5_detail" xml:space="preserve">
+    <value>将碱金属氧化物和铝依次分配到长石中：
+• 正长石（Or）：K₂O + Al₂O₃ + 6SiO₂
+• 钠长石（Ab）：Na₂O + Al₂O₃ + 6SiO₂
+• 钙长石（An）：CaO + Al₂O₃ + 2SiO₂
+• 刚玉（Cor）：残余 Al₂O₃（过铝质时出现）
+• 霓石（Ac）：Na₂O + Fe₂O₃ + 4SiO₂（过碱性时出现）
+• 残余碱金属硅酸盐（ns、ks）</value>
+  </data>
+  <data name="PointSquare" xml:space="preserve">
+    <value>方形</value>
+  </data>
+  <data name="no_imported_data_to_clear" xml:space="preserve">
+    <value>当前没有可清除的导入数据</value>
+  </data>
+  <data name="geo_help_italic" xml:space="preserve">
+    <value>斜体 (Ctrl+I)</value>
+  </data>
+  <data name="help_file_not_found" xml:space="preserve">
+    <value>无法找到帮助说明文件。</value>
+  </data>
+  <data name="tool_diagrams_section" xml:space="preserve">
+    <value>工具图解</value>
+  </data>
+  <data name="geo_tooltip_help" xml:space="preserve">
+    <value>帮助说明</value>
+  </data>
+  <data name="advanced_rendering" xml:space="preserve">
+    <value>高级渲染</value>
+  </data>
+  <data name="please_select_widget_to_add" xml:space="preserve">
+    <value>请选择要添加的组件：</value>
+  </data>
+  <data name="offset_y" xml:space="preserve">
+    <value>偏移量 Y</value>
+  </data>
+  <data name="offset_x" xml:space="preserve">
+    <value>偏移量 X</value>
+  </data>
+  <data name="ArsenopyriteGTM" xml:space="preserve">
+    <value>毒砂温度计 (Kretschmar and Scott, 1976)</value>
+  </data>
+  <data name="Alignment_LowerRight" xml:space="preserve">
+    <value>右下角</value>
+  </data>
+  <data name="official_website" xml:space="preserve">
+    <value>官网</value>
+  </data>
+  <data name="save_as_csv_file" xml:space="preserve">
+    <value>保存为CSV文件</value>
+  </data>
+  <data name="plot_defaults" xml:space="preserve">
+    <value>绘图默认设置</value>
+  </data>
+  <data name="add_column_right" xml:space="preserve">
+    <value>添加列(右)</value>
+  </data>
+  <data name="geo_ctx_export_zip" xml:space="preserve">
+    <value>导出 ZIP</value>
+  </data>
+  <data name="enter_plot_mode" xml:space="preserve">
+    <value>进入绘图模式</value>
+  </data>
+  <data name="minor_tick_style" xml:space="preserve">
+    <value>次刻度样式</value>
   </data>
   <data name="export_update_list" xml:space="preserve">
     <value>导出更新列表</value>
   </data>
-  <data name="batch_download_new_templates" xml:space="preserve">
-    <value>批量下载</value>
-    <comment>批量下载按钮文本</comment>
+  <data name="geo_ctx_edit" xml:space="preserve">
+    <value>编辑</value>
+  </data>
+  <data name="reset_view" xml:space="preserve">
+    <value>复位视图</value>
+  </data>
+  <data name="Alignment_UpperRight" xml:space="preserve">
+    <value>右上角</value>
   </data>
   <data name="batch_download_new_templates_tooltip" xml:space="preserve">
     <value>批量下载未安装的新模板</value>
-    <comment>批量下载按钮提示</comment>
   </data>
-  <data name="batch_download_title" xml:space="preserve">
-    <value>批量下载</value>
-    <comment>批量下载弹窗标题</comment>
+  <data name="LineColor" xml:space="preserve">
+    <value>颜色</value>
   </data>
-  <data name="batch_download_confirm_message" xml:space="preserve">
-    <value>检测到 {0} 个未下载的新模板，是否批量下载？</value>
-    <comment>批量下载确认消息</comment>
+  <data name="favorite_templates" xml:space="preserve">
+    <value>收藏</value>
   </data>
-  <data name="no_new_templates_to_download" xml:space="preserve">
-    <value>没有需要下载的新模板</value>
-    <comment>批量下载提示</comment>
+  <data name="unable_to_get_announcements" xml:space="preserve">
+    <value>无法获取公告信息。</value>
   </data>
-  <data name="batch_download_success_count" xml:space="preserve">
-    <value>成功下载：{0} 个</value>
-    <comment>批量下载结果</comment>
+  <data name="auto_check_geothermometer_updates" xml:space="preserve">
+    <value>自动检查地质温度计更新</value>
   </data>
-  <data name="batch_download_fail_count" xml:space="preserve">
-    <value>失败：{0} 个</value>
-    <comment>批量下载结果</comment>
+  <data name="LineStyle" xml:space="preserve">
+    <value>线条样式</value>
   </data>
-  <data name="batch_download_complete" xml:space="preserve">
-    <value>批量下载完成</value>
-    <comment>批量下载结果</comment>
+  <data name="LineSolid" xml:space="preserve">
+    <value>实线</value>
   </data>
-  <data name="failed_templates" xml:space="preserve">
-    <value>失败模板：</value>
-    <comment>批量下载结果</comment>
+  <data name="PointHollowCircle" xml:space="preserve">
+    <value>空心圆形</value>
   </data>
-  <data name="batch_download_failed" xml:space="preserve">
-    <value>批量下载失败</value>
-    <comment>批量下载错误</comment>
+  <data name="LineWidth" xml:space="preserve">
+    <value>宽度</value>
   </data>
-  <data name="batch_downloading" xml:space="preserve">
-    <value>批量下载中</value>
-    <comment>批量下载遮罩层标题</comment>
-  </data>
-  <data name="batch_download_progress" xml:space="preserve">
-    <value>正在下载：{0}/{1} - {2}</value>
-    <comment>批量下载进度</comment>
-  </data>
-  <data name="batch_download_cancelled" xml:space="preserve">
-    <value>批量下载已取消</value>
-    <comment>批量下载取消提示</comment>
-  </data>
-  <data name="toggle_details_expand_collapse" xml:space="preserve">
-    <value>展开/收缩详情</value>
-  </data>
-  <data name="calculation_results" xml:space="preserve">
-    <value>计算结果</value>
-  </data>
-  <data name="script_no_detailed_calculation_description" xml:space="preserve">
-    <value>该脚本未提供详细计算过程说明。</value>
-  </data>
-  <data name="trace_function_usage_tip" xml:space="preserve">
-    <value>可在脚本中使用 trace(...) 函数记录计算过程。</value>
-  </data>
-  <data name="insufficient_script_return_values" xml:space="preserve">
-    <value>脚本返回值不足</value>
-  </data>
-  <data name="ternary_script_return_value_requirement" xml:space="preserve">
-    <value>三元图脚本必须返回至少 3 个值的数组 [A, B, C]</value>
-  </data>
-  <data name="script_return_two_values_requirement" xml:space="preserve">
-    <value>脚本必须返回至少 2 个值的数组 [X, Y]</value>
+  <data name="add_widget" xml:space="preserve">
+    <value>添加小组件</value>
   </data>
   <data name="calculation_error" xml:space="preserve">
     <value>计算错误</value>
   </data>
-  <data name="script_return_type_error" xml:space="preserve">
-    <value>脚本返回类型错误</value>
+  <data name="confirm_enter_edit_mode_base_map" xml:space="preserve">
+    <value>确定要进入编辑模式吗？这将允许您修改底图。</value>
+  </data>
+  <data name="template_loaded_successfully" xml:space="preserve">
+    <value>模板文件打开成功</value>
+  </data>
+  <data name="all_fonts" xml:space="preserve">
+    <value>所有字体</value>
+  </data>
+  <data name="help_instructions" xml:space="preserve">
+    <value>帮助说明</value>
+  </data>
+  <data name="PlotData" xml:space="preserve">
+    <value>数据</value>
+  </data>
+  <data name="PlotText" xml:space="preserve">
+    <value>注释</value>
+  </data>
+  <data name="tio2_activity_range" xml:space="preserve">
+    <value>TiO2活度必须在(0,1]范围内</value>
+  </data>
+  <data name="QuitAppMode" xml:space="preserve">
+    <value>退出程序方法</value>
+  </data>
+  <data name="maximize" xml:space="preserve">
+    <value>最大化</value>
+  </data>
+  <data name="diagram_template_not_found_repair_hint" xml:space="preserve">
+    <value>找不到文件图解模板，请尝试在主页使用'模板修复工具'进行修复。</value>
+  </data>
+  <data name="no_new_templates_to_download" xml:space="preserve">
+    <value>没有需要下载的新模板</value>
+  </data>
+  <data name="retry_action" xml:space="preserve">
+    <value>重试</value>
+  </data>
+  <data name="arrowhead_length" xml:space="preserve">
+    <value>箭头长度</value>
+  </data>
+  <data name="remove_point" xml:space="preserve">
+    <value>删除此顶点</value>
+  </data>
+  <data name="geo_dialog_delete_thermometer" xml:space="preserve">
+    <value>确定删除{0}温度计「{1}」？</value>
+  </data>
+  <data name="x_coordinate" xml:space="preserve">
+    <value>X 坐标</value>
+  </data>
+  <data name="geo_btn_help_confirm" xml:space="preserve">
+    <value>确定</value>
+  </data>
+  <data name="content_and_position" xml:space="preserve">
+    <value>内容与位置</value>
+  </data>
+  <data name="CategoryFormatError" xml:space="preserve">
+    <value>类别格式错误</value>
+  </data>
+  <data name="invalid_diagram_template_file" xml:space="preserve">
+    <value>无效的图解模板文件</value>
+  </data>
+  <data name="add_image" xml:space="preserve">
+    <value>添加图片</value>
+  </data>
+  <data name="enable_anti_alias" xml:space="preserve">
+    <value>启用抗锯齿</value>
+  </data>
+  <data name="add_arrow" xml:space="preserve">
+    <value>添加箭头</value>
+  </data>
+  <data name="MarkerShape_Asterisk" xml:space="preserve">
+    <value>星号</value>
+  </data>
+  <data name="failed_to_delete_row" xml:space="preserve">
+    <value>无法删除行：</value>
+  </data>
+  <data name="EditMode" xml:space="preserve">
+    <value>编辑模式</value>
+  </data>
+  <data name="line_type_densely_dashed" xml:space="preserve">
+    <value>密集虚线</value>
+  </data>
+  <data name="geo_script_inputs" xml:space="preserve">
+    <value>输入列（逗号分隔）</value>
+  </data>
+  <data name="diagram_template_repair_tool" xml:space="preserve">
+    <value>图解模板修复工具</value>
+  </data>
+  <data name="cipw_diagnostic_details" xml:space="preserve">
+    <value>诊断详情</value>
+  </data>
+  <data name="domain" xml:space="preserve">
+    <value>定义域</value>
+  </data>
+  <data name="line_type_solid" xml:space="preserve">
+    <value>实线</value>
+  </data>
+  <data name="cipw_default_value_text" xml:space="preserve">
+    <value>默认 0.15</value>
+  </data>
+  <data name="FilePath" xml:space="preserve">
+    <value>文件路径</value>
+  </data>
+  <data name="subtitle_font_size" xml:space="preserve">
+    <value>子标题字号</value>
+  </data>
+  <data name="geo_help_optional_hint" xml:space="preserve">
+    <value>帮助文档为可选内容，支持多语言 RTF 富文本格式。</value>
+  </data>
+  <data name="delete_object" xml:space="preserve">
+    <value>删除对象</value>
+  </data>
+  <data name="cipw_title" xml:space="preserve">
+    <value>CIPW 标准矿物计算</value>
+  </data>
+  <data name="LegendSetting" xml:space="preserve">
+    <value>图例设置</value>
+  </data>
+  <data name="move_up" xml:space="preserve">
+    <value>上移</value>
+  </data>
+  <data name="refresh_successful" xml:space="preserve">
+    <value>刷新成功</value>
+  </data>
+  <data name="cipw_alumina_peraluminous" xml:space="preserve">
+    <value>过铝质</value>
+  </data>
+  <data name="start_coordinates" xml:space="preserve">
+    <value>起始坐标</value>
+  </data>
+  <data name="cipw_error" xml:space="preserve">
+    <value>错误</value>
+  </data>
+  <data name="elements_actual_returned" xml:space="preserve">
+    <value>个元素，实际返回</value>
+  </data>
+  <data name="geo_script_result" xml:space="preserve">
+    <value>结果：</value>
+  </data>
+  <data name="export" xml:space="preserve">
+    <value>导出</value>
+  </data>
+  <data name="Chlorite" xml:space="preserve">
+    <value>绿泥石</value>
+  </data>
+  <data name="edit_menu_bar_item" xml:space="preserve">
+    <value>编辑菜单栏项</value>
+  </data>
+  <data name="maintenance" xml:space="preserve">
+    <value>_维护(M)</value>
+  </data>
+  <data name="geo_tooltip_maximize" xml:space="preserve">
+    <value>最大化</value>
+  </data>
+  <data name="geo_tooltip_restore" xml:space="preserve">
+    <value>还原</value>
+  </data>
+  <data name="confirm_clear_all_data" xml:space="preserve">
+    <value>是否清除表格数据（包括绘图数据点）？</value>
+  </data>
+  <data name="PlotShowMinorGrid" xml:space="preserve">
+    <value>显示次网格</value>
+  </data>
+  <data name="geo_msg_richtext_not_init" xml:space="preserve">
+    <value>RichTextBox 控件未初始化</value>
+  </data>
+  <data name="invalid_filename_char" xml:space="preserve">
+    <value>内容含有不支持的字符</value>
+  </data>
+  <data name="missing_drawing_objects_error" xml:space="preserve">
+    <value>• 绘图对象缺失：模板中未包含任何线、多边形、文本或箭头。</value>
+  </data>
+  <data name="geo_msg_export_failed" xml:space="preserve">
+    <value>导出失败: {0}</value>
+  </data>
+  <data name="Alignment_MiddleCenter" xml:space="preserve">
+    <value>正中</value>
+  </data>
+  <data name="major_tick_style" xml:space="preserve">
+    <value>主刻度样式</value>
+  </data>
+  <data name="server_announcements" xml:space="preserve">
+    <value>服务器公告</value>
+  </data>
+  <data name="ModifedSuccess" xml:space="preserve">
+    <value>修改成功</value>
+  </data>
+  <data name="cipw_diag_main_minerals" xml:space="preserve">
+    <value>── 主要矿物 ──</value>
+  </data>
+  <data name="Orientation_Vertical" xml:space="preserve">
+    <value>纵向</value>
+  </data>
+  <data name="open_import" xml:space="preserve">
+    <value>打开导入</value>
+  </data>
+  <data name="no_data_please_add_data" xml:space="preserve">
+    <value>无数据，请添加数据</value>
+  </data>
+  <data name="geo_test_error_format" xml:space="preserve">
+    <value>错误: {0}</value>
+  </data>
+  <data name="ChineseS" xml:space="preserve">
+    <value>中文(简体)</value>
+  </data>
+  <data name="batch_download_new_templates" xml:space="preserve">
+    <value>批量下载</value>
+  </data>
+  <data name="error_creating_new_template" xml:space="preserve">
+    <value>新建模板时发生错误：</value>
+  </data>
+  <data name="PlotTitleFont" xml:space="preserve">
+    <value>标题字体</value>
+  </data>
+  <data name="geo_field_name" xml:space="preserve">
+    <value>名称 *</value>
+  </data>
+  <data name="geo_field_year" xml:space="preserve">
+    <value>年份 *</value>
+  </data>
+  <data name="already_latest_version" xml:space="preserve">
+    <value>当前已是最新版本</value>
+  </data>
+  <data name="geo_validation_script_required" xml:space="preserve">
+    <value>脚本内容为必填项</value>
+  </data>
+  <data name="favorite_removed" xml:space="preserve">
+    <value>已从收藏中移除</value>
+  </data>
+  <data name="richtextbox_control_cannot_be_null" xml:space="preserve">
+    <value>RichTextBox控件不能为null</value>
+  </data>
+  <data name="cipw_step7_detail" xml:space="preserve">
+    <value>将剩余的 MgO、FeO、CaO 分配到铁镁硅酸盐中：
+• 透辉石（Di）：CaO + MgO + 2SiO₂（含镁端元）
+• 钙铁辉石（Hd）：CaO + FeO + 2SiO₂（含铁端元）
+• 顽火辉石（En）：MgO + SiO₂
+• 铁辉石（Fs）：FeO + SiO₂
+• 硅灰石（Wo）：残余 CaO + SiO₂</value>
+  </data>
+  <data name="data_import_successful" xml:space="preserve">
+    <value>数据导入成功</value>
+  </data>
+  <data name="CheckUpdate" xml:space="preserve">
+    <value>检查更新</value>
+  </data>
+  <data name="cipw_step9_title" xml:space="preserve">
+    <value>结果输出</value>
+  </data>
+  <data name="path_is_empty" xml:space="preserve">
+    <value>路径为空</value>
+  </data>
+  <data name="BasemapExisted" xml:space="preserve">
+    <value>底图文件已经存在，是否覆盖？</value>
+  </data>
+  <data name="format" xml:space="preserve">
+    <value>格式</value>
+  </data>
+  <data name="cipw_step7_title" xml:space="preserve">
+    <value>形成暗色硅酸盐矿物</value>
+  </data>
+  <data name="cipw_msg_export_success" xml:space="preserve">
+    <value>结果已导出到: {0}</value>
+  </data>
+  <data name="language_apperarance" xml:space="preserve">
+    <value>语言与外观</value>
+  </data>
+  <data name="geo_msg_demoted" xml:space="preserve">
+    <value>已降级为自定义温度计</value>
+  </data>
+  <data name="plot_type" xml:space="preserve">
+    <value>绘图类型</value>
+  </data>
+  <data name="image_copied_to_clipboard" xml:space="preserve">
+    <value>图像已成功复制到剪贴板</value>
+  </data>
+  <data name="refresh" xml:space="preserve">
+    <value>刷新</value>
+  </data>
+  <data name="failed_to_parse_diagram_template_json" xml:space="preserve">
+    <value>无法解析图解模板 JSON 文件</value>
+  </data>
+  <data name="diagram_legend_properties" xml:space="preserve">
+    <value>图解图例属性</value>
+  </data>
+  <data name="downloaded_content_not_valid_json" xml:space="preserve">
+    <value>下载的内容不是有效的 JSON 格式。</value>
+  </data>
+  <data name="diagram_template_corrupted_or_invalid" xml:space="preserve">
+    <value>图解模板文件已损坏或未包含有效的图解模板 JSON 文件。</value>
+  </data>
+  <data name="Placeholder_Axis_Title" xml:space="preserve">
+    <value>轴标题</value>
+  </data>
+  <data name="MarkerShape_OpenCircle" xml:space="preserve">
+    <value>空心圆</value>
+  </data>
+  <data name="normalization_standard" xml:space="preserve">
+    <value>标准化方案</value>
+  </data>
+  <data name="linear" xml:space="preserve">
+    <value>线性</value>
+  </data>
+  <data name="cipw_iron_estimated_feot" xml:space="preserve">
+    <value>从 FeOT 估算</value>
+  </data>
+  <data name="view_latest_server_announcements" xml:space="preserve">
+    <value>查看服务器发布的最新公告信息</value>
+  </data>
+  <data name="length" xml:space="preserve">
+    <value>长度</value>
+  </data>
+  <data name="legend" xml:space="preserve">
+    <value>图例</value>
+  </data>
+  <data name="geo_msg_import_success" xml:space="preserve">
+    <value>导入成功</value>
+  </data>
+  <data name="calculation_results" xml:space="preserve">
+    <value>计算结果</value>
+  </data>
+  <data name="template_translator" xml:space="preserve">
+    <value>图解模板翻译器</value>
+  </data>
+  <data name="no_valid_workbook_or_data_found" xml:space="preserve">
+    <value>无法在文件中找到任何有效的工作簿或数据</value>
+  </data>
+  <data name="geo_validate_version_required" xml:space="preserve">
+    <value>版本不能为空。</value>
+  </data>
+  <data name="LineDenselyDashed" xml:space="preserve">
+    <value>密集虚线</value>
+  </data>
+  <data name="axis_title" xml:space="preserve">
+    <value>坐标轴标题</value>
+  </data>
+  <data name="axis_style" xml:space="preserve">
+    <value>坐标轴样式</value>
+  </data>
+  <data name="chart_title_style" xml:space="preserve">
+    <value>图表标题样式</value>
+  </data>
+  <data name="template_file_corrupted" xml:space="preserve">
+    <value>模板文件已损坏</value>
+  </data>
+  <data name="png_format" xml:space="preserve">
+    <value>PNG 格式</value>
+  </data>
+  <data name="PointFilledTriangleUp" xml:space="preserve">
+    <value>上三角形</value>
+  </data>
+  <data name="AddPolygons" xml:space="preserve">
+    <value>添加多边形</value>
+  </data>
+  <data name="LegendPosition" xml:space="preserve">
+    <value>图例位置</value>
+  </data>
+  <data name="is_not_a_valid_variable_name" xml:space="preserve">
+    <value>‘ 不是有效的变量名。</value>
+  </data>
+  <data name="template_potential_issues_detected" xml:space="preserve">
+    <value>检测到模板存在以下潜在问题：</value>
+  </data>
+  <data name="unknown_error_checking_for_updates" xml:space="preserve">
+    <value>检查更新时发生未知错误</value>
+  </data>
+  <data name="MinorAxes" xml:space="preserve">
+    <value>次刻度轴</value>
+  </data>
+  <data name="column" xml:space="preserve">
+    <value>列:</value>
+  </data>
+  <data name="major_grid_line" xml:space="preserve">
+    <value>主网格线</value>
+  </data>
+  <data name="ParameterNull" xml:space="preserve">
+    <value>参数为空</value>
+  </data>
+  <data name="diagram_template_directory_not_found" xml:space="preserve">
+    <value>图解模板目录不存在：</value>
+  </data>
+  <data name="unable_to_get_latest_release_info" xml:space="preserve">
+    <value>无法获取最新发布版本信息</value>
+  </data>
+  <data name="tick_labels" xml:space="preserve">
+    <value>刻度标签</value>
+  </data>
+  <data name="data_export" xml:space="preserve">
+    <value>数据导出</value>
+  </data>
+  <data name="function" xml:space="preserve">
+    <value>函数</value>
+  </data>
+  <data name="MessageNotification" xml:space="preserve">
+    <value>消息通知</value>
+  </data>
+  <data name="CancelSelected" xml:space="preserve">
+    <value>取消选中</value>
+  </data>
+  <data name="template_library" xml:space="preserve">
+    <value>模板库</value>
+  </data>
+  <data name="geo_menu_export_official" xml:space="preserve">
+    <value>导出官方温度计</value>
+  </data>
+  <data name="coordinates_picked_success" xml:space="preserve">
+    <value>坐标拾取成功！</value>
+  </data>
+  <data name="AxesTickUpLimit" xml:space="preserve">
+    <value>刻度上限</value>
+  </data>
+  <data name="ParameterNotFilledIn" xml:space="preserve">
+    <value>投图参数未填写</value>
+  </data>
+  <data name="csv_file_filter" xml:space="preserve">
+    <value>CSV文件|*.csv</value>
+  </data>
+  <data name="italic" xml:space="preserve">
+    <value>斜体</value>
+  </data>
+  <data name="plot_settings" xml:space="preserve">
+    <value>绘图设置</value>
+  </data>
+  <data name="geo_script_headers" xml:space="preserve">
+    <value>表头 *（逗号分隔）</value>
+  </data>
+  <data name="select_an_object" xml:space="preserve">
+    <value>请选择一个对象</value>
+  </data>
+  <data name="geo_validation_headers_required" xml:space="preserve">
+    <value>表头为必填项</value>
+  </data>
+  <data name="language_setting_duplicate_found" xml:space="preserve">
+    <value>语言设置中存在重复项，请检查！</value>
+  </data>
+  <data name="geo_field_reference" xml:space="preserve">
+    <value>参考文献 *</value>
+  </data>
+  <data name="unsaved_diagram_template_prompt" xml:space="preserve">
+    <value>当前图解模板有未保存的内容，是否保存？</value>
+  </data>
+  <data name="offset" xml:space="preserve">
+    <value>偏移量</value>
+  </data>
+  <data name="third_party" xml:space="preserve">
+    <value>第三方</value>
+  </data>
+  <data name="not_enough_vertices_add_polygon_canceled" xml:space="preserve">
+    <value>顶点数不足，添加多边形操作已取消.</value>
+  </data>
+  <data name="deselect" xml:space="preserve">
+    <value>取消选中</value>
+  </data>
+  <data name="PlotShowGrid" xml:space="preserve">
+    <value>显示网格</value>
+  </data>
+  <data name="overwrite" xml:space="preserve">
+    <value>覆盖</value>
+  </data>
+  <data name="data_file_filter" xml:space="preserve">
+    <value>数据文件 (*.csv, *.xls, *.xlsx)|*.csv;*.xls;*.xlsx</value>
+  </data>
+  <data name="CalTarget2" xml:space="preserve">
+    <value>Zr 主量温度  (Watson and Harrison, 1983)</value>
+  </data>
+  <data name="CalTarget1" xml:space="preserve">
+    <value>Zr 饱和温度 (Watson and Harrison, 1983)</value>
+  </data>
+  <data name="cipw_btn_confirm_clear" xml:space="preserve">
+    <value>确认清除</value>
+  </data>
+  <data name="missing_parameters" xml:space="preserve">
+    <value>缺少参数</value>
+  </data>
+  <data name="script_definition" xml:space="preserve">
+    <value>脚本</value>
+  </data>
+  <data name="cipw_iron_partial_assumed" xml:space="preserve">
+    <value>部分假设</value>
+  </data>
+  <data name="is_italic" xml:space="preserve">
+    <value>斜体</value>
+  </data>
+  <data name="formula" xml:space="preserve">
+    <value>公式</value>
+  </data>
+  <data name="script_language" xml:space="preserve">
+    <value>脚本语言:</value>
+  </data>
+  <data name="FontFamily" xml:space="preserve">
+    <value>字体</value>
+  </data>
+  <data name="update" xml:space="preserve">
+    <value>_更新(U)</value>
+  </data>
+  <data name="tick_style" xml:space="preserve">
+    <value>刻度样式</value>
+  </data>
+  <data name="no_template_or_path_specified" xml:space="preserve">
+    <value>没有可保存的模板或未指定保存路径。请使用另存为保存.</value>
+  </data>
+  <data name="ternary_script_return_value_requirement" xml:space="preserve">
+    <value>三元图脚本必须返回至少 3 个值的数组 [A, B, C]</value>
+  </data>
+  <data name="confirm_clear_data_for_validation" xml:space="preserve">
+    <value>验证语法将清空数据表格和绘图数据点，是否继续？</value>
+  </data>
+  <data name="geo_label_builtin" xml:space="preserve">
+    <value>内置</value>
+  </data>
+  <data name="file_path_cannot_be_empty" xml:space="preserve">
+    <value>文件路径不能为空</value>
+  </data>
+  <data name="IsShowMinorAxes" xml:space="preserve">
+    <value>隐藏次刻度</value>
+  </data>
+  <data name="data_series" xml:space="preserve">
+    <value>数据系列</value>
+  </data>
+  <data name="cipw_step8_title" xml:space="preserve">
+    <value>硅饱和度校正</value>
+  </data>
+  <data name="loading_main_interface_components_ellipsis" xml:space="preserve">
+    <value>正在加载主界面组件...</value>
+  </data>
+  <data name="ResetVision" xml:space="preserve">
+    <value>视图复位</value>
+  </data>
+  <data name="import_data" xml:space="preserve">
+    <value>导入数据</value>
+  </data>
+  <data name="template_ready" xml:space="preserve">
+    <value>模板就绪！</value>
+  </data>
+  <data name="PointStar" xml:space="preserve">
+    <value>星形</value>
+  </data>
+  <data name="export_diagram_template" xml:space="preserve">
+    <value>导出图解模板</value>
+  </data>
+  <data name="description" xml:space="preserve">
+    <value>描述</value>
+  </data>
+  <data name="exit_action" xml:space="preserve">
+    <value>退出</value>
+  </data>
+  <data name="maintain_server_config_and_templates" xml:space="preserve">
+    <value>维护服务器配置与模板文件</value>
+  </data>
+  <data name="NewBasemapSuccess" xml:space="preserve">
+    <value>新建底图成功</value>
+  </data>
+  <data name="copy_plot_to_clipboard" xml:space="preserve">
+    <value>复制绘图图像到剪切板</value>
+  </data>
+  <data name="batch_download_cancelled" xml:space="preserve">
+    <value>批量下载已取消</value>
+  </data>
+  <data name="geo_tooltip_formula_name" xml:space="preserve">
+    <value>仅限字母、数字和下划线，如 MyFormula_v1</value>
+  </data>
+  <data name="geo_menu_check_update" xml:space="preserve">
+    <value>检查更新</value>
+  </data>
+  <data name="geo_help_no_doc_text" xml:space="preserve">
+    <value>暂无帮助文档。</value>
+  </data>
+  <data name="cipw_sheet_name" xml:space="preserve">
+    <value>CIPW 计算</value>
+  </data>
+  <data name="right_y_axis" xml:space="preserve">
+    <value>右 Y 轴</value>
+  </data>
+  <data name="download_template_failed" xml:space="preserve">
+    <value>下载模板失败:</value>
+  </data>
+  <data name="click_or_drag_template_json_here" xml:space="preserve">
+    <value>点击或拖拽模板文件(JSON)到此处</value>
+  </data>
+  <data name="coordinate_positioning" xml:space="preserve">
+    <value>坐标定位</value>
+  </data>
+  <data name="geo_msg_already_latest" xml:space="preserve">
+    <value>已是最新版本</value>
+  </data>
+  <data name="SaveSuccess" xml:space="preserve">
+    <value>保存成功</value>
+  </data>
+  <data name="ResetPlot" xml:space="preserve">
+    <value>重置绘图</value>
+  </data>
+  <data name="cipw_step3_title" xml:space="preserve">
+    <value>形成副矿物</value>
+  </data>
+  <data name="geo_msg_update_available" xml:space="preserve">
+    <value>有 {0} 个地质温度计可更新</value>
+  </data>
+  <data name="open_file_location" xml:space="preserve">
+    <value>打开文件位置</value>
+  </data>
+  <data name="multiple_data_series_hint" xml:space="preserve">
+    <value>多个数据系列请用逗号分隔，例如：SiO2,TiO2</value>
+  </data>
+  <data name="AxesTickDownLimit" xml:space="preserve">
+    <value>刻度下限</value>
+  </data>
+  <data name="add_polygon" xml:space="preserve">
+    <value>添加多边形</value>
+  </data>
+  <data name="batch_download_title" xml:space="preserve">
+    <value>批量下载</value>
+  </data>
+  <data name="cipw_diag_iron_mode" xml:space="preserve">
+    <value>铁处理模式</value>
+  </data>
+  <data name="geo_msg_import_cancelled" xml:space="preserve">
+    <value>取消导入</value>
+  </data>
+  <data name="select_all" xml:space="preserve">
+    <value>全选</value>
+  </data>
+  <data name="Alignment_LowerCenter" xml:space="preserve">
+    <value>中下</value>
+  </data>
+  <data name="cannot_parse_version_number_check_release_address" xml:space="preserve">
+    <value>无法解析版本号。请前往发布地址查看</value>
+  </data>
+  <data name="workspace_section" xml:space="preserve">
+    <value>我的空间</value>
+  </data>
+  <data name="CustomPath" xml:space="preserve">
+    <value>自定义文件夹位置</value>
+  </data>
+  <data name="geo_msg_check_update_failed" xml:space="preserve">
+    <value>检查更新失败</value>
+  </data>
+  <data name="MarkerShape_OpenSquare" xml:space="preserve">
+    <value>空心正方形</value>
+  </data>
+  <data name="add_language_column" xml:space="preserve">
+    <value>添加语言列</value>
+  </data>
+  <data name="DefaultPath" xml:space="preserve">
+    <value>默认位置</value>
+  </data>
+  <data name="script_not_defined_in_template" xml:space="preserve">
+    <value>图解模板中未定义脚本</value>
+  </data>
+  <data name="confirm_delete_row" xml:space="preserve">
+    <value>确定要删除选中的行吗？</value>
+  </data>
+  <data name="save_template_failed" xml:space="preserve">
+    <value>保存模板失败:</value>
+  </data>
+  <data name="script_execution_failed" xml:space="preserve">
+    <value>脚本执行失败:</value>
+  </data>
+  <data name="external_applications" xml:space="preserve">
+    <value>外部应用程序</value>
+  </data>
+  <data name="open_via_third_party" xml:space="preserve">
+    <value>通过第三方打开</value>
+  </data>
+  <data name="import_template" xml:space="preserve">
+    <value>导入绘图模板</value>
+  </data>
+  <data name="diagram_grid_properties" xml:space="preserve">
+    <value>图解网格属性</value>
+  </data>
+  <data name="FontNormal" xml:space="preserve">
+    <value>默认</value>
+  </data>
+  <data name="diagram_template_export_success" xml:space="preserve">
+    <value>图解模板导出成功</value>
+  </data>
+  <data name="AmphiboleGTM" xml:space="preserve">
+    <value>Si 温度计 (Ridolfi et al., 2010)</value>
+  </data>
+  <data name="cipw_row_format" xml:space="preserve">
+    <value>第 {0} 行</value>
+  </data>
+  <data name="cancel_import" xml:space="preserve">
+    <value>取消导入</value>
+  </data>
+  <data name="corner_radius" xml:space="preserve">
+    <value>圆角半径</value>
+  </data>
+  <data name="axis" xml:space="preserve">
+    <value>坐标轴</value>
+  </data>
+  <data name="axes" xml:space="preserve">
+    <value>坐标轴</value>
+  </data>
+  <data name="font" xml:space="preserve">
+    <value>字体</value>
+  </data>
+  <data name="from" xml:space="preserve">
+    <value>从</value>
+  </data>
+  <data name="grid" xml:space="preserve">
+    <value>网格</value>
+  </data>
+  <data name="line" xml:space="preserve">
+    <value>线</value>
+  </data>
+  <data name="bold" xml:space="preserve">
+    <value>粗体</value>
+  </data>
+  <data name="home" xml:space="preserve">
+    <value>主页</value>
+  </data>
+  <data name="icon" xml:space="preserve">
+    <value>图标</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="open" xml:space="preserve">
+    <value>_打开(O)</value>
+  </data>
+  <data name="type" xml:space="preserve">
+    <value>类型</value>
+  </data>
+  <data name="text" xml:space="preserve">
+    <value>文本</value>
+  </data>
+  <data name="tips" xml:space="preserve">
+    <value>提示</value>
+  </data>
+  <data name="undo" xml:space="preserve">
+    <value>撤回</value>
+  </data>
+  <data name="view" xml:space="preserve">
+    <value>视图</value>
+  </data>
+  <data name="redo" xml:space="preserve">
+    <value>重做</value>
+  </data>
+  <data name="size" xml:space="preserve">
+    <value>大小</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>编辑</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>退出程序</value>
+  </data>
+  <data name="File" xml:space="preserve">
+    <value>_文件(F)</value>
+  </data>
+  <data name="Data" xml:space="preserve">
+    <value>数据</value>
+  </data>
+  <data name="GTMP" xml:space="preserve">
+    <value>温度绘图</value>
+  </data>
+  <data name="Boot" xml:space="preserve">
+    <value>开机自启</value>
+  </data>
+  <data name="Quit" xml:space="preserve">
+    <value>直接退出</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="Show" xml:space="preserve">
+    <value>显示界面</value>
+  </data>
+  <data name="Plot" xml:space="preserve">
+    <value>图解绘图</value>
+  </data>
+  <data name="geo_field_worksheet_name" xml:space="preserve">
+    <value>工作表名称</value>
+  </data>
+  <data name="code_formatted" xml:space="preserve">
+    <value>代码已格式化</value>
+  </data>
+  <data name="reset_default" xml:space="preserve">
+    <value>重置</value>
+  </data>
+  <data name="cipw_csv_filter" xml:space="preserve">
+    <value>CSV 文件|*.csv</value>
+  </data>
+  <data name="return_type_mismatch_error" xml:space="preserve">
+    <value>类型，应返回</value>
+  </data>
+  <data name="cipw_step2_detail" xml:space="preserve">
+    <value>按优先顺序消耗挥发分组分，形成以下矿物：
+• 方解石（Cc）：CO₂ + CaO
+• 萤石（Fl）：F + CaO
+• 黄铁矿（Py）：S + FeO
+• 石盐（Hl）：Cl + Na₂O
+• 芒硝（Th）：SO₃ + Na₂O</value>
+  </data>
+  <data name="PlotSetting" xml:space="preserve">
+    <value>绘图设置</value>
+  </data>
+  <data name="geo_step_help_doc" xml:space="preserve">
+    <value>帮助文档</value>
+  </data>
+  <data name="cipw_tooltip_maximize" xml:space="preserve">
+    <value>最大化 / 还原</value>
+  </data>
+  <data name="geo_tooltip_export_csv" xml:space="preserve">
+    <value>导出当前工作表为 CSV</value>
+  </data>
+  <data name="LegendHorizontal" xml:space="preserve">
+    <value>横向</value>
+  </data>
+  <data name="error_occurred_during_startup" xml:space="preserve">
+    <value>启动过程中发生错误:</value>
+  </data>
+  <data name="batch_download_success_count" xml:space="preserve">
+    <value>成功下载：{0} 个</value>
+  </data>
+  <data name="data_point" xml:space="preserve">
+    <value>数据点</value>
+  </data>
+  <data name="geo_msg_save_success" xml:space="preserve">
+    <value>保存成功。</value>
+  </data>
+  <data name="plot_layer_list_title" xml:space="preserve">
+    <value>图层列表</value>
+  </data>
+  <data name="plot_property_panel_title" xml:space="preserve">
+    <value>属性面板</value>
   </data>
 </root>

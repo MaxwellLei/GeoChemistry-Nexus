@@ -16,6 +16,7 @@
       xmlns:sys="clr-namespace:System;assembly=mscorlib"
       xmlns:s="clr-namespace:System;assembly=mscorlib"
       xmlns:models="clr-namespace:GeoChemistryNexus.Models"
+      xmlns:spiderModels="clr-namespace:GeoChemistryNexus.Models.SpiderDiagram"
       xmlns:vwp="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
@@ -55,6 +56,101 @@
         <Style x:Key="TemplateTreeViewItemStyle" BasedOn="{StaticResource ModernStyleTreeViewItemStyle}" TargetType="TreeViewItem">
             <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
             <EventSetter Event="RequestBringIntoView" Handler="TreeViewItem_RequestBringIntoView"/>
+        </Style>
+
+        <SolidColorBrush x:Key="LayerRowHoverBrush" Color="#0B000000"/>
+        <SolidColorBrush x:Key="LayerRowSelectedBrush" Color="#240A84FF"/>
+        <SolidColorBrush x:Key="LayerRowSelectedBorderBrush" Color="#380A84FF"/>
+        <SolidColorBrush x:Key="LayerRowTextBrush" Color="#1D1D1F"/>
+
+        <Style x:Key="LayerTreeViewItemStyle" TargetType="TreeViewItem">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Margin" Value="0,1"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource LayerRowTextBrush}"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TreeViewItem">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Border x:Name="Bd"
+                                    MinHeight="34"
+                                    CornerRadius="8"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    Padding="8,0"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                                <i:Interaction.Behaviors>
+                                    <tools:TreeViewItemExpandBehavior />
+                                </i:Interaction.Behaviors>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <ToggleButton x:Name="Expander"
+                                                  Grid.Column="0"
+                                                  Style="{StaticResource ExpandCollapseToggleStyle}"
+                                                  IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
+                                                  ClickMode="Press"
+                                                  Margin="0,0,6,0"
+                                                  VerticalAlignment="Center"/>
+
+                                    <ContentPresenter x:Name="PART_Header"
+                                                      Grid.Column="1"
+                                                      VerticalAlignment="Center"
+                                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                      ContentSource="Header"/>
+                                </Grid>
+                            </Border>
+
+                            <ItemsPresenter x:Name="ItemsHost"
+                                            Grid.Row="1"
+                                            Margin="20,0,0,0"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsExpanded" Value="False">
+                                <Setter TargetName="ItemsHost" Property="Visibility" Value="Collapsed"/>
+                            </Trigger>
+                            <Trigger Property="HasItems" Value="False">
+                                <Setter TargetName="Expander" Property="Visibility" Value="Hidden"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{StaticResource LayerRowHoverBrush}"/>
+                            </Trigger>
+                            <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{StaticResource LayerRowSelectedBrush}"/>
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource LayerRowSelectedBorderBrush}"/>
+                            </DataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsSelected}" Value="True"/>
+                                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource TemplatedParent}}" Value="True"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter TargetName="Bd" Property="Background" Value="{StaticResource LayerRowSelectedBrush}"/>
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource LayerRowSelectedBorderBrush}"/>
+                            </MultiDataTrigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.45"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <!-- New Modern-Style Styles -->
@@ -805,6 +901,149 @@
                                 </TextBlock>
                             </Grid>
                         </Button>
+
+                        <!-- 分隔线 -->
+                        <Rectangle Height="1" Fill="#E0E0E0" Margin="16,12"/>
+
+                        <!-- 分组三：工具图解 -->
+                        <TextBlock Text="{Binding [tool_diagrams_section],Source={x:Static lg:LanguageService.Instance}, FallbackValue='Tool Diagrams'}" 
+                                   FontSize="11" FontWeight="SemiBold" 
+                                   Foreground="#666666"
+                                   Margin="16,8,16,8"/>
+
+                        <!-- 稀土元素蛛网图 -->
+                        <Button BorderThickness="0" 
+                                Padding="12,10" Cursor="Hand"
+                                HorizontalContentAlignment="Stretch"
+                                Command="{Binding OpenSpiderDiagramCommand}"
+                                CommandParameter="REE">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border x:Name="BorderElement"
+                                                        Background="{TemplateBinding Background}" 
+                                                        Padding="{TemplateBinding Padding}"
+                                                        CornerRadius="6"
+                                                        Margin="8,0">
+                                                    <ContentPresenter/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="BorderElement" Property="Background" Value="#EAEAEA"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding IsSpiderDiagramMode}" Value="True"/>
+                                                <Condition Binding="{Binding SpiderDiagramViewModel.DiagramType}" Value="REE"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Background" Value="#EAEAEA"/>
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="&#xe628;" FontFamily="{StaticResource IconFont}" FontSize="16" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" 
+                                           Text="{Binding [ree_spider_diagram],Source={x:Static lg:LanguageService.Instance}, FallbackValue='稀土元素蛛网图'}" 
+                                           FontSize="14" 
+                                           Foreground="#333333"
+                                           VerticalAlignment="Center">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="FontWeight" Value="Normal"/>
+                                            <Style.Triggers>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding IsSpiderDiagramMode}" Value="True"/>
+                                                        <Condition Binding="{Binding SpiderDiagramViewModel.DiagramType}" Value="REE"/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="FontWeight" Value="Bold"/>
+                                                </MultiDataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                        </Button>
+
+                        <!-- 微量元素蛛网图 -->
+                        <Button BorderThickness="0" 
+                                Padding="12,10" Cursor="Hand"
+                                HorizontalContentAlignment="Stretch"
+                                Command="{Binding OpenSpiderDiagramCommand}"
+                                CommandParameter="TraceElement">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border x:Name="BorderElement"
+                                                        Background="{TemplateBinding Background}" 
+                                                        Padding="{TemplateBinding Padding}"
+                                                        CornerRadius="6"
+                                                        Margin="8,0">
+                                                    <ContentPresenter/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="BorderElement" Property="Background" Value="#EAEAEA"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding IsSpiderDiagramMode}" Value="True"/>
+                                                <Condition Binding="{Binding SpiderDiagramViewModel.DiagramType}" Value="TraceElement"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Background" Value="#EAEAEA"/>
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="&#xe625;" FontFamily="{StaticResource IconFont}" FontSize="16" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" 
+                                           Text="{Binding [trace_element_spider_diagram],Source={x:Static lg:LanguageService.Instance}, FallbackValue='微量元素蛛网图'}" 
+                                           FontSize="14" 
+                                           Foreground="#333333"
+                                           VerticalAlignment="Center">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="FontWeight" Value="Normal"/>
+                                            <Style.Triggers>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding IsSpiderDiagramMode}" Value="True"/>
+                                                        <Condition Binding="{Binding SpiderDiagramViewModel.DiagramType}" Value="TraceElement"/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="FontWeight" Value="Bold"/>
+                                                </MultiDataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                        </Button>
                     </StackPanel>
                 </ScrollViewer>
             </DockPanel>
@@ -839,7 +1078,8 @@
                         <!-- 第一行：面包屑导航 -->
                         <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled" 
                                       x:Name="BreadcrumbScrollViewer" SizeChanged="BreadcrumbScrollViewer_SizeChanged"
-                                      Margin="0,0,0,10">
+                                      Margin="0,0,0,10"
+                                      Visibility="{Binding IsSpiderDiagramMode, Converter={StaticResource BoolToVisibilityReConverter}}">
                             <ItemsControl ItemsSource="{Binding Breadcrumbs}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
@@ -892,7 +1132,8 @@
                             </TextBlock>
                             
                             <!-- 右侧：批量下载按钮和搜索框 -->
-                            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center"
+                                        Visibility="{Binding IsSpiderDiagramMode, Converter={StaticResource BoolToVisibilityReConverter}}">
                                 <!-- 批量下载按钮 -->
                                 <Button Height="32" Padding="12,0" Margin="0,0,8,0"
                                         Background="#0078D4" BorderBrush="#0078D4" BorderThickness="1"
@@ -1008,7 +1249,8 @@
                          VirtualizingPanel.IsVirtualizing="True"
                          VirtualizingPanel.VirtualizationMode="Recycling"
                          VirtualizingPanel.ScrollUnit="Pixel"
-                         Background="Transparent" BorderThickness="0">
+                         Background="Transparent" BorderThickness="0"
+                         Visibility="{Binding IsSpiderDiagramMode, Converter={StaticResource BoolToVisibilityReConverter}}">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <vwp:VirtualizingWrapPanel Orientation="Horizontal" StretchItems="True"/>
@@ -1511,6 +1753,317 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
+
+                <!-- 蛛网图工具面板 -->
+                <Grid Grid.Row="1" Margin="20"
+                      Visibility="{Binding IsSpiderDiagramMode, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- 标准化方案选择 -->
+                    <StackPanel Grid.Row="0" Margin="0,0,0,16">
+                        <Grid Margin="0,0,0,8">
+                            <TextBlock Text="{Binding [normalization_standard],Source={x:Static lg:LanguageService.Instance}, FallbackValue='标准化方案'}" 
+                                       FontSize="14" FontWeight="SemiBold" Foreground="#333"
+                                       VerticalAlignment="Center"/>
+                            <CheckBox HorizontalAlignment="Right" VerticalAlignment="Center"
+                                      IsChecked="{Binding SpiderDiagramViewModel.IsNormalizationEnabled, Mode=TwoWay}"
+                                      Content="{Binding [enable_normalization],Source={x:Static lg:LanguageService.Instance}, FallbackValue='启用标准化'}"
+                                      FontSize="12" Foreground="#555"/>
+                        </Grid>
+                        <ComboBox x:Name="NormalizationComboBox"
+                                  ItemsSource="{Binding SpiderDiagramViewModel.AvailableStandards}" 
+                                  SelectedItem="{Binding SpiderDiagramViewModel.SelectedStandard}"
+                                  IsEnabled="{Binding SpiderDiagramViewModel.IsNormalizationEnabled}"
+                                  DisplayMemberPath="Name"
+                                  Height="32" FontSize="13"/>
+                    </StackPanel>
+
+                    <!-- 元素选择与排序 -->
+                    <StackPanel Grid.Row="1" Margin="0,0,0,16">
+                        <!-- 标题行：标题 + 操作链接 -->
+                        <Grid Margin="0,0,0,8">
+                            <TextBlock Text="{Binding [element_order],Source={x:Static lg:LanguageService.Instance}, FallbackValue='元素顺序'}" 
+                                       FontSize="14" FontWeight="SemiBold" Foreground="#333" 
+                                       VerticalAlignment="Center"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                <Button Command="{Binding SpiderDiagramViewModel.SelectAllElementsCommand}" 
+                                        Content="{Binding [select_all],Source={x:Static lg:LanguageService.Instance}, FallbackValue='全选'}" 
+                                        FontSize="12" Foreground="#0078D4" Cursor="Hand"
+                                        Background="Transparent" BorderThickness="0" Padding="6,2" Margin="0,0,2,0">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <TextBlock x:Name="Tb" Text="{TemplateBinding Content}" 
+                                                       Foreground="{TemplateBinding Foreground}" FontSize="{TemplateBinding FontSize}"
+                                                       Padding="{TemplateBinding Padding}"/>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="Tb" Property="TextDecorations" Value="Underline"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                                <TextBlock Text="|" Foreground="#CCC" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                <Button Command="{Binding SpiderDiagramViewModel.DeselectAllElementsCommand}" 
+                                        Content="{Binding [deselect_all],Source={x:Static lg:LanguageService.Instance}, FallbackValue='取消全选'}" 
+                                        FontSize="12" Foreground="#0078D4" Cursor="Hand"
+                                        Background="Transparent" BorderThickness="0" Padding="6,2" Margin="0,0,2,0">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <TextBlock x:Name="Tb" Text="{TemplateBinding Content}" 
+                                                       Foreground="{TemplateBinding Foreground}" FontSize="{TemplateBinding FontSize}"
+                                                       Padding="{TemplateBinding Padding}"/>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="Tb" Property="TextDecorations" Value="Underline"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                                <TextBlock Text="|" Foreground="#CCC" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                <Button Command="{Binding SpiderDiagramViewModel.ResetElementOrderCommand}" 
+                                        Content="{Binding [reset_default],Source={x:Static lg:LanguageService.Instance}, FallbackValue='重置'}" 
+                                        FontSize="12" Foreground="#0078D4" Cursor="Hand"
+                                        Background="Transparent" BorderThickness="0" Padding="6,2">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <TextBlock x:Name="Tb" Text="{TemplateBinding Content}" 
+                                                       Foreground="{TemplateBinding Foreground}" FontSize="{TemplateBinding FontSize}"
+                                                       Padding="{TemplateBinding Padding}"/>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="Tb" Property="TextDecorations" Value="Underline"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- 元素 Chip 网格（点击切换选中） -->
+                        <Border Background="White" BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="6" Padding="10,8">
+                            <ItemsControl ItemsSource="{Binding SpiderDiagramViewModel.AllElements}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <ToggleButton IsChecked="{Binding IsSelected, Mode=TwoWay}" 
+                                                      Cursor="Hand" Margin="2,3">
+                                            <ToggleButton.Template>
+                                                <ControlTemplate TargetType="ToggleButton">
+                                                    <Border x:Name="ChipBorder" 
+                                                            CornerRadius="4" Padding="8,4"
+                                                            Background="#F0F4FF" BorderThickness="1" BorderBrush="#D6E4F9">
+                                                        <TextBlock x:Name="ChipText" Text="{Binding Name}" 
+                                                                   FontSize="12" Foreground="#0078D4"/>
+                                                    </Border>
+                                                    <ControlTemplate.Triggers>
+                                                        <!-- 未选中状态 -->
+                                                        <Trigger Property="IsChecked" Value="False">
+                                                            <Setter TargetName="ChipBorder" Property="Background" Value="#F5F5F5"/>
+                                                            <Setter TargetName="ChipBorder" Property="BorderBrush" Value="#E8E8E8"/>
+                                                            <Setter TargetName="ChipText" Property="Foreground" Value="#AAA"/>
+                                                            <Setter TargetName="ChipText" Property="TextDecorations" Value="Strikethrough"/>
+                                                        </Trigger>
+                                                        <!-- 悬浮状态（选中时） -->
+                                                        <MultiTrigger>
+                                                            <MultiTrigger.Conditions>
+                                                                <Condition Property="IsChecked" Value="True"/>
+                                                                <Condition Property="IsMouseOver" Value="True"/>
+                                                            </MultiTrigger.Conditions>
+                                                            <Setter TargetName="ChipBorder" Property="Background" Value="#DCE8FB"/>
+                                                            <Setter TargetName="ChipBorder" Property="BorderBrush" Value="#B0CBF0"/>
+                                                        </MultiTrigger>
+                                                        <!-- 悬浮状态（未选中时） -->
+                                                        <MultiTrigger>
+                                                            <MultiTrigger.Conditions>
+                                                                <Condition Property="IsChecked" Value="False"/>
+                                                                <Condition Property="IsMouseOver" Value="True"/>
+                                                            </MultiTrigger.Conditions>
+                                                            <Setter TargetName="ChipBorder" Property="Background" Value="#EAEAEA"/>
+                                                            <Setter TargetName="ChipBorder" Property="BorderBrush" Value="#D0D0D0"/>
+                                                            <Setter TargetName="ChipText" Property="Foreground" Value="#666"/>
+                                                        </MultiTrigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </ToggleButton.Template>
+                                        </ToggleButton>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Border>
+
+                        <!-- 排序调整区域 -->
+                        <Border Background="White" BorderBrush="#E0E0E0" BorderThickness="1" 
+                                CornerRadius="6" Padding="8,6" Margin="0,8,0,0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- 已选元素排序列表（水平滚动） -->
+                                <ListBox Grid.Column="0"
+                                         ItemsSource="{Binding SpiderDiagramViewModel.AllElements}"
+                                         SelectedItem="{Binding SpiderDiagramViewModel.SelectedElementItem, Mode=TwoWay}"
+                                         BorderThickness="0" Background="Transparent"
+                                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                         Height="30">
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                    <ListBox.ItemContainerStyle>
+                                        <Style TargetType="ListBoxItem">
+                                            <Setter Property="Padding" Value="0"/>
+                                            <Setter Property="Margin" Value="0"/>
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="ListBoxItem">
+                                                        <Border x:Name="Bd" Background="Transparent" 
+                                                                CornerRadius="3" Padding="5,3" Margin="1,0">
+                                                            <ContentPresenter/>
+                                                        </Border>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsSelected" Value="True">
+                                                                <Setter TargetName="Bd" Property="Background" Value="#E0EDFF"/>
+                                                            </Trigger>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter TargetName="Bd" Property="Background" Value="#F0F0F0"/>
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <!-- 隐藏未选中的元素 -->
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsSelected}" Value="False">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ListBox.ItemContainerStyle>
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name}" FontSize="11" Foreground="#555" 
+                                                       VerticalAlignment="Center"/>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+
+                                <!-- 上移/下移箭头 -->
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,0">
+                                    <Button Command="{Binding SpiderDiagramViewModel.MoveElementUpCommand}"
+                                            CommandParameter="{Binding SpiderDiagramViewModel.SelectedElementItem}"
+                                            ToolTip="{Binding [move_up],Source={x:Static lg:LanguageService.Instance}, FallbackValue='上移'}"
+                                            Cursor="Hand" Margin="0,0,2,0">
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border x:Name="Bd" Width="24" Height="24" CornerRadius="4" 
+                                                        Background="Transparent">
+                                                    <TextBlock Text="&#xE70E;" FontFamily="Segoe MDL2 Assets" 
+                                                               FontSize="11" Foreground="#666"
+                                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="Bd" Property="Background" Value="#E8E8E8"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsEnabled" Value="False">
+                                                        <Setter Property="Opacity" Value="0.3"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                    <Button Command="{Binding SpiderDiagramViewModel.MoveElementDownCommand}"
+                                            CommandParameter="{Binding SpiderDiagramViewModel.SelectedElementItem}"
+                                            ToolTip="{Binding [move_down],Source={x:Static lg:LanguageService.Instance}, FallbackValue='下移'}"
+                                            Cursor="Hand">
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border x:Name="Bd" Width="24" Height="24" CornerRadius="4" 
+                                                        Background="Transparent">
+                                                    <TextBlock Text="&#xE70D;" FontFamily="Segoe MDL2 Assets" 
+                                                               FontSize="11" Foreground="#666"
+                                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="Bd" Property="Background" Value="#E8E8E8"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsEnabled" Value="False">
+                                                        <Setter Property="Opacity" Value="0.3"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- 数据输入说明 -->
+                    <Border Grid.Row="2" Background="White" BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="6" Padding="20">
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets" FontSize="36" 
+                                       HorizontalAlignment="Center" Foreground="#CCC" Margin="0,0,0,12"/>
+                            <TextBlock Text="{Binding [spider_diagram_data_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue='进入绘图模式后，在数据表中粘贴数据。每行代表一个样品，列名需与上方元素名称对应。'}" 
+                                       FontSize="13" Foreground="#666" 
+                                       TextWrapping="Wrap" TextAlignment="Center"
+                                       HorizontalAlignment="Center" MaxWidth="400"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- 底部：进入绘图按钮 -->
+                    <Button Grid.Row="3" Margin="0,16,0,0"
+                            Height="40" MinWidth="180"
+                            HorizontalAlignment="Center"
+                            Command="{Binding EnterSpiderPlotModeCommand}"
+                            Cursor="Hand">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="#0078D4" CornerRadius="6" Padding="24,0">
+                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                    <TextBlock Text="&#xE768;" FontFamily="Segoe MDL2 Assets" 
+                                                               FontSize="16" Foreground="White" 
+                                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                                    <TextBlock Text="{Binding [enter_plot_mode],Source={x:Static lg:LanguageService.Instance}, FallbackValue='进入绘图模式'}" 
+                                                               FontSize="14" Foreground="White" FontWeight="SemiBold"
+                                                               VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Opacity" Value="0.9"/>
+                                                </Trigger>
+                                                <Trigger Property="IsPressed" Value="True">
+                                                    <Setter Property="Opacity" Value="0.8"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </Grid>
                 
                 <!-- 批量下载遮罩层 -->
                 <Border Background="#80000000" 
@@ -1752,7 +2305,8 @@
                         <Button Command="{Binding PlotSettingCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [diagram_title_properties], Source={x:Static lg:LanguageService.Instance}}">
                             <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe62b;" FontSize="16"/>
                         </Button>
-                        <Button Command="{Binding ScriptSettingCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [diagram_script_properties], Source={x:Static lg:LanguageService.Instance}}">
+                        <Button Command="{Binding ScriptSettingCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [diagram_script_properties], Source={x:Static lg:LanguageService.Instance}}"
+                                Visibility="{Binding IsSpiderDiagramMode, Converter={StaticResource BoolToVisibilityReConverter}}">
                             <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe614;" FontSize="16"/>
                         </Button>
                         <Button Command="{Binding LegendSettingCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [diagram_legend_properties], Source={x:Static lg:LanguageService.Instance}}">
@@ -1761,7 +2315,8 @@
                         <Button Command="{Binding GridSettingCommand}" IsEnabled="{Binding IsGridSettingEnabled}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [diagram_grid_properties], Source={x:Static lg:LanguageService.Instance}}">
                             <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe67b;" FontSize="16"/>
                         </Button>
-                        <Button Command="{Binding SwitchTemplateLanguageCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [switch_diagram_language], Source={x:Static lg:LanguageService.Instance}}">
+                        <Button Command="{Binding SwitchTemplateLanguageCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [switch_diagram_language], Source={x:Static lg:LanguageService.Instance}}"
+                                Visibility="{Binding IsSpiderDiagramMode, Converter={StaticResource BoolToVisibilityReConverter}}">
                             <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe6b4;" FontSize="16"/>
                         </Button>
 
@@ -1817,41 +2372,86 @@
                                     </Style.Triggers>
                                 </Style>
                             </Border.Style>
-                            <StackPanel Orientation="Horizontal">
-                                <Button Command="{Binding AddRowUpCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [add_row_above], Source={x:Static lg:LanguageService.Instance}}">
-                                    <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe615;" FontSize="16"/>
-                                </Button>
-                                <Button Command="{Binding AddRowDownCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [add_row_below], Source={x:Static lg:LanguageService.Instance}}">
-                                    <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe613;" FontSize="16"/>
-                                </Button>
-                                <Button Command="{Binding DeleteRowCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [delete_row], Source={x:Static lg:LanguageService.Instance}}">
-                                    <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe89f;" FontSize="16" Foreground="#D92C2C"/>
-                                </Button>
-                                <Rectangle Width="1" Height="24" Fill="#D0D0D0" Margin="8,0"/>
-                                <Button Command="{Binding AddColumnLeftCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [add_col_left], Source={x:Static lg:LanguageService.Instance}}">
-                                    <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe611;" FontSize="16"/>
-                                </Button>
-                                <Button Command="{Binding AddColumnRightCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [add_col_right], Source={x:Static lg:LanguageService.Instance}}">
-                                    <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe610;" FontSize="16"/>
-                                </Button>
-                                <Button Command="{Binding DeleteColumnCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [delete_column], Source={x:Static lg:LanguageService.Instance}}">
-                                    <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe907;" FontSize="16" Foreground="#D92C2C"/>
-                                </Button>
-                                <Rectangle Width="1" Height="24" Fill="#D0D0D0" Margin="8,0"/>
-                                <Button Command="{Binding ExportWorksheetCommand}" CommandParameter="{Binding ElementName=DataGrid}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [export_data], Source={x:Static lg:LanguageService.Instance}}">
-                                    <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe656;" FontSize="16" Foreground="#0078D4"/>
-                                </Button>
-                                <Button Command="{Binding UpdateDataCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [update_chart], Source={x:Static lg:LanguageService.Instance}}">
-                                    <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe71e;" FontSize="16" Foreground="#0078D4"/>
-                                </Button>
-                                <Button Command="{Binding ClearAllDataCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [clear_all_data], Source={x:Static lg:LanguageService.Instance}}">
-                                    <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe734;" FontSize="16" Foreground="#D92C2C"/>
-                                </Button>
-                            </StackPanel>
+                            <Grid VerticalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" MinWidth="150"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Border Grid.Column="0"
+                                        Height="30"
+                                        Background="White"
+                                        BorderBrush="#D9D9D9"
+                                        BorderThickness="1"
+                                        CornerRadius="4"
+                                        Padding="10,0"
+                                        VerticalAlignment="Center">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid Grid.Column="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="8"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Grid.Column="0"
+                                                     Text="{Binding SelectedCellContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     IsEnabled="{Binding IsSelectedCellEditable}"
+                                                     ToolTip="{Binding SelectedCellAddress}"
+                                                     VerticalContentAlignment="Center"
+                                                     BorderThickness="0"
+                                                     Background="Transparent"
+                                                     Padding="0"/>
+                                            <TextBlock Grid.Column="2"
+                                                       Text="{Binding SelectedCellAddress}"
+                                                       Foreground="#888888"
+                                                       VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </Grid>
+                                </Border>
+
+                                <Rectangle Grid.Column="1" Width="1" Height="24" Fill="#D0D0D0" Margin="10,0"/>
+
+                                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Button Command="{Binding AddRowUpCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [add_row_above], Source={x:Static lg:LanguageService.Instance}}">
+                                        <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe615;" FontSize="16"/>
+                                    </Button>
+                                    <Button Command="{Binding AddRowDownCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [add_row_below], Source={x:Static lg:LanguageService.Instance}}">
+                                        <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe613;" FontSize="16"/>
+                                    </Button>
+                                    <Button Command="{Binding DeleteRowCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [delete_row], Source={x:Static lg:LanguageService.Instance}}">
+                                        <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe89f;" FontSize="16" Foreground="#D92C2C"/>
+                                    </Button>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                    <Button Command="{Binding ExportWorksheetCommand}" CommandParameter="{Binding ElementName=DataGrid}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [export_data], Source={x:Static lg:LanguageService.Instance}}">
+                                        <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe656;" FontSize="16" Foreground="#0078D4"/>
+                                    </Button>
+                                    <Button Command="{Binding UpdateDataCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [update_chart], Source={x:Static lg:LanguageService.Instance}}">
+                                        <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe71e;" FontSize="16" Foreground="#0078D4"/>
+                                    </Button>
+                                    <Button Command="{Binding ClearAllDataCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [clear_all_data], Source={x:Static lg:LanguageService.Instance}}">
+                                        <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe734;" FontSize="16" Foreground="#D92C2C"/>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
                         </Border>
 
                         <!-- Layer Tree -->
-                        <TreeView Grid.Row="1" ItemsSource="{Binding LayerTree}" x:Name="LayerTreeView" Background="Transparent" BorderThickness="0">
+                        <TreeView Grid.Row="1"
+                                  ItemsSource="{Binding LayerTree}"
+                                  ItemTemplate="{StaticResource LayerTreeItemTemplate}"
+                                  x:Name="LayerTreeView"
+                                  Background="Transparent"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                  ScrollViewer.CanContentScroll="False"
+                                  BorderThickness="0">
                             <TreeView.Style>
                                 <Style TargetType="TreeView">
                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -1865,16 +2465,8 @@
                                     </Style.Triggers>
                                 </Style>
                             </TreeView.Style>
-                            <TreeView.Resources>
-                                <HierarchicalDataTemplate DataType="{x:Type layerModels:LayerItemViewModel}" ItemsSource="{Binding Children}">
-                                    <StackPanel Orientation="Horizontal" Margin="2">
-                                        <CheckBox IsChecked="{Binding IsVisible}" VerticalAlignment="Center" Margin="0,0,6,0"/>
-                                        <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                </HierarchicalDataTemplate>
-                            </TreeView.Resources>
                             <TreeView.ItemContainerStyle>
-                                <Style BasedOn="{StaticResource ModernStyleTreeViewItemStyle}" TargetType="{x:Type TreeViewItem}">
+                                <Style BasedOn="{StaticResource LayerTreeViewItemStyle}" TargetType="{x:Type TreeViewItem}">
                                     <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=OneWay}"/>
                                     <EventSetter Event="UIElement.PreviewMouseLeftButtonDown" Handler="OnTreeViewItemPreviewMouseLeftButtonDown"/>
                                     <EventSetter Event="RequestBringIntoView" Handler="TreeViewItem_RequestBringIntoView"/>
@@ -2060,7 +2652,8 @@
                                     </Grid.ColumnDefinitions>
 
                                     <!-- Editor Tools -->
-                                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center"
+                                                Visibility="{Binding HasConfirmedEditMode, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <StackPanel.Style>
                                             <Style TargetType="StackPanel">
                                                 <Setter Property="IsEnabled" Value="True"/>
@@ -2076,7 +2669,7 @@
                                                   SelectionChanged="FontSizeComboBox_SelectionChanged" IsEditable="True"
                                                   KeyDown="FontSizeComboBox_KeyDown" LostFocus="FontSizeComboBox_LostFocus"
                                                   ToolTip="Font Size" Margin="0,0,8,0" VerticalAlignment="Center"
-                                                  Padding="6,0" Focusable="False">
+                                                  Padding="6,0">
                                             <ComboBoxItem Content="8"/>
                                             <ComboBoxItem Content="9"/>
                                             <ComboBoxItem Content="10"/>
@@ -2173,7 +2766,8 @@
                     <!-- Info Bar -->
                     <Border Grid.Row="1" Background="#F9F9F9" Padding="10,4" BorderBrush="#E0E0E0" BorderThickness="0,1,0,0">
                         <Grid>
-                            <TextBlock Text="{Binding DiagramLanguageStatus}" HorizontalAlignment="Left" Foreground="#888" FontSize="12"/>
+                            <TextBlock Text="{Binding DiagramLanguageStatus}" HorizontalAlignment="Left" Foreground="#888" FontSize="12"
+                                       Visibility="{Binding IsDiagramLanguageStatusVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
                             <TextBlock Text="{Binding CoordinateStatus}" HorizontalAlignment="Right" Foreground="#888" FontSize="12"/>
                         </Grid>
                     </Border>
@@ -2203,16 +2797,8 @@
                             </Grid.Resources>
 
                             <ContentControl Content="{Binding PropertyGridModel}">
-                                <ContentControl.Style>
-                                    <Style TargetType="ContentControl">
-                                        <Style.Triggers>
-                                            <Trigger Property="Content" Value="{x:Null}">
-                                                <Setter Property="Template" Value="{StaticResource EmptyStateTemplate}"/>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ContentControl.Style>
                                 <ContentControl.Resources>
+                                    <cvs:StringColorConverter x:Key="StringColorConverter"/>
                                     <DataTemplate DataType="{x:Type models:EmptyPropertyModel}">
                                         <Control Template="{StaticResource EmptyStateTemplate}"/>
                                     </DataTemplate>
@@ -2251,6 +2837,14 @@
                                     </DataTemplate>
                                     <DataTemplate DataType="{x:Type models:ScatterDefinition}">
                                         <uc:ScatterPropertyControl SelectedObject="{Binding}"/>
+                                    </DataTemplate>
+                                    <!-- 蛛网图样品线属性 -->
+                                    <DataTemplate DataType="{x:Type spiderModels:SpiderSamplePropertyModel}">
+                                        <uc:SpiderSamplePropertyControl SelectedObject="{Binding}"/>
+                                    </DataTemplate>
+                                    <!-- 蛛网图坐标轴属性 -->
+                                    <DataTemplate DataType="{x:Type spiderModels:SpiderAxisPropertyModel}">
+                                        <uc:SpiderAxisPropertyControl SelectedObject="{Binding}"/>
                                     </DataTemplate>
                                 </ContentControl.Resources>
                             </ContentControl>

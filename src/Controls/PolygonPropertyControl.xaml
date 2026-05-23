@@ -42,7 +42,7 @@
                     <StackPanel Margin="10">
                         
                         <!-- Fill Color -->
-                        <TextBlock Text="Fill Color" Style="{StaticResource ModernLabelStyle}"/>
+                        <TextBlock Text="{Binding [fill_color],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
                         <local:TextPropertyColorPicker 
                             SelectedColor="{Binding FillColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" 
                             HorizontalAlignment="Stretch"
@@ -50,7 +50,7 @@
                             Margin="0,0,0,16"/>
 
                         <!-- Border Color -->
-                        <TextBlock Text="Border Color" Style="{StaticResource ModernLabelStyle}"/>
+                        <TextBlock Text="{Binding [border_color],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
                         <local:TextPropertyColorPicker 
                             SelectedColor="{Binding BorderColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" 
                             HorizontalAlignment="Stretch"
@@ -58,7 +58,7 @@
                             Margin="0,0,0,16"/>
 
                         <!-- Border Width -->
-                        <TextBlock Text="Border Width" Style="{StaticResource ModernLabelStyle}"/>
+                        <TextBlock Text="{Binding [border_width],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
                         <hc:NumericUpDown Value="{Binding BorderWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
                                     hc:InfoElement.Placeholder="1.0"
                                     Style="{StaticResource ModernNumericUpDownStyle}"/>

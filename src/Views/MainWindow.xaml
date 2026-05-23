@@ -20,7 +20,9 @@
     </WindowChrome.WindowChrome>
 
     <Window.Resources>
-        <!-- Modern-style Sidebar Button -->
+        <converter:BorderClipConverter x:Key="BorderClipConverter"/>
+
+        <!-- 现代化风格侧边栏按钮 -->
         <Style x:Key="ModernSideButton" TargetType="{x:Type RadioButton}">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="#4A4A4A"/>
@@ -31,17 +33,86 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type RadioButton}">
-                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="8" SnapsToDevicePixels="True">
+                        <Border x:Name="border" CornerRadius="8" SnapsToDevicePixels="True">
+                            <Border.Background>
+                                <SolidColorBrush x:Name="borderBrush" Color="Transparent"/>
+                            </Border.Background>
                             <Grid>
                                 <ContentPresenter Margin="{TemplateBinding Padding}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" TargetName="border" Value="#E5E5EA"/>
-                            </Trigger>
+                            <!-- 未选中时的悬停动画 -->
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                    <Condition Property="IsChecked" Value="False"/>
+                                </MultiTrigger.Conditions>
+                                <MultiTrigger.EnterActions>
+                                    <StopStoryboard BeginStoryboardName="HoverExit"/>
+                                    <StopStoryboard BeginStoryboardName="CheckedEnter"/>
+                                    <StopStoryboard BeginStoryboardName="CheckedExit"/>
+                                    <BeginStoryboard x:Name="HoverEnter">
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="borderBrush"
+                                                            Storyboard.TargetProperty="Color"
+                                                            To="#E5E5EA" Duration="0:0:0.15">
+                                                <ColorAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </ColorAnimation.EasingFunction>
+                                            </ColorAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </MultiTrigger.EnterActions>
+                                <MultiTrigger.ExitActions>
+                                    <StopStoryboard BeginStoryboardName="HoverEnter"/>
+                                    <BeginStoryboard x:Name="HoverExit">
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="borderBrush"
+                                                            Storyboard.TargetProperty="Color"
+                                                            To="Transparent" Duration="0:0:0.2">
+                                                <ColorAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </ColorAnimation.EasingFunction>
+                                            </ColorAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </MultiTrigger.ExitActions>
+                            </MultiTrigger>
+                            <!-- 选中状态动画 -->
                             <Trigger Property="IsChecked" Value="True">
-                                <Setter Property="Background" TargetName="border" Value="#007AFF"/> <!-- macOS Blue -->
+                                <Trigger.EnterActions>
+                                    <StopStoryboard BeginStoryboardName="HoverEnter"/>
+                                    <StopStoryboard BeginStoryboardName="HoverExit"/>
+                                    <StopStoryboard BeginStoryboardName="CheckedExit"/>
+                                    <BeginStoryboard x:Name="CheckedEnter">
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="borderBrush"
+                                                            Storyboard.TargetProperty="Color"
+                                                            To="#007AFF" Duration="0:0:0.25">
+                                                <ColorAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </ColorAnimation.EasingFunction>
+                                            </ColorAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <StopStoryboard BeginStoryboardName="CheckedEnter"/>
+                                    <StopStoryboard BeginStoryboardName="HoverEnter"/>
+                                    <StopStoryboard BeginStoryboardName="HoverExit"/>
+                                    <BeginStoryboard x:Name="CheckedExit">
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="borderBrush"
+                                                            Storyboard.TargetProperty="Color"
+                                                            To="Transparent" Duration="0:0:0.2">
+                                                <ColorAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </ColorAnimation.EasingFunction>
+                                            </ColorAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
                                 <Setter Property="Foreground" Value="White"/>
                                 <Setter Property="FontWeight" Value="SemiBold"/>
                             </Trigger>
@@ -179,10 +250,93 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Collapsible Sidebar -->
-                <Border Background="#F0F0F5" Width="240" CornerRadius="0,12,0,10" Margin="0,0,15,0"
-                        Visibility="{Binding IsSideBarVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <!-- 现代化可折叠侧边栏 -->
+                <Border Background="#F0F0F5" CornerRadius="0,12,0,10" ClipToBounds="True">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Width" Value="240"/>
+                            <Setter Property="Margin" Value="0,0,15,0"/>
+                            <Style.Triggers>
+                                <!-- 收起动画 -->
+                                <DataTrigger Binding="{Binding IsSideBarVisible}" Value="False">
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard x:Name="SidebarCollapse">
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Width"
+                                                                 To="0" Duration="0:0:0.3">
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseInOut"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                                <ThicknessAnimation Storyboard.TargetProperty="Margin"
+                                                                    To="0" Duration="0:0:0.3">
+                                                    <ThicknessAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseInOut"/>
+                                                    </ThicknessAnimation.EasingFunction>
+                                                </ThicknessAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                                    <!-- 展开动画 -->
+                                    <DataTrigger.ExitActions>
+                                        <StopStoryboard BeginStoryboardName="SidebarCollapse"/>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Width"
+                                                                 To="240" Duration="0:0:0.35">
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                                <ThicknessAnimation Storyboard.TargetProperty="Margin"
+                                                                    To="0,0,15,0" Duration="0:0:0.35">
+                                                    <ThicknessAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </ThicknessAnimation.EasingFunction>
+                                                </ThicknessAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.ExitActions>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <!-- 侧边栏内容（带淡入淡出动画） -->
                     <Grid>
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsSideBarVisible}" Value="False">
+                                        <DataTrigger.EnterActions>
+                                            <BeginStoryboard x:Name="ContentFadeOut">
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                                     To="0" Duration="0:0:0.15">
+                                                        <DoubleAnimation.EasingFunction>
+                                                            <QuadraticEase EasingMode="EaseIn"/>
+                                                        </DoubleAnimation.EasingFunction>
+                                                    </DoubleAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.EnterActions>
+                                        <DataTrigger.ExitActions>
+                                            <StopStoryboard BeginStoryboardName="ContentFadeOut"/>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                                     To="1" Duration="0:0:0.2"
+                                                                     BeginTime="0:0:0.12">
+                                                        <DoubleAnimation.EasingFunction>
+                                                            <QuadraticEase EasingMode="EaseOut"/>
+                                                        </DoubleAnimation.EasingFunction>
+                                                    </DoubleAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.ExitActions>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
                         <StackPanel Margin="0,20,0,0" VerticalAlignment="Top">
                             <!-- Home -->
                             <RadioButton Name="RadioButton1" Style="{StaticResource ModernSideButton}" GroupName="SideBar" 
@@ -210,6 +364,15 @@
                                     <TextBlock Text="{Binding [Geothermometer],Source={x:Static lg:LanguageService.Instance}}" Margin="10,0,0,0" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </RadioButton>
+
+                            <!-- CIPW -->
+                            <RadioButton Name="RadioButton5" Style="{StaticResource ModernSideButton}" GroupName="SideBar" 
+                                         Command="{Binding CipwPageCommand}" CommandParameter="{Binding ElementName=MyNav}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xe626;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="18" Width="30" TextAlignment="Center" VerticalAlignment="Center"/>
+                                    <TextBlock Text="CIPW" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </RadioButton>
                         </StackPanel>
 
                         <!-- Settings at the bottom -->
@@ -226,9 +389,29 @@
                 </Border>
 
                 <!-- Navigation Content -->
-                <Grid Grid.Column="1" Margin="0,0,0,0">
-                    <Frame Name="MyNav" NavigationUIVisibility="Hidden" Background="White" ClipToBounds="True"/>
-                </Grid>
+                <Border x:Name="NavContentBorder" Grid.Column="1">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="0,0,10,10"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsSideBarVisible}" Value="True">
+                                    <Setter Property="CornerRadius" Value="0,0,10,0"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsWindowMaximized}" Value="True">
+                                    <Setter Property="CornerRadius" Value="0"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <Border.Clip>
+                        <MultiBinding Converter="{StaticResource BorderClipConverter}">
+                            <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
+                            <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}"/>
+                            <Binding Path="CornerRadius" RelativeSource="{RelativeSource Self}"/>
+                        </MultiBinding>
+                    </Border.Clip>
+                    <Frame Name="MyNav" NavigationUIVisibility="Hidden" Background="White"/>
+                </Border>
             </Grid>
             
             <!-- Modal Mask -->

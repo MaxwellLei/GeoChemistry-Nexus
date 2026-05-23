@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,380 +117,65 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="StartStatus" xml:space="preserve">
-    <value>시작 중...</value>
-    <comment>软件启动界面</comment>
+  <data name="new_version_found" xml:space="preserve">
+    <value>새 버전 발견</value>
   </data>
-  <data name="Show" xml:space="preserve">
-    <value>인터페이스 표시</value>
-    <comment>托盘菜单右键</comment>
+  <data name="anti_aliasing" xml:space="preserve">
+    <value>앤티 앨리어싱</value>
   </data>
-  <data name="Exit" xml:space="preserve">
-    <value>프로그램 종료</value>
-    <comment>托盘菜单右键</comment>
+  <data name="geo_msg_load_help_doc_failed" xml:space="preserve">
+    <value>도움말 문서 로딩 실패: {0}</value>
   </data>
-  <data name="home" xml:space="preserve">
-    <value>홈</value>
-    <comment>主窗体侧边栏</comment>
+  <data name="script_content" xml:space="preserve">
+    <value>스크립트 내용:</value>
   </data>
-  <data name="Plot" xml:space="preserve">
-    <value>다이어그램 플롯</value>
-    <comment>主窗体侧边栏</comment>
+  <data name="geo_field_mineral_category" xml:space="preserve">
+    <value>광물 분류 *</value>
   </data>
-  <data name="Geothermometer" xml:space="preserve">
-    <value>지질 온도계</value>
-    <comment>主窗体侧边栏</comment>
+  <data name="unfavorite" xml:space="preserve">
+    <value>즐겨찾기 해제</value>
   </data>
-  <data name="Setting" xml:space="preserve">
-    <value>설정</value>
-    <comment>主窗体侧边栏</comment>
+  <data name="select" xml:space="preserve">
+    <value>선택</value>
   </data>
-  <data name="File" xml:space="preserve">
-    <value>_파일(F)</value>
-    <comment>绘图界面</comment>
+  <data name="cipw_col_alumina_state" xml:space="preserve">
+    <value>Al2O3 상태</value>
   </data>
-  <data name="Edit" xml:space="preserve">
-    <value>편집</value>
-    <comment>绘图界面</comment>
+  <data name="favorite" xml:space="preserve">
+    <value>즐겨찾기</value>
   </data>
-  <data name="Expand" xml:space="preserve">
-    <value>확장</value>
-    <comment>绘图界面</comment>
+  <data name="search_templates" xml:space="preserve">
+    <value>템플릿 검색...</value>
   </data>
-  <data name="EditMode" xml:space="preserve">
-    <value>편집 모드</value>
-    <comment>绘图界面</comment>
-  </data>
-  <data name="NewBasemap" xml:space="preserve">
-    <value>새 베이스맵</value>
-    <comment>绘图界面</comment>
-  </data>
-  <data name="SaveBasemap" xml:space="preserve">
-    <value>베이스맵 저장</value>
-  </data>
-  <data name="ImportBasemap" xml:space="preserve">
-    <value>베이스맵 가져오기</value>
-  </data>
-  <data name="ExportBasemap" xml:space="preserve">
-    <value>베이스맵 내보내기</value>
-  </data>
-  <data name="DeleteBasemap" xml:space="preserve">
-    <value>베이스맵 삭제</value>
-  </data>
-  <data name="GetMoreBasemap" xml:space="preserve">
-    <value>더 많은 베이스맵 받기</value>
-  </data>
-  <data name="ImportData" xml:space="preserve">
-    <value>데이터 가져오기</value>
-  </data>
-  <data name="ResetPlot" xml:space="preserve">
-    <value>플롯 초기화</value>
-  </data>
-  <data name="ResetVision" xml:space="preserve">
-    <value>뷰 재설정</value>
-  </data>
-  <data name="CancelSelected" xml:space="preserve">
-    <value>선택 취소</value>
-  </data>
-  <data name="LocationAxis" xml:space="preserve">
-    <value>위치 축</value>
-  </data>
-  <data name="ExportImage" xml:space="preserve">
-    <value>이미지 내보내기</value>
-  </data>
-  <data name="ExportImagePNG" xml:space="preserve">
-    <value>PNG 형식으로 내보내기</value>
-  </data>
-  <data name="ExportImageJPG" xml:space="preserve">
-    <value>JPG 형식으로 내보내기</value>
-  </data>
-  <data name="ExportImageBMP" xml:space="preserve">
-    <value>BMP 형식으로 내보내기</value>
-  </data>
-  <data name="ExportImageWebp" xml:space="preserve">
-    <value>Webp 형식으로 내보내기</value>
-  </data>
-  <data name="ExportImageSVG" xml:space="preserve">
-    <value>SVG 형식으로 내보내기</value>
-  </data>
-  <data name="LegendSetting" xml:space="preserve">
-    <value>범례 설정</value>
-  </data>
-  <data name="PlotSetting" xml:space="preserve">
-    <value>플롯 설정</value>
-  </data>
-  <data name="AddLine" xml:space="preserve">
-    <value>선 추가</value>
-  </data>
-  <data name="AddPolygons" xml:space="preserve">
-    <value>다각형 추가</value>
-  </data>
-  <data name="AddText" xml:space="preserve">
-    <value>주석 추가</value>
-  </data>
-  <data name="JsSetting" xml:space="preserve">
-    <value>스크립트 설정</value>
-  </data>
-  <data name="Save" xml:space="preserve">
-    <value>저장</value>
-  </data>
-  <data name="QuitEdit" xml:space="preserve">
-    <value>편집 종료</value>
-  </data>
-  <data name="IgneousRock" xml:space="preserve">
-    <value>화성암</value>
-  </data>
-  <data name="TectonicSetting" xml:space="preserve">
-    <value>구조적 환경</value>
-  </data>
-  <data name="Basalt" xml:space="preserve">
-    <value>현무암</value>
-  </data>
-  <data name="RockClassification" xml:space="preserve">
-    <value>암석 분류</value>
-  </data>
-  <data name="GTMP" xml:space="preserve">
-    <value>온도 플롯</value>
-  </data>
-  <data name="Guide" xml:space="preserve">
-    <value>가이드</value>
-  </data>
-  <data name="BorderLine" xml:space="preserve">
-    <value>경계</value>
-  </data>
-  <data name="PlotText" xml:space="preserve">
-    <value>주석</value>
-  </data>
-  <data name="PlotAxies" xml:space="preserve">
-    <value>좌표축</value>
-  </data>
-  <data name="PlotLeftAxies" xml:space="preserve">
-    <value>왼쪽 좌표축</value>
-  </data>
-  <data name="PlotBottomAxies" xml:space="preserve">
-    <value>하단 좌표축</value>
-  </data>
-  <data name="PlotData" xml:space="preserve">
-    <value>데이터</value>
-  </data>
-  <data name="MajorAxes" xml:space="preserve">
-    <value>주 눈금 축</value>
-  </data>
-  <data name="MinorAxes" xml:space="preserve">
-    <value>보조 눈금 축</value>
-  </data>
-  <data name="legend" xml:space="preserve">
-    <value>범례</value>
-  </data>
-  <data name="Background" xml:space="preserve">
-    <value>배경</value>
-  </data>
-  <data name="Calculate" xml:space="preserve">
-    <value>계산</value>
-  </data>
-  <data name="Delete" xml:space="preserve">
-    <value>삭제</value>
-  </data>
-  <data name="Confirm" xml:space="preserve">
-    <value>확인</value>
-  </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>취소</value>
-  </data>
-  <data name="DontSave" xml:space="preserve">
-    <value>저장 안 함</value>
-  </data>
-  <data name="IsShow" xml:space="preserve">
-    <value>IsShow</value>
-  </data>
-  <data name="FontFamily" xml:space="preserve">
-    <value>글꼴</value>
-  </data>
-  <data name="FontStyle" xml:space="preserve">
-    <value>글꼴 스타일</value>
-  </data>
-  <data name="FontNormal" xml:space="preserve">
-    <value>기본값</value>
-  </data>
-  <data name="FontBold" xml:space="preserve">
-    <value>굵게</value>
-  </data>
-  <data name="FontItalic" xml:space="preserve">
-    <value>기울임꼴</value>
-  </data>
-  <data name="FontSize" xml:space="preserve">
-    <value>글꼴 크기</value>
-  </data>
-  <data name="FontColor" xml:space="preserve">
-    <value>글꼴 색상</value>
-  </data>
-  <data name="TextContent" xml:space="preserve">
-    <value>내용</value>
-  </data>
-  <data name="LineStyle" xml:space="preserve">
-    <value>선 스타일</value>
-  </data>
-  <data name="LineSolid" xml:space="preserve">
-    <value>실선</value>
-  </data>
-  <data name="LineDash" xml:space="preserve">
-    <value>파선</value>
-  </data>
-  <data name="LineDashDot" xml:space="preserve">
-    <value>쇄선</value>
-  </data>
-  <data name="LineDenselyDashed" xml:space="preserve">
-    <value>촘촘한 파선</value>
-  </data>
-  <data name="LineWidth" xml:space="preserve">
-    <value>너비</value>
-  </data>
-  <data name="LineColor" xml:space="preserve">
-    <value>색상</value>
-  </data>
-  <data name="PointStyle" xml:space="preserve">
-    <value>점 스타일</value>
-  </data>
-  <data name="PointCircle" xml:space="preserve">
-    <value>원형</value>
-  </data>
-  <data name="PointHollowCircle" xml:space="preserve">
-    <value>빈 원형</value>
-  </data>
-  <data name="PointSquare" xml:space="preserve">
-    <value>사각형</value>
-  </data>
-  <data name="PointFilledTriangleUp" xml:space="preserve">
-    <value>위쪽 삼각형</value>
-  </data>
-  <data name="PointFilledTriangleDown" xml:space="preserve">
-    <value>아래쪽 삼각형</value>
-  </data>
-  <data name="PointDiamond" xml:space="preserve">
-    <value>마름모</value>
-  </data>
-  <data name="PointEks" xml:space="preserve">
-    <value>X표</value>
-  </data>
-  <data name="PointCross" xml:space="preserve">
-    <value>십자형</value>
-  </data>
-  <data name="PointStar" xml:space="preserve">
-    <value>별 모양</value>
-  </data>
-  <data name="size" xml:space="preserve">
-    <value>크기</value>
-  </data>
-  <data name="IsShowAxes" xml:space="preserve">
-    <value>축 표시</value>
-  </data>
-  <data name="IsShowAxesTick" xml:space="preserve">
-    <value>주 눈금 숨기기</value>
-  </data>
-  <data name="AxesStyle" xml:space="preserve">
-    <value>눈금 축 스타일</value>
-  </data>
-  <data name="AxesStyleNormal" xml:space="preserve">
-    <value>일반</value>
-  </data>
-  <data name="AxesStyleLog10" xml:space="preserve">
-    <value>Log(10)</value>
+  <data name="export_successful" xml:space="preserve">
+    <value>내보내기 성공</value>
   </data>
   <data name="AxesTickFont" xml:space="preserve">
     <value>눈금 축 글꼴</value>
   </data>
-  <data name="AxesTickFontSize" xml:space="preserve">
-    <value>눈금 글꼴 크기</value>
+  <data name="geo_validate_version_format" xml:space="preserve">
+    <value>버전 형식이 올바르지 않습니다. x.x.x 형식만 허용됩니다(예: 1.0.0, 1.2.3).</value>
   </data>
-  <data name="AxesTickSpacing" xml:space="preserve">
-    <value>눈금 간격</value>
+  <data name="delete_this_item" xml:space="preserve">
+    <value>항목 삭제</value>
   </data>
-  <data name="AxesTickUpLimit" xml:space="preserve">
-    <value>눈금 상한</value>
+  <data name="Placeholder_Chart_Title" xml:space="preserve">
+    <value>차트 제목</value>
   </data>
-  <data name="AxesTickDownLimit" xml:space="preserve">
-    <value>눈금 하한</value>
+  <data name="drawing_template_repair_tool" xml:space="preserve">
+    <value>도면 템플릿 복구 도구</value>
   </data>
-  <data name="AxesTickColor" xml:space="preserve">
-    <value>눈금 색상</value>
+  <data name="category_structure_min_two" xml:space="preserve">
+    <value>분류 구조는 2 이상이어야 합니다!</value>
   </data>
-  <data name="IsShowMinorAxes" xml:space="preserve">
-    <value>보조 눈금 숨기기</value>
+  <data name="template_file_save_path" xml:space="preserve">
+    <value>템플릿 파일 저장 경로</value>
   </data>
-  <data name="IsShowLegend" xml:space="preserve">
-    <value>범례 표시 여부</value>
+  <data name="jpg_format" xml:space="preserve">
+    <value>JPG 형식</value>
   </data>
-  <data name="LegendPosition" xml:space="preserve">
-    <value>범례 위치</value>
-  </data>
-  <data name="LegendPositionRU" xml:space="preserve">
-    <value>우측 상단</value>
-  </data>
-  <data name="LegendPositionRD" xml:space="preserve">
-    <value>우측 하단</value>
-  </data>
-  <data name="LegendPositionLU" xml:space="preserve">
-    <value>좌측 상단</value>
-  </data>
-  <data name="LegendPositionLD" xml:space="preserve">
-    <value>좌측 하단</value>
-  </data>
-  <data name="LegendDirection" xml:space="preserve">
-    <value>범례 방향</value>
-  </data>
-  <data name="LegendVertical" xml:space="preserve">
-    <value>세로</value>
-  </data>
-  <data name="LegendHorizontal" xml:space="preserve">
-    <value>가로</value>
-  </data>
-  <data name="PlotTitle" xml:space="preserve">
-    <value>플롯 제목</value>
-  </data>
-  <data name="PlotTitleFont" xml:space="preserve">
-    <value>제목 글꼴</value>
-  </data>
-  <data name="PlotTitleFontSize" xml:space="preserve">
-    <value>제목 글꼴 크기</value>
-  </data>
-  <data name="PlotTitleColor" xml:space="preserve">
-    <value>제목 색상</value>
-  </data>
-  <data name="PlotAxesTitle1" xml:space="preserve">
-    <value>좌표축 제목 1</value>
-  </data>
-  <data name="PlotAxesTitle2" xml:space="preserve">
-    <value>좌표축 제목 2</value>
-  </data>
-  <data name="PlotAxesTitleFont" xml:space="preserve">
-    <value>축 제목 글꼴</value>
-  </data>
-  <data name="PlotAxesTitleFontSize" xml:space="preserve">
-    <value>축 제목 글꼴 크기</value>
-  </data>
-  <data name="PlotAxesTitleColor" xml:space="preserve">
-    <value>축 제목 색상</value>
-  </data>
-  <data name="PlotShowGrid" xml:space="preserve">
-    <value>그리드 표시</value>
-  </data>
-  <data name="PlotMajorGridColor" xml:space="preserve">
-    <value>주 그리드 색상</value>
-  </data>
-  <data name="PlotMajorGridWidth" xml:space="preserve">
-    <value>주 그리드 두께</value>
-  </data>
-  <data name="PlotShowMinorGrid" xml:space="preserve">
-    <value>보조 그리드 표시</value>
-  </data>
-  <data name="PlotMinorGridColor" xml:space="preserve">
-    <value>보조 그리드 색상</value>
-  </data>
-  <data name="PlotMinorGridWidth" xml:space="preserve">
-    <value>보조 그리드 두께</value>
-  </data>
-  <data name="PlotSwitchFilledColor" xml:space="preserve">
-    <value>채우기 색상 반전</value>
+  <data name="TGMInfo" xml:space="preserve">
+    <value>파일을 클릭하거나 이곳으로 드래그하세요</value>
   </data>
   <data name="PlotFilledColor1" xml:space="preserve">
     <value>채우기 영역 색상 1</value>
@@ -498,179 +183,1683 @@
   <data name="PlotFilledColor2" xml:space="preserve">
     <value>채우기 영역 색상 2</value>
   </data>
-  <data name="Parameters" xml:space="preserve">
-    <value>필수 매개변수</value>
+  <data name="create_worksheet_failed" xml:space="preserve">
+    <value>워크시트 만들기 실패:</value>
   </data>
-  <data name="Js" xml:space="preserve">
-    <value>Js 스크립트</value>
+  <data name="geo_validate_year_required" xml:space="preserve">
+    <value>연도는 비워둘 수 없습니다.</value>
   </data>
-  <data name="CheckJs" xml:space="preserve">
-    <value>스크립트 확인</value>
+  <data name="new_version_available_github" xml:space="preserve">
+    <value>새 버전이 발견되었습니다! GitHub 릴리스 페이지로 이동하여 업데이트를 다운로드하십시오.</value>
   </data>
-  <data name="Undelete_Message" xml:space="preserve">
-    <value>삭제 취소됨</value>
+  <data name="batch_download_fail_count" xml:space="preserve">
+    <value>실패: {0}개</value>
   </data>
-  <data name="DeleteingBasemapConfirm2_Message" xml:space="preserve">
-    <value>삭제하시겠습니까?</value>
+  <data name="confirm_delete_column" xml:space="preserve">
+    <value>선택한 열을 삭제하시겠습니까?</value>
   </data>
-  <data name="SaveSuccess" xml:space="preserve">
-    <value>저장 성공</value>
+  <data name="cipw_iron_missing" xml:space="preserve">
+    <value>누락</value>
   </data>
-  <data name="ParameterNotFilledIn" xml:space="preserve">
-    <value>플롯 매개변수가 입력되지 않았습니다</value>
+  <data name="batch_download_complete" xml:space="preserve">
+    <value>일괄 다운로드 완료</value>
   </data>
-  <data name="ScNotFilledIn" xml:space="preserve">
-    <value>플롯 스크립트가 입력되지 않았습니다</value>
+  <data name="ternary_phase_diagram_sum_must_be_one" xml:space="preserve">
+    <value>삼원상 다이어그램의 합은 1이어야 합니다.</value>
   </data>
-  <data name="CancelImport" xml:space="preserve">
-    <value>가져오기 취소됨</value>
+  <data name="add_text_operation_canceled" xml:space="preserve">
+    <value>텍스트 추가 작업이 취소되었습니다.</value>
   </data>
-  <data name="BasemapExisted" xml:space="preserve">
-    <value>베이스맵 파일이 이미 존재합니다. 덮어쓰시겠습니까?</value>
+  <data name="geo_validation_version_required" xml:space="preserve">
+    <value>버전은 필수입니다</value>
   </data>
-  <data name="NewBasemapSuccess" xml:space="preserve">
-    <value>새 베이스맵 만들기 성공</value>
+  <data name="geo_btn_reset" xml:space="preserve">
+    <value>재설정</value>
   </data>
-  <data name="CategoryFormatError" xml:space="preserve">
-    <value>범주 형식 오류</value>
+  <data name="is_visible" xml:space="preserve">
+    <value>표시 여부</value>
   </data>
-  <data name="ParameterNull" xml:space="preserve">
-    <value>매개변수가 비어 있음</value>
+  <data name="geo_msg_batch_export_success" xml:space="preserve">
+    <value>공식 온도계 총 {0}개 중 이번에 {1}개를 내보냈습니다 (추가/수정)
+디렉터리: {2}</value>
   </data>
-  <data name="JsNull" xml:space="preserve">
-    <value>스크립트가 비어 있음</value>
+  <data name="tick_interval" xml:space="preserve">
+    <value>눈금 간격</value>
   </data>
-  <data name="BasemapCategories" xml:space="preserve">
-    <value>베이스맵 범주</value>
+  <data name="geo_btn_apply" xml:space="preserve">
+    <value>적용</value>
   </data>
-  <data name="BasemapLanguage" xml:space="preserve">
-    <value>베이스맵 언어</value>
+  <data name="stroke_color" xml:space="preserve">
+    <value>획 색상</value>
   </data>
-  <data name="Zircon" xml:space="preserve">
-    <value>지르콘</value>
+  <data name="ImportData" xml:space="preserve">
+    <value>데이터 가져오기</value>
   </data>
-  <data name="Sphalerite" xml:space="preserve">
-    <value>섬아연석</value>
+  <data name="stroke_width" xml:space="preserve">
+    <value>획 너비</value>
   </data>
-  <data name="Quartz" xml:space="preserve">
-    <value>석영</value>
+  <data name="AutoCheckUpdate" xml:space="preserve">
+    <value>자동 업데이트 확인</value>
   </data>
-  <data name="Arsenopyrite" xml:space="preserve">
-    <value>유비철석</value>
+  <data name="builtin_templates" xml:space="preserve">
+    <value>공식 내장 템플릿</value>
   </data>
-  <data name="Chlorite" xml:space="preserve">
-    <value>녹니석</value>
+  <data name="failed_to_open_zip_file" xml:space="preserve">
+    <value>ZIP 파일을 열 수 없음</value>
   </data>
-  <data name="Biotite" xml:space="preserve">
-    <value>흑운모</value>
+  <data name="Alignment_MiddleLeft" xml:space="preserve">
+    <value>좌측 중앙</value>
   </data>
-  <data name="Amphibole" xml:space="preserve">
-    <value>각섬석</value>
+  <data name="subtitle" xml:space="preserve">
+    <value>부제목</value>
   </data>
-  <data name="Reset" xml:space="preserve">
-    <value>초기화</value>
+  <data name="illustrator_not_found_check_path" xml:space="preserve">
+    <value>Adobe Illustrator를 찾을 수 없습니다. 경로 설정을 확인하거나 열 프로그램을 선택하십시오.</value>
   </data>
-  <data name="ExportResult" xml:space="preserve">
-    <value>결과 내보내기</value>
+  <data name="json_parse_error" xml:space="preserve">
+    <value>JSON 구문 분석 오류</value>
   </data>
-  <data name="TGMInfo" xml:space="preserve">
-    <value>파일을 클릭하거나 이곳으로 드래그하세요</value>
+  <data name="cipw_step1_detail" xml:space="preserve">
+    <value>• 입력된 주요 원소 산화물 데이터를 무수 기준으로 정규화 (100%로 정규화)
+• 철 분배 처리: 사용자 설정 Fe³⁺/Fe 비율에 따라 FeOT를 FeO와 Fe₂O₃로 분리
+• MnO를 몰비에 따라 FeO 등가값으로 통합
+• 모든 산화물의 질량 백분율을 몰수로 변환</value>
+  </data>
+  <data name="script_return_value_error_must_be_array" xml:space="preserve">
+    <value>• 스크립트 반환 값 오류: 스크립트는 배열을 반환해야 합니다.</value>
+  </data>
+  <data name="MarkerShape_VerticalBar" xml:space="preserve">
+    <value>수직선</value>
+  </data>
+  <data name="MarkerShape_OpenDiamond" xml:space="preserve">
+    <value>빈 마름모</value>
+  </data>
+  <data name="geo_script_javascript" xml:space="preserve">
+    <value>JavaScript 스크립트</value>
+  </data>
+  <data name="Expand" xml:space="preserve">
+    <value>확장</value>
+  </data>
+  <data name="Placeholder_Chart_Title_Default" xml:space="preserve">
+    <value>새 차트</value>
+  </data>
+  <data name="geo_msg_promoted" xml:space="preserve">
+    <value>공식 온도계로 승격되었습니다</value>
+  </data>
+  <data name="geo_msg_test_input_required" xml:space="preserve">
+    <value>테스트 값을 입력하세요.</value>
+  </data>
+  <data name="orientation" xml:space="preserve">
+    <value>방향</value>
+  </data>
+  <data name="downloading_ellipsis" xml:space="preserve">
+    <value>다운로드 중...</value>
+  </data>
+  <data name="geo_hint_no_custom" xml:space="preserve">
+    <value>사용자 정의 온도계가 없습니다. + 를 클릭하여 만드세요.</value>
   </data>
   <data name="CalTarget" xml:space="preserve">
     <value>계산 목표</value>
   </data>
-  <data name="CalTarget1" xml:space="preserve">
-    <value>Zr 포화 온도 (Watson and Harrison, 1983)</value>
+  <data name="FontItalic" xml:space="preserve">
+    <value>기울임꼴</value>
   </data>
-  <data name="CalTarget2" xml:space="preserve">
-    <value>Zr 주성분 온도 (Watson and Harrison, 1983)</value>
+  <data name="actual_sum_is" xml:space="preserve">
+    <value>(실제 합계</value>
+  </data>
+  <data name="geo_msg_update_downloaded" xml:space="preserve">
+    <value>{0}개의 지질 온도계를 다운로드했습니다</value>
+  </data>
+  <data name="export_current_worksheet" xml:space="preserve">
+    <value>현재 워크시트 내보내기(_R)</value>
+  </data>
+  <data name="use_help" xml:space="preserve">
+    <value>다이어그램 가이드</value>
+  </data>
+  <data name="Enum_LineType_Solid" xml:space="preserve">
+    <value>실선</value>
+  </data>
+  <data name="geo_placeholder_help_read_confirm" xml:space="preserve">
+    <value>문서를 읽은 후 확인을 클릭하여 계속하세요.</value>
+  </data>
+  <data name="batch_downloading" xml:space="preserve">
+    <value>일괄 다운로드 중</value>
+  </data>
+  <data name="subtitle_bold" xml:space="preserve">
+    <value>부제목 굵게</value>
+  </data>
+  <data name="diagram_guide" xml:space="preserve">
+    <value>다이어그램 가이드</value>
+  </data>
+  <data name="ExportImageBMP" xml:space="preserve">
+    <value>BMP 형식으로 내보내기</value>
+  </data>
+  <data name="ExportImageJPG" xml:space="preserve">
+    <value>JPG 형식으로 내보내기</value>
+  </data>
+  <data name="ExportImageSVG" xml:space="preserve">
+    <value>SVG 형식으로 내보내기</value>
+  </data>
+  <data name="ExportImagePNG" xml:space="preserve">
+    <value>PNG 형식으로 내보내기</value>
+  </data>
+  <data name="line_type_dot" xml:space="preserve">
+    <value>점선</value>
+  </data>
+  <data name="highlight_on_hover" xml:space="preserve">
+    <value>활성화하면 마우스가 플롯 개체(점, 선, 면 등) 위로 이동할 때 자동으로 강조 표시되며 클릭하여 정보를 볼 수 있습니다</value>
+  </data>
+  <data name="geo_help_delete_doc" xml:space="preserve">
+    <value>현재 언어의 도움말 문서 삭제</value>
+  </data>
+  <data name="loading_status" xml:space="preserve">
+    <value>로딩 중...</value>
+  </data>
+  <data name="geo_menu_update" xml:space="preserve">
+    <value>업데이트</value>
+  </data>
+  <data name="PlotMinorGridColor" xml:space="preserve">
+    <value>보조 그리드 색상</value>
+  </data>
+  <data name="MessageAutoClose" xml:space="preserve">
+    <value>자동 닫기 시간</value>
+  </data>
+  <data name="LegendDirection" xml:space="preserve">
+    <value>범례 방향</value>
+  </data>
+  <data name="PlotMinorGridWidth" xml:space="preserve">
+    <value>보조 그리드 두께</value>
+  </data>
+  <data name="please_enter_name" xml:space="preserve">
+    <value>이름을 입력하십시오</value>
+  </data>
+  <data name="please_enter_link" xml:space="preserve">
+    <value>링크를 입력하십시오</value>
+  </data>
+  <data name="add_text" xml:space="preserve">
+    <value>텍스트 추가</value>
+  </data>
+  <data name="add_line" xml:space="preserve">
+    <value>선 추가</value>
+  </data>
+  <data name="add_link" xml:space="preserve">
+    <value>링크 추가</value>
+  </data>
+  <data name="confirm_new_worksheet" xml:space="preserve">
+    <value>새 워크시트를 만드시겠습니까?</value>
+  </data>
+  <data name="pattern" xml:space="preserve">
+    <value>패턴</value>
+  </data>
+  <data name="geo_ctx_promote" xml:space="preserve">
+    <value>공식으로 승격</value>
+  </data>
+  <data name="geo_validation_reference_required" xml:space="preserve">
+    <value>참고 문헌은 필수입니다</value>
+  </data>
+  <data name="validation_failed" xml:space="preserve">
+    <value>검사 실패:</value>
+  </data>
+  <data name="Support2" xml:space="preserve">
+    <value>📌차트 지원:</value>
+  </data>
+  <data name="Support3" xml:space="preserve">
+    <value>📌문서 지원:</value>
+  </data>
+  <data name="Support1" xml:space="preserve">
+    <value>📌컨트롤 지원:</value>
+  </data>
+  <data name="Support4" xml:space="preserve">
+    <value>📌계산 지원:</value>
+  </data>
+  <data name="Support5" xml:space="preserve">
+    <value>📌도구 지원:</value>
+  </data>
+  <data name="geo_menu_maintenance" xml:space="preserve">
+    <value>유지 관리</value>
+  </data>
+  <data name="geo_validate_headers_required" xml:space="preserve">
+    <value>표 헤더는 비워둘 수 없습니다.</value>
+  </data>
+  <data name="PlotTitleFontSize" xml:space="preserve">
+    <value>제목 글꼴 크기</value>
+  </data>
+  <data name="enter_level_add" xml:space="preserve">
+    <value>레벨을 입력하고 Enter 키를 눌러 추가하십시오.</value>
+  </data>
+  <data name="background_and_border" xml:space="preserve">
+    <value>배경 및 테두리</value>
+  </data>
+  <data name="DeleteBasemap" xml:space="preserve">
+    <value>베이스맵 삭제</value>
+  </data>
+  <data name="all_imported_data_cleared" xml:space="preserve">
+    <value>모든 가져온 데이터가 지워졌습니다</value>
+  </data>
+  <data name="grid_settings" xml:space="preserve">
+    <value>그리드 설정</value>
+  </data>
+  <data name="refresh_failed" xml:space="preserve">
+    <value>새로 고침 실패:</value>
+  </data>
+  <data name="Biotite" xml:space="preserve">
+    <value>흑운모</value>
+  </data>
+  <data name="Arsenopyrite" xml:space="preserve">
+    <value>유비철석</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>삭제</value>
+  </data>
+  <data name="polygon" xml:space="preserve">
+    <value>다각형</value>
+  </data>
+  <data name="fill_color_2" xml:space="preserve">
+    <value>채우기 색상 2</value>
+  </data>
+  <data name="fill_color_1" xml:space="preserve">
+    <value>채우기 색상 1</value>
   </data>
   <data name="Pressure" xml:space="preserve">
     <value>압력(Mpa)</value>
   </data>
-  <data name="AmphiboleGTM" xml:space="preserve">
-    <value>Si 온도계 (Ridolfi et al., 2010)</value>
+  <data name="start_check_and_repair" xml:space="preserve">
+    <value>검사 및 복구 시작</value>
   </data>
-  <data name="BiotiteGTM" xml:space="preserve">
-    <value>Ti 온도계 (Henry et al., 2005)</value>
+  <data name="GetMoreBasemap" xml:space="preserve">
+    <value>더 많은 베이스맵 받기</value>
   </data>
-  <data name="ChloriteGTM" xml:space="preserve">
-    <value>Al4 온도계 (Jowett, 1991)</value>
+  <data name="check_for_category_updates" xml:space="preserve">
+    <value>분류 구조 업데이트 확인</value>
   </data>
-  <data name="ArsenopyriteGTM" xml:space="preserve">
-    <value>유비철석 온도계 (Kretschmar and Scott, 1976)</value>
+  <data name="cipw_overview" xml:space="preserve">
+    <value>CIPW 표준 광물 계산(CIPW Norm)은 1902년에 Cross, Iddings, Pirsson, Washington 네 명의 암석학자가 제안한 암석 화학 계산법입니다. 이 방법은 전암 주요 원소 산화물 분석 데이터에 따라 고정된 우선순위로 산화물을 일련의 이상화된 표준 광물에 할당하여 암석 분류 및 비교 연구에 사용됩니다.</value>
   </data>
-  <data name="QuartzGTM" xml:space="preserve">
-    <value>TitaniQ 온도계 (Wark and Watson, 2006)</value>
+  <data name="elements_count_suffix" xml:space="preserve">
+    <value>개.</value>
   </data>
-  <data name="SphaleriteGTM" xml:space="preserve">
-    <value>FeS 온도계 (Scott and Barnes, 1971)</value>
+  <data name="update_list_file_failed" xml:space="preserve">
+    <value>목록 파일 업데이트 실패</value>
   </data>
-  <data name="SphaleriteGGIMFisGTM" xml:space="preserve">
-    <value>GGIMFis 온도계 (Frenzel et al., 2016)</value>
+  <data name="FontStyle" xml:space="preserve">
+    <value>글꼴 스타일</value>
+  </data>
+  <data name="save_as" xml:space="preserve">
+    <value>다른 이름으로 저장</value>
+  </data>
+  <data name="click_help_for_guide" xml:space="preserve">
+    <value>버튼을 클릭하여 다이어그램 문서 보기</value>
+  </data>
+  <data name="LegendVertical" xml:space="preserve">
+    <value>세로</value>
+  </data>
+  <data name="Placeholder_Component_A" xml:space="preserve">
+    <value>A</value>
+  </data>
+  <data name="Placeholder_Component_C" xml:space="preserve">
+    <value>C</value>
+  </data>
+  <data name="Placeholder_Component_B" xml:space="preserve">
+    <value>B</value>
+  </data>
+  <data name="click_to_pick_coordinates" xml:space="preserve">
+    <value>좌표를 선택하려면 플롯 영역을 클릭하십시오</value>
+  </data>
+  <data name="FontColor" xml:space="preserve">
+    <value>글꼴 색상</value>
+  </data>
+  <data name="Basalt" xml:space="preserve">
+    <value>현무암</value>
+  </data>
+  <data name="annotation" xml:space="preserve">
+    <value>주석</value>
+  </data>
+  <data name="geo_dialog_apply_overwrite" xml:space="preserve">
+    <value>적용하면 현재 워크시트 내용을 덮어씁니다. 계속하시겠습니까？</value>
   </data>
   <data name="ZirconTiGTM" xml:space="preserve">
     <value>Ti 온도계 (Loucks et al., 2020)</value>
   </data>
+  <data name="ImportBasemap" xml:space="preserve">
+    <value>베이스맵 가져오기</value>
+  </data>
   <data name="ZirconZrGTM" xml:space="preserve">
     <value>Zr 온도계 (Watson and Harrison, 1983)</value>
   </data>
-  <data name="Step1" xml:space="preserve">
-    <value>데이터 가져오기 / 입력</value>
+  <data name="ResetSuccess" xml:space="preserve">
+    <value>초기화 성공</value>
   </data>
-  <data name="Step2" xml:space="preserve">
-    <value>매개변수 확인</value>
+  <data name="geo_msg_save_failed" xml:space="preserve">
+    <value>저장 실패: {0}</value>
   </data>
-  <data name="Step3" xml:space="preserve">
-    <value>결과 계산</value>
+  <data name="geo_editor_title_new" xml:space="preserve">
+    <value>새 사용자 정의 온도계</value>
   </data>
-  <data name="NormalSetting" xml:space="preserve">
-    <value>일반 설정</value>
+  <data name="BorderLine" xml:space="preserve">
+    <value>경계</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>정보</value>
+  <data name="switch_diagram_language" xml:space="preserve">
+    <value>다이어그램 언어 전환</value>
   </data>
-  <data name="FilePath" xml:space="preserve">
-    <value>파일 경로</value>
+  <data name="missing_columns" xml:space="preserve">
+    <value>누락된 열</value>
   </data>
-  <data name="FileSavePath" xml:space="preserve">
-    <value>파일 저장 위치</value>
+  <data name="location" xml:space="preserve">
+    <value>위치</value>
   </data>
-  <data name="DefaultPath" xml:space="preserve">
-    <value>기본 위치</value>
+  <data name="syntax_validation_passed" xml:space="preserve">
+    <value>구문 검사 통과</value>
   </data>
-  <data name="CustomPath" xml:space="preserve">
-    <value>사용자 지정 폴더 위치</value>
+  <data name="cipw_tooltip_expand" xml:space="preserve">
+    <value>펼치기 / 접기</value>
   </data>
-  <data name="OpenFileLocation" xml:space="preserve">
-    <value>폴더 위치 열기</value>
+  <data name="cipw_tooltip_export" xml:space="preserve">
+    <value>계산 결과를 CSV 파일로 내보내기</value>
   </data>
-  <data name="InternationalizationAndPersonalization" xml:space="preserve">
-    <value>국제화 &amp; 개인화</value>
+  <data name="is_bold" xml:space="preserve">
+    <value>굵게</value>
   </data>
-  <data name="Theme" xml:space="preserve">
-    <value>테마</value>
+  <data name="legend_settings" xml:space="preserve">
+    <value>범례 설정</value>
   </data>
-  <data name="Default" xml:space="preserve">
-    <value>기본</value>
+  <data name="Cancel" xml:space="preserve">
+    <value>취소</value>
   </data>
-  <data name="Language_" xml:space="preserve">
-    <value>언어</value>
+  <data name="geo_validation_author_required" xml:space="preserve">
+    <value>작성자는 필수입니다</value>
+  </data>
+  <data name="delete_row" xml:space="preserve">
+    <value>행 삭제</value>
+  </data>
+  <data name="cipw_export_dialog_title" xml:space="preserve">
+    <value>CIPW 계산 결과 내보내기</value>
+  </data>
+  <data name="geo_menu_import_zip" xml:space="preserve">
+    <value>지질 온도계 가져오기 (ZIP)</value>
+  </data>
+  <data name="read_file_failed" xml:space="preserve">
+    <value>파일 읽기 실패</value>
+  </data>
+  <data name="developer_mode" xml:space="preserve">
+    <value>개발자 모드</value>
+  </data>
+  <data name="BasemapCategories" xml:space="preserve">
+    <value>베이스맵 범주</value>
+  </data>
+  <data name="geo_validate_mineral_required" xml:space="preserve">
+    <value>광물 분류는 비워둘 수 없습니다.</value>
+  </data>
+  <data name="filter_templates" xml:space="preserve">
+    <value>템플릿 필터링</value>
+  </data>
+  <data name="geo_hint_select_data_row" xml:space="preserve">
+    <value>데이터 행을 선택하세요</value>
+  </data>
+  <data name="Setting" xml:space="preserve">
+    <value>설정</value>
+  </data>
+  <data name="batch_download_progress" xml:space="preserve">
+    <value>다운로드 중: {0}/{1} - {2}</value>
+  </data>
+  <data name="oxygen_atom_benchmark_zero" xml:space="preserve">
+    <value>산소 원자 기준 값이 0임</value>
+  </data>
+  <data name="geo_msg_export_success" xml:space="preserve">
+    <value>내보내기 성공</value>
+  </data>
+  <data name="LineDash" xml:space="preserve">
+    <value>파선</value>
+  </data>
+  <data name="cipw_iron_measured" xml:space="preserve">
+    <value>실측값</value>
+  </data>
+  <data name="IsShowLegend" xml:space="preserve">
+    <value>범례 표시 여부</value>
+  </data>
+  <data name="library_section" xml:space="preserve">
+    <value>리소스 라이브러리</value>
+  </data>
+  <data name="server_announcement" xml:space="preserve">
+    <value>서버 공지</value>
+  </data>
+  <data name="failed_templates" xml:space="preserve">
+    <value>실패한 템플릿:</value>
+  </data>
+  <data name="font_rotation" xml:space="preserve">
+    <value>글꼴 회전</value>
+  </data>
+  <data name="toggle_details_expand_collapse" xml:space="preserve">
+    <value>상세 정보 펼치기/접기</value>
+  </data>
+  <data name="PlotAxesTitleFontSize" xml:space="preserve">
+    <value>축 제목 글꼴 크기</value>
+  </data>
+  <data name="file_import_successful" xml:space="preserve">
+    <value>파일 가져오기 성공</value>
+  </data>
+  <data name="uncategorized" xml:space="preserve">
+    <value>분류되지 않음</value>
+  </data>
+  <data name="attempting_to_start" xml:space="preserve">
+    <value>시작 시도 중</value>
+  </data>
+  <data name="diagram" xml:space="preserve">
+    <value>다이어그램</value>
+  </data>
+  <data name="geo_validation_year_range" xml:space="preserve">
+    <value>연도는 4자리여야 합니다 (1000-9999)</value>
+  </data>
+  <data name="geo_msg_checking_update" xml:space="preserve">
+    <value>업데이트 확인 중...</value>
+  </data>
+  <data name="add_function" xml:space="preserve">
+    <value>함수 추가</value>
+  </data>
+  <data name="edit_diagram_template" xml:space="preserve">
+    <value>다이어그램 템플릿 편집</value>
+  </data>
+  <data name="IsShow" xml:space="preserve">
+    <value>IsShow</value>
   </data>
   <data name="EnglishUS" xml:space="preserve">
     <value>English (US)</value>
   </data>
-  <data name="ChineseS" xml:space="preserve">
-    <value>中文(简体)</value>
+  <data name="cipw_references_content" xml:space="preserve">
+    <value>• Cross, W., Iddings, J.P., Pirsson, L.V., Washington, H.S. (1902). A Quantitative Chemico-Mineralogical Classification and Nomenclature of Igneous Rocks.
+• Le Maitre, R.W. (2002). Igneous Rocks: A Classification and Glossary of Terms. Cambridge University Press.
+• Kelsey, C.H. (1965). Calculation of the CIPW norm. Mineralogical Magazine, 34, 276-282.</value>
+  </data>
+  <data name="geo_ctx_demote" xml:space="preserve">
+    <value>사용자 정의로 강등</value>
+  </data>
+  <data name="geo_ctx_delete" xml:space="preserve">
+    <value>삭제</value>
+  </data>
+  <data name="cipw_step3_detail" xml:space="preserve">
+    <value>미량 성분을 부광물에 할당:
+• 지르콘(Z): ZrO₂ + SiO₂
+• 인회석(Ap): P₂O₅ + CaO
+• 크롬철석(Cm): Cr₂O₃ + FeO
+• 티탄철석(Ilm): TiO₂ + FeO
+• 티탄석(Tn): TiO₂ + CaO + SiO₂
+• 금홍석(Ru): 잔여 TiO₂</value>
+  </data>
+  <data name="diagram_template_source_missing" xml:space="preserve">
+    <value>다이어그램 템플릿 소스 파일이 존재하지 않음</value>
+  </data>
+  <data name="diagram_help_path_undefined_save_template" xml:space="preserve">
+    <value>다이어그램 도움말 파일 경로를 확인할 수 없습니다. 먼저 템플릿을 저장해 보십시오.</value>
+  </data>
+  <data name="already_exists_overwrite_confirm" xml:space="preserve">
+    <value>이미 존재합니다. 덮어쓰시겠습니까?</value>
+  </data>
+  <data name="geo_editor_title_edit" xml:space="preserve">
+    <value>온도계 편집</value>
+  </data>
+  <data name="start_and_end_coordinates" xml:space="preserve">
+    <value>시작 좌표</value>
+  </data>
+  <data name="official_templates" xml:space="preserve">
+    <value>공식 다이어그램 템플릿</value>
+  </data>
+  <data name="ScNotFilledIn" xml:space="preserve">
+    <value>플롯 스크립트가 입력되지 않았습니다</value>
+  </data>
+  <data name="LegendPositionLU" xml:space="preserve">
+    <value>좌측 상단</value>
+  </data>
+  <data name="LegendPositionLD" xml:space="preserve">
+    <value>좌측 하단</value>
+  </data>
+  <data name="LegendPositionRD" xml:space="preserve">
+    <value>우측 하단</value>
+  </data>
+  <data name="LegendPositionRU" xml:space="preserve">
+    <value>우측 상단</value>
+  </data>
+  <data name="clear_data" xml:space="preserve">
+    <value>데이터 지우기</value>
+  </data>
+  <data name="geo_validate_reference_required" xml:space="preserve">
+    <value>참고문헌은 비워둘 수 없습니다.</value>
+  </data>
+  <data name="diagram_script_properties" xml:space="preserve">
+    <value>다이어그램 스크립트 속성</value>
+  </data>
+  <data name="PlotMajorGridColor" xml:space="preserve">
+    <value>주 그리드 색상</value>
+  </data>
+  <data name="PlotAxesTitleFont" xml:space="preserve">
+    <value>축 제목 글꼴</value>
+  </data>
+  <data name="zoom_type" xml:space="preserve">
+    <value>줌 유형</value>
+  </data>
+  <data name="pick_coordinate" xml:space="preserve">
+    <value>좌표 선택</value>
+  </data>
+  <data name="cipw_msg_export_failed" xml:space="preserve">
+    <value>내보내기 실패: {0}</value>
+  </data>
+  <data name="trace_function_usage_tip" xml:space="preserve">
+    <value>스크립트에서 trace(...) 함수를 사용하여 계산 과정을 기록할 수 있습니다.</value>
+  </data>
+  <data name="PlotMajorGridWidth" xml:space="preserve">
+    <value>주 그리드 두께</value>
+  </data>
+  <data name="custom_app" xml:space="preserve">
+    <value>사용자 지정 앱</value>
+  </data>
+  <data name="PlotAxesTitleColor" xml:space="preserve">
+    <value>축 제목 색상</value>
+  </data>
+  <data name="JsNull" xml:space="preserve">
+    <value>스크립트가 비어 있음</value>
+  </data>
+  <data name="input_out_of_range" xml:space="preserve">
+    <value>입력 값이 범위를 벗어남</value>
+  </data>
+  <data name="custom_templates" xml:space="preserve">
+    <value>사용자 정의 템플릿</value>
+  </data>
+  <data name="entering_soon_ellipsis" xml:space="preserve">
+    <value>곧 입장합니다...</value>
+  </data>
+  <data name="geo_tooltip_minimize" xml:space="preserve">
+    <value>최소화</value>
+  </data>
+  <data name="template_load_failed" xml:space="preserve">
+    <value>다이어그램 템플릿 로드 실패</value>
+  </data>
+  <data name="template_saved_successfully" xml:space="preserve">
+    <value>템플릿이 성공적으로 저장되었습니다!</value>
+  </data>
+  <data name="geo_test_script_empty" xml:space="preserve">
+    <value>스크립트 내용이 비어 있습니다</value>
+  </data>
+  <data name="favorite_added" xml:space="preserve">
+    <value>즐겨찾기에 추가됨</value>
+  </data>
+  <data name="geo_validation_version_format" xml:space="preserve">
+    <value>버전 형식은 x.x.x 이어야 합니다 (예: 1.0.0)</value>
+  </data>
+  <data name="IsShowAxes" xml:space="preserve">
+    <value>축 표시</value>
+  </data>
+  <data name="geo_msg_delete_confirm" xml:space="preserve">
+    <value>{0} 온도계 「{1}」을(를) 삭제하시겠습니까？</value>
+  </data>
+  <data name="geo_menu_new_custom" xml:space="preserve">
+    <value>새 사용자 정의 지질 온도계</value>
+  </data>
+  <data name="OpenFileLocation" xml:space="preserve">
+    <value>폴더 위치 열기</value>
+  </data>
+  <data name="Quartz" xml:space="preserve">
+    <value>석영</value>
+  </data>
+  <data name="import_custom_diagram_template" xml:space="preserve">
+    <value>사용자 정의 다이어그램 템플릿 가져오기</value>
+  </data>
+  <data name="invalid_formula" xml:space="preserve">
+    <value>유효하지 않은 공식</value>
+  </data>
+  <data name="PlotBoder" xml:space="preserve">
+    <value>경계</value>
+  </data>
+  <data name="subtitle_color" xml:space="preserve">
+    <value>부제목 색상</value>
+  </data>
+  <data name="cipw_diag_total_minerals" xml:space="preserve">
+    <value>광물 총량</value>
+  </data>
+  <data name="PlotAxies" xml:space="preserve">
+    <value>좌표축</value>
+  </data>
+  <data name="DeleteingBasemapConfirm2_Message" xml:space="preserve">
+    <value>삭제하시겠습니까?</value>
+  </data>
+  <data name="geo_validation_year_required" xml:space="preserve">
+    <value>연도는 필수입니다</value>
+  </data>
+  <data name="error_occurred_while_checking_for_updates" xml:space="preserve">
+    <value>업데이트 확인 중 오류 발생：</value>
+  </data>
+  <data name="GeothermometerSetting" xml:space="preserve">
+    <value>지질 온도계 설정</value>
+  </data>
+  <data name="PlotTitle" xml:space="preserve">
+    <value>플롯 제목</value>
+  </data>
+  <data name="MarkerShape_FilledTriangleUp" xml:space="preserve">
+    <value>채워진 위쪽 삼각형</value>
+  </data>
+  <data name="geo_btn_save_export_zip" xml:space="preserve">
+    <value>저장 후 ZIP 내보내기</value>
+  </data>
+  <data name="geo_section_official" xml:space="preserve">
+    <value>공식 온도계</value>
+  </data>
+  <data name="geo_validation_name_required" xml:space="preserve">
+    <value>이름은 필수입니다</value>
+  </data>
+  <data name="geo_help_current_lang" xml:space="preserve">
+    <value>현재 언어:</value>
+  </data>
+  <data name="new_drawing_template_library_version_detected" xml:space="preserve">
+    <value>드로잉 템플릿 라이브러리의 새 버전이 감지되었습니다. 목록을 지금 업데이트하시겠습니까?</value>
+  </data>
+  <data name="inkscape_env_not_found_select_program" xml:space="preserve">
+    <value>Inkscape 환경 변수를 찾을 수 없습니다. 열 프로그램을 선택하십시오.</value>
+  </data>
+  <data name="cipw_select_row_hint" xml:space="preserve">
+    <value>데이터 행을 선택하여 진단 세부 정보를 확인합니다</value>
+  </data>
+  <data name="loading_drawing_module_ellipsis" xml:space="preserve">
+    <value>드로잉 모듈 로드 중...</value>
+  </data>
+  <data name="template_list_update_success_refreshing" xml:space="preserve">
+    <value>템플릿 목록 업데이트 성공! 새로 고치는 중...</value>
+  </data>
+  <data name="IgneousRock" xml:space="preserve">
+    <value>화성암</value>
+  </data>
+  <data name="cipw_tooltip_clear" xml:space="preserve">
+    <value>모든 입력과 계산 결과 지우기</value>
+  </data>
+  <data name="script_return_two_values_requirement" xml:space="preserve">
+    <value>스크립트는 최소 2개의 값 [X, Y]이 포함된 배열을 반환해야 합니다</value>
+  </data>
+  <data name="Language_" xml:space="preserve">
+    <value>언어</value>
+  </data>
+  <data name="MarkerShape_HashTag" xml:space="preserve">
+    <value>우물 정자</value>
+  </data>
+  <data name="cipw_btn_calculate" xml:space="preserve">
+    <value>계산 실행</value>
+  </data>
+  <data name="AxesStyleNormal" xml:space="preserve">
+    <value>일반</value>
+  </data>
+  <data name="MarkerShape_OpenCircleWithDot" xml:space="preserve">
+    <value>가운데 점이 있는 원</value>
+  </data>
+  <data name="MarkerShape_OpenCircleWithEks" xml:space="preserve">
+    <value>X 표시가 있는 원</value>
+  </data>
+  <data name="normalization_factor_is_zero" xml:space="preserve">
+    <value>정규화 인자가 0임</value>
+  </data>
+  <data name="svg_format" xml:space="preserve">
+    <value>SVG 형식</value>
+  </data>
+  <data name="cipw_diag_warnings" xml:space="preserve">
+    <value>── 경고 ──</value>
+  </data>
+  <data name="AxesTickColor" xml:space="preserve">
+    <value>눈금 색상</value>
+  </data>
+  <data name="all_templates" xml:space="preserve">
+    <value>모든 템플릿</value>
+  </data>
+  <data name="personal_templates" xml:space="preserve">
+    <value>개인 다이어그램 템플릿</value>
+  </data>
+  <data name="geo_step_basic" xml:space="preserve">
+    <value>기본 정보</value>
+  </data>
+  <data name="cipw_step6_title" xml:space="preserve">
+    <value>철 산화물 형성</value>
+  </data>
+  <data name="failed_to_parse_category_group" xml:space="preserve">
+    <value>파일에서 유효한 범주 그룹을 구문 분석하지 못했습니다. 범주 열 데이터를 확인하십시오</value>
+  </data>
+  <data name="clear_data_points" xml:space="preserve">
+    <value>데이터 포인트 지우기</value>
+  </data>
+  <data name="geo_help_font_size" xml:space="preserve">
+    <value>글꼴 크기:</value>
+  </data>
+  <data name="geo_msg_test_input_invalid" xml:space="preserve">
+    <value>테스트 입력이 잘못되었습니다. 쉼표로 구분된 숫자를 사용하세요.</value>
+  </data>
+  <data name="MarkerShape_FilledTriangleDown" xml:space="preserve">
+    <value>채워진 아래쪽 삼각형</value>
+  </data>
+  <data name="Parameters" xml:space="preserve">
+    <value>필수 매개변수</value>
+  </data>
+  <data name="missing_translation_warning" xml:space="preserve">
+    <value>• 번역 누락: 일부 텍스트에 다국어 번역이 누락되었습니다.</value>
+  </data>
+  <data name="geo_btn_export" xml:space="preserve">
+    <value>내보내기</value>
+  </data>
+  <data name="developer_maintenance_tool" xml:space="preserve">
+    <value>개발자 유지 관리 도구</value>
+  </data>
+  <data name="geo_help_underline" xml:space="preserve">
+    <value>밑줄 (Ctrl+U)</value>
+  </data>
+  <data name="create_new_diagram_template" xml:space="preserve">
+    <value>새 다이어그램 템플릿 만들기</value>
+  </data>
+  <data name="ExportResult" xml:space="preserve">
+    <value>결과 내보내기</value>
+  </data>
+  <data name="background_fill" xml:space="preserve">
+    <value>배경 채우기</value>
+  </data>
+  <data name="cipw_alumina_peralkaline" xml:space="preserve">
+    <value>과알칼리</value>
+  </data>
+  <data name="geo_tooltip_version_format" xml:space="preserve">
+    <value>시맨틱 버전 (예: 1.0.0, 1.2.3)</value>
+  </data>
+  <data name="DontSave" xml:space="preserve">
+    <value>저장 안 함</value>
+  </data>
+  <data name="geo_field_author" xml:space="preserve">
+    <value>작성자 *</value>
+  </data>
+  <data name="cipw_tooltip_calculate" xml:space="preserve">
+    <value>데이터가 있는 모든 행에 대해 CIPW 표준 광물 계산을 실행합니다</value>
+  </data>
+  <data name="geo_btn_cancel" xml:space="preserve">
+    <value>취소</value>
+  </data>
+  <data name="logarithmic" xml:space="preserve">
+    <value>로그</value>
+  </data>
+  <data name="background_fill_1" xml:space="preserve">
+    <value>배경 채우기</value>
+  </data>
+  <data name="background_fill_2" xml:space="preserve">
+    <value>배경 채우기</value>
+  </data>
+  <data name="AxesTickSpacing" xml:space="preserve">
+    <value>눈금 간격</value>
+  </data>
+  <data name="geo_test_input_invalid" xml:space="preserve">
+    <value>테스트 입력이 잘못되었습니다. 쉼표로 구분된 숫자를 사용하세요.</value>
+  </data>
+  <data name="arrowhead_width" xml:space="preserve">
+    <value>화살표 머리 너비</value>
+  </data>
+  <data name="geo_btn_prev" xml:space="preserve">
+    <value>이전</value>
+  </data>
+  <data name="geo_btn_save" xml:space="preserve">
+    <value>저장</value>
+  </data>
+  <data name="geo_btn_help" xml:space="preserve">
+    <value>도움말</value>
+  </data>
+  <data name="geo_btn_next" xml:space="preserve">
+    <value>다음</value>
+  </data>
+  <data name="geo_field_description" xml:space="preserve">
+    <value>간단한 설명</value>
+  </data>
+  <data name="invalid_script_variable_name" xml:space="preserve">
+    <value>• 스크립트 변수 이름 형식 오류: '</value>
+  </data>
+  <data name="ExportImageWebp" xml:space="preserve">
+    <value>Webp 형식으로 내보내기</value>
+  </data>
+  <data name="geological_thermometer" xml:space="preserve">
+    <value>지질 온도계</value>
+  </data>
+  <data name="browse_ellipsis" xml:space="preserve">
+    <value>찾아보기...</value>
+  </data>
+  <data name="open_with_third_party_software" xml:space="preserve">
+    <value>타사 소프트웨어로 열기</value>
+  </data>
+  <data name="bmp_format" xml:space="preserve">
+    <value>BMP 형식</value>
+  </data>
+  <data name="return_to_template_library" xml:space="preserve">
+    <value>돌아가기</value>
+  </data>
+  <data name="fill_color" xml:space="preserve">
+    <value>채우기 색상</value>
+  </data>
+  <data name="enter_supported_languages" xml:space="preserve">
+    <value>지원되는 언어 입력</value>
+  </data>
+  <data name="cipw_iron_inconsistent" xml:space="preserve">
+    <value>입력 불일치</value>
+  </data>
+  <data name="export_image" xml:space="preserve">
+    <value>이미지 내보내기</value>
+  </data>
+  <data name="MarkerShape_FilledSquare" xml:space="preserve">
+    <value>채워진 사각형</value>
+  </data>
+  <data name="cipw_tooltip_example" xml:space="preserve">
+    <value>예제 데이터 입력 (화강암, 현무암, 안산암)</value>
+  </data>
+  <data name="diagram_title_properties" xml:space="preserve">
+    <value>다이어그램 제목 속성</value>
+  </data>
+  <data name="add_column_left" xml:space="preserve">
+    <value>열 추가(왼쪽)</value>
+  </data>
+  <data name="update_available_click_to_download" xml:space="preserve">
+    <value>새 버전을 사용할 수 있습니다. 클릭하여 업데이트하세요</value>
+  </data>
+  <data name="developer_maintenance_tools" xml:space="preserve">
+    <value>개발자 유지 관리 도구</value>
+  </data>
+  <data name="template_upgrade_warning" xml:space="preserve">
+    <value>현재 템플릿 버전이 낮습니다. 저장하면 템플릿 버전이 업그레이드되어 하위 버전의 소프트웨어에서 이 템플릿을 사용하지 못할 수 있습니다. 계속하시겠습니까?</value>
+  </data>
+  <data name="data_plotting_successful" xml:space="preserve">
+    <value>데이터 포인트 플롯 성공</value>
+  </data>
+  <data name="PlotAxesTitle1" xml:space="preserve">
+    <value>좌표축 제목 1</value>
+  </data>
+  <data name="PlotAxesTitle2" xml:space="preserve">
+    <value>좌표축 제목 2</value>
+  </data>
+  <data name="geo_section_calc_details" xml:space="preserve">
+    <value>계산 세부 정보</value>
+  </data>
+  <data name="geo_validate_formula_name_invalid" xml:space="preserve">
+    <value>수식 이름에는 영문, 숫자, 밑줄만 사용할 수 있습니다.</value>
+  </data>
+  <data name="border_width" xml:space="preserve">
+    <value>테두리 두께</value>
+  </data>
+  <data name="geo_help_add_lang" xml:space="preserve">
+    <value>언어 추가:</value>
+  </data>
+  <data name="copy_content" xml:space="preserve">
+    <value>내용 복사</value>
+  </data>
+  <data name="ignore_issues_and_continue_export" xml:space="preserve">
+    <value>이러한 문제를 무시하고 내보내기를 계속하시겠습니까?</value>
+  </data>
+  <data name="file_does_not_exist" xml:space="preserve">
+    <value>파일이 존재하지 않음:</value>
+  </data>
+  <data name="cipw_msg_calc_partial_success" xml:space="preserve">
+    <value>계산 완료: {0}/{1}개 샘플 성공</value>
+  </data>
+  <data name="border_color" xml:space="preserve">
+    <value>테두리 색상</value>
+  </data>
+  <data name="language_switch_success" xml:space="preserve">
+    <value>언어 전환 성공</value>
+  </data>
+  <data name="ExportImage" xml:space="preserve">
+    <value>이미지 내보내기</value>
+  </data>
+  <data name="Zircon" xml:space="preserve">
+    <value>지르콘</value>
+  </data>
+  <data name="left_y_axis" xml:space="preserve">
+    <value>왼쪽 Y축</value>
+  </data>
+  <data name="cipw_confirm_clear_msg" xml:space="preserve">
+    <value>모든 입력과 계산 결과를 지우시겠습니까?</value>
+  </data>
+  <data name="cipw_btn_help" xml:space="preserve">
+    <value>설명</value>
+  </data>
+  <data name="script_return_value_length_error" xml:space="preserve">
+    <value>• 스크립트 반환 값 길이 오류: 현재</value>
+  </data>
+  <data name="AboutInfo2" xml:space="preserve">
+    <value>이 프로젝트에 관심이 있으시다면 Star를 눌러 응원해 주세요! 도움이 되셨다면 커피 한 잔 사주셔도 좋습니다 ☕</value>
+  </data>
+  <data name="AboutInfo3" xml:space="preserve">
+    <value>더 많은 연구자분들의 참여를 환영합니다! 
+	함께 지구화학 계산 방법과 더 많은 플롯 베이스맵 템플릿을 유지 관리하고 업데이트합시다! 
+	소프트웨어를 더 강력하고 사용하기 쉽게 만들어 봅시다!</value>
+  </data>
+  <data name="AboutInfo1" xml:space="preserve">
+    <value>이 프로젝트는 지구화학 데이터를 활용하여 관련 차트 작성, 계산 및 분석을 수행하고 지질학 데이터를 효율적으로 처리함으로써 지구과학 연구자들이 데이터 분석 프로세스를 가속화하고 연구 효율성을 높이는 것을 목표로 합니다.</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>확인</value>
+  </data>
+  <data name="batch_download_failed" xml:space="preserve">
+    <value>일괄 다운로드 실패</value>
+  </data>
+  <data name="data_plotting" xml:space="preserve">
+    <value>데이터 플롯</value>
+  </data>
+  <data name="loading_font_resources_ellipsis" xml:space="preserve">
+    <value>글꼴 리소스 로드 중...</value>
+  </data>
+  <data name="geo_msg_test_error" xml:space="preserve">
+    <value>오류: {0}</value>
+  </data>
+  <data name="auto_check_diagram_template_updates" xml:space="preserve">
+    <value>다이어그램 템플릿 업데이트 자동 확인</value>
+  </data>
+  <data name="Sphalerite" xml:space="preserve">
+    <value>섬아연석</value>
+  </data>
+  <data name="content" xml:space="preserve">
+    <value>내용</value>
+  </data>
+  <data name="completeness_check" xml:space="preserve">
+    <value>완성도 검사</value>
+  </data>
+  <data name="LineDashDot" xml:space="preserve">
+    <value>쇄선</value>
+  </data>
+  <data name="TextContent" xml:space="preserve">
+    <value>내용</value>
+  </data>
+  <data name="MarkerShape_Eks" xml:space="preserve">
+    <value>X 모양</value>
+  </data>
+  <data name="geo_script_sample_row" xml:space="preserve">
+    <value>예시 행（쉼표 구분）</value>
+  </data>
+  <data name="line_width" xml:space="preserve">
+    <value>선 두께</value>
+  </data>
+  <data name="ModifedCanceled" xml:space="preserve">
+    <value>수정 취소됨</value>
+  </data>
+  <data name="geo_help_add_doc" xml:space="preserve">
+    <value>이 언어의 도움말 문서 추가</value>
+  </data>
+  <data name="community" xml:space="preserve">
+    <value>커뮤니티</value>
+  </data>
+  <data name="geo_help_no_lang_hint" xml:space="preserve">
+    <value>위의 + 버튼을 클릭하여 언어를 추가한 후 도움말 문서를 편집하세요.</value>
+  </data>
+  <data name="error_loading_rtf_file" xml:space="preserve">
+    <value>RTF 파일 로드 중 오류 발생:</value>
+  </data>
+  <data name="cipw_btn_close" xml:space="preserve">
+    <value>닫기</value>
+  </data>
+  <data name="cipw_btn_clear" xml:space="preserve">
+    <value>지우기</value>
+  </data>
+  <data name="error_creating_table" xml:space="preserve">
+    <value>테이블 생성 중 오류 발생:</value>
+  </data>
+  <data name="script_return_type_error" xml:space="preserve">
+    <value>스크립트 반환 유형 오류</value>
+  </data>
+  <data name="geo_msg_select_thermometer_first" xml:space="preserve">
+    <value>먼저 온도계를 선택하세요.</value>
+  </data>
+  <data name="enter_language_add" xml:space="preserve">
+    <value>언어를 입력하고 Enter 키를 눌러 추가하십시오.</value>
+  </data>
+  <data name="Alignment_LowerLeft" xml:space="preserve">
+    <value>좌측 하단</value>
+  </data>
+  <data name="Alignment_UpperLeft" xml:space="preserve">
+    <value>좌측 상단</value>
+  </data>
+  <data name="geo_msg_import_failed_detail" xml:space="preserve">
+    <value>가져오기 실패: {0}</value>
+  </data>
+  <data name="MarkerShape_OpenCircleWithCross" xml:space="preserve">
+    <value>십자가가 있는 원</value>
+  </data>
+  <data name="geo_validate_formula_name_required" xml:space="preserve">
+    <value>수식 이름은 비워둘 수 없습니다.</value>
+  </data>
+  <data name="subtitle_italic" xml:space="preserve">
+    <value>부제목 기울임꼴</value>
+  </data>
+  <data name="select_data_file" xml:space="preserve">
+    <value>데이터 파일을 선택하십시오</value>
+  </data>
+  <data name="AxesStyle" xml:space="preserve">
+    <value>눈금 축 스타일</value>
+  </data>
+  <data name="current_template_list_latest_version" xml:space="preserve">
+    <value>현재 템플릿 목록은 최신 버전입니다.</value>
+  </data>
+  <data name="alignment" xml:space="preserve">
+    <value>앵커 위치</value>
+  </data>
+  <data name="ChloriteGTM" xml:space="preserve">
+    <value>Al4 온도계 (Jowett, 1991)</value>
+  </data>
+  <data name="two_dimensional_coordinate_plot" xml:space="preserve">
+    <value>2차원 좌표 플롯</value>
+  </data>
+  <data name="dev_mode_warning_non_developers" xml:space="preserve">
+    <value>개발자가 아닌 경우 권장하지 않으며, 불필요한 문제가 발생할 수 있습니다.</value>
+  </data>
+  <data name="NormalSetting" xml:space="preserve">
+    <value>일반 설정</value>
+  </data>
+  <data name="cipw_step8_detail" xml:space="preserve">
+    <value>SiO₂ 잔여 상황에 따라 판정 및 조정:
+
+▶ 과포화(SiO₂ 잔여): 석영(Q) 형성
+▶ 포화(SiO₂ 정확히 소진): 석영 없음, 준장석 없음
+▶ 불포화(SiO₂ 부족): 우선순위에 따라 광물을 역방향으로 조정 ——
+    • 자소휘석(En+Fs) → 감람석(Fo+Fa)
+    • 정장석(Or) → 백류석(Le)
+    • 백류석(Le) → 가백류석(Kp)
+    • 조장석(Ab) → 하석(Ne)</value>
+  </data>
+  <data name="no_data_columns_defined" xml:space="preserve">
+    <value>데이터 열이 정의되지 않음</value>
+  </data>
+  <data name="cipw_step2_title" xml:space="preserve">
+    <value>휘발성 광물 형성</value>
+  </data>
+  <data name="geo_msg_csv_save_title" xml:space="preserve">
+    <value>CSV 파일로 저장</value>
+  </data>
+  <data name="geo_validation_formula_name_required" xml:space="preserve">
+    <value>수식 이름은 필수입니다</value>
+  </data>
+  <data name="language_switch_error" xml:space="preserve">
+    <value>언어 전환 중 오류 발생:</value>
+  </data>
+  <data name="unable_to_open_link" xml:space="preserve">
+    <value>링크를 열 수 없음:</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>배경</value>
+  </data>
+  <data name="Alignment_UpperCenter" xml:space="preserve">
+    <value>상단 중앙</value>
+  </data>
+  <data name="Undelete_Message" xml:space="preserve">
+    <value>삭제 취소됨</value>
   </data>
   <data name="DefaultRandom" xml:space="preserve">
     <value>기본 무작위</value>
   </data>
-  <data name="MessageNotification" xml:space="preserve">
-    <value>메시지 알림</value>
+  <data name="geo_tooltip_headers" xml:space="preserve">
+    <value>예: SiO2, TiO2, Al2O3, T(K)</value>
   </data>
-  <data name="MessageAutoClose" xml:space="preserve">
-    <value>자동 닫기 시간</value>
+  <data name="geo_validate_author_required" xml:space="preserve">
+    <value>작성자는 비워둘 수 없습니다.</value>
+  </data>
+  <data name="picking_operation_cancelled" xml:space="preserve">
+    <value>선택 작업 취소됨</value>
+  </data>
+  <data name="minimize" xml:space="preserve">
+    <value>최소화</value>
+  </data>
+  <data name="cipw_step5_title" xml:space="preserve">
+    <value>장석과 알칼리 규산염 형성</value>
+  </data>
+  <data name="failed_to_open_file" xml:space="preserve">
+    <value>파일 열기 실패:</value>
+  </data>
+  <data name="cipw_col_mass_balance_error" xml:space="preserve">
+    <value>질량 균형 오차(%)</value>
+  </data>
+  <data name="template_no_multilingual_info" xml:space="preserve">
+    <value>현재 템플릿에 다국어 정보가 없습니다</value>
+  </data>
+  <data name="cipw_msg_no_data" xml:space="preserve">
+    <value>유효한 데이터 행이 감지되지 않았습니다. 먼저 산화물 함량을 입력하세요</value>
+  </data>
+  <data name="PointEks" xml:space="preserve">
+    <value>X표</value>
+  </data>
+  <data name="current_diagram_version" xml:space="preserve">
+    <value>현재 도해 버전</value>
+  </data>
+  <data name="PointDiamond" xml:space="preserve">
+    <value>마름모</value>
+  </data>
+  <data name="SphaleriteGGIMFisGTM" xml:space="preserve">
+    <value>GGIMFis 온도계 (Frenzel et al., 2016)</value>
+  </data>
+  <data name="independent_diagram_window" xml:space="preserve">
+    <value>독립 다이어그램 창</value>
+  </data>
+  <data name="QuartzGTM" xml:space="preserve">
+    <value>TitaniQ 온도계 (Wark and Watson, 2006)</value>
+  </data>
+  <data name="cipw_diag_alumina_saturation" xml:space="preserve">
+    <value>알루미나 포화도</value>
+  </data>
+  <data name="RockClassification" xml:space="preserve">
+    <value>암석 분류</value>
+  </data>
+  <data name="view_help_docs" xml:space="preserve">
+    <value>도움말 문서 보기</value>
+  </data>
+  <data name="MinimizeTray" xml:space="preserve">
+    <value>트레이로 최소화</value>
+  </data>
+  <data name="geo_validate_name_required" xml:space="preserve">
+    <value>이름은 비워둘 수 없습니다.</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>기본</value>
+  </data>
+  <data name="custom_path_not_set_configure_in_settings" xml:space="preserve">
+    <value>사용자 지정 프로그램 경로가 설정되지 않았습니다. 설정에서 구성하십시오.</value>
+  </data>
+  <data name="add_line_operation_canceled" xml:space="preserve">
+    <value>선 추가 작업이 취소되었습니다.</value>
+  </data>
+  <data name="directory_not_exist" xml:space="preserve">
+    <value>디렉터리가 존재하지 않음</value>
+  </data>
+  <data name="show_major_ticks" xml:space="preserve">
+    <value>주 눈금 표시</value>
+  </data>
+  <data name="add_row_down" xml:space="preserve">
+    <value>아래에 행 삽입</value>
+  </data>
+  <data name="cipw_alumina_metaluminous" xml:space="preserve">
+    <value>메타알루미나</value>
+  </data>
+  <data name="geo_field_required_hint" xml:space="preserve">
+    <value>필수 항목은 * 로 표시됩니다. 버전 형식: x.x.x (예: 1.0.0).</value>
+  </data>
+  <data name="invalid_data_parameter_format" xml:space="preserve">
+    <value>데이터 매개변수 형식이 올바르지 않음</value>
+  </data>
+  <data name="coreldraw_env_not_found_select_program" xml:space="preserve">
+    <value>CorelDRAW 환경 변수를 찾을 수 없습니다. 열 프로그램을 선택하십시오.</value>
+  </data>
+  <data name="bottom_x_axis" xml:space="preserve">
+    <value>하단 X축</value>
+  </data>
+  <data name="AxesTickFontSize" xml:space="preserve">
+    <value>눈금 글꼴 크기</value>
+  </data>
+  <data name="parameter_format_correct" xml:space="preserve">
+    <value>매개변수 형식이 올바름</value>
+  </data>
+  <data name="error_loading_template" xml:space="preserve">
+    <value>템플릿 로드 중 오류 발생</value>
+  </data>
+  <data name="MajorAxes" xml:space="preserve">
+    <value>주 눈금 축</value>
+  </data>
+  <data name="error_calculating_data_point_coordinates" xml:space="preserve">
+    <value>데이터 포인트 좌표 계산 중 오류 발생:</value>
+  </data>
+  <data name="Placeholder_Text" xml:space="preserve">
+    <value>텍스트를 입력하십시오</value>
+  </data>
+  <data name="line_type_dash" xml:space="preserve">
+    <value>파선</value>
+  </data>
+  <data name="import_failed" xml:space="preserve">
+    <value>가져오기 실패:</value>
+  </data>
+  <data name="geo_msg_downloading_update" xml:space="preserve">
+    <value>다운로드 중...</value>
+  </data>
+  <data name="geo_test_input_required" xml:space="preserve">
+    <value>테스트 값을 입력하세요.</value>
+  </data>
+  <data name="CheckJs" xml:space="preserve">
+    <value>스크립트 확인</value>
+  </data>
+  <data name="LocationAxis" xml:space="preserve">
+    <value>위치 축</value>
+  </data>
+  <data name="cipw_btn_cancel" xml:space="preserve">
+    <value>취소</value>
+  </data>
+  <data name="Alignment_MiddleRight" xml:space="preserve">
+    <value>우측 중앙</value>
+  </data>
+  <data name="vertex_add_new" xml:space="preserve">
+    <value>새 정점 추가</value>
+  </data>
+  <data name="Placeholder_Ternary_Title" xml:space="preserve">
+    <value>새 삼원상 다이어그램</value>
+  </data>
+  <data name="MarkerShape_FilledCircle" xml:space="preserve">
+    <value>채워진 원</value>
+  </data>
+  <data name="IsShowAxesTick" xml:space="preserve">
+    <value>주 눈금 숨기기</value>
+  </data>
+  <data name="position" xml:space="preserve">
+    <value>속성</value>
+  </data>
+  <data name="enable_alternating_fill" xml:space="preserve">
+    <value>교차 채우기 사용</value>
+  </data>
+  <data name="delete_language_column" xml:space="preserve">
+    <value>언어 열 삭제</value>
+  </data>
+  <data name="coordinates" xml:space="preserve">
+    <value>좌표</value>
+  </data>
+  <data name="geo_msg_export_dialog_title" xml:space="preserve">
+    <value>지질 온도계 내보내기</value>
+  </data>
+  <data name="edit_link" xml:space="preserve">
+    <value>링크 편집</value>
+  </data>
+  <data name="background_color" xml:space="preserve">
+    <value>배경 색상</value>
+  </data>
+  <data name="cipw_step4_detail" xml:space="preserve">
+    <value>잔여 Al₂O₃와 알칼리 + CaO의 몰비로 알루미나 포화 유형 판정:
+• 과알칼리(Peralkaline): Na₂O + K₂O &gt; Al₂O₃
+• 메타알루미나(Metaluminous): Al₂O₃ ≤ CaO + Na₂O + K₂O
+• 과알루미나(Peraluminous): Al₂O₃ &gt; CaO + Na₂O + K₂O</value>
+  </data>
+  <data name="cipw_msg_calc_all_success" xml:space="preserve">
+    <value>계산 완료: {0}개 샘플 모두 성공</value>
+  </data>
+  <data name="select_software" xml:space="preserve">
+    <value>소프트웨어 선택</value>
+  </data>
+  <data name="modified_successfully" xml:space="preserve">
+    <value>수정됨</value>
+  </data>
+  <data name="geo_validation_formula_name_format" xml:space="preserve">
+    <value>수식 이름은 영문, 숫자, 밑줄만 가능합니다</value>
+  </data>
+  <data name="is_not_one" xml:space="preserve">
+    <value>행 데이터의 합이 1이 아님</value>
+  </data>
+  <data name="network_request_error" xml:space="preserve">
+    <value>네트워크 요청 오류</value>
+  </data>
+  <data name="script_no_detailed_calculation_description" xml:space="preserve">
+    <value>이 스크립트는 상세 계산 과정 설명을 제공하지 않습니다.</value>
+  </data>
+  <data name="insufficient_script_return_values" xml:space="preserve">
+    <value>스크립트 반환 값이 부족합니다</value>
+  </data>
+  <data name="SphaleriteGTM" xml:space="preserve">
+    <value>FeS 온도계 (Scott and Barnes, 1971)</value>
+  </data>
+  <data name="ThankSupport" xml:space="preserve">
+    <value>지원에 감사드립니다</value>
+  </data>
+  <data name="BasemapLanguage" xml:space="preserve">
+    <value>베이스맵 언어</value>
+  </data>
+  <data name="completed" xml:space="preserve">
+    <value>완료</value>
+  </data>
+  <data name="webp_format" xml:space="preserve">
+    <value>WebP 형식</value>
+  </data>
+  <data name="geo_validation_inputs_required" xml:space="preserve">
+    <value>입력 열은 필수입니다</value>
+  </data>
+  <data name="geo_validate_script_required" xml:space="preserve">
+    <value>JavaScript 스크립트는 비워둘 수 없습니다.</value>
+  </data>
+  <data name="excel_missing_required_columns" xml:space="preserve">
+    <value>Excel 파일에 다음 필수 열이 누락되었습니다</value>
+  </data>
+  <data name="automatic_updates" xml:space="preserve">
+    <value>자동 업데이트</value>
+  </data>
+  <data name="failed_to_open_widget" xml:space="preserve">
+    <value>위젯 열기 실패:</value>
+  </data>
+  <data name="MarkerShape_Cross" xml:space="preserve">
+    <value>십자형</value>
+  </data>
+  <data name="failed_to_load_help_document" xml:space="preserve">
+    <value>도움말 문서를 로드하지 못했습니다:</value>
+  </data>
+  <data name="template_type_not_supported_please_update" xml:space="preserve">
+    <value>현재 다이어그램 템플릿 유형이 지원되지 않습니다. 소프트웨어를 업데이트하십시오.</value>
+  </data>
+  <data name="geo_msg_delete_success" xml:space="preserve">
+    <value>삭제되었습니다</value>
+  </data>
+  <data name="research_life_smooth_sailing" xml:space="preserve">
+    <value>년간 연구와 생활이 순조롭기를 바랍니다!</value>
+  </data>
+  <data name="geo_script_run_test" xml:space="preserve">
+    <value>테스트 실행</value>
+  </data>
+  <data name="script_settings" xml:space="preserve">
+    <value>스크립트 설정</value>
+  </data>
+  <data name="to" xml:space="preserve">
+    <value>끝</value>
+  </data>
+  <data name="Js" xml:space="preserve">
+    <value>Js 스크립트</value>
+  </data>
+  <data name="cipw_btn_export" xml:space="preserve">
+    <value>내보내기</value>
+  </data>
+  <data name="check_for_template_updates" xml:space="preserve">
+    <value>템플릿 업데이트 확인</value>
+  </data>
+  <data name="geo_tooltip_new" xml:space="preserve">
+    <value>새로 만들기</value>
+  </data>
+  <data name="German_Germany" xml:space="preserve">
+    <value>Deutsch (Deutschland)</value>
+  </data>
+  <data name="Orientation_Horizontal" xml:space="preserve">
+    <value>가로</value>
+  </data>
+  <data name="initializing_language_service_ellipsis" xml:space="preserve">
+    <value>언어 서비스 초기화 중...</value>
+  </data>
+  <data name="enter_category_structure" xml:space="preserve">
+    <value>분류 구조 입력</value>
+  </data>
+  <data name="reading_user_configuration_ellipsis" xml:space="preserve">
+    <value>사용자 구성 읽는 중...</value>
+  </data>
+  <data name="geo_section_custom" xml:space="preserve">
+    <value>사용자 정의 온도계</value>
+  </data>
+  <data name="Placeholder_Axis_Y" xml:space="preserve">
+    <value>Y축</value>
+  </data>
+  <data name="Placeholder_Axis_X" xml:space="preserve">
+    <value>X축</value>
+  </data>
+  <data name="network_connection_failed_cannot_check_for_updates" xml:space="preserve">
+    <value>네트워크 연결 실패, 업데이트를 확인할 수 없음:</value>
+  </data>
+  <data name="help_document_not_found" xml:space="preserve">
+    <value>도움말 문서를 찾을 수 없습니다:</value>
+  </data>
+  <data name="geo_field_version" xml:space="preserve">
+    <value>버전 *</value>
+  </data>
+  <data name="FontSize" xml:space="preserve">
+    <value>글꼴 크기</value>
+  </data>
+  <data name="FontBold" xml:space="preserve">
+    <value>굵게</value>
+  </data>
+  <data name="template_delete_success" xml:space="preserve">
+    <value>템플릿 삭제 성공</value>
+  </data>
+  <data name="confirm_delete_custom_diagram_template" xml:space="preserve">
+    <value>이 사용자 정의 다이어그램 템플릿을 삭제하시겠습니까?</value>
+  </data>
+  <data name="Geothermometer" xml:space="preserve">
+    <value>지질 온도계</value>
+  </data>
+  <data name="error_loading_template_list" xml:space="preserve">
+    <value>템플릿 목록 로드 오류:</value>
+  </data>
+  <data name="confirm_clear_data_points" xml:space="preserve">
+    <value>데이터 포인트를 지우시겠습니까?</value>
+  </data>
+  <data name="PlotTitleColor" xml:space="preserve">
+    <value>제목 색상</value>
+  </data>
+  <data name="y_coordinate" xml:space="preserve">
+    <value>Y 좌표</value>
+  </data>
+  <data name="end_coordinates" xml:space="preserve">
+    <value>끝 좌표</value>
+  </data>
+  <data name="script_content_is_empty" xml:space="preserve">
+    <value>스크립트 내용이 비어 있음</value>
+  </data>
+  <data name="PlotSwitchFilledColor" xml:space="preserve">
+    <value>채우기 색상 반전</value>
+  </data>
+  <data name="export_failed" xml:space="preserve">
+    <value>내보내기 실패:</value>
+  </data>
+  <data name="TectonicSetting" xml:space="preserve">
+    <value>구조적 환경</value>
+  </data>
+  <data name="must_be_positive_number" xml:space="preserve">
+    <value>양수여야 함</value>
+  </data>
+  <data name="cipw_step4_title" xml:space="preserve">
+    <value>알루미나 포화 상태 판정</value>
+  </data>
+  <data name="font_color" xml:space="preserve">
+    <value>글꼴 색상</value>
+  </data>
+  <data name="default_third_party_editor" xml:space="preserve">
+    <value>기본 타사 편집기</value>
+  </data>
+  <data name="failed_to_load_diagram_template" xml:space="preserve">
+    <value>다이어그램 템플릿을 로드할 수 없음:</value>
+  </data>
+  <data name="font_style" xml:space="preserve">
+    <value>글꼴 스타일</value>
+  </data>
+  <data name="error" xml:space="preserve">
+    <value>오류:</value>
+  </data>
+  <data name="some_data_failed_validation" xml:space="preserve">
+    <value>일부 데이터가 유효성 검사를 통과하지 못해 건너뛰었습니다</value>
+  </data>
+  <data name="arrow" xml:space="preserve">
+    <value>화살표</value>
+  </data>
+  <data name="file_" xml:space="preserve">
+    <value>파일</value>
+  </data>
+  <data name="please_select_a_widget" xml:space="preserve">
+    <value>위젯을 선택하십시오</value>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>닫기</value>
+  </data>
+  <data name="color" xml:space="preserve">
+    <value>색상</value>
+  </data>
+  <data name="count" xml:space="preserve">
+    <value>보조 눈금 수</value>
+  </data>
+  <data name="point" xml:space="preserve">
+    <value>점</value>
+  </data>
+  <data name="width" xml:space="preserve">
+    <value>너비</value>
+  </data>
+  <data name="add" xml:space="preserve">
+    <value>추가</value>
+  </data>
+  <data name="new" xml:space="preserve">
+    <value>새로 만들기(_N)</value>
+  </data>
+  <data name="row" xml:space="preserve">
+    <value>행:</value>
+  </data>
+  <data name="ready" xml:space="preserve">
+    <value>준비됨</value>
+  </data>
+  <data name="PointCircle" xml:space="preserve">
+    <value>원형</value>
+  </data>
+  <data name="range" xml:space="preserve">
+    <value>범위</value>
+  </data>
+  <data name="style" xml:space="preserve">
+    <value>스타일</value>
+  </data>
+  <data name="ternary_diagram_crosshair_not_supported" xml:space="preserve">
+    <value>삼원상 다이어그램은 현재 십자선 위치 지정 기능을 지원하지 않습니다.</value>
+  </data>
+  <data name="cipw_references_title" xml:space="preserve">
+    <value>참고문헌</value>
+  </data>
+  <data name="About" xml:space="preserve">
+    <value>정보</value>
+  </data>
+  <data name="Guide" xml:space="preserve">
+    <value>가이드</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>기타</value>
+  </data>
+  <data name="cipw_step1_title" xml:space="preserve">
+    <value>데이터 전처리 및 정규화</value>
+  </data>
+  <data name="downloading_status" xml:space="preserve">
+    <value>다운로드 중...</value>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>테마</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>초기화</value>
+  </data>
+  <data name="Step3" xml:space="preserve">
+    <value>결과 계산</value>
+  </data>
+  <data name="Step2" xml:space="preserve">
+    <value>매개변수 확인</value>
+  </data>
+  <data name="Step1" xml:space="preserve">
+    <value>데이터 가져오기 / 입력</value>
+  </data>
+  <data name="please_select_an_object_to_delete_first" xml:space="preserve">
+    <value>먼저 삭제할 개체를 선택하십시오.</value>
+  </data>
+  <data name="FileSavePath" xml:space="preserve">
+    <value>파일 저장 위치</value>
+  </data>
+  <data name="geo_placeholder_search" xml:space="preserve">
+    <value>검색...</value>
+  </data>
+  <data name="recently_used" xml:space="preserve">
+    <value>최근 사용</value>
+  </data>
+  <data name="JsSetting" xml:space="preserve">
+    <value>스크립트 설정</value>
+  </data>
+  <data name="geo_help_bold" xml:space="preserve">
+    <value>굵게 (Ctrl+B)</value>
+  </data>
+  <data name="ternary_phase_diagram" xml:space="preserve">
+    <value>삼원상 다이어그램</value>
+  </data>
+  <data name="all_data_cleared" xml:space="preserve">
+    <value>모든 데이터가 지워짐</value>
+  </data>
+  <data name="Calculate" xml:space="preserve">
+    <value>계산</value>
+  </data>
+  <data name="failed_to_get_announcements" xml:space="preserve">
+    <value>공지 가져오기 실패:</value>
+  </data>
+  <data name="repair_missing_or_damaged_templates_and_lists" xml:space="preserve">
+    <value>누락되거나 손상된 드로잉 템플릿 및 목록 복구</value>
+  </data>
+  <data name="MarkerShape_FilledDiamond" xml:space="preserve">
+    <value>채워진 마름모</value>
+  </data>
+  <data name="export_and_tools" xml:space="preserve">
+    <value>내보내기/도구</value>
+  </data>
+  <data name="select_drawing_template_file" xml:space="preserve">
+    <value>드로잉 템플릿 파일 선택</value>
+  </data>
+  <data name="update_data" xml:space="preserve">
+    <value>데이터 업데이트</value>
+  </data>
+  <data name="geo_tooltip_test_input_eg" xml:space="preserve">
+    <value>예: 45.2, 0.8, 12.3</value>
+  </data>
+  <data name="swap_language_columns" xml:space="preserve">
+    <value>언어 열 교환</value>
+  </data>
+  <data name="unknown_error_occurred" xml:space="preserve">
+    <value>알 수 없는 오류 발생</value>
+  </data>
+  <data name="AddLine" xml:space="preserve">
+    <value>선 추가</value>
+  </data>
+  <data name="AddText" xml:space="preserve">
+    <value>주석 추가</value>
+  </data>
+  <data name="PlotBottomAxies" xml:space="preserve">
+    <value>하단 좌표축</value>
+  </data>
+  <data name="cipw_silica_oversaturated" xml:space="preserve">
+    <value>과포화</value>
+  </data>
+  <data name="auto_datapoint_projection_failed" xml:space="preserve">
+    <value>자동 데이터 포인트 투영 실패:</value>
+  </data>
+  <data name="geo_label_custom_chip" xml:space="preserve">
+    <value>사용자 정의</value>
+  </data>
+  <data name="AxesStyleLog10" xml:space="preserve">
+    <value>Log(10)</value>
+  </data>
+  <data name="copy_failed" xml:space="preserve">
+    <value>복사 실패:</value>
+  </data>
+  <data name="failed_to_open" xml:space="preserve">
+    <value>열기 실패:</value>
+  </data>
+  <data name="SaveBasemap" xml:space="preserve">
+    <value>베이스맵 저장</value>
+  </data>
+  <data name="geo_msg_import_failed" xml:space="preserve">
+    <value>가져오기 실패</value>
+  </data>
+  <data name="CancelImport" xml:space="preserve">
+    <value>가져오기 취소됨</value>
+  </data>
+  <data name="template_version_too_high" xml:space="preserve">
+    <value>템플릿 버전이 현재 소프트웨어 버전보다 높습니다. 소프트웨어를 업그레이드한 후 여십시오.</value>
+  </data>
+  <data name="cipw_silica_saturated" xml:space="preserve">
+    <value>포화</value>
+  </data>
+  <data name="custom_diagram_template" xml:space="preserve">
+    <value>사용자 정의 다이어그램 템플릿</value>
+  </data>
+  <data name="font_name" xml:space="preserve">
+    <value>글꼴 이름</value>
+  </data>
+  <data name="font_size" xml:space="preserve">
+    <value>글꼴 크기</value>
+  </data>
+  <data name="PointCross" xml:space="preserve">
+    <value>십자형</value>
+  </data>
+  <data name="close_file" xml:space="preserve">
+    <value>파일 닫기</value>
+  </data>
+  <data name="temperature_calculation_denominator_zero" xml:space="preserve">
+    <value>온도 계산 분모가 0임</value>
+  </data>
+  <data name="ExportBasemap" xml:space="preserve">
+    <value>베이스맵 내보내기</value>
+  </data>
+  <data name="open_diagram_template" xml:space="preserve">
+    <value>다이어그램 템플릿 열기</value>
+  </data>
+  <data name="PointStyle" xml:space="preserve">
+    <value>점 스타일</value>
+  </data>
+  <data name="cipw_msg_data_cleared" xml:space="preserve">
+    <value>데이터가 지워졌습니다</value>
+  </data>
+  <data name="loading_announcements" xml:space="preserve">
+    <value>공지 로드 중...</value>
+  </data>
+  <data name="format_failed" xml:space="preserve">
+    <value>서식 지정 실패:</value>
+  </data>
+  <data name="no_announcements" xml:space="preserve">
+    <value>공지 없음.</value>
   </data>
   <data name="MessageAutoClose5" xml:space="preserve">
     <value>5초</value>
@@ -684,1819 +1873,1143 @@
   <data name="MessageAutoClose2" xml:space="preserve">
     <value>2초</value>
   </data>
-  <data name="Other" xml:space="preserve">
-    <value>기타</value>
-  </data>
-  <data name="Boot" xml:space="preserve">
-    <value>시작 시 자동 실행</value>
-  </data>
-  <data name="AutoCheckUpdate" xml:space="preserve">
-    <value>자동 업데이트 확인</value>
-  </data>
-  <data name="CheckUpdate" xml:space="preserve">
-    <value>업데이트 확인</value>
-  </data>
-  <data name="QuitAppMode" xml:space="preserve">
-    <value>프로그램 종료 방법</value>
-  </data>
-  <data name="MinimizeTray" xml:space="preserve">
-    <value>트레이로 최소화</value>
-  </data>
-  <data name="Quit" xml:space="preserve">
-    <value>바로 종료</value>
-  </data>
-  <data name="AboutInfo1" xml:space="preserve">
-    <value>이 프로젝트는 지구화학 데이터를 활용하여 관련 차트 작성, 계산 및 분석을 수행하고 지질학 데이터를 효율적으로 처리함으로써 지구과학 연구자들이 데이터 분석 프로세스를 가속화하고 연구 효율성을 높이는 것을 목표로 합니다.</value>
-  </data>
-  <data name="AboutInfo2" xml:space="preserve">
-    <value>이 프로젝트에 관심이 있으시다면 Star를 눌러 응원해 주세요! 도움이 되셨다면 커피 한 잔 사주셔도 좋습니다 ☕</value>
-  </data>
-  <data name="AboutInfo3" xml:space="preserve">
-    <value>더 많은 연구자분들의 참여를 환영합니다! 
-	함께 지구화학 계산 방법과 더 많은 플롯 베이스맵 템플릿을 유지 관리하고 업데이트합시다! 
-	소프트웨어를 더 강력하고 사용하기 쉽게 만들어 봅시다!</value>
-  </data>
-  <data name="ThankSupport" xml:space="preserve">
-    <value>지원에 감사드립니다</value>
-  </data>
-  <data name="Support1" xml:space="preserve">
-    <value>📌컨트롤 지원:</value>
-  </data>
-  <data name="Support3" xml:space="preserve">
-    <value>📌문서 지원:</value>
-  </data>
-  <data name="Support4" xml:space="preserve">
-    <value>📌계산 지원:</value>
-  </data>
-  <data name="Support2" xml:space="preserve">
-    <value>📌차트 지원:</value>
-  </data>
-  <data name="Support5" xml:space="preserve">
-    <value>📌도구 지원:</value>
-  </data>
-  <data name="PlotBoder" xml:space="preserve">
-    <value>경계</value>
-  </data>
-  <data name="ResetSuccess" xml:space="preserve">
-    <value>초기화 성공</value>
-  </data>
-  <data name="ModifedSuccess" xml:space="preserve">
-    <value>수정 성공</value>
-  </data>
-  <data name="ModifedCanceled" xml:space="preserve">
-    <value>수정 취소됨</value>
-  </data>
-  <data name="import_template" xml:space="preserve">
-    <value>플롯 템플릿 가져오기</value>
-  </data>
-  <data name="create_new_diagram_template" xml:space="preserve">
-    <value>새 다이어그램 템플릿 만들기</value>
-  </data>
-  <data name="template_library" xml:space="preserve">
-    <value>템플릿 라이브러리</value>
-  </data>
-  <data name="return_to_template_library" xml:space="preserve">
-    <value>돌아가기</value>
-  </data>
-  <data name="Data" xml:space="preserve">
-    <value>데이터</value>
-  </data>
-  <data name="import_data" xml:space="preserve">
-    <value>데이터 가져오기</value>
-  </data>
-  <data name="clear_data" xml:space="preserve">
-    <value>데이터 지우기</value>
-  </data>
-  <data name="view" xml:space="preserve">
-    <value>뷰</value>
-  </data>
-  <data name="reset_view" xml:space="preserve">
-    <value>뷰 재설정</value>
-  </data>
-  <data name="coordinate_positioning" xml:space="preserve">
-    <value>좌표 위치 지정</value>
-  </data>
-  <data name="select" xml:space="preserve">
-    <value>선택</value>
-  </data>
-  <data name="deselect" xml:space="preserve">
-    <value>선택 취소</value>
-  </data>
-  <data name="export" xml:space="preserve">
-    <value>내보내기</value>
-  </data>
-  <data name="export_image" xml:space="preserve">
-    <value>이미지 내보내기</value>
-  </data>
-  <data name="png_format" xml:space="preserve">
-    <value>PNG 형식</value>
-  </data>
-  <data name="bmp_format" xml:space="preserve">
-    <value>BMP 형식</value>
-  </data>
-  <data name="jpg_format" xml:space="preserve">
-    <value>JPG 형식</value>
-  </data>
-  <data name="webp_format" xml:space="preserve">
-    <value>WebP 형식</value>
-  </data>
-  <data name="svg_format" xml:space="preserve">
-    <value>SVG 형식</value>
-  </data>
-  <data name="legend_settings" xml:space="preserve">
-    <value>범례 설정</value>
-  </data>
-  <data name="grid_settings" xml:space="preserve">
-    <value>그리드 설정</value>
-  </data>
-  <data name="script_settings" xml:space="preserve">
-    <value>스크립트 설정</value>
-  </data>
-  <data name="plot_settings" xml:space="preserve">
-    <value>플롯 설정</value>
-  </data>
-  <data name="all_templates" xml:space="preserve">
-    <value>모든 템플릿</value>
-  </data>
-  <data name="uncategorized" xml:space="preserve">
-    <value>분류되지 않음</value>
-  </data>
-  <data name="select_data_file" xml:space="preserve">
-    <value>데이터 파일을 선택하십시오</value>
-  </data>
-  <data name="data_file_filter" xml:space="preserve">
-    <value>데이터 파일 (*.csv, *.xls, *.xlsx)|*.csv;*.xls;*.xlsx</value>
-  </data>
-  <data name="no_valid_workbook_or_data_found" xml:space="preserve">
-    <value>파일에서 유효한 통합 문서나 데이터를 찾을 수 없습니다</value>
-  </data>
-  <data name="read_file_failed" xml:space="preserve">
-    <value>파일 읽기 실패</value>
-  </data>
-  <data name="excel_missing_required_columns" xml:space="preserve">
-    <value>Excel 파일에 다음 필수 열이 누락되었습니다</value>
-  </data>
-  <data name="data_point" xml:space="preserve">
-    <value>데이터 포인트</value>
-  </data>
-  <data name="failed_to_parse_category_group" xml:space="preserve">
-    <value>파일에서 유효한 범주 그룹을 구문 분석하지 못했습니다. 범주 열 데이터를 확인하십시오</value>
-  </data>
-  <data name="error_calculating_data_point_coordinates" xml:space="preserve">
-    <value>데이터 포인트 좌표 계산 중 오류 발생:</value>
-  </data>
-  <data name="data_import_successful" xml:space="preserve">
-    <value>데이터 가져오기 성공</value>
-  </data>
-  <data name="script_execution_failed" xml:space="preserve">
-    <value>스크립트 실행 실패:</value>
-  </data>
-  <data name="axes" xml:space="preserve">
-    <value>좌표축</value>
-  </data>
-  <data name="point" xml:space="preserve">
-    <value>점</value>
-  </data>
-  <data name="line" xml:space="preserve">
-    <value>선</value>
-  </data>
-  <data name="text" xml:space="preserve">
-    <value>텍스트</value>
-  </data>
-  <data name="annotation" xml:space="preserve">
-    <value>주석</value>
-  </data>
-  <data name="image_copied_to_clipboard" xml:space="preserve">
-    <value>이미지가 클립보드에 성공적으로 복사되었습니다</value>
-  </data>
-  <data name="copy_failed" xml:space="preserve">
-    <value>복사 실패:</value>
-  </data>
-  <data name="confirm_clear_data_points" xml:space="preserve">
-    <value>데이터 포인트를 지우시겠습니까?</value>
-  </data>
-  <data name="no_imported_data_to_clear" xml:space="preserve">
-    <value>지울 가져온 데이터가 없습니다</value>
-  </data>
-  <data name="all_imported_data_cleared" xml:space="preserve">
-    <value>모든 가져온 데이터가 지워졌습니다</value>
-  </data>
-  <data name="left_y_axis" xml:space="preserve">
-    <value>왼쪽 Y축</value>
-  </data>
-  <data name="right_y_axis" xml:space="preserve">
-    <value>오른쪽 Y축</value>
-  </data>
-  <data name="bottom_x_axis" xml:space="preserve">
-    <value>하단 X축</value>
-  </data>
-  <data name="top_x_axis" xml:space="preserve">
-    <value>상단 X축</value>
-  </data>
-  <data name="unknown_axis" xml:space="preserve">
-    <value>알 수 없는 좌표축</value>
-  </data>
-  <data name="content_and_position" xml:space="preserve">
-    <value>내용 및 위치</value>
-    <comment>属性面板-文本对象</comment>
-  </data>
-  <data name="script_definition" xml:space="preserve">
-    <value>스크립트</value>
-  </data>
-  <data name="script_language" xml:space="preserve">
-    <value>스크립트 언어:</value>
-  </data>
-  <data name="data_series" xml:space="preserve">
-    <value>데이터 계열</value>
-  </data>
-  <data name="multiple_data_series_hint" xml:space="preserve">
-    <value>여러 데이터 계열은 쉼표로 구분하십시오. 예: SiO2,TiO2</value>
-  </data>
-  <data name="script_content" xml:space="preserve">
-    <value>스크립트 내용:</value>
-  </data>
-  <data name="ready" xml:space="preserve">
-    <value>준비됨</value>
-  </data>
-  <data name="validate_syntax" xml:space="preserve">
-    <value>구문 검사</value>
-  </data>
-  <data name="row" xml:space="preserve">
-    <value>행:</value>
-  </data>
-  <data name="column" xml:space="preserve">
-    <value>열:</value>
-  </data>
-  <data name="code_formatted" xml:space="preserve">
-    <value>코드가 서식 지정됨</value>
-  </data>
-  <data name="format_failed" xml:space="preserve">
-    <value>서식 지정 실패:</value>
-  </data>
-  <data name="script_content_is_empty" xml:space="preserve">
-    <value>스크립트 내용이 비어 있음</value>
-  </data>
-  <data name="validation_failed" xml:space="preserve">
-    <value>검사 실패:</value>
-  </data>
-  <data name="data_parameters_are_empty" xml:space="preserve">
-    <value>데이터 매개변수가 비어 있음</value>
-  </data>
-  <data name="invalid_data_parameter_format" xml:space="preserve">
-    <value>데이터 매개변수 형식이 올바르지 않음</value>
-  </data>
-  <data name="parameter_format_correct" xml:space="preserve">
-    <value>매개변수 형식이 올바름</value>
-  </data>
-  <data name="syntax_validation_passed" xml:space="preserve">
-    <value>구문 검사 통과</value>
-  </data>
-  <data name="error" xml:space="preserve">
-    <value>오류:</value>
-  </data>
-  <data name="new" xml:space="preserve">
-    <value>새로 만들기(_N)</value>
-  </data>
-  <data name="open" xml:space="preserve">
-    <value>열기(_O)</value>
-  </data>
-  <data name="export_current_worksheet" xml:space="preserve">
-    <value>현재 워크시트 내보내기(_R)</value>
-  </data>
-  <data name="geological_thermometer" xml:space="preserve">
-    <value>지질 온도계</value>
-  </data>
-  <data name="confirm_new_worksheet" xml:space="preserve">
-    <value>새 워크시트를 만드시겠습니까?</value>
-  </data>
-  <data name="error_creating_table" xml:space="preserve">
-    <value>테이블 생성 중 오류 발생:</value>
-  </data>
-  <data name="file_import_successful" xml:space="preserve">
-    <value>파일 가져오기 성공</value>
-  </data>
-  <data name="cancel_import" xml:space="preserve">
-    <value>가져오기 취소</value>
-  </data>
-  <data name="export_successful" xml:space="preserve">
-    <value>내보내기 성공</value>
-  </data>
-  <data name="export_failed" xml:space="preserve">
-    <value>내보내기 실패:</value>
-  </data>
-  <data name="create_worksheet_failed" xml:space="preserve">
-    <value>워크시트 만들기 실패:</value>
-  </data>
-  <data name="row_1_column_1" xml:space="preserve">
-    <value>행: 1, 열: 1</value>
-  </data>
-  <data name="missing_parameters" xml:space="preserve">
-    <value>매개변수 누락</value>
-    <comment>自定义函数提示</comment>
-  </data>
-  <data name="input_out_of_range" xml:space="preserve">
-    <value>입력 값이 범위를 벗어남</value>
-    <comment>自定义函数提示</comment>
-  </data>
-  <data name="must_be_positive_number" xml:space="preserve">
-    <value>양수여야 함</value>
-    <comment>自定义函数提示</comment>
-  </data>
-  <data name="tio2_activity_range" xml:space="preserve">
-    <value>TiO2 활동도는 (0,1] 범위 내에 있어야 함</value>
-    <comment>自定义函数提示</comment>
-  </data>
-  <data name="oxygen_atom_benchmark_zero" xml:space="preserve">
-    <value>산소 원자 기준 값이 0임</value>
-    <comment>自定义函数提示</comment>
-  </data>
-  <data name="normalization_factor_is_zero" xml:space="preserve">
-    <value>정규화 인자가 0임</value>
-    <comment>自定义函数提示</comment>
-  </data>
-  <data name="temperature_calculation_denominator_zero" xml:space="preserve">
-    <value>온도 계산 분모가 0임</value>
-    <comment>自定义函数提示</comment>
-  </data>
-  <data name="color" xml:space="preserve">
-    <value>색상</value>
-    <comment>属性面板</comment>
-  </data>
-  <data name="style" xml:space="preserve">
-    <value>스타일</value>
-    <comment>属性面板</comment>
-  </data>
-  <data name="width" xml:space="preserve">
-    <value>너비</value>
-    <comment>属性面板</comment>
-  </data>
-  <data name="line_width" xml:space="preserve">
-    <value>선 두께</value>
-    <comment>属性面板</comment>
-  </data>
-  <data name="Enum_LineType_Solid" xml:space="preserve">
-    <value>실선</value>
-    <comment>属性面板</comment>
-  </data>
-  <data name="type" xml:space="preserve">
-    <value>유형</value>
-    <comment>属性面板</comment>
-  </data>
-  <data name="position" xml:space="preserve">
-    <value>속성</value>
-    <comment>属性面板</comment>
-  </data>
-  <data name="start_coordinates" xml:space="preserve">
-    <value>시작 좌표</value>
-    <comment>属性面板</comment>
-  </data>
-  <data name="end_coordinates" xml:space="preserve">
-    <value>끝 좌표</value>
-    <comment>属性面板</comment>
-  </data>
-  <data name="content" xml:space="preserve">
-    <value>내용</value>
-  </data>
-  <data name="alignment" xml:space="preserve">
-    <value>앵커 위치</value>
-  </data>
-  <data name="font_style" xml:space="preserve">
-    <value>글꼴 스타일</value>
-  </data>
-  <data name="font_name" xml:space="preserve">
-    <value>글꼴 이름</value>
-  </data>
-  <data name="font_size" xml:space="preserve">
-    <value>글꼴 크기</value>
-  </data>
-  <data name="font_rotation" xml:space="preserve">
-    <value>글꼴 회전</value>
-  </data>
-  <data name="font_color" xml:space="preserve">
-    <value>글꼴 색상</value>
-  </data>
-  <data name="bold" xml:space="preserve">
-    <value>굵게</value>
-  </data>
-  <data name="italic" xml:space="preserve">
-    <value>기울임꼴</value>
-  </data>
-  <data name="background_and_border" xml:space="preserve">
-    <value>배경 및 테두리</value>
-  </data>
-  <data name="background_color" xml:space="preserve">
-    <value>배경 색상</value>
-  </data>
-  <data name="border_color" xml:space="preserve">
-    <value>테두리 색상</value>
-  </data>
-  <data name="border_width" xml:space="preserve">
-    <value>테두리 두께</value>
-  </data>
-  <data name="corner_radius" xml:space="preserve">
-    <value>모서리 반경</value>
-  </data>
-  <data name="advanced_rendering" xml:space="preserve">
-    <value>고급 렌더링</value>
-  </data>
-  <data name="anti_aliasing" xml:space="preserve">
-    <value>앤티 앨리어싱</value>
-  </data>
-  <data name="axis_style" xml:space="preserve">
-    <value>좌표축 스타일</value>
-  </data>
-  <data name="axis_title" xml:space="preserve">
-    <value>좌표축 제목</value>
-  </data>
-  <data name="font_family" xml:space="preserve">
-    <value>글꼴</value>
-  </data>
-  <data name="tick_style" xml:space="preserve">
-    <value>눈금 스타일</value>
-  </data>
-  <data name="tick_interval" xml:space="preserve">
-    <value>눈금 간격</value>
-  </data>
-  <data name="major_tick_style" xml:space="preserve">
-    <value>주 눈금 스타일</value>
-  </data>
-  <data name="length" xml:space="preserve">
-    <value>길이</value>
-  </data>
-  <data name="minor_tick_style" xml:space="preserve">
-    <value>보조 눈금 스타일</value>
-  </data>
-  <data name="tick_labels" xml:space="preserve">
-    <value>눈금 레이블</value>
-  </data>
-  <data name="location" xml:space="preserve">
-    <value>위치</value>
-  </data>
-  <data name="orientation" xml:space="preserve">
-    <value>방향</value>
-  </data>
-  <data name="is_visible" xml:space="preserve">
-    <value>표시 여부</value>
-  </data>
-  <data name="font" xml:space="preserve">
-    <value>글꼴</value>
-  </data>
-  <data name="major_grid_line" xml:space="preserve">
-    <value>주 그리드 선</value>
-  </data>
-  <data name="pattern" xml:space="preserve">
-    <value>패턴</value>
-  </data>
-  <data name="enable_anti_alias" xml:space="preserve">
-    <value>앤티 앨리어싱 사용</value>
-  </data>
-  <data name="background_fill" xml:space="preserve">
-    <value>배경 채우기</value>
-  </data>
-  <data name="enable_alternating_fill" xml:space="preserve">
-    <value>교차 채우기 사용</value>
-  </data>
-  <data name="background_fill_1" xml:space="preserve">
-    <value>배경 채우기</value>
-  </data>
-  <data name="fill_color_1" xml:space="preserve">
-    <value>채우기 색상 1</value>
-  </data>
-  <data name="fill_color_2" xml:space="preserve">
-    <value>채우기 색상 2</value>
-  </data>
-  <data name="coordinates" xml:space="preserve">
-    <value>좌표</value>
-  </data>
-  <data name="x_coordinate" xml:space="preserve">
-    <value>X 좌표</value>
-  </data>
-  <data name="y_coordinate" xml:space="preserve">
-    <value>Y 좌표</value>
-  </data>
-  <data name="start_and_end_coordinates" xml:space="preserve">
-    <value>시작 좌표</value>
-  </data>
-  <data name="chart_title_style" xml:space="preserve">
-    <value>차트 제목 스타일</value>
-  </data>
-  <data name="is_bold" xml:space="preserve">
-    <value>굵게</value>
-  </data>
-  <data name="is_italic" xml:space="preserve">
-    <value>기울임꼴</value>
-  </data>
-  <data name="background_fill_2" xml:space="preserve">
-    <value>배경 채우기</value>
-  </data>
-  <data name="minor_grid_Line" xml:space="preserve">
-    <value>보조 그리드 선</value>
-  </data>
-  <data name="open_diagram_template" xml:space="preserve">
-    <value>다이어그램 템플릿 열기</value>
-  </data>
-  <data name="new_version_available_github" xml:space="preserve">
-    <value>새 버전이 발견되었습니다! GitHub 릴리스 페이지로 이동하여 업데이트를 다운로드하십시오.</value>
-    <comment>检查更新</comment>
-  </data>
-  <data name="go_to_download" xml:space="preserve">
-    <value>다운로드하러 가기</value>
-    <comment>检查更新</comment>
-  </data>
-  <data name="enter_supported_languages" xml:space="preserve">
-    <value>지원되는 언어 입력</value>
-    <comment>新疆模板</comment>
-  </data>
-  <data name="delete_this_item" xml:space="preserve">
-    <value>항목 삭제</value>
-    <comment>新疆模板</comment>
-  </data>
-  <data name="enter_language_add" xml:space="preserve">
-    <value>언어를 입력하고 Enter 키를 눌러 추가하십시오.</value>
-    <comment>新疆模板</comment>
-  </data>
-  <data name="enter_category_structure" xml:space="preserve">
-    <value>분류 구조 입력</value>
-    <comment>新疆模板</comment>
-  </data>
-  <data name="enter_level_add" xml:space="preserve">
-    <value>레벨을 입력하고 Enter 키를 눌러 추가하십시오.</value>
-    <comment>新疆模板</comment>
-  </data>
-  <data name="plot_type" xml:space="preserve">
-    <value>플롯 유형</value>
-    <comment>新疆模板</comment>
-  </data>
-  <data name="two_dimensional_coordinate_plot" xml:space="preserve">
-    <value>2차원 좌표 플롯</value>
-    <comment>新疆模板</comment>
-  </data>
-  <data name="template_file_save_path" xml:space="preserve">
-    <value>템플릿 파일 저장 경로</value>
-    <comment>新疆模板</comment>
-  </data>
-  <data name="browse_ellipsis" xml:space="preserve">
-    <value>찾아보기...</value>
-    <comment>新疆模板</comment>
-  </data>
-  <data name="all_fields_required" xml:space="preserve">
-    <value>모든 필드는 필수입니다!</value>
-    <comment>新疆模板</comment>
-  </data>
-  <data name="category_structure_min_two" xml:space="preserve">
-    <value>분류 구조는 2 이상이어야 합니다!</value>
-    <comment>新疆模板</comment>
-  </data>
-  <data name="no_template_or_path_specified" xml:space="preserve">
-    <value>저장할 템플릿이 없거나 저장 경로가 지정되지 않았습니다. '다른 이름으로 저장'을 사용하십시오.</value>
-    <comment>新疆模板</comment>
-  </data>
-  <data name="template_saved_successfully" xml:space="preserve">
-    <value>템플릿이 성공적으로 저장되었습니다!</value>
-    <comment>新疆模板</comment>
-  </data>
-  <data name="save_template_failed" xml:space="preserve">
-    <value>템플릿 저장 실패:</value>
-    <comment>新疆模板</comment>
-  </data>
-  <data name="research_life_smooth_sailing" xml:space="preserve">
-    <value>년간 연구와 생활이 순조롭기를 바랍니다!</value>
-    <comment>彩蛋</comment>
-  </data>
-  <data name="add" xml:space="preserve">
-    <value>추가</value>
-    <comment>绘图-编辑</comment>
-  </data>
-  <data name="add_line" xml:space="preserve">
-    <value>선 추가</value>
-    <comment>绘图-编辑</comment>
-  </data>
-  <data name="add_text" xml:space="preserve">
-    <value>텍스트 추가</value>
-    <comment>绘图-编辑</comment>
-  </data>
-  <data name="file_" xml:space="preserve">
-    <value>파일</value>
-    <comment>绘图-编辑</comment>
-  </data>
-  <data name="template_loaded_successfully" xml:space="preserve">
-    <value>템플릿 파일 열기 성공</value>
-    <comment>绘图页面</comment>
-  </data>
-  <data name="unknown_error_checking_for_updates" xml:space="preserve">
-    <value>업데이트 확인 중 알 수 없는 오류 발생</value>
-    <comment>设置页面</comment>
-  </data>
-  <data name="already_latest_version" xml:space="preserve">
-    <value>이미 최신 버전입니다</value>
-    <comment>检查更新</comment>
-  </data>
-  <data name="cannot_parse_version_number_check_release_address" xml:space="preserve">
-    <value>버전 번호를 구문 분석할 수 없습니다. 릴리스 주소에서 확인하십시오</value>
-    <comment>检查更新</comment>
-  </data>
-  <data name="network_request_error" xml:space="preserve">
-    <value>네트워크 요청 오류</value>
-    <comment>检查更新</comment>
-  </data>
-  <data name="json_parse_error" xml:space="preserve">
-    <value>JSON 구문 분석 오류</value>
-    <comment>检查更新</comment>
-  </data>
-  <data name="unknown_error_occurred" xml:space="preserve">
-    <value>알 수 없는 오류 발생</value>
-    <comment>检查更新</comment>
-  </data>
-  <data name="polygon" xml:space="preserve">
-    <value>다각형</value>
-    <comment>图层列表</comment>
-  </data>
-  <data name="not_enough_vertices_add_polygon_canceled" xml:space="preserve">
-    <value>정점 수가 부족하여 다각형 추가 작업이 취소되었습니다.</value>
-    <comment>创建绘图对象通知</comment>
-  </data>
-  <data name="add_line_operation_canceled" xml:space="preserve">
-    <value>선 추가 작업이 취소되었습니다.</value>
-    <comment>创建绘图对象通知</comment>
-  </data>
-  <data name="add_text_operation_canceled" xml:space="preserve">
-    <value>텍스트 추가 작업이 취소되었습니다.</value>
-    <comment>创建绘图对象通知</comment>
-  </data>
-  <data name="language_setting_duplicate_found" xml:space="preserve">
-    <value>언어 설정에 중복된 항목이 있습니다. 확인해 주십시오!</value>
-    <comment>新建图解模板通知</comment>
-  </data>
-  <data name="add_polygon" xml:space="preserve">
-    <value>다각형 추가</value>
-    <comment>绘图功能区</comment>
-  </data>
-  <data name="line_type_solid" xml:space="preserve">
-    <value>실선</value>
-    <comment>线条对象属性</comment>
-  </data>
-  <data name="line_type_dash" xml:space="preserve">
-    <value>파선</value>
-    <comment>线条对象属性</comment>
-  </data>
-  <data name="line_type_densely_dashed" xml:space="preserve">
-    <value>촘촘한 파선</value>
-    <comment>线条对象属性</comment>
-  </data>
-  <data name="line_type_dot" xml:space="preserve">
-    <value>점선</value>
-    <comment>线条对象属性</comment>
-  </data>
-  <data name="ternary_phase_diagram" xml:space="preserve">
-    <value>삼원상 다이어그램</value>
-    <comment>新建图解模板</comment>
-  </data>
-  <data name="copy_plot_to_clipboard" xml:space="preserve">
-    <value>플롯 이미지를 클립보드로 복사</value>
-    <comment>绘图-工具栏-提示</comment>
-  </data>
-  <data name="use_help" xml:space="preserve">
-    <value>다이어그램 가이드</value>
-    <comment>绘图-工具栏-提示</comment>
-  </data>
-  <data name="no_data_please_add_data" xml:space="preserve">
-    <value>데이터 없음, 데이터를 추가하십시오</value>
-    <comment>绘图-数据-提示</comment>
-  </data>
-  <data name="no_data_columns_defined" xml:space="preserve">
-    <value>데이터 열이 정의되지 않음</value>
-    <comment>绘图-数据-提示</comment>
-  </data>
-  <data name="data_plotting_successful" xml:space="preserve">
-    <value>데이터 포인트 플롯 성공</value>
-    <comment>绘图-数据-提示</comment>
-  </data>
-  <data name="save_as_csv_file" xml:space="preserve">
-    <value>CSV 파일로 저장</value>
-    <comment>温度计-提示</comment>
-  </data>
-  <data name="csv_file_filter" xml:space="preserve">
-    <value>CSV 파일|*.csv</value>
-    <comment>温度计-提示</comment>
-  </data>
-  <data name="data_export" xml:space="preserve">
-    <value>데이터 내보내기</value>
-    <comment>绘图-数据-按钮</comment>
-  </data>
-  <data name="update_data" xml:space="preserve">
-    <value>데이터 업데이트</value>
-    <comment>绘图-数据-按钮</comment>
-  </data>
-  <data name="data_plotting" xml:space="preserve">
-    <value>데이터 플롯</value>
-    <comment>绘图-数据-按钮</comment>
-  </data>
-  <data name="highlight_on_hover" xml:space="preserve">
-    <value>활성화하면 마우스가 플롯 개체(점, 선, 면 등) 위로 이동할 때 자동으로 강조 표시되며 클릭하여 정보를 볼 수 있습니다</value>
-    <comment>绘图-工具栏-提示</comment>
-  </data>
-  <data name="count" xml:space="preserve">
-    <value>보조 눈금 수</value>
-    <comment>属性-坐标轴-次刻度样式</comment>
-  </data>
-  <data name="zoom_type" xml:space="preserve">
-    <value>줌 유형</value>
-    <comment>属性-坐标轴-坐标轴样式</comment>
-  </data>
-  <data name="from" xml:space="preserve">
-    <value>시작</value>
-    <comment>属性-坐标轴-坐标轴样式</comment>
-  </data>
-  <data name="to" xml:space="preserve">
-    <value>끝</value>
-    <comment>属性-坐标轴-坐标轴样式</comment>
-  </data>
-  <data name="ternary_phase_diagram_sum_must_be_one" xml:space="preserve">
-    <value>삼원상 다이어그램의 합은 1이어야 합니다.</value>
-    <comment>新建-三元图-模板</comment>
-  </data>
-  <data name="save_as" xml:space="preserve">
-    <value>다른 이름으로 저장</value>
-    <comment>绘图-工具栏-编辑</comment>
-  </data>
-  <data name="all_data_cleared" xml:space="preserve">
-    <value>모든 데이터가 지워짐</value>
-    <comment>绘图-数据-清除数据-提示</comment>
-  </data>
-  <data name="confirm_clear_all_data" xml:space="preserve">
-    <value>테이블 데이터(플롯 데이터 포인트 포함)를 지우시겠습니까?</value>
-    <comment>绘图-数据-清除数据-提示</comment>
-  </data>
-  <data name="clear_data_points" xml:space="preserve">
-    <value>데이터 포인트 지우기</value>
-    <comment>绘图-数据-清除数据点</comment>
-  </data>
-  <data name="linear" xml:space="preserve">
-    <value>선형</value>
-    <comment>绘图-坐标轴-属性-缩放类型</comment>
-  </data>
-  <data name="logarithmic" xml:space="preserve">
-    <value>로그</value>
-    <comment>绘图-坐标轴-属性-缩放类型</comment>
-  </data>
-  <data name="some_data_failed_validation" xml:space="preserve">
-    <value>일부 데이터가 유효성 검사를 통과하지 못해 건너뛰었습니다</value>
-    <comment>绘图-数据-投点校验提示</comment>
-  </data>
-  <data name="the_sum_of_row" xml:space="preserve">
-    <value>제</value>
-    <comment>绘图-数据-投点校验提示</comment>
-  </data>
-  <data name="is_not_one" xml:space="preserve">
-    <value>행 데이터의 합이 1이 아님</value>
-    <comment>绘图-数据-投点校验提示</comment>
-  </data>
-  <data name="actual_sum_is" xml:space="preserve">
-    <value>(실제 합계</value>
-    <comment>绘图-数据-投点校验提示</comment>
-  </data>
-  <data name="arrow" xml:space="preserve">
-    <value>화살표</value>
-    <comment>绘图-图层-箭头</comment>
-  </data>
-  <data name="arrowhead_width" xml:space="preserve">
-    <value>화살표 머리 너비</value>
-    <comment>绘图-图层-箭头</comment>
-  </data>
-  <data name="arrowhead_length" xml:space="preserve">
-    <value>화살표 머리 길이</value>
-    <comment>绘图-图层-箭头</comment>
-  </data>
-  <data name="add_arrow" xml:space="preserve">
-    <value>화살표 추가</value>
-    <comment>绘图-编辑-添加箭头</comment>
-  </data>
-  <data name="delete_object" xml:space="preserve">
-    <value>개체 삭제</value>
-    <comment>绘图-编辑-删除功能</comment>
-  </data>
-  <data name="please_select_an_object_to_delete_first" xml:space="preserve">
-    <value>먼저 삭제할 개체를 선택하십시오.</value>
-    <comment>绘图-编辑-删除提示</comment>
-  </data>
-  <data name="object_deleted_successfully" xml:space="preserve">
-    <value>개체가 성공적으로 삭제되었습니다.</value>
-    <comment>绘图-编辑-删除提示</comment>
-  </data>
-  <data name="cannot_delete_base_layers" xml:space="preserve">
-    <value>기본 레이어를 삭제할 수 없습니다.</value>
-    <comment>绘图-编辑-删除提示</comment>
-  </data>
-  <data name="update" xml:space="preserve">
-    <value>_업데이트(U)</value>
-    <comment>绘图-菜单栏</comment>
-  </data>
-  <data name="check_for_template_updates" xml:space="preserve">
-    <value>템플릿 업데이트 확인</value>
-    <comment>绘图-菜单栏</comment>
-  </data>
-  <data name="template_ready" xml:space="preserve">
-    <value>템플릿 준비 완료!</value>
-    <comment>模板更新提示</comment>
-  </data>
-  <data name="download_template_failed" xml:space="preserve">
-    <value>템플릿 다운로드 실패:</value>
-    <comment>模板更新提示</comment>
-  </data>
-  <data name="downloaded_file_hash_mismatch" xml:space="preserve">
-    <value>다운로드한 파일 해시가 서버와 일치하지 않습니다. 파일이 손상되었거나 변조되었을 수 있습니다.</value>
-    <comment>模板更新提示</comment>
-  </data>
-  <data name="downloaded_content_not_valid_json" xml:space="preserve">
-    <value>다운로드한 내용이 유효한 JSON 형식이 아닙니다.</value>
-    <comment>模板更新提示</comment>
-  </data>
-  <data name="template_list_update_success_refreshing" xml:space="preserve">
-    <value>템플릿 목록 업데이트 성공! 새로 고치는 중...</value>
-    <comment>模板更新提示</comment>
-  </data>
-  <data name="update_list_file_failed" xml:space="preserve">
-    <value>목록 파일 업데이트 실패</value>
-    <comment>模板更新提示</comment>
-  </data>
-  <data name="new_drawing_template_library_version_detected" xml:space="preserve">
-    <value>드로잉 템플릿 라이브러리의 새 버전이 감지되었습니다. 목록을 지금 업데이트하시겠습니까?</value>
-    <comment>模板更新提示</comment>
-  </data>
-  <data name="current_template_list_latest_version" xml:space="preserve">
-    <value>현재 템플릿 목록은 최신 버전입니다.</value>
-    <comment>模板更新提示</comment>
-  </data>
-  <data name="network_connection_failed_cannot_check_for_updates" xml:space="preserve">
-    <value>네트워크 연결 실패, 업데이트를 확인할 수 없음:</value>
-    <comment>模板更新提示</comment>
-  </data>
-  <data name="error_occurred_while_checking_for_updates" xml:space="preserve">
-    <value>업데이트 확인 중 오류 발생：</value>
-    <comment>模板更新提示</comment>
-  </data>
-  <data name="help_instructions" xml:space="preserve">
-    <value>도움말</value>
-    <comment>温度计-帮助说明</comment>
-  </data>
-  <data name="view_help_docs" xml:space="preserve">
-    <value>도움말 문서 보기</value>
-    <comment>温度计-帮助说明按钮提示</comment>
-  </data>
-  <data name="German_Germany" xml:space="preserve">
-    <value>Deutsch (Deutschland)</value>
-    <comment>设置-常规设置-语言</comment>
-  </data>
-  <data name="custom_templates" xml:space="preserve">
-    <value>사용자 정의 템플릿</value>
-    <comment>绘图-模板列表</comment>
-  </data>
-  <data name="check_for_category_updates" xml:space="preserve">
-    <value>분류 구조 업데이트 확인</value>
-    <comment>绘图-菜单栏-更新分类结构</comment>
-  </data>
-  <data name="cannot_delete_protected_column" xml:space="preserve">
-    <value>보호된 열을 삭제할 수 없음</value>
-  </data>
-  <data name="add_column_left" xml:space="preserve">
-    <value>열 추가(왼쪽)</value>
-  </data>
-  <data name="add_column_right" xml:space="preserve">
-    <value>열 추가(오른쪽)</value>
-  </data>
-  <data name="delete_row" xml:space="preserve">
-    <value>행 삭제</value>
-  </data>
-  <data name="delete_column" xml:space="preserve">
-    <value>열 삭제</value>
-  </data>
-  <data name="missing_columns" xml:space="preserve">
-    <value>누락된 열</value>
-  </data>
-  <data name="add_row_up" xml:space="preserve">
-    <value>위에 행 삽입</value>
-  </data>
-  <data name="add_row_down" xml:space="preserve">
-    <value>아래에 행 삽입</value>
-  </data>
-  <data name="confirm_delete_row" xml:space="preserve">
-    <value>선택한 행을 삭제하시겠습니까?</value>
-  </data>
-  <data name="confirm_delete_column" xml:space="preserve">
-    <value>선택한 열을 삭제하시겠습니까?</value>
-  </data>
-  <data name="axis" xml:space="preserve">
-    <value>좌표축</value>
-    <comment>绘图-属性面板</comment>
-  </data>
-  <data name="grid" xml:space="preserve">
-    <value>그리드</value>
-    <comment>绘图-属性面板</comment>
-  </data>
-  <data name="formula" xml:space="preserve">
-    <value>공식</value>
-    <comment>绘图-属性-函数</comment>
-  </data>
-  <data name="range" xml:space="preserve">
-    <value>범위</value>
-    <comment>绘图-属性-函数</comment>
-  </data>
-  <data name="domain" xml:space="preserve">
-    <value>정의역</value>
-    <comment>绘图-属性-函数</comment>
-  </data>
-  <data name="point_count" xml:space="preserve">
-    <value>샘플 포인트</value>
-    <comment>绘图-属性-函数</comment>
-  </data>
-  <data name="vertices" xml:space="preserve">
-    <value>정점</value>
-    <comment>绘图-属性-多边形</comment>
-  </data>
-  <data name="template_file_corrupted" xml:space="preserve">
-    <value>템플릿 파일이 손상됨</value>
-  </data>
-  <data name="template_version_too_high" xml:space="preserve">
-    <value>템플릿 버전이 현재 소프트웨어 버전보다 높습니다. 소프트웨어를 업그레이드한 후 여십시오.</value>
-  </data>
-  <data name="error_loading_template" xml:space="preserve">
-    <value>템플릿 로드 중 오류 발생</value>
-  </data>
-  <data name="template_upgrade_warning" xml:space="preserve">
-    <value>현재 템플릿 버전이 낮습니다. 저장하면 템플릿 버전이 업그레이드되어 하위 버전의 소프트웨어에서 이 템플릿을 사용하지 못할 수 있습니다. 계속하시겠습니까?</value>
-  </data>
-  <data name="offset" xml:space="preserve">
-    <value>오프셋</value>
-  </data>
-  <data name="offset_x" xml:space="preserve">
-    <value>오프셋 X</value>
-  </data>
-  <data name="offset_y" xml:space="preserve">
-    <value>오프셋 Y</value>
-  </data>
-  <data name="add_function" xml:space="preserve">
-    <value>함수 추가</value>
-    <comment>绘图-编辑</comment>
-  </data>
-  <data name="Placeholder_Text" xml:space="preserve">
-    <value>텍스트를 입력하십시오</value>
-  </data>
-  <data name="Placeholder_Axis_Title" xml:space="preserve">
-    <value>축 제목</value>
-  </data>
-  <data name="Placeholder_Chart_Title" xml:space="preserve">
-    <value>차트 제목</value>
-  </data>
-  <data name="Placeholder_Ternary_Title" xml:space="preserve">
-    <value>새 삼원상 다이어그램</value>
-  </data>
-  <data name="Placeholder_Chart_Title_Default" xml:space="preserve">
-    <value>새 차트</value>
-  </data>
-  <data name="Placeholder_Axis_X" xml:space="preserve">
-    <value>X축</value>
-  </data>
-  <data name="Placeholder_Axis_Y" xml:space="preserve">
-    <value>Y축</value>
-  </data>
-  <data name="Placeholder_Component_A" xml:space="preserve">
-    <value>A</value>
-  </data>
-  <data name="Placeholder_Component_B" xml:space="preserve">
-    <value>B</value>
-  </data>
-  <data name="Placeholder_Component_C" xml:space="preserve">
-    <value>C</value>
-  </data>
-  <data name="third_party" xml:space="preserve">
-    <value>타사</value>
-    <comment>绘图-菜单栏-绘图</comment>
-  </data>
-  <data name="open_via_third_party" xml:space="preserve">
-    <value>타사 앱으로 열기</value>
-    <comment>绘图-菜单栏-绘图</comment>
-  </data>
-  <data name="select_an_object" xml:space="preserve">
-    <value>개체를 선택하십시오</value>
-    <comment>绘图-属性面板</comment>
-  </data>
-  <data name="undo" xml:space="preserve">
-    <value>실행 취소</value>
-    <comment>绘图-撤回</comment>
-  </data>
-  <data name="redo" xml:space="preserve">
-    <value>다시 실행</value>
-    <comment>绘图-重做</comment>
-  </data>
-  <data name="interval" xml:space="preserve">
-    <value>눈금 간격</value>
-    <comment>绘图-属性-二维坐标轴</comment>
-  </data>
-  <data name="pick_coordinate" xml:space="preserve">
-    <value>좌표 선택</value>
-    <comment>绘图-属性-多边形</comment>
-  </data>
-  <data name="remove_point" xml:space="preserve">
-    <value>이 정점 삭제</value>
-    <comment>绘图-属性-多边形</comment>
-  </data>
-  <data name="vertex_add_new" xml:space="preserve">
-    <value>새 정점 추가</value>
-    <comment>绘图-属性-多边形</comment>
-  </data>
-  <data name="subtitle" xml:space="preserve">
-    <value>부제목</value>
-  </data>
-  <data name="subtitle_font_size" xml:space="preserve">
-    <value>부제목 글꼴 크기</value>
-  </data>
-  <data name="subtitle_color" xml:space="preserve">
-    <value>부제목 색상</value>
-  </data>
-  <data name="subtitle_bold" xml:space="preserve">
-    <value>부제목 굵게</value>
-  </data>
-  <data name="subtitle_italic" xml:space="preserve">
-    <value>부제목 기울임꼴</value>
-  </data>
-  <data name="edit_link" xml:space="preserve">
-    <value>링크 편집</value>
-  </data>
-  <data name="template_translator" xml:space="preserve">
-    <value>다이어그램 템플릿 번역기</value>
-  </data>
-  <data name="diagram_template_repair_tool" xml:space="preserve">
-    <value>다이어그램 템플릿 복구 도구</value>
-    <comment>主页-小组件-模板修复工具</comment>
-  </data>
-  <data name="server_announcement" xml:space="preserve">
-    <value>서버 공지</value>
-  </data>
-  <data name="developer_maintenance_tool" xml:space="preserve">
-    <value>개발자 유지 관리 도구</value>
-  </data>
-  <data name="copy_content" xml:space="preserve">
-    <value>내용 복사</value>
-    <comment>窗体-通知系统</comment>
-  </data>
-  <data name="modified_successfully" xml:space="preserve">
-    <value>수정됨</value>
-    <comment>绘图-脚本-属性面板</comment>
-  </data>
-  <data name="error_loading_rtf_file" xml:space="preserve">
-    <value>RTF 파일 로드 중 오류 발생:</value>
-    <comment>绘图-通知-rtfhelper</comment>
-  </data>
-  <data name="file_path_cannot_be_empty" xml:space="preserve">
-    <value>파일 경로는 비어 있을 수 없습니다</value>
-    <comment>绘图-通知-rtfhelper</comment>
-  </data>
-  <data name="richtextbox_control_cannot_be_null" xml:space="preserve">
-    <value>RichTextBox 컨트롤은 null일 수 없습니다</value>
-    <comment>绘图-通知-rtfhelper</comment>
-  </data>
-  <data name="file_does_not_exist" xml:space="preserve">
-    <value>파일이 존재하지 않음:</value>
-    <comment>绘图-通知-rtfhelper</comment>
-  </data>
-  <data name="error_saving_rtf_file" xml:space="preserve">
-    <value>RTF 파일 저장 중 오류 발생:</value>
-    <comment>绘图-通知-rtfhelper</comment>
-  </data>
-  <data name="unable_to_get_latest_release_info" xml:space="preserve">
-    <value>최신 릴리스 정보를 가져올 수 없음</value>
-    <comment>设置-通知-更新</comment>
-  </data>
-  <data name="invalid_formula" xml:space="preserve">
-    <value>유효하지 않은 공식</value>
-    <comment>设置-属性-函数</comment>
-  </data>
-  <data name="loading_announcements" xml:space="preserve">
-    <value>공지 로드 중...</value>
-    <comment>主页-小组件-公告</comment>
-  </data>
-  <data name="no_announcements" xml:space="preserve">
-    <value>공지 없음.</value>
-    <comment>主页-小组件-公告</comment>
-  </data>
-  <data name="unable_to_get_announcements" xml:space="preserve">
-    <value>공지 정보를 가져올 수 없음.</value>
-    <comment>主页-小组件-公告</comment>
-  </data>
-  <data name="failed_to_get_announcements" xml:space="preserve">
-    <value>공지 가져오기 실패:</value>
-    <comment>主页-小组件-公告</comment>
-  </data>
-  <data name="error_loading_template_list" xml:space="preserve">
-    <value>템플릿 목록 로드 오류:</value>
-  </data>
-  <data name="unable_to_open_link" xml:space="preserve">
-    <value>링크를 열 수 없음:</value>
-    <comment>设置-about</comment>
-  </data>
-  <data name="add_link" xml:space="preserve">
-    <value>링크 추가</value>
-    <comment>主页-添加链接</comment>
-  </data>
-  <data name="name" xml:space="preserve">
-    <value>이름</value>
-    <comment>主页-添加链接</comment>
-  </data>
-  <data name="link_url" xml:space="preserve">
-    <value>링크 (URL)</value>
-    <comment>主页-添加链接</comment>
-  </data>
-  <data name="description" xml:space="preserve">
-    <value>설명</value>
-    <comment>主页-添加链接</comment>
-  </data>
-  <data name="icon" xml:space="preserve">
-    <value>아이콘</value>
-    <comment>主页-添加链接</comment>
-  </data>
-  <data name="please_enter_name" xml:space="preserve">
-    <value>이름을 입력하십시오</value>
-    <comment>主页-添加链接</comment>
-  </data>
-  <data name="please_enter_link" xml:space="preserve">
-    <value>링크를 입력하십시오</value>
-    <comment>主页-添加链接</comment>
-  </data>
-  <data name="add_widget" xml:space="preserve">
-    <value>위젯 추가</value>
-    <comment>主页-添加小组件</comment>
-  </data>
-  <data name="please_select_widget_to_add" xml:space="preserve">
-    <value>추가할 위젯을 선택하십시오:</value>
-    <comment>主页-添加小组件</comment>
-  </data>
-  <data name="please_select_a_widget" xml:space="preserve">
-    <value>위젯을 선택하십시오</value>
-    <comment>主页-添加小组件</comment>
-  </data>
-  <data name="server_announcements" xml:space="preserve">
-    <value>서버 공지</value>
-    <comment>主页-小组件-公告</comment>
-  </data>
-  <data name="refresh" xml:space="preserve">
-    <value>새로 고침</value>
-    <comment>主页-小组件-公告</comment>
-  </data>
-  <data name="developer_maintenance_tools" xml:space="preserve">
-    <value>개발자 유지 관리 도구</value>
-    <comment>主页-小组件-开发者工具</comment>
-  </data>
-  <data name="drawing_template_repair_tool" xml:space="preserve">
-    <value>도면 템플릿 복구 도구</value>
-    <comment>主页-小组件-模板修复工具</comment>
-  </data>
-  <data name="start_check_and_repair" xml:space="preserve">
-    <value>검사 및 복구 시작</value>
-    <comment>主页-小组件-模板修复工具</comment>
-  </data>
-  <data name="close_file" xml:space="preserve">
-    <value>파일 닫기</value>
-    <comment>主页-小组件-翻译组件</comment>
-  </data>
-  <data name="open_import" xml:space="preserve">
-    <value>가져오기 열기</value>
-    <comment>主页-小组件-翻译组件</comment>
-  </data>
-  <data name="add_language_column" xml:space="preserve">
-    <value>언어 열 추가</value>
-    <comment>主页-小组件-翻译组件</comment>
-  </data>
-  <data name="swap_language_columns" xml:space="preserve">
-    <value>언어 열 교환</value>
-    <comment>主页-小组件-翻译组件</comment>
-  </data>
-  <data name="delete_language_column" xml:space="preserve">
-    <value>언어 열 삭제</value>
-    <comment>主页-小组件-翻译组件</comment>
-  </data>
-  <data name="click_or_drag_template_json_here" xml:space="preserve">
-    <value>템플릿 파일(JSON)을 클릭하거나 이곳으로 드래그하십시오</value>
-    <comment>主页-小组件-翻译组件</comment>
-  </data>
-  <data name="support_json_format" xml:space="preserve">
-    <value>json 형식 지원</value>
-    <comment>主页-小组件-翻译组件</comment>
-  </data>
-  <data name="save_changes" xml:space="preserve">
-    <value>변경 사항 저장</value>
-    <comment>主页-小组件-翻译组件</comment>
-  </data>
-  <data name="select_drawing_template_file" xml:space="preserve">
-    <value>드로잉 템플릿 파일 선택</value>
-  </data>
-  <data name="edit_menu_bar_item" xml:space="preserve">
-    <value>메뉴 모음 항목 편집</value>
-    <comment>主页-右键菜单</comment>
-  </data>
-  <data name="import_custom_diagram_template" xml:space="preserve">
-    <value>사용자 정의 다이어그램 템플릿 가져오기</value>
-  </data>
-  <data name="open_file_location" xml:space="preserve">
-    <value>파일 위치 열기</value>
-    <comment>绘图-卡片-右键菜单</comment>
-  </data>
-  <data name="export_diagram_template" xml:space="preserve">
-    <value>다이어그램 템플릿 내보내기</value>
-  </data>
-  <data name="downloading_ellipsis" xml:space="preserve">
-    <value>다운로드 중...</value>
-    <comment>绘图-卡片-更新</comment>
-  </data>
-  <data name="initializing_language_service_ellipsis" xml:space="preserve">
-    <value>언어 서비스 초기화 중...</value>
-    <comment>启动窗体</comment>
-  </data>
-  <data name="loading_font_resources_ellipsis" xml:space="preserve">
-    <value>글꼴 리소스 로드 중...</value>
-  </data>
-  <data name="reading_user_configuration_ellipsis" xml:space="preserve">
-    <value>사용자 구성 읽는 중...</value>
-  </data>
-  <data name="loading_drawing_module_ellipsis" xml:space="preserve">
-    <value>드로잉 모듈 로드 중...</value>
-  </data>
-  <data name="loading_main_interface_components_ellipsis" xml:space="preserve">
-    <value>메인 인터페이스 구성 요소 로드 중...</value>
-  </data>
-  <data name="entering_soon_ellipsis" xml:space="preserve">
-    <value>곧 입장합니다...</value>
-  </data>
-  <data name="completed" xml:space="preserve">
-    <value>완료</value>
-  </data>
-  <data name="error_occurred_during_startup" xml:space="preserve">
-    <value>시작 중 오류 발생:</value>
-  </data>
-  <data name="language_apperarance" xml:space="preserve">
-    <value>언어 및 모양</value>
-  </data>
-  <data name="startup_background_image" xml:space="preserve">
-    <value>시작 배경 이미지</value>
-  </data>
-  <data name="add_image" xml:space="preserve">
-    <value>이미지 추가</value>
-  </data>
-  <data name="external_applications" xml:space="preserve">
-    <value>외부 응용 프로그램</value>
-  </data>
-  <data name="custom_app" xml:space="preserve">
-    <value>사용자 지정 앱</value>
-  </data>
-  <data name="plot_defaults" xml:space="preserve">
-    <value>플롯 기본 설정</value>
-  </data>
-  <data name="default_diagram_expand_level" xml:space="preserve">
-    <value>기본 다이어그램 확장 레벨</value>
-  </data>
-  <data name="default_third_party_editor" xml:space="preserve">
-    <value>기본 타사 편집기</value>
-  </data>
-  <data name="automatic_updates" xml:space="preserve">
-    <value>자동 업데이트</value>
-  </data>
-  <data name="auto_check_diagram_template_updates" xml:space="preserve">
-    <value>다이어그램 템플릿 업데이트 자동 확인</value>
-  </data>
-  <data name="community" xml:space="preserve">
-    <value>커뮤니티</value>
-  </data>
-  <data name="export_and_tools" xml:space="preserve">
-    <value>내보내기/도구</value>
-  </data>
-  <data name="format" xml:space="preserve">
-    <value>형식</value>
-  </data>
-  <data name="third_party_software" xml:space="preserve">
-    <value>타사 소프트웨어</value>
-  </data>
-  <data name="select_software" xml:space="preserve">
-    <value>소프트웨어 선택</value>
-  </data>
-  <data name="open_with_third_party_software" xml:space="preserve">
-    <value>타사 소프트웨어로 열기</value>
-  </data>
-  <data name="confirm_enter_edit_mode_base_map" xml:space="preserve">
-    <value>편집 모드로 들어가시겠습니까? 이렇게 하면 베이스맵을 수정할 수 있습니다.</value>
-  </data>
-  <data name="information" xml:space="preserve">
-    <value>정보</value>
-  </data>
-  <data name="click_to_pick_coordinates" xml:space="preserve">
-    <value>좌표를 선택하려면 플롯 영역을 클릭하십시오</value>
-  </data>
-  <data name="picking_operation_cancelled" xml:space="preserve">
-    <value>선택 작업 취소됨</value>
-  </data>
-  <data name="diagram" xml:space="preserve">
-    <value>다이어그램</value>
-    <comment>绘图-功能栏</comment>
-  </data>
-  <data name="official_website" xml:space="preserve">
-    <value>공식 웹사이트</value>
-  </data>
-  <data name="minimize" xml:space="preserve">
-    <value>최소화</value>
-  </data>
-  <data name="maximize" xml:space="preserve">
-    <value>최대화</value>
-  </data>
-  <data name="close" xml:space="preserve">
-    <value>닫기</value>
-  </data>
-  <data name="diagram_title_properties" xml:space="preserve">
-    <value>다이어그램 제목 속성</value>
-    <comment>绘图-快捷按钮-tooltip</comment>
-  </data>
-  <data name="diagram_script_properties" xml:space="preserve">
-    <value>다이어그램 스크립트 속성</value>
-    <comment>绘图-快捷按钮-tooltip</comment>
-  </data>
-  <data name="diagram_legend_properties" xml:space="preserve">
-    <value>다이어그램 범례 속성</value>
-  </data>
-  <data name="diagram_grid_properties" xml:space="preserve">
-    <value>다이어그램 그리드 속성</value>
-  </data>
-  <data name="switch_diagram_language" xml:space="preserve">
-    <value>다이어그램 언어 전환</value>
-  </data>
-  <data name="popup_diagram_window" xml:space="preserve">
-    <value>다이어그램 창 팝업</value>
-    <comment>绘图-快捷按钮-tooltip</comment>
-  </data>
-  <data name="independent_diagram_window" xml:space="preserve">
-    <value>독립 다이어그램 창</value>
-  </data>
   <data name="edit_drawing_template_translations" xml:space="preserve">
     <value>드로잉 템플릿 다국어 번역 편집</value>
-    <comment>主页-小组件-图解模板翻译器</comment>
-  </data>
-  <data name="repair_missing_or_damaged_templates_and_lists" xml:space="preserve">
-    <value>누락되거나 손상된 드로잉 템플릿 및 목록 복구</value>
-  </data>
-  <data name="view_latest_server_announcements" xml:space="preserve">
-    <value>서버의 최신 공지 사항 보기</value>
-  </data>
-  <data name="maintain_server_config_and_templates" xml:space="preserve">
-    <value>서버 구성 및 템플릿 파일 유지 관리</value>
-  </data>
-  <data name="stroke_width" xml:space="preserve">
-    <value>획 너비</value>
-  </data>
-  <data name="stroke_color" xml:space="preserve">
-    <value>획 색상</value>
-  </data>
-  <data name="template_type_not_supported_please_update" xml:space="preserve">
-    <value>현재 다이어그램 템플릿 유형이 지원되지 않습니다. 소프트웨어를 업데이트하십시오.</value>
-  </data>
-  <data name="diagram_guide" xml:space="preserve">
-    <value>다이어그램 가이드</value>
-    <comment>绘图-图解-帮助</comment>
-  </data>
-  <data name="click_help_for_guide" xml:space="preserve">
-    <value>버튼을 클릭하여 다이어그램 문서 보기</value>
-  </data>
-  <data name="Alignment_UpperLeft" xml:space="preserve">
-    <value>좌측 상단</value>
-  </data>
-  <data name="Alignment_UpperCenter" xml:space="preserve">
-    <value>상단 중앙</value>
-  </data>
-  <data name="Alignment_UpperRight" xml:space="preserve">
-    <value>우측 상단</value>
-  </data>
-  <data name="Alignment_MiddleLeft" xml:space="preserve">
-    <value>좌측 중앙</value>
-  </data>
-  <data name="Alignment_MiddleCenter" xml:space="preserve">
-    <value>정중앙</value>
-  </data>
-  <data name="Alignment_MiddleRight" xml:space="preserve">
-    <value>우측 중앙</value>
-  </data>
-  <data name="Alignment_LowerLeft" xml:space="preserve">
-    <value>좌측 하단</value>
-  </data>
-  <data name="Alignment_LowerCenter" xml:space="preserve">
-    <value>하단 중앙</value>
-  </data>
-  <data name="Alignment_LowerRight" xml:space="preserve">
-    <value>우측 하단</value>
-  </data>
-  <data name="Orientation_Horizontal" xml:space="preserve">
-    <value>가로</value>
-  </data>
-  <data name="Orientation_Vertical" xml:space="preserve">
-    <value>세로</value>
-  </data>
-  <data name="show_tick_labels" xml:space="preserve">
-    <value>눈금 레이블 표시</value>
-  </data>
-  <data name="show_major_ticks" xml:space="preserve">
-    <value>주 눈금 표시</value>
-  </data>
-  <data name="recently_used" xml:space="preserve">
-    <value>최근 사용</value>
-  </data>
-  <data name="all_fonts" xml:space="preserve">
-    <value>모든 글꼴</value>
-  </data>
-  <data name="failed_to_open_widget" xml:space="preserve">
-    <value>위젯 열기 실패:</value>
-  </data>
-  <data name="coordinates_picked_success" xml:space="preserve">
-    <value>좌표 선택 성공!</value>
-  </data>
-  <data name="unsaved_diagram_template_prompt" xml:space="preserve">
-    <value>현재 다이어그램 템플릿에 저장되지 않은 내용이 있습니다. 저장하시겠습니까?</value>
-  </data>
-  <data name="tips" xml:space="preserve">
-    <value>팁</value>
-  </data>
-  <data name="template_no_multilingual_info" xml:space="preserve">
-    <value>현재 템플릿에 다국어 정보가 없습니다</value>
-  </data>
-  <data name="language_switch_success" xml:space="preserve">
-    <value>언어 전환 성공</value>
-  </data>
-  <data name="language_switch_error" xml:space="preserve">
-    <value>언어 전환 중 오류 발생:</value>
-  </data>
-  <data name="auto_datapoint_projection_failed" xml:space="preserve">
-    <value>자동 데이터 포인트 투영 실패:</value>
-  </data>
-  <data name="failed_to_delete_row" xml:space="preserve">
-    <value>행 삭제 실패:</value>
-  </data>
-  <data name="diagram_template_not_found_repair_hint" xml:space="preserve">
-    <value>파일 다이어그램 템플릿을 찾을 수 없습니다. 홈 페이지에서 '템플릿 복구 도구'를 사용하여 복구해 보십시오.</value>
-  </data>
-  <data name="confirm_delete_custom_diagram_template" xml:space="preserve">
-    <value>이 사용자 정의 다이어그램 템플릿을 삭제하시겠습니까?</value>
-  </data>
-  <data name="template_delete_success" xml:space="preserve">
-    <value>템플릿 삭제 성공</value>
-  </data>
-  <data name="delete_failed" xml:space="preserve">
-    <value>삭제 실패:</value>
-  </data>
-  <data name="missing_drawing_objects_error" xml:space="preserve">
-    <value>• 드로잉 개체 누락: 템플릿에 선, 다각형, 텍스트 또는 화살표가 포함되어 있지 않습니다.</value>
-  </data>
-  <data name="invalid_script_variable_name" xml:space="preserve">
-    <value>• 스크립트 변수 이름 형식 오류: '</value>
-  </data>
-  <data name="is_not_a_valid_variable_name" xml:space="preserve">
-    <value>'은(는) 유효한 변수 이름이 아닙니다.</value>
-  </data>
-  <data name="script_return_value_error_must_be_array" xml:space="preserve">
-    <value>• 스크립트 반환 값 오류: 스크립트는 배열을 반환해야 합니다.</value>
-  </data>
-  <data name="script_return_value_length_error" xml:space="preserve">
-    <value>• 스크립트 반환 값 길이 오류: 현재</value>
-  </data>
-  <data name="return_type_mismatch_error" xml:space="preserve">
-    <value>유형이며, 다음을 반환해야 함</value>
-  </data>
-  <data name="elements_actual_returned" xml:space="preserve">
-    <value>개 요소, 실제 반환</value>
-  </data>
-  <data name="elements_count_suffix" xml:space="preserve">
-    <value>개.</value>
-  </data>
-  <data name="missing_translation_warning" xml:space="preserve">
-    <value>• 번역 누락: 일부 텍스트에 다국어 번역이 누락되었습니다.</value>
-  </data>
-  <data name="diagram_template_source_missing" xml:space="preserve">
-    <value>다이어그램 템플릿 소스 파일이 존재하지 않음</value>
-  </data>
-  <data name="template_potential_issues_detected" xml:space="preserve">
-    <value>템플릿에서 다음 잠재적 문제가 감지되었습니다:</value>
-  </data>
-  <data name="ignore_issues_and_continue_export" xml:space="preserve">
-    <value>이러한 문제를 무시하고 내보내기를 계속하시겠습니까?</value>
-  </data>
-  <data name="completeness_check" xml:space="preserve">
-    <value>완성도 검사</value>
-  </data>
-  <data name="diagram_template_export_success" xml:space="preserve">
-    <value>다이어그램 템플릿 내보내기 성공</value>
-  </data>
-  <data name="directory_not_exist" xml:space="preserve">
-    <value>디렉터리가 존재하지 않음</value>
-  </data>
-  <data name="diagram_template_directory_not_found" xml:space="preserve">
-    <value>다이어그램 템플릿 디렉터리가 존재하지 않음:</value>
-  </data>
-  <data name="failed_to_load_diagram_template" xml:space="preserve">
-    <value>다이어그램 템플릿을 로드할 수 없음:</value>
-  </data>
-  <data name="unsaved_template_changes_confirm" xml:space="preserve">
-    <value>현재 템플릿에 저장되지 않은 내용이 있습니다. 저장하시겠습니까?</value>
-  </data>
-  <data name="ternary_diagram_crosshair_not_supported" xml:space="preserve">
-    <value>삼원상 다이어그램은 현재 십자선 위치 지정 기능을 지원하지 않습니다.</value>
-  </data>
-  <data name="attempting_to_start" xml:space="preserve">
-    <value>시작 시도 중</value>
-  </data>
-  <data name="coreldraw_env_not_found_select_program" xml:space="preserve">
-    <value>CorelDRAW 환경 변수를 찾을 수 없습니다. 열 프로그램을 선택하십시오.</value>
-  </data>
-  <data name="failed_to_open" xml:space="preserve">
-    <value>열기 실패:</value>
-  </data>
-  <data name="inkscape_env_not_found_select_program" xml:space="preserve">
-    <value>Inkscape 환경 변수를 찾을 수 없습니다. 열 프로그램을 선택하십시오.</value>
-  </data>
-  <data name="illustrator_not_found_check_path" xml:space="preserve">
-    <value>Adobe Illustrator를 찾을 수 없습니다. 경로 설정을 확인하거나 열 프로그램을 선택하십시오.</value>
-  </data>
-  <data name="custom_path_not_set_configure_in_settings" xml:space="preserve">
-    <value>사용자 지정 프로그램 경로가 설정되지 않았습니다. 설정에서 구성하십시오.</value>
-  </data>
-  <data name="custom_program_start_failed" xml:space="preserve">
-    <value>사용자 지정 프로그램 시작 실패:</value>
-  </data>
-  <data name="help_file_not_found" xml:space="preserve">
-    <value>도움말 파일을 찾을 수 없습니다.</value>
-  </data>
-  <data name="refresh_successful" xml:space="preserve">
-    <value>새로 고침 성공</value>
-  </data>
-  <data name="refresh_failed" xml:space="preserve">
-    <value>새로 고침 실패:</value>
-  </data>
-  <data name="diagram_help_path_undefined_save_template" xml:space="preserve">
-    <value>다이어그램 도움말 파일 경로를 확인할 수 없습니다. 먼저 템플릿을 저장해 보십시오.</value>
-  </data>
-  <data name="failed_to_open_file" xml:space="preserve">
-    <value>파일 열기 실패:</value>
-  </data>
-  <data name="error_creating_new_template" xml:space="preserve">
-    <value>새 템플릿 생성 중 오류 발생:</value>
-  </data>
-  <data name="import_failed" xml:space="preserve">
-    <value>가져오기 실패:</value>
-  </data>
-  <data name="failed_to_open_zip_file" xml:space="preserve">
-    <value>ZIP 파일을 열 수 없음</value>
-  </data>
-  <data name="diagram_template_corrupted_or_invalid" xml:space="preserve">
-    <value>다이어그램 템플릿 파일이 손상되었거나 유효한 다이어그램 템플릿 JSON 파일이 포함되어 있지 않습니다.</value>
-  </data>
-  <data name="failed_to_parse_diagram_template_json" xml:space="preserve">
-    <value>다이어그램 템플릿 JSON 파일을 구문 분석할 수 없음</value>
-  </data>
-  <data name="invalid_diagram_template_file" xml:space="preserve">
-    <value>유효하지 않은 다이어그램 템플릿 파일</value>
-  </data>
-  <data name="custom_diagram_template" xml:space="preserve">
-    <value>사용자 정의 다이어그램 템플릿</value>
-  </data>
-  <data name="already_exists_overwrite_confirm" xml:space="preserve">
-    <value>이미 존재합니다. 덮어쓰시겠습니까?</value>
-  </data>
-  <data name="overwrite" xml:space="preserve">
-    <value>덮어쓰기</value>
-  </data>
-  <data name="failed_to_delete_old_directory" xml:space="preserve">
-    <value>이전 디렉터리를 삭제할 수 없음:</value>
-  </data>
-  <data name="invalid_diagram_template_no_json" xml:space="preserve">
-    <value>유효하지 않은 다이어그램 템플릿 파일입니다. 다이어그램 json 파일을 찾을 수 없습니다.</value>
-  </data>
-  <data name="template_load_failed" xml:space="preserve">
-    <value>다이어그램 템플릿 로드 실패</value>
-  </data>
-  <data name="script_not_defined_in_template" xml:space="preserve">
-    <value>다이어그램 템플릿에 스크립트가 정의되지 않았습니다</value>
-  </data>
-  <data name="function" xml:space="preserve">
-    <value>함수</value>
-  </data>
-  <data name="new_template" xml:space="preserve">
-    <value>새 다이어그램 템플릿</value>
-  </data>
-  <data name="update_available_click_to_download" xml:space="preserve">
-    <value>새 버전을 사용할 수 있습니다. 클릭하여 업데이트하세요</value>
-  </data>
-  <data name="invalid_filename_char" xml:space="preserve">
-    <value>콘텐츠에 지원되지 않는 문자가 포함되어 있습니다</value>
-  </data>
-  <data name="developer_mode" xml:space="preserve">
-    <value>개발자 모드</value>
-  </data>
-  <data name="help_document_not_found" xml:space="preserve">
-    <value>도움말 문서를 찾을 수 없습니다:</value>
-  </data>
-  <data name="path_is_empty" xml:space="preserve">
-    <value>경로가 비어 있습니다</value>
-  </data>
-  <data name="failed_to_load_help_document" xml:space="preserve">
-    <value>도움말 문서를 로드하지 못했습니다:</value>
-  </data>
-  <data name="dev_mode_warning_non_developers" xml:space="preserve">
-    <value>개발자가 아닌 경우 권장하지 않으며, 불필요한 문제가 발생할 수 있습니다.</value>
-  </data>
-  <data name="click_to_download" xml:space="preserve">
-    <value>클릭하여 다운로드</value>
-  </data>
-  <data name="new_version_found" xml:space="preserve">
-    <value>새 버전 발견</value>
-  </data>
-  <data name="downloading_status" xml:space="preserve">
-    <value>다운로드 중...</value>
-  </data>
-  <data name="retry_action" xml:space="preserve">
-    <value>재시도</value>
-  </data>
-  <data name="loading_status" xml:space="preserve">
-    <value>로딩 중...</value>
-  </data>
-  <data name="MarkerShape_FilledCircle" xml:space="preserve">
-    <value>채워진 원</value>
-  </data>
-  <data name="MarkerShape_OpenCircle" xml:space="preserve">
-    <value>빈 원</value>
-  </data>
-  <data name="MarkerShape_FilledSquare" xml:space="preserve">
-    <value>채워진 사각형</value>
-  </data>
-  <data name="MarkerShape_OpenSquare" xml:space="preserve">
-    <value>빈 사각형</value>
-  </data>
-  <data name="MarkerShape_FilledTriangleUp" xml:space="preserve">
-    <value>채워진 위쪽 삼각형</value>
   </data>
   <data name="MarkerShape_OpenTriangleUp" xml:space="preserve">
     <value>빈 위쪽 삼각형</value>
   </data>
-  <data name="MarkerShape_FilledTriangleDown" xml:space="preserve">
-    <value>채워진 아래쪽 삼각형</value>
+  <data name="object_deleted_successfully" xml:space="preserve">
+    <value>개체가 성공적으로 삭제되었습니다.</value>
   </data>
-  <data name="MarkerShape_OpenTriangleDown" xml:space="preserve">
-    <value>빈 아래쪽 삼각형</value>
+  <data name="geo_msg_batch_export_failed" xml:space="preserve">
+    <value>일괄 내보내기 실패: {0}</value>
   </data>
-  <data name="MarkerShape_FilledDiamond" xml:space="preserve">
-    <value>채워진 마름모</value>
+  <data name="show_tick_labels" xml:space="preserve">
+    <value>눈금 레이블 표시</value>
   </data>
-  <data name="MarkerShape_OpenDiamond" xml:space="preserve">
-    <value>빈 마름모</value>
+  <data name="cipw_tooltip_help" xml:space="preserve">
+    <value>CIPW 표준 광물 계산의 알고리즘 흐름 설명을 봅니다</value>
   </data>
-  <data name="MarkerShape_Cross" xml:space="preserve">
-    <value>십자형</value>
+  <data name="row_1_column_1" xml:space="preserve">
+    <value>행: 1, 열: 1</value>
   </data>
-  <data name="MarkerShape_Eks" xml:space="preserve">
-    <value>X 모양</value>
+  <data name="geo_field_formula_name" xml:space="preserve">
+    <value>수식 이름 *</value>
   </data>
-  <data name="MarkerShape_Asterisk" xml:space="preserve">
-    <value>별표</value>
+  <data name="third_party_software" xml:space="preserve">
+    <value>타사 소프트웨어</value>
   </data>
-  <data name="MarkerShape_VerticalBar" xml:space="preserve">
-    <value>수직선</value>
+  <data name="information" xml:space="preserve">
+    <value>정보</value>
+  </data>
+  <data name="cannot_delete_protected_column" xml:space="preserve">
+    <value>보호된 열을 삭제할 수 없음</value>
+  </data>
+  <data name="invalid_diagram_template_no_json" xml:space="preserve">
+    <value>유효하지 않은 다이어그램 템플릿 파일입니다. 다이어그램 json 파일을 찾을 수 없습니다.</value>
+  </data>
+  <data name="cipw_step9_detail" xml:space="preserve">
+    <value>• 각 광물의 몰수에 몰질량을 곱하여 표준 광물 질량 산출
+• 질량 백분율(wt%)로 정규화하여 출력
+• 실리카 포화도, 알루미나 포화 상태, 질량 균형 오차 등 진단 정보 보고</value>
+  </data>
+  <data name="top_x_axis" xml:space="preserve">
+    <value>상단 X축</value>
+  </data>
+  <data name="geo_script_test_input" xml:space="preserve">
+    <value>테스트 입력:</value>
+  </data>
+  <data name="cipw_diag_silica_saturation" xml:space="preserve">
+    <value>실리카 포화도</value>
+  </data>
+  <data name="cipw_diag_mass_balance_error" xml:space="preserve">
+    <value>질량 균형 오차</value>
+  </data>
+  <data name="geo_step_script" xml:space="preserve">
+    <value>수식 스크립트</value>
+  </data>
+  <data name="cipw_btn_example" xml:space="preserve">
+    <value>예제</value>
+  </data>
+  <data name="custom_program_start_failed" xml:space="preserve">
+    <value>사용자 지정 프로그램 시작 실패:</value>
+  </data>
+  <data name="geo_label_custom" xml:space="preserve">
+    <value>사용자 정의</value>
+  </data>
+  <data name="Amphibole" xml:space="preserve">
+    <value>각섬석</value>
+  </data>
+  <data name="minor_grid_Line" xml:space="preserve">
+    <value>보조 그리드 선</value>
+  </data>
+  <data name="BiotiteGTM" xml:space="preserve">
+    <value>Ti 온도계 (Henry et al., 2005)</value>
+  </data>
+  <data name="all_fields_required" xml:space="preserve">
+    <value>모든 필드는 필수입니다!</value>
+  </data>
+  <data name="startup_background_image" xml:space="preserve">
+    <value>시작 배경 이미지</value>
   </data>
   <data name="MarkerShape_HorizontalBar" xml:space="preserve">
     <value>수평선</value>
   </data>
-  <data name="MarkerShape_HashTag" xml:space="preserve">
-    <value>우물 정자</value>
+  <data name="the_sum_of_row" xml:space="preserve">
+    <value>제</value>
   </data>
-  <data name="MarkerShape_OpenCircleWithDot" xml:space="preserve">
-    <value>가운데 점이 있는 원</value>
+  <data name="cipw_step6_detail" xml:space="preserve">
+    <value>철 산화물을 광물에 할당:
+• 자철석(Mt): Fe₂O₃ + FeO
+• 적철석(Hm): 잔여 Fe₂O₃</value>
   </data>
-  <data name="MarkerShape_OpenCircleWithCross" xml:space="preserve">
-    <value>십자가가 있는 원</value>
+  <data name="cannot_delete_base_layers" xml:space="preserve">
+    <value>기본 레이어를 삭제할 수 없습니다.</value>
   </data>
-  <data name="MarkerShape_OpenCircleWithEks" xml:space="preserve">
-    <value>X 표시가 있는 원</value>
+  <data name="geo_msg_script_empty" xml:space="preserve">
+    <value>스크립트 내용이 비어 있습니다</value>
   </data>
-  <data name="exit_action" xml:space="preserve">
-    <value>종료</value>
+  <data name="go_to_download" xml:space="preserve">
+    <value>다운로드하러 가기</value>
   </data>
-  <data name="maintenance" xml:space="preserve">
-    <value>_유지보수(M)</value>
+  <data name="geo_msg_create_table_failed" xml:space="preserve">
+    <value>테이블 생성 실패: {0}</value>
   </data>
-  <data name="export_update_list" xml:space="preserve">
-    <value>업데이트 목록 내보내기</value>
+  <data name="link_url" xml:space="preserve">
+    <value>링크 (URL)</value>
   </data>
-  <data name="builtin_templates" xml:space="preserve">
-    <value>공식 내장 템플릿</value>
+  <data name="click_to_download" xml:space="preserve">
+    <value>클릭하여 다운로드</value>
   </data>
-  <data name="search_templates" xml:space="preserve">
-    <value>템플릿 검색...</value>
+  <data name="interval" xml:space="preserve">
+    <value>눈금 간격</value>
   </data>
-  <data name="clear_search" xml:space="preserve">
-    <value>지우기</value>
+  <data name="font_family" xml:space="preserve">
+    <value>글꼴</value>
   </data>
-  <data name="filter_templates" xml:space="preserve">
-    <value>템플릿 필터링</value>
+  <data name="vertices" xml:space="preserve">
+    <value>정점</value>
   </data>
-  <data name="favorite" xml:space="preserve">
-    <value>즐겨찾기</value>
+  <data name="unknown_axis" xml:space="preserve">
+    <value>알 수 없는 좌표축</value>
   </data>
-  <data name="unfavorite" xml:space="preserve">
-    <value>즐겨찾기 해제</value>
+  <data name="new_template" xml:space="preserve">
+    <value>새 다이어그램 템플릿</value>
   </data>
-  <data name="personal_templates" xml:space="preserve">
-    <value>개인 다이어그램 템플릿</value>
+  <data name="point_count" xml:space="preserve">
+    <value>샘플 포인트</value>
   </data>
-  <data name="favorite_templates" xml:space="preserve">
-    <value>즐겨찾기</value>
-  </data>
-  <data name="official_templates" xml:space="preserve">
-    <value>공식 다이어그램 템플릿</value>
-  </data>
-  <data name="favorite_added" xml:space="preserve">
-    <value>즐겨찾기에 추가됨</value>
-  </data>
-  <data name="favorite_removed" xml:space="preserve">
-    <value>즐겨찾기에서 제거됨</value>
+  <data name="geo_label_official" xml:space="preserve">
+    <value>공식</value>
   </data>
   <data name="recents_templates" xml:space="preserve">
     <value>최근 사용 기록</value>
   </data>
-  <data name="library_section" xml:space="preserve">
-    <value>리소스 라이브러리</value>
-  </data>
-  <data name="workspace_section" xml:space="preserve">
-    <value>마이 스페이스</value>
-  </data>
-  <data name="edit_diagram_template" xml:space="preserve">
-    <value>다이어그램 템플릿 편집</value>
-  </data>
-  <data name="batch_download_new_templates" xml:space="preserve">
-    <value>일괄 다운로드</value>
-  </data>
-  <data name="batch_download_new_templates_tooltip" xml:space="preserve">
-    <value>설치되지 않은 새 템플릿 일괄 다운로드</value>
+  <data name="downloaded_file_hash_mismatch" xml:space="preserve">
+    <value>다운로드한 파일 해시가 서버와 일치하지 않습니다. 파일이 손상되었거나 변조되었을 수 있습니다.</value>
   </data>
   <data name="batch_download_confirm_message" xml:space="preserve">
     <value>설치되지 않은 {0}개의 새 템플릿이 감지되었습니다. 일괄 다운로드하시겠습니까?</value>
   </data>
-  <data name="no_new_templates_to_download" xml:space="preserve">
-    <value>다운로드할 새 템플릿이 없습니다</value>
+  <data name="cipw_silica_undersaturated" xml:space="preserve">
+    <value>불포화</value>
   </data>
-  <data name="batch_download_success_count" xml:space="preserve">
-    <value>성공적으로 다운로드됨: {0}개</value>
+  <data name="data_parameters_are_empty" xml:space="preserve">
+    <value>데이터 매개변수가 비어 있음</value>
   </data>
-  <data name="batch_download_fail_count" xml:space="preserve">
-    <value>실패: {0}개</value>
+  <data name="StartStatus" xml:space="preserve">
+    <value>시작 중...</value>
   </data>
-  <data name="batch_download_complete" xml:space="preserve">
-    <value>일괄 다운로드 완료</value>
+  <data name="cipw_help_window_title" xml:space="preserve">
+    <value>CIPW 표준 광물 계산 - 알고리즘 설명</value>
   </data>
-  <data name="failed_templates" xml:space="preserve">
-    <value>실패한 템플릿:</value>
+  <data name="geo_tooltip_sample_row_eg" xml:space="preserve">
+    <value>예: 45.2, 0.8, 12.3, =MyFormula(A2,B2,C2)</value>
   </data>
-  <data name="batch_download_failed" xml:space="preserve">
-    <value>일괄 다운로드 실패</value>
+  <data name="geo_hint_select_thermometer" xml:space="preserve">
+    <value>왼쪽 패널에서 온도계를 선택하세요</value>
   </data>
-  <data name="batch_downloading" xml:space="preserve">
-    <value>일괄 다운로드 중</value>
+  <data name="delete_column" xml:space="preserve">
+    <value>열 삭제</value>
   </data>
-  <data name="batch_download_progress" xml:space="preserve">
-    <value>다운로드 중: {0}/{1} - {2}</value>
+  <data name="QuitEdit" xml:space="preserve">
+    <value>편집 종료</value>
   </data>
-  <data name="batch_download_cancelled" xml:space="preserve">
-    <value>일괄 다운로드 취소됨</value>
+  <data name="clear_search" xml:space="preserve">
+    <value>지우기</value>
   </data>
-  <data name="batch_download_title" xml:space="preserve">
-    <value>일괄 다운로드</value>
+  <data name="popup_diagram_window" xml:space="preserve">
+    <value>다이어그램 창 팝업</value>
   </data>
-  <data name="confirm_clear_data_for_validation" xml:space="preserve">
-    <value>구문 확인 시 데이터 테이블과 플롯 데이터 포인트가 모두 삭제됩니다. 계속하시겠습니까?</value>
+  <data name="geo_validation_mineral_required" xml:space="preserve">
+    <value>광물 분류는 필수입니다</value>
   </data>
-  <data name="toggle_details_expand_collapse" xml:space="preserve">
-    <value>상세 정보 펼치기/접기</value>
+  <data name="geo_tooltip_inputs_eg" xml:space="preserve">
+    <value>예: SiO2, TiO2, Al2O3</value>
   </data>
-  <data name="calculation_results" xml:space="preserve">
-    <value>계산 결과</value>
+  <data name="default_diagram_expand_level" xml:space="preserve">
+    <value>기본 다이어그램 확장 레벨</value>
   </data>
-  <data name="script_no_detailed_calculation_description" xml:space="preserve">
-    <value>이 스크립트는 상세 계산 과정 설명을 제공하지 않습니다.</value>
+  <data name="failed_to_delete_old_directory" xml:space="preserve">
+    <value>이전 디렉터리를 삭제할 수 없음:</value>
   </data>
-  <data name="trace_function_usage_tip" xml:space="preserve">
-    <value>스크립트에서 trace(...) 함수를 사용하여 계산 과정을 기록할 수 있습니다.</value>
+  <data name="unsaved_template_changes_confirm" xml:space="preserve">
+    <value>현재 템플릿에 저장되지 않은 내용이 있습니다. 저장하시겠습니까?</value>
   </data>
-  <data name="insufficient_script_return_values" xml:space="preserve">
-    <value>스크립트 반환 값이 부족합니다</value>
+  <data name="save_changes" xml:space="preserve">
+    <value>변경 사항 저장</value>
   </data>
-  <data name="ternary_script_return_value_requirement" xml:space="preserve">
-    <value>삼원 도표(Ternary plot) 스크립트는 최소 3개의 값 [A, B, C]이 포함된 배열을 반환해야 합니다</value>
+  <data name="MarkerShape_OpenTriangleDown" xml:space="preserve">
+    <value>빈 아래쪽 삼각형</value>
   </data>
-  <data name="script_return_two_values_requirement" xml:space="preserve">
-    <value>스크립트는 최소 2개의 값 [X, Y]이 포함된 배열을 반환해야 합니다</value>
+  <data name="PlotLeftAxies" xml:space="preserve">
+    <value>왼쪽 좌표축</value>
+  </data>
+  <data name="InternationalizationAndPersonalization" xml:space="preserve">
+    <value>국제화 &amp; 개인화</value>
+  </data>
+  <data name="error_saving_rtf_file" xml:space="preserve">
+    <value>RTF 파일 저장 중 오류 발생:</value>
+  </data>
+  <data name="support_json_format" xml:space="preserve">
+    <value>json 형식 지원</value>
+  </data>
+  <data name="cipw_col_silica_saturation" xml:space="preserve">
+    <value>SiO2 포화도</value>
+  </data>
+  <data name="validate_syntax" xml:space="preserve">
+    <value>구문 검사</value>
+  </data>
+  <data name="add_row_up" xml:space="preserve">
+    <value>위에 행 삽입</value>
+  </data>
+  <data name="delete_failed" xml:space="preserve">
+    <value>삭제 실패:</value>
+  </data>
+  <data name="PointFilledTriangleDown" xml:space="preserve">
+    <value>아래쪽 삼각형</value>
+  </data>
+  <data name="NewBasemap" xml:space="preserve">
+    <value>새 베이스맵</value>
+  </data>
+  <data name="cipw_step5_detail" xml:space="preserve">
+    <value>알칼리 산화물과 알루미나를 순차적으로 장석에 할당:
+• 정장석(Or): K₂O + Al₂O₃ + 6SiO₂
+• 조장석(Ab): Na₂O + Al₂O₃ + 6SiO₂
+• 회장석(An): CaO + Al₂O₃ + 2SiO₂
+• 강옥(Cor): 잔여 Al₂O₃ (과알루미나의 경우)
+• 에지린(Ac): Na₂O + Fe₂O₃ + 4SiO₂ (과알칼리의 경우)
+• 잔여 알칼리 규산염 (ns, ks)</value>
+  </data>
+  <data name="PointSquare" xml:space="preserve">
+    <value>사각형</value>
+  </data>
+  <data name="no_imported_data_to_clear" xml:space="preserve">
+    <value>지울 가져온 데이터가 없습니다</value>
+  </data>
+  <data name="geo_help_italic" xml:space="preserve">
+    <value>기울임꼴 (Ctrl+I)</value>
+  </data>
+  <data name="help_file_not_found" xml:space="preserve">
+    <value>도움말 파일을 찾을 수 없습니다.</value>
+  </data>
+  <data name="geo_tooltip_help" xml:space="preserve">
+    <value>도움말</value>
+  </data>
+  <data name="advanced_rendering" xml:space="preserve">
+    <value>고급 렌더링</value>
+  </data>
+  <data name="please_select_widget_to_add" xml:space="preserve">
+    <value>추가할 위젯을 선택하십시오:</value>
+  </data>
+  <data name="offset_y" xml:space="preserve">
+    <value>오프셋 Y</value>
+  </data>
+  <data name="offset_x" xml:space="preserve">
+    <value>오프셋 X</value>
+  </data>
+  <data name="ArsenopyriteGTM" xml:space="preserve">
+    <value>유비철석 온도계 (Kretschmar and Scott, 1976)</value>
+  </data>
+  <data name="Alignment_LowerRight" xml:space="preserve">
+    <value>우측 하단</value>
+  </data>
+  <data name="official_website" xml:space="preserve">
+    <value>공식 웹사이트</value>
+  </data>
+  <data name="save_as_csv_file" xml:space="preserve">
+    <value>CSV 파일로 저장</value>
+  </data>
+  <data name="plot_defaults" xml:space="preserve">
+    <value>플롯 기본 설정</value>
+  </data>
+  <data name="add_column_right" xml:space="preserve">
+    <value>열 추가(오른쪽)</value>
+  </data>
+  <data name="geo_ctx_export_zip" xml:space="preserve">
+    <value>ZIP 내보내기</value>
+  </data>
+  <data name="minor_tick_style" xml:space="preserve">
+    <value>보조 눈금 스타일</value>
+  </data>
+  <data name="export_update_list" xml:space="preserve">
+    <value>업데이트 목록 내보내기</value>
+  </data>
+  <data name="geo_ctx_edit" xml:space="preserve">
+    <value>편집</value>
+  </data>
+  <data name="reset_view" xml:space="preserve">
+    <value>뷰 재설정</value>
+  </data>
+  <data name="Alignment_UpperRight" xml:space="preserve">
+    <value>우측 상단</value>
+  </data>
+  <data name="batch_download_new_templates_tooltip" xml:space="preserve">
+    <value>설치되지 않은 새 템플릿 일괄 다운로드</value>
+  </data>
+  <data name="LineColor" xml:space="preserve">
+    <value>색상</value>
+  </data>
+  <data name="favorite_templates" xml:space="preserve">
+    <value>즐겨찾기</value>
+  </data>
+  <data name="unable_to_get_announcements" xml:space="preserve">
+    <value>공지 정보를 가져올 수 없음.</value>
+  </data>
+  <data name="auto_check_geothermometer_updates" xml:space="preserve">
+    <value>지질 온도계 업데이트 자동 확인</value>
+  </data>
+  <data name="LineStyle" xml:space="preserve">
+    <value>선 스타일</value>
+  </data>
+  <data name="LineSolid" xml:space="preserve">
+    <value>실선</value>
+  </data>
+  <data name="PointHollowCircle" xml:space="preserve">
+    <value>빈 원형</value>
+  </data>
+  <data name="LineWidth" xml:space="preserve">
+    <value>너비</value>
+  </data>
+  <data name="add_widget" xml:space="preserve">
+    <value>위젯 추가</value>
   </data>
   <data name="calculation_error" xml:space="preserve">
     <value>계산 오류</value>
   </data>
-  <data name="script_return_type_error" xml:space="preserve">
-    <value>스크립트 반환 유형 오류</value>
+  <data name="confirm_enter_edit_mode_base_map" xml:space="preserve">
+    <value>편집 모드로 들어가시겠습니까? 이렇게 하면 베이스맵을 수정할 수 있습니다.</value>
+  </data>
+  <data name="template_loaded_successfully" xml:space="preserve">
+    <value>템플릿 파일 열기 성공</value>
+  </data>
+  <data name="all_fonts" xml:space="preserve">
+    <value>모든 글꼴</value>
+  </data>
+  <data name="help_instructions" xml:space="preserve">
+    <value>도움말</value>
+  </data>
+  <data name="PlotData" xml:space="preserve">
+    <value>데이터</value>
+  </data>
+  <data name="PlotText" xml:space="preserve">
+    <value>주석</value>
+  </data>
+  <data name="tio2_activity_range" xml:space="preserve">
+    <value>TiO2 활동도는 (0,1] 범위 내에 있어야 함</value>
+  </data>
+  <data name="QuitAppMode" xml:space="preserve">
+    <value>프로그램 종료 방법</value>
+  </data>
+  <data name="maximize" xml:space="preserve">
+    <value>최대화</value>
+  </data>
+  <data name="diagram_template_not_found_repair_hint" xml:space="preserve">
+    <value>파일 다이어그램 템플릿을 찾을 수 없습니다. 홈 페이지에서 '템플릿 복구 도구'를 사용하여 복구해 보십시오.</value>
+  </data>
+  <data name="no_new_templates_to_download" xml:space="preserve">
+    <value>다운로드할 새 템플릿이 없습니다</value>
+  </data>
+  <data name="retry_action" xml:space="preserve">
+    <value>재시도</value>
+  </data>
+  <data name="arrowhead_length" xml:space="preserve">
+    <value>화살표 머리 길이</value>
+  </data>
+  <data name="remove_point" xml:space="preserve">
+    <value>이 정점 삭제</value>
+  </data>
+  <data name="geo_dialog_delete_thermometer" xml:space="preserve">
+    <value>{0} 온도계「{1}」을(를) 삭제하시겠습니까？</value>
+  </data>
+  <data name="x_coordinate" xml:space="preserve">
+    <value>X 좌표</value>
+  </data>
+  <data name="geo_btn_help_confirm" xml:space="preserve">
+    <value>확인</value>
+  </data>
+  <data name="content_and_position" xml:space="preserve">
+    <value>내용 및 위치</value>
+  </data>
+  <data name="CategoryFormatError" xml:space="preserve">
+    <value>범주 형식 오류</value>
+  </data>
+  <data name="invalid_diagram_template_file" xml:space="preserve">
+    <value>유효하지 않은 다이어그램 템플릿 파일</value>
+  </data>
+  <data name="add_image" xml:space="preserve">
+    <value>이미지 추가</value>
+  </data>
+  <data name="enable_anti_alias" xml:space="preserve">
+    <value>앤티 앨리어싱 사용</value>
+  </data>
+  <data name="add_arrow" xml:space="preserve">
+    <value>화살표 추가</value>
+  </data>
+  <data name="MarkerShape_Asterisk" xml:space="preserve">
+    <value>별표</value>
+  </data>
+  <data name="failed_to_delete_row" xml:space="preserve">
+    <value>행 삭제 실패:</value>
+  </data>
+  <data name="EditMode" xml:space="preserve">
+    <value>편집 모드</value>
+  </data>
+  <data name="line_type_densely_dashed" xml:space="preserve">
+    <value>촘촘한 파선</value>
+  </data>
+  <data name="geo_script_inputs" xml:space="preserve">
+    <value>입력 열（쉼표 구분）</value>
+  </data>
+  <data name="diagram_template_repair_tool" xml:space="preserve">
+    <value>다이어그램 템플릿 복구 도구</value>
+  </data>
+  <data name="cipw_diagnostic_details" xml:space="preserve">
+    <value>진단 세부 정보</value>
+  </data>
+  <data name="domain" xml:space="preserve">
+    <value>정의역</value>
+  </data>
+  <data name="line_type_solid" xml:space="preserve">
+    <value>실선</value>
+  </data>
+  <data name="cipw_default_value_text" xml:space="preserve">
+    <value>기본값 0.15</value>
+  </data>
+  <data name="FilePath" xml:space="preserve">
+    <value>파일 경로</value>
+  </data>
+  <data name="subtitle_font_size" xml:space="preserve">
+    <value>부제목 글꼴 크기</value>
+  </data>
+  <data name="geo_help_optional_hint" xml:space="preserve">
+    <value>도움말 문서는 선택 사항이며 다국어 RTF 서식 있는 텍스트를 지원합니다.</value>
+  </data>
+  <data name="delete_object" xml:space="preserve">
+    <value>개체 삭제</value>
+  </data>
+  <data name="cipw_title" xml:space="preserve">
+    <value>CIPW 표준 광물 계산</value>
+  </data>
+  <data name="LegendSetting" xml:space="preserve">
+    <value>범례 설정</value>
+  </data>
+  <data name="refresh_successful" xml:space="preserve">
+    <value>새로 고침 성공</value>
+  </data>
+  <data name="cipw_alumina_peraluminous" xml:space="preserve">
+    <value>과알루미나</value>
+  </data>
+  <data name="start_coordinates" xml:space="preserve">
+    <value>시작 좌표</value>
+  </data>
+  <data name="cipw_error" xml:space="preserve">
+    <value>오류</value>
+  </data>
+  <data name="elements_actual_returned" xml:space="preserve">
+    <value>개 요소, 실제 반환</value>
+  </data>
+  <data name="geo_script_result" xml:space="preserve">
+    <value>결과:</value>
+  </data>
+  <data name="export" xml:space="preserve">
+    <value>내보내기</value>
+  </data>
+  <data name="Chlorite" xml:space="preserve">
+    <value>녹니석</value>
+  </data>
+  <data name="edit_menu_bar_item" xml:space="preserve">
+    <value>메뉴 모음 항목 편집</value>
+  </data>
+  <data name="maintenance" xml:space="preserve">
+    <value>_유지보수(M)</value>
+  </data>
+  <data name="geo_tooltip_maximize" xml:space="preserve">
+    <value>최대화</value>
+  </data>
+  <data name="geo_tooltip_restore" xml:space="preserve">
+    <value>복원</value>
+  </data>
+  <data name="confirm_clear_all_data" xml:space="preserve">
+    <value>테이블 데이터(플롯 데이터 포인트 포함)를 지우시겠습니까?</value>
+  </data>
+  <data name="PlotShowMinorGrid" xml:space="preserve">
+    <value>보조 그리드 표시</value>
+  </data>
+  <data name="geo_msg_richtext_not_init" xml:space="preserve">
+    <value>RichTextBox 컨트롤이 초기화되지 않았습니다</value>
+  </data>
+  <data name="invalid_filename_char" xml:space="preserve">
+    <value>콘텐츠에 지원되지 않는 문자가 포함되어 있습니다</value>
+  </data>
+  <data name="missing_drawing_objects_error" xml:space="preserve">
+    <value>• 드로잉 개체 누락: 템플릿에 선, 다각형, 텍스트 또는 화살표가 포함되어 있지 않습니다.</value>
+  </data>
+  <data name="geo_msg_export_failed" xml:space="preserve">
+    <value>내보내기 실패: {0}</value>
+  </data>
+  <data name="Alignment_MiddleCenter" xml:space="preserve">
+    <value>정중앙</value>
+  </data>
+  <data name="major_tick_style" xml:space="preserve">
+    <value>주 눈금 스타일</value>
+  </data>
+  <data name="server_announcements" xml:space="preserve">
+    <value>서버 공지</value>
+  </data>
+  <data name="ModifedSuccess" xml:space="preserve">
+    <value>수정 성공</value>
+  </data>
+  <data name="cipw_diag_main_minerals" xml:space="preserve">
+    <value>── 주요 광물 ──</value>
+  </data>
+  <data name="Orientation_Vertical" xml:space="preserve">
+    <value>세로</value>
+  </data>
+  <data name="open_import" xml:space="preserve">
+    <value>가져오기 열기</value>
+  </data>
+  <data name="no_data_please_add_data" xml:space="preserve">
+    <value>데이터 없음, 데이터를 추가하십시오</value>
+  </data>
+  <data name="geo_test_error_format" xml:space="preserve">
+    <value>오류: {0}</value>
+  </data>
+  <data name="ChineseS" xml:space="preserve">
+    <value>中文(简体)</value>
+  </data>
+  <data name="batch_download_new_templates" xml:space="preserve">
+    <value>일괄 다운로드</value>
+  </data>
+  <data name="error_creating_new_template" xml:space="preserve">
+    <value>새 템플릿 생성 중 오류 발생:</value>
+  </data>
+  <data name="PlotTitleFont" xml:space="preserve">
+    <value>제목 글꼴</value>
+  </data>
+  <data name="geo_field_name" xml:space="preserve">
+    <value>이름 *</value>
+  </data>
+  <data name="geo_field_year" xml:space="preserve">
+    <value>연도 *</value>
+  </data>
+  <data name="already_latest_version" xml:space="preserve">
+    <value>이미 최신 버전입니다</value>
+  </data>
+  <data name="geo_validation_script_required" xml:space="preserve">
+    <value>스크립트 내용은 필수입니다</value>
+  </data>
+  <data name="favorite_removed" xml:space="preserve">
+    <value>즐겨찾기에서 제거됨</value>
+  </data>
+  <data name="richtextbox_control_cannot_be_null" xml:space="preserve">
+    <value>RichTextBox 컨트롤은 null일 수 없습니다</value>
+  </data>
+  <data name="cipw_step7_detail" xml:space="preserve">
+    <value>잔여 MgO, FeO, CaO를 철마그네슘 규산염에 할당:
+• 투휘석(Di): CaO + MgO + 2SiO₂ (Mg 종단원)
+• 헤덴베르크휘석(Hd): CaO + FeO + 2SiO₂ (Fe 종단원)
+• 완화휘석(En): MgO + SiO₂
+• 페로실라이트(Fs): FeO + SiO₂
+• 규회석(Wo): 잔여 CaO + SiO₂</value>
+  </data>
+  <data name="data_import_successful" xml:space="preserve">
+    <value>데이터 가져오기 성공</value>
+  </data>
+  <data name="CheckUpdate" xml:space="preserve">
+    <value>업데이트 확인</value>
+  </data>
+  <data name="cipw_step9_title" xml:space="preserve">
+    <value>결과 출력</value>
+  </data>
+  <data name="path_is_empty" xml:space="preserve">
+    <value>경로가 비어 있습니다</value>
+  </data>
+  <data name="BasemapExisted" xml:space="preserve">
+    <value>베이스맵 파일이 이미 존재합니다. 덮어쓰시겠습니까?</value>
+  </data>
+  <data name="format" xml:space="preserve">
+    <value>형식</value>
+  </data>
+  <data name="cipw_step7_title" xml:space="preserve">
+    <value>고철질 규산염 광물 형성</value>
+  </data>
+  <data name="cipw_msg_export_success" xml:space="preserve">
+    <value>결과를 내보냈습니다: {0}</value>
+  </data>
+  <data name="language_apperarance" xml:space="preserve">
+    <value>언어 및 모양</value>
+  </data>
+  <data name="geo_msg_demoted" xml:space="preserve">
+    <value>사용자 정의 온도계로 강등되었습니다</value>
+  </data>
+  <data name="plot_type" xml:space="preserve">
+    <value>플롯 유형</value>
+  </data>
+  <data name="image_copied_to_clipboard" xml:space="preserve">
+    <value>이미지가 클립보드에 성공적으로 복사되었습니다</value>
+  </data>
+  <data name="refresh" xml:space="preserve">
+    <value>새로 고침</value>
+  </data>
+  <data name="failed_to_parse_diagram_template_json" xml:space="preserve">
+    <value>다이어그램 템플릿 JSON 파일을 구문 분석할 수 없음</value>
+  </data>
+  <data name="diagram_legend_properties" xml:space="preserve">
+    <value>다이어그램 범례 속성</value>
+  </data>
+  <data name="downloaded_content_not_valid_json" xml:space="preserve">
+    <value>다운로드한 내용이 유효한 JSON 형식이 아닙니다.</value>
+  </data>
+  <data name="diagram_template_corrupted_or_invalid" xml:space="preserve">
+    <value>다이어그램 템플릿 파일이 손상되었거나 유효한 다이어그램 템플릿 JSON 파일이 포함되어 있지 않습니다.</value>
+  </data>
+  <data name="Placeholder_Axis_Title" xml:space="preserve">
+    <value>축 제목</value>
+  </data>
+  <data name="MarkerShape_OpenCircle" xml:space="preserve">
+    <value>빈 원</value>
+  </data>
+  <data name="linear" xml:space="preserve">
+    <value>선형</value>
+  </data>
+  <data name="cipw_iron_estimated_feot" xml:space="preserve">
+    <value>FeOT에서 추정</value>
+  </data>
+  <data name="view_latest_server_announcements" xml:space="preserve">
+    <value>서버의 최신 공지 사항 보기</value>
+  </data>
+  <data name="length" xml:space="preserve">
+    <value>길이</value>
+  </data>
+  <data name="legend" xml:space="preserve">
+    <value>범례</value>
+  </data>
+  <data name="geo_msg_import_success" xml:space="preserve">
+    <value>가져오기 성공</value>
+  </data>
+  <data name="calculation_results" xml:space="preserve">
+    <value>계산 결과</value>
+  </data>
+  <data name="template_translator" xml:space="preserve">
+    <value>다이어그램 템플릿 번역기</value>
+  </data>
+  <data name="no_valid_workbook_or_data_found" xml:space="preserve">
+    <value>파일에서 유효한 통합 문서나 데이터를 찾을 수 없습니다</value>
+  </data>
+  <data name="geo_validate_version_required" xml:space="preserve">
+    <value>버전은 비워둘 수 없습니다.</value>
+  </data>
+  <data name="LineDenselyDashed" xml:space="preserve">
+    <value>촘촘한 파선</value>
+  </data>
+  <data name="axis_title" xml:space="preserve">
+    <value>좌표축 제목</value>
+  </data>
+  <data name="axis_style" xml:space="preserve">
+    <value>좌표축 스타일</value>
+  </data>
+  <data name="chart_title_style" xml:space="preserve">
+    <value>차트 제목 스타일</value>
+  </data>
+  <data name="template_file_corrupted" xml:space="preserve">
+    <value>템플릿 파일이 손상됨</value>
+  </data>
+  <data name="png_format" xml:space="preserve">
+    <value>PNG 형식</value>
+  </data>
+  <data name="PointFilledTriangleUp" xml:space="preserve">
+    <value>위쪽 삼각형</value>
+  </data>
+  <data name="AddPolygons" xml:space="preserve">
+    <value>다각형 추가</value>
+  </data>
+  <data name="LegendPosition" xml:space="preserve">
+    <value>범례 위치</value>
+  </data>
+  <data name="is_not_a_valid_variable_name" xml:space="preserve">
+    <value>'은(는) 유효한 변수 이름이 아닙니다.</value>
+  </data>
+  <data name="template_potential_issues_detected" xml:space="preserve">
+    <value>템플릿에서 다음 잠재적 문제가 감지되었습니다:</value>
+  </data>
+  <data name="unknown_error_checking_for_updates" xml:space="preserve">
+    <value>업데이트 확인 중 알 수 없는 오류 발생</value>
+  </data>
+  <data name="MinorAxes" xml:space="preserve">
+    <value>보조 눈금 축</value>
+  </data>
+  <data name="column" xml:space="preserve">
+    <value>열:</value>
+  </data>
+  <data name="major_grid_line" xml:space="preserve">
+    <value>주 그리드 선</value>
+  </data>
+  <data name="ParameterNull" xml:space="preserve">
+    <value>매개변수가 비어 있음</value>
+  </data>
+  <data name="diagram_template_directory_not_found" xml:space="preserve">
+    <value>다이어그램 템플릿 디렉터리가 존재하지 않음:</value>
+  </data>
+  <data name="unable_to_get_latest_release_info" xml:space="preserve">
+    <value>최신 릴리스 정보를 가져올 수 없음</value>
+  </data>
+  <data name="tick_labels" xml:space="preserve">
+    <value>눈금 레이블</value>
+  </data>
+  <data name="data_export" xml:space="preserve">
+    <value>데이터 내보내기</value>
+  </data>
+  <data name="function" xml:space="preserve">
+    <value>함수</value>
+  </data>
+  <data name="MessageNotification" xml:space="preserve">
+    <value>메시지 알림</value>
+  </data>
+  <data name="CancelSelected" xml:space="preserve">
+    <value>선택 취소</value>
+  </data>
+  <data name="template_library" xml:space="preserve">
+    <value>템플릿 라이브러리</value>
+  </data>
+  <data name="geo_menu_export_official" xml:space="preserve">
+    <value>공식 온도계 내보내기</value>
+  </data>
+  <data name="coordinates_picked_success" xml:space="preserve">
+    <value>좌표 선택 성공!</value>
+  </data>
+  <data name="AxesTickUpLimit" xml:space="preserve">
+    <value>눈금 상한</value>
+  </data>
+  <data name="ParameterNotFilledIn" xml:space="preserve">
+    <value>플롯 매개변수가 입력되지 않았습니다</value>
+  </data>
+  <data name="csv_file_filter" xml:space="preserve">
+    <value>CSV 파일|*.csv</value>
+  </data>
+  <data name="italic" xml:space="preserve">
+    <value>기울임꼴</value>
+  </data>
+  <data name="plot_settings" xml:space="preserve">
+    <value>플롯 설정</value>
+  </data>
+  <data name="geo_script_headers" xml:space="preserve">
+    <value>헤더 *（쉼표 구분）</value>
+  </data>
+  <data name="select_an_object" xml:space="preserve">
+    <value>개체를 선택하십시오</value>
+  </data>
+  <data name="geo_validation_headers_required" xml:space="preserve">
+    <value>헤더는 필수입니다</value>
+  </data>
+  <data name="language_setting_duplicate_found" xml:space="preserve">
+    <value>언어 설정에 중복된 항목이 있습니다. 확인해 주십시오!</value>
+  </data>
+  <data name="geo_field_reference" xml:space="preserve">
+    <value>참고 문헌 *</value>
+  </data>
+  <data name="unsaved_diagram_template_prompt" xml:space="preserve">
+    <value>현재 다이어그램 템플릿에 저장되지 않은 내용이 있습니다. 저장하시겠습니까?</value>
+  </data>
+  <data name="offset" xml:space="preserve">
+    <value>오프셋</value>
+  </data>
+  <data name="third_party" xml:space="preserve">
+    <value>타사</value>
+  </data>
+  <data name="not_enough_vertices_add_polygon_canceled" xml:space="preserve">
+    <value>정점 수가 부족하여 다각형 추가 작업이 취소되었습니다.</value>
+  </data>
+  <data name="deselect" xml:space="preserve">
+    <value>선택 취소</value>
+  </data>
+  <data name="PlotShowGrid" xml:space="preserve">
+    <value>그리드 표시</value>
+  </data>
+  <data name="overwrite" xml:space="preserve">
+    <value>덮어쓰기</value>
+  </data>
+  <data name="data_file_filter" xml:space="preserve">
+    <value>데이터 파일 (*.csv, *.xls, *.xlsx)|*.csv;*.xls;*.xlsx</value>
+  </data>
+  <data name="CalTarget2" xml:space="preserve">
+    <value>Zr 주성분 온도 (Watson and Harrison, 1983)</value>
+  </data>
+  <data name="CalTarget1" xml:space="preserve">
+    <value>Zr 포화 온도 (Watson and Harrison, 1983)</value>
+  </data>
+  <data name="cipw_btn_confirm_clear" xml:space="preserve">
+    <value>지우기 확인</value>
+  </data>
+  <data name="missing_parameters" xml:space="preserve">
+    <value>매개변수 누락</value>
+  </data>
+  <data name="script_definition" xml:space="preserve">
+    <value>스크립트</value>
+  </data>
+  <data name="cipw_iron_partial_assumed" xml:space="preserve">
+    <value>부분 가정</value>
+  </data>
+  <data name="is_italic" xml:space="preserve">
+    <value>기울임꼴</value>
+  </data>
+  <data name="formula" xml:space="preserve">
+    <value>공식</value>
+  </data>
+  <data name="script_language" xml:space="preserve">
+    <value>스크립트 언어:</value>
+  </data>
+  <data name="FontFamily" xml:space="preserve">
+    <value>글꼴</value>
+  </data>
+  <data name="update" xml:space="preserve">
+    <value>_업데이트(U)</value>
+  </data>
+  <data name="tick_style" xml:space="preserve">
+    <value>눈금 스타일</value>
+  </data>
+  <data name="no_template_or_path_specified" xml:space="preserve">
+    <value>저장할 템플릿이 없거나 저장 경로가 지정되지 않았습니다. '다른 이름으로 저장'을 사용하십시오.</value>
+  </data>
+  <data name="ternary_script_return_value_requirement" xml:space="preserve">
+    <value>삼원 도표(Ternary plot) 스크립트는 최소 3개의 값 [A, B, C]이 포함된 배열을 반환해야 합니다</value>
+  </data>
+  <data name="confirm_clear_data_for_validation" xml:space="preserve">
+    <value>구문 확인 시 데이터 테이블과 플롯 데이터 포인트가 모두 삭제됩니다. 계속하시겠습니까?</value>
+  </data>
+  <data name="geo_label_builtin" xml:space="preserve">
+    <value>내장</value>
+  </data>
+  <data name="file_path_cannot_be_empty" xml:space="preserve">
+    <value>파일 경로는 비어 있을 수 없습니다</value>
+  </data>
+  <data name="IsShowMinorAxes" xml:space="preserve">
+    <value>보조 눈금 숨기기</value>
+  </data>
+  <data name="data_series" xml:space="preserve">
+    <value>데이터 계열</value>
+  </data>
+  <data name="cipw_step8_title" xml:space="preserve">
+    <value>실리카 포화도 보정</value>
+  </data>
+  <data name="loading_main_interface_components_ellipsis" xml:space="preserve">
+    <value>메인 인터페이스 구성 요소 로드 중...</value>
+  </data>
+  <data name="ResetVision" xml:space="preserve">
+    <value>뷰 재설정</value>
+  </data>
+  <data name="import_data" xml:space="preserve">
+    <value>데이터 가져오기</value>
+  </data>
+  <data name="template_ready" xml:space="preserve">
+    <value>템플릿 준비 완료!</value>
+  </data>
+  <data name="PointStar" xml:space="preserve">
+    <value>별 모양</value>
+  </data>
+  <data name="export_diagram_template" xml:space="preserve">
+    <value>다이어그램 템플릿 내보내기</value>
+  </data>
+  <data name="description" xml:space="preserve">
+    <value>설명</value>
+  </data>
+  <data name="exit_action" xml:space="preserve">
+    <value>종료</value>
+  </data>
+  <data name="maintain_server_config_and_templates" xml:space="preserve">
+    <value>서버 구성 및 템플릿 파일 유지 관리</value>
+  </data>
+  <data name="NewBasemapSuccess" xml:space="preserve">
+    <value>새 베이스맵 만들기 성공</value>
+  </data>
+  <data name="copy_plot_to_clipboard" xml:space="preserve">
+    <value>플롯 이미지를 클립보드로 복사</value>
+  </data>
+  <data name="batch_download_cancelled" xml:space="preserve">
+    <value>일괄 다운로드 취소됨</value>
+  </data>
+  <data name="geo_tooltip_formula_name" xml:space="preserve">
+    <value>영문, 숫자, 밑줄만 가능 (예: MyFormula_v1)</value>
+  </data>
+  <data name="geo_menu_check_update" xml:space="preserve">
+    <value>업데이트 확인</value>
+  </data>
+  <data name="geo_help_no_doc_text" xml:space="preserve">
+    <value>도움말 문서가 없습니다.</value>
+  </data>
+  <data name="cipw_sheet_name" xml:space="preserve">
+    <value>CIPW 계산</value>
+  </data>
+  <data name="right_y_axis" xml:space="preserve">
+    <value>오른쪽 Y축</value>
+  </data>
+  <data name="download_template_failed" xml:space="preserve">
+    <value>템플릿 다운로드 실패:</value>
+  </data>
+  <data name="click_or_drag_template_json_here" xml:space="preserve">
+    <value>템플릿 파일(JSON)을 클릭하거나 이곳으로 드래그하십시오</value>
+  </data>
+  <data name="coordinate_positioning" xml:space="preserve">
+    <value>좌표 위치 지정</value>
+  </data>
+  <data name="geo_msg_already_latest" xml:space="preserve">
+    <value>이미 최신 버전입니다</value>
+  </data>
+  <data name="SaveSuccess" xml:space="preserve">
+    <value>저장 성공</value>
+  </data>
+  <data name="ResetPlot" xml:space="preserve">
+    <value>플롯 초기화</value>
+  </data>
+  <data name="cipw_step3_title" xml:space="preserve">
+    <value>부광물 형성</value>
+  </data>
+  <data name="geo_msg_update_available" xml:space="preserve">
+    <value>{0}개의 지질 온도계를 업데이트할 수 있습니다</value>
+  </data>
+  <data name="open_file_location" xml:space="preserve">
+    <value>파일 위치 열기</value>
+  </data>
+  <data name="multiple_data_series_hint" xml:space="preserve">
+    <value>여러 데이터 계열은 쉼표로 구분하십시오. 예: SiO2,TiO2</value>
+  </data>
+  <data name="AxesTickDownLimit" xml:space="preserve">
+    <value>눈금 하한</value>
+  </data>
+  <data name="add_polygon" xml:space="preserve">
+    <value>다각형 추가</value>
+  </data>
+  <data name="batch_download_title" xml:space="preserve">
+    <value>일괄 다운로드</value>
+  </data>
+  <data name="cipw_diag_iron_mode" xml:space="preserve">
+    <value>철 처리 모드</value>
+  </data>
+  <data name="geo_msg_import_cancelled" xml:space="preserve">
+    <value>가져오기 취소됨</value>
+  </data>
+  <data name="Alignment_LowerCenter" xml:space="preserve">
+    <value>하단 중앙</value>
+  </data>
+  <data name="cannot_parse_version_number_check_release_address" xml:space="preserve">
+    <value>버전 번호를 구문 분석할 수 없습니다. 릴리스 주소에서 확인하십시오</value>
+  </data>
+  <data name="workspace_section" xml:space="preserve">
+    <value>마이 스페이스</value>
+  </data>
+  <data name="CustomPath" xml:space="preserve">
+    <value>사용자 지정 폴더 위치</value>
+  </data>
+  <data name="geo_msg_check_update_failed" xml:space="preserve">
+    <value>업데이트 확인 실패</value>
+  </data>
+  <data name="MarkerShape_OpenSquare" xml:space="preserve">
+    <value>빈 사각형</value>
+  </data>
+  <data name="add_language_column" xml:space="preserve">
+    <value>언어 열 추가</value>
+  </data>
+  <data name="DefaultPath" xml:space="preserve">
+    <value>기본 위치</value>
+  </data>
+  <data name="script_not_defined_in_template" xml:space="preserve">
+    <value>다이어그램 템플릿에 스크립트가 정의되지 않았습니다</value>
+  </data>
+  <data name="confirm_delete_row" xml:space="preserve">
+    <value>선택한 행을 삭제하시겠습니까?</value>
+  </data>
+  <data name="save_template_failed" xml:space="preserve">
+    <value>템플릿 저장 실패:</value>
+  </data>
+  <data name="script_execution_failed" xml:space="preserve">
+    <value>스크립트 실행 실패:</value>
+  </data>
+  <data name="external_applications" xml:space="preserve">
+    <value>외부 응용 프로그램</value>
+  </data>
+  <data name="open_via_third_party" xml:space="preserve">
+    <value>타사 앱으로 열기</value>
+  </data>
+  <data name="import_template" xml:space="preserve">
+    <value>플롯 템플릿 가져오기</value>
+  </data>
+  <data name="diagram_grid_properties" xml:space="preserve">
+    <value>다이어그램 그리드 속성</value>
+  </data>
+  <data name="FontNormal" xml:space="preserve">
+    <value>기본값</value>
+  </data>
+  <data name="diagram_template_export_success" xml:space="preserve">
+    <value>다이어그램 템플릿 내보내기 성공</value>
+  </data>
+  <data name="AmphiboleGTM" xml:space="preserve">
+    <value>Si 온도계 (Ridolfi et al., 2010)</value>
+  </data>
+  <data name="cipw_row_format" xml:space="preserve">
+    <value>{0}번째 행</value>
+  </data>
+  <data name="cancel_import" xml:space="preserve">
+    <value>가져오기 취소</value>
+  </data>
+  <data name="corner_radius" xml:space="preserve">
+    <value>모서리 반경</value>
+  </data>
+  <data name="axis" xml:space="preserve">
+    <value>좌표축</value>
+  </data>
+  <data name="axes" xml:space="preserve">
+    <value>좌표축</value>
+  </data>
+  <data name="font" xml:space="preserve">
+    <value>글꼴</value>
+  </data>
+  <data name="from" xml:space="preserve">
+    <value>시작</value>
+  </data>
+  <data name="grid" xml:space="preserve">
+    <value>그리드</value>
+  </data>
+  <data name="line" xml:space="preserve">
+    <value>선</value>
+  </data>
+  <data name="bold" xml:space="preserve">
+    <value>굵게</value>
+  </data>
+  <data name="home" xml:space="preserve">
+    <value>홈</value>
+  </data>
+  <data name="icon" xml:space="preserve">
+    <value>아이콘</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>이름</value>
+  </data>
+  <data name="open" xml:space="preserve">
+    <value>열기(_O)</value>
+  </data>
+  <data name="type" xml:space="preserve">
+    <value>유형</value>
+  </data>
+  <data name="text" xml:space="preserve">
+    <value>텍스트</value>
+  </data>
+  <data name="tips" xml:space="preserve">
+    <value>팁</value>
+  </data>
+  <data name="undo" xml:space="preserve">
+    <value>실행 취소</value>
+  </data>
+  <data name="view" xml:space="preserve">
+    <value>뷰</value>
+  </data>
+  <data name="redo" xml:space="preserve">
+    <value>다시 실행</value>
+  </data>
+  <data name="size" xml:space="preserve">
+    <value>크기</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>편집</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>프로그램 종료</value>
+  </data>
+  <data name="File" xml:space="preserve">
+    <value>_파일(F)</value>
+  </data>
+  <data name="Data" xml:space="preserve">
+    <value>데이터</value>
+  </data>
+  <data name="GTMP" xml:space="preserve">
+    <value>온도 플롯</value>
+  </data>
+  <data name="Boot" xml:space="preserve">
+    <value>시작 시 자동 실행</value>
+  </data>
+  <data name="Quit" xml:space="preserve">
+    <value>바로 종료</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>저장</value>
+  </data>
+  <data name="Show" xml:space="preserve">
+    <value>인터페이스 표시</value>
+  </data>
+  <data name="Plot" xml:space="preserve">
+    <value>다이어그램 플롯</value>
+  </data>
+  <data name="geo_field_worksheet_name" xml:space="preserve">
+    <value>워크시트 이름</value>
+  </data>
+  <data name="code_formatted" xml:space="preserve">
+    <value>코드가 서식 지정됨</value>
+  </data>
+  <data name="cipw_csv_filter" xml:space="preserve">
+    <value>CSV 파일|*.csv</value>
+  </data>
+  <data name="return_type_mismatch_error" xml:space="preserve">
+    <value>유형이며, 다음을 반환해야 함</value>
+  </data>
+  <data name="cipw_step2_detail" xml:space="preserve">
+    <value>우선순위에 따라 휘발성 성분을 소비하여 다음 광물을 형성:
+• 방해석(Cc): CO₂ + CaO
+• 형석(Fl): F + CaO
+• 황철석(Py): S + FeO
+• 암염(Hl): Cl + Na₂O
+• 망초(Th): SO₃ + Na₂O</value>
+  </data>
+  <data name="PlotSetting" xml:space="preserve">
+    <value>플롯 설정</value>
+  </data>
+  <data name="geo_step_help_doc" xml:space="preserve">
+    <value>도움말 문서</value>
+  </data>
+  <data name="cipw_tooltip_maximize" xml:space="preserve">
+    <value>최대화 / 복원</value>
+  </data>
+  <data name="geo_tooltip_export_csv" xml:space="preserve">
+    <value>현재 워크시트를 CSV로 내보내기</value>
+  </data>
+  <data name="LegendHorizontal" xml:space="preserve">
+    <value>가로</value>
+  </data>
+  <data name="error_occurred_during_startup" xml:space="preserve">
+    <value>시작 중 오류 발생:</value>
+  </data>
+  <data name="batch_download_success_count" xml:space="preserve">
+    <value>성공적으로 다운로드됨: {0}개</value>
+  </data>
+  <data name="data_point" xml:space="preserve">
+    <value>데이터 포인트</value>
+  </data>
+  <data name="geo_msg_save_success" xml:space="preserve">
+    <value>저장되었습니다.</value>
+  </data>
+  <data name="plot_layer_list_title" xml:space="preserve">
+    <value>레이어 목록</value>
+  </data>
+  <data name="plot_property_panel_title" xml:space="preserve">
+    <value>속성 패널</value>
   </data>
 </root>

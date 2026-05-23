@@ -195,16 +195,6 @@
                     </StackPanel>
                 </Border>
 
-                <!-- Rendering -->
-                <TextBlock Text="{Binding [advanced_rendering],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernSettingsGroupTitle}" Margin="4,10,0,6"/>
-                <Border Style="{StaticResource ModernCardStyle}" Margin="0,0,0,8">
-                    <StackPanel Margin="10">
-                        <DockPanel>
-                            <TextBlock Text="{Binding [anti_aliasing],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" Style="{StaticResource ModernLabelStyle}"/>
-                            <ToggleButton Style="{StaticResource ToggleButtonSwitch}" HorizontalAlignment="Right" IsChecked="{Binding AntiAliasEnable, Mode=TwoWay}"/>
-                        </DockPanel>
-                    </StackPanel>
-                </Border>
             </StackPanel>
         </ScrollViewer>
     </Grid>

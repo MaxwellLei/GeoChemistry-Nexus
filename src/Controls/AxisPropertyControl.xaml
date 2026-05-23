@@ -127,8 +127,10 @@
                 </Border>
 
                 <!-- Axis Range & Scale -->
-                <TextBlock Text="{Binding [axis_style],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernSettingsGroupTitle}" Margin="4,10,0,6"/>
-                <Border Style="{StaticResource ModernCardStyle}" Margin="0,0,0,8">
+                <TextBlock Text="{Binding [axis_style],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernSettingsGroupTitle}" Margin="4,10,0,6"
+                           Visibility="{Binding ShowAxisStyleOptions, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                <Border Style="{StaticResource ModernCardStyle}" Margin="0,0,0,8"
+                        Visibility="{Binding ShowAxisStyleOptions, Converter={StaticResource BoolToVisibilityConverter}}">
                     <StackPanel Margin="10">
                          <!-- Scale Type -->
                         <TextBlock Text="{Binding [zoom_type],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
@@ -167,8 +169,10 @@
                 </Border>
 
                 <!-- Major Tick Style -->
-                <TextBlock Text="{Binding [major_tick_style],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernSettingsGroupTitle}" Margin="4,10,0,6"/>
-                <Border Style="{StaticResource ModernCardStyle}" Margin="0,0,0,8">
+                <TextBlock Text="{Binding [major_tick_style],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernSettingsGroupTitle}" Margin="4,10,0,6"
+                           Visibility="{Binding ShowMajorTickStyleOptions, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                <Border Style="{StaticResource ModernCardStyle}" Margin="0,0,0,8"
+                        Visibility="{Binding ShowMajorTickStyleOptions, Converter={StaticResource BoolToVisibilityConverter}}">
                     <StackPanel Margin="10">
                          <Grid Margin="0,0,0,16">
                             <Grid.ColumnDefinitions>
@@ -208,16 +212,14 @@
                                 <local:TextPropertyColorPicker SelectedColor="{Binding MajorTickWidthColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" Height="32"/>
                             </StackPanel>
                         </Grid>
-                         <DockPanel>
-                             <TextBlock Text="{Binding [anti_aliasing],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}" VerticalAlignment="Center" Margin="0"/>
-                             <ToggleButton Style="{StaticResource ToggleButtonSwitch}" HorizontalAlignment="Right" IsChecked="{Binding MajorTickAntiAlias, Mode=TwoWay}"/>
-                         </DockPanel>
                     </StackPanel>
                 </Border>
 
                 <!-- Minor Tick Style -->
-                <TextBlock Text="{Binding [minor_tick_style],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernSettingsGroupTitle}" Margin="4,10,0,6"/>
-                <Border Style="{StaticResource ModernCardStyle}" Margin="0,0,0,8">
+                <TextBlock Text="{Binding [minor_tick_style],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernSettingsGroupTitle}" Margin="4,10,0,6"
+                           Visibility="{Binding ShowMinorTickStyleOptions, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                <Border Style="{StaticResource ModernCardStyle}" Margin="0,0,0,8"
+                        Visibility="{Binding ShowMinorTickStyleOptions, Converter={StaticResource BoolToVisibilityConverter}}">
                      <StackPanel Margin="10">
                          <Grid Margin="0,0,0,16">
                             <Grid.ColumnDefinitions>
@@ -257,10 +259,6 @@
                                 <local:TextPropertyColorPicker SelectedColor="{Binding MinorTickColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" Height="32"/>
                             </StackPanel>
                         </Grid>
-                         <DockPanel>
-                             <TextBlock Text="{Binding [anti_aliasing],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}" VerticalAlignment="Center" Margin="0"/>
-                             <ToggleButton Style="{StaticResource ToggleButtonSwitch}" HorizontalAlignment="Right" IsChecked="{Binding MinorTickAntiAlias, Mode=TwoWay}"/>
-                         </DockPanel>
                     </StackPanel>
                 </Border>
 

@@ -1,0 +1,23 @@
+{
+  "Id": "quartz_ti_wark_watson_2006",
+  "Version": "1.0.0",
+  "Mineral": "Quartz",
+  "MineralLangKey": "Quartz",
+  "Name": "TitaniQ-Thermometer (Wark and Watson, 2006)",
+  "NameLangKey": "QuartzGTM",
+  "Author": "Wark and Watson",
+  "Year": 2006,
+  "Reference": "Wark, D.A., Watson, E.B. (2006)",
+  "IconCode": "\ue60b",
+  "IconColor": "#90CAF9",
+  "Headers": ["ID", "Ti(ppm)", "\u03b1(TiO2)", "T(K)", "T(\u2103)"],
+  "ExampleRow": ["Example", "2.2", "1", "=Quatz_Wark_and_Watson_2006(B2,C2)", "=D2-273.15"],
+  "WorksheetName": "Quatz_Ti_2006",
+  "FormulaName": "Quatz_Wark_and_Watson_2006",
+  "HelpDocPath": "Data\\Documents\\GTM\\Quatz_Wark_and_Watson_2006",
+  "Script": "",
+  "ScriptFile": "quartz_ti_wark_watson_2006.js",
+  "InputColumns": ["Ti(ppm)", "\u03b1(TiO2)"],
+  "AdditionalFormulas": [],
+  "Description": "TitaniQ thermometer based on Wark and Watson (2006)"
+}

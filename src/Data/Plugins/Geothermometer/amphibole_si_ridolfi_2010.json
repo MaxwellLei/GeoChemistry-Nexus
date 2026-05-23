@@ -1,0 +1,23 @@
+{
+  "Id": "amphibole_si_ridolfi_2010",
+  "Version": "1.0.0",
+  "Mineral": "Amphibole",
+  "MineralLangKey": "Amphibole",
+  "Name": "Si-Thermometer (Ridolfi et al., 2010)",
+  "NameLangKey": "AmphiboleGTM",
+  "Author": "Ridolfi et al.",
+  "Year": 2010,
+  "Reference": "Ridolfi, F., Renzulli, A., Puerini, M. (2010)",
+  "IconCode": "\ue60e",
+  "IconColor": "#2F4F4F",
+  "Headers": ["ID", "SiO2(wt.%)", "TiO2(wt.%)", "Al2O3(wt.%)", "Cr2O3(wt.%)", "FeO(wt.%)", "MnO(wt.%)", "MgO(wt.%)", "CaO(wt.%)", "Na2O(wt.%)", "K2O(wt.%)", "F(wt.%)", "Cl(wt.%)", "T(K)", "T(\u2103)"],
+  "ExampleRow": ["Example", "45.47", "2.53", "9.07", "0.03", "12.68", "0.24", "14.21", "11.32", "2.04", "0.62", "0.17", "0.07", "=Amphibole_Ridolfi_et_al_2010(B2,C2,D2,E2,F2,G2,H2,I2,J2,K2,L2,M2)", "=N2-273.15"],
+  "WorksheetName": "Amphibole_Si_2010",
+  "FormulaName": "Amphibole_Ridolfi_et_al_2010",
+  "HelpDocPath": "Data\\Documents\\GTM\\Amphibole_Ridolfi_et_al_2010",
+  "Script": "",
+  "ScriptFile": "amphibole_si_ridolfi_2010.js",
+  "InputColumns": ["SiO2(wt.%)", "TiO2(wt.%)", "Al2O3(wt.%)", "Cr2O3(wt.%)", "FeO(wt.%)", "MnO(wt.%)", "MgO(wt.%)", "CaO(wt.%)", "Na2O(wt.%)", "K2O(wt.%)", "F(wt.%)", "Cl(wt.%)"],
+  "AdditionalFormulas": [],
+  "Description": "Amphibole Si* thermometer based on Ridolfi et al. (2010)"
+}

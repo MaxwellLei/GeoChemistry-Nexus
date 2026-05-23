@@ -35,6 +35,20 @@ namespace GeoChemistryNexus.Models
         private double _maxX = 10;
 
         /// <summary>
+        /// Y轴最小值，留空时不限制
+        /// </summary>
+        [ObservableProperty]
+        [property: LocalizedCategory("range")]         // 范围
+        private double _minY = double.NaN;
+
+        /// <summary>
+        /// Y轴最大值，留空时不限制
+        /// </summary>
+        [ObservableProperty]
+        [property: LocalizedCategory("range")]         // 范围
+        private double _maxY = double.NaN;
+
+        /// <summary>
         /// 采样点数量 (影响平滑度)
         /// </summary>
         [ObservableProperty]

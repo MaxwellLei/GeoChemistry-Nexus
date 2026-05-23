@@ -61,11 +61,18 @@ namespace GeoChemistryNexus
                     startViewModel.UpdateProgress(50, LanguageService.Instance["reading_user_configuration_ellipsis"]);
                     await Task.Delay(200);
 
-                    // 阶段 4: 准备主界面
+                    // 阶段 4: 预加载绘图模块（提前实例化 MainPlotPage 单例，避免首次进入卡顿）
                     startViewModel.UpdateProgress(70, LanguageService.Instance["loading_drawing_module_ellipsis"]);
                     await this.Dispatcher.InvokeAsync(() =>
                     {
                         MainPlotPage.GetPage();
+                    });
+
+                    // 阶段 4.1: 预加载温度计模块（提前实例化 GeothermometerPageView 单例，避免首次进入卡顿）
+                    startViewModel.UpdateProgress(75, LanguageService.Instance["loading_drawing_module_ellipsis"]);
+                    await this.Dispatcher.InvokeAsync(() =>
+                    {
+                        GeothermometerPageView.GetPage();
                     });
 
                     startViewModel.UpdateProgress(80, LanguageService.Instance["loading_main_interface_components_ellipsis"]);

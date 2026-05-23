@@ -115,11 +115,6 @@
                          <local:TextPropertyColorPicker SelectedColor="{Binding MajorTickWidthColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" 
                                                         Height="32" Margin="0,0,0,16"/>
 
-                        <!-- Anti-aliasing -->
-                        <DockPanel>
-                            <TextBlock Text="{Binding [anti_aliasing],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}" VerticalAlignment="Center" Margin="0"/>
-                            <ToggleButton Style="{StaticResource ToggleButtonSwitch}" HorizontalAlignment="Right" IsChecked="{Binding MajorTickAntiAlias, Mode=TwoWay}"/>
-                        </DockPanel>
                     </StackPanel>
                 </Border>
 

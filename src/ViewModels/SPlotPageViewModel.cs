@@ -36,6 +36,19 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private bool autoCheckTemplateUpdate;
 
+        // 选中对象触发方式：SingleClick 或 DoubleClick
+        [ObservableProperty]
+        private string objectSelectionTrigger;
+
+        // 鼠标吸附自动识别帧率
+        [ObservableProperty]
+        private int mouseSnapAutoRecognitionFrameRate;
+
+        // 当前图解版本（只读）
+        public string CurrentDiagramVersion { get; } = UpdateHelper.GetCurrentVersionFloat().ToString("F1");
+
+        public ObservableCollection<int> MouseSnapAutoRecognitionFrameRates { get; } = new() { 24, 30, 60, 90, 144 };
+
         public RelayCommand SelectCorelDRAWPathCommand { get; }
         public RelayCommand SelectInkscapePathCommand { get; }
         public RelayCommand SelectAdobeIllustratorPathCommand { get; }
@@ -78,6 +91,22 @@ namespace GeoChemistryNexus.ViewModels
             if (bool.TryParse(ConfigHelper.GetConfig("auto_check_template_update"), out bool checkTemp))
             {
                 AutoCheckTemplateUpdate = checkTemp;
+            }
+
+            ObjectSelectionTrigger = ConfigHelper.GetConfig("object_selection_trigger");
+            if (string.IsNullOrEmpty(ObjectSelectionTrigger))
+            {
+                ObjectSelectionTrigger = "SingleClick"; // 默认单击
+            }
+
+            if (int.TryParse(ConfigHelper.GetConfig("mouse_snap_auto_recognition_frame_rate"), out int snapFrameRate)
+                && MouseSnapAutoRecognitionFrameRates.Contains(snapFrameRate))
+            {
+                MouseSnapAutoRecognitionFrameRate = snapFrameRate;
+            }
+            else
+            {
+                MouseSnapAutoRecognitionFrameRate = 24;
             }
             
             isLoading = false;
@@ -141,6 +170,14 @@ namespace GeoChemistryNexus.ViewModels
              MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
         }
 
+        partial void OnObjectSelectionTriggerChanged(string value)
+        {
+            if (isLoading) return;
+            ConfigHelper.SetConfig("object_selection_trigger", value);
+            WeakReferenceMessenger.Default.Send(new ObjectSelectionTriggerChangedMessage(value));
+            MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
+        }
+
         partial void OnDefaultTreeExpandLevelChanged(int value)
         {
             if (isLoading) return;
@@ -149,6 +186,14 @@ namespace GeoChemistryNexus.ViewModels
             // 发送消息通知
             WeakReferenceMessenger.Default.Send(new DefaultTreeExpandLevelChangedMessage(value));
 
+            MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
+        }
+
+        partial void OnMouseSnapAutoRecognitionFrameRateChanged(int value)
+        {
+            if (isLoading) return;
+            ConfigHelper.SetConfig("mouse_snap_auto_recognition_frame_rate", value.ToString());
+            WeakReferenceMessenger.Default.Send(new MouseSnapAutoRecognitionFrameRateChangedMessage(value));
             MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
         }
     }

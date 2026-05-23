@@ -1,0 +1,23 @@
+{
+  "Id": "zircon_ti_loucks_2020",
+  "Version": "1.0.0",
+  "Mineral": "Zircon",
+  "MineralLangKey": "Zircon",
+  "Name": "Ti-Thermometer (Loucks et al., 2020)",
+  "NameLangKey": "ZirconTiGTM",
+  "Author": "Loucks et al.",
+  "Year": 2020,
+  "Reference": "Loucks, R.R., Fiorentini, M.L., Henriquez, G.J. (2020)",
+  "IconCode": "\ue60d",
+  "IconColor": "#D97757",
+  "Headers": ["ID", "Ti(ppm)", "P(MPa)", "\u03b1(TiO2)", "\u03b1(SiO2)", "T(K)", "T(\u2103)"],
+  "ExampleRow": ["Example", "4.12", "300", "0.8", "1", "=Zircon_Loucks_et_al_2020(B2,C2,D2,E2)", "=F2-273.15"],
+  "WorksheetName": "Zircon_Ti_2020",
+  "FormulaName": "Zircon_Loucks_et_al_2020",
+  "HelpDocPath": "Data\\Documents\\GTM\\Zircon_Loucks_et_al_2020",
+  "Script": "",
+  "ScriptFile": "zircon_ti_loucks_2020.js",
+  "InputColumns": ["Ti(ppm)", "P(MPa)", "\u03b1(TiO2)", "\u03b1(SiO2)"],
+  "AdditionalFormulas": [],
+  "Description": "Ti-in-zircon thermometer based on Loucks et al. (2020)"
+}

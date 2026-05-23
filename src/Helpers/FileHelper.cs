@@ -1,6 +1,9 @@
 using System;
 using System.Data;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Win32;
 using HandyControl.Controls;
 using Ookii.Dialogs.Wpf;
@@ -12,6 +15,70 @@ using System.Windows.Media;
 
 public class FileHelper
 {
+    #region Win32 API for dialog window monitoring
+
+    [DllImport("kernel32.dll")]
+    private static extern uint GetCurrentThreadId();
+
+    [DllImport("user32.dll")]
+    private static extern bool EnumThreadWindows(uint dwThreadId, EnumThreadDelegate lpfn, IntPtr lParam);
+
+    [DllImport("user32.dll")]
+    private static extern bool IsWindowVisible(IntPtr hWnd);
+
+    private delegate bool EnumThreadDelegate(IntPtr hWnd, IntPtr lParam);
+
+    /// <summary>
+    /// 检查指定线程是否有可见窗口
+    /// </summary>
+    private static bool ThreadHasVisibleWindow(uint threadId)
+    {
+        bool hasVisible = false;
+        EnumThreadWindows(threadId, (hWnd, lParam) =>
+        {
+            if (IsWindowVisible(hWnd))
+            {
+                hasVisible = true;
+                return false; // 停止枚举
+            }
+            return true; // 继续枚举
+        }, IntPtr.Zero);
+        return hasVisible;
+    }
+
+    /// <summary>
+    /// 等待对话框窗口关闭，一旦检测到关闭立即恢复主窗口
+    /// </summary>
+    private static async Task WaitForDialogCloseAndRestore(uint nativeThreadId, Task dialogTask, System.Windows.Window mainWindow)
+    {
+        bool dialogAppeared = false;
+
+        while (!dialogTask.IsCompleted)
+        {
+            bool hasVisibleWindow = ThreadHasVisibleWindow(nativeThreadId);
+
+            if (!dialogAppeared && hasVisibleWindow)
+            {
+                dialogAppeared = true;
+            }
+            else if (dialogAppeared && !hasVisibleWindow)
+            {
+                // 对话框已经从屏幕上消失，立即恢复主窗口
+                break;
+            }
+
+            await Task.Delay(50);
+        }
+
+        // 立即恢复主窗口交互
+        if (!mainWindow.IsEnabled)
+        {
+            mainWindow.IsEnabled = true;
+            mainWindow.Activate();
+        }
+    }
+
+    #endregion
 
 
     // 获取保存文件路径  —— 不带文件过滤器
@@ -32,7 +99,7 @@ public class FileHelper
         }
 
         // 显示对话框并检查结果
-        bool? result = dialog.ShowDialog();
+        bool? result = dialog.ShowDialog(Application.Current.MainWindow);
 
         // 如果用户点击了“保存”按钮，返回完整的文件路径
         if (result == true)
@@ -48,7 +115,7 @@ public class FileHelper
     public static string GetFilePath()
     {
         OpenFileDialog openFileDialog = new OpenFileDialog();
-        if (openFileDialog.ShowDialog() == true)
+        if (openFileDialog.ShowDialog(Application.Current.MainWindow) == true)
         {
             return openFileDialog.FileName;     //用户正确选择了路径
         }
@@ -63,7 +130,7 @@ public class FileHelper
     {
         OpenFileDialog openFileDialog = new OpenFileDialog();
         openFileDialog.Filter = filter;
-        if (openFileDialog.ShowDialog() == true)
+        if (openFileDialog.ShowDialog(Application.Current.MainWindow) == true)
         {
             return openFileDialog.FileName;     //用户正确选择了路径
         }
@@ -93,7 +160,7 @@ public class FileHelper
                 FileName = defaultFileName
             };
 
-            bool? result = dialog.ShowDialog();
+            bool? result = dialog.ShowDialog(Application.Current.MainWindow);
 
             if (result == true)
             {
@@ -105,6 +172,133 @@ public class FileHelper
         catch (Exception)
         {
             return null;
+        }
+    }
+
+    /// <summary>
+    /// 异步获取文件保存路径 - 在独立STA线程上显示对话框，避免COM清理阻塞UI线程
+    /// 使用Win32 API监测对话框窗口关闭，一旦关闭立即恢复主窗口交互
+    /// </summary>
+    public static async Task<string> GetSaveFilePath2Async(string title = "保存文件", string filter = "所有文件|*.*", string defaultExt = "", string defaultFileName = "")
+    {
+        var mainWindow = Application.Current.MainWindow;
+        mainWindow.IsEnabled = false;
+
+        try
+        {
+            var tcs = new TaskCompletionSource<string>(TaskCreationOptions.RunContinuationsAsynchronously);
+            var threadIdTcs = new TaskCompletionSource<uint>(TaskCreationOptions.RunContinuationsAsynchronously);
+
+            var thread = new Thread(() =>
+            {
+                try
+                {
+                    // 在STA线程上报告原生线程ID
+                    threadIdTcs.SetResult(GetCurrentThreadId());
+
+                    var dialog = new VistaSaveFileDialog
+                    {
+                        Title = title,
+                        Filter = filter,
+                        DefaultExt = defaultExt,
+                        AddExtension = true,
+                        FileName = defaultFileName
+                    };
+
+                    bool? result = dialog.ShowDialog();
+                    tcs.SetResult(result == true ? dialog.FileName : null);
+                }
+                catch (Exception)
+                {
+                    if (!threadIdTcs.Task.IsCompleted)
+                        threadIdTcs.TrySetResult(0);
+                    tcs.TrySetResult(null);
+                }
+            });
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.IsBackground = true;
+            thread.Start();
+
+            // 获取STA线程的原生线程ID
+            uint nativeThreadId = await threadIdTcs.Task;
+
+            if (nativeThreadId != 0)
+            {
+                // 监测对话框窗口，一旦关闭立即恢复主窗口
+                await WaitForDialogCloseAndRestore(nativeThreadId, tcs.Task, mainWindow);
+            }
+
+            return await tcs.Task;
+        }
+        finally
+        {
+            // 确保无论如何主窗口都能恢复
+            if (!mainWindow.IsEnabled)
+            {
+                mainWindow.IsEnabled = true;
+                mainWindow.Activate();
+            }
+        }
+    }
+
+    /// <summary>
+    /// 异步获取文件打开路径 - 在独立STA线程上显示对话框，避免COM清理阻塞UI线程
+    /// 使用Win32 API监测对话框窗口关闭，一旦关闭立即恢复主窗口交互
+    /// </summary>
+    public static async Task<string> GetFilePathAsync(string filter = null)
+    {
+        var mainWindow = Application.Current.MainWindow;
+        mainWindow.IsEnabled = false;
+
+        try
+        {
+            var tcs = new TaskCompletionSource<string>(TaskCreationOptions.RunContinuationsAsynchronously);
+            var threadIdTcs = new TaskCompletionSource<uint>(TaskCreationOptions.RunContinuationsAsynchronously);
+
+            var thread = new Thread(() =>
+            {
+                try
+                {
+                    // 在STA线程上报告原生线程ID
+                    threadIdTcs.SetResult(GetCurrentThreadId());
+
+                    var dialog = new VistaOpenFileDialog();
+                    if (!string.IsNullOrEmpty(filter))
+                        dialog.Filter = filter;
+
+                    bool? result = dialog.ShowDialog();
+                    tcs.SetResult(result == true ? dialog.FileName : null);
+                }
+                catch (Exception)
+                {
+                    if (!threadIdTcs.Task.IsCompleted)
+                        threadIdTcs.TrySetResult(0);
+                    tcs.TrySetResult(null);
+                }
+            });
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.IsBackground = true;
+            thread.Start();
+
+            // 获取STA线程的原生线程ID
+            uint nativeThreadId = await threadIdTcs.Task;
+
+            if (nativeThreadId != 0)
+            {
+                // 监测对话框窗口，一旦关闭立即恢复主窗口
+                await WaitForDialogCloseAndRestore(nativeThreadId, tcs.Task, mainWindow);
+            }
+
+            return await tcs.Task;
+        }
+        finally
+        {
+            // 确保无论如何主窗口都能恢复
+            if (!mainWindow.IsEnabled)
+            {
+                mainWindow.IsEnabled = true;
+                mainWindow.Activate();
+            }
         }
     }
 
@@ -236,7 +430,7 @@ public class FileHelper
         };
 
         // 显示对话框，并判断用户是否点击了“确定”按钮
-        if (dialog.ShowDialog() == true)
+        if (dialog.ShowDialog(Application.Current.MainWindow) == true)
         {
             // 返回用户选择的文件夹路径
             return dialog.SelectedPath;

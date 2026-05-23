@@ -1,0 +1,23 @@
+{
+  "Id": "sphalerite_fes_scott_barne_1971",
+  "Version": "1.0.0",
+  "Mineral": "Sphalerite",
+  "MineralLangKey": "Sphalerite",
+  "Name": "FeS-Thermometer (Scott and Barnes, 1971)",
+  "NameLangKey": "SphaleriteGTM",
+  "Author": "Scott and Barnes",
+  "Year": 1971,
+  "Reference": "Scott, S.D., Barnes, H.L. (1971)",
+  "IconCode": "\ue60c",
+  "IconColor": "#6D4C41",
+  "Headers": ["ID", "FeS(mol%)_matrix", "FeS(mol%)_patch", "T(K)", "T(\u2103)"],
+  "ExampleRow": ["Example", "19.3", "21.5", "=Sphalerite_Scott_and_Barne_1971(B2,C2)", "=D2-273.15"],
+  "WorksheetName": "Sphalerite_FeS_1971",
+  "FormulaName": "Sphalerite_Scott_and_Barne_1971",
+  "HelpDocPath": "Data\\Documents\\GTM\\Sphalerite_Scott_and_Barne_1971",
+  "Script": "",
+  "ScriptFile": "sphalerite_fes_scott_barne_1971.js",
+  "InputColumns": ["FeS(mol%)_matrix", "FeS(mol%)_patch"],
+  "AdditionalFormulas": [],
+  "Description": "FeS sphalerite geothermometer based on Scott and Barnes (1971)"
+}

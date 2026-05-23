@@ -1,0 +1,111 @@
+<UserControl x:Class="GeoChemistryNexus.Controls.SpiderSamplePropertyControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
+             xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="300"
+             Background="#F5F5F7">
+    <UserControl.Resources>
+        <cvs:StringColorConverter x:Key="StringColorConverter"/>
+        <cvs:NumericTypeConverter x:Key="NumericTypeConverter"/>
+    </UserControl.Resources>
+
+    <Grid DataContext="{Binding SelectedObject, RelativeSource={RelativeSource AncestorType=local:SpiderSamplePropertyControl}}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Margin="12">
+                <TextBlock Text="{Binding [style],Source={x:Static lg:LanguageService.Instance}, FallbackValue='Style'}" 
+                           Style="{StaticResource ModernSettingsGroupTitle}" Margin="4,10,0,6"/>
+                <Border Style="{StaticResource ModernCardStyle}" Margin="0,0,0,8">
+                    <StackPanel Margin="10">
+                        <!-- Sample Name -->
+                        <Grid Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" MinWidth="70"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="{Binding [name],Source={x:Static lg:LanguageService.Instance}, FallbackValue='Name'}" 
+                                       Style="{StaticResource ModernLabelStyle}" VerticalAlignment="Center"/>
+                            <TextBox Grid.Column="1" Text="{Binding SampleName, UpdateSourceTrigger=PropertyChanged}" 
+                                     Height="28" FontSize="13" Padding="6,3" VerticalContentAlignment="Center"/>
+                        </Grid>
+                        <!-- Color -->
+                        <Grid Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" MinWidth="70"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="{Binding [color],Source={x:Static lg:LanguageService.Instance}, FallbackValue='Color'}" 
+                                       Style="{StaticResource ModernLabelStyle}" VerticalAlignment="Center"/>
+                            <local:TextPropertyColorPicker Grid.Column="1" 
+                                SelectedColor="{Binding Color, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" Height="32"/>
+                        </Grid>
+                        <!-- Line Width -->
+                        <Grid Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" MinWidth="70"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="{Binding [line_width],Source={x:Static lg:LanguageService.Instance}, FallbackValue='Line Width'}" 
+                                       Style="{StaticResource ModernLabelStyle}" VerticalAlignment="Center"/>
+                            <hc:NumericUpDown Grid.Column="1" Value="{Binding LineWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" Minimum="0.5" Maximum="10" Increment="0.5" 
+                                             Style="{StaticResource ModernNumericUpDownStyle}" Height="28"/>
+                        </Grid>
+                        <!-- Marker Size -->
+                        <Grid Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" MinWidth="70"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="{Binding [marker_size],Source={x:Static lg:LanguageService.Instance}, FallbackValue='Marker Size'}" 
+                                       Style="{StaticResource ModernLabelStyle}" VerticalAlignment="Center"/>
+                            <hc:NumericUpDown Grid.Column="1" Value="{Binding MarkerSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" Minimum="0" Maximum="20" Increment="1" 
+                                             Style="{StaticResource ModernNumericUpDownStyle}" Height="28"/>
+                        </Grid>
+                        <!-- Marker Shape -->
+                        <Grid Margin="0,0,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" MinWidth="70"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="{Binding [type],Source={x:Static lg:LanguageService.Instance}, FallbackValue='Type'}" 
+                                       Style="{StaticResource ModernLabelStyle}" VerticalAlignment="Center"/>
+                            <ComboBox Grid.Column="1" ItemsSource="{Binding MarkerShapes, RelativeSource={RelativeSource AncestorType=local:SpiderSamplePropertyControl}}"
+                                      SelectedValue="{Binding MarkerShape, Mode=TwoWay}"
+                                      SelectedValuePath="Shape"
+                                      Style="{StaticResource ModernComboBoxStyle}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Viewbox Width="12" Height="12" Margin="0,0,8,0">
+                                                <Path Data="{Binding Icon}" 
+                                                      Stroke="#1D1D1F" 
+                                                      StrokeThickness="1">
+                                                    <Path.Style>
+                                                        <Style TargetType="Path">
+                                                            <Setter Property="Fill" Value="Transparent"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsFilled}" Value="True">
+                                                                    <Setter Property="Fill" Value="#1D1D1F"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Path.Style>
+                                                </Path>
+                                            </Viewbox>
+                                            <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

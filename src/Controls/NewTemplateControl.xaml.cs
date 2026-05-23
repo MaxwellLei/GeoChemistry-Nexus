@@ -39,6 +39,15 @@ namespace GeoChemistryNexus.Controls
         }
     }
 
+    public class PlotTypeOption
+    {
+        public string Key { get; set; } = string.Empty;
+        public string Badge { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string SelectedLabel { get; set; } = string.Empty;
+    }
+
     /// <summary>
     /// NewTemplateControl.xaml 的交互逻辑
     /// </summary>
@@ -48,6 +57,7 @@ namespace GeoChemistryNexus.Controls
         public readonly ObservableCollection<LanguageTagModel> _languageParts = new ObservableCollection<LanguageTagModel>();
         // Change from string to CategoryPartModel
         public readonly ObservableCollection<CategoryPartModel> _categoryParts = new ObservableCollection<CategoryPartModel>();
+        public readonly ObservableCollection<PlotTypeOption> _plotTypeOptions = new ObservableCollection<PlotTypeOption>();
         
         // 存储加载的分类数据
         private PlotTemplateCategoryConfig _categoryConfig;
@@ -58,7 +68,13 @@ namespace GeoChemistryNexus.Controls
         // Use DisplayName for the string representation
         public string CategoryHierarchy => string.Join(" > ", _categoryParts.Select(p => p.DisplayName));
 
-        public string PlotType => (PlotTypeComboBox.SelectedItem as ComboBoxItem)?.Tag.ToString() ?? PlotTypeComboBox.Text;
+        public string PlotType => PlotTypeListBox.SelectedValue as string ?? "2D_Plot";
+
+        public bool IsPlotTypeSelectionEnabled
+        {
+            get => PlotTypeListBox.IsEnabled;
+            set => PlotTypeListBox.IsEnabled = value;
+        }
 
         #region ConfirmCommand Dependency Property
 
@@ -97,7 +113,11 @@ namespace GeoChemistryNexus.Controls
             _categoryParts.CollectionChanged += (s, e) => UpdateCategoryComboBoxSource();
             
             InitializeBuiltInLanguages();
+            InitializePlotTypes();
             LoadCategories();
+
+            // 设置当前图解版本（只读显示）
+            DiagramVersionText.Text = UpdateHelper.GetCurrentVersionFloat().ToString("F1");
 
             // 注册消息接收
             WeakReferenceMessenger.Default.Register<CategoryConfigUpdatedMessage>(this, (r, m) =>
@@ -109,8 +129,7 @@ namespace GeoChemistryNexus.Controls
                 });
             });
 
-            // 默认选中第一个绘图类型
-            PlotTypeComboBox.SelectedIndex = 0;
+            SelectPlotType("2D_Plot");
         }
 
         private void LoadCategories()
@@ -169,7 +188,18 @@ namespace GeoChemistryNexus.Controls
             LanguageInputComboBox.SelectedIndex = -1;
             LanguageInputComboBox.Text = string.Empty;
 
-            PlotTypeComboBox.SelectedIndex = 0;
+            SelectPlotType("2D_Plot");
+        }
+
+        public void SelectPlotType(string plotType)
+        {
+            string normalizedPlotType = NormalizePlotType(plotType);
+            PlotTypeListBox.SelectedValue = normalizedPlotType;
+
+            if (PlotTypeListBox.SelectedIndex < 0 && _plotTypeOptions.Count > 0)
+            {
+                PlotTypeListBox.SelectedIndex = 0;
+            }
         }
 
         public void UpdateLanguageDefaultStatus()
@@ -369,6 +399,53 @@ namespace GeoChemistryNexus.Controls
             };
 
             LanguageInputComboBox.ItemsSource = builtIns;
+        }
+
+        private void InitializePlotTypes()
+        {
+            _plotTypeOptions.Clear();
+
+            _plotTypeOptions.Add(new PlotTypeOption
+            {
+                Key = "2D_Plot",
+                Badge = "XY",
+                Title = LanguageService.Instance["two_dimensional_coordinate_plot"] ?? "二维坐标图",
+                Description = GetLocalizedDescription(
+                    "适合常规 X-Y 坐标绘图，适用于散点、折线、函数等大多数图解模板。",
+                    "Best for standard X-Y plotting, including scatter, line, and function-based templates."),
+                SelectedLabel = GetLocalizedDescription("已选", "Selected")
+            });
+
+            _plotTypeOptions.Add(new PlotTypeOption
+            {
+                Key = "Ternary_Plot",
+                Badge = "ABC",
+                Title = LanguageService.Instance["ternary_phase_diagram"] ?? "三元相图",
+                Description = GetLocalizedDescription(
+                    "适合三组分配比数据，常用于三元判别图、相图和端元混合关系表达。",
+                    "Best for ternary compositions, phase diagrams, and endmember mixing relationships."),
+                SelectedLabel = GetLocalizedDescription("已选", "Selected")
+            });
+
+            PlotTypeListBox.ItemsSource = _plotTypeOptions;
+        }
+
+        private static string NormalizePlotType(string plotType)
+        {
+            return plotType switch
+            {
+                "Ternary" => "Ternary_Plot",
+                "Cartesian" => "2D_Plot",
+                "Ternary_Plot" => "Ternary_Plot",
+                _ => "2D_Plot"
+            };
+        }
+
+        private static string GetLocalizedDescription(string zhCnText, string enText)
+        {
+            return LanguageService.CurrentLanguage.StartsWith("zh", StringComparison.OrdinalIgnoreCase)
+                ? zhCnText
+                : enText;
         }
 
     }

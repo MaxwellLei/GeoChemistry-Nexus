@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,368 +117,65 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="StartStatus" xml:space="preserve">
-    <value>Starten...</value>
+  <data name="new_version_found" xml:space="preserve">
+    <value>Neue Version gefunden</value>
   </data>
-  <data name="Show" xml:space="preserve">
-    <value>Oberfläche anzeigen</value>
+  <data name="anti_aliasing" xml:space="preserve">
+    <value>Anti-Aliasing</value>
   </data>
-  <data name="Exit" xml:space="preserve">
-    <value>Programm beenden</value>
+  <data name="geo_msg_load_help_doc_failed" xml:space="preserve">
+    <value>Hilfedokument konnte nicht geladen werden: {0}</value>
   </data>
-  <data name="home" xml:space="preserve">
-    <value>Startseite</value>
+  <data name="script_content" xml:space="preserve">
+    <value>Skriptinhalt:</value>
   </data>
-  <data name="Plot" xml:space="preserve">
-    <value>Diagramm zeichnen</value>
+  <data name="geo_field_mineral_category" xml:space="preserve">
+    <value>Mineralkategorie *</value>
   </data>
-  <data name="Geothermometer" xml:space="preserve">
-    <value>Geothermometer</value>
+  <data name="unfavorite" xml:space="preserve">
+    <value>Aus Favoriten entfernen</value>
   </data>
-  <data name="Setting" xml:space="preserve">
-    <value>Einstellungen</value>
+  <data name="select" xml:space="preserve">
+    <value>Auswählen</value>
   </data>
-  <data name="File" xml:space="preserve">
-    <value>_Datei(F)</value>
+  <data name="cipw_col_alumina_state" xml:space="preserve">
+    <value>Al2O3-Status</value>
   </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Bearbeiten</value>
+  <data name="favorite" xml:space="preserve">
+    <value>Favorit</value>
   </data>
-  <data name="Expand" xml:space="preserve">
-    <value>Erweiterungen</value>
+  <data name="search_templates" xml:space="preserve">
+    <value>Vorlagen suchen...</value>
   </data>
-  <data name="EditMode" xml:space="preserve">
-    <value>Bearbeitungsmodus</value>
-  </data>
-  <data name="NewBasemap" xml:space="preserve">
-    <value>Neue Grundkarte</value>
-  </data>
-  <data name="SaveBasemap" xml:space="preserve">
-    <value>Grundkarte speichern</value>
-  </data>
-  <data name="ImportBasemap" xml:space="preserve">
-    <value>Grundkarte importieren</value>
-  </data>
-  <data name="ExportBasemap" xml:space="preserve">
-    <value>Grundkarte exportieren</value>
-  </data>
-  <data name="DeleteBasemap" xml:space="preserve">
-    <value>Grundkarte löschen</value>
-  </data>
-  <data name="GetMoreBasemap" xml:space="preserve">
-    <value>Mehr Grundkarten abrufen</value>
-  </data>
-  <data name="ImportData" xml:space="preserve">
-    <value>Daten importieren</value>
-  </data>
-  <data name="ResetPlot" xml:space="preserve">
-    <value>Diagramm zurücksetzen</value>
-  </data>
-  <data name="ResetVision" xml:space="preserve">
-    <value>Ansicht zurücksetzen</value>
-  </data>
-  <data name="CancelSelected" xml:space="preserve">
-    <value>Auswahl aufheben</value>
-  </data>
-  <data name="LocationAxis" xml:space="preserve">
-    <value>Positionsachse</value>
-  </data>
-  <data name="ExportImage" xml:space="preserve">
-    <value>Bild exportieren</value>
-  </data>
-  <data name="ExportImagePNG" xml:space="preserve">
-    <value>Als PNG exportieren</value>
-  </data>
-  <data name="ExportImageJPG" xml:space="preserve">
-    <value>Als JPG exportieren</value>
-  </data>
-  <data name="ExportImageBMP" xml:space="preserve">
-    <value>Als BMP exportieren</value>
-  </data>
-  <data name="ExportImageWebp" xml:space="preserve">
-    <value>Als Webp exportieren</value>
-  </data>
-  <data name="ExportImageSVG" xml:space="preserve">
-    <value>Als SVG exportieren</value>
-  </data>
-  <data name="LegendSetting" xml:space="preserve">
-    <value>Legendeneinstellungen</value>
-  </data>
-  <data name="PlotSetting" xml:space="preserve">
-    <value>Diagrammeinstellungen</value>
-  </data>
-  <data name="AddLine" xml:space="preserve">
-    <value>Linie hinzufügen</value>
-  </data>
-  <data name="AddPolygons" xml:space="preserve">
-    <value>Polygon hinzufügen</value>
-  </data>
-  <data name="AddText" xml:space="preserve">
-    <value>Kommentar hinzufügen</value>
-  </data>
-  <data name="JsSetting" xml:space="preserve">
-    <value>Skripteinstellungen</value>
-  </data>
-  <data name="Save" xml:space="preserve">
-    <value>Speichern</value>
-  </data>
-  <data name="QuitEdit" xml:space="preserve">
-    <value>Bearbeitung beenden</value>
-  </data>
-  <data name="IgneousRock" xml:space="preserve">
-    <value>Magmatisches Gestein</value>
-  </data>
-  <data name="TectonicSetting" xml:space="preserve">
-    <value>Tektonisches Umfeld</value>
-  </data>
-  <data name="Basalt" xml:space="preserve">
-    <value>Basalt</value>
-  </data>
-  <data name="RockClassification" xml:space="preserve">
-    <value>Gesteinsklassifikation</value>
-  </data>
-  <data name="GTMP" xml:space="preserve">
-    <value>Temperaturdiagramm</value>
-  </data>
-  <data name="Guide" xml:space="preserve">
-    <value>Anleitung</value>
-  </data>
-  <data name="BorderLine" xml:space="preserve">
-    <value>Grenze</value>
-  </data>
-  <data name="PlotText" xml:space="preserve">
-    <value>Kommentar</value>
-  </data>
-  <data name="PlotAxies" xml:space="preserve">
-    <value>Koordinatenachse</value>
-  </data>
-  <data name="PlotLeftAxies" xml:space="preserve">
-    <value>Linke Achse</value>
-  </data>
-  <data name="PlotBottomAxies" xml:space="preserve">
-    <value>Untere Achse</value>
-  </data>
-  <data name="PlotData" xml:space="preserve">
-    <value>Daten</value>
-  </data>
-  <data name="MajorAxes" xml:space="preserve">
-    <value>Hauptachse</value>
-  </data>
-  <data name="MinorAxes" xml:space="preserve">
-    <value>Nebenachse</value>
-  </data>
-  <data name="legend" xml:space="preserve">
-    <value>Legende</value>
-  </data>
-  <data name="Background" xml:space="preserve">
-    <value>Hintergrund</value>
-  </data>
-  <data name="Calculate" xml:space="preserve">
-    <value>Berechnen</value>
-  </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Löschen</value>
-  </data>
-  <data name="Confirm" xml:space="preserve">
-    <value>Bestätigen</value>
-  </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Abbrechen</value>
-  </data>
-  <data name="DontSave" xml:space="preserve">
-    <value>Nicht speichern</value>
-  </data>
-  <data name="IsShow" xml:space="preserve">
-    <value>Anzeigen</value>
-  </data>
-  <data name="FontFamily" xml:space="preserve">
-    <value>Schriftart</value>
-  </data>
-  <data name="FontStyle" xml:space="preserve">
-    <value>Schriftstil</value>
-  </data>
-  <data name="FontNormal" xml:space="preserve">
-    <value>Standard</value>
-  </data>
-  <data name="FontBold" xml:space="preserve">
-    <value>Fett</value>
-  </data>
-  <data name="FontItalic" xml:space="preserve">
-    <value>Kursiv</value>
-  </data>
-  <data name="FontSize" xml:space="preserve">
-    <value>Schriftgröße</value>
-  </data>
-  <data name="FontColor" xml:space="preserve">
-    <value>Schriftfarbe</value>
-  </data>
-  <data name="TextContent" xml:space="preserve">
-    <value>Inhalt</value>
-  </data>
-  <data name="LineStyle" xml:space="preserve">
-    <value>Linienstil</value>
-  </data>
-  <data name="LineSolid" xml:space="preserve">
-    <value>Durchgezogen</value>
-  </data>
-  <data name="LineDash" xml:space="preserve">
-    <value>Gestrichelt</value>
-  </data>
-  <data name="LineDashDot" xml:space="preserve">
-    <value>Strichpunkt</value>
-  </data>
-  <data name="LineDenselyDashed" xml:space="preserve">
-    <value>Dicht gestrichelt</value>
-  </data>
-  <data name="LineWidth" xml:space="preserve">
-    <value>Breite</value>
-  </data>
-  <data name="LineColor" xml:space="preserve">
-    <value>Farbe</value>
-  </data>
-  <data name="PointStyle" xml:space="preserve">
-    <value>Punktstil</value>
-  </data>
-  <data name="PointCircle" xml:space="preserve">
-    <value>Kreis</value>
-  </data>
-  <data name="PointHollowCircle" xml:space="preserve">
-    <value>Hohler Kreis</value>
-  </data>
-  <data name="PointSquare" xml:space="preserve">
-    <value>Quadrat</value>
-  </data>
-  <data name="PointFilledTriangleUp" xml:space="preserve">
-    <value>Dreieck oben</value>
-  </data>
-  <data name="PointFilledTriangleDown" xml:space="preserve">
-    <value>Dreieck unten</value>
-  </data>
-  <data name="PointDiamond" xml:space="preserve">
-    <value>Raute</value>
-  </data>
-  <data name="PointEks" xml:space="preserve">
-    <value>Kreuz (X)</value>
-  </data>
-  <data name="PointCross" xml:space="preserve">
-    <value>Kreuz (+)</value>
-  </data>
-  <data name="PointStar" xml:space="preserve">
-    <value>Stern</value>
-  </data>
-  <data name="size" xml:space="preserve">
-    <value>Größe</value>
-  </data>
-  <data name="IsShowAxes" xml:space="preserve">
-    <value>Achsen anzeigen</value>
-  </data>
-  <data name="IsShowAxesTick" xml:space="preserve">
-    <value>Hauptstriche ausblenden</value>
-  </data>
-  <data name="AxesStyle" xml:space="preserve">
-    <value>Achsenstil</value>
-  </data>
-  <data name="AxesStyleNormal" xml:space="preserve">
-    <value>Normal</value>
-  </data>
-  <data name="AxesStyleLog10" xml:space="preserve">
-    <value>Log(10)</value>
+  <data name="export_successful" xml:space="preserve">
+    <value>Export erfolgreich</value>
   </data>
   <data name="AxesTickFont" xml:space="preserve">
     <value>Achsenschriftart</value>
   </data>
-  <data name="AxesTickFontSize" xml:space="preserve">
-    <value>Achsenschriftgröße</value>
+  <data name="geo_validate_version_format" xml:space="preserve">
+    <value>Ungültiges Versionsformat. Nur x.x.x ist zulässig (z. B. 1.0.0, 1.2.3).</value>
   </data>
-  <data name="AxesTickSpacing" xml:space="preserve">
-    <value>Achsenabstand</value>
+  <data name="delete_this_item" xml:space="preserve">
+    <value>Dieses Element löschen</value>
   </data>
-  <data name="AxesTickUpLimit" xml:space="preserve">
-    <value>Obergrenze</value>
-  </data>
-  <data name="AxesTickDownLimit" xml:space="preserve">
-    <value>Untergrenze</value>
-  </data>
-  <data name="AxesTickColor" xml:space="preserve">
-    <value>Achsenfarbe</value>
-  </data>
-  <data name="IsShowMinorAxes" xml:space="preserve">
-    <value>Nebenstriche ausblenden</value>
-  </data>
-  <data name="IsShowLegend" xml:space="preserve">
-    <value>Legende anzeigen</value>
-  </data>
-  <data name="LegendPosition" xml:space="preserve">
-    <value>Legendenposition</value>
-  </data>
-  <data name="LegendPositionRU" xml:space="preserve">
-    <value>Rechts oben</value>
-  </data>
-  <data name="LegendPositionRD" xml:space="preserve">
-    <value>Rechts unten</value>
-  </data>
-  <data name="LegendPositionLU" xml:space="preserve">
-    <value>Links oben</value>
-  </data>
-  <data name="LegendPositionLD" xml:space="preserve">
-    <value>Links unten</value>
-  </data>
-  <data name="LegendDirection" xml:space="preserve">
-    <value>Legendenausrichtung</value>
-  </data>
-  <data name="LegendVertical" xml:space="preserve">
-    <value>Vertikal</value>
-  </data>
-  <data name="LegendHorizontal" xml:space="preserve">
-    <value>Horizontal</value>
-  </data>
-  <data name="PlotTitle" xml:space="preserve">
+  <data name="Placeholder_Chart_Title" xml:space="preserve">
     <value>Diagrammtitel</value>
   </data>
-  <data name="PlotTitleFont" xml:space="preserve">
-    <value>Titelschriftart</value>
+  <data name="drawing_template_repair_tool" xml:space="preserve">
+    <value>Zeichenvorlagenreparaturtool</value>
   </data>
-  <data name="PlotTitleFontSize" xml:space="preserve">
-    <value>Titelschriftgröße</value>
+  <data name="category_structure_min_two" xml:space="preserve">
+    <value>Kategoriestruktur muss mindestens 2 Ebenen haben!</value>
   </data>
-  <data name="PlotTitleColor" xml:space="preserve">
-    <value>Titelfarbe</value>
+  <data name="template_file_save_path" xml:space="preserve">
+    <value>Speicherpfad der Vorlagendatei</value>
   </data>
-  <data name="PlotAxesTitle1" xml:space="preserve">
-    <value>Achsentitel 1</value>
+  <data name="jpg_format" xml:space="preserve">
+    <value>JPG-Format</value>
   </data>
-  <data name="PlotAxesTitle2" xml:space="preserve">
-    <value>Achsentitel 2</value>
-  </data>
-  <data name="PlotAxesTitleFont" xml:space="preserve">
-    <value>Achsentitelschriftart</value>
-  </data>
-  <data name="PlotAxesTitleFontSize" xml:space="preserve">
-    <value>Achsentitelschriftgröße</value>
-  </data>
-  <data name="PlotAxesTitleColor" xml:space="preserve">
-    <value>Achsentitelfarbe</value>
-  </data>
-  <data name="PlotShowGrid" xml:space="preserve">
-    <value>Gitter anzeigen</value>
-  </data>
-  <data name="PlotMajorGridColor" xml:space="preserve">
-    <value>Hauptgitterfarbe</value>
-  </data>
-  <data name="PlotMajorGridWidth" xml:space="preserve">
-    <value>Hauptgitterbreite</value>
-  </data>
-  <data name="PlotShowMinorGrid" xml:space="preserve">
-    <value>Nebengitter anzeigen</value>
-  </data>
-  <data name="PlotMinorGridColor" xml:space="preserve">
-    <value>Nebengitterfarbe</value>
-  </data>
-  <data name="PlotMinorGridWidth" xml:space="preserve">
-    <value>Nebengitterbreite</value>
-  </data>
-  <data name="PlotSwitchFilledColor" xml:space="preserve">
-    <value>Füllfarbe umkehren</value>
+  <data name="TGMInfo" xml:space="preserve">
+    <value>Hier klicken oder Datei hierher ziehen</value>
   </data>
   <data name="PlotFilledColor1" xml:space="preserve">
     <value>Füllbereichsfarbe 1</value>
@@ -486,179 +183,1683 @@
   <data name="PlotFilledColor2" xml:space="preserve">
     <value>Füllbereichsfarbe 2</value>
   </data>
-  <data name="Parameters" xml:space="preserve">
-    <value>Erforderliche Parameter</value>
+  <data name="create_worksheet_failed" xml:space="preserve">
+    <value>Arbeitsblatterstellung fehlgeschlagen:</value>
   </data>
-  <data name="Js" xml:space="preserve">
-    <value>Js Skript</value>
+  <data name="geo_validate_year_required" xml:space="preserve">
+    <value>Jahr darf nicht leer sein.</value>
   </data>
-  <data name="CheckJs" xml:space="preserve">
-    <value>Skript prüfen</value>
+  <data name="new_version_available_github" xml:space="preserve">
+    <value>Neue Version gefunden! Bitte laden Sie das Update von der GitHub Release-Seite herunter.</value>
   </data>
-  <data name="Undelete_Message" xml:space="preserve">
-    <value>Löschen rückgängig gemacht</value>
+  <data name="batch_download_fail_count" xml:space="preserve">
+    <value>Fehlgeschlagen: {0}</value>
   </data>
-  <data name="DeleteingBasemapConfirm2_Message" xml:space="preserve">
-    <value>Wirklich löschen?</value>
+  <data name="confirm_delete_column" xml:space="preserve">
+    <value>Ausgewählte Spalte(n) wirklich löschen?</value>
   </data>
-  <data name="SaveSuccess" xml:space="preserve">
-    <value>Erfolgreich gespeichert</value>
+  <data name="cipw_iron_missing" xml:space="preserve">
+    <value>Fehlend</value>
   </data>
-  <data name="ParameterNotFilledIn" xml:space="preserve">
-    <value>Plot-Parameter nicht ausgefüllt</value>
+  <data name="batch_download_complete" xml:space="preserve">
+    <value>Batch-Download abgeschlossen</value>
   </data>
-  <data name="ScNotFilledIn" xml:space="preserve">
-    <value>Plot-Skript nicht ausgefüllt</value>
+  <data name="ternary_phase_diagram_sum_must_be_one" xml:space="preserve">
+    <value>Summe im ternären Diagramm muss 1 sein.</value>
   </data>
-  <data name="CancelImport" xml:space="preserve">
-    <value>Import abgebrochen</value>
+  <data name="add_text_operation_canceled" xml:space="preserve">
+    <value>Text-Erstellung abgebrochen.</value>
   </data>
-  <data name="BasemapExisted" xml:space="preserve">
-    <value>Grundkartendatei existiert bereits. Überschreiben?</value>
+  <data name="geo_validation_version_required" xml:space="preserve">
+    <value>Version ist erforderlich</value>
   </data>
-  <data name="NewBasemapSuccess" xml:space="preserve">
-    <value>Neue Grundkarte erfolgreich erstellt</value>
-  </data>
-  <data name="CategoryFormatError" xml:space="preserve">
-    <value>Kategorieformatfehler</value>
-  </data>
-  <data name="ParameterNull" xml:space="preserve">
-    <value>Parameter ist leer</value>
-  </data>
-  <data name="JsNull" xml:space="preserve">
-    <value>Skript ist leer</value>
-  </data>
-  <data name="BasemapCategories" xml:space="preserve">
-    <value>Grundkartenkategorie</value>
-  </data>
-  <data name="BasemapLanguage" xml:space="preserve">
-    <value>Grundkartensprache</value>
-  </data>
-  <data name="Zircon" xml:space="preserve">
-    <value>Zirkon</value>
-  </data>
-  <data name="Sphalerite" xml:space="preserve">
-    <value>Sphalerit</value>
-  </data>
-  <data name="Quartz" xml:space="preserve">
-    <value>Quarz</value>
-  </data>
-  <data name="Arsenopyrite" xml:space="preserve">
-    <value>Arsenopyrit</value>
-  </data>
-  <data name="Chlorite" xml:space="preserve">
-    <value>Chlorit</value>
-  </data>
-  <data name="Biotite" xml:space="preserve">
-    <value>Biotit</value>
-  </data>
-  <data name="Amphibole" xml:space="preserve">
-    <value>Amphibol</value>
-  </data>
-  <data name="Reset" xml:space="preserve">
+  <data name="geo_btn_reset" xml:space="preserve">
     <value>Zurücksetzen</value>
   </data>
-  <data name="ExportResult" xml:space="preserve">
-    <value>Ergebnis exportieren</value>
+  <data name="is_visible" xml:space="preserve">
+    <value>Sichtbar</value>
   </data>
-  <data name="TGMInfo" xml:space="preserve">
-    <value>Hier klicken oder Datei hierher ziehen</value>
+  <data name="geo_msg_batch_export_success" xml:space="preserve">
+    <value>{0} offizielle Thermometer insgesamt, davon {1} exportiert (hinzugefügt/geändert)
+Verzeichnis: {2}</value>
+  </data>
+  <data name="tick_interval" xml:space="preserve">
+    <value>Strichintervall</value>
+  </data>
+  <data name="geo_btn_apply" xml:space="preserve">
+    <value>Anwenden</value>
+  </data>
+  <data name="stroke_color" xml:space="preserve">
+    <value>Strichfarbe</value>
+  </data>
+  <data name="ImportData" xml:space="preserve">
+    <value>Daten importieren</value>
+  </data>
+  <data name="stroke_width" xml:space="preserve">
+    <value>Strichbreite</value>
+  </data>
+  <data name="AutoCheckUpdate" xml:space="preserve">
+    <value>Automatisch nach Updates suchen</value>
+  </data>
+  <data name="builtin_templates" xml:space="preserve">
+    <value>Offizielle integrierte Vorlagen</value>
+  </data>
+  <data name="failed_to_open_zip_file" xml:space="preserve">
+    <value>ZIP-Datei konnte nicht geöffnet werden</value>
+  </data>
+  <data name="Alignment_MiddleLeft" xml:space="preserve">
+    <value>Mitte links</value>
+  </data>
+  <data name="subtitle" xml:space="preserve">
+    <value>Untertitel</value>
+  </data>
+  <data name="illustrator_not_found_check_path" xml:space="preserve">
+    <value>Adobe Illustrator nicht gefunden. Bitte prüfen Sie die Pfadeinstellungen oder wählen Sie das zu öffnende Programm aus.</value>
+  </data>
+  <data name="json_parse_error" xml:space="preserve">
+    <value>JSON-Parse-Fehler</value>
+  </data>
+  <data name="cipw_step1_detail" xml:space="preserve">
+    <value>• Eingegebene Hauptelementoxide wasserfrei normalisieren (auf 100%)
+• Eisenverteilung: FeOT anhand des benutzerdefinierten Fe³⁺/Fe-Verhältnisses in FeO und Fe₂O₃ aufteilen
+• MnO molverhältnisbezogen mit FeO zusammenfassen
+• Massenprozente aller Oxide in Mole umrechnen</value>
+  </data>
+  <data name="script_return_value_error_must_be_array" xml:space="preserve">
+    <value>• Skript-Rückgabewertfehler: Das Skript muss ein Array zurückgeben.</value>
+  </data>
+  <data name="MarkerShape_VerticalBar" xml:space="preserve">
+    <value>Vertikale Linie</value>
+  </data>
+  <data name="MarkerShape_OpenDiamond" xml:space="preserve">
+    <value>Leere Raute</value>
+  </data>
+  <data name="geo_script_javascript" xml:space="preserve">
+    <value>JavaScript-Skript</value>
+  </data>
+  <data name="Expand" xml:space="preserve">
+    <value>Erweiterungen</value>
+  </data>
+  <data name="Placeholder_Chart_Title_Default" xml:space="preserve">
+    <value>Neues Diagramm</value>
+  </data>
+  <data name="geo_msg_promoted" xml:space="preserve">
+    <value>Zu offiziellem Thermometer hochgestuft</value>
+  </data>
+  <data name="geo_msg_test_input_required" xml:space="preserve">
+    <value>Bitte Testwerte eingeben.</value>
+  </data>
+  <data name="orientation" xml:space="preserve">
+    <value>Orientierung</value>
+  </data>
+  <data name="downloading_ellipsis" xml:space="preserve">
+    <value>Wird heruntergeladen...</value>
+  </data>
+  <data name="geo_hint_no_custom" xml:space="preserve">
+    <value>Noch keine benutzerdefinierten Thermometer, klicken Sie auf +, um zu erstellen.</value>
   </data>
   <data name="CalTarget" xml:space="preserve">
     <value>Berechnungsziel</value>
   </data>
-  <data name="CalTarget1" xml:space="preserve">
-    <value>Zr-Sättigungstemperatur (Watson und Harrison, 1983)</value>
+  <data name="FontItalic" xml:space="preserve">
+    <value>Kursiv</value>
   </data>
-  <data name="CalTarget2" xml:space="preserve">
-    <value>Zr-Haupttemperatur (Watson und Harrison, 1983)</value>
+  <data name="actual_sum_is" xml:space="preserve">
+    <value>(Tatsächliche Summe</value>
+  </data>
+  <data name="geo_msg_update_downloaded" xml:space="preserve">
+    <value>{0} Geothermometer heruntergeladen</value>
+  </data>
+  <data name="export_current_worksheet" xml:space="preserve">
+    <value>_Aktuelles Arbeitsblatt exportieren(R)</value>
+  </data>
+  <data name="use_help" xml:space="preserve">
+    <value>Diagramm-Anleitung</value>
+  </data>
+  <data name="Enum_LineType_Solid" xml:space="preserve">
+    <value>Durchgezogen</value>
+  </data>
+  <data name="geo_placeholder_help_read_confirm" xml:space="preserve">
+    <value>Klicken Sie nach dem Lesen des Dokuments auf OK, um fortzufahren.</value>
+  </data>
+  <data name="batch_downloading" xml:space="preserve">
+    <value>Batch-Download läuft</value>
+  </data>
+  <data name="subtitle_bold" xml:space="preserve">
+    <value>Untertitel fett</value>
+  </data>
+  <data name="diagram_guide" xml:space="preserve">
+    <value>Diagramm-Assistent</value>
+  </data>
+  <data name="ExportImageBMP" xml:space="preserve">
+    <value>Als BMP exportieren</value>
+  </data>
+  <data name="ExportImageJPG" xml:space="preserve">
+    <value>Als JPG exportieren</value>
+  </data>
+  <data name="ExportImageSVG" xml:space="preserve">
+    <value>Als SVG exportieren</value>
+  </data>
+  <data name="ExportImagePNG" xml:space="preserve">
+    <value>Als PNG exportieren</value>
+  </data>
+  <data name="line_type_dot" xml:space="preserve">
+    <value>Gepunktet</value>
+  </data>
+  <data name="highlight_on_hover" xml:space="preserve">
+    <value>Wenn aktiviert, werden Elemente beim Überfahren hervorgehoben und Details beim Klicken angezeigt</value>
+  </data>
+  <data name="geo_help_delete_doc" xml:space="preserve">
+    <value>Hilfedokument der aktuellen Sprache löschen</value>
+  </data>
+  <data name="loading_status" xml:space="preserve">
+    <value>Laden...</value>
+  </data>
+  <data name="geo_menu_update" xml:space="preserve">
+    <value>Aktualisieren</value>
+  </data>
+  <data name="PlotMinorGridColor" xml:space="preserve">
+    <value>Nebengitterfarbe</value>
+  </data>
+  <data name="MessageAutoClose" xml:space="preserve">
+    <value>Automatische Schließzeit</value>
+  </data>
+  <data name="LegendDirection" xml:space="preserve">
+    <value>Legendenausrichtung</value>
+  </data>
+  <data name="PlotMinorGridWidth" xml:space="preserve">
+    <value>Nebengitterbreite</value>
+  </data>
+  <data name="please_enter_name" xml:space="preserve">
+    <value>Bitte Name eingeben</value>
+  </data>
+  <data name="please_enter_link" xml:space="preserve">
+    <value>Bitte Link eingeben</value>
+  </data>
+  <data name="add_text" xml:space="preserve">
+    <value>Text hinzufügen</value>
+  </data>
+  <data name="add_line" xml:space="preserve">
+    <value>Linie hinzufügen</value>
+  </data>
+  <data name="add_link" xml:space="preserve">
+    <value>Link hinzufügen</value>
+  </data>
+  <data name="confirm_new_worksheet" xml:space="preserve">
+    <value>Neues Arbeitsblatt erstellen?</value>
+  </data>
+  <data name="pattern" xml:space="preserve">
+    <value>Muster</value>
+  </data>
+  <data name="geo_ctx_promote" xml:space="preserve">
+    <value>Zu offiziell hochstufen</value>
+  </data>
+  <data name="geo_validation_reference_required" xml:space="preserve">
+    <value>Referenz ist erforderlich</value>
+  </data>
+  <data name="validation_failed" xml:space="preserve">
+    <value>Validierung fehlgeschlagen:</value>
+  </data>
+  <data name="Support2" xml:space="preserve">
+    <value>📌Diagramme:</value>
+  </data>
+  <data name="Support3" xml:space="preserve">
+    <value>📌Dokumentation:</value>
+  </data>
+  <data name="Support1" xml:space="preserve">
+    <value>📌Steuerelemente:</value>
+  </data>
+  <data name="Support4" xml:space="preserve">
+    <value>📌Berechnung:</value>
+  </data>
+  <data name="Support5" xml:space="preserve">
+    <value>📌Tools:</value>
+  </data>
+  <data name="geo_menu_maintenance" xml:space="preserve">
+    <value>Wartung</value>
+  </data>
+  <data name="geo_validate_headers_required" xml:space="preserve">
+    <value>Kopfzeile darf nicht leer sein.</value>
+  </data>
+  <data name="PlotTitleFontSize" xml:space="preserve">
+    <value>Titelschriftgröße</value>
+  </data>
+  <data name="enter_level_add" xml:space="preserve">
+    <value>Ebene eingeben und Enter drücken.</value>
+  </data>
+  <data name="background_and_border" xml:space="preserve">
+    <value>Hintergrund und Rahmen</value>
+  </data>
+  <data name="DeleteBasemap" xml:space="preserve">
+    <value>Grundkarte löschen</value>
+  </data>
+  <data name="all_imported_data_cleared" xml:space="preserve">
+    <value>Alle importierten Daten gelöscht</value>
+  </data>
+  <data name="grid_settings" xml:space="preserve">
+    <value>Gittereinstellungen</value>
+  </data>
+  <data name="refresh_failed" xml:space="preserve">
+    <value>Aktualisierung fehlgeschlagen:</value>
+  </data>
+  <data name="Biotite" xml:space="preserve">
+    <value>Biotit</value>
+  </data>
+  <data name="Arsenopyrite" xml:space="preserve">
+    <value>Arsenopyrit</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="polygon" xml:space="preserve">
+    <value>Polygon</value>
+  </data>
+  <data name="fill_color_2" xml:space="preserve">
+    <value>Füllfarbe 2</value>
+  </data>
+  <data name="fill_color_1" xml:space="preserve">
+    <value>Füllfarbe 1</value>
   </data>
   <data name="Pressure" xml:space="preserve">
     <value>Druck(Mpa)</value>
   </data>
-  <data name="AmphiboleGTM" xml:space="preserve">
-    <value>Si-Thermometer (Ridolfi et al., 2010)</value>
+  <data name="start_check_and_repair" xml:space="preserve">
+    <value>Prüfung und Reparatur starten</value>
   </data>
-  <data name="BiotiteGTM" xml:space="preserve">
-    <value>Ti-Thermometer (Henry et al., 2005)</value>
+  <data name="GetMoreBasemap" xml:space="preserve">
+    <value>Mehr Grundkarten abrufen</value>
   </data>
-  <data name="ChloriteGTM" xml:space="preserve">
-    <value>Al4-Thermometer (Jowett, 1991)</value>
+  <data name="check_for_category_updates" xml:space="preserve">
+    <value>Nach Kategoriestruktur-Updates suchen</value>
   </data>
-  <data name="ArsenopyriteGTM" xml:space="preserve">
-    <value>Arsenopyrit-Thermometer (Kretschmar und Scott, 1976)</value>
+  <data name="cipw_overview" xml:space="preserve">
+    <value>Die CIPW-Normberechnung (auch CIPW Norm genannt) ist eine 1902 von Cross, Iddings, Pirsson und Washington vorgeschlagene petrochemische Berechnungsmethode. Auf Basis der chemischen Analyse der Hauptelementoxide eines Gesamtgesteins werden die Oxide in einer festen Reihenfolge auf eine Reihe idealisierter Standardminerale verteilt, was zur Gesteinsklassifikation und vergleichenden Untersuchungen dient.</value>
   </data>
-  <data name="QuartzGTM" xml:space="preserve">
-    <value>TitaniQ-Thermometer (Wark und Watson, 2006)</value>
+  <data name="elements_count_suffix" xml:space="preserve">
+    <value>Elemente.</value>
   </data>
-  <data name="SphaleriteGTM" xml:space="preserve">
-    <value>FeS-Thermometer (Scott und Barnes, 1971)</value>
+  <data name="update_list_file_failed" xml:space="preserve">
+    <value>Aktualisierung der Listendatei fehlgeschlagen</value>
   </data>
-  <data name="SphaleriteGGIMFisGTM" xml:space="preserve">
-    <value>GGIMFis-Thermometer (Frenzel et al., 2016)</value>
+  <data name="FontStyle" xml:space="preserve">
+    <value>Schriftstil</value>
+  </data>
+  <data name="save_as" xml:space="preserve">
+    <value>Speichern unter</value>
+  </data>
+  <data name="click_help_for_guide" xml:space="preserve">
+    <value>Klicken für Diagrammdokumentation</value>
+  </data>
+  <data name="LegendVertical" xml:space="preserve">
+    <value>Vertikal</value>
+  </data>
+  <data name="Placeholder_Component_A" xml:space="preserve">
+    <value>A</value>
+  </data>
+  <data name="Placeholder_Component_C" xml:space="preserve">
+    <value>C</value>
+  </data>
+  <data name="Placeholder_Component_B" xml:space="preserve">
+    <value>B</value>
+  </data>
+  <data name="click_to_pick_coordinates" xml:space="preserve">
+    <value>Bitte in den Zeichenbereich klicken, um Koordinaten zu wählen</value>
+  </data>
+  <data name="FontColor" xml:space="preserve">
+    <value>Schriftfarbe</value>
+  </data>
+  <data name="Basalt" xml:space="preserve">
+    <value>Basalt</value>
+  </data>
+  <data name="annotation" xml:space="preserve">
+    <value>Anmerkung</value>
+  </data>
+  <data name="geo_dialog_apply_overwrite" xml:space="preserve">
+    <value>Beim Anwenden wird der aktuelle Arbeitsblattinhalt überschrieben. Fortfahren?</value>
   </data>
   <data name="ZirconTiGTM" xml:space="preserve">
     <value>Ti-Thermometer (Loucks et al., 2020)</value>
   </data>
+  <data name="ImportBasemap" xml:space="preserve">
+    <value>Grundkarte importieren</value>
+  </data>
   <data name="ZirconZrGTM" xml:space="preserve">
     <value>Zr-Thermometer (Watson und Harrison, 1983)</value>
   </data>
-  <data name="Step1" xml:space="preserve">
-    <value>Daten importieren / eingeben</value>
+  <data name="ResetSuccess" xml:space="preserve">
+    <value>Erfolgreich zurückgesetzt</value>
   </data>
-  <data name="Step2" xml:space="preserve">
-    <value>Parameter prüfen</value>
+  <data name="geo_msg_save_failed" xml:space="preserve">
+    <value>Speichern fehlgeschlagen: {0}</value>
   </data>
-  <data name="Step3" xml:space="preserve">
-    <value>Ergebnis berechnen</value>
+  <data name="geo_editor_title_new" xml:space="preserve">
+    <value>Neues benutzerdefiniertes Thermometer</value>
   </data>
-  <data name="NormalSetting" xml:space="preserve">
-    <value>Allgemeine Einstellungen</value>
+  <data name="BorderLine" xml:space="preserve">
+    <value>Grenze</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Über</value>
+  <data name="switch_diagram_language" xml:space="preserve">
+    <value>Diagrammsprache wechseln</value>
   </data>
-  <data name="FilePath" xml:space="preserve">
-    <value>Dateipfad</value>
+  <data name="missing_columns" xml:space="preserve">
+    <value>Fehlende Spalten</value>
   </data>
-  <data name="FileSavePath" xml:space="preserve">
-    <value>Speicherort</value>
+  <data name="location" xml:space="preserve">
+    <value>Ort</value>
   </data>
-  <data name="DefaultPath" xml:space="preserve">
-    <value>Standardpfad</value>
+  <data name="syntax_validation_passed" xml:space="preserve">
+    <value>Syntaxvalidierung bestanden</value>
   </data>
-  <data name="CustomPath" xml:space="preserve">
-    <value>Benutzerdefinierter Ordner</value>
+  <data name="cipw_tooltip_expand" xml:space="preserve">
+    <value>Erweitern / Reduzieren</value>
   </data>
-  <data name="OpenFileLocation" xml:space="preserve">
-    <value>Dateispeicherort öffnen</value>
+  <data name="cipw_tooltip_export" xml:space="preserve">
+    <value>Berechnungsergebnisse in eine CSV-Datei exportieren</value>
   </data>
-  <data name="InternationalizationAndPersonalization" xml:space="preserve">
-    <value>Internationalisierung &amp; Personalisierung</value>
+  <data name="is_bold" xml:space="preserve">
+    <value>Fett</value>
   </data>
-  <data name="Theme" xml:space="preserve">
-    <value>Thema</value>
+  <data name="legend_settings" xml:space="preserve">
+    <value>Legendeneinstellungen</value>
   </data>
-  <data name="Default" xml:space="preserve">
-    <value>Standard</value>
+  <data name="Cancel" xml:space="preserve">
+    <value>Abbrechen</value>
   </data>
-  <data name="Language_" xml:space="preserve">
-    <value>Sprache</value>
+  <data name="geo_validation_author_required" xml:space="preserve">
+    <value>Autor ist erforderlich</value>
+  </data>
+  <data name="delete_row" xml:space="preserve">
+    <value>Zeile löschen</value>
+  </data>
+  <data name="cipw_export_dialog_title" xml:space="preserve">
+    <value>CIPW-Ergebnisse exportieren</value>
+  </data>
+  <data name="geo_menu_import_zip" xml:space="preserve">
+    <value>Geothermometer importieren (ZIP)</value>
+  </data>
+  <data name="read_file_failed" xml:space="preserve">
+    <value>Lesen der Datei fehlgeschlagen</value>
+  </data>
+  <data name="developer_mode" xml:space="preserve">
+    <value>Entwicklermodus</value>
+  </data>
+  <data name="BasemapCategories" xml:space="preserve">
+    <value>Grundkartenkategorie</value>
+  </data>
+  <data name="geo_validate_mineral_required" xml:space="preserve">
+    <value>Mineralkategorie darf nicht leer sein.</value>
+  </data>
+  <data name="filter_templates" xml:space="preserve">
+    <value>Vorlagen filtern</value>
+  </data>
+  <data name="geo_hint_select_data_row" xml:space="preserve">
+    <value>Bitte wählen Sie eine Datenzeile</value>
+  </data>
+  <data name="Setting" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="batch_download_progress" xml:space="preserve">
+    <value>Wird heruntergeladen: {0}/{1} - {2}</value>
+  </data>
+  <data name="oxygen_atom_benchmark_zero" xml:space="preserve">
+    <value>Sauerstoffatom-Basiswert ist null</value>
+  </data>
+  <data name="geo_msg_export_success" xml:space="preserve">
+    <value>Export erfolgreich</value>
+  </data>
+  <data name="LineDash" xml:space="preserve">
+    <value>Gestrichelt</value>
+  </data>
+  <data name="cipw_iron_measured" xml:space="preserve">
+    <value>Gemessen</value>
+  </data>
+  <data name="IsShowLegend" xml:space="preserve">
+    <value>Legende anzeigen</value>
+  </data>
+  <data name="library_section" xml:space="preserve">
+    <value>Ressourcenbibliothek</value>
+  </data>
+  <data name="server_announcement" xml:space="preserve">
+    <value>Serverankündigung</value>
+  </data>
+  <data name="failed_templates" xml:space="preserve">
+    <value>Fehlgeschlagene Vorlagen:</value>
+  </data>
+  <data name="font_rotation" xml:space="preserve">
+    <value>Schriftrotation</value>
+  </data>
+  <data name="toggle_details_expand_collapse" xml:space="preserve">
+    <value>Details ein-/ausblenden</value>
+  </data>
+  <data name="PlotAxesTitleFontSize" xml:space="preserve">
+    <value>Achsentitelschriftgröße</value>
+  </data>
+  <data name="file_import_successful" xml:space="preserve">
+    <value>Dateiimport erfolgreich</value>
+  </data>
+  <data name="uncategorized" xml:space="preserve">
+    <value>Unkategorisiert</value>
+  </data>
+  <data name="attempting_to_start" xml:space="preserve">
+    <value>Startversuch läuft</value>
+  </data>
+  <data name="diagram" xml:space="preserve">
+    <value>Diagramm</value>
+  </data>
+  <data name="geo_validation_year_range" xml:space="preserve">
+    <value>Jahr muss vierstellig sein (1000-9999)</value>
+  </data>
+  <data name="geo_msg_checking_update" xml:space="preserve">
+    <value>Suche nach Updates...</value>
+  </data>
+  <data name="add_function" xml:space="preserve">
+    <value>Funktion hinzufügen</value>
+  </data>
+  <data name="edit_diagram_template" xml:space="preserve">
+    <value>Diagrammvorlage bearbeiten</value>
+  </data>
+  <data name="IsShow" xml:space="preserve">
+    <value>Anzeigen</value>
   </data>
   <data name="EnglishUS" xml:space="preserve">
     <value>English (US)</value>
   </data>
-  <data name="ChineseS" xml:space="preserve">
-    <value>Chinesisch (Vereinfacht)</value>
+  <data name="cipw_references_content" xml:space="preserve">
+    <value>• Cross, W., Iddings, J.P., Pirsson, L.V., Washington, H.S. (1902). A Quantitative Chemico-Mineralogical Classification and Nomenclature of Igneous Rocks.
+• Le Maitre, R.W. (2002). Igneous Rocks: A Classification and Glossary of Terms. Cambridge University Press.
+• Kelsey, C.H. (1965). Calculation of the CIPW norm. Mineralogical Magazine, 34, 276-282.</value>
+  </data>
+  <data name="geo_ctx_demote" xml:space="preserve">
+    <value>Zu benutzerdefiniert herabstufen</value>
+  </data>
+  <data name="geo_ctx_delete" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="cipw_step3_detail" xml:space="preserve">
+    <value>Spurkomponenten den Akzessorien zuweisen:
+• Zirkon (Z): ZrO₂ + SiO₂
+• Apatit (Ap): P₂O₅ + CaO
+• Chromit (Cm): Cr₂O₃ + FeO
+• Ilmenit (Ilm): TiO₂ + FeO
+• Titanit (Tn): TiO₂ + CaO + SiO₂
+• Rutil (Ru): Rest TiO₂</value>
+  </data>
+  <data name="diagram_template_source_missing" xml:space="preserve">
+    <value>Quelldatei der Diagrammvorlage existiert nicht</value>
+  </data>
+  <data name="diagram_help_path_undefined_save_template" xml:space="preserve">
+    <value>Pfad der Diagramm-Hilfedatei konnte nicht ermittelt werden. Bitte versuchen Sie zuerst, die Vorlage zu speichern.</value>
+  </data>
+  <data name="already_exists_overwrite_confirm" xml:space="preserve">
+    <value>Bereits vorhanden. Möchten Sie es überschreiben?</value>
+  </data>
+  <data name="geo_editor_title_edit" xml:space="preserve">
+    <value>Thermometer bearbeiten</value>
+  </data>
+  <data name="start_and_end_coordinates" xml:space="preserve">
+    <value>Start- und Endkoordinaten</value>
+  </data>
+  <data name="official_templates" xml:space="preserve">
+    <value>Offizielle Diagrammvorlagen</value>
+  </data>
+  <data name="ScNotFilledIn" xml:space="preserve">
+    <value>Plot-Skript nicht ausgefüllt</value>
+  </data>
+  <data name="LegendPositionLU" xml:space="preserve">
+    <value>Links oben</value>
+  </data>
+  <data name="LegendPositionLD" xml:space="preserve">
+    <value>Links unten</value>
+  </data>
+  <data name="LegendPositionRD" xml:space="preserve">
+    <value>Rechts unten</value>
+  </data>
+  <data name="LegendPositionRU" xml:space="preserve">
+    <value>Rechts oben</value>
+  </data>
+  <data name="clear_data" xml:space="preserve">
+    <value>Daten löschen</value>
+  </data>
+  <data name="geo_validate_reference_required" xml:space="preserve">
+    <value>Referenz darf nicht leer sein.</value>
+  </data>
+  <data name="diagram_script_properties" xml:space="preserve">
+    <value>Diagrammskripteigenschaften</value>
+  </data>
+  <data name="PlotMajorGridColor" xml:space="preserve">
+    <value>Hauptgitterfarbe</value>
+  </data>
+  <data name="PlotAxesTitleFont" xml:space="preserve">
+    <value>Achsentitelschriftart</value>
+  </data>
+  <data name="zoom_type" xml:space="preserve">
+    <value>Zoomtyp</value>
+  </data>
+  <data name="pick_coordinate" xml:space="preserve">
+    <value>Koordinate wählen</value>
+  </data>
+  <data name="cipw_msg_export_failed" xml:space="preserve">
+    <value>Export fehlgeschlagen: {0}</value>
+  </data>
+  <data name="trace_function_usage_tip" xml:space="preserve">
+    <value>Verwenden Sie die Funktion trace(...), um den Berechnungsvorgang im Skript zu protokollieren.</value>
+  </data>
+  <data name="PlotMajorGridWidth" xml:space="preserve">
+    <value>Hauptgitterbreite</value>
+  </data>
+  <data name="custom_app" xml:space="preserve">
+    <value>Benutzerdefinierte App</value>
+  </data>
+  <data name="PlotAxesTitleColor" xml:space="preserve">
+    <value>Achsentitelfarbe</value>
+  </data>
+  <data name="JsNull" xml:space="preserve">
+    <value>Skript ist leer</value>
+  </data>
+  <data name="input_out_of_range" xml:space="preserve">
+    <value>Eingabewert außerhalb des Bereichs</value>
+  </data>
+  <data name="custom_templates" xml:space="preserve">
+    <value>Benutzerdefinierte Vorlagen</value>
+  </data>
+  <data name="entering_soon_ellipsis" xml:space="preserve">
+    <value>Gleich fertig...</value>
+  </data>
+  <data name="geo_tooltip_minimize" xml:space="preserve">
+    <value>Minimieren</value>
+  </data>
+  <data name="template_load_failed" xml:space="preserve">
+    <value>Laden der Vorlage fehlgeschlagen</value>
+  </data>
+  <data name="template_saved_successfully" xml:space="preserve">
+    <value>Vorlage erfolgreich gespeichert!</value>
+  </data>
+  <data name="geo_test_script_empty" xml:space="preserve">
+    <value>Skriptinhalt ist leer</value>
+  </data>
+  <data name="favorite_added" xml:space="preserve">
+    <value>Zu Favoriten hinzugefügt</value>
+  </data>
+  <data name="geo_validation_version_format" xml:space="preserve">
+    <value>Versionsformat sollte x.x.x sein (z. B. 1.0.0)</value>
+  </data>
+  <data name="IsShowAxes" xml:space="preserve">
+    <value>Achsen anzeigen</value>
+  </data>
+  <data name="geo_msg_delete_confirm" xml:space="preserve">
+    <value>{0} Thermometer „{1}" löschen?</value>
+  </data>
+  <data name="geo_menu_new_custom" xml:space="preserve">
+    <value>Neues benutzerdefiniertes Geothermometer</value>
+  </data>
+  <data name="OpenFileLocation" xml:space="preserve">
+    <value>Dateispeicherort öffnen</value>
+  </data>
+  <data name="Quartz" xml:space="preserve">
+    <value>Quarz</value>
+  </data>
+  <data name="import_custom_diagram_template" xml:space="preserve">
+    <value>Benutzerdefinierte Diagrammvorlage importieren</value>
+  </data>
+  <data name="invalid_formula" xml:space="preserve">
+    <value>Ungültige Formel</value>
+  </data>
+  <data name="PlotBoder" xml:space="preserve">
+    <value>Rahmen</value>
+  </data>
+  <data name="subtitle_color" xml:space="preserve">
+    <value>Untertitel-Farbe</value>
+  </data>
+  <data name="cipw_diag_total_minerals" xml:space="preserve">
+    <value>Mineralgesamtmenge</value>
+  </data>
+  <data name="PlotAxies" xml:space="preserve">
+    <value>Koordinatenachse</value>
+  </data>
+  <data name="DeleteingBasemapConfirm2_Message" xml:space="preserve">
+    <value>Wirklich löschen?</value>
+  </data>
+  <data name="geo_validation_year_required" xml:space="preserve">
+    <value>Jahr ist erforderlich</value>
+  </data>
+  <data name="error_occurred_while_checking_for_updates" xml:space="preserve">
+    <value>Fehler beim Prüfen auf Updates:</value>
+  </data>
+  <data name="GeothermometerSetting" xml:space="preserve">
+    <value>Geothermometer-Einstellungen</value>
+  </data>
+  <data name="PlotTitle" xml:space="preserve">
+    <value>Diagrammtitel</value>
+  </data>
+  <data name="MarkerShape_FilledTriangleUp" xml:space="preserve">
+    <value>Gefülltes Dreieck nach oben</value>
+  </data>
+  <data name="geo_btn_save_export_zip" xml:space="preserve">
+    <value>Speichern und ZIP exportieren</value>
+  </data>
+  <data name="geo_section_official" xml:space="preserve">
+    <value>Offizielle Thermometer</value>
+  </data>
+  <data name="geo_validation_name_required" xml:space="preserve">
+    <value>Name ist erforderlich</value>
+  </data>
+  <data name="geo_help_current_lang" xml:space="preserve">
+    <value>Aktuelle Sprache:</value>
+  </data>
+  <data name="new_drawing_template_library_version_detected" xml:space="preserve">
+    <value>Neue Version der Zeichenvorlagenbibliothek erkannt. Jetzt aktualisieren?</value>
+  </data>
+  <data name="inkscape_env_not_found_select_program" xml:space="preserve">
+    <value>Inkscape-Umgebungsvariable nicht gefunden. Bitte wählen Sie das zu öffnende Programm aus.</value>
+  </data>
+  <data name="cipw_select_row_hint" xml:space="preserve">
+    <value>Datenzeile auswählen, um Diagnosedetails anzuzeigen</value>
+  </data>
+  <data name="loading_drawing_module_ellipsis" xml:space="preserve">
+    <value>Lade Zeichenmodul...</value>
+  </data>
+  <data name="template_list_update_success_refreshing" xml:space="preserve">
+    <value>Vorlagenliste erfolgreich aktualisiert! Wird neu geladen...</value>
+  </data>
+  <data name="IgneousRock" xml:space="preserve">
+    <value>Magmatisches Gestein</value>
+  </data>
+  <data name="cipw_tooltip_clear" xml:space="preserve">
+    <value>Alle Eingaben und Berechnungsergebnisse löschen</value>
+  </data>
+  <data name="script_return_two_values_requirement" xml:space="preserve">
+    <value>Skripte müssen ein Array mit mindestens 2 Werten [X, Y] zurückgeben</value>
+  </data>
+  <data name="Language_" xml:space="preserve">
+    <value>Sprache</value>
+  </data>
+  <data name="MarkerShape_HashTag" xml:space="preserve">
+    <value>Rautezeichen</value>
+  </data>
+  <data name="cipw_btn_calculate" xml:space="preserve">
+    <value>Berechnen</value>
+  </data>
+  <data name="AxesStyleNormal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="MarkerShape_OpenCircleWithDot" xml:space="preserve">
+    <value>Leerer Kreis mit Punkt</value>
+  </data>
+  <data name="MarkerShape_OpenCircleWithEks" xml:space="preserve">
+    <value>Leerer Kreis mit X</value>
+  </data>
+  <data name="normalization_factor_is_zero" xml:space="preserve">
+    <value>Normalisierungsfaktor ist null</value>
+  </data>
+  <data name="svg_format" xml:space="preserve">
+    <value>SVG-Format</value>
+  </data>
+  <data name="cipw_diag_warnings" xml:space="preserve">
+    <value>── Warnungen ──</value>
+  </data>
+  <data name="AxesTickColor" xml:space="preserve">
+    <value>Achsenfarbe</value>
+  </data>
+  <data name="all_templates" xml:space="preserve">
+    <value>Alle Vorlagen</value>
+  </data>
+  <data name="personal_templates" xml:space="preserve">
+    <value>Persönliche Diagrammvorlagen</value>
+  </data>
+  <data name="geo_step_basic" xml:space="preserve">
+    <value>Grundinformationen</value>
+  </data>
+  <data name="cipw_step6_title" xml:space="preserve">
+    <value>Bildung der Eisenoxide</value>
+  </data>
+  <data name="failed_to_parse_category_group" xml:space="preserve">
+    <value>Konnte keine gültige Kategoriegruppe aus der Datei parsen. Bitte Kategoriespaltendaten prüfen</value>
+  </data>
+  <data name="clear_data_points" xml:space="preserve">
+    <value>Datenpunkte löschen</value>
+  </data>
+  <data name="geo_help_font_size" xml:space="preserve">
+    <value>Schriftgröße:</value>
+  </data>
+  <data name="geo_msg_test_input_invalid" xml:space="preserve">
+    <value>Ungültige Testeingabe. Bitte kommagetrennte Zahlen verwenden.</value>
+  </data>
+  <data name="MarkerShape_FilledTriangleDown" xml:space="preserve">
+    <value>Gefülltes Dreieck nach unten</value>
+  </data>
+  <data name="Parameters" xml:space="preserve">
+    <value>Erforderliche Parameter</value>
+  </data>
+  <data name="missing_translation_warning" xml:space="preserve">
+    <value>• Fehlende Übersetzung: Einige Texte verfügen über keine mehrsprachigen Übersetzungen.</value>
+  </data>
+  <data name="geo_btn_export" xml:space="preserve">
+    <value>Exportieren</value>
+  </data>
+  <data name="developer_maintenance_tool" xml:space="preserve">
+    <value>Entwicklerwartungstool</value>
+  </data>
+  <data name="geo_help_underline" xml:space="preserve">
+    <value>Unterstrichen (Strg+U)</value>
+  </data>
+  <data name="create_new_diagram_template" xml:space="preserve">
+    <value>Neue Diagrammvorlage erstellen</value>
+  </data>
+  <data name="ExportResult" xml:space="preserve">
+    <value>Ergebnis exportieren</value>
+  </data>
+  <data name="background_fill" xml:space="preserve">
+    <value>Hintergrundfüllung</value>
+  </data>
+  <data name="cipw_alumina_peralkaline" xml:space="preserve">
+    <value>Peralkalisch</value>
+  </data>
+  <data name="geo_tooltip_version_format" xml:space="preserve">
+    <value>Semantische Version, z. B. 1.0.0, 1.2.3</value>
+  </data>
+  <data name="DontSave" xml:space="preserve">
+    <value>Nicht speichern</value>
+  </data>
+  <data name="geo_field_author" xml:space="preserve">
+    <value>Autor *</value>
+  </data>
+  <data name="cipw_tooltip_calculate" xml:space="preserve">
+    <value>CIPW-Normberechnung für alle Zeilen mit Daten ausführen</value>
+  </data>
+  <data name="geo_btn_cancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="logarithmic" xml:space="preserve">
+    <value>Logarithmisch</value>
+  </data>
+  <data name="background_fill_1" xml:space="preserve">
+    <value>Hintergrundfüllung</value>
+  </data>
+  <data name="background_fill_2" xml:space="preserve">
+    <value>Hintergrundfüllung 2</value>
+  </data>
+  <data name="AxesTickSpacing" xml:space="preserve">
+    <value>Achsenabstand</value>
+  </data>
+  <data name="geo_test_input_invalid" xml:space="preserve">
+    <value>Ungültige Testeingabe. Bitte verwenden Sie durch Komma getrennte Zahlen.</value>
+  </data>
+  <data name="arrowhead_width" xml:space="preserve">
+    <value>Pfeilspitzenbreite</value>
+  </data>
+  <data name="geo_btn_prev" xml:space="preserve">
+    <value>Zurück</value>
+  </data>
+  <data name="geo_btn_save" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
+  <data name="geo_btn_help" xml:space="preserve">
+    <value>Hilfe</value>
+  </data>
+  <data name="geo_btn_next" xml:space="preserve">
+    <value>Weiter</value>
+  </data>
+  <data name="geo_field_description" xml:space="preserve">
+    <value>Kurzbeschreibung</value>
+  </data>
+  <data name="invalid_script_variable_name" xml:space="preserve">
+    <value>• Ungültiges Format des Skriptvariablennamens: ’</value>
+  </data>
+  <data name="ExportImageWebp" xml:space="preserve">
+    <value>Als Webp exportieren</value>
+  </data>
+  <data name="geological_thermometer" xml:space="preserve">
+    <value>Geologisches Thermometer</value>
+  </data>
+  <data name="browse_ellipsis" xml:space="preserve">
+    <value>Durchsuchen...</value>
+  </data>
+  <data name="open_with_third_party_software" xml:space="preserve">
+    <value>Mit Drittanbietersoftware öffnen</value>
+  </data>
+  <data name="bmp_format" xml:space="preserve">
+    <value>BMP-Format</value>
+  </data>
+  <data name="return_to_template_library" xml:space="preserve">
+    <value>Zurück</value>
+  </data>
+  <data name="fill_color" xml:space="preserve">
+    <value>Füllfarbe</value>
+  </data>
+  <data name="enter_supported_languages" xml:space="preserve">
+    <value>Unterstützte Sprachen eingeben</value>
+  </data>
+  <data name="cipw_iron_inconsistent" xml:space="preserve">
+    <value>Inkonsistente Eingabe</value>
+  </data>
+  <data name="export_image" xml:space="preserve">
+    <value>Bild exportieren</value>
+  </data>
+  <data name="MarkerShape_FilledSquare" xml:space="preserve">
+    <value>Gefülltes Quadrat</value>
+  </data>
+  <data name="cipw_tooltip_example" xml:space="preserve">
+    <value>Beispieldaten ausfüllen (Granit, Basalt, Andesit)</value>
+  </data>
+  <data name="diagram_title_properties" xml:space="preserve">
+    <value>Diagrammtiteleigenschaften</value>
+  </data>
+  <data name="add_column_left" xml:space="preserve">
+    <value>Spalte links hinzufügen</value>
+  </data>
+  <data name="update_available_click_to_download" xml:space="preserve">
+    <value>Neue Version verfügbar, zum Aktualisieren klicken</value>
+  </data>
+  <data name="developer_maintenance_tools" xml:space="preserve">
+    <value>Entwicklerwartungstools</value>
+  </data>
+  <data name="template_upgrade_warning" xml:space="preserve">
+    <value>Die aktuelle Vorlagenversion ist älter. Speichern aktualisiert die Version, was die Kompatibilität mit älteren Softwareversionen beeinträchtigen kann. Fortfahren?</value>
+  </data>
+  <data name="data_plotting_successful" xml:space="preserve">
+    <value>Datenpunkte erfolgreich gezeichnet</value>
+  </data>
+  <data name="PlotAxesTitle1" xml:space="preserve">
+    <value>Achsentitel 1</value>
+  </data>
+  <data name="PlotAxesTitle2" xml:space="preserve">
+    <value>Achsentitel 2</value>
+  </data>
+  <data name="geo_section_calc_details" xml:space="preserve">
+    <value>Berechnungsdetails</value>
+  </data>
+  <data name="geo_validate_formula_name_invalid" xml:space="preserve">
+    <value>Der Formelname darf nur Buchstaben, Ziffern und Unterstriche enthalten.</value>
+  </data>
+  <data name="border_width" xml:space="preserve">
+    <value>Rahmenbreite</value>
+  </data>
+  <data name="geo_help_add_lang" xml:space="preserve">
+    <value>Sprache hinzufügen:</value>
+  </data>
+  <data name="copy_content" xml:space="preserve">
+    <value>Inhalt kopieren</value>
+  </data>
+  <data name="ignore_issues_and_continue_export" xml:space="preserve">
+    <value>Diese Probleme ignorieren und mit dem Export fortfahren?</value>
+  </data>
+  <data name="file_does_not_exist" xml:space="preserve">
+    <value>Datei existiert nicht:</value>
+  </data>
+  <data name="cipw_msg_calc_partial_success" xml:space="preserve">
+    <value>Berechnung abgeschlossen: {0}/{1} Proben erfolgreich.</value>
+  </data>
+  <data name="border_color" xml:space="preserve">
+    <value>Rahmenfarbe</value>
+  </data>
+  <data name="language_switch_success" xml:space="preserve">
+    <value>Sprache erfolgreich geändert</value>
+  </data>
+  <data name="ExportImage" xml:space="preserve">
+    <value>Bild exportieren</value>
+  </data>
+  <data name="Zircon" xml:space="preserve">
+    <value>Zirkon</value>
+  </data>
+  <data name="left_y_axis" xml:space="preserve">
+    <value>Linke Y-Achse</value>
+  </data>
+  <data name="cipw_confirm_clear_msg" xml:space="preserve">
+    <value>Möchten Sie wirklich alle Eingaben und Berechnungsergebnisse löschen?</value>
+  </data>
+  <data name="cipw_btn_help" xml:space="preserve">
+    <value>Hilfe</value>
+  </data>
+  <data name="script_return_value_length_error" xml:space="preserve">
+    <value>• Fehler in der Länge des Skript-Rückgabewerts: Aktueller Wert ist</value>
+  </data>
+  <data name="AboutInfo2" xml:space="preserve">
+    <value>Wenn Ihnen dieses Projekt gefällt, geben Sie uns bitte einen Stern zur Unterstützung! Wenn Sie es hilfreich finden, können Sie mir auch einen Kaffee spendieren ☕</value>
+  </data>
+  <data name="AboutInfo3" xml:space="preserve">
+    <value>Wir begrüßen weitere Forscher!
+    Lassen Sie uns gemeinsam geochemische Berechnungsmethoden und weitere Diagrammvorlagen pflegen und aktualisieren!
+    Damit die Software leistungsfähiger und benutzerfreundlicher wird!</value>
+  </data>
+  <data name="AboutInfo1" xml:space="preserve">
+    <value>Dieses Projekt nutzt geochemische Daten für Diagrammerstellung, Berechnung und Analyse zur effizienten Verarbeitung geologischer Daten. Ziel ist es, Geowissenschaftlern zu helfen, den Datenanalyseprozess zu beschleunigen und die Forschungseffizienz zu verbessern.</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Bestätigen</value>
+  </data>
+  <data name="batch_download_failed" xml:space="preserve">
+    <value>Batch-Download fehlgeschlagen</value>
+  </data>
+  <data name="data_plotting" xml:space="preserve">
+    <value>Daten plotten</value>
+  </data>
+  <data name="loading_font_resources_ellipsis" xml:space="preserve">
+    <value>Lade Schriftarten...</value>
+  </data>
+  <data name="geo_msg_test_error" xml:space="preserve">
+    <value>Fehler: {0}</value>
+  </data>
+  <data name="auto_check_diagram_template_updates" xml:space="preserve">
+    <value>Automatisch nach Vorlagenupdates suchen</value>
+  </data>
+  <data name="Sphalerite" xml:space="preserve">
+    <value>Sphalerit</value>
+  </data>
+  <data name="content" xml:space="preserve">
+    <value>Inhalt</value>
+  </data>
+  <data name="completeness_check" xml:space="preserve">
+    <value>Vollständigkeitsprüfung</value>
+  </data>
+  <data name="LineDashDot" xml:space="preserve">
+    <value>Strichpunkt</value>
+  </data>
+  <data name="TextContent" xml:space="preserve">
+    <value>Inhalt</value>
+  </data>
+  <data name="MarkerShape_Eks" xml:space="preserve">
+    <value>X-Form</value>
+  </data>
+  <data name="geo_script_sample_row" xml:space="preserve">
+    <value>Beispielzeile (durch Komma getrennt)</value>
+  </data>
+  <data name="line_width" xml:space="preserve">
+    <value>Linienbreite</value>
+  </data>
+  <data name="ModifedCanceled" xml:space="preserve">
+    <value>Änderung abgebrochen</value>
+  </data>
+  <data name="geo_help_add_doc" xml:space="preserve">
+    <value>Hilfedokument für diese Sprache hinzufügen</value>
+  </data>
+  <data name="community" xml:space="preserve">
+    <value>Community</value>
+  </data>
+  <data name="geo_help_no_lang_hint" xml:space="preserve">
+    <value>Klicken Sie oben auf +, um eine Sprache hinzuzufügen, und bearbeiten Sie das Hilfedokument.</value>
+  </data>
+  <data name="error_loading_rtf_file" xml:space="preserve">
+    <value>Fehler beim Laden der RTF-Datei:</value>
+  </data>
+  <data name="cipw_btn_close" xml:space="preserve">
+    <value>Schließen</value>
+  </data>
+  <data name="cipw_btn_clear" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="error_creating_table" xml:space="preserve">
+    <value>Fehler beim Erstellen der Tabelle:</value>
+  </data>
+  <data name="script_return_type_error" xml:space="preserve">
+    <value>Skript-Rückgabetypfehler</value>
+  </data>
+  <data name="geo_msg_select_thermometer_first" xml:space="preserve">
+    <value>Bitte wählen Sie zuerst ein Thermometer aus.</value>
+  </data>
+  <data name="enter_language_add" xml:space="preserve">
+    <value>Sprache eingeben und Enter drücken.</value>
+  </data>
+  <data name="Alignment_LowerLeft" xml:space="preserve">
+    <value>Unten links</value>
+  </data>
+  <data name="Alignment_UpperLeft" xml:space="preserve">
+    <value>Oben links</value>
+  </data>
+  <data name="geo_msg_import_failed_detail" xml:space="preserve">
+    <value>Import fehlgeschlagen: {0}</value>
+  </data>
+  <data name="MarkerShape_OpenCircleWithCross" xml:space="preserve">
+    <value>Leerer Kreis mit Kreuz</value>
+  </data>
+  <data name="geo_validate_formula_name_required" xml:space="preserve">
+    <value>Formelname darf nicht leer sein.</value>
+  </data>
+  <data name="subtitle_italic" xml:space="preserve">
+    <value>Untertitel kursiv</value>
+  </data>
+  <data name="select_data_file" xml:space="preserve">
+    <value>Bitte Datendatei auswählen</value>
+  </data>
+  <data name="AxesStyle" xml:space="preserve">
+    <value>Achsenstil</value>
+  </data>
+  <data name="current_template_list_latest_version" xml:space="preserve">
+    <value>Die aktuelle Vorlagenliste ist bereits die neueste Version.</value>
+  </data>
+  <data name="alignment" xml:space="preserve">
+    <value>Ausrichtung</value>
+  </data>
+  <data name="ChloriteGTM" xml:space="preserve">
+    <value>Al4-Thermometer (Jowett, 1991)</value>
+  </data>
+  <data name="two_dimensional_coordinate_plot" xml:space="preserve">
+    <value>2D-Koordinatendiagramm</value>
+  </data>
+  <data name="dev_mode_warning_non_developers" xml:space="preserve">
+    <value>Nicht für Nicht-Entwickler empfohlen; dies kann zu unnötigen Problemen führen.</value>
+  </data>
+  <data name="NormalSetting" xml:space="preserve">
+    <value>Allgemeine Einstellungen</value>
+  </data>
+  <data name="cipw_step8_detail" xml:space="preserve">
+    <value>Anpassung je nach SiO₂-Restmenge:
+
+▶ Übersättigt (SiO₂ übrig): Quarz (Q) bilden
+▶ Gesättigt (SiO₂ vollständig verbraucht): kein Quarz, kein Foid
+▶ Untersättigt (SiO₂ fehlt): Minerale in Prioritätsreihenfolge umwandeln ——
+    • Hypersthen (En+Fs) → Olivin (Fo+Fa)
+    • Orthoklas (Or) → Leucit (Le)
+    • Leucit (Le) → Kalsilit (Kp)
+    • Albit (Ab) → Nephelin (Ne)</value>
+  </data>
+  <data name="no_data_columns_defined" xml:space="preserve">
+    <value>Keine Datenspalten definiert</value>
+  </data>
+  <data name="cipw_step2_title" xml:space="preserve">
+    <value>Bildung volatiler Minerale</value>
+  </data>
+  <data name="geo_msg_csv_save_title" xml:space="preserve">
+    <value>Als CSV-Datei speichern</value>
+  </data>
+  <data name="geo_validation_formula_name_required" xml:space="preserve">
+    <value>Formelname ist erforderlich</value>
+  </data>
+  <data name="language_switch_error" xml:space="preserve">
+    <value>Beim Umschalten der Sprache ist ein Fehler aufgetreten:</value>
+  </data>
+  <data name="unable_to_open_link" xml:space="preserve">
+    <value>Link kann nicht geöffnet werden:</value>
+  </data>
+  <data name="Background" xml:space="preserve">
+    <value>Hintergrund</value>
+  </data>
+  <data name="Alignment_UpperCenter" xml:space="preserve">
+    <value>Oben mitte</value>
+  </data>
+  <data name="Undelete_Message" xml:space="preserve">
+    <value>Löschen rückgängig gemacht</value>
   </data>
   <data name="DefaultRandom" xml:space="preserve">
     <value>Standard zufällig</value>
   </data>
-  <data name="MessageNotification" xml:space="preserve">
-    <value>Benachrichtigungen</value>
+  <data name="geo_tooltip_headers" xml:space="preserve">
+    <value>z. B. SiO2, TiO2, Al2O3, T(K)</value>
   </data>
-  <data name="MessageAutoClose" xml:space="preserve">
-    <value>Automatische Schließzeit</value>
+  <data name="geo_validate_author_required" xml:space="preserve">
+    <value>Autor darf nicht leer sein.</value>
+  </data>
+  <data name="picking_operation_cancelled" xml:space="preserve">
+    <value>Auswahlvorgang abgebrochen</value>
+  </data>
+  <data name="minimize" xml:space="preserve">
+    <value>Minimieren</value>
+  </data>
+  <data name="cipw_step5_title" xml:space="preserve">
+    <value>Bildung von Feldspäten und Alkali-Silikaten</value>
+  </data>
+  <data name="failed_to_open_file" xml:space="preserve">
+    <value>Datei konnte nicht geöffnet werden:</value>
+  </data>
+  <data name="cipw_col_mass_balance_error" xml:space="preserve">
+    <value>Massenbilanzfehler (%)</value>
+  </data>
+  <data name="template_no_multilingual_info" xml:space="preserve">
+    <value>Die aktuelle Vorlage enthält keine mehrsprachigen Informationen</value>
+  </data>
+  <data name="cipw_msg_no_data" xml:space="preserve">
+    <value>Keine gültige Datenzeile gefunden. Bitte zuerst Oxidgehalte eingeben.</value>
+  </data>
+  <data name="PointEks" xml:space="preserve">
+    <value>Kreuz (X)</value>
+  </data>
+  <data name="current_diagram_version" xml:space="preserve">
+    <value>Aktuelle Diagrammversion</value>
+  </data>
+  <data name="PointDiamond" xml:space="preserve">
+    <value>Raute</value>
+  </data>
+  <data name="SphaleriteGGIMFisGTM" xml:space="preserve">
+    <value>GGIMFis-Thermometer (Frenzel et al., 2016)</value>
+  </data>
+  <data name="independent_diagram_window" xml:space="preserve">
+    <value>Unabhängiges Diagrammfenster</value>
+  </data>
+  <data name="QuartzGTM" xml:space="preserve">
+    <value>TitaniQ-Thermometer (Wark und Watson, 2006)</value>
+  </data>
+  <data name="cipw_diag_alumina_saturation" xml:space="preserve">
+    <value>Tonerdesättigung</value>
+  </data>
+  <data name="RockClassification" xml:space="preserve">
+    <value>Gesteinsklassifikation</value>
+  </data>
+  <data name="view_help_docs" xml:space="preserve">
+    <value>Hilfedokumentation anzeigen</value>
+  </data>
+  <data name="MinimizeTray" xml:space="preserve">
+    <value>In Systemtray minimieren</value>
+  </data>
+  <data name="geo_validate_name_required" xml:space="preserve">
+    <value>Name darf nicht leer sein.</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="custom_path_not_set_configure_in_settings" xml:space="preserve">
+    <value>Benutzerdefinierter Programmpfad nicht festgelegt. Bitte in den Einstellungen konfigurieren.</value>
+  </data>
+  <data name="add_line_operation_canceled" xml:space="preserve">
+    <value>Linien-Erstellung abgebrochen.</value>
+  </data>
+  <data name="directory_not_exist" xml:space="preserve">
+    <value>Verzeichnis existiert nicht</value>
+  </data>
+  <data name="show_major_ticks" xml:space="preserve">
+    <value>Hauptskalen anzeigen</value>
+  </data>
+  <data name="add_row_down" xml:space="preserve">
+    <value>Zeile unten einfügen</value>
+  </data>
+  <data name="cipw_alumina_metaluminous" xml:space="preserve">
+    <value>Metaluminös</value>
+  </data>
+  <data name="geo_field_required_hint" xml:space="preserve">
+    <value>Pflichtfelder sind mit * markiert. Versionsformat: x.x.x (z. B. 1.0.0).</value>
+  </data>
+  <data name="invalid_data_parameter_format" xml:space="preserve">
+    <value>Ungültiges Datenparameterformat</value>
+  </data>
+  <data name="coreldraw_env_not_found_select_program" xml:space="preserve">
+    <value>CorelDRAW-Umgebungsvariable nicht gefunden. Bitte wählen Sie das zu öffnende Programm aus.</value>
+  </data>
+  <data name="bottom_x_axis" xml:space="preserve">
+    <value>Untere X-Achse</value>
+  </data>
+  <data name="AxesTickFontSize" xml:space="preserve">
+    <value>Achsenschriftgröße</value>
+  </data>
+  <data name="parameter_format_correct" xml:space="preserve">
+    <value>Parameterformat korrekt</value>
+  </data>
+  <data name="error_loading_template" xml:space="preserve">
+    <value>Fehler beim Laden der Vorlage</value>
+  </data>
+  <data name="MajorAxes" xml:space="preserve">
+    <value>Hauptachse</value>
+  </data>
+  <data name="error_calculating_data_point_coordinates" xml:space="preserve">
+    <value>Fehler beim Berechnen der Datenpunktkoordinaten:</value>
+  </data>
+  <data name="Placeholder_Text" xml:space="preserve">
+    <value>Bitte Text eingeben</value>
+  </data>
+  <data name="line_type_dash" xml:space="preserve">
+    <value>Gestrichelt</value>
+  </data>
+  <data name="import_failed" xml:space="preserve">
+    <value>Import fehlgeschlagen:</value>
+  </data>
+  <data name="geo_msg_downloading_update" xml:space="preserve">
+    <value>Wird heruntergeladen...</value>
+  </data>
+  <data name="geo_test_input_required" xml:space="preserve">
+    <value>Bitte geben Sie Testwerte ein.</value>
+  </data>
+  <data name="CheckJs" xml:space="preserve">
+    <value>Skript prüfen</value>
+  </data>
+  <data name="LocationAxis" xml:space="preserve">
+    <value>Positionsachse</value>
+  </data>
+  <data name="cipw_btn_cancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="Alignment_MiddleRight" xml:space="preserve">
+    <value>Mitte rechts</value>
+  </data>
+  <data name="vertex_add_new" xml:space="preserve">
+    <value>Neuen Eckpunkt hinzufügen</value>
+  </data>
+  <data name="Placeholder_Ternary_Title" xml:space="preserve">
+    <value>Neues ternäres Phasendiagramm</value>
+  </data>
+  <data name="MarkerShape_FilledCircle" xml:space="preserve">
+    <value>Gefüllter Kreis</value>
+  </data>
+  <data name="IsShowAxesTick" xml:space="preserve">
+    <value>Hauptstriche ausblenden</value>
+  </data>
+  <data name="position" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="enable_alternating_fill" xml:space="preserve">
+    <value>Alternierende Füllung aktivieren</value>
+  </data>
+  <data name="delete_language_column" xml:space="preserve">
+    <value>Sprachspalte löschen</value>
+  </data>
+  <data name="coordinates" xml:space="preserve">
+    <value>Koordinaten</value>
+  </data>
+  <data name="geo_msg_export_dialog_title" xml:space="preserve">
+    <value>Geothermometer exportieren</value>
+  </data>
+  <data name="edit_link" xml:space="preserve">
+    <value>Link bearbeiten</value>
+  </data>
+  <data name="background_color" xml:space="preserve">
+    <value>Hintergrundfarbe</value>
+  </data>
+  <data name="cipw_step4_detail" xml:space="preserve">
+    <value>Tonerdesättigungstyp aus dem molaren Verhältnis von Rest-Al₂O₃ und Alkalien + CaO ermitteln:
+• Peralkalisch (Peralkaline): Na₂O + K₂O &gt; Al₂O₃
+• Metaluminös (Metaluminous): Al₂O₃ ≤ CaO + Na₂O + K₂O
+• Peraluminös (Peraluminous): Al₂O₃ &gt; CaO + Na₂O + K₂O</value>
+  </data>
+  <data name="cipw_msg_calc_all_success" xml:space="preserve">
+    <value>Berechnung abgeschlossen: alle {0} Proben erfolgreich.</value>
+  </data>
+  <data name="select_software" xml:space="preserve">
+    <value>Software auswählen</value>
+  </data>
+  <data name="modified_successfully" xml:space="preserve">
+    <value>Erfolgreich geändert</value>
+  </data>
+  <data name="geo_validation_formula_name_format" xml:space="preserve">
+    <value>Formelname erlaubt nur Buchstaben, Ziffern und Unterstrich</value>
+  </data>
+  <data name="is_not_one" xml:space="preserve">
+    <value>Datensumme ist nicht 1</value>
+  </data>
+  <data name="network_request_error" xml:space="preserve">
+    <value>Netzwerkanfragefehler</value>
+  </data>
+  <data name="script_no_detailed_calculation_description" xml:space="preserve">
+    <value>Dieses Skript enthält keine detaillierten Erläuterungen zum Berechnungsvorgang.</value>
+  </data>
+  <data name="insufficient_script_return_values" xml:space="preserve">
+    <value>Unzureichende Skript-Rückgabewerte</value>
+  </data>
+  <data name="SphaleriteGTM" xml:space="preserve">
+    <value>FeS-Thermometer (Scott und Barnes, 1971)</value>
+  </data>
+  <data name="ThankSupport" xml:space="preserve">
+    <value>Danke für die Unterstützung</value>
+  </data>
+  <data name="BasemapLanguage" xml:space="preserve">
+    <value>Grundkartensprache</value>
+  </data>
+  <data name="completed" xml:space="preserve">
+    <value>Abgeschlossen</value>
+  </data>
+  <data name="webp_format" xml:space="preserve">
+    <value>WebP-Format</value>
+  </data>
+  <data name="geo_validation_inputs_required" xml:space="preserve">
+    <value>Eingabespalten sind erforderlich</value>
+  </data>
+  <data name="geo_validate_script_required" xml:space="preserve">
+    <value>JavaScript-Skript darf nicht leer sein.</value>
+  </data>
+  <data name="excel_missing_required_columns" xml:space="preserve">
+    <value>Excel-Datei fehlen erforderliche Spalten</value>
+  </data>
+  <data name="automatic_updates" xml:space="preserve">
+    <value>Automatische Updates</value>
+  </data>
+  <data name="failed_to_open_widget" xml:space="preserve">
+    <value>Widget konnte nicht geöffnet werden:</value>
+  </data>
+  <data name="MarkerShape_Cross" xml:space="preserve">
+    <value>Kreuz</value>
+  </data>
+  <data name="failed_to_load_help_document" xml:space="preserve">
+    <value>Fehler beim Laden des Hilfedokuments:</value>
+  </data>
+  <data name="template_type_not_supported_please_update" xml:space="preserve">
+    <value>Vorlagentyp nicht unterstützt, bitte Software aktualisieren.</value>
+  </data>
+  <data name="geo_msg_delete_success" xml:space="preserve">
+    <value>Erfolgreich gelöscht</value>
+  </data>
+  <data name="research_life_smooth_sailing" xml:space="preserve">
+    <value>viel Erfolg in Forschung und Leben!</value>
+  </data>
+  <data name="geo_script_run_test" xml:space="preserve">
+    <value>Test ausführen</value>
+  </data>
+  <data name="script_settings" xml:space="preserve">
+    <value>Skripteinstellungen</value>
+  </data>
+  <data name="to" xml:space="preserve">
+    <value>Bis</value>
+  </data>
+  <data name="Js" xml:space="preserve">
+    <value>Js Skript</value>
+  </data>
+  <data name="cipw_btn_export" xml:space="preserve">
+    <value>Exportieren</value>
+  </data>
+  <data name="check_for_template_updates" xml:space="preserve">
+    <value>Auf Vorlagenupdates prüfen</value>
+  </data>
+  <data name="geo_tooltip_new" xml:space="preserve">
+    <value>Neu</value>
+  </data>
+  <data name="German_Germany" xml:space="preserve">
+    <value>Deutsch (Deutschland)</value>
+  </data>
+  <data name="Orientation_Horizontal" xml:space="preserve">
+    <value>Horizontal</value>
+  </data>
+  <data name="initializing_language_service_ellipsis" xml:space="preserve">
+    <value>Initialisiere Sprachdienst...</value>
+  </data>
+  <data name="enter_category_structure" xml:space="preserve">
+    <value>Kategoriestruktur eingeben</value>
+  </data>
+  <data name="reading_user_configuration_ellipsis" xml:space="preserve">
+    <value>Lese Benutzerkonfiguration...</value>
+  </data>
+  <data name="geo_section_custom" xml:space="preserve">
+    <value>Benutzerdefinierte Thermometer</value>
+  </data>
+  <data name="Placeholder_Axis_Y" xml:space="preserve">
+    <value>Y-Achse</value>
+  </data>
+  <data name="Placeholder_Axis_X" xml:space="preserve">
+    <value>X-Achse</value>
+  </data>
+  <data name="network_connection_failed_cannot_check_for_updates" xml:space="preserve">
+    <value>Netzwerkverbindung fehlgeschlagen, Updates können nicht geprüft werden:</value>
+  </data>
+  <data name="help_document_not_found" xml:space="preserve">
+    <value>Hilfedokument nicht gefunden:</value>
+  </data>
+  <data name="geo_field_version" xml:space="preserve">
+    <value>Version *</value>
+  </data>
+  <data name="FontSize" xml:space="preserve">
+    <value>Schriftgröße</value>
+  </data>
+  <data name="FontBold" xml:space="preserve">
+    <value>Fett</value>
+  </data>
+  <data name="template_delete_success" xml:space="preserve">
+    <value>Vorlage erfolgreich gelöscht</value>
+  </data>
+  <data name="confirm_delete_custom_diagram_template" xml:space="preserve">
+    <value>Sind Sie sicher, dass Sie diese benutzerdefinierte Diagrammvorlage löschen möchten?</value>
+  </data>
+  <data name="Geothermometer" xml:space="preserve">
+    <value>Geothermometer</value>
+  </data>
+  <data name="error_loading_template_list" xml:space="preserve">
+    <value>Fehler beim Laden der Vorlagenliste:</value>
+  </data>
+  <data name="confirm_clear_data_points" xml:space="preserve">
+    <value>Datenpunkte löschen?</value>
+  </data>
+  <data name="PlotTitleColor" xml:space="preserve">
+    <value>Titelfarbe</value>
+  </data>
+  <data name="y_coordinate" xml:space="preserve">
+    <value>Y-Koordinate</value>
+  </data>
+  <data name="end_coordinates" xml:space="preserve">
+    <value>Endkoordinaten</value>
+  </data>
+  <data name="script_content_is_empty" xml:space="preserve">
+    <value>Skriptinhalt ist leer</value>
+  </data>
+  <data name="PlotSwitchFilledColor" xml:space="preserve">
+    <value>Füllfarbe umkehren</value>
+  </data>
+  <data name="export_failed" xml:space="preserve">
+    <value>Export fehlgeschlagen:</value>
+  </data>
+  <data name="TectonicSetting" xml:space="preserve">
+    <value>Tektonisches Umfeld</value>
+  </data>
+  <data name="must_be_positive_number" xml:space="preserve">
+    <value>Muss eine positive Zahl sein</value>
+  </data>
+  <data name="cipw_step4_title" xml:space="preserve">
+    <value>Bestimmung des Tonerdesättigungsgrads</value>
+  </data>
+  <data name="font_color" xml:space="preserve">
+    <value>Schriftfarbe</value>
+  </data>
+  <data name="default_third_party_editor" xml:space="preserve">
+    <value>Standard-Drittanbieter-Editor</value>
+  </data>
+  <data name="failed_to_load_diagram_template" xml:space="preserve">
+    <value>Diagrammvorlage konnte nicht geladen werden:</value>
+  </data>
+  <data name="font_style" xml:space="preserve">
+    <value>Schriftstil</value>
+  </data>
+  <data name="error" xml:space="preserve">
+    <value>Fehler:</value>
+  </data>
+  <data name="some_data_failed_validation" xml:space="preserve">
+    <value>Einige Daten haben die Validierung nicht bestanden und wurden übersprungen</value>
+  </data>
+  <data name="arrow" xml:space="preserve">
+    <value>Pfeil</value>
+  </data>
+  <data name="file_" xml:space="preserve">
+    <value>Datei</value>
+  </data>
+  <data name="please_select_a_widget" xml:space="preserve">
+    <value>Bitte ein Widget auswählen</value>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>Schließen</value>
+  </data>
+  <data name="color" xml:space="preserve">
+    <value>Farbe</value>
+  </data>
+  <data name="count" xml:space="preserve">
+    <value>Anzahl</value>
+  </data>
+  <data name="point" xml:space="preserve">
+    <value>Punkt</value>
+  </data>
+  <data name="width" xml:space="preserve">
+    <value>Breite</value>
+  </data>
+  <data name="add" xml:space="preserve">
+    <value>Hinzufügen</value>
+  </data>
+  <data name="new" xml:space="preserve">
+    <value>_Neu(N)</value>
+  </data>
+  <data name="row" xml:space="preserve">
+    <value>Zeile:</value>
+  </data>
+  <data name="ready" xml:space="preserve">
+    <value>Bereit</value>
+  </data>
+  <data name="PointCircle" xml:space="preserve">
+    <value>Kreis</value>
+  </data>
+  <data name="range" xml:space="preserve">
+    <value>Bereich</value>
+  </data>
+  <data name="style" xml:space="preserve">
+    <value>Stil</value>
+  </data>
+  <data name="ternary_diagram_crosshair_not_supported" xml:space="preserve">
+    <value>Fadenkreuz-Positionierung wird für Ternärdiagramme derzeit nicht unterstützt.</value>
+  </data>
+  <data name="cipw_references_title" xml:space="preserve">
+    <value>Literatur</value>
+  </data>
+  <data name="About" xml:space="preserve">
+    <value>Über</value>
+  </data>
+  <data name="Guide" xml:space="preserve">
+    <value>Anleitung</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Sonstiges</value>
+  </data>
+  <data name="cipw_step1_title" xml:space="preserve">
+    <value>Datenvorverarbeitung und Normalisierung</value>
+  </data>
+  <data name="downloading_status" xml:space="preserve">
+    <value>Wird heruntergeladen...</value>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>Thema</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Zurücksetzen</value>
+  </data>
+  <data name="Step3" xml:space="preserve">
+    <value>Ergebnis berechnen</value>
+  </data>
+  <data name="Step2" xml:space="preserve">
+    <value>Parameter prüfen</value>
+  </data>
+  <data name="Step1" xml:space="preserve">
+    <value>Daten importieren / eingeben</value>
+  </data>
+  <data name="please_select_an_object_to_delete_first" xml:space="preserve">
+    <value>Bitte zuerst ein Objekt zum Löschen auswählen.</value>
+  </data>
+  <data name="FileSavePath" xml:space="preserve">
+    <value>Speicherort</value>
+  </data>
+  <data name="geo_placeholder_search" xml:space="preserve">
+    <value>Suchen...</value>
+  </data>
+  <data name="recently_used" xml:space="preserve">
+    <value>Zuletzt verwendet</value>
+  </data>
+  <data name="JsSetting" xml:space="preserve">
+    <value>Skripteinstellungen</value>
+  </data>
+  <data name="geo_help_bold" xml:space="preserve">
+    <value>Fett (Strg+B)</value>
+  </data>
+  <data name="ternary_phase_diagram" xml:space="preserve">
+    <value>Ternäres Phasendiagramm</value>
+  </data>
+  <data name="all_data_cleared" xml:space="preserve">
+    <value>Alle Daten gelöscht</value>
+  </data>
+  <data name="Calculate" xml:space="preserve">
+    <value>Berechnen</value>
+  </data>
+  <data name="failed_to_get_announcements" xml:space="preserve">
+    <value>Abrufen der Ankündigungen fehlgeschlagen:</value>
+  </data>
+  <data name="repair_missing_or_damaged_templates_and_lists" xml:space="preserve">
+    <value>Fehlende oder beschädigte Vorlagen und Listen reparieren</value>
+  </data>
+  <data name="MarkerShape_FilledDiamond" xml:space="preserve">
+    <value>Gefüllte Raute</value>
+  </data>
+  <data name="export_and_tools" xml:space="preserve">
+    <value>Export/Tools</value>
+  </data>
+  <data name="select_drawing_template_file" xml:space="preserve">
+    <value>Zeichenvorlagendatei auswählen</value>
+  </data>
+  <data name="update_data" xml:space="preserve">
+    <value>Daten aktualisieren</value>
+  </data>
+  <data name="geo_tooltip_test_input_eg" xml:space="preserve">
+    <value>z. B. 45.2, 0.8, 12.3</value>
+  </data>
+  <data name="swap_language_columns" xml:space="preserve">
+    <value>Sprachspalten tauschen</value>
+  </data>
+  <data name="unknown_error_occurred" xml:space="preserve">
+    <value>Unbekannter Fehler aufgetreten</value>
+  </data>
+  <data name="AddLine" xml:space="preserve">
+    <value>Linie hinzufügen</value>
+  </data>
+  <data name="AddText" xml:space="preserve">
+    <value>Kommentar hinzufügen</value>
+  </data>
+  <data name="PlotBottomAxies" xml:space="preserve">
+    <value>Untere Achse</value>
+  </data>
+  <data name="cipw_silica_oversaturated" xml:space="preserve">
+    <value>Übersättigt</value>
+  </data>
+  <data name="auto_datapoint_projection_failed" xml:space="preserve">
+    <value>Automatische Datenpunktprojektion fehlgeschlagen:</value>
+  </data>
+  <data name="geo_label_custom_chip" xml:space="preserve">
+    <value>Benutzerdefiniert</value>
+  </data>
+  <data name="AxesStyleLog10" xml:space="preserve">
+    <value>Log(10)</value>
+  </data>
+  <data name="copy_failed" xml:space="preserve">
+    <value>Kopieren fehlgeschlagen:</value>
+  </data>
+  <data name="failed_to_open" xml:space="preserve">
+    <value>Öffnen fehlgeschlagen:</value>
+  </data>
+  <data name="SaveBasemap" xml:space="preserve">
+    <value>Grundkarte speichern</value>
+  </data>
+  <data name="geo_msg_import_failed" xml:space="preserve">
+    <value>Import fehlgeschlagen</value>
+  </data>
+  <data name="CancelImport" xml:space="preserve">
+    <value>Import abgebrochen</value>
+  </data>
+  <data name="template_version_too_high" xml:space="preserve">
+    <value>Vorlagenversion ist höher als die aktuelle Softwareversion. Bitte Software aktualisieren.</value>
+  </data>
+  <data name="cipw_silica_saturated" xml:space="preserve">
+    <value>Gesättigt</value>
+  </data>
+  <data name="custom_diagram_template" xml:space="preserve">
+    <value>Benutzerdefinierte Diagrammvorlage</value>
+  </data>
+  <data name="font_name" xml:space="preserve">
+    <value>Schriftartname</value>
+  </data>
+  <data name="font_size" xml:space="preserve">
+    <value>Schriftgröße</value>
+  </data>
+  <data name="PointCross" xml:space="preserve">
+    <value>Kreuz (+)</value>
+  </data>
+  <data name="close_file" xml:space="preserve">
+    <value>Datei schließen</value>
+  </data>
+  <data name="temperature_calculation_denominator_zero" xml:space="preserve">
+    <value>Nenner bei Temperaturberechnung ist null</value>
+  </data>
+  <data name="ExportBasemap" xml:space="preserve">
+    <value>Grundkarte exportieren</value>
+  </data>
+  <data name="open_diagram_template" xml:space="preserve">
+    <value>Diagrammvorlage öffnen</value>
+  </data>
+  <data name="PointStyle" xml:space="preserve">
+    <value>Punktstil</value>
+  </data>
+  <data name="cipw_msg_data_cleared" xml:space="preserve">
+    <value>Daten gelöscht.</value>
+  </data>
+  <data name="loading_announcements" xml:space="preserve">
+    <value>Lade Ankündigungen...</value>
+  </data>
+  <data name="format_failed" xml:space="preserve">
+    <value>Formatierung fehlgeschlagen:</value>
+  </data>
+  <data name="no_announcements" xml:space="preserve">
+    <value>Keine Ankündigungen.</value>
   </data>
   <data name="MessageAutoClose5" xml:space="preserve">
     <value>5 Sekunden</value>
@@ -672,1647 +1873,1143 @@
   <data name="MessageAutoClose2" xml:space="preserve">
     <value>2 Sekunden</value>
   </data>
-  <data name="Other" xml:space="preserve">
-    <value>Sonstiges</value>
-  </data>
-  <data name="Boot" xml:space="preserve">
-    <value>Autostart beim Booten</value>
-  </data>
-  <data name="AutoCheckUpdate" xml:space="preserve">
-    <value>Automatisch nach Updates suchen</value>
-  </data>
-  <data name="CheckUpdate" xml:space="preserve">
-    <value>Nach Updates suchen</value>
-  </data>
-  <data name="QuitAppMode" xml:space="preserve">
-    <value>Beenden-Modus</value>
-  </data>
-  <data name="MinimizeTray" xml:space="preserve">
-    <value>In Systemtray minimieren</value>
-  </data>
-  <data name="Quit" xml:space="preserve">
-    <value>Direkt beenden</value>
-  </data>
-  <data name="AboutInfo1" xml:space="preserve">
-    <value>Dieses Projekt nutzt geochemische Daten für Diagrammerstellung, Berechnung und Analyse zur effizienten Verarbeitung geologischer Daten. Ziel ist es, Geowissenschaftlern zu helfen, den Datenanalyseprozess zu beschleunigen und die Forschungseffizienz zu verbessern.</value>
-  </data>
-  <data name="AboutInfo2" xml:space="preserve">
-    <value>Wenn Ihnen dieses Projekt gefällt, geben Sie uns bitte einen Stern zur Unterstützung! Wenn Sie es hilfreich finden, können Sie mir auch einen Kaffee spendieren ☕</value>
-  </data>
-  <data name="AboutInfo3" xml:space="preserve">
-    <value>Wir begrüßen weitere Forscher!
-    Lassen Sie uns gemeinsam geochemische Berechnungsmethoden und weitere Diagrammvorlagen pflegen und aktualisieren!
-    Damit die Software leistungsfähiger und benutzerfreundlicher wird!</value>
-  </data>
-  <data name="ThankSupport" xml:space="preserve">
-    <value>Danke für die Unterstützung</value>
-  </data>
-  <data name="Support1" xml:space="preserve">
-    <value>📌Steuerelemente:</value>
-  </data>
-  <data name="Support3" xml:space="preserve">
-    <value>📌Dokumentation:</value>
-  </data>
-  <data name="Support4" xml:space="preserve">
-    <value>📌Berechnung:</value>
-  </data>
-  <data name="Support2" xml:space="preserve">
-    <value>📌Diagramme:</value>
-  </data>
-  <data name="Support5" xml:space="preserve">
-    <value>📌Tools:</value>
-  </data>
-  <data name="PlotBoder" xml:space="preserve">
-    <value>Rahmen</value>
-  </data>
-  <data name="ResetSuccess" xml:space="preserve">
-    <value>Erfolgreich zurückgesetzt</value>
-  </data>
-  <data name="ModifedSuccess" xml:space="preserve">
-    <value>Erfolgreich geändert</value>
-  </data>
-  <data name="ModifedCanceled" xml:space="preserve">
-    <value>Änderung abgebrochen</value>
-  </data>
-  <data name="import_template" xml:space="preserve">
-    <value>Diagrammvorlage importieren</value>
-  </data>
-  <data name="create_new_diagram_template" xml:space="preserve">
-    <value>Neue Diagrammvorlage erstellen</value>
-  </data>
-  <data name="template_library" xml:space="preserve">
-    <value>Vorlagenbibliothek</value>
-  </data>
-  <data name="return_to_template_library" xml:space="preserve">
-    <value>Zurück</value>
-  </data>
-  <data name="Data" xml:space="preserve">
-    <value>Daten</value>
-  </data>
-  <data name="import_data" xml:space="preserve">
-    <value>Daten importieren</value>
-  </data>
-  <data name="clear_data" xml:space="preserve">
-    <value>Daten löschen</value>
-  </data>
-  <data name="view" xml:space="preserve">
-    <value>Ansicht</value>
-  </data>
-  <data name="reset_view" xml:space="preserve">
-    <value>Ansicht zurücksetzen</value>
-  </data>
-  <data name="coordinate_positioning" xml:space="preserve">
-    <value>Koordinatenpositionierung</value>
-  </data>
-  <data name="select" xml:space="preserve">
-    <value>Auswählen</value>
-  </data>
-  <data name="deselect" xml:space="preserve">
-    <value>Auswahl aufheben</value>
-  </data>
-  <data name="export" xml:space="preserve">
-    <value>Exportieren</value>
-  </data>
-  <data name="export_image" xml:space="preserve">
-    <value>Bild exportieren</value>
-  </data>
-  <data name="png_format" xml:space="preserve">
-    <value>PNG-Format</value>
-  </data>
-  <data name="bmp_format" xml:space="preserve">
-    <value>BMP-Format</value>
-  </data>
-  <data name="jpg_format" xml:space="preserve">
-    <value>JPG-Format</value>
-  </data>
-  <data name="webp_format" xml:space="preserve">
-    <value>WebP-Format</value>
-  </data>
-  <data name="svg_format" xml:space="preserve">
-    <value>SVG-Format</value>
-  </data>
-  <data name="legend_settings" xml:space="preserve">
-    <value>Legendeneinstellungen</value>
-  </data>
-  <data name="grid_settings" xml:space="preserve">
-    <value>Gittereinstellungen</value>
-  </data>
-  <data name="script_settings" xml:space="preserve">
-    <value>Skripteinstellungen</value>
-  </data>
-  <data name="plot_settings" xml:space="preserve">
-    <value>Diagrammeinstellungen</value>
-  </data>
-  <data name="all_templates" xml:space="preserve">
-    <value>Alle Vorlagen</value>
-  </data>
-  <data name="uncategorized" xml:space="preserve">
-    <value>Unkategorisiert</value>
-  </data>
-  <data name="select_data_file" xml:space="preserve">
-    <value>Bitte Datendatei auswählen</value>
-  </data>
-  <data name="data_file_filter" xml:space="preserve">
-    <value>Datendatei (*.csv, *.xls, *.xlsx)|*.csv;*.xls;*.xlsx</value>
-  </data>
-  <data name="no_valid_workbook_or_data_found" xml:space="preserve">
-    <value>Keine gültige Arbeitsmappe oder Daten in der Datei gefunden</value>
-  </data>
-  <data name="read_file_failed" xml:space="preserve">
-    <value>Lesen der Datei fehlgeschlagen</value>
-  </data>
-  <data name="excel_missing_required_columns" xml:space="preserve">
-    <value>Excel-Datei fehlen erforderliche Spalten</value>
-  </data>
-  <data name="data_point" xml:space="preserve">
-    <value>Datenpunkt</value>
-  </data>
-  <data name="failed_to_parse_category_group" xml:space="preserve">
-    <value>Konnte keine gültige Kategoriegruppe aus der Datei parsen. Bitte Kategoriespaltendaten prüfen</value>
-  </data>
-  <data name="error_calculating_data_point_coordinates" xml:space="preserve">
-    <value>Fehler beim Berechnen der Datenpunktkoordinaten:</value>
-  </data>
-  <data name="data_import_successful" xml:space="preserve">
-    <value>Datenimport erfolgreich</value>
-  </data>
-  <data name="script_execution_failed" xml:space="preserve">
-    <value>Skriptausführung fehlgeschlagen:</value>
-  </data>
-  <data name="axes" xml:space="preserve">
-    <value>Achsen</value>
-  </data>
-  <data name="point" xml:space="preserve">
-    <value>Punkt</value>
-  </data>
-  <data name="line" xml:space="preserve">
-    <value>Linie</value>
-  </data>
-  <data name="text" xml:space="preserve">
-    <value>Text</value>
-  </data>
-  <data name="annotation" xml:space="preserve">
-    <value>Anmerkung</value>
-  </data>
-  <data name="image_copied_to_clipboard" xml:space="preserve">
-    <value>Bild erfolgreich in die Zwischenablage kopiert</value>
-  </data>
-  <data name="copy_failed" xml:space="preserve">
-    <value>Kopieren fehlgeschlagen:</value>
-  </data>
-  <data name="confirm_clear_data_points" xml:space="preserve">
-    <value>Datenpunkte löschen?</value>
-  </data>
-  <data name="no_imported_data_to_clear" xml:space="preserve">
-    <value>Keine importierten Daten zum Löschen vorhanden</value>
-  </data>
-  <data name="all_imported_data_cleared" xml:space="preserve">
-    <value>Alle importierten Daten gelöscht</value>
-  </data>
-  <data name="left_y_axis" xml:space="preserve">
-    <value>Linke Y-Achse</value>
-  </data>
-  <data name="right_y_axis" xml:space="preserve">
-    <value>Rechte Y-Achse</value>
-  </data>
-  <data name="bottom_x_axis" xml:space="preserve">
-    <value>Untere X-Achse</value>
-  </data>
-  <data name="top_x_axis" xml:space="preserve">
-    <value>Obere X-Achse</value>
-  </data>
-  <data name="unknown_axis" xml:space="preserve">
-    <value>Unbekannte Achse</value>
-  </data>
-  <data name="content_and_position" xml:space="preserve">
-    <value>Inhalt und Position</value>
-  </data>
-  <data name="script_definition" xml:space="preserve">
-    <value>Skriptdefinition</value>
-  </data>
-  <data name="script_language" xml:space="preserve">
-    <value>Skriptsprache:</value>
-  </data>
-  <data name="data_series" xml:space="preserve">
-    <value>Datenserie</value>
-  </data>
-  <data name="multiple_data_series_hint" xml:space="preserve">
-    <value>Mehrere Datenserien bitte mit Komma trennen, z.B.: SiO2,TiO2</value>
-  </data>
-  <data name="script_content" xml:space="preserve">
-    <value>Skriptinhalt:</value>
-  </data>
-  <data name="ready" xml:space="preserve">
-    <value>Bereit</value>
-  </data>
-  <data name="validate_syntax" xml:space="preserve">
-    <value>Syntax prüfen</value>
-  </data>
-  <data name="row" xml:space="preserve">
-    <value>Zeile:</value>
-  </data>
-  <data name="column" xml:space="preserve">
-    <value>Spalte:</value>
-  </data>
-  <data name="code_formatted" xml:space="preserve">
-    <value>Code formatiert</value>
-  </data>
-  <data name="format_failed" xml:space="preserve">
-    <value>Formatierung fehlgeschlagen:</value>
-  </data>
-  <data name="script_content_is_empty" xml:space="preserve">
-    <value>Skriptinhalt ist leer</value>
-  </data>
-  <data name="validation_failed" xml:space="preserve">
-    <value>Validierung fehlgeschlagen:</value>
-  </data>
-  <data name="data_parameters_are_empty" xml:space="preserve">
-    <value>Datenparameter sind leer</value>
-  </data>
-  <data name="invalid_data_parameter_format" xml:space="preserve">
-    <value>Ungültiges Datenparameterformat</value>
-  </data>
-  <data name="parameter_format_correct" xml:space="preserve">
-    <value>Parameterformat korrekt</value>
-  </data>
-  <data name="syntax_validation_passed" xml:space="preserve">
-    <value>Syntaxvalidierung bestanden</value>
-  </data>
-  <data name="error" xml:space="preserve">
-    <value>Fehler:</value>
-  </data>
-  <data name="new" xml:space="preserve">
-    <value>_Neu(N)</value>
-  </data>
-  <data name="open" xml:space="preserve">
-    <value>_Öffnen(O)</value>
-  </data>
-  <data name="export_current_worksheet" xml:space="preserve">
-    <value>_Aktuelles Arbeitsblatt exportieren(R)</value>
-  </data>
-  <data name="geological_thermometer" xml:space="preserve">
-    <value>Geologisches Thermometer</value>
-  </data>
-  <data name="confirm_new_worksheet" xml:space="preserve">
-    <value>Neues Arbeitsblatt erstellen?</value>
-  </data>
-  <data name="error_creating_table" xml:space="preserve">
-    <value>Fehler beim Erstellen der Tabelle:</value>
-  </data>
-  <data name="file_import_successful" xml:space="preserve">
-    <value>Dateiimport erfolgreich</value>
-  </data>
-  <data name="cancel_import" xml:space="preserve">
-    <value>Import abbrechen</value>
-  </data>
-  <data name="export_successful" xml:space="preserve">
-    <value>Export erfolgreich</value>
-  </data>
-  <data name="export_failed" xml:space="preserve">
-    <value>Export fehlgeschlagen:</value>
-  </data>
-  <data name="create_worksheet_failed" xml:space="preserve">
-    <value>Arbeitsblatterstellung fehlgeschlagen:</value>
-  </data>
-  <data name="row_1_column_1" xml:space="preserve">
-    <value>Zeile: 1, Spalte: 1</value>
-  </data>
-  <data name="missing_parameters" xml:space="preserve">
-    <value>Fehlende Parameter</value>
-  </data>
-  <data name="input_out_of_range" xml:space="preserve">
-    <value>Eingabewert außerhalb des Bereichs</value>
-  </data>
-  <data name="must_be_positive_number" xml:space="preserve">
-    <value>Muss eine positive Zahl sein</value>
-  </data>
-  <data name="tio2_activity_range" xml:space="preserve">
-    <value>TiO2-Aktivität muss im Bereich (0,1] liegen</value>
-  </data>
-  <data name="oxygen_atom_benchmark_zero" xml:space="preserve">
-    <value>Sauerstoffatom-Basiswert ist null</value>
-  </data>
-  <data name="normalization_factor_is_zero" xml:space="preserve">
-    <value>Normalisierungsfaktor ist null</value>
-  </data>
-  <data name="temperature_calculation_denominator_zero" xml:space="preserve">
-    <value>Nenner bei Temperaturberechnung ist null</value>
-  </data>
-  <data name="color" xml:space="preserve">
-    <value>Farbe</value>
-  </data>
-  <data name="style" xml:space="preserve">
-    <value>Stil</value>
-  </data>
-  <data name="width" xml:space="preserve">
-    <value>Breite</value>
-  </data>
-  <data name="line_width" xml:space="preserve">
-    <value>Linienbreite</value>
-  </data>
-  <data name="Enum_LineType_Solid" xml:space="preserve">
-    <value>Durchgezogen</value>
-  </data>
-  <data name="type" xml:space="preserve">
-    <value>Typ</value>
-  </data>
-  <data name="position" xml:space="preserve">
-    <value>Position</value>
-  </data>
-  <data name="start_coordinates" xml:space="preserve">
-    <value>Startkoordinaten</value>
-  </data>
-  <data name="end_coordinates" xml:space="preserve">
-    <value>Endkoordinaten</value>
-  </data>
-  <data name="content" xml:space="preserve">
-    <value>Inhalt</value>
-  </data>
-  <data name="alignment" xml:space="preserve">
-    <value>Ausrichtung</value>
-  </data>
-  <data name="font_style" xml:space="preserve">
-    <value>Schriftstil</value>
-  </data>
-  <data name="font_name" xml:space="preserve">
-    <value>Schriftartname</value>
-  </data>
-  <data name="font_size" xml:space="preserve">
-    <value>Schriftgröße</value>
-  </data>
-  <data name="font_rotation" xml:space="preserve">
-    <value>Schriftrotation</value>
-  </data>
-  <data name="font_color" xml:space="preserve">
-    <value>Schriftfarbe</value>
-  </data>
-  <data name="bold" xml:space="preserve">
-    <value>Fett</value>
-  </data>
-  <data name="italic" xml:space="preserve">
-    <value>Kursiv</value>
-  </data>
-  <data name="background_and_border" xml:space="preserve">
-    <value>Hintergrund und Rahmen</value>
-  </data>
-  <data name="background_color" xml:space="preserve">
-    <value>Hintergrundfarbe</value>
-  </data>
-  <data name="border_color" xml:space="preserve">
-    <value>Rahmenfarbe</value>
-  </data>
-  <data name="border_width" xml:space="preserve">
-    <value>Rahmenbreite</value>
-  </data>
-  <data name="corner_radius" xml:space="preserve">
-    <value>Eckenradius</value>
-  </data>
-  <data name="advanced_rendering" xml:space="preserve">
-    <value>Erweitertes Rendering</value>
-  </data>
-  <data name="anti_aliasing" xml:space="preserve">
-    <value>Anti-Aliasing</value>
-  </data>
-  <data name="axis_style" xml:space="preserve">
-    <value>Achsenstil</value>
-  </data>
-  <data name="axis_title" xml:space="preserve">
-    <value>Achsentitel</value>
-  </data>
-  <data name="font_family" xml:space="preserve">
-    <value>Schriftfamilie</value>
-  </data>
-  <data name="tick_style" xml:space="preserve">
-    <value>Strichstil</value>
-  </data>
-  <data name="tick_interval" xml:space="preserve">
-    <value>Strichintervall</value>
-  </data>
-  <data name="major_tick_style" xml:space="preserve">
-    <value>Hauptstrichstil</value>
-  </data>
-  <data name="length" xml:space="preserve">
-    <value>Länge</value>
-  </data>
-  <data name="minor_tick_style" xml:space="preserve">
-    <value>Nebenstrichstil</value>
-  </data>
-  <data name="tick_labels" xml:space="preserve">
-    <value>Strichbeschriftungen</value>
-  </data>
-  <data name="location" xml:space="preserve">
-    <value>Ort</value>
-  </data>
-  <data name="orientation" xml:space="preserve">
-    <value>Orientierung</value>
-  </data>
-  <data name="is_visible" xml:space="preserve">
-    <value>Sichtbar</value>
-  </data>
-  <data name="font" xml:space="preserve">
-    <value>Schrift</value>
-  </data>
-  <data name="major_grid_line" xml:space="preserve">
-    <value>Hauptgitterlinie</value>
-  </data>
-  <data name="pattern" xml:space="preserve">
-    <value>Muster</value>
-  </data>
-  <data name="enable_anti_alias" xml:space="preserve">
-    <value>Anti-Aliasing aktivieren</value>
-  </data>
-  <data name="background_fill" xml:space="preserve">
-    <value>Hintergrundfüllung</value>
-  </data>
-  <data name="enable_alternating_fill" xml:space="preserve">
-    <value>Alternierende Füllung aktivieren</value>
-  </data>
-  <data name="background_fill_1" xml:space="preserve">
-    <value>Hintergrundfüllung</value>
-  </data>
-  <data name="fill_color_1" xml:space="preserve">
-    <value>Füllfarbe 1</value>
-  </data>
-  <data name="fill_color_2" xml:space="preserve">
-    <value>Füllfarbe 2</value>
-  </data>
-  <data name="coordinates" xml:space="preserve">
-    <value>Koordinaten</value>
-  </data>
-  <data name="x_coordinate" xml:space="preserve">
-    <value>X-Koordinate</value>
-  </data>
-  <data name="y_coordinate" xml:space="preserve">
-    <value>Y-Koordinate</value>
-  </data>
-  <data name="start_and_end_coordinates" xml:space="preserve">
-    <value>Start- und Endkoordinaten</value>
-  </data>
-  <data name="chart_title_style" xml:space="preserve">
-    <value>Diagrammtitelstil</value>
-  </data>
-  <data name="is_bold" xml:space="preserve">
-    <value>Fett</value>
-  </data>
-  <data name="is_italic" xml:space="preserve">
-    <value>Kursiv</value>
-  </data>
-  <data name="background_fill_2" xml:space="preserve">
-    <value>Hintergrundfüllung 2</value>
-  </data>
-  <data name="minor_grid_Line" xml:space="preserve">
-    <value>Nebengitterlinie</value>
-  </data>
-  <data name="open_diagram_template" xml:space="preserve">
-    <value>Diagrammvorlage öffnen</value>
-  </data>
-  <data name="new_version_available_github" xml:space="preserve">
-    <value>Neue Version gefunden! Bitte laden Sie das Update von der GitHub Release-Seite herunter.</value>
-  </data>
-  <data name="go_to_download" xml:space="preserve">
-    <value>Zum Download</value>
-  </data>
-  <data name="enter_supported_languages" xml:space="preserve">
-    <value>Unterstützte Sprachen eingeben</value>
-  </data>
-  <data name="delete_this_item" xml:space="preserve">
-    <value>Dieses Element löschen</value>
-  </data>
-  <data name="enter_language_add" xml:space="preserve">
-    <value>Sprache eingeben und Enter drücken.</value>
-  </data>
-  <data name="enter_category_structure" xml:space="preserve">
-    <value>Kategoriestruktur eingeben</value>
-  </data>
-  <data name="enter_level_add" xml:space="preserve">
-    <value>Ebene eingeben und Enter drücken.</value>
-  </data>
-  <data name="plot_type" xml:space="preserve">
-    <value>Diagrammtyp</value>
-  </data>
-  <data name="two_dimensional_coordinate_plot" xml:space="preserve">
-    <value>2D-Koordinatendiagramm</value>
-  </data>
-  <data name="template_file_save_path" xml:space="preserve">
-    <value>Speicherpfad der Vorlagendatei</value>
-  </data>
-  <data name="browse_ellipsis" xml:space="preserve">
-    <value>Durchsuchen...</value>
-  </data>
-  <data name="all_fields_required" xml:space="preserve">
-    <value>Alle Felder sind erforderlich!</value>
-  </data>
-  <data name="category_structure_min_two" xml:space="preserve">
-    <value>Kategoriestruktur muss mindestens 2 Ebenen haben!</value>
-  </data>
-  <data name="no_template_or_path_specified" xml:space="preserve">
-    <value>Keine Vorlage oder Pfad angegeben. Bitte 'Speichern unter' verwenden.</value>
-  </data>
-  <data name="template_saved_successfully" xml:space="preserve">
-    <value>Vorlage erfolgreich gespeichert!</value>
-  </data>
-  <data name="save_template_failed" xml:space="preserve">
-    <value>Speichern der Vorlage fehlgeschlagen:</value>
-  </data>
-  <data name="research_life_smooth_sailing" xml:space="preserve">
-    <value>viel Erfolg in Forschung und Leben!</value>
-  </data>
-  <data name="add" xml:space="preserve">
-    <value>Hinzufügen</value>
-  </data>
-  <data name="add_line" xml:space="preserve">
-    <value>Linie hinzufügen</value>
-  </data>
-  <data name="add_text" xml:space="preserve">
-    <value>Text hinzufügen</value>
-  </data>
-  <data name="file_" xml:space="preserve">
-    <value>Datei</value>
-  </data>
-  <data name="template_loaded_successfully" xml:space="preserve">
-    <value>Vorlage erfolgreich geladen</value>
-  </data>
-  <data name="unknown_error_checking_for_updates" xml:space="preserve">
-    <value>Unbekannter Fehler bei der Update-Prüfung</value>
-  </data>
-  <data name="already_latest_version" xml:space="preserve">
-    <value>Bereits die neueste Version</value>
-  </data>
-  <data name="cannot_parse_version_number_check_release_address" xml:space="preserve">
-    <value>Versionsnummer konnte nicht geparst werden. Bitte Release-Seite prüfen</value>
-  </data>
-  <data name="network_request_error" xml:space="preserve">
-    <value>Netzwerkanfragefehler</value>
-  </data>
-  <data name="json_parse_error" xml:space="preserve">
-    <value>JSON-Parse-Fehler</value>
-  </data>
-  <data name="unknown_error_occurred" xml:space="preserve">
-    <value>Unbekannter Fehler aufgetreten</value>
-  </data>
-  <data name="polygon" xml:space="preserve">
-    <value>Polygon</value>
-  </data>
-  <data name="not_enough_vertices_add_polygon_canceled" xml:space="preserve">
-    <value>Nicht genügend Eckpunkte, Polygon-Erstellung abgebrochen.</value>
-  </data>
-  <data name="add_line_operation_canceled" xml:space="preserve">
-    <value>Linien-Erstellung abgebrochen.</value>
-  </data>
-  <data name="add_text_operation_canceled" xml:space="preserve">
-    <value>Text-Erstellung abgebrochen.</value>
-  </data>
-  <data name="language_setting_duplicate_found" xml:space="preserve">
-    <value>Doppelte Einträge in den Spracheinstellungen gefunden, bitte prüfen!</value>
-  </data>
-  <data name="add_polygon" xml:space="preserve">
-    <value>Polygon hinzufügen</value>
-  </data>
-  <data name="line_type_solid" xml:space="preserve">
-    <value>Durchgezogen</value>
-  </data>
-  <data name="line_type_dash" xml:space="preserve">
-    <value>Gestrichelt</value>
-  </data>
-  <data name="line_type_densely_dashed" xml:space="preserve">
-    <value>Dicht gestrichelt</value>
-  </data>
-  <data name="line_type_dot" xml:space="preserve">
-    <value>Gepunktet</value>
-  </data>
-  <data name="ternary_phase_diagram" xml:space="preserve">
-    <value>Ternäres Phasendiagramm</value>
-  </data>
-  <data name="copy_plot_to_clipboard" xml:space="preserve">
-    <value>Diagramm in die Zwischenablage kopieren</value>
-  </data>
-  <data name="use_help" xml:space="preserve">
-    <value>Diagramm-Anleitung</value>
-  </data>
-  <data name="no_data_please_add_data" xml:space="preserve">
-    <value>Keine Daten, bitte Daten hinzufügen</value>
-  </data>
-  <data name="no_data_columns_defined" xml:space="preserve">
-    <value>Keine Datenspalten definiert</value>
-  </data>
-  <data name="data_plotting_successful" xml:space="preserve">
-    <value>Datenpunkte erfolgreich gezeichnet</value>
-  </data>
-  <data name="save_as_csv_file" xml:space="preserve">
-    <value>Als CSV speichern</value>
-  </data>
-  <data name="csv_file_filter" xml:space="preserve">
-    <value>CSV-Datei|*.csv</value>
-  </data>
-  <data name="data_export" xml:space="preserve">
-    <value>Datenexport</value>
-  </data>
-  <data name="update_data" xml:space="preserve">
-    <value>Daten aktualisieren</value>
-  </data>
-  <data name="data_plotting" xml:space="preserve">
-    <value>Daten plotten</value>
-  </data>
-  <data name="highlight_on_hover" xml:space="preserve">
-    <value>Wenn aktiviert, werden Elemente beim Überfahren hervorgehoben und Details beim Klicken angezeigt</value>
-  </data>
-  <data name="count" xml:space="preserve">
-    <value>Anzahl</value>
-  </data>
-  <data name="zoom_type" xml:space="preserve">
-    <value>Zoomtyp</value>
-  </data>
-  <data name="from" xml:space="preserve">
-    <value>Von</value>
-  </data>
-  <data name="to" xml:space="preserve">
-    <value>Bis</value>
-  </data>
-  <data name="ternary_phase_diagram_sum_must_be_one" xml:space="preserve">
-    <value>Summe im ternären Diagramm muss 1 sein.</value>
-  </data>
-  <data name="save_as" xml:space="preserve">
-    <value>Speichern unter</value>
-  </data>
-  <data name="all_data_cleared" xml:space="preserve">
-    <value>Alle Daten gelöscht</value>
-  </data>
-  <data name="confirm_clear_all_data" xml:space="preserve">
-    <value>Alle Tabellendaten löschen (inkl. Plot-Punkte)?</value>
-  </data>
-  <data name="clear_data_points" xml:space="preserve">
-    <value>Datenpunkte löschen</value>
-  </data>
-  <data name="linear" xml:space="preserve">
-    <value>Linear</value>
-  </data>
-  <data name="logarithmic" xml:space="preserve">
-    <value>Logarithmisch</value>
-  </data>
-  <data name="some_data_failed_validation" xml:space="preserve">
-    <value>Einige Daten haben die Validierung nicht bestanden und wurden übersprungen</value>
-  </data>
-  <data name="the_sum_of_row" xml:space="preserve">
-    <value>Zeile</value>
-  </data>
-  <data name="is_not_one" xml:space="preserve">
-    <value>Datensumme ist nicht 1</value>
-  </data>
-  <data name="actual_sum_is" xml:space="preserve">
-    <value>(Tatsächliche Summe</value>
-  </data>
-  <data name="arrow" xml:space="preserve">
-    <value>Pfeil</value>
-  </data>
-  <data name="arrowhead_width" xml:space="preserve">
-    <value>Pfeilspitzenbreite</value>
-  </data>
-  <data name="arrowhead_length" xml:space="preserve">
-    <value>Pfeilspitzenlänge</value>
-  </data>
-  <data name="add_arrow" xml:space="preserve">
-    <value>Pfeil hinzufügen</value>
-  </data>
-  <data name="delete_object" xml:space="preserve">
-    <value>Objekt löschen</value>
-  </data>
-  <data name="please_select_an_object_to_delete_first" xml:space="preserve">
-    <value>Bitte zuerst ein Objekt zum Löschen auswählen.</value>
-  </data>
-  <data name="object_deleted_successfully" xml:space="preserve">
-    <value>Objekt erfolgreich gelöscht.</value>
-  </data>
-  <data name="cannot_delete_base_layers" xml:space="preserve">
-    <value>Basisebenen können nicht gelöscht werden.</value>
-  </data>
-  <data name="update" xml:space="preserve">
-    <value>_Aktualisieren(U)</value>
-  </data>
-  <data name="check_for_template_updates" xml:space="preserve">
-    <value>Auf Vorlagenupdates prüfen</value>
-  </data>
-  <data name="template_ready" xml:space="preserve">
-    <value>Vorlage bereit!</value>
-  </data>
-  <data name="download_template_failed" xml:space="preserve">
-    <value>Vorlagendownload fehlgeschlagen:</value>
-  </data>
-  <data name="downloaded_file_hash_mismatch" xml:space="preserve">
-    <value>Hash-Mismatch der heruntergeladenen Datei, Datei könnte beschädigt oder manipuliert sein.</value>
-  </data>
-  <data name="downloaded_content_not_valid_json" xml:space="preserve">
-    <value>Heruntergeladener Inhalt ist kein gültiges JSON-Format.</value>
-  </data>
-  <data name="template_list_update_success_refreshing" xml:space="preserve">
-    <value>Vorlagenliste erfolgreich aktualisiert! Wird neu geladen...</value>
-  </data>
-  <data name="update_list_file_failed" xml:space="preserve">
-    <value>Aktualisierung der Listendatei fehlgeschlagen</value>
-  </data>
-  <data name="new_drawing_template_library_version_detected" xml:space="preserve">
-    <value>Neue Version der Zeichenvorlagenbibliothek erkannt. Jetzt aktualisieren?</value>
-  </data>
-  <data name="current_template_list_latest_version" xml:space="preserve">
-    <value>Die aktuelle Vorlagenliste ist bereits die neueste Version.</value>
-  </data>
-  <data name="network_connection_failed_cannot_check_for_updates" xml:space="preserve">
-    <value>Netzwerkverbindung fehlgeschlagen, Updates können nicht geprüft werden:</value>
-  </data>
-  <data name="error_occurred_while_checking_for_updates" xml:space="preserve">
-    <value>Fehler beim Prüfen auf Updates:</value>
-  </data>
-  <data name="help_instructions" xml:space="preserve">
-    <value>Hilfeanweisungen</value>
-  </data>
-  <data name="view_help_docs" xml:space="preserve">
-    <value>Hilfedokumentation anzeigen</value>
-  </data>
-  <data name="German_Germany" xml:space="preserve">
-    <value>Deutsch (Deutschland)</value>
-  </data>
-  <data name="custom_templates" xml:space="preserve">
-    <value>Benutzerdefinierte Vorlagen</value>
-  </data>
-  <data name="check_for_category_updates" xml:space="preserve">
-    <value>Nach Kategoriestruktur-Updates suchen</value>
-  </data>
-  <data name="cannot_delete_protected_column" xml:space="preserve">
-    <value>Geschützte Spalte kann nicht gelöscht werden</value>
-  </data>
-  <data name="add_column_left" xml:space="preserve">
-    <value>Spalte links hinzufügen</value>
-  </data>
-  <data name="add_column_right" xml:space="preserve">
-    <value>Spalte rechts hinzufügen</value>
-  </data>
-  <data name="delete_row" xml:space="preserve">
-    <value>Zeile löschen</value>
-  </data>
-  <data name="delete_column" xml:space="preserve">
-    <value>Spalte löschen</value>
-  </data>
-  <data name="missing_columns" xml:space="preserve">
-    <value>Fehlende Spalten</value>
-  </data>
-  <data name="add_row_up" xml:space="preserve">
-    <value>Zeile oben einfügen</value>
-  </data>
-  <data name="add_row_down" xml:space="preserve">
-    <value>Zeile unten einfügen</value>
-  </data>
-  <data name="confirm_delete_row" xml:space="preserve">
-    <value>Ausgewählte Zeile(n) wirklich löschen?</value>
-  </data>
-  <data name="confirm_delete_column" xml:space="preserve">
-    <value>Ausgewählte Spalte(n) wirklich löschen?</value>
-  </data>
-  <data name="axis" xml:space="preserve">
-    <value>Achse</value>
-  </data>
-  <data name="grid" xml:space="preserve">
-    <value>Gitter</value>
-  </data>
-  <data name="formula" xml:space="preserve">
-    <value>Formel</value>
-  </data>
-  <data name="range" xml:space="preserve">
-    <value>Bereich</value>
-  </data>
-  <data name="domain" xml:space="preserve">
-    <value>Definitionsbereich</value>
-  </data>
-  <data name="point_count" xml:space="preserve">
-    <value>Stützstellen</value>
-  </data>
-  <data name="vertices" xml:space="preserve">
-    <value>Eckpunkte</value>
-  </data>
-  <data name="template_file_corrupted" xml:space="preserve">
-    <value>Vorlagendatei ist beschädigt</value>
-  </data>
-  <data name="template_version_too_high" xml:space="preserve">
-    <value>Vorlagenversion ist höher als die aktuelle Softwareversion. Bitte Software aktualisieren.</value>
-  </data>
-  <data name="error_loading_template" xml:space="preserve">
-    <value>Fehler beim Laden der Vorlage</value>
-  </data>
-  <data name="template_upgrade_warning" xml:space="preserve">
-    <value>Die aktuelle Vorlagenversion ist älter. Speichern aktualisiert die Version, was die Kompatibilität mit älteren Softwareversionen beeinträchtigen kann. Fortfahren?</value>
-  </data>
-  <data name="offset" xml:space="preserve">
-    <value>Versatz</value>
-  </data>
-  <data name="offset_x" xml:space="preserve">
-    <value>Versatz X</value>
-  </data>
-  <data name="offset_y" xml:space="preserve">
-    <value>Versatz Y</value>
-  </data>
-  <data name="add_function" xml:space="preserve">
-    <value>Funktion hinzufügen</value>
-  </data>
-  <data name="Placeholder_Text" xml:space="preserve">
-    <value>Bitte Text eingeben</value>
-  </data>
-  <data name="Placeholder_Axis_Title" xml:space="preserve">
-    <value>Achsentitel</value>
-  </data>
-  <data name="Placeholder_Chart_Title" xml:space="preserve">
-    <value>Diagrammtitel</value>
-  </data>
-  <data name="Placeholder_Ternary_Title" xml:space="preserve">
-    <value>Neues ternäres Phasendiagramm</value>
-  </data>
-  <data name="Placeholder_Chart_Title_Default" xml:space="preserve">
-    <value>Neues Diagramm</value>
-  </data>
-  <data name="Placeholder_Axis_X" xml:space="preserve">
-    <value>X-Achse</value>
-  </data>
-  <data name="Placeholder_Axis_Y" xml:space="preserve">
-    <value>Y-Achse</value>
-  </data>
-  <data name="Placeholder_Component_A" xml:space="preserve">
-    <value>A</value>
-  </data>
-  <data name="Placeholder_Component_B" xml:space="preserve">
-    <value>B</value>
-  </data>
-  <data name="Placeholder_Component_C" xml:space="preserve">
-    <value>C</value>
-  </data>
-  <data name="third_party" xml:space="preserve">
-    <value>Drittanbieter</value>
-  </data>
-  <data name="open_via_third_party" xml:space="preserve">
-    <value>Über Drittanbieter öffnen</value>
-  </data>
-  <data name="select_an_object" xml:space="preserve">
-    <value>Bitte ein Objekt auswählen</value>
-  </data>
-  <data name="undo" xml:space="preserve">
-    <value>Rückgängig</value>
-  </data>
-  <data name="redo" xml:space="preserve">
-    <value>Wiederholen</value>
-  </data>
-  <data name="interval" xml:space="preserve">
-    <value>Skalenintervall</value>
-  </data>
-  <data name="pick_coordinate" xml:space="preserve">
-    <value>Koordinate wählen</value>
-  </data>
-  <data name="remove_point" xml:space="preserve">
-    <value>Diesen Eckpunkt entfernen</value>
-  </data>
-  <data name="vertex_add_new" xml:space="preserve">
-    <value>Neuen Eckpunkt hinzufügen</value>
-  </data>
-  <data name="subtitle" xml:space="preserve">
-    <value>Untertitel</value>
-  </data>
-  <data name="subtitle_font_size" xml:space="preserve">
-    <value>Untertitel-Schriftgröße</value>
-  </data>
-  <data name="subtitle_color" xml:space="preserve">
-    <value>Untertitel-Farbe</value>
-  </data>
-  <data name="subtitle_bold" xml:space="preserve">
-    <value>Untertitel fett</value>
-  </data>
-  <data name="subtitle_italic" xml:space="preserve">
-    <value>Untertitel kursiv</value>
-  </data>
-  <data name="edit_link" xml:space="preserve">
-    <value>Link bearbeiten</value>
-  </data>
-  <data name="template_translator" xml:space="preserve">
-    <value>Vorlagenübersetzer</value>
-  </data>
-  <data name="diagram_template_repair_tool" xml:space="preserve">
-    <value>Vorlagenreparaturtool</value>
-  </data>
-  <data name="server_announcement" xml:space="preserve">
-    <value>Serverankündigung</value>
-  </data>
-  <data name="developer_maintenance_tool" xml:space="preserve">
-    <value>Entwicklerwartungstool</value>
-  </data>
-  <data name="copy_content" xml:space="preserve">
-    <value>Inhalt kopieren</value>
-  </data>
-  <data name="modified_successfully" xml:space="preserve">
-    <value>Erfolgreich geändert</value>
-  </data>
-  <data name="error_loading_rtf_file" xml:space="preserve">
-    <value>Fehler beim Laden der RTF-Datei:</value>
-  </data>
-  <data name="file_path_cannot_be_empty" xml:space="preserve">
-    <value>Dateipfad darf nicht leer sein</value>
-  </data>
-  <data name="richtextbox_control_cannot_be_null" xml:space="preserve">
-    <value>RichTextBox-Steuerelement darf nicht null sein</value>
-  </data>
-  <data name="file_does_not_exist" xml:space="preserve">
-    <value>Datei existiert nicht:</value>
-  </data>
-  <data name="error_saving_rtf_file" xml:space="preserve">
-    <value>Fehler beim Speichern der RTF-Datei:</value>
-  </data>
-  <data name="unable_to_get_latest_release_info" xml:space="preserve">
-    <value>Neueste Release-Info nicht abrufbar</value>
-  </data>
-  <data name="invalid_formula" xml:space="preserve">
-    <value>Ungültige Formel</value>
-  </data>
-  <data name="loading_announcements" xml:space="preserve">
-    <value>Lade Ankündigungen...</value>
-  </data>
-  <data name="no_announcements" xml:space="preserve">
-    <value>Keine Ankündigungen.</value>
-  </data>
-  <data name="unable_to_get_announcements" xml:space="preserve">
-    <value>Ankündigungen nicht abrufbar.</value>
-  </data>
-  <data name="failed_to_get_announcements" xml:space="preserve">
-    <value>Abrufen der Ankündigungen fehlgeschlagen:</value>
-  </data>
-  <data name="error_loading_template_list" xml:space="preserve">
-    <value>Fehler beim Laden der Vorlagenliste:</value>
-  </data>
-  <data name="unable_to_open_link" xml:space="preserve">
-    <value>Link kann nicht geöffnet werden:</value>
-  </data>
-  <data name="add_link" xml:space="preserve">
-    <value>Link hinzufügen</value>
-  </data>
-  <data name="name" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="link_url" xml:space="preserve">
-    <value>Link (URL)</value>
-  </data>
-  <data name="description" xml:space="preserve">
-    <value>Beschreibung</value>
-  </data>
-  <data name="icon" xml:space="preserve">
-    <value>Icon</value>
-  </data>
-  <data name="please_enter_name" xml:space="preserve">
-    <value>Bitte Name eingeben</value>
-  </data>
-  <data name="please_enter_link" xml:space="preserve">
-    <value>Bitte Link eingeben</value>
-  </data>
-  <data name="add_widget" xml:space="preserve">
-    <value>Widget hinzufügen</value>
-  </data>
-  <data name="please_select_widget_to_add" xml:space="preserve">
-    <value>Bitte Widget zum Hinzufügen auswählen:</value>
-  </data>
-  <data name="please_select_a_widget" xml:space="preserve">
-    <value>Bitte ein Widget auswählen</value>
-  </data>
-  <data name="server_announcements" xml:space="preserve">
-    <value>Serverankündigungen</value>
-  </data>
-  <data name="refresh" xml:space="preserve">
-    <value>Aktualisieren</value>
-  </data>
-  <data name="developer_maintenance_tools" xml:space="preserve">
-    <value>Entwicklerwartungstools</value>
-  </data>
-  <data name="drawing_template_repair_tool" xml:space="preserve">
-    <value>Zeichenvorlagenreparaturtool</value>
-  </data>
-  <data name="start_check_and_repair" xml:space="preserve">
-    <value>Prüfung und Reparatur starten</value>
-  </data>
-  <data name="close_file" xml:space="preserve">
-    <value>Datei schließen</value>
-  </data>
-  <data name="open_import" xml:space="preserve">
-    <value>Import öffnen</value>
-  </data>
-  <data name="add_language_column" xml:space="preserve">
-    <value>Sprachspalte hinzufügen</value>
-  </data>
-  <data name="swap_language_columns" xml:space="preserve">
-    <value>Sprachspalten tauschen</value>
-  </data>
-  <data name="delete_language_column" xml:space="preserve">
-    <value>Sprachspalte löschen</value>
-  </data>
-  <data name="click_or_drag_template_json_here" xml:space="preserve">
-    <value>Klicken oder JSON-Vorlagendatei hierher ziehen</value>
-  </data>
-  <data name="support_json_format" xml:space="preserve">
-    <value>Unterstützt .json Format</value>
-  </data>
-  <data name="save_changes" xml:space="preserve">
-    <value>Änderungen speichern</value>
-  </data>
-  <data name="select_drawing_template_file" xml:space="preserve">
-    <value>Zeichenvorlagendatei auswählen</value>
-  </data>
-  <data name="edit_menu_bar_item" xml:space="preserve">
-    <value>Menüleisteneintrag bearbeiten</value>
-  </data>
-  <data name="import_custom_diagram_template" xml:space="preserve">
-    <value>Benutzerdefinierte Diagrammvorlage importieren</value>
-  </data>
-  <data name="open_file_location" xml:space="preserve">
-    <value>Dateispeicherort öffnen</value>
-  </data>
-  <data name="export_diagram_template" xml:space="preserve">
-    <value>Diagrammvorlage exportieren</value>
-  </data>
-  <data name="downloading_ellipsis" xml:space="preserve">
-    <value>Wird heruntergeladen...</value>
-  </data>
-  <data name="initializing_language_service_ellipsis" xml:space="preserve">
-    <value>Initialisiere Sprachdienst...</value>
-  </data>
-  <data name="loading_font_resources_ellipsis" xml:space="preserve">
-    <value>Lade Schriftarten...</value>
-  </data>
-  <data name="reading_user_configuration_ellipsis" xml:space="preserve">
-    <value>Lese Benutzerkonfiguration...</value>
-  </data>
-  <data name="loading_drawing_module_ellipsis" xml:space="preserve">
-    <value>Lade Zeichenmodul...</value>
-  </data>
-  <data name="loading_main_interface_components_ellipsis" xml:space="preserve">
-    <value>Lade Hauptkomponenten...</value>
-  </data>
-  <data name="entering_soon_ellipsis" xml:space="preserve">
-    <value>Gleich fertig...</value>
-  </data>
-  <data name="completed" xml:space="preserve">
-    <value>Abgeschlossen</value>
-  </data>
-  <data name="error_occurred_during_startup" xml:space="preserve">
-    <value>Fehler beim Starten:</value>
-  </data>
-  <data name="language_apperarance" xml:space="preserve">
-    <value>Sprache und Erscheinungsbild</value>
-  </data>
-  <data name="startup_background_image" xml:space="preserve">
-    <value>Start-Hintergrundbild</value>
-  </data>
-  <data name="add_image" xml:space="preserve">
-    <value>Bild hinzufügen</value>
-  </data>
-  <data name="external_applications" xml:space="preserve">
-    <value>Externe Anwendungen</value>
-  </data>
-  <data name="custom_app" xml:space="preserve">
-    <value>Benutzerdefinierte App</value>
-  </data>
-  <data name="plot_defaults" xml:space="preserve">
-    <value>Plot-Standardeinstellungen</value>
-  </data>
-  <data name="default_diagram_expand_level" xml:space="preserve">
-    <value>Standard-Erweiterungsebene</value>
-  </data>
-  <data name="default_third_party_editor" xml:space="preserve">
-    <value>Standard-Drittanbieter-Editor</value>
-  </data>
-  <data name="automatic_updates" xml:space="preserve">
-    <value>Automatische Updates</value>
-  </data>
-  <data name="auto_check_diagram_template_updates" xml:space="preserve">
-    <value>Automatisch nach Vorlagenupdates suchen</value>
-  </data>
-  <data name="community" xml:space="preserve">
-    <value>Community</value>
-  </data>
-  <data name="export_and_tools" xml:space="preserve">
-    <value>Export/Tools</value>
-  </data>
-  <data name="format" xml:space="preserve">
-    <value>Format</value>
-  </data>
-  <data name="third_party_software" xml:space="preserve">
-    <value>Drittanbietersoftware</value>
-  </data>
-  <data name="select_software" xml:space="preserve">
-    <value>Software auswählen</value>
-  </data>
-  <data name="open_with_third_party_software" xml:space="preserve">
-    <value>Mit Drittanbietersoftware öffnen</value>
-  </data>
-  <data name="confirm_enter_edit_mode_base_map" xml:space="preserve">
-    <value>Möchten Sie wirklich in den Bearbeitungsmodus wechseln? Dies erlaubt das Ändern der Grundkarte.</value>
-  </data>
-  <data name="information" xml:space="preserve">
-    <value>Info</value>
-  </data>
-  <data name="click_to_pick_coordinates" xml:space="preserve">
-    <value>Bitte in den Zeichenbereich klicken, um Koordinaten zu wählen</value>
-  </data>
-  <data name="picking_operation_cancelled" xml:space="preserve">
-    <value>Auswahlvorgang abgebrochen</value>
-  </data>
-  <data name="diagram" xml:space="preserve">
-    <value>Diagramm</value>
-  </data>
-  <data name="official_website" xml:space="preserve">
-    <value>Offizielle Website</value>
-  </data>
-  <data name="minimize" xml:space="preserve">
-    <value>Minimieren</value>
-  </data>
-  <data name="maximize" xml:space="preserve">
-    <value>Maximieren</value>
-  </data>
-  <data name="close" xml:space="preserve">
-    <value>Schließen</value>
-  </data>
-  <data name="diagram_title_properties" xml:space="preserve">
-    <value>Diagrammtiteleigenschaften</value>
-  </data>
-  <data name="diagram_script_properties" xml:space="preserve">
-    <value>Diagrammskripteigenschaften</value>
-  </data>
-  <data name="diagram_legend_properties" xml:space="preserve">
-    <value>Diagrammlegendeneigenschaften</value>
-  </data>
-  <data name="diagram_grid_properties" xml:space="preserve">
-    <value>Diagrammgittereigenschaften</value>
-  </data>
-  <data name="switch_diagram_language" xml:space="preserve">
-    <value>Diagrammsprache wechseln</value>
-  </data>
-  <data name="popup_diagram_window" xml:space="preserve">
-    <value>Diagrammfenster ausklappen</value>
-  </data>
-  <data name="independent_diagram_window" xml:space="preserve">
-    <value>Unabhängiges Diagrammfenster</value>
-  </data>
   <data name="edit_drawing_template_translations" xml:space="preserve">
     <value>Übersetzungen der Zeichenvorlage bearbeiten</value>
-  </data>
-  <data name="repair_missing_or_damaged_templates_and_lists" xml:space="preserve">
-    <value>Fehlende oder beschädigte Vorlagen und Listen reparieren</value>
-  </data>
-  <data name="view_latest_server_announcements" xml:space="preserve">
-    <value>Neueste Serverankündigungen anzeigen</value>
-  </data>
-  <data name="maintain_server_config_and_templates" xml:space="preserve">
-    <value>Serverkonfiguration und Vorlagen warten</value>
-  </data>
-  <data name="stroke_width" xml:space="preserve">
-    <value>Strichbreite</value>
-  </data>
-  <data name="stroke_color" xml:space="preserve">
-    <value>Strichfarbe</value>
-  </data>
-  <data name="template_type_not_supported_please_update" xml:space="preserve">
-    <value>Vorlagentyp nicht unterstützt, bitte Software aktualisieren.</value>
-  </data>
-  <data name="diagram_guide" xml:space="preserve">
-    <value>Diagramm-Assistent</value>
-  </data>
-  <data name="click_help_for_guide" xml:space="preserve">
-    <value>Klicken für Diagrammdokumentation</value>
-  </data>
-  <data name="Alignment_UpperLeft" xml:space="preserve">
-    <value>Oben links</value>
-  </data>
-  <data name="Alignment_UpperCenter" xml:space="preserve">
-    <value>Oben mitte</value>
-  </data>
-  <data name="Alignment_UpperRight" xml:space="preserve">
-    <value>Oben rechts</value>
-  </data>
-  <data name="Alignment_MiddleLeft" xml:space="preserve">
-    <value>Mitte links</value>
-  </data>
-  <data name="Alignment_MiddleCenter" xml:space="preserve">
-    <value>Mitte zentriert</value>
-  </data>
-  <data name="Alignment_MiddleRight" xml:space="preserve">
-    <value>Mitte rechts</value>
-  </data>
-  <data name="Alignment_LowerLeft" xml:space="preserve">
-    <value>Unten links</value>
-  </data>
-  <data name="Alignment_LowerCenter" xml:space="preserve">
-    <value>Unten mitte</value>
-  </data>
-  <data name="Alignment_LowerRight" xml:space="preserve">
-    <value>Unten rechts</value>
-  </data>
-  <data name="Orientation_Horizontal" xml:space="preserve">
-    <value>Horizontal</value>
-  </data>
-  <data name="Orientation_Vertical" xml:space="preserve">
-    <value>Vertikal</value>
-  </data>
-  <data name="show_tick_labels" xml:space="preserve">
-    <value>Skalenbeschriftungen anzeigen</value>
-  </data>
-  <data name="show_major_ticks" xml:space="preserve">
-    <value>Hauptskalen anzeigen</value>
-  </data>
-  <data name="recently_used" xml:space="preserve">
-    <value>Zuletzt verwendet</value>
-  </data>
-  <data name="all_fonts" xml:space="preserve">
-    <value>Alle Schriftarten</value>
-  </data>
-  <data name="failed_to_open_widget" xml:space="preserve">
-    <value>Widget konnte nicht geöffnet werden:</value>
-  </data>
-  <data name="coordinates_picked_success" xml:space="preserve">
-    <value>Koordinaten erfolgreich erfasst!</value>
-  </data>
-  <data name="unsaved_diagram_template_prompt" xml:space="preserve">
-    <value>Die aktuelle Diagrammvorlage enthält nicht gespeicherte Änderungen. Möchten Sie diese speichern?</value>
-  </data>
-  <data name="tips" xml:space="preserve">
-    <value>Tips</value>
-  </data>
-  <data name="template_no_multilingual_info" xml:space="preserve">
-    <value>Die aktuelle Vorlage enthält keine mehrsprachigen Informationen</value>
-  </data>
-  <data name="language_switch_success" xml:space="preserve">
-    <value>Sprache erfolgreich geändert</value>
-  </data>
-  <data name="language_switch_error" xml:space="preserve">
-    <value>Beim Umschalten der Sprache ist ein Fehler aufgetreten:</value>
-  </data>
-  <data name="auto_datapoint_projection_failed" xml:space="preserve">
-    <value>Automatische Datenpunktprojektion fehlgeschlagen:</value>
-  </data>
-  <data name="failed_to_delete_row" xml:space="preserve">
-    <value>Zeile konnte nicht gelöscht werden:</value>
-  </data>
-  <data name="diagram_template_not_found_repair_hint" xml:space="preserve">
-    <value>Diagrammvorlagendatei nicht gefunden. Bitte versuchen Sie, diese mit dem „Vorlagen-Reparatur-Tool“ auf der Startseite zu reparieren.</value>
-  </data>
-  <data name="confirm_delete_custom_diagram_template" xml:space="preserve">
-    <value>Sind Sie sicher, dass Sie diese benutzerdefinierte Diagrammvorlage löschen möchten?</value>
-  </data>
-  <data name="template_delete_success" xml:space="preserve">
-    <value>Vorlage erfolgreich gelöscht</value>
-  </data>
-  <data name="delete_failed" xml:space="preserve">
-    <value>Löschen fehlgeschlagen:</value>
-  </data>
-  <data name="missing_drawing_objects_error" xml:space="preserve">
-    <value>• Fehlende Zeichenobjekte: Die Vorlage enthält keine Linien, Polygone, Texte oder Pfeile.</value>
-  </data>
-  <data name="invalid_script_variable_name" xml:space="preserve">
-    <value>• Ungültiges Format des Skriptvariablennamens: ’</value>
-  </data>
-  <data name="is_not_a_valid_variable_name" xml:space="preserve">
-    <value>’ ist kein gültiger Variablenname.</value>
-  </data>
-  <data name="script_return_value_error_must_be_array" xml:space="preserve">
-    <value>• Skript-Rückgabewertfehler: Das Skript muss ein Array zurückgeben.</value>
-  </data>
-  <data name="script_return_value_length_error" xml:space="preserve">
-    <value>• Fehler in der Länge des Skript-Rückgabewerts: Aktueller Wert ist</value>
-  </data>
-  <data name="return_type_mismatch_error" xml:space="preserve">
-    <value>Typ, sollte zurückgeben</value>
-  </data>
-  <data name="elements_actual_returned" xml:space="preserve">
-    <value>Elemente, aber tatsächlich zurückgegeben wurden</value>
-  </data>
-  <data name="elements_count_suffix" xml:space="preserve">
-    <value>Elemente.</value>
-  </data>
-  <data name="missing_translation_warning" xml:space="preserve">
-    <value>• Fehlende Übersetzung: Einige Texte verfügen über keine mehrsprachigen Übersetzungen.</value>
-  </data>
-  <data name="diagram_template_source_missing" xml:space="preserve">
-    <value>Quelldatei der Diagrammvorlage existiert nicht</value>
-  </data>
-  <data name="template_potential_issues_detected" xml:space="preserve">
-    <value>Folgende potenzielle Probleme wurden in der Vorlage erkannt:</value>
-  </data>
-  <data name="ignore_issues_and_continue_export" xml:space="preserve">
-    <value>Diese Probleme ignorieren und mit dem Export fortfahren?</value>
-  </data>
-  <data name="completeness_check" xml:space="preserve">
-    <value>Vollständigkeitsprüfung</value>
-  </data>
-  <data name="diagram_template_export_success" xml:space="preserve">
-    <value>Diagrammvorlage erfolgreich exportiert</value>
-  </data>
-  <data name="directory_not_exist" xml:space="preserve">
-    <value>Verzeichnis existiert nicht</value>
-  </data>
-  <data name="diagram_template_directory_not_found" xml:space="preserve">
-    <value>Verzeichnis für Diagrammvorlagen existiert nicht:</value>
-  </data>
-  <data name="failed_to_load_diagram_template" xml:space="preserve">
-    <value>Diagrammvorlage konnte nicht geladen werden:</value>
-  </data>
-  <data name="unsaved_template_changes_confirm" xml:space="preserve">
-    <value>Die aktuelle Vorlage enthält nicht gespeicherte Änderungen. Möchten Sie diese speichern?</value>
-  </data>
-  <data name="ternary_diagram_crosshair_not_supported" xml:space="preserve">
-    <value>Fadenkreuz-Positionierung wird für Ternärdiagramme derzeit nicht unterstützt.</value>
-  </data>
-  <data name="attempting_to_start" xml:space="preserve">
-    <value>Startversuch läuft</value>
-  </data>
-  <data name="coreldraw_env_not_found_select_program" xml:space="preserve">
-    <value>CorelDRAW-Umgebungsvariable nicht gefunden. Bitte wählen Sie das zu öffnende Programm aus.</value>
-  </data>
-  <data name="failed_to_open" xml:space="preserve">
-    <value>Öffnen fehlgeschlagen:</value>
-  </data>
-  <data name="inkscape_env_not_found_select_program" xml:space="preserve">
-    <value>Inkscape-Umgebungsvariable nicht gefunden. Bitte wählen Sie das zu öffnende Programm aus.</value>
-  </data>
-  <data name="illustrator_not_found_check_path" xml:space="preserve">
-    <value>Adobe Illustrator nicht gefunden. Bitte prüfen Sie die Pfadeinstellungen oder wählen Sie das zu öffnende Programm aus.</value>
-  </data>
-  <data name="custom_path_not_set_configure_in_settings" xml:space="preserve">
-    <value>Benutzerdefinierter Programmpfad nicht festgelegt. Bitte in den Einstellungen konfigurieren.</value>
-  </data>
-  <data name="custom_program_start_failed" xml:space="preserve">
-    <value>Starten des benutzerdefinierten Programms fehlgeschlagen:</value>
-  </data>
-  <data name="help_file_not_found" xml:space="preserve">
-    <value>Hilfedokumentation konnte nicht gefunden werden.</value>
-  </data>
-  <data name="refresh_successful" xml:space="preserve">
-    <value>Erfolgreich aktualisiert</value>
-  </data>
-  <data name="refresh_failed" xml:space="preserve">
-    <value>Aktualisierung fehlgeschlagen:</value>
-  </data>
-  <data name="diagram_help_path_undefined_save_template" xml:space="preserve">
-    <value>Pfad der Diagramm-Hilfedatei konnte nicht ermittelt werden. Bitte versuchen Sie zuerst, die Vorlage zu speichern.</value>
-  </data>
-  <data name="failed_to_open_file" xml:space="preserve">
-    <value>Datei konnte nicht geöffnet werden:</value>
-  </data>
-  <data name="error_creating_new_template" xml:space="preserve">
-    <value>Fehler beim Erstellen der neuen Vorlage:</value>
-  </data>
-  <data name="import_failed" xml:space="preserve">
-    <value>Import fehlgeschlagen:</value>
-  </data>
-  <data name="failed_to_open_zip_file" xml:space="preserve">
-    <value>ZIP-Datei konnte nicht geöffnet werden</value>
-  </data>
-  <data name="diagram_template_corrupted_or_invalid" xml:space="preserve">
-    <value>Die Diagrammvorlagendatei ist beschädigt oder enthält keine gültige JSON-Diagrammvorlagendatei.</value>
-  </data>
-  <data name="failed_to_parse_diagram_template_json" xml:space="preserve">
-    <value>Die JSON-Datei der Diagrammvorlage konnte nicht analysiert werden</value>
-  </data>
-  <data name="invalid_diagram_template_file" xml:space="preserve">
-    <value>Ungültige Diagrammvorlagendatei</value>
-  </data>
-  <data name="custom_diagram_template" xml:space="preserve">
-    <value>Benutzerdefinierte Diagrammvorlage</value>
-  </data>
-  <data name="already_exists_overwrite_confirm" xml:space="preserve">
-    <value>Bereits vorhanden. Möchten Sie es überschreiben?</value>
-  </data>
-  <data name="overwrite" xml:space="preserve">
-    <value>Überschreiben</value>
-  </data>
-  <data name="failed_to_delete_old_directory" xml:space="preserve">
-    <value>Altes Verzeichnis konnte nicht gelöscht werden:</value>
-  </data>
-  <data name="invalid_diagram_template_no_json" xml:space="preserve">
-    <value>Ungültige Diagrammvorlagendatei: Diagramm-JSON-Datei nicht gefunden.</value>
-  </data>
-  <data name="template_load_failed" xml:space="preserve">
-    <value>Laden der Vorlage fehlgeschlagen</value>
-  </data>
-  <data name="script_not_defined_in_template" xml:space="preserve">
-    <value>Kein Skript in der Diagrammvorlage definiert</value>
-  </data>
-  <data name="function" xml:space="preserve">
-    <value>Funktion</value>
-  </data>
-  <data name="new_template" xml:space="preserve">
-    <value>Neue Diagrammvorlage</value>
-  </data>
-  <data name="update_available_click_to_download" xml:space="preserve">
-    <value>Neue Version verfügbar, zum Aktualisieren klicken</value>
-  </data>
-  <data name="invalid_filename_char" xml:space="preserve">
-    <value>Inhalt enthält nicht unterstützte Zeichen</value>
-  </data>
-  <data name="developer_mode" xml:space="preserve">
-    <value>Entwicklermodus</value>
-  </data>
-  <data name="help_document_not_found" xml:space="preserve">
-    <value>Hilfedokument nicht gefunden:</value>
-  </data>
-  <data name="path_is_empty" xml:space="preserve">
-    <value>Pfad ist leer</value>
-  </data>
-  <data name="failed_to_load_help_document" xml:space="preserve">
-    <value>Fehler beim Laden des Hilfedokuments:</value>
-  </data>
-  <data name="dev_mode_warning_non_developers" xml:space="preserve">
-    <value>Nicht für Nicht-Entwickler empfohlen; dies kann zu unnötigen Problemen führen.</value>
-  </data>
-  <data name="click_to_download" xml:space="preserve">
-    <value>Zum Herunterladen klicken</value>
-  </data>
-  <data name="new_version_found" xml:space="preserve">
-    <value>Neue Version gefunden</value>
-  </data>
-  <data name="downloading_status" xml:space="preserve">
-    <value>Wird heruntergeladen...</value>
-  </data>
-  <data name="retry_action" xml:space="preserve">
-    <value>Wiederholen</value>
-  </data>
-  <data name="loading_status" xml:space="preserve">
-    <value>Laden...</value>
-  </data>
-  <data name="MarkerShape_FilledCircle" xml:space="preserve">
-    <value>Gefüllter Kreis</value>
-  </data>
-  <data name="MarkerShape_OpenCircle" xml:space="preserve">
-    <value>Leerer Kreis</value>
-  </data>
-  <data name="MarkerShape_FilledSquare" xml:space="preserve">
-    <value>Gefülltes Quadrat</value>
-  </data>
-  <data name="MarkerShape_OpenSquare" xml:space="preserve">
-    <value>Leeres Quadrat</value>
-  </data>
-  <data name="MarkerShape_FilledTriangleUp" xml:space="preserve">
-    <value>Gefülltes Dreieck nach oben</value>
   </data>
   <data name="MarkerShape_OpenTriangleUp" xml:space="preserve">
     <value>Leeres Dreieck nach oben</value>
   </data>
-  <data name="MarkerShape_FilledTriangleDown" xml:space="preserve">
-    <value>Gefülltes Dreieck nach unten</value>
+  <data name="object_deleted_successfully" xml:space="preserve">
+    <value>Objekt erfolgreich gelöscht.</value>
   </data>
-  <data name="MarkerShape_OpenTriangleDown" xml:space="preserve">
-    <value>Leeres Dreieck nach unten</value>
+  <data name="geo_msg_batch_export_failed" xml:space="preserve">
+    <value>Stapelexport fehlgeschlagen: {0}</value>
   </data>
-  <data name="MarkerShape_FilledDiamond" xml:space="preserve">
-    <value>Gefüllte Raute</value>
+  <data name="show_tick_labels" xml:space="preserve">
+    <value>Skalenbeschriftungen anzeigen</value>
   </data>
-  <data name="MarkerShape_OpenDiamond" xml:space="preserve">
-    <value>Leere Raute</value>
+  <data name="cipw_tooltip_help" xml:space="preserve">
+    <value>Algorithmusbeschreibung der CIPW-Normberechnung anzeigen</value>
   </data>
-  <data name="MarkerShape_Cross" xml:space="preserve">
-    <value>Kreuz</value>
+  <data name="row_1_column_1" xml:space="preserve">
+    <value>Zeile: 1, Spalte: 1</value>
   </data>
-  <data name="MarkerShape_Eks" xml:space="preserve">
-    <value>X-Form</value>
+  <data name="geo_field_formula_name" xml:space="preserve">
+    <value>Formelname *</value>
   </data>
-  <data name="MarkerShape_Asterisk" xml:space="preserve">
-    <value>Sternchen</value>
+  <data name="third_party_software" xml:space="preserve">
+    <value>Drittanbietersoftware</value>
   </data>
-  <data name="MarkerShape_VerticalBar" xml:space="preserve">
-    <value>Vertikale Linie</value>
+  <data name="information" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="cannot_delete_protected_column" xml:space="preserve">
+    <value>Geschützte Spalte kann nicht gelöscht werden</value>
+  </data>
+  <data name="invalid_diagram_template_no_json" xml:space="preserve">
+    <value>Ungültige Diagrammvorlagendatei: Diagramm-JSON-Datei nicht gefunden.</value>
+  </data>
+  <data name="cipw_step9_detail" xml:space="preserve">
+    <value>• Mole jedes Minerals mit der molaren Masse multiplizieren, um die Standardmineralmasse zu erhalten
+• Auf Massenprozent (wt%) normalisieren und ausgeben
+• Diagnosen wie Silikasättigung, Tonerdesättigung und Massenbilanzfehler ausgeben</value>
+  </data>
+  <data name="top_x_axis" xml:space="preserve">
+    <value>Obere X-Achse</value>
+  </data>
+  <data name="geo_script_test_input" xml:space="preserve">
+    <value>Testeingabe:</value>
+  </data>
+  <data name="cipw_diag_silica_saturation" xml:space="preserve">
+    <value>Silikasättigung</value>
+  </data>
+  <data name="cipw_diag_mass_balance_error" xml:space="preserve">
+    <value>Massenbilanzfehler</value>
+  </data>
+  <data name="geo_step_script" xml:space="preserve">
+    <value>Formelskript</value>
+  </data>
+  <data name="cipw_btn_example" xml:space="preserve">
+    <value>Beispiel</value>
+  </data>
+  <data name="custom_program_start_failed" xml:space="preserve">
+    <value>Starten des benutzerdefinierten Programms fehlgeschlagen:</value>
+  </data>
+  <data name="geo_label_custom" xml:space="preserve">
+    <value>Benutzerdefiniert</value>
+  </data>
+  <data name="Amphibole" xml:space="preserve">
+    <value>Amphibol</value>
+  </data>
+  <data name="minor_grid_Line" xml:space="preserve">
+    <value>Nebengitterlinie</value>
+  </data>
+  <data name="BiotiteGTM" xml:space="preserve">
+    <value>Ti-Thermometer (Henry et al., 2005)</value>
+  </data>
+  <data name="all_fields_required" xml:space="preserve">
+    <value>Alle Felder sind erforderlich!</value>
+  </data>
+  <data name="startup_background_image" xml:space="preserve">
+    <value>Start-Hintergrundbild</value>
   </data>
   <data name="MarkerShape_HorizontalBar" xml:space="preserve">
     <value>Horizontale Linie</value>
   </data>
-  <data name="MarkerShape_HashTag" xml:space="preserve">
-    <value>Rautezeichen</value>
+  <data name="the_sum_of_row" xml:space="preserve">
+    <value>Zeile</value>
   </data>
-  <data name="MarkerShape_OpenCircleWithDot" xml:space="preserve">
-    <value>Leerer Kreis mit Punkt</value>
+  <data name="cipw_step6_detail" xml:space="preserve">
+    <value>Eisenoxide den Mineralen zuweisen:
+• Magnetit (Mt): Fe₂O₃ + FeO
+• Hämatit (Hm): Rest Fe₂O₃</value>
   </data>
-  <data name="MarkerShape_OpenCircleWithCross" xml:space="preserve">
-    <value>Leerer Kreis mit Kreuz</value>
+  <data name="cannot_delete_base_layers" xml:space="preserve">
+    <value>Basisebenen können nicht gelöscht werden.</value>
   </data>
-  <data name="MarkerShape_OpenCircleWithEks" xml:space="preserve">
-    <value>Leerer Kreis mit X</value>
+  <data name="geo_msg_script_empty" xml:space="preserve">
+    <value>Skriptinhalt ist leer</value>
   </data>
-  <data name="exit_action" xml:space="preserve">
-    <value>Beenden</value>
+  <data name="go_to_download" xml:space="preserve">
+    <value>Zum Download</value>
   </data>
-  <data name="maintenance" xml:space="preserve">
-    <value>_Wartung(M)</value>
+  <data name="geo_msg_create_table_failed" xml:space="preserve">
+    <value>Tabellenerstellung fehlgeschlagen: {0}</value>
   </data>
-  <data name="export_update_list" xml:space="preserve">
-    <value>Update-Liste exportieren</value>
+  <data name="link_url" xml:space="preserve">
+    <value>Link (URL)</value>
   </data>
-  <data name="builtin_templates" xml:space="preserve">
-    <value>Offizielle integrierte Vorlagen</value>
+  <data name="click_to_download" xml:space="preserve">
+    <value>Zum Herunterladen klicken</value>
   </data>
-  <data name="search_templates" xml:space="preserve">
-    <value>Vorlagen suchen...</value>
+  <data name="interval" xml:space="preserve">
+    <value>Skalenintervall</value>
   </data>
-  <data name="clear_search" xml:space="preserve">
-    <value>Löschen</value>
+  <data name="font_family" xml:space="preserve">
+    <value>Schriftfamilie</value>
   </data>
-  <data name="filter_templates" xml:space="preserve">
-    <value>Vorlagen filtern</value>
+  <data name="vertices" xml:space="preserve">
+    <value>Eckpunkte</value>
   </data>
-  <data name="favorite" xml:space="preserve">
-    <value>Favorit</value>
+  <data name="unknown_axis" xml:space="preserve">
+    <value>Unbekannte Achse</value>
   </data>
-  <data name="unfavorite" xml:space="preserve">
-    <value>Aus Favoriten entfernen</value>
+  <data name="new_template" xml:space="preserve">
+    <value>Neue Diagrammvorlage</value>
   </data>
-  <data name="personal_templates" xml:space="preserve">
-    <value>Persönliche Diagrammvorlagen</value>
+  <data name="point_count" xml:space="preserve">
+    <value>Stützstellen</value>
   </data>
-  <data name="favorite_templates" xml:space="preserve">
-    <value>Favorit</value>
-  </data>
-  <data name="official_templates" xml:space="preserve">
-    <value>Offizielle Diagrammvorlagen</value>
-  </data>
-  <data name="favorite_added" xml:space="preserve">
-    <value>Zu Favoriten hinzugefügt</value>
-  </data>
-  <data name="favorite_removed" xml:space="preserve">
-    <value>Aus Favoriten entfernt</value>
+  <data name="geo_label_official" xml:space="preserve">
+    <value>Offiziell</value>
   </data>
   <data name="recents_templates" xml:space="preserve">
     <value>Zuletzt verwendet</value>
   </data>
-  <data name="library_section" xml:space="preserve">
-    <value>Ressourcenbibliothek</value>
-  </data>
-  <data name="workspace_section" xml:space="preserve">
-    <value>Mein Bereich</value>
-  </data>
-  <data name="edit_diagram_template" xml:space="preserve">
-    <value>Diagrammvorlage bearbeiten</value>
-  </data>
-  <data name="batch_download_new_templates" xml:space="preserve">
-    <value>Stapel-Download</value>
-  </data>
-  <data name="batch_download_new_templates_tooltip" xml:space="preserve">
-    <value>Neue nicht installierte Vorlagen stapelweise herunterladen</value>
-  </data>
-  <data name="batch_download_title" xml:space="preserve">
-    <value>Stapel-Download</value>
+  <data name="downloaded_file_hash_mismatch" xml:space="preserve">
+    <value>Hash-Mismatch der heruntergeladenen Datei, Datei könnte beschädigt oder manipuliert sein.</value>
   </data>
   <data name="batch_download_confirm_message" xml:space="preserve">
     <value>{0} neue nicht installierte Vorlagen erkannt. Batch-Download starten?</value>
   </data>
-  <data name="no_new_templates_to_download" xml:space="preserve">
-    <value>Keine neuen Vorlagen zum Herunterladen vorhanden</value>
+  <data name="cipw_silica_undersaturated" xml:space="preserve">
+    <value>Untersättigt</value>
   </data>
-  <data name="batch_download_success_count" xml:space="preserve">
-    <value>Erfolgreich heruntergeladen: {0}</value>
+  <data name="data_parameters_are_empty" xml:space="preserve">
+    <value>Datenparameter sind leer</value>
   </data>
-  <data name="batch_download_fail_count" xml:space="preserve">
-    <value>Fehlgeschlagen: {0}</value>
+  <data name="StartStatus" xml:space="preserve">
+    <value>Starten...</value>
   </data>
-  <data name="batch_download_complete" xml:space="preserve">
-    <value>Batch-Download abgeschlossen</value>
+  <data name="cipw_help_window_title" xml:space="preserve">
+    <value>CIPW-Normberechnung - Algorithmusbeschreibung</value>
   </data>
-  <data name="failed_templates" xml:space="preserve">
-    <value>Fehlgeschlagene Vorlagen:</value>
+  <data name="geo_tooltip_sample_row_eg" xml:space="preserve">
+    <value>z. B. 45.2, 0.8, 12.3, =MyFormula(A2,B2,C2)</value>
   </data>
-  <data name="batch_download_failed" xml:space="preserve">
-    <value>Batch-Download fehlgeschlagen</value>
+  <data name="geo_hint_select_thermometer" xml:space="preserve">
+    <value>Bitte wählen Sie ein Thermometer im linken Bereich</value>
   </data>
-  <data name="batch_downloading" xml:space="preserve">
-    <value>Batch-Download läuft</value>
+  <data name="delete_column" xml:space="preserve">
+    <value>Spalte löschen</value>
   </data>
-  <data name="batch_download_progress" xml:space="preserve">
-    <value>Wird heruntergeladen: {0}/{1} - {2}</value>
+  <data name="QuitEdit" xml:space="preserve">
+    <value>Bearbeitung beenden</value>
   </data>
-  <data name="batch_download_cancelled" xml:space="preserve">
-    <value>Batch-Download abgebrochen</value>
+  <data name="clear_search" xml:space="preserve">
+    <value>Löschen</value>
   </data>
-  <data name="confirm_clear_data_for_validation" xml:space="preserve">
-    <value>Die Syntaxprüfung löscht die Datentabelle und die Diagrammdatenpunkte. Fortfahren?</value>
+  <data name="popup_diagram_window" xml:space="preserve">
+    <value>Diagrammfenster ausklappen</value>
   </data>
-  <data name="toggle_details_expand_collapse" xml:space="preserve">
-    <value>Details ein-/ausblenden</value>
+  <data name="geo_validation_mineral_required" xml:space="preserve">
+    <value>Mineralkategorie ist erforderlich</value>
   </data>
-  <data name="calculation_results" xml:space="preserve">
-    <value>Berechnungsergebnisse</value>
+  <data name="geo_tooltip_inputs_eg" xml:space="preserve">
+    <value>z. B. SiO2, TiO2, Al2O3</value>
   </data>
-  <data name="script_no_detailed_calculation_description" xml:space="preserve">
-    <value>Dieses Skript enthält keine detaillierten Erläuterungen zum Berechnungsvorgang.</value>
+  <data name="default_diagram_expand_level" xml:space="preserve">
+    <value>Standard-Erweiterungsebene</value>
   </data>
-  <data name="trace_function_usage_tip" xml:space="preserve">
-    <value>Verwenden Sie die Funktion trace(...), um den Berechnungsvorgang im Skript zu protokollieren.</value>
+  <data name="failed_to_delete_old_directory" xml:space="preserve">
+    <value>Altes Verzeichnis konnte nicht gelöscht werden:</value>
   </data>
-  <data name="insufficient_script_return_values" xml:space="preserve">
-    <value>Unzureichende Skript-Rückgabewerte</value>
+  <data name="unsaved_template_changes_confirm" xml:space="preserve">
+    <value>Die aktuelle Vorlage enthält nicht gespeicherte Änderungen. Möchten Sie diese speichern?</value>
   </data>
-  <data name="ternary_script_return_value_requirement" xml:space="preserve">
-    <value>Ternäre Diagramm-Skripte müssen ein Array mit mindestens 3 Werten [A, B, C] zurückgeben</value>
+  <data name="save_changes" xml:space="preserve">
+    <value>Änderungen speichern</value>
   </data>
-  <data name="script_return_two_values_requirement" xml:space="preserve">
-    <value>Skripte müssen ein Array mit mindestens 2 Werten [X, Y] zurückgeben</value>
+  <data name="MarkerShape_OpenTriangleDown" xml:space="preserve">
+    <value>Leeres Dreieck nach unten</value>
+  </data>
+  <data name="PlotLeftAxies" xml:space="preserve">
+    <value>Linke Achse</value>
+  </data>
+  <data name="InternationalizationAndPersonalization" xml:space="preserve">
+    <value>Internationalisierung &amp; Personalisierung</value>
+  </data>
+  <data name="error_saving_rtf_file" xml:space="preserve">
+    <value>Fehler beim Speichern der RTF-Datei:</value>
+  </data>
+  <data name="support_json_format" xml:space="preserve">
+    <value>Unterstützt .json Format</value>
+  </data>
+  <data name="cipw_col_silica_saturation" xml:space="preserve">
+    <value>SiO2-Sättigung</value>
+  </data>
+  <data name="validate_syntax" xml:space="preserve">
+    <value>Syntax prüfen</value>
+  </data>
+  <data name="add_row_up" xml:space="preserve">
+    <value>Zeile oben einfügen</value>
+  </data>
+  <data name="delete_failed" xml:space="preserve">
+    <value>Löschen fehlgeschlagen:</value>
+  </data>
+  <data name="PointFilledTriangleDown" xml:space="preserve">
+    <value>Dreieck unten</value>
+  </data>
+  <data name="NewBasemap" xml:space="preserve">
+    <value>Neue Grundkarte</value>
+  </data>
+  <data name="cipw_step5_detail" xml:space="preserve">
+    <value>Alkalioxide und Tonerde nacheinander den Feldspäten zuweisen:
+• Orthoklas (Or): K₂O + Al₂O₃ + 6SiO₂
+• Albit (Ab): Na₂O + Al₂O₃ + 6SiO₂
+• Anorthit (An): CaO + Al₂O₃ + 2SiO₂
+• Korund (Cor): Rest Al₂O₃ (peraluminöser Fall)
+• Akmit (Ac): Na₂O + Fe₂O₃ + 4SiO₂ (peralkalischer Fall)
+• Restliche Alkali-Silikate (ns, ks)</value>
+  </data>
+  <data name="PointSquare" xml:space="preserve">
+    <value>Quadrat</value>
+  </data>
+  <data name="no_imported_data_to_clear" xml:space="preserve">
+    <value>Keine importierten Daten zum Löschen vorhanden</value>
+  </data>
+  <data name="geo_help_italic" xml:space="preserve">
+    <value>Kursiv (Strg+I)</value>
+  </data>
+  <data name="help_file_not_found" xml:space="preserve">
+    <value>Hilfedokumentation konnte nicht gefunden werden.</value>
+  </data>
+  <data name="geo_tooltip_help" xml:space="preserve">
+    <value>Hilfe</value>
+  </data>
+  <data name="advanced_rendering" xml:space="preserve">
+    <value>Erweitertes Rendering</value>
+  </data>
+  <data name="please_select_widget_to_add" xml:space="preserve">
+    <value>Bitte Widget zum Hinzufügen auswählen:</value>
+  </data>
+  <data name="offset_y" xml:space="preserve">
+    <value>Versatz Y</value>
+  </data>
+  <data name="offset_x" xml:space="preserve">
+    <value>Versatz X</value>
+  </data>
+  <data name="ArsenopyriteGTM" xml:space="preserve">
+    <value>Arsenopyrit-Thermometer (Kretschmar und Scott, 1976)</value>
+  </data>
+  <data name="Alignment_LowerRight" xml:space="preserve">
+    <value>Unten rechts</value>
+  </data>
+  <data name="official_website" xml:space="preserve">
+    <value>Offizielle Website</value>
+  </data>
+  <data name="save_as_csv_file" xml:space="preserve">
+    <value>Als CSV speichern</value>
+  </data>
+  <data name="plot_defaults" xml:space="preserve">
+    <value>Plot-Standardeinstellungen</value>
+  </data>
+  <data name="add_column_right" xml:space="preserve">
+    <value>Spalte rechts hinzufügen</value>
+  </data>
+  <data name="geo_ctx_export_zip" xml:space="preserve">
+    <value>ZIP exportieren</value>
+  </data>
+  <data name="minor_tick_style" xml:space="preserve">
+    <value>Nebenstrichstil</value>
+  </data>
+  <data name="export_update_list" xml:space="preserve">
+    <value>Update-Liste exportieren</value>
+  </data>
+  <data name="geo_ctx_edit" xml:space="preserve">
+    <value>Bearbeiten</value>
+  </data>
+  <data name="reset_view" xml:space="preserve">
+    <value>Ansicht zurücksetzen</value>
+  </data>
+  <data name="Alignment_UpperRight" xml:space="preserve">
+    <value>Oben rechts</value>
+  </data>
+  <data name="batch_download_new_templates_tooltip" xml:space="preserve">
+    <value>Neue nicht installierte Vorlagen stapelweise herunterladen</value>
+  </data>
+  <data name="LineColor" xml:space="preserve">
+    <value>Farbe</value>
+  </data>
+  <data name="favorite_templates" xml:space="preserve">
+    <value>Favorit</value>
+  </data>
+  <data name="unable_to_get_announcements" xml:space="preserve">
+    <value>Ankündigungen nicht abrufbar.</value>
+  </data>
+  <data name="auto_check_geothermometer_updates" xml:space="preserve">
+    <value>Automatisch nach Geothermometer-Updates suchen</value>
+  </data>
+  <data name="LineStyle" xml:space="preserve">
+    <value>Linienstil</value>
+  </data>
+  <data name="LineSolid" xml:space="preserve">
+    <value>Durchgezogen</value>
+  </data>
+  <data name="PointHollowCircle" xml:space="preserve">
+    <value>Hohler Kreis</value>
+  </data>
+  <data name="LineWidth" xml:space="preserve">
+    <value>Breite</value>
+  </data>
+  <data name="add_widget" xml:space="preserve">
+    <value>Widget hinzufügen</value>
   </data>
   <data name="calculation_error" xml:space="preserve">
     <value>Berechnungsfehler</value>
   </data>
-  <data name="script_return_type_error" xml:space="preserve">
-    <value>Skript-Rückgabetypfehler</value>
+  <data name="confirm_enter_edit_mode_base_map" xml:space="preserve">
+    <value>Möchten Sie wirklich in den Bearbeitungsmodus wechseln? Dies erlaubt das Ändern der Grundkarte.</value>
+  </data>
+  <data name="template_loaded_successfully" xml:space="preserve">
+    <value>Vorlage erfolgreich geladen</value>
+  </data>
+  <data name="all_fonts" xml:space="preserve">
+    <value>Alle Schriftarten</value>
+  </data>
+  <data name="help_instructions" xml:space="preserve">
+    <value>Hilfeanweisungen</value>
+  </data>
+  <data name="PlotData" xml:space="preserve">
+    <value>Daten</value>
+  </data>
+  <data name="PlotText" xml:space="preserve">
+    <value>Kommentar</value>
+  </data>
+  <data name="tio2_activity_range" xml:space="preserve">
+    <value>TiO2-Aktivität muss im Bereich (0,1] liegen</value>
+  </data>
+  <data name="QuitAppMode" xml:space="preserve">
+    <value>Beenden-Modus</value>
+  </data>
+  <data name="maximize" xml:space="preserve">
+    <value>Maximieren</value>
+  </data>
+  <data name="diagram_template_not_found_repair_hint" xml:space="preserve">
+    <value>Diagrammvorlagendatei nicht gefunden. Bitte versuchen Sie, diese mit dem „Vorlagen-Reparatur-Tool“ auf der Startseite zu reparieren.</value>
+  </data>
+  <data name="no_new_templates_to_download" xml:space="preserve">
+    <value>Keine neuen Vorlagen zum Herunterladen vorhanden</value>
+  </data>
+  <data name="retry_action" xml:space="preserve">
+    <value>Wiederholen</value>
+  </data>
+  <data name="arrowhead_length" xml:space="preserve">
+    <value>Pfeilspitzenlänge</value>
+  </data>
+  <data name="remove_point" xml:space="preserve">
+    <value>Diesen Eckpunkt entfernen</value>
+  </data>
+  <data name="geo_dialog_delete_thermometer" xml:space="preserve">
+    <value>Möchten Sie das {0} Thermometer „{1}“ wirklich löschen?</value>
+  </data>
+  <data name="x_coordinate" xml:space="preserve">
+    <value>X-Koordinate</value>
+  </data>
+  <data name="geo_btn_help_confirm" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="content_and_position" xml:space="preserve">
+    <value>Inhalt und Position</value>
+  </data>
+  <data name="CategoryFormatError" xml:space="preserve">
+    <value>Kategorieformatfehler</value>
+  </data>
+  <data name="invalid_diagram_template_file" xml:space="preserve">
+    <value>Ungültige Diagrammvorlagendatei</value>
+  </data>
+  <data name="add_image" xml:space="preserve">
+    <value>Bild hinzufügen</value>
+  </data>
+  <data name="enable_anti_alias" xml:space="preserve">
+    <value>Anti-Aliasing aktivieren</value>
+  </data>
+  <data name="add_arrow" xml:space="preserve">
+    <value>Pfeil hinzufügen</value>
+  </data>
+  <data name="MarkerShape_Asterisk" xml:space="preserve">
+    <value>Sternchen</value>
+  </data>
+  <data name="failed_to_delete_row" xml:space="preserve">
+    <value>Zeile konnte nicht gelöscht werden:</value>
+  </data>
+  <data name="EditMode" xml:space="preserve">
+    <value>Bearbeitungsmodus</value>
+  </data>
+  <data name="line_type_densely_dashed" xml:space="preserve">
+    <value>Dicht gestrichelt</value>
+  </data>
+  <data name="geo_script_inputs" xml:space="preserve">
+    <value>Eingabespalten (durch Komma getrennt)</value>
+  </data>
+  <data name="diagram_template_repair_tool" xml:space="preserve">
+    <value>Vorlagenreparaturtool</value>
+  </data>
+  <data name="cipw_diagnostic_details" xml:space="preserve">
+    <value>Diagnosedetails</value>
+  </data>
+  <data name="domain" xml:space="preserve">
+    <value>Definitionsbereich</value>
+  </data>
+  <data name="line_type_solid" xml:space="preserve">
+    <value>Durchgezogen</value>
+  </data>
+  <data name="cipw_default_value_text" xml:space="preserve">
+    <value>Standard 0,15</value>
+  </data>
+  <data name="FilePath" xml:space="preserve">
+    <value>Dateipfad</value>
+  </data>
+  <data name="subtitle_font_size" xml:space="preserve">
+    <value>Untertitel-Schriftgröße</value>
+  </data>
+  <data name="geo_help_optional_hint" xml:space="preserve">
+    <value>Hilfedokument ist optional und unterstützt mehrsprachiges RTF-Format.</value>
+  </data>
+  <data name="delete_object" xml:space="preserve">
+    <value>Objekt löschen</value>
+  </data>
+  <data name="cipw_title" xml:space="preserve">
+    <value>CIPW-Normberechnung</value>
+  </data>
+  <data name="LegendSetting" xml:space="preserve">
+    <value>Legendeneinstellungen</value>
+  </data>
+  <data name="refresh_successful" xml:space="preserve">
+    <value>Erfolgreich aktualisiert</value>
+  </data>
+  <data name="cipw_alumina_peraluminous" xml:space="preserve">
+    <value>Peraluminös</value>
+  </data>
+  <data name="start_coordinates" xml:space="preserve">
+    <value>Startkoordinaten</value>
+  </data>
+  <data name="cipw_error" xml:space="preserve">
+    <value>Fehler</value>
+  </data>
+  <data name="elements_actual_returned" xml:space="preserve">
+    <value>Elemente, aber tatsächlich zurückgegeben wurden</value>
+  </data>
+  <data name="geo_script_result" xml:space="preserve">
+    <value>Ergebnis:</value>
+  </data>
+  <data name="export" xml:space="preserve">
+    <value>Exportieren</value>
+  </data>
+  <data name="Chlorite" xml:space="preserve">
+    <value>Chlorit</value>
+  </data>
+  <data name="edit_menu_bar_item" xml:space="preserve">
+    <value>Menüleisteneintrag bearbeiten</value>
+  </data>
+  <data name="maintenance" xml:space="preserve">
+    <value>_Wartung(M)</value>
+  </data>
+  <data name="geo_tooltip_maximize" xml:space="preserve">
+    <value>Maximieren</value>
+  </data>
+  <data name="geo_tooltip_restore" xml:space="preserve">
+    <value>Wiederherstellen</value>
+  </data>
+  <data name="confirm_clear_all_data" xml:space="preserve">
+    <value>Alle Tabellendaten löschen (inkl. Plot-Punkte)?</value>
+  </data>
+  <data name="PlotShowMinorGrid" xml:space="preserve">
+    <value>Nebengitter anzeigen</value>
+  </data>
+  <data name="geo_msg_richtext_not_init" xml:space="preserve">
+    <value>RichTextBox-Steuerelement ist nicht initialisiert</value>
+  </data>
+  <data name="invalid_filename_char" xml:space="preserve">
+    <value>Inhalt enthält nicht unterstützte Zeichen</value>
+  </data>
+  <data name="missing_drawing_objects_error" xml:space="preserve">
+    <value>• Fehlende Zeichenobjekte: Die Vorlage enthält keine Linien, Polygone, Texte oder Pfeile.</value>
+  </data>
+  <data name="geo_msg_export_failed" xml:space="preserve">
+    <value>Export fehlgeschlagen: {0}</value>
+  </data>
+  <data name="Alignment_MiddleCenter" xml:space="preserve">
+    <value>Mitte zentriert</value>
+  </data>
+  <data name="major_tick_style" xml:space="preserve">
+    <value>Hauptstrichstil</value>
+  </data>
+  <data name="server_announcements" xml:space="preserve">
+    <value>Serverankündigungen</value>
+  </data>
+  <data name="ModifedSuccess" xml:space="preserve">
+    <value>Erfolgreich geändert</value>
+  </data>
+  <data name="cipw_diag_main_minerals" xml:space="preserve">
+    <value>── Hauptminerale ──</value>
+  </data>
+  <data name="Orientation_Vertical" xml:space="preserve">
+    <value>Vertikal</value>
+  </data>
+  <data name="open_import" xml:space="preserve">
+    <value>Import öffnen</value>
+  </data>
+  <data name="no_data_please_add_data" xml:space="preserve">
+    <value>Keine Daten, bitte Daten hinzufügen</value>
+  </data>
+  <data name="geo_test_error_format" xml:space="preserve">
+    <value>Fehler: {0}</value>
+  </data>
+  <data name="ChineseS" xml:space="preserve">
+    <value>Chinesisch (Vereinfacht)</value>
+  </data>
+  <data name="batch_download_new_templates" xml:space="preserve">
+    <value>Stapel-Download</value>
+  </data>
+  <data name="error_creating_new_template" xml:space="preserve">
+    <value>Fehler beim Erstellen der neuen Vorlage:</value>
+  </data>
+  <data name="PlotTitleFont" xml:space="preserve">
+    <value>Titelschriftart</value>
+  </data>
+  <data name="geo_field_name" xml:space="preserve">
+    <value>Name *</value>
+  </data>
+  <data name="geo_field_year" xml:space="preserve">
+    <value>Jahr *</value>
+  </data>
+  <data name="already_latest_version" xml:space="preserve">
+    <value>Bereits die neueste Version</value>
+  </data>
+  <data name="geo_validation_script_required" xml:space="preserve">
+    <value>Skriptinhalt ist erforderlich</value>
+  </data>
+  <data name="favorite_removed" xml:space="preserve">
+    <value>Aus Favoriten entfernt</value>
+  </data>
+  <data name="richtextbox_control_cannot_be_null" xml:space="preserve">
+    <value>RichTextBox-Steuerelement darf nicht null sein</value>
+  </data>
+  <data name="cipw_step7_detail" xml:space="preserve">
+    <value>Verbleibendes MgO, FeO und CaO den Eisen-Magnesium-Silikaten zuweisen:
+• Diopsid (Di): CaO + MgO + 2SiO₂ (Mg-Endglied)
+• Hedenbergit (Hd): CaO + FeO + 2SiO₂ (Fe-Endglied)
+• Enstatit (En): MgO + SiO₂
+• Ferrosilit (Fs): FeO + SiO₂
+• Wollastonit (Wo): Rest CaO + SiO₂</value>
+  </data>
+  <data name="data_import_successful" xml:space="preserve">
+    <value>Datenimport erfolgreich</value>
+  </data>
+  <data name="CheckUpdate" xml:space="preserve">
+    <value>Nach Updates suchen</value>
+  </data>
+  <data name="cipw_step9_title" xml:space="preserve">
+    <value>Ergebnisausgabe</value>
+  </data>
+  <data name="path_is_empty" xml:space="preserve">
+    <value>Pfad ist leer</value>
+  </data>
+  <data name="BasemapExisted" xml:space="preserve">
+    <value>Grundkartendatei existiert bereits. Überschreiben?</value>
+  </data>
+  <data name="format" xml:space="preserve">
+    <value>Format</value>
+  </data>
+  <data name="cipw_step7_title" xml:space="preserve">
+    <value>Bildung dunkler Silikatminerale</value>
+  </data>
+  <data name="cipw_msg_export_success" xml:space="preserve">
+    <value>Ergebnisse exportiert nach: {0}</value>
+  </data>
+  <data name="language_apperarance" xml:space="preserve">
+    <value>Sprache und Erscheinungsbild</value>
+  </data>
+  <data name="geo_msg_demoted" xml:space="preserve">
+    <value>Zu benutzerdefiniertem Thermometer herabgestuft</value>
+  </data>
+  <data name="plot_type" xml:space="preserve">
+    <value>Diagrammtyp</value>
+  </data>
+  <data name="image_copied_to_clipboard" xml:space="preserve">
+    <value>Bild erfolgreich in die Zwischenablage kopiert</value>
+  </data>
+  <data name="refresh" xml:space="preserve">
+    <value>Aktualisieren</value>
+  </data>
+  <data name="failed_to_parse_diagram_template_json" xml:space="preserve">
+    <value>Die JSON-Datei der Diagrammvorlage konnte nicht analysiert werden</value>
+  </data>
+  <data name="diagram_legend_properties" xml:space="preserve">
+    <value>Diagrammlegendeneigenschaften</value>
+  </data>
+  <data name="downloaded_content_not_valid_json" xml:space="preserve">
+    <value>Heruntergeladener Inhalt ist kein gültiges JSON-Format.</value>
+  </data>
+  <data name="diagram_template_corrupted_or_invalid" xml:space="preserve">
+    <value>Die Diagrammvorlagendatei ist beschädigt oder enthält keine gültige JSON-Diagrammvorlagendatei.</value>
+  </data>
+  <data name="Placeholder_Axis_Title" xml:space="preserve">
+    <value>Achsentitel</value>
+  </data>
+  <data name="MarkerShape_OpenCircle" xml:space="preserve">
+    <value>Leerer Kreis</value>
+  </data>
+  <data name="linear" xml:space="preserve">
+    <value>Linear</value>
+  </data>
+  <data name="cipw_iron_estimated_feot" xml:space="preserve">
+    <value>Aus FeOT geschätzt</value>
+  </data>
+  <data name="view_latest_server_announcements" xml:space="preserve">
+    <value>Neueste Serverankündigungen anzeigen</value>
+  </data>
+  <data name="length" xml:space="preserve">
+    <value>Länge</value>
+  </data>
+  <data name="legend" xml:space="preserve">
+    <value>Legende</value>
+  </data>
+  <data name="geo_msg_import_success" xml:space="preserve">
+    <value>Import erfolgreich</value>
+  </data>
+  <data name="calculation_results" xml:space="preserve">
+    <value>Berechnungsergebnisse</value>
+  </data>
+  <data name="template_translator" xml:space="preserve">
+    <value>Vorlagenübersetzer</value>
+  </data>
+  <data name="no_valid_workbook_or_data_found" xml:space="preserve">
+    <value>Keine gültige Arbeitsmappe oder Daten in der Datei gefunden</value>
+  </data>
+  <data name="geo_validate_version_required" xml:space="preserve">
+    <value>Version darf nicht leer sein.</value>
+  </data>
+  <data name="LineDenselyDashed" xml:space="preserve">
+    <value>Dicht gestrichelt</value>
+  </data>
+  <data name="axis_title" xml:space="preserve">
+    <value>Achsentitel</value>
+  </data>
+  <data name="axis_style" xml:space="preserve">
+    <value>Achsenstil</value>
+  </data>
+  <data name="chart_title_style" xml:space="preserve">
+    <value>Diagrammtitelstil</value>
+  </data>
+  <data name="template_file_corrupted" xml:space="preserve">
+    <value>Vorlagendatei ist beschädigt</value>
+  </data>
+  <data name="png_format" xml:space="preserve">
+    <value>PNG-Format</value>
+  </data>
+  <data name="PointFilledTriangleUp" xml:space="preserve">
+    <value>Dreieck oben</value>
+  </data>
+  <data name="AddPolygons" xml:space="preserve">
+    <value>Polygon hinzufügen</value>
+  </data>
+  <data name="LegendPosition" xml:space="preserve">
+    <value>Legendenposition</value>
+  </data>
+  <data name="is_not_a_valid_variable_name" xml:space="preserve">
+    <value>’ ist kein gültiger Variablenname.</value>
+  </data>
+  <data name="template_potential_issues_detected" xml:space="preserve">
+    <value>Folgende potenzielle Probleme wurden in der Vorlage erkannt:</value>
+  </data>
+  <data name="unknown_error_checking_for_updates" xml:space="preserve">
+    <value>Unbekannter Fehler bei der Update-Prüfung</value>
+  </data>
+  <data name="MinorAxes" xml:space="preserve">
+    <value>Nebenachse</value>
+  </data>
+  <data name="column" xml:space="preserve">
+    <value>Spalte:</value>
+  </data>
+  <data name="major_grid_line" xml:space="preserve">
+    <value>Hauptgitterlinie</value>
+  </data>
+  <data name="ParameterNull" xml:space="preserve">
+    <value>Parameter ist leer</value>
+  </data>
+  <data name="diagram_template_directory_not_found" xml:space="preserve">
+    <value>Verzeichnis für Diagrammvorlagen existiert nicht:</value>
+  </data>
+  <data name="unable_to_get_latest_release_info" xml:space="preserve">
+    <value>Neueste Release-Info nicht abrufbar</value>
+  </data>
+  <data name="tick_labels" xml:space="preserve">
+    <value>Strichbeschriftungen</value>
+  </data>
+  <data name="data_export" xml:space="preserve">
+    <value>Datenexport</value>
+  </data>
+  <data name="function" xml:space="preserve">
+    <value>Funktion</value>
+  </data>
+  <data name="MessageNotification" xml:space="preserve">
+    <value>Benachrichtigungen</value>
+  </data>
+  <data name="CancelSelected" xml:space="preserve">
+    <value>Auswahl aufheben</value>
+  </data>
+  <data name="template_library" xml:space="preserve">
+    <value>Vorlagenbibliothek</value>
+  </data>
+  <data name="geo_menu_export_official" xml:space="preserve">
+    <value>Offizielle Thermometer exportieren</value>
+  </data>
+  <data name="coordinates_picked_success" xml:space="preserve">
+    <value>Koordinaten erfolgreich erfasst!</value>
+  </data>
+  <data name="AxesTickUpLimit" xml:space="preserve">
+    <value>Obergrenze</value>
+  </data>
+  <data name="ParameterNotFilledIn" xml:space="preserve">
+    <value>Plot-Parameter nicht ausgefüllt</value>
+  </data>
+  <data name="csv_file_filter" xml:space="preserve">
+    <value>CSV-Datei|*.csv</value>
+  </data>
+  <data name="italic" xml:space="preserve">
+    <value>Kursiv</value>
+  </data>
+  <data name="plot_settings" xml:space="preserve">
+    <value>Diagrammeinstellungen</value>
+  </data>
+  <data name="geo_script_headers" xml:space="preserve">
+    <value>Kopfzeilen * (durch Komma getrennt)</value>
+  </data>
+  <data name="select_an_object" xml:space="preserve">
+    <value>Bitte ein Objekt auswählen</value>
+  </data>
+  <data name="geo_validation_headers_required" xml:space="preserve">
+    <value>Kopfzeilen sind erforderlich</value>
+  </data>
+  <data name="language_setting_duplicate_found" xml:space="preserve">
+    <value>Doppelte Einträge in den Spracheinstellungen gefunden, bitte prüfen!</value>
+  </data>
+  <data name="geo_field_reference" xml:space="preserve">
+    <value>Referenz *</value>
+  </data>
+  <data name="unsaved_diagram_template_prompt" xml:space="preserve">
+    <value>Die aktuelle Diagrammvorlage enthält nicht gespeicherte Änderungen. Möchten Sie diese speichern?</value>
+  </data>
+  <data name="offset" xml:space="preserve">
+    <value>Versatz</value>
+  </data>
+  <data name="third_party" xml:space="preserve">
+    <value>Drittanbieter</value>
+  </data>
+  <data name="not_enough_vertices_add_polygon_canceled" xml:space="preserve">
+    <value>Nicht genügend Eckpunkte, Polygon-Erstellung abgebrochen.</value>
+  </data>
+  <data name="deselect" xml:space="preserve">
+    <value>Auswahl aufheben</value>
+  </data>
+  <data name="PlotShowGrid" xml:space="preserve">
+    <value>Gitter anzeigen</value>
+  </data>
+  <data name="overwrite" xml:space="preserve">
+    <value>Überschreiben</value>
+  </data>
+  <data name="data_file_filter" xml:space="preserve">
+    <value>Datendatei (*.csv, *.xls, *.xlsx)|*.csv;*.xls;*.xlsx</value>
+  </data>
+  <data name="CalTarget2" xml:space="preserve">
+    <value>Zr-Haupttemperatur (Watson und Harrison, 1983)</value>
+  </data>
+  <data name="CalTarget1" xml:space="preserve">
+    <value>Zr-Sättigungstemperatur (Watson und Harrison, 1983)</value>
+  </data>
+  <data name="cipw_btn_confirm_clear" xml:space="preserve">
+    <value>Löschen bestätigen</value>
+  </data>
+  <data name="missing_parameters" xml:space="preserve">
+    <value>Fehlende Parameter</value>
+  </data>
+  <data name="script_definition" xml:space="preserve">
+    <value>Skriptdefinition</value>
+  </data>
+  <data name="cipw_iron_partial_assumed" xml:space="preserve">
+    <value>Teilweise angenommen</value>
+  </data>
+  <data name="is_italic" xml:space="preserve">
+    <value>Kursiv</value>
+  </data>
+  <data name="formula" xml:space="preserve">
+    <value>Formel</value>
+  </data>
+  <data name="script_language" xml:space="preserve">
+    <value>Skriptsprache:</value>
+  </data>
+  <data name="FontFamily" xml:space="preserve">
+    <value>Schriftart</value>
+  </data>
+  <data name="update" xml:space="preserve">
+    <value>_Aktualisieren(U)</value>
+  </data>
+  <data name="tick_style" xml:space="preserve">
+    <value>Strichstil</value>
+  </data>
+  <data name="no_template_or_path_specified" xml:space="preserve">
+    <value>Keine Vorlage oder Pfad angegeben. Bitte 'Speichern unter' verwenden.</value>
+  </data>
+  <data name="ternary_script_return_value_requirement" xml:space="preserve">
+    <value>Ternäre Diagramm-Skripte müssen ein Array mit mindestens 3 Werten [A, B, C] zurückgeben</value>
+  </data>
+  <data name="confirm_clear_data_for_validation" xml:space="preserve">
+    <value>Die Syntaxprüfung löscht die Datentabelle und die Diagrammdatenpunkte. Fortfahren?</value>
+  </data>
+  <data name="geo_label_builtin" xml:space="preserve">
+    <value>Integriert</value>
+  </data>
+  <data name="file_path_cannot_be_empty" xml:space="preserve">
+    <value>Dateipfad darf nicht leer sein</value>
+  </data>
+  <data name="IsShowMinorAxes" xml:space="preserve">
+    <value>Nebenstriche ausblenden</value>
+  </data>
+  <data name="data_series" xml:space="preserve">
+    <value>Datenserie</value>
+  </data>
+  <data name="cipw_step8_title" xml:space="preserve">
+    <value>Korrektur der Silikasättigung</value>
+  </data>
+  <data name="loading_main_interface_components_ellipsis" xml:space="preserve">
+    <value>Lade Hauptkomponenten...</value>
+  </data>
+  <data name="ResetVision" xml:space="preserve">
+    <value>Ansicht zurücksetzen</value>
+  </data>
+  <data name="import_data" xml:space="preserve">
+    <value>Daten importieren</value>
+  </data>
+  <data name="template_ready" xml:space="preserve">
+    <value>Vorlage bereit!</value>
+  </data>
+  <data name="PointStar" xml:space="preserve">
+    <value>Stern</value>
+  </data>
+  <data name="export_diagram_template" xml:space="preserve">
+    <value>Diagrammvorlage exportieren</value>
+  </data>
+  <data name="description" xml:space="preserve">
+    <value>Beschreibung</value>
+  </data>
+  <data name="exit_action" xml:space="preserve">
+    <value>Beenden</value>
+  </data>
+  <data name="maintain_server_config_and_templates" xml:space="preserve">
+    <value>Serverkonfiguration und Vorlagen warten</value>
+  </data>
+  <data name="NewBasemapSuccess" xml:space="preserve">
+    <value>Neue Grundkarte erfolgreich erstellt</value>
+  </data>
+  <data name="copy_plot_to_clipboard" xml:space="preserve">
+    <value>Diagramm in die Zwischenablage kopieren</value>
+  </data>
+  <data name="batch_download_cancelled" xml:space="preserve">
+    <value>Batch-Download abgebrochen</value>
+  </data>
+  <data name="geo_tooltip_formula_name" xml:space="preserve">
+    <value>Nur Buchstaben, Ziffern und Unterstrich, z. B. MyFormula_v1</value>
+  </data>
+  <data name="geo_menu_check_update" xml:space="preserve">
+    <value>Auf Updates prüfen</value>
+  </data>
+  <data name="geo_help_no_doc_text" xml:space="preserve">
+    <value>Kein Hilfedokument verfügbar.</value>
+  </data>
+  <data name="cipw_sheet_name" xml:space="preserve">
+    <value>CIPW-Berechnung</value>
+  </data>
+  <data name="right_y_axis" xml:space="preserve">
+    <value>Rechte Y-Achse</value>
+  </data>
+  <data name="download_template_failed" xml:space="preserve">
+    <value>Vorlagendownload fehlgeschlagen:</value>
+  </data>
+  <data name="click_or_drag_template_json_here" xml:space="preserve">
+    <value>Klicken oder JSON-Vorlagendatei hierher ziehen</value>
+  </data>
+  <data name="coordinate_positioning" xml:space="preserve">
+    <value>Koordinatenpositionierung</value>
+  </data>
+  <data name="geo_msg_already_latest" xml:space="preserve">
+    <value>Bereits auf dem neuesten Stand</value>
+  </data>
+  <data name="SaveSuccess" xml:space="preserve">
+    <value>Erfolgreich gespeichert</value>
+  </data>
+  <data name="ResetPlot" xml:space="preserve">
+    <value>Diagramm zurücksetzen</value>
+  </data>
+  <data name="cipw_step3_title" xml:space="preserve">
+    <value>Bildung der Akzessorien</value>
+  </data>
+  <data name="geo_msg_update_available" xml:space="preserve">
+    <value>{0} Geothermometer können aktualisiert werden</value>
+  </data>
+  <data name="open_file_location" xml:space="preserve">
+    <value>Dateispeicherort öffnen</value>
+  </data>
+  <data name="multiple_data_series_hint" xml:space="preserve">
+    <value>Mehrere Datenserien bitte mit Komma trennen, z.B.: SiO2,TiO2</value>
+  </data>
+  <data name="AxesTickDownLimit" xml:space="preserve">
+    <value>Untergrenze</value>
+  </data>
+  <data name="add_polygon" xml:space="preserve">
+    <value>Polygon hinzufügen</value>
+  </data>
+  <data name="batch_download_title" xml:space="preserve">
+    <value>Stapel-Download</value>
+  </data>
+  <data name="cipw_diag_iron_mode" xml:space="preserve">
+    <value>Eisenverarbeitungsmodus</value>
+  </data>
+  <data name="geo_msg_import_cancelled" xml:space="preserve">
+    <value>Import abgebrochen</value>
+  </data>
+  <data name="Alignment_LowerCenter" xml:space="preserve">
+    <value>Unten mitte</value>
+  </data>
+  <data name="cannot_parse_version_number_check_release_address" xml:space="preserve">
+    <value>Versionsnummer konnte nicht geparst werden. Bitte Release-Seite prüfen</value>
+  </data>
+  <data name="workspace_section" xml:space="preserve">
+    <value>Mein Bereich</value>
+  </data>
+  <data name="CustomPath" xml:space="preserve">
+    <value>Benutzerdefinierter Ordner</value>
+  </data>
+  <data name="geo_msg_check_update_failed" xml:space="preserve">
+    <value>Update-Prüfung fehlgeschlagen</value>
+  </data>
+  <data name="MarkerShape_OpenSquare" xml:space="preserve">
+    <value>Leeres Quadrat</value>
+  </data>
+  <data name="add_language_column" xml:space="preserve">
+    <value>Sprachspalte hinzufügen</value>
+  </data>
+  <data name="DefaultPath" xml:space="preserve">
+    <value>Standardpfad</value>
+  </data>
+  <data name="script_not_defined_in_template" xml:space="preserve">
+    <value>Kein Skript in der Diagrammvorlage definiert</value>
+  </data>
+  <data name="confirm_delete_row" xml:space="preserve">
+    <value>Ausgewählte Zeile(n) wirklich löschen?</value>
+  </data>
+  <data name="save_template_failed" xml:space="preserve">
+    <value>Speichern der Vorlage fehlgeschlagen:</value>
+  </data>
+  <data name="script_execution_failed" xml:space="preserve">
+    <value>Skriptausführung fehlgeschlagen:</value>
+  </data>
+  <data name="external_applications" xml:space="preserve">
+    <value>Externe Anwendungen</value>
+  </data>
+  <data name="open_via_third_party" xml:space="preserve">
+    <value>Über Drittanbieter öffnen</value>
+  </data>
+  <data name="import_template" xml:space="preserve">
+    <value>Diagrammvorlage importieren</value>
+  </data>
+  <data name="diagram_grid_properties" xml:space="preserve">
+    <value>Diagrammgittereigenschaften</value>
+  </data>
+  <data name="FontNormal" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="diagram_template_export_success" xml:space="preserve">
+    <value>Diagrammvorlage erfolgreich exportiert</value>
+  </data>
+  <data name="AmphiboleGTM" xml:space="preserve">
+    <value>Si-Thermometer (Ridolfi et al., 2010)</value>
+  </data>
+  <data name="cipw_row_format" xml:space="preserve">
+    <value>Zeile {0}</value>
+  </data>
+  <data name="cancel_import" xml:space="preserve">
+    <value>Import abbrechen</value>
+  </data>
+  <data name="corner_radius" xml:space="preserve">
+    <value>Eckenradius</value>
+  </data>
+  <data name="axis" xml:space="preserve">
+    <value>Achse</value>
+  </data>
+  <data name="axes" xml:space="preserve">
+    <value>Achsen</value>
+  </data>
+  <data name="font" xml:space="preserve">
+    <value>Schrift</value>
+  </data>
+  <data name="from" xml:space="preserve">
+    <value>Von</value>
+  </data>
+  <data name="grid" xml:space="preserve">
+    <value>Gitter</value>
+  </data>
+  <data name="line" xml:space="preserve">
+    <value>Linie</value>
+  </data>
+  <data name="bold" xml:space="preserve">
+    <value>Fett</value>
+  </data>
+  <data name="home" xml:space="preserve">
+    <value>Startseite</value>
+  </data>
+  <data name="icon" xml:space="preserve">
+    <value>Icon</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="open" xml:space="preserve">
+    <value>_Öffnen(O)</value>
+  </data>
+  <data name="type" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="text" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="tips" xml:space="preserve">
+    <value>Tips</value>
+  </data>
+  <data name="undo" xml:space="preserve">
+    <value>Rückgängig</value>
+  </data>
+  <data name="view" xml:space="preserve">
+    <value>Ansicht</value>
+  </data>
+  <data name="redo" xml:space="preserve">
+    <value>Wiederholen</value>
+  </data>
+  <data name="size" xml:space="preserve">
+    <value>Größe</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Bearbeiten</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>Programm beenden</value>
+  </data>
+  <data name="File" xml:space="preserve">
+    <value>_Datei(F)</value>
+  </data>
+  <data name="Data" xml:space="preserve">
+    <value>Daten</value>
+  </data>
+  <data name="GTMP" xml:space="preserve">
+    <value>Temperaturdiagramm</value>
+  </data>
+  <data name="Boot" xml:space="preserve">
+    <value>Autostart beim Booten</value>
+  </data>
+  <data name="Quit" xml:space="preserve">
+    <value>Direkt beenden</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
+  <data name="Show" xml:space="preserve">
+    <value>Oberfläche anzeigen</value>
+  </data>
+  <data name="Plot" xml:space="preserve">
+    <value>Diagramm zeichnen</value>
+  </data>
+  <data name="geo_field_worksheet_name" xml:space="preserve">
+    <value>Arbeitsblattname</value>
+  </data>
+  <data name="code_formatted" xml:space="preserve">
+    <value>Code formatiert</value>
+  </data>
+  <data name="cipw_csv_filter" xml:space="preserve">
+    <value>CSV-Datei|*.csv</value>
+  </data>
+  <data name="return_type_mismatch_error" xml:space="preserve">
+    <value>Typ, sollte zurückgeben</value>
+  </data>
+  <data name="cipw_step2_detail" xml:space="preserve">
+    <value>Volatile Komponenten in Prioritätsreihenfolge verbrauchen, um folgende Minerale zu bilden:
+• Calcit (Cc): CO₂ + CaO
+• Fluorit (Fl): F + CaO
+• Pyrit (Py): S + FeO
+• Halit (Hl): Cl + Na₂O
+• Thenardit (Th): SO₃ + Na₂O</value>
+  </data>
+  <data name="PlotSetting" xml:space="preserve">
+    <value>Diagrammeinstellungen</value>
+  </data>
+  <data name="geo_step_help_doc" xml:space="preserve">
+    <value>Hilfedokument</value>
+  </data>
+  <data name="cipw_tooltip_maximize" xml:space="preserve">
+    <value>Maximieren / Wiederherstellen</value>
+  </data>
+  <data name="geo_tooltip_export_csv" xml:space="preserve">
+    <value>Aktuelles Arbeitsblatt als CSV exportieren</value>
+  </data>
+  <data name="LegendHorizontal" xml:space="preserve">
+    <value>Horizontal</value>
+  </data>
+  <data name="error_occurred_during_startup" xml:space="preserve">
+    <value>Fehler beim Starten:</value>
+  </data>
+  <data name="batch_download_success_count" xml:space="preserve">
+    <value>Erfolgreich heruntergeladen: {0}</value>
+  </data>
+  <data name="data_point" xml:space="preserve">
+    <value>Datenpunkt</value>
+  </data>
+  <data name="geo_msg_save_success" xml:space="preserve">
+    <value>Erfolgreich gespeichert.</value>
+  </data>
+  <data name="plot_layer_list_title" xml:space="preserve">
+    <value>Ebenenliste</value>
+  </data>
+  <data name="plot_property_panel_title" xml:space="preserve">
+    <value>Eigenschaften</value>
   </data>
 </root>

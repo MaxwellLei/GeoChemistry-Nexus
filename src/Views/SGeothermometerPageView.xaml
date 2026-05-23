@@ -1,0 +1,37 @@
+<Page x:Class="GeoChemistryNexus.Views.SGeothermometerPageView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
+      xmlns:hc="https://handyorg.github.io/handycontrol"
+      xmlns:local="clr-namespace:GeoChemistryNexus.Views"
+      mc:Ignorable="d" 
+      d:DesignHeight="800" d:DesignWidth="600"
+      Title="SGeothermometerPageView"
+      UseLayoutRounding="True" TextOptions.TextFormattingMode="Display">
+
+    <Grid>
+        <hc:ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Margin="20,20,20,40" MaxWidth="800" HorizontalAlignment="Stretch">
+
+                <!-- UPDATE SETTINGS -->
+                <TextBlock Text="{Binding [automatic_updates],Source={x:Static lg:LanguageService.Instance}, FallbackValue=更新设置}" Style="{StaticResource ModernSettingsGroupTitle}"/>
+                <Border Style="{StaticResource ModernSettingsCard}">
+                    <StackPanel>
+                        <!-- Auto Check GTM Update -->
+                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding [auto_check_geothermometer_updates],Source={x:Static lg:LanguageService.Instance}, FallbackValue=自动检查地质温度计更新}" FontSize="14" VerticalAlignment="Center"/>
+                            <ToggleButton IsChecked="{Binding AutoCheckGtmUpdate}" Grid.Column="1" Style="{StaticResource ToggleButtonSwitch}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </hc:ScrollViewer>
+    </Grid>
+</Page>

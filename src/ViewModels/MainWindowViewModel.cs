@@ -163,13 +163,24 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 切换新温度计计算命令
+        /// 切换新温度计计算命令（GTM 页面）
         /// </summary>
         /// <param name="nav">导航</param>
         [RelayCommand]
         private void GTMNewPage(Frame nav)
         {
-            NavigateToPage(nav, GeothermometerNewPageView.GetPage());
+            NavigateToPage(nav, GeothermometerPageView.GetPage());
+            IsSideBarVisible = false;
+        }
+
+        /// <summary>
+        /// 切换CIPW标准矿物计算页面
+        /// </summary>
+        /// <param name="nav">导航</param>
+        [RelayCommand]
+        private void CipwPage(Frame nav)
+        {
+            NavigateToPage(nav, CipwPageView.GetPage());
             IsSideBarVisible = false;
         }
 
@@ -180,7 +191,6 @@ namespace GeoChemistryNexus.ViewModels
         private void SettingPage(Frame nav)
         {
             nav.Navigate(SettingPageView.GetPage());
-            SettingPageView.RefeshAn();
         }
 
 

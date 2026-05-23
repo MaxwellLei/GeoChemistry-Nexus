@@ -1,0 +1,23 @@
+{
+  "Id": "chlorite_al4_jowett_1991",
+  "Version": "1.0.0",
+  "Mineral": "Chlorite",
+  "MineralLangKey": "Chlorite",
+  "Name": "Al4-Thermometer (Jowett, 1991)",
+  "NameLangKey": "ChloriteGTM",
+  "Author": "Jowett",
+  "Year": 1991,
+  "Reference": "Jowett, E.C. (1991)",
+  "IconCode": "\ue60a",
+  "IconColor": "#228B22",
+  "Headers": ["ID", "SiO2(wt.%)", "TiO2(wt.%)", "Al2O3(wt.%)", "FeO(wt.%)", "MnO(wt.%)", "MgO(wt.%)", "CaO(wt.%)", "Na2O(wt.%)", "K2O(wt.%)", "BaO(wt.%)", "Rb2O(wt.%)", "Cs2O(wt.%)", "ZnO(wt.%)", "F(wt.%)", "Cl(wt.%)", "Cr2O3(wt.%)", "NiO(wt.%)", "T(K)", "T(\u2103)"],
+  "ExampleRow": ["Example", "37.663", "0.045", "23.254", "12.791", "0.058", "0.032", "23.047", "0.024", "0", "0", "0", "0", "0", "0", "0", "0", "0", "=Chlorite_Jowett_1991(B2,C2,D2,E2,F2,G2,H2,I2,J2,K2,L2,M2,N2,O2,P2,Q2,R2)", "=S2-273.15"],
+  "WorksheetName": "Chlorite_Al4_1991",
+  "FormulaName": "Chlorite_Jowett_1991",
+  "HelpDocPath": "Data\\Documents\\GTM\\Chlorite_Jowett_1991",
+  "Script": "",
+  "ScriptFile": "chlorite_al4_jowett_1991.js",
+  "InputColumns": ["SiO2(wt.%)", "TiO2(wt.%)", "Al2O3(wt.%)", "FeO(wt.%)", "MnO(wt.%)", "MgO(wt.%)", "CaO(wt.%)", "Na2O(wt.%)", "K2O(wt.%)", "BaO(wt.%)", "Rb2O(wt.%)", "Cs2O(wt.%)", "ZnO(wt.%)", "F(wt.%)", "Cl(wt.%)", "Cr2O3(wt.%)", "NiO(wt.%)"],
+  "AdditionalFormulas": [],
+  "Description": "Chlorite Al4 thermometer based on Jowett (1991)"
+}

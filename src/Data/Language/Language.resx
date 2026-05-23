@@ -187,6 +187,9 @@
   <data name="PlotSetting" xml:space="preserve">
     <value>Plot Settings</value>
   </data>
+  <data name="GeothermometerSetting" xml:space="preserve">
+    <value>Geothermometer Settings</value>
+  </data>
   <data name="AddLine" xml:space="preserve">
     <value>Add Line</value>
   </data>
@@ -626,7 +629,7 @@
     <value>Language</value>
   </data>
   <data name="ChineseS" xml:space="preserve">
-    <value>中文 (简体)</value>
+    <value>涓枃 (绠€浣?</value>
   </data>
   <data name="EnglishUS" xml:space="preserve">
     <value>English (US)</value>
@@ -677,7 +680,7 @@
     <value>This project utilizes geochemical data for related chart plotting, calculation, and analysis, aiming to efficiently process geological data and help earth science researchers accelerate their data analysis workflow and improve research efficiency.</value>
   </data>
   <data name="AboutInfo2" xml:space="preserve">
-    <value>If you're interested in this project, please consider giving it a Star for support! If you find it helpful, you can also buy me a coffee☕</value>
+    <value>If you're interested in this project, please consider giving it a Star for support! If you find it helpful, you can also buy me a coffee.</value>
   </data>
   <data name="AboutInfo3" xml:space="preserve">
     <value>We welcome more researchers to join!
@@ -688,19 +691,19 @@
     <value>Thanks for the Support</value>
   </data>
   <data name="Support1" xml:space="preserve">
-    <value>📌Control Support:</value>
+    <value>馃搶Control Support:</value>
   </data>
   <data name="Support2" xml:space="preserve">
-    <value>📌Chart Support:</value>
+    <value>馃搶Chart Support:</value>
   </data>
   <data name="Support3" xml:space="preserve">
-    <value>📌Documentation Support:</value>
+    <value>馃搶Documentation Support:</value>
   </data>
   <data name="Support4" xml:space="preserve">
-    <value>📌Calculation Support:</value>
+    <value>馃搶Calculation Support:</value>
   </data>
   <data name="Support5" xml:space="preserve">
-    <value>📌Tool Support:</value>
+    <value>馃搶Tool Support:</value>
   </data>
   <data name="PlotBoder" xml:space="preserve">
     <value>Border</value>
@@ -1107,6 +1110,9 @@
   <data name="background_fill_1" xml:space="preserve">
     <value>Background Fill</value>
   </data>
+  <data name="fill_color" xml:space="preserve">
+    <value>Fill Color</value>
+  </data>
   <data name="fill_color_1" xml:space="preserve">
     <value>Fill Color 1</value>
   </data>
@@ -1512,6 +1518,9 @@
   <data name="template_version_too_high" xml:space="preserve">
     <value>Template version is higher than current software version. Please upgrade software to open.</value>
   </data>
+  <data name="current_diagram_version" xml:space="preserve">
+    <value>Current Diagram Version</value>
+  </data>
   <data name="error_loading_template" xml:space="preserve">
     <value>Error loading template</value>
   </data>
@@ -1797,11 +1806,26 @@
   <data name="default_third_party_editor" xml:space="preserve">
     <value>Default Third-Party Editor</value>
   </data>
+  <data name="object_selection_trigger" xml:space="preserve">
+    <value>Object Selection Trigger</value>
+  </data>
+  <data name="mouse_snap_auto_recognition_frame_rate" xml:space="preserve">
+    <value>Mouse Snap Auto Recognition Frame Rate</value>
+  </data>
+  <data name="single_click" xml:space="preserve">
+    <value>Single Click</value>
+  </data>
+  <data name="double_click" xml:space="preserve">
+    <value>Double Click</value>
+  </data>
   <data name="automatic_updates" xml:space="preserve">
     <value>AUTOMATIC UPDATES</value>
   </data>
   <data name="auto_check_diagram_template_updates" xml:space="preserve">
     <value>Auto Check Diagram Template Updates</value>
+  </data>
+  <data name="auto_check_geothermometer_updates" xml:space="preserve">
+    <value>Auto Check Geothermometer Updates</value>
   </data>
   <data name="community" xml:space="preserve">
     <value>COMMUNITY</value>
@@ -1981,19 +2005,19 @@
     <value>Delete failed:</value>
   </data>
   <data name="missing_drawing_objects_error" xml:space="preserve">
-    <value>• Missing drawing objects: The template does not contain any lines, polygons, text, or arrows.</value>
+    <value>鈥?Missing drawing objects: The template does not contain any lines, polygons, text, or arrows.</value>
   </data>
   <data name="invalid_script_variable_name" xml:space="preserve">
-    <value>• Invalid script variable name format: ‘</value>
+    <value>Invalid script variable name format:</value>
   </data>
   <data name="is_not_a_valid_variable_name" xml:space="preserve">
-    <value>‘ is not a valid variable name.</value>
+    <value>鈥?is not a valid variable name.</value>
   </data>
   <data name="script_return_value_error_must_be_array" xml:space="preserve">
-    <value>• Script return value error: The script must return an array.</value>
+    <value>鈥?Script return value error: The script must return an array.</value>
   </data>
   <data name="script_return_value_length_error" xml:space="preserve">
-    <value>• Script return value length error: Current value is</value>
+    <value>鈥?Script return value length error: Current value is</value>
   </data>
   <data name="return_type_mismatch_error" xml:space="preserve">
     <value>type, should return</value>
@@ -2005,7 +2029,7 @@
     <value>elements.</value>
   </data>
   <data name="missing_translation_warning" xml:space="preserve">
-    <value>• Missing translation: Some texts are missing multilingual translations.</value>
+    <value>鈥?Missing translation: Some texts are missing multilingual translations.</value>
   </data>
   <data name="diagram_template_source_missing" xml:space="preserve">
     <value>Diagram template source file does not exist</value>
@@ -2308,4 +2332,688 @@
   <data name="script_return_type_error" xml:space="preserve">
     <value>Script Return Type Error</value>
   </data>
-</root>
+  <data name="tool_diagrams_section" xml:space="preserve">
+    <value>TOOL DIAGRAMS</value>
+  </data>
+  <data name="ree_spider_diagram" xml:space="preserve">
+    <value>REE Spider Diagram</value>
+  </data>
+  <data name="trace_element_spider_diagram" xml:space="preserve">
+    <value>Multi-Element Spider Diagram</value>
+  </data>
+  <data name="normalization_standard" xml:space="preserve">
+    <value>Normalization Standard</value>
+  </data>
+  <data name="enable_normalization" xml:space="preserve">
+    <value>Enable Normalization</value>
+  </data>
+  <data name="element_order" xml:space="preserve">
+    <value>Element Order</value>
+  </data>
+  <data name="spider_diagram_data_hint" xml:space="preserve">
+    <value>Paste your data in the table after entering plot mode. Each row represents a sample, columns should match element names above.</value>
+  </data>
+  <data name="enter_plot_mode" xml:space="preserve">
+    <value>Enter Plot Mode</value>
+  </data>
+  <data name="no_valid_data_found" xml:space="preserve">
+    <value>No valid data found in the table.</value>
+  </data>
+  <data name="select_all" xml:space="preserve">
+    <value>Select All</value>
+  </data>
+  <data name="deselect_all" xml:space="preserve">
+    <value>Deselect All</value>
+  </data>
+  <data name="reset_default" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="move_up" xml:space="preserve">
+    <value>Move Up</value>
+  </data>
+  <data name="move_down" xml:space="preserve">
+    <value>Move Down</value>
+  </data>
+  <data name="geo_menu_new_custom" xml:space="preserve">
+    <value>New Custom Geothermometer</value>
+  </data>
+  <data name="geo_menu_import_zip" xml:space="preserve">
+    <value>Import Geothermometer (ZIP)</value>
+  </data>
+  <data name="geo_menu_update" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="geo_menu_check_update" xml:space="preserve">
+    <value>Check for Updates</value>
+  </data>
+  <data name="geo_menu_maintenance" xml:space="preserve">
+    <value>Maintenance</value>
+  </data>
+  <data name="geo_menu_export_official" xml:space="preserve">
+    <value>Export Official Thermometers</value>
+  </data>
+  <data name="geo_section_official" xml:space="preserve">
+    <value>Official Thermometers</value>
+  </data>
+  <data name="geo_section_custom" xml:space="preserve">
+    <value>Custom Thermometers</value>
+  </data>
+  <data name="geo_section_calc_details" xml:space="preserve">
+    <value>Calculation Details</value>
+  </data>
+  <data name="geo_label_builtin" xml:space="preserve">
+    <value>Built-in</value>
+  </data>
+  <data name="geo_label_custom_chip" xml:space="preserve">
+    <value>Custom</value>
+  </data>
+  <data name="geo_label_official" xml:space="preserve">
+    <value>Official</value>
+  </data>
+  <data name="geo_label_custom" xml:space="preserve">
+    <value>Custom</value>
+  </data>
+  <data name="geo_hint_no_custom" xml:space="preserve">
+    <value>No custom thermometers yet, click + to create.</value>
+  </data>
+  <data name="geo_hint_select_thermometer" xml:space="preserve">
+    <value>Please select a thermometer from the left panel</value>
+  </data>
+  <data name="geo_hint_select_data_row" xml:space="preserve">
+    <value>Please select a data row</value>
+  </data>
+  <data name="geo_ctx_edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="geo_ctx_export_zip" xml:space="preserve">
+    <value>Export ZIP</value>
+  </data>
+  <data name="geo_ctx_demote" xml:space="preserve">
+    <value>Demote to Custom</value>
+  </data>
+  <data name="geo_ctx_delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="geo_ctx_promote" xml:space="preserve">
+    <value>Promote to Official</value>
+  </data>
+  <data name="geo_btn_apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="geo_btn_help" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="geo_btn_export" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="geo_btn_reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="geo_btn_help_confirm" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="geo_btn_cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="geo_btn_prev" xml:space="preserve">
+    <value>Previous</value>
+  </data>
+  <data name="geo_btn_next" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="geo_btn_save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="geo_btn_save_export_zip" xml:space="preserve">
+    <value>Save and Export ZIP</value>
+  </data>
+  <data name="geo_tooltip_new" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="geo_tooltip_help" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="geo_tooltip_export_csv" xml:space="preserve">
+    <value>Export current worksheet as CSV</value>
+  </data>
+  <data name="geo_tooltip_minimize" xml:space="preserve">
+    <value>Minimize</value>
+  </data>
+  <data name="geo_tooltip_restore" xml:space="preserve">
+    <value>Restore</value>
+  </data>
+  <data name="geo_tooltip_maximize" xml:space="preserve">
+    <value>Maximize</value>
+  </data>
+  <data name="geo_tooltip_version_format" xml:space="preserve">
+    <value>Semantic version, e.g. 1.0.0, 1.2.3</value>
+  </data>
+  <data name="geo_tooltip_formula_name" xml:space="preserve">
+    <value>Letters, digits and underscore only, e.g. MyFormula_v1</value>
+  </data>
+  <data name="geo_tooltip_headers" xml:space="preserve">
+    <value>e.g. SiO2, TiO2, Al2O3, T(K)</value>
+  </data>
+  <data name="geo_tooltip_sample_row_eg" xml:space="preserve">
+    <value>e.g. 45.2, 0.8, 12.3, =MyFormula(A2,B2,C2)</value>
+  </data>
+  <data name="geo_tooltip_inputs_eg" xml:space="preserve">
+    <value>e.g. SiO2, TiO2, Al2O3</value>
+  </data>
+  <data name="geo_tooltip_test_input_eg" xml:space="preserve">
+    <value>e.g. 45.2, 0.8, 12.3</value>
+  </data>
+  <data name="geo_placeholder_search" xml:space="preserve">
+    <value>Search...</value>
+  </data>
+  <data name="geo_placeholder_help_read_confirm" xml:space="preserve">
+    <value>Click OK to continue after reading the document.</value>
+  </data>
+  <data name="geo_step_basic" xml:space="preserve">
+    <value>Basic Info</value>
+  </data>
+  <data name="geo_step_script" xml:space="preserve">
+    <value>Formula Script</value>
+  </data>
+  <data name="geo_step_help_doc" xml:space="preserve">
+    <value>Help Document</value>
+  </data>
+  <data name="geo_field_name" xml:space="preserve">
+    <value>Name *</value>
+  </data>
+  <data name="geo_field_mineral_category" xml:space="preserve">
+    <value>Mineral Category *</value>
+  </data>
+  <data name="geo_field_year" xml:space="preserve">
+    <value>Year *</value>
+  </data>
+  <data name="geo_field_version" xml:space="preserve">
+    <value>Version *</value>
+  </data>
+  <data name="geo_field_author" xml:space="preserve">
+    <value>Author *</value>
+  </data>
+  <data name="geo_field_formula_name" xml:space="preserve">
+    <value>Formula Name *</value>
+  </data>
+  <data name="geo_field_worksheet_name" xml:space="preserve">
+    <value>Worksheet Name</value>
+  </data>
+  <data name="geo_field_reference" xml:space="preserve">
+    <value>Reference *</value>
+  </data>
+  <data name="geo_field_description" xml:space="preserve">
+    <value>Brief Description</value>
+  </data>
+  <data name="geo_field_required_hint" xml:space="preserve">
+    <value>Required fields are marked with *. Version format: x.x.x (e.g. 1.0.0).</value>
+  </data>
+  <data name="geo_script_javascript" xml:space="preserve">
+    <value>JavaScript Script</value>
+  </data>
+  <data name="geo_script_headers" xml:space="preserve">
+    <value>Headers * (comma separated)</value>
+  </data>
+  <data name="geo_script_sample_row" xml:space="preserve">
+    <value>Sample Row (comma separated)</value>
+  </data>
+  <data name="geo_script_inputs" xml:space="preserve">
+    <value>Input Columns (comma separated)</value>
+  </data>
+  <data name="geo_script_test_input" xml:space="preserve">
+    <value>Test Input:</value>
+  </data>
+  <data name="geo_script_run_test" xml:space="preserve">
+    <value>Run Test</value>
+  </data>
+  <data name="geo_script_result" xml:space="preserve">
+    <value>Result:</value>
+  </data>
+  <data name="geo_help_current_lang" xml:space="preserve">
+    <value>Current Language:</value>
+  </data>
+  <data name="geo_help_add_lang" xml:space="preserve">
+    <value>Add Language:</value>
+  </data>
+  <data name="geo_help_add_doc" xml:space="preserve">
+    <value>Add help document for this language</value>
+  </data>
+  <data name="geo_help_delete_doc" xml:space="preserve">
+    <value>Delete help document of current language</value>
+  </data>
+  <data name="geo_help_bold" xml:space="preserve">
+    <value>Bold (Ctrl+B)</value>
+  </data>
+  <data name="geo_help_italic" xml:space="preserve">
+    <value>Italic (Ctrl+I)</value>
+  </data>
+  <data name="geo_help_underline" xml:space="preserve">
+    <value>Underline (Ctrl+U)</value>
+  </data>
+  <data name="geo_help_font_size" xml:space="preserve">
+    <value>Font Size:</value>
+  </data>
+  <data name="geo_help_no_lang_hint" xml:space="preserve">
+    <value>Click the + button above to add a language, then edit the help document.</value>
+  </data>
+  <data name="geo_help_optional_hint" xml:space="preserve">
+    <value>Help document is optional and supports multilingual RTF rich text.</value>
+  </data>
+  <data name="geo_help_no_doc_text" xml:space="preserve">
+    <value>No help document available.</value>
+  </data>
+  <data name="geo_editor_title_edit" xml:space="preserve">
+    <value>Edit Thermometer</value>
+  </data>
+  <data name="geo_editor_title_new" xml:space="preserve">
+    <value>New Custom Thermometer</value>
+  </data>
+  <data name="geo_validation_name_required" xml:space="preserve">
+    <value>Name is required</value>
+  </data>
+  <data name="geo_validation_mineral_required" xml:space="preserve">
+    <value>Mineral category is required</value>
+  </data>
+  <data name="geo_validation_year_required" xml:space="preserve">
+    <value>Year is required</value>
+  </data>
+  <data name="geo_validation_year_range" xml:space="preserve">
+    <value>Year must be 4 digits (1000-9999)</value>
+  </data>
+  <data name="geo_validation_version_required" xml:space="preserve">
+    <value>Version is required</value>
+  </data>
+  <data name="geo_validation_version_format" xml:space="preserve">
+    <value>Version format should be x.x.x (e.g. 1.0.0)</value>
+  </data>
+  <data name="geo_validation_author_required" xml:space="preserve">
+    <value>Author is required</value>
+  </data>
+  <data name="geo_validation_formula_name_required" xml:space="preserve">
+    <value>Formula name is required</value>
+  </data>
+  <data name="geo_validation_formula_name_format" xml:space="preserve">
+    <value>Formula name only allows letters, digits and underscore</value>
+  </data>
+  <data name="geo_validation_reference_required" xml:space="preserve">
+    <value>Reference is required</value>
+  </data>
+  <data name="geo_validation_headers_required" xml:space="preserve">
+    <value>Headers are required</value>
+  </data>
+  <data name="geo_validation_inputs_required" xml:space="preserve">
+    <value>Input columns are required</value>
+  </data>
+  <data name="geo_validation_script_required" xml:space="preserve">
+    <value>Script content is required</value>
+  </data>
+  <data name="geo_test_script_empty" xml:space="preserve">
+    <value>Script content is empty</value>
+  </data>
+  <data name="geo_test_input_invalid" xml:space="preserve">
+    <value>Invalid test input. Please use comma-separated numbers.</value>
+  </data>
+  <data name="geo_test_input_required" xml:space="preserve">
+    <value>Please enter test values.</value>
+  </data>
+  <data name="geo_test_error_format" xml:space="preserve">
+    <value>Error: {0}</value>
+  </data>
+  <data name="geo_msg_save_success" xml:space="preserve">
+    <value>Saved successfully.</value>
+  </data>
+  <data name="geo_msg_save_failed" xml:space="preserve">
+    <value>Save failed: {0}</value>
+  </data>
+  <data name="geo_msg_export_success" xml:space="preserve">
+    <value>Export succeeded</value>
+  </data>
+  <data name="geo_msg_export_failed" xml:space="preserve">
+    <value>Export failed: {0}</value>
+  </data>
+  <data name="geo_msg_export_dialog_title" xml:space="preserve">
+    <value>Export Geothermometer</value>
+  </data>
+  <data name="geo_msg_select_thermometer_first" xml:space="preserve">
+    <value>Please select a thermometer first.</value>
+  </data>
+  <data name="geo_dialog_apply_overwrite" xml:space="preserve">
+    <value>Applying will overwrite the current worksheet content. Continue?</value>
+  </data>
+  <data name="geo_msg_import_success" xml:space="preserve">
+    <value>Import succeeded</value>
+  </data>
+  <data name="geo_msg_import_failed" xml:space="preserve">
+    <value>Import failed</value>
+  </data>
+  <data name="geo_msg_import_failed_detail" xml:space="preserve">
+    <value>Import failed: {0}</value>
+  </data>
+  <data name="geo_msg_checking_update" xml:space="preserve">
+    <value>Checking for updates...</value>
+  </data>
+  <data name="geo_msg_update_available" xml:space="preserve">
+    <value>{0} geothermometers can be updated</value>
+  </data>
+  <data name="geo_msg_downloading_update" xml:space="preserve">
+    <value>Downloading...</value>
+  </data>
+  <data name="geo_msg_update_downloaded" xml:space="preserve">
+    <value>{0} geothermometers downloaded</value>
+  </data>
+  <data name="geo_msg_already_latest" xml:space="preserve">
+    <value>Already up to date</value>
+  </data>
+  <data name="geo_msg_check_update_failed" xml:space="preserve">
+    <value>Failed to check for updates</value>
+  </data>
+  <data name="geo_msg_csv_save_title" xml:space="preserve">
+    <value>Save as CSV File</value>
+  </data>
+  <data name="geo_msg_create_table_failed" xml:space="preserve">
+    <value>Failed to create table: {0}</value>
+  </data>
+  <data name="geo_msg_delete_confirm" xml:space="preserve">
+    <value>Delete the {0} thermometer "{1}"?</value>
+  </data>
+  <data name="geo_msg_delete_success" xml:space="preserve">
+    <value>Deleted successfully</value>
+  </data>
+  <data name="geo_msg_promoted" xml:space="preserve">
+    <value>Promoted to official thermometer</value>
+  </data>
+  <data name="geo_msg_demoted" xml:space="preserve">
+    <value>Demoted to custom thermometer</value>
+  </data>
+  <data name="geo_msg_batch_export_success" xml:space="preserve">
+    <value>{0} official thermometers in total, {1} exported (added/modified)&#10;Directory: {2}</value>
+  </data>
+  <data name="geo_msg_batch_export_failed" xml:space="preserve">
+    <value>Batch export failed: {0}</value>
+  </data>
+  <data name="geo_msg_richtext_not_init" xml:space="preserve">
+    <value>RichTextBox control is not initialized</value>
+  </data>
+  <data name="geo_msg_load_help_doc_failed" xml:space="preserve">
+    <value>Failed to load help document: {0}</value>
+  </data>
+  <data name="geo_msg_import_cancelled" xml:space="preserve">
+    <value>Import cancelled</value>
+  </data>
+  <data name="geo_dialog_delete_thermometer" xml:space="preserve">
+    <value>Are you sure to delete the {0} thermometer "{1}"?</value>
+  </data>
+  <data name="geo_validate_name_required" xml:space="preserve">
+    <value>Name cannot be empty.</value>
+  </data>
+  <data name="geo_validate_mineral_required" xml:space="preserve">
+    <value>Mineral category cannot be empty.</value>
+  </data>
+  <data name="geo_validate_author_required" xml:space="preserve">
+    <value>Author cannot be empty.</value>
+  </data>
+  <data name="geo_validate_year_required" xml:space="preserve">
+    <value>Year cannot be empty.</value>
+  </data>
+  <data name="geo_validate_version_required" xml:space="preserve">
+    <value>Version cannot be empty.</value>
+  </data>
+  <data name="geo_validate_version_format" xml:space="preserve">
+    <value>Invalid version format. Only x.x.x is allowed (e.g. 1.0.0, 1.2.3).</value>
+  </data>
+  <data name="geo_validate_reference_required" xml:space="preserve">
+    <value>Reference cannot be empty.</value>
+  </data>
+  <data name="geo_validate_formula_name_required" xml:space="preserve">
+    <value>Formula name cannot be empty.</value>
+  </data>
+  <data name="geo_validate_formula_name_invalid" xml:space="preserve">
+    <value>Formula name can only contain letters, digits and underscores.</value>
+  </data>
+  <data name="geo_validate_headers_required" xml:space="preserve">
+    <value>Headers cannot be empty.</value>
+  </data>
+  <data name="geo_validate_script_required" xml:space="preserve">
+    <value>JavaScript script cannot be empty.</value>
+  </data>
+  <data name="geo_msg_script_empty" xml:space="preserve">
+    <value>Script content is empty</value>
+  </data>
+  <data name="geo_msg_test_input_invalid" xml:space="preserve">
+    <value>Invalid test input. Please use comma-separated numbers.</value>
+  </data>
+  <data name="geo_msg_test_input_required" xml:space="preserve">
+    <value>Please enter test values.</value>
+  </data>
+  <data name="geo_msg_test_error" xml:space="preserve">
+    <value>Error: {0}</value>
+  </data>
+  <data name="cipw_title" xml:space="preserve">
+    <value>CIPW Norm Calculation</value>
+  </data>
+  <data name="cipw_help_window_title" xml:space="preserve">
+    <value>CIPW Norm Calculation - Algorithm Description</value>
+  </data>
+  <data name="cipw_default_value_text" xml:space="preserve">
+    <value>Default 0.15</value>
+  </data>
+  <data name="cipw_btn_help" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="cipw_btn_example" xml:space="preserve">
+    <value>Example</value>
+  </data>
+  <data name="cipw_btn_export" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="cipw_btn_clear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="cipw_btn_calculate" xml:space="preserve">
+    <value>Calculate</value>
+  </data>
+  <data name="cipw_btn_close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="cipw_btn_cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="cipw_btn_confirm_clear" xml:space="preserve">
+    <value>Confirm Clear</value>
+  </data>
+  <data name="cipw_tooltip_help" xml:space="preserve">
+    <value>View algorithm description for CIPW Norm Calculation</value>
+  </data>
+  <data name="cipw_tooltip_example" xml:space="preserve">
+    <value>Fill example data (granite, basalt, andesite)</value>
+  </data>
+  <data name="cipw_tooltip_export" xml:space="preserve">
+    <value>Export results to a CSV file</value>
+  </data>
+  <data name="cipw_tooltip_clear" xml:space="preserve">
+    <value>Clear all input and calculation results</value>
+  </data>
+  <data name="cipw_tooltip_calculate" xml:space="preserve">
+    <value>Run CIPW norm calculation on all rows with data</value>
+  </data>
+  <data name="cipw_tooltip_maximize" xml:space="preserve">
+    <value>Maximize / Restore</value>
+  </data>
+  <data name="cipw_tooltip_expand" xml:space="preserve">
+    <value>Expand / Collapse</value>
+  </data>
+  <data name="cipw_diagnostic_details" xml:space="preserve">
+    <value>Diagnostic Details</value>
+  </data>
+  <data name="cipw_select_row_hint" xml:space="preserve">
+    <value>Select a data row to view diagnostic details</value>
+  </data>
+  <data name="cipw_overview" xml:space="preserve">
+    <value>The CIPW norm calculation (also called CIPW Norm) is a petrochemical method proposed by Cross, Iddings, Pirsson and Washington in 1902. Based on whole-rock major-element oxide analyses, it allocates oxides to a set of idealized standard minerals in a fixed priority order, supporting rock classification and comparative studies.</value>
+  </data>
+  <data name="cipw_step1_title" xml:space="preserve">
+    <value>Data preprocessing and normalization</value>
+  </data>
+  <data name="cipw_step1_detail" xml:space="preserve">
+    <value>&#x2022; Normalize input major-element oxides on an anhydrous basis (to 100%)&#x000A;&#x2022; Partition iron: split FeOT into FeO and Fe&#x2082;O&#x2083; using the user-defined Fe&#x00B3;&#x207A;/Fe ratio&#x000A;&#x2022; Combine MnO into FeO based on molar ratio&#x000A;&#x2022; Convert oxide mass percentages to moles</value>
+  </data>
+  <data name="cipw_step2_title" xml:space="preserve">
+    <value>Form volatile-bearing minerals</value>
+  </data>
+  <data name="cipw_step2_detail" xml:space="preserve">
+    <value>Consume volatile components in priority order to form:&#x000A;&#x2022; Calcite (Cc): CO&#x2082; + CaO&#x000A;&#x2022; Fluorite (Fl): F + CaO&#x000A;&#x2022; Pyrite (Py): S + FeO&#x000A;&#x2022; Halite (Hl): Cl + Na&#x2082;O&#x000A;&#x2022; Thenardite (Th): SO&#x2083; + Na&#x2082;O</value>
+  </data>
+  <data name="cipw_step3_title" xml:space="preserve">
+    <value>Form accessory minerals</value>
+  </data>
+  <data name="cipw_step3_detail" xml:space="preserve">
+    <value>Allocate trace components to accessory minerals:&#x000A;&#x2022; Zircon (Z): ZrO&#x2082; + SiO&#x2082;&#x000A;&#x2022; Apatite (Ap): P&#x2082;O&#x2085; + CaO&#x000A;&#x2022; Chromite (Cm): Cr&#x2082;O&#x2083; + FeO&#x000A;&#x2022; Ilmenite (Ilm): TiO&#x2082; + FeO&#x000A;&#x2022; Titanite (Tn): TiO&#x2082; + CaO + SiO&#x2082;&#x000A;&#x2022; Rutile (Ru): residual TiO&#x2082;</value>
+  </data>
+  <data name="cipw_step4_title" xml:space="preserve">
+    <value>Determine alumina saturation state</value>
+  </data>
+  <data name="cipw_step4_detail" xml:space="preserve">
+    <value>Determine the alumina saturation type from the molar ratio between residual Al&#x2082;O&#x2083; and alkalis + CaO:&#x000A;&#x2022; Peralkaline: Na&#x2082;O + K&#x2082;O &gt; Al&#x2082;O&#x2083;&#x000A;&#x2022; Metaluminous: Al&#x2082;O&#x2083; &#x2264; CaO + Na&#x2082;O + K&#x2082;O&#x000A;&#x2022; Peraluminous: Al&#x2082;O&#x2083; &gt; CaO + Na&#x2082;O + K&#x2082;O</value>
+  </data>
+  <data name="cipw_step5_title" xml:space="preserve">
+    <value>Form feldspars and alkali silicates</value>
+  </data>
+  <data name="cipw_step5_detail" xml:space="preserve">
+    <value>Allocate alkalis and alumina to feldspars in turn:&#x000A;&#x2022; Orthoclase (Or): K&#x2082;O + Al&#x2082;O&#x2083; + 6SiO&#x2082;&#x000A;&#x2022; Albite (Ab): Na&#x2082;O + Al&#x2082;O&#x2083; + 6SiO&#x2082;&#x000A;&#x2022; Anorthite (An): CaO + Al&#x2082;O&#x2083; + 2SiO&#x2082;&#x000A;&#x2022; Corundum (Cor): residual Al&#x2082;O&#x2083; (peraluminous case)&#x000A;&#x2022; Acmite (Ac): Na&#x2082;O + Fe&#x2082;O&#x2083; + 4SiO&#x2082; (peralkaline case)&#x000A;&#x2022; Residual alkali silicates (ns, ks)</value>
+  </data>
+  <data name="cipw_step6_title" xml:space="preserve">
+    <value>Form iron oxides</value>
+  </data>
+  <data name="cipw_step6_detail" xml:space="preserve">
+    <value>Allocate iron oxides to minerals:&#x000A;&#x2022; Magnetite (Mt): Fe&#x2082;O&#x2083; + FeO&#x000A;&#x2022; Hematite (Hm): residual Fe&#x2082;O&#x2083;</value>
+  </data>
+  <data name="cipw_step7_title" xml:space="preserve">
+    <value>Form mafic silicate minerals</value>
+  </data>
+  <data name="cipw_step7_detail" xml:space="preserve">
+    <value>Distribute remaining MgO, FeO and CaO to ferromagnesian silicates:&#x000A;&#x2022; Diopside (Di): CaO + MgO + 2SiO&#x2082; (Mg end-member)&#x000A;&#x2022; Hedenbergite (Hd): CaO + FeO + 2SiO&#x2082; (Fe end-member)&#x000A;&#x2022; Enstatite (En): MgO + SiO&#x2082;&#x000A;&#x2022; Ferrosilite (Fs): FeO + SiO&#x2082;&#x000A;&#x2022; Wollastonite (Wo): residual CaO + SiO&#x2082;</value>
+  </data>
+  <data name="cipw_step8_title" xml:space="preserve">
+    <value>Silica saturation correction</value>
+  </data>
+  <data name="cipw_step8_detail" xml:space="preserve">
+    <value>Adjust according to the SiO&#x2082; residual:&#x000A;&#x000A;&#x25B6; Oversaturated (SiO&#x2082; left over): form quartz (Q)&#x000A;&#x25B6; Saturated (SiO&#x2082; exactly used): no quartz, no feldspathoids&#x000A;&#x25B6; Undersaturated (SiO&#x2082; deficient): convert minerals in priority order&#x2014;&#x000A;    &#x2022; Hypersthene (En+Fs) &#x2192; Olivine (Fo+Fa)&#x000A;    &#x2022; Orthoclase (Or) &#x2192; Leucite (Le)&#x000A;    &#x2022; Leucite (Le) &#x2192; Kalsilite (Kp)&#x000A;    &#x2022; Albite (Ab) &#x2192; Nepheline (Ne)</value>
+  </data>
+  <data name="cipw_step9_title" xml:space="preserve">
+    <value>Result output</value>
+  </data>
+  <data name="cipw_step9_detail" xml:space="preserve">
+    <value>&#x2022; Multiply each mineral mole count by its molar mass to obtain its standard mineral mass&#x000A;&#x2022; Normalize to mass percentages (wt%) for output&#x000A;&#x2022; Report silica saturation, alumina saturation state and mass-balance error diagnostics</value>
+  </data>
+  <data name="cipw_references_title" xml:space="preserve">
+    <value>References</value>
+  </data>
+  <data name="cipw_references_content" xml:space="preserve">
+    <value>&#x2022; Cross, W., Iddings, J.P., Pirsson, L.V., Washington, H.S. (1902). A Quantitative Chemico-Mineralogical Classification and Nomenclature of Igneous Rocks.&#x000A;&#x2022; Le Maitre, R.W. (2002). Igneous Rocks: A Classification and Glossary of Terms. Cambridge University Press.&#x000A;&#x2022; Kelsey, C.H. (1965). Calculation of the CIPW norm. Mineralogical Magazine, 34, 276-282.</value>
+  </data>
+  <data name="cipw_sheet_name" xml:space="preserve">
+    <value>CIPW Calculation</value>
+  </data>
+  <data name="cipw_col_silica_saturation" xml:space="preserve">
+    <value>SiO2 Saturation</value>
+  </data>
+  <data name="cipw_col_alumina_state" xml:space="preserve">
+    <value>Al2O3 State</value>
+  </data>
+  <data name="cipw_col_mass_balance_error" xml:space="preserve">
+    <value>Mass Balance Error (%)</value>
+  </data>
+  <data name="cipw_error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="cipw_msg_no_data" xml:space="preserve">
+    <value>No valid data row found. Please input oxide content first.</value>
+  </data>
+  <data name="cipw_msg_calc_all_success" xml:space="preserve">
+    <value>Calculation complete: all {0} samples succeeded.</value>
+  </data>
+  <data name="cipw_msg_calc_partial_success" xml:space="preserve">
+    <value>Calculation complete: {0}/{1} samples succeeded.</value>
+  </data>
+  <data name="cipw_export_dialog_title" xml:space="preserve">
+    <value>Export CIPW Results</value>
+  </data>
+  <data name="cipw_csv_filter" xml:space="preserve">
+    <value>CSV File|*.csv</value>
+  </data>
+  <data name="cipw_msg_export_success" xml:space="preserve">
+    <value>Results exported to: {0}</value>
+  </data>
+  <data name="cipw_msg_export_failed" xml:space="preserve">
+    <value>Export failed: {0}</value>
+  </data>
+  <data name="cipw_confirm_clear_msg" xml:space="preserve">
+    <value>Are you sure you want to clear all input and calculation results?</value>
+  </data>
+  <data name="cipw_msg_data_cleared" xml:space="preserve">
+    <value>Data cleared.</value>
+  </data>
+  <data name="cipw_row_format" xml:space="preserve">
+    <value>Row {0}</value>
+  </data>
+  <data name="cipw_diag_silica_saturation" xml:space="preserve">
+    <value>Silica saturation</value>
+  </data>
+  <data name="cipw_diag_alumina_saturation" xml:space="preserve">
+    <value>Alumina saturation</value>
+  </data>
+  <data name="cipw_diag_iron_mode" xml:space="preserve">
+    <value>Iron handling mode</value>
+  </data>
+  <data name="cipw_diag_mass_balance_error" xml:space="preserve">
+    <value>Mass balance error</value>
+  </data>
+  <data name="cipw_diag_total_minerals" xml:space="preserve">
+    <value>Total minerals</value>
+  </data>
+  <data name="cipw_diag_main_minerals" xml:space="preserve">
+    <value>&#x2500;&#x2500; Main minerals &#x2500;&#x2500;</value>
+  </data>
+  <data name="cipw_diag_warnings" xml:space="preserve">
+    <value>&#x2500;&#x2500; Warnings &#x2500;&#x2500;</value>
+  </data>
+  <data name="cipw_silica_oversaturated" xml:space="preserve">
+    <value>Oversaturated</value>
+  </data>
+  <data name="cipw_silica_saturated" xml:space="preserve">
+    <value>Saturated</value>
+  </data>
+  <data name="cipw_silica_undersaturated" xml:space="preserve">
+    <value>Undersaturated</value>
+  </data>
+  <data name="cipw_alumina_peralkaline" xml:space="preserve">
+    <value>Peralkaline</value>
+  </data>
+  <data name="cipw_alumina_metaluminous" xml:space="preserve">
+    <value>Metaluminous</value>
+  </data>
+  <data name="cipw_alumina_peraluminous" xml:space="preserve">
+    <value>Peraluminous</value>
+  </data>
+  <data name="cipw_iron_measured" xml:space="preserve">
+    <value>Measured</value>
+  </data>
+  <data name="cipw_iron_partial_assumed" xml:space="preserve">
+    <value>Partial assumed</value>
+  </data>
+  <data name="cipw_iron_estimated_feot" xml:space="preserve">
+    <value>Estimated from FeOT</value>
+  </data>
+  <data name="cipw_iron_inconsistent" xml:space="preserve">
+    <value>Inconsistent input</value>
+  </data>
+  <data name="cipw_iron_missing" xml:space="preserve">
+    <value>Missing</value>
+  </data>
+  <data name="plot_layer_list_title" xml:space="preserve">
+    <value>Layer List</value>
+  </data>
+  <data name="plot_property_panel_title" xml:space="preserve">
+    <value>Properties Panel</value>
+  </data></root>
+
