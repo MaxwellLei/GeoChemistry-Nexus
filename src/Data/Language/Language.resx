@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
 		Microsoft ResX Schema
@@ -629,7 +629,7 @@
     <value>Language</value>
   </data>
   <data name="ChineseS" xml:space="preserve">
-    <value>涓枃 (绠€浣?</value>
+    <value>娑擃厽鏋?(缁犫偓娴?</value>
   </data>
   <data name="EnglishUS" xml:space="preserve">
     <value>English (US)</value>
@@ -691,19 +691,19 @@
     <value>Thanks for the Support</value>
   </data>
   <data name="Support1" xml:space="preserve">
-    <value>馃搶Control Support:</value>
+    <value>棣冩惗Control Support:</value>
   </data>
   <data name="Support2" xml:space="preserve">
-    <value>馃搶Chart Support:</value>
+    <value>棣冩惗Chart Support:</value>
   </data>
   <data name="Support3" xml:space="preserve">
-    <value>馃搶Documentation Support:</value>
+    <value>棣冩惗Documentation Support:</value>
   </data>
   <data name="Support4" xml:space="preserve">
-    <value>馃搶Calculation Support:</value>
+    <value>棣冩惗Calculation Support:</value>
   </data>
   <data name="Support5" xml:space="preserve">
-    <value>馃搶Tool Support:</value>
+    <value>棣冩惗Tool Support:</value>
   </data>
   <data name="PlotBoder" xml:space="preserve">
     <value>Border</value>
@@ -728,6 +728,15 @@
   </data>
   <data name="return_to_template_library" xml:space="preserve">
     <value>Back</value>
+  </data>
+  <data name="entering_plot_interface_status" xml:space="preserve">
+    <value>Entering the plot view</value>
+  </data>
+  <data name="returning_template_library_status" xml:space="preserve">
+    <value>Returning to the template library</value>
+  </data>
+  <data name="preparing_interface_content_status" xml:space="preserve">
+    <value>Page switched. Preparing interface content...</value>
   </data>
   <data name="Data" xml:space="preserve">
     <value>Data</value>
@@ -2005,19 +2014,19 @@
     <value>Delete failed:</value>
   </data>
   <data name="missing_drawing_objects_error" xml:space="preserve">
-    <value>鈥?Missing drawing objects: The template does not contain any lines, polygons, text, or arrows.</value>
+    <value>閳?Missing drawing objects: The template does not contain any lines, polygons, text, or arrows.</value>
   </data>
   <data name="invalid_script_variable_name" xml:space="preserve">
     <value>Invalid script variable name format:</value>
   </data>
   <data name="is_not_a_valid_variable_name" xml:space="preserve">
-    <value>鈥?is not a valid variable name.</value>
+    <value>閳?is not a valid variable name.</value>
   </data>
   <data name="script_return_value_error_must_be_array" xml:space="preserve">
-    <value>鈥?Script return value error: The script must return an array.</value>
+    <value>閳?Script return value error: The script must return an array.</value>
   </data>
   <data name="script_return_value_length_error" xml:space="preserve">
-    <value>鈥?Script return value length error: Current value is</value>
+    <value>閳?Script return value length error: Current value is</value>
   </data>
   <data name="return_type_mismatch_error" xml:space="preserve">
     <value>type, should return</value>
@@ -2029,7 +2038,7 @@
     <value>elements.</value>
   </data>
   <data name="missing_translation_warning" xml:space="preserve">
-    <value>鈥?Missing translation: Some texts are missing multilingual translations.</value>
+    <value>閳?Missing translation: Some texts are missing multilingual translations.</value>
   </data>
   <data name="diagram_template_source_missing" xml:space="preserve">
     <value>Diagram template source file does not exist</value>
@@ -2349,6 +2358,12 @@
   </data>
   <data name="element_order" xml:space="preserve">
     <value>Element Order</value>
+  </data>
+  <data name="spider_element_order_hint" xml:space="preserve">
+    <value>Select the elements to include in the plot. The list below shows the current plotting order, and you can use the buttons on the right to adjust the horizontal axis arrangement.</value>
+  </data>
+  <data name="spider_current_plot_order" xml:space="preserve">
+    <value>Current Plot Order</value>
   </data>
   <data name="spider_diagram_data_hint" xml:space="preserve">
     <value>Paste your data in the table after entering plot mode. Each row represents a sample, columns should match element names above.</value>
@@ -2726,7 +2741,8 @@
     <value>Demoted to custom thermometer</value>
   </data>
   <data name="geo_msg_batch_export_success" xml:space="preserve">
-    <value>{0} official thermometers in total, {1} exported (added/modified)&#10;Directory: {2}</value>
+    <value>{0} official thermometers in total, {1} exported (added/modified)
+Directory: {2}</value>
   </data>
   <data name="geo_msg_batch_export_failed" xml:space="preserve">
     <value>Batch export failed: {0}</value>
@@ -2855,61 +2871,103 @@
     <value>Data preprocessing and normalization</value>
   </data>
   <data name="cipw_step1_detail" xml:space="preserve">
-    <value>&#x2022; Normalize input major-element oxides on an anhydrous basis (to 100%)&#x000A;&#x2022; Partition iron: split FeOT into FeO and Fe&#x2082;O&#x2083; using the user-defined Fe&#x00B3;&#x207A;/Fe ratio&#x000A;&#x2022; Combine MnO into FeO based on molar ratio&#x000A;&#x2022; Convert oxide mass percentages to moles</value>
+    <value>• Normalize input major-element oxides on an anhydrous basis (to 100%)
+• Partition iron: split FeOT into FeO and Fe₂O₃ using the user-defined Fe³⁺/Fe ratio
+• Combine MnO into FeO based on molar ratio
+• Convert oxide mass percentages to moles</value>
   </data>
   <data name="cipw_step2_title" xml:space="preserve">
     <value>Form volatile-bearing minerals</value>
   </data>
   <data name="cipw_step2_detail" xml:space="preserve">
-    <value>Consume volatile components in priority order to form:&#x000A;&#x2022; Calcite (Cc): CO&#x2082; + CaO&#x000A;&#x2022; Fluorite (Fl): F + CaO&#x000A;&#x2022; Pyrite (Py): S + FeO&#x000A;&#x2022; Halite (Hl): Cl + Na&#x2082;O&#x000A;&#x2022; Thenardite (Th): SO&#x2083; + Na&#x2082;O</value>
+    <value>Consume volatile components in priority order to form:
+• Calcite (Cc): CO₂ + CaO
+• Fluorite (Fl): F + CaO
+• Pyrite (Py): S + FeO
+• Halite (Hl): Cl + Na₂O
+• Thenardite (Th): SO₃ + Na₂O</value>
   </data>
   <data name="cipw_step3_title" xml:space="preserve">
     <value>Form accessory minerals</value>
   </data>
   <data name="cipw_step3_detail" xml:space="preserve">
-    <value>Allocate trace components to accessory minerals:&#x000A;&#x2022; Zircon (Z): ZrO&#x2082; + SiO&#x2082;&#x000A;&#x2022; Apatite (Ap): P&#x2082;O&#x2085; + CaO&#x000A;&#x2022; Chromite (Cm): Cr&#x2082;O&#x2083; + FeO&#x000A;&#x2022; Ilmenite (Ilm): TiO&#x2082; + FeO&#x000A;&#x2022; Titanite (Tn): TiO&#x2082; + CaO + SiO&#x2082;&#x000A;&#x2022; Rutile (Ru): residual TiO&#x2082;</value>
+    <value>Allocate trace components to accessory minerals:
+• Zircon (Z): ZrO₂ + SiO₂
+• Apatite (Ap): P₂O₅ + CaO
+• Chromite (Cm): Cr₂O₃ + FeO
+• Ilmenite (Ilm): TiO₂ + FeO
+• Titanite (Tn): TiO₂ + CaO + SiO₂
+• Rutile (Ru): residual TiO₂</value>
   </data>
   <data name="cipw_step4_title" xml:space="preserve">
     <value>Determine alumina saturation state</value>
   </data>
   <data name="cipw_step4_detail" xml:space="preserve">
-    <value>Determine the alumina saturation type from the molar ratio between residual Al&#x2082;O&#x2083; and alkalis + CaO:&#x000A;&#x2022; Peralkaline: Na&#x2082;O + K&#x2082;O &gt; Al&#x2082;O&#x2083;&#x000A;&#x2022; Metaluminous: Al&#x2082;O&#x2083; &#x2264; CaO + Na&#x2082;O + K&#x2082;O&#x000A;&#x2022; Peraluminous: Al&#x2082;O&#x2083; &gt; CaO + Na&#x2082;O + K&#x2082;O</value>
+    <value>Determine the alumina saturation type from the molar ratio between residual Al₂O₃ and alkalis + CaO:
+• Peralkaline: Na₂O + K₂O &gt; Al₂O₃
+• Metaluminous: Al₂O₃ ≤ CaO + Na₂O + K₂O
+• Peraluminous: Al₂O₃ &gt; CaO + Na₂O + K₂O</value>
   </data>
   <data name="cipw_step5_title" xml:space="preserve">
     <value>Form feldspars and alkali silicates</value>
   </data>
   <data name="cipw_step5_detail" xml:space="preserve">
-    <value>Allocate alkalis and alumina to feldspars in turn:&#x000A;&#x2022; Orthoclase (Or): K&#x2082;O + Al&#x2082;O&#x2083; + 6SiO&#x2082;&#x000A;&#x2022; Albite (Ab): Na&#x2082;O + Al&#x2082;O&#x2083; + 6SiO&#x2082;&#x000A;&#x2022; Anorthite (An): CaO + Al&#x2082;O&#x2083; + 2SiO&#x2082;&#x000A;&#x2022; Corundum (Cor): residual Al&#x2082;O&#x2083; (peraluminous case)&#x000A;&#x2022; Acmite (Ac): Na&#x2082;O + Fe&#x2082;O&#x2083; + 4SiO&#x2082; (peralkaline case)&#x000A;&#x2022; Residual alkali silicates (ns, ks)</value>
+    <value>Allocate alkalis and alumina to feldspars in turn:
+• Orthoclase (Or): K₂O + Al₂O₃ + 6SiO₂
+• Albite (Ab): Na₂O + Al₂O₃ + 6SiO₂
+• Anorthite (An): CaO + Al₂O₃ + 2SiO₂
+• Corundum (Cor): residual Al₂O₃ (peraluminous case)
+• Acmite (Ac): Na₂O + Fe₂O₃ + 4SiO₂ (peralkaline case)
+• Residual alkali silicates (ns, ks)</value>
   </data>
   <data name="cipw_step6_title" xml:space="preserve">
     <value>Form iron oxides</value>
   </data>
   <data name="cipw_step6_detail" xml:space="preserve">
-    <value>Allocate iron oxides to minerals:&#x000A;&#x2022; Magnetite (Mt): Fe&#x2082;O&#x2083; + FeO&#x000A;&#x2022; Hematite (Hm): residual Fe&#x2082;O&#x2083;</value>
+    <value>Allocate iron oxides to minerals:
+• Magnetite (Mt): Fe₂O₃ + FeO
+• Hematite (Hm): residual Fe₂O₃</value>
   </data>
   <data name="cipw_step7_title" xml:space="preserve">
     <value>Form mafic silicate minerals</value>
   </data>
   <data name="cipw_step7_detail" xml:space="preserve">
-    <value>Distribute remaining MgO, FeO and CaO to ferromagnesian silicates:&#x000A;&#x2022; Diopside (Di): CaO + MgO + 2SiO&#x2082; (Mg end-member)&#x000A;&#x2022; Hedenbergite (Hd): CaO + FeO + 2SiO&#x2082; (Fe end-member)&#x000A;&#x2022; Enstatite (En): MgO + SiO&#x2082;&#x000A;&#x2022; Ferrosilite (Fs): FeO + SiO&#x2082;&#x000A;&#x2022; Wollastonite (Wo): residual CaO + SiO&#x2082;</value>
+    <value>Distribute remaining MgO, FeO and CaO to ferromagnesian silicates:
+• Diopside (Di): CaO + MgO + 2SiO₂ (Mg end-member)
+• Hedenbergite (Hd): CaO + FeO + 2SiO₂ (Fe end-member)
+• Enstatite (En): MgO + SiO₂
+• Ferrosilite (Fs): FeO + SiO₂
+• Wollastonite (Wo): residual CaO + SiO₂</value>
   </data>
   <data name="cipw_step8_title" xml:space="preserve">
     <value>Silica saturation correction</value>
   </data>
   <data name="cipw_step8_detail" xml:space="preserve">
-    <value>Adjust according to the SiO&#x2082; residual:&#x000A;&#x000A;&#x25B6; Oversaturated (SiO&#x2082; left over): form quartz (Q)&#x000A;&#x25B6; Saturated (SiO&#x2082; exactly used): no quartz, no feldspathoids&#x000A;&#x25B6; Undersaturated (SiO&#x2082; deficient): convert minerals in priority order&#x2014;&#x000A;    &#x2022; Hypersthene (En+Fs) &#x2192; Olivine (Fo+Fa)&#x000A;    &#x2022; Orthoclase (Or) &#x2192; Leucite (Le)&#x000A;    &#x2022; Leucite (Le) &#x2192; Kalsilite (Kp)&#x000A;    &#x2022; Albite (Ab) &#x2192; Nepheline (Ne)</value>
+    <value>Adjust according to the SiO₂ residual:
+
+▶ Oversaturated (SiO₂ left over): form quartz (Q)
+▶ Saturated (SiO₂ exactly used): no quartz, no feldspathoids
+▶ Undersaturated (SiO₂ deficient): convert minerals in priority order—
+    • Hypersthene (En+Fs) → Olivine (Fo+Fa)
+    • Orthoclase (Or) → Leucite (Le)
+    • Leucite (Le) → Kalsilite (Kp)
+    • Albite (Ab) → Nepheline (Ne)</value>
   </data>
   <data name="cipw_step9_title" xml:space="preserve">
     <value>Result output</value>
   </data>
   <data name="cipw_step9_detail" xml:space="preserve">
-    <value>&#x2022; Multiply each mineral mole count by its molar mass to obtain its standard mineral mass&#x000A;&#x2022; Normalize to mass percentages (wt%) for output&#x000A;&#x2022; Report silica saturation, alumina saturation state and mass-balance error diagnostics</value>
+    <value>• Multiply each mineral mole count by its molar mass to obtain its standard mineral mass
+• Normalize to mass percentages (wt%) for output
+• Report silica saturation, alumina saturation state and mass-balance error diagnostics</value>
   </data>
   <data name="cipw_references_title" xml:space="preserve">
     <value>References</value>
   </data>
   <data name="cipw_references_content" xml:space="preserve">
-    <value>&#x2022; Cross, W., Iddings, J.P., Pirsson, L.V., Washington, H.S. (1902). A Quantitative Chemico-Mineralogical Classification and Nomenclature of Igneous Rocks.&#x000A;&#x2022; Le Maitre, R.W. (2002). Igneous Rocks: A Classification and Glossary of Terms. Cambridge University Press.&#x000A;&#x2022; Kelsey, C.H. (1965). Calculation of the CIPW norm. Mineralogical Magazine, 34, 276-282.</value>
+    <value>• Cross, W., Iddings, J.P., Pirsson, L.V., Washington, H.S. (1902). A Quantitative Chemico-Mineralogical Classification and Nomenclature of Igneous Rocks.
+• Le Maitre, R.W. (2002). Igneous Rocks: A Classification and Glossary of Terms. Cambridge University Press.
+• Kelsey, C.H. (1965). Calculation of the CIPW norm. Mineralogical Magazine, 34, 276-282.</value>
   </data>
   <data name="cipw_sheet_name" xml:space="preserve">
     <value>CIPW Calculation</value>
@@ -2972,10 +3030,10 @@
     <value>Total minerals</value>
   </data>
   <data name="cipw_diag_main_minerals" xml:space="preserve">
-    <value>&#x2500;&#x2500; Main minerals &#x2500;&#x2500;</value>
+    <value>── Main minerals ──</value>
   </data>
   <data name="cipw_diag_warnings" xml:space="preserve">
-    <value>&#x2500;&#x2500; Warnings &#x2500;&#x2500;</value>
+    <value>── Warnings ──</value>
   </data>
   <data name="cipw_silica_oversaturated" xml:space="preserve">
     <value>Oversaturated</value>
@@ -3015,5 +3073,152 @@
   </data>
   <data name="plot_property_panel_title" xml:space="preserve">
     <value>Properties Panel</value>
-  </data></root>
-
+  </data>
+  <data name="data_toolbar_add_row_above_tooltip" xml:space="preserve">
+    <value>Insert a row above the current selection</value>
+  </data>
+  <data name="data_toolbar_update_chart_tooltip" xml:space="preserve">
+    <value>Plot the current data on the chart</value>
+  </data>
+  <data name="data_toolbar_delete_row_tooltip" xml:space="preserve">
+    <value>Delete the current row</value>
+  </data>
+  <data name="data_toolbar_add_row_below_tooltip" xml:space="preserve">
+    <value>Insert a row below the current selection</value>
+  </data>
+  <data name="data_toolbar_export_data_tooltip" xml:space="preserve">
+    <value>Export the current table data</value>
+  </data>
+  <data name="data_toolbar_clear_all_data_tooltip" xml:space="preserve">
+    <value>Clear all data in the table</value>
+  </data>
+  <data name="shortcuts_title" xml:space="preserve">
+    <value>Shortcuts</value>
+  </data>
+  <data name="shortcuts_intro" xml:space="preserve">
+    <value>This page lists the shortcuts supported in the current version. It is read-only and cannot be edited here.</value>
+  </data>
+  <data name="shortcuts_hint" xml:space="preserve">
+    <value>Tip: Some shortcuts only work when the related page is active or has keyboard focus.</value>
+  </data>
+  <data name="shortcut_group_plot_title" xml:space="preserve">
+    <value>Plot Editor</value>
+  </data>
+  <data name="shortcut_group_plot_desc" xml:space="preserve">
+    <value>These shortcuts mainly work on the diagram editing page.</value>
+  </data>
+  <data name="shortcut_group_add_title" xml:space="preserve">
+    <value>Quick Insert Objects</value>
+  </data>
+  <data name="shortcut_group_add_desc" xml:space="preserve">
+    <value>Use these shortcuts to quickly create common objects on the plot page.</value>
+  </data>
+  <data name="shortcut_group_template_title" xml:space="preserve">
+    <value>Template Card Actions</value>
+  </data>
+  <data name="shortcut_group_template_desc" xml:space="preserve">
+    <value>These actions apply to template cards in browse mode.</value>
+  </data>
+  <data name="shortcut_group_rich_text_title" xml:space="preserve">
+    <value>Rich Text Editor</value>
+  </data>
+  <data name="shortcut_group_rich_text_desc" xml:space="preserve">
+    <value>These shortcuts apply to rich text editing areas such as help documents.</value>
+  </data>
+  <data name="shortcut_action_undo_name" xml:space="preserve">
+    <value>Undo</value>
+  </data>
+  <data name="shortcut_action_undo_desc" xml:space="preserve">
+    <value>Undo the previous action.</value>
+  </data>
+  <data name="shortcut_action_redo_name" xml:space="preserve">
+    <value>Redo</value>
+  </data>
+  <data name="shortcut_action_redo_desc" xml:space="preserve">
+    <value>Restore the action that was just undone.</value>
+  </data>
+  <data name="shortcut_action_delete_selected_name" xml:space="preserve">
+    <value>Delete Selected Object</value>
+  </data>
+  <data name="shortcut_action_delete_selected_desc" xml:space="preserve">
+    <value>Delete the currently selected plot object.</value>
+  </data>
+  <data name="shortcut_action_center_view_name" xml:space="preserve">
+    <value>Center View</value>
+  </data>
+  <data name="shortcut_action_center_view_desc" xml:space="preserve">
+    <value>Quickly center the plot view.</value>
+  </data>
+  <data name="shortcut_action_save_plot_name" xml:space="preserve">
+    <value>Save Diagram</value>
+  </data>
+  <data name="shortcut_action_save_plot_desc" xml:space="preserve">
+    <value>Save the current diagram or template content.</value>
+  </data>
+  <data name="shortcut_action_add_line_name" xml:space="preserve">
+    <value>Add Line</value>
+  </data>
+  <data name="shortcut_action_add_line_desc" xml:space="preserve">
+    <value>Insert a line object.</value>
+  </data>
+  <data name="shortcut_action_add_text_name" xml:space="preserve">
+    <value>Add Text</value>
+  </data>
+  <data name="shortcut_action_add_text_desc" xml:space="preserve">
+    <value>Insert a text object.</value>
+  </data>
+  <data name="shortcut_action_add_polygon_name" xml:space="preserve">
+    <value>Add Polygon</value>
+  </data>
+  <data name="shortcut_action_add_polygon_desc" xml:space="preserve">
+    <value>Insert a polygon object.</value>
+  </data>
+  <data name="shortcut_action_add_arrow_name" xml:space="preserve">
+    <value>Add Arrow</value>
+  </data>
+  <data name="shortcut_action_add_arrow_desc" xml:space="preserve">
+    <value>Insert an arrow object.</value>
+  </data>
+  <data name="shortcut_action_add_function_name" xml:space="preserve">
+    <value>Add Function</value>
+  </data>
+  <data name="shortcut_action_add_function_desc" xml:space="preserve">
+    <value>Insert a function object.</value>
+  </data>
+  <data name="shortcut_action_quick_favorite_name" xml:space="preserve">
+    <value>Quick Favorite</value>
+  </data>
+  <data name="shortcut_action_quick_favorite_keys" xml:space="preserve">
+    <value>Ctrl+click the right side of the card</value>
+  </data>
+  <data name="shortcut_action_quick_favorite_desc" xml:space="preserve">
+    <value>Quickly toggle the favorite state of a template.</value>
+  </data>
+  <data name="shortcut_action_quick_delete_name" xml:space="preserve">
+    <value>Quick Delete</value>
+  </data>
+  <data name="shortcut_action_quick_delete_keys" xml:space="preserve">
+    <value>Ctrl+click the left side of the card</value>
+  </data>
+  <data name="shortcut_action_quick_delete_desc" xml:space="preserve">
+    <value>Delete a custom template directly without confirmation.</value>
+  </data>
+  <data name="shortcut_action_bold_name" xml:space="preserve">
+    <value>Bold</value>
+  </data>
+  <data name="shortcut_action_bold_desc" xml:space="preserve">
+    <value>Toggle bold for the selected text.</value>
+  </data>
+  <data name="shortcut_action_italic_name" xml:space="preserve">
+    <value>Italic</value>
+  </data>
+  <data name="shortcut_action_italic_desc" xml:space="preserve">
+    <value>Toggle italic for the selected text.</value>
+  </data>
+  <data name="shortcut_action_underline_name" xml:space="preserve">
+    <value>Underline</value>
+  </data>
+  <data name="shortcut_action_underline_desc" xml:space="preserve">
+    <value>Toggle underline for the selected text.</value>
+  </data>
+</root>

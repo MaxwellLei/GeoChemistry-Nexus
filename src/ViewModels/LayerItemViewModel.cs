@@ -90,6 +90,18 @@ namespace GeoChemistryNexus.ViewModels
         /// </summary>
         public LayerTreeIconKind IconKind => _customIconKind ?? GetDefaultIconKind();
 
+        /// <summary>
+        /// 图层列表中是否允许删除该节点。
+        /// 仅叶子节点中的非基础图层允许删除。
+        /// </summary>
+        public virtual bool CanDelete => this is not CategoryLayerItemViewModel and not AxisLayerItemViewModel;
+
+        /// <summary>
+        /// 是否在图层树右侧显示内联删除按钮。
+        /// 默认仅数据类图层显示，其余对象可继续通过快捷键删除。
+        /// </summary>
+        public virtual bool ShowInlineDeleteButton => false;
+
         private LayerTreeIconKind GetDefaultIconKind() => this switch
         {
             CategoryLayerItemViewModel => LayerTreeIconKind.Group,
@@ -173,7 +185,7 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 更新样式的虚方法，子类应重写此方法以直接修改 Plottable 属性
+        /// 更新样式的虚方法
         /// </summary>
         public virtual void UpdateStyle()
         {

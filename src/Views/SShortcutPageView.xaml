@@ -1,0 +1,88 @@
+<Page x:Class="GeoChemistryNexus.Views.SShortcutPageView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
+      xmlns:hc="https://handyorg.github.io/handycontrol"
+      mc:Ignorable="d"
+      d:DesignHeight="800" d:DesignWidth="600"
+      Title="SShortcutPageView"
+      UseLayoutRounding="True" TextOptions.TextFormattingMode="Display">
+
+    <Grid>
+        <hc:ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Margin="20,20,20,40" MaxWidth="880" HorizontalAlignment="Stretch">
+
+                <TextBlock Text="{Binding [shortcuts_title],Source={x:Static lg:LanguageService.Instance}, FallbackValue=快捷键}" Style="{StaticResource ModernSettingsGroupTitle}"/>
+                <Border Style="{StaticResource ModernSettingsCard}">
+                    <StackPanel Margin="16">
+                        <TextBlock Text="{Binding [shortcuts_intro],Source={x:Static lg:LanguageService.Instance}, FallbackValue=这里展示当前版本已经支持的快捷键，仅供查看，不能在此页面修改。}"
+                                   FontSize="14"
+                                   Foreground="#1D1D1F"
+                                   TextWrapping="Wrap"/>
+                        <TextBlock Text="{Binding [shortcuts_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=提示：部分快捷键仅在对应页面处于激活状态或获得焦点时生效。}"
+                                   Margin="0,8,0,0"
+                                   FontSize="12"
+                                   Foreground="#86868B"
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+
+                <ItemsControl ItemsSource="{Binding ShortcutGroups}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Text="{Binding Title}" Style="{StaticResource ModernSettingsGroupTitle}"/>
+                                <TextBlock Text="{Binding Description}"
+                                           Margin="16,0,0,8"
+                                           FontSize="12"
+                                           Foreground="#86868B"
+                                           TextWrapping="Wrap"/>
+                                <ItemsControl ItemsSource="{Binding Items}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Style="{StaticResource ModernSettingsCard}">
+                                                <Grid Margin="16,14">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <StackPanel Margin="0,0,20,0">
+                                                        <TextBlock Text="{Binding Name}"
+                                                                   FontSize="14"
+                                                                   FontWeight="SemiBold"
+                                                                   Foreground="#1D1D1F"/>
+                                                        <TextBlock Text="{Binding Description}"
+                                                                   Margin="0,6,0,0"
+                                                                   FontSize="12"
+                                                                   Foreground="#86868B"
+                                                                   TextWrapping="Wrap"/>
+                                                    </StackPanel>
+
+                                                    <Border Grid.Column="1"
+                                                            VerticalAlignment="Center"
+                                                            Background="#F2F4F7"
+                                                            BorderBrush="#D9DEE5"
+                                                            BorderThickness="1"
+                                                            CornerRadius="8"
+                                                            Padding="12,6">
+                                                        <TextBlock Text="{Binding Keys}"
+                                                                   FontSize="12"
+                                                                   FontWeight="SemiBold"
+                                                                   Foreground="#1D1D1F"/>
+                                                    </Border>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </hc:ScrollViewer>
+    </Grid>
+</Page>

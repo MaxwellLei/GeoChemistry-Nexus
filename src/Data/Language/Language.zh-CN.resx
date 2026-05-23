@@ -705,6 +705,12 @@
   <data name="element_order" xml:space="preserve">
     <value>元素顺序</value>
   </data>
+  <data name="spider_element_order_hint" xml:space="preserve">
+    <value>勾选需要参与绘图的元素；下方列表表示当前绘图顺序，可通过右侧按钮调整横轴排列。</value>
+  </data>
+  <data name="spider_current_plot_order" xml:space="preserve">
+    <value>当前绘图顺序</value>
+  </data>
   <data name="diagram_help_path_undefined_save_template" xml:space="preserve">
     <value>无法确定图解帮助文件路径，请尝试先保存模板。</value>
   </data>
@@ -1046,6 +1052,15 @@
   </data>
   <data name="return_to_template_library" xml:space="preserve">
     <value>返回</value>
+  </data>
+  <data name="entering_plot_interface_status" xml:space="preserve">
+    <value>正在进入绘图界面</value>
+  </data>
+  <data name="returning_template_library_status" xml:space="preserve">
+    <value>正在返回模板库</value>
+  </data>
+  <data name="preparing_interface_content_status" xml:space="preserve">
+    <value>已切换页面，正在准备界面内容...</value>
   </data>
   <data name="fill_color" xml:space="preserve">
     <value>填充颜色</value>
@@ -3065,5 +3080,152 @@
   </data>
   <data name="plot_property_panel_title" xml:space="preserve">
     <value>属性面板</value>
+  </data>
+  <data name="data_toolbar_add_row_above_tooltip" xml:space="preserve">
+    <value>在当前选中行上方插入一行</value>
+  </data>
+  <data name="data_toolbar_update_chart_tooltip" xml:space="preserve">
+    <value>将当前数据投绘到图表</value>
+  </data>
+  <data name="data_toolbar_delete_row_tooltip" xml:space="preserve">
+    <value>删除当前选中行</value>
+  </data>
+  <data name="data_toolbar_add_row_below_tooltip" xml:space="preserve">
+    <value>在当前选中行下方插入一行</value>
+  </data>
+  <data name="data_toolbar_export_data_tooltip" xml:space="preserve">
+    <value>导出当前数据表格内容</value>
+  </data>
+  <data name="data_toolbar_clear_all_data_tooltip" xml:space="preserve">
+    <value>清空数据表格中的所有数据</value>
+  </data>
+  <data name="shortcuts_title" xml:space="preserve">
+    <value>快捷键</value>
+  </data>
+  <data name="shortcuts_intro" xml:space="preserve">
+    <value>这里展示当前版本已经支持的快捷键，仅供查看，不能在此页面修改。</value>
+  </data>
+  <data name="shortcuts_hint" xml:space="preserve">
+    <value>提示：部分快捷键仅在对应页面处于激活状态或获得焦点时生效。</value>
+  </data>
+  <data name="shortcut_group_plot_title" xml:space="preserve">
+    <value>主绘图页</value>
+  </data>
+  <data name="shortcut_group_plot_desc" xml:space="preserve">
+    <value>以下快捷键主要在图解编辑页面生效。</value>
+  </data>
+  <data name="shortcut_group_add_title" xml:space="preserve">
+    <value>快速添加对象</value>
+  </data>
+  <data name="shortcut_group_add_desc" xml:space="preserve">
+    <value>用于在绘图页中快速创建常见对象。</value>
+  </data>
+  <data name="shortcut_group_template_title" xml:space="preserve">
+    <value>模板卡片操作</value>
+  </data>
+  <data name="shortcut_group_template_desc" xml:space="preserve">
+    <value>以下操作适用于模板浏览模式中的卡片区域。</value>
+  </data>
+  <data name="shortcut_group_rich_text_title" xml:space="preserve">
+    <value>富文本编辑</value>
+  </data>
+  <data name="shortcut_group_rich_text_desc" xml:space="preserve">
+    <value>适用于帮助文档等富文本编辑区域。</value>
+  </data>
+  <data name="shortcut_action_undo_name" xml:space="preserve">
+    <value>撤销</value>
+  </data>
+  <data name="shortcut_action_undo_desc" xml:space="preserve">
+    <value>撤销上一步操作。</value>
+  </data>
+  <data name="shortcut_action_redo_name" xml:space="preserve">
+    <value>重做</value>
+  </data>
+  <data name="shortcut_action_redo_desc" xml:space="preserve">
+    <value>恢复刚刚撤销的操作。</value>
+  </data>
+  <data name="shortcut_action_delete_selected_name" xml:space="preserve">
+    <value>删除选中对象</value>
+  </data>
+  <data name="shortcut_action_delete_selected_desc" xml:space="preserve">
+    <value>删除当前选中的绘图对象。</value>
+  </data>
+  <data name="shortcut_action_center_view_name" xml:space="preserve">
+    <value>视图居中</value>
+  </data>
+  <data name="shortcut_action_center_view_desc" xml:space="preserve">
+    <value>将绘图视图快速居中。</value>
+  </data>
+  <data name="shortcut_action_save_plot_name" xml:space="preserve">
+    <value>保存图解</value>
+  </data>
+  <data name="shortcut_action_save_plot_desc" xml:space="preserve">
+    <value>保存当前图解或模板内容。</value>
+  </data>
+  <data name="shortcut_action_add_line_name" xml:space="preserve">
+    <value>添加直线</value>
+  </data>
+  <data name="shortcut_action_add_line_desc" xml:space="preserve">
+    <value>插入一条直线对象。</value>
+  </data>
+  <data name="shortcut_action_add_text_name" xml:space="preserve">
+    <value>添加文本</value>
+  </data>
+  <data name="shortcut_action_add_text_desc" xml:space="preserve">
+    <value>插入一个文本对象。</value>
+  </data>
+  <data name="shortcut_action_add_polygon_name" xml:space="preserve">
+    <value>添加多边形</value>
+  </data>
+  <data name="shortcut_action_add_polygon_desc" xml:space="preserve">
+    <value>插入一个多边形对象。</value>
+  </data>
+  <data name="shortcut_action_add_arrow_name" xml:space="preserve">
+    <value>添加箭头</value>
+  </data>
+  <data name="shortcut_action_add_arrow_desc" xml:space="preserve">
+    <value>插入一个箭头对象。</value>
+  </data>
+  <data name="shortcut_action_add_function_name" xml:space="preserve">
+    <value>添加函数</value>
+  </data>
+  <data name="shortcut_action_add_function_desc" xml:space="preserve">
+    <value>插入一个函数对象。</value>
+  </data>
+  <data name="shortcut_action_quick_favorite_name" xml:space="preserve">
+    <value>快捷收藏</value>
+  </data>
+  <data name="shortcut_action_quick_favorite_keys" xml:space="preserve">
+    <value>Ctrl+点击卡片右侧区域</value>
+  </data>
+  <data name="shortcut_action_quick_favorite_desc" xml:space="preserve">
+    <value>快速切换模板收藏状态。</value>
+  </data>
+  <data name="shortcut_action_quick_delete_name" xml:space="preserve">
+    <value>快捷删除</value>
+  </data>
+  <data name="shortcut_action_quick_delete_keys" xml:space="preserve">
+    <value>Ctrl+点击卡片左侧区域</value>
+  </data>
+  <data name="shortcut_action_quick_delete_desc" xml:space="preserve">
+    <value>直接删除自定义模板，跳过二次确认。</value>
+  </data>
+  <data name="shortcut_action_bold_name" xml:space="preserve">
+    <value>加粗</value>
+  </data>
+  <data name="shortcut_action_bold_desc" xml:space="preserve">
+    <value>切换选中文本的加粗样式。</value>
+  </data>
+  <data name="shortcut_action_italic_name" xml:space="preserve">
+    <value>斜体</value>
+  </data>
+  <data name="shortcut_action_italic_desc" xml:space="preserve">
+    <value>切换选中文本的斜体样式。</value>
+  </data>
+  <data name="shortcut_action_underline_name" xml:space="preserve">
+    <value>下划线</value>
+  </data>
+  <data name="shortcut_action_underline_desc" xml:space="preserve">
+    <value>切换选中文本的下划线样式。</value>
   </data>
 </root>

@@ -1023,6 +1023,15 @@ Verzeichnis: {2}</value>
   <data name="return_to_template_library" xml:space="preserve">
     <value>Zurück</value>
   </data>
+  <data name="entering_plot_interface_status" xml:space="preserve">
+    <value>Diagrammansicht wird geöffnet</value>
+  </data>
+  <data name="returning_template_library_status" xml:space="preserve">
+    <value>Zur Vorlagenbibliothek wird zurückgekehrt</value>
+  </data>
+  <data name="preparing_interface_content_status" xml:space="preserve">
+    <value>Seite gewechselt. Oberflächeninhalt wird vorbereitet...</value>
+  </data>
   <data name="fill_color" xml:space="preserve">
     <value>Füllfarbe</value>
   </data>
@@ -3011,5 +3020,23 @@ Verzeichnis: {2}</value>
   </data>
   <data name="plot_property_panel_title" xml:space="preserve">
     <value>Eigenschaften</value>
+  </data>
+  <data name="data_toolbar_add_row_above_tooltip" xml:space="preserve">
+    <value>Eine Zeile über der aktuellen Auswahl einfügen</value>
+  </data>
+  <data name="data_toolbar_update_chart_tooltip" xml:space="preserve">
+    <value>Die aktuellen Daten im Diagramm darstellen</value>
+  </data>
+  <data name="data_toolbar_delete_row_tooltip" xml:space="preserve">
+    <value>Die aktuelle Zeile löschen</value>
+  </data>
+  <data name="data_toolbar_add_row_below_tooltip" xml:space="preserve">
+    <value>Eine Zeile unter der aktuellen Auswahl einfügen</value>
+  </data>
+  <data name="data_toolbar_export_data_tooltip" xml:space="preserve">
+    <value>Die aktuellen Tabellendaten exportieren</value>
+  </data>
+  <data name="data_toolbar_clear_all_data_tooltip" xml:space="preserve">
+    <value>Alle Daten in der Tabelle löschen</value>
   </data>
 </root>

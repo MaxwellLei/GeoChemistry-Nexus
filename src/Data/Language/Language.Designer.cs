@@ -1170,7 +1170,7 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 涓枃 (绠€浣? 的本地化字符串。
+        ///   查找类似 娑擃厽鏋?(缁犫偓娴? 的本地化字符串。
         /// </summary>
         internal static string ChineseS {
             get {
@@ -2400,6 +2400,60 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Insert a row above the current selection 的本地化字符串。
+        /// </summary>
+        internal static string data_toolbar_add_row_above_tooltip {
+            get {
+                return ResourceManager.GetString("data_toolbar_add_row_above_tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Insert a row below the current selection 的本地化字符串。
+        /// </summary>
+        internal static string data_toolbar_add_row_below_tooltip {
+            get {
+                return ResourceManager.GetString("data_toolbar_add_row_below_tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Clear all data in the table 的本地化字符串。
+        /// </summary>
+        internal static string data_toolbar_clear_all_data_tooltip {
+            get {
+                return ResourceManager.GetString("data_toolbar_clear_all_data_tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Delete the current row 的本地化字符串。
+        /// </summary>
+        internal static string data_toolbar_delete_row_tooltip {
+            get {
+                return ResourceManager.GetString("data_toolbar_delete_row_tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Export the current table data 的本地化字符串。
+        /// </summary>
+        internal static string data_toolbar_export_data_tooltip {
+            get {
+                return ResourceManager.GetString("data_toolbar_export_data_tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Plot the current data on the chart 的本地化字符串。
+        /// </summary>
+        internal static string data_toolbar_update_chart_tooltip {
+            get {
+                return ResourceManager.GetString("data_toolbar_update_chart_tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Default 的本地化字符串。
         /// </summary>
         internal static string Default {
@@ -2963,6 +3017,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string enter_supported_languages {
             get {
                 return ResourceManager.GetString("enter_supported_languages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Entering the plot view 的本地化字符串。
+        /// </summary>
+        internal static string entering_plot_interface_status {
+            get {
+                return ResourceManager.GetString("entering_plot_interface_status", resourceCulture);
             }
         }
         
@@ -5299,7 +5362,7 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 鈥?is not a valid variable name. 的本地化字符串。
+        ///   查找类似 閳?is not a valid variable name. 的本地化字符串。
         /// </summary>
         internal static string is_not_a_valid_variable_name {
             get {
@@ -6136,7 +6199,7 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 鈥?Missing drawing objects: The template does not contain any lines, polygons, text, or arrows. 的本地化字符串。
+        ///   查找类似 閳?Missing drawing objects: The template does not contain any lines, polygons, text, or arrows. 的本地化字符串。
         /// </summary>
         internal static string missing_drawing_objects_error {
             get {
@@ -6154,7 +6217,7 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 鈥?Missing translation: Some texts are missing multilingual translations. 的本地化字符串。
+        ///   查找类似 閳?Missing translation: Some texts are missing multilingual translations. 的本地化字符串。
         /// </summary>
         internal static string missing_translation_warning {
             get {
@@ -7243,6 +7306,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Page switched. Preparing interface content... 的本地化字符串。
+        /// </summary>
+        internal static string preparing_interface_content_status {
+            get {
+                return ResourceManager.GetString("preparing_interface_content_status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Pressure (MPa) 的本地化字符串。
         /// </summary>
         internal static string Pressure {
@@ -7504,6 +7576,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Returning to the template library 的本地化字符串。
+        /// </summary>
+        internal static string returning_template_library_status {
+            get {
+                return ResourceManager.GetString("returning_template_library_status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 RichTextBox control cannot be null 的本地化字符串。
         /// </summary>
         internal static string richtextbox_control_cannot_be_null {
@@ -7702,7 +7783,7 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 鈥?Script return value error: The script must return an array. 的本地化字符串。
+        ///   查找类似 閳?Script return value error: The script must return an array. 的本地化字符串。
         /// </summary>
         internal static string script_return_value_error_must_be_array {
             get {
@@ -7711,7 +7792,7 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 鈥?Script return value length error: Current value is 的本地化字符串。
+        ///   查找类似 閳?Script return value length error: Current value is 的本地化字符串。
         /// </summary>
         internal static string script_return_value_length_error {
             get {
@@ -7819,6 +7900,393 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Insert an arrow object. 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_action_add_arrow_desc {
+            get {
+                return ResourceManager.GetString("shortcut_action_add_arrow_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Add Arrow 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_action_add_arrow_name {
+            get {
+                return ResourceManager.GetString("shortcut_action_add_arrow_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Insert a function object. 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_action_add_function_desc {
+            get {
+                return ResourceManager.GetString("shortcut_action_add_function_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Add Function 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_action_add_function_name {
+            get {
+                return ResourceManager.GetString("shortcut_action_add_function_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Insert a line object. 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_action_add_line_desc {
+            get {
+                return ResourceManager.GetString("shortcut_action_add_line_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Add Line 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_action_add_line_name {
+            get {
+                return ResourceManager.GetString("shortcut_action_add_line_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Insert a polygon object. 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_action_add_polygon_desc {
+            get {
+                return ResourceManager.GetString("shortcut_action_add_polygon_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Add Polygon 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_action_add_polygon_name {
+            get {
+                return ResourceManager.GetString("shortcut_action_add_polygon_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Insert a text object. 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_action_add_text_desc {
+            get {
+                return ResourceManager.GetString("shortcut_action_add_text_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Add Text 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_action_add_text_name {
+            get {
+                return ResourceManager.GetString("shortcut_action_add_text_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Toggle bold for the selected text. 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_action_bold_desc {
+            get {
+                return ResourceManager.GetString("shortcut_action_bold_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Bold 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_action_bold_name {
+            get {
+                return ResourceManager.GetString("shortcut_action_bold_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Quickly center the plot view. 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_action_center_view_desc {
+            get {
+                return ResourceManager.GetString("shortcut_action_center_view_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Center View 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_action_center_view_name {
+            get {
+                return ResourceManager.GetString("shortcut_action_center_view_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Delete the currently selected plot object. 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_action_delete_selected_desc {
+            get {
+                return ResourceManager.GetString("shortcut_action_delete_selected_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Delete Selected Object 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_action_delete_selected_name {
+            get {
+                return ResourceManager.GetString("shortcut_action_delete_selected_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Toggle italic for the selected text. 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_action_italic_desc {
+            get {
+                return ResourceManager.GetString("shortcut_action_italic_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Italic 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_action_italic_name {
+            get {
+                return ResourceManager.GetString("shortcut_action_italic_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Delete a custom template directly without confirmation. 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_action_quick_delete_desc {
+            get {
+                return ResourceManager.GetString("shortcut_action_quick_delete_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Ctrl+click the left side of the card 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_action_quick_delete_keys {
+            get {
+                return ResourceManager.GetString("shortcut_action_quick_delete_keys", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Quick Delete 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_action_quick_delete_name {
+            get {
+                return ResourceManager.GetString("shortcut_action_quick_delete_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Quickly toggle the favorite state of a template. 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_action_quick_favorite_desc {
+            get {
+                return ResourceManager.GetString("shortcut_action_quick_favorite_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Ctrl+click the right side of the card 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_action_quick_favorite_keys {
+            get {
+                return ResourceManager.GetString("shortcut_action_quick_favorite_keys", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Quick Favorite 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_action_quick_favorite_name {
+            get {
+                return ResourceManager.GetString("shortcut_action_quick_favorite_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Restore the action that was just undone. 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_action_redo_desc {
+            get {
+                return ResourceManager.GetString("shortcut_action_redo_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Redo 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_action_redo_name {
+            get {
+                return ResourceManager.GetString("shortcut_action_redo_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Save the current diagram or template content. 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_action_save_plot_desc {
+            get {
+                return ResourceManager.GetString("shortcut_action_save_plot_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Save Diagram 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_action_save_plot_name {
+            get {
+                return ResourceManager.GetString("shortcut_action_save_plot_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Toggle underline for the selected text. 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_action_underline_desc {
+            get {
+                return ResourceManager.GetString("shortcut_action_underline_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Underline 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_action_underline_name {
+            get {
+                return ResourceManager.GetString("shortcut_action_underline_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Undo the previous action. 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_action_undo_desc {
+            get {
+                return ResourceManager.GetString("shortcut_action_undo_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Undo 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_action_undo_name {
+            get {
+                return ResourceManager.GetString("shortcut_action_undo_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Use these shortcuts to quickly create common objects on the plot page. 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_group_add_desc {
+            get {
+                return ResourceManager.GetString("shortcut_group_add_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Quick Insert Objects 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_group_add_title {
+            get {
+                return ResourceManager.GetString("shortcut_group_add_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 These shortcuts mainly work on the diagram editing page. 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_group_plot_desc {
+            get {
+                return ResourceManager.GetString("shortcut_group_plot_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Plot Editor 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_group_plot_title {
+            get {
+                return ResourceManager.GetString("shortcut_group_plot_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 These shortcuts apply to rich text editing areas such as help documents. 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_group_rich_text_desc {
+            get {
+                return ResourceManager.GetString("shortcut_group_rich_text_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Rich Text Editor 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_group_rich_text_title {
+            get {
+                return ResourceManager.GetString("shortcut_group_rich_text_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 These actions apply to template cards in browse mode. 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_group_template_desc {
+            get {
+                return ResourceManager.GetString("shortcut_group_template_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Template Card Actions 的本地化字符串。
+        /// </summary>
+        internal static string shortcut_group_template_title {
+            get {
+                return ResourceManager.GetString("shortcut_group_template_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Tip: Some shortcuts only work when the related page is active or has keyboard focus. 的本地化字符串。
+        /// </summary>
+        internal static string shortcuts_hint {
+            get {
+                return ResourceManager.GetString("shortcuts_hint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 This page lists the shortcuts supported in the current version. It is read-only and cannot be edited here. 的本地化字符串。
+        /// </summary>
+        internal static string shortcuts_intro {
+            get {
+                return ResourceManager.GetString("shortcuts_intro", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Shortcuts 的本地化字符串。
+        /// </summary>
+        internal static string shortcuts_title {
+            get {
+                return ResourceManager.GetString("shortcuts_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Show 的本地化字符串。
         /// </summary>
         internal static string Show {
@@ -7900,11 +8368,29 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Current Plot Order 的本地化字符串。
+        /// </summary>
+        internal static string spider_current_plot_order {
+            get {
+                return ResourceManager.GetString("spider_current_plot_order", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Paste your data in the table after entering plot mode. Each row represents a sample, columns should match element names above. 的本地化字符串。
         /// </summary>
         internal static string spider_diagram_data_hint {
             get {
                 return ResourceManager.GetString("spider_diagram_data_hint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Select the elements to include in the plot. The list below shows the current plotting order, and you can use the buttons on the right to adjust the horizontal axis arrangement. 的本地化字符串。
+        /// </summary>
+        internal static string spider_element_order_hint {
+            get {
+                return ResourceManager.GetString("spider_element_order_hint", resourceCulture);
             }
         }
         
@@ -8062,7 +8548,7 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 馃搶Control Support: 的本地化字符串。
+        ///   查找类似 棣冩惗Control Support: 的本地化字符串。
         /// </summary>
         internal static string Support1 {
             get {
@@ -8071,7 +8557,7 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 馃搶Chart Support: 的本地化字符串。
+        ///   查找类似 棣冩惗Chart Support: 的本地化字符串。
         /// </summary>
         internal static string Support2 {
             get {
@@ -8080,7 +8566,7 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 馃搶Documentation Support: 的本地化字符串。
+        ///   查找类似 棣冩惗Documentation Support: 的本地化字符串。
         /// </summary>
         internal static string Support3 {
             get {
@@ -8089,7 +8575,7 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 馃搶Calculation Support: 的本地化字符串。
+        ///   查找类似 棣冩惗Calculation Support: 的本地化字符串。
         /// </summary>
         internal static string Support4 {
             get {
@@ -8098,7 +8584,7 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 馃搶Tool Support: 的本地化字符串。
+        ///   查找类似 棣冩惗Tool Support: 的本地化字符串。
         /// </summary>
         internal static string Support5 {
             get {

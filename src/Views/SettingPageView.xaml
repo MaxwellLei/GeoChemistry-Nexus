@@ -1,4 +1,4 @@
-﻿<Grid x:Class="GeoChemistryNexus.Views.SettingPageView"
+<Grid x:Class="GeoChemistryNexus.Views.SettingPageView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -47,6 +47,15 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xe6b1;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="18" VerticalAlignment="Center" Margin="0,0,12,0"/>
                     <TextBlock Text="{Binding [GeothermometerSetting],Source={x:Static lg:LanguageService.Instance}, FallbackValue=地质温度计}" FontSize="14" VerticalAlignment="Center"/>
+                </StackPanel>
+            </RadioButton>
+
+            <!--Shortcuts-->
+            <RadioButton Style="{StaticResource ModernSidebarRadioButton}" GroupName="SettingSideBar"
+                         Command="{Binding ShortcutPage}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="&#xE765;" FontFamily="Segoe MDL2 Assets" FontSize="18" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <TextBlock Text="{Binding [shortcuts_title],Source={x:Static lg:LanguageService.Instance}, FallbackValue=快捷键}" FontSize="14" VerticalAlignment="Center"/>
                 </StackPanel>
             </RadioButton>
 

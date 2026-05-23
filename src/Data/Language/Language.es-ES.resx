@@ -1023,6 +1023,15 @@ Directorio: {2}</value>
   <data name="return_to_template_library" xml:space="preserve">
     <value>Volver</value>
   </data>
+  <data name="entering_plot_interface_status" xml:space="preserve">
+    <value>Entrando en la vista de trazado</value>
+  </data>
+  <data name="returning_template_library_status" xml:space="preserve">
+    <value>Volviendo a la biblioteca de plantillas</value>
+  </data>
+  <data name="preparing_interface_content_status" xml:space="preserve">
+    <value>Página cambiada. Preparando el contenido de la interfaz...</value>
+  </data>
   <data name="fill_color" xml:space="preserve">
     <value>Color de relleno</value>
   </data>
@@ -3011,5 +3020,23 @@ Directorio: {2}</value>
   </data>
   <data name="plot_property_panel_title" xml:space="preserve">
     <value>Panel de propiedades</value>
+  </data>
+  <data name="data_toolbar_add_row_above_tooltip" xml:space="preserve">
+    <value>Insertar una fila encima de la selección actual</value>
+  </data>
+  <data name="data_toolbar_update_chart_tooltip" xml:space="preserve">
+    <value>Representar los datos actuales en el gráfico</value>
+  </data>
+  <data name="data_toolbar_delete_row_tooltip" xml:space="preserve">
+    <value>Eliminar la fila actual</value>
+  </data>
+  <data name="data_toolbar_add_row_below_tooltip" xml:space="preserve">
+    <value>Insertar una fila debajo de la selección actual</value>
+  </data>
+  <data name="data_toolbar_export_data_tooltip" xml:space="preserve">
+    <value>Exportar los datos actuales de la tabla</value>
+  </data>
+  <data name="data_toolbar_clear_all_data_tooltip" xml:space="preserve">
+    <value>Borrar todos los datos de la tabla</value>
   </data>
 </root>

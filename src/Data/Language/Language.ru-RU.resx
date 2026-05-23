@@ -1023,6 +1023,15 @@
   <data name="return_to_template_library" xml:space="preserve">
     <value>Вернуться</value>
   </data>
+  <data name="entering_plot_interface_status" xml:space="preserve">
+    <value>Переход к окну построения</value>
+  </data>
+  <data name="returning_template_library_status" xml:space="preserve">
+    <value>Возврат в библиотеку шаблонов</value>
+  </data>
+  <data name="preparing_interface_content_status" xml:space="preserve">
+    <value>Страница переключена. Подготавливается содержимое интерфейса...</value>
+  </data>
   <data name="fill_color" xml:space="preserve">
     <value>Цвет заливки</value>
   </data>
@@ -3011,5 +3020,23 @@
   </data>
   <data name="plot_property_panel_title" xml:space="preserve">
     <value>Панель свойств</value>
+  </data>
+  <data name="data_toolbar_add_row_above_tooltip" xml:space="preserve">
+    <value>Вставить строку над текущим выбором</value>
+  </data>
+  <data name="data_toolbar_update_chart_tooltip" xml:space="preserve">
+    <value>Построить текущие данные на графике</value>
+  </data>
+  <data name="data_toolbar_delete_row_tooltip" xml:space="preserve">
+    <value>Удалить текущую строку</value>
+  </data>
+  <data name="data_toolbar_add_row_below_tooltip" xml:space="preserve">
+    <value>Вставить строку под текущим выбором</value>
+  </data>
+  <data name="data_toolbar_export_data_tooltip" xml:space="preserve">
+    <value>Экспортировать текущие данные таблицы</value>
+  </data>
+  <data name="data_toolbar_clear_all_data_tooltip" xml:space="preserve">
+    <value>Очистить все данные в таблице</value>
   </data>
 </root>

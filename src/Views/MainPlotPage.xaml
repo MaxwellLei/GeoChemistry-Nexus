@@ -53,6 +53,13 @@
         <cvs:IndexToBooleanConverter x:Key="IndexToBooleanConverter"/>
         <cvs:StringToBitmapImageConverter x:Key="StringToBitmapImageConverter"/>
 
+        <Style x:Key="SkeletonBlockStyle" TargetType="Border">
+            <Setter Property="Background" Value="#E8ECF2"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Height" Value="14"/>
+            <Setter Property="Margin" Value="0,0,0,12"/>
+        </Style>
+
         <Style x:Key="TemplateTreeViewItemStyle" BasedOn="{StaticResource ModernStyleTreeViewItemStyle}" TargetType="TreeViewItem">
             <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
             <EventSetter Event="RequestBringIntoView" Handler="TreeViewItem_RequestBringIntoView"/>
@@ -1758,278 +1765,337 @@
                 <Grid Grid.Row="1" Margin="20"
                       Visibility="{Binding IsSpiderDiagramMode, Converter={StaticResource BoolToVisibilityConverter}}">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <!-- 标准化方案选择 -->
-                    <StackPanel Grid.Row="0" Margin="0,0,0,16">
-                        <Grid Margin="0,0,0,8">
-                            <TextBlock Text="{Binding [normalization_standard],Source={x:Static lg:LanguageService.Instance}, FallbackValue='标准化方案'}" 
-                                       FontSize="14" FontWeight="SemiBold" Foreground="#333"
-                                       VerticalAlignment="Center"/>
-                            <CheckBox HorizontalAlignment="Right" VerticalAlignment="Center"
-                                      IsChecked="{Binding SpiderDiagramViewModel.IsNormalizationEnabled, Mode=TwoWay}"
-                                      Content="{Binding [enable_normalization],Source={x:Static lg:LanguageService.Instance}, FallbackValue='启用标准化'}"
-                                      FontSize="12" Foreground="#555"/>
-                        </Grid>
-                        <ComboBox x:Name="NormalizationComboBox"
-                                  ItemsSource="{Binding SpiderDiagramViewModel.AvailableStandards}" 
-                                  SelectedItem="{Binding SpiderDiagramViewModel.SelectedStandard}"
-                                  IsEnabled="{Binding SpiderDiagramViewModel.IsNormalizationEnabled}"
-                                  DisplayMemberPath="Name"
-                                  Height="32" FontSize="13"/>
-                    </StackPanel>
-
-                    <!-- 元素选择与排序 -->
-                    <StackPanel Grid.Row="1" Margin="0,0,0,16">
-                        <!-- 标题行：标题 + 操作链接 -->
-                        <Grid Margin="0,0,0,8">
-                            <TextBlock Text="{Binding [element_order],Source={x:Static lg:LanguageService.Instance}, FallbackValue='元素顺序'}" 
-                                       FontSize="14" FontWeight="SemiBold" Foreground="#333" 
-                                       VerticalAlignment="Center"/>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                                <Button Command="{Binding SpiderDiagramViewModel.SelectAllElementsCommand}" 
-                                        Content="{Binding [select_all],Source={x:Static lg:LanguageService.Instance}, FallbackValue='全选'}" 
-                                        FontSize="12" Foreground="#0078D4" Cursor="Hand"
-                                        Background="Transparent" BorderThickness="0" Padding="6,2" Margin="0,0,2,0">
-                                    <Button.Template>
-                                        <ControlTemplate TargetType="Button">
-                                            <TextBlock x:Name="Tb" Text="{TemplateBinding Content}" 
-                                                       Foreground="{TemplateBinding Foreground}" FontSize="{TemplateBinding FontSize}"
-                                                       Padding="{TemplateBinding Padding}"/>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter TargetName="Tb" Property="TextDecorations" Value="Underline"/>
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Button.Template>
-                                </Button>
-                                <TextBlock Text="|" Foreground="#CCC" VerticalAlignment="Center" Margin="0,0,2,0"/>
-                                <Button Command="{Binding SpiderDiagramViewModel.DeselectAllElementsCommand}" 
-                                        Content="{Binding [deselect_all],Source={x:Static lg:LanguageService.Instance}, FallbackValue='取消全选'}" 
-                                        FontSize="12" Foreground="#0078D4" Cursor="Hand"
-                                        Background="Transparent" BorderThickness="0" Padding="6,2" Margin="0,0,2,0">
-                                    <Button.Template>
-                                        <ControlTemplate TargetType="Button">
-                                            <TextBlock x:Name="Tb" Text="{TemplateBinding Content}" 
-                                                       Foreground="{TemplateBinding Foreground}" FontSize="{TemplateBinding FontSize}"
-                                                       Padding="{TemplateBinding Padding}"/>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter TargetName="Tb" Property="TextDecorations" Value="Underline"/>
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Button.Template>
-                                </Button>
-                                <TextBlock Text="|" Foreground="#CCC" VerticalAlignment="Center" Margin="0,0,2,0"/>
-                                <Button Command="{Binding SpiderDiagramViewModel.ResetElementOrderCommand}" 
-                                        Content="{Binding [reset_default],Source={x:Static lg:LanguageService.Instance}, FallbackValue='重置'}" 
-                                        FontSize="12" Foreground="#0078D4" Cursor="Hand"
-                                        Background="Transparent" BorderThickness="0" Padding="6,2">
-                                    <Button.Template>
-                                        <ControlTemplate TargetType="Button">
-                                            <TextBlock x:Name="Tb" Text="{TemplateBinding Content}" 
-                                                       Foreground="{TemplateBinding Foreground}" FontSize="{TemplateBinding FontSize}"
-                                                       Padding="{TemplateBinding Padding}"/>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter TargetName="Tb" Property="TextDecorations" Value="Underline"/>
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Button.Template>
-                                </Button>
-                            </StackPanel>
-                        </Grid>
-
-                        <!-- 元素 Chip 网格（点击切换选中） -->
-                        <Border Background="White" BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="6" Padding="10,8">
-                            <ItemsControl ItemsSource="{Binding SpiderDiagramViewModel.AllElements}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <WrapPanel/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <ToggleButton IsChecked="{Binding IsSelected, Mode=TwoWay}" 
-                                                      Cursor="Hand" Margin="2,3">
-                                            <ToggleButton.Template>
-                                                <ControlTemplate TargetType="ToggleButton">
-                                                    <Border x:Name="ChipBorder" 
-                                                            CornerRadius="4" Padding="8,4"
-                                                            Background="#F0F4FF" BorderThickness="1" BorderBrush="#D6E4F9">
-                                                        <TextBlock x:Name="ChipText" Text="{Binding Name}" 
-                                                                   FontSize="12" Foreground="#0078D4"/>
-                                                    </Border>
-                                                    <ControlTemplate.Triggers>
-                                                        <!-- 未选中状态 -->
-                                                        <Trigger Property="IsChecked" Value="False">
-                                                            <Setter TargetName="ChipBorder" Property="Background" Value="#F5F5F5"/>
-                                                            <Setter TargetName="ChipBorder" Property="BorderBrush" Value="#E8E8E8"/>
-                                                            <Setter TargetName="ChipText" Property="Foreground" Value="#AAA"/>
-                                                            <Setter TargetName="ChipText" Property="TextDecorations" Value="Strikethrough"/>
-                                                        </Trigger>
-                                                        <!-- 悬浮状态（选中时） -->
-                                                        <MultiTrigger>
-                                                            <MultiTrigger.Conditions>
-                                                                <Condition Property="IsChecked" Value="True"/>
-                                                                <Condition Property="IsMouseOver" Value="True"/>
-                                                            </MultiTrigger.Conditions>
-                                                            <Setter TargetName="ChipBorder" Property="Background" Value="#DCE8FB"/>
-                                                            <Setter TargetName="ChipBorder" Property="BorderBrush" Value="#B0CBF0"/>
-                                                        </MultiTrigger>
-                                                        <!-- 悬浮状态（未选中时） -->
-                                                        <MultiTrigger>
-                                                            <MultiTrigger.Conditions>
-                                                                <Condition Property="IsChecked" Value="False"/>
-                                                                <Condition Property="IsMouseOver" Value="True"/>
-                                                            </MultiTrigger.Conditions>
-                                                            <Setter TargetName="ChipBorder" Property="Background" Value="#EAEAEA"/>
-                                                            <Setter TargetName="ChipBorder" Property="BorderBrush" Value="#D0D0D0"/>
-                                                            <Setter TargetName="ChipText" Property="Foreground" Value="#666"/>
-                                                        </MultiTrigger>
-                                                    </ControlTemplate.Triggers>
-                                                </ControlTemplate>
-                                            </ToggleButton.Template>
-                                        </ToggleButton>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </Border>
-
-                        <!-- 排序调整区域 -->
-                        <Border Background="White" BorderBrush="#E0E0E0" BorderThickness="1" 
-                                CornerRadius="6" Padding="8,6" Margin="0,8,0,0">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-
-                                <!-- 已选元素排序列表（水平滚动） -->
-                                <ListBox Grid.Column="0"
-                                         ItemsSource="{Binding SpiderDiagramViewModel.AllElements}"
-                                         SelectedItem="{Binding SpiderDiagramViewModel.SelectedElementItem, Mode=TwoWay}"
-                                         BorderThickness="0" Background="Transparent"
-                                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                         Height="30">
-                                    <ListBox.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel Orientation="Horizontal"/>
-                                        </ItemsPanelTemplate>
-                                    </ListBox.ItemsPanel>
-                                    <ListBox.ItemContainerStyle>
-                                        <Style TargetType="ListBoxItem">
-                                            <Setter Property="Padding" Value="0"/>
-                                            <Setter Property="Margin" Value="0"/>
-                                            <Setter Property="Template">
-                                                <Setter.Value>
-                                                    <ControlTemplate TargetType="ListBoxItem">
-                                                        <Border x:Name="Bd" Background="Transparent" 
-                                                                CornerRadius="3" Padding="5,3" Margin="1,0">
-                                                            <ContentPresenter/>
-                                                        </Border>
-                                                        <ControlTemplate.Triggers>
-                                                            <Trigger Property="IsSelected" Value="True">
-                                                                <Setter TargetName="Bd" Property="Background" Value="#E0EDFF"/>
-                                                            </Trigger>
-                                                            <Trigger Property="IsMouseOver" Value="True">
-                                                                <Setter TargetName="Bd" Property="Background" Value="#F0F0F0"/>
-                                                            </Trigger>
-                                                        </ControlTemplate.Triggers>
-                                                    </ControlTemplate>
-                                                </Setter.Value>
-                                            </Setter>
-                                            <!-- 隐藏未选中的元素 -->
+                    <ScrollViewer Grid.Row="0"
+                                  VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Disabled"
+                                  CanContentScroll="True">
+                        <StackPanel Margin="0,0,0,16">
+                            <!-- 标准化方案选择 -->
+                            <StackPanel Margin="0,0,0,16">
+                                <Grid Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding [normalization_standard],Source={x:Static lg:LanguageService.Instance}, FallbackValue='标准化方案'}" 
+                                               FontSize="14" FontWeight="SemiBold" Foreground="#333"
+                                               VerticalAlignment="Center"/>
+                                    <CheckBox HorizontalAlignment="Right" VerticalAlignment="Center"
+                                              IsChecked="{Binding SpiderDiagramViewModel.IsNormalizationEnabled, Mode=TwoWay}"
+                                              Content="{Binding [enable_normalization],Source={x:Static lg:LanguageService.Instance}, FallbackValue='启用标准化'}"
+                                              FontSize="12" Foreground="#555"/>
+                                </Grid>
+                                <ComboBox x:Name="NormalizationComboBox"
+                                          ItemsSource="{Binding SpiderDiagramViewModel.AvailableStandards}" 
+                                          SelectedItem="{Binding SpiderDiagramViewModel.SelectedStandard}"
+                                          IsEnabled="{Binding SpiderDiagramViewModel.IsNormalizationEnabled}"
+                                          DisplayMemberPath="Name"
+                                          Height="32" FontSize="13"/>
+                                <Border Margin="0,8,0,0"
+                                        Padding="10,8"
+                                        Background="#FAFAFA"
+                                        BorderBrush="#E8E8E8"
+                                        BorderThickness="1"
+                                        CornerRadius="6"
+                                        IsEnabled="{Binding SpiderDiagramViewModel.IsNormalizationEnabled}"
+                                        Visibility="{Binding SpiderDiagramViewModel.HasSelectedStandardDisplayValues, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Opacity" Value="1"/>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsSelected}" Value="False">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                <DataTrigger Binding="{Binding SpiderDiagramViewModel.IsNormalizationEnabled}" Value="False">
+                                                    <Setter Property="Opacity" Value="0.5"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
-                                    </ListBox.ItemContainerStyle>
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Name}" FontSize="11" Foreground="#555" 
-                                                       VerticalAlignment="Center"/>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
+                                    </Border.Style>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding SpiderDiagramViewModel.SelectedStandardDisplayTitle}"
+                                                   FontSize="12"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="#555"/>
+                                        <ItemsControl Margin="0,6,0,0"
+                                                      ItemsSource="{Binding SpiderDiagramViewModel.SelectedStandardDisplayValues}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border Margin="0,0,6,6"
+                                                            Padding="8,4"
+                                                            Background="White"
+                                                            BorderBrush="#E4E4E4"
+                                                            BorderThickness="1"
+                                                            CornerRadius="4">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock Text="{Binding Key}"
+                                                                       FontSize="12"
+                                                                       FontWeight="SemiBold"
+                                                                       Foreground="#333"/>
+                                                            <TextBlock Text=" = "
+                                                                       FontSize="12"
+                                                                       Foreground="#777"/>
+                                                            <TextBlock Text="{Binding Value, StringFormat={}{0:G6}}"
+                                                                       FontSize="12"
+                                                                       Foreground="#666"/>
+                                                        </StackPanel>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
 
-                                <!-- 上移/下移箭头 -->
-                                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,0">
-                                    <Button Command="{Binding SpiderDiagramViewModel.MoveElementUpCommand}"
-                                            CommandParameter="{Binding SpiderDiagramViewModel.SelectedElementItem}"
-                                            ToolTip="{Binding [move_up],Source={x:Static lg:LanguageService.Instance}, FallbackValue='上移'}"
-                                            Cursor="Hand" Margin="0,0,2,0">
-                                        <Button.Template>
-                                            <ControlTemplate TargetType="Button">
-                                                <Border x:Name="Bd" Width="24" Height="24" CornerRadius="4" 
-                                                        Background="Transparent">
-                                                    <TextBlock Text="&#xE70E;" FontFamily="Segoe MDL2 Assets" 
-                                                               FontSize="11" Foreground="#666"
-                                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                </Border>
-                                                <ControlTemplate.Triggers>
-                                                    <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter TargetName="Bd" Property="Background" Value="#E8E8E8"/>
-                                                    </Trigger>
-                                                    <Trigger Property="IsEnabled" Value="False">
-                                                        <Setter Property="Opacity" Value="0.3"/>
-                                                    </Trigger>
-                                                </ControlTemplate.Triggers>
-                                            </ControlTemplate>
-                                        </Button.Template>
-                                    </Button>
-                                    <Button Command="{Binding SpiderDiagramViewModel.MoveElementDownCommand}"
-                                            CommandParameter="{Binding SpiderDiagramViewModel.SelectedElementItem}"
-                                            ToolTip="{Binding [move_down],Source={x:Static lg:LanguageService.Instance}, FallbackValue='下移'}"
-                                            Cursor="Hand">
-                                        <Button.Template>
-                                            <ControlTemplate TargetType="Button">
-                                                <Border x:Name="Bd" Width="24" Height="24" CornerRadius="4" 
-                                                        Background="Transparent">
-                                                    <TextBlock Text="&#xE70D;" FontFamily="Segoe MDL2 Assets" 
-                                                               FontSize="11" Foreground="#666"
-                                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                </Border>
-                                                <ControlTemplate.Triggers>
-                                                    <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter TargetName="Bd" Property="Background" Value="#E8E8E8"/>
-                                                    </Trigger>
-                                                    <Trigger Property="IsEnabled" Value="False">
-                                                        <Setter Property="Opacity" Value="0.3"/>
-                                                    </Trigger>
-                                                </ControlTemplate.Triggers>
-                                            </ControlTemplate>
-                                        </Button.Template>
-                                    </Button>
-                                </StackPanel>
-                            </Grid>
-                        </Border>
-                    </StackPanel>
+                            <!-- 元素选择与排序 -->
+                            <StackPanel>
+                                <!-- 标题行：标题 + 操作链接 -->
+                                <Grid Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding [element_order],Source={x:Static lg:LanguageService.Instance}, FallbackValue='元素顺序'}" 
+                                               FontSize="14" FontWeight="SemiBold" Foreground="#333" 
+                                               VerticalAlignment="Center"/>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                        <Button Command="{Binding SpiderDiagramViewModel.SelectAllElementsCommand}" 
+                                                Content="{Binding [select_all],Source={x:Static lg:LanguageService.Instance}, FallbackValue='全选'}" 
+                                                FontSize="12" Foreground="#0078D4" Cursor="Hand"
+                                                Background="Transparent" BorderThickness="0" Padding="6,2" Margin="0,0,2,0">
+                                            <Button.Template>
+                                                <ControlTemplate TargetType="Button">
+                                                    <TextBlock x:Name="Tb" Text="{TemplateBinding Content}" 
+                                                               Foreground="{TemplateBinding Foreground}" FontSize="{TemplateBinding FontSize}"
+                                                               Padding="{TemplateBinding Padding}"/>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter TargetName="Tb" Property="TextDecorations" Value="Underline"/>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                        </Button>
+                                        <TextBlock Text="|" Foreground="#CCC" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                        <Button Command="{Binding SpiderDiagramViewModel.DeselectAllElementsCommand}" 
+                                                Content="{Binding [deselect_all],Source={x:Static lg:LanguageService.Instance}, FallbackValue='取消全选'}" 
+                                                FontSize="12" Foreground="#0078D4" Cursor="Hand"
+                                                Background="Transparent" BorderThickness="0" Padding="6,2" Margin="0,0,2,0">
+                                            <Button.Template>
+                                                <ControlTemplate TargetType="Button">
+                                                    <TextBlock x:Name="Tb" Text="{TemplateBinding Content}" 
+                                                               Foreground="{TemplateBinding Foreground}" FontSize="{TemplateBinding FontSize}"
+                                                               Padding="{TemplateBinding Padding}"/>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter TargetName="Tb" Property="TextDecorations" Value="Underline"/>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                        </Button>
+                                        <TextBlock Text="|" Foreground="#CCC" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                        <Button Command="{Binding SpiderDiagramViewModel.ResetElementOrderCommand}" 
+                                                Content="{Binding [reset_default],Source={x:Static lg:LanguageService.Instance}, FallbackValue='重置'}" 
+                                                FontSize="12" Foreground="#0078D4" Cursor="Hand"
+                                                Background="Transparent" BorderThickness="0" Padding="6,2">
+                                            <Button.Template>
+                                                <ControlTemplate TargetType="Button">
+                                                    <TextBlock x:Name="Tb" Text="{TemplateBinding Content}" 
+                                                               Foreground="{TemplateBinding Foreground}" FontSize="{TemplateBinding FontSize}"
+                                                               Padding="{TemplateBinding Padding}"/>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter TargetName="Tb" Property="TextDecorations" Value="Underline"/>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                                <TextBlock Text="{Binding [spider_element_order_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue='勾选需要参与绘图的元素；下方列表表示当前绘图顺序，可通过右侧按钮调整横轴排列。'}"
+                                           Margin="0,0,0,8"
+                                           FontSize="12"
+                                           Foreground="#777"
+                                           TextWrapping="Wrap"/>
 
-                    <!-- 数据输入说明 -->
-                    <Border Grid.Row="2" Background="White" BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="6" Padding="20">
-                        <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets" FontSize="36" 
-                                       HorizontalAlignment="Center" Foreground="#CCC" Margin="0,0,0,12"/>
-                            <TextBlock Text="{Binding [spider_diagram_data_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue='进入绘图模式后，在数据表中粘贴数据。每行代表一个样品，列名需与上方元素名称对应。'}" 
-                                       FontSize="13" Foreground="#666" 
-                                       TextWrapping="Wrap" TextAlignment="Center"
-                                       HorizontalAlignment="Center" MaxWidth="400"/>
+                                <!-- 元素 Chip 网格（点击切换选中） -->
+                                <Border Background="White" BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="6" Padding="10,8">
+                                    <ItemsControl ItemsSource="{Binding SpiderDiagramViewModel.AllElements}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <ToggleButton IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                                              Cursor="Hand" Margin="2,3">
+                                                    <ToggleButton.Template>
+                                                        <ControlTemplate TargetType="ToggleButton">
+                                                            <Border x:Name="ChipBorder"
+                                                                    CornerRadius="4" Padding="8,4"
+                                                                    Background="#F0F4FF" BorderThickness="1" BorderBrush="#D6E4F9">
+                                                                <TextBlock x:Name="ChipText" Text="{Binding Name}"
+                                                                           FontSize="12" Foreground="#0078D4"/>
+                                                            </Border>
+                                                            <ControlTemplate.Triggers>
+                                                                <!-- 未选中状态 -->
+                                                                <Trigger Property="IsChecked" Value="False">
+                                                                    <Setter TargetName="ChipBorder" Property="Background" Value="#F5F5F5"/>
+                                                                    <Setter TargetName="ChipBorder" Property="BorderBrush" Value="#E8E8E8"/>
+                                                                    <Setter TargetName="ChipText" Property="Foreground" Value="#AAA"/>
+                                                                    <Setter TargetName="ChipText" Property="TextDecorations" Value="Strikethrough"/>
+                                                                </Trigger>
+                                                                <!-- 悬浮状态（选中时） -->
+                                                                <MultiTrigger>
+                                                                    <MultiTrigger.Conditions>
+                                                                        <Condition Property="IsChecked" Value="True"/>
+                                                                        <Condition Property="IsMouseOver" Value="True"/>
+                                                                    </MultiTrigger.Conditions>
+                                                                    <Setter TargetName="ChipBorder" Property="Background" Value="#DCE8FB"/>
+                                                                    <Setter TargetName="ChipBorder" Property="BorderBrush" Value="#B0CBF0"/>
+                                                                </MultiTrigger>
+                                                                <!-- 悬浮状态（未选中时） -->
+                                                                <MultiTrigger>
+                                                                    <MultiTrigger.Conditions>
+                                                                        <Condition Property="IsChecked" Value="False"/>
+                                                                        <Condition Property="IsMouseOver" Value="True"/>
+                                                                    </MultiTrigger.Conditions>
+                                                                    <Setter TargetName="ChipBorder" Property="Background" Value="#EAEAEA"/>
+                                                                    <Setter TargetName="ChipBorder" Property="BorderBrush" Value="#D0D0D0"/>
+                                                                    <Setter TargetName="ChipText" Property="Foreground" Value="#666"/>
+                                                                </MultiTrigger>
+                                                            </ControlTemplate.Triggers>
+                                                        </ControlTemplate>
+                                                    </ToggleButton.Template>
+                                                </ToggleButton>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </Border>
+
+                                <!-- 排序调整区域 -->
+                                <TextBlock Text="{Binding [spider_current_plot_order],Source={x:Static lg:LanguageService.Instance}, FallbackValue='当前绘图顺序'}"
+                                           Margin="0,8,0,6"
+                                           FontSize="12"
+                                           FontWeight="SemiBold"
+                                           Foreground="#555"/>
+                                <Border Background="White" BorderBrush="#E0E0E0" BorderThickness="1"
+                                        CornerRadius="6" Padding="8,6">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- 已选元素排序列表（水平滚动） -->
+                                        <ListBox Grid.Column="0"
+                                                 ItemsSource="{Binding SpiderDiagramViewModel.AllElements}"
+                                                 SelectedItem="{Binding SpiderDiagramViewModel.SelectedElementItem, Mode=TwoWay}"
+                                                 BorderThickness="0" Background="Transparent"
+                                                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                                 Height="30">
+                                            <ListBox.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Orientation="Horizontal"/>
+                                                </ItemsPanelTemplate>
+                                            </ListBox.ItemsPanel>
+                                            <ListBox.ItemContainerStyle>
+                                                <Style TargetType="ListBoxItem">
+                                                    <Setter Property="Padding" Value="0"/>
+                                                    <Setter Property="Margin" Value="0"/>
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="ListBoxItem">
+                                                                <Border x:Name="Bd" Background="Transparent"
+                                                                        CornerRadius="3" Padding="5,3" Margin="1,0">
+                                                                    <ContentPresenter/>
+                                                                </Border>
+                                                                <ControlTemplate.Triggers>
+                                                                    <Trigger Property="IsSelected" Value="True">
+                                                                        <Setter TargetName="Bd" Property="Background" Value="#E0EDFF"/>
+                                                                    </Trigger>
+                                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                                        <Setter TargetName="Bd" Property="Background" Value="#F0F0F0"/>
+                                                                    </Trigger>
+                                                                </ControlTemplate.Triggers>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                    <!-- 隐藏未选中的元素 -->
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsSelected}" Value="False">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ListBox.ItemContainerStyle>
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Name}" FontSize="11" Foreground="#555"
+                                                               VerticalAlignment="Center"/>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+
+                                        <!-- 上移/下移箭头 -->
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,0">
+                                            <Button Command="{Binding SpiderDiagramViewModel.MoveElementUpCommand}"
+                                                    CommandParameter="{Binding SpiderDiagramViewModel.SelectedElementItem}"
+                                                    ToolTip="{Binding [move_up],Source={x:Static lg:LanguageService.Instance}, FallbackValue='上移'}"
+                                                    Cursor="Hand" Margin="0,0,2,0">
+                                                <Button.Template>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border x:Name="Bd" Width="24" Height="24" CornerRadius="4"
+                                                                Background="Transparent">
+                                                            <TextBlock Text="&#xE70E;" FontFamily="Segoe MDL2 Assets"
+                                                                       FontSize="11" Foreground="#666"
+                                                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter TargetName="Bd" Property="Background" Value="#E8E8E8"/>
+                                                            </Trigger>
+                                                            <Trigger Property="IsEnabled" Value="False">
+                                                                <Setter Property="Opacity" Value="0.3"/>
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                            </Button>
+                                            <Button Command="{Binding SpiderDiagramViewModel.MoveElementDownCommand}"
+                                                    CommandParameter="{Binding SpiderDiagramViewModel.SelectedElementItem}"
+                                                    ToolTip="{Binding [move_down],Source={x:Static lg:LanguageService.Instance}, FallbackValue='下移'}"
+                                                    Cursor="Hand">
+                                                <Button.Template>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border x:Name="Bd" Width="24" Height="24" CornerRadius="4"
+                                                                Background="Transparent">
+                                                            <TextBlock Text="&#xE70D;" FontFamily="Segoe MDL2 Assets"
+                                                                       FontSize="11" Foreground="#666"
+                                                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter TargetName="Bd" Property="Background" Value="#E8E8E8"/>
+                                                            </Trigger>
+                                                            <Trigger Property="IsEnabled" Value="False">
+                                                                <Setter Property="Opacity" Value="0.3"/>
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </StackPanel>
                         </StackPanel>
-                    </Border>
+                    </ScrollViewer>
 
                     <!-- 底部：进入绘图按钮 -->
-                    <Button Grid.Row="3" Margin="0,16,0,0"
+                    <Button Grid.Row="1" Margin="0,16,0,0"
                             Height="40" MinWidth="180"
                             HorizontalAlignment="Center"
                             Command="{Binding EnterSpiderPlotModeCommand}"
@@ -2360,6 +2426,38 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
+                        <!-- Layer Panel Header -->
+                        <Grid Grid.Row="0" Margin="16,14,16,8">
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding RibbonTabIndex}" Value="0">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding RibbonTabIndex}" Value="2">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="12"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0"
+                                       Text="图层"
+                                       FontSize="12"
+                                       FontWeight="SemiBold"
+                                       Foreground="#666666"
+                                       VerticalAlignment="Center"/>
+                            <Rectangle Grid.Column="2"
+                                       Height="1"
+                                       Fill="#E3E5E8"
+                                       VerticalAlignment="Center"/>
+                        </Grid>
+
                         <!-- Data Toolbar -->
                         <Border Grid.Row="0" Background="#F9F9F9" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1" Padding="10,5">
                             <Border.Style>
@@ -2418,26 +2516,26 @@
                                 <Rectangle Grid.Column="1" Width="1" Height="24" Fill="#D0D0D0" Margin="10,0"/>
 
                                 <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-                                    <Button Command="{Binding AddRowUpCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [add_row_above], Source={x:Static lg:LanguageService.Instance}}">
+                                    <Button Command="{Binding AddRowUpCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [data_toolbar_add_row_above_tooltip], Source={x:Static lg:LanguageService.Instance}, FallbackValue='在当前选中行上方插入一行'}">
                                         <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe615;" FontSize="16"/>
                                     </Button>
-                                    <Button Command="{Binding AddRowDownCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [add_row_below], Source={x:Static lg:LanguageService.Instance}}">
+                                    <Button Command="{Binding AddRowDownCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [data_toolbar_add_row_below_tooltip], Source={x:Static lg:LanguageService.Instance}, FallbackValue='在当前选中行下方插入一行'}">
                                         <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe613;" FontSize="16"/>
                                     </Button>
-                                    <Button Command="{Binding DeleteRowCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [delete_row], Source={x:Static lg:LanguageService.Instance}}">
+                                    <Button Command="{Binding DeleteRowCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [data_toolbar_delete_row_tooltip], Source={x:Static lg:LanguageService.Instance}, FallbackValue='删除当前选中行'}">
                                         <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe89f;" FontSize="16" Foreground="#D92C2C"/>
                                     </Button>
                                 </StackPanel>
 
                                 <StackPanel Grid.Column="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                                    <Button Command="{Binding ExportWorksheetCommand}" CommandParameter="{Binding ElementName=DataGrid}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [export_data], Source={x:Static lg:LanguageService.Instance}}">
+                                    <Button Command="{Binding ClearAllDataCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [data_toolbar_clear_all_data_tooltip], Source={x:Static lg:LanguageService.Instance}, FallbackValue='清空数据表格中的所有数据'}">
+                                        <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe734;" FontSize="16" Foreground="#D92C2C"/>
+                                    </Button>
+                                    <Button Command="{Binding ExportWorksheetCommand}" CommandParameter="{Binding ElementName=DataGrid}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [data_toolbar_export_data_tooltip], Source={x:Static lg:LanguageService.Instance}, FallbackValue='导出当前数据表格内容'}">
                                         <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe656;" FontSize="16" Foreground="#0078D4"/>
                                     </Button>
-                                    <Button Command="{Binding UpdateDataCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [update_chart], Source={x:Static lg:LanguageService.Instance}}">
-                                        <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe71e;" FontSize="16" Foreground="#0078D4"/>
-                                    </Button>
-                                    <Button Command="{Binding ClearAllDataCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [clear_all_data], Source={x:Static lg:LanguageService.Instance}}">
-                                        <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe734;" FontSize="16" Foreground="#D92C2C"/>
+                                    <Button Command="{Binding UpdateDataCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [data_toolbar_update_chart_tooltip], Source={x:Static lg:LanguageService.Instance}, FallbackValue='将当前数据投绘到图表'}">
+                                        <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe62a;" FontSize="16" Foreground="#0078D4"/>
                                     </Button>
                                 </StackPanel>
                             </Grid>
@@ -2779,11 +2877,30 @@
                 <Border Grid.Column="4" Background="#F5F5F7" BorderBrush="#E0E0E0" BorderThickness="1,0,0,0">
                     <Grid>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
+                        <Grid Grid.Row="0" Margin="16,14,16,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="12"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0"
+                                       Text="属性"
+                                       FontSize="12"
+                                       FontWeight="SemiBold"
+                                       Foreground="#666666"
+                                       VerticalAlignment="Center"/>
+                            <Rectangle Grid.Column="2"
+                                       Height="1"
+                                       Fill="#E3E5E8"
+                                       VerticalAlignment="Center"/>
+                        </Grid>
+
                         <!-- Property Grid -->
-                        <Grid Grid.Row="0" Margin="0">
+                        <Grid Grid.Row="1" Margin="0">
                             <Grid.Resources>
                                 <ControlTemplate x:Key="EmptyStateTemplate">
                                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -2850,12 +2967,292 @@
                             </ContentControl>
                         </Grid>
 
-                        <uc:ScriptDefinitionControl Grid.Row="0"
+                        <uc:ScriptDefinitionControl Grid.Row="1"
                                          ScriptDefinition="{Binding CurrentScript}"
                                          Visibility="{Binding ScriptsPropertyGrid, Converter={StaticResource BoolToVisibilityConverter}}"/>
                     </Grid>
                 </Border>
             </Grid>
         </Grid>
+
+        <!-- 页面骨架加载遮罩 -->
+        <Border Panel.ZIndex="2000"
+                Background="#F7F8FA"
+                Visibility="{Binding IsLoadingOverlayVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid Margin="24">
+                <Grid
+                      Visibility="{Binding IsEnteringPlotTransition, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="52"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" Background="#FFFFFF" CornerRadius="12" Padding="16,10">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="260"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="240"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Style="{StaticResource SkeletonBlockStyle}" Height="28" Width="220" Margin="0"/>
+                            <Border Grid.Column="2" Style="{StaticResource SkeletonBlockStyle}" Height="28" Width="200" HorizontalAlignment="Right" Margin="0"/>
+                        </Grid>
+                    </Border>
+
+                    <Grid Grid.Row="1" Margin="0,16,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="280"/>
+                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="320"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Column="0" Background="#FFFFFF" CornerRadius="14" Padding="18">
+                            <StackPanel>
+                                <Border Style="{StaticResource SkeletonBlockStyle}" Height="18" Width="120"/>
+                                <Border Style="{StaticResource SkeletonBlockStyle}" Height="36" Margin="0,4,0,12"/>
+                                <Border Style="{StaticResource SkeletonBlockStyle}" Height="36"/>
+                                <Border Style="{StaticResource SkeletonBlockStyle}" Height="36"/>
+                                <Border Style="{StaticResource SkeletonBlockStyle}" Height="36"/>
+                                <Border Style="{StaticResource SkeletonBlockStyle}" Height="36"/>
+                                <Border Style="{StaticResource SkeletonBlockStyle}" Height="220" Margin="0,20,0,0"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Column="2" Background="#FFFFFF" CornerRadius="14" Padding="18">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Border Grid.Row="0" Background="#F3F6FA" CornerRadius="12"/>
+                                <StackPanel Grid.Row="1" Margin="0,18,0,0">
+                                    <Border Style="{StaticResource SkeletonBlockStyle}" Height="16" Width="240"/>
+                                    <Border Style="{StaticResource SkeletonBlockStyle}" Height="16" Width="180"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <Border Grid.Column="4" Background="#FFFFFF" CornerRadius="14" Padding="18">
+                            <StackPanel>
+                                <Border Style="{StaticResource SkeletonBlockStyle}" Height="20" Width="140"/>
+                                <Border Style="{StaticResource SkeletonBlockStyle}" Height="28" Margin="0,12,0,12"/>
+                                <Border Style="{StaticResource SkeletonBlockStyle}" Height="120"/>
+                                <Border Style="{StaticResource SkeletonBlockStyle}" Height="120"/>
+                                <Border Style="{StaticResource SkeletonBlockStyle}" Height="120"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Grid>
+
+                <Grid
+                      Visibility="{Binding IsReturningTemplateLibraryTransition, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="340"/>
+                        <ColumnDefinition Width="16"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0" Background="#FFFFFF" CornerRadius="14" Padding="18">
+                        <StackPanel>
+                            <Border Style="{StaticResource SkeletonBlockStyle}" Height="24" Width="180"/>
+                            <Border Style="{StaticResource SkeletonBlockStyle}" Height="34" Margin="0,20,0,8"/>
+                            <Border Style="{StaticResource SkeletonBlockStyle}" Height="220"/>
+                            <Border Style="{StaticResource SkeletonBlockStyle}" Height="34" Margin="0,16,0,8"/>
+                            <Border Style="{StaticResource SkeletonBlockStyle}" Height="160"/>
+                            <Border Style="{StaticResource SkeletonBlockStyle}" Height="34" Margin="0,16,0,8"/>
+                            <Border Style="{StaticResource SkeletonBlockStyle}" Height="120"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Grid Grid.Column="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Border Grid.Row="0" Background="#FFFFFF" CornerRadius="14" Padding="18">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="220"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="180"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" Style="{StaticResource SkeletonBlockStyle}" Height="20" Width="180" Margin="0"/>
+                                <Border Grid.Column="2" Style="{StaticResource SkeletonBlockStyle}" Height="32" Width="160" HorizontalAlignment="Right" Margin="0"/>
+                            </Grid>
+                        </Border>
+
+                        <UniformGrid Grid.Row="1" Rows="2" Columns="3" Margin="0,16,0,0">
+                            <Border Background="#FFFFFF" CornerRadius="14" Padding="16" Margin="0,0,16,16">
+                                <StackPanel>
+                                    <Border Style="{StaticResource SkeletonBlockStyle}" Height="130" Margin="0"/>
+                                    <Border Style="{StaticResource SkeletonBlockStyle}" Height="18" Width="80" Margin="0,16,0,12"/>
+                                    <Border Style="{StaticResource SkeletonBlockStyle}" Height="16" Width="180"/>
+                                    <Border Style="{StaticResource SkeletonBlockStyle}" Height="16" Width="140"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Background="#FFFFFF" CornerRadius="14" Padding="16" Margin="0,0,16,16">
+                                <StackPanel>
+                                    <Border Style="{StaticResource SkeletonBlockStyle}" Height="130" Margin="0"/>
+                                    <Border Style="{StaticResource SkeletonBlockStyle}" Height="18" Width="96" Margin="0,16,0,12"/>
+                                    <Border Style="{StaticResource SkeletonBlockStyle}" Height="16" Width="170"/>
+                                    <Border Style="{StaticResource SkeletonBlockStyle}" Height="16" Width="120"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Background="#FFFFFF" CornerRadius="14" Padding="16" Margin="0,0,0,16">
+                                <StackPanel>
+                                    <Border Style="{StaticResource SkeletonBlockStyle}" Height="130" Margin="0"/>
+                                    <Border Style="{StaticResource SkeletonBlockStyle}" Height="18" Width="72" Margin="0,16,0,12"/>
+                                    <Border Style="{StaticResource SkeletonBlockStyle}" Height="16" Width="160"/>
+                                    <Border Style="{StaticResource SkeletonBlockStyle}" Height="16" Width="110"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Background="#FFFFFF" CornerRadius="14" Padding="16" Margin="0,0,16,0">
+                                <StackPanel>
+                                    <Border Style="{StaticResource SkeletonBlockStyle}" Height="130" Margin="0"/>
+                                    <Border Style="{StaticResource SkeletonBlockStyle}" Height="18" Width="88" Margin="0,16,0,12"/>
+                                    <Border Style="{StaticResource SkeletonBlockStyle}" Height="16" Width="175"/>
+                                    <Border Style="{StaticResource SkeletonBlockStyle}" Height="16" Width="128"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Background="#FFFFFF" CornerRadius="14" Padding="16" Margin="0,0,16,0">
+                                <StackPanel>
+                                    <Border Style="{StaticResource SkeletonBlockStyle}" Height="130" Margin="0"/>
+                                    <Border Style="{StaticResource SkeletonBlockStyle}" Height="18" Width="78" Margin="0,16,0,12"/>
+                                    <Border Style="{StaticResource SkeletonBlockStyle}" Height="16" Width="168"/>
+                                    <Border Style="{StaticResource SkeletonBlockStyle}" Height="16" Width="138"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Background="#FFFFFF" CornerRadius="14" Padding="16" Margin="0">
+                                <StackPanel>
+                                    <Border Style="{StaticResource SkeletonBlockStyle}" Height="130" Margin="0"/>
+                                    <Border Style="{StaticResource SkeletonBlockStyle}" Height="18" Width="104" Margin="0,16,0,12"/>
+                                    <Border Style="{StaticResource SkeletonBlockStyle}" Height="16" Width="172"/>
+                                    <Border Style="{StaticResource SkeletonBlockStyle}" Height="16" Width="126"/>
+                                </StackPanel>
+                            </Border>
+                        </UniformGrid>
+                    </Grid>
+                </Grid>
+
+                <Grid
+                      Visibility="{Binding IsDataPlotLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="52"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" Background="#FFFFFF" CornerRadius="12" Padding="16,10">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="240"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="180"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Style="{StaticResource SkeletonBlockStyle}" Height="28" Width="180" Margin="0"/>
+                            <Border Grid.Column="2" Style="{StaticResource SkeletonBlockStyle}" Height="28" Width="140" HorizontalAlignment="Right" Margin="0"/>
+                        </Grid>
+                    </Border>
+
+                    <Grid Grid.Row="1" Margin="0,16,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="280"/>
+                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="320"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Column="0" Background="#FFFFFF" CornerRadius="14" Padding="18">
+                            <StackPanel>
+                                <Border Style="{StaticResource SkeletonBlockStyle}" Height="18" Width="110"/>
+                                <Border Style="{StaticResource SkeletonBlockStyle}" Height="36" Margin="0,8,0,12"/>
+                                <Border Style="{StaticResource SkeletonBlockStyle}" Height="36"/>
+                                <Border Style="{StaticResource SkeletonBlockStyle}" Height="36"/>
+                                <Border Style="{StaticResource SkeletonBlockStyle}" Height="36"/>
+                                <Border Style="{StaticResource SkeletonBlockStyle}" Height="180" Margin="0,20,0,0"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Column="2" Background="#FFFFFF" CornerRadius="14" Padding="18">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Border Grid.Row="0" Background="#F3F6FA" CornerRadius="12"/>
+                                <StackPanel Grid.Row="1" Margin="0,18,0,0">
+                                    <Border Style="{StaticResource SkeletonBlockStyle}" Height="16" Width="260"/>
+                                    <Border Style="{StaticResource SkeletonBlockStyle}" Height="16" Width="200"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <Border Grid.Column="4" Background="#FFFFFF" CornerRadius="14" Padding="18">
+                            <StackPanel>
+                                <Border Style="{StaticResource SkeletonBlockStyle}" Height="20" Width="120"/>
+                                <Border Style="{StaticResource SkeletonBlockStyle}" Height="28" Margin="0,12,0,12"/>
+                                <Border Style="{StaticResource SkeletonBlockStyle}" Height="90"/>
+                                <Border Style="{StaticResource SkeletonBlockStyle}" Height="90"/>
+                                <Border Style="{StaticResource SkeletonBlockStyle}" Height="90"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Grid>
+
+                <Border Panel.ZIndex="5"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Background="#D9FFFFFF"
+                        CornerRadius="18"
+                        Padding="30,22">
+                    <StackPanel HorizontalAlignment="Center">
+                        <Border Width="52" Height="52" CornerRadius="26" Background="#EAF2FF" HorizontalAlignment="Center">
+                            <TextBlock Text="&#xE7C3;"
+                                       FontFamily="Segoe MDL2 Assets"
+                                       Foreground="#0078D4"
+                                       FontSize="20"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Margin="0,16,0,0"
+                                   FontSize="22"
+                                   FontWeight="SemiBold"
+                                   Foreground="#243447"
+                                   HorizontalAlignment="Center"
+                                   Text="{Binding [entering_plot_interface_status], Source={x:Static lg:LanguageService.Instance}, FallbackValue='正在进入绘图界面'}"
+                                   Visibility="{Binding IsEnteringPlotTransition, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <TextBlock Margin="0,16,0,0"
+                                   FontSize="22"
+                                   FontWeight="SemiBold"
+                                   Foreground="#243447"
+                                   HorizontalAlignment="Center"
+                                   Text="{Binding [returning_template_library_status], Source={x:Static lg:LanguageService.Instance}, FallbackValue='正在返回模板库'}"
+                                   Visibility="{Binding IsReturningTemplateLibraryTransition, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <TextBlock Margin="0,16,0,0"
+                                   FontSize="22"
+                                   FontWeight="SemiBold"
+                                   Foreground="#243447"
+                                   HorizontalAlignment="Center"
+                                   Text="正在投绘数据"
+                                   Visibility="{Binding IsDataPlotLoading, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <TextBlock Margin="0,8,0,0"
+                                   FontSize="13"
+                                   Foreground="#6C7A89"
+                                   Text="{Binding [preparing_interface_content_status], Source={x:Static lg:LanguageService.Instance}, FallbackValue='已切换页面，正在准备界面内容...'}"
+                                   HorizontalAlignment="Center"
+                                   Visibility="{Binding IsTransitionLoading, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <TextBlock Margin="0,8,0,0"
+                                   FontSize="13"
+                                   Foreground="#6C7A89"
+                                   Text="正在解析表格并刷新图层，请稍候..."
+                                   HorizontalAlignment="Center"
+                                   Visibility="{Binding IsDataPlotLoading, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
     </Grid>
 </Page>

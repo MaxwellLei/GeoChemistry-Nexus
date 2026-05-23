@@ -1023,6 +1023,15 @@
   <data name="return_to_template_library" xml:space="preserve">
     <value>돌아가기</value>
   </data>
+  <data name="entering_plot_interface_status" xml:space="preserve">
+    <value>플롯 화면으로 이동하는 중</value>
+  </data>
+  <data name="returning_template_library_status" xml:space="preserve">
+    <value>템플릿 라이브러리로 돌아가는 중</value>
+  </data>
+  <data name="preparing_interface_content_status" xml:space="preserve">
+    <value>페이지가 전환되었습니다. 화면 내용을 준비하는 중...</value>
+  </data>
   <data name="fill_color" xml:space="preserve">
     <value>채우기 색상</value>
   </data>
@@ -3011,5 +3020,23 @@
   </data>
   <data name="plot_property_panel_title" xml:space="preserve">
     <value>속성 패널</value>
+  </data>
+  <data name="data_toolbar_add_row_above_tooltip" xml:space="preserve">
+    <value>현재 선택한 행 위에 행 추가</value>
+  </data>
+  <data name="data_toolbar_update_chart_tooltip" xml:space="preserve">
+    <value>현재 데이터를 차트에 반영합니다</value>
+  </data>
+  <data name="data_toolbar_delete_row_tooltip" xml:space="preserve">
+    <value>현재 행 삭제</value>
+  </data>
+  <data name="data_toolbar_add_row_below_tooltip" xml:space="preserve">
+    <value>현재 선택한 행 아래에 행 추가</value>
+  </data>
+  <data name="data_toolbar_export_data_tooltip" xml:space="preserve">
+    <value>현재 표 데이터를 내보냅니다</value>
+  </data>
+  <data name="data_toolbar_clear_all_data_tooltip" xml:space="preserve">
+    <value>표의 모든 데이터를 지웁니다</value>
   </data>
 </root>

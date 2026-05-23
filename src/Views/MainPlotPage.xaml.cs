@@ -384,6 +384,12 @@ namespace GeoChemistryNexus.Views
                     return;
                 }
 
+                // 删除按钮需要保留自身点击行为
+                if (FindAncestor<Button>(originalSource) != null)
+                {
+                    return;
+                }
+
                 // 执行 ViewModel 的选择逻辑
                 if (viewModel.SelectLayerCommand.CanExecute(layerItem))
                 {

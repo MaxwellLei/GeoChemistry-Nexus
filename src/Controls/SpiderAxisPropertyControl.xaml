@@ -18,7 +18,7 @@
     <Grid DataContext="{Binding SelectedObject, RelativeSource={RelativeSource AncestorType=local:SpiderAxisPropertyControl}}">
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
             <StackPanel Margin="12">
-                <TextBlock Text="{Binding [axis_label],Source={x:Static lg:LanguageService.Instance}, FallbackValue='Axis Label'}" 
+                <TextBlock Text="{Binding [axis_style],Source={x:Static lg:LanguageService.Instance}, FallbackValue='Axis Label'}" 
                            Style="{StaticResource ModernSettingsGroupTitle}" Margin="4,10,0,6"/>
                 <Border Style="{StaticResource ModernCardStyle}" Margin="0,0,0,8">
                     <StackPanel Margin="10">
@@ -44,31 +44,47 @@
                             <hc:NumericUpDown Grid.Column="1" Value="{Binding FontSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" Minimum="8" Maximum="36" Increment="1" 
                                              Style="{StaticResource ModernNumericUpDownStyle}" Height="28"/>
                         </Grid>
-                        <!-- Bold -->
+
+                        <!-- Style -->
                         <Grid Margin="0,0,0,12">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" MinWidth="70"/>
+                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="{Binding [is_bold],Source={x:Static lg:LanguageService.Instance}, FallbackValue='Bold'}" 
-                                       Style="{StaticResource ModernLabelStyle}" VerticalAlignment="Center"/>
-                            <CheckBox Grid.Column="1" IsChecked="{Binding IsBold}" VerticalAlignment="Center"/>
-                        </Grid>
-                        <!-- Color -->
-                        <Grid Margin="0,0,0,12">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" MinWidth="70"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="{Binding [color],Source={x:Static lg:LanguageService.Instance}, FallbackValue='Color'}" 
-                                       Style="{StaticResource ModernLabelStyle}" VerticalAlignment="Center"/>
-                            <local:TextPropertyColorPicker Grid.Column="1" 
-                                SelectedColor="{Binding Color, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" Height="32"/>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0"
+                                       Text="{Binding [style],Source={x:Static lg:LanguageService.Instance}, FallbackValue='Style'}"
+                                       Style="{StaticResource ModernLabelStyle}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="2"
+                                       Text="{Binding [font_color],Source={x:Static lg:LanguageService.Instance}, FallbackValue='Font Color'}"
+                                       Style="{StaticResource ModernLabelStyle}"/>
+
+                            <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+                                <ToggleButton Width="40" Height="32" Margin="0,0,8,0"
+                                              IsChecked="{Binding IsBold, Mode=TwoWay}"
+                                              Style="{StaticResource FontStyleToggleButtonStyle}">
+                                    <TextBlock Text="B" FontWeight="Bold"/>
+                                </ToggleButton>
+                                <ToggleButton Width="40" Height="32"
+                                              IsChecked="{Binding IsItalic, Mode=TwoWay}"
+                                              Style="{StaticResource FontStyleToggleButtonStyle}">
+                                    <TextBlock Text="I" FontStyle="Italic" FontFamily="Times New Roman"/>
+                                </ToggleButton>
+                            </StackPanel>
+
+                            <local:TextPropertyColorPicker Grid.Row="1" Grid.Column="2"
+                                                           SelectedColor="{Binding Color, Mode=TwoWay, Converter={StaticResource StringColorConverter}}"
+                                                           Height="32" Width="100"/>
                         </Grid>
                     </StackPanel>
                 </Border>
 
-                <TextBlock Text="{Binding [tick_label],Source={x:Static lg:LanguageService.Instance}, FallbackValue='Tick Label'}" 
+                <TextBlock Text="{Binding [major_tick_style],Source={x:Static lg:LanguageService.Instance}, FallbackValue='Tick Label'}" 
                            Style="{StaticResource ModernSettingsGroupTitle}" Margin="4,10,0,6"/>
                 <Border Style="{StaticResource ModernCardStyle}" Margin="0,0,0,8">
                     <StackPanel Margin="10">

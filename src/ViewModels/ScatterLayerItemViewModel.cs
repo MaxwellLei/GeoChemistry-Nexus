@@ -11,6 +11,7 @@ namespace GeoChemistryNexus.ViewModels
     public partial class ScatterLayerItemViewModel : LayerItemViewModel, IPlotLayer
     {
         public ScatterDefinition ScatterDefinition { get; }
+        public override bool ShowInlineDeleteButton => true;
 
         private List<Coordinates> _dataPoints = new List<Coordinates>();
         // 用来存储实际的数据点列表（无论是笛卡尔还是三元转换后的）

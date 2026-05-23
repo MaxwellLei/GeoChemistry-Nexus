@@ -133,6 +133,7 @@
                 <ColumnDefinition Width="28"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
             <CheckBox Grid.Column="0"
@@ -389,7 +390,51 @@
                 </TextBlock.Style>
             </TextBlock>
 
-            <Border Grid.Column="3"
+            <Button Grid.Column="3"
+                    Width="22"
+                    Height="22"
+                    Margin="8,0,0,0"
+                    Padding="0"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Right"
+                    Cursor="Hand"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    BorderThickness="0"
+                    Focusable="False"
+                    ToolTip="删除"
+                    Command="{Binding DataContext.DeleteSelectedObjectCommand, RelativeSource={RelativeSource AncestorType=TreeView}}">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Setter Property="Foreground" Value="#D92C2C"/>
+                        <Setter Property="Opacity" Value="0.9"/>
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsSelected}" Value="True"/>
+                                    <Condition Binding="{Binding ShowInlineDeleteButton}" Value="True"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </MultiDataTrigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#1AD92C2C"/>
+                                <Setter Property="BorderBrush" Value="#33D92C2C"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                                <Setter Property="Opacity" Value="1"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont"
+                           Text="&#xe6a2;"
+                           FontSize="14"
+                           Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
+            </Button>
+
+            <Border Grid.Column="4"
                     Margin="8,0,0,0"
                     MinWidth="18"
                     Height="18"

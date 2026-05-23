@@ -13,6 +13,7 @@ namespace GeoChemistryNexus.ViewModels
     public class SpiderSampleLayerItemViewModel : LayerItemViewModel, IPlotLayer
     {
         public event Action<SpiderSampleLayerItemViewModel, string>? SampleNameChanged;
+        public override bool ShowInlineDeleteButton => true;
 
         private sealed class ScatterStyleState
         {

@@ -79,6 +79,51 @@ namespace GeoChemistryNexus.ViewModels
             : "Multi-Element Spider Diagram";
 
         /// <summary>
+        /// 当前所选标准化方案的参考值标题
+        /// </summary>
+        public string SelectedStandardDisplayTitle => SelectedStandard == null
+            ? "标准化参考值"
+            : $"{SelectedStandard.ShortName} 参考值 (ppm)";
+
+        /// <summary>
+        /// 当前所选标准化方案的参考值列表，按该图类型的默认顺序展示全部参考值
+        /// </summary>
+        public IReadOnlyList<KeyValuePair<string, double>> SelectedStandardDisplayValues
+        {
+            get
+            {
+                if (SelectedStandard == null)
+                {
+                    return Array.Empty<KeyValuePair<string, double>>();
+                }
+
+                var defaultOrder = DiagramType == "REE"
+                    ? NormalizationData.ReeElementOrder
+                    : NormalizationData.TraceElementOrder;
+
+                var orderedValues = defaultOrder
+                    .Where(element => SelectedStandard.Values.ContainsKey(element))
+                    .Select(element => new KeyValuePair<string, double>(element, SelectedStandard.Values[element]))
+                    .ToList();
+
+                foreach (var entry in SelectedStandard.Values)
+                {
+                    if (!orderedValues.Any(item => item.Key == entry.Key))
+                    {
+                        orderedValues.Add(new KeyValuePair<string, double>(entry.Key, entry.Value));
+                    }
+                }
+
+                return orderedValues;
+            }
+        }
+
+        /// <summary>
+        /// 是否存在可展示的标准化参考值
+        /// </summary>
+        public bool HasSelectedStandardDisplayValues => SelectedStandardDisplayValues.Count > 0;
+
+        /// <summary>
         /// 元素排序/选择变更事件，用于通知外部（如 MainPlotViewModel）刷新数据表格
         /// </summary>
         public event Action? ElementOrderChanged;
@@ -293,6 +338,8 @@ namespace GeoChemistryNexus.ViewModels
 
         partial void OnSelectedStandardChanged(NormalizationStandard? value)
         {
+            RefreshSelectedStandardDisplay();
+
             if (Samples.Count == 0) return;
 
             // 模板化模式下，由外部统一负责重绘，避免重复叠加渲染
@@ -327,6 +374,34 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
+        private void RefreshSelectedStandardDisplay()
+        {
+            OnPropertyChanged(nameof(SelectedStandardDisplayTitle));
+            OnPropertyChanged(nameof(SelectedStandardDisplayValues));
+            OnPropertyChanged(nameof(HasSelectedStandardDisplayValues));
+        }
+
+        /// <summary>
+        /// 直接加载已解析的样品数据
+        /// </summary>
+        public void LoadSamples(IEnumerable<SpiderSampleData> samples)
+        {
+            Samples.Clear();
+
+            if (samples != null)
+            {
+                foreach (var sample in samples)
+                {
+                    if (sample != null)
+                    {
+                        Samples.Add(sample);
+                    }
+                }
+            }
+
+            NotifySamplesLoaded();
+        }
+
         /// <summary>
         /// 从数据表加载样品数据
         /// </summary>
@@ -337,23 +412,23 @@ namespace GeoChemistryNexus.ViewModels
             string sampleNameColumn = "Sample",
             IReadOnlyList<int>? sourceRowIndices = null)
         {
-            Samples.Clear();
+            var parsedSamples = new List<SpiderSampleData>(dataRows?.Count ?? 0);
 
             for (int rowIndex = 0; rowIndex < dataRows.Count; rowIndex++)
             {
                 var row = dataRows[rowIndex];
-                string sampleName = row.ContainsKey(sampleNameColumn) ? row[sampleNameColumn] : $"Sample {Samples.Count + 1}";
+                string sampleName = row.ContainsKey(sampleNameColumn) ? row[sampleNameColumn] : $"Sample {rowIndex + 1}";
 
-                var values = new Dictionary<string, double>();
+                var values = new Dictionary<string, double>(ElementOrder.Count, StringComparer.OrdinalIgnoreCase);
                 foreach (var element in ElementOrder)
                 {
-                    if (row.ContainsKey(element) && double.TryParse(row[element], out double val))
+                    if (row.TryGetValue(element, out string? textValue) && double.TryParse(textValue, out double val))
                     {
                         values[element] = val;
                     }
                 }
 
-                Samples.Add(new SpiderSampleData
+                parsedSamples.Add(new SpiderSampleData
                 {
                     Name = sampleName,
                     ElementValues = values,
@@ -363,6 +438,11 @@ namespace GeoChemistryNexus.ViewModels
                 });
             }
 
+            LoadSamples(parsedSamples);
+        }
+
+        private void NotifySamplesLoaded()
+        {
             if (Samples.Count == 0) return;
 
             // 模板化模式下，由外部统一负责重绘，避免重复叠加渲染

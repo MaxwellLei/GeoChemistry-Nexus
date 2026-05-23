@@ -14,6 +14,7 @@ namespace GeoChemistryNexus.ViewModels
         private Frame Nav;  //导航对象
         public RelayCommand CommonPage { get; private set; }   //切换常规设置命令
         public RelayCommand PlotPage { get; private set; }     //切换绘图设置命令
+        public RelayCommand ShortcutPage { get; private set; } //切换快捷键说明命令
         public RelayCommand AboutPage { get; private set; }   //切换关于命令
         public RelayCommand GeothermometerPage { get; private set; }   //切换地质温度计设置命令
 
@@ -22,6 +23,7 @@ namespace GeoChemistryNexus.ViewModels
             Nav = nav;
             CommonPage = new RelayCommand(ExecuteCommonPage);
             PlotPage = new RelayCommand(ExecutePlotPage);
+            ShortcutPage = new RelayCommand(ExecuteShortcutPage);
             AboutPage = new RelayCommand(ExecuteAboutPage);
             GeothermometerPage = new RelayCommand(ExecuteGeothermometerPage);
             Nav.Navigate(SCommonPageView.GetPage());
@@ -37,6 +39,12 @@ namespace GeoChemistryNexus.ViewModels
         private void ExecuteAboutPage()
         {
             Nav.Navigate(SAboutPageView.GetPage());
+        }
+
+        //切换快捷键说明命令
+        private void ExecuteShortcutPage()
+        {
+            Nav.Navigate(SShortcutPageView.GetPage());
         }
 
         //切换常规设置命令

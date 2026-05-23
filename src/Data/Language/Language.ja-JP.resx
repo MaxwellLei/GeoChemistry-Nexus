@@ -1023,6 +1023,15 @@
   <data name="return_to_template_library" xml:space="preserve">
     <value>戻る</value>
   </data>
+  <data name="entering_plot_interface_status" xml:space="preserve">
+    <value>描画画面に移動しています</value>
+  </data>
+  <data name="returning_template_library_status" xml:space="preserve">
+    <value>テンプレートライブラリに戻っています</value>
+  </data>
+  <data name="preparing_interface_content_status" xml:space="preserve">
+    <value>ページを切り替えました。画面の内容を準備しています...</value>
+  </data>
   <data name="fill_color" xml:space="preserve">
     <value>塗りつぶし色</value>
   </data>
@@ -3011,5 +3020,23 @@
   </data>
   <data name="plot_property_panel_title" xml:space="preserve">
     <value>プロパティパネル</value>
+  </data>
+  <data name="data_toolbar_add_row_above_tooltip" xml:space="preserve">
+    <value>現在選択中の行の上に 1 行挿入</value>
+  </data>
+  <data name="data_toolbar_update_chart_tooltip" xml:space="preserve">
+    <value>現在のデータをグラフに反映</value>
+  </data>
+  <data name="data_toolbar_delete_row_tooltip" xml:space="preserve">
+    <value>現在の行を削除</value>
+  </data>
+  <data name="data_toolbar_add_row_below_tooltip" xml:space="preserve">
+    <value>現在選択中の行の下に 1 行挿入</value>
+  </data>
+  <data name="data_toolbar_export_data_tooltip" xml:space="preserve">
+    <value>現在の表データをエクスポート</value>
+  </data>
+  <data name="data_toolbar_clear_all_data_tooltip" xml:space="preserve">
+    <value>表内のすべてのデータをクリア</value>
   </data>
 </root>

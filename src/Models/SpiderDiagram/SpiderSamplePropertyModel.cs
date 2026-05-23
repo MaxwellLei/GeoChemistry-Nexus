@@ -15,8 +15,6 @@ namespace GeoChemistryNexus.Models.SpiderDiagram
     {
         private readonly List<Scatter> _scatters = new();
         private Scatter? _legendProxy;
-        private WpfPlot? _wpfPlot;
-
         /// <summary>
         /// 样品名称
         /// </summary>
@@ -60,7 +58,6 @@ namespace GeoChemistryNexus.Models.SpiderDiagram
         {
             _scatters = scatters?.Where(s => s != null).Distinct().ToList() ?? new List<Scatter>();
             _legendProxy = legendProxy;
-            _wpfPlot = wpfPlot;
 
             var firstScatter = _scatters.FirstOrDefault();
             if (firstScatter != null)
@@ -86,7 +83,6 @@ namespace GeoChemistryNexus.Models.SpiderDiagram
                 }
                 // 图例代理颜色同步
                 if (_legendProxy != null) _legendProxy.Color = color;
-                _wpfPlot?.Refresh();
             }
             catch { }
         }
@@ -99,7 +95,6 @@ namespace GeoChemistryNexus.Models.SpiderDiagram
                 scatter.LineWidth = value;
             }
             // 不更新 _legendProxy.LineWidth — 图例保持固定大小
-            _wpfPlot?.Refresh();
         }
 
         partial void OnMarkerSizeChanged(float value)
@@ -110,7 +105,6 @@ namespace GeoChemistryNexus.Models.SpiderDiagram
                 scatter.MarkerSize = value;
             }
             // 不更新 _legendProxy.MarkerSize — 图例保持固定大小
-            _wpfPlot?.Refresh();
         }
 
         partial void OnMarkerShapeChanged(MarkerShape value)
@@ -122,7 +116,6 @@ namespace GeoChemistryNexus.Models.SpiderDiagram
             }
             // 图例代理形状同步
             if (_legendProxy != null) _legendProxy.MarkerShape = value;
-            _wpfPlot?.Refresh();
         }
 
         partial void OnSampleNameChanged(string value)
@@ -140,7 +133,6 @@ namespace GeoChemistryNexus.Models.SpiderDiagram
                     scatter.LegendText = value;
                 }
             }
-            _wpfPlot?.Refresh();
         }
     }
 }

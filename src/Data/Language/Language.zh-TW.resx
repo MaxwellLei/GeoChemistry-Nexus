@@ -1023,6 +1023,15 @@
   <data name="return_to_template_library" xml:space="preserve">
     <value>返回</value>
   </data>
+  <data name="entering_plot_interface_status" xml:space="preserve">
+    <value>正在進入繪圖介面</value>
+  </data>
+  <data name="returning_template_library_status" xml:space="preserve">
+    <value>正在返回模板庫</value>
+  </data>
+  <data name="preparing_interface_content_status" xml:space="preserve">
+    <value>已切換頁面，正在準備介面內容...</value>
+  </data>
   <data name="fill_color" xml:space="preserve">
     <value>填充顏色</value>
   </data>
@@ -3011,5 +3020,158 @@
   </data>
   <data name="plot_property_panel_title" xml:space="preserve">
     <value>屬性面板</value>
+  </data>
+  <data name="data_toolbar_add_row_above_tooltip" xml:space="preserve">
+    <value>在目前選取列上方插入一列</value>
+  </data>
+  <data name="data_toolbar_update_chart_tooltip" xml:space="preserve">
+    <value>將目前資料投繪到圖表</value>
+  </data>
+  <data name="data_toolbar_delete_row_tooltip" xml:space="preserve">
+    <value>刪除目前選取列</value>
+  </data>
+  <data name="data_toolbar_add_row_below_tooltip" xml:space="preserve">
+    <value>在目前選取列下方插入一列</value>
+  </data>
+  <data name="data_toolbar_export_data_tooltip" xml:space="preserve">
+    <value>匯出目前資料表格內容</value>
+  </data>
+  <data name="data_toolbar_clear_all_data_tooltip" xml:space="preserve">
+    <value>清空資料表格中的所有資料</value>
+  </data>
+  <data name="shortcuts_title" xml:space="preserve">
+    <value>快捷鍵</value>
+  </data>
+  <data name="shortcuts_intro" xml:space="preserve">
+    <value>這裡展示目前版本已支援的快捷鍵，僅供查看，不能在此頁面修改。</value>
+  </data>
+  <data name="shortcuts_hint" xml:space="preserve">
+    <value>提示：部分快捷鍵僅在對應頁面處於啟用狀態或取得焦點時生效。</value>
+  </data>
+  <data name="shortcut_group_plot_title" xml:space="preserve">
+    <value>主繪圖頁</value>
+  </data>
+  <data name="shortcut_group_plot_desc" xml:space="preserve">
+    <value>以下快捷鍵主要在圖解編輯頁面生效。</value>
+  </data>
+  <data name="shortcut_group_add_title" xml:space="preserve">
+    <value>快速新增物件</value>
+  </data>
+  <data name="shortcut_group_add_desc" xml:space="preserve">
+    <value>用於在繪圖頁中快速建立常見物件。</value>
+  </data>
+  <data name="shortcut_group_template_title" xml:space="preserve">
+    <value>模板卡片操作</value>
+  </data>
+  <data name="shortcut_group_template_desc" xml:space="preserve">
+    <value>以下操作適用於模板瀏覽模式中的卡片區域。</value>
+  </data>
+  <data name="shortcut_group_rich_text_title" xml:space="preserve">
+    <value>富文字編輯</value>
+  </data>
+  <data name="shortcut_group_rich_text_desc" xml:space="preserve">
+    <value>適用於說明文件等富文字編輯區域。</value>
+  </data>
+  <data name="shortcut_action_undo_name" xml:space="preserve">
+    <value>復原</value>
+  </data>
+  <data name="shortcut_action_undo_desc" xml:space="preserve">
+    <value>復原上一步操作。</value>
+  </data>
+  <data name="shortcut_action_redo_name" xml:space="preserve">
+    <value>重做</value>
+  </data>
+  <data name="shortcut_action_redo_desc" xml:space="preserve">
+    <value>恢復剛剛復原的操作。</value>
+  </data>
+  <data name="shortcut_action_delete_selected_name" xml:space="preserve">
+    <value>刪除選取物件</value>
+  </data>
+  <data name="shortcut_action_delete_selected_desc" xml:space="preserve">
+    <value>刪除目前選取的繪圖物件。</value>
+  </data>
+  <data name="shortcut_action_center_view_name" xml:space="preserve">
+    <value>視圖置中</value>
+  </data>
+  <data name="shortcut_action_center_view_desc" xml:space="preserve">
+    <value>將繪圖視圖快速置中。</value>
+  </data>
+  <data name="shortcut_action_save_plot_name" xml:space="preserve">
+    <value>儲存圖解</value>
+  </data>
+  <data name="shortcut_action_save_plot_desc" xml:space="preserve">
+    <value>儲存目前圖解或模板內容。</value>
+  </data>
+  <data name="shortcut_action_add_line_name" xml:space="preserve">
+    <value>新增直線</value>
+  </data>
+  <data name="shortcut_action_add_line_desc" xml:space="preserve">
+    <value>插入一條直線物件。</value>
+  </data>
+  <data name="shortcut_action_add_text_name" xml:space="preserve">
+    <value>新增文字</value>
+  </data>
+  <data name="shortcut_action_add_text_desc" xml:space="preserve">
+    <value>插入一個文字物件。</value>
+  </data>
+  <data name="shortcut_action_add_polygon_name" xml:space="preserve">
+    <value>新增多邊形</value>
+  </data>
+  <data name="shortcut_action_add_polygon_desc" xml:space="preserve">
+    <value>插入一個多邊形物件。</value>
+  </data>
+  <data name="shortcut_action_add_arrow_name" xml:space="preserve">
+    <value>新增箭頭</value>
+  </data>
+  <data name="shortcut_action_add_arrow_desc" xml:space="preserve">
+    <value>插入一個箭頭物件。</value>
+  </data>
+  <data name="shortcut_action_add_function_name" xml:space="preserve">
+    <value>新增函數</value>
+  </data>
+  <data name="shortcut_action_add_function_desc" xml:space="preserve">
+    <value>插入一個函數物件。</value>
+  </data>
+  <data name="shortcut_action_quick_favorite_name" xml:space="preserve">
+    <value>快捷收藏</value>
+  </data>
+  <data name="shortcut_action_quick_favorite_keys" xml:space="preserve">
+    <value>Ctrl+點擊卡片右側區域</value>
+  </data>
+  <data name="shortcut_action_quick_favorite_desc" xml:space="preserve">
+    <value>快速切換模板收藏狀態。</value>
+  </data>
+  <data name="shortcut_action_quick_delete_name" xml:space="preserve">
+    <value>快捷刪除</value>
+  </data>
+  <data name="shortcut_action_quick_delete_keys" xml:space="preserve">
+    <value>Ctrl+點擊卡片左側區域</value>
+  </data>
+  <data name="shortcut_action_quick_delete_desc" xml:space="preserve">
+    <value>直接刪除自訂模板，跳過二次確認。</value>
+  </data>
+  <data name="shortcut_action_bold_name" xml:space="preserve">
+    <value>粗體</value>
+  </data>
+  <data name="shortcut_action_bold_desc" xml:space="preserve">
+    <value>切換選取文字的粗體樣式。</value>
+  </data>
+  <data name="shortcut_action_italic_name" xml:space="preserve">
+    <value>斜體</value>
+  </data>
+  <data name="shortcut_action_italic_desc" xml:space="preserve">
+    <value>切換選取文字的斜體樣式。</value>
+  </data>
+  <data name="shortcut_action_underline_name" xml:space="preserve">
+    <value>底線</value>
+  </data>
+  <data name="shortcut_action_underline_desc" xml:space="preserve">
+    <value>切換選取文字的底線樣式。</value>
+  </data>
+  <data name="spider_element_order_hint" xml:space="preserve">
+    <value>勾選需要參與繪圖的元素；下方列表表示目前繪圖順序，可透過右側按鈕調整橫軸排列。</value>
+  </data>
+  <data name="spider_current_plot_order" xml:space="preserve">
+    <value>目前繪圖順序</value>
   </data>
 </root>
