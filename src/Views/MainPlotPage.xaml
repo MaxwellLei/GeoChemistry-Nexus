@@ -2408,7 +2408,7 @@
             </Border>
 
             <!-- Main Content -->
-            <Grid Grid.Row="1" x:Name="MainLayoutGrid">
+            <Grid Grid.Row="1" x:Name="MainLayoutGrid" ClipToBounds="True">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition x:Name="InnerLeftCol" Width="280" MinWidth="200" MaxWidth="500"/>
                     <ColumnDefinition Width="4"/>
@@ -2447,7 +2447,7 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0"
-                                       Text="图层"
+                                       Text="{Binding [layer], Source={x:Static lg:LanguageService.Instance}, FallbackValue='图层'}"
                                        FontSize="12"
                                        FontWeight="SemiBold"
                                        Foreground="#666666"
@@ -2516,6 +2516,12 @@
                                 <Rectangle Grid.Column="1" Width="1" Height="24" Fill="#D0D0D0" Margin="10,0"/>
 
                                 <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <ToggleButton IsChecked="{Binding IsDataSelectionLinkEnabled, Mode=TwoWay}"
+                                                  Style="{StaticResource ToolbarIconButtonStyle}"
+                                                  ToolTip="{Binding [enable_data_to_drawing_object_linkage], Source={x:Static lg:LanguageService.Instance}, FallbackValue='启用数据到绘图对象联动'}">
+                                        <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe62c;" FontSize="16"/>
+                                    </ToggleButton>
+                                    <Rectangle Width="1" Height="24" Fill="#D0D0D0" Margin="8,0"/>
                                     <Button Command="{Binding AddRowUpCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [data_toolbar_add_row_above_tooltip], Source={x:Static lg:LanguageService.Instance}, FallbackValue='在当前选中行上方插入一行'}">
                                         <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe615;" FontSize="16"/>
                                     </Button>
@@ -2681,6 +2687,9 @@
 
                 <!-- Center Panel: Plot -->
                 <Grid Grid.Column="2" Background="#FFFFFF" x:Name="PlotContainer" ClipToBounds="True">
+                    <Grid.RenderTransform>
+                        <TranslateTransform x:Name="PlotContainerTranslate"/>
+                    </Grid.RenderTransform>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
@@ -2871,10 +2880,17 @@
                     </Border>
                 </Grid>
 
-                <GridSplitter Grid.Column="3" Width="4" HorizontalAlignment="Stretch" Background="Transparent"/>
+                <GridSplitter x:Name="RightSplitter" Grid.Column="3" Width="4" HorizontalAlignment="Stretch" Background="Transparent">
+                    <GridSplitter.RenderTransform>
+                        <TranslateTransform x:Name="RightSplitterTranslate"/>
+                    </GridSplitter.RenderTransform>
+                </GridSplitter>
 
                 <!-- Right Panel: Inspector -->
-                <Border Grid.Column="4" Background="#F5F5F7" BorderBrush="#E0E0E0" BorderThickness="1,0,0,0">
+                <Border x:Name="RightPanelBorder" Grid.Column="4" Background="#F5F5F7" BorderBrush="#E0E0E0" BorderThickness="1,0,0,0">
+                    <Border.RenderTransform>
+                        <TranslateTransform x:Name="RightPanelTranslate"/>
+                    </Border.RenderTransform>
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -2888,7 +2904,7 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0"
-                                       Text="属性"
+                                       Text="{Binding [property], Source={x:Static lg:LanguageService.Instance}, FallbackValue='属性'}"
                                        FontSize="12"
                                        FontWeight="SemiBold"
                                        Foreground="#666666"
@@ -3236,7 +3252,7 @@
                                    FontWeight="SemiBold"
                                    Foreground="#243447"
                                    HorizontalAlignment="Center"
-                                   Text="正在投绘数据"
+                                   Text="{Binding [projecting_data], Source={x:Static lg:LanguageService.Instance}, FallbackValue='正在投绘数据'}"
                                    Visibility="{Binding IsDataPlotLoading, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         <TextBlock Margin="0,8,0,0"
                                    FontSize="13"
@@ -3247,7 +3263,7 @@
                         <TextBlock Margin="0,8,0,0"
                                    FontSize="13"
                                    Foreground="#6C7A89"
-                                   Text="正在解析表格并刷新图层，请稍候..."
+                                   Text="{Binding [parsing_table_and_refreshing_layer_please_wait], Source={x:Static lg:LanguageService.Instance}, FallbackValue='正在解析表格并刷新图层，请稍候...'}"
                                    HorizontalAlignment="Center"
                                    Visibility="{Binding IsDataPlotLoading, Converter={StaticResource BoolToVisibilityConverter}}"/>
                     </StackPanel>

@@ -374,7 +374,6 @@
             <TextBlock Grid.Column="2"
                        Text="{Binding Name}"
                        ToolTip="{Binding Name}"
-                       MaxWidth="{Binding RelativeSource={RelativeSource AncestorType=TreeView}, Path=ActualWidth}"
                        TextWrapping="NoWrap"
                        VerticalAlignment="Center"
                        TextTrimming="CharacterEllipsis">
@@ -1344,4 +1343,3 @@
     </Style>
 
 </ResourceDictionary>
-

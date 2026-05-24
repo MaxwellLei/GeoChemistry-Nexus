@@ -3039,4 +3039,49 @@ Verzeichnis: {2}</value>
   <data name="data_toolbar_clear_all_data_tooltip" xml:space="preserve">
     <value>Alle Daten in der Tabelle löschen</value>
   </data>
+  <data name="layer" xml:space="preserve">
+    <value>Ebene</value>
+  </data>
+  <data name="property" xml:space="preserve">
+    <value>Eigenschaft</value>
+  </data>
+  <data name="projecting_data" xml:space="preserve">
+    <value>Daten werden projiziert</value>
+  </data>
+  <data name="parsing_table_and_refreshing_layer_please_wait" xml:space="preserve">
+    <value>Tabelle wird analysiert und Ebene wird aktualisiert, bitte warten...</value>
+  </data>
+  <data name="delete_selected_drawing_objects" xml:space="preserve">
+    <value>Ausgewählte Zeichnungsobjekte löschen?</value>
+  </data>
+  <data name="delete_selected_data_and_drawing_objects" xml:space="preserve">
+    <value>Ausgewählte Daten und Zeichnungsobjekte löschen?</value>
+  </data>
+  <data name="delete_all" xml:space="preserve">
+    <value>Alle löschen</value>
+  </data>
+  <data name="keep_data" xml:space="preserve">
+    <value>Daten behalten</value>
+  </data>
+  <data name="cancel_delete" xml:space="preserve">
+    <value>Löschen abbrechen</value>
+  </data>
+  <data name="selected_data_and_drawing_objects_deleted" xml:space="preserve">
+    <value>Die ausgewählten Daten und Zeichnungsobjekte wurden gelöscht.</value>
+  </data>
+  <data name="selected_drawing_objects_deleted_data_kept" xml:space="preserve">
+    <value>Die ausgewählten Zeichnungsobjekte wurden gelöscht, die Daten wurden beibehalten.</value>
+  </data>
+  <data name="no_source_data_found_only_drawing_objects_deleted" xml:space="preserve">
+    <value>Keine Quelldaten gefunden; nur Zeichnungsobjekte wurden gelöscht.</value>
+  </data>
+  <data name="no_source_data_found" xml:space="preserve">
+    <value>Keine Quelldaten gefunden.</value>
+  </data>
+  <data name="delete_data_failed" xml:space="preserve">
+    <value>Daten konnten nicht gelöscht werden:</value>
+  </data>
+  <data name="enable_data_to_drawing_object_linkage" xml:space="preserve">
+    <value>Daten-zu-Zeichnungsobjekt-Verknüpfung aktivieren</value>
+  </data>
 </root>

@@ -31,6 +31,16 @@
                                FontSize="22" FontWeight="Bold" Foreground="#1D1D1F" VerticalAlignment="Center"/>
                 </StackPanel>
 
+                <!-- Name Group -->
+                <TextBlock Text="{Binding [style],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernSettingsGroupTitle}" Margin="4,0,0,6"/>
+                <Border Style="{StaticResource ModernCardStyle}" Margin="0,0,0,8">
+                    <StackPanel Margin="10">
+                        <TextBlock Text="{Binding [name],Source={x:Static lg:LanguageService.Instance}, FallbackValue='Name'}" Style="{StaticResource ModernLabelStyle}"/>
+                        <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Height="28" FontSize="13" Padding="6,3" VerticalContentAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+
                 <!-- Position Group -->
                 <TextBlock Text="{Binding [position],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernSettingsGroupTitle}" Margin="4,10,0,6"/>
                 <Border Style="{StaticResource ModernCardStyle}" Margin="0,0,0,8">

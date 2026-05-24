@@ -9,6 +9,14 @@ namespace GeoChemistryNexus.Models
 {
     public partial class ScatterDefinition : ObservableObject
     {
+        /// <summary>
+        /// 数据系列名称
+        /// </summary>
+        [ObservableProperty]
+        [property: LocalizedCategory("style")]
+        [property: LocalizedDisplayName("name")]
+        private string _name = string.Empty;
+
         // 坐标位置
         [ObservableProperty]
         [property: LocalizedCategory("position")] // 位置

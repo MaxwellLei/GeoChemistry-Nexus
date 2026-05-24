@@ -45,7 +45,7 @@
             <RadioButton Style="{StaticResource ModernSidebarRadioButton}" GroupName="SettingSideBar"
                          Command="{Binding GeothermometerPage}">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="&#xe6b1;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="18" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <TextBlock Text="&#xe634;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="18" VerticalAlignment="Center" Margin="0,0,12,0"/>
                     <TextBlock Text="{Binding [GeothermometerSetting],Source={x:Static lg:LanguageService.Instance}, FallbackValue=地质温度计}" FontSize="14" VerticalAlignment="Center"/>
                 </StackPanel>
             </RadioButton>

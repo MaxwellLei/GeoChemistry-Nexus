@@ -3228,4 +3228,49 @@
   <data name="shortcut_action_underline_desc" xml:space="preserve">
     <value>切换选中文本的下划线样式。</value>
   </data>
+  <data name="layer" xml:space="preserve">
+    <value>图层</value>
+  </data>
+  <data name="property" xml:space="preserve">
+    <value>属性</value>
+  </data>
+  <data name="projecting_data" xml:space="preserve">
+    <value>正在投影数据</value>
+  </data>
+  <data name="parsing_table_and_refreshing_layer_please_wait" xml:space="preserve">
+    <value>正在解析表格并刷新图层，请稍候...</value>
+  </data>
+  <data name="delete_selected_drawing_objects" xml:space="preserve">
+    <value>是否删除选中的绘图对象？</value>
+  </data>
+  <data name="delete_selected_data_and_drawing_objects" xml:space="preserve">
+    <value>是否删除选中的数据及绘图对象？</value>
+  </data>
+  <data name="delete_all" xml:space="preserve">
+    <value>全部删除</value>
+  </data>
+  <data name="keep_data" xml:space="preserve">
+    <value>保留数据</value>
+  </data>
+  <data name="cancel_delete" xml:space="preserve">
+    <value>取消删除</value>
+  </data>
+  <data name="selected_data_and_drawing_objects_deleted" xml:space="preserve">
+    <value>已删除选中的数据及绘图对象。</value>
+  </data>
+  <data name="selected_drawing_objects_deleted_data_kept" xml:space="preserve">
+    <value>已删除选中的绘图对象，已保留数据。</value>
+  </data>
+  <data name="no_source_data_found_only_drawing_objects_deleted" xml:space="preserve">
+    <value>未找到可删除的源数据，已仅删除绘图对象。</value>
+  </data>
+  <data name="no_source_data_found" xml:space="preserve">
+    <value>未找到可删除的源数据。</value>
+  </data>
+  <data name="delete_data_failed" xml:space="preserve">
+    <value>删除数据失败：</value>
+  </data>
+  <data name="enable_data_to_drawing_object_linkage" xml:space="preserve">
+    <value>启用数据到绘图对象联动</value>
+  </data>
 </root>

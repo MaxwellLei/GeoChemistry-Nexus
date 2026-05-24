@@ -1,4 +1,3 @@
-using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Models;
 using GeoChemistryNexus.ViewModels;
 using GeoChemistryNexus.Controls;
@@ -149,6 +148,9 @@ namespace GeoChemistryNexus.Views
         // 标记当前是否处于稳定展开状态（非动画中且未折叠）
         private bool _isStableExpanded = true;
 
+        // 标记动画是否正在进行中
+        private bool _isAnimating = false;
+
         private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(MainPlotViewModel.Breadcrumbs))
@@ -160,160 +162,184 @@ namespace GeoChemistryNexus.Views
             {
                 if (viewModel.RibbonTabIndex == 1)
                 {
-                    // 切换到数据表格模式
-                    
-                    // 使用 Dispatcher 确保布局计算准确
-                    Dispatcher.BeginInvoke(new Action(() => 
-                    {
-                        // 1. 仅在稳定展开状态下保存当前状态，避免在动画过程中保存中间值导致状态损坏
-                        if (_isStableExpanded)
-                        {
-                            if (OuterRightCol.Width.GridUnitType == GridUnitType.Pixel)
-                            {
-                                _lastOuterRightWidth = OuterRightCol.Width;
-                            }
-                            if (InnerLeftCol.Width.GridUnitType == GridUnitType.Pixel)
-                            {
-                                _lastInnerLeftWidth = InnerLeftCol.Width;
-                            }
-                        }
-
-                        // 标记不再稳定展开
-                        _isStableExpanded = false;
-
-                        // 2. 解除限制以便动画
-                        OuterRightCol.MinWidth = 0;
-                        InnerLeftCol.MaxWidth = double.PositiveInfinity;
-
-                        // 3. 计算目标像素宽度 (4.8 / 10 的比例)
-                        double gridWidth = MainLayoutGrid.ActualWidth;
-
-                        // 检查 Grid 是否已加载且有宽度
-                        if (gridWidth <= 0)
-                        {
-                             if (PlotColumn != null) PlotColumn.Width = new GridLength(1, GridUnitType.Star);
-                             InnerLeftCol.Width = new GridLength(0.923077, GridUnitType.Star);
-                             OuterRightCol.Width = new GridLength(0);
-                             _isCollapsedMode = true;
-                             return;
-                        }
-
-                        double splitterWidth = 8; // 两个Splitter各4px
-                        double availableWidth = Math.Max(0, gridWidth - splitterWidth);
-                        double targetLeftPx = availableWidth * 0.48;
-
-                        // 4. 创建像素到像素的动画
-                        // 左侧：当前像素 -> 目标像素
-                        var animLeft = new GridLengthAnimation
-                        {
-                            From = new GridLength(InnerLeftCol.ActualWidth, GridUnitType.Pixel),
-                            To = new GridLength(targetLeftPx, GridUnitType.Pixel),
-                            Duration = TimeSpan.FromSeconds(0.5),
-                            EasingFunction = new CubicEase { EasingMode = EasingMode.EaseInOut }
-                        };
-
-                        // 右侧：当前像素 -> 0像素
-                        var animRight = new GridLengthAnimation
-                        {
-                            From = new GridLength(OuterRightCol.ActualWidth, GridUnitType.Pixel),
-                            To = new GridLength(0, GridUnitType.Pixel),
-                            Duration = TimeSpan.FromSeconds(0.5),
-                            EasingFunction = new CubicEase { EasingMode = EasingMode.EaseInOut }
-                        };
-
-                        // 5. 动画完成后切换到 Star 单位以保持响应式布局
-                        animLeft.Completed += (s, _) =>
-                        {
-                            // 清除动画绑定，使本地值生效
-                            InnerLeftCol.BeginAnimation(ColumnDefinition.WidthProperty, null);
-                            
-                            // 修复：重置中间列宽度为 1*，确保比例正确
-                            if (PlotColumn != null)
-                            {
-                                PlotColumn.Width = new GridLength(1, GridUnitType.Star);
-                            }
-
-                            // 设置为 Star 单位 (4.8/5.2 = 0.923077)
-                            InnerLeftCol.Width = new GridLength(0.923077, GridUnitType.Star);
-                        };
-
-                        animRight.Completed += (s, _) =>
-                        {
-                            OuterRightCol.BeginAnimation(ColumnDefinition.WidthProperty, null);
-                            OuterRightCol.Width = new GridLength(0);
-                        };
-
-                        // 6. 开始动画
-                        InnerLeftCol.BeginAnimation(ColumnDefinition.WidthProperty, animLeft);
-                        OuterRightCol.BeginAnimation(ColumnDefinition.WidthProperty, animRight);
-                        
-                        _isCollapsedMode = true;
-                    }));
+                    // 切换到数据表格模式：先动画再切布局
+                    AnimateToDataMode();
                 }
                 else
                 {
-                    // 切换回绘图模式或其他模式
+                    // 切换回绘图模式：先切布局再动画
                     if (_isCollapsedMode)
                     {
-                        // 1. 创建像素到像素的动画 (从当前状态恢复到之前的固定宽度)
-                        
-                        // 左侧：当前实际像素 -> 之前的固定像素
-                        var animLeft = new GridLengthAnimation
-                        {
-                            From = new GridLength(InnerLeftCol.ActualWidth, GridUnitType.Pixel),
-                            To = _lastInnerLeftWidth,
-                            Duration = TimeSpan.FromSeconds(0.5),
-                            EasingFunction = new CubicEase { EasingMode = EasingMode.EaseInOut }
-                        };
-
-                        // 右侧：当前实际像素(0) -> 之前的固定像素
-                        var animRight = new GridLengthAnimation
-                        {
-                            From = new GridLength(OuterRightCol.ActualWidth, GridUnitType.Pixel),
-                            To = _lastOuterRightWidth,
-                            Duration = TimeSpan.FromSeconds(0.5),
-                            EasingFunction = new CubicEase { EasingMode = EasingMode.EaseInOut }
-                        };
-
-                        // 2. 动画完成后恢复约束
-                        animLeft.Completed += (s, _) =>
-                        {
-                            InnerLeftCol.BeginAnimation(ColumnDefinition.WidthProperty, null);
-                            InnerLeftCol.Width = _lastInnerLeftWidth;
-                            InnerLeftCol.MaxWidth = 500;
-                        };
-
-                        animRight.Completed += (s, _) =>
-                        {
-                            OuterRightCol.BeginAnimation(ColumnDefinition.WidthProperty, null);
-                            OuterRightCol.Width = _lastOuterRightWidth;
-                            OuterRightCol.MinWidth = 250;
-                            
-                            // 标记为稳定展开
-                            _isStableExpanded = true;
-                        };
-
-                        // 3. 开始动画
-                        InnerLeftCol.BeginAnimation(ColumnDefinition.WidthProperty, animLeft);
-                        OuterRightCol.BeginAnimation(ColumnDefinition.WidthProperty, animRight);
-                        
-                        _isCollapsedMode = false;
+                        AnimateToPlotMode();
                     }
                 }
             }
         }
 
-        private void AnimateColumn(ColumnDefinition column, GridLength toValue)
+        /// <summary>
+        /// 切换到数据模式：立即展开左侧面板（让ReoGrid有空间），固定Plot和右侧列宽，
+        /// 用 TranslateTransform 补偿视觉位移并动画回新位置。
+        /// </summary>
+        private void AnimateToDataMode()
         {
-            var animation = new GridLengthAnimation
+            Dispatcher.BeginInvoke(new Action(() =>
             {
-                From = column.Width, // 从当前宽度开始
-                To = toValue,
-                Duration = TimeSpan.FromSeconds(0.5),
-                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseInOut }
+                // 如果正在动画中，取消当前动画
+                if (_isAnimating)
+                {
+                    CancelTransformAnimations();
+                }
+
+                // 仅在稳定展开状态下保存当前状态
+                if (_isStableExpanded)
+                {
+                    if (OuterRightCol.Width.GridUnitType == GridUnitType.Pixel)
+                        _lastOuterRightWidth = OuterRightCol.Width;
+                    if (InnerLeftCol.Width.GridUnitType == GridUnitType.Pixel)
+                        _lastInnerLeftWidth = InnerLeftCol.Width;
+                }
+
+                _isStableExpanded = false;
+                _isAnimating = true;
+
+                double gridWidth = MainLayoutGrid.ActualWidth;
+                if (gridWidth <= 0)
+                {
+                    // Grid 尚未加载，直接 snap
+                    SnapToDataModeLayout();
+                    _isAnimating = false;
+                    return;
+                }
+
+                // 记录当前实际尺寸
+                double oldLeftWidth = InnerLeftCol.ActualWidth;
+                double rightWidth = OuterRightCol.ActualWidth;
+
+                // 计算目标宽度：左侧 45%，Plot 55%
+                double splitterWidth = 8;
+                double availableWidth = Math.Max(0, gridWidth - splitterWidth);
+                double targetLeftPx = availableWidth * 0.45;
+                double targetPlotPx = availableWidth * 0.55;
+
+                // 立即展开左侧面板，Plot 直接设为目标宽度（避免动画结束时 snap 产生跳变）
+                // 右侧列保持当前宽度（超出部分被 ClipToBounds 裁切）
+                OuterRightCol.MinWidth = 0;
+                InnerLeftCol.MaxWidth = double.PositiveInfinity;
+                InnerLeftCol.Width = new GridLength(targetLeftPx, GridUnitType.Pixel);
+                PlotColumn.Width = new GridLength(targetPlotPx, GridUnitType.Pixel);
+                OuterRightCol.Width = new GridLength(rightWidth, GridUnitType.Pixel);
+
+                // 计算位移量：左面板扩大导致右侧内容全部右移
+                double shift = targetLeftPx - oldLeftWidth; // 正值
+
+                // 用 TranslateTransform 补偿：从旧视觉位置(-shift) 动画到新位置(0)
+                // 在第一帧，布局把元素推到了新位置，-shift 把它们拉回旧位置，视觉无跳变
+                var duration = TimeSpan.FromSeconds(0.4);
+                var easing = new CubicEase { EasingMode = EasingMode.EaseInOut };
+
+                var plotAnim = new DoubleAnimation(-shift, 0, duration) { EasingFunction = easing };
+                var rightAnim = new DoubleAnimation(-shift, 0, duration) { EasingFunction = easing };
+                var splitterAnim = new DoubleAnimation(-shift, 0, duration) { EasingFunction = easing };
+
+                // 动画完成后 snap 到 Star 单位（响应式布局）
+                plotAnim.Completed += (s, _) =>
+                {
+                    CancelTransformAnimations();
+                    SnapToDataModeLayout();
+                    _isAnimating = false;
+                };
+
+                // 启动动画（动画期间无布局计算，纯 GPU 合成）
+                PlotContainerTranslate.BeginAnimation(TranslateTransform.XProperty, plotAnim);
+                RightPanelTranslate.BeginAnimation(TranslateTransform.XProperty, rightAnim);
+                RightSplitterTranslate.BeginAnimation(TranslateTransform.XProperty, splitterAnim);
+
+                _isCollapsedMode = true;
+            }));
+        }
+
+        /// <summary>
+        /// 切换回绘图模式：先 snap 布局，用已知目标值计算偏移，
+        /// 再用 RenderTransform 从旧位置平滑动画到新位置。
+        /// 不调用 UpdateLayout()，避免打断图层列表的绑定/模板加载。
+        /// </summary>
+        private void AnimateToPlotMode()
+        {
+            // 如果正在动画中，取消当前动画
+            if (_isAnimating)
+            {
+                CancelTransformAnimations();
+            }
+
+            _isAnimating = true;
+
+            // 记录当前状态（数据模式下的左侧宽度）
+            double oldLeftWidth = InnerLeftCol.ActualWidth;
+
+            // 从已知目标值计算偏移（不需要 UpdateLayout）
+            double targetLeftWidth = _lastInnerLeftWidth.Value;
+            double targetRightWidth = _lastOuterRightWidth.Value;
+
+            // 立即 snap 到绘图模式布局
+            InnerLeftCol.BeginAnimation(ColumnDefinition.WidthProperty, null);
+            OuterRightCol.BeginAnimation(ColumnDefinition.WidthProperty, null);
+
+            InnerLeftCol.Width = _lastInnerLeftWidth;
+            InnerLeftCol.MaxWidth = 500;
+            OuterRightCol.Width = _lastOuterRightWidth;
+            OuterRightCol.MinWidth = 250;
+            PlotColumn.Width = new GridLength(1, GridUnitType.Star);
+
+            // 计算补偿偏移：布局 snap 使内容左移，正向补偿使其视觉上仍在旧位置
+            double shift = oldLeftWidth - targetLeftWidth; // 正值 = 内容原本偏右
+
+            var duration = TimeSpan.FromSeconds(0.4);
+            var easing = new CubicEase { EasingMode = EasingMode.EaseInOut };
+
+            // PlotContainer: 从旧位置(shift)平滑滑到新位置(0)
+            var plotAnim = new DoubleAnimation(shift, 0, duration) { EasingFunction = easing };
+            // 右侧面板: 从屏幕外(shift + 面板宽度)滑入到位(0)
+            var rightAnim = new DoubleAnimation(shift + targetRightWidth, 0, duration) { EasingFunction = easing };
+            // 右侧 Splitter: 和右侧面板一起
+            var splitterAnim = new DoubleAnimation(shift + targetRightWidth, 0, duration) { EasingFunction = easing };
+
+            // 动画完成后清理
+            plotAnim.Completed += (s, _) =>
+            {
+                CancelTransformAnimations();
+                _isStableExpanded = true;
+                _isAnimating = false;
             };
 
-            column.BeginAnimation(ColumnDefinition.WidthProperty, animation);
+            // 启动动画
+            PlotContainerTranslate.BeginAnimation(TranslateTransform.XProperty, plotAnim);
+            RightPanelTranslate.BeginAnimation(TranslateTransform.XProperty, rightAnim);
+            RightSplitterTranslate.BeginAnimation(TranslateTransform.XProperty, splitterAnim);
+
+            _isCollapsedMode = false;
+        }
+
+        /// <summary>
+        /// Snap 到数据模式的最终布局
+        /// </summary>
+        private void SnapToDataModeLayout()
+        {
+            OuterRightCol.MinWidth = 0;
+            InnerLeftCol.MaxWidth = double.PositiveInfinity;
+
+            PlotColumn.Width = new GridLength(1, GridUnitType.Star);
+            InnerLeftCol.Width = new GridLength(0.818182, GridUnitType.Star);
+            OuterRightCol.Width = new GridLength(0);
+        }
+
+        /// <summary>
+        /// 取消所有 TranslateTransform 动画，恢复到基准值
+        /// </summary>
+        private void CancelTransformAnimations()
+        {
+            PlotContainerTranslate.BeginAnimation(TranslateTransform.XProperty, null);
+            RightPanelTranslate.BeginAnimation(TranslateTransform.XProperty, null);
+            RightSplitterTranslate.BeginAnimation(TranslateTransform.XProperty, null);
         }
 
         public static MainPlotPage GetPage()

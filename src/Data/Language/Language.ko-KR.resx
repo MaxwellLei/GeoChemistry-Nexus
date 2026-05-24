@@ -3039,4 +3039,49 @@
   <data name="data_toolbar_clear_all_data_tooltip" xml:space="preserve">
     <value>표의 모든 데이터를 지웁니다</value>
   </data>
+  <data name="layer" xml:space="preserve">
+    <value>레이어</value>
+  </data>
+  <data name="property" xml:space="preserve">
+    <value>속성</value>
+  </data>
+  <data name="projecting_data" xml:space="preserve">
+    <value>데이터 투영 중</value>
+  </data>
+  <data name="parsing_table_and_refreshing_layer_please_wait" xml:space="preserve">
+    <value>표를 분석하고 레이어를 새로 고치는 중입니다. 잠시만 기다려 주세요...</value>
+  </data>
+  <data name="delete_selected_drawing_objects" xml:space="preserve">
+    <value>선택한 도형 객체를 삭제하시겠습니까?</value>
+  </data>
+  <data name="delete_selected_data_and_drawing_objects" xml:space="preserve">
+    <value>선택한 데이터와 도형 객체를 삭제하시겠습니까?</value>
+  </data>
+  <data name="delete_all" xml:space="preserve">
+    <value>모두 삭제</value>
+  </data>
+  <data name="keep_data" xml:space="preserve">
+    <value>데이터 유지</value>
+  </data>
+  <data name="cancel_delete" xml:space="preserve">
+    <value>삭제 취소</value>
+  </data>
+  <data name="selected_data_and_drawing_objects_deleted" xml:space="preserve">
+    <value>선택한 데이터와 도형 객체가 삭제되었습니다.</value>
+  </data>
+  <data name="selected_drawing_objects_deleted_data_kept" xml:space="preserve">
+    <value>선택한 도형 객체가 삭제되었으며 데이터는 유지되었습니다.</value>
+  </data>
+  <data name="no_source_data_found_only_drawing_objects_deleted" xml:space="preserve">
+    <value>원본 데이터를 찾을 수 없어 도형 객체만 삭제되었습니다.</value>
+  </data>
+  <data name="no_source_data_found" xml:space="preserve">
+    <value>원본 데이터를 찾을 수 없습니다.</value>
+  </data>
+  <data name="delete_data_failed" xml:space="preserve">
+    <value>데이터 삭제 실패:</value>
+  </data>
+  <data name="enable_data_to_drawing_object_linkage" xml:space="preserve">
+    <value>데이터-도형 객체 연동 활성화</value>
+  </data>
 </root>

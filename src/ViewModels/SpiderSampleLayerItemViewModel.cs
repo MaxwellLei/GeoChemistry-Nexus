@@ -117,6 +117,35 @@ namespace GeoChemistryNexus.ViewModels
             return _seriesEntries.Any(entry => ReferenceEquals(entry.Scatter, plottable));
         }
 
+        public bool ContainsSourceRowIndex(int rowIndex)
+        {
+            if (rowIndex < 0)
+            {
+                return false;
+            }
+
+            return _seriesEntries.Any(entry => entry.Sample.SourceRowIndices.Contains(rowIndex));
+        }
+
+        public bool TrySetActiveByRowIndex(int rowIndex)
+        {
+            if (rowIndex < 0)
+            {
+                return false;
+            }
+
+            var match = _seriesEntries.FirstOrDefault(entry => entry.Sample.SourceRowIndices.Contains(rowIndex));
+            if (match == null)
+            {
+                return false;
+            }
+
+            _activeScatter = match.Scatter;
+            _hasExplicitActiveScatter = true;
+            Plottable = match.Scatter;
+            return true;
+        }
+
         public void SetActivePlottable(IPlottable? plottable)
         {
             if (plottable is Scatter scatter)

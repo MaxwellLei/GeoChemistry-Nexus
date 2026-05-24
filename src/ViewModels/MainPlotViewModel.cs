@@ -650,6 +650,10 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private bool _isSnapSelectionEnabled = false;
 
+        // 用于绑定数据表格到绘图对象联动按钮的状态
+        [ObservableProperty]
+        private bool _isDataSelectionLinkEnabled = true;
+
         // 选中对象触发方式：SingleClick 或 DoubleClick
         private bool _isDoubleClickSelectionMode = false;
 
@@ -2046,7 +2050,20 @@ namespace GeoChemistryNexus.ViewModels
             {
                 _isSyncingSelection = true;
                 UpdateSelectedCellDisplayText(e.Range.Row, e.Range.Col);
-                HighlightDataPointByRowIndex(e.Range.Row);
+                if (IsDataSelectionLinkEnabled)
+                {
+                    HighlightDataPointByRowIndex(e.Range.Row);
+                }
+                else if (_selectedDataPointMarker.IsVisible)
+                {
+                    _selectedDataPointMarker.IsVisible = false;
+                    if (_selectedDataPointLabel != null)
+                    {
+                        _selectedDataPointLabel.IsVisible = false;
+                    }
+
+                    WpfPlot1.Refresh();
+                }
                 
                 // 计算并显示当前选中行的计算结果
                 CalculateAndDisplayResult(e.Range.Row);
@@ -2206,6 +2223,37 @@ namespace GeoChemistryNexus.ViewModels
 
             if (!found)
             {
+                foreach (var layer in FlattenTree(LayerTree).OfType<SpiderSampleLayerItemViewModel>())
+                {
+                    if (!layer.IsVisible || !layer.ContainsSourceRowIndex(rowIndex))
+                    {
+                        continue;
+                    }
+
+                    layer.TrySetActiveByRowIndex(rowIndex);
+
+                    if (_selectedDataPointMarker.IsVisible)
+                    {
+                        _selectedDataPointMarker.IsVisible = false;
+                        if (_selectedDataPointLabel != null)
+                        {
+                            _selectedDataPointLabel.IsVisible = false;
+                        }
+                    }
+
+                    if (SelectLayerCommand.CanExecute(layer))
+                    {
+                        SelectLayerCommand.Execute(layer);
+                    }
+
+                    layer.Highlight();
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found)
+            {
                 // 如果没找到（比如选中了空行），隐藏高亮标记
                 if (_selectedDataPointMarker.IsVisible)
                 {
@@ -2338,41 +2386,63 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
-        private void SyncSpiderSampleNameToDataGrid(SpiderSampleLayerItemViewModel spiderLayer, string sampleName)
+        private void SyncLayerNameToDataGrid(IEnumerable<int> rowIndices, string layerName, params string[] candidateHeaders)
         {
-            if (_dataGrid == null || spiderLayer == null || _dataGrid.Worksheets.Count == 0)
+            if (_dataGrid == null || rowIndices == null || _dataGrid.Worksheets.Count == 0)
                 return;
 
             var worksheet = _dataGrid.Worksheets[0];
-            int sampleColumnIndex = -1;
+            int columnIndex = -1;
 
             for (int col = 0; col < worksheet.ColumnCount; col++)
             {
                 var headerText = worksheet.ColumnHeaders[col]?.Text;
-                if (string.Equals(headerText, "Category", StringComparison.OrdinalIgnoreCase)
-                    || string.Equals(headerText, "Sample", StringComparison.OrdinalIgnoreCase))
+                if (candidateHeaders.Any(header => string.Equals(headerText, header, StringComparison.OrdinalIgnoreCase)))
                 {
-                    sampleColumnIndex = col;
+                    columnIndex = col;
                     break;
                 }
             }
 
-            if (sampleColumnIndex < 0)
+            if (columnIndex < 0)
                 return;
 
-            var rowIndices = spiderLayer.Samples
-                .SelectMany(sample => sample.SourceRowIndices)
+            var validRowIndices = rowIndices
                 .Where(rowIndex => rowIndex >= 0 && rowIndex < worksheet.RowCount)
                 .Distinct()
                 .ToList();
 
-            if (rowIndices.Count == 0)
+            if (validRowIndices.Count == 0)
                 return;
 
-            foreach (var rowIndex in rowIndices)
+            foreach (var rowIndex in validRowIndices)
             {
-                worksheet[rowIndex, sampleColumnIndex] = sampleName;
+                worksheet[rowIndex, columnIndex] = layerName;
             }
+        }
+
+        private void SyncScatterNameToDataGrid(ScatterLayerItemViewModel scatterLayer, string scatterName)
+        {
+            if (scatterLayer == null)
+                return;
+
+            SyncLayerNameToDataGrid(
+                scatterLayer.OriginalRowIndices,
+                scatterName,
+                "Category",
+                "Sample");
+        }
+
+        private void SyncSpiderSampleNameToDataGrid(SpiderSampleLayerItemViewModel spiderLayer, string sampleName)
+        {
+            if (spiderLayer == null)
+                return;
+
+            var rowIndices = spiderLayer.Samples
+                .SelectMany(sample => sample.SourceRowIndices)
+                .ToList();
+
+            SyncLayerNameToDataGrid(rowIndices, sampleName, "Category", "Sample");
         }
 
         private void WpfPlot1_MouseUp(object? sender, MouseButtonEventArgs e)
@@ -10525,6 +10595,7 @@ namespace GeoChemistryNexus.ViewModels
 
                     var scatterDefForCategory = new ScatterDefinition
                     {
+                        Name = categoryName,
                         Color = groupColor.ToHex(),
                         Size = 10
                     };
@@ -10544,6 +10615,7 @@ namespace GeoChemistryNexus.ViewModels
                         IsVisible = true
                     };
 
+                    categoryViewModel.ScatterNameChanged += (layer, scatterName) => SyncScatterNameToDataGrid(layer, scatterName);
                     categoryViewModel.RequestRefresh += (s, e) => RefreshPlotFromLayers();
                     categoryViewModel.RequestStyleUpdate += (s, e) => WpfPlot1.Refresh();
                     rootDataNode.Children.Add(categoryViewModel);
@@ -10601,6 +10673,7 @@ namespace GeoChemistryNexus.ViewModels
 
                     var scatterDefForCategory = new ScatterDefinition
                     {
+                        Name = categoryName,
                         Color = groupColor.ToHex(),
                         Size = 10
                     };
@@ -10620,6 +10693,7 @@ namespace GeoChemistryNexus.ViewModels
                         IsVisible = true
                     };
 
+                    categoryViewModel.ScatterNameChanged += (layer, scatterName) => SyncScatterNameToDataGrid(layer, scatterName);
                     categoryViewModel.RequestRefresh += (s, e) => RefreshPlotFromLayers();
                     categoryViewModel.RequestStyleUpdate += (s, e) => WpfPlot1.Refresh();
                     rootDataNode.Children.Add(categoryViewModel);
@@ -11462,10 +11536,10 @@ namespace GeoChemistryNexus.ViewModels
             {
                 int result = await NotificationManager.Instance.ShowThreeButtonDialogAsync(
                     LanguageService.Instance["tips"] ?? "提示",
-                    "是否删除选中的数据及绘图对象？",
-                    "全部删除",
-                    "保留数据",
-                    "取消删除");
+                    LanguageService.Instance["delete_selected_data_and_drawing_objects"] ?? "是否删除选中的数据及绘图对象？",
+                    LanguageService.Instance["delete_all"] ?? "全部删除",
+                    LanguageService.Instance["keep_data"] ?? "保留数据",
+                    LanguageService.Instance["cancel_delete"] ?? "取消删除");
 
                 if (result == 2)
                 {
@@ -11478,7 +11552,7 @@ namespace GeoChemistryNexus.ViewModels
                     if (rowIndices.Count == 0)
                     {
                         DeleteLayersFromTreeWithUndo(layersToDelete, removeSpiderSamples: layersToDelete.Any(layer => layer is SpiderSampleLayerItemViewModel));
-                        MessageHelper.Warning("未找到可删除的源数据，已仅删除绘图对象。");
+                        MessageHelper.Warning(LanguageService.Instance["no_source_data_found_only_drawing_objects_deleted"] ?? "未找到可删除的源数据，已仅删除绘图对象。");
                         return;
                     }
 
@@ -11487,17 +11561,17 @@ namespace GeoChemistryNexus.ViewModels
                         CancelSelected();
                         if (!DeleteWorksheetRows(rowIndices))
                         {
-                            MessageHelper.Warning("未找到可删除的源数据。");
+                            MessageHelper.Warning(LanguageService.Instance["no_source_data_found"] ?? "未找到可删除的源数据。");
                             return;
                         }
 
                         ClearExistingPlottedData();
                         PlotDataFromGrid();
-                        MessageHelper.Success("已删除选中的数据及绘图对象。");
+                        MessageHelper.Success(LanguageService.Instance["selected_data_and_drawing_objects_deleted"] ?? "已删除选中的数据及绘图对象。");
                     }
                     catch (Exception ex)
                     {
-                        MessageHelper.Warning("删除数据失败: " + ex.Message);
+                        MessageHelper.Warning(LanguageService.Instance["delete_data_failed"] ?? "删除数据失败: " + ex.Message);
                     }
 
                     NotifySelectionDependentCommandStates();
@@ -11505,14 +11579,14 @@ namespace GeoChemistryNexus.ViewModels
                 }
 
                 DeleteLayersFromTreeWithUndo(layersToDelete, removeSpiderSamples: layersToDelete.Any(layer => layer is SpiderSampleLayerItemViewModel));
-                MessageHelper.Success("已删除选中的绘图对象，已保留数据。");
+                MessageHelper.Success(LanguageService.Instance["selected_drawing_objects_deleted_data_kept"] ?? "已删除选中的绘图对象，已保留数据。");
                 NotifySelectionDependentCommandStates();
                 return;
             }
 
             bool confirmed = await NotificationManager.Instance.ShowDialogAsync(
                 LanguageService.Instance["tips"] ?? "提示",
-                "是否删除选中的绘图对象？",
+                LanguageService.Instance["delete_selected_drawing_objects"] ?? "是否删除选中的绘图对象？",
                 LanguageService.Instance["Confirm"] ?? "确认",
                 LanguageService.Instance["Cancel"] ?? "取消");
 
@@ -11625,7 +11699,8 @@ namespace GeoChemistryNexus.ViewModels
             _originalTemplateJson = string.Empty;
             _originalHelpDocumentRtf = string.Empty;
             HasUnsavedChanges = false;
-            // 修复漏洞3：广播未保存状态清空消息，保持全局状态一致
+
+            // 广播未保存状态清空消息，保持全局状态一致
             WeakReferenceMessenger.Default.Send(new UnsavedChangesMessage(false));
 
             // 刷新一次以应用所有重置

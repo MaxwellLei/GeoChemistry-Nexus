@@ -3,6 +3,7 @@ using GeoChemistryNexus.Services;
 using GeoChemistryNexus.Interfaces;
 using GeoChemistryNexus.Models;
 using ScottPlot;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,6 +11,8 @@ namespace GeoChemistryNexus.ViewModels
 {
     public partial class ScatterLayerItemViewModel : LayerItemViewModel, IPlotLayer
     {
+        public event Action<ScatterLayerItemViewModel, string>? ScatterNameChanged;
+
         public ScatterDefinition ScatterDefinition { get; }
         public override bool ShowInlineDeleteButton => true;
 
@@ -40,12 +43,26 @@ namespace GeoChemistryNexus.ViewModels
         private ScottPlot.Plottables.Scatter? _legendProxy;
 
         public ScatterLayerItemViewModel(ScatterDefinition scatterDefinition)
-            : base(LanguageService.Instance["data_point"])
+            : base(string.IsNullOrWhiteSpace(scatterDefinition?.Name)
+                ? LanguageService.Instance["data_point"]
+                : scatterDefinition.Name)
         {
             ScatterDefinition = scatterDefinition;
+            PropertyChanged += ScatterLayerItemViewModel_PropertyChanged;
+
             // 监听 Model 变化
             ScatterDefinition.PropertyChanged += (s, e) => 
             {
+                if (e.PropertyName == nameof(ScatterDefinition.Name))
+                {
+                    var scatterName = ScatterDefinition.Name ?? string.Empty;
+                    Name = scatterName;
+                    UpdateLegendText(scatterName);
+                    ScatterNameChanged?.Invoke(this, scatterName);
+                    OnRefreshRequired();
+                    return;
+                }
+
                 // 区分样式更新和全量刷新
                 if (e.PropertyName == nameof(ScatterDefinition.Color) ||
                     e.PropertyName == nameof(ScatterDefinition.Size) ||
@@ -78,6 +95,15 @@ namespace GeoChemistryNexus.ViewModels
                     ScatterDefinition.StartAndEnd.PropertyChanged += (sender, args) => OnRefreshRequired();
                 }
             };
+
+            if (!string.IsNullOrWhiteSpace(ScatterDefinition.Name))
+            {
+                Name = ScatterDefinition.Name;
+            }
+            else
+            {
+                ScatterDefinition.Name = Name;
+            }
         }
 
         public void Render(Plot plot)
@@ -110,13 +136,39 @@ namespace GeoChemistryNexus.ViewModels
             // --- 创建图例替身 ---
             // 创建一个没有数据的散点图，仅用于显示图例
             _legendProxy = plot.Add.ScatterPoints(new Coordinates[] { });
-            _legendProxy.LegendText = this.Name;
+            UpdateLegendText(Name);
             
             // 应用初始样式
             UpdatePlottableStyle(scatterPlot, _legendProxy);
 
             // 赋值给基类
             this.Plottable = scatterPlot;
+        }
+
+        private void ScatterLayerItemViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != nameof(Name))
+            {
+                return;
+            }
+
+            var scatterName = Name ?? string.Empty;
+            if (ScatterDefinition.Name != scatterName)
+            {
+                ScatterDefinition.Name = scatterName;
+            }
+
+            UpdateLegendText(scatterName);
+        }
+
+        private void UpdateLegendText(string? scatterName)
+        {
+            if (_legendProxy == null)
+            {
+                return;
+            }
+
+            _legendProxy.LegendText = scatterName ?? string.Empty;
         }
 
         public override void UpdateStyle()
