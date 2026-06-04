@@ -44,6 +44,21 @@
                                 <ComboBoxItem Content="Русский"/>
                             </ComboBox>
                         </Grid>
+
+                        <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
+
+                        <!-- Main Sidebar Collapse Mode -->
+                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding [main_sidebar_collapse_style],Source={x:Static lg:LanguageService.Instance}, FallbackValue=主侧边栏收起样式}" VerticalAlignment="Center" FontSize="14"/>
+                            <ComboBox SelectedIndex="{Binding MainSidebarCollapseMode,Mode=TwoWay}" Width="160" Height="30" Grid.Column="1" VerticalAlignment="Center">
+                                <ComboBoxItem Content="{Binding [main_sidebar_collapse_full],Source={x:Static lg:LanguageService.Instance}, FallbackValue=全部收起}"/>
+                                <ComboBoxItem Content="{Binding [main_sidebar_collapse_icon_only],Source={x:Static lg:LanguageService.Instance}, FallbackValue=保留图标}"/>
+                            </ComboBox>
+                        </Grid>
                         
                         <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
 

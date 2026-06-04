@@ -23,15 +23,23 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace GeoChemistryNexus.ViewModels
 {
-    public partial class MainWindowViewModel: ObservableObject
+    public partial class MainWindowViewModel : ObservableObject, IRecipient<MainSidebarCollapseModeChangedMessage>
     {
         //初始化
         public MainWindowViewModel()
         {
             IsSideBarVisible = true;
+            LoadMainSidebarCollapseMode();
+            WeakReferenceMessenger.Default.Register(this);
+
+            if (IsSideBarInIconMode)
+            {
+                IsSideBarNavCentered = true;
+            }
         }
 
         [ObservableProperty]
@@ -42,6 +50,106 @@ namespace GeoChemistryNexus.ViewModels
 
         [ObservableProperty]
         private bool _isWindowMaximized = false;
+
+        [ObservableProperty]
+        private bool _useIconOnlySidebarCollapse;
+
+        [ObservableProperty]
+        private int _sidebarCollapseModeTransition;
+
+        /// <summary>
+        /// 图标模式收缩动画结束后再为 true，用于窄边栏内居中图标，避免动画过程中布局跳动。
+        /// </summary>
+        [ObservableProperty]
+        private bool _isSideBarNavCentered;
+
+        public bool IsSideBarInIconMode => !IsSideBarVisible && UseIconOnlySidebarCollapse;
+
+        public bool HasVisibleSideBarSurface => IsSideBarVisible || UseIconOnlySidebarCollapse;
+
+        private int _sideBarNavCenteredGeneration;
+
+        private const int SidebarIconCollapseAnimationMs = 280;
+
+        partial void OnIsSideBarVisibleChanged(bool value)
+        {
+            OnPropertyChanged(nameof(IsSideBarInIconMode));
+            OnPropertyChanged(nameof(HasVisibleSideBarSurface));
+            UpdateSideBarNavCentered();
+        }
+
+        partial void OnUseIconOnlySidebarCollapseChanged(bool value)
+        {
+            OnPropertyChanged(nameof(IsSideBarInIconMode));
+            OnPropertyChanged(nameof(HasVisibleSideBarSurface));
+            UpdateSideBarNavCentered();
+        }
+
+        private void UpdateSideBarNavCentered()
+        {
+            var generation = ++_sideBarNavCenteredGeneration;
+
+            if (!IsSideBarInIconMode)
+            {
+                IsSideBarNavCentered = false;
+                return;
+            }
+
+            IsSideBarNavCentered = false;
+            _ = SetSideBarNavCenteredAfterCollapseAsync(generation);
+        }
+
+        private async Task SetSideBarNavCenteredAfterCollapseAsync(int generation)
+        {
+            await Task.Delay(SidebarIconCollapseAnimationMs);
+
+            await Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                if (generation != _sideBarNavCenteredGeneration || !IsSideBarInIconMode)
+                {
+                    return;
+                }
+
+                IsSideBarNavCentered = true;
+            }, DispatcherPriority.Render);
+        }
+
+        private void LoadMainSidebarCollapseMode()
+        {
+            UseIconOnlySidebarCollapse = Helpers.ConfigHelper.GetConfig("main_sidebar_collapse_mode") == "1";
+        }
+
+        public void Receive(MainSidebarCollapseModeChangedMessage message)
+        {
+            if (UseIconOnlySidebarCollapse == message.Value)
+            {
+                return;
+            }
+
+            if (!IsSideBarVisible)
+            {
+                SidebarCollapseModeTransition = UseIconOnlySidebarCollapse ? 1 : 2;
+            }
+
+            UseIconOnlySidebarCollapse = message.Value;
+
+            if (SidebarCollapseModeTransition != 0)
+            {
+                _ = ResetSidebarCollapseModeTransitionAsync();
+            }
+
+            UpdateSideBarNavCentered();
+        }
+
+        private async Task ResetSidebarCollapseModeTransitionAsync()
+        {
+            await Task.Delay(320);
+
+            await Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                SidebarCollapseModeTransition = 0;
+            }, DispatcherPriority.Render);
+        }
 
         [RelayCommand]
         private void ToggleSideBar()
@@ -160,6 +268,17 @@ namespace GeoChemistryNexus.ViewModels
         private void StartPage(Frame nav)
         {
             NavigateToPage(nav, HomePageView.GetPage());
+        }
+
+        /// <summary>
+        /// 切换数据预处理与校正页面
+        /// </summary>
+        /// <param name="nav">导航</param>
+        [RelayCommand]
+        private void DataPreprocessingPage(Frame nav)
+        {
+            NavigateToPage(nav, DataPreprocessingPageView.GetPage());
+            IsSideBarVisible = false;
         }
 
         /// <summary>

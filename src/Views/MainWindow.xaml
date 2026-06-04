@@ -13,7 +13,7 @@
         WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         UseLayoutRounding="True" TextOptions.TextFormattingMode="Display"
         WindowStartupLocation="Manual" Loaded="Window_Loaded" Closing="Window_Closing" SourceInitialized="Window_SourceInitialized"
-        Title="{Binding Title}" Height="760" Width="1332" BorderThickness="0">
+        Title="{Binding Title}" Height="760" Width="1360" BorderThickness="0">
     
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="40" ResizeBorderThickness="15" GlassFrameThickness="1"/>
@@ -30,6 +30,7 @@
             <Setter Property="Margin" Value="10,2"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type RadioButton}">
@@ -38,7 +39,7 @@
                                 <SolidColorBrush x:Name="borderBrush" Color="Transparent"/>
                             </Border.Background>
                             <Grid>
-                                <ContentPresenter Margin="{TemplateBinding Padding}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                <ContentPresenter Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="Center"/>
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -120,6 +121,72 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+        </Style>
+
+        <Style x:Key="SidebarNavButton" TargetType="{x:Type RadioButton}" BasedOn="{StaticResource ModernSideButton}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsSideBarNavCentered}" Value="True">
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SidebarNavIconStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontFamily" Value="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="SidebarLabelTextStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" Value="10,0,0,0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Opacity" Value="1"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsSideBarInIconMode}" Value="True">
+                    <DataTrigger.EnterActions>
+                        <BeginStoryboard x:Name="SidebarLabelFadeOut">
+                            <Storyboard>
+                                <!-- 先随边栏宽度裁切收缩，末段再淡出文字 -->
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                 To="0" Duration="0:0:0.14"
+                                                 BeginTime="0:0:0.14">
+                                    <DoubleAnimation.EasingFunction>
+                                        <QuadraticEase EasingMode="EaseIn"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </DataTrigger.EnterActions>
+                    <DataTrigger.ExitActions>
+                        <StopStoryboard BeginStoryboardName="SidebarLabelFadeOut"/>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                 To="1" Duration="0:0:0.2"
+                                                 BeginTime="0:0:0.1">
+                                    <DoubleAnimation.EasingFunction>
+                                        <QuadraticEase EasingMode="EaseOut"/>
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </DataTrigger.ExitActions>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsSideBarNavCentered}" Value="True">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SidebarNavItemPanelStyle" TargetType="{x:Type StackPanel}">
+            <Setter Property="Orientation" Value="Horizontal"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsSideBarNavCentered}" Value="True">
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                </DataTrigger>
+            </Style.Triggers>
         </Style>
 
         <!-- Window Control Button Style (Dark Text) -->
@@ -229,7 +296,8 @@
 
                     <!-- Right: Window Controls -->
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
-                        <Button Content="&#xe622;" Style="{StaticResource ModernWinBtn}" Command="{Binding HelpCommand}" ToolTip="{Binding [official_website],Source={x:Static lg:LanguageService.Instance}}"/>
+                        <Button Content="&#xe622;" Style="{StaticResource ModernWinBtn}" Command="{Binding HelpCommand}" ToolTip="{Binding [view_help_docs],Source={x:Static lg:LanguageService.Instance}, FallbackValue=帮助手册}"/>
+                        <Border Width="1" Height="16" Background="#D0D0D0" VerticalAlignment="Center" Margin="0,0,2,0"/>
                         <Button Content="&#xe67a;" Style="{StaticResource ModernWinBtn}" Command="{Binding MinimizeWindowCommand}" 
                                 CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
                                 ToolTip="{Binding [minimize],Source={x:Static lg:LanguageService.Instance}}"/>
@@ -257,10 +325,72 @@
                             <Setter Property="Width" Value="240"/>
                             <Setter Property="Margin" Value="0,0,15,0"/>
                             <Style.Triggers>
-                                <!-- 收起动画 -->
-                                <DataTrigger Binding="{Binding IsSideBarVisible}" Value="False">
-                                    <DataTrigger.EnterActions>
-                                        <BeginStoryboard x:Name="SidebarCollapse">
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding IsSideBarVisible}" Value="False"/>
+                                        <Condition Binding="{Binding UseIconOnlySidebarCollapse}" Value="False"/>
+                                        <Condition Binding="{Binding SidebarCollapseModeTransition}" Value="1"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <MultiDataTrigger.EnterActions>
+                                        <StopStoryboard BeginStoryboardName="SidebarIconCollapse"/>
+                                        <StopStoryboard BeginStoryboardName="SidebarExpand"/>
+                                        <BeginStoryboard x:Name="SidebarIconToHiddenCollapse">
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Width"
+                                                                 From="68" To="0" Duration="0:0:0.3">
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseInOut"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                                <ThicknessAnimation Storyboard.TargetProperty="Margin"
+                                                                    From="0,0,15,0" To="0" Duration="0:0:0.3">
+                                                    <ThicknessAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseInOut"/>
+                                                    </ThicknessAnimation.EasingFunction>
+                                                </ThicknessAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </MultiDataTrigger.EnterActions>
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding IsSideBarVisible}" Value="False"/>
+                                        <Condition Binding="{Binding UseIconOnlySidebarCollapse}" Value="True"/>
+                                        <Condition Binding="{Binding SidebarCollapseModeTransition}" Value="2"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <MultiDataTrigger.EnterActions>
+                                        <StopStoryboard BeginStoryboardName="SidebarFullCollapse"/>
+                                        <StopStoryboard BeginStoryboardName="SidebarExpand"/>
+                                        <BeginStoryboard x:Name="SidebarHiddenToIconExpand">
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Width"
+                                                                 From="0" To="68" Duration="0:0:0.28">
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseInOut"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                                <ThicknessAnimation Storyboard.TargetProperty="Margin"
+                                                                    From="0" To="0,0,15,0" Duration="0:0:0.28">
+                                                    <ThicknessAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseInOut"/>
+                                                    </ThicknessAnimation.EasingFunction>
+                                                </ThicknessAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </MultiDataTrigger.EnterActions>
+                                </MultiDataTrigger>
+                                <!-- 全部收起动画 -->
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding IsSideBarVisible}" Value="False"/>
+                                        <Condition Binding="{Binding UseIconOnlySidebarCollapse}" Value="False"/>
+                                        <Condition Binding="{Binding SidebarCollapseModeTransition}" Value="0"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <MultiDataTrigger.EnterActions>
+                                        <StopStoryboard BeginStoryboardName="SidebarHiddenToIconExpand"/>
+                                        <StopStoryboard BeginStoryboardName="SidebarIconCollapse"/>
+                                        <StopStoryboard BeginStoryboardName="SidebarExpand"/>
+                                        <BeginStoryboard x:Name="SidebarFullCollapse">
                                             <Storyboard>
                                                 <DoubleAnimation Storyboard.TargetProperty="Width"
                                                                  To="0" Duration="0:0:0.3">
@@ -276,27 +406,59 @@
                                                 </ThicknessAnimation>
                                             </Storyboard>
                                         </BeginStoryboard>
-                                    </DataTrigger.EnterActions>
-                                    <!-- 展开动画 -->
-                                    <DataTrigger.ExitActions>
-                                        <StopStoryboard BeginStoryboardName="SidebarCollapse"/>
-                                        <BeginStoryboard>
+                                    </MultiDataTrigger.EnterActions>
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding IsSideBarVisible}" Value="False"/>
+                                        <Condition Binding="{Binding UseIconOnlySidebarCollapse}" Value="True"/>
+                                        <Condition Binding="{Binding SidebarCollapseModeTransition}" Value="0"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <MultiDataTrigger.EnterActions>
+                                        <StopStoryboard BeginStoryboardName="SidebarIconToHiddenCollapse"/>
+                                        <StopStoryboard BeginStoryboardName="SidebarFullCollapse"/>
+                                        <StopStoryboard BeginStoryboardName="SidebarExpand"/>
+                                        <BeginStoryboard x:Name="SidebarIconCollapse">
                                             <Storyboard>
                                                 <DoubleAnimation Storyboard.TargetProperty="Width"
-                                                                 To="240" Duration="0:0:0.35">
+                                                                 To="68" Duration="0:0:0.28">
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseInOut"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                                <ThicknessAnimation Storyboard.TargetProperty="Margin"
+                                                                    To="0,0,15,0" Duration="0:0:0.28">
+                                                    <ThicknessAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseInOut"/>
+                                                    </ThicknessAnimation.EasingFunction>
+                                                </ThicknessAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </MultiDataTrigger.EnterActions>
+                                </MultiDataTrigger>
+                                <DataTrigger Binding="{Binding IsSideBarVisible}" Value="True">
+                                    <DataTrigger.EnterActions>
+                                        <StopStoryboard BeginStoryboardName="SidebarIconToHiddenCollapse"/>
+                                        <StopStoryboard BeginStoryboardName="SidebarHiddenToIconExpand"/>
+                                        <StopStoryboard BeginStoryboardName="SidebarFullCollapse"/>
+                                        <StopStoryboard BeginStoryboardName="SidebarIconCollapse"/>
+                                        <BeginStoryboard x:Name="SidebarExpand">
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Width"
+                                                                 To="240" Duration="0:0:0.32">
                                                     <DoubleAnimation.EasingFunction>
                                                         <CubicEase EasingMode="EaseOut"/>
                                                     </DoubleAnimation.EasingFunction>
                                                 </DoubleAnimation>
                                                 <ThicknessAnimation Storyboard.TargetProperty="Margin"
-                                                                    To="0,0,15,0" Duration="0:0:0.35">
+                                                                    To="0,0,15,0" Duration="0:0:0.32">
                                                     <ThicknessAnimation.EasingFunction>
                                                         <CubicEase EasingMode="EaseOut"/>
                                                     </ThicknessAnimation.EasingFunction>
                                                 </ThicknessAnimation>
                                             </Storyboard>
                                         </BeginStoryboard>
-                                    </DataTrigger.ExitActions>
+                                    </DataTrigger.EnterActions>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -305,9 +467,56 @@
                     <Grid>
                         <Grid.Style>
                             <Style TargetType="Grid">
+                                <Setter Property="Opacity" Value="1"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsSideBarVisible}" Value="False">
-                                        <DataTrigger.EnterActions>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding IsSideBarVisible}" Value="False"/>
+                                            <Condition Binding="{Binding UseIconOnlySidebarCollapse}" Value="False"/>
+                                            <Condition Binding="{Binding SidebarCollapseModeTransition}" Value="1"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <MultiDataTrigger.EnterActions>
+                                            <StopStoryboard BeginStoryboardName="ContentIconModeFadeIn"/>
+                                            <BeginStoryboard x:Name="ContentIconToHiddenFadeOut">
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                                     From="1" To="0" Duration="0:0:0.15">
+                                                        <DoubleAnimation.EasingFunction>
+                                                            <QuadraticEase EasingMode="EaseIn"/>
+                                                        </DoubleAnimation.EasingFunction>
+                                                    </DoubleAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </MultiDataTrigger.EnterActions>
+                                    </MultiDataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding IsSideBarVisible}" Value="False"/>
+                                            <Condition Binding="{Binding UseIconOnlySidebarCollapse}" Value="True"/>
+                                            <Condition Binding="{Binding SidebarCollapseModeTransition}" Value="2"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <MultiDataTrigger.EnterActions>
+                                            <StopStoryboard BeginStoryboardName="ContentFadeOut"/>
+                                            <BeginStoryboard x:Name="ContentHiddenToIconFadeIn">
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                                     From="0" To="1" Duration="0:0:0.12">
+                                                        <DoubleAnimation.EasingFunction>
+                                                            <QuadraticEase EasingMode="EaseOut"/>
+                                                        </DoubleAnimation.EasingFunction>
+                                                    </DoubleAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </MultiDataTrigger.EnterActions>
+                                    </MultiDataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding IsSideBarVisible}" Value="False"/>
+                                            <Condition Binding="{Binding UseIconOnlySidebarCollapse}" Value="False"/>
+                                            <Condition Binding="{Binding SidebarCollapseModeTransition}" Value="0"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <MultiDataTrigger.EnterActions>
+                                            <StopStoryboard BeginStoryboardName="ContentHiddenToIconFadeIn"/>
                                             <BeginStoryboard x:Name="ContentFadeOut">
                                                 <Storyboard>
                                                     <DoubleAnimation Storyboard.TargetProperty="Opacity"
@@ -318,70 +527,110 @@
                                                     </DoubleAnimation>
                                                 </Storyboard>
                                             </BeginStoryboard>
-                                        </DataTrigger.EnterActions>
-                                        <DataTrigger.ExitActions>
+                                        </MultiDataTrigger.EnterActions>
+                                    </MultiDataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding IsSideBarVisible}" Value="False"/>
+                                            <Condition Binding="{Binding UseIconOnlySidebarCollapse}" Value="True"/>
+                                            <Condition Binding="{Binding SidebarCollapseModeTransition}" Value="0"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <MultiDataTrigger.EnterActions>
+                                            <StopStoryboard BeginStoryboardName="ContentIconToHiddenFadeOut"/>
                                             <StopStoryboard BeginStoryboardName="ContentFadeOut"/>
-                                            <BeginStoryboard>
+                                            <BeginStoryboard x:Name="ContentIconModeFadeIn">
                                                 <Storyboard>
                                                     <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                                                                     To="1" Duration="0:0:0.2"
-                                                                     BeginTime="0:0:0.12">
+                                                                     To="1" Duration="0:0:0.12">
                                                         <DoubleAnimation.EasingFunction>
                                                             <QuadraticEase EasingMode="EaseOut"/>
                                                         </DoubleAnimation.EasingFunction>
                                                     </DoubleAnimation>
                                                 </Storyboard>
                                             </BeginStoryboard>
-                                        </DataTrigger.ExitActions>
+                                        </MultiDataTrigger.EnterActions>
+                                    </MultiDataTrigger>
+                                    <DataTrigger Binding="{Binding IsSideBarVisible}" Value="True">
+                                        <DataTrigger.EnterActions>
+                                            <StopStoryboard BeginStoryboardName="ContentIconToHiddenFadeOut"/>
+                                            <StopStoryboard BeginStoryboardName="ContentHiddenToIconFadeIn"/>
+                                            <StopStoryboard BeginStoryboardName="ContentFadeOut"/>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                                     To="1" Duration="0:0:0.2"
+                                                                     BeginTime="0:0:0.08">
+                                                        <DoubleAnimation.EasingFunction>
+                                                            <QuadraticEase EasingMode="EaseOut"/>
+                                                        </DoubleAnimation.EasingFunction>
+                                                    </DoubleAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.EnterActions>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Grid.Style>
                         <StackPanel Margin="0,20,0,0" VerticalAlignment="Top">
                             <!-- Home -->
-                            <RadioButton Name="RadioButton1" Style="{StaticResource ModernSideButton}" GroupName="SideBar" 
-                                         Command="{Binding StartPageCommand}" CommandParameter="{Binding ElementName=MyNav}" IsChecked="True">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="&#xe635;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="18" Width="30" TextAlignment="Center" VerticalAlignment="Center"/>
-                                    <TextBlock Text="{Binding [home],Source={x:Static lg:LanguageService.Instance}}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                            <RadioButton Name="RadioButton1" Style="{StaticResource SidebarNavButton}" GroupName="SideBar" 
+                                         Command="{Binding StartPageCommand}" CommandParameter="{Binding ElementName=MyNav}" IsChecked="True"
+                                         ToolTip="{Binding [home],Source={x:Static lg:LanguageService.Instance}}">
+                                <StackPanel Style="{StaticResource SidebarNavItemPanelStyle}">
+                                    <TextBlock Text="&#xe635;" Style="{StaticResource SidebarNavIconStyle}"/>
+                                    <TextBlock Text="{Binding [home],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource SidebarLabelTextStyle}"/>
+                                </StackPanel>
+                            </RadioButton>
+
+                            <!-- Data Preprocessing -->
+                            <RadioButton Name="RadioButtonPreprocessing" Style="{StaticResource SidebarNavButton}" GroupName="SideBar"
+                                         Command="{Binding DataPreprocessingPageCommand}" CommandParameter="{Binding ElementName=MyNav}"
+                                         ToolTip="{Binding [dataPreprocessing],Source={x:Static lg:LanguageService.Instance}}">
+                                <StackPanel Style="{StaticResource SidebarNavItemPanelStyle}">
+                                    <TextBlock Text="&#xe865;" Style="{StaticResource SidebarNavIconStyle}"/>
+                                    <TextBlock Text="{Binding [dataPreprocessing],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource SidebarLabelTextStyle}"/>
                                 </StackPanel>
                             </RadioButton>
                             
                             <!-- Plot -->
-                            <RadioButton Name="RadioButton2" Style="{StaticResource ModernSideButton}" GroupName="SideBar" 
-                                         Command="{Binding HomePageCommand}" CommandParameter="{Binding ElementName=MyNav}">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="&#xe639;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="18" Width="30" TextAlignment="Center" VerticalAlignment="Center"/>
-                                    <TextBlock Text="{Binding [Plot],Source={x:Static lg:LanguageService.Instance}}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                            <RadioButton Name="RadioButton2" Style="{StaticResource SidebarNavButton}" GroupName="SideBar" 
+                                         Command="{Binding HomePageCommand}" CommandParameter="{Binding ElementName=MyNav}"
+                                         ToolTip="{Binding [Plot],Source={x:Static lg:LanguageService.Instance}}">
+                                <StackPanel Style="{StaticResource SidebarNavItemPanelStyle}">
+                                    <TextBlock Text="&#xe639;" Style="{StaticResource SidebarNavIconStyle}"/>
+                                    <TextBlock Text="{Binding [Plot],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource SidebarLabelTextStyle}"/>
                                 </StackPanel>
                             </RadioButton>
                             
                             <!-- Geothermometer -->
-                            <RadioButton Name="RadioButton3" Style="{StaticResource ModernSideButton}" GroupName="SideBar" 
-                                         Command="{Binding GTMNewPageCommand}" CommandParameter="{Binding ElementName=MyNav}">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="&#xe716;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="18" Width="30" TextAlignment="Center" VerticalAlignment="Center"/>
-                                    <TextBlock Text="{Binding [Geothermometer],Source={x:Static lg:LanguageService.Instance}}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                            <RadioButton Name="RadioButton3" Style="{StaticResource SidebarNavButton}" GroupName="SideBar" 
+                                         Command="{Binding GTMNewPageCommand}" CommandParameter="{Binding ElementName=MyNav}"
+                                         ToolTip="{Binding [Geothermometer],Source={x:Static lg:LanguageService.Instance}}">
+                                <StackPanel Style="{StaticResource SidebarNavItemPanelStyle}">
+                                    <TextBlock Text="&#xe716;" Style="{StaticResource SidebarNavIconStyle}"/>
+                                    <TextBlock Text="{Binding [Geothermometer],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource SidebarLabelTextStyle}"/>
                                 </StackPanel>
                             </RadioButton>
 
                             <!-- CIPW -->
-                            <RadioButton Name="RadioButton5" Style="{StaticResource ModernSideButton}" GroupName="SideBar" 
-                                         Command="{Binding CipwPageCommand}" CommandParameter="{Binding ElementName=MyNav}">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="&#xe626;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="18" Width="30" TextAlignment="Center" VerticalAlignment="Center"/>
-                                    <TextBlock Text="CIPW" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                            <RadioButton Name="RadioButton5" Style="{StaticResource SidebarNavButton}" GroupName="SideBar" 
+                                         Command="{Binding CipwPageCommand}" CommandParameter="{Binding ElementName=MyNav}"
+                                         ToolTip="CIPW">
+                                <StackPanel Style="{StaticResource SidebarNavItemPanelStyle}">
+                                    <TextBlock Text="&#xe626;" Style="{StaticResource SidebarNavIconStyle}" FontWeight="Bold"/>
+                                    <TextBlock Text="CIPW" Style="{StaticResource SidebarLabelTextStyle}"/>
                                 </StackPanel>
                             </RadioButton>
                         </StackPanel>
 
                         <!-- Settings at the bottom -->
                         <StackPanel VerticalAlignment="Bottom" Margin="0,0,0,20">
-                            <RadioButton Name="RadioButton4" Style="{StaticResource ModernSideButton}" GroupName="SideBar" 
-                                         Command="{Binding SettingPageCommand}" CommandParameter="{Binding ElementName=MyNav}">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="&#xe60f;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="18" Width="30" TextAlignment="Center" VerticalAlignment="Center"/>
-                                    <TextBlock Text="{Binding [Setting],Source={x:Static lg:LanguageService.Instance}}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                            <RadioButton Name="RadioButton4" Style="{StaticResource SidebarNavButton}" GroupName="SideBar" 
+                                         Command="{Binding SettingPageCommand}" CommandParameter="{Binding ElementName=MyNav}"
+                                         ToolTip="{Binding [Setting],Source={x:Static lg:LanguageService.Instance}}">
+                                <StackPanel Style="{StaticResource SidebarNavItemPanelStyle}">
+                                    <TextBlock Text="&#xe60f;" Style="{StaticResource SidebarNavIconStyle}"/>
+                                    <TextBlock Text="{Binding [Setting],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource SidebarLabelTextStyle}"/>
                                 </StackPanel>
                             </RadioButton>
                         </StackPanel>
@@ -394,7 +643,7 @@
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="0,0,10,10"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsSideBarVisible}" Value="True">
+                                <DataTrigger Binding="{Binding HasVisibleSideBarSurface}" Value="True">
                                     <Setter Property="CornerRadius" Value="0,0,10,0"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding IsWindowMaximized}" Value="True">

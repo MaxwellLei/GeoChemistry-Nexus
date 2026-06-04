@@ -22,6 +22,11 @@ yarn-error.log*
 src/.trae/
 src/.qoder/
 src/Others/
+
+# Cursor IDE
+.cursor/
+src/.cursor/
+.cursorrules
 # Visual Studio相关文件
 .vs/
 *.user
@@ -30,6 +35,9 @@ src/Others/
 # 构建输出文件夹
 bin/
 obj/
+
+# WPF 编译 XAML 时自动生成的临时工程文件
+*_wpftmp.csproj
 
 # NuGet 包
 *.nupkg

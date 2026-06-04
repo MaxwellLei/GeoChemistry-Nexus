@@ -1,0 +1,540 @@
+<UserControl x:Class="GeoChemistryNexus.Controls.DiagramPlotEditorControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:primitives="clr-namespace:System.Windows.Controls.Primitives;assembly=PresentationFramework"
+             xmlns:vm="clr-namespace:GeoChemistryNexus.ViewModels"
+             mc:Ignorable="d"
+             d:DesignHeight="720" d:DesignWidth="1000"
+             Background="#F5F5F7">
+
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="AccentBrush" Color="#0078D4"/>
+        <SolidColorBrush x:Key="AccentSoftBrush" Color="#E8F2FC"/>
+        <SolidColorBrush x:Key="SidebarBrush" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="BorderBrushLight" Color="#E5E5EA"/>
+        <SolidColorBrush x:Key="ModernPrimaryBrush" Color="#007AFF"/>
+        <SolidColorBrush x:Key="ModernPrimarySoftBrush" Color="#EAF3FF"/>
+        <SolidColorBrush x:Key="ModernCardBorderBrush" Color="#E5E5EA"/>
+        <SolidColorBrush x:Key="ModernSelectedCardBorderBrush" Color="#0A84FF"/>
+        <SolidColorBrush x:Key="ModernSelectedCardBackgroundBrush" Color="#F3F8FF"/>
+        <SolidColorBrush x:Key="ModernTextPrimaryBrush" Color="#1D1D1F"/>
+        <SolidColorBrush x:Key="ModernTextSecondaryBrush" Color="#86868B"/>
+
+        <!-- 覆盖 ComboBoxExtend 中带 ItemsControl 祖先绑定的 ComboBoxItem，避免下拉关闭后绑定报错 -->
+        <Style x:Key="DiagramEditorComboBoxItemStyle" TargetType="ComboBoxItem">
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBoxItem">
+                        <Border x:Name="ItemBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ItemBorder" Property="Background" Value="#F2F2F7"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="ItemBorder" Property="Background" Value="{StaticResource ModernPrimarySoftBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="DiagramEditorComboBoxStyle" TargetType="ComboBox" BasedOn="{StaticResource ComboBoxExtend}">
+            <Setter Property="ItemContainerStyle" Value="{StaticResource DiagramEditorComboBoxItemStyle}"/>
+        </Style>
+
+        <Style x:Key="TranslationDataGridStyle" TargetType="DataGrid">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="RowBackground" Value="White"/>
+            <Setter Property="AlternatingRowBackground" Value="#FAFAFA"/>
+            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#EEEEEE"/>
+        </Style>
+
+        <Style x:Key="TranslationDataGridCellStyle" TargetType="DataGridCell">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DataGridCell">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{StaticResource ModernPrimarySoftBrush}"/>
+                    <Setter Property="Foreground" Value="{StaticResource ModernTextPrimaryBrush}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="PlotTypeListBoxItemStyle" TargetType="ListBoxItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+            <Setter Property="Margin" Value="0,0,12,12"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <ContentPresenter/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="NavItemStyle" TargetType="RadioButton">
+            <Setter Property="Foreground" Value="#3C3C43"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Padding" Value="16,12"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="GroupName" Value="EditorNav"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="Bd" Background="Transparent" Padding="{TemplateBinding Padding}" CornerRadius="8" Margin="8,2">
+                            <ContentPresenter VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{StaticResource AccentSoftBrush}"/>
+                                <Setter Property="Foreground" Value="{StaticResource AccentBrush}"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#F2F2F7"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SectionTitleStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#1D1D1F"/>
+            <Setter Property="Margin" Value="0,0,0,6"/>
+        </Style>
+
+        <Style x:Key="SectionHintStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="#86868B"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Margin" Value="0,0,0,16"/>
+        </Style>
+
+        <Style x:Key="PanelCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Margin" Value="0,0,0,16"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrushLight}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style x:Key="TokenBorderStyle" TargetType="Border">
+            <Setter Property="Background" Value="#EBF3FF"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Margin" Value="0,0,8,8"/>
+            <Setter Property="Padding" Value="8,7"/>
+            <Setter Property="ClipToBounds" Value="False"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+        </Style>
+
+        <Style x:Key="CategoryTokenStyle" TargetType="Border" BasedOn="{StaticResource TokenBorderStyle}">
+            <Setter Property="Background" Value="#FFF4EB"/>
+        </Style>
+
+        <Style x:Key="TokenLabelStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="LineHeight" Value="14"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="0,1,0,1"/>
+        </Style>
+
+        <Style x:Key="TokenCloseButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="5,0,0,0"/>
+            <Setter Property="Width" Value="14"/>
+            <Setter Property="Height" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="CloseBd" Background="{TemplateBinding Background}" CornerRadius="7">
+                            <TextBlock Text="✕" FontSize="9" FontWeight="Bold"
+                                       Foreground="{TemplateBinding Foreground}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="CloseBd" Property="Opacity" Value="0.75"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="FooterButtonStyle" TargetType="Button">
+            <Setter Property="MinWidth" Value="96"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Padding" Value="16,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.9"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Sidebar -->
+        <Border Grid.Column="0" Background="{StaticResource SidebarBrush}" BorderBrush="{StaticResource BorderBrushLight}" BorderThickness="0,0,1,0">
+            <DockPanel Margin="0,16,0,16">
+                <StackPanel DockPanel.Dock="Top" Margin="12,0,12,20">
+                    <TextBlock Text="{Binding WindowTitle}" FontSize="15" FontWeight="SemiBold" Foreground="#1D1D1F" TextWrapping="Wrap"/>
+                    <TextBlock Margin="0,6,0,0" FontSize="11" Foreground="#86868B">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0} {1}">
+                                <Binding Source="{x:Static lg:LanguageService.Instance}" Path="[current_diagram_version]" Mode="OneWay"/>
+                                <Binding Path="DiagramVersionText" Mode="OneWay"/>
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </StackPanel>
+
+                <StackPanel DockPanel.Dock="Top">
+                    <RadioButton x:Name="NavBasic" Style="{StaticResource NavItemStyle}" IsChecked="True"
+                                 Checked="NavSection_Checked" Tag="0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="⚙" Margin="0,0,8,0"/>
+                            <TextBlock Text="{Binding [diagram_editor_basic_settings], Source={x:Static lg:LanguageService.Instance}, TargetNullValue='基本设置'}"/>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton x:Name="NavTranslation" Style="{StaticResource NavItemStyle}"
+                                 Checked="NavSection_Checked" Tag="1"
+                                 IsEnabled="{Binding IsTranslationSectionEnabled}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🌐" Margin="0,0,8,0"/>
+                            <TextBlock Text="{Binding [diagram_editor_content_translation], Source={x:Static lg:LanguageService.Instance}, TargetNullValue='内容翻译'}"/>
+                        </StackPanel>
+                    </RadioButton>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!-- Content -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Basic settings -->
+            <ScrollViewer x:Name="BasicPanel" VerticalScrollBarVisibility="Auto" Padding="28,24">
+                <StackPanel MaxWidth="720">
+                    <TextBlock Style="{StaticResource SectionTitleStyle}"
+                               Text="{Binding [diagram_editor_basic_settings], Source={x:Static lg:LanguageService.Instance}, TargetNullValue='基本设置'}"/>
+                    <TextBlock Style="{StaticResource SectionHintStyle}"
+                               Text="{Binding [new_template_description], Source={x:Static lg:LanguageService.Instance}}"/>
+
+                    <Border Style="{StaticResource PanelCardStyle}">
+                        <StackPanel>
+                            <TextBlock Text="{Binding [enter_supported_languages], Source={x:Static lg:LanguageService.Instance}}" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                            <ItemsControl ItemsSource="{Binding LanguageParts}" Margin="0,0,0,0" ClipToBounds="False">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Style="{StaticResource TokenBorderStyle}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="★" FontSize="9" FontWeight="Bold" Foreground="#0078D4" Margin="0,0,4,0"
+                                                           Visibility="{Binding IsDefault, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                                <TextBlock Text="{Binding Text}" Style="{StaticResource TokenLabelStyle}" Foreground="#0078D4"/>
+                                                <Button Tag="{Binding}" Click="RemoveLanguage_Click"
+                                                        Style="{StaticResource TokenCloseButtonStyle}" Foreground="#0078D4"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <Grid Margin="0,4,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <hc:ComboBox x:Name="LanguageCombo"
+                                             Grid.Column="0"
+                                             IsEditable="True"
+                                             StaysOpenOnEdit="True"
+                                             hc:InfoElement.Placeholder="{Binding [enter_language_add], Source={x:Static lg:LanguageService.Instance}}"
+                                             DisplayMemberPath="Name"
+                                             SelectedValuePath="Code"
+                                             SelectionChanged="LanguageCombo_SelectionChanged"
+                                             PreviewKeyDown="LanguageCombo_PreviewKeyDown"
+                                             Style="{StaticResource DiagramEditorComboBoxStyle}"/>
+                                <TextBlock Grid.Column="1"
+                                           Text="{Binding [enter_language_add], Source={x:Static lg:LanguageService.Instance}}"
+                                           VerticalAlignment="Center"
+                                           Foreground="{StaticResource ModernTextSecondaryBrush}"
+                                           Margin="16,0,0,0"
+                                           FontSize="13"
+                                           TextWrapping="Wrap"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource PanelCardStyle}">
+                        <StackPanel>
+                            <TextBlock Text="{Binding [enter_category_structure], Source={x:Static lg:LanguageService.Instance}}" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                            <ItemsControl ItemsSource="{Binding CategoryParts}" Margin="0,0,0,0" ClipToBounds="False">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Style="{StaticResource CategoryTokenStyle}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding DisplayName}" Style="{StaticResource TokenLabelStyle}" Foreground="#FF6B00"/>
+                                                <Button Tag="{Binding}" Click="RemoveCategory_Click"
+                                                        Style="{StaticResource TokenCloseButtonStyle}" Foreground="#FF6B00"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <Grid Margin="0,4,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <hc:ComboBox x:Name="CategoryCombo"
+                                             Grid.Column="0"
+                                             IsEditable="True"
+                                             StaysOpenOnEdit="True"
+                                             hc:InfoElement.Placeholder="{Binding [enter_level_add], Source={x:Static lg:LanguageService.Instance}}"
+                                             DisplayMemberPath="DisplayName"
+                                             SelectedValuePath="DisplayName"
+                                             SelectionChanged="CategoryCombo_SelectionChanged"
+                                             PreviewKeyDown="CategoryCombo_PreviewKeyDown"
+                                             Style="{StaticResource DiagramEditorComboBoxStyle}"/>
+                                <TextBlock Grid.Column="1"
+                                           Text="{Binding [enter_level_add], Source={x:Static lg:LanguageService.Instance}}"
+                                           VerticalAlignment="Center"
+                                           Foreground="{StaticResource ModernTextSecondaryBrush}"
+                                           Margin="16,0,0,0"
+                                           FontSize="13"
+                                           TextWrapping="Wrap"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource PanelCardStyle}"
+                            Visibility="{Binding IsPlotTypeSelectionEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <StackPanel>
+                            <TextBlock Text="{Binding [plot_type], Source={x:Static lg:LanguageService.Instance}}" FontWeight="SemiBold" Margin="0,0,0,12"/>
+                            <ListBox x:Name="PlotTypeList"
+                                     ItemsSource="{Binding PlotTypeOptions}"
+                                     SelectedValue="{Binding SelectedPlotType, Mode=TwoWay}"
+                                     SelectedValuePath="Key"
+                                     IsEnabled="{Binding IsPlotTypeSelectionEnabled}"
+                                     BorderThickness="0"
+                                     Background="Transparent"
+                                     ItemContainerStyle="{StaticResource PlotTypeListBoxItemStyle}">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <primitives:UniformGrid Columns="2"/>
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border x:Name="PlotTypeCard" Padding="18" CornerRadius="12"
+                                                Background="White" BorderBrush="{StaticResource ModernCardBorderBrush}" BorderThickness="1">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <!-- 选中勾标叠在图标角上，不占标题区域 -->
+                                                <Grid Width="40" Height="40" Margin="0,0,14,0">
+                                                    <Border x:Name="PlotTypeIcon" Width="40" Height="40" CornerRadius="10"
+                                                            Background="#F2F4F7">
+                                                        <TextBlock x:Name="PlotTypeBadgeText" Text="{Binding Badge}"
+                                                                   FontSize="15" FontWeight="SemiBold"
+                                                                   Foreground="{StaticResource ModernTextPrimaryBrush}"
+                                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    </Border>
+                                                    <Border x:Name="SelectionCheck" Width="18" Height="18" CornerRadius="9"
+                                                            HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                                            Margin="0,0,-3,-3"
+                                                            Background="{StaticResource ModernPrimaryBrush}"
+                                                            BorderBrush="White" BorderThickness="1.5"
+                                                            Visibility="Collapsed" Panel.ZIndex="1">
+                                                        <TextBlock Text="✓" FontSize="10" FontWeight="Bold" Foreground="White"
+                                                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                                   Margin="0,-1,0,0"/>
+                                                    </Border>
+                                                </Grid>
+                                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                    <TextBlock x:Name="PlotTypeTitle" Text="{Binding Title}"
+                                                               FontSize="14" FontWeight="SemiBold"
+                                                               Foreground="{StaticResource ModernTextPrimaryBrush}"
+                                                               TextWrapping="Wrap"/>
+                                                    <TextBlock x:Name="PlotTypeDescription" Text="{Binding Description}"
+                                                               Margin="0,6,0,0" FontSize="12"
+                                                               Foreground="{StaticResource ModernTextSecondaryBrush}"
+                                                               TextWrapping="Wrap"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsMouseOver}" Value="True">
+                                                <Setter TargetName="PlotTypeCard" Property="BorderBrush" Value="#C6DAFF"/>
+                                                <Setter TargetName="PlotTypeCard" Property="Background" Value="#FAFCFF"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
+                                                <Setter TargetName="PlotTypeCard" Property="BorderBrush" Value="{StaticResource ModernSelectedCardBorderBrush}"/>
+                                                <Setter TargetName="PlotTypeCard" Property="BorderThickness" Value="2"/>
+                                                <Setter TargetName="PlotTypeCard" Property="Background" Value="{StaticResource ModernSelectedCardBackgroundBrush}"/>
+                                                <Setter TargetName="PlotTypeIcon" Property="Background" Value="{StaticResource ModernPrimaryBrush}"/>
+                                                <Setter TargetName="PlotTypeTitle" Property="Foreground" Value="{StaticResource ModernPrimaryBrush}"/>
+                                                <Setter TargetName="PlotTypeBadgeText" Property="Foreground" Value="White"/>
+                                                <Setter TargetName="SelectionCheck" Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Translation -->
+            <Grid x:Name="TranslationPanel" Visibility="Collapsed" Margin="20,16">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Style="{StaticResource SectionTitleStyle}"
+                           Text="{Binding [diagram_editor_content_translation], Source={x:Static lg:LanguageService.Instance}, TargetNullValue='内容翻译'}"/>
+                <TextBlock Grid.Row="1" Style="{StaticResource SectionHintStyle}"
+                           Text="{Binding [diagram_editor_translation_hint], Source={x:Static lg:LanguageService.Instance}, TargetNullValue='编辑标题、坐标轴与图解内文本的多语言内容。'}"/>
+
+                <Border Grid.Row="2" Background="White" CornerRadius="10" BorderBrush="{StaticResource BorderBrushLight}" BorderThickness="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Border Grid.Row="0" Background="#FAFAFA" Padding="12,8" BorderBrush="#EEEEEE" BorderThickness="0,0,0,1">
+                            <WrapPanel>
+                                <Button Content="{Binding [add_language_column], Source={x:Static lg:LanguageService.Instance}}"
+                                        Click="AddTranslationLanguage_Click" Style="{StaticResource ButtonPrimary}" Margin="0,0,8,0"/>
+                                <Button Content="{Binding [swap_language_columns], Source={x:Static lg:LanguageService.Instance}}"
+                                        Click="SwapTranslationLanguage_Click" Margin="0,0,8,0"/>
+                                <Button Content="{Binding [delete_language_column], Source={x:Static lg:LanguageService.Instance}}"
+                                        Click="RemoveTranslationLanguage_Click" Style="{StaticResource ButtonWarning}"/>
+                            </WrapPanel>
+                        </Border>
+
+                        <DataGrid x:Name="TranslationGrid" Grid.Row="1"
+                                  ItemsSource="{Binding TranslationTable}"
+                                  Style="{StaticResource TranslationDataGridStyle}"
+                                  CellStyle="{StaticResource TranslationDataGridCellStyle}"
+                                  AutoGenerateColumns="True"
+                                  CanUserAddRows="False" CanUserDeleteRows="False"
+                                  HeadersVisibility="Column"
+                                  RowHeaderWidth="0"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                  ScrollViewer.CanContentScroll="True"
+                                  AutoGeneratingColumn="TranslationGrid_AutoGeneratingColumn"
+                                  CellEditEnding="TranslationGrid_CellEditEnding">
+                            <DataGrid.Resources>
+                                <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource ScrollBarBaseStyle}"/>
+                            </DataGrid.Resources>
+                        </DataGrid>
+                    </Grid>
+                </Border>
+
+                <TextBlock Grid.Row="3" Text="{Binding TranslationStatusMessage}" Margin="0,10,0,0"
+                           FontSize="12" Foreground="#86868B" TextTrimming="CharacterEllipsis"/>
+            </Grid>
+
+            <!-- Footer -->
+            <Border Grid.Row="1" Background="#FFFFFF" BorderBrush="{StaticResource BorderBrushLight}" BorderThickness="0,1,0,0" Padding="20,14">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="{Binding [Cancel], Source={x:Static lg:LanguageService.Instance}}"
+                            Style="{StaticResource FooterButtonStyle}" Background="White" BorderBrush="#D1D1D6" BorderThickness="1"
+                            Margin="0,0,10,0" Click="CancelButton_Click"/>
+                    <Button Content="{Binding [Confirm], Source={x:Static lg:LanguageService.Instance}}"
+                            Style="{StaticResource FooterButtonStyle}" Background="{StaticResource AccentBrush}" Foreground="White" BorderThickness="0"
+                            Click="ConfirmButton_Click"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -3084,4 +3084,19 @@
   <data name="enable_data_to_drawing_object_linkage" xml:space="preserve">
     <value>データと描画オブジェクトの連動を有効にする</value>
   </data>
+  <data name="dataPreprocessing" xml:space="preserve">
+    <value>データ前処理</value>
+  </data>
+  <data name="harker_diagram" xml:space="preserve">
+    <value>ハーカー図表</value>
+  </data>
+  <data name="demoData" xml:space="preserve">
+    <value>サンプルデータ</value>
+  </data>
+  <data name="clearTemplateTable" xml:space="preserve">
+    <value>テンプレート表をクリア</value>
+  </data>
+  <data name="runProcessing" xml:space="preserve">
+    <value>処理を実行</value>
+  </data>
 </root>

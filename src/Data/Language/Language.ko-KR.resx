@@ -3084,4 +3084,19 @@
   <data name="enable_data_to_drawing_object_linkage" xml:space="preserve">
     <value>데이터-도형 객체 연동 활성화</value>
   </data>
+  <data name="dataPreprocessing" xml:space="preserve">
+    <value>데이터 전처리</value>
+  </data>
+  <data name="harker_diagram" xml:space="preserve">
+    <value>하커 다이어그램</value>
+  </data>
+  <data name="demoData" xml:space="preserve">
+    <value>샘플 데이터</value>
+  </data>
+  <data name="clearTemplateTable" xml:space="preserve">
+    <value>템플릿 테이블 초기화</value>
+  </data>
+  <data name="runProcessing" xml:space="preserve">
+    <value>프로세스 실행</value>
+  </data>
 </root>

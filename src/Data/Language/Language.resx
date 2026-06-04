@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
 		Microsoft ResX Schema
@@ -1794,6 +1794,15 @@
   <data name="language_apperarance" xml:space="preserve">
     <value>LANGUAGE &amp; APPEARANCE</value>
   </data>
+  <data name="main_sidebar_collapse_style" xml:space="preserve">
+    <value>Main Sidebar Collapse Style</value>
+  </data>
+  <data name="main_sidebar_collapse_full" xml:space="preserve">
+    <value>Fully Collapse</value>
+  </data>
+  <data name="main_sidebar_collapse_icon_only" xml:space="preserve">
+    <value>Keep Icons</value>
+  </data>
   <data name="startup_background_image" xml:space="preserve">
     <value>Startup Background Image</value>
   </data>
@@ -3265,5 +3274,275 @@ Directory: {2}</value>
   </data>
   <data name="enable_data_to_drawing_object_linkage" xml:space="preserve">
     <value>Enable data-to-drawing object linkage</value>
+  </data>
+  <data name="dataPreprocessing" xml:space="preserve">
+    <value>Data Preprocessing</value>
+  </data>
+  <data name="harker_diagram" xml:space="preserve">
+    <value>Harker Diagram</value>
+  </data>
+  <data name="demoData" xml:space="preserve">
+    <value>Sample Data</value>
+  </data>
+  <data name="clearTemplateTable" xml:space="preserve">
+    <value>Clear Template Table</value>
+  </data>
+  <data name="runProcessing" xml:space="preserve">
+    <value>Execute Processing</value>
+  </data>
+  <data name="dataPrep_exportCurrentTable" xml:space="preserve">
+    <value>Export Current Table</value>
+  </data>
+  <data name="dataPrep_enable" xml:space="preserve">
+    <value>Enable</value>
+  </data>
+  <data name="dataPrep_parameterOptions" xml:space="preserve">
+    <value>Parameter Options</value>
+  </data>
+  <data name="dataPrep_excludeVolatiles" xml:space="preserve">
+    <value>Exclude volatiles</value>
+  </data>
+  <data name="dataPrep_normalizeToHundred" xml:space="preserve">
+    <value>Normalize to 100%</value>
+  </data>
+  <data name="dataPrep_normalization" xml:space="preserve">
+    <value>Normalization</value>
+  </data>
+  <data name="dataPrep_method" xml:space="preserve">
+    <value>Method</value>
+  </data>
+  <data name="dataPrep_fe3Tooltip" xml:space="preserve">
+    <value>Used only for "Empirical ratio correction" and represents the empirical Fe3+/Fe ratio.</value>
+  </data>
+  <data name="dataPrep_autoBackfillIronOxides" xml:space="preserve">
+    <value>Automatically backfill FeO / Fe2O3 when missing</value>
+  </data>
+  <data name="dataPrep_ironValence" xml:space="preserve">
+    <value>Iron Valence</value>
+  </data>
+  <data name="dataPrep_calculationItems" xml:space="preserve">
+    <value>Calculated Items</value>
+  </data>
+  <data name="dataPrep_indices" xml:space="preserve">
+    <value>Indices</value>
+  </data>
+  <data name="dataPrep_noCellSelected" xml:space="preserve">
+    <value>No cell selected</value>
+  </data>
+  <data name="dataPrep_notDetected" xml:space="preserve">
+    <value>Not detected</value>
+  </data>
+  <data name="dataPrep_noOxideColumnsDetected" xml:space="preserve">
+    <value>No major oxide columns detected</value>
+  </data>
+  <data name="dataPrep_selectedCellEmpty" xml:space="preserve">
+    <value>{0}: &lt;empty&gt;</value>
+  </data>
+  <data name="dataPrep_selectedCellValue" xml:space="preserve">
+    <value>{0}: {1}</value>
+  </data>
+  <data name="dataPrep_sampleDataGenerated" xml:space="preserve">
+    <value>Sample data generated.</value>
+  </data>
+  <data name="dataPrep_sampleDataGenerateFailed" xml:space="preserve">
+    <value>Failed to generate sample data:</value>
+  </data>
+  <data name="dataPrep_tableCleared" xml:space="preserve">
+    <value>Current data table cleared.</value>
+  </data>
+  <data name="dataPrep_clearTableFailed" xml:space="preserve">
+    <value>Failed to clear data table:</value>
+  </data>
+  <data name="dataPrep_noWorksheetToProcess" xml:space="preserve">
+    <value>There is no worksheet available for processing.</value>
+  </data>
+  <data name="dataPrep_processingCompleted" xml:space="preserve">
+    <value>Data preprocessing completed.</value>
+  </data>
+  <data name="dataPrep_processingFailed" xml:space="preserve">
+    <value>Processing failed:</value>
+  </data>
+  <data name="dataPrep_exportTitle" xml:space="preserve">
+    <value>Export Preprocessing Result</value>
+  </data>
+  <data name="dataPrep_exportFilter" xml:space="preserve">
+    <value>CSV Files|*.csv</value>
+  </data>
+  <data name="dataPrep_exportSucceeded" xml:space="preserve">
+    <value>Current worksheet exported.</value>
+  </data>
+  <data name="dataPrep_exportFailed" xml:space="preserve">
+    <value>Export failed:</value>
+  </data>
+  <data name="dataPrep_resetToRecommended" xml:space="preserve">
+    <value>Restored recommended presets.</value>
+  </data>
+  <data name="dataPrep_detectionLimitPreview" xml:space="preserve">
+    <value>The current page does not include detection-limit replacement or data-cleaning parameters.</value>
+  </data>
+  <data name="dataPrep_moduleAnhydrous" xml:space="preserve">
+    <value>Anhydrous normalization</value>
+  </data>
+  <data name="dataPrep_moduleIronValence" xml:space="preserve">
+    <value>Iron valence</value>
+  </data>
+  <data name="dataPrep_moduleIndexCalculation" xml:space="preserve">
+    <value>Index calculation</value>
+  </data>
+  <data name="dataPrep_listSeparator" xml:space="preserve">
+    <value>, </value>
+  </data>
+  <data name="dataPrep_keepOriginalOnly" xml:space="preserve">
+    <value>Keep original worksheet only</value>
+  </data>
+  <data name="dataPrep_previewSummary" xml:space="preserve">
+    <value>Detected oxide columns: {0}; enabled modules: {1}; iron valence method: "{2}"; Fe3+/Fe empirical ratio: {3:0.00}.</value>
+  </data>
+  <data name="dataPrep_ironMethodAutoEstimate" xml:space="preserve">
+    <value>Auto estimate from total iron</value>
+  </data>
+  <data name="dataPrep_ironMethodBackCalculate" xml:space="preserve">
+    <value>Back-calculate from FeO / Fe2O3</value>
+  </data>
+  <data name="dataPrep_ironMethodEmpiricalRatio" xml:space="preserve">
+    <value>Empirical ratio correction</value>
+  </data>
+  <data name="dataPrep_outlierMarkOnly" xml:space="preserve">
+    <value>Mark outliers only</value>
+  </data>
+  <data name="dataPrep_outlierIqr" xml:space="preserve">
+    <value>IQR method</value>
+  </data>
+  <data name="dataPrep_outlierThreeSigma" xml:space="preserve">
+    <value>3-sigma method</value>
+  </data>
+  <data name="dataPrep_missingKeep" xml:space="preserve">
+    <value>Keep missing values</value>
+  </data>
+  <data name="dataPrep_missingMean" xml:space="preserve">
+    <value>Mean imputation</value>
+  </data>
+  <data name="dataPrep_missingMedian" xml:space="preserve">
+    <value>Median imputation</value>
+  </data>
+  <data name="dataPrep_detectionReplaceZero" xml:space="preserve">
+    <value>Replace with 0</value>
+  </data>
+  <data name="dataPrep_detectionReplaceHalf" xml:space="preserve">
+    <value>Replace with half of detection limit</value>
+  </data>
+  <data name="dataPrep_detectionReplaceNull" xml:space="preserve">
+    <value>Replace with null</value>
+  </data>
+  <data name="dataPrep_noProcessableData" xml:space="preserve">
+    <value>The current worksheet has no processable data. Please import a table that contains field headers first.</value>
+  </data>
+  <data name="dataPrep_processingSummary" xml:space="preserve">
+    <value>Processed {0} rows and identified {1} numeric columns; detection-limit replacements {2}, outliers marked {3}, outliers cleared {4}, missing values filled {5}.</value>
+  </data>
+  <data name="dataPrep_noteDetectionReplacedWithZero" xml:space="preserve">
+    <value>Detection-limit value replaced with 0</value>
+  </data>
+  <data name="dataPrep_noteDetectionReplacedWithHalf" xml:space="preserve">
+    <value>Detection-limit value replaced with half of the limit</value>
+  </data>
+  <data name="dataPrep_noteDetectionNoLimitFallbackZero" xml:space="preserve">
+    <value>b.d.l. has no numeric limit; treated as 0</value>
+  </data>
+  <data name="dataPrep_noteDetectionReplacedWithNull" xml:space="preserve">
+    <value>Detection-limit value replaced with null</value>
+  </data>
+  <data name="dataPrep_noteDetectionStandardized" xml:space="preserve">
+    <value>Detection-limit value standardized</value>
+  </data>
+  <data name="dataPrep_noteNonNumericAsMissing" xml:space="preserve">
+    <value>Unable to parse as numeric; treated as missing</value>
+  </data>
+  <data name="dataPrep_noteOutlierDetected" xml:space="preserve">
+    <value>{0} detected as outlier</value>
+  </data>
+  <data name="dataPrep_noteMissingFilled" xml:space="preserve">
+    <value>{0} filled using {1}</value>
+  </data>
+  <data name="dataPrep_strategyMissingMean" xml:space="preserve">
+    <value>Mean imputation</value>
+  </data>
+  <data name="dataPrep_strategyMissingMedian" xml:space="preserve">
+    <value>Median imputation</value>
+  </data>
+  <data name="dataPrep_strategyMissingKeep" xml:space="preserve">
+    <value>Keep missing</value>
+  </data>
+  <data name="dataPrep_ironModeMeasured" xml:space="preserve">
+    <value>Measured FeO + Fe2O3</value>
+  </data>
+  <data name="dataPrep_ironModeFromFeotAndFeo" xml:space="preserve">
+    <value>Derived Fe2O3 from FeOT + FeO</value>
+  </data>
+  <data name="dataPrep_ironModeFromFeotAndFe2o3" xml:space="preserve">
+    <value>Derived FeO from FeOT + Fe2O3</value>
+  </data>
+  <data name="dataPrep_ironModeFeotEmpirical" xml:space="preserve">
+    <value>FeOT empirical ratio correction</value>
+  </data>
+  <data name="dataPrep_ironModeFeotAuto" xml:space="preserve">
+    <value>FeOT automatic estimation</value>
+  </data>
+  <data name="dataPrep_ironModeBackfillFe2o3" xml:space="preserve">
+    <value>Empirically backfilled Fe2O3 from FeO</value>
+  </data>
+  <data name="dataPrep_ironModeBackfillFeo" xml:space="preserve">
+    <value>Empirically backfilled FeO from Fe2O3</value>
+  </data>
+  <data name="dataPrep_ironModeInsufficient" xml:space="preserve">
+    <value>Insufficient iron data</value>
+  </data>
+  <data name="diagram_editor_basic_settings" xml:space="preserve">
+    <value>Basic Settings</value>
+  </data>
+  <data name="diagram_editor_content_translation" xml:space="preserve">
+    <value>Content Translation</value>
+  </data>
+  <data name="diagram_editor_translation_hint" xml:space="preserve">
+    <value>Edit multilingual text for titles, axes, labels, and other diagram content. Add or remove languages here to update the diagram's supported languages.</value>
+  </data>
+  <data name="translation_item_context" xml:space="preserve">
+    <value>Content Item</value>
+  </data>
+  <data name="translation_node_list" xml:space="preserve">
+    <value>Category Path</value>
+  </data>
+  <data name="translation_main_title" xml:space="preserve">
+    <value>Main Title</value>
+  </data>
+  <data name="translation_text_item" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="translation_axis_title" xml:space="preserve">
+    <value>Axis Title</value>
+  </data>
+  <data name="translation_axis_subtitle" xml:space="preserve">
+    <value>Axis Subtitle</value>
+  </data>
+  <data name="translation_annotation" xml:space="preserve">
+    <value>Annotation</value>
+  </data>
+  <data name="translation_loaded" xml:space="preserve">
+    <value>Translation data loaded</value>
+  </data>
+  <data name="enter_language_code_prompt" xml:space="preserve">
+    <value>Enter language code (e.g. fr-FR):</value>
+  </data>
+  <data name="at_least_two_languages_swap" xml:space="preserve">
+    <value>At least two languages are required to swap.</value>
+  </data>
+  <data name="select_language_to_delete" xml:space="preserve">
+    <value>Select the language to delete:</value>
+  </data>
+  <data name="confirm_delete_language" xml:space="preserve">
+    <value>Delete language '{0}'? This cannot be undone.</value>
+  </data>
+  <data name="language_exists" xml:space="preserve">
+    <value>Language already exists</value>
   </data>
 </root>

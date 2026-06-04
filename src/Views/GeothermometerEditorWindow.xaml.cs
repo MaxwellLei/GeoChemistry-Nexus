@@ -1,6 +1,9 @@
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Services;
 using GeoChemistryNexus.ViewModels;
+using System.Collections.ObjectModel;
 using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -12,6 +15,8 @@ namespace GeoChemistryNexus.Views
     /// </summary>
     public partial class GeothermometerEditorWindow : Window
     {
+        public ObservableCollection<NotificationViewModel> LocalNotifications { get; } = new();
+
         public GeothermometerEditorWindow()
         {
             InitializeComponent();
@@ -21,6 +26,8 @@ namespace GeoChemistryNexus.Views
         {
             DataContext = viewModel;
             viewModel.OnCloseRequested = () => this.Close();
+            viewModel.ShowErrorMessage = ShowErrorMessage;
+            viewModel.ShowSuccessMessage = ShowSuccessMessage;
 
             // 连接 ViewModel 与 RichTextBox 的回调
             viewModel.GetCurrentRtfContent = () =>
@@ -53,6 +60,44 @@ namespace GeoChemistryNexus.Views
                     HelpDocEditor.Document.Blocks.Clear();
                 }
             };
+        }
+
+        private void ShowSuccessMessage(string message)
+        {
+            ShowLocalNotification("Success", message, NotificationType.Success, MessageHelper.waitTime);
+        }
+
+        private void ShowErrorMessage(string message)
+        {
+            ShowLocalNotification("Error", message, NotificationType.Error);
+        }
+
+        private void ShowLocalNotification(string title, string message, NotificationType type, int durationSeconds = 0)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                var vm = new NotificationViewModel(title, message, type, RemoveNotification);
+                LocalNotifications.Add(vm);
+
+                if (durationSeconds > 0)
+                {
+                    _ = Task.Delay(TimeSpan.FromSeconds(durationSeconds)).ContinueWith(_ =>
+                    {
+                        Dispatcher.BeginInvoke(new Action(async () => await vm.Close()));
+                    });
+                }
+            });
+        }
+
+        private void RemoveNotification(NotificationViewModel vm)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                if (LocalNotifications.Contains(vm))
+                {
+                    LocalNotifications.Remove(vm);
+                }
+            });
         }
 
         // ==================== RTF 格式化按钮事件 ====================

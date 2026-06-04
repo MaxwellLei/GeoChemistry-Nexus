@@ -55,6 +55,9 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private bool _developerMode; // 开发者模式
 
+        [ObservableProperty]
+        private int mainSidebarCollapseMode; // 主窗体侧边栏收起样式(0是全部收起;1是保留图标)
+
         public RelayCommand AutoOffTimeChangedCommand { get; private set; }   // 修改通知自动关闭时间命令
         public RelayCommand LanguageChangedCommand { get; private set; }   // 修改语言命令
         public RelayCommand CheckUpdateCommand { get; private set; }   // 检查更新命令
@@ -181,6 +184,16 @@ namespace GeoChemistryNexus.ViewModels
             MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
         }
 
+        // 主窗体侧边栏收起样式
+        partial void OnMainSidebarCollapseModeChanged(int value)
+        {
+            if (isLoading) return;
+
+            ConfigHelper.SetConfig("main_sidebar_collapse_mode", value.ToString());
+            WeakReferenceMessenger.Default.Send(new MainSidebarCollapseModeChangedMessage(value == 1));
+            MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
+        }
+
         // 修改消息通知时间
         private void ExecuteAutoOffTimeChangedCommand()
         {
@@ -248,6 +261,15 @@ namespace GeoChemistryNexus.ViewModels
             Boot = bool.Parse(Helpers.ConfigHelper.GetConfig("boot"));     //读取是否自动开机
             AutoCheck = bool.Parse(Helpers.ConfigHelper.GetConfig("auto_check_update"));   //读取是否自动检查更新
             ExitMode = int.Parse(Helpers.ConfigHelper.GetConfig("exit_program_mode"));  //读取退出方式
+            if (int.TryParse(Helpers.ConfigHelper.GetConfig("main_sidebar_collapse_mode"), out int sidebarCollapseMode)
+                && sidebarCollapseMode >= 0 && sidebarCollapseMode <= 1)
+            {
+                MainSidebarCollapseMode = sidebarCollapseMode;
+            }
+            else
+            {
+                MainSidebarCollapseMode = 0;
+            }
 
             isLoading = false;
         }

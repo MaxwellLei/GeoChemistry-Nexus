@@ -3219,4 +3219,19 @@
   <data name="enable_data_to_drawing_object_linkage" xml:space="preserve">
     <value>啟用資料到繪圖物件聯動</value>
   </data>
+  <data name="dataPreprocessing" xml:space="preserve">
+    <value>資料預處理</value>
+  </data>
+  <data name="harker_diagram" xml:space="preserve">
+    <value>哈克圖解</value>
+  </data>
+  <data name="demoData" xml:space="preserve">
+    <value>範例資料</value>
+  </data>
+  <data name="clearTemplateTable" xml:space="preserve">
+    <value>清除模板表</value>
+  </data>
+  <data name="runProcessing" xml:space="preserve">
+    <value>執行處理</value>
+  </data>
 </root>

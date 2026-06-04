@@ -6,7 +6,9 @@
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:vm="clr-namespace:GeoChemistryNexus.ViewModels"
         xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
+        xmlns:controls="clr-namespace:GeoChemistryNexus.Controls"
         mc:Ignorable="d"
+        x:Name="RootWindow"
         Title="{Binding EditorTitle}"
         Height="780" Width="960"
         MinHeight="600" MinWidth="800"
@@ -183,22 +185,24 @@
         </Style>
     </Window.Resources>
 
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <Grid>
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <!-- ==================== StepBar ==================== -->
-        <hc:StepBar Grid.Row="0" StepIndex="{Binding CurrentStep, Mode=OneWay}" Margin="40,0,40,16">
-            <hc:StepBarItem Content="{Binding [geo_step_basic], Source={x:Static lg:LanguageService.Instance}, FallbackValue=基本信息}"/>
-            <hc:StepBarItem Content="{Binding [geo_step_script], Source={x:Static lg:LanguageService.Instance}, FallbackValue=公式脚本}"/>
-            <hc:StepBarItem Content="{Binding [geo_step_help_doc], Source={x:Static lg:LanguageService.Instance}, FallbackValue=帮助文档}"/>
-        </hc:StepBar>
+            <!-- ==================== StepBar ==================== -->
+            <hc:StepBar Grid.Row="0" StepIndex="{Binding CurrentStep, Mode=OneWay}" Margin="40,0,40,16">
+                <hc:StepBarItem Content="{Binding [geo_step_basic], Source={x:Static lg:LanguageService.Instance}, FallbackValue=基本信息}"/>
+                <hc:StepBarItem Content="{Binding [geo_step_script], Source={x:Static lg:LanguageService.Instance}, FallbackValue=公式脚本}"/>
+                <hc:StepBarItem Content="{Binding [geo_step_help_doc], Source={x:Static lg:LanguageService.Instance}, FallbackValue=帮助文档}"/>
+            </hc:StepBar>
 
-        <!-- ==================== 内容区域 ==================== -->
-        <Grid Grid.Row="1">
+            <!-- ==================== 内容区域 ==================== -->
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <Grid Margin="0,0,4,0">
 
             <!-- ========== Step 0: 基本信息 ========== -->
             <Border Background="White" CornerRadius="8" Padding="20,18" BorderBrush="#E0E0E0" BorderThickness="1">
@@ -215,6 +219,7 @@
 
                 <Grid VerticalAlignment="Top">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -296,8 +301,62 @@
                                  Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
 
-                    <!-- Row 4: Hint -->
-                    <TextBlock Grid.Row="4" FontSize="11" Foreground="#999" Margin="0,4,0,0"
+                    <!-- Row 4: Preview -->
+                    <StackPanel Grid.Row="4" Margin="0,0,0,12">
+                        <TextBlock Style="{StaticResource FieldLabelStyle}" Text="效果预览"/>
+                        <TextBlock FontSize="11" Foreground="#888" Margin="0,0,0,8"
+                                   Text="根据上方元数据实时生成，分别预览左侧列表项和右侧详情顶部的显示效果。"/>
+
+                        <TextBlock Style="{StaticResource FieldLabelStyle}" Text="温度计列表选项预览"/>
+                        <Border Background="#FAFAFC" BorderBrush="#E4E4E8" BorderThickness="1" CornerRadius="8" Padding="6" Margin="0,0,0,10">
+                            <Border Background="Transparent" CornerRadius="6" Padding="8,6">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="{Binding PreviewName, Mode=OneWay}" FontSize="13" Foreground="#333"
+                                                   TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock Text="{Binding PreviewMetaLine, Mode=OneWay}" FontSize="11" Foreground="#888"
+                                                   Margin="0,2,0,0" TextTrimming="CharacterEllipsis"/>
+                                    </StackPanel>
+                                    <Border Grid.Column="1" CornerRadius="4" Background="#FFF3E0" Padding="5,2"
+                                            VerticalAlignment="Center" Margin="4,0,0,0">
+                                        <TextBlock Text="{Binding [geo_label_custom_chip],Source={x:Static lg:LanguageService.Instance}, FallbackValue=自定义}"
+                                                   FontSize="9" Foreground="#E65100"/>
+                                    </Border>
+                                </Grid>
+                            </Border>
+                        </Border>
+
+                        <TextBlock Style="{StaticResource FieldLabelStyle}" Text="右侧顶部预览"/>
+                        <Border Background="#FAFAFC" BorderBrush="#E4E4E8" BorderThickness="1" CornerRadius="8" Padding="14,12">
+                            <StackPanel>
+                                <TextBlock Text="{Binding PreviewName, Mode=OneWay}" FontSize="18" FontWeight="SemiBold" Foreground="#333"/>
+                                <TextBlock FontSize="12" Foreground="#666" Margin="0,4,0,0"
+                                           Text="{Binding PreviewReference, Mode=OneWay}" TextTrimming="CharacterEllipsis"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                    <Border CornerRadius="4" Background="#E8F4FD" Padding="8,3" Margin="0,0,6,0">
+                                        <TextBlock FontSize="11" Foreground="#0078D4" Text="{Binding PreviewMineral, Mode=OneWay}"/>
+                                    </Border>
+                                    <Border CornerRadius="4" Background="#F0F0F0" Padding="8,3" Margin="0,0,6,0">
+                                        <TextBlock FontSize="11" Foreground="#555">
+                                            <Run Text="v"/>
+                                            <Run Text="{Binding PreviewVersion, Mode=OneWay}"/>
+                                        </TextBlock>
+                                    </Border>
+                                    <Border CornerRadius="4" Background="#FFF3E0" Padding="8,3">
+                                        <TextBlock FontSize="11" Foreground="#E65100"
+                                                   Text="{Binding [geo_label_custom_chip],Source={x:Static lg:LanguageService.Instance}, FallbackValue=自定义}"/>
+                                    </Border>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- Row 5: Hint -->
+                    <TextBlock Grid.Row="5" FontSize="11" Foreground="#999" Margin="0,4,0,0"
                                Text="{Binding [geo_field_required_hint], Source={x:Static lg:LanguageService.Instance}, FallbackValue=必填字段标有 *。版本号格式为 x.x.x（如 1.0.0）。公式名称将作为 ReoGrid 中的自定义函数名称注册。}"/>
                 </Grid>
             </Border>
@@ -568,21 +627,22 @@
                     </StackPanel>
                 </Grid>
             </Border>
-        </Grid>
+            </Grid>
+            </ScrollViewer>
 
-        <!-- ==================== 底部：操作按钮栏 ==================== -->
-        <Border Grid.Row="2" Background="White" CornerRadius="8" Padding="16,12" Margin="0,12,0,0"
-                BorderBrush="#E0E0E0" BorderThickness="1">
-            <DockPanel>
-                <!-- 左侧：取消 -->
-                <Button DockPanel.Dock="Left" Style="{StaticResource EditorButtonStyle}" 
-                        Command="{Binding CancelCommand}" Content="{Binding [geo_btn_cancel], Source={x:Static lg:LanguageService.Instance}, FallbackValue=取消}"/>
+            <!-- ==================== 底部：操作按钮栏 ==================== -->
+            <Border Grid.Row="2" Background="White" CornerRadius="8" Padding="16,12" Margin="0,12,0,0"
+                    BorderBrush="#E0E0E0" BorderThickness="1">
+                <DockPanel>
+                    <!-- 左侧：取消 -->
+                    <Button DockPanel.Dock="Left" Style="{StaticResource EditorButtonStyle}" 
+                            Command="{Binding CancelCommand}" Content="{Binding [geo_btn_cancel], Source={x:Static lg:LanguageService.Instance}, FallbackValue=取消}"/>
 
-                <!-- 右侧：导航和保存按钮 -->
-                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <!-- 右侧：导航和保存按钮 -->
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
 
-                    <!-- 上一步（step > 0 时显示） -->
-                    <Button Command="{Binding PrevStepCommand}" Margin="0,0,8,0">
+                        <!-- 上一步（step > 0 时显示） -->
+                        <Button Command="{Binding PrevStepCommand}" Margin="0,0,8,0">
                         <Button.Style>
                             <Style TargetType="Button" BasedOn="{StaticResource EditorButtonStyle}">
                                 <Setter Property="Visibility" Value="Visible"/>
@@ -598,10 +658,10 @@
                                        VerticalAlignment="Center" Margin="0,0,4,0"/>
                             <TextBlock Text="{Binding [geo_btn_prev], Source={x:Static lg:LanguageService.Instance}, FallbackValue=上一步}" FontSize="13"/>
                         </StackPanel>
-                    </Button>
+                        </Button>
 
-                    <!-- 下一步（step < 2 时显示） -->
-                    <Button Command="{Binding NextStepCommand}">
+                        <!-- 下一步（step < 2 时显示） -->
+                        <Button Command="{Binding NextStepCommand}">
                         <Button.Style>
                             <Style TargetType="Button" BasedOn="{StaticResource PrimaryEditorButtonStyle}">
                                 <Setter Property="Visibility" Value="Visible"/>
@@ -617,10 +677,10 @@
                             <TextBlock Text="&#xE76C;" FontFamily="Segoe MDL2 Assets" FontSize="11" 
                                        VerticalAlignment="Center" Margin="4,0,0,0"/>
                         </StackPanel>
-                    </Button>
+                        </Button>
 
-                    <!-- 保存并导出 ZIP（step == 2 时显示） -->
-                    <Button Command="{Binding SaveAndExportCommand}" Margin="0,0,8,0">
+                        <!-- 保存并导出 ZIP（step == 2 时显示） -->
+                        <Button Command="{Binding SaveAndExportCommand}" Margin="0,0,8,0">
                         <Button.Style>
                             <Style TargetType="Button" BasedOn="{StaticResource EditorButtonStyle}">
                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -636,10 +696,10 @@
                                        VerticalAlignment="Center" Margin="0,0,6,0"/>
                             <TextBlock Text="{Binding [geo_btn_save_export_zip], Source={x:Static lg:LanguageService.Instance}, FallbackValue=保存并导出 ZIP}" FontSize="13"/>
                         </StackPanel>
-                    </Button>
+                        </Button>
 
-                    <!-- 保存（step == 2 时显示） -->
-                    <Button Command="{Binding SaveCommand}">
+                        <!-- 保存（step == 2 时显示） -->
+                        <Button Command="{Binding SaveCommand}">
                         <Button.Style>
                             <Style TargetType="Button" BasedOn="{StaticResource PrimaryEditorButtonStyle}">
                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -655,9 +715,27 @@
                                        VerticalAlignment="Center" Margin="0,0,6,0"/>
                             <TextBlock Text="{Binding [geo_btn_save], Source={x:Static lg:LanguageService.Instance}, FallbackValue=保存}" FontSize="13"/>
                         </StackPanel>
-                    </Button>
-                </StackPanel>
-            </DockPanel>
-        </Border>
+                        </Button>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+        </Grid>
+
+        <ScrollViewer VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,20,20,0"
+                      MaxHeight="650" VerticalScrollBarVisibility="Hidden" PanningMode="VerticalOnly"
+                      IsHitTestVisible="True" BorderThickness="0" Background="Transparent">
+            <ItemsControl ItemsSource="{Binding ElementName=RootWindow, Path=LocalNotifications}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel VerticalAlignment="Top"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <controls:NotificationItem/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
     </Grid>
 </Window>

@@ -530,7 +530,40 @@ namespace GeoChemistryNexus.ViewModels
                 {
                     _ = InitializeAsync();
                 }
+
+                SyncSpiderDiagramLanguageWithApplication();
             }
+        }
+
+        private void SyncSpiderDiagramLanguageWithApplication()
+        {
+            if (CurrentTemplate?.TemplateType != "Spider")
+            {
+                return;
+            }
+
+            string targetLanguage = ResolveInitialSpiderDiagramLanguage(CurrentTemplate);
+            if (string.IsNullOrWhiteSpace(targetLanguage))
+            {
+                return;
+            }
+
+            CurrentTemplate.DefaultLanguage = targetLanguage;
+
+            if (!string.Equals(CurrentDiagramLanguage, targetLanguage, StringComparison.OrdinalIgnoreCase))
+            {
+                CancelSelected();
+                CurrentDiagramLanguage = targetLanguage;
+                return;
+            }
+
+            LocalizedString.OverrideLanguage = targetLanguage;
+            DiagramLanguageStatus = LanguageService.GetLanguageDisplayName(targetLanguage);
+
+            AutoDetectFonts();
+            CancelSelected();
+            BuildLayerTreeFromTemplate(CurrentTemplate);
+            RefreshPlotFromLayers(true);
         }
 
         /// <summary>
@@ -583,6 +616,9 @@ namespace GeoChemistryNexus.ViewModels
         // 蛛网图相关属性
         [ObservableProperty]
         private bool _isSpiderDiagramMode = false;
+
+        [ObservableProperty]
+        private bool _isHarkerDiagramMode = false;
 
         [ObservableProperty]
         private SpiderDiagramViewModel _spiderDiagramViewModel = new();
@@ -3991,6 +4027,7 @@ namespace GeoChemistryNexus.ViewModels
             IsFavoriteExpanded = false;
             IsOfficialExpanded = false;
             IsRecentsExpanded = false;
+            IsHarkerDiagramMode = false;
 
             // 清除 TreeView 选中项
             ClearTreeViewSelection(OfficialTemplatesNode);
@@ -4027,6 +4064,73 @@ namespace GeoChemistryNexus.ViewModels
             CurrentCategoryName = diagramType == "REE"
                 ? (LanguageService.Instance["ree_spider_diagram"] ?? "REE Spider Diagram")
                 : (LanguageService.Instance["trace_element_spider_diagram"] ?? "Multi-Element Spider Diagram");
+        }
+
+        /// <summary>
+        /// 直接打开哈克图解，复用现有笛卡尔模板渲染链路。
+        /// </summary>
+        [RelayCommand]
+        private async Task OpenHarkerDiagram()
+        {
+            if (IsTransitionLoading)
+            {
+                return;
+            }
+
+            await BeginTransitionLoadingAsync(enteringPlot: true);
+            try
+            {
+                SaveTemplateLibraryState();
+
+                LocalizedString.OverrideLanguage = null;
+
+                _currentTemplateId = null;
+                _currentTemplateFilePath = string.Empty;
+                _isCurrentTemplateCustom = false;
+                UpdateHelpDocReadOnlyState();
+
+                IsShowTemplateInfo = false;
+                IsHarkerDiagramMode = true;
+                IsSpiderDiagramMode = false;
+                SpiderDiagramViewModel.IsSpiderPlotMode = false;
+                SpiderDiagramViewModel.Samples.Clear();
+                _spiderTitleDef = null;
+                _spiderLegendDef = null;
+                _spiderGridDef = null;
+
+                WpfPlot1?.Plot.Clear();
+                WpfPlot1?.Refresh();
+
+                CancelSelected();
+                LayerTree.Clear();
+
+                CurrentTemplate = ToolDiagramTemplateFactory.CreateHarkerTemplate();
+                CurrentCategoryName = LanguageService.Instance["harker_diagram"] ?? "哈克图解";
+
+                IsTemplateMode = false;
+                IsPlotMode = true;
+                RibbonTabIndex = 0;
+
+                if (!string.IsNullOrEmpty(CurrentTemplate.DefaultLanguage))
+                {
+                    LocalizedString.OverrideLanguage = CurrentTemplate.DefaultLanguage;
+                }
+
+                BuildLayerTreeFromTemplate(CurrentTemplate);
+                RefreshPlotFromLayers();
+                CenterPlot();
+                ReloadHelpDocument(CurrentDiagramLanguage);
+                PrepareDataGridForInput();
+
+                _originalTemplateJson = SerializeTemplate(CurrentTemplate);
+                _originalHelpDocumentRtf = RtfHelper.GetRtfString(_richTextBox);
+                HasUnsavedChanges = false;
+                WeakReferenceMessenger.Default.Send(new UnsavedChangesMessage(false));
+            }
+            finally
+            {
+                await EndTransitionLoadingAsync();
+            }
         }
 
         private string ResolveInitialSpiderDiagramLanguage(GraphMapTemplate template)
@@ -4446,6 +4550,10 @@ namespace GeoChemistryNexus.ViewModels
             {
                 _lastSelectedCategory = SpiderDiagramViewModel.DiagramType == "REE" ? "SpiderREE" : "SpiderTraceElement";
             }
+            else if (IsHarkerDiagramMode)
+            {
+                _lastSelectedCategory = "Harker";
+            }
             else if (IsPersonalExpanded)
             {
                 _lastSelectedCategory = "Personal";
@@ -4478,6 +4586,7 @@ namespace GeoChemistryNexus.ViewModels
                     IsFavoriteExpanded = false;
                     IsOfficialExpanded = false;
                     IsRecentsExpanded = false;
+                    IsHarkerDiagramMode = false;
 
                     // 重置图表：清除所有绘图对象
                     WpfPlot1?.Plot.Clear();
@@ -4495,11 +4604,24 @@ namespace GeoChemistryNexus.ViewModels
                     SpiderDiagramViewModel.Initialize(spiderType);
                     SpiderDiagramViewModel.ElementOrderChanged += OnSpiderElementOrderChanged;
                     SpiderDiagramViewModel.PlotSettingsChanged += OnSpiderPlotSettingsChanged;
+                    CurrentTemplate = SpiderTemplateFactory.GetSpiderTemplate(spiderType);
+                    CurrentTemplate.DefaultLanguage = ResolveInitialSpiderDiagramLanguage(CurrentTemplate);
+                    _isCurrentTemplateCustom = true;
                     CurrentCategoryName = spiderType == "REE"
                         ? (LanguageService.Instance["ree_spider_diagram"] ?? "REE Spider Diagram")
                         : (LanguageService.Instance["trace_element_spider_diagram"] ?? "Multi-Element Spider Diagram");
                     break;
+                case "Harker":
+                    IsPersonalExpanded = false;
+                    IsFavoriteExpanded = false;
+                    IsOfficialExpanded = false;
+                    IsRecentsExpanded = false;
+                    IsSpiderDiagramMode = false;
+                    IsHarkerDiagramMode = true;
+                    CurrentCategoryName = LanguageService.Instance["harker_diagram"] ?? "哈克图解";
+                    break;
                 case "Personal":
+                    IsHarkerDiagramMode = false;
                     IsPersonalExpanded = true;
                     IsFavoriteExpanded = false;
                     IsOfficialExpanded = false;
@@ -4508,6 +4630,7 @@ namespace GeoChemistryNexus.ViewModels
                     await ShowCategoryTemplateCards(PersonalTemplatesNode);
                     break;
                 case "Favorite":
+                    IsHarkerDiagramMode = false;
                     IsPersonalExpanded = false;
                     IsFavoriteExpanded = true;
                     IsOfficialExpanded = false;
@@ -4517,6 +4640,7 @@ namespace GeoChemistryNexus.ViewModels
                     await ShowCategoryTemplateCards(FavoriteTemplatesNode);
                     break;
                 case "Recents":
+                    IsHarkerDiagramMode = false;
                     IsPersonalExpanded = false;
                     IsFavoriteExpanded = false;
                     IsOfficialExpanded = false;
@@ -4528,6 +4652,7 @@ namespace GeoChemistryNexus.ViewModels
                 case "Official":
                 default:
                     // 默认显示官方图解
+                    IsHarkerDiagramMode = false;
                     IsPersonalExpanded = false;
                     IsFavoriteExpanded = false;
                     IsOfficialExpanded = true;
@@ -4839,6 +4964,17 @@ namespace GeoChemistryNexus.ViewModels
         private string _currentDiagramLanguage = "";
 
         public bool IsDiagramLanguageStatusVisible => CurrentTemplate?.TemplateType != "Spider";
+        public bool IsScriptSettingButtonVisible => !IsSpiderDiagramMode && !IsHarkerDiagramMode;
+
+        partial void OnIsSpiderDiagramModeChanged(bool value)
+        {
+            OnPropertyChanged(nameof(IsScriptSettingButtonVisible));
+        }
+
+        partial void OnIsHarkerDiagramModeChanged(bool value)
+        {
+            OnPropertyChanged(nameof(IsScriptSettingButtonVisible));
+        }
 
         private void AutoDetectFonts()
         {
@@ -5953,100 +6089,25 @@ namespace GeoChemistryNexus.ViewModels
                     return;
                 }
 
-                var template = entity.Content;
+                var editWindow = new DiagramPlotEditorWindow();
+                TrySetDialogOwner(editWindow);
+                editWindow.InitializeForEdit(entity);
 
-                // 2. 创建编辑窗口
-                var editWindow = new NewTemplateWindow
+                editWindow.ConfirmCommand = new RelayCommand<DiagramPlotEditorViewModel>(async (editor) =>
                 {
-                    Owner = Application.Current.MainWindow,
-                    Title = LanguageService.Instance["edit_diagram_template"] ?? "编辑图解模板"
-                };
+                    if (editor == null) return;
 
-                // 3. 准备初始数据
-                var control = editWindow.TemplateControl;
-
-                control.EmptyData();
-
-                // 设置编辑模式，禁用绘图类型修改
-                control.IsPlotTypeSelectionEnabled = false;
-                control.SelectPlotType(template.TemplateType == "Ternary" ? "Ternary_Plot" : "2D_Plot");
-
-                // 加载现有语言
-                if (template.NodeList != null && template.NodeList.Translations != null)
-                {
-                    var languages = template.NodeList.Translations.Keys.ToList();
-                    foreach (var lang in languages)
+                    if (!editor.Validate(out string validationError))
                     {
-                        control._languageParts.Add(new LanguageTagModel { Text = lang });
-                    }
-                    control.UpdateLanguageDefaultStatus();
-
-                    // 加载现有分类
-                    var categoryParts = control.GetCategoryParts().ToList();
-                    control._categoryParts.Clear();
-
-                    // 获取默认语言的分类路径
-                    string defaultLang = template.DefaultLanguage;
-                    if (template.NodeList.Translations.ContainsKey(defaultLang))
-                    {
-                        var path = template.NodeList.Translations[defaultLang];
-                        var parts = path.Split('>', StringSplitOptions.RemoveEmptyEntries)
-                                       .Select(p => p.Trim())
-                                       .ToList();
-
-                        foreach (var part in parts)
-                        {
-                            control._categoryParts.Add(new CategoryPartModel
-                            {
-                                DisplayName = part,
-                                LocalizedNames = null
-                            });
-                        }
-                    }
-                }
-
-                // 4. 处理确认/取消命令
-                editWindow.ConfirmCommand = new RelayCommand<NewTemplateControl>(async (ctrl) =>
-                {
-                    if (ctrl == null) return;
-
-                    // 验证输入
-                    if (ctrl._languageParts.Count == 0)
-                    {
-                        MessageHelper.Warning(LanguageService.Instance["all_fields_required"]);
+                        editWindow.ShowWarningMessage(validationError);
                         return;
                     }
 
-                    if (ctrl._categoryParts.Count < 2)
-                    {
-                        MessageHelper.Warning(LanguageService.Instance["category_structure_min_two"]);
-                        return;
-                    }
+                    var updatedTemplate = editor.BuildTemplateForSubmit();
+                    var newNodeList = updatedTemplate.NodeList;
+                    var languages = editor.LanguageParts.Select(l => l.Text).ToList();
 
-                    // 更新 NodeList
-                    var newNodeList = new LocalizedString();
-                    var languages = ctrl._languageParts.Select(l => l.Text).ToList();
-
-                    foreach (var lang in languages)
-                    {
-                        // 构建分类路径
-                        var parts = new List<string>();
-                        foreach (var part in ctrl._categoryParts)
-                        {
-                            if (part.LocalizedNames != null && part.LocalizedNames.ContainsKey(lang))
-                            {
-                                parts.Add(part.LocalizedNames[lang]);
-                            }
-                            else
-                            {
-                                parts.Add(part.DisplayName);
-                            }
-                        }
-                        newNodeList.Translations[lang] = string.Join(" > ", parts);
-                    }
-
-                    // 重新计算 GraphMapPath（使用最后两级的 DisplayName 拼接）
-                    var categoryParts = ctrl._categoryParts.ToList();
+                    var categoryParts = editor.CategoryParts.ToList();
                     string lastPart = categoryParts[categoryParts.Count - 1].DisplayName;
                     string secondLastPart = categoryParts[categoryParts.Count - 2].DisplayName;
                     string newGraphMapPath = $"{secondLastPart}_{lastPart}";
@@ -6061,12 +6122,12 @@ namespace GeoChemistryNexus.ViewModels
                         var existingTemplate = await Task.Run(() => GraphMapDatabaseService.Instance.GetTemplate(newId));
                         if (existingTemplate != null)
                         {
-                            MessageHelper.Warning(LanguageService.Instance["BasemapExisted"]);
+                            editWindow.ShowWarningMessage(LanguageService.Instance["BasemapExisted"]);
                             return;
                         }
                     }
 
-                    // 更新 Entity 字段
+                    entity.Content = updatedTemplate;
                     entity.NodeList = newNodeList;
                     entity.Content.NodeList = newNodeList;
                     entity.Content.DefaultLanguage = languages.First();
@@ -6138,14 +6199,11 @@ namespace GeoChemistryNexus.ViewModels
                     // 刷新界面
                     await InitializeAsync();
 
-                    MessageHelper.Success(LanguageService.Instance["ModifedSuccess"] ?? "修改成功");
+                    editWindow.ShowSuccessMessage(LanguageService.Instance["ModifedSuccess"] ?? "淇敼鎴愬姛");
                     editWindow.Close();
                 });
 
-                editWindow.CancelCommand = new RelayCommand<NewTemplateControl>((ctrl) =>
-                {
-                    editWindow.Close();
-                });
+                editWindow.CancelCommand = new RelayCommand<DiagramPlotEditorViewModel>(_ => editWindow.Close());
 
                 editWindow.ShowDialog();
 
@@ -6343,6 +6401,7 @@ namespace GeoChemistryNexus.ViewModels
 
                 // 确保清除语言覆盖，使用软件默认配置
                 LocalizedString.OverrideLanguage = null;
+                IsHarkerDiagramMode = false;
 
                 // 设置是否为自定义模板 (官方模板不显示未保存提醒)
                 _isCurrentTemplateCustom = card.IsCustomTemplate;
@@ -9443,86 +9502,24 @@ namespace GeoChemistryNexus.ViewModels
         /// 尝试新建图解模板
         /// </summary>
         /// <returns>是否创建成功</returns>
-        private async Task<bool> TryCreateNewTemplate(NewTemplateControl newTemplateControl)
+        private async Task<bool> TryCreateNewTemplate(
+            DiagramPlotEditorViewModel editor,
+            Action<string>? showWarningMessage = null,
+            Func<string, string, string, string, Task<bool>>? showConfirmDialogAsync = null)
         {
-            if (newTemplateControl == null) return false;
+            if (editor == null) return false;
 
-            // 获取数据
-            string language = newTemplateControl.SelectedLanguages;
-            string category = newTemplateControl.CategoryHierarchy;
-            string plotType = newTemplateControl.PlotType;
-
-            // 检查数据是否有效
-            if (string.IsNullOrWhiteSpace(language) || string.IsNullOrWhiteSpace(category)
-                 || string.IsNullOrEmpty(plotType))
+            if (!editor.Validate(out string validationError))
             {
-                // 所有字段均为必填项！
-                MessageHelper.Warning(LanguageService.Instance["all_fields_required"]);
+                (showWarningMessage ?? MessageHelper.Warning)(validationError);
                 return false;
             }
 
-            var allLanguages = language.Split(new[] { " > " }, StringSplitOptions.RemoveEmptyEntries)
-                                .Select(lang => lang.Trim())
-                                .ToList();
+            var allLanguages = editor.LanguageParts.Select(l => l.Text).ToList();
+            var categoryParts = editor.CategoryParts.ToList();
+            string plotType = editor.SelectedPlotType;
+            var localizedCategory = editor.BuildCategoryNodeList();
 
-            // 检查是否有重复语言key
-            if (allLanguages.Distinct().Count() != allLanguages.Count)
-            {
-                // 语言设置中存在重复项，请检查！
-                MessageHelper.Warning(LanguageService.Instance["language_setting_duplicate_found"]);
-                return false;
-            }
-
-            // 获取富文本形式的分类层级数据
-            var categoryParts = newTemplateControl.GetCategoryParts().ToList();
-
-            if (categoryParts.Count < 2)
-            {
-                // 分类结构必须大于等于2！
-                MessageHelper.Warning(LanguageService.Instance["category_structure_min_two"]);
-                return false;
-            }
-
-            // 1. 确定默认语言
-            string defaultLanguage = allLanguages.First();
-
-            // 2. 为所有支持的语言构建分类路径字符串
-            var categoryTranslations = new Dictionary<string, string>();
-
-            foreach (var lang in allLanguages)
-            {
-                var pathParts = new List<string>();
-
-                foreach (var part in categoryParts)
-                {
-                    string partName = string.Empty;
-
-                    // 尝试获取本地化名称
-                    if (part.LocalizedNames != null && part.LocalizedNames.ContainsKey(lang))
-                    {
-                        partName = part.LocalizedNames[lang];
-                    }
-                    else
-                    {
-                        // 如果没有对应的本地化名称（或者是手动输入的），则使用默认显示名称
-                        partName = part.DisplayName;
-                    }
-
-                    pathParts.Add(partName);
-                }
-
-                // 组合成路径字符串
-                categoryTranslations[lang] = string.Join(" > ", pathParts);
-            }
-
-            // 3. 构建 NodeList 对象
-            var localizedCategory = new LocalizedString
-            {
-                Default = defaultLanguage,
-                Translations = categoryTranslations
-            };
-
-            // 使用最后两级作为文件名的一部分（使用默认语言或显示名称）
             string lastPart = categoryParts[categoryParts.Count - 1].DisplayName;
             string secondLastPart = categoryParts[categoryParts.Count - 2].DisplayName;
             string folderName = $"{secondLastPart}_{lastPart}";
@@ -9533,13 +9530,26 @@ namespace GeoChemistryNexus.ViewModels
 
             if (existingTemplate != null)
             {
-                var result = HandyControl.Controls.MessageBox.Show(
-                    LanguageService.Instance["BasemapExisted"],
-                    LanguageService.Instance["tips"] ?? "Tips",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Question);
+                bool shouldContinue;
+                if (showConfirmDialogAsync != null)
+                {
+                    shouldContinue = await showConfirmDialogAsync(
+                        LanguageService.Instance["tips"] ?? "Tips",
+                        LanguageService.Instance["BasemapExisted"],
+                        LanguageService.Instance["Confirm"] ?? "Confirm",
+                        LanguageService.Instance["Cancel"] ?? "Cancel");
+                }
+                else
+                {
+                    var result = HandyControl.Controls.MessageBox.Show(
+                        LanguageService.Instance["BasemapExisted"],
+                        LanguageService.Instance["tips"] ?? "Tips",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question);
+                    shouldContinue = result == MessageBoxResult.Yes;
+                }
 
-                if (result == MessageBoxResult.No)
+                if (!shouldContinue)
                 {
                     return false;
                 }
@@ -9548,8 +9558,7 @@ namespace GeoChemistryNexus.ViewModels
             // 确保清除语言覆盖
             LocalizedString.OverrideLanguage = null;
 
-            // 2. 准备新的 GraphMapTemplate 对象
-            CurrentTemplate = GraphMapTemplate.CreateDefault(allLanguages, plotType, localizedCategory);
+            CurrentTemplate = editor.BuildTemplateForSubmit();
 
             // 计算哈希
             string fileHash = string.Empty;
@@ -9631,6 +9640,7 @@ namespace GeoChemistryNexus.ViewModels
             _currentTemplateId = newEntity.Id;
             _currentTemplateFilePath = null; // 不再使用文件路径
             _isCurrentTemplateCustom = true;
+            IsHarkerDiagramMode = false;
             UpdateHelpDocReadOnlyState();
 
             IsTemplateMode = false;
@@ -9706,6 +9716,19 @@ namespace GeoChemistryNexus.ViewModels
             return true;
         }
 
+        private static void TrySetDialogOwner(Window window)
+        {
+            try
+            {
+                if (Application.Current.MainWindow != null && Application.Current.MainWindow.IsVisible)
+                    window.Owner = Application.Current.MainWindow;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"设置 Owner 失败: {ex.Message}");
+            }
+        }
+
         /// <summary>
         /// 新建底图——弹窗新建
         /// </summary>
@@ -9714,37 +9737,23 @@ namespace GeoChemistryNexus.ViewModels
         {
             try
             {
-                var window = new NewTemplateWindow();
+                var window = new DiagramPlotEditorWindow();
+                window.InitializeForCreate();
 
-                var confirmCommand = new AsyncRelayCommand<NewTemplateControl>(async (control) =>
+                window.ConfirmCommand = new AsyncRelayCommand<DiagramPlotEditorViewModel>(async (editor) =>
                 {
-                    if (await TryCreateNewTemplate(control))
+                    if (await TryCreateNewTemplate(
+                        editor,
+                        window.ShowWarningMessage,
+                        window.ShowConfirmDialogAsync))
                     {
                         window.Close();
                     }
                 });
 
-                var cancelCommand = new RelayCommand<NewTemplateControl>((control) =>
-                {
-                    window.Close();
-                });
+                window.CancelCommand = new RelayCommand<DiagramPlotEditorViewModel>(_ => window.Close());
 
-                window.ConfirmCommand = confirmCommand;
-                window.CancelCommand = cancelCommand;
-
-                // 尝试设置 Owner，避免因 MainWindow 未显示而崩溃
-                try
-                {
-                    if (Application.Current.MainWindow != null && Application.Current.MainWindow.IsVisible)
-                    {
-                        window.Owner = Application.Current.MainWindow;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine($"设置 Owner 失败: {ex.Message}");
-                }
-
+                TrySetDialogOwner(window);
                 window.ShowDialog();
             }
             catch (Exception ex)
@@ -10306,6 +10315,7 @@ namespace GeoChemistryNexus.ViewModels
 
                     // 将当前编辑的文件路径更新为用户选择的路径，以便后续保存操作
                     _currentTemplateFilePath = filePath;
+                    IsHarkerDiagramMode = false;
 
                     string customRoot = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Custom");
                     // 强制开启编辑模式

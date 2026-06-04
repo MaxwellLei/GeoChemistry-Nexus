@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -2521,6 +2521,15 @@
   <data name="language_apperarance" xml:space="preserve">
     <value>语言与外观</value>
   </data>
+  <data name="main_sidebar_collapse_style" xml:space="preserve">
+    <value>主侧边栏收起样式</value>
+  </data>
+  <data name="main_sidebar_collapse_full" xml:space="preserve">
+    <value>全部收起</value>
+  </data>
+  <data name="main_sidebar_collapse_icon_only" xml:space="preserve">
+    <value>保留图标</value>
+  </data>
   <data name="geo_msg_demoted" xml:space="preserve">
     <value>已降级为自定义温度计</value>
   </data>
@@ -3272,5 +3281,275 @@
   </data>
   <data name="enable_data_to_drawing_object_linkage" xml:space="preserve">
     <value>启用数据到绘图对象联动</value>
+  </data>
+  <data name="dataPreprocessing" xml:space="preserve">
+    <value>数据预处理</value>
+  </data>
+  <data name="harker_diagram" xml:space="preserve">
+    <value>哈克图解</value>
+  </data>
+  <data name="demoData" xml:space="preserve">
+    <value>示例数据</value>
+  </data>
+  <data name="clearTemplateTable" xml:space="preserve">
+    <value>清除模板表</value>
+  </data>
+  <data name="runProcessing" xml:space="preserve">
+    <value>执行处理</value>
+  </data>
+  <data name="dataPrep_exportCurrentTable" xml:space="preserve">
+    <value>导出当前表</value>
+  </data>
+  <data name="dataPrep_enable" xml:space="preserve">
+    <value>启用</value>
+  </data>
+  <data name="dataPrep_parameterOptions" xml:space="preserve">
+    <value>参数选项</value>
+  </data>
+  <data name="dataPrep_excludeVolatiles" xml:space="preserve">
+    <value>扣除挥发份</value>
+  </data>
+  <data name="dataPrep_normalizeToHundred" xml:space="preserve">
+    <value>归一到 100%</value>
+  </data>
+  <data name="dataPrep_normalization" xml:space="preserve">
+    <value>归一化</value>
+  </data>
+  <data name="dataPrep_method" xml:space="preserve">
+    <value>方法</value>
+  </data>
+  <data name="dataPrep_fe3Tooltip" xml:space="preserve">
+    <value>仅用于“使用经验比例校正”，表示 Fe3+/Fe 的经验比例</value>
+  </data>
+  <data name="dataPrep_autoBackfillIronOxides" xml:space="preserve">
+    <value>缺失时自动回填 FeO / Fe2O3</value>
+  </data>
+  <data name="dataPrep_ironValence" xml:space="preserve">
+    <value>铁价态</value>
+  </data>
+  <data name="dataPrep_calculationItems" xml:space="preserve">
+    <value>计算项目</value>
+  </data>
+  <data name="dataPrep_indices" xml:space="preserve">
+    <value>指标</value>
+  </data>
+  <data name="dataPrep_noCellSelected" xml:space="preserve">
+    <value>未选中单元格</value>
+  </data>
+  <data name="dataPrep_notDetected" xml:space="preserve">
+    <value>未检测</value>
+  </data>
+  <data name="dataPrep_noOxideColumnsDetected" xml:space="preserve">
+    <value>未识别到主量元素列</value>
+  </data>
+  <data name="dataPrep_selectedCellEmpty" xml:space="preserve">
+    <value>{0}: &lt;空&gt;</value>
+  </data>
+  <data name="dataPrep_selectedCellValue" xml:space="preserve">
+    <value>{0}: {1}</value>
+  </data>
+  <data name="dataPrep_sampleDataGenerated" xml:space="preserve">
+    <value>示例数据已生成。</value>
+  </data>
+  <data name="dataPrep_sampleDataGenerateFailed" xml:space="preserve">
+    <value>生成示例数据失败：</value>
+  </data>
+  <data name="dataPrep_tableCleared" xml:space="preserve">
+    <value>已清除当前数据表。</value>
+  </data>
+  <data name="dataPrep_clearTableFailed" xml:space="preserve">
+    <value>清除数据表失败：</value>
+  </data>
+  <data name="dataPrep_noWorksheetToProcess" xml:space="preserve">
+    <value>当前没有可处理的工作表。</value>
+  </data>
+  <data name="dataPrep_processingCompleted" xml:space="preserve">
+    <value>数据预处理完成。</value>
+  </data>
+  <data name="dataPrep_processingFailed" xml:space="preserve">
+    <value>执行处理失败：</value>
+  </data>
+  <data name="dataPrep_exportTitle" xml:space="preserve">
+    <value>导出预处理结果</value>
+  </data>
+  <data name="dataPrep_exportFilter" xml:space="preserve">
+    <value>CSV 文件|*.csv</value>
+  </data>
+  <data name="dataPrep_exportSucceeded" xml:space="preserve">
+    <value>当前工作表已导出。</value>
+  </data>
+  <data name="dataPrep_exportFailed" xml:space="preserve">
+    <value>导出失败：</value>
+  </data>
+  <data name="dataPrep_resetToRecommended" xml:space="preserve">
+    <value>已恢复为推荐预设。</value>
+  </data>
+  <data name="dataPrep_detectionLimitPreview" xml:space="preserve">
+    <value>当前界面已不包含检测限替换和数据清洗参数。</value>
+  </data>
+  <data name="dataPrep_moduleAnhydrous" xml:space="preserve">
+    <value>无水化</value>
+  </data>
+  <data name="dataPrep_moduleIronValence" xml:space="preserve">
+    <value>铁价态</value>
+  </data>
+  <data name="dataPrep_moduleIndexCalculation" xml:space="preserve">
+    <value>指标计算</value>
+  </data>
+  <data name="dataPrep_listSeparator" xml:space="preserve">
+    <value>、</value>
+  </data>
+  <data name="dataPrep_keepOriginalOnly" xml:space="preserve">
+    <value>仅保留原始表</value>
+  </data>
+  <data name="dataPrep_previewSummary" xml:space="preserve">
+    <value>检测到氧化物列：{0}；已启用 {1}；铁价态方法为“{2}”；Fe3+/Fe 经验比例 {3:0.00}。</value>
+  </data>
+  <data name="dataPrep_ironMethodAutoEstimate" xml:space="preserve">
+    <value>按总铁自动估算</value>
+  </data>
+  <data name="dataPrep_ironMethodBackCalculate" xml:space="preserve">
+    <value>按 FeO / Fe2O3 反演</value>
+  </data>
+  <data name="dataPrep_ironMethodEmpiricalRatio" xml:space="preserve">
+    <value>使用经验比例校正</value>
+  </data>
+  <data name="dataPrep_outlierMarkOnly" xml:space="preserve">
+    <value>仅标记异常值</value>
+  </data>
+  <data name="dataPrep_outlierIqr" xml:space="preserve">
+    <value>IQR 四分位法</value>
+  </data>
+  <data name="dataPrep_outlierThreeSigma" xml:space="preserve">
+    <value>3σ 标准差法</value>
+  </data>
+  <data name="dataPrep_missingKeep" xml:space="preserve">
+    <value>保留空值</value>
+  </data>
+  <data name="dataPrep_missingMean" xml:space="preserve">
+    <value>均值填补</value>
+  </data>
+  <data name="dataPrep_missingMedian" xml:space="preserve">
+    <value>中位数填补</value>
+  </data>
+  <data name="dataPrep_detectionReplaceZero" xml:space="preserve">
+    <value>替换为 0</value>
+  </data>
+  <data name="dataPrep_detectionReplaceHalf" xml:space="preserve">
+    <value>替换为检测限一半</value>
+  </data>
+  <data name="dataPrep_detectionReplaceNull" xml:space="preserve">
+    <value>替换为 Null</value>
+  </data>
+  <data name="dataPrep_noProcessableData" xml:space="preserve">
+    <value>当前工作表没有可处理的数据，请先导入包含字段列名的数据表。</value>
+  </data>
+  <data name="dataPrep_processingSummary" xml:space="preserve">
+    <value>已处理 {0} 行，识别 {1} 个数值列；检测限替换 {2} 处，异常值标记 {3} 处，异常值置空 {4} 处，空值填补 {5} 处。</value>
+  </data>
+  <data name="dataPrep_noteDetectionReplacedWithZero" xml:space="preserve">
+    <value>检测限值已替换为0</value>
+  </data>
+  <data name="dataPrep_noteDetectionReplacedWithHalf" xml:space="preserve">
+    <value>检测限值已替换为一半</value>
+  </data>
+  <data name="dataPrep_noteDetectionNoLimitFallbackZero" xml:space="preserve">
+    <value>b.d.l.无数值限，已按0处理</value>
+  </data>
+  <data name="dataPrep_noteDetectionReplacedWithNull" xml:space="preserve">
+    <value>检测限值已替换为Null</value>
+  </data>
+  <data name="dataPrep_noteDetectionStandardized" xml:space="preserve">
+    <value>检测限值已标准化</value>
+  </data>
+  <data name="dataPrep_noteNonNumericAsMissing" xml:space="preserve">
+    <value>无法识别为数值，按空值处理</value>
+  </data>
+  <data name="dataPrep_noteOutlierDetected" xml:space="preserve">
+    <value>{0} 检测为异常值</value>
+  </data>
+  <data name="dataPrep_noteMissingFilled" xml:space="preserve">
+    <value>{0} 已按{1}填补</value>
+  </data>
+  <data name="dataPrep_strategyMissingMean" xml:space="preserve">
+    <value>均值填补</value>
+  </data>
+  <data name="dataPrep_strategyMissingMedian" xml:space="preserve">
+    <value>中位数填补</value>
+  </data>
+  <data name="dataPrep_strategyMissingKeep" xml:space="preserve">
+    <value>保留空值</value>
+  </data>
+  <data name="dataPrep_ironModeMeasured" xml:space="preserve">
+    <value>实测 FeO + Fe2O3</value>
+  </data>
+  <data name="dataPrep_ironModeFromFeotAndFeo" xml:space="preserve">
+    <value>由 FeOT + FeO 反演 Fe2O3</value>
+  </data>
+  <data name="dataPrep_ironModeFromFeotAndFe2o3" xml:space="preserve">
+    <value>由 FeOT + Fe2O3 反演 FeO</value>
+  </data>
+  <data name="dataPrep_ironModeFeotEmpirical" xml:space="preserve">
+    <value>FeOT 经验比例校正</value>
+  </data>
+  <data name="dataPrep_ironModeFeotAuto" xml:space="preserve">
+    <value>FeOT 自动估算</value>
+  </data>
+  <data name="dataPrep_ironModeBackfillFe2o3" xml:space="preserve">
+    <value>由 FeO 经验回填 Fe2O3</value>
+  </data>
+  <data name="dataPrep_ironModeBackfillFeo" xml:space="preserve">
+    <value>由 Fe2O3 经验回填 FeO</value>
+  </data>
+  <data name="dataPrep_ironModeInsufficient" xml:space="preserve">
+    <value>铁数据不足</value>
+  </data>
+  <data name="diagram_editor_basic_settings" xml:space="preserve">
+    <value>基本设置</value>
+  </data>
+  <data name="diagram_editor_content_translation" xml:space="preserve">
+    <value>内容翻译</value>
+  </data>
+  <data name="diagram_editor_translation_hint" xml:space="preserve">
+    <value>编辑图解标题、坐标轴、文本与注释的多语言内容。在此添加或删除语言即可同步更新图解支持的语言。</value>
+  </data>
+  <data name="translation_item_context" xml:space="preserve">
+    <value>内容项</value>
+  </data>
+  <data name="translation_node_list" xml:space="preserve">
+    <value>分类路径</value>
+  </data>
+  <data name="translation_main_title" xml:space="preserve">
+    <value>主标题</value>
+  </data>
+  <data name="translation_text_item" xml:space="preserve">
+    <value>文本</value>
+  </data>
+  <data name="translation_axis_title" xml:space="preserve">
+    <value>坐标轴标题</value>
+  </data>
+  <data name="translation_axis_subtitle" xml:space="preserve">
+    <value>坐标轴副标题</value>
+  </data>
+  <data name="translation_annotation" xml:space="preserve">
+    <value>注释</value>
+  </data>
+  <data name="translation_loaded" xml:space="preserve">
+    <value>已加载翻译数据</value>
+  </data>
+  <data name="enter_language_code_prompt" xml:space="preserve">
+    <value>请输入语言代码（例如 fr-FR）：</value>
+  </data>
+  <data name="at_least_two_languages_swap" xml:space="preserve">
+    <value>至少需要两种语言才能交换。</value>
+  </data>
+  <data name="select_language_to_delete" xml:space="preserve">
+    <value>请选择要删除的语言：</value>
+  </data>
+  <data name="confirm_delete_language" xml:space="preserve">
+    <value>确定要删除语言「{0}」吗？此操作不可撤销。</value>
+  </data>
+  <data name="language_exists" xml:space="preserve">
+    <value>该语言已存在</value>
   </data>
 </root>

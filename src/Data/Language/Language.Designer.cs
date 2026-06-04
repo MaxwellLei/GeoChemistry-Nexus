@@ -531,6 +531,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 At least two languages are required to swap. 的本地化字符串。
+        /// </summary>
+        internal static string at_least_two_languages_swap {
+            get {
+                return ResourceManager.GetString("at_least_two_languages_swap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Attempting to start 的本地化字符串。
         /// </summary>
         internal static string attempting_to_start {
@@ -1941,6 +1950,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Clear Template Table 的本地化字符串。
+        /// </summary>
+        internal static string clearTemplateTable {
+            get {
+                return ResourceManager.GetString("clearTemplateTable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Click the button to view diagram documentation 的本地化字符串。
         /// </summary>
         internal static string click_help_for_guide {
@@ -2099,6 +2117,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string confirm_delete_custom_diagram_template {
             get {
                 return ResourceManager.GetString("confirm_delete_custom_diagram_template", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Delete language &apos;{0}&apos;? This cannot be undone. 的本地化字符串。
+        /// </summary>
+        internal static string confirm_delete_language {
+            get {
+                return ResourceManager.GetString("confirm_delete_language", resourceCulture);
             }
         }
         
@@ -2463,6 +2490,636 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Automatically backfill FeO / Fe2O3 when missing 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_autoBackfillIronOxides {
+            get {
+                return ResourceManager.GetString("dataPrep_autoBackfillIronOxides", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Calculated Items 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_calculationItems {
+            get {
+                return ResourceManager.GetString("dataPrep_calculationItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Failed to clear data table: 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_clearTableFailed {
+            get {
+                return ResourceManager.GetString("dataPrep_clearTableFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 The current page does not include detection-limit replacement or data-cleaning parameters. 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_detectionLimitPreview {
+            get {
+                return ResourceManager.GetString("dataPrep_detectionLimitPreview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Replace with half of detection limit 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_detectionReplaceHalf {
+            get {
+                return ResourceManager.GetString("dataPrep_detectionReplaceHalf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Replace with null 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_detectionReplaceNull {
+            get {
+                return ResourceManager.GetString("dataPrep_detectionReplaceNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Replace with 0 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_detectionReplaceZero {
+            get {
+                return ResourceManager.GetString("dataPrep_detectionReplaceZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Enable 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_enable {
+            get {
+                return ResourceManager.GetString("dataPrep_enable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Exclude volatiles 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_excludeVolatiles {
+            get {
+                return ResourceManager.GetString("dataPrep_excludeVolatiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Export Current Table 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_exportCurrentTable {
+            get {
+                return ResourceManager.GetString("dataPrep_exportCurrentTable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Export failed: 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_exportFailed {
+            get {
+                return ResourceManager.GetString("dataPrep_exportFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 CSV Files|*.csv 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_exportFilter {
+            get {
+                return ResourceManager.GetString("dataPrep_exportFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Current worksheet exported. 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_exportSucceeded {
+            get {
+                return ResourceManager.GetString("dataPrep_exportSucceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Export Preprocessing Result 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_exportTitle {
+            get {
+                return ResourceManager.GetString("dataPrep_exportTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Used only for &quot;Empirical ratio correction&quot; and represents the empirical Fe3+/Fe ratio. 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_fe3Tooltip {
+            get {
+                return ResourceManager.GetString("dataPrep_fe3Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Indices 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_indices {
+            get {
+                return ResourceManager.GetString("dataPrep_indices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Auto estimate from total iron 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_ironMethodAutoEstimate {
+            get {
+                return ResourceManager.GetString("dataPrep_ironMethodAutoEstimate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Back-calculate from FeO / Fe2O3 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_ironMethodBackCalculate {
+            get {
+                return ResourceManager.GetString("dataPrep_ironMethodBackCalculate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Empirical ratio correction 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_ironMethodEmpiricalRatio {
+            get {
+                return ResourceManager.GetString("dataPrep_ironMethodEmpiricalRatio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Empirically backfilled Fe2O3 from FeO 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_ironModeBackfillFe2o3 {
+            get {
+                return ResourceManager.GetString("dataPrep_ironModeBackfillFe2o3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Empirically backfilled FeO from Fe2O3 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_ironModeBackfillFeo {
+            get {
+                return ResourceManager.GetString("dataPrep_ironModeBackfillFeo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 FeOT automatic estimation 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_ironModeFeotAuto {
+            get {
+                return ResourceManager.GetString("dataPrep_ironModeFeotAuto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 FeOT empirical ratio correction 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_ironModeFeotEmpirical {
+            get {
+                return ResourceManager.GetString("dataPrep_ironModeFeotEmpirical", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Derived FeO from FeOT + Fe2O3 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_ironModeFromFeotAndFe2o3 {
+            get {
+                return ResourceManager.GetString("dataPrep_ironModeFromFeotAndFe2o3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Derived Fe2O3 from FeOT + FeO 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_ironModeFromFeotAndFeo {
+            get {
+                return ResourceManager.GetString("dataPrep_ironModeFromFeotAndFeo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Insufficient iron data 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_ironModeInsufficient {
+            get {
+                return ResourceManager.GetString("dataPrep_ironModeInsufficient", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Measured FeO + Fe2O3 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_ironModeMeasured {
+            get {
+                return ResourceManager.GetString("dataPrep_ironModeMeasured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Iron Valence 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_ironValence {
+            get {
+                return ResourceManager.GetString("dataPrep_ironValence", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Keep original worksheet only 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_keepOriginalOnly {
+            get {
+                return ResourceManager.GetString("dataPrep_keepOriginalOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 ,  的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_listSeparator {
+            get {
+                return ResourceManager.GetString("dataPrep_listSeparator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Method 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_method {
+            get {
+                return ResourceManager.GetString("dataPrep_method", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Keep missing values 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_missingKeep {
+            get {
+                return ResourceManager.GetString("dataPrep_missingKeep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Mean imputation 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_missingMean {
+            get {
+                return ResourceManager.GetString("dataPrep_missingMean", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Median imputation 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_missingMedian {
+            get {
+                return ResourceManager.GetString("dataPrep_missingMedian", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Anhydrous normalization 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_moduleAnhydrous {
+            get {
+                return ResourceManager.GetString("dataPrep_moduleAnhydrous", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Index calculation 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_moduleIndexCalculation {
+            get {
+                return ResourceManager.GetString("dataPrep_moduleIndexCalculation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Iron valence 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_moduleIronValence {
+            get {
+                return ResourceManager.GetString("dataPrep_moduleIronValence", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 No cell selected 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_noCellSelected {
+            get {
+                return ResourceManager.GetString("dataPrep_noCellSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 No major oxide columns detected 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_noOxideColumnsDetected {
+            get {
+                return ResourceManager.GetString("dataPrep_noOxideColumnsDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 The current worksheet has no processable data. Please import a table that contains field headers first. 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_noProcessableData {
+            get {
+                return ResourceManager.GetString("dataPrep_noProcessableData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Normalization 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_normalization {
+            get {
+                return ResourceManager.GetString("dataPrep_normalization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Normalize to 100% 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_normalizeToHundred {
+            get {
+                return ResourceManager.GetString("dataPrep_normalizeToHundred", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Not detected 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_notDetected {
+            get {
+                return ResourceManager.GetString("dataPrep_notDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 b.d.l. has no numeric limit; treated as 0 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_noteDetectionNoLimitFallbackZero {
+            get {
+                return ResourceManager.GetString("dataPrep_noteDetectionNoLimitFallbackZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Detection-limit value replaced with half of the limit 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_noteDetectionReplacedWithHalf {
+            get {
+                return ResourceManager.GetString("dataPrep_noteDetectionReplacedWithHalf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Detection-limit value replaced with null 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_noteDetectionReplacedWithNull {
+            get {
+                return ResourceManager.GetString("dataPrep_noteDetectionReplacedWithNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Detection-limit value replaced with 0 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_noteDetectionReplacedWithZero {
+            get {
+                return ResourceManager.GetString("dataPrep_noteDetectionReplacedWithZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Detection-limit value standardized 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_noteDetectionStandardized {
+            get {
+                return ResourceManager.GetString("dataPrep_noteDetectionStandardized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 {0} filled using {1} 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_noteMissingFilled {
+            get {
+                return ResourceManager.GetString("dataPrep_noteMissingFilled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Unable to parse as numeric; treated as missing 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_noteNonNumericAsMissing {
+            get {
+                return ResourceManager.GetString("dataPrep_noteNonNumericAsMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 {0} detected as outlier 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_noteOutlierDetected {
+            get {
+                return ResourceManager.GetString("dataPrep_noteOutlierDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 There is no worksheet available for processing. 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_noWorksheetToProcess {
+            get {
+                return ResourceManager.GetString("dataPrep_noWorksheetToProcess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 IQR method 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_outlierIqr {
+            get {
+                return ResourceManager.GetString("dataPrep_outlierIqr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Mark outliers only 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_outlierMarkOnly {
+            get {
+                return ResourceManager.GetString("dataPrep_outlierMarkOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 3-sigma method 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_outlierThreeSigma {
+            get {
+                return ResourceManager.GetString("dataPrep_outlierThreeSigma", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Parameter Options 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_parameterOptions {
+            get {
+                return ResourceManager.GetString("dataPrep_parameterOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Detected oxide columns: {0}; enabled modules: {1}; iron valence method: &quot;{2}&quot;; Fe3+/Fe empirical ratio: {3:0.00}. 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_previewSummary {
+            get {
+                return ResourceManager.GetString("dataPrep_previewSummary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Data preprocessing completed. 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_processingCompleted {
+            get {
+                return ResourceManager.GetString("dataPrep_processingCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Processing failed: 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_processingFailed {
+            get {
+                return ResourceManager.GetString("dataPrep_processingFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Processed {0} rows and identified {1} numeric columns; detection-limit replacements {2}, outliers marked {3}, outliers cleared {4}, missing values filled {5}. 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_processingSummary {
+            get {
+                return ResourceManager.GetString("dataPrep_processingSummary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Restored recommended presets. 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_resetToRecommended {
+            get {
+                return ResourceManager.GetString("dataPrep_resetToRecommended", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Sample data generated. 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_sampleDataGenerated {
+            get {
+                return ResourceManager.GetString("dataPrep_sampleDataGenerated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Failed to generate sample data: 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_sampleDataGenerateFailed {
+            get {
+                return ResourceManager.GetString("dataPrep_sampleDataGenerateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 {0}: &lt;empty&gt; 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_selectedCellEmpty {
+            get {
+                return ResourceManager.GetString("dataPrep_selectedCellEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 {0}: {1} 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_selectedCellValue {
+            get {
+                return ResourceManager.GetString("dataPrep_selectedCellValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Keep missing 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_strategyMissingKeep {
+            get {
+                return ResourceManager.GetString("dataPrep_strategyMissingKeep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Mean imputation 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_strategyMissingMean {
+            get {
+                return ResourceManager.GetString("dataPrep_strategyMissingMean", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Median imputation 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_strategyMissingMedian {
+            get {
+                return ResourceManager.GetString("dataPrep_strategyMissingMedian", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Current data table cleared. 的本地化字符串。
+        /// </summary>
+        internal static string dataPrep_tableCleared {
+            get {
+                return ResourceManager.GetString("dataPrep_tableCleared", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Data Preprocessing 的本地化字符串。
+        /// </summary>
+        internal static string dataPreprocessing {
+            get {
+                return ResourceManager.GetString("dataPreprocessing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Default 的本地化字符串。
         /// </summary>
         internal static string Default {
@@ -2625,6 +3282,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Sample Data 的本地化字符串。
+        /// </summary>
+        internal static string demoData {
+            get {
+                return ResourceManager.GetString("demoData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Description 的本地化字符串。
         /// </summary>
         internal static string description {
@@ -2693,6 +3359,33 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string diagram {
             get {
                 return ResourceManager.GetString("diagram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Basic Settings 的本地化字符串。
+        /// </summary>
+        internal static string diagram_editor_basic_settings {
+            get {
+                return ResourceManager.GetString("diagram_editor_basic_settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Content Translation 的本地化字符串。
+        /// </summary>
+        internal static string diagram_editor_content_translation {
+            get {
+                return ResourceManager.GetString("diagram_editor_content_translation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Edit multilingual text for titles, axes, labels, and other diagram content. Add or remove languages here to update the diagram&apos;s supported languages. 的本地化字符串。
+        /// </summary>
+        internal static string diagram_editor_translation_hint {
+            get {
+                return ResourceManager.GetString("diagram_editor_translation_hint", resourceCulture);
             }
         }
         
@@ -3044,6 +3737,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string enter_language_add {
             get {
                 return ResourceManager.GetString("enter_language_add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Enter language code (e.g. fr-FR): 的本地化字符串。
+        /// </summary>
+        internal static string enter_language_code_prompt {
+            get {
+                return ResourceManager.GetString("enter_language_code_prompt", resourceCulture);
             }
         }
         
@@ -5128,6 +5830,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Harker Diagram 的本地化字符串。
+        /// </summary>
+        internal static string harker_diagram {
+            get {
+                return ResourceManager.GetString("harker_diagram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Help document not found: 的本地化字符串。
         /// </summary>
         internal static string help_document_not_found {
@@ -5569,6 +6280,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Language already exists 的本地化字符串。
+        /// </summary>
+        internal static string language_exists {
+            get {
+                return ResourceManager.GetString("language_exists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Duplicate items exist in language settings, please check! 的本地化字符串。
         /// </summary>
         internal static string language_setting_duplicate_found {
@@ -5934,6 +6654,33 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string logarithmic {
             get {
                 return ResourceManager.GetString("logarithmic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Fully Collapse 的本地化字符串。
+        /// </summary>
+        internal static string main_sidebar_collapse_full {
+            get {
+                return ResourceManager.GetString("main_sidebar_collapse_full", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Keep Icons 的本地化字符串。
+        /// </summary>
+        internal static string main_sidebar_collapse_icon_only {
+            get {
+                return ResourceManager.GetString("main_sidebar_collapse_icon_only", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Main Sidebar Collapse Style 的本地化字符串。
+        /// </summary>
+        internal static string main_sidebar_collapse_style {
+            get {
+                return ResourceManager.GetString("main_sidebar_collapse_style", resourceCulture);
             }
         }
         
@@ -7747,6 +8494,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Execute Processing 的本地化字符串。
+        /// </summary>
+        internal static string runProcessing {
+            get {
+                return ResourceManager.GetString("runProcessing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Save 的本地化字符串。
         /// </summary>
         internal static string Save {
@@ -7977,6 +8733,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string select_drawing_template_file {
             get {
                 return ResourceManager.GetString("select_drawing_template_file", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Select the language to delete: 的本地化字符串。
+        /// </summary>
+        internal static string select_language_to_delete {
+            get {
+                return ResourceManager.GetString("select_language_to_delete", resourceCulture);
             }
         }
         
@@ -9120,6 +9885,78 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string trace_function_usage_tip {
             get {
                 return ResourceManager.GetString("trace_function_usage_tip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Annotation 的本地化字符串。
+        /// </summary>
+        internal static string translation_annotation {
+            get {
+                return ResourceManager.GetString("translation_annotation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Axis Subtitle 的本地化字符串。
+        /// </summary>
+        internal static string translation_axis_subtitle {
+            get {
+                return ResourceManager.GetString("translation_axis_subtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Axis Title 的本地化字符串。
+        /// </summary>
+        internal static string translation_axis_title {
+            get {
+                return ResourceManager.GetString("translation_axis_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Content Item 的本地化字符串。
+        /// </summary>
+        internal static string translation_item_context {
+            get {
+                return ResourceManager.GetString("translation_item_context", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Translation data loaded 的本地化字符串。
+        /// </summary>
+        internal static string translation_loaded {
+            get {
+                return ResourceManager.GetString("translation_loaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Main Title 的本地化字符串。
+        /// </summary>
+        internal static string translation_main_title {
+            get {
+                return ResourceManager.GetString("translation_main_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Category Path 的本地化字符串。
+        /// </summary>
+        internal static string translation_node_list {
+            get {
+                return ResourceManager.GetString("translation_node_list", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Text 的本地化字符串。
+        /// </summary>
+        internal static string translation_text_item {
+            get {
+                return ResourceManager.GetString("translation_text_item", resourceCulture);
             }
         }
         

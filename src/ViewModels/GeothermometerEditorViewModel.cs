@@ -53,6 +53,59 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private string version = "1.0.0";
 
+        public string PreviewName => string.IsNullOrWhiteSpace(Name)
+            ? "温度计名称预览"
+            : Name.Trim();
+
+        public string PreviewMetaLine
+        {
+            get
+            {
+                var mineralText = string.IsNullOrWhiteSpace(Mineral) ? "矿物分类" : Mineral.Trim();
+                var authorText = string.IsNullOrWhiteSpace(Author) ? "作者" : Author.Trim();
+                var yearText = Year > 0 ? Year.ToString() : DateTime.Now.Year.ToString();
+                return $"{mineralText} - {authorText} ({yearText})";
+            }
+        }
+
+        private void ShowError(string message)
+        {
+            if (ShowErrorMessage != null)
+            {
+                ShowErrorMessage(message);
+                return;
+            }
+
+            MessageHelper.Error(message);
+        }
+
+        private void ShowSuccess(string message)
+        {
+            if (ShowSuccessMessage != null)
+            {
+                ShowSuccessMessage(message);
+                return;
+            }
+
+            MessageHelper.Success(message);
+        }
+
+        public string PreviewReference => string.IsNullOrWhiteSpace(Reference)
+            ? "这里将显示参考文献信息"
+            : Reference.Trim();
+
+        public string PreviewMineral => string.IsNullOrWhiteSpace(Mineral)
+            ? "矿物分类"
+            : Mineral.Trim();
+
+        public string PreviewDescription => string.IsNullOrWhiteSpace(Description)
+            ? "这里将显示简要描述，帮助你确认列表项生成后的整体内容效果。"
+            : Description.Trim();
+
+        public string PreviewVersion => string.IsNullOrWhiteSpace(Version)
+            ? "1.0.0"
+            : Version.Trim();
+
         // ==================== 表格定义与脚本（Step 1） ====================
 
         [ObservableProperty]
@@ -151,6 +204,16 @@ namespace GeoChemistryNexus.ViewModels
         /// </summary>
         public Action? OnCloseRequested { get; set; }
 
+        /// <summary>
+        /// 由 View 注入的错误提示回调；未设置时回退到全局消息。
+        /// </summary>
+        public Action<string>? ShowErrorMessage { get; set; }
+
+        /// <summary>
+        /// 由 View 注入的成功提示回调；未设置时回退到全局消息。
+        /// </summary>
+        public Action<string>? ShowSuccessMessage { get; set; }
+
         // JS 脚本模板
         private const string ScriptTemplate = @"/**
                                                  * calculate(args) - Main calculation function
@@ -182,6 +245,24 @@ namespace GeoChemistryNexus.ViewModels
         {
             ScriptContent = ScriptTemplate;
         }
+
+        private void NotifyPreviewChanged()
+        {
+            OnPropertyChanged(nameof(PreviewName));
+            OnPropertyChanged(nameof(PreviewMetaLine));
+            OnPropertyChanged(nameof(PreviewReference));
+            OnPropertyChanged(nameof(PreviewMineral));
+            OnPropertyChanged(nameof(PreviewDescription));
+            OnPropertyChanged(nameof(PreviewVersion));
+        }
+
+        partial void OnNameChanged(string value) => NotifyPreviewChanged();
+        partial void OnMineralChanged(string value) => NotifyPreviewChanged();
+        partial void OnAuthorChanged(string value) => NotifyPreviewChanged();
+        partial void OnYearChanged(int value) => NotifyPreviewChanged();
+        partial void OnReferenceChanged(string value) => NotifyPreviewChanged();
+        partial void OnDescriptionChanged(string value) => NotifyPreviewChanged();
+        partial void OnVersionChanged(string value) => NotifyPreviewChanged();
 
         // ==================== 步骤变更处理 ====================
 
@@ -246,7 +327,7 @@ namespace GeoChemistryNexus.ViewModels
             var error = ValidateCurrentStep();
             if (error != null)
             {
-                MessageHelper.Error(error);
+                ShowError(error);
                 return;
             }
             if (CurrentStep < 2)
@@ -483,7 +564,7 @@ namespace GeoChemistryNexus.ViewModels
             var error = ValidateStep0() ?? ValidateStep1();
             if (error != null)
             {
-                MessageHelper.Error(error);
+                ShowError(error);
                 return;
             }
 
@@ -493,13 +574,13 @@ namespace GeoChemistryNexus.ViewModels
             {
                 var entity = BuildEntity();
                 GeothermometerService.SaveEntity(entity);
-                MessageHelper.Success(LanguageService.Instance["geo_msg_save_success"]);
+                ShowSuccess(LanguageService.Instance["geo_msg_save_success"]);
                 OnSaved?.Invoke();
                 OnCloseRequested?.Invoke();
             }
             catch (Exception ex)
             {
-                MessageHelper.Error(string.Format(LanguageService.Instance["geo_msg_save_failed"], ex.Message));
+                ShowError(string.Format(LanguageService.Instance["geo_msg_save_failed"], ex.Message));
             }
         }
 
@@ -509,7 +590,7 @@ namespace GeoChemistryNexus.ViewModels
             var error = ValidateStep0() ?? ValidateStep1();
             if (error != null)
             {
-                MessageHelper.Error(error);
+                ShowError(error);
                 return;
             }
 
@@ -529,13 +610,13 @@ namespace GeoChemistryNexus.ViewModels
 
                 var entityId = saved.Id;
                 await Task.Run(() => GeothermometerService.ExportToZip(entityId, filePath));
-                MessageHelper.Success(LanguageService.Instance["geo_msg_export_success"]);
+                ShowSuccess(LanguageService.Instance["geo_msg_export_success"]);
                 OnSaved?.Invoke();
                 OnCloseRequested?.Invoke();
             }
             catch (Exception ex)
             {
-                MessageHelper.Error(string.Format(LanguageService.Instance["geo_msg_export_failed"], ex.Message));
+                ShowError(string.Format(LanguageService.Instance["geo_msg_export_failed"], ex.Message));
             }
         }
 

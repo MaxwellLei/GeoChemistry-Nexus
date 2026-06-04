@@ -2,6 +2,7 @@ using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Services;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,6 +38,8 @@ namespace GeoChemistryNexus.Controls
             InitializeComponent();
             // 监听UI控件的Text变化事件，当用户输入时实时更新数据源
             DisplayTextBox.TextChanged += OnTextChanged;
+            Loaded += LocalizedStringControl_Loaded;
+            Unloaded += LocalizedStringControl_Unloaded;
         }
 
         /// <summary>
@@ -45,23 +48,35 @@ namespace GeoChemistryNexus.Controls
         private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var control = (LocalizedStringControl)d;
-            var localizedString = e.NewValue as LocalizedString;
+            control.UpdateDisplayedText();
+        }
 
+        private void LocalizedStringControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            LanguageService.Instance.PropertyChanged -= LanguageService_PropertyChanged;
+            LanguageService.Instance.PropertyChanged += LanguageService_PropertyChanged;
+            UpdateDisplayedText();
+        }
+
+        private void LocalizedStringControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            LanguageService.Instance.PropertyChanged -= LanguageService_PropertyChanged;
+        }
+
+        private void LanguageService_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "Item[]")
+            {
+                UpdateDisplayedText();
+            }
+        }
+
+        private void UpdateDisplayedText()
+        {
             // 标志位，表示本次UI更新来源于数据源，避免触发循环更新
-            control._isUpdatingFromSource = true;
-
-            if (localizedString != null)
-            {
-                // 使用 LocalizedString 自身的 Get 方法
-                control.DisplayTextBox.Text = localizedString.Get();
-            }
-            else
-            {
-                control.DisplayTextBox.Text = string.Empty;
-            }
-
-            // 更新结束，重置标志位
-            control._isUpdatingFromSource = false;
+            _isUpdatingFromSource = true;
+            DisplayTextBox.Text = Value?.Get() ?? string.Empty;
+            _isUpdatingFromSource = false;
         }
 
         /// <summary>
