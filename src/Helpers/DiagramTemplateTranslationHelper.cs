@@ -200,7 +200,7 @@ namespace GeoChemistryNexus.Helpers
 
         public static LocalizedString BuildCategoryNodeList(
             IList<string> languages,
-            IList<GeoChemistryNexus.Controls.CategoryPartModel> categoryParts)
+            IList<CategoryPartModel> categoryParts)
         {
             var nodeList = new LocalizedString();
             foreach (var lang in languages)

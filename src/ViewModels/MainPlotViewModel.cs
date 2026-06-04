@@ -69,6 +69,24 @@ namespace GeoChemistryNexus.ViewModels
         private PropertyEditRefreshMode _pendingPropertyEditRefreshMode = PropertyEditRefreshMode.None;
         private bool _pendingPropertyEditUnsavedCheck;
 
+        private const int LayerRefreshDelayMs = 50;
+        private readonly System.Windows.Threading.DispatcherTimer _layerRefreshTimer;
+        private bool _pendingLayerRefreshPreserveLimits = true;
+
+        private List<Coordinates>? _cachedSnapDataPoints;
+        private bool _isSnapDataPointsCacheValid;
+        private long _lastSnapCheckTimeMs;
+        private const long SnapCheckIntervalMs = 16;
+        private Coordinates? _lastSnapSearchResult;
+        private bool _lastSnapSearchHasResult;
+
+        private readonly Dictionary<ScottPlot.IPlottable, LayerItemViewModel> _plottableLayerLookup = new();
+
+        private long _lastPreviewRefreshMs;
+        private const long PreviewRefreshIntervalMs = 16;
+
+        private bool _usePreparedCoordinateScript;
+
         private enum PropertyEditRefreshMode
         {
             None = 0,
@@ -399,6 +417,7 @@ namespace GeoChemistryNexus.ViewModels
             WeakReferenceMessenger.Default.RegisterAll(this);
 
             _propertyEditRefreshTimer = CreatePropertyEditRefreshTimer();
+            _layerRefreshTimer = CreateLayerRefreshTimer();
             _propertyGridModel = nullObject;
 
             if (bool.TryParse(Helpers.ConfigHelper.GetConfig("developer_mode"), out bool devMode))
@@ -1383,6 +1402,7 @@ namespace GeoChemistryNexus.ViewModels
         public MainPlotViewModel(WpfPlot wpfPlot, System.Windows.Controls.RichTextBox richTextBox, unvell.ReoGrid.ReoGridControl dataGrid)
         {
             _propertyEditRefreshTimer = CreatePropertyEditRefreshTimer();
+            _layerRefreshTimer = CreateLayerRefreshTimer();
             _propertyGridModel = nullObject;
 
             // 监听语言变化
@@ -1894,24 +1914,17 @@ namespace GeoChemistryNexus.ViewModels
         {
             if (plottable == null) return null;
 
-            var flatLayers = FlattenTree(LayerTree).ToList();
-            var directMatch = flatLayers.FirstOrDefault(layer => layer.Plottable == plottable);
-            if (directMatch is SpiderSampleLayerItemViewModel directSpiderLayer)
+            if (_plottableLayerLookup.TryGetValue(plottable, out var layer))
             {
-                directSpiderLayer.SetActivePlottable(plottable);
+                if (layer is SpiderSampleLayerItemViewModel spiderLayer)
+                {
+                    spiderLayer.SetActivePlottable(plottable);
+                }
+
+                return layer;
             }
 
-            if (directMatch != null)
-            {
-                return directMatch;
-            }
-
-            var spiderLayer = flatLayers
-                .OfType<SpiderSampleLayerItemViewModel>()
-                .FirstOrDefault(layer => layer.ContainsPlottable(plottable));
-
-            spiderLayer?.SetActivePlottable(plottable);
-            return spiderLayer;
+            return null;
         }
 
         /// <summary>
@@ -2768,7 +2781,7 @@ namespace GeoChemistryNexus.ViewModels
                     // 创建新的 LineLayerItemViewModel
                     var lineLayer = new LineLayerItemViewModel(newLineDef, linesCategory.Children.Count);
                     // 订阅刷新事件
-                    lineLayer.RequestRefresh += (s, ev) => RefreshPlotFromLayers(true);
+                    lineLayer.RequestRefresh += OnLayerRequestRefreshPreserveLimits;
 
                     // 将新图层添加到图层树
                     linesCategory.Children.Add(lineLayer);
@@ -2860,7 +2873,7 @@ namespace GeoChemistryNexus.ViewModels
 
                 // 创建新的 TextLayerItemViewModel
                 var textLayer = new TextLayerItemViewModel(newTextDef, textCategory.Children.Count);
-                textLayer.RequestRefresh += (s, ev) => RefreshPlotFromLayers(true);
+                textLayer.RequestRefresh += OnLayerRequestRefreshPreserveLimits;
                 textCategory.Children.Add(textLayer);
 
                 RefreshPlotFromLayers(true);
@@ -2936,7 +2949,7 @@ namespace GeoChemistryNexus.ViewModels
                     };
 
                     var arrowLayer = new ArrowLayerItemViewModel(newArrowDef, arrowsCategory.Children.Count);
-                    arrowLayer.RequestRefresh += (s, ev) => RefreshPlotFromLayers(true);
+                    arrowLayer.RequestRefresh += OnLayerRequestRefreshPreserveLimits;
                     arrowsCategory.Children.Add(arrowLayer);
 
                     RefreshPlotFromLayers(true);
@@ -3190,7 +3203,7 @@ namespace GeoChemistryNexus.ViewModels
                     
                     // 创建 PolygonLayerItemViewModel
                     var polygonLayer = new PolygonLayerItemViewModel(newPolygonDef, polygonsCategory.Children.Count);
-                    polygonLayer.RequestRefresh += (s, ev) => RefreshPlotFromLayers(true);
+                    polygonLayer.RequestRefresh += OnLayerRequestRefreshPreserveLimits;
                     polygonsCategory.Children.Add(polygonLayer);
                     
                     // 刷新整个绘图
@@ -4125,7 +4138,6 @@ namespace GeoChemistryNexus.ViewModels
                 _originalTemplateJson = SerializeTemplate(CurrentTemplate);
                 _originalHelpDocumentRtf = RtfHelper.GetRtfString(_richTextBox);
                 HasUnsavedChanges = false;
-                WeakReferenceMessenger.Default.Send(new UnsavedChangesMessage(false));
             }
             finally
             {
@@ -4878,79 +4890,26 @@ namespace GeoChemistryNexus.ViewModels
         /// <returns>吸附点的坐标 (Render Coordinates)，如果没有吸附则返回 null</returns>
         private Coordinates? GetSnapPoint(Pixel mousePixel, double snapDistancePixels = 10)
         {
+            if (WpfPlot1?.Plot == null)
+            {
+                return null;
+            }
+
             Coordinates? bestSnap = null;
             double minDistanceSq = snapDistancePixels * snapDistancePixels;
 
-            var visibleLayers = FlattenTree(LayerTree).Where(l => l.IsVisible);
-
-            foreach (var layer in visibleLayers)
+            foreach (var dataPoint in GetSnapDataPoints())
             {
-                List<Coordinates> pointsToCheck = new List<Coordinates>();
+                var pt = PlotTransformHelper.ToRenderCoordinates(WpfPlot1.Plot, dataPoint);
+                Pixel ptPixel = WpfPlot1.Plot.GetPixel(pt);
+                double dx = ptPixel.X - mousePixel.X;
+                double dy = ptPixel.Y - mousePixel.Y;
+                double distSq = dx * dx + dy * dy;
 
-                if (layer is LineLayerItemViewModel lineLayer)
+                if (distSq < minDistanceSq)
                 {
-                    // 从 LineDefinition 获取坐标，而不是 Plottable，以确保获取最新的坐标值
-                    if (lineLayer.LineDefinition?.Start != null)
-                    {
-                        pointsToCheck.Add(PlotTransformHelper.ToRenderCoordinates(WpfPlot1.Plot, lineLayer.LineDefinition.Start.X, lineLayer.LineDefinition.Start.Y));
-                    }
-                    if (lineLayer.LineDefinition?.End != null)
-                    {
-                        pointsToCheck.Add(PlotTransformHelper.ToRenderCoordinates(WpfPlot1.Plot, lineLayer.LineDefinition.End.X, lineLayer.LineDefinition.End.Y));
-                    }
-                }
-                else if (layer is ArrowLayerItemViewModel arrowLayer)
-                {
-                    // 从 ArrowDefinition 获取坐标，而不是 Plottable
-                    if (arrowLayer.ArrowDefinition?.Start != null)
-                    {
-                        pointsToCheck.Add(PlotTransformHelper.ToRenderCoordinates(WpfPlot1.Plot, arrowLayer.ArrowDefinition.Start.X, arrowLayer.ArrowDefinition.Start.Y));
-                    }
-                    if (arrowLayer.ArrowDefinition?.End != null)
-                    {
-                        pointsToCheck.Add(PlotTransformHelper.ToRenderCoordinates(WpfPlot1.Plot, arrowLayer.ArrowDefinition.End.X, arrowLayer.ArrowDefinition.End.Y));
-                    }
-                }
-                else if (layer is PolygonLayerItemViewModel polygonLayer)
-                {
-                    if (polygonLayer.PolygonDefinition?.Vertices != null)
-                    {
-                        foreach (var v in polygonLayer.PolygonDefinition.Vertices)
-                        {
-                            pointsToCheck.Add(PlotTransformHelper.ToRenderCoordinates(WpfPlot1.Plot, v.X, v.Y));
-                        }
-                    }
-                }
-                else if (layer is ScatterLayerItemViewModel scatterLayer)
-                {
-                    if (scatterLayer.DataPoints != null)
-                    {
-                        foreach (var p in scatterLayer.DataPoints)
-                        {
-                            pointsToCheck.Add(PlotTransformHelper.ToRenderCoordinates(WpfPlot1.Plot, p));
-                        }
-                    }
-                }
-                else if (layer is TextLayerItemViewModel textLayer)
-                {
-                    if (textLayer.TextDefinition?.StartAndEnd != null)
-                    {
-                        pointsToCheck.Add(PlotTransformHelper.ToRenderCoordinates(WpfPlot1.Plot, textLayer.TextDefinition.StartAndEnd.X, textLayer.TextDefinition.StartAndEnd.Y));
-                    }
-                }
-
-                foreach (var pt in pointsToCheck)
-                {
-                    Pixel ptPixel = WpfPlot1.Plot.GetPixel(pt);
-                    double dx = ptPixel.X - mousePixel.X;
-                    double dy = ptPixel.Y - mousePixel.Y;
-                    double distSq = dx * dx + dy * dy;
-
-                    if (distSq < minDistanceSq)
-                    {
-                        minDistanceSq = distSq;
-                        bestSnap = pt;
-                    }
+                    minDistanceSq = distSq;
+                    bestSnap = pt;
                 }
             }
 
@@ -5232,9 +5191,23 @@ namespace GeoChemistryNexus.ViewModels
             // 引入刷新标记
             bool needRefresh = false;
 
+            long currentMs = Environment.TickCount64;
+
             if (isDrawingOrPicking)
             {
-                var snapPoint = GetSnapPoint(mousePixel);
+                Coordinates? snapPoint = null;
+                if (currentMs - _lastSnapCheckTimeMs >= SnapCheckIntervalMs)
+                {
+                    _lastSnapCheckTimeMs = currentMs;
+                    snapPoint = GetSnapPoint(mousePixel);
+                    _lastSnapSearchHasResult = snapPoint.HasValue;
+                    _lastSnapSearchResult = snapPoint;
+                }
+                else if (_lastSnapSearchHasResult)
+                {
+                    snapPoint = _lastSnapSearchResult;
+                }
+
                 if (snapPoint.HasValue)
                 {
                     mouseCoordinates = snapPoint.Value;
@@ -5273,9 +5246,6 @@ namespace GeoChemistryNexus.ViewModels
             }
 
             if (snapChanged) needRefresh = true;
-
-            // 获取当前时间 (毫秒)
-            long currentMs = Environment.TickCount64;
 
             // 坐标更新节流
             if (currentMs - _lastCoordinateUpdateMs > CoordinateUpdateIntervalMs)
@@ -5408,7 +5378,17 @@ namespace GeoChemistryNexus.ViewModels
             
             if (needRefresh)
             {
-                WpfPlot1.Refresh();
+                bool isPreviewOnlyRefresh = (IsAddingLine && _lineStartPoint.HasValue)
+                    || (IsAddingArrow && _arrowStartPoint.HasValue)
+                    || (IsAddingPolygon && _polygonVertices.Any());
+
+                if (!isPreviewOnlyRefresh
+                    || snapChanged
+                    || currentMs - _lastPreviewRefreshMs >= PreviewRefreshIntervalMs)
+                {
+                    _lastPreviewRefreshMs = currentMs;
+                    WpfPlot1.Refresh();
+                }
             }
         }
 
@@ -5455,7 +5435,7 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 后台加载模板详情（文件检查、缩略图）
+        /// 后台加载模板详情（状态、缩略图）
         /// </summary>
         private async Task LoadTemplateDetailsAsync(System.Threading.CancellationToken token)
         {
@@ -5464,46 +5444,20 @@ namespace GeoChemistryNexus.ViewModels
 
             await Task.Run(() =>
             {
-                var batchUpdateList = new List<(TemplateCardViewModel Card, TemplateState State, string? ThumbPath, string LocalPath, byte[]? ThumbBytes)>();
+                var batchUpdateList = new List<(TemplateCardViewModel Card, TemplateState State, byte[]? ThumbBytes)>();
                 const int BATCH_SIZE = 20;
 
                 foreach (var card in cardsSnapshot)
                 {
                     if (token.IsCancellationRequested) return;
 
-                    string localJsonPath = string.Empty;
-                    string localThumbPath = string.Empty;
-
-                    // 重新构建路径逻辑
-                    if (card.IsCustomTemplate)
-                    {
-                        if (!string.IsNullOrEmpty(card.TemplatePath))
-                        {
-                            var customRoot = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Custom");
-                            var templateDir = Path.Combine(customRoot, card.TemplatePath);
-                            localJsonPath = Path.Combine(templateDir, $"{card.TemplatePath}.json");
-                            localThumbPath = Path.Combine(templateDir, "thumbnail.jpg");
-                        }
-                    }
-                    else
-                    {
-                        var localDir = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Default", card.TemplatePath);
-                        localJsonPath = Path.Combine(localDir, $"{card.TemplatePath}.json");
-                        localThumbPath = Path.Combine(localDir, "thumbnail.jpg");
-                    }
-
-                    // 检查文件是否存在
-                    TemplateState newState = card.State; // 默认保留原状态
-                    string thumbPathToSet = null;
-
+                    TemplateState newState = card.State;
                     byte[]? thumbBytes = null;
 
                     if (card.TemplateId.HasValue)
                     {
-                        // 仅当状态未确定时才查 Entity
                         if (card.State == TemplateState.Loading)
                         {
-                            // LiteDB 模式：优先读取数据库状态
                             var entity = GraphMapDatabaseService.Instance.GetTemplate(card.TemplateId.Value);
                             if (entity != null && !string.IsNullOrEmpty(entity.Status))
                             {
@@ -5513,12 +5467,10 @@ namespace GeoChemistryNexus.ViewModels
                             }
                             else
                             {
-                                // 状态为空或实体不存在，保持 Loading，交给 CheckReadiness 处理
                                 newState = TemplateState.Loading;
                             }
                         }
 
-                        // 从数据库加载缩略图
                         try
                         {
                             using (var thumbStream = GraphMapDatabaseService.Instance.GetThumbnail(card.TemplateId.Value))
@@ -5540,13 +5492,11 @@ namespace GeoChemistryNexus.ViewModels
                     }
                     else
                     {
-                        // 无 ID，视为未下载
                         newState = TemplateState.NotDownloaded;
                     }
 
-                    batchUpdateList.Add((card, newState, thumbPathToSet, localJsonPath, thumbBytes));
+                    batchUpdateList.Add((card, newState, thumbBytes));
 
-                    // 批量更新 UI
                     if (batchUpdateList.Count >= BATCH_SIZE)
                     {
                         UpdateBatchUI(batchUpdateList, token);
@@ -5554,7 +5504,6 @@ namespace GeoChemistryNexus.ViewModels
                     }
                 }
 
-                // 处理剩余的更新
                 if (batchUpdateList.Count > 0)
                 {
                     UpdateBatchUI(batchUpdateList, token);
@@ -5562,11 +5511,10 @@ namespace GeoChemistryNexus.ViewModels
             }, token);
         }
 
-        private void UpdateBatchUI(List<(TemplateCardViewModel Card, TemplateState State, string? ThumbPath, string LocalPath, byte[]? ThumbBytes)> batch, System.Threading.CancellationToken token)
+        private void UpdateBatchUI(List<(TemplateCardViewModel Card, TemplateState State, byte[]? ThumbBytes)> batch, System.Threading.CancellationToken token)
         {
             if (token.IsCancellationRequested) return;
 
-            // 克隆列表以在 Dispatcher 中使用
             var updates = batch.ToList();
 
             Application.Current.Dispatcher.Invoke(() =>
@@ -5575,14 +5523,7 @@ namespace GeoChemistryNexus.ViewModels
 
                 foreach (var item in updates)
                 {
-                    item.Card.LocalFilePath = item.LocalPath; // 设置本地路径
                     item.Card.State = item.State;
-                    
-                    if (item.ThumbPath != null)
-                    {
-                        // 仅设置路径，由 Converter 异步加载图片
-                        item.Card.ThumbnailPath = item.ThumbPath;
-                    }
 
                     if (item.ThumbBytes != null)
                     {
@@ -6414,48 +6355,19 @@ namespace GeoChemistryNexus.ViewModels
                 IsTemplateMode = false;
                 IsPlotMode = true;
 
-                if (card.TemplateId.HasValue)
+                if (!card.TemplateId.HasValue)
                 {
-                    // LiteDB 模式
-                    _currentTemplateId = card.TemplateId.Value;
-                    if (!await LoadAndBuildLayersFromDb(card.TemplateId.Value))
-                    {
-                        await BackToTemplateMode();
-                        return;
-                    }
+                    MessageHelper.Error(LanguageService.Instance["diagram_template_source_missing"]);
+                    await BackToTemplateMode();
+                    return;
                 }
-                else
+
+                _currentTemplateId = card.TemplateId.Value;
+                _currentTemplateFilePath = null;
+                if (!await LoadAndBuildLayersFromDb(card.TemplateId.Value))
                 {
-                    // 兼容旧的文件系统模式
-                    _currentTemplateId = null;
-                    // 加载模板文件
-                    string baseDir;
-                    if (card.IsCustomTemplate)
-                    {
-                        baseDir = Path.Combine(FileHelper.GetAppPath(),
-                            "Data", "PlotData", "Custom", card.TemplatePath);
-                    }
-                    else
-                    {
-                        baseDir = Path.Combine(FileHelper.GetAppPath(),
-                            "Data", "PlotData", "Default", card.TemplatePath);
-                    }
-
-                    if (!Directory.Exists(baseDir))
-                    {
-                        // 图解模板目录不存在：
-                        throw new DirectoryNotFoundException(
-                            LanguageService.Instance["diagram_template_directory_not_found"] +
-                            baseDir);
-                    }
-
-                    var templateFilePath = Path.Combine(baseDir, $"{card.TemplatePath}.json");
-                    _currentTemplateFilePath = templateFilePath;
-                    if (!await LoadAndBuildLayers(templateFilePath))
-                    {
-                        await BackToTemplateMode();
-                        return;
-                    }
+                    await BackToTemplateMode();
+                    return;
                 }
 
                 CenterPlot();   // 视图复位
@@ -6690,9 +6602,6 @@ namespace GeoChemistryNexus.ViewModels
             {
                 HasUnsavedChanges = false;
             }
-
-            // 发送消息通知主窗口更新标题
-            WeakReferenceMessenger.Default.Send(new UnsavedChangesMessage(HasUnsavedChanges));
         }
 
         private void UpdateTemplateInfoFromLayers(GraphMapTemplate template)
@@ -7134,6 +7043,146 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
+        private System.Windows.Threading.DispatcherTimer CreateLayerRefreshTimer()
+        {
+            var timer = new System.Windows.Threading.DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(LayerRefreshDelayMs)
+            };
+            timer.Tick += LayerRefreshTimer_Tick;
+            return timer;
+        }
+
+        private void OnLayerRequestRefreshPreserveLimits(object? sender, EventArgs e) => ScheduleLayerRefresh(true);
+
+        private void OnLayerRequestRefreshResetLimits(object? sender, EventArgs e) => ScheduleLayerRefresh(false);
+
+        private void EnsureLayerRefreshHandler(LayerItemViewModel layer, bool preserveAxisLimits = true)
+        {
+            layer.RequestRefresh -= OnLayerRequestRefreshPreserveLimits;
+            layer.RequestRefresh -= OnLayerRequestRefreshResetLimits;
+            layer.RequestRefresh += preserveAxisLimits
+                ? OnLayerRequestRefreshPreserveLimits
+                : OnLayerRequestRefreshResetLimits;
+        }
+
+        private void ScheduleLayerRefresh(bool preserveAxisLimits = true)
+        {
+            if (!preserveAxisLimits)
+            {
+                _pendingLayerRefreshPreserveLimits = false;
+            }
+
+            _layerRefreshTimer.Stop();
+            _layerRefreshTimer.Start();
+        }
+
+        private void LayerRefreshTimer_Tick(object? sender, EventArgs e)
+        {
+            _layerRefreshTimer.Stop();
+
+            var preserveAxisLimits = _pendingLayerRefreshPreserveLimits;
+            _pendingLayerRefreshPreserveLimits = true;
+
+            RefreshPlotFromLayers(preserveAxisLimits);
+        }
+
+        private void InvalidateSnapPointsCache()
+        {
+            _isSnapDataPointsCacheValid = false;
+            _cachedSnapDataPoints = null;
+            _lastSnapSearchHasResult = false;
+            _lastSnapSearchResult = null;
+        }
+
+        private IReadOnlyList<Coordinates> GetSnapDataPoints()
+        {
+            if (!_isSnapDataPointsCacheValid || _cachedSnapDataPoints == null)
+            {
+                _cachedSnapDataPoints = CollectSnapDataPoints();
+                _isSnapDataPointsCacheValid = true;
+            }
+
+            return _cachedSnapDataPoints;
+        }
+
+        private List<Coordinates> CollectSnapDataPoints()
+        {
+            var points = new List<Coordinates>();
+
+            foreach (var layer in FlattenTree(LayerTree).Where(l => l.IsVisible))
+            {
+                switch (layer)
+                {
+                    case LineLayerItemViewModel lineLayer:
+                        if (lineLayer.LineDefinition?.Start != null)
+                        {
+                            points.Add(new Coordinates(lineLayer.LineDefinition.Start.X, lineLayer.LineDefinition.Start.Y));
+                        }
+
+                        if (lineLayer.LineDefinition?.End != null)
+                        {
+                            points.Add(new Coordinates(lineLayer.LineDefinition.End.X, lineLayer.LineDefinition.End.Y));
+                        }
+                        break;
+
+                    case ArrowLayerItemViewModel arrowLayer:
+                        if (arrowLayer.ArrowDefinition?.Start != null)
+                        {
+                            points.Add(new Coordinates(arrowLayer.ArrowDefinition.Start.X, arrowLayer.ArrowDefinition.Start.Y));
+                        }
+
+                        if (arrowLayer.ArrowDefinition?.End != null)
+                        {
+                            points.Add(new Coordinates(arrowLayer.ArrowDefinition.End.X, arrowLayer.ArrowDefinition.End.Y));
+                        }
+                        break;
+
+                    case PolygonLayerItemViewModel polygonLayer when polygonLayer.PolygonDefinition?.Vertices != null:
+                        foreach (var vertex in polygonLayer.PolygonDefinition.Vertices)
+                        {
+                            points.Add(new Coordinates(vertex.X, vertex.Y));
+                        }
+                        break;
+
+                    case ScatterLayerItemViewModel scatterLayer when scatterLayer.DataPoints != null:
+                        points.AddRange(scatterLayer.DataPoints);
+                        break;
+
+                    case TextLayerItemViewModel textLayer when textLayer.TextDefinition?.StartAndEnd != null:
+                        points.Add(new Coordinates(
+                            textLayer.TextDefinition.StartAndEnd.X,
+                            textLayer.TextDefinition.StartAndEnd.Y));
+                        break;
+                }
+            }
+
+            return points;
+        }
+
+        private void RebuildPlottableLayerLookup()
+        {
+            _plottableLayerLookup.Clear();
+
+            foreach (var layer in FlattenTree(LayerTree))
+            {
+                if (layer.Plottable != null)
+                {
+                    _plottableLayerLookup[layer.Plottable] = layer;
+                }
+
+                switch (layer)
+                {
+                    case ScatterLayerItemViewModel scatterLayer:
+                        scatterLayer.RegisterPlottablesForLookup(_plottableLayerLookup);
+                        break;
+                    case SpiderSampleLayerItemViewModel spiderLayer:
+                        spiderLayer.RegisterPlottablesForLookup(_plottableLayerLookup);
+                        break;
+                }
+            }
+        }
+
         private static bool IsTemplateAppearanceModel(object sender)
         {
             return sender is Models.TitleDefinition
@@ -7187,7 +7236,9 @@ namespace GeoChemistryNexus.ViewModels
                 }
         
                 // 执行脚本并获取结果
-                var result = engine.Evaluate(scriptBody);
+                var result = _usePreparedCoordinateScript
+                    ? JintHelper.InvokePreparedCoordinateScript(engine)
+                    : engine.Evaluate(scriptBody);
         
                 // 检查返回结果是否为数组
                 if (result.IsArray())
@@ -7504,7 +7555,6 @@ namespace GeoChemistryNexus.ViewModels
             // 在所有初始化完成后，再记录原始状态
             _originalTemplateJson = SerializeTemplate(CurrentTemplate);
             HasUnsavedChanges = false;
-            WeakReferenceMessenger.Default.Send(new UnsavedChangesMessage(false));
             
             return true;
         }
@@ -7574,7 +7624,6 @@ namespace GeoChemistryNexus.ViewModels
             // 否则这些修改会导致 IsTemplateModified 误判
             _originalTemplateJson = SerializeTemplate(CurrentTemplate);
             HasUnsavedChanges = false;
-            WeakReferenceMessenger.Default.Send(new UnsavedChangesMessage(false));
 
             return true;
         }
@@ -7591,12 +7640,13 @@ namespace GeoChemistryNexus.ViewModels
 
             // 1. 坐标轴图层 (最底层)
             var axesCategory = new CategoryLayerItemViewModel(LanguageService.Instance["axes"], LayerTreeIconKind.Axis);
+            if (attachEvents) EnsureLayerRefreshHandler(axesCategory);
             foreach (var axis in info.Axes)
             {
                 var axisLayer = new AxisLayerItemViewModel(axis);
                 if (attachEvents)
                 {
-                    axisLayer.RequestRefresh += (s, e) => RefreshPlotFromLayers(true);
+                    axisLayer.RequestRefresh += OnLayerRequestRefreshPreserveLimits;
                     axisLayer.RequestStyleUpdate += (s, e) => WpfPlot1.Refresh();
                 }
                 axesCategory.Children.Add(axisLayer);
@@ -7605,12 +7655,13 @@ namespace GeoChemistryNexus.ViewModels
 
             // 2. 多边形图层
             var polygonsCategory = new CategoryLayerItemViewModel(LanguageService.Instance["polygon"], LayerTreeIconKind.Polygon);
+            if (attachEvents) EnsureLayerRefreshHandler(polygonsCategory);
             for (int i = 0; i < info.Polygons.Count; i++)
             {
                 var polygonLayer = new PolygonLayerItemViewModel(info.Polygons[i], i);
                 if (attachEvents)
                 {
-                    polygonLayer.RequestRefresh += (s, e) => RefreshPlotFromLayers();
+                    polygonLayer.RequestRefresh += OnLayerRequestRefreshResetLimits;
                     polygonLayer.RequestStyleUpdate += (s, e) => WpfPlot1.Refresh();
                 }
                 polygonsCategory.Children.Add(polygonLayer);
@@ -7619,12 +7670,13 @@ namespace GeoChemistryNexus.ViewModels
 
             // 3. 线图层
             var linesCategory = new CategoryLayerItemViewModel(LanguageService.Instance["line"], LayerTreeIconKind.Line);
+            if (attachEvents) EnsureLayerRefreshHandler(linesCategory);
             for (int i = 0; i < info.Lines.Count; i++)
             {
                 var lineLayer = new LineLayerItemViewModel(info.Lines[i], i);
                 if (attachEvents)
                 {
-                    lineLayer.RequestRefresh += (s, e) => RefreshPlotFromLayers();
+                    lineLayer.RequestRefresh += OnLayerRequestRefreshResetLimits;
                     lineLayer.RequestStyleUpdate += (s, e) => WpfPlot1.Refresh();
                 }
                 linesCategory.Children.Add(lineLayer);
@@ -7633,13 +7685,13 @@ namespace GeoChemistryNexus.ViewModels
 
             // 4. 函数图层
             var functionCategory = new CategoryLayerItemViewModel("Function", LayerTreeIconKind.Function); // Consider localization
+            if (attachEvents) EnsureLayerRefreshHandler(functionCategory);
             for (int i = 0; i < info.Functions.Count; i++)
             {
                 var funcLayer = new FunctionLayerItemViewModel(info.Functions[i], i);
-                if (attachEvents) funcLayer.PropertyChanged += (s, e) =>
+                if (attachEvents)
                 {
-                    if (e.PropertyName == nameof(FunctionLayerItemViewModel.IsVisible))
-                        RefreshPlotFromLayers();
+                    EnsureLayerRefreshHandler(funcLayer);
                 };
                 functionCategory.Children.Add(funcLayer);
             }
@@ -7647,12 +7699,13 @@ namespace GeoChemistryNexus.ViewModels
 
             // 5. 点图层 (位于线条之上，在文本之下)
             var pointsCategory = new CategoryLayerItemViewModel(LanguageService.Instance["point"], LayerTreeIconKind.Point);
+            if (attachEvents) EnsureLayerRefreshHandler(pointsCategory);
             for (int i = 0; i < info.Points.Count; i++)
             {
                 var pointLayer = new PointLayerItemViewModel(info.Points[i], i);
                 if (attachEvents)
                 {
-                    pointLayer.RequestRefresh += (s, e) => RefreshPlotFromLayers();
+                    pointLayer.RequestRefresh += OnLayerRequestRefreshResetLimits;
                     pointLayer.RequestStyleUpdate += (s, e) => WpfPlot1.Refresh();
                 }
                 pointsCategory.Children.Add(pointLayer);
@@ -7661,12 +7714,13 @@ namespace GeoChemistryNexus.ViewModels
 
             // 6. 箭头图层
             var arrowsCategory = new CategoryLayerItemViewModel(LanguageService.Instance["arrow"], LayerTreeIconKind.Arrow);
+            if (attachEvents) EnsureLayerRefreshHandler(arrowsCategory);
             for (int i = 0; i < template.Info.Arrows.Count; i++)
             {
                 var arrowLayer = new ArrowLayerItemViewModel(template.Info.Arrows[i], i);
                 if (attachEvents)
                 {
-                    arrowLayer.RequestRefresh += (s, e) => RefreshPlotFromLayers();
+                    arrowLayer.RequestRefresh += OnLayerRequestRefreshResetLimits;
                     arrowLayer.RequestStyleUpdate += (s, e) => WpfPlot1.Refresh();
                 }
                 arrowsCategory.Children.Add(arrowLayer);
@@ -7675,12 +7729,13 @@ namespace GeoChemistryNexus.ViewModels
 
             // 7. 注释图层
             var annotationCategory = new CategoryLayerItemViewModel(LanguageService.Instance["annotation"], LayerTreeIconKind.Text);
+            if (attachEvents) EnsureLayerRefreshHandler(annotationCategory);
             for (int i = 0; i < info.Annotations.Count; i++)
             {
                 var annotationLayer = new AnnotationLayerItemViewModel(info.Annotations[i], i);
                 if (attachEvents)
                 {
-                    annotationLayer.RequestRefresh += (s, e) => RefreshPlotFromLayers();
+                    annotationLayer.RequestRefresh += OnLayerRequestRefreshResetLimits;
                     annotationLayer.RequestStyleUpdate += (s, e) => WpfPlot1.Refresh();
                 }
                 annotationCategory.Children.Add(annotationLayer);
@@ -7689,12 +7744,13 @@ namespace GeoChemistryNexus.ViewModels
 
             // 8. 文本图层 (最顶层)
             var textCategory = new CategoryLayerItemViewModel(LanguageService.Instance["text"], LayerTreeIconKind.Text);
+            if (attachEvents) EnsureLayerRefreshHandler(textCategory);
             for (int i = 0; i < info.Texts.Count; i++)
             {
                 var textLayer = new TextLayerItemViewModel(info.Texts[i], i);
                 if (attachEvents)
                 {
-                    textLayer.RequestRefresh += (s, e) => RefreshPlotFromLayers();
+                    textLayer.RequestRefresh += OnLayerRequestRefreshResetLimits;
                     textLayer.RequestStyleUpdate += (s, e) => WpfPlot1.Refresh();
                 }
                 textCategory.Children.Add(textLayer);
@@ -7802,6 +7858,9 @@ namespace GeoChemistryNexus.ViewModels
 
             // 重新应用选中状态的高亮/遮罩效果
             ReapplySelectionVisualState();
+
+            RebuildPlottableLayerLookup();
+            InvalidateSnapPointsCache();
 
             WpfPlot1.Refresh();
         }
@@ -9638,7 +9697,7 @@ namespace GeoChemistryNexus.ViewModels
 
             // 更新当前状态
             _currentTemplateId = newEntity.Id;
-            _currentTemplateFilePath = null; // 不再使用文件路径
+            _currentTemplateFilePath = null;
             _isCurrentTemplateCustom = true;
             IsHarkerDiagramMode = false;
             UpdateHelpDocReadOnlyState();
@@ -9657,7 +9716,6 @@ namespace GeoChemistryNexus.ViewModels
             _originalTemplateJson = SerializeTemplate(CurrentTemplate);
             _originalHelpDocumentRtf = RtfHelper.GetRtfString(_richTextBox);
             HasUnsavedChanges = false;
-            WeakReferenceMessenger.Default.Send(new UnsavedChangesMessage(false));
 
             // 生成并保存缩略图（680x480 灰度图）
             try
@@ -10317,7 +10375,6 @@ namespace GeoChemistryNexus.ViewModels
                     _currentTemplateFilePath = filePath;
                     IsHarkerDiagramMode = false;
 
-                    string customRoot = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Custom");
                     // 强制开启编辑模式
                     _isCurrentTemplateCustom = true;
                     UpdateHelpDocReadOnlyState();
@@ -10534,6 +10591,15 @@ namespace GeoChemistryNexus.ViewModels
             var engineLogs = new List<string>(); // 收集日志
             JintHelper.InjectTraceFunction(engine, engineLogs);
 
+            _usePreparedCoordinateScript = JintHelper.TryPrepareCoordinateScript(engine, scriptDefinition.ScriptBody);
+            if (!_usePreparedCoordinateScript)
+            {
+                MessageHelper.Error(LanguageService.Instance["script_execution_failed"] ?? "Script execution failed.");
+                return;
+            }
+
+            try
+            {
             // ===================================
             //  根据图表类型选择不同的投点逻辑
             // ===================================
@@ -10626,7 +10692,7 @@ namespace GeoChemistryNexus.ViewModels
                     };
 
                     categoryViewModel.ScatterNameChanged += (layer, scatterName) => SyncScatterNameToDataGrid(layer, scatterName);
-                    categoryViewModel.RequestRefresh += (s, e) => RefreshPlotFromLayers();
+                    categoryViewModel.RequestRefresh += OnLayerRequestRefreshResetLimits;
                     categoryViewModel.RequestStyleUpdate += (s, e) => WpfPlot1.Refresh();
                     rootDataNode.Children.Add(categoryViewModel);
                 }
@@ -10704,7 +10770,7 @@ namespace GeoChemistryNexus.ViewModels
                     };
 
                     categoryViewModel.ScatterNameChanged += (layer, scatterName) => SyncScatterNameToDataGrid(layer, scatterName);
-                    categoryViewModel.RequestRefresh += (s, e) => RefreshPlotFromLayers();
+                    categoryViewModel.RequestRefresh += OnLayerRequestRefreshResetLimits;
                     categoryViewModel.RequestStyleUpdate += (s, e) => WpfPlot1.Refresh();
                     rootDataNode.Children.Add(categoryViewModel);
                 }
@@ -10715,6 +10781,11 @@ namespace GeoChemistryNexus.ViewModels
             //WpfPlot1.Refresh();
             RefreshPlotFromLayers();
             CenterPlot();
+            }
+            finally
+            {
+                _usePreparedCoordinateScript = false;
+            }
         }
 
         /// <summary>
@@ -11146,7 +11217,7 @@ namespace GeoChemistryNexus.ViewModels
 
             // 添加图层
             var funcLayer = new FunctionLayerItemViewModel(funcDef, funcCategory.Children.Count);
-            funcLayer.PropertyChanged += (s, e) => { if (e.PropertyName == nameof(FunctionLayerItemViewModel.IsVisible)) RefreshPlotFromLayers(true); };
+            EnsureLayerRefreshHandler(funcLayer);
             funcCategory.Children.Add(funcLayer);
 
             RefreshPlotFromLayers(true);
@@ -11710,9 +11781,6 @@ namespace GeoChemistryNexus.ViewModels
             _originalHelpDocumentRtf = string.Empty;
             HasUnsavedChanges = false;
 
-            // 广播未保存状态清空消息，保持全局状态一致
-            WeakReferenceMessenger.Default.Send(new UnsavedChangesMessage(false));
-
             // 刷新一次以应用所有重置
             WpfPlot1.Refresh();
         }
@@ -11804,7 +11872,6 @@ namespace GeoChemistryNexus.ViewModels
                         _originalTemplateJson = jsonString;
                         _originalHelpDocumentRtf = RtfHelper.GetRtfString(_richTextBox);
                         HasUnsavedChanges = false;
-                        WeakReferenceMessenger.Default.Send(new UnsavedChangesMessage(false));
 
                         MessageHelper.Success(LanguageService.Instance["template_saved_successfully"]);
                     }
@@ -11869,7 +11936,6 @@ namespace GeoChemistryNexus.ViewModels
 
                 // 重置未保存状态
                 HasUnsavedChanges = false;
-                WeakReferenceMessenger.Default.Send(new UnsavedChangesMessage(false));
 
                 // 更新或生成新的缩略图（680x480 灰度图）
                 try
@@ -12489,6 +12555,7 @@ namespace GeoChemistryNexus.ViewModels
             if (category != null) return category;
 
             category = new CategoryLayerItemViewModel(name, GetCategoryIconKind(name));
+            EnsureLayerRefreshHandler(category);
             int newPriority = GetCategoryPriority(name);
 
             int insertIndex = LayerTree.Count;

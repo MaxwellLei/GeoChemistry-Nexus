@@ -102,6 +102,19 @@ namespace GeoChemistryNexus.ViewModels
             ApplyVisibility(IsVisible);
         }
 
+        internal void RegisterPlottablesForLookup(Dictionary<IPlottable, LayerItemViewModel> lookup)
+        {
+            foreach (var entry in _seriesEntries)
+            {
+                lookup[entry.Scatter] = this;
+            }
+
+            if (_legendProxy != null)
+            {
+                lookup[_legendProxy] = this;
+            }
+        }
+
         public void Render(Plot plot)
         {
             // 数据已经在 RenderSpiderPlot 中渲染，这里不需要额外处理

@@ -63,16 +63,4 @@ namespace GeoChemistryNexus.Helpers
             return null;
         }
     }
-
-    public class RaiseMenuItemClickAction : TriggerAction<Button>
-    {
-        protected override void Invoke(object parameter)
-        {
-            if (AssociatedObject != null)
-            {
-                var args = new RoutedEventArgs(MenuItem.ClickEvent, AssociatedObject);
-                AssociatedObject.RaiseEvent(args);
-            }
-        }
-    }
 }

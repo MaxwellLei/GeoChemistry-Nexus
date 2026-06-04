@@ -471,7 +471,7 @@
                                                                     </MenuItem.Icon>
                                                                 </MenuItem>
                                                                 <MenuItem Header="{Binding [geo_ctx_export_zip],Source={x:Static lg:LanguageService.Instance}, FallbackValue=导出 ZIP}"
-                                                                          Command="{Binding Data.SelectPluginCommand, Source={StaticResource ViewModelProxy}}"
+                                                                          Command="{Binding Data.ExportPluginCommand, Source={StaticResource ViewModelProxy}}"
                                                                           CommandParameter="{Binding}">
                                                                     <MenuItem.Icon>
                                                                         <TextBlock Text="&#xE78C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
@@ -566,7 +566,7 @@
                                                 </MenuItem.Icon>
                                             </MenuItem>
                                             <MenuItem Header="{Binding [geo_ctx_export_zip],Source={x:Static lg:LanguageService.Instance}, FallbackValue=导出 ZIP}"
-                                                      Command="{Binding Data.SelectPluginCommand, Source={StaticResource ViewModelProxy}}"
+                                                      Command="{Binding Data.ExportPluginCommand, Source={StaticResource ViewModelProxy}}"
                                                       CommandParameter="{Binding}">
                                                 <MenuItem.Icon>
                                                     <TextBlock Text="&#xE78C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>

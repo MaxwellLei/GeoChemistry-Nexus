@@ -18,9 +18,6 @@ namespace GeoChemistryNexus.ViewModels
         public string Name { get; set; }
         public Guid? TemplateId { get; set; }
         public string TemplatePath { get; set; }
-        
-        // 本地 JSON 文件完整路径
-        public string LocalFilePath { get; set; }
 
         [ObservableProperty]
         private string _thumbnailPath;

@@ -80,24 +80,17 @@ namespace GeoChemistryNexus.Models
         public string WorksheetName { get; set; } = string.Empty;
 
         /// <summary>
-        /// 已注册的公式函数名称（内置温度计使用）
+        /// 已注册的公式函数名称
         /// </summary>
         public string FormulaName { get; set; } = string.Empty;
 
         /// <summary>
-        /// 帮助文档相对路径
-        /// </summary>
-        public string HelpDocPath { get; set; } = string.Empty;
-
-        /// <summary>
-        /// JavaScript 计算脚本（内联脚本，适用于简单公式）
-        /// 当此字段不为空时，GTM 服务会通过 Jint 引擎注册该脚本为 FormulaExtension 自定义函数
+        /// JavaScript 计算脚本（内联脚本，ZIP 导入时可能携带）
         /// </summary>
         public string Script { get; set; } = string.Empty;
 
         /// <summary>
-        /// 外部 JavaScript 脚本文件路径（相对于 GTM 目录，适用于复杂算法）
-        /// 当 Script 为空但 ScriptFile 不为空时，从此文件加载脚本
+        /// 外部 JavaScript 脚本文件名（ZIP 交换格式中使用）
         /// </summary>
         public string ScriptFile { get; set; } = string.Empty;
 
@@ -118,32 +111,10 @@ namespace GeoChemistryNexus.Models
         public string Description { get; set; } = string.Empty;
 
         /// <summary>
-        /// 是否为内置 GTM
+        /// 是否为官方温度计
         /// </summary>
         [JsonIgnore]
         public bool IsBuiltIn { get; set; }
-
-        /// <summary>
-        /// GTM 来源（内置 / 本地 / 服务器）
-        /// </summary>
-        [JsonIgnore]
-        public PluginSource Source { get; set; } = PluginSource.BuiltIn;
-
-        /// <summary>
-        /// 已加载的完整脚本内容（运行时填充，不序列化）
-        /// </summary>
-        [JsonIgnore]
-        public string LoadedScript { get; set; } = string.Empty;
-    }
-
-    /// <summary>
-    /// GTM 来源枚举
-    /// </summary>
-    public enum PluginSource
-    {
-        BuiltIn,
-        Local,
-        Server
     }
 
     /// <summary>

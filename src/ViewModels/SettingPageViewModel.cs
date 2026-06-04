@@ -1,62 +1,48 @@
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GeoChemistryNexus.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace GeoChemistryNexus.ViewModels
 {
-    class SettingPageViewModel
+    public partial class SettingPageViewModel : ObservableObject
     {
-        private Frame Nav;  //导航对象
-        public RelayCommand CommonPage { get; private set; }   //切换常规设置命令
-        public RelayCommand PlotPage { get; private set; }     //切换绘图设置命令
-        public RelayCommand ShortcutPage { get; private set; } //切换快捷键说明命令
-        public RelayCommand AboutPage { get; private set; }   //切换关于命令
-        public RelayCommand GeothermometerPage { get; private set; }   //切换地质温度计设置命令
+        private readonly Frame _nav;
 
         public SettingPageViewModel(Frame nav)
         {
-            Nav = nav;
-            CommonPage = new RelayCommand(ExecuteCommonPage);
-            PlotPage = new RelayCommand(ExecutePlotPage);
-            ShortcutPage = new RelayCommand(ExecuteShortcutPage);
-            AboutPage = new RelayCommand(ExecuteAboutPage);
-            GeothermometerPage = new RelayCommand(ExecuteGeothermometerPage);
-            Nav.Navigate(SCommonPageView.GetPage());
+            _nav = nav;
+            nav.Navigate(SCommonPageView.GetPage());
         }
 
-        //切换绘图设置命令
-        private void ExecutePlotPage()
+        [RelayCommand]
+        private void CommonPage()
         {
-            Nav.Navigate(SPlotPageView.GetPage());
+            _nav.Navigate(SCommonPageView.GetPage());
         }
 
-        //切换关于命令
-        private void ExecuteAboutPage()
+        [RelayCommand]
+        private void PlotPage()
         {
-            Nav.Navigate(SAboutPageView.GetPage());
+            _nav.Navigate(SPlotPageView.GetPage());
         }
 
-        //切换快捷键说明命令
-        private void ExecuteShortcutPage()
+        [RelayCommand]
+        private void ShortcutPage()
         {
-            Nav.Navigate(SShortcutPageView.GetPage());
+            _nav.Navigate(SShortcutPageView.GetPage());
         }
 
-        //切换常规设置命令
-        private void ExecuteCommonPage()
+        [RelayCommand]
+        private void AboutPage()
         {
-            Nav.Navigate(SCommonPageView.GetPage());
+            _nav.Navigate(SAboutPageView.GetPage());
         }
 
-        //切换地质温度计设置命令
-        private void ExecuteGeothermometerPage()
+        [RelayCommand]
+        private void GeothermometerPage()
         {
-            Nav.Navigate(SGeothermometerPageView.GetPage());
+            _nav.Navigate(SGeothermometerPageView.GetPage());
         }
     }
 }

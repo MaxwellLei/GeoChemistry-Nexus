@@ -1,7 +1,6 @@
 using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using GeoChemistryNexus.Helpers;
-using GeoChemistryNexus.Attributes;
 
 namespace GeoChemistryNexus.Models
 {
@@ -9,14 +8,10 @@ namespace GeoChemistryNexus.Models
     {
         // X 坐标
         [ObservableProperty]
-        [property: LocalizedCategory("coordinates")] // 坐标
-        [property: LocalizedDisplayName("x_coordinate")] // X 坐标
         private double _x = 0;
 
         // Y 坐标
         [ObservableProperty]
-        [property: LocalizedCategory("coordinates")] // 坐标
-        [property: LocalizedDisplayName("y_coordinate")] // Y 坐标
         private double _y = 0;
 
         /// <summary>

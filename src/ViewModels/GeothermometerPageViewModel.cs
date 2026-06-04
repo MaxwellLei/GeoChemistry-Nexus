@@ -450,14 +450,23 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 导出当前选中的温度计为 ZIP 文件
+        /// 导出指定温度计为 ZIP 文件
         /// </summary>
         [RelayCommand]
-        private async Task ExportPlugin()
+        private async Task ExportPlugin(Geothermometer? plugin)
         {
-            if (_selectedFullEntity == null || SelectedPlugin == null)
+            plugin ??= SelectedPlugin;
+            if (plugin == null)
             {
                 MessageHelper.Info(LanguageService.Instance["geo_msg_select_thermometer_first"]);
+                return;
+            }
+
+            var entityId = GeothermometerDatabaseService.GenerateId(plugin.Id);
+            var entity = GeothermometerDatabaseService.Instance.GetEntity(entityId);
+            if (entity == null)
+            {
+                MessageHelper.Error(LanguageService.Instance["geo_msg_export_failed"]);
                 return;
             }
 
@@ -467,11 +476,10 @@ namespace GeoChemistryNexus.ViewModels
                     title: LanguageService.Instance["geo_msg_export_dialog_title"],
                     filter: "ZIP files (*.zip)|*.zip",
                     defaultExt: ".zip",
-                    defaultFileName: SelectedPlugin.Name);
+                    defaultFileName: plugin.Name);
                 if (string.IsNullOrEmpty(filePath)) return;
 
-                var entityId = _selectedFullEntity.Id;
-                await Task.Run(() => GeothermometerService.ExportToZip(entityId, filePath));
+                await Task.Run(() => GeothermometerService.ExportToZip(entity.Id, filePath));
                 MessageHelper.Success(LanguageService.Instance["geo_msg_export_success"]);
             }
             catch (Exception ex)

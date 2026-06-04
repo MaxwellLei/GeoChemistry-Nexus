@@ -66,12 +66,6 @@ namespace GeoChemistryNexus.Services
         /// </summary>
         public static IReadOnlyList<GeothermometerEntity> LoadedEntities => _loadedEntities.AsReadOnly();
 
-        /// <summary>
-        /// 旧版 GTM 目录（用于数据迁移）
-        /// </summary>
-        private static string LegacyPluginDirectory =>
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "Plugins", "Geothermometer");
-
         public static void SetServerBaseUrl(string url)
         {
             if (!string.IsNullOrWhiteSpace(url))
@@ -79,110 +73,11 @@ namespace GeoChemistryNexus.Services
         }
 
         /// <summary>
-        /// 初始化：检查数据库是否为空，如果是则从旧的 JSON+JS+RTF 文件迁移数据
-        /// 然后加载所有温度计并注册公式
+        /// 初始化：从 LiteDB 加载所有温度计并注册公式
         /// </summary>
         public static void Initialize()
         {
-            var dbService = GeothermometerDatabaseService.Instance;
-
-            // 如果数据库为空，执行一次性迁移
-            if (dbService.IsDatabaseEmpty())
-            {
-                MigrateFromLegacyFiles();
-            }
-
-            // 加载并注册
             ReloadPlugins();
-        }
-
-        /// <summary>
-        /// 从旧的 JSON + JS + RTF 文件迁移数据到 LiteDB
-        /// </summary>
-        private static void MigrateFromLegacyFiles()
-        {
-            string pluginDir = LegacyPluginDirectory;
-            if (!Directory.Exists(pluginDir))
-                return;
-
-            var jsonFiles = Directory.GetFiles(pluginDir, "*.json", SearchOption.TopDirectoryOnly);
-            string docBaseDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "Documents", "GTM");
-
-            foreach (var jsonFile in jsonFiles)
-            {
-                try
-                {
-                    string json = File.ReadAllText(jsonFile);
-                    var plugin = JsonSerializer.Deserialize<Geothermometer>(json, JsonOptions);
-                    if (plugin == null || string.IsNullOrEmpty(plugin.Id))
-                        continue;
-
-                    // 加载 JS 脚本
-                    string scriptContent = string.Empty;
-                    if (!string.IsNullOrEmpty(plugin.ScriptFile))
-                    {
-                        string jsPath = Path.Combine(pluginDir, plugin.ScriptFile);
-                        if (File.Exists(jsPath))
-                        {
-                            scriptContent = File.ReadAllText(jsPath);
-                        }
-                    }
-                    if (string.IsNullOrEmpty(scriptContent) && !string.IsNullOrEmpty(plugin.Script))
-                    {
-                        scriptContent = plugin.Script;
-                    }
-
-                    // 加载帮助文档
-                    var helpDocs = new Dictionary<string, string>();
-                    if (!string.IsNullOrEmpty(plugin.HelpDocPath))
-                    {
-                        string helpDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, plugin.HelpDocPath);
-                        if (Directory.Exists(helpDir))
-                        {
-                            foreach (var rtfFile in Directory.GetFiles(helpDir, "*.rtf"))
-                            {
-                                string langCode = Path.GetFileNameWithoutExtension(rtfFile);
-                                helpDocs[langCode] = File.ReadAllText(rtfFile);
-                            }
-                        }
-                    }
-
-                    // 创建数据库实体
-                    var entity = new GeothermometerEntity
-                    {
-                        Id = GeothermometerDatabaseService.GenerateId(plugin.Id),
-                        PluginId = plugin.Id,
-                        Version = plugin.Version,
-                        FileHash = GeothermometerDatabaseService.ComputeHash(scriptContent),
-                        LastModified = DateTime.Now,
-                        IsOfficial = true, // 从内置文件迁移的标记为官方
-                        Mineral = plugin.Mineral,
-                        MineralLangKey = plugin.MineralLangKey,
-                        Name = plugin.Name,
-                        NameLangKey = plugin.NameLangKey,
-                        Author = plugin.Author,
-                        Year = plugin.Year,
-                        Reference = plugin.Reference,
-                        Description = plugin.Description,
-                        IconCode = plugin.IconCode,
-                        IconColor = plugin.IconColor,
-                        Headers = plugin.Headers,
-                        ExampleRow = plugin.ExampleRow,
-                        WorksheetName = plugin.WorksheetName,
-                        FormulaName = plugin.FormulaName,
-                        InputColumns = plugin.InputColumns,
-                        AdditionalFormulas = plugin.AdditionalFormulas ?? new List<AdditionalFormula>(),
-                        ScriptContent = scriptContent,
-                        HelpDocuments = helpDocs
-                    };
-
-                    GeothermometerDatabaseService.Instance.UpsertEntity(entity);
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine($"[GeothermometerService] 迁移 GTM 失败: {jsonFile}, 错误: {ex.Message}");
-                }
-            }
         }
 
         /// <summary>
@@ -571,9 +466,7 @@ namespace GeoChemistryNexus.Services
                 FormulaName = entity.FormulaName,
                 InputColumns = entity.InputColumns,
                 AdditionalFormulas = entity.AdditionalFormulas,
-                LoadedScript = entity.ScriptContent,
-                IsBuiltIn = entity.IsOfficial,
-                Source = entity.IsOfficial ? PluginSource.BuiltIn : PluginSource.Local
+                IsBuiltIn = entity.IsOfficial
             };
         }
 

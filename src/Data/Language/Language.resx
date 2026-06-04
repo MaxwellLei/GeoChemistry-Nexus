@@ -124,83 +124,11 @@
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
   </data>
-  <data name="Expand" xml:space="preserve">
-    <value>Expand</value>
-  </data>
-  <data name="EditMode" xml:space="preserve">
-    <value>Edit Mode</value>
-  </data>
-  <data name="NewBasemap" xml:space="preserve">
-    <value>New Basemap</value>
-  </data>
-  <data name="SaveBasemap" xml:space="preserve">
-    <value>Save Basemap</value>
-  </data>
-  <data name="ImportBasemap" xml:space="preserve">
-    <value>Import Basemap</value>
-  </data>
-  <data name="ExportBasemap" xml:space="preserve">
-    <value>Export Basemap</value>
-  </data>
-  <data name="DeleteBasemap" xml:space="preserve">
-    <value>Delete Basemap</value>
-  </data>
-  <data name="GetMoreBasemap" xml:space="preserve">
-    <value>Get More Basemaps</value>
-  </data>
-  <data name="ImportData" xml:space="preserve">
-    <value>Import Data</value>
-  </data>
-  <data name="ResetPlot" xml:space="preserve">
-    <value>Reset Plot</value>
-  </data>
-  <data name="ResetVision" xml:space="preserve">
-    <value>Reset View</value>
-  </data>
-  <data name="CancelSelected" xml:space="preserve">
-    <value>Deselect</value>
-  </data>
-  <data name="LocationAxis" xml:space="preserve">
-    <value>Locate</value>
-  </data>
-  <data name="ExportImage" xml:space="preserve">
-    <value>Export</value>
-  </data>
-  <data name="ExportImagePNG" xml:space="preserve">
-    <value>Export as PNG</value>
-  </data>
-  <data name="ExportImageJPG" xml:space="preserve">
-    <value>Export as JPG</value>
-  </data>
-  <data name="ExportImageBMP" xml:space="preserve">
-    <value>Export as BMP</value>
-  </data>
-  <data name="ExportImageWebp" xml:space="preserve">
-    <value>Export as Webp</value>
-  </data>
-  <data name="ExportImageSVG" xml:space="preserve">
-    <value>Export as SVG</value>
-  </data>
-  <data name="LegendSetting" xml:space="preserve">
-    <value>Legend</value>
-  </data>
   <data name="PlotSetting" xml:space="preserve">
     <value>Plot Settings</value>
   </data>
   <data name="GeothermometerSetting" xml:space="preserve">
     <value>Geothermometer Settings</value>
-  </data>
-  <data name="AddLine" xml:space="preserve">
-    <value>Add Line</value>
-  </data>
-  <data name="AddPolygons" xml:space="preserve">
-    <value>Add Polygons</value>
-  </data>
-  <data name="AddText" xml:space="preserve">
-    <value>Add Text</value>
-  </data>
-  <data name="JsSetting" xml:space="preserve">
-    <value>Script Settings</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
@@ -208,47 +136,8 @@
   <data name="QuitEdit" xml:space="preserve">
     <value>Quit Edit</value>
   </data>
-  <data name="IgneousRock" xml:space="preserve">
-    <value>Igneous Rock</value>
-  </data>
-  <data name="TectonicSetting" xml:space="preserve">
-    <value>Tectonic Setting</value>
-  </data>
-  <data name="Basalt" xml:space="preserve">
-    <value>Basalt</value>
-  </data>
-  <data name="RockClassification" xml:space="preserve">
-    <value>Rock Classification</value>
-  </data>
-  <data name="GTMP" xml:space="preserve">
-    <value>Temperature Plot</value>
-  </data>
-  <data name="Guide" xml:space="preserve">
-    <value>Guide</value>
-  </data>
-  <data name="BorderLine" xml:space="preserve">
-    <value>Border</value>
-  </data>
-  <data name="PlotText" xml:space="preserve">
-    <value>Annotation</value>
-  </data>
-  <data name="PlotAxies" xml:space="preserve">
-    <value>Axes</value>
-  </data>
-  <data name="PlotLeftAxies" xml:space="preserve">
-    <value>Left Axis</value>
-  </data>
-  <data name="PlotBottomAxies" xml:space="preserve">
-    <value>Bottom Axis</value>
-  </data>
   <data name="PlotData" xml:space="preserve">
     <value>Data</value>
-  </data>
-  <data name="MajorAxes" xml:space="preserve">
-    <value>Major Axes</value>
-  </data>
-  <data name="MinorAxes" xml:space="preserve">
-    <value>Minor Axes</value>
   </data>
   <data name="legend" xml:space="preserve">
     <value>Legend</value>
@@ -271,329 +160,23 @@
   <data name="DontSave" xml:space="preserve">
     <value>Don't Save</value>
   </data>
-  <data name="IsShow" xml:space="preserve">
-    <value>Visible</value>
-  </data>
   <data name="FontFamily" xml:space="preserve">
     <value>Font Family</value>
-  </data>
-  <data name="FontStyle" xml:space="preserve">
-    <value>Font Style</value>
-  </data>
-  <data name="FontNormal" xml:space="preserve">
-    <value>Normal</value>
-  </data>
-  <data name="FontBold" xml:space="preserve">
-    <value>Bold</value>
-  </data>
-  <data name="FontItalic" xml:space="preserve">
-    <value>Italic</value>
   </data>
   <data name="FontSize" xml:space="preserve">
     <value>Font Size</value>
   </data>
-  <data name="FontColor" xml:space="preserve">
-    <value>Font Color</value>
-  </data>
-  <data name="TextContent" xml:space="preserve">
-    <value>Content</value>
-  </data>
-  <data name="LineStyle" xml:space="preserve">
-    <value>Line Style</value>
-  </data>
-  <data name="LineSolid" xml:space="preserve">
-    <value>Solid</value>
-  </data>
-  <data name="LineDash" xml:space="preserve">
-    <value>Dashed</value>
-  </data>
-  <data name="LineDashDot" xml:space="preserve">
-    <value>Dash-Dot</value>
-  </data>
-  <data name="LineDenselyDashed" xml:space="preserve">
-    <value>Densely Dashed</value>
-  </data>
-  <data name="LineWidth" xml:space="preserve">
-    <value>Width</value>
-  </data>
-  <data name="LineColor" xml:space="preserve">
-    <value>Color</value>
-  </data>
-  <data name="PointStyle" xml:space="preserve">
-    <value>Point Style</value>
-  </data>
-  <data name="PointCircle" xml:space="preserve">
-    <value>Circle</value>
-  </data>
-  <data name="PointHollowCircle" xml:space="preserve">
-    <value>Hollow Circle</value>
-  </data>
-  <data name="PointSquare" xml:space="preserve">
-    <value>Square</value>
-  </data>
-  <data name="PointFilledTriangleUp" xml:space="preserve">
-    <value>Filled Triangle Up</value>
-  </data>
-  <data name="PointFilledTriangleDown" xml:space="preserve">
-    <value>Filled Triangle Down</value>
-  </data>
-  <data name="PointDiamond" xml:space="preserve">
-    <value>Diamond</value>
-  </data>
-  <data name="PointEks" xml:space="preserve">
-    <value>X</value>
-  </data>
-  <data name="PointCross" xml:space="preserve">
-    <value>Cross</value>
-  </data>
-  <data name="PointStar" xml:space="preserve">
-    <value>Star</value>
-  </data>
   <data name="size" xml:space="preserve">
     <value>Size</value>
-  </data>
-  <data name="IsShowAxes" xml:space="preserve">
-    <value>Show Axes</value>
-  </data>
-  <data name="IsShowAxesTick" xml:space="preserve">
-    <value>Hide Major Ticks</value>
-  </data>
-  <data name="AxesStyle" xml:space="preserve">
-    <value>Axis Style</value>
-  </data>
-  <data name="AxesStyleNormal" xml:space="preserve">
-    <value>Normal</value>
-  </data>
-  <data name="AxesStyleLog10" xml:space="preserve">
-    <value>Log(10)</value>
-  </data>
-  <data name="AxesTickFont" xml:space="preserve">
-    <value>Tick Font</value>
-  </data>
-  <data name="AxesTickFontSize" xml:space="preserve">
-    <value>Tick Font Size</value>
-  </data>
-  <data name="AxesTickSpacing" xml:space="preserve">
-    <value>Tick Spacing</value>
-  </data>
-  <data name="AxesTickUpLimit" xml:space="preserve">
-    <value>Upper Limit</value>
-  </data>
-  <data name="AxesTickDownLimit" xml:space="preserve">
-    <value>Lower Limit</value>
-  </data>
-  <data name="AxesTickColor" xml:space="preserve">
-    <value>Tick Color</value>
-  </data>
-  <data name="IsShowMinorAxes" xml:space="preserve">
-    <value>Hide Minor Ticks</value>
-  </data>
-  <data name="IsShowLegend" xml:space="preserve">
-    <value>Show Legend</value>
-  </data>
-  <data name="LegendPosition" xml:space="preserve">
-    <value>Legend Position</value>
-  </data>
-  <data name="LegendPositionRU" xml:space="preserve">
-    <value>Top Right</value>
-  </data>
-  <data name="LegendPositionRD" xml:space="preserve">
-    <value>Bottom Right</value>
-  </data>
-  <data name="LegendPositionLU" xml:space="preserve">
-    <value>Top Left</value>
-  </data>
-  <data name="LegendPositionLD" xml:space="preserve">
-    <value>Bottom Left</value>
-  </data>
-  <data name="LegendDirection" xml:space="preserve">
-    <value>Legend Direction</value>
-  </data>
-  <data name="LegendVertical" xml:space="preserve">
-    <value>Vertical</value>
-  </data>
-  <data name="LegendHorizontal" xml:space="preserve">
-    <value>Horizontal</value>
   </data>
   <data name="PlotTitle" xml:space="preserve">
     <value>Plot Title</value>
   </data>
-  <data name="PlotTitleFont" xml:space="preserve">
-    <value>Title Font</value>
-  </data>
-  <data name="PlotTitleFontSize" xml:space="preserve">
-    <value>Title Font Size</value>
-  </data>
-  <data name="PlotTitleColor" xml:space="preserve">
-    <value>Title Color</value>
-  </data>
-  <data name="PlotAxesTitle1" xml:space="preserve">
-    <value>Axis Title 1</value>
-  </data>
-  <data name="PlotAxesTitle2" xml:space="preserve">
-    <value>Axis Title 2</value>
-  </data>
-  <data name="PlotAxesTitleFont" xml:space="preserve">
-    <value>Axis Title Font</value>
-  </data>
-  <data name="PlotAxesTitleFontSize" xml:space="preserve">
-    <value>Axis Title Font Size</value>
-  </data>
-  <data name="PlotAxesTitleColor" xml:space="preserve">
-    <value>Axis Title Color</value>
-  </data>
-  <data name="PlotShowGrid" xml:space="preserve">
-    <value>Show Grid</value>
-  </data>
-  <data name="PlotMajorGridColor" xml:space="preserve">
-    <value>Major Grid Color</value>
-  </data>
-  <data name="PlotMajorGridWidth" xml:space="preserve">
-    <value>Major Grid Width</value>
-  </data>
-  <data name="PlotShowMinorGrid" xml:space="preserve">
-    <value>Show Minor Grid</value>
-  </data>
-  <data name="PlotMinorGridColor" xml:space="preserve">
-    <value>Minor Grid Color</value>
-  </data>
-  <data name="PlotMinorGridWidth" xml:space="preserve">
-    <value>Minor Grid Width</value>
-  </data>
-  <data name="PlotSwitchFilledColor" xml:space="preserve">
-    <value>Invert Fill Color</value>
-  </data>
-  <data name="PlotFilledColor1" xml:space="preserve">
-    <value>Fill Color 1</value>
-  </data>
-  <data name="PlotFilledColor2" xml:space="preserve">
-    <value>Fill Color 2</value>
-  </data>
-  <data name="Parameters" xml:space="preserve">
-    <value>Required Parameters</value>
-  </data>
-  <data name="Js" xml:space="preserve">
-    <value>Js Script</value>
-  </data>
-  <data name="CheckJs" xml:space="preserve">
-    <value>Check Script</value>
-  </data>
-  <data name="Undelete_Message" xml:space="preserve">
-    <value>Delete Canceled</value>
-  </data>
   <data name="DeleteingBasemapConfirm2_Message" xml:space="preserve">
     <value>Are you sure you want to delete?</value>
   </data>
-  <data name="SaveSuccess" xml:space="preserve">
-    <value>Save Successful</value>
-  </data>
-  <data name="ParameterNotFilledIn" xml:space="preserve">
-    <value>Mapping parameters not filled in</value>
-  </data>
-  <data name="ScNotFilledIn" xml:space="preserve">
-    <value>Mapping script not filled in</value>
-  </data>
-  <data name="CancelImport" xml:space="preserve">
-    <value>Import Canceled</value>
-  </data>
   <data name="BasemapExisted" xml:space="preserve">
     <value>Basemap file already exists, do you want to overwrite?</value>
-  </data>
-  <data name="NewBasemapSuccess" xml:space="preserve">
-    <value>New Basemap Created Successfully</value>
-  </data>
-  <data name="CategoryFormatError" xml:space="preserve">
-    <value>Category format error</value>
-  </data>
-  <data name="ParameterNull" xml:space="preserve">
-    <value>Parameter is null</value>
-  </data>
-  <data name="JsNull" xml:space="preserve">
-    <value>Script is empty</value>
-  </data>
-  <data name="BasemapCategories" xml:space="preserve">
-    <value>Basemap Categories</value>
-  </data>
-  <data name="BasemapLanguage" xml:space="preserve">
-    <value>Basemap Language</value>
-  </data>
-  <data name="Zircon" xml:space="preserve">
-    <value>Zircon</value>
-  </data>
-  <data name="Sphalerite" xml:space="preserve">
-    <value>Sphalerite</value>
-  </data>
-  <data name="Quartz" xml:space="preserve">
-    <value>Quartz</value>
-  </data>
-  <data name="Arsenopyrite" xml:space="preserve">
-    <value>Arsenopyrite</value>
-  </data>
-  <data name="Chlorite" xml:space="preserve">
-    <value>Chlorite</value>
-  </data>
-  <data name="Biotite" xml:space="preserve">
-    <value>Biotite</value>
-  </data>
-  <data name="Amphibole" xml:space="preserve">
-    <value>Amphibole</value>
-  </data>
-  <data name="Reset" xml:space="preserve">
-    <value>Reset</value>
-  </data>
-  <data name="ExportResult" xml:space="preserve">
-    <value>Export Results</value>
-  </data>
-  <data name="TGMInfo" xml:space="preserve">
-    <value>Click or drag files here</value>
-  </data>
-  <data name="CalTarget" xml:space="preserve">
-    <value>Calculation Target</value>
-  </data>
-  <data name="CalTarget1" xml:space="preserve">
-    <value>Zr Saturation Temperature (Watson and Harrison, 1983)</value>
-  </data>
-  <data name="CalTarget2" xml:space="preserve">
-    <value>Zr Major Element Temperature (Watson and Harrison, 1983)</value>
-  </data>
-  <data name="Pressure" xml:space="preserve">
-    <value>Pressure (MPa)</value>
-  </data>
-  <data name="AmphiboleGTM" xml:space="preserve">
-    <value>Si Geothermometer (Ridolfi et al., 2010)</value>
-  </data>
-  <data name="BiotiteGTM" xml:space="preserve">
-    <value>Ti Geothermometer (Henry et al., 2005)</value>
-  </data>
-  <data name="ChloriteGTM" xml:space="preserve">
-    <value>Al4 Geothermometer (Jowett, 1991)</value>
-  </data>
-  <data name="ArsenopyriteGTM" xml:space="preserve">
-    <value>Arsenopyrite Geothermometer (Kretschmar and Scott, 1976)</value>
-  </data>
-  <data name="QuartzGTM" xml:space="preserve">
-    <value>TitaniQ Geothermometer (Wark and Watson, 2006)</value>
-  </data>
-  <data name="SphaleriteGTM" xml:space="preserve">
-    <value>FeS Geothermometer (Scott and Barnes, 1971)</value>
-  </data>
-  <data name="SphaleriteGGIMFisGTM" xml:space="preserve">
-    <value>GGIMFis Geothermometer (Frenzel et al., 2016)</value>
-  </data>
-  <data name="ZirconTiGTM" xml:space="preserve">
-    <value>Ti Geothermometer (Loucks et al., 2020)</value>
-  </data>
-  <data name="ZirconZrGTM" xml:space="preserve">
-    <value>Zr Geothermometer (Watson and Harrison, 1983)</value>
-  </data>
-  <data name="Step1" xml:space="preserve">
-    <value>Import / Enter Data</value>
-  </data>
-  <data name="Step2" xml:space="preserve">
-    <value>Check Parameters</value>
-  </data>
-  <data name="Step3" xml:space="preserve">
-    <value>Calculate Results</value>
   </data>
   <data name="NormalSetting" xml:space="preserve">
     <value>General Settings</value>
@@ -604,38 +187,11 @@
   <data name="FilePath" xml:space="preserve">
     <value>File Path</value>
   </data>
-  <data name="FileSavePath" xml:space="preserve">
-    <value>Save File Location</value>
-  </data>
-  <data name="DefaultPath" xml:space="preserve">
-    <value>Default Location</value>
-  </data>
-  <data name="CustomPath" xml:space="preserve">
-    <value>Custom Folder Location</value>
-  </data>
-  <data name="OpenFileLocation" xml:space="preserve">
-    <value>Open Folder Location</value>
-  </data>
-  <data name="InternationalizationAndPersonalization" xml:space="preserve">
-    <value>Internationalization &amp; Personalization</value>
-  </data>
-  <data name="Theme" xml:space="preserve">
-    <value>Theme</value>
-  </data>
   <data name="Default" xml:space="preserve">
     <value>Default</value>
   </data>
   <data name="Language_" xml:space="preserve">
     <value>Language</value>
-  </data>
-  <data name="ChineseS" xml:space="preserve">
-    <value>娑擃厽鏋?(缁犫偓娴?</value>
-  </data>
-  <data name="EnglishUS" xml:space="preserve">
-    <value>English (US)</value>
-  </data>
-  <data name="DefaultRandom" xml:space="preserve">
-    <value>Default Random</value>
   </data>
   <data name="MessageNotification" xml:space="preserve">
     <value>MESSAGE NOTIFICATION</value>
@@ -690,35 +246,8 @@
   <data name="ThankSupport" xml:space="preserve">
     <value>Thanks for the Support</value>
   </data>
-  <data name="Support1" xml:space="preserve">
-    <value>棣冩惗Control Support:</value>
-  </data>
-  <data name="Support2" xml:space="preserve">
-    <value>棣冩惗Chart Support:</value>
-  </data>
-  <data name="Support3" xml:space="preserve">
-    <value>棣冩惗Documentation Support:</value>
-  </data>
-  <data name="Support4" xml:space="preserve">
-    <value>棣冩惗Calculation Support:</value>
-  </data>
-  <data name="Support5" xml:space="preserve">
-    <value>棣冩惗Tool Support:</value>
-  </data>
-  <data name="PlotBoder" xml:space="preserve">
-    <value>Border</value>
-  </data>
-  <data name="ResetSuccess" xml:space="preserve">
-    <value>Reset Successful</value>
-  </data>
   <data name="ModifedSuccess" xml:space="preserve">
     <value>Modified Successfully</value>
-  </data>
-  <data name="ModifedCanceled" xml:space="preserve">
-    <value>Modification Canceled</value>
-  </data>
-  <data name="import_template" xml:space="preserve">
-    <value>Import Plotting Template</value>
   </data>
   <data name="create_new_diagram_template" xml:space="preserve">
     <value>New Diagram Template</value>
@@ -741,12 +270,6 @@
   <data name="Data" xml:space="preserve">
     <value>Data</value>
   </data>
-  <data name="import_data" xml:space="preserve">
-    <value>Import Data</value>
-  </data>
-  <data name="clear_data" xml:space="preserve">
-    <value>Clear Data</value>
-  </data>
   <data name="view" xml:space="preserve">
     <value>View</value>
   </data>
@@ -762,38 +285,11 @@
   <data name="deselect" xml:space="preserve">
     <value>Deselect</value>
   </data>
-  <data name="export" xml:space="preserve">
-    <value>Export</value>
-  </data>
   <data name="export_image" xml:space="preserve">
     <value>Export Image</value>
   </data>
-  <data name="png_format" xml:space="preserve">
-    <value>PNG Format</value>
-  </data>
-  <data name="jpg_format" xml:space="preserve">
-    <value>JPG Format</value>
-  </data>
-  <data name="bmp_format" xml:space="preserve">
-    <value>BMP Format</value>
-  </data>
-  <data name="webp_format" xml:space="preserve">
-    <value>WebP Format</value>
-  </data>
-  <data name="svg_format" xml:space="preserve">
-    <value>SVG Format</value>
-  </data>
-  <data name="legend_settings" xml:space="preserve">
-    <value>Legend</value>
-  </data>
-  <data name="grid_settings" xml:space="preserve">
-    <value>Grid</value>
-  </data>
   <data name="script_settings" xml:space="preserve">
     <value>Script</value>
-  </data>
-  <data name="plot_settings" xml:space="preserve">
-    <value>Plot</value>
   </data>
   <data name="all_templates" xml:space="preserve">
     <value>All Templates</value>
@@ -801,32 +297,11 @@
   <data name="uncategorized" xml:space="preserve">
     <value>Uncategorized</value>
   </data>
-  <data name="select_data_file" xml:space="preserve">
-    <value>Select Data File</value>
-  </data>
-  <data name="data_file_filter" xml:space="preserve">
-    <value>Data Files (*.csv, *.xls, *.xlsx)|*.csv;*.xls;*.xlsx</value>
-  </data>
-  <data name="no_valid_workbook_or_data_found" xml:space="preserve">
-    <value>No valid workbook or data found in the file</value>
-  </data>
-  <data name="read_file_failed" xml:space="preserve">
-    <value>Failed to Read File</value>
-  </data>
-  <data name="excel_missing_required_columns" xml:space="preserve">
-    <value>The Excel file is missing the following required columns</value>
-  </data>
   <data name="data_point" xml:space="preserve">
     <value>Data Point</value>
   </data>
   <data name="failed_to_parse_category_group" xml:space="preserve">
     <value>Failed to parse valid category groupings from the file. Please check the category column data</value>
-  </data>
-  <data name="error_calculating_data_point_coordinates" xml:space="preserve">
-    <value>Error calculating data point coordinates:</value>
-  </data>
-  <data name="data_import_successful" xml:space="preserve">
-    <value>Data Import Successful</value>
   </data>
   <data name="script_execution_failed" xml:space="preserve">
     <value>Script execution failed:</value>
@@ -851,30 +326,6 @@
   </data>
   <data name="copy_failed" xml:space="preserve">
     <value>Copy failed:</value>
-  </data>
-  <data name="confirm_clear_data_points" xml:space="preserve">
-    <value>Clear data points?</value>
-  </data>
-  <data name="no_imported_data_to_clear" xml:space="preserve">
-    <value>There is no imported data to clear</value>
-  </data>
-  <data name="all_imported_data_cleared" xml:space="preserve">
-    <value>All imported data has been cleared</value>
-  </data>
-  <data name="left_y_axis" xml:space="preserve">
-    <value>Left Y-Axis</value>
-  </data>
-  <data name="right_y_axis" xml:space="preserve">
-    <value>Right Y-Axis</value>
-  </data>
-  <data name="bottom_x_axis" xml:space="preserve">
-    <value>Bottom X-Axis</value>
-  </data>
-  <data name="top_x_axis" xml:space="preserve">
-    <value>Top X-Axis</value>
-  </data>
-  <data name="unknown_axis" xml:space="preserve">
-    <value>Unknown Axis</value>
   </data>
   <data name="content_and_position" xml:space="preserve">
     <value>Content and Position</value>
@@ -906,12 +357,6 @@
   <data name="column" xml:space="preserve">
     <value>Column:</value>
   </data>
-  <data name="code_formatted" xml:space="preserve">
-    <value>Code Formatted</value>
-  </data>
-  <data name="format_failed" xml:space="preserve">
-    <value>Format failed:</value>
-  </data>
   <data name="script_content_is_empty" xml:space="preserve">
     <value>Script content is empty</value>
   </data>
@@ -933,62 +378,14 @@
   <data name="error" xml:space="preserve">
     <value>Error:</value>
   </data>
-  <data name="new" xml:space="preserve">
-    <value>_New(N)</value>
-  </data>
-  <data name="open" xml:space="preserve">
-    <value>_Open(O)</value>
-  </data>
-  <data name="export_current_worksheet" xml:space="preserve">
-    <value>_Export Current Worksheet(R)</value>
-  </data>
-  <data name="geological_thermometer" xml:space="preserve">
-    <value>Geological Thermometer</value>
-  </data>
-  <data name="confirm_new_worksheet" xml:space="preserve">
-    <value>Create a new worksheet?</value>
-  </data>
-  <data name="error_creating_table" xml:space="preserve">
-    <value>Error creating table:</value>
-  </data>
-  <data name="file_import_successful" xml:space="preserve">
-    <value>File Import Successful</value>
-  </data>
-  <data name="cancel_import" xml:space="preserve">
-    <value>Cancel Import</value>
-  </data>
   <data name="export_successful" xml:space="preserve">
     <value>Export Successful</value>
   </data>
   <data name="export_failed" xml:space="preserve">
     <value>Export failed:</value>
   </data>
-  <data name="create_worksheet_failed" xml:space="preserve">
-    <value>Failed to create worksheet:</value>
-  </data>
   <data name="row_1_column_1" xml:space="preserve">
     <value>Row: 1, Column: 1</value>
-  </data>
-  <data name="missing_parameters" xml:space="preserve">
-    <value>Missing Parameters</value>
-  </data>
-  <data name="input_out_of_range" xml:space="preserve">
-    <value>Input value out of range</value>
-  </data>
-  <data name="must_be_positive_number" xml:space="preserve">
-    <value>Must be a positive number</value>
-  </data>
-  <data name="tio2_activity_range" xml:space="preserve">
-    <value>TiO2 activity must be within the range (0, 1]</value>
-  </data>
-  <data name="oxygen_atom_benchmark_zero" xml:space="preserve">
-    <value>Oxygen atom number benchmark is zero</value>
-  </data>
-  <data name="normalization_factor_is_zero" xml:space="preserve">
-    <value>Normalization factor is zero</value>
-  </data>
-  <data name="temperature_calculation_denominator_zero" xml:space="preserve">
-    <value>Temperature calculation denominator is zero</value>
   </data>
   <data name="color" xml:space="preserve">
     <value>Color</value>
@@ -998,9 +395,6 @@
   </data>
   <data name="width" xml:space="preserve">
     <value>Width</value>
-  </data>
-  <data name="Enum_LineType_Solid" xml:space="preserve">
-    <value>Solid</value>
   </data>
   <data name="type" xml:space="preserve">
     <value>Type</value>
@@ -1041,23 +435,11 @@
   <data name="italic" xml:space="preserve">
     <value>Italic</value>
   </data>
-  <data name="background_and_border" xml:space="preserve">
-    <value>Background and Border</value>
-  </data>
-  <data name="background_color" xml:space="preserve">
-    <value>Background Color</value>
-  </data>
   <data name="border_color" xml:space="preserve">
     <value>Border Color</value>
   </data>
   <data name="border_width" xml:space="preserve">
     <value>Border Width</value>
-  </data>
-  <data name="corner_radius" xml:space="preserve">
-    <value>Corner Radius</value>
-  </data>
-  <data name="anti_aliasing" xml:space="preserve">
-    <value>Anti Aliasing</value>
   </data>
   <data name="axis_style" xml:space="preserve">
     <value>Axis Style</value>
@@ -1067,12 +449,6 @@
   </data>
   <data name="font_family" xml:space="preserve">
     <value>Font Family</value>
-  </data>
-  <data name="tick_style" xml:space="preserve">
-    <value>Tick Style</value>
-  </data>
-  <data name="tick_interval" xml:space="preserve">
-    <value>Tick Interval</value>
   </data>
   <data name="major_tick_style" xml:space="preserve">
     <value>Major Tick Style</value>
@@ -1104,9 +480,6 @@
   <data name="pattern" xml:space="preserve">
     <value>Pattern</value>
   </data>
-  <data name="enable_anti_alias" xml:space="preserve">
-    <value>Enable Anti-Alias</value>
-  </data>
   <data name="minor_grid_Line" xml:space="preserve">
     <value>Minor Grid Line</value>
   </data>
@@ -1116,20 +489,11 @@
   <data name="enable_alternating_fill" xml:space="preserve">
     <value>Enable Alternating Fill</value>
   </data>
-  <data name="background_fill_1" xml:space="preserve">
-    <value>Background Fill</value>
-  </data>
   <data name="fill_color" xml:space="preserve">
     <value>Fill Color</value>
   </data>
   <data name="fill_color_1" xml:space="preserve">
     <value>Fill Color 1</value>
-  </data>
-  <data name="background_fill_2" xml:space="preserve">
-    <value>Background Fill</value>
-  </data>
-  <data name="coordinates" xml:space="preserve">
-    <value>Coordinates</value>
   </data>
   <data name="x_coordinate" xml:space="preserve">
     <value>X Coordinate</value>
@@ -1140,20 +504,8 @@
   <data name="start_and_end_coordinates" xml:space="preserve">
     <value>Start and End Coordinates</value>
   </data>
-  <data name="chart_title_style" xml:space="preserve">
-    <value>Chart Title Style</value>
-  </data>
-  <data name="is_bold" xml:space="preserve">
-    <value>Is Bold</value>
-  </data>
-  <data name="is_italic" xml:space="preserve">
-    <value>Is Italic</value>
-  </data>
   <data name="fill_color_2" xml:space="preserve">
     <value>Fill Color 2</value>
-  </data>
-  <data name="advanced_rendering" xml:space="preserve">
-    <value>Advanced Rendering</value>
   </data>
   <data name="open_diagram_template" xml:space="preserve">
     <value>Open Diagram Template</value>
@@ -1166,9 +518,6 @@
   </data>
   <data name="enter_supported_languages" xml:space="preserve">
     <value>Enter supported languages</value>
-  </data>
-  <data name="delete_this_item" xml:space="preserve">
-    <value>Delete this item</value>
   </data>
   <data name="enter_language_add" xml:space="preserve">
     <value>Enter a language and press Enter to add.</value>
@@ -1185,12 +534,6 @@
   <data name="two_dimensional_coordinate_plot" xml:space="preserve">
     <value>Two-dimensional coordinate plot</value>
   </data>
-  <data name="template_file_save_path" xml:space="preserve">
-    <value>Template file save path</value>
-  </data>
-  <data name="browse_ellipsis" xml:space="preserve">
-    <value>Browse...</value>
-  </data>
   <data name="all_fields_required" xml:space="preserve">
     <value>All fields are required!</value>
   </data>
@@ -1206,9 +549,6 @@
   <data name="save_template_failed" xml:space="preserve">
     <value>Failed to save template:</value>
   </data>
-  <data name="research_life_smooth_sailing" xml:space="preserve">
-    <value>years of research, wishing you smooth sailing in life!</value>
-  </data>
   <data name="add" xml:space="preserve">
     <value>Add</value>
   </data>
@@ -1217,9 +557,6 @@
   </data>
   <data name="add_text" xml:space="preserve">
     <value>Add text</value>
-  </data>
-  <data name="file_" xml:space="preserve">
-    <value>File</value>
   </data>
   <data name="template_loaded_successfully" xml:space="preserve">
     <value>Template Loaded Successfully</value>
@@ -1287,23 +624,11 @@
   <data name="no_data_columns_defined" xml:space="preserve">
     <value>No data columns defined</value>
   </data>
-  <data name="data_plotting_successful" xml:space="preserve">
-    <value>Data plotting successful</value>
-  </data>
   <data name="save_as_csv_file" xml:space="preserve">
     <value>Save as CSV File</value>
   </data>
   <data name="csv_file_filter" xml:space="preserve">
     <value>CSV File|*.csv</value>
-  </data>
-  <data name="data_export" xml:space="preserve">
-    <value>Data Export</value>
-  </data>
-  <data name="update_data" xml:space="preserve">
-    <value>Update Data</value>
-  </data>
-  <data name="data_plotting" xml:space="preserve">
-    <value>Data Plotting</value>
   </data>
   <data name="highlight_on_hover" xml:space="preserve">
     <value>When enabled, hovering the mouse over a plot object (point, line, area, etc.) will automatically highlight it, and you can click to view information</value>
@@ -1323,9 +648,6 @@
   <data name="ternary_phase_diagram_sum_must_be_one" xml:space="preserve">
     <value>The sum of a ternary phase diagram must be 1.</value>
   </data>
-  <data name="save_as" xml:space="preserve">
-    <value>Save as</value>
-  </data>
   <data name="all_data_cleared" xml:space="preserve">
     <value>All data cleared</value>
   </data>
@@ -1335,9 +657,6 @@
   <data name="confirm_clear_data_for_validation" xml:space="preserve">
     <value>Validating syntax will clear data table and plot data points. Continue?</value>
   </data>
-  <data name="clear_data_points" xml:space="preserve">
-    <value>Clear Data Points</value>
-  </data>
   <data name="linear" xml:space="preserve">
     <value>Linear</value>
   </data>
@@ -1346,15 +665,6 @@
   </data>
   <data name="some_data_failed_validation" xml:space="preserve">
     <value>Some data failed validation and has been skipped for plotting</value>
-  </data>
-  <data name="the_sum_of_row" xml:space="preserve">
-    <value>The sum of row</value>
-  </data>
-  <data name="is_not_one" xml:space="preserve">
-    <value>is not 1</value>
-  </data>
-  <data name="actual_sum_is" xml:space="preserve">
-    <value>(actual sum</value>
   </data>
   <data name="arrow" xml:space="preserve">
     <value>Arrow</value>
@@ -1370,9 +680,6 @@
   </data>
   <data name="object_deleted_successfully" xml:space="preserve">
     <value>Object deleted successfully.</value>
-  </data>
-  <data name="cannot_delete_base_layers" xml:space="preserve">
-    <value>Cannot delete base layers.</value>
   </data>
   <data name="update" xml:space="preserve">
     <value>_Update(U)</value>
@@ -1410,17 +717,8 @@
   <data name="error_occurred_while_checking_for_updates" xml:space="preserve">
     <value>An error occurred while checking for updates:</value>
   </data>
-  <data name="help_instructions" xml:space="preserve">
-    <value>Help Instructions</value>
-  </data>
   <data name="view_help_docs" xml:space="preserve">
     <value>View Help Documentation</value>
-  </data>
-  <data name="German_Germany" xml:space="preserve">
-    <value>Deutsch (Deutschland)</value>
-  </data>
-  <data name="check_for_category_updates" xml:space="preserve">
-    <value>Check for Category Updates</value>
   </data>
   <data name="custom_templates" xml:space="preserve">
     <value>Personal Diagram Template</value>
@@ -1449,47 +747,14 @@
   <data name="favorite_removed" xml:space="preserve">
     <value>Removed from favorites</value>
   </data>
-  <data name="builtin_templates" xml:space="preserve">
-    <value>Official Built-in Templates</value>
-  </data>
   <data name="search_templates" xml:space="preserve">
     <value>Search templates...</value>
-  </data>
-  <data name="clear_search" xml:space="preserve">
-    <value>Clear</value>
-  </data>
-  <data name="filter_templates" xml:space="preserve">
-    <value>Filter Templates</value>
-  </data>
-  <data name="cannot_delete_protected_column" xml:space="preserve">
-    <value>Cannot delete protected column</value>
-  </data>
-  <data name="add_column_left" xml:space="preserve">
-    <value>Add Column (Left)</value>
-  </data>
-  <data name="add_column_right" xml:space="preserve">
-    <value>Add Column (Right)</value>
-  </data>
-  <data name="delete_row" xml:space="preserve">
-    <value>Delete Row</value>
-  </data>
-  <data name="delete_column" xml:space="preserve">
-    <value>Delete Column</value>
   </data>
   <data name="missing_columns" xml:space="preserve">
     <value>Missing Columns</value>
   </data>
-  <data name="add_row_up" xml:space="preserve">
-    <value>Add Row Above</value>
-  </data>
-  <data name="add_row_down" xml:space="preserve">
-    <value>Add Row Below</value>
-  </data>
   <data name="confirm_delete_row" xml:space="preserve">
     <value>Are you sure you want to delete the selected row(s)?</value>
-  </data>
-  <data name="confirm_delete_column" xml:space="preserve">
-    <value>Are you sure you want to delete the selected column(s)?</value>
   </data>
   <data name="axis" xml:space="preserve">
     <value>Axis</value>
@@ -1502,9 +767,6 @@
   </data>
   <data name="range" xml:space="preserve">
     <value>Range</value>
-  </data>
-  <data name="domain" xml:space="preserve">
-    <value>Domain</value>
   </data>
   <data name="point_count" xml:space="preserve">
     <value>Sampling point</value>
@@ -1521,17 +783,11 @@
   <data name="vertices" xml:space="preserve">
     <value>Vertices</value>
   </data>
-  <data name="template_file_corrupted" xml:space="preserve">
-    <value>Template file is corrupted</value>
-  </data>
   <data name="template_version_too_high" xml:space="preserve">
     <value>Template version is higher than current software version. Please upgrade software to open.</value>
   </data>
   <data name="current_diagram_version" xml:space="preserve">
     <value>Current Diagram Version</value>
-  </data>
-  <data name="error_loading_template" xml:space="preserve">
-    <value>Error loading template</value>
   </data>
   <data name="template_upgrade_warning" xml:space="preserve">
     <value>The current template version is older. Saving will upgrade the template version, which may make it unusable in older versions of the software. Continue?</value>
@@ -1550,12 +806,6 @@
   </data>
   <data name="Placeholder_Text" xml:space="preserve">
     <value>Enter Text</value>
-  </data>
-  <data name="Placeholder_Axis_Title" xml:space="preserve">
-    <value>Axis Title</value>
-  </data>
-  <data name="Placeholder_Chart_Title" xml:space="preserve">
-    <value>Chart Title</value>
   </data>
   <data name="Placeholder_Ternary_Title" xml:space="preserve">
     <value>New Ternary Plot</value>
@@ -1577,12 +827,6 @@
   </data>
   <data name="Placeholder_Component_C" xml:space="preserve">
     <value>C</value>
-  </data>
-  <data name="third_party" xml:space="preserve">
-    <value>Third-party</value>
-  </data>
-  <data name="open_via_third_party" xml:space="preserve">
-    <value>Open via third-party</value>
   </data>
   <data name="select_an_object" xml:space="preserve">
     <value>Please select an object</value>
@@ -1632,9 +876,6 @@
   <data name="server_announcement" xml:space="preserve">
     <value>Server Announcement</value>
   </data>
-  <data name="developer_maintenance_tool" xml:space="preserve">
-    <value>Developer Maintenance Tool</value>
-  </data>
   <data name="copy_content" xml:space="preserve">
     <value>Copy Content</value>
   </data>
@@ -1673,9 +914,6 @@
   </data>
   <data name="failed_to_get_announcements" xml:space="preserve">
     <value>Failed to get announcements:</value>
-  </data>
-  <data name="error_loading_template_list" xml:space="preserve">
-    <value>Error loading template list:</value>
   </data>
   <data name="unable_to_open_link" xml:space="preserve">
     <value>Unable to open link:</value>
@@ -1716,9 +954,6 @@
   <data name="refresh" xml:space="preserve">
     <value>Refresh</value>
   </data>
-  <data name="developer_maintenance_tools" xml:space="preserve">
-    <value>Developer Maintenance Tools</value>
-  </data>
   <data name="drawing_template_repair_tool" xml:space="preserve">
     <value>Diagram Template Repair Tool</value>
   </data>
@@ -1757,9 +992,6 @@
   </data>
   <data name="import_custom_diagram_template" xml:space="preserve">
     <value>Import Custom Diagram Template</value>
-  </data>
-  <data name="open_file_location" xml:space="preserve">
-    <value>Open File Location</value>
   </data>
   <data name="export_diagram_template" xml:space="preserve">
     <value>Export Diagram Template</value>
@@ -1878,9 +1110,6 @@
   <data name="diagram" xml:space="preserve">
     <value>Diagram</value>
   </data>
-  <data name="official_website" xml:space="preserve">
-    <value>Official Website</value>
-  </data>
   <data name="minimize" xml:space="preserve">
     <value>Minimize</value>
   </data>
@@ -1920,9 +1149,6 @@
   <data name="view_latest_server_announcements" xml:space="preserve">
     <value>View the latest announcements from the server</value>
   </data>
-  <data name="maintain_server_config_and_templates" xml:space="preserve">
-    <value>Maintain server configurations and template files</value>
-  </data>
   <data name="stroke_width" xml:space="preserve">
     <value>Stroke Width</value>
   </data>
@@ -1946,15 +1172,6 @@
   </data>
   <data name="Alignment_UpperRight" xml:space="preserve">
     <value>Top Right</value>
-  </data>
-  <data name="Alignment_MiddleLeft" xml:space="preserve">
-    <value>Middle Left</value>
-  </data>
-  <data name="Alignment_MiddleCenter" xml:space="preserve">
-    <value>Middle Center</value>
-  </data>
-  <data name="Alignment_MiddleRight" xml:space="preserve">
-    <value>Middle Right</value>
   </data>
   <data name="Alignment_LowerLeft" xml:space="preserve">
     <value>Bottom Left</value>
@@ -2003,9 +1220,6 @@
   </data>
   <data name="language_switch_error" xml:space="preserve">
     <value>An error occurred while switching languages:</value>
-  </data>
-  <data name="auto_datapoint_projection_failed" xml:space="preserve">
-    <value>Automatic data point projection failed:</value>
   </data>
   <data name="failed_to_delete_row" xml:space="preserve">
     <value>Failed to delete row:</value>
@@ -2064,12 +1278,6 @@
   <data name="diagram_template_export_success" xml:space="preserve">
     <value>Diagram template exported successfully</value>
   </data>
-  <data name="directory_not_exist" xml:space="preserve">
-    <value>Directory does not exist</value>
-  </data>
-  <data name="diagram_template_directory_not_found" xml:space="preserve">
-    <value>Diagram template directory does not exist:</value>
-  </data>
   <data name="failed_to_load_diagram_template" xml:space="preserve">
     <value>Failed to load diagram template:</value>
   </data>
@@ -2103,15 +1311,6 @@
   <data name="help_file_not_found" xml:space="preserve">
     <value>The help documentation file could not be found.</value>
   </data>
-  <data name="refresh_successful" xml:space="preserve">
-    <value>Refreshed successfully</value>
-  </data>
-  <data name="refresh_failed" xml:space="preserve">
-    <value>Refresh failed:</value>
-  </data>
-  <data name="diagram_help_path_undefined_save_template" xml:space="preserve">
-    <value>Unable to determine the diagram help file path. Please try saving the template first.</value>
-  </data>
   <data name="failed_to_open_file" xml:space="preserve">
     <value>Failed to open file:</value>
   </data>
@@ -2141,9 +1340,6 @@
   </data>
   <data name="overwrite" xml:space="preserve">
     <value>Overwrite</value>
-  </data>
-  <data name="failed_to_delete_old_directory" xml:space="preserve">
-    <value>Failed to delete the old directory:</value>
   </data>
   <data name="invalid_diagram_template_no_json" xml:space="preserve">
     <value>Invalid diagram template file: diagram JSON file not found.</value>
@@ -2225,15 +1421,6 @@
   </data>
   <data name="developer_mode" xml:space="preserve">
     <value>Developer Mode</value>
-  </data>
-  <data name="help_document_not_found" xml:space="preserve">
-    <value>Help document not found:</value>
-  </data>
-  <data name="path_is_empty" xml:space="preserve">
-    <value>Path is empty</value>
-  </data>
-  <data name="failed_to_load_help_document" xml:space="preserve">
-    <value>Failed to load help document:</value>
   </data>
   <data name="dev_mode_warning_non_developers" xml:space="preserve">
     <value>Not recommended for non-developers; it may cause unnecessary issues.</value>
@@ -2373,9 +1560,6 @@
   </data>
   <data name="spider_current_plot_order" xml:space="preserve">
     <value>Current Plot Order</value>
-  </data>
-  <data name="spider_diagram_data_hint" xml:space="preserve">
-    <value>Paste your data in the table after entering plot mode. Each row represents a sample, columns should match element names above.</value>
   </data>
   <data name="enter_plot_mode" xml:space="preserve">
     <value>Enter Plot Mode</value>
@@ -2632,57 +1816,6 @@
   <data name="geo_editor_title_new" xml:space="preserve">
     <value>New Custom Thermometer</value>
   </data>
-  <data name="geo_validation_name_required" xml:space="preserve">
-    <value>Name is required</value>
-  </data>
-  <data name="geo_validation_mineral_required" xml:space="preserve">
-    <value>Mineral category is required</value>
-  </data>
-  <data name="geo_validation_year_required" xml:space="preserve">
-    <value>Year is required</value>
-  </data>
-  <data name="geo_validation_year_range" xml:space="preserve">
-    <value>Year must be 4 digits (1000-9999)</value>
-  </data>
-  <data name="geo_validation_version_required" xml:space="preserve">
-    <value>Version is required</value>
-  </data>
-  <data name="geo_validation_version_format" xml:space="preserve">
-    <value>Version format should be x.x.x (e.g. 1.0.0)</value>
-  </data>
-  <data name="geo_validation_author_required" xml:space="preserve">
-    <value>Author is required</value>
-  </data>
-  <data name="geo_validation_formula_name_required" xml:space="preserve">
-    <value>Formula name is required</value>
-  </data>
-  <data name="geo_validation_formula_name_format" xml:space="preserve">
-    <value>Formula name only allows letters, digits and underscore</value>
-  </data>
-  <data name="geo_validation_reference_required" xml:space="preserve">
-    <value>Reference is required</value>
-  </data>
-  <data name="geo_validation_headers_required" xml:space="preserve">
-    <value>Headers are required</value>
-  </data>
-  <data name="geo_validation_inputs_required" xml:space="preserve">
-    <value>Input columns are required</value>
-  </data>
-  <data name="geo_validation_script_required" xml:space="preserve">
-    <value>Script content is required</value>
-  </data>
-  <data name="geo_test_script_empty" xml:space="preserve">
-    <value>Script content is empty</value>
-  </data>
-  <data name="geo_test_input_invalid" xml:space="preserve">
-    <value>Invalid test input. Please use comma-separated numbers.</value>
-  </data>
-  <data name="geo_test_input_required" xml:space="preserve">
-    <value>Please enter test values.</value>
-  </data>
-  <data name="geo_test_error_format" xml:space="preserve">
-    <value>Error: {0}</value>
-  </data>
   <data name="geo_msg_save_success" xml:space="preserve">
     <value>Saved successfully.</value>
   </data>
@@ -2737,9 +1870,6 @@
   <data name="geo_msg_create_table_failed" xml:space="preserve">
     <value>Failed to create table: {0}</value>
   </data>
-  <data name="geo_msg_delete_confirm" xml:space="preserve">
-    <value>Delete the {0} thermometer "{1}"?</value>
-  </data>
   <data name="geo_msg_delete_success" xml:space="preserve">
     <value>Deleted successfully</value>
   </data>
@@ -2755,9 +1885,6 @@ Directory: {2}</value>
   </data>
   <data name="geo_msg_batch_export_failed" xml:space="preserve">
     <value>Batch export failed: {0}</value>
-  </data>
-  <data name="geo_msg_richtext_not_init" xml:space="preserve">
-    <value>RichTextBox control is not initialized</value>
   </data>
   <data name="geo_msg_load_help_doc_failed" xml:space="preserve">
     <value>Failed to load help document: {0}</value>
@@ -3076,12 +2203,6 @@ Directory: {2}</value>
   </data>
   <data name="cipw_iron_missing" xml:space="preserve">
     <value>Missing</value>
-  </data>
-  <data name="plot_layer_list_title" xml:space="preserve">
-    <value>Layer List</value>
-  </data>
-  <data name="plot_property_panel_title" xml:space="preserve">
-    <value>Properties Panel</value>
   </data>
   <data name="data_toolbar_add_row_above_tooltip" xml:space="preserve">
     <value>Insert a row above the current selection</value>

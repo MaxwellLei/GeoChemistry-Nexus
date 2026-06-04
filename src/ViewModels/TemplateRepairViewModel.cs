@@ -6,11 +6,8 @@ using GeoChemistryNexus.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace GeoChemistryNexus.ViewModels
 {
@@ -49,8 +46,6 @@ namespace GeoChemistryNexus.ViewModels
             {
                 await CheckAndRepairGraphMapList();
                 await CheckAndRepairCategories();
-                await CheckMissingTemplatesInList();
-                await CheckMissingCustomTemplates();
 
                 Log("Check and repair process completed.");
                 HandyControl.Controls.Growl.Success("修复流程完成");
@@ -137,123 +132,6 @@ namespace GeoChemistryNexus.ViewModels
             else
             {
                 Log("PlotTemplateCategories.json is valid.");
-            }
-        }
-
-        private async Task CheckMissingTemplatesInList()
-        {
-            Log("Checking for missing default templates...");
-            string listPath = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "GraphMapList.json");
-            if (!File.Exists(listPath)) return;
-
-            var json = File.ReadAllText(listPath);
-            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            var list = JsonSerializer.Deserialize<List<GraphMapTemplateService.JsonTemplateItem>>(json, options);
-
-            if (list == null) return;
-
-            var itemsToRemove = new List<GraphMapTemplateService.JsonTemplateItem>();
-            string defaultDir = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Default");
-
-            foreach (var item in list)
-            {
-                // Logic derived from MainPlotViewModel.cs (assumed path structure)
-                
-                string templateDir = Path.Combine(defaultDir, item.GraphMapPath);
-                string templateFile = Path.Combine(templateDir, $"{item.GraphMapPath}.json");
-
-                if (!File.Exists(templateFile))
-                {
-                    Log($"Missing template file: {templateFile}");
-                    itemsToRemove.Add(item);
-                }
-            }
-
-            if (itemsToRemove.Count > 0)
-            {
-                string msg = $"发现 {itemsToRemove.Count} 个默认模板在列表中存在但文件丢失。\n是否清除这些无效记录？";
-                bool confirm = await MessageHelper.ShowAsyncDialog(msg, "取消", "清除");
-
-                if (confirm)
-                {
-                    foreach (var item in itemsToRemove)
-                    {
-                        list.Remove(item);
-                        Log($"Removed invalid default template: {item.GraphMapPath}");
-                    }
-                    
-                    string newJson = JsonSerializer.Serialize(list, new JsonSerializerOptions { WriteIndented = true });
-                    File.WriteAllText(listPath, newJson);
-                    Log("GraphMapList.json updated.");
-                }
-            }
-            else
-            {
-                Log("All default templates in list exist.");
-            }
-        }
-
-        private async Task CheckMissingCustomTemplates()
-        {
-            Log("Checking for missing custom templates...");
-            string listPath = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "GraphMapCustomList.json");
-            if (!File.Exists(listPath))
-            {
-                Log("GraphMapCustomList.json not found, skipping.");
-                return;
-            }
-
-            var json = File.ReadAllText(listPath);
-            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            List<GraphMapTemplateService.JsonTemplateItem> list;
-            try
-            {
-                list = JsonSerializer.Deserialize<List<GraphMapTemplateService.JsonTemplateItem>>(json, options);
-            }
-            catch
-            {
-                Log("GraphMapCustomList.json is corrupted.");
-                return; 
-            }
-
-            if (list == null) return;
-
-            var itemsToRemove = new List<GraphMapTemplateService.JsonTemplateItem>();
-            string customDir = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Custom");
-
-            foreach (var item in list)
-            {
-                string templateDir = Path.Combine(customDir, item.GraphMapPath);
-                string templateFile = Path.Combine(templateDir, $"{item.GraphMapPath}.json");
-
-                if (!File.Exists(templateFile))
-                {
-                    Log($"Missing custom template file: {templateFile}");
-                    itemsToRemove.Add(item);
-                }
-            }
-
-            if (itemsToRemove.Count > 0)
-            {
-                string msg = $"发现 {itemsToRemove.Count} 个自定义模板在列表中存在但文件丢失。\n是否清除这些无效记录？";
-                bool confirm = await MessageHelper.ShowAsyncDialog(msg, "取消", "清除");
-
-                if (confirm)
-                {
-                    foreach (var item in itemsToRemove)
-                    {
-                        list.Remove(item);
-                        Log($"Removed invalid custom template: {item.GraphMapPath}");
-                    }
-
-                    string newJson = JsonSerializer.Serialize(list, new JsonSerializerOptions { WriteIndented = true });
-                    File.WriteAllText(listPath, newJson);
-                    Log("GraphMapCustomList.json updated.");
-                }
-            }
-            else
-            {
-                Log("All custom templates in list exist.");
             }
         }
     }

@@ -25,7 +25,7 @@
 
             <!--Routine Settings-->
             <RadioButton Style="{StaticResource ModernSidebarRadioButton}" GroupName="SettingSideBar"
-                         IsChecked="True" Command="{Binding CommonPage}">
+                         IsChecked="True" Command="{Binding CommonPageCommand}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xe616;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="18" VerticalAlignment="Center" Margin="0,0,12,0"/>
                     <TextBlock Text="{Binding [NormalSetting],Source={x:Static lg:LanguageService.Instance}}" FontSize="14" VerticalAlignment="Center"/>
@@ -34,7 +34,7 @@
 
             <!--Drawing settings-->
             <RadioButton Style="{StaticResource ModernSidebarRadioButton}" GroupName="SettingSideBar"
-                         Command="{Binding PlotPage}">
+                         Command="{Binding PlotPageCommand}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xe66f;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="18" VerticalAlignment="Center" Margin="0,0,12,0"/>
                     <TextBlock Text="{Binding [PlotSetting],Source={x:Static lg:LanguageService.Instance}}" FontSize="14" VerticalAlignment="Center"/>
@@ -43,7 +43,7 @@
 
             <!--Geothermometer settings-->
             <RadioButton Style="{StaticResource ModernSidebarRadioButton}" GroupName="SettingSideBar"
-                         Command="{Binding GeothermometerPage}">
+                         Command="{Binding GeothermometerPageCommand}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xe634;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="18" VerticalAlignment="Center" Margin="0,0,12,0"/>
                     <TextBlock Text="{Binding [GeothermometerSetting],Source={x:Static lg:LanguageService.Instance}, FallbackValue=地质温度计}" FontSize="14" VerticalAlignment="Center"/>
@@ -52,7 +52,7 @@
 
             <!--Shortcuts-->
             <RadioButton Style="{StaticResource ModernSidebarRadioButton}" GroupName="SettingSideBar"
-                         Command="{Binding ShortcutPage}">
+                         Command="{Binding ShortcutPageCommand}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xE765;" FontFamily="Segoe MDL2 Assets" FontSize="18" VerticalAlignment="Center" Margin="0,0,12,0"/>
                     <TextBlock Text="{Binding [shortcuts_title],Source={x:Static lg:LanguageService.Instance}, FallbackValue=快捷键}" FontSize="14" VerticalAlignment="Center"/>
@@ -61,7 +61,7 @@
 
             <!--About-->
             <RadioButton Style="{StaticResource ModernSidebarRadioButton}" GroupName="SettingSideBar"
-                         Command="{Binding AboutPage}">
+                         Command="{Binding AboutPageCommand}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xe61d;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="18" VerticalAlignment="Center" Margin="0,0,12,0"/>
                     <TextBlock Text="{Binding [About],Source={x:Static lg:LanguageService.Instance}}" FontSize="14" VerticalAlignment="Center"/>

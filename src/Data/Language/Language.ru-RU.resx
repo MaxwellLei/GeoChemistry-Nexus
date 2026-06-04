@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -120,9 +120,6 @@
   <data name="new_version_found" xml:space="preserve">
     <value>Найдена новая версия</value>
   </data>
-  <data name="anti_aliasing" xml:space="preserve">
-    <value>Сглаживание</value>
-  </data>
   <data name="geo_msg_load_help_doc_failed" xml:space="preserve">
     <value>Не удалось загрузить документ справки: {0}</value>
   </data>
@@ -150,41 +147,14 @@
   <data name="export_successful" xml:space="preserve">
     <value>Экспорт успешен</value>
   </data>
-  <data name="AxesTickFont" xml:space="preserve">
-    <value>Шрифт делений</value>
-  </data>
   <data name="geo_validate_version_format" xml:space="preserve">
     <value>Неверный формат версии. Допустим только x.x.x (например, 1.0.0, 1.2.3).</value>
-  </data>
-  <data name="delete_this_item" xml:space="preserve">
-    <value>Удалить этот элемент</value>
-  </data>
-  <data name="Placeholder_Chart_Title" xml:space="preserve">
-    <value>Заголовок диаграммы</value>
   </data>
   <data name="drawing_template_repair_tool" xml:space="preserve">
     <value>Инструмент восстановления шаблонов</value>
   </data>
   <data name="category_structure_min_two" xml:space="preserve">
     <value>Структура категорий должна быть &gt;= 2!</value>
-  </data>
-  <data name="template_file_save_path" xml:space="preserve">
-    <value>Путь сохранения файла шаблона</value>
-  </data>
-  <data name="jpg_format" xml:space="preserve">
-    <value>Формат JPG</value>
-  </data>
-  <data name="TGMInfo" xml:space="preserve">
-    <value>Нажмите или перетащите файл сюда</value>
-  </data>
-  <data name="PlotFilledColor1" xml:space="preserve">
-    <value>Цвет заливки 1</value>
-  </data>
-  <data name="PlotFilledColor2" xml:space="preserve">
-    <value>Цвет заливки 2</value>
-  </data>
-  <data name="create_worksheet_failed" xml:space="preserve">
-    <value>Ошибка создания листа:</value>
   </data>
   <data name="geo_validate_year_required" xml:space="preserve">
     <value>Год не может быть пустым.</value>
@@ -194,9 +164,6 @@
   </data>
   <data name="batch_download_fail_count" xml:space="preserve">
     <value>Ошибка: {0}</value>
-  </data>
-  <data name="confirm_delete_column" xml:space="preserve">
-    <value>Удалить выбранные столбцы?</value>
   </data>
   <data name="cipw_iron_missing" xml:space="preserve">
     <value>Отсутствует</value>
@@ -210,9 +177,6 @@
   <data name="add_text_operation_canceled" xml:space="preserve">
     <value>Добавление текста отменено.</value>
   </data>
-  <data name="geo_validation_version_required" xml:space="preserve">
-    <value>Версия обязательна</value>
-  </data>
   <data name="geo_btn_reset" xml:space="preserve">
     <value>Сброс</value>
   </data>
@@ -223,17 +187,11 @@
     <value>Всего {0} официальных термометров, экспортировано {1} (добавлено/изменено)
 Каталог: {2}</value>
   </data>
-  <data name="tick_interval" xml:space="preserve">
-    <value>Интервал делений</value>
-  </data>
   <data name="geo_btn_apply" xml:space="preserve">
     <value>Применить</value>
   </data>
   <data name="stroke_color" xml:space="preserve">
     <value>Цвет обводки</value>
-  </data>
-  <data name="ImportData" xml:space="preserve">
-    <value>Импорт данных</value>
   </data>
   <data name="stroke_width" xml:space="preserve">
     <value>Ширина обводки</value>
@@ -241,14 +199,8 @@
   <data name="AutoCheckUpdate" xml:space="preserve">
     <value>Автопроверка обновлений</value>
   </data>
-  <data name="builtin_templates" xml:space="preserve">
-    <value>Официальные встроенные шаблоны</value>
-  </data>
   <data name="failed_to_open_zip_file" xml:space="preserve">
     <value>Не удалось открыть ZIP</value>
-  </data>
-  <data name="Alignment_MiddleLeft" xml:space="preserve">
-    <value>Слева по центру</value>
   </data>
   <data name="subtitle" xml:space="preserve">
     <value>Подзаголовок</value>
@@ -277,9 +229,6 @@
   <data name="geo_script_javascript" xml:space="preserve">
     <value>Сценарий JavaScript</value>
   </data>
-  <data name="Expand" xml:space="preserve">
-    <value>Расширить</value>
-  </data>
   <data name="Placeholder_Chart_Title_Default" xml:space="preserve">
     <value>Новая диаграмма</value>
   </data>
@@ -298,26 +247,11 @@
   <data name="geo_hint_no_custom" xml:space="preserve">
     <value>Пока нет пользовательских термометров, нажмите +, чтобы создать.</value>
   </data>
-  <data name="CalTarget" xml:space="preserve">
-    <value>Цель расчета</value>
-  </data>
-  <data name="FontItalic" xml:space="preserve">
-    <value>Курсив</value>
-  </data>
-  <data name="actual_sum_is" xml:space="preserve">
-    <value>(Фактическая сумма</value>
-  </data>
   <data name="geo_msg_update_downloaded" xml:space="preserve">
     <value>Загружено {0} геотермометров</value>
   </data>
-  <data name="export_current_worksheet" xml:space="preserve">
-    <value>_Экспорт текущего листа(R)</value>
-  </data>
   <data name="use_help" xml:space="preserve">
     <value>Руководство по диаграммам</value>
-  </data>
-  <data name="Enum_LineType_Solid" xml:space="preserve">
-    <value>Сплошная</value>
   </data>
   <data name="geo_placeholder_help_read_confirm" xml:space="preserve">
     <value>После прочтения документа нажмите OK, чтобы продолжить.</value>
@@ -330,18 +264,6 @@
   </data>
   <data name="diagram_guide" xml:space="preserve">
     <value>Мастер диаграмм</value>
-  </data>
-  <data name="ExportImageBMP" xml:space="preserve">
-    <value>Экспорт в BMP</value>
-  </data>
-  <data name="ExportImageJPG" xml:space="preserve">
-    <value>Экспорт в JPG</value>
-  </data>
-  <data name="ExportImageSVG" xml:space="preserve">
-    <value>Экспорт в SVG</value>
-  </data>
-  <data name="ExportImagePNG" xml:space="preserve">
-    <value>Экспорт в PNG</value>
   </data>
   <data name="line_type_dot" xml:space="preserve">
     <value>Точечная</value>
@@ -358,17 +280,8 @@
   <data name="geo_menu_update" xml:space="preserve">
     <value>Обновить</value>
   </data>
-  <data name="PlotMinorGridColor" xml:space="preserve">
-    <value>Цвет вспомогательной сетки</value>
-  </data>
   <data name="MessageAutoClose" xml:space="preserve">
     <value>Время автозакрытия</value>
-  </data>
-  <data name="LegendDirection" xml:space="preserve">
-    <value>Ориентация легенды</value>
-  </data>
-  <data name="PlotMinorGridWidth" xml:space="preserve">
-    <value>Ширина вспомогательной сетки</value>
   </data>
   <data name="please_enter_name" xml:space="preserve">
     <value>Введите имя</value>
@@ -385,35 +298,14 @@
   <data name="add_link" xml:space="preserve">
     <value>Добавить ссылку</value>
   </data>
-  <data name="confirm_new_worksheet" xml:space="preserve">
-    <value>Создать новый рабочий лист?</value>
-  </data>
   <data name="pattern" xml:space="preserve">
     <value>Шаблон</value>
   </data>
   <data name="geo_ctx_promote" xml:space="preserve">
     <value>Повысить до официального</value>
   </data>
-  <data name="geo_validation_reference_required" xml:space="preserve">
-    <value>Ссылка обязательна</value>
-  </data>
   <data name="validation_failed" xml:space="preserve">
     <value>Проверка не удалась:</value>
-  </data>
-  <data name="Support2" xml:space="preserve">
-    <value>📌Диаграммы:</value>
-  </data>
-  <data name="Support3" xml:space="preserve">
-    <value>📌Документация:</value>
-  </data>
-  <data name="Support1" xml:space="preserve">
-    <value>📌Элементы управления:</value>
-  </data>
-  <data name="Support4" xml:space="preserve">
-    <value>📌Расчеты:</value>
-  </data>
-  <data name="Support5" xml:space="preserve">
-    <value>📌Инструменты:</value>
   </data>
   <data name="geo_menu_maintenance" xml:space="preserve">
     <value>Обслуживание</value>
@@ -421,32 +313,8 @@
   <data name="geo_validate_headers_required" xml:space="preserve">
     <value>Заголовки не могут быть пустыми.</value>
   </data>
-  <data name="PlotTitleFontSize" xml:space="preserve">
-    <value>Размер шрифта заголовка</value>
-  </data>
   <data name="enter_level_add" xml:space="preserve">
     <value>Введите уровень и нажмите Enter для добавления.</value>
-  </data>
-  <data name="background_and_border" xml:space="preserve">
-    <value>Фон и границы</value>
-  </data>
-  <data name="DeleteBasemap" xml:space="preserve">
-    <value>Удалить подложку</value>
-  </data>
-  <data name="all_imported_data_cleared" xml:space="preserve">
-    <value>Все импортированные данные очищены</value>
-  </data>
-  <data name="grid_settings" xml:space="preserve">
-    <value>Настройки сетки</value>
-  </data>
-  <data name="refresh_failed" xml:space="preserve">
-    <value>Ошибка обновления：</value>
-  </data>
-  <data name="Biotite" xml:space="preserve">
-    <value>Биотит</value>
-  </data>
-  <data name="Arsenopyrite" xml:space="preserve">
-    <value>Арсенопирит</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Удалить</value>
@@ -460,17 +328,8 @@
   <data name="fill_color_1" xml:space="preserve">
     <value>Цвет заливки 1</value>
   </data>
-  <data name="Pressure" xml:space="preserve">
-    <value>Давление (МПа)</value>
-  </data>
   <data name="start_check_and_repair" xml:space="preserve">
     <value>Начать проверку и восстановление</value>
-  </data>
-  <data name="GetMoreBasemap" xml:space="preserve">
-    <value>Больше подложек</value>
-  </data>
-  <data name="check_for_category_updates" xml:space="preserve">
-    <value>Проверить обновления категорий</value>
   </data>
   <data name="cipw_overview" xml:space="preserve">
     <value>Расчёт нормы CIPW (CIPW Norm) — петрохимический метод, предложенный в 1902 году Кроссом, Иддингсом, Пирсоном и Вашингтоном. На основании химического анализа главных породообразующих оксидов общей пробы метод распределяет оксиды по набору идеализированных стандартных минералов в строго фиксированном порядке приоритета и применяется для классификации и сравнительных исследований пород.</value>
@@ -481,17 +340,8 @@
   <data name="update_list_file_failed" xml:space="preserve">
     <value>Ошибка обновления файла списка</value>
   </data>
-  <data name="FontStyle" xml:space="preserve">
-    <value>Стиль шрифта</value>
-  </data>
-  <data name="save_as" xml:space="preserve">
-    <value>Сохранить как</value>
-  </data>
   <data name="click_help_for_guide" xml:space="preserve">
     <value>Нажмите для просмотра документации</value>
-  </data>
-  <data name="LegendVertical" xml:space="preserve">
-    <value>Вертикальная</value>
   </data>
   <data name="Placeholder_Component_A" xml:space="preserve">
     <value>A</value>
@@ -505,38 +355,17 @@
   <data name="click_to_pick_coordinates" xml:space="preserve">
     <value>Кликните в области графика для получения координат</value>
   </data>
-  <data name="FontColor" xml:space="preserve">
-    <value>Цвет шрифта</value>
-  </data>
-  <data name="Basalt" xml:space="preserve">
-    <value>Базальт</value>
-  </data>
   <data name="annotation" xml:space="preserve">
     <value>Аннотация</value>
   </data>
   <data name="geo_dialog_apply_overwrite" xml:space="preserve">
     <value>Применение перезапишет содержимое текущего листа. Продолжить?</value>
   </data>
-  <data name="ZirconTiGTM" xml:space="preserve">
-    <value>Ti Термометр (Loucks et al., 2020)</value>
-  </data>
-  <data name="ImportBasemap" xml:space="preserve">
-    <value>Импорт подложки</value>
-  </data>
-  <data name="ZirconZrGTM" xml:space="preserve">
-    <value>Zr Термометр (Watson and Harrison, 1983)</value>
-  </data>
-  <data name="ResetSuccess" xml:space="preserve">
-    <value>Сброс выполнен успешно</value>
-  </data>
   <data name="geo_msg_save_failed" xml:space="preserve">
     <value>Ошибка сохранения: {0}</value>
   </data>
   <data name="geo_editor_title_new" xml:space="preserve">
     <value>Новый пользовательский термометр</value>
-  </data>
-  <data name="BorderLine" xml:space="preserve">
-    <value>Граница</value>
   </data>
   <data name="switch_diagram_language" xml:space="preserve">
     <value>Переключить язык диаграммы</value>
@@ -556,20 +385,8 @@
   <data name="cipw_tooltip_export" xml:space="preserve">
     <value>Экспортировать результаты расчёта в файл CSV</value>
   </data>
-  <data name="is_bold" xml:space="preserve">
-    <value>Жирный</value>
-  </data>
-  <data name="legend_settings" xml:space="preserve">
-    <value>Настройки легенды</value>
-  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Отмена</value>
-  </data>
-  <data name="geo_validation_author_required" xml:space="preserve">
-    <value>Автор обязателен</value>
-  </data>
-  <data name="delete_row" xml:space="preserve">
-    <value>Удалить строку</value>
   </data>
   <data name="cipw_export_dialog_title" xml:space="preserve">
     <value>Экспорт результатов CIPW</value>
@@ -577,20 +394,11 @@
   <data name="geo_menu_import_zip" xml:space="preserve">
     <value>Импортировать геотермометр (ZIP)</value>
   </data>
-  <data name="read_file_failed" xml:space="preserve">
-    <value>Ошибка чтения файла</value>
-  </data>
   <data name="developer_mode" xml:space="preserve">
     <value>Режим разработчика</value>
   </data>
-  <data name="BasemapCategories" xml:space="preserve">
-    <value>Категории подложки</value>
-  </data>
   <data name="geo_validate_mineral_required" xml:space="preserve">
     <value>Категория минерала не может быть пустой.</value>
-  </data>
-  <data name="filter_templates" xml:space="preserve">
-    <value>Фильтровать шаблоны</value>
   </data>
   <data name="geo_hint_select_data_row" xml:space="preserve">
     <value>Выберите строку данных</value>
@@ -601,20 +409,11 @@
   <data name="batch_download_progress" xml:space="preserve">
     <value>Загрузка: {0}/{1} - {2}</value>
   </data>
-  <data name="oxygen_atom_benchmark_zero" xml:space="preserve">
-    <value>Базовое значение атомов кислорода равно нулю</value>
-  </data>
   <data name="geo_msg_export_success" xml:space="preserve">
     <value>Экспорт выполнен</value>
   </data>
-  <data name="LineDash" xml:space="preserve">
-    <value>Штриховая</value>
-  </data>
   <data name="cipw_iron_measured" xml:space="preserve">
     <value>Измеренное</value>
-  </data>
-  <data name="IsShowLegend" xml:space="preserve">
-    <value>Показать легенду</value>
   </data>
   <data name="library_section" xml:space="preserve">
     <value>Библиотека ресурсов</value>
@@ -631,12 +430,6 @@
   <data name="toggle_details_expand_collapse" xml:space="preserve">
     <value>Развернуть/свернуть детали</value>
   </data>
-  <data name="PlotAxesTitleFontSize" xml:space="preserve">
-    <value>Размер шрифта заголовка оси</value>
-  </data>
-  <data name="file_import_successful" xml:space="preserve">
-    <value>Файл успешно импортирован</value>
-  </data>
   <data name="uncategorized" xml:space="preserve">
     <value>Без категории</value>
   </data>
@@ -646,9 +439,6 @@
   <data name="diagram" xml:space="preserve">
     <value>Диаграмма</value>
   </data>
-  <data name="geo_validation_year_range" xml:space="preserve">
-    <value>Год должен быть четырёхзначным (1000-9999)</value>
-  </data>
   <data name="geo_msg_checking_update" xml:space="preserve">
     <value>Проверка обновлений...</value>
   </data>
@@ -657,12 +447,6 @@
   </data>
   <data name="edit_diagram_template" xml:space="preserve">
     <value>Редактировать шаблон диаграммы</value>
-  </data>
-  <data name="IsShow" xml:space="preserve">
-    <value>Показывать</value>
-  </data>
-  <data name="EnglishUS" xml:space="preserve">
-    <value>English (US)</value>
   </data>
   <data name="cipw_references_content" xml:space="preserve">
     <value>• Cross, W., Iddings, J.P., Pirsson, L.V., Washington, H.S. (1902). A Quantitative Chemico-Mineralogical Classification and Nomenclature of Igneous Rocks.
@@ -687,9 +471,6 @@
   <data name="diagram_template_source_missing" xml:space="preserve">
     <value>Исходный файл шаблона отсутствует</value>
   </data>
-  <data name="diagram_help_path_undefined_save_template" xml:space="preserve">
-    <value>Путь к справке не определен, сначала сохраните шаблон.</value>
-  </data>
   <data name="already_exists_overwrite_confirm" xml:space="preserve">
     <value>Уже существует, перезаписать?</value>
   </data>
@@ -702,35 +483,11 @@
   <data name="official_templates" xml:space="preserve">
     <value>Официальные шаблоны диаграмм</value>
   </data>
-  <data name="ScNotFilledIn" xml:space="preserve">
-    <value>Скрипт графика не заполнен</value>
-  </data>
-  <data name="LegendPositionLU" xml:space="preserve">
-    <value>Слева сверху</value>
-  </data>
-  <data name="LegendPositionLD" xml:space="preserve">
-    <value>Слева снизу</value>
-  </data>
-  <data name="LegendPositionRD" xml:space="preserve">
-    <value>Справа снизу</value>
-  </data>
-  <data name="LegendPositionRU" xml:space="preserve">
-    <value>Справа сверху</value>
-  </data>
-  <data name="clear_data" xml:space="preserve">
-    <value>Очистить данные</value>
-  </data>
   <data name="geo_validate_reference_required" xml:space="preserve">
     <value>Ссылка не может быть пустой.</value>
   </data>
   <data name="diagram_script_properties" xml:space="preserve">
     <value>Свойства скрипта диаграммы</value>
-  </data>
-  <data name="PlotMajorGridColor" xml:space="preserve">
-    <value>Цвет основной сетки</value>
-  </data>
-  <data name="PlotAxesTitleFont" xml:space="preserve">
-    <value>Шрифт заголовка оси</value>
   </data>
   <data name="zoom_type" xml:space="preserve">
     <value>Тип масштабирования</value>
@@ -744,20 +501,8 @@
   <data name="trace_function_usage_tip" xml:space="preserve">
     <value>Используйте функцию trace(...) для записи процесса вычислений в сценарии.</value>
   </data>
-  <data name="PlotMajorGridWidth" xml:space="preserve">
-    <value>Ширина основной сетки</value>
-  </data>
   <data name="custom_app" xml:space="preserve">
     <value>Пользовательское приложение</value>
-  </data>
-  <data name="PlotAxesTitleColor" xml:space="preserve">
-    <value>Цвет заголовка оси</value>
-  </data>
-  <data name="JsNull" xml:space="preserve">
-    <value>Скрипт пуст</value>
-  </data>
-  <data name="input_out_of_range" xml:space="preserve">
-    <value>Значение вне диапазона</value>
   </data>
   <data name="custom_templates" xml:space="preserve">
     <value>Пользовательские шаблоны</value>
@@ -774,29 +519,11 @@
   <data name="template_saved_successfully" xml:space="preserve">
     <value>Шаблон успешно сохранен!</value>
   </data>
-  <data name="geo_test_script_empty" xml:space="preserve">
-    <value>Содержимое сценария пустое</value>
-  </data>
   <data name="favorite_added" xml:space="preserve">
     <value>Добавлено в избранное</value>
   </data>
-  <data name="geo_validation_version_format" xml:space="preserve">
-    <value>Формат версии должен быть x.x.x (например, 1.0.0)</value>
-  </data>
-  <data name="IsShowAxes" xml:space="preserve">
-    <value>Показать оси</value>
-  </data>
-  <data name="geo_msg_delete_confirm" xml:space="preserve">
-    <value>Удалить {0} термометр «{1}»?</value>
-  </data>
   <data name="geo_menu_new_custom" xml:space="preserve">
     <value>Новый пользовательский геотермометр</value>
-  </data>
-  <data name="OpenFileLocation" xml:space="preserve">
-    <value>Открыть расположение папки</value>
-  </data>
-  <data name="Quartz" xml:space="preserve">
-    <value>Кварц</value>
   </data>
   <data name="import_custom_diagram_template" xml:space="preserve">
     <value>Импорт пользовательского шаблона</value>
@@ -804,23 +531,14 @@
   <data name="invalid_formula" xml:space="preserve">
     <value>Неверная формула</value>
   </data>
-  <data name="PlotBoder" xml:space="preserve">
-    <value>Граница</value>
-  </data>
   <data name="subtitle_color" xml:space="preserve">
     <value>Цвет подзаголовка</value>
   </data>
   <data name="cipw_diag_total_minerals" xml:space="preserve">
     <value>Всего минералов</value>
   </data>
-  <data name="PlotAxies" xml:space="preserve">
-    <value>Оси координат</value>
-  </data>
   <data name="DeleteingBasemapConfirm2_Message" xml:space="preserve">
     <value>Вы уверены, что хотите удалить?</value>
-  </data>
-  <data name="geo_validation_year_required" xml:space="preserve">
-    <value>Год обязателен</value>
   </data>
   <data name="error_occurred_while_checking_for_updates" xml:space="preserve">
     <value>Ошибка при проверке обновлений：</value>
@@ -840,9 +558,6 @@
   <data name="geo_section_official" xml:space="preserve">
     <value>Официальные термометры</value>
   </data>
-  <data name="geo_validation_name_required" xml:space="preserve">
-    <value>Имя обязательно</value>
-  </data>
   <data name="geo_help_current_lang" xml:space="preserve">
     <value>Текущий язык:</value>
   </data>
@@ -861,9 +576,6 @@
   <data name="template_list_update_success_refreshing" xml:space="preserve">
     <value>Список шаблонов обновлен! Обновление...</value>
   </data>
-  <data name="IgneousRock" xml:space="preserve">
-    <value>Магматические породы</value>
-  </data>
   <data name="cipw_tooltip_clear" xml:space="preserve">
     <value>Очистить все вводы и результаты расчёта</value>
   </data>
@@ -879,26 +591,14 @@
   <data name="cipw_btn_calculate" xml:space="preserve">
     <value>Рассчитать</value>
   </data>
-  <data name="AxesStyleNormal" xml:space="preserve">
-    <value>Обычный</value>
-  </data>
   <data name="MarkerShape_OpenCircleWithDot" xml:space="preserve">
     <value>Пустой круг с точкой</value>
   </data>
   <data name="MarkerShape_OpenCircleWithEks" xml:space="preserve">
     <value>Пустой круг с иксом</value>
   </data>
-  <data name="normalization_factor_is_zero" xml:space="preserve">
-    <value>Коэффициент нормализации равен нулю</value>
-  </data>
-  <data name="svg_format" xml:space="preserve">
-    <value>Формат SVG</value>
-  </data>
   <data name="cipw_diag_warnings" xml:space="preserve">
     <value>── Предупреждения ──</value>
-  </data>
-  <data name="AxesTickColor" xml:space="preserve">
-    <value>Цвет делений</value>
   </data>
   <data name="all_templates" xml:space="preserve">
     <value>Все шаблоны</value>
@@ -915,9 +615,6 @@
   <data name="failed_to_parse_category_group" xml:space="preserve">
     <value>Не удалось разобрать группы категорий из файла. Проверьте данные столбца категорий</value>
   </data>
-  <data name="clear_data_points" xml:space="preserve">
-    <value>Очистить точки данных</value>
-  </data>
   <data name="geo_help_font_size" xml:space="preserve">
     <value>Размер шрифта:</value>
   </data>
@@ -927,26 +624,17 @@
   <data name="MarkerShape_FilledTriangleDown" xml:space="preserve">
     <value>Закрашенный треугольник вниз</value>
   </data>
-  <data name="Parameters" xml:space="preserve">
-    <value>Требуемые параметры</value>
-  </data>
   <data name="missing_translation_warning" xml:space="preserve">
     <value>• Пропущен перевод: у некоторых текстов нет перевода.</value>
   </data>
   <data name="geo_btn_export" xml:space="preserve">
     <value>Экспорт</value>
   </data>
-  <data name="developer_maintenance_tool" xml:space="preserve">
-    <value>Инструменты разработчика</value>
-  </data>
   <data name="geo_help_underline" xml:space="preserve">
     <value>Подчёркнутый (Ctrl+U)</value>
   </data>
   <data name="create_new_diagram_template" xml:space="preserve">
     <value>Создать шаблон диаграммы</value>
-  </data>
-  <data name="ExportResult" xml:space="preserve">
-    <value>Экспорт результата</value>
   </data>
   <data name="background_fill" xml:space="preserve">
     <value>Заливка фона</value>
@@ -972,18 +660,6 @@
   <data name="logarithmic" xml:space="preserve">
     <value>Логарифмический</value>
   </data>
-  <data name="background_fill_1" xml:space="preserve">
-    <value>Заливка фона</value>
-  </data>
-  <data name="background_fill_2" xml:space="preserve">
-    <value>Заливка фона</value>
-  </data>
-  <data name="AxesTickSpacing" xml:space="preserve">
-    <value>Интервал делений</value>
-  </data>
-  <data name="geo_test_input_invalid" xml:space="preserve">
-    <value>Неверный тестовый ввод. Используйте числа через запятую.</value>
-  </data>
   <data name="arrowhead_width" xml:space="preserve">
     <value>Ширина стрелки</value>
   </data>
@@ -1005,20 +681,8 @@
   <data name="invalid_script_variable_name" xml:space="preserve">
     <value>• Неверный формат имени переменной скрипта：’</value>
   </data>
-  <data name="ExportImageWebp" xml:space="preserve">
-    <value>Экспорт в WebP</value>
-  </data>
-  <data name="geological_thermometer" xml:space="preserve">
-    <value>Геологический термометр</value>
-  </data>
-  <data name="browse_ellipsis" xml:space="preserve">
-    <value>Обзор...</value>
-  </data>
   <data name="open_with_third_party_software" xml:space="preserve">
     <value>Открыть в стороннем ПО</value>
-  </data>
-  <data name="bmp_format" xml:space="preserve">
-    <value>Формат BMP</value>
   </data>
   <data name="return_to_template_library" xml:space="preserve">
     <value>Вернуться</value>
@@ -1053,26 +717,11 @@
   <data name="diagram_title_properties" xml:space="preserve">
     <value>Свойства заголовка диаграммы</value>
   </data>
-  <data name="add_column_left" xml:space="preserve">
-    <value>Добавить столбец (слева)</value>
-  </data>
   <data name="update_available_click_to_download" xml:space="preserve">
     <value>Доступна новая версия, нажмите, чтобы обновить</value>
   </data>
-  <data name="developer_maintenance_tools" xml:space="preserve">
-    <value>Инструменты разработчика</value>
-  </data>
   <data name="template_upgrade_warning" xml:space="preserve">
     <value>Версия шаблона устарела, сохранение обновит её. Продолжить?</value>
-  </data>
-  <data name="data_plotting_successful" xml:space="preserve">
-    <value>Точки данных успешно построены</value>
-  </data>
-  <data name="PlotAxesTitle1" xml:space="preserve">
-    <value>Заголовок оси 1</value>
-  </data>
-  <data name="PlotAxesTitle2" xml:space="preserve">
-    <value>Заголовок оси 2</value>
   </data>
   <data name="geo_section_calc_details" xml:space="preserve">
     <value>Детали расчёта</value>
@@ -1104,15 +753,6 @@
   <data name="language_switch_success" xml:space="preserve">
     <value>Язык успешно переключен</value>
   </data>
-  <data name="ExportImage" xml:space="preserve">
-    <value>Экспорт изображения</value>
-  </data>
-  <data name="Zircon" xml:space="preserve">
-    <value>Циркон</value>
-  </data>
-  <data name="left_y_axis" xml:space="preserve">
-    <value>Левая ось Y</value>
-  </data>
   <data name="cipw_confirm_clear_msg" xml:space="preserve">
     <value>Очистить все вводы и результаты расчётов?</value>
   </data>
@@ -1139,9 +779,6 @@
   <data name="batch_download_failed" xml:space="preserve">
     <value>Ошибка пакетной загрузки</value>
   </data>
-  <data name="data_plotting" xml:space="preserve">
-    <value>Построить точки</value>
-  </data>
   <data name="loading_font_resources_ellipsis" xml:space="preserve">
     <value>Загрузка шрифтов...</value>
   </data>
@@ -1151,20 +788,11 @@
   <data name="auto_check_diagram_template_updates" xml:space="preserve">
     <value>Автопроверка обновлений шаблонов</value>
   </data>
-  <data name="Sphalerite" xml:space="preserve">
-    <value>Сфалерит</value>
-  </data>
   <data name="content" xml:space="preserve">
     <value>Содержание</value>
   </data>
   <data name="completeness_check" xml:space="preserve">
     <value>Проверка полноты</value>
-  </data>
-  <data name="LineDashDot" xml:space="preserve">
-    <value>Штрихпунктирная</value>
-  </data>
-  <data name="TextContent" xml:space="preserve">
-    <value>Содержание</value>
   </data>
   <data name="MarkerShape_Eks" xml:space="preserve">
     <value>X-образная форма</value>
@@ -1174,9 +802,6 @@
   </data>
   <data name="line_width" xml:space="preserve">
     <value>Ширина линии</value>
-  </data>
-  <data name="ModifedCanceled" xml:space="preserve">
-    <value>Изменение отменено</value>
   </data>
   <data name="geo_help_add_doc" xml:space="preserve">
     <value>Добавить справочный документ для этого языка</value>
@@ -1195,9 +820,6 @@
   </data>
   <data name="cipw_btn_clear" xml:space="preserve">
     <value>Очистить</value>
-  </data>
-  <data name="error_creating_table" xml:space="preserve">
-    <value>Ошибка при создании таблицы:</value>
   </data>
   <data name="script_return_type_error" xml:space="preserve">
     <value>Ошибка типа возвращаемого значения сценария</value>
@@ -1226,20 +848,11 @@
   <data name="subtitle_italic" xml:space="preserve">
     <value>Курсив подзаголовка</value>
   </data>
-  <data name="select_data_file" xml:space="preserve">
-    <value>Выберите файл данных</value>
-  </data>
-  <data name="AxesStyle" xml:space="preserve">
-    <value>Стиль осей</value>
-  </data>
   <data name="current_template_list_latest_version" xml:space="preserve">
     <value>Текущий список шаблонов актуален.</value>
   </data>
   <data name="alignment" xml:space="preserve">
     <value>Привязка</value>
-  </data>
-  <data name="ChloriteGTM" xml:space="preserve">
-    <value>Al4 Термометр (Jowett, 1991)</value>
   </data>
   <data name="two_dimensional_coordinate_plot" xml:space="preserve">
     <value>2D График</value>
@@ -1270,9 +883,6 @@
   <data name="geo_msg_csv_save_title" xml:space="preserve">
     <value>Сохранить как файл CSV</value>
   </data>
-  <data name="geo_validation_formula_name_required" xml:space="preserve">
-    <value>Имя формулы обязательно</value>
-  </data>
   <data name="language_switch_error" xml:space="preserve">
     <value>Ошибка переключения языка：</value>
   </data>
@@ -1284,12 +894,6 @@
   </data>
   <data name="Alignment_UpperCenter" xml:space="preserve">
     <value>Сверху по центру</value>
-  </data>
-  <data name="Undelete_Message" xml:space="preserve">
-    <value>Удаление отменено</value>
-  </data>
-  <data name="DefaultRandom" xml:space="preserve">
-    <value>Случайно по умолчанию</value>
   </data>
   <data name="geo_tooltip_headers" xml:space="preserve">
     <value>Например: SiO2, TiO2, Al2O3, T(K)</value>
@@ -1318,29 +922,14 @@
   <data name="cipw_msg_no_data" xml:space="preserve">
     <value>Действительные строки данных не обнаружены. Сначала введите содержание оксидов.</value>
   </data>
-  <data name="PointEks" xml:space="preserve">
-    <value>Крест (X)</value>
-  </data>
   <data name="current_diagram_version" xml:space="preserve">
     <value>Текущая версия диаграммы</value>
-  </data>
-  <data name="PointDiamond" xml:space="preserve">
-    <value>Ромб</value>
-  </data>
-  <data name="SphaleriteGGIMFisGTM" xml:space="preserve">
-    <value>GGIMFis Термометр (Frenzel et al., 2016)</value>
   </data>
   <data name="independent_diagram_window" xml:space="preserve">
     <value>Отдельное окно диаграммы</value>
   </data>
-  <data name="QuartzGTM" xml:space="preserve">
-    <value>Термометр TitaniQ (Wark and Watson, 2006)</value>
-  </data>
   <data name="cipw_diag_alumina_saturation" xml:space="preserve">
     <value>Насыщение глинозёмом</value>
-  </data>
-  <data name="RockClassification" xml:space="preserve">
-    <value>Классификация пород</value>
   </data>
   <data name="view_help_docs" xml:space="preserve">
     <value>Смотреть документацию</value>
@@ -1360,14 +949,8 @@
   <data name="add_line_operation_canceled" xml:space="preserve">
     <value>Добавление линии отменено.</value>
   </data>
-  <data name="directory_not_exist" xml:space="preserve">
-    <value>Каталог не существует</value>
-  </data>
   <data name="show_major_ticks" xml:space="preserve">
     <value>Показать основные деления</value>
-  </data>
-  <data name="add_row_down" xml:space="preserve">
-    <value>Вставить строку снизу</value>
   </data>
   <data name="cipw_alumina_metaluminous" xml:space="preserve">
     <value>Метаалюминиевое</value>
@@ -1381,23 +964,8 @@
   <data name="coreldraw_env_not_found_select_program" xml:space="preserve">
     <value>Переменная среды CorelDRAW не найдена, выберите программу.</value>
   </data>
-  <data name="bottom_x_axis" xml:space="preserve">
-    <value>Нижняя ось X</value>
-  </data>
-  <data name="AxesTickFontSize" xml:space="preserve">
-    <value>Размер шрифта делений</value>
-  </data>
   <data name="parameter_format_correct" xml:space="preserve">
     <value>Формат параметров верен</value>
-  </data>
-  <data name="error_loading_template" xml:space="preserve">
-    <value>Ошибка загрузки шаблона</value>
-  </data>
-  <data name="MajorAxes" xml:space="preserve">
-    <value>Основные деления</value>
-  </data>
-  <data name="error_calculating_data_point_coordinates" xml:space="preserve">
-    <value>Ошибка при расчете координат точки данных:</value>
   </data>
   <data name="Placeholder_Text" xml:space="preserve">
     <value>Введите текст</value>
@@ -1411,20 +979,8 @@
   <data name="geo_msg_downloading_update" xml:space="preserve">
     <value>Загрузка...</value>
   </data>
-  <data name="geo_test_input_required" xml:space="preserve">
-    <value>Введите тестовые значения.</value>
-  </data>
-  <data name="CheckJs" xml:space="preserve">
-    <value>Проверить скрипт</value>
-  </data>
-  <data name="LocationAxis" xml:space="preserve">
-    <value>Ось координат</value>
-  </data>
   <data name="cipw_btn_cancel" xml:space="preserve">
     <value>Отмена</value>
-  </data>
-  <data name="Alignment_MiddleRight" xml:space="preserve">
-    <value>Справа по центру</value>
   </data>
   <data name="vertex_add_new" xml:space="preserve">
     <value>Добавить вершину</value>
@@ -1435,9 +991,6 @@
   <data name="MarkerShape_FilledCircle" xml:space="preserve">
     <value>Закрашенный круг</value>
   </data>
-  <data name="IsShowAxesTick" xml:space="preserve">
-    <value>Скрыть основные деления</value>
-  </data>
   <data name="position" xml:space="preserve">
     <value>Свойства</value>
   </data>
@@ -1447,17 +1000,11 @@
   <data name="delete_language_column" xml:space="preserve">
     <value>Удалить столбец языка</value>
   </data>
-  <data name="coordinates" xml:space="preserve">
-    <value>Координаты</value>
-  </data>
   <data name="geo_msg_export_dialog_title" xml:space="preserve">
     <value>Экспорт геотермометра</value>
   </data>
   <data name="edit_link" xml:space="preserve">
     <value>Редактировать ссылку</value>
-  </data>
-  <data name="background_color" xml:space="preserve">
-    <value>Цвет фона</value>
   </data>
   <data name="cipw_step4_detail" xml:space="preserve">
     <value>Тип насыщения глинозёмом определяется по молярному отношению остаточного Al₂O₃ и щелочей + CaO:
@@ -1474,12 +1021,6 @@
   <data name="modified_successfully" xml:space="preserve">
     <value>Изменено</value>
   </data>
-  <data name="geo_validation_formula_name_format" xml:space="preserve">
-    <value>Имя формулы допускает только буквы, цифры и подчёркивание</value>
-  </data>
-  <data name="is_not_one" xml:space="preserve">
-    <value>не равна 1</value>
-  </data>
   <data name="network_request_error" xml:space="preserve">
     <value>Ошибка сетевого запроса</value>
   </data>
@@ -1489,29 +1030,14 @@
   <data name="insufficient_script_return_values" xml:space="preserve">
     <value>Недостаточно возвращаемых значений сценария</value>
   </data>
-  <data name="SphaleriteGTM" xml:space="preserve">
-    <value>FeS Термометр (Scott and Barnes, 1971)</value>
-  </data>
   <data name="ThankSupport" xml:space="preserve">
     <value>Спасибо за поддержку</value>
-  </data>
-  <data name="BasemapLanguage" xml:space="preserve">
-    <value>Язык подложки</value>
   </data>
   <data name="completed" xml:space="preserve">
     <value>Готово</value>
   </data>
-  <data name="webp_format" xml:space="preserve">
-    <value>Формат WebP</value>
-  </data>
-  <data name="geo_validation_inputs_required" xml:space="preserve">
-    <value>Входные столбцы обязательны</value>
-  </data>
   <data name="geo_validate_script_required" xml:space="preserve">
     <value>JavaScript-скрипт не может быть пустым.</value>
-  </data>
-  <data name="excel_missing_required_columns" xml:space="preserve">
-    <value>В файле Excel отсутствуют следующие обязательные столбцы</value>
   </data>
   <data name="automatic_updates" xml:space="preserve">
     <value>Автообновление</value>
@@ -1522,17 +1048,11 @@
   <data name="MarkerShape_Cross" xml:space="preserve">
     <value>Крест</value>
   </data>
-  <data name="failed_to_load_help_document" xml:space="preserve">
-    <value>Не удалось загрузить справочный документ:</value>
-  </data>
   <data name="template_type_not_supported_please_update" xml:space="preserve">
     <value>Тип шаблона не поддерживается, пожалуйста, обновите ПО.</value>
   </data>
   <data name="geo_msg_delete_success" xml:space="preserve">
     <value>Успешно удалено</value>
-  </data>
-  <data name="research_life_smooth_sailing" xml:space="preserve">
-    <value>успехов в исследованиях и гладкой жизни!</value>
   </data>
   <data name="geo_script_run_test" xml:space="preserve">
     <value>Запустить тест</value>
@@ -1543,9 +1063,6 @@
   <data name="to" xml:space="preserve">
     <value>До</value>
   </data>
-  <data name="Js" xml:space="preserve">
-    <value>JS скрипт</value>
-  </data>
   <data name="cipw_btn_export" xml:space="preserve">
     <value>Экспорт</value>
   </data>
@@ -1554,9 +1071,6 @@
   </data>
   <data name="geo_tooltip_new" xml:space="preserve">
     <value>Создать</value>
-  </data>
-  <data name="German_Germany" xml:space="preserve">
-    <value>Deutsch (Deutschland)</value>
   </data>
   <data name="Orientation_Horizontal" xml:space="preserve">
     <value>Горизонтально</value>
@@ -1582,17 +1096,11 @@
   <data name="network_connection_failed_cannot_check_for_updates" xml:space="preserve">
     <value>Ошибка сети, невозможно проверить обновления：</value>
   </data>
-  <data name="help_document_not_found" xml:space="preserve">
-    <value>Справочный документ не найден:</value>
-  </data>
   <data name="geo_field_version" xml:space="preserve">
     <value>Версия *</value>
   </data>
   <data name="FontSize" xml:space="preserve">
     <value>Размер шрифта</value>
-  </data>
-  <data name="FontBold" xml:space="preserve">
-    <value>Жирный</value>
   </data>
   <data name="template_delete_success" xml:space="preserve">
     <value>Шаблон удален</value>
@@ -1603,15 +1111,6 @@
   <data name="Geothermometer" xml:space="preserve">
     <value>Геотермометр</value>
   </data>
-  <data name="error_loading_template_list" xml:space="preserve">
-    <value>Ошибка загрузки списка шаблонов:</value>
-  </data>
-  <data name="confirm_clear_data_points" xml:space="preserve">
-    <value>Очистить точки данных?</value>
-  </data>
-  <data name="PlotTitleColor" xml:space="preserve">
-    <value>Цвет заголовка</value>
-  </data>
   <data name="y_coordinate" xml:space="preserve">
     <value>Координата Y</value>
   </data>
@@ -1621,17 +1120,8 @@
   <data name="script_content_is_empty" xml:space="preserve">
     <value>Скрипт пуст</value>
   </data>
-  <data name="PlotSwitchFilledColor" xml:space="preserve">
-    <value>Инвертировать цвет заливки</value>
-  </data>
   <data name="export_failed" xml:space="preserve">
     <value>Ошибка экспорта:</value>
-  </data>
-  <data name="TectonicSetting" xml:space="preserve">
-    <value>Тектоническая обстановка</value>
-  </data>
-  <data name="must_be_positive_number" xml:space="preserve">
-    <value>Должно быть положительным числом</value>
   </data>
   <data name="cipw_step4_title" xml:space="preserve">
     <value>Определение состояния насыщения глинозёмом</value>
@@ -1657,9 +1147,6 @@
   <data name="arrow" xml:space="preserve">
     <value>Стрелка</value>
   </data>
-  <data name="file_" xml:space="preserve">
-    <value>Файл</value>
-  </data>
   <data name="please_select_a_widget" xml:space="preserve">
     <value>Выберите виджет</value>
   </data>
@@ -1681,17 +1168,11 @@
   <data name="add" xml:space="preserve">
     <value>Добавить</value>
   </data>
-  <data name="new" xml:space="preserve">
-    <value>_Новый(N)</value>
-  </data>
   <data name="row" xml:space="preserve">
     <value>Стр:</value>
   </data>
   <data name="ready" xml:space="preserve">
     <value>Готово</value>
-  </data>
-  <data name="PointCircle" xml:space="preserve">
-    <value>Круг</value>
   </data>
   <data name="range" xml:space="preserve">
     <value>Диапазон</value>
@@ -1708,9 +1189,6 @@
   <data name="About" xml:space="preserve">
     <value>О программе</value>
   </data>
-  <data name="Guide" xml:space="preserve">
-    <value>Руководство</value>
-  </data>
   <data name="Other" xml:space="preserve">
     <value>Другое</value>
   </data>
@@ -1720,35 +1198,14 @@
   <data name="downloading_status" xml:space="preserve">
     <value>Загрузка...</value>
   </data>
-  <data name="Theme" xml:space="preserve">
-    <value>Тема</value>
-  </data>
-  <data name="Reset" xml:space="preserve">
-    <value>Сброс</value>
-  </data>
-  <data name="Step3" xml:space="preserve">
-    <value>Расчет результатов</value>
-  </data>
-  <data name="Step2" xml:space="preserve">
-    <value>Проверка параметров</value>
-  </data>
-  <data name="Step1" xml:space="preserve">
-    <value>Импорт / Ввод данных</value>
-  </data>
   <data name="please_select_an_object_to_delete_first" xml:space="preserve">
     <value>Пожалуйста, выберите объект для удаления.</value>
-  </data>
-  <data name="FileSavePath" xml:space="preserve">
-    <value>Путь сохранения файла</value>
   </data>
   <data name="geo_placeholder_search" xml:space="preserve">
     <value>Поиск...</value>
   </data>
   <data name="recently_used" xml:space="preserve">
     <value>Недавно использованные</value>
-  </data>
-  <data name="JsSetting" xml:space="preserve">
-    <value>Настройки скрипта</value>
   </data>
   <data name="geo_help_bold" xml:space="preserve">
     <value>Полужирный (Ctrl+B)</value>
@@ -1777,9 +1234,6 @@
   <data name="select_drawing_template_file" xml:space="preserve">
     <value>Выберите файл шаблона</value>
   </data>
-  <data name="update_data" xml:space="preserve">
-    <value>Обновить данные</value>
-  </data>
   <data name="geo_tooltip_test_input_eg" xml:space="preserve">
     <value>Например: 45.2, 0.8, 12.3</value>
   </data>
@@ -1789,26 +1243,11 @@
   <data name="unknown_error_occurred" xml:space="preserve">
     <value>Произошла неизвестная ошибка</value>
   </data>
-  <data name="AddLine" xml:space="preserve">
-    <value>Добавить линию</value>
-  </data>
-  <data name="AddText" xml:space="preserve">
-    <value>Добавить примечание</value>
-  </data>
-  <data name="PlotBottomAxies" xml:space="preserve">
-    <value>Нижняя ось</value>
-  </data>
   <data name="cipw_silica_oversaturated" xml:space="preserve">
     <value>Перенасыщенное</value>
   </data>
-  <data name="auto_datapoint_projection_failed" xml:space="preserve">
-    <value>Ошибка автопроекции точек：</value>
-  </data>
   <data name="geo_label_custom_chip" xml:space="preserve">
     <value>Пользовательский</value>
-  </data>
-  <data name="AxesStyleLog10" xml:space="preserve">
-    <value>Log(10)</value>
   </data>
   <data name="copy_failed" xml:space="preserve">
     <value>Ошибка копирования:</value>
@@ -1816,14 +1255,8 @@
   <data name="failed_to_open" xml:space="preserve">
     <value>Ошибка открытия：</value>
   </data>
-  <data name="SaveBasemap" xml:space="preserve">
-    <value>Сохранить подложку</value>
-  </data>
   <data name="geo_msg_import_failed" xml:space="preserve">
     <value>Ошибка импорта</value>
-  </data>
-  <data name="CancelImport" xml:space="preserve">
-    <value>Импорт отменен</value>
   </data>
   <data name="template_version_too_high" xml:space="preserve">
     <value>Версия шаблона выше текущей версии ПО, пожалуйста, обновитесь.</value>
@@ -1840,32 +1273,17 @@
   <data name="font_size" xml:space="preserve">
     <value>Размер шрифта</value>
   </data>
-  <data name="PointCross" xml:space="preserve">
-    <value>Плюс (+)</value>
-  </data>
   <data name="close_file" xml:space="preserve">
     <value>Закрыть файл</value>
   </data>
-  <data name="temperature_calculation_denominator_zero" xml:space="preserve">
-    <value>Знаменатель в расчете температуры равен нулю</value>
-  </data>
-  <data name="ExportBasemap" xml:space="preserve">
-    <value>Экспорт подложки</value>
-  </data>
   <data name="open_diagram_template" xml:space="preserve">
     <value>Открыть шаблон диаграммы</value>
-  </data>
-  <data name="PointStyle" xml:space="preserve">
-    <value>Стиль точки</value>
   </data>
   <data name="cipw_msg_data_cleared" xml:space="preserve">
     <value>Данные очищены.</value>
   </data>
   <data name="loading_announcements" xml:space="preserve">
     <value>Загрузка объявлений...</value>
-  </data>
-  <data name="format_failed" xml:space="preserve">
-    <value>Ошибка форматирования:</value>
   </data>
   <data name="no_announcements" xml:space="preserve">
     <value>Нет объявлений.</value>
@@ -1912,9 +1330,6 @@
   <data name="information" xml:space="preserve">
     <value>Информация</value>
   </data>
-  <data name="cannot_delete_protected_column" xml:space="preserve">
-    <value>Невозможно удалить защищенный столбец</value>
-  </data>
   <data name="invalid_diagram_template_no_json" xml:space="preserve">
     <value>Недопустимый файл, json не найден.</value>
   </data>
@@ -1922,9 +1337,6 @@
     <value>• Умножить число молей каждого минерала на его молярную массу для получения массы стандартного минерала
 • Нормализовать к массовым процентам (мас.%) и вывести
 • Сообщить диагностику: насыщение кремнезёмом, состояние насыщения глинозёмом и ошибку баланса масс</value>
-  </data>
-  <data name="top_x_axis" xml:space="preserve">
-    <value>Верхняя ось X</value>
   </data>
   <data name="geo_script_test_input" xml:space="preserve">
     <value>Тестовый ввод:</value>
@@ -1947,14 +1359,8 @@
   <data name="geo_label_custom" xml:space="preserve">
     <value>пользовательский</value>
   </data>
-  <data name="Amphibole" xml:space="preserve">
-    <value>Амфибол</value>
-  </data>
   <data name="minor_grid_Line" xml:space="preserve">
     <value>Вспомогательная сетка</value>
-  </data>
-  <data name="BiotiteGTM" xml:space="preserve">
-    <value>Ti Термометр (Henry et al., 2005)</value>
   </data>
   <data name="all_fields_required" xml:space="preserve">
     <value>Все поля обязательны!</value>
@@ -1965,16 +1371,10 @@
   <data name="MarkerShape_HorizontalBar" xml:space="preserve">
     <value>Горизонтальная линия</value>
   </data>
-  <data name="the_sum_of_row" xml:space="preserve">
-    <value>Сумма строки</value>
-  </data>
   <data name="cipw_step6_detail" xml:space="preserve">
     <value>Распределить оксиды железа по минералам:
 • Магнетит (Mt): Fe₂O₃ + FeO
 • Гематит (Hm): остаточный Fe₂O₃</value>
-  </data>
-  <data name="cannot_delete_base_layers" xml:space="preserve">
-    <value>Невозможно удалить базовые слои.</value>
   </data>
   <data name="geo_msg_script_empty" xml:space="preserve">
     <value>Содержимое скрипта пусто</value>
@@ -1999,9 +1399,6 @@
   </data>
   <data name="vertices" xml:space="preserve">
     <value>Вершины</value>
-  </data>
-  <data name="unknown_axis" xml:space="preserve">
-    <value>Неизвестная ось</value>
   </data>
   <data name="new_template" xml:space="preserve">
     <value>Новый шаблон диаграммы</value>
@@ -2039,29 +1436,17 @@
   <data name="geo_hint_select_thermometer" xml:space="preserve">
     <value>Выберите термометр на левой панели</value>
   </data>
-  <data name="delete_column" xml:space="preserve">
-    <value>Удалить столбец</value>
-  </data>
   <data name="QuitEdit" xml:space="preserve">
     <value>Выйти из редактирования</value>
   </data>
-  <data name="clear_search" xml:space="preserve">
-    <value>Очистить</value>
-  </data>
   <data name="popup_diagram_window" xml:space="preserve">
     <value>Всплывающее окно диаграммы</value>
-  </data>
-  <data name="geo_validation_mineral_required" xml:space="preserve">
-    <value>Категория минерала обязательна</value>
   </data>
   <data name="geo_tooltip_inputs_eg" xml:space="preserve">
     <value>Например: SiO2, TiO2, Al2O3</value>
   </data>
   <data name="default_diagram_expand_level" xml:space="preserve">
     <value>Уровень развертывания диаграммы по умолчанию</value>
-  </data>
-  <data name="failed_to_delete_old_directory" xml:space="preserve">
-    <value>Не удалось удалить старый каталог：</value>
   </data>
   <data name="unsaved_template_changes_confirm" xml:space="preserve">
     <value>В шаблоне есть несохраненные изменения, сохранить?</value>
@@ -2071,12 +1456,6 @@
   </data>
   <data name="MarkerShape_OpenTriangleDown" xml:space="preserve">
     <value>Пустой треугольник вниз</value>
-  </data>
-  <data name="PlotLeftAxies" xml:space="preserve">
-    <value>Левая ось</value>
-  </data>
-  <data name="InternationalizationAndPersonalization" xml:space="preserve">
-    <value>Язык и персонализация</value>
   </data>
   <data name="error_saving_rtf_file" xml:space="preserve">
     <value>Ошибка сохранения RTF:</value>
@@ -2090,17 +1469,8 @@
   <data name="validate_syntax" xml:space="preserve">
     <value>Проверить синтаксис</value>
   </data>
-  <data name="add_row_up" xml:space="preserve">
-    <value>Вставить строку сверху</value>
-  </data>
   <data name="delete_failed" xml:space="preserve">
     <value>Ошибка удаления：</value>
-  </data>
-  <data name="PointFilledTriangleDown" xml:space="preserve">
-    <value>Треугольник вниз</value>
-  </data>
-  <data name="NewBasemap" xml:space="preserve">
-    <value>Новая подложка</value>
   </data>
   <data name="cipw_step5_detail" xml:space="preserve">
     <value>Последовательно распределить щелочные оксиды и глинозём в полевые шпаты:
@@ -2111,12 +1481,6 @@
 • Эгирин (Ac): Na₂O + Fe₂O₃ + 4SiO₂ (пералкалический случай)
 • Остаточные щелочные силикаты (ns, ks)</value>
   </data>
-  <data name="PointSquare" xml:space="preserve">
-    <value>Квадрат</value>
-  </data>
-  <data name="no_imported_data_to_clear" xml:space="preserve">
-    <value>Нет импортированных данных для очистки</value>
-  </data>
   <data name="geo_help_italic" xml:space="preserve">
     <value>Курсив (Ctrl+I)</value>
   </data>
@@ -2125,9 +1489,6 @@
   </data>
   <data name="geo_tooltip_help" xml:space="preserve">
     <value>Справка</value>
-  </data>
-  <data name="advanced_rendering" xml:space="preserve">
-    <value>Расширенный рендеринг</value>
   </data>
   <data name="please_select_widget_to_add" xml:space="preserve">
     <value>Выберите виджет:</value>
@@ -2138,23 +1499,14 @@
   <data name="offset_x" xml:space="preserve">
     <value>Смещение X</value>
   </data>
-  <data name="ArsenopyriteGTM" xml:space="preserve">
-    <value>Арсенопиритовый термометр (Kretschmar and Scott, 1976)</value>
-  </data>
   <data name="Alignment_LowerRight" xml:space="preserve">
     <value>Справа снизу</value>
-  </data>
-  <data name="official_website" xml:space="preserve">
-    <value>Официальный сайт</value>
   </data>
   <data name="save_as_csv_file" xml:space="preserve">
     <value>Сохранить как CSV</value>
   </data>
   <data name="plot_defaults" xml:space="preserve">
     <value>Настройки графика по умолчанию</value>
-  </data>
-  <data name="add_column_right" xml:space="preserve">
-    <value>Добавить столбец (справа)</value>
   </data>
   <data name="geo_ctx_export_zip" xml:space="preserve">
     <value>Экспортировать ZIP</value>
@@ -2177,9 +1529,6 @@
   <data name="batch_download_new_templates_tooltip" xml:space="preserve">
     <value>Пакетная загрузка новых неустановленных шаблонов</value>
   </data>
-  <data name="LineColor" xml:space="preserve">
-    <value>Цвет</value>
-  </data>
   <data name="favorite_templates" xml:space="preserve">
     <value>В избранное</value>
   </data>
@@ -2188,18 +1537,6 @@
   </data>
   <data name="auto_check_geothermometer_updates" xml:space="preserve">
     <value>Автопроверка обновлений геотермометров</value>
-  </data>
-  <data name="LineStyle" xml:space="preserve">
-    <value>Стиль линии</value>
-  </data>
-  <data name="LineSolid" xml:space="preserve">
-    <value>Сплошная</value>
-  </data>
-  <data name="PointHollowCircle" xml:space="preserve">
-    <value>Пустой круг</value>
-  </data>
-  <data name="LineWidth" xml:space="preserve">
-    <value>Ширина</value>
   </data>
   <data name="add_widget" xml:space="preserve">
     <value>Добавить виджет</value>
@@ -2216,17 +1553,8 @@
   <data name="all_fonts" xml:space="preserve">
     <value>Все шрифты</value>
   </data>
-  <data name="help_instructions" xml:space="preserve">
-    <value>Инструкции</value>
-  </data>
   <data name="PlotData" xml:space="preserve">
     <value>Данные</value>
-  </data>
-  <data name="PlotText" xml:space="preserve">
-    <value>Примечание</value>
-  </data>
-  <data name="tio2_activity_range" xml:space="preserve">
-    <value>Активность TiO2 должна быть в диапазоне (0,1]</value>
   </data>
   <data name="QuitAppMode" xml:space="preserve">
     <value>Способ выхода</value>
@@ -2261,17 +1589,11 @@
   <data name="content_and_position" xml:space="preserve">
     <value>Содержание и позиция</value>
   </data>
-  <data name="CategoryFormatError" xml:space="preserve">
-    <value>Ошибка формата категории</value>
-  </data>
   <data name="invalid_diagram_template_file" xml:space="preserve">
     <value>Недопустимый файл шаблона</value>
   </data>
   <data name="add_image" xml:space="preserve">
     <value>Добавить изображение</value>
-  </data>
-  <data name="enable_anti_alias" xml:space="preserve">
-    <value>Включить сглаживание</value>
   </data>
   <data name="add_arrow" xml:space="preserve">
     <value>Добавить стрелку</value>
@@ -2281,9 +1603,6 @@
   </data>
   <data name="failed_to_delete_row" xml:space="preserve">
     <value>Не удалось удалить строку：</value>
-  </data>
-  <data name="EditMode" xml:space="preserve">
-    <value>Режим редактирования</value>
   </data>
   <data name="line_type_densely_dashed" xml:space="preserve">
     <value>Частая штриховая</value>
@@ -2296,9 +1615,6 @@
   </data>
   <data name="cipw_diagnostic_details" xml:space="preserve">
     <value>Сведения о диагностике</value>
-  </data>
-  <data name="domain" xml:space="preserve">
-    <value>Область определения</value>
   </data>
   <data name="line_type_solid" xml:space="preserve">
     <value>Сплошная</value>
@@ -2321,12 +1637,6 @@
   <data name="cipw_title" xml:space="preserve">
     <value>Расчёт нормы CIPW</value>
   </data>
-  <data name="LegendSetting" xml:space="preserve">
-    <value>Настройки легенды</value>
-  </data>
-  <data name="refresh_successful" xml:space="preserve">
-    <value>Обновление успешно</value>
-  </data>
   <data name="cipw_alumina_peraluminous" xml:space="preserve">
     <value>Пералюминиевое</value>
   </data>
@@ -2341,12 +1651,6 @@
   </data>
   <data name="geo_script_result" xml:space="preserve">
     <value>Результат:</value>
-  </data>
-  <data name="export" xml:space="preserve">
-    <value>Экспорт</value>
-  </data>
-  <data name="Chlorite" xml:space="preserve">
-    <value>Хлорит</value>
   </data>
   <data name="edit_menu_bar_item" xml:space="preserve">
     <value>Редактировать пункт меню</value>
@@ -2363,12 +1667,6 @@
   <data name="confirm_clear_all_data" xml:space="preserve">
     <value>Очистить данные таблицы (включая точки графика)?</value>
   </data>
-  <data name="PlotShowMinorGrid" xml:space="preserve">
-    <value>Показать вспомогательную сетку</value>
-  </data>
-  <data name="geo_msg_richtext_not_init" xml:space="preserve">
-    <value>Элемент управления RichTextBox не инициализирован</value>
-  </data>
   <data name="invalid_filename_char" xml:space="preserve">
     <value>Содержимое содержит неподдерживаемые символы</value>
   </data>
@@ -2377,9 +1675,6 @@
   </data>
   <data name="geo_msg_export_failed" xml:space="preserve">
     <value>Ошибка экспорта: {0}</value>
-  </data>
-  <data name="Alignment_MiddleCenter" xml:space="preserve">
-    <value>В центре</value>
   </data>
   <data name="major_tick_style" xml:space="preserve">
     <value>Стиль основных делений</value>
@@ -2402,20 +1697,11 @@
   <data name="no_data_please_add_data" xml:space="preserve">
     <value>Нет данных, пожалуйста, добавьте данные</value>
   </data>
-  <data name="geo_test_error_format" xml:space="preserve">
-    <value>Ошибка: {0}</value>
-  </data>
-  <data name="ChineseS" xml:space="preserve">
-    <value>中文(简体)</value>
-  </data>
   <data name="batch_download_new_templates" xml:space="preserve">
     <value>Пакетная загрузка</value>
   </data>
   <data name="error_creating_new_template" xml:space="preserve">
     <value>Ошибка создания шаблона：</value>
-  </data>
-  <data name="PlotTitleFont" xml:space="preserve">
-    <value>Шрифт заголовка</value>
   </data>
   <data name="geo_field_name" xml:space="preserve">
     <value>Имя *</value>
@@ -2425,9 +1711,6 @@
   </data>
   <data name="already_latest_version" xml:space="preserve">
     <value>Уже установлена последняя версия</value>
-  </data>
-  <data name="geo_validation_script_required" xml:space="preserve">
-    <value>Содержимое сценария обязательно</value>
   </data>
   <data name="favorite_removed" xml:space="preserve">
     <value>Удалено из избранного</value>
@@ -2443,17 +1726,11 @@
 • Ферросилит (Fs): FeO + SiO₂
 • Волластонит (Wo): остаточный CaO + SiO₂</value>
   </data>
-  <data name="data_import_successful" xml:space="preserve">
-    <value>Импорт данных успешен</value>
-  </data>
   <data name="CheckUpdate" xml:space="preserve">
     <value>Проверить обновления</value>
   </data>
   <data name="cipw_step9_title" xml:space="preserve">
     <value>Вывод результатов</value>
-  </data>
-  <data name="path_is_empty" xml:space="preserve">
-    <value>Путь пуст</value>
   </data>
   <data name="BasemapExisted" xml:space="preserve">
     <value>Файл подложки уже существует, перезаписать?</value>
@@ -2494,9 +1771,6 @@
   <data name="diagram_template_corrupted_or_invalid" xml:space="preserve">
     <value>Файл шаблона поврежден или не содержит допустимый JSON.</value>
   </data>
-  <data name="Placeholder_Axis_Title" xml:space="preserve">
-    <value>Заголовок оси</value>
-  </data>
   <data name="MarkerShape_OpenCircle" xml:space="preserve">
     <value>Пустой круг</value>
   </data>
@@ -2524,38 +1798,14 @@
   <data name="template_translator" xml:space="preserve">
     <value>Переводчик шаблонов</value>
   </data>
-  <data name="no_valid_workbook_or_data_found" xml:space="preserve">
-    <value>Допустимые рабочие книги или данные в файле не найдены</value>
-  </data>
   <data name="geo_validate_version_required" xml:space="preserve">
     <value>Версия не может быть пустой.</value>
-  </data>
-  <data name="LineDenselyDashed" xml:space="preserve">
-    <value>Частая штриховая</value>
   </data>
   <data name="axis_title" xml:space="preserve">
     <value>Заголовок оси</value>
   </data>
   <data name="axis_style" xml:space="preserve">
     <value>Стиль осей</value>
-  </data>
-  <data name="chart_title_style" xml:space="preserve">
-    <value>Стиль заголовка диаграммы</value>
-  </data>
-  <data name="template_file_corrupted" xml:space="preserve">
-    <value>Файл шаблона поврежден</value>
-  </data>
-  <data name="png_format" xml:space="preserve">
-    <value>Формат PNG</value>
-  </data>
-  <data name="PointFilledTriangleUp" xml:space="preserve">
-    <value>Треугольник вверх</value>
-  </data>
-  <data name="AddPolygons" xml:space="preserve">
-    <value>Добавить полигон</value>
-  </data>
-  <data name="LegendPosition" xml:space="preserve">
-    <value>Позиция легенды</value>
   </data>
   <data name="is_not_a_valid_variable_name" xml:space="preserve">
     <value>‘ не является допустимым именем.</value>
@@ -2566,20 +1816,11 @@
   <data name="unknown_error_checking_for_updates" xml:space="preserve">
     <value>Неизвестная ошибка при проверке обновлений</value>
   </data>
-  <data name="MinorAxes" xml:space="preserve">
-    <value>Вспомогательные деления</value>
-  </data>
   <data name="column" xml:space="preserve">
     <value>Кол:</value>
   </data>
   <data name="major_grid_line" xml:space="preserve">
     <value>Основная сетка</value>
-  </data>
-  <data name="ParameterNull" xml:space="preserve">
-    <value>Параметр пуст</value>
-  </data>
-  <data name="diagram_template_directory_not_found" xml:space="preserve">
-    <value>Каталог шаблонов не найден：</value>
   </data>
   <data name="unable_to_get_latest_release_info" xml:space="preserve">
     <value>Не удалось получить информацию о последней версии</value>
@@ -2587,17 +1828,11 @@
   <data name="tick_labels" xml:space="preserve">
     <value>Метки делений</value>
   </data>
-  <data name="data_export" xml:space="preserve">
-    <value>Экспорт данных</value>
-  </data>
   <data name="function" xml:space="preserve">
     <value>Функция</value>
   </data>
   <data name="MessageNotification" xml:space="preserve">
     <value>Уведомления</value>
-  </data>
-  <data name="CancelSelected" xml:space="preserve">
-    <value>Снять выделение</value>
   </data>
   <data name="template_library" xml:space="preserve">
     <value>Библиотека шаблонов</value>
@@ -2608,29 +1843,17 @@
   <data name="coordinates_picked_success" xml:space="preserve">
     <value>Координаты получены！</value>
   </data>
-  <data name="AxesTickUpLimit" xml:space="preserve">
-    <value>Верхний предел</value>
-  </data>
-  <data name="ParameterNotFilledIn" xml:space="preserve">
-    <value>Параметры графика не заполнены</value>
-  </data>
   <data name="csv_file_filter" xml:space="preserve">
     <value>Файл CSV|*.csv</value>
   </data>
   <data name="italic" xml:space="preserve">
     <value>Курсив</value>
   </data>
-  <data name="plot_settings" xml:space="preserve">
-    <value>Настройки графика</value>
-  </data>
   <data name="geo_script_headers" xml:space="preserve">
     <value>Заголовки * (через запятую)</value>
   </data>
   <data name="select_an_object" xml:space="preserve">
     <value>Выберите объект</value>
-  </data>
-  <data name="geo_validation_headers_required" xml:space="preserve">
-    <value>Заголовки обязательны</value>
   </data>
   <data name="language_setting_duplicate_found" xml:space="preserve">
     <value>Найдены дубликаты в настройках языка, пожалуйста, проверьте!</value>
@@ -2644,44 +1867,23 @@
   <data name="offset" xml:space="preserve">
     <value>Смещение</value>
   </data>
-  <data name="third_party" xml:space="preserve">
-    <value>Стороннее ПО</value>
-  </data>
   <data name="not_enough_vertices_add_polygon_canceled" xml:space="preserve">
     <value>Недостаточно вершин, добавление полигона отменено.</value>
   </data>
   <data name="deselect" xml:space="preserve">
     <value>Отменить выбор</value>
   </data>
-  <data name="PlotShowGrid" xml:space="preserve">
-    <value>Показать сетку</value>
-  </data>
   <data name="overwrite" xml:space="preserve">
     <value>Перезаписать</value>
   </data>
-  <data name="data_file_filter" xml:space="preserve">
-    <value>Файлы данных (*.csv, *.xls, *.xlsx)|*.csv;*.xls;*.xlsx</value>
-  </data>
-  <data name="CalTarget2" xml:space="preserve">
-    <value>Основная температура Zr (Watson and Harrison, 1983)</value>
-  </data>
-  <data name="CalTarget1" xml:space="preserve">
-    <value>Температура насыщения Zr (Watson and Harrison, 1983)</value>
-  </data>
   <data name="cipw_btn_confirm_clear" xml:space="preserve">
     <value>Подтвердить очистку</value>
-  </data>
-  <data name="missing_parameters" xml:space="preserve">
-    <value>Отсутствуют параметры</value>
   </data>
   <data name="script_definition" xml:space="preserve">
     <value>Скрипт</value>
   </data>
   <data name="cipw_iron_partial_assumed" xml:space="preserve">
     <value>Частично предположенное</value>
-  </data>
-  <data name="is_italic" xml:space="preserve">
-    <value>Курсив</value>
   </data>
   <data name="formula" xml:space="preserve">
     <value>Формула</value>
@@ -2694,9 +1896,6 @@
   </data>
   <data name="update" xml:space="preserve">
     <value>_Обновить(U)</value>
-  </data>
-  <data name="tick_style" xml:space="preserve">
-    <value>Стиль делений</value>
   </data>
   <data name="no_template_or_path_specified" xml:space="preserve">
     <value>Нет шаблона или не указан путь. Используйте "Сохранить как".</value>
@@ -2713,9 +1912,6 @@
   <data name="file_path_cannot_be_empty" xml:space="preserve">
     <value>Путь не может быть пустым</value>
   </data>
-  <data name="IsShowMinorAxes" xml:space="preserve">
-    <value>Скрыть вспомогательные деления</value>
-  </data>
   <data name="data_series" xml:space="preserve">
     <value>Серии данных</value>
   </data>
@@ -2725,17 +1921,8 @@
   <data name="loading_main_interface_components_ellipsis" xml:space="preserve">
     <value>Загрузка компонентов интерфейса...</value>
   </data>
-  <data name="ResetVision" xml:space="preserve">
-    <value>Сброс вида</value>
-  </data>
-  <data name="import_data" xml:space="preserve">
-    <value>Импорт данных</value>
-  </data>
   <data name="template_ready" xml:space="preserve">
     <value>Шаблон готов!</value>
-  </data>
-  <data name="PointStar" xml:space="preserve">
-    <value>Звезда</value>
   </data>
   <data name="export_diagram_template" xml:space="preserve">
     <value>Экспорт шаблона диаграммы</value>
@@ -2745,12 +1932,6 @@
   </data>
   <data name="exit_action" xml:space="preserve">
     <value>Выход</value>
-  </data>
-  <data name="maintain_server_config_and_templates" xml:space="preserve">
-    <value>Обслуживание конфигурации и шаблонов</value>
-  </data>
-  <data name="NewBasemapSuccess" xml:space="preserve">
-    <value>Подложка успешно создана</value>
   </data>
   <data name="copy_plot_to_clipboard" xml:space="preserve">
     <value>Скопировать график в буфер обмена</value>
@@ -2770,9 +1951,6 @@
   <data name="cipw_sheet_name" xml:space="preserve">
     <value>Расчёт CIPW</value>
   </data>
-  <data name="right_y_axis" xml:space="preserve">
-    <value>Правая ось Y</value>
-  </data>
   <data name="download_template_failed" xml:space="preserve">
     <value>Ошибка загрузки шаблона:</value>
   </data>
@@ -2785,26 +1963,14 @@
   <data name="geo_msg_already_latest" xml:space="preserve">
     <value>Уже актуальная версия</value>
   </data>
-  <data name="SaveSuccess" xml:space="preserve">
-    <value>Успешно сохранено</value>
-  </data>
-  <data name="ResetPlot" xml:space="preserve">
-    <value>Сброс графика</value>
-  </data>
   <data name="cipw_step3_title" xml:space="preserve">
     <value>Образование акцессорных минералов</value>
   </data>
   <data name="geo_msg_update_available" xml:space="preserve">
     <value>Доступно обновление {0} геотермометров</value>
   </data>
-  <data name="open_file_location" xml:space="preserve">
-    <value>Открыть расположение файла</value>
-  </data>
   <data name="multiple_data_series_hint" xml:space="preserve">
     <value>Разделяйте несколько серий данных запятыми, например: SiO2,TiO2</value>
-  </data>
-  <data name="AxesTickDownLimit" xml:space="preserve">
-    <value>Нижний предел</value>
   </data>
   <data name="add_polygon" xml:space="preserve">
     <value>Добавить полигон</value>
@@ -2827,9 +1993,6 @@
   <data name="workspace_section" xml:space="preserve">
     <value>Мое пространство</value>
   </data>
-  <data name="CustomPath" xml:space="preserve">
-    <value>Пользовательская папка</value>
-  </data>
   <data name="geo_msg_check_update_failed" xml:space="preserve">
     <value>Не удалось проверить обновления</value>
   </data>
@@ -2838,9 +2001,6 @@
   </data>
   <data name="add_language_column" xml:space="preserve">
     <value>Добавить столбец языка</value>
-  </data>
-  <data name="DefaultPath" xml:space="preserve">
-    <value>Путь по умолчанию</value>
   </data>
   <data name="script_not_defined_in_template" xml:space="preserve">
     <value>Скрипт не определен в шаблоне</value>
@@ -2857,32 +2017,14 @@
   <data name="external_applications" xml:space="preserve">
     <value>Внешние приложения</value>
   </data>
-  <data name="open_via_third_party" xml:space="preserve">
-    <value>Открыть через стороннее ПО</value>
-  </data>
-  <data name="import_template" xml:space="preserve">
-    <value>Импорт шаблона диаграммы</value>
-  </data>
   <data name="diagram_grid_properties" xml:space="preserve">
     <value>Свойства сетки диаграммы</value>
-  </data>
-  <data name="FontNormal" xml:space="preserve">
-    <value>Обычный</value>
   </data>
   <data name="diagram_template_export_success" xml:space="preserve">
     <value>Экспорт шаблона успешен</value>
   </data>
-  <data name="AmphiboleGTM" xml:space="preserve">
-    <value>Si Термометр (Ridolfi et al., 2010)</value>
-  </data>
   <data name="cipw_row_format" xml:space="preserve">
     <value>Строка {0}</value>
-  </data>
-  <data name="cancel_import" xml:space="preserve">
-    <value>Отменить импорт</value>
-  </data>
-  <data name="corner_radius" xml:space="preserve">
-    <value>Радиус скругления</value>
   </data>
   <data name="axis" xml:space="preserve">
     <value>Ось</value>
@@ -2913,9 +2055,6 @@
   </data>
   <data name="name" xml:space="preserve">
     <value>Имя</value>
-  </data>
-  <data name="open" xml:space="preserve">
-    <value>_Открыть(O)</value>
   </data>
   <data name="type" xml:space="preserve">
     <value>Тип</value>
@@ -2950,9 +2089,6 @@
   <data name="Data" xml:space="preserve">
     <value>Данные</value>
   </data>
-  <data name="GTMP" xml:space="preserve">
-    <value>Температурный график</value>
-  </data>
   <data name="Boot" xml:space="preserve">
     <value>Запуск при загрузке</value>
   </data>
@@ -2970,9 +2106,6 @@
   </data>
   <data name="geo_field_worksheet_name" xml:space="preserve">
     <value>Имя листа</value>
-  </data>
-  <data name="code_formatted" xml:space="preserve">
-    <value>Код отформатирован</value>
   </data>
   <data name="cipw_csv_filter" xml:space="preserve">
     <value>Файл CSV|*.csv</value>
@@ -3000,9 +2133,6 @@
   <data name="geo_tooltip_export_csv" xml:space="preserve">
     <value>Экспортировать текущий лист как CSV</value>
   </data>
-  <data name="LegendHorizontal" xml:space="preserve">
-    <value>Горизонтальная</value>
-  </data>
   <data name="error_occurred_during_startup" xml:space="preserve">
     <value>Ошибка при запуске:</value>
   </data>
@@ -3014,12 +2144,6 @@
   </data>
   <data name="geo_msg_save_success" xml:space="preserve">
     <value>Успешно сохранено.</value>
-  </data>
-  <data name="plot_layer_list_title" xml:space="preserve">
-    <value>Список слоев</value>
-  </data>
-  <data name="plot_property_panel_title" xml:space="preserve">
-    <value>Панель свойств</value>
   </data>
   <data name="data_toolbar_add_row_above_tooltip" xml:space="preserve">
     <value>Вставить строку над текущим выбором</value>

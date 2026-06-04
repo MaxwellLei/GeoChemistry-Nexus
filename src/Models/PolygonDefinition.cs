@@ -1,7 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.Generic;
 using GeoChemistryNexus.Helpers;
-using GeoChemistryNexus.Attributes;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 
@@ -13,8 +12,6 @@ namespace GeoChemistryNexus.Models
         /// 多边形顶点
         /// </summary>
         [ObservableProperty]
-        [property: LocalizedCategory("position")]        // 位置
-        [property: LocalizedDisplayName("vertices")]     // 顶点
         private ObservableCollection<PointDefinition> _vertices = new();
 
 
@@ -22,24 +19,18 @@ namespace GeoChemistryNexus.Models
         /// 多边形填充颜色
         /// </summary>
         [ObservableProperty]
-        [property: LocalizedCategory("style")]        // 样式
-        [property: LocalizedDisplayName("fill_color")]     // 填充颜色
         private string _fillColor = "#FFFF00";
 
         /// <summary>
         /// 边框线样式-边框颜色
         /// </summary>
         [ObservableProperty]
-        [property: LocalizedCategory("style")]        // 样式
-        [property: LocalizedDisplayName("border_color")]     // 边框颜色
         public string _borderColor = "#FF0078D4";       // 默认蓝色
 
         /// <summary>
         /// 边框线样式-边框宽度
         /// </summary>
         [ObservableProperty]
-        [property: LocalizedCategory("style")]        // 样式
-        [property: LocalizedDisplayName("border_width")]     // 边框宽度
         public float _borderWidth  = 2;
 
         /// <summary>

@@ -322,49 +322,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
-        <Style x:Key="ToolbarDropdownStyle" TargetType="uc:ModernRibbonButton">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Width" Value="32"/>
-            <Setter Property="Height" Value="32"/>
-            <Setter Property="Margin" Value="2,0"/>
-            <Setter Property="Foreground" Value="#555"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="uc:ModernRibbonButton">
-                        <Grid Background="Transparent">
-                            <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="6" ToolTip="{TemplateBinding ToolTip}">
-                                <Grid>
-                                    <TextBlock FontFamily="{TemplateBinding IconFontFamily}" Text="{TemplateBinding IconCode}" 
-                                               FontSize="16" Foreground="{TemplateBinding Foreground}"
-                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    <Popup x:Name="PART_Popup" AllowsTransparency="True" Placement="Bottom" 
-                                           PlacementTarget="{Binding ElementName=border}" StaysOpen="False"
-                                           IsOpen="{Binding IsChecked, ElementName=ToggleBtn, Mode=TwoWay}">
-                                        <Border Background="White" BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="4" Margin="0,4,0,0">
-                                            <Border.Effect>
-                                                <DropShadowEffect BlurRadius="10" ShadowDepth="2" Direction="270" Color="#20000000" Opacity="0.4"/>
-                                            </Border.Effect>
-                                            <ContentPresenter Content="{TemplateBinding MenuContent}"/>
-                                        </Border>
-                                    </Popup>
-                                </Grid>
-                            </Border>
-                            <!-- Invisible Toggle Button overlay to handle clicks -->
-                            <ToggleButton x:Name="ToggleBtn"
-                                          Opacity="0" Background="Transparent" BorderThickness="0"/>
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#E5E5E5"/>
-                                <Setter Property="Foreground" Value="#000"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
     </Page.Resources>
 
     <Grid>

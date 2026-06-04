@@ -16,6 +16,34 @@ namespace GeoChemistryNexus.Helpers
     /// </summary>
     public static class JintHelper
     {
+        public const string CoordinateScriptFunctionName = "__geoCalc";
+
+        /// <summary>
+        /// 将坐标脚本预编译为可重复调用的函数，避免逐行 Evaluate 重复解析。
+        /// </summary>
+        public static bool TryPrepareCoordinateScript(Engine engine, string scriptBody)
+        {
+            if (engine == null || string.IsNullOrWhiteSpace(scriptBody))
+            {
+                return false;
+            }
+
+            try
+            {
+                engine.Execute($"function {CoordinateScriptFunctionName}() {{ {scriptBody} }}");
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static JsValue InvokePreparedCoordinateScript(Engine engine)
+        {
+            return engine.Invoke(CoordinateScriptFunctionName);
+        }
+
         public static bool IsValidFunctionExpression(string expression)
         {
             if (string.IsNullOrWhiteSpace(expression)) return false;

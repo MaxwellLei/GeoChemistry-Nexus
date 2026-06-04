@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.Messaging;
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Models;
 using GeoChemistryNexus.Messages;
 using GeoChemistryNexus.Services;
 using GeoChemistryNexus.ViewModels;
@@ -196,7 +197,7 @@ namespace GeoChemistryNexus.Controls
 
         private void AddTranslationLanguage_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new SimpleInputDialog(
+            var dialog = new TextInputDialog(
                 LanguageService.Instance["enter_language_code_prompt"] ?? "Enter language code (e.g. fr-FR):",
                 LanguageService.Instance["add_language_column"] ?? "Add Language",
                 OwnerWindow());
@@ -216,13 +217,17 @@ namespace GeoChemistryNexus.Controls
                 return;
             }
 
-            var dialog = new LanguageSwapDialog(langs, OwnerWindow());
+            var dialog = new DualComboSelectDialog(
+                langs,
+                LanguageService.Instance["swap_language_columns"] ?? "Swap Languages",
+                LanguageService.Instance["swap_language_columns"] ?? "Swap",
+                OwnerWindow());
             if (dialog.ShowDialog() == true &&
-                !string.IsNullOrEmpty(dialog.Lang1) &&
-                !string.IsNullOrEmpty(dialog.Lang2) &&
-                dialog.Lang1 != dialog.Lang2)
+                !string.IsNullOrEmpty(dialog.FirstSelection) &&
+                !string.IsNullOrEmpty(dialog.SecondSelection) &&
+                dialog.FirstSelection != dialog.SecondSelection)
             {
-                ViewModel.SwapTranslationLanguagesCommand.Execute(Tuple.Create(dialog.Lang1, dialog.Lang2));
+                ViewModel.SwapTranslationLanguagesCommand.Execute(Tuple.Create(dialog.FirstSelection, dialog.SecondSelection));
             }
         }
 
@@ -231,23 +236,24 @@ namespace GeoChemistryNexus.Controls
             var langs = GetTranslationLanguages();
             if (langs.Count == 0) return;
 
-            var selectDialog = new LanguageSelectDialog(
+            var selectDialog = new SingleComboSelectDialog(
                 langs,
                 LanguageService.Instance["select_language_to_delete"] ?? "Select language to delete:",
+                LanguageService.Instance["delete_language_column"] ?? "Delete Language",
                 OwnerWindow());
-            if (selectDialog.ShowDialog() != true || string.IsNullOrEmpty(selectDialog.SelectedLanguage))
+            if (selectDialog.ShowDialog() != true || string.IsNullOrEmpty(selectDialog.SelectedItem))
                 return;
 
             var confirm = HandyControl.Controls.MessageBox.Show(
                 string.Format(
                     LanguageService.Instance["confirm_delete_language"] ?? "Delete language '{0}'?",
-                    selectDialog.SelectedLanguage),
+                    selectDialog.SelectedItem),
                 LanguageService.Instance["tips"] ?? "Tips",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Warning);
 
             if (confirm == MessageBoxResult.Yes)
-                ViewModel.RemoveTranslationLanguageCommand.Execute(selectDialog.SelectedLanguage);
+                ViewModel.RemoveTranslationLanguageCommand.Execute(selectDialog.SelectedItem);
         }
 
         private List<string> GetTranslationLanguages()

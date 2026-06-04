@@ -176,10 +176,6 @@ namespace GeoChemistryNexus
         //窗体加载完成后的按钮动画
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //加载自定义的鼠标样式
-            //System.Windows.Input.Cursor myCursor = new System.Windows.Input.Cursor(@"Data/Cursors/pointer.cur");
-            //rootborder.Cursor = myCursor;
-
             // 将窗口置顶
             this.Topmost = true;
             this.Activate();

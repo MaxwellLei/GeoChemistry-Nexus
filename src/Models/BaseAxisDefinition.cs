@@ -20,8 +20,6 @@ namespace GeoChemistryNexus.Models
         /// Axis type ("Left", "Right", "Bottom", "Top")
         /// </summary>
         [ObservableProperty]
-        [property: LocalizedCategory("axis_style")] // 坐标轴样式
-        [property: LocalizedDisplayName("type")] // 类型
         [property: Browsable(false)]      // 取消属性面板展示该属性
         private string type;
 
@@ -29,64 +27,48 @@ namespace GeoChemistryNexus.Models
         /// Axis label
         /// </summary>
         [ObservableProperty]
-        [property: LocalizedCategory("axis_title")] // 坐标轴标题
-        [property: LocalizedDisplayName("content")] // 内容
         private LocalizedString _label = new LocalizedString();
 
         /// <summary>
         /// Font family
         /// </summary>
         [ObservableProperty]
-        [property: LocalizedCategory("axis_title")] // 坐标轴标题
-        [property: LocalizedDisplayName("font_family")] // 字体
         private string _family = "Arial";
 
         /// <summary>
         /// Font size
         /// </summary>
         [ObservableProperty]
-        [property: LocalizedCategory("axis_title")] // 坐标轴标题
-        [property: LocalizedDisplayName("font_size")] // 字体大小
         private float _size = 18;
 
         /// <summary>
         /// Font color
         /// </summary>
         [ObservableProperty]
-        [property: LocalizedCategory("axis_title")] // 坐标轴标题
-        [property: LocalizedDisplayName("font_color")] // 字体颜色
         private string _color = "#000000";
 
         /// <summary>
         /// Bold style
         /// </summary>
         [ObservableProperty]
-        [property: LocalizedCategory("axis_title")] // 坐标轴标题
-        [property: LocalizedDisplayName("bold")] // 粗体
         private bool _isBold = true;
 
         /// <summary>
         /// Italic style
         /// </summary>
         [ObservableProperty]
-        [property: LocalizedCategory("axis_title")] // 坐标轴标题
-        [property: LocalizedDisplayName("italic")] // 斜体
         private bool _isItalic = false;
 
         /// <summary>
         /// Axis major tick color
         /// </summary>
         [ObservableProperty]
-        [property: LocalizedCategory("major_tick_style")] // 主刻度样式
-        [property: LocalizedDisplayName("color")] // 颜色
         private string _majorTickWidthColor = "#000000";
 
         /// <summary>
         /// Axis major tick anti-aliasing enabled
         /// </summary>
         [ObservableProperty]
-        [property: LocalizedCategory("major_tick_style")] // 主刻度样式
-        [property: LocalizedDisplayName("anti_aliasing")] // 抗锯齿
         [property: Browsable(false)]
         private bool _majorTickAntiAlias = true;
 
@@ -94,40 +76,30 @@ namespace GeoChemistryNexus.Models
         /// Tick label font family
         /// </summary>
         [ObservableProperty]
-        [property: LocalizedCategory("tick_labels")] // 刻度标签
-        [property: LocalizedDisplayName("font_family")] // 字体
         private string _tickLableFamily = "Arial";
 
         /// <summary>
         /// Font size
         /// </summary>
         [ObservableProperty]
-        [property: LocalizedCategory("tick_labels")] // 刻度标签
-        [property: LocalizedDisplayName("font_size")] // 字体大小
         private float _tickLablesize = 12;
 
         /// <summary>
         /// Font color
         /// </summary>
         [ObservableProperty]
-        [property: LocalizedCategory("tick_labels")] // 刻度标签
-        [property: LocalizedDisplayName("font_color")] // 字体颜色
         private string _tickLablecolor = "#000000";
 
         /// <summary>
         /// Bold style
         /// </summary>
         [ObservableProperty]
-        [property: LocalizedCategory("tick_labels")] // 刻度标签
-        [property: LocalizedDisplayName("bold")] // 粗体
         private bool _tickLableisBold = false;
 
         /// <summary>
         /// Italic style
         /// </summary>
         [ObservableProperty]
-        [property: LocalizedCategory("tick_labels")] // 刻度标签
-        [property: LocalizedDisplayName("italic")] // 斜体
         private bool _tickLableisItalic = false;
 
         partial void OnMajorTickAntiAliasChanged(bool value)

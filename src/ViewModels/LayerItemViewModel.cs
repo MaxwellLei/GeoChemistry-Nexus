@@ -145,15 +145,42 @@ namespace GeoChemistryNexus.ViewModels
             OnPropertyChanged(nameof(ChildCount));
         }
 
+        private bool _isVisibilityBeingPropagated;
+
+        /// <summary>
+        /// 由父节点批量同步可见性，避免每个子节点各自触发一次全量重绘。
+        /// </summary>
+        internal void SetVisibilityFromParent(bool value)
+        {
+            if (IsVisible == value)
+            {
+                return;
+            }
+
+            _isVisibilityBeingPropagated = true;
+            try
+            {
+                IsVisible = value;
+            }
+            finally
+            {
+                _isVisibilityBeingPropagated = false;
+            }
+        }
+
         // IsVisible 状态变化,触发图表重绘
         partial void OnIsVisibleChanged(bool value)
         {
             // 当父项的可见性改变时，递归地更新所有子项的可见性
             foreach (var child in Children)
             {
-                child.IsVisible = value;
+                child.SetVisibilityFromParent(value);
             }
-            OnRefreshRequired();
+
+            if (!_isVisibilityBeingPropagated)
+            {
+                OnRefreshRequired();
+            }
         }
 
         /// <summary>

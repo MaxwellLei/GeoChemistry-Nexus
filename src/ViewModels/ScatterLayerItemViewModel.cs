@@ -106,6 +106,19 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
+        internal void RegisterPlottablesForLookup(Dictionary<ScottPlot.IPlottable, LayerItemViewModel> lookup)
+        {
+            if (Plottable != null)
+            {
+                lookup[Plottable] = this;
+            }
+
+            if (_legendProxy != null)
+            {
+                lookup[_legendProxy] = this;
+            }
+        }
+
         public void Render(Plot plot)
         {
             // 如果没有数据点，则不绘制
