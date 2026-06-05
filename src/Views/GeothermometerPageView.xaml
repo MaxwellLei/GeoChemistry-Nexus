@@ -214,22 +214,16 @@
             <Border DockPanel.Dock="Top" Background="#F1F1F1" BorderBrush="#D4D4D4" BorderThickness="0,0,0,1">
                 <Menu Background="Transparent" VerticalAlignment="Center" Margin="2,5,0,5">
                     <MenuItem Header="{Binding [File],Source={x:Static lg:LanguageService.Instance}, FallbackValue=文件}">
-                        <MenuItem Header="{Binding [geo_menu_new_custom],Source={x:Static lg:LanguageService.Instance}, FallbackValue=新建自定义地质温度计}" 
+                        <MenuItem Header="{Binding [geo_menu_new_custom],Source={x:Static lg:LanguageService.Instance}, FallbackValue=新建自定义地质温压计}" 
                                   Command="{Binding CreateCustomThermometerCommand}"
                                   Icon="&#x1f4c4;"/>
                         <Separator />
-                        <MenuItem Header="{Binding [geo_menu_import_zip],Source={x:Static lg:LanguageService.Instance}, FallbackValue=导入地质温度计 (ZIP)}" 
+                        <MenuItem Header="{Binding [geo_menu_import_zip],Source={x:Static lg:LanguageService.Instance}, FallbackValue=导入地质温压计 (ZIP)}" 
                                   Command="{Binding ImportPluginCommand}"/>
                     </MenuItem>
                     <MenuItem Header="{Binding [geo_menu_update],Source={x:Static lg:LanguageService.Instance}, FallbackValue=更新}">
                         <MenuItem Header="{Binding [geo_menu_check_update],Source={x:Static lg:LanguageService.Instance}, FallbackValue=检查更新}" 
                                   Command="{Binding CheckForPluginUpdatesCommand}"/>
-                    </MenuItem>
-                    <!-- 维护菜单：仅开发者模式可见 -->
-                    <MenuItem Header="{Binding [geo_menu_maintenance],Source={x:Static lg:LanguageService.Instance}, FallbackValue=维护}"
-                              Visibility="{Binding IsDeveloperMode, Converter={StaticResource BoolToVisibilityConverter}}">
-                        <MenuItem Header="{Binding [geo_menu_export_official],Source={x:Static lg:LanguageService.Instance}, FallbackValue=导出官方温度计}" 
-                                  Command="{Binding ExportAllOfficialCommand}"/>
                     </MenuItem>
                 </Menu>
             </Border>
@@ -289,14 +283,14 @@
             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                 <StackPanel Margin="0,4,0,12">
 
-                    <!-- ========== 官方温度计区域 ========== -->
+                    <!-- ========== 官方温压计区域 ========== -->
                     <Grid Margin="16,8,16,6">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0"
-                                   Text="{Binding [geo_section_official],Source={x:Static lg:LanguageService.Instance}, FallbackValue=官方温度计}" 
+                                   Text="{Binding [geo_section_official],Source={x:Static lg:LanguageService.Instance}, FallbackValue=官方温压计}" 
                                    FontSize="11" FontWeight="SemiBold" Foreground="#666666" VerticalAlignment="Center"/>
                         <Border Grid.Column="1" CornerRadius="8" Padding="5,1" Background="#E9E9EF" VerticalAlignment="Center">
                             <TextBlock Text="{Binding OfficialPluginCount}" FontSize="10" Foreground="#555"/>
@@ -393,7 +387,7 @@
                                         </Grid>
                                     </Button>
 
-                                    <!-- 温度计子列表（展开/折叠） -->
+                                    <!-- 温压计子列表（展开/折叠） -->
                                     <Border ClipToBounds="True">
                                         <Border.Style>
                                             <Style TargetType="Border">
@@ -517,7 +511,7 @@
                     <!-- 分隔线 -->
                     <Rectangle Height="1" Fill="#E0E0E0" Margin="16,8"/>
 
-                    <!-- ========== 自定义温度计区域 ========== -->
+                    <!-- ========== 自定义温压计区域 ========== -->
                     <Grid Margin="16,4,16,6">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -525,12 +519,12 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0"
-                                   Text="{Binding [geo_section_custom],Source={x:Static lg:LanguageService.Instance}, FallbackValue=自定义温度计}" 
+                                   Text="{Binding [geo_section_custom],Source={x:Static lg:LanguageService.Instance}, FallbackValue=自定义温压计}" 
                                    FontSize="11" FontWeight="SemiBold" Foreground="#666666" VerticalAlignment="Center"/>
                         <Border Grid.Column="1" CornerRadius="8" Padding="5,1" Background="#E9E9EF" VerticalAlignment="Center" Margin="0,0,6,0">
                             <TextBlock Text="{Binding CustomPluginCount}" FontSize="10" Foreground="#555"/>
                         </Border>
-                        <!-- 新建自定义温度计按钮 -->
+                        <!-- 新建自定义温压计按钮 -->
                         <Button Grid.Column="2" Cursor="Hand" ToolTip="{Binding [geo_tooltip_new],Source={x:Static lg:LanguageService.Instance}, FallbackValue=新建}"
                                 Command="{Binding CreateCustomThermometerCommand}">
                             <Button.Template>
@@ -548,7 +542,7 @@
                         </Button>
                     </Grid>
 
-                    <!-- 自定义温度计列表 -->
+                    <!-- 自定义温压计列表 -->
                     <ItemsControl ItemsSource="{Binding CustomPlugins}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="{x:Type models:Geothermometer}">
@@ -630,9 +624,9 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
 
-                    <!-- 无自定义温度计时的提示 -->
+                    <!-- 无自定义温压计时的提示 -->
                     <TextBlock Margin="20,6,20,4" FontSize="11" Foreground="#AAA" TextWrapping="Wrap"
-                               Text="{Binding [geo_hint_no_custom],Source={x:Static lg:LanguageService.Instance}, FallbackValue=暂无自定义温度计，点击 + 创建。}">
+                               Text="{Binding [geo_hint_no_custom],Source={x:Static lg:LanguageService.Instance}, FallbackValue=暂无自定义温压计，点击 + 创建。}">
                         <TextBlock.Style>
                             <Style TargetType="TextBlock">
                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -667,7 +661,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- 顶部：温度计信息卡片 + 操作按钮 -->
+            <!-- 顶部：温压计信息卡片 + 操作按钮 -->
             <Border Grid.Row="0" Background="White" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1" Padding="20,14">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -675,14 +669,14 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- 左侧：选中的温度计信息 -->
+                    <!-- 左侧：选中的温压计信息 -->
                     <StackPanel Grid.Column="0" VerticalAlignment="Center">
                         <!-- 未选中时的提示 -->
                         <TextBlock FontSize="16" Foreground="#999" Margin="0,4">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Visibility" Value="Collapsed"/>
-                                    <Setter Property="Text" Value="{Binding [geo_hint_select_thermometer],Source={x:Static lg:LanguageService.Instance}, FallbackValue=请从左侧面板选择温度计}"/>
+                                    <Setter Property="Text" Value="{Binding [geo_hint_select_thermometer],Source={x:Static lg:LanguageService.Instance}, FallbackValue=请从左侧面板选择温压计}"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding SelectedPlugin}" Value="{x:Null}">
                                             <Setter Property="Visibility" Value="Visible"/>
@@ -705,7 +699,7 @@
                                 </Style>
                             </StackPanel.Style>
 
-                            <!-- 温度计名称 -->
+                            <!-- 温压计名称 -->
                             <TextBlock Text="{Binding SelectedPluginDisplayName}" FontSize="18" FontWeight="SemiBold" Foreground="#333"/>
 
                             <!-- 参考文献 -->

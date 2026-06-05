@@ -164,6 +164,8 @@ namespace GeoChemistryNexus.ViewModels
                         entity.Id = newId;
                         entity.IsCustom = false;
                         entity.IsNewTemplate = true;
+                        if (entity.Content != null)
+                            entity.FileHash = GraphMapTemplateService.ComputeTemplateContentHash(entity.Content);
 
                         // 5. Save new template
                         GraphMapDatabaseService.Instance.UpsertTemplate(entity);
@@ -180,14 +182,18 @@ namespace GeoChemistryNexus.ViewModels
                         // 7. Update local VM
                         card.TemplateId = newId;
                         card.IsCustomTemplate = false;
+                        card.IsNewTemplate = true;
                     }
                     else
                     {
                         // 如果 ID 恰好相同，就仅更新 IsCustom
                         entity.IsCustom = false;
                         entity.IsNewTemplate = true;
+                        if (entity.Content != null)
+                            entity.FileHash = GraphMapTemplateService.ComputeTemplateContentHash(entity.Content);
                         GraphMapDatabaseService.Instance.UpsertTemplate(entity);
                         card.IsCustomTemplate = false;
+                        card.IsNewTemplate = true;
                     }
 
                     MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
@@ -237,169 +243,6 @@ namespace GeoChemistryNexus.ViewModels
             catch (Exception ex)
             {
                 MessageHelper.Error(ex.Message);
-            }
-        }
-
-        [RelayCommand]
-        private void ExportUpdateList()
-        {
-            var dialog = new Microsoft.Win32.SaveFileDialog();
-            dialog.Filter = "JSON Files (*.json)|*.json|All Files (*.*)|*.*";
-            dialog.FileName = "GraphMapList.json";
-
-            if (dialog.ShowDialog() == true)
-            {
-                try
-                {
-                    var allTemplates = GraphMapDatabaseService.Instance.GetSummaries();
-                    var systemTemplates = allTemplates.Where(x => !x.IsCustom).ToList();
-
-                    var exportList = systemTemplates.Select(x => new
-                    {
-                        ID = x.Id,
-                        NodeList = x.NodeList,
-                        GraphMapPath = x.GraphMapPath,
-                        FileHash = x.FileHash
-                    }).ToList();
-
-                    var jsonOptions = new JsonSerializerOptions { WriteIndented = true, Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping };
-                    string jsonString = JsonSerializer.Serialize(exportList, jsonOptions);
-
-                    string graphMapListPath = dialog.FileName;
-                    File.WriteAllText(graphMapListPath, jsonString);
-
-                    // 获取导出目录
-                    string exportDir = Path.GetDirectoryName(graphMapListPath);
-                    if (string.IsNullOrEmpty(exportDir)) exportDir = AppDomain.CurrentDomain.BaseDirectory;
-
-                    // 2. Export PlotTemplateCategories.json
-                    string categoriesFileName = "PlotTemplateCategories.json";
-                    string srcCategoriesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "PlotData", categoriesFileName);
-                    string dstCategoriesPath = Path.Combine(exportDir, categoriesFileName);
-
-                    if (File.Exists(srcCategoriesPath))
-                    {
-                        File.Copy(srcCategoriesPath, dstCategoriesPath, true);
-                    }
-
-                    // 3. Calculate Hashes
-                    string listHash = UpdateHelper.ComputeFileMd5(graphMapListPath);
-                    string categoriesHash = File.Exists(dstCategoriesPath) ? UpdateHelper.ComputeFileMd5(dstCategoriesPath) : "";
-
-                    // 4. Export server_info.json
-                    var serverInfo = new ServerInfo
-                    {
-                        ListHash = listHash,
-                        ListPlotCategoriesHash = categoriesHash,
-                        Announcement = ""
-                    };
-                    string serverInfoJson = JsonSerializer.Serialize(serverInfo, jsonOptions);
-                    File.WriteAllText(Path.Combine(exportDir, "server_info.json"), serverInfoJson);
-
-                    // 5. Export Templates (Condition A & B)
-                    string templatesDir = Path.Combine(exportDir, "Templates");
-                    if (!Directory.Exists(templatesDir))
-                    {
-                        Directory.CreateDirectory(templatesDir);
-                    }
-
-                    int exportedCount = 0;
-                    List<string> newTemplateNames = new List<string>();
-                    List<string> outdatedTemplateNames = new List<string>();
-
-                    foreach (var template in systemTemplates)
-                    {
-                        // Condition A: IsNewTemplate == true
-                        bool isNew = template.IsNewTemplate;
-
-                        // Condition B: IsCustom == false && Status == OUTDATED
-                        bool isOutdated = template.Status == "OUTDATED";
-
-                        if (isNew || isOutdated)
-                        {
-                            var fullTemplate = GraphMapDatabaseService.Instance.GetTemplate(template.Id);
-                            if (fullTemplate != null && fullTemplate.Content != null)
-                            {
-                                string fileName = template.GraphMapPath;
-                                string templateJson = JsonSerializer.Serialize(fullTemplate.Content, jsonOptions);
-                                string zipPath = Path.Combine(templatesDir, $"{fileName}.zip");
-
-                                // Create ZIP
-                                if (File.Exists(zipPath)) File.Delete(zipPath);
-                                using (var archive = ZipFile.Open(zipPath, ZipArchiveMode.Create))
-                                {
-                                    // 1. Export JSON
-                                    var entry = archive.CreateEntry($"{fileName}.json");
-                                    using (var entryStream = entry.Open())
-                                    using (var streamWriter = new StreamWriter(entryStream))
-                                    {
-                                        streamWriter.Write(templateJson);
-                                    }
-
-                                    // 2. Export Thumbnail (thumbnail.jpg)
-                                    using (var thumbStream = GraphMapDatabaseService.Instance.GetThumbnail(template.Id))
-                                    {
-                                        if (thumbStream != null)
-                                        {
-                                            try
-                                            {
-                                                using (var skBitmap = SKBitmap.Decode(thumbStream))
-                                                {
-                                                    if (skBitmap != null)
-                                                    {
-                                                        var thumbEntry = archive.CreateEntry("thumbnail.jpg");
-                                                        using (var thumbEntryStream = thumbEntry.Open())
-                                                        using (var wStream = new SKManagedWStream(thumbEntryStream))
-                                                        {
-                                                            skBitmap.Encode(wStream, SKEncodedImageFormat.Jpeg, 85);
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            catch (Exception ex)
-                                            {
-                                                Debug.WriteLine($"Error converting thumbnail: {ex.Message}");
-                                            }
-                                        }
-                                    }
-
-                                    // 3. Export Help Documents ({lg}.rtf)
-                                    if (fullTemplate.HelpDocuments != null)
-                                    {
-                                        foreach (var kvp in fullTemplate.HelpDocuments)
-                                        {
-                                            string langCode = kvp.Key;
-                                            string rtfContent = kvp.Value;
-                                            if (!string.IsNullOrWhiteSpace(rtfContent))
-                                            {
-                                                var helpEntry = archive.CreateEntry($"{langCode}.rtf");
-                                                using (var helpEntryStream = helpEntry.Open())
-                                                using (var streamWriter = new StreamWriter(helpEntryStream))
-                                                {
-                                                    streamWriter.Write(rtfContent);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                exportedCount++;
-
-                                if (isNew) newTemplateNames.Add(template.Name);
-                                if (isOutdated) outdatedTemplateNames.Add(template.Name);
-                            }
-                        }
-                    }
-
-                    StringBuilder sb = new StringBuilder();
-                    sb.AppendLine($"新增模板：{newTemplateNames.Count} 个。{(newTemplateNames.Count > 0 ? string.Join(", ", newTemplateNames) : "")}");
-                    sb.AppendLine($"更新模板：{outdatedTemplateNames.Count} 个。{(outdatedTemplateNames.Count > 0 ? string.Join(", ", outdatedTemplateNames) : "")}");
-
-                    NotificationManager.Instance.Show(LanguageService.Instance["ExportSuccess"] ?? "导出成功", sb.ToString(), NotificationType.Success, 0);
-                }
-                catch (Exception ex)
-                {
-                    MessageHelper.Error(ex.Message);
-                }
             }
         }
 
@@ -541,15 +384,7 @@ namespace GeoChemistryNexus.ViewModels
         {
             if (e.PropertyName == "Item[]")
             {
-                // 标记为脏
-                _isTemplateLibraryDirty = true;
-
-                // 如果当前在模板浏览模式，立即重新加载以更新名称
-                if (IsTemplateMode)
-                {
-                    _ = InitializeAsync();
-                }
-
+                RequestTemplateLibraryRefresh(TemplateLibraryRefreshMode.ImmediateIfInTemplateMode);
                 SyncSpiderDiagramLanguageWithApplication();
             }
         }
@@ -787,6 +622,13 @@ namespace GeoChemistryNexus.ViewModels
 
         public ICollectionView TemplateCardsView { get; private set; }
 
+        // 模板卡片为空时的提示
+        [ObservableProperty]
+        private bool _isTemplateCardsEmpty;
+
+        [ObservableProperty]
+        private string _templateCardsEmptyHint = string.Empty;
+
         // 当前显示的模板路径（用于面包屑导航）
         [ObservableProperty]
         private string _currentTemplatePath = "";
@@ -823,6 +665,11 @@ namespace GeoChemistryNexus.ViewModels
         {
             ApplyTemplateFilter();
         }
+
+        partial void OnIsPersonalExpandedChanged(bool value) => UpdateTemplateCardsEmptyState();
+        partial void OnIsFavoriteExpandedChanged(bool value) => UpdateTemplateCardsEmptyState();
+        partial void OnIsOfficialExpandedChanged(bool value) => UpdateTemplateCardsEmptyState();
+        partial void OnIsRecentsExpandedChanged(bool value) => UpdateTemplateCardsEmptyState();
 
         /// <summary>
         /// 模板卡片过滤方法
@@ -861,6 +708,49 @@ namespace GeoChemistryNexus.ViewModels
             {
                 TemplateCardsView.Refresh();
             }
+
+            UpdateTemplateCardsEmptyState();
+        }
+
+        /// <summary>
+        /// 更新模板卡片空状态提示
+        /// </summary>
+        private void UpdateTemplateCardsEmptyState()
+        {
+            var isEmpty = !IsSpiderDiagramMode
+                          && !IsHarkerDiagramMode
+                          && GetFilteredTemplateCardCount() == 0;
+
+            IsTemplateCardsEmpty = isEmpty;
+            TemplateCardsEmptyHint = isEmpty ? GetTemplateCardsEmptyHint() : string.Empty;
+        }
+
+        private int GetFilteredTemplateCardCount()
+        {
+            if (TemplateCardsView == null)
+                return TemplateCards.Count;
+
+            return TemplateCardsView.Cast<object>().Count();
+        }
+
+        private string GetTemplateCardsEmptyHint()
+        {
+            if (!string.IsNullOrWhiteSpace(SearchText))
+                return LanguageService.Instance["diagram_hint_no_search_results"] ?? "未找到匹配的模板。";
+
+            if (IsPersonalExpanded)
+                return LanguageService.Instance["diagram_hint_no_personal"] ?? "暂无个人图解，可通过「文件」菜单新建或导入。";
+
+            if (IsFavoriteExpanded)
+                return LanguageService.Instance["diagram_hint_no_favorites"] ?? "暂无收藏的图解模板。";
+
+            if (IsRecentsExpanded)
+                return LanguageService.Instance["diagram_hint_no_recents"] ?? "暂无最近使用的图解模板。";
+
+            if (IsOfficialExpanded)
+                return LanguageService.Instance["diagram_hint_no_official"] ?? "暂无官方图解模板。";
+
+            return LanguageService.Instance["diagram_hint_no_templates"] ?? "暂无图解模板。";
         }
 
         /// <summary>
@@ -942,8 +832,96 @@ namespace GeoChemistryNexus.ViewModels
         // 标记模板库是否需要刷新 (Dirty Flag)
         private bool _isTemplateLibraryDirty = true; // 默认为 true，确保首次加载
 
+        private Task _initialLoadTask = Task.CompletedTask;
+
+        /// <summary>
+        /// 模板库刷新策略
+        /// </summary>
+        private enum TemplateLibraryRefreshMode
+        {
+            /// <summary>仅标记 dirty，返回模板库时再全量刷新</summary>
+            Deferred,
+            /// <summary>仅在模板浏览模式下立即刷新；绘图模式下只标记 dirty</summary>
+            ImmediateIfInTemplateMode
+        }
+
+        /// <summary>
+        /// 请求刷新模板库（统一入口）
+        /// </summary>
+        private void RequestTemplateLibraryRefresh(TemplateLibraryRefreshMode mode = TemplateLibraryRefreshMode.Deferred)
+        {
+            _isTemplateLibraryDirty = true;
+
+            if (mode == TemplateLibraryRefreshMode.ImmediateIfInTemplateMode && IsTemplateMode)
+            {
+                _ = InitializeAsync();
+            }
+        }
+
+        /// <summary>
+        /// 模板数据变更后刷新：浏览模式下立即刷新，绘图模式下仅标记 dirty（不切换模式、不重置绘图）
+        /// </summary>
+        private async Task RefreshTemplateLibraryAfterDataChangeAsync()
+        {
+            _isTemplateLibraryDirty = true;
+
+            if (!IsTemplateMode)
+            {
+                return;
+            }
+
+            await InitializeAsync();
+        }
+
+        /// <summary>
+        /// 返回模板库时按需刷新或恢复导航状态
+        /// </summary>
+        private async Task RefreshTemplateLibraryIfNeededAsync()
+        {
+            if (_isTemplateLibraryDirty)
+            {
+                await InitializeAsync();
+            }
+            else
+            {
+                await RestoreTemplateLibraryState();
+            }
+
+            RequestRestoreTemplateCardsScroll();
+        }
+
+        /// <summary>
+        /// 请求 View 恢复模板卡片列表的滚动位置
+        /// </summary>
+        private void RequestRestoreTemplateCardsScroll()
+        {
+            if (_lastSelectedCategory is "SpiderREE" or "SpiderTraceElement" or "Harker")
+            {
+                return;
+            }
+
+            RestoreTemplateCardsScrollRequested?.Invoke(_lastSavedTemplateCardsScrollOffset);
+        }
+
         // 记录模板库的上次选中状态（用于返回时恢复）
         private string _lastSelectedCategory = "Official"; // 默认为官方图解
+
+        // 记录模板库面包屑导航位置（用于从绘图模式返回时恢复）
+        private bool _lastWasAllTemplatesView = false;
+        private Guid? _lastSavedNavigationTemplateId;
+        private string _lastSavedNavigationGraphMapPath;
+        private List<string> _lastSavedNavigationNodeNames = new();
+        private double _lastSavedTemplateCardsScrollOffset;
+
+        /// <summary>
+        /// 由 View 注入：读取模板卡片列表当前垂直滚动偏移
+        /// </summary>
+        public Func<double>? GetTemplateCardsScrollOffset { get; set; }
+
+        /// <summary>
+        /// 由 View 订阅：恢复模板卡片列表滚动位置
+        /// </summary>
+        public event Action<double>? RestoreTemplateCardsScrollRequested;
 
         private Models.TitleDefinition GetOrCreateSpiderTitleDefinition()
         {
@@ -1434,9 +1412,10 @@ namespace GeoChemistryNexus.ViewModels
 
             TemplateCardsView = CollectionViewSource.GetDefaultView(TemplateCards);
             TemplateCardsView.Filter = FilterTemplateCard;
+            TemplateCards.CollectionChanged += (_, _) => UpdateTemplateCardsEmptyState();
 
-            // 异步初始化
-            _ = InitializeAsync();
+            // 异步初始化（页面 Loaded 时会等待此任务完成后再检查更新）
+            _initialLoadTask = InitializeAsync();
 
             // 初始化十字轴并设置样式
             CrosshairPlot = WpfPlot1.Plot.Add.Crosshair(0, 0);
@@ -1527,16 +1506,33 @@ namespace GeoChemistryNexus.ViewModels
         /// </summary>
         public void CheckUpdatesIfNeeded()
         {
-            // 自动检查更新（仅在第一次加载时执行）
-            if (!_hasCheckedUpdates)
-            {
-                _hasCheckedUpdates = true;
+            _ = CheckUpdatesIfNeededAsync();
+        }
 
-                // 检查模板更新
-                if (bool.TryParse(ConfigHelper.GetConfig("auto_check_template_update"), out bool checkTemplate) && checkTemplate)
-                {
-                    _ = AutoCheckForTemplateUpdates();
-                }
+        /// <summary>
+        /// 等待首次模板库加载完成后再检查更新，避免与 InitializeAsync 并发写库/读库
+        /// </summary>
+        public async Task CheckUpdatesIfNeededAsync()
+        {
+            if (_hasCheckedUpdates)
+            {
+                return;
+            }
+
+            _hasCheckedUpdates = true;
+
+            try
+            {
+                await _initialLoadTask;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Initial template library load failed before update check: {ex.Message}");
+            }
+
+            if (bool.TryParse(ConfigHelper.GetConfig("auto_check_template_update"), out bool checkTemplate) && checkTemplate)
+            {
+                await AutoCheckForTemplateUpdates();
             }
         }
 
@@ -3600,6 +3596,12 @@ namespace GeoChemistryNexus.ViewModels
 
                 if (token.IsCancellationRequested) return;
 
+                // 绘图模式下仅同步树数据，避免全量重建卡片；返回模板库时再刷新视图
+                if (!IsTemplateMode)
+                {
+                    return;
+                }
+
                 // 2. 初始化面包屑
                 await Application.Current.Dispatcher.InvokeAsync(() =>
                 {
@@ -3690,15 +3692,18 @@ namespace GeoChemistryNexus.ViewModels
                             if (serverTemplates != null)
                             {
                                 var serverHashMap = new Dictionary<Guid, string>();
+                                var serverVersionMap = new Dictionary<Guid, string>();
                                 foreach (var item in serverTemplates)
                                 {
                                     if (Guid.TryParse(item.ID, out Guid guid))
                                     {
                                         serverHashMap[guid] = item.FileHash;
+                                        if (!string.IsNullOrWhiteSpace(item.Version))
+                                            serverVersionMap[guid] = ContentVersionHelper.Normalize(item.Version);
                                     }
                                 }
 
-                                UpdateNodeHashesFromServer(node, serverHashMap);
+                                UpdateNodeMetadataFromServer(node, serverHashMap, serverVersionMap);
                             }
                         }
                     }
@@ -3737,7 +3742,6 @@ namespace GeoChemistryNexus.ViewModels
             {
                 await Application.Current.Dispatcher.InvokeAsync(() =>
                 {
-                    // 找不到文件图解模板，请尝试在主页使用'模板修复工具'进行修复。
                     MessageHelper.Error(LanguageService.Instance["diagram_template_not_found_repair_hint"]);
                 });
             }
@@ -4582,6 +4586,18 @@ namespace GeoChemistryNexus.ViewModels
             {
                 _lastSelectedCategory = "Recents";
             }
+
+            // 保存面包屑导航位置，便于从绘图模式返回时还原
+            _lastWasAllTemplatesView = Breadcrumbs.Count <= 1 || Breadcrumbs.All(b => b.Node == null);
+            var lastNavNode = Breadcrumbs.LastOrDefault(b => b.Node != null)?.Node;
+            _lastSavedNavigationTemplateId = lastNavNode?.TemplateId;
+            _lastSavedNavigationGraphMapPath = lastNavNode?.GraphMapPath;
+            _lastSavedNavigationNodeNames = Breadcrumbs
+                .Where(b => b.Node != null)
+                .Select(b => b.Node.Name)
+                .ToList();
+
+            _lastSavedTemplateCardsScrollOffset = GetTemplateCardsScrollOffset?.Invoke() ?? 0;
         }
 
         /// <summary>
@@ -4638,8 +4654,7 @@ namespace GeoChemistryNexus.ViewModels
                     IsFavoriteExpanded = false;
                     IsOfficialExpanded = false;
                     IsRecentsExpanded = false;
-                    CurrentCategoryName = PersonalTemplatesNode?.Name ?? LanguageService.Instance["personal_templates"];
-                    await ShowCategoryTemplateCards(PersonalTemplatesNode);
+                    await RestoreTemplateLibraryNavigationAsync(PersonalTemplatesNode);
                     break;
                 case "Favorite":
                     IsHarkerDiagramMode = false;
@@ -4648,8 +4663,7 @@ namespace GeoChemistryNexus.ViewModels
                     IsOfficialExpanded = false;
                     IsRecentsExpanded = false;
                     LoadFavoriteTemplates();
-                    CurrentCategoryName = FavoriteTemplatesNode?.Name ?? LanguageService.Instance["favorite_templates"];
-                    await ShowCategoryTemplateCards(FavoriteTemplatesNode);
+                    await RestoreTemplateLibraryNavigationAsync(FavoriteTemplatesNode);
                     break;
                 case "Recents":
                     IsHarkerDiagramMode = false;
@@ -4658,8 +4672,7 @@ namespace GeoChemistryNexus.ViewModels
                     IsOfficialExpanded = false;
                     IsRecentsExpanded = true;
                     LoadRecentsTemplates();
-                    CurrentCategoryName = RecentsTemplatesNode?.Name ?? LanguageService.Instance["recents_templates"];
-                    await ShowCategoryTemplateCards(RecentsTemplatesNode);
+                    await RestoreTemplateLibraryNavigationAsync(RecentsTemplatesNode);
                     break;
                 case "Official":
                 default:
@@ -4669,37 +4682,217 @@ namespace GeoChemistryNexus.ViewModels
                     IsFavoriteExpanded = false;
                     IsOfficialExpanded = true;
                     IsRecentsExpanded = false;
-                    CurrentCategoryName = OfficialTemplatesNode?.Name ?? LanguageService.Instance["official_templates"];
-                    await ShowCategoryTemplateCards(OfficialTemplatesNode);
+                    await RestoreTemplateLibraryNavigationAsync(OfficialTemplatesNode);
                     break;
             }
         }
 
         /// <summary>
-        /// 递归更新节点的哈希值为服务器原始值
+        /// 恢复模板库面包屑导航位置
         /// </summary>
-        private void UpdateNodeHashesFromServer(GraphMapTemplateNode node, Dictionary<Guid, string> serverHashes)
+        private async Task RestoreTemplateLibraryNavigationAsync(GraphMapTemplateNode fallbackNode)
+        {
+            if (_lastWasAllTemplatesView)
+            {
+                await LoadAllTemplateCardsAsync(default);
+                InitializeBreadcrumbs();
+                CurrentCategoryName = string.Empty;
+                if (GraphMapTemplateNode != null)
+                {
+                    ClearTreeViewSelection(GraphMapTemplateNode);
+                }
+                return;
+            }
+
+            var nodeToRestore = FindTemplateLibraryNode(
+                _lastSavedNavigationTemplateId,
+                _lastSavedNavigationGraphMapPath,
+                _lastSavedNavigationNodeNames) ?? fallbackNode;
+
+            if (!string.IsNullOrEmpty(nodeToRestore.GraphMapPath))
+            {
+                await ShowSingleTemplateCard(nodeToRestore);
+            }
+            else
+            {
+                await ShowCategoryTemplateCards(nodeToRestore);
+            }
+
+            SyncTreeViewSelection(nodeToRestore);
+        }
+
+        /// <summary>
+        /// 在模板树中查找之前保存的导航节点（支持树重建后通过 ID/路径/名称定位）
+        /// </summary>
+        private GraphMapTemplateNode? FindTemplateLibraryNode(
+            Guid? templateId,
+            string? graphMapPath,
+            IReadOnlyList<string>? namePath)
+        {
+            var searchRoots = new[]
+            {
+                GraphMapTemplateNode,
+                OfficialTemplatesNode,
+                PersonalTemplatesNode,
+                FavoriteTemplatesNode,
+                RecentsTemplatesNode
+            };
+
+            if (templateId.HasValue)
+            {
+                foreach (var root in searchRoots)
+                {
+                    var found = FindNodeByTemplateId(root, templateId.Value);
+                    if (found != null)
+                    {
+                        return found;
+                    }
+                }
+            }
+
+            if (!string.IsNullOrEmpty(graphMapPath))
+            {
+                foreach (var root in searchRoots)
+                {
+                    var found = FindNodeByGraphMapPath(root, graphMapPath);
+                    if (found != null)
+                    {
+                        return found;
+                    }
+                }
+            }
+
+            return FindNodeByNamePath(namePath);
+        }
+
+        private static GraphMapTemplateNode? FindNodeByTemplateId(GraphMapTemplateNode? node, Guid templateId)
+        {
+            if (node == null)
+            {
+                return null;
+            }
+
+            if (node.TemplateId == templateId)
+            {
+                return node;
+            }
+
+            foreach (var child in node.Children)
+            {
+                var found = FindNodeByTemplateId(child, templateId);
+                if (found != null)
+                {
+                    return found;
+                }
+            }
+
+            return null;
+        }
+
+        private static GraphMapTemplateNode? FindNodeByGraphMapPath(GraphMapTemplateNode? node, string graphMapPath)
+        {
+            if (node == null)
+            {
+                return null;
+            }
+
+            if (string.Equals(node.GraphMapPath, graphMapPath, StringComparison.OrdinalIgnoreCase))
+            {
+                return node;
+            }
+
+            foreach (var child in node.Children)
+            {
+                var found = FindNodeByGraphMapPath(child, graphMapPath);
+                if (found != null)
+                {
+                    return found;
+                }
+            }
+
+            return null;
+        }
+
+        private GraphMapTemplateNode? FindNodeByNamePath(IReadOnlyList<string>? namePath)
+        {
+            if (namePath == null || namePath.Count == 0)
+            {
+                return null;
+            }
+
+            var current = ResolveTopLevelCategoryNode(namePath[0]);
+            if (current == null)
+            {
+                return null;
+            }
+
+            if (namePath.Count == 1)
+            {
+                return current;
+            }
+
+            for (int i = 1; i < namePath.Count; i++)
+            {
+                var child = current.Children?.FirstOrDefault(c => c.Name == namePath[i]);
+                if (child == null)
+                {
+                    return null;
+                }
+
+                current = child;
+            }
+
+            return current;
+        }
+
+        private GraphMapTemplateNode? ResolveTopLevelCategoryNode(string name)
+        {
+            if (OfficialTemplatesNode?.Name == name)
+            {
+                return OfficialTemplatesNode;
+            }
+
+            if (PersonalTemplatesNode?.Name == name)
+            {
+                return PersonalTemplatesNode;
+            }
+
+            if (FavoriteTemplatesNode?.Name == name)
+            {
+                return FavoriteTemplatesNode;
+            }
+
+            if (RecentsTemplatesNode?.Name == name)
+            {
+                return RecentsTemplatesNode;
+            }
+
+            return GraphMapTemplateNode?.Children?.FirstOrDefault(c => c.Name == name);
+        }
+
+        /// <summary>
+        /// 递归更新节点的服务器清单元数据（哈希、版本）
+        /// </summary>
+        private void UpdateNodeMetadataFromServer(
+            GraphMapTemplateNode node,
+            Dictionary<Guid, string> serverHashes,
+            Dictionary<Guid, string> serverVersions)
         {
             if (node == null) return;
 
-            // 如果匹配到服务器哈希，强制覆盖 FileHash
-            // 这样做的目的是让 UI 显示的树（以及后续生成的 TemplateCardViewModel）携带的是服务器原始 Hash
-            // 而数据库中存储的可能是用户修改后的 Hash
-            // 从而在 CheckSingleTemplateUpdate 中能正确比较出差异
             if (node.TemplateId.HasValue && !node.IsCustomTemplate)
             {
                 if (serverHashes.TryGetValue(node.TemplateId.Value, out string hash))
-                {
                     node.FileHash = hash;
-                }
+
+                if (serverVersions.TryGetValue(node.TemplateId.Value, out string version))
+                    node.ServerVersion = version;
             }
 
             if (node.Children != null)
             {
                 foreach (var child in node.Children)
-                {
-                    UpdateNodeHashesFromServer(child, serverHashes);
-                }
+                    UpdateNodeMetadataFromServer(child, serverHashes, serverVersions);
             }
         }
 
@@ -4928,6 +5121,7 @@ namespace GeoChemistryNexus.ViewModels
         partial void OnIsSpiderDiagramModeChanged(bool value)
         {
             OnPropertyChanged(nameof(IsScriptSettingButtonVisible));
+            UpdateTemplateCardsEmptyState();
         }
 
         partial void OnIsHarkerDiagramModeChanged(bool value)
@@ -5444,6 +5638,8 @@ namespace GeoChemistryNexus.ViewModels
 
             await Task.Run(() =>
             {
+                var summaryLookup = BuildTemplateSummaryLookup();
+                var dbService = GraphMapDatabaseService.Instance;
                 var batchUpdateList = new List<(TemplateCardViewModel Card, TemplateState State, byte[]? ThumbBytes)>();
                 const int BATCH_SIZE = 20;
 
@@ -5456,19 +5652,20 @@ namespace GeoChemistryNexus.ViewModels
 
                     if (card.TemplateId.HasValue)
                     {
-                        if (card.State == TemplateState.Loading)
+                        if (!card.IsCustomTemplate)
                         {
-                            var entity = GraphMapDatabaseService.Instance.GetTemplate(card.TemplateId.Value);
-                            if (entity != null && !string.IsNullOrEmpty(entity.Status))
+                            if (summaryLookup.TryGetValue(card.TemplateId.Value, out var summary))
                             {
-                                if (entity.Status == "UP_TO_DATE") newState = TemplateState.Ready;
-                                else if (entity.Status == "OUTDATED") newState = TemplateState.UpdateAvailable;
-                                else newState = TemplateState.NotDownloaded;
+                                newState = ResolveOfficialTemplateUpdateState(summary, card.ServerHash, card.ServerVersion, dbService);
                             }
                             else
                             {
-                                newState = TemplateState.Loading;
+                                newState = TemplateState.NotDownloaded;
                             }
+                        }
+                        else if (card.State == TemplateState.Loading)
+                        {
+                            newState = TemplateState.Ready;
                         }
 
                         try
@@ -5529,13 +5726,7 @@ namespace GeoChemistryNexus.ViewModels
                     {
                         try
                         {
-                            var bitmap = new BitmapImage();
-                            bitmap.BeginInit();
-                            bitmap.StreamSource = new MemoryStream(item.ThumbBytes);
-                            bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                            bitmap.EndInit();
-                            bitmap.Freeze();
-                            item.Card.ThumbnailImage = bitmap;
+                            item.Card.ThumbnailImage = CreateTemplateCardThumbnailImage(item.ThumbBytes);
                         }
                         catch (Exception ex)
                         {
@@ -5573,6 +5764,20 @@ namespace GeoChemistryNexus.ViewModels
             };
         }
 
+        /// <summary>
+        /// 按数据库中缩略图原始分辨率解码（默认 680×480 灰度 JPEG）。虚拟化下同时呈现的卡片数量有限，内存可接受。
+        /// </summary>
+        private static BitmapImage CreateTemplateCardThumbnailImage(byte[] bytes)
+        {
+            var bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.StreamSource = new MemoryStream(bytes);
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.EndInit();
+            bitmap.Freeze();
+            return bitmap;
+        }
+
         private TemplateCardViewModel CreateTemplateCardViewModel(
             GraphMapTemplateNode templateNode,
             Dictionary<Guid, GraphMapTemplateEntity>? summaryLookup = null)
@@ -5593,7 +5798,9 @@ namespace GeoChemistryNexus.ViewModels
                 TemplatePath = templateNode.GraphMapPath,
                 Category = GetNodePath(templateNode),
                 ServerHash = templateNode.FileHash,
+                ServerVersion = templateNode.ServerVersion,
                 IsCustomTemplate = templateNode.IsCustomTemplate,
+                IsNewTemplate = summary?.IsNewTemplate ?? false,
                 IsFavorite = isFavorite,
                 State = ResolveTemplateState(status),
                 ThumbnailImage = null,
@@ -5679,6 +5886,7 @@ namespace GeoChemistryNexus.ViewModels
             {
                 if (token.IsCancellationRequested) return;
                 TemplateCardsView?.Refresh();
+                UpdateTemplateCardsEmptyState();
             }, System.Windows.Threading.DispatcherPriority.Background);
         }
 
@@ -5726,9 +5934,7 @@ namespace GeoChemistryNexus.ViewModels
                     }
                 }
 
-                // 4. 刷新界面
-                // 重新加载所有模板
-                await InitializeAsync();
+                await RefreshTemplateLibraryAfterDataChangeAsync();
 
                 // 模板删除成功
                 MessageHelper.Success(LanguageService.Instance["template_delete_success"]);
@@ -6072,23 +6278,20 @@ namespace GeoChemistryNexus.ViewModels
                     entity.NodeList = newNodeList;
                     entity.Content.NodeList = newNodeList;
                     entity.Content.DefaultLanguage = languages.First();
+                    entity.Version = updatedTemplate.Version;
+                    entity.TemplateType = updatedTemplate.TemplateType;
                     entity.GraphMapPath = newGraphMapPath;
                     entity.Name = newGraphMapPath;
                     entity.LastModified = DateTime.Now;
+                    entity.HelpDocuments = editor.GetHelpDocumentsForSubmit();
 
-                    // 重新计算 FileHash
-                    try
+                    entity.FileHash = GraphMapTemplateService.ComputeTemplateContentHash(entity.Content);
+
+                    if (!entity.IsCustom)
                     {
-                        using (var md5 = System.Security.Cryptography.MD5.Create())
-                        {
-                            var jsonBytes = System.Text.Encoding.UTF8.GetBytes(JsonSerializer.Serialize(entity.Content));
-                            var hashBytes = md5.ComputeHash(jsonBytes);
-                            entity.FileHash = BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        System.Diagnostics.Debug.WriteLine($"Failed to calculate hash: {ex.Message}");
+                        entity.PendingPublish = true;
+                        bool isHashSame = string.Equals(entity.FileHash, card.ServerHash, StringComparison.OrdinalIgnoreCase);
+                        entity.Status = isHashSame ? "UP_TO_DATE" : "OUTDATED";
                     }
 
                     if (newId != oldId)
@@ -6137,8 +6340,24 @@ namespace GeoChemistryNexus.ViewModels
                         await Task.Run(() => GraphMapDatabaseService.Instance.UpsertTemplate(entity));
                     }
 
-                    // 刷新界面
-                    await InitializeAsync();
+                    TemplateState refreshedState = !entity.IsCustom
+                        ? ResolveOfficialTemplateUpdateState(entity, card.ServerHash, card.ServerVersion)
+                        : TemplateState.Ready;
+
+                    await Application.Current.Dispatcher.InvokeAsync(() =>
+                    {
+                        if (newId != oldId)
+                        {
+                            card.TemplateId = newId;
+                            card.TemplatePath = newGraphMapPath;
+                            card.Name = newGraphMapPath;
+                        }
+
+                        if (!entity.IsCustom)
+                            card.State = refreshedState;
+                    });
+
+                    await RefreshTemplateLibraryAfterDataChangeAsync();
 
                     editWindow.ShowSuccessMessage(LanguageService.Instance["ModifedSuccess"] ?? "淇敼鎴愬姛");
                     editWindow.Close();
@@ -6464,15 +6683,7 @@ namespace GeoChemistryNexus.ViewModels
             ResetPlotStateToDefault();
 
             // 3. 仅在必要时重新加载所有模板（包括更新后的自定义列表）
-            if (_isTemplateLibraryDirty)
-            {
-                await InitializeAsync();
-            }
-            else
-            {
-                // 如果模板库没有变化，直接恢复之前的选中状态
-                await RestoreTemplateLibraryState();
-            }
+            await RefreshTemplateLibraryIfNeededAsync();
             }
             finally
             {
@@ -9648,48 +9859,43 @@ namespace GeoChemistryNexus.ViewModels
                 Version = CurrentTemplate.Version,
                 Content = CurrentTemplate,
                 FileHash = fileHash,
-                HelpDocuments = new Dictionary<string, string>()
+                HelpDocuments = editor.GetHelpDocumentsForSubmit()
             };
 
-            // 4. 加载并填充初始 RTF 帮助文档
-            // 根据新建模板所支持的语言，复制 template.rtf 文档内容到 HelpDocuments 字段
-            string sourceRtfPath = Path.Combine(FileHelper.GetAppPath(), "Data", "Documents", "template.rtf");
-
-            // 开发环境兼容：如果运行目录下没有，尝试查找源码目录 (假设在 bin/Debug/net6.0-windows 下运行)
-            if (!File.Exists(sourceRtfPath))
+            // 为尚未写入帮助文档的语言填充默认 template.rtf
+            if (newEntity.HelpDocuments.Count < allLanguages.Count)
             {
-                try
+                string sourceRtfPath = Path.Combine(FileHelper.GetAppPath(), "Data", "Documents", "template.rtf");
+                if (!File.Exists(sourceRtfPath))
                 {
-                    string devPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "Data", "Documents", "template.rtf"));
-                    if (File.Exists(devPath))
+                    try
                     {
-                        sourceRtfPath = devPath;
+                        string devPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "Data", "Documents", "template.rtf"));
+                        if (File.Exists(devPath))
+                            sourceRtfPath = devPath;
+                    }
+                    catch
+                    {
+                        // 忽略路径错误
                     }
                 }
-                catch
-                {
-                    // 忽略路径错误
-                }
-            }
 
-            if (File.Exists(sourceRtfPath))
-            {
-                try
+                if (File.Exists(sourceRtfPath))
                 {
-                    string defaultRtfContent = File.ReadAllText(sourceRtfPath);
-                    foreach (var lang in allLanguages)
+                    try
                     {
-                        newEntity.HelpDocuments[lang] = defaultRtfContent;
+                        string defaultRtfContent = File.ReadAllText(sourceRtfPath);
+                        foreach (var lang in allLanguages)
+                        {
+                            if (!newEntity.HelpDocuments.ContainsKey(lang))
+                                newEntity.HelpDocuments[lang] = defaultRtfContent;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Failed to load template.rtf: {ex.Message}");
                     }
                 }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine($"Failed to load template.rtf: {ex.Message}");
-                }
-            }
-            else
-            {
-                System.Diagnostics.Debug.WriteLine($"Warning: template.rtf not found. Expected at: {sourceRtfPath}");
             }
 
             // 5. 保存到数据库
@@ -9758,18 +9964,8 @@ namespace GeoChemistryNexus.ViewModels
             // 加载说明文档 (从数据库)
             ReloadHelpDocument(CurrentDiagramLanguage);
 
-            // 在后台异步刷新模板列表缓存，不阻塞窗口关闭
-            _ = Task.Run(async () => 
-            {
-                try 
-                {
-                    await InitializeAsync();
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine($"Failed to refresh template list: {ex.Message}");
-                }
-            });
+            // 新建后进入绘图模式，返回模板库时再刷新
+            RequestTemplateLibraryRefresh();
 
             return true;
         }
@@ -9897,8 +10093,7 @@ namespace GeoChemistryNexus.ViewModels
 
             if (imported)
             {
-                // 刷新模板列表
-                await InitializeAsync();
+                await RefreshTemplateLibraryAfterDataChangeAsync();
             }
         }
 
@@ -10175,8 +10370,7 @@ namespace GeoChemistryNexus.ViewModels
                     }
                 });
 
-                // 刷新缓存
-                await InitializeAsync();
+                await RefreshTemplateLibraryAfterDataChangeAsync();
 
                 MessageHelper.Success(LanguageService.Instance["template_saved_successfully"]);
                 CheckUnsavedChanges();
@@ -10934,7 +11128,23 @@ namespace GeoChemistryNexus.ViewModels
                 }
                 else
                 {
-                    // 列表已是最新
+                    // 列表文件已是最新：仍用本地 GraphMapList 与数据库对账（清理下架项、同步 Hash）
+                    if (File.Exists(localListPath))
+                    {
+                        bool dbChanged = await Task.Run(() =>
+                        {
+                            string listContent = File.ReadAllText(localListPath);
+                            var templateList = JsonSerializer.Deserialize<List<GraphMapTemplateService.JsonTemplateItem>>(listContent);
+                            return templateList != null
+                                && GraphMapTemplateService.SyncOfficialTemplatesFromServerList(templateList);
+                        });
+
+                        if (dbChanged)
+                        {
+                            await RefreshTemplateLibraryAfterDataChangeAsync();
+                        }
+                    }
+
                     // 检查分类文件是否缺失 (如果不缺失，即使Hash不一致也忽略，等待下次列表更新)
                     if (!File.Exists(localCategoryPath))
                     {
@@ -10976,7 +11186,7 @@ namespace GeoChemistryNexus.ViewModels
             try
             {
                 // 服务器端的 GraphMapList.json 下载地址
-                string listDownloadUrl = "https://geochemistrynexus-1303234197.cos.ap-hongkong.myqcloud.com/GraphMapList.json";
+                string listDownloadUrl = OfficialContentEndpoints.GraphMapListUrl;
 
                 // 下载到临时文件
                 await UpdateHelper.DownloadFileAsync(listDownloadUrl, tempFilePath);
@@ -11021,67 +11231,17 @@ namespace GeoChemistryNexus.ViewModels
                 // 模板列表更新成功！正在刷新...
                 MessageHelper.Success(LanguageService.Instance["template_list_update_success_refreshing"]);
 
-                // 同步本地数据库与新的模板列表
+                // 同步本地数据库与新的模板列表（含下架删除与 FileHash 更新）
                 await Task.Run(() =>
                 {
                     string newListContent = File.ReadAllText(localListPath);
                     var newTemplateList = JsonSerializer.Deserialize<List<GraphMapTemplateService.JsonTemplateItem>>(newListContent);
-
                     if (newTemplateList != null)
-                    {
-                        var dbService = GraphMapDatabaseService.Instance;
-                        // 获取所有现有模板的摘要，建立 ID -> Entity 映射，减少 DB 查询
-                        var existingTemplates = dbService.GetSummaries().ToDictionary(x => x.Id, x => x);
-
-                        foreach (var item in newTemplateList)
-                        {
-                            if (Guid.TryParse(item.ID, out Guid itemId))
-                            {
-                                if (existingTemplates.TryGetValue(itemId, out var existingEntity))
-                                {
-                                    // 存在：比较 Hash
-                                    bool isHashSame = string.Equals(existingEntity.FileHash, item.FileHash, StringComparison.OrdinalIgnoreCase);
-                                    string newStatus = isHashSame ? "UP_TO_DATE" : "OUTDATED";
-
-                                    // 只有状态改变或 Hash 改变时才更新
-                                    if (existingEntity.Status != newStatus || existingEntity.FileHash != item.FileHash)
-                                    {
-                                        existingEntity.Status = newStatus;
-                                        // 因此，这里只更新 Status。
-                                        dbService.UpsertTemplate(existingEntity);
-                                    }
-                                }
-                                else
-                                {
-                                    // 不存在：添加新记录
-                                    var newEntity = new GraphMapTemplateEntity
-                                    {
-                                        Id = itemId,
-                                        NodeList = item.NodeList,
-                                        GraphMapPath = item.GraphMapPath,
-                                        FileHash = item.FileHash, // 这里存的是服务器 Hash，但因为是 NOT_INSTALLED，不影响逻辑
-                                        IsCustom = false,
-                                        Status = "NOT_INSTALLED",
-                                        LastModified = DateTime.Now,
-                                        // 其他字段留空
-                                        Content = null,
-                                        TemplateType = null,
-                                        Version = 0,
-                                        HelpDocuments = new Dictionary<string, string>()
-                                    };
-                                    dbService.UpsertTemplate(newEntity);
-                                }
-                            }
-                        }
-                    }
+                        GraphMapTemplateService.SyncOfficialTemplatesFromServerList(newTemplateList);
                 });
 
-                // 刷新 UI (重新加载卡片)
-                _isTemplateLibraryDirty = true;
-                await BackToTemplateMode();
-                
-                // 检查是否有新模板可下载
-                CheckForNewTemplatesDownload();
+                // 刷新 UI (重新加载卡片)；绘图模式下仅标记 dirty，不强制返回模板库
+                await RefreshTemplateLibraryAfterDataChangeAsync();
             }
             catch (Exception ex)
             {
@@ -11117,7 +11277,7 @@ namespace GeoChemistryNexus.ViewModels
             try
             {
                 // 服务器端的 PlotTemplateCategories.json 下载地址
-                string listDownloadUrl = "https://geochemistrynexus-1303234197.cos.ap-hongkong.myqcloud.com/PlotTemplateCategories.json";
+                string listDownloadUrl = OfficialContentEndpoints.PlotTemplateCategoriesUrl;
 
                 // 下载到临时文件
                 await UpdateHelper.DownloadFileAsync(listDownloadUrl, tempFilePath);
@@ -11790,9 +11950,9 @@ namespace GeoChemistryNexus.ViewModels
         /// </summary>
         private async Task PerformSave()
         {
-            // 版本校验：如果当前程序版本大于模板版本，提示用户升级风险
-            float currentAppVersion = UpdateHelper.GetCurrentVersionFloat();
-            if (currentAppVersion > CurrentTemplate.Version)
+            // 版本校验：若程序格式 x.y 高于模板，提示保存后将升级格式基线
+            string appFormatVersion = ContentVersionHelper.GetDiagramFormatVersion();
+            if (ContentVersionHelper.CompareFormat(appFormatVersion, CurrentTemplate.Version) > 0)
             {
                 bool confirmUpgrade = await MessageHelper.ShowAsyncDialog(
                     LanguageService.Instance["template_upgrade_warning"],
@@ -11802,8 +11962,9 @@ namespace GeoChemistryNexus.ViewModels
                 if (!confirmUpgrade) return;
             }
 
-            // 更新模板版本为当前程序版本
-            CurrentTemplate.Version = currentAppVersion;
+            CurrentTemplate.Version = ContentVersionHelper.ResolveVersionOnSave(
+                CurrentTemplate.Version,
+                appFormatVersion);
 
             // 清空模板中原有的动态绘图元素列表并从 LayerTree 更新
             UpdateTemplateInfoFromLayers(CurrentTemplate);
@@ -11903,6 +12064,7 @@ namespace GeoChemistryNexus.ViewModels
                 if (!entity.IsCustom)
                 {
                     entity.Status = null;
+                    entity.PendingPublish = true;
 
                     // Calculate new hash
                     string jsonString = SerializeTemplate(entity.Content);
@@ -11925,8 +12087,7 @@ namespace GeoChemistryNexus.ViewModels
                 // 保存到数据库
                 await Task.Run(() => GraphMapDatabaseService.Instance.UpsertTemplate(entity));
 
-                // 标记模板库需要刷新
-                _isTemplateLibraryDirty = true;
+                RequestTemplateLibraryRefresh();
 
                 // 更新原始状态记录
                 _originalTemplateJson = SerializeTemplate(CurrentTemplate);
@@ -12114,6 +12275,36 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
+        /// 根据本地 FileHash 与服务器哈希解析官方模板更新状态，必要时同步写回 Status。
+        /// </summary>
+        private static TemplateState ResolveOfficialTemplateUpdateState(
+            GraphMapTemplateEntity entity,
+            string? serverHash,
+            string? serverVersion = null,
+            GraphMapDatabaseService? dbService = null)
+        {
+            if (entity == null)
+                return TemplateState.NotDownloaded;
+
+            if (string.Equals(entity.Status, "NOT_INSTALLED", StringComparison.Ordinal))
+                return TemplateState.NotDownloaded;
+
+            bool isHashSame = !string.IsNullOrEmpty(serverHash)
+                && string.Equals(entity.FileHash, serverHash, StringComparison.OrdinalIgnoreCase);
+            bool hasVersionUpdate = !string.IsNullOrWhiteSpace(serverVersion)
+                && ContentVersionHelper.HasContentUpdate(entity.Version, serverVersion);
+
+            string resolvedStatus = isHashSame && !hasVersionUpdate ? "UP_TO_DATE" : "OUTDATED";
+            if (dbService != null && !string.Equals(entity.Status, resolvedStatus, StringComparison.Ordinal))
+            {
+                dbService.UpdateTemplateStatus(entity.Id, resolvedStatus);
+                entity.Status = resolvedStatus;
+            }
+
+            return isHashSame && !hasVersionUpdate ? TemplateState.Ready : TemplateState.UpdateAvailable;
+        }
+
+        /// <summary>
         /// 检查单个模板的更新状态
         /// </summary>
         private async Task CheckSingleTemplateUpdate(TemplateCardViewModel card)
@@ -12128,33 +12319,7 @@ namespace GeoChemistryNexus.ViewModels
 
                 if (entity != null)
                 {
-                    // 找到了，检查状态
-                    if (!string.IsNullOrEmpty(entity.Status))
-                    {
-                        // 如果状态不是空，说明已经检查过了
-                        if (entity.Status == "UP_TO_DATE") nextState = TemplateState.Ready;
-                        else if (entity.Status == "OUTDATED") nextState = TemplateState.UpdateAvailable;
-                        else if (entity.Status == "NOT_INSTALLED") nextState = TemplateState.NotDownloaded;
-                    }
-                    else
-                    {
-                        // 状态为空，进行哈希对比
-                        bool isHashSame = string.Equals(entity.FileHash, card.ServerHash, StringComparison.OrdinalIgnoreCase);
-
-                        if (isHashSame)
-                        {
-                            entity.Status = "UP_TO_DATE";
-                            nextState = TemplateState.Ready;
-                        }
-                        else
-                        {
-                            entity.Status = "OUTDATED";
-                            nextState = TemplateState.UpdateAvailable;
-                        }
-
-                        // 更新数据库状态
-                        dbService.UpsertTemplate(entity);
-                    }
+                    nextState = ResolveOfficialTemplateUpdateState(entity, card.ServerHash, card.ServerVersion, dbService);
                 }
                 else
                 {
@@ -12184,6 +12349,59 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
+        /// 开发者模式：强制从服务器重新下载官方图解模板
+        /// </summary>
+        [RelayCommand]
+        private async Task ForceUpdateTemplate(TemplateCardViewModel card)
+        {
+            if (card == null || card.IsCustomTemplate || !IsDeveloperMode || !card.TemplateId.HasValue)
+                return;
+
+            if (card.State == TemplateState.Downloading)
+                return;
+
+            try
+            {
+                if (!await TryRefreshOfficialTemplateMetadataFromServer(card))
+                {
+                    MessageHelper.Error(LanguageService.Instance["force_update_template_not_found"]);
+                    return;
+                }
+
+                await DownloadSingleTemplate(card, showNotification: true);
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.Error(LanguageService.Instance["download_template_failed"] + $" {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 从服务器 GraphMapList 刷新指定官方模板的元数据（哈希、路径）
+        /// </summary>
+        private static async Task<bool> TryRefreshOfficialTemplateMetadataFromServer(TemplateCardViewModel card)
+        {
+            string json = await UpdateHelper.GetUrlContentAsync(OfficialContentEndpoints.GraphMapListUrl);
+            var list = JsonSerializer.Deserialize<List<GraphMapTemplateService.JsonTemplateItem>>(json);
+            if (list == null || list.Count == 0)
+                return false;
+
+            var item = list.FirstOrDefault(x =>
+                Guid.TryParse(x.ID, out Guid id) && id == card.TemplateId!.Value);
+
+            if (item == null)
+                return false;
+
+            card.ServerHash = item.FileHash;
+            if (!string.IsNullOrWhiteSpace(item.Version))
+                card.ServerVersion = ContentVersionHelper.Normalize(item.Version);
+            if (!string.IsNullOrEmpty(item.GraphMapPath))
+                card.TemplatePath = item.GraphMapPath;
+
+            return true;
+        }
+
+        /// <summary>
         /// 下载单个模板的具体实现 (Updated for LiteDB)
         /// </summary>
         private async Task DownloadSingleTemplate(TemplateCardViewModel card, bool showNotification = true)
@@ -12197,7 +12415,7 @@ namespace GeoChemistryNexus.ViewModels
                 card.DownloadProgress = 0;
 
                 // 准备路径: {BaseUrl}/{GraphMapPath}.zip
-                string baseUrl = "https://geochemistrynexus-1303234197.cos.ap-hongkong.myqcloud.com";
+                string baseUrl = OfficialContentEndpoints.CosBaseUrl;
                 // string idStr = card.TemplateId.Value.ToString(); 
 
                 // 对路径进行 URL 编码
@@ -12238,13 +12456,23 @@ namespace GeoChemistryNexus.ViewModels
                         var template = JsonSerializer.Deserialize<GraphMapTemplate>(jsonContent, options);
                         if (template == null) throw new Exception("Failed to deserialize template.");
 
+                        if (!GraphMapTemplateService.IsVersionCompatible(template))
+                            throw new Exception(LanguageService.Instance["template_version_too_high"]);
+
+                        if (!string.IsNullOrEmpty(card.ServerHash))
+                        {
+                            string computedHash = GraphMapTemplateService.ComputeTemplateContentHash(template);
+                            if (!string.Equals(computedHash, card.ServerHash, StringComparison.OrdinalIgnoreCase))
+                                throw new Exception(LanguageService.Instance["downloaded_file_hash_mismatch"]);
+                        }
+
                         // 准备实体
                         var entity = new GraphMapTemplateEntity
                         {
                             Id = card.TemplateId.Value,
                             GraphMapPath = card.TemplatePath,
                             Name = card.TemplatePath,
-                            FileHash = card.ServerHash, // 使用服务器哈希作为最新哈希
+                            FileHash = card.ServerHash,
                             Status = "UP_TO_DATE",
                             IsCustom = false,
                             LastModified = DateTime.Now,
@@ -12297,17 +12525,14 @@ namespace GeoChemistryNexus.ViewModels
                 card.State = TemplateState.Ready;
 
                 // 重新加载缩略图
-                var thumbStream = GraphMapDatabaseService.Instance.GetThumbnail(card.TemplateId.Value);
-                if (thumbStream != null)
+                using (var thumbStream = GraphMapDatabaseService.Instance.GetThumbnail(card.TemplateId.Value))
                 {
-                    var bitmap = new BitmapImage();
-                    bitmap.BeginInit();
-                    bitmap.StreamSource = thumbStream;
-                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                    bitmap.EndInit();
-                    bitmap.Freeze();
-                    card.ThumbnailImage = bitmap;
-                    thumbStream.Dispose();
+                    if (thumbStream != null)
+                    {
+                        using var ms = new MemoryStream();
+                        thumbStream.CopyTo(ms);
+                        card.ThumbnailImage = CreateTemplateCardThumbnailImage(ms.ToArray());
+                    }
                 }
 
                 // 仅在显示通知为true时显示成功通知
@@ -12490,12 +12715,7 @@ namespace GeoChemistryNexus.ViewModels
                         0);
                 }
 
-                // 刷新模板库
-                _isTemplateLibraryDirty = true;
-                await BackToTemplateMode();
-                
-                // 重新检查批量下载按钮状态
-                CheckForNewTemplatesDownload();
+                await RefreshTemplateLibraryAfterDataChangeAsync();
             }
             catch (Exception ex)
             {

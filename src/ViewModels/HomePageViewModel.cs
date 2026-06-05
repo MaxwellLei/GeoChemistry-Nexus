@@ -9,106 +9,264 @@ using GongSolutions.Wpf.DragDrop;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Data;
-using System.Windows.Threading;
 
 namespace GeoChemistryNexus.ViewModels
 {
     public partial class HomePageViewModel : ObservableObject, IDropTarget
     {
-        private readonly DispatcherTimer _timer;
-        private readonly ObservableCollection<HomeAppItem> _sourceApps = new();
+        private readonly ObservableCollection<HomeAppItem> _widgets = new();
         private readonly Dictionary<string, Window> _openedWindows = new();
+        private HomeLinkGroupViewModel _personalGroup;
 
-        public ICollectionView HomeApps { get; }
+        public ObservableCollection<HomeLinkGroupViewModel> OfficialLinkGroups { get; } = new();
 
-        [ObservableProperty]
-        private string currentTime = string.Empty;
+        public ObservableCollection<HomeAppItem> Widgets => _widgets;
 
-        [ObservableProperty]
-        private string currentDate = string.Empty;
-
-        [ObservableProperty]
-        private string searchString = string.Empty;
+        public HomeLinkGroupViewModel PersonalLinkGroup => _personalGroup;
 
         [ObservableProperty]
-        private bool isEditMode = false;
+        [NotifyPropertyChangedFor(nameof(IsSelectedGroupPersonal))]
+        private HomeLinkGroupViewModel selectedLinkGroup;
 
-        partial void OnSearchStringChanged(string value)
+        [ObservableProperty]
+        private HomeLinkGroupViewModel selectedOfficialGroup;
+
+        partial void OnSelectedOfficialGroupChanged(HomeLinkGroupViewModel value)
         {
-            HomeApps.Refresh();
+            if (value != null)
+                SelectedLinkGroup = value;
         }
+
+        partial void OnSelectedLinkGroupChanged(HomeLinkGroupViewModel value)
+        {
+            if (value?.IsPersonal == true)
+                SelectedOfficialGroup = null;
+            else if (value != null && !value.IsPersonal)
+                SelectedOfficialGroup = value;
+
+            if (value?.IsPersonal != true && IsEditMode)
+                IsEditMode = false;
+        }
+
+        [ObservableProperty]
+        private bool isEditMode;
+
+        public bool IsSelectedGroupPersonal => SelectedLinkGroup?.IsPersonal == true;
+
+        [ObservableProperty]
+        private string announcementText = string.Empty;
+
+        [ObservableProperty]
+        private bool hasAnnouncement;
+
+        [ObservableProperty]
+        private bool isAnnouncementBusy;
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(IsCatalogIdle))]
+        private bool isCatalogBusy;
+
+        public bool IsAnnouncementIdle => !IsAnnouncementBusy;
+
+        public bool IsCatalogIdle => !IsCatalogBusy;
 
         public HomePageViewModel()
         {
-            _timer = new DispatcherTimer
+            RebuildGroups();
+        }
+
+        [RelayCommand]
+        private async Task Loaded()
+        {
+            await RefreshHomeDataAsync(showUpdateMessage: false);
+        }
+
+        [RelayCommand]
+        private async Task RefreshCatalog()
+        {
+            await RefreshHomeDataAsync(showUpdateMessage: true);
+        }
+
+        [RelayCommand]
+        private async Task RefreshAnnouncement()
+        {
+            await LoadAnnouncementAsync();
+        }
+
+        private async Task RefreshHomeDataAsync(bool showUpdateMessage)
+        {
+            if (IsCatalogBusy)
+                return;
+
+            IsCatalogBusy = true;
+            try
             {
-                Interval = TimeSpan.FromSeconds(1)
+                bool updated = await HomeLinksCatalogService.SyncFromServerAsync();
+                await LoadAnnouncementAsync();
+                RebuildGroups();
+
+                if (showUpdateMessage)
+                {
+                    if (updated)
+                        MessageHelper.Success(LanguageService.Instance["home_catalog_updated"]);
+                    else
+                        MessageHelper.Info(LanguageService.Instance["home_catalog_already_latest"]);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[HomePageViewModel] Refresh failed: {ex.Message}");
+                if (showUpdateMessage)
+                    MessageHelper.Warning(LanguageService.Instance["home_catalog_sync_failed"]);
+            }
+            finally
+            {
+                IsCatalogBusy = false;
+            }
+        }
+
+        private async Task LoadAnnouncementAsync()
+        {
+            if (IsAnnouncementBusy)
+                return;
+
+            IsAnnouncementBusy = true;
+            OnPropertyChanged(nameof(IsAnnouncementIdle));
+            try
+            {
+                string text = await ServerAnnouncementService.LoadAnnouncementAsync();
+                if (!string.IsNullOrWhiteSpace(text))
+                {
+                    AnnouncementText = text;
+                    HasAnnouncement = true;
+                }
+                else
+                {
+                    AnnouncementText = string.Empty;
+                    HasAnnouncement = false;
+                }
+            }
+            catch
+            {
+                AnnouncementText = string.Empty;
+                HasAnnouncement = false;
+            }
+            finally
+            {
+                IsAnnouncementBusy = false;
+                OnPropertyChanged(nameof(IsAnnouncementIdle));
+            }
+        }
+
+        private void RebuildGroups()
+        {
+            string previousGroupId = SelectedLinkGroup?.GroupId;
+
+            var catalog = HomeLinksCatalogService.LoadLocalCatalog();
+            var userConfig = HomeUserConfigService.Load();
+
+            OfficialLinkGroups.Clear();
+            _widgets.Clear();
+
+            foreach (var group in catalog.Groups ?? Enumerable.Empty<HomeLinkGroup>())
+            {
+                if (group.Links == null || group.Links.Count == 0)
+                    continue;
+
+                var groupVm = new HomeLinkGroupViewModel
+                {
+                    GroupId = group.Id,
+                    Title = group.Title,
+                    IsPersonal = false,
+                    IsVisible = true
+                };
+
+                foreach (var link in group.Links)
+                    groupVm.Items.Add(ToOfficialAppItem(link));
+
+                OfficialLinkGroups.Add(groupVm);
+            }
+
+            _personalGroup = new HomeLinkGroupViewModel
+            {
+                GroupId = "personal",
+                Title = LanguageService.Instance["home_personal_group"],
+                IsPersonal = true,
+                IsVisible = true
             };
-            _timer.Tick += (s, e) => UpdateNow();
 
-            // Initialize CollectionView
-            HomeApps = CollectionViewSource.GetDefaultView(_sourceApps);
-            HomeApps.Filter = FilterApps;
+            foreach (var link in userConfig.PersonalLinks ?? Enumerable.Empty<HomeAppItem>())
+            {
+                link.IsOfficial = false;
+                link.Type = HomeAppType.WebLink;
+                _personalGroup.Items.Add(link);
+            }
 
-            LoadApps();
-            UpdateNow();
+            OnPropertyChanged(nameof(PersonalLinkGroup));
+
+            var availableWidgets = HomeAppService.GetAvailableWidgets()
+                .Where(w => !string.IsNullOrEmpty(w.WidgetKey))
+                .ToDictionary(w => w.WidgetKey, w => w, StringComparer.OrdinalIgnoreCase);
+
+            foreach (var widget in userConfig.Widgets ?? Enumerable.Empty<HomeAppItem>())
+            {
+                widget.IsOfficial = false;
+                widget.Type = HomeAppType.Widget;
+                if (availableWidgets.TryGetValue(widget.WidgetKey ?? string.Empty, out var template))
+                {
+                    widget.Title = template.Title;
+                    widget.Description = template.Description;
+                    widget.Icon = template.Icon;
+                }
+                _widgets.Add(widget);
+            }
+
+            RestoreSelectedLinkGroup(previousGroupId);
         }
 
-        private bool FilterApps(object obj)
+        private void RestoreSelectedLinkGroup(string previousGroupId)
         {
-            if (string.IsNullOrWhiteSpace(SearchString)) return true;
-
-            if (obj is HomeAppItem app)
+            if (string.Equals(previousGroupId, "personal", StringComparison.OrdinalIgnoreCase))
             {
-                var q = SearchString.Trim();
-                return (app.Title?.Contains(q, StringComparison.OrdinalIgnoreCase) ?? false) || 
-                       (app.Description?.Contains(q, StringComparison.OrdinalIgnoreCase) ?? false);
+                SelectedLinkGroup = _personalGroup;
+                return;
             }
-            return false;
+
+            var official = OfficialLinkGroups.FirstOrDefault(g => g.GroupId == previousGroupId);
+            if (official != null)
+            {
+                SelectedLinkGroup = official;
+                return;
+            }
+
+            if (OfficialLinkGroups.Count > 0)
+                SelectedLinkGroup = OfficialLinkGroups[0];
+            else
+                SelectedLinkGroup = _personalGroup;
         }
 
         [RelayCommand]
-        private void Loaded()
+        private void SelectPersonalGroup()
         {
-            UpdateNow();
-            _timer.Start();
+            SelectedLinkGroup = _personalGroup;
         }
 
-        [RelayCommand]
-        private void Unloaded()
+        private static HomeAppItem ToOfficialAppItem(HomeLinkEntry entry)
         {
-            _timer.Stop();
-        }
-
-        private void LoadApps()
-        {
-            var apps = HomeAppService.LoadApps();
-            var filtered = apps.Where(a => !(a.Type == HomeAppType.Widget &&
-                                             (string.Equals(a.WidgetKey, "CalendarWidget", StringComparison.OrdinalIgnoreCase)
-                                              || string.Equals(a.WidgetKey, "SystemInfoWidget", StringComparison.OrdinalIgnoreCase)
-                                              || string.Equals(a.WidgetKey, "DeveloperToolWidget", StringComparison.OrdinalIgnoreCase)))).ToList();
-            
-            _sourceApps.Clear();
-            foreach (var app in filtered)
+            return new HomeAppItem
             {
-                _sourceApps.Add(app);
-            }
-
-            if (filtered.Count != apps.Count)
-            {
-                HomeAppService.SaveApps(_sourceApps);
-            }
-        }
-
-        private void UpdateNow()
-        {
-            CurrentTime = DateTime.Now.ToString("HH:mm");
-            CurrentDate = DateTime.Now.ToString("yyyy-MM-dd");
+                Id = string.IsNullOrWhiteSpace(entry.Id) ? Guid.NewGuid().ToString() : entry.Id,
+                Type = HomeAppType.WebLink,
+                Title = entry.Title ?? string.Empty,
+                Description = entry.Description ?? string.Empty,
+                Url = entry.Url ?? string.Empty,
+                Icon = HomeIconHelper.ResolveIcon(entry.Icon),
+                IsOfficial = true
+            };
         }
 
         [RelayCommand]
@@ -120,55 +278,35 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private void EditApp(HomeAppItem app)
         {
-            if (app == null) return;
-            
-            if (app.Type == HomeAppType.WebLink)
-            {
-                var dialog = new AddLinkWindow();
-                dialog.Owner = Application.Current.MainWindow;
-                dialog.TitleBox.Text = app.Title;
-                dialog.UrlBox.Text = app.Url;
-                dialog.DescBox.Text = app.Description;
-                dialog.IconBox.SelectedValue = app.Icon;
-                dialog.Title = LanguageService.Instance["edit_link"];
+            if (app == null || app.IsReadOnly)
+                return;
 
-                if (dialog.ShowDialog() == true)
-                {
-                    app.Title = dialog.Result.Title;
-                    app.Url = dialog.Result.Url;
-                    app.Description = dialog.Result.Description;
-                    app.Icon = dialog.Result.Icon;
-                    
-                    HomeAppService.SaveApps(_sourceApps);
-                }
-            }
-        }
+            if (app.Type != HomeAppType.WebLink)
+                return;
 
-        public void SaveOrder()
-        {
-            HomeAppService.SaveApps(_sourceApps);
-        }
+            var dialog = new AddLinkWindow();
+            dialog.Owner = Application.Current.MainWindow;
+            dialog.TitleBox.Text = app.Title;
+            dialog.UrlBox.Text = app.Url;
+            dialog.DescBox.Text = app.Description;
+            dialog.LoadIcon(app.Icon);
+            dialog.Title = LanguageService.Instance["edit_link"];
 
-        [RelayCommand]
-        private void SearchStarted()
-        {
-            var q = (searchString ?? string.Empty).Trim();
-            if (q.Length == 0) return;
-            var url = "https://www.bing.com/search?q=" + Uri.EscapeDataString(q);
-            try
+            if (dialog.ShowDialog() == true)
             {
-                Process.Start(new ProcessStartInfo("cmd", $"/c start {url}") { CreateNoWindow = true });
-            }
-            catch (Exception ex)
-            {
-                MessageHelper.Warning("OpenBrowserError: " + ex.Message);
+                app.Title = dialog.Result.Title;
+                app.Url = dialog.Result.Url;
+                app.Description = dialog.Result.Description;
+                app.Icon = dialog.Result.Icon;
+                SavePersonalLinks();
             }
         }
 
         [RelayCommand]
         private void OpenApp(HomeAppItem app)
         {
-            if (app == null || IsEditMode) return;
+            if (app == null || IsEditMode)
+                return;
 
             if (app.Type == HomeAppType.WebLink && !string.IsNullOrWhiteSpace(app.Url))
             {
@@ -183,110 +321,120 @@ namespace GeoChemistryNexus.ViewModels
             }
             else if (app.Type == HomeAppType.Widget)
             {
-                try
+                OpenWidget(app);
+            }
+        }
+
+        private void OpenWidget(HomeAppItem app)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(app.WidgetKey) && _openedWindows.TryGetValue(app.WidgetKey, out var existingWindow))
                 {
-                    // 检查窗口是否已打开
-                    if (!string.IsNullOrEmpty(app.WidgetKey) && _openedWindows.TryGetValue(app.WidgetKey, out var existingWindow))
+                    if (existingWindow.IsLoaded)
                     {
-                        if (existingWindow.IsLoaded)
-                        {
-                            if (existingWindow.WindowState == WindowState.Minimized)
-                                existingWindow.WindowState = WindowState.Normal;
-                            existingWindow.Activate();
-                            return;
-                        }
-                        else
-                        {
-                            _openedWindows.Remove(app.WidgetKey);
-                        }
+                        if (existingWindow.WindowState == WindowState.Minimized)
+                            existingWindow.WindowState = WindowState.Normal;
+                        existingWindow.Activate();
+                        return;
                     }
 
-                    Window window = null;
-
-                    if (app.WidgetKey == "TemplateTranslatorWidget")
-                    {
-                        window = new Window
-                        {
-                            Title = LanguageService.Instance["template_translator"],
-                            Width = 900,
-                            Height = 600,
-                            Content = new TemplateTranslatorWidget { DataContext = new TemplateTranslatorViewModel() }
-                        };
-                    }
-                    else if (app.WidgetKey == "TemplateRepairWidget")
-                    {
-                        window = new Window
-                        {
-                            Title = LanguageService.Instance["diagram_template_repair_tool"],
-                            Width = 600,
-                            Height = 400,
-                            Content = new TemplateRepairWidget { DataContext = new TemplateRepairViewModel() }
-                        };
-                    }
-                    else if (app.WidgetKey == "AnnouncementWidget")
-                    {
-                        window = new Window
-                        {
-                            Title = LanguageService.Instance["server_announcement"],
-                            Width = 500,
-                            Height = 350,
-                            Content = new AnnouncementWidget { DataContext = new AnnouncementViewModel() }
-                        };
-                    }
-
-                    if (window != null)
-                    {
-                        var mainWindow = Application.Current.MainWindow;
-                        if (mainWindow != null && mainWindow.IsVisible)
-                        {
-                            window.Owner = mainWindow;
-                            window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-                        }
-                        else
-                        {
-                            window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                        }
-                        
-                        window.Show();
-
-                        if (!string.IsNullOrEmpty(app.WidgetKey))
-                        {
-                            _openedWindows[app.WidgetKey] = window;
-                            window.Closed += (s, e) => _openedWindows.Remove(app.WidgetKey);
-                        }
-                    }
+                    _openedWindows.Remove(app.WidgetKey);
                 }
-                catch (Exception ex)
+
+                Window window = null;
+
+                if (app.WidgetKey == "TemplateTranslatorWidget")
                 {
-                    // 打开小组件失败
-                    MessageHelper.Error(LanguageService.Instance["failed_to_open_widget"] + ex.Message + "\n" + ex.StackTrace);
+                    window = new Window
+                    {
+                        Title = LanguageService.Instance["template_translator"],
+                        Width = 900,
+                        Height = 600,
+                        Content = new TemplateTranslatorWidget { DataContext = new TemplateTranslatorViewModel() }
+                    };
                 }
+                else if (app.WidgetKey == "OfficialTemplatePublisherWidget")
+                {
+                    window = new Window
+                    {
+                        Title = LanguageService.Instance["official_template_publisher"],
+                        Width = 920,
+                        Height = 700,
+                        Content = new OfficialTemplatePublisherWidget { DataContext = new OfficialTemplatePublisherViewModel() }
+                    };
+                }
+                else if (app.WidgetKey == "AnnouncementWidget")
+                {
+                    window = new Window
+                    {
+                        Title = LanguageService.Instance["server_announcement"],
+                        Width = 500,
+                        Height = 350,
+                        Content = new AnnouncementWidget { DataContext = new AnnouncementViewModel() }
+                    };
+                }
+
+                if (window == null)
+                    return;
+
+                var mainWindow = Application.Current.MainWindow;
+                if (mainWindow != null && mainWindow.IsVisible)
+                {
+                    window.Owner = mainWindow;
+                    window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                }
+                else
+                {
+                    window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                }
+
+                window.Show();
+
+                if (!string.IsNullOrEmpty(app.WidgetKey))
+                {
+                    _openedWindows[app.WidgetKey] = window;
+                    window.Closed += (s, e) => _openedWindows.Remove(app.WidgetKey);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.Error(LanguageService.Instance["failed_to_open_widget"] + ex.Message + "\n" + ex.StackTrace);
             }
         }
 
         [RelayCommand]
         private void RemoveApp(HomeAppItem app)
         {
-            if (app != null && _sourceApps.Contains(app))
+            if (app == null || app.IsReadOnly)
+                return;
+
+            if (app.Type == HomeAppType.Widget && _widgets.Contains(app))
             {
-                _sourceApps.Remove(app);
-                HomeAppService.SaveApps(_sourceApps);
+                _widgets.Remove(app);
+                SaveWidgets();
+                return;
+            }
+
+            if (_personalGroup?.Items.Contains(app) == true)
+            {
+                _personalGroup.Items.Remove(app);
+                SavePersonalLinks();
             }
         }
 
         [RelayCommand]
         private void AddWebLink()
         {
+            EnsurePersonalGroup();
+            SelectedLinkGroup = _personalGroup;
+
             var dialog = new AddLinkWindow();
             dialog.Owner = Application.Current.MainWindow;
-            if (dialog.ShowDialog() == true)
+            if (dialog.ShowDialog() == true && dialog.Result != null)
             {
-                var newItem = dialog.Result;
-                if (newItem != null)
-                {
-                    _sourceApps.Add(newItem);
-                    HomeAppService.SaveApps(_sourceApps);
-                }
+                _personalGroup.Items.Add(dialog.Result);
+                SavePersonalLinks();
             }
         }
 
@@ -296,55 +444,106 @@ namespace GeoChemistryNexus.ViewModels
             var widgets = HomeAppService.GetAvailableWidgets();
             var dialog = new AddWidgetWindow(widgets);
             dialog.Owner = Application.Current.MainWindow;
-            
-            if (dialog.ShowDialog() == true)
+
+            if (dialog.ShowDialog() == true && dialog.SelectedWidget != null)
             {
                 var widget = dialog.SelectedWidget;
-                if (widget != null)
+                _widgets.Add(new HomeAppItem
                 {
-                    // 创建一个新的实例
-                    var newItem = new HomeAppItem
-                    {
-                        Type = HomeAppType.Widget,
-                        Title = widget.Title,
-                        Description = widget.Description,
-                        WidgetKey = widget.WidgetKey,
-                        Icon = widget.Icon
-                    };
-                    _sourceApps.Add(newItem);
-                    HomeAppService.SaveApps(_sourceApps);
-                }
+                    Type = HomeAppType.Widget,
+                    Title = widget.Title,
+                    Description = widget.Description,
+                    WidgetKey = widget.WidgetKey,
+                    Icon = widget.Icon
+                });
+                SaveWidgets();
             }
+        }
+
+        private void EnsurePersonalGroup()
+        {
+            if (_personalGroup != null)
+                return;
+
+            _personalGroup = new HomeLinkGroupViewModel
+            {
+                GroupId = "personal",
+                Title = LanguageService.Instance["home_personal_group"],
+                IsPersonal = true,
+                IsVisible = true
+            };
+            OnPropertyChanged(nameof(PersonalLinkGroup));
+        }
+
+        private void SavePersonalLinks()
+        {
+            EnsurePersonalGroup();
+            HomeUserConfigService.SavePersonalLinks(_personalGroup.Items);
+        }
+
+        private void SaveWidgets()
+        {
+            HomeUserConfigService.SaveWidgets(_widgets);
         }
 
         void IDropTarget.DragOver(IDropInfo dropInfo)
         {
-            if (!string.IsNullOrEmpty(SearchString)) return;
+            if (!IsEditMode || dropInfo.Data is not HomeAppItem source || dropInfo.TargetItem is not HomeAppItem target)
+                return;
 
-            if (IsEditMode && dropInfo.Data is HomeAppItem && dropInfo.TargetItem is HomeAppItem)
-            {
-                dropInfo.DropTargetAdorner = DropTargetAdorners.Insert;
-                dropInfo.Effects = DragDropEffects.Move;
-            }
+            if (source.IsReadOnly || target.IsReadOnly)
+                return;
+
+            if (!IsSameReorderScope(source, target))
+                return;
+
+            dropInfo.DropTargetAdorner = DropTargetAdorners.Insert;
+            dropInfo.Effects = DragDropEffects.Move;
         }
 
         void IDropTarget.Drop(IDropInfo dropInfo)
         {
-            if (IsEditMode && dropInfo.Data is HomeAppItem sourceItem && dropInfo.TargetItem is HomeAppItem targetItem)
-            {
-                int sourceIndex = _sourceApps.IndexOf(sourceItem);
-                int targetIndex = _sourceApps.IndexOf(targetItem);
+            if (!IsEditMode || dropInfo.Data is not HomeAppItem sourceItem || dropInfo.TargetItem is not HomeAppItem targetItem)
+                return;
 
+            if (sourceItem.IsReadOnly || targetItem.IsReadOnly)
+                return;
+
+            if (_widgets.Contains(sourceItem) && _widgets.Contains(targetItem))
+            {
+                int sourceIndex = _widgets.IndexOf(sourceItem);
+                int targetIndex = _widgets.IndexOf(targetItem);
                 if (sourceIndex != -1 && targetIndex != -1)
                 {
-                    _sourceApps.Move(sourceIndex, targetIndex);
-                    
-                    if (string.IsNullOrEmpty(SearchString))
-                    {
-                        HomeAppService.SaveApps(_sourceApps);
-                    }
+                    _widgets.Move(sourceIndex, targetIndex);
+                    SaveWidgets();
+                }
+
+                return;
+            }
+
+            if (SelectedLinkGroup?.IsPersonal == true
+                && SelectedLinkGroup.Items.Contains(sourceItem)
+                && SelectedLinkGroup.Items.Contains(targetItem))
+            {
+                int sourceIndex = SelectedLinkGroup.Items.IndexOf(sourceItem);
+                int targetIndex = SelectedLinkGroup.Items.IndexOf(targetItem);
+                if (sourceIndex != -1 && targetIndex != -1)
+                {
+                    SelectedLinkGroup.Items.Move(sourceIndex, targetIndex);
+                    SavePersonalLinks();
                 }
             }
+        }
+
+        private bool IsSameReorderScope(HomeAppItem a, HomeAppItem b)
+        {
+            if (_widgets.Contains(a) && _widgets.Contains(b))
+                return true;
+
+            return SelectedLinkGroup?.IsPersonal == true
+                   && SelectedLinkGroup.Items.Contains(a)
+                   && SelectedLinkGroup.Items.Contains(b);
         }
     }
 }

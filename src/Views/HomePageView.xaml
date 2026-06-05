@@ -5,63 +5,53 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:hc="https://handyorg.github.io/handycontrol"
       xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
-      xmlns:models="clr-namespace:GeoChemistryNexus.Models"
       xmlns:helpers="clr-namespace:GeoChemistryNexus.Helpers"
+      xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
       xmlns:dd="urn:gong-wpf-dragdrop"
       xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
       mc:Ignorable="d"
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="HomePageView">
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding LoadedCommand}"/>
-        </i:EventTrigger>
-        <i:EventTrigger EventName="Unloaded">
-            <i:InvokeCommandAction Command="{Binding UnloadedCommand}"/>
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
-    <Page.Background>
-        <ImageBrush ImageSource="pack://application:,,,/GeoChemistryNexus;component/Data/Image/HomePic/Default.jpg"/>
-    </Page.Background>
-    
+      d:DesignHeight="600" d:DesignWidth="1000"
+      Title="HomePageView"
+      Background="#F2F2F7"
+      HorizontalAlignment="Stretch"
+      VerticalAlignment="Stretch">
     <Page.Resources>
+        <cvs:HomeIconIsUrlConverter x:Key="HomeIconIsUrlConverter"/>
+        <cvs:StringToBitmapImageConverter x:Key="HomeIconBitmapConverter"/>
         <helpers:BindingProxy x:Key="VmProxy" Data="{Binding}" />
-        
-        <!-- Template for WebLink and Widget -->
-        <DataTemplate x:Key="AppItemTemplate">
-            <Grid Margin="15" Cursor="Hand" Width="80">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
 
-                <Grid.InputBindings>
-                    <MouseBinding MouseAction="LeftClick" Command="{Binding Data.OpenAppCommand, Source={StaticResource VmProxy}}" CommandParameter="{Binding}"/>
-                </Grid.InputBindings>
-                
-                <Grid.ContextMenu>
-                    <ContextMenu Width="180">
-                        <!-- 编辑 -->
-                        <MenuItem Header="{Binding [Edit],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding Data.EditAppCommand, Source={StaticResource VmProxy}}" CommandParameter="{Binding}"
-                                  Visibility="{Binding IsWebLink, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <DataTemplate x:Key="ShortcutItemTemplate">
+            <StackPanel Width="68" Margin="0,2,10,10">
+                <StackPanel.InputBindings>
+                    <MouseBinding MouseAction="LeftClick"
+                                  Command="{Binding Data.OpenAppCommand, Source={StaticResource VmProxy}}"
+                                  CommandParameter="{Binding}"/>
+                </StackPanel.InputBindings>
+                <StackPanel.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="{Binding [Edit],Source={x:Static lg:LanguageService.Instance}}"
+                                  Command="{Binding Data.EditAppCommand, Source={StaticResource VmProxy}}"
+                                  CommandParameter="{Binding}"
+                                  Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanToVisibilityReConverter}}">
                             <MenuItem.Icon>
                                 <TextBlock Text="&#xE70F;" FontFamily="Segoe MDL2 Assets"/>
                             </MenuItem.Icon>
                         </MenuItem>
-                        <!-- 删除 -->
-                        <MenuItem Header="{Binding [Delete],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding Data.RemoveAppCommand, Source={StaticResource VmProxy}}" CommandParameter="{Binding}">
+                        <MenuItem Header="{Binding [Delete],Source={x:Static lg:LanguageService.Instance}}"
+                                  Command="{Binding Data.RemoveAppCommand, Source={StaticResource VmProxy}}"
+                                  CommandParameter="{Binding}"
+                                  Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanToVisibilityReConverter}}">
                             <MenuItem.Icon>
                                 <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets"/>
                             </MenuItem.Icon>
                         </MenuItem>
                     </ContextMenu>
-                </Grid.ContextMenu>
+                </StackPanel.ContextMenu>
 
-                <!-- Icon Container -->
-                <Border Grid.Row="0" Width="60" Height="60" Background="White" CornerRadius="12" Effect="{DynamicResource EffectShadow2}"
-                        ToolTipService.InitialShowDelay="300" ToolTipService.Placement="Top">
+                <Border ToolTipService.InitialShowDelay="350" ToolTipService.Placement="Top">
                     <Border.Style>
-                        <Style TargetType="Border">
+                        <Style TargetType="Border" BasedOn="{StaticResource HomeLinkTileBorderStyle}">
+                            <Setter Property="ToolTip" Value="{Binding Description}"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Description}" Value="">
                                     <Setter Property="ToolTipService.IsEnabled" Value="False"/>
@@ -70,117 +60,281 @@
                                     <Setter Property="ToolTipService.IsEnabled" Value="False"/>
                                 </DataTrigger>
                             </Style.Triggers>
-                            <Setter Property="ToolTip" Value="{Binding Description}"/>
                         </Style>
                     </Border.Style>
-                     <Grid>
-                         <Viewbox Margin="12">
-                            <TextBlock Text="{Binding Icon}" FontFamily="Segoe MDL2 Assets" Foreground="#333"/>
+                    <Grid>
+                        <Viewbox Margin="10"
+                                 Visibility="{Binding IsIconUrl, Converter={StaticResource BooleanToVisibilityReConverter}}">
+                            <TextBlock Text="{Binding Icon}" FontFamily="Segoe MDL2 Assets" Foreground="#3C3C43"/>
                         </Viewbox>
-                        
-                        <!-- Edit Mode Indicator -->
-                        <Border Background="#2196F3" CornerRadius="8" Width="16" Height="16" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-4,-4,0"
-                                Visibility="{Binding Data.IsEditMode, Source={StaticResource VmProxy}, Converter={StaticResource BooleanToVisibilityConverter}}">
-                            <TextBlock Text="&#xE70F;" FontFamily="Segoe MDL2 Assets" Foreground="White" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                             <Border.InputBindings>
-                                <MouseBinding MouseAction="LeftClick" Command="{Binding Data.EditAppCommand, Source={StaticResource VmProxy}}" CommandParameter="{Binding}"/>
+                        <Image Margin="10"
+                               Source="{Binding Icon, Converter={StaticResource HomeIconBitmapConverter}, ConverterParameter=48}"
+                               Stretch="Uniform"
+                               Visibility="{Binding IsIconUrl, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                        <Border Background="#007AFF" CornerRadius="7" Width="14" Height="14"
+                                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-3,-3,0"
+                                Visibility="Collapsed">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding Data.IsEditMode, Source={StaticResource VmProxy}}" Value="True"/>
+                                                <Condition Binding="{Binding Data.IsSelectedGroupPersonal, Source={StaticResource VmProxy}}" Value="True"/>
+                                                <Condition Binding="{Binding IsReadOnly}" Value="False"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <TextBlock Text="&#xE70F;" FontFamily="Segoe MDL2 Assets" Foreground="White" FontSize="8"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <Border.InputBindings>
+                                <MouseBinding MouseAction="LeftClick"
+                                              Command="{Binding Data.EditAppCommand, Source={StaticResource VmProxy}}"
+                                              CommandParameter="{Binding}"/>
                             </Border.InputBindings>
                         </Border>
-                     </Grid>
+                    </Grid>
                 </Border>
-                
-                     
-                <!-- Title -->
-                <TextBlock Grid.Row="1" Text="{Binding Title}" Margin="0,5,0,0" HorizontalAlignment="Center" TextAlignment="Center"
-                           TextTrimming="CharacterEllipsis" FontWeight="Bold" Foreground="White" FontSize="13">
-                     <TextBlock.Effect>
-                        <DropShadowEffect BlurRadius="2" ShadowDepth="0" Color="Black" Opacity="0.8"/>
-                     </TextBlock.Effect>
-                </TextBlock>
-            </Grid>
+                <TextBlock Text="{Binding Title}" Style="{StaticResource HomeLinkTitleStyle}" Margin="0,5,0,0"/>
+            </StackPanel>
         </DataTemplate>
-        
-    </Page.Resources>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="3.5*"/>
-            <RowDefinition Height="6.5*"/>
-        </Grid.RowDefinitions>
-
-        <Grid Grid.Row="0" VerticalAlignment="Center">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-
-            <TextBlock Name="Timer" Text="{Binding CurrentTime}" Foreground="White" FontSize="64" FontWeight="Bold"
-                       HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-
-            <TextBlock Name="DayTimer" Text="{Binding CurrentDate}" Foreground="White" FontSize="20"
-                       HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Margin="0 0 0 20"/>
-
-            <hc:SearchBar Height="10" Width="500" Style="{StaticResource SearchBarPlus}" Grid.Row="2"
-                           Name="SearchBar" Text="{Binding SearchString, UpdateSourceTrigger=PropertyChanged}" Command="{Binding SearchStartedCommand}"/>
-        </Grid>
-
-        <Grid Grid.Row="1" Margin="20,-40,20,20">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
-            <!-- App List -->
-            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,30,0,0" Background="Transparent">
-                <ScrollViewer.ContextMenu>
+        <DataTemplate x:Key="WidgetPanelTileTemplate">
+            <Border Style="{StaticResource HomeWidgetPanelTileStyle}">
+                <Border.InputBindings>
+                    <MouseBinding MouseAction="LeftClick"
+                                  Command="{Binding Data.OpenAppCommand, Source={StaticResource VmProxy}}"
+                                  CommandParameter="{Binding}"/>
+                </Border.InputBindings>
+                <Border.ContextMenu>
                     <ContextMenu>
-                        <!--添加链接-->
-                        <MenuItem Header="{Binding [add_link],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding AddWebLinkCommand}">
+                        <MenuItem Header="{Binding [Delete],Source={x:Static lg:LanguageService.Instance}}"
+                                  Command="{Binding Data.RemoveAppCommand, Source={StaticResource VmProxy}}"
+                                  CommandParameter="{Binding}">
                             <MenuItem.Icon>
-                                <TextBlock Text="&#xE71B;" FontFamily="Segoe MDL2 Assets"/>
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <!--添加小组件-->
-                        <MenuItem Header="{Binding [add_widget],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding AddWidgetCommand}">
-                            <MenuItem.Icon>
-                                <TextBlock Text="&#xE74C;" FontFamily="Segoe MDL2 Assets"/>
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <Separator/>
-                        <!--编辑菜单栏项-->
-                        <MenuItem Header="{Binding [edit_menu_bar_item],Source={x:Static lg:LanguageService.Instance}}" Command="{Binding ToggleEditModeCommand}">
-                            <MenuItem.Icon>
-                                <TextBlock Text="&#xE70F;" FontFamily="Segoe MDL2 Assets"/>
+                                <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets"/>
                             </MenuItem.Icon>
                         </MenuItem>
                     </ContextMenu>
-                </ScrollViewer.ContextMenu>
-                <ItemsControl ItemsSource="{Binding HomeApps}" ItemTemplate="{StaticResource AppItemTemplate}"
-                              dd:DragDrop.IsDragSource="{Binding IsEditMode}"
-                              dd:DragDrop.IsDropTarget="{Binding IsEditMode}"
-                              dd:DragDrop.DropHandler="{Binding}"
-                              dd:DragDrop.UseDefaultDragAdorner="True">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" Width="800"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                </ItemsControl>
-            </ScrollViewer>
+                </Border.ContextMenu>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="40"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="0" Width="36" Height="36" Background="White" CornerRadius="9"
+                            BorderBrush="#E5E5EA" BorderThickness="1" VerticalAlignment="Center">
+                        <Viewbox Margin="8">
+                            <TextBlock Text="{Binding Icon}" FontFamily="Segoe MDL2 Assets" Foreground="#007AFF"/>
+                        </Viewbox>
+                    </Border>
+                    <StackPanel Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Title}" FontSize="13" FontWeight="SemiBold" Foreground="#1C1C1E"
+                                   TextTrimming="CharacterEllipsis"/>
+                        <TextBlock Text="{Binding Description}" FontSize="11" Foreground="#8E8E93" Margin="0,2,0,0"
+                                   TextTrimming="CharacterEllipsis" MaxHeight="32" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </DataTemplate>
+    </Page.Resources>
 
-            <!-- Exit Edit Mode Button -->
-            <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,20"
-                        Visibility="{Binding IsEditMode, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <Button Command="{Binding ToggleEditModeCommand}" Style="{StaticResource ButtonPrimary}" 
-                        Width="40" Height="40" Margin="0,0,0,10" ToolTip="{Binding [QuitEdit],Source={x:Static lg:LanguageService.Instance}}" Padding="0" hc:BorderElement.CornerRadius="20">
-                    <Button.Content>
-                         <Grid>
-                             <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
-                         </Grid>
-                    </Button.Content>
-                </Button>
-            </StackPanel>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadedCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Style="{StaticResource ModernCardStyle}" Margin="0,0,0,12" Padding="14,12"
+                Visibility="{Binding HasAnnouncement, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <DockPanel Grid.Row="0" Margin="0,0,0,6">
+                    <Button DockPanel.Dock="Right" Style="{StaticResource ButtonIcon}" Margin="4,0,0,0"
+                            Command="{Binding RefreshAnnouncementCommand}"
+                            ToolTip="{Binding [refresh],Source={x:Static lg:LanguageService.Instance}}"
+                            IsEnabled="{Binding IsAnnouncementIdle}">
+                        <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" Foreground="#636366"/>
+                    </Button>
+                    <TextBlock Text="{Binding [announcement],Source={x:Static lg:LanguageService.Instance}}"
+                               FontSize="14" FontWeight="SemiBold" Foreground="#1C1C1E" VerticalAlignment="Center"/>
+                </DockPanel>
+                <TextBlock Grid.Row="1" Text="{Binding AnnouncementText}" TextWrapping="Wrap"
+                           FontSize="13" LineHeight="20" Foreground="#48484A"/>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="2*" MinWidth="240" MaxWidth="420"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Style="{StaticResource ModernCardStyle}" Margin="0" Padding="16,14"
+                    VerticalAlignment="Stretch">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <DockPanel Grid.Row="0" Margin="0,0,0,10">
+                        <Button DockPanel.Dock="Right" Style="{StaticResource HomeToolbarButtonStyle}"
+                                Command="{Binding ToggleEditModeCommand}" Margin="0"
+                                ToolTip="{Binding [edit_menu_bar_item],Source={x:Static lg:LanguageService.Instance}}"
+                                Visibility="{Binding IsSelectedGroupPersonal, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <TextBlock Text="&#xE70F;" FontFamily="Segoe MDL2 Assets" FontSize="15"
+                                       Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Button>
+                        <Button DockPanel.Dock="Right" Style="{StaticResource HomeToolbarButtonStyle}"
+                                Command="{Binding AddWebLinkCommand}"
+                                ToolTip="{Binding [add_link],Source={x:Static lg:LanguageService.Instance}}"
+                                Visibility="{Binding IsSelectedGroupPersonal, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <TextBlock Text="&#xE71B;" FontFamily="Segoe MDL2 Assets" FontSize="15"
+                                       Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Button>
+                        <Button DockPanel.Dock="Right" Style="{StaticResource HomeToolbarButtonStyle}"
+                                Command="{Binding RefreshCatalogCommand}" IsEnabled="{Binding IsCatalogIdle}"
+                                ToolTip="{Binding [refresh],Source={x:Static lg:LanguageService.Instance}}">
+                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="15"
+                                       Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Button>
+                        <TextBlock Text="{Binding [home_recommended_content],Source={x:Static lg:LanguageService.Instance}}"
+                                   FontSize="14" FontWeight="SemiBold" Foreground="#1C1C1E" VerticalAlignment="Center"/>
+                    </DockPanel>
+
+                    <Grid Grid.Row="1" Margin="0,0,0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <ListBox Grid.Column="0" ItemsSource="{Binding OfficialLinkGroups}"
+                                 SelectedItem="{Binding SelectedOfficialGroup, Mode=TwoWay}"
+                                 DisplayMemberPath="Title"
+                                 Style="{StaticResource HomeGroupTabListStyle}"
+                                 ItemContainerStyle="{StaticResource HomeGroupTabItemStyle}"/>
+                        <Button Grid.Column="1" Margin="8,0,0,0" VerticalAlignment="Top"
+                                Command="{Binding SelectPersonalGroupCommand}"
+                                Content="{Binding [home_personal_group],Source={x:Static lg:LanguageService.Instance}}">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource HomePersonalTabButtonStyle}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsSelectedGroupPersonal}" Value="True">
+                                            <Setter Property="Background" Value="#007AFF"/>
+                                            <Setter Property="Foreground" Value="White"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </Grid>
+
+                    <TextBlock Grid.Row="2" Text="{Binding [home_personal_group_hint],Source={x:Static lg:LanguageService.Instance}}"
+                               FontSize="12" Foreground="#007AFF" Margin="4,0,0,4"
+                               Visibility="{Binding IsSelectedGroupPersonal, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                    <TextBlock Grid.Row="3" Text="{Binding [home_group_empty_links],Source={x:Static lg:LanguageService.Instance}}"
+                               FontSize="13" Foreground="#8E8E93" HorizontalAlignment="Center" Margin="0,0,0,4"
+                               TextAlignment="Center">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedLinkGroup.Items.Count}" Value="0">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+
+                    <ScrollViewer Grid.Row="4" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                                  VerticalAlignment="Stretch" Padding="4,6,4,4" ClipToBounds="False">
+                        <ItemsControl ItemsSource="{Binding SelectedLinkGroup.Items}"
+                                      ItemTemplate="{StaticResource ShortcutItemTemplate}"
+                                      HorizontalAlignment="Left"
+                                      dd:DragDrop.DropHandler="{Binding}"
+                                      dd:DragDrop.UseDefaultDragAdorner="True">
+                            <ItemsControl.Style>
+                                <Style TargetType="ItemsControl">
+                                    <Setter Property="dd:DragDrop.IsDragSource" Value="False"/>
+                                    <Setter Property="dd:DragDrop.IsDropTarget" Value="False"/>
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding Data.IsSelectedGroupPersonal, Source={StaticResource VmProxy}}" Value="True"/>
+                                                <Condition Binding="{Binding Data.IsEditMode, Source={StaticResource VmProxy}}" Value="True"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="dd:DragDrop.IsDragSource" Value="True"/>
+                                            <Setter Property="dd:DragDrop.IsDropTarget" Value="True"/>
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ItemsControl.Style>
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+
+            <Border Grid.Column="2" Style="{StaticResource ModernCardStyle}" Margin="0" Padding="14,14"
+                    VerticalAlignment="Stretch">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <DockPanel Grid.Row="0" Margin="0,0,0,10">
+                        <Button DockPanel.Dock="Right" Style="{StaticResource HomeToolbarButtonStyle}" Margin="0"
+                                Command="{Binding AddWidgetCommand}"
+                                ToolTip="{Binding [add_widget],Source={x:Static lg:LanguageService.Instance}}">
+                            <TextBlock Text="&#xE74C;" FontFamily="Segoe MDL2 Assets" FontSize="15"
+                                       Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Button>
+                        <TextBlock Text="{Binding [home_widgets_section],Source={x:Static lg:LanguageService.Instance}}"
+                                   FontSize="14" FontWeight="SemiBold" Foreground="#1C1C1E" VerticalAlignment="Center"/>
+                    </DockPanel>
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                        <ItemsControl ItemsSource="{Binding Widgets}" ItemTemplate="{StaticResource WidgetPanelTileTemplate}"
+                                      dd:DragDrop.IsDragSource="{Binding IsEditMode}"
+                                      dd:DragDrop.IsDropTarget="{Binding IsEditMode}"
+                                      dd:DragDrop.DropHandler="{Binding}"
+                                      dd:DragDrop.UseDefaultDragAdorner="True"/>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
         </Grid>
+
+        <Button Grid.Row="1" Grid.ColumnSpan="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,8,8"
+                Command="{Binding ToggleEditModeCommand}" Style="{StaticResource ButtonPrimary}"
+                Width="44" Height="44" Padding="0" hc:BorderElement.CornerRadius="22"
+                ToolTip="{Binding [QuitEdit],Source={x:Static lg:LanguageService.Instance}}"
+                Visibility="{Binding IsEditMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+        </Button>
     </Grid>
 </Page>

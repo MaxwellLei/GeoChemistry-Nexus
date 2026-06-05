@@ -150,9 +150,6 @@
   <data name="geo_validate_version_format" xml:space="preserve">
     <value>版本格式不正确，只允许 x.x.x 格式（如 1.0.0、1.2.3）。</value>
   </data>
-  <data name="drawing_template_repair_tool" xml:space="preserve">
-    <value>图解模板修复工具</value>
-  </data>
   <data name="category_structure_min_two" xml:space="preserve">
     <value>分类结构必须大于等于2！</value>
   </data>
@@ -187,7 +184,7 @@
     <value>微量元素蛛网图</value>
   </data>
   <data name="geo_msg_batch_export_success" xml:space="preserve">
-    <value>官方温度计共 {0} 个，本次导出 {1} 个（新增/修改）
+    <value>官方温压计共 {0} 个，本次导出 {1} 个（新增/修改）
 目录: {2}</value>
   </data>
   <data name="geo_btn_apply" xml:space="preserve">
@@ -236,7 +233,7 @@
     <value>新建图表</value>
   </data>
   <data name="geo_msg_promoted" xml:space="preserve">
-    <value>已转换为官方温度计</value>
+    <value>已转换为官方温压计</value>
   </data>
   <data name="geo_msg_test_input_required" xml:space="preserve">
     <value>请输入测试值。</value>
@@ -248,10 +245,10 @@
     <value>正在下载...</value>
   </data>
   <data name="geo_hint_no_custom" xml:space="preserve">
-    <value>暂无自定义温度计，点击 + 创建。</value>
+    <value>暂无自定义温压计，点击 + 创建。</value>
   </data>
   <data name="geo_msg_update_downloaded" xml:space="preserve">
-    <value>已下载 {0} 个地质温度计</value>
+    <value>已下载 {0} 个地质温压计</value>
   </data>
   <data name="use_help" xml:space="preserve">
     <value>图解指南</value>
@@ -304,6 +301,87 @@
   <data name="add_link" xml:space="preserve">
     <value>添加链接</value>
   </data>
+  <data name="home_recommended_content" xml:space="preserve">
+    <value>推荐内容</value>
+  </data>
+  <data name="home_personal_group" xml:space="preserve">
+    <value>个人</value>
+  </data>
+  <data name="home_widgets_section" xml:space="preserve">
+    <value>小组件</value>
+  </data>
+  <data name="home_personal_group_hint" xml:space="preserve">
+    <value>此分组可添加、编辑或删除您的链接。</value>
+  </data>
+  <data name="home_widgets_panel_desc" xml:space="preserve">
+    <value>在软件内打开的工具，显示于右侧栏。</value>
+  </data>
+  <data name="home_group_empty_links" xml:space="preserve">
+    <value>此分组暂无链接，可点击「添加链接」创建。</value>
+  </data>
+  <data name="home_catalog_updated" xml:space="preserve">
+    <value>主页链接目录已更新。</value>
+  </data>
+  <data name="home_catalog_already_latest" xml:space="preserve">
+    <value>主页链接目录已是最新版本。</value>
+  </data>
+  <data name="home_catalog_sync_failed" xml:space="preserve">
+    <value>同步主页链接目录失败。</value>
+  </data>
+  <data name="official_publisher_home_links_summary" xml:space="preserve">
+    <value>主页链接：{0} 个分组，{1} 个链接，hash={2}。</value>
+  </data>
+  <data name="official_publisher_include_home_links" xml:space="preserve">
+    <value>包含主页链接</value>
+  </data>
+  <data name="official_publisher_home_links_section" xml:space="preserve">
+    <value>主页链接</value>
+  </data>
+  <data name="official_publisher_home_groups" xml:space="preserve">
+    <value>分组</value>
+  </data>
+  <data name="official_publisher_home_link_items" xml:space="preserve">
+    <value>链接</value>
+  </data>
+  <data name="official_publisher_home_links_pending" xml:space="preserve">
+    <value>待发布</value>
+  </data>
+  <data name="official_publisher_home_links_up_to_date" xml:space="preserve">
+    <value>服务器已是最新。</value>
+  </data>
+  <data name="official_publisher_home_links_preview_summary" xml:space="preserve">
+    <value>分组：{0}，链接：{1}，本地 hash：{2}，远程 hash：{3}。</value>
+  </data>
+  <data name="official_publisher_home_links_bundled_saved" xml:space="preserve">
+    <value>主页链接已保存到内置目录。</value>
+  </data>
+  <data name="official_publisher_home_links_reloaded" xml:space="preserve">
+    <value>主页链接编辑器已重新加载。</value>
+  </data>
+  <data name="official_publisher_home_add_group" xml:space="preserve">
+    <value>添加分组</value>
+  </data>
+  <data name="official_publisher_home_edit_group" xml:space="preserve">
+    <value>编辑分组</value>
+  </data>
+  <data name="official_publisher_home_group_title_prompt" xml:space="preserve">
+    <value>请输入分组名称：</value>
+  </data>
+  <data name="official_publisher_home_select_group" xml:space="preserve">
+    <value>请先选择一个分组。</value>
+  </data>
+  <data name="official_publisher_home_save_draft" xml:space="preserve">
+    <value>保存草稿</value>
+  </data>
+  <data name="official_publisher_home_links_draft_saved" xml:space="preserve">
+    <value>主页链接草稿已保存到本地。</value>
+  </data>
+  <data name="home_icon_url" xml:space="preserve">
+    <value>图标 URL</value>
+  </data>
+  <data name="home_icon_url_hint" xml:space="preserve">
+    <value>可选。填写 https://... 时将覆盖上方预设图标。</value>
+  </data>
   <data name="pattern" xml:space="preserve">
     <value>线型</value>
   </data>
@@ -333,9 +411,6 @@
   </data>
   <data name="fill_color_1" xml:space="preserve">
     <value>填充颜色 1</value>
-  </data>
-  <data name="start_check_and_repair" xml:space="preserve">
-    <value>开始检查与修复</value>
   </data>
   <data name="cipw_overview" xml:space="preserve">
     <value>CIPW 标准矿物计算（又称 CIPW Norm）是由 Cross、Iddings、Pirsson 和 Washington 四位岩石学家于 1902 年提出的一种岩石化学计算方法。该方法根据全岩主量元素氧化物的化学分析数据，按照固定的优先顺序将氧化物分配到一组理想化的标准矿物中，用于岩石分类和对比研究。</value>
@@ -370,8 +445,14 @@
   <data name="geo_msg_save_failed" xml:space="preserve">
     <value>保存失败: {0}</value>
   </data>
+  <data name="geo_msg_formula_name_conflict" xml:space="preserve">
+    <value>公式名 '{0}' 已被 '{1}'（{2}）使用</value>
+  </data>
+  <data name="geo_msg_formula_name_duplicate" xml:space="preserve">
+    <value>公式名 '{0}' 在温压计 '{1}' 内重复定义</value>
+  </data>
   <data name="geo_editor_title_new" xml:space="preserve">
-    <value>新建自定义温度计</value>
+    <value>新建自定义温压计</value>
   </data>
   <data name="switch_diagram_language" xml:space="preserve">
     <value>切换图解语言</value>
@@ -401,7 +482,7 @@
     <value>导出 CIPW 计算结果</value>
   </data>
   <data name="geo_menu_import_zip" xml:space="preserve">
-    <value>导入地质温度计 (ZIP)</value>
+    <value>导入地质温压计 (ZIP)</value>
   </data>
   <data name="developer_mode" xml:space="preserve">
     <value>开发者模式</value>
@@ -499,7 +580,7 @@
     <value>已存在，是否覆盖？</value>
   </data>
   <data name="geo_editor_title_edit" xml:space="preserve">
-    <value>编辑温度计</value>
+    <value>编辑温压计</value>
   </data>
   <data name="start_and_end_coordinates" xml:space="preserve">
     <value>起始坐标</value>
@@ -547,7 +628,7 @@
     <value>已添加到收藏</value>
   </data>
   <data name="geo_menu_new_custom" xml:space="preserve">
-    <value>新建自定义地质温度计</value>
+    <value>新建自定义地质温压计</value>
   </data>
   <data name="import_custom_diagram_template" xml:space="preserve">
     <value>导入自定义图解模板</value>
@@ -571,7 +652,7 @@
     <value>检查更新时发生错误：</value>
   </data>
   <data name="GeothermometerSetting" xml:space="preserve">
-    <value>地质温度计设置</value>
+    <value>地质温压计设置</value>
   </data>
   <data name="PlotTitle" xml:space="preserve">
     <value>绘图标题</value>
@@ -586,7 +667,7 @@
     <value>启用标准化</value>
   </data>
   <data name="geo_section_official" xml:space="preserve">
-    <value>官方温度计</value>
+    <value>官方温压计</value>
   </data>
   <data name="geo_help_current_lang" xml:space="preserve">
     <value>当前语言：</value>
@@ -855,7 +936,7 @@
     <value>脚本返回类型错误</value>
   </data>
   <data name="geo_msg_select_thermometer_first" xml:space="preserve">
-    <value>请先选择一个温度计。</value>
+    <value>请先选择一个温压计。</value>
   </data>
   <data name="enter_language_add" xml:space="preserve">
     <value>输入一个语言后按 Enter 键添加。</value>
@@ -986,7 +1067,7 @@
     <value>准铝质</value>
   </data>
   <data name="geo_field_required_hint" xml:space="preserve">
-    <value>必填字段标有 *。版本号格式为 x.x.x（如 1.0.0）。</value>
+    <value>必填字段标有 *。格式基线 x.y 跟随软件温压计版本，修订号 z 为模板内容版本。公式名称将作为 ReoGrid 中的自定义函数名称注册。</value>
   </data>
   <data name="invalid_data_parameter_format" xml:space="preserve">
     <value>数据参数格式不正确</value>
@@ -1034,7 +1115,7 @@
     <value>删除语言列</value>
   </data>
   <data name="geo_msg_export_dialog_title" xml:space="preserve">
-    <value>导出地质温度计</value>
+    <value>导出地质温压计</value>
   </data>
   <data name="edit_link" xml:space="preserve">
     <value>编辑链接</value>
@@ -1121,7 +1202,7 @@
     <value>正在读取用户配置...</value>
   </data>
   <data name="geo_section_custom" xml:space="preserve">
-    <value>自定义温度计</value>
+    <value>自定义温压计</value>
   </data>
   <data name="Placeholder_Axis_Y" xml:space="preserve">
     <value>Y轴</value>
@@ -1145,7 +1226,7 @@
     <value>确定要删除该自定义图解模板吗？</value>
   </data>
   <data name="Geothermometer" xml:space="preserve">
-    <value>地质温度计</value>
+    <value>地质温压计</value>
   </data>
   <data name="y_coordinate" xml:space="preserve">
     <value>Y 坐标</value>
@@ -1257,9 +1338,6 @@
   </data>
   <data name="failed_to_get_announcements" xml:space="preserve">
     <value>获取公告失败:</value>
-  </data>
-  <data name="repair_missing_or_damaged_templates_and_lists" xml:space="preserve">
-    <value>修复丢失或损坏的绘图模板及列表</value>
   </data>
   <data name="MarkerShape_FilledDiamond" xml:space="preserve">
     <value>实心菱形</value>
@@ -1448,6 +1526,24 @@
   <data name="recents_templates" xml:space="preserve">
     <value>最近使用</value>
   </data>
+  <data name="diagram_hint_no_official" xml:space="preserve">
+    <value>暂无官方图解模板。</value>
+  </data>
+  <data name="diagram_hint_no_personal" xml:space="preserve">
+    <value>暂无个人图解，可通过「文件」菜单新建或导入。</value>
+  </data>
+  <data name="diagram_hint_no_favorites" xml:space="preserve">
+    <value>暂无收藏的图解模板。</value>
+  </data>
+  <data name="diagram_hint_no_recents" xml:space="preserve">
+    <value>暂无最近使用的图解模板。</value>
+  </data>
+  <data name="diagram_hint_no_templates" xml:space="preserve">
+    <value>暂无图解模板。</value>
+  </data>
+  <data name="diagram_hint_no_search_results" xml:space="preserve">
+    <value>未找到匹配的模板。</value>
+  </data>
   <data name="downloaded_file_hash_mismatch" xml:space="preserve">
     <value>下载的文件哈希值与服务器不匹配，文件可能已损坏或遭到篡改。</value>
   </data>
@@ -1470,7 +1566,7 @@
     <value>例如: 45.2, 0.8, 12.3, =MyFormula(A2,B2,C2)</value>
   </data>
   <data name="geo_hint_select_thermometer" xml:space="preserve">
-    <value>请从左侧面板选择温度计</value>
+    <value>请从左侧面板选择温压计</value>
   </data>
   <data name="QuitEdit" xml:space="preserve">
     <value>退出编辑</value>
@@ -1581,7 +1677,7 @@
     <value>无法获取公告信息。</value>
   </data>
   <data name="auto_check_geothermometer_updates" xml:space="preserve">
-    <value>自动检查地质温度计更新</value>
+    <value>自动检查地质温压计更新</value>
   </data>
   <data name="add_widget" xml:space="preserve">
     <value>添加小组件</value>
@@ -1608,7 +1704,7 @@
     <value>最大化</value>
   </data>
   <data name="diagram_template_not_found_repair_hint" xml:space="preserve">
-    <value>找不到文件图解模板，请尝试在主页使用'模板修复工具'进行修复。</value>
+    <value>找不到图解模板文件，请检查安装是否完整或尝试重新安装。</value>
   </data>
   <data name="no_new_templates_to_download" xml:space="preserve">
     <value>没有需要下载的新模板</value>
@@ -1623,7 +1719,7 @@
     <value>删除此顶点</value>
   </data>
   <data name="geo_dialog_delete_thermometer" xml:space="preserve">
-    <value>确定删除{0}温度计「{1}」？</value>
+    <value>确定删除{0}温压计「{1}」？</value>
   </data>
   <data name="x_coordinate" xml:space="preserve">
     <value>X 坐标</value>
@@ -1640,6 +1736,12 @@
   <data name="add_image" xml:space="preserve">
     <value>添加图片</value>
   </data>
+  <data name="start_image_copy_successfully" xml:space="preserve">
+    <value>启动图片添加成功。</value>
+  </data>
+  <data name="start_image_copy_error" xml:space="preserve">
+    <value>启动图片添加失败：</value>
+  </data>
   <data name="add_arrow" xml:space="preserve">
     <value>添加箭头</value>
   </data>
@@ -1655,8 +1757,152 @@
   <data name="geo_script_inputs" xml:space="preserve">
     <value>输入列（逗号分隔）</value>
   </data>
-  <data name="diagram_template_repair_tool" xml:space="preserve">
-    <value>图解模板修复工具</value>
+  <data name="official_template_publisher" xml:space="preserve">
+    <value>官方发布器</value>
+  </data>
+  <data name="official_template_publisher_desc" xml:space="preserve">
+    <value>导出并发布官方内容（图解、温压计、主页链接、公告）到腾讯云 COS</value>
+  </data>
+  <data name="official_publisher_ready" xml:space="preserve">
+    <value>官方发布器已就绪。</value>
+  </data>
+  <data name="official_publisher_dev_mode_required" xml:space="preserve">
+    <value>发布官方模板需要开启开发者模式。</value>
+  </data>
+  <data name="official_publisher_staging_dir" xml:space="preserve">
+    <value>本地 staging 目录</value>
+  </data>
+  <data name="official_publisher_staging_required" xml:space="preserve">
+    <value>请选择 staging 目录。</value>
+  </data>
+  <data name="official_publisher_refresh" xml:space="preserve">
+    <value>刷新预览</value>
+  </data>
+  <data name="official_publisher_export_local" xml:space="preserve">
+    <value>仅导出到本地</value>
+  </data>
+  <data name="official_publisher_publish_cos" xml:space="preserve">
+    <value>一键发布到 COS</value>
+  </data>
+  <data name="official_publisher_refreshing" xml:space="preserve">
+    <value>正在刷新发布预览...</value>
+  </data>
+  <data name="official_publisher_new" xml:space="preserve">
+    <value>新增</value>
+  </data>
+  <data name="official_publisher_updated" xml:space="preserve">
+    <value>更新</value>
+  </data>
+  <data name="official_publisher_removed" xml:space="preserve">
+    <value>下架</value>
+  </data>
+  <data name="official_publisher_unchanged" xml:space="preserve">
+    <value>未变化</value>
+  </data>
+  <data name="official_publisher_preview_summary" xml:space="preserve">
+    <value>预览：新增 {0}，更新 {1}，下架 {2}，未变化 {3}。</value>
+  </data>
+  <data name="official_publisher_exporting" xml:space="preserve">
+    <value>正在导出到 {0}...</value>
+  </data>
+  <data name="official_publisher_confirm" xml:space="preserve">
+    <value>确认将官方内容发布到 COS？</value>
+  </data>
+  <data name="official_publisher_include_diagrams" xml:space="preserve">
+    <value>图解</value>
+  </data>
+  <data name="official_publisher_include_geothermometers" xml:space="preserve">
+    <value>温压计</value>
+  </data>
+  <data name="official_publisher_include_announcement" xml:space="preserve">
+    <value>公告</value>
+  </data>
+  <data name="official_publisher_announcement_section" xml:space="preserve">
+    <value>公告</value>
+  </data>
+  <data name="official_publisher_announcement_pending" xml:space="preserve">
+    <value>待发布</value>
+  </data>
+  <data name="official_publisher_announcement_up_to_date" xml:space="preserve">
+    <value>服务器已是最新</value>
+  </data>
+  <data name="official_publisher_announcement_loaded" xml:space="preserve">
+    <value>已从服务器加载公告。</value>
+  </data>
+  <data name="official_publisher_announcement_edit_hint" xml:space="preserve">
+    <value>在此编辑公告内容，发布后将在主页「公告」区域显示。</value>
+  </data>
+  <data name="official_publisher_announcement_load" xml:space="preserve">
+    <value>从服务器加载</value>
+  </data>
+  <data name="official_publisher_announcement_preview" xml:space="preserve">
+    <value>当前草稿：</value>
+  </data>
+  <data name="official_publisher_announcement_empty" xml:space="preserve">
+    <value>（空）</value>
+  </data>
+  <data name="official_publisher_diagram_section" xml:space="preserve">
+    <value>图解</value>
+  </data>
+  <data name="official_publisher_geothermometer_section" xml:space="preserve">
+    <value>温压计</value>
+  </data>
+  <data name="official_publisher_diagram_preview_summary" xml:space="preserve">
+    <value>图解：新增 {0}，更新 {1}，下架 {2}，未变化 {3}。</value>
+  </data>
+  <data name="official_publisher_geo_preview_summary" xml:space="preserve">
+    <value>温压计：新增 {0}，更新 {1}，下架 {2}，未变化 {3}。</value>
+  </data>
+  <data name="official_publisher_export_done" xml:space="preserve">
+    <value>导出完成。</value>
+  </data>
+  <data name="official_publisher_target_required" xml:space="preserve">
+    <value>请至少选择一项发布内容。</value>
+  </data>
+  <data name="official_publisher_start" xml:space="preserve">
+    <value>开始发布...</value>
+  </data>
+  <data name="official_publisher_progress_exporting_announcement" xml:space="preserve">
+    <value>正在导出公告...</value>
+  </data>
+  <data name="official_publisher_progress_exporting_home_links" xml:space="preserve">
+    <value>正在导出主页链接...</value>
+  </data>
+  <data name="official_publisher_progress_exporting_diagrams" xml:space="preserve">
+    <value>正在导出图解模板...</value>
+  </data>
+  <data name="official_publisher_progress_exporting_geothermometers" xml:space="preserve">
+    <value>正在导出地热计...</value>
+  </data>
+  <data name="official_publisher_progress_uploading_cos" xml:space="preserve">
+    <value>正在上传到 COS...</value>
+  </data>
+  <data name="official_publisher_progress_uploading" xml:space="preserve">
+    <value>正在上传到 COS ({0}/{1})...</value>
+  </data>
+  <data name="official_publisher_progress_done" xml:space="preserve">
+    <value>发布完成。</value>
+  </data>
+  <data name="cos_save_settings" xml:space="preserve">
+    <value>保存配置</value>
+  </data>
+  <data name="cos_test_connection" xml:space="preserve">
+    <value>测试连接</value>
+  </data>
+  <data name="cos_settings_saved" xml:space="preserve">
+    <value>COS 配置已保存。</value>
+  </data>
+  <data name="cos_secret_id_required" xml:space="preserve">
+    <value>SecretId 不能为空。</value>
+  </data>
+  <data name="cos_credentials_required" xml:space="preserve">
+    <value>请先配置并保存 COS 凭证。</value>
+  </data>
+  <data name="cos_test_success" xml:space="preserve">
+    <value>COS 连接测试成功。</value>
+  </data>
+  <data name="cos_test_failed" xml:space="preserve">
+    <value>COS 连接测试失败。</value>
   </data>
   <data name="cipw_diagnostic_details" xml:space="preserve">
     <value>诊断详情</value>
@@ -1729,6 +1975,9 @@
   </data>
   <data name="server_announcements" xml:space="preserve">
     <value>服务器公告</value>
+  </data>
+  <data name="announcement" xml:space="preserve">
+    <value>公告</value>
   </data>
   <data name="ModifedSuccess" xml:space="preserve">
     <value>修改成功</value>
@@ -1805,7 +2054,7 @@
     <value>保留图标</value>
   </data>
   <data name="geo_msg_demoted" xml:space="preserve">
-    <value>已降级为自定义温度计</value>
+    <value>已降级为自定义温压计</value>
   </data>
   <data name="plot_type" xml:space="preserve">
     <value>绘图类型</value>
@@ -1898,7 +2147,7 @@
     <value>模板库</value>
   </data>
   <data name="geo_menu_export_official" xml:space="preserve">
-    <value>导出官方温度计</value>
+    <value>导出官方温压计</value>
   </data>
   <data name="coordinates_picked_success" xml:space="preserve">
     <value>坐标拾取成功！</value>
@@ -1987,6 +2236,12 @@
   <data name="export_diagram_template" xml:space="preserve">
     <value>导出图解模板</value>
   </data>
+  <data name="force_update_template" xml:space="preserve">
+    <value>强制更新</value>
+  </data>
+  <data name="force_update_template_not_found" xml:space="preserve">
+    <value>服务器上未找到该图解模板。</value>
+  </data>
   <data name="description" xml:space="preserve">
     <value>描述</value>
   </data>
@@ -2027,7 +2282,7 @@
     <value>形成副矿物</value>
   </data>
   <data name="geo_msg_update_available" xml:space="preserve">
-    <value>有 {0} 个地质温度计可更新</value>
+    <value>有 {0} 个地质温压计可更新</value>
   </data>
   <data name="multiple_data_series_hint" xml:space="preserve">
     <value>多个数据系列请用逗号分隔，例如：SiO2,TiO2</value>
@@ -2169,6 +2424,63 @@
   </data>
   <data name="geo_field_worksheet_name" xml:space="preserve">
     <value>工作表名称</value>
+  </data>
+  <data name="geo_current_app_format_version" xml:space="preserve">
+    <value>当前软件温压计版本</value>
+  </data>
+  <data name="geo_current_template_version" xml:space="preserve">
+    <value>当前温压计模板版本</value>
+  </data>
+  <data name="geo_editor_set_version" xml:space="preserve">
+    <value>设定温压计版本</value>
+  </data>
+  <data name="geo_tooltip_version_patch" xml:space="preserve">
+    <value>修订号 z；格式基线 x.y 跟随程序版本</value>
+  </data>
+  <data name="geo_example_name" xml:space="preserve">
+    <value>例如：石英温压计</value>
+  </data>
+  <data name="geo_example_mineral" xml:space="preserve">
+    <value>例如：石英</value>
+  </data>
+  <data name="geo_example_year" xml:space="preserve">
+    <value>例如：2020</value>
+  </data>
+  <data name="geo_example_author" xml:space="preserve">
+    <value>例如：Smith 等</value>
+  </data>
+  <data name="geo_example_reference" xml:space="preserve">
+    <value>例如：Smith (2020) Geochim. Cosmochim. Acta 280, 123-145</value>
+  </data>
+  <data name="geo_example_formula_name" xml:space="preserve">
+    <value>例如：MyFormula_v1</value>
+  </data>
+  <data name="geo_preview_title" xml:space="preserve">
+    <value>效果预览</value>
+  </data>
+  <data name="geo_preview_hint" xml:space="preserve">
+    <value>根据上方元数据实时生成，分别预览左侧列表项和右侧详情顶部的显示效果。</value>
+  </data>
+  <data name="geo_preview_list_item" xml:space="preserve">
+    <value>温压计列表项预览</value>
+  </data>
+  <data name="geo_preview_detail_header" xml:space="preserve">
+    <value>右侧顶部预览</value>
+  </data>
+  <data name="geo_preview_name_placeholder" xml:space="preserve">
+    <value>温压计名称预览</value>
+  </data>
+  <data name="geo_preview_mineral_placeholder" xml:space="preserve">
+    <value>矿物分类</value>
+  </data>
+  <data name="geo_preview_author_placeholder" xml:space="preserve">
+    <value>作者</value>
+  </data>
+  <data name="geo_preview_reference_placeholder" xml:space="preserve">
+    <value>这里将显示参考文献信息</value>
+  </data>
+  <data name="geo_preview_meta_format" xml:space="preserve">
+    <value>{0} - {1} ({2})</value>
   </data>
   <data name="reset_default" xml:space="preserve">
     <value>重置</value>
@@ -2633,6 +2945,12 @@
   </data>
   <data name="diagram_editor_translation_hint" xml:space="preserve">
     <value>编辑图解标题、坐标轴、文本与注释的多语言内容。在此添加或删除语言即可同步更新图解支持的语言。</value>
+  </data>
+  <data name="diagram_editor_new_version" xml:space="preserve">
+    <value>新版本</value>
+  </data>
+  <data name="diagram_editor_saved_version" xml:space="preserve">
+    <value>保存后版本：</value>
   </data>
   <data name="translation_item_context" xml:space="preserve">
     <value>内容项</value>

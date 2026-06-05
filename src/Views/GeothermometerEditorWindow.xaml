@@ -7,6 +7,7 @@
         xmlns:vm="clr-namespace:GeoChemistryNexus.ViewModels"
         xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
         xmlns:controls="clr-namespace:GeoChemistryNexus.Controls"
+        xmlns:converter="clr-namespace:GeoChemistryNexus.Converter"
         mc:Ignorable="d"
         x:Name="RootWindow"
         Title="{Binding EditorTitle}"
@@ -17,18 +18,27 @@
         Background="#F5F5F7">
 
     <Window.Resources>
+        <converter:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <!-- 标签样式 -->
         <Style x:Key="FieldLabelStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontSize" Value="11"/>
             <Setter Property="Foreground" Value="#555"/>
-            <Setter Property="Margin" Value="0,0,0,4"/>
+            <Setter Property="Margin" Value="0,0,0,3"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+        <!-- 填写示例提示 -->
+        <Style x:Key="FieldHintStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="Foreground" Value="#AAA"/>
+            <Setter Property="Margin" Value="0,2,0,0"/>
         </Style>
 
         <!-- 输入框样式 -->
         <Style x:Key="FieldInputStyle" TargetType="TextBox">
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Padding" Value="6,4"/>
+            <Setter Property="MinHeight" Value="26"/>
             <Setter Property="BorderBrush" Value="#D0D0D0"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Background" Value="White"/>
@@ -188,20 +198,12 @@
     <Grid>
         <Grid Margin="20">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <!-- ==================== StepBar ==================== -->
-            <hc:StepBar Grid.Row="0" StepIndex="{Binding CurrentStep, Mode=OneWay}" Margin="40,0,40,16">
-                <hc:StepBarItem Content="{Binding [geo_step_basic], Source={x:Static lg:LanguageService.Instance}, FallbackValue=基本信息}"/>
-                <hc:StepBarItem Content="{Binding [geo_step_script], Source={x:Static lg:LanguageService.Instance}, FallbackValue=公式脚本}"/>
-                <hc:StepBarItem Content="{Binding [geo_step_help_doc], Source={x:Static lg:LanguageService.Instance}, FallbackValue=帮助文档}"/>
-            </hc:StepBar>
-
             <!-- ==================== 内容区域 ==================== -->
-            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
             <Grid Margin="0,0,4,0">
 
             <!-- ========== Step 0: 基本信息 ========== -->
@@ -227,7 +229,7 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <!-- Row 0: Name, Mineral, Year, Version -->
+                    <!-- Row 0: Name, Mineral, Year -->
                     <Grid Grid.Row="0" Margin="0,0,0,12">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -235,37 +237,30 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="12"/>
                             <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="12"/>
-                            <ColumnDefinition Width="120"/>
                         </Grid.ColumnDefinitions>
 
                         <StackPanel Grid.Column="0">
                             <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_name], Source={x:Static lg:LanguageService.Instance}, FallbackValue=名称 *}"/>
                             <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding [geo_example_name], Source={x:Static lg:LanguageService.Instance}, FallbackValue=例如：石英温压计}"/>
                         </StackPanel>
 
                         <StackPanel Grid.Column="2">
                             <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_mineral_category], Source={x:Static lg:LanguageService.Instance}, FallbackValue=矿物分类 *}"/>
                             <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding Mineral, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding [geo_example_mineral], Source={x:Static lg:LanguageService.Instance}, FallbackValue=例如：石英}"/>
                         </StackPanel>
 
                         <StackPanel Grid.Column="4">
                             <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_year], Source={x:Static lg:LanguageService.Instance}, FallbackValue=年份 *}"/>
                             <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding Year, UpdateSourceTrigger=PropertyChanged}"/>
-                        </StackPanel>
-
-                        <StackPanel Grid.Column="6">
-                            <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_version], Source={x:Static lg:LanguageService.Instance}, FallbackValue=版本 *}"/>
-                            <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding Version, UpdateSourceTrigger=PropertyChanged}"
-                                     ToolTip="{Binding [geo_tooltip_version_format], Source={x:Static lg:LanguageService.Instance}, FallbackValue=语义化版本号，如 1.0.0、1.2.3}"/>
+                            <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding [geo_example_year], Source={x:Static lg:LanguageService.Instance}, FallbackValue=例如：2020}"/>
                         </StackPanel>
                     </Grid>
 
-                    <!-- Row 1: Author, FormulaName, WorksheetName -->
+                    <!-- Row 1: Author, FormulaName -->
                     <Grid Grid.Row="1" Margin="0,0,0,12">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="12"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="12"/>
                             <ColumnDefinition Width="*"/>
@@ -274,17 +269,14 @@
                         <StackPanel Grid.Column="0">
                             <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_author], Source={x:Static lg:LanguageService.Instance}, FallbackValue=作者 *}"/>
                             <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding Author, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding [geo_example_author], Source={x:Static lg:LanguageService.Instance}, FallbackValue=例如：Smith 等}"/>
                         </StackPanel>
 
                         <StackPanel Grid.Column="2">
                             <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_formula_name], Source={x:Static lg:LanguageService.Instance}, FallbackValue=公式名称 *}"/>
                             <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding FormulaName, UpdateSourceTrigger=PropertyChanged}"
                                      ToolTip="{Binding [geo_tooltip_formula_name], Source={x:Static lg:LanguageService.Instance}, FallbackValue=仅限字母、数字和下划线，如 MyFormula_v1}"/>
-                        </StackPanel>
-
-                        <StackPanel Grid.Column="4">
-                            <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_worksheet_name], Source={x:Static lg:LanguageService.Instance}, FallbackValue=工作表名称}"/>
-                            <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding WorksheetName, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding [geo_example_formula_name], Source={x:Static lg:LanguageService.Instance}, FallbackValue=例如：MyFormula_v1}"/>
                         </StackPanel>
                     </Grid>
 
@@ -292,22 +284,80 @@
                     <StackPanel Grid.Row="2" Margin="0,0,0,12">
                         <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_reference], Source={x:Static lg:LanguageService.Instance}, FallbackValue=参考文献 *}"/>
                         <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding Reference, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding [geo_example_reference], Source={x:Static lg:LanguageService.Instance}, FallbackValue='例如：Smith (2020) Geochim. Cosmochim. Acta 280, 123-145'}"/>
                     </StackPanel>
 
-                    <!-- Row 3: Description -->
-                    <StackPanel Grid.Row="3" Margin="0,0,0,12">
-                        <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_description], Source={x:Static lg:LanguageService.Instance}, FallbackValue=简要描述}"/>
-                        <TextBox Style="{StaticResource MultiLineInputStyle}" Height="80"
-                                 Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"/>
-                    </StackPanel>
+                    <!-- Row 3: Version (left: app version, right: set thermometer version) -->
+                    <Border Grid.Row="3" Background="#FAFAFC" BorderBrush="#E4E4E8" BorderThickness="1" CornerRadius="8" Padding="14,12" Margin="0,0,0,12">
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_version], Source={x:Static lg:LanguageService.Instance}, FallbackValue=版本}" Margin="0,0,0,10"/>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="16"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- 左侧：当前软件版本 -->
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock FontSize="11" Foreground="#86868B" Margin="0,0,0,4"
+                                               Text="{Binding [geo_current_app_format_version], Source={x:Static lg:LanguageService.Instance}, FallbackValue=当前软件温压计版本}"/>
+                                    <TextBlock FontSize="13" FontWeight="SemiBold" Foreground="#1D1D1F"
+                                               Text="{Binding AppFormatVersion, Mode=OneWay}"/>
+
+                                    <StackPanel Margin="0,10,0,0"
+                                                Visibility="{Binding IsEditMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <TextBlock FontSize="11" Foreground="#86868B" Margin="0,0,0,4"
+                                                   Text="{Binding [geo_current_template_version], Source={x:Static lg:LanguageService.Instance}, FallbackValue=当前温压计模板版本}"/>
+                                        <TextBlock FontSize="13" FontWeight="SemiBold" Foreground="#1D1D1F"
+                                                   Text="{Binding OriginalTemplateVersion, Mode=OneWay}"/>
+                                    </StackPanel>
+                                </StackPanel>
+
+                                <!-- 右侧：设定温压计版本 -->
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock FontSize="11" Foreground="#86868B" Margin="0,0,0,4"
+                                               Text="{Binding [geo_editor_set_version], Source={x:Static lg:LanguageService.Instance}, FallbackValue=设定温压计版本}"/>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="56"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0"
+                                                   VerticalAlignment="Center"
+                                                   Margin="0,0,4,0"
+                                                   Foreground="#666"
+                                                   FontSize="12"
+                                                   Text="{Binding FormatVersionPrefix, Mode=OneWay}"/>
+                                        <TextBox Grid.Column="1"
+                                                 Style="{StaticResource FieldInputStyle}"
+                                                 Text="{Binding PatchVersion, UpdateSourceTrigger=PropertyChanged}"
+                                                 ToolTip="{Binding [geo_tooltip_version_patch], Source={x:Static lg:LanguageService.Instance}, FallbackValue=修订号 z；格式基线 x.y 跟随程序版本}"/>
+                                        <TextBlock Grid.Column="2"
+                                                   VerticalAlignment="Center"
+                                                   Margin="10,0,0,0"
+                                                   FontSize="11"
+                                                   Foreground="#86868B">
+                                            <Run Text="{Binding [diagram_editor_saved_version], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay, FallbackValue=保存后版本：}"/>
+                                            <Run Text="{Binding TemplateVersion, Mode=OneWay}" FontWeight="SemiBold"/>
+                                        </TextBlock>
+                                    </Grid>
+                                    <TextBlock Style="{StaticResource FieldHintStyle}" Margin="0,4,0,0"
+                                               Text="{Binding [geo_tooltip_version_patch], Source={x:Static lg:LanguageService.Instance}, FallbackValue=修订号 z；格式基线 x.y 跟随程序版本}"/>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
 
                     <!-- Row 4: Preview -->
                     <StackPanel Grid.Row="4" Margin="0,0,0,12">
-                        <TextBlock Style="{StaticResource FieldLabelStyle}" Text="效果预览"/>
-                        <TextBlock FontSize="11" Foreground="#888" Margin="0,0,0,8"
-                                   Text="根据上方元数据实时生成，分别预览左侧列表项和右侧详情顶部的显示效果。"/>
+                        <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_preview_title], Source={x:Static lg:LanguageService.Instance}, FallbackValue=效果预览}"/>
+                        <TextBlock FontSize="10" Foreground="#888" Margin="0,0,0,8"
+                                   Text="{Binding [geo_preview_hint], Source={x:Static lg:LanguageService.Instance}, FallbackValue=根据上方元数据实时生成，分别预览左侧列表项和右侧详情顶部的显示效果。}"/>
 
-                        <TextBlock Style="{StaticResource FieldLabelStyle}" Text="温度计列表选项预览"/>
+                        <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_preview_list_item], Source={x:Static lg:LanguageService.Instance}, FallbackValue=温压计列表项预览}"/>
                         <Border Background="#FAFAFC" BorderBrush="#E4E4E8" BorderThickness="1" CornerRadius="8" Padding="6" Margin="0,0,0,10">
                             <Border Background="Transparent" CornerRadius="6" Padding="8,6">
                                 <Grid>
@@ -330,7 +380,7 @@
                             </Border>
                         </Border>
 
-                        <TextBlock Style="{StaticResource FieldLabelStyle}" Text="右侧顶部预览"/>
+                        <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_preview_detail_header], Source={x:Static lg:LanguageService.Instance}, FallbackValue=右侧顶部预览}"/>
                         <Border Background="#FAFAFC" BorderBrush="#E4E4E8" BorderThickness="1" CornerRadius="8" Padding="14,12">
                             <StackPanel>
                                 <TextBlock Text="{Binding PreviewName, Mode=OneWay}" FontSize="18" FontWeight="SemiBold" Foreground="#333"/>
@@ -357,7 +407,7 @@
 
                     <!-- Row 5: Hint -->
                     <TextBlock Grid.Row="5" FontSize="11" Foreground="#999" Margin="0,4,0,0"
-                               Text="{Binding [geo_field_required_hint], Source={x:Static lg:LanguageService.Instance}, FallbackValue=必填字段标有 *。版本号格式为 x.x.x（如 1.0.0）。公式名称将作为 ReoGrid 中的自定义函数名称注册。}"/>
+                               Text="{Binding [geo_field_required_hint], Source={x:Static lg:LanguageService.Instance}, FallbackValue=必填字段标有 *。格式基线 x.y 跟随软件温压计版本，修订号 z 为模板内容版本。公式名称将作为 ReoGrid 中的自定义函数名称注册。}"/>
                 </Grid>
             </Border>
 
@@ -630,8 +680,8 @@
             </Grid>
             </ScrollViewer>
 
-            <!-- ==================== 底部：操作按钮栏 ==================== -->
-            <Border Grid.Row="2" Background="White" CornerRadius="8" Padding="16,12" Margin="0,12,0,0"
+            <!-- ==================== 底部：步骤条 + 操作按钮栏 ==================== -->
+            <Border Grid.Row="1" Background="White" CornerRadius="8" Padding="16,12" Margin="0,12,0,0"
                     BorderBrush="#E0E0E0" BorderThickness="1">
                 <DockPanel>
                     <!-- 左侧：取消 -->
@@ -717,6 +767,15 @@
                         </StackPanel>
                         </Button>
                     </StackPanel>
+
+                    <!-- 中间：步骤条 -->
+                    <hc:StepBar StepIndex="{Binding CurrentStep, Mode=OneWay}"
+                                HorizontalAlignment="Center" VerticalAlignment="Center"
+                                Margin="20,0">
+                        <hc:StepBarItem Content="{Binding [geo_step_basic], Source={x:Static lg:LanguageService.Instance}, FallbackValue=基本信息}"/>
+                        <hc:StepBarItem Content="{Binding [geo_step_script], Source={x:Static lg:LanguageService.Instance}, FallbackValue=公式脚本}"/>
+                        <hc:StepBarItem Content="{Binding [geo_step_help_doc], Source={x:Static lg:LanguageService.Instance}, FallbackValue=帮助文档}"/>
+                    </hc:StepBar>
                 </DockPanel>
             </Border>
         </Grid>

@@ -150,9 +150,6 @@
   <data name="geo_validate_version_format" xml:space="preserve">
     <value>版本格式不正確，只允許 x.x.x 格式（如 1.0.0、1.2.3）。</value>
   </data>
-  <data name="drawing_template_repair_tool" xml:space="preserve">
-    <value>圖解範本修復工具</value>
-  </data>
   <data name="category_structure_min_two" xml:space="preserve">
     <value>分類結構必須大於等於2！</value>
   </data>
@@ -184,7 +181,7 @@
     <value>是否可見</value>
   </data>
   <data name="geo_msg_batch_export_success" xml:space="preserve">
-    <value>官方溫度計共 {0} 個，本次匯出 {1} 個（新增/修改）
+    <value>官方溫壓計共 {0} 個，本次匯出 {1} 個（新增/修改）
 目錄: {2}</value>
   </data>
   <data name="geo_btn_apply" xml:space="preserve">
@@ -233,7 +230,7 @@
     <value>新增圖表</value>
   </data>
   <data name="geo_msg_promoted" xml:space="preserve">
-    <value>已轉換為官方溫度計</value>
+    <value>已轉換為官方溫壓計</value>
   </data>
   <data name="geo_msg_test_input_required" xml:space="preserve">
     <value>請輸入測試值。</value>
@@ -245,10 +242,10 @@
     <value>正在下載...</value>
   </data>
   <data name="geo_hint_no_custom" xml:space="preserve">
-    <value>目前沒有自訂溫度計，點擊 + 建立。</value>
+    <value>目前沒有自訂溫壓計，點擊 + 建立。</value>
   </data>
   <data name="geo_msg_update_downloaded" xml:space="preserve">
-    <value>已下載 {0} 個地質溫度計</value>
+    <value>已下載 {0} 個地質溫壓計</value>
   </data>
   <data name="use_help" xml:space="preserve">
     <value>圖解指南</value>
@@ -328,9 +325,6 @@
   <data name="fill_color_1" xml:space="preserve">
     <value>填充顏色 1</value>
   </data>
-  <data name="start_check_and_repair" xml:space="preserve">
-    <value>開始檢查與修復</value>
-  </data>
   <data name="cipw_overview" xml:space="preserve">
     <value>CIPW 標準礦物計算（又稱 CIPW Norm）是由 Cross、Iddings、Pirsson 和 Washington 四位岩石學家於 1902 年提出的一種岩石化學計算方法。該方法根據全岩主量元素氧化物的化學分析資料，按照固定的優先順序將氧化物分配到一組理想化的標準礦物中，用於岩石分類與對比研究。</value>
   </data>
@@ -365,7 +359,7 @@
     <value>儲存失敗: {0}</value>
   </data>
   <data name="geo_editor_title_new" xml:space="preserve">
-    <value>新建自訂溫度計</value>
+    <value>新建自訂溫壓計</value>
   </data>
   <data name="switch_diagram_language" xml:space="preserve">
     <value>切換圖解語言</value>
@@ -392,7 +386,7 @@
     <value>匯出 CIPW 計算結果</value>
   </data>
   <data name="geo_menu_import_zip" xml:space="preserve">
-    <value>匯入地質溫度計 (ZIP)</value>
+    <value>匯入地質溫壓計 (ZIP)</value>
   </data>
   <data name="developer_mode" xml:space="preserve">
     <value>開發者模式</value>
@@ -475,7 +469,7 @@
     <value>已存在，是否覆蓋？</value>
   </data>
   <data name="geo_editor_title_edit" xml:space="preserve">
-    <value>編輯溫度計</value>
+    <value>編輯溫壓計</value>
   </data>
   <data name="start_and_end_coordinates" xml:space="preserve">
     <value>起始座標</value>
@@ -523,7 +517,7 @@
     <value>已新增至收藏</value>
   </data>
   <data name="geo_menu_new_custom" xml:space="preserve">
-    <value>新建自訂地質溫度計</value>
+    <value>新建自訂地質溫壓計</value>
   </data>
   <data name="import_custom_diagram_template" xml:space="preserve">
     <value>匯入自訂圖解範本</value>
@@ -544,7 +538,7 @@
     <value>檢查更新時發生錯誤：</value>
   </data>
   <data name="GeothermometerSetting" xml:space="preserve">
-    <value>地質溫度計設定</value>
+    <value>地質溫壓計設定</value>
   </data>
   <data name="PlotTitle" xml:space="preserve">
     <value>繪圖標題</value>
@@ -556,7 +550,7 @@
     <value>儲存並匯出 ZIP</value>
   </data>
   <data name="geo_section_official" xml:space="preserve">
-    <value>官方溫度計</value>
+    <value>官方溫壓計</value>
   </data>
   <data name="geo_help_current_lang" xml:space="preserve">
     <value>目前語言：</value>
@@ -825,7 +819,7 @@
     <value>指令碼傳回型別錯誤</value>
   </data>
   <data name="geo_msg_select_thermometer_first" xml:space="preserve">
-    <value>請先選擇一個溫度計。</value>
+    <value>請先選擇一個溫壓計。</value>
   </data>
   <data name="enter_language_add" xml:space="preserve">
     <value>輸入一個語言後按 Enter 鍵新增。</value>
@@ -1001,7 +995,7 @@
     <value>刪除語言欄</value>
   </data>
   <data name="geo_msg_export_dialog_title" xml:space="preserve">
-    <value>匯出地質溫度計</value>
+    <value>匯出地質溫壓計</value>
   </data>
   <data name="edit_link" xml:space="preserve">
     <value>編輯連結</value>
@@ -1085,7 +1079,7 @@
     <value>正在讀取使用者配置...</value>
   </data>
   <data name="geo_section_custom" xml:space="preserve">
-    <value>自訂溫度計</value>
+    <value>自訂溫壓計</value>
   </data>
   <data name="Placeholder_Axis_Y" xml:space="preserve">
     <value>Y軸</value>
@@ -1109,7 +1103,7 @@
     <value>確定要刪除該自訂圖解範本嗎？</value>
   </data>
   <data name="Geothermometer" xml:space="preserve">
-    <value>地質溫度計</value>
+    <value>地質溫壓計</value>
   </data>
   <data name="y_coordinate" xml:space="preserve">
     <value>Y 座標</value>
@@ -1221,9 +1215,6 @@
   </data>
   <data name="failed_to_get_announcements" xml:space="preserve">
     <value>取得公告失敗:</value>
-  </data>
-  <data name="repair_missing_or_damaged_templates_and_lists" xml:space="preserve">
-    <value>修復丟失或損壞的繪圖範本及列表</value>
   </data>
   <data name="MarkerShape_FilledDiamond" xml:space="preserve">
     <value>實心菱形</value>
@@ -1434,7 +1425,7 @@
     <value>例如: 45.2, 0.8, 12.3, =MyFormula(A2,B2,C2)</value>
   </data>
   <data name="geo_hint_select_thermometer" xml:space="preserve">
-    <value>請從左側面板選擇溫度計</value>
+    <value>請從左側面板選擇溫壓計</value>
   </data>
   <data name="QuitEdit" xml:space="preserve">
     <value>退出編輯</value>
@@ -1536,7 +1527,7 @@
     <value>無法取得公告資訊。</value>
   </data>
   <data name="auto_check_geothermometer_updates" xml:space="preserve">
-    <value>自動檢查地質溫度計更新</value>
+    <value>自動檢查地質溫壓計更新</value>
   </data>
   <data name="add_widget" xml:space="preserve">
     <value>新增小組件</value>
@@ -1563,7 +1554,7 @@
     <value>最大化</value>
   </data>
   <data name="diagram_template_not_found_repair_hint" xml:space="preserve">
-    <value>找不到檔案圖解範本，請嘗試在首頁使用'範本修復工具'進行修復。</value>
+    <value>找不到圖解範本檔案，請檢查安裝是否完整或嘗試重新安裝。</value>
   </data>
   <data name="no_new_templates_to_download" xml:space="preserve">
     <value>沒有需要下載的新範本</value>
@@ -1578,7 +1569,7 @@
     <value>刪除此頂點</value>
   </data>
   <data name="geo_dialog_delete_thermometer" xml:space="preserve">
-    <value>確定刪除{0}溫度計「{1}」？</value>
+    <value>確定刪除{0}溫壓計「{1}」？</value>
   </data>
   <data name="x_coordinate" xml:space="preserve">
     <value>X 座標</value>
@@ -1595,6 +1586,12 @@
   <data name="add_image" xml:space="preserve">
     <value>新增圖片</value>
   </data>
+  <data name="start_image_copy_successfully" xml:space="preserve">
+    <value>啟動圖片新增成功。</value>
+  </data>
+  <data name="start_image_copy_error" xml:space="preserve">
+    <value>啟動圖片新增失敗：</value>
+  </data>
   <data name="add_arrow" xml:space="preserve">
     <value>新增箭頭</value>
   </data>
@@ -1609,9 +1606,6 @@
   </data>
   <data name="geo_script_inputs" xml:space="preserve">
     <value>輸入欄（逗號分隔）</value>
-  </data>
-  <data name="diagram_template_repair_tool" xml:space="preserve">
-    <value>圖解範本修復工具</value>
   </data>
   <data name="cipw_diagnostic_details" xml:space="preserve">
     <value>診斷詳情</value>
@@ -1748,7 +1742,7 @@
     <value>語言與外觀</value>
   </data>
   <data name="geo_msg_demoted" xml:space="preserve">
-    <value>已降級為自訂溫度計</value>
+    <value>已降級為自訂溫壓計</value>
   </data>
   <data name="plot_type" xml:space="preserve">
     <value>繪圖類型</value>
@@ -1838,7 +1832,7 @@
     <value>範本庫</value>
   </data>
   <data name="geo_menu_export_official" xml:space="preserve">
-    <value>匯出官方溫度計</value>
+    <value>匯出官方溫壓計</value>
   </data>
   <data name="coordinates_picked_success" xml:space="preserve">
     <value>座標拾取成功！</value>
@@ -1967,7 +1961,7 @@
     <value>形成副礦物</value>
   </data>
   <data name="geo_msg_update_available" xml:space="preserve">
-    <value>有 {0} 個地質溫度計可更新</value>
+    <value>有 {0} 個地質溫壓計可更新</value>
   </data>
   <data name="multiple_data_series_hint" xml:space="preserve">
     <value>多個資料系列請用逗號分隔，例如：SiO2,TiO2</value>
@@ -2106,6 +2100,63 @@
   </data>
   <data name="geo_field_worksheet_name" xml:space="preserve">
     <value>工作表名稱</value>
+  </data>
+  <data name="geo_current_app_format_version" xml:space="preserve">
+    <value>目前軟體溫壓計版本</value>
+  </data>
+  <data name="geo_current_template_version" xml:space="preserve">
+    <value>目前溫壓計範本版本</value>
+  </data>
+  <data name="geo_editor_set_version" xml:space="preserve">
+    <value>設定溫壓計版本</value>
+  </data>
+  <data name="geo_tooltip_version_patch" xml:space="preserve">
+    <value>修訂號 z；格式基線 x.y 跟隨程式版本</value>
+  </data>
+  <data name="geo_example_name" xml:space="preserve">
+    <value>例如：石英溫壓計</value>
+  </data>
+  <data name="geo_example_mineral" xml:space="preserve">
+    <value>例如：石英</value>
+  </data>
+  <data name="geo_example_year" xml:space="preserve">
+    <value>例如：2020</value>
+  </data>
+  <data name="geo_example_author" xml:space="preserve">
+    <value>例如：Smith 等</value>
+  </data>
+  <data name="geo_example_reference" xml:space="preserve">
+    <value>例如：Smith (2020) Geochim. Cosmochim. Acta 280, 123-145</value>
+  </data>
+  <data name="geo_example_formula_name" xml:space="preserve">
+    <value>例如：MyFormula_v1</value>
+  </data>
+  <data name="geo_preview_title" xml:space="preserve">
+    <value>效果預覽</value>
+  </data>
+  <data name="geo_preview_hint" xml:space="preserve">
+    <value>根據上方中繼資料即時產生，分別預覽左側列表項和右側詳情頂部的顯示效果。</value>
+  </data>
+  <data name="geo_preview_list_item" xml:space="preserve">
+    <value>溫壓計列表項預覽</value>
+  </data>
+  <data name="geo_preview_detail_header" xml:space="preserve">
+    <value>右側頂部預覽</value>
+  </data>
+  <data name="geo_preview_name_placeholder" xml:space="preserve">
+    <value>溫壓計名稱預覽</value>
+  </data>
+  <data name="geo_preview_mineral_placeholder" xml:space="preserve">
+    <value>礦物分類</value>
+  </data>
+  <data name="geo_preview_author_placeholder" xml:space="preserve">
+    <value>作者</value>
+  </data>
+  <data name="geo_preview_reference_placeholder" xml:space="preserve">
+    <value>這裡將顯示參考文獻資訊</value>
+  </data>
+  <data name="geo_preview_meta_format" xml:space="preserve">
+    <value>{0} - {1} ({2})</value>
   </data>
   <data name="cipw_csv_filter" xml:space="preserve">
     <value>CSV 檔案|*.csv</value>

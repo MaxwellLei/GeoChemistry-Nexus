@@ -15,6 +15,24 @@
         <hc:ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
             <StackPanel Margin="20,20,20,40" MaxWidth="800" HorizontalAlignment="Stretch">
 
+                <!-- VERSION INFO -->
+                <TextBlock Text="{Binding [geo_field_version],Source={x:Static lg:LanguageService.Instance}, FallbackValue=版本}" Style="{StaticResource ModernSettingsGroupTitle}"/>
+                <Border Style="{StaticResource ModernSettingsCard}">
+                    <StackPanel>
+                        <!-- Current Geothermometer Format Version (Read-Only) -->
+                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding [geo_current_app_format_version],Source={x:Static lg:LanguageService.Instance}, FallbackValue=当前软件温压计版本}"
+                                       VerticalAlignment="Center" FontSize="14"/>
+                            <TextBlock Grid.Column="1" Text="{Binding CurrentGeothermometerVersion}" VerticalAlignment="Center"
+                                       FontSize="14" Foreground="Gray" HorizontalAlignment="Right"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
                 <!-- UPDATE SETTINGS -->
                 <TextBlock Text="{Binding [automatic_updates],Source={x:Static lg:LanguageService.Instance}, FallbackValue=更新设置}" Style="{StaticResource ModernSettingsGroupTitle}"/>
                 <Border Style="{StaticResource ModernSettingsCard}">
@@ -25,7 +43,7 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding [auto_check_geothermometer_updates],Source={x:Static lg:LanguageService.Instance}, FallbackValue=自动检查地质温度计更新}" FontSize="14" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding [auto_check_geothermometer_updates],Source={x:Static lg:LanguageService.Instance}, FallbackValue=自动检查地质温压计更新}" FontSize="14" VerticalAlignment="Center"/>
                             <ToggleButton IsChecked="{Binding AutoCheckGtmUpdate}" Grid.Column="1" Style="{StaticResource ToggleButtonSwitch}"/>
                         </Grid>
                     </StackPanel>

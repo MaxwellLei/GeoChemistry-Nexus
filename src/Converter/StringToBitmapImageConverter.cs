@@ -19,18 +19,14 @@ namespace GeoChemistryNexus.Converter
                     bitmap.CacheOption = BitmapCacheOption.OnLoad;
                     bitmap.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
 
-                    // 允许通过参数覆盖 DecodePixelWidth
+                    // 仅当传入 ConverterParameter 时才缩小解码尺寸（如首页图标 48）
                     if (parameter is string widthStr && int.TryParse(widthStr, out int width))
                     {
                         bitmap.DecodePixelWidth = width;
                     }
-                    else
-                    {
-                        bitmap.DecodePixelWidth = 640; // Default width
-                    }
-                    
+
                     bitmap.EndInit();
-                    bitmap.Freeze(); // 冻结对象，确保跨线程访问安全并提升性能
+                    bitmap.Freeze();
                     return bitmap;
                 }
                 catch

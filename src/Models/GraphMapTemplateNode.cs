@@ -57,6 +57,12 @@ namespace GeoChemistryNexus.Models
         public string FileHash { get; set; }
 
         /// <summary>
+        /// 服务器清单中的版本号（x.y.z），用于与本地版本比较更新状态。
+        /// </summary>
+        [JsonIgnore]
+        public string ServerVersion { get; set; }
+
+        /// <summary>
         /// 数据库记录的状态 (UP_TO_DATE, OUTDATED, NOT_INSTALLED 等)
         /// </summary>
         public string Status { get; set; }

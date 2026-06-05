@@ -150,9 +150,6 @@
   <data name="geo_validate_version_format" xml:space="preserve">
     <value>Неверный формат версии. Допустим только x.x.x (например, 1.0.0, 1.2.3).</value>
   </data>
-  <data name="drawing_template_repair_tool" xml:space="preserve">
-    <value>Инструмент восстановления шаблонов</value>
-  </data>
   <data name="category_structure_min_two" xml:space="preserve">
     <value>Структура категорий должна быть &gt;= 2!</value>
   </data>
@@ -184,7 +181,7 @@
     <value>Видимость</value>
   </data>
   <data name="geo_msg_batch_export_success" xml:space="preserve">
-    <value>Всего {0} официальных термометров, экспортировано {1} (добавлено/изменено)
+    <value>Всего {0} официальных геотермобарометров, экспортировано {1} (добавлено/изменено)
 Каталог: {2}</value>
   </data>
   <data name="geo_btn_apply" xml:space="preserve">
@@ -233,7 +230,7 @@
     <value>Новая диаграмма</value>
   </data>
   <data name="geo_msg_promoted" xml:space="preserve">
-    <value>Повышен до официального термометра</value>
+    <value>Повышен до официального геотермобарометра</value>
   </data>
   <data name="geo_msg_test_input_required" xml:space="preserve">
     <value>Введите тестовые значения.</value>
@@ -245,10 +242,10 @@
     <value>Загрузка...</value>
   </data>
   <data name="geo_hint_no_custom" xml:space="preserve">
-    <value>Пока нет пользовательских термометров, нажмите +, чтобы создать.</value>
+    <value>Пока нет пользовательских геотермобарометров, нажмите +, чтобы создать.</value>
   </data>
   <data name="geo_msg_update_downloaded" xml:space="preserve">
-    <value>Загружено {0} геотермометров</value>
+    <value>Загружено {0} геотермобарометров</value>
   </data>
   <data name="use_help" xml:space="preserve">
     <value>Руководство по диаграммам</value>
@@ -328,9 +325,6 @@
   <data name="fill_color_1" xml:space="preserve">
     <value>Цвет заливки 1</value>
   </data>
-  <data name="start_check_and_repair" xml:space="preserve">
-    <value>Начать проверку и восстановление</value>
-  </data>
   <data name="cipw_overview" xml:space="preserve">
     <value>Расчёт нормы CIPW (CIPW Norm) — петрохимический метод, предложенный в 1902 году Кроссом, Иддингсом, Пирсоном и Вашингтоном. На основании химического анализа главных породообразующих оксидов общей пробы метод распределяет оксиды по набору идеализированных стандартных минералов в строго фиксированном порядке приоритета и применяется для классификации и сравнительных исследований пород.</value>
   </data>
@@ -365,7 +359,7 @@
     <value>Ошибка сохранения: {0}</value>
   </data>
   <data name="geo_editor_title_new" xml:space="preserve">
-    <value>Новый пользовательский термометр</value>
+    <value>Новый пользовательский геотермобарометр</value>
   </data>
   <data name="switch_diagram_language" xml:space="preserve">
     <value>Переключить язык диаграммы</value>
@@ -392,7 +386,7 @@
     <value>Экспорт результатов CIPW</value>
   </data>
   <data name="geo_menu_import_zip" xml:space="preserve">
-    <value>Импортировать геотермометр (ZIP)</value>
+    <value>Импортировать геотермобарометр (ZIP)</value>
   </data>
   <data name="developer_mode" xml:space="preserve">
     <value>Режим разработчика</value>
@@ -475,7 +469,7 @@
     <value>Уже существует, перезаписать?</value>
   </data>
   <data name="geo_editor_title_edit" xml:space="preserve">
-    <value>Изменить термометр</value>
+    <value>Изменить геотермобарометр</value>
   </data>
   <data name="start_and_end_coordinates" xml:space="preserve">
     <value>Начальные координаты</value>
@@ -523,7 +517,7 @@
     <value>Добавлено в избранное</value>
   </data>
   <data name="geo_menu_new_custom" xml:space="preserve">
-    <value>Новый пользовательский геотермометр</value>
+    <value>Новый пользовательский геотермобарометр</value>
   </data>
   <data name="import_custom_diagram_template" xml:space="preserve">
     <value>Импорт пользовательского шаблона</value>
@@ -544,7 +538,7 @@
     <value>Ошибка при проверке обновлений：</value>
   </data>
   <data name="GeothermometerSetting" xml:space="preserve">
-    <value>Настройки геотермометра</value>
+    <value>Настройки геотермобарометра</value>
   </data>
   <data name="PlotTitle" xml:space="preserve">
     <value>Заголовок графика</value>
@@ -556,7 +550,7 @@
     <value>Сохранить и экспортировать ZIP</value>
   </data>
   <data name="geo_section_official" xml:space="preserve">
-    <value>Официальные термометры</value>
+    <value>Официальные геотермобарометры</value>
   </data>
   <data name="geo_help_current_lang" xml:space="preserve">
     <value>Текущий язык:</value>
@@ -825,7 +819,7 @@
     <value>Ошибка типа возвращаемого значения сценария</value>
   </data>
   <data name="geo_msg_select_thermometer_first" xml:space="preserve">
-    <value>Сначала выберите термометр.</value>
+    <value>Сначала выберите геотермобарометр.</value>
   </data>
   <data name="enter_language_add" xml:space="preserve">
     <value>Введите язык и нажмите Enter для добавления.</value>
@@ -1001,7 +995,7 @@
     <value>Удалить столбец языка</value>
   </data>
   <data name="geo_msg_export_dialog_title" xml:space="preserve">
-    <value>Экспорт геотермометра</value>
+    <value>Экспорт геотермобарометра</value>
   </data>
   <data name="edit_link" xml:space="preserve">
     <value>Редактировать ссылку</value>
@@ -1085,7 +1079,7 @@
     <value>Чтение конфигурации пользователя...</value>
   </data>
   <data name="geo_section_custom" xml:space="preserve">
-    <value>Пользовательские термометры</value>
+    <value>Пользовательские геотермобарометры</value>
   </data>
   <data name="Placeholder_Axis_Y" xml:space="preserve">
     <value>Ось Y</value>
@@ -1109,7 +1103,7 @@
     <value>Удалить этот пользовательский шаблон?</value>
   </data>
   <data name="Geothermometer" xml:space="preserve">
-    <value>Геотермометр</value>
+    <value>Геотермобарометр</value>
   </data>
   <data name="y_coordinate" xml:space="preserve">
     <value>Координата Y</value>
@@ -1221,9 +1215,6 @@
   </data>
   <data name="failed_to_get_announcements" xml:space="preserve">
     <value>Ошибка получения объявлений:</value>
-  </data>
-  <data name="repair_missing_or_damaged_templates_and_lists" xml:space="preserve">
-    <value>Восстановить утерянные или поврежденные шаблоны</value>
   </data>
   <data name="MarkerShape_FilledDiamond" xml:space="preserve">
     <value>Закрашенный ромб</value>
@@ -1434,7 +1425,7 @@
     <value>Например: 45.2, 0.8, 12.3, =MyFormula(A2,B2,C2)</value>
   </data>
   <data name="geo_hint_select_thermometer" xml:space="preserve">
-    <value>Выберите термометр на левой панели</value>
+    <value>Выберите геотермобарометр на левой панели</value>
   </data>
   <data name="QuitEdit" xml:space="preserve">
     <value>Выйти из редактирования</value>
@@ -1536,7 +1527,7 @@
     <value>Не удалось получить объявления.</value>
   </data>
   <data name="auto_check_geothermometer_updates" xml:space="preserve">
-    <value>Автопроверка обновлений геотермометров</value>
+    <value>Автопроверка обновлений геотермобарометров</value>
   </data>
   <data name="add_widget" xml:space="preserve">
     <value>Добавить виджет</value>
@@ -1563,7 +1554,7 @@
     <value>Развернуть</value>
   </data>
   <data name="diagram_template_not_found_repair_hint" xml:space="preserve">
-    <value>Шаблон не найден, попробуйте 'Инструмент восстановления' на главной.</value>
+    <value>Файл шаблона диаграммы не найден. Проверьте установку или переустановите приложение.</value>
   </data>
   <data name="no_new_templates_to_download" xml:space="preserve">
     <value>Нет новых шаблонов для загрузки</value>
@@ -1578,7 +1569,7 @@
     <value>Удалить вершину</value>
   </data>
   <data name="geo_dialog_delete_thermometer" xml:space="preserve">
-    <value>Удалить термометр {0} «{1}»?</value>
+    <value>Удалить геотермобарометр {0} «{1}»?</value>
   </data>
   <data name="x_coordinate" xml:space="preserve">
     <value>Координата X</value>
@@ -1595,6 +1586,12 @@
   <data name="add_image" xml:space="preserve">
     <value>Добавить изображение</value>
   </data>
+  <data name="start_image_copy_successfully" xml:space="preserve">
+    <value>Изображение запуска успешно добавлено.</value>
+  </data>
+  <data name="start_image_copy_error" xml:space="preserve">
+    <value>Не удалось добавить изображение запуска: </value>
+  </data>
   <data name="add_arrow" xml:space="preserve">
     <value>Добавить стрелку</value>
   </data>
@@ -1609,9 +1606,6 @@
   </data>
   <data name="geo_script_inputs" xml:space="preserve">
     <value>Входные столбцы (через запятую)</value>
-  </data>
-  <data name="diagram_template_repair_tool" xml:space="preserve">
-    <value>Инструмент восстановления шаблонов</value>
   </data>
   <data name="cipw_diagnostic_details" xml:space="preserve">
     <value>Сведения о диагностике</value>
@@ -1748,7 +1742,7 @@
     <value>Язык и вид</value>
   </data>
   <data name="geo_msg_demoted" xml:space="preserve">
-    <value>Понижен до пользовательского термометра</value>
+    <value>Понижен до пользовательского геотермобарометра</value>
   </data>
   <data name="plot_type" xml:space="preserve">
     <value>Тип графика</value>
@@ -1838,7 +1832,7 @@
     <value>Библиотека шаблонов</value>
   </data>
   <data name="geo_menu_export_official" xml:space="preserve">
-    <value>Экспортировать официальные термометры</value>
+    <value>Экспортировать официальные геотермобарометры</value>
   </data>
   <data name="coordinates_picked_success" xml:space="preserve">
     <value>Координаты получены！</value>
@@ -1967,7 +1961,7 @@
     <value>Образование акцессорных минералов</value>
   </data>
   <data name="geo_msg_update_available" xml:space="preserve">
-    <value>Доступно обновление {0} геотермометров</value>
+    <value>Доступно обновление {0} геотермобарометров</value>
   </data>
   <data name="multiple_data_series_hint" xml:space="preserve">
     <value>Разделяйте несколько серий данных запятыми, например: SiO2,TiO2</value>
@@ -2106,6 +2100,63 @@
   </data>
   <data name="geo_field_worksheet_name" xml:space="preserve">
     <value>Имя листа</value>
+  </data>
+  <data name="geo_current_app_format_version" xml:space="preserve">
+    <value>Текущая версия геотермобарометра приложения</value>
+  </data>
+  <data name="geo_current_template_version" xml:space="preserve">
+    <value>Текущая версия шаблона геотермобарометра</value>
+  </data>
+  <data name="geo_editor_set_version" xml:space="preserve">
+    <value>Задать версию геотермобарометра</value>
+  </data>
+  <data name="geo_tooltip_version_patch" xml:space="preserve">
+    <value>Номер ревизии (z); базовая линия формата (x.y) следует версии приложения</value>
+  </data>
+  <data name="geo_example_name" xml:space="preserve">
+    <value>напр. Кварцевый геотермобарометр</value>
+  </data>
+  <data name="geo_example_mineral" xml:space="preserve">
+    <value>напр. Кварц</value>
+  </data>
+  <data name="geo_example_year" xml:space="preserve">
+    <value>напр. 2020</value>
+  </data>
+  <data name="geo_example_author" xml:space="preserve">
+    <value>напр. Smith et al.</value>
+  </data>
+  <data name="geo_example_reference" xml:space="preserve">
+    <value>напр. Smith (2020) Geochim. Cosmochim. Acta 280, 123-145</value>
+  </data>
+  <data name="geo_example_formula_name" xml:space="preserve">
+    <value>напр. MyFormula_v1</value>
+  </data>
+  <data name="geo_preview_title" xml:space="preserve">
+    <value>Предпросмотр</value>
+  </data>
+  <data name="geo_preview_hint" xml:space="preserve">
+    <value>Живой предпросмотр на основе метаданных выше. Показывает отображение в левом списке и в заголовке справа.</value>
+  </data>
+  <data name="geo_preview_list_item" xml:space="preserve">
+    <value>Предпросмотр элемента списка</value>
+  </data>
+  <data name="geo_preview_detail_header" xml:space="preserve">
+    <value>Предпросмотр заголовка деталей</value>
+  </data>
+  <data name="geo_preview_name_placeholder" xml:space="preserve">
+    <value>Название геотермобарометра</value>
+  </data>
+  <data name="geo_preview_mineral_placeholder" xml:space="preserve">
+    <value>Категория минерала</value>
+  </data>
+  <data name="geo_preview_author_placeholder" xml:space="preserve">
+    <value>Автор</value>
+  </data>
+  <data name="geo_preview_reference_placeholder" xml:space="preserve">
+    <value>Здесь будет отображаться ссылка</value>
+  </data>
+  <data name="geo_preview_meta_format" xml:space="preserve">
+    <value>{0} - {1} ({2})</value>
   </data>
   <data name="cipw_csv_filter" xml:space="preserve">
     <value>Файл CSV|*.csv</value>

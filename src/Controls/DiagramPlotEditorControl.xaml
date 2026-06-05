@@ -82,7 +82,7 @@
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 Padding="{TemplateBinding Padding}">
-                            <ContentPresenter VerticalAlignment="Center"/>
+                            <ContentPresenter VerticalAlignment="Top"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -233,6 +233,32 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style x:Key="HelpFormatButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#D0D0D0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#F2F2F7"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
 
     <Grid>
@@ -250,7 +276,7 @@
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}{0} {1}">
                                 <Binding Source="{x:Static lg:LanguageService.Instance}" Path="[current_diagram_version]" Mode="OneWay"/>
-                                <Binding Path="DiagramVersionText" Mode="OneWay"/>
+                                <Binding Path="SidebarVersionText" Mode="OneWay"/>
                             </MultiBinding>
                         </TextBlock.Text>
                     </TextBlock>
@@ -272,6 +298,14 @@
                             <TextBlock Text="{Binding [diagram_editor_content_translation], Source={x:Static lg:LanguageService.Instance}, TargetNullValue='内容翻译'}"/>
                         </StackPanel>
                     </RadioButton>
+                    <RadioButton x:Name="NavHelp" Style="{StaticResource NavItemStyle}"
+                                 Checked="NavSection_Checked" Tag="2"
+                                 IsEnabled="{Binding IsHelpSectionEnabled}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📄" Margin="0,0,8,0"/>
+                            <TextBlock Text="{Binding [geo_step_help_doc], Source={x:Static lg:LanguageService.Instance}, TargetNullValue='帮助文档'}"/>
+                        </StackPanel>
+                    </RadioButton>
                 </StackPanel>
             </DockPanel>
         </Border>
@@ -290,6 +324,56 @@
                                Text="{Binding [diagram_editor_basic_settings], Source={x:Static lg:LanguageService.Instance}, TargetNullValue='基本设置'}"/>
                     <TextBlock Style="{StaticResource SectionHintStyle}"
                                Text="{Binding [new_template_description], Source={x:Static lg:LanguageService.Instance}}"/>
+
+                    <Border Style="{StaticResource PanelCardStyle}">
+                        <StackPanel>
+                            <TextBlock Text="{Binding [geo_field_version], Source={x:Static lg:LanguageService.Instance}, FallbackValue=版本}" FontWeight="SemiBold" Margin="0,0,0,10"/>
+
+                            <StackPanel Margin="0,0,0,12"
+                                        Visibility="{Binding IsEditMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <TextBlock FontSize="12"
+                                           Foreground="#86868B"
+                                           Margin="0,0,0,4"
+                                           Text="{Binding [current_diagram_version], Source={x:Static lg:LanguageService.Instance}, FallbackValue=当前图解版本}"/>
+                                <TextBlock FontSize="14"
+                                           FontWeight="SemiBold"
+                                           Foreground="#1D1D1F"
+                                           Text="{Binding OriginalTemplateVersion, Mode=OneWay}"/>
+                            </StackPanel>
+
+                            <TextBlock FontSize="12"
+                                       Foreground="#86868B"
+                                       Margin="0,0,0,4"
+                                       Text="{Binding [diagram_editor_new_version], Source={x:Static lg:LanguageService.Instance}, FallbackValue=新版本}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0"
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,4,0"
+                                           Foreground="#666"
+                                           FontSize="13"
+                                           Text="{Binding FormatVersionPrefix, Mode=OneWay}"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding PatchVersion, UpdateSourceTrigger=PropertyChanged}"
+                                         VerticalAlignment="Center"
+                                         Padding="8,6"
+                                         FontSize="13"
+                                         ToolTip="{Binding [geo_tooltip_version_patch], Source={x:Static lg:LanguageService.Instance}, FallbackValue=修订号 z；格式基线 x.y 跟随程序版本}"/>
+                                <TextBlock Grid.Column="2"
+                                           VerticalAlignment="Center"
+                                           Margin="12,0,0,0"
+                                           FontSize="12"
+                                           Foreground="#86868B">
+                                    <Run Text="{Binding [diagram_editor_saved_version], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay, FallbackValue=保存后版本：}"/>
+                                    <Run Text="{Binding TemplateVersion, Mode=OneWay}" FontWeight="SemiBold"/>
+                                </TextBlock>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
 
                     <Border Style="{StaticResource PanelCardStyle}">
                         <StackPanel>
@@ -508,10 +592,13 @@
                                   CanUserAddRows="False" CanUserDeleteRows="False"
                                   HeadersVisibility="Column"
                                   RowHeaderWidth="0"
+                                  EnableRowVirtualization="False"
                                   ScrollViewer.HorizontalScrollBarVisibility="Auto"
                                   ScrollViewer.VerticalScrollBarVisibility="Auto"
                                   ScrollViewer.CanContentScroll="True"
                                   AutoGeneratingColumn="TranslationGrid_AutoGeneratingColumn"
+                                  PreparingCellForEdit="TranslationGrid_PreparingCellForEdit"
+                                  LoadingRow="TranslationGrid_LoadingRow"
                                   CellEditEnding="TranslationGrid_CellEditEnding">
                             <DataGrid.Resources>
                                 <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource ScrollBarBaseStyle}"/>
@@ -522,6 +609,82 @@
 
                 <TextBlock Grid.Row="3" Text="{Binding TranslationStatusMessage}" Margin="0,10,0,0"
                            FontSize="12" Foreground="#86868B" TextTrimming="CharacterEllipsis"/>
+            </Grid>
+
+            <!-- Help documents -->
+            <Grid x:Name="HelpPanel" Visibility="Collapsed" Margin="20,16">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Style="{StaticResource SectionTitleStyle}"
+                           Text="{Binding [geo_step_help_doc], Source={x:Static lg:LanguageService.Instance}, TargetNullValue='帮助文档'}"/>
+                <TextBlock Grid.Row="1" Style="{StaticResource SectionHintStyle}"
+                           Text="{Binding [geo_help_optional_hint], Source={x:Static lg:LanguageService.Instance}, FallbackValue='帮助文档为可选内容，支持多语言 RTF 富文本格式。'}"/>
+
+                <Border Grid.Row="2" Background="#FAFAFA" Padding="12,8" Margin="0,0,0,0"
+                        CornerRadius="10,10,0,0" BorderBrush="{StaticResource BorderBrushLight}" BorderThickness="1,1,1,0">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding [geo_help_current_lang], Source={x:Static lg:LanguageService.Instance}, FallbackValue='当前语言：'}"
+                                   FontSize="12" Foreground="#555" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                        <ComboBox ItemsSource="{Binding LanguageParts}"
+                                  DisplayMemberPath="Text"
+                                  SelectedValuePath="Text"
+                                  SelectedValue="{Binding SelectedHelpLanguage, Mode=TwoWay}"
+                                  Width="130" VerticalAlignment="Center"/>
+
+                        <Rectangle Width="1" Height="20" Fill="#D0D0D0" Margin="14,0"/>
+
+                        <Button Style="{StaticResource HelpFormatButtonStyle}" Click="BoldButton_Click"
+                                ToolTip="{Binding [geo_help_bold], Source={x:Static lg:LanguageService.Instance}, FallbackValue='加粗 (Ctrl+B)'}">
+                            <TextBlock Text="B" FontWeight="Bold" FontSize="13"/>
+                        </Button>
+                        <Button Style="{StaticResource HelpFormatButtonStyle}" Click="ItalicButton_Click" Margin="4,0,0,0"
+                                ToolTip="{Binding [geo_help_italic], Source={x:Static lg:LanguageService.Instance}, FallbackValue='斜体 (Ctrl+I)'}">
+                            <TextBlock Text="I" FontStyle="Italic" FontSize="13"/>
+                        </Button>
+                        <Button Style="{StaticResource HelpFormatButtonStyle}" Click="UnderlineButton_Click" Margin="4,0,0,0"
+                                ToolTip="{Binding [geo_help_underline], Source={x:Static lg:LanguageService.Instance}, FallbackValue='下划线 (Ctrl+U)'}">
+                            <TextBlock Text="U" FontSize="13" TextDecorations="Underline"/>
+                        </Button>
+
+                        <Rectangle Width="1" Height="20" Fill="#D0D0D0" Margin="10,0"/>
+
+                        <TextBlock Text="{Binding [geo_help_font_size], Source={x:Static lg:LanguageService.Instance}, FallbackValue='字号：'}"
+                                   FontSize="12" Foreground="#555" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                        <ComboBox x:Name="FontSizeComboBox" Width="65" SelectedIndex="1" IsEditable="True"
+                                  SelectionChanged="FontSizeComboBox_SelectionChanged">
+                            <ComboBoxItem Content="10"/>
+                            <ComboBoxItem Content="12"/>
+                            <ComboBoxItem Content="14"/>
+                            <ComboBoxItem Content="16"/>
+                            <ComboBoxItem Content="18"/>
+                            <ComboBoxItem Content="20"/>
+                            <ComboBoxItem Content="24"/>
+                            <ComboBoxItem Content="28"/>
+                            <ComboBoxItem Content="36"/>
+                        </ComboBox>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Row="3" Background="White" CornerRadius="0,0,10,10"
+                        BorderBrush="{StaticResource BorderBrushLight}" BorderThickness="1,0,1,1">
+                    <RichTextBox x:Name="HelpDocEditor"
+                                 Padding="16,12" BorderThickness="0"
+                                 VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
+                                 AcceptsTab="True">
+                        <RichTextBox.Resources>
+                            <Style TargetType="{x:Type FlowDocument}">
+                                <Setter Property="ColumnWidth" Value="999999"/>
+                                <Setter Property="PagePadding" Value="10"/>
+                            </Style>
+                        </RichTextBox.Resources>
+                        <FlowDocument/>
+                    </RichTextBox>
+                </Border>
             </Grid>
 
             <!-- Footer -->

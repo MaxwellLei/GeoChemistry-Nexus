@@ -10,8 +10,8 @@ using System.Text;
 namespace GeoChemistryNexus.Services
 {
     /// <summary>
-    /// 温度计（GTM）数据库服务
-    /// 使用 LiteDB 存储温度计的元数据、JS 脚本和帮助文档
+    /// 温压计（GTM）数据库服务
+    /// 使用 LiteDB 存储温压计的元数据、JS 脚本和帮助文档
     /// 参照 GraphMapDatabaseService 的设计模式
     /// </summary>
     public class GeothermometerDatabaseService
@@ -41,7 +41,7 @@ namespace GeoChemistryNexus.Services
         }
 
         /// <summary>
-        /// 获取所有温度计的摘要信息（不含 ScriptContent 和 HelpDocuments）
+        /// 获取所有温压计的摘要信息（不含 ScriptContent 和 HelpDocuments）
         /// </summary>
         public List<GeothermometerEntity> GetSummaries(bool? isOfficial = null)
         {
@@ -65,7 +65,7 @@ namespace GeoChemistryNexus.Services
         }
 
         /// <summary>
-        /// 根据 ID 获取完整温度计实体（含脚本和帮助文档）
+        /// 根据 ID 获取完整温压计实体（含脚本和帮助文档）
         /// </summary>
         public GeothermometerEntity GetEntity(Guid id)
         {
@@ -75,7 +75,7 @@ namespace GeoChemistryNexus.Services
         }
 
         /// <summary>
-        /// 根据 PluginId 获取完整温度计实体
+        /// 根据 PluginId 获取完整温压计实体
         /// </summary>
         public GeothermometerEntity GetEntityByPluginId(string pluginId)
         {
@@ -85,7 +85,7 @@ namespace GeoChemistryNexus.Services
         }
 
         /// <summary>
-        /// 插入或更新温度计
+        /// 插入或更新温压计
         /// </summary>
         public void UpsertEntity(GeothermometerEntity entity)
         {
@@ -100,7 +100,7 @@ namespace GeoChemistryNexus.Services
         }
 
         /// <summary>
-        /// 删除温度计
+        /// 删除温压计
         /// </summary>
         public void DeleteEntity(Guid id)
         {
@@ -120,7 +120,7 @@ namespace GeoChemistryNexus.Services
         }
 
         /// <summary>
-        /// 获取所有温度计数量
+        /// 获取所有温压计数量
         /// </summary>
         public int Count()
         {

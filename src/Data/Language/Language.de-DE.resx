@@ -150,9 +150,6 @@
   <data name="geo_validate_version_format" xml:space="preserve">
     <value>Ungültiges Versionsformat. Nur x.x.x ist zulässig (z. B. 1.0.0, 1.2.3).</value>
   </data>
-  <data name="drawing_template_repair_tool" xml:space="preserve">
-    <value>Zeichenvorlagenreparaturtool</value>
-  </data>
   <data name="category_structure_min_two" xml:space="preserve">
     <value>Kategoriestruktur muss mindestens 2 Ebenen haben!</value>
   </data>
@@ -184,7 +181,7 @@
     <value>Sichtbar</value>
   </data>
   <data name="geo_msg_batch_export_success" xml:space="preserve">
-    <value>{0} offizielle Thermometer insgesamt, davon {1} exportiert (hinzugefügt/geändert)
+    <value>{0} offizielle Geothermobarometer insgesamt, davon {1} exportiert (hinzugefügt/geändert)
 Verzeichnis: {2}</value>
   </data>
   <data name="geo_btn_apply" xml:space="preserve">
@@ -233,7 +230,7 @@ Verzeichnis: {2}</value>
     <value>Neues Diagramm</value>
   </data>
   <data name="geo_msg_promoted" xml:space="preserve">
-    <value>Zu offiziellem Thermometer hochgestuft</value>
+    <value>Zu offiziellem Geothermobarometer hochgestuft</value>
   </data>
   <data name="geo_msg_test_input_required" xml:space="preserve">
     <value>Bitte Testwerte eingeben.</value>
@@ -245,10 +242,10 @@ Verzeichnis: {2}</value>
     <value>Wird heruntergeladen...</value>
   </data>
   <data name="geo_hint_no_custom" xml:space="preserve">
-    <value>Noch keine benutzerdefinierten Thermometer, klicken Sie auf +, um zu erstellen.</value>
+    <value>Noch keine benutzerdefinierten Geothermobarometer, klicken Sie auf +, um zu erstellen.</value>
   </data>
   <data name="geo_msg_update_downloaded" xml:space="preserve">
-    <value>{0} Geothermometer heruntergeladen</value>
+    <value>{0} Geothermobarometer heruntergeladen</value>
   </data>
   <data name="use_help" xml:space="preserve">
     <value>Diagramm-Anleitung</value>
@@ -328,9 +325,6 @@ Verzeichnis: {2}</value>
   <data name="fill_color_1" xml:space="preserve">
     <value>Füllfarbe 1</value>
   </data>
-  <data name="start_check_and_repair" xml:space="preserve">
-    <value>Prüfung und Reparatur starten</value>
-  </data>
   <data name="cipw_overview" xml:space="preserve">
     <value>Die CIPW-Normberechnung (auch CIPW Norm genannt) ist eine 1902 von Cross, Iddings, Pirsson und Washington vorgeschlagene petrochemische Berechnungsmethode. Auf Basis der chemischen Analyse der Hauptelementoxide eines Gesamtgesteins werden die Oxide in einer festen Reihenfolge auf eine Reihe idealisierter Standardminerale verteilt, was zur Gesteinsklassifikation und vergleichenden Untersuchungen dient.</value>
   </data>
@@ -365,7 +359,7 @@ Verzeichnis: {2}</value>
     <value>Speichern fehlgeschlagen: {0}</value>
   </data>
   <data name="geo_editor_title_new" xml:space="preserve">
-    <value>Neues benutzerdefiniertes Thermometer</value>
+    <value>Neues benutzerdefiniertes Geothermobarometer</value>
   </data>
   <data name="switch_diagram_language" xml:space="preserve">
     <value>Diagrammsprache wechseln</value>
@@ -392,7 +386,7 @@ Verzeichnis: {2}</value>
     <value>CIPW-Ergebnisse exportieren</value>
   </data>
   <data name="geo_menu_import_zip" xml:space="preserve">
-    <value>Geothermometer importieren (ZIP)</value>
+    <value>Geothermobarometer importieren (ZIP)</value>
   </data>
   <data name="developer_mode" xml:space="preserve">
     <value>Entwicklermodus</value>
@@ -475,7 +469,7 @@ Verzeichnis: {2}</value>
     <value>Bereits vorhanden. Möchten Sie es überschreiben?</value>
   </data>
   <data name="geo_editor_title_edit" xml:space="preserve">
-    <value>Thermometer bearbeiten</value>
+    <value>Geothermobarometer bearbeiten</value>
   </data>
   <data name="start_and_end_coordinates" xml:space="preserve">
     <value>Start- und Endkoordinaten</value>
@@ -523,7 +517,7 @@ Verzeichnis: {2}</value>
     <value>Zu Favoriten hinzugefügt</value>
   </data>
   <data name="geo_menu_new_custom" xml:space="preserve">
-    <value>Neues benutzerdefiniertes Geothermometer</value>
+    <value>Neues benutzerdefiniertes Geothermobarometer</value>
   </data>
   <data name="import_custom_diagram_template" xml:space="preserve">
     <value>Benutzerdefinierte Diagrammvorlage importieren</value>
@@ -544,7 +538,7 @@ Verzeichnis: {2}</value>
     <value>Fehler beim Prüfen auf Updates:</value>
   </data>
   <data name="GeothermometerSetting" xml:space="preserve">
-    <value>Geothermometer-Einstellungen</value>
+    <value>Geothermobarometer-Einstellungen</value>
   </data>
   <data name="PlotTitle" xml:space="preserve">
     <value>Diagrammtitel</value>
@@ -556,7 +550,7 @@ Verzeichnis: {2}</value>
     <value>Speichern und ZIP exportieren</value>
   </data>
   <data name="geo_section_official" xml:space="preserve">
-    <value>Offizielle Thermometer</value>
+    <value>Offizielle Geothermobarometer</value>
   </data>
   <data name="geo_help_current_lang" xml:space="preserve">
     <value>Aktuelle Sprache:</value>
@@ -825,7 +819,7 @@ Verzeichnis: {2}</value>
     <value>Skript-Rückgabetypfehler</value>
   </data>
   <data name="geo_msg_select_thermometer_first" xml:space="preserve">
-    <value>Bitte wählen Sie zuerst ein Thermometer aus.</value>
+    <value>Bitte wählen Sie zuerst ein Geothermobarometer aus.</value>
   </data>
   <data name="enter_language_add" xml:space="preserve">
     <value>Sprache eingeben und Enter drücken.</value>
@@ -1001,7 +995,7 @@ Verzeichnis: {2}</value>
     <value>Sprachspalte löschen</value>
   </data>
   <data name="geo_msg_export_dialog_title" xml:space="preserve">
-    <value>Geothermometer exportieren</value>
+    <value>Geothermobarometer exportieren</value>
   </data>
   <data name="edit_link" xml:space="preserve">
     <value>Link bearbeiten</value>
@@ -1085,7 +1079,7 @@ Verzeichnis: {2}</value>
     <value>Lese Benutzerkonfiguration...</value>
   </data>
   <data name="geo_section_custom" xml:space="preserve">
-    <value>Benutzerdefinierte Thermometer</value>
+    <value>Benutzerdefinierte Geothermobarometer</value>
   </data>
   <data name="Placeholder_Axis_Y" xml:space="preserve">
     <value>Y-Achse</value>
@@ -1109,7 +1103,7 @@ Verzeichnis: {2}</value>
     <value>Sind Sie sicher, dass Sie diese benutzerdefinierte Diagrammvorlage löschen möchten?</value>
   </data>
   <data name="Geothermometer" xml:space="preserve">
-    <value>Geothermometer</value>
+    <value>Geothermobarometer</value>
   </data>
   <data name="y_coordinate" xml:space="preserve">
     <value>Y-Koordinate</value>
@@ -1221,9 +1215,6 @@ Verzeichnis: {2}</value>
   </data>
   <data name="failed_to_get_announcements" xml:space="preserve">
     <value>Abrufen der Ankündigungen fehlgeschlagen:</value>
-  </data>
-  <data name="repair_missing_or_damaged_templates_and_lists" xml:space="preserve">
-    <value>Fehlende oder beschädigte Vorlagen und Listen reparieren</value>
   </data>
   <data name="MarkerShape_FilledDiamond" xml:space="preserve">
     <value>Gefüllte Raute</value>
@@ -1434,7 +1425,7 @@ Verzeichnis: {2}</value>
     <value>z. B. 45.2, 0.8, 12.3, =MyFormula(A2,B2,C2)</value>
   </data>
   <data name="geo_hint_select_thermometer" xml:space="preserve">
-    <value>Bitte wählen Sie ein Thermometer im linken Bereich</value>
+    <value>Bitte wählen Sie ein Geothermobarometer im linken Bereich</value>
   </data>
   <data name="QuitEdit" xml:space="preserve">
     <value>Bearbeitung beenden</value>
@@ -1536,7 +1527,7 @@ Verzeichnis: {2}</value>
     <value>Ankündigungen nicht abrufbar.</value>
   </data>
   <data name="auto_check_geothermometer_updates" xml:space="preserve">
-    <value>Automatisch nach Geothermometer-Updates suchen</value>
+    <value>Automatisch nach Geothermobarometer-Updates suchen</value>
   </data>
   <data name="add_widget" xml:space="preserve">
     <value>Widget hinzufügen</value>
@@ -1563,7 +1554,7 @@ Verzeichnis: {2}</value>
     <value>Maximieren</value>
   </data>
   <data name="diagram_template_not_found_repair_hint" xml:space="preserve">
-    <value>Diagrammvorlagendatei nicht gefunden. Bitte versuchen Sie, diese mit dem „Vorlagen-Reparatur-Tool“ auf der Startseite zu reparieren.</value>
+    <value>Diagrammvorlagendatei nicht gefunden. Bitte überprüfen Sie die Installation oder installieren Sie die Anwendung neu.</value>
   </data>
   <data name="no_new_templates_to_download" xml:space="preserve">
     <value>Keine neuen Vorlagen zum Herunterladen vorhanden</value>
@@ -1578,7 +1569,7 @@ Verzeichnis: {2}</value>
     <value>Diesen Eckpunkt entfernen</value>
   </data>
   <data name="geo_dialog_delete_thermometer" xml:space="preserve">
-    <value>Möchten Sie das {0} Thermometer „{1}“ wirklich löschen?</value>
+    <value>Möchten Sie das {0} Geothermobarometer „{1}“ wirklich löschen?</value>
   </data>
   <data name="x_coordinate" xml:space="preserve">
     <value>X-Koordinate</value>
@@ -1595,6 +1586,12 @@ Verzeichnis: {2}</value>
   <data name="add_image" xml:space="preserve">
     <value>Bild hinzufügen</value>
   </data>
+  <data name="start_image_copy_successfully" xml:space="preserve">
+    <value>Startbild erfolgreich hinzugefügt.</value>
+  </data>
+  <data name="start_image_copy_error" xml:space="preserve">
+    <value>Startbild konnte nicht hinzugefügt werden: </value>
+  </data>
   <data name="add_arrow" xml:space="preserve">
     <value>Pfeil hinzufügen</value>
   </data>
@@ -1609,9 +1606,6 @@ Verzeichnis: {2}</value>
   </data>
   <data name="geo_script_inputs" xml:space="preserve">
     <value>Eingabespalten (durch Komma getrennt)</value>
-  </data>
-  <data name="diagram_template_repair_tool" xml:space="preserve">
-    <value>Vorlagenreparaturtool</value>
   </data>
   <data name="cipw_diagnostic_details" xml:space="preserve">
     <value>Diagnosedetails</value>
@@ -1748,7 +1742,7 @@ Verzeichnis: {2}</value>
     <value>Sprache und Erscheinungsbild</value>
   </data>
   <data name="geo_msg_demoted" xml:space="preserve">
-    <value>Zu benutzerdefiniertem Thermometer herabgestuft</value>
+    <value>Zu benutzerdefiniertem Geothermobarometer herabgestuft</value>
   </data>
   <data name="plot_type" xml:space="preserve">
     <value>Diagrammtyp</value>
@@ -1838,7 +1832,7 @@ Verzeichnis: {2}</value>
     <value>Vorlagenbibliothek</value>
   </data>
   <data name="geo_menu_export_official" xml:space="preserve">
-    <value>Offizielle Thermometer exportieren</value>
+    <value>Offizielle Geothermobarometer exportieren</value>
   </data>
   <data name="coordinates_picked_success" xml:space="preserve">
     <value>Koordinaten erfolgreich erfasst!</value>
@@ -1967,7 +1961,7 @@ Verzeichnis: {2}</value>
     <value>Bildung der Akzessorien</value>
   </data>
   <data name="geo_msg_update_available" xml:space="preserve">
-    <value>{0} Geothermometer können aktualisiert werden</value>
+    <value>{0} Geothermobarometer können aktualisiert werden</value>
   </data>
   <data name="multiple_data_series_hint" xml:space="preserve">
     <value>Mehrere Datenserien bitte mit Komma trennen, z.B.: SiO2,TiO2</value>
@@ -2106,6 +2100,63 @@ Verzeichnis: {2}</value>
   </data>
   <data name="geo_field_worksheet_name" xml:space="preserve">
     <value>Arbeitsblattname</value>
+  </data>
+  <data name="geo_current_app_format_version" xml:space="preserve">
+    <value>Aktuelle App-Geothermobarometer-Version</value>
+  </data>
+  <data name="geo_current_template_version" xml:space="preserve">
+    <value>Aktuelle Geothermobarometer-Vorlagenversion</value>
+  </data>
+  <data name="geo_editor_set_version" xml:space="preserve">
+    <value>Geothermobarometer-Version festlegen</value>
+  </data>
+  <data name="geo_tooltip_version_patch" xml:space="preserve">
+    <value>Revisionsnummer (z); Format-Baseline (x.y) folgt der App-Version</value>
+  </data>
+  <data name="geo_example_name" xml:space="preserve">
+    <value>z. B. Quarz-Geothermobarometer</value>
+  </data>
+  <data name="geo_example_mineral" xml:space="preserve">
+    <value>z. B. Quarz</value>
+  </data>
+  <data name="geo_example_year" xml:space="preserve">
+    <value>z. B. 2020</value>
+  </data>
+  <data name="geo_example_author" xml:space="preserve">
+    <value>z. B. Smith et al.</value>
+  </data>
+  <data name="geo_example_reference" xml:space="preserve">
+    <value>z. B. Smith (2020) Geochim. Cosmochim. Acta 280, 123-145</value>
+  </data>
+  <data name="geo_example_formula_name" xml:space="preserve">
+    <value>z. B. MyFormula_v1</value>
+  </data>
+  <data name="geo_preview_title" xml:space="preserve">
+    <value>Vorschau</value>
+  </data>
+  <data name="geo_preview_hint" xml:space="preserve">
+    <value>Live-Vorschau basierend auf den Metadaten oben. Zeigt die Darstellung in der linken Liste und im rechten Detailkopf.</value>
+  </data>
+  <data name="geo_preview_list_item" xml:space="preserve">
+    <value>Listenelement-Vorschau</value>
+  </data>
+  <data name="geo_preview_detail_header" xml:space="preserve">
+    <value>Detailkopf-Vorschau</value>
+  </data>
+  <data name="geo_preview_name_placeholder" xml:space="preserve">
+    <value>Geothermobarometer-Name</value>
+  </data>
+  <data name="geo_preview_mineral_placeholder" xml:space="preserve">
+    <value>Mineralgruppe</value>
+  </data>
+  <data name="geo_preview_author_placeholder" xml:space="preserve">
+    <value>Autor</value>
+  </data>
+  <data name="geo_preview_reference_placeholder" xml:space="preserve">
+    <value>Referenz wird hier angezeigt</value>
+  </data>
+  <data name="geo_preview_meta_format" xml:space="preserve">
+    <value>{0} - {1} ({2})</value>
   </data>
   <data name="cipw_csv_filter" xml:space="preserve">
     <value>CSV-Datei|*.csv</value>

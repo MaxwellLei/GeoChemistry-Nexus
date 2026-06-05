@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "groups": [
+    {
+      "id": "geochemistry-tools",
+      "title": "地化工具",
+      "sortOrder": 0,
+      "links": [
+        {
+          "id": "georoc",
+          "title": "GEOROC",
+          "description": "Geochemistry of Rocks of the Oceans and Continents",
+          "url": "https://georoc.mpch-mainz.gwdg.de/georoc/",
+          "icon": "\uE774"
+        },
+        {
+          "id": "earthchem",
+          "title": "EarthChem",
+          "description": "Portal for geochemical data discovery",
+          "url": "https://www.earthchem.org/",
+          "icon": "\uE753"
+        }
+      ]
+    },
+    {
+      "id": "references",
+      "title": "参考资料",
+      "sortOrder": 1,
+      "links": [
+        {
+          "id": "bing",
+          "title": "Bing",
+          "description": "Search engine",
+          "url": "https://www.bing.com/",
+          "icon": "\uE721"
+        }
+      ]
+    }
+  ]
+}

@@ -1,3 +1,4 @@
+using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Models;
 using Jint;
 using Jint.Native;
@@ -16,8 +17,8 @@ using unvell.ReoGrid.Formula;
 namespace GeoChemistryNexus.Services
 {
     /// <summary>
-    /// 地质温度计（GTM）管理服务
-    /// 从 LiteDB 加载温度计，通过 Jint 注册 JS 脚本为 ReoGrid 自定义函数
+    /// 地质温压计（GTM）管理服务
+    /// 从 LiteDB 加载温压计，通过 Jint 注册 JS 脚本为 ReoGrid 自定义函数
     /// 支持 ZIP 导入/导出，从服务器下载更新
     /// </summary>
     public static class GeothermometerService
@@ -56,13 +57,19 @@ namespace GeoChemistryNexus.Services
         private static string _serverBaseUrl = DefaultServerBaseUrl;
 
         /// <summary>
+        /// 最近一次 ReloadPlugins 检测到的公式名冲突（先注册者优先生效）
+        /// </summary>
+        public static IReadOnlyList<FormulaNameConflict> LastFormulaNameConflicts { get; private set; } =
+            Array.Empty<FormulaNameConflict>();
+
+        /// <summary>
         /// 本地 GeoT-List.json 存储路径
         /// </summary>
         private static string LocalListFilePath =>
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "Plugins", "GeoT-List.json");
 
         /// <summary>
-        /// 获取已加载的全部温度计实体（摘要）
+        /// 获取已加载的全部温压计实体（摘要）
         /// </summary>
         public static IReadOnlyList<GeothermometerEntity> LoadedEntities => _loadedEntities.AsReadOnly();
 
@@ -73,7 +80,7 @@ namespace GeoChemistryNexus.Services
         }
 
         /// <summary>
-        /// 初始化：从 LiteDB 加载所有温度计并注册公式
+        /// 初始化：从 LiteDB 加载所有温压计并注册公式
         /// </summary>
         public static void Initialize()
         {
@@ -81,7 +88,7 @@ namespace GeoChemistryNexus.Services
         }
 
         /// <summary>
-        /// 从数据库加载所有温度计并注册 JS 公式
+        /// 从数据库加载所有温压计并注册 JS 公式
         /// </summary>
         public static void ReloadPlugins()
         {
@@ -89,25 +96,48 @@ namespace GeoChemistryNexus.Services
 
             var dbService = GeothermometerDatabaseService.Instance;
             var summaries = dbService.GetSummaries();
+            var fullEntities = new List<GeothermometerEntity>();
 
             foreach (var summary in summaries)
             {
                 _loadedEntities.Add(summary);
 
-                // 获取完整实体（含脚本）来注册公式
                 var fullEntity = dbService.GetEntity(summary.Id);
-                if (fullEntity != null && !string.IsNullOrEmpty(fullEntity.ScriptContent)
-                    && !string.IsNullOrEmpty(fullEntity.FormulaName))
+                if (fullEntity != null)
+                    fullEntities.Add(fullEntity);
+            }
+
+            LastFormulaNameConflicts = FindAllFormulaNameConflicts(fullEntities);
+            foreach (var conflict in LastFormulaNameConflicts)
+            {
+                Debug.WriteLine(
+                    $"[GeothermometerService] 公式名冲突: '{conflict.FormulaName}' " +
+                    $"已被 '{conflict.ExistingName}' ({conflict.ExistingPluginId}) 使用，" +
+                    $"'{conflict.CandidateName}' ({conflict.CandidatePluginId}) 的注册已跳过");
+            }
+
+            var registeredFormulaNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (var fullEntity in fullEntities.OrderBy(e => e.PluginId, StringComparer.Ordinal))
+            {
+                if (fullEntity == null || string.IsNullOrEmpty(fullEntity.ScriptContent))
+                    continue;
+
+                if (!string.IsNullOrEmpty(fullEntity.FormulaName)
+                    && registeredFormulaNames.Add(fullEntity.FormulaName))
                 {
                     RegisterScriptFormula(fullEntity);
+                }
 
-                    // 注册附加公式
-                    if (fullEntity.AdditionalFormulas != null)
+                if (fullEntity.AdditionalFormulas != null)
+                {
+                    foreach (var af in fullEntity.AdditionalFormulas)
                     {
-                        foreach (var af in fullEntity.AdditionalFormulas)
-                        {
+                        if (string.IsNullOrEmpty(af.FormulaName) || string.IsNullOrEmpty(af.FunctionName))
+                            continue;
+
+                        if (registeredFormulaNames.Add(af.FormulaName))
                             RegisterAdditionalFormula(fullEntity, af);
-                        }
                     }
                 }
             }
@@ -270,7 +300,7 @@ namespace GeoChemistryNexus.Services
         }
 
         /// <summary>
-        /// 获取按矿物分组的温度计列表
+        /// 获取按矿物分组的温压计列表
         /// </summary>
         /// <param name="isOfficial">null=全部, true=仅官方, false=仅自定义</param>
         public static List<MineralGroup> GetGroupedEntities(bool? isOfficial = null)
@@ -308,7 +338,7 @@ namespace GeoChemistryNexus.Services
         }
 
         /// <summary>
-        /// 获取自定义温度计的平面列表（不按矿物分组）
+        /// 获取自定义温压计的平面列表（不按矿物分组）
         /// </summary>
         public static List<Geothermometer> GetCustomPlugins()
         {
@@ -319,10 +349,12 @@ namespace GeoChemistryNexus.Services
         }
 
         /// <summary>
-        /// 保存温度计到数据库并重新注册公式（支持官方和自定义）
+        /// 保存温压计到数据库并重新注册公式（支持官方和自定义）
         /// </summary>
         public static GeothermometerEntity SaveEntity(GeothermometerEntity entity)
         {
+            ValidateFormulaNames(entity, entity.Id == Guid.Empty ? null : entity.Id);
+
             entity.LastModified = DateTime.Now;
             entity.FileHash = GeothermometerDatabaseService.ComputeHash(entity.ScriptContent ?? "");
 
@@ -340,7 +372,7 @@ namespace GeoChemistryNexus.Services
         }
 
         /// <summary>
-        /// 保存自定义温度计（兼容旧调用，强制 IsOfficial=false）
+        /// 保存自定义温压计（兼容旧调用，强制 IsOfficial=false）
         /// </summary>
         public static GeothermometerEntity SaveCustomEntity(GeothermometerEntity entity)
         {
@@ -349,7 +381,7 @@ namespace GeoChemistryNexus.Services
         }
 
         /// <summary>
-        /// 将自定义温度计转换为官方温度计（重新生成 PluginId 和 Guid）
+        /// 将自定义温压计转换为官方温压计（重新生成 PluginId 和 Guid）
         /// </summary>
         public static bool ConvertToOfficial(Guid entityId)
         {
@@ -374,7 +406,7 @@ namespace GeoChemistryNexus.Services
         }
 
         /// <summary>
-        /// 将官方温度计降级为自定义温度计（重新生成 PluginId 和 Guid）
+        /// 将官方温压计降级为自定义温压计（重新生成 PluginId 和 Guid）
         /// </summary>
         public static bool ConvertToCustom(Guid entityId)
         {
@@ -399,7 +431,7 @@ namespace GeoChemistryNexus.Services
         }
 
         /// <summary>
-        /// 删除温度计（支持删除官方和自定义）
+        /// 删除温压计（支持删除官方和自定义）
         /// </summary>
         public static bool DeleteEntity(Guid entityId)
         {
@@ -457,12 +489,10 @@ namespace GeoChemistryNexus.Services
                 Author = entity.Author,
                 Year = entity.Year,
                 Reference = entity.Reference,
-                Description = entity.Description,
                 IconCode = entity.IconCode,
                 IconColor = entity.IconColor,
                 Headers = entity.Headers,
                 ExampleRow = entity.ExampleRow,
-                WorksheetName = entity.WorksheetName,
                 FormulaName = entity.FormulaName,
                 InputColumns = entity.InputColumns,
                 AdditionalFormulas = entity.AdditionalFormulas,
@@ -473,7 +503,7 @@ namespace GeoChemistryNexus.Services
         // ==================== 导出/导入 ZIP ====================
 
         /// <summary>
-        /// 导出温度计为 ZIP 文件
+        /// 导出温压计为 ZIP 文件
         /// ZIP 包含: {pluginId}.json (元数据) + {pluginId}.js (脚本) + *.rtf (帮助文档)
         /// </summary>
         public static void ExportToZip(Guid entityId, string zipFilePath)
@@ -500,12 +530,10 @@ namespace GeoChemistryNexus.Services
                     ["Author"] = entity.Author,
                     ["Year"] = entity.Year,
                     ["Reference"] = entity.Reference,
-                    ["Description"] = entity.Description,
                     ["IconCode"] = entity.IconCode,
                     ["IconColor"] = entity.IconColor,
                     ["Headers"] = entity.Headers,
                     ["ExampleRow"] = entity.ExampleRow,
-                    ["WorksheetName"] = entity.WorksheetName,
                     ["FormulaName"] = entity.FormulaName,
                     ["InputColumns"] = entity.InputColumns,
                     ["AdditionalFormulas"] = entity.AdditionalFormulas,
@@ -546,10 +574,12 @@ namespace GeoChemistryNexus.Services
         }
 
         /// <summary>
-        /// 从 ZIP 文件导入温度计
+        /// 从 ZIP 文件导入温压计
         /// </summary>
+        /// <param name="zipFilePath">ZIP 文件路径</param>
+        /// <param name="persist">是否立即写入数据库（服务器下载场景应在哈希校验后再写入）</param>
         /// <returns>导入的实体，如果失败则返回 null</returns>
-        public static GeothermometerEntity ImportFromZip(string zipFilePath)
+        public static GeothermometerEntity? ImportFromZip(string zipFilePath, bool persist = true)
         {
             string tempDir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
 
@@ -566,6 +596,13 @@ namespace GeoChemistryNexus.Services
                 var plugin = JsonSerializer.Deserialize<Geothermometer>(jsonContent, JsonOptions);
                 if (plugin == null || string.IsNullOrEmpty(plugin.Id))
                     return null;
+
+                plugin.Version = ContentVersionHelper.Normalize(plugin.Version);
+                if (!ContentVersionHelper.IsGeothermometerFormatCompatible(plugin.Version))
+                {
+                    Debug.WriteLine($"[GeothermometerService] GTM 格式版本不兼容 [{plugin.Id}]: {plugin.Version}");
+                    return null;
+                }
 
                 // 尝试读取 JSON 中的 IsOfficial 标志
                 bool isOfficial = false;
@@ -621,12 +658,10 @@ namespace GeoChemistryNexus.Services
                     Author = plugin.Author,
                     Year = plugin.Year,
                     Reference = plugin.Reference,
-                    Description = plugin.Description,
                     IconCode = plugin.IconCode,
                     IconColor = plugin.IconColor,
                     Headers = plugin.Headers,
                     ExampleRow = plugin.ExampleRow,
-                    WorksheetName = plugin.WorksheetName,
                     FormulaName = plugin.FormulaName,
                     InputColumns = plugin.InputColumns ?? new List<string>(),
                     AdditionalFormulas = plugin.AdditionalFormulas ?? new List<AdditionalFormula>(),
@@ -634,8 +669,11 @@ namespace GeoChemistryNexus.Services
                     HelpDocuments = helpDocs
                 };
 
-                // 写入数据库
-                GeothermometerDatabaseService.Instance.UpsertEntity(entity);
+                if (persist)
+                {
+                    ValidateFormulaNames(entity);
+                    GeothermometerDatabaseService.Instance.UpsertEntity(entity);
+                }
 
                 return entity;
             }
@@ -656,94 +694,157 @@ namespace GeoChemistryNexus.Services
         /// <summary>
         /// 从服务器检查可用更新（两级校验）
         /// 1. 下载 GeoT-index.json 获取 GeoT-List.json 的哈希值
-        /// 2. 对比本地 GeoT-List.json 的哈希，不一致则下载新的列表
-        /// 3. 对比列表中的 GTM 与本地数据库，找出需要新增/更新的，删除已移除的
+        /// 2. 对比本地 GeoT-List.json 的哈希，不一致则下载新的列表并校验完整性
+        /// 3. 使用清单与本地数据库对账：仅返回需下载项与待下架项，不执行删除
         /// </summary>
-        public static async Task<List<PluginIndexEntry>> CheckForUpdatesAsync()
+        public static async Task<GeothermometerUpdateCheckResult> CheckForUpdatesAsync()
         {
-            var updatable = new List<PluginIndexEntry>();
             try
             {
                 using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(15) };
 
-                // 1. 下载 GeoT-index.json，获取 GeoT-List.json 的哈希值
                 string indexUrl = $"{_serverBaseUrl}/{GeoTIndexFileName}";
                 string indexJson = await client.GetStringAsync(indexUrl);
                 var geoTIndex = JsonSerializer.Deserialize<GeoTIndex>(indexJson, JsonOptions);
                 if (geoTIndex == null || string.IsNullOrEmpty(geoTIndex.ListHash))
-                    return updatable;
+                {
+                    return new GeothermometerUpdateCheckResult
+                    {
+                        Status = GeothermometerUpdateCheckStatus.Failed,
+                        ErrorMessage = "Invalid GeoT-index.json"
+                    };
+                }
 
-                // 2. 检查本地 GeoT-List.json 是否需要更新
                 bool needDownloadList = true;
                 if (File.Exists(LocalListFilePath))
                 {
-                    string localListContent = File.ReadAllText(LocalListFilePath);
+                    string localListContent = await File.ReadAllTextAsync(LocalListFilePath);
                     string localListHash = GeothermometerDatabaseService.ComputeHash(localListContent);
-                    if (localListHash == geoTIndex.ListHash)
+                    if (string.Equals(localListHash, geoTIndex.ListHash, StringComparison.OrdinalIgnoreCase))
                         needDownloadList = false;
                 }
 
-                // 3. 如果需要则从服务器下载 GeoT-List.json 并保存到本地
                 string listJson;
                 if (needDownloadList)
                 {
                     string listUrl = $"{_serverBaseUrl}/{GeoTListFileName}";
                     listJson = await client.GetStringAsync(listUrl);
 
+                    string downloadedHash = GeothermometerDatabaseService.ComputeHash(listJson);
+                    if (!string.Equals(downloadedHash, geoTIndex.ListHash, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return new GeothermometerUpdateCheckResult
+                        {
+                            Status = GeothermometerUpdateCheckStatus.Failed,
+                            ErrorMessage = LanguageService.Instance["downloaded_file_hash_mismatch"]
+                        };
+                    }
+
                     string listDir = Path.GetDirectoryName(LocalListFilePath);
                     if (!string.IsNullOrEmpty(listDir) && !Directory.Exists(listDir))
                         Directory.CreateDirectory(listDir);
-                    File.WriteAllText(LocalListFilePath, listJson);
+                    await File.WriteAllTextAsync(LocalListFilePath, listJson);
+                }
+                else if (File.Exists(LocalListFilePath))
+                {
+                    listJson = await File.ReadAllTextAsync(LocalListFilePath);
                 }
                 else
                 {
-                    // 本地列表哈希一致，无需更新
-                    return updatable;
+                    return new GeothermometerUpdateCheckResult
+                    {
+                        Status = GeothermometerUpdateCheckStatus.Failed,
+                        ErrorMessage = "Local GeoT-List.json is missing"
+                    };
                 }
 
-                // 4. 解析 GTM 列表
                 var pluginList = JsonSerializer.Deserialize<PluginIndex>(listJson, JsonOptions);
-                if (pluginList?.Plugins == null) return updatable;
-
-                // 5. 对比本地，找出需要更新/新增的 GTM
-                var serverPluginIds = new HashSet<string>();
-                foreach (var entry in pluginList.Plugins)
+                if (pluginList?.Plugins == null)
                 {
-                    serverPluginIds.Add(entry.Id);
-                    var local = _loadedEntities.FirstOrDefault(p => p.PluginId == entry.Id);
-                    if (local == null)
+                    return new GeothermometerUpdateCheckResult
                     {
-                        // 本地没有此 GTM → 需要下载
-                        updatable.Add(entry);
-                    }
-                    else if (CompareVersions(entry.Version, local.Version) > 0)
-                    {
-                        // 服务器版本更高 → 需要更新
-                        updatable.Add(entry);
-                    }
-                    else if (!string.IsNullOrEmpty(entry.Hash) && entry.Hash != local.FileHash)
-                    {
-                        // 版本相同但 Hash 不同 → 内容有变化，需要更新
-                        updatable.Add(entry);
-                    }
+                        Status = GeothermometerUpdateCheckStatus.Failed,
+                        ErrorMessage = "Invalid GeoT-List.json"
+                    };
                 }
 
-                // 6. 删除本地已不存在于服务器列表中的官方温度计
-                var localOfficials = _loadedEntities.Where(e => e.IsOfficial).ToList();
-                foreach (var local in localOfficials)
-                {
-                    if (!serverPluginIds.Contains(local.PluginId))
-                    {
-                        Debug.WriteLine($"[GeothermometerService] 删除已移除的官方温度计: {local.PluginId}");
-                        DeleteEntity(local.Id);
-                    }
-                }
+                return BuildUpdateCheckResult(pluginList);
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"[GeothermometerService] 检查更新失败: {ex.Message}");
+                return new GeothermometerUpdateCheckResult
+                {
+                    Status = GeothermometerUpdateCheckStatus.Failed,
+                    ErrorMessage = ex.Message
+                };
             }
-            return updatable;
+        }
+
+        /// <summary>
+        /// 根据服务器清单对账本地官方温压计，返回需下载项与待下架项（无副作用）。
+        /// </summary>
+        private static GeothermometerUpdateCheckResult BuildUpdateCheckResult(PluginIndex pluginList)
+        {
+            var updatable = new List<PluginIndexEntry>();
+            var serverPluginIds = new HashSet<string>();
+            string appFormatVersion = ContentVersionHelper.GetGeothermometerFormatVersion();
+
+            foreach (var entry in pluginList.Plugins)
+            {
+                serverPluginIds.Add(entry.Id);
+
+                if (ContentVersionHelper.RequiresAppUpgrade(entry.Version, appFormatVersion))
+                    continue;
+
+                var local = _loadedEntities.FirstOrDefault(p => p.PluginId == entry.Id);
+                if (local == null)
+                {
+                    updatable.Add(entry);
+                }
+                else if (!ContentVersionHelper.IsGeothermometerFormatCompatible(local.Version))
+                {
+                    updatable.Add(entry);
+                }
+                else if (ContentVersionHelper.HasContentUpdate(local.Version, entry.Version)
+                         || ContentVersionHelper.Compare(entry.Version, local.Version) > 0)
+                {
+                    updatable.Add(entry);
+                }
+                else if (!string.IsNullOrEmpty(entry.Hash) && !string.Equals(entry.Hash, local.FileHash, StringComparison.OrdinalIgnoreCase))
+                {
+                    updatable.Add(entry);
+                }
+            }
+
+            var removals = _loadedEntities
+                .Where(e => e.IsOfficial && !serverPluginIds.Contains(e.PluginId))
+                .Select(e => e.Id)
+                .ToList();
+
+            return new GeothermometerUpdateCheckResult
+            {
+                Status = GeothermometerUpdateCheckStatus.Success,
+                Updates = updatable,
+                Removals = removals
+            };
+        }
+
+        /// <summary>
+        /// 删除已从服务器清单下架的官方温压计（在用户确认更新后调用）。
+        /// </summary>
+        public static int ApplyRemovals(IEnumerable<Guid> entityIds)
+        {
+            if (entityIds == null) return 0;
+
+            int count = 0;
+            foreach (var id in entityIds)
+            {
+                if (DeleteEntity(id))
+                    count++;
+            }
+
+            return count;
         }
 
         /// <summary>
@@ -765,15 +866,30 @@ namespace GeoChemistryNexus.Services
 
                 try
                 {
-                    var imported = ImportFromZip(tempZip);
-                    if (imported != null)
+                    var imported = ImportFromZip(tempZip, persist: false);
+                    if (imported == null)
+                        return false;
+
+                    if (!string.IsNullOrEmpty(entry.Hash) &&
+                        !string.Equals(imported.FileHash, entry.Hash, StringComparison.OrdinalIgnoreCase))
                     {
-                        // 从服务器下载的 GTM 标记为官方
-                        imported.IsOfficial = true;
-                        GeothermometerDatabaseService.Instance.UpsertEntity(imported);
-                        return true;
+                        Debug.WriteLine($"[GeothermometerService] GTM 哈希校验失败 [{entry.Id}]: expected={entry.Hash}, actual={imported.FileHash}");
+                        return false;
                     }
-                    return false;
+
+                    try
+                    {
+                        ValidateFormulaNames(imported);
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        Debug.WriteLine($"[GeothermometerService] GTM 公式名冲突 [{entry.Id}]: {ex.Message}");
+                        return false;
+                    }
+
+                    imported.IsOfficial = true;
+                    GeothermometerDatabaseService.Instance.UpsertEntity(imported);
+                    return true;
                 }
                 finally
                 {
@@ -788,10 +904,15 @@ namespace GeoChemistryNexus.Services
         }
 
         /// <summary>
-        /// 批量下载并重新加载
+        /// 批量下载、删除下架项并重新加载
         /// </summary>
-        public static async Task<int> DownloadAndReloadAsync(List<PluginIndexEntry> entries)
+        public static async Task<int> DownloadAndReloadAsync(
+            List<PluginIndexEntry> entries,
+            IEnumerable<Guid>? removals = null)
         {
+            if (removals != null)
+                ApplyRemovals(removals);
+
             int successCount = 0;
             foreach (var entry in entries)
             {
@@ -799,29 +920,154 @@ namespace GeoChemistryNexus.Services
                     successCount++;
             }
 
-            if (successCount > 0)
+            if (successCount > 0 || (removals != null && removals.Any()))
                 ReloadPlugins();
 
             return successCount;
         }
 
-        private static int CompareVersions(string v1, string v2)
+        private static IEnumerable<string> EnumerateFormulaNames(GeothermometerEntity entity)
         {
-            try
+            if (!string.IsNullOrWhiteSpace(entity.FormulaName))
+                yield return entity.FormulaName.Trim();
+
+            if (entity.AdditionalFormulas == null)
+                yield break;
+
+            foreach (var additionalFormula in entity.AdditionalFormulas)
             {
-                return new Version(v1).CompareTo(new Version(v2));
-            }
-            catch
-            {
-                return string.Compare(v1, v2, StringComparison.Ordinal);
+                if (!string.IsNullOrWhiteSpace(additionalFormula.FormulaName))
+                    yield return additionalFormula.FormulaName.Trim();
             }
         }
+
+        /// <summary>
+        /// 检测候选温压计与数据库中已有温压计的公式名冲突
+        /// </summary>
+        public static List<FormulaNameConflict> FindFormulaNameConflicts(
+            GeothermometerEntity candidate,
+            Guid? excludeEntityId = null)
+        {
+            var conflicts = new List<FormulaNameConflict>();
+            if (candidate == null)
+                return conflicts;
+
+            var dbService = GeothermometerDatabaseService.Instance;
+
+            foreach (var formulaName in EnumerateFormulaNames(candidate))
+            {
+                foreach (var summary in dbService.GetSummaries())
+                {
+                    if (excludeEntityId.HasValue && summary.Id == excludeEntityId.Value)
+                        continue;
+
+                    var existing = dbService.GetEntity(summary.Id);
+                    if (existing == null)
+                        continue;
+
+                    if (!EnumerateFormulaNames(existing).Any(name =>
+                            string.Equals(name, formulaName, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        continue;
+                    }
+
+                    conflicts.Add(new FormulaNameConflict
+                    {
+                        FormulaName = formulaName,
+                        ExistingPluginId = existing.PluginId,
+                        ExistingName = existing.Name,
+                        CandidatePluginId = candidate.PluginId,
+                        CandidateName = candidate.Name
+                    });
+                    break;
+                }
+            }
+
+            return conflicts;
+        }
+
+        /// <summary>
+        /// 检测一组温压计之间的公式名冲突（按 PluginId 排序，先出现者视为已占用）
+        /// </summary>
+        public static List<FormulaNameConflict> FindAllFormulaNameConflicts(IEnumerable<GeothermometerEntity> entities)
+        {
+            var conflicts = new List<FormulaNameConflict>();
+            var ownerByFormulaName = new Dictionary<string, GeothermometerEntity>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (var entity in entities.OrderBy(e => e.PluginId, StringComparer.Ordinal))
+            {
+                foreach (var formulaName in EnumerateFormulaNames(entity))
+                {
+                    if (ownerByFormulaName.TryGetValue(formulaName, out var existing))
+                    {
+                        conflicts.Add(new FormulaNameConflict
+                        {
+                            FormulaName = formulaName,
+                            ExistingPluginId = existing.PluginId,
+                            ExistingName = existing.Name,
+                            CandidatePluginId = entity.PluginId,
+                            CandidateName = entity.Name
+                        });
+                    }
+                    else
+                    {
+                        ownerByFormulaName[formulaName] = entity;
+                    }
+                }
+            }
+
+            return conflicts;
+        }
+
+        /// <summary>
+        /// 校验公式名无内部重复且不与已有温压计冲突；不通过时抛出 InvalidOperationException
+        /// </summary>
+        public static void ValidateFormulaNames(GeothermometerEntity candidate, Guid? excludeEntityId = null)
+        {
+            var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var formulaName in EnumerateFormulaNames(candidate))
+            {
+                if (!seen.Add(formulaName))
+                {
+                    throw new InvalidOperationException(
+                        string.Format(
+                            LanguageService.Instance["geo_msg_formula_name_duplicate"],
+                            formulaName,
+                            candidate.Name));
+                }
+            }
+
+            var conflicts = FindFormulaNameConflicts(candidate, excludeEntityId);
+            if (conflicts.Count == 0)
+                return;
+
+            var conflict = conflicts[0];
+            throw new InvalidOperationException(FormatFormulaNameConflictMessage(conflict));
+        }
+
+        private static string FormatFormulaNameConflictMessage(FormulaNameConflict conflict)
+        {
+            return string.Format(
+                LanguageService.Instance["geo_msg_formula_name_conflict"],
+                conflict.FormulaName,
+                conflict.ExistingName,
+                conflict.ExistingPluginId);
+        }
+
+        /// <summary>
+        /// 判断温压计版本是否可在当前程序中加载。
+        /// </summary>
+        public static bool IsVersionCompatible(string? version)
+            => ContentVersionHelper.IsGeothermometerFormatCompatible(version);
+
+        private static int CompareVersions(string v1, string v2)
+            => ContentVersionHelper.Compare(v1, v2);
 
         // ==================== 开发者工具 ====================
 
         /// <summary>
-        /// 增量导出官方温度计到指定目录
-        /// 生成 GeoT-List.json（官方温度计列表）和 GeoT-index.json（列表文件的哈希）
+        /// 增量导出官方温压计到指定目录
+        /// 生成 GeoT-List.json（官方温压计列表）和 GeoT-index.json（列表文件的哈希）
         /// 对比目录中已有的 GeoT-List.json，只导出新增或 Hash 变化的 ZIP
         /// </summary>
         /// <returns>(导出数量, 总官方数量)</returns>
@@ -891,7 +1137,7 @@ namespace GeoChemistryNexus.Services
                 }
             }
 
-            // 生成 GeoT-List.json（官方温度计列表）
+            // 生成 GeoT-List.json（官方温压计列表）
             var pluginList = new PluginIndex
             {
                 IndexVersion = DateTime.Now.ToString("yyyy.MM.dd"),

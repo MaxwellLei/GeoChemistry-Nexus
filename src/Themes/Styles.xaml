@@ -1,5 +1,6 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     xmlns:hc="https://handyorg.github.io/handycontrol"
                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                     xmlns:helpers="clr-namespace:GeoChemistryNexus.Helpers"
@@ -455,8 +456,7 @@
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
                            FontSize="11"
-                           FontWeight="SemiBold"
-                           Foreground="#3A3A3C"
+                           Foreground="#636366"
                            TextAlignment="Center"/>
             </Border>
         </Grid>
@@ -660,6 +660,14 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <!-- 开发者模式：已转换为内置模板的图解卡片边框色 -->
+    <SolidColorBrush x:Key="ConvertedBuiltinTemplateBorderBrush" Color="#8B0000"/>
+
+    <!-- 图解模板卡片网格尺寸：内容区最小 260，外边距 8，单元格 276（列数计算与行高基准） -->
+    <sys:Double x:Key="TemplateCardMinDimension">260</sys:Double>
+    <sys:Double x:Key="TemplateCardCellDimension">276</sys:Double>
+    <Size x:Key="TemplateCardCellSize">276,276</Size>
 
     <Style x:Key="TemplateCardStyle" TargetType="Border">
         <Setter Property="Background" Value="White"/>
@@ -1376,6 +1384,263 @@
         <Setter Property="CornerRadius" Value="12"/>
         <Setter Property="Padding" Value="10,4"/>
         <Setter Property="Margin" Value="0,0,8,8"/>
+    </Style>
+
+    <LinearGradientBrush x:Key="HomePageScrimBrush" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#00000000" Offset="0"/>
+        <GradientStop Color="#33000000" Offset="0.45"/>
+        <GradientStop Color="#99000000" Offset="1"/>
+    </LinearGradientBrush>
+
+    <Style x:Key="HomeContentCardStyle" TargetType="Border">
+        <Setter Property="Background" Value="#F2FFFFFF"/>
+        <Setter Property="BorderBrush" Value="#40FFFFFF"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="20"/>
+        <Setter Property="Padding" Value="20,18"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect BlurRadius="24" ShadowDepth="0" Direction="270" Color="#40000000" Opacity="0.45"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="HomeAnnouncementCardStyle" TargetType="Border" BasedOn="{StaticResource HomeContentCardStyle}">
+        <Setter Property="Padding" Value="16,14"/>
+        <Setter Property="Margin" Value="0,0,0,14"/>
+    </Style>
+
+    <Style x:Key="HomeSectionTitleStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="#636366"/>
+        <Setter Property="Margin" Value="4,0,0,12"/>
+    </Style>
+
+    <Style x:Key="HomeClockTextStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="72"/>
+        <Setter Property="FontWeight" Value="Light"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="FontFamily" Value="Segoe UI"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect BlurRadius="8" ShadowDepth="0" Color="Black" Opacity="0.35"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="HomeDateTextStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Foreground" Value="#E6FFFFFF"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect BlurRadius="6" ShadowDepth="0" Color="Black" Opacity="0.3"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="HomeLinkTileBorderStyle" TargetType="Border">
+        <Setter Property="Width" Value="48"/>
+        <Setter Property="Height" Value="48"/>
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="CornerRadius" Value="12"/>
+        <Setter Property="BorderBrush" Value="#14000000"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect BlurRadius="6" ShadowDepth="1" Direction="270" Color="#26000000" Opacity="0.35"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <ScaleTransform ScaleX="1" ScaleY="1"/>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#FAFAFA"/>
+                <Setter Property="RenderTransform">
+                    <Setter.Value>
+                        <ScaleTransform ScaleX="1.03" ScaleY="1.03"/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="HomeLinkTitleStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="Foreground" Value="#1C1C1E"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        <Setter Property="MaxWidth" Value="64"/>
+    </Style>
+
+    <Style x:Key="HomeWidgetPanelTileStyle" TargetType="Border">
+        <Setter Property="Background" Value="#FAFAFC"/>
+        <Setter Property="BorderBrush" Value="#E5E5EA"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="10"/>
+        <Setter Property="Padding" Value="10,8"/>
+        <Setter Property="Margin" Value="0,0,0,8"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#F0F4FF"/>
+                <Setter Property="BorderBrush" Value="#B8D4FF"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="HomeToolbarButtonStyle" TargetType="Button">
+        <Setter Property="Width" Value="32"/>
+        <Setter Property="Height" Value="32"/>
+        <Setter Property="MinWidth" Value="32"/>
+        <Setter Property="MinHeight" Value="32"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Margin" Value="0,0,4,0"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Foreground" Value="#AEAEB2"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Root" Background="{TemplateBinding Background}"
+                            BorderThickness="0"
+                            CornerRadius="8"
+                            ClipToBounds="False"
+                            SnapsToDevicePixels="True">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                          Margin="0" RecognizesAccessKey="True"
+                                          TextElement.Foreground="{TemplateBinding Foreground}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Root" Property="Background" Value="#08000000"/>
+                            <Setter Property="Foreground" Value="#8E8E93"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Root" Property="Background" Value="#12000000"/>
+                            <Setter Property="Foreground" Value="#636366"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.4"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="HomeGroupTitleStyle" TargetType="TextBlock" BasedOn="{StaticResource HomeSectionTitleStyle}"/>
+
+    <Style x:Key="HomeGroupTabListStyle" TargetType="ListBox">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Margin" Value="0,0,0,4"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="HomePersonalTabButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="#E8E8ED"/>
+        <Setter Property="Foreground" Value="#3C3C43"/>
+        <Setter Property="Padding" Value="14,8"/>
+        <Setter Property="Margin" Value="0,0,0,0"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="TabBorder" Background="{TemplateBinding Background}"
+                            CornerRadius="10" Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                          TextElement.Foreground="{TemplateBinding Foreground}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="TabBorder" Property="Background" Value="#D8D8DE"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="TabBorder" Property="Background" Value="#C8C8CE"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="HomeGroupTabItemStyle" TargetType="ListBoxItem">
+        <Setter Property="Background" Value="#E8E8ED"/>
+        <Setter Property="Foreground" Value="#3C3C43"/>
+        <Setter Property="Padding" Value="14,8"/>
+        <Setter Property="Margin" Value="0,0,8,0"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <Border x:Name="TabBorder" Background="{TemplateBinding Background}"
+                            CornerRadius="10" Padding="{TemplateBinding Padding}"
+                            BorderBrush="Transparent" BorderThickness="1">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="TabBorder" Property="Background" Value="#007AFF"/>
+                            <Setter Property="Foreground" Value="White"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="TabBorder" Property="Background" Value="#D8D8DE"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                                <Condition Property="IsSelected" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="TabBorder" Property="Background" Value="#0062CC"/>
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="HomeWidgetCardStyle" TargetType="Border">
+        <Setter Property="Background" Value="#FAFAFC"/>
+        <Setter Property="BorderBrush" Value="#E5E5EA"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="12"/>
+        <Setter Property="Padding" Value="14,12"/>
+        <Setter Property="Margin" Value="0,0,0,10"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#F0F4FF"/>
+                <Setter Property="BorderBrush" Value="#B8D4FF"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
 </ResourceDictionary>

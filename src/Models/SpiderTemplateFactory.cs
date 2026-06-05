@@ -20,7 +20,7 @@ namespace GeoChemistryNexus.Models
 
             var template = new GraphMapTemplate
             {
-                Version = UpdateHelper.GetCurrentVersionFloat(),
+                Version = ContentVersionHelper.GetDiagramFormatVersion(),
                 DefaultLanguage = defaultLang,
                 TemplateType = "Spider",
                 NodeList = new LocalizedString
@@ -86,7 +86,7 @@ namespace GeoChemistryNexus.Models
 
             var template = new GraphMapTemplate
             {
-                Version = UpdateHelper.GetCurrentVersionFloat(),
+                Version = ContentVersionHelper.GetDiagramFormatVersion(),
                 DefaultLanguage = defaultLang,
                 TemplateType = "Spider",
                 NodeList = new LocalizedString

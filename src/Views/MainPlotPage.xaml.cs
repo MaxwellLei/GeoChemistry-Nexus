@@ -47,12 +47,14 @@ namespace GeoChemistryNexus.Views
             this.DataContext = viewModel;
 
             viewModel.PropertyChanged += ViewModel_PropertyChanged;
+            viewModel.GetTemplateCardsScrollOffset = GetTemplateCardsScrollOffset;
+            viewModel.RestoreTemplateCardsScrollRequested += RestoreTemplateCardsScroll;
             AttachBreadcrumbScrollBehavior();
 
-            // 页面加载时检查更新
-            this.Loaded += (s, e) =>
+            // 页面加载时检查更新（等待首次模板库加载完成）
+            this.Loaded += async (s, e) =>
             {
-                viewModel.CheckUpdatesIfNeeded();
+                await viewModel.CheckUpdatesIfNeededAsync();
                 // 页面加载后，获取窗口并添加键盘事件监听
                 AttachKeyboardEvents();
             };
@@ -138,9 +140,15 @@ namespace GeoChemistryNexus.Views
             }
         }
 
+        // 绘图模式列宽比例：左 20% + 绘图 56% + 右 24% = 100%
+        private const double PlotModeLeftStar = 20;
+        private const double PlotModePlotStar = 56;
+        private const double PlotModeRightStar = 24;
+
         // 记录切换前的宽度状态，用于恢复
-        private GridLength _lastOuterRightWidth = new GridLength(320);
-        private GridLength _lastInnerLeftWidth = new GridLength(280);
+        private GridLength _lastInnerLeftWidth = new GridLength(PlotModeLeftStar, GridUnitType.Star);
+        private GridLength _lastPlotWidth = new GridLength(PlotModePlotStar, GridUnitType.Star);
+        private GridLength _lastOuterRightWidth = new GridLength(PlotModeRightStar, GridUnitType.Star);
         
         // 标记当前是否处于折叠模式（数据表格模式）
         private bool _isCollapsedMode = false;
@@ -190,13 +198,12 @@ namespace GeoChemistryNexus.Views
                     CancelTransformAnimations();
                 }
 
-                // 仅在稳定展开状态下保存当前状态
+                // 仅在稳定展开状态下保存当前列宽比例
                 if (_isStableExpanded)
                 {
-                    if (OuterRightCol.Width.GridUnitType == GridUnitType.Pixel)
-                        _lastOuterRightWidth = OuterRightCol.Width;
-                    if (InnerLeftCol.Width.GridUnitType == GridUnitType.Pixel)
-                        _lastInnerLeftWidth = InnerLeftCol.Width;
+                    _lastInnerLeftWidth = InnerLeftCol.Width;
+                    _lastPlotWidth = PlotColumn.Width;
+                    _lastOuterRightWidth = OuterRightCol.Width;
                 }
 
                 _isStableExpanded = false;
@@ -276,19 +283,23 @@ namespace GeoChemistryNexus.Views
             // 记录当前状态（数据模式下的左侧宽度）
             double oldLeftWidth = InnerLeftCol.ActualWidth;
 
-            // 从已知目标值计算偏移（不需要 UpdateLayout）
-            double targetLeftWidth = _lastInnerLeftWidth.Value;
-            double targetRightWidth = _lastOuterRightWidth.Value;
+            double gridWidth = MainLayoutGrid.ActualWidth;
+            double splitterWidth = 8;
+            double availableWidth = Math.Max(0, gridWidth - splitterWidth);
+            double totalStars = GetPlotModeTotalStars();
+            double targetLeftWidth = availableWidth * (_lastInnerLeftWidth.Value / totalStars);
+            double targetRightWidth = availableWidth * (_lastOuterRightWidth.Value / totalStars);
 
             // 立即 snap 到绘图模式布局
             InnerLeftCol.BeginAnimation(ColumnDefinition.WidthProperty, null);
             OuterRightCol.BeginAnimation(ColumnDefinition.WidthProperty, null);
+            PlotColumn.BeginAnimation(ColumnDefinition.WidthProperty, null);
 
             InnerLeftCol.Width = _lastInnerLeftWidth;
-            InnerLeftCol.MaxWidth = 500;
+            InnerLeftCol.MaxWidth = double.PositiveInfinity;
+            PlotColumn.Width = _lastPlotWidth;
             OuterRightCol.Width = _lastOuterRightWidth;
             OuterRightCol.MinWidth = 250;
-            PlotColumn.Width = new GridLength(1, GridUnitType.Star);
 
             // 计算补偿偏移：布局 snap 使内容左移，正向补偿使其视觉上仍在旧位置
             double shift = oldLeftWidth - targetLeftWidth; // 正值 = 内容原本偏右
@@ -330,6 +341,11 @@ namespace GeoChemistryNexus.Views
             PlotColumn.Width = new GridLength(1, GridUnitType.Star);
             InnerLeftCol.Width = new GridLength(0.818182, GridUnitType.Star);
             OuterRightCol.Width = new GridLength(0);
+        }
+
+        private double GetPlotModeTotalStars()
+        {
+            return _lastInnerLeftWidth.Value + _lastPlotWidth.Value + _lastOuterRightWidth.Value;
         }
 
         /// <summary>
@@ -806,6 +822,37 @@ namespace GeoChemistryNexus.Views
                     }
                 }
             }
+        }
+
+        private double GetTemplateCardsScrollOffset()
+        {
+            var scrollViewer = FindVisualChild<ScrollViewer>(TemplateCardsControl);
+            return scrollViewer?.VerticalOffset ?? 0;
+        }
+
+        private void RestoreTemplateCardsScroll(double offset)
+        {
+            Dispatcher.InvokeAsync(async () =>
+            {
+                for (var attempt = 0; attempt < 6; attempt++)
+                {
+                    var scrollViewer = FindVisualChild<ScrollViewer>(TemplateCardsControl);
+                    if (scrollViewer == null)
+                    {
+                        return;
+                    }
+
+                    var targetOffset = Math.Min(offset, scrollViewer.ScrollableHeight);
+                    scrollViewer.ScrollToVerticalOffset(targetOffset);
+
+                    if (Math.Abs(scrollViewer.VerticalOffset - targetOffset) < 1)
+                    {
+                        return;
+                    }
+
+                    await Task.Delay(50);
+                }
+            }, System.Windows.Threading.DispatcherPriority.Loaded);
         }
 
         /// <summary>

@@ -13,7 +13,7 @@
         WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         UseLayoutRounding="True" TextOptions.TextFormattingMode="Display"
         WindowStartupLocation="Manual" Loaded="Window_Loaded" Closing="Window_Closing" SourceInitialized="Window_SourceInitialized"
-        Title="{Binding Title}" Height="760" Width="1360" BorderThickness="0">
+        Title="{Binding Title}" Height="780" Width="1360" BorderThickness="0">
     
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="40" ResizeBorderThickness="15" GlassFrameThickness="1"/>
@@ -322,7 +322,7 @@
                 <Border Background="#F0F0F5" CornerRadius="0,12,0,10" ClipToBounds="True">
                     <Border.Style>
                         <Style TargetType="Border">
-                            <Setter Property="Width" Value="240"/>
+                            <Setter Property="Width" Value="260"/>
                             <Setter Property="Margin" Value="0,0,15,0"/>
                             <Style.Triggers>
                                 <MultiDataTrigger>

@@ -9,6 +9,9 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private bool autoCheckGtmUpdate;
 
+        /// <summary>当前软件支持的地质温压计格式版本（只读）。</summary>
+        public string CurrentGeothermometerVersion { get; } = ContentVersionHelper.GetGeothermometerFormatVersion();
+
         private bool isLoading = true;
 
         public SGeothermometerPageViewModel()

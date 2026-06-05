@@ -97,7 +97,7 @@ namespace GeoChemistryNexus.Models
         /// 高级渲染   抗锯齿
         /// </summary>
         [ObservableProperty]
-        [property: Browsable(false)]
+        [Browsable(false)]
         private bool _antiAliasEnable = true;
 
         partial void OnAntiAliasEnableChanged(bool value)

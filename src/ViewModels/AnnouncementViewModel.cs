@@ -1,10 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using GeoChemistryNexus.Helpers;
-using GeoChemistryNexus.Models;
 using GeoChemistryNexus.Services;
-using System;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace GeoChemistryNexus.ViewModels
@@ -30,33 +26,22 @@ namespace GeoChemistryNexus.ViewModels
         {
             if (IsBusy) return;
             IsBusy = true;
-            AnnouncementText = LanguageService.Instance["loading_announcements"];   // 正在加载公告....
+            AnnouncementText = LanguageService.Instance["loading_announcements"];
 
             try
             {
-                string json = await UpdateHelper.GetUrlContentAsync();
-                if (!string.IsNullOrWhiteSpace(json))
+                string text = await ServerAnnouncementService.LoadAnnouncementAsync();
+                if (!string.IsNullOrWhiteSpace(text))
                 {
-                    var serverInfo = JsonSerializer.Deserialize<ServerInfo>(json);
-                    if (serverInfo != null && !string.IsNullOrWhiteSpace(serverInfo.Announcement))
-                    {
-                        AnnouncementText = serverInfo.Announcement;
-                    }
-                    else
-                    {
-                        // 暂无公告
-                        AnnouncementText = LanguageService.Instance["no_announcements"];
-                    }
+                    AnnouncementText = text;
                 }
                 else
                 {
-                    // 无法获取公告信息。
-                    AnnouncementText = LanguageService.Instance["unable_to_get_announcements"];
+                    AnnouncementText = LanguageService.Instance["no_announcements"];
                 }
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
-                // 获取公告失败: Message
                 AnnouncementText = LanguageService.Instance["failed_to_get_announcements"] + $" {ex.Message}";
             }
             finally

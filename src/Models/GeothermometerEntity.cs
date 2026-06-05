@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace GeoChemistryNexus.Models
 {
     /// <summary>
-    /// 温度计（GTM）数据库实体
+    /// 温压计（GTM）数据库实体
     /// 存储在 LiteDB 中，包含元数据、JS 脚本和帮助文档
     /// </summary>
     public class GeothermometerEntity
@@ -39,7 +39,7 @@ namespace GeoChemistryNexus.Models
         public DateTime LastModified { get; set; } = DateTime.Now;
 
         /// <summary>
-        /// 是否为官方温度计（迁移自内置 JSON 的为官方，用户创建或导入的为自定义）
+        /// 是否为官方温压计（迁移自内置 JSON 的为官方，用户创建或导入的为自定义）
         /// </summary>
         public bool IsOfficial { get; set; }
 
@@ -56,12 +56,12 @@ namespace GeoChemistryNexus.Models
         public string MineralLangKey { get; set; } = string.Empty;
 
         /// <summary>
-        /// 温度计名称（显示名称）
+        /// 温压计名称（显示名称）
         /// </summary>
         public string Name { get; set; } = string.Empty;
 
         /// <summary>
-        /// 温度计名称的多语言键名
+        /// 温压计名称的多语言键名
         /// </summary>
         public string NameLangKey { get; set; } = string.Empty;
 
@@ -79,11 +79,6 @@ namespace GeoChemistryNexus.Models
         /// 参考文献
         /// </summary>
         public string Reference { get; set; } = string.Empty;
-
-        /// <summary>
-        /// 简要描述
-        /// </summary>
-        public string Description { get; set; } = string.Empty;
 
         /// <summary>
         /// 图标编码（iconfont unicode）
@@ -106,11 +101,6 @@ namespace GeoChemistryNexus.Models
         /// 示例数据行
         /// </summary>
         public List<string> ExampleRow { get; set; } = new();
-
-        /// <summary>
-        /// 工作表名称
-        /// </summary>
-        public string WorksheetName { get; set; } = string.Empty;
 
         /// <summary>
         /// 已注册的公式函数名称

@@ -36,7 +36,7 @@ namespace GeoChemistryNexus.Models
         /// 主网格 抗锯齿
         /// </summary>
         [ObservableProperty]
-        [property: Browsable(false)]
+        [Browsable(false)]
         private bool _majorGridLineAntiAlias = true;
 
 
@@ -68,7 +68,7 @@ namespace GeoChemistryNexus.Models
         /// 次网格 抗锯齿
         /// </summary>
         [ObservableProperty]
-        [property: Browsable(false)]
+        [Browsable(false)]
         private bool _minorGridLineAntiAlias = true;
 
 

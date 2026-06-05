@@ -9,10 +9,10 @@ namespace GeoChemistryNexus.Models
     public class GraphMapTemplate
     {
         /// <summary>
-        /// 底图版本
+        /// 底图版本（x.y.z；x.y 对齐程序 FileVersion，z 为内容修订号）
         /// </summary>
-        [JsonConverter(typeof(StringToFloatConverter))]
-        public float Version { get; set; } = 1.0f;
+        [JsonConverter(typeof(ContentVersionJsonConverter))]
+        public string Version { get; set; } = ContentVersionHelper.DefaultVersion;
 
         /// <summary>
         /// 默认语言
@@ -66,7 +66,7 @@ namespace GeoChemistryNexus.Models
             // 创建模板基础结构
             var template = new GraphMapTemplate
             {
-                Version = UpdateHelper.GetCurrentVersionFloat(),
+                Version = ContentVersionHelper.GetDiagramFormatVersion(),
                 DefaultLanguage = defaultLanguage,
                 // 根据传入的type设置模板类型
                 TemplateType = type == "Ternary_Plot" ? "Ternary" : "Cartesian",

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Windows;
 
@@ -42,7 +43,48 @@ namespace GeoChemistryNexus.ViewModels
         private bool _isTranslationSectionEnabled;
 
         [ObservableProperty]
-        private string _diagramVersionText;
+        private bool _isHelpSectionEnabled;
+
+        [ObservableProperty]
+        private string? _selectedHelpLanguage;
+
+        [ObservableProperty]
+        private int _patchVersion;
+
+        /// <summary>语言代码 → RTF 帮助文档内容。</summary>
+        private readonly Dictionary<string, string> _helpDocuments = new();
+
+        /// <summary>由 View 设置：获取当前 RichTextBox 中的 RTF 内容。</summary>
+        public Func<string?>? GetCurrentRtfContent { get; set; }
+
+        /// <summary>由 View 设置：将 RTF 内容加载到 RichTextBox。</summary>
+        public Action<string?>? SetCurrentRtfContent { get; set; }
+
+        /// <summary>编辑模式下打开时的原始模板版本（只读展示）。</summary>
+        [ObservableProperty]
+        private string _originalTemplateVersion = string.Empty;
+
+        public bool IsEditMode => Mode == DiagramPlotEditorMode.Edit;
+
+        /// <summary>程序图解格式基线 x.y.（只读）</summary>
+        public string FormatVersionPrefix
+        {
+            get
+            {
+                var normalized = ContentVersionHelper.Normalize(ContentVersionHelper.GetDiagramFormatVersion());
+                var parts = normalized.Split('.');
+                return parts.Length >= 2 ? $"{parts[0]}.{parts[1]}." : "1.0.";
+            }
+        }
+
+        /// <summary>侧边栏显示的版本摘要（编辑=当前版本，新建=保存后版本）。</summary>
+        public string SidebarVersionText =>
+            IsEditMode && !string.IsNullOrWhiteSpace(OriginalTemplateVersion)
+                ? OriginalTemplateVersion
+                : TemplateVersion;
+
+        /// <summary>保存后将写入的完整模板版本 x.y.z。</summary>
+        public string TemplateVersion => ContentVersionHelper.WithAppDiagramFormat(PatchVersion);
 
         public ObservableCollection<LanguageTagModel> LanguageParts { get; } = new();
         public ObservableCollection<CategoryPartModel> CategoryParts { get; } = new();
@@ -51,6 +93,7 @@ namespace GeoChemistryNexus.ViewModels
         private PlotTemplateCategoryConfig? _categoryConfig;
         private GraphMapTemplate? _workingTemplate;
         private GraphMapTemplateEntity? _editEntity;
+        private bool _suppressTranslationRebuild;
 
         [ObservableProperty]
         private string _selectedPlotType = "2D_Plot";
@@ -62,7 +105,6 @@ namespace GeoChemistryNexus.ViewModels
         public DiagramPlotEditorViewModel()
         {
             WindowTitle = LanguageService.Instance["new_template"] ?? "New Diagram";
-            DiagramVersionText = UpdateHelper.GetCurrentVersionFloat().ToString("F1");
             InitializePlotTypes();
             LoadCategories();
             LanguageParts.CollectionChanged += (_, _) => OnLanguagesChanged();
@@ -76,54 +118,111 @@ namespace GeoChemistryNexus.ViewModels
             IsPlotTypeSelectionEnabled = true;
             _editEntity = null;
             _workingTemplate = null;
+            OriginalTemplateVersion = string.Empty;
             ClearAll();
             SelectPlotType("2D_Plot");
             SelectedSectionIndex = 0;
+            NotifyVersionPropertiesChanged();
         }
 
         public void InitializeForEdit(GraphMapTemplateEntity entity)
         {
             if (entity?.Content == null) return;
 
+            var clonedContent = GraphMapTemplateService.CloneTemplateContent(entity.Content);
+            if (clonedContent == null) return;
+
             Mode = DiagramPlotEditorMode.Edit;
             WindowTitle = LanguageService.Instance["edit_diagram_template"] ?? "Edit Diagram";
             IsPlotTypeSelectionEnabled = false;
             _editEntity = entity;
-            _workingTemplate = entity.Content;
+            _workingTemplate = clonedContent;
+            OriginalTemplateVersion = ContentVersionHelper.Normalize(entity.Content.Version);
 
-            ClearAll();
-
-            SelectPlotType(entity.Content.TemplateType == "Ternary" ? "Ternary_Plot" : "2D_Plot");
-
-            if (entity.Content.NodeList?.Translations != null)
+            _suppressTranslationRebuild = true;
+            try
             {
-                foreach (var lang in entity.Content.NodeList.Translations.Keys)
-                    LanguageParts.Add(new LanguageTagModel { Text = lang });
-                UpdateLanguageDefaultStatus();
-            }
+                ClearAll();
 
-            string defaultLang = entity.Content.DefaultLanguage;
-            if (entity.NodeList?.Translations != null &&
-                entity.NodeList.Translations.TryGetValue(defaultLang, out var path))
-            {
-                var parts = path.Split('>', StringSplitOptions.RemoveEmptyEntries)
-                    .Select(p => p.Trim());
-                foreach (var part in parts)
+                SelectPlotType(entity.Content.TemplateType == "Ternary" ? "Ternary_Plot" : "2D_Plot");
+
+                if (_workingTemplate.NodeList?.Translations != null)
                 {
-                    CategoryParts.Add(new CategoryPartModel
-                    {
-                        DisplayName = part,
-                        LocalizedNames = null
-                    });
+                    foreach (var lang in _workingTemplate.NodeList.Translations.Keys)
+                        LanguageParts.Add(new LanguageTagModel { Text = lang });
+                    UpdateLanguageDefaultStatus();
                 }
+
+                string defaultLang = _workingTemplate.DefaultLanguage;
+                if (_workingTemplate.NodeList?.Translations != null &&
+                    _workingTemplate.NodeList.Translations.TryGetValue(defaultLang, out var path))
+                {
+                    var parts = path.Split('>', StringSplitOptions.RemoveEmptyEntries)
+                        .Select(p => p.Trim());
+                    foreach (var part in parts)
+                    {
+                        CategoryParts.Add(new CategoryPartModel
+                        {
+                            DisplayName = part,
+                            LocalizedNames = null
+                        });
+                    }
+                }
+
+                TranslationTable = DiagramTemplateTranslationHelper.BuildTranslationTable(
+                    _workingTemplate,
+                    LanguageParts.Select(l => l.Text));
+                IsTranslationSectionEnabled = LanguageParts.Count > 0;
+                TranslationStatusMessage = LanguageService.Instance["translation_loaded"] ?? "Translation data loaded";
+            }
+            finally
+            {
+                _suppressTranslationRebuild = false;
             }
 
-            TranslationTable = DiagramTemplateTranslationHelper.BuildTranslationTable(
-                _workingTemplate,
-                LanguageParts.Select(l => l.Text));
-            IsTranslationSectionEnabled = LanguageParts.Count > 0;
-            TranslationStatusMessage = LanguageService.Instance["translation_loaded"] ?? "Translation data loaded";
+            LoadHelpDocumentsFromEntity(entity);
+            PatchVersion = ContentVersionHelper.TryGetPatch(entity.Content.Version, out int patch) ? patch : 0;
+            ApplyPatchToWorkingTemplate();
             SelectedSectionIndex = 0;
+            NotifyVersionPropertiesChanged();
+        }
+
+        partial void OnModeChanged(DiagramPlotEditorMode value) => NotifyVersionPropertiesChanged();
+
+        partial void OnOriginalTemplateVersionChanged(string value) => NotifyVersionPropertiesChanged();
+
+        partial void OnSelectedSectionIndexChanged(int oldValue, int newValue)
+        {
+            if (oldValue == 2)
+                SaveCurrentHelpLanguageRtf();
+
+            if (newValue == 2)
+            {
+                SyncHelpLanguagesWithBasicSettings();
+                LoadSelectedHelpLanguageIntoEditor();
+            }
+        }
+
+        partial void OnSelectedHelpLanguageChanged(string? oldValue, string? newValue)
+        {
+            if (oldValue != null &&
+                LanguageParts.Any(p => p.Text.Equals(oldValue, StringComparison.OrdinalIgnoreCase)) &&
+                GetCurrentRtfContent != null)
+            {
+                var rtf = GetCurrentRtfContent();
+                if (rtf != null)
+                    _helpDocuments[oldValue] = rtf;
+            }
+
+            if (newValue != null)
+            {
+                _helpDocuments.TryGetValue(newValue, out var content);
+                SetCurrentRtfContent?.Invoke(content);
+            }
+            else
+            {
+                SetCurrentRtfContent?.Invoke(null);
+            }
         }
 
         public void ClearAll()
@@ -132,7 +231,30 @@ namespace GeoChemistryNexus.ViewModels
             CategoryParts.Clear();
             TranslationTable = null;
             IsTranslationSectionEnabled = false;
+            IsHelpSectionEnabled = false;
             TranslationStatusMessage = string.Empty;
+            PatchVersion = 0;
+            _helpDocuments.Clear();
+            SelectedHelpLanguage = null;
+        }
+
+        partial void OnPatchVersionChanged(int value)
+        {
+            NotifyVersionPropertiesChanged();
+            ApplyPatchToWorkingTemplate();
+        }
+
+        private void NotifyVersionPropertiesChanged()
+        {
+            OnPropertyChanged(nameof(TemplateVersion));
+            OnPropertyChanged(nameof(SidebarVersionText));
+            OnPropertyChanged(nameof(IsEditMode));
+        }
+
+        private void ApplyPatchToWorkingTemplate()
+        {
+            if (_workingTemplate == null) return;
+            _workingTemplate.Version = ContentVersionHelper.WithAppDiagramFormat(PatchVersion);
         }
 
         public IEnumerable<CategoryPartModel> GetCategoryParts() => CategoryParts;
@@ -313,6 +435,12 @@ namespace GeoChemistryNexus.ViewModels
                 return false;
             }
 
+            if (PatchVersion < 0)
+            {
+                errorMessage = LanguageService.Instance["geo_validate_version_format"];
+                return false;
+            }
+
             errorMessage = string.Empty;
             return true;
         }
@@ -329,11 +457,12 @@ namespace GeoChemistryNexus.ViewModels
             var categoryNodeList = BuildCategoryNodeList();
 
             GraphMapTemplate template;
-            if (Mode == DiagramPlotEditorMode.Edit && _workingTemplate != null)
+            if (Mode == DiagramPlotEditorMode.Edit)
             {
+                if (_workingTemplate == null)
+                    throw new InvalidOperationException(LanguageService.Instance["diagram_template_source_missing"]);
+
                 template = _workingTemplate;
-                template.NodeList = categoryNodeList;
-                template.DefaultLanguage = languages.First();
             }
             else
             {
@@ -342,22 +471,34 @@ namespace GeoChemistryNexus.ViewModels
             }
 
             if (TranslationTable != null)
-                DiagramTemplateTranslationHelper.ApplyTranslationTable(TranslationTable, template);
-            else
-                DiagramTemplateTranslationHelper.SyncTemplateLanguages(template, languages);
-
-            template.NodeList = categoryNodeList;
-            foreach (var lang in languages)
             {
-                if (!template.NodeList.Translations.ContainsKey(lang))
-                {
-                    var parts = CategoryParts.Select(p =>
-                        p.LocalizedNames != null && p.LocalizedNames.TryGetValue(lang, out var n) ? n : p.DisplayName);
-                    template.NodeList.Translations[lang] = string.Join(" > ", parts);
-                }
+                DiagramTemplateTranslationHelper.ApplyTranslationTable(TranslationTable, template);
+            }
+            else
+            {
+                template.NodeList = categoryNodeList;
+                DiagramTemplateTranslationHelper.SyncTemplateLanguages(template, languages);
             }
 
-            return template;
+            template.DefaultLanguage = languages.First();
+            template.Version = ContentVersionHelper.WithAppDiagramFormat(PatchVersion);
+
+            return GraphMapTemplateService.CloneTemplateContent(template) ?? template;
+        }
+
+        /// <summary>提交前收集各语言 RTF 帮助文档（仅含非空内容）。</summary>
+        public Dictionary<string, string> GetHelpDocumentsForSubmit()
+        {
+            SaveCurrentHelpLanguageRtf();
+
+            var result = new Dictionary<string, string>();
+            foreach (var lang in LanguageParts.Select(l => l.Text))
+            {
+                if (_helpDocuments.TryGetValue(lang, out var rtf) && !string.IsNullOrWhiteSpace(rtf))
+                    result[lang] = rtf;
+            }
+
+            return result;
         }
 
         public void OnTranslationCellChanged()
@@ -368,11 +509,112 @@ namespace GeoChemistryNexus.ViewModels
         private void OnLanguagesChanged()
         {
             UpdateLanguageDefaultStatus();
+            SyncHelpLanguagesWithBasicSettings();
             RebuildTranslationPreview();
+        }
+
+        private void LoadHelpDocumentsFromEntity(GraphMapTemplateEntity entity)
+        {
+            _helpDocuments.Clear();
+            if (entity.HelpDocuments != null)
+            {
+                foreach (var kvp in entity.HelpDocuments)
+                    _helpDocuments[kvp.Key] = kvp.Value;
+            }
+
+            SyncHelpLanguagesWithBasicSettings();
+            SelectedHelpLanguage = LanguageParts.FirstOrDefault()?.Text;
+        }
+
+        private void SyncHelpLanguagesWithBasicSettings()
+        {
+            var langs = LanguageParts.Select(l => l.Text).ToList();
+
+            foreach (var key in _helpDocuments.Keys.ToList())
+            {
+                if (!langs.Any(l => l.Equals(key, StringComparison.OrdinalIgnoreCase)))
+                    _helpDocuments.Remove(key);
+            }
+
+            foreach (var lang in langs)
+            {
+                if (!_helpDocuments.ContainsKey(lang))
+                    EnsureDefaultHelpDocForLanguage(lang);
+            }
+
+            IsHelpSectionEnabled = langs.Count > 0;
+
+            if (SelectedHelpLanguage == null ||
+                !langs.Any(l => l.Equals(SelectedHelpLanguage, StringComparison.OrdinalIgnoreCase)))
+            {
+                SelectedHelpLanguage = langs.FirstOrDefault();
+            }
+        }
+
+        private void EnsureDefaultHelpDocForLanguage(string langCode)
+        {
+            if (_helpDocuments.TryGetValue(langCode, out var existing) && !string.IsNullOrWhiteSpace(existing))
+                return;
+
+            _helpDocuments[langCode] = TryLoadDefaultTemplateRtf() ?? string.Empty;
+        }
+
+        private static string? TryLoadDefaultTemplateRtf()
+        {
+            string sourceRtfPath = Path.Combine(FileHelper.GetAppPath(), "Data", "Documents", "template.rtf");
+            if (!File.Exists(sourceRtfPath))
+            {
+                try
+                {
+                    string devPath = Path.GetFullPath(Path.Combine(
+                        AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "Data", "Documents", "template.rtf"));
+                    if (File.Exists(devPath))
+                        sourceRtfPath = devPath;
+                }
+                catch
+                {
+                    // ignore
+                }
+            }
+
+            if (!File.Exists(sourceRtfPath))
+                return null;
+
+            try
+            {
+                return File.ReadAllText(sourceRtfPath);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private void LoadSelectedHelpLanguageIntoEditor()
+        {
+            if (SelectedHelpLanguage == null) return;
+            _helpDocuments.TryGetValue(SelectedHelpLanguage, out var content);
+            SetCurrentRtfContent?.Invoke(content);
+        }
+
+        private void SaveCurrentHelpLanguageRtf()
+        {
+            if (SelectedHelpLanguage == null ||
+                !LanguageParts.Any(p => p.Text.Equals(SelectedHelpLanguage, StringComparison.OrdinalIgnoreCase)) ||
+                GetCurrentRtfContent == null)
+            {
+                return;
+            }
+
+            var rtf = GetCurrentRtfContent();
+            if (rtf != null)
+                _helpDocuments[SelectedHelpLanguage] = rtf;
         }
 
         private void RebuildTranslationPreview()
         {
+            if (_suppressTranslationRebuild) return;
+
             var languages = LanguageParts.Select(l => l.Text).ToList();
             IsTranslationSectionEnabled = languages.Count > 0 && CategoryParts.Count >= 2;
 
@@ -388,10 +630,13 @@ namespace GeoChemistryNexus.ViewModels
                     languages, CategoryParts.ToList());
 
                 GraphMapTemplate draft;
-                if (Mode == DiagramPlotEditorMode.Edit && _workingTemplate != null)
+                if (Mode == DiagramPlotEditorMode.Edit)
                 {
+                    if (_workingTemplate == null) return;
+
                     draft = _workingTemplate;
-                    draft.NodeList = categoryNodeList;
+                    draft.NodeList ??= new LocalizedString();
+                    MergeCategoryNodeListFromBasicSettings(draft.NodeList, categoryNodeList, languages);
                     DiagramTemplateTranslationHelper.SyncTemplateLanguages(draft, languages);
                 }
                 else
@@ -404,11 +649,42 @@ namespace GeoChemistryNexus.ViewModels
                 TranslationTable = DiagramTemplateTranslationHelper.SyncTableLanguages(
                     TranslationTable, languages, draft);
                 _workingTemplate = draft;
+                ApplyPatchToWorkingTemplate();
             }
             catch (Exception ex)
             {
                 TranslationStatusMessage = ex.Message;
             }
+        }
+
+        /// <summary>
+        /// 基本设置中的分类变更时，仅同步默认语言路径；其他语言保留翻译表中的自定义内容。
+        /// </summary>
+        private static void MergeCategoryNodeListFromBasicSettings(
+            LocalizedString target,
+            LocalizedString rebuiltFromBasicSettings,
+            IList<string> languages)
+        {
+            if (languages.Count == 0) return;
+
+            target.Translations ??= new Dictionary<string, string>();
+            string defaultLang = languages[0];
+
+            if (rebuiltFromBasicSettings.Translations.TryGetValue(defaultLang, out var defaultPath))
+                target.Translations[defaultLang] = defaultPath;
+
+            foreach (var lang in languages)
+            {
+                if (lang == defaultLang) continue;
+
+                if (!target.Translations.TryGetValue(lang, out var existing) || string.IsNullOrWhiteSpace(existing))
+                {
+                    if (rebuiltFromBasicSettings.Translations.TryGetValue(lang, out var fallback))
+                        target.Translations[lang] = fallback;
+                }
+            }
+
+            target.Default = defaultLang;
         }
 
         private void SyncWorkingTemplateFromTable()

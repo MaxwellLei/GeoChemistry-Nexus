@@ -37,13 +37,13 @@ namespace GeoChemistryNexus.ViewModels
         private Geothermometer? selectedPlugin;
 
         /// <summary>
-        /// 是否显示帮助文档区域（选中温度计时显示，点击确认后隐藏）
+        /// 是否显示帮助文档区域（选中温压计时显示，点击确认后隐藏）
         /// </summary>
         [ObservableProperty]
         private bool isHelpDocVisible;
 
         /// <summary>
-        /// 当前选中的温度计是否已应用（控制顶部按钮显示逻辑）
+        /// 当前选中的温压计是否已应用（控制顶部按钮显示逻辑）
         /// </summary>
         [ObservableProperty]
         private bool isPluginApplied;
@@ -79,19 +79,19 @@ namespace GeoChemistryNexus.ViewModels
         private int totalPluginCount;
 
         /// <summary>
-        /// 自定义温度计列表（平面列表，不按矿物分组）
+        /// 自定义温压计列表（平面列表，不按矿物分组）
         /// </summary>
         [ObservableProperty]
         private ObservableCollection<Geothermometer> customPlugins = new();
 
         /// <summary>
-        /// 官方温度计数量
+        /// 官方温压计数量
         /// </summary>
         [ObservableProperty]
         private int officialPluginCount;
 
         /// <summary>
-        /// 自定义温度计数量
+        /// 自定义温压计数量
         /// </summary>
         [ObservableProperty]
         private int customPluginCount;
@@ -138,17 +138,17 @@ namespace GeoChemistryNexus.ViewModels
         private string selectedRowInfo = string.Empty;
 
         /// <summary>
-        /// 当前选中温度计的完整数据库实体（含脚本和帮助文档）
+        /// 当前选中温压计的完整数据库实体（含脚本和帮助文档）
         /// </summary>
         private GeothermometerEntity? _selectedFullEntity;
 
         /// <summary>
-        /// 上一次已应用的温度计（用于点击确定时恢复）
+        /// 上一次已应用的温压计（用于点击确定时恢复）
         /// </summary>
         private Geothermometer? _appliedPlugin;
 
         /// <summary>
-        /// 上一次已应用的温度计对应的完整实体
+        /// 上一次已应用的温压计对应的完整实体
         /// </summary>
         private GeothermometerEntity? _appliedFullEntity;
 
@@ -198,12 +198,12 @@ namespace GeoChemistryNexus.ViewModels
             // 加载分组数据
             LoadMineralGroups();
 
-            // 首次切换到温度计页面时，如果开启了自动检查更新，则自动检查
+            // 首次切换到温压计页面时，如果开启了自动检查更新，则自动检查
             TryAutoCheckUpdate();
         }
 
         /// <summary>
-        /// 尝试自动检查地质温度计更新（仅在开启了设置且本次启动尚未检查过时执行）
+        /// 尝试自动检查地质温压计更新（仅在开启了设置且本次启动尚未检查过时执行）
         /// </summary>
         private async void TryAutoCheckUpdate()
         {
@@ -245,7 +245,7 @@ namespace GeoChemistryNexus.ViewModels
             MineralGroups.Clear();
             CustomPlugins.Clear();
 
-            // 官方温度计（按矿物分组）
+            // 官方温压计（按矿物分组）
             var officialGroups = GeothermometerService.GetGroupedEntities(true);
             foreach (var group in officialGroups)
             {
@@ -266,7 +266,7 @@ namespace GeoChemistryNexus.ViewModels
                 MineralGroups.Add(vm);
             }
 
-            // 自定义温度计（平面列表）
+            // 自定义温压计（平面列表）
             var customList = GeothermometerService.GetCustomPlugins();
             foreach (var plugin in customList)
             {
@@ -291,7 +291,7 @@ namespace GeoChemistryNexus.ViewModels
             MineralGroups.Clear();
             CustomPlugins.Clear();
 
-            // 过滤官方温度计
+            // 过滤官方温压计
             var officialGroups = GeothermometerService.GetGroupedEntities(true);
             foreach (var group in officialGroups)
             {
@@ -299,7 +299,6 @@ namespace GeoChemistryNexus.ViewModels
                     p.Name.ToLowerInvariant().Contains(keyword) ||
                     p.Mineral.ToLowerInvariant().Contains(keyword) ||
                     p.Author.ToLowerInvariant().Contains(keyword) ||
-                    p.Description.ToLowerInvariant().Contains(keyword) ||
                     p.Year.ToString().Contains(keyword)
                 ).ToList();
 
@@ -323,14 +322,13 @@ namespace GeoChemistryNexus.ViewModels
                 }
             }
 
-            // 过滤自定义温度计
+            // 过滤自定义温压计
             var customList = GeothermometerService.GetCustomPlugins();
             foreach (var plugin in customList)
             {
                 if (plugin.Name.ToLowerInvariant().Contains(keyword) ||
                     plugin.Mineral.ToLowerInvariant().Contains(keyword) ||
                     plugin.Author.ToLowerInvariant().Contains(keyword) ||
-                    plugin.Description.ToLowerInvariant().Contains(keyword) ||
                     plugin.Year.ToString().Contains(keyword))
                 {
                     CustomPlugins.Add(plugin);
@@ -360,12 +358,12 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 确认阅读完帮助文档，隐藏文档区域，恢复之前已应用的温度计界面
+        /// 确认阅读完帮助文档，隐藏文档区域，恢复之前已应用的温压计界面
         /// </summary>
         [RelayCommand]
         private void ConfirmAndShowTable()
         {
-            // 如果之前有已应用的温度计，恢复到该温度计的状态
+            // 如果之前有已应用的温压计，恢复到该温压计的状态
             if (_appliedPlugin != null)
             {
                 SelectedPlugin = _appliedPlugin;
@@ -450,7 +448,7 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 导出指定温度计为 ZIP 文件
+        /// 导出指定温压计为 ZIP 文件
         /// </summary>
         [RelayCommand]
         private async Task ExportPlugin(Geothermometer? plugin)
@@ -508,7 +506,7 @@ namespace GeoChemistryNexus.ViewModels
                 }
                 else
                 {
-                    MessageHelper.Error(LanguageService.Instance["geo_msg_import_failed"]);
+                    MessageHelper.Error(LanguageService.Instance["template_version_too_high"]);
                 }
             }
             catch (Exception ex)
@@ -607,7 +605,7 @@ namespace GeoChemistryNexus.ViewModels
                 // 冻结表头行，使滚动时始终显示
                 worksheet.FreezeToCell(1, 0);
 
-                // 记录已应用的温度计，用于确定按钮恢复
+                // 记录已应用的温压计，用于确定按钮恢复
                 _appliedPlugin = SelectedPlugin;
                 _appliedFullEntity = _selectedFullEntity;
 
@@ -778,12 +776,24 @@ namespace GeoChemistryNexus.ViewModels
 
             try
             {
-                var updates = await GeothermometerService.CheckForUpdatesAsync();
-                AvailableUpdateCount = updates.Count;
+                var checkResult = await GeothermometerService.CheckForUpdatesAsync();
 
-                if (updates.Count > 0)
+                if (checkResult.Status == GeothermometerUpdateCheckStatus.Failed)
                 {
-                    string msg = string.Format(LanguageService.Instance["geo_msg_update_available"], updates.Count);
+                    UpdateStatusText = LanguageService.Instance["geo_msg_check_update_failed"];
+                    if (!_isAutoChecking)
+                    {
+                        MessageHelper.Error($"{UpdateStatusText}: {checkResult.ErrorMessage}");
+                    }
+                    return;
+                }
+
+                int changeCount = checkResult.Updates.Count + checkResult.Removals.Count;
+                AvailableUpdateCount = changeCount;
+
+                if (checkResult.HasChanges)
+                {
+                    string msg = string.Format(LanguageService.Instance["geo_msg_update_available"], changeCount);
                     UpdateStatusText = msg;
 
                     bool confirmed = await MessageHelper.ShowAsyncDialog(
@@ -794,7 +804,9 @@ namespace GeoChemistryNexus.ViewModels
                     if (confirmed)
                     {
                         UpdateStatusText = LanguageService.Instance["geo_msg_downloading_update"];
-                        int count = await GeothermometerService.DownloadAndReloadAsync(updates);
+                        int count = await GeothermometerService.DownloadAndReloadAsync(
+                            checkResult.Updates,
+                            checkResult.Removals);
                         LoadMineralGroups();
 
                         string result = string.Format(LanguageService.Instance["geo_msg_update_downloaded"], count);
@@ -908,10 +920,10 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
-        // ==================== 温度计管理 ====================
+        // ==================== 温压计管理 ====================
 
         /// <summary>
-        /// 新建温度计（打开编辑器窗口）
+        /// 新建温压计（打开编辑器窗口）
         /// </summary>
         [RelayCommand]
         private void CreateCustomThermometer()
@@ -929,7 +941,7 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 编辑温度计（支持官方和自定义）
+        /// 编辑温压计（支持官方和自定义）
         /// </summary>
         [RelayCommand]
         private void EditCustomThermometer(Geothermometer plugin)
@@ -954,7 +966,7 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 删除温度计（支持官方和自定义）
+        /// 删除温压计（支持官方和自定义）
         /// </summary>
         [RelayCommand]
         private async Task DeleteCustomThermometer(Geothermometer plugin)
@@ -980,7 +992,7 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 转换为官方温度计
+        /// 转换为官方温压计
         /// </summary>
         [RelayCommand]
         private void ConvertToOfficial(Geothermometer plugin)
@@ -996,7 +1008,7 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 降级为自定义温度计
+        /// 降级为自定义温压计
         /// </summary>
         [RelayCommand]
         private void ConvertToCustom(Geothermometer plugin)
@@ -1012,26 +1024,6 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 增量导出官方温度计到目录（含 GeoT-index.json + GeoT-List.json）
-        /// </summary>
-        [RelayCommand]
-        private void ExportAllOfficial()
-        {
-            try
-            {
-                string folderPath = FileHelper.GetFolderPath();
-                if (string.IsNullOrEmpty(folderPath)) return;
-
-                var (exported, total) = GeothermometerService.ExportAllOfficialToDirectory(folderPath);
-                MessageHelper.Success(string.Format(LanguageService.Instance["geo_msg_batch_export_success"], total, exported, folderPath));
-            }
-            catch (Exception ex)
-            {
-                MessageHelper.Error(string.Format(LanguageService.Instance["geo_msg_batch_export_failed"], ex.Message));
-            }
-        }
-
-        /// <summary>
         /// 展开/折叠矿物分组
         /// </summary>
         [RelayCommand]
@@ -1039,33 +1031,6 @@ namespace GeoChemistryNexus.ViewModels
         {
             if (group == null) return;
             group.IsExpanded = !group.IsExpanded;
-        }
-
-        /// <summary>
-        /// 生成唯一的工作表名称
-        /// </summary>
-        private string GetUniqueWorksheetName(ReoGridControl reoGridControl, string baseName)
-        {
-            string uniqueName = baseName;
-            int counter = 1;
-
-            while (WorksheetExists(reoGridControl, uniqueName))
-            {
-                uniqueName = $"{baseName}_{counter}";
-                counter++;
-            }
-
-            return uniqueName;
-        }
-
-        private bool WorksheetExists(ReoGridControl reoGridControl, string worksheetName)
-        {
-            foreach (var worksheet in reoGridControl.Worksheets)
-            {
-                if (worksheet.Name.Equals(worksheetName, StringComparison.OrdinalIgnoreCase))
-                    return true;
-            }
-            return false;
         }
     }
 

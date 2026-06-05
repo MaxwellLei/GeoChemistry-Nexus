@@ -85,3 +85,6 @@ desktop.ini
 
 # 用于发布的发布输出
 publish/
+
+# COS 发布凭证（本地 DPAPI 加密）
+src/Data/Config/cos_publish.json

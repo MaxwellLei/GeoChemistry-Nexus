@@ -35,11 +35,7 @@ namespace GeoChemistryNexus.Views
         //随机启动图
         private bool DisplayRandomImage()
         {
-            //设置图片文件夹的路径
-            string folderPath = System.IO.Path.Combine(Environment.CurrentDirectory, "Data", "Image", "StartPic");
-
-            //从文件夹中读取所有图片文件
-            string[] files = Directory.GetFiles(folderPath, "*.jpg", SearchOption.TopDirectoryOnly);
+            string[] files = StartPicHelper.GetImageFiles();
 
             //如果没有找到图片文件，返回
             if (files.Length == 0)

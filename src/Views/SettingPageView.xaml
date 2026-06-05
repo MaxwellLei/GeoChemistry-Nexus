@@ -12,7 +12,7 @@
 
     <!--Settings page-->
     <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="260" MinWidth="200" MaxWidth="320"/>
+        <ColumnDefinition Width="300" MinWidth="200" MaxWidth="320"/>
         <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
 
@@ -46,7 +46,7 @@
                          Command="{Binding GeothermometerPageCommand}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xe634;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="18" VerticalAlignment="Center" Margin="0,0,12,0"/>
-                    <TextBlock Text="{Binding [GeothermometerSetting],Source={x:Static lg:LanguageService.Instance}, FallbackValue=地质温度计}" FontSize="14" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding [GeothermometerSetting],Source={x:Static lg:LanguageService.Instance}, FallbackValue=地质温压计设置}" FontSize="14" VerticalAlignment="Center"/>
                 </StackPanel>
             </RadioButton>
 

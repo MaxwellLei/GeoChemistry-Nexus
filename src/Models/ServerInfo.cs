@@ -22,6 +22,12 @@ namespace GeoChemistryNexus.Models
         public string ListPlotCategoriesHash { get; set; }
 
         /// <summary>
+        /// 服务器端主页链接目录文件的哈希值
+        /// </summary>
+        [JsonPropertyName("home_links_hash")]
+        public string HomeLinksHash { get; set; }
+
+        /// <summary>
         /// 服务器公告信息
         /// </summary>
         [JsonPropertyName("announcement")]

@@ -97,6 +97,21 @@ namespace GeoChemistryNexus.Services
         }
 
         /// <summary>
+        /// 仅更新模板状态，避免用摘要对象覆盖 Content 等重量级字段。
+        /// </summary>
+        public void UpdateTemplateStatus(Guid id, string status)
+        {
+            using var db = GetDatabase();
+            var col = db.GetCollection<GraphMapTemplateEntity>(CollectionName);
+            var entity = col.FindById(id);
+            if (entity == null || string.Equals(entity.Status, status, StringComparison.Ordinal))
+                return;
+
+            entity.Status = status;
+            col.Update(entity);
+        }
+
+        /// <summary>
         /// 删除模板
         /// </summary>
         public void DeleteTemplate(Guid id)

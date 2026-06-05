@@ -45,7 +45,7 @@ namespace GeoChemistryNexus.ViewModels
         private int mouseSnapAutoRecognitionFrameRate;
 
         // 当前图解版本（只读）
-        public string CurrentDiagramVersion { get; } = UpdateHelper.GetCurrentVersionFloat().ToString("F1");
+        public string CurrentDiagramVersion { get; } = ContentVersionHelper.GetDiagramFormatVersion();
 
         public ObservableCollection<int> MouseSnapAutoRecognitionFrameRates { get; } = new() { 24, 30, 60, 90, 144 };
 

@@ -282,7 +282,7 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 切换新温度计计算命令（GTM 页面）
+        /// 切换新温压计计算命令（GTM 页面）
         /// </summary>
         /// <param name="nav">导航</param>
         [RelayCommand]

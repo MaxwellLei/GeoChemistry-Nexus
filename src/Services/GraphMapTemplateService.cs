@@ -3,6 +3,10 @@ using ScottPlot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using GeoChemistryNexus.Helpers;
 
 namespace GeoChemistryNexus.Services
@@ -88,6 +92,112 @@ namespace GeoChemistryNexus.Services
         }
 
         /// <summary>
+        /// 将本地官方模板与服务器 GraphMapList 对齐：更新元数据/状态，并删除已从清单下架的项。
+        /// </summary>
+        /// <returns>若数据库或状态有变更则为 true。</returns>
+        public static bool SyncOfficialTemplatesFromServerList(List<JsonTemplateItem> serverList)
+        {
+            if (serverList == null || serverList.Count == 0)
+                return false;
+
+            bool changed = false;
+            var dbService = GraphMapDatabaseService.Instance;
+            var existingTemplates = dbService.GetSummaries().ToDictionary(x => x.Id, x => x);
+            var serverIds = new HashSet<Guid>();
+
+            foreach (var item in serverList)
+            {
+                if (!Guid.TryParse(item.ID, out Guid itemId))
+                    continue;
+
+                serverIds.Add(itemId);
+
+                if (existingTemplates.TryGetValue(itemId, out _))
+                {
+                    var fullEntity = dbService.GetTemplate(itemId);
+                    if (fullEntity == null)
+                        continue;
+
+                    bool isHashSame = string.Equals(fullEntity.FileHash, item.FileHash, StringComparison.OrdinalIgnoreCase);
+                    bool hasVersionUpdate = ContentVersionHelper.HasContentUpdate(fullEntity.Version, item.Version);
+                    string newStatus = string.Equals(fullEntity.Status, "NOT_INSTALLED", StringComparison.Ordinal)
+                        ? "NOT_INSTALLED"
+                        : (isHashSame && !hasVersionUpdate ? "UP_TO_DATE" : "OUTDATED");
+
+                    bool metadataChanged =
+                        fullEntity.Status != newStatus
+                        || fullEntity.GraphMapPath != item.GraphMapPath
+                        || !NodeListEquals(fullEntity.NodeList, item.NodeList)
+                        || (!string.IsNullOrWhiteSpace(item.Version)
+                            && ContentVersionHelper.Compare(fullEntity.Version, item.Version) != 0);
+
+                    if (metadataChanged)
+                    {
+                        fullEntity.Status = newStatus;
+                        fullEntity.GraphMapPath = item.GraphMapPath;
+                        fullEntity.NodeList = item.NodeList;
+
+                        if (!string.IsNullOrWhiteSpace(item.Version))
+                            fullEntity.Version = ContentVersionHelper.Normalize(item.Version);
+
+                        // 仅未安装占位记录同步服务器哈希；已安装模板保留本地 Content 对应的 FileHash
+                        if (string.Equals(newStatus, "NOT_INSTALLED", StringComparison.Ordinal))
+                            fullEntity.FileHash = item.FileHash;
+
+                        dbService.UpsertTemplate(fullEntity);
+                        changed = true;
+                    }
+                }
+                else
+                {
+                    var newEntity = new GraphMapTemplateEntity
+                    {
+                        Id = itemId,
+                        NodeList = item.NodeList,
+                        GraphMapPath = item.GraphMapPath,
+                        FileHash = item.FileHash,
+                        IsCustom = false,
+                        Status = "NOT_INSTALLED",
+                        LastModified = DateTime.Now,
+                        Content = null,
+                        TemplateType = null,
+                        Version = ContentVersionHelper.Normalize(item.Version),
+                        HelpDocuments = new Dictionary<string, string>()
+                    };
+                    dbService.UpsertTemplate(newEntity);
+                    changed = true;
+                }
+            }
+
+            foreach (var local in existingTemplates.Values.Where(e => !e.IsCustom))
+            {
+                if (!serverIds.Contains(local.Id))
+                {
+                    dbService.DeleteTemplate(local.Id);
+                    changed = true;
+                }
+            }
+
+            return changed;
+        }
+
+        private static bool NodeListEquals(LocalizedString a, LocalizedString b)
+        {
+            if (ReferenceEquals(a, b)) return true;
+            if (a == null || b == null) return false;
+            if (a.Default != b.Default) return false;
+            if (a.Translations == null && b.Translations == null) return true;
+            if (a.Translations == null || b.Translations == null) return false;
+            if (a.Translations.Count != b.Translations.Count) return false;
+            foreach (var kv in a.Translations)
+            {
+                if (!b.Translations.TryGetValue(kv.Key, out var other) || other != kv.Value)
+                    return false;
+            }
+            return true;
+        }
+
+        /// <summary>
         /// 将表示样式的字符串转换为 ScottPlot 的 LinePattern 枚举。
         /// </summary>
         public static LinePattern GetLinePattern(string style)
@@ -138,6 +248,7 @@ namespace GeoChemistryNexus.Services
             public LocalizedString NodeList { get; set; }
             public string GraphMapPath { get; set; }
             public string FileHash { get; set; }
+            public string Version { get; set; }
         }
 
         /// <summary>
@@ -174,8 +285,56 @@ namespace GeoChemistryNexus.Services
         public static bool IsVersionCompatible(GraphMapTemplate template)
         {
             if (template == null) return false;
-            float currentVersion = UpdateHelper.GetCurrentVersionFloat();
-            return template.Version <= currentVersion;
+            return ContentVersionHelper.IsDiagramFormatCompatible(template.Version);
+        }
+
+        /// <summary>
+        /// 模板内容 JSON 序列化选项（与 FileHash 计算口径一致）
+        /// </summary>
+        public static JsonSerializerOptions CreateTemplateJsonOptions()
+        {
+            return new JsonSerializerOptions
+            {
+                WriteIndented = false,
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                Converters = { new JsonStringEnumConverter() },
+                NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals
+            };
+        }
+
+        /// <summary>
+        /// 序列化模板内容为 JSON 字符串（与 FileHash 口径一致）
+        /// </summary>
+        public static string SerializeTemplateContent(GraphMapTemplate template)
+        {
+            if (template == null) return string.Empty;
+            return JsonSerializer.Serialize(template, CreateTemplateJsonOptions());
+        }
+
+        /// <summary>
+        /// 深拷贝模板内容（JSON 往返，与持久化口径一致）。
+        /// </summary>
+        public static GraphMapTemplate? CloneTemplateContent(GraphMapTemplate? template)
+        {
+            if (template == null) return null;
+
+            string json = SerializeTemplateContent(template);
+            if (string.IsNullOrWhiteSpace(json)) return null;
+
+            return JsonSerializer.Deserialize<GraphMapTemplate>(json, CreateTemplateJsonOptions());
+        }
+
+        /// <summary>
+        /// 计算模板内容的 MD5 哈希（与保存/清单 FileHash 口径一致）
+        /// </summary>
+        public static string ComputeTemplateContentHash(GraphMapTemplate template)
+        {
+            if (template == null) return string.Empty;
+
+            string json = SerializeTemplateContent(template);
+            using var md5 = MD5.Create();
+            byte[] hashBytes = md5.ComputeHash(Encoding.UTF8.GetBytes(json));
+            return BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();
         }
     }
 }

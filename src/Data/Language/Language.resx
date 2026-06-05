@@ -113,7 +113,7 @@
     <value>Diagram Plot</value>
   </data>
   <data name="Geothermometer" xml:space="preserve">
-    <value>Geothermometer</value>
+    <value>Geothermobarometer</value>
   </data>
   <data name="Setting" xml:space="preserve">
     <value>Setting</value>
@@ -128,7 +128,7 @@
     <value>Plot Settings</value>
   </data>
   <data name="GeothermometerSetting" xml:space="preserve">
-    <value>Geothermometer Settings</value>
+    <value>Geothermobarometer Settings</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
@@ -735,6 +735,24 @@
   <data name="recents_templates" xml:space="preserve">
     <value>Recents</value>
   </data>
+  <data name="diagram_hint_no_official" xml:space="preserve">
+    <value>No official diagram templates in this category.</value>
+  </data>
+  <data name="diagram_hint_no_personal" xml:space="preserve">
+    <value>No personal diagrams yet. Create or import one from the File menu.</value>
+  </data>
+  <data name="diagram_hint_no_favorites" xml:space="preserve">
+    <value>No favorite diagram templates yet.</value>
+  </data>
+  <data name="diagram_hint_no_recents" xml:space="preserve">
+    <value>No recently used diagram templates yet.</value>
+  </data>
+  <data name="diagram_hint_no_templates" xml:space="preserve">
+    <value>No diagram templates available.</value>
+  </data>
+  <data name="diagram_hint_no_search_results" xml:space="preserve">
+    <value>No templates match your search.</value>
+  </data>
   <data name="library_section" xml:space="preserve">
     <value>LIBRARY</value>
   </data>
@@ -870,8 +888,125 @@
   <data name="template_translator" xml:space="preserve">
     <value>Diagram Template Translator</value>
   </data>
-  <data name="diagram_template_repair_tool" xml:space="preserve">
-    <value>Diagram Template Repair Tool</value>
+  <data name="official_template_publisher" xml:space="preserve">
+    <value>Official Publisher</value>
+  </data>
+  <data name="official_template_publisher_desc" xml:space="preserve">
+    <value>Export and publish official content (diagrams, geothermobarometers, home links, announcements) to COS</value>
+  </data>
+  <data name="official_publisher_ready" xml:space="preserve">
+    <value>Official publisher ready.</value>
+  </data>
+  <data name="official_publisher_dev_mode_required" xml:space="preserve">
+    <value>Developer mode is required for publishing.</value>
+  </data>
+  <data name="official_publisher_staging_dir" xml:space="preserve">
+    <value>Staging Directory</value>
+  </data>
+  <data name="official_publisher_staging_required" xml:space="preserve">
+    <value>Please select a staging directory.</value>
+  </data>
+  <data name="official_publisher_refresh" xml:space="preserve">
+    <value>Refresh Preview</value>
+  </data>
+  <data name="official_publisher_export_local" xml:space="preserve">
+    <value>Export Local</value>
+  </data>
+  <data name="official_publisher_publish_cos" xml:space="preserve">
+    <value>Publish to COS</value>
+  </data>
+  <data name="official_publisher_refreshing" xml:space="preserve">
+    <value>Refreshing publish preview...</value>
+  </data>
+  <data name="official_publisher_new" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="official_publisher_updated" xml:space="preserve">
+    <value>Updated</value>
+  </data>
+  <data name="official_publisher_removed" xml:space="preserve">
+    <value>Removed</value>
+  </data>
+  <data name="official_publisher_unchanged" xml:space="preserve">
+    <value>Unchanged</value>
+  </data>
+  <data name="official_publisher_preview_summary" xml:space="preserve">
+    <value>Preview: new {0}, updated {1}, removed {2}, unchanged {3}.</value>
+  </data>
+  <data name="official_publisher_exporting" xml:space="preserve">
+    <value>Exporting to {0}...</value>
+  </data>
+  <data name="official_publisher_confirm" xml:space="preserve">
+    <value>Publish official content to COS?</value>
+  </data>
+  <data name="official_publisher_include_diagrams" xml:space="preserve">
+    <value>Diagrams</value>
+  </data>
+  <data name="official_publisher_include_geothermometers" xml:space="preserve">
+    <value>Geothermobarometers</value>
+  </data>
+  <data name="official_publisher_diagram_section" xml:space="preserve">
+    <value>Diagrams</value>
+  </data>
+  <data name="official_publisher_geothermometer_section" xml:space="preserve">
+    <value>Geothermobarometers</value>
+  </data>
+  <data name="official_publisher_diagram_preview_summary" xml:space="preserve">
+    <value>Diagrams: new {0}, updated {1}, removed {2}, unchanged {3}.</value>
+  </data>
+  <data name="official_publisher_geo_preview_summary" xml:space="preserve">
+    <value>Geothermobarometers: new {0}, updated {1}, removed {2}, unchanged {3}.</value>
+  </data>
+  <data name="official_publisher_export_done" xml:space="preserve">
+    <value>Export completed.</value>
+  </data>
+  <data name="official_publisher_target_required" xml:space="preserve">
+    <value>Select at least one publish target.</value>
+  </data>
+  <data name="official_publisher_start" xml:space="preserve">
+    <value>Starting publish...</value>
+  </data>
+  <data name="official_publisher_progress_exporting_announcement" xml:space="preserve">
+    <value>Exporting announcement...</value>
+  </data>
+  <data name="official_publisher_progress_exporting_home_links" xml:space="preserve">
+    <value>Exporting home links...</value>
+  </data>
+  <data name="official_publisher_progress_exporting_diagrams" xml:space="preserve">
+    <value>Exporting diagrams...</value>
+  </data>
+  <data name="official_publisher_progress_exporting_geothermometers" xml:space="preserve">
+    <value>Exporting geothermobarometers...</value>
+  </data>
+  <data name="official_publisher_progress_uploading_cos" xml:space="preserve">
+    <value>Uploading to COS...</value>
+  </data>
+  <data name="official_publisher_progress_uploading" xml:space="preserve">
+    <value>Uploading to COS ({0}/{1})...</value>
+  </data>
+  <data name="official_publisher_progress_done" xml:space="preserve">
+    <value>Publish completed.</value>
+  </data>
+  <data name="cos_save_settings" xml:space="preserve">
+    <value>Save Settings</value>
+  </data>
+  <data name="cos_test_connection" xml:space="preserve">
+    <value>Test Connection</value>
+  </data>
+  <data name="cos_settings_saved" xml:space="preserve">
+    <value>COS settings saved.</value>
+  </data>
+  <data name="cos_secret_id_required" xml:space="preserve">
+    <value>SecretId is required.</value>
+  </data>
+  <data name="cos_credentials_required" xml:space="preserve">
+    <value>Configure and save COS credentials first.</value>
+  </data>
+  <data name="cos_test_success" xml:space="preserve">
+    <value>COS connection test succeeded.</value>
+  </data>
+  <data name="cos_test_failed" xml:space="preserve">
+    <value>COS connection test failed.</value>
   </data>
   <data name="server_announcement" xml:space="preserve">
     <value>Server Announcement</value>
@@ -921,6 +1056,114 @@
   <data name="add_link" xml:space="preserve">
     <value>Add Link</value>
   </data>
+  <data name="home_recommended_content" xml:space="preserve">
+    <value>Recommended</value>
+  </data>
+  <data name="home_personal_group" xml:space="preserve">
+    <value>Personal</value>
+  </data>
+  <data name="home_widgets_section" xml:space="preserve">
+    <value>Widgets</value>
+  </data>
+  <data name="home_personal_group_hint" xml:space="preserve">
+    <value>You can add, edit, or remove links in this group.</value>
+  </data>
+  <data name="home_widgets_panel_desc" xml:space="preserve">
+    <value>Built-in tools that open inside the app, shown in the side panel.</value>
+  </data>
+  <data name="home_group_empty_links" xml:space="preserve">
+    <value>No links in this group. Use Add Link to create one.</value>
+  </data>
+  <data name="home_catalog_updated" xml:space="preserve">
+    <value>Home link catalog updated.</value>
+  </data>
+  <data name="home_catalog_already_latest" xml:space="preserve">
+    <value>Home link catalog is already up to date.</value>
+  </data>
+  <data name="home_catalog_sync_failed" xml:space="preserve">
+    <value>Failed to sync home link catalog.</value>
+  </data>
+  <data name="official_publisher_home_links_summary" xml:space="preserve">
+    <value>Home links: {0} groups, {1} links, hash={2}.</value>
+  </data>
+  <data name="official_publisher_include_home_links" xml:space="preserve">
+    <value>Include home links</value>
+  </data>
+  <data name="official_publisher_include_announcement" xml:space="preserve">
+    <value>Announcement</value>
+  </data>
+  <data name="official_publisher_announcement_section" xml:space="preserve">
+    <value>Announcement</value>
+  </data>
+  <data name="official_publisher_announcement_pending" xml:space="preserve">
+    <value>Pending publish</value>
+  </data>
+  <data name="official_publisher_announcement_up_to_date" xml:space="preserve">
+    <value>Already up to date on server</value>
+  </data>
+  <data name="official_publisher_announcement_loaded" xml:space="preserve">
+    <value>Announcement loaded from server.</value>
+  </data>
+  <data name="official_publisher_announcement_edit_hint" xml:space="preserve">
+    <value>Edit the announcement here. After publishing, it will appear in the home page announcement area.</value>
+  </data>
+  <data name="official_publisher_announcement_load" xml:space="preserve">
+    <value>Load from server</value>
+  </data>
+  <data name="official_publisher_announcement_preview" xml:space="preserve">
+    <value>Current draft:</value>
+  </data>
+  <data name="official_publisher_announcement_empty" xml:space="preserve">
+    <value>(empty)</value>
+  </data>
+  <data name="official_publisher_home_links_section" xml:space="preserve">
+    <value>Home Links</value>
+  </data>
+  <data name="official_publisher_home_groups" xml:space="preserve">
+    <value>Groups</value>
+  </data>
+  <data name="official_publisher_home_link_items" xml:space="preserve">
+    <value>Links</value>
+  </data>
+  <data name="official_publisher_home_links_pending" xml:space="preserve">
+    <value>Pending publish</value>
+  </data>
+  <data name="official_publisher_home_links_up_to_date" xml:space="preserve">
+    <value>Already up to date on server.</value>
+  </data>
+  <data name="official_publisher_home_links_preview_summary" xml:space="preserve">
+    <value>Groups: {0}, links: {1}, local hash: {2}, remote hash: {3}.</value>
+  </data>
+  <data name="official_publisher_home_links_bundled_saved" xml:space="preserve">
+    <value>Home links saved to bundled catalog.</value>
+  </data>
+  <data name="official_publisher_home_links_reloaded" xml:space="preserve">
+    <value>Home links editor reloaded.</value>
+  </data>
+  <data name="official_publisher_home_add_group" xml:space="preserve">
+    <value>Add Group</value>
+  </data>
+  <data name="official_publisher_home_edit_group" xml:space="preserve">
+    <value>Edit Group</value>
+  </data>
+  <data name="official_publisher_home_group_title_prompt" xml:space="preserve">
+    <value>Enter group title:</value>
+  </data>
+  <data name="official_publisher_home_select_group" xml:space="preserve">
+    <value>Select a group first.</value>
+  </data>
+  <data name="official_publisher_home_save_draft" xml:space="preserve">
+    <value>Save Draft</value>
+  </data>
+  <data name="official_publisher_home_links_draft_saved" xml:space="preserve">
+    <value>Home links draft saved locally.</value>
+  </data>
+  <data name="home_icon_url" xml:space="preserve">
+    <value>Icon URL</value>
+  </data>
+  <data name="home_icon_url_hint" xml:space="preserve">
+    <value>Optional. https://... overrides preset icon above.</value>
+  </data>
   <data name="name" xml:space="preserve">
     <value>Name</value>
   </data>
@@ -951,14 +1194,11 @@
   <data name="server_announcements" xml:space="preserve">
     <value>Server Announcements</value>
   </data>
+  <data name="announcement" xml:space="preserve">
+    <value>Announcement</value>
+  </data>
   <data name="refresh" xml:space="preserve">
     <value>Refresh</value>
-  </data>
-  <data name="drawing_template_repair_tool" xml:space="preserve">
-    <value>Diagram Template Repair Tool</value>
-  </data>
-  <data name="start_check_and_repair" xml:space="preserve">
-    <value>Start Check and Repair</value>
   </data>
   <data name="close_file" xml:space="preserve">
     <value>Close File</value>
@@ -995,6 +1235,12 @@
   </data>
   <data name="export_diagram_template" xml:space="preserve">
     <value>Export Diagram Template</value>
+  </data>
+  <data name="force_update_template" xml:space="preserve">
+    <value>Force Update</value>
+  </data>
+  <data name="force_update_template_not_found" xml:space="preserve">
+    <value>Template not found on server.</value>
   </data>
   <data name="downloading_ellipsis" xml:space="preserve">
     <value>Downloading...</value>
@@ -1041,6 +1287,12 @@
   <data name="add_image" xml:space="preserve">
     <value>Add Image</value>
   </data>
+  <data name="start_image_copy_successfully" xml:space="preserve">
+    <value>Startup image added successfully.</value>
+  </data>
+  <data name="start_image_copy_error" xml:space="preserve">
+    <value>Failed to add startup image: </value>
+  </data>
   <data name="external_applications" xml:space="preserve">
     <value>EXTERNAL APPLICATIONS</value>
   </data>
@@ -1075,7 +1327,7 @@
     <value>Auto Check Diagram Template Updates</value>
   </data>
   <data name="auto_check_geothermometer_updates" xml:space="preserve">
-    <value>Auto Check Geothermometer Updates</value>
+    <value>Auto Check Geothermobarometer Updates</value>
   </data>
   <data name="community" xml:space="preserve">
     <value>COMMUNITY</value>
@@ -1142,9 +1394,6 @@
   </data>
   <data name="edit_drawing_template_translations" xml:space="preserve">
     <value>Edit Drawing Template Translations</value>
-  </data>
-  <data name="repair_missing_or_damaged_templates_and_lists" xml:space="preserve">
-    <value>Repair missing or damaged drawing templates and lists</value>
   </data>
   <data name="view_latest_server_announcements" xml:space="preserve">
     <value>View the latest announcements from the server</value>
@@ -1225,7 +1474,7 @@
     <value>Failed to delete row:</value>
   </data>
   <data name="diagram_template_not_found_repair_hint" xml:space="preserve">
-    <value>Diagram template file not found. Please try using the 'Template Repair Tool' on the home page to fix it.</value>
+    <value>Diagram template file not found. Please verify your installation or try reinstalling the application.</value>
   </data>
   <data name="confirm_delete_custom_diagram_template" xml:space="preserve">
     <value>Are you sure you want to delete this custom diagram template?</value>
@@ -1583,10 +1832,10 @@
     <value>Move Down</value>
   </data>
   <data name="geo_menu_new_custom" xml:space="preserve">
-    <value>New Custom Geothermometer</value>
+    <value>New Custom Geothermobarometer</value>
   </data>
   <data name="geo_menu_import_zip" xml:space="preserve">
-    <value>Import Geothermometer (ZIP)</value>
+    <value>Import Geothermobarometer (ZIP)</value>
   </data>
   <data name="geo_menu_update" xml:space="preserve">
     <value>Update</value>
@@ -1598,13 +1847,13 @@
     <value>Maintenance</value>
   </data>
   <data name="geo_menu_export_official" xml:space="preserve">
-    <value>Export Official Thermometers</value>
+    <value>Export Official Geothermobarometers</value>
   </data>
   <data name="geo_section_official" xml:space="preserve">
-    <value>Official Thermometers</value>
+    <value>Official Geothermobarometers</value>
   </data>
   <data name="geo_section_custom" xml:space="preserve">
-    <value>Custom Thermometers</value>
+    <value>Custom Geothermobarometers</value>
   </data>
   <data name="geo_section_calc_details" xml:space="preserve">
     <value>Calculation Details</value>
@@ -1622,10 +1871,10 @@
     <value>Custom</value>
   </data>
   <data name="geo_hint_no_custom" xml:space="preserve">
-    <value>No custom thermometers yet, click + to create.</value>
+    <value>No custom geothermobarometers yet, click + to create.</value>
   </data>
   <data name="geo_hint_select_thermometer" xml:space="preserve">
-    <value>Please select a thermometer from the left panel</value>
+    <value>Please select a geothermobarometer from the left panel</value>
   </data>
   <data name="geo_hint_select_data_row" xml:space="preserve">
     <value>Please select a data row</value>
@@ -1747,6 +1996,63 @@
   <data name="geo_field_worksheet_name" xml:space="preserve">
     <value>Worksheet Name</value>
   </data>
+  <data name="geo_current_app_format_version" xml:space="preserve">
+    <value>Current App Geothermobarometer Version</value>
+  </data>
+  <data name="geo_current_template_version" xml:space="preserve">
+    <value>Current Geothermobarometer Template Version</value>
+  </data>
+  <data name="geo_editor_set_version" xml:space="preserve">
+    <value>Set Geothermobarometer Version</value>
+  </data>
+  <data name="geo_tooltip_version_patch" xml:space="preserve">
+    <value>Revision number (z); format baseline (x.y) follows app version</value>
+  </data>
+  <data name="geo_example_name" xml:space="preserve">
+    <value>e.g. Quartz Geothermobarometer</value>
+  </data>
+  <data name="geo_example_mineral" xml:space="preserve">
+    <value>e.g. Quartz</value>
+  </data>
+  <data name="geo_example_year" xml:space="preserve">
+    <value>e.g. 2020</value>
+  </data>
+  <data name="geo_example_author" xml:space="preserve">
+    <value>e.g. Smith et al.</value>
+  </data>
+  <data name="geo_example_reference" xml:space="preserve">
+    <value>e.g. Smith (2020) Geochim. Cosmochim. Acta 280, 123-145</value>
+  </data>
+  <data name="geo_example_formula_name" xml:space="preserve">
+    <value>e.g. MyFormula_v1</value>
+  </data>
+  <data name="geo_preview_title" xml:space="preserve">
+    <value>Effect Preview</value>
+  </data>
+  <data name="geo_preview_hint" xml:space="preserve">
+    <value>Live preview based on the metadata above. Shows how the geothermobarometer appears in the left list and the right detail header.</value>
+  </data>
+  <data name="geo_preview_list_item" xml:space="preserve">
+    <value>List Item Preview</value>
+  </data>
+  <data name="geo_preview_detail_header" xml:space="preserve">
+    <value>Detail Header Preview</value>
+  </data>
+  <data name="geo_preview_name_placeholder" xml:space="preserve">
+    <value>Geothermobarometer Name</value>
+  </data>
+  <data name="geo_preview_mineral_placeholder" xml:space="preserve">
+    <value>Mineral Category</value>
+  </data>
+  <data name="geo_preview_author_placeholder" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  <data name="geo_preview_reference_placeholder" xml:space="preserve">
+    <value>Reference will appear here</value>
+  </data>
+  <data name="geo_preview_meta_format" xml:space="preserve">
+    <value>{0} - {1} ({2})</value>
+  </data>
   <data name="geo_field_reference" xml:space="preserve">
     <value>Reference *</value>
   </data>
@@ -1754,7 +2060,7 @@
     <value>Brief Description</value>
   </data>
   <data name="geo_field_required_hint" xml:space="preserve">
-    <value>Required fields are marked with *. Version format: x.x.x (e.g. 1.0.0).</value>
+    <value>Required fields are marked with *. Format baseline x.y follows the app geothermobarometer version; revision z is the template content version. Formula name will be registered as a custom ReoGrid function.</value>
   </data>
   <data name="geo_script_javascript" xml:space="preserve">
     <value>JavaScript Script</value>
@@ -1811,16 +2117,22 @@
     <value>No help document available.</value>
   </data>
   <data name="geo_editor_title_edit" xml:space="preserve">
-    <value>Edit Thermometer</value>
+    <value>Edit Geothermobarometer</value>
   </data>
   <data name="geo_editor_title_new" xml:space="preserve">
-    <value>New Custom Thermometer</value>
+    <value>New Custom Geothermobarometer</value>
   </data>
   <data name="geo_msg_save_success" xml:space="preserve">
     <value>Saved successfully.</value>
   </data>
   <data name="geo_msg_save_failed" xml:space="preserve">
     <value>Save failed: {0}</value>
+  </data>
+  <data name="geo_msg_formula_name_conflict" xml:space="preserve">
+    <value>Formula name '{0}' is already used by '{1}' ({2})</value>
+  </data>
+  <data name="geo_msg_formula_name_duplicate" xml:space="preserve">
+    <value>Formula name '{0}' is duplicated within geothermobarometer '{1}'</value>
   </data>
   <data name="geo_msg_export_success" xml:space="preserve">
     <value>Export succeeded</value>
@@ -1829,10 +2141,10 @@
     <value>Export failed: {0}</value>
   </data>
   <data name="geo_msg_export_dialog_title" xml:space="preserve">
-    <value>Export Geothermometer</value>
+    <value>Export Geothermobarometer</value>
   </data>
   <data name="geo_msg_select_thermometer_first" xml:space="preserve">
-    <value>Please select a thermometer first.</value>
+    <value>Please select a geothermobarometer first.</value>
   </data>
   <data name="geo_dialog_apply_overwrite" xml:space="preserve">
     <value>Applying will overwrite the current worksheet content. Continue?</value>
@@ -1850,13 +2162,13 @@
     <value>Checking for updates...</value>
   </data>
   <data name="geo_msg_update_available" xml:space="preserve">
-    <value>{0} geothermometers can be updated</value>
+    <value>{0} geothermobarometers can be updated</value>
   </data>
   <data name="geo_msg_downloading_update" xml:space="preserve">
     <value>Downloading...</value>
   </data>
   <data name="geo_msg_update_downloaded" xml:space="preserve">
-    <value>{0} geothermometers downloaded</value>
+    <value>{0} geothermobarometers downloaded</value>
   </data>
   <data name="geo_msg_already_latest" xml:space="preserve">
     <value>Already up to date</value>
@@ -1874,13 +2186,13 @@
     <value>Deleted successfully</value>
   </data>
   <data name="geo_msg_promoted" xml:space="preserve">
-    <value>Promoted to official thermometer</value>
+    <value>Promoted to official geothermobarometer</value>
   </data>
   <data name="geo_msg_demoted" xml:space="preserve">
-    <value>Demoted to custom thermometer</value>
+    <value>Demoted to custom geothermobarometer</value>
   </data>
   <data name="geo_msg_batch_export_success" xml:space="preserve">
-    <value>{0} official thermometers in total, {1} exported (added/modified)
+    <value>{0} official geothermobarometers in total, {1} exported (added/modified)
 Directory: {2}</value>
   </data>
   <data name="geo_msg_batch_export_failed" xml:space="preserve">
@@ -1893,7 +2205,7 @@ Directory: {2}</value>
     <value>Import cancelled</value>
   </data>
   <data name="geo_dialog_delete_thermometer" xml:space="preserve">
-    <value>Are you sure to delete the {0} thermometer "{1}"?</value>
+    <value>Are you sure to delete the {0} geothermobarometer "{1}"?</value>
   </data>
   <data name="geo_validate_name_required" xml:space="preserve">
     <value>Name cannot be empty.</value>
@@ -2626,6 +2938,12 @@ Directory: {2}</value>
   </data>
   <data name="diagram_editor_translation_hint" xml:space="preserve">
     <value>Edit multilingual text for titles, axes, labels, and other diagram content. Add or remove languages here to update the diagram's supported languages.</value>
+  </data>
+  <data name="diagram_editor_new_version" xml:space="preserve">
+    <value>New Version</value>
+  </data>
+  <data name="diagram_editor_saved_version" xml:space="preserve">
+    <value>Version after save:</value>
   </data>
   <data name="translation_item_context" xml:space="preserve">
     <value>Content Item</value>

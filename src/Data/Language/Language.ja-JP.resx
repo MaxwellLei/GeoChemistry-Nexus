@@ -150,9 +150,6 @@
   <data name="geo_validate_version_format" xml:space="preserve">
     <value>バージョン形式が正しくありません。x.x.x のみ許可されます（例：1.0.0、1.2.3）。</value>
   </data>
-  <data name="drawing_template_repair_tool" xml:space="preserve">
-    <value>図解テンプレート修復ツール</value>
-  </data>
   <data name="category_structure_min_two" xml:space="preserve">
     <value>分類構造は2以上である必要があります！</value>
   </data>
@@ -184,7 +181,7 @@
     <value>表示するか</value>
   </data>
   <data name="geo_msg_batch_export_success" xml:space="preserve">
-    <value>公式温度計は合計 {0} 個、今回 {1} 個をエクスポートしました（追加/変更）
+    <value>公式温圧計は合計 {0} 個、今回 {1} 個をエクスポートしました（追加/変更）
 ディレクトリ: {2}</value>
   </data>
   <data name="geo_btn_apply" xml:space="preserve">
@@ -233,7 +230,7 @@
     <value>新規チャート</value>
   </data>
   <data name="geo_msg_promoted" xml:space="preserve">
-    <value>公式温度計に昇格しました</value>
+    <value>公式温圧計に昇格しました</value>
   </data>
   <data name="geo_msg_test_input_required" xml:space="preserve">
     <value>テスト値を入力してください。</value>
@@ -245,10 +242,10 @@
     <value>ダウンロード中...</value>
   </data>
   <data name="geo_hint_no_custom" xml:space="preserve">
-    <value>カスタム温度計はまだありません。+ をクリックして作成してください。</value>
+    <value>カスタム温圧計はまだありません。+ をクリックして作成してください。</value>
   </data>
   <data name="geo_msg_update_downloaded" xml:space="preserve">
-    <value>{0} 個の地質温度計をダウンロードしました</value>
+    <value>{0} 個の地質温圧計をダウンロードしました</value>
   </data>
   <data name="use_help" xml:space="preserve">
     <value>図解ガイド</value>
@@ -328,9 +325,6 @@
   <data name="fill_color_1" xml:space="preserve">
     <value>塗りつぶし色 1</value>
   </data>
-  <data name="start_check_and_repair" xml:space="preserve">
-    <value>チェックと修復を開始</value>
-  </data>
   <data name="cipw_overview" xml:space="preserve">
     <value>CIPW ノルム計算（CIPW Norm とも呼ばれる）は、Cross、Iddings、Pirsson、Washington の 4 名の岩石学者が 1902 年に提案した岩石化学計算法です。全岩主要元素酸化物の化学分析データに基づき、固定の優先順位で酸化物を理想化された一連の標準鉱物に割り当て、岩石分類および対比研究に用いられます。</value>
   </data>
@@ -365,7 +359,7 @@
     <value>保存に失敗しました: {0}</value>
   </data>
   <data name="geo_editor_title_new" xml:space="preserve">
-    <value>新規カスタム温度計</value>
+    <value>新規カスタム温圧計</value>
   </data>
   <data name="switch_diagram_language" xml:space="preserve">
     <value>図解言語を切り替え</value>
@@ -392,7 +386,7 @@
     <value>CIPW 計算結果のエクスポート</value>
   </data>
   <data name="geo_menu_import_zip" xml:space="preserve">
-    <value>地質温度計をインポート (ZIP)</value>
+    <value>地質温圧計をインポート (ZIP)</value>
   </data>
   <data name="developer_mode" xml:space="preserve">
     <value>開発者モード</value>
@@ -475,7 +469,7 @@
     <value>既に存在します。上書きしますか？</value>
   </data>
   <data name="geo_editor_title_edit" xml:space="preserve">
-    <value>温度計を編集</value>
+    <value>温圧計を編集</value>
   </data>
   <data name="start_and_end_coordinates" xml:space="preserve">
     <value>開始座標</value>
@@ -523,7 +517,7 @@
     <value>お気に入りに追加しました</value>
   </data>
   <data name="geo_menu_new_custom" xml:space="preserve">
-    <value>新規カスタム地質温度計</value>
+    <value>新規カスタム地質温圧計</value>
   </data>
   <data name="import_custom_diagram_template" xml:space="preserve">
     <value>カスタム図解テンプレートをインポート</value>
@@ -544,7 +538,7 @@
     <value>更新確認中にエラーが発生しました:</value>
   </data>
   <data name="GeothermometerSetting" xml:space="preserve">
-    <value>地質温度計設定</value>
+    <value>地質温圧計設定</value>
   </data>
   <data name="PlotTitle" xml:space="preserve">
     <value>図のタイトル</value>
@@ -556,7 +550,7 @@
     <value>保存して ZIP をエクスポート</value>
   </data>
   <data name="geo_section_official" xml:space="preserve">
-    <value>公式温度計</value>
+    <value>公式温圧計</value>
   </data>
   <data name="geo_help_current_lang" xml:space="preserve">
     <value>現在の言語:</value>
@@ -825,7 +819,7 @@
     <value>スクリプトの戻り値の型が正しくありません</value>
   </data>
   <data name="geo_msg_select_thermometer_first" xml:space="preserve">
-    <value>先に温度計を選択してください。</value>
+    <value>先に温圧計を選択してください。</value>
   </data>
   <data name="enter_language_add" xml:space="preserve">
     <value>言語を入力してEnterキーを押すと追加されます。</value>
@@ -1001,7 +995,7 @@
     <value>言語列を削除</value>
   </data>
   <data name="geo_msg_export_dialog_title" xml:space="preserve">
-    <value>地質温度計をエクスポート</value>
+    <value>地質温圧計をエクスポート</value>
   </data>
   <data name="edit_link" xml:space="preserve">
     <value>リンクを編集</value>
@@ -1085,7 +1079,7 @@
     <value>ユーザー設定を読み込み中...</value>
   </data>
   <data name="geo_section_custom" xml:space="preserve">
-    <value>カスタム温度計</value>
+    <value>カスタム温圧計</value>
   </data>
   <data name="Placeholder_Axis_Y" xml:space="preserve">
     <value>Y軸</value>
@@ -1109,7 +1103,7 @@
     <value>このカスタム図解テンプレートを削除してもよろしいですか？</value>
   </data>
   <data name="Geothermometer" xml:space="preserve">
-    <value>地質温度計</value>
+    <value>地質温圧計</value>
   </data>
   <data name="y_coordinate" xml:space="preserve">
     <value>Y 座標</value>
@@ -1221,9 +1215,6 @@
   </data>
   <data name="failed_to_get_announcements" xml:space="preserve">
     <value>お知らせの取得に失敗しました:</value>
-  </data>
-  <data name="repair_missing_or_damaged_templates_and_lists" xml:space="preserve">
-    <value>紛失または破損した描画テンプレートとリストを修復</value>
   </data>
   <data name="MarkerShape_FilledDiamond" xml:space="preserve">
     <value>塗りつぶされたひし形</value>
@@ -1434,7 +1425,7 @@
     <value>例: 45.2, 0.8, 12.3, =MyFormula(A2,B2,C2)</value>
   </data>
   <data name="geo_hint_select_thermometer" xml:space="preserve">
-    <value>左側のパネルから温度計を選択してください</value>
+    <value>左側のパネルから温圧計を選択してください</value>
   </data>
   <data name="QuitEdit" xml:space="preserve">
     <value>編集を終了</value>
@@ -1536,7 +1527,7 @@
     <value>お知らせ情報を取得できません。</value>
   </data>
   <data name="auto_check_geothermometer_updates" xml:space="preserve">
-    <value>地質温度計の更新を自動的に確認</value>
+    <value>地質温圧計の更新を自動的に確認</value>
   </data>
   <data name="add_widget" xml:space="preserve">
     <value>ウィジェットを追加</value>
@@ -1563,7 +1554,7 @@
     <value>最大化</value>
   </data>
   <data name="diagram_template_not_found_repair_hint" xml:space="preserve">
-    <value>図解テンプレートファイルが見つかりません。ホームページの「テンプレート修復ツール」を使用して修復を試みてください。</value>
+    <value>図解テンプレートファイルが見つかりません。インストールが完全か確認するか、アプリケーションを再インストールしてください。</value>
   </data>
   <data name="no_new_templates_to_download" xml:space="preserve">
     <value>ダウンロードが必要な新しいテンプレートはありません</value>
@@ -1578,7 +1569,7 @@
     <value>この頂点を削除</value>
   </data>
   <data name="geo_dialog_delete_thermometer" xml:space="preserve">
-    <value>{0}温度計「{1}」を削除しますか？</value>
+    <value>{0}温圧計「{1}」を削除しますか？</value>
   </data>
   <data name="x_coordinate" xml:space="preserve">
     <value>X 座標</value>
@@ -1595,6 +1586,12 @@
   <data name="add_image" xml:space="preserve">
     <value>画像を追加</value>
   </data>
+  <data name="start_image_copy_successfully" xml:space="preserve">
+    <value>起動画像を追加しました。</value>
+  </data>
+  <data name="start_image_copy_error" xml:space="preserve">
+    <value>起動画像の追加に失敗しました: </value>
+  </data>
   <data name="add_arrow" xml:space="preserve">
     <value>矢印を追加</value>
   </data>
@@ -1609,9 +1606,6 @@
   </data>
   <data name="geo_script_inputs" xml:space="preserve">
     <value>入力列（カンマ区切り）</value>
-  </data>
-  <data name="diagram_template_repair_tool" xml:space="preserve">
-    <value>図解テンプレート修復ツール</value>
   </data>
   <data name="cipw_diagnostic_details" xml:space="preserve">
     <value>診断詳細</value>
@@ -1748,7 +1742,7 @@
     <value>言語と外観</value>
   </data>
   <data name="geo_msg_demoted" xml:space="preserve">
-    <value>カスタム温度計に降格しました</value>
+    <value>カスタム温圧計に降格しました</value>
   </data>
   <data name="plot_type" xml:space="preserve">
     <value>プロットタイプ</value>
@@ -1838,7 +1832,7 @@
     <value>テンプレートライブラリ</value>
   </data>
   <data name="geo_menu_export_official" xml:space="preserve">
-    <value>公式温度計をエクスポート</value>
+    <value>公式温圧計をエクスポート</value>
   </data>
   <data name="coordinates_picked_success" xml:space="preserve">
     <value>座標のピックに成功しました！</value>
@@ -1967,7 +1961,7 @@
     <value>副鉱物の生成</value>
   </data>
   <data name="geo_msg_update_available" xml:space="preserve">
-    <value>{0} 個の地質温度計が更新可能です</value>
+    <value>{0} 個の地質温圧計が更新可能です</value>
   </data>
   <data name="multiple_data_series_hint" xml:space="preserve">
     <value>複数のデータ系列はカンマで区切ってください（例：SiO2,TiO2）</value>
@@ -2106,6 +2100,63 @@
   </data>
   <data name="geo_field_worksheet_name" xml:space="preserve">
     <value>ワークシート名</value>
+  </data>
+  <data name="geo_current_app_format_version" xml:space="preserve">
+    <value>現在のソフトウェア温圧計バージョン</value>
+  </data>
+  <data name="geo_current_template_version" xml:space="preserve">
+    <value>現在の温圧計テンプレートバージョン</value>
+  </data>
+  <data name="geo_editor_set_version" xml:space="preserve">
+    <value>温圧計バージョンを設定</value>
+  </data>
+  <data name="geo_tooltip_version_patch" xml:space="preserve">
+    <value>改訂番号 z；フォーマット基線 x.y はプログラムバージョンに従います</value>
+  </data>
+  <data name="geo_example_name" xml:space="preserve">
+    <value>例：石英温圧計</value>
+  </data>
+  <data name="geo_example_mineral" xml:space="preserve">
+    <value>例：石英</value>
+  </data>
+  <data name="geo_example_year" xml:space="preserve">
+    <value>例：2020</value>
+  </data>
+  <data name="geo_example_author" xml:space="preserve">
+    <value>例：Smith 他</value>
+  </data>
+  <data name="geo_example_reference" xml:space="preserve">
+    <value>例：Smith (2020) Geochim. Cosmochim. Acta 280, 123-145</value>
+  </data>
+  <data name="geo_example_formula_name" xml:space="preserve">
+    <value>例：MyFormula_v1</value>
+  </data>
+  <data name="geo_preview_title" xml:space="preserve">
+    <value>効果プレビュー</value>
+  </data>
+  <data name="geo_preview_hint" xml:space="preserve">
+    <value>上記のメタデータに基づくリアルタイムプレビュー。左リスト項目と右詳細ヘッダーの表示を確認できます。</value>
+  </data>
+  <data name="geo_preview_list_item" xml:space="preserve">
+    <value>リスト項目プレビュー</value>
+  </data>
+  <data name="geo_preview_detail_header" xml:space="preserve">
+    <value>詳細ヘッダープレビュー</value>
+  </data>
+  <data name="geo_preview_name_placeholder" xml:space="preserve">
+    <value>温圧計名プレビュー</value>
+  </data>
+  <data name="geo_preview_mineral_placeholder" xml:space="preserve">
+    <value>鉱物分類</value>
+  </data>
+  <data name="geo_preview_author_placeholder" xml:space="preserve">
+    <value>著者</value>
+  </data>
+  <data name="geo_preview_reference_placeholder" xml:space="preserve">
+    <value>参考文献がここに表示されます</value>
+  </data>
+  <data name="geo_preview_meta_format" xml:space="preserve">
+    <value>{0} - {1} ({2})</value>
   </data>
   <data name="cipw_csv_filter" xml:space="preserve">
     <value>CSV ファイル|*.csv</value>

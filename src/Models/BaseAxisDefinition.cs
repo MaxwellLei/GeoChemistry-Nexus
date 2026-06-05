@@ -20,7 +20,7 @@ namespace GeoChemistryNexus.Models
         /// Axis type ("Left", "Right", "Bottom", "Top")
         /// </summary>
         [ObservableProperty]
-        [property: Browsable(false)]      // 取消属性面板展示该属性
+        [Browsable(false)]      // 取消属性面板展示该属性
         private string type;
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace GeoChemistryNexus.Models
         /// Axis major tick anti-aliasing enabled
         /// </summary>
         [ObservableProperty]
-        [property: Browsable(false)]
+        [Browsable(false)]
         private bool _majorTickAntiAlias = true;
 
         /// <summary>

@@ -150,9 +150,6 @@
   <data name="geo_validate_version_format" xml:space="preserve">
     <value>버전 형식이 올바르지 않습니다. x.x.x 형식만 허용됩니다(예: 1.0.0, 1.2.3).</value>
   </data>
-  <data name="drawing_template_repair_tool" xml:space="preserve">
-    <value>도면 템플릿 복구 도구</value>
-  </data>
   <data name="category_structure_min_two" xml:space="preserve">
     <value>분류 구조는 2 이상이어야 합니다!</value>
   </data>
@@ -184,7 +181,7 @@
     <value>표시 여부</value>
   </data>
   <data name="geo_msg_batch_export_success" xml:space="preserve">
-    <value>공식 온도계 총 {0}개 중 이번에 {1}개를 내보냈습니다 (추가/수정)
+    <value>공식 온압계 총 {0}개 중 이번에 {1}개를 내보냈습니다 (추가/수정)
 디렉터리: {2}</value>
   </data>
   <data name="geo_btn_apply" xml:space="preserve">
@@ -233,7 +230,7 @@
     <value>새 차트</value>
   </data>
   <data name="geo_msg_promoted" xml:space="preserve">
-    <value>공식 온도계로 승격되었습니다</value>
+    <value>공식 온압계로 승격되었습니다</value>
   </data>
   <data name="geo_msg_test_input_required" xml:space="preserve">
     <value>테스트 값을 입력하세요.</value>
@@ -245,10 +242,10 @@
     <value>다운로드 중...</value>
   </data>
   <data name="geo_hint_no_custom" xml:space="preserve">
-    <value>사용자 정의 온도계가 없습니다. + 를 클릭하여 만드세요.</value>
+    <value>사용자 정의 온압계가 없습니다. + 를 클릭하여 만드세요.</value>
   </data>
   <data name="geo_msg_update_downloaded" xml:space="preserve">
-    <value>{0}개의 지질 온도계를 다운로드했습니다</value>
+    <value>{0}개의 지질 온압계를 다운로드했습니다</value>
   </data>
   <data name="use_help" xml:space="preserve">
     <value>다이어그램 가이드</value>
@@ -328,9 +325,6 @@
   <data name="fill_color_1" xml:space="preserve">
     <value>채우기 색상 1</value>
   </data>
-  <data name="start_check_and_repair" xml:space="preserve">
-    <value>검사 및 복구 시작</value>
-  </data>
   <data name="cipw_overview" xml:space="preserve">
     <value>CIPW 표준 광물 계산(CIPW Norm)은 1902년에 Cross, Iddings, Pirsson, Washington 네 명의 암석학자가 제안한 암석 화학 계산법입니다. 이 방법은 전암 주요 원소 산화물 분석 데이터에 따라 고정된 우선순위로 산화물을 일련의 이상화된 표준 광물에 할당하여 암석 분류 및 비교 연구에 사용됩니다.</value>
   </data>
@@ -365,7 +359,7 @@
     <value>저장 실패: {0}</value>
   </data>
   <data name="geo_editor_title_new" xml:space="preserve">
-    <value>새 사용자 정의 온도계</value>
+    <value>새 사용자 정의 온압계</value>
   </data>
   <data name="switch_diagram_language" xml:space="preserve">
     <value>다이어그램 언어 전환</value>
@@ -392,7 +386,7 @@
     <value>CIPW 계산 결과 내보내기</value>
   </data>
   <data name="geo_menu_import_zip" xml:space="preserve">
-    <value>지질 온도계 가져오기 (ZIP)</value>
+    <value>지질 온압계 가져오기 (ZIP)</value>
   </data>
   <data name="developer_mode" xml:space="preserve">
     <value>개발자 모드</value>
@@ -475,7 +469,7 @@
     <value>이미 존재합니다. 덮어쓰시겠습니까?</value>
   </data>
   <data name="geo_editor_title_edit" xml:space="preserve">
-    <value>온도계 편집</value>
+    <value>온압계 편집</value>
   </data>
   <data name="start_and_end_coordinates" xml:space="preserve">
     <value>시작 좌표</value>
@@ -523,7 +517,7 @@
     <value>즐겨찾기에 추가됨</value>
   </data>
   <data name="geo_menu_new_custom" xml:space="preserve">
-    <value>새 사용자 정의 지질 온도계</value>
+    <value>새 사용자 정의 지질 온압계</value>
   </data>
   <data name="import_custom_diagram_template" xml:space="preserve">
     <value>사용자 정의 다이어그램 템플릿 가져오기</value>
@@ -544,7 +538,7 @@
     <value>업데이트 확인 중 오류 발생：</value>
   </data>
   <data name="GeothermometerSetting" xml:space="preserve">
-    <value>지질 온도계 설정</value>
+    <value>지질 온압계 설정</value>
   </data>
   <data name="PlotTitle" xml:space="preserve">
     <value>플롯 제목</value>
@@ -556,7 +550,7 @@
     <value>저장 후 ZIP 내보내기</value>
   </data>
   <data name="geo_section_official" xml:space="preserve">
-    <value>공식 온도계</value>
+    <value>공식 온압계</value>
   </data>
   <data name="geo_help_current_lang" xml:space="preserve">
     <value>현재 언어:</value>
@@ -825,7 +819,7 @@
     <value>스크립트 반환 유형 오류</value>
   </data>
   <data name="geo_msg_select_thermometer_first" xml:space="preserve">
-    <value>먼저 온도계를 선택하세요.</value>
+    <value>먼저 온압계를 선택하세요.</value>
   </data>
   <data name="enter_language_add" xml:space="preserve">
     <value>언어를 입력하고 Enter 키를 눌러 추가하십시오.</value>
@@ -1001,7 +995,7 @@
     <value>언어 열 삭제</value>
   </data>
   <data name="geo_msg_export_dialog_title" xml:space="preserve">
-    <value>지질 온도계 내보내기</value>
+    <value>지질 온압계 내보내기</value>
   </data>
   <data name="edit_link" xml:space="preserve">
     <value>링크 편집</value>
@@ -1085,7 +1079,7 @@
     <value>사용자 구성 읽는 중...</value>
   </data>
   <data name="geo_section_custom" xml:space="preserve">
-    <value>사용자 정의 온도계</value>
+    <value>사용자 정의 온압계</value>
   </data>
   <data name="Placeholder_Axis_Y" xml:space="preserve">
     <value>Y축</value>
@@ -1109,7 +1103,7 @@
     <value>이 사용자 정의 다이어그램 템플릿을 삭제하시겠습니까?</value>
   </data>
   <data name="Geothermometer" xml:space="preserve">
-    <value>지질 온도계</value>
+    <value>지질 온압계</value>
   </data>
   <data name="y_coordinate" xml:space="preserve">
     <value>Y 좌표</value>
@@ -1221,9 +1215,6 @@
   </data>
   <data name="failed_to_get_announcements" xml:space="preserve">
     <value>공지 가져오기 실패:</value>
-  </data>
-  <data name="repair_missing_or_damaged_templates_and_lists" xml:space="preserve">
-    <value>누락되거나 손상된 드로잉 템플릿 및 목록 복구</value>
   </data>
   <data name="MarkerShape_FilledDiamond" xml:space="preserve">
     <value>채워진 마름모</value>
@@ -1434,7 +1425,7 @@
     <value>예: 45.2, 0.8, 12.3, =MyFormula(A2,B2,C2)</value>
   </data>
   <data name="geo_hint_select_thermometer" xml:space="preserve">
-    <value>왼쪽 패널에서 온도계를 선택하세요</value>
+    <value>왼쪽 패널에서 온압계를 선택하세요</value>
   </data>
   <data name="QuitEdit" xml:space="preserve">
     <value>편집 종료</value>
@@ -1536,7 +1527,7 @@
     <value>공지 정보를 가져올 수 없음.</value>
   </data>
   <data name="auto_check_geothermometer_updates" xml:space="preserve">
-    <value>지질 온도계 업데이트 자동 확인</value>
+    <value>지질 온압계 업데이트 자동 확인</value>
   </data>
   <data name="add_widget" xml:space="preserve">
     <value>위젯 추가</value>
@@ -1563,7 +1554,7 @@
     <value>최대화</value>
   </data>
   <data name="diagram_template_not_found_repair_hint" xml:space="preserve">
-    <value>파일 다이어그램 템플릿을 찾을 수 없습니다. 홈 페이지에서 '템플릿 복구 도구'를 사용하여 복구해 보십시오.</value>
+    <value>다이어그램 템플릿 파일을 찾을 수 없습니다. 설치가 완전한지 확인하거나 애플리케이션을 다시 설치해 보세요.</value>
   </data>
   <data name="no_new_templates_to_download" xml:space="preserve">
     <value>다운로드할 새 템플릿이 없습니다</value>
@@ -1578,7 +1569,7 @@
     <value>이 정점 삭제</value>
   </data>
   <data name="geo_dialog_delete_thermometer" xml:space="preserve">
-    <value>{0} 온도계「{1}」을(를) 삭제하시겠습니까？</value>
+    <value>{0} 온압계「{1}」을(를) 삭제하시겠습니까？</value>
   </data>
   <data name="x_coordinate" xml:space="preserve">
     <value>X 좌표</value>
@@ -1595,6 +1586,12 @@
   <data name="add_image" xml:space="preserve">
     <value>이미지 추가</value>
   </data>
+  <data name="start_image_copy_successfully" xml:space="preserve">
+    <value>시작 이미지가 추가되었습니다.</value>
+  </data>
+  <data name="start_image_copy_error" xml:space="preserve">
+    <value>시작 이미지 추가 실패: </value>
+  </data>
   <data name="add_arrow" xml:space="preserve">
     <value>화살표 추가</value>
   </data>
@@ -1609,9 +1606,6 @@
   </data>
   <data name="geo_script_inputs" xml:space="preserve">
     <value>입력 열（쉼표 구분）</value>
-  </data>
-  <data name="diagram_template_repair_tool" xml:space="preserve">
-    <value>다이어그램 템플릿 복구 도구</value>
   </data>
   <data name="cipw_diagnostic_details" xml:space="preserve">
     <value>진단 세부 정보</value>
@@ -1748,7 +1742,7 @@
     <value>언어 및 모양</value>
   </data>
   <data name="geo_msg_demoted" xml:space="preserve">
-    <value>사용자 정의 온도계로 강등되었습니다</value>
+    <value>사용자 정의 온압계로 강등되었습니다</value>
   </data>
   <data name="plot_type" xml:space="preserve">
     <value>플롯 유형</value>
@@ -1838,7 +1832,7 @@
     <value>템플릿 라이브러리</value>
   </data>
   <data name="geo_menu_export_official" xml:space="preserve">
-    <value>공식 온도계 내보내기</value>
+    <value>공식 온압계 내보내기</value>
   </data>
   <data name="coordinates_picked_success" xml:space="preserve">
     <value>좌표 선택 성공!</value>
@@ -1967,7 +1961,7 @@
     <value>부광물 형성</value>
   </data>
   <data name="geo_msg_update_available" xml:space="preserve">
-    <value>{0}개의 지질 온도계를 업데이트할 수 있습니다</value>
+    <value>{0}개의 지질 온압계를 업데이트할 수 있습니다</value>
   </data>
   <data name="multiple_data_series_hint" xml:space="preserve">
     <value>여러 데이터 계열은 쉼표로 구분하십시오. 예: SiO2,TiO2</value>
@@ -2106,6 +2100,63 @@
   </data>
   <data name="geo_field_worksheet_name" xml:space="preserve">
     <value>워크시트 이름</value>
+  </data>
+  <data name="geo_current_app_format_version" xml:space="preserve">
+    <value>현재 소프트웨어 온압계 버전</value>
+  </data>
+  <data name="geo_current_template_version" xml:space="preserve">
+    <value>현재 온압계 템플릿 버전</value>
+  </data>
+  <data name="geo_editor_set_version" xml:space="preserve">
+    <value>온압계 버전 설정</value>
+  </data>
+  <data name="geo_tooltip_version_patch" xml:space="preserve">
+    <value>개정 번호 z; 형식 기준선 x.y는 프로그램 버전을 따릅니다</value>
+  </data>
+  <data name="geo_example_name" xml:space="preserve">
+    <value>예: 석영 온압계</value>
+  </data>
+  <data name="geo_example_mineral" xml:space="preserve">
+    <value>예: 석영</value>
+  </data>
+  <data name="geo_example_year" xml:space="preserve">
+    <value>예: 2020</value>
+  </data>
+  <data name="geo_example_author" xml:space="preserve">
+    <value>예: Smith 등</value>
+  </data>
+  <data name="geo_example_reference" xml:space="preserve">
+    <value>예: Smith (2020) Geochim. Cosmochim. Acta 280, 123-145</value>
+  </data>
+  <data name="geo_example_formula_name" xml:space="preserve">
+    <value>예: MyFormula_v1</value>
+  </data>
+  <data name="geo_preview_title" xml:space="preserve">
+    <value>효과 미리보기</value>
+  </data>
+  <data name="geo_preview_hint" xml:space="preserve">
+    <value>위 메타데이터를 기반으로 실시간 미리보기. 왼쪽 목록 항목과 오른쪽 상세 헤더 표시를 확인할 수 있습니다.</value>
+  </data>
+  <data name="geo_preview_list_item" xml:space="preserve">
+    <value>목록 항목 미리보기</value>
+  </data>
+  <data name="geo_preview_detail_header" xml:space="preserve">
+    <value>상세 헤더 미리보기</value>
+  </data>
+  <data name="geo_preview_name_placeholder" xml:space="preserve">
+    <value>온압계 이름 미리보기</value>
+  </data>
+  <data name="geo_preview_mineral_placeholder" xml:space="preserve">
+    <value>광물 분류</value>
+  </data>
+  <data name="geo_preview_author_placeholder" xml:space="preserve">
+    <value>저자</value>
+  </data>
+  <data name="geo_preview_reference_placeholder" xml:space="preserve">
+    <value>참고문헌이 여기에 표시됩니다</value>
+  </data>
+  <data name="geo_preview_meta_format" xml:space="preserve">
+    <value>{0} - {1} ({2})</value>
   </data>
   <data name="cipw_csv_filter" xml:space="preserve">
     <value>CSV 파일|*.csv</value>

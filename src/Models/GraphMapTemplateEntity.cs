@@ -1,5 +1,5 @@
-using LiteDB;
 using GeoChemistryNexus.Helpers;
+using LiteDB;
 using System;
 using System.Collections.Generic;
 
@@ -57,7 +57,7 @@ namespace GeoChemistryNexus.Models
         public LocalizedString NodeList { get; set; }
         
         public string TemplateType { get; set; } // "Cartesian" or "Ternary"
-        public float Version { get; set; }
+        public string Version { get; set; } = ContentVersionHelper.DefaultVersion;
 
         // --- 重量级数据区 (Payload) ---
 
@@ -86,5 +86,10 @@ namespace GeoChemistryNexus.Models
         /// 是否收藏
         /// </summary>
         public bool IsFavorite { get; set; } = false;
+
+        /// <summary>
+        /// 开发者本地编辑后待发布标记
+        /// </summary>
+        public bool PendingPublish { get; set; }
     }
 }

@@ -356,13 +356,6 @@
                         <MenuItem Header="{Binding [check_for_template_updates], Source={x:Static lg:LanguageService.Instance}}" 
                                   Command="{Binding CheckForTemplateUpdatesCommand}" Icon="🔄"/>
                     </MenuItem>
-
-                    <!--维护-->
-                    <MenuItem Header="{Binding [maintenance], Source={x:Static lg:LanguageService.Instance}, TargetNullValue='维护'}"
-                              Visibility="{Binding IsDeveloperMode, Converter={StaticResource BoolToVisibilityConverter}}">
-                        <MenuItem Header="{Binding [export_update_list], Source={x:Static lg:LanguageService.Instance}, TargetNullValue='导出更新列表'}"
-                                  Command="{Binding ExportUpdateListCommand}"/>
-                    </MenuItem>
                 </Menu>
 
                 <!-- 新的列表式侧边栏菜单 -->
@@ -1271,18 +1264,23 @@
                 </Border>
 
                 <!-- 模板卡片网格 (虚拟化) -->
-                <ListBox Grid.Row="1" ItemsSource="{Binding TemplateCardsView}" Margin="10" 
-                         x:Name="TemplateCardsControl"
-                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                         ScrollViewer.VerticalScrollBarVisibility="Auto"
-                         VirtualizingPanel.IsVirtualizing="True"
-                         VirtualizingPanel.VirtualizationMode="Recycling"
-                         VirtualizingPanel.ScrollUnit="Pixel"
-                         Background="Transparent" BorderThickness="0"
-                         Visibility="{Binding IsSpiderDiagramMode, Converter={StaticResource BoolToVisibilityReConverter}}">
+                <Grid Grid.Row="1"
+                      Visibility="{Binding IsSpiderDiagramMode, Converter={StaticResource BoolToVisibilityReConverter}}">
+                    <ListBox ItemsSource="{Binding TemplateCardsView}" Margin="10" 
+                             x:Name="TemplateCardsControl"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                             VirtualizingPanel.IsVirtualizing="True"
+                             VirtualizingPanel.VirtualizationMode="Recycling"
+                             VirtualizingPanel.ScrollUnit="Pixel"
+                             Background="Transparent" BorderThickness="0">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <vwp:VirtualizingWrapPanel Orientation="Horizontal" StretchItems="True"/>
+                            <!-- VWP 2.x：Horizontal=横向排列换行+纵向滚动；Vertical=纵向排列换列+横向滚动（勿用） -->
+                            <vwp:VirtualizingWrapPanel Orientation="Horizontal"
+                                                       StretchItems="True"
+                                                       SpacingMode="Uniform"
+                                                       ItemSize="{StaticResource TemplateCardCellSize}"/>
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                     <ListBox.ItemContainerStyle>
@@ -1290,6 +1288,8 @@
                             <Setter Property="Padding" Value="0"/>
                             <Setter Property="BorderThickness" Value="0"/>
                             <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="ListBoxItem">
@@ -1301,18 +1301,31 @@
                     </ListBox.ItemContainerStyle>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Border Height="260" MinWidth="260" Tag="{Binding DataContext, ElementName=TemplateCardsControl}">
+                            <Border MinWidth="{StaticResource TemplateCardMinDimension}"
+                                    MinHeight="{StaticResource TemplateCardMinDimension}"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    Tag="{Binding DataContext, ElementName=TemplateCardsControl}">
                                 <Border.Style>
                                     <Style TargetType="Border" BasedOn="{StaticResource TemplateCardStyle}">
                                         <Style.Triggers>
+                                            <!-- 开发者模式：已转换为内置模板的卡片使用深红色边框 -->
                                             <MultiDataTrigger>
                                                 <MultiDataTrigger.Conditions>
-                                                    <Condition Binding="{Binding IsCustomTemplate}" Value="False"/>
-                                                    <!-- Use Tag binding for IsDeveloperMode because Border is not part of logical tree during binding evaluation inside style sometimes? No, ElementName works on Border itself usually, but let's be safe and consistent -->
+                                                    <Condition Binding="{Binding IsNewTemplate}" Value="True"/>
                                                     <Condition Binding="{Binding Tag.IsDeveloperMode, RelativeSource={RelativeSource Self}}" Value="True"/>
                                                 </MultiDataTrigger.Conditions>
-                                                <Setter Property="BorderBrush" Value="DarkRed"/>
+                                                <Setter Property="BorderBrush" Value="{StaticResource ConvertedBuiltinTemplateBorderBrush}"/>
                                                 <Setter Property="BorderThickness" Value="2"/>
+                                            </MultiDataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding IsNewTemplate}" Value="True"/>
+                                                    <Condition Binding="{Binding Tag.IsDeveloperMode, RelativeSource={RelativeSource Self}}" Value="True"/>
+                                                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="BorderBrush" Value="{StaticResource ConvertedBuiltinTemplateBorderBrush}"/>
+                                                <Setter Property="BorderThickness" Value="3"/>
                                             </MultiDataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -1363,6 +1376,25 @@
                                         <MenuItem Header="{Binding [export_diagram_template],Source={x:Static lg:LanguageService.Instance}}" 
                                                   Command="{Binding PlacementTarget.Tag.ExportTemplateCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                                                   CommandParameter="{Binding}"/>
+                                        <!--强制更新 (开发者模式 + 官方图解)-->
+                                        <MenuItem Header="{Binding [force_update_template],Source={x:Static lg:LanguageService.Instance}, TargetNullValue='强制更新'}"
+                                                  Command="{Binding PlacementTarget.Tag.ForceUpdateTemplateCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                  CommandParameter="{Binding}">
+                                            <MenuItem.Style>
+                                                <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <MultiDataTrigger>
+                                                            <MultiDataTrigger.Conditions>
+                                                                <Condition Binding="{Binding IsCustomTemplate}" Value="False"/>
+                                                                <Condition Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True"/>
+                                                            </MultiDataTrigger.Conditions>
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </MultiDataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </MenuItem.Style>
+                                        </MenuItem>
                                         <!--转换为内置模板 (开发者模式)-->
                                         <MenuItem Header="{Binding [convert_to_builtin_template],Source={x:Static lg:LanguageService.Instance}, TargetNullValue='转换为内置模板'}"
                                                   Command="{Binding PlacementTarget.Tag.ConvertToBuiltInCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
@@ -1421,8 +1453,11 @@
 
                                     <!-- Thumbnails -->
                                     <Grid Grid.Row="0" Margin="8,8,8,0">
-                                        <Border x:Name="ThumbnailBorder" CornerRadius="6,6,0,0" Background="#F8F9FA" ClipToBounds="True">
-                                            <Image Stretch="Fill">
+                                        <Border x:Name="ThumbnailBorder" CornerRadius="6,6,0,0" Background="White" ClipToBounds="True">
+                                            <Image Stretch="Uniform"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   RenderOptions.BitmapScalingMode="HighQuality">
                                                 <Image.Style>
                                                     <Style TargetType="Image">
                                                         <Setter Property="Source" Value="{Binding ThumbnailImage}"/>
@@ -1781,7 +1816,20 @@
                             </Border>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
-                </ListBox>
+                    </ListBox>
+
+                    <!-- 模板列表为空时的居中提示 -->
+                    <TextBlock Text="{Binding TemplateCardsEmptyHint}"
+                               FontSize="14"
+                               Foreground="#AAAAAA"
+                               TextWrapping="Wrap"
+                               TextAlignment="Center"
+                               MaxWidth="360"
+                               Margin="24"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               Visibility="{Binding IsTemplateCardsEmpty, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                </Grid>
 
                 <!-- 蛛网图工具面板 -->
                 <Grid Grid.Row="1" Margin="20"
@@ -2432,11 +2480,11 @@
             <!-- Main Content -->
             <Grid Grid.Row="1" x:Name="MainLayoutGrid" ClipToBounds="True">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition x:Name="InnerLeftCol" Width="280" MinWidth="200" MaxWidth="500"/>
+                    <ColumnDefinition x:Name="InnerLeftCol" Width="20*" MinWidth="200"/>
                     <ColumnDefinition Width="4"/>
-                    <ColumnDefinition x:Name="PlotColumn" Width="*"/>
+                    <ColumnDefinition x:Name="PlotColumn" Width="56*"/>
                     <ColumnDefinition Width="4"/>
-                    <ColumnDefinition x:Name="OuterRightCol" Width="320" MinWidth="250" MaxWidth="600"/>
+                    <ColumnDefinition x:Name="OuterRightCol" Width="24*" MinWidth="250"/>
                 </Grid.ColumnDefinitions>
 
                 <!-- Left Panel: Layers / Data -->
@@ -3040,11 +3088,11 @@
 
                     <Grid Grid.Row="1" Margin="0,16,0,0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="280"/>
+                            <ColumnDefinition Width="20*"/>
                             <ColumnDefinition Width="16"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="56*"/>
                             <ColumnDefinition Width="16"/>
-                            <ColumnDefinition Width="320"/>
+                            <ColumnDefinition Width="24*"/>
                         </Grid.ColumnDefinitions>
 
                         <Border Grid.Column="0" Background="#FFFFFF" CornerRadius="14" Padding="18">
@@ -3197,11 +3245,11 @@
 
                     <Grid Grid.Row="1" Margin="0,16,0,0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="280"/>
+                            <ColumnDefinition Width="20*"/>
                             <ColumnDefinition Width="16"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="56*"/>
                             <ColumnDefinition Width="16"/>
-                            <ColumnDefinition Width="320"/>
+                            <ColumnDefinition Width="24*"/>
                         </Grid.ColumnDefinitions>
 
                         <Border Grid.Column="0" Background="#FFFFFF" CornerRadius="14" Padding="18">

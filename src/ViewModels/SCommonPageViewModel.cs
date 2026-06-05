@@ -277,41 +277,30 @@ namespace GeoChemistryNexus.ViewModels
         // 添加启动图
         private void ExecuteAddStartImgCommand()
         {
-            // 源文件路径
-            string sourceFilePath = FileHelper.GetFilePath("ImageFile(*.jpg,*.png)|*.jpg;*.png");
-            if (sourceFilePath != null)
+            string? sourceFilePath = FileHelper.GetFilePath("ImageFile(*.jpg,*.png)|*.jpg;*.png");
+            if (sourceFilePath == null)
+                return;
+
+            string sourceFileName = Path.GetFileName(sourceFilePath);
+            StartPicHelper.EnsureFolderExists();
+            string destinationFilePath = Path.Combine(StartPicHelper.FolderPath, sourceFileName);
+
+            try
             {
-                string sourceFileName = System.IO.Path.GetFileName(sourceFilePath);
-                // 目标文件路径
-                string destinationFolderPath = System.IO.Path.Combine(Environment.CurrentDirectory, "Data", "Image", "StartPic");
-                Directory.CreateDirectory(destinationFolderPath);
-                // 创建目标文件路径
-                string destinationFilePath = System.IO.Path.Combine(destinationFolderPath, sourceFileName);
-                // 尝试复制文件
-                try
-                {
-                    // 如果目标文件已存在，将overwrite参数设置为true以覆盖
-                    File.Copy(sourceFilePath, destinationFilePath, true);
-                    // 刷新封面流
-                    GetFlowPic();
-                    MessageHelper.Success((string)Application.Current.Resources["StartImageCopySuccessfully"]);
-                }
-                catch (Exception ex)
-                {
-                    MessageHelper.Warning((string)Application.Current.Resources["StartImageCopyError"] + ex.Message);
-                }
+                File.Copy(sourceFilePath, destinationFilePath, true);
+                CoverFlowMain?.Add(destinationFilePath);
+                MessageHelper.Success(LanguageService.Instance["start_image_copy_successfully"]);
             }
-            MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
+            catch (Exception ex)
+            {
+                MessageHelper.Warning(LanguageService.Instance["start_image_copy_error"] + ex.Message);
+            }
         }
 
         // 获取启动封面图
         public void GetFlowPic()
         {
-            //获取启动封面
-            string folderPath = System.IO.Path.Combine(Environment.CurrentDirectory,
-                "Data", "Image", "StartPic");     // 指定文件夹路径
-            string[] files = Directory.GetFiles(folderPath); // 获取文件夹中的所有文件
-            foreach (var file in files)
+            foreach (var file in StartPicHelper.GetImageFiles())
             {
                 CoverFlowMain?.Add(file);
             }

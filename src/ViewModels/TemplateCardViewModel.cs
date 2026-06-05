@@ -27,8 +27,17 @@ namespace GeoChemistryNexus.ViewModels
         // 服务器端哈希 (用于校验)
         public string ServerHash { get; set; }
 
+        // 服务器端版本 (用于 z 修订比较)
+        public string ServerVersion { get; set; }
+
         [ObservableProperty]
         private bool _isCustomTemplate;
+
+        /// <summary>
+        /// 是否为由个人图解转换为内置模板的卡片（开发者模式标识用）
+        /// </summary>
+        [ObservableProperty]
+        private bool _isNewTemplate;
 
         [ObservableProperty]
         private bool _isFavorite;

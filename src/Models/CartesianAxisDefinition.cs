@@ -143,7 +143,7 @@ namespace GeoChemistryNexus.Models
         /// Axis minor tick anti-aliasing enabled
         /// </summary>
         [ObservableProperty]
-        [property: Browsable(false)]
+        [Browsable(false)]
         private bool _minorTickAntiAlias = true;
 
         #region Subtitle / SubLabel

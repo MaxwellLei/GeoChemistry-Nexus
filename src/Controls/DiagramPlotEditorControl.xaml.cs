@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
 
 namespace GeoChemistryNexus.Controls
@@ -54,6 +56,33 @@ namespace GeoChemistryNexus.Controls
                 if (e.PropertyName == nameof(DiagramPlotEditorViewModel.SelectedSectionIndex))
                     UpdateSectionVisibility();
             };
+
+            ViewModel.GetCurrentRtfContent = () =>
+            {
+                try
+                {
+                    return RtfHelper.GetRtfString(HelpDocEditor);
+                }
+                catch
+                {
+                    return null;
+                }
+            };
+
+            ViewModel.SetCurrentRtfContent = rtf =>
+            {
+                try
+                {
+                    if (string.IsNullOrEmpty(rtf))
+                        HelpDocEditor.Document.Blocks.Clear();
+                    else
+                        RtfHelper.LoadRtfString(HelpDocEditor, rtf);
+                }
+                catch
+                {
+                    HelpDocEditor.Document.Blocks.Clear();
+                }
+            };
         }
 
         public void InitializeForCreate() => ViewModel.InitializeForCreate();
@@ -83,14 +112,23 @@ namespace GeoChemistryNexus.Controls
 
         private void UpdateSectionVisibility()
         {
-            bool showTranslation = ViewModel.SelectedSectionIndex == 1;
-            BasicPanel.Visibility = showTranslation ? Visibility.Collapsed : Visibility.Visible;
-            TranslationPanel.Visibility = showTranslation ? Visibility.Visible : Visibility.Collapsed;
+            int index = ViewModel.SelectedSectionIndex;
+            BasicPanel.Visibility = index == 0 ? Visibility.Visible : Visibility.Collapsed;
+            TranslationPanel.Visibility = index == 1 ? Visibility.Visible : Visibility.Collapsed;
+            HelpPanel.Visibility = index == 2 ? Visibility.Visible : Visibility.Collapsed;
 
-            if (showTranslation)
-                NavTranslation.IsChecked = true;
-            else
-                NavBasic.IsChecked = true;
+            switch (index)
+            {
+                case 0:
+                    NavBasic.IsChecked = true;
+                    break;
+                case 1:
+                    NavTranslation.IsChecked = true;
+                    break;
+                case 2:
+                    NavHelp.IsChecked = true;
+                    break;
+            }
         }
 
         private void LanguageCombo_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -184,10 +222,71 @@ namespace GeoChemistryNexus.Controls
             {
                 string langCode = e.PropertyName;
                 bool isDefault = string.Equals(langCode, ViewModel.DefaultLanguageCode, StringComparison.OrdinalIgnoreCase);
-                e.Column.Header = isDefault ? $"{langCode} *" : langCode;
-                e.Column.Width = new DataGridLength(140);
-                e.Column.MinWidth = 120;
+                e.Column = CreateMultilineTranslationColumn(langCode, isDefault ? $"{langCode} *" : langCode);
             }
+        }
+
+        private static DataGridTemplateColumn CreateMultilineTranslationColumn(string bindingPath, string header)
+        {
+            var binding = new Binding($"[{bindingPath}]")
+            {
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+                Mode = BindingMode.TwoWay
+            };
+
+            var displayTextBlock = new FrameworkElementFactory(typeof(TextBlock));
+            displayTextBlock.SetBinding(TextBlock.TextProperty, new Binding($"[{bindingPath}]"));
+            displayTextBlock.SetValue(TextBlock.TextWrappingProperty, TextWrapping.Wrap);
+            displayTextBlock.SetValue(TextBlock.VerticalAlignmentProperty, VerticalAlignment.Top);
+
+            var editTextBox = new FrameworkElementFactory(typeof(TextBox));
+            editTextBox.SetBinding(TextBox.TextProperty, binding);
+            editTextBox.SetValue(TextBox.AcceptsReturnProperty, true);
+            editTextBox.SetValue(TextBox.TextWrappingProperty, TextWrapping.Wrap);
+            editTextBox.SetValue(TextBox.VerticalScrollBarVisibilityProperty, ScrollBarVisibility.Auto);
+            editTextBox.SetValue(TextBox.MinHeightProperty, 64.0);
+            editTextBox.SetValue(TextBox.VerticalAlignmentProperty, VerticalAlignment.Stretch);
+            editTextBox.SetValue(TextBox.VerticalContentAlignmentProperty, VerticalAlignment.Top);
+            editTextBox.SetValue(TextBox.PaddingProperty, new Thickness(2));
+
+            return new DataGridTemplateColumn
+            {
+                Header = header,
+                Width = new DataGridLength(140),
+                MinWidth = 120,
+                CellTemplate = new DataTemplate { VisualTree = displayTextBlock },
+                CellEditingTemplate = new DataTemplate { VisualTree = editTextBox }
+            };
+        }
+
+        private void TranslationGrid_PreparingCellForEdit(object sender, DataGridPreparingCellForEditEventArgs e)
+        {
+            if (e.EditingElement is not TextBox textBox) return;
+
+            textBox.PreviewKeyDown -= TranslationCellTextBox_PreviewKeyDown;
+            textBox.PreviewKeyDown += TranslationCellTextBox_PreviewKeyDown;
+        }
+
+        private static void TranslationCellTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                e.Handled = true;
+        }
+
+        private void TranslationGrid_LoadingRow(object sender, DataGridRowEventArgs e)
+        {
+            if (e.Row.Item is not System.Data.DataRowView rowView) return;
+
+            int maxLines = 1;
+            foreach (System.Data.DataColumn column in rowView.Row.Table.Columns)
+            {
+                if (column.ColumnName is "Context" or "ObjectRef") continue;
+
+                if (rowView[column.ColumnName] is string text && !string.IsNullOrEmpty(text))
+                    maxLines = Math.Max(maxLines, text.Split('\n').Length);
+            }
+
+            e.Row.MinHeight = Math.Max(32, maxLines * 18 + 12);
         }
 
         private void TranslationGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
@@ -267,6 +366,8 @@ namespace GeoChemistryNexus.Controls
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
+            ViewModel.GetHelpDocumentsForSubmit();
+
             if (ConfirmCommand?.CanExecute(ViewModel) ?? ConfirmCommand?.CanExecute(null) ?? false)
                 ConfirmCommand.Execute(ViewModel);
             else if (ConfirmCommand != null)
@@ -280,6 +381,39 @@ namespace GeoChemistryNexus.Controls
         }
 
         private Window? OwnerWindow() => Window.GetWindow(this);
+
+        private void BoldButton_Click(object sender, RoutedEventArgs e)
+        {
+            EditingCommands.ToggleBold.Execute(null, HelpDocEditor);
+            HelpDocEditor.Focus();
+        }
+
+        private void ItalicButton_Click(object sender, RoutedEventArgs e)
+        {
+            EditingCommands.ToggleItalic.Execute(null, HelpDocEditor);
+            HelpDocEditor.Focus();
+        }
+
+        private void UnderlineButton_Click(object sender, RoutedEventArgs e)
+        {
+            EditingCommands.ToggleUnderline.Execute(null, HelpDocEditor);
+            HelpDocEditor.Focus();
+        }
+
+        private void FontSizeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (HelpDocEditor?.Selection == null) return;
+
+            string? sizeText = FontSizeComboBox.SelectedItem is ComboBoxItem item
+                ? item.Content?.ToString()
+                : FontSizeComboBox.SelectedItem as string;
+
+            if (sizeText != null && double.TryParse(sizeText, out double size) && size > 0 && size <= 200)
+            {
+                HelpDocEditor.Selection.ApplyPropertyValue(TextElement.FontSizeProperty, size);
+                HelpDocEditor.Focus();
+            }
+        }
 
         private class LanguageOption
         {

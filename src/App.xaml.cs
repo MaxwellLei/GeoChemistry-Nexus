@@ -1,3 +1,4 @@
+using GeoChemistryNexus.Models;
 using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Services;
 using GeoChemistryNexus.ViewModels;
@@ -30,6 +31,9 @@ namespace GeoChemistryNexus
         protected override async void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
+            if (TryHandleHeadlessPublish(e.Args))
+                return;
 
             // 0. 初始化语言
             LanguageService.InitializeLanguage();
@@ -68,7 +72,7 @@ namespace GeoChemistryNexus
                         MainPlotPage.GetPage();
                     });
 
-                    // 阶段 4.1: 预加载温度计模块（提前实例化 GeothermometerPageView 单例，避免首次进入卡顿）
+                    // 阶段 4.1: 预加载温压计模块（提前实例化 GeothermometerPageView 单例，避免首次进入卡顿）
                     startViewModel.UpdateProgress(75, LanguageService.Instance["loading_drawing_module_ellipsis"]);
                     await this.Dispatcher.InvokeAsync(() =>
                     {
@@ -110,6 +114,103 @@ namespace GeoChemistryNexus
                     });
                 }
             });
+        }
+
+        /// <summary>
+        /// 无头模式：命令行发布官方图解模板
+        /// GeoChemistryNexus.exe --publish-official-templates [--staging-dir=路径] [--dry-run]
+        /// </summary>
+        private bool TryHandleHeadlessPublish(string[] args)
+        {
+            if (args == null || !args.Any(a => string.Equals(a, "--publish-official-templates", StringComparison.OrdinalIgnoreCase)))
+                return false;
+
+            bool dryRun = args.Any(a => string.Equals(a, "--dry-run", StringComparison.OrdinalIgnoreCase));
+            string stagingArg = args.FirstOrDefault(a => a.StartsWith("--staging-dir=", StringComparison.OrdinalIgnoreCase));
+            string stagingDir = null;
+            if (!string.IsNullOrEmpty(stagingArg))
+                stagingDir = stagingArg.Substring("--staging-dir=".Length).Trim('"');
+
+            LanguageService.InitializeLanguage();
+
+            string logDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
+            if (!Directory.Exists(logDir))
+                Directory.CreateDirectory(logDir);
+
+            string logFile = Path.Combine(logDir, $"publish_{DateTime.Now:yyyyMMdd_HHmmss}.log");
+            var logLines = new List<string>();
+
+            void Log(string message)
+            {
+                string line = $"[{DateTime.Now:HH:mm:ss}] {message}";
+                logLines.Add(line);
+                Console.WriteLine(line);
+            }
+
+            try
+            {
+                var settings = CosPublishSettingsService.Load();
+                if (string.IsNullOrEmpty(stagingDir))
+                    stagingDir = settings.StagingDirectory;
+
+                if (string.IsNullOrWhiteSpace(stagingDir))
+                    throw new InvalidOperationException("Staging directory is required. Use --staging-dir= or configure cos_publish.json.");
+
+                Log($"Staging directory: {stagingDir}");
+
+                string announcement = string.Empty;
+                try
+                {
+                    string json = UpdateHelper.GetUrlContentAsync(OfficialContentEndpoints.ServerInfoUrl).GetAwaiter().GetResult();
+                    var info = System.Text.Json.JsonSerializer.Deserialize<ServerInfo>(json);
+                    announcement = info?.Announcement ?? string.Empty;
+                }
+                catch
+                {
+                    // keep empty announcement
+                }
+
+                var publishResult = GraphMapTemplatePublishService.ExportToDirectory(stagingDir, new PublishOptions
+                {
+                    PreserveAnnouncement = announcement
+                });
+                Log(publishResult.Summary);
+
+                var geoResult = GeothermometerPublishService.ExportToDirectory(stagingDir);
+                Log(geoResult.Summary);
+
+                if (dryRun)
+                {
+                    Log("Dry run: skipping COS upload.");
+                }
+                else
+                {
+                    if (!settings.IsConfigured)
+                        throw new InvalidOperationException("COS settings are not configured.");
+
+                    var progress = new Progress<string>(Log);
+                    var uploadResult = TencentCosPublishService.UploadCombinedPublishAsync(
+                        stagingDir, publishResult, geoResult, null, null, settings, true, true, false, false, progress).GetAwaiter().GetResult();
+
+                    Log(uploadResult.Message);
+                    if (!uploadResult.Success)
+                        Environment.ExitCode = 1;
+
+                    GraphMapTemplatePublishService.ClearPendingPublishFlags();
+                }
+
+                File.WriteAllLines(logFile, logLines);
+                Shutdown();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Log($"ERROR: {ex.Message}");
+                File.WriteAllLines(logFile, logLines);
+                Environment.ExitCode = 1;
+                Shutdown();
+                return true;
+            }
         }
 
         /// <summary>

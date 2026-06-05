@@ -8,17 +8,25 @@
     <ApplicationIcon>Data\Icon\logo.ico</ApplicationIcon>
 	<!--软件版本号-->
     <AssemblyVersion>0.6.1</AssemblyVersion>
-	<!--图表版本号-->
-    <FileVersion>1.2</FileVersion>
+	<!--图解格式版本号 x.y.z -->
+    <FileVersion>1.2.0</FileVersion>
+    <!--地质温压计格式版本号 x.y.z -->
+    <GeothermometerFormatVersion>1.0.0</GeothermometerFormatVersion>
     <Copyright>Copyright ©️ 2024</Copyright>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <ItemGroup>
+    <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+      <_Parameter1>GeothermometerFormatVersion</_Parameter1>
+      <_Parameter2>$(GeothermometerFormatVersion)</_Parameter2>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Data\Documents\template.rtf" />
     <None Remove="Data\Icon\iconfont.ttf" />
     <None Remove="Data\Icon\logo.png" />
-    <None Remove="Data\Image\HomePic\Default.jpg" />
     <None Remove="Data\Image\StartPic\1.jpg" />
     <None Remove="Data\Image\StartPic\2.jpg" />
     <None Remove="Data\Image\StartPic\3.jpg" />
@@ -33,7 +41,6 @@
     <Resource Include="Data\Icon\iconfont.ttf" />
     <Content Include="Data\Icon\logo.ico" />
     <Resource Include="Data\Icon\logo.png" />
-    <Resource Include="Data\Image\HomePic\Default.jpg" />
     <Content Include="Data\Image\StartPic\1.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -49,9 +56,13 @@
     <Content Include="Data\PlotData\PlotTemplateCategories.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Data\Home\HomeLinksCatalog.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Tencent.QCloud.Cos.Sdk" Version="5.4.49" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
     <PackageReference Include="gong-wpf-dragdrop" Version="4.0.0" />
     <PackageReference Include="HandyControl" Version="3.6.0-rc3" />

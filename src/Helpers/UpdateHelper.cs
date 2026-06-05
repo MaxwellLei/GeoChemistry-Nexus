@@ -1,3 +1,4 @@
+using GeoChemistryNexus.Models;
 using GeoChemistryNexus.Services;
 using HandyControl.Controls;
 using System;
@@ -31,53 +32,40 @@ namespace GeoChemistryNexus.Helpers
         private const string GitHubApiUrl = "https://api.github.com/repos/MaxwellLei/GeoChemistry-Nexus/releases/latest";
 
         // 服务器信息 URL 常量
-        private const string ServerInfoUrl = "https://geochemistrynexus-1303234197.cos.ap-hongkong.myqcloud.com/server_info.json";
+        private const string ServerInfoUrl = OfficialContentEndpoints.ServerInfoUrl;
 
         // 使用静态 HttpClient 实例
         private static readonly HttpClient httpClient = new HttpClient();
 
         /// <summary>
-        /// 获取当前应用程序的版本号（Float格式，取前两位，例如 1.2）
-        /// 使用 FileVersion 而不是 AssemblyVersion
+        /// 获取当前应用程序的图解格式版本号（x.y.z，来自 FileVersion）。
         /// </summary>
+        public static string GetCurrentDiagramFormatVersion()
+            => ContentVersionHelper.GetDiagramFormatVersion();
+
+        /// <summary>
+        /// 获取当前应用程序的地质温压计格式版本号（x.y.z，来自 GeothermometerFormatVersion）。
+        /// </summary>
+        public static string GetCurrentGeothermometerFormatVersion()
+            => ContentVersionHelper.GetGeothermometerFormatVersion();
+
+        /// <summary>
+        /// 已废弃：请使用 <see cref="GetCurrentDiagramFormatVersion"/>。
+        /// </summary>
+        [Obsolete("Use GetCurrentDiagramFormatVersion() and ContentVersionHelper instead.")]
         public static float GetCurrentVersionFloat()
         {
-            try
+            var normalized = ContentVersionHelper.GetDiagramFormatVersion();
+            if (ContentVersionHelper.TryGetPatch(normalized, out _))
             {
-                var attr = System.Reflection.Assembly.GetExecutingAssembly()
-                    .GetCustomAttribute<System.Reflection.AssemblyFileVersionAttribute>();
-                
-                if (attr != null && !string.IsNullOrEmpty(attr.Version))
+                var parts = normalized.Split('.');
+                if (parts.Length >= 2
+                    && float.TryParse($"{parts[0]}.{parts[1]}", out float result))
                 {
-                    if (Version.TryParse(attr.Version, out Version v))
-                    {
-                        string versionStr = $"{v.Major}.{v.Minor}";
-                        if (float.TryParse(versionStr, out float result))
-                        {
-                            return result;
-                        }
-                    }
-                    // 备用：尝试直接解析
-                    if (float.TryParse(attr.Version, out float directResult))
-                    {
-                        return directResult;
-                    }
+                    return result;
                 }
             }
-            catch
-            {
-                // ignore
-            }
 
-            // Fallback: 如果获取 FileVersion 失败，尝试获取 AssemblyVersion
-            var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-            if (version == null) return 1.0f;
-            
-            string fallbackStr = $"{version.Major}.{version.Minor}";
-            if (float.TryParse(fallbackStr, out float fallbackResult))
-            {
-                return fallbackResult;
-            }
             return 1.0f;
         }
 

@@ -6,11 +6,12 @@
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
         mc:Ignorable="d"
-        Title="{Binding [add_link],Source={x:Static lg:LanguageService.Instance}}" Height="450" Width="400"
+        Title="{Binding [add_link],Source={x:Static lg:LanguageService.Instance}}" Height="520" Width="400"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False">
     
     <Grid Margin="20">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -36,7 +37,12 @@
             </hc:ComboBox.ItemTemplate>
         </hc:ComboBox>
 
-        <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right">
+        <hc:TextBox Name="IconUrlBox"
+                    hc:InfoElement.Title="{Binding [home_icon_url],Source={x:Static lg:LanguageService.Instance}}"
+                    hc:InfoElement.Placeholder="{Binding [home_icon_url_hint],Source={x:Static lg:LanguageService.Instance}}"
+                    Grid.Row="4" Margin="0,0,0,15"/>
+
+        <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Content="{Binding [Cancel],Source={x:Static lg:LanguageService.Instance}}" Click="Cancel_Click" Margin="0,0,10,0"/>
             <Button Content="{Binding [Confirm],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ButtonPrimary}" Click="Ok_Click"/>
         </StackPanel>

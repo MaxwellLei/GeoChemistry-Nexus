@@ -6,6 +6,7 @@ using GeoChemistryNexus.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,8 +14,8 @@ using System.Threading.Tasks;
 namespace GeoChemistryNexus.ViewModels
 {
     /// <summary>
-    /// 自定义温度计编辑器 ViewModel
-    /// 用于新建和编辑自定义温度计，支持脚本测试和导出
+    /// 自定义温压计编辑器 ViewModel
+    /// 用于新建和编辑自定义温压计，支持脚本测试和导出
     /// 三步流程：基本信息 → 公式脚本 → 帮助文档
     /// </summary>
     public partial class GeothermometerEditorViewModel : ObservableObject
@@ -42,29 +43,56 @@ namespace GeoChemistryNexus.ViewModels
         private string reference = string.Empty;
 
         [ObservableProperty]
-        private string description = string.Empty;
-
-        [ObservableProperty]
         private string formulaName = string.Empty;
 
         [ObservableProperty]
-        private string worksheetName = string.Empty;
+        private int patchVersion;
 
+        /// <summary>编辑模式下打开时的原始模板版本（只读展示）。</summary>
         [ObservableProperty]
-        private string version = "1.0.0";
+        private string originalTemplateVersion = string.Empty;
+
+        /// <summary>当前软件支持的温压计格式版本 x.y.z（只读）。</summary>
+        public string AppFormatVersion =>
+            ContentVersionHelper.Normalize(ContentVersionHelper.GetGeothermometerFormatVersion());
+
+        /// <summary>程序固定的格式基线 x.y.（用户不可编辑）</summary>
+        public string FormatVersionPrefix
+        {
+            get
+            {
+                var normalized = ContentVersionHelper.Normalize(ContentVersionHelper.GetGeothermometerFormatVersion());
+                if (ContentVersionHelper.TryGetPatch(normalized, out _))
+                {
+                    var parts = normalized.Split('.');
+                    if (parts.Length >= 2)
+                        return $"{parts[0]}.{parts[1]}.";
+                }
+
+                return "1.0.";
+            }
+        }
+
+        /// <summary>保存后将写入的完整温压计版本 x.y.z。</summary>
+        public string TemplateVersion => ContentVersionHelper.WithAppGeothermometerFormat(PatchVersion);
 
         public string PreviewName => string.IsNullOrWhiteSpace(Name)
-            ? "温度计名称预览"
+            ? LanguageService.Instance["geo_preview_name_placeholder"] ?? "Thermometer Name"
             : Name.Trim();
 
         public string PreviewMetaLine
         {
             get
             {
-                var mineralText = string.IsNullOrWhiteSpace(Mineral) ? "矿物分类" : Mineral.Trim();
-                var authorText = string.IsNullOrWhiteSpace(Author) ? "作者" : Author.Trim();
+                var mineralText = string.IsNullOrWhiteSpace(Mineral)
+                    ? LanguageService.Instance["geo_preview_mineral_placeholder"] ?? "Mineral Category"
+                    : Mineral.Trim();
+                var authorText = string.IsNullOrWhiteSpace(Author)
+                    ? LanguageService.Instance["geo_preview_author_placeholder"] ?? "Author"
+                    : Author.Trim();
                 var yearText = Year > 0 ? Year.ToString() : DateTime.Now.Year.ToString();
-                return $"{mineralText} - {authorText} ({yearText})";
+                var format = LanguageService.Instance["geo_preview_meta_format"] ?? "{0} - {1} ({2})";
+                return string.Format(format, mineralText, authorText, yearText);
             }
         }
 
@@ -91,20 +119,14 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         public string PreviewReference => string.IsNullOrWhiteSpace(Reference)
-            ? "这里将显示参考文献信息"
+            ? LanguageService.Instance["geo_preview_reference_placeholder"] ?? "Reference will appear here"
             : Reference.Trim();
 
         public string PreviewMineral => string.IsNullOrWhiteSpace(Mineral)
-            ? "矿物分类"
+            ? LanguageService.Instance["geo_preview_mineral_placeholder"] ?? "Mineral Category"
             : Mineral.Trim();
 
-        public string PreviewDescription => string.IsNullOrWhiteSpace(Description)
-            ? "这里将显示简要描述，帮助你确认列表项生成后的整体内容效果。"
-            : Description.Trim();
-
-        public string PreviewVersion => string.IsNullOrWhiteSpace(Version)
-            ? "1.0.0"
-            : Version.Trim();
+        public string PreviewVersion => TemplateVersion;
 
         // ==================== 表格定义与脚本（Step 1） ====================
 
@@ -180,7 +202,7 @@ namespace GeoChemistryNexus.ViewModels
         public bool IsEditMode { get; private set; }
 
         /// <summary>
-        /// 当前编辑的实体是否为官方温度计（编辑模式下保留原标志，新建模式下为 false）
+        /// 当前编辑的实体是否为官方温压计（编辑模式下保留原标志，新建模式下为 false）
         /// </summary>
         private bool _isOfficial;
 
@@ -244,6 +266,16 @@ namespace GeoChemistryNexus.ViewModels
         public GeothermometerEditorViewModel()
         {
             ScriptContent = ScriptTemplate;
+            LanguageService.Instance.PropertyChanged += OnLanguageChanged;
+        }
+
+        private void OnLanguageChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "Item[]")
+            {
+                OnPropertyChanged(nameof(EditorTitle));
+                NotifyPreviewChanged();
+            }
         }
 
         private void NotifyPreviewChanged()
@@ -252,7 +284,12 @@ namespace GeoChemistryNexus.ViewModels
             OnPropertyChanged(nameof(PreviewMetaLine));
             OnPropertyChanged(nameof(PreviewReference));
             OnPropertyChanged(nameof(PreviewMineral));
-            OnPropertyChanged(nameof(PreviewDescription));
+            OnPropertyChanged(nameof(PreviewVersion));
+        }
+
+        private void NotifyVersionPropertiesChanged()
+        {
+            OnPropertyChanged(nameof(TemplateVersion));
             OnPropertyChanged(nameof(PreviewVersion));
         }
 
@@ -261,8 +298,11 @@ namespace GeoChemistryNexus.ViewModels
         partial void OnAuthorChanged(string value) => NotifyPreviewChanged();
         partial void OnYearChanged(int value) => NotifyPreviewChanged();
         partial void OnReferenceChanged(string value) => NotifyPreviewChanged();
-        partial void OnDescriptionChanged(string value) => NotifyPreviewChanged();
-        partial void OnVersionChanged(string value) => NotifyPreviewChanged();
+        partial void OnPatchVersionChanged(int value)
+        {
+            NotifyVersionPropertiesChanged();
+            NotifyPreviewChanged();
+        }
 
         // ==================== 步骤变更处理 ====================
 
@@ -361,9 +401,7 @@ namespace GeoChemistryNexus.ViewModels
                 return LanguageService.Instance["geo_validate_author_required"];
             if (Year <= 0)
                 return LanguageService.Instance["geo_validate_year_required"];
-            if (string.IsNullOrWhiteSpace(Version))
-                return LanguageService.Instance["geo_validate_version_required"];
-            if (!System.Text.RegularExpressions.Regex.IsMatch(Version.Trim(), @"^\d+\.\d+\.\d+$"))
+            if (PatchVersion < 0)
                 return LanguageService.Instance["geo_validate_version_format"];
             if (string.IsNullOrWhiteSpace(Reference))
                 return LanguageService.Instance["geo_validate_reference_required"];
@@ -417,7 +455,7 @@ namespace GeoChemistryNexus.ViewModels
         // ==================== 加载已有实体 ====================
 
         /// <summary>
-        /// 以编辑模式加载已有的温度计实体
+        /// 以编辑模式加载已有的温压计实体
         /// </summary>
         public void LoadEntity(GeothermometerEntity entity)
         {
@@ -433,10 +471,9 @@ namespace GeoChemistryNexus.ViewModels
             Author = entity.Author;
             Year = entity.Year;
             Reference = entity.Reference;
-            Description = entity.Description;
             FormulaName = entity.FormulaName;
-            WorksheetName = entity.WorksheetName;
-            Version = entity.Version;
+            OriginalTemplateVersion = ContentVersionHelper.Normalize(entity.Version);
+            PatchVersion = ContentVersionHelper.TryGetPatch(entity.Version, out int patch) ? patch : 0;
 
             HeadersText = string.Join(", ", entity.Headers ?? new List<string>());
             ExampleRowText = string.Join(", ", entity.ExampleRow ?? new List<string>());
@@ -471,6 +508,8 @@ namespace GeoChemistryNexus.ViewModels
             }
 
             OnPropertyChanged(nameof(EditorTitle));
+            OnPropertyChanged(nameof(IsEditMode));
+            NotifyVersionPropertiesChanged();
         }
 
         // ==================== 脚本测试 ====================
@@ -535,16 +574,14 @@ namespace GeoChemistryNexus.ViewModels
             {
                 Id = IsEditMode ? _editingEntityId : Guid.Empty,
                 PluginId = IsEditMode ? _editingPluginId : string.Empty,
-                Version = string.IsNullOrWhiteSpace(Version) ? "1.0.0" : Version.Trim(),
+                Version = TemplateVersion,
                 IsOfficial = _isOfficial,
                 Mineral = Mineral.Trim(),
                 Name = Name.Trim(),
                 Author = Author.Trim(),
                 Year = Year,
                 Reference = Reference.Trim(),
-                Description = Description.Trim(),
                 FormulaName = FormulaName.Trim(),
-                WorksheetName = string.IsNullOrWhiteSpace(WorksheetName) ? Name.Trim() : WorksheetName.Trim(),
                 Headers = headers,
                 ExampleRow = exampleRow,
                 InputColumns = inputColumns,

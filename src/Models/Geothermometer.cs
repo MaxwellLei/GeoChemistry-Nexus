@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 namespace GeoChemistryNexus.Models
 {
     /// <summary>
-    /// 地质温度计（GTM）定义模型
+    /// 地质温压计（GTM）定义模型
     /// </summary>
     public class Geothermometer
     {
@@ -30,12 +30,12 @@ namespace GeoChemistryNexus.Models
         public string MineralLangKey { get; set; } = string.Empty;
 
         /// <summary>
-        /// 温度计名称（显示名称）
+        /// 温压计名称（显示名称）
         /// </summary>
         public string Name { get; set; } = string.Empty;
 
         /// <summary>
-        /// 温度计名称的多语言键名
+        /// 温压计名称的多语言键名
         /// </summary>
         public string NameLangKey { get; set; } = string.Empty;
 
@@ -75,11 +75,6 @@ namespace GeoChemistryNexus.Models
         public List<string> ExampleRow { get; set; } = new();
 
         /// <summary>
-        /// 工作表名称
-        /// </summary>
-        public string WorksheetName { get; set; } = string.Empty;
-
-        /// <summary>
         /// 已注册的公式函数名称
         /// </summary>
         public string FormulaName { get; set; } = string.Empty;
@@ -106,12 +101,7 @@ namespace GeoChemistryNexus.Models
         public List<AdditionalFormula> AdditionalFormulas { get; set; } = new();
 
         /// <summary>
-        /// 简要描述
-        /// </summary>
-        public string Description { get; set; } = string.Empty;
-
-        /// <summary>
-        /// 是否为官方温度计
+        /// 是否为官方温压计
         /// </summary>
         [JsonIgnore]
         public bool IsBuiltIn { get; set; }
@@ -143,7 +133,7 @@ namespace GeoChemistryNexus.Models
         public string IconColor { get; set; } = "#555555";
 
         /// <summary>
-        /// 该矿物下的温度计列表
+        /// 该矿物下的温压计列表
         /// </summary>
         public List<Geothermometer> Plugins { get; set; } = new();
 
@@ -198,6 +188,47 @@ namespace GeoChemistryNexus.Models
         /// GTM 列表
         /// </summary>
         public List<PluginIndexEntry> Plugins { get; set; } = new();
+    }
+
+    /// <summary>
+    /// 温压计更新检查结果状态
+    /// </summary>
+    public enum GeothermometerUpdateCheckStatus
+    {
+        /// <summary>检查成功完成</summary>
+        Success,
+        /// <summary>检查过程中发生错误（网络、解析等）</summary>
+        Failed
+    }
+
+    /// <summary>
+    /// 温压计更新检查结果
+    /// </summary>
+    public class GeothermometerUpdateCheckResult
+    {
+        public GeothermometerUpdateCheckStatus Status { get; set; } = GeothermometerUpdateCheckStatus.Failed;
+
+        public string ErrorMessage { get; set; } = string.Empty;
+
+        /// <summary>需要从服务器下载或更新的条目</summary>
+        public List<PluginIndexEntry> Updates { get; set; } = new();
+
+        /// <summary>已从服务器清单下架、待删除的本地官方温压计实体 ID</summary>
+        public List<Guid> Removals { get; set; } = new();
+
+        public bool HasChanges => Updates.Count > 0 || Removals.Count > 0;
+    }
+
+    /// <summary>
+    /// ReoGrid 公式名冲突描述
+    /// </summary>
+    public class FormulaNameConflict
+    {
+        public string FormulaName { get; set; } = string.Empty;
+        public string ExistingPluginId { get; set; } = string.Empty;
+        public string ExistingName { get; set; } = string.Empty;
+        public string CandidatePluginId { get; set; } = string.Empty;
+        public string CandidateName { get; set; } = string.Empty;
     }
 
     /// <summary>

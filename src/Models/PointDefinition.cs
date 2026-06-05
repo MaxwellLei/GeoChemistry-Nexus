@@ -18,7 +18,7 @@ namespace GeoChemistryNexus.Models
         /// 是否处于高亮状态
         /// </summary>
         [ObservableProperty]
-        [property: System.Text.Json.Serialization.JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
         private bool _isHighlighted;
     }
 }

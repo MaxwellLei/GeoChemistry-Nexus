@@ -30,7 +30,7 @@ namespace GeoChemistryNexus.Models
                     }
                 });
 
-            template.Version = UpdateHelper.GetCurrentVersionFloat();
+            template.Version = ContentVersionHelper.GetDiagramFormatVersion();
             template.DefaultLanguage = defaultLanguage;
             template.TemplateType = "Cartesian";
 

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Windows;
 using GeoChemistryNexus.Models;
 using GeoChemistryNexus.Services;
+using GeoChemistryNexus.Helpers;
 
 namespace GeoChemistryNexus.Views.Widgets
 {
@@ -36,6 +37,34 @@ namespace GeoChemistryNexus.Views.Widgets
             IconBox.SelectedIndex = 0;
         }
 
+        public void LoadIcon(string icon)
+        {
+            if (HomeIconHelper.IsUrlIcon(icon))
+            {
+                IconUrlBox.Text = icon.Trim();
+                IconBox.SelectedIndex = 0;
+                return;
+            }
+
+            IconUrlBox.Text = string.Empty;
+            if (string.IsNullOrWhiteSpace(icon))
+            {
+                IconBox.SelectedIndex = 0;
+                return;
+            }
+
+            foreach (IconItem item in IconBox.Items)
+            {
+                if (item.Code == icon)
+                {
+                    IconBox.SelectedItem = item;
+                    return;
+                }
+            }
+
+            IconBox.SelectedIndex = 0;
+        }
+
         private void Ok_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(TitleBox.Text))
@@ -52,13 +81,17 @@ namespace GeoChemistryNexus.Views.Widgets
                 return;
             }
 
+            string icon = !string.IsNullOrWhiteSpace(IconUrlBox.Text)
+                ? IconUrlBox.Text.Trim()
+                : IconBox.SelectedValue?.ToString() ?? HomeIconHelper.DefaultIcon;
+
             Result = new HomeAppItem
             {
                 Type = HomeAppType.WebLink,
                 Title = TitleBox.Text.Trim(),
                 Url = UrlBox.Text.Trim(),
                 Description = DescBox.Text?.Trim() ?? "",
-                Icon = IconBox.SelectedValue?.ToString() ?? "\uE774"
+                Icon = icon
             };
 
             DialogResult = true;
