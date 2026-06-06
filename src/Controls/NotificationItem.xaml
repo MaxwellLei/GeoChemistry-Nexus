@@ -9,7 +9,8 @@
              xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
              d:DataContext="{d:DesignInstance Type=vm:NotificationViewModel}"
              d:DesignHeight="64" d:DesignWidth="400"
-             Margin="0,5">
+             Margin="0,5"
+             PreviewMouseDown="OnPreviewMouseDown">
     
     <UserControl.Resources>
         <Storyboard x:Key="SlideIn">

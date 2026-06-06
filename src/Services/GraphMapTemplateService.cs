@@ -29,7 +29,7 @@ namespace GeoChemistryNexus.Services
 
             foreach (var item in entities)
             {
-                // 获取分类路径 (强制使用当前APP语言，忽略 OverrideLanguage)
+                // 获取分类路径 (强制使用当前 App 界面语言，忽略图解内容语言上下文)
                 string selectedPath = GetPathForAppLanguage(item.NodeList);
 
                 if (item.IsCustom)
@@ -252,29 +252,17 @@ namespace GeoChemistryNexus.Services
         }
 
         /// <summary>
-        /// 获取当前APP语言对应的路径，忽略 LocalizedString.OverrideLanguage 设置。
+        /// 获取当前 App 界面语言对应的路径，忽略图解内容语言上下文。
         /// </summary>
         private static string GetPathForAppLanguage(LocalizedString localizedString)
         {
             if (localizedString == null) return string.Empty;
 
-            // 使用 LanguageService 获取当前界面语言
-            string appLang = LanguageService.CurrentLanguage;
-
-            if (localizedString.Translations != null && localizedString.Translations.ContainsKey(appLang))
-            {
-                return localizedString.Translations[appLang];
-            }
-
-            // 回退到默认语言
-            if (!string.IsNullOrEmpty(localizedString.Default) &&
-                localizedString.Translations != null &&
-                localizedString.Translations.ContainsKey(localizedString.Default))
-            {
-                return localizedString.Translations[localizedString.Default];
-            }
-
-            return string.Empty;
+            string appLang = AppCultureRegistry.ResolveAppLanguage(LanguageService.CurrentLanguage);
+            return AppCultureRegistry.GetLocalizedValue(
+                localizedString.Translations,
+                appLang,
+                localizedString.Default);
         }
 
         /// <summary>

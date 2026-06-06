@@ -5,6 +5,7 @@ using GeoChemistryNexus.Models;
 using GeoChemistryNexus.Services;
 using GeoChemistryNexus.Views.Widgets;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -121,6 +122,18 @@ namespace GeoChemistryNexus.ViewModels
         public ObservableCollection<string> AnnouncementPreviewLines { get; } = new();
         public ObservableCollection<HomeLinkGroupEditorViewModel> HomeLinkGroups { get; } = new();
 
+        public ContentLanguageContext HomeLinksLanguageContext { get; } = new();
+
+        public IReadOnlyList<CultureOption> HomeLinksLanguageOptions { get; } = AppCultureRegistry.GetContentOptions();
+
+        [ObservableProperty]
+        private string selectedHomeLinksLanguage = AppCultureRegistry.DefaultContentLanguage;
+
+        partial void OnSelectedHomeLinksLanguageChanged(string value)
+        {
+            HomeLinksLanguageContext.ContentLanguage = value;
+        }
+
         private string _remoteAnnouncementText = string.Empty;
 
         private PublishPreview _diagramPreview;
@@ -141,6 +154,8 @@ namespace GeoChemistryNexus.ViewModels
             if (!IsDeveloperMode)
                 Log(LanguageService.Instance["official_publisher_dev_mode_required"] ?? "Developer mode is required.");
 
+            SelectedHomeLinksLanguage = AppCultureRegistry.ResolveAppLanguage(LanguageService.CurrentLanguage);
+            HomeLinksLanguageContext.ContentLanguage = SelectedHomeLinksLanguage;
             LoadHomeLinksEditor();
             _ = LoadAnnouncementFromServerAsync();
         }
@@ -703,20 +718,21 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private void AddHomeLinkGroup()
         {
-            var dialog = new TextInputDialog(
-                LanguageService.Instance["official_publisher_home_group_title_prompt"] ?? "Enter group title:",
-                LanguageService.Instance["official_publisher_home_add_group"] ?? "Add Group",
-                Application.Current.MainWindow);
-            if (dialog.ShowDialog() != true || string.IsNullOrWhiteSpace(dialog.InputText))
+            var dialog = new HomeLinkLocalizedEditWindow(
+                HomeLinkLocalizedEditMode.Group,
+                HomeLinksLanguageContext,
+                LanguageService.Instance["official_publisher_home_add_group"] ?? "Add Group");
+            dialog.Owner = Application.Current.MainWindow;
+            if (dialog.ShowDialog() != true)
                 return;
 
             int nextOrder = HomeLinkGroups.Count == 0 ? 0 : HomeLinkGroups.Max(g => g.SortOrder) + 1;
-            var group = new HomeLinkGroupEditorViewModel
+            var group = new HomeLinkGroupEditorViewModel(HomeLinksLanguageContext)
             {
-                Title = dialog.InputText.Trim(),
+                Title = dialog.ResultTitle,
                 SortOrder = nextOrder
             };
-            group.Id = Slugify(group.Title);
+            group.Id = Slugify(HomeLinksLocalization.GetSortKey(group.Title));
             HomeLinkGroups.Add(group);
             SelectedHomeLinkGroup = group;
             UpdateHomeLinkCounts(BuildCatalogFromEditor());
@@ -728,15 +744,16 @@ namespace GeoChemistryNexus.ViewModels
             if (SelectedHomeLinkGroup == null)
                 return;
 
-            var dialog = new TextInputDialog(
-                LanguageService.Instance["official_publisher_home_group_title_prompt"] ?? "Enter group title:",
+            var dialog = new HomeLinkLocalizedEditWindow(
+                HomeLinkLocalizedEditMode.Group,
+                HomeLinksLanguageContext,
                 LanguageService.Instance["official_publisher_home_edit_group"] ?? "Edit Group",
-                Application.Current.MainWindow,
-                SelectedHomeLinkGroup.Title);
-            if (dialog.ShowDialog() != true || string.IsNullOrWhiteSpace(dialog.InputText))
+                title: SelectedHomeLinkGroup.Title);
+            dialog.Owner = Application.Current.MainWindow;
+            if (dialog.ShowDialog() != true)
                 return;
 
-            SelectedHomeLinkGroup.Title = dialog.InputText.Trim();
+            SelectedHomeLinkGroup.Title = dialog.ResultTitle;
             UpdateHomeLinkCounts(BuildCatalogFromEditor());
         }
 
@@ -814,20 +831,20 @@ namespace GeoChemistryNexus.ViewModels
 
             foreach (var group in catalog.Groups ?? Enumerable.Empty<HomeLinkGroup>())
             {
-                var groupVm = new HomeLinkGroupEditorViewModel
+                var groupVm = new HomeLinkGroupEditorViewModel(HomeLinksLanguageContext)
                 {
                     Id = group.Id ?? string.Empty,
-                    Title = group.Title ?? string.Empty,
+                    Title = HomeLinksLocalization.Clone(group.Title),
                     SortOrder = group.SortOrder
                 };
 
                 foreach (var link in group.Links ?? Enumerable.Empty<HomeLinkEntry>())
                 {
-                    groupVm.Links.Add(new HomeLinkEntryEditorViewModel
+                    groupVm.Links.Add(new HomeLinkEntryEditorViewModel(HomeLinksLanguageContext)
                     {
                         Id = link.Id ?? string.Empty,
-                        Title = link.Title ?? string.Empty,
-                        Description = link.Description ?? string.Empty,
+                        Title = HomeLinksLocalization.Clone(link.Title),
+                        Description = HomeLinksLocalization.Clone(link.Description),
                         Url = link.Url ?? string.Empty,
                         Icon = HomeIconHelper.ResolveIcon(link.Icon)
                     });
@@ -844,21 +861,23 @@ namespace GeoChemistryNexus.ViewModels
         private HomeLinksCatalog BuildCatalogFromEditor()
         {
             var groups = HomeLinkGroups
-                .Where(g => !string.IsNullOrWhiteSpace(g.Title))
+                .Where(g => HomeLinksLocalization.HasText(g.Title))
                 .Select(g => new HomeLinkGroup
                 {
-                    Id = string.IsNullOrWhiteSpace(g.Id) ? Slugify(g.Title) : g.Id.Trim(),
-                    Title = g.Title.Trim(),
+                    Id = string.IsNullOrWhiteSpace(g.Id)
+                        ? Slugify(HomeLinksLocalization.GetSortKey(g.Title))
+                        : g.Id.Trim(),
+                    Title = HomeLinksLocalization.Clone(g.Title),
                     SortOrder = g.SortOrder,
                     Links = g.Links
-                        .Where(l => !string.IsNullOrWhiteSpace(l.Title) && !string.IsNullOrWhiteSpace(l.Url))
+                        .Where(l => HomeLinksLocalization.HasText(l.Title) && !string.IsNullOrWhiteSpace(l.Url))
                         .Select(l => HomeLinksPublishService.CreateLink(l.Id, l.Title, l.Url, l.Description, l.Icon))
                         .ToList()
                 })
                 .Where(g => g.Links.Count > 0)
                 .ToList();
 
-            return HomeLinksPublishService.BuildCatalog(groups, 1);
+            return HomeLinksPublishService.BuildCatalog(groups, 2);
         }
 
         private void SaveHomeLinksToBundled()
@@ -877,32 +896,28 @@ namespace GeoChemistryNexus.ViewModels
         private bool TryEditLink(HomeLinkEntryEditorViewModel existing, out HomeLinkEntryEditorViewModel result)
         {
             result = null;
-            var dialog = new AddLinkWindow
-            {
-                Owner = Application.Current.MainWindow,
-                Title = existing == null
+            var dialog = new HomeLinkLocalizedEditWindow(
+                HomeLinkLocalizedEditMode.Link,
+                HomeLinksLanguageContext,
+                existing == null
                     ? (LanguageService.Instance["add_link"] ?? "Add Link")
-                    : (LanguageService.Instance["edit_link"] ?? "Edit Link")
-            };
+                    : (LanguageService.Instance["edit_link"] ?? "Edit Link"),
+                title: existing?.Title,
+                description: existing?.Description,
+                url: existing?.Url,
+                icon: existing?.Icon);
+            dialog.Owner = Application.Current.MainWindow;
 
-            if (existing != null)
-            {
-                dialog.TitleBox.Text = existing.Title;
-                dialog.UrlBox.Text = existing.Url;
-                dialog.DescBox.Text = existing.Description;
-                dialog.LoadIcon(existing.Icon);
-            }
-
-            if (dialog.ShowDialog() != true || dialog.Result == null)
+            if (dialog.ShowDialog() != true)
                 return false;
 
-            result = new HomeLinkEntryEditorViewModel
+            result = new HomeLinkEntryEditorViewModel(HomeLinksLanguageContext)
             {
-                Id = existing?.Id ?? Slugify(dialog.Result.Title),
-                Title = dialog.Result.Title,
-                Url = dialog.Result.Url,
-                Description = dialog.Result.Description,
-                Icon = dialog.Result.Icon
+                Id = existing?.Id ?? Slugify(HomeLinksLocalization.GetSortKey(dialog.ResultTitle)),
+                Title = dialog.ResultTitle,
+                Url = dialog.ResultUrl,
+                Description = dialog.ResultDescription,
+                Icon = dialog.ResultIcon
             };
             return true;
         }

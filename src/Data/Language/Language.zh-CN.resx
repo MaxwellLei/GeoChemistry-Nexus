@@ -334,6 +334,9 @@
   <data name="official_publisher_include_home_links" xml:space="preserve">
     <value>包含主页链接</value>
   </data>
+  <data name="home_links_edit_language" xml:space="preserve">
+    <value>编辑语言：</value>
+  </data>
   <data name="official_publisher_home_links_section" xml:space="preserve">
     <value>主页链接</value>
   </data>
@@ -2670,6 +2673,21 @@
   <data name="shortcut_action_underline_desc" xml:space="preserve">
     <value>切换选中文本的下划线样式。</value>
   </data>
+  <data name="shortcut_group_notification_title" xml:space="preserve">
+    <value>消息通知</value>
+  </data>
+  <data name="shortcut_group_notification_desc" xml:space="preserve">
+    <value>以下快捷键适用于右上角的消息通知区域。</value>
+  </data>
+  <data name="shortcut_action_close_notification_name" xml:space="preserve">
+    <value>关闭通知</value>
+  </data>
+  <data name="shortcut_action_close_notification_keys" xml:space="preserve">
+    <value>在通知上按下鼠标中键</value>
+  </data>
+  <data name="shortcut_action_close_notification_desc" xml:space="preserve">
+    <value>关闭当前消息通知，效果与点击关闭按钮相同。交互式对话框不适用。</value>
+  </data>
   <data name="layer" xml:space="preserve">
     <value>图层</value>
   </data>
@@ -2944,7 +2962,43 @@
     <value>内容翻译</value>
   </data>
   <data name="diagram_editor_translation_hint" xml:space="preserve">
-    <value>编辑图解标题、坐标轴、文本与注释的多语言内容。在此添加或删除语言即可同步更新图解支持的语言。</value>
+    <value>编辑图解标题、坐标轴、文本与注释的多语言内容。语言请在「基本设置」中配置，此处支持导出/导入 JSON 翻译文件。</value>
+  </data>
+  <data name="diagram_translation_export" xml:space="preserve">
+    <value>导出</value>
+  </data>
+  <data name="diagram_translation_import" xml:space="preserve">
+    <value>导入</value>
+  </data>
+  <data name="translation_export_no_languages" xml:space="preserve">
+    <value>请先在基本设置中配置语言。</value>
+  </data>
+  <data name="translation_export_table_missing" xml:space="preserve">
+    <value>翻译表尚未就绪。</value>
+  </data>
+  <data name="translation_export_success" xml:space="preserve">
+    <value>已导出翻译到 {0}。</value>
+  </data>
+  <data name="translation_export_failed" xml:space="preserve">
+    <value>导出失败。</value>
+  </data>
+  <data name="translation_import_no_languages" xml:space="preserve">
+    <value>请先在基本设置中配置语言。</value>
+  </data>
+  <data name="translation_import_table_missing" xml:space="preserve">
+    <value>翻译表尚未就绪。</value>
+  </data>
+  <data name="translation_import_invalid_json" xml:space="preserve">
+    <value>JSON 文件无效。</value>
+  </data>
+  <data name="translation_import_invalid_format" xml:space="preserve">
+    <value>不支持的翻译文件格式。</value>
+  </data>
+  <data name="translation_import_success" xml:space="preserve">
+    <value>已导入 {0} 项，更新 {1} 个单元格。</value>
+  </data>
+  <data name="translation_import_failed" xml:space="preserve">
+    <value>导入失败。</value>
   </data>
   <data name="diagram_editor_new_version" xml:space="preserve">
     <value>新版本</value>
@@ -2990,5 +3044,74 @@
   </data>
   <data name="language_exists" xml:space="preserve">
     <value>该语言已存在</value>
+  </data>
+  <data name="notification_success" xml:space="preserve">
+    <value>成功</value>
+  </data>
+  <data name="notification_warning" xml:space="preserve">
+    <value>警告</value>
+  </data>
+  <data name="filter_all_files" xml:space="preserve">
+    <value>所有文件</value>
+  </data>
+  <data name="filter_json_files" xml:space="preserve">
+    <value>JSON 文件</value>
+  </data>
+  <data name="filter_zip_files" xml:space="preserve">
+    <value>Zip 文件</value>
+  </data>
+  <data name="filter_template_files" xml:space="preserve">
+    <value>模板文件</value>
+  </data>
+  <data name="filter_csv_files" xml:space="preserve">
+    <value>CSV 文件</value>
+  </data>
+  <data name="filter_png_image" xml:space="preserve">
+    <value>PNG 图像</value>
+  </data>
+  <data name="filter_svg_vector" xml:space="preserve">
+    <value>SVG 矢量图</value>
+  </data>
+  <data name="open_template" xml:space="preserve">
+    <value>打开模板</value>
+  </data>
+  <data name="save_file_title" xml:space="preserve">
+    <value>保存文件</value>
+  </data>
+  <data name="plot_undefined_data_columns" xml:space="preserve">
+    <value>未定义数据列</value>
+  </data>
+  <data name="plot_json_multiselect_not_supported" xml:space="preserve">
+    <value>JSON 文件不支持多选批量添加，仅支持 ZIP 文件多选批量添加。</value>
+  </data>
+  <data name="plot_ternary_axis_not_found" xml:space="preserve">
+    <value>错误：在图中找不到三元坐标轴对象。</value>
+  </data>
+  <data name="plot_upload_thumbnail_failed" xml:space="preserve">
+    <value>上传缩略图失败：{0}</value>
+  </data>
+  <data name="plot_type_2d_description" xml:space="preserve">
+    <value>适合常规 X-Y 坐标绘图，适用于散点、折线、函数等大多数图解模板。</value>
+  </data>
+  <data name="plot_type_ternary_description" xml:space="preserve">
+    <value>适合三组分配比数据，常用于三元判别图、相图和端元混合关系表达。</value>
+  </data>
+  <data name="selected_label" xml:space="preserve">
+    <value>已选</value>
+  </data>
+  <data name="dataPrep_workflowStep1" xml:space="preserve">
+    <value>1. 导入 CSV / Excel 数据表，确认主量元素表头</value>
+  </data>
+  <data name="dataPrep_workflowStep2" xml:space="preserve">
+    <value>2. 设定检测限、空值、异常值与铁价态估算策略</value>
+  </data>
+  <data name="dataPrep_workflowStep3" xml:space="preserve">
+    <value>3. 批量生成清洗列、归一化列和地球化学指标列</value>
+  </data>
+  <data name="dataPrep_workflowStep4" xml:space="preserve">
+    <value>4. 输出到新的 Processed 工作表并导出结果</value>
+  </data>
+  <data name="see_error_log_for_details" xml:space="preserve">
+    <value>详见 error.log。</value>
   </data>
 </root>

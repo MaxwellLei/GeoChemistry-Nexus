@@ -121,6 +121,13 @@ namespace GeoChemistryNexus.ViewModels
                         new ShortcutItem("shortcut_action_bold_name", "Ctrl+B", "shortcut_action_bold_desc"),
                         new ShortcutItem("shortcut_action_italic_name", "Ctrl+I", "shortcut_action_italic_desc"),
                         new ShortcutItem("shortcut_action_underline_name", "Ctrl+U", "shortcut_action_underline_desc")
+                    }),
+                new ShortcutGroup(
+                    "shortcut_group_notification_title",
+                    "shortcut_group_notification_desc",
+                    new List<ShortcutItem>
+                    {
+                        new ShortcutItem("shortcut_action_close_notification_name", "shortcut_action_close_notification_keys", "shortcut_action_close_notification_desc", true)
                     })
             };
         }

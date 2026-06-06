@@ -456,6 +456,15 @@
 
                     <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
 
+                        <TextBlock Text="{Binding [home_links_edit_language], Source={x:Static lg:LanguageService.Instance}, FallbackValue=Editing language:}"
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+
+                        <ComboBox ItemsSource="{Binding HomeLinksLanguageOptions}"
+                                  DisplayMemberPath="DisplayName"
+                                  SelectedValuePath="Code"
+                                  SelectedValue="{Binding SelectedHomeLinksLanguage}"
+                                  Width="180" Margin="0,0,16,0" VerticalAlignment="Center"/>
+
                         <Button Content="{Binding [official_publisher_home_add_group], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}"
 
                                 Command="{Binding AddHomeLinkGroupCommand}" Margin="0,0,8,0" MinWidth="88"/>
@@ -508,7 +517,7 @@
 
                                  SelectedItem="{Binding SelectedHomeLinkGroup}"
 
-                                 DisplayMemberPath="Title"
+                                 DisplayMemberPath="DisplayTitle"
 
                                  BorderBrush="#EEEEEE" BorderThickness="1"/>
 
@@ -526,7 +535,9 @@
 
                                     <StackPanel Margin="2">
 
-                                        <TextBlock Text="{Binding Title}" FontWeight="SemiBold"/>
+                                        <TextBlock Text="{Binding DisplayTitle}" FontWeight="SemiBold"/>
+
+                                        <TextBlock Text="{Binding DisplayDescription}" FontSize="11" Foreground="#888888" TextTrimming="CharacterEllipsis"/>
 
                                         <TextBlock Text="{Binding Url}" FontSize="11" Foreground="#666666" TextTrimming="CharacterEllipsis"/>
 

@@ -76,7 +76,7 @@ namespace GeoChemistryNexus.Services
 
                 catalog.Groups = catalog.Groups
                     .OrderBy(g => g.SortOrder)
-                    .ThenBy(g => g.Title, StringComparer.OrdinalIgnoreCase)
+                    .ThenBy(g => HomeLinksLocalization.GetSortKey(g.Title), StringComparer.OrdinalIgnoreCase)
                     .ToList();
 
                 return catalog;

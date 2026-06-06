@@ -10,6 +10,7 @@ using Ookii.Dialogs.Wpf;
 using System.Linq;
 using System.Windows;
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Services;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
 
@@ -88,8 +89,8 @@ public class FileHelper
         var dialog = new VistaSaveFileDialog
         {
             FileName = defaultFileName, // 设置默认文件名
-            Filter = "All Files (*.*)|*.*", // 文件类型过滤器
-            Title = "保存文件" // 对话框标题
+            Filter = FileDialogFilterHelper.AllFiles,
+            Title = LanguageService.Instance["save_file_title"] ?? "Save File"
         };
 
         // 如果提供了初始目录，则设置它
@@ -147,14 +148,14 @@ public class FileHelper
     /// <param name="filter">文件类型过滤器</param>
     /// <param name="defaultExt">默认文件扩展名</param>
     /// <returns>选择的文件保存路径，如果用户取消则返回null</returns>
-    public static string GetSaveFilePath2(string title = "保存文件", string filter = "所有文件|*.*", string defaultExt = "", string defaultFileName = "")
+    public static string GetSaveFilePath2(string title = null, string filter = null, string defaultExt = "", string defaultFileName = "")
     {
         try
         {
             var dialog = new VistaSaveFileDialog
             {
-                Title = title,
-                Filter = filter,
+                Title = title ?? LanguageService.Instance["save_file_title"] ?? "Save File",
+                Filter = filter ?? FileDialogFilterHelper.AllFiles,
                 DefaultExt = defaultExt,
                 AddExtension = true,
                 FileName = defaultFileName
@@ -179,10 +180,13 @@ public class FileHelper
     /// 异步获取文件保存路径 - 在独立STA线程上显示对话框，避免COM清理阻塞UI线程
     /// 使用Win32 API监测对话框窗口关闭，一旦关闭立即恢复主窗口交互
     /// </summary>
-    public static async Task<string> GetSaveFilePath2Async(string title = "保存文件", string filter = "所有文件|*.*", string defaultExt = "", string defaultFileName = "")
+    public static async Task<string> GetSaveFilePath2Async(string title = null, string filter = null, string defaultExt = "", string defaultFileName = "")
     {
         var mainWindow = Application.Current.MainWindow;
         mainWindow.IsEnabled = false;
+
+        string resolvedTitle = title ?? LanguageService.Instance["save_file_title"] ?? "Save File";
+        string resolvedFilter = filter ?? FileDialogFilterHelper.AllFiles;
 
         try
         {
@@ -198,8 +202,8 @@ public class FileHelper
 
                     var dialog = new VistaSaveFileDialog
                     {
-                        Title = title,
-                        Filter = filter,
+                        Title = resolvedTitle,
+                        Filter = resolvedFilter,
                         DefaultExt = defaultExt,
                         AddExtension = true,
                         FileName = defaultFileName

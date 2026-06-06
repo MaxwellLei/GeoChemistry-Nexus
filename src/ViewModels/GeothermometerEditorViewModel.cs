@@ -1,6 +1,8 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Messages;
 using GeoChemistryNexus.Models;
 using GeoChemistryNexus.Services;
 using System;
@@ -18,7 +20,7 @@ namespace GeoChemistryNexus.ViewModels
     /// 用于新建和编辑自定义温压计，支持脚本测试和导出
     /// 三步流程：基本信息 → 公式脚本 → 帮助文档
     /// </summary>
-    public partial class GeothermometerEditorViewModel : ObservableObject
+    public partial class GeothermometerEditorViewModel : ObservableObject, IRecipient<DeveloperModeChangedMessage>
     {
         // ==================== 步骤导航 ====================
 
@@ -176,13 +178,11 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private string newLanguageToAdd = "zh-CN";
 
-        /// <summary>
-        /// 所有可选语言代码
-        /// </summary>
-        public static List<string> AllLanguageCodes { get; } = new()
-        {
-            "zh-CN", "en-US", "ja-JP", "ko-KR", "de-DE", "fr-FR", "es-ES", "pt-BR", "ru-RU"
-        };
+        [ObservableProperty]
+        private IReadOnlyList<CultureOption> _availableLanguageOptions = AppCultureRegistry.GetContentOptions();
+
+        [ObservableProperty]
+        private ObservableCollection<CultureOption> _addedLanguageOptions = new();
 
         /// <summary>
         /// 由 View 设置的回调：获取当前 RichTextBox 中的 RTF 内容
@@ -267,6 +267,21 @@ namespace GeoChemistryNexus.ViewModels
         {
             ScriptContent = ScriptTemplate;
             LanguageService.Instance.PropertyChanged += OnLanguageChanged;
+            WeakReferenceMessenger.Default.Register<DeveloperModeChangedMessage>(this);
+            RefreshLanguageDisplayOptions();
+        }
+
+        public void Receive(DeveloperModeChangedMessage message)
+        {
+            RefreshLanguageDisplayOptions();
+        }
+
+        private void RefreshLanguageDisplayOptions()
+        {
+            AvailableLanguageOptions = AppCultureRegistry.GetContentOptions();
+            AddedLanguageOptions.Clear();
+            foreach (var code in AddedLanguages)
+                AddedLanguageOptions.Add(new CultureOption(code, AppCultureRegistry.GetDisplayName(code)));
         }
 
         private void OnLanguageChanged(object? sender, PropertyChangedEventArgs e)
@@ -439,6 +454,7 @@ namespace GeoChemistryNexus.ViewModels
             AddedLanguages.Add(NewLanguageToAdd);
             _helpDocuments[NewLanguageToAdd] = string.Empty;
             SelectedLanguage = NewLanguageToAdd;
+            RefreshLanguageDisplayOptions();
         }
 
         [RelayCommand]
@@ -450,6 +466,7 @@ namespace GeoChemistryNexus.ViewModels
             _helpDocuments.Remove(lang);
             AddedLanguages.Remove(lang);
             SelectedLanguage = AddedLanguages.FirstOrDefault();
+            RefreshLanguageDisplayOptions();
         }
 
         // ==================== 加载已有实体 ====================
@@ -507,6 +524,7 @@ namespace GeoChemistryNexus.ViewModels
                 SelectedLanguage = AddedLanguages.FirstOrDefault();
             }
 
+            RefreshLanguageDisplayOptions();
             OnPropertyChanged(nameof(EditorTitle));
             OnPropertyChanged(nameof(IsEditMode));
             NotifyVersionPropertiesChanged();

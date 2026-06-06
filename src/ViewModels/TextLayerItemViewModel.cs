@@ -17,12 +17,14 @@ namespace GeoChemistryNexus.ViewModels
     {
         public TextDefinition TextDefinition { get; }
         private readonly int _index;
+        private readonly ContentLanguageContext? _contentLanguage;
 
-        public TextLayerItemViewModel(TextDefinition textDefinition, int index)
-            : base(GetName(textDefinition, index))
+        public TextLayerItemViewModel(TextDefinition textDefinition, int index, ContentLanguageContext? contentLanguage = null)
+            : base(GetName(textDefinition, index, contentLanguage))
         {
             TextDefinition = textDefinition;
             _index = index;
+            _contentLanguage = contentLanguage;
             PropertyChangedEventManager.AddHandler(TextDefinition, OnTextDefinitionChanged, string.Empty);
             
             // 监听 Model 变化触发刷新
@@ -35,9 +37,9 @@ namespace GeoChemistryNexus.ViewModels
             };
         }
 
-        private static string GetName(TextDefinition textDefinition, int index)
+        private static string GetName(TextDefinition textDefinition, int index, ContentLanguageContext? contentLanguage)
         {
-            var content = textDefinition.Content.Get();
+            var content = textDefinition.Content.Get(contentLanguage);
             if (string.IsNullOrWhiteSpace(content))
             {
                 return LanguageService.Instance["text"] + $" {index + 1}";
@@ -54,7 +56,7 @@ namespace GeoChemistryNexus.ViewModels
         {
             if (e.PropertyName == nameof(TextDefinition.Content))
             {
-                Name = GetName(TextDefinition, _index);
+                Name = GetName(TextDefinition, _index, _contentLanguage);
             }
         }
 
@@ -65,7 +67,7 @@ namespace GeoChemistryNexus.ViewModels
 
             // 获取文本内容（多语言）
             // ScottPlot 不正确渲染 Windows 换行符 \r，导致显示方块，统一替换为 \n
-            string content = TextDefinition.Content.Get();
+            string content = TextDefinition.Content.Get(_contentLanguage);
             if (!string.IsNullOrEmpty(content))
             {
                 content = content.Replace("\r\n", "\n").Replace("\r", "\n");

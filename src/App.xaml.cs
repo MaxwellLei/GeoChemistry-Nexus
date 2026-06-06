@@ -220,8 +220,11 @@ namespace GeoChemistryNexus
         {
             LogException(e.Exception, "DispatcherUnhandledException");
             
-            MessageBox.Show($"An error occurred during startup:\r\n{e.Exception.Message}\r\n\r\nSee error.log for details.",
-                "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show(
+                $"{LanguageService.Instance["error_occurred_during_startup"]}{e.Exception.Message}\r\n\r\n{LanguageService.Instance["see_error_log_for_details"]}",
+                LanguageService.Instance["error"],
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
             
             e.Handled = true;
             Current.Shutdown();

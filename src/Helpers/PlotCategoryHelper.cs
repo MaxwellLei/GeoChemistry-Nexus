@@ -29,12 +29,11 @@ namespace GeoChemistryNexus.Helpers
         public static string GetName(Dictionary<string, string> names)
         {
              if (names == null) return "";
-             
-             string currentLang = LanguageService.CurrentLanguage;
-             
-             if (names.TryGetValue(currentLang, out string name)) return name;
-             if (names.TryGetValue("en-US", out name)) return name;
-             return names.Values.FirstOrDefault() ?? "";
+
+             return AppCultureRegistry.GetLocalizedValue(
+                 names,
+                 LanguageService.CurrentLanguage,
+                 AppCultureRegistry.DefaultAppLanguage);
         }
     }
 }

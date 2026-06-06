@@ -567,16 +567,20 @@
                             BorderBrush="#E8E8E8" BorderThickness="0,0,0,1">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <TextBlock Text="{Binding [geo_help_current_lang], Source={x:Static lg:LanguageService.Instance}, FallbackValue=当前语言：}" FontSize="12" Foreground="#555" VerticalAlignment="Center" Margin="0,0,6,0"/>
-                            <ComboBox ItemsSource="{Binding AddedLanguages}" 
-                                      SelectedItem="{Binding SelectedLanguage}" 
-                                      Width="110" VerticalAlignment="Center"/>
+                            <ComboBox ItemsSource="{Binding AddedLanguageOptions}" 
+                                      DisplayMemberPath="DisplayName"
+                                      SelectedValuePath="Code"
+                                      SelectedValue="{Binding SelectedLanguage}" 
+                                      Width="140" VerticalAlignment="Center"/>
 
                             <Rectangle Width="1" Height="20" Fill="#D0D0D0" Margin="14,0"/>
 
                             <TextBlock Text="{Binding [geo_help_add_lang], Source={x:Static lg:LanguageService.Instance}, FallbackValue=添加语言：}" FontSize="12" Foreground="#555" VerticalAlignment="Center" Margin="0,0,6,0"/>
-                            <ComboBox ItemsSource="{x:Static vm:GeothermometerEditorViewModel.AllLanguageCodes}" 
-                                      SelectedItem="{Binding NewLanguageToAdd}" 
-                                      Width="110" VerticalAlignment="Center"/>
+                            <ComboBox ItemsSource="{Binding AvailableLanguageOptions}" 
+                                      DisplayMemberPath="DisplayName"
+                                      SelectedValuePath="Code"
+                                      SelectedValue="{Binding NewLanguageToAdd}" 
+                                      Width="140" VerticalAlignment="Center"/>
                             <Button Style="{StaticResource LangActionButtonStyle}" 
                                     Command="{Binding AddLanguageCommand}" Margin="6,0,0,0"
                                     ToolTip="{Binding [geo_help_add_doc], Source={x:Static lg:LanguageService.Instance}, FallbackValue=添加该语言的帮助文档}">

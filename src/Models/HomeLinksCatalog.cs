@@ -1,3 +1,5 @@
+using GeoChemistryNexus.Converter;
+using GeoChemistryNexus.Helpers;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
@@ -6,7 +8,7 @@ namespace GeoChemistryNexus.Models
     public class HomeLinksCatalog
     {
         [JsonPropertyName("version")]
-        public int Version { get; set; } = 1;
+        public int Version { get; set; } = 2;
 
         [JsonPropertyName("groups")]
         public List<HomeLinkGroup> Groups { get; set; } = new();
@@ -18,7 +20,8 @@ namespace GeoChemistryNexus.Models
         public string Id { get; set; } = string.Empty;
 
         [JsonPropertyName("title")]
-        public string Title { get; set; } = string.Empty;
+        [JsonConverter(typeof(LocalizedStringJsonConverter))]
+        public LocalizedString Title { get; set; } = new();
 
         [JsonPropertyName("sortOrder")]
         public int SortOrder { get; set; }
@@ -33,10 +36,12 @@ namespace GeoChemistryNexus.Models
         public string Id { get; set; } = string.Empty;
 
         [JsonPropertyName("title")]
-        public string Title { get; set; } = string.Empty;
+        [JsonConverter(typeof(LocalizedStringJsonConverter))]
+        public LocalizedString Title { get; set; } = new();
 
         [JsonPropertyName("description")]
-        public string Description { get; set; } = string.Empty;
+        [JsonConverter(typeof(LocalizedStringJsonConverter))]
+        public LocalizedString Description { get; set; } = new();
 
         [JsonPropertyName("url")]
         public string Url { get; set; } = string.Empty;

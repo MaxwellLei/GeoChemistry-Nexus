@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Models.SpiderDiagram;
 using ScottPlot;
 using ScottPlot.WPF;
@@ -606,7 +607,7 @@ namespace GeoChemistryNexus.ViewModels
 
             var dialog = new Microsoft.Win32.SaveFileDialog
             {
-                Filter = "PNG Image|*.png|SVG Vector|*.svg",
+                Filter = FileDialogFilterHelper.PngSvg,
                 DefaultExt = ".png",
                 FileName = $"{DiagramType}_SpiderDiagram"
             };

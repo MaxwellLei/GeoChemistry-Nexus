@@ -13,19 +13,6 @@ namespace GeoChemistryNexus.Helpers
     /// </summary>
     public static class LocalizedPlaceholderFactory
     {
-        // 占位符支持的语言列表
-        private static readonly List<string> _supportedLanguages = new List<string>
-        {
-            "en-US",
-            "zh-CN",
-            "zh-TW",
-            "ja-JP",
-            "ru-RU",
-            "ko-KR",
-            "de-DE",
-            "es-ES"
-        };
-
         private static readonly ResourceManager _resourceManager = 
             new ResourceManager("GeoChemistryNexus.Data.Language.Language", typeof(LanguageService).Assembly);
 
@@ -43,7 +30,7 @@ namespace GeoChemistryNexus.Helpers
                 defaultLanguage = LanguageService.CurrentLanguage;
             }
 
-            var languagesToProcess = targetLanguages ?? _supportedLanguages;
+            var languagesToProcess = targetLanguages ?? AppCultureRegistry.AppUiCodes;
 
             var localizedString = new LocalizedString
             {
@@ -88,6 +75,6 @@ namespace GeoChemistryNexus.Helpers
         /// <summary>
         /// 获取支持语言列表的辅助属性，以备他用。
         /// </summary>
-        public static IReadOnlyList<string> SupportedLanguages => _supportedLanguages.AsReadOnly();
+        public static IReadOnlyList<string> SupportedLanguages => AppCultureRegistry.AppUiCodes;
     }
 }

@@ -2274,4 +2274,844 @@
   <data name="runProcessing" xml:space="preserve">
     <value>処理を実行</value>
   </data>
+  <data name="notification_success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="notification_warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="filter_all_files" xml:space="preserve">
+    <value>All Files</value>
+  </data>
+  <data name="filter_json_files" xml:space="preserve">
+    <value>JSON Files</value>
+  </data>
+  <data name="filter_zip_files" xml:space="preserve">
+    <value>Zip Files</value>
+  </data>
+  <data name="filter_template_files" xml:space="preserve">
+    <value>Template Files</value>
+  </data>
+  <data name="filter_csv_files" xml:space="preserve">
+    <value>CSV Files</value>
+  </data>
+  <data name="filter_png_image" xml:space="preserve">
+    <value>PNG Image</value>
+  </data>
+  <data name="filter_svg_vector" xml:space="preserve">
+    <value>SVG Vector</value>
+  </data>
+  <data name="open_template" xml:space="preserve">
+    <value>Open Template</value>
+  </data>
+  <data name="save_file_title" xml:space="preserve">
+    <value>Save File</value>
+  </data>
+  <data name="plot_undefined_data_columns" xml:space="preserve">
+    <value>Undefined data columns</value>
+  </data>
+  <data name="plot_json_multiselect_not_supported" xml:space="preserve">
+    <value>JSON files cannot be added in a multi-select batch. Only ZIP files support multi-select batch import.</value>
+  </data>
+  <data name="plot_ternary_axis_not_found" xml:space="preserve">
+    <value>Error: triangular axis object not found in the plot.</value>
+  </data>
+  <data name="plot_upload_thumbnail_failed" xml:space="preserve">
+    <value>Failed to upload thumbnail: {0}</value>
+  </data>
+  <data name="plot_type_2d_description" xml:space="preserve">
+    <value>Best for standard X-Y plotting for scatter, line, function, and most diagram templates.</value>
+  </data>
+  <data name="plot_type_ternary_description" xml:space="preserve">
+    <value>Best for ternary compositions, phase diagrams, and end-member mixing relationships.</value>
+  </data>
+  <data name="selected_label" xml:space="preserve">
+    <value>Selected</value>
+  </data>
+  <data name="dataPrep_workflowStep1" xml:space="preserve">
+    <value>1. Import a CSV / Excel table and confirm major-element headers</value>
+  </data>
+  <data name="dataPrep_workflowStep2" xml:space="preserve">
+    <value>2. Set detection limits, missing values, outliers, and iron valence strategy</value>
+  </data>
+  <data name="dataPrep_workflowStep3" xml:space="preserve">
+    <value>3. Batch-generate cleaned, normalized, and geochemical indicator columns</value>
+  </data>
+  <data name="dataPrep_workflowStep4" xml:space="preserve">
+    <value>4. Output to a new Processed worksheet and export results</value>
+  </data>
+  <data name="see_error_log_for_details" xml:space="preserve">
+    <value>See error.log for details.</value>
+  </data>
+  <data name="announcement" xml:space="preserve">
+    <value>お知らせ</value>
+  </data>
+  <data name="at_least_two_languages_swap" xml:space="preserve">
+    <value>入れ替えには少なくとも2つの言語が必要です。</value>
+  </data>
+  <data name="confirm_delete_language" xml:space="preserve">
+    <value>言語「{0}」を削除しますか？この操作は元に戻せません。</value>
+  </data>
+  <data name="cos_credentials_required" xml:space="preserve">
+    <value>先に COS 認証情報を設定して保存してください。</value>
+  </data>
+  <data name="cos_save_settings" xml:space="preserve">
+    <value>設定を保存</value>
+  </data>
+  <data name="cos_secret_id_required" xml:space="preserve">
+    <value>SecretId は必須です。</value>
+  </data>
+  <data name="cos_settings_saved" xml:space="preserve">
+    <value>COS 設定を保存しました。</value>
+  </data>
+  <data name="cos_test_connection" xml:space="preserve">
+    <value>接続テスト</value>
+  </data>
+  <data name="cos_test_failed" xml:space="preserve">
+    <value>COS 接続テストに失敗しました。</value>
+  </data>
+  <data name="cos_test_success" xml:space="preserve">
+    <value>COS 接続テストに成功しました。</value>
+  </data>
+  <data name="dataPrep_autoBackfillIronOxides" xml:space="preserve">
+    <value>FeO / Fe2O3 が欠損している場合に自動補完</value>
+  </data>
+  <data name="dataPrep_calculationItems" xml:space="preserve">
+    <value>計算項目</value>
+  </data>
+  <data name="dataPrep_clearTableFailed" xml:space="preserve">
+    <value>データ表のクリアに失敗しました：</value>
+  </data>
+  <data name="dataPrep_detectionLimitPreview" xml:space="preserve">
+    <value>この画面には検出限界の置換やデータクリーニングのパラメータは含まれていません。</value>
+  </data>
+  <data name="dataPrep_detectionReplaceHalf" xml:space="preserve">
+    <value>検出限界の半分で置換</value>
+  </data>
+  <data name="dataPrep_detectionReplaceNull" xml:space="preserve">
+    <value>Null で置換</value>
+  </data>
+  <data name="dataPrep_detectionReplaceZero" xml:space="preserve">
+    <value>0 で置換</value>
+  </data>
+  <data name="dataPrep_enable" xml:space="preserve">
+    <value>有効化</value>
+  </data>
+  <data name="dataPrep_excludeVolatiles" xml:space="preserve">
+    <value>揮発分を控除</value>
+  </data>
+  <data name="dataPrep_exportCurrentTable" xml:space="preserve">
+    <value>現在の表をエクスポート</value>
+  </data>
+  <data name="dataPrep_exportFailed" xml:space="preserve">
+    <value>エクスポートに失敗しました：</value>
+  </data>
+  <data name="dataPrep_exportFilter" xml:space="preserve">
+    <value>CSV ファイル|*.csv</value>
+  </data>
+  <data name="dataPrep_exportSucceeded" xml:space="preserve">
+    <value>現在のワークシートをエクスポートしました。</value>
+  </data>
+  <data name="dataPrep_exportTitle" xml:space="preserve">
+    <value>前処理結果をエクスポート</value>
+  </data>
+  <data name="dataPrep_fe3Tooltip" xml:space="preserve">
+    <value>「経験比率補正」でのみ使用され、経験的 Fe3+/Fe 比を表します。</value>
+  </data>
+  <data name="dataPrep_indices" xml:space="preserve">
+    <value>指標</value>
+  </data>
+  <data name="dataPrep_ironMethodAutoEstimate" xml:space="preserve">
+    <value>全鉄量から自動推定</value>
+  </data>
+  <data name="dataPrep_ironMethodBackCalculate" xml:space="preserve">
+    <value>FeO / Fe2O3 から逆算</value>
+  </data>
+  <data name="dataPrep_ironMethodEmpiricalRatio" xml:space="preserve">
+    <value>経験比率補正</value>
+  </data>
+  <data name="dataPrep_ironModeBackfillFe2o3" xml:space="preserve">
+    <value>FeO から Fe2O3 を経験的に補完</value>
+  </data>
+  <data name="dataPrep_ironModeBackfillFeo" xml:space="preserve">
+    <value>Fe2O3 から FeO を経験的に補完</value>
+  </data>
+  <data name="dataPrep_ironModeFeotAuto" xml:space="preserve">
+    <value>FeOT 自動推定</value>
+  </data>
+  <data name="dataPrep_ironModeFeotEmpirical" xml:space="preserve">
+    <value>FeOT 経験比率補正</value>
+  </data>
+  <data name="dataPrep_ironModeFromFeotAndFe2o3" xml:space="preserve">
+    <value>FeOT + Fe2O3 から FeO を逆算</value>
+  </data>
+  <data name="dataPrep_ironModeFromFeotAndFeo" xml:space="preserve">
+    <value>FeOT + FeO から Fe2O3 を逆算</value>
+  </data>
+  <data name="dataPrep_ironModeInsufficient" xml:space="preserve">
+    <value>鉄データ不足</value>
+  </data>
+  <data name="dataPrep_ironModeMeasured" xml:space="preserve">
+    <value>実測 FeO + Fe2O3</value>
+  </data>
+  <data name="dataPrep_ironValence" xml:space="preserve">
+    <value>鉄の価数</value>
+  </data>
+  <data name="dataPrep_keepOriginalOnly" xml:space="preserve">
+    <value>元のワークシートのみ保持</value>
+  </data>
+  <data name="dataPrep_listSeparator" xml:space="preserve">
+    <value>、</value>
+  </data>
+  <data name="dataPrep_method" xml:space="preserve">
+    <value>方法</value>
+  </data>
+  <data name="dataPrep_missingKeep" xml:space="preserve">
+    <value>欠損値を保持</value>
+  </data>
+  <data name="dataPrep_missingMean" xml:space="preserve">
+    <value>平均値補完</value>
+  </data>
+  <data name="dataPrep_missingMedian" xml:space="preserve">
+    <value>中央値補完</value>
+  </data>
+  <data name="dataPrep_moduleAnhydrous" xml:space="preserve">
+    <value>無水正規化</value>
+  </data>
+  <data name="dataPrep_moduleIndexCalculation" xml:space="preserve">
+    <value>指標計算</value>
+  </data>
+  <data name="dataPrep_moduleIronValence" xml:space="preserve">
+    <value>鉄の価数</value>
+  </data>
+  <data name="dataPrep_noCellSelected" xml:space="preserve">
+    <value>セルが選択されていません</value>
+  </data>
+  <data name="dataPrep_noOxideColumnsDetected" xml:space="preserve">
+    <value>主量酸化物列が検出されませんでした</value>
+  </data>
+  <data name="dataPrep_noProcessableData" xml:space="preserve">
+    <value>現在のワークシートに処理可能なデータがありません。先にフィールド見出しを含む表をインポートしてください。</value>
+  </data>
+  <data name="dataPrep_normalization" xml:space="preserve">
+    <value>正規化</value>
+  </data>
+  <data name="dataPrep_normalizeToHundred" xml:space="preserve">
+    <value>100% に正規化</value>
+  </data>
+  <data name="dataPrep_notDetected" xml:space="preserve">
+    <value>未検出</value>
+  </data>
+  <data name="dataPrep_noteDetectionNoLimitFallbackZero" xml:space="preserve">
+    <value>b.d.l. に数値限界なし；0 として処理</value>
+  </data>
+  <data name="dataPrep_noteDetectionReplacedWithHalf" xml:space="preserve">
+    <value>検出限界値を限界の半分で置換</value>
+  </data>
+  <data name="dataPrep_noteDetectionReplacedWithNull" xml:space="preserve">
+    <value>検出限界値を Null で置換</value>
+  </data>
+  <data name="dataPrep_noteDetectionReplacedWithZero" xml:space="preserve">
+    <value>検出限界値を 0 で置換</value>
+  </data>
+  <data name="dataPrep_noteDetectionStandardized" xml:space="preserve">
+    <value>検出限界値を標準化</value>
+  </data>
+  <data name="dataPrep_noteMissingFilled" xml:space="preserve">
+    <value>{0} を {1} で補完</value>
+  </data>
+  <data name="dataPrep_noteNonNumericAsMissing" xml:space="preserve">
+    <value>数値として解析できません；欠損として処理</value>
+  </data>
+  <data name="dataPrep_noteOutlierDetected" xml:space="preserve">
+    <value>{0} を外れ値として検出</value>
+  </data>
+  <data name="dataPrep_noWorksheetToProcess" xml:space="preserve">
+    <value>処理可能なワークシートがありません。</value>
+  </data>
+  <data name="dataPrep_outlierIqr" xml:space="preserve">
+    <value>IQR 法</value>
+  </data>
+  <data name="dataPrep_outlierMarkOnly" xml:space="preserve">
+    <value>外れ値のみマーク</value>
+  </data>
+  <data name="dataPrep_outlierThreeSigma" xml:space="preserve">
+    <value>3σ 法</value>
+  </data>
+  <data name="dataPrep_parameterOptions" xml:space="preserve">
+    <value>パラメータオプション</value>
+  </data>
+  <data name="dataPrep_previewSummary" xml:space="preserve">
+    <value>検出された酸化物列：{0}；有効モジュール：{1}；鉄価数法：「{2}」；Fe3+/Fe 経験比 {3:0.00}。</value>
+  </data>
+  <data name="dataPrep_processingCompleted" xml:space="preserve">
+    <value>データ前処理が完了しました。</value>
+  </data>
+  <data name="dataPrep_processingFailed" xml:space="preserve">
+    <value>処理に失敗しました：</value>
+  </data>
+  <data name="dataPrep_processingSummary" xml:space="preserve">
+    <value>{0} 行を処理し {1} 個の数値列を識別；検出限界置換 {2} 件、外れ値マーク {3} 件、外れ値クリア {4} 件、欠損補完 {5} 件。</value>
+  </data>
+  <data name="dataPrep_resetToRecommended" xml:space="preserve">
+    <value>推奨プリセットを復元しました。</value>
+  </data>
+  <data name="dataPrep_sampleDataGenerated" xml:space="preserve">
+    <value>サンプルデータを生成しました。</value>
+  </data>
+  <data name="dataPrep_sampleDataGenerateFailed" xml:space="preserve">
+    <value>サンプルデータの生成に失敗しました：</value>
+  </data>
+  <data name="dataPrep_selectedCellEmpty" xml:space="preserve">
+    <value>{0}: &lt;空&gt;</value>
+  </data>
+  <data name="dataPrep_selectedCellValue" xml:space="preserve">
+    <value>{0}: {1}</value>
+  </data>
+  <data name="dataPrep_strategyMissingKeep" xml:space="preserve">
+    <value>欠損を保持</value>
+  </data>
+  <data name="dataPrep_strategyMissingMean" xml:space="preserve">
+    <value>平均値補完</value>
+  </data>
+  <data name="dataPrep_strategyMissingMedian" xml:space="preserve">
+    <value>中央値補完</value>
+  </data>
+  <data name="dataPrep_tableCleared" xml:space="preserve">
+    <value>現在のデータ表をクリアしました。</value>
+  </data>
+  <data name="deselect_all" xml:space="preserve">
+    <value>すべて解除</value>
+  </data>
+  <data name="diagram_editor_basic_settings" xml:space="preserve">
+    <value>基本設定</value>
+  </data>
+  <data name="diagram_editor_content_translation" xml:space="preserve">
+    <value>コンテンツ翻訳</value>
+  </data>
+  <data name="diagram_editor_new_version" xml:space="preserve">
+    <value>新バージョン</value>
+  </data>
+  <data name="diagram_editor_saved_version" xml:space="preserve">
+    <value>保存後のバージョン：</value>
+  </data>
+  <data name="diagram_editor_translation_hint" xml:space="preserve">
+    <value>タイトル、軸、ラベル、注釈の多言語テキストを編集します。言語は「基本設定」で構成し、ここで JSON 翻訳ファイルをエクスポート/インポートできます。</value>
+  </data>
+  <data name="diagram_hint_no_favorites" xml:space="preserve">
+    <value>お気に入りの図解テンプレートはまだありません。</value>
+  </data>
+  <data name="diagram_hint_no_official" xml:space="preserve">
+    <value>このカテゴリに公式図解テンプレートはありません。</value>
+  </data>
+  <data name="diagram_hint_no_personal" xml:space="preserve">
+    <value>個人図解はまだありません。「ファイル」メニューから新規作成またはインポートしてください。</value>
+  </data>
+  <data name="diagram_hint_no_recents" xml:space="preserve">
+    <value>最近使用した図解テンプレートはまだありません。</value>
+  </data>
+  <data name="diagram_hint_no_search_results" xml:space="preserve">
+    <value>検索条件に一致するテンプレートがありません。</value>
+  </data>
+  <data name="diagram_hint_no_templates" xml:space="preserve">
+    <value>利用可能な図解テンプレートがありません。</value>
+  </data>
+  <data name="diagram_translation_export" xml:space="preserve">
+    <value>エクスポート</value>
+  </data>
+  <data name="diagram_translation_import" xml:space="preserve">
+    <value>インポート</value>
+  </data>
+  <data name="double_click" xml:space="preserve">
+    <value>ダブルクリック</value>
+  </data>
+  <data name="element_order" xml:space="preserve">
+    <value>元素順序</value>
+  </data>
+  <data name="enable_normalization" xml:space="preserve">
+    <value>正規化を有効化</value>
+  </data>
+  <data name="enter_language_code_prompt" xml:space="preserve">
+    <value>言語コードを入力してください（例：fr-FR）：</value>
+  </data>
+  <data name="enter_plot_mode" xml:space="preserve">
+    <value>プロットモードに入る</value>
+  </data>
+  <data name="force_update_template" xml:space="preserve">
+    <value>強制更新</value>
+  </data>
+  <data name="force_update_template_not_found" xml:space="preserve">
+    <value>サーバーにテンプレートが見つかりません。</value>
+  </data>
+  <data name="geo_msg_formula_name_conflict" xml:space="preserve">
+    <value>式名「{0}」は「{1}」（{2}）ですでに使用されています</value>
+  </data>
+  <data name="geo_msg_formula_name_duplicate" xml:space="preserve">
+    <value>式名「{0}」が地温圧力計「{1}」内で重複定義されています</value>
+  </data>
+  <data name="home_catalog_already_latest" xml:space="preserve">
+    <value>ホームリンクカタログは最新です。</value>
+  </data>
+  <data name="home_catalog_sync_failed" xml:space="preserve">
+    <value>ホームリンクカタログの同期に失敗しました。</value>
+  </data>
+  <data name="home_catalog_updated" xml:space="preserve">
+    <value>ホームリンクカタログを更新しました。</value>
+  </data>
+  <data name="home_group_empty_links" xml:space="preserve">
+    <value>このグループにリンクがありません。「リンクを追加」で作成してください。</value>
+  </data>
+  <data name="home_icon_url" xml:space="preserve">
+    <value>アイコン URL</value>
+  </data>
+  <data name="home_icon_url_hint" xml:space="preserve">
+    <value>任意。https://... を入力すると上のプリセットアイコンを上書きします。</value>
+  </data>
+  <data name="home_links_edit_language" xml:space="preserve">
+    <value>編集言語：</value>
+  </data>
+  <data name="home_personal_group" xml:space="preserve">
+    <value>個人</value>
+  </data>
+  <data name="home_personal_group_hint" xml:space="preserve">
+    <value>このグループではリンクの追加、編集、削除ができます。</value>
+  </data>
+  <data name="home_recommended_content" xml:space="preserve">
+    <value>おすすめ</value>
+  </data>
+  <data name="home_widgets_panel_desc" xml:space="preserve">
+    <value>アプリ内で開く組み込みツール。サイドパネルに表示されます。</value>
+  </data>
+  <data name="home_widgets_section" xml:space="preserve">
+    <value>ウィジェット</value>
+  </data>
+  <data name="language_exists" xml:space="preserve">
+    <value>言語は既に存在します</value>
+  </data>
+  <data name="main_sidebar_collapse_full" xml:space="preserve">
+    <value>完全に折りたたむ</value>
+  </data>
+  <data name="main_sidebar_collapse_icon_only" xml:space="preserve">
+    <value>アイコンを保持</value>
+  </data>
+  <data name="main_sidebar_collapse_style" xml:space="preserve">
+    <value>メインサイドバーの折りたたみスタイル</value>
+  </data>
+  <data name="mouse_snap_auto_recognition_frame_rate" xml:space="preserve">
+    <value>マウススナップ自動認識フレームレート</value>
+  </data>
+  <data name="move_down" xml:space="preserve">
+    <value>下へ</value>
+  </data>
+  <data name="move_up" xml:space="preserve">
+    <value>上へ</value>
+  </data>
+  <data name="no_valid_data_found" xml:space="preserve">
+    <value>表に有効なデータが見つかりません。</value>
+  </data>
+  <data name="normalization_standard" xml:space="preserve">
+    <value>正規化基準</value>
+  </data>
+  <data name="object_selection_trigger" xml:space="preserve">
+    <value>オブジェクト選択トリガー</value>
+  </data>
+  <data name="official_publisher_announcement_edit_hint" xml:space="preserve">
+    <value>ここでお知らせを編集します。公開後、ホームページの「お知らせ」エリアに表示されます。</value>
+  </data>
+  <data name="official_publisher_announcement_empty" xml:space="preserve">
+    <value>（空）</value>
+  </data>
+  <data name="official_publisher_announcement_load" xml:space="preserve">
+    <value>サーバーから読み込み</value>
+  </data>
+  <data name="official_publisher_announcement_loaded" xml:space="preserve">
+    <value>サーバーからお知らせを読み込みました。</value>
+  </data>
+  <data name="official_publisher_announcement_pending" xml:space="preserve">
+    <value>公開待ち</value>
+  </data>
+  <data name="official_publisher_announcement_preview" xml:space="preserve">
+    <value>現在の下書き：</value>
+  </data>
+  <data name="official_publisher_announcement_section" xml:space="preserve">
+    <value>お知らせ</value>
+  </data>
+  <data name="official_publisher_announcement_up_to_date" xml:space="preserve">
+    <value>サーバーは最新です</value>
+  </data>
+  <data name="official_publisher_confirm" xml:space="preserve">
+    <value>公式コンテンツを COS に公開しますか？</value>
+  </data>
+  <data name="official_publisher_dev_mode_required" xml:space="preserve">
+    <value>公開には開発者モードが必要です。</value>
+  </data>
+  <data name="official_publisher_diagram_preview_summary" xml:space="preserve">
+    <value>図解：新規 {0}、更新 {1}、削除 {2}、変更なし {3}。</value>
+  </data>
+  <data name="official_publisher_diagram_section" xml:space="preserve">
+    <value>図解</value>
+  </data>
+  <data name="official_publisher_export_done" xml:space="preserve">
+    <value>エクスポートが完了しました。</value>
+  </data>
+  <data name="official_publisher_export_local" xml:space="preserve">
+    <value>ローカルにエクスポート</value>
+  </data>
+  <data name="official_publisher_exporting" xml:space="preserve">
+    <value>{0} にエクスポート中...</value>
+  </data>
+  <data name="official_publisher_geo_preview_summary" xml:space="preserve">
+    <value>地温圧力計：新規 {0}、更新 {1}、削除 {2}、変更なし {3}。</value>
+  </data>
+  <data name="official_publisher_geothermometer_section" xml:space="preserve">
+    <value>地温圧力計</value>
+  </data>
+  <data name="official_publisher_home_add_group" xml:space="preserve">
+    <value>グループを追加</value>
+  </data>
+  <data name="official_publisher_home_edit_group" xml:space="preserve">
+    <value>グループを編集</value>
+  </data>
+  <data name="official_publisher_home_group_title_prompt" xml:space="preserve">
+    <value>グループ名を入力：</value>
+  </data>
+  <data name="official_publisher_home_groups" xml:space="preserve">
+    <value>グループ</value>
+  </data>
+  <data name="official_publisher_home_link_items" xml:space="preserve">
+    <value>リンク</value>
+  </data>
+  <data name="official_publisher_home_links_bundled_saved" xml:space="preserve">
+    <value>ホームリンクをバンドルカタログに保存しました。</value>
+  </data>
+  <data name="official_publisher_home_links_draft_saved" xml:space="preserve">
+    <value>ホームリンク下書きをローカルに保存しました。</value>
+  </data>
+  <data name="official_publisher_home_links_pending" xml:space="preserve">
+    <value>公開待ち</value>
+  </data>
+  <data name="official_publisher_home_links_preview_summary" xml:space="preserve">
+    <value>グループ：{0}、リンク：{1}、ローカル hash：{2}、リモート hash：{3}。</value>
+  </data>
+  <data name="official_publisher_home_links_reloaded" xml:space="preserve">
+    <value>ホームリンクエディタを再読み込みしました。</value>
+  </data>
+  <data name="official_publisher_home_links_section" xml:space="preserve">
+    <value>ホームリンク</value>
+  </data>
+  <data name="official_publisher_home_links_summary" xml:space="preserve">
+    <value>ホームリンク：{0} グループ、{1} リンク、hash={2}。</value>
+  </data>
+  <data name="official_publisher_home_links_up_to_date" xml:space="preserve">
+    <value>サーバーは最新です。</value>
+  </data>
+  <data name="official_publisher_home_save_draft" xml:space="preserve">
+    <value>下書きを保存</value>
+  </data>
+  <data name="official_publisher_home_select_group" xml:space="preserve">
+    <value>先にグループを選択してください。</value>
+  </data>
+  <data name="official_publisher_include_announcement" xml:space="preserve">
+    <value>お知らせ</value>
+  </data>
+  <data name="official_publisher_include_diagrams" xml:space="preserve">
+    <value>図解</value>
+  </data>
+  <data name="official_publisher_include_geothermometers" xml:space="preserve">
+    <value>地温圧力計</value>
+  </data>
+  <data name="official_publisher_include_home_links" xml:space="preserve">
+    <value>ホームリンクを含める</value>
+  </data>
+  <data name="official_publisher_new" xml:space="preserve">
+    <value>新規</value>
+  </data>
+  <data name="official_publisher_preview_summary" xml:space="preserve">
+    <value>プレビュー：新規 {0}、更新 {1}、削除 {2}、変更なし {3}。</value>
+  </data>
+  <data name="official_publisher_progress_done" xml:space="preserve">
+    <value>公開が完了しました。</value>
+  </data>
+  <data name="official_publisher_progress_exporting_announcement" xml:space="preserve">
+    <value>お知らせをエクスポート中...</value>
+  </data>
+  <data name="official_publisher_progress_exporting_diagrams" xml:space="preserve">
+    <value>図解をエクスポート中...</value>
+  </data>
+  <data name="official_publisher_progress_exporting_geothermometers" xml:space="preserve">
+    <value>地温圧力計をエクスポート中...</value>
+  </data>
+  <data name="official_publisher_progress_exporting_home_links" xml:space="preserve">
+    <value>ホームリンクをエクスポート中...</value>
+  </data>
+  <data name="official_publisher_progress_uploading" xml:space="preserve">
+    <value>COS にアップロード中 ({0}/{1})...</value>
+  </data>
+  <data name="official_publisher_progress_uploading_cos" xml:space="preserve">
+    <value>COS にアップロード中...</value>
+  </data>
+  <data name="official_publisher_publish_cos" xml:space="preserve">
+    <value>COS に公開</value>
+  </data>
+  <data name="official_publisher_ready" xml:space="preserve">
+    <value>公式パブリッシャーの準備ができました。</value>
+  </data>
+  <data name="official_publisher_refresh" xml:space="preserve">
+    <value>プレビューを更新</value>
+  </data>
+  <data name="official_publisher_refreshing" xml:space="preserve">
+    <value>公開プレビューを更新中...</value>
+  </data>
+  <data name="official_publisher_removed" xml:space="preserve">
+    <value>削除</value>
+  </data>
+  <data name="official_publisher_staging_dir" xml:space="preserve">
+    <value>staging ディレクトリ</value>
+  </data>
+  <data name="official_publisher_staging_required" xml:space="preserve">
+    <value>staging ディレクトリを選択してください。</value>
+  </data>
+  <data name="official_publisher_start" xml:space="preserve">
+    <value>公開を開始しています...</value>
+  </data>
+  <data name="official_publisher_target_required" xml:space="preserve">
+    <value>公開対象を少なくとも1つ選択してください。</value>
+  </data>
+  <data name="official_publisher_unchanged" xml:space="preserve">
+    <value>変更なし</value>
+  </data>
+  <data name="official_publisher_updated" xml:space="preserve">
+    <value>更新</value>
+  </data>
+  <data name="official_template_publisher" xml:space="preserve">
+    <value>公式パブリッシャー</value>
+  </data>
+  <data name="official_template_publisher_desc" xml:space="preserve">
+    <value>公式コンテンツ（図解、地温圧力計、ホームリンク、お知らせ）をエクスポートして COS に公開</value>
+  </data>
+  <data name="ree_spider_diagram" xml:space="preserve">
+    <value>REE スパイダー図</value>
+  </data>
+  <data name="reset_default" xml:space="preserve">
+    <value>リセット</value>
+  </data>
+  <data name="select_all" xml:space="preserve">
+    <value>すべて選択</value>
+  </data>
+  <data name="select_language_to_delete" xml:space="preserve">
+    <value>削除する言語を選択：</value>
+  </data>
+  <data name="shortcut_action_add_arrow_desc" xml:space="preserve">
+    <value>矢印オブジェクトを挿入します。</value>
+  </data>
+  <data name="shortcut_action_add_arrow_name" xml:space="preserve">
+    <value>矢印を追加</value>
+  </data>
+  <data name="shortcut_action_add_function_desc" xml:space="preserve">
+    <value>関数オブジェクトを挿入します。</value>
+  </data>
+  <data name="shortcut_action_add_function_name" xml:space="preserve">
+    <value>関数を追加</value>
+  </data>
+  <data name="shortcut_action_add_line_desc" xml:space="preserve">
+    <value>線オブジェクトを挿入します。</value>
+  </data>
+  <data name="shortcut_action_add_line_name" xml:space="preserve">
+    <value>線を追加</value>
+  </data>
+  <data name="shortcut_action_add_polygon_desc" xml:space="preserve">
+    <value>多角形オブジェクトを挿入します。</value>
+  </data>
+  <data name="shortcut_action_add_polygon_name" xml:space="preserve">
+    <value>多角形を追加</value>
+  </data>
+  <data name="shortcut_action_add_text_desc" xml:space="preserve">
+    <value>テキストオブジェクトを挿入します。</value>
+  </data>
+  <data name="shortcut_action_add_text_name" xml:space="preserve">
+    <value>テキストを追加</value>
+  </data>
+  <data name="shortcut_action_bold_desc" xml:space="preserve">
+    <value>選択テキストの太字を切り替えます。</value>
+  </data>
+  <data name="shortcut_action_bold_name" xml:space="preserve">
+    <value>太字</value>
+  </data>
+  <data name="shortcut_action_center_view_desc" xml:space="preserve">
+    <value>プロットビューを素早く中央に配置します。</value>
+  </data>
+  <data name="shortcut_action_center_view_name" xml:space="preserve">
+    <value>ビューを中央配置</value>
+  </data>
+  <data name="shortcut_action_close_notification_desc" xml:space="preserve">
+    <value>通知を閉じます。閉じるボタンをクリックしたのと同じです。対話型ダイアログには適用されません。</value>
+  </data>
+  <data name="shortcut_action_close_notification_keys" xml:space="preserve">
+    <value>通知上で中クリック</value>
+  </data>
+  <data name="shortcut_action_close_notification_name" xml:space="preserve">
+    <value>通知を閉じる</value>
+  </data>
+  <data name="shortcut_action_delete_selected_desc" xml:space="preserve">
+    <value>現在選択中のプロットオブジェクトを削除します。</value>
+  </data>
+  <data name="shortcut_action_delete_selected_name" xml:space="preserve">
+    <value>選択オブジェクトを削除</value>
+  </data>
+  <data name="shortcut_action_italic_desc" xml:space="preserve">
+    <value>選択テキストの斜体を切り替えます。</value>
+  </data>
+  <data name="shortcut_action_italic_name" xml:space="preserve">
+    <value>斜体</value>
+  </data>
+  <data name="shortcut_action_quick_delete_desc" xml:space="preserve">
+    <value>確認なしでカスタムテンプレートを直接削除します。</value>
+  </data>
+  <data name="shortcut_action_quick_delete_keys" xml:space="preserve">
+    <value>カード左側を Ctrl+クリック</value>
+  </data>
+  <data name="shortcut_action_quick_delete_name" xml:space="preserve">
+    <value>クイック削除</value>
+  </data>
+  <data name="shortcut_action_quick_favorite_desc" xml:space="preserve">
+    <value>テンプレートのお気に入り状態を素早く切り替えます。</value>
+  </data>
+  <data name="shortcut_action_quick_favorite_keys" xml:space="preserve">
+    <value>カード右側を Ctrl+クリック</value>
+  </data>
+  <data name="shortcut_action_quick_favorite_name" xml:space="preserve">
+    <value>クイックお気に入り</value>
+  </data>
+  <data name="shortcut_action_redo_desc" xml:space="preserve">
+    <value>直前に取り消した操作を復元します。</value>
+  </data>
+  <data name="shortcut_action_redo_name" xml:space="preserve">
+    <value>やり直し</value>
+  </data>
+  <data name="shortcut_action_save_plot_desc" xml:space="preserve">
+    <value>現在の図解またはテンプレート内容を保存します。</value>
+  </data>
+  <data name="shortcut_action_save_plot_name" xml:space="preserve">
+    <value>図解を保存</value>
+  </data>
+  <data name="shortcut_action_underline_desc" xml:space="preserve">
+    <value>選択テキストの下線を切り替えます。</value>
+  </data>
+  <data name="shortcut_action_underline_name" xml:space="preserve">
+    <value>下線</value>
+  </data>
+  <data name="shortcut_action_undo_desc" xml:space="preserve">
+    <value>前の操作を取り消します。</value>
+  </data>
+  <data name="shortcut_action_undo_name" xml:space="preserve">
+    <value>元に戻す</value>
+  </data>
+  <data name="shortcut_group_add_desc" xml:space="preserve">
+    <value>プロットページで一般的なオブジェクトを素早く作成するためのショートカットです。</value>
+  </data>
+  <data name="shortcut_group_add_title" xml:space="preserve">
+    <value>オブジェクトのクイック挿入</value>
+  </data>
+  <data name="shortcut_group_notification_desc" xml:space="preserve">
+    <value>右上のトースト通知に適用されるショートカットです。</value>
+  </data>
+  <data name="shortcut_group_notification_title" xml:space="preserve">
+    <value>通知</value>
+  </data>
+  <data name="shortcut_group_plot_desc" xml:space="preserve">
+    <value>図解編集ページで主に機能するショートカットです。</value>
+  </data>
+  <data name="shortcut_group_plot_title" xml:space="preserve">
+    <value>プロットエディタ</value>
+  </data>
+  <data name="shortcut_group_rich_text_desc" xml:space="preserve">
+    <value>ヘルプドキュメントなどのリッチテキスト編集領域に適用されるショートカットです。</value>
+  </data>
+  <data name="shortcut_group_rich_text_title" xml:space="preserve">
+    <value>リッチテキストエディタ</value>
+  </data>
+  <data name="shortcut_group_template_desc" xml:space="preserve">
+    <value>ブラウズモードのテンプレートカードに適用される操作です。</value>
+  </data>
+  <data name="shortcut_group_template_title" xml:space="preserve">
+    <value>テンプレートカード操作</value>
+  </data>
+  <data name="shortcuts_hint" xml:space="preserve">
+    <value>ヒント：一部のショートカットは、関連ページがアクティブまたはキーボードフォーカスがある場合のみ機能します。</value>
+  </data>
+  <data name="shortcuts_intro" xml:space="preserve">
+    <value>このページは現在のバージョンでサポートされているショートカットを一覧表示します。読み取り専用で、ここでは編集できません。</value>
+  </data>
+  <data name="shortcuts_title" xml:space="preserve">
+    <value>ショートカット</value>
+  </data>
+  <data name="single_click" xml:space="preserve">
+    <value>シングルクリック</value>
+  </data>
+  <data name="spider_current_plot_order" xml:space="preserve">
+    <value>現在のプロット順序</value>
+  </data>
+  <data name="spider_element_order_hint" xml:space="preserve">
+    <value>プロットに含める元素を選択してください。下のリストは現在のプロット順序を示し、右のボタンで横軸の配置を調整できます。</value>
+  </data>
+  <data name="tool_diagrams_section" xml:space="preserve">
+    <value>ツール図解</value>
+  </data>
+  <data name="trace_element_spider_diagram" xml:space="preserve">
+    <value>微量元素スパイダー図</value>
+  </data>
+  <data name="translation_annotation" xml:space="preserve">
+    <value>注釈</value>
+  </data>
+  <data name="translation_axis_subtitle" xml:space="preserve">
+    <value>軸副タイトル</value>
+  </data>
+  <data name="translation_axis_title" xml:space="preserve">
+    <value>軸タイトル</value>
+  </data>
+  <data name="translation_export_failed" xml:space="preserve">
+    <value>エクスポートに失敗しました。</value>
+  </data>
+  <data name="translation_export_no_languages" xml:space="preserve">
+    <value>先に基本設定で言語を構成してください。</value>
+  </data>
+  <data name="translation_export_success" xml:space="preserve">
+    <value>翻訳を {0} にエクスポートしました。</value>
+  </data>
+  <data name="translation_export_table_missing" xml:space="preserve">
+    <value>翻訳表の準備ができていません。</value>
+  </data>
+  <data name="translation_import_failed" xml:space="preserve">
+    <value>インポートに失敗しました。</value>
+  </data>
+  <data name="translation_import_invalid_format" xml:space="preserve">
+    <value>サポートされていない翻訳ファイル形式です。</value>
+  </data>
+  <data name="translation_import_invalid_json" xml:space="preserve">
+    <value>無効な JSON ファイルです。</value>
+  </data>
+  <data name="translation_import_no_languages" xml:space="preserve">
+    <value>先に基本設定で言語を構成してください。</value>
+  </data>
+  <data name="translation_import_success" xml:space="preserve">
+    <value>{0} 項目をインポートし、{1} セルを更新しました。</value>
+  </data>
+  <data name="translation_import_table_missing" xml:space="preserve">
+    <value>翻訳表の準備ができていません。</value>
+  </data>
+  <data name="translation_item_context" xml:space="preserve">
+    <value>コンテンツ項目</value>
+  </data>
+  <data name="translation_loaded" xml:space="preserve">
+    <value>翻訳データを読み込みました</value>
+  </data>
+  <data name="translation_main_title" xml:space="preserve">
+    <value>メインタイトル</value>
+  </data>
+  <data name="translation_node_list" xml:space="preserve">
+    <value>カテゴリパス</value>
+  </data>
+  <data name="translation_text_item" xml:space="preserve">
+    <value>テキスト</value>
+  </data>
 </root>

@@ -2274,4 +2274,844 @@
   <data name="runProcessing" xml:space="preserve">
     <value>Выполнить обработку</value>
   </data>
+  <data name="notification_success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="notification_warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="filter_all_files" xml:space="preserve">
+    <value>All Files</value>
+  </data>
+  <data name="filter_json_files" xml:space="preserve">
+    <value>JSON Files</value>
+  </data>
+  <data name="filter_zip_files" xml:space="preserve">
+    <value>Zip Files</value>
+  </data>
+  <data name="filter_template_files" xml:space="preserve">
+    <value>Template Files</value>
+  </data>
+  <data name="filter_csv_files" xml:space="preserve">
+    <value>CSV Files</value>
+  </data>
+  <data name="filter_png_image" xml:space="preserve">
+    <value>PNG Image</value>
+  </data>
+  <data name="filter_svg_vector" xml:space="preserve">
+    <value>SVG Vector</value>
+  </data>
+  <data name="open_template" xml:space="preserve">
+    <value>Open Template</value>
+  </data>
+  <data name="save_file_title" xml:space="preserve">
+    <value>Save File</value>
+  </data>
+  <data name="plot_undefined_data_columns" xml:space="preserve">
+    <value>Undefined data columns</value>
+  </data>
+  <data name="plot_json_multiselect_not_supported" xml:space="preserve">
+    <value>JSON files cannot be added in a multi-select batch. Only ZIP files support multi-select batch import.</value>
+  </data>
+  <data name="plot_ternary_axis_not_found" xml:space="preserve">
+    <value>Error: triangular axis object not found in the plot.</value>
+  </data>
+  <data name="plot_upload_thumbnail_failed" xml:space="preserve">
+    <value>Failed to upload thumbnail: {0}</value>
+  </data>
+  <data name="plot_type_2d_description" xml:space="preserve">
+    <value>Best for standard X-Y plotting for scatter, line, function, and most diagram templates.</value>
+  </data>
+  <data name="plot_type_ternary_description" xml:space="preserve">
+    <value>Best for ternary compositions, phase diagrams, and end-member mixing relationships.</value>
+  </data>
+  <data name="selected_label" xml:space="preserve">
+    <value>Selected</value>
+  </data>
+  <data name="dataPrep_workflowStep1" xml:space="preserve">
+    <value>1. Import a CSV / Excel table and confirm major-element headers</value>
+  </data>
+  <data name="dataPrep_workflowStep2" xml:space="preserve">
+    <value>2. Set detection limits, missing values, outliers, and iron valence strategy</value>
+  </data>
+  <data name="dataPrep_workflowStep3" xml:space="preserve">
+    <value>3. Batch-generate cleaned, normalized, and geochemical indicator columns</value>
+  </data>
+  <data name="dataPrep_workflowStep4" xml:space="preserve">
+    <value>4. Output to a new Processed worksheet and export results</value>
+  </data>
+  <data name="see_error_log_for_details" xml:space="preserve">
+    <value>See error.log for details.</value>
+  </data>
+  <data name="announcement" xml:space="preserve">
+    <value>Объявление</value>
+  </data>
+  <data name="at_least_two_languages_swap" xml:space="preserve">
+    <value>Для обмена требуется как минимум два языка.</value>
+  </data>
+  <data name="confirm_delete_language" xml:space="preserve">
+    <value>Удалить язык «{0}»? Это действие нельзя отменить.</value>
+  </data>
+  <data name="cos_credentials_required" xml:space="preserve">
+    <value>Сначала настройте и сохраните учётные данные COS.</value>
+  </data>
+  <data name="cos_save_settings" xml:space="preserve">
+    <value>Сохранить настройки</value>
+  </data>
+  <data name="cos_secret_id_required" xml:space="preserve">
+    <value>SecretId обязателен.</value>
+  </data>
+  <data name="cos_settings_saved" xml:space="preserve">
+    <value>Настройки COS сохранены.</value>
+  </data>
+  <data name="cos_test_connection" xml:space="preserve">
+    <value>Проверить подключение</value>
+  </data>
+  <data name="cos_test_failed" xml:space="preserve">
+    <value>Проверка подключения к COS не удалась.</value>
+  </data>
+  <data name="cos_test_success" xml:space="preserve">
+    <value>Проверка подключения к COS успешна.</value>
+  </data>
+  <data name="dataPrep_autoBackfillIronOxides" xml:space="preserve">
+    <value>Автоматически заполнять FeO / Fe2O3 при отсутствии</value>
+  </data>
+  <data name="dataPrep_calculationItems" xml:space="preserve">
+    <value>Расчётные элементы</value>
+  </data>
+  <data name="dataPrep_clearTableFailed" xml:space="preserve">
+    <value>Не удалось очистить таблицу данных:</value>
+  </data>
+  <data name="dataPrep_detectionLimitPreview" xml:space="preserve">
+    <value>На этой странице нет параметров замены предела обнаружения или очистки данных.</value>
+  </data>
+  <data name="dataPrep_detectionReplaceHalf" xml:space="preserve">
+    <value>Заменить половиной предела обнаружения</value>
+  </data>
+  <data name="dataPrep_detectionReplaceNull" xml:space="preserve">
+    <value>Заменить на null</value>
+  </data>
+  <data name="dataPrep_detectionReplaceZero" xml:space="preserve">
+    <value>Заменить на 0</value>
+  </data>
+  <data name="dataPrep_enable" xml:space="preserve">
+    <value>Включить</value>
+  </data>
+  <data name="dataPrep_excludeVolatiles" xml:space="preserve">
+    <value>Исключить летучие компоненты</value>
+  </data>
+  <data name="dataPrep_exportCurrentTable" xml:space="preserve">
+    <value>Экспорт текущей таблицы</value>
+  </data>
+  <data name="dataPrep_exportFailed" xml:space="preserve">
+    <value>Ошибка экспорта:</value>
+  </data>
+  <data name="dataPrep_exportFilter" xml:space="preserve">
+    <value>Файлы CSV|*.csv</value>
+  </data>
+  <data name="dataPrep_exportSucceeded" xml:space="preserve">
+    <value>Текущий лист экспортирован.</value>
+  </data>
+  <data name="dataPrep_exportTitle" xml:space="preserve">
+    <value>Экспорт результата предобработки</value>
+  </data>
+  <data name="dataPrep_fe3Tooltip" xml:space="preserve">
+    <value>Используется только для «Эмпирической коррекции соотношения» и представляет эмпирическое соотношение Fe3+/Fe.</value>
+  </data>
+  <data name="dataPrep_indices" xml:space="preserve">
+    <value>Индексы</value>
+  </data>
+  <data name="dataPrep_ironMethodAutoEstimate" xml:space="preserve">
+    <value>Автооценка по общему железу</value>
+  </data>
+  <data name="dataPrep_ironMethodBackCalculate" xml:space="preserve">
+    <value>Обратный расчёт по FeO / Fe2O3</value>
+  </data>
+  <data name="dataPrep_ironMethodEmpiricalRatio" xml:space="preserve">
+    <value>Эмпирическая коррекция соотношения</value>
+  </data>
+  <data name="dataPrep_ironModeBackfillFe2o3" xml:space="preserve">
+    <value>Fe2O3 эмпирически заполнено из FeO</value>
+  </data>
+  <data name="dataPrep_ironModeBackfillFeo" xml:space="preserve">
+    <value>FeO эмпирически заполнено из Fe2O3</value>
+  </data>
+  <data name="dataPrep_ironModeFeotAuto" xml:space="preserve">
+    <value>Автооценка FeOT</value>
+  </data>
+  <data name="dataPrep_ironModeFeotEmpirical" xml:space="preserve">
+    <value>Эмпирическая коррекция FeOT</value>
+  </data>
+  <data name="dataPrep_ironModeFromFeotAndFe2o3" xml:space="preserve">
+    <value>FeO выведено из FeOT + Fe2O3</value>
+  </data>
+  <data name="dataPrep_ironModeFromFeotAndFeo" xml:space="preserve">
+    <value>Fe2O3 выведено из FeOT + FeO</value>
+  </data>
+  <data name="dataPrep_ironModeInsufficient" xml:space="preserve">
+    <value>Недостаточно данных по железу</value>
+  </data>
+  <data name="dataPrep_ironModeMeasured" xml:space="preserve">
+    <value>Измеренные FeO + Fe2O3</value>
+  </data>
+  <data name="dataPrep_ironValence" xml:space="preserve">
+    <value>Валентность железа</value>
+  </data>
+  <data name="dataPrep_keepOriginalOnly" xml:space="preserve">
+    <value>Сохранить только исходный лист</value>
+  </data>
+  <data name="dataPrep_listSeparator" xml:space="preserve">
+    <value>, </value>
+  </data>
+  <data name="dataPrep_method" xml:space="preserve">
+    <value>Метод</value>
+  </data>
+  <data name="dataPrep_missingKeep" xml:space="preserve">
+    <value>Сохранить пропуски</value>
+  </data>
+  <data name="dataPrep_missingMean" xml:space="preserve">
+    <value>Импутация средним</value>
+  </data>
+  <data name="dataPrep_missingMedian" xml:space="preserve">
+    <value>Импутация медианой</value>
+  </data>
+  <data name="dataPrep_moduleAnhydrous" xml:space="preserve">
+    <value>Безводная нормализация</value>
+  </data>
+  <data name="dataPrep_moduleIndexCalculation" xml:space="preserve">
+    <value>Расчёт индексов</value>
+  </data>
+  <data name="dataPrep_moduleIronValence" xml:space="preserve">
+    <value>Валентность железа</value>
+  </data>
+  <data name="dataPrep_noCellSelected" xml:space="preserve">
+    <value>Ячейка не выбрана</value>
+  </data>
+  <data name="dataPrep_noOxideColumnsDetected" xml:space="preserve">
+    <value>Столбцы основных оксидов не обнаружены</value>
+  </data>
+  <data name="dataPrep_noProcessableData" xml:space="preserve">
+    <value>На текущем листе нет обрабатываемых данных. Сначала импортируйте таблицу с заголовками полей.</value>
+  </data>
+  <data name="dataPrep_normalization" xml:space="preserve">
+    <value>Нормализация</value>
+  </data>
+  <data name="dataPrep_normalizeToHundred" xml:space="preserve">
+    <value>Нормализовать до 100 %</value>
+  </data>
+  <data name="dataPrep_notDetected" xml:space="preserve">
+    <value>Не обнаружено</value>
+  </data>
+  <data name="dataPrep_noteDetectionNoLimitFallbackZero" xml:space="preserve">
+    <value>b.d.l. без числового предела; обработано как 0</value>
+  </data>
+  <data name="dataPrep_noteDetectionReplacedWithHalf" xml:space="preserve">
+    <value>Значение предела обнаружения заменено половиной предела</value>
+  </data>
+  <data name="dataPrep_noteDetectionReplacedWithNull" xml:space="preserve">
+    <value>Значение предела обнаружения заменено на null</value>
+  </data>
+  <data name="dataPrep_noteDetectionReplacedWithZero" xml:space="preserve">
+    <value>Значение предела обнаружения заменено на 0</value>
+  </data>
+  <data name="dataPrep_noteDetectionStandardized" xml:space="preserve">
+    <value>Значение предела обнаружения стандартизировано</value>
+  </data>
+  <data name="dataPrep_noteMissingFilled" xml:space="preserve">
+    <value>{0} заполнено методом {1}</value>
+  </data>
+  <data name="dataPrep_noteNonNumericAsMissing" xml:space="preserve">
+    <value>Не удалось распознать как число; обработано как пропуск</value>
+  </data>
+  <data name="dataPrep_noteOutlierDetected" xml:space="preserve">
+    <value>{0} обнаружено как выброс</value>
+  </data>
+  <data name="dataPrep_noWorksheetToProcess" xml:space="preserve">
+    <value>Нет доступного листа для обработки.</value>
+  </data>
+  <data name="dataPrep_outlierIqr" xml:space="preserve">
+    <value>Метод IQR</value>
+  </data>
+  <data name="dataPrep_outlierMarkOnly" xml:space="preserve">
+    <value>Только пометить выбросы</value>
+  </data>
+  <data name="dataPrep_outlierThreeSigma" xml:space="preserve">
+    <value>Метод 3σ</value>
+  </data>
+  <data name="dataPrep_parameterOptions" xml:space="preserve">
+    <value>Параметры</value>
+  </data>
+  <data name="dataPrep_previewSummary" xml:space="preserve">
+    <value>Обнаружены столбцы оксидов: {0}; включённые модули: {1}; метод валентности железа: «{2}»; эмпирическое соотношение Fe3+/Fe: {3:0.00}.</value>
+  </data>
+  <data name="dataPrep_processingCompleted" xml:space="preserve">
+    <value>Предобработка данных завершена.</value>
+  </data>
+  <data name="dataPrep_processingFailed" xml:space="preserve">
+    <value>Ошибка обработки:</value>
+  </data>
+  <data name="dataPrep_processingSummary" xml:space="preserve">
+    <value>Обработано {0} строк, обнаружено {1} числовых столбцов; замен предела обнаружения {2}, помечено выбросов {3}, очищено выбросов {4}, заполнено пропусков {5}.</value>
+  </data>
+  <data name="dataPrep_resetToRecommended" xml:space="preserve">
+    <value>Рекомендуемые настройки восстановлены.</value>
+  </data>
+  <data name="dataPrep_sampleDataGenerated" xml:space="preserve">
+    <value>Примерные данные созданы.</value>
+  </data>
+  <data name="dataPrep_sampleDataGenerateFailed" xml:space="preserve">
+    <value>Не удалось создать примерные данные:</value>
+  </data>
+  <data name="dataPrep_selectedCellEmpty" xml:space="preserve">
+    <value>{0}: &lt;пусто&gt;</value>
+  </data>
+  <data name="dataPrep_selectedCellValue" xml:space="preserve">
+    <value>{0}: {1}</value>
+  </data>
+  <data name="dataPrep_strategyMissingKeep" xml:space="preserve">
+    <value>Сохранить пропуски</value>
+  </data>
+  <data name="dataPrep_strategyMissingMean" xml:space="preserve">
+    <value>Импутация средним</value>
+  </data>
+  <data name="dataPrep_strategyMissingMedian" xml:space="preserve">
+    <value>Импутация медианой</value>
+  </data>
+  <data name="dataPrep_tableCleared" xml:space="preserve">
+    <value>Текущая таблица данных очищена.</value>
+  </data>
+  <data name="deselect_all" xml:space="preserve">
+    <value>Снять выделение</value>
+  </data>
+  <data name="diagram_editor_basic_settings" xml:space="preserve">
+    <value>Основные настройки</value>
+  </data>
+  <data name="diagram_editor_content_translation" xml:space="preserve">
+    <value>Перевод содержимого</value>
+  </data>
+  <data name="diagram_editor_new_version" xml:space="preserve">
+    <value>Новая версия</value>
+  </data>
+  <data name="diagram_editor_saved_version" xml:space="preserve">
+    <value>Версия после сохранения:</value>
+  </data>
+  <data name="diagram_editor_translation_hint" xml:space="preserve">
+    <value>Редактируйте многоязычный текст для заголовков, осей, меток и аннотаций. Языки настраиваются в основных настройках; здесь можно экспортировать или импортировать JSON-файлы перевода.</value>
+  </data>
+  <data name="diagram_hint_no_favorites" xml:space="preserve">
+    <value>Избранных шаблонов диаграмм пока нет.</value>
+  </data>
+  <data name="diagram_hint_no_official" xml:space="preserve">
+    <value>В этой категории нет официальных шаблонов диаграмм.</value>
+  </data>
+  <data name="diagram_hint_no_personal" xml:space="preserve">
+    <value>Личных диаграмм пока нет. Создайте или импортируйте через меню «Файл».</value>
+  </data>
+  <data name="diagram_hint_no_recents" xml:space="preserve">
+    <value>Недавно использованных шаблонов диаграмм пока нет.</value>
+  </data>
+  <data name="diagram_hint_no_search_results" xml:space="preserve">
+    <value>Нет шаблонов, соответствующих поиску.</value>
+  </data>
+  <data name="diagram_hint_no_templates" xml:space="preserve">
+    <value>Нет доступных шаблонов диаграмм.</value>
+  </data>
+  <data name="diagram_translation_export" xml:space="preserve">
+    <value>Экспорт</value>
+  </data>
+  <data name="diagram_translation_import" xml:space="preserve">
+    <value>Импорт</value>
+  </data>
+  <data name="double_click" xml:space="preserve">
+    <value>Двойной щелчок</value>
+  </data>
+  <data name="element_order" xml:space="preserve">
+    <value>Порядок элементов</value>
+  </data>
+  <data name="enable_normalization" xml:space="preserve">
+    <value>Включить нормализацию</value>
+  </data>
+  <data name="enter_language_code_prompt" xml:space="preserve">
+    <value>Введите код языка (например, fr-FR):</value>
+  </data>
+  <data name="enter_plot_mode" xml:space="preserve">
+    <value>Войти в режим построения</value>
+  </data>
+  <data name="force_update_template" xml:space="preserve">
+    <value>Принудительное обновление</value>
+  </data>
+  <data name="force_update_template_not_found" xml:space="preserve">
+    <value>Шаблон не найден на сервере.</value>
+  </data>
+  <data name="geo_msg_formula_name_conflict" xml:space="preserve">
+    <value>Имя формулы «{0}» уже используется в «{1}» ({2})</value>
+  </data>
+  <data name="geo_msg_formula_name_duplicate" xml:space="preserve">
+    <value>Имя формулы «{0}» дублируется в Geothermobarometer «{1}»</value>
+  </data>
+  <data name="home_catalog_already_latest" xml:space="preserve">
+    <value>Каталог ссылок главной страницы уже актуален.</value>
+  </data>
+  <data name="home_catalog_sync_failed" xml:space="preserve">
+    <value>Не удалось синхронизировать каталог ссылок главной страницы.</value>
+  </data>
+  <data name="home_catalog_updated" xml:space="preserve">
+    <value>Каталог ссылок главной страницы обновлён.</value>
+  </data>
+  <data name="home_group_empty_links" xml:space="preserve">
+    <value>В этой группе нет ссылок. Используйте «Добавить ссылку» для создания.</value>
+  </data>
+  <data name="home_icon_url" xml:space="preserve">
+    <value>URL значка</value>
+  </data>
+  <data name="home_icon_url_hint" xml:space="preserve">
+    <value>Необязательно. https://... переопределяет предустановленный значок выше.</value>
+  </data>
+  <data name="home_links_edit_language" xml:space="preserve">
+    <value>Язык редактирования:</value>
+  </data>
+  <data name="home_personal_group" xml:space="preserve">
+    <value>Личное</value>
+  </data>
+  <data name="home_personal_group_hint" xml:space="preserve">
+    <value>В этой группе можно добавлять, редактировать или удалять ссылки.</value>
+  </data>
+  <data name="home_recommended_content" xml:space="preserve">
+    <value>Рекомендуемое</value>
+  </data>
+  <data name="home_widgets_panel_desc" xml:space="preserve">
+    <value>Встроенные инструменты, открывающиеся в приложении и отображаемые на боковой панели.</value>
+  </data>
+  <data name="home_widgets_section" xml:space="preserve">
+    <value>Виджеты</value>
+  </data>
+  <data name="language_exists" xml:space="preserve">
+    <value>Язык уже существует</value>
+  </data>
+  <data name="main_sidebar_collapse_full" xml:space="preserve">
+    <value>Полностью свернуть</value>
+  </data>
+  <data name="main_sidebar_collapse_icon_only" xml:space="preserve">
+    <value>Оставить значки</value>
+  </data>
+  <data name="main_sidebar_collapse_style" xml:space="preserve">
+    <value>Стиль сворачивания главной боковой панели</value>
+  </data>
+  <data name="mouse_snap_auto_recognition_frame_rate" xml:space="preserve">
+    <value>Частота кадров автораспознавания привязки мыши</value>
+  </data>
+  <data name="move_down" xml:space="preserve">
+    <value>Вниз</value>
+  </data>
+  <data name="move_up" xml:space="preserve">
+    <value>Вверх</value>
+  </data>
+  <data name="no_valid_data_found" xml:space="preserve">
+    <value>В таблице не найдено допустимых данных.</value>
+  </data>
+  <data name="normalization_standard" xml:space="preserve">
+    <value>Стандарт нормализации</value>
+  </data>
+  <data name="object_selection_trigger" xml:space="preserve">
+    <value>Способ выбора объектов</value>
+  </data>
+  <data name="official_publisher_announcement_edit_hint" xml:space="preserve">
+    <value>Редактируйте объявление здесь. После публикации оно появится в области объявлений на главной странице.</value>
+  </data>
+  <data name="official_publisher_announcement_empty" xml:space="preserve">
+    <value>(пусто)</value>
+  </data>
+  <data name="official_publisher_announcement_load" xml:space="preserve">
+    <value>Загрузить с сервера</value>
+  </data>
+  <data name="official_publisher_announcement_loaded" xml:space="preserve">
+    <value>Объявление загружено с сервера.</value>
+  </data>
+  <data name="official_publisher_announcement_pending" xml:space="preserve">
+    <value>Ожидает публикации</value>
+  </data>
+  <data name="official_publisher_announcement_preview" xml:space="preserve">
+    <value>Текущий черновик:</value>
+  </data>
+  <data name="official_publisher_announcement_section" xml:space="preserve">
+    <value>Объявление</value>
+  </data>
+  <data name="official_publisher_announcement_up_to_date" xml:space="preserve">
+    <value>На сервере уже актуально</value>
+  </data>
+  <data name="official_publisher_confirm" xml:space="preserve">
+    <value>Опубликовать официальное содержимое в COS?</value>
+  </data>
+  <data name="official_publisher_dev_mode_required" xml:space="preserve">
+    <value>Для публикации требуется режим разработчика.</value>
+  </data>
+  <data name="official_publisher_diagram_preview_summary" xml:space="preserve">
+    <value>Диаграммы: новых {0}, обновлено {1}, удалено {2}, без изменений {3}.</value>
+  </data>
+  <data name="official_publisher_diagram_section" xml:space="preserve">
+    <value>Диаграммы</value>
+  </data>
+  <data name="official_publisher_export_done" xml:space="preserve">
+    <value>Экспорт завершён.</value>
+  </data>
+  <data name="official_publisher_export_local" xml:space="preserve">
+    <value>Экспорт локально</value>
+  </data>
+  <data name="official_publisher_exporting" xml:space="preserve">
+    <value>Экспорт в {0}...</value>
+  </data>
+  <data name="official_publisher_geo_preview_summary" xml:space="preserve">
+    <value>Geothermobarometers: новых {0}, обновлено {1}, удалено {2}, без изменений {3}.</value>
+  </data>
+  <data name="official_publisher_geothermometer_section" xml:space="preserve">
+    <value>Geothermobarometers</value>
+  </data>
+  <data name="official_publisher_home_add_group" xml:space="preserve">
+    <value>Добавить группу</value>
+  </data>
+  <data name="official_publisher_home_edit_group" xml:space="preserve">
+    <value>Редактировать группу</value>
+  </data>
+  <data name="official_publisher_home_group_title_prompt" xml:space="preserve">
+    <value>Введите название группы:</value>
+  </data>
+  <data name="official_publisher_home_groups" xml:space="preserve">
+    <value>Группы</value>
+  </data>
+  <data name="official_publisher_home_link_items" xml:space="preserve">
+    <value>Ссылки</value>
+  </data>
+  <data name="official_publisher_home_links_bundled_saved" xml:space="preserve">
+    <value>Ссылки главной страницы сохранены во встроенный каталог.</value>
+  </data>
+  <data name="official_publisher_home_links_draft_saved" xml:space="preserve">
+    <value>Черновик ссылок главной страницы сохранён локально.</value>
+  </data>
+  <data name="official_publisher_home_links_pending" xml:space="preserve">
+    <value>Ожидает публикации</value>
+  </data>
+  <data name="official_publisher_home_links_preview_summary" xml:space="preserve">
+    <value>Группы: {0}, ссылки: {1}, локальный hash: {2}, удалённый hash: {3}.</value>
+  </data>
+  <data name="official_publisher_home_links_reloaded" xml:space="preserve">
+    <value>Редактор ссылок главной страницы перезагружен.</value>
+  </data>
+  <data name="official_publisher_home_links_section" xml:space="preserve">
+    <value>Ссылки главной страницы</value>
+  </data>
+  <data name="official_publisher_home_links_summary" xml:space="preserve">
+    <value>Ссылки главной страницы: {0} групп, {1} ссылок, hash={2}.</value>
+  </data>
+  <data name="official_publisher_home_links_up_to_date" xml:space="preserve">
+    <value>На сервере уже актуально.</value>
+  </data>
+  <data name="official_publisher_home_save_draft" xml:space="preserve">
+    <value>Сохранить черновик</value>
+  </data>
+  <data name="official_publisher_home_select_group" xml:space="preserve">
+    <value>Сначала выберите группу.</value>
+  </data>
+  <data name="official_publisher_include_announcement" xml:space="preserve">
+    <value>Объявление</value>
+  </data>
+  <data name="official_publisher_include_diagrams" xml:space="preserve">
+    <value>Диаграммы</value>
+  </data>
+  <data name="official_publisher_include_geothermometers" xml:space="preserve">
+    <value>Geothermobarometers</value>
+  </data>
+  <data name="official_publisher_include_home_links" xml:space="preserve">
+    <value>Включить ссылки главной страницы</value>
+  </data>
+  <data name="official_publisher_new" xml:space="preserve">
+    <value>Новое</value>
+  </data>
+  <data name="official_publisher_preview_summary" xml:space="preserve">
+    <value>Предпросмотр: новых {0}, обновлено {1}, удалено {2}, без изменений {3}.</value>
+  </data>
+  <data name="official_publisher_progress_done" xml:space="preserve">
+    <value>Публикация завершена.</value>
+  </data>
+  <data name="official_publisher_progress_exporting_announcement" xml:space="preserve">
+    <value>Экспорт объявления...</value>
+  </data>
+  <data name="official_publisher_progress_exporting_diagrams" xml:space="preserve">
+    <value>Экспорт диаграмм...</value>
+  </data>
+  <data name="official_publisher_progress_exporting_geothermometers" xml:space="preserve">
+    <value>Экспорт Geothermobarometers...</value>
+  </data>
+  <data name="official_publisher_progress_exporting_home_links" xml:space="preserve">
+    <value>Экспорт ссылок главной страницы...</value>
+  </data>
+  <data name="official_publisher_progress_uploading" xml:space="preserve">
+    <value>Загрузка в COS ({0}/{1})...</value>
+  </data>
+  <data name="official_publisher_progress_uploading_cos" xml:space="preserve">
+    <value>Загрузка в COS...</value>
+  </data>
+  <data name="official_publisher_publish_cos" xml:space="preserve">
+    <value>Опубликовать в COS</value>
+  </data>
+  <data name="official_publisher_ready" xml:space="preserve">
+    <value>Официальный издатель готов.</value>
+  </data>
+  <data name="official_publisher_refresh" xml:space="preserve">
+    <value>Обновить предпросмотр</value>
+  </data>
+  <data name="official_publisher_refreshing" xml:space="preserve">
+    <value>Обновление предпросмотра публикации...</value>
+  </data>
+  <data name="official_publisher_removed" xml:space="preserve">
+    <value>Удалено</value>
+  </data>
+  <data name="official_publisher_staging_dir" xml:space="preserve">
+    <value>Каталог staging</value>
+  </data>
+  <data name="official_publisher_staging_required" xml:space="preserve">
+    <value>Выберите каталог staging.</value>
+  </data>
+  <data name="official_publisher_start" xml:space="preserve">
+    <value>Запуск публикации...</value>
+  </data>
+  <data name="official_publisher_target_required" xml:space="preserve">
+    <value>Выберите хотя бы одну цель публикации.</value>
+  </data>
+  <data name="official_publisher_unchanged" xml:space="preserve">
+    <value>Без изменений</value>
+  </data>
+  <data name="official_publisher_updated" xml:space="preserve">
+    <value>Обновлено</value>
+  </data>
+  <data name="official_template_publisher" xml:space="preserve">
+    <value>Официальный издатель</value>
+  </data>
+  <data name="official_template_publisher_desc" xml:space="preserve">
+    <value>Экспорт и публикация официального содержимого (диаграммы, Geothermobarometers, ссылки главной страницы, объявления) в COS</value>
+  </data>
+  <data name="ree_spider_diagram" xml:space="preserve">
+    <value>Паутинная диаграмма REE</value>
+  </data>
+  <data name="reset_default" xml:space="preserve">
+    <value>Сброс</value>
+  </data>
+  <data name="select_all" xml:space="preserve">
+    <value>Выбрать всё</value>
+  </data>
+  <data name="select_language_to_delete" xml:space="preserve">
+    <value>Выберите язык для удаления:</value>
+  </data>
+  <data name="shortcut_action_add_arrow_desc" xml:space="preserve">
+    <value>Вставить объект «стрелка».</value>
+  </data>
+  <data name="shortcut_action_add_arrow_name" xml:space="preserve">
+    <value>Добавить стрелку</value>
+  </data>
+  <data name="shortcut_action_add_function_desc" xml:space="preserve">
+    <value>Вставить объект «функция».</value>
+  </data>
+  <data name="shortcut_action_add_function_name" xml:space="preserve">
+    <value>Добавить функцию</value>
+  </data>
+  <data name="shortcut_action_add_line_desc" xml:space="preserve">
+    <value>Вставить объект «линия».</value>
+  </data>
+  <data name="shortcut_action_add_line_name" xml:space="preserve">
+    <value>Добавить линию</value>
+  </data>
+  <data name="shortcut_action_add_polygon_desc" xml:space="preserve">
+    <value>Вставить объект «многоугольник».</value>
+  </data>
+  <data name="shortcut_action_add_polygon_name" xml:space="preserve">
+    <value>Добавить многоугольник</value>
+  </data>
+  <data name="shortcut_action_add_text_desc" xml:space="preserve">
+    <value>Вставить текстовый объект.</value>
+  </data>
+  <data name="shortcut_action_add_text_name" xml:space="preserve">
+    <value>Добавить текст</value>
+  </data>
+  <data name="shortcut_action_bold_desc" xml:space="preserve">
+    <value>Переключить полужирное начертание выделенного текста.</value>
+  </data>
+  <data name="shortcut_action_bold_name" xml:space="preserve">
+    <value>Полужирный</value>
+  </data>
+  <data name="shortcut_action_center_view_desc" xml:space="preserve">
+    <value>Быстро центрировать вид диаграммы.</value>
+  </data>
+  <data name="shortcut_action_center_view_name" xml:space="preserve">
+    <value>Центрировать вид</value>
+  </data>
+  <data name="shortcut_action_close_notification_desc" xml:space="preserve">
+    <value>Закрыть уведомление, как при нажатии кнопки закрытия. Не применяется к интерактивным диалогам.</value>
+  </data>
+  <data name="shortcut_action_close_notification_keys" xml:space="preserve">
+    <value>Щелчок средней кнопкой по уведомлению</value>
+  </data>
+  <data name="shortcut_action_close_notification_name" xml:space="preserve">
+    <value>Закрыть уведомление</value>
+  </data>
+  <data name="shortcut_action_delete_selected_desc" xml:space="preserve">
+    <value>Удалить выбранный объект диаграммы.</value>
+  </data>
+  <data name="shortcut_action_delete_selected_name" xml:space="preserve">
+    <value>Удалить выбранный объект</value>
+  </data>
+  <data name="shortcut_action_italic_desc" xml:space="preserve">
+    <value>Переключить курсив для выделенного текста.</value>
+  </data>
+  <data name="shortcut_action_italic_name" xml:space="preserve">
+    <value>Курсив</value>
+  </data>
+  <data name="shortcut_action_quick_delete_desc" xml:space="preserve">
+    <value>Удалить пользовательский шаблон без подтверждения.</value>
+  </data>
+  <data name="shortcut_action_quick_delete_keys" xml:space="preserve">
+    <value>Ctrl+щелчок по левой части карточки</value>
+  </data>
+  <data name="shortcut_action_quick_delete_name" xml:space="preserve">
+    <value>Быстрое удаление</value>
+  </data>
+  <data name="shortcut_action_quick_favorite_desc" xml:space="preserve">
+    <value>Быстро переключить статус избранного шаблона.</value>
+  </data>
+  <data name="shortcut_action_quick_favorite_keys" xml:space="preserve">
+    <value>Ctrl+щелчок по правой части карточки</value>
+  </data>
+  <data name="shortcut_action_quick_favorite_name" xml:space="preserve">
+    <value>Быстрое избранное</value>
+  </data>
+  <data name="shortcut_action_redo_desc" xml:space="preserve">
+    <value>Восстановить только что отменённое действие.</value>
+  </data>
+  <data name="shortcut_action_redo_name" xml:space="preserve">
+    <value>Повторить</value>
+  </data>
+  <data name="shortcut_action_save_plot_desc" xml:space="preserve">
+    <value>Сохранить текущую диаграмму или содержимое шаблона.</value>
+  </data>
+  <data name="shortcut_action_save_plot_name" xml:space="preserve">
+    <value>Сохранить диаграмму</value>
+  </data>
+  <data name="shortcut_action_underline_desc" xml:space="preserve">
+    <value>Переключить подчёркивание выделенного текста.</value>
+  </data>
+  <data name="shortcut_action_underline_name" xml:space="preserve">
+    <value>Подчёркивание</value>
+  </data>
+  <data name="shortcut_action_undo_desc" xml:space="preserve">
+    <value>Отменить предыдущее действие.</value>
+  </data>
+  <data name="shortcut_action_undo_name" xml:space="preserve">
+    <value>Отменить</value>
+  </data>
+  <data name="shortcut_group_add_desc" xml:space="preserve">
+    <value>Эти сочетания клавиш позволяют быстро создавать типовые объекты на странице диаграммы.</value>
+  </data>
+  <data name="shortcut_group_add_title" xml:space="preserve">
+    <value>Быстрая вставка объектов</value>
+  </data>
+  <data name="shortcut_group_notification_desc" xml:space="preserve">
+    <value>Эти сочетания применяются к всплывающим уведомлениям в правом верхнем углу.</value>
+  </data>
+  <data name="shortcut_group_notification_title" xml:space="preserve">
+    <value>Уведомления</value>
+  </data>
+  <data name="shortcut_group_plot_desc" xml:space="preserve">
+    <value>Эти сочетания в основном работают на странице редактирования диаграммы.</value>
+  </data>
+  <data name="shortcut_group_plot_title" xml:space="preserve">
+    <value>Редактор диаграммы</value>
+  </data>
+  <data name="shortcut_group_rich_text_desc" xml:space="preserve">
+    <value>Эти сочетания применяются к областям редактирования форматированного текста, например справочным документам.</value>
+  </data>
+  <data name="shortcut_group_rich_text_title" xml:space="preserve">
+    <value>Редактор форматированного текста</value>
+  </data>
+  <data name="shortcut_group_template_desc" xml:space="preserve">
+    <value>Эти действия применяются к карточкам шаблонов в режиме просмотра.</value>
+  </data>
+  <data name="shortcut_group_template_title" xml:space="preserve">
+    <value>Действия с карточками шаблонов</value>
+  </data>
+  <data name="shortcuts_hint" xml:space="preserve">
+    <value>Подсказка: некоторые сочетания работают только когда связанная страница активна или имеет фокус клавиатуры.</value>
+  </data>
+  <data name="shortcuts_intro" xml:space="preserve">
+    <value>На этой странице перечислены сочетания клавиш, поддерживаемые в текущей версии. Только для чтения, редактирование здесь недоступно.</value>
+  </data>
+  <data name="shortcuts_title" xml:space="preserve">
+    <value>Сочетания клавиш</value>
+  </data>
+  <data name="single_click" xml:space="preserve">
+    <value>Один щелчок</value>
+  </data>
+  <data name="spider_current_plot_order" xml:space="preserve">
+    <value>Текущий порядок построения</value>
+  </data>
+  <data name="spider_element_order_hint" xml:space="preserve">
+    <value>Выберите элементы для включения в диаграмму. Список ниже показывает текущий порядок построения; кнопки справа позволяют настроить расположение по горизонтальной оси.</value>
+  </data>
+  <data name="tool_diagrams_section" xml:space="preserve">
+    <value>ИНСТРУМЕНТАЛЬНЫЕ ДИАГРАММЫ</value>
+  </data>
+  <data name="trace_element_spider_diagram" xml:space="preserve">
+    <value>Паутинная диаграмма микроэлементов</value>
+  </data>
+  <data name="translation_annotation" xml:space="preserve">
+    <value>Аннотация</value>
+  </data>
+  <data name="translation_axis_subtitle" xml:space="preserve">
+    <value>Подзаголовок оси</value>
+  </data>
+  <data name="translation_axis_title" xml:space="preserve">
+    <value>Заголовок оси</value>
+  </data>
+  <data name="translation_export_failed" xml:space="preserve">
+    <value>Ошибка экспорта.</value>
+  </data>
+  <data name="translation_export_no_languages" xml:space="preserve">
+    <value>Сначала настройте языки в основных настройках.</value>
+  </data>
+  <data name="translation_export_success" xml:space="preserve">
+    <value>Переводы экспортированы в {0}.</value>
+  </data>
+  <data name="translation_export_table_missing" xml:space="preserve">
+    <value>Таблица перевода не готова.</value>
+  </data>
+  <data name="translation_import_failed" xml:space="preserve">
+    <value>Ошибка импорта.</value>
+  </data>
+  <data name="translation_import_invalid_format" xml:space="preserve">
+    <value>Неподдерживаемый формат файла перевода.</value>
+  </data>
+  <data name="translation_import_invalid_json" xml:space="preserve">
+    <value>Недопустимый JSON-файл.</value>
+  </data>
+  <data name="translation_import_no_languages" xml:space="preserve">
+    <value>Сначала настройте языки в основных настройках.</value>
+  </data>
+  <data name="translation_import_success" xml:space="preserve">
+    <value>Импортировано {0} элементов, обновлено {1} ячеек.</value>
+  </data>
+  <data name="translation_import_table_missing" xml:space="preserve">
+    <value>Таблица перевода не готова.</value>
+  </data>
+  <data name="translation_item_context" xml:space="preserve">
+    <value>Элемент содержимого</value>
+  </data>
+  <data name="translation_loaded" xml:space="preserve">
+    <value>Данные перевода загружены</value>
+  </data>
+  <data name="translation_main_title" xml:space="preserve">
+    <value>Основной заголовок</value>
+  </data>
+  <data name="translation_node_list" xml:space="preserve">
+    <value>Путь категории</value>
+  </data>
+  <data name="translation_text_item" xml:space="preserve">
+    <value>Текст</value>
+  </data>
 </root>

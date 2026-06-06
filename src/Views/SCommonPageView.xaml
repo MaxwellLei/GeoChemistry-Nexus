@@ -29,19 +29,16 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="{Binding [Language_],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" FontSize="14"/>
-                            <ComboBox SelectedIndex="{Binding Language,Mode=TwoWay}" Width="140" Height="30" Grid.Column="1" VerticalAlignment="Center">
+                            <ComboBox ItemsSource="{Binding AppLanguageOptions}"
+                                      DisplayMemberPath="DisplayName"
+                                      SelectedValuePath="Code"
+                                      SelectedValue="{Binding SelectedAppLanguageCode, Mode=TwoWay}"
+                                      Width="200" Height="30" Grid.Column="1" VerticalAlignment="Center">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="SelectionChanged">
                                         <i:InvokeCommandAction Command="{Binding LanguageChangedCommand}"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
-                                <ComboBoxItem Content="简体中文"/>
-                                <ComboBoxItem Content="English (US)"/>
-                                <ComboBoxItem Content="Deutsch"/>
-                                <ComboBoxItem Content="Español"/>
-                                <ComboBoxItem Content="日本語"/>
-                                <ComboBoxItem Content="한국어"/>
-                                <ComboBoxItem Content="Русский"/>
                             </ComboBox>
                         </Grid>
 

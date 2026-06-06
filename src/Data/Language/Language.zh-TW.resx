@@ -2343,6 +2343,21 @@
   <data name="shortcut_action_underline_desc" xml:space="preserve">
     <value>切換選取文字的底線樣式。</value>
   </data>
+  <data name="shortcut_group_notification_title" xml:space="preserve">
+    <value>訊息通知</value>
+  </data>
+  <data name="shortcut_group_notification_desc" xml:space="preserve">
+    <value>以下快捷鍵適用於右上角的訊息通知區域。</value>
+  </data>
+  <data name="shortcut_action_close_notification_name" xml:space="preserve">
+    <value>關閉通知</value>
+  </data>
+  <data name="shortcut_action_close_notification_keys" xml:space="preserve">
+    <value>在通知上按下滑鼠中鍵</value>
+  </data>
+  <data name="shortcut_action_close_notification_desc" xml:space="preserve">
+    <value>關閉目前訊息通知，效果與點擊關閉按鈕相同。互動式對話框不適用。</value>
+  </data>
   <data name="spider_element_order_hint" xml:space="preserve">
     <value>勾選需要參與繪圖的元素；下方列表表示目前繪圖順序，可透過右側按鈕調整橫軸排列。</value>
   </data>
@@ -2409,4 +2424,695 @@
   <data name="runProcessing" xml:space="preserve">
     <value>執行處理</value>
   </data>
+  <data name="notification_success" xml:space="preserve">
+    <value>成功</value>
+  </data>
+  <data name="notification_warning" xml:space="preserve">
+    <value>警告</value>
+  </data>
+  <data name="filter_all_files" xml:space="preserve">
+    <value>所有檔案</value>
+  </data>
+  <data name="filter_json_files" xml:space="preserve">
+    <value>JSON 檔案</value>
+  </data>
+  <data name="filter_zip_files" xml:space="preserve">
+    <value>Zip 檔案</value>
+  </data>
+  <data name="filter_template_files" xml:space="preserve">
+    <value>模板檔案</value>
+  </data>
+  <data name="filter_csv_files" xml:space="preserve">
+    <value>CSV 檔案</value>
+  </data>
+  <data name="filter_png_image" xml:space="preserve">
+    <value>PNG 圖像</value>
+  </data>
+  <data name="filter_svg_vector" xml:space="preserve">
+    <value>SVG 向量圖</value>
+  </data>
+  <data name="open_template" xml:space="preserve">
+    <value>開啟模板</value>
+  </data>
+  <data name="save_file_title" xml:space="preserve">
+    <value>儲存檔案</value>
+  </data>
+  <data name="plot_undefined_data_columns" xml:space="preserve">
+    <value>未定義資料欄</value>
+  </data>
+  <data name="plot_json_multiselect_not_supported" xml:space="preserve">
+    <value>JSON 檔案不支援多選批量新增，僅支援 ZIP 檔案多選批量新增。</value>
+  </data>
+  <data name="plot_ternary_axis_not_found" xml:space="preserve">
+    <value>錯誤：在圖中找不到三元座標軸物件。</value>
+  </data>
+  <data name="plot_upload_thumbnail_failed" xml:space="preserve">
+    <value>上傳縮圖失敗：{0}</value>
+  </data>
+  <data name="plot_type_2d_description" xml:space="preserve">
+    <value>適合常規 X-Y 座標繪圖，適用於散點、折線、函數等大多數圖解模板。</value>
+  </data>
+  <data name="plot_type_ternary_description" xml:space="preserve">
+    <value>適合三組分配比資料，常用於三元判別圖、相圖和端元混合關係表達。</value>
+  </data>
+  <data name="selected_label" xml:space="preserve">
+    <value>已選</value>
+  </data>
+  <data name="dataPrep_workflowStep1" xml:space="preserve">
+    <value>1. 匯入 CSV / Excel 資料表，確認主量元素表頭</value>
+  </data>
+  <data name="dataPrep_workflowStep2" xml:space="preserve">
+    <value>2. 設定檢測限、空值、異常值與鐵價態估算策略</value>
+  </data>
+  <data name="dataPrep_workflowStep3" xml:space="preserve">
+    <value>3. 批量產生清洗欄、正規化欄和地球化學指標欄</value>
+  </data>
+  <data name="dataPrep_workflowStep4" xml:space="preserve">
+    <value>4. 輸出到新的 Processed 工作表並匯出結果</value>
+  </data>
+  <data name="see_error_log_for_details" xml:space="preserve">
+    <value>詳見 error.log。</value>
+  </data>
+  <data name="announcement" xml:space="preserve">
+    <value>公告</value>
+  </data>
+  <data name="at_least_two_languages_swap" xml:space="preserve">
+    <value>至少需要兩種語言才能交換。</value>
+  </data>
+  <data name="confirm_delete_language" xml:space="preserve">
+    <value>確定要刪除語言「{0}」嗎？此操作無法復原。</value>
+  </data>
+  <data name="cos_credentials_required" xml:space="preserve">
+    <value>請先設定並儲存 COS 憑證。</value>
+  </data>
+  <data name="cos_save_settings" xml:space="preserve">
+    <value>儲存設定</value>
+  </data>
+  <data name="cos_secret_id_required" xml:space="preserve">
+    <value>SecretId 不能為空。</value>
+  </data>
+  <data name="cos_settings_saved" xml:space="preserve">
+    <value>COS 設定已儲存。</value>
+  </data>
+  <data name="cos_test_connection" xml:space="preserve">
+    <value>測試連線</value>
+  </data>
+  <data name="cos_test_failed" xml:space="preserve">
+    <value>COS 連線測試失敗。</value>
+  </data>
+  <data name="cos_test_success" xml:space="preserve">
+    <value>COS 連線測試成功。</value>
+  </data>
+  <data name="dataPrep_autoBackfillIronOxides" xml:space="preserve">
+    <value>缺失時自動回填 FeO / Fe2O3</value>
+  </data>
+  <data name="dataPrep_calculationItems" xml:space="preserve">
+    <value>計算項目</value>
+  </data>
+  <data name="dataPrep_clearTableFailed" xml:space="preserve">
+    <value>清除資料表失敗：</value>
+  </data>
+  <data name="dataPrep_detectionLimitPreview" xml:space="preserve">
+    <value>目前介面已不包含檢測限替換與資料清洗參數。</value>
+  </data>
+  <data name="dataPrep_detectionReplaceHalf" xml:space="preserve">
+    <value>替換為檢測限一半</value>
+  </data>
+  <data name="dataPrep_detectionReplaceNull" xml:space="preserve">
+    <value>替換為 Null</value>
+  </data>
+  <data name="dataPrep_detectionReplaceZero" xml:space="preserve">
+    <value>替換為 0</value>
+  </data>
+  <data name="dataPrep_enable" xml:space="preserve">
+    <value>啟用</value>
+  </data>
+  <data name="dataPrep_excludeVolatiles" xml:space="preserve">
+    <value>扣除揮發份</value>
+  </data>
+  <data name="dataPrep_exportCurrentTable" xml:space="preserve">
+    <value>匯出目前表</value>
+  </data>
+  <data name="dataPrep_exportFailed" xml:space="preserve">
+    <value>匯出失敗：</value>
+  </data>
+  <data name="dataPrep_exportFilter" xml:space="preserve">
+    <value>CSV 檔案|*.csv</value>
+  </data>
+  <data name="dataPrep_exportSucceeded" xml:space="preserve">
+    <value>目前工作表已匯出。</value>
+  </data>
+  <data name="dataPrep_exportTitle" xml:space="preserve">
+    <value>匯出預處理結果</value>
+  </data>
+  <data name="dataPrep_fe3Tooltip" xml:space="preserve">
+    <value>僅用於「使用經驗比例校正」，表示 Fe3+/Fe 的經驗比例</value>
+  </data>
+  <data name="dataPrep_indices" xml:space="preserve">
+    <value>指標</value>
+  </data>
+  <data name="dataPrep_ironMethodAutoEstimate" xml:space="preserve">
+    <value>依總鐵自動估算</value>
+  </data>
+  <data name="dataPrep_ironMethodBackCalculate" xml:space="preserve">
+    <value>依 FeO / Fe2O3 反演</value>
+  </data>
+  <data name="dataPrep_ironMethodEmpiricalRatio" xml:space="preserve">
+    <value>使用經驗比例校正</value>
+  </data>
+  <data name="dataPrep_ironModeBackfillFe2o3" xml:space="preserve">
+    <value>由 FeO 經驗回填 Fe2O3</value>
+  </data>
+  <data name="dataPrep_ironModeBackfillFeo" xml:space="preserve">
+    <value>由 Fe2O3 經驗回填 FeO</value>
+  </data>
+  <data name="dataPrep_ironModeFeotAuto" xml:space="preserve">
+    <value>FeOT 自動估算</value>
+  </data>
+  <data name="dataPrep_ironModeFeotEmpirical" xml:space="preserve">
+    <value>FeOT 經驗比例校正</value>
+  </data>
+  <data name="dataPrep_ironModeFromFeotAndFe2o3" xml:space="preserve">
+    <value>由 FeOT + Fe2O3 反演 FeO</value>
+  </data>
+  <data name="dataPrep_ironModeFromFeotAndFeo" xml:space="preserve">
+    <value>由 FeOT + FeO 反演 Fe2O3</value>
+  </data>
+  <data name="dataPrep_ironModeInsufficient" xml:space="preserve">
+    <value>鐵資料不足</value>
+  </data>
+  <data name="dataPrep_ironModeMeasured" xml:space="preserve">
+    <value>實測 FeO + Fe2O3</value>
+  </data>
+  <data name="dataPrep_ironValence" xml:space="preserve">
+    <value>鐵價態</value>
+  </data>
+  <data name="dataPrep_keepOriginalOnly" xml:space="preserve">
+    <value>僅保留原始表</value>
+  </data>
+  <data name="dataPrep_listSeparator" xml:space="preserve">
+    <value>、</value>
+  </data>
+  <data name="dataPrep_method" xml:space="preserve">
+    <value>方法</value>
+  </data>
+  <data name="dataPrep_missingKeep" xml:space="preserve">
+    <value>保留空值</value>
+  </data>
+  <data name="dataPrep_missingMean" xml:space="preserve">
+    <value>平均值填補</value>
+  </data>
+  <data name="dataPrep_missingMedian" xml:space="preserve">
+    <value>中位數填補</value>
+  </data>
+  <data name="dataPrep_moduleAnhydrous" xml:space="preserve">
+    <value>無水化</value>
+  </data>
+  <data name="dataPrep_moduleIndexCalculation" xml:space="preserve">
+    <value>指標計算</value>
+  </data>
+  <data name="dataPrep_moduleIronValence" xml:space="preserve">
+    <value>鐵價態</value>
+  </data>
+  <data name="dataPrep_noCellSelected" xml:space="preserve">
+    <value>未選取儲存格</value>
+  </data>
+  <data name="dataPrep_noOxideColumnsDetected" xml:space="preserve">
+    <value>未識別到主量元素欄</value>
+  </data>
+  <data name="dataPrep_noProcessableData" xml:space="preserve">
+    <value>目前工作表沒有可處理的資料，請先匯入包含欄位名稱的資料表。</value>
+  </data>
+  <data name="dataPrep_normalization" xml:space="preserve">
+    <value>正規化</value>
+  </data>
+  <data name="dataPrep_normalizeToHundred" xml:space="preserve">
+    <value>正規化至 100%</value>
+  </data>
+  <data name="dataPrep_notDetected" xml:space="preserve">
+    <value>未檢測</value>
+  </data>
+  <data name="dataPrep_noteDetectionNoLimitFallbackZero" xml:space="preserve">
+    <value>b.d.l. 無數值限，已按 0 處理</value>
+  </data>
+  <data name="dataPrep_noteDetectionReplacedWithHalf" xml:space="preserve">
+    <value>檢測限值已替換為一半</value>
+  </data>
+  <data name="dataPrep_noteDetectionReplacedWithNull" xml:space="preserve">
+    <value>檢測限值已替換為 Null</value>
+  </data>
+  <data name="dataPrep_noteDetectionReplacedWithZero" xml:space="preserve">
+    <value>檢測限值已替換為 0</value>
+  </data>
+  <data name="dataPrep_noteDetectionStandardized" xml:space="preserve">
+    <value>檢測限值已標準化</value>
+  </data>
+  <data name="dataPrep_noteMissingFilled" xml:space="preserve">
+    <value>{0} 已按 {1} 填補</value>
+  </data>
+  <data name="dataPrep_noteNonNumericAsMissing" xml:space="preserve">
+    <value>無法識別為數值，按空值處理</value>
+  </data>
+  <data name="dataPrep_noteOutlierDetected" xml:space="preserve">
+    <value>{0} 檢測為異常值</value>
+  </data>
+  <data name="dataPrep_noWorksheetToProcess" xml:space="preserve">
+    <value>目前沒有可處理的工作表。</value>
+  </data>
+  <data name="dataPrep_outlierIqr" xml:space="preserve">
+    <value>IQR 四分位法</value>
+  </data>
+  <data name="dataPrep_outlierMarkOnly" xml:space="preserve">
+    <value>僅標記異常值</value>
+  </data>
+  <data name="dataPrep_outlierThreeSigma" xml:space="preserve">
+    <value>3σ 標準差法</value>
+  </data>
+  <data name="dataPrep_parameterOptions" xml:space="preserve">
+    <value>參數選項</value>
+  </data>
+  <data name="dataPrep_previewSummary" xml:space="preserve">
+    <value>偵測到氧化物欄：{0}；已啟用 {1}；鐵價態方法為「{2}」；Fe3+/Fe 經驗比例 {3:0.00}。</value>
+  </data>
+  <data name="dataPrep_processingCompleted" xml:space="preserve">
+    <value>資料預處理完成。</value>
+  </data>
+  <data name="dataPrep_processingFailed" xml:space="preserve">
+    <value>執行處理失敗：</value>
+  </data>
+  <data name="dataPrep_processingSummary" xml:space="preserve">
+    <value>已處理 {0} 列，識別 {1} 個數值欄；檢測限替換 {2} 處，異常值標記 {3} 處，異常值置空 {4} 處，空值填補 {5} 處。</value>
+  </data>
+  <data name="dataPrep_resetToRecommended" xml:space="preserve">
+    <value>已恢復為建議預設。</value>
+  </data>
+  <data name="dataPrep_sampleDataGenerated" xml:space="preserve">
+    <value>範例資料已產生。</value>
+  </data>
+  <data name="dataPrep_sampleDataGenerateFailed" xml:space="preserve">
+    <value>產生範例資料失敗：</value>
+  </data>
+  <data name="dataPrep_selectedCellEmpty" xml:space="preserve">
+    <value>{0}: &lt;空&gt;</value>
+  </data>
+  <data name="dataPrep_selectedCellValue" xml:space="preserve">
+    <value>{0}: {1}</value>
+  </data>
+  <data name="dataPrep_strategyMissingKeep" xml:space="preserve">
+    <value>保留空值</value>
+  </data>
+  <data name="dataPrep_strategyMissingMean" xml:space="preserve">
+    <value>平均值填補</value>
+  </data>
+  <data name="dataPrep_strategyMissingMedian" xml:space="preserve">
+    <value>中位數填補</value>
+  </data>
+  <data name="dataPrep_tableCleared" xml:space="preserve">
+    <value>已清除目前資料表。</value>
+  </data>
+  <data name="deselect_all" xml:space="preserve">
+    <value>取消全選</value>
+  </data>
+  <data name="diagram_editor_basic_settings" xml:space="preserve">
+    <value>基本設定</value>
+  </data>
+  <data name="diagram_editor_content_translation" xml:space="preserve">
+    <value>內容翻譯</value>
+  </data>
+  <data name="diagram_editor_new_version" xml:space="preserve">
+    <value>新版本</value>
+  </data>
+  <data name="diagram_editor_saved_version" xml:space="preserve">
+    <value>儲存後版本：</value>
+  </data>
+  <data name="diagram_editor_translation_hint" xml:space="preserve">
+    <value>編輯圖解標題、座標軸、文字與註釋的多語言內容。語言請在「基本設定」中設定，此處支援匯出/匯入 JSON 翻譯檔案。</value>
+  </data>
+  <data name="diagram_hint_no_favorites" xml:space="preserve">
+    <value>暫無收藏的圖解範本。</value>
+  </data>
+  <data name="diagram_hint_no_official" xml:space="preserve">
+    <value>暫無官方圖解範本。</value>
+  </data>
+  <data name="diagram_hint_no_personal" xml:space="preserve">
+    <value>暫無個人圖解，可透過「檔案」選單新增或匯入。</value>
+  </data>
+  <data name="diagram_hint_no_recents" xml:space="preserve">
+    <value>暫無最近使用的圖解範本。</value>
+  </data>
+  <data name="diagram_hint_no_search_results" xml:space="preserve">
+    <value>未找到符合的範本。</value>
+  </data>
+  <data name="diagram_hint_no_templates" xml:space="preserve">
+    <value>暫無圖解範本。</value>
+  </data>
+  <data name="diagram_translation_export" xml:space="preserve">
+    <value>匯出</value>
+  </data>
+  <data name="diagram_translation_import" xml:space="preserve">
+    <value>匯入</value>
+  </data>
+  <data name="double_click" xml:space="preserve">
+    <value>雙擊</value>
+  </data>
+  <data name="element_order" xml:space="preserve">
+    <value>元素順序</value>
+  </data>
+  <data name="enable_normalization" xml:space="preserve">
+    <value>啟用標準化</value>
+  </data>
+  <data name="enter_language_code_prompt" xml:space="preserve">
+    <value>請輸入語言代碼（例如 fr-FR）：</value>
+  </data>
+  <data name="enter_plot_mode" xml:space="preserve">
+    <value>進入繪圖模式</value>
+  </data>
+  <data name="force_update_template" xml:space="preserve">
+    <value>強制更新</value>
+  </data>
+  <data name="force_update_template_not_found" xml:space="preserve">
+    <value>伺服器上未找到該圖解範本。</value>
+  </data>
+  <data name="geo_msg_formula_name_conflict" xml:space="preserve">
+    <value>公式名 '{0}' 已被 '{1}'（{2}）使用</value>
+  </data>
+  <data name="geo_msg_formula_name_duplicate" xml:space="preserve">
+    <value>公式名 '{0}' 在溫壓計 '{1}' 內重複定義</value>
+  </data>
+  <data name="home_catalog_already_latest" xml:space="preserve">
+    <value>首頁連結目錄已是最新版本。</value>
+  </data>
+  <data name="home_catalog_sync_failed" xml:space="preserve">
+    <value>同步首頁連結目錄失敗。</value>
+  </data>
+  <data name="home_catalog_updated" xml:space="preserve">
+    <value>首頁連結目錄已更新。</value>
+  </data>
+  <data name="home_group_empty_links" xml:space="preserve">
+    <value>此分組暫無連結，可點擊「新增連結」建立。</value>
+  </data>
+  <data name="home_icon_url" xml:space="preserve">
+    <value>圖示 URL</value>
+  </data>
+  <data name="home_icon_url_hint" xml:space="preserve">
+    <value>可選。填寫 https://... 時將覆蓋上方預設圖示。</value>
+  </data>
+  <data name="home_links_edit_language" xml:space="preserve">
+    <value>編輯語言：</value>
+  </data>
+  <data name="home_personal_group" xml:space="preserve">
+    <value>個人</value>
+  </data>
+  <data name="home_personal_group_hint" xml:space="preserve">
+    <value>此分組可新增、編輯或刪除您的連結。</value>
+  </data>
+  <data name="home_recommended_content" xml:space="preserve">
+    <value>推薦內容</value>
+  </data>
+  <data name="home_widgets_panel_desc" xml:space="preserve">
+    <value>在軟體內開啟的工具，顯示於右側欄。</value>
+  </data>
+  <data name="home_widgets_section" xml:space="preserve">
+    <value>小組件</value>
+  </data>
+  <data name="language_exists" xml:space="preserve">
+    <value>該語言已存在</value>
+  </data>
+  <data name="main_sidebar_collapse_full" xml:space="preserve">
+    <value>全部收起</value>
+  </data>
+  <data name="main_sidebar_collapse_icon_only" xml:space="preserve">
+    <value>保留圖示</value>
+  </data>
+  <data name="main_sidebar_collapse_style" xml:space="preserve">
+    <value>主側邊欄收起樣式</value>
+  </data>
+  <data name="mouse_snap_auto_recognition_frame_rate" xml:space="preserve">
+    <value>滑鼠吸附自動識別幀率</value>
+  </data>
+  <data name="move_down" xml:space="preserve">
+    <value>下移</value>
+  </data>
+  <data name="move_up" xml:space="preserve">
+    <value>上移</value>
+  </data>
+  <data name="no_valid_data_found" xml:space="preserve">
+    <value>未在資料表中找到有效資料。</value>
+  </data>
+  <data name="normalization_standard" xml:space="preserve">
+    <value>標準化方案</value>
+  </data>
+  <data name="object_selection_trigger" xml:space="preserve">
+    <value>選取物件觸發方式</value>
+  </data>
+  <data name="official_publisher_announcement_edit_hint" xml:space="preserve">
+    <value>在此編輯公告內容，發布後將在首頁「公告」區域顯示。</value>
+  </data>
+  <data name="official_publisher_announcement_empty" xml:space="preserve">
+    <value>（空）</value>
+  </data>
+  <data name="official_publisher_announcement_load" xml:space="preserve">
+    <value>從伺服器載入</value>
+  </data>
+  <data name="official_publisher_announcement_loaded" xml:space="preserve">
+    <value>已從伺服器載入公告。</value>
+  </data>
+  <data name="official_publisher_announcement_pending" xml:space="preserve">
+    <value>待發布</value>
+  </data>
+  <data name="official_publisher_announcement_preview" xml:space="preserve">
+    <value>目前草稿：</value>
+  </data>
+  <data name="official_publisher_announcement_section" xml:space="preserve">
+    <value>公告</value>
+  </data>
+  <data name="official_publisher_announcement_up_to_date" xml:space="preserve">
+    <value>伺服器已是最新</value>
+  </data>
+  <data name="official_publisher_confirm" xml:space="preserve">
+    <value>確認將官方內容發布至 COS？</value>
+  </data>
+  <data name="official_publisher_dev_mode_required" xml:space="preserve">
+    <value>發布官方範本需要開啟開發者模式。</value>
+  </data>
+  <data name="official_publisher_diagram_preview_summary" xml:space="preserve">
+    <value>圖解：新增 {0}，更新 {1}，下架 {2}，未變更 {3}。</value>
+  </data>
+  <data name="official_publisher_diagram_section" xml:space="preserve">
+    <value>圖解</value>
+  </data>
+  <data name="official_publisher_export_done" xml:space="preserve">
+    <value>匯出完成。</value>
+  </data>
+  <data name="official_publisher_export_local" xml:space="preserve">
+    <value>僅匯出至本地</value>
+  </data>
+  <data name="official_publisher_exporting" xml:space="preserve">
+    <value>正在匯出至 {0}...</value>
+  </data>
+  <data name="official_publisher_geo_preview_summary" xml:space="preserve">
+    <value>溫壓計：新增 {0}，更新 {1}，下架 {2}，未變更 {3}。</value>
+  </data>
+  <data name="official_publisher_geothermometer_section" xml:space="preserve">
+    <value>溫壓計</value>
+  </data>
+  <data name="official_publisher_home_add_group" xml:space="preserve">
+    <value>新增分組</value>
+  </data>
+  <data name="official_publisher_home_edit_group" xml:space="preserve">
+    <value>編輯分組</value>
+  </data>
+  <data name="official_publisher_home_group_title_prompt" xml:space="preserve">
+    <value>請輸入分組名稱：</value>
+  </data>
+  <data name="official_publisher_home_groups" xml:space="preserve">
+    <value>分組</value>
+  </data>
+  <data name="official_publisher_home_link_items" xml:space="preserve">
+    <value>連結</value>
+  </data>
+  <data name="official_publisher_home_links_bundled_saved" xml:space="preserve">
+    <value>首頁連結已儲存至內建目錄。</value>
+  </data>
+  <data name="official_publisher_home_links_draft_saved" xml:space="preserve">
+    <value>首頁連結草稿已儲存至本地。</value>
+  </data>
+  <data name="official_publisher_home_links_pending" xml:space="preserve">
+    <value>待發布</value>
+  </data>
+  <data name="official_publisher_home_links_preview_summary" xml:space="preserve">
+    <value>分組：{0}，連結：{1}，本地 hash：{2}，遠端 hash：{3}。</value>
+  </data>
+  <data name="official_publisher_home_links_reloaded" xml:space="preserve">
+    <value>首頁連結編輯器已重新載入。</value>
+  </data>
+  <data name="official_publisher_home_links_section" xml:space="preserve">
+    <value>首頁連結</value>
+  </data>
+  <data name="official_publisher_home_links_summary" xml:space="preserve">
+    <value>首頁連結：{0} 個分組，{1} 個連結，hash={2}。</value>
+  </data>
+  <data name="official_publisher_home_links_up_to_date" xml:space="preserve">
+    <value>伺服器已是最新。</value>
+  </data>
+  <data name="official_publisher_home_save_draft" xml:space="preserve">
+    <value>儲存草稿</value>
+  </data>
+  <data name="official_publisher_home_select_group" xml:space="preserve">
+    <value>請先選擇一個分組。</value>
+  </data>
+  <data name="official_publisher_include_announcement" xml:space="preserve">
+    <value>公告</value>
+  </data>
+  <data name="official_publisher_include_diagrams" xml:space="preserve">
+    <value>圖解</value>
+  </data>
+  <data name="official_publisher_include_geothermometers" xml:space="preserve">
+    <value>溫壓計</value>
+  </data>
+  <data name="official_publisher_include_home_links" xml:space="preserve">
+    <value>包含首頁連結</value>
+  </data>
+  <data name="official_publisher_new" xml:space="preserve">
+    <value>新增</value>
+  </data>
+  <data name="official_publisher_preview_summary" xml:space="preserve">
+    <value>預覽：新增 {0}，更新 {1}，下架 {2}，未變更 {3}。</value>
+  </data>
+  <data name="official_publisher_progress_done" xml:space="preserve">
+    <value>發布完成。</value>
+  </data>
+  <data name="official_publisher_progress_exporting_announcement" xml:space="preserve">
+    <value>正在匯出公告...</value>
+  </data>
+  <data name="official_publisher_progress_exporting_diagrams" xml:space="preserve">
+    <value>正在匯出圖解範本...</value>
+  </data>
+  <data name="official_publisher_progress_exporting_geothermometers" xml:space="preserve">
+    <value>正在匯出溫壓計...</value>
+  </data>
+  <data name="official_publisher_progress_exporting_home_links" xml:space="preserve">
+    <value>正在匯出首頁連結...</value>
+  </data>
+  <data name="official_publisher_progress_uploading" xml:space="preserve">
+    <value>正在上傳至 COS ({0}/{1})...</value>
+  </data>
+  <data name="official_publisher_progress_uploading_cos" xml:space="preserve">
+    <value>正在上傳至 COS...</value>
+  </data>
+  <data name="official_publisher_publish_cos" xml:space="preserve">
+    <value>一鍵發布至 COS</value>
+  </data>
+  <data name="official_publisher_ready" xml:space="preserve">
+    <value>官方發布器已就緒。</value>
+  </data>
+  <data name="official_publisher_refresh" xml:space="preserve">
+    <value>重新整理預覽</value>
+  </data>
+  <data name="official_publisher_refreshing" xml:space="preserve">
+    <value>正在重新整理發布預覽...</value>
+  </data>
+  <data name="official_publisher_removed" xml:space="preserve">
+    <value>下架</value>
+  </data>
+  <data name="official_publisher_staging_dir" xml:space="preserve">
+    <value>本地 staging 目錄</value>
+  </data>
+  <data name="official_publisher_staging_required" xml:space="preserve">
+    <value>請選擇 staging 目錄。</value>
+  </data>
+  <data name="official_publisher_start" xml:space="preserve">
+    <value>開始發布...</value>
+  </data>
+  <data name="official_publisher_target_required" xml:space="preserve">
+    <value>請至少選擇一項發布內容。</value>
+  </data>
+  <data name="official_publisher_unchanged" xml:space="preserve">
+    <value>未變更</value>
+  </data>
+  <data name="official_publisher_updated" xml:space="preserve">
+    <value>更新</value>
+  </data>
+  <data name="official_template_publisher" xml:space="preserve">
+    <value>官方發布器</value>
+  </data>
+  <data name="official_template_publisher_desc" xml:space="preserve">
+    <value>匯出並發布官方內容（圖解、溫壓計、首頁連結、公告）至騰訊雲 COS</value>
+  </data>
+  <data name="ree_spider_diagram" xml:space="preserve">
+    <value>稀土元素蛛網圖</value>
+  </data>
+  <data name="reset_default" xml:space="preserve">
+    <value>重設</value>
+  </data>
+  <data name="select_all" xml:space="preserve">
+    <value>全選</value>
+  </data>
+  <data name="select_language_to_delete" xml:space="preserve">
+    <value>請選擇要刪除的語言：</value>
+  </data>
+  <data name="single_click" xml:space="preserve">
+    <value>單擊</value>
+  </data>
+  <data name="tool_diagrams_section" xml:space="preserve">
+    <value>工具圖解</value>
+  </data>
+  <data name="trace_element_spider_diagram" xml:space="preserve">
+    <value>微量元素蛛網圖</value>
+  </data>
+  <data name="translation_annotation" xml:space="preserve">
+    <value>註釋</value>
+  </data>
+  <data name="translation_axis_subtitle" xml:space="preserve">
+    <value>座標軸副標題</value>
+  </data>
+  <data name="translation_axis_title" xml:space="preserve">
+    <value>座標軸標題</value>
+  </data>
+  <data name="translation_export_failed" xml:space="preserve">
+    <value>匯出失敗。</value>
+  </data>
+  <data name="translation_export_no_languages" xml:space="preserve">
+    <value>請先在基本設定中設定語言。</value>
+  </data>
+  <data name="translation_export_success" xml:space="preserve">
+    <value>已匯出翻譯至 {0}。</value>
+  </data>
+  <data name="translation_export_table_missing" xml:space="preserve">
+    <value>翻譯表尚未就緒。</value>
+  </data>
+  <data name="translation_import_failed" xml:space="preserve">
+    <value>匯入失敗。</value>
+  </data>
+  <data name="translation_import_invalid_format" xml:space="preserve">
+    <value>不支援的翻譯檔案格式。</value>
+  </data>
+  <data name="translation_import_invalid_json" xml:space="preserve">
+    <value>JSON 檔案無效。</value>
+  </data>
+  <data name="translation_import_no_languages" xml:space="preserve">
+    <value>請先在基本設定中設定語言。</value>
+  </data>
+  <data name="translation_import_success" xml:space="preserve">
+    <value>已匯入 {0} 項，更新 {1} 個儲存格。</value>
+  </data>
+  <data name="translation_import_table_missing" xml:space="preserve">
+    <value>翻譯表尚未就緒。</value>
+  </data>
+  <data name="translation_item_context" xml:space="preserve">
+    <value>內容項</value>
+  </data>
+  <data name="translation_loaded" xml:space="preserve">
+    <value>已載入翻譯資料</value>
+  </data>
+  <data name="translation_main_title" xml:space="preserve">
+    <value>主標題</value>
+  </data>
+  <data name="translation_node_list" xml:space="preserve">
+    <value>分類路徑</value>
+  </data>
+  <data name="translation_text_item" xml:space="preserve">
+    <value>文字</value>
+  </data>
+
 </root>

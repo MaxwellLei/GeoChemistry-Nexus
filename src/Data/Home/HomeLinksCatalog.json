@@ -1,22 +1,52 @@
 {
-  "version": 1,
+  "version": 2,
   "groups": [
     {
       "id": "geochemistry-tools",
-      "title": "地化工具",
+      "title": {
+        "default": "en-US",
+        "translations": {
+          "en-US": "Geochemistry Tools",
+          "zh-CN": "地化工具"
+        }
+      },
       "sortOrder": 0,
       "links": [
         {
           "id": "georoc",
-          "title": "GEOROC",
-          "description": "Geochemistry of Rocks of the Oceans and Continents",
+          "title": {
+            "default": "en-US",
+            "translations": {
+              "en-US": "GEOROC",
+              "zh-CN": "GEOROC"
+            }
+          },
+          "description": {
+            "default": "en-US",
+            "translations": {
+              "en-US": "Geochemistry of Rocks of the Oceans and Continents",
+              "zh-CN": "海洋与大陆岩石地球化学数据库"
+            }
+          },
           "url": "https://georoc.mpch-mainz.gwdg.de/georoc/",
           "icon": "\uE774"
         },
         {
           "id": "earthchem",
-          "title": "EarthChem",
-          "description": "Portal for geochemical data discovery",
+          "title": {
+            "default": "en-US",
+            "translations": {
+              "en-US": "EarthChem",
+              "zh-CN": "EarthChem"
+            }
+          },
+          "description": {
+            "default": "en-US",
+            "translations": {
+              "en-US": "Portal for geochemical data discovery",
+              "zh-CN": "地球化学数据发现门户"
+            }
+          },
           "url": "https://www.earthchem.org/",
           "icon": "\uE753"
         }
@@ -24,13 +54,31 @@
     },
     {
       "id": "references",
-      "title": "参考资料",
+      "title": {
+        "default": "en-US",
+        "translations": {
+          "en-US": "References",
+          "zh-CN": "参考资料"
+        }
+      },
       "sortOrder": 1,
       "links": [
         {
           "id": "bing",
-          "title": "Bing",
-          "description": "Search engine",
+          "title": {
+            "default": "en-US",
+            "translations": {
+              "en-US": "Bing",
+              "zh-CN": "必应"
+            }
+          },
+          "description": {
+            "default": "en-US",
+            "translations": {
+              "en-US": "Search engine",
+              "zh-CN": "搜索引擎"
+            }
+          },
           "url": "https://www.bing.com/",
           "icon": "\uE721"
         }

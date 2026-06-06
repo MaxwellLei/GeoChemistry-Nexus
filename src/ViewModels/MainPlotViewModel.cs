@@ -103,6 +103,10 @@ namespace GeoChemistryNexus.ViewModels
         public void Receive(DeveloperModeChangedMessage message)
         {
             IsDeveloperMode = message.Value;
+            if (!string.IsNullOrEmpty(CurrentDiagramLanguage))
+            {
+                DiagramLanguageStatus = LanguageService.GetLanguageDisplayName(CurrentDiagramLanguage);
+            }
         }
 
         public void Receive(ObjectSelectionTriggerChangedMessage message)
@@ -386,8 +390,24 @@ namespace GeoChemistryNexus.ViewModels
             {
                 RequestTemplateLibraryRefresh(TemplateLibraryRefreshMode.ImmediateIfInTemplateMode);
                 SyncSpiderDiagramLanguageWithApplication();
+                RefreshSelectedCellDisplayForLanguageChange();
             }
         }
+
+        private void RefreshSelectedCellDisplayForLanguageChange()
+        {
+            var worksheet = _dataGrid?.CurrentWorksheet;
+            if (worksheet == null)
+            {
+                SelectedCellDisplayText = Lang("dataPrep_noCellSelected", "No cell selected");
+                return;
+            }
+
+            UpdateSelectedCellDisplayText(worksheet.SelectionRange.Row, worksheet.SelectionRange.Col);
+        }
+
+        private static string Lang(string key, string fallback) =>
+            LanguageService.Instance[key] ?? fallback;
 
         private void SyncSpiderDiagramLanguageWithApplication()
         {
@@ -411,7 +431,7 @@ namespace GeoChemistryNexus.ViewModels
                 return;
             }
 
-            LocalizedString.OverrideLanguage = targetLanguage;
+            SyncDiagramLanguageContext(targetLanguage);
             DiagramLanguageStatus = LanguageService.GetLanguageDisplayName(targetLanguage);
 
             AutoDetectFonts();
@@ -570,7 +590,7 @@ namespace GeoChemistryNexus.ViewModels
         /// 当前数据表格选中单元格的显示文本。
         /// </summary>
         [ObservableProperty]
-        private string _selectedCellDisplayText = "未选中单元格";
+        private string _selectedCellDisplayText = string.Empty;
 
         /// <summary>
         /// 当前选中单元格地址，如 A1。
@@ -968,7 +988,7 @@ namespace GeoChemistryNexus.ViewModels
             }
 
             var titleLabel = new LocalizedString();
-            titleLabel.Set(Services.LanguageService.CurrentLanguage, WpfPlot1.Plot.Axes.Title.Label.Text ?? string.Empty);
+            titleLabel.Set(WpfPlot1.Plot.Axes.Title.Label.Text ?? string.Empty, languageCode: Services.LanguageService.CurrentLanguage);
             definition.Label = titleLabel;
             definition.Family = WpfPlot1.Plot.Axes.Title.Label.FontName;
             definition.Size = WpfPlot1.Plot.Axes.Title.Label.FontSize;
@@ -1111,7 +1131,7 @@ namespace GeoChemistryNexus.ViewModels
                 return;
             }
 
-            plot.Axes.Title.Label.Text = titleDefinition.Label?.Get() ?? string.Empty;
+            plot.Axes.Title.Label.Text = titleDefinition.Label?.Get(DiagramLanguage) ?? string.Empty;
             plot.Axes.Title.Label.FontName = titleDefinition.Family;
             plot.Axes.Title.Label.FontSize = titleDefinition.Size;
             plot.Axes.Title.Label.ForeColor = ScottPlot.Color.FromHex(
@@ -2124,7 +2144,7 @@ namespace GeoChemistryNexus.ViewModels
             var worksheet = _dataGrid?.CurrentWorksheet;
             if (worksheet == null)
             {
-                SelectedCellDisplayText = "未选中单元格";
+                SelectedCellDisplayText = Lang("dataPrep_noCellSelected", "No cell selected");
                 SelectedCellAddress = "--";
                 IsSelectedCellEditable = false;
 
@@ -2146,7 +2166,7 @@ namespace GeoChemistryNexus.ViewModels
 
             if (targetRow < 0 || targetCol < 0 || targetRow >= worksheet.RowCount || targetCol >= worksheet.ColumnCount)
             {
-                SelectedCellDisplayText = "未选中单元格";
+                SelectedCellDisplayText = Lang("dataPrep_noCellSelected", "No cell selected");
                 SelectedCellAddress = "--";
                 IsSelectedCellEditable = false;
 
@@ -2179,8 +2199,8 @@ namespace GeoChemistryNexus.ViewModels
             }
 
             SelectedCellDisplayText = string.IsNullOrWhiteSpace(cellValue)
-                ? $"{cellAddress}: <空>"
-                : $"{cellAddress}: {cellValue}";
+                ? string.Format(System.Globalization.CultureInfo.CurrentCulture, Lang("dataPrep_selectedCellEmpty", "{0}: <empty>"), cellAddress)
+                : string.Format(System.Globalization.CultureInfo.CurrentCulture, Lang("dataPrep_selectedCellValue", "{0}: {1}"), cellAddress, cellValue);
         }
 
         partial void OnSelectedCellContentChanged(string value)
@@ -2846,7 +2866,7 @@ namespace GeoChemistryNexus.ViewModels
                 var contentString = LocalizedPlaceholderFactory.Create("Placeholder_Text", defaultLang, allLangs);
 
                 // 获取当前语言下的文本用于字体检测
-                string placeholder = contentString.Get();
+                string placeholder = contentString.Get(DiagramLanguage);
 
 
                 // 将鼠标点击坐标转换为真实数据坐标
@@ -2868,7 +2888,7 @@ namespace GeoChemistryNexus.ViewModels
                 };
 
                 // 创建新的 TextLayerItemViewModel
-                var textLayer = new TextLayerItemViewModel(newTextDef, textCategory.Children.Count);
+                var textLayer = new TextLayerItemViewModel(newTextDef, textCategory.Children.Count, DiagramLanguage);
                 textLayer.RequestRefresh += OnLayerRequestRefreshPreserveLimits;
                 textCategory.Children.Add(textLayer);
 
@@ -3419,7 +3439,7 @@ namespace GeoChemistryNexus.ViewModels
                 string currentLang = CurrentDiagramLanguage;
                 if (string.IsNullOrEmpty(currentLang))
                 {
-                    currentLang = LocalizedString.OverrideLanguage ?? LanguageService.CurrentLanguage;
+                    currentLang = DiagramLanguage.ContentLanguage ?? LanguageService.CurrentLanguage;
                 }
 
                 // 确保选中项存在
@@ -4099,7 +4119,7 @@ namespace GeoChemistryNexus.ViewModels
             {
                 SaveTemplateLibraryState();
 
-                LocalizedString.OverrideLanguage = null;
+                ClearDiagramLanguageContext();
 
                 _currentTemplateId = null;
                 _currentTemplateFilePath = string.Empty;
@@ -4128,10 +4148,7 @@ namespace GeoChemistryNexus.ViewModels
                 IsPlotMode = true;
                 RibbonTabIndex = 0;
 
-                if (!string.IsNullOrEmpty(CurrentTemplate.DefaultLanguage))
-                {
-                    LocalizedString.OverrideLanguage = CurrentTemplate.DefaultLanguage;
-                }
+                CurrentDiagramLanguage = ResolveInitialDiagramLanguage(CurrentTemplate);
 
                 BuildLayerTreeFromTemplate(CurrentTemplate);
                 RefreshPlotFromLayers();
@@ -4149,34 +4166,48 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
-        private string ResolveInitialSpiderDiagramLanguage(GraphMapTemplate template)
+        private string ResolveInitialDiagramLanguage(GraphMapTemplate template)
         {
             if (template == null)
-            {
-                return "en-US";
-            }
+                return AppCultureRegistry.DefaultContentLanguage;
 
-            string currentLanguage = LanguageService.CurrentLanguage;
-            if (IsLanguageSupportedByTemplate(template, currentLanguage))
-            {
-                return currentLanguage;
-            }
+            if (IsLanguageSupportedByTemplate(template, LanguageService.CurrentLanguage))
+                return LanguageService.CurrentLanguage;
 
-            // 内置蛛网图当前至少内置了中文和英文，繁中场景优先复用简中翻译，避免首次进入回退到英文。
-            if (!string.IsNullOrWhiteSpace(currentLanguage) &&
-                currentLanguage.StartsWith("zh", StringComparison.OrdinalIgnoreCase) &&
-                IsLanguageSupportedByTemplate(template, "zh-CN"))
-            {
-                return "zh-CN";
-            }
-
-            if (IsLanguageSupportedByTemplate(template, template.DefaultLanguage))
-            {
+            if (!string.IsNullOrEmpty(template.DefaultLanguage))
                 return template.DefaultLanguage;
+
+            return AppCultureRegistry.ResolveDiagramDisplayLanguage(
+                LanguageService.CurrentLanguage,
+                CollectTemplateLanguages(template),
+                template.DefaultLanguage);
+        }
+
+        private string ResolveInitialSpiderDiagramLanguage(GraphMapTemplate template)
+        {
+            return ResolveInitialDiagramLanguage(template);
+        }
+
+        private static HashSet<string> CollectTemplateLanguages(GraphMapTemplate template)
+        {
+            var languages = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            if (!string.IsNullOrEmpty(template.DefaultLanguage))
+                languages.Add(template.DefaultLanguage);
+
+            if (template.Info?.Title?.Label?.Translations != null)
+            {
+                foreach (var key in template.Info.Title.Label.Translations.Keys)
+                    languages.Add(key);
             }
 
-            string firstAvailableLanguage = template.NodeList?.Translations?.Keys?.FirstOrDefault();
-            return string.IsNullOrWhiteSpace(firstAvailableLanguage) ? "en-US" : firstAvailableLanguage;
+            if (template.NodeList?.Translations != null)
+            {
+                foreach (var key in template.NodeList.Translations.Keys)
+                    languages.Add(key);
+            }
+
+            return languages;
         }
 
         /// <summary>
@@ -4230,7 +4261,7 @@ namespace GeoChemistryNexus.ViewModels
                         spiderAxis.SpiderType,
                         spiderAxis.NormalizationStandard,
                         spiderAxis.IsNormalizationEnabled);
-                    spiderAxis.Family = ScottPlot.Fonts.Detect(spiderAxis.Label.Get());
+                    spiderAxis.Family = ScottPlot.Fonts.Detect(spiderAxis.Label.Get(DiagramLanguage));
                 }
             }
         }
@@ -4242,7 +4273,7 @@ namespace GeoChemistryNexus.ViewModels
                 spiderAxis.SpiderType,
                 spiderAxis.NormalizationStandard,
                 spiderAxis.IsNormalizationEnabled);
-            string currentLabel = spiderAxis.Label.Get();
+            string currentLabel = spiderAxis.Label.Get(DiagramLanguage);
             return autoLabel.Translations.Values.Contains(currentLabel);
         }
 
@@ -5115,7 +5146,20 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private string _currentDiagramLanguage = "";
 
+        public ContentLanguageContext DiagramLanguage { get; } = new();
+
         public bool IsDiagramLanguageStatusVisible => CurrentTemplate?.TemplateType != "Spider";
+
+        private void SyncDiagramLanguageContext(string? language)
+        {
+            DiagramLanguage.ContentLanguage = language;
+            ContentLanguageScope.Instance.Active = string.IsNullOrEmpty(language) ? null : DiagramLanguage;
+        }
+
+        private void ClearDiagramLanguageContext()
+        {
+            SyncDiagramLanguageContext(null);
+        }
         public bool IsScriptSettingButtonVisible => !IsSpiderDiagramMode && !IsHarkerDiagramMode;
 
         partial void OnIsSpiderDiagramModeChanged(bool value)
@@ -5136,13 +5180,13 @@ namespace GeoChemistryNexus.ViewModels
             // Title
             if (CurrentTemplate.Info.Title != null)
             {
-                CurrentTemplate.Info.Title.Family = ScottPlot.Fonts.Detect(CurrentTemplate.Info.Title.Label.Get());
+                CurrentTemplate.Info.Title.Family = ScottPlot.Fonts.Detect(CurrentTemplate.Info.Title.Label.Get(DiagramLanguage));
             }
 
             // Legend
             if (CurrentTemplate.Info.Legend != null)
             {
-                string sampleText = CurrentTemplate.Info.Title?.Label.Get() ?? "Legend";
+                string sampleText = CurrentTemplate.Info.Title?.Label.Get(DiagramLanguage) ?? "Legend";
                 CurrentTemplate.Info.Legend.Font = ScottPlot.Fonts.Detect(sampleText);
             }
 
@@ -5151,7 +5195,7 @@ namespace GeoChemistryNexus.ViewModels
             {
                 foreach (var axis in CurrentTemplate.Info.Axes)
                 {
-                    axis.Family = ScottPlot.Fonts.Detect(axis.Label.Get());
+                    axis.Family = ScottPlot.Fonts.Detect(axis.Label.Get(DiagramLanguage));
                 }
             }
 
@@ -5160,7 +5204,7 @@ namespace GeoChemistryNexus.ViewModels
             {
                 foreach (var text in CurrentTemplate.Info.Texts)
                 {
-                    text.Family = ScottPlot.Fonts.Detect(text.Content.Get());
+                    text.Family = ScottPlot.Fonts.Detect(text.Content.Get(DiagramLanguage));
                 }
             }
         }
@@ -5171,14 +5215,14 @@ namespace GeoChemistryNexus.ViewModels
 
             if (CurrentTemplate.Info.Title != null)
             {
-                CurrentTemplate.Info.Title.Family = ScottPlot.Fonts.Detect(CurrentTemplate.Info.Title.Label.Get());
+                CurrentTemplate.Info.Title.Family = ScottPlot.Fonts.Detect(CurrentTemplate.Info.Title.Label.Get(DiagramLanguage));
             }
 
             if (CurrentTemplate.Info.Axes != null)
             {
                 foreach (var axis in CurrentTemplate.Info.Axes.OfType<SpiderAxisDefinition>())
                 {
-                    axis.Family = ScottPlot.Fonts.Detect(axis.Label.Get());
+                    axis.Family = ScottPlot.Fonts.Detect(axis.Label.Get(DiagramLanguage));
                 }
             }
         }
@@ -5187,10 +5231,14 @@ namespace GeoChemistryNexus.ViewModels
 
         partial void OnCurrentDiagramLanguageChanged(string value)
         {
-            if (string.IsNullOrEmpty(value)) return;
+            if (string.IsNullOrEmpty(value))
+            {
+                ClearDiagramLanguageContext();
+                return;
+            }
 
             DiagramLanguageStatus = LanguageService.GetLanguageDisplayName(value);
-            LocalizedString.OverrideLanguage = value;
+            SyncDiagramLanguageContext(value);
 
             // 自动根据内容检测并设置字体
             AutoDetectFonts();
@@ -5221,16 +5269,17 @@ namespace GeoChemistryNexus.ViewModels
                 // 设置网格属性按钮是否可用
                 IsGridSettingEnabled = true;
 
-                if (!string.IsNullOrEmpty(value.DefaultLanguage))
+                // 优先使用当前 App 语言；模板不支持时回退到模板默认语言
+                string initialLanguage = ResolveInitialDiagramLanguage(value);
+                if (!string.Equals(CurrentDiagramLanguage, initialLanguage, StringComparison.OrdinalIgnoreCase))
                 {
-                    // 某些模板（如内置蛛网图）直接赋值 CurrentTemplate 时，
-                    // CurrentDiagramLanguage 可能没有变化，因此这里显式同步语言上下文。
-                    LocalizedString.OverrideLanguage = value.DefaultLanguage;
-                    DiagramLanguageStatus = LanguageService.GetLanguageDisplayName(value.DefaultLanguage);
+                    CurrentDiagramLanguage = initialLanguage;
                 }
-
-                // 设置当前图解语言为模板默认语言
-                CurrentDiagramLanguage = value.DefaultLanguage;
+                else
+                {
+                    SyncDiagramLanguageContext(initialLanguage);
+                    DiagramLanguageStatus = LanguageService.GetLanguageDisplayName(initialLanguage);
+                }
 
                 // 统一在模板切换时执行一次字体自动检测，
                 // 让蛛网图标题和坐标轴标题与普通模板保持一致。
@@ -5246,6 +5295,7 @@ namespace GeoChemistryNexus.ViewModels
             {
                 DiagramLanguageStatus = "";
                 CurrentDiagramLanguage = "";
+                ClearDiagramLanguageContext();
                 IsGridSettingEnabled = false;
             }
         }
@@ -5321,17 +5371,17 @@ namespace GeoChemistryNexus.ViewModels
 
                     if (bottomAxis != null && bottomAxis.Label != null)
                     {
-                        var text = bottomAxis.Label.Get();
+                        var text = bottomAxis.Label.Get(DiagramLanguage);
                         if (!string.IsNullOrEmpty(text)) labelA = text;
                     }
                     if (leftAxis != null && leftAxis.Label != null)
                     {
-                        var text = leftAxis.Label.Get();
+                        var text = leftAxis.Label.Get(DiagramLanguage);
                         if (!string.IsNullOrEmpty(text)) labelB = text;
                     }
                     if (rightAxis != null && rightAxis.Label != null)
                     {
-                        var text = rightAxis.Label.Get();
+                        var text = rightAxis.Label.Get(DiagramLanguage);
                         if (!string.IsNullOrEmpty(text)) labelC = text;
                     }
                 }
@@ -6122,7 +6172,7 @@ namespace GeoChemistryNexus.ViewModels
 
                 // 2. 选择保存位置
                 var dialog = new VistaSaveFileDialog();
-                dialog.Filter = "Zip Files (*.zip)|*.zip";
+                dialog.Filter = FileDialogFilterHelper.ZipFiles;
                 dialog.DefaultExt = "zip";
 
                 string templateFileName = entity.Name;
@@ -6359,7 +6409,7 @@ namespace GeoChemistryNexus.ViewModels
 
                     await RefreshTemplateLibraryAfterDataChangeAsync();
 
-                    editWindow.ShowSuccessMessage(LanguageService.Instance["ModifedSuccess"] ?? "淇敼鎴愬姛");
+                    editWindow.ShowSuccessMessage(LanguageService.Instance["ModifedSuccess"]);
                     editWindow.Close();
                 });
 
@@ -6560,7 +6610,7 @@ namespace GeoChemistryNexus.ViewModels
                 }
 
                 // 确保清除语言覆盖，使用软件默认配置
-                LocalizedString.OverrideLanguage = null;
+                ClearDiagramLanguageContext();
                 IsHarkerDiagramMode = false;
 
                 // 设置是否为自定义模板 (官方模板不显示未保存提醒)
@@ -7544,7 +7594,7 @@ namespace GeoChemistryNexus.ViewModels
                 var requiredSeriesStr = CurrentTemplate.Script.RequiredDataSeries;
                 if (string.IsNullOrWhiteSpace(requiredSeriesStr))
                 {
-                    CalculationResultSummary = "未定义数据列";
+                    CalculationResultSummary = Lang("plot_undefined_data_columns", "Undefined data columns");
                     return;
                 }
         
@@ -7742,18 +7792,6 @@ namespace GeoChemistryNexus.ViewModels
             // 初始化网格支持属性
             ConfigureGridDefinitionCapabilities(CurrentTemplate);
 
-            // 确保 OverrideLanguage 被正确设置
-            if (!string.IsNullOrEmpty(CurrentTemplate.DefaultLanguage))
-            {
-                LocalizedString.OverrideLanguage = CurrentTemplate.DefaultLanguage;
-                DiagramLanguageStatus = LanguageService.GetLanguageDisplayName(CurrentTemplate.DefaultLanguage);
-
-                if (_currentDiagramLanguage != CurrentTemplate.DefaultLanguage)
-                {
-                    CurrentDiagramLanguage = CurrentTemplate.DefaultLanguage;
-                }
-            }
-
             // 自动根据内容检测并设置字体
             AutoDetectFonts();
 
@@ -7808,19 +7846,6 @@ namespace GeoChemistryNexus.ViewModels
             // 初始化网格支持属性
             ConfigureGridDefinitionCapabilities(CurrentTemplate);
 
-            // 确保 OverrideLanguage 被正确设置，即使 CurrentDiagramLanguage 没有变化
-            if (!string.IsNullOrEmpty(CurrentTemplate.DefaultLanguage))
-            {
-                LocalizedString.OverrideLanguage = CurrentTemplate.DefaultLanguage;
-                DiagramLanguageStatus = LanguageService.GetLanguageDisplayName(CurrentTemplate.DefaultLanguage);
-
-                // 确保 ViewModel 属性同步
-                if (_currentDiagramLanguage != CurrentTemplate.DefaultLanguage)
-                {
-                    CurrentDiagramLanguage = CurrentTemplate.DefaultLanguage;
-                }
-            }
-
             // 自动根据内容检测并设置字体 (覆盖 JSON 中的设置)
             AutoDetectFonts();
 
@@ -7854,7 +7879,7 @@ namespace GeoChemistryNexus.ViewModels
             if (attachEvents) EnsureLayerRefreshHandler(axesCategory);
             foreach (var axis in info.Axes)
             {
-                var axisLayer = new AxisLayerItemViewModel(axis);
+                var axisLayer = new AxisLayerItemViewModel(axis, DiagramLanguage);
                 if (attachEvents)
                 {
                     axisLayer.RequestRefresh += OnLayerRequestRefreshPreserveLimits;
@@ -7958,7 +7983,7 @@ namespace GeoChemistryNexus.ViewModels
             if (attachEvents) EnsureLayerRefreshHandler(textCategory);
             for (int i = 0; i < info.Texts.Count; i++)
             {
-                var textLayer = new TextLayerItemViewModel(info.Texts[i], i);
+                var textLayer = new TextLayerItemViewModel(info.Texts[i], i, DiagramLanguage);
                 if (attachEvents)
                 {
                     textLayer.RequestRefresh += OnLayerRequestRefreshResetLimits;
@@ -8105,7 +8130,7 @@ namespace GeoChemistryNexus.ViewModels
             // 全局设置——处理标题
             if (CurrentTemplate.Info.Title.Label.Translations.Any())
             {
-                WpfPlot1.Plot.Axes.Title.Label.Text = CurrentTemplate.Info.Title.Label.Get();
+                WpfPlot1.Plot.Axes.Title.Label.Text = CurrentTemplate.Info.Title.Label.Get(DiagramLanguage);
                 WpfPlot1.Plot.Axes.Title.Label.FontName = CurrentTemplate.Info.Title.Family;
                 WpfPlot1.Plot.Axes.Title.Label.FontSize = CurrentTemplate.Info.Title.Size;
                 WpfPlot1.Plot.Axes.Title.Label.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateService.ConvertWpfHexToScottPlotHex(CurrentTemplate.Info.Title.Color));
@@ -8155,7 +8180,7 @@ namespace GeoChemistryNexus.ViewModels
             WpfPlot1.Plot.Axes.Title.IsVisible = true;
             if (CurrentTemplate.Info.Title.Label.Translations.Any())
             {
-                WpfPlot1.Plot.Axes.Title.Label.Text = CurrentTemplate.Info.Title.Label.Get();
+                WpfPlot1.Plot.Axes.Title.Label.Text = CurrentTemplate.Info.Title.Label.Get(DiagramLanguage);
                 WpfPlot1.Plot.Axes.Title.Label.FontName = CurrentTemplate.Info.Title.Family;
                 WpfPlot1.Plot.Axes.Title.Label.FontSize = CurrentTemplate.Info.Title.Size;
                 WpfPlot1.Plot.Axes.Title.Label.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateService.ConvertWpfHexToScottPlotHex(CurrentTemplate.Info.Title.Color));
@@ -8205,7 +8230,7 @@ namespace GeoChemistryNexus.ViewModels
             WpfPlot1.Plot.Axes.Title.IsVisible = true;
             if (CurrentTemplate.Info.Title.Label.Translations.Any())
             {
-                WpfPlot1.Plot.Axes.Title.Label.Text = CurrentTemplate.Info.Title.Label.Get();
+                WpfPlot1.Plot.Axes.Title.Label.Text = CurrentTemplate.Info.Title.Label.Get(DiagramLanguage);
                 WpfPlot1.Plot.Axes.Title.Label.FontName = CurrentTemplate.Info.Title.Family;
                 WpfPlot1.Plot.Axes.Title.Label.FontSize = CurrentTemplate.Info.Title.Size;
                 WpfPlot1.Plot.Axes.Title.Label.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateService.ConvertWpfHexToScottPlotHex(CurrentTemplate.Info.Title.Color));
@@ -9826,7 +9851,7 @@ namespace GeoChemistryNexus.ViewModels
             }
 
             // 确保清除语言覆盖
-            LocalizedString.OverrideLanguage = null;
+            ClearDiagramLanguageContext();
 
             CurrentTemplate = editor.BuildTemplateForSubmit();
 
@@ -9912,8 +9937,7 @@ namespace GeoChemistryNexus.ViewModels
             IsPlotMode = true;
 
 
-            // 设置 OverrideLanguage。
-            LocalizedString.OverrideLanguage = CurrentTemplate.DefaultLanguage;
+            CurrentDiagramLanguage = ResolveInitialDiagramLanguage(CurrentTemplate);
 
             BuildLayerTreeFromTemplate(CurrentTemplate);
             RefreshPlotFromLayers();
@@ -10049,7 +10073,7 @@ namespace GeoChemistryNexus.ViewModels
             {
                 // 导入自定义图解模板
                 Title = LanguageService.Instance["import_custom_diagram_template"],
-                Filter = "Template Files (*.zip;*.json)|*.zip;*.json|Zip Files (*.zip)|*.zip|Json Files (*.json)|*.json|All Files (*.*)|*.*",
+                Filter = FileDialogFilterHelper.ImportTemplates,
                 DefaultExt = ".zip",
                 CheckFileExists = true,
                 Multiselect = true
@@ -10060,7 +10084,7 @@ namespace GeoChemistryNexus.ViewModels
             // 检查是否包含 JSON 文件且为多选
             if (openFileDialog.FileNames.Length > 1 && openFileDialog.FileNames.Any(f => f.EndsWith(".json", StringComparison.OrdinalIgnoreCase)))
             {
-                MessageHelper.Warning("json文件不支持多选批量添加。只支持zip文件多选批量添加。");
+                MessageHelper.Warning(Lang("plot_json_multiselect_not_supported", "JSON files cannot be added in a multi-select batch. Only ZIP files support multi-select batch import."));
                 return;
             }
 
@@ -10365,7 +10389,8 @@ namespace GeoChemistryNexus.ViewModels
                         }
                         catch (Exception ex)
                         {
-                            Application.Current.Dispatcher.Invoke(() => HandyControl.Controls.MessageBox.Show($"Failed to upload thumbnail: {ex.Message}"));
+                            Application.Current.Dispatcher.Invoke(() => HandyControl.Controls.MessageBox.Show(
+                                string.Format(Lang("plot_upload_thumbnail_failed", "Failed to upload thumbnail: {0}"), ex.Message)));
                         }
                     }
                 });
@@ -10425,7 +10450,7 @@ namespace GeoChemistryNexus.ViewModels
                 // Title
                 if (template.Info.Title.Label.Translations.Any())
                 {
-                    plot.Axes.Title.Label.Text = template.Info.Title.Label.Get();
+                    plot.Axes.Title.Label.Text = template.Info.Title.Label.Get(DiagramLanguage);
                     plot.Axes.Title.Label.FontName = template.Info.Title.Family;
                     plot.Axes.Title.Label.FontSize = template.Info.Title.Size;
                     plot.Axes.Title.Label.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateService.ConvertWpfHexToScottPlotHex(template.Info.Title.Color));
@@ -10490,7 +10515,7 @@ namespace GeoChemistryNexus.ViewModels
             var openFileDialog = new VistaOpenFileDialog
             {
                 Title = LanguageService.Instance["open_template"],
-                Filter = $"{LanguageService.Instance["template_files"]} (*.json;*.zip)|*.json;*.zip|{LanguageService.Instance["all_files"]} (*.*)|*.*",
+                Filter = FileDialogFilterHelper.OpenTemplate,
                 DefaultExt = ".json",
                 CheckFileExists = true, // 确保文件存在
                 Multiselect = false
@@ -10502,7 +10527,7 @@ namespace GeoChemistryNexus.ViewModels
                 try
                 {
                     // 确保清除语言覆盖
-                    LocalizedString.OverrideLanguage = null;
+                    ClearDiagramLanguageContext();
 
                     // Clear Template ID since we are opening an external file
                     _currentTemplateId = null;
@@ -10803,7 +10828,7 @@ namespace GeoChemistryNexus.ViewModels
                 var triangularAxis = WpfPlot1.Plot.GetPlottables().OfType<ScottPlot.Plottables.TriangularAxis>().FirstOrDefault();
                 if (triangularAxis == null)
                 {
-                    MessageHelper.Error("错误：在图中找不到三元坐标轴对象。");
+                    MessageHelper.Error(Lang("plot_ternary_axis_not_found", "Error: triangular axis object not found in the plot."));
                     return;
                 }
 
@@ -11893,7 +11918,7 @@ namespace GeoChemistryNexus.ViewModels
             ResetEditModes();
 
             // 清除语言覆盖
-            LocalizedString.OverrideLanguage = null;
+            ClearDiagramLanguageContext();
 
             // 重置编辑确认状态
             SetHasConfirmedEditMode(false);
@@ -12234,7 +12259,9 @@ namespace GeoChemistryNexus.ViewModels
             if (worksheet == null) return;
 
             // 保存为csv文件
-            string tempFilePath = FileHelper.GetSaveFilePath2(title: LanguageService.Instance["save_as_csv_file"], filter: "CSV文件|*.csv",
+            string tempFilePath = FileHelper.GetSaveFilePath2(
+                title: LanguageService.Instance["save_as_csv_file"],
+                filter: FileDialogFilterHelper.CsvFiles,
                                                                 defaultExt: ".csv", defaultFileName: worksheet.Name);
             if (string.IsNullOrEmpty(tempFilePath)) return;
 

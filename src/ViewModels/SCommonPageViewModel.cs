@@ -21,18 +21,15 @@ namespace GeoChemistryNexus.ViewModels
 {
     partial class SCommonPageViewModel : ObservableObject
     {
-        // 定义语言代码映射数组(索引对应 ComboBox)
-        // 0 -> zh-CN; 1 -> en-US; 2 -> de-DE; 3 -> es-ES; 4 -> ja-JP; 5 -> ko-KR; 6 -> ru-RU
-        private readonly string[] _languageCodes = { "zh-CN", "en-US", "de-DE", "es-ES", "ja-JP", "ko-KR", "ru-RU" };
-
-
+        [ObservableProperty]
+        private IReadOnlyList<CultureOption> _appLanguageOptions = AppCultureRegistry.GetAppUiOptions();
 
         //封面流
         [ObservableProperty]
         private CoverFlow? coverFlowMain;
 
         [ObservableProperty]
-        private int language;     // 语言设置(0是中文;1是英文)
+        private string selectedAppLanguageCode = AppCultureRegistry.DefaultAppLanguage;
 
         [ObservableProperty]
         private int font;     // 字体设置(0是微软雅黑;1是添加字体)
@@ -65,6 +62,7 @@ namespace GeoChemistryNexus.ViewModels
         public RelayCommand AddStartImgCommand { get; private set; }    // 添加启动图
 
         private bool isLoading = true;
+        private bool _isRefreshingLanguageOptions;
 
         // 初始化
         public SCommonPageViewModel()
@@ -151,6 +149,7 @@ namespace GeoChemistryNexus.ViewModels
             if (isLoading) return;
             ConfigHelper.SetConfig("developer_mode", DeveloperMode.ToString());
             WeakReferenceMessenger.Default.Send(new DeveloperModeChangedMessage(value));
+            RefreshAppLanguageOptions();
 
             if (value)
             {
@@ -215,28 +214,38 @@ namespace GeoChemistryNexus.ViewModels
             MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
         }
 
+        // 刷新语言下拉列表（开发者模式切换时显示名会变化），并保持当前选中项
+        private void RefreshAppLanguageOptions()
+        {
+            _isRefreshingLanguageOptions = true;
+            try
+            {
+                string currentCode = AppCultureRegistry.ResolveAppLanguage(ConfigHelper.GetConfig("language"));
+                AppLanguageOptions = AppCultureRegistry.GetAppUiOptions();
+                // ItemsSource 替换后 ComboBox 可能丢失选中状态，需先清空再恢复以触发重新匹配
+                SelectedAppLanguageCode = string.Empty;
+                SelectedAppLanguageCode = currentCode;
+            }
+            finally
+            {
+                _isRefreshingLanguageOptions = false;
+            }
+        }
+
         // 修改语言
         private void ExecuteLanguageChangedCommand()
         {
-            // 确保索引在有效范围内
-            if (Language >= 0 && Language < _languageCodes.Length)
-            {
-                // 获取当前选中的索引对应的语言代码
-                string selectedCode = _languageCodes[Language];
+            if (_isRefreshingLanguageOptions || isLoading)
+                return;
 
-                // 将字符串代码保存到配置文件
-                ConfigHelper.SetConfig("language", selectedCode);
+            string selectedCode = AppCultureRegistry.ResolveAppLanguage(SelectedAppLanguageCode);
+            string currentCode = AppCultureRegistry.ResolveAppLanguage(ConfigHelper.GetConfig("language"));
+            if (string.Equals(selectedCode, currentCode, StringComparison.OrdinalIgnoreCase))
+                return;
 
-                // 语言切换
-                LanguageService.Instance.ChangeLanguage(new System.Globalization.CultureInfo(selectedCode));
-            }
-            else
-            {
-                // 异常处理：索引越界则默认回滚到中文
-                ConfigHelper.SetConfig("language", "en-US");
-                LanguageService.Instance.ChangeLanguage(new System.Globalization.CultureInfo("en-US"));
-            }
-
+            SelectedAppLanguageCode = selectedCode;
+            ConfigHelper.SetConfig("language", selectedCode);
+            LanguageService.Instance.ChangeLanguage(new System.Globalization.CultureInfo(selectedCode));
             MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
         }
 
@@ -247,9 +256,7 @@ namespace GeoChemistryNexus.ViewModels
         {
             // 读取语言设置
             string langConfig = Helpers.ConfigHelper.GetConfig("language");
-            // 在数组中查找该字符串对应的索引
-            int langIndex = Array.IndexOf(_languageCodes, langConfig);
-            Language = (langIndex >= 0) ? langIndex : 1;
+            SelectedAppLanguageCode = AppCultureRegistry.ResolveAppLanguage(langConfig);
 
             AutoOffTime = int.Parse(Helpers.ConfigHelper.GetConfig("auto_off_time"));    //读取消息通知时间
             

@@ -12,7 +12,7 @@ namespace GeoChemistryNexus.Services
 {
     public class LanguageService : INotifyPropertyChanged
     {
-        public static string CurrentLanguage { get; set; } = "en-US";
+        public static string CurrentLanguage { get; set; } = AppCultureRegistry.DefaultAppLanguage;
         private readonly ResourceManager _resourceManager;
 
         // 使用线程安全的单例模式
@@ -31,12 +31,12 @@ namespace GeoChemistryNexus.Services
             string language = ConfigHelper.GetConfig("language");
             if (language != "")
             {
-                CurrentLanguage = language;
+                CurrentLanguage = AppCultureRegistry.ResolveAppLanguage(language);
                 LanguageService.Instance.ChangeLanguage(new System.Globalization.CultureInfo(CurrentLanguage));
             }
             else
             {
-                LanguageService.Instance.ChangeLanguage(new System.Globalization.CultureInfo("en-US"));
+                LanguageService.Instance.ChangeLanguage(new System.Globalization.CultureInfo(AppCultureRegistry.DefaultAppLanguage));
             }
         }
 
@@ -54,20 +54,7 @@ namespace GeoChemistryNexus.Services
         // 获取语言的友好显示名称
         public static string GetLanguageDisplayName(string code)
         {
-            if (string.IsNullOrEmpty(code)) return string.Empty;
-
-            return code switch
-            {
-                "zh-CN" => "简体中文 (zh-CN)",
-                "zh-TW" => "繁体中文 (zh-TW)",
-                "en-US" => "English (en-US)",
-                "ja-JP" => "日本語 (ja-JP)",
-                "ru-RU" => "Русский (ru-RU)",
-                "ko-KR" => "한국어 (ko-KR)",
-                "de-DE" => "Deutsch (de-DE)",
-                "es-ES" => "Español (es-ES)",
-                _ => code
-            };
+            return AppCultureRegistry.GetDisplayName(code);
         }
 
         public string this[string name]
@@ -84,7 +71,8 @@ namespace GeoChemistryNexus.Services
 
         public void ChangeLanguage(CultureInfo cultureInfo)
         {
-            CurrentLanguage = cultureInfo.Name;
+            CurrentLanguage = AppCultureRegistry.ResolveAppLanguage(cultureInfo.Name);
+            cultureInfo = new CultureInfo(CurrentLanguage);
             CultureInfo.CurrentCulture = cultureInfo;
             CultureInfo.CurrentUICulture = cultureInfo;
             CultureInfo.DefaultThreadCurrentCulture = cultureInfo;

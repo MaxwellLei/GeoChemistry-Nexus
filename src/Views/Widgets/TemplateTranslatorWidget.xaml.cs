@@ -34,7 +34,7 @@ namespace GeoChemistryNexus.Views.Widgets
         {
             var openFileDialog = new Microsoft.Win32.OpenFileDialog
             {
-                Filter = "JSON Files (*.json)|*.json|All Files (*.*)|*.*",
+                Filter = FileDialogFilterHelper.JsonOrAll,
                 Title = LanguageService.Instance["select_drawing_template_file"]
             };
 

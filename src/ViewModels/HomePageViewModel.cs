@@ -76,7 +76,14 @@ namespace GeoChemistryNexus.ViewModels
 
         public HomePageViewModel()
         {
+            LanguageService.Instance.PropertyChanged += OnAppLanguageChanged;
             RebuildGroups();
+        }
+
+        private void OnAppLanguageChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "Item[]")
+                RebuildGroups();
         }
 
         [RelayCommand]
@@ -180,7 +187,7 @@ namespace GeoChemistryNexus.ViewModels
                 var groupVm = new HomeLinkGroupViewModel
                 {
                     GroupId = group.Id,
-                    Title = group.Title,
+                    Title = HomeLinksLocalization.ResolveForApp(group.Title),
                     IsPersonal = false,
                     IsVisible = true
                 };
@@ -261,8 +268,8 @@ namespace GeoChemistryNexus.ViewModels
             {
                 Id = string.IsNullOrWhiteSpace(entry.Id) ? Guid.NewGuid().ToString() : entry.Id,
                 Type = HomeAppType.WebLink,
-                Title = entry.Title ?? string.Empty,
-                Description = entry.Description ?? string.Empty,
+                Title = HomeLinksLocalization.ResolveForApp(entry.Title),
+                Description = HomeLinksLocalization.ResolveForApp(entry.Description),
                 Url = entry.Url ?? string.Empty,
                 Icon = HomeIconHelper.ResolveIcon(entry.Icon),
                 IsOfficial = true

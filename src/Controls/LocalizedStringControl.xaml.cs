@@ -1,114 +1,120 @@
 using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Services;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace GeoChemistryNexus.Controls
 {
     public partial class LocalizedStringControl : UserControl
     {
-        // 防止在通过代码更新UI时，UI的事件又反过来更新属性
         private bool _isUpdatingFromSource = false;
 
         public static readonly DependencyProperty ValueProperty =
-            DependencyProperty.Register("Value", typeof(LocalizedString), typeof(LocalizedStringControl),
+            DependencyProperty.Register(nameof(Value), typeof(LocalizedString), typeof(LocalizedStringControl),
                 new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged));
+
+        public static readonly DependencyProperty ContentLanguageContextProperty =
+            DependencyProperty.Register(
+                nameof(ContentLanguageContext),
+                typeof(ContentLanguageContext),
+                typeof(LocalizedStringControl),
+                new PropertyMetadata(null, OnContentLanguageContextChanged));
 
         public LocalizedString Value
         {
-            get { return (LocalizedString)GetValue(ValueProperty); }
-            set { SetValue(ValueProperty, value); }
+            get => (LocalizedString)GetValue(ValueProperty);
+            set => SetValue(ValueProperty, value);
+        }
+
+        public ContentLanguageContext? ContentLanguageContext
+        {
+            get => (ContentLanguageContext?)GetValue(ContentLanguageContextProperty);
+            set => SetValue(ContentLanguageContextProperty, value);
         }
 
         public LocalizedStringControl()
         {
             InitializeComponent();
-            // 监听UI控件的Text变化事件，当用户输入时实时更新数据源
             DisplayTextBox.TextChanged += OnTextChanged;
             Loaded += LocalizedStringControl_Loaded;
             Unloaded += LocalizedStringControl_Unloaded;
         }
 
-        /// <summary>
-        /// 当Value依赖属性变化时，更新UI
-        /// </summary>
         private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var control = (LocalizedStringControl)d;
             control.UpdateDisplayedText();
         }
 
+        private static void OnContentLanguageContextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is LocalizedStringControl control && e.OldValue is ContentLanguageContext oldContext)
+                oldContext.PropertyChanged -= control.ContentLanguageContext_PropertyChanged;
+
+            if (d is LocalizedStringControl control2 && e.NewValue is ContentLanguageContext newContext)
+                newContext.PropertyChanged += control2.ContentLanguageContext_PropertyChanged;
+
+            ((LocalizedStringControl)d).UpdateDisplayedText();
+        }
+
         private void LocalizedStringControl_Loaded(object sender, RoutedEventArgs e)
         {
             LanguageService.Instance.PropertyChanged -= LanguageService_PropertyChanged;
             LanguageService.Instance.PropertyChanged += LanguageService_PropertyChanged;
+
+            if (ContentLanguageContext != null)
+                ContentLanguageContext.PropertyChanged += ContentLanguageContext_PropertyChanged;
+
             UpdateDisplayedText();
         }
 
         private void LocalizedStringControl_Unloaded(object sender, RoutedEventArgs e)
         {
             LanguageService.Instance.PropertyChanged -= LanguageService_PropertyChanged;
+
+            if (ContentLanguageContext != null)
+                ContentLanguageContext.PropertyChanged -= ContentLanguageContext_PropertyChanged;
         }
 
         private void LanguageService_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "Item[]")
-            {
                 UpdateDisplayedText();
-            }
+        }
+
+        private void ContentLanguageContext_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "ContentLanguage")
+                UpdateDisplayedText();
+        }
+
+        private ContentLanguageContext? ResolveContext()
+        {
+            return ContentLanguageContext ?? ContentLanguageScope.Instance.Active;
         }
 
         private void UpdateDisplayedText()
         {
-            // 标志位，表示本次UI更新来源于数据源，避免触发循环更新
             _isUpdatingFromSource = true;
-            DisplayTextBox.Text = Value?.Get() ?? string.Empty;
+            DisplayTextBox.Text = Value?.Get(ResolveContext()) ?? string.Empty;
             _isUpdatingFromSource = false;
         }
 
-        /// <summary>
-        /// 当UI控件的值被用户修改时，实时更新Value依赖属性
-        /// </summary>
         private void OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            // 如果UI的更新是代码触发的，则直接返回
-            if (_isUpdatingFromSource) return;
-            if (Value == null) return;
+            if (_isUpdatingFromSource || Value == null)
+                return;
 
-            // 触发绑定更新
-            var newText = DisplayTextBox.Text;
-
-            // 优先使用覆盖语言
-            string targetLang = !string.IsNullOrEmpty(LocalizedString.OverrideLanguage) 
-                ? LocalizedString.OverrideLanguage 
-                : LanguageService.CurrentLanguage;
-            
-            // 创建一个新实例
             var newLocalizedString = new LocalizedString
             {
                 Default = Value.Default,
-                // 创建字典的新副本，以防原始字典被意外修改
                 Translations = new Dictionary<string, string>(Value.Translations)
             };
-            
-            // 使用 Set 方法的逻辑手动更新
-            newLocalizedString.Translations[targetLang] = newText;
 
-            // 将新实例赋值给依赖属性
-            this.Value = newLocalizedString;
+            newLocalizedString.Set(DisplayTextBox.Text, ResolveContext());
+            Value = newLocalizedString;
         }
     }
 }

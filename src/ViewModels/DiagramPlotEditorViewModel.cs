@@ -1,8 +1,11 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Messages;
 using GeoChemistryNexus.Models;
 using GeoChemistryNexus.Services;
+using Ookii.Dialogs.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,7 +22,7 @@ namespace GeoChemistryNexus.ViewModels
         Edit
     }
 
-    public partial class DiagramPlotEditorViewModel : ObservableObject
+    public partial class DiagramPlotEditorViewModel : ObservableObject, IRecipient<DeveloperModeChangedMessage>
     {
         [ObservableProperty]
         private DiagramPlotEditorMode _mode = DiagramPlotEditorMode.Create;
@@ -87,6 +90,10 @@ namespace GeoChemistryNexus.ViewModels
         public string TemplateVersion => ContentVersionHelper.WithAppDiagramFormat(PatchVersion);
 
         public ObservableCollection<LanguageTagModel> LanguageParts { get; } = new();
+
+        [ObservableProperty]
+        private IReadOnlyList<CultureOption> _appLanguageOptions = AppCultureRegistry.GetAppUiOptions();
+
         public ObservableCollection<CategoryPartModel> CategoryParts { get; } = new();
         public ObservableCollection<PlotTypeOption> PlotTypeOptions { get; } = new();
 
@@ -109,6 +116,26 @@ namespace GeoChemistryNexus.ViewModels
             LoadCategories();
             LanguageParts.CollectionChanged += (_, _) => OnLanguagesChanged();
             CategoryParts.CollectionChanged += (_, _) => RebuildTranslationPreview();
+            LanguageService.Instance.PropertyChanged += (_, args) =>
+            {
+                if (args.PropertyName == "Item[]")
+                {
+                    InitializePlotTypes();
+                }
+            };
+            WeakReferenceMessenger.Default.Register<DeveloperModeChangedMessage>(this);
+        }
+
+        public void Receive(DeveloperModeChangedMessage message)
+        {
+            RefreshLanguageDisplayNames();
+        }
+
+        public void RefreshLanguageDisplayNames()
+        {
+            AppLanguageOptions = AppCultureRegistry.GetAppUiOptions();
+            foreach (var part in LanguageParts)
+                part.NotifyDisplayTextChanged();
         }
 
         public void InitializeForCreate()
@@ -284,6 +311,8 @@ namespace GeoChemistryNexus.ViewModels
         {
             if (string.IsNullOrWhiteSpace(code)) return false;
             code = code.Trim();
+            if (!AppCultureRegistry.IsValidAppUiCode(code))
+                return false;
             if (LanguageParts.Any(p => p.Text.Equals(code, StringComparison.OrdinalIgnoreCase)))
                 return false;
 
@@ -339,46 +368,96 @@ namespace GeoChemistryNexus.ViewModels
         public void ReloadCategories() => LoadCategories();
 
         [RelayCommand]
-        private void AddTranslationLanguage(string? langCode)
+        private void ExportTranslations()
         {
-            if (string.IsNullOrWhiteSpace(langCode) || TranslationTable == null) return;
-            langCode = langCode.Trim();
-            if (TranslationTable.Columns.Contains(langCode))
+            if (TranslationTable == null)
             {
-                TranslationStatusMessage = $"{LanguageService.Instance["language_exists"] ?? "Language exists"}: {langCode}";
+                TranslationStatusMessage = LanguageService.Instance["translation_export_table_missing"] ?? "Translation table is not ready.";
                 return;
             }
 
-            TranslationTable.Columns.Add(langCode, typeof(string));
-            foreach (DataRow row in TranslationTable.Rows)
-                row[langCode] = string.Empty;
-
-            if (!LanguageParts.Any(p => p.Text.Equals(langCode, StringComparison.OrdinalIgnoreCase)))
+            var languages = LanguageParts.Select(l => l.Text).ToList();
+            if (languages.Count == 0)
             {
-                LanguageParts.Add(new LanguageTagModel { Text = langCode });
-                UpdateLanguageDefaultStatus();
+                TranslationStatusMessage = LanguageService.Instance["translation_export_no_languages"] ?? "Configure languages in basic settings first.";
+                return;
             }
 
-            RefreshTranslationTableBinding();
-            SyncWorkingTemplateFromTable();
-            TranslationStatusMessage = $"{LanguageService.Instance["add_language_column"]}: {langCode}";
+            var dialog = new VistaSaveFileDialog
+            {
+                Title = LanguageService.Instance["diagram_translation_export"] ?? "Export Translations",
+                Filter = FileDialogFilterHelper.JsonOnly,
+                DefaultExt = "json",
+                FileName = "diagram-translations.json"
+            };
+
+            if (dialog.ShowDialog() != true)
+                return;
+
+            try
+            {
+                string json = DiagramTemplateTranslationHelper.ExportToJson(
+                    TranslationTable,
+                    languages,
+                    DefaultLanguageCode);
+                File.WriteAllText(dialog.FileName, json);
+                TranslationStatusMessage = string.Format(
+                    LanguageService.Instance["translation_export_success"] ?? "Exported translations to {0}.",
+                    dialog.FileName);
+            }
+            catch (Exception ex)
+            {
+                TranslationStatusMessage = $"{LanguageService.Instance["translation_export_failed"] ?? "Export failed."} {ex.Message}";
+            }
         }
 
         [RelayCommand]
-        private void RemoveTranslationLanguage(string? langCode)
+        private void ImportTranslations()
         {
-            if (string.IsNullOrWhiteSpace(langCode) || TranslationTable == null) return;
-            if (!TranslationTable.Columns.Contains(langCode)) return;
+            if (TranslationTable == null)
+            {
+                TranslationStatusMessage = LanguageService.Instance["translation_import_table_missing"] ?? "Translation table is not ready.";
+                return;
+            }
 
-            TranslationTable.Columns.Remove(langCode);
-            var tag = LanguageParts.FirstOrDefault(p => p.Text.Equals(langCode, StringComparison.OrdinalIgnoreCase));
-            if (tag != null)
-                LanguageParts.Remove(tag);
+            var languages = LanguageParts.Select(l => l.Text).ToList();
+            if (languages.Count == 0)
+            {
+                TranslationStatusMessage = LanguageService.Instance["translation_import_no_languages"] ?? "Configure languages in basic settings first.";
+                return;
+            }
 
-            UpdateLanguageDefaultStatus();
-            RefreshTranslationTableBinding();
-            SyncWorkingTemplateFromTable();
-            TranslationStatusMessage = $"{LanguageService.Instance["delete_language_column"]}: {langCode}";
+            var dialog = new VistaOpenFileDialog
+            {
+                Title = LanguageService.Instance["diagram_translation_import"] ?? "Import Translations",
+                Filter = FileDialogFilterHelper.JsonOnly,
+                DefaultExt = "json"
+            };
+
+            if (dialog.ShowDialog() != true)
+                return;
+
+            try
+            {
+                string json = File.ReadAllText(dialog.FileName);
+                var result = DiagramTemplateTranslationHelper.ImportFromJson(json, TranslationTable, languages);
+                if (!result.IsSuccess)
+                {
+                    TranslationStatusMessage = result.ErrorMessage;
+                    return;
+                }
+
+                RefreshTranslationTableBinding();
+                SyncWorkingTemplateFromTable();
+                TranslationStatusMessage = string.Format(
+                    LanguageService.Instance["translation_import_success"] ?? "Imported {0} items, updated {1} cells.",
+                    result.MatchedItems,
+                    result.UpdatedCells);
+            }
+            catch (Exception ex)
+            {
+                TranslationStatusMessage = $"{LanguageService.Instance["translation_import_failed"] ?? "Import failed."} {ex.Message}";
+            }
         }
 
         [RelayCommand]
@@ -713,20 +792,16 @@ namespace GeoChemistryNexus.ViewModels
                 Key = "2D_Plot",
                 Badge = "XY",
                 Title = LanguageService.Instance["two_dimensional_coordinate_plot"] ?? "2D Plot",
-                Description = GetLocalizedDescription(
-                    "适合常规 X-Y 坐标绘图，适用于散点、折线、函数等大多数图解模板。",
-                    "Best for standard X-Y plotting."),
-                SelectedLabel = GetLocalizedDescription("已选", "Selected")
+                Description = LanguageService.Instance["plot_type_2d_description"] ?? "Best for standard X-Y plotting.",
+                SelectedLabel = LanguageService.Instance["selected_label"] ?? "Selected"
             });
             PlotTypeOptions.Add(new PlotTypeOption
             {
                 Key = "Ternary_Plot",
                 Badge = "ABC",
                 Title = LanguageService.Instance["ternary_phase_diagram"] ?? "Ternary",
-                Description = GetLocalizedDescription(
-                    "适合三组分配比数据，常用于三元判别图、相图和端元混合关系表达。",
-                    "Best for ternary compositions and phase diagrams."),
-                SelectedLabel = GetLocalizedDescription("已选", "Selected")
+                Description = LanguageService.Instance["plot_type_ternary_description"] ?? "Best for ternary compositions and phase diagrams.",
+                SelectedLabel = LanguageService.Instance["selected_label"] ?? "Selected"
             });
         }
 
@@ -737,10 +812,5 @@ namespace GeoChemistryNexus.ViewModels
             "Ternary_Plot" => "Ternary_Plot",
             _ => "2D_Plot"
         };
-
-        private static string GetLocalizedDescription(string zhCnText, string enText) =>
-            LanguageService.CurrentLanguage.StartsWith("zh", StringComparison.OrdinalIgnoreCase)
-                ? zhCnText
-                : enText;
     }
 }

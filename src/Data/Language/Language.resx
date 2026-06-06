@@ -1116,6 +1116,9 @@
   <data name="official_publisher_announcement_empty" xml:space="preserve">
     <value>(empty)</value>
   </data>
+  <data name="home_links_edit_language" xml:space="preserve">
+    <value>Editing language:</value>
+  </data>
   <data name="official_publisher_home_links_section" xml:space="preserve">
     <value>Home Links</value>
   </data>
@@ -2663,6 +2666,21 @@ Directory: {2}</value>
   <data name="shortcut_action_underline_desc" xml:space="preserve">
     <value>Toggle underline for the selected text.</value>
   </data>
+  <data name="shortcut_group_notification_title" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="shortcut_group_notification_desc" xml:space="preserve">
+    <value>These shortcuts apply to toast notifications in the top-right corner.</value>
+  </data>
+  <data name="shortcut_action_close_notification_name" xml:space="preserve">
+    <value>Close Notification</value>
+  </data>
+  <data name="shortcut_action_close_notification_keys" xml:space="preserve">
+    <value>Middle-click on the notification</value>
+  </data>
+  <data name="shortcut_action_close_notification_desc" xml:space="preserve">
+    <value>Close the notification, same as clicking the close button. Does not apply to interactive dialogs.</value>
+  </data>
   <data name="layer" xml:space="preserve">
     <value>Layer</value>
   </data>
@@ -2937,7 +2955,43 @@ Directory: {2}</value>
     <value>Content Translation</value>
   </data>
   <data name="diagram_editor_translation_hint" xml:space="preserve">
-    <value>Edit multilingual text for titles, axes, labels, and other diagram content. Add or remove languages here to update the diagram's supported languages.</value>
+    <value>Edit multilingual text for titles, axes, labels, and annotations. Configure languages in Basic Settings; export or import JSON translation files here.</value>
+  </data>
+  <data name="diagram_translation_export" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="diagram_translation_import" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="translation_export_no_languages" xml:space="preserve">
+    <value>Configure languages in basic settings first.</value>
+  </data>
+  <data name="translation_export_table_missing" xml:space="preserve">
+    <value>Translation table is not ready.</value>
+  </data>
+  <data name="translation_export_success" xml:space="preserve">
+    <value>Exported translations to {0}.</value>
+  </data>
+  <data name="translation_export_failed" xml:space="preserve">
+    <value>Export failed.</value>
+  </data>
+  <data name="translation_import_no_languages" xml:space="preserve">
+    <value>Configure languages in basic settings first.</value>
+  </data>
+  <data name="translation_import_table_missing" xml:space="preserve">
+    <value>Translation table is not ready.</value>
+  </data>
+  <data name="translation_import_invalid_json" xml:space="preserve">
+    <value>Invalid JSON file.</value>
+  </data>
+  <data name="translation_import_invalid_format" xml:space="preserve">
+    <value>Unsupported translation file format.</value>
+  </data>
+  <data name="translation_import_success" xml:space="preserve">
+    <value>Imported {0} items, updated {1} cells.</value>
+  </data>
+  <data name="translation_import_failed" xml:space="preserve">
+    <value>Import failed.</value>
   </data>
   <data name="diagram_editor_new_version" xml:space="preserve">
     <value>New Version</value>
@@ -2983,5 +3037,74 @@ Directory: {2}</value>
   </data>
   <data name="language_exists" xml:space="preserve">
     <value>Language already exists</value>
+  </data>
+  <data name="notification_success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="notification_warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="filter_all_files" xml:space="preserve">
+    <value>All Files</value>
+  </data>
+  <data name="filter_json_files" xml:space="preserve">
+    <value>JSON Files</value>
+  </data>
+  <data name="filter_zip_files" xml:space="preserve">
+    <value>Zip Files</value>
+  </data>
+  <data name="filter_template_files" xml:space="preserve">
+    <value>Template Files</value>
+  </data>
+  <data name="filter_csv_files" xml:space="preserve">
+    <value>CSV Files</value>
+  </data>
+  <data name="filter_png_image" xml:space="preserve">
+    <value>PNG Image</value>
+  </data>
+  <data name="filter_svg_vector" xml:space="preserve">
+    <value>SVG Vector</value>
+  </data>
+  <data name="open_template" xml:space="preserve">
+    <value>Open Template</value>
+  </data>
+  <data name="save_file_title" xml:space="preserve">
+    <value>Save File</value>
+  </data>
+  <data name="plot_undefined_data_columns" xml:space="preserve">
+    <value>Undefined data columns</value>
+  </data>
+  <data name="plot_json_multiselect_not_supported" xml:space="preserve">
+    <value>JSON files cannot be added in a multi-select batch. Only ZIP files support multi-select batch import.</value>
+  </data>
+  <data name="plot_ternary_axis_not_found" xml:space="preserve">
+    <value>Error: triangular axis object not found in the plot.</value>
+  </data>
+  <data name="plot_upload_thumbnail_failed" xml:space="preserve">
+    <value>Failed to upload thumbnail: {0}</value>
+  </data>
+  <data name="plot_type_2d_description" xml:space="preserve">
+    <value>Best for standard X-Y plotting for scatter, line, function, and most diagram templates.</value>
+  </data>
+  <data name="plot_type_ternary_description" xml:space="preserve">
+    <value>Best for ternary compositions, phase diagrams, and end-member mixing relationships.</value>
+  </data>
+  <data name="selected_label" xml:space="preserve">
+    <value>Selected</value>
+  </data>
+  <data name="dataPrep_workflowStep1" xml:space="preserve">
+    <value>1. Import a CSV / Excel table and confirm major-element headers</value>
+  </data>
+  <data name="dataPrep_workflowStep2" xml:space="preserve">
+    <value>2. Set detection limits, missing values, outliers, and iron valence strategy</value>
+  </data>
+  <data name="dataPrep_workflowStep3" xml:space="preserve">
+    <value>3. Batch-generate cleaned, normalized, and geochemical indicator columns</value>
+  </data>
+  <data name="dataPrep_workflowStep4" xml:space="preserve">
+    <value>4. Output to a new Processed worksheet and export results</value>
+  </data>
+  <data name="see_error_log_for_details" xml:space="preserve">
+    <value>See error.log for details.</value>
   </data>
 </root>

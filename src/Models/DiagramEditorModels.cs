@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using GeoChemistryNexus.Helpers;
 using System.Collections.Generic;
 
 namespace GeoChemistryNexus.Models
@@ -14,6 +15,13 @@ namespace GeoChemistryNexus.Models
         private bool _isDefault;
 
         public string Text { get; set; } = string.Empty;
+
+        public string DisplayText => AppCultureRegistry.GetDisplayName(Text);
+
+        public void NotifyDisplayTextChanged()
+        {
+            OnPropertyChanged(nameof(DisplayText));
+        }
 
         public bool IsDefault
         {

@@ -39,13 +39,7 @@ namespace GeoChemistryNexus.ViewModels
 
         public ObservableCollection<LocalizedOptionItem> DetectionLimitStrategies { get; } = new();
 
-        public ObservableCollection<string> WorkflowSteps { get; } = new()
-        {
-            "1. 导入 CSV / Excel 数据表，确认主量元素表头",
-            "2. 设定检测限、空值、异常值与铁价态估算策略",
-            "3. 批量生成清洗列、归一化列和地球化学指标列",
-            "4. 输出到新的 Processed 工作表并导出结果"
-        };
+        public ObservableCollection<string> WorkflowSteps { get; } = new();
 
         public ObservableCollection<string> OutputFields { get; } = new()
         {
@@ -148,6 +142,7 @@ namespace GeoChemistryNexus.ViewModels
         public DataPreprocessingPageViewModel()
         {
             RefreshLocalizedOptions();
+            RefreshWorkflowSteps();
             SelectedIronValenceMethod = DataPreprocessingOptionCodes.IronValenceAutoEstimate;
             SelectedOutlierStrategy = DataPreprocessingOptionCodes.OutlierMarkOnly;
             SelectedMissingValueStrategy = DataPreprocessingOptionCodes.MissingKeep;
@@ -159,6 +154,7 @@ namespace GeoChemistryNexus.ViewModels
                 if (args.PropertyName == "Item[]")
                 {
                     RefreshLocalizedOptions();
+                    RefreshWorkflowSteps();
                     RefreshLocalizedStateTexts();
                     UpdatePreviewTexts();
                 }
@@ -567,6 +563,15 @@ namespace GeoChemistryNexus.ViewModels
             worksheet.SetRangeStyles(new RangePosition(0, 0, rowCount, colCount), dataStyle);
 
             UpdateWorksheetSummary(worksheet);
+        }
+
+        private void RefreshWorkflowSteps()
+        {
+            WorkflowSteps.Clear();
+            WorkflowSteps.Add(L("dataPrep_workflowStep1", "1. Import a CSV / Excel table and confirm major-element headers"));
+            WorkflowSteps.Add(L("dataPrep_workflowStep2", "2. Set detection limits, missing values, outliers, and iron valence strategy"));
+            WorkflowSteps.Add(L("dataPrep_workflowStep3", "3. Batch-generate cleaned, normalized, and geochemical indicator columns"));
+            WorkflowSteps.Add(L("dataPrep_workflowStep4", "4. Output to a new Processed worksheet and export results"));
         }
 
         private void UpdatePreviewTexts()

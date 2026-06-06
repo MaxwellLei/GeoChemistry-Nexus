@@ -38,6 +38,7 @@ namespace GeoChemistryNexus.ViewModels
 
         // Dialog support
         [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(CloseCommand))]
         private bool isInteractive;
 
         [ObservableProperty]
@@ -56,6 +57,7 @@ namespace GeoChemistryNexus.ViewModels
         private bool isThreeButtonDialog;
 
         [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(CloseCommand))]
         private bool isClosing;
 
         public Action<bool> DialogResultAction { get; set; }
@@ -182,7 +184,9 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
-        [RelayCommand]
+        private bool CanDismiss() => !IsInteractive && !IsClosing;
+
+        [RelayCommand(CanExecute = nameof(CanDismiss))]
         public async Task Close()
         {
             if (IsClosing) return;

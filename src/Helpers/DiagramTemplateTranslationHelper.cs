@@ -4,6 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace GeoChemistryNexus.Helpers
 {
@@ -12,6 +15,20 @@ namespace GeoChemistryNexus.Helpers
     /// </summary>
     public static class DiagramTemplateTranslationHelper
     {
+        public const string TranslationKeyColumn = "TranslationKey";
+        private const string ExportFormat = "GeoChemistryNexus.DiagramTranslation";
+        private const int ExportFormatVersion = 1;
+
+        private static readonly HashSet<string> MetadataColumns = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "Context",
+            "ObjectRef",
+            TranslationKeyColumn
+        };
+
+        public static bool IsLanguageColumn(string columnName) =>
+            !MetadataColumns.Contains(columnName);
+
         public static List<LocalizedString> CollectLocalizedStrings(GraphMapTemplate template)
         {
             var result = new List<LocalizedString>();
@@ -61,6 +78,7 @@ namespace GeoChemistryNexus.Helpers
         {
             var dt = new DataTable();
             dt.Columns.Add("Context", typeof(string));
+            dt.Columns.Add(TranslationKeyColumn, typeof(string));
             dt.Columns.Add("ObjectRef", typeof(object));
 
             if (template == null)
@@ -87,10 +105,10 @@ namespace GeoChemistryNexus.Helpers
                 dt.Columns.Add(lang, typeof(string));
 
             if (template.NodeList != null)
-                AddRow(dt, LanguageService.Instance["translation_node_list"] ?? "Category Path", template.NodeList, orderedLanguages);
+                AddRow(dt, LanguageService.Instance["translation_node_list"] ?? "Category Path", "categoryPath", template.NodeList, orderedLanguages);
 
             if (template.Info?.Title?.Label != null)
-                AddRow(dt, LanguageService.Instance["translation_main_title"] ?? "Main Title", template.Info.Title.Label, orderedLanguages);
+                AddRow(dt, LanguageService.Instance["translation_main_title"] ?? "Main Title", "mainTitle", template.Info.Title.Label, orderedLanguages);
 
             if (template.Info?.Texts != null)
             {
@@ -100,7 +118,7 @@ namespace GeoChemistryNexus.Helpers
                     if (textDef?.Content == null) continue;
 
                     string preview = GetPreviewText(textDef.Content, template.DefaultLanguage, $"Text #{i + 1}");
-                    AddRow(dt, $"{LanguageService.Instance["translation_text_item"] ?? "Text"} #{i + 1} ({preview})", textDef.Content, orderedLanguages);
+                    AddRow(dt, $"{LanguageService.Instance["translation_text_item"] ?? "Text"} #{i + 1} ({preview})", $"text.{i}", textDef.Content, orderedLanguages);
                 }
             }
 
@@ -110,10 +128,10 @@ namespace GeoChemistryNexus.Helpers
                 {
                     var axis = template.Info.Axes[i];
                     if (axis?.Label != null)
-                        AddRow(dt, $"{LanguageService.Instance["translation_axis_title"] ?? "Axis"} #{i + 1}", axis.Label, orderedLanguages);
+                        AddRow(dt, $"{LanguageService.Instance["translation_axis_title"] ?? "Axis"} #{i + 1}", $"axis.{i}.label", axis.Label, orderedLanguages);
 
                     if (axis is CartesianAxisDefinition cartesian && cartesian.SubLabel != null)
-                        AddRow(dt, $"{LanguageService.Instance["translation_axis_subtitle"] ?? "Axis Subtitle"} #{i + 1}", cartesian.SubLabel, orderedLanguages);
+                        AddRow(dt, $"{LanguageService.Instance["translation_axis_subtitle"] ?? "Axis Subtitle"} #{i + 1}", $"axis.{i}.sublabel", cartesian.SubLabel, orderedLanguages);
                 }
             }
 
@@ -125,7 +143,7 @@ namespace GeoChemistryNexus.Helpers
                     if (annotation?.Content == null) continue;
 
                     string preview = GetPreviewText(annotation.Content, template.DefaultLanguage, $"Annotation #{i + 1}");
-                    AddRow(dt, $"{LanguageService.Instance["translation_annotation"] ?? "Annotation"} #{i + 1} ({preview})", annotation.Content, orderedLanguages);
+                    AddRow(dt, $"{LanguageService.Instance["translation_annotation"] ?? "Annotation"} #{i + 1} ({preview})", $"annotation.{i}", annotation.Content, orderedLanguages);
                 }
             }
 
@@ -137,7 +155,7 @@ namespace GeoChemistryNexus.Helpers
             if (table == null || template == null) return;
 
             var currentLanguages = table.Columns.Cast<DataColumn>()
-                .Where(c => c.ColumnName is not "Context" and not "ObjectRef")
+                .Where(c => IsLanguageColumn(c.ColumnName))
                 .Select(c => c.ColumnName)
                 .ToHashSet(StringComparer.OrdinalIgnoreCase);
 
@@ -246,10 +264,116 @@ namespace GeoChemistryNexus.Helpers
             return rebuilt;
         }
 
-        private static void AddRow(DataTable dt, string context, LocalizedString locString, IList<string> languages)
+        public static string ExportToJson(DataTable table, IList<string> languages, string defaultLanguage)
+        {
+            if (table == null) throw new ArgumentNullException(nameof(table));
+            if (languages == null || languages.Count == 0)
+                throw new InvalidOperationException(LanguageService.Instance["translation_export_no_languages"] ?? "No languages configured.");
+
+            var payload = new DiagramTranslationExportPayload
+            {
+                Format = ExportFormat,
+                FormatVersion = ExportFormatVersion,
+                Languages = languages.ToList(),
+                DefaultLanguage = defaultLanguage,
+                Items = new List<DiagramTranslationExportItem>()
+            };
+
+            foreach (DataRow row in table.Rows)
+            {
+                string key = row[TranslationKeyColumn] as string ?? string.Empty;
+                if (string.IsNullOrWhiteSpace(key)) continue;
+
+                var item = new DiagramTranslationExportItem
+                {
+                    Key = key,
+                    Context = row["Context"] as string ?? string.Empty,
+                    Values = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+                };
+
+                foreach (var lang in languages)
+                {
+                    if (!table.Columns.Contains(lang)) continue;
+                    item.Values[lang] = row[lang] as string ?? string.Empty;
+                }
+
+                payload.Items.Add(item);
+            }
+
+            return JsonSerializer.Serialize(payload, new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+            });
+        }
+
+        public static DiagramTranslationImportResult ImportFromJson(string json, DataTable table, IList<string> configuredLanguages)
+        {
+            var result = new DiagramTranslationImportResult();
+            if (table == null)
+            {
+                result.ErrorMessage = LanguageService.Instance["translation_import_table_missing"] ?? "Translation table is not ready.";
+                return result;
+            }
+
+            if (configuredLanguages == null || configuredLanguages.Count == 0)
+            {
+                result.ErrorMessage = LanguageService.Instance["translation_import_no_languages"] ?? "Configure languages in basic settings first.";
+                return result;
+            }
+
+            DiagramTranslationExportPayload? payload;
+            try
+            {
+                payload = JsonSerializer.Deserialize<DiagramTranslationExportPayload>(json);
+            }
+            catch (JsonException ex)
+            {
+                result.ErrorMessage = $"{LanguageService.Instance["translation_import_invalid_json"] ?? "Invalid JSON file."} {ex.Message}";
+                return result;
+            }
+
+            if (payload == null ||
+                !string.Equals(payload.Format, ExportFormat, StringComparison.OrdinalIgnoreCase) ||
+                payload.FormatVersion != ExportFormatVersion ||
+                payload.Items == null)
+            {
+                result.ErrorMessage = LanguageService.Instance["translation_import_invalid_format"] ?? "Unsupported translation file format.";
+                return result;
+            }
+
+            var configuredLangSet = configuredLanguages.ToHashSet(StringComparer.OrdinalIgnoreCase);
+            var rowsByKey = table.Rows.Cast<DataRow>()
+                .Where(r => r[TranslationKeyColumn] is string key && !string.IsNullOrWhiteSpace(key))
+                .ToDictionary(r => (string)r[TranslationKeyColumn], r => r, StringComparer.OrdinalIgnoreCase);
+
+            foreach (var item in payload.Items)
+            {
+                if (string.IsNullOrWhiteSpace(item.Key) || item.Values == null) continue;
+                if (!rowsByKey.TryGetValue(item.Key, out var row)) continue;
+
+                foreach (var kvp in item.Values)
+                {
+                    if (!configuredLangSet.Contains(kvp.Key)) continue;
+                    if (!table.Columns.Contains(kvp.Key)) continue;
+
+                    row[kvp.Key] = kvp.Value ?? string.Empty;
+                    result.UpdatedCells++;
+                }
+
+                result.MatchedItems++;
+            }
+
+            result.IsSuccess = true;
+            return result;
+        }
+
+        private static void AddRow(DataTable dt, string context, string translationKey, LocalizedString locString, IList<string> languages)
         {
             var row = dt.NewRow();
             row["Context"] = context;
+            row[TranslationKeyColumn] = translationKey;
             row["ObjectRef"] = locString;
 
             foreach (var lang in languages)
@@ -265,22 +389,39 @@ namespace GeoChemistryNexus.Helpers
 
         private static string GetPreviewText(LocalizedString content, string defaultLanguage, string fallback)
         {
-            string text = string.Empty;
-            if (!string.IsNullOrEmpty(defaultLanguage) &&
-                content.Translations != null &&
-                content.Translations.TryGetValue(defaultLanguage, out var localized))
-            {
-                text = localized;
-            }
-            else if (content.Translations?.Values.FirstOrDefault(v => !string.IsNullOrWhiteSpace(v)) is string first)
-            {
-                text = first;
-            }
+            string text = AppCultureRegistry.GetLocalizedValue(
+                content.Translations,
+                defaultLanguage,
+                content.Default);
 
             if (string.IsNullOrWhiteSpace(text))
                 return fallback;
 
             return text.Length > 24 ? text.Substring(0, 24) + "…" : text;
         }
+    }
+
+    public sealed class DiagramTranslationExportPayload
+    {
+        public string Format { get; set; } = string.Empty;
+        public int FormatVersion { get; set; }
+        public List<string> Languages { get; set; } = new();
+        public string DefaultLanguage { get; set; } = string.Empty;
+        public List<DiagramTranslationExportItem> Items { get; set; } = new();
+    }
+
+    public sealed class DiagramTranslationExportItem
+    {
+        public string Key { get; set; } = string.Empty;
+        public string Context { get; set; } = string.Empty;
+        public Dictionary<string, string> Values { get; set; } = new(StringComparer.OrdinalIgnoreCase);
+    }
+
+    public sealed class DiagramTranslationImportResult
+    {
+        public bool IsSuccess { get; set; }
+        public string ErrorMessage { get; set; } = string.Empty;
+        public int MatchedItems { get; set; }
+        public int UpdatedCells { get; set; }
     }
 }

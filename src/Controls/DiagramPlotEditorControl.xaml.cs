@@ -91,17 +91,11 @@ namespace GeoChemistryNexus.Controls
 
         private void InitializeLanguageCombo()
         {
-            LanguageCombo.ItemsSource = new[]
-            {
-                new LanguageOption { Name = "简体中文 (zh-CN)", Code = "zh-CN" },
-                new LanguageOption { Name = "繁体中文 (zh-TW)", Code = "zh-TW" },
-                new LanguageOption { Name = "English (en-US)", Code = "en-US" },
-                new LanguageOption { Name = "日本語 (ja-JP)", Code = "ja-JP" },
-                new LanguageOption { Name = "Русский (ru-RU)", Code = "ru-RU" },
-                new LanguageOption { Name = "한국어 (ko-KR)", Code = "ko-KR" },
-                new LanguageOption { Name = "Deutsch (de-DE)", Code = "de-DE" },
-                new LanguageOption { Name = "Español (es-ES)", Code = "es-ES" }
-            };
+            LanguageCombo.SetBinding(
+                System.Windows.Controls.Primitives.Selector.ItemsSourceProperty,
+                new System.Windows.Data.Binding(nameof(DiagramPlotEditorViewModel.AppLanguageOptions)));
+            LanguageCombo.DisplayMemberPath = nameof(CultureOption.DisplayName);
+            LanguageCombo.SelectedValuePath = nameof(CultureOption.Code);
         }
 
         private void NavSection_Checked(object sender, RoutedEventArgs e)
@@ -214,7 +208,7 @@ namespace GeoChemistryNexus.Controls
                 e.Column.Width = new DataGridLength(200);
                 e.Column.MinWidth = 160;
             }
-            else if (e.PropertyName == "ObjectRef")
+            else if (e.PropertyName is "ObjectRef" or DiagramTemplateTranslationHelper.TranslationKeyColumn)
             {
                 e.Cancel = true;
             }
@@ -280,7 +274,7 @@ namespace GeoChemistryNexus.Controls
             int maxLines = 1;
             foreach (System.Data.DataColumn column in rowView.Row.Table.Columns)
             {
-                if (column.ColumnName is "Context" or "ObjectRef") continue;
+                if (!DiagramTemplateTranslationHelper.IsLanguageColumn(column.ColumnName)) continue;
 
                 if (rowView[column.ColumnName] is string text && !string.IsNullOrEmpty(text))
                     maxLines = Math.Max(maxLines, text.Split('\n').Length);
@@ -292,16 +286,6 @@ namespace GeoChemistryNexus.Controls
         private void TranslationGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             Dispatcher.BeginInvoke(new Action(() => ViewModel.OnTranslationCellChanged()));
-        }
-
-        private void AddTranslationLanguage_Click(object sender, RoutedEventArgs e)
-        {
-            var dialog = new TextInputDialog(
-                LanguageService.Instance["enter_language_code_prompt"] ?? "Enter language code (e.g. fr-FR):",
-                LanguageService.Instance["add_language_column"] ?? "Add Language",
-                OwnerWindow());
-            if (dialog.ShowDialog() == true && !string.IsNullOrWhiteSpace(dialog.InputText))
-                ViewModel.AddTranslationLanguageCommand.Execute(dialog.InputText.Trim());
         }
 
         private void SwapTranslationLanguage_Click(object sender, RoutedEventArgs e)
@@ -330,36 +314,11 @@ namespace GeoChemistryNexus.Controls
             }
         }
 
-        private void RemoveTranslationLanguage_Click(object sender, RoutedEventArgs e)
-        {
-            var langs = GetTranslationLanguages();
-            if (langs.Count == 0) return;
-
-            var selectDialog = new SingleComboSelectDialog(
-                langs,
-                LanguageService.Instance["select_language_to_delete"] ?? "Select language to delete:",
-                LanguageService.Instance["delete_language_column"] ?? "Delete Language",
-                OwnerWindow());
-            if (selectDialog.ShowDialog() != true || string.IsNullOrEmpty(selectDialog.SelectedItem))
-                return;
-
-            var confirm = HandyControl.Controls.MessageBox.Show(
-                string.Format(
-                    LanguageService.Instance["confirm_delete_language"] ?? "Delete language '{0}'?",
-                    selectDialog.SelectedItem),
-                LanguageService.Instance["tips"] ?? "Tips",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Warning);
-
-            if (confirm == MessageBoxResult.Yes)
-                ViewModel.RemoveTranslationLanguageCommand.Execute(selectDialog.SelectedItem);
-        }
-
         private List<string> GetTranslationLanguages()
         {
             if (ViewModel.TranslationTable == null) return new List<string>();
             return ViewModel.TranslationTable.Columns.Cast<System.Data.DataColumn>()
-                .Where(c => c.ColumnName is not "Context" and not "ObjectRef")
+                .Where(c => DiagramTemplateTranslationHelper.IsLanguageColumn(c.ColumnName))
                 .Select(c => c.ColumnName)
                 .ToList();
         }
@@ -413,12 +372,6 @@ namespace GeoChemistryNexus.Controls
                 HelpDocEditor.Selection.ApplyPropertyValue(TextElement.FontSizeProperty, size);
                 HelpDocEditor.Focus();
             }
-        }
-
-        private class LanguageOption
-        {
-            public string Name { get; set; } = string.Empty;
-            public string Code { get; set; } = string.Empty;
         }
 
         private class CategoryDisplayItem

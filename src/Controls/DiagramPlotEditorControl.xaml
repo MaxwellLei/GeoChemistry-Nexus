@@ -390,7 +390,7 @@
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock Text="★" FontSize="9" FontWeight="Bold" Foreground="#0078D4" Margin="0,0,4,0"
                                                            Visibility="{Binding IsDefault, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                                                <TextBlock Text="{Binding Text}" Style="{StaticResource TokenLabelStyle}" Foreground="#0078D4"/>
+                                                <TextBlock Text="{Binding DisplayText}" Style="{StaticResource TokenLabelStyle}" Foreground="#0078D4"/>
                                                 <Button Tag="{Binding}" Click="RemoveLanguage_Click"
                                                         Style="{StaticResource TokenCloseButtonStyle}" Foreground="#0078D4"/>
                                             </StackPanel>
@@ -408,7 +408,7 @@
                                              IsEditable="True"
                                              StaysOpenOnEdit="True"
                                              hc:InfoElement.Placeholder="{Binding [enter_language_add], Source={x:Static lg:LanguageService.Instance}}"
-                                             DisplayMemberPath="Name"
+                                             DisplayMemberPath="DisplayName"
                                              SelectedValuePath="Code"
                                              SelectionChanged="LanguageCombo_SelectionChanged"
                                              PreviewKeyDown="LanguageCombo_PreviewKeyDown"
@@ -575,12 +575,12 @@
 
                         <Border Grid.Row="0" Background="#FAFAFA" Padding="12,8" BorderBrush="#EEEEEE" BorderThickness="0,0,0,1">
                             <WrapPanel>
-                                <Button Content="{Binding [add_language_column], Source={x:Static lg:LanguageService.Instance}}"
-                                        Click="AddTranslationLanguage_Click" Style="{StaticResource ButtonPrimary}" Margin="0,0,8,0"/>
                                 <Button Content="{Binding [swap_language_columns], Source={x:Static lg:LanguageService.Instance}}"
                                         Click="SwapTranslationLanguage_Click" Margin="0,0,8,0"/>
-                                <Button Content="{Binding [delete_language_column], Source={x:Static lg:LanguageService.Instance}}"
-                                        Click="RemoveTranslationLanguage_Click" Style="{StaticResource ButtonWarning}"/>
+                                <Button Content="{Binding [diagram_translation_export], Source={x:Static lg:LanguageService.Instance}, FallbackValue=导出}"
+                                        Command="{Binding ExportTranslationsCommand}" Margin="0,0,8,0"/>
+                                <Button Content="{Binding [diagram_translation_import], Source={x:Static lg:LanguageService.Instance}, FallbackValue=导入}"
+                                        Command="{Binding ImportTranslationsCommand}"/>
                             </WrapPanel>
                         </Border>
 
@@ -631,7 +631,7 @@
                         <TextBlock Text="{Binding [geo_help_current_lang], Source={x:Static lg:LanguageService.Instance}, FallbackValue='当前语言：'}"
                                    FontSize="12" Foreground="#555" VerticalAlignment="Center" Margin="0,0,6,0"/>
                         <ComboBox ItemsSource="{Binding LanguageParts}"
-                                  DisplayMemberPath="Text"
+                                  DisplayMemberPath="DisplayText"
                                   SelectedValuePath="Text"
                                   SelectedValue="{Binding SelectedHelpLanguage, Mode=TwoWay}"
                                   Width="130" VerticalAlignment="Center"/>

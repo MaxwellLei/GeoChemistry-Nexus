@@ -2274,4 +2274,844 @@ Verzeichnis: {2}</value>
   <data name="runProcessing" xml:space="preserve">
     <value>Verarbeitung ausführen</value>
   </data>
+  <data name="notification_success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="notification_warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="filter_all_files" xml:space="preserve">
+    <value>All Files</value>
+  </data>
+  <data name="filter_json_files" xml:space="preserve">
+    <value>JSON Files</value>
+  </data>
+  <data name="filter_zip_files" xml:space="preserve">
+    <value>Zip Files</value>
+  </data>
+  <data name="filter_template_files" xml:space="preserve">
+    <value>Template Files</value>
+  </data>
+  <data name="filter_csv_files" xml:space="preserve">
+    <value>CSV Files</value>
+  </data>
+  <data name="filter_png_image" xml:space="preserve">
+    <value>PNG Image</value>
+  </data>
+  <data name="filter_svg_vector" xml:space="preserve">
+    <value>SVG Vector</value>
+  </data>
+  <data name="open_template" xml:space="preserve">
+    <value>Open Template</value>
+  </data>
+  <data name="save_file_title" xml:space="preserve">
+    <value>Save File</value>
+  </data>
+  <data name="plot_undefined_data_columns" xml:space="preserve">
+    <value>Undefined data columns</value>
+  </data>
+  <data name="plot_json_multiselect_not_supported" xml:space="preserve">
+    <value>JSON files cannot be added in a multi-select batch. Only ZIP files support multi-select batch import.</value>
+  </data>
+  <data name="plot_ternary_axis_not_found" xml:space="preserve">
+    <value>Error: triangular axis object not found in the plot.</value>
+  </data>
+  <data name="plot_upload_thumbnail_failed" xml:space="preserve">
+    <value>Failed to upload thumbnail: {0}</value>
+  </data>
+  <data name="plot_type_2d_description" xml:space="preserve">
+    <value>Best for standard X-Y plotting for scatter, line, function, and most diagram templates.</value>
+  </data>
+  <data name="plot_type_ternary_description" xml:space="preserve">
+    <value>Best for ternary compositions, phase diagrams, and end-member mixing relationships.</value>
+  </data>
+  <data name="selected_label" xml:space="preserve">
+    <value>Selected</value>
+  </data>
+  <data name="dataPrep_workflowStep1" xml:space="preserve">
+    <value>1. Import a CSV / Excel table and confirm major-element headers</value>
+  </data>
+  <data name="dataPrep_workflowStep2" xml:space="preserve">
+    <value>2. Set detection limits, missing values, outliers, and iron valence strategy</value>
+  </data>
+  <data name="dataPrep_workflowStep3" xml:space="preserve">
+    <value>3. Batch-generate cleaned, normalized, and geochemical indicator columns</value>
+  </data>
+  <data name="dataPrep_workflowStep4" xml:space="preserve">
+    <value>4. Output to a new Processed worksheet and export results</value>
+  </data>
+  <data name="see_error_log_for_details" xml:space="preserve">
+    <value>See error.log for details.</value>
+  </data>
+  <data name="announcement" xml:space="preserve">
+    <value>Ankündigung</value>
+  </data>
+  <data name="at_least_two_languages_swap" xml:space="preserve">
+    <value>Zum Tauschen werden mindestens zwei Sprachen benötigt.</value>
+  </data>
+  <data name="confirm_delete_language" xml:space="preserve">
+    <value>Sprache „{0}“ löschen? Dies kann nicht rückgängig gemacht werden.</value>
+  </data>
+  <data name="cos_credentials_required" xml:space="preserve">
+    <value>Bitte konfigurieren und speichern Sie zuerst die COS-Anmeldedaten.</value>
+  </data>
+  <data name="cos_save_settings" xml:space="preserve">
+    <value>Einstellungen speichern</value>
+  </data>
+  <data name="cos_secret_id_required" xml:space="preserve">
+    <value>SecretId ist erforderlich.</value>
+  </data>
+  <data name="cos_settings_saved" xml:space="preserve">
+    <value>COS-Einstellungen gespeichert.</value>
+  </data>
+  <data name="cos_test_connection" xml:space="preserve">
+    <value>Verbindung testen</value>
+  </data>
+  <data name="cos_test_failed" xml:space="preserve">
+    <value>COS-Verbindungstest fehlgeschlagen.</value>
+  </data>
+  <data name="cos_test_success" xml:space="preserve">
+    <value>COS-Verbindungstest erfolgreich.</value>
+  </data>
+  <data name="dataPrep_autoBackfillIronOxides" xml:space="preserve">
+    <value>Fehlende FeO / Fe2O3 automatisch auffüllen</value>
+  </data>
+  <data name="dataPrep_calculationItems" xml:space="preserve">
+    <value>Berechnete Elemente</value>
+  </data>
+  <data name="dataPrep_clearTableFailed" xml:space="preserve">
+    <value>Datentabelle konnte nicht geleert werden:</value>
+  </data>
+  <data name="dataPrep_detectionLimitPreview" xml:space="preserve">
+    <value>Diese Seite enthält keine Parameter für Nachweisgrenzenersetzung oder Datenbereinigung.</value>
+  </data>
+  <data name="dataPrep_detectionReplaceHalf" xml:space="preserve">
+    <value>Durch die Hälfte der Nachweisgrenze ersetzen</value>
+  </data>
+  <data name="dataPrep_detectionReplaceNull" xml:space="preserve">
+    <value>Durch Null ersetzen</value>
+  </data>
+  <data name="dataPrep_detectionReplaceZero" xml:space="preserve">
+    <value>Durch 0 ersetzen</value>
+  </data>
+  <data name="dataPrep_enable" xml:space="preserve">
+    <value>Aktivieren</value>
+  </data>
+  <data name="dataPrep_excludeVolatiles" xml:space="preserve">
+    <value>Flüchtige Bestandteile abziehen</value>
+  </data>
+  <data name="dataPrep_exportCurrentTable" xml:space="preserve">
+    <value>Aktuelle Tabelle exportieren</value>
+  </data>
+  <data name="dataPrep_exportFailed" xml:space="preserve">
+    <value>Export fehlgeschlagen:</value>
+  </data>
+  <data name="dataPrep_exportFilter" xml:space="preserve">
+    <value>CSV-Dateien|*.csv</value>
+  </data>
+  <data name="dataPrep_exportSucceeded" xml:space="preserve">
+    <value>Aktuelles Arbeitsblatt exportiert.</value>
+  </data>
+  <data name="dataPrep_exportTitle" xml:space="preserve">
+    <value>Vorverarbeitungsergebnis exportieren</value>
+  </data>
+  <data name="dataPrep_fe3Tooltip" xml:space="preserve">
+    <value>Nur für „Empirische Verhältniskorrektur“ verwendet; stellt das empirische Fe3+/Fe-Verhältnis dar.</value>
+  </data>
+  <data name="dataPrep_indices" xml:space="preserve">
+    <value>Indizes</value>
+  </data>
+  <data name="dataPrep_ironMethodAutoEstimate" xml:space="preserve">
+    <value>Automatische Schätzung aus Gesamteisen</value>
+  </data>
+  <data name="dataPrep_ironMethodBackCalculate" xml:space="preserve">
+    <value>Rückrechnung aus FeO / Fe2O3</value>
+  </data>
+  <data name="dataPrep_ironMethodEmpiricalRatio" xml:space="preserve">
+    <value>Empirische Verhältniskorrektur</value>
+  </data>
+  <data name="dataPrep_ironModeBackfillFe2o3" xml:space="preserve">
+    <value>Fe2O3 empirisch aus FeO aufgefüllt</value>
+  </data>
+  <data name="dataPrep_ironModeBackfillFeo" xml:space="preserve">
+    <value>FeO empirisch aus Fe2O3 aufgefüllt</value>
+  </data>
+  <data name="dataPrep_ironModeFeotAuto" xml:space="preserve">
+    <value>FeOT automatische Schätzung</value>
+  </data>
+  <data name="dataPrep_ironModeFeotEmpirical" xml:space="preserve">
+    <value>FeOT empirische Verhältniskorrektur</value>
+  </data>
+  <data name="dataPrep_ironModeFromFeotAndFe2o3" xml:space="preserve">
+    <value>FeO aus FeOT + Fe2O3 abgeleitet</value>
+  </data>
+  <data name="dataPrep_ironModeFromFeotAndFeo" xml:space="preserve">
+    <value>Fe2O3 aus FeOT + FeO abgeleitet</value>
+  </data>
+  <data name="dataPrep_ironModeInsufficient" xml:space="preserve">
+    <value>Unzureichende Eisendaten</value>
+  </data>
+  <data name="dataPrep_ironModeMeasured" xml:space="preserve">
+    <value>Gemessenes FeO + Fe2O3</value>
+  </data>
+  <data name="dataPrep_ironValence" xml:space="preserve">
+    <value>Eisenvalenz</value>
+  </data>
+  <data name="dataPrep_keepOriginalOnly" xml:space="preserve">
+    <value>Nur Original-Arbeitsblatt behalten</value>
+  </data>
+  <data name="dataPrep_listSeparator" xml:space="preserve">
+    <value>, </value>
+  </data>
+  <data name="dataPrep_method" xml:space="preserve">
+    <value>Methode</value>
+  </data>
+  <data name="dataPrep_missingKeep" xml:space="preserve">
+    <value>Fehlende Werte beibehalten</value>
+  </data>
+  <data name="dataPrep_missingMean" xml:space="preserve">
+    <value>Mittelwert-Imputation</value>
+  </data>
+  <data name="dataPrep_missingMedian" xml:space="preserve">
+    <value>Median-Imputation</value>
+  </data>
+  <data name="dataPrep_moduleAnhydrous" xml:space="preserve">
+    <value>Wasserfreie Normalisierung</value>
+  </data>
+  <data name="dataPrep_moduleIndexCalculation" xml:space="preserve">
+    <value>Indexberechnung</value>
+  </data>
+  <data name="dataPrep_moduleIronValence" xml:space="preserve">
+    <value>Eisenvalenz</value>
+  </data>
+  <data name="dataPrep_noCellSelected" xml:space="preserve">
+    <value>Keine Zelle ausgewählt</value>
+  </data>
+  <data name="dataPrep_noOxideColumnsDetected" xml:space="preserve">
+    <value>Keine Hauptoxid-Spalten erkannt</value>
+  </data>
+  <data name="dataPrep_noProcessableData" xml:space="preserve">
+    <value>Das aktuelle Arbeitsblatt enthält keine verarbeitbaren Daten. Bitte importieren Sie zuerst eine Tabelle mit Spaltenüberschriften.</value>
+  </data>
+  <data name="dataPrep_normalization" xml:space="preserve">
+    <value>Normalisierung</value>
+  </data>
+  <data name="dataPrep_normalizeToHundred" xml:space="preserve">
+    <value>Auf 100 % normalisieren</value>
+  </data>
+  <data name="dataPrep_notDetected" xml:space="preserve">
+    <value>Nicht erkannt</value>
+  </data>
+  <data name="dataPrep_noteDetectionNoLimitFallbackZero" xml:space="preserve">
+    <value>b.d.l. ohne numerische Grenze; als 0 behandelt</value>
+  </data>
+  <data name="dataPrep_noteDetectionReplacedWithHalf" xml:space="preserve">
+    <value>Nachweisgrenzenwert durch die Hälfte der Grenze ersetzt</value>
+  </data>
+  <data name="dataPrep_noteDetectionReplacedWithNull" xml:space="preserve">
+    <value>Nachweisgrenzenwert durch Null ersetzt</value>
+  </data>
+  <data name="dataPrep_noteDetectionReplacedWithZero" xml:space="preserve">
+    <value>Nachweisgrenzenwert durch 0 ersetzt</value>
+  </data>
+  <data name="dataPrep_noteDetectionStandardized" xml:space="preserve">
+    <value>Nachweisgrenzenwert standardisiert</value>
+  </data>
+  <data name="dataPrep_noteMissingFilled" xml:space="preserve">
+    <value>{0} mit {1} aufgefüllt</value>
+  </data>
+  <data name="dataPrep_noteNonNumericAsMissing" xml:space="preserve">
+    <value>Nicht als numerisch erkennbar; als fehlend behandelt</value>
+  </data>
+  <data name="dataPrep_noteOutlierDetected" xml:space="preserve">
+    <value>{0} als Ausreißer erkannt</value>
+  </data>
+  <data name="dataPrep_noWorksheetToProcess" xml:space="preserve">
+    <value>Kein Arbeitsblatt zur Verarbeitung verfügbar.</value>
+  </data>
+  <data name="dataPrep_outlierIqr" xml:space="preserve">
+    <value>IQR-Methode</value>
+  </data>
+  <data name="dataPrep_outlierMarkOnly" xml:space="preserve">
+    <value>Nur Ausreißer markieren</value>
+  </data>
+  <data name="dataPrep_outlierThreeSigma" xml:space="preserve">
+    <value>3σ-Methode</value>
+  </data>
+  <data name="dataPrep_parameterOptions" xml:space="preserve">
+    <value>Parameteroptionen</value>
+  </data>
+  <data name="dataPrep_previewSummary" xml:space="preserve">
+    <value>Erkannte Oxid-Spalten: {0}; aktivierte Module: {1}; Eisenvalenzmethode: „{2}“; empirisches Fe3+/Fe-Verhältnis: {3:0.00}.</value>
+  </data>
+  <data name="dataPrep_processingCompleted" xml:space="preserve">
+    <value>Datenvorverarbeitung abgeschlossen.</value>
+  </data>
+  <data name="dataPrep_processingFailed" xml:space="preserve">
+    <value>Verarbeitung fehlgeschlagen:</value>
+  </data>
+  <data name="dataPrep_processingSummary" xml:space="preserve">
+    <value>{0} Zeilen verarbeitet und {1} numerische Spalten erkannt; Nachweisgrenzenersetzungen {2}, Ausreißer markiert {3}, Ausreißer geleert {4}, fehlende Werte aufgefüllt {5}.</value>
+  </data>
+  <data name="dataPrep_resetToRecommended" xml:space="preserve">
+    <value>Empfohlene Voreinstellungen wiederhergestellt.</value>
+  </data>
+  <data name="dataPrep_sampleDataGenerated" xml:space="preserve">
+    <value>Beispieldaten erzeugt.</value>
+  </data>
+  <data name="dataPrep_sampleDataGenerateFailed" xml:space="preserve">
+    <value>Beispieldaten konnten nicht erzeugt werden:</value>
+  </data>
+  <data name="dataPrep_selectedCellEmpty" xml:space="preserve">
+    <value>{0}: &lt;leer&gt;</value>
+  </data>
+  <data name="dataPrep_selectedCellValue" xml:space="preserve">
+    <value>{0}: {1}</value>
+  </data>
+  <data name="dataPrep_strategyMissingKeep" xml:space="preserve">
+    <value>Fehlende beibehalten</value>
+  </data>
+  <data name="dataPrep_strategyMissingMean" xml:space="preserve">
+    <value>Mittelwert-Imputation</value>
+  </data>
+  <data name="dataPrep_strategyMissingMedian" xml:space="preserve">
+    <value>Median-Imputation</value>
+  </data>
+  <data name="dataPrep_tableCleared" xml:space="preserve">
+    <value>Aktuelle Datentabelle geleert.</value>
+  </data>
+  <data name="deselect_all" xml:space="preserve">
+    <value>Alle abwählen</value>
+  </data>
+  <data name="diagram_editor_basic_settings" xml:space="preserve">
+    <value>Grundeinstellungen</value>
+  </data>
+  <data name="diagram_editor_content_translation" xml:space="preserve">
+    <value>Inhaltsübersetzung</value>
+  </data>
+  <data name="diagram_editor_new_version" xml:space="preserve">
+    <value>Neue Version</value>
+  </data>
+  <data name="diagram_editor_saved_version" xml:space="preserve">
+    <value>Version nach dem Speichern:</value>
+  </data>
+  <data name="diagram_editor_translation_hint" xml:space="preserve">
+    <value>Mehrsprachige Texte für Titel, Achsen, Beschriftungen und Anmerkungen bearbeiten. Sprachen in den Grundeinstellungen konfigurieren; JSON-Übersetzungsdateien hier exportieren oder importieren.</value>
+  </data>
+  <data name="diagram_hint_no_favorites" xml:space="preserve">
+    <value>Noch keine favorisierten Diagrammvorlagen.</value>
+  </data>
+  <data name="diagram_hint_no_official" xml:space="preserve">
+    <value>Keine offiziellen Diagrammvorlagen in dieser Kategorie.</value>
+  </data>
+  <data name="diagram_hint_no_personal" xml:space="preserve">
+    <value>Noch keine persönlichen Diagramme. Erstellen oder importieren Sie eines über das Menü „Datei“.</value>
+  </data>
+  <data name="diagram_hint_no_recents" xml:space="preserve">
+    <value>Noch keine kürzlich verwendeten Diagrammvorlagen.</value>
+  </data>
+  <data name="diagram_hint_no_search_results" xml:space="preserve">
+    <value>Keine Vorlagen entsprechen Ihrer Suche.</value>
+  </data>
+  <data name="diagram_hint_no_templates" xml:space="preserve">
+    <value>Keine Diagrammvorlagen verfügbar.</value>
+  </data>
+  <data name="diagram_translation_export" xml:space="preserve">
+    <value>Exportieren</value>
+  </data>
+  <data name="diagram_translation_import" xml:space="preserve">
+    <value>Importieren</value>
+  </data>
+  <data name="double_click" xml:space="preserve">
+    <value>Doppelklick</value>
+  </data>
+  <data name="element_order" xml:space="preserve">
+    <value>Elementreihenfolge</value>
+  </data>
+  <data name="enable_normalization" xml:space="preserve">
+    <value>Normalisierung aktivieren</value>
+  </data>
+  <data name="enter_language_code_prompt" xml:space="preserve">
+    <value>Sprachcode eingeben (z. B. fr-FR):</value>
+  </data>
+  <data name="enter_plot_mode" xml:space="preserve">
+    <value>Zeichenmodus starten</value>
+  </data>
+  <data name="force_update_template" xml:space="preserve">
+    <value>Aktualisierung erzwingen</value>
+  </data>
+  <data name="force_update_template_not_found" xml:space="preserve">
+    <value>Vorlage auf dem Server nicht gefunden.</value>
+  </data>
+  <data name="geo_msg_formula_name_conflict" xml:space="preserve">
+    <value>Formelname „{0}“ wird bereits von „{1}“ ({2}) verwendet</value>
+  </data>
+  <data name="geo_msg_formula_name_duplicate" xml:space="preserve">
+    <value>Formelname „{0}“ ist innerhalb des Geothermobarometers „{1}“ doppelt definiert</value>
+  </data>
+  <data name="home_catalog_already_latest" xml:space="preserve">
+    <value>Startseiten-Linkkatalog ist bereits aktuell.</value>
+  </data>
+  <data name="home_catalog_sync_failed" xml:space="preserve">
+    <value>Synchronisierung des Startseiten-Linkkatalogs fehlgeschlagen.</value>
+  </data>
+  <data name="home_catalog_updated" xml:space="preserve">
+    <value>Startseiten-Linkkatalog aktualisiert.</value>
+  </data>
+  <data name="home_group_empty_links" xml:space="preserve">
+    <value>Keine Links in dieser Gruppe. Verwenden Sie „Link hinzufügen“, um einen zu erstellen.</value>
+  </data>
+  <data name="home_icon_url" xml:space="preserve">
+    <value>Symbol-URL</value>
+  </data>
+  <data name="home_icon_url_hint" xml:space="preserve">
+    <value>Optional. https://... überschreibt das voreingestellte Symbol oben.</value>
+  </data>
+  <data name="home_links_edit_language" xml:space="preserve">
+    <value>Bearbeitungssprache:</value>
+  </data>
+  <data name="home_personal_group" xml:space="preserve">
+    <value>Persönlich</value>
+  </data>
+  <data name="home_personal_group_hint" xml:space="preserve">
+    <value>In dieser Gruppe können Sie Links hinzufügen, bearbeiten oder entfernen.</value>
+  </data>
+  <data name="home_recommended_content" xml:space="preserve">
+    <value>Empfohlen</value>
+  </data>
+  <data name="home_widgets_panel_desc" xml:space="preserve">
+    <value>Integrierte Werkzeuge, die in der App geöffnet werden und in der Seitenleiste angezeigt werden.</value>
+  </data>
+  <data name="home_widgets_section" xml:space="preserve">
+    <value>Widgets</value>
+  </data>
+  <data name="language_exists" xml:space="preserve">
+    <value>Sprache existiert bereits</value>
+  </data>
+  <data name="main_sidebar_collapse_full" xml:space="preserve">
+    <value>Vollständig einklappen</value>
+  </data>
+  <data name="main_sidebar_collapse_icon_only" xml:space="preserve">
+    <value>Symbole behalten</value>
+  </data>
+  <data name="main_sidebar_collapse_style" xml:space="preserve">
+    <value>Einklappstil der Hauptseitenleiste</value>
+  </data>
+  <data name="mouse_snap_auto_recognition_frame_rate" xml:space="preserve">
+    <value>Bildrate für automatische Maus-Snap-Erkennung</value>
+  </data>
+  <data name="move_down" xml:space="preserve">
+    <value>Nach unten</value>
+  </data>
+  <data name="move_up" xml:space="preserve">
+    <value>Nach oben</value>
+  </data>
+  <data name="no_valid_data_found" xml:space="preserve">
+    <value>Keine gültigen Daten in der Tabelle gefunden.</value>
+  </data>
+  <data name="normalization_standard" xml:space="preserve">
+    <value>Normalisierungsstandard</value>
+  </data>
+  <data name="object_selection_trigger" xml:space="preserve">
+    <value>Objektauswahl-Auslöser</value>
+  </data>
+  <data name="official_publisher_announcement_edit_hint" xml:space="preserve">
+    <value>Bearbeiten Sie hier die Ankündigung. Nach der Veröffentlichung erscheint sie im Ankündigungsbereich der Startseite.</value>
+  </data>
+  <data name="official_publisher_announcement_empty" xml:space="preserve">
+    <value>(leer)</value>
+  </data>
+  <data name="official_publisher_announcement_load" xml:space="preserve">
+    <value>Vom Server laden</value>
+  </data>
+  <data name="official_publisher_announcement_loaded" xml:space="preserve">
+    <value>Ankündigung vom Server geladen.</value>
+  </data>
+  <data name="official_publisher_announcement_pending" xml:space="preserve">
+    <value>Veröffentlichung ausstehend</value>
+  </data>
+  <data name="official_publisher_announcement_preview" xml:space="preserve">
+    <value>Aktueller Entwurf:</value>
+  </data>
+  <data name="official_publisher_announcement_section" xml:space="preserve">
+    <value>Ankündigung</value>
+  </data>
+  <data name="official_publisher_announcement_up_to_date" xml:space="preserve">
+    <value>Auf dem Server bereits aktuell</value>
+  </data>
+  <data name="official_publisher_confirm" xml:space="preserve">
+    <value>Offizielle Inhalte auf COS veröffentlichen?</value>
+  </data>
+  <data name="official_publisher_dev_mode_required" xml:space="preserve">
+    <value>Für die Veröffentlichung ist der Entwicklermodus erforderlich.</value>
+  </data>
+  <data name="official_publisher_diagram_preview_summary" xml:space="preserve">
+    <value>Diagramme: neu {0}, aktualisiert {1}, entfernt {2}, unverändert {3}.</value>
+  </data>
+  <data name="official_publisher_diagram_section" xml:space="preserve">
+    <value>Diagramme</value>
+  </data>
+  <data name="official_publisher_export_done" xml:space="preserve">
+    <value>Export abgeschlossen.</value>
+  </data>
+  <data name="official_publisher_export_local" xml:space="preserve">
+    <value>Lokal exportieren</value>
+  </data>
+  <data name="official_publisher_exporting" xml:space="preserve">
+    <value>Export nach {0}...</value>
+  </data>
+  <data name="official_publisher_geo_preview_summary" xml:space="preserve">
+    <value>Geothermobarometer: neu {0}, aktualisiert {1}, entfernt {2}, unverändert {3}.</value>
+  </data>
+  <data name="official_publisher_geothermometer_section" xml:space="preserve">
+    <value>Geothermobarometer</value>
+  </data>
+  <data name="official_publisher_home_add_group" xml:space="preserve">
+    <value>Gruppe hinzufügen</value>
+  </data>
+  <data name="official_publisher_home_edit_group" xml:space="preserve">
+    <value>Gruppe bearbeiten</value>
+  </data>
+  <data name="official_publisher_home_group_title_prompt" xml:space="preserve">
+    <value>Gruppentitel eingeben:</value>
+  </data>
+  <data name="official_publisher_home_groups" xml:space="preserve">
+    <value>Gruppen</value>
+  </data>
+  <data name="official_publisher_home_link_items" xml:space="preserve">
+    <value>Links</value>
+  </data>
+  <data name="official_publisher_home_links_bundled_saved" xml:space="preserve">
+    <value>Startseiten-Links im gebündelten Katalog gespeichert.</value>
+  </data>
+  <data name="official_publisher_home_links_draft_saved" xml:space="preserve">
+    <value>Startseiten-Links-Entwurf lokal gespeichert.</value>
+  </data>
+  <data name="official_publisher_home_links_pending" xml:space="preserve">
+    <value>Veröffentlichung ausstehend</value>
+  </data>
+  <data name="official_publisher_home_links_preview_summary" xml:space="preserve">
+    <value>Gruppen: {0}, Links: {1}, lokaler hash: {2}, Remote-hash: {3}.</value>
+  </data>
+  <data name="official_publisher_home_links_reloaded" xml:space="preserve">
+    <value>Startseiten-Links-Editor neu geladen.</value>
+  </data>
+  <data name="official_publisher_home_links_section" xml:space="preserve">
+    <value>Startseiten-Links</value>
+  </data>
+  <data name="official_publisher_home_links_summary" xml:space="preserve">
+    <value>Startseiten-Links: {0} Gruppen, {1} Links, hash={2}.</value>
+  </data>
+  <data name="official_publisher_home_links_up_to_date" xml:space="preserve">
+    <value>Auf dem Server bereits aktuell.</value>
+  </data>
+  <data name="official_publisher_home_save_draft" xml:space="preserve">
+    <value>Entwurf speichern</value>
+  </data>
+  <data name="official_publisher_home_select_group" xml:space="preserve">
+    <value>Bitte wählen Sie zuerst eine Gruppe.</value>
+  </data>
+  <data name="official_publisher_include_announcement" xml:space="preserve">
+    <value>Ankündigung</value>
+  </data>
+  <data name="official_publisher_include_diagrams" xml:space="preserve">
+    <value>Diagramme</value>
+  </data>
+  <data name="official_publisher_include_geothermometers" xml:space="preserve">
+    <value>Geothermobarometer</value>
+  </data>
+  <data name="official_publisher_include_home_links" xml:space="preserve">
+    <value>Startseiten-Links einschließen</value>
+  </data>
+  <data name="official_publisher_new" xml:space="preserve">
+    <value>Neu</value>
+  </data>
+  <data name="official_publisher_preview_summary" xml:space="preserve">
+    <value>Vorschau: neu {0}, aktualisiert {1}, entfernt {2}, unverändert {3}.</value>
+  </data>
+  <data name="official_publisher_progress_done" xml:space="preserve">
+    <value>Veröffentlichung abgeschlossen.</value>
+  </data>
+  <data name="official_publisher_progress_exporting_announcement" xml:space="preserve">
+    <value>Ankündigung wird exportiert...</value>
+  </data>
+  <data name="official_publisher_progress_exporting_diagrams" xml:space="preserve">
+    <value>Diagramme werden exportiert...</value>
+  </data>
+  <data name="official_publisher_progress_exporting_geothermometers" xml:space="preserve">
+    <value>Geothermobarometer werden exportiert...</value>
+  </data>
+  <data name="official_publisher_progress_exporting_home_links" xml:space="preserve">
+    <value>Startseiten-Links werden exportiert...</value>
+  </data>
+  <data name="official_publisher_progress_uploading" xml:space="preserve">
+    <value>Upload nach COS ({0}/{1})...</value>
+  </data>
+  <data name="official_publisher_progress_uploading_cos" xml:space="preserve">
+    <value>Upload nach COS...</value>
+  </data>
+  <data name="official_publisher_publish_cos" xml:space="preserve">
+    <value>Auf COS veröffentlichen</value>
+  </data>
+  <data name="official_publisher_ready" xml:space="preserve">
+    <value>Offizieller Publisher bereit.</value>
+  </data>
+  <data name="official_publisher_refresh" xml:space="preserve">
+    <value>Vorschau aktualisieren</value>
+  </data>
+  <data name="official_publisher_refreshing" xml:space="preserve">
+    <value>Veröffentlichungsvorschau wird aktualisiert...</value>
+  </data>
+  <data name="official_publisher_removed" xml:space="preserve">
+    <value>Entfernt</value>
+  </data>
+  <data name="official_publisher_staging_dir" xml:space="preserve">
+    <value>Staging-Verzeichnis</value>
+  </data>
+  <data name="official_publisher_staging_required" xml:space="preserve">
+    <value>Bitte wählen Sie ein staging-Verzeichnis.</value>
+  </data>
+  <data name="official_publisher_start" xml:space="preserve">
+    <value>Veröffentlichung wird gestartet...</value>
+  </data>
+  <data name="official_publisher_target_required" xml:space="preserve">
+    <value>Wählen Sie mindestens ein Veröffentlichungsziel.</value>
+  </data>
+  <data name="official_publisher_unchanged" xml:space="preserve">
+    <value>Unverändert</value>
+  </data>
+  <data name="official_publisher_updated" xml:space="preserve">
+    <value>Aktualisiert</value>
+  </data>
+  <data name="official_template_publisher" xml:space="preserve">
+    <value>Offizieller Publisher</value>
+  </data>
+  <data name="official_template_publisher_desc" xml:space="preserve">
+    <value>Offizielle Inhalte (Diagramme, Geothermobarometer, Startseiten-Links, Ankündigungen) exportieren und auf COS veröffentlichen</value>
+  </data>
+  <data name="ree_spider_diagram" xml:space="preserve">
+    <value>REE-Spinnendiagramm</value>
+  </data>
+  <data name="reset_default" xml:space="preserve">
+    <value>Zurücksetzen</value>
+  </data>
+  <data name="select_all" xml:space="preserve">
+    <value>Alle auswählen</value>
+  </data>
+  <data name="select_language_to_delete" xml:space="preserve">
+    <value>Zu löschende Sprache auswählen:</value>
+  </data>
+  <data name="shortcut_action_add_arrow_desc" xml:space="preserve">
+    <value>Pfeilobjekt einfügen.</value>
+  </data>
+  <data name="shortcut_action_add_arrow_name" xml:space="preserve">
+    <value>Pfeil hinzufügen</value>
+  </data>
+  <data name="shortcut_action_add_function_desc" xml:space="preserve">
+    <value>Funktionsobjekt einfügen.</value>
+  </data>
+  <data name="shortcut_action_add_function_name" xml:space="preserve">
+    <value>Funktion hinzufügen</value>
+  </data>
+  <data name="shortcut_action_add_line_desc" xml:space="preserve">
+    <value>Linienobjekt einfügen.</value>
+  </data>
+  <data name="shortcut_action_add_line_name" xml:space="preserve">
+    <value>Linie hinzufügen</value>
+  </data>
+  <data name="shortcut_action_add_polygon_desc" xml:space="preserve">
+    <value>Polygonobjekt einfügen.</value>
+  </data>
+  <data name="shortcut_action_add_polygon_name" xml:space="preserve">
+    <value>Polygon hinzufügen</value>
+  </data>
+  <data name="shortcut_action_add_text_desc" xml:space="preserve">
+    <value>Textobjekt einfügen.</value>
+  </data>
+  <data name="shortcut_action_add_text_name" xml:space="preserve">
+    <value>Text hinzufügen</value>
+  </data>
+  <data name="shortcut_action_bold_desc" xml:space="preserve">
+    <value>Fettschrift für den ausgewählten Text umschalten.</value>
+  </data>
+  <data name="shortcut_action_bold_name" xml:space="preserve">
+    <value>Fett</value>
+  </data>
+  <data name="shortcut_action_center_view_desc" xml:space="preserve">
+    <value>Diagrammansicht schnell zentrieren.</value>
+  </data>
+  <data name="shortcut_action_center_view_name" xml:space="preserve">
+    <value>Ansicht zentrieren</value>
+  </data>
+  <data name="shortcut_action_close_notification_desc" xml:space="preserve">
+    <value>Benachrichtigung schließen, wie beim Klick auf die Schaltfläche Schließen. Gilt nicht für interaktive Dialoge.</value>
+  </data>
+  <data name="shortcut_action_close_notification_keys" xml:space="preserve">
+    <value>Mittelklick auf die Benachrichtigung</value>
+  </data>
+  <data name="shortcut_action_close_notification_name" xml:space="preserve">
+    <value>Benachrichtigung schließen</value>
+  </data>
+  <data name="shortcut_action_delete_selected_desc" xml:space="preserve">
+    <value>Aktuell ausgewähltes Diagrammobjekt löschen.</value>
+  </data>
+  <data name="shortcut_action_delete_selected_name" xml:space="preserve">
+    <value>Ausgewähltes Objekt löschen</value>
+  </data>
+  <data name="shortcut_action_italic_desc" xml:space="preserve">
+    <value>Kursivschrift für den ausgewählten Text umschalten.</value>
+  </data>
+  <data name="shortcut_action_italic_name" xml:space="preserve">
+    <value>Kursiv</value>
+  </data>
+  <data name="shortcut_action_quick_delete_desc" xml:space="preserve">
+    <value>Benutzerdefinierte Vorlage direkt ohne Bestätigung löschen.</value>
+  </data>
+  <data name="shortcut_action_quick_delete_keys" xml:space="preserve">
+    <value>Ctrl+Klick auf die linke Seite der Karte</value>
+  </data>
+  <data name="shortcut_action_quick_delete_name" xml:space="preserve">
+    <value>Schnelllöschen</value>
+  </data>
+  <data name="shortcut_action_quick_favorite_desc" xml:space="preserve">
+    <value>Favoritenstatus einer Vorlage schnell umschalten.</value>
+  </data>
+  <data name="shortcut_action_quick_favorite_keys" xml:space="preserve">
+    <value>Ctrl+Klick auf die rechte Seite der Karte</value>
+  </data>
+  <data name="shortcut_action_quick_favorite_name" xml:space="preserve">
+    <value>Schnellfavorit</value>
+  </data>
+  <data name="shortcut_action_redo_desc" xml:space="preserve">
+    <value>Zuletzt rückgängig gemachte Aktion wiederherstellen.</value>
+  </data>
+  <data name="shortcut_action_redo_name" xml:space="preserve">
+    <value>Wiederholen</value>
+  </data>
+  <data name="shortcut_action_save_plot_desc" xml:space="preserve">
+    <value>Aktuelles Diagramm oder Vorlageninhalt speichern.</value>
+  </data>
+  <data name="shortcut_action_save_plot_name" xml:space="preserve">
+    <value>Diagramm speichern</value>
+  </data>
+  <data name="shortcut_action_underline_desc" xml:space="preserve">
+    <value>Unterstreichung für den ausgewählten Text umschalten.</value>
+  </data>
+  <data name="shortcut_action_underline_name" xml:space="preserve">
+    <value>Unterstreichen</value>
+  </data>
+  <data name="shortcut_action_undo_desc" xml:space="preserve">
+    <value>Vorherige Aktion rückgängig machen.</value>
+  </data>
+  <data name="shortcut_action_undo_name" xml:space="preserve">
+    <value>Rückgängig</value>
+  </data>
+  <data name="shortcut_group_add_desc" xml:space="preserve">
+    <value>Diese Tastenkürzel dienen zum schnellen Erstellen häufiger Objekte auf der Diagrammseite.</value>
+  </data>
+  <data name="shortcut_group_add_title" xml:space="preserve">
+    <value>Objekte schnell einfügen</value>
+  </data>
+  <data name="shortcut_group_notification_desc" xml:space="preserve">
+    <value>Diese Tastenkürzel gelten für Toast-Benachrichtigungen oben rechts.</value>
+  </data>
+  <data name="shortcut_group_notification_title" xml:space="preserve">
+    <value>Benachrichtigungen</value>
+  </data>
+  <data name="shortcut_group_plot_desc" xml:space="preserve">
+    <value>Diese Tastenkürzel funktionieren hauptsächlich auf der Diagrammbearbeitungsseite.</value>
+  </data>
+  <data name="shortcut_group_plot_title" xml:space="preserve">
+    <value>Diagrammeditor</value>
+  </data>
+  <data name="shortcut_group_rich_text_desc" xml:space="preserve">
+    <value>Diese Tastenkürzel gelten für Rich-Text-Bearbeitungsbereiche wie Hilfedokumente.</value>
+  </data>
+  <data name="shortcut_group_rich_text_title" xml:space="preserve">
+    <value>Rich-Text-Editor</value>
+  </data>
+  <data name="shortcut_group_template_desc" xml:space="preserve">
+    <value>Diese Aktionen gelten für Vorlagenkarten im Durchsuchmodus.</value>
+  </data>
+  <data name="shortcut_group_template_title" xml:space="preserve">
+    <value>Vorlagenkarten-Aktionen</value>
+  </data>
+  <data name="shortcuts_hint" xml:space="preserve">
+    <value>Tipp: Einige Tastenkürzel funktionieren nur, wenn die zugehörige Seite aktiv ist oder den Tastaturfokus hat.</value>
+  </data>
+  <data name="shortcuts_intro" xml:space="preserve">
+    <value>Diese Seite listet die in der aktuellen Version unterstützten Tastenkürzel auf. Sie ist schreibgeschützt und kann hier nicht bearbeitet werden.</value>
+  </data>
+  <data name="shortcuts_title" xml:space="preserve">
+    <value>Tastenkürzel</value>
+  </data>
+  <data name="single_click" xml:space="preserve">
+    <value>Einfachklick</value>
+  </data>
+  <data name="spider_current_plot_order" xml:space="preserve">
+    <value>Aktuelle Zeichenreihenfolge</value>
+  </data>
+  <data name="spider_element_order_hint" xml:space="preserve">
+    <value>Wählen Sie die Elemente für die Darstellung. Die Liste unten zeigt die aktuelle Zeichenreihenfolge; mit den Schaltflächen rechts können Sie die horizontale Achsenanordnung anpassen.</value>
+  </data>
+  <data name="tool_diagrams_section" xml:space="preserve">
+    <value>WERKZEUG-DIAGRAMME</value>
+  </data>
+  <data name="trace_element_spider_diagram" xml:space="preserve">
+    <value>Spurenelement-Spinnendiagramm</value>
+  </data>
+  <data name="translation_annotation" xml:space="preserve">
+    <value>Anmerkung</value>
+  </data>
+  <data name="translation_axis_subtitle" xml:space="preserve">
+    <value>Achsenuntertitel</value>
+  </data>
+  <data name="translation_axis_title" xml:space="preserve">
+    <value>Achsentitel</value>
+  </data>
+  <data name="translation_export_failed" xml:space="preserve">
+    <value>Export fehlgeschlagen.</value>
+  </data>
+  <data name="translation_export_no_languages" xml:space="preserve">
+    <value>Bitte konfigurieren Sie zuerst Sprachen in den Grundeinstellungen.</value>
+  </data>
+  <data name="translation_export_success" xml:space="preserve">
+    <value>Übersetzungen nach {0} exportiert.</value>
+  </data>
+  <data name="translation_export_table_missing" xml:space="preserve">
+    <value>Übersetzungstabelle ist nicht bereit.</value>
+  </data>
+  <data name="translation_import_failed" xml:space="preserve">
+    <value>Import fehlgeschlagen.</value>
+  </data>
+  <data name="translation_import_invalid_format" xml:space="preserve">
+    <value>Nicht unterstütztes Übersetzungsdateiformat.</value>
+  </data>
+  <data name="translation_import_invalid_json" xml:space="preserve">
+    <value>Ungültige JSON-Datei.</value>
+  </data>
+  <data name="translation_import_no_languages" xml:space="preserve">
+    <value>Bitte konfigurieren Sie zuerst Sprachen in den Grundeinstellungen.</value>
+  </data>
+  <data name="translation_import_success" xml:space="preserve">
+    <value>{0} Elemente importiert, {1} Zellen aktualisiert.</value>
+  </data>
+  <data name="translation_import_table_missing" xml:space="preserve">
+    <value>Übersetzungstabelle ist nicht bereit.</value>
+  </data>
+  <data name="translation_item_context" xml:space="preserve">
+    <value>Inhaltselement</value>
+  </data>
+  <data name="translation_loaded" xml:space="preserve">
+    <value>Übersetzungsdaten geladen</value>
+  </data>
+  <data name="translation_main_title" xml:space="preserve">
+    <value>Haupttitel</value>
+  </data>
+  <data name="translation_node_list" xml:space="preserve">
+    <value>Kategoriepfad</value>
+  </data>
+  <data name="translation_text_item" xml:space="preserve">
+    <value>Text</value>
+  </data>
 </root>

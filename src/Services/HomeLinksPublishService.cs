@@ -1,3 +1,4 @@
+using GeoChemistryNexus.Converter;
 using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Models;
 using System;
@@ -15,7 +16,8 @@ namespace GeoChemistryNexus.Services
         private static readonly JsonSerializerOptions JsonOptions = new()
         {
             WriteIndented = true,
-            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+            Converters = { new LocalizedStringJsonConverter() }
         };
 
         public static HomeLinksCatalog LoadBundledCatalog()
@@ -131,7 +133,7 @@ namespace GeoChemistryNexus.Services
             };
         }
 
-        public static HomeLinksCatalog BuildCatalog(IEnumerable<HomeLinkGroup> groups, int version = 1)
+        public static HomeLinksCatalog BuildCatalog(IEnumerable<HomeLinkGroup> groups, int version = 2)
         {
             var catalog = new HomeLinksCatalog
             {
@@ -139,7 +141,7 @@ namespace GeoChemistryNexus.Services
                 Groups = groups?
                     .Where(g => g?.Links != null && g.Links.Count > 0)
                     .OrderBy(g => g.SortOrder)
-                    .ThenBy(g => g.Title, StringComparer.OrdinalIgnoreCase)
+                    .ThenBy(g => HomeLinksLocalization.GetSortKey(g.Title), StringComparer.OrdinalIgnoreCase)
                     .ToList() ?? new List<HomeLinkGroup>()
             };
 
@@ -153,17 +155,17 @@ namespace GeoChemistryNexus.Services
             {
                 var copy = new HomeLinksCatalog
                 {
-                    Version = catalog?.Version ?? 1,
+                    Version = catalog?.Version ?? 2,
                     Groups = catalog?.Groups?.Select(g => new HomeLinkGroup
                     {
                         Id = g.Id,
-                        Title = g.Title,
+                        Title = HomeLinksLocalization.Clone(g.Title),
                         SortOrder = g.SortOrder,
                         Links = g.Links?.Select(l => new HomeLinkEntry
                         {
                             Id = l.Id,
-                            Title = l.Title,
-                            Description = l.Description,
+                            Title = HomeLinksLocalization.Clone(l.Title),
+                            Description = HomeLinksLocalization.Clone(l.Description),
                             Url = l.Url,
                             Icon = HomeIconHelper.ResolveIcon(l.Icon)
                         }).ToList() ?? new List<HomeLinkEntry>()
@@ -183,25 +185,25 @@ namespace GeoChemistryNexus.Services
             }
         }
 
-        public static HomeLinkGroup CreateGroup(string id, string title, int sortOrder)
+        public static HomeLinkGroup CreateGroup(string id, LocalizedString title, int sortOrder)
         {
             return new HomeLinkGroup
             {
-                Id = string.IsNullOrWhiteSpace(id) ? Slugify(title) : id.Trim(),
-                Title = title.Trim(),
+                Id = string.IsNullOrWhiteSpace(id) ? Slugify(HomeLinksLocalization.GetSortKey(title)) : id.Trim(),
+                Title = HomeLinksLocalization.Clone(title),
                 SortOrder = sortOrder,
                 Links = new List<HomeLinkEntry>()
             };
         }
 
-        public static HomeLinkEntry CreateLink(string id, string title, string url, string description, string icon)
+        public static HomeLinkEntry CreateLink(string id, LocalizedString title, string url, LocalizedString description, string icon)
         {
             return new HomeLinkEntry
             {
-                Id = string.IsNullOrWhiteSpace(id) ? Slugify(title) : id.Trim(),
-                Title = title.Trim(),
+                Id = string.IsNullOrWhiteSpace(id) ? Slugify(HomeLinksLocalization.GetSortKey(title)) : id.Trim(),
+                Title = HomeLinksLocalization.Clone(title),
                 Url = url.Trim(),
-                Description = description?.Trim() ?? string.Empty,
+                Description = HomeLinksLocalization.Clone(description),
                 Icon = HomeIconHelper.ResolveIcon(icon)
             };
         }
@@ -211,7 +213,7 @@ namespace GeoChemistryNexus.Services
             catalog.Groups = catalog.Groups?
                 .Where(g => g.Links != null && g.Links.Count > 0)
                 .OrderBy(g => g.SortOrder)
-                .ThenBy(g => g.Title, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(g => HomeLinksLocalization.GetSortKey(g.Title), StringComparer.OrdinalIgnoreCase)
                 .ToList() ?? new List<HomeLinkGroup>();
         }
 
