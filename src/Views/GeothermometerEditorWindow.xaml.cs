@@ -104,24 +104,28 @@ namespace GeoChemistryNexus.Views
 
         private void BoldButton_Click(object sender, RoutedEventArgs e)
         {
+            if (DataContext is GeothermometerEditorViewModel vm && vm.IsContentReadOnly) return;
             EditingCommands.ToggleBold.Execute(null, HelpDocEditor);
             HelpDocEditor.Focus();
         }
 
         private void ItalicButton_Click(object sender, RoutedEventArgs e)
         {
+            if (DataContext is GeothermometerEditorViewModel vm && vm.IsContentReadOnly) return;
             EditingCommands.ToggleItalic.Execute(null, HelpDocEditor);
             HelpDocEditor.Focus();
         }
 
         private void UnderlineButton_Click(object sender, RoutedEventArgs e)
         {
+            if (DataContext is GeothermometerEditorViewModel vm && vm.IsContentReadOnly) return;
             EditingCommands.ToggleUnderline.Execute(null, HelpDocEditor);
             HelpDocEditor.Focus();
         }
 
         private void FontSizeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (DataContext is GeothermometerEditorViewModel vm && vm.IsContentReadOnly) return;
             if (HelpDocEditor?.Selection == null) return;
 
             string sizeText = null;

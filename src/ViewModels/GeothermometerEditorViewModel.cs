@@ -206,15 +206,32 @@ namespace GeoChemistryNexus.ViewModels
         /// </summary>
         private bool _isOfficial;
 
+        /// <summary>
+        /// 官方温压计查看模式：基本信息、公式脚本、帮助文档仅可查看与复制，不可修改。
+        /// </summary>
+        [ObservableProperty]
+        private bool isContentReadOnly;
+
         private Guid _editingEntityId;
         private string _editingPluginId = string.Empty;
 
         /// <summary>
         /// 编辑器标题
         /// </summary>
-        public string EditorTitle => IsEditMode
-            ? LanguageService.Instance["geo_editor_title_edit"]
-            : LanguageService.Instance["geo_editor_title_new"];
+        public string EditorTitle
+        {
+            get
+            {
+                if (IsEditMode && IsContentReadOnly)
+                    return LanguageService.Instance["geo_editor_title_view"]
+                           ?? LanguageService.Instance["geo_editor_title_edit"];
+                return IsEditMode
+                    ? LanguageService.Instance["geo_editor_title_edit"]
+                    : LanguageService.Instance["geo_editor_title_new"];
+            }
+        }
+
+        partial void OnIsContentReadOnlyChanged(bool value) => OnPropertyChanged(nameof(EditorTitle));
 
         /// <summary>
         /// 保存成功后的回调
@@ -254,12 +271,20 @@ namespace GeoChemistryNexus.ViewModels
                                                  * calculateDetailed(inputs) - Detailed calculation with intermediate steps
                                                  * Called when user selects a data row in the table.
                                                  * @param {number[]} inputs - Same input values as calculate()
-                                                 * @returns {Object[]} - Array of step objects: {name, value, desc, isResult}
+                                                 * @returns {Object[]} - Array of step objects: {name, value, desc, descLang?, isResult}
+                                                 *   desc      - Default description (fallback for all languages)
+                                                 *   descLang  - Optional map of language code to description, e.g. { 'zh-CN': '...', 'en-US': '...' }
                                                  */
                                                 function calculateDetailed(inputs) {
                                                     var result = calculate(inputs);
                                                     return [
-                                                        { name: 'Result', value: result.toFixed(2), desc: 'Final temperature', isResult: true }
+                                                        {
+                                                            name: 'Result',
+                                                            value: result.toFixed(2),
+                                                            desc: 'Final temperature',
+                                                            descLang: { 'zh-CN': '最终温度', 'zh-TW': '最終溫度' },
+                                                            isResult: true
+                                                        }
                                                     ];
                                                 }";
 
@@ -441,6 +466,7 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private void AddLanguage()
         {
+            if (IsContentReadOnly) return;
             if (string.IsNullOrEmpty(NewLanguageToAdd)) return;
 
             if (AddedLanguages.Contains(NewLanguageToAdd))
@@ -460,6 +486,7 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private void RemoveLanguage()
         {
+            if (IsContentReadOnly) return;
             if (SelectedLanguage == null) return;
 
             var lang = SelectedLanguage;
@@ -482,6 +509,7 @@ namespace GeoChemistryNexus.ViewModels
             _editingEntityId = entity.Id;
             _editingPluginId = entity.PluginId;
             _isOfficial = entity.IsOfficial;
+            IsContentReadOnly = entity.IsOfficial;
 
             Name = entity.Name;
             Mineral = entity.Mineral;
@@ -616,6 +644,8 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private void Save()
         {
+            if (IsContentReadOnly) return;
+
             var error = ValidateStep0() ?? ValidateStep1();
             if (error != null)
             {
@@ -642,6 +672,8 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private async Task SaveAndExport()
         {
+            if (IsContentReadOnly) return;
+
             var error = ValidateStep0() ?? ValidateStep1();
             if (error != null)
             {

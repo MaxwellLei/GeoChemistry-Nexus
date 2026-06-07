@@ -49,6 +49,12 @@ namespace GeoChemistryNexus.ViewModels
         private bool _isHelpSectionEnabled;
 
         [ObservableProperty]
+        private bool _isScriptSectionEnabled;
+
+        /// <summary>当前工作模板中的图解脚本定义。</summary>
+        public ScriptDefinition? ScriptDefinition => _workingTemplate?.Script;
+
+        [ObservableProperty]
         private string? _selectedHelpLanguage;
 
         [ObservableProperty]
@@ -208,6 +214,8 @@ namespace GeoChemistryNexus.ViewModels
             }
 
             LoadHelpDocumentsFromEntity(entity);
+            IsScriptSectionEnabled = true;
+            NotifyScriptDefinitionChanged();
             PatchVersion = ContentVersionHelper.TryGetPatch(entity.Content.Version, out int patch) ? patch : 0;
             ApplyPatchToWorkingTemplate();
             SelectedSectionIndex = 0;
@@ -220,14 +228,17 @@ namespace GeoChemistryNexus.ViewModels
 
         partial void OnSelectedSectionIndexChanged(int oldValue, int newValue)
         {
-            if (oldValue == 2)
+            if (oldValue == 3)
                 SaveCurrentHelpLanguageRtf();
 
-            if (newValue == 2)
+            if (newValue == 3)
             {
                 SyncHelpLanguagesWithBasicSettings();
                 LoadSelectedHelpLanguageIntoEditor();
             }
+
+            if (newValue == 2)
+                EnsureScriptEditable();
         }
 
         partial void OnSelectedHelpLanguageChanged(string? oldValue, string? newValue)
@@ -259,6 +270,7 @@ namespace GeoChemistryNexus.ViewModels
             TranslationTable = null;
             IsTranslationSectionEnabled = false;
             IsHelpSectionEnabled = false;
+            IsScriptSectionEnabled = false;
             TranslationStatusMessage = string.Empty;
             PatchVersion = 0;
             _helpDocuments.Clear();
@@ -696,6 +708,7 @@ namespace GeoChemistryNexus.ViewModels
 
             var languages = LanguageParts.Select(l => l.Text).ToList();
             IsTranslationSectionEnabled = languages.Count > 0 && CategoryParts.Count >= 2;
+            IsScriptSectionEnabled = IsTranslationSectionEnabled;
 
             if (!IsTranslationSectionEnabled)
             {
@@ -729,11 +742,24 @@ namespace GeoChemistryNexus.ViewModels
                     TranslationTable, languages, draft);
                 _workingTemplate = draft;
                 ApplyPatchToWorkingTemplate();
+                NotifyScriptDefinitionChanged();
             }
             catch (Exception ex)
             {
                 TranslationStatusMessage = ex.Message;
             }
+        }
+
+        private void NotifyScriptDefinitionChanged()
+        {
+            OnPropertyChanged(nameof(ScriptDefinition));
+            EnsureScriptEditable();
+        }
+
+        private void EnsureScriptEditable()
+        {
+            if (_workingTemplate?.Script != null)
+                _workingTemplate.Script.IsReadOnly = false;
         }
 
         /// <summary>

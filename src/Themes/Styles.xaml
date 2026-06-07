@@ -1643,4 +1643,12 @@
         </Style.Triggers>
     </Style>
 
+    <!-- 扁平进度条：无内置文本，避免小高度时文字被裁切 -->
+    <Style x:Key="FlatProgressBarStyle" TargetType="ProgressBar" BasedOn="{StaticResource ProgressBarFlat}">
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="hc:VisualElement.Text" Value=""/>
+        <Setter Property="Height" Value="10"/>
+        <Setter Property="MinHeight" Value="10"/>
+    </Style>
+
 </ResourceDictionary>

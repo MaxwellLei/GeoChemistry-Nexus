@@ -3867,6 +3867,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Basic info, formula script, and help documents for official geothermobarometers are view-only. You can browse and copy content, but not edit it. 的本地化字符串。
+        /// </summary>
+        internal static string geo_editor_readonly_hint {
+            get {
+                return ResourceManager.GetString("geo_editor_readonly_hint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Set Geothermobarometer Version 的本地化字符串。
         /// </summary>
         internal static string geo_editor_set_version {
@@ -3890,6 +3899,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string geo_editor_title_new {
             get {
                 return ResourceManager.GetString("geo_editor_title_new", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 View Geothermobarometer 的本地化字符串。
+        /// </summary>
+        internal static string geo_editor_title_view {
+            get {
+                return ResourceManager.GetString("geo_editor_title_view", resourceCulture);
             }
         }
         
@@ -4413,6 +4431,24 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string geo_msg_import_failed_detail {
             get {
                 return ResourceManager.GetString("geo_msg_import_failed_detail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Import rejected, formula name validation failed: {0} 的本地化字符串。
+        /// </summary>
+        internal static string geo_msg_import_formula_name_rejected {
+            get {
+                return ResourceManager.GetString("geo_msg_import_formula_name_rejected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 The geothermobarometer file is corrupted or does not contain a valid geothermobarometer JSON file. 的本地化字符串。
+        /// </summary>
+        internal static string geo_msg_import_invalid_format {
+            get {
+                return ResourceManager.GetString("geo_msg_import_invalid_format", resourceCulture);
             }
         }
         
@@ -4989,6 +5025,24 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string grid {
             get {
                 return ResourceManager.GetString("grid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Ti-in-Bt (Wu &amp; Chen, 2015) 的本地化字符串。
+        /// </summary>
+        internal static string gtm_biotite_ti_wu_chen_2015 {
+            get {
+                return ResourceManager.GetString("gtm_biotite_ti_wu_chen_2015", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Biotite 的本地化字符串。
+        /// </summary>
+        internal static string gtm_mineral_biotite {
+            get {
+                return ResourceManager.GetString("gtm_mineral_biotite", resourceCulture);
             }
         }
         
@@ -8121,6 +8175,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string some_data_failed_validation {
             get {
                 return ResourceManager.GetString("some_data_failed_validation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Special Thanks 的本地化字符串。
+        /// </summary>
+        internal static string SpecialThanks {
+            get {
+                return ResourceManager.GetString("SpecialThanks", resourceCulture);
             }
         }
         

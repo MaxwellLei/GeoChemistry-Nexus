@@ -33,10 +33,23 @@ namespace GeoChemistryNexus.Controls
             DependencyProperty.Register("ScriptDefinition", typeof(ScriptDefinition), typeof(ScriptDefinitionControl),
                 new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnScriptDefinitionChanged));
 
+        public static readonly DependencyProperty UseStandaloneValidationProperty =
+            DependencyProperty.Register(nameof(UseStandaloneValidation), typeof(bool), typeof(ScriptDefinitionControl),
+                new PropertyMetadata(false));
+
         public ScriptDefinition ScriptDefinition
         {
             get { return (ScriptDefinition)GetValue(ScriptDefinitionProperty); }
             set { SetValue(ScriptDefinitionProperty, value); }
+        }
+
+        /// <summary>
+        /// 为 true 时在控件内直接验证脚本，不通过 MainPlotViewModel 中转（用于图解编辑面板等独立场景）。
+        /// </summary>
+        public bool UseStandaloneValidation
+        {
+            get => (bool)GetValue(UseStandaloneValidationProperty);
+            set => SetValue(UseStandaloneValidationProperty, value);
         }
 
         public ScriptDefinitionControl()
@@ -125,6 +138,12 @@ namespace GeoChemistryNexus.Controls
                 if (string.IsNullOrWhiteSpace(script))
                 {
                     UpdateStatus(LanguageService.Instance["script_content_is_empty"], Brushes.Red);
+                    return;
+                }
+
+                if (UseStandaloneValidation)
+                {
+                    PerformValidation();
                     return;
                 }
 

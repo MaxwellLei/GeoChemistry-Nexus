@@ -7,6 +7,7 @@
              xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:primitives="clr-namespace:System.Windows.Controls.Primitives;assembly=PresentationFramework"
              xmlns:vm="clr-namespace:GeoChemistryNexus.ViewModels"
+             xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
              mc:Ignorable="d"
              d:DesignHeight="720" d:DesignWidth="1000"
              Background="#F5F5F7">
@@ -259,6 +260,36 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style x:Key="HelpFormatToggleButtonStyle" TargetType="ToggleButton">
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#D0D0D0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#F2F2F7"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#E8F2FC"/>
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="#0078D4"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
 
     <Grid>
@@ -298,8 +329,16 @@
                             <TextBlock Text="{Binding [diagram_editor_content_translation], Source={x:Static lg:LanguageService.Instance}, TargetNullValue='内容翻译'}"/>
                         </StackPanel>
                     </RadioButton>
-                    <RadioButton x:Name="NavHelp" Style="{StaticResource NavItemStyle}"
+                    <RadioButton x:Name="NavScript" Style="{StaticResource NavItemStyle}"
                                  Checked="NavSection_Checked" Tag="2"
+                                 IsEnabled="{Binding IsScriptSectionEnabled}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📜" Margin="0,0,8,0"/>
+                            <TextBlock Text="{Binding [script_definition], Source={x:Static lg:LanguageService.Instance}, TargetNullValue='图解脚本'}"/>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton x:Name="NavHelp" Style="{StaticResource NavItemStyle}"
+                                 Checked="NavSection_Checked" Tag="3"
                                  IsEnabled="{Binding IsHelpSectionEnabled}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="📄" Margin="0,0,8,0"/>
@@ -611,6 +650,12 @@
                            FontSize="12" Foreground="#86868B" TextTrimming="CharacterEllipsis"/>
             </Grid>
 
+            <!-- Diagram script -->
+            <Grid x:Name="ScriptPanel" Visibility="Collapsed" Margin="0">
+                <local:ScriptDefinitionControl ScriptDefinition="{Binding ScriptDefinition, Mode=OneWay}"
+                                               UseStandaloneValidation="True"/>
+            </Grid>
+
             <!-- Help documents -->
             <Grid x:Name="HelpPanel" Visibility="Collapsed" Margin="20,16">
                 <Grid.RowDefinitions>
@@ -650,6 +695,26 @@
                                 ToolTip="{Binding [geo_help_underline], Source={x:Static lg:LanguageService.Instance}, FallbackValue='下划线 (Ctrl+U)'}">
                             <TextBlock Text="U" FontSize="13" TextDecorations="Underline"/>
                         </Button>
+
+                        <Rectangle Width="1" Height="20" Fill="#D0D0D0" Margin="10,0"/>
+
+                        <ToggleButton x:Name="HelpColorButton" Style="{StaticResource HelpFormatToggleButtonStyle}" Margin="0,0,4,0" Focusable="False"
+                                      ToolTip="{Binding [font_color], Source={x:Static lg:LanguageService.Instance}, FallbackValue='字体颜色'}">
+                            <Grid>
+                                <TextBlock Text="A" FontSize="13" FontWeight="Bold" Foreground="#333" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,3"/>
+                                <Border Height="3" VerticalAlignment="Bottom" Margin="4,0,4,3"
+                                        Background="{Binding ElementName=HelpDocColorPicker, Path=SelectedBrush}" CornerRadius="1"/>
+                            </Grid>
+                        </ToggleButton>
+                        <Popup IsOpen="{Binding IsChecked, ElementName=HelpColorButton}" StaysOpen="False"
+                               PlacementTarget="{Binding ElementName=HelpColorButton}" Placement="Bottom" AllowsTransparency="True">
+                            <Border Background="White" BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="4" Padding="5">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="10" ShadowDepth="2" Direction="270" Color="#20000000" Opacity="0.4"/>
+                                </Border.Effect>
+                                <local:CustomColorPicker x:Name="HelpDocColorPicker" Width="270" Height="Auto" SelectedColor="Black"/>
+                            </Border>
+                        </Popup>
 
                         <Rectangle Width="1" Height="20" Fill="#D0D0D0" Margin="10,0"/>
 

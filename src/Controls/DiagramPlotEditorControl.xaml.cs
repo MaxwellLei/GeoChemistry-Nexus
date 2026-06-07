@@ -6,12 +6,14 @@ using GeoChemistryNexus.Services;
 using GeoChemistryNexus.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace GeoChemistryNexus.Controls
 {
@@ -83,6 +85,18 @@ namespace GeoChemistryNexus.Controls
                     HelpDocEditor.Document.Blocks.Clear();
                 }
             };
+
+            var colorPickerDpd = DependencyPropertyDescriptor.FromProperty(
+                CustomColorPicker.SelectedColorProperty, typeof(CustomColorPicker));
+            colorPickerDpd.AddValueChanged(HelpDocColorPicker, (_, _) =>
+            {
+                if (HelpDocEditor?.Selection == null) return;
+
+                HelpDocEditor.Selection.ApplyPropertyValue(
+                    TextElement.ForegroundProperty,
+                    new SolidColorBrush(HelpDocColorPicker.SelectedColor));
+                HelpDocEditor.Focus();
+            });
         }
 
         public void InitializeForCreate() => ViewModel.InitializeForCreate();
@@ -109,7 +123,8 @@ namespace GeoChemistryNexus.Controls
             int index = ViewModel.SelectedSectionIndex;
             BasicPanel.Visibility = index == 0 ? Visibility.Visible : Visibility.Collapsed;
             TranslationPanel.Visibility = index == 1 ? Visibility.Visible : Visibility.Collapsed;
-            HelpPanel.Visibility = index == 2 ? Visibility.Visible : Visibility.Collapsed;
+            ScriptPanel.Visibility = index == 2 ? Visibility.Visible : Visibility.Collapsed;
+            HelpPanel.Visibility = index == 3 ? Visibility.Visible : Visibility.Collapsed;
 
             switch (index)
             {
@@ -120,6 +135,9 @@ namespace GeoChemistryNexus.Controls
                     NavTranslation.IsChecked = true;
                     break;
                 case 2:
+                    NavScript.IsChecked = true;
+                    break;
+                case 3:
                     NavHelp.IsChecked = true;
                     break;
             }

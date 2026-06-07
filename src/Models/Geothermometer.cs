@@ -249,6 +249,31 @@ namespace GeoChemistryNexus.Models
     }
 
     /// <summary>
+    /// 温压计 ZIP 导入失败原因
+    /// </summary>
+    public enum GeothermometerImportFailureReason
+    {
+        /// <summary>文件损坏或 JSON 格式不符合温压计规范</summary>
+        InvalidOrCorrupted,
+        /// <summary>温压计格式版本高于当前程序支持版本</summary>
+        VersionIncompatible
+    }
+
+    /// <summary>
+    /// 温压计 ZIP 导入失败异常
+    /// </summary>
+    public class GeothermometerImportException : Exception
+    {
+        public GeothermometerImportFailureReason Reason { get; }
+
+        public GeothermometerImportException(GeothermometerImportFailureReason reason, Exception? innerException = null)
+            : base(null, innerException)
+        {
+            Reason = reason;
+        }
+    }
+
+    /// <summary>
     /// 附加公式定义（用于一个 GTM 注册多个 ReoGrid 自定义函数）
     /// </summary>
     public class AdditionalFormula

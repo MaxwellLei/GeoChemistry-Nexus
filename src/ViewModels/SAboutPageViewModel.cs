@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Services;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
@@ -13,6 +14,15 @@ namespace GeoChemistryNexus.ViewModels
     {
         [ObservableProperty]
         private string version;
+
+        public IReadOnlyList<string> SpecialThanksNames { get; } = new[]
+        {
+            "张天阳",
+            "邢琬若",
+            "张正阳",
+            "崔庆意",
+            "刘悦"
+        };
 
         public RelayCommand<string> OpenUrlCommand { get; private set; }
 

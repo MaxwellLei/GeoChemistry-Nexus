@@ -1,0 +1,37 @@
+<Window x:Class="GeoChemistryNexus.Views.OfficialTemplatePublisherWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:controls="clr-namespace:GeoChemistryNexus.Controls"
+        xmlns:widgets="clr-namespace:GeoChemistryNexus.Views.Widgets"
+        mc:Ignorable="d"
+        x:Name="RootWindow"
+        Height="700" Width="920"
+        MinHeight="600" MinWidth="880"
+        WindowStartupLocation="CenterOwner"
+        WindowStyle="SingleBorderWindow"
+        Background="#F5F5F7">
+
+    <Grid>
+        <widgets:OfficialTemplatePublisherWidget x:Name="PublisherWidget"/>
+
+        <ScrollViewer VerticalAlignment="Top" HorizontalAlignment="Right"
+                      Margin="0,16,16,0" MaxHeight="480"
+                      VerticalScrollBarVisibility="Hidden" IsHitTestVisible="True"
+                      BorderThickness="0" Background="Transparent">
+            <ItemsControl ItemsSource="{Binding LocalNotifications, ElementName=RootWindow}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <controls:NotificationItem/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</Window>

@@ -246,6 +246,9 @@
   <data name="ThankSupport" xml:space="preserve">
     <value>Thanks for the Support</value>
   </data>
+  <data name="SpecialThanks" xml:space="preserve">
+    <value>Special Thanks</value>
+  </data>
   <data name="ModifedSuccess" xml:space="preserve">
     <value>Modified Successfully</value>
   </data>
@@ -2122,6 +2125,12 @@
   <data name="geo_editor_title_edit" xml:space="preserve">
     <value>Edit Geothermobarometer</value>
   </data>
+  <data name="geo_editor_title_view" xml:space="preserve">
+    <value>View Geothermobarometer</value>
+  </data>
+  <data name="geo_editor_readonly_hint" xml:space="preserve">
+    <value>Basic info, formula script, and help documents for official geothermobarometers are view-only. You can browse and copy content, but not edit it.</value>
+  </data>
   <data name="geo_editor_title_new" xml:space="preserve">
     <value>New Custom Geothermobarometer</value>
   </data>
@@ -2160,6 +2169,12 @@
   </data>
   <data name="geo_msg_import_failed_detail" xml:space="preserve">
     <value>Import failed: {0}</value>
+  </data>
+  <data name="geo_msg_import_formula_name_rejected" xml:space="preserve">
+    <value>Import rejected, formula name validation failed: {0}</value>
+  </data>
+  <data name="geo_msg_import_invalid_format" xml:space="preserve">
+    <value>The geothermobarometer file is corrupted or does not contain a valid geothermobarometer JSON file.</value>
   </data>
   <data name="geo_msg_checking_update" xml:space="preserve">
     <value>Checking for updates...</value>
@@ -3106,5 +3121,11 @@ Directory: {2}</value>
   </data>
   <data name="see_error_log_for_details" xml:space="preserve">
     <value>See error.log for details.</value>
+  </data>
+  <data name="gtm_biotite_ti_wu_chen_2015" xml:space="preserve">
+    <value>Ti-in-Bt (Wu &amp; Chen, 2015)</value>
+  </data>
+  <data name="gtm_mineral_biotite" xml:space="preserve">
+    <value>Biotite</value>
   </data>
 </root>

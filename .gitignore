@@ -22,6 +22,7 @@ yarn-error.log*
 src/.trae/
 src/.qoder/
 src/Others/
+src/_tmp_gtm/
 
 # Cursor IDE
 .cursor/

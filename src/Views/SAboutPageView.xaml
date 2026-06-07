@@ -95,6 +95,25 @@
                     </StackPanel>
                 </Border>
 
+                <!-- Group 4: Special Thanks -->
+                <TextBlock Text="{Binding [SpecialThanks],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernSettingsGroupTitle}"/>
+                <Border Style="{StaticResource ModernSettingsCard}">
+                    <ItemsControl ItemsSource="{Binding SpecialThanksNames}" Margin="16,12">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel HorizontalAlignment="Center"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#F5F5F7" CornerRadius="8" Padding="16,8" Margin="6,4">
+                                    <TextBlock Text="{Binding}" FontSize="14" Foreground="#1D1D1F" HorizontalAlignment="Center"/>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Border>
+
                 <!-- Footer -->
                 <TextBlock Text="{Binding [AboutInfo3],Source={x:Static lg:LanguageService.Instance}}" 
                            FontSize="12" Foreground="#86868B" TextWrapping="Wrap" TextAlignment="Center" Margin="0,20,0,0" HorizontalAlignment="Center"/>

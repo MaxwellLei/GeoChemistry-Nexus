@@ -833,6 +833,12 @@
   <data name="geo_msg_import_failed_detail" xml:space="preserve">
     <value>匯入失敗: {0}</value>
   </data>
+  <data name="geo_msg_import_formula_name_rejected" xml:space="preserve">
+    <value>匯入失敗，公式名校驗未通過：{0}</value>
+  </data>
+  <data name="geo_msg_import_invalid_format" xml:space="preserve">
+    <value>自訂溫壓計檔案已損壞或未包含有效的溫壓計 JSON 檔案。</value>
+  </data>
   <data name="MarkerShape_OpenCircleWithCross" xml:space="preserve">
     <value>空心圓加十字</value>
   </data>
@@ -1026,6 +1032,9 @@
   </data>
   <data name="ThankSupport" xml:space="preserve">
     <value>感謝支持</value>
+  </data>
+  <data name="SpecialThanks" xml:space="preserve">
+    <value>特別感謝</value>
   </data>
   <data name="completed" xml:space="preserve">
     <value>完成</value>
@@ -3113,6 +3122,12 @@
   </data>
   <data name="translation_text_item" xml:space="preserve">
     <value>文字</value>
+  </data>
+  <data name="gtm_biotite_ti_wu_chen_2015" xml:space="preserve">
+    <value>Ti-in-黑雲母（Wu &amp; Chen, 2015）</value>
+  </data>
+  <data name="gtm_mineral_biotite" xml:space="preserve">
+    <value>黑雲母</value>
   </data>
 
 </root>

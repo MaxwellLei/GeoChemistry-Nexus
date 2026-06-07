@@ -833,6 +833,12 @@ Verzeichnis: {2}</value>
   <data name="geo_msg_import_failed_detail" xml:space="preserve">
     <value>Import fehlgeschlagen: {0}</value>
   </data>
+  <data name="geo_msg_import_formula_name_rejected" xml:space="preserve">
+    <value>Import abgelehnt, Formelname-Validierung fehlgeschlagen: {0}</value>
+  </data>
+  <data name="geo_msg_import_invalid_format" xml:space="preserve">
+    <value>Die Geothermobarometer-Datei ist beschädigt oder enthält keine gültige Geothermobarometer-JSON-Datei.</value>
+  </data>
   <data name="MarkerShape_OpenCircleWithCross" xml:space="preserve">
     <value>Leerer Kreis mit Kreuz</value>
   </data>
@@ -1026,6 +1032,9 @@ Verzeichnis: {2}</value>
   </data>
   <data name="ThankSupport" xml:space="preserve">
     <value>Danke für die Unterstützung</value>
+  </data>
+  <data name="SpecialThanks" xml:space="preserve">
+    <value>Besonderer Dank</value>
   </data>
   <data name="completed" xml:space="preserve">
     <value>Abgeschlossen</value>
@@ -3113,5 +3122,11 @@ Verzeichnis: {2}</value>
   </data>
   <data name="translation_text_item" xml:space="preserve">
     <value>Text</value>
+  </data>
+  <data name="gtm_biotite_ti_wu_chen_2015" xml:space="preserve">
+    <value>Ti-in-Bt (Wu &amp; Chen, 2015)</value>
+  </data>
+  <data name="gtm_mineral_biotite" xml:space="preserve">
+    <value>Biotit</value>
   </data>
 </root>

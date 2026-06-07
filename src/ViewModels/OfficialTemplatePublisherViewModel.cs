@@ -139,6 +139,53 @@ namespace GeoChemistryNexus.ViewModels
         private PublishPreview _diagramPreview;
         private PublishPreview _geothermometerPreview;
 
+        public Action<string>? ShowSuccessMessage { get; set; }
+        public Action<string>? ShowWarningMessage { get; set; }
+        public Action<string>? ShowErrorMessage { get; set; }
+        public Func<string, string, string, Task<bool>>? ShowConfirmDialogAsync { get; set; }
+        public Window? OwnerWindow { get; set; }
+
+        private void ShowSuccess(string message)
+        {
+            if (ShowSuccessMessage != null)
+            {
+                ShowSuccessMessage(message);
+                return;
+            }
+
+            MessageHelper.Success(message);
+        }
+
+        private void ShowWarning(string message)
+        {
+            if (ShowWarningMessage != null)
+            {
+                ShowWarningMessage(message);
+                return;
+            }
+
+            MessageHelper.Warning(message);
+        }
+
+        private void ShowError(string message)
+        {
+            if (ShowErrorMessage != null)
+            {
+                ShowErrorMessage(message);
+                return;
+            }
+
+            MessageHelper.Error(message);
+        }
+
+        private Task<bool> ShowConfirmAsync(string message, string cancelText, string confirmText)
+        {
+            if (ShowConfirmDialogAsync != null)
+                return ShowConfirmDialogAsync(message, cancelText, confirmText);
+
+            return MessageHelper.ShowAsyncDialog(message, cancelText, confirmText);
+        }
+
         public OfficialTemplatePublisherViewModel()
         {
             if (bool.TryParse(ConfigHelper.GetConfig("developer_mode"), out bool devMode))
@@ -254,7 +301,7 @@ namespace GeoChemistryNexus.ViewModels
         {
             if (string.IsNullOrWhiteSpace(SecretId))
             {
-                MessageHelper.Warning(LanguageService.Instance["cos_secret_id_required"] ?? "SecretId is required.");
+                ShowWarning(LanguageService.Instance["cos_secret_id_required"] ?? "SecretId is required.");
                 return;
             }
 
@@ -267,7 +314,7 @@ namespace GeoChemistryNexus.ViewModels
             CosPublishSettingsService.Save(settings, string.IsNullOrWhiteSpace(SecretKey) ? null : SecretKey.Trim());
             SecretKey = string.Empty;
             Log(LanguageService.Instance["cos_settings_saved"] ?? "COS settings saved.");
-            MessageHelper.Success(LanguageService.Instance["cos_settings_saved"] ?? "COS settings saved.");
+            ShowSuccess(LanguageService.Instance["cos_settings_saved"] ?? "COS settings saved.");
         }
 
         [RelayCommand]
@@ -282,7 +329,7 @@ namespace GeoChemistryNexus.ViewModels
                 var settings = BuildSettingsFromUi();
                 if (!settings.IsConfigured && string.IsNullOrWhiteSpace(SecretKey))
                 {
-                    MessageHelper.Warning(LanguageService.Instance["cos_credentials_required"] ?? "Configure COS credentials first.");
+                    ShowWarning(LanguageService.Instance["cos_credentials_required"] ?? "Configure COS credentials first.");
                     return;
                 }
 
@@ -290,18 +337,18 @@ namespace GeoChemistryNexus.ViewModels
                 if (ok)
                 {
                     Log(LanguageService.Instance["cos_test_success"] ?? "COS connection test succeeded.");
-                    MessageHelper.Success(LanguageService.Instance["cos_test_success"] ?? "COS connection test succeeded.");
+                    ShowSuccess(LanguageService.Instance["cos_test_success"] ?? "COS connection test succeeded.");
                 }
                 else
                 {
                     Log(LanguageService.Instance["cos_test_failed"] ?? "COS connection test failed.");
-                    MessageHelper.Error(LanguageService.Instance["cos_test_failed"] ?? "COS connection test failed.");
+                    ShowError(LanguageService.Instance["cos_test_failed"] ?? "COS connection test failed.");
                 }
             }
             catch (Exception ex)
             {
                 Log(ex.Message);
-                MessageHelper.Error(ex.Message);
+                ShowError(ex.Message);
             }
             finally
             {
@@ -433,7 +480,7 @@ namespace GeoChemistryNexus.ViewModels
             catch (Exception ex)
             {
                 Log(ex.Message);
-                MessageHelper.Error(ex.Message);
+                ShowError(ex.Message);
             }
             finally
             {
@@ -500,12 +547,12 @@ namespace GeoChemistryNexus.ViewModels
                     Log(geoResult.Summary);
                 }
 
-                MessageHelper.Success(LanguageService.Instance["official_publisher_export_done"] ?? "Export completed.");
+                ShowSuccess(LanguageService.Instance["official_publisher_export_done"] ?? "Export completed.");
             }
             catch (Exception ex)
             {
                 Log(ex.Message);
-                MessageHelper.Error(ex.Message);
+                ShowError(ex.Message);
             }
             finally
             {
@@ -523,14 +570,14 @@ namespace GeoChemistryNexus.ViewModels
             var settings = BuildSettingsFromUi();
             if (!settings.IsConfigured)
             {
-                MessageHelper.Warning(LanguageService.Instance["cos_credentials_required"] ?? "Configure and save COS credentials first.");
+                ShowWarning(LanguageService.Instance["cos_credentials_required"] ?? "Configure and save COS credentials first.");
                 return;
             }
 
             string outputDir = ResolveStagingDirectory();
             if (string.IsNullOrEmpty(outputDir)) return;
 
-            bool confirm = await MessageHelper.ShowAsyncDialog(
+            bool confirm = await ShowConfirmAsync(
                 LanguageService.Instance["official_publisher_confirm"] ?? "Publish official content to COS?",
                 LanguageService.Instance["Cancel"] ?? "Cancel",
                 LanguageService.Instance["Confirm"] ?? "Confirm");
@@ -642,12 +689,12 @@ namespace GeoChemistryNexus.ViewModels
                 string doneMessage = LanguageService.Instance["official_publisher_progress_done"] ?? "Publish completed.";
                 ReportPublishProgress(100, doneMessage);
                 Log(uploadResult.Message);
-                MessageHelper.Success(uploadResult.Message);
+                ShowSuccess(uploadResult.Message);
             }
             catch (Exception ex)
             {
                 Log(ex.Message);
-                MessageHelper.Error(ex.Message);
+                ShowError(ex.Message);
             }
             finally
             {
@@ -682,21 +729,21 @@ namespace GeoChemistryNexus.ViewModels
                 return StagingDirectory;
             }
 
-            MessageHelper.Warning(LanguageService.Instance["official_publisher_staging_required"] ?? "Select a staging directory.");
+            ShowWarning(LanguageService.Instance["official_publisher_staging_required"] ?? "Select a staging directory.");
             return null;
         }
 
         private bool EnsureDeveloperMode()
         {
             if (IsDeveloperMode) return true;
-            MessageHelper.Warning(LanguageService.Instance["official_publisher_dev_mode_required"] ?? "Developer mode is required.");
+            ShowWarning(LanguageService.Instance["official_publisher_dev_mode_required"] ?? "Developer mode is required.");
             return false;
         }
 
         private bool EnsurePublishTargetSelected()
         {
             if (PublishDiagrams || PublishGeothermometers || PublishHomeLinks || PublishAnnouncement) return true;
-            MessageHelper.Warning(LanguageService.Instance["official_publisher_target_required"] ?? "Select at least one publish target.");
+            ShowWarning(LanguageService.Instance["official_publisher_target_required"] ?? "Select at least one publish target.");
             return false;
         }
 
@@ -722,7 +769,7 @@ namespace GeoChemistryNexus.ViewModels
                 HomeLinkLocalizedEditMode.Group,
                 HomeLinksLanguageContext,
                 LanguageService.Instance["official_publisher_home_add_group"] ?? "Add Group");
-            dialog.Owner = Application.Current.MainWindow;
+            dialog.Owner = OwnerWindow ?? Application.Current.MainWindow;
             if (dialog.ShowDialog() != true)
                 return;
 
@@ -749,7 +796,7 @@ namespace GeoChemistryNexus.ViewModels
                 HomeLinksLanguageContext,
                 LanguageService.Instance["official_publisher_home_edit_group"] ?? "Edit Group",
                 title: SelectedHomeLinkGroup.Title);
-            dialog.Owner = Application.Current.MainWindow;
+            dialog.Owner = OwnerWindow ?? Application.Current.MainWindow;
             if (dialog.ShowDialog() != true)
                 return;
 
@@ -774,7 +821,7 @@ namespace GeoChemistryNexus.ViewModels
         {
             if (SelectedHomeLinkGroup == null)
             {
-                MessageHelper.Warning(LanguageService.Instance["official_publisher_home_select_group"] ?? "Select a group first.");
+                ShowWarning(LanguageService.Instance["official_publisher_home_select_group"] ?? "Select a group first.");
                 return;
             }
 
@@ -821,7 +868,7 @@ namespace GeoChemistryNexus.ViewModels
 
             SaveHomeLinksToBundled();
             Log(LanguageService.Instance["official_publisher_home_links_draft_saved"] ?? "Home links draft saved locally.");
-            MessageHelper.Success(LanguageService.Instance["official_publisher_home_links_draft_saved"] ?? "Home links draft saved locally.");
+            ShowSuccess(LanguageService.Instance["official_publisher_home_links_draft_saved"] ?? "Home links draft saved locally.");
         }
 
         private void LoadHomeLinksEditor()
@@ -906,7 +953,7 @@ namespace GeoChemistryNexus.ViewModels
                 description: existing?.Description,
                 url: existing?.Url,
                 icon: existing?.Icon);
-            dialog.Owner = Application.Current.MainWindow;
+            dialog.Owner = OwnerWindow ?? Application.Current.MainWindow;
 
             if (dialog.ShowDialog() != true)
                 return false;

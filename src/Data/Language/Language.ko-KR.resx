@@ -833,6 +833,12 @@
   <data name="geo_msg_import_failed_detail" xml:space="preserve">
     <value>가져오기 실패: {0}</value>
   </data>
+  <data name="geo_msg_import_formula_name_rejected" xml:space="preserve">
+    <value>가져오기가 거부되었습니다. 수식 이름 검증 실패: {0}</value>
+  </data>
+  <data name="geo_msg_import_invalid_format" xml:space="preserve">
+    <value>사용자 지정 지질 온압계 파일이 손상되었거나 유효한 지질 온압계 JSON 파일이 포함되어 있지 않습니다.</value>
+  </data>
   <data name="MarkerShape_OpenCircleWithCross" xml:space="preserve">
     <value>십자가가 있는 원</value>
   </data>
@@ -1026,6 +1032,9 @@
   </data>
   <data name="ThankSupport" xml:space="preserve">
     <value>지원에 감사드립니다</value>
+  </data>
+  <data name="SpecialThanks" xml:space="preserve">
+    <value>특별 감사</value>
   </data>
   <data name="completed" xml:space="preserve">
     <value>완료</value>
@@ -3113,5 +3122,11 @@
   </data>
   <data name="translation_text_item" xml:space="preserve">
     <value>텍스트</value>
+  </data>
+  <data name="gtm_biotite_ti_wu_chen_2015" xml:space="preserve">
+    <value>Ti-in-Bt (Wu &amp; Chen, 2015)</value>
+  </data>
+  <data name="gtm_mineral_biotite" xml:space="preserve">
+    <value>흑운모</value>
   </data>
 </root>

@@ -316,20 +316,13 @@
                                         </Button.Style>
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto"/>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <!-- 矿物图标 -->
-                                            <TextBlock Grid.Column="0" Text="{Binding IconCode}" 
-                                                       FontFamily="{StaticResource IconFont}" FontSize="16"
-                                                       Foreground="{Binding IconColor, Converter={StaticResource StringToBrushConverter}}"
-                                                       Margin="0,0,10,0" VerticalAlignment="Center"/>
-
                                             <!-- 矿物名称 -->
-                                            <TextBlock Grid.Column="1" Text="{Binding DisplayName}" 
+                                            <TextBlock Grid.Column="0" Text="{Binding DisplayName}" 
                                                        FontSize="14" Foreground="#333333" VerticalAlignment="Center">
                                                 <TextBlock.Style>
                                                     <Style TargetType="TextBlock">
@@ -344,13 +337,13 @@
                                             </TextBlock>
 
                                             <!-- 数量徽章 -->
-                                            <Border Grid.Column="2" CornerRadius="10" Padding="6,2" Margin="4,0" 
+                                            <Border Grid.Column="1" CornerRadius="10" Padding="6,2" Margin="4,0" 
                                                     Background="#E9E9EF" VerticalAlignment="Center">
                                                 <TextBlock Text="{Binding PluginCount}" FontSize="11" Foreground="#555"/>
                                             </Border>
 
                                             <!-- 展开箭头 -->
-                                            <TextBlock Grid.Column="3" FontFamily="Segoe MDL2 Assets" 
+                                            <TextBlock Grid.Column="2" FontFamily="Segoe MDL2 Assets" 
                                                        FontSize="10" Foreground="#808080" VerticalAlignment="Center"
                                                        RenderTransformOrigin="0.5,0.5">
                                                 <TextBlock.Text>&#xE76C;</TextBlock.Text>
@@ -447,16 +440,6 @@
                                                             Tag="{Binding Data, Source={StaticResource ViewModelProxy}}">
                                                         <Button.ContextMenu>
                                                             <ContextMenu>
-                                                                <ContextMenu.Style>
-                                                                    <Style TargetType="ContextMenu">
-                                                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                                                        <Style.Triggers>
-                                                                            <DataTrigger Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource Self}}" Value="True">
-                                                                                <Setter Property="Visibility" Value="Visible"/>
-                                                                            </DataTrigger>
-                                                                        </Style.Triggers>
-                                                                    </Style>
-                                                                </ContextMenu.Style>
                                                                 <MenuItem Header="{Binding [geo_ctx_edit],Source={x:Static lg:LanguageService.Instance}, FallbackValue=编辑}"
                                                                           Command="{Binding Data.EditCustomThermometerCommand, Source={StaticResource ViewModelProxy}}"
                                                                           CommandParameter="{Binding}">
@@ -471,13 +454,34 @@
                                                                         <TextBlock Text="&#xE78C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
                                                                     </MenuItem.Icon>
                                                                 </MenuItem>
-                                                                <Separator/>
+                                                                <Separator>
+                                                                    <Separator.Style>
+                                                                        <Style TargetType="Separator">
+                                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                                            <Style.Triggers>
+                                                                                <DataTrigger Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True">
+                                                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                                                </DataTrigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </Separator.Style>
+                                                                </Separator>
                                                                 <MenuItem Header="{Binding [geo_ctx_demote],Source={x:Static lg:LanguageService.Instance}, FallbackValue=降级为自定义}"
                                                                           Command="{Binding Data.ConvertToCustomCommand, Source={StaticResource ViewModelProxy}}"
                                                                           CommandParameter="{Binding}">
                                                                     <MenuItem.Icon>
                                                                         <TextBlock Text="&#xE74B;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#E65100"/>
                                                                     </MenuItem.Icon>
+                                                                    <MenuItem.Style>
+                                                                        <Style TargetType="MenuItem">
+                                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                                            <Style.Triggers>
+                                                                                <DataTrigger Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True">
+                                                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                                                </DataTrigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </MenuItem.Style>
                                                                 </MenuItem>
                                                                 <MenuItem Header="{Binding [geo_ctx_delete],Source={x:Static lg:LanguageService.Instance}, FallbackValue=删除}"
                                                                           Command="{Binding Data.DeleteCustomThermometerCommand, Source={StaticResource ViewModelProxy}}"
@@ -485,6 +489,16 @@
                                                                     <MenuItem.Icon>
                                                                         <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#D13438"/>
                                                                     </MenuItem.Icon>
+                                                                    <MenuItem.Style>
+                                                                        <Style TargetType="MenuItem">
+                                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                                            <Style.Triggers>
+                                                                                <DataTrigger Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True">
+                                                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                                                </DataTrigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </MenuItem.Style>
                                                                 </MenuItem>
                                                             </ContextMenu>
                                                         </Button.ContextMenu>
@@ -1161,5 +1175,85 @@
                 </Grid>
             </Grid>
         </Grid>
+
+        <!-- 温压计更新遮罩层 -->
+        <Border Grid.ColumnSpan="3"
+                Panel.ZIndex="1000"
+                Background="#80000000"
+                Visibility="{Binding IsUpdateOverlayVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Border Background="White"
+                    CornerRadius="12"
+                    Width="420"
+                    Padding="36,28"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="20" ShadowDepth="0" Opacity="0.3"/>
+                </Border.Effect>
+                <StackPanel>
+                    <TextBlock FontSize="18"
+                               FontWeight="SemiBold"
+                               Foreground="#333"
+                               HorizontalAlignment="Center"
+                               LineHeight="24"
+                               Padding="0,2"
+                               Margin="0,0,0,16">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Text" Value="{Binding [geo_msg_checking_update], Source={x:Static lg:LanguageService.Instance}, FallbackValue=Checking for updates...}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsUpdateProgressIndeterminate}" Value="False">
+                                        <Setter Property="Text" Value="{Binding [geo_msg_downloading_update], Source={x:Static lg:LanguageService.Instance}, FallbackValue=Downloading...}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+
+                    <Grid Margin="0,0,0,4">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0" Margin="0,0,0,10">
+                            <TextBlock Text="{Binding UpdateStatusText}"
+                                       FontSize="13"
+                                       Foreground="#666"
+                                       TextAlignment="Center"
+                                       TextWrapping="Wrap"
+                                       LineHeight="18"
+                                       Padding="0,2"
+                                       VerticalAlignment="Center"
+                                       TextTrimming="CharacterEllipsis"/>
+                            <TextBlock FontSize="12"
+                                       Foreground="#888"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Center"
+                                       Padding="0,2"
+                                       LineHeight="16"
+                                       Text="{Binding UpdateProgress, StringFormat={}{0:0}%}">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsUpdateProgressIndeterminate}" Value="False">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+
+                        <ProgressBar Grid.Row="1"
+                                       Style="{StaticResource FlatProgressBarStyle}"
+                                       Maximum="100"
+                                       Value="{Binding UpdateProgress}"
+                                       IsIndeterminate="{Binding IsUpdateProgressIndeterminate}"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Border>
     </Grid>
 </Page>

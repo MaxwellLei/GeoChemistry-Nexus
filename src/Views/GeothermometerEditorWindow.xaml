@@ -19,6 +19,7 @@
 
     <Window.Resources>
         <converter:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converter:BoolToVisibilityReConverter x:Key="BooleanToVisibilityReConverter"/>
         <!-- 标签样式 -->
         <Style x:Key="FieldLabelStyle" TargetType="TextBlock">
             <Setter Property="FontSize" Value="11"/>
@@ -39,6 +40,7 @@
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="Padding" Value="6,4"/>
             <Setter Property="MinHeight" Value="26"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="BorderBrush" Value="#D0D0D0"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Background" Value="White"/>
@@ -49,7 +51,7 @@
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="4" Padding="{TemplateBinding Padding}">
-                            <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Center"/>
+                            <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Stretch"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsFocused" Value="True">
@@ -66,6 +68,7 @@
             <Setter Property="AcceptsReturn" Value="True"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="VerticalContentAlignment" Value="Top"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
@@ -203,8 +206,178 @@
             </Grid.RowDefinitions>
 
             <!-- ==================== 内容区域 ==================== -->
-            <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <Grid Grid.Row="0">
+
+            <!-- ========== Step 1: 公式脚本（占满可视区域，避免测试栏被裁切） ========== -->
+            <Border Background="White" CornerRadius="8" Padding="0" BorderBrush="#E0E0E0" BorderThickness="1"
+                    VerticalAlignment="Stretch">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding CurrentStep}" Value="1">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- 表格定义区 -->
+                    <Border Grid.Row="0" Padding="16,14" BorderBrush="#E8E8E8" BorderThickness="0,0,0,1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="12"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="12"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_script_headers], Source={x:Static lg:LanguageService.Instance}, FallbackValue=表头 *（逗号分隔）}"/>
+                                <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding HeadersText, UpdateSourceTrigger=PropertyChanged}"
+                                         ToolTip="{Binding [geo_tooltip_headers], Source={x:Static lg:LanguageService.Instance}, FallbackValue='例如: SiO2, TiO2, Al2O3, T(K)'}"
+                                         IsReadOnly="{Binding IsContentReadOnly}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_script_sample_row], Source={x:Static lg:LanguageService.Instance}, FallbackValue=示例行（逗号分隔）}"/>
+                                <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding ExampleRowText, UpdateSourceTrigger=PropertyChanged}"
+                                         ToolTip="{Binding [geo_tooltip_sample_row_eg], Source={x:Static lg:LanguageService.Instance}, FallbackValue='例如: 45.2, 0.8, 12.3, =MyFormula(A2,B2,C2)'}"
+                                         IsReadOnly="{Binding IsContentReadOnly}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="4">
+                                <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_script_inputs], Source={x:Static lg:LanguageService.Instance}, FallbackValue=输入列（逗号分隔）}"/>
+                                <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding InputColumnsText, UpdateSourceTrigger=PropertyChanged}"
+                                         ToolTip="{Binding [geo_tooltip_inputs_eg], Source={x:Static lg:LanguageService.Instance}, FallbackValue='例如: SiO2, TiO2, Al2O3'}"
+                                         IsReadOnly="{Binding IsContentReadOnly}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- 脚本标题栏 -->
+                    <Border Grid.Row="1" Background="#F8F8FA" Padding="14,10"
+                            BorderBrush="#E8E8E8" BorderThickness="0,0,0,1">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE943;" FontFamily="Segoe MDL2 Assets" FontSize="14" 
+                                       Foreground="#0078D4" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <TextBlock Text="{Binding [geo_script_javascript], Source={x:Static lg:LanguageService.Instance}, FallbackValue=JavaScript 脚本}" FontSize="13" FontWeight="SemiBold" Foreground="#333"/>
+                            <TextBlock Text="  calculate(args) + calculateDetailed(inputs)" 
+                                       FontSize="11" Foreground="#999" VerticalAlignment="Center" Margin="8,0,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- 脚本编辑器 -->
+                    <TextBox Grid.Row="2" 
+                             Text="{Binding ScriptContent, UpdateSourceTrigger=PropertyChanged}"
+                             FontFamily="Consolas, Courier New" FontSize="13"
+                             AcceptsReturn="True" AcceptsTab="True"
+                             VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
+                             TextWrapping="NoWrap" BorderThickness="0" Padding="14,10"
+                             Background="White"
+                             IsReadOnly="{Binding IsContentReadOnly}"/>
+
+                    <!-- 测试栏 -->
+                    <Border Grid.Row="3" Background="#F8F8FA" Padding="14,10,14,12" CornerRadius="0,0,8,8"
+                            BorderBrush="#E8E8E8" BorderThickness="0,1,0,0">
+                        <Grid VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" Text="{Binding [geo_script_test_input], Source={x:Static lg:LanguageService.Instance}, FallbackValue=测试输入：}" 
+                                       FontSize="12" Foreground="#555" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <TextBox Grid.Column="1" Style="{StaticResource FieldInputStyle}" 
+                                     Text="{Binding TestInputText, UpdateSourceTrigger=PropertyChanged}"
+                                     ToolTip="{Binding [geo_tooltip_test_input_eg], Source={x:Static lg:LanguageService.Instance}, FallbackValue='例如: 45.2, 0.8, 12.3'}"
+                                     MinHeight="32" FontSize="12" VerticalAlignment="Center"/>
+
+                            <Button Grid.Column="2" Content="{Binding [geo_script_run_test], Source={x:Static lg:LanguageService.Instance}, FallbackValue=运行测试}"
+                                    Command="{Binding TestScriptCommand}" Margin="8,0"
+                                    FontSize="12" Padding="12,4" Cursor="Hand" VerticalAlignment="Center"
+                                    Background="#E8F4FD" Foreground="#0078D4" BorderBrush="#B3D9F2" BorderThickness="1">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border x:Name="Bd" Background="{TemplateBinding Background}" 
+                                                BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1"
+                                                CornerRadius="4" Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Bd" Property="Background" Value="#D0EAFB"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+
+                            <TextBlock Grid.Column="3" Text="{Binding [geo_script_result], Source={x:Static lg:LanguageService.Instance}, FallbackValue=结果：}" 
+                                       FontSize="12" Foreground="#555" VerticalAlignment="Center" Margin="8,0,8,0"/>
+                            <TextBlock Grid.Column="4" Text="{Binding TestResultText}" FontSize="12" VerticalAlignment="Center"
+                                       FontFamily="Consolas" TextTrimming="CharacterEllipsis">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="#D13438"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsTestSuccess}" Value="True">
+                                                <Setter Property="Foreground" Value="#107C10"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <ScrollViewer.Style>
+                    <Style TargetType="ScrollViewer">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding CurrentStep}" Value="0">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding CurrentStep}" Value="2">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ScrollViewer.Style>
             <Grid Margin="0,0,4,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+            <!-- 官方温压计只读提示 -->
+            <Border Grid.Row="0" Background="#FFF8E1" BorderBrush="#FFE082" BorderThickness="1" CornerRadius="6"
+                    Padding="12,8" Margin="0,0,0,12"
+                    Visibility="{Binding IsContentReadOnly, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="&#xE7BA;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                               Foreground="#F9A825" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <TextBlock FontSize="12" Foreground="#795548" VerticalAlignment="Center"
+                               Text="{Binding [geo_editor_readonly_hint], Source={x:Static lg:LanguageService.Instance}, FallbackValue=官方温压计的基本信息、公式脚本和帮助文档仅可查看与复制，不可修改。}"/>
+                </StackPanel>
+            </Border>
+
+            <Grid Grid.Row="1">
 
             <!-- ========== Step 0: 基本信息 ========== -->
             <Border Background="White" CornerRadius="8" Padding="20,18" BorderBrush="#E0E0E0" BorderThickness="1">
@@ -241,19 +414,22 @@
 
                         <StackPanel Grid.Column="0">
                             <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_name], Source={x:Static lg:LanguageService.Instance}, FallbackValue=名称 *}"/>
-                            <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                                     IsReadOnly="{Binding IsContentReadOnly}"/>
                             <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding [geo_example_name], Source={x:Static lg:LanguageService.Instance}, FallbackValue=例如：石英温压计}"/>
                         </StackPanel>
 
                         <StackPanel Grid.Column="2">
                             <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_mineral_category], Source={x:Static lg:LanguageService.Instance}, FallbackValue=矿物分类 *}"/>
-                            <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding Mineral, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding Mineral, UpdateSourceTrigger=PropertyChanged}"
+                                     IsReadOnly="{Binding IsContentReadOnly}"/>
                             <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding [geo_example_mineral], Source={x:Static lg:LanguageService.Instance}, FallbackValue=例如：石英}"/>
                         </StackPanel>
 
                         <StackPanel Grid.Column="4">
                             <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_year], Source={x:Static lg:LanguageService.Instance}, FallbackValue=年份 *}"/>
-                            <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding Year, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding Year, UpdateSourceTrigger=PropertyChanged}"
+                                     IsReadOnly="{Binding IsContentReadOnly}"/>
                             <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding [geo_example_year], Source={x:Static lg:LanguageService.Instance}, FallbackValue=例如：2020}"/>
                         </StackPanel>
                     </Grid>
@@ -268,14 +444,16 @@
 
                         <StackPanel Grid.Column="0">
                             <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_author], Source={x:Static lg:LanguageService.Instance}, FallbackValue=作者 *}"/>
-                            <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding Author, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding Author, UpdateSourceTrigger=PropertyChanged}"
+                                     IsReadOnly="{Binding IsContentReadOnly}"/>
                             <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding [geo_example_author], Source={x:Static lg:LanguageService.Instance}, FallbackValue=例如：Smith 等}"/>
                         </StackPanel>
 
                         <StackPanel Grid.Column="2">
                             <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_formula_name], Source={x:Static lg:LanguageService.Instance}, FallbackValue=公式名称 *}"/>
                             <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding FormulaName, UpdateSourceTrigger=PropertyChanged}"
-                                     ToolTip="{Binding [geo_tooltip_formula_name], Source={x:Static lg:LanguageService.Instance}, FallbackValue=仅限字母、数字和下划线，如 MyFormula_v1}"/>
+                                     ToolTip="{Binding [geo_tooltip_formula_name], Source={x:Static lg:LanguageService.Instance}, FallbackValue=仅限字母、数字和下划线，如 MyFormula_v1}"
+                                     IsReadOnly="{Binding IsContentReadOnly}"/>
                             <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding [geo_example_formula_name], Source={x:Static lg:LanguageService.Instance}, FallbackValue=例如：MyFormula_v1}"/>
                         </StackPanel>
                     </Grid>
@@ -283,7 +461,8 @@
                     <!-- Row 2: Reference -->
                     <StackPanel Grid.Row="2" Margin="0,0,0,12">
                         <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_reference], Source={x:Static lg:LanguageService.Instance}, FallbackValue=参考文献 *}"/>
-                        <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding Reference, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding Reference, UpdateSourceTrigger=PropertyChanged}"
+                                 IsReadOnly="{Binding IsContentReadOnly}"/>
                         <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding [geo_example_reference], Source={x:Static lg:LanguageService.Instance}, FallbackValue='例如：Smith (2020) Geochim. Cosmochim. Acta 280, 123-145'}"/>
                     </StackPanel>
 
@@ -334,7 +513,8 @@
                                         <TextBox Grid.Column="1"
                                                  Style="{StaticResource FieldInputStyle}"
                                                  Text="{Binding PatchVersion, UpdateSourceTrigger=PropertyChanged}"
-                                                 ToolTip="{Binding [geo_tooltip_version_patch], Source={x:Static lg:LanguageService.Instance}, FallbackValue=修订号 z；格式基线 x.y 跟随程序版本}"/>
+                                                 ToolTip="{Binding [geo_tooltip_version_patch], Source={x:Static lg:LanguageService.Instance}, FallbackValue=修订号 z；格式基线 x.y 跟随程序版本}"
+                                                 IsReadOnly="{Binding IsContentReadOnly}"/>
                                         <TextBlock Grid.Column="2"
                                                    VerticalAlignment="Center"
                                                    Margin="10,0,0,0"
@@ -411,137 +591,6 @@
                 </Grid>
             </Border>
 
-            <!-- ========== Step 1: 公式脚本 ========== -->
-            <Border Background="White" CornerRadius="8" Padding="0" BorderBrush="#E0E0E0" BorderThickness="1">
-                <Border.Style>
-                    <Style TargetType="Border">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding CurrentStep}" Value="1">
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Border.Style>
-
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-
-                    <!-- 表格定义区 -->
-                    <Border Grid.Row="0" Padding="16,14" BorderBrush="#E8E8E8" BorderThickness="0,0,0,1">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="12"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="12"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <StackPanel Grid.Column="0">
-                                <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_script_headers], Source={x:Static lg:LanguageService.Instance}, FallbackValue=表头 *（逗号分隔）}"/>
-                                <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding HeadersText, UpdateSourceTrigger=PropertyChanged}"
-                                         ToolTip="{Binding [geo_tooltip_headers], Source={x:Static lg:LanguageService.Instance}, FallbackValue='例如: SiO2, TiO2, Al2O3, T(K)'}"/>
-                            </StackPanel>
-
-                            <StackPanel Grid.Column="2">
-                                <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_script_sample_row], Source={x:Static lg:LanguageService.Instance}, FallbackValue=示例行（逗号分隔）}"/>
-                                <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding ExampleRowText, UpdateSourceTrigger=PropertyChanged}"
-                                         ToolTip="{Binding [geo_tooltip_sample_row_eg], Source={x:Static lg:LanguageService.Instance}, FallbackValue='例如: 45.2, 0.8, 12.3, =MyFormula(A2,B2,C2)'}"/>
-                            </StackPanel>
-
-                            <StackPanel Grid.Column="4">
-                                <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_script_inputs], Source={x:Static lg:LanguageService.Instance}, FallbackValue=输入列（逗号分隔）}"/>
-                                <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding InputColumnsText, UpdateSourceTrigger=PropertyChanged}"
-                                         ToolTip="{Binding [geo_tooltip_inputs_eg], Source={x:Static lg:LanguageService.Instance}, FallbackValue='例如: SiO2, TiO2, Al2O3'}"/>
-                            </StackPanel>
-                        </Grid>
-                    </Border>
-
-                    <!-- 脚本标题栏 -->
-                    <Border Grid.Row="1" Background="#F8F8FA" Padding="14,10"
-                            BorderBrush="#E8E8E8" BorderThickness="0,0,0,1">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xE943;" FontFamily="Segoe MDL2 Assets" FontSize="14" 
-                                       Foreground="#0078D4" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                            <TextBlock Text="{Binding [geo_script_javascript], Source={x:Static lg:LanguageService.Instance}, FallbackValue=JavaScript 脚本}" FontSize="13" FontWeight="SemiBold" Foreground="#333"/>
-                            <TextBlock Text="  calculate(args) + calculateDetailed(inputs)" 
-                                       FontSize="11" Foreground="#999" VerticalAlignment="Center" Margin="8,0,0,0"/>
-                        </StackPanel>
-                    </Border>
-
-                    <!-- 脚本编辑器 -->
-                    <TextBox Grid.Row="2" 
-                             Text="{Binding ScriptContent, UpdateSourceTrigger=PropertyChanged}"
-                             FontFamily="Consolas, Courier New" FontSize="13"
-                             AcceptsReturn="True" AcceptsTab="True"
-                             VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
-                             TextWrapping="NoWrap" BorderThickness="0" Padding="14,10"
-                             Background="White"/>
-
-                    <!-- 测试栏 -->
-                    <Border Grid.Row="3" Background="#F8F8FA" Padding="14,8" CornerRadius="0,0,8,8"
-                            BorderBrush="#E8E8E8" BorderThickness="0,1,0,0">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock Grid.Column="0" Text="{Binding [geo_script_test_input], Source={x:Static lg:LanguageService.Instance}, FallbackValue=测试输入：}" 
-                                       FontSize="12" Foreground="#555" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                            <TextBox Grid.Column="1" Style="{StaticResource FieldInputStyle}" 
-                                     Text="{Binding TestInputText, UpdateSourceTrigger=PropertyChanged}"
-                                     ToolTip="{Binding [geo_tooltip_test_input_eg], Source={x:Static lg:LanguageService.Instance}, FallbackValue='例如: 45.2, 0.8, 12.3'}" Height="28" FontSize="12"/>
-
-                            <Button Grid.Column="2" Content="{Binding [geo_script_run_test], Source={x:Static lg:LanguageService.Instance}, FallbackValue=运行测试}"
-                                    Command="{Binding TestScriptCommand}" Margin="8,0"
-                                    FontSize="12" Padding="12,4" Cursor="Hand"
-                                    Background="#E8F4FD" Foreground="#0078D4" BorderBrush="#B3D9F2" BorderThickness="1">
-                                <Button.Template>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border x:Name="Bd" Background="{TemplateBinding Background}" 
-                                                BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1"
-                                                CornerRadius="4" Padding="{TemplateBinding Padding}">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter TargetName="Bd" Property="Background" Value="#D0EAFB"/>
-                                            </Trigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Button.Template>
-                            </Button>
-
-                            <TextBlock Grid.Column="3" Text="{Binding [geo_script_result], Source={x:Static lg:LanguageService.Instance}, FallbackValue=结果：}" 
-                                       FontSize="12" Foreground="#555" VerticalAlignment="Center" Margin="8,0,8,0"/>
-                            <TextBlock Grid.Column="4" Text="{Binding TestResultText}" FontSize="12" VerticalAlignment="Center"
-                                       FontFamily="Consolas" TextTrimming="CharacterEllipsis">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="#D13438"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsTestSuccess}" Value="True">
-                                                <Setter Property="Foreground" Value="#107C10"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                        </Grid>
-                    </Border>
-                </Grid>
-            </Border>
-
             <!-- ========== Step 2: 帮助文档 ========== -->
             <Border Background="White" CornerRadius="8" Padding="0" BorderBrush="#E0E0E0" BorderThickness="1">
                 <Border.Style>
@@ -573,34 +622,42 @@
                                       SelectedValue="{Binding SelectedLanguage}" 
                                       Width="140" VerticalAlignment="Center"/>
 
-                            <Rectangle Width="1" Height="20" Fill="#D0D0D0" Margin="14,0"/>
+                            <Rectangle Width="1" Height="20" Fill="#D0D0D0" Margin="14,0"
+                                       Visibility="{Binding IsContentReadOnly, Converter={StaticResource BooleanToVisibilityReConverter}}"/>
 
-                            <TextBlock Text="{Binding [geo_help_add_lang], Source={x:Static lg:LanguageService.Instance}, FallbackValue=添加语言：}" FontSize="12" Foreground="#555" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                            <TextBlock Text="{Binding [geo_help_add_lang], Source={x:Static lg:LanguageService.Instance}, FallbackValue=添加语言：}" FontSize="12" Foreground="#555" VerticalAlignment="Center" Margin="0,0,6,0"
+                                       Visibility="{Binding IsContentReadOnly, Converter={StaticResource BooleanToVisibilityReConverter}}"/>
                             <ComboBox ItemsSource="{Binding AvailableLanguageOptions}" 
                                       DisplayMemberPath="DisplayName"
                                       SelectedValuePath="Code"
                                       SelectedValue="{Binding NewLanguageToAdd}" 
-                                      Width="140" VerticalAlignment="Center"/>
+                                      Width="140" VerticalAlignment="Center"
+                                      Visibility="{Binding IsContentReadOnly, Converter={StaticResource BooleanToVisibilityReConverter}}"/>
                             <Button Style="{StaticResource LangActionButtonStyle}" 
                                     Command="{Binding AddLanguageCommand}" Margin="6,0,0,0"
-                                    ToolTip="{Binding [geo_help_add_doc], Source={x:Static lg:LanguageService.Instance}, FallbackValue=添加该语言的帮助文档}">
+                                    ToolTip="{Binding [geo_help_add_doc], Source={x:Static lg:LanguageService.Instance}, FallbackValue=添加该语言的帮助文档}"
+                                    Visibility="{Binding IsContentReadOnly, Converter={StaticResource BooleanToVisibilityReConverter}}">
                                 <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="11" Foreground="#0078D4"/>
                             </Button>
                             <Button Style="{StaticResource LangActionButtonStyle}" 
                                     Command="{Binding RemoveLanguageCommand}" Margin="4,0,0,0"
-                                    ToolTip="{Binding [geo_help_delete_doc], Source={x:Static lg:LanguageService.Instance}, FallbackValue=删除当前语言的帮助文档}">
+                                    ToolTip="{Binding [geo_help_delete_doc], Source={x:Static lg:LanguageService.Instance}, FallbackValue=删除当前语言的帮助文档}"
+                                    Visibility="{Binding IsContentReadOnly, Converter={StaticResource BooleanToVisibilityReConverter}}">
                                 <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="11" Foreground="#D13438"/>
                             </Button>
                         </StackPanel>
                     </Border>
 
-                    <!-- 当有语言选中时：显示格式工具栏和编辑器 -->
+                    <!-- 当有语言选中时：显示格式工具栏（只读模式隐藏） -->
                     <Border Grid.Row="1" Background="White" Padding="12,6" BorderBrush="#E8E8E8" BorderThickness="0,0,0,1">
                         <Border.Style>
                             <Style TargetType="Border">
                                 <Setter Property="Visibility" Value="Visible"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding SelectedLanguage}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsContentReadOnly}" Value="True">
                                         <Setter Property="Visibility" Value="Collapsed"/>
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -639,7 +696,8 @@
                     <RichTextBox Grid.Row="2" x:Name="HelpDocEditor" 
                                  Padding="16,12" BorderThickness="0"
                                  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
-                                 AcceptsTab="True">
+                                 AcceptsTab="True"
+                                 IsReadOnly="{Binding IsContentReadOnly}">
                         <RichTextBox.Style>
                             <Style TargetType="RichTextBox">
                                 <Setter Property="Visibility" Value="Visible"/>
@@ -682,7 +740,9 @@
                 </Grid>
             </Border>
             </Grid>
+            </Grid>
             </ScrollViewer>
+            </Grid>
 
             <!-- ==================== 底部：步骤条 + 操作按钮栏 ==================== -->
             <Border Grid.Row="1" Background="White" CornerRadius="8" Padding="16,12" Margin="0,12,0,0"
@@ -733,15 +793,19 @@
                         </StackPanel>
                         </Button>
 
-                        <!-- 保存并导出 ZIP（step == 2 时显示） -->
+                        <!-- 保存并导出 ZIP（step == 2 时显示，只读模式隐藏） -->
                         <Button Command="{Binding SaveAndExportCommand}" Margin="0,0,8,0">
                         <Button.Style>
                             <Style TargetType="Button" BasedOn="{StaticResource EditorButtonStyle}">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding CurrentStep}" Value="2">
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding CurrentStep}" Value="2"/>
+                                            <Condition Binding="{Binding IsContentReadOnly}" Value="False"/>
+                                        </MultiDataTrigger.Conditions>
                                         <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
+                                    </MultiDataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Button.Style>
@@ -752,15 +816,19 @@
                         </StackPanel>
                         </Button>
 
-                        <!-- 保存（step == 2 时显示） -->
+                        <!-- 保存（step == 2 时显示，只读模式隐藏） -->
                         <Button Command="{Binding SaveCommand}">
                         <Button.Style>
                             <Style TargetType="Button" BasedOn="{StaticResource PrimaryEditorButtonStyle}">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding CurrentStep}" Value="2">
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding CurrentStep}" Value="2"/>
+                                            <Condition Binding="{Binding IsContentReadOnly}" Value="False"/>
+                                        </MultiDataTrigger.Conditions>
                                         <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
+                                    </MultiDataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Button.Style>

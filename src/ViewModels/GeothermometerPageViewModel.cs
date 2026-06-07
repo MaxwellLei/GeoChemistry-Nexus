@@ -8,6 +8,7 @@ using GeoChemistryNexus.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -19,11 +20,18 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using GeoChemistryNexus.Views;
 using unvell.ReoGrid;
+using unvell.ReoGrid.Events;
 
 namespace GeoChemistryNexus.ViewModels
 {
     public partial class GeothermometerPageViewModel : ObservableObject, IRecipient<DeveloperModeChangedMessage>
     {
+        /// <summary>
+        /// 应用温压计后工作表的初始行数（含表头与示例行）
+        /// </summary>
+        private const int InitialWorksheetRowCount = 500;
+
+        private Worksheet? _rowExpansionWorksheet;
         /// <summary>
         /// 矿物分组列表（用于左侧导航）
         /// </summary>
@@ -53,6 +61,24 @@ namespace GeoChemistryNexus.ViewModels
         /// </summary>
         [ObservableProperty]
         private bool isCheckingUpdates;
+
+        /// <summary>
+        /// 更新遮罩层是否可见
+        /// </summary>
+        [ObservableProperty]
+        private bool isUpdateOverlayVisible;
+
+        /// <summary>
+        /// 更新进度（0-100）
+        /// </summary>
+        [ObservableProperty]
+        private double updateProgress;
+
+        /// <summary>
+        /// 更新进度条是否为不确定模式（检查更新阶段）
+        /// </summary>
+        [ObservableProperty]
+        private bool isUpdateProgressIndeterminate = true;
 
         /// <summary>
         /// 更新状态文本
@@ -132,6 +158,11 @@ namespace GeoChemistryNexus.ViewModels
         private bool _userMinimized;
 
         /// <summary>
+        /// 上一次用于详细计算的行输入值（语言切换时用于刷新步骤注释）
+        /// </summary>
+        private double[]? _lastCalculationInputValues;
+
+        /// <summary>
         /// 选中行的描述信息
         /// </summary>
         [ObservableProperty]
@@ -198,8 +229,21 @@ namespace GeoChemistryNexus.ViewModels
             // 加载分组数据
             LoadMineralGroups();
 
+            LanguageService.Instance.PropertyChanged += OnAppLanguageChanged;
+
             // 首次切换到温压计页面时，如果开启了自动检查更新，则自动检查
             TryAutoCheckUpdate();
+        }
+
+        private void OnAppLanguageChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != "Item[]")
+                return;
+
+            if (_lastCalculationInputValues == null || _selectedFullEntity == null || !HasCalculationData)
+                return;
+
+            ApplyCalculationSteps(_lastCalculationInputValues);
         }
 
         /// <summary>
@@ -253,8 +297,6 @@ namespace GeoChemistryNexus.ViewModels
                 {
                     MineralKey = group.MineralKey,
                     DisplayName = group.DisplayName,
-                    IconCode = group.IconCode,
-                    IconColor = group.IconColor,
                     IsExpanded = false
                 };
 
@@ -308,8 +350,6 @@ namespace GeoChemistryNexus.ViewModels
                     {
                         MineralKey = group.MineralKey,
                         DisplayName = group.DisplayName,
-                        IconCode = group.IconCode,
-                        IconColor = group.IconColor,
                         IsExpanded = true
                     };
 
@@ -497,17 +537,26 @@ namespace GeoChemistryNexus.ViewModels
                 string filePath = FileHelper.GetFilePath("ZIP files (*.zip)|*.zip");
                 if (string.IsNullOrEmpty(filePath)) return;
 
-                var entity = GeothermometerService.ImportFromZip(filePath);
-                if (entity != null)
+                GeothermometerService.ImportFromZip(filePath);
+                GeothermometerService.ReloadPlugins();
+                LoadMineralGroups();
+                MessageHelper.Success(LanguageService.Instance["geo_msg_import_success"]);
+            }
+            catch (GeothermometerImportException ex)
+            {
+                string message = ex.Reason switch
                 {
-                    GeothermometerService.ReloadPlugins();
-                    LoadMineralGroups();
-                    MessageHelper.Success(LanguageService.Instance["geo_msg_import_success"]);
-                }
-                else
-                {
-                    MessageHelper.Error(LanguageService.Instance["template_version_too_high"]);
-                }
+                    GeothermometerImportFailureReason.VersionIncompatible =>
+                        LanguageService.Instance["template_version_too_high"],
+                    _ => LanguageService.Instance["geo_msg_import_invalid_format"]
+                };
+                MessageHelper.Error(message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                MessageHelper.Error(string.Format(
+                    LanguageService.Instance["geo_msg_import_formula_name_rejected"],
+                    ex.Message));
             }
             catch (Exception ex)
             {
@@ -537,6 +586,7 @@ namespace GeoChemistryNexus.ViewModels
                 var currentScale = worksheet.ScaleFactor;
                 worksheet.Reset();
                 worksheet.ScaleFactor = currentScale;
+                worksheet.RowCount = InitialWorksheetRowCount;
 
                 // 设置整个工作表默认居中对齐
                 worksheet.SetRangeStyles(RangePosition.EntireRange, new WorksheetRangeStyle
@@ -590,20 +640,22 @@ namespace GeoChemistryNexus.ViewModels
                     var currentWidth = worksheet.GetColumnWidth(i);
                     worksheet.SetColumnsWidth(i, 1, (ushort)(currentWidth + 10));
 
-                    if (headers[i].Contains("T(K)") || headers[i].Contains("T(\u2103)"))
+                    if (IsTemperatureHeader(headers[i]))
                     {
                         var range = new RangePosition(1, i, worksheet.RowCount - 1, 1);
                         worksheet.SetRangeDataFormat(range,
                             unvell.ReoGrid.DataFormat.CellDataFormatFlag.Number,
                             new unvell.ReoGrid.DataFormat.NumberDataFormatter.NumberFormatArgs
                             {
-                                DecimalPlaces = 1
+                                DecimalPlaces = 0
                             });
                     }
                 }
 
                 // 冻结表头行，使滚动时始终显示
                 worksheet.FreezeToCell(1, 0);
+
+                AttachWorksheetRowExpansionEvents(worksheet);
 
                 // 记录已应用的温压计，用于确定按钮恢复
                 _appliedPlugin = SelectedPlugin;
@@ -617,6 +669,64 @@ namespace GeoChemistryNexus.ViewModels
             {
                 Debug.WriteLine("创建表格失败: " + ex.Message);
             }
+        }
+
+        /// <summary>
+        /// 绑定工作表行扩展相关事件（粘贴扩行、末行编辑自动增行）
+        /// </summary>
+        public void AttachWorksheetRowExpansionEvents(Worksheet? worksheet)
+        {
+            if (_rowExpansionWorksheet != null)
+            {
+                _rowExpansionWorksheet.BeforePaste -= Worksheet_BeforePaste;
+                _rowExpansionWorksheet.CellDataChanged -= Worksheet_CellDataChanged;
+            }
+
+            _rowExpansionWorksheet = worksheet;
+
+            if (worksheet == null)
+                return;
+
+            worksheet.BeforePaste += Worksheet_BeforePaste;
+            worksheet.CellDataChanged += Worksheet_CellDataChanged;
+        }
+
+        private void Worksheet_BeforePaste(object? sender, BeforeRangeOperationEventArgs e)
+        {
+            if (sender is not Worksheet worksheet)
+                return;
+
+            if (!Clipboard.ContainsText())
+                return;
+
+            string pasteText = Clipboard.GetText();
+            if (string.IsNullOrEmpty(pasteText))
+                return;
+
+            var lines = pasteText.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+            int pastedRowCount = lines.Length;
+
+            if (string.IsNullOrEmpty(lines.Last()))
+                pastedRowCount--;
+
+            if (pastedRowCount <= 0)
+                return;
+
+            int startRow = worksheet.SelectionRange.Row;
+            int requiredTotalRows = startRow + pastedRowCount;
+
+            if (requiredTotalRows > worksheet.RowCount)
+                worksheet.RowCount = requiredTotalRows;
+        }
+
+        private void Worksheet_CellDataChanged(object? sender, CellEventArgs e)
+        {
+            if (sender is not Worksheet worksheet)
+                return;
+
+            int row = e.Cell.Position.Row;
+            if (row >= worksheet.RowCount - 1)
+                worksheet.RowCount = worksheet.RowCount + 1;
         }
 
         /// <summary>
@@ -678,15 +788,8 @@ namespace GeoChemistryNexus.ViewModels
                     return;
                 }
 
-                // 调用 calculateDetailed
-                var steps = GeothermometerService.ExecuteDetailedCalculation(
-                    _selectedFullEntity, inputValues.ToArray());
-
-                CalculationSteps.Clear();
-                foreach (var step in steps)
-                {
-                    CalculationSteps.Add(step);
-                }
+                _lastCalculationInputValues = inputValues.ToArray();
+                var steps = ApplyCalculationSteps(_lastCalculationInputValues);
 
                 if (steps.Count > 0)
                 {
@@ -710,11 +813,27 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
+        private List<CalculationStep> ApplyCalculationSteps(double[] inputValues)
+        {
+            if (_selectedFullEntity == null)
+                return new List<CalculationStep>();
+
+            var steps = GeothermometerService.ExecuteDetailedCalculation(_selectedFullEntity, inputValues);
+            CalculationSteps.Clear();
+            foreach (var step in steps)
+            {
+                CalculationSteps.Add(step);
+            }
+
+            return steps;
+        }
+
         /// <summary>
         /// 清除计算数据，回到最小化状态
         /// </summary>
         private void ClearCalculationData()
         {
+            _lastCalculationInputValues = null;
             CalculationSteps.Clear();
             HasCalculationData = false;
             IsDetailPanelMaximized = false;
@@ -763,6 +882,24 @@ namespace GeoChemistryNexus.ViewModels
             _userMinimized = false;
         }
 
+        private void ShowUpdateOverlay(bool indeterminate, string statusText, double progress = 0)
+        {
+            if (_isAutoChecking && indeterminate)
+                return;
+
+            IsUpdateProgressIndeterminate = indeterminate;
+            UpdateProgress = progress;
+            UpdateStatusText = statusText;
+            IsUpdateOverlayVisible = true;
+        }
+
+        private void HideUpdateOverlay()
+        {
+            IsUpdateOverlayVisible = false;
+            IsUpdateProgressIndeterminate = true;
+            UpdateProgress = 0;
+        }
+
         /// <summary>
         /// 检查 GTM 更新
         /// </summary>
@@ -772,7 +909,7 @@ namespace GeoChemistryNexus.ViewModels
             if (IsCheckingUpdates) return;
 
             IsCheckingUpdates = true;
-            UpdateStatusText = LanguageService.Instance["geo_msg_checking_update"];
+            ShowUpdateOverlay(true, LanguageService.Instance["geo_msg_checking_update"]);
 
             try
             {
@@ -796,6 +933,8 @@ namespace GeoChemistryNexus.ViewModels
                     string msg = string.Format(LanguageService.Instance["geo_msg_update_available"], changeCount);
                     UpdateStatusText = msg;
 
+                    HideUpdateOverlay();
+
                     bool confirmed = await MessageHelper.ShowAsyncDialog(
                         msg,
                         LanguageService.Instance["Cancel"],
@@ -803,10 +942,22 @@ namespace GeoChemistryNexus.ViewModels
 
                     if (confirmed)
                     {
-                        UpdateStatusText = LanguageService.Instance["geo_msg_downloading_update"];
+                        ShowUpdateOverlay(false, LanguageService.Instance["geo_msg_downloading_update"]);
+
+                        var progress = new Progress<(int current, int total, string name)>(p =>
+                        {
+                            UpdateProgress = p.total > 0 ? (double)p.current / p.total * 100 : 0;
+                            UpdateStatusText = string.Format(
+                                LanguageService.Instance["batch_download_progress"],
+                                p.current,
+                                p.total,
+                                p.name);
+                        });
+
                         int count = await GeothermometerService.DownloadAndReloadAsync(
                             checkResult.Updates,
-                            checkResult.Removals);
+                            checkResult.Removals,
+                            progress);
                         LoadMineralGroups();
 
                         string result = string.Format(LanguageService.Instance["geo_msg_update_downloaded"], count);
@@ -834,6 +985,7 @@ namespace GeoChemistryNexus.ViewModels
             }
             finally
             {
+                HideUpdateOverlay();
                 IsCheckingUpdates = false;
             }
         }
@@ -1032,6 +1184,18 @@ namespace GeoChemistryNexus.ViewModels
             if (group == null) return;
             group.IsExpanded = !group.IsExpanded;
         }
+
+        /// <summary>
+        /// 判断表头是否为温度列（T(℃) 或 T(K)）
+        /// </summary>
+        private static bool IsTemperatureHeader(string header)
+        {
+            if (string.IsNullOrWhiteSpace(header))
+                return false;
+
+            return header.Contains("T(K)", StringComparison.OrdinalIgnoreCase)
+                || header.Contains("T(\u2103)", StringComparison.Ordinal);
+        }
     }
 
     /// <summary>
@@ -1041,8 +1205,6 @@ namespace GeoChemistryNexus.ViewModels
     {
         public string MineralKey { get; set; } = string.Empty;
         public string DisplayName { get; set; } = string.Empty;
-        public string IconCode { get; set; } = string.Empty;
-        public string IconColor { get; set; } = "#555555";
 
         [ObservableProperty]
         private bool isExpanded;

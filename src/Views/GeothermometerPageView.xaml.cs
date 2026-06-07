@@ -32,6 +32,7 @@ namespace GeoChemistryNexus.Views
             // 监听 ReoGrid 选区变化事件，用于触发详细计算
             MyReoGrid.CurrentWorksheet.SelectionRangeChanged += OnSelectionRangeChanged;
             MyReoGrid.CurrentWorksheetChanged += OnCurrentWorksheetChanged;
+            _viewModel.AttachWorksheetRowExpansionEvents(MyReoGrid.CurrentWorksheet);
 
             // 监听 ViewModel 属性变化，处理最大化/最小化时的布局切换
             _viewModel.PropertyChanged += OnViewModelPropertyChanged;
@@ -101,6 +102,8 @@ namespace GeoChemistryNexus.Views
             {
                 worksheet.SelectionRangeChanged += OnSelectionRangeChanged;
             }
+
+            _viewModel.AttachWorksheetRowExpansionEvents(MyReoGrid.CurrentWorksheet);
         }
 
         /// <summary>

@@ -833,6 +833,12 @@
   <data name="geo_msg_import_failed_detail" xml:space="preserve">
     <value>インポートに失敗しました: {0}</value>
   </data>
+  <data name="geo_msg_import_formula_name_rejected" xml:space="preserve">
+    <value>インポートが拒否されました。式名の検証に失敗しました：{0}</value>
+  </data>
+  <data name="geo_msg_import_invalid_format" xml:space="preserve">
+    <value>カスタム地質温圧計ファイルが破損しているか、有効な地質温圧計 JSON ファイルが含まれていません。</value>
+  </data>
   <data name="MarkerShape_OpenCircleWithCross" xml:space="preserve">
     <value>十字付き白抜き円</value>
   </data>
@@ -1026,6 +1032,9 @@
   </data>
   <data name="ThankSupport" xml:space="preserve">
     <value>ご支援ありがとうございます</value>
+  </data>
+  <data name="SpecialThanks" xml:space="preserve">
+    <value>特別な感謝</value>
   </data>
   <data name="completed" xml:space="preserve">
     <value>完了</value>
@@ -3113,5 +3122,11 @@
   </data>
   <data name="translation_text_item" xml:space="preserve">
     <value>テキスト</value>
+  </data>
+  <data name="gtm_biotite_ti_wu_chen_2015" xml:space="preserve">
+    <value>Ti-in-Bt（Wu &amp; Chen, 2015）</value>
+  </data>
+  <data name="gtm_mineral_biotite" xml:space="preserve">
+    <value>黒雲母</value>
   </data>
 </root>

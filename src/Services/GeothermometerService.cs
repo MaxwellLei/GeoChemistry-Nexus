@@ -2,6 +2,7 @@ using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Models;
 using Jint;
 using Jint.Native;
+using Jint.Native.Object;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -283,7 +284,7 @@ namespace GeoChemistryNexus.Services
                             {
                                 Name = obj.Get("name")?.AsString() ?? "",
                                 Value = obj.Get("value")?.ToString() ?? "",
-                                Description = obj.Get("desc")?.AsString() ?? "",
+                                Description = ResolveStepDescription(obj),
                                 IsResult = isResultProp.IsBoolean() && isResultProp.AsBoolean()
                             });
                         }
@@ -297,6 +298,50 @@ namespace GeoChemistryNexus.Services
             }
 
             return steps;
+        }
+
+        /// <summary>
+        /// 解析计算步骤注释：desc 为默认文本；可选 descLang 按当前界面语言取值，未命中时回退 desc。
+        /// </summary>
+        private static string ResolveStepDescription(ObjectInstance stepObject)
+        {
+            string defaultDesc = stepObject.Get("desc")?.AsString() ?? string.Empty;
+
+            var descLangValue = stepObject.Get("descLang");
+            if (descLangValue == null || descLangValue.IsUndefined() || descLangValue.IsNull() || !descLangValue.IsObject())
+                return defaultDesc;
+
+            var langObject = descLangValue.AsObject();
+            var translations = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var property in langObject.GetOwnProperties())
+            {
+                string? key = property.Key.AsString();
+                string? text = langObject.Get(property.Key)?.AsString();
+                if (!string.IsNullOrEmpty(key) && !string.IsNullOrEmpty(text))
+                    translations[key] = text;
+            }
+
+            if (translations.Count == 0)
+                return defaultDesc;
+
+            string requested = LanguageService.CurrentLanguage;
+            if (AppCultureRegistry.TryNormalize(requested, out string normalized) &&
+                translations.TryGetValue(normalized, out string? localized) &&
+                !string.IsNullOrEmpty(localized))
+            {
+                return localized;
+            }
+
+            foreach (var pair in translations)
+            {
+                if (string.Equals(pair.Key, requested, StringComparison.OrdinalIgnoreCase) &&
+                    !string.IsNullOrEmpty(pair.Value))
+                {
+                    return pair.Value;
+                }
+            }
+
+            return defaultDesc;
         }
 
         /// <summary>
@@ -578,41 +623,42 @@ namespace GeoChemistryNexus.Services
         /// </summary>
         /// <param name="zipFilePath">ZIP 文件路径</param>
         /// <param name="persist">是否立即写入数据库（服务器下载场景应在哈希校验后再写入）</param>
-        /// <returns>导入的实体，如果失败则返回 null</returns>
-        public static GeothermometerEntity? ImportFromZip(string zipFilePath, bool persist = true)
+        /// <param name="keepPluginIdentity">是否保留 ZIP 中的 PluginId（服务器下载为 true；用户导入为 false，生成新的自定义 ID）</param>
+        /// <returns>导入的实体</returns>
+        public static GeothermometerEntity ImportFromZip(string zipFilePath, bool persist = true, bool keepPluginIdentity = false)
         {
             string tempDir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
 
             try
             {
-                ZipFile.ExtractToDirectory(zipFilePath, tempDir);
+                try
+                {
+                    ZipFile.ExtractToDirectory(zipFilePath, tempDir);
+                }
+                catch (Exception ex) when (ex is InvalidDataException or IOException)
+                {
+                    throw new GeothermometerImportException(GeothermometerImportFailureReason.InvalidOrCorrupted, ex);
+                }
 
                 // 查找 JSON 文件
                 var jsonFiles = Directory.GetFiles(tempDir, "*.json");
                 if (jsonFiles.Length == 0)
-                    return null;
+                    throw new GeothermometerImportException(GeothermometerImportFailureReason.InvalidOrCorrupted);
 
                 string jsonContent = File.ReadAllText(jsonFiles[0]);
-                var plugin = JsonSerializer.Deserialize<Geothermometer>(jsonContent, JsonOptions);
-                if (plugin == null || string.IsNullOrEmpty(plugin.Id))
-                    return null;
+                var plugin = ParseAndValidateImportJson(jsonContent);
 
                 plugin.Version = ContentVersionHelper.Normalize(plugin.Version);
                 if (!ContentVersionHelper.IsGeothermometerFormatCompatible(plugin.Version))
                 {
                     Debug.WriteLine($"[GeothermometerService] GTM 格式版本不兼容 [{plugin.Id}]: {plugin.Version}");
-                    return null;
+                    throw new GeothermometerImportException(GeothermometerImportFailureReason.VersionIncompatible);
                 }
 
-                // 尝试读取 JSON 中的 IsOfficial 标志
-                bool isOfficial = false;
-                try
-                {
-                    using var jsonDoc = JsonDocument.Parse(jsonContent);
-                    if (jsonDoc.RootElement.TryGetProperty("IsOfficial", out var officialProp))
-                        isOfficial = officialProp.GetBoolean();
-                }
-                catch { /* 忽略解析错误，默认为自定义 */ }
+                // 用户导入：始终作为自定义温压计，分配新 PluginId，避免覆盖已有官方条目
+                string pluginId = keepPluginIdentity
+                    ? plugin.Id
+                    : "custom_" + Guid.NewGuid().ToString("N");
 
                 // 加载 JS 脚本
                 string scriptContent = string.Empty;
@@ -634,6 +680,9 @@ namespace GeoChemistryNexus.Services
                     scriptContent = plugin.Script;
                 }
 
+                if (string.IsNullOrWhiteSpace(scriptContent))
+                    throw new GeothermometerImportException(GeothermometerImportFailureReason.InvalidOrCorrupted);
+
                 // 加载帮助文档
                 var helpDocs = new Dictionary<string, string>();
                 foreach (var rtfFile in Directory.GetFiles(tempDir, "*.rtf"))
@@ -645,12 +694,12 @@ namespace GeoChemistryNexus.Services
                 // 创建实体
                 var entity = new GeothermometerEntity
                 {
-                    Id = GeothermometerDatabaseService.GenerateId(plugin.Id),
-                    PluginId = plugin.Id,
+                    Id = GeothermometerDatabaseService.GenerateId(pluginId),
+                    PluginId = pluginId,
                     Version = plugin.Version,
                     FileHash = GeothermometerDatabaseService.ComputeHash(scriptContent),
                     LastModified = DateTime.Now,
-                    IsOfficial = isOfficial, // 保留 ZIP 中携带的官方标志
+                    IsOfficial = false, // 用户创建或导入均为自定义；服务器下载流程在写入前设为官方
                     Mineral = plugin.Mineral,
                     MineralLangKey = plugin.MineralLangKey,
                     Name = plugin.Name,
@@ -671,22 +720,107 @@ namespace GeoChemistryNexus.Services
 
                 if (persist)
                 {
-                    ValidateFormulaNames(entity);
+                    ValidateFormulaNames(entity, entity.Id);
                     GeothermometerDatabaseService.Instance.UpsertEntity(entity);
                 }
 
                 return entity;
             }
+            catch (GeothermometerImportException)
+            {
+                throw;
+            }
+            catch (InvalidOperationException)
+            {
+                throw;
+            }
             catch (Exception ex)
             {
                 Debug.WriteLine($"[GeothermometerService] 导入 ZIP 失败: {ex.Message}");
-                return null;
+                throw new GeothermometerImportException(GeothermometerImportFailureReason.InvalidOrCorrupted, ex);
             }
             finally
             {
                 if (Directory.Exists(tempDir))
                     Directory.Delete(tempDir, true);
             }
+        }
+
+        private static Geothermometer ParseAndValidateImportJson(string jsonContent)
+        {
+            JsonDocument document;
+            try
+            {
+                document = JsonDocument.Parse(jsonContent);
+            }
+            catch (JsonException ex)
+            {
+                throw new GeothermometerImportException(GeothermometerImportFailureReason.InvalidOrCorrupted, ex);
+            }
+
+            using (document)
+            {
+                if (document.RootElement.ValueKind != JsonValueKind.Object)
+                    throw new GeothermometerImportException(GeothermometerImportFailureReason.InvalidOrCorrupted);
+
+                ValidateRequiredImportProperties(document.RootElement);
+            }
+
+            Geothermometer? plugin;
+            try
+            {
+                plugin = JsonSerializer.Deserialize<Geothermometer>(jsonContent, JsonOptions);
+            }
+            catch (JsonException ex)
+            {
+                throw new GeothermometerImportException(GeothermometerImportFailureReason.InvalidOrCorrupted, ex);
+            }
+
+            if (plugin == null
+                || string.IsNullOrWhiteSpace(plugin.Id)
+                || string.IsNullOrWhiteSpace(plugin.Name)
+                || plugin.Headers == null
+                || plugin.Headers.Count == 0
+                || string.IsNullOrWhiteSpace(plugin.FormulaName))
+            {
+                throw new GeothermometerImportException(GeothermometerImportFailureReason.InvalidOrCorrupted);
+            }
+
+            return plugin;
+        }
+
+        private static void ValidateRequiredImportProperties(JsonElement root)
+        {
+            if (!TryGetJsonProperty(root, "Id", out _))
+                throw new GeothermometerImportException(GeothermometerImportFailureReason.InvalidOrCorrupted);
+
+            if (!TryGetJsonProperty(root, "Name", out _))
+                throw new GeothermometerImportException(GeothermometerImportFailureReason.InvalidOrCorrupted);
+
+            if (!TryGetJsonProperty(root, "FormulaName", out _))
+                throw new GeothermometerImportException(GeothermometerImportFailureReason.InvalidOrCorrupted);
+
+            if (!TryGetJsonProperty(root, "Headers", out var headersElement)
+                || headersElement.ValueKind != JsonValueKind.Array
+                || headersElement.GetArrayLength() == 0)
+            {
+                throw new GeothermometerImportException(GeothermometerImportFailureReason.InvalidOrCorrupted);
+            }
+        }
+
+        private static bool TryGetJsonProperty(JsonElement element, string propertyName, out JsonElement value)
+        {
+            foreach (var property in element.EnumerateObject())
+            {
+                if (string.Equals(property.Name, propertyName, StringComparison.OrdinalIgnoreCase))
+                {
+                    value = property.Value;
+                    return true;
+                }
+            }
+
+            value = default;
+            return false;
         }
 
         // ==================== 服务器更新 ====================
@@ -866,9 +1000,7 @@ namespace GeoChemistryNexus.Services
 
                 try
                 {
-                    var imported = ImportFromZip(tempZip, persist: false);
-                    if (imported == null)
-                        return false;
+                    var imported = ImportFromZip(tempZip, persist: false, keepPluginIdentity: true);
 
                     if (!string.IsNullOrEmpty(entry.Hash) &&
                         !string.Equals(imported.FileHash, entry.Hash, StringComparison.OrdinalIgnoreCase))
@@ -908,19 +1040,30 @@ namespace GeoChemistryNexus.Services
         /// </summary>
         public static async Task<int> DownloadAndReloadAsync(
             List<PluginIndexEntry> entries,
-            IEnumerable<Guid>? removals = null)
+            IEnumerable<Guid>? removals = null,
+            IProgress<(int current, int total, string name)>? progress = null)
         {
-            if (removals != null)
-                ApplyRemovals(removals);
+            var removalList = removals?.ToList() ?? new List<Guid>();
+            int total = removalList.Count + entries.Count;
+            int current = 0;
+
+            if (removalList.Count > 0)
+            {
+                ApplyRemovals(removalList);
+                current = removalList.Count;
+                progress?.Report((current, total, LanguageService.Instance["geo_msg_downloading_update"]));
+            }
 
             int successCount = 0;
             foreach (var entry in entries)
             {
+                current++;
+                progress?.Report((current, total, entry.Id));
                 if (await DownloadPluginAsync(entry))
                     successCount++;
             }
 
-            if (successCount > 0 || (removals != null && removals.Any()))
+            if (successCount > 0 || removalList.Count > 0)
                 ReloadPlugins();
 
             return successCount;

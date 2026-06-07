@@ -585,6 +585,12 @@
   <data name="geo_editor_title_edit" xml:space="preserve">
     <value>编辑温压计</value>
   </data>
+  <data name="geo_editor_title_view" xml:space="preserve">
+    <value>查看温压计</value>
+  </data>
+  <data name="geo_editor_readonly_hint" xml:space="preserve">
+    <value>官方温压计的基本信息、公式脚本和帮助文档仅可查看与复制，不可修改。</value>
+  </data>
   <data name="start_and_end_coordinates" xml:space="preserve">
     <value>起始坐标</value>
   </data>
@@ -953,6 +959,12 @@
   <data name="geo_msg_import_failed_detail" xml:space="preserve">
     <value>导入失败: {0}</value>
   </data>
+  <data name="geo_msg_import_formula_name_rejected" xml:space="preserve">
+    <value>导入失败，公式名校验未通过：{0}</value>
+  </data>
+  <data name="geo_msg_import_invalid_format" xml:space="preserve">
+    <value>自定义温压计文件已损坏或未包含有效的温压计 JSON 文件。</value>
+  </data>
   <data name="MarkerShape_OpenCircleWithCross" xml:space="preserve">
     <value>空心圆加十字</value>
   </data>
@@ -1149,6 +1161,9 @@
   </data>
   <data name="ThankSupport" xml:space="preserve">
     <value>感谢支持</value>
+  </data>
+  <data name="SpecialThanks" xml:space="preserve">
+    <value>特别感谢</value>
   </data>
   <data name="completed" xml:space="preserve">
     <value>完成</value>
@@ -3113,5 +3128,11 @@
   </data>
   <data name="see_error_log_for_details" xml:space="preserve">
     <value>详见 error.log。</value>
+  </data>
+  <data name="gtm_biotite_ti_wu_chen_2015" xml:space="preserve">
+    <value>Ti-in-黑云母（Wu &amp; Chen, 2015）</value>
+  </data>
+  <data name="gtm_mineral_biotite" xml:space="preserve">
+    <value>黑云母</value>
   </data>
 </root>

@@ -363,13 +363,7 @@ namespace GeoChemistryNexus.ViewModels
                 }
                 else if (app.WidgetKey == "OfficialTemplatePublisherWidget")
                 {
-                    window = new Window
-                    {
-                        Title = LanguageService.Instance["official_template_publisher"],
-                        Width = 920,
-                        Height = 700,
-                        Content = new OfficialTemplatePublisherWidget { DataContext = new OfficialTemplatePublisherViewModel() }
-                    };
+                    window = new OfficialTemplatePublisherWindow();
                 }
                 else if (app.WidgetKey == "AnnouncementWidget")
                 {
