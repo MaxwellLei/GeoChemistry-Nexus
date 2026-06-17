@@ -567,9 +567,11 @@ namespace GeoChemistryNexus.ViewModels
             }
             else
             {
-                template.NodeList = categoryNodeList;
                 DiagramTemplateTranslationHelper.SyncTemplateLanguages(template, languages);
             }
+
+            template.NodeList ??= new LocalizedString();
+            MergeCategoryNodeListFromBasicSettings(template.NodeList, categoryNodeList, languages);
 
             template.DefaultLanguage = languages.First();
             template.Version = ContentVersionHelper.WithAppDiagramFormat(PatchVersion);

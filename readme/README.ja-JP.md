@@ -92,7 +92,8 @@
 ## 💬 コミュニティと連絡先
 
 * **連絡先メール**: `maxwelllei@qq.com`
-* **フォーラム**: [Geochemistry Nexus](https://geochemistry-nexus.discourse.group/invites/L8pjQMvExB)
+* **QQ Group**: 1076647740
+* **Discord**: https://discord.gg/mRm8dbwa4W
 
 ## 👋 開発への参加
 

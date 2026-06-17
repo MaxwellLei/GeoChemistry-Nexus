@@ -129,6 +129,15 @@
   <data name="geo_field_mineral_category" xml:space="preserve">
     <value>광물 분류 *</value>
   </data>
+  <data name="geo_category_single_mineral" xml:space="preserve">
+    <value>단일 광물 온압계</value>
+  </data>
+  <data name="geo_category_mineral_pair" xml:space="preserve">
+    <value>광물 쌍 온압계</value>
+  </data>
+  <data name="geo_category_multi_equilibrium" xml:space="preserve">
+    <value>다광물/전암 다중 평형</value>
+  </data>
   <data name="unfavorite" xml:space="preserve">
     <value>즐겨찾기 해제</value>
   </data>
@@ -1942,6 +1951,42 @@
   <data name="batch_download_cancelled" xml:space="preserve">
     <value>일괄 다운로드 취소됨</value>
   </data>
+  <data name="batch_update_outdated_templates" xml:space="preserve">
+    <value>일괄 업데이트</value>
+  </data>
+  <data name="batch_update_outdated_templates_tooltip" xml:space="preserve">
+    <value>새 버전이 있는 공식 템플릿 일괄 업데이트</value>
+  </data>
+  <data name="batch_update_title" xml:space="preserve">
+    <value>일괄 업데이트</value>
+  </data>
+  <data name="batch_update_confirm_message" xml:space="preserve">
+    <value>새 버전이 있는 템플릿 {0}개가 감지되었습니다. 일괄 업데이트하시겠습니까?</value>
+  </data>
+  <data name="no_outdated_templates_to_update" xml:space="preserve">
+    <value>업데이트가 필요한 템플릿이 없습니다</value>
+  </data>
+  <data name="batch_update_success_count" xml:space="preserve">
+    <value>업데이트 성공: {0}개</value>
+  </data>
+  <data name="batch_update_fail_count" xml:space="preserve">
+    <value>실패: {0}개</value>
+  </data>
+  <data name="batch_update_complete" xml:space="preserve">
+    <value>일괄 업데이트 완료</value>
+  </data>
+  <data name="batch_update_failed" xml:space="preserve">
+    <value>일괄 업데이트 실패: </value>
+  </data>
+  <data name="batch_updating" xml:space="preserve">
+    <value>일괄 업데이트 중</value>
+  </data>
+  <data name="batch_update_progress" xml:space="preserve">
+    <value>업데이트 중: {0}/{1} - {2}</value>
+  </data>
+  <data name="batch_update_cancelled" xml:space="preserve">
+    <value>일괄 업데이트가 취소되었습니다</value>
+  </data>
   <data name="geo_tooltip_formula_name" xml:space="preserve">
     <value>영문, 숫자, 밑줄만 가능 (예: MyFormula_v1)</value>
   </data>
@@ -1959,6 +2004,21 @@
   </data>
   <data name="click_or_drag_template_json_here" xml:space="preserve">
     <value>템플릿 파일(JSON)을 클릭하거나 이곳으로 드래그하십시오</value>
+  </data>
+  <data name="file_drop_release_to_open" xml:space="preserve">
+    <value>Release to open template</value>
+  </data>
+  <data name="file_drop_release_to_import" xml:space="preserve">
+    <value>Release to import</value>
+  </data>
+  <data name="file_drop_invalid_format" xml:space="preserve">
+    <value>Unsupported file format</value>
+  </data>
+  <data name="file_drop_supported_diagram" xml:space="preserve">
+    <value>Supports .json / .zip template files</value>
+  </data>
+  <data name="file_drop_supported_geothermometer" xml:space="preserve">
+    <value>Supports .zip geothermometer packages</value>
   </data>
   <data name="coordinate_positioning" xml:space="preserve">
     <value>좌표 위치 지정</value>

@@ -129,6 +129,15 @@
   <data name="geo_field_mineral_category" xml:space="preserve">
     <value>礦物分類 *</value>
   </data>
+  <data name="geo_category_single_mineral" xml:space="preserve">
+    <value>單礦物溫壓計</value>
+  </data>
+  <data name="geo_category_mineral_pair" xml:space="preserve">
+    <value>礦物對溫壓計</value>
+  </data>
+  <data name="geo_category_multi_equilibrium" xml:space="preserve">
+    <value>多礦物/全岩多平衡</value>
+  </data>
   <data name="unfavorite" xml:space="preserve">
     <value>取消收藏</value>
   </data>
@@ -1942,6 +1951,42 @@
   <data name="batch_download_cancelled" xml:space="preserve">
     <value>批次下載已取消</value>
   </data>
+  <data name="batch_update_outdated_templates" xml:space="preserve">
+    <value>批量更新</value>
+  </data>
+  <data name="batch_update_outdated_templates_tooltip" xml:space="preserve">
+    <value>批量更新有新版本的官方範本</value>
+  </data>
+  <data name="batch_update_title" xml:space="preserve">
+    <value>批量更新</value>
+  </data>
+  <data name="batch_update_confirm_message" xml:space="preserve">
+    <value>檢測到 {0} 個範本有新版本，是否批量更新？</value>
+  </data>
+  <data name="no_outdated_templates_to_update" xml:space="preserve">
+    <value>沒有需要更新的範本</value>
+  </data>
+  <data name="batch_update_success_count" xml:space="preserve">
+    <value>成功更新：{0} 個</value>
+  </data>
+  <data name="batch_update_fail_count" xml:space="preserve">
+    <value>失敗：{0} 個</value>
+  </data>
+  <data name="batch_update_complete" xml:space="preserve">
+    <value>批量更新完成</value>
+  </data>
+  <data name="batch_update_failed" xml:space="preserve">
+    <value>批量更新失敗：</value>
+  </data>
+  <data name="batch_updating" xml:space="preserve">
+    <value>批量更新中</value>
+  </data>
+  <data name="batch_update_progress" xml:space="preserve">
+    <value>正在更新：{0}/{1} - {2}</value>
+  </data>
+  <data name="batch_update_cancelled" xml:space="preserve">
+    <value>批量更新已取消</value>
+  </data>
   <data name="geo_tooltip_formula_name" xml:space="preserve">
     <value>僅限字母、數字和底線，例如 MyFormula_v1</value>
   </data>
@@ -1959,6 +2004,21 @@
   </data>
   <data name="click_or_drag_template_json_here" xml:space="preserve">
     <value>點擊或拖曳範本檔案(JSON)到此處</value>
+  </data>
+  <data name="file_drop_release_to_open" xml:space="preserve">
+    <value>鬆開滑鼠以開啟範本</value>
+  </data>
+  <data name="file_drop_release_to_import" xml:space="preserve">
+    <value>鬆開滑鼠以匯入</value>
+  </data>
+  <data name="file_drop_invalid_format" xml:space="preserve">
+    <value>不支援的檔案格式</value>
+  </data>
+  <data name="file_drop_supported_diagram" xml:space="preserve">
+    <value>支援 .json / .zip 圖解範本檔案</value>
+  </data>
+  <data name="file_drop_supported_geothermometer" xml:space="preserve">
+    <value>支援 .zip 溫壓計包</value>
   </data>
   <data name="coordinate_positioning" xml:space="preserve">
     <value>座標定位</value>

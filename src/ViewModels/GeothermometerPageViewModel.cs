@@ -24,7 +24,9 @@ using unvell.ReoGrid.Events;
 
 namespace GeoChemistryNexus.ViewModels
 {
-    public partial class GeothermometerPageViewModel : ObservableObject, IRecipient<DeveloperModeChangedMessage>
+    public partial class GeothermometerPageViewModel : ObservableObject,
+        IRecipient<DeveloperModeChangedMessage>,
+        IRecipient<GeoTMineralCategoryUpdatedMessage>
     {
         /// <summary>
         /// 应用温压计后工作表的初始行数（含表头与示例行）
@@ -33,10 +35,10 @@ namespace GeoChemistryNexus.ViewModels
 
         private Worksheet? _rowExpansionWorksheet;
         /// <summary>
-        /// 矿物分组列表（用于左侧导航）
+        /// 官方温压计类别分组列表（用于左侧导航）
         /// </summary>
         [ObservableProperty]
-        private ObservableCollection<MineralGroupViewModel> mineralGroups = new();
+        private ObservableCollection<CategoryGroupViewModel> categoryGroups = new();
 
         /// <summary>
         /// 当前选中的 GTM
@@ -227,7 +229,7 @@ namespace GeoChemistryNexus.ViewModels
             GeothermometerService.Initialize();
 
             // 加载分组数据
-            LoadMineralGroups();
+            LoadCategoryGroups();
 
             LanguageService.Instance.PropertyChanged += OnAppLanguageChanged;
 
@@ -240,10 +242,43 @@ namespace GeoChemistryNexus.ViewModels
             if (e.PropertyName != "Item[]")
                 return;
 
+            ReloadCategoryGroupsAndSelection();
+
             if (_lastCalculationInputValues == null || _selectedFullEntity == null || !HasCalculationData)
                 return;
 
             ApplyCalculationSteps(_lastCalculationInputValues);
+        }
+
+        private void ReloadCategoryGroupsAndSelection()
+        {
+            string? selectedPluginId = SelectedPlugin?.Id;
+            string? appliedPluginId = _appliedPlugin?.Id;
+
+            LoadCategoryGroups();
+
+            if (!string.IsNullOrEmpty(selectedPluginId))
+            {
+                SelectedPlugin = FindPluginById(selectedPluginId);
+                OnPropertyChanged(nameof(SelectedPluginDisplayName));
+            }
+
+            if (!string.IsNullOrEmpty(appliedPluginId))
+            {
+                _appliedPlugin = FindPluginById(appliedPluginId);
+            }
+        }
+
+        private Geothermometer? FindPluginById(string pluginId)
+        {
+            foreach (var group in CategoryGroups)
+            {
+                var plugin = group.Plugins.FirstOrDefault(p => p.Id == pluginId);
+                if (plugin != null)
+                    return plugin;
+            }
+
+            return CustomPlugins.FirstOrDefault(p => p.Id == pluginId);
         }
 
         /// <summary>
@@ -273,6 +308,11 @@ namespace GeoChemistryNexus.ViewModels
             IsDeveloperMode = message.Value;
         }
 
+        public void Receive(GeoTMineralCategoryUpdatedMessage message)
+        {
+            ReloadCategoryGroupsAndSelection();
+        }
+
         /// <summary>
         /// 设置帮助文档 RichTextBox 引用
         /// </summary>
@@ -282,20 +322,19 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 加载矿物分组数据到 UI（官方按矿物分组，自定义为平面列表）
+        /// 加载官方温压计类别分组数据到 UI
         /// </summary>
-        private void LoadMineralGroups()
+        private void LoadCategoryGroups()
         {
-            MineralGroups.Clear();
+            CategoryGroups.Clear();
             CustomPlugins.Clear();
 
-            // 官方温压计（按矿物分组）
             var officialGroups = GeothermometerService.GetGroupedEntities(true);
             foreach (var group in officialGroups)
             {
-                var vm = new MineralGroupViewModel
+                var vm = new CategoryGroupViewModel
                 {
-                    MineralKey = group.MineralKey,
+                    CategoryKey = group.CategoryKey,
                     DisplayName = group.DisplayName,
                     IsExpanded = false
                 };
@@ -305,17 +344,16 @@ namespace GeoChemistryNexus.ViewModels
                     vm.Plugins.Add(plugin);
                 }
 
-                MineralGroups.Add(vm);
+                CategoryGroups.Add(vm);
             }
 
-            // 自定义温压计（平面列表）
             var customList = GeothermometerService.GetCustomPlugins();
             foreach (var plugin in customList)
             {
                 CustomPlugins.Add(plugin);
             }
 
-            OfficialPluginCount = MineralGroups.Sum(g => g.Plugins.Count);
+            OfficialPluginCount = CategoryGroups.Sum(g => g.Plugins.Count);
             CustomPluginCount = CustomPlugins.Count;
             TotalPluginCount = GeothermometerService.LoadedEntities.Count;
         }
@@ -325,30 +363,30 @@ namespace GeoChemistryNexus.ViewModels
             if (string.IsNullOrWhiteSpace(value))
             {
                 // 清空搜索时恢复原始分组
-                LoadMineralGroups();
+                LoadCategoryGroups();
                 return;
             }
 
             string keyword = value.Trim().ToLowerInvariant();
-            MineralGroups.Clear();
+            CategoryGroups.Clear();
             CustomPlugins.Clear();
 
-            // 过滤官方温压计
             var officialGroups = GeothermometerService.GetGroupedEntities(true);
             foreach (var group in officialGroups)
             {
                 var matchedPlugins = group.Plugins.Where(p =>
                     p.Name.ToLowerInvariant().Contains(keyword) ||
-                    p.Mineral.ToLowerInvariant().Contains(keyword) ||
+                    p.TagsDisplayText.ToLowerInvariant().Contains(keyword) ||
+                    GeoTCategoryHelper.GetDisplayName(p.Category).ToLowerInvariant().Contains(keyword) ||
                     p.Author.ToLowerInvariant().Contains(keyword) ||
                     p.Year.ToString().Contains(keyword)
                 ).ToList();
 
                 if (matchedPlugins.Any())
                 {
-                    var vm = new MineralGroupViewModel
+                    var vm = new CategoryGroupViewModel
                     {
-                        MineralKey = group.MineralKey,
+                        CategoryKey = group.CategoryKey,
                         DisplayName = group.DisplayName,
                         IsExpanded = true
                     };
@@ -358,16 +396,16 @@ namespace GeoChemistryNexus.ViewModels
                         vm.Plugins.Add(plugin);
                     }
 
-                    MineralGroups.Add(vm);
+                    CategoryGroups.Add(vm);
                 }
             }
 
-            // 过滤自定义温压计
             var customList = GeothermometerService.GetCustomPlugins();
             foreach (var plugin in customList)
             {
                 if (plugin.Name.ToLowerInvariant().Contains(keyword) ||
-                    plugin.Mineral.ToLowerInvariant().Contains(keyword) ||
+                    plugin.TagsDisplayText.ToLowerInvariant().Contains(keyword) ||
+                    GeoTCategoryHelper.GetDisplayName(plugin.Category).ToLowerInvariant().Contains(keyword) ||
                     plugin.Author.ToLowerInvariant().Contains(keyword) ||
                     plugin.Year.ToString().Contains(keyword))
                 {
@@ -532,14 +570,24 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private void ImportPlugin()
         {
+            string filePath = FileHelper.GetFilePath("ZIP files (*.zip)|*.zip");
+            ImportPluginFromPath(filePath);
+        }
+
+        /// <summary>
+        /// 从指定 ZIP 路径导入 GTM（支持拖入文件）
+        /// </summary>
+        [RelayCommand]
+        private void ImportPluginFromPath(string? filePath)
+        {
+            if (string.IsNullOrWhiteSpace(filePath))
+                return;
+
             try
             {
-                string filePath = FileHelper.GetFilePath("ZIP files (*.zip)|*.zip");
-                if (string.IsNullOrEmpty(filePath)) return;
-
                 GeothermometerService.ImportFromZip(filePath);
                 GeothermometerService.ReloadPlugins();
-                LoadMineralGroups();
+                LoadCategoryGroups();
                 MessageHelper.Success(LanguageService.Instance["geo_msg_import_success"]);
             }
             catch (GeothermometerImportException ex)
@@ -581,7 +629,13 @@ namespace GeoChemistryNexus.ViewModels
 
                 if (!isConfirmed) return;
 
-                Worksheet worksheet = reoGridControl.CurrentWorksheet;
+                Worksheet? worksheet = reoGridControl.CurrentWorksheet;
+                if (worksheet == null)
+                {
+                    if (reoGridControl.Worksheets.Count == 0) return;
+                    worksheet = reoGridControl.Worksheets[0];
+                    reoGridControl.CurrentWorksheet = worksheet;
+                }
 
                 var currentScale = worksheet.ScaleFactor;
                 worksheet.Reset();
@@ -958,7 +1012,6 @@ namespace GeoChemistryNexus.ViewModels
                             checkResult.Updates,
                             checkResult.Removals,
                             progress);
-                        LoadMineralGroups();
 
                         string result = string.Format(LanguageService.Instance["geo_msg_update_downloaded"], count);
                         MessageHelper.Success(result);
@@ -977,6 +1030,9 @@ namespace GeoChemistryNexus.ViewModels
                         MessageHelper.Info(UpdateStatusText);
                     }
                 }
+
+                if (checkResult.MineralCategoriesSynced)
+                    ReloadCategoryGroupsAndSelection();
             }
             catch (Exception ex)
             {
@@ -1084,7 +1140,7 @@ namespace GeoChemistryNexus.ViewModels
             editorVm.OnSaved = () =>
             {
                 GeothermometerService.ReloadPlugins();
-                LoadMineralGroups();
+                LoadCategoryGroups();
             };
 
             var window = new GeothermometerEditorWindow(editorVm);
@@ -1109,7 +1165,7 @@ namespace GeoChemistryNexus.ViewModels
             editorVm.OnSaved = () =>
             {
                 GeothermometerService.ReloadPlugins();
-                LoadMineralGroups();
+                LoadCategoryGroups();
             };
 
             var window = new GeothermometerEditorWindow(editorVm);
@@ -1138,7 +1194,7 @@ namespace GeoChemistryNexus.ViewModels
             var entityId = GeothermometerDatabaseService.GenerateId(plugin.Id);
             if (GeothermometerService.DeleteEntity(entityId))
             {
-                LoadMineralGroups();
+                LoadCategoryGroups();
                 MessageHelper.Success(LanguageService.Instance["geo_msg_delete_success"]);
             }
         }
@@ -1154,7 +1210,7 @@ namespace GeoChemistryNexus.ViewModels
             var entityId = GeothermometerDatabaseService.GenerateId(plugin.Id);
             if (GeothermometerService.ConvertToOfficial(entityId))
             {
-                LoadMineralGroups();
+                LoadCategoryGroups();
                 MessageHelper.Success(LanguageService.Instance["geo_msg_promoted"]);
             }
         }
@@ -1170,16 +1226,16 @@ namespace GeoChemistryNexus.ViewModels
             var entityId = GeothermometerDatabaseService.GenerateId(plugin.Id);
             if (GeothermometerService.ConvertToCustom(entityId))
             {
-                LoadMineralGroups();
+                LoadCategoryGroups();
                 MessageHelper.Success(LanguageService.Instance["geo_msg_demoted"]);
             }
         }
 
         /// <summary>
-        /// 展开/折叠矿物分组
+        /// 展开/折叠类别分组
         /// </summary>
         [RelayCommand]
-        private void ToggleMineralGroup(MineralGroupViewModel group)
+        private void ToggleCategoryGroup(CategoryGroupViewModel group)
         {
             if (group == null) return;
             group.IsExpanded = !group.IsExpanded;
@@ -1199,11 +1255,11 @@ namespace GeoChemistryNexus.ViewModels
     }
 
     /// <summary>
-    /// 矿物分组 ViewModel（支持 UI 绑定和展开/折叠）
+    /// 温压计类别分组 ViewModel（支持 UI 绑定和展开/折叠）
     /// </summary>
-    public partial class MineralGroupViewModel : ObservableObject
+    public partial class CategoryGroupViewModel : ObservableObject
     {
-        public string MineralKey { get; set; } = string.Empty;
+        public string CategoryKey { get; set; } = string.Empty;
         public string DisplayName { get; set; } = string.Empty;
 
         [ObservableProperty]

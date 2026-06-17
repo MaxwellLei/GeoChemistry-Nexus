@@ -424,6 +424,44 @@
 
             </TabItem>
 
+            <TabItem Header="{Binding [official_publisher_plot_categories_section], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}">
+
+                <StackPanel Orientation="Horizontal" Margin="4">
+
+                    <TextBlock>
+
+                        <Run Text="{Binding [official_publisher_plot_categories_level], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}"/>
+
+                        <Run Text=": "/>
+
+                        <Run Text="{Binding SelectedPlotCategoryLevel, Mode=OneWay}"/>
+
+                    </TextBlock>
+
+                    <TextBlock Margin="16,0,0,0">
+
+                        <Run Text="{Binding PlotCategoryEntryCount, Mode=OneWay}"/>
+
+                    </TextBlock>
+
+                </StackPanel>
+
+            </TabItem>
+
+            <TabItem Header="{Binding [official_publisher_geot_categories_section], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}">
+
+                <StackPanel Orientation="Horizontal" Margin="4">
+
+                    <TextBlock>
+
+                        <Run Text="{Binding GeoTMineralEntryCount, Mode=OneWay}"/>
+
+                    </TextBlock>
+
+                </StackPanel>
+
+            </TabItem>
+
         </TabControl>
 
 
@@ -552,6 +590,148 @@
                         </ListBox>
 
                     </Grid>
+
+                </Grid>
+
+            </TabItem>
+
+            <TabItem Header="{Binding [official_publisher_plot_categories_section], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}">
+
+                <Grid Margin="4">
+
+                    <Grid.RowDefinitions>
+
+                        <RowDefinition Height="Auto"/>
+
+                        <RowDefinition Height="*"/>
+
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
+
+                        <TextBlock Text="{Binding [home_links_edit_language], Source={x:Static lg:LanguageService.Instance}, FallbackValue=Editing language:}"
+
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+
+                        <ComboBox ItemsSource="{Binding HomeLinksLanguageOptions}"
+
+                                  DisplayMemberPath="DisplayName"
+
+                                  SelectedValuePath="Code"
+
+                                  SelectedValue="{Binding SelectedPlotCategoriesLanguage}"
+
+                                  Width="180" Margin="0,0,16,0" VerticalAlignment="Center"/>
+
+                        <TextBlock Text="{Binding [official_publisher_plot_categories_level], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}"
+
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+
+                        <ComboBox ItemsSource="{Binding PlotCategoryLevelKeys}"
+
+                                  SelectedItem="{Binding SelectedPlotCategoryLevel}"
+
+                                  Width="100" Margin="0,0,16,0" VerticalAlignment="Center"/>
+
+                        <Button Content="{Binding [official_publisher_category_add], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}"
+
+                                Command="{Binding AddPlotCategoryEntryCommand}" Margin="0,0,8,0" MinWidth="88"/>
+
+                        <Button Content="{Binding [official_publisher_category_edit], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}"
+
+                                Command="{Binding EditPlotCategoryEntryCommand}" Margin="0,0,8,0" MinWidth="88"/>
+
+                        <Button Content="{Binding [Delete], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}"
+
+                                Command="{Binding RemovePlotCategoryEntryCommand}" Margin="0,0,8,0" MinWidth="72"/>
+
+                        <Button Content="{Binding [official_publisher_home_save_draft], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}"
+
+                                Command="{Binding SavePlotCategoriesDraftCommand}" Margin="0,0,8,0" MinWidth="100"/>
+
+                        <Button Content="{Binding [refresh], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}"
+
+                                Command="{Binding ReloadPlotCategoriesEditorCommand}" MinWidth="72"/>
+
+                    </StackPanel>
+
+                    <ListBox Grid.Row="1"
+
+                             ItemsSource="{Binding PlotCategoryEntries}"
+
+                             SelectedItem="{Binding SelectedPlotCategoryEntry}"
+
+                             DisplayMemberPath="DisplayTitle"
+
+                             BorderBrush="#EEEEEE" BorderThickness="1"
+
+                             MinHeight="180"/>
+
+                </Grid>
+
+            </TabItem>
+
+            <TabItem Header="{Binding [official_publisher_geot_categories_section], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}">
+
+                <Grid Margin="4">
+
+                    <Grid.RowDefinitions>
+
+                        <RowDefinition Height="Auto"/>
+
+                        <RowDefinition Height="*"/>
+
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
+
+                        <TextBlock Text="{Binding [home_links_edit_language], Source={x:Static lg:LanguageService.Instance}, FallbackValue=Editing language:}"
+
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+
+                        <ComboBox ItemsSource="{Binding HomeLinksLanguageOptions}"
+
+                                  DisplayMemberPath="DisplayName"
+
+                                  SelectedValuePath="Code"
+
+                                  SelectedValue="{Binding SelectedGeoTMineralCategoriesLanguage}"
+
+                                  Width="180" Margin="0,0,16,0" VerticalAlignment="Center"/>
+
+                        <Button Content="{Binding [official_publisher_category_add], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}"
+
+                                Command="{Binding AddGeoTMineralEntryCommand}" Margin="0,0,8,0" MinWidth="88"/>
+
+                        <Button Content="{Binding [official_publisher_category_edit], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}"
+
+                                Command="{Binding EditGeoTMineralEntryCommand}" Margin="0,0,8,0" MinWidth="88"/>
+
+                        <Button Content="{Binding [Delete], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}"
+
+                                Command="{Binding RemoveGeoTMineralEntryCommand}" Margin="0,0,8,0" MinWidth="72"/>
+
+                        <Button Content="{Binding [official_publisher_home_save_draft], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}"
+
+                                Command="{Binding SaveGeoTMineralCategoriesDraftCommand}" Margin="0,0,8,0" MinWidth="100"/>
+
+                        <Button Content="{Binding [refresh], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}"
+
+                                Command="{Binding ReloadGeoTMineralCategoriesEditorCommand}" MinWidth="72"/>
+
+                    </StackPanel>
+
+                    <ListBox Grid.Row="1"
+
+                             ItemsSource="{Binding GeoTMineralEntries}"
+
+                             SelectedItem="{Binding SelectedGeoTMineralEntry}"
+
+                             DisplayMemberPath="DisplayTitle"
+
+                             BorderBrush="#EEEEEE" BorderThickness="1"
+
+                             MinHeight="180"/>
 
                 </Grid>
 

@@ -20,6 +20,16 @@
     <Window.Resources>
         <converter:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <converter:BoolToVisibilityReConverter x:Key="BooleanToVisibilityReConverter"/>
+        <!-- HandyControl ComboBox（与字段输入框高度一致） -->
+        <Style x:Key="EditorFieldComboBoxStyle" TargetType="ComboBox" BasedOn="{StaticResource ComboBoxExtend}">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Padding" Value="6,4"/>
+            <Setter Property="Height" Value="26"/>
+            <Setter Property="MinHeight" Value="26"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="hc:BorderElement.CornerRadius" Value="4"/>
+        </Style>
+
         <!-- 标签样式 -->
         <Style x:Key="FieldLabelStyle" TargetType="TextBlock">
             <Setter Property="FontSize" Value="11"/>
@@ -400,9 +410,10 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <!-- Row 0: Name, Mineral, Year -->
+                    <!-- Row 0: Name, Category, Year -->
                     <Grid Grid.Row="0" Margin="0,0,0,12">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -420,10 +431,22 @@
                         </StackPanel>
 
                         <StackPanel Grid.Column="2">
-                            <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_mineral_category], Source={x:Static lg:LanguageService.Instance}, FallbackValue=矿物分类 *}"/>
-                            <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding Mineral, UpdateSourceTrigger=PropertyChanged}"
-                                     IsReadOnly="{Binding IsContentReadOnly}"/>
-                            <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding [geo_example_mineral], Source={x:Static lg:LanguageService.Instance}, FallbackValue=例如：石英}"/>
+                            <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_category], Source={x:Static lg:LanguageService.Instance}, FallbackValue=类别 *}"/>
+                            <hc:ComboBox ItemsSource="{Binding CategoryOptions}"
+                                         DisplayMemberPath="DisplayName"
+                                         SelectedValuePath="Key"
+                                         SelectedValue="{Binding SelectedCategory}">
+                                <hc:ComboBox.Style>
+                                    <Style TargetType="ComboBox" BasedOn="{StaticResource EditorFieldComboBoxStyle}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsContentReadOnly}" Value="True">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </hc:ComboBox.Style>
+                            </hc:ComboBox>
+                            <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding [geo_example_category], Source={x:Static lg:LanguageService.Instance}, FallbackValue=例如：单矿物温压计}"/>
                         </StackPanel>
 
                         <StackPanel Grid.Column="4">
@@ -434,8 +457,60 @@
                         </StackPanel>
                     </Grid>
 
+                    <!-- Row 0.5: Tags -->
+                    <StackPanel Grid.Row="1" Margin="0,0,0,12">
+                        <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_tags], Source={x:Static lg:LanguageService.Instance}, FallbackValue=温压计标签 *}"/>
+                        <ItemsControl ItemsSource="{Binding TagParts}" Margin="0,0,0,6">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="#E8F4FD" BorderBrush="#B3D9F2" BorderThickness="1"
+                                            CornerRadius="4" Padding="8,3" Margin="0,0,6,6">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding DisplayName}" FontSize="11" Foreground="#0078D4" VerticalAlignment="Center"/>
+                                            <Button Tag="{Binding}" Click="RemoveTag_Click" Margin="6,0,0,0"
+                                                    Cursor="Hand" Background="Transparent" BorderThickness="0"
+                                                    Padding="0" Width="14" Height="14"
+                                                    Visibility="{Binding DataContext.IsContentReadOnly, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource BooleanToVisibilityReConverter}}">
+                                                <TextBlock Text="✕" FontSize="9" FontWeight="Bold" Foreground="#0078D4"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <Grid Visibility="{Binding IsContentReadOnly, Converter={StaticResource BooleanToVisibilityReConverter}}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <hc:ComboBox x:Name="TagCombo"
+                                         Grid.Column="0"
+                                         IsEditable="True"
+                                         StaysOpenOnEdit="True"
+                                         hc:InfoElement.Placeholder="{Binding [geo_tag_enter_hint], Source={x:Static lg:LanguageService.Instance}, FallbackValue=输入标签后按 Enter 确认}"
+                                         DisplayMemberPath="DisplayName"
+                                         SelectedValuePath="DisplayName"
+                                         SelectionChanged="TagCombo_SelectionChanged"
+                                         PreviewKeyDown="TagCombo_PreviewKeyDown"
+                                         Style="{StaticResource EditorFieldComboBoxStyle}"/>
+                            <TextBlock Grid.Column="1"
+                                       Text="{Binding [geo_tag_enter_hint], Source={x:Static lg:LanguageService.Instance}, FallbackValue=输入标签后按 Enter 确认}"
+                                       VerticalAlignment="Center"
+                                       Foreground="#AAA"
+                                       Margin="16,0,0,0"
+                                       FontSize="10"
+                                       TextWrapping="Wrap"/>
+                        </Grid>
+                        <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding [geo_example_tag], Source={x:Static lg:LanguageService.Instance}, FallbackValue=例如：石英}"/>
+                    </StackPanel>
+
                     <!-- Row 1: Author, FormulaName -->
-                    <Grid Grid.Row="1" Margin="0,0,0,12">
+                    <Grid Grid.Row="2" Margin="0,0,0,12">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="12"/>
@@ -459,7 +534,7 @@
                     </Grid>
 
                     <!-- Row 2: Reference -->
-                    <StackPanel Grid.Row="2" Margin="0,0,0,12">
+                    <StackPanel Grid.Row="3" Margin="0,0,0,12">
                         <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_reference], Source={x:Static lg:LanguageService.Instance}, FallbackValue=参考文献 *}"/>
                         <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding Reference, UpdateSourceTrigger=PropertyChanged}"
                                  IsReadOnly="{Binding IsContentReadOnly}"/>
@@ -467,7 +542,7 @@
                     </StackPanel>
 
                     <!-- Row 3: Version (left: app version, right: set thermometer version) -->
-                    <Border Grid.Row="3" Background="#FAFAFC" BorderBrush="#E4E4E8" BorderThickness="1" CornerRadius="8" Padding="14,12" Margin="0,0,0,12">
+                    <Border Grid.Row="4" Background="#FAFAFC" BorderBrush="#E4E4E8" BorderThickness="1" CornerRadius="8" Padding="14,12" Margin="0,0,0,12">
                         <StackPanel>
                             <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_version], Source={x:Static lg:LanguageService.Instance}, FallbackValue=版本}" Margin="0,0,0,10"/>
 
@@ -532,7 +607,7 @@
                     </Border>
 
                     <!-- Row 4: Preview -->
-                    <StackPanel Grid.Row="4" Margin="0,0,0,12">
+                    <StackPanel Grid.Row="5" Margin="0,0,0,12">
                         <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_preview_title], Source={x:Static lg:LanguageService.Instance}, FallbackValue=效果预览}"/>
                         <TextBlock FontSize="10" Foreground="#888" Margin="0,0,0,8"
                                    Text="{Binding [geo_preview_hint], Source={x:Static lg:LanguageService.Instance}, FallbackValue=根据上方元数据实时生成，分别预览左侧列表项和右侧详情顶部的显示效果。}"/>
@@ -567,9 +642,20 @@
                                 <TextBlock FontSize="12" Foreground="#666" Margin="0,4,0,0"
                                            Text="{Binding PreviewReference, Mode=OneWay}" TextTrimming="CharacterEllipsis"/>
                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                                    <Border CornerRadius="4" Background="#E8F4FD" Padding="8,3" Margin="0,0,6,0">
-                                        <TextBlock FontSize="11" Foreground="#0078D4" Text="{Binding PreviewMineral, Mode=OneWay}"/>
-                                    </Border>
+                                    <ItemsControl ItemsSource="{Binding PreviewTags, Mode=OneWay}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Horizontal"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border CornerRadius="4" Background="#E8F4FD" Padding="8,3" Margin="0,0,6,0">
+                                                    <TextBlock FontSize="11" Foreground="#0078D4" Text="{Binding Mode=OneWay}"/>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
                                     <Border CornerRadius="4" Background="#F0F0F0" Padding="8,3" Margin="0,0,6,0">
                                         <TextBlock FontSize="11" Foreground="#555">
                                             <Run Text="v"/>
@@ -586,7 +672,7 @@
                     </StackPanel>
 
                     <!-- Row 5: Hint -->
-                    <TextBlock Grid.Row="5" FontSize="11" Foreground="#999" Margin="0,4,0,0"
+                    <TextBlock Grid.Row="6" FontSize="11" Foreground="#999" Margin="0,4,0,0"
                                Text="{Binding [geo_field_required_hint], Source={x:Static lg:LanguageService.Instance}, FallbackValue=必填字段标有 *。格式基线 x.y 跟随软件温压计版本，修订号 z 为模板内容版本。公式名称将作为 ReoGrid 中的自定义函数名称注册。}"/>
                 </Grid>
             </Border>
@@ -748,15 +834,8 @@
             <Border Grid.Row="1" Background="White" CornerRadius="8" Padding="16,12" Margin="0,12,0,0"
                     BorderBrush="#E0E0E0" BorderThickness="1">
                 <DockPanel>
-                    <!-- 左侧：取消 -->
-                    <Button DockPanel.Dock="Left" Style="{StaticResource EditorButtonStyle}" 
-                            Command="{Binding CancelCommand}" Content="{Binding [geo_btn_cancel], Source={x:Static lg:LanguageService.Instance}, FallbackValue=取消}"/>
-
-                    <!-- 右侧：导航和保存按钮 -->
-                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
-
-                        <!-- 上一步（step > 0 时显示） -->
-                        <Button Command="{Binding PrevStepCommand}" Margin="0,0,8,0">
+                    <!-- 左侧：上一步（step > 0 时显示） -->
+                    <Button DockPanel.Dock="Left" Command="{Binding PrevStepCommand}">
                         <Button.Style>
                             <Style TargetType="Button" BasedOn="{StaticResource EditorButtonStyle}">
                                 <Setter Property="Visibility" Value="Visible"/>
@@ -768,11 +847,14 @@
                             </Style>
                         </Button.Style>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xE76B;" FontFamily="Segoe MDL2 Assets" FontSize="11" 
+                            <TextBlock Text="&#xE76B;" FontFamily="Segoe MDL2 Assets" FontSize="11"
                                        VerticalAlignment="Center" Margin="0,0,4,0"/>
                             <TextBlock Text="{Binding [geo_btn_prev], Source={x:Static lg:LanguageService.Instance}, FallbackValue=上一步}" FontSize="13"/>
                         </StackPanel>
-                        </Button>
+                    </Button>
+
+                    <!-- 右侧：导航和保存按钮 -->
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
 
                         <!-- 下一步（step < 2 时显示） -->
                         <Button Command="{Binding NextStepCommand}">

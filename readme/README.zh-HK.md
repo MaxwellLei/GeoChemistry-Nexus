@@ -92,7 +92,8 @@
 ## 💬 社群與交流
 
 * **聯絡電郵**: `maxwelllei@qq.com`
-* **論壇社區**: [Geochemistry Nexus](https://geochemistry-nexus.discourse.group/invites/L8pjQMvExB)
+* **QQ Group**: 1076647740
+* **Discord**: https://discord.gg/mRm8dbwa4W
 
 ## 👋 參與貢獻
 

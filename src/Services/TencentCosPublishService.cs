@@ -202,7 +202,8 @@ namespace GeoChemistryNexus.Services
             var manifestFiles = new[]
             {
                 (Local: publishResult.ListPath, Key: $"{OfficialContentEndpoints.GeothermometerFolderName}/{OfficialContentEndpoints.GeoTListFileName}"),
-                (Local: publishResult.IndexPath, Key: $"{OfficialContentEndpoints.GeothermometerFolderName}/{OfficialContentEndpoints.GeoTIndexFileName}")
+                (Local: publishResult.IndexPath, Key: $"{OfficialContentEndpoints.GeothermometerFolderName}/{OfficialContentEndpoints.GeoTIndexFileName}"),
+                (Local: publishResult.CategoriesPath, Key: $"{OfficialContentEndpoints.GeothermometerFolderName}/{OfficialContentEndpoints.GeoTMineralCategoriesFileName}")
             };
 
             foreach (var file in manifestFiles)
@@ -230,7 +231,7 @@ namespace GeoChemistryNexus.Services
                 Log($"Uploaded: {entry.CosKey}");
             }
 
-            bool verified = await VerifyGeoTIndexAsync(publishResult.ListHash);
+            bool verified = await VerifyGeoTIndexAsync(publishResult.ListHash, publishResult.MineralCategoriesHash);
             Log(verified
                 ? "GeoT-index.json verification passed."
                 : "Warning: GeoT-index.json verification failed or CDN not yet refreshed.");
@@ -474,7 +475,8 @@ namespace GeoChemistryNexus.Services
             var manifestFiles = new[]
             {
                 publishResult.ListPath,
-                publishResult.IndexPath
+                publishResult.IndexPath,
+                publishResult.CategoriesPath
             };
 
             count += manifestFiles.Count(path => !string.IsNullOrEmpty(path) && File.Exists(path));
@@ -603,7 +605,7 @@ namespace GeoChemistryNexus.Services
             return false;
         }
 
-        private static async Task<bool> VerifyGeoTIndexAsync(string expectedListHash)
+        private static async Task<bool> VerifyGeoTIndexAsync(string expectedListHash, string expectedMineralCategoriesHash = null)
         {
             if (string.IsNullOrEmpty(expectedListHash))
                 return false;
@@ -620,7 +622,13 @@ namespace GeoChemistryNexus.Services
                     if (index != null
                         && string.Equals(index.ListHash, expectedListHash, StringComparison.OrdinalIgnoreCase))
                     {
-                        return true;
+                        if (string.IsNullOrEmpty(expectedMineralCategoriesHash))
+                            return true;
+
+                        return string.Equals(
+                            index.MineralCategoriesHash,
+                            expectedMineralCategoriesHash,
+                            StringComparison.OrdinalIgnoreCase);
                     }
                 }
                 catch

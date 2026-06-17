@@ -32,6 +32,7 @@
     <None Remove="Data\Image\StartPic\3.jpg" />
     <None Remove="Data\Image\StartPic\4.jpg" />
     <None Remove="Data\PlotData\PlotTemplateCategories.json" />
+    <None Remove="Data\Plugins\GeoTMineralCategories.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -54,6 +55,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\PlotData\PlotTemplateCategories.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Plugins\GeoTMineralCategories.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\Home\HomeLinksCatalog.json">
@@ -92,7 +96,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Others\" />
+    <Compile Remove="Others\**\*" />
+    <Page Remove="Others\**\*" />
+    <EmbeddedResource Remove="Others\**\*" />
+    <None Remove="Others\**\*" />
+    <Compile Remove="_build_out\**\*" />
+    <Content Remove="_build_out\**\*" />
+    <None Remove="_build_out\**\*" />
   </ItemGroup>
 
 </Project>

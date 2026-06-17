@@ -3,10 +3,13 @@ using GeoChemistryNexus.Services;
 using GeoChemistryNexus.ViewModels;
 using System.Collections.ObjectModel;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Input;
 
 namespace GeoChemistryNexus.Views
 {
@@ -28,6 +31,13 @@ namespace GeoChemistryNexus.Views
             viewModel.OnCloseRequested = () => this.Close();
             viewModel.ShowErrorMessage = ShowErrorMessage;
             viewModel.ShowSuccessMessage = ShowSuccessMessage;
+
+            RefreshTagSuggestions();
+            LanguageService.Instance.PropertyChanged += (_, e) =>
+            {
+                if (e.PropertyName == "Item[]")
+                    Dispatcher.Invoke(RefreshTagSuggestions);
+            };
 
             // 连接 ViewModel 与 RichTextBox 的回调
             viewModel.GetCurrentRtfContent = () =>
@@ -144,6 +154,77 @@ namespace GeoChemistryNexus.Views
                 HelpDocEditor.Selection.ApplyPropertyValue(TextElement.FontSizeProperty, size);
                 HelpDocEditor.Focus();
             }
+        }
+
+        private void TagCombo_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Enter) return;
+            if (DataContext is GeothermometerEditorViewModel vm &&
+                vm.TryAddTag(TagCombo.Text?.Trim() ?? string.Empty))
+            {
+                TagCombo.Text = string.Empty;
+            }
+            e.Handled = true;
+        }
+
+        private void TagCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (DataContext is not GeothermometerEditorViewModel vm) return;
+            if (!TagCombo.IsDropDownOpen)
+            {
+                TagCombo.SelectedIndex = -1;
+                return;
+            }
+
+            if (TagCombo.SelectedItem is TagDisplayItem item &&
+                vm.TryAddTag(item.DisplayName, item.OriginalObject))
+            {
+                TagCombo.SelectedIndex = -1;
+                TagCombo.Text = string.Empty;
+            }
+
+            RefreshTagSuggestions();
+        }
+
+        private void RemoveTag_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is GeothermometerEditorViewModel vm &&
+                (sender as Button)?.Tag is GeoTTagModel item)
+            {
+                vm.RemoveTag(item);
+            }
+        }
+
+        private void RefreshTagSuggestions()
+        {
+            if (DataContext is not GeothermometerEditorViewModel vm) return;
+
+            var list = vm.GetTagSuggestions();
+            TagCombo.ItemsSource = list.Select(entry =>
+            {
+                string displayName = AppCultureRegistry.GetLocalizedValue(
+                    entry,
+                    LanguageService.CurrentLanguage,
+                    AppCultureRegistry.DefaultAppLanguage);
+                if (string.IsNullOrWhiteSpace(displayName) &&
+                    entry.TryGetValue("zh-CN", out var zh) &&
+                    !string.IsNullOrWhiteSpace(zh))
+                {
+                    displayName = zh;
+                }
+
+                return new TagDisplayItem
+                {
+                    DisplayName = displayName ?? string.Empty,
+                    OriginalObject = entry
+                };
+            }).ToList();
+        }
+
+        private class TagDisplayItem
+        {
+            public string DisplayName { get; set; } = string.Empty;
+            public Dictionary<string, string>? OriginalObject { get; set; }
         }
     }
 }

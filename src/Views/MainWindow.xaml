@@ -574,7 +574,7 @@
                         <StackPanel Margin="0,20,0,0" VerticalAlignment="Top">
                             <!-- Home -->
                             <RadioButton Name="RadioButton1" Style="{StaticResource SidebarNavButton}" GroupName="SideBar" 
-                                         Command="{Binding StartPageCommand}" CommandParameter="{Binding ElementName=MyNav}" IsChecked="True"
+                                         Command="{Binding HomePageCommand}" CommandParameter="{Binding ElementName=MyNav}" IsChecked="True"
                                          ToolTip="{Binding [home],Source={x:Static lg:LanguageService.Instance}}">
                                 <StackPanel Style="{StaticResource SidebarNavItemPanelStyle}">
                                     <TextBlock Text="&#xe635;" Style="{StaticResource SidebarNavIconStyle}"/>
@@ -594,7 +594,7 @@
                             
                             <!-- Plot -->
                             <RadioButton Name="RadioButton2" Style="{StaticResource SidebarNavButton}" GroupName="SideBar" 
-                                         Command="{Binding HomePageCommand}" CommandParameter="{Binding ElementName=MyNav}"
+                                         Command="{Binding PlotPageCommand}" CommandParameter="{Binding ElementName=MyNav}"
                                          ToolTip="{Binding [Plot],Source={x:Static lg:LanguageService.Instance}}">
                                 <StackPanel Style="{StaticResource SidebarNavItemPanelStyle}">
                                     <TextBlock Text="&#xe639;" Style="{StaticResource SidebarNavIconStyle}"/>

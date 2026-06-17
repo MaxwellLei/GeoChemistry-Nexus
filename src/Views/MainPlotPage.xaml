@@ -26,7 +26,7 @@
     <Page.InputBindings>
         <KeyBinding Key="Z" Modifiers="Control" Command="{Binding UndoCommand}"/>
         <KeyBinding Key="Y" Modifiers="Control" Command="{Binding RedoCommand}"/>
-        <KeyBinding Key="Delete" Command="{Binding DeleteSelectedObjectCommand}"/>
+        <KeyBinding Key="Delete" Command="{Binding HandlePageDeleteKeyCommand}"/>
         <KeyBinding Key="D0" Modifiers="Control" Command="{Binding CenterPlotCommand}"/>
         <KeyBinding Key="NumPad0" Modifiers="Control" Command="{Binding CenterPlotCommand}"/>
         <KeyBinding Key="S" Modifiers="Control" Command="{Binding SaveBaseMapCommand}"/>
@@ -325,6 +325,15 @@
     </Page.Resources>
 
     <Grid>
+        <i:Interaction.Behaviors>
+            <tools:FileDropBehavior DropCommand="{Binding OpenTemplateFromPathCommand}"
+                                    AllowedExtensions=".json,.zip"
+                                    OverlayIcon="&#xE8E1;"
+                                    HintText="{Binding [file_drop_release_to_open], Source={x:Static lg:LanguageService.Instance}}"
+                                    SubHintText="{Binding [file_drop_supported_diagram], Source={x:Static lg:LanguageService.Instance}}"
+                                    InvalidHintText="{Binding [file_drop_invalid_format], Source={x:Static lg:LanguageService.Instance}}"/>
+        </i:Interaction.Behaviors>
+
         <!-- 模板浏览模式 -->
         <Grid x:Name="TemplateGrid" Visibility="{Binding IsPlotMode, Converter={StaticResource BoolToVisibilityReConverter}}" Opacity="1" RenderTransformOrigin="0.5,0.5">
             <Grid.ColumnDefinitions>
@@ -1191,6 +1200,50 @@
                                                             <Trigger Property="IsPressed" Value="True">
                                                                 <Setter Property="Background" Value="#004578"/>
                                                                 <Setter Property="BorderBrush" Value="#004578"/>
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+
+                                <!-- 批量更新按钮 -->
+                                <Button Height="32" Padding="12,0" Margin="0,0,8,0"
+                                        Background="#107C10" BorderBrush="#107C10" BorderThickness="1"
+                                        Foreground="White"
+                                        Command="{Binding BatchUpdateOutdatedTemplatesCommand}"
+                                        ToolTip="{Binding [batch_update_outdated_templates_tooltip], Source={x:Static lg:LanguageService.Instance}, FallbackValue='批量更新有新版本的官方模板'}"
+                                        Cursor="Hand"
+                                        Visibility="{Binding IsBatchUpdateButtonVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="{TemplateBinding Background}" 
+                                                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                                CornerRadius="4"
+                                                                Padding="{TemplateBinding Padding}">
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <TextBlock Text="&#xE895;" FontFamily="Segoe MDL2 Assets" 
+                                                                           FontSize="14" Foreground="{TemplateBinding Foreground}" 
+                                                                           VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                                                <TextBlock Text="{Binding [batch_update_outdated_templates], Source={x:Static lg:LanguageService.Instance}, FallbackValue='批量更新'}" 
+                                                                           FontSize="13" Foreground="{TemplateBinding Foreground}" 
+                                                                           VerticalAlignment="Center"/>
+                                                            </StackPanel>
+                                                        </Border>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter Property="Background" Value="#0B6A0B"/>
+                                                                <Setter Property="BorderBrush" Value="#0B6A0B"/>
+                                                            </Trigger>
+                                                            <Trigger Property="IsPressed" Value="True">
+                                                                <Setter Property="Background" Value="#094509"/>
+                                                                <Setter Property="BorderBrush" Value="#094509"/>
                                                             </Trigger>
                                                         </ControlTemplate.Triggers>
                                                     </ControlTemplate>
@@ -2221,7 +2274,7 @@
                             </Grid.RowDefinitions>
                             
                             <!-- 标题 -->
-                            <TextBlock Grid.Row="0" Text="{Binding [batch_downloading], Source={x:Static lg:LanguageService.Instance}, FallbackValue='批量下载中'}" 
+                            <TextBlock Grid.Row="0" Text="{Binding BatchOverlayTitle, FallbackValue='批量下载中'}" 
                                        FontSize="20" FontWeight="SemiBold" 
                                        Foreground="#333" 
                                        HorizontalAlignment="Center"
@@ -2494,6 +2547,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
                         <!-- Layer Panel Header -->
@@ -2667,8 +2721,31 @@
                             </rg:ReoGridControl.Style>
                         </rg:ReoGridControl>
 
+                        <!-- 数据表格底部状态栏：数据已修改提示 -->
+                        <Border Grid.Row="2" Background="#FFFBE6" BorderBrush="#FFE58F" BorderThickness="0,1,0,0" Padding="10,4">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding RibbonTabIndex}" Value="1"/>
+                                                <Condition Binding="{Binding IsDataGridPlotRefreshPending}" Value="True"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <TextBlock Text="{Binding [data_grid_plot_refresh_pending], Source={x:Static lg:LanguageService.Instance}, FallbackValue='数据已修改，请刷新投图。'}"
+                                       FontSize="12"
+                                       Foreground="#AD6800"
+                                       VerticalAlignment="Center"
+                                       TextTrimming="CharacterEllipsis"/>
+                        </Border>
+
                         <!-- 计算过程验证区域 -->
-                        <Border Grid.Row="2" Background="#FAFAFA" BorderBrush="#E0E0E0" BorderThickness="0,1,0,0">
+                        <Border Grid.Row="3" Background="#FAFAFA" BorderBrush="#E0E0E0" BorderThickness="0,1,0,0">
                             <Border.Style>
                                 <Style TargetType="Border">
                                     <Setter Property="Visibility" Value="Collapsed"/>

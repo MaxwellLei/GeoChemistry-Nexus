@@ -92,7 +92,8 @@ We are building more than just a tool; we are building a research ecosystem. Her
 ## 💬 Community & Contact
 
 * **Contact Email**: `maxwelllei@qq.com`
-* **Forum**: [Geochemistry Nexus](https://geochemistry-nexus.discourse.group/invites/L8pjQMvExB) 
+* **QQ Group**: 1076647740
+* **Discord**: https://discord.gg/mRm8dbwa4W
 
 ## 👋 Contribute
 

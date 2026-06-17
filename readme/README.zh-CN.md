@@ -80,7 +80,8 @@
 ## 💬 社区与交流
 
 * **联系邮箱**: `maxwelllei@qq.com`
-* **论坛社区**: [Geochemistry Nexus](https://geochemistry-nexus.discourse.group/invites/L8pjQMvExB)
+* **QQ Group**: 1076647740
+* **Discord**: https://discord.gg/mRm8dbwa4W
 
 ## 👋 参与贡献
 

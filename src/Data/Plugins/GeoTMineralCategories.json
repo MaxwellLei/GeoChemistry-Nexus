@@ -1,0 +1,728 @@
+{
+
+  "Minerals": [
+
+    {
+
+      "zh-CN": "石榴石",
+
+      "zh-TW": "石榴石",
+
+      "en-US": "Garnet",
+
+      "de-DE": "Granat",
+
+      "es-ES": "Granate",
+
+      "ja-JP": "ガーネット",
+
+      "ko-KR": "석류석",
+
+      "ru-RU": "Гранат",
+
+      "fr-FR": "Grenat",
+
+      "pt-BR": "Granada"
+
+    },
+
+    {
+
+      "zh-CN": "橄榄石",
+
+      "zh-TW": "橄欖石",
+
+      "en-US": "Olivine",
+
+      "de-DE": "Olivin",
+
+      "es-ES": "Olivino",
+
+      "ja-JP": "オリビン",
+
+      "ko-KR": "감람석",
+
+      "ru-RU": "Оливин",
+
+      "fr-FR": "Olivine",
+
+      "pt-BR": "Olivina"
+
+    },
+
+    {
+
+      "zh-CN": "辉石",
+
+      "zh-TW": "輝石",
+
+      "en-US": "Pyroxene",
+
+      "de-DE": "Pyroxen",
+
+      "es-ES": "Piroxeno",
+
+      "ja-JP": "輝石",
+
+      "ko-KR": "휘석",
+
+      "ru-RU": "Пироксен",
+
+      "fr-FR": "Pyroxène",
+
+      "pt-BR": "Piroxênio"
+
+    },
+
+    {
+
+      "zh-CN": "单斜辉石",
+
+      "zh-TW": "單斜輝石",
+
+      "en-US": "Clinopyroxene",
+
+      "de-DE": "Klinopyroxen",
+
+      "es-ES": "Clinopiroxeno",
+
+      "ja-JP": "単斜輝石",
+
+      "ko-KR": "단사휘석",
+
+      "ru-RU": "Клинопироксен",
+
+      "fr-FR": "Clinopyroxène",
+
+      "pt-BR": "Clinopiroxênio"
+
+    },
+
+    {
+
+      "zh-CN": "斜方辉石",
+
+      "zh-TW": "斜方輝石",
+
+      "en-US": "Orthopyroxene",
+
+      "de-DE": "Orthopyroxen",
+
+      "es-ES": "Ortopiroxeno",
+
+      "ja-JP": "斜方輝石",
+
+      "ko-KR": "사방휘석",
+
+      "ru-RU": "Ортопироксен",
+
+      "fr-FR": "Orthopyroxène",
+
+      "pt-BR": "Ortopiroxênio"
+
+    },
+
+    {
+
+      "zh-CN": "角闪石",
+
+      "zh-TW": "角閃石",
+
+      "en-US": "Amphibole",
+
+      "de-DE": "Amphibol",
+
+      "es-ES": "Anfibol",
+
+      "ja-JP": "角閃石",
+
+      "ko-KR": "각섬석",
+
+      "ru-RU": "Амфибол",
+
+      "fr-FR": "Amphibole",
+
+      "pt-BR": "Anfibólio"
+
+    },
+
+    {
+
+      "zh-CN": "长石",
+
+      "zh-TW": "長石",
+
+      "en-US": "Feldspar",
+
+      "de-DE": "Feldspat",
+
+      "es-ES": "Feldespato",
+
+      "ja-JP": "長石",
+
+      "ko-KR": "장석",
+
+      "ru-RU": "Полевой шпат",
+
+      "fr-FR": "Feldspath",
+
+      "pt-BR": "Feldspato"
+
+    },
+
+    {
+
+      "zh-CN": "斜长石",
+
+      "zh-TW": "斜長石",
+
+      "en-US": "Plagioclase",
+
+      "de-DE": "Plagioklas",
+
+      "es-ES": "Plagioclasa",
+
+      "ja-JP": "斜長石",
+
+      "ko-KR": "사장석",
+
+      "ru-RU": "Плагиоклаз",
+
+      "fr-FR": "Plagioclase",
+
+      "pt-BR": "Plagioclásio"
+
+    },
+
+    {
+
+      "zh-CN": "钾长石",
+
+      "zh-TW": "鉀長石",
+
+      "en-US": "K-Feldspar",
+
+      "de-DE": "Kalifeldspat",
+
+      "es-ES": "Feldespato potásico",
+
+      "ja-JP": "カリ長石",
+
+      "ko-KR": "정장석",
+
+      "ru-RU": "Калишпат",
+
+      "fr-FR": "Feldspath potassique",
+
+      "pt-BR": "Feldspato potássico"
+
+    },
+
+    {
+
+      "zh-CN": "石英",
+
+      "zh-TW": "石英",
+
+      "en-US": "Quartz",
+
+      "de-DE": "Quarz",
+
+      "es-ES": "Cuarzo",
+
+      "ja-JP": "石英",
+
+      "ko-KR": "석영",
+
+      "ru-RU": "Кварц",
+
+      "fr-FR": "Quartz",
+
+      "pt-BR": "Quartzo"
+
+    },
+
+    {
+
+      "zh-CN": "黑云母",
+
+      "zh-TW": "黑雲母",
+
+      "en-US": "Biotite",
+
+      "de-DE": "Biotit",
+
+      "es-ES": "Biotita",
+
+      "ja-JP": "黒雲母",
+
+      "ko-KR": "흑운모",
+
+      "ru-RU": "Биотит",
+
+      "fr-FR": "Biotite",
+
+      "pt-BR": "Biotita"
+
+    },
+
+    {
+
+      "zh-CN": "白云母",
+
+      "zh-TW": "白雲母",
+
+      "en-US": "Muscovite",
+
+      "de-DE": "Muskovit",
+
+      "es-ES": "Moscovita",
+
+      "ja-JP": "白雲母",
+
+      "ko-KR": "백운모",
+
+      "ru-RU": "Мусковит",
+
+      "fr-FR": "Muscovite",
+
+      "pt-BR": "Muscovita"
+
+    },
+
+    {
+
+      "zh-CN": "多硅白云母",
+
+      "zh-TW": "多矽白雲母",
+
+      "en-US": "Phengite",
+
+      "de-DE": "Phengit",
+
+      "es-ES": "Phengita",
+
+      "ja-JP": "多珪白雲母",
+
+      "ko-KR": "펜자이트",
+
+      "ru-RU": "Фенгит",
+
+      "fr-FR": "Phénigit",
+
+      "pt-BR": "Fengita"
+
+    },
+
+    {
+
+      "zh-CN": "绿泥石",
+
+      "zh-TW": "綠泥石",
+
+      "en-US": "Chlorite",
+
+      "de-DE": "Chlorit",
+
+      "es-ES": "Clorita",
+
+      "ja-JP": "緑泥石",
+
+      "ko-KR": "녹니석",
+
+      "ru-RU": "Хлорит",
+
+      "fr-FR": "Chlorite",
+
+      "pt-BR": "Clorita"
+
+    },
+
+    {
+
+      "zh-CN": "绿帘石",
+
+      "zh-TW": "綠簾石",
+
+      "en-US": "Epidote",
+
+      "de-DE": "Epidot",
+
+      "es-ES": "Epidota",
+
+      "ja-JP": "緑簾石",
+
+      "ko-KR": "녹렴석",
+
+      "ru-RU": "Эпидот",
+
+      "fr-FR": "Épidote",
+
+      "pt-BR": "Epidoto"
+
+    },
+
+    {
+
+      "zh-CN": "尖晶石",
+
+      "zh-TW": "尖晶石",
+
+      "en-US": "Spinel",
+
+      "de-DE": "Spinell",
+
+      "es-ES": "Espinela",
+
+      "ja-JP": "スピネル",
+
+      "ko-KR": "첨정석",
+
+      "ru-RU": "Шпинель",
+
+      "fr-FR": "Spinelle",
+
+      "pt-BR": "Espinela"
+
+    },
+
+    {
+
+      "zh-CN": "堇青石",
+
+      "zh-TW": "堇青石",
+
+      "en-US": "Cordierite",
+
+      "de-DE": "Cordierit",
+
+      "es-ES": "Cordierita",
+
+      "ja-JP": "コーディエライト",
+
+      "ko-KR": "코디어라이트",
+
+      "ru-RU": "Кордиерит",
+
+      "fr-FR": "Cordiérite",
+
+      "pt-BR": "Cordierita"
+
+    },
+
+    {
+
+      "zh-CN": "蓝晶石",
+
+      "zh-TW": "藍晶石",
+
+      "en-US": "Kyanite",
+
+      "de-DE": "Kyanit",
+
+      "es-ES": "Cianita",
+
+      "ja-JP": "藍晶石",
+
+      "ko-KR": "남정석",
+
+      "ru-RU": "Кианит",
+
+      "fr-FR": "Disthène",
+
+      "pt-BR": "Cianita"
+
+    },
+
+    {
+
+      "zh-CN": "矽线石",
+
+      "zh-TW": "矽線石",
+
+      "en-US": "Sillimanite",
+
+      "de-DE": "Sillimanit",
+
+      "es-ES": "Silimanita",
+
+      "ja-JP": "珪線石",
+
+      "ko-KR": "규선석",
+
+      "ru-RU": "Силлиманит",
+
+      "fr-FR": "Sillimanite",
+
+      "pt-BR": "Silimanita"
+
+    },
+
+    {
+
+      "zh-CN": "红柱石",
+
+      "zh-TW": "紅柱石",
+
+      "en-US": "Andalusite",
+
+      "de-DE": "Andalusit",
+
+      "es-ES": "Andalucita",
+
+      "ja-JP": "アンダルサイト",
+
+      "ko-KR": "안달루사이트",
+
+      "ru-RU": "Андалузит",
+
+      "fr-FR": "Andalousite",
+
+      "pt-BR": "Andaluzita"
+
+    },
+
+    {
+
+      "zh-CN": "十字石",
+
+      "zh-TW": "十字石",
+
+      "en-US": "Staurolite",
+
+      "de-DE": "Staurolith",
+
+      "es-ES": "Estaurolita",
+
+      "ja-JP": "十字石",
+
+      "ko-KR": "십자석",
+
+      "ru-RU": "Стауролит",
+
+      "fr-FR": "Staurolite",
+
+      "pt-BR": "Estaurolita"
+
+    },
+
+    {
+
+      "zh-CN": "锆石",
+
+      "zh-TW": "鋯石",
+
+      "en-US": "Zircon",
+
+      "de-DE": "Zirkon",
+
+      "es-ES": "Circón",
+
+      "ja-JP": "ジルコン",
+
+      "ko-KR": "지르콘",
+
+      "ru-RU": "Циркон",
+
+      "fr-FR": "Zircon",
+
+      "pt-BR": "Zircão"
+
+    },
+
+    {
+
+      "zh-CN": "金红石",
+
+      "zh-TW": "金紅石",
+
+      "en-US": "Rutile",
+
+      "de-DE": "Rutil",
+
+      "es-ES": "Rutilo",
+
+      "ja-JP": "ルチル",
+
+      "ko-KR": "금홍석",
+
+      "ru-RU": "Рутил",
+
+      "fr-FR": "Rutile",
+
+      "pt-BR": "Rutilo"
+
+    },
+
+    {
+
+      "zh-CN": "钛铁矿",
+
+      "zh-TW": "鈦鐵礦",
+
+      "en-US": "Ilmenite",
+
+      "de-DE": "Ilmenit",
+
+      "es-ES": "Ilmenita",
+
+      "ja-JP": "イルメナイト",
+
+      "ko-KR": "일메나이트",
+
+      "ru-RU": "Ильменит",
+
+      "fr-FR": "Ilménite",
+
+      "pt-BR": "Ilmenita"
+
+    },
+
+    {
+
+      "zh-CN": "榍石",
+
+      "zh-TW": "榍石",
+
+      "en-US": "Titanite",
+
+      "de-DE": "Titanit",
+
+      "es-ES": "Titanita",
+
+      "ja-JP": "チタン石",
+
+      "ko-KR": "티타나이트",
+
+      "ru-RU": "Титанит",
+
+      "fr-FR": "Titanite",
+
+      "pt-BR": "Titanita"
+
+    },
+
+    {
+
+      "zh-CN": "独居石",
+
+      "zh-TW": "獨居石",
+
+      "en-US": "Monazite",
+
+      "de-DE": "Monazit",
+
+      "es-ES": "Monacita",
+
+      "ja-JP": "モナズ石",
+
+      "ko-KR": "모나자이트",
+
+      "ru-RU": "Монацит",
+
+      "fr-FR": "Monazite",
+
+      "pt-BR": "Monazita"
+
+    },
+
+    {
+
+      "zh-CN": "磷灰石",
+
+      "zh-TW": "磷灰石",
+
+      "en-US": "Apatite",
+
+      "de-DE": "Apatit",
+
+      "es-ES": "Apatita",
+
+      "ja-JP": "燐灰石",
+
+      "ko-KR": "인회석",
+
+      "ru-RU": "Апатит",
+
+      "fr-FR": "Apatite",
+
+      "pt-BR": "Apatita"
+
+    },
+
+    {
+
+      "zh-CN": "方解石",
+
+      "zh-TW": "方解石",
+
+      "en-US": "Calcite",
+
+      "de-DE": "Calcit",
+
+      "es-ES": "Calcita",
+
+      "ja-JP": "方解石",
+
+      "ko-KR": "방해석",
+
+      "ru-RU": "Кальцит",
+
+      "fr-FR": "Calcite",
+
+      "pt-BR": "Calcita"
+
+    },
+
+    {
+
+      "zh-CN": "白云石",
+
+      "zh-TW": "白雲石",
+
+      "en-US": "Dolomite",
+
+      "de-DE": "Dolomit",
+
+      "es-ES": "Dolomita",
+
+      "ja-JP": "苦灰石",
+
+      "ko-KR": "백운석",
+
+      "ru-RU": "Доломит",
+
+      "fr-FR": "Dolomite",
+
+      "pt-BR": "Dolomita"
+
+    },
+
+    {
+
+      "zh-CN": "电气石",
+
+      "zh-TW": "電氣石",
+
+      "en-US": "Tourmaline",
+
+      "de-DE": "Turmalin",
+
+      "es-ES": "Turmalina",
+
+      "ja-JP": "電気石",
+
+      "ko-KR": "전기석",
+
+      "ru-RU": "Турмалин",
+
+      "fr-FR": "Tourmaline",
+
+      "pt-BR": "Turmalina"
+
+    }
+
+  ]
+
+}
+

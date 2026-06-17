@@ -277,6 +277,168 @@ namespace GeoChemistryNexus.Services
         }
 
         /// <summary>
+        /// 校验 JSON 文本是否具备图解模板必需结构（反序列化前，避免非图解 JSON 被默认属性误判为有效）。
+        /// </summary>
+        public static bool HasValidDiagramTemplateJsonStructure(string jsonContent)
+        {
+            if (string.IsNullOrWhiteSpace(jsonContent))
+                return false;
+
+            try
+            {
+                using var document = JsonDocument.Parse(jsonContent);
+                return HasValidDiagramTemplateJsonStructure(document.RootElement);
+            }
+            catch (JsonException)
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 校验已反序列化的图解模板内容是否完整有效。
+        /// </summary>
+        public static bool IsValidDiagramTemplateContent(GraphMapTemplate? template)
+        {
+            if (template?.Info == null || template.Script == null)
+                return false;
+
+            if (!IsSupportedTemplateType(template.TemplateType))
+                return false;
+
+            int requiredAxes = template.TemplateType == "Ternary" ? 3 : 2;
+            if (template.Info.Axes == null
+                || template.Info.Axes.Count < requiredAxes
+                || template.Info.Axes.Any(axis => axis == null || string.IsNullOrWhiteSpace(axis.Type)))
+            {
+                return false;
+            }
+
+            return template.Info.Title != null && template.Info.Grid != null;
+        }
+
+        /// <summary>
+        /// 解析并校验图解模板 JSON；失败时 template 为 null（不含版本校验）。
+        /// </summary>
+        public static bool TryParseDiagramTemplate(string jsonContent, out GraphMapTemplate? template)
+        {
+            template = null;
+            if (!HasValidDiagramTemplateJsonStructure(jsonContent))
+                return false;
+
+            try
+            {
+                template = JsonSerializer.Deserialize<GraphMapTemplate>(jsonContent, CreateTemplateParseJsonOptions());
+            }
+            catch (JsonException)
+            {
+                template = null;
+                return false;
+            }
+
+            if (!IsValidDiagramTemplateContent(template))
+            {
+                template = null;
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool HasValidDiagramTemplateJsonStructure(JsonElement root)
+        {
+            if (root.ValueKind != JsonValueKind.Object)
+                return false;
+
+            if (!TryGetJsonProperty(root, "TemplateType", out var templateTypeElement)
+                || templateTypeElement.ValueKind != JsonValueKind.String
+                || !IsSupportedTemplateType(templateTypeElement.GetString()))
+            {
+                return false;
+            }
+
+            string templateType = templateTypeElement.GetString()!;
+            int requiredAxes = templateType == "Ternary" ? 3 : 2;
+
+            if (!TryGetJsonProperty(root, "Info", out var infoElement)
+                || infoElement.ValueKind != JsonValueKind.Object)
+            {
+                return false;
+            }
+
+            if (!TryGetJsonProperty(infoElement, "Axes", out var axesElement)
+                || axesElement.ValueKind != JsonValueKind.Array
+                || axesElement.GetArrayLength() < requiredAxes)
+            {
+                return false;
+            }
+
+            foreach (var axisElement in axesElement.EnumerateArray())
+            {
+                if (axisElement.ValueKind != JsonValueKind.Object)
+                    return false;
+
+                if (!TryGetJsonProperty(axisElement, "Type", out var typeElement)
+                    || typeElement.ValueKind != JsonValueKind.String
+                    || string.IsNullOrWhiteSpace(typeElement.GetString()))
+                {
+                    return false;
+                }
+            }
+
+            if (!TryGetJsonProperty(infoElement, "Title", out var titleElement)
+                || titleElement.ValueKind != JsonValueKind.Object)
+            {
+                return false;
+            }
+
+            if (!TryGetJsonProperty(infoElement, "Grid", out var gridElement)
+                || gridElement.ValueKind != JsonValueKind.Object)
+            {
+                return false;
+            }
+
+            if (!TryGetJsonProperty(root, "Script", out var scriptElement)
+                || scriptElement.ValueKind != JsonValueKind.Object)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool IsSupportedTemplateType(string? templateType)
+        {
+            return string.Equals(templateType, "Cartesian", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(templateType, "Ternary", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool TryGetJsonProperty(JsonElement element, string propertyName, out JsonElement value)
+        {
+            foreach (var property in element.EnumerateObject())
+            {
+                if (string.Equals(property.Name, propertyName, StringComparison.OrdinalIgnoreCase))
+                {
+                    value = property.Value;
+                    return true;
+                }
+            }
+
+            value = default;
+            return false;
+        }
+
+        /// <summary>
+        /// 图解模板 JSON 反序列化选项（导入/打开时使用，与持久化口径一致并忽略大小写）。
+        /// </summary>
+        public static JsonSerializerOptions CreateTemplateParseJsonOptions()
+        {
+            var options = CreateTemplateJsonOptions();
+            options.PropertyNameCaseInsensitive = true;
+            return options;
+        }
+
+        /// <summary>
         /// 模板内容 JSON 序列化选项（与 FileHash 计算口径一致）
         /// </summary>
         public static JsonSerializerOptions CreateTemplateJsonOptions()

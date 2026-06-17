@@ -16,7 +16,6 @@
       HorizontalAlignment="Stretch"
       VerticalAlignment="Stretch">
     <Page.Resources>
-        <cvs:HomeIconIsUrlConverter x:Key="HomeIconIsUrlConverter"/>
         <cvs:StringToBitmapImageConverter x:Key="HomeIconBitmapConverter"/>
         <helpers:BindingProxy x:Key="VmProxy" Data="{Binding}" />
 
@@ -190,7 +189,6 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
@@ -248,11 +246,7 @@
                         </Button>
                     </Grid>
 
-                    <TextBlock Grid.Row="2" Text="{Binding [home_personal_group_hint],Source={x:Static lg:LanguageService.Instance}}"
-                               FontSize="12" Foreground="#007AFF" Margin="4,0,0,4"
-                               Visibility="{Binding IsSelectedGroupPersonal, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-
-                    <TextBlock Grid.Row="3" Text="{Binding [home_group_empty_links],Source={x:Static lg:LanguageService.Instance}}"
+                    <TextBlock Grid.Row="2" Text="{Binding [home_group_empty_links],Source={x:Static lg:LanguageService.Instance}}"
                                FontSize="13" Foreground="#8E8E93" HorizontalAlignment="Center" Margin="0,0,0,4"
                                TextAlignment="Center">
                         <TextBlock.Style>
@@ -267,7 +261,7 @@
                         </TextBlock.Style>
                     </TextBlock>
 
-                    <ScrollViewer Grid.Row="4" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                    <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
                                   VerticalAlignment="Stretch" Padding="4,6,4,4" ClipToBounds="False">
                         <ItemsControl ItemsSource="{Binding SelectedLinkGroup.Items}"
                                       ItemTemplate="{StaticResource ShortcutItemTemplate}"

@@ -128,7 +128,9 @@ namespace GeoChemistryNexus.Services
 
             string listPath = Path.Combine(outputDir, OfficialContentEndpoints.GeoTListFileName);
             string indexPath = Path.Combine(outputDir, OfficialContentEndpoints.GeoTIndexFileName);
+            string categoriesPath = Path.Combine(outputDir, OfficialContentEndpoints.GeoTMineralCategoriesFileName);
             string listHash = string.Empty;
+            string mineralCategoriesHash = string.Empty;
             if (File.Exists(indexPath))
             {
                 try
@@ -136,6 +138,7 @@ namespace GeoChemistryNexus.Services
                     string indexJson = File.ReadAllText(indexPath);
                     var index = JsonSerializer.Deserialize<GeoTIndex>(indexJson, JsonOptions);
                     listHash = index?.ListHash ?? string.Empty;
+                    mineralCategoriesHash = index?.MineralCategoriesHash ?? string.Empty;
                 }
                 catch { /* ignore */ }
             }
@@ -151,8 +154,10 @@ namespace GeoChemistryNexus.Services
                 SkippedZipCount = skippedZipCount,
                 ListPath = listPath,
                 IndexPath = indexPath,
+                CategoriesPath = File.Exists(categoriesPath) ? categoriesPath : null,
                 ManifestPath = manifestPath,
                 ListHash = listHash,
+                MineralCategoriesHash = mineralCategoriesHash,
                 ManifestEntries = manifestEntries
             };
         }
@@ -182,12 +187,11 @@ namespace GeoChemistryNexus.Services
 
         private static string GetEffectiveHash(GeothermometerEntity summary)
         {
-            if (!string.IsNullOrEmpty(summary.FileHash))
-                return summary.FileHash;
-
             var full = GeothermometerDatabaseService.Instance.GetEntity(summary.Id);
-            if (full == null) return string.Empty;
-            return GeothermometerDatabaseService.ComputeHash(full.ScriptContent ?? "");
+            if (full != null)
+                return GeothermometerDatabaseService.ComputeEntityHash(full);
+
+            return summary.FileHash ?? string.Empty;
         }
 
         private static PublishPreviewItem CreatePreviewItem(

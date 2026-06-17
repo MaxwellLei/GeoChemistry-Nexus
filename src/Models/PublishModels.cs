@@ -96,8 +96,10 @@ namespace GeoChemistryNexus.Models
         public int SkippedZipCount { get; set; }
         public string ListPath { get; set; }
         public string IndexPath { get; set; }
+        public string CategoriesPath { get; set; }
         public string ManifestPath { get; set; }
         public string ListHash { get; set; }
+        public string MineralCategoriesHash { get; set; }
         public List<PublishManifestEntry> ManifestEntries { get; set; } = new();
 
         public string Summary =>

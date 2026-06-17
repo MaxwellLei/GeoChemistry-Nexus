@@ -245,15 +245,28 @@ namespace GeoChemistryNexus.Helpers
             var rebuilt = BuildTranslationTable(template, languages);
             if (existing == null) return rebuilt;
 
+            string defaultLanguage = languages.Count > 0 ? languages[0] : string.Empty;
+
             foreach (DataRow newRow in rebuilt.Rows)
             {
                 var newRef = newRow["ObjectRef"];
+                var translationKey = newRow[TranslationKeyColumn] as string;
+                var isCategoryPath = string.Equals(translationKey, "categoryPath", StringComparison.OrdinalIgnoreCase);
+
                 foreach (DataRow oldRow in existing.Rows)
                 {
                     if (!ReferenceEquals(oldRow["ObjectRef"], newRef)) continue;
 
                     foreach (var lang in languages)
                     {
+                        // 基本设置变更分类结构时，默认语言路径以重建结果为准；其他语言保留翻译表自定义内容。
+                        if (isCategoryPath &&
+                            !string.IsNullOrEmpty(defaultLanguage) &&
+                            lang.Equals(defaultLanguage, StringComparison.OrdinalIgnoreCase))
+                        {
+                            continue;
+                        }
+
                         if (existing.Columns.Contains(lang) && rebuilt.Columns.Contains(lang))
                             newRow[lang] = oldRow[lang];
                     }

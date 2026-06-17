@@ -29,7 +29,7 @@ namespace GeoChemistryNexus.Models
         public string Version { get; set; } = "1.0.0";
 
         /// <summary>
-        /// 文件哈希（用于版本比对）
+        /// 发布内容哈希（元数据 + 脚本 + 帮助文档，用于版本比对）
         /// </summary>
         public string FileHash { get; set; } = string.Empty;
 
@@ -46,14 +46,14 @@ namespace GeoChemistryNexus.Models
         // --- 轻量元数据区 (用于列表展示) ---
 
         /// <summary>
-        /// 所属矿物分类
+        /// 温压计类别键（single_mineral / mineral_pair / multi_equilibrium）
         /// </summary>
-        public string Mineral { get; set; } = string.Empty;
+        public string Category { get; set; } = string.Empty;
 
         /// <summary>
-        /// 矿物分类的多语言键名
+        /// 温压计标签（存储 zh-CN 或用户输入的原始名称）
         /// </summary>
-        public string MineralLangKey { get; set; } = string.Empty;
+        public List<string> Tags { get; set; } = new();
 
         /// <summary>
         /// 温压计名称（显示名称）

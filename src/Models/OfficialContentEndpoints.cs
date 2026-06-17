@@ -26,8 +26,10 @@ namespace GeoChemistryNexus.Models
         public const string GeothermometerBaseUrl = CosBaseUrl + "/" + GeothermometerFolderName;
         public const string GeoTListUrl = GeothermometerBaseUrl + "/GeoT-List.json";
         public const string GeoTIndexUrl = GeothermometerBaseUrl + "/GeoT-index.json";
+        public const string GeoTMineralCategoriesUrl = GeothermometerBaseUrl + "/GeoTMineralCategories.json";
         public const string GeoTListFileName = "GeoT-List.json";
         public const string GeoTIndexFileName = "GeoT-index.json";
+        public const string GeoTMineralCategoriesFileName = "GeoTMineralCategories.json";
         public const string GeothermometerPublishManifestFileName = "geothermometer_publish_manifest.json";
     }
 }

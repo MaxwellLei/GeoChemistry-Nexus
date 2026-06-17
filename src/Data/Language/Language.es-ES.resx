@@ -129,6 +129,15 @@
   <data name="geo_field_mineral_category" xml:space="preserve">
     <value>Categoría mineral *</value>
   </data>
+  <data name="geo_category_single_mineral" xml:space="preserve">
+    <value>Geotermómetro/barómetro monomineral</value>
+  </data>
+  <data name="geo_category_mineral_pair" xml:space="preserve">
+    <value>Geotermómetro/barómetro de par mineral</value>
+  </data>
+  <data name="geo_category_multi_equilibrium" xml:space="preserve">
+    <value>Multimineral / multi-equilibrio de roca total</value>
+  </data>
   <data name="unfavorite" xml:space="preserve">
     <value>Quitar de favoritos</value>
   </data>
@@ -1942,6 +1951,42 @@ Directorio: {2}</value>
   <data name="batch_download_cancelled" xml:space="preserve">
     <value>Descarga por lotes cancelada</value>
   </data>
+  <data name="batch_update_outdated_templates" xml:space="preserve">
+    <value>Actualización por lotes</value>
+  </data>
+  <data name="batch_update_outdated_templates_tooltip" xml:space="preserve">
+    <value>Actualizar por lotes las plantillas oficiales con nuevas versiones disponibles</value>
+  </data>
+  <data name="batch_update_title" xml:space="preserve">
+    <value>Actualización por lotes</value>
+  </data>
+  <data name="batch_update_confirm_message" xml:space="preserve">
+    <value>Se detectaron {0} plantillas con nuevas versiones. ¿Desea actualizarlas por lotes?</value>
+  </data>
+  <data name="no_outdated_templates_to_update" xml:space="preserve">
+    <value>No hay plantillas que necesiten actualización</value>
+  </data>
+  <data name="batch_update_success_count" xml:space="preserve">
+    <value>Actualizadas correctamente: {0}</value>
+  </data>
+  <data name="batch_update_fail_count" xml:space="preserve">
+    <value>Fallidas: {0}</value>
+  </data>
+  <data name="batch_update_complete" xml:space="preserve">
+    <value>Actualización por lotes completada</value>
+  </data>
+  <data name="batch_update_failed" xml:space="preserve">
+    <value>Error en la actualización por lotes: </value>
+  </data>
+  <data name="batch_updating" xml:space="preserve">
+    <value>Actualizando por lotes</value>
+  </data>
+  <data name="batch_update_progress" xml:space="preserve">
+    <value>Actualizando: {0}/{1} - {2}</value>
+  </data>
+  <data name="batch_update_cancelled" xml:space="preserve">
+    <value>Actualización por lotes cancelada</value>
+  </data>
   <data name="geo_tooltip_formula_name" xml:space="preserve">
     <value>Solo letras, dígitos y guion bajo, p. ej. MyFormula_v1</value>
   </data>
@@ -1959,6 +2004,21 @@ Directorio: {2}</value>
   </data>
   <data name="click_or_drag_template_json_here" xml:space="preserve">
     <value>Haga clic o arrastre el archivo de plantilla (JSON) aquí</value>
+  </data>
+  <data name="file_drop_release_to_open" xml:space="preserve">
+    <value>Release to open template</value>
+  </data>
+  <data name="file_drop_release_to_import" xml:space="preserve">
+    <value>Release to import</value>
+  </data>
+  <data name="file_drop_invalid_format" xml:space="preserve">
+    <value>Unsupported file format</value>
+  </data>
+  <data name="file_drop_supported_diagram" xml:space="preserve">
+    <value>Supports .json / .zip template files</value>
+  </data>
+  <data name="file_drop_supported_geothermometer" xml:space="preserve">
+    <value>Supports .zip geothermometer packages</value>
   </data>
   <data name="coordinate_positioning" xml:space="preserve">
     <value>Posicionamiento de coordenadas</value>

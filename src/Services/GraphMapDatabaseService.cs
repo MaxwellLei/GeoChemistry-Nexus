@@ -139,17 +139,20 @@ namespace GeoChemistryNexus.Services
         }
 
         /// <summary>
-        /// 获取缩略图流
+        /// 获取缩略图流（独立 MemoryStream，不依赖 LiteDB 连接生命周期）
         /// </summary>
-        public Stream GetThumbnail(Guid id)
+        public Stream? GetThumbnail(Guid id)
         {
             using var db = GetDatabase();
             string fileId = $"{id}{ThumbnailSuffix}";
-            if (db.FileStorage.Exists(fileId))
-            {
-                return db.FileStorage.OpenRead(fileId);
-            }
-            return null;
+            if (!db.FileStorage.Exists(fileId))
+                return null;
+
+            using var source = db.FileStorage.OpenRead(fileId);
+            var buffer = new MemoryStream();
+            source.CopyTo(buffer);
+            buffer.Position = 0;
+            return buffer;
         }
 
         /// <summary>

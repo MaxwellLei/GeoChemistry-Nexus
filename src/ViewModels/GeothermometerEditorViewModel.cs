@@ -10,8 +10,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace GeoChemistryNexus.ViewModels
 {
@@ -20,7 +22,9 @@ namespace GeoChemistryNexus.ViewModels
     /// 用于新建和编辑自定义温压计，支持脚本测试和导出
     /// 三步流程：基本信息 → 公式脚本 → 帮助文档
     /// </summary>
-    public partial class GeothermometerEditorViewModel : ObservableObject, IRecipient<DeveloperModeChangedMessage>
+    public partial class GeothermometerEditorViewModel : ObservableObject,
+        IRecipient<DeveloperModeChangedMessage>,
+        IRecipient<GeoTMineralCategoryUpdatedMessage>
     {
         // ==================== 步骤导航 ====================
 
@@ -33,7 +37,11 @@ namespace GeoChemistryNexus.ViewModels
         private string name = string.Empty;
 
         [ObservableProperty]
-        private string mineral = string.Empty;
+        private string selectedCategory = GeoTCategoryHelper.DefaultCategoryKey;
+
+        public ObservableCollection<GeoTTagModel> TagParts { get; } = new();
+
+        public ObservableCollection<GeoTCategoryOption> CategoryOptions { get; } = new();
 
         [ObservableProperty]
         private string author = string.Empty;
@@ -86,15 +94,15 @@ namespace GeoChemistryNexus.ViewModels
         {
             get
             {
-                var mineralText = string.IsNullOrWhiteSpace(Mineral)
-                    ? LanguageService.Instance["geo_preview_mineral_placeholder"] ?? "Mineral Category"
-                    : Mineral.Trim();
+                var tagsText = TagParts.Count == 0
+                    ? LanguageService.Instance["geo_preview_tags_placeholder"] ?? "Tags"
+                    : string.Join(" · ", TagParts.Select(t => t.DisplayName));
                 var authorText = string.IsNullOrWhiteSpace(Author)
                     ? LanguageService.Instance["geo_preview_author_placeholder"] ?? "Author"
                     : Author.Trim();
                 var yearText = Year > 0 ? Year.ToString() : DateTime.Now.Year.ToString();
                 var format = LanguageService.Instance["geo_preview_meta_format"] ?? "{0} - {1} ({2})";
-                return string.Format(format, mineralText, authorText, yearText);
+                return string.Format(format, tagsText, authorText, yearText);
             }
         }
 
@@ -124,9 +132,21 @@ namespace GeoChemistryNexus.ViewModels
             ? LanguageService.Instance["geo_preview_reference_placeholder"] ?? "Reference will appear here"
             : Reference.Trim();
 
-        public string PreviewMineral => string.IsNullOrWhiteSpace(Mineral)
-            ? LanguageService.Instance["geo_preview_mineral_placeholder"] ?? "Mineral Category"
-            : Mineral.Trim();
+        public ObservableCollection<string> PreviewTags
+        {
+            get
+            {
+                if (TagParts.Count == 0)
+                {
+                    return new ObservableCollection<string>
+                    {
+                        LanguageService.Instance["geo_preview_tags_placeholder"] ?? "Tags"
+                    };
+                }
+
+                return new ObservableCollection<string>(TagParts.Select(t => t.DisplayName));
+            }
+        }
 
         public string PreviewVersion => TemplateVersion;
 
@@ -207,10 +227,14 @@ namespace GeoChemistryNexus.ViewModels
         private bool _isOfficial;
 
         /// <summary>
-        /// 官方温压计查看模式：基本信息、公式脚本、帮助文档仅可查看与复制，不可修改。
+        /// 官方温压计查看模式：基本信息、公式脚本和帮助文档仅可查看与复制，不可修改。
+        /// 开发者模式下编辑官方温压计时允许修改。
         /// </summary>
         [ObservableProperty]
         private bool isContentReadOnly;
+
+        [ObservableProperty]
+        private bool isDeveloperMode;
 
         private Guid _editingEntityId;
         private string _editingPluginId = string.Empty;
@@ -291,14 +315,44 @@ namespace GeoChemistryNexus.ViewModels
         public GeothermometerEditorViewModel()
         {
             ScriptContent = ScriptTemplate;
+            TagParts.CollectionChanged += (_, _) => NotifyPreviewChanged();
+            ReloadCategoryOptions();
+            if (bool.TryParse(ConfigHelper.GetConfig("developer_mode"), out bool devMode))
+                IsDeveloperMode = devMode;
             LanguageService.Instance.PropertyChanged += OnLanguageChanged;
             WeakReferenceMessenger.Default.Register<DeveloperModeChangedMessage>(this);
+            WeakReferenceMessenger.Default.Register<GeoTMineralCategoryUpdatedMessage>(this);
             RefreshLanguageDisplayOptions();
+        }
+
+        public void Receive(GeoTMineralCategoryUpdatedMessage message)
+        {
+            ReloadCategoryOptions();
+            RefreshTagDisplayNames();
+        }
+
+        private void ReloadCategoryOptions()
+        {
+            CategoryOptions.Clear();
+            foreach (string key in GeoTCategoryHelper.GetCategoryKeys())
+            {
+                CategoryOptions.Add(new GeoTCategoryOption(key, GeoTCategoryHelper.GetDisplayName(key)));
+            }
+
+            if (!GeoTCategoryHelper.IsValidCategoryKey(SelectedCategory))
+                SelectedCategory = GeoTCategoryHelper.DefaultCategoryKey;
         }
 
         public void Receive(DeveloperModeChangedMessage message)
         {
+            IsDeveloperMode = message.Value;
+            UpdateContentReadOnlyState();
             RefreshLanguageDisplayOptions();
+        }
+
+        private void UpdateContentReadOnlyState()
+        {
+            IsContentReadOnly = _isOfficial && !IsDeveloperMode;
         }
 
         private void RefreshLanguageDisplayOptions()
@@ -313,9 +367,19 @@ namespace GeoChemistryNexus.ViewModels
         {
             if (e.PropertyName == "Item[]")
             {
+                ReloadCategoryOptions();
+                RefreshTagDisplayNames();
                 OnPropertyChanged(nameof(EditorTitle));
                 NotifyPreviewChanged();
             }
+        }
+
+        private void RefreshTagDisplayNames()
+        {
+            var keys = TagParts.Select(t => t.StorageName).ToList();
+            TagParts.Clear();
+            foreach (var key in keys)
+                TagParts.Add(new GeoTTagModel(key));
         }
 
         private void NotifyPreviewChanged()
@@ -323,7 +387,7 @@ namespace GeoChemistryNexus.ViewModels
             OnPropertyChanged(nameof(PreviewName));
             OnPropertyChanged(nameof(PreviewMetaLine));
             OnPropertyChanged(nameof(PreviewReference));
-            OnPropertyChanged(nameof(PreviewMineral));
+            OnPropertyChanged(nameof(PreviewTags));
             OnPropertyChanged(nameof(PreviewVersion));
         }
 
@@ -334,7 +398,7 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         partial void OnNameChanged(string value) => NotifyPreviewChanged();
-        partial void OnMineralChanged(string value) => NotifyPreviewChanged();
+        partial void OnSelectedCategoryChanged(string value) => NotifyPreviewChanged();
         partial void OnAuthorChanged(string value) => NotifyPreviewChanged();
         partial void OnYearChanged(int value) => NotifyPreviewChanged();
         partial void OnReferenceChanged(string value) => NotifyPreviewChanged();
@@ -399,6 +463,60 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
+        // ==================== 标签管理 ====================
+
+        public bool TryAddTag(string text, Dictionary<string, string>? localizedNames = null)
+        {
+            if (IsContentReadOnly) return false;
+            if (string.IsNullOrWhiteSpace(text)) return false;
+
+            string trimmed = text.Trim();
+            if (TagParts.Any(t => string.Equals(t.StorageName, trimmed, StringComparison.OrdinalIgnoreCase)))
+                return false;
+
+            var invalidChars = Path.GetInvalidFileNameChars();
+            if (trimmed.IndexOfAny(invalidChars) >= 0)
+            {
+                ShowError(LanguageService.Instance["invalid_filename_char"]);
+                return false;
+            }
+
+            string storageName = ResolveTagStorageName(trimmed, localizedNames);
+            TagParts.Add(new GeoTTagModel(storageName));
+            return true;
+        }
+
+        public void RemoveTag(GeoTTagModel item)
+        {
+            if (IsContentReadOnly || item == null) return;
+            TagParts.Remove(item);
+        }
+
+        private static string ResolveTagStorageName(string text, Dictionary<string, string>? localizedNames)
+        {
+            if (localizedNames != null &&
+                localizedNames.TryGetValue("zh-CN", out var zh) &&
+                !string.IsNullOrWhiteSpace(zh))
+            {
+                return zh.Trim();
+            }
+
+            var entry = GeoTMineralCategoryHelper.FindEntry(text);
+            if (entry != null &&
+                entry.TryGetValue("zh-CN", out var matchedZh) &&
+                !string.IsNullOrWhiteSpace(matchedZh))
+            {
+                return matchedZh.Trim();
+            }
+
+            return text.Trim();
+        }
+
+        public List<Dictionary<string, string>> GetTagSuggestions()
+        {
+            return GeoTMineralCategoryHelper.GetAllTagSuggestions();
+        }
+
         // ==================== 步骤导航命令 ====================
 
         [RelayCommand]
@@ -435,8 +553,10 @@ namespace GeoChemistryNexus.ViewModels
         {
             if (string.IsNullOrWhiteSpace(Name))
                 return LanguageService.Instance["geo_validate_name_required"];
-            if (string.IsNullOrWhiteSpace(Mineral))
-                return LanguageService.Instance["geo_validate_mineral_required"];
+            if (!GeoTCategoryHelper.IsValidCategoryKey(SelectedCategory))
+                return LanguageService.Instance["geo_validate_category_required"];
+            if (TagParts.Count == 0)
+                return LanguageService.Instance["geo_validate_tags_required"];
             if (string.IsNullOrWhiteSpace(Author))
                 return LanguageService.Instance["geo_validate_author_required"];
             if (Year <= 0)
@@ -509,10 +629,16 @@ namespace GeoChemistryNexus.ViewModels
             _editingEntityId = entity.Id;
             _editingPluginId = entity.PluginId;
             _isOfficial = entity.IsOfficial;
-            IsContentReadOnly = entity.IsOfficial;
+            UpdateContentReadOnlyState();
 
             Name = entity.Name;
-            Mineral = entity.Mineral;
+            SelectedCategory = GeoTCategoryHelper.NormalizeCategoryKey(entity.Category);
+            TagParts.Clear();
+            foreach (var tag in entity.Tags ?? new List<string>())
+            {
+                if (string.IsNullOrWhiteSpace(tag)) continue;
+                TagParts.Add(new GeoTTagModel(tag.Trim()));
+            }
             Author = entity.Author;
             Year = entity.Year;
             Reference = entity.Reference;
@@ -622,7 +748,8 @@ namespace GeoChemistryNexus.ViewModels
                 PluginId = IsEditMode ? _editingPluginId : string.Empty,
                 Version = TemplateVersion,
                 IsOfficial = _isOfficial,
-                Mineral = Mineral.Trim(),
+                Category = GeoTCategoryHelper.NormalizeCategoryKey(SelectedCategory),
+                Tags = TagParts.Select(t => t.StorageName).Where(t => t.Length > 0).Distinct(StringComparer.OrdinalIgnoreCase).ToList(),
                 Name = Name.Trim(),
                 Author = Author.Trim(),
                 Year = Year,
@@ -712,5 +839,29 @@ namespace GeoChemistryNexus.ViewModels
         {
             OnCloseRequested?.Invoke();
         }
+    }
+
+    public class GeoTCategoryOption
+    {
+        public GeoTCategoryOption(string key, string displayName)
+        {
+            Key = key;
+            DisplayName = displayName;
+        }
+
+        public string Key { get; }
+        public string DisplayName { get; }
+    }
+
+    public class GeoTTagModel
+    {
+        public GeoTTagModel(string storageName)
+        {
+            StorageName = storageName.Trim();
+        }
+
+        public string StorageName { get; }
+
+        public string DisplayName => GeoTMineralCategoryHelper.GetDisplayName(StorageName);
     }
 }

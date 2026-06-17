@@ -1161,6 +1161,33 @@
   <data name="official_publisher_home_save_draft" xml:space="preserve">
     <value>Save Draft</value>
   </data>
+  <data name="official_publisher_plot_categories_section" xml:space="preserve">
+    <value>Plot Categories</value>
+  </data>
+  <data name="official_publisher_plot_categories_level" xml:space="preserve">
+    <value>Level</value>
+  </data>
+  <data name="official_publisher_plot_categories_draft_saved" xml:space="preserve">
+    <value>Plot categories draft saved locally.</value>
+  </data>
+  <data name="official_publisher_plot_categories_reloaded" xml:space="preserve">
+    <value>Plot categories editor reloaded.</value>
+  </data>
+  <data name="official_publisher_geot_categories_section" xml:space="preserve">
+    <value>GeoT Mineral Tags</value>
+  </data>
+  <data name="official_publisher_geot_categories_draft_saved" xml:space="preserve">
+    <value>GeoT mineral categories draft saved locally.</value>
+  </data>
+  <data name="official_publisher_geot_categories_reloaded" xml:space="preserve">
+    <value>GeoT mineral categories editor reloaded.</value>
+  </data>
+  <data name="official_publisher_category_add" xml:space="preserve">
+    <value>Add Entry</value>
+  </data>
+  <data name="official_publisher_category_edit" xml:space="preserve">
+    <value>Edit Entry</value>
+  </data>
   <data name="official_publisher_home_links_draft_saved" xml:space="preserve">
     <value>Home links draft saved locally.</value>
   </data>
@@ -1223,6 +1250,21 @@
   </data>
   <data name="click_or_drag_template_json_here" xml:space="preserve">
     <value>Click or drag template file (JSON) here</value>
+  </data>
+  <data name="file_drop_release_to_open" xml:space="preserve">
+    <value>Release to open template</value>
+  </data>
+  <data name="file_drop_release_to_import" xml:space="preserve">
+    <value>Release to import</value>
+  </data>
+  <data name="file_drop_invalid_format" xml:space="preserve">
+    <value>Unsupported file format</value>
+  </data>
+  <data name="file_drop_supported_diagram" xml:space="preserve">
+    <value>Supports .json / .zip template files</value>
+  </data>
+  <data name="file_drop_supported_geothermometer" xml:space="preserve">
+    <value>Supports .zip geothermometer packages</value>
   </data>
   <data name="support_json_format" xml:space="preserve">
     <value>Supports .json format</value>
@@ -1756,6 +1798,54 @@
     <value>Batch Download Cancelled</value>
     <comment>Batch download cancellation prompt</comment>
   </data>
+  <data name="batch_update_outdated_templates" xml:space="preserve">
+    <value>Batch Update</value>
+    <comment>Batch update button text</comment>
+  </data>
+  <data name="batch_update_outdated_templates_tooltip" xml:space="preserve">
+    <value>Batch update official templates with new versions available</value>
+    <comment>Batch update button tooltip</comment>
+  </data>
+  <data name="batch_update_title" xml:space="preserve">
+    <value>Batch Update</value>
+    <comment>Batch update dialog title</comment>
+  </data>
+  <data name="batch_update_confirm_message" xml:space="preserve">
+    <value>Detected {0} templates with new versions available. Would you like to batch update them?</value>
+    <comment>Batch update confirmation message</comment>
+  </data>
+  <data name="no_outdated_templates_to_update" xml:space="preserve">
+    <value>No templates need updating</value>
+    <comment>Batch update empty prompt</comment>
+  </data>
+  <data name="batch_update_success_count" xml:space="preserve">
+    <value>Successfully updated: {0}</value>
+    <comment>Batch update result</comment>
+  </data>
+  <data name="batch_update_fail_count" xml:space="preserve">
+    <value>Failed: {0}</value>
+    <comment>Batch update result</comment>
+  </data>
+  <data name="batch_update_complete" xml:space="preserve">
+    <value>Batch Update Complete</value>
+    <comment>Batch update result</comment>
+  </data>
+  <data name="batch_update_failed" xml:space="preserve">
+    <value>Batch Update Failed: </value>
+    <comment>Batch update error</comment>
+  </data>
+  <data name="batch_updating" xml:space="preserve">
+    <value>Batch Updating</value>
+    <comment>Batch update overlay title</comment>
+  </data>
+  <data name="batch_update_progress" xml:space="preserve">
+    <value>Updating: {0}/{1} - {2}</value>
+    <comment>Batch update progress</comment>
+  </data>
+  <data name="batch_update_cancelled" xml:space="preserve">
+    <value>Batch Update Cancelled</value>
+    <comment>Batch update cancellation prompt</comment>
+  </data>
   <data name="favorite" xml:space="preserve">
     <value>Favorite</value>
   </data>
@@ -1985,7 +2075,13 @@
     <value>Name *</value>
   </data>
   <data name="geo_field_mineral_category" xml:space="preserve">
-    <value>Mineral Category *</value>
+    <value>Thermobarometer Tags *</value>
+  </data>
+  <data name="geo_field_tags" xml:space="preserve">
+    <value>Thermobarometer Tags *</value>
+  </data>
+  <data name="geo_field_category" xml:space="preserve">
+    <value>Category *</value>
   </data>
   <data name="geo_field_year" xml:space="preserve">
     <value>Year *</value>
@@ -2020,6 +2116,24 @@
   <data name="geo_example_mineral" xml:space="preserve">
     <value>e.g. Quartz</value>
   </data>
+  <data name="geo_example_tag" xml:space="preserve">
+    <value>e.g. Quartz</value>
+  </data>
+  <data name="geo_example_category" xml:space="preserve">
+    <value>e.g. Single-Mineral Geothermobarometer</value>
+  </data>
+  <data name="geo_category_single_mineral" xml:space="preserve">
+    <value>Single-Mineral Geothermobarometer</value>
+  </data>
+  <data name="geo_category_mineral_pair" xml:space="preserve">
+    <value>Mineral-Pair Geothermobarometer</value>
+  </data>
+  <data name="geo_category_multi_equilibrium" xml:space="preserve">
+    <value>Multi-Mineral / Whole-Rock Multi-Equilibrium</value>
+  </data>
+  <data name="geo_tag_enter_hint" xml:space="preserve">
+    <value>Type a tag and press Enter to confirm</value>
+  </data>
   <data name="geo_example_year" xml:space="preserve">
     <value>e.g. 2020</value>
   </data>
@@ -2048,7 +2162,10 @@
     <value>Geothermobarometer Name</value>
   </data>
   <data name="geo_preview_mineral_placeholder" xml:space="preserve">
-    <value>Mineral Category</value>
+    <value>Tags</value>
+  </data>
+  <data name="geo_preview_tags_placeholder" xml:space="preserve">
+    <value>Tags</value>
   </data>
   <data name="geo_preview_author_placeholder" xml:space="preserve">
     <value>Author</value>
@@ -2229,7 +2346,13 @@ Directory: {2}</value>
     <value>Name cannot be empty.</value>
   </data>
   <data name="geo_validate_mineral_required" xml:space="preserve">
-    <value>Mineral category cannot be empty.</value>
+    <value>Please add at least one thermobarometer tag.</value>
+  </data>
+  <data name="geo_validate_tags_required" xml:space="preserve">
+    <value>Please add at least one thermobarometer tag.</value>
+  </data>
+  <data name="geo_validate_category_required" xml:space="preserve">
+    <value>Please select a thermobarometer category.</value>
   </data>
   <data name="geo_validate_author_required" xml:space="preserve">
     <value>Author cannot be empty.</value>
@@ -2551,6 +2674,9 @@ Directory: {2}</value>
   </data>
   <data name="data_toolbar_clear_all_data_tooltip" xml:space="preserve">
     <value>Clear all data in the table</value>
+  </data>
+  <data name="data_grid_plot_refresh_pending" xml:space="preserve">
+    <value>Data has been modified. Please refresh the plot.</value>
   </data>
   <data name="shortcuts_title" xml:space="preserve">
     <value>Shortcuts</value>

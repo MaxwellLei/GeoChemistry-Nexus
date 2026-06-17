@@ -11,6 +11,7 @@
       xmlns:models="clr-namespace:GeoChemistryNexus.Models"
       xmlns:vm="clr-namespace:GeoChemistryNexus.ViewModels"
       xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="1100"
       Title="GeothermometerPageView">
@@ -18,7 +19,6 @@
     <Page.Resources>
         <FontFamily x:Key="IconFont">pack://application:,,,/Data/Icon/#iconfont</FontFamily>
         <cvs:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-        <cvs:StringToBrushConverter x:Key="StringToBrushConverter"/>
         <hp:BindingProxy x:Key="GridProxy" Data="{Binding ElementName=MyReoGrid}" />
         <hp:BindingProxy x:Key="ViewModelProxy" Data="{Binding}" />
 
@@ -201,6 +201,15 @@
     </Page.Resources>
 
     <Grid>
+        <i:Interaction.Behaviors>
+            <hp:FileDropBehavior DropCommand="{Binding ImportPluginFromPathCommand}"
+                                 AllowedExtensions=".zip"
+                                 OverlayIcon="&#xE896;"
+                                 HintText="{Binding [file_drop_release_to_import], Source={x:Static lg:LanguageService.Instance}}"
+                                 SubHintText="{Binding [file_drop_supported_geothermometer], Source={x:Static lg:LanguageService.Instance}}"
+                                 InvalidHintText="{Binding [file_drop_invalid_format], Source={x:Static lg:LanguageService.Instance}}"/>
+        </i:Interaction.Behaviors>
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300"/>
             <ColumnDefinition Width="4"/>
@@ -297,13 +306,13 @@
                         </Border>
                     </Grid>
 
-                    <!-- 官方矿物分组列表 -->
-                    <ItemsControl ItemsSource="{Binding MineralGroups}">
+                    <!-- 官方类别分组列表 -->
+                    <ItemsControl ItemsSource="{Binding CategoryGroups}">
                         <ItemsControl.ItemTemplate>
-                            <DataTemplate DataType="{x:Type vm:MineralGroupViewModel}">
+                            <DataTemplate DataType="{x:Type vm:CategoryGroupViewModel}">
                                 <StackPanel>
-                                    <!-- 矿物分组按钮 -->
-                                    <Button Command="{Binding Data.ToggleMineralGroupCommand, Source={StaticResource ViewModelProxy}}"
+                                    <!-- 类别分组按钮 -->
+                                    <Button Command="{Binding Data.ToggleCategoryGroupCommand, Source={StaticResource ViewModelProxy}}"
                                             CommandParameter="{Binding}">
                                         <Button.Style>
                                             <Style TargetType="Button" BasedOn="{StaticResource MineralGroupButtonStyle}">
@@ -321,7 +330,7 @@
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <!-- 矿物名称 -->
+                                            <!-- 类别名称 -->
                                             <TextBlock Grid.Column="0" Text="{Binding DisplayName}" 
                                                        FontSize="14" Foreground="#333333" VerticalAlignment="Center">
                                                 <TextBlock.Style>
@@ -618,7 +627,7 @@
                                             <TextBlock Text="{Binding Name}" FontSize="13" Foreground="#333" 
                                                        TextTrimming="CharacterEllipsis"/>
                                             <TextBlock FontSize="11" Foreground="#888" Margin="0,2,0,0">
-                                                <Run Text="{Binding Mineral, Mode=OneWay}"/>
+                                                <Run Text="{Binding TagsDisplayText, Mode=OneWay}"/>
                                                 <Run Text=" - "/>
                                                 <Run Text="{Binding Author, Mode=OneWay}"/>
                                                 <Run Text=" ("/>
@@ -720,11 +729,22 @@
                             <TextBlock FontSize="12" Foreground="#666" Margin="0,4,0,0"
                                        Text="{Binding SelectedPlugin.Reference}" TextTrimming="CharacterEllipsis"/>
 
-                            <!-- 标签 -->
+                            <!-- 标签 · 版本 · 内置/自定义 -->
                             <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                                <Border CornerRadius="4" Background="#E8F4FD" Padding="8,3" Margin="0,0,6,0">
-                                    <TextBlock FontSize="11" Foreground="#0078D4" Text="{Binding SelectedPlugin.Mineral}"/>
-                                </Border>
+                                <ItemsControl ItemsSource="{Binding SelectedPlugin.Tags}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border CornerRadius="4" Background="#E8F4FD" Padding="8,3" Margin="0,0,6,0">
+                                                <TextBlock FontSize="11" Foreground="#0078D4" Text="{Binding Mode=OneWay}"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
                                 <Border CornerRadius="4" Background="#F0F0F0" Padding="8,3" Margin="0,0,6,0">
                                     <TextBlock FontSize="11" Foreground="#555">
                                         <Run Text="v"/>

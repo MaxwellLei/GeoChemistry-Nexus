@@ -216,7 +216,8 @@ namespace GeoChemistryNexus.ViewModels
                 {
                     // 计算鼠标在窗口中的相对位置比例
                     var mouseX = System.Windows.Input.Mouse.GetPosition(window).X;
-                    var mouseRatio = mouseX / window.ActualWidth;
+                    var width = window.ActualWidth;
+                    var mouseRatio = width > 0 ? mouseX / width : 0;
                     
                     // 还原窗口
                     window.WindowState = WindowState.Normal;
@@ -250,24 +251,23 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 切换绘图页命令
+        /// 导航到主页（仪表盘）
         /// </summary>
         /// <param name="nav">导航</param>
         [RelayCommand]
         private void HomePage(Frame nav)
         {
-            NavigateToPage(nav, MainPlotPage.GetPage());
-            IsSideBarVisible = false;
+            NavigateToPage(nav, HomePageView.GetPage());
         }
 
         /// <summary>
-        /// 切换主页命令
+        /// 导航到绘图页
         /// </summary>
         /// <param name="nav">导航</param>
         [RelayCommand]
-        private void StartPage(Frame nav)
+        private void PlotPage(Frame nav)
         {
-            NavigateToPage(nav, HomePageView.GetPage());
+            NavigateToPage(nav, MainPlotPage.GetPage());
         }
 
         /// <summary>
@@ -278,7 +278,6 @@ namespace GeoChemistryNexus.ViewModels
         private void DataPreprocessingPage(Frame nav)
         {
             NavigateToPage(nav, DataPreprocessingPageView.GetPage());
-            IsSideBarVisible = false;
         }
 
         /// <summary>
@@ -289,7 +288,6 @@ namespace GeoChemistryNexus.ViewModels
         private void GTMNewPage(Frame nav)
         {
             NavigateToPage(nav, GeothermometerPageView.GetPage());
-            IsSideBarVisible = false;
         }
 
         /// <summary>
@@ -300,7 +298,6 @@ namespace GeoChemistryNexus.ViewModels
         private void CipwPage(Frame nav)
         {
             NavigateToPage(nav, CipwPageView.GetPage());
-            IsSideBarVisible = false;
         }
 
 

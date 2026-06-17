@@ -338,10 +338,12 @@ public class FileHelper
     //检查文件是否被占用
     public static bool IsFileInUse(string path)
     {
+        if (!File.Exists(path))
+            return false;
+
         try
         {
-            System.IO.FileStream fs = System.IO.File.Open(path, System.IO.FileMode.OpenOrCreate, System.IO.FileAccess.ReadWrite, System.IO.FileShare.None);
-            fs.Close();
+            using var fs = File.Open(path, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
             return false;
         }
         catch (Exception)
@@ -353,10 +355,12 @@ public class FileHelper
     //解除文件占用
     public static bool ReleaseFile(string path)
     {
+        if (!File.Exists(path))
+            return true;
+
         try
         {
-            System.IO.FileStream fs = System.IO.File.Open(path, System.IO.FileMode.OpenOrCreate, System.IO.FileAccess.ReadWrite, System.IO.FileShare.None);
-            fs.Close();
+            using var fs = File.Open(path, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
             return true;
         }
         catch (Exception)
@@ -378,7 +382,7 @@ public class FileHelper
         {
             if (!IsFileExist(path))
             {
-                System.IO.File.Create(path);
+                using (File.Create(path)) { }
             }
             return true;
         }

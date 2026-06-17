@@ -127,7 +127,22 @@
     <value>脚本内容:</value>
   </data>
   <data name="geo_field_mineral_category" xml:space="preserve">
-    <value>矿物分类 *</value>
+    <value>温压计标签 *</value>
+  </data>
+  <data name="geo_field_tags" xml:space="preserve">
+    <value>温压计标签 *</value>
+  </data>
+  <data name="geo_field_category" xml:space="preserve">
+    <value>类别 *</value>
+  </data>
+  <data name="geo_category_single_mineral" xml:space="preserve">
+    <value>单矿物温压计</value>
+  </data>
+  <data name="geo_category_mineral_pair" xml:space="preserve">
+    <value>矿物对温压计</value>
+  </data>
+  <data name="geo_category_multi_equilibrium" xml:space="preserve">
+    <value>多矿物/全岩多平衡</value>
   </data>
   <data name="unfavorite" xml:space="preserve">
     <value>取消收藏</value>
@@ -376,6 +391,33 @@
   <data name="official_publisher_home_save_draft" xml:space="preserve">
     <value>保存草稿</value>
   </data>
+  <data name="official_publisher_plot_categories_section" xml:space="preserve">
+    <value>图解分类</value>
+  </data>
+  <data name="official_publisher_plot_categories_level" xml:space="preserve">
+    <value>层级</value>
+  </data>
+  <data name="official_publisher_plot_categories_draft_saved" xml:space="preserve">
+    <value>图解分类草稿已保存到本地。</value>
+  </data>
+  <data name="official_publisher_plot_categories_reloaded" xml:space="preserve">
+    <value>图解分类编辑器已重新加载。</value>
+  </data>
+  <data name="official_publisher_geot_categories_section" xml:space="preserve">
+    <value>温压计矿物标签</value>
+  </data>
+  <data name="official_publisher_geot_categories_draft_saved" xml:space="preserve">
+    <value>温压计矿物标签草稿已保存到本地。</value>
+  </data>
+  <data name="official_publisher_geot_categories_reloaded" xml:space="preserve">
+    <value>温压计矿物标签编辑器已重新加载。</value>
+  </data>
+  <data name="official_publisher_category_add" xml:space="preserve">
+    <value>添加条目</value>
+  </data>
+  <data name="official_publisher_category_edit" xml:space="preserve">
+    <value>编辑条目</value>
+  </data>
   <data name="official_publisher_home_links_draft_saved" xml:space="preserve">
     <value>主页链接草稿已保存到本地。</value>
   </data>
@@ -491,7 +533,13 @@
     <value>开发者模式</value>
   </data>
   <data name="geo_validate_mineral_required" xml:space="preserve">
-    <value>矿物分类不能为空。</value>
+    <value>请至少添加一个温压计标签。</value>
+  </data>
+  <data name="geo_validate_tags_required" xml:space="preserve">
+    <value>请至少添加一个温压计标签。</value>
+  </data>
+  <data name="geo_validate_category_required" xml:space="preserve">
+    <value>请选择温压计类别。</value>
   </data>
   <data name="object_selection_trigger" xml:space="preserve">
     <value>选中对象触发方式</value>
@@ -2272,6 +2320,42 @@
   <data name="batch_download_cancelled" xml:space="preserve">
     <value>批量下载已取消</value>
   </data>
+  <data name="batch_update_outdated_templates" xml:space="preserve">
+    <value>批量更新</value>
+  </data>
+  <data name="batch_update_outdated_templates_tooltip" xml:space="preserve">
+    <value>批量更新有新版本的官方模板</value>
+  </data>
+  <data name="batch_update_title" xml:space="preserve">
+    <value>批量更新</value>
+  </data>
+  <data name="batch_update_confirm_message" xml:space="preserve">
+    <value>检测到 {0} 个模板有新版本，是否批量更新？</value>
+  </data>
+  <data name="no_outdated_templates_to_update" xml:space="preserve">
+    <value>没有需要更新的模板</value>
+  </data>
+  <data name="batch_update_success_count" xml:space="preserve">
+    <value>成功更新：{0} 个</value>
+  </data>
+  <data name="batch_update_fail_count" xml:space="preserve">
+    <value>失败：{0} 个</value>
+  </data>
+  <data name="batch_update_complete" xml:space="preserve">
+    <value>批量更新完成</value>
+  </data>
+  <data name="batch_update_failed" xml:space="preserve">
+    <value>批量更新失败：</value>
+  </data>
+  <data name="batch_updating" xml:space="preserve">
+    <value>批量更新中</value>
+  </data>
+  <data name="batch_update_progress" xml:space="preserve">
+    <value>正在更新：{0}/{1} - {2}</value>
+  </data>
+  <data name="batch_update_cancelled" xml:space="preserve">
+    <value>批量更新已取消</value>
+  </data>
   <data name="geo_tooltip_formula_name" xml:space="preserve">
     <value>仅限字母、数字和下划线，如 MyFormula_v1</value>
   </data>
@@ -2289,6 +2373,21 @@
   </data>
   <data name="click_or_drag_template_json_here" xml:space="preserve">
     <value>点击或拖拽模板文件(JSON)到此处</value>
+  </data>
+  <data name="file_drop_release_to_open" xml:space="preserve">
+    <value>松开鼠标以打开模板</value>
+  </data>
+  <data name="file_drop_release_to_import" xml:space="preserve">
+    <value>松开鼠标以导入</value>
+  </data>
+  <data name="file_drop_invalid_format" xml:space="preserve">
+    <value>不支持的文件格式</value>
+  </data>
+  <data name="file_drop_supported_diagram" xml:space="preserve">
+    <value>支持 .json / .zip 图解模板文件</value>
+  </data>
+  <data name="file_drop_supported_geothermometer" xml:space="preserve">
+    <value>支持 .zip 温压计包</value>
   </data>
   <data name="coordinate_positioning" xml:space="preserve">
     <value>坐标定位</value>
@@ -2461,6 +2560,15 @@
   <data name="geo_example_mineral" xml:space="preserve">
     <value>例如：石英</value>
   </data>
+  <data name="geo_example_tag" xml:space="preserve">
+    <value>例如：石英</value>
+  </data>
+  <data name="geo_example_category" xml:space="preserve">
+    <value>例如：单矿物温压计</value>
+  </data>
+  <data name="geo_tag_enter_hint" xml:space="preserve">
+    <value>输入标签后按 Enter 确认</value>
+  </data>
   <data name="geo_example_year" xml:space="preserve">
     <value>例如：2020</value>
   </data>
@@ -2489,7 +2597,10 @@
     <value>温压计名称预览</value>
   </data>
   <data name="geo_preview_mineral_placeholder" xml:space="preserve">
-    <value>矿物分类</value>
+    <value>标签</value>
+  </data>
+  <data name="geo_preview_tags_placeholder" xml:space="preserve">
+    <value>标签</value>
   </data>
   <data name="geo_preview_author_placeholder" xml:space="preserve">
     <value>作者</value>
@@ -2558,6 +2669,9 @@
   </data>
   <data name="data_toolbar_clear_all_data_tooltip" xml:space="preserve">
     <value>清空数据表格中的所有数据</value>
+  </data>
+  <data name="data_grid_plot_refresh_pending" xml:space="preserve">
+    <value>数据已修改，请刷新投图。</value>
   </data>
   <data name="shortcuts_title" xml:space="preserve">
     <value>快捷键</value>

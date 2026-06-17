@@ -129,6 +129,15 @@
   <data name="geo_field_mineral_category" xml:space="preserve">
     <value>鉱物分類 *</value>
   </data>
+  <data name="geo_category_single_mineral" xml:space="preserve">
+    <value>単鉱物温圧計</value>
+  </data>
+  <data name="geo_category_mineral_pair" xml:space="preserve">
+    <value>鉱物対温圧計</value>
+  </data>
+  <data name="geo_category_multi_equilibrium" xml:space="preserve">
+    <value>多鉱物/全岩多平衡</value>
+  </data>
   <data name="unfavorite" xml:space="preserve">
     <value>お気に入りを解除</value>
   </data>
@@ -1942,6 +1951,42 @@
   <data name="batch_download_cancelled" xml:space="preserve">
     <value>一括ダウンロードはキャンセルされました</value>
   </data>
+  <data name="batch_update_outdated_templates" xml:space="preserve">
+    <value>一括更新</value>
+  </data>
+  <data name="batch_update_outdated_templates_tooltip" xml:space="preserve">
+    <value>新しいバージョンがある公式テンプレートを一括更新</value>
+  </data>
+  <data name="batch_update_title" xml:space="preserve">
+    <value>一括更新</value>
+  </data>
+  <data name="batch_update_confirm_message" xml:space="preserve">
+    <value>新しいバージョンがあるテンプレートが {0} 件見つかりました。一括更新しますか？</value>
+  </data>
+  <data name="no_outdated_templates_to_update" xml:space="preserve">
+    <value>更新が必要なテンプレートはありません</value>
+  </data>
+  <data name="batch_update_success_count" xml:space="preserve">
+    <value>更新成功：{0} 件</value>
+  </data>
+  <data name="batch_update_fail_count" xml:space="preserve">
+    <value>失敗：{0} 件</value>
+  </data>
+  <data name="batch_update_complete" xml:space="preserve">
+    <value>一括更新が完了しました</value>
+  </data>
+  <data name="batch_update_failed" xml:space="preserve">
+    <value>一括更新に失敗しました：</value>
+  </data>
+  <data name="batch_updating" xml:space="preserve">
+    <value>一括更新中</value>
+  </data>
+  <data name="batch_update_progress" xml:space="preserve">
+    <value>更新中：{0}/{1} - {2}</value>
+  </data>
+  <data name="batch_update_cancelled" xml:space="preserve">
+    <value>一括更新がキャンセルされました</value>
+  </data>
   <data name="geo_tooltip_formula_name" xml:space="preserve">
     <value>英数字とアンダースコアのみ (例: MyFormula_v1)</value>
   </data>
@@ -1959,6 +2004,21 @@
   </data>
   <data name="click_or_drag_template_json_here" xml:space="preserve">
     <value>テンプレートファイル(JSON)をクリックまたはドラッグしてください</value>
+  </data>
+  <data name="file_drop_release_to_open" xml:space="preserve">
+    <value>Release to open template</value>
+  </data>
+  <data name="file_drop_release_to_import" xml:space="preserve">
+    <value>Release to import</value>
+  </data>
+  <data name="file_drop_invalid_format" xml:space="preserve">
+    <value>Unsupported file format</value>
+  </data>
+  <data name="file_drop_supported_diagram" xml:space="preserve">
+    <value>Supports .json / .zip template files</value>
+  </data>
+  <data name="file_drop_supported_geothermometer" xml:space="preserve">
+    <value>Supports .zip geothermometer packages</value>
   </data>
   <data name="coordinate_positioning" xml:space="preserve">
     <value>座標位置合わせ</value>

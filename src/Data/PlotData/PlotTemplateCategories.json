@@ -1,48 +1,128 @@
 {
   "Level1": [
     {
+      "zh-CN": "岩浆岩石学",
+      "zh-TW": "岩漿岩石學",
       "en-US": "Igneous Petrology",
-      "zh-CN": "岩浆岩石学"
+      "de-DE": "Magmapetrologie",
+      "es-ES": "Petrología ígnea",
+      "ja-JP": "火成岩石学",
+      "ko-KR": "화성암석학",
+      "ru-RU": "Магматическая петрология",
+      "fr-FR": "Pétrologie ignée",
+      "pt-BR": "Petrologia ígnea"
     }
   ],
   "Level2": [
     {
+      "zh-CN": "岩石分类",
+      "zh-TW": "岩石分類",
       "en-US": "Rock Classification",
-      "zh-CN": "岩石分类"
+      "de-DE": "Gesteinsklassifikation",
+      "es-ES": "Clasificación de rocas",
+      "ja-JP": "岩石分類",
+      "ko-KR": "암석 분류",
+      "ru-RU": "Классификация пород",
+      "fr-FR": "Classification des roches",
+      "pt-BR": "Classificação de rochas"
     },
     {
-      "en-US": "Tectonic Discrimination",
-      "zh-CN": "构造环境判别"
+      "zh-CN": "构造环境",
+      "zh-TW": "構造環境",
+      "en-US": "Tectonic Setting",
+      "de-DE": "Tektonisches Setting",
+      "es-ES": "Ambiente tectónico",
+      "ja-JP": "構造環境",
+      "ko-KR": "구조 환경",
+      "ru-RU": "Тектоническая обстановка",
+      "fr-FR": "Contexte tectonique",
+      "pt-BR": "Ambiente tectônico"
     }
   ],
   "Level3": [
     {
+      "zh-CN": "火山岩",
+      "zh-TW": "火山岩",
       "en-US": "Volcanic Rocks",
-      "zh-CN": "火山岩"
+      "de-DE": "Vulkanische Gesteine",
+      "es-ES": "Rocas volcánicas",
+      "ja-JP": "火山岩",
+      "ko-KR": "화산암",
+      "ru-RU": "Вулканические породы",
+      "fr-FR": "Roches volcaniques",
+      "pt-BR": "Rochas vulcânicas"
     },
     {
+      "zh-CN": "侵入岩",
+      "zh-TW": "侵入岩",
       "en-US": "Plutonic Rocks",
-      "zh-CN": "侵入岩"
+      "de-DE": "Plutonische Gesteine",
+      "es-ES": "Rocas plutónicas",
+      "ja-JP": "深成岩",
+      "ko-KR": "심성암",
+      "ru-RU": "Плутонические породы",
+      "fr-FR": "Roches plutoniques",
+      "pt-BR": "Rochas plutônicas"
     },
     {
+      "zh-CN": "岩浆系列",
+      "zh-TW": "岩漿系列",
       "en-US": "Magma Series",
-      "zh-CN": "岩浆系列"
+      "de-DE": "Magmaserien",
+      "es-ES": "Series magmáticas",
+      "ja-JP": "マグマ系列",
+      "ko-KR": "마그마 계열",
+      "ru-RU": "Магматические ряды",
+      "fr-FR": "Séries magmatiques",
+      "pt-BR": "Séries magmáticas"
     },
     {
+      "zh-CN": "花岗岩类",
+      "zh-TW": "花崗岩類",
       "en-US": "Granitoids",
-      "zh-CN": "花岗岩类"
+      "de-DE": "Granitoide",
+      "es-ES": "Granitoides",
+      "ja-JP": "花崗岩類",
+      "ko-KR": "화강암류",
+      "ru-RU": "Гранитоиды",
+      "fr-FR": "Granitoïdes",
+      "pt-BR": "Granitoides"
     },
     {
+      "zh-CN": "安山岩类",
+      "zh-TW": "安山岩類",
       "en-US": "Andesitic Rocks",
-      "zh-CN": "安山岩类"
+      "de-DE": "Andesitische Gesteine",
+      "es-ES": "Rocas andesíticas",
+      "ja-JP": "安山岩類",
+      "ko-KR": "안산암류",
+      "ru-RU": "Андезитовые породы",
+      "fr-FR": "Roches andésitiques",
+      "pt-BR": "Rochas andesíticas"
     },
     {
+      "zh-CN": "玄武岩类",
+      "zh-TW": "玄武岩類",
       "en-US": "Basaltic Rocks",
-      "zh-CN": "玄武岩类"
+      "de-DE": "Basaltische Gesteine",
+      "es-ES": "Rocas basálticas",
+      "ja-JP": "玄武岩類",
+      "ko-KR": "현무암류",
+      "ru-RU": "Базальтовые породы",
+      "fr-FR": "Roches basaltiques",
+      "pt-BR": "Rochas basálticas"
     },
     {
+      "zh-CN": "埃达克岩与TTG岩系",
+      "zh-TW": "埃達克岩與TTG岩系",
       "en-US": "Adakites & TTG",
-      "zh-CN": "埃达克岩与TTG岩系"
+      "de-DE": "Adakite und TTG",
+      "es-ES": "Adakitas y TTG",
+      "ja-JP": "アダカイトとTTG岩",
+      "ko-KR": "아다카이트 및 TTG",
+      "ru-RU": "Адакиты и TTG",
+      "fr-FR": "Adakites et TTG",
+      "pt-BR": "Adakitos e TTG"
     }
   ]
 }

@@ -66,5 +66,25 @@ namespace GeoChemistryNexus.Helpers
                     : new Dictionary<string, string>(value.Translations)
             };
         }
+
+        public static LocalizedString FromDictionary(Dictionary<string, string>? dict)
+        {
+            if (dict == null || dict.Count == 0)
+                return new LocalizedString();
+
+            return new LocalizedString
+            {
+                Default = AppCultureRegistry.DefaultContentLanguage,
+                Translations = new Dictionary<string, string>(dict)
+            };
+        }
+
+        public static Dictionary<string, string> ToDictionary(LocalizedString? value)
+        {
+            if (value?.Translations == null || value.Translations.Count == 0)
+                return new Dictionary<string, string>();
+
+            return new Dictionary<string, string>(value.Translations);
+        }
     }
 }

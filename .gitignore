@@ -36,6 +36,7 @@ src/.cursor/
 # 构建输出文件夹
 bin/
 obj/
+src/_build_out/
 
 # WPF 编译 XAML 时自动生成的临时工程文件
 *_wpftmp.csproj

@@ -9,6 +9,7 @@
                     xmlns:layerModels="clr-namespace:GeoChemistryNexus.ViewModels">
 
     <conv:ListBoxItemCornerRadiusConverter x:Key="ListBoxItemCornerRadiusConverter"/>
+    <conv:ListBoxItemBorderThicknessConverter x:Key="ListBoxItemBorderThicknessConverter"/>
 
     <Style x:Key="LayerIconContainerStyle" TargetType="Border">
         <Setter Property="Width" Value="20"/>
@@ -1084,7 +1085,7 @@
 
     <!-- Segmented Control Item Style (ListBoxItem) -->
     <Style x:Key="SegmentedItemStyle" TargetType="ListBoxItem">
-        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Background" Value="White"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Padding" Value="0"/>
         <Setter Property="Margin" Value="0"/>
@@ -1099,8 +1100,14 @@
                     <Border x:Name="Border" 
                             Background="{TemplateBinding Background}"
                             BorderBrush="#E0E0E0"
-                            BorderThickness="0,0,1,0"
-                            SnapsToDevicePixels="True">
+                            SnapsToDevicePixels="True"
+                            UseLayoutRounding="True">
+                        <Border.BorderThickness>
+                            <MultiBinding Converter="{StaticResource ListBoxItemBorderThicknessConverter}">
+                                <Binding RelativeSource="{RelativeSource TemplatedParent}"/>
+                                <Binding RelativeSource="{RelativeSource AncestorType=ListBox}"/>
+                            </MultiBinding>
+                        </Border.BorderThickness>
                         <Border.CornerRadius>
                             <MultiBinding Converter="{StaticResource ListBoxItemCornerRadiusConverter}">
                                 <Binding RelativeSource="{RelativeSource TemplatedParent}"/>
@@ -1114,6 +1121,8 @@
                             <Setter TargetName="Border" Property="Background" Value="#007AFF"/>
                             <Setter Property="Foreground" Value="White"/>
                             <Setter TargetName="Border" Property="BorderThickness" Value="0"/>
+                            <Setter TargetName="Border" Property="Margin" Value="-1"/>
+                            <Setter Property="Panel.ZIndex" Value="1"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="Border" Property="Background" Value="#E5E5E5"/>
@@ -1133,7 +1142,7 @@
 
     <!-- Segmented Control Style (ListBox) -->
     <Style x:Key="SegmentedControlStyle" TargetType="ListBox">
-        <Setter Property="Background" Value="White"/>
+        <Setter Property="Background" Value="#007AFF"/>
         <Setter Property="BorderBrush" Value="#007AFF"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Padding" Value="0"/>
@@ -1152,7 +1161,9 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             CornerRadius="6"
-                            ClipToBounds="True">
+                            ClipToBounds="True"
+                            SnapsToDevicePixels="True"
+                            UseLayoutRounding="True">
                         <ItemsPresenter/>
                     </Border>
                 </ControlTemplate>
@@ -1649,6 +1660,56 @@
         <Setter Property="hc:VisualElement.Text" Value=""/>
         <Setter Property="Height" Value="10"/>
         <Setter Property="MinHeight" Value="10"/>
+    </Style>
+
+    <!-- 文件拖放遮罩 -->
+    <Style x:Key="FileDropOverlayMaskStyle" TargetType="Border">
+        <Setter Property="Background" Value="#99F5F5F7"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="IsHitTestVisible" Value="False"/>
+        <Setter Property="Visibility" Value="Collapsed"/>
+    </Style>
+
+    <Style x:Key="FileDropOverlayCardStyle" TargetType="Border">
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="BorderBrush" Value="#0078D4"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="CornerRadius" Value="12"/>
+        <Setter Property="Padding" Value="48,36"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect BlurRadius="24" ShadowDepth="0" Opacity="0.18" Color="#000000"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="FileDropOverlayIconStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+        <Setter Property="FontSize" Value="48"/>
+        <Setter Property="Foreground" Value="#0078D4"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="0,0,0,12"/>
+    </Style>
+
+    <Style x:Key="FileDropOverlayHintStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="22"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="#0078D4"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+
+    <Style x:Key="FileDropOverlaySubHintStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="#666666"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="Margin" Value="0,8,0,0"/>
     </Style>
 
 </ResourceDictionary>

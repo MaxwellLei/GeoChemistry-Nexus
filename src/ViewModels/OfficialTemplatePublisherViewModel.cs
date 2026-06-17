@@ -1,6 +1,8 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Messages;
 using GeoChemistryNexus.Models;
 using GeoChemistryNexus.Services;
 using GeoChemistryNexus.Views.Widgets;
@@ -124,14 +126,62 @@ namespace GeoChemistryNexus.ViewModels
 
         public ContentLanguageContext HomeLinksLanguageContext { get; } = new();
 
+        public ContentLanguageContext PlotCategoriesLanguageContext { get; } = new();
+
+        public ContentLanguageContext GeoTMineralCategoriesLanguageContext { get; } = new();
+
+        public IReadOnlyList<string> PlotCategoryLevelKeys { get; } = new[] { "Level1", "Level2", "Level3" };
+
+        public ObservableCollection<LocalizedCategoryEntryViewModel> PlotCategoryEntries { get; } = new();
+
+        public ObservableCollection<LocalizedCategoryEntryViewModel> GeoTMineralEntries { get; } = new();
+
         public IReadOnlyList<CultureOption> HomeLinksLanguageOptions { get; } = AppCultureRegistry.GetContentOptions();
 
         [ObservableProperty]
         private string selectedHomeLinksLanguage = AppCultureRegistry.DefaultContentLanguage;
 
+        [ObservableProperty]
+        private string selectedPlotCategoriesLanguage = AppCultureRegistry.DefaultContentLanguage;
+
+        [ObservableProperty]
+        private string selectedGeoTMineralCategoriesLanguage = AppCultureRegistry.DefaultContentLanguage;
+
+        [ObservableProperty]
+        private string selectedPlotCategoryLevel = "Level1";
+
+        [ObservableProperty]
+        private LocalizedCategoryEntryViewModel selectedPlotCategoryEntry;
+
+        [ObservableProperty]
+        private LocalizedCategoryEntryViewModel selectedGeoTMineralEntry;
+
+        [ObservableProperty]
+        private int plotCategoryEntryCount;
+
+        [ObservableProperty]
+        private int geoTMineralEntryCount;
+
+        private readonly Dictionary<string, ObservableCollection<LocalizedCategoryEntryViewModel>> _plotCategoryEntriesByLevel = new();
+
         partial void OnSelectedHomeLinksLanguageChanged(string value)
         {
             HomeLinksLanguageContext.ContentLanguage = value;
+        }
+
+        partial void OnSelectedPlotCategoriesLanguageChanged(string value)
+        {
+            PlotCategoriesLanguageContext.ContentLanguage = value;
+        }
+
+        partial void OnSelectedGeoTMineralCategoriesLanguageChanged(string value)
+        {
+            GeoTMineralCategoriesLanguageContext.ContentLanguage = value;
+        }
+
+        partial void OnSelectedPlotCategoryLevelChanged(string value)
+        {
+            RefreshPlotCategoryEntriesForSelectedLevel();
         }
 
         private string _remoteAnnouncementText = string.Empty;
@@ -203,7 +253,13 @@ namespace GeoChemistryNexus.ViewModels
 
             SelectedHomeLinksLanguage = AppCultureRegistry.ResolveAppLanguage(LanguageService.CurrentLanguage);
             HomeLinksLanguageContext.ContentLanguage = SelectedHomeLinksLanguage;
+            SelectedPlotCategoriesLanguage = SelectedHomeLinksLanguage;
+            PlotCategoriesLanguageContext.ContentLanguage = SelectedPlotCategoriesLanguage;
+            SelectedGeoTMineralCategoriesLanguage = SelectedHomeLinksLanguage;
+            GeoTMineralCategoriesLanguageContext.ContentLanguage = SelectedGeoTMineralCategoriesLanguage;
             LoadHomeLinksEditor();
+            LoadPlotCategoriesEditor();
+            LoadGeoTMineralCategoriesEditor();
             _ = LoadAnnouncementFromServerAsync();
         }
 
@@ -1059,6 +1115,253 @@ namespace GeoChemistryNexus.ViewModels
             {
                 return string.Empty;
             }
+        }
+
+        [RelayCommand]
+        private void ReloadPlotCategoriesEditor()
+        {
+            LoadPlotCategoriesEditor();
+            Log(LanguageService.Instance["official_publisher_plot_categories_reloaded"] ?? "Plot categories editor reloaded.");
+        }
+
+        [RelayCommand]
+        private void SavePlotCategoriesDraft()
+        {
+            if (!EnsureDeveloperMode())
+                return;
+
+            SavePlotCategoriesToLocal();
+            Log(LanguageService.Instance["official_publisher_plot_categories_draft_saved"] ?? "Plot categories draft saved locally.");
+            ShowSuccess(LanguageService.Instance["official_publisher_plot_categories_draft_saved"] ?? "Plot categories draft saved locally.");
+        }
+
+        [RelayCommand]
+        private void AddPlotCategoryEntry()
+        {
+            if (!TryEditCategoryEntry(null, PlotCategoriesLanguageContext, out var entry))
+                return;
+
+            GetPlotCategoryCollection(SelectedPlotCategoryLevel).Add(entry);
+            PlotCategoryEntries.Add(entry);
+            SelectedPlotCategoryEntry = entry;
+            UpdatePlotCategoryEntryCount();
+        }
+
+        [RelayCommand]
+        private void EditPlotCategoryEntry()
+        {
+            if (SelectedPlotCategoryEntry == null)
+                return;
+
+            if (!TryEditCategoryEntry(SelectedPlotCategoryEntry, PlotCategoriesLanguageContext, out var updated))
+                return;
+
+            SelectedPlotCategoryEntry.Title = updated.Title;
+        }
+
+        [RelayCommand]
+        private void RemovePlotCategoryEntry()
+        {
+            if (SelectedPlotCategoryEntry == null)
+                return;
+
+            GetPlotCategoryCollection(SelectedPlotCategoryLevel).Remove(SelectedPlotCategoryEntry);
+            PlotCategoryEntries.Remove(SelectedPlotCategoryEntry);
+            SelectedPlotCategoryEntry = PlotCategoryEntries.FirstOrDefault();
+            UpdatePlotCategoryEntryCount();
+        }
+
+        [RelayCommand]
+        private void ReloadGeoTMineralCategoriesEditor()
+        {
+            LoadGeoTMineralCategoriesEditor();
+            Log(LanguageService.Instance["official_publisher_geot_categories_reloaded"] ?? "GeoT mineral categories editor reloaded.");
+        }
+
+        [RelayCommand]
+        private void SaveGeoTMineralCategoriesDraft()
+        {
+            if (!EnsureDeveloperMode())
+                return;
+
+            SaveGeoTMineralCategoriesToLocal();
+            Log(LanguageService.Instance["official_publisher_geot_categories_draft_saved"] ?? "GeoT mineral categories draft saved locally.");
+            ShowSuccess(LanguageService.Instance["official_publisher_geot_categories_draft_saved"] ?? "GeoT mineral categories draft saved locally.");
+        }
+
+        [RelayCommand]
+        private void AddGeoTMineralEntry()
+        {
+            if (!TryEditCategoryEntry(null, GeoTMineralCategoriesLanguageContext, out var entry))
+                return;
+
+            GeoTMineralEntries.Add(entry);
+            SelectedGeoTMineralEntry = entry;
+            UpdateGeoTMineralEntryCount();
+        }
+
+        [RelayCommand]
+        private void EditGeoTMineralEntry()
+        {
+            if (SelectedGeoTMineralEntry == null)
+                return;
+
+            if (!TryEditCategoryEntry(SelectedGeoTMineralEntry, GeoTMineralCategoriesLanguageContext, out var updated))
+                return;
+
+            SelectedGeoTMineralEntry.Title = updated.Title;
+        }
+
+        [RelayCommand]
+        private void RemoveGeoTMineralEntry()
+        {
+            if (SelectedGeoTMineralEntry == null)
+                return;
+
+            GeoTMineralEntries.Remove(SelectedGeoTMineralEntry);
+            SelectedGeoTMineralEntry = GeoTMineralEntries.FirstOrDefault();
+            UpdateGeoTMineralEntryCount();
+        }
+
+        private void LoadPlotCategoriesEditor()
+        {
+            _plotCategoryEntriesByLevel.Clear();
+            var config = PlotCategoryHelper.LoadConfig();
+
+            foreach (string level in PlotCategoryLevelKeys)
+            {
+                var entries = new ObservableCollection<LocalizedCategoryEntryViewModel>();
+                if (config.TryGetValue(level, out var items))
+                {
+                    foreach (var item in items ?? Enumerable.Empty<Dictionary<string, string>>())
+                    {
+                        entries.Add(new LocalizedCategoryEntryViewModel(PlotCategoriesLanguageContext)
+                        {
+                            Title = HomeLinksLocalization.FromDictionary(item)
+                        });
+                    }
+                }
+
+                _plotCategoryEntriesByLevel[level] = entries;
+            }
+
+            RefreshPlotCategoryEntriesForSelectedLevel();
+        }
+
+        private void LoadGeoTMineralCategoriesEditor()
+        {
+            GeoTMineralEntries.Clear();
+            var config = GeoTMineralCategoryHelper.LoadConfig();
+
+            foreach (var item in config.Minerals ?? Enumerable.Empty<Dictionary<string, string>>())
+            {
+                GeoTMineralEntries.Add(new LocalizedCategoryEntryViewModel(GeoTMineralCategoriesLanguageContext)
+                {
+                    Title = HomeLinksLocalization.FromDictionary(item)
+                });
+            }
+
+            SelectedGeoTMineralEntry = GeoTMineralEntries.FirstOrDefault();
+            UpdateGeoTMineralEntryCount();
+        }
+
+        private void RefreshPlotCategoryEntriesForSelectedLevel()
+        {
+            PlotCategoryEntries.Clear();
+            foreach (var entry in GetPlotCategoryCollection(SelectedPlotCategoryLevel))
+                PlotCategoryEntries.Add(entry);
+
+            SelectedPlotCategoryEntry = PlotCategoryEntries.FirstOrDefault();
+            UpdatePlotCategoryEntryCount();
+        }
+
+        private ObservableCollection<LocalizedCategoryEntryViewModel> GetPlotCategoryCollection(string level)
+        {
+            level ??= PlotCategoryLevelKeys[0];
+            if (!_plotCategoryEntriesByLevel.TryGetValue(level, out var entries))
+            {
+                entries = new ObservableCollection<LocalizedCategoryEntryViewModel>();
+                _plotCategoryEntriesByLevel[level] = entries;
+            }
+
+            return entries;
+        }
+
+        private PlotTemplateCategoryConfig BuildPlotCategoryConfigFromEditor()
+        {
+            var config = new PlotTemplateCategoryConfig();
+            foreach (string level in PlotCategoryLevelKeys)
+            {
+                var items = GetPlotCategoryCollection(level)
+                    .Where(entry => HomeLinksLocalization.HasText(entry.Title))
+                    .Select(entry => HomeLinksLocalization.ToDictionary(entry.Title))
+                    .Where(dict => dict.Count > 0)
+                    .ToList();
+
+                if (items.Count > 0)
+                    config[level] = items;
+            }
+
+            return config;
+        }
+
+        private GeoTMineralCategoryConfig BuildGeoTMineralCategoryConfigFromEditor()
+        {
+            return new GeoTMineralCategoryConfig
+            {
+                Minerals = GeoTMineralEntries
+                    .Where(entry => HomeLinksLocalization.HasText(entry.Title))
+                    .Select(entry => HomeLinksLocalization.ToDictionary(entry.Title))
+                    .Where(dict => dict.Count > 0)
+                    .ToList()
+            };
+        }
+
+        private void SavePlotCategoriesToLocal()
+        {
+            PlotCategoryHelper.SaveConfig(BuildPlotCategoryConfigFromEditor());
+            WeakReferenceMessenger.Default.Send(new CategoryConfigUpdatedMessage("Updated"));
+        }
+
+        private void SaveGeoTMineralCategoriesToLocal()
+        {
+            GeoTMineralCategoryHelper.SaveConfig(BuildGeoTMineralCategoryConfigFromEditor(), GeoTMineralCategoryHelper.LocalConfigPath);
+            GeoTMineralCategoryHelper.InvalidateCache();
+        }
+
+        private void UpdatePlotCategoryEntryCount()
+        {
+            PlotCategoryEntryCount = GetPlotCategoryCollection(SelectedPlotCategoryLevel).Count;
+        }
+
+        private void UpdateGeoTMineralEntryCount()
+        {
+            GeoTMineralEntryCount = GeoTMineralEntries.Count;
+        }
+
+        private bool TryEditCategoryEntry(
+            LocalizedCategoryEntryViewModel existing,
+            ContentLanguageContext languageContext,
+            out LocalizedCategoryEntryViewModel result)
+        {
+            result = null;
+            var dialog = new HomeLinkLocalizedEditWindow(
+                HomeLinkLocalizedEditMode.Group,
+                languageContext,
+                existing == null
+                    ? (LanguageService.Instance["official_publisher_category_add"] ?? "Add Category")
+                    : (LanguageService.Instance["official_publisher_category_edit"] ?? "Edit Category"),
+                title: existing?.Title);
+            dialog.Owner = OwnerWindow ?? Application.Current.MainWindow;
+
+            if (dialog.ShowDialog() != true)
+                return false;
+
+            result = new LocalizedCategoryEntryViewModel(languageContext)
+            {
+                Title = HomeLinksLocalization.Clone(dialog.ResultTitle)
+            };
+            return true;
         }
     }
 }

@@ -20,14 +20,22 @@ namespace GeoChemistryNexus.Models
         public string Version { get; set; } = "1.0.0";
 
         /// <summary>
-        /// 所属矿物分类
+        /// 温压计类别键（single_mineral / mineral_pair / multi_equilibrium）
         /// </summary>
-        public string Mineral { get; set; } = string.Empty;
+        public string Category { get; set; } = string.Empty;
 
         /// <summary>
-        /// 矿物分类的多语言键名（对应语言资源文件中的 key）
+        /// 温压计标签（显示名称，已本地化）
         /// </summary>
-        public string MineralLangKey { get; set; } = string.Empty;
+        public List<string> Tags { get; set; } = new();
+
+        /// <summary>
+        /// 标签显示文本（用于列表等简单绑定）
+        /// </summary>
+        [JsonIgnore]
+        public string TagsDisplayText => Tags == null || Tags.Count == 0
+            ? string.Empty
+            : string.Join(" · ", Tags);
 
         /// <summary>
         /// 温压计名称（显示名称）
@@ -108,17 +116,17 @@ namespace GeoChemistryNexus.Models
     }
 
     /// <summary>
-    /// 矿物分组模型（用于 UI 展示）
+    /// 温压计类别分组模型（用于官方温压计 UI 展示）
     /// </summary>
-    public class MineralGroup
+    public class GeoTCategoryGroup
     {
         /// <summary>
-        /// 矿物标识
+        /// 类别键
         /// </summary>
-        public string MineralKey { get; set; } = string.Empty;
+        public string CategoryKey { get; set; } = string.Empty;
 
         /// <summary>
-        /// 矿物显示名称
+        /// 类别显示名称
         /// </summary>
         public string DisplayName { get; set; } = string.Empty;
 
@@ -133,7 +141,7 @@ namespace GeoChemistryNexus.Models
         public string IconColor { get; set; } = "#555555";
 
         /// <summary>
-        /// 该矿物下的温压计列表
+        /// 该类别下的温压计列表
         /// </summary>
         public List<Geothermometer> Plugins { get; set; } = new();
 
@@ -216,6 +224,9 @@ namespace GeoChemistryNexus.Models
         /// <summary>已从服务器清单下架、待删除的本地官方温压计实体 ID</summary>
         public List<Guid> Removals { get; set; } = new();
 
+        /// <summary>本次检查是否同步了矿物分类翻译文件</summary>
+        public bool MineralCategoriesSynced { get; set; }
+
         public bool HasChanges => Updates.Count > 0 || Removals.Count > 0;
     }
 
@@ -241,6 +252,11 @@ namespace GeoChemistryNexus.Models
         /// GeoT-List.json 文件的 MD5 哈希值
         /// </summary>
         public string ListHash { get; set; } = string.Empty;
+
+        /// <summary>
+        /// GeoTMineralCategories.json 文件的 MD5 哈希值
+        /// </summary>
+        public string MineralCategoriesHash { get; set; } = string.Empty;
 
         /// <summary>
         /// 索引版本

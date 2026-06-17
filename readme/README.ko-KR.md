@@ -92,7 +92,8 @@ GitHub **[Releases](https://github.com/MaxwellLei/GeoChemistry-Nexus/releases)**
 ## 💬 커뮤니티 및 소통
 
 * **연락처 이메일**: `maxwelllei@qq.com`
-* **포럼**: [Geochemistry Nexus](https://geochemistry-nexus.discourse.group/invites/L8pjQMvExB)
+* **QQ Group**: 1076647740
+* **Discord**: https://discord.gg/mRm8dbwa4W
 
 ## 👋 기여하기 (Contribute)
 

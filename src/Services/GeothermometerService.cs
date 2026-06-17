@@ -1,5 +1,7 @@
 using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Models;
+using GeoChemistryNexus.Messages;
+using CommunityToolkit.Mvvm.Messaging;
 using Jint;
 using Jint.Native;
 using Jint.Native.Object;
@@ -69,6 +71,9 @@ namespace GeoChemistryNexus.Services
         private static string LocalListFilePath =>
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "Plugins", "GeoT-List.json");
 
+        private static string LocalMineralCategoriesFilePath =>
+            GeoTMineralCategoryHelper.LocalConfigPath;
+
         /// <summary>
         /// 获取已加载的全部温压计实体（摘要）
         /// </summary>
@@ -101,11 +106,21 @@ namespace GeoChemistryNexus.Services
 
             foreach (var summary in summaries)
             {
-                _loadedEntities.Add(summary);
-
                 var fullEntity = dbService.GetEntity(summary.Id);
                 if (fullEntity != null)
+                {
+                    string hash = GeothermometerDatabaseService.ComputeEntityHash(fullEntity);
+                    if (!string.Equals(summary.FileHash, hash, StringComparison.OrdinalIgnoreCase))
+                    {
+                        summary.FileHash = hash;
+                        fullEntity.FileHash = hash;
+                        dbService.UpsertEntity(fullEntity);
+                    }
+
                     fullEntities.Add(fullEntity);
+                }
+
+                _loadedEntities.Add(summary);
             }
 
             LastFormulaNameConflicts = FindAllFormulaNameConflicts(fullEntities);
@@ -345,12 +360,22 @@ namespace GeoChemistryNexus.Services
         }
 
         /// <summary>
-        /// 获取按矿物分组的温压计列表
+        /// 获取按类别分组的温压计列表（官方温压计按三个固定类别分组）
         /// </summary>
         /// <param name="isOfficial">null=全部, true=仅官方, false=仅自定义</param>
-        public static List<MineralGroup> GetGroupedEntities(bool? isOfficial = null)
+        public static List<GeoTCategoryGroup> GetGroupedEntities(bool? isOfficial = null)
         {
-            var groups = new Dictionary<string, MineralGroup>();
+            var groups = new Dictionary<string, GeoTCategoryGroup>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (string categoryKey in GeoTCategoryHelper.GetCategoryKeys())
+            {
+                groups[categoryKey] = new GeoTCategoryGroup
+                {
+                    CategoryKey = categoryKey,
+                    DisplayName = GeoTCategoryHelper.GetDisplayName(categoryKey),
+                    Plugins = new List<Geothermometer>()
+                };
+            }
 
             var entities = isOfficial.HasValue
                 ? _loadedEntities.Where(e => e.IsOfficial == isOfficial.Value)
@@ -358,28 +383,26 @@ namespace GeoChemistryNexus.Services
 
             foreach (var entity in entities)
             {
-                string key = entity.Mineral;
-                if (!groups.ContainsKey(key))
+                string categoryKey = GeoTCategoryHelper.NormalizeCategoryKey(entity.Category);
+                if (!groups.TryGetValue(categoryKey, out var group))
                 {
-                    string displayName = !string.IsNullOrEmpty(entity.MineralLangKey)
-                        ? (LanguageService.Instance[entity.MineralLangKey] ?? entity.Mineral)
-                        : entity.Mineral;
-
-                    groups[key] = new MineralGroup
+                    group = new GeoTCategoryGroup
                     {
-                        MineralKey = key,
-                        DisplayName = displayName,
-                        IconCode = entity.IconCode,
-                        IconColor = entity.IconColor,
+                        CategoryKey = categoryKey,
+                        DisplayName = GeoTCategoryHelper.GetDisplayName(categoryKey),
                         Plugins = new List<Geothermometer>()
                     };
+                    groups[categoryKey] = group;
                 }
 
-                // 将 entity 转为轻量对象用于 UI 展示
-                groups[key].Plugins.Add(EntityToGeothermometer(entity));
+                group.Plugins.Add(EntityToGeothermometer(entity));
             }
 
-            return groups.Values.ToList();
+            return GeoTCategoryHelper.GetCategoryKeys()
+                .Select(key => groups.TryGetValue(key, out var group) ? group : null)
+                .Where(group => group != null && group.Plugins.Count > 0)
+                .Cast<GeoTCategoryGroup>()
+                .ToList();
         }
 
         /// <summary>
@@ -401,7 +424,7 @@ namespace GeoChemistryNexus.Services
             ValidateFormulaNames(entity, entity.Id == Guid.Empty ? null : entity.Id);
 
             entity.LastModified = DateTime.Now;
-            entity.FileHash = GeothermometerDatabaseService.ComputeHash(entity.ScriptContent ?? "");
+            entity.FileHash = GeothermometerDatabaseService.ComputeEntityHash(entity);
 
             // 如果是新建，生成 ID
             if (entity.Id == Guid.Empty)
@@ -444,6 +467,7 @@ namespace GeoChemistryNexus.Services
             entity.Id = GeothermometerDatabaseService.GenerateId(entity.PluginId);
             entity.IsOfficial = true;
             entity.LastModified = DateTime.Now;
+            entity.FileHash = GeothermometerDatabaseService.ComputeEntityHash(entity);
 
             dbService.UpsertEntity(entity);
             ReloadPlugins();
@@ -469,6 +493,7 @@ namespace GeoChemistryNexus.Services
             entity.Id = GeothermometerDatabaseService.GenerateId(entity.PluginId);
             entity.IsOfficial = false;
             entity.LastModified = DateTime.Now;
+            entity.FileHash = GeothermometerDatabaseService.ComputeEntityHash(entity);
 
             dbService.UpsertEntity(entity);
             ReloadPlugins();
@@ -527,8 +552,8 @@ namespace GeoChemistryNexus.Services
             {
                 Id = entity.PluginId,
                 Version = entity.Version,
-                Mineral = entity.Mineral,
-                MineralLangKey = entity.MineralLangKey,
+                Category = GeoTCategoryHelper.NormalizeCategoryKey(entity.Category),
+                Tags = ResolveTagsDisplayNames(entity),
                 Name = entity.Name,
                 NameLangKey = entity.NameLangKey,
                 Author = entity.Author,
@@ -568,8 +593,8 @@ namespace GeoChemistryNexus.Services
                     ["Id"] = entity.PluginId,
                     ["Version"] = entity.Version,
                     ["IsOfficial"] = entity.IsOfficial,
-                    ["Mineral"] = entity.Mineral,
-                    ["MineralLangKey"] = entity.MineralLangKey,
+                    ["Category"] = GeoTCategoryHelper.NormalizeCategoryKey(entity.Category),
+                    ["Tags"] = entity.Tags ?? new List<string>(),
                     ["Name"] = entity.Name,
                     ["NameLangKey"] = entity.NameLangKey,
                     ["Author"] = entity.Author,
@@ -697,11 +722,10 @@ namespace GeoChemistryNexus.Services
                     Id = GeothermometerDatabaseService.GenerateId(pluginId),
                     PluginId = pluginId,
                     Version = plugin.Version,
-                    FileHash = GeothermometerDatabaseService.ComputeHash(scriptContent),
                     LastModified = DateTime.Now,
                     IsOfficial = false, // 用户创建或导入均为自定义；服务器下载流程在写入前设为官方
-                    Mineral = plugin.Mineral,
-                    MineralLangKey = plugin.MineralLangKey,
+                    Category = plugin.Category,
+                    Tags = plugin.Tags ?? new List<string>(),
                     Name = plugin.Name,
                     NameLangKey = plugin.NameLangKey,
                     Author = plugin.Author,
@@ -717,6 +741,7 @@ namespace GeoChemistryNexus.Services
                     ScriptContent = scriptContent,
                     HelpDocuments = helpDocs
                 };
+                entity.FileHash = GeothermometerDatabaseService.ComputeEntityHash(entity);
 
                 if (persist)
                 {
@@ -823,6 +848,28 @@ namespace GeoChemistryNexus.Services
             return false;
         }
 
+        private static IEnumerable<string> GetEntityTagSourceNames(GeothermometerEntity entity)
+        {
+            return (entity.Tags ?? new List<string>()).Where(tag => !string.IsNullOrWhiteSpace(tag));
+        }
+
+        private static List<string> ResolveTagsDisplayNames(GeothermometerEntity entity)
+        {
+            return GetEntityTagSourceNames(entity)
+                .Select(ResolveTagDisplayName)
+                .Where(tag => !string.IsNullOrWhiteSpace(tag))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
+        }
+
+        private static string ResolveTagDisplayName(string tagKey)
+        {
+            if (string.IsNullOrWhiteSpace(tagKey))
+                return tagKey ?? string.Empty;
+
+            return GeoTMineralCategoryHelper.GetDisplayName(tagKey.Trim());
+        }
+
         // ==================== 服务器更新 ====================
 
         /// <summary>
@@ -848,6 +895,8 @@ namespace GeoChemistryNexus.Services
                         ErrorMessage = "Invalid GeoT-index.json"
                     };
                 }
+
+                bool mineralCategoriesSynced = await SyncMineralCategoriesAsync(geoTIndex, client);
 
                 bool needDownloadList = true;
                 if (File.Exists(LocalListFilePath))
@@ -902,7 +951,7 @@ namespace GeoChemistryNexus.Services
                     };
                 }
 
-                return BuildUpdateCheckResult(pluginList);
+                return BuildUpdateCheckResult(pluginList, mineralCategoriesSynced);
             }
             catch (Exception ex)
             {
@@ -916,9 +965,75 @@ namespace GeoChemistryNexus.Services
         }
 
         /// <summary>
+        /// 从服务器同步矿物分类多语言文件（GeoT-index 中的 MineralCategoriesHash 校验）。
+        /// </summary>
+        public static async Task<bool> SyncMineralCategoriesAsync(GeoTIndex? geoTIndex, HttpClient? client = null)
+        {
+            if (geoTIndex == null || string.IsNullOrEmpty(geoTIndex.MineralCategoriesHash))
+                return false;
+
+            bool ownsClient = client == null;
+            client ??= new HttpClient { Timeout = TimeSpan.FromSeconds(15) };
+
+            try
+            {
+                string localHash = string.Empty;
+                if (File.Exists(LocalMineralCategoriesFilePath))
+                {
+                    string localContent = await File.ReadAllTextAsync(LocalMineralCategoriesFilePath);
+                    localHash = GeothermometerDatabaseService.ComputeHash(localContent);
+                }
+
+                if (string.Equals(localHash, geoTIndex.MineralCategoriesHash, StringComparison.OrdinalIgnoreCase))
+                    return false;
+
+                string downloadUrl = $"{_serverBaseUrl}/{OfficialContentEndpoints.GeoTMineralCategoriesFileName}";
+                string categoriesJson = await client.GetStringAsync(downloadUrl);
+
+                string downloadedHash = GeothermometerDatabaseService.ComputeHash(categoriesJson);
+                if (!string.Equals(downloadedHash, geoTIndex.MineralCategoriesHash, StringComparison.OrdinalIgnoreCase))
+                {
+                    Debug.WriteLine("[GeothermometerService] GeoTMineralCategories.json hash mismatch.");
+                    return false;
+                }
+
+                try
+                {
+                    JsonDocument.Parse(categoriesJson);
+                }
+                catch (JsonException)
+                {
+                    Debug.WriteLine("[GeothermometerService] GeoTMineralCategories.json is not valid JSON.");
+                    return false;
+                }
+
+                string? directory = Path.GetDirectoryName(LocalMineralCategoriesFilePath);
+                if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+                    Directory.CreateDirectory(directory);
+
+                await File.WriteAllTextAsync(LocalMineralCategoriesFilePath, categoriesJson);
+                GeoTMineralCategoryHelper.InvalidateCache();
+                WeakReferenceMessenger.Default.Send(new GeoTMineralCategoryUpdatedMessage("Updated"));
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[GeothermometerService] Sync mineral categories failed: {ex.Message}");
+                return false;
+            }
+            finally
+            {
+                if (ownsClient)
+                    client.Dispose();
+            }
+        }
+
+        /// <summary>
         /// 根据服务器清单对账本地官方温压计，返回需下载项与待下架项（无副作用）。
         /// </summary>
-        private static GeothermometerUpdateCheckResult BuildUpdateCheckResult(PluginIndex pluginList)
+        private static GeothermometerUpdateCheckResult BuildUpdateCheckResult(
+            PluginIndex pluginList,
+            bool mineralCategoriesSynced = false)
         {
             var updatable = new List<PluginIndexEntry>();
             var serverPluginIds = new HashSet<string>();
@@ -960,7 +1075,8 @@ namespace GeoChemistryNexus.Services
             {
                 Status = GeothermometerUpdateCheckStatus.Success,
                 Updates = updatable,
-                Removals = removals
+                Removals = removals,
+                MineralCategoriesSynced = mineralCategoriesSynced
             };
         }
 
@@ -1043,6 +1159,19 @@ namespace GeoChemistryNexus.Services
             IEnumerable<Guid>? removals = null,
             IProgress<(int current, int total, string name)>? progress = null)
         {
+            try
+            {
+                using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(15) };
+                string indexUrl = $"{_serverBaseUrl}/{GeoTIndexFileName}";
+                string indexJson = await client.GetStringAsync(indexUrl);
+                var geoTIndex = JsonSerializer.Deserialize<GeoTIndex>(indexJson, JsonOptions);
+                await SyncMineralCategoriesAsync(geoTIndex, client);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[GeothermometerService] Sync mineral categories before download failed: {ex.Message}");
+            }
+
             var removalList = removals?.ToList() ?? new List<Guid>();
             int total = removalList.Count + entries.Count;
             int current = 0;
@@ -1250,7 +1379,7 @@ namespace GeoChemistryNexus.Services
                     var fullEntity = dbService.GetEntity(summary.Id);
                     if (fullEntity == null) continue;
 
-                    string currentHash = GeothermometerDatabaseService.ComputeHash(fullEntity.ScriptContent ?? "");
+                    string currentHash = GeothermometerDatabaseService.ComputeEntityHash(fullEntity);
                     string zipFileName = $"{fullEntity.PluginId}.zip";
                     string zipPath = Path.Combine(outputDir, zipFileName);
 
@@ -1290,11 +1419,32 @@ namespace GeoChemistryNexus.Services
             string listContent = JsonSerializer.Serialize(pluginList, JsonOptions);
             File.WriteAllText(listPath, listContent);
 
-            // 生成 GeoT-index.json（包含 GeoT-List.json 的哈希值）
+            string categoriesPath = Path.Combine(outputDir, OfficialContentEndpoints.GeoTMineralCategoriesFileName);
+            var categoriesConfig = GeoTMineralCategoryHelper.LoadConfigFromPath(GeoTMineralCategoryHelper.LocalConfigPath);
+            if (File.Exists(categoriesPath))
+            {
+                categoriesConfig = GeoTMineralCategoryHelper.MergeMissingMinerals(
+                    GeoTMineralCategoryHelper.LoadConfigFromPath(categoriesPath),
+                    officialEntities.SelectMany(GetEntityTagSourceNames));
+            }
+            else
+            {
+                categoriesConfig = GeoTMineralCategoryHelper.MergeMissingMinerals(
+                    categoriesConfig,
+                    officialEntities.SelectMany(GetEntityTagSourceNames));
+            }
+
+            GeoTMineralCategoryHelper.SaveConfig(categoriesConfig, categoriesPath);
+            string categoriesHash = File.Exists(categoriesPath)
+                ? UpdateHelper.ComputeFileMd5(categoriesPath)
+                : string.Empty;
+
+            // 生成 GeoT-index.json（包含 GeoT-List.json 与矿物分类文件的哈希值）
             string listHash = GeothermometerDatabaseService.ComputeHash(listContent);
             var geoTIndex = new GeoTIndex
             {
                 ListHash = listHash,
+                MineralCategoriesHash = categoriesHash,
                 IndexVersion = DateTime.Now.ToString("yyyy.MM.dd")
             };
 
@@ -1325,7 +1475,7 @@ namespace GeoChemistryNexus.Services
                     Version = fullEntity.Version,
                     Reference = fullEntity.Reference ?? string.Empty,
                     DownloadUrl = $"{fullEntity.PluginId}.zip",
-                    Hash = GeothermometerDatabaseService.ComputeHash(fullEntity.ScriptContent ?? "")
+                    Hash = GeothermometerDatabaseService.ComputeEntityHash(fullEntity)
                 });
             }
 

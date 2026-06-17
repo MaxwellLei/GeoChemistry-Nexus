@@ -129,6 +129,15 @@
   <data name="geo_field_mineral_category" xml:space="preserve">
     <value>Категория минерала *</value>
   </data>
+  <data name="geo_category_single_mineral" xml:space="preserve">
+    <value>Одноминеральный геотермобарометр</value>
+  </data>
+  <data name="geo_category_mineral_pair" xml:space="preserve">
+    <value>Геотермобарометр минеральной пары</value>
+  </data>
+  <data name="geo_category_multi_equilibrium" xml:space="preserve">
+    <value>Мультиминеральный / цельнопородный мульти-равновесие</value>
+  </data>
   <data name="unfavorite" xml:space="preserve">
     <value>Удалить из избранного</value>
   </data>
@@ -1942,6 +1951,42 @@
   <data name="batch_download_cancelled" xml:space="preserve">
     <value>Пакетная загрузка отменена</value>
   </data>
+  <data name="batch_update_outdated_templates" xml:space="preserve">
+    <value>Пакетное обновление</value>
+  </data>
+  <data name="batch_update_outdated_templates_tooltip" xml:space="preserve">
+    <value>Пакетное обновление официальных шаблонов с доступными новыми версиями</value>
+  </data>
+  <data name="batch_update_title" xml:space="preserve">
+    <value>Пакетное обновление</value>
+  </data>
+  <data name="batch_update_confirm_message" xml:space="preserve">
+    <value>Обнаружено {0} шаблонов с новыми версиями. Выполнить пакетное обновление?</value>
+  </data>
+  <data name="no_outdated_templates_to_update" xml:space="preserve">
+    <value>Нет шаблонов, требующих обновления</value>
+  </data>
+  <data name="batch_update_success_count" xml:space="preserve">
+    <value>Успешно обновлено: {0}</value>
+  </data>
+  <data name="batch_update_fail_count" xml:space="preserve">
+    <value>Ошибок: {0}</value>
+  </data>
+  <data name="batch_update_complete" xml:space="preserve">
+    <value>Пакетное обновление завершено</value>
+  </data>
+  <data name="batch_update_failed" xml:space="preserve">
+    <value>Ошибка пакетного обновления: </value>
+  </data>
+  <data name="batch_updating" xml:space="preserve">
+    <value>Пакетное обновление</value>
+  </data>
+  <data name="batch_update_progress" xml:space="preserve">
+    <value>Обновление: {0}/{1} - {2}</value>
+  </data>
+  <data name="batch_update_cancelled" xml:space="preserve">
+    <value>Пакетное обновление отменено</value>
+  </data>
   <data name="geo_tooltip_formula_name" xml:space="preserve">
     <value>Только буквы, цифры и подчёркивание, например MyFormula_v1</value>
   </data>
@@ -1959,6 +2004,21 @@
   </data>
   <data name="click_or_drag_template_json_here" xml:space="preserve">
     <value>Нажмите или перетащите файл шаблона (JSON) сюда</value>
+  </data>
+  <data name="file_drop_release_to_open" xml:space="preserve">
+    <value>Release to open template</value>
+  </data>
+  <data name="file_drop_release_to_import" xml:space="preserve">
+    <value>Release to import</value>
+  </data>
+  <data name="file_drop_invalid_format" xml:space="preserve">
+    <value>Unsupported file format</value>
+  </data>
+  <data name="file_drop_supported_diagram" xml:space="preserve">
+    <value>Supports .json / .zip template files</value>
+  </data>
+  <data name="file_drop_supported_geothermometer" xml:space="preserve">
+    <value>Supports .zip geothermometer packages</value>
   </data>
   <data name="coordinate_positioning" xml:space="preserve">
     <value>Координаты</value>

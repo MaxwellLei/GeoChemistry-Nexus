@@ -369,7 +369,10 @@ namespace GeoChemistryNexus.ViewModels
                 LanguageService.Instance["cipw_btn_confirm_clear"] ?? "Confirm Clear");
             if (!confirmed) return;
 
-            var sheet = grid.CurrentWorksheet;
+            var sheet = grid.CurrentWorksheet
+                ?? (grid.Worksheets.Count > 0 ? grid.Worksheets[0] : null);
+            if (sheet == null) return;
+
             for (int row = 1; row < sheet.RowCount; row++)
             {
                 for (int c = 0; c < sheet.ColumnCount; c++)

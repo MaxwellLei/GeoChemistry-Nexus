@@ -1,11 +1,13 @@
-using LiteDB;
+using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Models;
+using LiteDB;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 
 namespace GeoChemistryNexus.Services
 {
@@ -95,7 +97,7 @@ namespace GeoChemistryNexus.Services
 
             // 确保索引
             col.EnsureIndex(x => x.PluginId);
-            col.EnsureIndex(x => x.Mineral);
+            col.EnsureIndex(x => x.Category);
             col.EnsureIndex(x => x.IsOfficial);
         }
 
@@ -160,6 +162,51 @@ namespace GeoChemistryNexus.Services
 
                 return new Guid(newGuid);
             }
+        }
+
+        private static readonly JsonSerializerOptions EntityHashJsonOptions = new()
+        {
+            WriteIndented = false
+        };
+
+        /// <summary>
+        /// 计算温压计发布内容的 MD5 哈希（元数据 + 脚本 + 帮助文档，与 ZIP 导出口径一致）
+        /// </summary>
+        public static string ComputeEntityHash(GeothermometerEntity entity)
+        {
+            if (entity == null) return string.Empty;
+
+            var helpDocuments = entity.HelpDocuments == null
+                ? new Dictionary<string, string>()
+                : entity.HelpDocuments
+                    .OrderBy(kv => kv.Key, StringComparer.Ordinal)
+                    .ToDictionary(kv => kv.Key, kv => kv.Value);
+
+            var payload = new Dictionary<string, object>
+            {
+                ["Id"] = entity.PluginId ?? string.Empty,
+                ["Version"] = entity.Version ?? string.Empty,
+                ["IsOfficial"] = entity.IsOfficial,
+                ["Category"] = GeoTCategoryHelper.NormalizeCategoryKey(entity.Category),
+                ["Tags"] = entity.Tags ?? new List<string>(),
+                ["Name"] = entity.Name ?? string.Empty,
+                ["NameLangKey"] = entity.NameLangKey ?? string.Empty,
+                ["Author"] = entity.Author ?? string.Empty,
+                ["Year"] = entity.Year,
+                ["Reference"] = entity.Reference ?? string.Empty,
+                ["IconCode"] = entity.IconCode ?? string.Empty,
+                ["IconColor"] = entity.IconColor ?? string.Empty,
+                ["Headers"] = entity.Headers ?? new List<string>(),
+                ["ExampleRow"] = entity.ExampleRow ?? new List<string>(),
+                ["FormulaName"] = entity.FormulaName ?? string.Empty,
+                ["InputColumns"] = entity.InputColumns ?? new List<string>(),
+                ["AdditionalFormulas"] = entity.AdditionalFormulas ?? new List<AdditionalFormula>(),
+                ["ScriptContent"] = entity.ScriptContent ?? string.Empty,
+                ["HelpDocuments"] = helpDocuments
+            };
+
+            string json = System.Text.Json.JsonSerializer.Serialize(payload, EntityHashJsonOptions);
+            return ComputeHash(json);
         }
 
         /// <summary>
