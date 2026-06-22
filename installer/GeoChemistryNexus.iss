@@ -3,7 +3,7 @@
 #define MyAppPublisher "Maxwell Lei"
 #define MyAppURL "https://github.com/MaxwellLei/GeoChemistry-Nexus"
 ; 发版时与 GeoChemistryNexus.csproj 中的 AssemblyVersion 保持一致
-#define MyAppVersion "0.7.0"
+#define MyAppVersion "0.7.1"
 
 #define PublishDir "..\src\_publish\win-x64"
 #define MyAppOutputBase "GeoChemistryNexus-Setup-" + MyAppVersion + "-x64"
@@ -40,6 +40,14 @@ DisableProgramGroupPage=yes
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
+Name: "german"; MessagesFile: "compiler:Languages\German.isl"
+Name: "french"; MessagesFile: "compiler:Languages\French.isl"
+Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
+Name: "russian"; MessagesFile: "compiler:Languages\Russian.isl"
+Name: "japanese"; MessagesFile: "compiler:Languages\Japanese.isl"
+Name: "korean"; MessagesFile: "compiler:Languages\Korean.isl"
+Name: "chinesesimp"; MessagesFile: "compiler:Languages\ChineseSimplified.isl"
+Name: "chinesetrad"; MessagesFile: "compiler:Languages\ChineseTraditional.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked

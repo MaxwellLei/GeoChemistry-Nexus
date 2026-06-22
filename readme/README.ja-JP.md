@@ -1,49 +1,56 @@
-<p align="center">
-  <a href="https://github.com/MaxwellLei/GeoChemistry-Nexus" target="_blank">
-    <img width="120" src="https://geochemistrynexus-1303234197.cos.ap-hongkong.myqcloud.com/Images/logo.png">
-  </a>
-</p>
+<div align="center">
 
-<h1 align="center">GeoChemistry Nexus</h1>
+<img src="https://geochemistrynexus-1303234197.cos.ap-hongkong.myqcloud.com/Images/logo.png" width="96" alt="GeoChemistry Nexus Logo">
 
-<p align="center">次世代の地球化学・岩石学判別図作成および計算ツール —— 地球科学者の頼れるパートナー</p>
+# GeoChemistry Nexus
 
-<p align="center">判別図の作成 | データの投影 | 専門的な計算 | 地質温度計</p>
+**🌍 次世代の地球化学・岩石学 図解・計算ワークベンチ — 地球科学者の頼れるパートナー**
 
-<p align="center">
-  <a href="./README.md">English</a> |
-  <a href="./readme/README.zh-CN.md">简体中文</a> |
-  <a href="./readme/README.zh-HK.md">繁體中文</a> |
-  <a href="./readme/README.de-DE.md">Deutsch</a> |
-  <a href="./readme/README.ja-JP.md">日本語</a> |
-  <a href="./readme/README.ko-KR.md">한국어</a>
-</p>
+[![GitHub Stars](https://img.shields.io/github/stars/MaxwellLei/GeoChemistry-Nexus?style=flat-square&logo=github)](https://github.com/MaxwellLei/GeoChemistry-Nexus/stargazers)
+[![Latest Release](https://img.shields.io/github/v/release/MaxwellLei/GeoChemistry-Nexus?style=flat-square)](https://github.com/MaxwellLei/GeoChemistry-Nexus/releases)
+[![License: GPL v3](https://img.shields.io/github/license/MaxwellLei/GeoChemistry-Nexus?style=flat-square)](https://github.com/MaxwellLei/GeoChemistry-Nexus/blob/main/LICENSE)
+[![.NET 6](https://img.shields.io/badge/.NET-6.0-512BD4?style=flat-square&logo=dotnet)](https://dotnet.microsoft.com/download/dotnet/6.0)
 
+[English](../README.md) · [简体中文](./README.zh-CN.md) · [繁體中文](./README.zh-HK.md) · [Deutsch](./README.de-DE.md) · **日本語** · [한국어](./README.ko-KR.md)
 
-  <p>
-    <img src="https://img.shields.io/github/stars/MaxwellLei/GeoChemistry-Nexus?style=flat-square&logo=github" alt="GitHub Repo stars">
-    <img src="https://img.shields.io/github/license/baby7/agile-tiles?style=flat-square" alt="License">
-    <img src="https://img.shields.io/github/v/tag/MaxwellLei/GeoChemistry-Nexus?label=Version&style=flat-square" alt="Version">
-    <img src="https://img.shields.io/github/last-commit/MaxwellLei/GeoChemistry-Nexus?style=flat-square" alt="Last Commit">
-    <a href="https://dotnet.microsoft.com/en-us/download/dotnet/6.0">
-      <img src="https://img.shields.io/badge/.Net-6.0-512BD4?style=flat-square&logo=dotnet" alt=".Net 6.0">
-    </a>
-  </p>
+<br>
+
+📥 [最新版をダウンロード](https://github.com/MaxwellLei/GeoChemistry-Nexus/releases) · 📖 [オンラインドキュメント](https://geochemistry-nexus.pages.dev/) · 💬 [フィードバックと議論](https://github.com/MaxwellLei/GeoChemistry-Nexus/issues)
+
+</div>
 
 ---
 
-## 📖 プロジェクト概要
+## 💡 なぜ GeoChemistry Nexus なのか
 
-**GeoChemistry Nexus** は、地球化学および岩石学の研究者のために開発された高効率なツールであり、研究プロセスにおける作図の煩わしさ、計算の複雑さ、フォーマットの不統一といった課題を解決することを目的としています。
+地球化学・岩石学の研究では、**作図**と**計算**が異なるツールに分散していることがよくあります：📋 データ整理は表計算ソフト、✏️ 底図の作成は汎用ベクターツール、🌡️ 温圧計計算は別のスクリプトや古いプログラム——。ワークフローの分断、フォーマットの不統一、再現コストの高さは、多くの研究者が日常直面する摩擦です。
 
-本ソフトウェアは **Windows 7** SP1 以上のオペレーティングシステム（Win 8/10/11 推奨）をサポートしており、モダンなインタラクションデザインを通じて、データのインポートから専門的な図解生成までの全プロセスを迅速に完了できるよう支援します。
+さらに、よく使われる判別図、温圧計、関連計算ツールの多くは **継続的な更新が不足** しており、新しく発表されたアルゴリズムや古典モデルの改訂がなかなか取り込まれず、研究者は長年停滞した旧バージョンを使い続けることになりがちです。より現実的な問題として、研究者が **自ら新しいアルゴリズムや図解を開発** した場合、**手軽でオープンな配布チャネル** が不足し、成果が論文付録や個人スクリプト、限られた共有のまま——分野内への迅速な普及と再利用が難しい、というケースも少なくありません。
+
+**GeoChemistry Nexus** は、この一連の流れを一つの場所に集約することを目指します——試料データのインポート、前処理・補正から、判別図の作成、地質温度計計算、CIPW 標準鉱物計算、PNG / SVG などへのエクスポートまで、可能な限り同一インターフェースで完結。**クラウドテンプレート・エコシステム** と **コミュニティ協力** により、図解とアルゴリズムを継続的に更新し、より多くの研究者へ素早く届けます。
 
 > 🚀 **私たちのビジョン**：基礎的な地球化学・岩石学の図解と計算機能を融合させた統合プラットフォームを構築し、研究効率を飛躍的に向上させ、技術的な障壁を下げることで、科学者が科学的発見そのものに集中できるようにすることです。
 
 <div align="center">
-  <img src="./images/software_ui_show.webp" alt="Software UI" style="border-radius: 10px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); width: 90%; margin: 20px 0;"/>
+  <img src="./images/software_ui_show.webp" alt="GeoChemistry Nexus ソフトウェア画面" width="88%" style="border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+  <br>
+  <sub>📈 判別図 · 📐 データ投影 · 🧩 テンプレート編集 · 🌐 多言語 UI</sub>
 </div>
 
+---
+
+## 🧭 できること
+
+| モジュール | 説明 |
+| :---: | --- |
+| 🏠 **ホーム** | クイックリンク、実用ウィジェット、地球科学リソースへの入口——ウィンドウ切り替えを削減 |
+| 📊 **データ前処理** | 分析データのインポートと整理、作図・計算の準備 |
+| 📈 **判別図** | テンプレートライブラリから三角図、散布図、スパイダー図などを作成；データ投影とスタイル編集に対応 |
+| 🌡️ **地質温度計** | 単鉱物計算など一般的なシナリオ向けの地質温圧計テンプレートを統合 |
+| 🪨 **CIPW 計算** | 標準鉱物 norm 計算、岩石学分析ワークフローを支援 |
+| ☁️ **テンプレート・エコシステム** | 公式・コミュニティテンプレートのクラウド更新；カスタムテンプレートのパッケージ化・共有・協力 |
+
+---
 
 ## ✨ 主な機能
 
@@ -53,7 +60,7 @@
 
 * **🌐 ネイティブな多言語サポート**
     * **図解の国際化**：同一のテンプレートで日・英・中などの言語をワンクリックで切り替え可能。一つの成果を世界へ発信できます。
-    * **インターフェースのローカライズ**：ソフトウェアのUIは、英語（US）、簡体字中国語、ドイツ語などを全面的にサポートしています。
+    * **インターフェースのローカライズ**：ソフトウェアの UI は、英語（US）、簡体字中国語、ドイツ語などを全面的にサポートしています。
 
 * **☁️ クラウドテンプレート・エコシステム**
     * 公式チームとコミュニティが共同で管理する図解テンプレートライブラリを内蔵。
@@ -65,54 +72,94 @@
 * **🧮 専門的な地質計算モジュール**
     * 単鉱物など多種多様な地質温度計（Geothermometer）テンプレートを統合し、多様なパラメータ計算のニーズに対応します。
 
+---
+
 ## ⚡ クイックスタート
 
-### ダウンロードとインストール
+### 📥 ダウンロードとインストール
 
-最新のインストールパッケージは、GitHubの **[Releases](https://github.com/MaxwellLei/GeoChemistry-Nexus/releases)** ページからダウンロードしてください。
+GitHub の **[Releases](https://github.com/MaxwellLei/GeoChemistry-Nexus/releases)** ページから Windows インストーラー（現在のバージョン **v0.7.1**）をダウンロードし、ウィザードに従ってインストールしてください。
 
-### システム要件
-* **OS**: Windows 7 SP1 またはそれ以降 (Windows 10/11 推奨)
-* **実行環境**: .NET 6.0 Runtime (未インストールの場合、通常はソフトウェアが通知するか、自動的にインストールを案内します)
+### 💻 システム要件
 
-詳細な使用チュートリアルについては、私たちの [公式ドキュメントサイト](https://geochemistry-nexus.pages.dev/) をご覧ください。
+| 項目 | 要件 |
+| --- | --- |
+| 🖥️ OS | Windows 7 SP1 以上（Windows 10 / 11 推奨） |
+| ⚙️ 実行環境 | [.NET 6.0 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/6.0) |
+| 📦 アーキテクチャ | x64 |
 
-## 🗺️ ロードマップ (Roadmap)
+> 💡 .NET Runtime が未インストールの場合、インストーラーまたは初回起動時にダウンロードを案内します。
 
-私たちは単なるツールではなく、研究エコシステムを構築しようとしています。現在推進している計画は以下の通りです：
+### 🚀 おすすめの始め方
 
-- [ ] **研究コミュニティの構築**: ユーザーが図解をアップロード・共有できる専用コミュニティの設立（フォーラムやフィードバック機能を含む）。
-- [ ] **計算ツールボックスの拡張**: よく使われる地球化学アルゴリズムやモデルの継続的な統合。
-- [ ] **機械学習 (ML) の統合**: 一般的なMLアルゴリズムを導入し、多次元データ分析を支援。
-- [ ] **「新しい図解」モデルのサポート**: MLベースの判別モデルの読み込みをサポートし、複雑なAI判別を三角図の使用と同じくらい簡単に。
-- [ ] **AIスマート研究アシスタント**:
-    - [ ] Phase 1: RAGベースのインテリジェントな質疑応答とソリューション生成。
-    - [ ] Phase 2: 自動化されたデータ処理パイプラインと分析エージェント。
-
-## 💬 コミュニティと連絡先
-
-* **連絡先メール**: `maxwelllei@qq.com`
-* **QQ Group**: 1076647740
-* **Discord**: https://discord.gg/mRm8dbwa4W
-
-## 👋 開発への参加
-
-**GeoChemistry Nexus** は現在、高速なイテレーション（反復開発）期間にあります。開発者や地質学研究者の皆様のご参加を心よりお待ちしております！コードが得意な方も、地質学の理論に詳しい方も、ここで活躍できる場所があります。
-
-**以下の分野でご協力をお願いします：**
-
-1.  🌍 **ローカライズ**: ソフトウェアのインターフェースやドキュメントの翻訳支援。
-2.  🧮 **アルゴリズム研究開発**: 地球化学計算アルゴリズムの提供または改善。
-3.  💻 **機能開発**: C# コードの記述やモジュール構築への参加。
-4.  📈 **テンプレートデザイン**: 専門的な判別図テンプレートの作成。
-5.  💡 **フィードバックと提案**: 必要な機能を教えてください。
+| ステップ | 操作 |
+| :---: | --- |
+| 1️⃣ | **ホーム** でインターフェースとショートカットに慣れる |
+| 2️⃣ | サンプルデータで **判別図** の公式テンプレートを開き、最初の作図を完了する |
+| 3️⃣ | 必要に応じて **地質温度計** または **CIPW** モジュールで計算を試す |
+| 4️⃣ | PNG / JPG / BMP / SVG でエクスポートし、[公式ドキュメント](https://geochemistry-nexus.pages.dev/) で応用を学ぶ |
 
 ---
 
-## Star History
+## 🛠️ 技術概要
+
+| カテゴリ | 内容 |
+| --- | --- |
+| 💻 言語・フレームワーク | C# · WPF · .NET 6 |
+| 🏗️ アーキテクチャ | MVVM（CommunityToolkit.Mvvm） |
+| 📊 作図・エクスポート | ScottPlot；PNG / JPG / BMP / SVG に対応 |
+| 📜 スクリプトエンジン | Jint（テンプレート内カスタムロジック） |
+| 📄 ライセンス | [GNU GPL v3](../LICENSE) |
+
+> 🔧 ローカルビルドと貢献の詳細は `src/` ディレクトリを参照；Issue と Pull Request は GitHub で歓迎します。
+
+---
+
+## 🗺️ ロードマップ
+
+目標は単なる「作図ソフト」ではなく、**データ · 図解 · 計算 · 協力** を一体化した研究ツールチェーンの構築です。
+
+| 段階 | 方向性 |
+| --- | --- |
+| 🔥 **進行中** | 一般的な地球化学・岩石学図解の継続的拡充；地質温度計・地圧計テンプレートの改善 |
+| 📅 **近期計画** | 同位体年代学関連の作図；より豊富な地球化学計算ツール |
+| 🔭 **中長期** | 研究コミュニティとテンプレート共有 · ML 支援分析 · 読み込み可能な「新しい図解」判別モデル · RAG ベースの AI 研究アシスタント |
+
+📌 完全なロードマップ：[公式ドキュメント · Roadmap](https://geochemistry-nexus.pages.dev/docs/Roadmap)
+
+---
+
+## 👋 参加と連絡先
+
+**地質学理論**、**アルゴリズム開発**、**テンプレートデザイン**、**C# 開発** のいずれかを得意とする方、ぜひご参加ください：
+
+| 方法 | 内容 |
+| --- | --- |
+| 🐛 問題を報告 | Bug 報告や機能要望 → [GitHub Issues](https://github.com/MaxwellLei/GeoChemistry-Nexus/issues) |
+| 💻 コードを貢献 | Fork して Pull Request を作成 |
+| 🌍 翻訳を支援 | UI とドキュメントのローカライズ（中 / 英 / 独 / 日 / 韓 など） |
+| 📈 テンプレートを共有 | 自作の判別図テンプレートをコミュニティに提供 |
+
+### 💬 コミュニティチャネル
+
+| チャネル | 情報 |
+| --- | --- |
+| 📧 メール | `maxwelllei@qq.com` |
+| 💬 QQ グループ | `1076647740` |
+| 🎮 Discord | https://discord.gg/mRm8dbwa4W |
+
+---
+
+## ⭐ Star 履歴
 
 <p align="center">
   <a href="https://star-history.com/#MaxwellLei/GeoChemistry-Nexus&Date">
-    <img src="https://api.star-history.com/svg?repos=MaxwellLei/GeoChemistry-Nexus&type=timeline" alt="Star History Chart">
+    <img src="https://api.star-history.com/svg?repos=MaxwellLei/GeoChemistry-Nexus&type=timeline" alt="Star History">
   </a>
 </p>
+
+<div align="center">
+
+✨ GeoChemistry Nexus が研究のお役に立てば、継続的な更新のために **Star** をお願いします ✨
+
+</div>

@@ -1,49 +1,56 @@
-<p align="center">
-  <a href="https://github.com/MaxwellLei/GeoChemistry-Nexus" target="_blank">
-    <img width="120" src="https://geochemistrynexus-1303234197.cos.ap-hongkong.myqcloud.com/Images/logo.png">
-  </a>
-</p>
+<div align="center">
 
-<h1 align="center">GeoChemistry Nexus</h1>
+<img src="https://geochemistrynexus-1303234197.cos.ap-hongkong.myqcloud.com/Images/logo.png" width="96" alt="GeoChemistry Nexus Logo">
 
-<p align="center">Die nächste Generation von Diskriminanzdiagrammen und Berechnungstools für Geochemie und Petrologie – Der beste Helfer für Geowissenschaftler</p>
+# GeoChemistry Nexus
 
-<p align="center">Erstellung von Diskriminanzdiagrammen | Datenprojektion | Professionelle Berechnungen | Geothermometer</p>
+**🌍 Nächste Generation Geochemie- & Petrologie-Diagramm- und Berechnungs-Workbench — Der beste Helfer für Geowissenschaftler**
 
-<p align="center">
-  <a href="./README.md">English</a> |
-  <a href="./readme/README.zh-CN.md">简体中文</a> |
-  <a href="./readme/README.zh-HK.md">繁體中文</a> |
-  <a href="./readme/README.de-DE.md">Deutsch</a> |
-  <a href="./readme/README.ja-JP.md">日本語</a> |
-  <a href="./readme/README.ko-KR.md">한국어</a>
-</p>
+[![GitHub Stars](https://img.shields.io/github/stars/MaxwellLei/GeoChemistry-Nexus?style=flat-square&logo=github)](https://github.com/MaxwellLei/GeoChemistry-Nexus/stargazers)
+[![Latest Release](https://img.shields.io/github/v/release/MaxwellLei/GeoChemistry-Nexus?style=flat-square)](https://github.com/MaxwellLei/GeoChemistry-Nexus/releases)
+[![License: GPL v3](https://img.shields.io/github/license/MaxwellLei/GeoChemistry-Nexus?style=flat-square)](https://github.com/MaxwellLei/GeoChemistry-Nexus/blob/main/LICENSE)
+[![.NET 6](https://img.shields.io/badge/.NET-6.0-512BD4?style=flat-square&logo=dotnet)](https://dotnet.microsoft.com/download/dotnet/6.0)
 
+[English](../README.md) · [简体中文](./README.zh-CN.md) · [繁體中文](./README.zh-HK.md) · **Deutsch** · [日本語](./README.ja-JP.md) · [한국어](./README.ko-KR.md)
 
-  <p>
-    <img src="https://img.shields.io/github/stars/MaxwellLei/GeoChemistry-Nexus?style=flat-square&logo=github" alt="GitHub Repo stars">
-    <img src="https://img.shields.io/github/license/baby7/agile-tiles?style=flat-square" alt="License">
-    <img src="https://img.shields.io/github/v/tag/MaxwellLei/GeoChemistry-Nexus?label=Version&style=flat-square" alt="Version">
-    <img src="https://img.shields.io/github/last-commit/MaxwellLei/GeoChemistry-Nexus?style=flat-square" alt="Last Commit">
-    <a href="https://dotnet.microsoft.com/en-us/download/dotnet/6.0">
-      <img src="https://img.shields.io/badge/.Net-6.0-512BD4?style=flat-square&logo=dotnet" alt=".Net 6.0">
-    </a>
-  </p>
+<br>
+
+📥 [Neueste Version herunterladen](https://github.com/MaxwellLei/GeoChemistry-Nexus/releases) · 📖 [Online-Dokumentation](https://geochemistry-nexus.pages.dev/) · 💬 [Feedback & Diskussion](https://github.com/MaxwellLei/GeoChemistry-Nexus/issues)
+
+</div>
 
 ---
 
-## 📖 Projektbeschreibung
+## 💡 Warum GeoChemistry Nexus
 
-**GeoChemistry Nexus** ist ein hocheffizientes Werkzeug, das speziell für Forscher in der Geochemie und Petrologie entwickelt wurde. Es zielt darauf ab, gängige Probleme im Forschungsprozess zu lösen, wie z. B. die mühsame Erstellung von Grafiken, komplexe Berechnungen und uneinheitliche Formatierungen.
+In der geochemischen und petrologischen Forschung sind **Grafikerstellung** und **Berechnung** oft auf verschiedene Werkzeuge verteilt: 📋 Datenvorbereitung in Tabellenkalkulationen, ✏️ Basiskartenerstellung in allgemeiner Vektorsoftware und 🌡️ Geothermobarometrie in separaten Skripten oder veralteten Programmen. Fragmentierte Workflows, uneinheitliche Formate und hohe Reproduzierbarkeitskosten sind alltägliche Reibungspunkte für viele Forscher.
 
-Diese Software unterstützt **Windows 7** und höhere Versionen (Win 8/10/11). Dank des modernen Interaktionsdesigns können Sie den gesamten Prozess – vom Datenimport bis zur Erstellung professioneller Diagramme – schnell und effizient durchlaufen.
+Darüber hinaus **fehlt vielen gängigen Diskriminanzdiagrammen, Geothermobarometern und zugehörigen Berechnungstools eine kontinuierliche Aktualisierung** — neu veröffentlichte Algorithmen und Überarbeitungen klassischer Modelle werden nur langsam integriert, sodass Forscher oft auf Versionen angewiesen sind, die seit Jahren stagnieren. Ein ebenso praktisches Problem: Wenn Forscher **eigene Algorithmen oder Diagramme entwickeln**, fehlt ihnen häufig **ein bequemer, offener Vertriebskanal** — Ergebnisse bleiben in Paper-Anhängen, persönlichen Skripten oder kleinen Kreisen und lassen sich nur schwer im Fachgebiet verbreiten und wiederverwenden.
 
-> 🚀 **Unsere Vision**: Aufbau einer integrierten Plattform, die grundlegende geochemische und petrologische Diagramme mit Berechnungsfunktionen verbindet. Dies soll die Forschungseffizienz deutlich steigern und technische Hürden senken, damit sich Wissenschaftler voll und ganz auf die wissenschaftliche Entdeckung konzentrieren können.
+**GeoChemistry Nexus** möchte diese Kette zusammenführen — vom Import und der Vorverarbeitung von Proben bis zur Erstellung von Diskriminanzdiagrammen, Geothermometer-Berechnungen und CIPW-Norm-Berechnungen bis hin zum Export in PNG / SVG und andere Formate — möglichst in einer Oberfläche. Durch ein **Cloud-Vorlagen-Ökosystem** und **Community-Zusammenarbeit** sollen Diagramme und Algorithmen kontinuierlich weiterentwickelt und schnell mehr Forschern zugänglich gemacht werden.
+
+> 🚀 **Unsere Vision**: Aufbau einer integrierten Plattform, die grundlegende geochemische und petrologische Diagramme mit Berechnungsfunktionen verbindet, die Forschungseffizienz deutlich steigert und technische Hürden senkt, damit sich Wissenschaftler voll und ganz auf die wissenschaftliche Entdeckung konzentrieren können.
 
 <div align="center">
-  <img src="./images/software_ui_show.webp" alt="Software UI" style="border-radius: 10px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); width: 90%; margin: 20px 0;"/>
+  <img src="./images/software_ui_show.webp" alt="GeoChemistry Nexus Software-Oberfläche" width="88%" style="border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+  <br>
+  <sub>📈 Diskriminanzdiagramme · 📐 Datenprojektion · 🧩 Vorlagenbearbeitung · 🌐 Mehrsprachige Oberfläche</sub>
 </div>
 
+---
+
+## 🧭 Was Sie damit tun können
+
+| Modul | Beschreibung |
+| :---: | --- |
+| 🏠 **Startseite** | Schnelllinks, praktische Widgets und gängige Geowissenschafts-Ressourcen — weniger Fensterwechsel |
+| 📊 **Datenvorverarbeitung** | Analysedaten importieren und organisieren, Vorbereitung für Grafik und Berechnung |
+| 📈 **Diskriminanzdiagramme** | Ternärdiagramme, Streudiagramme, Spinnendiagramme u. a. aus Vorlagenbibliotheken; Datenprojektion und Stilbearbeitung |
+| 🌡️ **Geothermometer** | Integrierte Geothermobarometer-Vorlagen für gängige Szenarien wie Einzelmineral-Berechnungen |
+| 🪨 **CIPW-Berechnung** | Standardmineral-Norm-Berechnung für petrologische Analyse-Workflows |
+| ☁️ **Vorlagen-Ökosystem** | Cloud-Updates für offizielle und Community-Vorlagen; benutzerdefinierte Vorlagen packen, teilen und gemeinsam bearbeiten |
+
+---
 
 ## ✨ Kernfunktionen
 
@@ -52,7 +59,7 @@ Diese Software unterstützt **Windows 7** und höhere Versionen (Win 8/10/11). D
     * Unterstützt benutzerdefinierte Skripte zur flexiblen Festlegung von Datenimport- und Berechnungsregeln, um auch komplexe Anforderungen zu erfüllen.
 
 * **🌐 Native Mehrsprachigkeit**
-    * **Diagramm-Internationalisierung**: Eine Vorlage unterstützt den Wechsel zwischen Sprachen (z. B. Deutsch/Englisch/Chinesisch) per Klick – einmal erstellen, weltweit veröffentlichen.
+    * **Diagramm-Internationalisierung**: Eine Vorlage unterstützt den Wechsel zwischen Sprachen (z. B. Deutsch/Englisch/Chinesisch) per Klick — einmal erstellen, weltweit veröffentlichen.
     * **Oberflächen-Lokalisierung**: Die Softwareoberfläche unterstützt vollständig Englisch (US), Vereinfachtes Chinesisch, Deutsch und mehr.
 
 * **☁️ Cloud-Vorlagen-Ökosystem**
@@ -65,54 +72,94 @@ Diese Software unterstützt **Windows 7** und höhere Versionen (Win 8/10/11). D
 * **🧮 Professionelles geologisches Berechnungsmodul**
     * Integrierte Geothermometer-Vorlagen (einschließlich Einzelmineral-Typen), die vielfältige Anforderungen an die Parameterberechnung erfüllen.
 
+---
+
 ## ⚡ Schnellstart
 
-### Herunterladen und Installieren
+### 📥 Herunterladen & Installieren
 
-Bitte besuchen Sie die GitHub **[Releases](https://github.com/MaxwellLei/GeoChemistry-Nexus/releases)**-Seite, um das neueste Installationspaket herunterzuladen.
+Besuchen Sie die GitHub-**[Releases](https://github.com/MaxwellLei/GeoChemistry-Nexus/releases)**-Seite, laden Sie das Windows-Installationspaket herunter (aktuelle Version **v0.7.1**) und folgen Sie dem Setup-Assistenten.
 
-### Systemanforderungen
-* **Betriebssystem**: Windows 7 SP1 oder höher (Windows 10/11 empfohlen)
-* **Laufzeitumgebung**: .NET 6.0 Runtime (falls nicht installiert, wird die Software Sie normalerweise darauf hinweisen oder die Installation automatisch anleiten)
+### 💻 Systemanforderungen
 
-Für detaillierte Tutorials besuchen Sie bitte unsere [Offizielle Dokumentationsseite](https://geochemistry-nexus.pages.dev/).
+| Punkt | Anforderung |
+| --- | --- |
+| 🖥️ Betriebssystem | Windows 7 SP1 oder höher (Windows 10 / 11 empfohlen) |
+| ⚙️ Laufzeitumgebung | [.NET 6.0 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/6.0) |
+| 📦 Architektur | x64 |
 
-## 🗺️ Roadmap (Entwicklungsplan)
+> 💡 Wenn .NET Runtime nicht installiert ist, leitet Sie das Installationsprogramm oder der erste Start zum Download an.
 
-Wir entwickeln mehr als nur ein Werkzeug; wir bauen ein Forschungsökosystem. Hier sind die Pläne, die wir derzeit vorantreiben:
+### 🚀 Empfohlener Einstieg
 
-- [ ] **Aufbau einer Forschungs-Community**: Schaffung einer exklusiven Community, in der Benutzer Diagramme hochladen/teilen können, inklusive Foren und Feedback-Bereichen.
-- [ ] **Erweiterung der Berechnungs-Toolbox**: Kontinuierliche Integration weiterer gängiger geochemischer Algorithmen und Modelle.
-- [ ] **Integration von maschinellem Lernen (ML)**: Einführung gängiger ML-Algorithmen zur Unterstützung bei der mehrdimensionalen Datenanalyse.
-- [ ] **Unterstützung für „Neue Diagramm“-Modelle**: Laden von ML-basierten Diskriminanzmodellen, damit komplexe KI-Klassifizierungen so einfach werden wie die Nutzung eines Dreiecksdiagramms.
-- [ ] **Intelligenter KI-Forschungsassistent**:
-    - [ ] Phase 1: RAG-basierte intelligente Fragenbeantwortung und Lösungsgenerierung.
-    - [ ] Phase 2: Automatisierte Datenverarbeitungs-Pipelines und Analyse-Agenten.
-
-## 💬 Community & Kontakt
-
-* **Kontakt-E-Mail**: `maxwelllei@qq.com`
-* **QQ Group**: 1076647740
-* **Discord**: https://discord.gg/mRm8dbwa4W
-
-## 👋 Mitwirken
-
-**GeoChemistry Nexus** befindet sich in einer Phase schneller Iteration, und wir laden Entwickler und geologische Forscher herzlich ein, sich uns anzuschließen! Egal, ob Sie gut im Programmieren sind oder in der geologischen Theorie zu Hause sind – hier gibt es einen Platz für Sie.
-
-**Wir brauchen Ihre Hilfe bei:**
-
-1.  🌍 **Lokalisierung**: Unterstützung bei der Übersetzung der Softwareoberfläche oder der Dokumentation.
-2.  🧮 **Algorithmen-F&E**: Bereitstellung oder Verbesserung geochemischer Berechnungsalgorithmen.
-3.  💻 **Funktionsentwicklung**: Mitarbeit am C#-Code und beim Erstellen von Modulen.
-4.  📈 **Vorlagendesign**: Erstellung professioneller Diskriminanzdiagramm-Vorlagen.
-5.  💡 **Feedback & Vorschläge**: Sagen Sie uns, welche Funktionen Sie benötigen.
+| Schritt | Aktion |
+| :---: | --- |
+| 1️⃣ | Auf der **Startseite** Oberfläche und Schnellzugriffe kennenlernen |
+| 2️⃣ | Mit Beispieldaten in **Diskriminanzdiagrammen** eine offizielle Vorlage öffnen und die erste Grafik erstellen |
+| 3️⃣ | Bei Bedarf Berechnungen in **Geothermometer** oder **CIPW** ausprobieren |
+| 4️⃣ | Als PNG / JPG / BMP / SVG exportieren und die [Offizielle Dokumentation](https://geochemistry-nexus.pages.dev/) für fortgeschrittene Nutzung lesen |
 
 ---
 
-## Star History
+## 🛠️ Technischer Überblick
+
+| Kategorie | Details |
+| --- | --- |
+| 💻 Sprache & Framework | C# · WPF · .NET 6 |
+| 🏗️ Architektur | MVVM (CommunityToolkit.Mvvm) |
+| 📊 Darstellung & Export | ScottPlot; unterstützt PNG / JPG / BMP / SVG |
+| 📜 Skript-Engine | Jint (benutzerdefinierte Logik in Vorlagen) |
+| 📄 Lizenz | [GNU GPL v3](../LICENSE) |
+
+> 🔧 Hinweise zum lokalen Build und zu Beiträgen finden Sie im `src/`-Verzeichnis; Issues und Pull Requests sind auf GitHub willkommen.
+
+---
+
+## 🗺️ Roadmap
+
+Das Ziel ist nicht nur eine „Zeichensoftware", sondern eine integrierte Forschungs-Toolchain für **Daten · Diagramme · Berechnung · Zusammenarbeit**.
+
+| Phase | Richtung |
+| --- | --- |
+| 🔥 **In Arbeit** | Kontinuierliche Erweiterung gängiger Geochemie-/Petrologie-Diagramme; Verbesserung von Geothermometer- und Geobarometer-Vorlagen |
+| 📅 **Kurzfristig** | Isotopen-Geochronologie-Grafiken; reichere geochemische Berechnungstools |
+| 🔭 **Langfristig** | Forschungs-Community & Vorlagen-Sharing · ML-gestützte Analyse · ladefähige „Neue Diagramm"-Diskriminanzmodelle · RAG-basierter KI-Forschungsassistent |
+
+📌 Vollständige Roadmap: [Offizielle Dokumentation · Roadmap](https://geochemistry-nexus.pages.dev/docs/Roadmap).
+
+---
+
+## 👋 Mitmachen & Kontakt
+
+Ob Sie in **geologischer Theorie**, **Algorithmenentwicklung**, **Vorlagendesign** oder **C#-Entwicklung** zu Hause sind — wir heißen Sie willkommen:
+
+| Art | Details |
+| --- | --- |
+| 🐛 Probleme melden | Bug-Berichte oder Feature-Wünsche → [GitHub Issues](https://github.com/MaxwellLei/GeoChemistry-Nexus/issues) |
+| 💻 Code beitragen | Forken und Pull Request eröffnen |
+| 🌍 Übersetzen helfen | Oberfläche und Dokumentation lokalisieren (Chinesisch / Englisch / Deutsch / Japanisch / Koreanisch usw.) |
+| 📈 Vorlagen teilen | Eigene Diskriminanzdiagramm-Vorlagen für die Community hochladen |
+
+### 💬 Community-Kanäle
+
+| Kanal | Info |
+| --- | --- |
+| 📧 E-Mail | `maxwelllei@qq.com` |
+| 💬 QQ-Gruppe | `1076647740` |
+| 🎮 Discord | https://discord.gg/mRm8dbwa4W |
+
+---
+
+## ⭐ Star-Verlauf
 
 <p align="center">
   <a href="https://star-history.com/#MaxwellLei/GeoChemistry-Nexus&Date">
-    <img src="https://api.star-history.com/svg?repos=MaxwellLei/GeoChemistry-Nexus&type=timeline" alt="Star History Chart">
+    <img src="https://api.star-history.com/svg?repos=MaxwellLei/GeoChemistry-Nexus&type=timeline" alt="Star History">
   </a>
 </p>
+
+<div align="center">
+
+✨ Wenn GeoChemistry Nexus Ihrer Forschung hilft, geben Sie dem Projekt bitte einen **Star**, um kontinuierliche Updates zu unterstützen ✨
+
+</div>

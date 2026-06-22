@@ -7,7 +7,7 @@
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Data\Icon\logo.ico</ApplicationIcon>
 	<!--软件版本号-->
-    <AssemblyVersion>0.7.0</AssemblyVersion>
+    <AssemblyVersion>0.7.1</AssemblyVersion>
 	<!--图解格式版本号 x.y.z -->
     <FileVersion>1.2.0</FileVersion>
     <!--地质温压计格式版本号 x.y.z -->
