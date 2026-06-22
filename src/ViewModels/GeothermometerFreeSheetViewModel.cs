@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GeoChemistryNexus.Helpers;
@@ -15,6 +16,7 @@ using unvell.ReoGrid.Events;
 
 namespace GeoChemistryNexus.ViewModels
 {
+    [SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "WPF binding requires instance members.")]
     public partial class GeothermometerFreeSheetViewModel : ObservableObject
     {
         private const int InitialRowCount = 500;
@@ -243,7 +245,7 @@ namespace GeoChemistryNexus.ViewModels
 
             int row = e.Cell.Position.Row;
             if (row >= worksheet.RowCount - 1)
-                worksheet.RowCount = worksheet.RowCount + 1;
+                worksheet.RowCount++;
         }
 
         private void UpdateSelectionDisplay(Worksheet? worksheet)
@@ -355,7 +357,7 @@ namespace GeoChemistryNexus.ViewModels
             RefreshUndoState(_grid);
         }
 
-        private Worksheet? GetWorksheet(ReoGridControl? grid) => grid?.CurrentWorksheet;
+        private static Worksheet? GetWorksheet(ReoGridControl? grid) => grid?.CurrentWorksheet;
 
         [RelayCommand(CanExecute = nameof(CanExecuteUndo))]
         private void Undo(ReoGridControl? grid)

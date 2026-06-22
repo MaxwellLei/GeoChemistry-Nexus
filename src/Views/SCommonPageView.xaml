@@ -152,8 +152,14 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="{Binding [CheckUpdate],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" FontSize="14"/>
-                            <Button Content="{Binding [CheckUpdate],Source={x:Static lg:LanguageService.Instance}}" 
-                                    Command="{Binding CheckUpdateCommand}" Grid.Column="1" Width="Auto" Padding="15,0" Height="30"/>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                <Button Content="{Binding [CheckUpdate],Source={x:Static lg:LanguageService.Instance}}"
+                                        Command="{Binding CheckUpdateCommand}" Width="Auto" Padding="15,0" Height="30"/>
+                                <Button Content="{Binding [force_update_app],Source={x:Static lg:LanguageService.Instance}, TargetNullValue='强制更新'}"
+                                        Command="{Binding ForceUpdateCommand}"
+                                        Visibility="{Binding DeveloperMode, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        Width="Auto" Padding="15,0" Height="30" Margin="8,0,0,0"/>
+                            </StackPanel>
                         </Grid>
                     </StackPanel>
                 </Border>

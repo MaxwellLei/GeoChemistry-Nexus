@@ -2709,6 +2709,12 @@
   <data name="force_update_template" xml:space="preserve">
     <value>強制更新</value>
   </data>
+  <data name="force_update_app" xml:space="preserve">
+    <value>強制更新</value>
+  </data>
+  <data name="force_update_app_confirm" xml:space="preserve">
+    <value>最新バージョン {0} をダウンロードしてインストールしますか？</value>
+  </data>
   <data name="force_update_template_not_found" xml:space="preserve">
     <value>サーバーにテンプレートが見つかりません。</value>
   </data>

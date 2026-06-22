@@ -1,3 +1,4 @@
+using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Models;
 using System;
 using System.IO;
@@ -14,8 +15,7 @@ namespace GeoChemistryNexus.Services
             WriteIndented = true
         };
 
-        private static string SettingsPath =>
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "Config", "cos_publish.json");
+        private static string SettingsPath => AppDataPathHelper.GetDataPath("Config", "cos_publish.json");
 
         public static CosPublishSettings Load()
         {

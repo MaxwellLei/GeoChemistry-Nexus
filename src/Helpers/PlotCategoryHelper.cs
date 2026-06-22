@@ -33,8 +33,7 @@ namespace GeoChemistryNexus.Helpers
 
 
         public static string LocalConfigPath =>
-
-            Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", OfficialContentEndpoints.PlotTemplateCategoriesFileName);
+            FileHelper.GetDataPath("PlotData", OfficialContentEndpoints.PlotTemplateCategoriesFileName);
 
 
 

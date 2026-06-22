@@ -87,10 +87,10 @@ namespace GeoChemistryNexus.Views
         }
 
         void IFreeSheetNotificationHost.ShowInfo(string message) =>
-            ShowLocalNotification(LanguageService.Instance["information"] ?? "Information", message, NotificationType.Info, MessageHelper.waitTime);
+            ShowLocalNotification(LanguageService.Instance["information"] ?? "Information", message, NotificationType.Info, MessageHelper.WaitTime);
 
         void IFreeSheetNotificationHost.ShowSuccess(string message) =>
-            ShowLocalNotification(LanguageService.Instance["notification_success"] ?? "Success", message, NotificationType.Success, MessageHelper.waitTime);
+            ShowLocalNotification(LanguageService.Instance["notification_success"] ?? "Success", message, NotificationType.Success, MessageHelper.WaitTime);
 
         void IFreeSheetNotificationHost.ShowWarning(string message) =>
             ShowLocalNotification(LanguageService.Instance["notification_warning"] ?? "Warning", message, NotificationType.Warning);

@@ -2276,6 +2276,21 @@
   <data name="already_latest_version" xml:space="preserve">
     <value>当前已是最新版本</value>
   </data>
+  <data name="update_auto_check_notify" xml:space="preserve">
+    <value>发现新版本，请前往设置页下载并安装。</value>
+  </data>
+  <data name="update_download_confirm_shutdown" xml:space="preserve">
+    <value>下载完成，程序即将退出并启动安装向导，是否继续？</value>
+  </data>
+  <data name="update_installer_not_found" xml:space="preserve">
+    <value>最新发布中未找到安装包。</value>
+  </data>
+  <data name="update_installer_saved" xml:space="preserve">
+    <value>安装包已下载保存。</value>
+  </data>
+  <data name="update_portable_mode_hint" xml:space="preserve">
+    <value>当前为便携模式，请前往 Releases 页面手动下载安装包或便携版。</value>
+  </data>
   <data name="favorite_removed" xml:space="preserve">
     <value>已从收藏中移除</value>
   </data>
@@ -2505,6 +2520,12 @@
   </data>
   <data name="force_update_template" xml:space="preserve">
     <value>强制更新</value>
+  </data>
+  <data name="force_update_app" xml:space="preserve">
+    <value>强制更新</value>
+  </data>
+  <data name="force_update_app_confirm" xml:space="preserve">
+    <value>即将下载并安装最新版本 {0}，是否继续？</value>
   </data>
   <data name="force_update_template_not_found" xml:space="preserve">
     <value>服务器上未找到该图解模板。</value>

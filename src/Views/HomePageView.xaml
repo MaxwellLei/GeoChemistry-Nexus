@@ -102,7 +102,9 @@
                         </Border>
                     </Grid>
                 </Border>
-                <TextBlock Text="{Binding Title}" Style="{StaticResource HomeLinkTitleStyle}" Margin="0,5,0,0"/>
+                <Grid Style="{StaticResource HomeLinkTitleHostStyle}">
+                    <TextBlock Text="{Binding Title}" Style="{StaticResource HomeLinkTitleStyle}" VerticalAlignment="Center"/>
+                </Grid>
             </StackPanel>
         </DataTemplate>
 

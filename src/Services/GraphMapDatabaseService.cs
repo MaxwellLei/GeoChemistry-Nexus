@@ -25,7 +25,8 @@ namespace GeoChemistryNexus.Services
 
         private GraphMapDatabaseService()
         {
-            string dataDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "PlotData");
+            AppDataPathHelper.Initialize();
+            string dataDir = AppDataPathHelper.GetDataPath("PlotData");
             if (!Directory.Exists(dataDir))
             {
                 Directory.CreateDirectory(dataDir);

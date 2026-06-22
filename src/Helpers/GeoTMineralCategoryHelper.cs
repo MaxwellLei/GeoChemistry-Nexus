@@ -23,7 +23,7 @@ namespace GeoChemistryNexus.Helpers
         private static DateTime _cachedWriteTimeUtc;
 
         public static string LocalConfigPath =>
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "Plugins", OfficialContentEndpoints.GeoTMineralCategoriesFileName);
+            AppDataPathHelper.GetDataPath("Plugins", OfficialContentEndpoints.GeoTMineralCategoriesFileName);
 
         public static GeoTMineralCategoryConfig LoadConfig()
         {

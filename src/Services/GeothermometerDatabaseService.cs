@@ -29,7 +29,8 @@ namespace GeoChemistryNexus.Services
 
         private GeothermometerDatabaseService()
         {
-            string dataDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "Plugins");
+            AppDataPathHelper.Initialize();
+            string dataDir = AppDataPathHelper.GetDataPath("Plugins");
             if (!Directory.Exists(dataDir))
             {
                 Directory.CreateDirectory(dataDir);

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -24,6 +25,7 @@ using unvell.ReoGrid.Events;
 
 namespace GeoChemistryNexus.ViewModels
 {
+    [SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "WPF binding requires instance members.")]
     public partial class GeothermometerPageViewModel : ObservableObject,
         IRecipient<DeveloperModeChangedMessage>,
         IRecipient<GeoTMineralCategoryUpdatedMessage>
@@ -496,7 +498,7 @@ namespace GeoChemistryNexus.ViewModels
             try
             {
                 string langCode = LanguageService.GetLanguage();
-                string rtfContent = null;
+                string? rtfContent = null;
 
                 if (_selectedFullEntity.HelpDocuments.ContainsKey(langCode))
                     rtfContent = _selectedFullEntity.HelpDocuments[langCode];
@@ -548,7 +550,7 @@ namespace GeoChemistryNexus.ViewModels
 
             try
             {
-                string filePath = await FileHelper.GetSaveFilePath2Async(
+                string? filePath = await FileHelper.GetSaveFilePath2Async(
                     title: LanguageService.Instance["geo_msg_export_dialog_title"],
                     filter: "ZIP files (*.zip)|*.zip",
                     defaultExt: ".zip",
@@ -570,7 +572,7 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private void ImportPlugin()
         {
-            string filePath = FileHelper.GetFilePath("ZIP files (*.zip)|*.zip");
+            string? filePath = FileHelper.GetFilePath("ZIP files (*.zip)|*.zip");
             ImportPluginFromPath(filePath);
         }
 
@@ -780,7 +782,7 @@ namespace GeoChemistryNexus.ViewModels
 
             int row = e.Cell.Position.Row;
             if (row >= worksheet.RowCount - 1)
-                worksheet.RowCount = worksheet.RowCount + 1;
+                worksheet.RowCount++;
         }
 
         /// <summary>
@@ -1108,7 +1110,7 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         public void OpenExcelFile(ReoGridControl reoGridControl)
         {
-            string filePath = FileHelper.GetFilePath(LanguageService.Instance["csv_file_filter"]);
+            string? filePath = FileHelper.GetFilePath(LanguageService.Instance["csv_file_filter"]);
             if (filePath != null)
             {
                 reoGridControl.Load(filePath);
@@ -1129,7 +1131,7 @@ namespace GeoChemistryNexus.ViewModels
             var worksheet = reoGridControl.CurrentWorksheet;
             if (worksheet == null) return;
 
-            string tempFilePath = await FileHelper.GetSaveFilePath2Async(
+            string? tempFilePath = await FileHelper.GetSaveFilePath2Async(
                 title: LanguageService.Instance["geo_msg_csv_save_title"],
                 filter: LanguageService.Instance["csv_file_filter"],
                 defaultExt: ".csv",
@@ -1147,7 +1149,7 @@ namespace GeoChemistryNexus.ViewModels
                     for (int c = range.Col; c <= range.EndCol; c++)
                     {
                         string cellValue = worksheet.GetCellText(r, c) ?? "";
-                        if (cellValue.Contains(",") || cellValue.Contains("\""))
+                        if (cellValue.Contains(',') || cellValue.Contains('"'))
                         {
                             cellValue = $"\"{cellValue.Replace("\"", "\"\"")}\"";
                         }
@@ -1201,15 +1203,19 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private void CreateCustomThermometer()
         {
-            var editorVm = new GeothermometerEditorViewModel();
-            editorVm.OnSaved = () =>
+            var editorVm = new GeothermometerEditorViewModel
             {
-                GeothermometerService.ReloadPlugins();
-                LoadCategoryGroups();
+                OnSaved = () =>
+                {
+                    GeothermometerService.ReloadPlugins();
+                    LoadCategoryGroups();
+                }
             };
 
-            var window = new GeothermometerEditorWindow(editorVm);
-            window.Owner = Application.Current.MainWindow;
+            var window = new GeothermometerEditorWindow(editorVm)
+            {
+                Owner = Application.Current.MainWindow
+            };
             window.ShowDialog();
         }
 
@@ -1225,16 +1231,20 @@ namespace GeoChemistryNexus.ViewModels
             var entity = GeothermometerDatabaseService.Instance.GetEntity(entityId);
             if (entity == null) return;
 
-            var editorVm = new GeothermometerEditorViewModel();
-            editorVm.LoadEntity(entity);
-            editorVm.OnSaved = () =>
+            var editorVm = new GeothermometerEditorViewModel
             {
-                GeothermometerService.ReloadPlugins();
-                LoadCategoryGroups();
+                OnSaved = () =>
+                {
+                    GeothermometerService.ReloadPlugins();
+                    LoadCategoryGroups();
+                }
             };
+            editorVm.LoadEntity(entity);
 
-            var window = new GeothermometerEditorWindow(editorVm);
-            window.Owner = Application.Current.MainWindow;
+            var window = new GeothermometerEditorWindow(editorVm)
+            {
+                Owner = Application.Current.MainWindow
+            };
             window.ShowDialog();
         }
 

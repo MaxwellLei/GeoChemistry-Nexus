@@ -37,7 +37,7 @@ namespace GeoChemistryNexus.Views
                 LanguageService.Instance["notification_success"] ?? "Success",
                 message,
                 NotificationType.Success,
-                MessageHelper.waitTime);
+                MessageHelper.WaitTime);
 
         public void ShowWarningMessage(string message) =>
             ShowLocalNotification(

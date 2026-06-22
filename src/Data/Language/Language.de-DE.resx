@@ -2709,6 +2709,12 @@ Verzeichnis: {2}</value>
   <data name="force_update_template" xml:space="preserve">
     <value>Aktualisierung erzwingen</value>
   </data>
+  <data name="force_update_app" xml:space="preserve">
+    <value>Aktualisierung erzwingen</value>
+  </data>
+  <data name="force_update_app_confirm" xml:space="preserve">
+    <value>Neueste Version {0} herunterladen und installieren?</value>
+  </data>
   <data name="force_update_template_not_found" xml:space="preserve">
     <value>Vorlage auf dem Server nicht gefunden.</value>
   </data>

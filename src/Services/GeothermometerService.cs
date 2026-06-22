@@ -69,7 +69,7 @@ namespace GeoChemistryNexus.Services
         /// 本地 GeoT-List.json 存储路径
         /// </summary>
         private static string LocalListFilePath =>
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "Plugins", "GeoT-List.json");
+            AppDataPathHelper.GetDataPath("Plugins", "GeoT-List.json");
 
         private static string LocalMineralCategoriesFilePath =>
             GeoTMineralCategoryHelper.LocalConfigPath;

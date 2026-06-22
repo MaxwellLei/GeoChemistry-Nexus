@@ -570,6 +570,21 @@
   <data name="already_latest_version" xml:space="preserve">
     <value>Already the latest version</value>
   </data>
+  <data name="update_auto_check_notify" xml:space="preserve">
+    <value>A new version is available. Open Settings to download and install.</value>
+  </data>
+  <data name="update_download_confirm_shutdown" xml:space="preserve">
+    <value>Download complete. The application will exit and launch the installer wizard. Continue?</value>
+  </data>
+  <data name="update_installer_not_found" xml:space="preserve">
+    <value>Installer package not found in the latest release.</value>
+  </data>
+  <data name="update_installer_saved" xml:space="preserve">
+    <value>Installer downloaded and saved.</value>
+  </data>
+  <data name="update_portable_mode_hint" xml:space="preserve">
+    <value>Portable mode detected. Please download the installer or portable package from the Releases page.</value>
+  </data>
   <data name="cannot_parse_version_number_check_release_address" xml:space="preserve">
     <value>Unable to parse the version number. Please check the release address</value>
   </data>
@@ -1286,6 +1301,12 @@
   </data>
   <data name="force_update_template" xml:space="preserve">
     <value>Force Update</value>
+  </data>
+  <data name="force_update_app" xml:space="preserve">
+    <value>Force Update</value>
+  </data>
+  <data name="force_update_app_confirm" xml:space="preserve">
+    <value>Download and install the latest version {0}?</value>
   </data>
   <data name="force_update_template_not_found" xml:space="preserve">
     <value>Template not found on server.</value>

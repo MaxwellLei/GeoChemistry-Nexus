@@ -19,22 +19,22 @@ namespace GeoChemistryNexus.ViewModels
     public partial class NotificationViewModel : ObservableObject
     {
         [ObservableProperty]
-        private string title;
+        private string title = string.Empty;
 
         [ObservableProperty]
-        private string message;
+        private string message = string.Empty;
 
         [ObservableProperty]
         private NotificationType type;
 
         [ObservableProperty]
-        private Brush backgroundColor;
+        private Brush backgroundColor = Brushes.Transparent;
 
         [ObservableProperty]
-        private Brush foregroundColor;
+        private Brush foregroundColor = Brushes.Black;
         
         [ObservableProperty]
-        private Brush borderColor;
+        private Brush borderColor = Brushes.Gray;
 
         // Dialog support
         [ObservableProperty]
@@ -45,13 +45,13 @@ namespace GeoChemistryNexus.ViewModels
         private bool isCopyVisible;
 
         [ObservableProperty]
-        private string confirmText;
+        private string confirmText = string.Empty;
 
         [ObservableProperty]
-        private string cancelText;
+        private string cancelText = string.Empty;
 
         [ObservableProperty]
-        private string thirdButtonText;
+        private string thirdButtonText = string.Empty;
 
         [ObservableProperty]
         private bool isThreeButtonDialog;
@@ -60,33 +60,33 @@ namespace GeoChemistryNexus.ViewModels
         [NotifyCanExecuteChangedFor(nameof(CloseCommand))]
         private bool isClosing;
 
-        public Action<bool> DialogResultAction { get; set; }
+        public Action<bool>? DialogResultAction { get; set; }
 
-        public Action<int> ThreeButtonDialogResultAction { get; set; }
+        public Action<int>? ThreeButtonDialogResultAction { get; set; }
 
         [ObservableProperty]
         private bool _isLanguageSelection;
 
         [ObservableProperty]
-        private ObservableCollection<string> _languages;
+        private ObservableCollection<string> _languages = new();
 
         [ObservableProperty]
-        private string _selectedLanguage;
+        private string _selectedLanguage = string.Empty;
 
-        public Action<string> LanguageSelectionAction { get; set; }
+        public Action<string>? LanguageSelectionAction { get; set; }
 
         [ObservableProperty]
         private bool _isExportModeSelection;
 
         [ObservableProperty]
-        private ObservableCollection<string> _exportOptions;
+        private ObservableCollection<string> _exportOptions = new();
 
         [ObservableProperty]
-        private string _selectedExportOption;
+        private string _selectedExportOption = string.Empty;
 
-        public Action<string> ExportModeSelectionAction { get; set; }
+        public Action<string>? ExportModeSelectionAction { get; set; }
 
-        private Action<NotificationViewModel> _closeAction;
+        private readonly Action<NotificationViewModel> _closeAction;
 
         public NotificationViewModel(string title, string message, NotificationType type, Action<NotificationViewModel> closeAction)
         {

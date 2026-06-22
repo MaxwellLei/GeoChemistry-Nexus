@@ -1,5 +1,6 @@
 using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Models;
+using GeoChemistryNexus.Services;
 using GeoChemistryNexus.ViewModels;
 using GeoChemistryNexus.Views;
 using ScottPlot;
@@ -97,6 +98,12 @@ namespace GeoChemistryNexus
             
             // 监听窗口状态变化
             this.StateChanged += MainWindow_StateChanged;
+            this.Loaded += MainWindow_Loaded;
+        }
+
+        private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            await AppUpdateService.TryAutoCheckOnStartupAsync();
         }
 
         /// <summary>

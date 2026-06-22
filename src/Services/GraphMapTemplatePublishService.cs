@@ -188,7 +188,7 @@ namespace GeoChemistryNexus.Services
             File.WriteAllText(graphMapListPath, JsonSerializer.Serialize(exportList, ListJsonOptions));
 
             string categoriesFileName = OfficialContentEndpoints.PlotTemplateCategoriesFileName;
-            string srcCategoriesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "PlotData", categoriesFileName);
+            string srcCategoriesPath = AppDataPathHelper.GetDataPath("PlotData", categoriesFileName);
             string dstCategoriesPath = Path.Combine(outputDir, categoriesFileName);
             if (File.Exists(srcCategoriesPath))
                 File.Copy(srcCategoriesPath, dstCategoriesPath, true);

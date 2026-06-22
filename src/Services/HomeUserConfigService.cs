@@ -9,8 +9,7 @@ namespace GeoChemistryNexus.Services
 {
     public static class HomeUserConfigService
     {
-        private static readonly string UserConfigPath = Path.Combine(
-            AppDomain.CurrentDomain.BaseDirectory, "Data", "Config", "home_user.json");
+        private static string UserConfigPath => AppDataPathHelper.GetDataPath("Config", "home_user.json");
 
         private static readonly string[] DeprecatedWidgetKeys =
         {

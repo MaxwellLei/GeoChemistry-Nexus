@@ -30,6 +30,8 @@ namespace GeoChemistryNexus
         {
             base.OnStartup(e);
 
+            AppDataPathHelper.Initialize();
+
             if (TryHandleHeadlessPublish(e.Args))
                 return;
 
@@ -131,7 +133,7 @@ namespace GeoChemistryNexus
 
             LanguageService.InitializeLanguage();
 
-            string logDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
+            string logDir = AppDataPathHelper.GetLogsPath();
             if (!Directory.Exists(logDir))
                 Directory.CreateDirectory(logDir);
 
@@ -255,7 +257,7 @@ namespace GeoChemistryNexus
         {
             try
             {
-                string logDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
+                string logDir = AppDataPathHelper.GetLogsPath();
                 if (!Directory.Exists(logDir))
                 {
                     Directory.CreateDirectory(logDir);

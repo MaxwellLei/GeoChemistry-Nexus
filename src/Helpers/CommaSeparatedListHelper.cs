@@ -26,7 +26,7 @@ namespace GeoChemistryNexus.Helpers
                 return new List<string>();
 
             text = text.Trim();
-            if (text.IndexOf('"') >= 0)
+            if (text.Contains('"'))
                 return SplitQuotedCsv(text);
 
             return SplitRespectingParentheses(text);

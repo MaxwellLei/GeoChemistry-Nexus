@@ -17,9 +17,9 @@ namespace GeoChemistryNexus.Controls.GeothermometerEditorPanels
 
         public void RefreshTagSuggestions()
         {
-            if (DataContext is not GeothermometerEditorViewModel vm) return;
+            if (DataContext is not GeothermometerEditorViewModel) return;
 
-            var list = vm.GetTagSuggestions();
+            var list = GeothermometerEditorViewModel.GetTagSuggestions();
             TagCombo.ItemsSource = list.Select(entry =>
             {
                 string displayName = AppCultureRegistry.GetLocalizedValue(

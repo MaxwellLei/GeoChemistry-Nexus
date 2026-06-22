@@ -3747,7 +3747,7 @@ namespace GeoChemistryNexus.ViewModels
                     // -------------------------------------------------------------------------
                     try
                     {
-                        string localListPath = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "GraphMapList.json");
+                        string localListPath = FileHelper.GetDataPath("PlotData", "GraphMapList.json");
                         if (File.Exists(localListPath))
                         {
                             string jsonContent = File.ReadAllText(localListPath);
@@ -6150,7 +6150,7 @@ namespace GeoChemistryNexus.ViewModels
                 // 如果删除的是官方模板（开发者模式），同步删除本地 GraphMapList.json
                 if (!card.IsCustomTemplate)
                 {
-                    string localListPath = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "GraphMapList.json");
+                    string localListPath = FileHelper.GetDataPath("PlotData", "GraphMapList.json");
                     if (File.Exists(localListPath))
                     {
                         File.Delete(localListPath);
@@ -11279,13 +11279,13 @@ namespace GeoChemistryNexus.ViewModels
             try
             {
                 // 获取本地 GraphMapList.json
-                string localListPath = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "GraphMapList.json");
+                string localListPath = FileHelper.GetDataPath("PlotData", "GraphMapList.json");
 
                 // 计算本地文件的哈希值
                 string localHash = UpdateHelper.ComputeFileMd5(localListPath);
 
                 // 获取本地 PlotTemplateCategories.json
-                string localCategoryPath = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "PlotTemplateCategories.json");
+                string localCategoryPath = FileHelper.GetDataPath("PlotData", "PlotTemplateCategories.json");
 
                 // 从服务器获取 server_info.json
                 string jsonContent = await UpdateHelper.GetUrlContentAsync();
@@ -11296,7 +11296,7 @@ namespace GeoChemistryNexus.ViewModels
                 if (serverInfo == null) return;
 
                 // 检查数据库文件是否存在
-                string dbPath = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "Templates.db");
+                string dbPath = FileHelper.GetDataPath("PlotData", "Templates.db");
                 bool isDbMissing = !File.Exists(dbPath);
 
                 // 检查列表是否需要更新
@@ -11373,7 +11373,7 @@ namespace GeoChemistryNexus.ViewModels
         {
             // 生成一个唯一的临时文件路径
             string tempFilePath = Path.GetTempFileName();
-            string localListPath = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "GraphMapList.json");
+            string localListPath = FileHelper.GetDataPath("PlotData", "GraphMapList.json");
 
             try
             {
@@ -11464,7 +11464,7 @@ namespace GeoChemistryNexus.ViewModels
         {
             // 生成一个唯一的临时文件路径
             string tempFilePath = Path.GetTempFileName();
-            string localListPath = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "PlotTemplateCategories.json");
+            string localListPath = FileHelper.GetDataPath("PlotData", "PlotTemplateCategories.json");
 
             try
             {
@@ -12851,7 +12851,7 @@ namespace GeoChemistryNexus.ViewModels
 
             try
             {
-                string localListPath = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "GraphMapList.json");
+                string localListPath = FileHelper.GetDataPath("PlotData", "GraphMapList.json");
                 if (!File.Exists(localListPath))
                     return result;
 

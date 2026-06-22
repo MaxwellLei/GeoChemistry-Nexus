@@ -2709,6 +2709,12 @@
   <data name="force_update_template" xml:space="preserve">
     <value>Принудительное обновление</value>
   </data>
+  <data name="force_update_app" xml:space="preserve">
+    <value>Принудительное обновление</value>
+  </data>
+  <data name="force_update_app_confirm" xml:space="preserve">
+    <value>Загрузить и установить последнюю версию {0}?</value>
+  </data>
   <data name="force_update_template_not_found" xml:space="preserve">
     <value>Шаблон не найден на сервере.</value>
   </data>

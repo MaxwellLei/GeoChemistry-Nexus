@@ -12,11 +12,9 @@ namespace GeoChemistryNexus.Services
 {
     public static class HomeLinksCatalogService
     {
-        private static readonly string LocalCatalogPath = Path.Combine(
-            AppDomain.CurrentDomain.BaseDirectory, "Data", "Config", OfficialContentEndpoints.HomeLinksCatalogFileName);
+        private static string LocalCatalogPath => AppDataPathHelper.GetDataPath("Config", OfficialContentEndpoints.HomeLinksCatalogFileName);
 
-        private static readonly string BundledCatalogPath = Path.Combine(
-            AppDomain.CurrentDomain.BaseDirectory, "Data", "Home", OfficialContentEndpoints.HomeLinksCatalogFileName);
+        private static string BundledCatalogPath => AppDataPathHelper.GetBundledDataPath("Home", OfficialContentEndpoints.HomeLinksCatalogFileName);
 
         /// <summary>
         /// 从服务器同步主页链接目录；若已是最新则跳过下载。

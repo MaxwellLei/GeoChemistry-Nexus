@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -23,6 +24,7 @@ namespace GeoChemistryNexus.ViewModels
     /// 用于新建和编辑自定义温压计，支持脚本测试和导出
     /// 三步流程：基本信息 → 公式脚本 → 帮助文档
     /// </summary>
+    [SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "WPF binding requires instance members.")]
     public partial class GeothermometerEditorViewModel : ObservableObject,
         IRecipient<DeveloperModeChangedMessage>,
         IRecipient<GeoTMineralCategoryUpdatedMessage>
@@ -188,7 +190,7 @@ namespace GeoChemistryNexus.ViewModels
         /// <summary>
         /// 内部存储：语言代码 → RTF 内容
         /// </summary>
-        private Dictionary<string, string> _helpDocuments = new();
+        private readonly Dictionary<string, string> _helpDocuments = new();
 
         /// <summary>
         /// 已添加的语言列表（绑定到 UI 的 ComboBox）
@@ -527,7 +529,7 @@ namespace GeoChemistryNexus.ViewModels
             return text.Trim();
         }
 
-        public List<Dictionary<string, string>> GetTagSuggestions()
+        public static List<Dictionary<string, string>> GetTagSuggestions()
         {
             return GeoTMineralCategoryHelper.GetAllTagSuggestions();
         }
@@ -966,7 +968,7 @@ namespace GeoChemistryNexus.ViewModels
                 var entity = BuildEntity();
                 var saved = GeothermometerService.SaveEntity(entity);
 
-                string filePath = await FileHelper.GetSaveFilePath2Async(
+                string? filePath = await FileHelper.GetSaveFilePath2Async(
                     title: LanguageService.Instance["geo_msg_export_dialog_title"],
                     filter: "ZIP files (*.zip)|*.zip",
                     defaultExt: ".zip",

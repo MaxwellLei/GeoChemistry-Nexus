@@ -69,7 +69,7 @@ namespace GeoChemistryNexus.Views
 
         private void ShowSuccessMessage(string message)
         {
-            ShowLocalNotification("Success", message, NotificationType.Success, MessageHelper.waitTime);
+            ShowLocalNotification("Success", message, NotificationType.Success, MessageHelper.WaitTime);
         }
 
         private void ShowErrorMessage(string message)

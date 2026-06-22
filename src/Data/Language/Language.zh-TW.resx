@@ -2859,6 +2859,12 @@
   <data name="force_update_template" xml:space="preserve">
     <value>強制更新</value>
   </data>
+  <data name="force_update_app" xml:space="preserve">
+    <value>強制更新</value>
+  </data>
+  <data name="force_update_app_confirm" xml:space="preserve">
+    <value>即將下載並安裝最新版本 {0}，是否繼續？</value>
+  </data>
   <data name="force_update_template_not_found" xml:space="preserve">
     <value>伺服器上未找到該圖解範本。</value>
   </data>

@@ -33,6 +33,7 @@
     <None Remove="Data\Image\StartPic\4.jpg" />
     <None Remove="Data\PlotData\PlotTemplateCategories.json" />
     <None Remove="Data\Plugins\GeoTMineralCategories.json" />
+    <None Remove="Data\Config\App.config" />
   </ItemGroup>
 
   <ItemGroup>
@@ -63,9 +64,15 @@
     <Content Include="Data\Home\HomeLinksCatalog.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Data\Config\App.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>GeoChemistryNexus.dll.config</TargetPath>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
     <PackageReference Include="Tencent.QCloud.Cos.Sdk" Version="5.4.49" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
     <PackageReference Include="gong-wpf-dragdrop" Version="4.0.0" />

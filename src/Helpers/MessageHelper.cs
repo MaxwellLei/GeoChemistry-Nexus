@@ -7,7 +7,7 @@ namespace GeoChemistryNexus.Helpers
     public class MessageHelper
     {
         //消息自动关闭通知时间
-        public static int waitTime = 5;
+        public static int WaitTime { get; set; } = 5;
 
         private static string L(string key, string fallback) =>
             LanguageService.Instance[key] ?? fallback;
@@ -19,7 +19,7 @@ namespace GeoChemistryNexus.Helpers
                 L("information", "Information"),
                 message,
                 NotificationType.Info,
-                waitTime);
+                WaitTime);
         }
 
         //成功消息通知
@@ -29,7 +29,7 @@ namespace GeoChemistryNexus.Helpers
                 L("notification_success", "Success"),
                 message,
                 NotificationType.Success,
-                waitTime);
+                WaitTime);
         }
 
         //警告消息通知
@@ -39,7 +39,7 @@ namespace GeoChemistryNexus.Helpers
                 L("notification_warning", "Warning"),
                 message,
                 NotificationType.Warning,
-                waitTime);
+                WaitTime);
         }
 
         //错误消息通知
@@ -49,7 +49,7 @@ namespace GeoChemistryNexus.Helpers
                 L("error", "Error"),
                 message,
                 NotificationType.Error,
-                waitTime);
+                WaitTime);
         }
 
         public static Task<bool> ShowAsyncDialog(string message, string cancelText, string confirmText)

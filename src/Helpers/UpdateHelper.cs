@@ -1,199 +1,260 @@
 using GeoChemistryNexus.Models;
 using GeoChemistryNexus.Services;
-using HandyControl.Controls;
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
-using System.Security.Cryptography;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace GeoChemistryNexus.Helpers
 {
+    public class AppUpdateInfo
+    {
+        public bool HasUpdate { get; set; }
+        public string LatestVersion { get; set; } = string.Empty;
+        public string InstallerDownloadUrl { get; set; } = string.Empty;
+        public string InstallerFileName { get; set; } = string.Empty;
+    }
+
+    public class GitHubAsset
+    {
+        [JsonPropertyName("name")]
+        public string Name { get; set; } = string.Empty;
+
+        [JsonPropertyName("browser_download_url")]
+        public string BrowserDownloadUrl { get; set; } = string.Empty;
+    }
+
     /// <summary>
     /// 用于反序列化 GitHub Release API 响应的辅助类
     /// </summary>
     public class GitHubRelease
     {
-        [System.Text.Json.Serialization.JsonPropertyName("tag_name")]
-        public string TagName { get; set; }
+        [JsonPropertyName("tag_name")]
+        public string TagName { get; set; } = string.Empty;
+
+        [JsonPropertyName("assets")]
+        public GitHubAsset[] Assets { get; set; } = Array.Empty<GitHubAsset>();
     }
 
     /// <summary>
-    /// 检查 GitHub Releases 更新
+    /// 检查 GitHub Releases 更新并下载安装包
     /// </summary>
     public static class UpdateHelper
     {
-        // 仓库的 API URL
         private const string GitHubApiUrl = "https://api.github.com/repos/MaxwellLei/GeoChemistry-Nexus/releases/latest";
-
-        // 服务器信息 URL 常量
         private const string ServerInfoUrl = OfficialContentEndpoints.ServerInfoUrl;
+        private const string InstallerAssetPattern = "GeoChemistryNexus-Setup-";
+        private const string InstallerAssetSuffix = "-x64.exe";
 
-        // 使用静态 HttpClient 实例
-        private static readonly HttpClient httpClient = new HttpClient();
+        private static readonly HttpClient HttpClient = CreateHttpClient();
 
-        // 计算文件的 MD5 哈希值 (小写 hex 字符串)
+        private static HttpClient CreateHttpClient()
+        {
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.UserAgent.Add(
+                new ProductInfoHeaderValue("GeoChemistry-Nexus-Update-Checker", "1.0"));
+            return client;
+        }
+
         public static string ComputeFileMd5(string filePath)
         {
             if (!File.Exists(filePath)) return string.Empty;
 
-            using (var md5 = MD5.Create())
-            using (var stream = File.OpenRead(filePath))
-            {
-                byte[] hashBytes = md5.ComputeHash(stream);
-                return BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();
-            }
+            using var md5 = System.Security.Cryptography.MD5.Create();
+            using var stream = File.OpenRead(filePath);
+            byte[] hashBytes = md5.ComputeHash(stream);
+            return BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();
         }
 
-        // 简单的 GET 请求获取 JSON 字符串
         public static async Task<string> GetUrlContentAsync(string url = ServerInfoUrl)
         {
-            using (var client = new HttpClient())
-            {
-                // 可以设置超时时间
-                client.Timeout = TimeSpan.FromSeconds(10);
-                return await client.GetStringAsync(url);
-            }
+            using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(10) };
+            return await client.GetStringAsync(url);
         }
 
-        /// <summary>
-        /// 异步检查是否有新版本发布。
-        /// </summary>
-        /// <param name="currentVersionString">应用程序当前的有好版本字符串，例如 "1.0.0"。</param>
-        /// <returns>如果存在新版本，则返回 true；否则返回 false。</returns>
-        public static async Task<bool> CheckForUpdateAsync(string currentVersionString)
+        public static string GetCurrentAppVersion()
         {
-            // GitHub API 要求设置 User-Agent
-            httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("GeoChemistry-Nexus-Update-Checker", "1.0"));
+            return Assembly.GetExecutingAssembly().GetName().Version?.ToString(3) ?? "0.0.0";
+        }
+
+        public static async Task<AppUpdateInfo> GetLatestReleaseInfoAsync(string? currentVersionString = null, bool forceDownload = false)
+        {
+            currentVersionString ??= GetCurrentAppVersion();
+            var result = new AppUpdateInfo();
 
             try
             {
-                // 发起 GET 请求
-                HttpResponseMessage response = await httpClient.GetAsync(GitHubApiUrl);
-
-                // 确保请求成功
+                using var response = await HttpClient.GetAsync(GitHubApiUrl);
                 response.EnsureSuccessStatusCode();
 
-                // 读取响应内容
                 string jsonResponse = await response.Content.ReadAsStringAsync();
-
-                // 直接反序列化 JSON 对象，而不是列表
                 var latestRelease = JsonSerializer.Deserialize<GitHubRelease>(jsonResponse);
 
-                if (latestRelease == null)
+                if (latestRelease == null || string.IsNullOrWhiteSpace(latestRelease.TagName))
+                    return result;
+
+                string cleanedLatest = latestRelease.TagName.TrimStart('v', 'V');
+                if (Version.TryParse(cleanedLatest, out Version? latestVersion) && latestVersion != null)
                 {
-                    MessageHelper.Warning(LanguageService.Instance["unable_to_get_latest_release_info"]);
-                    return false;
-                }
-
-                string latestVersionTag = latestRelease.TagName;
-
-                // 清理版本号字符串
-                string cleanedLatestVersionString = latestVersionTag.TrimStart('v', 'V');
-                string cleanedCurrentVersionString = currentVersionString.TrimStart('v', 'V');
-
-                // 解析版本号
-                if (Version.TryParse(cleanedLatestVersionString, out Version latestVersion) &&
-                    Version.TryParse(cleanedCurrentVersionString, out Version currentVersion))
-                {
-                    // 强制转换为3位版本号 (忽略 Revision)
-                    // 如果只有两位版本号，则默认为 0
-                    latestVersion = new Version(latestVersion.Major, latestVersion.Minor, latestVersion.Build >= 0 ? latestVersion.Build : 0);
-                    currentVersion = new Version(currentVersion.Major, currentVersion.Minor, currentVersion.Build >= 0 ? currentVersion.Build : 0);
-
-                    // 比较版本号
-                    // 如果最新版本号大于当前版本号，则有更新
-                    if(latestVersion == currentVersion)
-                    {
-                        return false;
-                    }
-                    return latestVersion > currentVersion;
+                    latestVersion = NormalizeVersion(latestVersion);
+                    result.LatestVersion = latestVersion.ToString(3);
                 }
                 else
                 {
-                    MessageHelper.Warning(LanguageService.Instance["cannot_parse_version_number_check_release_address"]);
-                    return false;
+                    result.LatestVersion = cleanedLatest;
                 }
+
+                var installerAsset = latestRelease.Assets?
+                    .FirstOrDefault(a =>
+                        !string.IsNullOrWhiteSpace(a?.Name)
+                        && a.Name.StartsWith(InstallerAssetPattern, StringComparison.OrdinalIgnoreCase)
+                        && a.Name.EndsWith(InstallerAssetSuffix, StringComparison.OrdinalIgnoreCase));
+
+                bool shouldDownload = forceDownload;
+                if (!forceDownload)
+                {
+                    string cleanedCurrent = currentVersionString.TrimStart('v', 'V');
+                    if (Version.TryParse(cleanedLatest, out Version? latest) &&
+                        Version.TryParse(cleanedCurrent, out Version? current) &&
+                        latest != null && current != null)
+                    {
+                        shouldDownload = NormalizeVersion(latest) > NormalizeVersion(current);
+                    }
+                }
+
+                if (shouldDownload && installerAsset != null)
+                {
+                    result.HasUpdate = true;
+                    result.InstallerDownloadUrl = installerAsset.BrowserDownloadUrl;
+                    result.InstallerFileName = installerAsset.Name;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[UpdateHelper] GetLatestReleaseInfoAsync failed: {ex.Message}");
+            }
+
+            return result;
+        }
+
+        public static async Task<bool> CheckForUpdateAsync(string currentVersionString)
+        {
+            try
+            {
+                var info = await GetLatestReleaseInfoAsync(currentVersionString);
+                return info.HasUpdate;
             }
             catch (HttpRequestException ex)
             {
-                // 网络请求错误
                 MessageHelper.Error(LanguageService.Instance["network_request_error"] + $": {ex.Message}");
                 return false;
             }
             catch (JsonException ex)
             {
-                // JSON 解析错误
                 MessageHelper.Error(LanguageService.Instance["json_parse_error"] + $": {ex.Message}");
                 return false;
             }
             catch (Exception ex)
             {
-                // 其他未知错误
                 MessageHelper.Error(LanguageService.Instance["unknown_error_occurred"] + $": {ex.Message}");
                 return false;
             }
         }
 
-        /// <summary>
-        /// 检查并更新 PlotTemplateCategories.json
-        /// </summary>
         public static async Task CheckAndUpdatePlotCategoriesAsync()
         {
             try
             {
-                // 1. 获取 server_info.json
                 string serverInfoJson = await GetUrlContentAsync(ServerInfoUrl);
-                var serverInfo = JsonSerializer.Deserialize<GeoChemistryNexus.Models.ServerInfo>(serverInfoJson);
+                var serverInfo = JsonSerializer.Deserialize<ServerInfo>(serverInfoJson);
 
                 if (serverInfo == null || string.IsNullOrEmpty(serverInfo.ListPlotCategoriesHash))
-                {
                     return;
-                }
 
-                // 2. 计算本地文件 Hash
-                string localPath = Path.Combine(FileHelper.GetAppPath(), "Data", "PlotData", "PlotTemplateCategories.json");
-                string localHash = string.Empty;
+                string localPath = FileHelper.GetDataPath("PlotData", "PlotTemplateCategories.json");
+                string localHash = File.Exists(localPath) ? ComputeFileMd5(localPath) : string.Empty;
 
-                if (File.Exists(localPath))
-                {
-                    localHash = ComputeFileMd5(localPath);
-                }
-
-                // 3. 比较 Hash
                 if (!string.Equals(localHash, serverInfo.ListPlotCategoriesHash, StringComparison.OrdinalIgnoreCase))
                 {
-                    // 4. 下载更新
                     string downloadUrl = ServerInfoUrl.Replace("server_info.json", "PlotTemplateCategories.json");
-
-                    // 确保目录存在
-                    string directory = Path.GetDirectoryName(localPath);
-                    if (!Directory.Exists(directory))
-                    {
+                    string? directory = Path.GetDirectoryName(localPath);
+                    if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
                         Directory.CreateDirectory(directory);
-                    }
 
                     await DownloadFileAsync(downloadUrl, localPath);
                 }
             }
             catch (Exception ex)
             {
-                // 更新失败不影响主流程
                 Debug.WriteLine($"Failed to update PlotTemplateCategories.json: {ex.Message}");
             }
         }
 
-        /// <summary>
-        /// 带进度的文件下载
-        /// </summary>
-        public static async Task DownloadFileAsync(string url, string destinationPath, IProgress<double> progress = null)
+        public static string GetInstallerDownloadPath(string? fileName = null)
+        {
+            string dir = Path.Combine(Path.GetTempPath(), "GeoChemistryNexus");
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+
+            string safeName = string.IsNullOrWhiteSpace(fileName)
+                ? "GeoChemistryNexus-Setup.exe"
+                : Path.GetFileName(fileName);
+
+            return Path.Combine(dir, safeName);
+        }
+
+        public static async Task<string> DownloadInstallerAsync(
+            string downloadUrl,
+            string destinationPath,
+            IProgress<double>? progress = null)
+        {
+            if (string.IsNullOrWhiteSpace(downloadUrl))
+                throw new InvalidOperationException("Installer download URL is empty.");
+
+            string? directory = Path.GetDirectoryName(destinationPath);
+            if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
+
+            await DownloadFileAsync(downloadUrl, destinationPath, progress);
+            return destinationPath;
+        }
+
+        public static void LaunchInstallerAndShutdown(string installerPath)
+        {
+            if (!File.Exists(installerPath))
+                throw new FileNotFoundException("Installer not found.", installerPath);
+
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = installerPath,
+                Arguments = "/CLOSEAPPLICATIONS",
+                UseShellExecute = true
+            });
+
+            Application.Current?.Shutdown();
+        }
+
+        public static void OpenLatestReleasePage()
+        {
+            Process.Start(new ProcessStartInfo("https://github.com/MaxwellLei/GeoChemistry-Nexus/releases/latest")
+            {
+                UseShellExecute = true
+            });
+        }
+
+        public static async Task DownloadFileAsync(string url, string destinationPath, IProgress<double>? progress = null)
         {
             using var client = new HttpClient();
+            client.DefaultRequestHeaders.UserAgent.Add(
+                new ProductInfoHeaderValue("GeoChemistry-Nexus-Update-Checker", "1.0"));
+
             using var response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
             response.EnsureSuccessStatusCode();
 
@@ -207,16 +268,22 @@ namespace GeoChemistryNexus.Helpers
             long totalRead = 0;
             int bytesRead;
 
-            while ((bytesRead = await contentStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+            while ((bytesRead = await contentStream.ReadAsync(buffer.AsMemory())) > 0)
             {
-                await fileStream.WriteAsync(buffer, 0, bytesRead);
+                await fileStream.WriteAsync(buffer.AsMemory(0, bytesRead));
                 totalRead += bytesRead;
 
                 if (canReportProgress)
-                {
-                    progress.Report((double)totalRead / totalBytes * 100);
-                }
+                    progress!.Report((double)totalRead / totalBytes * 100);
             }
+        }
+
+        private static Version NormalizeVersion(Version version)
+        {
+            return new Version(
+                version.Major,
+                version.Minor,
+                version.Build >= 0 ? version.Build : 0);
         }
     }
 }

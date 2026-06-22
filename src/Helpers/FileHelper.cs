@@ -14,6 +14,8 @@ using GeoChemistryNexus.Services;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
 
+namespace GeoChemistryNexus.Helpers
+{
 public class FileHelper
 {
     #region Win32 API for dialog window monitoring
@@ -83,7 +85,7 @@ public class FileHelper
 
 
     // 获取保存文件路径  —— 不带文件过滤器
-    public static string GetSaveFilePath(string defaultFileName, string initialDirectory = null)
+    public static string GetSaveFilePath(string defaultFileName, string? initialDirectory = null)
     {
         // 创建文件保存对话框的实例
         var dialog = new VistaSaveFileDialog
@@ -113,9 +115,9 @@ public class FileHelper
     }
 
     //获取文件路径——不带格式限制
-    public static string GetFilePath()
+    public static string? GetFilePath()
     {
-        OpenFileDialog openFileDialog = new OpenFileDialog();
+        OpenFileDialog openFileDialog = new();
         if (openFileDialog.ShowDialog(Application.Current.MainWindow) == true)
         {
             return openFileDialog.FileName;     //用户正确选择了路径
@@ -127,10 +129,9 @@ public class FileHelper
     }
 
     //获取文件路径——带有格式限制
-    public static string GetFilePath(string filter, System.Windows.Window? owner = null)
+    public static string? GetFilePath(string filter, System.Windows.Window? owner = null)
     {
-        OpenFileDialog openFileDialog = new OpenFileDialog();
-        openFileDialog.Filter = filter;
+        OpenFileDialog openFileDialog = new() { Filter = filter };
         var dialogOwner = owner ?? Application.Current.MainWindow;
         if (openFileDialog.ShowDialog(dialogOwner) == true)
         {
@@ -149,7 +150,7 @@ public class FileHelper
     /// <param name="filter">文件类型过滤器</param>
     /// <param name="defaultExt">默认文件扩展名</param>
     /// <returns>选择的文件保存路径，如果用户取消则返回null</returns>
-    public static string GetSaveFilePath2(string title = null, string filter = null, string defaultExt = "", string defaultFileName = "")
+    public static string? GetSaveFilePath2(string? title = null, string? filter = null, string defaultExt = "", string defaultFileName = "")
     {
         try
         {
@@ -181,7 +182,7 @@ public class FileHelper
     /// 异步获取文件保存路径 - 在独立STA线程上显示对话框，避免COM清理阻塞UI线程
     /// 使用Win32 API监测对话框窗口关闭，一旦关闭立即恢复主窗口交互
     /// </summary>
-    public static async Task<string> GetSaveFilePath2Async(string title = null, string filter = null, string defaultExt = "", string defaultFileName = "", System.Windows.Window? owner = null)
+    public static async Task<string?> GetSaveFilePath2Async(string? title = null, string? filter = null, string defaultExt = "", string defaultFileName = "", System.Windows.Window? owner = null)
     {
         var targetWindow = owner ?? Application.Current.MainWindow;
         targetWindow.IsEnabled = false;
@@ -191,7 +192,7 @@ public class FileHelper
 
         try
         {
-            var tcs = new TaskCompletionSource<string>(TaskCreationOptions.RunContinuationsAsynchronously);
+            var tcs = new TaskCompletionSource<string?>(TaskCreationOptions.RunContinuationsAsynchronously);
             var threadIdTcs = new TaskCompletionSource<uint>(TaskCreationOptions.RunContinuationsAsynchronously);
 
             var thread = new Thread(() =>
@@ -250,14 +251,14 @@ public class FileHelper
     /// 异步获取文件打开路径 - 在独立STA线程上显示对话框，避免COM清理阻塞UI线程
     /// 使用Win32 API监测对话框窗口关闭，一旦关闭立即恢复主窗口交互
     /// </summary>
-    public static async Task<string> GetFilePathAsync(string filter = null, System.Windows.Window? owner = null)
+    public static async Task<string?> GetFilePathAsync(string? filter = null, System.Windows.Window? owner = null)
     {
         var targetWindow = owner ?? Application.Current.MainWindow;
         targetWindow.IsEnabled = false;
 
         try
         {
-            var tcs = new TaskCompletionSource<string>(TaskCreationOptions.RunContinuationsAsynchronously);
+            var tcs = new TaskCompletionSource<string?>(TaskCreationOptions.RunContinuationsAsynchronously);
             var threadIdTcs = new TaskCompletionSource<uint>(TaskCreationOptions.RunContinuationsAsynchronously);
 
             var thread = new Thread(() =>
@@ -416,10 +417,16 @@ public class FileHelper
         }
     }
 
-    //获取当前运行 程序所在路径
+    //获取当前运行程序所在路径（只读资源、内置种子文件）
     public static string GetAppPath()
     {
-        return System.AppDomain.CurrentDomain.BaseDirectory;
+        return AppDataPathHelper.GetAppDirectory();
+    }
+
+    //获取可写用户数据路径
+    public static string GetDataPath(params string[] segments)
+    {
+        return AppDataPathHelper.GetDataPath(segments);
     }
 
     //判断文件夹是否为空
@@ -429,7 +436,7 @@ public class FileHelper
     }
 
     //获取文件夹路径
-    public static string GetFolderPath()
+    public static string? GetFolderPath()
     {
         // 创建一个新的 VistaFolderBrowserDialog 对象
         var dialog = new VistaFolderBrowserDialog
@@ -519,7 +526,7 @@ public class FileHelper
     /// <returns></returns>
     /// <exception cref="UnauthorizedAccessException"></exception>
     /// <exception cref="Exception"></exception>
-    public static string FindFileOrGetFirstWithExtension(string folderPath, string fileName, string fileExtension, bool includeSubfolders = false)
+    public static string? FindFileOrGetFirstWithExtension(string folderPath, string fileName, string fileExtension, bool includeSubfolders = false)
     {
         try
         {
@@ -576,44 +583,41 @@ public class FileHelper
     /// <param name="path">图片路径</param>
     /// <param name="decodeWidth">解码宽度，默认400</param>
     /// <param name="toGray">是否转为灰度图以极致节省内存</param>
-    public static BitmapSource LoadBitmapNoLock(string path, int decodeWidth = 400, bool toGray = true)
+    public static BitmapSource? LoadBitmapNoLock(string path, int decodeWidth = 400, bool toGray = true)
     {
         if (!File.Exists(path)) return null;
 
         try
         {
-            using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            // 按尺寸优化加载
+            var bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.DecodePixelWidth = decodeWidth;
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.StreamSource = stream;
+            bitmap.EndInit();
+
+            if (toGray)
             {
-                // 按尺寸优化加载
-                var bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.DecodePixelWidth = decodeWidth;
-                bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                bitmap.StreamSource = stream;
-                bitmap.EndInit();
+                // 如果需要灰度，进行格式转换
+                var grayBitmap = new FormatConvertedBitmap();
+                grayBitmap.BeginInit();
+                grayBitmap.Source = bitmap; // 源
+                grayBitmap.DestinationFormat = PixelFormats.Gray8; // 转换为 8位灰度
+                grayBitmap.EndInit();
 
-                if (toGray)
-                {
-                    // 如果需要灰度，进行格式转换
-                    var grayBitmap = new FormatConvertedBitmap();
-                    grayBitmap.BeginInit();
-                    grayBitmap.Source = bitmap; // 源
-                    grayBitmap.DestinationFormat = PixelFormats.Gray8; // 转换为 8位灰度
-                    grayBitmap.EndInit();
-
-                    grayBitmap.Freeze(); // 冻结灰度图
-                    return grayBitmap;
-                }
-                else
-                {
-                    bitmap.Freeze();
-                    return bitmap;
-                }
+                grayBitmap.Freeze(); // 冻结灰度图
+                return grayBitmap;
             }
+
+            bitmap.Freeze();
+            return bitmap;
         }
         catch
         {
             return null;
         }
     }
+}
 }

@@ -1,29 +1,37 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GeoChemistryNexus.Helpers
 {
     class ConfigHelper
     {
-        //private static string configPath = FileHelper.GetFilePath();  //配置文件路径
+        private static Configuration _mappedConfig;
 
-
-        //获取配置文件中的值（传入 key 返回 value
-        public static string GetConfig(string key)
+        private static Configuration GetConfiguration()
         {
-            // 移除多余的 OpenExeConfiguration 调用
-            return ConfigurationManager.AppSettings[key];
+            if (_mappedConfig != null)
+                return _mappedConfig;
+
+            AppDataPathHelper.Initialize();
+
+            string configPath = AppDataPathHelper.GetUserConfigPath();
+            var map = new ExeConfigurationFileMap
+            {
+                ExeConfigFilename = configPath
+            };
+            _mappedConfig = ConfigurationManager.OpenMappedExeConfiguration(map, ConfigurationUserLevel.None);
+            return _mappedConfig;
         }
 
-        //设置配置文件中的值
-        //传入 key value 写入配置文件并刷新配置文件
+        public static string GetConfig(string key)
+        {
+            return GetConfiguration().AppSettings.Settings[key]?.Value;
+        }
+
         public static void SetConfig(string key, string value)
         {
-            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            Configuration config = GetConfiguration();
             if (config.AppSettings.Settings[key] == null)
             {
                 config.AppSettings.Settings.Add(key, value);
@@ -36,14 +44,12 @@ namespace GeoChemistryNexus.Helpers
             ConfigurationManager.RefreshSection("appSettings");
         }
 
-        // 批量设置配置文件中的值
-        // 传入 Dictionary<string, string> 批量写入并刷新
         public static void SetConfigs(Dictionary<string, string> settings)
         {
-            if (settings == null || settings.Count == 0) return;
+            if (settings == null || settings.Count == 0)
+                return;
 
-            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            
+            Configuration config = GetConfiguration();
             foreach (var item in settings)
             {
                 if (config.AppSettings.Settings[item.Key] == null)
@@ -55,7 +61,7 @@ namespace GeoChemistryNexus.Helpers
                     config.AppSettings.Settings[item.Key].Value = item.Value;
                 }
             }
-            
+
             config.Save();
             ConfigurationManager.RefreshSection("appSettings");
         }

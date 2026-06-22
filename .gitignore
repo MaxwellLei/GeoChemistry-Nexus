@@ -37,6 +37,7 @@ src/.cursor/
 bin/
 obj/
 src/_build_out/
+src/_publish/
 
 # WPF 编译 XAML 时自动生成的临时工程文件
 *_wpftmp.csproj
@@ -87,6 +88,10 @@ desktop.ini
 
 # 用于发布的发布输出
 publish/
+
+# Inno Setup 安装包输出与 .NET 运行时离线包
+installer/dist/
+installer/redist/
 
 # COS 发布凭证（本地 DPAPI 加密）
 src/Data/Config/cos_publish.json

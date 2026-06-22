@@ -58,6 +58,7 @@ namespace GeoChemistryNexus.ViewModels
         public RelayCommand AutoOffTimeChangedCommand { get; private set; }   // 修改通知自动关闭时间命令
         public RelayCommand LanguageChangedCommand { get; private set; }   // 修改语言命令
         public RelayCommand CheckUpdateCommand { get; private set; }   // 检查更新命令
+        public RelayCommand ForceUpdateCommand { get; private set; }   // 强制更新命令（开发者模式）
         public RelayCommand ExitProgrmModeCommand { get; private set; }   // 退出程序方式命令
         public RelayCommand AddStartImgCommand { get; private set; }    // 添加启动图
 
@@ -70,12 +71,13 @@ namespace GeoChemistryNexus.ViewModels
             LanguageChangedCommand = new RelayCommand(ExecuteLanguageChangedCommand);
             AutoOffTimeChangedCommand = new RelayCommand(ExecuteAutoOffTimeChangedCommand);
             CheckUpdateCommand = new RelayCommand(ExecuteCheckUpdateCommandAsync);
+            ForceUpdateCommand = new RelayCommand(ExecuteForceUpdateCommandAsync);
             ExitProgrmModeCommand = new RelayCommand(ExecuteExitProgrmModeCommand);
             AddStartImgCommand = new RelayCommand(ExecuteAddStartImgCommand);
             ReadConfig();   // 读取配置文件
 
             // 获取版本信息
-            Version = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
+            Version = Assembly.GetExecutingAssembly().GetName().Version?.ToString(3) ?? "0.0.0";
                 
         }
 
@@ -89,57 +91,141 @@ namespace GeoChemistryNexus.ViewModels
         // 检查更新
         private async void ExecuteCheckUpdateCommandAsync()
         {
-            //MessageHelper.Info("正在检查更新，请稍候...");
             try
             {
-                // 异步等待结果
-                bool hasUpdate = await UpdateHelper.CheckForUpdateAsync(Assembly.GetExecutingAssembly().GetName().Version.ToString(3));
+                var updateInfo = await UpdateHelper.GetLatestReleaseInfoAsync();
 
-                if (hasUpdate)
+                if (updateInfo.HasUpdate)
                 {
+                    string confirmMessage = string.Format(
+                        LanguageService.Instance["new_version_available_github"] ?? "New version {0} is available. Download and install now?",
+                        updateInfo.LatestVersion);
+
                     bool isConfirmed = await MessageHelper.ShowAsyncDialog(
-                                LanguageService.Instance["new_version_available_github"],
-                                LanguageService.Instance["Cancel"],
-                                LanguageService.Instance["go_to_download"]);
-                    if (isConfirmed)
-                    {
-                        try
-                        {
-                            await UpdateHelper.CheckAndUpdatePlotCategoriesAsync();
-                        }
-                        catch
-                        {
-                            // 忽略更新 PlotTemplateCategories.json 的错误
-                        }
+                        confirmMessage,
+                        LanguageService.Instance["Cancel"],
+                        LanguageService.Instance["go_to_download"]);
 
-                        string url = "https://github.com/MaxwellLei/GeoChemistry-Nexus/releases/latest";
-                        //拉起浏览器
-                        try
-                        {
-                            Process.Start(new ProcessStartInfo("cmd", $"/c start {url}") { CreateNoWindow = true });
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageHelper.Warning((string)System.Windows.Application.Current.Resources["OpenBrowserError"] + ex.Message);
-                        }
-                    }
+                    if (!isConfirmed)
+                        return;
+
+                    await TryDownloadAndInstallUpdateAsync(updateInfo);
+                    return;
                 }
-                else
+
+                try
                 {
-                    try
-                    {
-                        await UpdateHelper.CheckAndUpdatePlotCategoriesAsync();
-                    }
-                    catch
-                    {
-                        // 忽略更新 PlotTemplateCategories.json 的错误
-                    }
-                    MessageHelper.Success(LanguageService.Instance["already_latest_version"]);
+                    await UpdateHelper.CheckAndUpdatePlotCategoriesAsync();
                 }
+                catch
+                {
+                    // 忽略更新 PlotTemplateCategories.json 的错误
+                }
+
+                MessageHelper.Success(LanguageService.Instance["already_latest_version"]);
             }
             catch (Exception ex)
             {
                 MessageHelper.Error(LanguageService.Instance["unknown_error_checking_for_updates"] + $": {ex.Message}");
+            }
+        }
+
+        // 强制更新（开发者模式，不比对版本号）
+        private async void ExecuteForceUpdateCommandAsync()
+        {
+            if (!DeveloperMode)
+                return;
+
+            try
+            {
+                var updateInfo = await UpdateHelper.GetLatestReleaseInfoAsync(forceDownload: true);
+
+                if (string.IsNullOrWhiteSpace(updateInfo.InstallerDownloadUrl))
+                {
+                    MessageHelper.Warning(LanguageService.Instance["update_installer_not_found"]
+                        ?? "Installer package not found in the latest release.");
+                    UpdateHelper.OpenLatestReleasePage();
+                    return;
+                }
+
+                string confirmMessage = string.Format(
+                    LanguageService.Instance["force_update_app_confirm"]
+                        ?? "Download and install the latest version {0}?",
+                    updateInfo.LatestVersion);
+
+                bool isConfirmed = await MessageHelper.ShowAsyncDialog(
+                    confirmMessage,
+                    LanguageService.Instance["Cancel"],
+                    LanguageService.Instance["go_to_download"]);
+
+                if (!isConfirmed)
+                    return;
+
+                await TryDownloadAndInstallUpdateAsync(updateInfo, bypassPortableCheck: true);
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.Error(LanguageService.Instance["unknown_error_checking_for_updates"] + $": {ex.Message}");
+            }
+        }
+
+        private static async Task TryDownloadAndInstallUpdateAsync(AppUpdateInfo updateInfo, bool bypassPortableCheck = false)
+        {
+            if (!bypassPortableCheck && AppDataPathHelper.IsPortableMode())
+            {
+                string portableHint = LanguageService.Instance["update_portable_mode_hint"]
+                    ?? "Portable mode detected. Please download the installer or portable package from the Releases page.";
+                MessageHelper.Warning(portableHint);
+                UpdateHelper.OpenLatestReleasePage();
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(updateInfo.InstallerDownloadUrl))
+            {
+                MessageHelper.Warning(LanguageService.Instance["update_installer_not_found"]
+                    ?? "Installer package not found in the latest release.");
+                UpdateHelper.OpenLatestReleasePage();
+                return;
+            }
+
+            try
+            {
+                string installerPath = UpdateHelper.GetInstallerDownloadPath(updateInfo.InstallerFileName);
+                MessageHelper.Info(LanguageService.Instance["downloading_ellipsis"] ?? "Downloading...");
+
+                await UpdateHelper.DownloadInstallerAsync(
+                    updateInfo.InstallerDownloadUrl,
+                    installerPath);
+
+                string shutdownMessage = LanguageService.Instance["update_download_confirm_shutdown"]
+                    ?? "Download complete. The application will exit and launch the installer wizard. Continue?";
+
+                bool readyToInstall = await MessageHelper.ShowAsyncDialog(
+                    shutdownMessage,
+                    LanguageService.Instance["Cancel"],
+                    LanguageService.Instance["Confirm"]);
+
+                if (!readyToInstall)
+                {
+                    MessageHelper.Info(LanguageService.Instance["update_installer_saved"]
+                        ?? $"Installer saved to: {installerPath}");
+                    return;
+                }
+
+                try
+                {
+                    await UpdateHelper.CheckAndUpdatePlotCategoriesAsync();
+                }
+                catch
+                {
+                    // 忽略更新 PlotTemplateCategories.json 的错误
+                }
+
+                UpdateHelper.LaunchInstallerAndShutdown(installerPath);
+            }
+            catch (Exception downloadEx)
+            {
+                MessageHelper.Error(LanguageService.Instance["unknown_error_occurred"] + $": {downloadEx.Message}");
             }
         }
 
@@ -199,16 +285,16 @@ namespace GeoChemistryNexus.ViewModels
             switch (AutoOffTime)
             {
                 case 0:
-                    MessageHelper.waitTime = 5;
+                    MessageHelper.WaitTime = 5;
                     break;
                 case 1:
-                    MessageHelper.waitTime = 4;
+                    MessageHelper.WaitTime = 4;
                     break;
                 case 2:
-                    MessageHelper.waitTime = 3;
+                    MessageHelper.WaitTime = 3;
                     break;
                 case 3:
-                    MessageHelper.waitTime = 2;
+                    MessageHelper.WaitTime = 2;
                     break;
             }
             MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
