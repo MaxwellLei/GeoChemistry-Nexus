@@ -54,7 +54,7 @@ namespace GeoChemistryNexus.Controls
 
         private void ShowColorPicker()
         {
-            if (DateTime.Now.Ticks - _lastClosedTicks < 200 * 10000) return;  // 200ºÁÃë·À¶¶
+            if (DateTime.Now.Ticks - _lastClosedTicks < 200 * 10000) return;  // 200
             ColorPopup.IsOpen = true;
         }
 
@@ -67,7 +67,7 @@ namespace GeoChemistryNexus.Controls
             {
                 control._isUpdating = true;
                 control.SelectedColor = newBrush.Color;
-                control.HexColor = newBrush.Color.ToString();
+                control.HexColor = ColorToHexRgb(newBrush.Color);
                 control._isUpdating = false;
             }
         }
@@ -80,7 +80,7 @@ namespace GeoChemistryNexus.Controls
             var newColor = (Color)e.NewValue;
             control._isUpdating = true;
             control.SelectedBrush = new SolidColorBrush(newColor);
-            control.HexColor = newColor.ToString();
+            control.HexColor = ColorToHexRgb(newColor);
             control._isUpdating = false;
         }
 
@@ -104,6 +104,11 @@ namespace GeoChemistryNexus.Controls
                     // Ignore invalid hex
                 }
             }
+        }
+
+        private static string ColorToHexRgb(Color color)
+        {
+            return $"#{color.R:X2}{color.G:X2}{color.B:X2}";
         }
     }
 }

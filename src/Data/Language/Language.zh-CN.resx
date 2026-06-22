@@ -233,7 +233,7 @@
 • 将所有氧化物的质量百分比转换为摩尔数</value>
   </data>
   <data name="script_return_value_error_must_be_array" xml:space="preserve">
-    <value>• 脚本返回值错误：脚本必须返回一个数组。</value>
+    <value>脚本返回值错误：脚本必须返回一个数组。</value>
   </data>
   <data name="MarkerShape_VerticalBar" xml:space="preserve">
     <value>竖线</value>
@@ -264,6 +264,15 @@
   </data>
   <data name="geo_msg_update_downloaded" xml:space="preserve">
     <value>已下载 {0} 个地质温压计</value>
+  </data>
+  <data name="geo_msg_update_removed_count" xml:space="preserve">
+    <value>下架：{0} 个</value>
+  </data>
+  <data name="geo_msg_update_download_failed_items" xml:space="preserve">
+    <value>下载失败项：</value>
+  </data>
+  <data name="geo_msg_update_download_failed_detail" xml:space="preserve">
+    <value>{0}: {1}</value>
   </data>
   <data name="use_help" xml:space="preserve">
     <value>图解指南</value>
@@ -442,6 +451,9 @@
   <data name="geo_validate_headers_required" xml:space="preserve">
     <value>表头不能为空。</value>
   </data>
+  <data name="geo_validate_example_row_column_mismatch" xml:space="preserve">
+    <value>示例行列数必须与表头一致（期望 {0} 列，实际 {1} 列）。</value>
+  </data>
   <data name="enter_level_add" xml:space="preserve">
     <value>输入一个层级后按 Enter 键添加。</value>
   </data>
@@ -528,6 +540,153 @@
   </data>
   <data name="geo_menu_import_zip" xml:space="preserve">
     <value>导入地质温压计 (ZIP)</value>
+  </data>
+  <data name="geo_menu_open_free_sheet" xml:space="preserve">
+    <value>打开自由表格</value>
+  </data>
+  <data name="geo_free_sheet_title" xml:space="preserve">
+    <value>自由温压计表格</value>
+  </data>
+  <data name="geo_free_sheet_hint" xml:space="preserve">
+    <value>可使用已注册温压计公式，例如 =FormulaName(A2,B2)</value>
+  </data>
+  <data name="geo_free_sheet_worksheet_name" xml:space="preserve">
+    <value>自由表格</value>
+  </data>
+  <data name="geo_free_sheet_clear_confirm" xml:space="preserve">
+    <value>确定要清空当前表格中的所有数据吗？</value>
+  </data>
+  <data name="geo_free_sheet_clear_success" xml:space="preserve">
+    <value>表格已清空</value>
+  </data>
+  <data name="geo_free_sheet_delete_row_confirm" xml:space="preserve">
+    <value>确定要删除选中的行吗？</value>
+  </data>
+  <data name="geo_free_sheet_delete_col_confirm" xml:space="preserve">
+    <value>确定要删除选中的列吗？</value>
+  </data>
+  <data name="geo_free_sheet_delete_col_failed" xml:space="preserve">
+    <value>删除列失败：</value>
+  </data>
+  <data name="geo_free_sheet_import_failed" xml:space="preserve">
+    <value>导入失败：{0}</value>
+  </data>
+  <data name="geo_free_sheet_group_edit" xml:space="preserve">
+    <value>编辑</value>
+  </data>
+  <data name="geo_free_sheet_group_font" xml:space="preserve">
+    <value>字体</value>
+  </data>
+  <data name="geo_free_sheet_group_align" xml:space="preserve">
+    <value>对齐</value>
+  </data>
+  <data name="geo_free_sheet_group_number" xml:space="preserve">
+    <value>数字</value>
+  </data>
+  <data name="geo_free_sheet_group_cells" xml:space="preserve">
+    <value>单元格</value>
+  </data>
+  <data name="geo_free_sheet_group_file" xml:space="preserve">
+    <value>文件</value>
+  </data>
+  <data name="geo_free_sheet_italic" xml:space="preserve">
+    <value>斜体</value>
+  </data>
+  <data name="geo_free_sheet_underline" xml:space="preserve">
+    <value>下划线</value>
+  </data>
+  <data name="geo_free_sheet_format_painter" xml:space="preserve">
+    <value>格式刷</value>
+  </data>
+  <data name="geo_free_sheet_export_title" xml:space="preserve">
+    <value>导出选项</value>
+  </data>
+  <data name="geo_free_sheet_export_mode_prompt" xml:space="preserve">
+    <value>请选择导出内容类型</value>
+  </data>
+  <data name="geo_free_sheet_export_values" xml:space="preserve">
+    <value>导出值（不含公式）</value>
+  </data>
+  <data name="geo_free_sheet_export_formulas" xml:space="preserve">
+    <value>导出公式（不含值）</value>
+  </data>
+  <data name="geo_free_sheet_fill_color" xml:space="preserve">
+    <value>填充颜色</value>
+  </data>
+  <data name="geo_free_sheet_borders" xml:space="preserve">
+    <value>边框</value>
+  </data>
+  <data name="geo_free_sheet_border_all" xml:space="preserve">
+    <value>所有框线</value>
+  </data>
+  <data name="geo_free_sheet_border_outside" xml:space="preserve">
+    <value>外侧框线</value>
+  </data>
+  <data name="geo_free_sheet_border_bottom" xml:space="preserve">
+    <value>下框线</value>
+  </data>
+  <data name="geo_free_sheet_border_none" xml:space="preserve">
+    <value>无框线</value>
+  </data>
+  <data name="geo_free_sheet_align_left" xml:space="preserve">
+    <value>左对齐</value>
+  </data>
+  <data name="geo_free_sheet_align_center" xml:space="preserve">
+    <value>居中</value>
+  </data>
+  <data name="geo_free_sheet_align_right" xml:space="preserve">
+    <value>右对齐</value>
+  </data>
+  <data name="geo_free_sheet_wrap" xml:space="preserve">
+    <value>自动换行</value>
+  </data>
+  <data name="geo_free_sheet_merge" xml:space="preserve">
+    <value>合并后居中</value>
+  </data>
+  <data name="geo_free_sheet_fmt_general" xml:space="preserve">
+    <value>常规</value>
+  </data>
+  <data name="geo_free_sheet_fmt_number" xml:space="preserve">
+    <value>数值</value>
+  </data>
+  <data name="geo_free_sheet_fmt_percent" xml:space="preserve">
+    <value>百分比</value>
+  </data>
+  <data name="geo_free_sheet_fmt_scientific" xml:space="preserve">
+    <value>科学计数</value>
+  </data>
+  <data name="geo_free_sheet_insert_col_left" xml:space="preserve">
+    <value>在左侧插入列</value>
+  </data>
+  <data name="geo_free_sheet_insert_col_right" xml:space="preserve">
+    <value>在右侧插入列</value>
+  </data>
+  <data name="geo_free_sheet_delete_col" xml:space="preserve">
+    <value>删除列</value>
+  </data>
+  <data name="geo_free_sheet_import" xml:space="preserve">
+    <value>导入</value>
+  </data>
+  <data name="geo_free_sheet_clear" xml:space="preserve">
+    <value>清空</value>
+  </data>
+  <data name="geo_free_sheet_color_black" xml:space="preserve">
+    <value>黑色</value>
+  </data>
+  <data name="geo_free_sheet_color_red" xml:space="preserve">
+    <value>红色</value>
+  </data>
+  <data name="geo_free_sheet_color_blue" xml:space="preserve">
+    <value>蓝色</value>
+  </data>
+  <data name="geo_free_sheet_color_green" xml:space="preserve">
+    <value>绿色</value>
+  </data>
+  <data name="geo_free_sheet_color_white" xml:space="preserve">
+    <value>白色</value>
+  </data>
+  <data name="geo_free_sheet_color_yellow" xml:space="preserve">
+    <value>黄色</value>
   </data>
   <data name="developer_mode" xml:space="preserve">
     <value>开发者模式</value>
@@ -793,7 +952,7 @@
     <value>实心下三角</value>
   </data>
   <data name="missing_translation_warning" xml:space="preserve">
-    <value>• 翻译缺失：部分文本缺少多语言翻译。</value>
+    <value>翻译缺失：部分文本缺少多语言翻译。</value>
   </data>
   <data name="geo_btn_export" xml:space="preserve">
     <value>导出</value>
@@ -847,7 +1006,7 @@
     <value>简要描述</value>
   </data>
   <data name="invalid_script_variable_name" xml:space="preserve">
-    <value>• 脚本变量名格式错误：’</value>
+    <value>脚本变量名格式错误:</value>
   </data>
   <data name="open_with_third_party_software" xml:space="preserve">
     <value>第三方软件打开</value>
@@ -913,7 +1072,7 @@
     <value>文件不存在:</value>
   </data>
   <data name="cipw_msg_calc_partial_success" xml:space="preserve">
-    <value>计算完成：{0}/{1} 个样品成功</value>
+    <value>计算完成：{0}/{1} 个样品成功.</value>
   </data>
   <data name="border_color" xml:space="preserve">
     <value>边框颜色</value>
@@ -928,10 +1087,10 @@
     <value>说明</value>
   </data>
   <data name="script_return_value_length_error" xml:space="preserve">
-    <value>• 脚本返回值长度错误：当前为</value>
+    <value>脚本返回值长度错误：当前为</value>
   </data>
   <data name="AboutInfo2" xml:space="preserve">
-    <value>如果您对本项目感兴趣，欢迎点个 Star 支持一下！如果您觉得对您有帮助，也可以请我喝杯咖啡☕</value>
+    <value>如果您对本项目感兴趣，欢迎点个 Star 支持一下！如果您觉得对您有帮助，也可以请我喝杯咖啡☕.</value>
   </data>
   <data name="AboutInfo3" xml:space="preserve">
     <value>我们欢迎更多的研究人员加入！
@@ -1094,7 +1253,7 @@
     <value>当前模板没有多语言信息</value>
   </data>
   <data name="cipw_msg_no_data" xml:space="preserve">
-    <value>未检测到有效数据行，请先输入氧化物含量</value>
+    <value>未检测到有效数据行，请先输入氧化物含量.</value>
   </data>
   <data name="current_diagram_version" xml:space="preserve">
     <value>当前图解版本</value>
@@ -1130,7 +1289,7 @@
     <value>准铝质</value>
   </data>
   <data name="geo_field_required_hint" xml:space="preserve">
-    <value>必填字段标有 *。格式基线 x.y 跟随软件温压计版本，修订号 z 为模板内容版本。公式名称将作为 ReoGrid 中的自定义函数名称注册。</value>
+    <value>必填字段标有 *。格式基线 x.y 跟随软件温压计版本，修订号 z 为模板内容版本。Grid 公式在「公式脚本」步骤中配置。</value>
   </data>
   <data name="invalid_data_parameter_format" xml:space="preserve">
     <value>数据参数格式不正确</value>
@@ -1190,7 +1349,7 @@
 • 过铝质（Peraluminous）：Al₂O₃ &gt; CaO + Na₂O + K₂O</value>
   </data>
   <data name="cipw_msg_calc_all_success" xml:space="preserve">
-    <value>计算完成：{0} 个样品全部成功</value>
+    <value>计算完成：{0} 个样品全部成功.</value>
   </data>
   <data name="select_software" xml:space="preserve">
     <value>选择软件</value>
@@ -1460,7 +1619,7 @@
     <value>打开图解模板</value>
   </data>
   <data name="cipw_msg_data_cleared" xml:space="preserve">
-    <value>数据已清除</value>
+    <value>数据已清除.</value>
   </data>
   <data name="loading_announcements" xml:space="preserve">
     <value>正在加载公告...</value>
@@ -1806,7 +1965,7 @@
     <value>启动图片添加成功。</value>
   </data>
   <data name="start_image_copy_error" xml:space="preserve">
-    <value>启动图片添加失败：</value>
+    <value>启动图片添加失败： </value>
   </data>
   <data name="add_arrow" xml:space="preserve">
     <value>添加箭头</value>
@@ -2012,6 +2171,48 @@
   <data name="geo_script_result" xml:space="preserve">
     <value>结果：</value>
   </data>
+  <data name="geo_additional_formulas_title" xml:space="preserve">
+    <value>附加公式（可选）</value>
+  </data>
+  <data name="geo_formulas_title" xml:space="preserve">
+    <value>Grid 公式 *</value>
+  </data>
+  <data name="geo_formulas_hint" xml:space="preserve">
+    <value>将 Grid 自定义函数名映射到下方 JS 脚本中的函数。首行主公式固定调用 calculate(args)。</value>
+  </data>
+  <data name="geo_main_formula_badge" xml:space="preserve">
+    <value>主公式</value>
+  </data>
+  <data name="geo_additional_formula_badge" xml:space="preserve">
+    <value>附加</value>
+  </data>
+  <data name="geo_additional_formulas_hint" xml:space="preserve">
+    <value>注册额外的 Grid 自定义函数，映射到下方 JS 脚本中的函数。主公式仍使用「公式名称」对应 calculate(args)。</value>
+  </data>
+  <data name="geo_additional_formula_name" xml:space="preserve">
+    <value>Grid 公式名</value>
+  </data>
+  <data name="geo_additional_function_name" xml:space="preserve">
+    <value>JS 函数名</value>
+  </data>
+  <data name="geo_btn_add_additional_formula" xml:space="preserve">
+    <value>添加附加公式</value>
+  </data>
+  <data name="geo_tooltip_additional_function_name" xml:space="preserve">
+    <value>脚本中的 JS 函数名，例如 calcPressure</value>
+  </data>
+  <data name="geo_validate_additional_formula_incomplete" xml:space="preserve">
+    <value>附加公式第 {0} 行：Grid 公式名与 JS 函数名均不能为空。</value>
+  </data>
+  <data name="geo_validate_additional_function_name_invalid" xml:space="preserve">
+    <value>JS 函数名「{0}」无效（须为合法的 JavaScript 标识符）。</value>
+  </data>
+  <data name="geo_validate_additional_formula_duplicate_main" xml:space="preserve">
+    <value>附加公式名「{0}」与主公式名称重复。</value>
+  </data>
+  <data name="geo_validate_additional_function_reserved" xml:space="preserve">
+    <value>JS 函数名「{0}」已保留给主公式或详细计算，不能用于附加公式。</value>
+  </data>
   <data name="edit_menu_bar_item" xml:space="preserve">
     <value>编辑菜单栏项</value>
   </data>
@@ -2031,7 +2232,7 @@
     <value>内容含有不支持的字符</value>
   </data>
   <data name="missing_drawing_objects_error" xml:space="preserve">
-    <value>• 绘图对象缺失：模板中未包含任何线、多边形、文本或箭头。</value>
+    <value>绘图对象缺失：模板中未包含任何线、多边形、文本或箭头。</value>
   </data>
   <data name="geo_msg_export_failed" xml:space="preserve">
     <value>导出失败: {0}</value>
@@ -2345,7 +2546,7 @@
     <value>批量更新完成</value>
   </data>
   <data name="batch_update_failed" xml:space="preserve">
-    <value>批量更新失败：</value>
+    <value>批量更新失败： </value>
   </data>
   <data name="batch_updating" xml:space="preserve">
     <value>批量更新中</value>
@@ -2573,7 +2774,7 @@
     <value>例如：2020</value>
   </data>
   <data name="geo_example_author" xml:space="preserve">
-    <value>例如：Smith 等</value>
+    <value>例如：Smith 等.</value>
   </data>
   <data name="geo_example_reference" xml:space="preserve">
     <value>例如：Smith (2020) Geochim. Cosmochim. Acta 280, 123-145</value>
@@ -2899,7 +3100,7 @@
     <value>方法</value>
   </data>
   <data name="dataPrep_fe3Tooltip" xml:space="preserve">
-    <value>仅用于“使用经验比例校正”，表示 Fe3+/Fe 的经验比例</value>
+    <value>仅用于“使用经验比例校正”，表示 Fe3+/Fe 的经验比例.</value>
   </data>
   <data name="dataPrep_autoBackfillIronOxides" xml:space="preserve">
     <value>缺失时自动回填 FeO / Fe2O3</value>
@@ -2977,7 +3178,7 @@
     <value>指标计算</value>
   </data>
   <data name="dataPrep_listSeparator" xml:space="preserve">
-    <value>、</value>
+    <value>、 </value>
   </data>
   <data name="dataPrep_keepOriginalOnly" xml:space="preserve">
     <value>仅保留原始表</value>

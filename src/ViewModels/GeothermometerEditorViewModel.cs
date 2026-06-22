@@ -12,6 +12,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -173,6 +174,15 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private bool isTestSuccess;
 
+        public ObservableCollection<AdditionalFormulaItemViewModel> AdditionalFormulaItems { get; } = new();
+
+        private const string MainFunctionNameValue = "calculate";
+
+        /// <summary>主公式固定映射的 JS 函数名（供 UI 绑定）。</summary>
+        public string MainFunctionName => MainFunctionNameValue;
+
+        private static readonly Regex JsIdentifierRegex = new(@"^[a-zA-Z_$][a-zA-Z0-9_$]*$", RegexOptions.Compiled);
+
         // ==================== 帮助文档（Step 2） ====================
 
         /// <summary>
@@ -255,7 +265,12 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
-        partial void OnIsContentReadOnlyChanged(bool value) => OnPropertyChanged(nameof(EditorTitle));
+        partial void OnIsContentReadOnlyChanged(bool value)
+        {
+            OnPropertyChanged(nameof(EditorTitle));
+            AddAdditionalFormulaCommand.NotifyCanExecuteChanged();
+            RemoveAdditionalFormulaCommand.NotifyCanExecuteChanged();
+        }
 
         /// <summary>
         /// 保存成功后的回调
@@ -539,6 +554,20 @@ namespace GeoChemistryNexus.ViewModels
                 CurrentStep--;
         }
 
+        [RelayCommand]
+        private void NavigateToSection(int step)
+        {
+            if (step < 0 || step > 2)
+                return;
+            CurrentStep = step;
+        }
+
+        [RelayCommand]
+        private void Cancel()
+        {
+            OnCloseRequested?.Invoke();
+        }
+
         private string? ValidateCurrentStep()
         {
             return CurrentStep switch
@@ -565,10 +594,6 @@ namespace GeoChemistryNexus.ViewModels
                 return LanguageService.Instance["geo_validate_version_format"];
             if (string.IsNullOrWhiteSpace(Reference))
                 return LanguageService.Instance["geo_validate_reference_required"];
-            if (string.IsNullOrWhiteSpace(FormulaName))
-                return LanguageService.Instance["geo_validate_formula_name_required"];
-            if (FormulaName.Any(c => !char.IsLetterOrDigit(c) && c != '_'))
-                return LanguageService.Instance["geo_validate_formula_name_invalid"];
             return null;
         }
 
@@ -578,8 +603,103 @@ namespace GeoChemistryNexus.ViewModels
                 return LanguageService.Instance["geo_validate_headers_required"];
             if (string.IsNullOrWhiteSpace(ScriptContent))
                 return LanguageService.Instance["geo_validate_script_required"];
+
+            var headers = CommaSeparatedListHelper.Split(HeadersText);
+            if (headers.Count == 0)
+                return LanguageService.Instance["geo_validate_headers_required"];
+
+            if (!string.IsNullOrWhiteSpace(ExampleRowText))
+            {
+                var exampleRow = CommaSeparatedListHelper.Split(ExampleRowText);
+                if (exampleRow.Count != headers.Count)
+                {
+                    return string.Format(
+                        LanguageService.Instance["geo_validate_example_row_column_mismatch"]
+                        ?? "Sample row must have the same number of columns as headers ({0} expected, {1} found).",
+                        headers.Count,
+                        exampleRow.Count);
+                }
+            }
+
+            return ValidateFormulas();
+        }
+
+        private string? ValidateFormulas()
+        {
+            if (string.IsNullOrWhiteSpace(FormulaName))
+                return LanguageService.Instance["geo_validate_formula_name_required"];
+            if (FormulaName.Any(c => !char.IsLetterOrDigit(c) && c != '_'))
+                return LanguageService.Instance["geo_validate_formula_name_invalid"];
+
+            var seenNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            {
+                FormulaName.Trim()
+            };
+
+            int rowIndex = 0;
+            foreach (var item in AdditionalFormulaItems)
+            {
+                rowIndex++;
+                string formulaName = item.FormulaName?.Trim() ?? string.Empty;
+                string functionName = item.FunctionName?.Trim() ?? string.Empty;
+
+                if (string.IsNullOrEmpty(formulaName) && string.IsNullOrEmpty(functionName))
+                    continue;
+
+                if (string.IsNullOrEmpty(formulaName) || string.IsNullOrEmpty(functionName))
+                {
+                    return string.Format(
+                        LanguageService.Instance["geo_validate_additional_formula_incomplete"],
+                        rowIndex);
+                }
+
+                if (formulaName.Any(c => !char.IsLetterOrDigit(c) && c != '_'))
+                    return LanguageService.Instance["geo_validate_formula_name_invalid"];
+
+                if (!IsValidJsIdentifier(functionName))
+                {
+                    return string.Format(
+                        LanguageService.Instance["geo_validate_additional_function_name_invalid"],
+                        functionName);
+                }
+
+                if (string.Equals(functionName, MainFunctionNameValue, StringComparison.OrdinalIgnoreCase)
+                    || string.Equals(functionName, "calculateDetailed", StringComparison.OrdinalIgnoreCase))
+                {
+                    return string.Format(
+                        LanguageService.Instance["geo_validate_additional_function_reserved"],
+                        functionName);
+                }
+
+                if (!seenNames.Add(formulaName))
+                {
+                    return string.Format(
+                        LanguageService.Instance["geo_msg_formula_name_duplicate"],
+                        formulaName,
+                        Name);
+                }
+            }
+
             return null;
         }
+
+        private static bool IsValidJsIdentifier(string name)
+            => !string.IsNullOrEmpty(name) && JsIdentifierRegex.IsMatch(name);
+
+        [RelayCommand(CanExecute = nameof(CanEditAdditionalFormulas))]
+        private void AddAdditionalFormula()
+        {
+            AdditionalFormulaItems.Add(new AdditionalFormulaItemViewModel());
+        }
+
+        [RelayCommand(CanExecute = nameof(CanEditAdditionalFormulas))]
+        private void RemoveAdditionalFormula(AdditionalFormulaItemViewModel? item)
+        {
+            if (item == null) return;
+            AdditionalFormulaItems.Remove(item);
+        }
+
+        private bool CanEditAdditionalFormulas() => !IsContentReadOnly;
 
         // ==================== 语言管理命令 ====================
 
@@ -646,11 +766,32 @@ namespace GeoChemistryNexus.ViewModels
             OriginalTemplateVersion = ContentVersionHelper.Normalize(entity.Version);
             PatchVersion = ContentVersionHelper.TryGetPatch(entity.Version, out int patch) ? patch : 0;
 
-            HeadersText = string.Join(", ", entity.Headers ?? new List<string>());
-            ExampleRowText = string.Join(", ", entity.ExampleRow ?? new List<string>());
-            InputColumnsText = string.Join(", ", entity.InputColumns ?? new List<string>());
+            var headers = entity.Headers ?? new List<string>();
+            HeadersText = CommaSeparatedListHelper.Join(headers);
+            ExampleRowText = CommaSeparatedListHelper.Join(
+                CommaSeparatedListHelper.AlignToHeaderCount(headers, entity.ExampleRow));
+            InputColumnsText = CommaSeparatedListHelper.Join(entity.InputColumns);
 
             ScriptContent = entity.ScriptContent ?? ScriptTemplate;
+
+            AdditionalFormulaItems.Clear();
+            if (entity.AdditionalFormulas != null)
+            {
+                foreach (var additionalFormula in entity.AdditionalFormulas)
+                {
+                    if (string.IsNullOrWhiteSpace(additionalFormula.FormulaName)
+                        && string.IsNullOrWhiteSpace(additionalFormula.FunctionName))
+                    {
+                        continue;
+                    }
+
+                    AdditionalFormulaItems.Add(new AdditionalFormulaItemViewModel
+                    {
+                        FormulaName = additionalFormula.FormulaName ?? string.Empty,
+                        FunctionName = additionalFormula.FunctionName ?? string.Empty
+                    });
+                }
+            }
 
             // 构造测试输入（从示例行提取输入列对应的值）
             if (entity.InputColumns != null && entity.Headers != null && entity.ExampleRow != null)
@@ -735,12 +876,10 @@ namespace GeoChemistryNexus.ViewModels
 
         private GeothermometerEntity BuildEntity()
         {
-            var headers = HeadersText.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(s => s.Trim()).Where(s => s.Length > 0).ToList();
-            var exampleRow = ExampleRowText.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(s => s.Trim()).Where(s => s.Length > 0).ToList();
-            var inputColumns = InputColumnsText.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(s => s.Trim()).Where(s => s.Length > 0).ToList();
+            var headers = CommaSeparatedListHelper.Split(HeadersText);
+            var exampleRow = CommaSeparatedListHelper.AlignToHeaderCount(
+                headers, CommaSeparatedListHelper.Split(ExampleRowText));
+            var inputColumns = CommaSeparatedListHelper.Split(InputColumnsText);
 
             var entity = new GeothermometerEntity
             {
@@ -758,7 +897,19 @@ namespace GeoChemistryNexus.ViewModels
                 Headers = headers,
                 ExampleRow = exampleRow,
                 InputColumns = inputColumns,
-                AdditionalFormulas = new List<AdditionalFormula>(),
+                AdditionalFormulas = AdditionalFormulaItems
+                    .Select(item => new
+                    {
+                        FormulaName = item.FormulaName?.Trim() ?? string.Empty,
+                        FunctionName = item.FunctionName?.Trim() ?? string.Empty
+                    })
+                    .Where(item => item.FormulaName.Length > 0 && item.FunctionName.Length > 0)
+                    .Select(item => new AdditionalFormula
+                    {
+                        FormulaName = item.FormulaName,
+                        FunctionName = item.FunctionName
+                    })
+                    .ToList(),
                 ScriptContent = ScriptContent,
                 HelpDocuments = new Dictionary<string, string>(_helpDocuments)
             };
@@ -833,12 +984,6 @@ namespace GeoChemistryNexus.ViewModels
                 ShowError(string.Format(LanguageService.Instance["geo_msg_export_failed"], ex.Message));
             }
         }
-
-        [RelayCommand]
-        private void Cancel()
-        {
-            OnCloseRequested?.Invoke();
-        }
     }
 
     public class GeoTCategoryOption
@@ -863,5 +1008,14 @@ namespace GeoChemistryNexus.ViewModels
         public string StorageName { get; }
 
         public string DisplayName => GeoTMineralCategoryHelper.GetDisplayName(StorageName);
+    }
+
+    public partial class AdditionalFormulaItemViewModel : ObservableObject
+    {
+        [ObservableProperty]
+        private string formulaName = string.Empty;
+
+        [ObservableProperty]
+        private string functionName = string.Empty;
     }
 }

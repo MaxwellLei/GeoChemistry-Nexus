@@ -75,6 +75,17 @@ namespace GeoChemistryNexus.ViewModels
 
         public Action<string> LanguageSelectionAction { get; set; }
 
+        [ObservableProperty]
+        private bool _isExportModeSelection;
+
+        [ObservableProperty]
+        private ObservableCollection<string> _exportOptions;
+
+        [ObservableProperty]
+        private string _selectedExportOption;
+
+        public Action<string> ExportModeSelectionAction { get; set; }
+
         private Action<NotificationViewModel> _closeAction;
 
         public NotificationViewModel(string title, string message, NotificationType type, Action<NotificationViewModel> closeAction)
@@ -93,6 +104,16 @@ namespace GeoChemistryNexus.ViewModels
             if (!string.IsNullOrEmpty(SelectedLanguage))
             {
                 LanguageSelectionAction?.Invoke(SelectedLanguage);
+                await Close();
+            }
+        }
+
+        [RelayCommand]
+        private async Task SelectExportMode()
+        {
+            if (!string.IsNullOrEmpty(SelectedExportOption))
+            {
+                ExportModeSelectionAction?.Invoke(SelectedExportOption);
                 await Close();
             }
         }

@@ -50,7 +50,12 @@
                 <Border ToolTipService.InitialShowDelay="350" ToolTipService.Placement="Top">
                     <Border.Style>
                         <Style TargetType="Border" BasedOn="{StaticResource HomeLinkTileBorderStyle}">
-                            <Setter Property="ToolTip" Value="{Binding Description}"/>
+                            <Setter Property="ToolTip">
+                                <Setter.Value>
+                                    <ToolTip Style="{StaticResource HomeLinkDescriptionToolTipStyle}"
+                                             Content="{Binding Description}"/>
+                                </Setter.Value>
+                            </Setter>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Description}" Value="">
                                     <Setter Property="ToolTipService.IsEnabled" Value="False"/>

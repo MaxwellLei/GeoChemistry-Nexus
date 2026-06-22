@@ -1,0 +1,204 @@
+<UserControl x:Class="GeoChemistryNexus.Controls.GeothermometerEditorPanels.GeoTBasicInfoPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="600">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/GeoChemistryNexus;component/Themes/EditorStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <StackPanel>
+        <TextBlock Style="{StaticResource GeoTSectionTitleStyle}"
+                   Text="{Binding [geo_step_basic], Source={x:Static lg:LanguageService.Instance}, FallbackValue=基本信息}"/>
+
+        <!-- 元数据卡片 -->
+        <Border Style="{StaticResource GeoTPanelCardStyle}">
+            <StackPanel>
+                <Grid Margin="0,0,0,12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="100"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_name], Source={x:Static lg:LanguageService.Instance}, FallbackValue=名称 *}"/>
+                        <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                                 IsReadOnly="{Binding IsContentReadOnly}"/>
+                        <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding [geo_example_name], Source={x:Static lg:LanguageService.Instance}, FallbackValue=例如：石英温压计}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_category], Source={x:Static lg:LanguageService.Instance}, FallbackValue=类别 *}"/>
+                        <Border Style="{StaticResource FieldControlHostStyle}">
+                            <hc:ComboBox ItemsSource="{Binding CategoryOptions}"
+                                         DisplayMemberPath="DisplayName"
+                                         SelectedValuePath="Key"
+                                         SelectedValue="{Binding SelectedCategory}"
+                                         HorizontalAlignment="Stretch">
+                                <hc:ComboBox.Style>
+                                    <Style TargetType="ComboBox" BasedOn="{StaticResource EditorFieldComboBoxStyle}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsContentReadOnly}" Value="True">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </hc:ComboBox.Style>
+                            </hc:ComboBox>
+                        </Border>
+                        <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding [geo_example_category], Source={x:Static lg:LanguageService.Instance}, FallbackValue=例如：单矿物温压计}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="4">
+                        <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_year], Source={x:Static lg:LanguageService.Instance}, FallbackValue=年份 *}"/>
+                        <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding Year, UpdateSourceTrigger=PropertyChanged}"
+                                 IsReadOnly="{Binding IsContentReadOnly}"/>
+                        <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding [geo_example_year], Source={x:Static lg:LanguageService.Instance}, FallbackValue=例如：2020}"/>
+                    </StackPanel>
+                </Grid>
+
+                <StackPanel Margin="0,0,0,12">
+                    <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_tags], Source={x:Static lg:LanguageService.Instance}, FallbackValue=温压计标签 *}"/>
+                    <ItemsControl ItemsSource="{Binding TagParts}" Margin="0,0,0,6">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Style="{StaticResource GeoTTokenBorderStyle}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding DisplayName}" FontSize="12" Foreground="#0078D4" VerticalAlignment="Center"/>
+                                        <Button Tag="{Binding}" Click="RemoveTag_Click"
+                                                Style="{StaticResource GeoTTokenCloseButtonStyle}"
+                                                Foreground="#0078D4"
+                                                Visibility="{Binding DataContext.IsContentReadOnly, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BooleanToVisibilityReConverter}}"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <Grid Visibility="{Binding IsContentReadOnly, Converter={StaticResource BooleanToVisibilityReConverter}}" Margin="0,0,0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" Style="{StaticResource FieldControlHostStyle}" Margin="0">
+                            <hc:ComboBox x:Name="TagCombo"
+                                         IsEditable="True"
+                                         StaysOpenOnEdit="True"
+                                         hc:InfoElement.Placeholder="{Binding [geo_tag_enter_hint], Source={x:Static lg:LanguageService.Instance}, FallbackValue=输入标签后按 Enter 确认}"
+                                         DisplayMemberPath="DisplayName"
+                                         SelectedValuePath="DisplayName"
+                                         SelectionChanged="TagCombo_SelectionChanged"
+                                         PreviewKeyDown="TagCombo_PreviewKeyDown"
+                                         HorizontalAlignment="Stretch"
+                                         Style="{StaticResource EditorFieldComboBoxStyle}"/>
+                        </Border>
+                        <TextBlock Grid.Column="1"
+                                   Text="{Binding [geo_tag_enter_hint], Source={x:Static lg:LanguageService.Instance}, FallbackValue=输入标签后按 Enter 确认}"
+                                   VerticalAlignment="Center"
+                                   Foreground="#AAA"
+                                   Margin="16,0,0,0"
+                                   FontSize="10"
+                                   TextWrapping="Wrap"/>
+                    </Grid>
+                    <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding [geo_example_tag], Source={x:Static lg:LanguageService.Instance}, FallbackValue=例如：石英}"/>
+                </StackPanel>
+
+                <StackPanel Margin="0,0,0,12">
+                    <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_author], Source={x:Static lg:LanguageService.Instance}, FallbackValue=作者 *}"/>
+                    <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding Author, UpdateSourceTrigger=PropertyChanged}"
+                             IsReadOnly="{Binding IsContentReadOnly}"/>
+                    <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding [geo_example_author], Source={x:Static lg:LanguageService.Instance}, FallbackValue=例如：Smith 等}"/>
+                </StackPanel>
+
+                <StackPanel>
+                    <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_reference], Source={x:Static lg:LanguageService.Instance}, FallbackValue=参考文献 *}"/>
+                    <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding Reference, UpdateSourceTrigger=PropertyChanged}"
+                             IsReadOnly="{Binding IsContentReadOnly}"/>
+                    <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding [geo_example_reference], Source={x:Static lg:LanguageService.Instance}, FallbackValue='例如：Smith (2020) Geochim. Cosmochim. Acta 280, 123-145'}"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- 版本卡片 -->
+        <Border Style="{StaticResource GeoTPanelCardStyle}" Margin="0">
+            <StackPanel>
+                <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_version], Source={x:Static lg:LanguageService.Instance}, FallbackValue=版本}" Margin="0,0,0,10"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="16"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <TextBlock FontSize="11" Foreground="#86868B" Margin="0,0,0,4"
+                                   Text="{Binding [geo_current_app_format_version], Source={x:Static lg:LanguageService.Instance}, FallbackValue=当前软件温压计版本}"/>
+                        <TextBlock FontSize="13" FontWeight="SemiBold" Foreground="#1D1D1F"
+                                   Text="{Binding AppFormatVersion, Mode=OneWay}"/>
+
+                        <StackPanel Margin="0,10,0,0"
+                                    Visibility="{Binding IsEditMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <TextBlock FontSize="11" Foreground="#86868B" Margin="0,0,0,4"
+                                       Text="{Binding [geo_current_template_version], Source={x:Static lg:LanguageService.Instance}, FallbackValue=当前温压计模板版本}"/>
+                            <TextBlock FontSize="13" FontWeight="SemiBold" Foreground="#1D1D1F"
+                                       Text="{Binding OriginalTemplateVersion, Mode=OneWay}"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2">
+                        <TextBlock FontSize="11" Foreground="#86868B" Margin="0,0,0,4"
+                                   Text="{Binding [geo_editor_set_version], Source={x:Static lg:LanguageService.Instance}, FallbackValue=设定温压计版本}"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="56"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,4,0"
+                                       Foreground="#666"
+                                       FontSize="12"
+                                       Text="{Binding FormatVersionPrefix, Mode=OneWay}"/>
+                            <TextBox Grid.Column="1"
+                                     Style="{StaticResource FieldInputStyle}"
+                                     Text="{Binding PatchVersion, UpdateSourceTrigger=PropertyChanged}"
+                                     ToolTip="{Binding [geo_tooltip_version_patch], Source={x:Static lg:LanguageService.Instance}, FallbackValue=修订号 z；格式基线 x.y 跟随程序版本}"
+                                     IsReadOnly="{Binding IsContentReadOnly}"/>
+                            <TextBlock Grid.Column="2"
+                                       VerticalAlignment="Center"
+                                       Margin="10,0,0,0"
+                                       FontSize="11"
+                                       Foreground="#86868B">
+                                <Run Text="{Binding [diagram_editor_saved_version], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay, FallbackValue=保存后版本：}"/>
+                                <Run Text="{Binding TemplateVersion, Mode=OneWay}" FontWeight="SemiBold"/>
+                            </TextBlock>
+                        </Grid>
+                        <TextBlock Style="{StaticResource FieldHintStyle}" Margin="0,4,0,0"
+                                   Text="{Binding [geo_tooltip_version_patch], Source={x:Static lg:LanguageService.Instance}, FallbackValue=修订号 z；格式基线 x.y 跟随程序版本}"/>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+        <TextBlock FontSize="11" Foreground="#999" Margin="0,4,0,0"
+                   Text="{Binding [geo_field_required_hint], Source={x:Static lg:LanguageService.Instance}, FallbackValue=必填字段标有 *。格式基线 x.y 跟随软件温压计版本，修订号 z 为模板内容版本。Grid 公式在「公式脚本」步骤中配置。}"/>
+    </StackPanel>
+</UserControl>

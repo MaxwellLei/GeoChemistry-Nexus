@@ -423,6 +423,8 @@ namespace GeoChemistryNexus.Services
         {
             ValidateFormulaNames(entity, entity.Id == Guid.Empty ? null : entity.Id);
 
+            entity.ExampleRow = CommaSeparatedListHelper.AlignToHeaderCount(entity.Headers, entity.ExampleRow);
+
             entity.LastModified = DateTime.Now;
             entity.FileHash = GeothermometerDatabaseService.ComputeEntityHash(entity);
 
@@ -562,7 +564,7 @@ namespace GeoChemistryNexus.Services
                 IconCode = entity.IconCode,
                 IconColor = entity.IconColor,
                 Headers = entity.Headers,
-                ExampleRow = entity.ExampleRow,
+                ExampleRow = CommaSeparatedListHelper.AlignToHeaderCount(entity.Headers, entity.ExampleRow),
                 FormulaName = entity.FormulaName,
                 InputColumns = entity.InputColumns,
                 AdditionalFormulas = entity.AdditionalFormulas,
@@ -723,7 +725,7 @@ namespace GeoChemistryNexus.Services
                     PluginId = pluginId,
                     Version = plugin.Version,
                     LastModified = DateTime.Now,
-                    IsOfficial = false, // 用户创建或导入均为自定义；服务器下载流程在写入前设为官方
+                    IsOfficial = keepPluginIdentity,
                     Category = plugin.Category,
                     Tags = plugin.Tags ?? new List<string>(),
                     Name = plugin.Name,
@@ -734,7 +736,7 @@ namespace GeoChemistryNexus.Services
                     IconCode = plugin.IconCode,
                     IconColor = plugin.IconColor,
                     Headers = plugin.Headers,
-                    ExampleRow = plugin.ExampleRow,
+                    ExampleRow = CommaSeparatedListHelper.AlignToHeaderCount(plugin.Headers, plugin.ExampleRow),
                     FormulaName = plugin.FormulaName,
                     InputColumns = plugin.InputColumns ?? new List<string>(),
                     AdditionalFormulas = plugin.AdditionalFormulas ?? new List<AdditionalFormula>(),
@@ -1100,7 +1102,7 @@ namespace GeoChemistryNexus.Services
         /// <summary>
         /// 从服务器下载 ZIP 并导入
         /// </summary>
-        public static async Task<bool> DownloadPluginAsync(PluginIndexEntry entry)
+        public static async Task<GeothermometerDownloadItemResult> DownloadPluginAsync(PluginIndexEntry entry)
         {
             try
             {
@@ -1121,8 +1123,9 @@ namespace GeoChemistryNexus.Services
                     if (!string.IsNullOrEmpty(entry.Hash) &&
                         !string.Equals(imported.FileHash, entry.Hash, StringComparison.OrdinalIgnoreCase))
                     {
+                        string errorMessage = LanguageService.Instance["downloaded_file_hash_mismatch"];
                         Debug.WriteLine($"[GeothermometerService] GTM 哈希校验失败 [{entry.Id}]: expected={entry.Hash}, actual={imported.FileHash}");
-                        return false;
+                        return GeothermometerDownloadItemResult.Failed(entry.Id, errorMessage);
                     }
 
                     try
@@ -1132,29 +1135,39 @@ namespace GeoChemistryNexus.Services
                     catch (InvalidOperationException ex)
                     {
                         Debug.WriteLine($"[GeothermometerService] GTM 公式名冲突 [{entry.Id}]: {ex.Message}");
-                        return false;
+                        return GeothermometerDownloadItemResult.Failed(entry.Id, ex.Message);
                     }
 
-                    imported.IsOfficial = true;
                     GeothermometerDatabaseService.Instance.UpsertEntity(imported);
-                    return true;
+                    return GeothermometerDownloadItemResult.Succeeded(entry.Id);
                 }
                 finally
                 {
                     if (File.Exists(tempZip)) File.Delete(tempZip);
                 }
             }
+            catch (GeothermometerImportException ex)
+            {
+                string errorMessage = ex.Reason switch
+                {
+                    GeothermometerImportFailureReason.VersionIncompatible =>
+                        LanguageService.Instance["template_version_too_high"],
+                    _ => LanguageService.Instance["geo_msg_import_invalid_format"]
+                };
+                Debug.WriteLine($"[GeothermometerService] GTM 导入失败 [{entry.Id}]: {errorMessage}");
+                return GeothermometerDownloadItemResult.Failed(entry.Id, errorMessage);
+            }
             catch (Exception ex)
             {
                 Debug.WriteLine($"[GeothermometerService] 下载 GTM 失败 [{entry.Id}]: {ex.Message}");
-                return false;
+                return GeothermometerDownloadItemResult.Failed(entry.Id, ex.Message);
             }
         }
 
         /// <summary>
         /// 批量下载、删除下架项并重新加载
         /// </summary>
-        public static async Task<int> DownloadAndReloadAsync(
+        public static async Task<GeothermometerBatchDownloadResult> DownloadAndReloadAsync(
             List<PluginIndexEntry> entries,
             IEnumerable<Guid>? removals = null,
             IProgress<(int current, int total, string name)>? progress = null)
@@ -1175,27 +1188,41 @@ namespace GeoChemistryNexus.Services
             var removalList = removals?.ToList() ?? new List<Guid>();
             int total = removalList.Count + entries.Count;
             int current = 0;
+            int removalCount = 0;
 
             if (removalList.Count > 0)
             {
-                ApplyRemovals(removalList);
+                removalCount = ApplyRemovals(removalList);
                 current = removalList.Count;
                 progress?.Report((current, total, LanguageService.Instance["geo_msg_downloading_update"]));
             }
 
             int successCount = 0;
+            var failures = new List<GeothermometerDownloadItemResult>();
             foreach (var entry in entries)
             {
                 current++;
                 progress?.Report((current, total, entry.Id));
-                if (await DownloadPluginAsync(entry))
+                var itemResult = await DownloadPluginAsync(entry);
+                if (itemResult.Success)
+                {
                     successCount++;
+                }
+                else
+                {
+                    failures.Add(itemResult);
+                }
             }
 
-            if (successCount > 0 || removalList.Count > 0)
+            if (successCount > 0 || removalCount > 0)
                 ReloadPlugins();
 
-            return successCount;
+            return new GeothermometerBatchDownloadResult
+            {
+                SuccessCount = successCount,
+                RemovalCount = removalCount,
+                Failures = failures
+            };
         }
 
         private static IEnumerable<string> EnumerateFormulaNames(GeothermometerEntity entity)

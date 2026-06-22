@@ -231,6 +231,37 @@ namespace GeoChemistryNexus.Models
     }
 
     /// <summary>
+    /// 单个温压计下载结果
+    /// </summary>
+    public class GeothermometerDownloadItemResult
+    {
+        public bool Success { get; init; }
+
+        public string PluginId { get; init; } = string.Empty;
+
+        public string ErrorMessage { get; init; } = string.Empty;
+
+        public static GeothermometerDownloadItemResult Succeeded(string pluginId)
+            => new() { Success = true, PluginId = pluginId };
+
+        public static GeothermometerDownloadItemResult Failed(string pluginId, string errorMessage)
+            => new() { Success = false, PluginId = pluginId, ErrorMessage = errorMessage };
+    }
+
+    /// <summary>
+    /// 温压计批量下载结果
+    /// </summary>
+    public class GeothermometerBatchDownloadResult
+    {
+        public int SuccessCount { get; init; }
+
+        public int RemovalCount { get; init; }
+
+        public IReadOnlyList<GeothermometerDownloadItemResult> Failures { get; init; } =
+            Array.Empty<GeothermometerDownloadItemResult>();
+    }
+
+    /// <summary>
     /// ReoGrid 公式名冲突描述
     /// </summary>
     public class FormulaNameConflict

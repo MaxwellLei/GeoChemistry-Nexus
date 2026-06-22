@@ -127,11 +127,12 @@ public class FileHelper
     }
 
     //获取文件路径——带有格式限制
-    public static string GetFilePath(string filter)
+    public static string GetFilePath(string filter, System.Windows.Window? owner = null)
     {
         OpenFileDialog openFileDialog = new OpenFileDialog();
         openFileDialog.Filter = filter;
-        if (openFileDialog.ShowDialog(Application.Current.MainWindow) == true)
+        var dialogOwner = owner ?? Application.Current.MainWindow;
+        if (openFileDialog.ShowDialog(dialogOwner) == true)
         {
             return openFileDialog.FileName;     //用户正确选择了路径
         }
@@ -180,10 +181,10 @@ public class FileHelper
     /// 异步获取文件保存路径 - 在独立STA线程上显示对话框，避免COM清理阻塞UI线程
     /// 使用Win32 API监测对话框窗口关闭，一旦关闭立即恢复主窗口交互
     /// </summary>
-    public static async Task<string> GetSaveFilePath2Async(string title = null, string filter = null, string defaultExt = "", string defaultFileName = "")
+    public static async Task<string> GetSaveFilePath2Async(string title = null, string filter = null, string defaultExt = "", string defaultFileName = "", System.Windows.Window? owner = null)
     {
-        var mainWindow = Application.Current.MainWindow;
-        mainWindow.IsEnabled = false;
+        var targetWindow = owner ?? Application.Current.MainWindow;
+        targetWindow.IsEnabled = false;
 
         string resolvedTitle = title ?? LanguageService.Instance["save_file_title"] ?? "Save File";
         string resolvedFilter = filter ?? FileDialogFilterHelper.AllFiles;
@@ -229,18 +230,18 @@ public class FileHelper
             if (nativeThreadId != 0)
             {
                 // 监测对话框窗口，一旦关闭立即恢复主窗口
-                await WaitForDialogCloseAndRestore(nativeThreadId, tcs.Task, mainWindow);
+                await WaitForDialogCloseAndRestore(nativeThreadId, tcs.Task, targetWindow);
             }
 
             return await tcs.Task;
         }
         finally
         {
-            // 确保无论如何主窗口都能恢复
-            if (!mainWindow.IsEnabled)
+            // 确保无论如何目标窗口都能恢复
+            if (!targetWindow.IsEnabled)
             {
-                mainWindow.IsEnabled = true;
-                mainWindow.Activate();
+                targetWindow.IsEnabled = true;
+                targetWindow.Activate();
             }
         }
     }
@@ -249,10 +250,10 @@ public class FileHelper
     /// 异步获取文件打开路径 - 在独立STA线程上显示对话框，避免COM清理阻塞UI线程
     /// 使用Win32 API监测对话框窗口关闭，一旦关闭立即恢复主窗口交互
     /// </summary>
-    public static async Task<string> GetFilePathAsync(string filter = null)
+    public static async Task<string> GetFilePathAsync(string filter = null, System.Windows.Window? owner = null)
     {
-        var mainWindow = Application.Current.MainWindow;
-        mainWindow.IsEnabled = false;
+        var targetWindow = owner ?? Application.Current.MainWindow;
+        targetWindow.IsEnabled = false;
 
         try
         {
@@ -290,18 +291,18 @@ public class FileHelper
             if (nativeThreadId != 0)
             {
                 // 监测对话框窗口，一旦关闭立即恢复主窗口
-                await WaitForDialogCloseAndRestore(nativeThreadId, tcs.Task, mainWindow);
+                await WaitForDialogCloseAndRestore(nativeThreadId, tcs.Task, targetWindow);
             }
 
             return await tcs.Task;
         }
         finally
         {
-            // 确保无论如何主窗口都能恢复
-            if (!mainWindow.IsEnabled)
+            // 确保无论如何目标窗口都能恢复
+            if (!targetWindow.IsEnabled)
             {
-                mainWindow.IsEnabled = true;
-                mainWindow.Activate();
+                targetWindow.IsEnabled = true;
+                targetWindow.Activate();
             }
         }
     }

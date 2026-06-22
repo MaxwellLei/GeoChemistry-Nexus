@@ -224,7 +224,7 @@ Directorio: {2}</value>
 • Convertir los porcentajes en peso de los óxidos a moles</value>
   </data>
   <data name="script_return_value_error_must_be_array" xml:space="preserve">
-    <value>• Error de valor de retorno de script: El script debe devolver una matriz.</value>
+    <value>Error de valor de retorno de script: El script debe devolver una matriz.</value>
   </data>
   <data name="MarkerShape_VerticalBar" xml:space="preserve">
     <value>Línea vertical</value>
@@ -628,7 +628,7 @@ Directorio: {2}</value>
     <value>Triángulo relleno hacia abajo</value>
   </data>
   <data name="missing_translation_warning" xml:space="preserve">
-    <value>• Traducción faltante: A algunos textos les falta traducción.</value>
+    <value>Traducción faltante: A algunos textos les falta traducción.</value>
   </data>
   <data name="geo_btn_export" xml:space="preserve">
     <value>Exportar</value>
@@ -682,7 +682,7 @@ Directorio: {2}</value>
     <value>Descripción breve</value>
   </data>
   <data name="invalid_script_variable_name" xml:space="preserve">
-    <value>• Error de formato de nombre de variable de script: '</value>
+    <value>Error de formato de nombre de variable de script:</value>
   </data>
   <data name="open_with_third_party_software" xml:space="preserve">
     <value>Abrir con software de terceros</value>
@@ -763,10 +763,10 @@ Directorio: {2}</value>
     <value>Ayuda</value>
   </data>
   <data name="script_return_value_length_error" xml:space="preserve">
-    <value>• Error de longitud de valor de retorno de script: Actual es</value>
+    <value>Error de longitud de valor de retorno de script: Actual es</value>
   </data>
   <data name="AboutInfo2" xml:space="preserve">
-    <value>Si le interesa este proyecto, ¡por favor déle una Estrella para apoyarlo! Si le resulta útil, también puede invitarme a un café ☕</value>
+    <value>Si le interesa este proyecto, ¡por favor déle una Estrella para apoyarlo! Si le resulta útil, también puede invitarme a un café ☕.</value>
   </data>
   <data name="AboutInfo3" xml:space="preserve">
     <value>¡Damos la bienvenida a más investigadores para que se unan!
@@ -1683,7 +1683,7 @@ Directorio: {2}</value>
     <value>El contenido contiene caracteres no compatibles</value>
   </data>
   <data name="missing_drawing_objects_error" xml:space="preserve">
-    <value>• Faltan objetos de dibujo: La plantilla no contiene líneas, polígonos, texto o flechas.</value>
+    <value>Faltan objetos de dibujo: La plantilla no contiene líneas, polígonos, texto o flechas.</value>
   </data>
   <data name="geo_msg_export_failed" xml:space="preserve">
     <value>Error al exportar: {0}</value>
@@ -3188,5 +3188,65 @@ Directorio: {2}</value>
   </data>
   <data name="gtm_mineral_biotite" xml:space="preserve">
     <value>Biotita</value>
+  </data>
+  <data name="official_publisher_plot_categories_section" xml:space="preserve">
+    <value>Categorías de diagramas</value>
+  </data>
+  <data name="official_publisher_plot_categories_level" xml:space="preserve">
+    <value>Nivel</value>
+  </data>
+  <data name="official_publisher_plot_categories_draft_saved" xml:space="preserve">
+    <value>El borrador de categorías de diagramas se guardó localmente.</value>
+  </data>
+  <data name="official_publisher_plot_categories_reloaded" xml:space="preserve">
+    <value>El editor de categorías de diagramas se recargó.</value>
+  </data>
+  <data name="official_publisher_geot_categories_section" xml:space="preserve">
+    <value>Etiquetas minerales de GeoT</value>
+  </data>
+  <data name="official_publisher_geot_categories_draft_saved" xml:space="preserve">
+    <value>El borrador de categorías minerales de GeoT se guardó localmente.</value>
+  </data>
+  <data name="official_publisher_geot_categories_reloaded" xml:space="preserve">
+    <value>El editor de categorías minerales de GeoT se recargó.</value>
+  </data>
+  <data name="official_publisher_category_add" xml:space="preserve">
+    <value>Agregar entrada</value>
+  </data>
+  <data name="official_publisher_category_edit" xml:space="preserve">
+    <value>Editar entrada</value>
+  </data>
+  <data name="geo_validate_tags_required" xml:space="preserve">
+    <value>Agregue al menos una etiqueta de geotermobarómetro.</value>
+  </data>
+  <data name="geo_validate_category_required" xml:space="preserve">
+    <value>Seleccione una categoría de geotermobarómetro.</value>
+  </data>
+  <data name="geo_tag_enter_hint" xml:space="preserve">
+    <value>Escriba una etiqueta y presione Enter para confirmar</value>
+  </data>
+  <data name="geo_preview_tags_placeholder" xml:space="preserve">
+    <value>Etiquetas</value>
+  </data>
+  <data name="geo_field_tags" xml:space="preserve">
+    <value>Etiquetas de geotermobarómetro *</value>
+  </data>
+  <data name="geo_field_category" xml:space="preserve">
+    <value>Categoría *</value>
+  </data>
+  <data name="geo_example_tag" xml:space="preserve">
+    <value>p. ej. Cuarzo</value>
+  </data>
+  <data name="geo_example_category" xml:space="preserve">
+    <value>p. ej. Geotermobarómetro de mineral único</value>
+  </data>
+  <data name="geo_editor_title_view" xml:space="preserve">
+    <value>Ver geotermobarómetro</value>
+  </data>
+  <data name="geo_editor_readonly_hint" xml:space="preserve">
+    <value>La información básica, el script de fórmula y los documentos de ayuda de los geotermobarómetros oficiales son de solo lectura. Puede explorar y copiar el contenido, pero no editarlo.</value>
+  </data>
+  <data name="data_grid_plot_refresh_pending" xml:space="preserve">
+    <value>Los datos se han modificado. Actualice el diagrama.</value>
   </data>
 </root>

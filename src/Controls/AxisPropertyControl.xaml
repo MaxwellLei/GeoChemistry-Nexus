@@ -84,44 +84,53 @@
                             </ToggleButton>
                         </Grid>
 
-                        <!-- Subtitle Configuration -->
-                        <TextBlock Text="{Binding [subtitle],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
-                        <local:LocalizedStringControl Value="{Binding SubLabel, Mode=TwoWay}" Margin="0,0,0,16"/>
+                        <!-- Subtitle Configuration (collapsed by default) -->
+                        <ToggleButton x:Name="SubtitleSectionToggle"
+                                      Style="{StaticResource PropertySectionHeaderToggleStyle}"
+                                      Margin="0,0,0,8">
+                            <TextBlock Text="{Binding [subtitle],Source={x:Static lg:LanguageService.Instance}}"
+                                       Style="{StaticResource ModernLabelStyle}"
+                                       Margin="0"/>
+                        </ToggleButton>
 
-                        <Grid Margin="0,0,0,16">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="12"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                        <StackPanel Visibility="{Binding IsChecked, ElementName=SubtitleSectionToggle, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <local:LocalizedStringControl Value="{Binding SubLabel, Mode=TwoWay}" Margin="0,0,0,16"/>
 
-                            <StackPanel Grid.Column="0">
-                                <TextBlock Text="{Binding [subtitle_font_size],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
-                                <hc:NumericUpDown Value="{Binding SubLabelSize, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
-                                                  Style="{StaticResource ModernNumericUpDownStyle}"/>
-                            </StackPanel>
+                            <Grid Margin="0,0,0,16">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="12"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
 
-                            <StackPanel Grid.Column="2">
-                                <TextBlock Text="{Binding [subtitle_color],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
-                                <local:TextPropertyColorPicker SelectedColor="{Binding SubLabelColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" Height="32"/>
-                            </StackPanel>
-                        </Grid>
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="{Binding [subtitle_font_size],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
+                                    <hc:NumericUpDown Value="{Binding SubLabelSize, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
+                                                      Style="{StaticResource ModernNumericUpDownStyle}"/>
+                                </StackPanel>
 
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="12"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="{Binding [subtitle_color],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
+                                    <local:TextPropertyColorPicker SelectedColor="{Binding SubLabelColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" Height="32"/>
+                                </StackPanel>
+                            </Grid>
 
-                            <ToggleButton Grid.Column="0" IsChecked="{Binding SubLabelBold}" Style="{StaticResource FontStyleToggleButtonStyle}" ToolTip="{Binding [subtitle_bold],Source={x:Static lg:LanguageService.Instance}}">
-                                <TextBlock Text="B" FontWeight="Bold"/>
-                            </ToggleButton>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="12"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
 
-                            <ToggleButton Grid.Column="2" IsChecked="{Binding SubLabelItalic}" Style="{StaticResource FontStyleToggleButtonStyle}" ToolTip="{Binding [subtitle_italic],Source={x:Static lg:LanguageService.Instance}}">
-                                <TextBlock Text="I" FontStyle="Italic" FontWeight="Bold" FontFamily="Times New Roman"/>
-                            </ToggleButton>
-                        </Grid>
+                                <ToggleButton Grid.Column="0" IsChecked="{Binding SubLabelBold}" Style="{StaticResource FontStyleToggleButtonStyle}" ToolTip="{Binding [subtitle_bold],Source={x:Static lg:LanguageService.Instance}}">
+                                    <TextBlock Text="B" FontWeight="Bold"/>
+                                </ToggleButton>
+
+                                <ToggleButton Grid.Column="2" IsChecked="{Binding SubLabelItalic}" Style="{StaticResource FontStyleToggleButtonStyle}" ToolTip="{Binding [subtitle_italic],Source={x:Static lg:LanguageService.Instance}}">
+                                    <TextBlock Text="I" FontStyle="Italic" FontWeight="Bold" FontFamily="Times New Roman"/>
+                                </ToggleButton>
+                            </Grid>
+                        </StackPanel>
 
                     </StackPanel>
                 </Border>

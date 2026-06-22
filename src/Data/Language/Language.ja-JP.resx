@@ -224,7 +224,7 @@
 • すべての酸化物の質量百分率をモル数に変換</value>
   </data>
   <data name="script_return_value_error_must_be_array" xml:space="preserve">
-    <value>• スクリプト戻り値エラー：スクリプトは配列を返す必要があります。</value>
+    <value>スクリプト戻り値エラー：スクリプトは配列を返す必要があります。</value>
   </data>
   <data name="MarkerShape_VerticalBar" xml:space="preserve">
     <value>垂直線</value>
@@ -628,7 +628,7 @@
     <value>塗りつぶされた下向き三角形</value>
   </data>
   <data name="missing_translation_warning" xml:space="preserve">
-    <value>• 翻訳欠落：一部のテキストに多言語翻訳がありません。</value>
+    <value>翻訳欠落：一部のテキストに多言語翻訳がありません。</value>
   </data>
   <data name="geo_btn_export" xml:space="preserve">
     <value>エクスポート</value>
@@ -682,7 +682,7 @@
     <value>簡単な説明</value>
   </data>
   <data name="invalid_script_variable_name" xml:space="preserve">
-    <value>• スクリプト変数名の形式エラー：’</value>
+    <value>スクリプト変数名の形式エラー:</value>
   </data>
   <data name="open_with_third_party_software" xml:space="preserve">
     <value>サードパーティソフトウェアで開く</value>
@@ -748,7 +748,7 @@
     <value>ファイルが存在しません:</value>
   </data>
   <data name="cipw_msg_calc_partial_success" xml:space="preserve">
-    <value>計算完了: {0}/{1} サンプル成功</value>
+    <value>計算完了: {0}/{1} サンプル成功.</value>
   </data>
   <data name="border_color" xml:space="preserve">
     <value>枠線の色</value>
@@ -763,10 +763,10 @@
     <value>説明</value>
   </data>
   <data name="script_return_value_length_error" xml:space="preserve">
-    <value>• スクリプト戻り値の長さエラー：現在は</value>
+    <value>スクリプト戻り値の長さエラー：現在は</value>
   </data>
   <data name="AboutInfo2" xml:space="preserve">
-    <value>もし本プロジェクトに興味をお持ちでしたら、ぜひStarをつけて応援してください！お役に立ちましたら、コーヒーを一杯奢っていただけると嬉しいです☕</value>
+    <value>もし本プロジェクトに興味をお持ちでしたら、ぜひStarをつけて応援してください！お役に立ちましたら、コーヒーを一杯奢っていただけると嬉しいです☕.</value>
   </data>
   <data name="AboutInfo3" xml:space="preserve">
     <value>より多くの研究者の皆様の参加を歓迎します！
@@ -929,7 +929,7 @@
     <value>現在のテンプレートには多言語情報がありません</value>
   </data>
   <data name="cipw_msg_no_data" xml:space="preserve">
-    <value>有効なデータ行が検出されません。先に酸化物含有量を入力してください</value>
+    <value>有効なデータ行が検出されません。先に酸化物含有量を入力してください.</value>
   </data>
   <data name="current_diagram_version" xml:space="preserve">
     <value>現在の図解バージョン</value>
@@ -1022,7 +1022,7 @@
 • ペラルミナス（Peraluminous）: Al₂O₃ &gt; CaO + Na₂O + K₂O</value>
   </data>
   <data name="cipw_msg_calc_all_success" xml:space="preserve">
-    <value>計算完了: {0} サンプルすべて成功</value>
+    <value>計算完了: {0} サンプルすべて成功.</value>
   </data>
   <data name="select_software" xml:space="preserve">
     <value>ソフトウェアを選択</value>
@@ -1289,7 +1289,7 @@
     <value>図解テンプレートを開く</value>
   </data>
   <data name="cipw_msg_data_cleared" xml:space="preserve">
-    <value>データをクリアしました</value>
+    <value>データをクリアしました.</value>
   </data>
   <data name="loading_announcements" xml:space="preserve">
     <value>お知らせを読み込み中...</value>
@@ -1683,7 +1683,7 @@
     <value>内容にサポートされていない文字が含まれています</value>
   </data>
   <data name="missing_drawing_objects_error" xml:space="preserve">
-    <value>• 描画オブジェクト欠落：テンプレートに線、ポリゴン、テキスト、または矢印が含まれていません。</value>
+    <value>描画オブジェクト欠落：テンプレートに線、ポリゴン、テキスト、または矢印が含まれていません。</value>
   </data>
   <data name="geo_msg_export_failed" xml:space="preserve">
     <value>エクスポートに失敗しました: {0}</value>
@@ -1976,7 +1976,7 @@
     <value>一括更新が完了しました</value>
   </data>
   <data name="batch_update_failed" xml:space="preserve">
-    <value>一括更新に失敗しました：</value>
+    <value>一括更新に失敗しました： </value>
   </data>
   <data name="batch_updating" xml:space="preserve">
     <value>一括更新中</value>
@@ -2192,7 +2192,7 @@
     <value>例：2020</value>
   </data>
   <data name="geo_example_author" xml:space="preserve">
-    <value>例：Smith 他</value>
+    <value>例：Smith 他.</value>
   </data>
   <data name="geo_example_reference" xml:space="preserve">
     <value>例：Smith (2020) Geochim. Cosmochim. Acta 280, 123-145</value>
@@ -2530,7 +2530,7 @@
     <value>元のワークシートのみ保持</value>
   </data>
   <data name="dataPrep_listSeparator" xml:space="preserve">
-    <value>、</value>
+    <value>、 </value>
   </data>
   <data name="dataPrep_method" xml:space="preserve">
     <value>方法</value>
@@ -2566,7 +2566,7 @@
     <value>正規化</value>
   </data>
   <data name="dataPrep_normalizeToHundred" xml:space="preserve">
-    <value>100% に正規化</value>
+    <value>Normalize to 100%</value>
   </data>
   <data name="dataPrep_notDetected" xml:space="preserve">
     <value>未検出</value>
@@ -3188,5 +3188,65 @@
   </data>
   <data name="gtm_mineral_biotite" xml:space="preserve">
     <value>黒雲母</value>
+  </data>
+  <data name="official_publisher_plot_categories_section" xml:space="preserve">
+    <value>図解カテゴリ</value>
+  </data>
+  <data name="official_publisher_plot_categories_level" xml:space="preserve">
+    <value>レベル</value>
+  </data>
+  <data name="official_publisher_plot_categories_draft_saved" xml:space="preserve">
+    <value>図解カテゴリの下書きをローカルに保存しました。</value>
+  </data>
+  <data name="official_publisher_plot_categories_reloaded" xml:space="preserve">
+    <value>図解カテゴリエディターを再読み込みしました。</value>
+  </data>
+  <data name="official_publisher_geot_categories_section" xml:space="preserve">
+    <value>GeoT 鉱物タグ</value>
+  </data>
+  <data name="official_publisher_geot_categories_draft_saved" xml:space="preserve">
+    <value>GeoT 鉱物カテゴリの下書きをローカルに保存しました。</value>
+  </data>
+  <data name="official_publisher_geot_categories_reloaded" xml:space="preserve">
+    <value>GeoT 鉱物カテゴリエディターを再読み込みしました。</value>
+  </data>
+  <data name="official_publisher_category_add" xml:space="preserve">
+    <value>項目を追加</value>
+  </data>
+  <data name="official_publisher_category_edit" xml:space="preserve">
+    <value>項目を編集</value>
+  </data>
+  <data name="geo_validate_tags_required" xml:space="preserve">
+    <value>少なくとも 1 つの温圧計タグを追加してください。</value>
+  </data>
+  <data name="geo_validate_category_required" xml:space="preserve">
+    <value>温圧計カテゴリを選択してください。</value>
+  </data>
+  <data name="geo_tag_enter_hint" xml:space="preserve">
+    <value>タグを入力して Enter キーで確定</value>
+  </data>
+  <data name="geo_preview_tags_placeholder" xml:space="preserve">
+    <value>タグ</value>
+  </data>
+  <data name="geo_field_tags" xml:space="preserve">
+    <value>温圧計タグ *</value>
+  </data>
+  <data name="geo_field_category" xml:space="preserve">
+    <value>カテゴリ *</value>
+  </data>
+  <data name="geo_example_tag" xml:space="preserve">
+    <value>例：石英</value>
+  </data>
+  <data name="geo_example_category" xml:space="preserve">
+    <value>例：単鉱物地質温圧計</value>
+  </data>
+  <data name="geo_editor_title_view" xml:space="preserve">
+    <value>地質温圧計を表示</value>
+  </data>
+  <data name="geo_editor_readonly_hint" xml:space="preserve">
+    <value>公式地質温圧計の基本情報、式スクリプト、ヘルプ文書は閲覧専用です。内容の閲覧とコピーはできますが、編集はできません。</value>
+  </data>
+  <data name="data_grid_plot_refresh_pending" xml:space="preserve">
+    <value>データが変更されました。図解を再読み込みしてください。</value>
   </data>
 </root>

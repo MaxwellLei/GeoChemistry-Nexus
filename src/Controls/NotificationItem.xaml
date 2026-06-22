@@ -147,6 +147,51 @@
                     </StackPanel>
                 </StackPanel>
 
+                <!-- Export Mode Selection -->
+                <StackPanel Margin="0,10,0,0">
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsExportModeSelection}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+
+                    <ComboBox ItemsSource="{Binding ExportOptions}" SelectedItem="{Binding SelectedExportOption}"
+                              Margin="0,0,0,10" Padding="6,4" BorderThickness="1" BorderBrush="{Binding BorderColor}"/>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="{Binding [Confirm], Source={x:Static lg:LanguageService.Instance}}"
+                                Command="{Binding SelectExportModeCommand}"
+                                Margin="0,0,10,0" Padding="12,5" Background="{Binding ForegroundColor}" Foreground="White"
+                                BorderThickness="0" Cursor="Hand" FontWeight="SemiBold">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+
+                        <Button Content="{Binding [Cancel], Source={x:Static lg:LanguageService.Instance}}"
+                                Command="{Binding CancelCommand}"
+                                Padding="12,5" Background="Transparent" Foreground="{Binding ForegroundColor}"
+                                BorderBrush="{Binding ForegroundColor}" BorderThickness="1" Cursor="Hand" FontWeight="SemiBold">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+
                 <!-- Action Buttons -->
                 <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                     <StackPanel.Style>
@@ -157,6 +202,7 @@
                                     <MultiDataTrigger.Conditions>
                                         <Condition Binding="{Binding IsInteractive}" Value="True"/>
                                         <Condition Binding="{Binding IsLanguageSelection}" Value="False"/>
+                                        <Condition Binding="{Binding IsExportModeSelection}" Value="False"/>
                                         <Condition Binding="{Binding IsThreeButtonDialog}" Value="False"/>
                                     </MultiDataTrigger.Conditions>
                                     <Setter Property="Visibility" Value="Visible"/>

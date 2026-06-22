@@ -48,6 +48,13 @@ namespace GeoChemistryNexus.Helpers
             .Select(d => d.Code)
             .ToHashSet(StringComparer.OrdinalIgnoreCase);
 
+        private static readonly Dictionary<string, string> CustomDisplayNames =
+            new(StringComparer.OrdinalIgnoreCase)
+            {
+                ["zh-CN"] = "简体中文（中国）",
+                ["zh-TW"] = "繁体中文（中國臺灣）",
+            };
+
         public static IReadOnlyList<string> AppUiCodes { get; } = Descriptors
             .Where(d => d.Scope is CultureScope.AppUi or CultureScope.Both)
             .OrderBy(d => d.SortOrder)
@@ -88,6 +95,9 @@ namespace GeoChemistryNexus.Helpers
                 return code;
 
             bool showCode = includeCultureCode ?? IsDeveloperModeEnabled();
+
+            if (CustomDisplayNames.TryGetValue(normalized, out string? customName))
+                return showCode ? $"{customName} ({normalized})" : customName;
 
             try
             {

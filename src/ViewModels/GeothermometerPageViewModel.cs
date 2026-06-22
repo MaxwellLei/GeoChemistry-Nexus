@@ -650,7 +650,7 @@ namespace GeoChemistryNexus.ViewModels
                 });
 
                 var headers = SelectedPlugin.Headers;
-                var exampleRow = SelectedPlugin.ExampleRow;
+                var exampleRow = CommaSeparatedListHelper.AlignToHeaderCount(headers, SelectedPlugin.ExampleRow);
 
                 // 设置表头
                 for (int i = 0; i < headers.Count; i++)
@@ -678,7 +678,7 @@ namespace GeoChemistryNexus.ViewModels
                 });
 
                 // 设置示例行样式
-                var exampleRange = new RangePosition(1, 0, 1, exampleRow.Count);
+                var exampleRange = new RangePosition(1, 0, 1, headers.Count);
                 worksheet.SetRangeStyles(exampleRange, new WorksheetRangeStyle
                 {
                     Flag = PlainStyleFlag.BackColor | PlainStyleFlag.TextColor |
@@ -954,6 +954,59 @@ namespace GeoChemistryNexus.ViewModels
             UpdateProgress = 0;
         }
 
+        private static string ShowGeothermometerDownloadResult(GeothermometerBatchDownloadResult downloadResult)
+        {
+            var resultMessage = new StringBuilder();
+            resultMessage.AppendLine(string.Format(
+                LanguageService.Instance["batch_download_success_count"],
+                downloadResult.SuccessCount));
+
+            if (downloadResult.RemovalCount > 0)
+            {
+                resultMessage.AppendLine(string.Format(
+                    LanguageService.Instance["geo_msg_update_removed_count"],
+                    downloadResult.RemovalCount));
+            }
+
+            if (downloadResult.Failures.Count > 0)
+            {
+                resultMessage.AppendLine(string.Format(
+                    LanguageService.Instance["batch_download_fail_count"],
+                    downloadResult.Failures.Count));
+                resultMessage.AppendLine(LanguageService.Instance["geo_msg_update_download_failed_items"]);
+
+                foreach (var failure in downloadResult.Failures.Take(10))
+                {
+                    resultMessage.AppendLine(string.Format(
+                        LanguageService.Instance["geo_msg_update_download_failed_detail"],
+                        failure.PluginId,
+                        failure.ErrorMessage));
+                }
+
+                if (downloadResult.Failures.Count > 10)
+                    resultMessage.AppendLine("...");
+            }
+
+            string message = resultMessage.ToString().TrimEnd();
+
+            if (downloadResult.Failures.Count > 0
+                && downloadResult.SuccessCount == 0
+                && downloadResult.RemovalCount == 0)
+            {
+                MessageHelper.Error(message);
+            }
+            else if (downloadResult.Failures.Count > 0)
+            {
+                MessageHelper.Warning(message);
+            }
+            else
+            {
+                MessageHelper.Success(message);
+            }
+
+            return message;
+        }
+
         /// <summary>
         /// 检查 GTM 更新
         /// </summary>
@@ -968,6 +1021,7 @@ namespace GeoChemistryNexus.ViewModels
             try
             {
                 var checkResult = await GeothermometerService.CheckForUpdatesAsync();
+                bool listNeedsReload = checkResult.MineralCategoriesSynced;
 
                 if (checkResult.Status == GeothermometerUpdateCheckStatus.Failed)
                 {
@@ -1008,14 +1062,16 @@ namespace GeoChemistryNexus.ViewModels
                                 p.name);
                         });
 
-                        int count = await GeothermometerService.DownloadAndReloadAsync(
+                        var downloadResult = await GeothermometerService.DownloadAndReloadAsync(
                             checkResult.Updates,
                             checkResult.Removals,
                             progress);
 
-                        string result = string.Format(LanguageService.Instance["geo_msg_update_downloaded"], count);
-                        MessageHelper.Success(result);
+                        string result = ShowGeothermometerDownloadResult(downloadResult);
                         UpdateStatusText = result;
+
+                        if (downloadResult.SuccessCount > 0 || downloadResult.RemovalCount > 0)
+                            listNeedsReload = true;
                     }
                     else
                     {
@@ -1031,7 +1087,7 @@ namespace GeoChemistryNexus.ViewModels
                     }
                 }
 
-                if (checkResult.MineralCategoriesSynced)
+                if (listNeedsReload)
                     ReloadCategoryGroupsAndSelection();
             }
             catch (Exception ex)
@@ -1129,6 +1185,15 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         // ==================== 温压计管理 ====================
+
+        /// <summary>
+        /// 打开自由温压计表格窗口
+        /// </summary>
+        [RelayCommand]
+        private void OpenFreeSheet()
+        {
+            GeothermometerFreeSheetWindow.ShowOrActivate();
+        }
 
         /// <summary>
         /// 新建温压计（打开编辑器窗口）

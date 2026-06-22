@@ -224,7 +224,7 @@
 • 모든 산화물의 질량 백분율을 몰수로 변환</value>
   </data>
   <data name="script_return_value_error_must_be_array" xml:space="preserve">
-    <value>• 스크립트 반환 값 오류: 스크립트는 배열을 반환해야 합니다.</value>
+    <value>스크립트 반환 값 오류: 스크립트는 배열을 반환해야 합니다.</value>
   </data>
   <data name="MarkerShape_VerticalBar" xml:space="preserve">
     <value>수직선</value>
@@ -628,7 +628,7 @@
     <value>채워진 아래쪽 삼각형</value>
   </data>
   <data name="missing_translation_warning" xml:space="preserve">
-    <value>• 번역 누락: 일부 텍스트에 다국어 번역이 누락되었습니다.</value>
+    <value>번역 누락: 일부 텍스트에 다국어 번역이 누락되었습니다.</value>
   </data>
   <data name="geo_btn_export" xml:space="preserve">
     <value>내보내기</value>
@@ -682,7 +682,7 @@
     <value>간단한 설명</value>
   </data>
   <data name="invalid_script_variable_name" xml:space="preserve">
-    <value>• 스크립트 변수 이름 형식 오류: '</value>
+    <value>스크립트 변수 이름 형식 오류:</value>
   </data>
   <data name="open_with_third_party_software" xml:space="preserve">
     <value>타사 소프트웨어로 열기</value>
@@ -748,7 +748,7 @@
     <value>파일이 존재하지 않음:</value>
   </data>
   <data name="cipw_msg_calc_partial_success" xml:space="preserve">
-    <value>계산 완료: {0}/{1}개 샘플 성공</value>
+    <value>계산 완료: {0}/{1}개 샘플 성공.</value>
   </data>
   <data name="border_color" xml:space="preserve">
     <value>테두리 색상</value>
@@ -763,10 +763,10 @@
     <value>설명</value>
   </data>
   <data name="script_return_value_length_error" xml:space="preserve">
-    <value>• 스크립트 반환 값 길이 오류: 현재</value>
+    <value>스크립트 반환 값 길이 오류: 현재</value>
   </data>
   <data name="AboutInfo2" xml:space="preserve">
-    <value>이 프로젝트에 관심이 있으시다면 Star를 눌러 응원해 주세요! 도움이 되셨다면 커피 한 잔 사주셔도 좋습니다 ☕</value>
+    <value>이 프로젝트에 관심이 있으시다면 Star를 눌러 응원해 주세요! 도움이 되셨다면 커피 한 잔 사주셔도 좋습니다 ☕.</value>
   </data>
   <data name="AboutInfo3" xml:space="preserve">
     <value>더 많은 연구자분들의 참여를 환영합니다! 
@@ -929,7 +929,7 @@
     <value>현재 템플릿에 다국어 정보가 없습니다</value>
   </data>
   <data name="cipw_msg_no_data" xml:space="preserve">
-    <value>유효한 데이터 행이 감지되지 않았습니다. 먼저 산화물 함량을 입력하세요</value>
+    <value>유효한 데이터 행이 감지되지 않았습니다. 먼저 산화물 함량을 입력하세요.</value>
   </data>
   <data name="current_diagram_version" xml:space="preserve">
     <value>현재 도해 버전</value>
@@ -1022,7 +1022,7 @@
 • 과알루미나(Peraluminous): Al₂O₃ &gt; CaO + Na₂O + K₂O</value>
   </data>
   <data name="cipw_msg_calc_all_success" xml:space="preserve">
-    <value>계산 완료: {0}개 샘플 모두 성공</value>
+    <value>계산 완료: {0}개 샘플 모두 성공.</value>
   </data>
   <data name="select_software" xml:space="preserve">
     <value>소프트웨어 선택</value>
@@ -1289,7 +1289,7 @@
     <value>다이어그램 템플릿 열기</value>
   </data>
   <data name="cipw_msg_data_cleared" xml:space="preserve">
-    <value>데이터가 지워졌습니다</value>
+    <value>데이터가 지워졌습니다.</value>
   </data>
   <data name="loading_announcements" xml:space="preserve">
     <value>공지 로드 중...</value>
@@ -1683,7 +1683,7 @@
     <value>콘텐츠에 지원되지 않는 문자가 포함되어 있습니다</value>
   </data>
   <data name="missing_drawing_objects_error" xml:space="preserve">
-    <value>• 드로잉 개체 누락: 템플릿에 선, 다각형, 텍스트 또는 화살표가 포함되어 있지 않습니다.</value>
+    <value>드로잉 개체 누락: 템플릿에 선, 다각형, 텍스트 또는 화살표가 포함되어 있지 않습니다.</value>
   </data>
   <data name="geo_msg_export_failed" xml:space="preserve">
     <value>내보내기 실패: {0}</value>
@@ -2192,7 +2192,7 @@
     <value>예: 2020</value>
   </data>
   <data name="geo_example_author" xml:space="preserve">
-    <value>예: Smith 등</value>
+    <value>예: Smith 등.</value>
   </data>
   <data name="geo_example_reference" xml:space="preserve">
     <value>예: Smith (2020) Geochim. Cosmochim. Acta 280, 123-145</value>
@@ -2566,7 +2566,7 @@
     <value>정규화</value>
   </data>
   <data name="dataPrep_normalizeToHundred" xml:space="preserve">
-    <value>100%로 정규화</value>
+    <value>Normalize to 100%</value>
   </data>
   <data name="dataPrep_notDetected" xml:space="preserve">
     <value>미검출</value>
@@ -3188,5 +3188,65 @@
   </data>
   <data name="gtm_mineral_biotite" xml:space="preserve">
     <value>흑운모</value>
+  </data>
+  <data name="official_publisher_plot_categories_section" xml:space="preserve">
+    <value>도표 분류</value>
+  </data>
+  <data name="official_publisher_plot_categories_level" xml:space="preserve">
+    <value>레벨</value>
+  </data>
+  <data name="official_publisher_plot_categories_draft_saved" xml:space="preserve">
+    <value>도표 분류 초안을 로컬에 저장했습니다.</value>
+  </data>
+  <data name="official_publisher_plot_categories_reloaded" xml:space="preserve">
+    <value>도표 분류 편집기를 다시 불러왔습니다.</value>
+  </data>
+  <data name="official_publisher_geot_categories_section" xml:space="preserve">
+    <value>GeoT 광물 태그</value>
+  </data>
+  <data name="official_publisher_geot_categories_draft_saved" xml:space="preserve">
+    <value>GeoT 광물 분류 초안을 로컬에 저장했습니다.</value>
+  </data>
+  <data name="official_publisher_geot_categories_reloaded" xml:space="preserve">
+    <value>GeoT 광물 분류 편집기를 다시 불러왔습니다.</value>
+  </data>
+  <data name="official_publisher_category_add" xml:space="preserve">
+    <value>항목 추가</value>
+  </data>
+  <data name="official_publisher_category_edit" xml:space="preserve">
+    <value>항목 편집</value>
+  </data>
+  <data name="geo_validate_tags_required" xml:space="preserve">
+    <value>최소 하나의 온압계 태그를 추가하세요.</value>
+  </data>
+  <data name="geo_validate_category_required" xml:space="preserve">
+    <value>온압계 분류를 선택하세요.</value>
+  </data>
+  <data name="geo_tag_enter_hint" xml:space="preserve">
+    <value>태그를 입력한 뒤 Enter를 눌러 확인하세요</value>
+  </data>
+  <data name="geo_preview_tags_placeholder" xml:space="preserve">
+    <value>태그</value>
+  </data>
+  <data name="geo_field_tags" xml:space="preserve">
+    <value>온압계 태그 *</value>
+  </data>
+  <data name="geo_field_category" xml:space="preserve">
+    <value>분류 *</value>
+  </data>
+  <data name="geo_example_tag" xml:space="preserve">
+    <value>예: 석영</value>
+  </data>
+  <data name="geo_example_category" xml:space="preserve">
+    <value>예: 단일 광물 온압계</value>
+  </data>
+  <data name="geo_editor_title_view" xml:space="preserve">
+    <value>온압계 보기</value>
+  </data>
+  <data name="geo_editor_readonly_hint" xml:space="preserve">
+    <value>공식 온압계의 기본 정보, 공식 스크립트, 도움말 문서는 읽기 전용입니다. 내용을 열람하고 복사할 수 있지만 편집할 수는 없습니다.</value>
+  </data>
+  <data name="data_grid_plot_refresh_pending" xml:space="preserve">
+    <value>데이터가 수정되었습니다. 도표를 새로고침하세요.</value>
   </data>
 </root>

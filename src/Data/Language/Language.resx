@@ -1933,6 +1933,153 @@
   <data name="geo_menu_import_zip" xml:space="preserve">
     <value>Import Geothermobarometer (ZIP)</value>
   </data>
+  <data name="geo_menu_open_free_sheet" xml:space="preserve">
+    <value>Open Free Spreadsheet</value>
+  </data>
+  <data name="geo_free_sheet_title" xml:space="preserve">
+    <value>Free Geothermometer Spreadsheet</value>
+  </data>
+  <data name="geo_free_sheet_hint" xml:space="preserve">
+    <value>Use registered geothermometer formulas, e.g. =FormulaName(A2,B2)</value>
+  </data>
+  <data name="geo_free_sheet_worksheet_name" xml:space="preserve">
+    <value>FreeSheet</value>
+  </data>
+  <data name="geo_free_sheet_clear_confirm" xml:space="preserve">
+    <value>Clear all data in the current spreadsheet?</value>
+  </data>
+  <data name="geo_free_sheet_clear_success" xml:space="preserve">
+    <value>Spreadsheet cleared</value>
+  </data>
+  <data name="geo_free_sheet_delete_row_confirm" xml:space="preserve">
+    <value>Delete the selected row(s)?</value>
+  </data>
+  <data name="geo_free_sheet_delete_col_confirm" xml:space="preserve">
+    <value>Delete the selected column(s)?</value>
+  </data>
+  <data name="geo_free_sheet_delete_col_failed" xml:space="preserve">
+    <value>Failed to delete column: </value>
+  </data>
+  <data name="geo_free_sheet_import_failed" xml:space="preserve">
+    <value>Import failed: {0}</value>
+  </data>
+  <data name="geo_free_sheet_group_edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="geo_free_sheet_group_font" xml:space="preserve">
+    <value>Font</value>
+  </data>
+  <data name="geo_free_sheet_group_align" xml:space="preserve">
+    <value>Alignment</value>
+  </data>
+  <data name="geo_free_sheet_group_number" xml:space="preserve">
+    <value>Number</value>
+  </data>
+  <data name="geo_free_sheet_group_cells" xml:space="preserve">
+    <value>Cells</value>
+  </data>
+  <data name="geo_free_sheet_group_file" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="geo_free_sheet_italic" xml:space="preserve">
+    <value>Italic</value>
+  </data>
+  <data name="geo_free_sheet_underline" xml:space="preserve">
+    <value>Underline</value>
+  </data>
+  <data name="geo_free_sheet_format_painter" xml:space="preserve">
+    <value>Format Painter</value>
+  </data>
+  <data name="geo_free_sheet_export_title" xml:space="preserve">
+    <value>Export Options</value>
+  </data>
+  <data name="geo_free_sheet_export_mode_prompt" xml:space="preserve">
+    <value>Select export content type</value>
+  </data>
+  <data name="geo_free_sheet_export_values" xml:space="preserve">
+    <value>Export values (without formulas)</value>
+  </data>
+  <data name="geo_free_sheet_export_formulas" xml:space="preserve">
+    <value>Export formulas (without values)</value>
+  </data>
+  <data name="geo_free_sheet_fill_color" xml:space="preserve">
+    <value>Fill Color</value>
+  </data>
+  <data name="geo_free_sheet_borders" xml:space="preserve">
+    <value>Borders</value>
+  </data>
+  <data name="geo_free_sheet_border_all" xml:space="preserve">
+    <value>All Borders</value>
+  </data>
+  <data name="geo_free_sheet_border_outside" xml:space="preserve">
+    <value>Outside Borders</value>
+  </data>
+  <data name="geo_free_sheet_border_bottom" xml:space="preserve">
+    <value>Bottom Border</value>
+  </data>
+  <data name="geo_free_sheet_border_none" xml:space="preserve">
+    <value>No Border</value>
+  </data>
+  <data name="geo_free_sheet_align_left" xml:space="preserve">
+    <value>Align Left</value>
+  </data>
+  <data name="geo_free_sheet_align_center" xml:space="preserve">
+    <value>Center</value>
+  </data>
+  <data name="geo_free_sheet_align_right" xml:space="preserve">
+    <value>Align Right</value>
+  </data>
+  <data name="geo_free_sheet_wrap" xml:space="preserve">
+    <value>Wrap Text</value>
+  </data>
+  <data name="geo_free_sheet_merge" xml:space="preserve">
+    <value>Merge &amp; Center</value>
+  </data>
+  <data name="geo_free_sheet_fmt_general" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="geo_free_sheet_fmt_number" xml:space="preserve">
+    <value>Number</value>
+  </data>
+  <data name="geo_free_sheet_fmt_percent" xml:space="preserve">
+    <value>Percent</value>
+  </data>
+  <data name="geo_free_sheet_fmt_scientific" xml:space="preserve">
+    <value>Scientific</value>
+  </data>
+  <data name="geo_free_sheet_insert_col_left" xml:space="preserve">
+    <value>Insert Column Left</value>
+  </data>
+  <data name="geo_free_sheet_insert_col_right" xml:space="preserve">
+    <value>Insert Column Right</value>
+  </data>
+  <data name="geo_free_sheet_delete_col" xml:space="preserve">
+    <value>Delete Column</value>
+  </data>
+  <data name="geo_free_sheet_import" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="geo_free_sheet_clear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="geo_free_sheet_color_black" xml:space="preserve">
+    <value>Black</value>
+  </data>
+  <data name="geo_free_sheet_color_red" xml:space="preserve">
+    <value>Red</value>
+  </data>
+  <data name="geo_free_sheet_color_blue" xml:space="preserve">
+    <value>Blue</value>
+  </data>
+  <data name="geo_free_sheet_color_green" xml:space="preserve">
+    <value>Green</value>
+  </data>
+  <data name="geo_free_sheet_color_white" xml:space="preserve">
+    <value>White</value>
+  </data>
+  <data name="geo_free_sheet_color_yellow" xml:space="preserve">
+    <value>Yellow</value>
+  </data>
   <data name="geo_menu_update" xml:space="preserve">
     <value>Update</value>
   </data>
@@ -2183,7 +2330,7 @@
     <value>Brief Description</value>
   </data>
   <data name="geo_field_required_hint" xml:space="preserve">
-    <value>Required fields are marked with *. Format baseline x.y follows the app geothermobarometer version; revision z is the template content version. Formula name will be registered as a custom ReoGrid function.</value>
+    <value>Required fields are marked with *. Format baseline x.y follows the app geothermobarometer version; revision z is the template content version. Grid formulas are configured on the script step.</value>
   </data>
   <data name="geo_script_javascript" xml:space="preserve">
     <value>JavaScript Script</value>
@@ -2205,6 +2352,48 @@
   </data>
   <data name="geo_script_result" xml:space="preserve">
     <value>Result:</value>
+  </data>
+  <data name="geo_additional_formulas_title" xml:space="preserve">
+    <value>Additional Formulas (Optional)</value>
+  </data>
+  <data name="geo_formulas_title" xml:space="preserve">
+    <value>Grid Formulas *</value>
+  </data>
+  <data name="geo_formulas_hint" xml:space="preserve">
+    <value>Map Grid custom function names to JavaScript functions in the script below. The main formula always calls calculate(args).</value>
+  </data>
+  <data name="geo_main_formula_badge" xml:space="preserve">
+    <value>Main</value>
+  </data>
+  <data name="geo_additional_formula_badge" xml:space="preserve">
+    <value>Extra</value>
+  </data>
+  <data name="geo_additional_formulas_hint" xml:space="preserve">
+    <value>Register extra Grid custom functions mapped to JavaScript functions in the script below. The main formula still uses FormulaName → calculate(args).</value>
+  </data>
+  <data name="geo_additional_formula_name" xml:space="preserve">
+    <value>Grid Formula Name</value>
+  </data>
+  <data name="geo_additional_function_name" xml:space="preserve">
+    <value>JS Function Name</value>
+  </data>
+  <data name="geo_btn_add_additional_formula" xml:space="preserve">
+    <value>Add Additional Formula</value>
+  </data>
+  <data name="geo_tooltip_additional_function_name" xml:space="preserve">
+    <value>JavaScript function name in the script, e.g. calcPressure</value>
+  </data>
+  <data name="geo_validate_additional_formula_incomplete" xml:space="preserve">
+    <value>Additional formula row {0}: both Grid formula name and JS function name are required.</value>
+  </data>
+  <data name="geo_validate_additional_function_name_invalid" xml:space="preserve">
+    <value>JS function name '{0}' is invalid (must be a valid JavaScript identifier).</value>
+  </data>
+  <data name="geo_validate_additional_formula_duplicate_main" xml:space="preserve">
+    <value>Additional formula name '{0}' duplicates the main formula name.</value>
+  </data>
+  <data name="geo_validate_additional_function_reserved" xml:space="preserve">
+    <value>JS function name '{0}' is reserved for the main formula or detailed calculation.</value>
   </data>
   <data name="geo_help_current_lang" xml:space="preserve">
     <value>Current Language:</value>
@@ -2305,6 +2494,15 @@
   <data name="geo_msg_update_downloaded" xml:space="preserve">
     <value>{0} geothermobarometers downloaded</value>
   </data>
+  <data name="geo_msg_update_removed_count" xml:space="preserve">
+    <value>Removed: {0}</value>
+  </data>
+  <data name="geo_msg_update_download_failed_items" xml:space="preserve">
+    <value>Failed downloads:</value>
+  </data>
+  <data name="geo_msg_update_download_failed_detail" xml:space="preserve">
+    <value>{0}: {1}</value>
+  </data>
   <data name="geo_msg_already_latest" xml:space="preserve">
     <value>Already up to date</value>
   </data>
@@ -2377,6 +2575,9 @@ Directory: {2}</value>
   </data>
   <data name="geo_validate_headers_required" xml:space="preserve">
     <value>Headers cannot be empty.</value>
+  </data>
+  <data name="geo_validate_example_row_column_mismatch" xml:space="preserve">
+    <value>Sample row must have the same number of columns as headers ({0} expected, {1} found).</value>
   </data>
   <data name="geo_validate_script_required" xml:space="preserve">
     <value>JavaScript script cannot be empty.</value>

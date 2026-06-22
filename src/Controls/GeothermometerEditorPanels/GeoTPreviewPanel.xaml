@@ -1,0 +1,90 @@
+<UserControl x:Class="GeoChemistryNexus.Controls.GeothermometerEditorPanels.GeoTPreviewPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="280"
+             Background="#F5F5F7">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/GeoChemistryNexus;component/Themes/EditorStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Border Background="White" BorderBrush="{StaticResource EditorBorderBrushLight}" BorderThickness="1,0,0,0" Padding="16,20">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel>
+                <TextBlock Style="{StaticResource GeoTSectionTitleStyle}"
+                           Text="{Binding [geo_preview_title], Source={x:Static lg:LanguageService.Instance}, FallbackValue=效果预览}"/>
+                <TextBlock Style="{StaticResource GeoTSectionHintStyle}" Margin="0,0,0,12"
+                           Text="{Binding [geo_preview_hint], Source={x:Static lg:LanguageService.Instance}, FallbackValue=根据元数据实时生成，预览列表项与详情顶部的显示效果。}"/>
+
+                <TextBlock Style="{StaticResource FieldLabelStyle}"
+                           Text="{Binding [geo_preview_list_item], Source={x:Static lg:LanguageService.Instance}, FallbackValue=温压计列表项预览}"/>
+                <Border Background="#FAFAFC" BorderBrush="#E4E4E8" BorderThickness="1" CornerRadius="8" Padding="6" Margin="0,0,0,16">
+                    <Border Background="Transparent" CornerRadius="6" Padding="8,6">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{Binding PreviewName, Mode=OneWay}" FontSize="13" Foreground="#333"
+                                           TextTrimming="CharacterEllipsis"/>
+                                <TextBlock Text="{Binding PreviewMetaLine, Mode=OneWay}" FontSize="11" Foreground="#888"
+                                           Margin="0,2,0,0" TextTrimming="CharacterEllipsis"/>
+                            </StackPanel>
+                            <Border Grid.Column="1" CornerRadius="4" Background="#FFF3E0" Padding="5,2"
+                                    VerticalAlignment="Center" Margin="4,0,0,0">
+                                <TextBlock Text="{Binding [geo_label_custom_chip], Source={x:Static lg:LanguageService.Instance}, FallbackValue=自定义}"
+                                           FontSize="9" Foreground="#E65100"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </Border>
+
+                <TextBlock Style="{StaticResource FieldLabelStyle}"
+                           Text="{Binding [geo_preview_detail_header], Source={x:Static lg:LanguageService.Instance}, FallbackValue=详情顶部预览}"/>
+                <Border Background="#FAFAFC" BorderBrush="#E4E4E8" BorderThickness="1" CornerRadius="8" Padding="14,12">
+                    <StackPanel>
+                        <TextBlock Text="{Binding PreviewName, Mode=OneWay}" FontSize="18" FontWeight="SemiBold" Foreground="#333"
+                                   TextTrimming="CharacterEllipsis"/>
+                        <TextBlock FontSize="12" Foreground="#666" Margin="0,4,0,0"
+                                   Text="{Binding PreviewReference, Mode=OneWay}" TextTrimming="CharacterEllipsis"/>
+                        <WrapPanel Margin="0,6,0,0">
+                            <ItemsControl ItemsSource="{Binding PreviewTags, Mode=OneWay}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border CornerRadius="4" Background="#E8F4FD" Padding="8,3" Margin="0,0,6,6">
+                                            <TextBlock FontSize="11" Foreground="#0078D4" Text="{Binding Mode=OneWay}"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <Border CornerRadius="4" Background="#F0F0F0" Padding="8,3" Margin="0,0,6,6">
+                                <TextBlock FontSize="11" Foreground="#555">
+                                    <Run Text="v"/>
+                                    <Run Text="{Binding PreviewVersion, Mode=OneWay}"/>
+                                </TextBlock>
+                            </Border>
+                            <Border CornerRadius="4" Background="#FFF3E0" Padding="8,3" Margin="0,0,6,6">
+                                <TextBlock FontSize="11" Foreground="#E65100"
+                                           Text="{Binding [geo_label_custom_chip], Source={x:Static lg:LanguageService.Instance}, FallbackValue=自定义}"/>
+                            </Border>
+                        </WrapPanel>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Border>
+</UserControl>

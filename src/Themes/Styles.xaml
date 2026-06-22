@@ -808,6 +808,58 @@
         </Setter>
     </Style>
 
+    <!-- 属性面板可折叠分组标题（默认收起） -->
+    <Style x:Key="PropertySectionHeaderToggleStyle" TargetType="ToggleButton">
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="IsChecked" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Path x:Name="Arrow"
+                              Grid.Column="0"
+                              Stroke="#666"
+                              StrokeThickness="1.5"
+                              SnapsToDevicePixels="True"
+                              VerticalAlignment="Center"
+                              HorizontalAlignment="Center"
+                              Margin="0,0,8,0"
+                              Data="M 0 0 L 4 4 L 0 8">
+                            <Path.RenderTransform>
+                                <RotateTransform Angle="0" CenterX="2" CenterY="4"/>
+                            </Path.RenderTransform>
+                        </Path>
+                        <ContentPresenter Grid.Column="1"
+                                          VerticalAlignment="Center"
+                                          HorizontalAlignment="Left"
+                                          RecognizesAccessKey="True"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Arrow" Property="Stroke" Value="#333"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="Arrow" Property="RenderTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="90" CenterX="2" CenterY="4"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="ModernTreeViewItemStyle" TargetType="TreeViewItem">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="Margin" Value="0,2,0,0"/>
@@ -1491,6 +1543,23 @@
         <Setter Property="TextAlignment" Value="Center"/>
         <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
         <Setter Property="MaxWidth" Value="64"/>
+    </Style>
+
+    <Style x:Key="HomeLinkDescriptionToolTipStyle" TargetType="ToolTip">
+        <Setter Property="MaxWidth" Value="320"/>
+        <Setter Property="Padding" Value="10,8"/>
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="Foreground" Value="#3C3C43"/>
+        <Setter Property="BorderBrush" Value="#E5E5EA"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" TextWrapping="Wrap"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style x:Key="HomeWidgetPanelTileStyle" TargetType="Border">

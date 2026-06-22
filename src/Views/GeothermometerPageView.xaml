@@ -229,6 +229,8 @@
                         <Separator />
                         <MenuItem Header="{Binding [geo_menu_import_zip],Source={x:Static lg:LanguageService.Instance}, FallbackValue=导入地质温压计 (ZIP)}" 
                                   Command="{Binding ImportPluginCommand}"/>
+                        <MenuItem Header="{Binding [geo_menu_open_free_sheet],Source={x:Static lg:LanguageService.Instance}, FallbackValue=打开自由表格}" 
+                                  Command="{Binding OpenFreeSheetCommand}"/>
                     </MenuItem>
                     <MenuItem Header="{Binding [geo_menu_update],Source={x:Static lg:LanguageService.Instance}, FallbackValue=更新}">
                         <MenuItem Header="{Binding [geo_menu_check_update],Source={x:Static lg:LanguageService.Instance}, FallbackValue=检查更新}" 
@@ -837,13 +839,9 @@
                                     Command="{Binding ExportWorksheetCommand}"
                                     CommandParameter="{Binding Data, Source={StaticResource GridProxy}}"
                                     ToolTip="{Binding [geo_tooltip_export_csv],Source={x:Static lg:LanguageService.Instance}, FallbackValue=导出当前工作表为CSV}"
-                                    Margin="0,0,4,0">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="&#xE78C;" FontFamily="Segoe MDL2 Assets" FontSize="15" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                                    <TextBlock Text="{Binding [geo_btn_export],Source={x:Static lg:LanguageService.Instance}, FallbackValue=导出}" 
-                                               VerticalAlignment="Center" FontSize="13"/>
-                                </StackPanel>
-                            </Button>
+                                    Margin="0,0,4,0"
+                                    Content="{Binding [geo_btn_export],Source={x:Static lg:LanguageService.Instance}, FallbackValue=导出}"
+                                    FontSize="13"/>
 
                             <!-- 重置按钮（功能等同于应用） -->
                             <Button Style="{StaticResource PrimaryButtonStyle}"

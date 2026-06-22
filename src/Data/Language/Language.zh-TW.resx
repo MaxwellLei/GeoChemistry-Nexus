@@ -224,7 +224,7 @@
 • 將所有氧化物的質量百分比轉換為摩爾數</value>
   </data>
   <data name="script_return_value_error_must_be_array" xml:space="preserve">
-    <value>• 腳本回傳值錯誤：腳本必須回傳一個陣列。</value>
+    <value>腳本回傳值錯誤：腳本必須回傳一個陣列。</value>
   </data>
   <data name="MarkerShape_VerticalBar" xml:space="preserve">
     <value>豎線</value>
@@ -628,7 +628,7 @@
     <value>實心下三角形</value>
   </data>
   <data name="missing_translation_warning" xml:space="preserve">
-    <value>• 翻譯缺失：部分文字缺少多語言翻譯。</value>
+    <value>翻譯缺失：部分文字缺少多語言翻譯。</value>
   </data>
   <data name="geo_btn_export" xml:space="preserve">
     <value>匯出</value>
@@ -682,7 +682,7 @@
     <value>簡要描述</value>
   </data>
   <data name="invalid_script_variable_name" xml:space="preserve">
-    <value>• 腳本變數名格式錯誤：’</value>
+    <value>腳本變數名格式錯誤:</value>
   </data>
   <data name="open_with_third_party_software" xml:space="preserve">
     <value>第三方軟體開啟</value>
@@ -748,7 +748,7 @@
     <value>檔案不存在:</value>
   </data>
   <data name="cipw_msg_calc_partial_success" xml:space="preserve">
-    <value>計算完成：{0}/{1} 個樣品成功</value>
+    <value>計算完成：{0}/{1} 個樣品成功.</value>
   </data>
   <data name="border_color" xml:space="preserve">
     <value>邊框顏色</value>
@@ -763,10 +763,10 @@
     <value>說明</value>
   </data>
   <data name="script_return_value_length_error" xml:space="preserve">
-    <value>• 腳本回傳值長度錯誤：目前為</value>
+    <value>腳本回傳值長度錯誤：目前為</value>
   </data>
   <data name="AboutInfo2" xml:space="preserve">
-    <value>如果您對本專案感興趣，歡迎點個 Star 支持一下！如果您覺得對您有幫助，也可以請我喝杯咖啡☕</value>
+    <value>如果您對本專案感興趣，歡迎點個 Star 支持一下！如果您覺得對您有幫助，也可以請我喝杯咖啡☕.</value>
   </data>
   <data name="AboutInfo3" xml:space="preserve">
     <value>我們歡迎更多的研究人員加入！
@@ -929,7 +929,7 @@
     <value>目前範本沒有多語言資訊</value>
   </data>
   <data name="cipw_msg_no_data" xml:space="preserve">
-    <value>未偵測到有效資料列，請先輸入氧化物含量</value>
+    <value>未偵測到有效資料列，請先輸入氧化物含量.</value>
   </data>
   <data name="current_diagram_version" xml:space="preserve">
     <value>目前圖解版本</value>
@@ -1022,7 +1022,7 @@
 • 過鋁質（Peraluminous）：Al₂O₃ &gt; CaO + Na₂O + K₂O</value>
   </data>
   <data name="cipw_msg_calc_all_success" xml:space="preserve">
-    <value>計算完成：{0} 個樣品全部成功</value>
+    <value>計算完成：{0} 個樣品全部成功.</value>
   </data>
   <data name="select_software" xml:space="preserve">
     <value>選擇軟體</value>
@@ -1289,7 +1289,7 @@
     <value>開啟圖解範本</value>
   </data>
   <data name="cipw_msg_data_cleared" xml:space="preserve">
-    <value>資料已清除</value>
+    <value>資料已清除.</value>
   </data>
   <data name="loading_announcements" xml:space="preserve">
     <value>正在載入公告...</value>
@@ -1608,7 +1608,7 @@
     <value>啟動圖片新增成功。</value>
   </data>
   <data name="start_image_copy_error" xml:space="preserve">
-    <value>啟動圖片新增失敗：</value>
+    <value>啟動圖片新增失敗： </value>
   </data>
   <data name="add_arrow" xml:space="preserve">
     <value>新增箭頭</value>
@@ -1683,7 +1683,7 @@
     <value>內容含有不支持的字元</value>
   </data>
   <data name="missing_drawing_objects_error" xml:space="preserve">
-    <value>• 繪圖物件缺失：範本中未包含任何線、多邊形、文字或箭頭。</value>
+    <value>繪圖物件缺失：範本中未包含任何線、多邊形、文字或箭頭。</value>
   </data>
   <data name="geo_msg_export_failed" xml:space="preserve">
     <value>匯出失敗: {0}</value>
@@ -1976,7 +1976,7 @@
     <value>批量更新完成</value>
   </data>
   <data name="batch_update_failed" xml:space="preserve">
-    <value>批量更新失敗：</value>
+    <value>批量更新失敗： </value>
   </data>
   <data name="batch_updating" xml:space="preserve">
     <value>批量更新中</value>
@@ -2192,7 +2192,7 @@
     <value>例如：2020</value>
   </data>
   <data name="geo_example_author" xml:space="preserve">
-    <value>例如：Smith 等</value>
+    <value>例如：Smith 等.</value>
   </data>
   <data name="geo_example_reference" xml:space="preserve">
     <value>例如：Smith (2020) Geochim. Cosmochim. Acta 280, 123-145</value>
@@ -2635,7 +2635,7 @@
     <value>匯出預處理結果</value>
   </data>
   <data name="dataPrep_fe3Tooltip" xml:space="preserve">
-    <value>僅用於「使用經驗比例校正」，表示 Fe3+/Fe 的經驗比例</value>
+    <value>僅用於「使用經驗比例校正」，表示 Fe3+/Fe 的經驗比例.</value>
   </data>
   <data name="dataPrep_indices" xml:space="preserve">
     <value>指標</value>
@@ -2680,7 +2680,7 @@
     <value>僅保留原始表</value>
   </data>
   <data name="dataPrep_listSeparator" xml:space="preserve">
-    <value>、</value>
+    <value>、 </value>
   </data>
   <data name="dataPrep_method" xml:space="preserve">
     <value>方法</value>
@@ -3188,6 +3188,66 @@
   </data>
   <data name="gtm_mineral_biotite" xml:space="preserve">
     <value>黑雲母</value>
+  </data>
+  <data name="official_publisher_plot_categories_section" xml:space="preserve">
+    <value>圖解分類</value>
+  </data>
+  <data name="official_publisher_plot_categories_level" xml:space="preserve">
+    <value>層級</value>
+  </data>
+  <data name="official_publisher_plot_categories_draft_saved" xml:space="preserve">
+    <value>圖解分類草稿已儲存到本機。</value>
+  </data>
+  <data name="official_publisher_plot_categories_reloaded" xml:space="preserve">
+    <value>圖解分類編輯器已重新載入。</value>
+  </data>
+  <data name="official_publisher_geot_categories_section" xml:space="preserve">
+    <value>溫壓計礦物標籤</value>
+  </data>
+  <data name="official_publisher_geot_categories_draft_saved" xml:space="preserve">
+    <value>溫壓計礦物分類草稿已儲存到本機。</value>
+  </data>
+  <data name="official_publisher_geot_categories_reloaded" xml:space="preserve">
+    <value>溫壓計礦物分類編輯器已重新載入。</value>
+  </data>
+  <data name="official_publisher_category_add" xml:space="preserve">
+    <value>新增條目</value>
+  </data>
+  <data name="official_publisher_category_edit" xml:space="preserve">
+    <value>編輯條目</value>
+  </data>
+  <data name="geo_validate_tags_required" xml:space="preserve">
+    <value>請至少新增一個溫壓計標籤。</value>
+  </data>
+  <data name="geo_validate_category_required" xml:space="preserve">
+    <value>請選擇溫壓計分類。</value>
+  </data>
+  <data name="geo_tag_enter_hint" xml:space="preserve">
+    <value>輸入標籤後按 Enter 確認</value>
+  </data>
+  <data name="geo_preview_tags_placeholder" xml:space="preserve">
+    <value>標籤</value>
+  </data>
+  <data name="geo_field_tags" xml:space="preserve">
+    <value>溫壓計標籤 *</value>
+  </data>
+  <data name="geo_field_category" xml:space="preserve">
+    <value>分類 *</value>
+  </data>
+  <data name="geo_example_tag" xml:space="preserve">
+    <value>例如：石英</value>
+  </data>
+  <data name="geo_example_category" xml:space="preserve">
+    <value>例如：單礦物溫壓計</value>
+  </data>
+  <data name="geo_editor_title_view" xml:space="preserve">
+    <value>查看溫壓計</value>
+  </data>
+  <data name="geo_editor_readonly_hint" xml:space="preserve">
+    <value>官方溫壓計的基本資訊、公式腳本與說明文件僅可檢視與複製，不可編輯。</value>
+  </data>
+  <data name="data_grid_plot_refresh_pending" xml:space="preserve">
+    <value>資料已修改，請重新整理圖解。</value>
   </data>
 
 </root>

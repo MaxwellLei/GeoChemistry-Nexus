@@ -37,38 +37,6 @@ namespace GeoChemistryNexus.Helpers
         // 使用静态 HttpClient 实例
         private static readonly HttpClient httpClient = new HttpClient();
 
-        /// <summary>
-        /// 获取当前应用程序的图解格式版本号（x.y.z，来自 FileVersion）。
-        /// </summary>
-        public static string GetCurrentDiagramFormatVersion()
-            => ContentVersionHelper.GetDiagramFormatVersion();
-
-        /// <summary>
-        /// 获取当前应用程序的地质温压计格式版本号（x.y.z，来自 GeothermometerFormatVersion）。
-        /// </summary>
-        public static string GetCurrentGeothermometerFormatVersion()
-            => ContentVersionHelper.GetGeothermometerFormatVersion();
-
-        /// <summary>
-        /// 已废弃：请使用 <see cref="GetCurrentDiagramFormatVersion"/>。
-        /// </summary>
-        [Obsolete("Use GetCurrentDiagramFormatVersion() and ContentVersionHelper instead.")]
-        public static float GetCurrentVersionFloat()
-        {
-            var normalized = ContentVersionHelper.GetDiagramFormatVersion();
-            if (ContentVersionHelper.TryGetPatch(normalized, out _))
-            {
-                var parts = normalized.Split('.');
-                if (parts.Length >= 2
-                    && float.TryParse($"{parts[0]}.{parts[1]}", out float result))
-                {
-                    return result;
-                }
-            }
-
-            return 1.0f;
-        }
-
         // 计算文件的 MD5 哈希值 (小写 hex 字符串)
         public static string ComputeFileMd5(string filePath)
         {

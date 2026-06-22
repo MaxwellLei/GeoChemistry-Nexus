@@ -3849,6 +3849,51 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 ReoGrid Formula Name 的本地化字符串。
+        /// </summary>
+        internal static string geo_additional_formula_name {
+            get {
+                return ResourceManager.GetString("geo_additional_formula_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Register extra ReoGrid custom functions mapped to JavaScript functions in the script below. The main formula still uses FormulaName → calculate(args). 的本地化字符串。
+        /// </summary>
+        internal static string geo_additional_formulas_hint {
+            get {
+                return ResourceManager.GetString("geo_additional_formulas_hint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Additional Formulas (Optional) 的本地化字符串。
+        /// </summary>
+        internal static string geo_additional_formulas_title {
+            get {
+                return ResourceManager.GetString("geo_additional_formulas_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 JS Function Name 的本地化字符串。
+        /// </summary>
+        internal static string geo_additional_function_name {
+            get {
+                return ResourceManager.GetString("geo_additional_function_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Add Additional Formula 的本地化字符串。
+        /// </summary>
+        internal static string geo_btn_add_additional_formula {
+            get {
+                return ResourceManager.GetString("geo_btn_add_additional_formula", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Apply 的本地化字符串。
         /// </summary>
         internal static string geo_btn_apply {
@@ -5011,6 +5056,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 JavaScript function name in the script, e.g. calcPressure 的本地化字符串。
+        /// </summary>
+        internal static string geo_tooltip_additional_function_name {
+            get {
+                return ResourceManager.GetString("geo_tooltip_additional_function_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Export current worksheet as CSV 的本地化字符串。
         /// </summary>
         internal static string geo_tooltip_export_csv {
@@ -5128,6 +5182,33 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Additional formula name &apos;{0}&apos; duplicates the main formula name. 的本地化字符串。
+        /// </summary>
+        internal static string geo_validate_additional_formula_duplicate_main {
+            get {
+                return ResourceManager.GetString("geo_validate_additional_formula_duplicate_main", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Additional formula row {0}: both ReoGrid formula name and JS function name are required. 的本地化字符串。
+        /// </summary>
+        internal static string geo_validate_additional_formula_incomplete {
+            get {
+                return ResourceManager.GetString("geo_validate_additional_formula_incomplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 JS function name &apos;{0}&apos; is invalid (must be a valid JavaScript identifier). 的本地化字符串。
+        /// </summary>
+        internal static string geo_validate_additional_function_name_invalid {
+            get {
+                return ResourceManager.GetString("geo_validate_additional_function_name_invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Author cannot be empty. 的本地化字符串。
         /// </summary>
         internal static string geo_validate_author_required {
@@ -5142,6 +5223,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string geo_validate_category_required {
             get {
                 return ResourceManager.GetString("geo_validate_category_required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Sample row must have the same number of columns as headers ({0} expected, {1} found). 的本地化字符串。
+        /// </summary>
+        internal static string geo_validate_example_row_column_mismatch {
+            get {
+                return ResourceManager.GetString("geo_validate_example_row_column_mismatch", resourceCulture);
             }
         }
         

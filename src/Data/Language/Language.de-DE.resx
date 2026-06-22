@@ -224,7 +224,7 @@ Verzeichnis: {2}</value>
 • Massenprozente aller Oxide in Mole umrechnen</value>
   </data>
   <data name="script_return_value_error_must_be_array" xml:space="preserve">
-    <value>• Skript-Rückgabewertfehler: Das Skript muss ein Array zurückgeben.</value>
+    <value>Skript-Rückgabewertfehler: Das Skript muss ein Array zurückgeben.</value>
   </data>
   <data name="MarkerShape_VerticalBar" xml:space="preserve">
     <value>Vertikale Linie</value>
@@ -628,7 +628,7 @@ Verzeichnis: {2}</value>
     <value>Gefülltes Dreieck nach unten</value>
   </data>
   <data name="missing_translation_warning" xml:space="preserve">
-    <value>• Fehlende Übersetzung: Einige Texte verfügen über keine mehrsprachigen Übersetzungen.</value>
+    <value>Fehlende Übersetzung: Einige Texte verfügen über keine mehrsprachigen Übersetzungen.</value>
   </data>
   <data name="geo_btn_export" xml:space="preserve">
     <value>Exportieren</value>
@@ -682,7 +682,7 @@ Verzeichnis: {2}</value>
     <value>Kurzbeschreibung</value>
   </data>
   <data name="invalid_script_variable_name" xml:space="preserve">
-    <value>• Ungültiges Format des Skriptvariablennamens: ’</value>
+    <value>Ungültiges Format des Skriptvariablennamens:</value>
   </data>
   <data name="open_with_third_party_software" xml:space="preserve">
     <value>Mit Drittanbietersoftware öffnen</value>
@@ -763,10 +763,10 @@ Verzeichnis: {2}</value>
     <value>Hilfe</value>
   </data>
   <data name="script_return_value_length_error" xml:space="preserve">
-    <value>• Fehler in der Länge des Skript-Rückgabewerts: Aktueller Wert ist</value>
+    <value>Fehler in der Länge des Skript-Rückgabewerts: Aktueller Wert ist</value>
   </data>
   <data name="AboutInfo2" xml:space="preserve">
-    <value>Wenn Ihnen dieses Projekt gefällt, geben Sie uns bitte einen Stern zur Unterstützung! Wenn Sie es hilfreich finden, können Sie mir auch einen Kaffee spendieren ☕</value>
+    <value>Wenn Ihnen dieses Projekt gefällt, geben Sie uns bitte einen Stern zur Unterstützung! Wenn Sie es hilfreich finden, können Sie mir auch einen Kaffee spendieren ☕.</value>
   </data>
   <data name="AboutInfo3" xml:space="preserve">
     <value>Wir begrüßen weitere Forscher!
@@ -1683,7 +1683,7 @@ Verzeichnis: {2}</value>
     <value>Inhalt enthält nicht unterstützte Zeichen</value>
   </data>
   <data name="missing_drawing_objects_error" xml:space="preserve">
-    <value>• Fehlende Zeichenobjekte: Die Vorlage enthält keine Linien, Polygone, Texte oder Pfeile.</value>
+    <value>Fehlende Zeichenobjekte: Die Vorlage enthält keine Linien, Polygone, Texte oder Pfeile.</value>
   </data>
   <data name="geo_msg_export_failed" xml:space="preserve">
     <value>Export fehlgeschlagen: {0}</value>
@@ -2566,7 +2566,7 @@ Verzeichnis: {2}</value>
     <value>Normalisierung</value>
   </data>
   <data name="dataPrep_normalizeToHundred" xml:space="preserve">
-    <value>Auf 100 % normalisieren</value>
+    <value>Normalize to 100%</value>
   </data>
   <data name="dataPrep_notDetected" xml:space="preserve">
     <value>Nicht erkannt</value>
@@ -3188,5 +3188,65 @@ Verzeichnis: {2}</value>
   </data>
   <data name="gtm_mineral_biotite" xml:space="preserve">
     <value>Biotit</value>
+  </data>
+  <data name="official_publisher_plot_categories_section" xml:space="preserve">
+    <value>Diagramm-Kategorien</value>
+  </data>
+  <data name="official_publisher_plot_categories_level" xml:space="preserve">
+    <value>Ebene</value>
+  </data>
+  <data name="official_publisher_plot_categories_draft_saved" xml:space="preserve">
+    <value>Entwurf der Diagramm-Kategorien lokal gespeichert.</value>
+  </data>
+  <data name="official_publisher_plot_categories_reloaded" xml:space="preserve">
+    <value>Editor für Diagramm-Kategorien neu geladen.</value>
+  </data>
+  <data name="official_publisher_geot_categories_section" xml:space="preserve">
+    <value>GeoT-Mineral-Tags</value>
+  </data>
+  <data name="official_publisher_geot_categories_draft_saved" xml:space="preserve">
+    <value>Entwurf der GeoT-Mineralkategorien lokal gespeichert.</value>
+  </data>
+  <data name="official_publisher_geot_categories_reloaded" xml:space="preserve">
+    <value>Editor für GeoT-Mineralkategorien neu geladen.</value>
+  </data>
+  <data name="official_publisher_category_add" xml:space="preserve">
+    <value>Eintrag hinzufügen</value>
+  </data>
+  <data name="official_publisher_category_edit" xml:space="preserve">
+    <value>Eintrag bearbeiten</value>
+  </data>
+  <data name="geo_validate_tags_required" xml:space="preserve">
+    <value>Bitte fügen Sie mindestens ein Geothermobarometer-Tag hinzu.</value>
+  </data>
+  <data name="geo_validate_category_required" xml:space="preserve">
+    <value>Bitte wählen Sie eine Geothermobarometer-Kategorie aus.</value>
+  </data>
+  <data name="geo_tag_enter_hint" xml:space="preserve">
+    <value>Tag eingeben und mit Enter bestätigen</value>
+  </data>
+  <data name="geo_preview_tags_placeholder" xml:space="preserve">
+    <value>Tags</value>
+  </data>
+  <data name="geo_field_tags" xml:space="preserve">
+    <value>Geothermobarometer-Tags *</value>
+  </data>
+  <data name="geo_field_category" xml:space="preserve">
+    <value>Kategorie *</value>
+  </data>
+  <data name="geo_example_tag" xml:space="preserve">
+    <value>z. B. Quarz</value>
+  </data>
+  <data name="geo_example_category" xml:space="preserve">
+    <value>z. B. Einmineral-Geothermobarometer</value>
+  </data>
+  <data name="geo_editor_title_view" xml:space="preserve">
+    <value>Geothermobarometer anzeigen</value>
+  </data>
+  <data name="geo_editor_readonly_hint" xml:space="preserve">
+    <value>Basisinformationen, Formelskript und Hilfedokumente für offizielle Geothermobarometer sind schreibgeschützt. Sie können Inhalte ansehen und kopieren, aber nicht bearbeiten.</value>
+  </data>
+  <data name="data_grid_plot_refresh_pending" xml:space="preserve">
+    <value>Daten wurden geändert. Bitte Diagramm aktualisieren.</value>
   </data>
 </root>
