@@ -25,6 +25,7 @@ src/Others/
 src/_tmp_gtm/
 
 # Cursor IDE
+.agents/
 .cursor/
 src/.cursor/
 .cursorrules

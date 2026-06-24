@@ -16,15 +16,15 @@ const config = {
   favicon: 'img/logo.ico',
 
   // Set the production url of your site here
-  url: 'https://www.helloseraphine.com',
+  url: 'https://geochemistry-nexus.pages.dev',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  organizationName: 'MaxwellLei',
+  projectName: 'GeoChemistry-Nexus',
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -34,7 +34,7 @@ const config = {
   // may want to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'en',
-    locales: ['en', 'zh-Hans', 'zh-Hant', 'de-DE'],
+    locales: ['en', 'zh-Hans', 'zh-Hant', 'de-DE', 'ja-JP', 'ko-KR'],
     path: 'i18n',
     localeConfigs: {
       en: {
@@ -65,6 +65,20 @@ const config = {
         calendar: 'gregory',
         path: 'de',
       },
+      'ja-JP': {
+        label: '日本語',
+        direction: 'ltr',
+        htmlLang: 'ja-JP',
+        calendar: 'gregory',
+        path: 'ja',
+      },
+      'ko-KR': {
+        label: '한국어',
+        direction: 'ltr',
+        htmlLang: 'ko-KR',
+        calendar: 'gregory',
+        path: 'ko',
+      },
     }
   },
 
@@ -77,14 +91,16 @@ const config = {
       ({
         docs: {
           sidebarPath: './sidebars.js',
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+          editUrl: 'https://github.com/MaxwellLei/GeoChemistry-Nexus/edit/main/web/',
+          editLocalizedFiles: true,
           lastVersion: 'current',
           versions: {
             current: {
+              label: 'v0.7.1',
+            },
+            '0.6.1': {
               label: 'v0.6.1',
+              path: '0.6.1',
             },
             '0.6.0': {
               label: 'v0.6.0',
@@ -106,10 +122,7 @@ const config = {
             type: ['rss', 'atom'],
             xslt: true,
           },
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+          editUrl: 'https://github.com/MaxwellLei/GeoChemistry-Nexus/edit/main/web/',
           // Useful options to enforce blogging best practices
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
@@ -146,7 +159,7 @@ const config = {
             position: 'right',           // 你可以根据喜好调整位置, 'left' 或 'right'
           },
           {
-            href: 'https://github.com/MaxwellLei/Geo-Thermometer',
+            href: 'https://github.com/MaxwellLei/GeoChemistry-Nexus',
             label: 'GitHub',
             position: 'right',
           },
@@ -199,11 +212,15 @@ const config = {
         //     ],
         //   },
         ],
-        copyright: 'Copyright © 2024-2025 GeoChemistry Nexus',
+        copyright: 'Copyright © 2024-2026 GeoChemistry Nexus',
       },
       prism: {
         theme: prismThemes.github,
         darkTheme: prismThemes.dracula,
+      },
+      tableOfContents: {
+        minHeadingLevel: 2,
+        maxHeadingLevel: 4,
       },
     }),
   plugins: [

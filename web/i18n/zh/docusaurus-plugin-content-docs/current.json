@@ -1,22 +1,30 @@
 {
   "version.label": {
-    "message": "v0.6.1",
+    "message": "v0.7.1",
     "description": "The label for version current"
   },
   "sidebar.tutorialSidebar.category.📝 Tutorial": {
-    "message": "📝 教程",
+    "message": "📝 基础教程",
     "description": "The label for category 📝 Tutorial in sidebar tutorialSidebar"
   },
   "sidebar.tutorialSidebar.category.📝 Tutorial.link.generated-index.title": {
-    "message": "教程概述",
+    "message": "基础教程概述",
     "description": "The generated-index page title for category 📝 Tutorial in sidebar tutorialSidebar"
   },
   "sidebar.tutorialSidebar.category.🌟 Advanced Tutorials": {
-    "message": "📝 进阶教程",
+    "message": "🌟 进阶教程",
     "description": "The label for category 📝 Tutorial in sidebar tutorialSidebar"
   },
   "sidebar.tutorialSidebar.category.🌟 Advanced Tutorials.link.generated-index.title": {
     "message": "进阶教程概述",
     "description": "The generated-index page title for category 📝 Tutorial in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.💻 Developer Guide": {
+    "message": "💻 开发者指南",
+    "description": "The label for category 💻 Developer Guide in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.💻 Developer Guide.link.generated-index.title": {
+    "message": "开发者指南概述",
+    "description": "The generated-index page title for category 💻 Developer Guide in sidebar tutorialSidebar"
   }
 }

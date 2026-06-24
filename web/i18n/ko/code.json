@@ -1,0 +1,50 @@
+{
+  "home.button.getStarted": {
+    "message": "시작하기"
+  },
+  "home.button.github": {
+    "message": "GitHub에서 보기"
+  },
+  "home.tagline": {
+    "message": "차세대 지구화학 및 암석학 판별도·계산 도구 — 지구과학자의 든든한 파트너",
+    "description": "The tagline of the site"
+  },
+  "Comprehensive Plotting Toolkit": {
+    "message": "포괄적인 작도 툴킷"
+  },
+  "GeoChemistry Nexus includes a built-in Geoscience Illustrated Plotting Module with templates for Tectonic Setting Discrimination, Rock Classification, and more. It offers a complete workflow from data import to publication-quality export (SVG supported).": {
+    "message": "GeoChemistry Nexus에는 구조환경 판별도, 암석 분류도 등의 템플릿을 갖춘 지구과학 도해 모듈이 내장되어 있습니다. 데이터 가져오기부터 출판 품질보내기(SVG 지원)까지 완전한 워크플로를 제공합니다."
+  },
+  "Excel-like Geothermometers": {
+    "message": "Excel 스타일 지온계"
+  },
+  "Perform geothermometer calculations for minerals like Zircon and Biotite using an intuitive, Excel-like interface. Use built-in templates or custom functions (e.g., =FuncName(args)) to speed up your research without needing programming skills.": {
+    "message": "직관적인 Excel 스타일 인터페이스로 지르콘, 흑운모 등의 지온계 계산을 수행할 수 있습니다. 내장 템플릿이나 사용자 정의 함수(예: =FuncName(args))를 사용하여 프로그래밍 기술 없이 연구를 가속화하세요."
+  },
+  "Customizable & Extensible": {
+    "message": "사용자 정의 및 확장 가능"
+  },
+  "Create and share your own diagram templates using our JSON/ZIP based extension system. The platform supports multi-language templates, custom scripting (JavaScript), and seamless integration with third-party software like Inkscape and CorelDRAW.": {
+    "message": "JSON/ZIP 기반 확장 시스템으로 자체 도해 템플릿을 만들고 공유할 수 있습니다. 다국어 템플릿, 사용자 정의 스크립트(JavaScript), Inkscape 및 CorelDRAW와 같은 타사 소프트웨어와의 원활한 통합을 지원합니다."
+  },
+  "theme.navbar.mobileLanguageDropdown.label": {
+    "message": "언어",
+    "description": "The label for the mobile language switcher dropdown"
+  },
+  "theme.docs.paginator.previous": {
+    "message": "이전",
+    "description": "The label used to navigate to the previous doc"
+  },
+  "theme.docs.paginator.next": {
+    "message": "다음",
+    "description": "The label used to navigate to the next doc"
+  },
+  "theme.NotFound.title": {
+    "message": "페이지를 찾을 수 없습니다",
+    "description": "The title of the 404 page"
+  },
+  "theme.common.editThisPage": {
+    "message": "이 페이지 편집",
+    "description": "The link label to edit the current page"
+  }
+}

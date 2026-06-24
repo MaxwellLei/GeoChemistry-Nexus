@@ -4,15 +4,23 @@ sidebar_position: 5
 
 # 🙏 Besonderer Dank
 
-GeoChemistry Nexus existiert dank der Unterstützung der Community.
+GeoChemistry Nexus verdankt sein Bestehen der Unterstützung der Community.
 
 ## Mitwirkende
 
-Danke an alle, die Fehler melden, Funktionen vorschlagen und Code, Vorlagen, Tests und Übersetzungen beisteuern.
+Vielen Dank an alle, die über GitHub Issues, Diskussionsforen oder E-Mail an diesem Projekt mitwirken, unter anderem:
 
-## Open-Source
+* Meldung von Bugs und Vorschläge für neue Funktionen
+* Beiträge zu Code, Tests und Dokumentation
+* Teilen oder gemeinsames Erstellen diskriminativer Diagramme, Thermobarometer-Vorlagen usw.
 
-Wir schätzen die Open-Source-Projekte und -Werkzeuge aufrichtig, die diese Arbeit ermöglichen.
+* Mitwirkung an der Mehrsprachigkeits-Lokalisierung usw.
+
+Alle Mitwirkenden, die eine Veröffentlichung gestattet haben, werden in der Contributor-Liste des Projekts aufgeführt; wenn Sie eine persönliche Website oder relevante Links haben, teilen Sie uns diese gerne mit, damit wir sie ebenfalls anzeigen können.
+
+## Open Source und technisches Ökosystem
+
+Wir danken aufrichtig den Open-Source-Projekten und Werkzeugen, die diese Arbeit ermöglichen.
 
 * CommunityToolkit.Mvvm (8.3.2)
 * gong-wpf-dragdrop (4.0.0)

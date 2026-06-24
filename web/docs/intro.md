@@ -4,47 +4,42 @@ sidebar_position: 1
 
 # 🌍 Introduction
 
+**GeoChemistry Nexus is an integrated workspace for geochemistry and petrology researchers**: it brings data preprocessing, discriminant diagram plotting, geothermometer and CIPW calculations, and PNG/SVG export into a single interface; and through a cloud template ecosystem, diagrams and algorithms stay up to date and are easy to share.
+
 Let's get started with **GeoChemistry Nexus** in **5 minutes** ⏱️.
 
 ## Prerequisites 🛠️
 
-Before you begin, please follow these steps:
+One thing to note upfront: **the software is only available for Windows users**.
 
-1. **Select Download Option** 🌐:
-   You can obtain the required content in one of the following ways:
-   - **Manual Installation**: Visit the [.NET 6 Official Download Page (Click Here)](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) directly and select the appropriate installer for your operating system version.
-   - **Follow Prompts**: During software execution, follow the system prompts to automatically jump to the download page to complete the framework installation.
-   - **No Manual Configuration Required: Choose the standalone package we provide (no additional runtime framework installation needed)**.
-2. **Determine Operating System Type** 💻:
-   - For Windows systems, please first determine whether your operating system is `32-bit` or `64-bit`, and select the corresponding version to install.
+There is currently no detailed guidance for Linux and Mac. We recommend running the program in a virtual machine when needed. We plan to migrate to `Avalonia` in the future for full cross-platform compatibility. 📅
 
 :::tip
 
-**Windows Users**: Please ensure your operating system version is at least Windows 7.
+**Windows users**: Please ensure your operating system is at least Windows 7.
 
 :::
 
-## Getting Started 🚀
+## Get Started 🚀
 
-[Click here](https://github.com/MaxwellLei/GeoChemistry-Nexus/releases) to visit the download page. Select the appropriate version, download, and unzip it. Then, double-click to run `GeoChemistry Nexus.exe` 🖱️.
+[Click here](https://github.com/MaxwellLei/GeoChemistry-Nexus/releases) to visit the download page. Choose a suitable version, download, and install. Then double-click `GeoChemistry Nexus.exe` to run 🖱️.
 
-### Package Naming Convention 📦:
+![User interface example](/img/v0.7.1/intro_user_interface_example1.webp)
 
-**Package naming follows this format: `SoftwareName_Abbreviation_Version_Dependency_OS_Architecture`**
+![User interface example](/img/v0.7.1/intro_user_interface_example2.webp)
 
-- If the name contains `d`, it indicates that the software depends on the **.NET 6 SDK**, which needs to be installed separately. 🔍
-- If `d` is missing, the software already includes necessary components and requires no further installation. ✅
+![User interface example](/img/v0.7.1/intro_user_interface_example3.webp)
 
-### Note for Linux and Mac Users 🐧🍏:
+![User interface example](/img/v0.7.1/intro_user_interface_example4.webp)
 
-Currently, there are no detailed instructions for Linux and Mac. It is recommended to prioritize using a virtual machine to run the program. We plan to migrate to `Avalonia` in the future to achieve full cross-platform compatibility. 📅
-
-![User Interface Example](/img/v0.6.1/intro_user_interface_example1.png)
-
-![User Interface Example](/img/v0.6.1/intro_user_interface_example2.png)
-
-![tutorial_plot0](/img/v0.6.1/tutorial_plot0.png)
+![User interface example](/img/v0.7.1/intro_user_interface_example5.webp)
 
 ----
 
-Happy exploring! 🎉 If you have questions, please join our community or submit an issue on [GitHub](https://github.com/MaxwellLei/GeoChemistry-Nexus).
+Happy exploring! 🎉 If you have questions, join our community and contact us below or submit an issue on [GitHub](https://github.com/MaxwellLei/GeoChemistry-Nexus).
+
+| Channel    | Info                          |
+| ---------- | ----------------------------- |
+| 📧 Email   | `maxwelllei@qq.com`           |
+| 💬 QQ Group | `1076647740`                  |
+| 🎮 Discord | https://discord.gg/mRm8dbwa4W |

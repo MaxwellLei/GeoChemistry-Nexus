@@ -1,24 +1,24 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 ---
 
-# 🎨 Diagrammerstellung
+# Diagrammvorlagen
 
-Dieser Abschnitt stellt das integrierte **Geowissenschaftliche Diagrammerstellungsmodul** der Software vor. Es behandelt die Klassifizierung, Verwaltung und Erweiterungsmechanismen (JSON/ZIP) der **Vorlagenbibliothek**, bietet eine detaillierte Analyse des Layouts der **Plot-Oberfläche** (Menüleiste, Symbolleiste, Ebenenliste, Eigenschaftsfenster) und seiner Kernfunktionen (wie Datenimport, Ebenenbearbeitung, visuelle Einstellungen und Integration von Drittanbietersoftware) und bietet einen **Vollständigen Workflow-Leitfaden** – von der Auswahl einer Vorlage bis zum Export des endgültigen Plots. 🌍
+Dieser Abschnitt stellt das integrierte **Geowissenschaftliche Diagrammmodul** der Software vor. Er behandelt die Klassifizierung, Verwaltung und Erweiterungsmechanismen (JSON/ZIP) der **Vorlagenbibliothek**, analysiert detailliert das Layout der **Diagrammoberfläche** (Menüleiste, Symbolleiste, Ebenenliste, Eigenschaftsfenster) und deren Kernfunktionen (wie Datenimport, Ebenenbearbeitung, visuelle Einstellungen und Integration von Drittanbietersoftware) und bietet einen **vollständigen Workflow-Leitfaden** von der Vorlagenauswahl bis zum Export des endgültigen Diagramms. 🌍
 
 ## Ziele
 
-Auf der Seite Illustrierte Diagrammerstellung werden wir weitere grundlegende geowissenschaftliche Vorlagen integrieren, einschließlich, aber nicht beschränkt auf: Tektonische Umgebungsdiskriminierungsdiagramme, Gesteinsklassifizierungsdiagramme und grundlegende Geothermometerdiagramme. **Unser ultimatives Ziel ist es, ein umfassendes Plot-Toolkit für die Geowissenschaften zu erstellen, um Forschern maximalen Komfort zu bieten.** 🧪
+Auf der Diagrammzeichnungsseite werden wir weitere grundlegende geowissenschaftliche Vorlagen integrieren, einschließlich, aber nicht beschränkt auf: Tektonische Umgebungsdiskriminierungsdiagramme, Gesteinsklassifizierungsdiagramme und grundlegende Geothermometerdiagramme. **Unser ultimatives Ziel ist es, ein umfassendes Zeichenwerkzeug für die Geowissenschaften zu schaffen und Forschenden maximalen Komfort zu bieten.** 🧪
 
-Die Klassifizierungslogik für Vorlagen ist derzeit nach akademischer Disziplin organisiert:
+Die Klassifizierungslogik für Vorlagen ist derzeit nach Fachdisziplin organisiert:
 
 ![tutorial_plot1](/img/v0.6.1/tutorial_plot1.png)
 
 :::info
 
-Da Vorlagen aktualisiert werden, können sich einige Klassifizierungsstrukturen ändern.
+Da Vorlagen aktualisiert werden, können sich bestimmte Klassifizierungsstrukturen ändern.
 
-Wir begrüßen wertvolles Feedback während Ihrer Nutzung, um die Benutzerfreundlichkeit und Bequemlichkeit der Software zu verbessern. 🌹
+Wir begrüßen wertvolles Feedback während der Nutzung, um die Benutzerfreundlichkeit und den Komfort der Software zu verbessern. 🌹
 
 :::
 
@@ -26,74 +26,130 @@ Wir begrüßen wertvolles Feedback während Ihrer Nutzung, um die Benutzerfreund
 
 ### Vorlagenbibliothek
 
-Wir kategorisieren Diagrammvorlagen in zwei Haupttypen: **Offizielle integrierte Vorlagen** und **Persönliche benutzerdefinierte Vorlagen**.
+Wir unterteilen das Diagrammmodul in drei Kategorien: **Integrierte Cloud-Vorlagen**, **Persönliche benutzerdefinierte Vorlagen** und **Integrierte Werkzeugvorlagen**.
 
-**Offizielle integrierte Vorlagen** werden von uns kontinuierlich aktualisiert und gepflegt. Benutzer können auf die neuesten Versionen zugreifen, ohne die Software zu aktualisieren, um sicherzustellen, dass sie immer über die umfassendsten und maßgeblichsten Vorlagenressourcen verfügen.
+**Integrierte Cloud-Vorlagen**: Werden von uns kontinuierlich aktualisiert und gepflegt. Nutzer müssen die Software nicht aktualisieren; bei Internetverbindung können sie aktualisierte Diagrammvorlagen abrufen und stets über die umfassendsten und maßgeblichsten Vorlagenressourcen verfügen.
 
-**Persönliche benutzerdefinierte Vorlagen** eignen sich für Szenarien, in denen die erforderliche Vorlage nicht in der offiziellen Bibliothek gefunden wird oder wenn benutzerdefinierte Vorlagen für spezifische Forschungsbedürfnisse erstellt werden müssen. Benutzer können diese Vorlagen nicht nur selbst erstellen, sondern sie auch exportieren, um sie einfach mit anderen Forschern zu teilen, was den akademischen Austausch und die Verbreitung erleichtert.
+**Persönliche benutzerdefinierte Vorlagen**: Geeignet für Szenarien, in denen die benötigte Vorlage nicht in der offiziellen Bibliothek gefunden wird oder benutzerdefinierte Vorlagen für spezifische Forschungsbedürfnisse erstellt werden müssen. Nutzer können diese Vorlagen nicht nur selbst erstellen, sondern auch exportieren, um sie einfach mit anderen Forschenden zu teilen und den akademischen Austausch zu fördern.
 
-> *In Zukunft planen wir den Aufbau einer dedizierten Diagrammvorlagen-Community, in der Benutzer verschiedene **Persönliche benutzerdefinierte Vorlagen** einfach erstellen, hochladen, teilen und herunterladen können, was die Flexibilität und Skalierbarkeit des Systems weiter verbessert.*
+> *In Zukunft planen wir den Aufbau einer dedizierten Diagrammvorlagen-Community, in der Nutzer verschiedene **persönliche benutzerdefinierte Vorlagen** einfach erstellen, hochladen, teilen und herunterladen können, um die Flexibilität und Erweiterbarkeit des Systems weiter zu steigern.*
 
-#### Hauptseite
+**Integrierte Werkzeugvorlagen**: Nicht standardmäßige Cloud-Diagrammwerkzeuge werden separat ausgelagert. Derzeit umfasst dies: **REE-Spinnendiagramm, Spurenelement-Spinnendiagramm und Harker-Diagramm**.
 
-Standardmäßig zeigt das Plot-Modul beim Betreten die integrierte Geowissenschaftliche Vorlagenbibliothek an. Die Oberfläche ist in drei Hauptabschnitte unterteilt:
+#### Oberfläche
 
-* **Links - Vorlagenliste**: Zeigt alle Vorlagenhierarchien und entsprechenden Vorlagen an, einschließlich benutzerdefinierter Vorlagenlisten.
-* **Oben Rechts - Navigationsleiste**: Aktualisiert sich basierend auf der ausgewählten Hierarchie in der Vorlagenliste, um verschiedene Inhaltsebenen anzuzeigen.
-* **Unten Rechts - Vorlagenkarten**: Zeigt die Plot-Karten unter der aktuellen Hierarchie an, einschließlich Namen und Vorschaubildern.
+Standardmäßig zeigt das Zeichenmodul beim Betreten die integrierte geowissenschaftliche Vorlagenbibliothek an. Die Oberfläche ist in drei Hauptbereiche unterteilt:
 
-![tutorial_plot2](/img/v0.6.1/tutorial_plot2.png)
+*   **Links – Vorlagenliste**: Zeigt alle Vorlagenhierarchien und entsprechende Vorlagen an, einschließlich der benutzerdefinierten Vorlagenliste.
+*   **Oben rechts – Navigationsleiste**: Aktualisiert sich basierend auf der in der Vorlagenliste gewählten Hierarchie, um Inhalte auf verschiedenen Ebenen anzuzeigen.
+*   **Unten rechts – Vorlagenkarten**: Zeigt die Diagrammkarten der aktuellen Ebene an, einschließlich Name und Vorschaubild.
 
-Wählen Sie eine Vorlagenkarte aus und klicken Sie darauf, um die spezifische Plot-Oberfläche aufzurufen.
+![tutorial_plot2](/img/v0.7.1/tutorial_plot2.webp)
 
-**Diese Vorlagen sind hochgradig erweiterbar.** Wir verwenden das `JSON`-Format, um Kernvorlageninformationen zu speichern, und das `ZIP`-Format, um vollständige Ressourcenpakete zu packen. Mit diesem Design können **Forscher nicht nur ihre eigenen Vorlagen erstellen, sondern sie auch packen und mit anderen teilen, um sie schnell wiederzuverwenden.**
+Wählen Sie eine Vorlagenkarte mit der Maus aus und klicken Sie darauf, um die spezifische Diagrammoberfläche aufzurufen. Sie können auch per Rechtsklick auf eine Diagrammkarte das entsprechende Diagramm exportieren, um es mit anderen Forschenden zu teilen. Oder favorisieren Sie ein Diagramm für den schnellen Zugriff beim nächsten Mal. Persönliche benutzerdefinierte Diagramme können per Rechtsklick gelöscht werden.
 
-**Das System unterstützt derzeit serverseitige Speicherung**, sodass die Vorlagenliste dynamisch aktualisiert werden kann, ohne dass ein Software-Update erforderlich ist.
+:::tip
 
-Unter lokalen Internetbedingungen können Benutzer die integrierte Vorlagenliste manuell über die Menüleiste überprüfen und aktualisieren oder die automatische Überprüfung in den Einstellungen aktivieren, um die neuesten Ressourcen sicherzustellen.
+Sie können die <kbd>Strg</kbd>-Taste gedrückt halten, um Diagrammkarten schnell zu löschen oder zu favorisieren.
 
-#### Grundlegende Symbolleiste
+:::
 
-Die Funktionen der Menüleiste sind in zwei Hauptkategorien unterteilt:
+Unter lokalen Netzwerkbedingungen können Nutzer die integrierte Vorlagenliste manuell über die Menüleiste prüfen und aktualisieren oder in den Einstellungen die automatische Prüfung aktivieren, um stets die neuesten Ressourcen zu erhalten.
 
-1. **Datei**: Hauptsächlich zum Erstellen, Öffnen und Importieren von Vorlagen.
-   1. **Neue Vorlage**: Wird verwendet, um benutzerdefinierte Diagramme zu erstellen; ein Klick hierauf öffnet ein interaktives Popup.
-   2. **Vorlage öffnen**: Wird verwendet, um eine Vorlage vorübergehend zu öffnen; unterstützt `json`-Dateien und `zip`-Ressourcenpakete.
-   3. **Vorlage importieren**: Wird verwendet, um externe Vorlagenpakete (`zip`) in die lokale benutzerdefinierte Vorlagenliste zu importieren.
-2. **Vorlagen**: Hauptsächlich für Updates integrierter Vorlagen. **Auf Updates für integrierte Vorlagen prüfen**: Wird verwendet, um die neuesten Vorlagenlisten und Updates abzurufen.
+#### Obere Menüleiste
 
-### Plot-Oberfläche
+Die Menüleistenfunktionen sind in zwei Kategorien unterteilt:
 
-#### Layout
+1.  **Datei**: Hauptsächlich zum Erstellen, Öffnen und Importieren von Vorlagen.
+    1.  **Neue Vorlage**: Zum Erstellen benutzerdefinierter Diagramme; ein Klick öffnet ein interaktives Dialogfenster.
+    2.  **Vorlage öffnen**: Zum vorübergehenden Öffnen einer Vorlage; unterstützt `json`-Dateien und `zip`-Ressourcenpakete.
+    3.  **Vorlage importieren**: Zum Importieren externer Vorlagenpakete (`zip`) in die lokale benutzerdefinierte Vorlagenliste.
+2.  **Vorlage**: Hauptsächlich für Updates integrierter Vorlagen. **Integrierte Cloud-Vorlagen auf Updates prüfen**: Zum Abrufen der neuesten Vorlagenliste und Updates.
 
-Die Plot-Oberfläche ist in fünf Hauptteile unterteilt:
+:::tip
 
-- **Symbolleiste**: Enthält Schnellzugriffsschaltflächen und drei Funktionsregisterkarten: Plotten, Daten und Bearbeiten.
-- **Ebenenliste (Objekte)**: Eine Liste von Zeichnungselementen auf der Vorlage. Durch Klicken auf ein Element können Sie dessen Eigenschaften ändern.
-- **Zeichenfläche**: Der zentrale Bereich zum Anzeigen des Plots, Importieren von Daten, visuellen Einstellungen und Anzeigen von Vorlagenanweisungen.
-- **Statusleiste**: Zeigt grundlegende Plot-Informationen an, einschließlich der aktuellen Diagrammsprache und Koordinateninformationen.
-- **Eigenschaftsfenster**: Zeigt die Attribute des ausgewählten Zeichnungselements (z. B. Farbe, Größe) an, um den gewünschten visuellen Effekt zu erzielen.
+Sie können Diagrammvorlagendateien auch direkt an die vorgesehene Stelle ziehen, um Diagrammvorlagen zu importieren.
 
-![tutorial_plot3](/img/v0.6.1/tutorial_plot3.png)
+:::
 
-#### Plot-Symbolleiste
+### Diagrammoberfläche
 
-Die Symbolleiste besteht aus **Schnellzugriffsschaltflächen** und einer **Menüleiste**. **Schnellzugriffsschaltflächen** sind für häufige Operationen gedacht, während die **Menüleiste** spezifische spezialisierte Funktionen bietet.
+#### Oberfläche
 
-Standardmäßig zeigt das System die Plot-Symbolleiste an. Allgemeine Benutzer müssen normalerweise nicht die **Bearbeitungs-Symbolleiste** verwenden – dies ist ein fortgeschrittenes Werkzeug, das zum Erstellen und Erweitern von Vorlagen verwendet wird.
+Die Diagrammoberfläche ist in fünf Hauptbereiche unterteilt:
+
+-   **Symbolleiste**: Enthält Schnellzugriffsschaltflächen und drei Funktionsregisterkarten: Zeichnen, Daten und Bearbeiten.
+-   **Ebenenliste (Objekte)**: Liste der Zeichnungselemente auf der Vorlage. Durch Klicken auf ein Element können Sie dessen Eigenschaften ändern.
+-   **Zeichenfläche**: Zentraler Bereich zum Anzeigen des Diagramms, Importieren von Daten, visuellen Einstellungen und Anzeigen der Vorlagendokumentation.
+-   **Statusleiste**: Zeigt grundlegende Zeicheninformationen an, einschließlich der aktuellen Diagrammsprache und Koordinateninformationen.
+-   **Eigenschaftsfenster**: Zeigt die Eigenschaften des ausgewählten Zeichnungselements (z. B. Farbe, Größe) an, um den gewünschten visuellen Effekt zu erzielen.
+
+![tutorial_plot3](/img/v0.7.1/tutorial_plot3.webp)
+
+#### Diagramm-Symbolleiste
+
+Die Symbolleiste besteht aus einer Reihe von **Schnellzugriffsschaltflächen**. Dazu gehören unter anderem:
+
+1. Zurück zur Diagrammvorlagenbibliothek
+2. Diagrammstatus wechseln (Diagrammmodus, Datenmodus, Bearbeitungsmodus)
+3. Verschiedene Diagramm-Eigenschaftspanels und Bedienwerkzeuge usw.
+
+Detaillierte Funktionen siehe Abbildung unten.
 
 ![tutorial_plot4](/img/v0.6.1/tutorial_plot4.png)
 
 ### Ebenenliste
 
-Zeichnungselemente sind in 7 Haupttypen unterteilt:
+Zeichnungselemente sind in 7 Kategorien unterteilt:
 
-- **Linie (Line)**: Definiert grundlegende Kartengrenzen oder Segmente.
-- **Text (Text)**: Beschriftungen und Anmerkungen.
-- **Polygon (Polygon)**: Geschlossene Formen innerhalb des Plots.
-- **Pfeil (Arrow)**: Gerichtete Zeichnungsobjekte.
-- **Funktion (Function)**: Ermöglicht Benutzern die Eingabe benutzerdefinierter mathematischer Funktionen und Definitionsbereiche.
-- **Achsen (Axes)**: Koordinatenachsen für den Plot.
-- **Datenpunkt (Data Point)**: Elemente, die importierte Daten darstellen.
+-   **Line (Linie)**: Definiert grundlegende Kartenbegrenzungen oder Liniensegmente.
+-   **Text (Text)**: Beschriftungen und Anmerkungen.
+-   **Polygon (Polygon)**: Geschlossene Formen innerhalb des Diagramms.
+-   **Arrow (Pfeil)**: Gerichtete Zeichnungsobjekte.
+-   **Function (Funktion)**: Ermöglicht die Eingabe benutzerdefinierter mathematischer Funktionen und Definitionsbereiche.
+-   **Axes (Achsen)**: Koordinatenachsen des Diagramms.
+-   **Data Point (Datenpunkt)**: Elemente, die importierte Daten darstellen.
 
-**Standard-Renderreihenfolge (Oben nach Unten): `Text > Pfeil > Punkt > Funktion > Linie > Polygon > Achsen`**.
+**Standard-Renderreihenfolge (von oben nach unten): `Text > Pfeil > Punkt > Funktion > Linie > Polygon > Achsen`**.
+
+![tutorial_plot5](/img/v0.6.1/tutorial_plot5.png)
+
+Wenn Sie ein Element im Ebenenpanel auswählen, wird es auf der Zeichenfläche hervorgehoben, während andere Elemente halbtransparent werden, um Ablenkungen zu reduzieren. Das Eigenschaftsfenster zeigt anschließend die relevanten Eigenschaften dieses Elements an. 🔍
+
+Passen Sie diese Eigenschaften an, um Ihren gewünschten visuellen Stil zu erreichen.
+
+:::tip
+
+Um alle Elemente abzuwählen, klicken Sie einfach mit der rechten Maustaste irgendwo auf die Zeichenfläche oder verwenden Sie die Schaltfläche **Abwählen** in der Symbolleiste.
+
+:::
+
+### Eigenschaftsfenster & Diagrammleitfaden
+
+## Anwendungsbeispiel Diagramm
+
+### Beispiel
+
+1. Wählen Sie eine Vorlage aus der **Vorlagenbibliothek**, um die Zeichenseite aufzurufen. Beispiel: TAS-Diagramm auswählen.
+2. Wenn Daten eingegeben werden müssen, wechseln Sie vom Diagrammmodus in den Datenmodus.
+   
+   ![tutorial_plot6](/img/v0.7.1/tutorial_plot6.webp)
+
+
+   Für das TAS-Diagramm sind vier Datenspalten erforderlich: `Category`, `SiO2`, `K2O` und `Na2O`. Die Einheit ist `wt.%`. Die Spalte `Category` dient der Gruppierung der Daten und der Erstellung der Legende. Wenn Sie unsicher sind, welche Daten eingegeben werden sollen, welche Einheiten gelten oder wie das Diagramm verwendet wird, können Sie auf die Diagrammhilfe-Schaltfläche oben rechts im Diagrammbereich klicken, um die Dokumentation zu diesem Diagramm anzuzeigen.
+
+   ![tutorial_plot7](/img/v0.6.1/tutorial_plot7.png)
+3. Nachdem Sie die Anforderungen verstanden haben, geben Sie Ihre Daten ein und klicken Sie auf die Projektionsschaltfläche oben rechts im Datenpanel, um Datenpunkte zu zeichnen. Bei fehlerhaften Eingaben klicken Sie nach der Korrektur einfach erneut auf Projektion.
+   
+   ![tutorial_plot8](/img/v0.7.1/tutorial_plot8.webp)
+   
+4. **Diagramm exportieren**. Wir bieten eine **Schnellschaltfläche zum Kopieren des Diagrammergebnisses in die Zwischenablage**. Außerdem gibt es eine **formale Exportfunktion**. Im formalen Exportpanel unterstützen wir die Bildformate `jpg`, `png`, `bmp` und `svg`. Für wissenschaftliche Abbildungen mit Vektorgrafiken empfehlen wir das `svg`-Format. Wir unterstützen auch die **direkte Verknüpfung der Ergebnisse mit Drittanbieter-Zeichensoftware**, ohne den Zwischenschritt Export und erneuter Import. Empfohlene integrierte Drittanbieter-Software: **CorelDRAW, Inkscape, Adobe Illustrator**. Für die nachträgliche wissenschaftliche Bearbeitung empfehlen wir die Verknüpfung mit Inkscape. Selbstverständlich unterstützen wir auch benutzerdefinierte Drittanbieter-Zeichensoftware, sofern diese das `svg`-Vektorformat unterstützt. Forschende müssen nur in den Einstellungen den Programmpfad der Zeichensoftware angeben.
+   ![tutorial_plot8](/img/v0.7.1/tutorial_plot10.webp)
+
+### Zusätzliche Hinweise
+
+Diagrammvorlagen unterstützen selbst den mehrsprachigen Wechsel, d. h. ein Diagramm kann in mehrere Sprachversionen umgeschaltet werden, um Internationalisierungsbedürfnisse zu erfüllen.
+
+Beispiel: Für Veröffentlichungen in chinesischen Fachzeitschriften wird die chinesische Version benötigt, für englische SCI/IE-Zeitschriften die englische Version. Sie können über die Sprachschaltfläche oben rechts in der Diagramm-Symbolleiste zur entsprechenden Sprachversion wechseln.
+
+![tutorial_plot9](/img/v0.7.1/tutorial_plot9.webp)

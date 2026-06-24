@@ -4,15 +4,23 @@ sidebar_position: 5
 
 # 🙏 Special Thanks
 
-GeoChemistry Nexus exists thanks to the community’s support.
+GeoChemistry Nexus exists thanks to community support.
 
 ## Contributors
 
-Thanks to everyone who reports bugs, suggests features, and contributes code, templates, tests, and translations.
+Thanks to everyone who has participated in this project through GitHub Issues, discussions, or email, including but not limited to:
 
-## Open-source
+* Reporting bugs and suggesting features
+* Contributing code, testing, and documentation
+* Sharing or co-building discriminant diagrams, thermobarometers, and other templates
 
-We sincerely appreciate the open-source projects and tools that make this work possible.
+* Participating in multilingual localization, etc.
+
+All contributors who permit public listing will be included in the project contributor list; if you have a personal homepage or related links, please let us know and we will display them as well.
+
+## Open Source & Technology Ecosystem
+
+We sincerely thank the open source projects and tools that make this work possible.
 
 * CommunityToolkit.Mvvm (8.3.2)
 * gong-wpf-dragdrop (4.0.0)
@@ -27,4 +35,3 @@ We sincerely appreciate the open-source projects and tools that make this work p
 * LiteDB (5.0.21)
 * [Docusaurus](https://www.docusaurus.io/)
 * [Cloudflare](https://www.cloudflare.com/)
-

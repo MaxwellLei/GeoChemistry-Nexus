@@ -1,12 +1,12 @@
 {
   "position": 2,
-  "label": "📝 教程",
+  "label": "📝 基礎教程",
   "collapsible": true,
   "collapsed": false,
   "className": "green",
   "link": {
     "type": "generated-index",
-    "title": "教程概覽"
+    "title": "基礎教程概覽"
   },
   "customProps": {
     "description": "This description can be used in the swizzled DocCard"

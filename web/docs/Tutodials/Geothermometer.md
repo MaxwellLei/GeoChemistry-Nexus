@@ -1,58 +1,62 @@
 ---
-sidebar_position: 3
+sidebar_position: 4
 ---
 
-# 🌡️ Geothermometers
+# Geothermobarometer
 
-The Geothermometer page in the software is abbreviated as **GTM**. This page currently includes geothermometer calculations for minerals such as zircon, sphalerite, quartz, xenotime, chlorite, and biotite.
+In early versions, this module was abbreviated as **GTM**. It was later renamed to geothermometer, and now its official name is: geothermobarometer.
 
-:::tip
-
-Please note that the current Geothermometer module features a temporary UI. It will be adjusted as the functionality of the thermometers is enhanced.
-
-:::
+Early versions included geothermometer calculations for minerals such as zircon, sphalerite, quartz, xenotime, chlorite, and biotite. The new version of the geothermobarometer is still being updated and adapted, and will be synchronized soon.
 
 ## 🌟 Features
 
-Our Geothermometer module now utilizes an Excel-like interface, significantly lowering the learning curve. Calculations can be performed in two ways:
+The geothermobarometer module was designed from the start to **mimic the Excel format** to reduce the learning curve for users. **It is mainly used in two forms**:
 
-1.  **Using functions directly in cells**, identical to using Excel functions. We have pre-defined several calculation functions for various thermometers. For specific function details, please refer to the "Custom Functions" section in the Advanced Tutorials.
-2.  **Using built-in geothermometer templates**, which is more direct and faster, requiring no programming knowledge.
+1. **Built-in Cloud Templates**: By default, **built-in cloud templates** cannot be modified by users and are maintained and updated by the official team. Without updating the software, users can obtain more of the latest geothermobarometer templates when connected to the network. Researchers can search and select templates suitable for themselves, and fill in data and perform calculations according to the guide. **This approach is more direct and faster, requiring no programming knowledge**.
+2. **Standalone Window**: Researchers can open a standalone form through the menu bar, File -> Open Standalone Spreadsheet. In the standalone form, researchers are allowed to custom program and use different geothermobarometers for combined calculations. For specific thermobarometer functions, see the advanced tutorials section. **This approach is more complex and relatively flexible**.
 
-![gtm_ui](imgs/gtm_ui.png)
+Of course, the geothermobarometer module also allows researchers to create their own custom thermobarometers. By packaging into a geothermobarometer package, they can be exported and distributed to other researchers for use.
 
-## Usage Examples
+![gtm_ui](/img/v0.7.1/geothermobarometer1.webp)
 
-### Custom Functions
-
-The use of custom functions is consistent with Excel; simply enter a format like `=FuncName(args)` into a cell to call them.
-
-Refer to the Advanced Tutorials for specific custom function references.
+## Geothermobarometer Usage Example
 
 ### Using Built-in Templates
 
-First, within the Geothermometer module, select the corresponding calculation template from the menu bar:
+First, within the geothermometer module, select the corresponding calculation template from the menu bar:
 
-![gtm_select_m](imgs/gtm_select_m.png)
+![gtm_ui](/img/v0.7.1/geothermobarometer2.webp)
 
-A pop-up window will then appear asking to confirm whether to create a new sheet for the calculation.
+A secondary confirmation sidebar popup will then appear. After confirming, the previous template calculation will be reset and overwritten (if you had previously selected another thermobarometer calculation).
 
-If your current sheet contains data you do not want to overwrite, please select **OK**. Conversely, if you want to overwrite the current sheet, select **Cancel**.
+![gtm_ui](/img/v0.7.1/geothermobarometer3.webp)
 
-![Notification](https://geo-1303234197.cos.ap-hongkong.myqcloud.com/V0_5_0_0/GTM_New_Sheet.png)
-
-Next, a sample template for the thermometer will appear. Users only need to fill in the corresponding data and then use the "click-and-drag" fill handle (similar to Excel) to automatically complete the calculations (as shown in the animated example below).
+Next, a sample thermometer template will appear. Users only need to fill in the corresponding data, then use the "click and drag" fill handle (similar to Excel) to automatically complete the calculation (as shown in the animation example below).
 
 ![](https://geo-1303234197.cos.ap-hongkong.myqcloud.com/V0_5_0_0/Example.gif)
 
-## Intermediate Calculation Processes
+Of course, the new version thermobarometer supports viewing internal calculation details. Researchers can select the corresponding data row with the mouse and view specific intermediate calculation result details at the bottom.
 
-:::tip
+![gtm_ui](/img/v0.7.1/geothermobarometer4.webp)
 
-We have already taken this into account. We understand that petrologists need to perform verification or view intermediate processes. We are currently designing a new UI and algorithms to implement this functionality.
+### Standalone Window - Custom Functions
+
+As mentioned earlier, you can open a standalone form through the menu bar, File -> Open Standalone Spreadsheet.
+
+The standalone window spreadsheet is an empty spreadsheet containing some simple toolbar buttons.
+
+![gtm_ui](/img/v0.7.1/geothermobarometer5.webp)
+
+When using the standalone window spreadsheet, it works just like **using an Excel spreadsheet in daily life—you can input any values and call functions by entering `=FunctionName(parameters)`**.
+
+The difference is that our geothermobarometer calculations are registered as corresponding calculation functions, allowing researchers to more flexibly customize content calculations as needed. Including but not limited to comparing results from multiple thermobarometers. With default templates, it is not possible to calculate multiple thermobarometer results simultaneously (unless you calculate one template at a time). But in the standalone window spreadsheet, you can directly define and use multiple geothermobarometer functions in the same spreadsheet to obtain calculation results.
+
+:::note
+
+**In the standalone window spreadsheet, it is not possible to view the intermediate calculation process for the corresponding data row**.
 
 :::
 
 ---
 
-We cordially invite contributors to join us in creating a better software experience. 🤝😊
+We sincerely invite contributors to join us in creating a better software experience. 🤝😊

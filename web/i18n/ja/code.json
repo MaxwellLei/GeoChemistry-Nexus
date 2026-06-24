@@ -1,0 +1,50 @@
+{
+  "home.button.getStarted": {
+    "message": "はじめる"
+  },
+  "home.button.github": {
+    "message": "GitHub で見る"
+  },
+  "home.tagline": {
+    "message": "次世代の地球化学・岩石学 判別図・計算ツール — 地球科学者の頼れるパートナー",
+    "description": "The tagline of the site"
+  },
+  "Comprehensive Plotting Toolkit": {
+    "message": "包括的な作図ツールキット"
+  },
+  "GeoChemistry Nexus includes a built-in Geoscience Illustrated Plotting Module with templates for Tectonic Setting Discrimination, Rock Classification, and more. It offers a complete workflow from data import to publication-quality export (SVG supported).": {
+    "message": "GeoChemistry Nexus には、構造環境判別図、岩石分類図などのテンプレートを備えた地球科学図解モジュールが内蔵されています。データインポートから出版品質のエクスポート（SVG 対応）まで、完全なワークフローを提供します。"
+  },
+  "Excel-like Geothermometers": {
+    "message": "Excel 風地質温度計"
+  },
+  "Perform geothermometer calculations for minerals like Zircon and Biotite using an intuitive, Excel-like interface. Use built-in templates or custom functions (e.g., =FuncName(args)) to speed up your research without needing programming skills.": {
+    "message": "直感的な Excel 風インターフェースで、ジルコンやバイオタイトなどの地質温度計計算を実行できます。内蔵テンプレートやカスタム関数（例：=FuncName(args)）を使用して、プログラミングスキルなしで研究を加速できます。"
+  },
+  "Customizable & Extensible": {
+    "message": "カスタマイズ可能・拡張可能"
+  },
+  "Create and share your own diagram templates using our JSON/ZIP based extension system. The platform supports multi-language templates, custom scripting (JavaScript), and seamless integration with third-party software like Inkscape and CorelDRAW.": {
+    "message": "JSON/ZIP ベースの拡張システムで独自の図解テンプレートを作成・共有できます。多言語テンプレート、カスタムスクリプト（JavaScript）、Inkscape や CorelDRAW などのサードパーティソフトとのシームレスな連携をサポートします。"
+  },
+  "theme.navbar.mobileLanguageDropdown.label": {
+    "message": "言語",
+    "description": "The label for the mobile language switcher dropdown"
+  },
+  "theme.docs.paginator.previous": {
+    "message": "前へ",
+    "description": "The label used to navigate to the previous doc"
+  },
+  "theme.docs.paginator.next": {
+    "message": "次へ",
+    "description": "The label used to navigate to the next doc"
+  },
+  "theme.NotFound.title": {
+    "message": "ページが見つかりません",
+    "description": "The title of the 404 page"
+  },
+  "theme.common.editThisPage": {
+    "message": "このページを編集",
+    "description": "The link label to edit the current page"
+  }
+}

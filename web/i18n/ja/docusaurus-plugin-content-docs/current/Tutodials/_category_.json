@@ -1,0 +1,14 @@
+{
+  "position": 2,
+  "label": "📝 チュートリアル",
+  "collapsible": true,
+  "collapsed": false,
+  "className": "green",
+  "link": {
+    "type": "generated-index",
+    "title": "チュートリアル概要"
+  },
+  "customProps": {
+    "description": "This description can be used in the swizzled DocCard"
+  }
+}

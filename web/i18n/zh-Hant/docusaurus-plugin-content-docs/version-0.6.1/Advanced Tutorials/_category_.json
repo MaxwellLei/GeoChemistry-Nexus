@@ -1,0 +1,14 @@
+{
+  "position": 3,
+  "label": "🌟 進階教程",
+  "collapsible": false,
+  "collapsed": false,
+  "className": "green",
+  "link": {
+    "type": "generated-index",
+    "title": "教程概覽"
+  },
+  "customProps": {
+    "description": "This description can be used in the swizzled DocCard"
+  }
+}

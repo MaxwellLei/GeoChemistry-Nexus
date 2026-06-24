@@ -1,8 +1,8 @@
 {
   "position": 3,
   "label": "🌟 Advanced Tutorials",
-  "collapsible": false,
-  "collapsed": false,
+  "collapsible": true,
+  "collapsed": true,
   "className": "green",
   "link": {
     "type": "generated-index",

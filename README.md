@@ -1,7 +1,5 @@
 <div align="center">
 
-<img src="./readme/images/geochemistry-nexus-readme-poster.svg" alt="GeoChemistry Nexus Poster" width="100%">
-
 <img src="https://geochemistrynexus-1303234197.cos.ap-hongkong.myqcloud.com/Images/logo.png" width="96" alt="GeoChemistry Nexus Logo">
 
 # GeoChemistry Nexus

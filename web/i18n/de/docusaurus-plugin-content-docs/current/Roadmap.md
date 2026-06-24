@@ -4,16 +4,47 @@ sidebar_position: 3
 
 # 🛣️ Roadmap
 
-# Aktuell
+Das Ziel von GeoChemistry Nexus ist nicht nur eine „Diagrammsoftware“, sondern schrittweise eine integrierte Werkzeugkette für geochemische und petrographische Forschung mit den Säulen **Daten · Diagramme · Berechnungen · Zusammenarbeit**.
 
-- [x] Kontinuierliche Aktualisierung gängiger geologischer und geochemischer Diagramme
-- [ ] Kontinuierliche Aktualisierung gängiger Geothermometer und Geobarometer
-- [ ] Geochronologische Datenplots
+## ✅ Abgeschlossen
 
-# Geplant
 
-- [ ] **Aufbau einer Forschungsgemeinschaft**: Wir werden eine dedizierte Forschungsgemeinschaft aufbauen, um Forscher beim Hochladen und Teilen selbst erstellter wissenschaftlicher Diagramme zu unterstützen. Die Gemeinschaft wird auch mit einem Bereich für Problemfeedback und Forendiskussionsmodulen ausgestattet sein, um die Interaktion der Mitglieder, den Erfahrungsaustausch und die Lösungsverbesserung zu erleichtern.
-- [ ] **Erweiterung der geochemischen Berechnungswerkzeuge**: Basierend auf den Benutzerbedürfnissen werden wir wissenschaftliche Berechnungsmethoden im Zusammenhang mit Geochemie kontinuierlich aktualisieren und verbessern und reichhaltigere Berechnungsfunktionen bereitstellen, um diverse wissenschaftliche Forschungsanwendungsszenarien zu unterstützen.
-- [ ] **Maschinelles Lernen zur Datenanalyse**: Zukünftige Softwareversionen werden gängige Algorithmen für maschinelles Lernen einführen, um bei der geochemischen Datenanalyse zu helfen und Forschern effiziente und intelligente Datenverarbeitungsfähigkeiten bereitzustellen.
-- [ ] **Unterstützung für maschinelle Lernmodelle im "Neuen Diagramm"-Stil**: Mit der rasanten Entwicklung von Big Data und maschinellem Lernen sind viele Modelle zu neuen "Diskriminanzdiagramm"-Werkzeugen geworden. Die Software wird integrierte erweiterbare Schnittstellen enthalten, um das schnelle Laden und Trainieren solcher Modelle zu unterstützen. Forscher können "neue Diagramme" direkt zur Analyse und Diskriminierung anwenden, ohne maschinelles Lernen oder Technologien wie Python beherrschen zu müssen, wodurch komplexe Konfigurationsumgebungen vermieden werden.
-- [ ] **Intelligenter KI-Assistent**: Unter Nutzung integrierter Hilfedokumentation und wissenseingebetteter Großmodelltechnologie wird der KI-Assistent in der ersten Phase in der Lage sein, gezielte Lösungen basierend auf Schlüsselwörtern und Bedürfnissen zu generieren, die von Forschern bereitgestellt werden; in der zweiten Phase wird er die automatisierte Datenverarbeitung und -analyse weiter realisieren, wissenschaftliche Forschungsabläufe vereinfachen und die Effizienz verbessern.
+### Kern-Workflow
+- [x] **Startseite**: Schnelllinks, praktische Widgets
+- [x] **Datenvorverarbeitung**: Erkennung von Hauptoxid-Spalten, Fe-Valenz-Schätzung / Rückrechnung, Strategien für Ausreißer, fehlende Werte und Nachweisgrenzen
+- [x] **Diskriminative Diagramme**: Erstellung von Ternary-, Streu- und Spinnendiagrammen usw. auf Basis der Template-Bibliothek; Unterstützung für Datenprojektion und Stilbearbeitung
+- [x] **Geothermometer (GTM)**: Integrierte Berechnungsvorlagen für mehrere Minerale sowie Excel-ähnliche benutzerdefinierte Funktionen
+- [x] **CIPW-Standardmineralberechnung**: Norm-Berechnung aus Ganzgesteins-Hauptelementdaten und Ergebnisexport
+### Plattformfähigkeiten
+- [x] **Template-Ökosystem**: Dynamische Cloud-Updates offizieller Vorlagen; Erstellung, Import und Paketierung benutzerdefinierter Vorlagen im JSON- / ZIP-Format zum Teilen
+- [x] **Mehrsprachigkeit**: Oberflächenlokalisierung (Chinesisch / Englisch / Deutsch usw.); Ein-Klick-Sprachwechsel für Diagrammvorlagen
+- [x] **Export und Integration**: Export als PNG / JPG / BMP / SVG; Zusammenarbeit mit Drittanbieter-Software wie CorelDRAW, Inkscape, Adobe Illustrator
+
+
+
+## 🔥 In Arbeit
+- [ ] **Fortlaufende Erweiterung der Diagrammvorlagen-Bibliothek**  
+  Schwerpunkt auf geochemischen diskriminativen Diagrammen wie tektonischer Umgebungs- und Gesteinsklassifikationsdiagrammen.
+- [ ] **Weiterentwicklung des Geothermometer-Moduls**  
+  Erweiterung gängiger geologischer Thermometer- / Barometer-Vorlagen.
+- [ ] **Dokumentation und Lokalisierung**  
+  Synchronisierte Aktualisierung der Dokumentation in Chinesisch / Englisch / Deutsch usw., um den Einstieg für neue Nutzer zu erleichtern.
+
+## 📅 Kurzfristige Planung
+### Isotopen-Datierung und Diagramme
+- [ ] U-Pb-Konkordia-Diagramm (Concordia)
+- [ ] Isochron-Diagramme für Rb-Sr, Sm-Nd, Lu-Hf, U-Pb usw.
+- [ ] Diagramme zu Anfangsisotopenverhältnissen (z. B. (⁸⁷Sr/⁸⁶Sr)ᵢ vs. εNd(t))
+
+
+## 🔭 Mittel- und langfristige Vision
+### Machine-Learning-gestützte Analyse
+Einführung gängiger ML-Workflows zur Unterstützung geochemischer Datendiskrimination und -klassifikation mit Ausgabe von Modellbewertung, Variablenwichtigkeit sowie ROC-Kurven, Konfusionsmatrizen usw. — **ohne dass Nutzer selbst eine Python-Umgebung einrichten müssen**.
+### „Neue Diagramme“ als diskriminative Modelle
+Unterstützung für erweiterbare ML-Diskriminationsmodelle (z. B. auf Basis großer Datensätze trainierte neue Diagramme), damit Forschende „neue Diagramme“ direkt anwenden können, ohne den vollständigen ML-Entwicklungsstack zu beherrschen.
+### KI-Forschungsassistent (in Phasen)
+1. **Phase 1**: RAG-basierte Fragen und Antworten auf Basis integrierter Hilfedokumentation und Wissensbasis, mit Handlungsempfehlungen nach Schlüsselwörtern und Szenario  
+2. **Phase 2**: Weitere Unterstützung bei Datenverarbeitung und Analyse-Workflows zur Vereinfachung repetitiver Schritte
+### Plattformübergreifend und Sonstiges
+- [ ] Bewertung von Avalonia u. a., schrittweise Unterstützung für Linux / macOS (derzeit primär Windows)
+- [ ] Fortlaufende Optimierung von Performance, Template-Format und Entwickler-Erweiterungsschnittstellen

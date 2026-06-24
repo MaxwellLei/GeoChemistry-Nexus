@@ -1,0 +1,30 @@
+{
+  "version.label": {
+    "message": "v0.7.1",
+    "description": "The label for version current"
+  },
+  "sidebar.tutorialSidebar.category.📝 Tutorial": {
+    "message": "📝 튜토리얼",
+    "description": "The label for category 📝 Tutorial in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.📝 Tutorial.link.generated-index.title": {
+    "message": "튜토리얼 개요",
+    "description": "The generated-index page title for category 📝 Tutorial in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.🌟 Advanced Tutorials": {
+    "message": "🌟 고급 튜토리얼",
+    "description": "The label for category 🌟 Advanced Tutorials in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.🌟 Advanced Tutorials.link.generated-index.title": {
+    "message": "고급 튜토리얼 개요",
+    "description": "The generated-index page title for category 🌟 Advanced Tutorials in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.💻 Developer Guide": {
+    "message": "💻 개발자 가이드",
+    "description": "The label for category 💻 Developer Guide in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.💻 Developer Guide.link.generated-index.title": {
+    "message": "개발자 가이드 개요",
+    "description": "The generated-index page title for category 💻 Developer Guide in sidebar tutorialSidebar"
+  }
+}

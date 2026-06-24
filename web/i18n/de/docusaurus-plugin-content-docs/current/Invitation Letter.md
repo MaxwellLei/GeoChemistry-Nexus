@@ -4,31 +4,31 @@ sidebar_position: 4
 
 # 💌 Einladungsschreiben
 
-🔍 Wir begrüßen mehr Forscher, sich uns anzuschließen! 🤝
+🔍 Wir heißen weitere Forschende herzlich willkommen! 🤝
 
-💪 Lassen Sie uns zusammenarbeiten, um geochemische Berechnungsmethoden und andere Plotting-Vorlagen zu pflegen und zu aktualisieren! 📊
+💪 Lassen Sie uns gemeinsam geochemische Berechnungsmethoden und weitere Diagrammvorlagen pflegen und aktualisieren! 📊
 
-✨ Lassen Sie uns gemeinsam die Software leistungsfähiger und benutzerfreundlicher machen! 😊
+✨ Lassen Sie uns die Software gemeinsam leistungsfähiger und benutzerfreundlicher machen! 😊
 
 :::info
 
-Alle Mitwirkenden werden in unserer Mitwirkendenliste aufgeführt. Wenn Sie eine persönliche Website oder relevante Links haben, werden wir diese mit Ihrer Erlaubnis aufnehmen.
+Alle Mitwirkenden werden in unsere Contributor-Liste aufgenommen. Wenn Sie eine persönliche Website oder relevante Links haben, nehmen wir diese mit Ihrer Erlaubnis ebenfalls auf.
 
 :::
 
-## 🌟 Berechnungsmethoden und funktionale Anforderungen
+## 🌟 Berechnungsmethoden und Funktionsanforderungen
 
-Im Bereich der Geochemie sind Genauigkeit und Effizienz von Berechnungsmethoden von größter Bedeutung. **Wenn Sie fundierte Kenntnisse und Erfahrung in geochemischen Berechnungen haben oder Ihre Forschung spezifische Berechnungsmethoden beinhaltet, laden wir Sie herzlich ein, zu unserem Projekt beizutragen**. Ihr Fachwissen wird dazu beitragen, die Rechenfähigkeiten unserer Software zu verbessern und sicherzustellen, dass sie den Bedürfnissen der Forschungsgemeinschaft besser entspricht! Ihre Teilnahme wird auch neuen Benutzern wertvolle Unterstützung bieten und ihnen helfen, unsere Werkzeuge optimal zu nutzen.
+In der Geochemie sind Genauigkeit und Effizienz von Berechnungsmethoden entscheidend. **Wenn Sie fundiertes Wissen und Erfahrung in geochemischen Berechnungen haben oder Ihre Forschung bestimmte Berechnungsmethoden betrifft, laden wir Sie herzlich ein, zu unserem Projekt beizutragen.** Ihr Fachwissen wird die Rechenfähigkeiten unserer Software stärken und sicherstellen, dass sie den Bedürfnissen der Forschungscommunity besser gerecht wird! Ihre Beteiligung wird auch neue Nutzer wertvoll unterstützen und ihnen helfen, unsere Werkzeuge optimal zu nutzen.
 
 ## 💻 Entwickler
 
-Unsere Software wird mit `C#` entwickelt und basiert auf einer modernen `MVVM`-Architektur und `WPF`-Technologie, was eine hervorragende Wartbarkeit und Skalierbarkeit gewährleistet. Darüber hinaus planen wir, in Zukunft `Python` einzuführen, um bestimmte Funktionen zu implementieren, was eine flexiblere und vielfältigere Funktionalität ermöglicht. **Wenn Sie ein erfahrener `C#`- oder `Python`-Entwickler sind, heißen wir Sie herzlich willkommen, unserem Projektteam beizutreten. Egal, ob Sie Code beisteuern, Benutzeroberflächen entwerfen oder Funktionstests durchführen möchten, Ihre Beteiligung wird unsere Software besser machen**.
+Unsere Software ist in `C#` entwickelt und basiert auf moderner `MVVM`-Architektur und `WPF`-Technologie, was hervorragende Wartbarkeit und Erweiterbarkeit gewährleistet. Zudem planen wir, künftig `Python` für bestimmte Funktionen einzubinden, um flexiblere und vielfältigere Möglichkeiten zu bieten. **Wenn Sie ein erfahrener `C#`- oder `Python`-Entwickler sind, heißen wir Sie herzlich im Projektteam willkommen. Ob Codebeiträge, UI-Design oder Funktionstests — Ihre Mitwirkung macht unsere Software besser.**
 
-![Software Framework](https://geo-1303234197.cos.ap-hongkong.myqcloud.com/Software_Framework.png)
+![Software-Framework](https://geo-1303234197.cos.ap-hongkong.myqcloud.com/Software_Framework.png)
 
 ## 🌍 Übersetzung
 
-Um unsere Software mehr Benutzern weltweit zugänglich zu machen, möchten wir zusätzliche lokalisierte Sprachversionen bereitstellen. **Wenn Sie mehrere Sprachen beherrschen und an Lokalisierungsbemühungen teilnehmen möchten, begrüßen wir Ihren Beitrag begeistert**. Ihre harte Arbeit wird uns helfen, ein inklusiveres und zugänglicheres Produkt zu schaffen, das Forscher aus verschiedenen sprachlichen Hintergründen anzieht. Bitte kontaktieren Sie uns und lassen Sie uns zusammenarbeiten, um die Benutzerfreundlichkeit der Software zu verbessern!
+Damit unsere Software weltweit mehr Nutzer erreicht, möchten wir weitere lokalisierte Sprachversionen anbieten. **Wenn Sie mehrere Sprachen beherrschen und an der Lokalisierung mitwirken möchten, begrüßen wir Ihren Beitrag herzlich.** Ihre Arbeit hilft uns, ein inklusiveres und zugänglicheres Produkt zu schaffen, das Forschende unterschiedlicher Sprachhintergründe anspricht. Kontaktieren Sie uns — gemeinsam verbessern wir die Nutzbarkeit der Software!
 
 ---
 
@@ -36,6 +36,6 @@ Um unsere Software mehr Benutzern weltweit zugänglich zu machen, möchten wir z
 
 Siehe [Besonderer Dank](./Special%20Thanks).
 
-## ℹ️ Über
+## ℹ️ Über uns
 
-Siehe [Über](./About).
+Siehe [Über uns](./About).

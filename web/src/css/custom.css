@@ -38,3 +38,26 @@
   font-weight: 600;
 }
 
+/* Center standalone markdown images (paragraph contains only one image) */
+.markdown p:has(> img:only-child) {
+  text-align: center;
+}
+
+/* Doc page: spacing between sidebar, content, and TOC */
+:root {
+  --gn-doc-layout-gap-left: 4rem;
+  --gn-doc-layout-gap-right: 2rem;
+}
+
+@media (min-width: 997px) {
+  /* Left sidebar ↔ main content */
+  .docs-wrapper main > .container {
+    padding-left: var(--gn-doc-layout-gap-left);
+  }
+
+  /* Main content ↔ right TOC */
+  .docs-doc-page .container > .row {
+    column-gap: var(--gn-doc-layout-gap-right);
+  }
+}
+

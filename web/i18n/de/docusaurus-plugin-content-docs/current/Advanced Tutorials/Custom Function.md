@@ -2,7 +2,11 @@
 sidebar_position: 2
 ---
 
-# 🔢 Benutzerdefinierte Funktionen
+# Benutzerdefinierte Funktionen
+
+:::warning
+Diese Dokumentation wird derzeit aktualisiert / ist noch nicht vollständig aktualisiert. Bitte haben Sie Geduld.
+:::
 
 Für Geothermometer-Berechnungen können Sie auch integrierte benutzerdefinierte Funktionen zur direkten Berechnung verwenden. Die derzeit integrierten Geothermometer-Berechnungsfunktionen sind unten aufgeführt:
 

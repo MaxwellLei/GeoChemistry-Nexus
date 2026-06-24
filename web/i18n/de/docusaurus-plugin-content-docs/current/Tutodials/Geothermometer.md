@@ -1,58 +1,62 @@
 ---
-sidebar_position: 3
+sidebar_position: 4
 ---
 
-# 🌡️ Geothermometer
+# Geothermobarometer
 
-Die Geothermometer-Seite in der Software wird als **GTM** abgekürzt. Diese Seite enthält derzeit Geothermometer-Berechnungen für Minerale wie Zirkon, Sphalerit, Quarz, Xenotim, Chlorit und Biotit.
+In frühen Versionen wurde dieses Modul kurz als **GTM** bezeichnet. Später hieß es Geothermometer und trägt nun den offiziellen Namen Geothermobarometer.
 
-:::tip
+Frühe Versionen umfassten geologische Thermometer für Zirkon, Sphalerit, Quarz, Xenotim, Chlorit und Biotit. Das neue Geothermobarometer-Modul wird derzeit noch angepasst und wird in Kürze synchronisiert.
 
-Bitte beachten Sie, dass das aktuelle Geothermometer-Modul eine temporäre Benutzeroberfläche verwendet. Sie wird angepasst, wenn die Funktionalität der Thermometer erweitert wird.
+## 🌟 Merkmale
 
-:::
+Das Geothermobarometer-Modul orientiert sich von Anfang an **am Excel-Prinzip**, um die Einarbeitung zu erleichtern. **Es gibt zwei Hauptnutzungsformen:**
 
-## 🌟 Funktionen
+1. **Integrierte Cloud-Vorlagen**: Standardmäßig sind **Cloud-Vorlagen** für Nutzer nicht editierbar und werden offiziell gepflegt. Bei Internetverbindung erhalten Sie die neuesten Geothermobarometer-Vorlagen ohne Software-Update. Forschende können passende Vorlagen suchen, Daten gemäß Anleitung eintragen und berechnen. **Diese Methode ist direkter und schneller — Programmierkenntnisse sind nicht erforderlich.**
+2. **Unabhängiges Fenster**: Über die Menüleiste **Datei → Unabhängige Tabelle öffnen** lässt sich ein separates Fenster öffnen. Dort können Forschende benutzerdefinierte Berechnungen mit verschiedenen Geothermobarometern kombinieren. Die zugehörigen Funktionen finden Sie in den fortgeschrittenen Anleitungen. **Diese Methode ist komplexer, aber flexibler.**
 
-Unser Geothermometer-Modul verwendet jetzt eine Excel-ähnliche Oberfläche, was die Lernkurve erheblich senkt. Berechnungen können auf zwei Arten durchgeführt werden:
+Das Modul erlaubt zudem das Erstellen eigener Geothermobarometer. Als Paket exportiert können Sie diese an andere Forschende weitergeben.
 
-1.  **Funktionen direkt in Zellen verwenden**, identisch mit der Verwendung von Excel-Funktionen. Wir haben mehrere Berechnungsfunktionen für verschiedene Thermometer vordefiniert. Für spezifische Funktionsdetails siehe den Abschnitt "Benutzerdefinierte Funktionen" in den Fortgeschrittenen Anleitungen.
-2.  **Verwendung integrierter Geothermometer-Vorlagen**, was direkter und schneller ist und keine Programmierkenntnisse erfordert.
+![gtm_ui](/img/v0.7.1/geothermobarometer1.webp)
 
-![gtm_ui](imgs/gtm_ui.png)
+## Anwendungsbeispiel Geothermobarometer
 
-## Anwendungsbeispiele
+### Integrierte Vorlagen verwenden
 
-### Benutzerdefinierte Funktionen
+Wählen Sie zunächst im Geothermometer-Modul über die Menüleiste die gewünschte Berechnungsvorlage:
 
-Die Verwendung von benutzerdefinierten Funktionen entspricht Excel; geben Sie einfach ein Format wie `=FunktionsName(args)` in eine Zelle ein, um sie aufzurufen.
+![gtm_ui](/img/v0.7.1/geothermobarometer2.webp)
 
-Siehe die Fortgeschrittenen Anleitungen für spezifische Referenzen zu benutzerdefinierten Funktionen.
+Anschließend erscheint eine seitliche Bestätigungsleiste; nach Bestätigung wird die vorherige Vorlagenberechnung zurückgesetzt und überschrieben (falls zuvor ein anderes Thermobarometer gewählt wurde).
 
-### Verwendung integrierter Vorlagen
+![gtm_ui](/img/v0.7.1/geothermobarometer3.webp)
 
-Wählen Sie zuerst im Geothermometer-Modul die entsprechende Berechnungsvorlage aus der Menüleiste aus:
-
-![gtm_select_m](imgs/gtm_select_m.png)
-
-Es erscheint dann ein Popup-Fenster, in dem Sie bestätigen müssen, ob ein neues Blatt für die Berechnung erstellt werden soll.
-
-Wenn Ihr aktuelles Blatt Daten enthält, die Sie nicht überschreiben möchten, wählen Sie bitte **OK**. Wenn Sie hingegen das aktuelle Blatt überschreiben möchten, wählen Sie **Abbrechen**.
-
-![Notification](https://geo-1303234197.cos.ap-hongkong.myqcloud.com/V0_5_0_0/GTM_New_Sheet.png)
-
-Als Nächstes erscheint eine Beispielvorlage für das Thermometer. Benutzer müssen nur die entsprechenden Daten ausfüllen und dann den "Click-and-Drag"-Ausfüllgriff (ähnlich wie bei Excel) verwenden, um die Berechnungen automatisch abzuschließen (wie im animierten Beispiel unten gezeigt).
+Als Nächstes erscheint eine Beispielvorlage für ein Thermometer. Tragen Sie die entsprechenden Daten ein und nutzen Sie den „Klicken und Ziehen“-Füllgriff (ähnlich wie in Excel), um Berechnungen automatisch auszuführen (siehe Animation unten).
 
 ![](https://geo-1303234197.cos.ap-hongkong.myqcloud.com/V0_5_0_0/Example.gif)
 
-## Zwischenberechnungsprozesse
+Neuere Versionen unterstützen zudem die Anzeige interner Berechnungsdetails. Markieren Sie eine Datenzeile mit der Maus, um Zwischenergebnisse im unteren Bereich einzusehen.
 
-:::tip
+![gtm_ui](/img/v0.7.1/geothermobarometer4.webp)
 
-Wir haben dies bereits berücksichtigt. Wir verstehen, dass Petrologen Überprüfungen durchführen oder Zwischenprozesse einsehen müssen. Wir entwerfen derzeit eine neue Benutzeroberfläche und Algorithmen, um diese Funktionalität zu implementieren.
+### Unabhängiges Fenster — benutzerdefinierte Funktionen
+
+Wie oben beschrieben, öffnen Sie über **Datei → Unabhängige Tabelle öffnen** ein separates Fenster.
+
+Die unabhängige Tabelle ist leer und enthält einige einfache Symbolleisten-Schaltflächen.
+
+![gtm_ui](/img/v0.7.1/geothermobarometer5.webp)
+
+Die Nutzung entspricht dem **täglichen Arbeiten mit Excel: Beliebige Werte eingeben und mit `=Funktionsname(Übergabeparameter)` Funktionen aufrufen.**
+
+Der Unterschied: Geothermobarometer-Berechnungen sind als Funktionen registriert; Forschende können Berechnungen flexibel anpassen — u. a. Vergleiche mehrerer Thermobarometer. In Standardvorlagen lassen sich nicht gleichzeitig mehrere Ergebnisse berechnen (außer nacheinander pro Vorlage). Im unabhängigen Fenster können Sie mehrere Geothermobarometer-Funktionen in derselben Tabelle definieren und nutzen.
+
+:::note
+
+**Im unabhängigen Fenster können Zwischenberechnungen einzelner Datenzeilen nicht angezeigt werden.**
 
 :::
 
 ---
 
-Wir laden Mitwirkende herzlich ein, sich uns anzuschließen, um ein besseres Softwareerlebnis zu schaffen. 🤝😊
+Wir laden Mitwirkende herzlich ein, gemeinsam ein besseres Software-Erlebnis zu schaffen. 🤝😊

@@ -1,6 +1,6 @@
 {
   "version.label": {
-    "message": "v0.6.1",
+    "message": "v0.7.1",
     "description": "The label for version current"
   },
   "sidebar.tutorialSidebar.category.📝 Tutorial": {
@@ -18,5 +18,13 @@
   "sidebar.tutorialSidebar.category.🌟 Advanced Tutorials.link.generated-index.title": {
     "message": "Anleitungsübersicht",
     "description": "The generated-index page title for category 🌟 Advanced Tutorials in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.💻 Developer Guide": {
+    "message": "💻 Entwicklerhandbuch",
+    "description": "The label for category 💻 Developer Guide in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.💻 Developer Guide.link.generated-index.title": {
+    "message": "Entwicklerhandbuch-Übersicht",
+    "description": "The generated-index page title for category 💻 Developer Guide in sidebar tutorialSidebar"
   }
 }

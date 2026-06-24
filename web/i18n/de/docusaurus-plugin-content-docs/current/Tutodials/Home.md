@@ -2,26 +2,26 @@
 sidebar_position: 1
 ---
 
-# 🏠 Startseite
+# Startseite
 
 # Ziel
 
-Das ursprüngliche Designziel der Startseite ist es, den schnellen Zugriff auf häufig verwendete Websites im Bereich der Geowissenschaften zu integrieren und praktische Widgets zur Unterstützung verwandter Operationen und Berechnungen bereitzustellen, um letztendlich die Forschungseffizienz zu steigern.
+Die Startseite bündelt Schnellzugriffe auf häufig genutzte Websites aus den Geowissenschaften und bietet praktische Widgets für zugehörige Operationen und Berechnungen, um die Forschungseffizienz zu steigern.
 
-![plot_home_ui](/img/v0.6.1/tutorial_home1.png)
+Unser Designziel ist es, möglichst viele geologische, geochemische und geowissenschaftliche Websites und Werkzeuge über Schnelllinks auf der Startseite zu verbinden und so einen vernetzten, bequemen Zugang zu schaffen.
 
-Die Startseite zeigt hauptsächlich **Schnelllinks** und **Widgets**. Sie können mit der rechten Maustaste klicken, um die Menüleiste zu öffnen und verwandte Operationen anzuzeigen.
+![plot_home_ui](/img/v0.7.1/intro_user_interface_example1.webp)
 
-Bezüglich der Schnelllinks ist unsere Designphilosophie, dass Benutzer häufig verwendete professionelle Websites in Geologie und Geochemie hinzufügen können. Zusätzlich enthält die Software integrierte empfohlene Websites. Wenn Sie möchten, dass Ihre Website zu den Empfehlungen der Startseite hinzugefügt wird, kontaktieren Sie uns bitte über die Seite "Über".
+Die Hauptfunktionen der Startseite sind: **Ankündigungen**, **Schnelllinks** und **Widgets**.
 
-Derzeit zeigt die Startseite standardmäßig das Systemdatum und die Uhrzeit an. Sie verfügt auch über eine Suchleiste, die benutzerdefinierte Schnelllinks und Widgets suchen und abgleichen kann, um ein schnelles Nachschlagen und Navigieren zu ermöglichen.
-
-Das Designziel von Widgets ist es, einfache, unabhängige und grundlegende Berechnungs- oder Betriebsfunktionen bereitzustellen, um häufig verwendete periphere Werkzeuge zu ergänzen und den täglichen Gebrauch für Benutzer zu erleichtern.
+* **Ankündigungen**: Empfang von Server-Benachrichtigungen
+* **Schnelllinks**: Bündelung geowissenschaftlicher Einstiegspunkte in zwei Kategorien — **Empfohlene Links** und **Persönliche Links**. Empfohlene Links können nicht individuell geändert werden; sie werden serverseitig eingebunden. Wenn Sie möchten, dass Ihre Website in den Empfehlungen erscheint, kontaktieren Sie uns über die Seite „Über uns“. Persönliche Links können Sie selbst hinzufügen, entfernen und verwalten.
+* **Widgets**: Widgets sollen einfache, eigenständige und grundlegende Berechnungen oder Operationen bereitstellen, um gängige Hilfswerkzeuge zu ergänzen und den Alltag zu erleichtern. Künftig sind sie als erweiterbare Plugins geplant; derzeit ist eine freie Erweiterung noch nicht möglich.
 
 :::info
 
-Da die Software ständig aktualisiert wird, wird die Funktionalität der Startseite noch praktischer werden.
+Mit fortlaufenden Software-Updates wird die Startseite immer praktischer.
 
-Wir begrüßen Ihr wertvolles Feedback, um uns zu helfen, die Benutzerfreundlichkeit und Bequemlichkeit der Software zu verbessern. 🌹
+Wir freuen uns über Ihr wertvolles Feedback, um Nutzbarkeit und Komfort der Software zu verbessern. 🌹
 
 :::

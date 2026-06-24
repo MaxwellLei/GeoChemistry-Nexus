@@ -1,52 +1,52 @@
 ---
-sidebar_position: 4
+sidebar_position: 6
 ---
 
-# ⚙️ Einstellungen
+# Einstellungen
 
-Der Einstellungsbereich der Software ist recht vielfältig und wird mit der Erweiterung der Funktionen kontinuierlich um weitere Personalisierungsoptionen aktualisiert.
+Der Einstellungsbereich der Software ist vielfältig und wird mit wachsendem Funktionsumfang um weitere Personalisierungsoptionen ergänzt.
 
 ## Allgemeine Programmeinstellungen
 
-Die Einstellungen sind hauptsächlich in vier Teile unterteilt: Dateipfade, Internationalisierung & Personalisierung, Benachrichtigungen und Sonstiges. Nachfolgend finden Sie eine kurze Beschreibung der wichtigsten Einstellungen:
+Die Einstellungen gliedern sich hauptsächlich in vier Bereiche: Dateipfade, Internationalisierung und Personalisierung, Benachrichtigungen und Sonstiges. Nachfolgend eine kurze Übersicht der wichtigsten Optionen:
 
-![tutorial_settings1](/img/v0.6.1/tutorial_settings1.png)
+![tutorial_settings1](/img/v0.7.1/tutorial_settings1.webp)
 
-### 🌍 Sprache & Aussehen
+### 🌍 Sprache & Erscheinungsbild
 
-- **Sprache**: Unterstützt derzeit Vereinfachtes Chinesisch, Englisch, Deutsch, Spanisch, Japanisch, Koreanisch und Russisch.
-- **Start-Hintergrundbild**: Das Hintergrundbild, das beim Start der Software angezeigt wird.
+-   **Sprache**: Derzeit werden Vereinfachtes Chinesisch, Traditionelles Chinesisch, Englisch, Deutsch, Spanisch, Japanisch, Koreanisch und Russisch unterstützt.
+-   **Start-Hintergrundbild**: Hintergrundbild beim Start der Software.
 
 :::info
 
-Für die Sprachunterstützung: Wenn Sie helfen möchten, für Ihr Land zu lokalisieren, laden wir Sie herzlich ein, sich unseren Übersetzungsbemühungen anzuschließen! Die meisten aktuellen Übersetzungen wurden von KI unterstützt, was bedeutet, dass einige Teile ungenau sein können – Ihre Hilfe wird sehr benötigt und geschätzt.
+Zur Sprachunterstützung: Wenn Sie bei der Lokalisierung für Ihr Land mithelfen möchten, laden wir Sie herzlich zur Übersetzungsarbeit ein! Die meisten Übersetzungen wurden KI-unterstützt erstellt — einzelne Passagen können ungenau sein. Ihre Hilfe ist sehr willkommen und wird geschätzt.
 
 :::
 
 ### 🗨️ Benachrichtigungen
 
-- **Automatische Schließdauer**: Die Dauer, für die Benachrichtigungs-Popups während des Softwarebetriebs automatisch geschlossen werden. Bitte beachten Sie, dass Fehler- und Warnmeldungen manuell geschlossen werden müssen.
+-   **Automatisches Schließen**: Dauer, nach der Benachrichtigungs-Pop-ups während des Betriebs automatisch geschlossen werden. Fehler- und Warnmeldungen müssen manuell geschlossen werden.
 
 ### ⚙️ Sonstiges
 
-- **Mit System starten**: Die Software startet automatisch, wenn das System hochfährt.
-- **Entwicklermodus**: Dieser Modus bietet Debugging-Funktionen für Entwickler. Nicht-Entwicklern wird geraten, ihn nicht zu aktivieren, um unbeabsichtigte Operationen zu vermeiden.
-- **Automatisch auf Updates prüfen**: Die Software prüft beim Start automatisch auf Updates; aufgrund von Serverproblemen ist diese Funktion jedoch vorübergehend deaktiviert und wird in einer zukünftigen Version wiederhergestellt.
-- **Beendigungsmethode**: Die Software kann auf zwei Arten beendet werden: Direktes Beenden oder Minimieren in die Taskleiste. Wenn Sie sich für das Minimieren in die Taskleiste entscheiden, können Sie mit der rechten Maustaste auf das Taskleistensymbol klicken und Beenden wählen, um die Software zu schließen.
+-   **Mit System starten**: Die Software startet automatisch mit dem System.
+-   **Entwicklermodus**: Bietet Entwicklern Debug-Funktionen. Nicht-Entwicklern wird empfohlen, diesen Modus nicht zu aktivieren, um Fehlbedienungen zu vermeiden.
+-   **Automatische Update-Prüfung**: Beim Start wird automatisch auf Updates geprüft.
+-   **Beenden-Modus**: Die Software kann auf zwei Arten beendet werden: direkt beenden oder in den System-Tray minimieren. Bei Minimierung in den Tray können Sie per Rechtsklick auf das Tray-Symbol „Beenden“ wählen.
 
-## Einstellungen des Plot-Moduls
+## Einstellungen des Diagrammmoduls
 
-Die Einstellungen des Plot-Moduls beziehen sich speziell auf Funktionen innerhalb des Plot-Moduls, einschließlich, aber nicht beschränkt auf:
+Die Einstellungen des Diagrammmoduls betreffen ausschließlich Funktionen innerhalb dieses Moduls, unter anderem:
 
-* Pfadkonfiguration für Drittanbieterprogramme
-* Standard-Drittanbieterprogramme
-* Standard-Ladesprache für Diagramme
-* Automatische Updates für Diagrammvorlagen und Klassifizierungsstrukturen
+*   Konfiguration von Pfaden zu Drittanbieter-Programmen
+*   Standard-Drittanbieter-Programm
+*   Standardsprache beim Laden von Diagrammen
+*   Automatische Aktualisierung von Diagrammvorlagen und Kategoriestruktur
 
-![tutorial_settings2](/img/v0.6.1/tutorial_settings2.png)
+![tutorial_settings2](/img/v0.7.1/tutorial_settings2.webp)
 
-## Über
+## Über uns
 
-Die Über-Seite des Programms.
+Die „Über uns“-Seite des Programms.
 
 ![tutorial_settings3](/img/v0.6.1/tutorial_settings3.png)
