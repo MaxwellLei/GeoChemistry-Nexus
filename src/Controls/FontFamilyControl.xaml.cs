@@ -14,11 +14,11 @@ namespace GeoChemistryNexus.Controls
 {
     public class FontItem
     {
-        public string Name { get; set; }
-        public string Category { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Category { get; set; } = string.Empty;
 
         // 缓存 FontFamily 对象，避免绑定过程中因 TypeConverter 带来的开销
-        private System.Windows.Media.FontFamily _fontFamily;
+        private System.Windows.Media.FontFamily? _fontFamily;
         public System.Windows.Media.FontFamily FontFamily
         {
             get
@@ -41,7 +41,7 @@ namespace GeoChemistryNexus.Controls
         // Static list to persist recent fonts
         private static List<string> _recentFonts = new List<string>();
         // Cache for all font items to avoid recreating them
-        private static List<FontItem> _cachedAllFontItems = null;
+        private static List<FontItem>? _cachedAllFontItems;
         private const int MaxRecentFonts = 5;
 
         public static readonly DependencyProperty FontFamilyNameProperty =
@@ -128,7 +128,7 @@ namespace GeoChemistryNexus.Controls
             control.SetSelectedFont(newFontName);
         }
 
-        private void SetSelectedFont(string fontName)
+        private void SetSelectedFont(string? fontName)
         {
             if (string.IsNullOrEmpty(fontName)) return;
 

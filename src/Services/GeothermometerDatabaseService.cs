@@ -18,7 +18,7 @@ namespace GeoChemistryNexus.Services
     /// </summary>
     public class GeothermometerDatabaseService
     {
-        private static GeothermometerDatabaseService _instance;
+        private static GeothermometerDatabaseService _instance = null!;
         public static GeothermometerDatabaseService Instance => _instance ??= new GeothermometerDatabaseService();
 
         private readonly string _dbPath;

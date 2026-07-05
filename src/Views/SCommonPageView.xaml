@@ -160,6 +160,42 @@
                                         Visibility="{Binding DeveloperMode, Converter={StaticResource BooleanToVisibilityConverter}}"
                                         Width="Auto" Padding="15,0" Height="30" Margin="8,0,0,0"/>
                             </StackPanel>
+
+                            <Border Grid.Column="1"
+                                    Style="{StaticResource AppUpdateRowOverlayMaskStyle}"
+                                    Visibility="{Binding IsAppUpdateOverlayVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                    IsHitTestVisible="True">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Grid Grid.Row="0" Margin="0,0,0,3">
+                                        <TextBlock Text="{Binding AppUpdateStatusText}"
+                                                   Style="{StaticResource AppUpdateRowOverlayStatusStyle}"/>
+
+                                        <TextBlock Text="{Binding AppUpdateProgress, StringFormat={}{0:0}%}">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock" BasedOn="{StaticResource AppUpdateRowOverlayPercentStyle}">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsAppUpdateProgressIndeterminate}" Value="False">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </Grid>
+
+                                    <ProgressBar Grid.Row="1"
+                                                 Style="{StaticResource FlatProgressBarStyle}"
+                                                 Maximum="100"
+                                                 Value="{Binding AppUpdateProgress}"
+                                                 IsIndeterminate="{Binding IsAppUpdateProgressIndeterminate}"/>
+                                </Grid>
+                            </Border>
                         </Grid>
                     </StackPanel>
                 </Border>
@@ -189,6 +225,7 @@
 
             </StackPanel>
         </hc:ScrollViewer>
+
     </Grid>
 </Page>
 

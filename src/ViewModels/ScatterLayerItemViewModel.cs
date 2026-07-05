@@ -45,9 +45,9 @@ namespace GeoChemistryNexus.ViewModels
         public ScatterLayerItemViewModel(ScatterDefinition scatterDefinition)
             : base(string.IsNullOrWhiteSpace(scatterDefinition?.Name)
                 ? LanguageService.Instance["data_point"]
-                : scatterDefinition.Name)
+                : scatterDefinition!.Name)
         {
-            ScatterDefinition = scatterDefinition;
+            ScatterDefinition = scatterDefinition ?? throw new ArgumentNullException(nameof(scatterDefinition));
             PropertyChanged += ScatterLayerItemViewModel_PropertyChanged;
 
             // 监听 Model 变化

@@ -159,7 +159,7 @@ namespace GeoChemistryNexus.Services
             var originalHeaders = new List<string>();
             for (int col = 0; col < effectiveColumnCount; col++)
             {
-                string header = sourceSheet.ColumnHeaders[col]?.Text?.Trim();
+                string header = sourceSheet.ColumnHeaders[col]?.Text?.Trim() ?? string.Empty;
                 originalHeaders.Add(string.IsNullOrWhiteSpace(header) ? $"Column_{col + 1}" : header);
             }
 
@@ -376,6 +376,7 @@ namespace GeoChemistryNexus.Services
             return headers
                 .Select(GetCanonicalHeader)
                 .Where(h => !string.IsNullOrWhiteSpace(h))
+                .Select(h => h!)
                 .Distinct(StringComparer.OrdinalIgnoreCase)
                 .ToList();
         }
@@ -613,7 +614,7 @@ namespace GeoChemistryNexus.Services
 
             for (int i = 0; i < headers.Count; i++)
             {
-                string canonical = GetCanonicalHeader(headers[i]);
+                string? canonical = GetCanonicalHeader(headers[i]);
                 if (string.IsNullOrWhiteSpace(canonical) || map.ContainsKey(canonical))
                 {
                     continue;
@@ -820,7 +821,7 @@ namespace GeoChemistryNexus.Services
             return (al2o3 / MolecularWeights["Al2O3"]) / denominator;
         }
 
-        private static string GetCanonicalHeader(string header)
+        private static string? GetCanonicalHeader(string header)
         {
             string normalized = (header ?? string.Empty).Trim();
             if (string.IsNullOrWhiteSpace(normalized))
@@ -933,7 +934,7 @@ namespace GeoChemistryNexus.Services
             int lastHeaderIndex = -1;
             for (int col = 0; col < sourceSheet.ColumnCount; col++)
             {
-                string header = sourceSheet.ColumnHeaders[col]?.Text;
+                string? header = sourceSheet.ColumnHeaders[col]?.Text;
                 if (!string.IsNullOrWhiteSpace(header))
                 {
                     lastHeaderIndex = col;

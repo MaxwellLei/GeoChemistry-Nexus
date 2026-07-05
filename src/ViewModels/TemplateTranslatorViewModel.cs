@@ -17,28 +17,27 @@ namespace GeoChemistryNexus.ViewModels
     public partial class TemplateTranslatorViewModel : ObservableObject
     {
         [ObservableProperty]
-        private string _currentFilePath;
+        private string _currentFilePath = string.Empty;
 
         [ObservableProperty]
-        private string _statusMessage;
+        private string _statusMessage = string.Empty;
 
         [ObservableProperty]
         private bool _isFileLoaded;
 
         [ObservableProperty]
-        private DataTable _translationTable;
+        private DataTable _translationTable = new();
 
         [ObservableProperty]
-        private GraphMapTemplate _currentTemplate;
+        private GraphMapTemplate? _currentTemplate;
 
         [ObservableProperty]
-        private List<LocalizedString> _localizedStrings;
+        private List<LocalizedString> _localizedStrings = new();
 
         private readonly JsonSerializerOptions _jsonOptions;
 
         public TemplateTranslatorViewModel()
         {
-            TranslationTable = new DataTable();
             _jsonOptions = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true,
@@ -74,9 +73,7 @@ namespace GeoChemistryNexus.ViewModels
             TranslationTable.Columns.Add(langCode, typeof(string));
             
             // 触发 DataGrid 刷新
-            var temp = TranslationTable;
-            TranslationTable = null;
-            TranslationTable = temp;
+            OnPropertyChanged(nameof(TranslationTable));
 
             StatusMessage = $"已添加语言: {langCode}";
         }
@@ -90,9 +87,7 @@ namespace GeoChemistryNexus.ViewModels
                 TranslationTable.Columns.Remove(langCode);
                 
                 // 触发 DataGrid 刷新
-                var temp = TranslationTable;
-                TranslationTable = null;
-                TranslationTable = temp;
+                OnPropertyChanged(nameof(TranslationTable));
 
                 StatusMessage = $"已删除语言: {langCode}";
             }
@@ -131,22 +126,22 @@ namespace GeoChemistryNexus.ViewModels
             try
             {
                 string jsonContent = File.ReadAllText(filePath);
-                
-                _currentTemplate = JsonSerializer.Deserialize<GraphMapTemplate>(jsonContent, _jsonOptions);
+                var template = JsonSerializer.Deserialize<GraphMapTemplate>(jsonContent, _jsonOptions);
 
-                if (_currentTemplate == null)
+                if (template == null)
                 {
                     StatusMessage = "无法解析模板文件";
                     return;
                 }
 
                 // 版本校验
-                if (!GraphMapTemplateService.IsVersionCompatible(_currentTemplate))
+                if (!GraphMapTemplateService.IsVersionCompatible(template))
                 {
-                    StatusMessage = LanguageService.Instance["template_version_too_high"];
+                    StatusMessage = LanguageService.Instance["template_version_too_high"] ?? string.Empty;
                     return;
                 }
 
+                CurrentTemplate = template;
                 CurrentFilePath = filePath;
                 LoadDataToTable();
                 IsFileLoaded = true;
@@ -160,7 +155,15 @@ namespace GeoChemistryNexus.ViewModels
 
         private void LoadDataToTable()
         {
-            _localizedStrings = new List<LocalizedString>();
+            if (CurrentTemplate == null)
+            {
+                TranslationTable = new DataTable();
+                LocalizedStrings = new List<LocalizedString>();
+                return;
+            }
+
+            var currentTemplate = CurrentTemplate;
+            LocalizedStrings = new List<LocalizedString>();
             var dt = new DataTable();
 
             // 定义列
@@ -171,12 +174,12 @@ namespace GeoChemistryNexus.ViewModels
             var allLanguages = new HashSet<string>();
             
             // 1. NodeList
-            if (_currentTemplate.NodeList != null)
+            if (currentTemplate.NodeList != null)
             {
-                _localizedStrings.Add(_currentTemplate.NodeList);
-                if (_currentTemplate.NodeList.Translations != null)
+                LocalizedStrings.Add(currentTemplate.NodeList);
+                if (currentTemplate.NodeList.Translations != null)
                 {
-                    foreach (var key in _currentTemplate.NodeList.Translations.Keys)
+                    foreach (var key in currentTemplate.NodeList.Translations.Keys)
                     {
                         allLanguages.Add(key);
                     }
@@ -184,14 +187,14 @@ namespace GeoChemistryNexus.ViewModels
             }
 
             // 2. Info.Texts
-            if (_currentTemplate.Info?.Texts != null)
+            if (currentTemplate.Info?.Texts != null)
             {
-                for (int i = 0; i < _currentTemplate.Info.Texts.Count; i++)
+                for (int i = 0; i < currentTemplate.Info.Texts.Count; i++)
                 {
-                    var textDef = _currentTemplate.Info.Texts[i];
+                    var textDef = currentTemplate.Info.Texts[i];
                     if (textDef.Content != null)
                     {
-                        _localizedStrings.Add(textDef.Content);
+                        LocalizedStrings.Add(textDef.Content);
                         if (textDef.Content.Translations != null)
                         {
                             foreach (var key in textDef.Content.Translations.Keys)
@@ -204,12 +207,12 @@ namespace GeoChemistryNexus.ViewModels
             }
 
             // 3. Info.Title
-             if (_currentTemplate.Info?.Title?.Label != null)
+             if (currentTemplate.Info?.Title?.Label != null)
             {
-                _localizedStrings.Add(_currentTemplate.Info.Title.Label);
-                if (_currentTemplate.Info.Title.Label.Translations != null)
+                LocalizedStrings.Add(currentTemplate.Info.Title.Label);
+                if (currentTemplate.Info.Title.Label.Translations != null)
                 {
-                    foreach (var key in _currentTemplate.Info.Title.Label.Translations.Keys)
+                    foreach (var key in currentTemplate.Info.Title.Label.Translations.Keys)
                     {
                         allLanguages.Add(key);
                     }
@@ -217,14 +220,14 @@ namespace GeoChemistryNexus.ViewModels
             }
 
              // 4. Info.Axes
-             if (_currentTemplate.Info?.Axes != null)
+             if (currentTemplate.Info?.Axes != null)
             {
-                for (int i = 0; i < _currentTemplate.Info.Axes.Count; i++)
+                for (int i = 0; i < currentTemplate.Info.Axes.Count; i++)
                 {
-                    var axis = _currentTemplate.Info.Axes[i];
+                    var axis = currentTemplate.Info.Axes[i];
                     if (axis.Label != null) // BaseAxisDefinition uses 'Label' not 'Title.Label'
                     {
-                        _localizedStrings.Add(axis.Label);
+                        LocalizedStrings.Add(axis.Label);
                         if (axis.Label.Translations != null)
                         {
                             foreach (var key in axis.Label.Translations.Keys)
@@ -238,9 +241,9 @@ namespace GeoChemistryNexus.ViewModels
 
 
             // 确保默认语言也在列中
-            if (!string.IsNullOrEmpty(_currentTemplate.DefaultLanguage))
+            if (!string.IsNullOrEmpty(currentTemplate.DefaultLanguage))
             {
-                allLanguages.Add(_currentTemplate.DefaultLanguage);
+                allLanguages.Add(currentTemplate.DefaultLanguage);
             }
 
             // 添加语言列
@@ -251,27 +254,29 @@ namespace GeoChemistryNexus.ViewModels
 
             // 填充行
             // NodeList
-             if (_currentTemplate.NodeList != null)
+             if (currentTemplate.NodeList != null)
             {
-                AddRow(dt, "NodeList (Category)", _currentTemplate.NodeList, allLanguages);
+                AddRow(dt, "NodeList (Category)", currentTemplate.NodeList, allLanguages);
             }
 
              // Title
-             if (_currentTemplate.Info?.Title?.Label != null)
+             if (currentTemplate.Info?.Title?.Label != null)
              {
-                 AddRow(dt, "Main Title", _currentTemplate.Info.Title.Label, allLanguages);
+                 AddRow(dt, "Main Title", currentTemplate.Info.Title.Label, allLanguages);
              }
 
             // Texts
-            if (_currentTemplate.Info?.Texts != null)
+            if (currentTemplate.Info?.Texts != null)
             {
-                for (int i = 0; i < _currentTemplate.Info.Texts.Count; i++)
+                for (int i = 0; i < currentTemplate.Info.Texts.Count; i++)
                 {
-                    var textDef = _currentTemplate.Info.Texts[i];
+                    var textDef = currentTemplate.Info.Texts[i];
                     if (textDef.Content != null)
                     {
                         // 尝试用默认语言的内容作为标识，如果没有则用索引
-                        string defaultText = textDef.Content.Default != null && textDef.Content.Translations.ContainsKey(textDef.Content.Default) 
+                        string defaultText = textDef.Content.Default != null
+                            && textDef.Content.Translations != null
+                            && textDef.Content.Translations.ContainsKey(textDef.Content.Default)
                             ? textDef.Content.Translations[textDef.Content.Default] 
                             : $"Text #{i + 1}";
                         
@@ -284,11 +289,11 @@ namespace GeoChemistryNexus.ViewModels
             }
             
             // Axes
-             if (_currentTemplate.Info?.Axes != null)
+             if (currentTemplate.Info?.Axes != null)
             {
-                for (int i = 0; i < _currentTemplate.Info.Axes.Count; i++)
+                for (int i = 0; i < currentTemplate.Info.Axes.Count; i++)
                 {
-                    var axis = _currentTemplate.Info.Axes[i];
+                    var axis = currentTemplate.Info.Axes[i];
                     if (axis.Label != null)
                     {
                          AddRow(dt, $"Axis #{i + 1} Title", axis.Label, allLanguages);
@@ -322,7 +327,7 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private void SaveTemplate()
         {
-            if (_currentTemplate == null || TranslationTable == null)
+            if (CurrentTemplate == null || TranslationTable == null)
             {
                 StatusMessage = "没有可保存的数据";
                 return;
@@ -361,7 +366,7 @@ namespace GeoChemistryNexus.ViewModels
                     // 2. 更新或添加表格中的语言
                     foreach (string langKey in currentLanguages)
                     {
-                        string value = row[langKey] as string;
+                        string value = row[langKey] as string ?? string.Empty;
 
                         if (!string.IsNullOrEmpty(value))
                         {
@@ -376,7 +381,7 @@ namespace GeoChemistryNexus.ViewModels
                 }
 
                 // 序列化并保存
-                string jsonOutput = JsonSerializer.Serialize(_currentTemplate, _jsonOptions);
+                string jsonOutput = JsonSerializer.Serialize(CurrentTemplate, _jsonOptions);
                 
                 File.WriteAllText(CurrentFilePath, jsonOutput);
                 StatusMessage = $"保存成功: {DateTime.Now:HH:mm:ss}";

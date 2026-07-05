@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
 		Microsoft ResX Schema
@@ -3476,4 +3476,212 @@ Directory: {2}</value>
   <data name="gtm_mineral_biotite" xml:space="preserve">
     <value>Biotite</value>
   </data>
+  <data name="plot_invalid_row_example" xml:space="preserve">
+    <value>Row {0}: {1}</value>
+  </data>
+  <data name="plot_invalid_rows_summary" xml:space="preserve">
+    <value>{0} rows were not plotted because their script results are not valid coordinates. They have been marked in the data table; please check their input values.</value>
+  </data>
+  <data name="plot_ternary_sum_zero" xml:space="preserve">
+    <value>The ternary coordinate components sum to 0 and cannot be normalized.</value>
+  </data>
+  <data name="plot_script_execution_failed_with_reason" xml:space="preserve">
+    <value>Script execution failed</value>
+  </data>
+  <data name="plot_script_result_non_numeric" xml:space="preserve">
+    <value>Script result contains non-numeric values.</value>
+  </data>
+  <data name="plot_invalid_rows_examples" xml:space="preserve">
+    <value>Examples:</value>
+  </data>
+  <data name="plot_ternary_conversion_invalid" xml:space="preserve">
+    <value>The ternary coordinate conversion did not produce a valid coordinate.</value>
+  </data>
+  <data name="plot_invalid_rows_more" xml:space="preserve">
+    <value>{0} additional rows have similar issues.</value>
+  </data>
+  <data name="plot_row_script_result_invalid" xml:space="preserve">
+    <value>This row&apos;s script result is invalid.</value>
+  </data>
+  <data name="plot_ternary_script_return_three_finite_values" xml:space="preserve">
+    <value>Ternary diagram scripts must return 3 valid finite numbers.</value>
+  </data>
+  <data name="plot_script_result_not_array" xml:space="preserve">
+    <value>Script result is not an array.</value>
+  </data>
+  <data name="plot_invalid_coordinate_hint" xml:space="preserve">
+    <value>This row&apos;s script result is invalid, so a valid coordinate cannot be generated. Check for division by zero, empty values, logarithms of negative numbers, or square roots of negative numbers.</value>
+  </data>
+  <data name="plot_script_result_invalid_coordinate" xml:space="preserve">
+    <value>Script result is not a valid coordinate.</value>
+  </data>
+  <data name="plot_cartesian_script_return_two_finite_values" xml:space="preserve">
+    <value>Cartesian diagram scripts must return 2 valid finite numbers.</value>
+  </data>
+  <data name="plot_script_result_contains_invalid_number" xml:space="preserve">
+    <value>Script result contains {0}; a valid coordinate cannot be generated.</value>
+  </data>
+  <data name="cipw_mineral_Q" xml:space="preserve">
+    <value>Quartz</value>
+  </data>
+  <data name="cipw_mineral_Cor" xml:space="preserve">
+    <value>Corundum</value>
+  </data>
+  <data name="cipw_mineral_Or" xml:space="preserve">
+    <value>Orthoclase</value>
+  </data>
+  <data name="cipw_mineral_Ab" xml:space="preserve">
+    <value>Albite</value>
+  </data>
+  <data name="cipw_mineral_An" xml:space="preserve">
+    <value>Anorthite</value>
+  </data>
+  <data name="cipw_mineral_Le" xml:space="preserve">
+    <value>Leucite</value>
+  </data>
+  <data name="cipw_mineral_Ne" xml:space="preserve">
+    <value>Nepheline</value>
+  </data>
+  <data name="cipw_mineral_Kp" xml:space="preserve">
+    <value>Kalsilite</value>
+  </data>
+  <data name="cipw_mineral_Ac" xml:space="preserve">
+    <value>Acmite</value>
+  </data>
+  <data name="cipw_mineral_Di" xml:space="preserve">
+    <value>Diopside</value>
+  </data>
+  <data name="cipw_mineral_Hd" xml:space="preserve">
+    <value>Hedenbergite</value>
+  </data>
+  <data name="cipw_mineral_Wo" xml:space="preserve">
+    <value>Wollastonite</value>
+  </data>
+  <data name="cipw_mineral_En" xml:space="preserve">
+    <value>Enstatite</value>
+  </data>
+  <data name="cipw_mineral_Fs" xml:space="preserve">
+    <value>Ferrosilite</value>
+  </data>
+  <data name="cipw_mineral_Fo" xml:space="preserve">
+    <value>Forsterite</value>
+  </data>
+  <data name="cipw_mineral_Fa" xml:space="preserve">
+    <value>Fayalite</value>
+  </data>
+  <data name="cipw_mineral_Mt" xml:space="preserve">
+    <value>Magnetite</value>
+  </data>
+  <data name="cipw_mineral_Hm" xml:space="preserve">
+    <value>Hematite</value>
+  </data>
+  <data name="cipw_mineral_Ilm" xml:space="preserve">
+    <value>Ilmenite</value>
+  </data>
+  <data name="cipw_mineral_Cm" xml:space="preserve">
+    <value>Chromite</value>
+  </data>
+  <data name="cipw_mineral_Ru" xml:space="preserve">
+    <value>Rutile</value>
+  </data>
+  <data name="cipw_mineral_Tn" xml:space="preserve">
+    <value>Titanite</value>
+  </data>
+  <data name="cipw_mineral_Z" xml:space="preserve">
+    <value>Zircon</value>
+  </data>
+  <data name="cipw_mineral_Ap" xml:space="preserve">
+    <value>Apatite</value>
+  </data>
+  <data name="cipw_mineral_Cc" xml:space="preserve">
+    <value>Calcite</value>
+  </data>
+  <data name="cipw_mineral_Py" xml:space="preserve">
+    <value>Pyrite</value>
+  </data>
+  <data name="cipw_mineral_Fl" xml:space="preserve">
+    <value>Fluorite</value>
+  </data>
+  <data name="cipw_mineral_Hl" xml:space="preserve">
+    <value>Halite</value>
+  </data>
+  <data name="cipw_mineral_Th" xml:space="preserve">
+    <value>Thenardite</value>
+  </data>
+  <data name="cipw_mineral_ns" xml:space="preserve">
+    <value>Sodium metasilicate</value>
+  </data>
+  <data name="cipw_mineral_ks" xml:space="preserve">
+    <value>Potassium metasilicate</value>
+  </data>
+  <data name="cipw_warning_partial_iron_missing" xml:space="preserve">
+    <value>Partial iron speciation data is missing (only one of FeO or Fe2O3 is provided).</value>
+  </data>
+  <data name="cipw_warning_feot_estimated" xml:space="preserve">
+    <value>Iron speciation was estimated from FeOT using a fixed Fe3+/Fe ratio ({0:F2}).</value>
+  </data>
+  <data name="cipw_warning_iron_inconsistent" xml:space="preserve">
+    <value>Iron input is inconsistent: FeOT and FeO/Fe2O3 were provided together.</value>
+  </data>
+  <data name="cipw_warning_iron_missing" xml:space="preserve">
+    <value>No iron data was provided.</value>
+  </data>
+  <data name="cipw_warning_mno_to_feo" xml:space="preserve">
+    <value>MnO was converted to FeO equivalent by molar ratio.</value>
+  </data>
+  <data name="cipw_error_negative_oxide_with_value" xml:space="preserve">
+    <value>Negative oxide {0}: {1}</value>
+  </data>
+  <data name="cipw_error_oxide_total_positive" xml:space="preserve">
+    <value>Oxide total must be greater than 0.</value>
+  </data>
+  <data name="cipw_error_fe3_fraction_range" xml:space="preserve">
+    <value>Fe3+ ratio must be between 0 and 1.</value>
+  </data>
+  <data name="cipw_error_negative_oxide_content" xml:space="preserve">
+    <value>Oxide {0} has a negative content.</value>
+  </data>
+  <data name="minimum_version_dialog_title" xml:space="preserve">
+    <value>Update required</value>
+  </data>
+  <data name="minimum_version_dialog_message" xml:space="preserve">
+    <value>Your current version {0} is lower than the minimum supported version {1}. Please update GeoChemistry Nexus.</value>
+  </data>
+  <data name="minimum_version_auto_update" xml:space="preserve">
+    <value>Auto update</value>
+  </data>
+  <data name="minimum_version_manual_update" xml:space="preserve">
+    <value>Manual update</value>
+  </data>
+  <data name="minimum_version_force_use" xml:space="preserve">
+    <value>Force use</value>
+  </data>
+  <data name="minimum_version_force_confirm" xml:space="preserve">
+    <value>Continue anyway</value>
+  </data>
+  <data name="minimum_version_force_confirm_message" xml:space="preserve">
+    <value>This version is no longer supported. Continuing may cause unpredictable problems. Continue anyway?</value>
+  </data>
+  <data name="official_publisher_minimum_version_label" xml:space="preserve">
+    <value>Minimum supported version</value>
+  </data>
+  <data name="official_publisher_minimum_version_hint" xml:space="preserve">
+    <value>Format: 1.2.3. Leave empty to disable the minimum version gate.</value>
+  </data>
+  <data name="official_publisher_minimum_version_pending" xml:space="preserve">
+    <value>Minimum version pending publish</value>
+  </data>
+  <data name="official_publisher_minimum_version_up_to_date" xml:space="preserve">
+    <value>Minimum supported version is up to date.</value>
+  </data>
+  <data name="official_publisher_minimum_version_preview" xml:space="preserve">
+    <value>Minimum supported version: {0}</value>
+  </data>
+  <data name="official_publisher_minimum_version_empty" xml:space="preserve">
+    <value>(empty)</value>
+  </data>
+  <data name="official_publisher_minimum_version_invalid" xml:space="preserve">
+    <value>Minimum supported version must be a valid version, for example 1.2.3.</value>
+  </data>
 </root>
+

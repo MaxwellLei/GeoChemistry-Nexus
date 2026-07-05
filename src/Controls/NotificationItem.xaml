@@ -62,7 +62,19 @@
     </UserControl.Triggers>
 
     <!-- Modern-style Glassmorphism Card -->
-    <Border Background="{Binding BackgroundColor}" CornerRadius="8" BorderBrush="{Binding BorderColor}" BorderThickness="1" MinWidth="300" MaxWidth="380">
+    <Border Background="{Binding BackgroundColor}" CornerRadius="8" BorderBrush="{Binding BorderColor}" BorderThickness="1">
+        <Border.Style>
+            <Style TargetType="Border">
+                <Setter Property="MinWidth" Value="300"/>
+                <Setter Property="MaxWidth" Value="380"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsInteractive}" Value="True">
+                        <Setter Property="MinWidth" Value="360"/>
+                        <Setter Property="MaxWidth" Value="420"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
         <Border.Effect>
             <DropShadowEffect Color="Black" BlurRadius="20" ShadowDepth="4" Opacity="0.15"/>
         </Border.Effect>
@@ -237,9 +249,9 @@
                 </StackPanel>
 
                 <!-- Three Button Dialog -->
-                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                    <StackPanel.Style>
-                        <Style TargetType="StackPanel">
+                <WrapPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <WrapPanel.Style>
+                        <Style TargetType="WrapPanel">
                             <Setter Property="Visibility" Value="Collapsed"/>
                             <Style.Triggers>
                                 <MultiDataTrigger>
@@ -251,7 +263,7 @@
                                 </MultiDataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </StackPanel.Style>
+                    </WrapPanel.Style>
                     
                     <Button Content="{Binding ConfirmText}" Command="{Binding ConfirmCommand}" 
                             Margin="0,0,8,0" Padding="12,5" Background="{Binding ForegroundColor}" Foreground="White" 
@@ -266,8 +278,22 @@
                     </Button>
                     
                     <Button Content="{Binding ThirdButtonText}" Command="{Binding ThirdButtonCommand}" 
-                            Margin="0,0,8,0" Padding="12,5" Background="Transparent" Foreground="{Binding ForegroundColor}" 
-                            BorderBrush="{Binding ForegroundColor}" BorderThickness="1" Cursor="Hand" FontWeight="SemiBold">
+                            Margin="0,0,8,0" Padding="12,5" Background="Transparent"
+                            BorderThickness="1" Cursor="Hand">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Foreground" Value="{Binding ForegroundColor}"/>
+                                <Setter Property="BorderBrush" Value="{Binding ForegroundColor}"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsThirdButtonSubtle}" Value="True">
+                                        <Setter Property="Foreground" Value="#8E8E93"/>
+                                        <Setter Property="BorderBrush" Value="Transparent"/>
+                                        <Setter Property="FontWeight" Value="Normal"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6" Padding="{TemplateBinding Padding}">
@@ -288,7 +314,7 @@
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
-                </StackPanel>
+                </WrapPanel>
             </StackPanel>
 
             <!-- Close Button -->

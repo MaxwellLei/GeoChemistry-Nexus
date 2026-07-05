@@ -186,12 +186,12 @@ namespace GeoChemistryNexus.ViewModels
         /// <summary>
         /// 请求刷新图表事件 (全量重建)
         /// </summary>
-        public event EventHandler RequestRefresh;
+        public event EventHandler? RequestRefresh;
 
         /// <summary>
         /// 请求更新图表样式事件 (仅重绘，不重建)
         /// </summary>
-        public event EventHandler RequestStyleUpdate;
+        public event EventHandler? RequestStyleUpdate;
 
         protected void OnRefreshRequired()
         {

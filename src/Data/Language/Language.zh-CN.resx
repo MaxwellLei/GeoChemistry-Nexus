@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -3471,4 +3471,212 @@
   <data name="gtm_mineral_biotite" xml:space="preserve">
     <value>黑云母</value>
   </data>
+  <data name="plot_invalid_row_example" xml:space="preserve">
+    <value>第 {0} 行：{1}</value>
+  </data>
+  <data name="plot_invalid_rows_summary" xml:space="preserve">
+    <value>有 {0} 行数据没有投到图上，因为脚本计算结果不是有效坐标。已为你标记在数据表中，请检查这些行的输入值。</value>
+  </data>
+  <data name="plot_ternary_sum_zero" xml:space="preserve">
+    <value>三元坐标分量之和为 0，无法归一化。</value>
+  </data>
+  <data name="plot_script_execution_failed_with_reason" xml:space="preserve">
+    <value>脚本执行失败</value>
+  </data>
+  <data name="plot_script_result_non_numeric" xml:space="preserve">
+    <value>脚本返回值包含非数字内容。</value>
+  </data>
+  <data name="plot_invalid_rows_examples" xml:space="preserve">
+    <value>问题示例：</value>
+  </data>
+  <data name="plot_ternary_conversion_invalid" xml:space="preserve">
+    <value>三元坐标转换后不是有效坐标。</value>
+  </data>
+  <data name="plot_invalid_rows_more" xml:space="preserve">
+    <value>另有 {0} 行存在类似问题。</value>
+  </data>
+  <data name="plot_row_script_result_invalid" xml:space="preserve">
+    <value>该行脚本计算结果无效。</value>
+  </data>
+  <data name="plot_ternary_script_return_three_finite_values" xml:space="preserve">
+    <value>三元图脚本必须返回 3 个有效有限数值。</value>
+  </data>
+  <data name="plot_script_result_not_array" xml:space="preserve">
+    <value>脚本返回值不是数组。</value>
+  </data>
+  <data name="plot_invalid_coordinate_hint" xml:space="preserve">
+    <value>该行脚本计算结果无效，无法生成有效坐标。请检查是否存在分母为 0、空值、对负数取对数或平方根等情况。</value>
+  </data>
+  <data name="plot_script_result_invalid_coordinate" xml:space="preserve">
+    <value>脚本计算结果不是有效坐标。</value>
+  </data>
+  <data name="plot_cartesian_script_return_two_finite_values" xml:space="preserve">
+    <value>笛卡尔图脚本必须返回 2 个有效有限数值。</value>
+  </data>
+  <data name="plot_script_result_contains_invalid_number" xml:space="preserve">
+    <value>脚本计算结果包含 {0}，无法生成有效坐标。</value>
+  </data>
+  <data name="cipw_mineral_Q" xml:space="preserve">
+    <value>石英</value>
+  </data>
+  <data name="cipw_mineral_Cor" xml:space="preserve">
+    <value>刚玉</value>
+  </data>
+  <data name="cipw_mineral_Or" xml:space="preserve">
+    <value>正长石</value>
+  </data>
+  <data name="cipw_mineral_Ab" xml:space="preserve">
+    <value>钠长石</value>
+  </data>
+  <data name="cipw_mineral_An" xml:space="preserve">
+    <value>钙长石</value>
+  </data>
+  <data name="cipw_mineral_Le" xml:space="preserve">
+    <value>白榴石</value>
+  </data>
+  <data name="cipw_mineral_Ne" xml:space="preserve">
+    <value>霞石</value>
+  </data>
+  <data name="cipw_mineral_Kp" xml:space="preserve">
+    <value>假白榴石</value>
+  </data>
+  <data name="cipw_mineral_Ac" xml:space="preserve">
+    <value>霓石</value>
+  </data>
+  <data name="cipw_mineral_Di" xml:space="preserve">
+    <value>透辉石</value>
+  </data>
+  <data name="cipw_mineral_Hd" xml:space="preserve">
+    <value>钙铁辉石</value>
+  </data>
+  <data name="cipw_mineral_Wo" xml:space="preserve">
+    <value>硅灰石</value>
+  </data>
+  <data name="cipw_mineral_En" xml:space="preserve">
+    <value>顽火辉石</value>
+  </data>
+  <data name="cipw_mineral_Fs" xml:space="preserve">
+    <value>铁辉石</value>
+  </data>
+  <data name="cipw_mineral_Fo" xml:space="preserve">
+    <value>镁橄榄石</value>
+  </data>
+  <data name="cipw_mineral_Fa" xml:space="preserve">
+    <value>铁橄榄石</value>
+  </data>
+  <data name="cipw_mineral_Mt" xml:space="preserve">
+    <value>磁铁矿</value>
+  </data>
+  <data name="cipw_mineral_Hm" xml:space="preserve">
+    <value>赤铁矿</value>
+  </data>
+  <data name="cipw_mineral_Ilm" xml:space="preserve">
+    <value>钛铁矿</value>
+  </data>
+  <data name="cipw_mineral_Cm" xml:space="preserve">
+    <value>铬铁矿</value>
+  </data>
+  <data name="cipw_mineral_Ru" xml:space="preserve">
+    <value>金红石</value>
+  </data>
+  <data name="cipw_mineral_Tn" xml:space="preserve">
+    <value>榍石</value>
+  </data>
+  <data name="cipw_mineral_Z" xml:space="preserve">
+    <value>锆石</value>
+  </data>
+  <data name="cipw_mineral_Ap" xml:space="preserve">
+    <value>磷灰石</value>
+  </data>
+  <data name="cipw_mineral_Cc" xml:space="preserve">
+    <value>方解石</value>
+  </data>
+  <data name="cipw_mineral_Py" xml:space="preserve">
+    <value>黄铁矿</value>
+  </data>
+  <data name="cipw_mineral_Fl" xml:space="preserve">
+    <value>萤石</value>
+  </data>
+  <data name="cipw_mineral_Hl" xml:space="preserve">
+    <value>石盐</value>
+  </data>
+  <data name="cipw_mineral_Th" xml:space="preserve">
+    <value>芒硝</value>
+  </data>
+  <data name="cipw_mineral_ns" xml:space="preserve">
+    <value>偏硅酸钠</value>
+  </data>
+  <data name="cipw_mineral_ks" xml:space="preserve">
+    <value>偏硅酸钾</value>
+  </data>
+  <data name="cipw_warning_partial_iron_missing" xml:space="preserve">
+    <value>部分铁配分数据缺失（仅提供 FeO 或 Fe2O3 之一）。</value>
+  </data>
+  <data name="cipw_warning_feot_estimated" xml:space="preserve">
+    <value>已使用固定 Fe3+/Fe 比值（{0:F2}）从 FeOT 估算铁配分。</value>
+  </data>
+  <data name="cipw_warning_iron_inconsistent" xml:space="preserve">
+    <value>铁输入不一致：同时提供了 FeOT 和 FeO/Fe2O3。</value>
+  </data>
+  <data name="cipw_warning_iron_missing" xml:space="preserve">
+    <value>未提供铁数据。</value>
+  </data>
+  <data name="cipw_warning_mno_to_feo" xml:space="preserve">
+    <value>MnO 已按摩尔比转换为 FeO 当量。</value>
+  </data>
+  <data name="cipw_error_negative_oxide_with_value" xml:space="preserve">
+    <value>负值氧化物 {0}：{1}</value>
+  </data>
+  <data name="cipw_error_oxide_total_positive" xml:space="preserve">
+    <value>氧化物总量必须大于 0。</value>
+  </data>
+  <data name="cipw_error_fe3_fraction_range" xml:space="preserve">
+    <value>Fe3+ 比值必须在 0 到 1 之间。</value>
+  </data>
+  <data name="cipw_error_negative_oxide_content" xml:space="preserve">
+    <value>氧化物 {0} 的含量为负值。</value>
+  </data>
+  <data name="minimum_version_dialog_title" xml:space="preserve">
+    <value>需要升级软件</value>
+  </data>
+  <data name="minimum_version_dialog_message" xml:space="preserve">
+    <value>当前版本 {0} 低于服务器最低支持版本 {1}。请升级 GeoChemistry Nexus 后继续使用。</value>
+  </data>
+  <data name="minimum_version_auto_update" xml:space="preserve">
+    <value>自动更新</value>
+  </data>
+  <data name="minimum_version_manual_update" xml:space="preserve">
+    <value>手动更新</value>
+  </data>
+  <data name="minimum_version_force_use" xml:space="preserve">
+    <value>强制使用</value>
+  </data>
+  <data name="minimum_version_force_confirm" xml:space="preserve">
+    <value>仍然继续</value>
+  </data>
+  <data name="minimum_version_force_confirm_message" xml:space="preserve">
+    <value>当前版本已低于最低支持版本，继续使用可能出现不可预知的问题。是否仍然继续？</value>
+  </data>
+  <data name="official_publisher_minimum_version_label" xml:space="preserve">
+    <value>最低支持版本</value>
+  </data>
+  <data name="official_publisher_minimum_version_hint" xml:space="preserve">
+    <value>格式：1.2.3。留空表示不启用最低版本门槛。</value>
+  </data>
+  <data name="official_publisher_minimum_version_pending" xml:space="preserve">
+    <value>最低版本待发布</value>
+  </data>
+  <data name="official_publisher_minimum_version_up_to_date" xml:space="preserve">
+    <value>最低支持版本已是最新。</value>
+  </data>
+  <data name="official_publisher_minimum_version_preview" xml:space="preserve">
+    <value>最低支持版本：{0}</value>
+  </data>
+  <data name="official_publisher_minimum_version_empty" xml:space="preserve">
+    <value>（空）</value>
+  </data>
+  <data name="official_publisher_minimum_version_invalid" xml:space="preserve">
+    <value>最低支持版本必须是有效版本号，例如 1.2.3。</value>
+  </data>
 </root>
+

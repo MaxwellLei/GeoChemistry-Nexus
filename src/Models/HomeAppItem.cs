@@ -25,17 +25,17 @@ namespace GeoChemistryNexus.Models
         private string description = string.Empty;
 
         [ObservableProperty]
-        private string url;
+        private string url = string.Empty;
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsIconUrl))]
-        private string icon;
+        private string icon = string.Empty;
 
         [JsonIgnore]
         public bool IsIconUrl => HomeIconHelper.IsUrlIcon(Icon);
 
         // 小组件 Key
-        public string WidgetKey { get; set; }
+        public string WidgetKey { get; set; } = string.Empty;
 
         [JsonIgnore]
         public bool IsWebLink => Type == HomeAppType.WebLink;
@@ -51,6 +51,6 @@ namespace GeoChemistryNexus.Models
 
         // 小组件提示
         [JsonIgnore]
-        public object WidgetContent { get; set; }
+        public object? WidgetContent { get; set; }
     }
 }

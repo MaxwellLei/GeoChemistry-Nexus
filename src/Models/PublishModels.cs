@@ -15,25 +15,25 @@ namespace GeoChemistryNexus.Models
     public class PublishManifestEntry
     {
         [JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = string.Empty;
 
         [JsonPropertyName("graphMapPath")]
-        public string GraphMapPath { get; set; }
+        public string GraphMapPath { get; set; } = string.Empty;
 
         [JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [JsonPropertyName("fileHash")]
-        public string FileHash { get; set; }
+        public string FileHash { get; set; } = string.Empty;
 
         [JsonPropertyName("action")]
-        public string Action { get; set; }
+        public string Action { get; set; } = string.Empty;
 
         [JsonPropertyName("cosKey")]
-        public string CosKey { get; set; }
+        public string CosKey { get; set; } = string.Empty;
 
         [JsonPropertyName("localPath")]
-        public string LocalPath { get; set; }
+        public string? LocalPath { get; set; }
     }
 
     public class PublishOptions
@@ -46,22 +46,34 @@ namespace GeoChemistryNexus.Models
         /// <summary>
         /// 保留 server_info.json 中的现有公告
         /// </summary>
-        public string PreserveAnnouncement { get; set; }
+        public string? PreserveAnnouncement { get; set; }
+
+        /// <summary>
+        /// 保留 server_info.json 中的最低支持软件版本
+        /// </summary>
+        public string? PreserveMinimumSupportedVersion { get; set; }
+
+        /// <summary>
+        /// 保留 server_info.json 中的最新软件版本
+        /// </summary>
+        public string? PreserveLatestAppVersion { get; set; }
     }
 
     public class PublishResult
     {
-        public string OutputDirectory { get; set; }
+        public string OutputDirectory { get; set; } = string.Empty;
         public int TotalOfficialCount { get; set; }
         public int ExportedZipCount { get; set; }
         public int SkippedZipCount { get; set; }
-        public string GraphMapListPath { get; set; }
-        public string HomeLinksCatalogPath { get; set; }
-        public string HomeLinksHash { get; set; }
-        public string ServerInfoPath { get; set; }
-        public string CategoriesPath { get; set; }
-        public string ManifestPath { get; set; }
-        public string ListHash { get; set; }
+        public string GraphMapListPath { get; set; } = string.Empty;
+        public string HomeLinksCatalogPath { get; set; } = string.Empty;
+        public string HomeLinksHash { get; set; } = string.Empty;
+        public string ServerInfoPath { get; set; } = string.Empty;
+        public string CategoriesPath { get; set; } = string.Empty;
+        public string ManifestPath { get; set; } = string.Empty;
+        public string ListHash { get; set; } = string.Empty;
+        public string MinimumSupportedVersion { get; set; } = string.Empty;
+        public string LatestAppVersion { get; set; } = string.Empty;
         public List<PublishManifestEntry> ManifestEntries { get; set; } = new();
 
         public string Summary =>
@@ -71,10 +83,10 @@ namespace GeoChemistryNexus.Models
     public class PublishPreviewItem
     {
         public Guid Id { get; set; }
-        public string GraphMapPath { get; set; }
-        public string Name { get; set; }
-        public string LocalHash { get; set; }
-        public string RemoteHash { get; set; }
+        public string GraphMapPath { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+        public string LocalHash { get; set; } = string.Empty;
+        public string RemoteHash { get; set; } = string.Empty;
         public PublishAction Action { get; set; }
     }
 
@@ -90,16 +102,16 @@ namespace GeoChemistryNexus.Models
 
     public class GeothermometerPublishResult
     {
-        public string OutputDirectory { get; set; }
+        public string OutputDirectory { get; set; } = string.Empty;
         public int TotalOfficialCount { get; set; }
         public int ExportedZipCount { get; set; }
         public int SkippedZipCount { get; set; }
-        public string ListPath { get; set; }
-        public string IndexPath { get; set; }
-        public string CategoriesPath { get; set; }
-        public string ManifestPath { get; set; }
-        public string ListHash { get; set; }
-        public string MineralCategoriesHash { get; set; }
+        public string ListPath { get; set; } = string.Empty;
+        public string IndexPath { get; set; } = string.Empty;
+        public string CategoriesPath { get; set; } = string.Empty;
+        public string ManifestPath { get; set; } = string.Empty;
+        public string ListHash { get; set; } = string.Empty;
+        public string MineralCategoriesHash { get; set; } = string.Empty;
         public List<PublishManifestEntry> ManifestEntries { get; set; } = new();
 
         public string Summary =>
@@ -108,10 +120,13 @@ namespace GeoChemistryNexus.Models
 
     public class HomeLinksPublishResult
     {
-        public string OutputDirectory { get; set; }
-        public string HomeLinksCatalogPath { get; set; }
-        public string HomeLinksHash { get; set; }
-        public string ServerInfoPath { get; set; }
+        public string OutputDirectory { get; set; } = string.Empty;
+        public string HomeLinksCatalogPath { get; set; } = string.Empty;
+        public string HomeLinksHash { get; set; } = string.Empty;
+        public string ServerInfoPath { get; set; } = string.Empty;
+        public string Announcement { get; set; } = string.Empty;
+        public string MinimumSupportedVersion { get; set; } = string.Empty;
+        public string LatestAppVersion { get; set; } = string.Empty;
         public int GroupCount { get; set; }
         public int LinkCount { get; set; }
 
@@ -121,9 +136,11 @@ namespace GeoChemistryNexus.Models
 
     public class AnnouncementPublishResult
     {
-        public string OutputDirectory { get; set; }
-        public string ServerInfoPath { get; set; }
-        public string Announcement { get; set; }
+        public string OutputDirectory { get; set; } = string.Empty;
+        public string ServerInfoPath { get; set; } = string.Empty;
+        public string Announcement { get; set; } = string.Empty;
+        public string MinimumSupportedVersion { get; set; } = string.Empty;
+        public string LatestAppVersion { get; set; } = string.Empty;
 
         public string Summary => "公告已写入 server_info.json。";
     }
@@ -133,7 +150,7 @@ namespace GeoChemistryNexus.Models
         public bool Success { get; set; }
         public int UploadedFileCount { get; set; }
         public bool ServerInfoVerified { get; set; }
-        public string Message { get; set; }
+        public string Message { get; set; } = string.Empty;
         public List<string> UploadedKeys { get; set; } = new();
     }
 }

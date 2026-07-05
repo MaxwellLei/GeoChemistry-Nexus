@@ -5,13 +5,13 @@ namespace GeoChemistryNexus.Models
     public class CosPublishSettings
     {
         [JsonPropertyName("secretId")]
-        public string SecretId { get; set; }
+        public string SecretId { get; set; } = string.Empty;
 
         /// <summary>
         /// DPAPI 加密后的 SecretKey（Base64）
         /// </summary>
         [JsonPropertyName("protectedSecretKey")]
-        public string ProtectedSecretKey { get; set; }
+        public string ProtectedSecretKey { get; set; } = string.Empty;
 
         [JsonPropertyName("region")]
         public string Region { get; set; } = OfficialContentEndpoints.DefaultRegion;
@@ -20,7 +20,7 @@ namespace GeoChemistryNexus.Models
         public string Bucket { get; set; } = OfficialContentEndpoints.DefaultBucket;
 
         [JsonPropertyName("stagingDirectory")]
-        public string StagingDirectory { get; set; }
+        public string StagingDirectory { get; set; } = string.Empty;
 
         public bool IsConfigured =>
             !string.IsNullOrWhiteSpace(SecretId)

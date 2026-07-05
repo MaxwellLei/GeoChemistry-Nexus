@@ -15,20 +15,20 @@ namespace GeoChemistryNexus.ViewModels
     // 模板卡片视图模型
     public partial class TemplateCardViewModel : ObservableObject
     {
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public Guid? TemplateId { get; set; }
-        public string TemplatePath { get; set; }
+        public string TemplatePath { get; set; } = string.Empty;
 
         [ObservableProperty]
-        private string _thumbnailPath;
+        private string _thumbnailPath = string.Empty;
 
-        public string Category { get; set; }
+        public string Category { get; set; } = string.Empty;
 
         // 服务器端哈希 (用于校验)
-        public string ServerHash { get; set; }
+        public string ServerHash { get; set; } = string.Empty;
 
         // 服务器端版本 (用于 z 修订比较)
-        public string ServerVersion { get; set; }
+        public string ServerVersion { get; set; } = string.Empty;
 
         [ObservableProperty]
         private bool _isCustomTemplate;
@@ -46,7 +46,7 @@ namespace GeoChemistryNexus.ViewModels
         private bool _isCtrlOverlayVisible; // Ctrl键遮罩显示状态
 
         [ObservableProperty]
-        private ImageSource _thumbnailImage; // 支持动态修改（下载前是默认图，下载后是真实图）
+        private ImageSource? _thumbnailImage; // 支持动态修改（下载前是默认图，下载后是真实图）
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(StateText))]
@@ -73,12 +73,12 @@ namespace GeoChemistryNexus.ViewModels
 
         // --- 委托事件 ---
         // 将具体的"打开"和"下载"逻辑交给 MainViewModel 实现
-        public Func<TemplateCardViewModel, Task> DownloadHandler { get; set; }
-        public Func<TemplateCardViewModel, Task> OpenHandler { get; set; }
-        public Func<TemplateCardViewModel, Task> CheckUpdateHandler { get; set; }
-        public Func<TemplateCardViewModel, Task> ToggleFavoriteHandler { get; set; }
-        public Func<TemplateCardViewModel, bool, Task> DeleteHandler { get; set; }
-        public Func<TemplateCardViewModel, Task> EditHandler { get; set; }
+        public Func<TemplateCardViewModel, Task>? DownloadHandler { get; set; }
+        public Func<TemplateCardViewModel, Task>? OpenHandler { get; set; }
+        public Func<TemplateCardViewModel, Task>? CheckUpdateHandler { get; set; }
+        public Func<TemplateCardViewModel, Task>? ToggleFavoriteHandler { get; set; }
+        public Func<TemplateCardViewModel, bool, Task>? DeleteHandler { get; set; }
+        public Func<TemplateCardViewModel, Task>? EditHandler { get; set; }
 
         private bool _isProcessing = false;
 

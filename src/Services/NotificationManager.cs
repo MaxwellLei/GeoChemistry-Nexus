@@ -87,7 +87,13 @@ namespace GeoChemistryNexus.Services
         /// <param name="thirdButtonText">第三个按钮文本（不保存）</param>
         /// <param name="cancelText">取消按钮文本</param>
         /// <returns>0=确认/保存, 1=第三个按钮/不保存, 2=取消</returns>
-        public Task<int> ShowThreeButtonDialogAsync(string title, string message, string confirmText, string thirdButtonText, string cancelText)
+        public Task<int> ShowThreeButtonDialogAsync(
+            string title,
+            string message,
+            string confirmText,
+            string thirdButtonText,
+            string cancelText,
+            bool isThirdButtonSubtle = false)
         {
             var tcs = new TaskCompletionSource<int>();
 
@@ -100,6 +106,7 @@ namespace GeoChemistryNexus.Services
                     ConfirmText = confirmText,
                     ThirdButtonText = thirdButtonText,
                     CancelText = cancelText,
+                    IsThirdButtonSubtle = isThirdButtonSubtle,
                     ThreeButtonDialogResultAction = (result) => tcs.SetResult(result)
                 };
                 Notifications.Add(vm);

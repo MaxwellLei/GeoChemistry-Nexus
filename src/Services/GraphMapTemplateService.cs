@@ -160,7 +160,7 @@ namespace GeoChemistryNexus.Services
                         Status = "NOT_INSTALLED",
                         LastModified = DateTime.Now,
                         Content = null,
-                        TemplateType = null,
+                        TemplateType = string.Empty,
                         Version = ContentVersionHelper.Normalize(item.Version),
                         HelpDocuments = new Dictionary<string, string>()
                     };

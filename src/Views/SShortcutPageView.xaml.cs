@@ -8,7 +8,7 @@ namespace GeoChemistryNexus.Views
     /// </summary>
     public partial class SShortcutPageView : Page
     {
-        private static SShortcutPageView instance = null;
+        private static SShortcutPageView instance = null!;
 
         public SShortcutPageView()
         {

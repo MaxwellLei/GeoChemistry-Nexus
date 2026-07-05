@@ -925,7 +925,7 @@ namespace GeoChemistryNexus.Services
                         };
                     }
 
-                    string listDir = Path.GetDirectoryName(LocalListFilePath);
+                    string? listDir = Path.GetDirectoryName(LocalListFilePath);
                     if (!string.IsNullOrEmpty(listDir) && !Directory.Exists(listDir))
                         Directory.CreateDirectory(listDir);
                     await File.WriteAllTextAsync(LocalListFilePath, listJson);

@@ -23,7 +23,7 @@ namespace GeoChemistryNexus.Helpers
         /// <param name="defaultLanguage">默认语言代码。如果为 null，则使用当前应用程序语言。</param>
         /// <param name="targetLanguages">可选的需要填充的语言列表。如果为 null，则使用所有支持的语言。</param>
         /// <returns>已填充的 LocalizedString 对象。</returns>
-        public static LocalizedString Create(string resourceKey, string defaultLanguage = null, IEnumerable<string> targetLanguages = null)
+        public static LocalizedString Create(string resourceKey, string? defaultLanguage = null, IEnumerable<string>? targetLanguages = null)
         {
             if (string.IsNullOrEmpty(defaultLanguage))
             {

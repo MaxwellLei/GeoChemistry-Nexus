@@ -8,12 +8,12 @@ namespace GeoChemistryNexus.Views.Widgets
 {
     public partial class AddLinkWindow : HandyControl.Controls.Window
     {
-        public HomeAppItem Result { get; private set; }
+        public HomeAppItem? Result { get; private set; }
 
         public class IconItem
         {
-            public string Name { get; set; }
-            public string Code { get; set; }
+            public string Name { get; set; } = string.Empty;
+            public string Code { get; set; } = string.Empty;
         }
 
         public AddLinkWindow()
@@ -65,7 +65,7 @@ namespace GeoChemistryNexus.Views.Widgets
             IconBox.SelectedIndex = 0;
         }
 
-        private void Ok_Click(object sender, RoutedEventArgs e)
+        private void Ok_Click(object? sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(TitleBox.Text))
             {
@@ -98,7 +98,7 @@ namespace GeoChemistryNexus.Views.Widgets
             Close();
         }
 
-        private void Cancel_Click(object sender, RoutedEventArgs e)
+        private void Cancel_Click(object? sender, RoutedEventArgs e)
         {
             DialogResult = false;
             Close();

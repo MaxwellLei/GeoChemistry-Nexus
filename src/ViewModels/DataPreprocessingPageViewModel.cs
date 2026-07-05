@@ -23,7 +23,7 @@ namespace GeoChemistryNexus.ViewModels
 
     public partial class DataPreprocessingPageViewModel : ObservableObject
     {
-        private ReoGridControl _dataGrid;
+        private ReoGridControl? _dataGrid;
         private bool _isUpdatingSelectedCellEditor;
         private readonly string[] _templateHeaders =
         {
@@ -110,10 +110,10 @@ namespace GeoChemistryNexus.ViewModels
         private string selectedDetectionLimitStrategy;
 
         [ObservableProperty]
-        private string detectionLimitPreview;
+        private string detectionLimitPreview = string.Empty;
 
         [ObservableProperty]
-        private string previewSummary;
+        private string previewSummary = string.Empty;
 
         [ObservableProperty]
         private string currentWorksheetName = "Raw_Data";
@@ -217,7 +217,7 @@ namespace GeoChemistryNexus.ViewModels
             var headers = new List<string>();
             for (int col = 0; col < WorksheetColumnCount; col++)
             {
-                string header = worksheet.ColumnHeaders[col]?.Text;
+                string? header = worksheet.ColumnHeaders[col]?.Text;
                 if (!string.IsNullOrWhiteSpace(header))
                 {
                     headers.Add(header.Trim());
@@ -389,7 +389,7 @@ namespace GeoChemistryNexus.ViewModels
             }
 
             var worksheet = grid.CurrentWorksheet;
-            string filePath = await FileHelper.GetSaveFilePath2Async(
+            string? filePath = await FileHelper.GetSaveFilePath2Async(
                 title: L("dataPrep_exportTitle", "Export Preprocessing Result"),
                 filter: L("dataPrep_exportFilter", "CSV Files|*.csv"),
                 defaultExt: ".csv",
@@ -690,7 +690,7 @@ namespace GeoChemistryNexus.ViewModels
             int lastHeaderIndex = -1;
             for (int col = 0; col < worksheet.ColumnCount; col++)
             {
-                string header = worksheet.ColumnHeaders[col]?.Text;
+                string? header = worksheet.ColumnHeaders[col]?.Text;
                 if (!string.IsNullOrWhiteSpace(header))
                 {
                     lastHeaderIndex = col;

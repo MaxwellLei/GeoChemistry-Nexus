@@ -7,7 +7,7 @@ namespace GeoChemistryNexus.Views.Widgets
 {
     public partial class AddWidgetWindow : HandyControl.Controls.Window
     {
-        public HomeAppItem SelectedWidget { get; private set; }
+        public HomeAppItem? SelectedWidget { get; private set; }
 
         public AddWidgetWindow(List<HomeAppItem> availableWidgets)
         {
@@ -15,7 +15,7 @@ namespace GeoChemistryNexus.Views.Widgets
             WidgetList.ItemsSource = availableWidgets;
         }
 
-        private void Ok_Click(object sender, RoutedEventArgs e)
+        private void Ok_Click(object? sender, RoutedEventArgs e)
         {
             if (WidgetList.SelectedItem is HomeAppItem item)
             {
@@ -29,7 +29,7 @@ namespace GeoChemistryNexus.Views.Widgets
             }
         }
 
-        private void Cancel_Click(object sender, RoutedEventArgs e)
+        private void Cancel_Click(object? sender, RoutedEventArgs e)
         {
             DialogResult = false;
             Close();

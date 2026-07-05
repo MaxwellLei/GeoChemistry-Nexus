@@ -13,7 +13,7 @@ namespace GeoChemistryNexus.Services
 {
     public class GraphMapDatabaseService
     {
-        private static GraphMapDatabaseService _instance;
+        private static GraphMapDatabaseService _instance = null!;
         public static GraphMapDatabaseService Instance => _instance ??= new GraphMapDatabaseService();
 
         private readonly string _dbPath;
@@ -69,7 +69,7 @@ namespace GeoChemistryNexus.Services
             var all = col.FindAll().ToList();
             foreach (var item in all)
             {
-                item.Status = null;
+                item.Status = string.Empty;
             }
             col.Update(all);
         }

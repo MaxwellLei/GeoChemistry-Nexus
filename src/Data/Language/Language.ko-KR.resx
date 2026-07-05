@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -3255,4 +3255,171 @@
   <data name="data_grid_plot_refresh_pending" xml:space="preserve">
     <value>데이터가 수정되었습니다. 도표를 새로고침하세요.</value>
   </data>
+  <data name="plot_invalid_row_example" xml:space="preserve">
+    <value>{0}행: {1}</value>
+  </data>
+  <data name="plot_invalid_rows_summary" xml:space="preserve">
+    <value>스크립트 결과가 유효한 좌표가 아니어서 {0}개 행이 플롯되지 않았습니다. 데이터 표에 표시했으니 입력값을 확인하세요.</value>
+  </data>
+  <data name="plot_ternary_sum_zero" xml:space="preserve">
+    <value>삼각 좌표 성분의 합이 0이라 정규화할 수 없습니다.</value>
+  </data>
+  <data name="plot_script_execution_failed_with_reason" xml:space="preserve">
+    <value>스크립트 실행 실패</value>
+  </data>
+  <data name="plot_script_result_non_numeric" xml:space="preserve">
+    <value>스크립트 반환값에 숫자가 아닌 값이 포함되어 있습니다.</value>
+  </data>
+  <data name="plot_invalid_rows_examples" xml:space="preserve">
+    <value>예:</value>
+  </data>
+  <data name="plot_ternary_conversion_invalid" xml:space="preserve">
+    <value>삼각 좌표 변환 결과가 유효한 좌표가 아닙니다.</value>
+  </data>
+  <data name="plot_invalid_rows_more" xml:space="preserve">
+    <value>비슷한 문제가 있는 행이 {0}개 더 있습니다.</value>
+  </data>
+  <data name="plot_row_script_result_invalid" xml:space="preserve">
+    <value>이 행의 스크립트 계산 결과가 유효하지 않습니다.</value>
+  </data>
+  <data name="plot_ternary_script_return_three_finite_values" xml:space="preserve">
+    <value>삼각도 스크립트는 유효한 유한 숫자 3개를 반환해야 합니다.</value>
+  </data>
+  <data name="plot_script_result_not_array" xml:space="preserve">
+    <value>스크립트 반환값이 배열이 아닙니다.</value>
+  </data>
+  <data name="plot_invalid_coordinate_hint" xml:space="preserve">
+    <value>이 행의 스크립트 계산 결과가 유효하지 않아 좌표를 만들 수 없습니다. 0으로 나누기, 빈 값, 음수의 로그 또는 음수의 제곱근을 확인하세요.</value>
+  </data>
+  <data name="plot_script_result_invalid_coordinate" xml:space="preserve">
+    <value>스크립트 결과가 유효한 좌표가 아닙니다.</value>
+  </data>
+  <data name="plot_cartesian_script_return_two_finite_values" xml:space="preserve">
+    <value>직교 좌표도 스크립트는 유효한 유한 숫자 2개를 반환해야 합니다.</value>
+  </data>
+  <data name="plot_script_result_contains_invalid_number" xml:space="preserve">
+    <value>스크립트 계산 결과에 {0}이(가) 포함되어 유효한 좌표를 만들 수 없습니다.</value>
+  </data>
+  <data name="cipw_mineral_Q" xml:space="preserve">
+    <value>석영</value>
+  </data>
+  <data name="cipw_mineral_Cor" xml:space="preserve">
+    <value>강옥</value>
+  </data>
+  <data name="cipw_mineral_Or" xml:space="preserve">
+    <value>정장석</value>
+  </data>
+  <data name="cipw_mineral_Ab" xml:space="preserve">
+    <value>조장석</value>
+  </data>
+  <data name="cipw_mineral_An" xml:space="preserve">
+    <value>회장석</value>
+  </data>
+  <data name="cipw_mineral_Le" xml:space="preserve">
+    <value>백류석</value>
+  </data>
+  <data name="cipw_mineral_Ne" xml:space="preserve">
+    <value>하석</value>
+  </data>
+  <data name="cipw_mineral_Kp" xml:space="preserve">
+    <value>칼실라이트</value>
+  </data>
+  <data name="cipw_mineral_Ac" xml:space="preserve">
+    <value>애크마이트</value>
+  </data>
+  <data name="cipw_mineral_Di" xml:space="preserve">
+    <value>투휘석</value>
+  </data>
+  <data name="cipw_mineral_Hd" xml:space="preserve">
+    <value>헤덴버자이트</value>
+  </data>
+  <data name="cipw_mineral_Wo" xml:space="preserve">
+    <value>규회석</value>
+  </data>
+  <data name="cipw_mineral_En" xml:space="preserve">
+    <value>완화휘석</value>
+  </data>
+  <data name="cipw_mineral_Fs" xml:space="preserve">
+    <value>철휘석</value>
+  </data>
+  <data name="cipw_mineral_Fo" xml:space="preserve">
+    <value>고토감람석</value>
+  </data>
+  <data name="cipw_mineral_Fa" xml:space="preserve">
+    <value>철감람석</value>
+  </data>
+  <data name="cipw_mineral_Mt" xml:space="preserve">
+    <value>자철석</value>
+  </data>
+  <data name="cipw_mineral_Hm" xml:space="preserve">
+    <value>적철석</value>
+  </data>
+  <data name="cipw_mineral_Ilm" xml:space="preserve">
+    <value>일메나이트</value>
+  </data>
+  <data name="cipw_mineral_Cm" xml:space="preserve">
+    <value>크롬철석</value>
+  </data>
+  <data name="cipw_mineral_Ru" xml:space="preserve">
+    <value>금홍석</value>
+  </data>
+  <data name="cipw_mineral_Tn" xml:space="preserve">
+    <value>티타나이트</value>
+  </data>
+  <data name="cipw_mineral_Z" xml:space="preserve">
+    <value>지르콘</value>
+  </data>
+  <data name="cipw_mineral_Ap" xml:space="preserve">
+    <value>인회석</value>
+  </data>
+  <data name="cipw_mineral_Cc" xml:space="preserve">
+    <value>방해석</value>
+  </data>
+  <data name="cipw_mineral_Py" xml:space="preserve">
+    <value>황철석</value>
+  </data>
+  <data name="cipw_mineral_Fl" xml:space="preserve">
+    <value>형석</value>
+  </data>
+  <data name="cipw_mineral_Hl" xml:space="preserve">
+    <value>암염</value>
+  </data>
+  <data name="cipw_mineral_Th" xml:space="preserve">
+    <value>테나다이트</value>
+  </data>
+  <data name="cipw_mineral_ns" xml:space="preserve">
+    <value>메타규산나트륨</value>
+  </data>
+  <data name="cipw_mineral_ks" xml:space="preserve">
+    <value>메타규산칼륨</value>
+  </data>
+  <data name="cipw_warning_partial_iron_missing" xml:space="preserve">
+    <value>철 배분 데이터가 일부 누락되었습니다(FeO 또는 Fe2O3 중 하나만 제공됨).</value>
+  </data>
+  <data name="cipw_warning_feot_estimated" xml:space="preserve">
+    <value>고정 Fe3+/Fe 비율({0:F2})을 사용하여 FeOT에서 철 배분을 추정했습니다.</value>
+  </data>
+  <data name="cipw_warning_iron_inconsistent" xml:space="preserve">
+    <value>철 입력이 일치하지 않습니다: FeOT와 FeO/Fe2O3가 함께 제공되었습니다.</value>
+  </data>
+  <data name="cipw_warning_iron_missing" xml:space="preserve">
+    <value>철 데이터가 제공되지 않았습니다.</value>
+  </data>
+  <data name="cipw_warning_mno_to_feo" xml:space="preserve">
+    <value>MnO가 몰 비율에 따라 FeO 등가량으로 변환되었습니다.</value>
+  </data>
+  <data name="cipw_error_negative_oxide_with_value" xml:space="preserve">
+    <value>음수 산화물 {0}: {1}</value>
+  </data>
+  <data name="cipw_error_oxide_total_positive" xml:space="preserve">
+    <value>산화물 총량은 0보다 커야 합니다.</value>
+  </data>
+  <data name="cipw_error_fe3_fraction_range" xml:space="preserve">
+    <value>Fe3+ 비율은 0에서 1 사이여야 합니다.</value>
+  </data>
+  <data name="cipw_error_negative_oxide_content" xml:space="preserve">
+    <value>산화물 {0}의 함량이 음수입니다.</value>
+  </data>
 </root>
+
+

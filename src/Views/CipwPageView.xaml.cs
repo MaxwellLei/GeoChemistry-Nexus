@@ -51,7 +51,7 @@ namespace GeoChemistryNexus.Views
         /// <summary>
         /// 当切换工作表时重新绑定选区变化事件
         /// </summary>
-        private void OnCurrentWorksheetChanged(object sender, System.EventArgs e)
+        private void OnCurrentWorksheetChanged(object? sender, System.EventArgs e)
         {
             var worksheet = CipwReoGrid.CurrentWorksheet;
             if (worksheet != null)
@@ -64,7 +64,7 @@ namespace GeoChemistryNexus.Views
         /// 选区变化时更新诊断数据
         /// 如果用户没有手动收缩面板，选中有数据的行时自动展开
         /// </summary>
-        private void OnSelectionRangeChanged(object sender, RangeEventArgs e)
+        private void OnSelectionRangeChanged(object? sender, RangeEventArgs e)
         {
             if (_viewModel == null) return;
 
@@ -96,7 +96,7 @@ namespace GeoChemistryNexus.Views
         /// 最大化：占据大部分空间（数据表格保留小部分可见）
         /// 还原：恢复之前的高度
         /// </summary>
-        private void OnMaximizePanelClick(object sender, RoutedEventArgs e)
+        private void OnMaximizePanelClick(object? sender, RoutedEventArgs e)
         {
             if (_isMaximized)
             {
@@ -138,7 +138,7 @@ namespace GeoChemistryNexus.Views
         /// 收缩：面板缩为底部状态条（仅标题栏可见），并锁定不自动展开
         /// 展开：恢复正常高度，解除锁定
         /// </summary>
-        private void OnToggleExpandClick(object sender, RoutedEventArgs e)
+        private void OnToggleExpandClick(object? sender, RoutedEventArgs e)
         {
             if (_viewModel.IsDiagnosticPanelExpanded)
             {
@@ -173,7 +173,7 @@ namespace GeoChemistryNexus.Views
         /// <summary>
         /// 打开CIPW算法说明窗口
         /// </summary>
-        private void OnHelpClick(object sender, RoutedEventArgs e)
+        private void OnHelpClick(object? sender, RoutedEventArgs e)
         {
             var helpWindow = new CipwHelpWindow
             {
@@ -185,7 +185,7 @@ namespace GeoChemistryNexus.Views
         /// <summary>
         /// Fe3+/Fe 值失焦时校验范围 [0, 1]
         /// </summary>
-        private void OnFe3FractionLostFocus(object sender, RoutedEventArgs e)
+        private void OnFe3FractionLostFocus(object? sender, RoutedEventArgs e)
         {
             _viewModel.ClampFe3Fraction();
         }

@@ -100,6 +100,10 @@
 
                         <RowDefinition Height="Auto"/>
 
+                        <RowDefinition Height="Auto"/>
+
+                        <RowDefinition Height="Auto"/>
+
                         <RowDefinition Height="140"/>
 
                     </Grid.RowDefinitions>
@@ -154,7 +158,65 @@
 
 
 
-                    <TextBox Grid.Row="3"
+                    <Grid Grid.Row="3" Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0"
+                                   Text="{Binding [official_publisher_minimum_version_label], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}"
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+
+                        <TextBox Grid.Column="1"
+                                 Text="{Binding MinimumSupportedVersionText, UpdateSourceTrigger=PropertyChanged}"
+                                 VerticalContentAlignment="Center"
+                                 Padding="6,3"
+                                 BorderBrush="#DDDDDD"
+                                 BorderThickness="1"/>
+
+                        <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0,0,0">
+                            <TextBlock Foreground="#636366" FontSize="12" VerticalAlignment="Center"
+                                       Text="{Binding [official_publisher_minimum_version_hint], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}"/>
+
+                            <TextBlock Foreground="#FF9500" FontSize="12" VerticalAlignment="Center" Margin="12,0,0,0"
+                                       Visibility="{Binding MinimumSupportedVersionHasRemoteChanges, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <Run Text="{Binding [official_publisher_minimum_version_pending], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid Grid.Row="4" Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0"
+                                   Text="最新版本号"
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+
+                        <TextBox Grid.Column="1"
+                                 Text="{Binding LatestAppVersionText, UpdateSourceTrigger=PropertyChanged}"
+                                 VerticalContentAlignment="Center"
+                                 Padding="6,3"
+                                 BorderBrush="#DDDDDD"
+                                 BorderThickness="1"/>
+
+                        <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0,0,0">
+                            <TextBlock Foreground="#636366" FontSize="12" VerticalAlignment="Center"
+                                       Text="用于写入 server_info.json 的 latest_app_version"/>
+
+                            <TextBlock Foreground="#FF9500" FontSize="12" VerticalAlignment="Center" Margin="12,0,0,0"
+                                       Visibility="{Binding LatestAppVersionHasRemoteChanges, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <Run Text="最新版本号待发布"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </Grid>
+
+                    <TextBox Grid.Row="5"
 
                              Text="{Binding AnnouncementText, UpdateSourceTrigger=PropertyChanged}"
 
@@ -417,6 +479,22 @@
                                Visibility="{Binding AnnouncementHasRemoteChanges, Converter={StaticResource BooleanToVisibilityReConverter}}">
 
                         <Run Text="{Binding [official_publisher_announcement_up_to_date], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}"/>
+
+                    </TextBlock>
+
+                    <TextBlock Foreground="#FF9500" Margin="16,0,0,0"
+
+                               Visibility="{Binding MinimumSupportedVersionHasRemoteChanges, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+                        <Run Text="{Binding [official_publisher_minimum_version_pending], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}"/>
+
+                    </TextBlock>
+
+                    <TextBlock Foreground="#FF9500" Margin="16,0,0,0"
+
+                               Visibility="{Binding LatestAppVersionHasRemoteChanges, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+                        <Run Text="最新版本号待发布"/>
 
                     </TextBlock>
 

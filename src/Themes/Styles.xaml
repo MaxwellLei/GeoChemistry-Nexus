@@ -538,23 +538,6 @@
         </Setter>
     </Style>
 
-    <Style x:Key="RibbonLargeButton" TargetType="Button" BasedOn="{StaticResource ModernRibbonButton}">
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="BorderBrush" Value="Transparent"/>
-        <Setter Property="Padding" Value="2"/>
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#E5F3FF"/>
-                <Setter Property="BorderBrush" Value="#CCE7FF"/>
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="#CCE7FF"/>
-                <Setter Property="BorderBrush" Value="#99D1FF"/>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-
     <Style x:Key="RibbonSmallButton" TargetType="Button" BasedOn="{StaticResource ModernRibbonButton}">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="1"/>
@@ -608,58 +591,6 @@
                 <Setter Property="BorderBrush" Value="#99D1FF"/>
             </Trigger>
         </Style.Triggers>
-    </Style>
-
-    <Style x:Key="RibbonSplitButton" TargetType="hc:SplitButton" BasedOn="{StaticResource SplitButtonBaseStyle}">
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="BorderBrush" Value="Transparent"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Padding" Value="2"/>
-        <Setter Property="hc:BorderElement.CornerRadius" Value="4"/>
-        <Setter Property="Foreground" Value="#323130"/>
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Opacity" Value="1.0" />
-                <Setter Property="Background" Value="#E5F3FF"/>
-                <Setter Property="BorderBrush" Value="#CCE7FF"/>
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Opacity" Value="1.0" />
-                <Setter Property="Background" Value="#CCE7FF"/>
-                <Setter Property="BorderBrush" Value="#99D1FF"/>
-            </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Opacity" Value="0.4"/>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-
-    <Style x:Key="RibbonGroupStyle" TargetType="GroupBox">
-        <Setter Property="BorderBrush" Value="Transparent"/>
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="Margin" Value="0"/>
-        <Setter Property="Padding" Value="0"/>
-        <Setter Property="FontSize" Value="11"/>
-        <Setter Property="Foreground" Value="#6C757D"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="GroupBox">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <ContentPresenter Grid.Row="0" Margin="{TemplateBinding Padding}"/>
-                        <TextBlock Grid.Row="1" Text="{TemplateBinding Header}" 
-                                   FontSize="{TemplateBinding FontSize}"
-                                   Foreground="{TemplateBinding Foreground}"
-                                   HorizontalAlignment="Center" 
-                                   Margin="0,2,0,0"/>
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
     </Style>
 
     <!-- 开发者模式：已转换为内置模板的图解卡片边框色 -->
@@ -729,36 +660,6 @@
                 </Trigger.ExitActions>
             </Trigger>
         </Style.Triggers>
-    </Style>
-
-    <!-- New Styles from MainPlotPage -->
-    
-    <Style x:Key="TabLikeRadioButtonStyle" TargetType="RadioButton">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="RadioButton">
-                    <Border Name="Border" Background="Transparent"
-                               BorderThickness="1,1,1,0" CornerRadius="3,3,0,0"
-                               Padding="16,6,16,8" Margin="1,0" Height="28"
-                               VerticalAlignment="Bottom">
-                        <ContentPresenter HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="White"/>
-                            <Setter TargetName="Border" Property="BorderBrush" Value="#D4D4D4"/>
-                        </Trigger>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="#E5F3FF"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="FontSize" Value="12"/>
-        <Setter Property="Foreground" Value="#323130"/>
-        <Setter Property="Cursor" Value="Hand"/>
     </Style>
 
     <Style x:Key="ExpandCollapseToggleStyle" TargetType="ToggleButton">
@@ -854,93 +755,6 @@
                                 </Setter.Value>
                             </Setter>
                         </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="ModernTreeViewItemStyle" TargetType="TreeViewItem">
-        <Setter Property="OverridesDefaultStyle" Value="True"/>
-        <Setter Property="Margin" Value="0,2,0,0"/>
-        <Setter Property="Padding" Value="2"/>
-        <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="Foreground" Value="#333"/>
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="TreeViewItem">
-                    <StackPanel>
-                        <Border x:Name="Bd"
-                        CornerRadius="4"
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}"
-                        Padding="8,7" 
-                        SnapsToDevicePixels="true">
-                            <i:Interaction.Behaviors>
-                                <helpers:TreeViewItemExpandBehavior />
-                            </i:Interaction.Behaviors>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-
-                                <ToggleButton x:Name="Expander"
-                                      Grid.Column="0"
-                                      Style="{StaticResource ExpandCollapseToggleStyle}"
-                                      IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
-                                      ClickMode="Press"
-                                      Margin="0,0,5,0"
-                                      VerticalAlignment="Center"/>
-
-                                <ContentPresenter x:Name="PART_Header"
-                                          Grid.Column="1"
-                                          VerticalAlignment="Center"
-                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                          ContentSource="Header"/>
-                            </Grid>
-                        </Border>
-
-                        <ItemsPresenter x:Name="ItemsHost" Margin="20,0,0,0"/>
-
-                    </StackPanel>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsExpanded" Value="False">
-                            <Setter TargetName="ItemsHost" Property="Visibility" Value="Collapsed"/>
-                        </Trigger>
-                        <Trigger Property="HasItems" Value="False">
-                            <Setter TargetName="Expander" Property="Visibility" Value="Hidden"/>
-                        </Trigger>
-                        <Trigger SourceName="Bd" Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Bd" Property="Background" Value="#C2C3C9"/>
-                        </Trigger>
-                        <!-- 使用 DataTrigger 将 ViewModel 的 IsSelected 属性绑定 -->
-                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                            <Setter TargetName="Bd" Property="Background" Value="#35383E"/>
-                            <Setter Property="Foreground" Value="White"/>
-                        </DataTrigger>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsSelected" Value="True"/>
-                                <Condition Property="IsSelectionActive" Value="True"/>
-                            </MultiTrigger.Conditions>
-                            <Setter TargetName="Bd" Property="Background" Value="#35383E"/>
-                            <Setter Property="Foreground" Value="White"/>
-                        </MultiTrigger>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsSelected" Value="True"/>
-                                <Condition Property="IsSelectionActive" Value="False"/>
-                            </MultiTrigger.Conditions>
-                            <Setter TargetName="Bd" Property="Background" Value="#35383E"/>
-                            <Setter Property="Foreground" Value="White"/>
-                        </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -1737,6 +1551,32 @@
         <Setter Property="hc:VisualElement.Text" Value=""/>
         <Setter Property="Height" Value="10"/>
         <Setter Property="MinHeight" Value="10"/>
+    </Style>
+
+    <!-- 设置页检查更新行遮罩 -->
+    <Style x:Key="AppUpdateRowOverlayMaskStyle" TargetType="Border">
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="Padding" Value="0,6"/>
+        <Setter Property="MinWidth" Value="220"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <Style x:Key="AppUpdateRowOverlayStatusStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Foreground" Value="#666666"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="TextAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+    </Style>
+
+    <Style x:Key="AppUpdateRowOverlayPercentStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Foreground" Value="#666666"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="TextAlignment" Value="Right"/>
     </Style>
 
     <!-- 文件拖放遮罩 -->

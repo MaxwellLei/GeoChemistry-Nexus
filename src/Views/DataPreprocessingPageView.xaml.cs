@@ -32,7 +32,7 @@ namespace GeoChemistryNexus.Views
             return _instance;
         }
 
-        private void DataPrepGrid_CurrentWorksheetChanged(object sender, System.EventArgs e)
+        private void DataPrepGrid_CurrentWorksheetChanged(object? sender, System.EventArgs e)
         {
             BindWorksheetEvents();
             _viewModel.UpdateWorksheetSummary(DataPrepGrid.CurrentWorksheet);
@@ -56,13 +56,13 @@ namespace GeoChemistryNexus.Views
             _boundWorksheet.CellDataChanged += CurrentWorksheet_CellDataChanged;
         }
 
-        private void CurrentWorksheet_SelectionRangeChanged(object sender, RangeEventArgs e)
+        private void CurrentWorksheet_SelectionRangeChanged(object? sender, RangeEventArgs e)
         {
             _viewModel.UpdateWorksheetSummary(DataPrepGrid.CurrentWorksheet);
             _viewModel.UpdateSelectedCellState(DataPrepGrid.CurrentWorksheet, e.Range.Row, e.Range.Col);
         }
 
-        private void CurrentWorksheet_CellDataChanged(object sender, CellEventArgs e)
+        private void CurrentWorksheet_CellDataChanged(object? sender, CellEventArgs e)
         {
             _viewModel.UpdateWorksheetSummary(DataPrepGrid.CurrentWorksheet);
             _viewModel.UpdateSelectedCellState(DataPrepGrid.CurrentWorksheet, e.Cell.Position.Row, e.Cell.Position.Col);

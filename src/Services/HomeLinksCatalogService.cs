@@ -64,7 +64,7 @@ namespace GeoChemistryNexus.Services
 
             try
             {
-                string json = JsonHelper.ReadJsonFile(LocalCatalogPath);
+                string? json = JsonHelper.ReadJsonFile(LocalCatalogPath);
                 if (string.IsNullOrWhiteSpace(json))
                     return new HomeLinksCatalog();
 
@@ -100,7 +100,7 @@ namespace GeoChemistryNexus.Services
 
             try
             {
-                string dir = Path.GetDirectoryName(LocalCatalogPath);
+                string? dir = Path.GetDirectoryName(LocalCatalogPath);
                 if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
                     Directory.CreateDirectory(dir);
 
@@ -116,7 +116,7 @@ namespace GeoChemistryNexus.Services
 
         private static void WriteLocalCatalog(string json)
         {
-            string dir = Path.GetDirectoryName(LocalCatalogPath);
+            string? dir = Path.GetDirectoryName(LocalCatalogPath);
             if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
 

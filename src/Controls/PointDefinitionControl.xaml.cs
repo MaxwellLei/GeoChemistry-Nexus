@@ -66,7 +66,7 @@ namespace GeoChemistryNexus.Controls
         /// <summary>
         /// 控件加载时更新坐标标签
         /// </summary>
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private void UserControl_Loaded(object? sender, RoutedEventArgs e)
         {
             UpdateCoordinateLabels();
         }
@@ -160,7 +160,7 @@ namespace GeoChemistryNexus.Controls
         /// <summary>
         /// 当UI控件的值被用户修改时,更新PointValue依赖属性
         /// </summary>
-        private void OnNumericUpDownValueChanged(object sender, FunctionEventArgs<double> e)
+        private void OnNumericUpDownValueChanged(object? sender, FunctionEventArgs<double> e)
         {
             // 如果UI的更新是代码触发的,则直接返回
             if (_isUpdatingFromSource) return;
@@ -195,7 +195,7 @@ namespace GeoChemistryNexus.Controls
             }
         }
 
-        private void PickPointButton_Click(object sender, RoutedEventArgs e)
+        private void PickPointButton_Click(object? sender, RoutedEventArgs e)
         {
             // 发送拾取点请求
             if (PointValue != null)
@@ -204,7 +204,7 @@ namespace GeoChemistryNexus.Controls
             }
         }
 
-        private void Coordinate_GotFocus(object sender, RoutedEventArgs e)
+        private void Coordinate_GotFocus(object? sender, RoutedEventArgs e)
         {
             if (PointValue != null)
             {
@@ -212,7 +212,7 @@ namespace GeoChemistryNexus.Controls
             }
         }
 
-        private void Coordinate_LostFocus(object sender, RoutedEventArgs e)
+        private void Coordinate_LostFocus(object? sender, RoutedEventArgs e)
         {
             if (PointValue != null)
             {

@@ -93,7 +93,7 @@ namespace GeoChemistryNexus.Services
         /// <summary>
         /// 增量导出官方模板发布包到指定目录
         /// </summary>
-        public static PublishResult ExportToDirectory(string outputDir, PublishOptions options = null)
+        public static PublishResult ExportToDirectory(string outputDir, PublishOptions? options = null)
         {
             options ??= new PublishOptions();
             if (string.IsNullOrWhiteSpace(outputDir))
@@ -125,7 +125,7 @@ namespace GeoChemistryNexus.Services
                 string zipPath = Path.Combine(templatesDir, zipFileName);
                 string cosKey = $"{OfficialContentEndpoints.TemplatesFolderName}/{zipFileName}";
 
-                baselineHashes.TryGetValue(summary.Id, out string baselineHash);
+                baselineHashes.TryGetValue(summary.Id, out string? baselineHash);
                 bool hashChanged = !string.Equals(currentHash, baselineHash, StringComparison.OrdinalIgnoreCase);
                 bool zipMissing = !File.Exists(zipPath);
                 bool needExport = options.ForceExportAll || hashChanged || zipMissing || string.IsNullOrEmpty(baselineHash);
@@ -201,13 +201,16 @@ namespace GeoChemistryNexus.Services
                 ? UpdateHelper.ComputeFileMd5(homeLinksCatalogPath)
                 : LoadExistingHomeLinksHash(outputDir);
 
-            var serverInfo = new ServerInfo
-            {
-                ListHash = listHash,
-                ListPlotCategoriesHash = categoriesHash,
-                HomeLinksHash = homeLinksHash,
-                Announcement = options.PreserveAnnouncement ?? LoadExistingAnnouncement(outputDir)
-            };
+            var serverInfo = LoadMergedServerInfo(outputDir);
+            serverInfo.ListHash = listHash;
+            serverInfo.ListPlotCategoriesHash = categoriesHash;
+            serverInfo.HomeLinksHash = homeLinksHash;
+            if (options.PreserveAnnouncement != null)
+                serverInfo.Announcement = options.PreserveAnnouncement;
+            if (options.PreserveMinimumSupportedVersion != null)
+                serverInfo.MinimumSupportedVersion = options.PreserveMinimumSupportedVersion;
+            if (options.PreserveLatestAppVersion != null)
+                serverInfo.LatestAppVersion = options.PreserveLatestAppVersion;
 
             string serverInfoPath = Path.Combine(outputDir, OfficialContentEndpoints.ServerInfoFileName);
             File.WriteAllText(serverInfoPath, JsonSerializer.Serialize(serverInfo, ListJsonOptions));
@@ -228,6 +231,8 @@ namespace GeoChemistryNexus.Services
                 CategoriesPath = dstCategoriesPath,
                 ManifestPath = manifestPath,
                 ListHash = listHash,
+                MinimumSupportedVersion = serverInfo.MinimumSupportedVersion ?? string.Empty,
+                LatestAppVersion = serverInfo.LatestAppVersion ?? string.Empty,
                 ManifestEntries = manifestEntries
             };
         }
@@ -278,7 +283,7 @@ namespace GeoChemistryNexus.Services
         {
             string srcPath = HomeLinksCatalogService.GetBundledCatalogPath();
             if (!File.Exists(srcPath))
-                return null;
+                return string.Empty;
 
             string dstPath = Path.Combine(outputDir, OfficialContentEndpoints.HomeLinksCatalogFileName);
             File.Copy(srcPath, dstPath, true);
@@ -287,37 +292,41 @@ namespace GeoChemistryNexus.Services
 
         private static string LoadExistingHomeLinksHash(string outputDir)
         {
-            string path = Path.Combine(outputDir, OfficialContentEndpoints.ServerInfoFileName);
-            if (!File.Exists(path))
-                return string.Empty;
-
-            try
-            {
-                string json = File.ReadAllText(path);
-                var info = JsonSerializer.Deserialize<ServerInfo>(json);
-                return info?.HomeLinksHash ?? string.Empty;
-            }
-            catch
-            {
-                return string.Empty;
-            }
+            return LoadMergedServerInfo(outputDir).HomeLinksHash ?? string.Empty;
         }
 
-        private static string LoadExistingAnnouncement(string outputDir)
+        private static ServerInfo LoadMergedServerInfo(string outputDir)
         {
             string path = Path.Combine(outputDir, OfficialContentEndpoints.ServerInfoFileName);
-            if (!File.Exists(path)) return string.Empty;
+            if (File.Exists(path))
+            {
+                try
+                {
+                    var local = JsonSerializer.Deserialize<ServerInfo>(File.ReadAllText(path));
+                    if (local != null)
+                        return local;
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"[PublishService] Load local server_info failed: {ex.Message}");
+                }
+            }
 
             try
             {
-                string json = File.ReadAllText(path);
-                var info = JsonSerializer.Deserialize<ServerInfo>(json);
-                return info?.Announcement ?? string.Empty;
+                string json = UpdateHelper.GetUrlContentAsync(OfficialContentEndpoints.ServerInfoUrl)
+                    .GetAwaiter()
+                    .GetResult();
+                var remote = JsonSerializer.Deserialize<ServerInfo>(json);
+                if (remote != null)
+                    return remote;
             }
-            catch
+            catch (Exception ex)
             {
-                return string.Empty;
+                Debug.WriteLine($"[PublishService] Load remote server_info failed: {ex.Message}");
             }
+
+            return new ServerInfo();
         }
 
         private static string GetEffectiveHash(GraphMapTemplateEntity summary)

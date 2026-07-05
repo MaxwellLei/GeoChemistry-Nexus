@@ -10,7 +10,7 @@ namespace GeoChemistryNexus.Converter
 {
     public class EnumToDisplayStringConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             if (value == null) return string.Empty;
 
@@ -35,7 +35,8 @@ namespace GeoChemistryNexus.Converter
                 }
             }
 
-            FieldInfo fi = type.GetField(value.ToString());
+            string? enumName = value.ToString();
+            FieldInfo? fi = enumName != null ? type.GetField(enumName) : null;
             if (fi != null)
             {
                 var attributes = (LocalizedDescriptionAttribute[])fi.GetCustomAttributes(typeof(LocalizedDescriptionAttribute), false);
@@ -48,7 +49,7 @@ namespace GeoChemistryNexus.Converter
             return value.ToString();
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

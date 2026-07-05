@@ -101,7 +101,7 @@ namespace GeoChemistryNexus
             this.Loaded += MainWindow_Loaded;
         }
 
-        private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        private async void MainWindow_Loaded(object? sender, RoutedEventArgs e)
         {
             await AppUpdateService.TryAutoCheckOnStartupAsync();
         }
@@ -109,7 +109,7 @@ namespace GeoChemistryNexus
         /// <summary>
         /// 窗口状态变化事件处理
         /// </summary>
-        private void MainWindow_StateChanged(object sender, EventArgs e)
+        private void MainWindow_StateChanged(object? sender, EventArgs e)
         {
             if (this.DataContext is MainWindowViewModel viewModel)
             {
@@ -120,7 +120,7 @@ namespace GeoChemistryNexus
         /// <summary>
         /// 窗口初始化完成，添加消息钩子处理最大化不覆盖任务栏，并设置初始位置
         /// </summary>
-        private void Window_SourceInitialized(object sender, EventArgs e)
+        private void Window_SourceInitialized(object? sender, EventArgs e)
         {
             var hwndSource = HwndSource.FromHwnd(new WindowInteropHelper(this).Handle);
             if (hwndSource != null)
@@ -168,7 +168,7 @@ namespace GeoChemistryNexus
         }
 
         //显示窗口
-        private void ShowWindow(object sender, RoutedEventArgs e)
+        private void ShowWindow(object? sender, RoutedEventArgs e)
         {
             // 显示窗口并将其置于屏幕的最顶层
             this.Show();
@@ -181,7 +181,7 @@ namespace GeoChemistryNexus
         }
 
         //窗体加载完成后的按钮动画
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object? sender, RoutedEventArgs e)
         {
             // 将窗口置顶
             this.Topmost = true;
@@ -253,7 +253,7 @@ namespace GeoChemistryNexus
         }
 
         //窗体关闭触发
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void Window_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
         {
             if (ConfigHelper.GetConfig("exit_program_mode") == "0")
             {
@@ -265,7 +265,7 @@ namespace GeoChemistryNexus
         }
 
         //关闭窗口
-        private void ShutDownWindow(object sender, RoutedEventArgs e)
+        private void ShutDownWindow(object? sender, RoutedEventArgs e)
         {
             // 关闭应用程序
             System.Windows.Application.Current.Shutdown();
@@ -274,7 +274,7 @@ namespace GeoChemistryNexus
         /// <summary>
         /// 标题栏鼠标左键按下事件处理
         /// </summary>
-        private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void TitleBar_MouseLeftButtonDown(object? sender, MouseButtonEventArgs e)
         {
             var now = DateTime.Now;
             var timeSinceLastClick = (now - _lastClickTime).TotalMilliseconds;

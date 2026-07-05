@@ -6,7 +6,7 @@ namespace GeoChemistryNexus.Helpers
     {
         public const string DefaultIcon = "\uE774";
 
-        public static bool IsUrlIcon(string icon)
+        public static bool IsUrlIcon(string? icon)
         {
             if (string.IsNullOrWhiteSpace(icon))
                 return false;

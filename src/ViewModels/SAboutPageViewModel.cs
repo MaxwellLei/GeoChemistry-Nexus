@@ -13,7 +13,7 @@ namespace GeoChemistryNexus.ViewModels
     public partial class SAboutPageViewModel : ObservableObject
     {
         [ObservableProperty]
-        private string version;
+        private string version = string.Empty;
 
         public IReadOnlyList<string> SpecialThanksNames { get; } = new[]
         {
@@ -24,15 +24,15 @@ namespace GeoChemistryNexus.ViewModels
             "刘悦"
         };
 
-        public RelayCommand<string> OpenUrlCommand { get; private set; }
+        public RelayCommand<string?> OpenUrlCommand { get; private set; } = null!;
 
         public SAboutPageViewModel()
         {
-            Version = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
-            OpenUrlCommand = new RelayCommand<string>(ExecuteOpenUrlCommand);
+            Version = Assembly.GetExecutingAssembly().GetName().Version?.ToString(3) ?? string.Empty;
+            OpenUrlCommand = new RelayCommand<string?>(ExecuteOpenUrlCommand);
         }
 
-        private void ExecuteOpenUrlCommand(string url)
+        private void ExecuteOpenUrlCommand(string? url)
         {
             if (string.IsNullOrEmpty(url)) return;
             try

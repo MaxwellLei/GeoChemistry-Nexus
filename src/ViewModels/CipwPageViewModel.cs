@@ -153,31 +153,33 @@ namespace GeoChemistryNexus.ViewModels
             // 诊断列标题
             foreach (var diag in DiagnosticColumns)
             {
-                sheet[0, col] = LanguageService.Instance[diag] ?? diag;
-                sheet.SetColumnsWidth(col, 1, 110);
+                var headerText = LanguageService.Instance[diag] ?? diag;
+                sheet[0, col] = headerText;
+                SetColumnWidthForHeader(sheet, col, headerText, minWidth: 110);
                 col++;
             }
 
             // 结果矿物列标题
             foreach (var mineral in ResultMineralOrder)
             {
-                string displayName = CipwConstants.MineralNames.TryGetValue(mineral, out var name)
-                    ? $"{mineral}({name})"
-                    : mineral;
-                sheet[0, col] = displayName;
-                sheet.SetColumnsWidth(col, 1, 90);
+                var headerText = FormatMineralName(mineral);
+                sheet[0, col] = headerText;
+                SetColumnWidthForHeader(sheet, col, headerText, minWidth: 90);
                 col++;
             }
 
             // 设置表头样式
             var headerStyle = new WorksheetRangeStyle
             {
-                Flag = PlainStyleFlag.FontStyleBold | PlainStyleFlag.BackColor | PlainStyleFlag.HorizontalAlign,
+                Flag = PlainStyleFlag.BackColor | PlainStyleFlag.TextColor |
+                       PlainStyleFlag.FontStyleBold | PlainStyleFlag.HorizontalAlign,
                 Bold = true,
-                BackColor = Color.FromRgb(234, 239, 255),
+                BackColor = Colors.LightGray,
+                TextColor = Colors.Black,
                 HAlign = ReoGridHorAlign.Center
             };
             sheet.SetRangeStyles(new RangePosition(0, 0, 1, totalCols), headerStyle);
+            ApplyHeaderSideBorders(sheet, totalCols);
 
             // 锁定表头行（逐单元格设为只读）
             for (int i = 0; i < totalCols; i++)
@@ -195,6 +197,16 @@ namespace GeoChemistryNexus.ViewModels
 
             // 冻结表头行
             sheet.FreezeToCell(1, 0);
+        }
+
+        private static void ApplyHeaderSideBorders(Worksheet sheet, int totalCols)
+        {
+            for (int i = 0; i < totalCols; i++)
+            {
+                var cellRange = new RangePosition(0, i, 1, 1);
+                sheet.SetRangeBorders(cellRange, BorderPositions.Left, RangeBorderStyle.SilverSolid);
+                sheet.SetRangeBorders(cellRange, BorderPositions.Right, RangeBorderStyle.SilverSolid);
+            }
         }
 
         /// <summary>
@@ -277,7 +289,7 @@ namespace GeoChemistryNexus.ViewModels
                 {
                     // 写入错误信息
                     sheet[row, diagStartCol] = LanguageService.Instance["cipw_error"] ?? "Error";
-                    sheet[row, diagStartCol + 1] = result.ErrorMessage;
+                    sheet[row, diagStartCol + 1] = FormatCipwMessage(result.ErrorMessageKey, result.ErrorMessageArgs, result.ErrorMessage);
                 }
             }
 
@@ -359,7 +371,7 @@ namespace GeoChemistryNexus.ViewModels
         /// 清除所有数据
         /// </summary>
         [RelayCommand]
-        private async void ClearData(ReoGridControl grid)
+        private async Task ClearData(ReoGridControl grid)
         {
             if (grid == null) return;
 
@@ -523,12 +535,9 @@ namespace GeoChemistryNexus.ViewModels
 
                 foreach (var kv in sortedMinerals)
                 {
-                    string mineralName = CipwConstants.MineralNames.TryGetValue(kv.Key, out var name)
-                        ? $"{kv.Key} ({name})"
-                        : kv.Key;
                     DiagnosticItems.Add(new CipwDiagnosticItem
                     {
-                        Name = mineralName,
+                        Name = FormatMineralName(kv.Key, includeSpace: true),
                         Value = $"{kv.Value:F3} %",
                         IsHighlight = kv.Value > 10.0
                     });
@@ -551,11 +560,69 @@ namespace GeoChemistryNexus.ViewModels
                     DiagnosticItems.Add(new CipwDiagnosticItem
                     {
                         Name = "⚠",
-                        Value = warning,
+                        Value = FormatCipwMessage(warning),
                         IsHighlight = true
                     });
                 }
             }
+        }
+
+        private static string FormatMineralName(string mineral, bool includeSpace = false)
+        {
+            var localizedName = LanguageService.Instance[$"cipw_mineral_{mineral}"];
+            if (string.IsNullOrWhiteSpace(localizedName))
+            {
+                return mineral;
+            }
+
+            return includeSpace
+                ? $"{mineral} ({localizedName})"
+                : $"{mineral}({localizedName})";
+        }
+
+        private static void SetColumnWidthForHeader(Worksheet sheet, int column, string headerText, int minWidth)
+        {
+            double pixelsPerDip = 1.0;
+            try
+            {
+                var mainWindow = Application.Current?.MainWindow;
+                if (mainWindow != null)
+                {
+                    pixelsPerDip = VisualTreeHelper.GetDpi(mainWindow).PixelsPerDip;
+                }
+            }
+            catch
+            {
+                // Fall back to 1.0 when DPI information is unavailable during design-time initialization.
+            }
+
+            var formattedText = new FormattedText(
+                headerText ?? string.Empty,
+                System.Globalization.CultureInfo.CurrentCulture,
+                FlowDirection.LeftToRight,
+                new Typeface("Microsoft YaHei UI"),
+                13,
+                Brushes.Black,
+                pixelsPerDip);
+
+            var width = Math.Clamp((int)Math.Ceiling(formattedText.Width + 28), minWidth, 220);
+            sheet.SetColumnsWidth(column, 1, (ushort)width);
+        }
+
+        private static string FormatCipwMessage(CipwMessage message)
+        {
+            return FormatCipwMessage(message.Key, message.Args, message.Key);
+        }
+
+        private static string FormatCipwMessage(string key, object[] args, string fallback)
+        {
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                return fallback ?? string.Empty;
+            }
+
+            var template = LanguageService.Instance[key] ?? fallback ?? key;
+            return args?.Length > 0 ? string.Format(template, args) : template;
         }
 
         private static string TranslateSilicaSaturation(string value) => value switch

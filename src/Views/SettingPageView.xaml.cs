@@ -27,7 +27,7 @@ namespace GeoChemistryNexus.Views
     public partial class SettingPageView
     {
         // 单例模式
-        private static SettingPageView settingPage = null;
+        private static SettingPageView settingPage = null!;
 
         public SettingPageView()
         {

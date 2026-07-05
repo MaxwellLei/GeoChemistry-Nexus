@@ -143,6 +143,8 @@ namespace GeoChemistryNexus.Helpers
             var obj = jsValue.ToObject();
             try
             {
+                if (obj == null)
+                    return default!;
                 return (T)Convert.ChangeType(obj, typeof(T));
             }
             catch (InvalidCastException ex)
@@ -172,6 +174,8 @@ namespace GeoChemistryNexus.Helpers
             var obj = jsValue.ToObject();
             try
             {
+                if (obj == null)
+                    return default!;
                 return (T)Convert.ChangeType(obj, typeof(T));
             }
             catch (InvalidCastException ex)
@@ -202,6 +206,8 @@ namespace GeoChemistryNexus.Helpers
             var obj = jsValue.ToObject();
             try
             {
+                if (obj == null)
+                    return default!;
                 return (T)Convert.ChangeType(obj, typeof(T));
             }
             catch (InvalidCastException ex)
@@ -251,7 +257,7 @@ namespace GeoChemistryNexus.Helpers
             {
                 if (message != null)
                 {
-                    logs.Add(message.ToString());
+                    logs.Add(message.ToString() ?? string.Empty);
                 }
             }));
         }

@@ -13,7 +13,7 @@ namespace GeoChemistryNexus.ViewModels
     {
         public FunctionDefinition FunctionDefinition { get; }
 
-        private ScottPlot.Plottables.Scatter _scatterPlot;
+        private ScottPlot.Plottables.Scatter? _scatterPlot;
 
         public FunctionLayerItemViewModel(FunctionDefinition functionDefinition, int index)
             : base("Function " + (index + 1))

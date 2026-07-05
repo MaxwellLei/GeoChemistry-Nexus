@@ -16,7 +16,7 @@ namespace GeoChemistryNexus.Helpers
         };
 
         // 从 JSON 文件读取和反序列化内容
-        public static string ReadJsonFile(string filePath)
+        public static string? ReadJsonFile(string filePath)
         {
             if (!File.Exists(filePath))
             {
@@ -53,7 +53,7 @@ namespace GeoChemistryNexus.Helpers
             try
             {
                 string jsonString = JsonSerializer.Serialize(obj, _options);
-                string directory = Path.GetDirectoryName(filePath);
+                string? directory = Path.GetDirectoryName(filePath);
                 if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
                 {
                     Directory.CreateDirectory(directory);
@@ -67,7 +67,7 @@ namespace GeoChemistryNexus.Helpers
         }
 
         // 从 JSON 字符串反序列化为对象
-        public static T Deserialize<T>(string jsonString)
+        public static T? Deserialize<T>(string jsonString)
         {
             try
             {

@@ -21,7 +21,7 @@ namespace GeoChemistryNexus.Models
         /// </summary>
         [ObservableProperty]
         [Browsable(false)]      // 取消属性面板展示该属性
-        private string type;
+        private string type = string.Empty;
 
         /// <summary>
         /// Axis label

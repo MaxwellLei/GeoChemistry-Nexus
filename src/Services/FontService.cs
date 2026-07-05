@@ -7,10 +7,10 @@ namespace GeoChemistryNexus.Services
 {
     public static class FontService
     {
-        private static List<string> _cachedFontNames;
+        private static List<string>? _cachedFontNames;
         private static readonly object _lock = new object();
         private static bool _isInitialized = false;
-        private static Task _initializationTask;
+        private static Task? _initializationTask;
 
         /// <summary>
         /// 获取缓存的字体列表

@@ -20,7 +20,7 @@ namespace GeoChemistryNexus.Views
     /// </summary>
     public partial class SAboutPageView : Page
     {
-        private static SAboutPageView sAboutPageView;
+        private static SAboutPageView sAboutPageView = null!;
 
         public SAboutPageView()
         {

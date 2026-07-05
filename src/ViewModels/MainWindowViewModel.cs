@@ -265,9 +265,11 @@ namespace GeoChemistryNexus.ViewModels
         /// </summary>
         /// <param name="nav">导航</param>
         [RelayCommand]
-        private void PlotPage(Frame nav)
+        private async Task PlotPage(Frame nav)
         {
-            NavigateToPage(nav, MainPlotPage.GetPage());
+            var page = MainPlotPage.GetPage();
+            NavigateToPage(nav, page);
+            await page.CheckUpdatesIfNeededAsync();
         }
 
         /// <summary>
@@ -285,9 +287,11 @@ namespace GeoChemistryNexus.ViewModels
         /// </summary>
         /// <param name="nav">导航</param>
         [RelayCommand]
-        private void GTMNewPage(Frame nav)
+        private async Task GTMNewPage(Frame nav)
         {
-            NavigateToPage(nav, GeothermometerPageView.GetPage());
+            var page = (GeothermometerPageView)GeothermometerPageView.GetPage();
+            NavigateToPage(nav, page);
+            await page.CheckUpdatesIfNeededAsync();
         }
 
         /// <summary>

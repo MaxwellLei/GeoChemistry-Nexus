@@ -53,6 +53,18 @@ namespace GeoChemistryNexus.ViewModels
         private bool _developerMode; // 开发者模式
 
         [ObservableProperty]
+        private bool isAppUpdateOverlayVisible;
+
+        [ObservableProperty]
+        private double appUpdateProgress;
+
+        [ObservableProperty]
+        private bool isAppUpdateProgressIndeterminate = true;
+
+        [ObservableProperty]
+        private string appUpdateStatusText = string.Empty;
+
+        [ObservableProperty]
         private int mainSidebarCollapseMode; // 主窗体侧边栏收起样式(0是全部收起;1是保留图标)
 
         public RelayCommand AutoOffTimeChangedCommand { get; private set; }   // 修改通知自动关闭时间命令
@@ -91,15 +103,25 @@ namespace GeoChemistryNexus.ViewModels
         // 检查更新
         private async void ExecuteCheckUpdateCommandAsync()
         {
+            if (IsAppUpdateOverlayVisible)
+                return;
+
             try
             {
-                var updateInfo = await UpdateHelper.GetLatestReleaseInfoAsync();
+                var updateInfo = await UpdateHelper.GetLatestAppUpdateInfoAsync();
 
                 if (updateInfo.HasUpdate)
                 {
-                    string confirmMessage = string.Format(
-                        LanguageService.Instance["new_version_available_github"] ?? "New version {0} is available. Download and install now?",
-                        updateInfo.LatestVersion);
+                    bool hasCachedInstaller = UpdateHelper.TryGetCachedInstallerPath(updateInfo, out _);
+                    string confirmMessage = hasCachedInstaller
+                        ? string.Format(
+                            GetLanguageText(
+                                "update_cached_installer_confirm",
+                                "Installer for version {0} is already downloaded. Install now?"),
+                            updateInfo.LatestVersion)
+                        : string.Format(
+                            LanguageService.Instance["new_version_available_github"] ?? "New version {0} is available. Download and install now?",
+                            updateInfo.LatestVersion);
 
                     bool isConfirmed = await MessageHelper.ShowAsyncDialog(
                         confirmMessage,
@@ -109,7 +131,7 @@ namespace GeoChemistryNexus.ViewModels
                     if (!isConfirmed)
                         return;
 
-                    await TryDownloadAndInstallUpdateAsync(updateInfo);
+                    await DownloadAndInstallAppUpdateAsync(updateInfo, hasCachedInstaller: hasCachedInstaller);
                     return;
                 }
 
@@ -136,9 +158,12 @@ namespace GeoChemistryNexus.ViewModels
             if (!DeveloperMode)
                 return;
 
+            if (IsAppUpdateOverlayVisible)
+                return;
+
             try
             {
-                var updateInfo = await UpdateHelper.GetLatestReleaseInfoAsync(forceDownload: true);
+                var updateInfo = await UpdateHelper.GetLatestAppUpdateInfoAsync(forceDownload: true);
 
                 if (string.IsNullOrWhiteSpace(updateInfo.InstallerDownloadUrl))
                 {
@@ -148,10 +173,17 @@ namespace GeoChemistryNexus.ViewModels
                     return;
                 }
 
-                string confirmMessage = string.Format(
-                    LanguageService.Instance["force_update_app_confirm"]
-                        ?? "Download and install the latest version {0}?",
-                    updateInfo.LatestVersion);
+                bool hasCachedInstaller = UpdateHelper.TryGetCachedInstallerPath(updateInfo, out _);
+                string confirmMessage = hasCachedInstaller
+                    ? string.Format(
+                        GetLanguageText(
+                            "update_cached_installer_confirm",
+                            "Installer for version {0} is already downloaded. Install now?"),
+                        updateInfo.LatestVersion)
+                    : string.Format(
+                        LanguageService.Instance["force_update_app_confirm"]
+                            ?? "Download and install the latest version {0}?",
+                        updateInfo.LatestVersion);
 
                 bool isConfirmed = await MessageHelper.ShowAsyncDialog(
                     confirmMessage,
@@ -161,7 +193,7 @@ namespace GeoChemistryNexus.ViewModels
                 if (!isConfirmed)
                     return;
 
-                await TryDownloadAndInstallUpdateAsync(updateInfo, bypassPortableCheck: true);
+                await DownloadAndInstallAppUpdateAsync(updateInfo, bypassPortableCheck: true, hasCachedInstaller: hasCachedInstaller);
             }
             catch (Exception ex)
             {
@@ -169,64 +201,54 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
-        private static async Task TryDownloadAndInstallUpdateAsync(AppUpdateInfo updateInfo, bool bypassPortableCheck = false)
+        private async Task DownloadAndInstallAppUpdateAsync(
+            AppUpdateInfo updateInfo,
+            bool bypassPortableCheck = false,
+            bool hasCachedInstaller = false)
         {
-            if (!bypassPortableCheck && AppDataPathHelper.IsPortableMode())
-            {
-                string portableHint = LanguageService.Instance["update_portable_mode_hint"]
-                    ?? "Portable mode detected. Please download the installer or portable package from the Releases page.";
-                MessageHelper.Warning(portableHint);
-                UpdateHelper.OpenLatestReleasePage();
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(updateInfo.InstallerDownloadUrl))
-            {
-                MessageHelper.Warning(LanguageService.Instance["update_installer_not_found"]
-                    ?? "Installer package not found in the latest release.");
-                UpdateHelper.OpenLatestReleasePage();
-                return;
-            }
+            ShowAppUpdateOverlay(
+                hasCachedInstaller
+                    ? GetLanguageText("update_cached_installer_ready", "Ready")
+                    : LanguageService.Instance["downloading_ellipsis"] ?? "Downloading...",
+                !hasCachedInstaller,
+                hasCachedInstaller ? 100 : 0);
 
             try
             {
-                string installerPath = UpdateHelper.GetInstallerDownloadPath(updateInfo.InstallerFileName);
-                MessageHelper.Info(LanguageService.Instance["downloading_ellipsis"] ?? "Downloading...");
-
-                await UpdateHelper.DownloadInstallerAsync(
-                    updateInfo.InstallerDownloadUrl,
-                    installerPath);
-
-                string shutdownMessage = LanguageService.Instance["update_download_confirm_shutdown"]
-                    ?? "Download complete. The application will exit and launch the installer wizard. Continue?";
-
-                bool readyToInstall = await MessageHelper.ShowAsyncDialog(
-                    shutdownMessage,
-                    LanguageService.Instance["Cancel"],
-                    LanguageService.Instance["Confirm"]);
-
-                if (!readyToInstall)
+                var progress = new Progress<double>(value =>
                 {
-                    MessageHelper.Info(LanguageService.Instance["update_installer_saved"]
-                        ?? $"Installer saved to: {installerPath}");
-                    return;
-                }
+                    IsAppUpdateProgressIndeterminate = false;
+                    AppUpdateProgress = Math.Clamp(value, 0, 100);
+                });
 
-                try
-                {
-                    await UpdateHelper.CheckAndUpdatePlotCategoriesAsync();
-                }
-                catch
-                {
-                    // 忽略更新 PlotTemplateCategories.json 的错误
-                }
-
-                UpdateHelper.LaunchInstallerAndShutdown(installerPath);
+                await AppUpdateService.TryDownloadAndInstallUpdateAsync(updateInfo, bypassPortableCheck, progress);
             }
-            catch (Exception downloadEx)
+            finally
             {
-                MessageHelper.Error(LanguageService.Instance["unknown_error_occurred"] + $": {downloadEx.Message}");
+                HideAppUpdateOverlay();
             }
+        }
+
+        private void ShowAppUpdateOverlay(string statusText, bool indeterminate, double progress = 0)
+        {
+            AppUpdateStatusText = statusText;
+            IsAppUpdateProgressIndeterminate = indeterminate;
+            AppUpdateProgress = progress;
+            IsAppUpdateOverlayVisible = true;
+        }
+
+        private void HideAppUpdateOverlay()
+        {
+            IsAppUpdateOverlayVisible = false;
+            IsAppUpdateProgressIndeterminate = true;
+            AppUpdateProgress = 0;
+            AppUpdateStatusText = string.Empty;
+        }
+
+        private static string GetLanguageText(string key, string fallback)
+        {
+            string value = LanguageService.Instance[key];
+            return string.IsNullOrWhiteSpace(value) ? fallback : value;
         }
 
         // 开发者模式
@@ -341,19 +363,19 @@ namespace GeoChemistryNexus.ViewModels
         void ReadConfig()
         {
             // 读取语言设置
-            string langConfig = Helpers.ConfigHelper.GetConfig("language");
-            SelectedAppLanguageCode = AppCultureRegistry.ResolveAppLanguage(langConfig);
+            string? langConfig = Helpers.ConfigHelper.GetConfig("language");
+            SelectedAppLanguageCode = AppCultureRegistry.ResolveAppLanguage(langConfig ?? string.Empty);
 
-            AutoOffTime = int.Parse(Helpers.ConfigHelper.GetConfig("auto_off_time"));    //读取消息通知时间
+            AutoOffTime = int.Parse(Helpers.ConfigHelper.GetConfig("auto_off_time") ?? "0");    //读取消息通知时间
             
             if (bool.TryParse(Helpers.ConfigHelper.GetConfig("developer_mode"), out bool devMode))
             {
                 DeveloperMode = devMode;
             }
 
-            Boot = bool.Parse(Helpers.ConfigHelper.GetConfig("boot"));     //读取是否自动开机
-            AutoCheck = bool.Parse(Helpers.ConfigHelper.GetConfig("auto_check_update"));   //读取是否自动检查更新
-            ExitMode = int.Parse(Helpers.ConfigHelper.GetConfig("exit_program_mode"));  //读取退出方式
+            Boot = bool.Parse(Helpers.ConfigHelper.GetConfig("boot") ?? "false");     //读取是否自动开机
+            AutoCheck = bool.Parse(Helpers.ConfigHelper.GetConfig("auto_check_update") ?? "false");   //读取是否自动检查更新
+            ExitMode = int.Parse(Helpers.ConfigHelper.GetConfig("exit_program_mode") ?? "0");  //读取退出方式
             if (int.TryParse(Helpers.ConfigHelper.GetConfig("main_sidebar_collapse_mode"), out int sidebarCollapseMode)
                 && sidebarCollapseMode >= 0 && sidebarCollapseMode <= 1)
             {

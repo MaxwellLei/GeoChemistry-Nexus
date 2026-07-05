@@ -18,12 +18,12 @@ namespace GeoChemistryNexus.Services
 
         private sealed class UploadProgressTracker
         {
-            private readonly IProgress<(int current, int total)> _progress;
+            private readonly IProgress<(int current, int total)>? _progress;
 
             public int Total { get; }
             public int Current { get; private set; }
 
-            public UploadProgressTracker(IProgress<(int current, int total)> progress, int total)
+            public UploadProgressTracker(IProgress<(int current, int total)>? progress, int total)
             {
                 _progress = progress;
                 Total = total;
@@ -40,7 +40,7 @@ namespace GeoChemistryNexus.Services
             string outputDir,
             PublishResult publishResult,
             CosPublishSettings settings,
-            IProgress<string> log = null)
+            IProgress<string>? log = null)
         {
             return await UploadPublishResultCoreAsync(outputDir, publishResult, settings, log, null);
         }
@@ -49,8 +49,8 @@ namespace GeoChemistryNexus.Services
             string outputDir,
             PublishResult publishResult,
             CosPublishSettings settings,
-            IProgress<string> log,
-            UploadProgressTracker uploadTracker)
+            IProgress<string>? log,
+            UploadProgressTracker? uploadTracker)
         {
             if (settings == null || !settings.IsConfigured)
                 throw new InvalidOperationException("COS publish settings are not configured.");
@@ -100,7 +100,11 @@ namespace GeoChemistryNexus.Services
                 Log($"Uploaded: {entry.CosKey}");
             }
 
-            bool verified = await VerifyServerInfoAsync(publishResult.ListHash, publishResult.HomeLinksHash);
+            bool verified = await VerifyServerInfoAsync(
+                publishResult.ListHash,
+                publishResult.HomeLinksHash,
+                publishResult.MinimumSupportedVersion,
+                publishResult.LatestAppVersion);
             Log(verified
                 ? "server_info.json verification passed."
                 : "Warning: server_info.json verification failed or CDN not yet refreshed.");
@@ -118,7 +122,7 @@ namespace GeoChemistryNexus.Services
         public static async Task<CosUploadResult> UploadHomeLinksPublishResultAsync(
             HomeLinksPublishResult publishResult,
             CosPublishSettings settings,
-            IProgress<string> log = null)
+            IProgress<string>? log = null)
         {
             return await UploadHomeLinksPublishResultCoreAsync(publishResult, settings, log, null);
         }
@@ -126,8 +130,8 @@ namespace GeoChemistryNexus.Services
         private static async Task<CosUploadResult> UploadHomeLinksPublishResultCoreAsync(
             HomeLinksPublishResult publishResult,
             CosPublishSettings settings,
-            IProgress<string> log,
-            UploadProgressTracker uploadTracker)
+            IProgress<string>? log,
+            UploadProgressTracker? uploadTracker)
         {
             if (settings == null || !settings.IsConfigured)
                 throw new InvalidOperationException("COS publish settings are not configured.");
@@ -158,7 +162,11 @@ namespace GeoChemistryNexus.Services
                 Log($"Uploaded: {file.Key}");
             }
 
-            bool verified = await VerifyHomeLinksHashAsync(publishResult.HomeLinksHash);
+            bool verified = await VerifyHomeLinksHashAsync(
+                publishResult.HomeLinksHash,
+                publishResult.Announcement,
+                publishResult.MinimumSupportedVersion,
+                publishResult.LatestAppVersion);
             Log(verified
                 ? "server_info.json home_links_hash verification passed."
                 : "Warning: home_links_hash verification failed or CDN not yet refreshed.");
@@ -176,7 +184,7 @@ namespace GeoChemistryNexus.Services
         public static async Task<CosUploadResult> UploadGeothermometerPublishResultAsync(
             GeothermometerPublishResult publishResult,
             CosPublishSettings settings,
-            IProgress<string> log = null)
+            IProgress<string>? log = null)
         {
             return await UploadGeothermometerPublishResultCoreAsync(publishResult, settings, log, null);
         }
@@ -184,8 +192,8 @@ namespace GeoChemistryNexus.Services
         private static async Task<CosUploadResult> UploadGeothermometerPublishResultCoreAsync(
             GeothermometerPublishResult publishResult,
             CosPublishSettings settings,
-            IProgress<string> log,
-            UploadProgressTracker uploadTracker)
+            IProgress<string>? log,
+            UploadProgressTracker? uploadTracker)
         {
             if (settings == null || !settings.IsConfigured)
                 throw new InvalidOperationException("COS publish settings are not configured.");
@@ -249,7 +257,7 @@ namespace GeoChemistryNexus.Services
         public static async Task<CosUploadResult> UploadAnnouncementPublishResultAsync(
             AnnouncementPublishResult publishResult,
             CosPublishSettings settings,
-            IProgress<string> log = null)
+            IProgress<string>? log = null)
         {
             return await UploadAnnouncementPublishResultCoreAsync(publishResult, settings, log, null);
         }
@@ -257,8 +265,8 @@ namespace GeoChemistryNexus.Services
         private static async Task<CosUploadResult> UploadAnnouncementPublishResultCoreAsync(
             AnnouncementPublishResult publishResult,
             CosPublishSettings settings,
-            IProgress<string> log,
-            UploadProgressTracker uploadTracker)
+            IProgress<string>? log,
+            UploadProgressTracker? uploadTracker)
         {
             if (settings == null || !settings.IsConfigured)
                 throw new InvalidOperationException("COS publish settings are not configured.");
@@ -280,7 +288,10 @@ namespace GeoChemistryNexus.Services
             uploadTracker?.Advance();
             Log($"Uploaded: {OfficialContentEndpoints.ServerInfoFileName}");
 
-            bool verified = await VerifyAnnouncementAsync(publishResult.Announcement);
+            bool verified = await VerifyAnnouncementAsync(
+                publishResult.Announcement,
+                publishResult.MinimumSupportedVersion,
+                publishResult.LatestAppVersion);
             Log(verified
                 ? "server_info.json announcement verification passed."
                 : "Warning: announcement verification failed or CDN not yet refreshed.");
@@ -297,17 +308,17 @@ namespace GeoChemistryNexus.Services
 
         public static async Task<CosUploadResult> UploadCombinedPublishAsync(
             string stagingRoot,
-            PublishResult diagramResult,
-            GeothermometerPublishResult geothermometerResult,
-            HomeLinksPublishResult homeLinksResult,
-            AnnouncementPublishResult announcementResult,
+            PublishResult? diagramResult,
+            GeothermometerPublishResult? geothermometerResult,
+            HomeLinksPublishResult? homeLinksResult,
+            AnnouncementPublishResult? announcementResult,
             CosPublishSettings settings,
             bool uploadDiagrams,
             bool uploadGeothermometers,
             bool uploadHomeLinks,
             bool uploadAnnouncement,
-            IProgress<string> log = null,
-            IProgress<(int current, int total)> uploadProgress = null)
+            IProgress<string>? log = null,
+            IProgress<(int current, int total)>? uploadProgress = null)
         {
             var allKeys = new List<string>();
             bool diagramVerified = true;
@@ -367,7 +378,7 @@ namespace GeoChemistryNexus.Services
             };
         }
 
-        public static async Task<bool> TestConnectionAsync(CosPublishSettings settings, string plainSecretKey = null)
+        public static async Task<bool> TestConnectionAsync(CosPublishSettings settings, string? plainSecretKey = null)
         {
             if (settings == null || string.IsNullOrWhiteSpace(settings.SecretId))
                 return false;
@@ -405,10 +416,10 @@ namespace GeoChemistryNexus.Services
         }
 
         private static int CountCombinedUploadFiles(
-            PublishResult diagramResult,
-            GeothermometerPublishResult geothermometerResult,
-            HomeLinksPublishResult homeLinksResult,
-            AnnouncementPublishResult announcementResult,
+            PublishResult? diagramResult,
+            GeothermometerPublishResult? geothermometerResult,
+            HomeLinksPublishResult? homeLinksResult,
+            AnnouncementPublishResult? announcementResult,
             bool uploadDiagrams,
             bool uploadGeothermometers,
             bool uploadHomeLinks,
@@ -429,7 +440,7 @@ namespace GeoChemistryNexus.Services
             return total;
         }
 
-        private static int CountPublishResultFiles(PublishResult publishResult)
+        private static int CountPublishResultFiles(PublishResult? publishResult)
         {
             if (publishResult == null)
                 return 0;
@@ -452,7 +463,7 @@ namespace GeoChemistryNexus.Services
             return count;
         }
 
-        private static int CountHomeLinksPublishFiles(HomeLinksPublishResult publishResult)
+        private static int CountHomeLinksPublishFiles(HomeLinksPublishResult? publishResult)
         {
             if (publishResult == null)
                 return 0;
@@ -466,7 +477,7 @@ namespace GeoChemistryNexus.Services
             return manifestFiles.Count(path => !string.IsNullOrEmpty(path) && File.Exists(path));
         }
 
-        private static int CountGeothermometerPublishFiles(GeothermometerPublishResult publishResult)
+        private static int CountGeothermometerPublishFiles(GeothermometerPublishResult? publishResult)
         {
             if (publishResult == null)
                 return 0;
@@ -488,7 +499,7 @@ namespace GeoChemistryNexus.Services
             return count;
         }
 
-        private static int CountAnnouncementPublishFiles(AnnouncementPublishResult publishResult)
+        private static int CountAnnouncementPublishFiles(AnnouncementPublishResult? publishResult)
         {
             if (publishResult == null)
                 return 0;
@@ -518,7 +529,11 @@ namespace GeoChemistryNexus.Services
             cosXml.PutObject(request);
         }
 
-        private static async Task<bool> VerifyServerInfoAsync(string expectedListHash, string expectedHomeLinksHash = null)
+        private static async Task<bool> VerifyServerInfoAsync(
+            string expectedListHash,
+            string? expectedHomeLinksHash = null,
+            string? expectedMinimumSupportedVersion = null,
+            string? expectedLatestAppVersion = null)
         {
             if (string.IsNullOrEmpty(expectedListHash))
                 return false;
@@ -535,10 +550,12 @@ namespace GeoChemistryNexus.Services
                     if (serverInfo != null
                         && string.Equals(serverInfo.ListHash, expectedListHash, StringComparison.OrdinalIgnoreCase))
                     {
-                        if (string.IsNullOrEmpty(expectedHomeLinksHash))
-                            return true;
+                        if (!string.IsNullOrEmpty(expectedHomeLinksHash)
+                            && !string.Equals(serverInfo.HomeLinksHash, expectedHomeLinksHash, StringComparison.OrdinalIgnoreCase))
+                            return false;
 
-                        return string.Equals(serverInfo.HomeLinksHash, expectedHomeLinksHash, StringComparison.OrdinalIgnoreCase);
+                        return IsMinimumSupportedVersionVerified(serverInfo, expectedMinimumSupportedVersion)
+                            && IsLatestAppVersionVerified(serverInfo, expectedLatestAppVersion);
                     }
                 }
                 catch
@@ -550,7 +567,11 @@ namespace GeoChemistryNexus.Services
             return false;
         }
 
-        private static async Task<bool> VerifyHomeLinksHashAsync(string expectedHomeLinksHash)
+        private static async Task<bool> VerifyHomeLinksHashAsync(
+            string expectedHomeLinksHash,
+            string? expectedAnnouncement = null,
+            string? expectedMinimumSupportedVersion = null,
+            string? expectedLatestAppVersion = null)
         {
             if (string.IsNullOrEmpty(expectedHomeLinksHash))
                 return false;
@@ -567,7 +588,11 @@ namespace GeoChemistryNexus.Services
                     if (serverInfo != null
                         && string.Equals(serverInfo.HomeLinksHash, expectedHomeLinksHash, StringComparison.OrdinalIgnoreCase))
                     {
-                        return true;
+                        if (!IsAnnouncementVerified(serverInfo, expectedAnnouncement))
+                            return false;
+
+                        return IsMinimumSupportedVersionVerified(serverInfo, expectedMinimumSupportedVersion)
+                            && IsLatestAppVersionVerified(serverInfo, expectedLatestAppVersion);
                     }
                 }
                 catch
@@ -579,7 +604,10 @@ namespace GeoChemistryNexus.Services
             return false;
         }
 
-        private static async Task<bool> VerifyAnnouncementAsync(string expectedAnnouncement)
+        private static async Task<bool> VerifyAnnouncementAsync(
+            string expectedAnnouncement,
+            string? expectedMinimumSupportedVersion = null,
+            string? expectedLatestAppVersion = null)
         {
             for (int attempt = 0; attempt < 3; attempt++)
             {
@@ -593,7 +621,8 @@ namespace GeoChemistryNexus.Services
                     if (serverInfo != null
                         && string.Equals(serverInfo.Announcement?.Trim(), expectedAnnouncement?.Trim(), StringComparison.Ordinal))
                     {
-                        return true;
+                        return IsMinimumSupportedVersionVerified(serverInfo, expectedMinimumSupportedVersion)
+                            && IsLatestAppVersionVerified(serverInfo, expectedLatestAppVersion);
                     }
                 }
                 catch
@@ -605,7 +634,44 @@ namespace GeoChemistryNexus.Services
             return false;
         }
 
-        private static async Task<bool> VerifyGeoTIndexAsync(string expectedListHash, string expectedMineralCategoriesHash = null)
+        private static bool IsMinimumSupportedVersionVerified(
+            ServerInfo serverInfo,
+            string? expectedMinimumSupportedVersion)
+        {
+            if (string.IsNullOrEmpty(expectedMinimumSupportedVersion))
+                return true;
+
+            return string.Equals(
+                serverInfo.MinimumSupportedVersion?.Trim(),
+                expectedMinimumSupportedVersion.Trim(),
+                StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool IsLatestAppVersionVerified(
+            ServerInfo serverInfo,
+            string? expectedLatestAppVersion)
+        {
+            if (string.IsNullOrEmpty(expectedLatestAppVersion))
+                return true;
+
+            return string.Equals(
+                serverInfo.LatestAppVersion?.Trim(),
+                expectedLatestAppVersion.Trim(),
+                StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool IsAnnouncementVerified(ServerInfo serverInfo, string? expectedAnnouncement)
+        {
+            if (expectedAnnouncement == null)
+                return true;
+
+            return string.Equals(
+                serverInfo.Announcement?.Trim(),
+                expectedAnnouncement.Trim(),
+                StringComparison.Ordinal);
+        }
+
+        private static async Task<bool> VerifyGeoTIndexAsync(string expectedListHash, string? expectedMineralCategoriesHash = null)
         {
             if (string.IsNullOrEmpty(expectedListHash))
                 return false;

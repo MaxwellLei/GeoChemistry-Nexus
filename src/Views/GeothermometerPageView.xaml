@@ -168,6 +168,35 @@
             </Setter>
         </Style>
 
+        <!-- 面板控制小按钮样式（与 CIPW 计算详情一致） -->
+        <Style x:Key="PanelControlButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="26"/>
+            <Setter Property="Height" Value="26"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Foreground" Value="#888"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="4" 
+                                ToolTip="{TemplateBinding ToolTip}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#E8E8E8"/>
+                                <Setter Property="Foreground" Value="#333"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#D4D4D4"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <!-- 主操作按钮样式 -->
         <Style x:Key="PrimaryButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="#0078D4"/>
@@ -462,7 +491,7 @@
                                                                           Command="{Binding Data.ExportPluginCommand, Source={StaticResource ViewModelProxy}}"
                                                                           CommandParameter="{Binding}">
                                                                     <MenuItem.Icon>
-                                                                        <TextBlock Text="&#xE78C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
+                                                                        <TextBlock Text="&#xe673;" FontFamily="{StaticResource IconFont}" FontSize="12"/>
                                                                     </MenuItem.Icon>
                                                                 </MenuItem>
                                                                 <Separator>
@@ -484,7 +513,7 @@
                                                                         <TextBlock Text="&#xE74B;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#E65100"/>
                                                                     </MenuItem.Icon>
                                                                     <MenuItem.Style>
-                                                                        <Style TargetType="MenuItem">
+                                                                        <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
                                                                             <Setter Property="Visibility" Value="Collapsed"/>
                                                                             <Style.Triggers>
                                                                                 <DataTrigger Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True">
@@ -501,7 +530,7 @@
                                                                         <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#D13438"/>
                                                                     </MenuItem.Icon>
                                                                     <MenuItem.Style>
-                                                                        <Style TargetType="MenuItem">
+                                                                        <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
                                                                             <Setter Property="Visibility" Value="Collapsed"/>
                                                                             <Style.Triggers>
                                                                                 <DataTrigger Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True">
@@ -588,7 +617,7 @@
                                                       Command="{Binding Data.ExportPluginCommand, Source={StaticResource ViewModelProxy}}"
                                                       CommandParameter="{Binding}">
                                                 <MenuItem.Icon>
-                                                    <TextBlock Text="&#xE78C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
+                                                    <TextBlock Text="&#xe673;" FontFamily="{StaticResource IconFont}" FontSize="12"/>
                                                 </MenuItem.Icon>
                                             </MenuItem>
                                             <Separator/>
@@ -600,7 +629,7 @@
                                                     <TextBlock Text="&#xE735;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#107C10"/>
                                                 </MenuItem.Icon>
                                                 <MenuItem.Style>
-                                                    <Style TargetType="MenuItem">
+                                                    <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
                                                         <Setter Property="Visibility" Value="Collapsed"/>
                                                         <Style.Triggers>
                                                             <DataTrigger Binding="{Binding PlacementTarget.Tag.IsDeveloperMode, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True">
@@ -839,9 +868,14 @@
                                     Command="{Binding ExportWorksheetCommand}"
                                     CommandParameter="{Binding Data, Source={StaticResource GridProxy}}"
                                     ToolTip="{Binding [geo_tooltip_export_csv],Source={x:Static lg:LanguageService.Instance}, FallbackValue=导出当前工作表为CSV}"
-                                    Margin="0,0,4,0"
-                                    Content="{Binding [geo_btn_export],Source={x:Static lg:LanguageService.Instance}, FallbackValue=导出}"
-                                    FontSize="13"/>
+                                    Margin="0,0,4,0">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xe673;" FontFamily="{StaticResource IconFont}" FontSize="13"
+                                               VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                    <TextBlock Text="{Binding [geo_btn_export],Source={x:Static lg:LanguageService.Instance}, FallbackValue=导出}"
+                                               VerticalAlignment="Center" FontSize="13"/>
+                                </StackPanel>
+                            </Button>
 
                             <!-- 重置按钮（功能等同于应用） -->
                             <Button Style="{StaticResource PrimaryButtonStyle}"
@@ -943,6 +977,7 @@
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
 
                                     <TextBlock Grid.Column="0" Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" 
@@ -982,72 +1017,19 @@
                                         </TextBlock.Style>
                                     </TextBlock>
 
-                                    <!-- 标题栏按钮组（仅有数据时显示） -->
-                                    <StackPanel Grid.Column="2" Orientation="Horizontal">
-                                        <StackPanel.Style>
-                                            <Style TargetType="StackPanel">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding HasCalculationData}" Value="False">
-                                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </StackPanel.Style>
-                                        <!-- 最小化/还原按钮 -->
-                                        <Button Padding="6,4">
-                                            <Button.Style>
-                                                <Style TargetType="Button" BasedOn="{StaticResource GTMToolbarButtonStyle}">
-                                                    <Setter Property="Command" Value="{Binding MinimizeDetailPanelCommand}"/>
-                                                    <Setter Property="ToolTip" Value="{Binding [geo_tooltip_minimize], Source={x:Static lg:LanguageService.Instance}, FallbackValue=最小化}"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsDetailPanelMinimized}" Value="True">
-                                                            <Setter Property="Command" Value="{Binding RestoreDetailPanelCommand}"/>
-                                                            <Setter Property="ToolTip" Value="{Binding [geo_tooltip_restore], Source={x:Static lg:LanguageService.Instance}, FallbackValue=还原}"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Button.Style>
-                                            <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="11" Foreground="#888">
-                                                <TextBlock.Style>
-                                                    <Style TargetType="TextBlock">
-                                                        <Setter Property="Text" Value="&#xE921;"/>
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding IsDetailPanelMinimized}" Value="True">
-                                                                <Setter Property="Text" Value="&#xE923;"/>
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </TextBlock.Style>
-                                            </TextBlock>
-                                        </Button>
-                                        <!-- 最大化/还原按钮 -->
-                                        <Button Padding="6,4"
-                                                Command="{Binding ToggleMaximizeDetailPanelCommand}">
-                                            <Button.Style>
-                                                <Style TargetType="Button" BasedOn="{StaticResource GTMToolbarButtonStyle}">
-                                                    <Setter Property="ToolTip" Value="{Binding [geo_tooltip_maximize], Source={x:Static lg:LanguageService.Instance}, FallbackValue=最大化}"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsDetailPanelMaximized}" Value="True">
-                                                            <Setter Property="ToolTip" Value="{Binding [geo_tooltip_restore], Source={x:Static lg:LanguageService.Instance}, FallbackValue=还原}"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Button.Style>
-                                            <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="11" Foreground="#888">
-                                                <TextBlock.Style>
-                                                    <Style TargetType="TextBlock">
-                                                        <Setter Property="Text" Value="&#xE922;"/>
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding IsDetailPanelMaximized}" Value="True">
-                                                                <Setter Property="Text" Value="&#xE923;"/>
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </TextBlock.Style>
-                                            </TextBlock>
-                                        </Button>
-                                    </StackPanel>
+                                    <!-- 面板控制按钮：最大化/还原（与 CIPW 一致，始终显示在右上角） -->
+                                    <Button Grid.Column="2" Style="{StaticResource PanelControlButtonStyle}"
+                                            Click="OnMaximizeDetailPanelClick" Margin="4,0"
+                                            ToolTip="{Binding [geo_tooltip_maximize], Source={x:Static lg:LanguageService.Instance}, FallbackValue=最大化/还原}">
+                                        <TextBlock x:Name="DetailMaximizeIcon" Text="&#xE740;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
+                                    </Button>
+
+                                    <!-- 面板控制按钮：展开/收缩（与 CIPW 一致） -->
+                                    <Button Grid.Column="3" Style="{StaticResource PanelControlButtonStyle}"
+                                            Click="OnToggleDetailExpandClick"
+                                            ToolTip="{Binding [cipw_tooltip_expand], Source={x:Static lg:LanguageService.Instance}, FallbackValue=展开/收缩}">
+                                        <TextBlock x:Name="DetailExpandIcon" Text="&#xE70D;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
+                                    </Button>
                                 </Grid>
                             </Border>
 

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -3255,4 +3255,171 @@
   <data name="data_grid_plot_refresh_pending" xml:space="preserve">
     <value>Данные были изменены. Пожалуйста, обновите диаграмму.</value>
   </data>
+  <data name="plot_invalid_row_example" xml:space="preserve">
+    <value>Строка {0}: {1}</value>
+  </data>
+  <data name="plot_invalid_rows_summary" xml:space="preserve">
+    <value>{0} строк не были нанесены на график, потому что результаты скрипта не являются допустимыми координатами. Они отмечены в таблице данных; проверьте входные значения.</value>
+  </data>
+  <data name="plot_ternary_sum_zero" xml:space="preserve">
+    <value>Сумма компонентов тройной координаты равна 0, нормализация невозможна.</value>
+  </data>
+  <data name="plot_script_execution_failed_with_reason" xml:space="preserve">
+    <value>Не удалось выполнить скрипт</value>
+  </data>
+  <data name="plot_script_result_non_numeric" xml:space="preserve">
+    <value>Результат скрипта содержит нечисловые значения.</value>
+  </data>
+  <data name="plot_invalid_rows_examples" xml:space="preserve">
+    <value>Примеры:</value>
+  </data>
+  <data name="plot_ternary_conversion_invalid" xml:space="preserve">
+    <value>Преобразование тройной координаты не дало допустимую координату.</value>
+  </data>
+  <data name="plot_invalid_rows_more" xml:space="preserve">
+    <value>Еще {0} строк имеют похожие проблемы.</value>
+  </data>
+  <data name="plot_row_script_result_invalid" xml:space="preserve">
+    <value>Результат скрипта для этой строки недопустим.</value>
+  </data>
+  <data name="plot_ternary_script_return_three_finite_values" xml:space="preserve">
+    <value>Скрипты тройных диаграмм должны возвращать 3 допустимых конечных числа.</value>
+  </data>
+  <data name="plot_script_result_not_array" xml:space="preserve">
+    <value>Результат скрипта не является массивом.</value>
+  </data>
+  <data name="plot_invalid_coordinate_hint" xml:space="preserve">
+    <value>Результат вычисления скрипта для этой строки недопустим, поэтому невозможно создать координату. Проверьте деление на ноль, пустые значения, логарифм отрицательного числа или квадратный корень из отрицательного числа.</value>
+  </data>
+  <data name="plot_script_result_invalid_coordinate" xml:space="preserve">
+    <value>Результат скрипта не является допустимой координатой.</value>
+  </data>
+  <data name="plot_cartesian_script_return_two_finite_values" xml:space="preserve">
+    <value>Скрипты декартовых диаграмм должны возвращать 2 допустимых конечных числа.</value>
+  </data>
+  <data name="plot_script_result_contains_invalid_number" xml:space="preserve">
+    <value>Результат скрипта содержит {0}; невозможно создать допустимую координату.</value>
+  </data>
+  <data name="cipw_mineral_Q" xml:space="preserve">
+    <value>Кварц</value>
+  </data>
+  <data name="cipw_mineral_Cor" xml:space="preserve">
+    <value>Корунд</value>
+  </data>
+  <data name="cipw_mineral_Or" xml:space="preserve">
+    <value>Ортоклаз</value>
+  </data>
+  <data name="cipw_mineral_Ab" xml:space="preserve">
+    <value>Альбит</value>
+  </data>
+  <data name="cipw_mineral_An" xml:space="preserve">
+    <value>Анортит</value>
+  </data>
+  <data name="cipw_mineral_Le" xml:space="preserve">
+    <value>Лейцит</value>
+  </data>
+  <data name="cipw_mineral_Ne" xml:space="preserve">
+    <value>Нефелин</value>
+  </data>
+  <data name="cipw_mineral_Kp" xml:space="preserve">
+    <value>Кальсилит</value>
+  </data>
+  <data name="cipw_mineral_Ac" xml:space="preserve">
+    <value>Акмит</value>
+  </data>
+  <data name="cipw_mineral_Di" xml:space="preserve">
+    <value>Диопсид</value>
+  </data>
+  <data name="cipw_mineral_Hd" xml:space="preserve">
+    <value>Геденбергит</value>
+  </data>
+  <data name="cipw_mineral_Wo" xml:space="preserve">
+    <value>Волластонит</value>
+  </data>
+  <data name="cipw_mineral_En" xml:space="preserve">
+    <value>Энстатит</value>
+  </data>
+  <data name="cipw_mineral_Fs" xml:space="preserve">
+    <value>Ферросилит</value>
+  </data>
+  <data name="cipw_mineral_Fo" xml:space="preserve">
+    <value>Форстерит</value>
+  </data>
+  <data name="cipw_mineral_Fa" xml:space="preserve">
+    <value>Фаялит</value>
+  </data>
+  <data name="cipw_mineral_Mt" xml:space="preserve">
+    <value>Магнетит</value>
+  </data>
+  <data name="cipw_mineral_Hm" xml:space="preserve">
+    <value>Гематит</value>
+  </data>
+  <data name="cipw_mineral_Ilm" xml:space="preserve">
+    <value>Ильменит</value>
+  </data>
+  <data name="cipw_mineral_Cm" xml:space="preserve">
+    <value>Хромит</value>
+  </data>
+  <data name="cipw_mineral_Ru" xml:space="preserve">
+    <value>Рутил</value>
+  </data>
+  <data name="cipw_mineral_Tn" xml:space="preserve">
+    <value>Титанит</value>
+  </data>
+  <data name="cipw_mineral_Z" xml:space="preserve">
+    <value>Циркон</value>
+  </data>
+  <data name="cipw_mineral_Ap" xml:space="preserve">
+    <value>Апатит</value>
+  </data>
+  <data name="cipw_mineral_Cc" xml:space="preserve">
+    <value>Кальцит</value>
+  </data>
+  <data name="cipw_mineral_Py" xml:space="preserve">
+    <value>Пирит</value>
+  </data>
+  <data name="cipw_mineral_Fl" xml:space="preserve">
+    <value>Флюорит</value>
+  </data>
+  <data name="cipw_mineral_Hl" xml:space="preserve">
+    <value>Галит</value>
+  </data>
+  <data name="cipw_mineral_Th" xml:space="preserve">
+    <value>Тенардит</value>
+  </data>
+  <data name="cipw_mineral_ns" xml:space="preserve">
+    <value>Метасиликат натрия</value>
+  </data>
+  <data name="cipw_mineral_ks" xml:space="preserve">
+    <value>Метасиликат калия</value>
+  </data>
+  <data name="cipw_warning_partial_iron_missing" xml:space="preserve">
+    <value>Часть данных о распределении железа отсутствует (указан только FeO или Fe2O3).</value>
+  </data>
+  <data name="cipw_warning_feot_estimated" xml:space="preserve">
+    <value>Распределение железа оценено из FeOT с фиксированным отношением Fe3+/Fe ({0:F2}).</value>
+  </data>
+  <data name="cipw_warning_iron_inconsistent" xml:space="preserve">
+    <value>Несогласованный ввод железа: FeOT и FeO/Fe2O3 указаны одновременно.</value>
+  </data>
+  <data name="cipw_warning_iron_missing" xml:space="preserve">
+    <value>Данные о железе не указаны.</value>
+  </data>
+  <data name="cipw_warning_mno_to_feo" xml:space="preserve">
+    <value>MnO пересчитан в эквивалент FeO по молярному соотношению.</value>
+  </data>
+  <data name="cipw_error_negative_oxide_with_value" xml:space="preserve">
+    <value>Отрицательное значение оксида {0}: {1}</value>
+  </data>
+  <data name="cipw_error_oxide_total_positive" xml:space="preserve">
+    <value>Сумма оксидов должна быть больше 0.</value>
+  </data>
+  <data name="cipw_error_fe3_fraction_range" xml:space="preserve">
+    <value>Отношение Fe3+ должно быть от 0 до 1.</value>
+  </data>
+  <data name="cipw_error_negative_oxide_content" xml:space="preserve">
+    <value>Оксид {0} имеет отрицательное содержание.</value>
+  </data>
 </root>
+
+

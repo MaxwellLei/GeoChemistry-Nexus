@@ -159,20 +159,23 @@ namespace GeoChemistryNexus
                 Log($"Staging directory: {stagingDir}");
 
                 string announcement = string.Empty;
+                string minimumSupportedVersion = string.Empty;
                 try
                 {
                     string json = UpdateHelper.GetUrlContentAsync(OfficialContentEndpoints.ServerInfoUrl).GetAwaiter().GetResult();
                     var info = System.Text.Json.JsonSerializer.Deserialize<ServerInfo>(json);
                     announcement = info?.Announcement ?? string.Empty;
+                    minimumSupportedVersion = info?.MinimumSupportedVersion ?? string.Empty;
                 }
                 catch
                 {
-                    // keep empty announcement
+                    // keep empty server config fields
                 }
 
                 var publishResult = GraphMapTemplatePublishService.ExportToDirectory(stagingDir, new PublishOptions
                 {
-                    PreserveAnnouncement = announcement
+                    PreserveAnnouncement = announcement,
+                    PreserveMinimumSupportedVersion = minimumSupportedVersion
                 });
                 Log(publishResult.Summary);
 
@@ -216,7 +219,7 @@ namespace GeoChemistryNexus
         /// <summary>
         /// UI线程未处理异常
         /// </summary>
-        private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        private void App_DispatcherUnhandledException(object? sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             LogException(e.Exception, "DispatcherUnhandledException");
             
@@ -233,7 +236,7 @@ namespace GeoChemistryNexus
         /// <summary>
         /// 非UI线程未处理异常
         /// </summary>
-        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        private void CurrentDomain_UnhandledException(object? sender, UnhandledExceptionEventArgs e)
         {
             if (e.ExceptionObject is Exception ex)
             {
@@ -244,7 +247,7 @@ namespace GeoChemistryNexus
         /// <summary>
         /// Task未观察异常
         /// </summary>
-        private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
+        private void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
         {
             LogException(e.Exception, "UnobservedTaskException");
             e.SetObserved();

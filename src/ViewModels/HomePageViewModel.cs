@@ -299,7 +299,7 @@ namespace GeoChemistryNexus.ViewModels
             dialog.LoadIcon(app.Icon);
             dialog.Title = LanguageService.Instance["edit_link"];
 
-            if (dialog.ShowDialog() == true)
+            if (dialog.ShowDialog() == true && dialog.Result != null)
             {
                 app.Title = dialog.Result.Title;
                 app.Url = dialog.Result.Url;

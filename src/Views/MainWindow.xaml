@@ -669,7 +669,7 @@
                     IsHitTestVisible="True"/>
 
             <!-- Notification Area -->
-            <ScrollViewer Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,20,20,0"
+            <ScrollViewer Grid.Row="1" Panel.ZIndex="1000" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,20,20,0"
                           MaxHeight="650" VerticalScrollBarVisibility="Hidden" PanningMode="VerticalOnly"
                           IsHitTestVisible="True" BorderThickness="0" Background="Transparent">
                 <ItemsControl ItemsSource="{Binding Notifications, Source={x:Static services:NotificationManager.Instance}}">

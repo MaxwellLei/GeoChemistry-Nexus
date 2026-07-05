@@ -17,13 +17,13 @@ namespace GeoChemistryNexus.Models
         /// <summary>
         /// 当节点名称
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         /// <summary>
         /// 记录当前节点的父亲
         /// </summary>
         [JsonIgnore]
-        public GraphMapTemplateNode Parent { get; set; }
+        public GraphMapTemplateNode? Parent { get; set; }
 
         /// <summary>
         /// 子节点
@@ -38,7 +38,7 @@ namespace GeoChemistryNexus.Models
         /// <summary>
         /// 模板文件和缩略图路径，不含文件后缀
         /// </summary>
-        private string _graphMapPath;
+        private string _graphMapPath = string.Empty;
         public string GraphMapPath
         {
             get => _graphMapPath;
@@ -54,18 +54,18 @@ namespace GeoChemistryNexus.Models
         // 模板列表文件哈希值
         // 更新逻辑核心依赖
         [JsonPropertyName("file_hash")]
-        public string FileHash { get; set; }
+        public string FileHash { get; set; } = string.Empty;
 
         /// <summary>
         /// 服务器清单中的版本号（x.y.z），用于与本地版本比较更新状态。
         /// </summary>
         [JsonIgnore]
-        public string ServerVersion { get; set; }
+        public string ServerVersion { get; set; } = string.Empty;
 
         /// <summary>
         /// 数据库记录的状态 (UP_TO_DATE, OUTDATED, NOT_INSTALLED 等)
         /// </summary>
-        public string Status { get; set; }
+        public string Status { get; set; } = string.Empty;
 
         /// <summary>
         /// 标识是否为自定义模板

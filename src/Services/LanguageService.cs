@@ -28,7 +28,7 @@ namespace GeoChemistryNexus.Services
 
         public static void InitializeLanguage()
         {
-            string language = ConfigHelper.GetConfig("language");
+            string? language = ConfigHelper.GetConfig("language");
             if (language != "")
             {
                 CurrentLanguage = AppCultureRegistry.ResolveAppLanguage(language);
@@ -43,8 +43,8 @@ namespace GeoChemistryNexus.Services
         // 主动获取语言设置
         public static string GetLanguage()
         {
-            string language = ConfigHelper.GetConfig("language");
-            if (language != "")
+            string? language = ConfigHelper.GetConfig("language");
+            if (!string.IsNullOrEmpty(language))
             {
                 return language;
             }
@@ -65,7 +65,9 @@ namespace GeoChemistryNexus.Services
                 {
                     throw new ArgumentNullException(nameof(name));
                 }
-                return _resourceManager.GetString(name);
+
+                var culture = new CultureInfo(AppCultureRegistry.ResolveAppLanguage(CurrentLanguage));
+                return _resourceManager.GetString(name, culture) ?? string.Empty;
             }
         }
 

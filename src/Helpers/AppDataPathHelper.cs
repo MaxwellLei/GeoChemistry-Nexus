@@ -14,7 +14,7 @@ namespace GeoChemistryNexus.Helpers
         public const string PortableFlagFileName = "portable.flag";
         private const string AppDataFolderName = "GeoChemistryNexus";
 
-        private static string _dataRoot;
+        private static string _dataRoot = string.Empty;
         private static bool _initialized;
 
         public static string GetAppDirectory()
@@ -126,7 +126,7 @@ namespace GeoChemistryNexus.Helpers
                 if (File.Exists(targetPath) || !File.Exists(sourcePath))
                     return;
 
-                string targetDir = Path.GetDirectoryName(targetPath);
+                string? targetDir = Path.GetDirectoryName(targetPath);
                 if (!string.IsNullOrEmpty(targetDir) && !Directory.Exists(targetDir))
                     Directory.CreateDirectory(targetDir);
 

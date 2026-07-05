@@ -57,6 +57,9 @@ namespace GeoChemistryNexus.ViewModels
         private bool isThreeButtonDialog;
 
         [ObservableProperty]
+        private bool isThirdButtonSubtle;
+
+        [ObservableProperty]
         [NotifyCanExecuteChangedFor(nameof(CloseCommand))]
         private bool isClosing;
 

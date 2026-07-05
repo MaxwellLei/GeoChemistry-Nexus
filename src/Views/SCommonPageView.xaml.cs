@@ -22,14 +22,15 @@ namespace GeoChemistryNexus.Views
     /// </summary>
     public partial class SCommonPageView : Page
     {
-        private static SCommonPageView commonPage = null;
+        private static SCommonPageView commonPage = null!;
 
         public SCommonPageView()
         {
             InitializeComponent();
-            this.DataContext = new SCommonPageViewModel();
-            (this.DataContext as SCommonPageViewModel).CoverFlowMain = this.CoverFlow;
-            (this.DataContext as SCommonPageViewModel).GetFlowPic();
+            var viewModel = new SCommonPageViewModel();
+            this.DataContext = viewModel;
+            viewModel.CoverFlowMain = this.CoverFlow;
+            viewModel.GetFlowPic();
         }
 
         public static Page GetPage()

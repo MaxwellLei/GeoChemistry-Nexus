@@ -34,7 +34,7 @@ namespace GeoChemistryNexus.Views
     public partial class MainPlotPage : Page
     {
         // 单例本体
-        private static MainPlotPage homePage = null;
+        private static MainPlotPage homePage = null!;
 
         private MainPlotViewModel viewModel;
         private bool _isUpdatingToolbarState = false;
@@ -51,10 +51,8 @@ namespace GeoChemistryNexus.Views
             viewModel.RestoreTemplateCardsScrollRequested += RestoreTemplateCardsScroll;
             AttachBreadcrumbScrollBehavior();
 
-            // 页面加载时检查更新（等待首次模板库加载完成）
-            this.Loaded += async (s, e) =>
+            this.Loaded += (s, e) =>
             {
-                await viewModel.CheckUpdatesIfNeededAsync();
                 // 页面加载后，获取窗口并添加键盘事件监听
                 AttachKeyboardEvents();
             };
@@ -100,7 +98,7 @@ namespace GeoChemistryNexus.Views
         {
             if (SwitchContainer == null || SwitchSlider == null) return;
 
-            RadioButton checkedButton = null;
+            RadioButton? checkedButton = null;
             foreach (var child in SwitchContainer.Children)
             {
                 if (child is RadioButton rb && rb.IsChecked == true)
@@ -367,6 +365,11 @@ namespace GeoChemistryNexus.Views
             return homePage;
         }
 
+        public Task CheckUpdatesIfNeededAsync()
+        {
+            return viewModel.CheckUpdatesIfNeededAsync();
+        }
+
         // 点击展开列表
         private void OnTreeViewItemMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -374,7 +377,7 @@ namespace GeoChemistryNexus.Views
             if (sender is TreeViewItem item)
             {
                 // 从真正被点击的元素向上查找父类
-                var sourceTvi = FindAncestor<TreeViewItem>(e.OriginalSource as DependencyObject);
+                var sourceTvi = FindAncestor<TreeViewItem>(e.OriginalSource as DependencyObject ?? item);
 
                 // 冒泡事件
                 if (item != sourceTvi)
@@ -385,7 +388,7 @@ namespace GeoChemistryNexus.Views
 
             // 检查父类状态
             var originalSource = e.OriginalSource as DependencyObject;
-            if (FindAncestor<ToggleButton>(originalSource) != null)
+            if (originalSource != null && FindAncestor<ToggleButton>(originalSource) != null)
             {
                 return;
             }
@@ -407,7 +410,7 @@ namespace GeoChemistryNexus.Views
                 var originalSource = e.OriginalSource as DependencyObject;
 
                 // 1. 确保点击的是当前 TreeViewItem，而不是其子项
-                var clickedItem = FindAncestor<TreeViewItem>(originalSource);
+                var clickedItem = originalSource != null ? FindAncestor<TreeViewItem>(originalSource) : null;
                 if (clickedItem != item)
                 {
                     // 忽略
@@ -452,7 +455,7 @@ namespace GeoChemistryNexus.Views
         /// <typeparam name="T">要查找的父控件的类型。</typeparam>
         /// <param name="current">查找的起始依赖对象。</param>
         /// <returns>找到的第一个指定类型的父控件，如果找不到则返回 null。</returns>
-        private T FindAncestor<T>(DependencyObject current) where T : DependencyObject
+        private T? FindAncestor<T>(DependencyObject? current) where T : DependencyObject
         {
             while (current != null)
             {
@@ -614,7 +617,7 @@ namespace GeoChemistryNexus.Views
 
         #endregion
 
-        private Window _popOutWindow = null;
+        private Window? _popOutWindow;
 
         private void OnPopOutPlotClick(object sender, RoutedEventArgs e)
         {
@@ -702,7 +705,7 @@ namespace GeoChemistryNexus.Views
                 BreadcrumbScrollViewer?.ScrollToRightEnd();
             }, System.Windows.Threading.DispatcherPriority.Loaded);
         }
-        private Window _parentWindow;
+        private Window? _parentWindow;
 
         /// <summary>
         /// 附加键盘事件到父窗口
@@ -858,7 +861,7 @@ namespace GeoChemistryNexus.Views
         /// <summary>
         /// 在可视化树中查找指定类型的子控件
         /// </summary>
-        private T FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
+        private T? FindVisualChild<T>(DependencyObject? parent) where T : DependencyObject
         {
             if (parent == null) return null;
 
@@ -882,7 +885,7 @@ namespace GeoChemistryNexus.Views
         /// <summary>
         /// 在可视化树中向上查找指定类型的父控件
         /// </summary>
-        private T FindVisualParent<T>(DependencyObject child) where T : DependencyObject
+        private T? FindVisualParent<T>(DependencyObject? child) where T : DependencyObject
         {
             var parent = VisualTreeHelper.GetParent(child);
             if (parent == null) return null;

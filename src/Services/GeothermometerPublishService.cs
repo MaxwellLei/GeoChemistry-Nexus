@@ -95,7 +95,7 @@ namespace GeoChemistryNexus.Services
             {
                 string pluginId = kvp.Key;
                 string currentHash = kvp.Value;
-                baselineHashes.TryGetValue(pluginId, out string baselineHash);
+                baselineHashes.TryGetValue(pluginId, out string? baselineHash);
 
                 PublishAction action;
                 if (string.IsNullOrEmpty(baselineHash))
@@ -154,7 +154,7 @@ namespace GeoChemistryNexus.Services
                 SkippedZipCount = skippedZipCount,
                 ListPath = listPath,
                 IndexPath = indexPath,
-                CategoriesPath = File.Exists(categoriesPath) ? categoriesPath : null,
+                CategoriesPath = File.Exists(categoriesPath) ? categoriesPath : string.Empty,
                 ManifestPath = manifestPath,
                 ListHash = listHash,
                 MineralCategoriesHash = mineralCategoriesHash,
@@ -195,7 +195,7 @@ namespace GeoChemistryNexus.Services
         }
 
         private static PublishPreviewItem CreatePreviewItem(
-            GeothermometerEntity local, string localHash, string remoteHash, PublishAction action)
+            GeothermometerEntity local, string localHash, string? remoteHash, PublishAction action)
         {
             return new PublishPreviewItem
             {
@@ -203,7 +203,7 @@ namespace GeoChemistryNexus.Services
                 GraphMapPath = local.PluginId,
                 Name = local.FormulaName ?? local.PluginId,
                 LocalHash = localHash,
-                RemoteHash = remoteHash,
+                RemoteHash = remoteHash ?? string.Empty,
                 Action = action
             };
         }

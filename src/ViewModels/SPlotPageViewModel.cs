@@ -12,16 +12,16 @@ namespace GeoChemistryNexus.ViewModels
     public partial class SPlotPageViewModel : ObservableObject
     {
         [ObservableProperty]
-        private string corelDRAWPath;
+        private string corelDRAWPath = string.Empty;
 
         [ObservableProperty]
-        private string inkscapePath;
+        private string inkscapePath = string.Empty;
 
         [ObservableProperty]
-        private string adobeIllustratorPath;
+        private string adobeIllustratorPath = string.Empty;
 
         [ObservableProperty]
-        private string customThirdPartyAppPath;
+        private string customThirdPartyAppPath = string.Empty;
 
         // 默认图解列表展开层级 (1-4)
         [ObservableProperty]
@@ -31,14 +31,14 @@ namespace GeoChemistryNexus.ViewModels
         public ObservableCollection<string> ThirdPartyApps { get; } = new() { "CorelDRAW", "Inkscape", "Adobe Illustrator", "Custom" };
 
         [ObservableProperty]
-        private string selectedThirdPartyApp;
+        private string selectedThirdPartyApp = string.Empty;
 
         [ObservableProperty]
         private bool autoCheckTemplateUpdate;
 
         // 选中对象触发方式：SingleClick 或 DoubleClick
         [ObservableProperty]
-        private string objectSelectionTrigger;
+        private string objectSelectionTrigger = string.Empty;
 
         // 鼠标吸附自动识别帧率
         [ObservableProperty]
@@ -68,10 +68,10 @@ namespace GeoChemistryNexus.ViewModels
 
         private void LoadConfig()
         {
-            CorelDRAWPath = ConfigHelper.GetConfig("coreldraw_path");
-            InkscapePath = ConfigHelper.GetConfig("inkscape_path");
-            AdobeIllustratorPath = ConfigHelper.GetConfig("adobe_illustrator_path");
-            CustomThirdPartyAppPath = ConfigHelper.GetConfig("custom_third_party_app_path");
+            CorelDRAWPath = ConfigHelper.GetConfig("coreldraw_path") ?? string.Empty;
+            InkscapePath = ConfigHelper.GetConfig("inkscape_path") ?? string.Empty;
+            AdobeIllustratorPath = ConfigHelper.GetConfig("adobe_illustrator_path") ?? string.Empty;
+            CustomThirdPartyAppPath = ConfigHelper.GetConfig("custom_third_party_app_path") ?? string.Empty;
             
             if (int.TryParse(ConfigHelper.GetConfig("default_tree_expand_level"), out int expandLevel))
             {
@@ -82,7 +82,7 @@ namespace GeoChemistryNexus.ViewModels
                 DefaultTreeExpandLevel = 2; // Default to level 2
             }
 
-            SelectedThirdPartyApp = ConfigHelper.GetConfig("default_third_party_app");
+            SelectedThirdPartyApp = ConfigHelper.GetConfig("default_third_party_app") ?? string.Empty;
             if (string.IsNullOrEmpty(SelectedThirdPartyApp))
             {
                 SelectedThirdPartyApp = "CorelDRAW";
@@ -93,7 +93,7 @@ namespace GeoChemistryNexus.ViewModels
                 AutoCheckTemplateUpdate = checkTemp;
             }
 
-            ObjectSelectionTrigger = ConfigHelper.GetConfig("object_selection_trigger");
+            ObjectSelectionTrigger = ConfigHelper.GetConfig("object_selection_trigger") ?? string.Empty;
             if (string.IsNullOrEmpty(ObjectSelectionTrigger))
             {
                 ObjectSelectionTrigger = "SingleClick"; // 默认单击
@@ -114,7 +114,7 @@ namespace GeoChemistryNexus.ViewModels
 
         private void ExecuteSelectCorelDRAWPath()
         {
-            string path = FileHelper.GetFilePath("CorelDRAW Executable (*.exe)|*.exe");
+            string? path = FileHelper.GetFilePath("CorelDRAW Executable (*.exe)|*.exe");
             if (!string.IsNullOrEmpty(path))
             {
                 CorelDRAWPath = path;
@@ -125,7 +125,7 @@ namespace GeoChemistryNexus.ViewModels
 
         private void ExecuteSelectInkscapePath()
         {
-            string path = FileHelper.GetFilePath("Inkscape Executable (*.exe)|*.exe");
+            string? path = FileHelper.GetFilePath("Inkscape Executable (*.exe)|*.exe");
             if (!string.IsNullOrEmpty(path))
             {
                 InkscapePath = path;
@@ -136,7 +136,7 @@ namespace GeoChemistryNexus.ViewModels
 
         private void ExecuteSelectAdobeIllustratorPath()
         {
-            string path = FileHelper.GetFilePath("Adobe Illustrator Executable (*.exe)|*.exe");
+            string? path = FileHelper.GetFilePath("Adobe Illustrator Executable (*.exe)|*.exe");
             if (!string.IsNullOrEmpty(path))
             {
                 AdobeIllustratorPath = path;
@@ -147,7 +147,7 @@ namespace GeoChemistryNexus.ViewModels
 
         private void ExecuteSelectCustomThirdPartyAppPath()
         {
-            string path = FileHelper.GetFilePath("Executable (*.exe)|*.exe");
+            string? path = FileHelper.GetFilePath("Executable (*.exe)|*.exe");
             if (!string.IsNullOrEmpty(path))
             {
                 CustomThirdPartyAppPath = path;

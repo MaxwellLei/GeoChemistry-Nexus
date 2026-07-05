@@ -78,7 +78,11 @@ namespace GeoChemistryNexus.Services
             return preview;
         }
 
-        public static AnnouncementPublishResult ExportAnnouncementToDirectory(string outputDir, string announcement)
+        public static AnnouncementPublishResult ExportAnnouncementToDirectory(
+            string outputDir,
+            string announcement,
+            string? minimumSupportedVersion = null,
+            string? latestAppVersion = null)
         {
             if (string.IsNullOrWhiteSpace(outputDir))
                 throw new ArgumentException("Output directory is required.", nameof(outputDir));
@@ -88,6 +92,10 @@ namespace GeoChemistryNexus.Services
 
             var serverInfo = LoadMergedServerInfo(outputDir);
             serverInfo.Announcement = announcement ?? string.Empty;
+            if (minimumSupportedVersion != null)
+                serverInfo.MinimumSupportedVersion = minimumSupportedVersion;
+            if (latestAppVersion != null)
+                serverInfo.LatestAppVersion = latestAppVersion;
 
             string serverInfoPath = Path.Combine(outputDir, OfficialContentEndpoints.ServerInfoFileName);
             File.WriteAllText(serverInfoPath, JsonSerializer.Serialize(serverInfo, JsonOptions));
@@ -96,11 +104,18 @@ namespace GeoChemistryNexus.Services
             {
                 OutputDirectory = outputDir,
                 ServerInfoPath = serverInfoPath,
-                Announcement = announcement ?? string.Empty
+                Announcement = announcement ?? string.Empty,
+                MinimumSupportedVersion = serverInfo.MinimumSupportedVersion ?? string.Empty,
+                LatestAppVersion = serverInfo.LatestAppVersion ?? string.Empty
             };
         }
 
-        public static HomeLinksPublishResult ExportToDirectory(string outputDir, HomeLinksCatalog catalog, string preserveAnnouncement = null)
+        public static HomeLinksPublishResult ExportToDirectory(
+            string outputDir,
+            HomeLinksCatalog catalog,
+            string? preserveAnnouncement = null,
+            string? preserveMinimumSupportedVersion = null,
+            string? preserveLatestAppVersion = null)
         {
             if (string.IsNullOrWhiteSpace(outputDir))
                 throw new ArgumentException("Output directory is required.", nameof(outputDir));
@@ -118,6 +133,10 @@ namespace GeoChemistryNexus.Services
             serverInfo.HomeLinksHash = homeLinksHash;
             if (preserveAnnouncement != null)
                 serverInfo.Announcement = preserveAnnouncement;
+            if (preserveMinimumSupportedVersion != null)
+                serverInfo.MinimumSupportedVersion = preserveMinimumSupportedVersion;
+            if (preserveLatestAppVersion != null)
+                serverInfo.LatestAppVersion = preserveLatestAppVersion;
 
             string serverInfoPath = Path.Combine(outputDir, OfficialContentEndpoints.ServerInfoFileName);
             File.WriteAllText(serverInfoPath, JsonSerializer.Serialize(serverInfo, JsonOptions));
@@ -128,6 +147,9 @@ namespace GeoChemistryNexus.Services
                 HomeLinksCatalogPath = catalogPath,
                 HomeLinksHash = homeLinksHash,
                 ServerInfoPath = serverInfoPath,
+                Announcement = serverInfo.Announcement ?? string.Empty,
+                MinimumSupportedVersion = serverInfo.MinimumSupportedVersion ?? string.Empty,
+                LatestAppVersion = serverInfo.LatestAppVersion ?? string.Empty,
                 GroupCount = catalog.Groups?.Count ?? 0,
                 LinkCount = catalog.Groups?.SelectMany(g => g.Links ?? Enumerable.Empty<HomeLinkEntry>()).Count() ?? 0
             };

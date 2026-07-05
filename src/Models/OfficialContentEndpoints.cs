@@ -18,6 +18,12 @@ namespace GeoChemistryNexus.Models
         public const string HomeLinksCatalogFileName = "HomeLinksCatalog.json";
         public const string PublishManifestFileName = "publish_manifest.json";
         public const string TemplatesFolderName = "Templates";
+        public const string InstallersFolderName = "Installers";
+
+        public const string GitHubLatestReleaseUrl = "https://github.com/MaxwellLei/GeoChemistry-Nexus/releases/latest";
+        public const string GitHubReleaseDownloadBaseUrl = "https://github.com/MaxwellLei/GeoChemistry-Nexus/releases/download";
+        public const string InstallerAssetPrefix = "GeoChemistryNexus-Setup-";
+        public const string InstallerAssetSuffix = "-x64.exe";
 
         public const string DefaultRegion = "ap-hongkong";
         public const string DefaultBucket = "geochemistrynexus-1303234197";
@@ -31,5 +37,20 @@ namespace GeoChemistryNexus.Models
         public const string GeoTIndexFileName = "GeoT-index.json";
         public const string GeoTMineralCategoriesFileName = "GeoTMineralCategories.json";
         public const string GeothermometerPublishManifestFileName = "geothermometer_publish_manifest.json";
+
+        public static string BuildInstallerFileName(string version)
+        {
+            return $"{InstallerAssetPrefix}{version}{InstallerAssetSuffix}";
+        }
+
+        public static string BuildGitHubInstallerUrl(string version)
+        {
+            return $"{GitHubReleaseDownloadBaseUrl}/v{version}/{BuildInstallerFileName(version)}";
+        }
+
+        public static string BuildCosInstallerUrl(string version)
+        {
+            return $"{CosBaseUrl}/{InstallersFolderName}/{BuildInstallerFileName(version)}";
+        }
     }
 }

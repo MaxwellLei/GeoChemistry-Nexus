@@ -64,7 +64,7 @@ namespace GeoChemistryNexus.Models
         public LineDefinition.LineType _style = LineDefinition.LineType.Solid;
 
         [ObservableProperty]
-        private string _formulaErrorMessage;
+        private string? _formulaErrorMessage;
 
         [ObservableProperty]
         private bool _hasFormulaError;

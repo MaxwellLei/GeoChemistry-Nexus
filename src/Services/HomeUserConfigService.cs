@@ -22,7 +22,7 @@ namespace GeoChemistryNexus.Services
         {
             try
             {
-                string json = JsonHelper.ReadJsonFile(UserConfigPath);
+                string? json = JsonHelper.ReadJsonFile(UserConfigPath);
                 if (string.IsNullOrWhiteSpace(json))
                     return new HomeUserConfig();
 
@@ -54,7 +54,7 @@ namespace GeoChemistryNexus.Services
 
             try
             {
-                string dir = Path.GetDirectoryName(UserConfigPath);
+                string? dir = Path.GetDirectoryName(UserConfigPath);
                 if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
                     Directory.CreateDirectory(dir);
 

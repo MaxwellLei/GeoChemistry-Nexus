@@ -415,6 +415,9 @@ namespace GeoChemistryNexus.ViewModels
         {
             var parsedSamples = new List<SpiderSampleData>(dataRows?.Count ?? 0);
 
+            if (dataRows == null)
+                return;
+
             for (int rowIndex = 0; rowIndex < dataRows.Count; rowIndex++)
             {
                 var row = dataRows[rowIndex];

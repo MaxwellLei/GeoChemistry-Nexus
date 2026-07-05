@@ -79,6 +79,8 @@ namespace GeoChemistryNexus.ViewModels
         private const long SnapCheckIntervalMs = 16;
         private Coordinates? _lastSnapSearchResult;
         private bool _lastSnapSearchHasResult;
+        private readonly HashSet<int> _scriptInvalidRows = new();
+        private readonly Dictionary<int, List<ScriptInvalidCellVisualSnapshot>> _scriptInvalidRowVisualSnapshots = new();
 
         private readonly Dictionary<ScottPlot.IPlottable, LayerItemViewModel> _plottableLayerLookup = new();
 
@@ -86,6 +88,17 @@ namespace GeoChemistryNexus.ViewModels
         private const long PreviewRefreshIntervalMs = 16;
 
         private bool _usePreparedCoordinateScript;
+
+        private sealed class ScriptInvalidCellVisualSnapshot
+        {
+            public int Column { get; init; }
+            public bool HasBackColor { get; init; }
+            public System.Windows.Media.Color BackColor { get; init; }
+            public RangeBorderStyle TopBorder { get; init; }
+            public RangeBorderStyle RightBorder { get; init; }
+            public RangeBorderStyle BottomBorder { get; init; }
+            public RangeBorderStyle LeftBorder { get; init; }
+        }
 
         private enum PropertyEditRefreshMode
         {
@@ -445,7 +458,7 @@ namespace GeoChemistryNexus.ViewModels
         /// <summary>
         /// 处理图解帮助RichTextBox内容改变事件
         /// </summary>
-        private void RichTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        private void RichTextBox_TextChanged(object? sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             // 如果正在加载帮助文档，忽略此事件
             if (_isLoadingHelpDocument) return;
@@ -1591,7 +1604,7 @@ namespace GeoChemistryNexus.ViewModels
         /// </summary>
         /// <param name="sender">事件发送者，即 Worksheet 对象</param>
         /// <param name="e">事件参数</param>
-        private void CurrentWorksheet_BeforePaste(object sender, unvell.ReoGrid.Events.BeforeRangeOperationEventArgs e)
+        private void CurrentWorksheet_BeforePaste(object? sender, unvell.ReoGrid.Events.BeforeRangeOperationEventArgs e)
         {
             var worksheet = sender as Worksheet;
             if (worksheet == null) return;
@@ -2067,6 +2080,12 @@ namespace GeoChemistryNexus.ViewModels
         {
             if (WpfPlot1 == null || _selectedDataPointMarker == null) return;
 
+            if (BaseMapType == "Ternary")
+            {
+                HideSelectedDataPointMarker(refresh: true);
+                return;
+            }
+
             // 移除并重新添加，确保标记显示在最上层
             WpfPlot1.Plot.Remove(_selectedDataPointMarker);
             WpfPlot1.Plot.Add.Plottable(_selectedDataPointMarker);
@@ -2087,30 +2106,30 @@ namespace GeoChemistryNexus.ViewModels
             // 更新坐标标签
             if (_selectedDataPointLabel != null)
             {
-                string coordinateText;
-                
-                // 判断是否为三元图
-                if (BaseMapType == "Ternary")
-                {
-                    // 将笛卡尔坐标转换为三元坐标
-                    var (bottom, left) = ToTernary(location.X, location.Y, Clockwise);
-                    double right = 1 - bottom - left;
-                    
-                    // 格式化为 (a, b, c) 形式，保疙4位小数
-                    coordinateText = $"({bottom:F4}, {left:F4}, {right:F4})";
-                }
-                else
-                {
-                    // 笛卡尔坐标系，格式化为 (x, y) 形式
-                    coordinateText = $"({location.X:F4}, {location.Y:F4})";
-                }
-                
-                _selectedDataPointLabel.LabelText = coordinateText;
+                _selectedDataPointLabel.LabelText = $"({location.X:F4}, {location.Y:F4})";
                 _selectedDataPointLabel.Location = renderLocation;
                 _selectedDataPointLabel.IsVisible = true;
             }
 
             WpfPlot1.Refresh();
+        }
+
+        private void HideSelectedDataPointMarker(bool refresh = false)
+        {
+            if (_selectedDataPointMarker != null)
+            {
+                _selectedDataPointMarker.IsVisible = false;
+            }
+
+            if (_selectedDataPointLabel != null)
+            {
+                _selectedDataPointLabel.IsVisible = false;
+            }
+
+            if (refresh)
+            {
+                WpfPlot1?.Refresh();
+            }
         }
 
         private void AttachDataGridWorksheetEvents(Worksheet? worksheet)
@@ -4004,7 +4023,7 @@ namespace GeoChemistryNexus.ViewModels
         /// 切换分类展开状态，确保同时只有一个展开
         /// </summary>
         [RelayCommand]
-        private async void ToggleCategoryExpansion(string category)
+        private async Task ToggleCategoryExpansion(string category)
         {
             // 离开蛛网图入口时，统一重置绘图状态，避免旧 plottable 残留
             if (IsSpiderDiagramMode || SpiderDiagramViewModel.IsSpiderPlotMode)
@@ -6207,7 +6226,7 @@ namespace GeoChemistryNexus.ViewModels
                         }
                     }
 
-                    // Check execution
+                    // Check execution. Coordinate scripts are treated as function bodies and must explicitly return an array.
                     try
                     {
                         var engine = new Jint.Engine();
@@ -6218,7 +6237,13 @@ namespace GeoChemistryNexus.ViewModels
                             engine.SetValue(v, 1.0); // 测试数据
                         }
 
-                        var result = engine.Evaluate(template.Script.ScriptBody);
+                        if (!JintHelper.TryPrepareCoordinateScript(engine, template.Script.ScriptBody))
+                        {
+                            throw new InvalidOperationException(
+                                Lang("plot_script_must_return_array_explicitly", "Scripts must explicitly return an array, for example: return [x, y];"));
+                        }
+
+                        var result = JintHelper.InvokePreparedCoordinateScript(engine);
 
                         if (!result.IsArray())
                         {
@@ -6253,7 +6278,13 @@ namespace GeoChemistryNexus.ViewModels
                         var engine = new Jint.Engine();
                         var tempLogs = new List<string>();
                         JintHelper.InjectTraceFunction(engine, tempLogs); // 注入trace函数避免验证失败
-                        var result = engine.Evaluate(template.Script.ScriptBody);
+                        if (!JintHelper.TryPrepareCoordinateScript(engine, template.Script.ScriptBody))
+                        {
+                            throw new InvalidOperationException(
+                                Lang("plot_script_must_return_array_explicitly", "Scripts must explicitly return an array, for example: return [x, y];"));
+                        }
+
+                        var result = JintHelper.InvokePreparedCoordinateScript(engine);
                         if (result.IsArray())
                         {
                             var arr = result.AsArray();
@@ -6267,6 +6298,10 @@ namespace GeoChemistryNexus.ViewModels
                                 expectedLen + LanguageService.Instance["elements_actual_returned"] +
                                 arr.Length + LanguageService.Instance["elements_count_suffix"]);
                             }
+                        }
+                        else
+                        {
+                            warnings.Add(LanguageService.Instance["script_return_value_error_must_be_array"]);
                         }
                     }
                     catch (Exception ex)
@@ -7657,31 +7692,25 @@ namespace GeoChemistryNexus.ViewModels
         /// </summary>
         /// <param name="dataRow">数据行</param>
         /// <param name="dataColumns">参与计算的数据列名</param>
-        /// <param name="scriptBody">脚本内容</param>
         /// <returns>返回计算结果的double数组,如果计算失败或返回类型不正确则返回null</returns>
-        private double[]? CalculateCoordinatesUsingScript(Jint.Engine engine, DataRow dataRow, List<string> dataColumns, string scriptBody)
+        private double[]? CalculateCoordinatesUsingScript(Jint.Engine engine, DataRow dataRow, List<string> dataColumns, out string? invalidReason)
         {
+            invalidReason = null;
             try
             {
-        
-                // 将数据列的值注入到JavaScript环境中
-                foreach (string columnName in dataColumns)
+                if (!TrySetCoordinateScriptInputs(engine, dataRow, dataColumns, out invalidReason))
                 {
-                    if (double.TryParse(dataRow[columnName]?.ToString(), out double value))
-                    {
-                        engine.SetValue(columnName, value);
-                    }
-                    else
-                    {
-                        // 如果无法解析为数字,注入null或0
-                        engine.SetValue(columnName, 0);
-                    }
+                    return null;
                 }
         
+                if (!_usePreparedCoordinateScript)
+                {
+                    invalidReason = Lang("plot_script_must_return_array_explicitly", "Scripts must explicitly return an array, for example: return [x, y];");
+                    return null;
+                }
+
                 // 执行脚本并获取结果
-                var result = _usePreparedCoordinateScript
-                    ? JintHelper.InvokePreparedCoordinateScript(engine)
-                    : engine.Evaluate(scriptBody);
+                var result = JintHelper.InvokePreparedCoordinateScript(engine);
         
                 // 检查返回结果是否为数组
                 if (result.IsArray())
@@ -7698,19 +7727,315 @@ namespace GeoChemistryNexus.ViewModels
                         else
                         {
                             // 如果数组中有任何一个元素不是数字,则认为结果无效
+                            invalidReason = Lang("plot_script_result_non_numeric", "Script result contains non-numeric values.");
                             return null;
                         }
                     }
+
+                    if (!TryValidateFiniteValues(values, out invalidReason))
+                    {
+                        return null;
+                    }
+
                     return values; // 返回包含所有数值的数组
                 }
         
+                invalidReason = Lang("plot_script_result_not_array", "Script result is not an array.");
                 return null;
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(LanguageService.Instance["script_execution_failed"] + ex.Message);
+                invalidReason = $"{Lang("plot_script_execution_failed_with_reason", "Script execution failed")}: {ex.Message}";
                 return null;
             }
+        }
+
+        private static bool TrySetCoordinateScriptInputs(Jint.Engine engine, DataRow dataRow, IEnumerable<string> dataColumns, out string? invalidReason)
+        {
+            invalidReason = null;
+
+            foreach (string columnName in dataColumns)
+            {
+                string? rawValue = dataRow[columnName]?.ToString();
+                if (!TryParseCoordinateScriptInput(rawValue, out double value))
+                {
+                    invalidReason = string.Format(
+                        Lang("plot_script_input_value_invalid", "Input value for column \"{0}\" is missing or not numeric."),
+                        columnName);
+                    return false;
+                }
+
+                engine.SetValue(columnName, value);
+            }
+
+            return true;
+        }
+
+        private static bool TrySetCoordinateScriptInputs(Jint.Engine engine, Worksheet worksheet, int rowIndex, IEnumerable<string> dataColumns, out string? invalidReason)
+        {
+            invalidReason = null;
+
+            foreach (string columnName in dataColumns)
+            {
+                int colIndex = -1;
+                for (int c = 0; c < worksheet.ColumnCount; c++)
+                {
+                    var headerText = worksheet.ColumnHeaders[c].Text;
+                    if (string.Equals(headerText, columnName, StringComparison.Ordinal))
+                    {
+                        colIndex = c;
+                        break;
+                    }
+                }
+
+                if (colIndex < 0)
+                {
+                    invalidReason = string.Format(
+                        Lang("plot_script_input_column_missing", "Required column \"{0}\" was not found."),
+                        columnName);
+                    return false;
+                }
+
+                string? rawValue = worksheet[rowIndex, colIndex]?.ToString();
+                if (!TryParseCoordinateScriptInput(rawValue, out double value))
+                {
+                    invalidReason = string.Format(
+                        Lang("plot_script_input_value_invalid", "Input value for column \"{0}\" is missing or not numeric."),
+                        columnName);
+                    return false;
+                }
+
+                engine.SetValue(columnName, value);
+            }
+
+            return true;
+        }
+
+        private static bool TryParseCoordinateScriptInput(string? rawValue, out double value)
+        {
+            value = default;
+            return !string.IsNullOrWhiteSpace(rawValue) && double.TryParse(rawValue, out value) && IsFiniteValue(value);
+        }
+
+        private static bool IsFiniteValue(double value)
+        {
+            return !double.IsNaN(value) && !double.IsInfinity(value);
+        }
+
+        private static bool TryValidateFiniteValues(IReadOnlyList<double> values, out string? invalidReason)
+        {
+            invalidReason = null;
+
+            for (int i = 0; i < values.Count; i++)
+            {
+                double value = values[i];
+                if (!IsFiniteValue(value))
+                {
+                    invalidReason = string.Format(
+                        Lang("plot_script_result_contains_invalid_number", "Script result contains {0}; a valid coordinate cannot be generated."),
+                        FormatInvalidNumber(value));
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private static string FormatInvalidNumber(double value)
+        {
+            if (double.IsNaN(value)) return "NaN";
+            if (double.IsPositiveInfinity(value)) return "Infinity";
+            if (double.IsNegativeInfinity(value)) return "-Infinity";
+            return value.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        }
+
+        private static string BuildInvalidCoordinateHint(string? detail = null)
+        {
+            var message = Lang("plot_invalid_coordinate_hint", "This row's script result is invalid, so a valid coordinate cannot be generated. Check for division by zero, empty values, logarithms of negative numbers, or square roots of negative numbers.");
+            return string.IsNullOrWhiteSpace(detail) ? message : $"{message} {detail}";
+        }
+
+        private static bool TryReadFiniteArray(Jint.Native.JsValue result, int requiredLength, out double[] values, out string? invalidReason)
+        {
+            values = Array.Empty<double>();
+            invalidReason = null;
+
+            if (!result.IsArray())
+            {
+                invalidReason = Lang("plot_script_result_not_array", "Script result is not an array.");
+                return false;
+            }
+
+            var array = result.AsArray();
+            if (array.Length < requiredLength)
+            {
+                invalidReason = requiredLength == 3
+                    ? Lang("ternary_script_return_value_requirement", "Ternary diagram scripts must return an array with at least 3 values [A, B, C].")
+                    : Lang("script_return_two_values_requirement", "Scripts must return an array with at least 2 values [X, Y].");
+                return false;
+            }
+
+            values = new double[requiredLength];
+            for (int i = 0; i < requiredLength; i++)
+            {
+                if (!array[i].IsNumber())
+                {
+                    invalidReason = Lang("plot_script_result_non_numeric", "Script result contains non-numeric values.");
+                    return false;
+                }
+
+                values[i] = array[i].AsNumber();
+            }
+
+            return TryValidateFiniteValues(values, out invalidReason);
+        }
+
+        private static string FormatSkippedRowsWarning(IReadOnlyList<string> validationErrors, int skippedCount)
+        {
+            var builder = new StringBuilder();
+            builder.Append(string.Format(
+                Lang("plot_invalid_rows_summary", "{0} rows were not plotted because their script results are not valid coordinates. They have been marked in the data table; please check their input values."),
+                skippedCount));
+
+            if (validationErrors.Count > 0)
+            {
+                builder.AppendLine();
+                builder.AppendLine();
+                builder.AppendLine(Lang("plot_invalid_rows_examples", "Examples:"));
+                foreach (var error in validationErrors.Take(5))
+                {
+                    builder.AppendLine(error);
+                }
+
+                if (skippedCount > 5)
+                {
+                    builder.AppendLine(string.Format(
+                        Lang("plot_invalid_rows_more", "{0} additional rows have similar issues."),
+                        skippedCount - 5));
+                }
+            }
+
+            return builder.ToString().TrimEnd();
+        }
+
+        private void MarkScriptInvalidRow(Worksheet worksheet, int rowIndex)
+        {
+            if (worksheet == null || rowIndex < 0 || rowIndex >= worksheet.RowCount)
+            {
+                return;
+            }
+
+            if (!_scriptInvalidRowVisualSnapshots.ContainsKey(rowIndex))
+            {
+                var snapshots = new List<ScriptInvalidCellVisualSnapshot>();
+                for (int col = 0; col < worksheet.ColumnCount; col++)
+                {
+                    var style = worksheet.GetCellStyles(rowIndex, col);
+                    var hasBackColor = style != null && style.HasStyle(PlainStyleFlag.BackColor);
+                    var borders = worksheet.GetRangeBorders(new RangePosition(rowIndex, col, 1, 1), BorderPositions.All, true);
+                    snapshots.Add(new ScriptInvalidCellVisualSnapshot
+                    {
+                        Column = col,
+                        HasBackColor = hasBackColor,
+                        BackColor = hasBackColor ? ToMediaColor(style.BackColor) : System.Windows.Media.Colors.Transparent,
+                        TopBorder = borders.Top,
+                        RightBorder = borders.Right,
+                        BottomBorder = borders.Bottom,
+                        LeftBorder = borders.Left
+                    });
+                }
+
+                _scriptInvalidRowVisualSnapshots[rowIndex] = snapshots;
+            }
+
+            _scriptInvalidRows.Add(rowIndex);
+            for (int col = 0; col < worksheet.ColumnCount; col++)
+            {
+                ApplyScriptInvalidRowBackColor(worksheet, rowIndex, col, System.Windows.Media.Color.FromArgb(36, 255, 0, 0));
+                ApplyScriptInvalidRowGridLines(worksheet, rowIndex, col);
+            }
+        }
+
+        private void ClearScriptInvalidRowMarks(Worksheet worksheet)
+        {
+            if (worksheet == null || _scriptInvalidRows.Count == 0)
+            {
+                _scriptInvalidRows.Clear();
+                _scriptInvalidRowVisualSnapshots.Clear();
+                return;
+            }
+
+            foreach (var rowIndex in _scriptInvalidRows.ToList())
+            {
+                if (rowIndex >= 0 && rowIndex < worksheet.RowCount)
+                {
+                    if (_scriptInvalidRowVisualSnapshots.TryGetValue(rowIndex, out var snapshots))
+                    {
+                        foreach (var snapshot in snapshots)
+                        {
+                            if (snapshot.Column >= 0 && snapshot.Column < worksheet.ColumnCount)
+                            {
+                                var range = new RangePosition(rowIndex, snapshot.Column, 1, 1);
+                                if (snapshot.HasBackColor)
+                                {
+                                    ApplyScriptInvalidRowBackColor(worksheet, rowIndex, snapshot.Column, snapshot.BackColor);
+                                }
+                                else
+                                {
+                                    worksheet.RemoveRangeStyles(range, PlainStyleFlag.BackColor);
+                                }
+
+                                RestoreScriptInvalidRowBorder(worksheet, range, BorderPositions.Top, snapshot.TopBorder);
+                                RestoreScriptInvalidRowBorder(worksheet, range, BorderPositions.Right, snapshot.RightBorder);
+                                RestoreScriptInvalidRowBorder(worksheet, range, BorderPositions.Bottom, snapshot.BottomBorder);
+                                RestoreScriptInvalidRowBorder(worksheet, range, BorderPositions.Left, snapshot.LeftBorder);
+                            }
+                        }
+                    }
+                }
+            }
+
+            _scriptInvalidRows.Clear();
+            _scriptInvalidRowVisualSnapshots.Clear();
+        }
+
+        private static void ApplyScriptInvalidRowBackColor(Worksheet worksheet, int rowIndex, int columnIndex, System.Windows.Media.Color color)
+        {
+            worksheet.SetRangeStyles(new RangePosition(rowIndex, columnIndex, 1, 1), new WorksheetRangeStyle
+            {
+                Flag = PlainStyleFlag.BackColor,
+                BackColor = ToReoGridColor(color)
+            });
+        }
+
+        private static void ApplyScriptInvalidRowGridLines(Worksheet worksheet, int rowIndex, int columnIndex)
+        {
+            worksheet.SetRangeBorders(
+                new RangePosition(rowIndex, columnIndex, 1, 1),
+                BorderPositions.All,
+                RangeBorderStyle.SilverSolid);
+        }
+
+        private static void RestoreScriptInvalidRowBorder(Worksheet worksheet, RangePosition range, BorderPositions position, RangeBorderStyle borderStyle)
+        {
+            if (borderStyle.IsEmpty)
+            {
+                worksheet.RemoveRangeBorders(range, position);
+                return;
+            }
+
+            worksheet.SetRangeBorders(range, position, borderStyle);
+        }
+
+        private static System.Windows.Media.Color ToMediaColor(unvell.ReoGrid.Graphics.SolidColor color)
+        {
+            return System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B);
+        }
+
+        private static unvell.ReoGrid.Graphics.SolidColor ToReoGridColor(System.Windows.Media.Color color)
+        {
+            return unvell.ReoGrid.Graphics.SolidColor.FromArgb(color.A, color.R, color.G, color.B);
         }
         
         /// <summary>
@@ -7746,6 +8071,14 @@ namespace GeoChemistryNexus.ViewModels
             var sheet = _dataGrid.Worksheets[0];
             if (rowIndex < 0 || rowIndex >= sheet.RowCount)
             {
+                return;
+            }
+
+            if (_scriptInvalidRows.Contains(rowIndex))
+            {
+                IsCalculationVerificationVisible = true;
+                CalculationResultSummary = Lang("plot_row_script_result_invalid", "This row's script result is invalid.");
+                CalculationLogs.Add(BuildInvalidCoordinateHint());
                 return;
             }
             
@@ -7791,41 +8124,31 @@ namespace GeoChemistryNexus.ViewModels
                 var engine = new Jint.Engine();
                 JintHelper.InjectTraceFunction(engine, logs);
 
-                // 将数据列的值注入到JavaScript环境中
-                foreach (string columnName in dataColumns)
+                if (!TrySetCoordinateScriptInputs(engine, sheet, rowIndex, dataColumns, out var inputInvalidReason))
                 {
-                    // 查找列索引
-                    int colIndex = -1;
-                    for (int c = 0; c < sheet.ColumnCount; c++)
-                    {
-                        var headerText = sheet.ColumnHeaders[c].Text;
-                        if (headerText == columnName)
-                        {
-                            colIndex = c;
-                            break;
-                        }
-                    }
-
-                    if (colIndex >= 0)
-                    {
-                        var cellData = sheet[rowIndex, colIndex];
-                        if (cellData != null && double.TryParse(cellData.ToString(), out double value))
-                        {
-                            engine.SetValue(columnName, value);
-                        }
-                        else
-                        {
-                            engine.SetValue(columnName, 0);
-                        }
-                    }
-                    else
-                    {
-                        engine.SetValue(columnName, 0);
-                    }
+                    CalculationResultSummary = Lang("plot_row_script_result_invalid", "This row's script result is invalid.");
+                    CalculationLogs.Add(BuildInvalidCoordinateHint(inputInvalidReason));
+                    return;
                 }
 
                 // 执行脚本并获取结果
-                var result = engine.Evaluate(CurrentTemplate.Script.ScriptBody);
+                if (!JintHelper.TryPrepareCoordinateScript(engine, CurrentTemplate.Script.ScriptBody))
+                {
+                    CalculationResultSummary = Lang("plot_row_script_result_invalid", "This row's script result is invalid.");
+                    CalculationLogs.Add(BuildInvalidCoordinateHint(
+                        Lang("plot_script_must_return_array_explicitly", "Scripts must explicitly return an array, for example: return [x, y];")));
+                    return;
+                }
+
+                var result = JintHelper.InvokePreparedCoordinateScript(engine);
+
+                int requiredLength = CurrentTemplate.TemplateType == "Ternary" ? 3 : 2;
+                if (!TryReadFiniteArray(result, requiredLength, out var finiteValues, out var invalidReason))
+                {
+                    CalculationResultSummary = Lang("plot_row_script_result_invalid", "This row's script result is invalid.");
+                    CalculationLogs.Add(BuildInvalidCoordinateHint(invalidReason));
+                    return;
+                }
 
                 // 检查返回结果是否为数组
                 if (result.IsArray())
@@ -7838,9 +8161,9 @@ namespace GeoChemistryNexus.ViewModels
                         // 三元图需要3个值：A, B, C
                         if (array.Length >= 3)
                         {
-                            double a = array[0].IsNumber() ? array[0].AsNumber() : 0;
-                            double b = array[1].IsNumber() ? array[1].AsNumber() : 0;
-                            double c = array[2].IsNumber() ? array[2].AsNumber() : 0;
+                            double a = finiteValues[0];
+                            double b = finiteValues[1];
+                            double c = finiteValues[2];
 
                             // 格式化结果摘要（三元图使用 A, B, C）
                             CalculationResultSummary = LanguageService.Instance["calculation_results"] +
@@ -7874,8 +8197,8 @@ namespace GeoChemistryNexus.ViewModels
                         // 二维坐标系需要2个值：X, Y
                         if (array.Length >= 2)
                         {
-                            double x = array[0].IsNumber() ? array[0].AsNumber() : 0;
-                            double y = array[1].IsNumber() ? array[1].AsNumber() : 0;
+                            double x = finiteValues[0];
+                            double y = finiteValues[1];
 
                             // 格式化结果摘要（二维坐标系使用 X, Y）
                             CalculationResultSummary = LanguageService.Instance["calculation_results"] + 
@@ -10905,6 +11228,7 @@ namespace GeoChemistryNexus.ViewModels
 
             // 清除之前导入的数据点
             ClearExistingPlottedData();
+            ClearScriptInvalidRowMarks(worksheet);
 
             // 1. 确定 Category 列
             // 优先查找名为 "Category" 的列
@@ -10964,6 +11288,20 @@ namespace GeoChemistryNexus.ViewModels
 
             var palette = new ScottPlot.Palettes.Category10();
             int colorIndex = 0;
+            var invalidCoordinateMessages = new List<string>();
+            var invalidCoordinateRows = new HashSet<int>();
+
+            void RegisterInvalidCoordinateRow(int rowIndex, string? reason)
+            {
+                if (invalidCoordinateRows.Add(rowIndex))
+                {
+                    MarkScriptInvalidRow(worksheet, rowIndex);
+                    invalidCoordinateMessages.Add(string.Format(
+                        Lang("plot_invalid_row_example", "Row {0}: {1}"),
+                        rowIndex + 1,
+                        reason ?? Lang("plot_script_result_invalid_coordinate", "Script result is not a valid coordinate.")));
+                }
+            }
 
             // 创建Jint引擎并注入trace函数
             var engine = new Jint.Engine();
@@ -10973,7 +11311,8 @@ namespace GeoChemistryNexus.ViewModels
             _usePreparedCoordinateScript = JintHelper.TryPrepareCoordinateScript(engine, scriptDefinition.ScriptBody);
             if (!_usePreparedCoordinateScript)
             {
-                MessageHelper.Error(LanguageService.Instance["script_execution_failed"] ?? "Script execution failed.");
+                MessageHelper.Error((LanguageService.Instance["script_execution_failed"] ?? "Script execution failed.") +
+                    Lang("plot_script_must_return_array_explicitly", "Scripts must explicitly return an array, for example: return [x, y];"));
                 return;
             }
 
@@ -10992,9 +11331,6 @@ namespace GeoChemistryNexus.ViewModels
                     return;
                 }
 
-                // 用于保存校验失败的数据信息
-                var validationErrors = new List<string>();
-
                 foreach (var group in groupedData)
                 {
                     string categoryName = group.Key;
@@ -11009,7 +11345,7 @@ namespace GeoChemistryNexus.ViewModels
                         int rowIndex = item.OriginalRowIndex; // 获取原始数据行号
                         try
                         {
-                            var ternaryValues = CalculateCoordinatesUsingScript(engine, row, dataColumns, scriptDefinition.ScriptBody);
+                            var ternaryValues = CalculateCoordinatesUsingScript(engine, row, dataColumns, out var invalidReason);
                             // 脚本必须为三元图返回三个值
                             if (ternaryValues != null && ternaryValues.Length == 3)
                             {
@@ -11017,32 +11353,47 @@ namespace GeoChemistryNexus.ViewModels
                                 double leftVal = ternaryValues[1];
                                 double rightVal = ternaryValues[2];
 
+                                if (bottomVal < 0 || leftVal < 0 || rightVal < 0)
+                                {
+                                    RegisterInvalidCoordinateRow(rowIndex, Lang("plot_ternary_negative_component", "Ternary coordinate components cannot be negative."));
+                                    continue;
+                                }
+
                                 // 计算三个分量的和
                                 double sum = bottomVal + leftVal + rightVal;
 
                                 // 如果和接近0，视为无效数据，跳过
                                 if (Math.Abs(sum) < 1e-9)
                                 {
+                                    RegisterInvalidCoordinateRow(rowIndex, Lang("plot_ternary_sum_zero", "The ternary coordinate components sum to 0 and cannot be normalized."));
                                     continue;
                                 }
 
-                                // 如果和显著大于1（例如，接近100），则认为是百分比整数形式，进行归一化
-                                if (sum > 1.1)
-                                {
-                                    bottomVal /= sum;
-                                    leftVal /= sum;
-                                    rightVal /= sum;
-                                }
+                                // 三元图只关心三个分量的相对比例，统一归一化避免未归一化数据产生偏移。
+                                bottomVal /= sum;
+                                leftVal /= sum;
+                                rightVal /= sum;
 
                                 // 将三元坐标转换为笛卡尔坐标
                                 var cartesianCoord = triangularAxis.GetCoordinates(bottomVal, leftVal, rightVal);
+                                if (!IsFiniteValue(cartesianCoord.X) || !IsFiniteValue(cartesianCoord.Y))
+                                {
+                                    RegisterInvalidCoordinateRow(rowIndex, Lang("plot_ternary_conversion_invalid", "The ternary coordinate conversion did not produce a valid coordinate."));
+                                    continue;
+                                }
+
                                 cartesianCoords.Add(cartesianCoord);
                                 rowIndices.Add(rowIndex);
+                            }
+                            else
+                            {
+                                RegisterInvalidCoordinateRow(rowIndex, invalidReason ?? Lang("plot_ternary_script_return_three_finite_values", "Ternary diagram scripts must return 3 valid finite numbers."));
                             }
                         }
                         catch (Exception ex)
                         {
                             System.Diagnostics.Debug.WriteLine($"计算三元坐标时出错: {ex.Message}");
+                            RegisterInvalidCoordinateRow(rowIndex, $"{Lang("plot_script_execution_failed_with_reason", "Script execution failed")}: {ex.Message}");
                         }
                     }
 
@@ -11076,13 +11427,6 @@ namespace GeoChemistryNexus.ViewModels
                     rootDataNode.Children.Add(categoryViewModel);
                 }
 
-                // 如果存在校验失败的数据，则进行提示
-                if (validationErrors.Any())
-                {
-                    // 部分数据未通过校验，已跳过绘制
-                    string fullErrorMessage = LanguageService.Instance["some_data_failed_validation"] + "：\n" + string.Join("\n", validationErrors);
-                    MessageHelper.Warning(fullErrorMessage);
-                }
             }
             else // --- 笛卡尔坐标系投点逻辑 ---
             {
@@ -11102,7 +11446,7 @@ namespace GeoChemistryNexus.ViewModels
                         int rowIndex = item.OriginalRowIndex;
                         try
                         {
-                            var coordinates = CalculateCoordinatesUsingScript(engine, row, dataColumns, scriptDefinition.ScriptBody);
+                            var coordinates = CalculateCoordinatesUsingScript(engine, row, dataColumns, out var invalidReason);
                             // 脚本必须为笛卡尔坐标图返回两个值
                             if (coordinates != null && coordinates.Length == 2)
                             {
@@ -11110,10 +11454,15 @@ namespace GeoChemistryNexus.ViewModels
                                 ys.Add(coordinates[1]);
                                 rowIndices.Add(rowIndex);
                             }
+                            else
+                            {
+                                RegisterInvalidCoordinateRow(rowIndex, invalidReason ?? Lang("plot_cartesian_script_return_two_finite_values", "Cartesian diagram scripts must return 2 valid finite numbers."));
+                            }
                         }
                         catch (Exception ex)
                         {
                             System.Diagnostics.Debug.WriteLine($"计算坐标时出错: {ex.Message}");
+                            RegisterInvalidCoordinateRow(rowIndex, $"{Lang("plot_script_execution_failed_with_reason", "Script execution failed")}: {ex.Message}");
                         }
                     }
 
@@ -11153,6 +11502,11 @@ namespace GeoChemistryNexus.ViewModels
                     categoryViewModel.RequestStyleUpdate += (s, e) => WpfPlot1.Refresh();
                     rootDataNode.Children.Add(categoryViewModel);
                 }
+            }
+
+            if (invalidCoordinateRows.Any())
+            {
+                MessageHelper.Warning(FormatSkippedRowsWarning(invalidCoordinateMessages, invalidCoordinateRows.Count));
             }
 
             if (!rootDataNode.Children.Any())

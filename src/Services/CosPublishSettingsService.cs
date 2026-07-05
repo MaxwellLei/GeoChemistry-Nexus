@@ -33,12 +33,12 @@ namespace GeoChemistryNexus.Services
             }
         }
 
-        public static void Save(CosPublishSettings settings, string plainSecretKey = null)
+        public static void Save(CosPublishSettings settings, string? plainSecretKey = null)
         {
             if (settings == null)
                 throw new ArgumentNullException(nameof(settings));
 
-            string dir = Path.GetDirectoryName(SettingsPath);
+            string? dir = Path.GetDirectoryName(SettingsPath);
             if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
 

@@ -234,9 +234,6 @@ namespace GeoChemistryNexus.ViewModels
             LoadCategoryGroups();
 
             LanguageService.Instance.PropertyChanged += OnAppLanguageChanged;
-
-            // 首次切换到温压计页面时，如果开启了自动检查更新，则自动检查
-            TryAutoCheckUpdate();
         }
 
         private void OnAppLanguageChanged(object? sender, PropertyChangedEventArgs e)
@@ -284,9 +281,9 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 尝试自动检查地质温压计更新（仅在开启了设置且本次启动尚未检查过时执行）
+        /// 在温压计页面首次显示时自动检查更新（仅在开启设置且本次启动尚未检查过时执行）
         /// </summary>
-        private async void TryAutoCheckUpdate()
+        public async Task CheckUpdatesIfNeededAsync()
         {
             if (_hasAutoCheckedUpdate) return;
 
@@ -678,6 +675,7 @@ namespace GeoChemistryNexus.ViewModels
                     TextColor = Colors.Black,
                     Bold = true
                 });
+                ApplyHeaderSideBorders(worksheet, headers.Count);
 
                 // 设置示例行样式
                 var exampleRange = new RangePosition(1, 0, 1, headers.Count);
@@ -724,6 +722,16 @@ namespace GeoChemistryNexus.ViewModels
             catch (Exception ex)
             {
                 Debug.WriteLine("创建表格失败: " + ex.Message);
+            }
+        }
+
+        private static void ApplyHeaderSideBorders(Worksheet worksheet, int headerCount)
+        {
+            for (int i = 0; i < headerCount; i++)
+            {
+                var cellRange = new RangePosition(0, i, 1, 1);
+                worksheet.SetRangeBorders(cellRange, BorderPositions.Left, RangeBorderStyle.SilverSolid);
+                worksheet.SetRangeBorders(cellRange, BorderPositions.Right, RangeBorderStyle.SilverSolid);
             }
         }
 

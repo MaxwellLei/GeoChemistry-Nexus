@@ -5,7 +5,7 @@ namespace GeoChemistryNexus.Views
 {
     public partial class SPlotPageView : Page
     {
-        private static SPlotPageView plotPage = null;
+        private static SPlotPageView plotPage = null!;
 
         public SPlotPageView()
         {

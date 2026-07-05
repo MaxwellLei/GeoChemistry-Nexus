@@ -8,7 +8,7 @@ namespace GeoChemistryNexus.Views
     /// </summary>
     public partial class SGeothermometerPageView : Page
     {
-        private static SGeothermometerPageView instance = null;
+        private static SGeothermometerPageView instance = null!;
 
         public SGeothermometerPageView()
         {

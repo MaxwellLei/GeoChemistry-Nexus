@@ -5,7 +5,7 @@ namespace GeoChemistryNexus.Views
 {
     public partial class HomePageView : Page
     {
-        private static HomePageView _instance;
+        private static HomePageView _instance = null!;
 
         public HomePageView()
         {

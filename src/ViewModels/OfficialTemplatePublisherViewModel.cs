@@ -62,6 +62,18 @@ namespace GeoChemistryNexus.ViewModels
         private bool announcementHasRemoteChanges;
 
         [ObservableProperty]
+        private string minimumSupportedVersionText = string.Empty;
+
+        [ObservableProperty]
+        private bool minimumSupportedVersionHasRemoteChanges;
+
+        [ObservableProperty]
+        private string latestAppVersionText = string.Empty;
+
+        [ObservableProperty]
+        private bool latestAppVersionHasRemoteChanges;
+
+        [ObservableProperty]
         private int homeLinkGroupCount;
 
         [ObservableProperty]
@@ -71,10 +83,10 @@ namespace GeoChemistryNexus.ViewModels
         private bool homeLinksHasRemoteChanges;
 
         [ObservableProperty]
-        private HomeLinkGroupEditorViewModel selectedHomeLinkGroup;
+        private HomeLinkGroupEditorViewModel? selectedHomeLinkGroup;
 
         [ObservableProperty]
-        private HomeLinkEntryEditorViewModel selectedHomeLink;
+        private HomeLinkEntryEditorViewModel? selectedHomeLink;
 
         [ObservableProperty]
         private string secretId = string.Empty;
@@ -151,10 +163,10 @@ namespace GeoChemistryNexus.ViewModels
         private string selectedPlotCategoryLevel = "Level1";
 
         [ObservableProperty]
-        private LocalizedCategoryEntryViewModel selectedPlotCategoryEntry;
+        private LocalizedCategoryEntryViewModel? selectedPlotCategoryEntry;
 
         [ObservableProperty]
-        private LocalizedCategoryEntryViewModel selectedGeoTMineralEntry;
+        private LocalizedCategoryEntryViewModel? selectedGeoTMineralEntry;
 
         [ObservableProperty]
         private int plotCategoryEntryCount;
@@ -185,9 +197,11 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         private string _remoteAnnouncementText = string.Empty;
+        private string _remoteMinimumSupportedVersion = string.Empty;
+        private string _remoteLatestAppVersion = string.Empty;
 
-        private PublishPreview _diagramPreview;
-        private PublishPreview _geothermometerPreview;
+        private PublishPreview? _diagramPreview;
+        private PublishPreview? _geothermometerPreview;
 
         public Action<string>? ShowSuccessMessage { get; set; }
         public Action<string>? ShowWarningMessage { get; set; }
@@ -268,9 +282,14 @@ namespace GeoChemistryNexus.ViewModels
         {
             try
             {
-                _remoteAnnouncementText = await LoadRemoteAnnouncementAsync();
+                var info = await LoadRemoteServerInfoAsync();
+                _remoteAnnouncementText = info?.Announcement ?? string.Empty;
+                _remoteMinimumSupportedVersion = info?.MinimumSupportedVersion ?? string.Empty;
+                _remoteLatestAppVersion = info?.LatestAppVersion ?? string.Empty;
                 AnnouncementText = _remoteAnnouncementText;
-                UpdateAnnouncementChangeState();
+                MinimumSupportedVersionText = _remoteMinimumSupportedVersion;
+                LatestAppVersionText = _remoteLatestAppVersion;
+                UpdateServerConfigChangeState();
                 Log(LanguageService.Instance["official_publisher_announcement_loaded"] ?? "Announcement loaded from server.");
             }
             catch (Exception ex)
@@ -279,15 +298,29 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
-        private void UpdateAnnouncementChangeState()
+        private void UpdateServerConfigChangeState()
         {
             AnnouncementHasRemoteChanges = !string.Equals(
                 AnnouncementText?.Trim(),
                 _remoteAnnouncementText?.Trim(),
                 StringComparison.Ordinal);
+
+            MinimumSupportedVersionHasRemoteChanges = !string.Equals(
+                MinimumSupportedVersionText?.Trim(),
+                _remoteMinimumSupportedVersion?.Trim(),
+                StringComparison.OrdinalIgnoreCase);
+
+            LatestAppVersionHasRemoteChanges = !string.Equals(
+                LatestAppVersionText?.Trim(),
+                _remoteLatestAppVersion?.Trim(),
+                StringComparison.OrdinalIgnoreCase);
         }
 
-        partial void OnAnnouncementTextChanged(string value) => UpdateAnnouncementChangeState();
+        partial void OnAnnouncementTextChanged(string value) => UpdateServerConfigChangeState();
+
+        partial void OnMinimumSupportedVersionTextChanged(string value) => UpdateServerConfigChangeState();
+
+        partial void OnLatestAppVersionTextChanged(string value) => UpdateServerConfigChangeState();
 
         private void Log(string message)
         {
@@ -312,7 +345,7 @@ namespace GeoChemistryNexus.ViewModels
             _publishExportStepIndex = 0;
         }
 
-        private void ReportPublishProgress(double value, string message = null)
+        private void ReportPublishProgress(double value, string? message = null)
         {
             PublishProgress = Math.Clamp(value, 0, 100);
             if (!string.IsNullOrWhiteSpace(message))
@@ -330,7 +363,7 @@ namespace GeoChemistryNexus.ViewModels
         private int CountPublishExportSteps()
         {
             int steps = 0;
-            if (PublishAnnouncement && !PublishDiagrams && !PublishGeothermometers && !PublishHomeLinks)
+            if (PublishAnnouncement && !PublishDiagrams && !PublishHomeLinks)
                 steps++;
             if (PublishHomeLinks && !PublishDiagrams)
                 steps++;
@@ -344,7 +377,7 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private void BrowseStagingDirectory()
         {
-            string folder = FileHelper.GetFolderPath();
+            string? folder = FileHelper.GetFolderPath();
             if (!string.IsNullOrEmpty(folder))
             {
                 StagingDirectory = folder;
@@ -505,12 +538,53 @@ namespace GeoChemistryNexus.ViewModels
                 if (PublishAnnouncement)
                 {
                     AnnouncementPreviewLines.Clear();
-                    _remoteAnnouncementText = await LoadRemoteAnnouncementAsync();
-                    UpdateAnnouncementChangeState();
+                    var remoteInfo = await LoadRemoteServerInfoAsync();
+                    _remoteAnnouncementText = remoteInfo?.Announcement ?? string.Empty;
+                    _remoteMinimumSupportedVersion = remoteInfo?.MinimumSupportedVersion ?? string.Empty;
+                    _remoteLatestAppVersion = remoteInfo?.LatestAppVersion ?? string.Empty;
+                    UpdateServerConfigChangeState();
 
                     AnnouncementPreviewLines.Add(AnnouncementHasRemoteChanges
                         ? (LanguageService.Instance["official_publisher_announcement_pending"] ?? "Pending publish.")
                         : (LanguageService.Instance["official_publisher_announcement_up_to_date"] ?? "Already up to date on server."));
+
+                    AnnouncementPreviewLines.Add(MinimumSupportedVersionHasRemoteChanges
+                        ? (LanguageService.Instance["official_publisher_minimum_version_pending"] ?? "Minimum supported version pending publish.")
+                        : (LanguageService.Instance["official_publisher_minimum_version_up_to_date"] ?? "Minimum supported version is up to date."));
+
+                    AnnouncementPreviewLines.Add(LatestAppVersionHasRemoteChanges
+                        ? "Latest app version pending publish."
+                        : "Latest app version is up to date.");
+
+                    if (!TryNormalizeMinimumSupportedVersion(MinimumSupportedVersionText, out string normalizedMinimumVersion, out string minimumVersionError))
+                    {
+                        AnnouncementPreviewLines.Add(minimumVersionError);
+                        ShowWarning(minimumVersionError);
+                        return;
+                    }
+
+                    if (!TryNormalizeLatestAppVersion(LatestAppVersionText, out string normalizedLatestVersion, out string latestVersionError))
+                    {
+                        AnnouncementPreviewLines.Add(latestVersionError);
+                        ShowWarning(latestVersionError);
+                        return;
+                    }
+
+                    AnnouncementPreviewLines.Add(string.Format(
+                        LanguageService.Instance["official_publisher_minimum_version_preview"]
+                            ?? "Minimum supported version: {0}",
+                        string.IsNullOrWhiteSpace(normalizedMinimumVersion)
+                            ? (LanguageService.Instance["official_publisher_minimum_version_empty"] ?? "(empty)")
+                            : normalizedMinimumVersion));
+
+                    AnnouncementPreviewLines.Add(string.IsNullOrWhiteSpace(normalizedLatestVersion)
+                        ? "Latest app version: (empty)"
+                        : $"Latest app version: {normalizedLatestVersion}");
+
+                    if (!string.IsNullOrWhiteSpace(normalizedLatestVersion))
+                    {
+                        AnnouncementPreviewLines.Add($"Installer file: {OfficialContentEndpoints.BuildInstallerFileName(normalizedLatestVersion)}");
+                    }
 
                     if (!string.IsNullOrWhiteSpace(AnnouncementText))
                     {
@@ -551,23 +625,25 @@ namespace GeoChemistryNexus.ViewModels
             if (!EnsurePublishTargetSelected()) return;
             if (IsBusy) return;
 
-            string outputDir = ResolveStagingDirectory();
+            string? outputDir = ResolveStagingDirectory();
             if (string.IsNullOrEmpty(outputDir)) return;
 
             IsBusy = true;
             try
             {
                 Log(string.Format(LanguageService.Instance["official_publisher_exporting"] ?? "Exporting to {0}...", outputDir));
-                string announcement = await ResolveAnnouncementForPublishAsync();
+                string announcement = await ResolveAnnouncementForPublishAsync() ?? string.Empty;
+                string minimumSupportedVersion = await ResolveMinimumSupportedVersionForPublishAsync() ?? string.Empty;
+                string latestAppVersion = await ResolveLatestAppVersionForPublishAsync() ?? string.Empty;
                 SaveHomeLinksToBundled();
 
-                HomeLinksPublishResult homeLinksResult = null;
-                AnnouncementPublishResult announcementResult = null;
+                HomeLinksPublishResult? homeLinksResult = null;
+                AnnouncementPublishResult? announcementResult = null;
 
-                if (PublishAnnouncement && !PublishDiagrams && !PublishGeothermometers && !PublishHomeLinks)
+                if (PublishAnnouncement && !PublishDiagrams && !PublishHomeLinks)
                 {
                     announcementResult = await Task.Run(() =>
-                        HomeLinksPublishService.ExportAnnouncementToDirectory(outputDir, announcement));
+                        HomeLinksPublishService.ExportAnnouncementToDirectory(outputDir, announcement, minimumSupportedVersion, latestAppVersion));
                     Log(announcementResult.Summary);
                 }
 
@@ -581,7 +657,7 @@ namespace GeoChemistryNexus.ViewModels
                     else
                     {
                         homeLinksResult = await Task.Run(() => HomeLinksPublishService.ExportToDirectory(
-                            outputDir, BuildCatalogFromEditor(), announcement));
+                            outputDir, BuildCatalogFromEditor(), announcement, minimumSupportedVersion, latestAppVersion));
                         Log(homeLinksResult.Summary);
                         LogHomeLinksPublishSummary(homeLinksResult);
                     }
@@ -591,7 +667,9 @@ namespace GeoChemistryNexus.ViewModels
                 {
                     var result = await Task.Run(() => GraphMapTemplatePublishService.ExportToDirectory(outputDir, new PublishOptions
                     {
-                        PreserveAnnouncement = announcement
+                        PreserveAnnouncement = announcement,
+                        PreserveMinimumSupportedVersion = minimumSupportedVersion,
+                        PreserveLatestAppVersion = latestAppVersion
                     }));
                     Log(result.Summary);
                     LogHomeLinksCatalogSummary(result);
@@ -630,7 +708,7 @@ namespace GeoChemistryNexus.ViewModels
                 return;
             }
 
-            string outputDir = ResolveStagingDirectory();
+            string? outputDir = ResolveStagingDirectory();
             if (string.IsNullOrEmpty(outputDir)) return;
 
             bool confirm = await ShowConfirmAsync(
@@ -647,21 +725,23 @@ namespace GeoChemistryNexus.ViewModels
                 Log(startMessage);
                 ReportPublishProgress(2, startMessage);
 
-                string announcement = await ResolveAnnouncementForPublishAsync();
+                string announcement = await ResolveAnnouncementForPublishAsync() ?? string.Empty;
+                string minimumSupportedVersion = await ResolveMinimumSupportedVersionForPublishAsync() ?? string.Empty;
+                string latestAppVersion = await ResolveLatestAppVersionForPublishAsync() ?? string.Empty;
                 SaveHomeLinksToBundled();
 
-                PublishResult diagramResult = null;
-                GeothermometerPublishResult geoResult = null;
-                HomeLinksPublishResult homeLinksResult = null;
-                AnnouncementPublishResult announcementResult = null;
+                PublishResult? diagramResult = null;
+                GeothermometerPublishResult? geoResult = null;
+                HomeLinksPublishResult? homeLinksResult = null;
+                AnnouncementPublishResult? announcementResult = null;
 
-                if (PublishAnnouncement && !PublishDiagrams && !PublishGeothermometers && !PublishHomeLinks)
+                if (PublishAnnouncement && !PublishDiagrams && !PublishHomeLinks)
                 {
                     string exportMessage = LanguageService.Instance["official_publisher_progress_exporting_announcement"]
                         ?? "Exporting announcement...";
                     ReportPublishExportStep(exportMessage);
                     announcementResult = await Task.Run(() =>
-                        HomeLinksPublishService.ExportAnnouncementToDirectory(outputDir, announcement));
+                        HomeLinksPublishService.ExportAnnouncementToDirectory(outputDir, announcement, minimumSupportedVersion, latestAppVersion));
                     Log(announcementResult.Summary);
                 }
 
@@ -671,7 +751,7 @@ namespace GeoChemistryNexus.ViewModels
                         ?? "Exporting home links...";
                     ReportPublishExportStep(exportMessage);
                     homeLinksResult = await Task.Run(() => HomeLinksPublishService.ExportToDirectory(
-                        outputDir, BuildCatalogFromEditor(), announcement));
+                        outputDir, BuildCatalogFromEditor(), announcement, minimumSupportedVersion, latestAppVersion));
                     Log(homeLinksResult.Summary);
                     LogHomeLinksPublishSummary(homeLinksResult);
                 }
@@ -688,7 +768,9 @@ namespace GeoChemistryNexus.ViewModels
                     ReportPublishExportStep(exportMessage);
                     diagramResult = await Task.Run(() => GraphMapTemplatePublishService.ExportToDirectory(outputDir, new PublishOptions
                     {
-                        PreserveAnnouncement = announcement
+                        PreserveAnnouncement = announcement,
+                        PreserveMinimumSupportedVersion = minimumSupportedVersion,
+                        PreserveLatestAppVersion = latestAppVersion
                     }));
                     Log(diagramResult.Summary);
                     LogHomeLinksCatalogSummary(diagramResult);
@@ -739,8 +821,13 @@ namespace GeoChemistryNexus.ViewModels
                 if (PublishDiagrams)
                     GraphMapTemplatePublishService.ClearPendingPublishFlags();
 
-                if (PublishAnnouncement && announcementResult != null)
+                if (PublishAnnouncement)
+                {
                     _remoteAnnouncementText = announcement ?? string.Empty;
+                    _remoteMinimumSupportedVersion = minimumSupportedVersion ?? string.Empty;
+                    _remoteLatestAppVersion = latestAppVersion ?? string.Empty;
+                    UpdateServerConfigChangeState();
+                }
 
                 string doneMessage = LanguageService.Instance["official_publisher_progress_done"] ?? "Publish completed.";
                 ReportPublishProgress(100, doneMessage);
@@ -762,14 +849,14 @@ namespace GeoChemistryNexus.ViewModels
         private CosPublishSettings BuildSettingsFromUi()
         {
             var settings = CosPublishSettingsService.Load();
-            settings.SecretId = SecretId?.Trim();
+            settings.SecretId = SecretId?.Trim() ?? string.Empty;
             settings.Region = string.IsNullOrWhiteSpace(Region) ? OfficialContentEndpoints.DefaultRegion : Region.Trim();
             settings.Bucket = string.IsNullOrWhiteSpace(Bucket) ? OfficialContentEndpoints.DefaultBucket : Bucket.Trim();
             settings.StagingDirectory = StagingDirectory;
             return settings;
         }
 
-        private string ResolveStagingDirectory()
+        private string? ResolveStagingDirectory()
         {
             if (!string.IsNullOrWhiteSpace(StagingDirectory))
             {
@@ -777,7 +864,7 @@ namespace GeoChemistryNexus.ViewModels
                 return StagingDirectory;
             }
 
-            string folder = FileHelper.GetFolderPath();
+            string? folder = FileHelper.GetFolderPath();
             if (!string.IsNullOrEmpty(folder))
             {
                 StagingDirectory = folder;
@@ -803,12 +890,38 @@ namespace GeoChemistryNexus.ViewModels
             return false;
         }
 
-        private async Task<string> ResolveAnnouncementForPublishAsync()
+        private Task<string?> ResolveAnnouncementForPublishAsync()
         {
             if (PublishAnnouncement)
-                return AnnouncementText ?? string.Empty;
+                return Task.FromResult<string?>(AnnouncementText ?? string.Empty);
 
-            return await LoadRemoteAnnouncementAsync();
+            return Task.FromResult<string?>(null);
+        }
+
+        private Task<string?> ResolveMinimumSupportedVersionForPublishAsync()
+        {
+            if (PublishAnnouncement)
+            {
+                if (!TryNormalizeMinimumSupportedVersion(MinimumSupportedVersionText, out string normalized, out string error))
+                    throw new InvalidOperationException(error);
+
+                return Task.FromResult<string?>(normalized);
+            }
+
+            return Task.FromResult<string?>(null);
+        }
+
+        private Task<string?> ResolveLatestAppVersionForPublishAsync()
+        {
+            if (PublishAnnouncement)
+            {
+                if (!TryNormalizeLatestAppVersion(LatestAppVersionText, out string normalized, out string error))
+                    throw new InvalidOperationException(error);
+
+                return Task.FromResult<string?>(normalized);
+            }
+
+            return Task.FromResult<string?>(null);
         }
 
         [RelayCommand]
@@ -881,7 +994,7 @@ namespace GeoChemistryNexus.ViewModels
                 return;
             }
 
-            if (!TryEditLink(null, out var link))
+            if (!TryEditLink(null, out var link) || link == null)
                 return;
 
             SelectedHomeLinkGroup.Links.Add(link);
@@ -895,7 +1008,7 @@ namespace GeoChemistryNexus.ViewModels
             if (SelectedHomeLink == null)
                 return;
 
-            if (!TryEditLink(SelectedHomeLink, out var updated))
+            if (!TryEditLink(SelectedHomeLink, out var updated) || updated == null)
                 return;
 
             SelectedHomeLink.Title = updated.Title;
@@ -996,7 +1109,7 @@ namespace GeoChemistryNexus.ViewModels
                 .Count() ?? 0;
         }
 
-        private bool TryEditLink(HomeLinkEntryEditorViewModel existing, out HomeLinkEntryEditorViewModel result)
+        private bool TryEditLink(HomeLinkEntryEditorViewModel? existing, out HomeLinkEntryEditorViewModel? result)
         {
             result = null;
             var dialog = new HomeLinkLocalizedEditWindow(
@@ -1103,18 +1216,60 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
-        private static async Task<string> LoadRemoteAnnouncementAsync()
+        private static async Task<ServerInfo> LoadRemoteServerInfoAsync()
         {
             try
             {
                 string json = await UpdateHelper.GetUrlContentAsync(OfficialContentEndpoints.ServerInfoUrl);
-                var info = System.Text.Json.JsonSerializer.Deserialize<ServerInfo>(json);
-                return info?.Announcement ?? string.Empty;
+                return System.Text.Json.JsonSerializer.Deserialize<ServerInfo>(json) ?? new ServerInfo();
             }
             catch
             {
-                return string.Empty;
+                return new ServerInfo();
             }
+        }
+
+        private static bool TryNormalizeMinimumSupportedVersion(
+            string value,
+            out string normalized,
+            out string error)
+        {
+            normalized = string.Empty;
+            error = string.Empty;
+
+            if (string.IsNullOrWhiteSpace(value))
+                return true;
+
+            if (!UpdateHelper.TryNormalizeVersion(value, out Version? version) || version == null)
+            {
+                error = LanguageService.Instance["official_publisher_minimum_version_invalid"]
+                    ?? "Minimum supported version must be a valid version, for example 1.2.3.";
+                return false;
+            }
+
+            normalized = version.ToString(3);
+            return true;
+        }
+
+        private static bool TryNormalizeLatestAppVersion(
+            string value,
+            out string normalized,
+            out string error)
+        {
+            normalized = string.Empty;
+            error = string.Empty;
+
+            if (string.IsNullOrWhiteSpace(value))
+                return true;
+
+            if (!UpdateHelper.TryNormalizeVersion(value, out Version? version) || version == null)
+            {
+                error = "Latest app version must be a valid version, for example 1.2.3.";
+                return false;
+            }
+
+            normalized = version.ToString(3);
+            return true;
         }
 
         [RelayCommand]
@@ -1138,7 +1293,7 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private void AddPlotCategoryEntry()
         {
-            if (!TryEditCategoryEntry(null, PlotCategoriesLanguageContext, out var entry))
+            if (!TryEditCategoryEntry(null, PlotCategoriesLanguageContext, out var entry) || entry == null)
                 return;
 
             GetPlotCategoryCollection(SelectedPlotCategoryLevel).Add(entry);
@@ -1153,7 +1308,7 @@ namespace GeoChemistryNexus.ViewModels
             if (SelectedPlotCategoryEntry == null)
                 return;
 
-            if (!TryEditCategoryEntry(SelectedPlotCategoryEntry, PlotCategoriesLanguageContext, out var updated))
+            if (!TryEditCategoryEntry(SelectedPlotCategoryEntry, PlotCategoriesLanguageContext, out var updated) || updated == null)
                 return;
 
             SelectedPlotCategoryEntry.Title = updated.Title;
@@ -1192,7 +1347,7 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private void AddGeoTMineralEntry()
         {
-            if (!TryEditCategoryEntry(null, GeoTMineralCategoriesLanguageContext, out var entry))
+            if (!TryEditCategoryEntry(null, GeoTMineralCategoriesLanguageContext, out var entry) || entry == null)
                 return;
 
             GeoTMineralEntries.Add(entry);
@@ -1206,7 +1361,7 @@ namespace GeoChemistryNexus.ViewModels
             if (SelectedGeoTMineralEntry == null)
                 return;
 
-            if (!TryEditCategoryEntry(SelectedGeoTMineralEntry, GeoTMineralCategoriesLanguageContext, out var updated))
+            if (!TryEditCategoryEntry(SelectedGeoTMineralEntry, GeoTMineralCategoriesLanguageContext, out var updated) || updated == null)
                 return;
 
             SelectedGeoTMineralEntry.Title = updated.Title;
@@ -1340,9 +1495,9 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         private bool TryEditCategoryEntry(
-            LocalizedCategoryEntryViewModel existing,
+            LocalizedCategoryEntryViewModel? existing,
             ContentLanguageContext languageContext,
-            out LocalizedCategoryEntryViewModel result)
+            out LocalizedCategoryEntryViewModel? result)
         {
             result = null;
             var dialog = new HomeLinkLocalizedEditWindow(

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -3255,4 +3255,171 @@
   <data name="data_grid_plot_refresh_pending" xml:space="preserve">
     <value>データが変更されました。図解を再読み込みしてください。</value>
   </data>
+  <data name="plot_invalid_row_example" xml:space="preserve">
+    <value>行 {0}: {1}</value>
+  </data>
+  <data name="plot_invalid_rows_summary" xml:space="preserve">
+    <value>スクリプト結果が有効な座標ではないため、{0} 行はプロットされませんでした。データ表でマークされています。入力値を確認してください。</value>
+  </data>
+  <data name="plot_ternary_sum_zero" xml:space="preserve">
+    <value>三角座標成分の合計が 0 のため、正規化できません。</value>
+  </data>
+  <data name="plot_script_execution_failed_with_reason" xml:space="preserve">
+    <value>スクリプトの実行に失敗しました</value>
+  </data>
+  <data name="plot_script_result_non_numeric" xml:space="preserve">
+    <value>スクリプトの戻り値に数値以外の内容が含まれています。</value>
+  </data>
+  <data name="plot_invalid_rows_examples" xml:space="preserve">
+    <value>例:</value>
+  </data>
+  <data name="plot_ternary_conversion_invalid" xml:space="preserve">
+    <value>三角座標変換後の座標が有効ではありません。</value>
+  </data>
+  <data name="plot_invalid_rows_more" xml:space="preserve">
+    <value>同様の問題がある行がほかに {0} 行あります。</value>
+  </data>
+  <data name="plot_row_script_result_invalid" xml:space="preserve">
+    <value>この行のスクリプト計算結果は無効です。</value>
+  </data>
+  <data name="plot_ternary_script_return_three_finite_values" xml:space="preserve">
+    <value>三角図のスクリプトは 3 つの有効な有限数値を返す必要があります。</value>
+  </data>
+  <data name="plot_script_result_not_array" xml:space="preserve">
+    <value>スクリプトの戻り値は配列ではありません。</value>
+  </data>
+  <data name="plot_invalid_coordinate_hint" xml:space="preserve">
+    <value>この行のスクリプト計算結果は無効なため、有効な座標を生成できません。ゼロ除算、空値、負数の対数、負数の平方根などを確認してください。</value>
+  </data>
+  <data name="plot_script_result_invalid_coordinate" xml:space="preserve">
+    <value>スクリプト結果は有効な座標ではありません。</value>
+  </data>
+  <data name="plot_cartesian_script_return_two_finite_values" xml:space="preserve">
+    <value>直交座標図のスクリプトは 2 つの有効な有限数値を返す必要があります。</value>
+  </data>
+  <data name="plot_script_result_contains_invalid_number" xml:space="preserve">
+    <value>スクリプトの計算結果に {0} が含まれているため、有効な座標を生成できません。</value>
+  </data>
+  <data name="cipw_mineral_Q" xml:space="preserve">
+    <value>石英</value>
+  </data>
+  <data name="cipw_mineral_Cor" xml:space="preserve">
+    <value>コランダム</value>
+  </data>
+  <data name="cipw_mineral_Or" xml:space="preserve">
+    <value>正長石</value>
+  </data>
+  <data name="cipw_mineral_Ab" xml:space="preserve">
+    <value>曹長石</value>
+  </data>
+  <data name="cipw_mineral_An" xml:space="preserve">
+    <value>灰長石</value>
+  </data>
+  <data name="cipw_mineral_Le" xml:space="preserve">
+    <value>白榴石</value>
+  </data>
+  <data name="cipw_mineral_Ne" xml:space="preserve">
+    <value>霞石</value>
+  </data>
+  <data name="cipw_mineral_Kp" xml:space="preserve">
+    <value>カリシライト</value>
+  </data>
+  <data name="cipw_mineral_Ac" xml:space="preserve">
+    <value>アクマイト</value>
+  </data>
+  <data name="cipw_mineral_Di" xml:space="preserve">
+    <value>透輝石</value>
+  </data>
+  <data name="cipw_mineral_Hd" xml:space="preserve">
+    <value>ヘデンベルグ輝石</value>
+  </data>
+  <data name="cipw_mineral_Wo" xml:space="preserve">
+    <value>珪灰石</value>
+  </data>
+  <data name="cipw_mineral_En" xml:space="preserve">
+    <value>頑火輝石</value>
+  </data>
+  <data name="cipw_mineral_Fs" xml:space="preserve">
+    <value>鉄珪輝石</value>
+  </data>
+  <data name="cipw_mineral_Fo" xml:space="preserve">
+    <value>苦土橄欖石</value>
+  </data>
+  <data name="cipw_mineral_Fa" xml:space="preserve">
+    <value>鉄橄欖石</value>
+  </data>
+  <data name="cipw_mineral_Mt" xml:space="preserve">
+    <value>磁鉄鉱</value>
+  </data>
+  <data name="cipw_mineral_Hm" xml:space="preserve">
+    <value>赤鉄鉱</value>
+  </data>
+  <data name="cipw_mineral_Ilm" xml:space="preserve">
+    <value>チタン鉄鉱</value>
+  </data>
+  <data name="cipw_mineral_Cm" xml:space="preserve">
+    <value>クロム鉄鉱</value>
+  </data>
+  <data name="cipw_mineral_Ru" xml:space="preserve">
+    <value>ルチル</value>
+  </data>
+  <data name="cipw_mineral_Tn" xml:space="preserve">
+    <value>チタナイト</value>
+  </data>
+  <data name="cipw_mineral_Z" xml:space="preserve">
+    <value>ジルコン</value>
+  </data>
+  <data name="cipw_mineral_Ap" xml:space="preserve">
+    <value>燐灰石</value>
+  </data>
+  <data name="cipw_mineral_Cc" xml:space="preserve">
+    <value>方解石</value>
+  </data>
+  <data name="cipw_mineral_Py" xml:space="preserve">
+    <value>黄鉄鉱</value>
+  </data>
+  <data name="cipw_mineral_Fl" xml:space="preserve">
+    <value>蛍石</value>
+  </data>
+  <data name="cipw_mineral_Hl" xml:space="preserve">
+    <value>岩塩</value>
+  </data>
+  <data name="cipw_mineral_Th" xml:space="preserve">
+    <value>テナルダイト</value>
+  </data>
+  <data name="cipw_mineral_ns" xml:space="preserve">
+    <value>メタケイ酸ナトリウム</value>
+  </data>
+  <data name="cipw_mineral_ks" xml:space="preserve">
+    <value>メタケイ酸カリウム</value>
+  </data>
+  <data name="cipw_warning_partial_iron_missing" xml:space="preserve">
+    <value>鉄の配分データが一部不足しています（FeO または Fe2O3 の一方のみが入力されています）。</value>
+  </data>
+  <data name="cipw_warning_feot_estimated" xml:space="preserve">
+    <value>固定 Fe3+/Fe 比（{0:F2}）を使用して FeOT から鉄配分を推定しました。</value>
+  </data>
+  <data name="cipw_warning_iron_inconsistent" xml:space="preserve">
+    <value>鉄の入力に不整合があります：FeOT と FeO/Fe2O3 が同時に指定されています。</value>
+  </data>
+  <data name="cipw_warning_iron_missing" xml:space="preserve">
+    <value>鉄データが入力されていません。</value>
+  </data>
+  <data name="cipw_warning_mno_to_feo" xml:space="preserve">
+    <value>MnO はモル比に基づいて FeO 当量に換算されました。</value>
+  </data>
+  <data name="cipw_error_negative_oxide_with_value" xml:space="preserve">
+    <value>負の酸化物 {0}: {1}</value>
+  </data>
+  <data name="cipw_error_oxide_total_positive" xml:space="preserve">
+    <value>酸化物合計は 0 より大きい必要があります。</value>
+  </data>
+  <data name="cipw_error_fe3_fraction_range" xml:space="preserve">
+    <value>Fe3+ 比は 0 から 1 の範囲である必要があります。</value>
+  </data>
+  <data name="cipw_error_negative_oxide_content" xml:space="preserve">
+    <value>酸化物 {0} の含有量が負の値です。</value>
+  </data>
 </root>
+
+

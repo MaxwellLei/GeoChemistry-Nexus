@@ -5,6 +5,21 @@ using System.Linq;
 namespace GeoChemistryNexus.Models.Cipw
 {
     /// <summary>
+    /// CIPW calculation message that can be localized by the presentation layer.
+    /// </summary>
+    public class CipwMessage
+    {
+        public string Key { get; set; } = string.Empty;
+        public object[] Args { get; set; } = Array.Empty<object>();
+
+        public CipwMessage(string key, params object[] args)
+        {
+            Key = key;
+            Args = args;
+        }
+    }
+
+    /// <summary>
     /// CIPW标准矿物计算结果
     /// </summary>
     public class CipwResult
@@ -22,12 +37,12 @@ namespace GeoChemistryNexus.Models.Cipw
         /// <summary>
         /// 硅饱和状态 (oversaturated / saturated / undersaturated)
         /// </summary>
-        public string SilicaSaturation { get; set; }
+        public string SilicaSaturation { get; set; } = string.Empty;
 
         /// <summary>
         /// 铝饱和状态 (peralkaline / metaluminous / peraluminous)
         /// </summary>
-        public string AluminaState { get; set; }
+        public string AluminaState { get; set; } = string.Empty;
 
         /// <summary>
         /// 质量平衡误差
@@ -47,12 +62,12 @@ namespace GeoChemistryNexus.Models.Cipw
         /// <summary>
         /// 铁的处理模式
         /// </summary>
-        public string IronMode { get; set; }
+        public string IronMode { get; set; } = string.Empty;
 
         /// <summary>
         /// 警告信息列表
         /// </summary>
-        public List<string> Warnings { get; set; } = new();
+        public List<CipwMessage> Warnings { get; set; } = new();
 
         /// <summary>
         /// 计算是否成功
@@ -62,7 +77,30 @@ namespace GeoChemistryNexus.Models.Cipw
         /// <summary>
         /// 错误信息（计算失败时）
         /// </summary>
-        public string ErrorMessage { get; set; }
+        public string ErrorMessage { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 错误信息资源键（计算失败时）
+        /// </summary>
+        public string ErrorMessageKey { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 错误信息格式化参数（计算失败时）
+        /// </summary>
+        public object[] ErrorMessageArgs { get; set; } = Array.Empty<object>();
+    }
+
+    internal class CipwCalculationException : Exception
+    {
+        public string ResourceKey { get; }
+        public object[] Args { get; }
+
+        public CipwCalculationException(string resourceKey, params object[] args)
+            : base(resourceKey)
+        {
+            ResourceKey = resourceKey;
+            Args = args;
+        }
     }
 
     /// <summary>
@@ -94,7 +132,7 @@ namespace GeoChemistryNexus.Models.Cipw
                 _oxides[key] = Get(key) - value;
 
                 if (key != "SiO2" && _oxides[key] < -CipwConstants.EPS)
-                    throw new InvalidOperationException($"负值氧化物 {key}: {_oxides[key]}");
+                    throw new CipwCalculationException("cipw_error_negative_oxide_with_value", key, _oxides[key]);
 
                 if (Math.Abs(_oxides[key]) < CipwConstants.EPS)
                     _oxides[key] = 0.0;
@@ -120,7 +158,7 @@ namespace GeoChemistryNexus.Models.Cipw
                 if (Math.Abs(_oxides[key]) < CipwConstants.EPS)
                     _oxides[key] = 0.0;
                 else if (key != "SiO2" && _oxides[key] < 0)
-                    throw new InvalidOperationException($"负值氧化物 {key}: {_oxides[key]}");
+                    throw new CipwCalculationException("cipw_error_negative_oxide_with_value", key, _oxides[key]);
             }
         }
 
@@ -243,6 +281,16 @@ namespace GeoChemistryNexus.Models.Cipw
                     Success = true
                 };
             }
+            catch (CipwCalculationException ex)
+            {
+                return new CipwResult
+                {
+                    Success = false,
+                    ErrorMessage = ex.Message,
+                    ErrorMessageKey = ex.ResourceKey,
+                    ErrorMessageArgs = ex.Args
+                };
+            }
             catch (Exception ex)
             {
                 return new CipwResult
@@ -262,7 +310,7 @@ namespace GeoChemistryNexus.Models.Cipw
             double total = clean.Values.Sum();
 
             if (total <= 0)
-                throw new ArgumentException("氧化物总量必须大于0");
+                throw new CipwCalculationException("cipw_error_oxide_total_positive");
 
             return clean.ToDictionary(kv => kv.Key, kv => 100.0 * kv.Value / total);
         }
@@ -270,15 +318,15 @@ namespace GeoChemistryNexus.Models.Cipw
         /// <summary>
         /// 铁的配分处理
         /// </summary>
-        private static (Dictionary<string, double> oxides, string ironMode, List<string> warnings) HandleIron(
+        private static (Dictionary<string, double> oxides, string ironMode, List<CipwMessage> warnings) HandleIron(
             Dictionary<string, double> oxides, double fe3Fraction, bool strict)
         {
             if (fe3Fraction < 0.0 || fe3Fraction > 1.0)
-                throw new ArgumentException("Fe3+比值必须在0到1之间");
+                throw new CipwCalculationException("cipw_error_fe3_fraction_range");
 
             var ox = new Dictionary<string, double>(oxides);
             string ironMode = null;
-            var warnings = new List<string>();
+            var warnings = new List<CipwMessage>();
 
             bool hasFeo = ox.ContainsKey("FeO") && ox["FeO"] > 0;
             bool hasFe2o3 = ox.ContainsKey("Fe2O3") && ox["Fe2O3"] > 0;
@@ -293,7 +341,7 @@ namespace GeoChemistryNexus.Models.Cipw
                 if (!ox.ContainsKey("FeO")) ox["FeO"] = 0.0;
                 if (!ox.ContainsKey("Fe2O3")) ox["Fe2O3"] = 0.0;
                 ironMode = "partial_assumed";
-                warnings.Add("部分铁配分数据缺失（仅有FeO或Fe2O3之一）");
+                warnings.Add(new CipwMessage("cipw_warning_partial_iron_missing"));
             }
             else if (hasFeot && !hasFeo && !hasFe2o3)
             {
@@ -302,15 +350,14 @@ namespace GeoChemistryNexus.Models.Cipw
                 ox["Fe2O3"] = feTotal * fe3Fraction * 1.11134;
                 ox["FeO"] = feTotal * (1.0 - fe3Fraction);
                 ironMode = "estimated_from_FeOT";
-                warnings.Add($"使用固定Fe3+/Fe比值({fe3Fraction:F2})从FeOT估算铁配分");
+                warnings.Add(new CipwMessage("cipw_warning_feot_estimated", fe3Fraction));
             }
             else if (hasFeot && (hasFeo || hasFe2o3))
             {
-                string msg = "铁输入不一致：同时提供了FeOT和FeO/Fe2O3";
                 ironMode = "inconsistent_input";
-                warnings.Add(msg);
+                warnings.Add(new CipwMessage("cipw_warning_iron_inconsistent"));
                 if (strict)
-                    throw new ArgumentException(msg);
+                    throw new CipwCalculationException("cipw_warning_iron_inconsistent");
                 ox.Remove("FeOT");
             }
             else
@@ -318,7 +365,7 @@ namespace GeoChemistryNexus.Models.Cipw
                 if (!ox.ContainsKey("FeO")) ox["FeO"] = 0.0;
                 if (!ox.ContainsKey("Fe2O3")) ox["Fe2O3"] = 0.0;
                 ironMode = "missing";
-                warnings.Add("未提供铁数据");
+                warnings.Add(new CipwMessage("cipw_warning_iron_missing"));
             }
 
             // MnO转换为FeO当量
@@ -328,7 +375,7 @@ namespace GeoChemistryNexus.Models.Cipw
                 ox.Remove("MnO");
                 double feoEquivalent = mnWt * (CipwConstants.MolarMass["FeO"] / CipwConstants.MolarMass["MnO"]);
                 ox["FeO"] = (ox.ContainsKey("FeO") ? ox["FeO"] : 0.0) + feoEquivalent;
-                warnings.Add("MnO已按摩尔比转换为FeO当量");
+                warnings.Add(new CipwMessage("cipw_warning_mno_to_feo"));
             }
 
             return (ox, ironMode, warnings);
@@ -345,7 +392,7 @@ namespace GeoChemistryNexus.Models.Cipw
                 if (CipwConstants.MolarMass.ContainsKey(kv.Key))
                 {
                     if (kv.Value < 0)
-                        throw new ArgumentException($"氧化物 {kv.Key} 的含量为负值");
+                        throw new CipwCalculationException("cipw_error_negative_oxide_content", kv.Key);
                     moles[kv.Key] = kv.Value / CipwConstants.MolarMass[kv.Key];
                 }
             }

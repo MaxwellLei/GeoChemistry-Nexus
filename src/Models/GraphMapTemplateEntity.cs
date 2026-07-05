@@ -20,13 +20,13 @@ namespace GeoChemistryNexus.Models
         /// 原有的路径标识符，例如 "Igneous/TAS_Diagram"
         /// 作为生成 Id 的种子
         /// </summary>
-        public string GraphMapPath { get; set; }
+        public string GraphMapPath { get; set; } = string.Empty;
 
         /// <summary>
         /// 文件哈希，用于版本比对 (MD5)
         /// 计算源为 Content 序列化后的 JSON 字符串
         /// </summary>
-        public string FileHash { get; set; }
+        public string FileHash { get; set; } = string.Empty;
 
         /// <summary>
         /// 是否为用户自定义模板 (true: 用户创建/另存; false: 系统内置)
@@ -48,15 +48,15 @@ namespace GeoChemistryNexus.Models
         /// <summary>
         /// 模板名称
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         
         /// <summary>
         /// 模板分类层级信息
         /// 从 Content.NodeList 映射而来，用于快速构建分类树
         /// </summary>
-        public LocalizedString NodeList { get; set; }
+        public LocalizedString NodeList { get; set; } = new();
         
-        public string TemplateType { get; set; } // "Cartesian" or "Ternary"
+        public string TemplateType { get; set; } = string.Empty; // "Cartesian" or "Ternary"
         public string Version { get; set; } = ContentVersionHelper.DefaultVersion;
 
         // --- 重量级数据区 (Payload) ---
@@ -66,7 +66,7 @@ namespace GeoChemistryNexus.Models
         /// 对应原 .json 文件内容
         /// 仅在打开模板时加载
         /// </summary>
-        public GraphMapTemplate Content { get; set; }
+        public GraphMapTemplate? Content { get; set; }
 
         // --- 附属资源区 ---
 
@@ -80,7 +80,7 @@ namespace GeoChemistryNexus.Models
         /// <summary>
         /// 模板状态：NOT_INSTALLED, UP_TO_DATE, OUTDATED
         /// </summary>
-        public string Status { get; set; }
+        public string Status { get; set; } = string.Empty;
 
         /// <summary>
         /// 是否收藏

@@ -6,7 +6,7 @@ namespace GeoChemistryNexus.Helpers
 {
     class ConfigHelper
     {
-        private static Configuration _mappedConfig;
+        private static Configuration? _mappedConfig;
 
         private static Configuration GetConfiguration()
         {
@@ -24,7 +24,7 @@ namespace GeoChemistryNexus.Helpers
             return _mappedConfig;
         }
 
-        public static string GetConfig(string key)
+        public static string? GetConfig(string key)
         {
             return GetConfiguration().AppSettings.Settings[key]?.Value;
         }
