@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Windows;
+using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Models;
 using GeoChemistryNexus.Services;
 
@@ -12,6 +13,7 @@ namespace GeoChemistryNexus.Views.Widgets
         public AddWidgetWindow(List<HomeAppItem> availableWidgets)
         {
             InitializeComponent();
+            UiScaleHelper.Attach(this);
             WidgetList.ItemsSource = availableWidgets;
         }
 

@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.Json;
 
 namespace GeoChemistryNexus.Helpers
 {
@@ -13,17 +12,37 @@ namespace GeoChemistryNexus.Helpers
     /// </summary>
     public static class GeoTMineralCategoryHelper
     {
-        private static readonly JsonSerializerOptions JsonOptions = new()
-        {
-            PropertyNameCaseInsensitive = true,
-            WriteIndented = true
-        };
-
         private static GeoTMineralCategoryConfig? _cachedConfig;
         private static DateTime _cachedWriteTimeUtc;
 
         public static string LocalConfigPath =>
             AppDataPathHelper.GetDataPath("Plugins", OfficialContentEndpoints.GeoTMineralCategoriesFileName);
+
+        public static string PublisherConfigPath =>
+            AppDataPathHelper.GetDataPath("Config", "GeoTMineralCategories.publisher.json");
+
+        /// <summary>
+        /// 发布器工作副本：优先本地草稿，其次运行时目录文件。
+        /// </summary>
+        public static GeoTMineralCategoryConfig LoadPublisherConfig()
+        {
+            return PublisherConfigHelper.LoadPublisherConfig<GeoTMineralCategoryConfig>(
+                PublisherConfigPath,
+                LocalConfigPath);
+        }
+
+        public static void SavePublisherConfig(GeoTMineralCategoryConfig config)
+        {
+            PublisherConfigHelper.SavePublisherConfig(config, PublisherConfigPath);
+        }
+
+        /// <summary>
+        /// 导出/发布时使用的分类文件路径。
+        /// </summary>
+        public static string ResolveExportConfigPath()
+        {
+            return PublisherConfigHelper.ResolveExportConfigPath(PublisherConfigPath, LocalConfigPath);
+        }
 
         public static GeoTMineralCategoryConfig LoadConfig()
         {
@@ -34,19 +53,8 @@ namespace GeoChemistryNexus.Helpers
             if (_cachedConfig != null && writeTime == _cachedWriteTimeUtc)
                 return _cachedConfig;
 
-            try
-            {
-                string json = File.ReadAllText(LocalConfigPath);
-                _cachedConfig = JsonSerializer.Deserialize<GeoTMineralCategoryConfig>(json, JsonOptions)
-                                ?? new GeoTMineralCategoryConfig();
-                _cachedWriteTimeUtc = writeTime;
-            }
-            catch
-            {
-                _cachedConfig = new GeoTMineralCategoryConfig();
-                _cachedWriteTimeUtc = writeTime;
-            }
-
+            _cachedConfig = PublisherConfigHelper.LoadFromPath<GeoTMineralCategoryConfig>(LocalConfigPath);
+            _cachedWriteTimeUtc = writeTime;
             return _cachedConfig;
         }
 
@@ -137,28 +145,15 @@ namespace GeoChemistryNexus.Helpers
 
         public static void SaveConfig(GeoTMineralCategoryConfig config, string path)
         {
-            string? directory = Path.GetDirectoryName(path);
-            if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
-                Directory.CreateDirectory(directory);
+            PublisherConfigHelper.SaveToPath(config, path);
 
-            File.WriteAllText(path, JsonSerializer.Serialize(config, JsonOptions));
+            if (string.Equals(path, LocalConfigPath, StringComparison.OrdinalIgnoreCase))
+                InvalidateCache();
         }
 
         public static GeoTMineralCategoryConfig LoadConfigFromPath(string path)
         {
-            if (!File.Exists(path))
-                return new GeoTMineralCategoryConfig();
-
-            try
-            {
-                string json = File.ReadAllText(path);
-                return JsonSerializer.Deserialize<GeoTMineralCategoryConfig>(json, JsonOptions)
-                       ?? new GeoTMineralCategoryConfig();
-            }
-            catch
-            {
-                return new GeoTMineralCategoryConfig();
-            }
+            return PublisherConfigHelper.LoadFromPath<GeoTMineralCategoryConfig>(path);
         }
 
         private static Dictionary<string, string>? FindEntryInConfig(GeoTMineralCategoryConfig config, string mineralKey)

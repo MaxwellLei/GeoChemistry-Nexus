@@ -1,8 +1,11 @@
+using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.ViewModels;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Threading;
 using unvell.ReoGrid;
 using unvell.ReoGrid.Events;
 
@@ -22,20 +25,18 @@ namespace GeoChemistryNexus.Views
         private double _normalDetailPanelHeight = 180;
 
         /// <summary>
-        /// 是否处于最大化状态
+        /// 计算详情面板最小高度
         /// </summary>
-        private bool _isDetailPanelMaximized = false;
-
-        /// <summary>
-        /// 用户是否手动收缩了面板（锁定收缩状态）
-        /// </summary>
-        private bool _userManuallyCollapsed = false;
+        private const double MinDetailPanelHeight = 80;
 
         public GeothermometerPageView()
         {
             InitializeComponent();
             _viewModel = new GeothermometerPageViewModel();
             this.DataContext = _viewModel;
+
+            if (Resources["ViewModelProxy"] is BindingProxy viewModelProxy)
+                viewModelProxy.Data = _viewModel;
 
             // 将帮助文档 RichTextBox 控件的引用传递给 ViewModel
             _viewModel.SetHelpRichTextBox(this.HelpDocRichTextBox);
@@ -46,9 +47,7 @@ namespace GeoChemistryNexus.Views
             _viewModel.AttachWorksheetRowExpansionEvents(MyReoGrid.CurrentWorksheet);
 
             // 默认状态：收缩为底部状态条
-            DetailRow.Height = GridLength.Auto;
-            _viewModel.IsDetailPanelMinimized = true;
-            DetailExpandIcon.Text = "\uE70E";
+            CollapseDetailPanel(resetManualLock: false);
 
             // 监听 ViewModel 属性变化，处理计算详情面板的布局切换
             _viewModel.PropertyChanged += OnViewModelPropertyChanged;
@@ -59,22 +58,41 @@ namespace GeoChemistryNexus.Views
         /// </summary>
         private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(GeothermometerPageViewModel.IsDetailPanelMaximized))
+            if (e.PropertyName == nameof(GeothermometerPageViewModel.IsDetailPanelMinimized))
             {
                 SyncDetailPanelLayoutFromViewModel();
             }
-            else if (e.PropertyName == nameof(GeothermometerPageViewModel.IsDetailPanelMinimized))
+            else if (e.PropertyName == nameof(GeothermometerPageViewModel.DetailScrollResetToken))
             {
-                SyncDetailPanelLayoutFromViewModel();
+                ResetCalculationDetailScroll();
             }
-            else if (e.PropertyName == nameof(GeothermometerPageViewModel.HasCalculationData))
+            else if (e.PropertyName == nameof(GeothermometerPageViewModel.GridScrollResetToken))
             {
-                // 无数据时恢复默认布局
-                if (!_viewModel.HasCalculationData)
-                {
-                    CollapseDetailPanel(resetManualLock: false);
-                }
+                ResetReoGridScroll();
             }
+        }
+
+        /// <summary>
+        /// 将 ReoGrid 的横向/纵向滚动条复位到起始位置
+        /// </summary>
+        private void ResetReoGridScroll()
+        {
+            MyReoGrid?.ScrollCurrentWorksheet(0, 0);
+
+            // 延迟再次复位，避免选区变更等后续操作重新触发滚动
+            MyReoGrid?.Dispatcher.BeginInvoke(() =>
+            {
+                MyReoGrid?.ScrollCurrentWorksheet(0, 0);
+            }, DispatcherPriority.Loaded);
+        }
+
+        /// <summary>
+        /// 将计算详情区域的横向/纵向滚动条复位到起始位置
+        /// </summary>
+        private void ResetCalculationDetailScroll()
+        {
+            CalculationDetailScrollViewer?.ScrollToVerticalOffset(0);
+            CalculationDetailScrollViewer?.ScrollToHorizontalOffset(0);
         }
 
         /// <summary>
@@ -82,11 +100,7 @@ namespace GeoChemistryNexus.Views
         /// </summary>
         private void SyncDetailPanelLayoutFromViewModel()
         {
-            if (_viewModel.IsDetailPanelMaximized)
-            {
-                MaximizeDetailPanel();
-            }
-            else if (_viewModel.IsDetailPanelMinimized)
+            if (_viewModel.IsDetailPanelMinimized)
             {
                 CollapseDetailPanel(resetManualLock: false);
             }
@@ -97,16 +111,6 @@ namespace GeoChemistryNexus.Views
         }
 
         /// <summary>
-        /// 最大化/还原计算详情面板（与 CIPW 逻辑一致）
-        /// </summary>
-        private void OnMaximizeDetailPanelClick(object? sender, RoutedEventArgs e)
-        {
-            _viewModel.ToggleMaximizeDetailPanelCommand.Execute(null);
-            _userManuallyCollapsed = false;
-            SyncDetailPanelLayoutFromViewModel();
-        }
-
-        /// <summary>
         /// 展开/收缩计算详情面板（与 CIPW 逻辑一致）
         /// </summary>
         private void OnToggleDetailExpandClick(object? sender, RoutedEventArgs e)
@@ -114,56 +118,35 @@ namespace GeoChemistryNexus.Views
             if (_viewModel.IsDetailPanelMinimized)
             {
                 _viewModel.RestoreDetailPanelCommand.Execute(null);
-                _userManuallyCollapsed = false;
             }
             else
             {
                 _viewModel.MinimizeDetailPanelCommand.Execute(null);
-                _userManuallyCollapsed = true;
             }
 
             SyncDetailPanelLayoutFromViewModel();
         }
 
         /// <summary>
-        /// 最大化：表格保留小部分可见，计算详情占主要区域
+        /// 拖动分隔条结束后记录当前面板高度
         /// </summary>
-        private void MaximizeDetailPanel()
+        private void OnDetailSplitterDragCompleted(object? sender, DragCompletedEventArgs e)
         {
-            if (!_viewModel.IsDetailPanelMinimized)
-            {
-                if (DetailRow.Height.IsAbsolute && DetailRow.Height.Value > 40)
-                {
-                    _normalDetailPanelHeight = DetailRow.Height.Value;
-                }
-            }
-
-            TableRow.Height = new GridLength(1, GridUnitType.Star);
-            DetailRow.Height = new GridLength(3, GridUnitType.Star);
-            DetailPanelBorder.MaxHeight = double.PositiveInfinity;
-            MyReoGrid.Visibility = Visibility.Visible;
-            _isDetailPanelMaximized = true;
-            DetailMaximizeIcon.Text = "\uE73F";
-            DetailExpandIcon.Text = "\uE70D";
+            RememberDetailPanelHeight();
         }
 
         /// <summary>
-        /// 展开：恢复正常高度并解除自动展开锁定
+        /// 展开：恢复正常高度
         /// </summary>
         private void ExpandDetailPanel(bool resetManualLock)
         {
             TableRow.Height = new GridLength(1, GridUnitType.Star);
+            DetailRow.MinHeight = MinDetailPanelHeight;
             DetailRow.Height = new GridLength(_normalDetailPanelHeight);
-            DetailPanelBorder.MaxHeight = 260;
+            DetailSplitter.Visibility = Visibility.Visible;
             MyReoGrid.Visibility = Visibility.Visible;
-            _isDetailPanelMaximized = false;
-            DetailMaximizeIcon.Text = "\uE740";
             DetailExpandIcon.Text = "\uE70D";
 
-            if (resetManualLock)
-            {
-                _userManuallyCollapsed = false;
-            }
         }
 
         /// <summary>
@@ -171,26 +154,25 @@ namespace GeoChemistryNexus.Views
         /// </summary>
         private void CollapseDetailPanel(bool resetManualLock)
         {
-            if (_isDetailPanelMaximized)
-            {
-                TableRow.Height = new GridLength(1, GridUnitType.Star);
-                _isDetailPanelMaximized = false;
-                DetailMaximizeIcon.Text = "\uE740";
-            }
-            else if (DetailRow.Height.IsAbsolute && DetailRow.Height.Value > 40)
-            {
-                _normalDetailPanelHeight = DetailRow.Height.Value;
-            }
+            RememberDetailPanelHeight();
 
             TableRow.Height = new GridLength(1, GridUnitType.Star);
+            DetailRow.MinHeight = 0;
             DetailRow.Height = GridLength.Auto;
-            DetailPanelBorder.MaxHeight = 260;
+            DetailSplitter.Visibility = Visibility.Collapsed;
             MyReoGrid.Visibility = Visibility.Visible;
             DetailExpandIcon.Text = "\uE70E";
 
-            if (resetManualLock)
+        }
+
+        /// <summary>
+        /// 记录当前计算详情面板高度，供下次展开时恢复
+        /// </summary>
+        private void RememberDetailPanelHeight()
+        {
+            if (DetailRow.Height.IsAbsolute && DetailRow.Height.Value >= MinDetailPanelHeight)
             {
-                _userManuallyCollapsed = true;
+                _normalDetailPanelHeight = DetailRow.Height.Value;
             }
         }
 
@@ -227,16 +209,7 @@ namespace GeoChemistryNexus.Views
 
             _viewModel.OnRowSelected(worksheet, row);
 
-            // 如果用户没有手动锁定收缩，且当前行有计算数据，自动展开面板
-            if (!_userManuallyCollapsed && !_isDetailPanelMaximized && _viewModel.HasCalculationData)
-            {
-                if (_viewModel.IsDetailPanelMinimized)
-                {
-                    _viewModel.RestoreDetailPanelCommand.Execute(null);
-                }
-
-                ExpandDetailPanel(resetManualLock: false);
-            }
+            // 选中数据行只刷新计算详情内容，不改变用户当前的展开/收缩状态。
         }
 
         public static Page GetPage()

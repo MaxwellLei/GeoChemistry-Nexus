@@ -1,5 +1,6 @@
 using GeoChemistryNexus.Services;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GeoChemistryNexus.Helpers
 {
@@ -34,9 +35,18 @@ namespace GeoChemistryNexus.Helpers
                 value?.Default ?? AppCultureRegistry.DefaultContentLanguage);
         }
 
-        public static bool HasText(LocalizedString? value)
+        public static bool HasText(LocalizedString? value, ContentLanguageContext? context = null)
         {
-            return !string.IsNullOrWhiteSpace(GetSortKey(value));
+            if (value == null)
+                return false;
+
+            if (!string.IsNullOrWhiteSpace(ResolveForContext(value, context)))
+                return true;
+
+            if (!string.IsNullOrWhiteSpace(GetSortKey(value)))
+                return true;
+
+            return value.Translations?.Values.Any(v => !string.IsNullOrWhiteSpace(v)) ?? false;
         }
 
         public static LocalizedString FromPlain(string text, string? languageCode = null)

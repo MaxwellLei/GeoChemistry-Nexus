@@ -325,17 +325,16 @@
     </Page.Resources>
 
     <Grid>
-        <i:Interaction.Behaviors>
-            <tools:FileDropBehavior DropCommand="{Binding OpenTemplateFromPathCommand}"
-                                    AllowedExtensions=".json,.zip"
-                                    OverlayIcon="&#xE8E1;"
-                                    HintText="{Binding [file_drop_release_to_open], Source={x:Static lg:LanguageService.Instance}}"
-                                    SubHintText="{Binding [file_drop_supported_diagram], Source={x:Static lg:LanguageService.Instance}}"
-                                    InvalidHintText="{Binding [file_drop_invalid_format], Source={x:Static lg:LanguageService.Instance}}"/>
-        </i:Interaction.Behaviors>
-
         <!-- 模板浏览模式 -->
         <Grid x:Name="TemplateGrid" Visibility="{Binding IsPlotMode, Converter={StaticResource BoolToVisibilityReConverter}}" Opacity="1" RenderTransformOrigin="0.5,0.5">
+            <i:Interaction.Behaviors>
+                <tools:FileDropBehavior DropCommand="{Binding ImportCustomTemplateFromPathCommand}"
+                                        AllowedExtensions=".json,.gndiag,.zip"
+                                        OverlayIcon="&#xE896;"
+                                        HintText="{Binding [file_drop_release_to_import], Source={x:Static lg:LanguageService.Instance}}"
+                                        SubHintText="{Binding [import_custom_diagram_template], Source={x:Static lg:LanguageService.Instance}}"
+                                        InvalidHintText="{Binding [file_drop_invalid_format], Source={x:Static lg:LanguageService.Instance}}"/>
+            </i:Interaction.Behaviors>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="340"/>
                 <ColumnDefinition Width="4"/>
@@ -483,13 +482,13 @@
                                                 <BeginStoryboard>
                                                     <Storyboard>
                                                         <DoubleAnimation Storyboard.TargetProperty="MaxHeight" 
-                                                                         To="800" Duration="0:0:0.3">
+                                                                         To="800" Duration="0:0:0.15">
                                                             <DoubleAnimation.EasingFunction>
                                                                 <CubicEase EasingMode="EaseOut"/>
                                                             </DoubleAnimation.EasingFunction>
                                                         </DoubleAnimation>
                                                         <DoubleAnimation Storyboard.TargetProperty="Opacity" 
-                                                                         To="1.0" Duration="0:0:0.25"/>
+                                                                         To="1.0" Duration="0:0:0.12"/>
                                                     </Storyboard>
                                                 </BeginStoryboard>
                                             </DataTrigger.EnterActions>
@@ -497,13 +496,13 @@
                                                 <BeginStoryboard>
                                                     <Storyboard>
                                                         <DoubleAnimation Storyboard.TargetProperty="MaxHeight" 
-                                                                         To="0" Duration="0:0:0.25">
+                                                                         To="0" Duration="0:0:0.12">
                                                             <DoubleAnimation.EasingFunction>
                                                                 <CubicEase EasingMode="EaseIn"/>
                                                             </DoubleAnimation.EasingFunction>
                                                         </DoubleAnimation>
                                                         <DoubleAnimation Storyboard.TargetProperty="Opacity" 
-                                                                         To="0" Duration="0:0:0.2"/>
+                                                                         To="0" Duration="0:0:0.1"/>
                                                     </Storyboard>
                                                 </BeginStoryboard>
                                             </DataTrigger.ExitActions>
@@ -686,13 +685,13 @@
                                                 <BeginStoryboard>
                                                     <Storyboard>
                                                         <DoubleAnimation Storyboard.TargetProperty="MaxHeight" 
-                                                                         To="800" Duration="0:0:0.3">
+                                                                         To="800" Duration="0:0:0.15">
                                                             <DoubleAnimation.EasingFunction>
                                                                 <CubicEase EasingMode="EaseOut"/>
                                                             </DoubleAnimation.EasingFunction>
                                                         </DoubleAnimation>
                                                         <DoubleAnimation Storyboard.TargetProperty="Opacity" 
-                                                                         To="1.0" Duration="0:0:0.25"/>
+                                                                         To="1.0" Duration="0:0:0.12"/>
                                                     </Storyboard>
                                                 </BeginStoryboard>
                                             </DataTrigger.EnterActions>
@@ -700,13 +699,13 @@
                                                 <BeginStoryboard>
                                                     <Storyboard>
                                                         <DoubleAnimation Storyboard.TargetProperty="MaxHeight" 
-                                                                         To="0" Duration="0:0:0.25">
+                                                                         To="0" Duration="0:0:0.12">
                                                             <DoubleAnimation.EasingFunction>
                                                                 <CubicEase EasingMode="EaseIn"/>
                                                             </DoubleAnimation.EasingFunction>
                                                         </DoubleAnimation>
                                                         <DoubleAnimation Storyboard.TargetProperty="Opacity" 
-                                                                         To="0" Duration="0:0:0.2"/>
+                                                                         To="0" Duration="0:0:0.1"/>
                                                     </Storyboard>
                                                 </BeginStoryboard>
                                             </DataTrigger.ExitActions>
@@ -1319,17 +1318,17 @@
                 <!-- 模板卡片网格 (虚拟化) -->
                 <Grid Grid.Row="1"
                       Visibility="{Binding IsSpiderDiagramMode, Converter={StaticResource BoolToVisibilityReConverter}}">
-                    <ListBox ItemsSource="{Binding TemplateCardsView}" Margin="10" 
+                    <!-- Margin 右侧为 0 使滚动条贴齐边框；右侧间距由 TemplateCardListBoxStyle 的 Padding 保留 -->
+                    <ListBox ItemsSource="{Binding TemplateCardsView}" Margin="10,10,0,10"
+                             Style="{StaticResource TemplateCardListBoxStyle}"
                              x:Name="TemplateCardsControl"
-                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                             ScrollViewer.VerticalScrollBarVisibility="Auto"
                              VirtualizingPanel.IsVirtualizing="True"
                              VirtualizingPanel.VirtualizationMode="Recycling"
-                             VirtualizingPanel.ScrollUnit="Pixel"
-                             Background="Transparent" BorderThickness="0">
+                             VirtualizingPanel.ScrollUnit="Pixel">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <!-- VWP 2.x：Horizontal=横向排列换行+纵向滚动；Vertical=纵向排列换列+横向滚动（勿用） -->
+                            <!-- ItemSize 由 MainPlotPage.xaml.cs 按布局模式/视口宽度运行时计算 -->
                             <vwp:VirtualizingWrapPanel Orientation="Horizontal"
                                                        StretchItems="True"
                                                        SpacingMode="Uniform"
@@ -1354,15 +1353,13 @@
                     </ListBox.ItemContainerStyle>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Border MinWidth="{StaticResource TemplateCardMinDimension}"
-                                    MinHeight="{StaticResource TemplateCardMinDimension}"
-                                    HorizontalAlignment="Stretch"
+                            <Border HorizontalAlignment="Stretch"
                                     VerticalAlignment="Stretch"
                                     Tag="{Binding DataContext, ElementName=TemplateCardsControl}">
                                 <Border.Style>
                                     <Style TargetType="Border" BasedOn="{StaticResource TemplateCardStyle}">
                                         <Style.Triggers>
-                                            <!-- 开发者模式：已转换为内置模板的卡片使用深红色边框 -->
+                                            <!-- 开发者模式：已转换为内置模板但尚未推送的卡片使用深红色边框 -->
                                             <MultiDataTrigger>
                                                 <MultiDataTrigger.Conditions>
                                                     <Condition Binding="{Binding IsNewTemplate}" Value="True"/>
@@ -1375,7 +1372,14 @@
                                                 <MultiDataTrigger.Conditions>
                                                     <Condition Binding="{Binding IsNewTemplate}" Value="True"/>
                                                     <Condition Binding="{Binding Tag.IsDeveloperMode, RelativeSource={RelativeSource Self}}" Value="True"/>
-                                                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True"/>
+                                                    <Condition Value="True">
+                                                        <Condition.Binding>
+                                                            <MultiBinding Converter="{StaticResource BoolOrMultiConverter}">
+                                                                <Binding Path="IsMouseOver" RelativeSource="{RelativeSource Self}"/>
+                                                                <Binding Path="ContextMenu.IsOpen" RelativeSource="{RelativeSource Self}"/>
+                                                            </MultiBinding>
+                                                        </Condition.Binding>
+                                                    </Condition>
                                                 </MultiDataTrigger.Conditions>
                                                 <Setter Property="BorderBrush" Value="{StaticResource ConvertedBuiltinTemplateBorderBrush}"/>
                                                 <Setter Property="BorderThickness" Value="3"/>
@@ -1562,9 +1566,15 @@
                                                             </ControlTemplate>
                                                         </Setter.Value>
                                                     </Setter>
-                                                    <!-- 卡片鼠标悬停时显示收藏按钮 -->
+                                                    <!-- 卡片悬停或右键菜单打开时显示收藏按钮 -->
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Border}}" Value="True">
+                                                        <DataTrigger Value="True">
+                                                            <DataTrigger.Binding>
+                                                                <MultiBinding Converter="{StaticResource BoolOrMultiConverter}">
+                                                                    <Binding Path="IsMouseOver" RelativeSource="{RelativeSource AncestorType=Border}"/>
+                                                                    <Binding Path="ContextMenu.IsOpen" RelativeSource="{RelativeSource AncestorType=Border}"/>
+                                                                </MultiBinding>
+                                                            </DataTrigger.Binding>
                                                             <DataTrigger.EnterActions>
                                                                 <BeginStoryboard>
                                                                     <Storyboard>
@@ -2427,11 +2437,6 @@
                             <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe82e;" FontSize="14"/>
                         </ToggleButton>
 
-                        <ToggleButton IsChecked="{Binding IsCrosshairVisible}" Style="{StaticResource ToolbarIconButtonStyle}"
-                                       ToolTip="{Binding [coordinate_positioning], Source={x:Static lg:LanguageService.Instance}}">
-                            <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe61e;" FontSize="16"/>
-                        </ToggleButton>
-
                         <Button Command="{Binding CancelSelectedCommand}" Style="{StaticResource ToolbarButtonIconStyle}" 
                                 ToolTip="{Binding [deselect], Source={x:Static lg:LanguageService.Instance}}">
                             <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xeaf2;" FontSize="16"/>
@@ -2494,15 +2499,15 @@
                         <Button Command="{Binding PlotSettingCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [diagram_title_properties], Source={x:Static lg:LanguageService.Instance}}">
                             <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe62b;" FontSize="16"/>
                         </Button>
-                        <Button Command="{Binding ScriptSettingCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [diagram_script_properties], Source={x:Static lg:LanguageService.Instance}}"
-                                Visibility="{Binding IsScriptSettingButtonVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe614;" FontSize="16"/>
-                        </Button>
                         <Button Command="{Binding LegendSettingCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [diagram_legend_properties], Source={x:Static lg:LanguageService.Instance}}">
                             <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe6ae;" FontSize="16"/>
                         </Button>
                         <Button Command="{Binding GridSettingCommand}" IsEnabled="{Binding IsGridSettingEnabled}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [diagram_grid_properties], Source={x:Static lg:LanguageService.Instance}}">
                             <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe67b;" FontSize="16"/>
+                        </Button>
+                        <Button Command="{Binding ScriptSettingCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [diagram_script_properties], Source={x:Static lg:LanguageService.Instance}}"
+                                Visibility="{Binding IsScriptSettingButtonVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe614;" FontSize="16"/>
                         </Button>
                         <Button Command="{Binding SwitchTemplateLanguageCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [switch_diagram_language], Source={x:Static lg:LanguageService.Instance}}"
                                 Visibility="{Binding IsSpiderDiagramMode, Converter={StaticResource BoolToVisibilityReConverter}}">
@@ -3011,7 +3016,7 @@
                             </Border>
 
                             <RichTextBox Grid.Row="1" x:Name="Drichtextbox" IsReadOnly="{Binding IsHelpDocReadOnly}" 
-                              BorderThickness="0" Background="Transparent" Margin="24"
+                              BorderThickness="0" Background="Transparent" Margin="24,6"
                               VerticalScrollBarVisibility="Auto"
                               HorizontalScrollBarVisibility="Auto"
                               Foreground="Black"

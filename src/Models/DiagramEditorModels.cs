@@ -1,9 +1,22 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using GeoChemistryNexus.Helpers;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace GeoChemistryNexus.Models
 {
+    /// <summary>
+    /// 选择已有分类结构对话框中的树节点。
+    /// </summary>
+    public class CategoryStructureSelectNode
+    {
+        public string Name { get; set; } = string.Empty;
+        public ObservableCollection<CategoryStructureSelectNode> Children { get; } = new();
+        public bool IsSelectable { get; set; }
+        public LocalizedString? SourceNodeList { get; set; }
+        public int PrefixLength { get; set; }
+    }
+
     public class CategoryPartModel
     {
         public string DisplayName { get; set; } = string.Empty;

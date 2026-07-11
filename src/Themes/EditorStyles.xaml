@@ -45,8 +45,10 @@
 
     <Style x:Key="FieldInputStyle" TargetType="TextBox">
         <Setter Property="FontSize" Value="12"/>
-        <Setter Property="Padding" Value="6,5"/>
+        <Setter Property="Padding" Value="6,4"/>
+        <Setter Property="Height" Value="32"/>
         <Setter Property="MinHeight" Value="32"/>
+        <Setter Property="MaxHeight" Value="32"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="BorderBrush" Value="#D0D0D0"/>
         <Setter Property="BorderThickness" Value="1"/>

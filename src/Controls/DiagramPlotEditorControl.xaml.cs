@@ -148,21 +148,30 @@ namespace GeoChemistryNexus.Controls
             if (e.Key != Key.Enter) return;
             if (ViewModel.TryAddLanguage(LanguageCombo.Text?.Trim() ?? string.Empty))
                 LanguageCombo.Text = string.Empty;
+            LanguageCombo.SelectedIndex = -1;
             e.Handled = true;
         }
 
         private void LanguageCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (LanguageCombo.SelectedValue is string code && ViewModel.TryAddLanguage(code))
+            // 仅在下拉打开时提交（点选）；输入过程中的文本匹配不得自动添加。
+            if (!LanguageCombo.IsDropDownOpen)
             {
                 LanguageCombo.SelectedIndex = -1;
-                LanguageCombo.Text = string.Empty;
+                return;
             }
+
+            if (LanguageCombo.SelectedValue is not string code)
+                return;
+
+            ViewModel.TryAddLanguage(code);
+            LanguageCombo.SelectedIndex = -1;
+            LanguageCombo.Text = string.Empty;
         }
 
         private void RemoveLanguage_Click(object sender, RoutedEventArgs e)
         {
-            if ((sender as Button)?.Tag is LanguageTagModel item)
+            if (sender is Button { Tag: LanguageTagModel item })
                 ViewModel.RemoveLanguage(item);
         }
 
@@ -194,11 +203,27 @@ namespace GeoChemistryNexus.Controls
 
         private void RemoveCategory_Click(object sender, RoutedEventArgs e)
         {
-            if ((sender as Button)?.Tag is CategoryPartModel item)
+            if (sender is Button { Tag: CategoryPartModel item })
             {
                 ViewModel.RemoveCategory(item);
                 RefreshCategorySuggestions();
             }
+        }
+
+        private void SelectExistingCategoryStructure_Click(object sender, RoutedEventArgs e)
+        {
+            var tree = ViewModel.GetExistingCategoryStructureTree();
+            var dialog = new CategoryStructureSelectDialog(tree, Window.GetWindow(this));
+            if (dialog.ShowDialog() != true || dialog.SelectedNode == null)
+                return;
+
+            var parts = PlotCategoryStructureHelper.BuildCategoryPartsFromSelection(dialog.SelectedNode);
+            if (parts.Count == 0)
+                return;
+
+            ViewModel.ApplyExistingCategoryStructure(parts);
+            CategoryCombo.Text = string.Empty;
+            RefreshCategorySuggestions();
         }
 
         private void RefreshCategorySuggestions()
@@ -344,11 +369,7 @@ namespace GeoChemistryNexus.Controls
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.GetHelpDocumentsForSubmit();
-
-            if (ConfirmCommand?.CanExecute(ViewModel) ?? ConfirmCommand?.CanExecute(null) ?? false)
-                ConfirmCommand.Execute(ViewModel);
-            else if (ConfirmCommand != null)
-                ConfirmCommand.Execute(ViewModel);
+            ConfirmCommand?.Execute(ViewModel);
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)

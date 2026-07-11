@@ -92,16 +92,30 @@ namespace GeoChemistryNexus.ViewModels
                 ? OriginalTemplateVersion
                 : TemplateVersion;
 
+        /// <summary>版本区域收缩时显示的摘要。</summary>
+        public string VersionSectionCollapsedSummary =>
+            IsEditMode && !string.IsNullOrWhiteSpace(OriginalTemplateVersion)
+                ? $"{OriginalTemplateVersion} → {TemplateVersion}"
+                : TemplateVersion;
+
         /// <summary>保存后将写入的完整模板版本 x.y.z。</summary>
         public string TemplateVersion => ContentVersionHelper.WithAppDiagramFormat(PatchVersion);
+
+        [ObservableProperty]
+        private bool _isVersionSectionExpanded;
 
         public ObservableCollection<LanguageTagModel> LanguageParts { get; } = new();
 
         [ObservableProperty]
-        private IReadOnlyList<CultureOption> _appLanguageOptions = AppCultureRegistry.GetAppUiOptions();
+        private IReadOnlyList<CultureOption> _appLanguageOptions = AppCultureRegistry.GetContentOptions();
 
         public ObservableCollection<CategoryPartModel> CategoryParts { get; } = new();
         public ObservableCollection<PlotTypeOption> PlotTypeOptions { get; } = new();
+
+        /// <summary>分类结构预览 TreeView 的虚拟根节点。</summary>
+        public GraphMapTemplateNode CategoryStructurePreviewRoot { get; } = new();
+
+        public bool HasCategoryStructurePreview => CategoryParts.Count > 0;
 
         private PlotTemplateCategoryConfig? _categoryConfig;
         private GraphMapTemplate? _workingTemplate;
@@ -121,7 +135,11 @@ namespace GeoChemistryNexus.ViewModels
             InitializePlotTypes();
             LoadCategories();
             LanguageParts.CollectionChanged += (_, _) => OnLanguagesChanged();
-            CategoryParts.CollectionChanged += (_, _) => RebuildTranslationPreview();
+            CategoryParts.CollectionChanged += (_, _) =>
+            {
+                RebuildCategoryStructurePreview();
+                RebuildTranslationPreview();
+            };
             LanguageService.Instance.PropertyChanged += (_, args) =>
             {
                 if (args.PropertyName == "Item[]")
@@ -139,7 +157,7 @@ namespace GeoChemistryNexus.ViewModels
 
         public void RefreshLanguageDisplayNames()
         {
-            AppLanguageOptions = AppCultureRegistry.GetAppUiOptions();
+            AppLanguageOptions = AppCultureRegistry.GetContentOptions();
             foreach (var part in LanguageParts)
                 part.NotifyDisplayTextChanged();
         }
@@ -213,6 +231,7 @@ namespace GeoChemistryNexus.ViewModels
                 _suppressTranslationRebuild = false;
             }
 
+            RebuildCategoryStructurePreview();
             LoadHelpDocumentsFromEntity(entity);
             IsScriptSectionEnabled = true;
             NotifyScriptDefinitionChanged();
@@ -287,7 +306,14 @@ namespace GeoChemistryNexus.ViewModels
         {
             OnPropertyChanged(nameof(TemplateVersion));
             OnPropertyChanged(nameof(SidebarVersionText));
+            OnPropertyChanged(nameof(VersionSectionCollapsedSummary));
             OnPropertyChanged(nameof(IsEditMode));
+        }
+
+        [RelayCommand]
+        private void ToggleVersionSection()
+        {
+            IsVersionSectionExpanded = !IsVersionSectionExpanded;
         }
 
         private void ApplyPatchToWorkingTemplate()
@@ -322,13 +348,12 @@ namespace GeoChemistryNexus.ViewModels
         public bool TryAddLanguage(string code)
         {
             if (string.IsNullOrWhiteSpace(code)) return false;
-            code = code.Trim();
-            if (!AppCultureRegistry.IsValidAppUiCode(code))
+            if (!AppCultureRegistry.TryNormalize(code, out string normalized))
                 return false;
-            if (LanguageParts.Any(p => p.Text.Equals(code, StringComparison.OrdinalIgnoreCase)))
+            if (LanguageParts.Any(p => p.Text.Equals(normalized, StringComparison.OrdinalIgnoreCase)))
                 return false;
 
-            LanguageParts.Add(new LanguageTagModel { Text = code });
+            LanguageParts.Add(new LanguageTagModel { Text = normalized });
             UpdateLanguageDefaultStatus();
             return true;
         }
@@ -378,6 +403,26 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         public void ReloadCategories() => LoadCategories();
+
+        public IReadOnlyList<CategoryStructureSelectNode> GetExistingCategoryStructureTree()
+        {
+            var entities = GraphMapDatabaseService.Instance.GetSummaries();
+            Guid? excludeId = _editEntity?.Id;
+            return PlotCategoryStructureHelper.BuildSelectableStructureTree(entities, excludeId);
+        }
+
+        public void ApplyExistingCategoryStructure(IReadOnlyList<CategoryPartModel> parts)
+        {
+            CategoryParts.Clear();
+            foreach (var part in parts)
+            {
+                CategoryParts.Add(new CategoryPartModel
+                {
+                    DisplayName = part.DisplayName,
+                    LocalizedNames = part.LocalizedNames
+                });
+            }
+        }
 
         [RelayCommand]
         private void ExportTranslations()
@@ -603,6 +648,7 @@ namespace GeoChemistryNexus.ViewModels
         {
             UpdateLanguageDefaultStatus();
             SyncHelpLanguagesWithBasicSettings();
+            RebuildCategoryStructurePreview();
             RebuildTranslationPreview();
         }
 
@@ -702,6 +748,52 @@ namespace GeoChemistryNexus.ViewModels
             var rtf = GetCurrentRtfContent();
             if (rtf != null)
                 _helpDocuments[SelectedHelpLanguage] = rtf;
+        }
+
+        private void RebuildCategoryStructurePreview()
+        {
+            CategoryStructurePreviewRoot.Children.Clear();
+
+            if (CategoryParts.Count == 0)
+            {
+                OnPropertyChanged(nameof(HasCategoryStructurePreview));
+                return;
+            }
+
+            var previewLanguage = DefaultLanguageCode;
+            if (string.IsNullOrWhiteSpace(previewLanguage))
+                previewLanguage = LanguageService.CurrentLanguage ?? AppCultureRegistry.DefaultAppLanguage;
+
+            GraphMapTemplateNode currentNode = CategoryStructurePreviewRoot;
+            for (int i = 0; i < CategoryParts.Count; i++)
+            {
+                var part = CategoryParts[i];
+                bool isLeaf = i == CategoryParts.Count - 1;
+                var node = new GraphMapTemplateNode
+                {
+                    Name = GetCategoryPartDisplayName(part, previewLanguage),
+                    GraphMapPath = isLeaf ? "preview" : string.Empty,
+                    IsExpanded = true,
+                    Parent = currentNode
+                };
+                currentNode.Children.Add(node);
+                currentNode = node;
+            }
+
+            OnPropertyChanged(nameof(HasCategoryStructurePreview));
+        }
+
+        private static string GetCategoryPartDisplayName(CategoryPartModel part, string languageCode)
+        {
+            if (!string.IsNullOrWhiteSpace(languageCode) &&
+                part.LocalizedNames != null &&
+                part.LocalizedNames.TryGetValue(languageCode, out var localized) &&
+                !string.IsNullOrWhiteSpace(localized))
+            {
+                return localized;
+            }
+
+            return part.DisplayName;
         }
 
         private void RebuildTranslationPreview()

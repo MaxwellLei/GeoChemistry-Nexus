@@ -13,6 +13,12 @@ namespace GeoChemistryNexus.ViewModels
     {
         public event Action<ScatterLayerItemViewModel, string>? ScatterNameChanged;
 
+        public override void ClearEventSubscriptions()
+        {
+            ScatterNameChanged = null;
+            base.ClearEventSubscriptions();
+        }
+
         public ScatterDefinition ScatterDefinition { get; }
         public override bool ShowInlineDeleteButton => true;
 

@@ -1,6 +1,5 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Services;
 using System;
 using System.Collections.Generic;
@@ -37,7 +36,7 @@ namespace GeoChemistryNexus.ViewModels
             if (string.IsNullOrEmpty(url)) return;
             try
             {
-                Process.Start(new ProcessStartInfo("cmd", $"/c start {url}") { CreateNoWindow = true });
+                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
             }
             catch (Exception ex)
             {

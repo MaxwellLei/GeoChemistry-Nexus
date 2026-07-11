@@ -1,6 +1,5 @@
 using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Services;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -26,12 +25,6 @@ namespace GeoChemistryNexus.Views.Widgets
 
         private readonly HomeLinkLocalizedEditMode _mode;
 
-        public class IconItem
-        {
-            public string Name { get; set; } = string.Empty;
-            public string Code { get; set; } = string.Empty;
-        }
-
         public HomeLinkLocalizedEditWindow(
             HomeLinkLocalizedEditMode mode,
             ContentLanguageContext languageContext,
@@ -42,6 +35,7 @@ namespace GeoChemistryNexus.Views.Widgets
             string? icon = null)
         {
             InitializeComponent();
+            UiScaleHelper.Attach(this);
             _mode = mode;
             LanguageContext = languageContext;
             Title = windowTitle;
@@ -73,20 +67,7 @@ namespace GeoChemistryNexus.Views.Widgets
 
         private void InitializeIcons(string? icon)
         {
-            var icons = new List<IconItem>
-            {
-                new IconItem { Name = "网页 (Globe)", Code = "\uE774" },
-                new IconItem { Name = "链接 (Link)", Code = "\uE71B" },
-                new IconItem { Name = "收藏 (Star)", Code = "\uE734" },
-                new IconItem { Name = "主页 (Home)", Code = "\uE80F" },
-                new IconItem { Name = "文档 (Document)", Code = "\uE8A5" },
-                new IconItem { Name = "邮件 (Mail)", Code = "\uE715" },
-                new IconItem { Name = "云端 (Cloud)", Code = "\uE753" },
-                new IconItem { Name = "设置 (Settings)", Code = "\uE713" },
-                new IconItem { Name = "搜索 (Search)", Code = "\uE721" }
-            };
-
-            IconBox.ItemsSource = icons;
+            IconBox.ItemsSource = HomeIconHelper.CreatePresetIcons();
             LoadIcon(icon);
         }
 
@@ -126,7 +107,10 @@ namespace GeoChemistryNexus.Views.Widgets
 
         private void Ok_Click(object sender, RoutedEventArgs e)
         {
-            if (!HomeLinksLocalization.HasText(TitleControl.Value))
+            TitleControl.CommitPendingText();
+            DescriptionControl.CommitPendingText();
+
+            if (!HomeLinksLocalization.HasText(TitleControl.Value, LanguageContext))
             {
                 HandyControl.Controls.Growl.Warning(LanguageService.Instance["please_enter_name"]);
                 return;

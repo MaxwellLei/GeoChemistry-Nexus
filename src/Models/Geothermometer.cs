@@ -30,6 +30,12 @@ namespace GeoChemistryNexus.Models
         public List<string> Tags { get; set; } = new();
 
         /// <summary>
+        /// 标签存储键（未本地化，用于筛选匹配）
+        /// </summary>
+        [JsonIgnore]
+        public List<string> StorageTags { get; set; } = new();
+
+        /// <summary>
         /// 标签显示文本（用于列表等简单绑定）
         /// </summary>
         [JsonIgnore]
@@ -113,6 +119,12 @@ namespace GeoChemistryNexus.Models
         /// </summary>
         [JsonIgnore]
         public bool IsBuiltIn { get; set; }
+
+        /// <summary>
+        /// 是否已收藏
+        /// </summary>
+        [JsonIgnore]
+        public bool IsFavorite { get; set; }
     }
 
     /// <summary>

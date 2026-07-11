@@ -4,17 +4,11 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using System.Text.Json;
 
 namespace GeoChemistryNexus.Services
 {
     public static class CosPublishSettingsService
     {
-        private static readonly JsonSerializerOptions JsonOptions = new()
-        {
-            WriteIndented = true
-        };
-
         private static string SettingsPath => AppDataPathHelper.GetDataPath("Config", "cos_publish.json");
 
         public static CosPublishSettings Load()
@@ -24,8 +18,7 @@ namespace GeoChemistryNexus.Services
                 if (!File.Exists(SettingsPath))
                     return new CosPublishSettings();
 
-                string json = File.ReadAllText(SettingsPath);
-                return JsonSerializer.Deserialize<CosPublishSettings>(json, JsonOptions) ?? new CosPublishSettings();
+                return JsonHelper.LoadFromFileOrNew<CosPublishSettings>(SettingsPath);
             }
             catch
             {
@@ -38,15 +31,10 @@ namespace GeoChemistryNexus.Services
             if (settings == null)
                 throw new ArgumentNullException(nameof(settings));
 
-            string? dir = Path.GetDirectoryName(SettingsPath);
-            if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
-                Directory.CreateDirectory(dir);
-
             if (!string.IsNullOrEmpty(plainSecretKey))
                 settings.ProtectedSecretKey = ProtectSecret(plainSecretKey);
 
-            string json = JsonSerializer.Serialize(settings, JsonOptions);
-            File.WriteAllText(SettingsPath, json);
+            JsonHelper.SerializeToJsonFile(settings, SettingsPath);
         }
 
         public static string UnprotectSecretKey(CosPublishSettings settings)

@@ -122,9 +122,9 @@ namespace GeoChemistryNexus.Services
             Application.Current.Dispatcher.Invoke(() =>
             {
                 var vm = new NotificationViewModel(
-                    LanguageService.Instance["select_language"] ?? "Select Language", 
-                    LanguageService.Instance["please_select_language"] ?? "Please select a language", 
-                    NotificationType.Info, 
+                    LanguageService.GetString("select_language", "Select Language"),
+                    LanguageService.GetString("please_select_language", "Please select a language"),
+                    NotificationType.Info,
                     RemoveNotification)
                 {
                     IsInteractive = true,

@@ -89,6 +89,15 @@ namespace GeoChemistryNexus.ViewModels
         /// <summary>保存后将写入的完整温压计版本 x.y.z。</summary>
         public string TemplateVersion => ContentVersionHelper.WithAppGeothermometerFormat(PatchVersion);
 
+        /// <summary>版本区域收缩时显示的摘要。</summary>
+        public string VersionSectionCollapsedSummary =>
+            IsEditMode && !string.IsNullOrWhiteSpace(OriginalTemplateVersion)
+                ? $"{OriginalTemplateVersion} → {TemplateVersion}"
+                : TemplateVersion;
+
+        [ObservableProperty]
+        private bool _isVersionSectionExpanded;
+
         public string PreviewName => string.IsNullOrWhiteSpace(Name)
             ? LanguageService.Instance["geo_preview_name_placeholder"] ?? "Thermometer Name"
             : Name.Trim();
@@ -97,15 +106,12 @@ namespace GeoChemistryNexus.ViewModels
         {
             get
             {
-                var tagsText = TagParts.Count == 0
-                    ? LanguageService.Instance["geo_preview_tags_placeholder"] ?? "Tags"
-                    : string.Join(" · ", TagParts.Select(t => t.DisplayName));
                 var authorText = string.IsNullOrWhiteSpace(Author)
                     ? LanguageService.Instance["geo_preview_author_placeholder"] ?? "Author"
                     : Author.Trim();
                 var yearText = Year > 0 ? Year.ToString() : DateTime.Now.Year.ToString();
-                var format = LanguageService.Instance["geo_preview_meta_format"] ?? "{0} - {1} ({2})";
-                return string.Format(format, tagsText, authorText, yearText);
+                var format = LanguageService.Instance["geo_preview_meta_format"] ?? "{0} ({1})";
+                return string.Format(format, authorText, yearText);
             }
         }
 
@@ -226,6 +232,12 @@ namespace GeoChemistryNexus.ViewModels
         /// </summary>
         public Action<string?>? SetCurrentRtfContent { get; set; }
 
+        /// <summary>
+        /// 帮助文档 RichTextBox 是否已与当前语言完成加载/同步（仅在 Step 2 有效）。
+        /// 防止未进入帮助文档页保存时，用空编辑器覆盖已有 RTF。
+        /// </summary>
+        private bool _isHelpDocEditorSynced;
+
         // ==================== 状态 ====================
 
         /// <summary>
@@ -294,40 +306,40 @@ namespace GeoChemistryNexus.ViewModels
         /// </summary>
         public Action<string>? ShowSuccessMessage { get; set; }
 
-        // JS 脚本模板
+        // JS 脚本模板（内容顶格写入，避免把 C# 源码缩进带进编辑器）
         private const string ScriptTemplate = @"/**
-                                                 * calculate(args) - Main calculation function
-                                                 * Called by ReoGrid cell formulas.
-                                                 * @param {number[]} args - Input values from InputColumns (in order)
-                                                 * @returns {number} - Calculated temperature value
-                                                 */
-                                                function calculate(args) {
-                                                    // Example: args[0] = first input column value
-                                                    // var T_K = 273.15 + some_formula(args[0]);
-                                                    // return T_K;
-                                                    return 0;
-                                                }
+ * calculate(args) - Main calculation function
+ * Called by ReoGrid cell formulas.
+ * @param {number[]} args - Input values from InputColumns (in order)
+ * @returns {number} - Calculated temperature value
+ */
+function calculate(args) {
+    // Example: args[0] = first input column value
+    // var T_K = 273.15 + some_formula(args[0]);
+    // return T_K;
+    return 0;
+}
 
-                                                /**
-                                                 * calculateDetailed(inputs) - Detailed calculation with intermediate steps
-                                                 * Called when user selects a data row in the table.
-                                                 * @param {number[]} inputs - Same input values as calculate()
-                                                 * @returns {Object[]} - Array of step objects: {name, value, desc, descLang?, isResult}
-                                                 *   desc      - Default description (fallback for all languages)
-                                                 *   descLang  - Optional map of language code to description, e.g. { 'zh-CN': '...', 'en-US': '...' }
-                                                 */
-                                                function calculateDetailed(inputs) {
-                                                    var result = calculate(inputs);
-                                                    return [
-                                                        {
-                                                            name: 'Result',
-                                                            value: result.toFixed(2),
-                                                            desc: 'Final temperature',
-                                                            descLang: { 'zh-CN': '最终温度', 'zh-TW': '最終溫度' },
-                                                            isResult: true
-                                                        }
-                                                    ];
-                                                }";
+/**
+ * calculateDetailed(inputs) - Detailed calculation with intermediate steps
+ * Called when user selects a data row in the table.
+ * @param {number[]} inputs - Same input values as calculate()
+ * @returns {Object[]} - Array of step objects: {name, value, desc, descLang?, isResult}
+ *   desc      - Default description (fallback for all languages)
+ *   descLang  - Optional map of language code to description, e.g. { 'zh-CN': '...', 'en-US': '...' }
+ */
+function calculateDetailed(inputs) {
+    var result = calculate(inputs);
+    return [
+        {
+            name: 'Result',
+            value: result.toFixed(2),
+            desc: 'Final temperature',
+            descLang: { 'zh-CN': '最终温度', 'zh-TW': '最終溫度' },
+            isResult: true
+        }
+    ];
+}";
 
         public GeothermometerEditorViewModel()
         {
@@ -412,6 +424,13 @@ namespace GeoChemistryNexus.ViewModels
         {
             OnPropertyChanged(nameof(TemplateVersion));
             OnPropertyChanged(nameof(PreviewVersion));
+            OnPropertyChanged(nameof(VersionSectionCollapsedSummary));
+        }
+
+        [RelayCommand]
+        private void ToggleVersionSection()
+        {
+            IsVersionSectionExpanded = !IsVersionSectionExpanded;
         }
 
         partial void OnNameChanged(string value) => NotifyPreviewChanged();
@@ -432,14 +451,15 @@ namespace GeoChemistryNexus.ViewModels
             // 离开帮助文档步骤时，保存当前语言的 RTF 内容
             if (oldValue == 2)
             {
-                SaveCurrentLanguageRtf();
+                CommitCurrentLanguageRtf(fromLeavingHelpStep: true);
+                _isHelpDocEditorSynced = false;
             }
 
             // 进入帮助文档步骤时，加载当前语言的 RTF 内容
             if (newValue == 2 && SelectedLanguage != null)
             {
-                _helpDocuments.TryGetValue(SelectedLanguage, out var content);
-                SetCurrentRtfContent?.Invoke(content);
+                LoadSelectedLanguageIntoEditor();
+                _isHelpDocEditorSynced = true;
             }
         }
 
@@ -447,37 +467,101 @@ namespace GeoChemistryNexus.ViewModels
 
         partial void OnSelectedLanguageChanged(string? oldValue, string? newValue)
         {
-            // 保存旧语言的 RTF 内容（仅当语言仍在列表中时）
-            if (oldValue != null && AddedLanguages.Contains(oldValue) && GetCurrentRtfContent != null)
+            if (CurrentStep != 2)
+                return;
+
+            // 保存旧语言的 RTF 内容（仅当编辑器已与旧语言同步时）
+            if (oldValue != null &&
+                _isHelpDocEditorSynced &&
+                AddedLanguages.Contains(oldValue))
             {
-                var rtf = GetCurrentRtfContent();
-                if (rtf != null)
-                    _helpDocuments[oldValue] = rtf;
+                CommitLanguageRtf(oldValue);
             }
 
             // 加载新语言的 RTF 内容
             if (newValue != null)
             {
-                _helpDocuments.TryGetValue(newValue, out var content);
-                SetCurrentRtfContent?.Invoke(content);
+                LoadSelectedLanguageIntoEditor();
+                _isHelpDocEditorSynced = true;
             }
             else
             {
                 SetCurrentRtfContent?.Invoke(null);
+                _isHelpDocEditorSynced = false;
             }
         }
 
+        private void LoadSelectedLanguageIntoEditor()
+        {
+            if (SelectedLanguage == null)
+                return;
+
+            _helpDocuments.TryGetValue(SelectedLanguage, out var content);
+            SetCurrentRtfContent?.Invoke(content);
+        }
+
         /// <summary>
-        /// 保存当前选中语言的 RTF 内容到字典
+        /// 保存当前选中语言的 RTF 内容到字典（仅当处于帮助文档步骤且编辑器已同步）。
         /// </summary>
         private void SaveCurrentLanguageRtf()
         {
-            if (SelectedLanguage != null && AddedLanguages.Contains(SelectedLanguage) && GetCurrentRtfContent != null)
+            CommitCurrentLanguageRtf(fromLeavingHelpStep: false);
+        }
+
+        private void CommitCurrentLanguageRtf(bool fromLeavingHelpStep)
+        {
+            if (!_isHelpDocEditorSynced || SelectedLanguage == null)
+                return;
+
+            if (!fromLeavingHelpStep && CurrentStep != 2)
+                return;
+
+            CommitLanguageRtf(SelectedLanguage);
+        }
+
+        private void CommitLanguageRtf(string languageCode)
+        {
+            if (!AddedLanguages.Contains(languageCode) || GetCurrentRtfContent == null)
+                return;
+
+            var rtf = GetCurrentRtfContent();
+            if (rtf == null)
+                return;
+
+            if (IsBlankRtf(rtf) &&
+                _helpDocuments.TryGetValue(languageCode, out var existing) &&
+                !IsBlankRtf(existing))
             {
-                var rtf = GetCurrentRtfContent();
-                if (rtf != null)
-                    _helpDocuments[SelectedLanguage] = rtf;
+                return;
             }
+
+            _helpDocuments[languageCode] = rtf;
+        }
+
+        private static bool IsBlankRtf(string? rtf)
+        {
+            if (string.IsNullOrWhiteSpace(rtf))
+                return true;
+
+            string text = Regex.Replace(rtf, @"\\[a-z]+\d* ?|\\'[0-9a-f]{2}|\{|\}", string.Empty, RegexOptions.IgnoreCase);
+            return string.IsNullOrWhiteSpace(text);
+        }
+
+        /// <summary>
+        /// 提交前收集各语言 RTF 帮助文档（仅含非空内容，且不会从未同步的编辑器覆盖已有文档）。
+        /// </summary>
+        private Dictionary<string, string> GetHelpDocumentsForSubmit()
+        {
+            SaveCurrentLanguageRtf();
+
+            var result = new Dictionary<string, string>();
+            foreach (var lang in AddedLanguages)
+            {
+                if (_helpDocuments.TryGetValue(lang, out var rtf) && !IsBlankRtf(rtf))
+                    result[lang] = rtf;
+            }
+
+            return result;
         }
 
         // ==================== 标签管理 ====================
@@ -811,6 +895,7 @@ namespace GeoChemistryNexus.ViewModels
             // 加载帮助文档
             _helpDocuments.Clear();
             AddedLanguages.Clear();
+            _isHelpDocEditorSynced = false;
             if (entity.HelpDocuments != null && entity.HelpDocuments.Count > 0)
             {
                 foreach (var kvp in entity.HelpDocuments)
@@ -913,7 +998,7 @@ namespace GeoChemistryNexus.ViewModels
                     })
                     .ToList(),
                 ScriptContent = ScriptContent,
-                HelpDocuments = new Dictionary<string, string>(_helpDocuments)
+                HelpDocuments = GetHelpDocumentsForSubmit()
             };
 
             return entity;
@@ -970,8 +1055,8 @@ namespace GeoChemistryNexus.ViewModels
 
                 string? filePath = await FileHelper.GetSaveFilePath2Async(
                     title: LanguageService.Instance["geo_msg_export_dialog_title"],
-                    filter: "ZIP files (*.zip)|*.zip",
-                    defaultExt: ".zip",
+                    filter: FileDialogFilterHelper.GeothermometerPackageFiles,
+                    defaultExt: TemplatePackageFileExtensions.GeothermometerPrimary,
                     defaultFileName: Name.Trim());
                 if (string.IsNullOrEmpty(filePath)) return;
 

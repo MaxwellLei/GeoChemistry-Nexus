@@ -44,13 +44,13 @@ namespace GeoChemistryNexus.ViewModels
         private const double PublishUploadPhaseEnd = 95;
 
         [ObservableProperty]
-        private bool publishDiagrams = true;
+        private bool publishDiagrams;
 
         [ObservableProperty]
-        private bool publishGeothermometers = true;
+        private bool publishGeothermometers;
 
         [ObservableProperty]
-        private bool publishHomeLinks = true;
+        private bool publishHomeLinks;
 
         [ObservableProperty]
         private bool publishAnnouncement;
@@ -274,7 +274,25 @@ namespace GeoChemistryNexus.ViewModels
             LoadHomeLinksEditor();
             LoadPlotCategoriesEditor();
             LoadGeoTMineralCategoriesEditor();
+            _ = InitializeHomeLinksEditorAsync();
             _ = LoadAnnouncementFromServerAsync();
+        }
+
+        private async Task InitializeHomeLinksEditorAsync()
+        {
+            try
+            {
+                if (File.Exists(HomeLinksPublishService.GetPublisherCatalogPath()))
+                    return;
+
+                await HomeLinksCatalogService.SyncFromServerAsync();
+                await Application.Current.Dispatcher.InvokeAsync(() =>
+                    PopulateHomeLinksEditor(HomeLinksPublishService.LoadPublisherCatalogFromSyncedLocal()));
+            }
+            catch (Exception ex)
+            {
+                Log(ex.Message);
+            }
         }
 
         [RelayCommand]
@@ -360,16 +378,16 @@ namespace GeoChemistryNexus.ViewModels
             ReportPublishProgress(value, message);
         }
 
-        private int CountPublishExportSteps()
+        private int CountPublishExportSteps(bool exportDiagrams, bool exportGeothermometers)
         {
             int steps = 0;
-            if (PublishAnnouncement && !PublishDiagrams && !PublishHomeLinks)
+            if (PublishAnnouncement && !exportDiagrams && !PublishHomeLinks)
                 steps++;
-            if (PublishHomeLinks && !PublishDiagrams)
+            if (PublishHomeLinks && !exportDiagrams)
                 steps++;
-            if (PublishDiagrams)
+            if (exportDiagrams)
                 steps++;
-            if (PublishGeothermometers)
+            if (exportGeothermometers)
                 steps++;
             return Math.Max(1, steps);
         }
@@ -622,8 +640,11 @@ namespace GeoChemistryNexus.ViewModels
         private async Task ExportLocal()
         {
             if (!EnsureDeveloperMode()) return;
-            if (!EnsurePublishTargetSelected()) return;
             if (IsBusy) return;
+
+            SavePlotCategoriesToLocal();
+            SaveGeoTMineralCategoriesToLocal();
+            if (!await EnsurePublishTargetSelectedAsync()) return;
 
             string? outputDir = ResolveStagingDirectory();
             if (string.IsNullOrEmpty(outputDir)) return;
@@ -632,15 +653,18 @@ namespace GeoChemistryNexus.ViewModels
             try
             {
                 Log(string.Format(LanguageService.Instance["official_publisher_exporting"] ?? "Exporting to {0}...", outputDir));
-                string announcement = await ResolveAnnouncementForPublishAsync() ?? string.Empty;
-                string minimumSupportedVersion = await ResolveMinimumSupportedVersionForPublishAsync() ?? string.Empty;
-                string latestAppVersion = await ResolveLatestAppVersionForPublishAsync() ?? string.Empty;
-                SaveHomeLinksToBundled();
+                string? announcement = await ResolveAnnouncementForPublishAsync();
+                string? minimumSupportedVersion = await ResolveMinimumSupportedVersionForPublishAsync();
+                string? latestAppVersion = await ResolveLatestAppVersionForPublishAsync();
+                SaveHomeLinksToLocal();
+
+                var (exportDiagrams, exportGeothermometers) = await ResolveCategoryExportFlagsAsync();
+                LogCategoryOnlyExportNotice(exportDiagrams, exportGeothermometers);
 
                 HomeLinksPublishResult? homeLinksResult = null;
                 AnnouncementPublishResult? announcementResult = null;
 
-                if (PublishAnnouncement && !PublishDiagrams && !PublishHomeLinks)
+                if (PublishAnnouncement && !exportDiagrams && !PublishHomeLinks)
                 {
                     announcementResult = await Task.Run(() =>
                         HomeLinksPublishService.ExportAnnouncementToDirectory(outputDir, announcement, minimumSupportedVersion, latestAppVersion));
@@ -649,10 +673,10 @@ namespace GeoChemistryNexus.ViewModels
 
                 if (PublishHomeLinks)
                 {
-                    if (PublishDiagrams)
+                    if (exportDiagrams)
                     {
-                        Log(LanguageService.Instance["official_publisher_home_links_bundled_saved"]
-                            ?? "Home links saved to bundled catalog.");
+                        Log(LanguageService.Instance["official_publisher_home_links_draft_saved"]
+                            ?? "Home links draft saved locally.");
                     }
                     else
                     {
@@ -663,7 +687,7 @@ namespace GeoChemistryNexus.ViewModels
                     }
                 }
 
-                if (PublishDiagrams)
+                if (exportDiagrams)
                 {
                     var result = await Task.Run(() => GraphMapTemplatePublishService.ExportToDirectory(outputDir, new PublishOptions
                     {
@@ -675,7 +699,7 @@ namespace GeoChemistryNexus.ViewModels
                     LogHomeLinksCatalogSummary(result);
                 }
 
-                if (PublishGeothermometers)
+                if (exportGeothermometers)
                 {
                     var geoResult = await Task.Run(() => GeothermometerPublishService.ExportToDirectory(outputDir));
                     Log(geoResult.Summary);
@@ -698,8 +722,11 @@ namespace GeoChemistryNexus.ViewModels
         private async Task PublishToCos()
         {
             if (!EnsureDeveloperMode()) return;
-            if (!EnsurePublishTargetSelected()) return;
             if (IsBusy) return;
+
+            SavePlotCategoriesToLocal();
+            SaveGeoTMineralCategoriesToLocal();
+            if (!await EnsurePublishTargetSelectedAsync()) return;
 
             var settings = BuildSettingsFromUi();
             if (!settings.IsConfigured)
@@ -717,25 +744,28 @@ namespace GeoChemistryNexus.ViewModels
                 LanguageService.Instance["Confirm"] ?? "Confirm");
             if (!confirm) return;
 
+            var (exportDiagrams, exportGeothermometers) = await ResolveCategoryExportFlagsAsync();
+
             IsBusy = true;
-            BeginPublishProgress(CountPublishExportSteps());
+            BeginPublishProgress(CountPublishExportSteps(exportDiagrams, exportGeothermometers));
             try
             {
                 string startMessage = LanguageService.Instance["official_publisher_start"] ?? "Starting publish...";
                 Log(startMessage);
                 ReportPublishProgress(2, startMessage);
 
-                string announcement = await ResolveAnnouncementForPublishAsync() ?? string.Empty;
-                string minimumSupportedVersion = await ResolveMinimumSupportedVersionForPublishAsync() ?? string.Empty;
-                string latestAppVersion = await ResolveLatestAppVersionForPublishAsync() ?? string.Empty;
-                SaveHomeLinksToBundled();
+                string? announcement = await ResolveAnnouncementForPublishAsync();
+                string? minimumSupportedVersion = await ResolveMinimumSupportedVersionForPublishAsync();
+                string? latestAppVersion = await ResolveLatestAppVersionForPublishAsync();
+                SaveHomeLinksToLocal();
+                LogCategoryOnlyExportNotice(exportDiagrams, exportGeothermometers);
 
                 PublishResult? diagramResult = null;
                 GeothermometerPublishResult? geoResult = null;
                 HomeLinksPublishResult? homeLinksResult = null;
                 AnnouncementPublishResult? announcementResult = null;
 
-                if (PublishAnnouncement && !PublishDiagrams && !PublishHomeLinks)
+                if (PublishAnnouncement && !exportDiagrams && !PublishHomeLinks)
                 {
                     string exportMessage = LanguageService.Instance["official_publisher_progress_exporting_announcement"]
                         ?? "Exporting announcement...";
@@ -745,7 +775,7 @@ namespace GeoChemistryNexus.ViewModels
                     Log(announcementResult.Summary);
                 }
 
-                if (PublishHomeLinks && !PublishDiagrams)
+                if (PublishHomeLinks && !exportDiagrams)
                 {
                     string exportMessage = LanguageService.Instance["official_publisher_progress_exporting_home_links"]
                         ?? "Exporting home links...";
@@ -757,11 +787,11 @@ namespace GeoChemistryNexus.ViewModels
                 }
                 else if (PublishHomeLinks)
                 {
-                    Log(LanguageService.Instance["official_publisher_home_links_bundled_saved"]
-                        ?? "Home links saved to bundled catalog.");
+                    Log(LanguageService.Instance["official_publisher_home_links_draft_saved"]
+                        ?? "Home links draft saved locally.");
                 }
 
-                if (PublishDiagrams)
+                if (exportDiagrams)
                 {
                     string exportMessage = LanguageService.Instance["official_publisher_progress_exporting_diagrams"]
                         ?? "Exporting diagrams...";
@@ -776,7 +806,7 @@ namespace GeoChemistryNexus.ViewModels
                     LogHomeLinksCatalogSummary(diagramResult);
                 }
 
-                if (PublishGeothermometers)
+                if (exportGeothermometers)
                 {
                     string exportMessage = LanguageService.Instance["official_publisher_progress_exporting_geothermometers"]
                         ?? "Exporting geothermobarometers...";
@@ -811,15 +841,18 @@ namespace GeoChemistryNexus.ViewModels
                     homeLinksResult,
                     announcementResult,
                     settings,
-                    PublishDiagrams,
-                    PublishGeothermometers,
+                    exportDiagrams,
+                    exportGeothermometers,
                     PublishHomeLinks,
                     PublishAnnouncement,
                     logProgress,
                     uploadProgress);
 
-                if (PublishDiagrams)
+                if (exportDiagrams && PublishDiagrams)
+                {
                     GraphMapTemplatePublishService.ClearPendingPublishFlags();
+                    WeakReferenceMessenger.Default.Send(new OfficialTemplatesPublishedMessage());
+                }
 
                 if (PublishAnnouncement)
                 {
@@ -883,11 +916,70 @@ namespace GeoChemistryNexus.ViewModels
             return false;
         }
 
-        private bool EnsurePublishTargetSelected()
+        private async Task<bool> EnsurePublishTargetSelectedAsync()
         {
-            if (PublishDiagrams || PublishGeothermometers || PublishHomeLinks || PublishAnnouncement) return true;
+            if (PublishDiagrams || PublishGeothermometers || PublishHomeLinks || PublishAnnouncement)
+                return true;
+
+            if (await HasPlotCategoriesPendingPublishAsync() || await HasGeoTMineralCategoriesPendingPublishAsync())
+                return true;
+
             ShowWarning(LanguageService.Instance["official_publisher_target_required"] ?? "Select at least one publish target.");
             return false;
+        }
+
+        private async Task<(bool exportDiagrams, bool exportGeothermometers)> ResolveCategoryExportFlagsAsync()
+        {
+            bool plotCategoriesPending = await HasPlotCategoriesPendingPublishAsync();
+            bool geoCategoriesPending = await HasGeoTMineralCategoriesPendingPublishAsync();
+            return (PublishDiagrams || plotCategoriesPending, PublishGeothermometers || geoCategoriesPending);
+        }
+
+        private void LogCategoryOnlyExportNotice(bool exportDiagrams, bool exportGeothermometers)
+        {
+            if (exportDiagrams && !PublishDiagrams)
+            {
+                Log(LanguageService.Instance["official_publisher_plot_categories_auto_included"]
+                    ?? "Plot categories changed; including diagram index files in this publish.");
+            }
+
+            if (exportGeothermometers && !PublishGeothermometers)
+            {
+                Log(LanguageService.Instance["official_publisher_geot_categories_auto_included"]
+                    ?? "GeoT mineral tags changed; including geothermometer index files in this publish.");
+            }
+        }
+
+        private static async Task<bool> HasPlotCategoriesPendingPublishAsync()
+        {
+            string path = PlotCategoryHelper.ResolveExportConfigPath();
+            if (!File.Exists(path))
+                return false;
+
+            string localHash = UpdateHelper.ComputeFileMd5(path);
+            var info = await LoadRemoteServerInfoAsync();
+            return string.IsNullOrEmpty(info.ListPlotCategoriesHash)
+                || !string.Equals(localHash, info.ListPlotCategoriesHash, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static async Task<bool> HasGeoTMineralCategoriesPendingPublishAsync()
+        {
+            string path = GeoTMineralCategoryHelper.ResolveExportConfigPath();
+            if (!File.Exists(path))
+                return false;
+
+            string localHash = UpdateHelper.ComputeFileMd5(path);
+            try
+            {
+                string json = await UpdateHelper.GetUrlContentAsync(OfficialContentEndpoints.GeoTIndexUrl);
+                var index = JsonHelper.Deserialize<GeoTIndex>(json);
+                return string.IsNullOrEmpty(index?.MineralCategoriesHash)
+                    || !string.Equals(localHash, index.MineralCategoriesHash, StringComparison.OrdinalIgnoreCase);
+            }
+            catch
+            {
+                return true;
+            }
         }
 
         private Task<string?> ResolveAnnouncementForPublishAsync()
@@ -925,9 +1017,13 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         [RelayCommand]
-        private void ReloadHomeLinksEditor()
+        private async Task ReloadHomeLinksEditor()
         {
-            LoadHomeLinksEditor();
+            if (!EnsureDeveloperMode())
+                return;
+
+            await HomeLinksCatalogService.SyncFromServerAsync();
+            PopulateHomeLinksEditor(HomeLinksPublishService.LoadPublisherCatalogFromSyncedLocal());
             Log(LanguageService.Instance["official_publisher_home_links_reloaded"] ?? "Home links editor reloaded.");
         }
 
@@ -1035,15 +1131,19 @@ namespace GeoChemistryNexus.ViewModels
             if (!EnsureDeveloperMode())
                 return;
 
-            SaveHomeLinksToBundled();
+            SaveHomeLinksToLocal();
             Log(LanguageService.Instance["official_publisher_home_links_draft_saved"] ?? "Home links draft saved locally.");
             ShowSuccess(LanguageService.Instance["official_publisher_home_links_draft_saved"] ?? "Home links draft saved locally.");
         }
 
         private void LoadHomeLinksEditor()
         {
+            PopulateHomeLinksEditor(HomeLinksPublishService.LoadPublisherCatalog());
+        }
+
+        private void PopulateHomeLinksEditor(HomeLinksCatalog catalog)
+        {
             HomeLinkGroups.Clear();
-            var catalog = HomeLinksPublishService.LoadBundledCatalog();
 
             foreach (var group in catalog.Groups ?? Enumerable.Empty<HomeLinkGroup>())
             {
@@ -1096,9 +1196,9 @@ namespace GeoChemistryNexus.ViewModels
             return HomeLinksPublishService.BuildCatalog(groups, 2);
         }
 
-        private void SaveHomeLinksToBundled()
+        private void SaveHomeLinksToLocal()
         {
-            HomeLinksPublishService.SaveBundledCatalog(BuildCatalogFromEditor());
+            HomeLinksPublishService.SavePublisherCatalog(BuildCatalogFromEditor());
         }
 
         private void UpdateHomeLinkCounts(HomeLinksCatalog catalog)
@@ -1221,7 +1321,7 @@ namespace GeoChemistryNexus.ViewModels
             try
             {
                 string json = await UpdateHelper.GetUrlContentAsync(OfficialContentEndpoints.ServerInfoUrl);
-                return System.Text.Json.JsonSerializer.Deserialize<ServerInfo>(json) ?? new ServerInfo();
+                return JsonHelper.Deserialize<ServerInfo>(json) ?? new ServerInfo();
             }
             catch
             {
@@ -1311,7 +1411,7 @@ namespace GeoChemistryNexus.ViewModels
             if (!TryEditCategoryEntry(SelectedPlotCategoryEntry, PlotCategoriesLanguageContext, out var updated) || updated == null)
                 return;
 
-            SelectedPlotCategoryEntry.Title = updated.Title;
+            SelectedPlotCategoryEntry.ReplaceTitle(updated.Title);
         }
 
         [RelayCommand]
@@ -1364,7 +1464,7 @@ namespace GeoChemistryNexus.ViewModels
             if (!TryEditCategoryEntry(SelectedGeoTMineralEntry, GeoTMineralCategoriesLanguageContext, out var updated) || updated == null)
                 return;
 
-            SelectedGeoTMineralEntry.Title = updated.Title;
+            SelectedGeoTMineralEntry.ReplaceTitle(updated.Title);
         }
 
         [RelayCommand]
@@ -1381,7 +1481,7 @@ namespace GeoChemistryNexus.ViewModels
         private void LoadPlotCategoriesEditor()
         {
             _plotCategoryEntriesByLevel.Clear();
-            var config = PlotCategoryHelper.LoadConfig();
+            var config = PlotCategoryHelper.LoadPublisherConfig();
 
             foreach (string level in PlotCategoryLevelKeys)
             {
@@ -1406,7 +1506,7 @@ namespace GeoChemistryNexus.ViewModels
         private void LoadGeoTMineralCategoriesEditor()
         {
             GeoTMineralEntries.Clear();
-            var config = GeoTMineralCategoryHelper.LoadConfig();
+            var config = GeoTMineralCategoryHelper.LoadPublisherConfig();
 
             foreach (var item in config.Minerals ?? Enumerable.Empty<Dictionary<string, string>>())
             {
@@ -1448,7 +1548,7 @@ namespace GeoChemistryNexus.ViewModels
             foreach (string level in PlotCategoryLevelKeys)
             {
                 var items = GetPlotCategoryCollection(level)
-                    .Where(entry => HomeLinksLocalization.HasText(entry.Title))
+                    .Where(entry => HomeLinksLocalization.HasText(entry.Title, PlotCategoriesLanguageContext))
                     .Select(entry => HomeLinksLocalization.ToDictionary(entry.Title))
                     .Where(dict => dict.Count > 0)
                     .ToList();
@@ -1465,7 +1565,7 @@ namespace GeoChemistryNexus.ViewModels
             return new GeoTMineralCategoryConfig
             {
                 Minerals = GeoTMineralEntries
-                    .Where(entry => HomeLinksLocalization.HasText(entry.Title))
+                    .Where(entry => HomeLinksLocalization.HasText(entry.Title, GeoTMineralCategoriesLanguageContext))
                     .Select(entry => HomeLinksLocalization.ToDictionary(entry.Title))
                     .Where(dict => dict.Count > 0)
                     .ToList()
@@ -1474,14 +1574,12 @@ namespace GeoChemistryNexus.ViewModels
 
         private void SavePlotCategoriesToLocal()
         {
-            PlotCategoryHelper.SaveConfig(BuildPlotCategoryConfigFromEditor());
-            WeakReferenceMessenger.Default.Send(new CategoryConfigUpdatedMessage("Updated"));
+            PlotCategoryHelper.SavePublisherConfig(BuildPlotCategoryConfigFromEditor());
         }
 
         private void SaveGeoTMineralCategoriesToLocal()
         {
-            GeoTMineralCategoryHelper.SaveConfig(BuildGeoTMineralCategoryConfigFromEditor(), GeoTMineralCategoryHelper.LocalConfigPath);
-            GeoTMineralCategoryHelper.InvalidateCache();
+            GeoTMineralCategoryHelper.SavePublisherConfig(BuildGeoTMineralCategoryConfigFromEditor());
         }
 
         private void UpdatePlotCategoryEntryCount()

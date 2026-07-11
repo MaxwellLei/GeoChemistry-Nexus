@@ -126,9 +126,6 @@
   <data name="script_content" xml:space="preserve">
     <value>Содержание скрипта:</value>
   </data>
-  <data name="geo_field_mineral_category" xml:space="preserve">
-    <value>Категория минерала *</value>
-  </data>
   <data name="geo_category_single_mineral" xml:space="preserve">
     <value>Одноминеральный геотермобарометр</value>
   </data>
@@ -188,10 +185,6 @@
   </data>
   <data name="is_visible" xml:space="preserve">
     <value>Видимость</value>
-  </data>
-  <data name="geo_msg_batch_export_success" xml:space="preserve">
-    <value>Всего {0} официальных геотермобарометров, экспортировано {1} (добавлено/изменено)
-Каталог: {2}</value>
   </data>
   <data name="geo_btn_apply" xml:space="preserve">
     <value>Применить</value>
@@ -313,9 +306,6 @@
   <data name="validation_failed" xml:space="preserve">
     <value>Проверка не удалась:</value>
   </data>
-  <data name="geo_menu_maintenance" xml:space="preserve">
-    <value>Обслуживание</value>
-  </data>
   <data name="geo_validate_headers_required" xml:space="preserve">
     <value>Заголовки не могут быть пустыми.</value>
   </data>
@@ -373,6 +363,12 @@
   <data name="switch_diagram_language" xml:space="preserve">
     <value>Переключить язык диаграммы</value>
   </data>
+  <data name="select_language" xml:space="preserve">
+    <value>Выберите язык</value>
+  </data>
+  <data name="please_select_language" xml:space="preserve">
+    <value>Пожалуйста, выберите язык диаграммы</value>
+  </data>
   <data name="missing_columns" xml:space="preserve">
     <value>Отсутствуют столбцы</value>
   </data>
@@ -395,13 +391,10 @@
     <value>Экспорт результатов CIPW</value>
   </data>
   <data name="geo_menu_import_zip" xml:space="preserve">
-    <value>Импортировать геотермобарометр (ZIP)</value>
+    <value>Импортировать геотермобарометр (.gngtm)</value>
   </data>
   <data name="developer_mode" xml:space="preserve">
     <value>Режим разработчика</value>
-  </data>
-  <data name="geo_validate_mineral_required" xml:space="preserve">
-    <value>Категория минерала не может быть пустой.</value>
   </data>
   <data name="geo_hint_select_data_row" xml:space="preserve">
     <value>Выберите строку данных</value>
@@ -513,9 +506,6 @@
   <data name="entering_soon_ellipsis" xml:space="preserve">
     <value>Скоро вход...</value>
   </data>
-  <data name="geo_tooltip_minimize" xml:space="preserve">
-    <value>Свернуть</value>
-  </data>
   <data name="template_load_failed" xml:space="preserve">
     <value>Ошибка загрузки шаблона</value>
   </data>
@@ -556,7 +546,7 @@
     <value>Закрашенный треугольник вверх</value>
   </data>
   <data name="geo_btn_save_export_zip" xml:space="preserve">
-    <value>Сохранить и экспортировать ZIP</value>
+    <value>Сохранить и экспортировать пакет</value>
   </data>
   <data name="geo_section_official" xml:space="preserve">
     <value>Официальные геотермобарометры</value>
@@ -645,9 +635,6 @@
   <data name="cipw_alumina_peralkaline" xml:space="preserve">
     <value>Пералкалическое</value>
   </data>
-  <data name="geo_tooltip_version_format" xml:space="preserve">
-    <value>Семантическая версия, например 1.0.0, 1.2.3</value>
-  </data>
   <data name="DontSave" xml:space="preserve">
     <value>Не сохранять</value>
   </data>
@@ -657,29 +644,17 @@
   <data name="cipw_tooltip_calculate" xml:space="preserve">
     <value>Выполнить расчёт нормы CIPW для всех строк с данными</value>
   </data>
-  <data name="geo_btn_cancel" xml:space="preserve">
-    <value>Отмена</value>
-  </data>
   <data name="logarithmic" xml:space="preserve">
     <value>Логарифмический</value>
   </data>
   <data name="arrowhead_width" xml:space="preserve">
     <value>Ширина стрелки</value>
   </data>
-  <data name="geo_btn_prev" xml:space="preserve">
-    <value>Назад</value>
-  </data>
   <data name="geo_btn_save" xml:space="preserve">
     <value>Сохранить</value>
   </data>
   <data name="geo_btn_help" xml:space="preserve">
     <value>Справка</value>
-  </data>
-  <data name="geo_btn_next" xml:space="preserve">
-    <value>Далее</value>
-  </data>
-  <data name="geo_field_description" xml:space="preserve">
-    <value>Краткое описание</value>
   </data>
   <data name="invalid_script_variable_name" xml:space="preserve">
     <value>Неверный формат имени переменной скрипта:</value>
@@ -774,7 +749,19 @@
 	Сделаем программное обеспечение более мощным и удобным!</value>
   </data>
   <data name="AboutInfo1" xml:space="preserve">
-    <value>Этот проект использует геохимические данные для построения графиков, расчетов и анализа, помогая исследователям в области наук о Земле ускорить процесс анализа данных и повысить эффективность исследований.</value>
+    <value>GeoChemistry Nexus — интегрированная рабочая среда для геохимии и петрологии. Она объединяет импорт данных проб, предобработку и коррекцию, построение дискриминационных диаграмм, расчёт геотермобарометров, расчёт CIPW-нормы и экспорт в PNG/SVG в одном интерфейсе; облачная экосистема шаблонов и сообщество позволяют диаграммам и алгоритмам непрерывно развиваться и быстрее доходить до большего числа исследователей.</value>
+  </data>
+  <data name="AboutTagline" xml:space="preserve">
+    <value>Рабочая среда нового поколения для геохимических и петрологических диаграмм и расчётов</value>
+  </data>
+  <data name="about_email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="about_qq_group" xml:space="preserve">
+    <value>Группа QQ</value>
+  </data>
+  <data name="about_discord" xml:space="preserve">
+    <value>Discord</value>
   </data>
   <data name="Confirm" xml:space="preserve">
     <value>Подтвердить</value>
@@ -1060,9 +1047,6 @@
   <data name="MarkerShape_Cross" xml:space="preserve">
     <value>Крест</value>
   </data>
-  <data name="template_type_not_supported_please_update" xml:space="preserve">
-    <value>Тип шаблона не поддерживается, пожалуйста, обновите ПО.</value>
-  </data>
   <data name="geo_msg_delete_success" xml:space="preserve">
     <value>Успешно удалено</value>
   </data>
@@ -1092,6 +1076,24 @@
   </data>
   <data name="enter_category_structure" xml:space="preserve">
     <value>Введите структуру категорий</value>
+  </data>
+  <data name="select_existing_category_structure_tooltip" xml:space="preserve">
+    <value>Выбрать путь категории из существующих шаблонов диаграмм</value>
+  </data>
+  <data name="select_existing_category_structure_title" xml:space="preserve">
+    <value>Выбор структуры категорий</value>
+  </data>
+  <data name="select_existing_category_structure_prompt" xml:space="preserve">
+    <value>Выберите путь категории из существующих шаблонов диаграмм. После выбора можно продолжить добавлять пользовательские уровни.</value>
+  </data>
+  <data name="select_existing_category_structure_empty" xml:space="preserve">
+    <value>Доступные структуры категорий не найдены.</value>
+  </data>
+  <data name="category_structure_preview" xml:space="preserve">
+    <value>Предпросмотр категории</value>
+  </data>
+  <data name="category_structure_preview_empty" xml:space="preserve">
+    <value>Добавьте уровни, чтобы увидеть предпросмотр иерархии категорий.</value>
   </data>
   <data name="reading_user_configuration_ellipsis" xml:space="preserve">
     <value>Чтение конфигурации пользователя...</value>
@@ -1153,9 +1155,6 @@
   <data name="error" xml:space="preserve">
     <value>Ошибка:</value>
   </data>
-  <data name="some_data_failed_validation" xml:space="preserve">
-    <value>Некоторые данные не прошли проверку, пропущены</value>
-  </data>
   <data name="arrow" xml:space="preserve">
     <value>Стрелка</value>
   </data>
@@ -1192,9 +1191,6 @@
   <data name="style" xml:space="preserve">
     <value>Стиль</value>
   </data>
-  <data name="ternary_diagram_crosshair_not_supported" xml:space="preserve">
-    <value>Тройные диаграммы пока не поддерживают перекрестие.</value>
-  </data>
   <data name="cipw_references_title" xml:space="preserve">
     <value>Литература</value>
   </data>
@@ -1215,6 +1211,12 @@
   </data>
   <data name="geo_placeholder_search" xml:space="preserve">
     <value>Поиск...</value>
+  </data>
+  <data name="geo_tooltip_tag_filter" xml:space="preserve">
+    <value>Фильтр по тегам</value>
+  </data>
+  <data name="geo_msg_no_tags_available" xml:space="preserve">
+    <value>Нет доступных тегов</value>
   </data>
   <data name="recently_used" xml:space="preserve">
     <value>Недавно использованные</value>
@@ -1263,9 +1265,6 @@
   </data>
   <data name="failed_to_open" xml:space="preserve">
     <value>Ошибка открытия：</value>
-  </data>
-  <data name="geo_msg_import_failed" xml:space="preserve">
-    <value>Ошибка импорта</value>
   </data>
   <data name="template_version_too_high" xml:space="preserve">
     <value>Версия шаблона выше текущей версии ПО, пожалуйста, обновитесь.</value>
@@ -1318,9 +1317,6 @@
   <data name="object_deleted_successfully" xml:space="preserve">
     <value>Объект успешно удален.</value>
   </data>
-  <data name="geo_msg_batch_export_failed" xml:space="preserve">
-    <value>Ошибка пакетного экспорта: {0}</value>
-  </data>
   <data name="show_tick_labels" xml:space="preserve">
     <value>Показать метки делений</value>
   </data>
@@ -1329,9 +1325,6 @@
   </data>
   <data name="row_1_column_1" xml:space="preserve">
     <value>Стр: 1, Кол: 1</value>
-  </data>
-  <data name="geo_field_formula_name" xml:space="preserve">
-    <value>Имя формулы *</value>
   </data>
   <data name="third_party_software" xml:space="preserve">
     <value>Стороннее ПО</value>
@@ -1518,13 +1511,10 @@
     <value>Настройки графика по умолчанию</value>
   </data>
   <data name="geo_ctx_export_zip" xml:space="preserve">
-    <value>Экспортировать ZIP</value>
+    <value>Экспортировать пакет</value>
   </data>
   <data name="minor_tick_style" xml:space="preserve">
     <value>Стиль вспомогательных делений</value>
-  </data>
-  <data name="export_update_list" xml:space="preserve">
-    <value>Экспортировать список обновлений</value>
   </data>
   <data name="geo_ctx_edit" xml:space="preserve">
     <value>Изменить</value>
@@ -1540,9 +1530,6 @@
   </data>
   <data name="favorite_templates" xml:space="preserve">
     <value>В избранное</value>
-  </data>
-  <data name="unable_to_get_announcements" xml:space="preserve">
-    <value>Не удалось получить объявления.</value>
   </data>
   <data name="auto_check_geothermometer_updates" xml:space="preserve">
     <value>Автопроверка обновлений геотермобарометров</value>
@@ -1598,9 +1585,6 @@
   <data name="content_and_position" xml:space="preserve">
     <value>Содержание и позиция</value>
   </data>
-  <data name="invalid_diagram_template_file" xml:space="preserve">
-    <value>Недопустимый файл шаблона</value>
-  </data>
   <data name="add_image" xml:space="preserve">
     <value>Добавить изображение</value>
   </data>
@@ -1609,6 +1593,15 @@
   </data>
   <data name="start_image_copy_error" xml:space="preserve">
     <value>Не удалось добавить изображение запуска: </value>
+  </data>
+  <data name="delete_image" xml:space="preserve">
+    <value>Удалить изображение</value>
+  </data>
+  <data name="start_image_delete_successfully" xml:space="preserve">
+    <value>Изображение запуска успешно удалено.</value>
+  </data>
+  <data name="start_image_delete_error" xml:space="preserve">
+    <value>Не удалось удалить изображение запуска: </value>
   </data>
   <data name="add_arrow" xml:space="preserve">
     <value>Добавить стрелку</value>
@@ -1633,9 +1626,6 @@
   </data>
   <data name="cipw_default_value_text" xml:space="preserve">
     <value>По умолчанию 0,15</value>
-  </data>
-  <data name="FilePath" xml:space="preserve">
-    <value>Путь к файлу</value>
   </data>
   <data name="subtitle_font_size" xml:space="preserve">
     <value>Размер шрифта подзаголовка</value>
@@ -1666,15 +1656,6 @@
   </data>
   <data name="edit_menu_bar_item" xml:space="preserve">
     <value>Редактировать пункт меню</value>
-  </data>
-  <data name="maintenance" xml:space="preserve">
-    <value>_Техническое обслуживание((M))</value>
-  </data>
-  <data name="geo_tooltip_maximize" xml:space="preserve">
-    <value>Развернуть</value>
-  </data>
-  <data name="geo_tooltip_restore" xml:space="preserve">
-    <value>Восстановить</value>
   </data>
   <data name="confirm_clear_all_data" xml:space="preserve">
     <value>Очистить данные таблицы (включая точки графика)?</value>
@@ -1771,9 +1752,6 @@
   <data name="refresh" xml:space="preserve">
     <value>Обновить</value>
   </data>
-  <data name="failed_to_parse_diagram_template_json" xml:space="preserve">
-    <value>Не удалось разобрать JSON шаблона</value>
-  </data>
   <data name="diagram_legend_properties" xml:space="preserve">
     <value>Свойства легенды диаграммы</value>
   </data>
@@ -1810,9 +1788,6 @@
   <data name="template_translator" xml:space="preserve">
     <value>Переводчик шаблонов</value>
   </data>
-  <data name="geo_validate_version_required" xml:space="preserve">
-    <value>Версия не может быть пустой.</value>
-  </data>
   <data name="axis_title" xml:space="preserve">
     <value>Заголовок оси</value>
   </data>
@@ -1834,9 +1809,6 @@
   <data name="major_grid_line" xml:space="preserve">
     <value>Основная сетка</value>
   </data>
-  <data name="unable_to_get_latest_release_info" xml:space="preserve">
-    <value>Не удалось получить информацию о последней версии</value>
-  </data>
   <data name="tick_labels" xml:space="preserve">
     <value>Метки делений</value>
   </data>
@@ -1848,9 +1820,6 @@
   </data>
   <data name="template_library" xml:space="preserve">
     <value>Библиотека шаблонов</value>
-  </data>
-  <data name="geo_menu_export_official" xml:space="preserve">
-    <value>Экспортировать официальные геотермобарометры</value>
   </data>
   <data name="coordinates_picked_success" xml:space="preserve">
     <value>Координаты получены！</value>
@@ -2005,20 +1974,14 @@
   <data name="click_or_drag_template_json_here" xml:space="preserve">
     <value>Нажмите или перетащите файл шаблона (JSON) сюда</value>
   </data>
-  <data name="file_drop_release_to_open" xml:space="preserve">
-    <value>Release to open template</value>
-  </data>
   <data name="file_drop_release_to_import" xml:space="preserve">
-    <value>Release to import</value>
+    <value>Отпустите для импорта</value>
   </data>
   <data name="file_drop_invalid_format" xml:space="preserve">
-    <value>Unsupported file format</value>
-  </data>
-  <data name="file_drop_supported_diagram" xml:space="preserve">
-    <value>Supports .json / .zip template files</value>
+    <value>Неподдерживаемый формат файла</value>
   </data>
   <data name="file_drop_supported_geothermometer" xml:space="preserve">
-    <value>Supports .zip geothermometer packages</value>
+    <value>Поддерживаются пакеты геотермобарометра .gngtm / .zip</value>
   </data>
   <data name="coordinate_positioning" xml:space="preserve">
     <value>Координаты</value>
@@ -2049,9 +2012,6 @@
   </data>
   <data name="Alignment_LowerCenter" xml:space="preserve">
     <value>Снизу по центру</value>
-  </data>
-  <data name="cannot_parse_version_number_check_release_address" xml:space="preserve">
-    <value>Не удалось разобрать номер версии. Проверьте адрес релиза</value>
   </data>
   <data name="workspace_section" xml:space="preserve">
     <value>Мое пространство</value>
@@ -2088,9 +2048,6 @@
   </data>
   <data name="cipw_row_format" xml:space="preserve">
     <value>Строка {0}</value>
-  </data>
-  <data name="axis" xml:space="preserve">
-    <value>Ось</value>
   </data>
   <data name="axes" xml:space="preserve">
     <value>Оси</value>
@@ -2132,7 +2089,7 @@
     <value>Отменить</value>
   </data>
   <data name="view" xml:space="preserve">
-    <value>Вид</value>
+    <value>Открыть</value>
   </data>
   <data name="redo" xml:space="preserve">
     <value>Повторить</value>
@@ -2167,9 +2124,6 @@
   <data name="Plot" xml:space="preserve">
     <value>Построение диаграмм</value>
   </data>
-  <data name="geo_field_worksheet_name" xml:space="preserve">
-    <value>Имя листа</value>
-  </data>
   <data name="geo_current_app_format_version" xml:space="preserve">
     <value>Текущая версия геотермобарометра приложения</value>
   </data>
@@ -2185,9 +2139,6 @@
   <data name="geo_example_name" xml:space="preserve">
     <value>напр. Кварцевый геотермобарометр</value>
   </data>
-  <data name="geo_example_mineral" xml:space="preserve">
-    <value>напр. Кварц</value>
-  </data>
   <data name="geo_example_year" xml:space="preserve">
     <value>напр. 2020</value>
   </data>
@@ -2196,9 +2147,6 @@
   </data>
   <data name="geo_example_reference" xml:space="preserve">
     <value>напр. Smith (2020) Geochim. Cosmochim. Acta 280, 123-145</value>
-  </data>
-  <data name="geo_example_formula_name" xml:space="preserve">
-    <value>напр. MyFormula_v1</value>
   </data>
   <data name="geo_preview_title" xml:space="preserve">
     <value>Предпросмотр</value>
@@ -2215,9 +2163,6 @@
   <data name="geo_preview_name_placeholder" xml:space="preserve">
     <value>Название геотермобарометра</value>
   </data>
-  <data name="geo_preview_mineral_placeholder" xml:space="preserve">
-    <value>Категория минерала</value>
-  </data>
   <data name="geo_preview_author_placeholder" xml:space="preserve">
     <value>Автор</value>
   </data>
@@ -2225,7 +2170,7 @@
     <value>Здесь будет отображаться ссылка</value>
   </data>
   <data name="geo_preview_meta_format" xml:space="preserve">
-    <value>{0} - {1} ({2})</value>
+    <value>{0} ({1})</value>
   </data>
   <data name="cipw_csv_filter" xml:space="preserve">
     <value>Файл CSV|*.csv</value>
@@ -2246,9 +2191,6 @@
   </data>
   <data name="geo_step_help_doc" xml:space="preserve">
     <value>Справочный документ</value>
-  </data>
-  <data name="cipw_tooltip_maximize" xml:space="preserve">
-    <value>Развернуть / Восстановить</value>
   </data>
   <data name="geo_tooltip_export_csv" xml:space="preserve">
     <value>Экспортировать текущий лист как CSV</value>
@@ -2344,73 +2286,82 @@
     <value>Выполнить обработку</value>
   </data>
   <data name="notification_success" xml:space="preserve">
-    <value>Success</value>
+    <value>Успех</value>
   </data>
   <data name="notification_warning" xml:space="preserve">
-    <value>Warning</value>
+    <value>Предупреждение</value>
   </data>
   <data name="filter_all_files" xml:space="preserve">
-    <value>All Files</value>
+    <value>Все файлы</value>
   </data>
   <data name="filter_json_files" xml:space="preserve">
-    <value>JSON Files</value>
+    <value>Файлы JSON</value>
   </data>
   <data name="filter_zip_files" xml:space="preserve">
-    <value>Zip Files</value>
+    <value>Файлы Zip</value>
   </data>
   <data name="filter_template_files" xml:space="preserve">
-    <value>Template Files</value>
+    <value>Файлы шаблонов</value>
+  </data>
+  <data name="filter_diagram_package" xml:space="preserve">
+    <value>Пакет шаблона диаграммы</value>
+  </data>
+  <data name="filter_geothermometer_package" xml:space="preserve">
+    <value>Пакет геотермобарометра</value>
+  </data>
+  <data name="filter_geothermometer_import" xml:space="preserve">
+    <value>Пакеты геотермобарометра</value>
   </data>
   <data name="filter_csv_files" xml:space="preserve">
-    <value>CSV Files</value>
+    <value>Файлы CSV</value>
   </data>
   <data name="filter_png_image" xml:space="preserve">
-    <value>PNG Image</value>
+    <value>Изображение PNG</value>
   </data>
   <data name="filter_svg_vector" xml:space="preserve">
-    <value>SVG Vector</value>
+    <value>Вектор SVG</value>
   </data>
   <data name="open_template" xml:space="preserve">
-    <value>Open Template</value>
+    <value>Открыть шаблон</value>
   </data>
   <data name="save_file_title" xml:space="preserve">
-    <value>Save File</value>
+    <value>Сохранить файл</value>
   </data>
   <data name="plot_undefined_data_columns" xml:space="preserve">
-    <value>Undefined data columns</value>
+    <value>Неопределённые столбцы данных</value>
   </data>
   <data name="plot_json_multiselect_not_supported" xml:space="preserve">
-    <value>JSON files cannot be added in a multi-select batch. Only ZIP files support multi-select batch import.</value>
+    <value>Файлы JSON нельзя добавлять при множественном выборе. Пакетный импорт поддерживается только для пакетных файлов.</value>
   </data>
   <data name="plot_ternary_axis_not_found" xml:space="preserve">
-    <value>Error: triangular axis object not found in the plot.</value>
+    <value>Ошибка: объект треугольной оси не найден на графике.</value>
   </data>
   <data name="plot_upload_thumbnail_failed" xml:space="preserve">
-    <value>Failed to upload thumbnail: {0}</value>
+    <value>Не удалось загрузить миниатюру: {0}</value>
   </data>
   <data name="plot_type_2d_description" xml:space="preserve">
-    <value>Best for standard X-Y plotting for scatter, line, function, and most diagram templates.</value>
+    <value>Подходит для стандартных X-Y графиков: точечных, линейных, функциональных и большинства шаблонов диаграмм.</value>
   </data>
   <data name="plot_type_ternary_description" xml:space="preserve">
-    <value>Best for ternary compositions, phase diagrams, and end-member mixing relationships.</value>
+    <value>Подходит для тройных составов, фазовых диаграмм и отношений смешения конечных членов.</value>
   </data>
   <data name="selected_label" xml:space="preserve">
-    <value>Selected</value>
+    <value>Выбрано</value>
   </data>
   <data name="dataPrep_workflowStep1" xml:space="preserve">
-    <value>1. Import a CSV / Excel table and confirm major-element headers</value>
+    <value>1. Импортируйте таблицу CSV / Excel и подтвердите заголовки главных элементов</value>
   </data>
   <data name="dataPrep_workflowStep2" xml:space="preserve">
-    <value>2. Set detection limits, missing values, outliers, and iron valence strategy</value>
+    <value>2. Задайте пределы обнаружения, пропущенные значения, выбросы и стратегию валентности железа</value>
   </data>
   <data name="dataPrep_workflowStep3" xml:space="preserve">
-    <value>3. Batch-generate cleaned, normalized, and geochemical indicator columns</value>
+    <value>3. Пакетно создайте очищенные, нормализованные столбцы и геохимические индикаторы</value>
   </data>
   <data name="dataPrep_workflowStep4" xml:space="preserve">
-    <value>4. Output to a new Processed worksheet and export results</value>
+    <value>4. Выведите в новый лист Processed и экспортируйте результаты</value>
   </data>
   <data name="see_error_log_for_details" xml:space="preserve">
-    <value>See error.log for details.</value>
+    <value>Подробности см. в error.log.</value>
   </data>
   <data name="announcement" xml:space="preserve">
     <value>Объявление</value>
@@ -2709,6 +2660,9 @@
   <data name="force_update_template" xml:space="preserve">
     <value>Принудительное обновление</value>
   </data>
+  <data name="convert_to_builtin_template" xml:space="preserve">
+    <value>Преобразовать во встроенный шаблон</value>
+  </data>
   <data name="force_update_app" xml:space="preserve">
     <value>Принудительное обновление</value>
   </data>
@@ -2722,7 +2676,7 @@
     <value>Имя формулы «{0}» уже используется в «{1}» ({2})</value>
   </data>
   <data name="geo_msg_formula_name_duplicate" xml:space="preserve">
-    <value>Имя формулы «{0}» дублируется в Geothermobarometer «{1}»</value>
+    <value>Имя формулы «{0}» дублируется в геотермобарометре «{1}»</value>
   </data>
   <data name="home_catalog_already_latest" xml:space="preserve">
     <value>Каталог ссылок главной страницы уже актуален.</value>
@@ -2748,20 +2702,11 @@
   <data name="home_personal_group" xml:space="preserve">
     <value>Личное</value>
   </data>
-  <data name="home_personal_group_hint" xml:space="preserve">
-    <value>В этой группе можно добавлять, редактировать или удалять ссылки.</value>
-  </data>
   <data name="home_recommended_content" xml:space="preserve">
     <value>Рекомендуемое</value>
   </data>
-  <data name="home_widgets_panel_desc" xml:space="preserve">
-    <value>Встроенные инструменты, открывающиеся в приложении и отображаемые на боковой панели.</value>
-  </data>
   <data name="home_widgets_section" xml:space="preserve">
     <value>Виджеты</value>
-  </data>
-  <data name="language_exists" xml:space="preserve">
-    <value>Язык уже существует</value>
   </data>
   <data name="main_sidebar_collapse_full" xml:space="preserve">
     <value>Полностью свернуть</value>
@@ -2836,10 +2781,10 @@
     <value>Экспорт в {0}...</value>
   </data>
   <data name="official_publisher_geo_preview_summary" xml:space="preserve">
-    <value>Geothermobarometers: новых {0}, обновлено {1}, удалено {2}, без изменений {3}.</value>
+    <value>Геотермобарометры: новых {0}, обновлено {1}, удалено {2}, без изменений {3}.</value>
   </data>
   <data name="official_publisher_geothermometer_section" xml:space="preserve">
-    <value>Geothermobarometers</value>
+    <value>Геотермобарометры</value>
   </data>
   <data name="official_publisher_home_add_group" xml:space="preserve">
     <value>Добавить группу</value>
@@ -2847,17 +2792,11 @@
   <data name="official_publisher_home_edit_group" xml:space="preserve">
     <value>Редактировать группу</value>
   </data>
-  <data name="official_publisher_home_group_title_prompt" xml:space="preserve">
-    <value>Введите название группы:</value>
-  </data>
   <data name="official_publisher_home_groups" xml:space="preserve">
     <value>Группы</value>
   </data>
   <data name="official_publisher_home_link_items" xml:space="preserve">
     <value>Ссылки</value>
-  </data>
-  <data name="official_publisher_home_links_bundled_saved" xml:space="preserve">
-    <value>Ссылки главной страницы сохранены во встроенный каталог.</value>
   </data>
   <data name="official_publisher_home_links_draft_saved" xml:space="preserve">
     <value>Черновик ссылок главной страницы сохранён локально.</value>
@@ -2893,16 +2832,13 @@
     <value>Диаграммы</value>
   </data>
   <data name="official_publisher_include_geothermometers" xml:space="preserve">
-    <value>Geothermobarometers</value>
+    <value>Геотермобарометры</value>
   </data>
   <data name="official_publisher_include_home_links" xml:space="preserve">
     <value>Включить ссылки главной страницы</value>
   </data>
   <data name="official_publisher_new" xml:space="preserve">
     <value>Новое</value>
-  </data>
-  <data name="official_publisher_preview_summary" xml:space="preserve">
-    <value>Предпросмотр: новых {0}, обновлено {1}, удалено {2}, без изменений {3}.</value>
   </data>
   <data name="official_publisher_progress_done" xml:space="preserve">
     <value>Публикация завершена.</value>
@@ -2914,7 +2850,7 @@
     <value>Экспорт диаграмм...</value>
   </data>
   <data name="official_publisher_progress_exporting_geothermometers" xml:space="preserve">
-    <value>Экспорт Geothermobarometers...</value>
+    <value>Экспорт геотермобарометров...</value>
   </data>
   <data name="official_publisher_progress_exporting_home_links" xml:space="preserve">
     <value>Экспорт ссылок главной страницы...</value>
@@ -2962,7 +2898,7 @@
     <value>Официальный издатель</value>
   </data>
   <data name="official_template_publisher_desc" xml:space="preserve">
-    <value>Экспорт и публикация официального содержимого (диаграммы, Geothermobarometers, ссылки главной страницы, объявления) в COS</value>
+    <value>Экспорт и публикация официального содержимого (диаграммы, геотермобарометры, ссылки главной страницы, объявления) в COS</value>
   </data>
   <data name="ree_spider_diagram" xml:space="preserve">
     <value>Паутинная диаграмма REE</value>
@@ -3189,12 +3125,6 @@
   <data name="translation_text_item" xml:space="preserve">
     <value>Текст</value>
   </data>
-  <data name="gtm_biotite_ti_wu_chen_2015" xml:space="preserve">
-    <value>Ti-in-Bt (У и Чэнь, 2015)</value>
-  </data>
-  <data name="gtm_mineral_biotite" xml:space="preserve">
-    <value>Биотит</value>
-  </data>
   <data name="official_publisher_plot_categories_section" xml:space="preserve">
     <value>Категории диаграмм</value>
   </data>
@@ -3420,6 +3350,587 @@
   <data name="cipw_error_negative_oxide_content" xml:space="preserve">
     <value>Оксид {0} имеет отрицательное содержание.</value>
   </data>
+  <data name="template_card_size_preset" xml:space="preserve">
+    <value>Размер карточки</value>
+  </data>
+  <data name="template_card_size_compact" xml:space="preserve">
+    <value>Компактный</value>
+  </data>
+  <data name="template_card_size_standard" xml:space="preserve">
+    <value>Стандарт</value>
+  </data>
+  <data name="AutoCheckUpdate_hint" xml:space="preserve">
+
+    <value>Автоматически проверять обновления приложения при запуске</value>
+
+  </data>
+
+  <data name="Boot_hint" xml:space="preserve">
+
+    <value>Автоматически запускать приложение при старте Windows</value>
+
+  </data>
+
+  <data name="CheckUpdate_hint" xml:space="preserve">
+
+    <value>Сейчас проверить, доступна ли более новая версия приложения</value>
+
+  </data>
+
+  <data name="Language_hint" xml:space="preserve">
+
+    <value>Выберите язык интерфейса приложения</value>
+
+  </data>
+
+  <data name="MessageAutoClose_hint" xml:space="preserve">
+
+    <value>Как долго уведомления остаются видимыми до автоматического закрытия</value>
+
+  </data>
+
+  <data name="QuitAppMode_hint" xml:space="preserve">
+
+    <value>Свернуть в системный трей или выйти из приложения при закрытии окна</value>
+
+  </data>
+
+  <data name="adobe_illustrator_path_hint" xml:space="preserve">
+
+    <value>Путь к исполняемому файлу Adobe Illustrator для открытия векторной графики</value>
+
+  </data>
+
+  <data name="auto_check_diagram_template_updates_hint" xml:space="preserve">
+
+    <value>Автоматически проверять обновления шаблонов диаграмм при запуске</value>
+
+  </data>
+
+  <data name="auto_check_geothermometer_updates_hint" xml:space="preserve">
+
+    <value>Автоматически проверять обновления геотермобарометров при запуске</value>
+
+  </data>
+
+  <data name="coreldraw_path_hint" xml:space="preserve">
+
+    <value>Путь к исполняемому файлу CorelDRAW для открытия векторной графики</value>
+
+  </data>
+
+  <data name="current_diagram_version_hint" xml:space="preserve">
+
+    <value>Версия формата шаблона диаграмм, поддерживаемая этим приложением (только чтение)</value>
+
+  </data>
+
+  <data name="custom_app_hint" xml:space="preserve">
+
+    <value>Путь к исполняемому файлу пользовательского стороннего графического редактора</value>
+
+  </data>
+
+  <data name="default_diagram_expand_level_hint" xml:space="preserve">
+
+    <value>Глубина раскрытия дерева категорий диаграмм по умолчанию</value>
+
+  </data>
+
+  <data name="default_third_party_editor_hint" xml:space="preserve">
+
+    <value>Стороннее приложение по умолчанию при редактировании или экспорте векторной графики</value>
+
+  </data>
+
+  <data name="developer_mode_hint" xml:space="preserve">
+
+    <value>При включении показывать параметры разработки и отладки</value>
+
+  </data>
+
+  <data name="geo_additional_formula_badge" xml:space="preserve">
+
+    <value>Доп</value>
+
+  </data>
+
+  <data name="geo_additional_formula_name" xml:space="preserve">
+
+    <value>Имя формулы Grid</value>
+
+  </data>
+
+
+
+  <data name="geo_additional_function_name" xml:space="preserve">
+
+    <value>Имя функции JS</value>
+
+  </data>
+
+  <data name="geo_btn_add_additional_formula" xml:space="preserve">
+
+    <value>Добавить дополнительную формулу</value>
+
+  </data>
+
+  <data name="geo_current_app_format_version_hint" xml:space="preserve">
+
+    <value>Версия формата шаблона геотермобарометра, поддерживаемая этим приложением (только чтение)</value>
+
+  </data>
+
+  <data name="geo_formulas_hint" xml:space="preserve">
+
+    <value>Сопоставьте имена пользовательских функций Grid с функциями JavaScript в скрипте ниже. Основная формула всегда вызывает calculate(args).</value>
+
+  </data>
+
+  <data name="geo_formulas_title" xml:space="preserve">
+
+    <value>Формулы Grid *</value>
+
+  </data>
+
+  <data name="geo_free_sheet_align_center" xml:space="preserve">
+
+    <value>По центру</value>
+
+  </data>
+
+  <data name="geo_free_sheet_align_left" xml:space="preserve">
+
+    <value>По левому краю</value>
+
+  </data>
+
+  <data name="geo_free_sheet_align_right" xml:space="preserve">
+
+    <value>По правому краю</value>
+
+  </data>
+
+
+
+
+
+
+  <data name="geo_free_sheet_clear" xml:space="preserve">
+
+    <value>Очистить</value>
+
+  </data>
+
+  <data name="geo_free_sheet_clear_confirm" xml:space="preserve">
+
+    <value>Очистить все данные в текущей таблице?</value>
+
+  </data>
+
+  <data name="geo_free_sheet_clear_success" xml:space="preserve">
+
+    <value>Таблица очищена</value>
+
+  </data>
+
+
+
+
+
+
+
+  <data name="geo_free_sheet_delete_col" xml:space="preserve">
+
+    <value>Удалить столбец</value>
+
+  </data>
+
+  <data name="geo_free_sheet_delete_col_confirm" xml:space="preserve">
+
+    <value>Удалить выбранный столбец(цы)?</value>
+
+  </data>
+
+  <data name="geo_free_sheet_delete_col_failed" xml:space="preserve">
+
+    <value>Не удалось удалить столбец: </value>
+
+  </data>
+
+  <data name="geo_free_sheet_delete_row_confirm" xml:space="preserve">
+
+    <value>Удалить выбранную строку(и)?</value>
+
+  </data>
+
+  <data name="geo_free_sheet_export_formulas" xml:space="preserve">
+
+    <value>Экспортировать формулы (без значений)</value>
+
+  </data>
+
+  <data name="geo_free_sheet_export_mode_prompt" xml:space="preserve">
+
+    <value>Выберите тип содержимого для экспорта</value>
+
+  </data>
+
+  <data name="geo_free_sheet_export_title" xml:space="preserve">
+
+    <value>Параметры экспорта</value>
+
+  </data>
+
+  <data name="geo_free_sheet_export_values" xml:space="preserve">
+
+    <value>Экспортировать значения (без формул)</value>
+
+  </data>
+
+  <data name="geo_free_sheet_fill_color" xml:space="preserve">
+
+    <value>Цвет заливки</value>
+
+  </data>
+
+
+
+
+
+  <data name="geo_free_sheet_format_painter" xml:space="preserve">
+
+    <value>Формат по образцу</value>
+
+  </data>
+
+  <data name="geo_free_sheet_group_align" xml:space="preserve">
+
+    <value>Выравнивание</value>
+
+  </data>
+
+  <data name="geo_free_sheet_group_cells" xml:space="preserve">
+
+    <value>Ячейки</value>
+
+  </data>
+
+  <data name="geo_free_sheet_group_edit" xml:space="preserve">
+
+    <value>Правка</value>
+
+  </data>
+
+  <data name="geo_free_sheet_group_file" xml:space="preserve">
+
+    <value>Файл</value>
+
+  </data>
+
+  <data name="geo_free_sheet_group_font" xml:space="preserve">
+
+    <value>Шрифт</value>
+
+  </data>
+
+
+  <data name="geo_free_sheet_hint" xml:space="preserve">
+
+    <value>Можно использовать зарегистрированные формулы геотермобарометра, например =FormulaName(A2,B2)</value>
+
+  </data>
+
+  <data name="geo_free_sheet_import" xml:space="preserve">
+
+    <value>Импорт</value>
+
+  </data>
+
+  <data name="geo_free_sheet_import_failed" xml:space="preserve">
+
+    <value>Ошибка импорта: {0}</value>
+
+  </data>
+
+  <data name="geo_free_sheet_insert_col_left" xml:space="preserve">
+
+    <value>Вставить столбец слева</value>
+
+  </data>
+
+  <data name="geo_free_sheet_insert_col_right" xml:space="preserve">
+
+    <value>Вставить столбец справа</value>
+
+  </data>
+
+  <data name="geo_free_sheet_italic" xml:space="preserve">
+
+    <value>Курсив</value>
+
+  </data>
+
+  <data name="geo_free_sheet_merge" xml:space="preserve">
+
+    <value>Объединить и выровнять по центру</value>
+
+  </data>
+
+  <data name="geo_free_sheet_title" xml:space="preserve">
+
+    <value>Свободная таблица геотермобарометра</value>
+
+  </data>
+
+  <data name="geo_free_sheet_underline" xml:space="preserve">
+
+    <value>Подчёркнутый</value>
+
+  </data>
+
+  <data name="geo_free_sheet_worksheet_name" xml:space="preserve">
+
+    <value>СвободнаяТаблица</value>
+
+  </data>
+
+
+  <data name="geo_main_formula_badge" xml:space="preserve">
+
+    <value>Основная</value>
+
+  </data>
+
+  <data name="geo_menu_open_free_sheet" xml:space="preserve">
+
+    <value>Открыть свободную таблицу</value>
+
+  </data>
+
+  <data name="geo_msg_batch_import_success" xml:space="preserve">
+
+    <value>Успешно импортировано: {0}</value>
+
+  </data>
+
+  <data name="geo_msg_update_download_failed_detail" xml:space="preserve">
+
+    <value>{0}: {1}</value>
+
+  </data>
+
+  <data name="geo_msg_update_download_failed_items" xml:space="preserve">
+
+    <value>Неудачные загрузки:</value>
+
+  </data>
+
+  <data name="geo_msg_update_removed_count" xml:space="preserve">
+
+    <value>Удалено: {0}</value>
+
+  </data>
+
+  <data name="geo_tooltip_additional_function_name" xml:space="preserve">
+
+    <value>Имя функции JavaScript в скрипте, например calcPressure</value>
+
+  </data>
+
+
+  <data name="geo_validate_additional_formula_incomplete" xml:space="preserve">
+
+    <value>Дополнительная формула, строка {0}: требуются и имя формулы Grid, и имя функции JS.</value>
+
+  </data>
+
+  <data name="geo_validate_additional_function_name_invalid" xml:space="preserve">
+
+    <value>Имя функции JS «{0}» недопустимо (должен быть допустимый идентификатор JavaScript).</value>
+
+  </data>
+
+  <data name="geo_validate_additional_function_reserved" xml:space="preserve">
+
+    <value>Имя функции JS «{0}» зарезервировано для основной формулы или подробного расчёта.</value>
+
+  </data>
+
+  <data name="geo_validate_example_row_column_mismatch" xml:space="preserve">
+
+    <value>Строка примера должна иметь то же число столбцов, что и заголовки (ожидалось {0}, найдено {1}).</value>
+
+  </data>
+
+  <data name="inkscape_path_hint" xml:space="preserve">
+
+    <value>Путь к исполняемому файлу Inkscape для открытия векторной графики</value>
+
+  </data>
+
+  <data name="main_sidebar_collapse_style_hint" xml:space="preserve">
+
+    <value>Выберите, сворачивать ли главную боковую панель полностью или оставлять значки видимыми</value>
+
+  </data>
+
+  <data name="minimum_version_auto_update" xml:space="preserve">
+
+    <value>Автообновление</value>
+
+  </data>
+
+  <data name="minimum_version_dialog_message" xml:space="preserve">
+
+    <value>Текущая версия {0} ниже минимально поддерживаемой версии {1}. Обновите GeoChemistry Nexus.</value>
+
+  </data>
+
+  <data name="minimum_version_dialog_title" xml:space="preserve">
+
+    <value>Требуется обновление</value>
+
+  </data>
+
+  <data name="minimum_version_force_confirm" xml:space="preserve">
+
+    <value>Всё равно продолжить</value>
+
+  </data>
+
+  <data name="minimum_version_force_confirm_message" xml:space="preserve">
+
+    <value>Эта версия больше не поддерживается. Продолжение может привести к непредсказуемым проблемам. Всё равно продолжить?</value>
+
+  </data>
+
+  <data name="minimum_version_force_use" xml:space="preserve">
+
+    <value>Принудительное использование</value>
+
+  </data>
+
+  <data name="minimum_version_manual_update" xml:space="preserve">
+
+    <value>Ручное обновление</value>
+
+  </data>
+
+  <data name="mouse_snap_auto_recognition_frame_rate_hint" xml:space="preserve">
+
+    <value>Частота обновления автораспознавания привязки мыши; выше — плавнее, но больше нагрузка</value>
+
+  </data>
+
+  <data name="object_selection_trigger_hint" xml:space="preserve">
+
+    <value>Действие мыши для выбора объектов на холсте графика</value>
+
+  </data>
+
+  <data name="official_publisher_minimum_version_empty" xml:space="preserve">
+
+    <value>(пусто)</value>
+
+  </data>
+
+  <data name="official_publisher_minimum_version_hint" xml:space="preserve">
+
+    <value>Формат: 1.2.3. Оставьте пустым, чтобы отключить порог минимальной версии.</value>
+
+  </data>
+
+  <data name="official_publisher_minimum_version_invalid" xml:space="preserve">
+
+    <value>Минимально поддерживаемая версия должна быть допустимой, например 1.2.3.</value>
+
+  </data>
+
+  <data name="official_publisher_minimum_version_label" xml:space="preserve">
+
+    <value>Минимально поддерживаемая версия</value>
+
+  </data>
+
+  <data name="official_publisher_minimum_version_pending" xml:space="preserve">
+
+    <value>Минимальная версия ожидает публикации</value>
+
+  </data>
+
+  <data name="official_publisher_minimum_version_preview" xml:space="preserve">
+
+    <value>Минимально поддерживаемая версия: {0}</value>
+
+  </data>
+
+  <data name="official_publisher_minimum_version_up_to_date" xml:space="preserve">
+
+    <value>Минимально поддерживаемая версия актуальна.</value>
+
+  </data>
+
+  <data name="startup_background_image_hint" xml:space="preserve">
+
+    <value>Добавьте одно или несколько изображений для экрана запуска</value>
+
+  </data>
+
+  <data name="template_card_size_preset_hint" xml:space="preserve">
+
+    <value>Размер отображения карточек шаблонов диаграмм в библиотеке</value>
+
+  </data>
+
+  <data name="ui_scale_auto" xml:space="preserve">
+
+    <value>Авто</value>
+
+  </data>
+
+  <data name="ui_scale_mode" xml:space="preserve">
+
+    <value>Масштаб интерфейса</value>
+
+  </data>
+
+  <data name="ui_scale_mode_hint" xml:space="preserve">
+
+    <value>Автоматически подстраиваться под текущий дисплей или задать фиксированный масштаб интерфейса</value>
+
+  </data>
+
+  <data name="update_auto_check_notify" xml:space="preserve">
+
+    <value>Доступна новая версия. Откройте «Параметры», чтобы скачать и установить.</value>
+
+  </data>
+
+  <data name="update_download_confirm_shutdown" xml:space="preserve">
+
+    <value>Загрузка завершена. Приложение будет закрыто, и запустится мастер установки. Продолжить?</value>
+
+  </data>
+
+  <data name="update_installer_not_found" xml:space="preserve">
+
+    <value>В последнем выпуске не найден установочный пакет.</value>
+
+  </data>
+
+  <data name="update_installer_saved" xml:space="preserve">
+
+    <value>Установочный пакет загружен и сохранён.</value>
+
+  </data>
+
+  <data name="update_portable_mode_hint" xml:space="preserve">
+
+    <value>Обнаружен портативный режим. Скачайте установщик или портативный пакет со страницы Releases.</value>
+
+  </data>
+
 </root>
 
 

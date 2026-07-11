@@ -15,6 +15,12 @@ namespace GeoChemistryNexus.ViewModels
         public event Action<SpiderSampleLayerItemViewModel, string>? SampleNameChanged;
         public override bool ShowInlineDeleteButton => true;
 
+        public override void ClearEventSubscriptions()
+        {
+            SampleNameChanged = null;
+            base.ClearEventSubscriptions();
+        }
+
         private sealed class ScatterStyleState
         {
             public ScottPlot.Color Color { get; private set; }

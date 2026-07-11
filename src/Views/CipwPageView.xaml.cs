@@ -1,6 +1,7 @@
 using GeoChemistryNexus.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using unvell.ReoGrid;
 using unvell.ReoGrid.Events;
 
@@ -20,9 +21,9 @@ namespace GeoChemistryNexus.Views
         private double _normalPanelHeight = 180;
 
         /// <summary>
-        /// 是否处于最大化状态
+        /// 诊断详情面板最小高度
         /// </summary>
-        private bool _isMaximized = false;
+        private const double MinDetailPanelHeight = 80;
 
         /// <summary>
         /// 用户是否手动收缩了面板（锁定收缩状态）
@@ -39,9 +40,7 @@ namespace GeoChemistryNexus.Views
             _viewModel.InitializeWorksheet(CipwReoGrid);
 
             // 默认状态：收缩为状态条
-            DiagnosticRowDef.Height = GridLength.Auto;
-            _viewModel.IsDiagnosticPanelExpanded = false;
-            ExpandIcon.Text = "\uE70E";
+            CollapseDiagnosticPanel(saveHeight: false);
 
             // 监听选区变化
             CipwReoGrid.CurrentWorksheet.SelectionRangeChanged += OnSelectionRangeChanged;
@@ -80,56 +79,9 @@ namespace GeoChemistryNexus.Views
             _viewModel.OnRowSelected(worksheet, row);
 
             // 如果用户没有手动锁定收缩，且当前行有诊断数据，自动展开面板
-            if (!_userManuallyCollapsed && !_isMaximized && _viewModel.HasDiagnosticData)
+            if (!_userManuallyCollapsed && _viewModel.HasDiagnosticData && !_viewModel.IsDiagnosticPanelExpanded)
             {
-                if (!_viewModel.IsDiagnosticPanelExpanded)
-                {
-                    DiagnosticRowDef.Height = new GridLength(_normalPanelHeight);
-                    _viewModel.IsDiagnosticPanelExpanded = true;
-                    ExpandIcon.Text = "\uE70D";
-                }
-            }
-        }
-
-        /// <summary>
-        /// 最大化/还原诊断面板
-        /// 最大化：占据大部分空间（数据表格保留小部分可见）
-        /// 还原：恢复之前的高度
-        /// </summary>
-        private void OnMaximizePanelClick(object? sender, RoutedEventArgs e)
-        {
-            if (_isMaximized)
-            {
-                // 还原
-                GridRowDef.Height = new GridLength(1, GridUnitType.Star);
-                DiagnosticRowDef.Height = new GridLength(_normalPanelHeight);
-                _isMaximized = false;
-                _viewModel.IsDiagnosticMaximized = false;
-                _viewModel.IsDiagnosticPanelExpanded = true;
-                _userManuallyCollapsed = false;
-                MaximizeIcon.Text = "\uE740";
-                ExpandIcon.Text = "\uE70D";
-            }
-            else
-            {
-                // 最大化：先确保面板内容可见
-                if (!_viewModel.IsDiagnosticPanelExpanded)
-                {
-                    _viewModel.IsDiagnosticPanelExpanded = true;
-                }
-                // 记录当前高度
-                if (DiagnosticRowDef.Height.IsAbsolute && DiagnosticRowDef.Height.Value > 40)
-                {
-                    _normalPanelHeight = DiagnosticRowDef.Height.Value;
-                }
-                // 数据表格保留小部分，诊断面板占大部分（1:3 比例）
-                GridRowDef.Height = new GridLength(1, GridUnitType.Star);
-                DiagnosticRowDef.Height = new GridLength(3, GridUnitType.Star);
-                _isMaximized = true;
-                _viewModel.IsDiagnosticMaximized = true;
-                _userManuallyCollapsed = false;
-                MaximizeIcon.Text = "\uE73F";
-                ExpandIcon.Text = "\uE70D";
+                ExpandDiagnosticPanel();
             }
         }
 
@@ -142,31 +94,61 @@ namespace GeoChemistryNexus.Views
         {
             if (_viewModel.IsDiagnosticPanelExpanded)
             {
-                // 用户手动收缩 → 锁定
-                if (_isMaximized)
-                {
-                    // 先退出最大化
-                    GridRowDef.Height = new GridLength(1, GridUnitType.Star);
-                    _isMaximized = false;
-                    _viewModel.IsDiagnosticMaximized = false;
-                    MaximizeIcon.Text = "\uE740";
-                }
-                else if (DiagnosticRowDef.Height.IsAbsolute && DiagnosticRowDef.Height.Value > 40)
-                {
-                    _normalPanelHeight = DiagnosticRowDef.Height.Value;
-                }
-                DiagnosticRowDef.Height = GridLength.Auto;
-                _viewModel.IsDiagnosticPanelExpanded = false;
+                CollapseDiagnosticPanel(saveHeight: true);
                 _userManuallyCollapsed = true;
-                ExpandIcon.Text = "\uE70E";
             }
             else
             {
-                // 用户手动展开 → 解除锁定
-                DiagnosticRowDef.Height = new GridLength(_normalPanelHeight);
-                _viewModel.IsDiagnosticPanelExpanded = true;
+                ExpandDiagnosticPanel();
                 _userManuallyCollapsed = false;
-                ExpandIcon.Text = "\uE70D";
+            }
+        }
+
+        /// <summary>
+        /// 拖动分隔条结束后记录当前面板高度
+        /// </summary>
+        private void OnDetailSplitterDragCompleted(object? sender, DragCompletedEventArgs e)
+        {
+            RememberDetailPanelHeight();
+        }
+
+        /// <summary>
+        /// 展开诊断面板并显示可拖动分隔条
+        /// </summary>
+        private void ExpandDiagnosticPanel()
+        {
+            DiagnosticRowDef.MinHeight = MinDetailPanelHeight;
+            DiagnosticRowDef.Height = new GridLength(_normalPanelHeight);
+            DetailSplitter.Visibility = Visibility.Visible;
+            _viewModel.IsDiagnosticPanelExpanded = true;
+            ExpandIcon.Text = "\uE70D";
+        }
+
+        /// <summary>
+        /// 收缩诊断面板并隐藏分隔条
+        /// </summary>
+        private void CollapseDiagnosticPanel(bool saveHeight)
+        {
+            if (saveHeight)
+            {
+                RememberDetailPanelHeight();
+            }
+
+            DiagnosticRowDef.MinHeight = 0;
+            DiagnosticRowDef.Height = GridLength.Auto;
+            DetailSplitter.Visibility = Visibility.Collapsed;
+            _viewModel.IsDiagnosticPanelExpanded = false;
+            ExpandIcon.Text = "\uE70E";
+        }
+
+        /// <summary>
+        /// 记录当前诊断面板高度，供下次展开时恢复
+        /// </summary>
+        private void RememberDetailPanelHeight()
+        {
+            if (DiagnosticRowDef.Height.IsAbsolute && DiagnosticRowDef.Height.Value >= MinDetailPanelHeight)
+            {
+                _normalPanelHeight = DiagnosticRowDef.Height.Value;
             }
         }
 

@@ -29,15 +29,18 @@ namespace GeoChemistryNexus.Services
         public static void InitializeLanguage()
         {
             string? language = ConfigHelper.GetConfig("language");
-            if (language != "")
+            if (!string.IsNullOrEmpty(language))
             {
                 CurrentLanguage = AppCultureRegistry.ResolveAppLanguage(language);
-                LanguageService.Instance.ChangeLanguage(new System.Globalization.CultureInfo(CurrentLanguage));
+                Instance.ChangeLanguage(new CultureInfo(CurrentLanguage));
+                return;
             }
-            else
-            {
-                LanguageService.Instance.ChangeLanguage(new System.Globalization.CultureInfo(AppCultureRegistry.DefaultAppLanguage));
-            }
+
+            // 首次启动：按系统 UI 语言选择默认语言并写入配置
+            string detected = AppCultureRegistry.ResolveFromSystemCulture();
+            ConfigHelper.SetConfig("language", detected);
+            CurrentLanguage = detected;
+            Instance.ChangeLanguage(new CultureInfo(detected));
         }
 
         // 主动获取语言设置
@@ -57,7 +60,7 @@ namespace GeoChemistryNexus.Services
             return AppCultureRegistry.GetDisplayName(code);
         }
 
-        public string this[string name]
+        public string? this[string name]
         {
             get
             {
@@ -67,8 +70,13 @@ namespace GeoChemistryNexus.Services
                 }
 
                 var culture = new CultureInfo(AppCultureRegistry.ResolveAppLanguage(CurrentLanguage));
-                return _resourceManager.GetString(name, culture) ?? string.Empty;
+                return _resourceManager.GetString(name, culture);
             }
+        }
+
+        public static string GetString(string key, string fallback)
+        {
+            return string.IsNullOrEmpty(Instance[key]) ? fallback : Instance[key]!;
         }
 
         public void ChangeLanguage(CultureInfo cultureInfo)

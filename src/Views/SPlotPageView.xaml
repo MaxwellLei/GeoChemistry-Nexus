@@ -7,12 +7,17 @@
       xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
       xmlns:hc="https://handyorg.github.io/handycontrol"
       xmlns:local="clr-namespace:GeoChemistryNexus.Views"
+      xmlns:models="clr-namespace:GeoChemistryNexus.Models"
+      xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
       xmlns:sys="clr-namespace:System;assembly=mscorlib"
       mc:Ignorable="d" 
       d:DesignHeight="800" d:DesignWidth="600"
       Title="SPlotPageView"
       UseLayoutRounding="True" TextOptions.TextFormattingMode="Display">
 
+    <Page.Resources>
+        <cvs:TemplateCardSizePresetToDisplayConverter x:Key="TemplateCardSizePresetToDisplayConverter"/>
+    </Page.Resources>
     <Grid>
         <hc:ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
             <StackPanel Margin="20,20,20,40" MaxWidth="800" HorizontalAlignment="Stretch">
@@ -22,61 +27,77 @@
                 <Border Style="{StaticResource ModernSettingsCard}">
                     <StackPanel>
                         <!-- CorelDRAW -->
-                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                        <Grid MinHeight="56" Background="Transparent" Margin="16,4">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="CorelDRAW" VerticalAlignment="Center" FontSize="14" Width="120"/>
-                            <TextBox Grid.Column="1" Text="{Binding CorelDRAWPath}" IsReadOnly="True" BorderThickness="0" Background="Transparent" 
-                                     VerticalAlignment="Center" Foreground="Gray" TextAlignment="Right" Margin="10,0"/>
-                            <Button Grid.Column="2" Content="..." Command="{Binding SelectCorelDRAWPathCommand}" Width="40" Height="28"/>
+                            <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+                                <TextBlock Text="CorelDRAW" FontSize="14"/>
+                                <TextBlock Text="{Binding [coreldraw_path_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=设置 CorelDRAW 可执行文件路径，用于打开矢量图}" Style="{StaticResource ModernSettingsItemHintStyle}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBox Text="{Binding CorelDRAWPath}" IsReadOnly="True" BorderThickness="0" Background="Transparent"
+                                         VerticalAlignment="Center" Foreground="Gray" TextAlignment="Right" Width="220" Margin="0,0,8,0"/>
+                                <Button Content="..." Command="{Binding SelectCorelDRAWPathCommand}" Width="40" Height="28"/>
+                            </StackPanel>
                         </Grid>
                         
                         <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
 
                         <!-- Inkscape -->
-                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                        <Grid MinHeight="56" Background="Transparent" Margin="16,4">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Inkscape" VerticalAlignment="Center" FontSize="14" Width="120"/>
-                            <TextBox Grid.Column="1" Text="{Binding InkscapePath}" IsReadOnly="True" BorderThickness="0" Background="Transparent" 
-                                     VerticalAlignment="Center" Foreground="Gray" TextAlignment="Right" Margin="10,0"/>
-                            <Button Grid.Column="2" Content="..." Command="{Binding SelectInkscapePathCommand}" Width="40" Height="28"/>
+                            <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+                                <TextBlock Text="Inkscape" FontSize="14"/>
+                                <TextBlock Text="{Binding [inkscape_path_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=设置 Inkscape 可执行文件路径，用于打开矢量图}" Style="{StaticResource ModernSettingsItemHintStyle}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBox Text="{Binding InkscapePath}" IsReadOnly="True" BorderThickness="0" Background="Transparent"
+                                         VerticalAlignment="Center" Foreground="Gray" TextAlignment="Right" Width="220" Margin="0,0,8,0"/>
+                                <Button Content="..." Command="{Binding SelectInkscapePathCommand}" Width="40" Height="28"/>
+                            </StackPanel>
                         </Grid>
 
                         <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
 
                         <!-- Illustrator -->
-                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                        <Grid MinHeight="56" Background="Transparent" Margin="16,4">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Adobe Illustrator" VerticalAlignment="Center" FontSize="14" Width="120"/>
-                            <TextBox Grid.Column="1" Text="{Binding AdobeIllustratorPath}" IsReadOnly="True" BorderThickness="0" Background="Transparent" 
-                                     VerticalAlignment="Center" Foreground="Gray" TextAlignment="Right" Margin="10,0"/>
-                            <Button Grid.Column="2" Content="..." Command="{Binding SelectAdobeIllustratorPathCommand}" Width="40" Height="28"/>
+                            <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+                                <TextBlock Text="Adobe Illustrator" FontSize="14"/>
+                                <TextBlock Text="{Binding [adobe_illustrator_path_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=设置 Adobe Illustrator 可执行文件路径，用于打开矢量图}" Style="{StaticResource ModernSettingsItemHintStyle}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBox Text="{Binding AdobeIllustratorPath}" IsReadOnly="True" BorderThickness="0" Background="Transparent"
+                                         VerticalAlignment="Center" Foreground="Gray" TextAlignment="Right" Width="220" Margin="0,0,8,0"/>
+                                <Button Content="..." Command="{Binding SelectAdobeIllustratorPathCommand}" Width="40" Height="28"/>
+                            </StackPanel>
                         </Grid>
 
                         <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
 
                         <!-- Custom -->
-                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                        <Grid MinHeight="56" Background="Transparent" Margin="16,4">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding [custom_app],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" FontSize="14" Width="120"/>
-                            <TextBox Grid.Column="1" Text="{Binding CustomThirdPartyAppPath}" IsReadOnly="True" BorderThickness="0" Background="Transparent" 
-                                     VerticalAlignment="Center" Foreground="Gray" TextAlignment="Right" Margin="10,0"/>
-                            <Button Grid.Column="2" Content="..." Command="{Binding SelectCustomThirdPartyAppPathCommand}" Width="40" Height="28"/>
+                            <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+                                <TextBlock Text="{Binding [custom_app],Source={x:Static lg:LanguageService.Instance}}" FontSize="14"/>
+                                <TextBlock Text="{Binding [custom_app_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=设置自定义第三方绘图软件的可执行文件路径}" Style="{StaticResource ModernSettingsItemHintStyle}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBox Text="{Binding CustomThirdPartyAppPath}" IsReadOnly="True" BorderThickness="0" Background="Transparent"
+                                         VerticalAlignment="Center" Foreground="Gray" TextAlignment="Right" Width="220" Margin="0,0,8,0"/>
+                                <Button Content="..." Command="{Binding SelectCustomThirdPartyAppPathCommand}" Width="40" Height="28"/>
+                            </StackPanel>
                         </Grid>
                     </StackPanel>
                 </Border>
@@ -86,14 +107,17 @@
                 <Border Style="{StaticResource ModernSettingsCard}">
                     <StackPanel>
                         <!-- Default Expand Level -->
-                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                        <Grid MinHeight="56" Background="Transparent" Margin="16,4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding [default_diagram_expand_level],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" FontSize="14"/>
+                            <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+                                <TextBlock Text="{Binding [default_diagram_expand_level],Source={x:Static lg:LanguageService.Instance}}" FontSize="14"/>
+                                <TextBlock Text="{Binding [default_diagram_expand_level_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=图解分类树默认展开到的层级深度}" Style="{StaticResource ModernSettingsItemHintStyle}"/>
+                            </StackPanel>
                             <ComboBox SelectedValue="{Binding DefaultTreeExpandLevel}" FontSize="12" VerticalAlignment="Center" 
-                                      HorizontalAlignment="Right" SelectedValuePath="Content" Width="80" Height="30">
+                                      HorizontalAlignment="Right" SelectedValuePath="Content" Width="80" Height="30" Grid.Column="1">
                                 <ComboBox.Items>
                                     <ComboBoxItem Content="1"/>
                                     <ComboBoxItem Content="2"/>
@@ -106,27 +130,33 @@
                         <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
 
                         <!-- Default App -->
-                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                        <Grid MinHeight="56" Background="Transparent" Margin="16,4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding [default_third_party_editor],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" FontSize="14"/>
+                            <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+                                <TextBlock Text="{Binding [default_third_party_editor],Source={x:Static lg:LanguageService.Instance}}" FontSize="14"/>
+                                <TextBlock Text="{Binding [default_third_party_editor_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=编辑或导出矢量图时默认打开的第三方软件}" Style="{StaticResource ModernSettingsItemHintStyle}"/>
+                            </StackPanel>
                             <ComboBox ItemsSource="{Binding ThirdPartyApps}" SelectedValue="{Binding SelectedThirdPartyApp}" 
-                                      FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Right" Width="140" Height="30"/>
+                                      FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Right" Width="140" Height="30" Grid.Column="1"/>
                         </Grid>
 
                         <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
 
                         <!-- Object Selection Trigger -->
-                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                        <Grid MinHeight="56" Background="Transparent" Margin="16,4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding [object_selection_trigger],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" FontSize="14"/>
+                            <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+                                <TextBlock Text="{Binding [object_selection_trigger],Source={x:Static lg:LanguageService.Instance}}" FontSize="14"/>
+                                <TextBlock Text="{Binding [object_selection_trigger_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=在绘图画布上选中图形对象的鼠标操作方式}" Style="{StaticResource ModernSettingsItemHintStyle}"/>
+                            </StackPanel>
                             <ComboBox SelectedValue="{Binding ObjectSelectionTrigger}" FontSize="12" VerticalAlignment="Center" 
-                                      HorizontalAlignment="Right" SelectedValuePath="Tag" Width="140" Height="30">
+                                      HorizontalAlignment="Right" SelectedValuePath="Tag" Width="140" Height="30" Grid.Column="1">
                                 <ComboBox.Items>
                                     <ComboBoxItem Content="{Binding [single_click],Source={x:Static lg:LanguageService.Instance}}" Tag="SingleClick"/>
                                     <ComboBoxItem Content="{Binding [double_click],Source={x:Static lg:LanguageService.Instance}}" Tag="DoubleClick"/>
@@ -137,30 +167,65 @@
                         <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
 
                         <!-- Mouse Snap Auto Recognition Frame Rate -->
-                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                        <Grid MinHeight="56" Background="Transparent" Margin="16,4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding [mouse_snap_auto_recognition_frame_rate],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" FontSize="14"/>
+                            <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+                                <TextBlock Text="{Binding [mouse_snap_auto_recognition_frame_rate],Source={x:Static lg:LanguageService.Instance}}" FontSize="14"/>
+                                <TextBlock Text="{Binding [mouse_snap_auto_recognition_frame_rate_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=鼠标吸附自动识别时的刷新帧率，越高越流畅但更耗性能}" Style="{StaticResource ModernSettingsItemHintStyle}"/>
+                            </StackPanel>
                             <ComboBox ItemsSource="{Binding MouseSnapAutoRecognitionFrameRates}"
                                       SelectedValue="{Binding MouseSnapAutoRecognitionFrameRate}"
                                       FontSize="12"
                                       VerticalAlignment="Center"
                                       HorizontalAlignment="Right"
                                       Width="100"
-                                      Height="30"/>
+                                      Height="30"
+                                      Grid.Column="1"/>
+                        </Grid>
+
+                        <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
+
+                        <!-- Template Card Size Preset -->
+                        <Grid MinHeight="56" Background="Transparent" Margin="16,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+                                <TextBlock Text="{Binding [template_card_size_preset],Source={x:Static lg:LanguageService.Instance}}" FontSize="14"/>
+                                <TextBlock Text="{Binding [template_card_size_preset_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=图解模板库中卡片的显示尺寸}" Style="{StaticResource ModernSettingsItemHintStyle}"/>
+                            </StackPanel>
+                            <ListBox Grid.Column="1"
+                                     Height="32" Width="140"
+                                     VerticalAlignment="Center" HorizontalAlignment="Right"
+                                     Style="{StaticResource TemplateCardSizeSegmentedStyle}"
+                                     ItemContainerStyle="{StaticResource TemplateCardSizeSegmentedItemStyle}"
+                                     ItemsSource="{Binding TemplateCardSizePresetOptions}"
+                                     SelectedItem="{Binding TemplateCardSizePreset, Mode=TwoWay}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Converter={StaticResource TemplateCardSizePresetToDisplayConverter}}"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
                         </Grid>
 
                         <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
 
                         <!-- Current Diagram Version (Read-Only) -->
-                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                        <Grid MinHeight="56" Background="Transparent" Margin="16,4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding [current_diagram_version],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" FontSize="14"/>
+                            <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+                                <TextBlock Text="{Binding [current_diagram_version],Source={x:Static lg:LanguageService.Instance}}" FontSize="14"/>
+                                <TextBlock Text="{Binding [current_diagram_version_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=当前软件支持的图解模板格式版本（只读）}" Style="{StaticResource ModernSettingsItemHintStyle}"/>
+                            </StackPanel>
                             <TextBlock Grid.Column="1" Text="{Binding CurrentDiagramVersion}" VerticalAlignment="Center" 
                                        FontSize="14" Foreground="Gray" HorizontalAlignment="Right"/>
                         </Grid>
@@ -172,14 +237,17 @@
                 <Border Style="{StaticResource ModernSettingsCard}">
                     <StackPanel>
                         <!-- Template Updates -->
-                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                        <Grid MinHeight="56" Background="Transparent" Margin="16,4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding [auto_check_diagram_template_updates],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" FontSize="14"/>
+                            <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+                                <TextBlock Text="{Binding [auto_check_diagram_template_updates],Source={x:Static lg:LanguageService.Instance}}" FontSize="14"/>
+                                <TextBlock Text="{Binding [auto_check_diagram_template_updates_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=启动时自动检查图解模板是否有更新}" Style="{StaticResource ModernSettingsItemHintStyle}"/>
+                            </StackPanel>
                             <ToggleButton Style="{StaticResource ToggleButtonSwitch}" IsChecked="{Binding AutoCheckTemplateUpdate}" 
-                                          HorizontalAlignment="Right"/>
+                                          HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="1"/>
                         </Grid>
                     </StackPanel>
                 </Border>
@@ -188,4 +256,3 @@
         </hc:ScrollViewer>
     </Grid>
 </Page>
-

@@ -14,17 +14,8 @@ namespace GeoChemistryNexus.Services
 {
     public static class GraphMapTemplatePublishService
     {
-        private static readonly JsonSerializerOptions ListJsonOptions = new()
-        {
-            WriteIndented = true,
-            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-        };
-
-        private static readonly JsonSerializerOptions ManifestJsonOptions = new()
-        {
-            WriteIndented = true,
-            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-        };
+        private static readonly JsonSerializerOptions PublishJsonOptions =
+            JsonHelper.CreateRelaxedIndentedOptions();
 
         /// <summary>
         /// 对比线上清单与本地 DB，返回发布预览
@@ -39,7 +30,7 @@ namespace GeoChemistryNexus.Services
             try
             {
                 string remoteJson = await UpdateHelper.GetUrlContentAsync(OfficialContentEndpoints.GraphMapListUrl);
-                var remoteList = JsonSerializer.Deserialize<List<GraphMapTemplateService.JsonTemplateItem>>(remoteJson);
+                var remoteList = JsonHelper.Deserialize<List<GraphMapTemplateService.JsonTemplateItem>>(remoteJson);
                 if (remoteList != null)
                 {
                     foreach (var item in remoteList)
@@ -185,10 +176,10 @@ namespace GeoChemistryNexus.Services
                 .ToList();
 
             string graphMapListPath = Path.Combine(outputDir, OfficialContentEndpoints.GraphMapListFileName);
-            File.WriteAllText(graphMapListPath, JsonSerializer.Serialize(exportList, ListJsonOptions));
+            File.WriteAllText(graphMapListPath, JsonSerializer.Serialize(exportList, PublishJsonOptions));
 
             string categoriesFileName = OfficialContentEndpoints.PlotTemplateCategoriesFileName;
-            string srcCategoriesPath = AppDataPathHelper.GetDataPath("PlotData", categoriesFileName);
+            string srcCategoriesPath = PlotCategoryHelper.ResolveExportConfigPath();
             string dstCategoriesPath = Path.Combine(outputDir, categoriesFileName);
             if (File.Exists(srcCategoriesPath))
                 File.Copy(srcCategoriesPath, dstCategoriesPath, true);
@@ -201,7 +192,7 @@ namespace GeoChemistryNexus.Services
                 ? UpdateHelper.ComputeFileMd5(homeLinksCatalogPath)
                 : LoadExistingHomeLinksHash(outputDir);
 
-            var serverInfo = LoadMergedServerInfo(outputDir);
+            var serverInfo = UpdateHelper.LoadMergedServerInfo(outputDir);
             serverInfo.ListHash = listHash;
             serverInfo.ListPlotCategoriesHash = categoriesHash;
             serverInfo.HomeLinksHash = homeLinksHash;
@@ -213,10 +204,10 @@ namespace GeoChemistryNexus.Services
                 serverInfo.LatestAppVersion = options.PreserveLatestAppVersion;
 
             string serverInfoPath = Path.Combine(outputDir, OfficialContentEndpoints.ServerInfoFileName);
-            File.WriteAllText(serverInfoPath, JsonSerializer.Serialize(serverInfo, ListJsonOptions));
+            File.WriteAllText(serverInfoPath, JsonSerializer.Serialize(serverInfo, PublishJsonOptions));
 
             string manifestPath = Path.Combine(outputDir, OfficialContentEndpoints.PublishManifestFileName);
-            File.WriteAllText(manifestPath, JsonSerializer.Serialize(manifestEntries, ManifestJsonOptions));
+            File.WriteAllText(manifestPath, JsonSerializer.Serialize(manifestEntries, PublishJsonOptions));
 
             return new PublishResult
             {
@@ -238,16 +229,17 @@ namespace GeoChemistryNexus.Services
         }
 
         /// <summary>
-        /// 发布成功后清除所有官方模板的 PendingPublish 标记
+        /// 发布成功后清除所有官方模板的 PendingPublish 标记，以及已推送的 IsNewTemplate 标记
         /// </summary>
         public static void ClearPendingPublishFlags()
         {
             var dbService = GraphMapDatabaseService.Instance;
-            foreach (var summary in dbService.GetSummaries().Where(x => !x.IsCustom && x.PendingPublish))
+            foreach (var summary in dbService.GetSummaries().Where(x => !x.IsCustom && (x.PendingPublish || x.IsNewTemplate)))
             {
                 var entity = dbService.GetTemplate(summary.Id);
                 if (entity == null) continue;
                 entity.PendingPublish = false;
+                entity.IsNewTemplate = false;
                 dbService.UpsertTemplate(entity);
             }
         }
@@ -262,7 +254,7 @@ namespace GeoChemistryNexus.Services
             try
             {
                 string json = File.ReadAllText(listPath);
-                var items = JsonSerializer.Deserialize<List<GraphMapTemplateService.JsonTemplateItem>>(json);
+                var items = JsonHelper.Deserialize<List<GraphMapTemplateService.JsonTemplateItem>>(json);
                 if (items == null) return result;
 
                 foreach (var item in items)
@@ -281,7 +273,7 @@ namespace GeoChemistryNexus.Services
 
         private static string ExportHomeLinksCatalog(string outputDir)
         {
-            string srcPath = HomeLinksCatalogService.GetBundledCatalogPath();
+            string srcPath = HomeLinksPublishService.ResolveExportCatalogPath();
             if (!File.Exists(srcPath))
                 return string.Empty;
 
@@ -292,41 +284,7 @@ namespace GeoChemistryNexus.Services
 
         private static string LoadExistingHomeLinksHash(string outputDir)
         {
-            return LoadMergedServerInfo(outputDir).HomeLinksHash ?? string.Empty;
-        }
-
-        private static ServerInfo LoadMergedServerInfo(string outputDir)
-        {
-            string path = Path.Combine(outputDir, OfficialContentEndpoints.ServerInfoFileName);
-            if (File.Exists(path))
-            {
-                try
-                {
-                    var local = JsonSerializer.Deserialize<ServerInfo>(File.ReadAllText(path));
-                    if (local != null)
-                        return local;
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine($"[PublishService] Load local server_info failed: {ex.Message}");
-                }
-            }
-
-            try
-            {
-                string json = UpdateHelper.GetUrlContentAsync(OfficialContentEndpoints.ServerInfoUrl)
-                    .GetAwaiter()
-                    .GetResult();
-                var remote = JsonSerializer.Deserialize<ServerInfo>(json);
-                if (remote != null)
-                    return remote;
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"[PublishService] Load remote server_info failed: {ex.Message}");
-            }
-
-            return new ServerInfo();
+            return UpdateHelper.LoadMergedServerInfo(outputDir).HomeLinksHash ?? string.Empty;
         }
 
         private static string GetEffectiveHash(GraphMapTemplateEntity summary)

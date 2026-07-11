@@ -4,12 +4,13 @@ using CommunityToolkit.Mvvm.Messaging;
 using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Services;
 using GeoChemistryNexus.Messages;
+using GeoChemistryNexus.Models;
 using System.Collections.ObjectModel;
 using System.Windows;
 
 namespace GeoChemistryNexus.ViewModels
 {
-    public partial class SPlotPageViewModel : ObservableObject
+    public partial class SPlotPageViewModel : ObservableObject, IRecipient<TemplateCardLayoutChangedMessage>
     {
         [ObservableProperty]
         private string corelDRAWPath = string.Empty;
@@ -44,6 +45,16 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private int mouseSnapAutoRecognitionFrameRate;
 
+        // 图解模板卡片大小档位
+        [ObservableProperty]
+        private TemplateCardSizePreset templateCardSizePreset = TemplateCardSizePreset.Standard;
+
+        public TemplateCardSizePreset[] TemplateCardSizePresetOptions { get; } =
+        {
+            TemplateCardSizePreset.Compact,
+            TemplateCardSizePreset.Standard
+        };
+
         // 当前图解版本（只读）
         public string CurrentDiagramVersion { get; } = ContentVersionHelper.GetDiagramFormatVersion();
 
@@ -58,6 +69,8 @@ namespace GeoChemistryNexus.ViewModels
 
         public SPlotPageViewModel()
         {
+            WeakReferenceMessenger.Default.RegisterAll(this);
+
             SelectCorelDRAWPathCommand = new RelayCommand(ExecuteSelectCorelDRAWPath);
             SelectInkscapePathCommand = new RelayCommand(ExecuteSelectInkscapePath);
             SelectAdobeIllustratorPathCommand = new RelayCommand(ExecuteSelectAdobeIllustratorPath);
@@ -66,8 +79,15 @@ namespace GeoChemistryNexus.ViewModels
             LoadConfig();
         }
 
+        public void Receive(TemplateCardLayoutChangedMessage message)
+        {
+            ApplyTemplateCardLayoutSettings(message.Value, persist: false, notify: false, showToast: false);
+        }
+
         private void LoadConfig()
         {
+            isLoading = true;
+
             CorelDRAWPath = ConfigHelper.GetConfig("coreldraw_path") ?? string.Empty;
             InkscapePath = ConfigHelper.GetConfig("inkscape_path") ?? string.Empty;
             AdobeIllustratorPath = ConfigHelper.GetConfig("adobe_illustrator_path") ?? string.Empty;
@@ -108,8 +128,52 @@ namespace GeoChemistryNexus.ViewModels
             {
                 MouseSnapAutoRecognitionFrameRate = 24;
             }
+
+            ApplyTemplateCardLayoutSettings(TemplateCardLayoutHelper.LoadFromConfig(), persist: false, notify: false, showToast: false);
             
             isLoading = false;
+        }
+
+        private void ApplyTemplateCardLayoutSettings(TemplateCardLayoutSettings settings, bool persist, bool notify, bool showToast)
+        {
+            bool previousLoading = isLoading;
+            isLoading = true;
+            try
+            {
+                TemplateCardSizePreset = settings.SizePreset;
+            }
+            finally
+            {
+                isLoading = previousLoading;
+            }
+
+            if (persist)
+            {
+                TemplateCardLayoutHelper.SaveToConfig(TemplateCardSizePreset);
+            }
+
+            if (notify)
+            {
+                WeakReferenceMessenger.Default.Send(new TemplateCardLayoutChangedMessage(new TemplateCardLayoutSettings
+                {
+                    SizePreset = TemplateCardSizePreset
+                }));
+            }
+
+            if (showToast)
+            {
+                MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
+            }
+        }
+
+        private void PersistTemplateCardLayoutFromUi()
+        {
+            if (isLoading) return;
+
+            ApplyTemplateCardLayoutSettings(new TemplateCardLayoutSettings
+            {
+                SizePreset = TemplateCardSizePreset
+            }, persist: true, notify: true, showToast: true);
         }
 
         private void ExecuteSelectCorelDRAWPath()
@@ -195,6 +259,11 @@ namespace GeoChemistryNexus.ViewModels
             ConfigHelper.SetConfig("mouse_snap_auto_recognition_frame_rate", value.ToString());
             WeakReferenceMessenger.Default.Send(new MouseSnapAutoRecognitionFrameRateChangedMessage(value));
             MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
+        }
+
+        partial void OnTemplateCardSizePresetChanged(TemplateCardSizePreset value)
+        {
+            PersistTemplateCardLayoutFromUi();
         }
     }
 }

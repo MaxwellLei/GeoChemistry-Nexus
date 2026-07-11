@@ -129,13 +129,15 @@ namespace GeoChemistryNexus.Services
                         || fullEntity.GraphMapPath != item.GraphMapPath
                         || !NodeListEquals(fullEntity.NodeList, item.NodeList)
                         || (!string.IsNullOrWhiteSpace(item.Version)
-                            && ContentVersionHelper.Compare(fullEntity.Version, item.Version) != 0);
+                            && ContentVersionHelper.Compare(fullEntity.Version, item.Version) != 0)
+                        || fullEntity.IsNewTemplate;
 
                     if (metadataChanged)
                     {
                         fullEntity.Status = newStatus;
                         fullEntity.GraphMapPath = item.GraphMapPath;
                         fullEntity.NodeList = item.NodeList;
+                        fullEntity.IsNewTemplate = false;
 
                         if (!string.IsNullOrWhiteSpace(item.Version))
                             fullEntity.Version = ContentVersionHelper.Normalize(item.Version);

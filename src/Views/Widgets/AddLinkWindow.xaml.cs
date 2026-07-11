@@ -10,30 +10,12 @@ namespace GeoChemistryNexus.Views.Widgets
     {
         public HomeAppItem? Result { get; private set; }
 
-        public class IconItem
-        {
-            public string Name { get; set; } = string.Empty;
-            public string Code { get; set; } = string.Empty;
-        }
-
         public AddLinkWindow()
         {
             InitializeComponent();
-            
-            var icons = new List<IconItem>
-            {
-                new IconItem { Name = "网页 (Globe)", Code = "\uE774" },
-                new IconItem { Name = "链接 (Link)", Code = "\uE71B" },
-                new IconItem { Name = "收藏 (Star)", Code = "\uE734" },
-                new IconItem { Name = "主页 (Home)", Code = "\uE80F" },
-                new IconItem { Name = "文档 (Document)", Code = "\uE8A5" },
-                new IconItem { Name = "邮件 (Mail)", Code = "\uE715" },
-                new IconItem { Name = "云端 (Cloud)", Code = "\uE753" },
-                new IconItem { Name = "设置 (Settings)", Code = "\uE713" },
-                new IconItem { Name = "搜索 (Search)", Code = "\uE721" }
-            };
-            
-            IconBox.ItemsSource = icons;
+            UiScaleHelper.Attach(this);
+
+            IconBox.ItemsSource = HomeIconHelper.CreatePresetIcons();
             IconBox.SelectedIndex = 0;
         }
 

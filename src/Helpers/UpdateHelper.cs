@@ -63,7 +63,44 @@ namespace GeoChemistryNexus.Helpers
             if (string.IsNullOrWhiteSpace(json))
                 return null;
 
-            return JsonSerializer.Deserialize<ServerInfo>(json);
+            return JsonHelper.Deserialize<ServerInfo>(json);
+        }
+
+        /// <summary>
+        /// 发布合并用：优先读本地输出目录中的 server_info.json，否则拉取远端。
+        /// </summary>
+        public static ServerInfo LoadMergedServerInfo(string outputDir)
+        {
+            string localPath = Path.Combine(outputDir, OfficialContentEndpoints.ServerInfoFileName);
+            if (File.Exists(localPath))
+            {
+                try
+                {
+                    var local = JsonHelper.Deserialize<ServerInfo>(File.ReadAllText(localPath));
+                    if (local != null)
+                        return local;
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"[UpdateHelper] Load local server_info failed: {ex.Message}");
+                }
+            }
+
+            try
+            {
+                string json = GetUrlContentAsync(OfficialContentEndpoints.ServerInfoUrl)
+                    .GetAwaiter()
+                    .GetResult();
+                var remote = JsonHelper.Deserialize<ServerInfo>(json);
+                if (remote != null)
+                    return remote;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[UpdateHelper] Load remote server_info failed: {ex.Message}");
+            }
+
+            return new ServerInfo();
         }
 
         public static async Task<AppMinimumVersionCheckResult> CheckMinimumSupportedVersionAsync(string? currentVersionString = null)
@@ -187,7 +224,7 @@ namespace GeoChemistryNexus.Helpers
             try
             {
                 string serverInfoJson = await GetUrlContentAsync(ServerInfoUrl);
-                var serverInfo = JsonSerializer.Deserialize<ServerInfo>(serverInfoJson);
+                var serverInfo = JsonHelper.Deserialize<ServerInfo>(serverInfoJson);
 
                 if (serverInfo == null || string.IsNullOrEmpty(serverInfo.ListPlotCategoriesHash))
                     return;

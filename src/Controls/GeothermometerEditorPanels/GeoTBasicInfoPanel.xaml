@@ -13,6 +13,34 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/GeoChemistryNexus;component/Themes/EditorStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            <Style x:Key="PanelControlButtonStyle" TargetType="Button">
+                <Setter Property="Width" Value="26"/>
+                <Setter Property="Height" Value="26"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Foreground" Value="#888"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="4"
+                                    ToolTip="{TemplateBinding ToolTip}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Bd" Property="Background" Value="#E8E8E8"/>
+                                    <Setter Property="Foreground" Value="#333"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="Bd" Property="Background" Value="#D4D4D4"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -34,8 +62,10 @@
 
                     <StackPanel Grid.Column="0">
                         <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_name], Source={x:Static lg:LanguageService.Instance}, FallbackValue=名称 *}"/>
-                        <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
-                                 IsReadOnly="{Binding IsContentReadOnly}"/>
+                        <Border Style="{StaticResource FieldControlHostStyle}">
+                            <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                                     IsReadOnly="{Binding IsContentReadOnly}"/>
+                        </Border>
                         <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding [geo_example_name], Source={x:Static lg:LanguageService.Instance}, FallbackValue=例如：石英温压计}"/>
                     </StackPanel>
 
@@ -63,8 +93,10 @@
 
                     <StackPanel Grid.Column="4">
                         <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_year], Source={x:Static lg:LanguageService.Instance}, FallbackValue=年份 *}"/>
-                        <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding Year, UpdateSourceTrigger=PropertyChanged}"
-                                 IsReadOnly="{Binding IsContentReadOnly}"/>
+                        <Border Style="{StaticResource FieldControlHostStyle}">
+                            <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding Year, UpdateSourceTrigger=PropertyChanged}"
+                                     IsReadOnly="{Binding IsContentReadOnly}"/>
+                        </Border>
                         <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding [geo_example_year], Source={x:Static lg:LanguageService.Instance}, FallbackValue=例如：2020}"/>
                     </StackPanel>
                 </Grid>
@@ -121,15 +153,19 @@
 
                 <StackPanel Margin="0,0,0,12">
                     <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_author], Source={x:Static lg:LanguageService.Instance}, FallbackValue=作者 *}"/>
-                    <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding Author, UpdateSourceTrigger=PropertyChanged}"
-                             IsReadOnly="{Binding IsContentReadOnly}"/>
+                    <Border Style="{StaticResource FieldControlHostStyle}">
+                        <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding Author, UpdateSourceTrigger=PropertyChanged}"
+                                 IsReadOnly="{Binding IsContentReadOnly}"/>
+                    </Border>
                     <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding [geo_example_author], Source={x:Static lg:LanguageService.Instance}, FallbackValue=例如：Smith 等}"/>
                 </StackPanel>
 
                 <StackPanel>
                     <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_reference], Source={x:Static lg:LanguageService.Instance}, FallbackValue=参考文献 *}"/>
-                    <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding Reference, UpdateSourceTrigger=PropertyChanged}"
-                             IsReadOnly="{Binding IsContentReadOnly}"/>
+                    <Border Style="{StaticResource FieldControlHostStyle}">
+                        <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding Reference, UpdateSourceTrigger=PropertyChanged}"
+                                 IsReadOnly="{Binding IsContentReadOnly}"/>
+                    </Border>
                     <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding [geo_example_reference], Source={x:Static lg:LanguageService.Instance}, FallbackValue='例如：Smith (2020) Geochim. Cosmochim. Acta 280, 123-145'}"/>
                 </StackPanel>
             </StackPanel>
@@ -138,9 +174,48 @@
         <!-- 版本卡片 -->
         <Border Style="{StaticResource GeoTPanelCardStyle}" Margin="0">
             <StackPanel>
-                <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_version], Source={x:Static lg:LanguageService.Instance}, FallbackValue=版本}" Margin="0,0,0,10"/>
-
                 <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0"
+                               VerticalAlignment="Center"
+                               Style="{StaticResource FieldLabelStyle}"
+                               Margin="0"
+                               Text="{Binding [geo_field_version], Source={x:Static lg:LanguageService.Instance}, FallbackValue=版本}"/>
+
+                    <TextBlock Grid.Column="1"
+                               VerticalAlignment="Center"
+                               Margin="12,0,8,0"
+                               FontSize="12"
+                               Foreground="#86868B"
+                               Text="{Binding VersionSectionCollapsedSummary, Mode=OneWay}"
+                               Visibility="{Binding IsVersionSectionExpanded, Converter={StaticResource BooleanToVisibilityReConverter}}"/>
+
+                    <Button Grid.Column="2"
+                            Style="{StaticResource PanelControlButtonStyle}"
+                            Command="{Binding ToggleVersionSectionCommand}"
+                            ToolTip="{Binding [cipw_tooltip_expand], Source={x:Static lg:LanguageService.Instance}, FallbackValue=展开/收缩}">
+                        <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="12">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Text" Value="&#xE70E;"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsVersionSectionExpanded}" Value="True">
+                                            <Setter Property="Text" Value="&#xE70D;"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Button>
+                </Grid>
+
+                <Grid Margin="0,10,0,0"
+                      Visibility="{Binding IsVersionSectionExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="16"/>

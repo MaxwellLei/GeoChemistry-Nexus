@@ -7,8 +7,8 @@
         mc:Ignorable="d"
         x:Name="RootWindow"
         Title="{Binding EditorTitle}"
-        Height="760" Width="1180"
-        MinHeight="640" MinWidth="960"
+        Height="720" Width="1180"
+        MinHeight="600" MinWidth="960"
         WindowStartupLocation="CenterOwner"
         WindowStyle="SingleBorderWindow"
         Background="#F5F5F7">
@@ -17,7 +17,7 @@
         <controls:GeothermometerEditorControl x:Name="EditorControl" DataContext="{Binding}"/>
 
         <ScrollViewer VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,16,16,0"
-                      MaxHeight="650" VerticalScrollBarVisibility="Hidden" PanningMode="VerticalOnly"
+                      MaxHeight="480" VerticalScrollBarVisibility="Hidden" PanningMode="VerticalOnly"
                       IsHitTestVisible="True" BorderThickness="0" Background="Transparent">
             <ItemsControl ItemsSource="{Binding ElementName=RootWindow, Path=LocalNotifications}">
                 <ItemsControl.ItemsPanel>

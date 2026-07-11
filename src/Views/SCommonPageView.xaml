@@ -23,12 +23,15 @@
                 <Border Style="{StaticResource ModernSettingsCard}">
                     <StackPanel>
                         <!-- Language -->
-                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                        <Grid MinHeight="56" Background="Transparent" Margin="16,4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding [Language_],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" FontSize="14"/>
+                            <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+                                <TextBlock Text="{Binding [Language_],Source={x:Static lg:LanguageService.Instance}}" FontSize="14"/>
+                                <TextBlock Text="{Binding [Language_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=选择应用程序界面显示语言}" Style="{StaticResource ModernSettingsItemHintStyle}"/>
+                            </StackPanel>
                             <ComboBox ItemsSource="{Binding AppLanguageOptions}"
                                       DisplayMemberPath="DisplayName"
                                       SelectedValuePath="Code"
@@ -45,36 +48,70 @@
                         <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
 
                         <!-- Main Sidebar Collapse Mode -->
-                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                        <Grid MinHeight="56" Background="Transparent" Margin="16,4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding [main_sidebar_collapse_style],Source={x:Static lg:LanguageService.Instance}, FallbackValue=主侧边栏收起样式}" VerticalAlignment="Center" FontSize="14"/>
+                            <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+                                <TextBlock Text="{Binding [main_sidebar_collapse_style],Source={x:Static lg:LanguageService.Instance}, FallbackValue=主侧边栏收起样式}" FontSize="14"/>
+                                <TextBlock Text="{Binding [main_sidebar_collapse_style_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=控制主侧边栏收起时是完全隐藏还是保留图标}" Style="{StaticResource ModernSettingsItemHintStyle}"/>
+                            </StackPanel>
                             <ComboBox SelectedIndex="{Binding MainSidebarCollapseMode,Mode=TwoWay}" Width="160" Height="30" Grid.Column="1" VerticalAlignment="Center">
                                 <ComboBoxItem Content="{Binding [main_sidebar_collapse_full],Source={x:Static lg:LanguageService.Instance}, FallbackValue=全部收起}"/>
                                 <ComboBoxItem Content="{Binding [main_sidebar_collapse_icon_only],Source={x:Static lg:LanguageService.Instance}, FallbackValue=保留图标}"/>
+                            </ComboBox>
+                        </Grid>
+
+                        <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
+
+                        <!-- UI Scale -->
+                        <Grid MinHeight="56" Background="Transparent" Margin="16,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+                                <TextBlock Text="{Binding [ui_scale_mode],Source={x:Static lg:LanguageService.Instance}, FallbackValue=界面缩放}" FontSize="14"/>
+                                <TextBlock Text="{Binding [ui_scale_mode_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=自动按当前显示器适配，或手动固定界面缩放比例}" Style="{StaticResource ModernSettingsItemHintStyle}"/>
+                            </StackPanel>
+                            <ComboBox SelectedIndex="{Binding UiScaleModeIndex,Mode=TwoWay}" Width="160" Height="30" Grid.Column="1" VerticalAlignment="Center">
+                                <ComboBoxItem Content="{Binding [ui_scale_auto],Source={x:Static lg:LanguageService.Instance}, FallbackValue=自动}"/>
+                                <ComboBoxItem Content="100%"/>
+                                <ComboBoxItem Content="125%"/>
+                                <ComboBoxItem Content="150%"/>
+                                <ComboBoxItem Content="200%"/>
                             </ComboBox>
                         </Grid>
                         
                         <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
 
                         <!-- Start Image -->
-                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                        <Grid MinHeight="56" Background="Transparent" Margin="16,4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding [startup_background_image],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" FontSize="14"/>
-                            <Button Grid.Column="1" Content="{Binding [add_image],Source={x:Static lg:LanguageService.Instance}}" 
-                                    Command="{Binding AddStartImgCommand}" Width="Auto" Padding="15,0" Height="30"/>
+                            <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+                                <TextBlock Text="{Binding [startup_background_image],Source={x:Static lg:LanguageService.Instance}}" FontSize="14"/>
+                                <TextBlock Text="{Binding [startup_background_image_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=可添加一张或多张图片，用于启动界面显示}" Style="{StaticResource ModernSettingsItemHintStyle}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                <Button Content="{Binding [delete_image],Source={x:Static lg:LanguageService.Instance}, FallbackValue=删除图片}"
+                                        Command="{Binding DeleteStartImgCommand}"
+                                        Visibility="{Binding IsDeleteStartImageVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        Width="Auto" Padding="15,0" Height="30" Margin="0,0,8,0"/>
+                                <Button Content="{Binding [add_image],Source={x:Static lg:LanguageService.Instance}}"
+                                        Command="{Binding AddStartImgCommand}" Width="Auto" Padding="15,0" Height="30"/>
+                            </StackPanel>
                         </Grid>
                         
                         <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
 
                         <!-- Cover Flow -->
-                        <Grid Margin="16,10" Height="140">
-                             <hc:CoverFlow x:Name="CoverFlow" Margin="0"/>
+                        <Grid x:Name="CoverFlowHost" Margin="16,10" Height="140">
+                             <hc:CoverFlow x:Name="CoverFlow" Margin="0"
+                                           PageIndex="{Binding CoverFlowPageIndex, Mode=TwoWay}"/>
                         </Grid>
                     </StackPanel>
                 </Border>
@@ -84,12 +121,15 @@
                 <Border Style="{StaticResource ModernSettingsCard}">
                     <StackPanel>
                         <!-- Auto Off Time -->
-                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                        <Grid MinHeight="56" Background="Transparent" Margin="16,4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding [MessageAutoClose],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" FontSize="14"/>
+                            <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+                                <TextBlock Text="{Binding [MessageAutoClose],Source={x:Static lg:LanguageService.Instance}}" FontSize="14"/>
+                                <TextBlock Text="{Binding [MessageAutoClose_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=消息提示自动消失前的等待时间}" Style="{StaticResource ModernSettingsItemHintStyle}"/>
+                            </StackPanel>
                             <ComboBox SelectedIndex="{Binding AutoOffTime,Mode=TwoWay}" Width="120" Height="30" Grid.Column="1" VerticalAlignment="Center">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="SelectionChanged">
@@ -110,48 +150,60 @@
                 <Border Style="{StaticResource ModernSettingsCard}">
                     <StackPanel>
                         <!-- Boot -->
-                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                        <Grid MinHeight="56" Background="Transparent" Margin="16,4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding [Boot],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" FontSize="14"/>
-                            <ToggleButton IsChecked="{Binding Boot}" Grid.Column="1" Style="{StaticResource ToggleButtonSwitch}"/>
+                            <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+                                <TextBlock Text="{Binding [Boot],Source={x:Static lg:LanguageService.Instance}}" FontSize="14"/>
+                                <TextBlock Text="{Binding [Boot_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=系统启动时自动运行本软件}" Style="{StaticResource ModernSettingsItemHintStyle}"/>
+                            </StackPanel>
+                            <ToggleButton IsChecked="{Binding Boot}" Grid.Column="1" Style="{StaticResource ToggleButtonSwitch}" VerticalAlignment="Center"/>
                         </Grid>
                         
                         <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
 
                         <!-- Developer Mode -->
-                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                        <Grid MinHeight="56" Background="Transparent" Margin="16,4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding [developer_mode],Source={x:Static lg:LanguageService.Instance}, TargetNullValue='开发者模式'}" VerticalAlignment="Center" FontSize="14"/>
-                            <ToggleButton IsChecked="{Binding DeveloperMode}" Grid.Column="1" Style="{StaticResource ToggleButtonSwitch}"/>
+                            <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+                                <TextBlock Text="{Binding [developer_mode],Source={x:Static lg:LanguageService.Instance}, TargetNullValue='开发者模式'}" FontSize="14"/>
+                                <TextBlock Text="{Binding [developer_mode_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=启用后显示开发与调试相关功能}" Style="{StaticResource ModernSettingsItemHintStyle}"/>
+                            </StackPanel>
+                            <ToggleButton IsChecked="{Binding DeveloperMode}" Grid.Column="1" Style="{StaticResource ToggleButtonSwitch}" VerticalAlignment="Center"/>
                         </Grid>
 
                         <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
 
                         <!-- Auto Check Update -->
-                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                        <Grid MinHeight="56" Background="Transparent" Margin="16,4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding [AutoCheckUpdate],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" FontSize="14"/>
-                            <ToggleButton IsChecked="{Binding AutoCheck}" Grid.Column="1" Style="{StaticResource ToggleButtonSwitch}"/>
+                            <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+                                <TextBlock Text="{Binding [AutoCheckUpdate],Source={x:Static lg:LanguageService.Instance}}" FontSize="14"/>
+                                <TextBlock Text="{Binding [AutoCheckUpdate_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=启动时自动检查软件是否有新版本}" Style="{StaticResource ModernSettingsItemHintStyle}"/>
+                            </StackPanel>
+                            <ToggleButton IsChecked="{Binding AutoCheck}" Grid.Column="1" Style="{StaticResource ToggleButtonSwitch}" VerticalAlignment="Center"/>
                         </Grid>
 
                         <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
 
                         <!-- Check Update Button -->
-                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                        <Grid MinHeight="56" Background="Transparent" Margin="16,4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding [CheckUpdate],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" FontSize="14"/>
+                            <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+                                <TextBlock Text="{Binding [CheckUpdate],Source={x:Static lg:LanguageService.Instance}}" FontSize="14"/>
+                                <TextBlock Text="{Binding [CheckUpdate_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=立即检查是否有可用的软件更新}" Style="{StaticResource ModernSettingsItemHintStyle}"/>
+                            </StackPanel>
                             <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                                 <Button Content="{Binding [CheckUpdate],Source={x:Static lg:LanguageService.Instance}}"
                                         Command="{Binding CheckUpdateCommand}" Width="Auto" Padding="15,0" Height="30"/>
@@ -204,12 +256,15 @@
                 <TextBlock Text="{Binding [exit_action],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernSettingsGroupTitle}"/>
                 <Border Style="{StaticResource ModernSettingsCard}">
                     <StackPanel>
-                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                        <Grid MinHeight="56" Background="Transparent" Margin="16,4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding [QuitAppMode],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" FontSize="14"/>
+                            <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+                                <TextBlock Text="{Binding [QuitAppMode],Source={x:Static lg:LanguageService.Instance}}" FontSize="14"/>
+                                <TextBlock Text="{Binding [QuitAppMode_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=关闭窗口时最小化到系统托盘或直接退出程序}" Style="{StaticResource ModernSettingsItemHintStyle}"/>
+                            </StackPanel>
                             <ComboBox SelectedIndex="{Binding ExitMode,Mode=TwoWay}" Width="160" Height="30" Grid.Column="1" VerticalAlignment="Center">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="SelectionChanged">
@@ -228,4 +283,3 @@
 
     </Grid>
 </Page>
-

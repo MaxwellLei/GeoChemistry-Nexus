@@ -5,18 +5,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace GeoChemistryNexus.Services
 {
     public static class GeothermometerPublishService
     {
-        private static readonly JsonSerializerOptions JsonOptions = new()
-        {
-            PropertyNameCaseInsensitive = true
-        };
-
         public static async Task<PublishPreview> GetPublishPreviewAsync()
         {
             GeothermometerService.Initialize();
@@ -28,7 +22,7 @@ namespace GeoChemistryNexus.Services
             try
             {
                 string remoteJson = await UpdateHelper.GetUrlContentAsync(OfficialContentEndpoints.GeoTListUrl);
-                var remoteList = JsonSerializer.Deserialize<PluginIndex>(remoteJson, JsonOptions);
+                var remoteList = JsonHelper.Deserialize<PluginIndex>(remoteJson);
                 if (remoteList?.Plugins != null)
                 {
                     foreach (var entry in remoteList.Plugins)
@@ -136,7 +130,7 @@ namespace GeoChemistryNexus.Services
                 try
                 {
                     string indexJson = File.ReadAllText(indexPath);
-                    var index = JsonSerializer.Deserialize<GeoTIndex>(indexJson, JsonOptions);
+                    var index = JsonHelper.Deserialize<GeoTIndex>(indexJson);
                     listHash = index?.ListHash ?? string.Empty;
                     mineralCategoriesHash = index?.MineralCategoriesHash ?? string.Empty;
                 }
@@ -144,7 +138,7 @@ namespace GeoChemistryNexus.Services
             }
 
             string manifestPath = Path.Combine(outputDir, OfficialContentEndpoints.GeothermometerPublishManifestFileName);
-            File.WriteAllText(manifestPath, JsonSerializer.Serialize(manifestEntries, JsonOptions));
+            File.WriteAllText(manifestPath, JsonHelper.Serialize(manifestEntries));
 
             return new GeothermometerPublishResult
             {
@@ -171,7 +165,7 @@ namespace GeoChemistryNexus.Services
             try
             {
                 string json = File.ReadAllText(listPath);
-                var list = JsonSerializer.Deserialize<PluginIndex>(json, JsonOptions);
+                var list = JsonHelper.Deserialize<PluginIndex>(json);
                 if (list?.Plugins == null) return result;
 
                 foreach (var entry in list.Plugins)

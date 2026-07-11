@@ -34,7 +34,7 @@ namespace GeoChemistryNexus.Models
         public bool IsCustom { get; set; }
 
         /// <summary>
-        /// 是否为新模板 (true: 刚刚转换为内置模板; false: 旧模板)
+        /// 是否为新模板 (true: 已转换为内置模板但尚未推送到服务器; false: 已推送或旧模板)
         /// </summary>
         public bool IsNewTemplate { get; set; }
 

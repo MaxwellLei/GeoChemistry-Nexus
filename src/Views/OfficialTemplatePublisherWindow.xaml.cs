@@ -15,6 +15,7 @@ namespace GeoChemistryNexus.Views
         public OfficialTemplatePublisherWindow()
         {
             InitializeComponent();
+            UiScaleHelper.Attach(this);
 
             Title = LanguageService.Instance["official_template_publisher"];
 

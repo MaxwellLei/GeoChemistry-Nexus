@@ -43,6 +43,11 @@ namespace GeoChemistryNexus.Models
         /// </summary>
         public bool IsOfficial { get; set; }
 
+        /// <summary>
+        /// 是否已收藏
+        /// </summary>
+        public bool IsFavorite { get; set; }
+
         // --- 轻量元数据区 (用于列表展示) ---
 
         /// <summary>

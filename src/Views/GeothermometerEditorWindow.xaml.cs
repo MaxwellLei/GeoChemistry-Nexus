@@ -18,6 +18,7 @@ namespace GeoChemistryNexus.Views
         public GeothermometerEditorWindow()
         {
             InitializeComponent();
+            UiScaleHelper.Attach(this);
         }
 
         public GeothermometerEditorWindow(GeothermometerEditorViewModel viewModel) : this()

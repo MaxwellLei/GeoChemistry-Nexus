@@ -44,27 +44,65 @@ namespace GeoChemistryNexus.Services
         }
 
         /// <summary>
-        /// 获取所有温压计的摘要信息（不含 ScriptContent 和 HelpDocuments）
+        /// 获取所有温压计的摘要信息（读取后剥离重量级字段，避免投影映射异常）
         /// </summary>
         public List<GeothermometerEntity> GetSummaries(bool? isOfficial = null)
         {
             using var db = GetDatabase();
             var col = db.GetCollection<GeothermometerEntity>(CollectionName);
-            
+
             List<GeothermometerEntity> allEntities;
             if (isOfficial.HasValue)
                 allEntities = col.Find(x => x.IsOfficial == isOfficial.Value).ToList();
             else
                 allEntities = col.FindAll().ToList();
 
-            // 清空重量级字段，减少内存占用
             foreach (var entity in allEntities)
-            {
-                entity.ScriptContent = string.Empty;
-                entity.HelpDocuments = new Dictionary<string, string>();
-            }
+                StripHeavyFields(entity);
 
             return allEntities;
+        }
+
+        /// <summary>
+        /// 获取用于公式注册的实体（含脚本；帮助文档在内存中剥离）
+        /// </summary>
+        public GeothermometerEntity? GetEntityForRegistration(Guid id)
+        {
+            using var db = GetDatabase();
+            var col = db.GetCollection<GeothermometerEntity>(CollectionName);
+            var entity = col.FindById(id);
+            if (entity == null)
+                return null;
+
+            // 注册公式不需要 RTF，尽早释放引用以降低峰值内存
+            entity.HelpDocuments = new Dictionary<string, string>();
+            entity.PluginId ??= string.Empty;
+            entity.FormulaName ??= string.Empty;
+            entity.ScriptContent ??= string.Empty;
+            entity.AdditionalFormulas ??= new List<AdditionalFormula>();
+            return entity;
+        }
+
+        private static void StripHeavyFields(GeothermometerEntity entity)
+        {
+            entity.PluginId ??= string.Empty;
+            entity.Version ??= string.Empty;
+            entity.FileHash ??= string.Empty;
+            entity.Category ??= string.Empty;
+            entity.Tags ??= new List<string>();
+            entity.Name ??= string.Empty;
+            entity.NameLangKey ??= string.Empty;
+            entity.Author ??= string.Empty;
+            entity.Reference ??= string.Empty;
+            entity.IconCode ??= "\ue60d";
+            entity.IconColor ??= "#555555";
+            entity.Headers ??= new List<string>();
+            entity.ExampleRow ??= new List<string>();
+            entity.FormulaName ??= string.Empty;
+            entity.InputColumns ??= new List<string>();
+            entity.AdditionalFormulas ??= new List<AdditionalFormula>();
+            entity.ScriptContent = string.Empty;
+            entity.HelpDocuments = new Dictionary<string, string>();
         }
 
         /// <summary>
@@ -75,6 +113,81 @@ namespace GeoChemistryNexus.Services
             using var db = GetDatabase();
             var col = db.GetCollection<GeothermometerEntity>(CollectionName);
             return col.FindById(id);
+        }
+
+        /// <summary>
+        /// 按需读取单个语言的帮助文档 RTF（不构造完整实体、不保留其它语言文档）
+        /// 回退顺序：preferredLanguage → en-US → 字典中第一条非空
+        /// </summary>
+        public string? GetHelpDocument(Guid id, string preferredLanguage)
+        {
+            using var db = GetDatabase();
+            // 以 BsonDocument 读取，避免反序列化为 GeothermometerEntity（含 ScriptContent 大字符串）
+            var col = db.GetCollection<BsonDocument>(CollectionName);
+            var doc = col.FindById(id);
+            if (doc == null)
+                return null;
+
+            if (!doc.TryGetValue("HelpDocuments", out BsonValue helpValue)
+                || helpValue == null
+                || helpValue.IsNull
+                || !helpValue.IsDocument)
+            {
+                return null;
+            }
+
+            var helpDocs = helpValue.AsDocument;
+            if (helpDocs.Count == 0)
+                return null;
+
+            if (!string.IsNullOrWhiteSpace(preferredLanguage)
+                && TryGetHelpRtf(helpDocs, preferredLanguage, out string? preferred))
+            {
+                return preferred;
+            }
+
+            if (!string.Equals(preferredLanguage, "en-US", StringComparison.OrdinalIgnoreCase)
+                && TryGetHelpRtf(helpDocs, "en-US", out string? english))
+            {
+                return english;
+            }
+
+            foreach (var key in helpDocs.Keys)
+            {
+                if (TryGetHelpRtf(helpDocs, key, out string? any) && !string.IsNullOrEmpty(any))
+                    return any;
+            }
+
+            return null;
+        }
+
+        private static bool TryGetHelpRtf(BsonDocument helpDocs, string languageKey, out string? rtf)
+        {
+            rtf = null;
+            if (string.IsNullOrWhiteSpace(languageKey))
+                return false;
+
+            if (helpDocs.TryGetValue(languageKey, out BsonValue exact) && exact != null && exact.IsString)
+            {
+                rtf = exact.AsString;
+                return !string.IsNullOrEmpty(rtf);
+            }
+
+            // 兼容大小写不一致的语言键
+            foreach (var key in helpDocs.Keys)
+            {
+                if (!string.Equals(key, languageKey, StringComparison.OrdinalIgnoreCase))
+                    continue;
+
+                var value = helpDocs[key];
+                if (value != null && value.IsString)
+                {
+                    rtf = value.AsString;
+                    return !string.IsNullOrEmpty(rtf);
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -151,18 +264,16 @@ namespace GeoChemistryNexus.Services
             Buffer.BlockCopy(namespaceBytes, 0, hashInput, 0, namespaceBytes.Length);
             Buffer.BlockCopy(nameBytes, 0, hashInput, namespaceBytes.Length, nameBytes.Length);
 
-            using (SHA1 sha1 = SHA1.Create())
-            {
-                byte[] hash = sha1.ComputeHash(hashInput);
-                hash[6] = (byte)((hash[6] & 0x0F) | 0x50);
-                hash[8] = (byte)((hash[8] & 0x3F) | 0x80);
+            using SHA1 sha1 = SHA1.Create();
+            byte[] hash = sha1.ComputeHash(hashInput);
+            hash[6] = (byte)((hash[6] & 0x0F) | 0x50);
+            hash[8] = (byte)((hash[8] & 0x3F) | 0x80);
 
-                byte[] newGuid = new byte[16];
-                Buffer.BlockCopy(hash, 0, newGuid, 0, 16);
-                SwapByteOrder(newGuid);
+            byte[] newGuid = new byte[16];
+            Buffer.BlockCopy(hash, 0, newGuid, 0, 16);
+            SwapByteOrder(newGuid);
 
-                return new Guid(newGuid);
-            }
+            return new Guid(newGuid);
         }
 
         private static readonly JsonSerializerOptions EntityHashJsonOptions = new()

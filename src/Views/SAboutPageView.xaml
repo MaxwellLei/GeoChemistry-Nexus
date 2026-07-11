@@ -25,10 +25,13 @@
                              <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
                                  <Image Source="/GeoChemistryNexus;component/Data/Icon/logo.png" Width="80" Height="80" RenderOptions.BitmapScalingMode="HighQuality" Margin="0,0,0,15"/>
                                  <TextBlock Text="GeoChemistry Nexus" FontSize="22" FontWeight="SemiBold" Foreground="#1D1D1F" HorizontalAlignment="Center" Margin="0,0,0,5"/>
-                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,8">
                                       <TextBlock Text="Version " FontSize="14" Foreground="#86868B"/>
                                       <TextBlock Text="{Binding Version}" FontSize="14" Foreground="#86868B"/>
                                  </StackPanel>
+                                 <TextBlock Text="{Binding [AboutTagline],Source={x:Static lg:LanguageService.Instance}}"
+                                            FontSize="13" Foreground="#86868B" TextWrapping="Wrap" TextAlignment="Center"
+                                            HorizontalAlignment="Center" Margin="8,0,8,0" LineHeight="18"/>
                              </StackPanel>
                         </Grid>
                         
@@ -37,7 +40,7 @@
                         <!-- Description -->
                         <Grid Margin="16">
                              <TextBlock Text="{Binding [AboutInfo1],Source={x:Static lg:LanguageService.Instance}}" 
-                                        FontSize="14" Foreground="#1D1D1F" TextWrapping="Wrap" LineHeight="20"/>
+                                        FontSize="14" Foreground="#1D1D1F" TextWrapping="Wrap" LineHeight="22"/>
                         </Grid>
                     </StackPanel>
                 </Border>
@@ -46,14 +49,62 @@
                 <TextBlock Text="{Binding [community],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernSettingsGroupTitle}"/> 
                 <Border Style="{StaticResource ModernSettingsCard}">
                     <StackPanel>
+                        <!-- Email -->
+                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding [about_email],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" FontSize="14"/>
+                            <TextBlock Grid.Column="1" Text="maxwelllei@qq.com" VerticalAlignment="Center" FontSize="14" Foreground="#86868B" TextTrimming="CharacterEllipsis"/>
+                            <Button Grid.Column="2" Content="{Binding [view],Source={x:Static lg:LanguageService.Instance}}" 
+                                    Command="{Binding OpenUrlCommand}" 
+                                    CommandParameter="mailto:maxwelllei@qq.com"
+                                    Width="80" Height="30"/>
+                        </Grid>
+
+                        <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
+
+                        <!-- QQ Group -->
+                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding [about_qq_group],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" FontSize="14"/>
+                            <TextBlock Grid.Column="1" Text="1076647740" VerticalAlignment="Center" FontSize="14" Foreground="#86868B"/>
+                        </Grid>
+
+                        <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
+
+                        <!-- Discord -->
+                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding [about_discord],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center" FontSize="14"/>
+                            <TextBlock Grid.Column="1" Text="discord.com/invite/mRm8dbwa4W" VerticalAlignment="Center" FontSize="14" Foreground="#86868B" TextTrimming="CharacterEllipsis"/>
+                            <Button Grid.Column="2" Content="{Binding [view],Source={x:Static lg:LanguageService.Instance}}" 
+                                    Command="{Binding OpenUrlCommand}" 
+                                    CommandParameter="https://discord.com/invite/mRm8dbwa4W"
+                                    Width="80" Height="30"/>
+                        </Grid>
+
+                        <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
+
                          <!-- GitHub -->
                         <Grid Height="50" Background="Transparent" Margin="16,0">
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="GitHub" VerticalAlignment="Center" FontSize="14"/>
-                            <Button Grid.Column="1" Content="View" 
+                            <TextBlock Grid.Column="1" Text="MaxwellLei/GeoChemistry-Nexus" VerticalAlignment="Center" FontSize="14" Foreground="#86868B" TextTrimming="CharacterEllipsis"/>
+                            <Button Grid.Column="2" Content="{Binding [view],Source={x:Static lg:LanguageService.Instance}}" 
                                     Command="{Binding OpenUrlCommand}" 
                                     CommandParameter="https://github.com/MaxwellLei/GeoChemistry-Nexus"
                                     Width="80" Height="30"/>

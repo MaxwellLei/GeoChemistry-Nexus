@@ -71,12 +71,6 @@ namespace GeoChemistryNexus.ViewModels
         private bool _isDiagnosticPanelExpanded = false;
 
         /// <summary>
-        /// 诊断面板是否最大化
-        /// </summary>
-        [ObservableProperty]
-        private bool _isDiagnosticMaximized = false;
-
-        /// <summary>
         /// 校验并限制 Fe3+/Fe 比值在 [0, 1] 范围内
         /// </summary>
         public void ClampFe3Fraction()

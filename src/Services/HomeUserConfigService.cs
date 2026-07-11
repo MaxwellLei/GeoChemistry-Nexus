@@ -11,13 +11,6 @@ namespace GeoChemistryNexus.Services
     {
         private static string UserConfigPath => AppDataPathHelper.GetDataPath("Config", "home_user.json");
 
-        private static readonly string[] DeprecatedWidgetKeys =
-        {
-            "CalendarWidget",
-            "SystemInfoWidget",
-            "DeveloperToolWidget"
-        };
-
         public static HomeUserConfig Load()
         {
             try
@@ -34,8 +27,7 @@ namespace GeoChemistryNexus.Services
                 config.Widgets ??= new List<HomeAppItem>();
 
                 config.Widgets = config.Widgets
-                    .Where(w => w.Type == HomeAppType.Widget
-                                && !DeprecatedWidgetKeys.Any(k => string.Equals(w.WidgetKey, k, StringComparison.OrdinalIgnoreCase)))
+                    .Where(w => w.Type == HomeAppType.Widget)
                     .ToList();
 
                 return config;

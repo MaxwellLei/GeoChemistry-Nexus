@@ -37,23 +37,29 @@
 
                         <StackPanel Grid.Column="0">
                             <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_script_headers], Source={x:Static lg:LanguageService.Instance}, FallbackValue=表头 *（逗号分隔）}"/>
-                            <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding HeadersText, UpdateSourceTrigger=PropertyChanged}"
-                                     ToolTip="{Binding [geo_tooltip_headers], Source={x:Static lg:LanguageService.Instance}, FallbackValue='例如: SiO2, TiO2, Al2O3, T(K)'}"
-                                     IsReadOnly="{Binding IsContentReadOnly}"/>
+                            <Border Style="{StaticResource FieldControlHostStyle}">
+                                <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding HeadersText, UpdateSourceTrigger=PropertyChanged}"
+                                         ToolTip="{Binding [geo_tooltip_headers], Source={x:Static lg:LanguageService.Instance}, FallbackValue='例如: SiO2, TiO2, Al2O3, T(K)'}"
+                                         IsReadOnly="{Binding IsContentReadOnly}"/>
+                            </Border>
                         </StackPanel>
 
                         <StackPanel Grid.Column="2">
                             <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_script_sample_row], Source={x:Static lg:LanguageService.Instance}, FallbackValue=示例行（逗号分隔）}"/>
-                            <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding ExampleRowText, UpdateSourceTrigger=PropertyChanged}"
-                                     ToolTip="{Binding [geo_tooltip_sample_row_eg], Source={x:Static lg:LanguageService.Instance}, FallbackValue='例如: 45.2, 0.8, 12.3, =MyFormula(A2,B2,C2)'}"
-                                     IsReadOnly="{Binding IsContentReadOnly}"/>
+                            <Border Style="{StaticResource FieldControlHostStyle}">
+                                <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding ExampleRowText, UpdateSourceTrigger=PropertyChanged}"
+                                         ToolTip="{Binding [geo_tooltip_sample_row_eg], Source={x:Static lg:LanguageService.Instance}, FallbackValue='例如: 45.2, 0.8, 12.3, =MyFormula(A2,B2,C2)'}"
+                                         IsReadOnly="{Binding IsContentReadOnly}"/>
+                            </Border>
                         </StackPanel>
 
                         <StackPanel Grid.Column="4">
                             <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_script_inputs], Source={x:Static lg:LanguageService.Instance}, FallbackValue=输入列（逗号分隔）}"/>
-                            <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding InputColumnsText, UpdateSourceTrigger=PropertyChanged}"
-                                     ToolTip="{Binding [geo_tooltip_inputs_eg], Source={x:Static lg:LanguageService.Instance}, FallbackValue='例如: SiO2, TiO2, Al2O3'}"
-                                     IsReadOnly="{Binding IsContentReadOnly}"/>
+                            <Border Style="{StaticResource FieldControlHostStyle}">
+                                <TextBox Style="{StaticResource FieldInputStyle}" Text="{Binding InputColumnsText, UpdateSourceTrigger=PropertyChanged}"
+                                         ToolTip="{Binding [geo_tooltip_inputs_eg], Source={x:Static lg:LanguageService.Instance}, FallbackValue='例如: SiO2, TiO2, Al2O3'}"
+                                         IsReadOnly="{Binding IsContentReadOnly}"/>
+                            </Border>
                         </StackPanel>
                     </Grid>
 
@@ -87,8 +93,9 @@
                             <ColumnDefinition Width="36"/>
                         </Grid.ColumnDefinitions>
                         <Border Grid.Column="0" Background="#E8F4FD" BorderBrush="#B3D9F2" BorderThickness="1"
-                                CornerRadius="4" Padding="6,4" VerticalAlignment="Center">
+                                CornerRadius="4" Padding="6,4" Height="32" VerticalAlignment="Center">
                             <TextBlock FontSize="10" Foreground="#0078D4" FontWeight="SemiBold" TextAlignment="Center"
+                                       VerticalAlignment="Center"
                                        Text="{Binding [geo_main_formula_badge], Source={x:Static lg:LanguageService.Instance}, FallbackValue=主公式}"/>
                         </Border>
                         <TextBox Grid.Column="2" Style="{StaticResource FieldInputStyle}"
@@ -96,8 +103,9 @@
                                  ToolTip="{Binding [geo_tooltip_formula_name], Source={x:Static lg:LanguageService.Instance}, FallbackValue=仅限字母、数字和下划线，如 MyFormula_v1}"
                                  IsReadOnly="{Binding IsContentReadOnly}"/>
                         <Border Grid.Column="4" Background="#F5F5F5" BorderBrush="#D0D0D0" BorderThickness="1"
-                                CornerRadius="4" Padding="6,4" VerticalAlignment="Center">
+                                CornerRadius="4" Padding="6,4" Height="32" VerticalAlignment="Center">
                             <TextBlock FontSize="12" Foreground="#666" FontFamily="Consolas, Courier New"
+                                       VerticalAlignment="Center"
                                        Text="{Binding MainFunctionName, Mode=OneWay}"/>
                         </Border>
                     </Grid>
@@ -115,8 +123,9 @@
                                         <ColumnDefinition Width="36"/>
                                     </Grid.ColumnDefinitions>
                                     <Border Grid.Column="0" Background="#F0F0F0" BorderBrush="#E0E0E0" BorderThickness="1"
-                                            CornerRadius="4" Padding="6,4" VerticalAlignment="Center">
+                                            CornerRadius="4" Padding="6,4" Height="32" VerticalAlignment="Center">
                                         <TextBlock FontSize="10" Foreground="#666" FontWeight="SemiBold" TextAlignment="Center"
+                                                   VerticalAlignment="Center"
                                                    Text="{Binding [geo_additional_formula_badge], Source={x:Static lg:LanguageService.Instance}, FallbackValue=附加}"/>
                                     </Border>
                                     <TextBox Grid.Column="2" Style="{StaticResource FieldInputStyle}"
@@ -216,7 +225,7 @@
                         <TextBox Grid.Column="1" Style="{StaticResource FieldInputStyle}"
                                  Text="{Binding TestInputText, UpdateSourceTrigger=PropertyChanged}"
                                  ToolTip="{Binding [geo_tooltip_test_input_eg], Source={x:Static lg:LanguageService.Instance}, FallbackValue='例如: 45.2, 0.8, 12.3'}"
-                                 MinHeight="32" FontSize="12" VerticalAlignment="Center"/>
+                                 VerticalAlignment="Center"/>
 
                         <Button Grid.Column="2" Content="{Binding [geo_script_run_test], Source={x:Static lg:LanguageService.Instance}, FallbackValue=运行测试}"
                                 Command="{Binding TestScriptCommand}" Margin="8,0"

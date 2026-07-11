@@ -739,11 +739,21 @@
 
                              SelectedItem="{Binding SelectedPlotCategoryEntry}"
 
-                             DisplayMemberPath="DisplayTitle"
-
                              BorderBrush="#EEEEEE" BorderThickness="1"
 
-                             MinHeight="180"/>
+                             MinHeight="180">
+
+                        <ListBox.ItemTemplate>
+
+                            <DataTemplate>
+
+                                <TextBlock Text="{Binding DisplayTitle}"/>
+
+                            </DataTemplate>
+
+                        </ListBox.ItemTemplate>
+
+                    </ListBox>
 
                 </Grid>
 
@@ -805,11 +815,21 @@
 
                              SelectedItem="{Binding SelectedGeoTMineralEntry}"
 
-                             DisplayMemberPath="DisplayTitle"
-
                              BorderBrush="#EEEEEE" BorderThickness="1"
 
-                             MinHeight="180"/>
+                             MinHeight="180">
+
+                        <ListBox.ItemTemplate>
+
+                            <DataTemplate>
+
+                                <TextBlock Text="{Binding DisplayTitle}"/>
+
+                            </DataTemplate>
+
+                        </ListBox.ItemTemplate>
+
+                    </ListBox>
 
                 </Grid>
 

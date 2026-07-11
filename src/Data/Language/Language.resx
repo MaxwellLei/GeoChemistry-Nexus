@@ -184,9 +184,6 @@
   <data name="About" xml:space="preserve">
     <value>About</value>
   </data>
-  <data name="FilePath" xml:space="preserve">
-    <value>File Path</value>
-  </data>
   <data name="Default" xml:space="preserve">
     <value>Default</value>
   </data>
@@ -233,7 +230,19 @@
     <value>Quit Directly</value>
   </data>
   <data name="AboutInfo1" xml:space="preserve">
-    <value>This project utilizes geochemical data for related chart plotting, calculation, and analysis, aiming to efficiently process geological data and help earth science researchers accelerate their data analysis workflow and improve research efficiency.</value>
+    <value>GeoChemistry Nexus is an integrated workbench for geochemistry and petrology research. It brings sample data import, preprocessing and correction, discrimination diagram plotting, geothermobarometer calculation, CIPW norm calculation, and PNG/SVG export together in one interface—while a cloud template ecosystem and community collaboration keep diagrams and algorithms evolving so they reach more researchers quickly.</value>
+  </data>
+  <data name="AboutTagline" xml:space="preserve">
+    <value>Next-generation geochemistry &amp; petrology diagramming and calculation workbench</value>
+  </data>
+  <data name="about_email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="about_qq_group" xml:space="preserve">
+    <value>QQ Group</value>
+  </data>
+  <data name="about_discord" xml:space="preserve">
+    <value>Discord</value>
   </data>
   <data name="AboutInfo2" xml:space="preserve">
     <value>If you're interested in this project, please consider giving it a Star for support! If you find it helpful, you can also buy me a coffee.</value>
@@ -528,6 +537,24 @@
   <data name="enter_category_structure" xml:space="preserve">
     <value>Enter category structure</value>
   </data>
+  <data name="select_existing_category_structure_tooltip" xml:space="preserve">
+    <value>Select a category path from existing diagram templates</value>
+  </data>
+  <data name="select_existing_category_structure_title" xml:space="preserve">
+    <value>Select Category Structure</value>
+  </data>
+  <data name="select_existing_category_structure_prompt" xml:space="preserve">
+    <value>Select a category path from existing diagram templates. You can continue adding custom levels afterward.</value>
+  </data>
+  <data name="select_existing_category_structure_empty" xml:space="preserve">
+    <value>No existing category structures found.</value>
+  </data>
+  <data name="category_structure_preview" xml:space="preserve">
+    <value>Category preview</value>
+  </data>
+  <data name="category_structure_preview_empty" xml:space="preserve">
+    <value>Add levels to preview the category hierarchy.</value>
+  </data>
   <data name="enter_level_add" xml:space="preserve">
     <value>Enter a level and press Enter to add.</value>
   </data>
@@ -584,9 +611,6 @@
   </data>
   <data name="update_portable_mode_hint" xml:space="preserve">
     <value>Portable mode detected. Please download the installer or portable package from the Releases page.</value>
-  </data>
-  <data name="cannot_parse_version_number_check_release_address" xml:space="preserve">
-    <value>Unable to parse the version number. Please check the release address</value>
   </data>
   <data name="network_request_error" xml:space="preserve">
     <value>Network request error</value>
@@ -680,9 +704,6 @@
   </data>
   <data name="logarithmic" xml:space="preserve">
     <value>Logarithmic</value>
-  </data>
-  <data name="some_data_failed_validation" xml:space="preserve">
-    <value>Some data failed validation and has been skipped for plotting</value>
   </data>
   <data name="arrow" xml:space="preserve">
     <value>Arrow</value>
@@ -791,9 +812,6 @@
   </data>
   <data name="confirm_delete_row" xml:space="preserve">
     <value>Are you sure you want to delete the selected row(s)?</value>
-  </data>
-  <data name="axis" xml:space="preserve">
-    <value>Axis</value>
   </data>
   <data name="grid" xml:space="preserve">
     <value>Grid</value>
@@ -948,9 +966,6 @@
   <data name="official_publisher_unchanged" xml:space="preserve">
     <value>Unchanged</value>
   </data>
-  <data name="official_publisher_preview_summary" xml:space="preserve">
-    <value>Preview: new {0}, updated {1}, removed {2}, unchanged {3}.</value>
-  </data>
   <data name="official_publisher_exporting" xml:space="preserve">
     <value>Exporting to {0}...</value>
   </data>
@@ -1050,9 +1065,6 @@
   <data name="error_saving_rtf_file" xml:space="preserve">
     <value>Error saving RTF file:</value>
   </data>
-  <data name="unable_to_get_latest_release_info" xml:space="preserve">
-    <value>Unable to get latest release information</value>
-  </data>
   <data name="invalid_formula" xml:space="preserve">
     <value>Invalid formula</value>
   </data>
@@ -1061,9 +1073,6 @@
   </data>
   <data name="no_announcements" xml:space="preserve">
     <value>No announcements available.</value>
-  </data>
-  <data name="unable_to_get_announcements" xml:space="preserve">
-    <value>Unable to get announcement information.</value>
   </data>
   <data name="failed_to_get_announcements" xml:space="preserve">
     <value>Failed to get announcements:</value>
@@ -1082,12 +1091,6 @@
   </data>
   <data name="home_widgets_section" xml:space="preserve">
     <value>Widgets</value>
-  </data>
-  <data name="home_personal_group_hint" xml:space="preserve">
-    <value>You can add, edit, or remove links in this group.</value>
-  </data>
-  <data name="home_widgets_panel_desc" xml:space="preserve">
-    <value>Built-in tools that open inside the app, shown in the side panel.</value>
   </data>
   <data name="home_group_empty_links" xml:space="preserve">
     <value>No links in this group. Use Add Link to create one.</value>
@@ -1155,9 +1158,6 @@
   <data name="official_publisher_home_links_preview_summary" xml:space="preserve">
     <value>Groups: {0}, links: {1}, local hash: {2}, remote hash: {3}.</value>
   </data>
-  <data name="official_publisher_home_links_bundled_saved" xml:space="preserve">
-    <value>Home links saved to bundled catalog.</value>
-  </data>
   <data name="official_publisher_home_links_reloaded" xml:space="preserve">
     <value>Home links editor reloaded.</value>
   </data>
@@ -1166,9 +1166,6 @@
   </data>
   <data name="official_publisher_home_edit_group" xml:space="preserve">
     <value>Edit Group</value>
-  </data>
-  <data name="official_publisher_home_group_title_prompt" xml:space="preserve">
-    <value>Enter group title:</value>
   </data>
   <data name="official_publisher_home_select_group" xml:space="preserve">
     <value>Select a group first.</value>
@@ -1266,20 +1263,14 @@
   <data name="click_or_drag_template_json_here" xml:space="preserve">
     <value>Click or drag template file (JSON) here</value>
   </data>
-  <data name="file_drop_release_to_open" xml:space="preserve">
-    <value>Release to open template</value>
-  </data>
   <data name="file_drop_release_to_import" xml:space="preserve">
     <value>Release to import</value>
   </data>
   <data name="file_drop_invalid_format" xml:space="preserve">
     <value>Unsupported file format</value>
   </data>
-  <data name="file_drop_supported_diagram" xml:space="preserve">
-    <value>Supports .json / .zip template files</value>
-  </data>
   <data name="file_drop_supported_geothermometer" xml:space="preserve">
-    <value>Supports .zip geothermometer packages</value>
+    <value>Supports .gngtm / .zip geothermobarometer packages (multiple files)</value>
   </data>
   <data name="support_json_format" xml:space="preserve">
     <value>Supports .json format</value>
@@ -1301,6 +1292,9 @@
   </data>
   <data name="force_update_template" xml:space="preserve">
     <value>Force Update</value>
+  </data>
+  <data name="convert_to_builtin_template" xml:space="preserve">
+    <value>Convert to Built-in Template</value>
   </data>
   <data name="force_update_app" xml:space="preserve">
     <value>Force Update</value>
@@ -1350,6 +1344,15 @@
   <data name="main_sidebar_collapse_icon_only" xml:space="preserve">
     <value>Keep Icons</value>
   </data>
+  <data name="ui_scale_mode" xml:space="preserve">
+    <value>UI Scale</value>
+  </data>
+  <data name="ui_scale_mode_hint" xml:space="preserve">
+    <value>Automatically fit the current display, or set a fixed UI scale</value>
+  </data>
+  <data name="ui_scale_auto" xml:space="preserve">
+    <value>Auto</value>
+  </data>
   <data name="startup_background_image" xml:space="preserve">
     <value>Startup Background Image</value>
   </data>
@@ -1361,6 +1364,15 @@
   </data>
   <data name="start_image_copy_error" xml:space="preserve">
     <value>Failed to add startup image: </value>
+  </data>
+  <data name="delete_image" xml:space="preserve">
+    <value>Delete Image</value>
+  </data>
+  <data name="start_image_delete_successfully" xml:space="preserve">
+    <value>Startup image deleted successfully.</value>
+  </data>
+  <data name="start_image_delete_error" xml:space="preserve">
+    <value>Failed to delete startup image: </value>
   </data>
   <data name="external_applications" xml:space="preserve">
     <value>EXTERNAL APPLICATIONS</value>
@@ -1455,6 +1467,12 @@
   <data name="switch_diagram_language" xml:space="preserve">
     <value>Switch Diagram Language</value>
   </data>
+  <data name="select_language" xml:space="preserve">
+    <value>Select Language</value>
+  </data>
+  <data name="please_select_language" xml:space="preserve">
+    <value>Please select a diagram language</value>
+  </data>
   <data name="popup_diagram_window" xml:space="preserve">
     <value>Pop-up Diagram Window</value>
   </data>
@@ -1472,9 +1490,6 @@
   </data>
   <data name="stroke_color" xml:space="preserve">
     <value>Stroke Color</value>
-  </data>
-  <data name="template_type_not_supported_please_update" xml:space="preserve">
-    <value>The current diagram template type is not supported. Please update the software.</value>
   </data>
   <data name="diagram_guide" xml:space="preserve">
     <value>Diagram Wizard</value>
@@ -1602,9 +1617,6 @@
   <data name="unsaved_template_changes_confirm" xml:space="preserve">
     <value>The current template has unsaved changes. Do you want to save them?</value>
   </data>
-  <data name="ternary_diagram_crosshair_not_supported" xml:space="preserve">
-    <value>Crosshair positioning is currently not supported for ternary diagrams.</value>
-  </data>
   <data name="attempting_to_start" xml:space="preserve">
     <value>Attempting to start</value>
   </data>
@@ -1643,12 +1655,6 @@
   </data>
   <data name="diagram_template_corrupted_or_invalid" xml:space="preserve">
     <value>The diagram template file is corrupted or does not contain a valid diagram template JSON file.</value>
-  </data>
-  <data name="failed_to_parse_diagram_template_json" xml:space="preserve">
-    <value>Failed to parse diagram template JSON file</value>
-  </data>
-  <data name="invalid_diagram_template_file" xml:space="preserve">
-    <value>Invalid diagram template file</value>
   </data>
   <data name="custom_diagram_template" xml:space="preserve">
     <value>Custom Diagram Template</value>
@@ -1760,12 +1766,6 @@
   </data>
   <data name="exit_action" xml:space="preserve">
     <value>Exit</value>
-  </data>
-  <data name="maintenance" xml:space="preserve">
-    <value>_Maintenance(M)</value>
-  </data>
-  <data name="export_update_list" xml:space="preserve">
-    <value>Export Update List</value>
   </data>
   <data name="batch_download_new_templates" xml:space="preserve">
     <value>Batch Download</value>
@@ -1952,16 +1952,16 @@
     <value>New Custom Geothermobarometer</value>
   </data>
   <data name="geo_menu_import_zip" xml:space="preserve">
-    <value>Import Geothermobarometer (ZIP)</value>
+    <value>Import Geothermobarometer (.gngtm)</value>
   </data>
   <data name="geo_menu_open_free_sheet" xml:space="preserve">
     <value>Open Free Spreadsheet</value>
   </data>
   <data name="geo_free_sheet_title" xml:space="preserve">
-    <value>Free Geothermometer Spreadsheet</value>
+    <value>Free Geothermobarometer Spreadsheet</value>
   </data>
   <data name="geo_free_sheet_hint" xml:space="preserve">
-    <value>Use registered geothermometer formulas, e.g. =FormulaName(A2,B2)</value>
+    <value>Use registered geothermobarometer formulas, e.g. =FormulaName(A2,B2)</value>
   </data>
   <data name="geo_free_sheet_worksheet_name" xml:space="preserve">
     <value>FreeSheet</value>
@@ -1993,9 +1993,6 @@
   <data name="geo_free_sheet_group_align" xml:space="preserve">
     <value>Alignment</value>
   </data>
-  <data name="geo_free_sheet_group_number" xml:space="preserve">
-    <value>Number</value>
-  </data>
   <data name="geo_free_sheet_group_cells" xml:space="preserve">
     <value>Cells</value>
   </data>
@@ -2026,21 +2023,6 @@
   <data name="geo_free_sheet_fill_color" xml:space="preserve">
     <value>Fill Color</value>
   </data>
-  <data name="geo_free_sheet_borders" xml:space="preserve">
-    <value>Borders</value>
-  </data>
-  <data name="geo_free_sheet_border_all" xml:space="preserve">
-    <value>All Borders</value>
-  </data>
-  <data name="geo_free_sheet_border_outside" xml:space="preserve">
-    <value>Outside Borders</value>
-  </data>
-  <data name="geo_free_sheet_border_bottom" xml:space="preserve">
-    <value>Bottom Border</value>
-  </data>
-  <data name="geo_free_sheet_border_none" xml:space="preserve">
-    <value>No Border</value>
-  </data>
   <data name="geo_free_sheet_align_left" xml:space="preserve">
     <value>Align Left</value>
   </data>
@@ -2050,23 +2032,8 @@
   <data name="geo_free_sheet_align_right" xml:space="preserve">
     <value>Align Right</value>
   </data>
-  <data name="geo_free_sheet_wrap" xml:space="preserve">
-    <value>Wrap Text</value>
-  </data>
   <data name="geo_free_sheet_merge" xml:space="preserve">
     <value>Merge &amp; Center</value>
-  </data>
-  <data name="geo_free_sheet_fmt_general" xml:space="preserve">
-    <value>General</value>
-  </data>
-  <data name="geo_free_sheet_fmt_number" xml:space="preserve">
-    <value>Number</value>
-  </data>
-  <data name="geo_free_sheet_fmt_percent" xml:space="preserve">
-    <value>Percent</value>
-  </data>
-  <data name="geo_free_sheet_fmt_scientific" xml:space="preserve">
-    <value>Scientific</value>
   </data>
   <data name="geo_free_sheet_insert_col_left" xml:space="preserve">
     <value>Insert Column Left</value>
@@ -2083,35 +2050,11 @@
   <data name="geo_free_sheet_clear" xml:space="preserve">
     <value>Clear</value>
   </data>
-  <data name="geo_free_sheet_color_black" xml:space="preserve">
-    <value>Black</value>
-  </data>
-  <data name="geo_free_sheet_color_red" xml:space="preserve">
-    <value>Red</value>
-  </data>
-  <data name="geo_free_sheet_color_blue" xml:space="preserve">
-    <value>Blue</value>
-  </data>
-  <data name="geo_free_sheet_color_green" xml:space="preserve">
-    <value>Green</value>
-  </data>
-  <data name="geo_free_sheet_color_white" xml:space="preserve">
-    <value>White</value>
-  </data>
-  <data name="geo_free_sheet_color_yellow" xml:space="preserve">
-    <value>Yellow</value>
-  </data>
   <data name="geo_menu_update" xml:space="preserve">
     <value>Update</value>
   </data>
   <data name="geo_menu_check_update" xml:space="preserve">
     <value>Check for Updates</value>
-  </data>
-  <data name="geo_menu_maintenance" xml:space="preserve">
-    <value>Maintenance</value>
-  </data>
-  <data name="geo_menu_export_official" xml:space="preserve">
-    <value>Export Official Geothermobarometers</value>
   </data>
   <data name="geo_section_official" xml:space="preserve">
     <value>Official Geothermobarometers</value>
@@ -2147,7 +2090,7 @@
     <value>Edit</value>
   </data>
   <data name="geo_ctx_export_zip" xml:space="preserve">
-    <value>Export ZIP</value>
+    <value>Export Package</value>
   </data>
   <data name="geo_ctx_demote" xml:space="preserve">
     <value>Demote to Custom</value>
@@ -2173,20 +2116,11 @@
   <data name="geo_btn_help_confirm" xml:space="preserve">
     <value>OK</value>
   </data>
-  <data name="geo_btn_cancel" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
-  <data name="geo_btn_prev" xml:space="preserve">
-    <value>Previous</value>
-  </data>
-  <data name="geo_btn_next" xml:space="preserve">
-    <value>Next</value>
-  </data>
   <data name="geo_btn_save" xml:space="preserve">
     <value>Save</value>
   </data>
   <data name="geo_btn_save_export_zip" xml:space="preserve">
-    <value>Save and Export ZIP</value>
+    <value>Save and Export Package</value>
   </data>
   <data name="geo_tooltip_new" xml:space="preserve">
     <value>New</value>
@@ -2196,18 +2130,6 @@
   </data>
   <data name="geo_tooltip_export_csv" xml:space="preserve">
     <value>Export current worksheet as CSV</value>
-  </data>
-  <data name="geo_tooltip_minimize" xml:space="preserve">
-    <value>Minimize</value>
-  </data>
-  <data name="geo_tooltip_restore" xml:space="preserve">
-    <value>Restore</value>
-  </data>
-  <data name="geo_tooltip_maximize" xml:space="preserve">
-    <value>Maximize</value>
-  </data>
-  <data name="geo_tooltip_version_format" xml:space="preserve">
-    <value>Semantic version, e.g. 1.0.0, 1.2.3</value>
   </data>
   <data name="geo_tooltip_formula_name" xml:space="preserve">
     <value>Letters, digits and underscore only, e.g. MyFormula_v1</value>
@@ -2227,6 +2149,12 @@
   <data name="geo_placeholder_search" xml:space="preserve">
     <value>Search...</value>
   </data>
+  <data name="geo_tooltip_tag_filter" xml:space="preserve">
+    <value>Filter by tags</value>
+  </data>
+  <data name="geo_msg_no_tags_available" xml:space="preserve">
+    <value>No tags available</value>
+  </data>
   <data name="geo_placeholder_help_read_confirm" xml:space="preserve">
     <value>Click OK to continue after reading the document.</value>
   </data>
@@ -2241,9 +2169,6 @@
   </data>
   <data name="geo_field_name" xml:space="preserve">
     <value>Name *</value>
-  </data>
-  <data name="geo_field_mineral_category" xml:space="preserve">
-    <value>Thermobarometer Tags *</value>
   </data>
   <data name="geo_field_tags" xml:space="preserve">
     <value>Thermobarometer Tags *</value>
@@ -2260,12 +2185,6 @@
   <data name="geo_field_author" xml:space="preserve">
     <value>Author *</value>
   </data>
-  <data name="geo_field_formula_name" xml:space="preserve">
-    <value>Formula Name *</value>
-  </data>
-  <data name="geo_field_worksheet_name" xml:space="preserve">
-    <value>Worksheet Name</value>
-  </data>
   <data name="geo_current_app_format_version" xml:space="preserve">
     <value>Current App Geothermobarometer Version</value>
   </data>
@@ -2280,9 +2199,6 @@
   </data>
   <data name="geo_example_name" xml:space="preserve">
     <value>e.g. Quartz Geothermobarometer</value>
-  </data>
-  <data name="geo_example_mineral" xml:space="preserve">
-    <value>e.g. Quartz</value>
   </data>
   <data name="geo_example_tag" xml:space="preserve">
     <value>e.g. Quartz</value>
@@ -2311,9 +2227,6 @@
   <data name="geo_example_reference" xml:space="preserve">
     <value>e.g. Smith (2020) Geochim. Cosmochim. Acta 280, 123-145</value>
   </data>
-  <data name="geo_example_formula_name" xml:space="preserve">
-    <value>e.g. MyFormula_v1</value>
-  </data>
   <data name="geo_preview_title" xml:space="preserve">
     <value>Effect Preview</value>
   </data>
@@ -2329,9 +2242,6 @@
   <data name="geo_preview_name_placeholder" xml:space="preserve">
     <value>Geothermobarometer Name</value>
   </data>
-  <data name="geo_preview_mineral_placeholder" xml:space="preserve">
-    <value>Tags</value>
-  </data>
   <data name="geo_preview_tags_placeholder" xml:space="preserve">
     <value>Tags</value>
   </data>
@@ -2342,13 +2252,10 @@
     <value>Reference will appear here</value>
   </data>
   <data name="geo_preview_meta_format" xml:space="preserve">
-    <value>{0} - {1} ({2})</value>
+    <value>{0} ({1})</value>
   </data>
   <data name="geo_field_reference" xml:space="preserve">
     <value>Reference *</value>
-  </data>
-  <data name="geo_field_description" xml:space="preserve">
-    <value>Brief Description</value>
   </data>
   <data name="geo_field_required_hint" xml:space="preserve">
     <value>Required fields are marked with *. Format baseline x.y follows the app geothermobarometer version; revision z is the template content version. Grid formulas are configured on the script step.</value>
@@ -2374,9 +2281,6 @@
   <data name="geo_script_result" xml:space="preserve">
     <value>Result:</value>
   </data>
-  <data name="geo_additional_formulas_title" xml:space="preserve">
-    <value>Additional Formulas (Optional)</value>
-  </data>
   <data name="geo_formulas_title" xml:space="preserve">
     <value>Grid Formulas *</value>
   </data>
@@ -2388,9 +2292,6 @@
   </data>
   <data name="geo_additional_formula_badge" xml:space="preserve">
     <value>Extra</value>
-  </data>
-  <data name="geo_additional_formulas_hint" xml:space="preserve">
-    <value>Register extra Grid custom functions mapped to JavaScript functions in the script below. The main formula still uses FormulaName → calculate(args).</value>
   </data>
   <data name="geo_additional_formula_name" xml:space="preserve">
     <value>Grid Formula Name</value>
@@ -2409,9 +2310,6 @@
   </data>
   <data name="geo_validate_additional_function_name_invalid" xml:space="preserve">
     <value>JS function name '{0}' is invalid (must be a valid JavaScript identifier).</value>
-  </data>
-  <data name="geo_validate_additional_formula_duplicate_main" xml:space="preserve">
-    <value>Additional formula name '{0}' duplicates the main formula name.</value>
   </data>
   <data name="geo_validate_additional_function_reserved" xml:space="preserve">
     <value>JS function name '{0}' is reserved for the main formula or detailed calculation.</value>
@@ -2491,8 +2389,8 @@
   <data name="geo_msg_import_success" xml:space="preserve">
     <value>Import succeeded</value>
   </data>
-  <data name="geo_msg_import_failed" xml:space="preserve">
-    <value>Import failed</value>
+  <data name="geo_msg_batch_import_success" xml:space="preserve">
+    <value>Successfully imported: {0}</value>
   </data>
   <data name="geo_msg_import_failed_detail" xml:space="preserve">
     <value>Import failed: {0}</value>
@@ -2545,13 +2443,6 @@
   <data name="geo_msg_demoted" xml:space="preserve">
     <value>Demoted to custom geothermobarometer</value>
   </data>
-  <data name="geo_msg_batch_export_success" xml:space="preserve">
-    <value>{0} official geothermobarometers in total, {1} exported (added/modified)
-Directory: {2}</value>
-  </data>
-  <data name="geo_msg_batch_export_failed" xml:space="preserve">
-    <value>Batch export failed: {0}</value>
-  </data>
   <data name="geo_msg_load_help_doc_failed" xml:space="preserve">
     <value>Failed to load help document: {0}</value>
   </data>
@@ -2564,9 +2455,6 @@ Directory: {2}</value>
   <data name="geo_validate_name_required" xml:space="preserve">
     <value>Name cannot be empty.</value>
   </data>
-  <data name="geo_validate_mineral_required" xml:space="preserve">
-    <value>Please add at least one thermobarometer tag.</value>
-  </data>
   <data name="geo_validate_tags_required" xml:space="preserve">
     <value>Please add at least one thermobarometer tag.</value>
   </data>
@@ -2578,9 +2466,6 @@ Directory: {2}</value>
   </data>
   <data name="geo_validate_year_required" xml:space="preserve">
     <value>Year cannot be empty.</value>
-  </data>
-  <data name="geo_validate_version_required" xml:space="preserve">
-    <value>Version cannot be empty.</value>
   </data>
   <data name="geo_validate_version_format" xml:space="preserve">
     <value>Invalid version format. Only x.x.x is allowed (e.g. 1.0.0, 1.2.3).</value>
@@ -2662,9 +2547,6 @@ Directory: {2}</value>
   </data>
   <data name="cipw_tooltip_calculate" xml:space="preserve">
     <value>Run CIPW norm calculation on all rows with data</value>
-  </data>
-  <data name="cipw_tooltip_maximize" xml:space="preserve">
-    <value>Maximize / Restore</value>
   </data>
   <data name="cipw_tooltip_expand" xml:space="preserve">
     <value>Expand / Collapse</value>
@@ -3398,9 +3280,6 @@ Directory: {2}</value>
   <data name="confirm_delete_language" xml:space="preserve">
     <value>Delete language '{0}'? This cannot be undone.</value>
   </data>
-  <data name="language_exists" xml:space="preserve">
-    <value>Language already exists</value>
-  </data>
   <data name="notification_success" xml:space="preserve">
     <value>Success</value>
   </data>
@@ -3418,6 +3297,15 @@ Directory: {2}</value>
   </data>
   <data name="filter_template_files" xml:space="preserve">
     <value>Template Files</value>
+  </data>
+  <data name="filter_diagram_package" xml:space="preserve">
+    <value>Diagram Template Package</value>
+  </data>
+  <data name="filter_geothermometer_package" xml:space="preserve">
+    <value>Geothermobarometer Package</value>
+  </data>
+  <data name="filter_geothermometer_import" xml:space="preserve">
+    <value>Geothermobarometer Packages</value>
   </data>
   <data name="filter_csv_files" xml:space="preserve">
     <value>CSV Files</value>
@@ -3438,7 +3326,7 @@ Directory: {2}</value>
     <value>Undefined data columns</value>
   </data>
   <data name="plot_json_multiselect_not_supported" xml:space="preserve">
-    <value>JSON files cannot be added in a multi-select batch. Only ZIP files support multi-select batch import.</value>
+    <value>JSON files cannot be added in a multi-select batch. Only package files support multi-select batch import.</value>
   </data>
   <data name="plot_ternary_axis_not_found" xml:space="preserve">
     <value>Error: triangular axis object not found in the plot.</value>
@@ -3469,12 +3357,6 @@ Directory: {2}</value>
   </data>
   <data name="see_error_log_for_details" xml:space="preserve">
     <value>See error.log for details.</value>
-  </data>
-  <data name="gtm_biotite_ti_wu_chen_2015" xml:space="preserve">
-    <value>Ti-in-Bt (Wu &amp; Chen, 2015)</value>
-  </data>
-  <data name="gtm_mineral_biotite" xml:space="preserve">
-    <value>Biotite</value>
   </data>
   <data name="plot_invalid_row_example" xml:space="preserve">
     <value>Row {0}: {1}</value>
@@ -3682,6 +3564,81 @@ Directory: {2}</value>
   </data>
   <data name="official_publisher_minimum_version_invalid" xml:space="preserve">
     <value>Minimum supported version must be a valid version, for example 1.2.3.</value>
+  </data>
+  <data name="template_card_size_preset" xml:space="preserve">
+    <value>Card Size</value>
+  </data>
+  <data name="template_card_size_compact" xml:space="preserve">
+    <value>Compact</value>
+  </data>
+  <data name="template_card_size_standard" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="Language_hint" xml:space="preserve">
+    <value>Select the display language for the application interface</value>
+  </data>
+  <data name="main_sidebar_collapse_style_hint" xml:space="preserve">
+    <value>Choose whether the main sidebar fully collapses or keeps icons visible</value>
+  </data>
+  <data name="startup_background_image_hint" xml:space="preserve">
+    <value>Add one or more images to show on the startup screen</value>
+  </data>
+  <data name="MessageAutoClose_hint" xml:space="preserve">
+    <value>How long toast messages stay visible before closing automatically</value>
+  </data>
+  <data name="Boot_hint" xml:space="preserve">
+    <value>Launch the application automatically when Windows starts</value>
+  </data>
+  <data name="developer_mode_hint" xml:space="preserve">
+    <value>Show developer and debugging options when enabled</value>
+  </data>
+  <data name="AutoCheckUpdate_hint" xml:space="preserve">
+    <value>Automatically check for application updates on startup</value>
+  </data>
+  <data name="CheckUpdate_hint" xml:space="preserve">
+    <value>Check now whether a newer application version is available</value>
+  </data>
+  <data name="QuitAppMode_hint" xml:space="preserve">
+    <value>Minimize to the system tray or quit the application when the window is closed</value>
+  </data>
+  <data name="coreldraw_path_hint" xml:space="preserve">
+    <value>Executable path of CorelDRAW for opening vector graphics</value>
+  </data>
+  <data name="inkscape_path_hint" xml:space="preserve">
+    <value>Executable path of Inkscape for opening vector graphics</value>
+  </data>
+  <data name="adobe_illustrator_path_hint" xml:space="preserve">
+    <value>Executable path of Adobe Illustrator for opening vector graphics</value>
+  </data>
+  <data name="custom_app_hint" xml:space="preserve">
+    <value>Executable path of a custom third-party graphics editor</value>
+  </data>
+  <data name="default_diagram_expand_level_hint" xml:space="preserve">
+    <value>Default expansion depth of the diagram category tree</value>
+  </data>
+  <data name="default_third_party_editor_hint" xml:space="preserve">
+    <value>Default third-party app used when editing or exporting vector graphics</value>
+  </data>
+  <data name="object_selection_trigger_hint" xml:space="preserve">
+    <value>Mouse action used to select objects on the plot canvas</value>
+  </data>
+  <data name="mouse_snap_auto_recognition_frame_rate_hint" xml:space="preserve">
+    <value>Refresh rate for mouse-snap auto recognition; higher is smoother but uses more resources</value>
+  </data>
+  <data name="template_card_size_preset_hint" xml:space="preserve">
+    <value>Display size of diagram template cards in the library</value>
+  </data>
+  <data name="current_diagram_version_hint" xml:space="preserve">
+    <value>Diagram template format version supported by this application (read-only)</value>
+  </data>
+  <data name="auto_check_diagram_template_updates_hint" xml:space="preserve">
+    <value>Automatically check for diagram template updates on startup</value>
+  </data>
+  <data name="geo_current_app_format_version_hint" xml:space="preserve">
+    <value>Geothermobarometer template format version supported by this application (read-only)</value>
+  </data>
+  <data name="auto_check_geothermometer_updates_hint" xml:space="preserve">
+    <value>Automatically check for geothermobarometer updates on startup</value>
   </data>
 </root>
 

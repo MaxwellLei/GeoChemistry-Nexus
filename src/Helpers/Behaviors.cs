@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.IO;
 
 using System.Linq;
@@ -160,7 +162,7 @@ namespace GeoChemistryNexus.Helpers
 
                 typeof(FileDropBehavior),
 
-                new PropertyMetadata(".json,.zip"));
+                new PropertyMetadata(".json,.gndiag,.zip"));
 
 
 
@@ -340,7 +342,7 @@ namespace GeoChemistryNexus.Helpers
 
 
 
-            e.Effects = TryGetValidFile(e, out _) ? DragDropEffects.Copy : DragDropEffects.None;
+            e.Effects = TryGetValidFiles(e, out _) ? DragDropEffects.Copy : DragDropEffects.None;
 
             e.Handled = true;
 
@@ -380,15 +382,15 @@ namespace GeoChemistryNexus.Helpers
 
 
 
-            if (!TryGetValidFile(e, out string? filePath))
+            if (!TryGetValidFiles(e, out IReadOnlyList<string> filePaths))
 
                 return;
 
 
 
-            if (DropCommand?.CanExecute(filePath) == true)
+            if (DropCommand?.CanExecute(filePaths) == true)
 
-                DropCommand.Execute(filePath);
+                DropCommand.Execute(filePaths);
 
 
 
@@ -410,7 +412,7 @@ namespace GeoChemistryNexus.Helpers
 
 
 
-            bool isValid = TryGetValidFile(e, out _);
+            bool isValid = TryGetValidFiles(e, out _);
 
             if (_hintTextBlock != null)
 
@@ -536,11 +538,11 @@ namespace GeoChemistryNexus.Helpers
 
 
 
-        private bool TryGetValidFile(DragEventArgs e, out string? filePath)
+        private bool TryGetValidFiles(DragEventArgs e, out IReadOnlyList<string> filePaths)
 
         {
 
-            filePath = null;
+            filePaths = Array.Empty<string>();
 
             if (!e.Data.GetDataPresent(DataFormats.FileDrop))
 
@@ -564,17 +566,21 @@ namespace GeoChemistryNexus.Helpers
 
 
 
-            filePath = files.FirstOrDefault(f =>
+            filePaths = files
 
-                !string.IsNullOrWhiteSpace(f) &&
+                .Where(f =>
 
-                File.Exists(f) &&
+                    !string.IsNullOrWhiteSpace(f) &&
 
-                allowed.Contains(Path.GetExtension(f)));
+                    File.Exists(f) &&
+
+                    allowed.Contains(Path.GetExtension(f)))
+
+                .ToList();
 
 
 
-            return !string.IsNullOrEmpty(filePath);
+            return filePaths.Count > 0;
 
         }
 

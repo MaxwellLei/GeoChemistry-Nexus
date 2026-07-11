@@ -546,7 +546,7 @@ namespace GeoChemistryNexus.Services
                         await Task.Delay(2000);
 
                     string json = await UpdateHelper.GetUrlContentAsync(OfficialContentEndpoints.ServerInfoUrl);
-                    var serverInfo = JsonSerializer.Deserialize<ServerInfo>(json);
+                    var serverInfo = JsonHelper.Deserialize<ServerInfo>(json);
                     if (serverInfo != null
                         && string.Equals(serverInfo.ListHash, expectedListHash, StringComparison.OrdinalIgnoreCase))
                     {
@@ -584,7 +584,7 @@ namespace GeoChemistryNexus.Services
                         await Task.Delay(2000);
 
                     string json = await UpdateHelper.GetUrlContentAsync(OfficialContentEndpoints.ServerInfoUrl);
-                    var serverInfo = JsonSerializer.Deserialize<ServerInfo>(json);
+                    var serverInfo = JsonHelper.Deserialize<ServerInfo>(json);
                     if (serverInfo != null
                         && string.Equals(serverInfo.HomeLinksHash, expectedHomeLinksHash, StringComparison.OrdinalIgnoreCase))
                     {
@@ -617,7 +617,7 @@ namespace GeoChemistryNexus.Services
                         await Task.Delay(2000);
 
                     string json = await UpdateHelper.GetUrlContentAsync(OfficialContentEndpoints.ServerInfoUrl);
-                    var serverInfo = JsonSerializer.Deserialize<ServerInfo>(json);
+                    var serverInfo = JsonHelper.Deserialize<ServerInfo>(json);
                     if (serverInfo != null
                         && string.Equals(serverInfo.Announcement?.Trim(), expectedAnnouncement?.Trim(), StringComparison.Ordinal))
                     {
@@ -684,7 +684,7 @@ namespace GeoChemistryNexus.Services
                         await Task.Delay(2000);
 
                     string json = await UpdateHelper.GetUrlContentAsync(OfficialContentEndpoints.GeoTIndexUrl);
-                    var index = JsonSerializer.Deserialize<GeoTIndex>(json);
+                    var index = JsonHelper.Deserialize<GeoTIndex>(json);
                     if (index != null
                         && string.Equals(index.ListHash, expectedListHash, StringComparison.OrdinalIgnoreCase))
                     {

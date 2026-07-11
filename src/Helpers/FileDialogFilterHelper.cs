@@ -22,14 +22,44 @@ namespace GeoChemistryNexus.Helpers
         public static string CsvFiles =>
             FormatFilter("filter_csv_files", "CSV Files", "*.csv", "*.csv");
 
+        /// <summary>图解用户导出包（.gndiag）。</summary>
+        public static string DiagramPackageFiles =>
+            FormatFilter(
+                "filter_diagram_package",
+                "Diagram Template Package",
+                $"*{TemplatePackageFileExtensions.DiagramPrimary}",
+                $"*{TemplatePackageFileExtensions.DiagramPrimary}");
+
+        /// <summary>温压计用户导出包（.gngtm）。</summary>
+        public static string GeothermometerPackageFiles =>
+            FormatFilter(
+                "filter_geothermometer_package",
+                "Geothermometer Package",
+                $"*{TemplatePackageFileExtensions.GeothermometerPrimary}",
+                $"*{TemplatePackageFileExtensions.GeothermometerPrimary}");
+
+        /// <summary>图解打开/导入可选文件（新后缀 + zip + json）。</summary>
         public static string TemplateFiles =>
-            FormatFilter("filter_template_files", "Template Files", "*.json;*.zip", "*.json;*.zip");
+            FormatFilter(
+                "filter_template_files",
+                "Template Files",
+                $"*{TemplatePackageFileExtensions.DiagramPrimary};*.zip;*.json",
+                $"*{TemplatePackageFileExtensions.DiagramPrimary};*.zip;*.json");
 
         public static string OpenTemplate =>
-            $"{TemplateFiles}|{AllFiles}";
+            $"{TemplateFiles}|{DiagramPackageFiles}|{ZipFiles}|{JsonFiles}|{AllFiles}";
 
         public static string ImportTemplates =>
-            $"{L("filter_template_files", "Template Files")} (*.zip;*.json)|*.zip;*.json|{ZipFiles}|{JsonFiles}|{AllFiles}";
+            $"{TemplateFiles}|{DiagramPackageFiles}|{ZipFiles}|{JsonFiles}|{AllFiles}";
+
+        /// <summary>温压计导入（.gngtm + 兼容 .zip）。</summary>
+        public static string ImportGeothermometerPackages =>
+            FormatFilter(
+                "filter_geothermometer_import",
+                "Geothermometer Packages",
+                $"*{TemplatePackageFileExtensions.GeothermometerPrimary};*.zip",
+                $"*{TemplatePackageFileExtensions.GeothermometerPrimary};*.zip")
+            + $"|{GeothermometerPackageFiles}|{ZipFiles}|{AllFiles}";
 
         public static string JsonOrAll =>
             $"{JsonFiles}|{AllFiles}";

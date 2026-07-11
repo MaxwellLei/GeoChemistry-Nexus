@@ -2,7 +2,6 @@ using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Models;
 using System;
 using System.Diagnostics;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace GeoChemistryNexus.Services
@@ -17,7 +16,7 @@ namespace GeoChemistryNexus.Services
                 if (string.IsNullOrWhiteSpace(json))
                     return string.Empty;
 
-                var serverInfo = JsonSerializer.Deserialize<ServerInfo>(json);
+                var serverInfo = JsonHelper.Deserialize<ServerInfo>(json);
                 return serverInfo?.Announcement?.Trim() ?? string.Empty;
             }
             catch (Exception ex)

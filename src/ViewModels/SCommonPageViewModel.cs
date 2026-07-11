@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using GeoChemistryNexus.Messages;
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Models;
 using GeoChemistryNexus.Services;
 using HandyControl.Controls;
 using ScottPlot;
@@ -27,6 +28,12 @@ namespace GeoChemistryNexus.ViewModels
         //封面流
         [ObservableProperty]
         private CoverFlow? coverFlowMain;
+
+        [ObservableProperty]
+        private int coverFlowPageIndex;
+
+        [ObservableProperty]
+        private bool isDeleteStartImageVisible;
 
         [ObservableProperty]
         private string selectedAppLanguageCode = AppCultureRegistry.DefaultAppLanguage;
@@ -67,12 +74,27 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private int mainSidebarCollapseMode; // 主窗体侧边栏收起样式(0是全部收起;1是保留图标)
 
+        /// <summary>
+        /// 界面缩放：0=自动，1=100%，2=125%，3=150%，4=200%
+        /// </summary>
+        [ObservableProperty]
+        private int uiScaleModeIndex;
+
         public RelayCommand AutoOffTimeChangedCommand { get; private set; }   // 修改通知自动关闭时间命令
         public RelayCommand LanguageChangedCommand { get; private set; }   // 修改语言命令
         public RelayCommand CheckUpdateCommand { get; private set; }   // 检查更新命令
         public RelayCommand ForceUpdateCommand { get; private set; }   // 强制更新命令（开发者模式）
         public RelayCommand ExitProgrmModeCommand { get; private set; }   // 退出程序方式命令
         public RelayCommand AddStartImgCommand { get; private set; }    // 添加启动图
+        public RelayCommand DeleteStartImgCommand { get; private set; } // 删除启动图
+
+        /// <summary>
+        /// 由 View 重建 CoverFlow（HandyControl CoverFlow 无公开 Clear API）。
+        /// 参数：图片路径列表、目标页码。
+        /// </summary>
+        public Action<IReadOnlyList<string>, int>? RebuildCoverFlowAction { get; set; }
+
+        private readonly List<string> _startImagePaths = new();
 
         private bool isLoading = true;
         private bool _isRefreshingLanguageOptions;
@@ -86,6 +108,7 @@ namespace GeoChemistryNexus.ViewModels
             ForceUpdateCommand = new RelayCommand(ExecuteForceUpdateCommandAsync);
             ExitProgrmModeCommand = new RelayCommand(ExecuteExitProgrmModeCommand);
             AddStartImgCommand = new RelayCommand(ExecuteAddStartImgCommand);
+            DeleteStartImgCommand = new RelayCommand(ExecuteDeleteStartImgCommand, CanExecuteDeleteStartImgCommand);
             ReadConfig();   // 读取配置文件
 
             // 获取版本信息
@@ -301,6 +324,32 @@ namespace GeoChemistryNexus.ViewModels
             MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
         }
 
+        // 界面缩放
+        partial void OnUiScaleModeIndexChanged(int value)
+        {
+            if (isLoading) return;
+            UiScaleHelper.SetMode(IndexToUiScaleMode(value));
+            MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
+        }
+
+        private static UiScaleMode IndexToUiScaleMode(int index) => index switch
+        {
+            1 => UiScaleMode.Percent100,
+            2 => UiScaleMode.Percent125,
+            3 => UiScaleMode.Percent150,
+            4 => UiScaleMode.Percent200,
+            _ => UiScaleMode.Auto
+        };
+
+        private static int UiScaleModeToIndex(UiScaleMode mode) => mode switch
+        {
+            UiScaleMode.Percent100 => 1,
+            UiScaleMode.Percent125 => 2,
+            UiScaleMode.Percent150 => 3,
+            UiScaleMode.Percent200 => 4,
+            _ => 0
+        };
+
         // 修改消息通知时间
         private void ExecuteAutoOffTimeChangedCommand()
         {
@@ -386,6 +435,8 @@ namespace GeoChemistryNexus.ViewModels
                 MainSidebarCollapseMode = 0;
             }
 
+            UiScaleModeIndex = UiScaleModeToIndex(UiScaleHelper.GetMode());
+
             isLoading = false;
         }
 
@@ -403,7 +454,21 @@ namespace GeoChemistryNexus.ViewModels
             try
             {
                 File.Copy(sourceFilePath, destinationFilePath, true);
-                CoverFlowMain?.Add(destinationFilePath);
+
+                int existingIndex = _startImagePaths.FindIndex(p =>
+                    string.Equals(Path.GetFileName(p), sourceFileName, StringComparison.OrdinalIgnoreCase));
+                if (existingIndex >= 0)
+                    _startImagePaths[existingIndex] = destinationFilePath;
+                else
+                    _startImagePaths.Add(destinationFilePath);
+
+                // 覆盖同名文件或新增后重建，避免 CoverFlow 内部索引与文件列表不一致
+                int targetIndex = _startImagePaths.FindIndex(p =>
+                    string.Equals(Path.GetFileName(p), sourceFileName, StringComparison.OrdinalIgnoreCase));
+                if (targetIndex < 0)
+                    targetIndex = Math.Max(0, _startImagePaths.Count - 1);
+
+                RebuildCoverFlow(targetIndex);
                 MessageHelper.Success(LanguageService.Instance["start_image_copy_successfully"]);
             }
             catch (Exception ex)
@@ -412,13 +477,89 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
+        // 删除当前预览的自定义启动图（官方图不可删，按钮亦不显示）
+        private bool CanExecuteDeleteStartImgCommand() => IsDeleteStartImageVisible;
+
+        private void ExecuteDeleteStartImgCommand()
+        {
+            if (!CanExecuteDeleteStartImgCommand())
+                return;
+
+            int index = CoverFlowPageIndex;
+            if (index < 0 || index >= _startImagePaths.Count)
+                return;
+
+            string filePath = _startImagePaths[index];
+            if (!StartPicHelper.IsCustomImage(filePath))
+                return;
+
+            // 先从列表移除并重建 CoverFlow，释放图片文件句柄后再删除磁盘文件
+            _startImagePaths.RemoveAt(index);
+            int newIndex = _startImagePaths.Count == 0
+                ? 0
+                : Math.Min(index, _startImagePaths.Count - 1);
+
+            RebuildCoverFlow(newIndex);
+
+            if (StartPicHelper.TryDeleteCustomImage(filePath, out string? errorMessage))
+            {
+                MessageHelper.Success(LanguageService.Instance["start_image_delete_successfully"]
+                    ?? "Startup image deleted successfully.");
+            }
+            else
+            {
+                // 删除失败时把路径加回并刷新，避免界面与磁盘不一致
+                if (index > _startImagePaths.Count)
+                    index = _startImagePaths.Count;
+                _startImagePaths.Insert(index, filePath);
+                RebuildCoverFlow(index);
+                MessageHelper.Warning((LanguageService.Instance["start_image_delete_error"]
+                    ?? "Failed to delete startup image: ") + (errorMessage ?? string.Empty));
+            }
+        }
+
+        partial void OnCoverFlowPageIndexChanged(int value)
+        {
+            UpdateDeleteStartImageVisibility();
+        }
+
+        partial void OnIsDeleteStartImageVisibleChanged(bool value)
+        {
+            DeleteStartImgCommand.NotifyCanExecuteChanged();
+        }
+
+        private void UpdateDeleteStartImageVisibility()
+        {
+            if (CoverFlowPageIndex >= 0 && CoverFlowPageIndex < _startImagePaths.Count)
+            {
+                IsDeleteStartImageVisible = StartPicHelper.IsCustomImage(_startImagePaths[CoverFlowPageIndex]);
+            }
+            else
+            {
+                IsDeleteStartImageVisible = false;
+            }
+        }
+
+        private void RebuildCoverFlow(int pageIndex)
+        {
+            int safeIndex = _startImagePaths.Count == 0
+                ? 0
+                : Math.Clamp(pageIndex, 0, _startImagePaths.Count - 1);
+
+            // 先更新页码，再建控件，确保绑定与删除按钮状态一致
+            if (CoverFlowPageIndex != safeIndex)
+                CoverFlowPageIndex = safeIndex;
+
+            RebuildCoverFlowAction?.Invoke(_startImagePaths, safeIndex);
+            UpdateDeleteStartImageVisibility();
+        }
+
         // 获取启动封面图
         public void GetFlowPic()
         {
-            foreach (var file in StartPicHelper.GetImageFiles())
-            {
-                CoverFlowMain?.Add(file);
-            }
+            _startImagePaths.Clear();
+            _startImagePaths.AddRange(StartPicHelper.GetImageFiles());
+            RebuildCoverFlow(0);
         }
     }
 }

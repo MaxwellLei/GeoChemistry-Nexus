@@ -218,5 +218,17 @@ namespace GeoChemistryNexus.ViewModels
         {
             // 默认不做任何事
         }
+
+        /// <summary>
+        /// 丢弃图层前清除事件订阅，避免换模板/重绘后悬挂回调累积。
+        /// </summary>
+        public virtual void ClearEventSubscriptions()
+        {
+            foreach (var child in Children)
+                child.ClearEventSubscriptions();
+
+            RequestRefresh = null;
+            RequestStyleUpdate = null;
+        }
     }
 }

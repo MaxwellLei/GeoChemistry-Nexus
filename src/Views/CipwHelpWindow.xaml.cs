@@ -1,4 +1,5 @@
 using System.Windows;
+using GeoChemistryNexus.Helpers;
 
 namespace GeoChemistryNexus.Views
 {
@@ -10,6 +11,7 @@ namespace GeoChemistryNexus.Views
         public CipwHelpWindow()
         {
             InitializeComponent();
+            UiScaleHelper.Attach(this);
         }
 
         private void OnCloseClick(object sender, RoutedEventArgs e)

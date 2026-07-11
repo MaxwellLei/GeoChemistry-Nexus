@@ -29,6 +29,7 @@ namespace GeoChemistryNexus.Views
         public StartWindow()
         {
             InitializeComponent();
+            UiScaleHelper.Attach(this);
             DisplayRandomImage();
         }
 
@@ -47,12 +48,12 @@ namespace GeoChemistryNexus.Views
             Random random = new Random();
             int randomIndex = random.Next(files.Length);
 
-            //将随机选择的图片显示为背景
-            ImageBrush imageBrush = new()
-            {
-                ImageSource = new BitmapImage(new Uri(files[randomIndex], UriKind.Absolute))
-            };
-            Basemap.Background = imageBrush;
+            //将随机选择的图片显示为背景（内存加载，避免锁定启动图文件）
+            var bitmap = StartPicHelper.LoadBitmapWithoutFileLock(files[randomIndex]);
+            if (bitmap == null)
+                return false;
+
+            Basemap.Background = new ImageBrush { ImageSource = bitmap };
             return true;
         }
 

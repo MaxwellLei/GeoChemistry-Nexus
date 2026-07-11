@@ -13,7 +13,7 @@
         WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         UseLayoutRounding="True" TextOptions.TextFormattingMode="Display"
         WindowStartupLocation="Manual" Loaded="Window_Loaded" Closing="Window_Closing" SourceInitialized="Window_SourceInitialized"
-        Title="{Binding Title}" Height="780" Width="1360" BorderThickness="0">
+        Title="{Binding Title}" Height="780" Width="1360" MinHeight="500" MinWidth="800" BorderThickness="0">
     
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="40" ResizeBorderThickness="15" GlassFrameThickness="1"/>
@@ -22,7 +22,7 @@
     <Window.Resources>
         <converter:BorderClipConverter x:Key="BorderClipConverter"/>
 
-        <!-- 现代化风格侧边栏按钮 -->
+        <!-- 现代化风格侧边栏按钮（即时 hover/选中反馈，避免动画拖沓） -->
         <Style x:Key="ModernSideButton" TargetType="{x:Type RadioButton}">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="#4A4A4A"/>
@@ -34,89 +34,27 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type RadioButton}">
-                        <Border x:Name="border" CornerRadius="8" SnapsToDevicePixels="True">
-                            <Border.Background>
-                                <SolidColorBrush x:Name="borderBrush" Color="Transparent"/>
-                            </Border.Background>
+                        <Border x:Name="border" Background="Transparent" CornerRadius="8" SnapsToDevicePixels="True">
                             <Grid>
                                 <ContentPresenter Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="Center"/>
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <!-- 未选中时的悬停动画 -->
-                            <MultiTrigger>
-                                <MultiTrigger.Conditions>
-                                    <Condition Property="IsMouseOver" Value="True"/>
-                                    <Condition Property="IsChecked" Value="False"/>
-                                </MultiTrigger.Conditions>
-                                <MultiTrigger.EnterActions>
-                                    <StopStoryboard BeginStoryboardName="HoverExit"/>
-                                    <StopStoryboard BeginStoryboardName="CheckedEnter"/>
-                                    <StopStoryboard BeginStoryboardName="CheckedExit"/>
-                                    <BeginStoryboard x:Name="HoverEnter">
-                                        <Storyboard>
-                                            <ColorAnimation Storyboard.TargetName="borderBrush"
-                                                            Storyboard.TargetProperty="Color"
-                                                            To="#E5E5EA" Duration="0:0:0.15">
-                                                <ColorAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseOut"/>
-                                                </ColorAnimation.EasingFunction>
-                                            </ColorAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </MultiTrigger.EnterActions>
-                                <MultiTrigger.ExitActions>
-                                    <StopStoryboard BeginStoryboardName="HoverEnter"/>
-                                    <BeginStoryboard x:Name="HoverExit">
-                                        <Storyboard>
-                                            <ColorAnimation Storyboard.TargetName="borderBrush"
-                                                            Storyboard.TargetProperty="Color"
-                                                            To="Transparent" Duration="0:0:0.2">
-                                                <ColorAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseOut"/>
-                                                </ColorAnimation.EasingFunction>
-                                            </ColorAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </MultiTrigger.ExitActions>
-                            </MultiTrigger>
-                            <!-- 选中状态动画 -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#E5E5EA"/>
+                            </Trigger>
                             <Trigger Property="IsChecked" Value="True">
-                                <Trigger.EnterActions>
-                                    <StopStoryboard BeginStoryboardName="HoverEnter"/>
-                                    <StopStoryboard BeginStoryboardName="HoverExit"/>
-                                    <StopStoryboard BeginStoryboardName="CheckedExit"/>
-                                    <BeginStoryboard x:Name="CheckedEnter">
-                                        <Storyboard>
-                                            <ColorAnimation Storyboard.TargetName="borderBrush"
-                                                            Storyboard.TargetProperty="Color"
-                                                            To="#007AFF" Duration="0:0:0.25">
-                                                <ColorAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseOut"/>
-                                                </ColorAnimation.EasingFunction>
-                                            </ColorAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </Trigger.EnterActions>
-                                <Trigger.ExitActions>
-                                    <StopStoryboard BeginStoryboardName="CheckedEnter"/>
-                                    <StopStoryboard BeginStoryboardName="HoverEnter"/>
-                                    <StopStoryboard BeginStoryboardName="HoverExit"/>
-                                    <BeginStoryboard x:Name="CheckedExit">
-                                        <Storyboard>
-                                            <ColorAnimation Storyboard.TargetName="borderBrush"
-                                                            Storyboard.TargetProperty="Color"
-                                                            To="Transparent" Duration="0:0:0.2">
-                                                <ColorAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseOut"/>
-                                                </ColorAnimation.EasingFunction>
-                                            </ColorAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </Trigger.ExitActions>
+                                <Setter TargetName="border" Property="Background" Value="#007AFF"/>
                                 <Setter Property="Foreground" Value="White"/>
                                 <Setter Property="FontWeight" Value="SemiBold"/>
                             </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                    <Condition Property="IsChecked" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="border" Property="Background" Value="#0062CC"/>
+                            </MultiTrigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>

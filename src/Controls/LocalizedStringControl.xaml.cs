@@ -104,17 +104,36 @@ namespace GeoChemistryNexus.Controls
 
         private void OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            if (_isUpdatingFromSource || Value == null)
+            if (_isUpdatingFromSource)
                 return;
 
-            var newLocalizedString = new LocalizedString
+            Value = BuildValueFromText(DisplayTextBox.Text);
+        }
+
+        /// <summary>
+        /// 将文本框当前内容同步到 <see cref="Value"/>（用于对话框确认前确保未丢失输入）。
+        /// </summary>
+        public void CommitPendingText()
+        {
+            if (_isUpdatingFromSource)
+                return;
+
+            Value = BuildValueFromText(DisplayTextBox.Text);
+        }
+
+        private LocalizedString BuildValueFromText(string text)
+        {
+            var current = Value ?? new LocalizedString();
+            var updated = new LocalizedString
             {
-                Default = Value.Default,
-                Translations = new Dictionary<string, string>(Value.Translations)
+                Default = current.Default,
+                Translations = current.Translations == null
+                    ? new Dictionary<string, string>()
+                    : new Dictionary<string, string>(current.Translations)
             };
 
-            newLocalizedString.Set(DisplayTextBox.Text, ResolveContext());
-            Value = newLocalizedString;
+            updated.Set(text, ResolveContext());
+            return updated;
         }
     }
 }

@@ -7,7 +7,7 @@
              xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
              xmlns:panels="clr-namespace:GeoChemistryNexus.Controls.GeothermometerEditorPanels"
              mc:Ignorable="d"
-             d:DesignHeight="760" d:DesignWidth="1180"
+             d:DesignHeight="720" d:DesignWidth="1180"
              Background="#F5F5F7">
 
     <UserControl.Resources>

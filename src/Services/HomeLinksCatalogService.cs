@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace GeoChemistryNexus.Services
@@ -28,7 +27,7 @@ namespace GeoChemistryNexus.Services
                 if (string.IsNullOrWhiteSpace(json))
                     return EnsureLocalCatalogExists();
 
-                var serverInfo = JsonSerializer.Deserialize<ServerInfo>(json);
+                var serverInfo = JsonHelper.Deserialize<ServerInfo>(json);
                 if (serverInfo == null || string.IsNullOrWhiteSpace(serverInfo.HomeLinksHash))
                     return EnsureLocalCatalogExists();
 

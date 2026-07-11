@@ -19,6 +19,7 @@ namespace GeoChemistryNexus.Views
         public DiagramPlotEditorWindow()
         {
             InitializeComponent();
+            UiScaleHelper.Attach(this);
             EditorControl.ViewModel.PropertyChanged += (_, e) =>
             {
                 if (e.PropertyName == nameof(DiagramPlotEditorViewModel.WindowTitle))

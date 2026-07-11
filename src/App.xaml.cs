@@ -24,6 +24,7 @@ namespace GeoChemistryNexus
             this.DispatcherUnhandledException += App_DispatcherUnhandledException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
+            this.Exit += App_Exit;
         }
 
         protected override async void OnStartup(StartupEventArgs e)
@@ -34,6 +35,20 @@ namespace GeoChemistryNexus
 
             if (TryHandleHeadlessPublish(e.Args))
                 return;
+
+            // GUI 单实例：已有进程时转发关联文件路径并退出
+            if (!SingleInstanceHelper.TryAcquirePrimaryInstance())
+            {
+                SingleInstanceHelper.TryNotifyRunningInstance(TryFindAssociatedPackageArg(e.Args));
+                Shutdown();
+                return;
+            }
+
+            SingleInstanceHelper.StartIpcServer();
+
+            string? associatedPath = TryFindAssociatedPackageArg(e.Args);
+            if (!string.IsNullOrEmpty(associatedPath))
+                SingleInstanceHelper.EnqueuePackagePath(associatedPath);
 
             // 0. 初始化语言
             LanguageService.InitializeLanguage();
@@ -116,6 +131,35 @@ namespace GeoChemistryNexus
             });
         }
 
+        private void App_Exit(object sender, ExitEventArgs e)
+        {
+            SingleInstanceHelper.Release();
+        }
+
+        /// <summary>
+        /// 从启动参数中提取关联包文件路径（仅 .gndiag / .gngtm）。
+        /// </summary>
+        private static string? TryFindAssociatedPackageArg(string[]? args)
+        {
+            if (args == null || args.Length == 0)
+                return null;
+
+            foreach (string arg in args)
+            {
+                if (string.IsNullOrWhiteSpace(arg) || arg.StartsWith("--", StringComparison.Ordinal))
+                    continue;
+
+                string path = arg.Trim().Trim('"');
+                if (!File.Exists(path))
+                    continue;
+
+                if (TemplatePackageFileExtensions.IsAssociatedPackagePath(path))
+                    return path;
+            }
+
+            return null;
+        }
+
         /// <summary>
         /// 无头模式：命令行发布官方图解模板
         /// GeoChemistryNexus.exe --publish-official-templates [--staging-dir=路径] [--dry-run]
@@ -126,8 +170,8 @@ namespace GeoChemistryNexus
                 return false;
 
             bool dryRun = args.Any(a => string.Equals(a, "--dry-run", StringComparison.OrdinalIgnoreCase));
-            string stagingArg = args.FirstOrDefault(a => a.StartsWith("--staging-dir=", StringComparison.OrdinalIgnoreCase));
-            string stagingDir = null;
+            string? stagingArg = args.FirstOrDefault(a => a.StartsWith("--staging-dir=", StringComparison.OrdinalIgnoreCase));
+            string? stagingDir = null;
             if (!string.IsNullOrEmpty(stagingArg))
                 stagingDir = stagingArg.Substring("--staging-dir=".Length).Trim('"');
 
@@ -163,7 +207,7 @@ namespace GeoChemistryNexus
                 try
                 {
                     string json = UpdateHelper.GetUrlContentAsync(OfficialContentEndpoints.ServerInfoUrl).GetAwaiter().GetResult();
-                    var info = System.Text.Json.JsonSerializer.Deserialize<ServerInfo>(json);
+                    var info = JsonHelper.Deserialize<ServerInfo>(json);
                     announcement = info?.Announcement ?? string.Empty;
                     minimumSupportedVersion = info?.MinimumSupportedVersion ?? string.Empty;
                 }

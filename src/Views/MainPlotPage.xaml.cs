@@ -1,6 +1,7 @@
 using GeoChemistryNexus.Models;
 using GeoChemistryNexus.ViewModels;
 using GeoChemistryNexus.Controls;
+using GeoChemistryNexus.Helpers;
 using ScottPlot;
 using ScottPlot.Interactivity;
 using ScottPlot.Plottables;
@@ -10,6 +11,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,6 +27,7 @@ using System.Windows.Shapes;
 using System.Windows.Media.Animation;
 using GeoChemistryNexus.Services;
 using System.Collections.Specialized;
+using WpfToolkit.Controls;
 
 namespace GeoChemistryNexus.Views
 {
@@ -48,18 +51,30 @@ namespace GeoChemistryNexus.Views
 
             viewModel.PropertyChanged += ViewModel_PropertyChanged;
             viewModel.GetTemplateCardsScrollOffset = GetTemplateCardsScrollOffset;
-            viewModel.RestoreTemplateCardsScrollRequested += RestoreTemplateCardsScroll;
+            viewModel.RestoreTemplateCardsScrollAsync = RestoreTemplateCardsScrollAsync;
+            viewModel.TemplateCardsPresentationChanged += OnTemplateCardsPresentationChanged;
+            AttachTemplateCardsScrollBehavior();
             AttachBreadcrumbScrollBehavior();
+            AttachTemplateCardLayoutBehavior();
 
             this.Loaded += (s, e) =>
             {
                 // 页面加载后，获取窗口并添加键盘事件监听
                 AttachKeyboardEvents();
+                ScheduleTemplateCardItemSizeUpdate();
             };
 
             this.Unloaded += (s, e) =>
             {
                 DetachKeyboardEvents();
+                _stickyScrollCts?.Cancel();
+                _stickyScrollCts?.Dispose();
+                _stickyScrollCts = null;
+                _hideTemplateCardsUntilScrollRestored = false;
+                SetTemplateCardsVisibilityForScrollRestore(visible: true);
+                CompleteScrollRestore();
+                if (viewModel != null)
+                    viewModel.TemplateCardsPresentationChanged -= OnTemplateCardsPresentationChanged;
             };
 
             var dpd = System.ComponentModel.DependencyPropertyDescriptor.FromProperty(CustomColorPicker.SelectedColorProperty, typeof(CustomColorPicker));
@@ -162,6 +177,11 @@ namespace GeoChemistryNexus.Views
             if (e.PropertyName == nameof(MainPlotViewModel.Breadcrumbs))
             {
                 AttachBreadcrumbScrollBehavior();
+            }
+
+            if (e.PropertyName == nameof(MainPlotViewModel.TemplateCardSizePreset))
+            {
+                ScheduleTemplateCardItemSizeUpdate(preserveScrollRatio: true);
             }
 
             if (e.PropertyName == nameof(MainPlotViewModel.RibbonTabIndex))
@@ -827,35 +847,410 @@ namespace GeoChemistryNexus.Views
             }
         }
 
+        private void OnTemplateCardsPresentationChanged()
+        {
+            RequestVisibleTemplateCardThumbnails();
+
+            // 卡片重建后：若 pending 或 sticky 目标仍在，重新恢复（覆盖延迟 Clear 冲掉滚动的情况）
+            if (_pendingTemplateCardsScrollOffset is > 0 || _stickyTemplateCardsScrollOffset is > 0)
+            {
+                if (_pendingTemplateCardsScrollOffset == null && _stickyTemplateCardsScrollOffset is double sticky)
+                    _pendingTemplateCardsScrollOffset = sticky;
+
+                // 再次隐藏，避免 Clear 后顶部内容在恢复前露出来
+                if (_stickyTemplateCardsScrollOffset is > 0)
+                {
+                    _hideTemplateCardsUntilScrollRestored = true;
+                    SetTemplateCardsVisibilityForScrollRestore(visible: false);
+                }
+
+                _ = TryRestoreTemplateCardsScrollAsync();
+            }
+        }
+
+        private void AttachTemplateCardsScrollBehavior()
+        {
+            TemplateCardsControl.Loaded += (_, _) =>
+            {
+                var scrollViewer = FindVisualChild<ScrollViewer>(TemplateCardsControl);
+                if (scrollViewer == null)
+                    return;
+
+                scrollViewer.ScrollChanged -= TemplateCardsScrollViewer_ScrollChanged;
+                scrollViewer.ScrollChanged += TemplateCardsScrollViewer_ScrollChanged;
+                scrollViewer.SizeChanged -= TemplateCardsScrollViewer_SizeChanged;
+                scrollViewer.SizeChanged += TemplateCardsScrollViewer_SizeChanged;
+                ScheduleTemplateCardItemSizeUpdate();
+                RequestVisibleTemplateCardThumbnails();
+            };
+        }
+
+        private void AttachTemplateCardLayoutBehavior()
+        {
+            TemplateCardsControl.SizeChanged -= TemplateCardsControl_SizeChanged;
+            TemplateCardsControl.SizeChanged += TemplateCardsControl_SizeChanged;
+        }
+
+        private void TemplateCardsControl_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (!e.WidthChanged)
+                return;
+
+            // 取消最大化等场景下，SizeChanged 可能早于 ViewportWidth 稳定，延后到布局完成再算
+            ScheduleTemplateCardItemSizeUpdate(preserveScrollRatio: true);
+        }
+
+        private void TemplateCardsScrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (!e.WidthChanged)
+                return;
+
+            ScheduleTemplateCardItemSizeUpdate(preserveScrollRatio: true);
+        }
+
+        private Size _lastAppliedTemplateCardItemSize = new(TemplateCardLayoutHelper.DefaultCellSize, TemplateCardLayoutHelper.DefaultCellSize);
+        private double _lastTemplateCardAvailableWidth;
+        private bool _templateCardItemSizeRetryPending;
+        private bool _templateCardItemSizeUpdateScheduled;
+        private bool _pendingPreserveScrollRatio;
+
+        private void ScheduleTemplateCardItemSizeUpdate(bool preserveScrollRatio = false)
+        {
+            _pendingPreserveScrollRatio |= preserveScrollRatio;
+            if (_templateCardItemSizeUpdateScheduled)
+                return;
+
+            _templateCardItemSizeUpdateScheduled = true;
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                _templateCardItemSizeUpdateScheduled = false;
+                bool preserve = _pendingPreserveScrollRatio;
+                _pendingPreserveScrollRatio = false;
+                UpdateTemplateCardItemSize(preserve);
+            }), System.Windows.Threading.DispatcherPriority.Loaded);
+        }
+
+        private void UpdateTemplateCardItemSize(bool preserveScrollRatio = false)
+        {
+            if (viewModel == null || TemplateCardsControl == null)
+                return;
+
+            var scrollViewer = FindVisualChild<ScrollViewer>(TemplateCardsControl);
+            double availableWidth = scrollViewer?.ViewportWidth ?? 0;
+            if (availableWidth <= 0)
+                availableWidth = TemplateCardsControl.ActualWidth;
+
+            // ListBox 右侧 Padding=10，与 TemplateCardListBoxStyle 一致
+            if (availableWidth > 10)
+                availableWidth -= 10;
+
+            if (availableWidth <= 0)
+                return;
+
+            var newSize = TemplateCardLayoutHelper.ComputeItemSize(
+                availableWidth,
+                viewModel.TemplateCardSizePreset);
+
+            bool widthUnchanged = Math.Abs(availableWidth - _lastTemplateCardAvailableWidth) < 0.5;
+            bool sizeUnchanged = Math.Abs(newSize.Width - _lastAppliedTemplateCardItemSize.Width) < 0.5
+                && Math.Abs(newSize.Height - _lastAppliedTemplateCardItemSize.Height) < 0.5;
+            if (widthUnchanged && sizeUnchanged)
+                return;
+
+            double? scrollRatio = null;
+            if (preserveScrollRatio && scrollViewer != null && scrollViewer.ExtentHeight > 0)
+            {
+                scrollRatio = scrollViewer.VerticalOffset / scrollViewer.ExtentHeight;
+            }
+
+            var panel = FindVisualChild<VirtualizingWrapPanel>(TemplateCardsControl);
+            if (panel == null)
+            {
+                if (_templateCardItemSizeRetryPending)
+                    return;
+
+                _templateCardItemSizeRetryPending = true;
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    _templateCardItemSizeRetryPending = false;
+                    UpdateTemplateCardItemSize(preserveScrollRatio);
+                }), System.Windows.Threading.DispatcherPriority.Loaded);
+                return;
+            }
+
+            panel.ItemSize = newSize;
+            _lastAppliedTemplateCardItemSize = newSize;
+            _lastTemplateCardAvailableWidth = availableWidth;
+
+            // 强制面板按新 ItemSize 重新测量（取消最大化后仅改属性可能不立刻重排）
+            panel.InvalidateMeasure();
+            panel.InvalidateArrange();
+            TemplateCardsControl.UpdateLayout();
+            scrollViewer?.UpdateLayout();
+
+            if (scrollRatio is double ratio && scrollViewer != null)
+            {
+                scrollViewer.ScrollToVerticalOffset(ratio * scrollViewer.ExtentHeight);
+            }
+
+            RequestVisibleTemplateCardThumbnails();
+        }
+
+        private void TemplateCardsScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            // 视口宽度变化（含取消最大化后滚动条显隐）时同步刷新列布局
+            if (e.ViewportWidthChange != 0)
+            {
+                ScheduleTemplateCardItemSizeUpdate(preserveScrollRatio: true);
+            }
+
+            if (e.VerticalChange == 0 && e.ViewportHeightChange == 0 && e.ViewportWidthChange == 0)
+                return;
+
+            RequestVisibleTemplateCardThumbnails();
+        }
+
+        private void RequestVisibleTemplateCardThumbnails()
+        {
+            if (viewModel == null)
+                return;
+
+            var visibleCards = GetVisibleTemplateCards().ToList();
+            if (visibleCards.Count > 0)
+                viewModel.RequestTemplateCardThumbnails(visibleCards);
+        }
+
+        private IEnumerable<TemplateCardViewModel> GetVisibleTemplateCards()
+        {
+            var scrollViewer = FindVisualChild<ScrollViewer>(TemplateCardsControl);
+            if (scrollViewer == null)
+                yield break;
+
+            var viewport = new Rect(0, scrollViewer.VerticalOffset, scrollViewer.ViewportWidth, scrollViewer.ViewportHeight);
+            foreach (var item in TemplateCardsControl.Items)
+            {
+                if (item is not TemplateCardViewModel card)
+                    continue;
+
+                var container = TemplateCardsControl.ItemContainerGenerator.ContainerFromItem(item) as FrameworkElement;
+                if (container == null)
+                    continue;
+
+                if (IsTemplateCardVisibleInViewport(container, scrollViewer, viewport))
+                    yield return card;
+            }
+        }
+
+        private static bool IsTemplateCardVisibleInViewport(FrameworkElement container, ScrollViewer scrollViewer, Rect viewport)
+        {
+            try
+            {
+                var itemBounds = container.TransformToAncestor(scrollViewer)
+                    .TransformBounds(new Rect(0, 0, container.ActualWidth, container.ActualHeight));
+                return viewport.IntersectsWith(itemBounds);
+            }
+            catch (InvalidOperationException)
+            {
+                return false;
+            }
+        }
+
+        private double? _pendingTemplateCardsScrollOffset;
+        /// <summary>
+        /// 返回模板库后短暂保留的目标偏移：即使一次恢复成功，若随后卡片被 Clear 重建，仍可再次恢复。
+        /// </summary>
+        private double? _stickyTemplateCardsScrollOffset;
+        private CancellationTokenSource? _stickyScrollCts;
+        private TaskCompletionSource<bool>? _scrollRestoreTcs;
+        private bool _hideTemplateCardsUntilScrollRestored;
+
         private double GetTemplateCardsScrollOffset()
         {
             var scrollViewer = FindVisualChild<ScrollViewer>(TemplateCardsControl);
             return scrollViewer?.VerticalOffset ?? 0;
         }
 
-        private void RestoreTemplateCardsScroll(double offset)
+        private Task RestoreTemplateCardsScrollAsync(double offset)
         {
+            _pendingTemplateCardsScrollOffset = offset;
+            if (offset > 0)
+            {
+                _stickyTemplateCardsScrollOffset = offset;
+                _hideTemplateCardsUntilScrollRestored = true;
+                SetTemplateCardsVisibilityForScrollRestore(visible: false);
+                _stickyScrollCts?.Cancel();
+                _stickyScrollCts = new CancellationTokenSource();
+                var token = _stickyScrollCts.Token;
+                _ = ClearStickyScrollAfterDelayAsync(token);
+            }
+            else
+            {
+                _stickyTemplateCardsScrollOffset = null;
+                _hideTemplateCardsUntilScrollRestored = false;
+                SetTemplateCardsVisibilityForScrollRestore(visible: true);
+            }
+
+            return TryRestoreTemplateCardsScrollAsync();
+        }
+
+        private void SetTemplateCardsVisibilityForScrollRestore(bool visible)
+        {
+            if (TemplateCardsControl == null)
+                return;
+
+            TemplateCardsControl.Opacity = visible ? 1 : 0;
+        }
+
+        private async Task ClearStickyScrollAfterDelayAsync(CancellationToken token)
+        {
+            try
+            {
+                await Task.Delay(800, token);
+                if (!token.IsCancellationRequested)
+                    _stickyTemplateCardsScrollOffset = null;
+            }
+            catch (TaskCanceledException)
+            {
+            }
+        }
+
+        private Task TryRestoreTemplateCardsScrollAsync()
+        {
+            var offset = _pendingTemplateCardsScrollOffset ?? _stickyTemplateCardsScrollOffset;
+            if (offset is not double desiredOffset)
+            {
+                return Task.CompletedTask;
+            }
+
+            // 目标为顶部时无需重试
+            if (desiredOffset <= 0)
+            {
+                var scrollViewerAtTop = FindVisualChild<ScrollViewer>(TemplateCardsControl);
+                scrollViewerAtTop?.ScrollToVerticalOffset(0);
+                _pendingTemplateCardsScrollOffset = null;
+                FinishScrollRestoreAndShowCards();
+                return Task.CompletedTask;
+            }
+
+            // 若已有进行中的恢复，复用同一个 Task，避免并发重试互相干扰
+            if (_scrollRestoreTcs != null && !_scrollRestoreTcs.Task.IsCompleted)
+            {
+                return _scrollRestoreTcs.Task;
+            }
+
+            var tcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+            _scrollRestoreTcs = tcs;
+
             Dispatcher.InvokeAsync(async () =>
             {
-                for (var attempt = 0; attempt < 6; attempt++)
+                try
                 {
-                    var scrollViewer = FindVisualChild<ScrollViewer>(TemplateCardsControl);
-                    if (scrollViewer == null)
+                    double lastScrollableHeight = -1;
+                    var stableScrollableCount = 0;
+
+                    for (var attempt = 0; attempt < 20; attempt++)
                     {
+                        var pending = _pendingTemplateCardsScrollOffset ?? _stickyTemplateCardsScrollOffset;
+                        if (pending is not double pendingOffset || pendingOffset <= 0)
+                        {
+                            FinishScrollRestoreAndShowCards();
+                            return;
+                        }
+
+                        desiredOffset = pendingOffset;
+                        var scrollViewer = FindVisualChild<ScrollViewer>(TemplateCardsControl);
+                        if (scrollViewer == null)
+                        {
+                            await Task.Delay(40);
+                            continue;
+                        }
+
+                        // 强制一次布局，让批量加载的卡片尽快参与测量
+                        TemplateCardsControl.UpdateLayout();
+                        scrollViewer.UpdateLayout();
+
+                        if (scrollViewer.ScrollableHeight <= 0)
+                        {
+                            await Task.Delay(40);
+                            continue;
+                        }
+
+                        // 内容仍在增高时不要过早判定成功，否则会停在“半截列表”的顶部附近
+                        if (Math.Abs(scrollViewer.ScrollableHeight - lastScrollableHeight) < 0.5)
+                            stableScrollableCount++;
+                        else
+                            stableScrollableCount = 0;
+                        lastScrollableHeight = scrollViewer.ScrollableHeight;
+
+                        var contentReady = scrollViewer.ScrollableHeight + 1 >= desiredOffset
+                                           || stableScrollableCount >= 2;
+                        if (!contentReady)
+                        {
+                            await Task.Delay(40);
+                            continue;
+                        }
+
+                        var targetOffset = Math.Min(desiredOffset, scrollViewer.ScrollableHeight);
+                        scrollViewer.ScrollToVerticalOffset(targetOffset);
+                        scrollViewer.UpdateLayout();
+
+                        if (Math.Abs(scrollViewer.VerticalOffset - targetOffset) >= 1)
+                        {
+                            await Task.Delay(40);
+                            continue;
+                        }
+
+                        // 再等一帧 Render，确认合成侧也已是目标偏移
+                        await Dispatcher.InvokeAsync(() => { }, System.Windows.Threading.DispatcherPriority.Render);
+
+                        scrollViewer = FindVisualChild<ScrollViewer>(TemplateCardsControl);
+                        if (scrollViewer == null)
+                        {
+                            await Task.Delay(40);
+                            continue;
+                        }
+
+                        targetOffset = Math.Min(desiredOffset, scrollViewer.ScrollableHeight);
+                        if (Math.Abs(scrollViewer.VerticalOffset - targetOffset) >= 1)
+                        {
+                            scrollViewer.ScrollToVerticalOffset(targetOffset);
+                            await Task.Delay(40);
+                            continue;
+                        }
+
+                        _pendingTemplateCardsScrollOffset = null;
+                        FinishScrollRestoreAndShowCards();
                         return;
                     }
-
-                    var targetOffset = Math.Min(offset, scrollViewer.ScrollableHeight);
-                    scrollViewer.ScrollToVerticalOffset(targetOffset);
-
-                    if (Math.Abs(scrollViewer.VerticalOffset - targetOffset) < 1)
-                    {
-                        return;
-                    }
-
-                    await Task.Delay(50);
+                }
+                finally
+                {
+                    // 重试耗尽也结束等待并显示列表，避免遮罩一直不关
+                    FinishScrollRestoreAndShowCards();
                 }
             }, System.Windows.Threading.DispatcherPriority.Loaded);
+
+            return tcs.Task;
+        }
+
+        private void FinishScrollRestoreAndShowCards()
+        {
+            if (_hideTemplateCardsUntilScrollRestored)
+            {
+                _hideTemplateCardsUntilScrollRestored = false;
+                SetTemplateCardsVisibilityForScrollRestore(visible: true);
+            }
+
+            CompleteScrollRestore();
+        }
+
+        private void CompleteScrollRestore()
+        {
+            var tcs = _scrollRestoreTcs;
+            if (tcs != null && !tcs.Task.IsCompleted)
+            {
+                tcs.TrySetResult(true);
+            }
         }
 
         /// <summary>

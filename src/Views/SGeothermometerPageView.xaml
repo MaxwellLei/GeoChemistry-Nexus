@@ -20,13 +20,15 @@
                 <Border Style="{StaticResource ModernSettingsCard}">
                     <StackPanel>
                         <!-- Current Geothermometer Format Version (Read-Only) -->
-                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                        <Grid MinHeight="56" Background="Transparent" Margin="16,4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding [geo_current_app_format_version],Source={x:Static lg:LanguageService.Instance}, FallbackValue=当前软件温压计版本}"
-                                       VerticalAlignment="Center" FontSize="14"/>
+                            <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+                                <TextBlock Text="{Binding [geo_current_app_format_version],Source={x:Static lg:LanguageService.Instance}, FallbackValue=当前软件温压计版本}" FontSize="14"/>
+                                <TextBlock Text="{Binding [geo_current_app_format_version_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=当前软件支持的地质温压计模板格式版本（只读）}" Style="{StaticResource ModernSettingsItemHintStyle}"/>
+                            </StackPanel>
                             <TextBlock Grid.Column="1" Text="{Binding CurrentGeothermometerVersion}" VerticalAlignment="Center"
                                        FontSize="14" Foreground="Gray" HorizontalAlignment="Right"/>
                         </Grid>
@@ -38,13 +40,16 @@
                 <Border Style="{StaticResource ModernSettingsCard}">
                     <StackPanel>
                         <!-- Auto Check GTM Update -->
-                        <Grid Height="50" Background="Transparent" Margin="16,0">
+                        <Grid MinHeight="56" Background="Transparent" Margin="16,4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding [auto_check_geothermometer_updates],Source={x:Static lg:LanguageService.Instance}, FallbackValue=自动检查地质温压计更新}" FontSize="14" VerticalAlignment="Center"/>
-                            <ToggleButton IsChecked="{Binding AutoCheckGtmUpdate}" Grid.Column="1" Style="{StaticResource ToggleButtonSwitch}"/>
+                            <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+                                <TextBlock Text="{Binding [auto_check_geothermometer_updates],Source={x:Static lg:LanguageService.Instance}, FallbackValue=自动检查地质温压计更新}" FontSize="14"/>
+                                <TextBlock Text="{Binding [auto_check_geothermometer_updates_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=启动时自动检查地质温压计是否有更新}" Style="{StaticResource ModernSettingsItemHintStyle}"/>
+                            </StackPanel>
+                            <ToggleButton IsChecked="{Binding AutoCheckGtmUpdate}" Grid.Column="1" Style="{StaticResource ToggleButtonSwitch}" VerticalAlignment="Center"/>
                         </Grid>
                     </StackPanel>
                 </Border>

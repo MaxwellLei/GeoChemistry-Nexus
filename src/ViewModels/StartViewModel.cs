@@ -18,10 +18,10 @@ namespace GeoChemistryNexus.ViewModels
             ProgressText = LanguageService.Instance["StartStatus"];
         }
 
-        public void UpdateProgress(double value, string text)
+        public void UpdateProgress(double value, string? text)
         {
             ProgressValue = value;
-            ProgressText = text;
+            ProgressText = text ?? string.Empty;
         }
     }
 }

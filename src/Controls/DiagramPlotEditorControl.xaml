@@ -8,6 +8,7 @@
              xmlns:primitives="clr-namespace:System.Windows.Controls.Primitives;assembly=PresentationFramework"
              xmlns:vm="clr-namespace:GeoChemistryNexus.ViewModels"
              xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
+             xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
              mc:Ignorable="d"
              d:DesignHeight="720" d:DesignWidth="1000"
              Background="#F5F5F7">
@@ -60,6 +61,12 @@
 
         <Style x:Key="DiagramEditorComboBoxStyle" TargetType="ComboBox" BasedOn="{StaticResource ComboBoxExtend}">
             <Setter Property="ItemContainerStyle" Value="{StaticResource DiagramEditorComboBoxItemStyle}"/>
+        </Style>
+
+        <cvs:GraphMapPathToIconConverter x:Key="GraphMapPathToIconConverter"/>
+
+        <Style x:Key="CategoryPreviewTreeViewItemStyle" BasedOn="{StaticResource ModernStyleTreeViewItemStyle}" TargetType="TreeViewItem">
+            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
         </Style>
 
         <Style x:Key="TranslationDataGridStyle" TargetType="DataGrid">
@@ -163,6 +170,34 @@
             <Setter Property="BorderThickness" Value="1"/>
         </Style>
 
+        <Style x:Key="PanelControlButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="26"/>
+            <Setter Property="Height" Value="26"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Foreground" Value="#888"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="4"
+                                ToolTip="{TemplateBinding ToolTip}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#E8E8E8"/>
+                                <Setter Property="Foreground" Value="#333"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#D4D4D4"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <Style x:Key="TokenBorderStyle" TargetType="Border">
             <Setter Property="Background" Value="#EBF3FF"/>
             <Setter Property="CornerRadius" Value="8"/>
@@ -228,6 +263,43 @@
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="Bd" Property="Opacity" Value="0.9"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CategorySelectButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="32"/>
+            <Setter Property="MinWidth" Value="0"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ModernCardBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="{StaticResource ModernTextPrimaryBrush}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6"
+                                ToolTip="{TemplateBinding ToolTip}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#F2F2F7"/>
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="#C7C7CC"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#E5E5EA"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.5"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -359,57 +431,103 @@
             <!-- Basic settings -->
             <ScrollViewer x:Name="BasicPanel" VerticalScrollBarVisibility="Auto" Padding="28,24">
                 <StackPanel MaxWidth="720">
-                    <TextBlock Style="{StaticResource SectionTitleStyle}"
+                    <TextBlock Style="{StaticResource SectionTitleStyle}" Margin="0,0,0,12"
                                Text="{Binding [diagram_editor_basic_settings], Source={x:Static lg:LanguageService.Instance}, TargetNullValue='基本设置'}"/>
-                    <TextBlock Style="{StaticResource SectionHintStyle}"
-                               Text="{Binding [new_template_description], Source={x:Static lg:LanguageService.Instance}}"/>
 
                     <Border Style="{StaticResource PanelCardStyle}">
                         <StackPanel>
-                            <TextBlock Text="{Binding [geo_field_version], Source={x:Static lg:LanguageService.Instance}, FallbackValue=版本}" FontWeight="SemiBold" Margin="0,0,0,10"/>
-
-                            <StackPanel Margin="0,0,0,12"
-                                        Visibility="{Binding IsEditMode, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                <TextBlock FontSize="12"
-                                           Foreground="#86868B"
-                                           Margin="0,0,0,4"
-                                           Text="{Binding [current_diagram_version], Source={x:Static lg:LanguageService.Instance}, FallbackValue=当前图解版本}"/>
-                                <TextBlock FontSize="14"
-                                           FontWeight="SemiBold"
-                                           Foreground="#1D1D1F"
-                                           Text="{Binding OriginalTemplateVersion, Mode=OneWay}"/>
-                            </StackPanel>
-
-                            <TextBlock FontSize="12"
-                                       Foreground="#86868B"
-                                       Margin="0,0,0,4"
-                                       Text="{Binding [diagram_editor_new_version], Source={x:Static lg:LanguageService.Instance}, FallbackValue=新版本}"/>
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="80"/>
                                     <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
+
                                 <TextBlock Grid.Column="0"
                                            VerticalAlignment="Center"
-                                           Margin="0,0,4,0"
-                                           Foreground="#666"
-                                           FontSize="13"
-                                           Text="{Binding FormatVersionPrefix, Mode=OneWay}"/>
-                                <TextBox Grid.Column="1"
-                                         Text="{Binding PatchVersion, UpdateSourceTrigger=PropertyChanged}"
-                                         VerticalAlignment="Center"
-                                         Padding="8,6"
-                                         FontSize="13"
-                                         ToolTip="{Binding [geo_tooltip_version_patch], Source={x:Static lg:LanguageService.Instance}, FallbackValue=修订号 z；格式基线 x.y 跟随程序版本}"/>
-                                <TextBlock Grid.Column="2"
+                                           Text="{Binding [geo_field_version], Source={x:Static lg:LanguageService.Instance}, FallbackValue=版本}"
+                                           FontWeight="SemiBold"/>
+
+                                <TextBlock Grid.Column="1"
                                            VerticalAlignment="Center"
-                                           Margin="12,0,0,0"
+                                           Margin="12,0,8,0"
                                            FontSize="12"
-                                           Foreground="#86868B">
-                                    <Run Text="{Binding [diagram_editor_saved_version], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay, FallbackValue=保存后版本：}"/>
-                                    <Run Text="{Binding TemplateVersion, Mode=OneWay}" FontWeight="SemiBold"/>
-                                </TextBlock>
+                                           Foreground="#86868B"
+                                           Text="{Binding VersionSectionCollapsedSummary, Mode=OneWay}"
+                                           Visibility="{Binding IsVersionSectionExpanded, Converter={StaticResource BooleanToVisibilityReConverter}}"/>
+
+                                <Button Grid.Column="2"
+                                        Style="{StaticResource PanelControlButtonStyle}"
+                                        Command="{Binding ToggleVersionSectionCommand}"
+                                        ToolTip="{Binding [cipw_tooltip_expand], Source={x:Static lg:LanguageService.Instance}, FallbackValue=展开/收缩}">
+                                    <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="12">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Text" Value="&#xE70E;"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsVersionSectionExpanded}" Value="True">
+                                                        <Setter Property="Text" Value="&#xE70D;"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Button>
+                            </Grid>
+
+                            <Grid Margin="0,10,0,0"
+                                  Visibility="{Binding IsVersionSectionExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="48"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0"
+                                            Visibility="{Binding IsEditMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <TextBlock FontSize="12"
+                                               Foreground="#86868B"
+                                               Margin="0,0,0,4"
+                                               Text="{Binding [current_diagram_version], Source={x:Static lg:LanguageService.Instance}, FallbackValue=当前图解版本}"/>
+                                    <TextBlock FontSize="14"
+                                               FontWeight="SemiBold"
+                                               Foreground="#1D1D1F"
+                                               Text="{Binding OriginalTemplateVersion, Mode=OneWay}"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock FontSize="12"
+                                               Foreground="#86868B"
+                                               Margin="0,0,0,4"
+                                               Text="{Binding [diagram_editor_new_version], Source={x:Static lg:LanguageService.Instance}, FallbackValue=新版本}"/>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0"
+                                                   VerticalAlignment="Center"
+                                                   Margin="0,0,4,0"
+                                                   Foreground="#666"
+                                                   FontSize="13"
+                                                   Text="{Binding FormatVersionPrefix, Mode=OneWay}"/>
+                                        <TextBox Grid.Column="1"
+                                                 Text="{Binding PatchVersion, UpdateSourceTrigger=PropertyChanged}"
+                                                 VerticalAlignment="Center"
+                                                 Padding="8,6"
+                                                 FontSize="13"
+                                                 ToolTip="{Binding [geo_tooltip_version_patch], Source={x:Static lg:LanguageService.Instance}, FallbackValue=修订号 z；格式基线 x.y 跟随程序版本}"/>
+                                        <TextBlock Grid.Column="2"
+                                                   VerticalAlignment="Center"
+                                                   Margin="12,0,0,0"
+                                                   FontSize="12"
+                                                   Foreground="#86868B">
+                                            <Run Text="{Binding [diagram_editor_saved_version], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay, FallbackValue=保存后版本：}"/>
+                                            <Run Text="{Binding TemplateVersion, Mode=OneWay}" FontWeight="SemiBold"/>
+                                        </TextBlock>
+                                    </Grid>
+                                </StackPanel>
                             </Grid>
                         </StackPanel>
                     </Border>
@@ -445,6 +563,7 @@
                                 <hc:ComboBox x:Name="LanguageCombo"
                                              Grid.Column="0"
                                              IsEditable="True"
+                                             IsTextSearchEnabled="False"
                                              StaysOpenOnEdit="True"
                                              hc:InfoElement.Placeholder="{Binding [enter_language_add], Source={x:Static lg:LanguageService.Instance}}"
                                              DisplayMemberPath="DisplayName"
@@ -466,46 +585,103 @@
                     <Border Style="{StaticResource PanelCardStyle}">
                         <StackPanel>
                             <TextBlock Text="{Binding [enter_category_structure], Source={x:Static lg:LanguageService.Instance}}" FontWeight="SemiBold" Margin="0,0,0,10"/>
-                            <ItemsControl ItemsSource="{Binding CategoryParts}" Margin="0,0,0,0" ClipToBounds="False">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <WrapPanel/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border Style="{StaticResource CategoryTokenStyle}">
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{Binding DisplayName}" Style="{StaticResource TokenLabelStyle}" Foreground="#FF6B00"/>
-                                                <Button Tag="{Binding}" Click="RemoveCategory_Click"
-                                                        Style="{StaticResource TokenCloseButtonStyle}" Foreground="#FF6B00"/>
-                                            </StackPanel>
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                            <Grid Margin="0,4,0,0">
+                            <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*" MinWidth="260"/>
+                                    <ColumnDefinition Width="16"/>
+                                    <ColumnDefinition Width="300"/>
                                 </Grid.ColumnDefinitions>
-                                <hc:ComboBox x:Name="CategoryCombo"
-                                             Grid.Column="0"
-                                             IsEditable="True"
-                                             StaysOpenOnEdit="True"
-                                             hc:InfoElement.Placeholder="{Binding [enter_level_add], Source={x:Static lg:LanguageService.Instance}}"
-                                             DisplayMemberPath="DisplayName"
-                                             SelectedValuePath="DisplayName"
-                                             SelectionChanged="CategoryCombo_SelectionChanged"
-                                             PreviewKeyDown="CategoryCombo_PreviewKeyDown"
-                                             Style="{StaticResource DiagramEditorComboBoxStyle}"/>
-                                <TextBlock Grid.Column="1"
-                                           Text="{Binding [enter_level_add], Source={x:Static lg:LanguageService.Instance}}"
-                                           VerticalAlignment="Center"
-                                           Foreground="{StaticResource ModernTextSecondaryBrush}"
-                                           Margin="16,0,0,0"
-                                           FontSize="13"
-                                           TextWrapping="Wrap"/>
+
+                                <StackPanel Grid.Column="0">
+                                    <ItemsControl ItemsSource="{Binding CategoryParts}" Margin="0,0,0,0" ClipToBounds="False">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Style="{StaticResource CategoryTokenStyle}">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="{Binding DisplayName}" Style="{StaticResource TokenLabelStyle}" Foreground="#FF6B00"/>
+                                                        <Button Tag="{Binding}" Click="RemoveCategory_Click"
+                                                                Style="{StaticResource TokenCloseButtonStyle}" Foreground="#FF6B00"/>
+                                                    </StackPanel>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                    <Grid Margin="0,4,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <hc:ComboBox x:Name="CategoryCombo"
+                                                     Grid.Column="0"
+                                                     IsEditable="True"
+                                                     StaysOpenOnEdit="True"
+                                                     hc:InfoElement.Placeholder="{Binding [enter_level_add], Source={x:Static lg:LanguageService.Instance}}"
+                                                     DisplayMemberPath="DisplayName"
+                                                     SelectedValuePath="DisplayName"
+                                                     SelectionChanged="CategoryCombo_SelectionChanged"
+                                                     PreviewKeyDown="CategoryCombo_PreviewKeyDown"
+                                                     Style="{StaticResource DiagramEditorComboBoxStyle}"/>
+                                        <Button Grid.Column="1"
+                                                Margin="8,0,0,0"
+                                                Style="{StaticResource CategorySelectButtonStyle}"
+                                                Click="SelectExistingCategoryStructure_Click"
+                                                ToolTip="{Binding [select_existing_category_structure_tooltip], Source={x:Static lg:LanguageService.Instance}, FallbackValue='Select a category path from existing diagram templates.'}">
+                                            <TextBlock Text="&#xe71b;"
+                                                       FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont"
+                                                       FontSize="14"
+                                                       VerticalAlignment="Center"
+                                                       HorizontalAlignment="Center"/>
+                                        </Button>
+                                    </Grid>
+                                    <TextBlock Text="{Binding [enter_level_add], Source={x:Static lg:LanguageService.Instance}}"
+                                               Foreground="{StaticResource ModernTextSecondaryBrush}"
+                                               Margin="0,6,0,0"
+                                               FontSize="13"
+                                               TextWrapping="Wrap"/>
+                                </StackPanel>
+
+                                <Border Grid.Column="2"
+                                        Background="#FAFAFA"
+                                        CornerRadius="8"
+                                        BorderBrush="{StaticResource ModernCardBorderBrush}"
+                                        BorderThickness="1"
+                                        Padding="12"
+                                        MinHeight="160">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding [category_structure_preview], Source={x:Static lg:LanguageService.Instance}, FallbackValue='Preview'}"
+                                                   FontWeight="SemiBold"
+                                                   FontSize="13"
+                                                   Foreground="{StaticResource ModernTextPrimaryBrush}"
+                                                   Margin="0,0,0,8"/>
+                                        <TreeView ItemsSource="{Binding CategoryStructurePreviewRoot.Children}"
+                                                  Background="Transparent"
+                                                  BorderThickness="0"
+                                                  ItemContainerStyle="{StaticResource CategoryPreviewTreeViewItemStyle}"
+                                                  Visibility="{Binding HasCategoryStructurePreview, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <TreeView.ItemTemplate>
+                                                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="{Binding GraphMapPath, Converter={StaticResource GraphMapPathToIconConverter}}"
+                                                                   FontSize="14"
+                                                                   Margin="0,0,8,0"/>
+                                                        <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </HierarchicalDataTemplate>
+                                            </TreeView.ItemTemplate>
+                                        </TreeView>
+                                        <TextBlock Text="{Binding [category_structure_preview_empty], Source={x:Static lg:LanguageService.Instance}, FallbackValue='Add levels to preview the category hierarchy.'}"
+                                                   Foreground="{StaticResource ModernTextSecondaryBrush}"
+                                                   FontSize="12"
+                                                   TextWrapping="Wrap"
+                                                   VerticalAlignment="Center"
+                                                   Visibility="{Binding HasCategoryStructurePreview, Converter={StaticResource BooleanToVisibilityReConverter}}"/>
+                                    </StackPanel>
+                                </Border>
                             </Grid>
                         </StackPanel>
                     </Border>

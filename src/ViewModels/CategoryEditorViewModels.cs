@@ -22,6 +22,11 @@ namespace GeoChemistryNexus.ViewModels
 
         partial void OnTitleChanged(LocalizedString value) => OnPropertyChanged(nameof(DisplayTitle));
 
+        public void ReplaceTitle(LocalizedString source)
+        {
+            Title = HomeLinksLocalization.Clone(source);
+        }
+
         private void OnLanguageContextChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(ContentLanguageContext.ContentLanguage))

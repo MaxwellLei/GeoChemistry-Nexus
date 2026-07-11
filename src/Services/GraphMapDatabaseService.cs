@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Text.Json;
 using GeoChemistryNexus.Helpers;
 
 namespace GeoChemistryNexus.Services
@@ -22,6 +21,9 @@ namespace GeoChemistryNexus.Services
 
         // Namespace for UUID v5 generation (as per design doc)
         private static readonly Guid NamespaceGuid = Guid.Parse("6ba7b814-9dad-11d1-80b4-00c04fd430c8");
+
+        private readonly object _summariesCacheLock = new();
+        private List<GraphMapTemplateEntity>? _summariesCache;
 
         private GraphMapDatabaseService()
         {
@@ -40,23 +42,81 @@ namespace GeoChemistryNexus.Services
         }
 
         /// <summary>
-        /// 获取所有模板的摘要信息（仅元数据，不含 Content）
+        /// 获取所有模板的摘要信息（仅元数据，不含 Content / HelpDocuments）。
+        /// 结果带进程内缓存；调用方拿到的是副本，可安全改状态字段。
         /// </summary>
         public List<GraphMapTemplateEntity> GetSummaries()
         {
+            lock (_summariesCacheLock)
+            {
+                if (_summariesCache == null)
+                    _summariesCache = LoadSummariesFromDatabase();
+
+                return _summariesCache.Select(CloneSummary).ToList();
+            }
+        }
+
+        /// <summary>
+        /// 使摘要缓存失效（模板增删改后调用）。
+        /// </summary>
+        public void InvalidateSummariesCache()
+        {
+            lock (_summariesCacheLock)
+            {
+                _summariesCache = null;
+            }
+        }
+
+        private List<GraphMapTemplateEntity> LoadSummariesFromDatabase()
+        {
             using var db = GetDatabase();
             var col = db.GetCollection<GraphMapTemplateEntity>(CollectionName);
-            
-            // 直接查询所有记录，然后清空 Content 字段
+
             var allEntities = col.FindAll().ToList();
-            
-            // 清空重量级字段，减少内存占用
+
             foreach (var entity in allEntities)
             {
                 entity.Content = null;
+                entity.HelpDocuments = new Dictionary<string, string>();
             }
-            
+
             return allEntities;
+        }
+
+        private static GraphMapTemplateEntity CloneSummary(GraphMapTemplateEntity source)
+        {
+            return new GraphMapTemplateEntity
+            {
+                Id = source.Id,
+                GraphMapPath = source.GraphMapPath,
+                FileHash = source.FileHash,
+                IsCustom = source.IsCustom,
+                IsNewTemplate = source.IsNewTemplate,
+                LastModified = source.LastModified,
+                Name = source.Name,
+                NodeList = CloneLocalizedString(source.NodeList),
+                TemplateType = source.TemplateType,
+                Version = source.Version,
+                Content = null,
+                HelpDocuments = new Dictionary<string, string>(),
+                Status = source.Status,
+                IsFavorite = source.IsFavorite,
+                PendingPublish = source.PendingPublish
+            };
+        }
+
+        private static LocalizedString CloneLocalizedString(LocalizedString? source)
+        {
+            if (source == null)
+                return new LocalizedString();
+
+            return new LocalizedString
+            {
+                Default = source.Default,
+                Translations = source.Translations == null
+                    ? new Dictionary<string, string>()
+                    : new Dictionary<string, string>(source.Translations)
+            };
         }
 
         /// <summary>
@@ -72,6 +132,7 @@ namespace GeoChemistryNexus.Services
                 item.Status = string.Empty;
             }
             col.Update(all);
+            InvalidateSummariesCache();
         }
 
         /// <summary>
@@ -85,6 +146,94 @@ namespace GeoChemistryNexus.Services
         }
 
         /// <summary>
+        /// 按语言加载帮助文档 RTF，避免反序列化完整 Content。
+        /// 回退顺序：preferredLanguage → 语言前缀匹配 → en-US → 字典中第一条非空
+        /// </summary>
+        public string? GetHelpDocument(Guid id, string preferredLanguage)
+        {
+            using var db = GetDatabase();
+            var col = db.GetCollection<BsonDocument>(CollectionName);
+            var doc = col.FindById(id);
+            if (doc == null)
+                return null;
+
+            if (!doc.TryGetValue("HelpDocuments", out BsonValue helpValue)
+                || helpValue == null
+                || helpValue.IsNull
+                || !helpValue.IsDocument)
+            {
+                return null;
+            }
+
+            var helpDocs = helpValue.AsDocument;
+            if (helpDocs.Count == 0)
+                return null;
+
+            if (!string.IsNullOrWhiteSpace(preferredLanguage)
+                && TryGetHelpRtf(helpDocs, preferredLanguage, out string? preferred))
+            {
+                return preferred;
+            }
+
+            // 前缀匹配（如 "zh" → "zh-CN"）
+            if (!string.IsNullOrWhiteSpace(preferredLanguage))
+            {
+                string prefix = preferredLanguage.Split('-')[0];
+                foreach (var key in helpDocs.Keys)
+                {
+                    if (key.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)
+                        && TryGetHelpRtf(helpDocs, key, out string? prefixMatch)
+                        && !string.IsNullOrEmpty(prefixMatch))
+                    {
+                        return prefixMatch;
+                    }
+                }
+            }
+
+            if (!string.Equals(preferredLanguage, "en-US", StringComparison.OrdinalIgnoreCase)
+                && TryGetHelpRtf(helpDocs, "en-US", out string? english))
+            {
+                return english;
+            }
+
+            foreach (var key in helpDocs.Keys)
+            {
+                if (TryGetHelpRtf(helpDocs, key, out string? any) && !string.IsNullOrEmpty(any))
+                    return any;
+            }
+
+            return null;
+        }
+
+        private static bool TryGetHelpRtf(BsonDocument helpDocs, string languageKey, out string? rtf)
+        {
+            rtf = null;
+            if (string.IsNullOrWhiteSpace(languageKey))
+                return false;
+
+            if (helpDocs.TryGetValue(languageKey, out BsonValue exact) && exact != null && exact.IsString)
+            {
+                rtf = exact.AsString;
+                return !string.IsNullOrEmpty(rtf);
+            }
+
+            foreach (var key in helpDocs.Keys)
+            {
+                if (!string.Equals(key, languageKey, StringComparison.OrdinalIgnoreCase))
+                    continue;
+
+                var value = helpDocs[key];
+                if (value != null && value.IsString)
+                {
+                    rtf = value.AsString;
+                    return !string.IsNullOrEmpty(rtf);
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// 插入或更新模板
         /// </summary>
         public void UpsertTemplate(GraphMapTemplateEntity template)
@@ -92,9 +241,10 @@ namespace GeoChemistryNexus.Services
             using var db = GetDatabase();
             var col = db.GetCollection<GraphMapTemplateEntity>(CollectionName);
             col.Upsert(template);
-            
+
             // 确保索引
             col.EnsureIndex(x => x.GraphMapPath);
+            InvalidateSummariesCache();
         }
 
         /// <summary>
@@ -110,6 +260,7 @@ namespace GeoChemistryNexus.Services
 
             entity.Status = status;
             col.Update(entity);
+            InvalidateSummariesCache();
         }
 
         /// <summary>
@@ -120,13 +271,15 @@ namespace GeoChemistryNexus.Services
             using var db = GetDatabase();
             var col = db.GetCollection<GraphMapTemplateEntity>(CollectionName);
             col.Delete(id);
-            
+
             // 删除关联的缩略图
             string fileId = $"{id}{ThumbnailSuffix}";
             if (db.FileStorage.Exists(fileId))
             {
                 db.FileStorage.Delete(fileId);
             }
+
+            InvalidateSummariesCache();
         }
 
         /// <summary>
@@ -172,7 +325,7 @@ namespace GeoChemistryNexus.Services
 
             byte[] nameBytes = Encoding.UTF8.GetBytes(input);
             byte[] hashInput = new byte[namespaceBytes.Length + nameBytes.Length];
-            
+
             Buffer.BlockCopy(namespaceBytes, 0, hashInput, 0, namespaceBytes.Length);
             Buffer.BlockCopy(nameBytes, 0, hashInput, namespaceBytes.Length, nameBytes.Length);
 
@@ -186,7 +339,7 @@ namespace GeoChemistryNexus.Services
                 byte[] newGuid = new byte[16];
                 Buffer.BlockCopy(hash, 0, newGuid, 0, 16);
                 SwapByteOrder(newGuid);
-                
+
                 return new Guid(newGuid);
             }
         }

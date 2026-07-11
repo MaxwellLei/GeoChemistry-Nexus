@@ -6,6 +6,7 @@ using Jint;
 using Jint.Native;
 using Jint.Native.Object;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -13,6 +14,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using unvell.ReoGrid;
 using unvell.ReoGrid.Formula;
@@ -50,20 +52,14 @@ namespace GeoChemistryNexus.Services
             var E = Math.E;
         ";
 
-        private static readonly JsonSerializerOptions JsonOptions = new()
-        {
-            WriteIndented = true,
-            PropertyNameCaseInsensitive = true
-        };
+        private static readonly JsonSerializerOptions JsonOptions = JsonHelper.DefaultOptions;
 
         private static readonly List<GeothermometerEntity> _loadedEntities = new();
+        private static readonly object _registryLock = new();
+        private static readonly ConcurrentDictionary<string, Lazy<CachedScriptEngine>> _scriptEngines =
+            new(StringComparer.OrdinalIgnoreCase);
+        private static readonly Dictionary<Guid, HashSet<string>> _entityFormulaNames = new();
         private static string _serverBaseUrl = DefaultServerBaseUrl;
-
-        /// <summary>
-        /// 最近一次 ReloadPlugins 检测到的公式名冲突（先注册者优先生效）
-        /// </summary>
-        public static IReadOnlyList<FormulaNameConflict> LastFormulaNameConflicts { get; private set; } =
-            Array.Empty<FormulaNameConflict>();
 
         /// <summary>
         /// 本地 GeoT-List.json 存储路径
@@ -94,69 +90,187 @@ namespace GeoChemistryNexus.Services
         }
 
         /// <summary>
-        /// 从数据库加载所有温压计并注册 JS 公式
+        /// 从数据库全量加载温压计并注册 JS 公式（启动或批量同步后使用）
         /// </summary>
         public static void ReloadPlugins()
         {
-            _loadedEntities.Clear();
-
-            var dbService = GeothermometerDatabaseService.Instance;
-            var summaries = dbService.GetSummaries();
-            var fullEntities = new List<GeothermometerEntity>();
-
-            foreach (var summary in summaries)
+            lock (_registryLock)
             {
-                var fullEntity = dbService.GetEntity(summary.Id);
-                if (fullEntity != null)
-                {
-                    string hash = GeothermometerDatabaseService.ComputeEntityHash(fullEntity);
-                    if (!string.Equals(summary.FileHash, hash, StringComparison.OrdinalIgnoreCase))
-                    {
-                        summary.FileHash = hash;
-                        fullEntity.FileHash = hash;
-                        dbService.UpsertEntity(fullEntity);
-                    }
+                ClearRegisteredFormulas();
+                _loadedEntities.Clear();
+                _entityFormulaNames.Clear();
 
-                    fullEntities.Add(fullEntity);
+                var dbService = GeothermometerDatabaseService.Instance;
+                var summaries = dbService.GetSummaries()
+                    .OrderBy(e => e.PluginId, StringComparer.Ordinal)
+                    .ToList();
+
+                var formulaNameConflicts = FindAllFormulaNameConflicts(summaries);
+                foreach (var conflict in formulaNameConflicts)
+                {
+                    Debug.WriteLine(
+                        $"[GeothermometerService] 公式名冲突: '{conflict.FormulaName}' " +
+                        $"已被 '{conflict.ExistingName}' ({conflict.ExistingPluginId}) 使用，" +
+                        $"'{conflict.CandidateName}' ({conflict.CandidatePluginId}) 的注册已跳过");
                 }
 
-                _loadedEntities.Add(summary);
+                var registeredFormulaNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+                foreach (var summary in summaries)
+                {
+                    _loadedEntities.Add(CloneSummary(summary));
+
+                    var registrationEntity = dbService.GetEntityForRegistration(summary.Id);
+                    if (registrationEntity == null || string.IsNullOrEmpty(registrationEntity.ScriptContent))
+                        continue;
+
+                    RegisterEntityFormulas(registrationEntity, registeredFormulaNames);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 增量更新单个温压计的内存摘要与公式注册（保存/导入后使用）
+        /// </summary>
+        public static void UpsertLoadedPlugin(GeothermometerEntity entity)
+        {
+            if (entity == null)
+                return;
+
+            lock (_registryLock)
+            {
+                UnregisterEntityFormulas(entity.Id);
+
+                var summary = ToSummary(entity);
+                int index = _loadedEntities.FindIndex(e => e.Id == entity.Id);
+                if (index >= 0)
+                    _loadedEntities[index] = summary;
+                else
+                    _loadedEntities.Add(summary);
+
+                if (!string.IsNullOrEmpty(entity.ScriptContent))
+                {
+                    var occupied = GetOccupiedFormulaNames(excludeEntityId: entity.Id);
+                    RegisterEntityFormulas(entity, occupied);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 从内存摘要与公式注册中移除指定温压计
+        /// </summary>
+        public static void UnloadPlugin(Guid entityId)
+        {
+            lock (_registryLock)
+            {
+                UnregisterEntityFormulas(entityId);
+                _loadedEntities.RemoveAll(e => e.Id == entityId);
+            }
+        }
+
+        private static void ClearRegisteredFormulas()
+        {
+            var customFunctions = FormulaExtension.CustomFunctions;
+            if (customFunctions != null)
+            {
+                foreach (var formulaNames in _entityFormulaNames.Values)
+                {
+                    foreach (var formulaName in formulaNames)
+                        customFunctions.Remove(formulaName);
+                }
             }
 
-            LastFormulaNameConflicts = FindAllFormulaNameConflicts(fullEntities);
-            foreach (var conflict in LastFormulaNameConflicts)
+            _entityFormulaNames.Clear();
+            _scriptEngines.Clear();
+        }
+
+        private static void UnregisterEntityFormulas(Guid entityId)
+        {
+            if (_entityFormulaNames.TryGetValue(entityId, out var formulaNames))
             {
-                Debug.WriteLine(
-                    $"[GeothermometerService] 公式名冲突: '{conflict.FormulaName}' " +
-                    $"已被 '{conflict.ExistingName}' ({conflict.ExistingPluginId}) 使用，" +
-                    $"'{conflict.CandidateName}' ({conflict.CandidatePluginId}) 的注册已跳过");
+                var customFunctions = FormulaExtension.CustomFunctions;
+                if (customFunctions != null)
+                {
+                    foreach (var formulaName in formulaNames)
+                        customFunctions.Remove(formulaName);
+                }
+
+                _entityFormulaNames.Remove(entityId);
             }
 
-            var registeredFormulaNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            _scriptEngines.TryRemove(entityId.ToString("N"), out _);
+        }
 
-            foreach (var fullEntity in fullEntities.OrderBy(e => e.PluginId, StringComparer.Ordinal))
+        private static HashSet<string> GetOccupiedFormulaNames(Guid? excludeEntityId)
+        {
+            var occupied = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var pair in _entityFormulaNames)
             {
-                if (fullEntity == null || string.IsNullOrEmpty(fullEntity.ScriptContent))
+                if (excludeEntityId.HasValue && pair.Key == excludeEntityId.Value)
                     continue;
 
-                if (!string.IsNullOrEmpty(fullEntity.FormulaName)
-                    && registeredFormulaNames.Add(fullEntity.FormulaName))
-                {
-                    RegisterScriptFormula(fullEntity);
-                }
+                occupied.UnionWith(pair.Value);
+            }
 
-                if (fullEntity.AdditionalFormulas != null)
-                {
-                    foreach (var af in fullEntity.AdditionalFormulas)
-                    {
-                        if (string.IsNullOrEmpty(af.FormulaName) || string.IsNullOrEmpty(af.FunctionName))
-                            continue;
+            return occupied;
+        }
 
-                        if (registeredFormulaNames.Add(af.FormulaName))
-                            RegisterAdditionalFormula(fullEntity, af);
-                    }
+        private static void RegisterEntityFormulas(
+            GeothermometerEntity entity,
+            HashSet<string> registeredFormulaNames)
+        {
+            if (entity == null || string.IsNullOrEmpty(entity.ScriptContent))
+                return;
+
+            var registeredForEntity = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            if (!string.IsNullOrEmpty(entity.FormulaName)
+                && registeredFormulaNames.Add(entity.FormulaName))
+            {
+                RegisterScriptFormula(entity);
+                registeredForEntity.Add(entity.FormulaName);
+            }
+
+            if (entity.AdditionalFormulas != null)
+            {
+                foreach (var af in entity.AdditionalFormulas)
+                {
+                    if (af == null
+                        || string.IsNullOrEmpty(af.FormulaName)
+                        || string.IsNullOrEmpty(af.FunctionName))
+                        continue;
+
+                    if (!registeredFormulaNames.Add(af.FormulaName))
+                        continue;
+
+                    RegisterAdditionalFormula(entity, af);
+                    registeredForEntity.Add(af.FormulaName);
                 }
             }
+
+            if (registeredForEntity.Count > 0)
+                _entityFormulaNames[entity.Id] = registeredForEntity;
+        }
+
+        private static CachedScriptEngine GetOrCreateScriptEngine(GeothermometerEntity entity)
+        {
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
+            if (string.IsNullOrEmpty(entity.ScriptContent))
+                throw new InvalidOperationException("ScriptContent is empty.");
+
+            string cacheKey = entity.Id.ToString("N");
+            string script = entity.ScriptContent;
+            // 统一使用较长超时：表格单元格与详细计算共用同一缓存引擎
+            var lazy = _scriptEngines.GetOrAdd(cacheKey, _ => new Lazy<CachedScriptEngine>(() =>
+            {
+                var engine = new Engine(cfg => cfg.TimeoutInterval(TimeSpan.FromSeconds(10)));
+                engine.Execute(MathHelpers);
+                engine.Execute(script);
+                return new CachedScriptEngine(engine);
+            }, LazyThreadSafetyMode.ExecutionAndPublication));
+
+            return lazy.Value;
         }
 
         /// <summary>
@@ -166,25 +280,28 @@ namespace GeoChemistryNexus.Services
         {
             try
             {
-                string script = entity.ScriptContent;
+                if (FormulaExtension.CustomFunctions == null || string.IsNullOrEmpty(entity.FormulaName))
+                    return;
+
+                var registrationEntity = CloneForRegistration(entity);
 
                 FormulaExtension.CustomFunctions[entity.FormulaName] = (cell, args) =>
                 {
                     try
                     {
-                        var engine = new Engine(cfg => cfg.TimeoutInterval(TimeSpan.FromSeconds(5)));
-                        engine.Execute(MathHelpers);
-                        engine.Execute(script);
+                        var cached = GetOrCreateScriptEngine(registrationEntity);
+                        lock (cached.SyncRoot)
+                        {
+                            var doubleArgs = new double[args.Length];
+                            for (int i = 0; i < args.Length; i++)
+                                doubleArgs[i] = Convert.ToDouble(args[i]);
 
-                        var doubleArgs = new double[args.Length];
-                        for (int i = 0; i < args.Length; i++)
-                            doubleArgs[i] = Convert.ToDouble(args[i]);
+                            var result = cached.Engine.Invoke("calculate", new object[] { doubleArgs });
+                            if (result == null || result.IsNull() || result.IsUndefined())
+                                return null;
 
-                        var result = engine.Invoke("calculate", new object[] { doubleArgs });
-                        if (result == null || result.IsNull() || result.IsUndefined())
-                            return null;
-
-                        return Convert.ToDouble(result.AsNumber());
+                            return Convert.ToDouble(result.AsNumber());
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -209,29 +326,32 @@ namespace GeoChemistryNexus.Services
 
             try
             {
-                string script = entity.ScriptContent;
+                if (FormulaExtension.CustomFunctions == null)
+                    return;
+
+                var registrationEntity = CloneForRegistration(entity);
                 string jsFuncName = af.FunctionName;
 
                 FormulaExtension.CustomFunctions[af.FormulaName] = (cell, args) =>
                 {
                     try
                     {
-                        var engine = new Engine(cfg => cfg.TimeoutInterval(TimeSpan.FromSeconds(5)));
-                        engine.Execute(MathHelpers);
-                        engine.Execute(script);
+                        var cached = GetOrCreateScriptEngine(registrationEntity);
+                        lock (cached.SyncRoot)
+                        {
+                            var jsArgs = new object[args.Length];
+                            for (int i = 0; i < args.Length; i++)
+                                jsArgs[i] = args[i];
 
-                        var jsArgs = new object[args.Length];
-                        for (int i = 0; i < args.Length; i++)
-                            jsArgs[i] = args[i];
-
-                        var result = engine.Invoke(jsFuncName, jsArgs);
-                        if (result == null || result.IsNull() || result.IsUndefined())
-                            return null;
-                        if (result.IsNumber())
-                            return Convert.ToDouble(result.AsNumber());
-                        if (result.IsString())
-                            return result.AsString();
-                        return result.ToString();
+                            var result = cached.Engine.Invoke(jsFuncName, jsArgs);
+                            if (result == null || result.IsNull() || result.IsUndefined())
+                                return null;
+                            if (result.IsNumber())
+                                return Convert.ToDouble(result.AsNumber());
+                            if (result.IsString())
+                                return result.AsString();
+                            return result.ToString();
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -257,7 +377,8 @@ namespace GeoChemistryNexus.Services
             var fullEntity = entity;
             if (string.IsNullOrEmpty(fullEntity.ScriptContent))
             {
-                fullEntity = GeothermometerDatabaseService.Instance.GetEntity(entity.Id);
+                fullEntity = GeothermometerDatabaseService.Instance.GetEntityForRegistration(entity.Id)
+                    ?? GeothermometerDatabaseService.Instance.GetEntity(entity.Id);
             }
 
             if (fullEntity == null || string.IsNullOrEmpty(fullEntity.ScriptContent))
@@ -265,43 +386,43 @@ namespace GeoChemistryNexus.Services
 
             try
             {
-                var engine = new Engine(cfg => cfg.TimeoutInterval(TimeSpan.FromSeconds(10)));
-                engine.Execute(MathHelpers);
-                engine.Execute(fullEntity.ScriptContent);
-
-                var funcValue = engine.GetValue("calculateDetailed");
-                if (funcValue == null || funcValue.IsUndefined())
+                var cached = GetOrCreateScriptEngine(fullEntity);
+                lock (cached.SyncRoot)
                 {
-                    var simpleResult = engine.Invoke("calculate", new object[] { inputValues });
-                    if (simpleResult != null && !simpleResult.IsNull() && !simpleResult.IsUndefined())
+                    var funcValue = cached.Engine.GetValue("calculateDetailed");
+                    if (funcValue == null || funcValue.IsUndefined())
                     {
-                        steps.Add(new CalculationStep
+                        var simpleResult = cached.Engine.Invoke("calculate", new object[] { inputValues });
+                        if (simpleResult != null && !simpleResult.IsNull() && !simpleResult.IsUndefined())
                         {
-                            Name = "T(K)",
-                            Value = simpleResult.AsNumber().ToString("F2"),
-                            IsResult = true
-                        });
-                    }
-                    return steps;
-                }
-
-                var result = engine.Invoke("calculateDetailed", new object[] { inputValues });
-                if (result != null && result.IsArray())
-                {
-                    var array = result.AsArray();
-                    foreach (var item in array)
-                    {
-                        if (item.IsObject())
-                        {
-                            var obj = item.AsObject();
-                            var isResultProp = obj.Get("isResult");
                             steps.Add(new CalculationStep
                             {
-                                Name = obj.Get("name")?.AsString() ?? "",
-                                Value = obj.Get("value")?.ToString() ?? "",
-                                Description = ResolveStepDescription(obj),
-                                IsResult = isResultProp.IsBoolean() && isResultProp.AsBoolean()
+                                Name = "T(K)",
+                                Value = simpleResult.AsNumber().ToString("F2"),
+                                IsResult = true
                             });
+                        }
+                        return steps;
+                    }
+
+                    var result = cached.Engine.Invoke("calculateDetailed", new object[] { inputValues });
+                    if (result != null && result.IsArray())
+                    {
+                        var array = result.AsArray();
+                        foreach (var item in array)
+                        {
+                            if (item.IsObject())
+                            {
+                                var obj = item.AsObject();
+                                var isResultProp = obj.Get("isResult");
+                                steps.Add(new CalculationStep
+                                {
+                                    Name = obj.Get("name")?.AsString() ?? "",
+                                    Value = obj.Get("value")?.ToString() ?? "",
+                                    Description = ResolveStepDescription(obj),
+                                    IsResult = isResultProp.IsBoolean() && isResultProp.AsBoolean()
+                                });
+                            }
                         }
                     }
                 }
@@ -313,6 +434,64 @@ namespace GeoChemistryNexus.Services
             }
 
             return steps;
+        }
+
+        private static GeothermometerEntity CloneSummary(GeothermometerEntity entity)
+            => ToSummary(entity);
+
+        private static GeothermometerEntity ToSummary(GeothermometerEntity entity)
+        {
+            return new GeothermometerEntity
+            {
+                Id = entity.Id,
+                PluginId = entity.PluginId,
+                Version = entity.Version,
+                FileHash = entity.FileHash,
+                LastModified = entity.LastModified,
+                IsOfficial = entity.IsOfficial,
+                IsFavorite = entity.IsFavorite,
+                Category = entity.Category,
+                Tags = entity.Tags != null ? new List<string>(entity.Tags) : new List<string>(),
+                Name = entity.Name,
+                NameLangKey = entity.NameLangKey,
+                Author = entity.Author,
+                Year = entity.Year,
+                Reference = entity.Reference,
+                IconCode = entity.IconCode,
+                IconColor = entity.IconColor,
+                Headers = entity.Headers != null ? new List<string>(entity.Headers) : new List<string>(),
+                ExampleRow = entity.ExampleRow != null ? new List<string>(entity.ExampleRow) : new List<string>(),
+                FormulaName = entity.FormulaName,
+                InputColumns = entity.InputColumns != null ? new List<string>(entity.InputColumns) : new List<string>(),
+                AdditionalFormulas = entity.AdditionalFormulas != null
+                    ? new List<AdditionalFormula>(entity.AdditionalFormulas)
+                    : new List<AdditionalFormula>(),
+                ScriptContent = string.Empty,
+                HelpDocuments = new Dictionary<string, string>()
+            };
+        }
+
+        private static GeothermometerEntity CloneForRegistration(GeothermometerEntity entity)
+        {
+            return new GeothermometerEntity
+            {
+                Id = entity.Id,
+                PluginId = entity.PluginId,
+                FormulaName = entity.FormulaName,
+                ScriptContent = entity.ScriptContent,
+                AdditionalFormulas = entity.AdditionalFormulas
+            };
+        }
+
+        private sealed class CachedScriptEngine
+        {
+            public CachedScriptEngine(Engine engine)
+            {
+                Engine = engine;
+            }
+
+            public Engine Engine { get; }
+            public object SyncRoot { get; } = new();
         }
 
         /// <summary>
@@ -437,7 +616,7 @@ namespace GeoChemistryNexus.Services
             }
 
             GeothermometerDatabaseService.Instance.UpsertEntity(entity);
-            ReloadPlugins();
+            UpsertLoadedPlugin(entity);
             return entity;
         }
 
@@ -461,8 +640,7 @@ namespace GeoChemistryNexus.Services
 
             // 删除旧记录
             dbService.DeleteEntity(entityId);
-            if (!string.IsNullOrEmpty(entity.FormulaName))
-                FormulaExtension.CustomFunctions.Remove(entity.FormulaName);
+            UnloadPlugin(entityId);
 
             // 生成新的官方 PluginId 和 Guid
             entity.PluginId = "official_" + Guid.NewGuid().ToString("N");
@@ -472,7 +650,7 @@ namespace GeoChemistryNexus.Services
             entity.FileHash = GeothermometerDatabaseService.ComputeEntityHash(entity);
 
             dbService.UpsertEntity(entity);
-            ReloadPlugins();
+            UpsertLoadedPlugin(entity);
             return true;
         }
 
@@ -487,8 +665,7 @@ namespace GeoChemistryNexus.Services
 
             // 删除旧记录
             dbService.DeleteEntity(entityId);
-            if (!string.IsNullOrEmpty(entity.FormulaName))
-                FormulaExtension.CustomFunctions.Remove(entity.FormulaName);
+            UnloadPlugin(entityId);
 
             // 生成新的自定义 PluginId 和 Guid
             entity.PluginId = "custom_" + Guid.NewGuid().ToString("N");
@@ -498,7 +675,7 @@ namespace GeoChemistryNexus.Services
             entity.FileHash = GeothermometerDatabaseService.ComputeEntityHash(entity);
 
             dbService.UpsertEntity(entity);
-            ReloadPlugins();
+            UpsertLoadedPlugin(entity);
             return true;
         }
 
@@ -512,12 +689,7 @@ namespace GeoChemistryNexus.Services
                 return false;
 
             GeothermometerDatabaseService.Instance.DeleteEntity(entityId);
-
-            // 注销公式
-            if (!string.IsNullOrEmpty(entity.FormulaName))
-                FormulaExtension.CustomFunctions.Remove(entity.FormulaName);
-
-            ReloadPlugins();
+            UnloadPlugin(entityId);
             return true;
         }
 
@@ -548,27 +720,35 @@ namespace GeoChemistryNexus.Services
         /// <summary>
         /// 将数据库实体转换为 UI 用的轻量对象
         /// </summary>
+        public static Geothermometer CreateGeothermometerFromEntity(GeothermometerEntity entity)
+            => EntityToGeothermometer(entity);
+
+        /// <summary>
+        /// 将数据库实体转换为 UI 用的轻量对象
+        /// </summary>
         private static Geothermometer EntityToGeothermometer(GeothermometerEntity entity)
         {
             return new Geothermometer
             {
-                Id = entity.PluginId,
-                Version = entity.Version,
+                Id = entity.PluginId ?? string.Empty,
+                Version = entity.Version ?? string.Empty,
                 Category = GeoTCategoryHelper.NormalizeCategoryKey(entity.Category),
                 Tags = ResolveTagsDisplayNames(entity),
-                Name = entity.Name,
-                NameLangKey = entity.NameLangKey,
-                Author = entity.Author,
+                StorageTags = GetEntityTagSourceNames(entity).ToList(),
+                Name = entity.Name ?? string.Empty,
+                NameLangKey = entity.NameLangKey ?? string.Empty,
+                Author = entity.Author ?? string.Empty,
                 Year = entity.Year,
-                Reference = entity.Reference,
-                IconCode = entity.IconCode,
-                IconColor = entity.IconColor,
-                Headers = entity.Headers,
+                Reference = entity.Reference ?? string.Empty,
+                IconCode = entity.IconCode ?? "\ue60d",
+                IconColor = entity.IconColor ?? "#555555",
+                Headers = entity.Headers ?? new List<string>(),
                 ExampleRow = CommaSeparatedListHelper.AlignToHeaderCount(entity.Headers, entity.ExampleRow),
-                FormulaName = entity.FormulaName,
-                InputColumns = entity.InputColumns,
-                AdditionalFormulas = entity.AdditionalFormulas,
-                IsBuiltIn = entity.IsOfficial
+                FormulaName = entity.FormulaName ?? string.Empty,
+                InputColumns = entity.InputColumns ?? new List<string>(),
+                AdditionalFormulas = entity.AdditionalFormulas ?? new List<AdditionalFormula>(),
+                IsBuiltIn = entity.IsOfficial,
+                IsFavorite = entity.IsFavorite
             };
         }
 
@@ -749,6 +929,7 @@ namespace GeoChemistryNexus.Services
                 {
                     ValidateFormulaNames(entity, entity.Id);
                     GeothermometerDatabaseService.Instance.UpsertEntity(entity);
+                    UpsertLoadedPlugin(entity);
                 }
 
                 return entity;
@@ -1100,6 +1281,54 @@ namespace GeoChemistryNexus.Services
         }
 
         /// <summary>
+        /// 从服务器拉取最新 GeoT-List.json 并查找指定温压计条目（强制更新用，跳过本地哈希缓存）。
+        /// </summary>
+        public static async Task<(PluginIndexEntry? Entry, string? ErrorMessage)> FetchFreshPluginIndexEntryAsync(string pluginId)
+        {
+            if (string.IsNullOrWhiteSpace(pluginId))
+                return (null, "Plugin ID is empty");
+
+            try
+            {
+                using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(15) };
+
+                string indexUrl = $"{_serverBaseUrl}/{GeoTIndexFileName}";
+                string indexJson = await client.GetStringAsync(indexUrl);
+                var geoTIndex = JsonSerializer.Deserialize<GeoTIndex>(indexJson, JsonOptions);
+                if (geoTIndex == null || string.IsNullOrEmpty(geoTIndex.ListHash))
+                    return (null, "Invalid GeoT-index.json");
+
+                await SyncMineralCategoriesAsync(geoTIndex, client);
+
+                string listUrl = $"{_serverBaseUrl}/{GeoTListFileName}";
+                string listJson = await client.GetStringAsync(listUrl);
+
+                string downloadedHash = GeothermometerDatabaseService.ComputeHash(listJson);
+                if (!string.Equals(downloadedHash, geoTIndex.ListHash, StringComparison.OrdinalIgnoreCase))
+                    return (null, LanguageService.Instance["downloaded_file_hash_mismatch"]);
+
+                string? listDir = Path.GetDirectoryName(LocalListFilePath);
+                if (!string.IsNullOrEmpty(listDir) && !Directory.Exists(listDir))
+                    Directory.CreateDirectory(listDir);
+                await File.WriteAllTextAsync(LocalListFilePath, listJson);
+
+                var pluginList = JsonSerializer.Deserialize<PluginIndex>(listJson, JsonOptions);
+                if (pluginList?.Plugins == null)
+                    return (null, "Invalid GeoT-List.json");
+
+                var entry = pluginList.Plugins.FirstOrDefault(p =>
+                    string.Equals(p.Id, pluginId, StringComparison.OrdinalIgnoreCase));
+
+                return (entry, null);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[GeothermometerService] Fetch fresh plugin entry failed [{pluginId}]: {ex.Message}");
+                return (null, ex.Message);
+            }
+        }
+
+        /// <summary>
         /// 从服务器下载 ZIP 并导入
         /// </summary>
         public static async Task<GeothermometerDownloadItemResult> DownloadPluginAsync(PluginIndexEntry entry)
@@ -1130,7 +1359,7 @@ namespace GeoChemistryNexus.Services
 
                     try
                     {
-                        ValidateFormulaNames(imported);
+                        ValidateFormulaNames(imported, imported.Id);
                     }
                     catch (InvalidOperationException ex)
                     {
@@ -1139,6 +1368,7 @@ namespace GeoChemistryNexus.Services
                     }
 
                     GeothermometerDatabaseService.Instance.UpsertEntity(imported);
+                    UpsertLoadedPlugin(imported);
                     return GeothermometerDownloadItemResult.Succeeded(entry.Id);
                 }
                 finally
@@ -1227,6 +1457,9 @@ namespace GeoChemistryNexus.Services
 
         private static IEnumerable<string> EnumerateFormulaNames(GeothermometerEntity entity)
         {
+            if (entity == null)
+                yield break;
+
             if (!string.IsNullOrWhiteSpace(entity.FormulaName))
                 yield return entity.FormulaName.Trim();
 
@@ -1235,7 +1468,7 @@ namespace GeoChemistryNexus.Services
 
             foreach (var additionalFormula in entity.AdditionalFormulas)
             {
-                if (!string.IsNullOrWhiteSpace(additionalFormula.FormulaName))
+                if (additionalFormula != null && !string.IsNullOrWhiteSpace(additionalFormula.FormulaName))
                     yield return additionalFormula.FormulaName.Trim();
             }
         }
@@ -1251,17 +1484,14 @@ namespace GeoChemistryNexus.Services
             if (candidate == null)
                 return conflicts;
 
-            var dbService = GeothermometerDatabaseService.Instance;
+            // 摘要已含 FormulaName / AdditionalFormulas，无需再读完整实体
+            var summaries = GeothermometerDatabaseService.Instance.GetSummaries();
 
             foreach (var formulaName in EnumerateFormulaNames(candidate))
             {
-                foreach (var summary in dbService.GetSummaries())
+                foreach (var existing in summaries)
                 {
-                    if (excludeEntityId.HasValue && summary.Id == excludeEntityId.Value)
-                        continue;
-
-                    var existing = dbService.GetEntity(summary.Id);
-                    if (existing == null)
+                    if (excludeEntityId.HasValue && existing.Id == excludeEntityId.Value)
                         continue;
 
                     if (!EnumerateFormulaNames(existing).Any(name =>
@@ -1447,19 +1677,10 @@ namespace GeoChemistryNexus.Services
             File.WriteAllText(listPath, listContent);
 
             string categoriesPath = Path.Combine(outputDir, OfficialContentEndpoints.GeoTMineralCategoriesFileName);
-            var categoriesConfig = GeoTMineralCategoryHelper.LoadConfigFromPath(GeoTMineralCategoryHelper.LocalConfigPath);
-            if (File.Exists(categoriesPath))
-            {
-                categoriesConfig = GeoTMineralCategoryHelper.MergeMissingMinerals(
-                    GeoTMineralCategoryHelper.LoadConfigFromPath(categoriesPath),
-                    officialEntities.SelectMany(GetEntityTagSourceNames));
-            }
-            else
-            {
-                categoriesConfig = GeoTMineralCategoryHelper.MergeMissingMinerals(
-                    categoriesConfig,
-                    officialEntities.SelectMany(GetEntityTagSourceNames));
-            }
+            var categoriesConfig = GeoTMineralCategoryHelper.LoadConfigFromPath(GeoTMineralCategoryHelper.ResolveExportConfigPath());
+            categoriesConfig = GeoTMineralCategoryHelper.MergeMissingMinerals(
+                categoriesConfig,
+                officialEntities.SelectMany(GetEntityTagSourceNames));
 
             GeoTMineralCategoryHelper.SaveConfig(categoriesConfig, categoriesPath);
             string categoriesHash = File.Exists(categoriesPath)
@@ -1481,39 +1702,6 @@ namespace GeoChemistryNexus.Services
             return (exportedCount, officialEntities.Count);
         }
 
-        /// <summary>
-        /// 仅生成 GeoT-List.json 内容（不导出 ZIP）
-        /// 用于在已有 ZIP 文件的情况下更新索引
-        /// </summary>
-        public static string GeneratePluginIndex()
-        {
-            var officialEntities = _loadedEntities.Where(e => e.IsOfficial).ToList();
-            var dbService = GeothermometerDatabaseService.Instance;
-
-            var indexEntries = new List<PluginIndexEntry>();
-            foreach (var summary in officialEntities)
-            {
-                var fullEntity = dbService.GetEntity(summary.Id);
-                if (fullEntity == null) continue;
-
-                indexEntries.Add(new PluginIndexEntry
-                {
-                    Id = fullEntity.PluginId,
-                    Version = fullEntity.Version,
-                    Reference = fullEntity.Reference ?? string.Empty,
-                    DownloadUrl = $"{fullEntity.PluginId}.zip",
-                    Hash = GeothermometerDatabaseService.ComputeEntityHash(fullEntity)
-                });
-            }
-
-            var pluginList = new PluginIndex
-            {
-                IndexVersion = DateTime.Now.ToString("yyyy.MM.dd"),
-                Plugins = indexEntries
-            };
-
-            return JsonSerializer.Serialize(pluginList, JsonOptions);
-        }
     }
 
     /// <summary>

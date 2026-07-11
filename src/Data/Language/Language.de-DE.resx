@@ -126,9 +126,6 @@
   <data name="script_content" xml:space="preserve">
     <value>Skriptinhalt:</value>
   </data>
-  <data name="geo_field_mineral_category" xml:space="preserve">
-    <value>Mineralkategorie *</value>
-  </data>
   <data name="geo_category_single_mineral" xml:space="preserve">
     <value>Einkristall-Geothermobarometer</value>
   </data>
@@ -188,10 +185,6 @@
   </data>
   <data name="is_visible" xml:space="preserve">
     <value>Sichtbar</value>
-  </data>
-  <data name="geo_msg_batch_export_success" xml:space="preserve">
-    <value>{0} offizielle Geothermobarometer insgesamt, davon {1} exportiert (hinzugefügt/geändert)
-Verzeichnis: {2}</value>
   </data>
   <data name="geo_btn_apply" xml:space="preserve">
     <value>Anwenden</value>
@@ -313,9 +306,6 @@ Verzeichnis: {2}</value>
   <data name="validation_failed" xml:space="preserve">
     <value>Validierung fehlgeschlagen:</value>
   </data>
-  <data name="geo_menu_maintenance" xml:space="preserve">
-    <value>Wartung</value>
-  </data>
   <data name="geo_validate_headers_required" xml:space="preserve">
     <value>Kopfzeile darf nicht leer sein.</value>
   </data>
@@ -373,6 +363,12 @@ Verzeichnis: {2}</value>
   <data name="switch_diagram_language" xml:space="preserve">
     <value>Diagrammsprache wechseln</value>
   </data>
+  <data name="select_language" xml:space="preserve">
+    <value>Sprache auswählen</value>
+  </data>
+  <data name="please_select_language" xml:space="preserve">
+    <value>Bitte wählen Sie eine Diagrammsprache</value>
+  </data>
   <data name="missing_columns" xml:space="preserve">
     <value>Fehlende Spalten</value>
   </data>
@@ -395,13 +391,10 @@ Verzeichnis: {2}</value>
     <value>CIPW-Ergebnisse exportieren</value>
   </data>
   <data name="geo_menu_import_zip" xml:space="preserve">
-    <value>Geothermobarometer importieren (ZIP)</value>
+    <value>Geothermobarometer importieren (.gngtm)</value>
   </data>
   <data name="developer_mode" xml:space="preserve">
     <value>Entwicklermodus</value>
-  </data>
-  <data name="geo_validate_mineral_required" xml:space="preserve">
-    <value>Mineralkategorie darf nicht leer sein.</value>
   </data>
   <data name="geo_hint_select_data_row" xml:space="preserve">
     <value>Bitte wählen Sie eine Datenzeile</value>
@@ -513,9 +506,6 @@ Verzeichnis: {2}</value>
   <data name="entering_soon_ellipsis" xml:space="preserve">
     <value>Gleich fertig...</value>
   </data>
-  <data name="geo_tooltip_minimize" xml:space="preserve">
-    <value>Minimieren</value>
-  </data>
   <data name="template_load_failed" xml:space="preserve">
     <value>Laden der Vorlage fehlgeschlagen</value>
   </data>
@@ -556,7 +546,7 @@ Verzeichnis: {2}</value>
     <value>Gefülltes Dreieck nach oben</value>
   </data>
   <data name="geo_btn_save_export_zip" xml:space="preserve">
-    <value>Speichern und ZIP exportieren</value>
+    <value>Speichern und Paket exportieren</value>
   </data>
   <data name="geo_section_official" xml:space="preserve">
     <value>Offizielle Geothermobarometer</value>
@@ -645,9 +635,6 @@ Verzeichnis: {2}</value>
   <data name="cipw_alumina_peralkaline" xml:space="preserve">
     <value>Peralkalisch</value>
   </data>
-  <data name="geo_tooltip_version_format" xml:space="preserve">
-    <value>Semantische Version, z. B. 1.0.0, 1.2.3</value>
-  </data>
   <data name="DontSave" xml:space="preserve">
     <value>Nicht speichern</value>
   </data>
@@ -657,29 +644,17 @@ Verzeichnis: {2}</value>
   <data name="cipw_tooltip_calculate" xml:space="preserve">
     <value>CIPW-Normberechnung für alle Zeilen mit Daten ausführen</value>
   </data>
-  <data name="geo_btn_cancel" xml:space="preserve">
-    <value>Abbrechen</value>
-  </data>
   <data name="logarithmic" xml:space="preserve">
     <value>Logarithmisch</value>
   </data>
   <data name="arrowhead_width" xml:space="preserve">
     <value>Pfeilspitzenbreite</value>
   </data>
-  <data name="geo_btn_prev" xml:space="preserve">
-    <value>Zurück</value>
-  </data>
   <data name="geo_btn_save" xml:space="preserve">
     <value>Speichern</value>
   </data>
   <data name="geo_btn_help" xml:space="preserve">
     <value>Hilfe</value>
-  </data>
-  <data name="geo_btn_next" xml:space="preserve">
-    <value>Weiter</value>
-  </data>
-  <data name="geo_field_description" xml:space="preserve">
-    <value>Kurzbeschreibung</value>
   </data>
   <data name="invalid_script_variable_name" xml:space="preserve">
     <value>Ungültiges Format des Skriptvariablennamens:</value>
@@ -774,7 +749,19 @@ Verzeichnis: {2}</value>
     Damit die Software leistungsfähiger und benutzerfreundlicher wird!</value>
   </data>
   <data name="AboutInfo1" xml:space="preserve">
-    <value>Dieses Projekt nutzt geochemische Daten für Diagrammerstellung, Berechnung und Analyse zur effizienten Verarbeitung geologischer Daten. Ziel ist es, Geowissenschaftlern zu helfen, den Datenanalyseprozess zu beschleunigen und die Forschungseffizienz zu verbessern.</value>
+    <value>GeoChemistry Nexus ist eine integrierte Werkbank für geochemische und petrographische Forschung. Sie bündelt den Import von Probendaten, Vorverarbeitung und Korrektur, Diskriminierungsdiagramme, Geothermobarometer-Berechnung, CIPW-Normberechnung sowie den Export in PNG/SVG in einer Oberfläche—während ein Cloud-Template-Ökosystem und Community-Zusammenarbeit Diagramme und Algorithmen kontinuierlich weiterentwickeln und schneller mehr Forschenden zugänglich machen.</value>
+  </data>
+  <data name="AboutTagline" xml:space="preserve">
+    <value>Integrierte Werkbank für geochemische und petrographische Diagramme und Berechnungen</value>
+  </data>
+  <data name="about_email" xml:space="preserve">
+    <value>E-Mail</value>
+  </data>
+  <data name="about_qq_group" xml:space="preserve">
+    <value>QQ-Gruppe</value>
+  </data>
+  <data name="about_discord" xml:space="preserve">
+    <value>Discord</value>
   </data>
   <data name="Confirm" xml:space="preserve">
     <value>Bestätigen</value>
@@ -1060,9 +1047,6 @@ Verzeichnis: {2}</value>
   <data name="MarkerShape_Cross" xml:space="preserve">
     <value>Kreuz</value>
   </data>
-  <data name="template_type_not_supported_please_update" xml:space="preserve">
-    <value>Vorlagentyp nicht unterstützt, bitte Software aktualisieren.</value>
-  </data>
   <data name="geo_msg_delete_success" xml:space="preserve">
     <value>Erfolgreich gelöscht</value>
   </data>
@@ -1092,6 +1076,24 @@ Verzeichnis: {2}</value>
   </data>
   <data name="enter_category_structure" xml:space="preserve">
     <value>Kategoriestruktur eingeben</value>
+  </data>
+  <data name="select_existing_category_structure_tooltip" xml:space="preserve">
+    <value>Kategoriepfad aus vorhandenen Diagrammvorlagen auswählen</value>
+  </data>
+  <data name="select_existing_category_structure_title" xml:space="preserve">
+    <value>Kategoriestruktur auswählen</value>
+  </data>
+  <data name="select_existing_category_structure_prompt" xml:space="preserve">
+    <value>Wählen Sie einen Kategoriepfad aus vorhandenen Diagrammvorlagen. Anschließend können Sie eigene Ebenen hinzufügen.</value>
+  </data>
+  <data name="select_existing_category_structure_empty" xml:space="preserve">
+    <value>Keine vorhandenen Kategoriestrukturen gefunden.</value>
+  </data>
+  <data name="category_structure_preview" xml:space="preserve">
+    <value>Kategorievorschau</value>
+  </data>
+  <data name="category_structure_preview_empty" xml:space="preserve">
+    <value>Fügen Sie Ebenen hinzu, um die Kategoriehierarchie in der Vorschau anzuzeigen.</value>
   </data>
   <data name="reading_user_configuration_ellipsis" xml:space="preserve">
     <value>Lese Benutzerkonfiguration...</value>
@@ -1153,9 +1155,6 @@ Verzeichnis: {2}</value>
   <data name="error" xml:space="preserve">
     <value>Fehler:</value>
   </data>
-  <data name="some_data_failed_validation" xml:space="preserve">
-    <value>Einige Daten haben die Validierung nicht bestanden und wurden übersprungen</value>
-  </data>
   <data name="arrow" xml:space="preserve">
     <value>Pfeil</value>
   </data>
@@ -1192,9 +1191,6 @@ Verzeichnis: {2}</value>
   <data name="style" xml:space="preserve">
     <value>Stil</value>
   </data>
-  <data name="ternary_diagram_crosshair_not_supported" xml:space="preserve">
-    <value>Fadenkreuz-Positionierung wird für Ternärdiagramme derzeit nicht unterstützt.</value>
-  </data>
   <data name="cipw_references_title" xml:space="preserve">
     <value>Literatur</value>
   </data>
@@ -1215,6 +1211,12 @@ Verzeichnis: {2}</value>
   </data>
   <data name="geo_placeholder_search" xml:space="preserve">
     <value>Suchen...</value>
+  </data>
+  <data name="geo_tooltip_tag_filter" xml:space="preserve">
+    <value>Nach Tags filtern</value>
+  </data>
+  <data name="geo_msg_no_tags_available" xml:space="preserve">
+    <value>Keine Tags verfügbar</value>
   </data>
   <data name="recently_used" xml:space="preserve">
     <value>Zuletzt verwendet</value>
@@ -1263,9 +1265,6 @@ Verzeichnis: {2}</value>
   </data>
   <data name="failed_to_open" xml:space="preserve">
     <value>Öffnen fehlgeschlagen:</value>
-  </data>
-  <data name="geo_msg_import_failed" xml:space="preserve">
-    <value>Import fehlgeschlagen</value>
   </data>
   <data name="template_version_too_high" xml:space="preserve">
     <value>Vorlagenversion ist höher als die aktuelle Softwareversion. Bitte Software aktualisieren.</value>
@@ -1318,9 +1317,6 @@ Verzeichnis: {2}</value>
   <data name="object_deleted_successfully" xml:space="preserve">
     <value>Objekt erfolgreich gelöscht.</value>
   </data>
-  <data name="geo_msg_batch_export_failed" xml:space="preserve">
-    <value>Stapelexport fehlgeschlagen: {0}</value>
-  </data>
   <data name="show_tick_labels" xml:space="preserve">
     <value>Skalenbeschriftungen anzeigen</value>
   </data>
@@ -1329,9 +1325,6 @@ Verzeichnis: {2}</value>
   </data>
   <data name="row_1_column_1" xml:space="preserve">
     <value>Zeile: 1, Spalte: 1</value>
-  </data>
-  <data name="geo_field_formula_name" xml:space="preserve">
-    <value>Formelname *</value>
   </data>
   <data name="third_party_software" xml:space="preserve">
     <value>Drittanbietersoftware</value>
@@ -1518,13 +1511,10 @@ Verzeichnis: {2}</value>
     <value>Plot-Standardeinstellungen</value>
   </data>
   <data name="geo_ctx_export_zip" xml:space="preserve">
-    <value>ZIP exportieren</value>
+    <value>Paket exportieren</value>
   </data>
   <data name="minor_tick_style" xml:space="preserve">
     <value>Nebenstrichstil</value>
-  </data>
-  <data name="export_update_list" xml:space="preserve">
-    <value>Update-Liste exportieren</value>
   </data>
   <data name="geo_ctx_edit" xml:space="preserve">
     <value>Bearbeiten</value>
@@ -1541,9 +1531,6 @@ Verzeichnis: {2}</value>
   <data name="favorite_templates" xml:space="preserve">
     <value>Favorit</value>
   </data>
-  <data name="unable_to_get_announcements" xml:space="preserve">
-    <value>Ankündigungen nicht abrufbar.</value>
-  </data>
   <data name="auto_check_geothermometer_updates" xml:space="preserve">
     <value>Automatisch nach Geothermobarometer-Updates suchen</value>
   </data>
@@ -1554,7 +1541,7 @@ Verzeichnis: {2}</value>
     <value>Berechnungsfehler</value>
   </data>
   <data name="confirm_enter_edit_mode_base_map" xml:space="preserve">
-    <value>Möchten Sie wirklich in den Bearbeitungsmodus wechseln? Dies erlaubt das Ändern der Grundkarte.</value>
+    <value>Möchten Sie wirklich in den Bearbeitungsmodus wechseln? Dies erlaubt das Ändern der Basiskarte.</value>
   </data>
   <data name="template_loaded_successfully" xml:space="preserve">
     <value>Vorlage erfolgreich geladen</value>
@@ -1598,9 +1585,6 @@ Verzeichnis: {2}</value>
   <data name="content_and_position" xml:space="preserve">
     <value>Inhalt und Position</value>
   </data>
-  <data name="invalid_diagram_template_file" xml:space="preserve">
-    <value>Ungültige Diagrammvorlagendatei</value>
-  </data>
   <data name="add_image" xml:space="preserve">
     <value>Bild hinzufügen</value>
   </data>
@@ -1609,6 +1593,15 @@ Verzeichnis: {2}</value>
   </data>
   <data name="start_image_copy_error" xml:space="preserve">
     <value>Startbild konnte nicht hinzugefügt werden: </value>
+  </data>
+  <data name="delete_image" xml:space="preserve">
+    <value>Bild löschen</value>
+  </data>
+  <data name="start_image_delete_successfully" xml:space="preserve">
+    <value>Startbild erfolgreich gelöscht.</value>
+  </data>
+  <data name="start_image_delete_error" xml:space="preserve">
+    <value>Startbild konnte nicht gelöscht werden: </value>
   </data>
   <data name="add_arrow" xml:space="preserve">
     <value>Pfeil hinzufügen</value>
@@ -1633,9 +1626,6 @@ Verzeichnis: {2}</value>
   </data>
   <data name="cipw_default_value_text" xml:space="preserve">
     <value>Standard 0,15</value>
-  </data>
-  <data name="FilePath" xml:space="preserve">
-    <value>Dateipfad</value>
   </data>
   <data name="subtitle_font_size" xml:space="preserve">
     <value>Untertitel-Schriftgröße</value>
@@ -1666,15 +1656,6 @@ Verzeichnis: {2}</value>
   </data>
   <data name="edit_menu_bar_item" xml:space="preserve">
     <value>Menüleisteneintrag bearbeiten</value>
-  </data>
-  <data name="maintenance" xml:space="preserve">
-    <value>_Wartung(M)</value>
-  </data>
-  <data name="geo_tooltip_maximize" xml:space="preserve">
-    <value>Maximieren</value>
-  </data>
-  <data name="geo_tooltip_restore" xml:space="preserve">
-    <value>Wiederherstellen</value>
   </data>
   <data name="confirm_clear_all_data" xml:space="preserve">
     <value>Alle Tabellendaten löschen (inkl. Plot-Punkte)?</value>
@@ -1745,7 +1726,7 @@ Verzeichnis: {2}</value>
     <value>Ergebnisausgabe</value>
   </data>
   <data name="BasemapExisted" xml:space="preserve">
-    <value>Grundkartendatei existiert bereits. Überschreiben?</value>
+    <value>Basiskartendatei existiert bereits. Überschreiben?</value>
   </data>
   <data name="format" xml:space="preserve">
     <value>Format</value>
@@ -1770,9 +1751,6 @@ Verzeichnis: {2}</value>
   </data>
   <data name="refresh" xml:space="preserve">
     <value>Aktualisieren</value>
-  </data>
-  <data name="failed_to_parse_diagram_template_json" xml:space="preserve">
-    <value>Die JSON-Datei der Diagrammvorlage konnte nicht analysiert werden</value>
   </data>
   <data name="diagram_legend_properties" xml:space="preserve">
     <value>Diagrammlegendeneigenschaften</value>
@@ -1810,9 +1788,6 @@ Verzeichnis: {2}</value>
   <data name="template_translator" xml:space="preserve">
     <value>Vorlagenübersetzer</value>
   </data>
-  <data name="geo_validate_version_required" xml:space="preserve">
-    <value>Version darf nicht leer sein.</value>
-  </data>
   <data name="axis_title" xml:space="preserve">
     <value>Achsentitel</value>
   </data>
@@ -1834,9 +1809,6 @@ Verzeichnis: {2}</value>
   <data name="major_grid_line" xml:space="preserve">
     <value>Hauptgitterlinie</value>
   </data>
-  <data name="unable_to_get_latest_release_info" xml:space="preserve">
-    <value>Neueste Release-Info nicht abrufbar</value>
-  </data>
   <data name="tick_labels" xml:space="preserve">
     <value>Strichbeschriftungen</value>
   </data>
@@ -1848,9 +1820,6 @@ Verzeichnis: {2}</value>
   </data>
   <data name="template_library" xml:space="preserve">
     <value>Vorlagenbibliothek</value>
-  </data>
-  <data name="geo_menu_export_official" xml:space="preserve">
-    <value>Offizielle Geothermobarometer exportieren</value>
   </data>
   <data name="coordinates_picked_success" xml:space="preserve">
     <value>Koordinaten erfolgreich erfasst!</value>
@@ -2005,20 +1974,14 @@ Verzeichnis: {2}</value>
   <data name="click_or_drag_template_json_here" xml:space="preserve">
     <value>Klicken oder JSON-Vorlagendatei hierher ziehen</value>
   </data>
-  <data name="file_drop_release_to_open" xml:space="preserve">
-    <value>Release to open template</value>
-  </data>
   <data name="file_drop_release_to_import" xml:space="preserve">
-    <value>Release to import</value>
+    <value>Loslassen zum Importieren</value>
   </data>
   <data name="file_drop_invalid_format" xml:space="preserve">
-    <value>Unsupported file format</value>
-  </data>
-  <data name="file_drop_supported_diagram" xml:space="preserve">
-    <value>Supports .json / .zip template files</value>
+    <value>Nicht unterstütztes Dateiformat</value>
   </data>
   <data name="file_drop_supported_geothermometer" xml:space="preserve">
-    <value>Supports .zip geothermometer packages</value>
+    <value>Unterstützt .gngtm / .zip Geothermobarometer-Pakete</value>
   </data>
   <data name="coordinate_positioning" xml:space="preserve">
     <value>Koordinatenpositionierung</value>
@@ -2049,9 +2012,6 @@ Verzeichnis: {2}</value>
   </data>
   <data name="Alignment_LowerCenter" xml:space="preserve">
     <value>Unten mitte</value>
-  </data>
-  <data name="cannot_parse_version_number_check_release_address" xml:space="preserve">
-    <value>Versionsnummer konnte nicht geparst werden. Bitte Release-Seite prüfen</value>
   </data>
   <data name="workspace_section" xml:space="preserve">
     <value>Mein Bereich</value>
@@ -2089,9 +2049,6 @@ Verzeichnis: {2}</value>
   <data name="cipw_row_format" xml:space="preserve">
     <value>Zeile {0}</value>
   </data>
-  <data name="axis" xml:space="preserve">
-    <value>Achse</value>
-  </data>
   <data name="axes" xml:space="preserve">
     <value>Achsen</value>
   </data>
@@ -2126,13 +2083,13 @@ Verzeichnis: {2}</value>
     <value>Text</value>
   </data>
   <data name="tips" xml:space="preserve">
-    <value>Tips</value>
+    <value>Tipps</value>
   </data>
   <data name="undo" xml:space="preserve">
     <value>Rückgängig</value>
   </data>
   <data name="view" xml:space="preserve">
-    <value>Ansicht</value>
+    <value>Anzeigen</value>
   </data>
   <data name="redo" xml:space="preserve">
     <value>Wiederholen</value>
@@ -2167,9 +2124,6 @@ Verzeichnis: {2}</value>
   <data name="Plot" xml:space="preserve">
     <value>Diagramm zeichnen</value>
   </data>
-  <data name="geo_field_worksheet_name" xml:space="preserve">
-    <value>Arbeitsblattname</value>
-  </data>
   <data name="geo_current_app_format_version" xml:space="preserve">
     <value>Aktuelle App-Geothermobarometer-Version</value>
   </data>
@@ -2185,9 +2139,6 @@ Verzeichnis: {2}</value>
   <data name="geo_example_name" xml:space="preserve">
     <value>z. B. Quarz-Geothermobarometer</value>
   </data>
-  <data name="geo_example_mineral" xml:space="preserve">
-    <value>z. B. Quarz</value>
-  </data>
   <data name="geo_example_year" xml:space="preserve">
     <value>z. B. 2020</value>
   </data>
@@ -2196,9 +2147,6 @@ Verzeichnis: {2}</value>
   </data>
   <data name="geo_example_reference" xml:space="preserve">
     <value>z. B. Smith (2020) Geochim. Cosmochim. Acta 280, 123-145</value>
-  </data>
-  <data name="geo_example_formula_name" xml:space="preserve">
-    <value>z. B. MyFormula_v1</value>
   </data>
   <data name="geo_preview_title" xml:space="preserve">
     <value>Vorschau</value>
@@ -2215,9 +2163,6 @@ Verzeichnis: {2}</value>
   <data name="geo_preview_name_placeholder" xml:space="preserve">
     <value>Geothermobarometer-Name</value>
   </data>
-  <data name="geo_preview_mineral_placeholder" xml:space="preserve">
-    <value>Mineralgruppe</value>
-  </data>
   <data name="geo_preview_author_placeholder" xml:space="preserve">
     <value>Autor</value>
   </data>
@@ -2225,7 +2170,7 @@ Verzeichnis: {2}</value>
     <value>Referenz wird hier angezeigt</value>
   </data>
   <data name="geo_preview_meta_format" xml:space="preserve">
-    <value>{0} - {1} ({2})</value>
+    <value>{0} ({1})</value>
   </data>
   <data name="cipw_csv_filter" xml:space="preserve">
     <value>CSV-Datei|*.csv</value>
@@ -2246,9 +2191,6 @@ Verzeichnis: {2}</value>
   </data>
   <data name="geo_step_help_doc" xml:space="preserve">
     <value>Hilfedokument</value>
-  </data>
-  <data name="cipw_tooltip_maximize" xml:space="preserve">
-    <value>Maximieren / Wiederherstellen</value>
   </data>
   <data name="geo_tooltip_export_csv" xml:space="preserve">
     <value>Aktuelles Arbeitsblatt als CSV exportieren</value>
@@ -2344,73 +2286,82 @@ Verzeichnis: {2}</value>
     <value>Verarbeitung ausführen</value>
   </data>
   <data name="notification_success" xml:space="preserve">
-    <value>Success</value>
+    <value>Erfolg</value>
   </data>
   <data name="notification_warning" xml:space="preserve">
-    <value>Warning</value>
+    <value>Warnung</value>
   </data>
   <data name="filter_all_files" xml:space="preserve">
-    <value>All Files</value>
+    <value>Alle Dateien</value>
   </data>
   <data name="filter_json_files" xml:space="preserve">
-    <value>JSON Files</value>
+    <value>JSON-Dateien</value>
   </data>
   <data name="filter_zip_files" xml:space="preserve">
-    <value>Zip Files</value>
+    <value>Zip-Dateien</value>
   </data>
   <data name="filter_template_files" xml:space="preserve">
-    <value>Template Files</value>
+    <value>Vorlagendateien</value>
+  </data>
+  <data name="filter_diagram_package" xml:space="preserve">
+    <value>Diagrammvorlagen-Paket</value>
+  </data>
+  <data name="filter_geothermometer_package" xml:space="preserve">
+    <value>Geothermobarometer-Paket</value>
+  </data>
+  <data name="filter_geothermometer_import" xml:space="preserve">
+    <value>Geothermobarometer-Pakete</value>
   </data>
   <data name="filter_csv_files" xml:space="preserve">
-    <value>CSV Files</value>
+    <value>CSV-Dateien</value>
   </data>
   <data name="filter_png_image" xml:space="preserve">
-    <value>PNG Image</value>
+    <value>PNG-Bild</value>
   </data>
   <data name="filter_svg_vector" xml:space="preserve">
-    <value>SVG Vector</value>
+    <value>SVG-Vektor</value>
   </data>
   <data name="open_template" xml:space="preserve">
-    <value>Open Template</value>
+    <value>Vorlage öffnen</value>
   </data>
   <data name="save_file_title" xml:space="preserve">
-    <value>Save File</value>
+    <value>Datei speichern</value>
   </data>
   <data name="plot_undefined_data_columns" xml:space="preserve">
-    <value>Undefined data columns</value>
+    <value>Undefinierte Datenspalten</value>
   </data>
   <data name="plot_json_multiselect_not_supported" xml:space="preserve">
-    <value>JSON files cannot be added in a multi-select batch. Only ZIP files support multi-select batch import.</value>
+    <value>JSON-Dateien können nicht in einer Mehrfachauswahl hinzugefügt werden. Nur Paketdateien unterstützen Mehrfachimport.</value>
   </data>
   <data name="plot_ternary_axis_not_found" xml:space="preserve">
-    <value>Error: triangular axis object not found in the plot.</value>
+    <value>Fehler: Dreiecksachsenobjekt im Diagramm nicht gefunden.</value>
   </data>
   <data name="plot_upload_thumbnail_failed" xml:space="preserve">
-    <value>Failed to upload thumbnail: {0}</value>
+    <value>Miniaturansicht konnte nicht hochgeladen werden: {0}</value>
   </data>
   <data name="plot_type_2d_description" xml:space="preserve">
-    <value>Best for standard X-Y plotting for scatter, line, function, and most diagram templates.</value>
+    <value>Ideal für Standard-X-Y-Diagramme: Streu-, Linien-, Funktionsdiagramme und die meisten Diagrammvorlagen.</value>
   </data>
   <data name="plot_type_ternary_description" xml:space="preserve">
-    <value>Best for ternary compositions, phase diagrams, and end-member mixing relationships.</value>
+    <value>Ideal für ternäre Zusammensetzungen, Phasendiagramme und Endglied-Mischungsbeziehungen.</value>
   </data>
   <data name="selected_label" xml:space="preserve">
-    <value>Selected</value>
+    <value>Ausgewählt</value>
   </data>
   <data name="dataPrep_workflowStep1" xml:space="preserve">
-    <value>1. Import a CSV / Excel table and confirm major-element headers</value>
+    <value>1. CSV-/Excel-Tabelle importieren und Hauptelement-Kopfzeilen bestätigen</value>
   </data>
   <data name="dataPrep_workflowStep2" xml:space="preserve">
-    <value>2. Set detection limits, missing values, outliers, and iron valence strategy</value>
+    <value>2. Nachweisgrenzen, fehlende Werte, Ausreißer und Eisenvalenzstrategie festlegen</value>
   </data>
   <data name="dataPrep_workflowStep3" xml:space="preserve">
-    <value>3. Batch-generate cleaned, normalized, and geochemical indicator columns</value>
+    <value>3. Bereinigte, normalisierte und geochemische Indikatorspalten stapelweise erzeugen</value>
   </data>
   <data name="dataPrep_workflowStep4" xml:space="preserve">
-    <value>4. Output to a new Processed worksheet and export results</value>
+    <value>4. In ein neues Processed-Arbeitsblatt ausgeben und Ergebnisse exportieren</value>
   </data>
   <data name="see_error_log_for_details" xml:space="preserve">
-    <value>See error.log for details.</value>
+    <value>Details siehe error.log.</value>
   </data>
   <data name="announcement" xml:space="preserve">
     <value>Ankündigung</value>
@@ -2566,7 +2517,7 @@ Verzeichnis: {2}</value>
     <value>Normalisierung</value>
   </data>
   <data name="dataPrep_normalizeToHundred" xml:space="preserve">
-    <value>Normalize to 100%</value>
+    <value>Normalisieren auf 100%</value>
   </data>
   <data name="dataPrep_notDetected" xml:space="preserve">
     <value>Nicht erkannt</value>
@@ -2709,6 +2660,9 @@ Verzeichnis: {2}</value>
   <data name="force_update_template" xml:space="preserve">
     <value>Aktualisierung erzwingen</value>
   </data>
+  <data name="convert_to_builtin_template" xml:space="preserve">
+    <value>In eingebaute Vorlage konvertieren</value>
+  </data>
   <data name="force_update_app" xml:space="preserve">
     <value>Aktualisierung erzwingen</value>
   </data>
@@ -2748,20 +2702,11 @@ Verzeichnis: {2}</value>
   <data name="home_personal_group" xml:space="preserve">
     <value>Persönlich</value>
   </data>
-  <data name="home_personal_group_hint" xml:space="preserve">
-    <value>In dieser Gruppe können Sie Links hinzufügen, bearbeiten oder entfernen.</value>
-  </data>
   <data name="home_recommended_content" xml:space="preserve">
     <value>Empfohlen</value>
   </data>
-  <data name="home_widgets_panel_desc" xml:space="preserve">
-    <value>Integrierte Werkzeuge, die in der App geöffnet werden und in der Seitenleiste angezeigt werden.</value>
-  </data>
   <data name="home_widgets_section" xml:space="preserve">
     <value>Widgets</value>
-  </data>
-  <data name="language_exists" xml:space="preserve">
-    <value>Sprache existiert bereits</value>
   </data>
   <data name="main_sidebar_collapse_full" xml:space="preserve">
     <value>Vollständig einklappen</value>
@@ -2847,17 +2792,11 @@ Verzeichnis: {2}</value>
   <data name="official_publisher_home_edit_group" xml:space="preserve">
     <value>Gruppe bearbeiten</value>
   </data>
-  <data name="official_publisher_home_group_title_prompt" xml:space="preserve">
-    <value>Gruppentitel eingeben:</value>
-  </data>
   <data name="official_publisher_home_groups" xml:space="preserve">
     <value>Gruppen</value>
   </data>
   <data name="official_publisher_home_link_items" xml:space="preserve">
     <value>Links</value>
-  </data>
-  <data name="official_publisher_home_links_bundled_saved" xml:space="preserve">
-    <value>Startseiten-Links im gebündelten Katalog gespeichert.</value>
   </data>
   <data name="official_publisher_home_links_draft_saved" xml:space="preserve">
     <value>Startseiten-Links-Entwurf lokal gespeichert.</value>
@@ -2900,9 +2839,6 @@ Verzeichnis: {2}</value>
   </data>
   <data name="official_publisher_new" xml:space="preserve">
     <value>Neu</value>
-  </data>
-  <data name="official_publisher_preview_summary" xml:space="preserve">
-    <value>Vorschau: neu {0}, aktualisiert {1}, entfernt {2}, unverändert {3}.</value>
   </data>
   <data name="official_publisher_progress_done" xml:space="preserve">
     <value>Veröffentlichung abgeschlossen.</value>
@@ -2965,7 +2901,7 @@ Verzeichnis: {2}</value>
     <value>Offizielle Inhalte (Diagramme, Geothermobarometer, Startseiten-Links, Ankündigungen) exportieren und auf COS veröffentlichen</value>
   </data>
   <data name="ree_spider_diagram" xml:space="preserve">
-    <value>REE-Spinnendiagramm</value>
+    <value>REE-Spider-Diagramm</value>
   </data>
   <data name="reset_default" xml:space="preserve">
     <value>Zurücksetzen</value>
@@ -3133,7 +3069,7 @@ Verzeichnis: {2}</value>
     <value>WERKZEUG-DIAGRAMME</value>
   </data>
   <data name="trace_element_spider_diagram" xml:space="preserve">
-    <value>Spurenelement-Spinnendiagramm</value>
+    <value>Spurenelement-Spider-Diagramm</value>
   </data>
   <data name="translation_annotation" xml:space="preserve">
     <value>Anmerkung</value>
@@ -3188,12 +3124,6 @@ Verzeichnis: {2}</value>
   </data>
   <data name="translation_text_item" xml:space="preserve">
     <value>Text</value>
-  </data>
-  <data name="gtm_biotite_ti_wu_chen_2015" xml:space="preserve">
-    <value>Ti-in-Bt (Wu &amp; Chen, 2015)</value>
-  </data>
-  <data name="gtm_mineral_biotite" xml:space="preserve">
-    <value>Biotit</value>
   </data>
   <data name="official_publisher_plot_categories_section" xml:space="preserve">
     <value>Diagramm-Kategorien</value>
@@ -3420,6 +3350,587 @@ Verzeichnis: {2}</value>
   <data name="cipw_error_negative_oxide_content" xml:space="preserve">
     <value>Oxid {0} hat einen negativen Gehalt.</value>
   </data>
+  <data name="template_card_size_preset" xml:space="preserve">
+    <value>Kartengröße</value>
+  </data>
+  <data name="template_card_size_compact" xml:space="preserve">
+    <value>Kompakt</value>
+  </data>
+  <data name="template_card_size_standard" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="AutoCheckUpdate_hint" xml:space="preserve">
+
+    <value>Beim Start automatisch nach Anwendungsupdates suchen</value>
+
+  </data>
+
+  <data name="Boot_hint" xml:space="preserve">
+
+    <value>Anwendung automatisch starten, wenn Windows gestartet wird</value>
+
+  </data>
+
+  <data name="CheckUpdate_hint" xml:space="preserve">
+
+    <value>Jetzt prüfen, ob eine neuere Anwendungsversion verfügbar ist</value>
+
+  </data>
+
+  <data name="Language_hint" xml:space="preserve">
+
+    <value>Anzeigesprache der Anwendungsoberfläche auswählen</value>
+
+  </data>
+
+  <data name="MessageAutoClose_hint" xml:space="preserve">
+
+    <value>Wie lange Toast-Meldungen sichtbar bleiben, bevor sie automatisch geschlossen werden</value>
+
+  </data>
+
+  <data name="QuitAppMode_hint" xml:space="preserve">
+
+    <value>Beim Schließen des Fensters in den Systemtray minimieren oder die Anwendung beenden</value>
+
+  </data>
+
+  <data name="adobe_illustrator_path_hint" xml:space="preserve">
+
+    <value>Pfad zur ausführbaren Datei von Adobe Illustrator zum Öffnen von Vektorgrafiken</value>
+
+  </data>
+
+  <data name="auto_check_diagram_template_updates_hint" xml:space="preserve">
+
+    <value>Beim Start automatisch nach Diagrammvorlagen-Updates suchen</value>
+
+  </data>
+
+  <data name="auto_check_geothermometer_updates_hint" xml:space="preserve">
+
+    <value>Beim Start automatisch nach Geothermobarometer-Updates suchen</value>
+
+  </data>
+
+  <data name="coreldraw_path_hint" xml:space="preserve">
+
+    <value>Pfad zur ausführbaren Datei von CorelDRAW zum Öffnen von Vektorgrafiken</value>
+
+  </data>
+
+  <data name="current_diagram_version_hint" xml:space="preserve">
+
+    <value>Von dieser Anwendung unterstützte Diagrammvorlagen-Formatversion (schreibgeschützt)</value>
+
+  </data>
+
+  <data name="custom_app_hint" xml:space="preserve">
+
+    <value>Pfad zur ausführbaren Datei eines benutzerdefinierten Drittanbieter-Grafikeditors</value>
+
+  </data>
+
+  <data name="default_diagram_expand_level_hint" xml:space="preserve">
+
+    <value>Standardmäßige Expansionstiefe des Diagrammkategoriebaums</value>
+
+  </data>
+
+  <data name="default_third_party_editor_hint" xml:space="preserve">
+
+    <value>Standard-Drittanbieter-App beim Bearbeiten oder Exportieren von Vektorgrafiken</value>
+
+  </data>
+
+  <data name="developer_mode_hint" xml:space="preserve">
+
+    <value>Bei Aktivierung Entwickler- und Debug-Optionen anzeigen</value>
+
+  </data>
+
+  <data name="geo_additional_formula_badge" xml:space="preserve">
+
+    <value>Zusätzlich</value>
+
+  </data>
+
+  <data name="geo_additional_formula_name" xml:space="preserve">
+
+    <value>Grid-Formelname</value>
+
+  </data>
+
+
+
+  <data name="geo_additional_function_name" xml:space="preserve">
+
+    <value>JS-Funktionsname</value>
+
+  </data>
+
+  <data name="geo_btn_add_additional_formula" xml:space="preserve">
+
+    <value>Zusätzliche Formel hinzufügen</value>
+
+  </data>
+
+  <data name="geo_current_app_format_version_hint" xml:space="preserve">
+
+    <value>Von dieser Anwendung unterstützte Geothermobarometer-Vorlagenformatversion (schreibgeschützt)</value>
+
+  </data>
+
+  <data name="geo_formulas_hint" xml:space="preserve">
+
+    <value>Grid-Benutzerfunktionsnamen auf JavaScript-Funktionen im Skript darunter abbilden. Die Hauptformel ruft immer calculate(args) auf.</value>
+
+  </data>
+
+  <data name="geo_formulas_title" xml:space="preserve">
+
+    <value>Grid-Formeln *</value>
+
+  </data>
+
+  <data name="geo_free_sheet_align_center" xml:space="preserve">
+
+    <value>Zentriert</value>
+
+  </data>
+
+  <data name="geo_free_sheet_align_left" xml:space="preserve">
+
+    <value>Linksbündig</value>
+
+  </data>
+
+  <data name="geo_free_sheet_align_right" xml:space="preserve">
+
+    <value>Rechtsbündig</value>
+
+  </data>
+
+
+
+
+
+
+  <data name="geo_free_sheet_clear" xml:space="preserve">
+
+    <value>Leeren</value>
+
+  </data>
+
+  <data name="geo_free_sheet_clear_confirm" xml:space="preserve">
+
+    <value>Alle Daten in der aktuellen Tabelle löschen?</value>
+
+  </data>
+
+  <data name="geo_free_sheet_clear_success" xml:space="preserve">
+
+    <value>Tabelle geleert</value>
+
+  </data>
+
+
+
+
+
+
+
+  <data name="geo_free_sheet_delete_col" xml:space="preserve">
+
+    <value>Spalte löschen</value>
+
+  </data>
+
+  <data name="geo_free_sheet_delete_col_confirm" xml:space="preserve">
+
+    <value>Ausgewählte Spalte(n) löschen?</value>
+
+  </data>
+
+  <data name="geo_free_sheet_delete_col_failed" xml:space="preserve">
+
+    <value>Spalte konnte nicht gelöscht werden: </value>
+
+  </data>
+
+  <data name="geo_free_sheet_delete_row_confirm" xml:space="preserve">
+
+    <value>Ausgewählte Zeile(n) löschen?</value>
+
+  </data>
+
+  <data name="geo_free_sheet_export_formulas" xml:space="preserve">
+
+    <value>Formeln exportieren (ohne Werte)</value>
+
+  </data>
+
+  <data name="geo_free_sheet_export_mode_prompt" xml:space="preserve">
+
+    <value>Exportinhaltstyp auswählen</value>
+
+  </data>
+
+  <data name="geo_free_sheet_export_title" xml:space="preserve">
+
+    <value>Exportoptionen</value>
+
+  </data>
+
+  <data name="geo_free_sheet_export_values" xml:space="preserve">
+
+    <value>Werte exportieren (ohne Formeln)</value>
+
+  </data>
+
+  <data name="geo_free_sheet_fill_color" xml:space="preserve">
+
+    <value>Füllfarbe</value>
+
+  </data>
+
+
+
+
+
+  <data name="geo_free_sheet_format_painter" xml:space="preserve">
+
+    <value>Format übertragen</value>
+
+  </data>
+
+  <data name="geo_free_sheet_group_align" xml:space="preserve">
+
+    <value>Ausrichtung</value>
+
+  </data>
+
+  <data name="geo_free_sheet_group_cells" xml:space="preserve">
+
+    <value>Zellen</value>
+
+  </data>
+
+  <data name="geo_free_sheet_group_edit" xml:space="preserve">
+
+    <value>Bearbeiten</value>
+
+  </data>
+
+  <data name="geo_free_sheet_group_file" xml:space="preserve">
+
+    <value>Datei</value>
+
+  </data>
+
+  <data name="geo_free_sheet_group_font" xml:space="preserve">
+
+    <value>Schriftart</value>
+
+  </data>
+
+
+  <data name="geo_free_sheet_hint" xml:space="preserve">
+
+    <value>Registrierte Geothermobarometer-Formeln verwenden, z. B. =FormulaName(A2,B2)</value>
+
+  </data>
+
+  <data name="geo_free_sheet_import" xml:space="preserve">
+
+    <value>Importieren</value>
+
+  </data>
+
+  <data name="geo_free_sheet_import_failed" xml:space="preserve">
+
+    <value>Import fehlgeschlagen: {0}</value>
+
+  </data>
+
+  <data name="geo_free_sheet_insert_col_left" xml:space="preserve">
+
+    <value>Spalte links einfügen</value>
+
+  </data>
+
+  <data name="geo_free_sheet_insert_col_right" xml:space="preserve">
+
+    <value>Spalte rechts einfügen</value>
+
+  </data>
+
+  <data name="geo_free_sheet_italic" xml:space="preserve">
+
+    <value>Kursiv</value>
+
+  </data>
+
+  <data name="geo_free_sheet_merge" xml:space="preserve">
+
+    <value>Verbinden und zentrieren</value>
+
+  </data>
+
+  <data name="geo_free_sheet_title" xml:space="preserve">
+
+    <value>Freie Geothermobarometer-Tabelle</value>
+
+  </data>
+
+  <data name="geo_free_sheet_underline" xml:space="preserve">
+
+    <value>Unterstreichen</value>
+
+  </data>
+
+  <data name="geo_free_sheet_worksheet_name" xml:space="preserve">
+
+    <value>FreieTabelle</value>
+
+  </data>
+
+
+  <data name="geo_main_formula_badge" xml:space="preserve">
+
+    <value>Haupt</value>
+
+  </data>
+
+  <data name="geo_menu_open_free_sheet" xml:space="preserve">
+
+    <value>Freie Tabelle öffnen</value>
+
+  </data>
+
+  <data name="geo_msg_batch_import_success" xml:space="preserve">
+
+    <value>Erfolgreich importiert: {0}</value>
+
+  </data>
+
+  <data name="geo_msg_update_download_failed_detail" xml:space="preserve">
+
+    <value>{0}: {1}</value>
+
+  </data>
+
+  <data name="geo_msg_update_download_failed_items" xml:space="preserve">
+
+    <value>Fehlgeschlagene Downloads:</value>
+
+  </data>
+
+  <data name="geo_msg_update_removed_count" xml:space="preserve">
+
+    <value>Entfernt: {0}</value>
+
+  </data>
+
+  <data name="geo_tooltip_additional_function_name" xml:space="preserve">
+
+    <value>JavaScript-Funktionsname im Skript, z. B. calcPressure</value>
+
+  </data>
+
+
+  <data name="geo_validate_additional_formula_incomplete" xml:space="preserve">
+
+    <value>Zusätzliche Formel Zeile {0}: Grid-Formelname und JS-Funktionsname sind beide erforderlich.</value>
+
+  </data>
+
+  <data name="geo_validate_additional_function_name_invalid" xml:space="preserve">
+
+    <value>JS-Funktionsname „{0}“ ist ungültig (muss ein gültiger JavaScript-Bezeichner sein).</value>
+
+  </data>
+
+  <data name="geo_validate_additional_function_reserved" xml:space="preserve">
+
+    <value>JS-Funktionsname „{0}“ ist für die Hauptformel oder die detaillierte Berechnung reserviert.</value>
+
+  </data>
+
+  <data name="geo_validate_example_row_column_mismatch" xml:space="preserve">
+
+    <value>Beispielzeile muss dieselbe Spaltenanzahl wie die Kopfzeile haben ({0} erwartet, {1} gefunden).</value>
+
+  </data>
+
+  <data name="inkscape_path_hint" xml:space="preserve">
+
+    <value>Pfad zur ausführbaren Datei von Inkscape zum Öffnen von Vektorgrafiken</value>
+
+  </data>
+
+  <data name="main_sidebar_collapse_style_hint" xml:space="preserve">
+
+    <value>Festlegen, ob die Hauptseitenleiste vollständig eingeklappt wird oder Symbole sichtbar bleiben</value>
+
+  </data>
+
+  <data name="minimum_version_auto_update" xml:space="preserve">
+
+    <value>Automatisch aktualisieren</value>
+
+  </data>
+
+  <data name="minimum_version_dialog_message" xml:space="preserve">
+
+    <value>Ihre aktuelle Version {0} liegt unter der mindestens unterstützten Version {1}. Bitte aktualisieren Sie GeoChemistry Nexus.</value>
+
+  </data>
+
+  <data name="minimum_version_dialog_title" xml:space="preserve">
+
+    <value>Update erforderlich</value>
+
+  </data>
+
+  <data name="minimum_version_force_confirm" xml:space="preserve">
+
+    <value>Trotzdem fortfahren</value>
+
+  </data>
+
+  <data name="minimum_version_force_confirm_message" xml:space="preserve">
+
+    <value>Diese Version wird nicht mehr unterstützt. Fortfahren kann unvorhersehbare Probleme verursachen. Trotzdem fortfahren?</value>
+
+  </data>
+
+  <data name="minimum_version_force_use" xml:space="preserve">
+
+    <value>Erzwungen verwenden</value>
+
+  </data>
+
+  <data name="minimum_version_manual_update" xml:space="preserve">
+
+    <value>Manuell aktualisieren</value>
+
+  </data>
+
+  <data name="mouse_snap_auto_recognition_frame_rate_hint" xml:space="preserve">
+
+    <value>Bildwiederholrate für die automatische Mausfang-Erkennung; höher ist flüssiger, verbraucht aber mehr Ressourcen</value>
+
+  </data>
+
+  <data name="object_selection_trigger_hint" xml:space="preserve">
+
+    <value>Mausaktion zum Auswählen von Objekten auf der Zeichenfläche</value>
+
+  </data>
+
+  <data name="official_publisher_minimum_version_empty" xml:space="preserve">
+
+    <value>(leer)</value>
+
+  </data>
+
+  <data name="official_publisher_minimum_version_hint" xml:space="preserve">
+
+    <value>Format: 1.2.3. Leer lassen, um die Mindestversionsprüfung zu deaktivieren.</value>
+
+  </data>
+
+  <data name="official_publisher_minimum_version_invalid" xml:space="preserve">
+
+    <value>Die Mindestens unterstützte Version muss eine gültige Version sein, z. B. 1.2.3.</value>
+
+  </data>
+
+  <data name="official_publisher_minimum_version_label" xml:space="preserve">
+
+    <value>Mindestens unterstützte Version</value>
+
+  </data>
+
+  <data name="official_publisher_minimum_version_pending" xml:space="preserve">
+
+    <value>Mindestversion ausstehend zur Veröffentlichung</value>
+
+  </data>
+
+  <data name="official_publisher_minimum_version_preview" xml:space="preserve">
+
+    <value>Mindestens unterstützte Version: {0}</value>
+
+  </data>
+
+  <data name="official_publisher_minimum_version_up_to_date" xml:space="preserve">
+
+    <value>Die mindestens unterstützte Version ist aktuell.</value>
+
+  </data>
+
+  <data name="startup_background_image_hint" xml:space="preserve">
+
+    <value>Ein oder mehrere Bilder für den Startbildschirm hinzufügen</value>
+
+  </data>
+
+  <data name="template_card_size_preset_hint" xml:space="preserve">
+
+    <value>Anzeigegröße der Diagrammvorlagenkarten in der Bibliothek</value>
+
+  </data>
+
+  <data name="ui_scale_auto" xml:space="preserve">
+
+    <value>Automatisch</value>
+
+  </data>
+
+  <data name="ui_scale_mode" xml:space="preserve">
+
+    <value>UI-Skalierung</value>
+
+  </data>
+
+  <data name="ui_scale_mode_hint" xml:space="preserve">
+
+    <value>Automatisch an das aktuelle Display anpassen oder eine feste UI-Skalierung festlegen</value>
+
+  </data>
+
+  <data name="update_auto_check_notify" xml:space="preserve">
+
+    <value>Eine neue Version ist verfügbar. Öffnen Sie die Einstellungen zum Herunterladen und Installieren.</value>
+
+  </data>
+
+  <data name="update_download_confirm_shutdown" xml:space="preserve">
+
+    <value>Download abgeschlossen. Die Anwendung wird beendet und der Installationsassistent gestartet. Fortfahren?</value>
+
+  </data>
+
+  <data name="update_installer_not_found" xml:space="preserve">
+
+    <value>Im neuesten Release wurde kein Installationspaket gefunden.</value>
+
+  </data>
+
+  <data name="update_installer_saved" xml:space="preserve">
+
+    <value>Installationspaket heruntergeladen und gespeichert.</value>
+
+  </data>
+
+  <data name="update_portable_mode_hint" xml:space="preserve">
+
+    <value>Portabler Modus erkannt. Bitte laden Sie das Installations- oder Portable-Paket von der Releases-Seite herunter.</value>
+
+  </data>
+
 </root>
 
 

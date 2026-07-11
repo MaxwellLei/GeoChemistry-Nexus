@@ -10,6 +10,7 @@
 
     <conv:ListBoxItemCornerRadiusConverter x:Key="ListBoxItemCornerRadiusConverter"/>
     <conv:ListBoxItemBorderThicknessConverter x:Key="ListBoxItemBorderThicknessConverter"/>
+    <conv:BoolOrMultiConverter x:Key="BoolOrMultiConverter"/>
 
     <Style x:Key="LayerIconContainerStyle" TargetType="Border">
         <Setter Property="Width" Value="20"/>
@@ -596,10 +597,37 @@
     <!-- 开发者模式：已转换为内置模板的图解卡片边框色 -->
     <SolidColorBrush x:Key="ConvertedBuiltinTemplateBorderBrush" Color="#8B0000"/>
 
-    <!-- 图解模板卡片网格尺寸：内容区最小 260，外边距 8，单元格 276（列数计算与行高基准） -->
-    <sys:Double x:Key="TemplateCardMinDimension">260</sys:Double>
+    <!-- 图解模板卡片网格尺寸：标准档位基准 276；运行时由 TemplateCardLayoutHelper 按视口重算 ItemSize -->
+    <sys:Double x:Key="TemplateCardMinDimension">160</sys:Double>
     <sys:Double x:Key="TemplateCardCellDimension">276</sys:Double>
     <Size x:Key="TemplateCardCellSize">276,276</Size>
+
+    <!-- 图解卡片列表：滚动条贴齐右侧；Padding 仅作用于 ItemsPresenter，保持最右列卡片与边框间距 -->
+    <Style x:Key="TemplateCardListBoxStyle" TargetType="ListBox">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="0,0,10,0"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBox">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            SnapsToDevicePixels="True">
+                        <ScrollViewer Focusable="False"
+                                      CanContentScroll="{TemplateBinding ScrollViewer.CanContentScroll}"
+                                      HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                                      VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
+                            <ItemsPresenter Margin="{TemplateBinding Padding}"
+                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                        </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <Style x:Key="TemplateCardStyle" TargetType="Border">
         <Setter Property="Background" Value="White"/>
@@ -615,10 +643,21 @@
             </Setter.Value>
         </Setter>
         <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
+            <!-- 悬停或右键菜单打开时保持高亮（菜单弹出后指针移到菜单上 IsMouseOver 会变为 False） -->
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Value="True">
+                        <Condition.Binding>
+                            <MultiBinding Converter="{StaticResource BoolOrMultiConverter}">
+                                <Binding Path="IsMouseOver" RelativeSource="{RelativeSource Self}"/>
+                                <Binding Path="ContextMenu.IsOpen" RelativeSource="{RelativeSource Self}"/>
+                            </MultiBinding>
+                        </Condition.Binding>
+                    </Condition>
+                </MultiDataTrigger.Conditions>
                 <Setter Property="BorderBrush" Value="#0078D4"/>
                 <Setter Property="Background" Value="White"/>
-                <Trigger.EnterActions>
+                <MultiDataTrigger.EnterActions>
                     <BeginStoryboard>
                         <Storyboard>
                             <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)"
@@ -637,8 +676,8 @@
                             </DoubleAnimation>
                         </Storyboard>
                     </BeginStoryboard>
-                </Trigger.EnterActions>
-                <Trigger.ExitActions>
+                </MultiDataTrigger.EnterActions>
+                <MultiDataTrigger.ExitActions>
                     <BeginStoryboard>
                         <Storyboard>
                             <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)"
@@ -657,8 +696,8 @@
                             </DoubleAnimation>
                         </Storyboard>
                     </BeginStoryboard>
-                </Trigger.ExitActions>
-            </Trigger>
+                </MultiDataTrigger.ExitActions>
+            </MultiDataTrigger>
         </Style.Triggers>
     </Style>
 
@@ -1037,6 +1076,92 @@
         </Setter>
     </Style>
 
+    <!-- 图解卡片大小档位：工具栏/设置页用的浅色分段控件 -->
+    <Style x:Key="TemplateCardSizeSegmentedStyle" TargetType="ListBox">
+        <Setter Property="Background" Value="#EEEEEE"/>
+        <Setter Property="BorderBrush" Value="#E0E0E0"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="2"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <UniformGrid Rows="1"/>
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBox">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="6"
+                            Padding="{TemplateBinding Padding}"
+                            SnapsToDevicePixels="True"
+                            UseLayoutRounding="True">
+                        <ItemsPresenter/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="TemplateCardSizeSegmentedItemStyle" TargetType="ListBoxItem">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Margin" Value="1,0"/>
+        <Setter Property="Foreground" Value="#666666"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <Border x:Name="Bd"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="4"
+                            Padding="6,0"
+                            SnapsToDevicePixels="True"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          TextElement.Foreground="{TemplateBinding Foreground}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="#E4E4E4"/>
+                            <Setter Property="Foreground" Value="#333333"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="White"/>
+                            <Setter Property="Foreground" Value="#0078D4"/>
+                            <Setter TargetName="Bd" Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect BlurRadius="4" ShadowDepth="0" Opacity="0.12" Color="#000000"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True"/>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Bd" Property="Background" Value="White"/>
+                            <Setter Property="Foreground" Value="#005A9E"/>
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!-- Modern Button Style -->
     <Style x:Key="ModernButtonStyle" TargetType="Button">
         <Setter Property="Background" Value="#007AFF"/>
@@ -1125,6 +1250,14 @@
     <!-- ModernSettingsCard -->
     <Style x:Key="ModernSettingsCard" TargetType="Border" BasedOn="{StaticResource ModernCardStyle}">
          <Setter Property="Margin" Value="0,0,0,10"/>
+    </Style>
+
+    <!-- ModernSettingsItemHintStyle：设置项标题下方的灰色说明 -->
+    <Style x:Key="ModernSettingsItemHintStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="Foreground" Value="#86868B"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="Margin" Value="0,2,0,0"/>
     </Style>
 
     <!-- ToggleButtonSwitch -->

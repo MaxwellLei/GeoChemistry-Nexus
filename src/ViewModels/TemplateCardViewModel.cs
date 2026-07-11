@@ -34,7 +34,7 @@ namespace GeoChemistryNexus.ViewModels
         private bool _isCustomTemplate;
 
         /// <summary>
-        /// 是否为由个人图解转换为内置模板的卡片（开发者模式标识用）
+        /// 是否为由个人图解转换为内置模板且尚未推送到服务器的卡片（开发者模式标识用）
         /// </summary>
         [ObservableProperty]
         private bool _isNewTemplate;

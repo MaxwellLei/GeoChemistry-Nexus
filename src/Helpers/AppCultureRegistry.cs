@@ -103,8 +103,9 @@ namespace GeoChemistryNexus.Helpers
             {
                 var culture = new CultureInfo(normalized);
                 string nativeName = culture.NativeName;
-                if (string.IsNullOrWhiteSpace(nativeName))
-                    return showCode ? normalized : normalized;
+                if (string.IsNullOrWhiteSpace(nativeName) ||
+                    nativeName.Equals(normalized, StringComparison.OrdinalIgnoreCase))
+                    return normalized;
 
                 return showCode ? $"{nativeName} ({normalized})" : nativeName;
             }
@@ -124,17 +125,33 @@ namespace GeoChemistryNexus.Helpers
             return !string.IsNullOrWhiteSpace(code) && ContentCodeSet.Contains(code);
         }
 
+        /// <summary>
+        /// 是否为可用的内容/图解语言码：非空即可（含任意自定义字符串）。
+        /// </summary>
+        public static bool IsValidLanguageCode(string? code)
+        {
+            return TryNormalize(code, out _);
+        }
+
         public static bool TryNormalize(string? code, out string normalized)
         {
             normalized = string.Empty;
             if (string.IsNullOrWhiteSpace(code))
                 return false;
 
-            normalized = code.Trim().Replace('_', '-');
-            if (AppUiCodeSet.Contains(normalized) || ContentCodeSet.Contains(normalized))
-                return true;
+            string trimmed = code.Trim();
+            string hyphenated = trimmed.Replace('_', '-');
 
-            return false;
+            // 预置码统一为注册表中的规范形式（_ → -）。
+            if (AppUiCodeSet.Contains(hyphenated) || ContentCodeSet.Contains(hyphenated))
+            {
+                normalized = hyphenated;
+                return true;
+            }
+
+            // 自定义语言：任意非空字符串，不强制 BCP 47。
+            normalized = trimmed;
+            return true;
         }
 
         public static string ResolveAppLanguage(string? requested)
@@ -143,6 +160,80 @@ namespace GeoChemistryNexus.Helpers
                 return normalized;
 
             return DefaultAppLanguage;
+        }
+
+        /// <summary>
+        /// 根据系统 UI 语言解析首次启动默认 App 语言；无法匹配时回退到 <see cref="DefaultAppLanguage"/>。
+        /// </summary>
+        public static string ResolveFromSystemCulture(CultureInfo? culture = null)
+        {
+            culture ??= CultureInfo.CurrentUICulture;
+
+            for (CultureInfo? current = culture;
+                 current != null && !string.IsNullOrEmpty(current.Name);
+                 current = current.Parent)
+            {
+                if (TryMapCultureNameToAppUiCode(current.Name, out string mapped))
+                    return mapped;
+            }
+
+            return DefaultAppLanguage;
+        }
+
+        private static bool TryMapCultureNameToAppUiCode(string cultureName, out string mapped)
+        {
+            mapped = string.Empty;
+            if (string.IsNullOrWhiteSpace(cultureName))
+                return false;
+
+            string name = cultureName.Trim().Replace('_', '-');
+
+            // 精确匹配已支持的 UI 语言码
+            string? exact = AppUiCodes.FirstOrDefault(c =>
+                c.Equals(name, StringComparison.OrdinalIgnoreCase));
+            if (exact != null)
+            {
+                mapped = exact;
+                return true;
+            }
+
+            // 中文脚本/地区变体 → zh-CN / zh-TW
+            if (name.StartsWith("zh-Hans", StringComparison.OrdinalIgnoreCase) ||
+                name.Equals("zh-CN", StringComparison.OrdinalIgnoreCase) ||
+                name.Equals("zh-SG", StringComparison.OrdinalIgnoreCase))
+            {
+                mapped = "zh-CN";
+                return true;
+            }
+
+            if (name.StartsWith("zh-Hant", StringComparison.OrdinalIgnoreCase) ||
+                name.Equals("zh-TW", StringComparison.OrdinalIgnoreCase) ||
+                name.Equals("zh-HK", StringComparison.OrdinalIgnoreCase) ||
+                name.Equals("zh-MO", StringComparison.OrdinalIgnoreCase))
+            {
+                mapped = "zh-TW";
+                return true;
+            }
+
+            if (name.Equals("zh", StringComparison.OrdinalIgnoreCase))
+            {
+                mapped = "zh-CN";
+                return true;
+            }
+
+            // 仅语言部分匹配，例如 en-GB → en-US、de-AT → de-DE
+            int dashIndex = name.IndexOf('-');
+            string language = dashIndex > 0 ? name[..dashIndex] : name;
+            string? byLanguage = AppUiCodes.FirstOrDefault(c =>
+                c.Equals(language, StringComparison.OrdinalIgnoreCase) ||
+                c.StartsWith(language + "-", StringComparison.OrdinalIgnoreCase));
+            if (byLanguage != null)
+            {
+                mapped = byLanguage;
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>

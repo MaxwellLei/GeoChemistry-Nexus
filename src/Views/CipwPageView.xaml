@@ -116,7 +116,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition x:Name="GridRowDef" Height="*"/>
-            <RowDefinition x:Name="DiagnosticRowDef" Height="180"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition x:Name="DiagnosticRowDef" Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!-- ==================== 顶部：工具栏 ==================== -->
@@ -269,8 +270,29 @@
             </rg:ReoGridControl.Resources>
         </rg:ReoGridControl>
 
+        <!-- 表格与诊断详情之间的可拖动分隔条 -->
+        <GridSplitter x:Name="DetailSplitter" Grid.Row="2"
+                      Height="6"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Center"
+                      ResizeDirection="Rows"
+                      ResizeBehavior="PreviousAndNext"
+                      Background="Transparent"
+                      ShowsPreview="True"
+                      Visibility="Collapsed"
+                      DragCompleted="OnDetailSplitterDragCompleted"
+                      Cursor="SizeNS">
+            <GridSplitter.Template>
+                <ControlTemplate TargetType="GridSplitter">
+                    <Grid Background="Transparent">
+                        <Border Height="1" VerticalAlignment="Center" Background="#E0E0E0"/>
+                    </Grid>
+                </ControlTemplate>
+            </GridSplitter.Template>
+        </GridSplitter>
+
         <!-- ==================== 底部：诊断详情面板 ==================== -->
-        <Border Grid.Row="2" BorderBrush="#D4D4D4" BorderThickness="0,1,0,0" Background="White">
+        <Border Grid.Row="3" BorderBrush="#D4D4D4" BorderThickness="0,1,0,0" Background="White">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -283,7 +305,6 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
@@ -337,15 +358,8 @@
                             </TextBlock.Style>
                         </TextBlock>
 
-                        <!-- 面板控制按钮：最大化/还原 -->
-                        <Button Grid.Column="2" Style="{StaticResource PanelControlButtonStyle}" 
-                                Click="OnMaximizePanelClick" Margin="4,0"
-                                ToolTip="{Binding [cipw_tooltip_maximize],Source={x:Static lg:LanguageService.Instance}, FallbackValue='最大化/还原'}">
-                            <TextBlock x:Name="MaximizeIcon" Text="&#xE740;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
-                        </Button>
-
                         <!-- 面板控制按钮：展开/收缩 -->
-                        <Button Grid.Column="3" Style="{StaticResource PanelControlButtonStyle}" 
+                        <Button Grid.Column="2" Style="{StaticResource PanelControlButtonStyle}" 
                                 Click="OnToggleExpandClick"
                                 ToolTip="{Binding [cipw_tooltip_expand],Source={x:Static lg:LanguageService.Instance}, FallbackValue='展开/收缩'}">
                             <TextBlock x:Name="ExpandIcon" Text="&#xE70D;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>

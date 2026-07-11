@@ -13,16 +13,83 @@ namespace GeoChemistryNexus.Services
 {
     public static class HomeLinksPublishService
     {
-        private static readonly JsonSerializerOptions JsonOptions = new()
+        public const string PublisherCatalogFileName = "HomeLinksCatalog.publisher.json";
+
+        private static readonly JsonSerializerOptions JsonOptions =
+            JsonHelper.CreateRelaxedIndentedOptions(new LocalizedStringJsonConverter());
+
+        private static string PublisherCatalogPath =>
+            AppDataPathHelper.GetDataPath("Config", PublisherCatalogFileName);
+
+        /// <summary>
+        /// 发布器工作副本：优先本地草稿，其次已同步目录，最后内置默认。
+        /// </summary>
+        public static HomeLinksCatalog LoadPublisherCatalog()
         {
-            WriteIndented = true,
-            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-            Converters = { new LocalizedStringJsonConverter() }
-        };
+            if (File.Exists(PublisherCatalogPath))
+            {
+                var draft = LoadCatalogFromPath(PublisherCatalogPath);
+                if (draft.Groups?.Count > 0)
+                    return draft;
+            }
+
+            var localCatalog = HomeLinksCatalogService.LoadLocalCatalog();
+            if (localCatalog.Groups?.Count > 0)
+                return localCatalog;
+
+            return LoadBundledCatalog();
+        }
+
+        /// <summary>
+        /// 从服务器同步后的目录加载，并回写发布器草稿。
+        /// </summary>
+        public static HomeLinksCatalog LoadPublisherCatalogFromSyncedLocal()
+        {
+            var catalog = HomeLinksCatalogService.LoadLocalCatalog();
+            if (catalog.Groups == null || catalog.Groups.Count == 0)
+                catalog = LoadBundledCatalog();
+
+            SavePublisherCatalog(catalog);
+            return catalog;
+        }
 
         public static HomeLinksCatalog LoadBundledCatalog()
         {
-            string path = HomeLinksCatalogService.GetBundledCatalogPath();
+            return LoadCatalogFromPath(HomeLinksCatalogService.GetBundledCatalogPath());
+        }
+
+        public static void SavePublisherCatalog(HomeLinksCatalog catalog)
+        {
+            if (catalog == null)
+                throw new ArgumentNullException(nameof(catalog));
+
+            WriteCatalogToPath(PublisherCatalogPath, catalog);
+        }
+
+        public static void SaveBundledCatalog(HomeLinksCatalog catalog)
+        {
+            SavePublisherCatalog(catalog);
+        }
+
+        public static string GetPublisherCatalogPath() => PublisherCatalogPath;
+
+        /// <summary>
+        /// 导出/发布时使用的目录文件路径。
+        /// </summary>
+        public static string ResolveExportCatalogPath()
+        {
+            if (File.Exists(PublisherCatalogPath))
+                return PublisherCatalogPath;
+
+            string localPath = HomeLinksCatalogService.GetLocalCatalogPath();
+            if (File.Exists(localPath))
+                return localPath;
+
+            return HomeLinksCatalogService.GetBundledCatalogPath();
+        }
+
+        private static HomeLinksCatalog LoadCatalogFromPath(string path)
+        {
             if (!File.Exists(path))
                 return new HomeLinksCatalog();
 
@@ -33,18 +100,14 @@ namespace GeoChemistryNexus.Services
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"[HomeLinksPublishService] Load bundled failed: {ex.Message}");
+                Debug.WriteLine($"[HomeLinksPublishService] Load catalog failed ({path}): {ex.Message}");
                 return new HomeLinksCatalog();
             }
         }
 
-        public static void SaveBundledCatalog(HomeLinksCatalog catalog)
+        private static void WriteCatalogToPath(string path, HomeLinksCatalog catalog)
         {
-            if (catalog == null)
-                throw new ArgumentNullException(nameof(catalog));
-
-            string path = HomeLinksCatalogService.GetBundledCatalogPath();
-            string dir = Path.GetDirectoryName(path);
+            string? dir = Path.GetDirectoryName(path);
             if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
 
@@ -65,7 +128,7 @@ namespace GeoChemistryNexus.Services
             try
             {
                 string json = await UpdateHelper.GetUrlContentAsync(OfficialContentEndpoints.ServerInfoUrl);
-                var serverInfo = JsonSerializer.Deserialize<ServerInfo>(json);
+                var serverInfo = JsonHelper.Deserialize<ServerInfo>(json);
                 preview.RemoteHash = serverInfo?.HomeLinksHash ?? string.Empty;
                 preview.HasRemoteChanges = !string.Equals(localHash, preview.RemoteHash, StringComparison.OrdinalIgnoreCase);
             }
@@ -90,7 +153,7 @@ namespace GeoChemistryNexus.Services
             if (!Directory.Exists(outputDir))
                 Directory.CreateDirectory(outputDir);
 
-            var serverInfo = LoadMergedServerInfo(outputDir);
+            var serverInfo = UpdateHelper.LoadMergedServerInfo(outputDir);
             serverInfo.Announcement = announcement ?? string.Empty;
             if (minimumSupportedVersion != null)
                 serverInfo.MinimumSupportedVersion = minimumSupportedVersion;
@@ -129,7 +192,7 @@ namespace GeoChemistryNexus.Services
             File.WriteAllText(catalogPath, JsonSerializer.Serialize(catalog, JsonOptions));
             string homeLinksHash = UpdateHelper.ComputeFileMd5(catalogPath);
 
-            var serverInfo = LoadMergedServerInfo(outputDir);
+            var serverInfo = UpdateHelper.LoadMergedServerInfo(outputDir);
             serverInfo.HomeLinksHash = homeLinksHash;
             if (preserveAnnouncement != null)
                 serverInfo.Announcement = preserveAnnouncement;
@@ -237,39 +300,6 @@ namespace GeoChemistryNexus.Services
                 .OrderBy(g => g.SortOrder)
                 .ThenBy(g => HomeLinksLocalization.GetSortKey(g.Title), StringComparer.OrdinalIgnoreCase)
                 .ToList() ?? new List<HomeLinkGroup>();
-        }
-
-        private static ServerInfo LoadMergedServerInfo(string outputDir)
-        {
-            string localPath = Path.Combine(outputDir, OfficialContentEndpoints.ServerInfoFileName);
-            if (File.Exists(localPath))
-            {
-                try
-                {
-                    var info = JsonSerializer.Deserialize<ServerInfo>(File.ReadAllText(localPath));
-                    if (info != null)
-                        return info;
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine($"[HomeLinksPublishService] Load local server_info failed: {ex.Message}");
-                }
-            }
-
-            try
-            {
-                string json = UpdateHelper.GetUrlContentAsync(OfficialContentEndpoints.ServerInfoUrl)
-                    .GetAwaiter().GetResult();
-                var remote = JsonSerializer.Deserialize<ServerInfo>(json);
-                if (remote != null)
-                    return remote;
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"[HomeLinksPublishService] Load remote server_info failed: {ex.Message}");
-            }
-
-            return new ServerInfo();
         }
 
         private static string Slugify(string value)

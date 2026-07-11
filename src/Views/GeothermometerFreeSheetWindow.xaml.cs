@@ -20,6 +20,7 @@ namespace GeoChemistryNexus.Views
         public GeothermometerFreeSheetWindow()
         {
             InitializeComponent();
+            UiScaleHelper.Attach(this);
             _viewModel = new GeothermometerFreeSheetViewModel();
             DataContext = _viewModel;
 
