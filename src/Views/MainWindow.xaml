@@ -182,30 +182,52 @@
         </Style>
     </Window.Resources>
 
-    <!-- Main Container with Rounded Corners and Shadow Simulation -->
-    <Border>
-        <Border.Style>
-            <Style TargetType="Border">
-                <Setter Property="Background" Value="#F5F5F7"/>
-                <Setter Property="CornerRadius" Value="10"/>
-                <Setter Property="BorderBrush" Value="#D1D1D1"/>
-                <Setter Property="BorderThickness" Value="1"/>
-                <Setter Property="Margin" Value="15"/>
-                <Setter Property="Effect">
-                    <Setter.Value>
-                        <DropShadowEffect Color="Black" BlurRadius="20" ShadowDepth="0" Opacity="0.3"/>
-                    </Setter.Value>
-                </Setter>
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsWindowMaximized}" Value="True">
-                        <Setter Property="Margin" Value="0"/>
-                        <Setter Property="CornerRadius" Value="0"/>
-                        <Setter Property="BorderThickness" Value="0"/>
-                        <Setter Property="Effect" Value="{x:Null}"/>
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-        </Border.Style>
+    <!-- Main Container: shadow on empty sibling Border so content (incl. plot) is not rasterized by Effect -->
+    <Grid>
+        <!-- Shadow layer only (no children) — DropShadowEffect must not wrap real content -->
+        <Border IsHitTestVisible="False">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Background" Value="#F5F5F7"/>
+                    <Setter Property="CornerRadius" Value="10"/>
+                    <Setter Property="BorderBrush" Value="#D1D1D1"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="Margin" Value="15"/>
+                    <Setter Property="Effect">
+                        <Setter.Value>
+                            <DropShadowEffect Color="Black" BlurRadius="20" ShadowDepth="0" Opacity="0.3"/>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsWindowMaximized}" Value="True">
+                            <Setter Property="Margin" Value="0"/>
+                            <Setter Property="CornerRadius" Value="0"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="Effect" Value="{x:Null}"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+        </Border>
+
+        <!-- Content layer — no Effect, so ScottPlot / text stay sharp -->
+        <Border>
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Background" Value="#F5F5F7"/>
+                    <Setter Property="CornerRadius" Value="10"/>
+                    <Setter Property="BorderBrush" Value="#D1D1D1"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="Margin" Value="15"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsWindowMaximized}" Value="True">
+                            <Setter Property="Margin" Value="0"/>
+                            <Setter Property="CornerRadius" Value="0"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/> <!-- Title Bar -->
@@ -636,6 +658,7 @@
             </hc:NotifyIcon>
 
         </Grid>
-    </Border>
+        </Border>
+    </Grid>
 </Window>
 

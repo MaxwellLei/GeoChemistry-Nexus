@@ -1,7 +1,3 @@
-using GeoChemistryNexus.Helpers;
-using GeoChemistryNexus.Models;
-using GeoChemistryNexus.ViewModels;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -21,8 +17,6 @@ namespace GeoChemistryNexus.Controls
             get { return GetValue(SelectedObjectProperty); }
             set { SetValue(SelectedObjectProperty, value); }
         }
-
-        public List<MarkerShapeItem> MarkerShapes => MarkerShapeHelper.GetMarkerShapes();
 
         public ScatterPropertyControl()
         {

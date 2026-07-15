@@ -56,12 +56,12 @@
                              
                              <!-- Pick Point Button for Start -->
                              <Button Grid.Column="1"
-                                    Width="28" Height="28" 
+                                    Width="20" Height="20" 
                                     Margin="0,0,0,4"
                                     Style="{StaticResource ModernIconButtonStyle}"
                                     ToolTip="{Binding [coordinate_positioning],Source={x:Static lg:LanguageService.Instance}}"
                                     Click="PickStartPointButton_Click">
-                                <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe601;" FontSize="16" Foreground="#007AFF"/>
+                                <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe601;" FontSize="12" Foreground="Black"/>
                             </Button>
 
                             <Grid Grid.Row="1" Grid.ColumnSpan="2">
@@ -108,12 +108,12 @@
                              
                              <!-- Pick Point Button for End -->
                              <Button Grid.Column="1"
-                                    Width="28" Height="28" 
+                                    Width="20" Height="20" 
                                     Margin="0,0,0,4"
                                     Style="{StaticResource ModernIconButtonStyle}"
                                     ToolTip="{Binding [coordinate_positioning],Source={x:Static lg:LanguageService.Instance}}"
                                     Click="PickEndPointButton_Click">
-                                <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe601;" FontSize="16" Foreground="#007AFF"/>
+                                <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe601;" FontSize="12" Foreground="Black"/>
                             </Button>
 
                             <Grid Grid.Row="1" Grid.ColumnSpan="2">

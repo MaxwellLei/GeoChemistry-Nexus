@@ -1,4 +1,5 @@
-﻿using ScottPlot;
+﻿using GeoChemistryNexus.Models;
+using ScottPlot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,9 @@ namespace GeoChemistryNexus.Helpers
         /// </summary>
         public static bool IsLogAxis(IAxis axis)
         {
+            if (axis.TickGenerator is Extensions.ScottPlotExtensions.LogDecadeTickGenerator)
+                return true;
+
             if (axis.TickGenerator is ScottPlot.TickGenerators.NumericAutomatic numTick)
             {
                 return numTick.MinorTickGenerator is ScottPlot.TickGenerators.LogMinorTickGenerator;
@@ -100,6 +104,78 @@ namespace GeoChemistryNexus.Helpers
             }
 
             return new Coordinates(realX, realY);
+        }
+
+        /// <summary>
+        /// 固定轴范围时在两端增加少量边距，避免端点刻度标签贴边被裁切。
+        /// </summary>
+        public const double FixedAxisRangePaddingFraction = 0.025;
+
+        /// <summary>
+        /// 将用户设定的轴范围转换为绘图使用的范围（含对数转换；可选端点边距）。
+        /// </summary>
+        public static bool TryGetPlotAxisRange(
+            double minimum,
+            double maximum,
+            AxisScaleType scaleType,
+            out double plotMin,
+            out double plotMax,
+            bool applyPadding = true)
+        {
+            plotMin = minimum;
+            plotMax = maximum;
+
+            if (double.IsNaN(minimum) || double.IsNaN(maximum))
+                return false;
+
+            if (Math.Abs(maximum - minimum) <= 1e-9)
+                return false;
+
+            if (scaleType == AxisScaleType.Logarithmic)
+            {
+                if (minimum <= 0 || maximum <= 0)
+                    return false;
+
+                plotMin = Math.Log10(minimum);
+                plotMax = Math.Log10(maximum);
+            }
+
+            if (applyPadding)
+                ApplyFixedRangePadding(ref plotMin, ref plotMax, scaleType);
+
+            return true;
+        }
+
+        /// <summary>
+        /// 在已转换后的绘图坐标范围两端增加边距。
+        /// 对数轴额外保证最小 decade 边距，避免端点 decade 标签贴边被裁切。
+        /// </summary>
+        public static void ApplyFixedRangePadding(
+            ref double plotMin,
+            ref double plotMax,
+            AxisScaleType scaleType = AxisScaleType.Linear)
+        {
+            double rangeSpan = Math.Abs(plotMax - plotMin);
+            if (rangeSpan <= 0)
+                return;
+
+            double padding = rangeSpan * FixedAxisRangePaddingFraction;
+            if (scaleType == AxisScaleType.Logarithmic)
+            {
+                // log10 坐标上至少留出约 0.05 decade，确保 0.01/10 这类端点标签可见
+                padding = Math.Max(padding, 0.05);
+            }
+
+            if (plotMin > plotMax)
+            {
+                plotMin += padding;
+                plotMax -= padding;
+            }
+            else
+            {
+                plotMin -= padding;
+                plotMax += padding;
+            }
         }
     }
 }

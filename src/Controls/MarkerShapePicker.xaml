@@ -1,0 +1,126 @@
+<UserControl x:Class="GeoChemistryNexus.Controls.MarkerShapePicker"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
+             mc:Ignorable="d"
+             d:DesignHeight="36" d:DesignWidth="160"
+             HorizontalAlignment="Stretch">
+    <Grid>
+        <!-- 当前形状预览按钮：仅图标，宽度跟随列宽 -->
+        <Button Height="32"
+                Cursor="Hand"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                Command="{Binding ShowPickerCommand, RelativeSource={RelativeSource AncestorType=local:MarkerShapePicker}}">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Root"
+                            Background="#F2F2F7"
+                            CornerRadius="8"
+                            Padding="10,0"
+                            SnapsToDevicePixels="True">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Viewbox Width="16" Height="16"
+                                     HorizontalAlignment="Center"
+                                     VerticalAlignment="Center">
+                                <Path Data="{Binding PreviewIcon, RelativeSource={RelativeSource AncestorType=local:MarkerShapePicker}}"
+                                      Stroke="#1D1D1F"
+                                      StrokeThickness="1"
+                                      StrokeLineJoin="Round">
+                                    <Path.Style>
+                                        <Style TargetType="Path">
+                                            <Setter Property="Fill" Value="Transparent"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding PreviewIsFilled, RelativeSource={RelativeSource AncestorType=local:MarkerShapePicker}}" Value="True">
+                                                    <Setter Property="Fill" Value="#1D1D1F"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Path.Style>
+                                </Path>
+                            </Viewbox>
+
+                            <TextBlock Grid.Column="1"
+                                       Text="&#xE70E;"
+                                       FontFamily="Segoe MDL2 Assets"
+                                       FontSize="10"
+                                       Foreground="#8E8E93"
+                                       VerticalAlignment="Center"
+                                       Margin="4,0,0,0"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Root" Property="Background" Value="#E8E8ED"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+
+        <!-- 展开后的图标网格：默认向上展开 -->
+        <Popup x:Name="ShapePopup"
+               PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType=local:MarkerShapePicker}}"
+               Placement="Top"
+               StaysOpen="False"
+               AllowsTransparency="True"
+               HorizontalOffset="0"
+               VerticalOffset="-4">
+            <Border Background="White"
+                    CornerRadius="10"
+                    BorderBrush="#E5E5EA"
+                    BorderThickness="1"
+                    Padding="8"
+                    Width="220"
+                    Height="220">
+                <Border.Effect>
+                    <DropShadowEffect Color="Black" BlurRadius="16" ShadowDepth="4" Opacity="0.18"/>
+                </Border.Effect>
+                <ListBox x:Name="ShapeList"
+                         ItemsSource="{Binding MarkerShapes, RelativeSource={RelativeSource AncestorType=local:MarkerShapePicker}}"
+                         SelectedValue="{Binding SelectedShape, RelativeSource={RelativeSource AncestorType=local:MarkerShapePicker}, Mode=OneWay}"
+                         SelectedValuePath="Shape"
+                         Style="{StaticResource MarkerShapePickerListBoxStyle}"
+                         ItemContainerStyle="{StaticResource MarkerShapePickerItemStyle}"
+                         PreviewMouseLeftButtonUp="ShapeList_PreviewMouseLeftButtonUp"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         Height="204">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="5"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Viewbox Width="14" Height="14" Stretch="Uniform">
+                                <Path Data="{Binding Icon}"
+                                      Stroke="#1D1D1F"
+                                      StrokeThickness="1"
+                                      StrokeLineJoin="Round">
+                                    <Path.Style>
+                                        <Style TargetType="Path">
+                                            <Setter Property="Fill" Value="Transparent"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsFilled}" Value="True">
+                                                    <Setter Property="Fill" Value="#1D1D1F"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Path.Style>
+                                </Path>
+                            </Viewbox>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Border>
+        </Popup>
+    </Grid>
+</UserControl>

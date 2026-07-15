@@ -409,7 +409,7 @@
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Visibility" Value="Collapsed"/>
-                        <Setter Property="Foreground" Value="#D92C2C"/>
+                        <Setter Property="Foreground" Value="#8E8E93"/>
                         <Setter Property="Opacity" Value="0.9"/>
                         <Style.Triggers>
                             <MultiDataTrigger>
@@ -420,8 +420,8 @@
                                 <Setter Property="Visibility" Value="Visible"/>
                             </MultiDataTrigger>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#1AD92C2C"/>
-                                <Setter Property="BorderBrush" Value="#33D92C2C"/>
+                                <Setter Property="Background" Value="#1A8E8E93"/>
+                                <Setter Property="BorderBrush" Value="#338E8E93"/>
                                 <Setter Property="BorderThickness" Value="1"/>
                                 <Setter Property="Opacity" Value="1"/>
                             </Trigger>
@@ -988,6 +988,52 @@
         <Setter Property="FontWeight" Value="Medium"/>
     </Style>
 
+    <!-- Marker shape icon grid (scatter property panel) -->
+    <Style x:Key="MarkerShapePickerListBoxStyle" TargetType="ListBox">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="Focusable" Value="False"/>
+    </Style>
+
+    <Style x:Key="MarkerShapePickerItemStyle" TargetType="ListBoxItem">
+        <Setter Property="Width" Value="36"/>
+        <Setter Property="Height" Value="36"/>
+        <Setter Property="Margin" Value="2"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <Border x:Name="Root"
+                            Background="Transparent"
+                            BorderBrush="#E5E5EA"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            SnapsToDevicePixels="True">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Root" Property="Background" Value="#F2F2F7"/>
+                            <Setter TargetName="Root" Property="BorderBrush" Value="#C7C7CC"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Root" Property="Background" Value="#E8F1FF"/>
+                            <Setter TargetName="Root" Property="BorderBrush" Value="#007AFF"/>
+                            <Setter TargetName="Root" Property="BorderThickness" Value="1.5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!-- Segmented Control Item Style (ListBoxItem) -->
     <Style x:Key="SegmentedItemStyle" TargetType="ListBoxItem">
         <Setter Property="Background" Value="White"/>
@@ -1141,7 +1187,7 @@
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="Bd" Property="Background" Value="White"/>
-                            <Setter Property="Foreground" Value="#0078D4"/>
+                            <Setter Property="Foreground" Value="#333333"/>
                             <Setter TargetName="Bd" Property="Effect">
                                 <Setter.Value>
                                     <DropShadowEffect BlurRadius="4" ShadowDepth="0" Opacity="0.12" Color="#000000"/>
@@ -1154,7 +1200,7 @@
                                 <Condition Property="IsMouseOver" Value="True"/>
                             </MultiTrigger.Conditions>
                             <Setter TargetName="Bd" Property="Background" Value="White"/>
-                            <Setter Property="Foreground" Value="#005A9E"/>
+                            <Setter Property="Foreground" Value="#333333"/>
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -1205,7 +1251,7 @@
         <Setter Property="hc:BorderElement.CornerRadius" Value="8"/>
         <Setter Property="FontSize" Value="14"/>
     </Style>
-    
+
     <!-- Modern Icon Button Style (Small) -->
     <Style x:Key="ModernIconButtonStyle" TargetType="Button">
         <Setter Property="Background" Value="#F2F2F7"/>

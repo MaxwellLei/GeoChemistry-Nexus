@@ -7,6 +7,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -80,6 +81,21 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
+        /// 初始工作表行数（含表头）
+        /// </summary>
+        private const int InitialWorksheetRowCount = 500;
+
+        /// <summary>
+        /// 样品号列索引（仅作标识，不参与计算）
+        /// </summary>
+        private const int SampleColumnIndex = 0;
+
+        /// <summary>
+        /// 氧化物输入起始列（样品号列之后）
+        /// </summary>
+        private const int InputStartColumn = 1;
+
+        /// <summary>
         /// 输入氧化物列
         /// </summary>
         private static readonly string[] InputColumns = CipwConstants.InputOxides;
@@ -109,58 +125,58 @@ namespace GeoChemistryNexus.ViewModels
         private readonly Dictionary<int, CipwResult> _rowResults = new();
 
         /// <summary>
+        /// 当前绑定的表格控件（用于语言切换时刷新表头）
+        /// </summary>
+        private ReoGridControl? _grid;
+
+        public CipwPageViewModel()
+        {
+            LanguageService.Instance.PropertyChanged += OnLanguageChanged;
+        }
+
+        private void OnLanguageChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != "Item[]" || _grid?.CurrentWorksheet == null)
+                return;
+
+            RefreshLocalizedHeaders(_grid.CurrentWorksheet);
+        }
+
+        /// <summary>
         /// 初始化ReoGrid工作表
         /// </summary>
         public void InitializeWorksheet(ReoGridControl grid)
         {
+            _grid = grid;
+            ReoGridImeHelper.Attach(grid);
+
             var sheet = grid.CurrentWorksheet;
-            sheet.Name = LanguageService.Instance["cipw_sheet_name"] ?? "CIPW";
 
             // 隐藏工作表标签栏
             grid.SetSettings(unvell.ReoGrid.WorkbookSettings.View_ShowSheetTabControl, false);
 
-            // 设置列数 = 输入列 + 分隔列 + 诊断列 + 结果矿物列
-            int totalCols = InputColumns.Length + 1 + DiagnosticColumns.Length + ResultMineralOrder.Length;
-            sheet.Resize(102, totalCols); // 100行数据 + 1行表头 + 1行备用
+            // 设置列数 = 样品号列 + 输入列 + 分隔列 + 诊断列 + 结果矿物列
+            int totalCols = 1 + InputColumns.Length + 1 + DiagnosticColumns.Length + ResultMineralOrder.Length;
+            sheet.Resize(InitialWorksheetRowCount, totalCols);
 
-            int col = 0;
-
-            // 输入列标题
-            foreach (var oxide in InputColumns)
+            // 输入列标题（氧化物符号不随语言变化；Sample/诊断/矿物表头由 RefreshLocalizedHeaders 写入）
+            for (int c = 0; c < InputColumns.Length; c++)
             {
-                sheet[0, col] = oxide;
+                int col = InputStartColumn + c;
+                sheet[0, col] = InputColumns[c];
                 sheet.SetColumnsWidth(col, 1, 70);
-                col++;
             }
 
             // 分隔列
-            sheet[0, col] = "│";
-            sheet.SetColumnsWidth(col, 1, 20);
+            int separatorCol = InputStartColumn + InputColumns.Length;
+            sheet[0, separatorCol] = "│";
+            sheet.SetColumnsWidth(separatorCol, 1, 20);
             var separatorStyle = new WorksheetRangeStyle
             {
                 Flag = PlainStyleFlag.BackColor,
                 BackColor = Color.FromRgb(240, 240, 240)
             };
-            sheet.SetRangeStyles(new RangePosition(0, col, 102, 1), separatorStyle);
-            col++;
-
-            // 诊断列标题
-            foreach (var diag in DiagnosticColumns)
-            {
-                var headerText = LanguageService.Instance[diag] ?? diag;
-                sheet[0, col] = headerText;
-                SetColumnWidthForHeader(sheet, col, headerText, minWidth: 110);
-                col++;
-            }
-
-            // 结果矿物列标题
-            foreach (var mineral in ResultMineralOrder)
-            {
-                var headerText = FormatMineralName(mineral);
-                sheet[0, col] = headerText;
-                SetColumnWidthForHeader(sheet, col, headerText, minWidth: 90);
-                col++;
-            }
+            sheet.SetRangeStyles(new RangePosition(0, separatorCol, InitialWorksheetRowCount, 1), separatorStyle);
 
             // 设置表头样式
             var headerStyle = new WorksheetRangeStyle
@@ -187,10 +203,43 @@ namespace GeoChemistryNexus.ViewModels
                 Flag = PlainStyleFlag.HorizontalAlign,
                 HAlign = ReoGridHorAlign.Center
             };
-            sheet.SetRangeStyles(new RangePosition(1, 0, 101, totalCols), dataStyle);
+            sheet.SetRangeStyles(new RangePosition(1, 0, InitialWorksheetRowCount - 1, totalCols), dataStyle);
 
             // 冻结表头行
             sheet.FreezeToCell(1, 0);
+
+            RefreshLocalizedHeaders(sheet);
+        }
+
+        /// <summary>
+        /// 按当前语言刷新表头与工作表名称
+        /// </summary>
+        private void RefreshLocalizedHeaders(Worksheet sheet)
+        {
+            sheet.Name = LanguageService.Instance["cipw_sheet_name"] ?? "CIPW";
+
+            int col = SampleColumnIndex;
+
+            var sampleHeader = LanguageService.Instance["cipw_col_sample"] ?? "Sample";
+            sheet[0, col] = sampleHeader;
+            SetColumnWidthForHeader(sheet, col, sampleHeader, minWidth: 90);
+            col = InputStartColumn + InputColumns.Length + 1; // 跳过氧化物列与分隔列
+
+            foreach (var diag in DiagnosticColumns)
+            {
+                var headerText = LanguageService.Instance[diag] ?? diag;
+                sheet[0, col] = headerText;
+                SetColumnWidthForHeader(sheet, col, headerText, minWidth: 110);
+                col++;
+            }
+
+            foreach (var mineral in ResultMineralOrder)
+            {
+                var headerText = FormatMineralName(mineral);
+                sheet[0, col] = headerText;
+                SetColumnWidthForHeader(sheet, col, headerText, minWidth: 90);
+                col++;
+            }
         }
 
         private static void ApplyHeaderSideBorders(Worksheet sheet, int totalCols)
@@ -219,7 +268,7 @@ namespace GeoChemistryNexus.ViewModels
             int successCount = 0;
             int totalCount = 0;
 
-            int separatorCol = InputColumns.Length;
+            int separatorCol = InputStartColumn + InputColumns.Length;
             int diagStartCol = separatorCol + 1;
             int mineralStartCol = diagStartCol + DiagnosticColumns.Length;
 
@@ -235,13 +284,13 @@ namespace GeoChemistryNexus.ViewModels
             // 逐行计算
             for (int row = 1; row < sheet.RowCount; row++)
             {
-                // 读取输入数据
+                // 读取输入数据（跳过样品号列，仅读取氧化物）
                 var oxides = new Dictionary<string, double>();
                 bool hasData = false;
 
                 for (int c = 0; c < InputColumns.Length; c++)
                 {
-                    var cellValue = sheet[row, c];
+                    var cellValue = sheet[row, InputStartColumn + c];
                     if (cellValue != null && double.TryParse(cellValue.ToString(), out double value) && value > 0)
                     {
                         oxides[InputColumns[c]] = value;
@@ -436,14 +485,17 @@ namespace GeoChemistryNexus.ViewModels
             };
 
             var examples = new[] { example1, example2, example3 };
+            var sampleNames = new[] { "Granite", "Basalt", "Andesite" };
 
             for (int row = 0; row < examples.Length; row++)
             {
+                sheet[row + 1, SampleColumnIndex] = sampleNames[row];
+
                 for (int c = 0; c < InputColumns.Length; c++)
                 {
                     if (examples[row].TryGetValue(InputColumns[c], out double val))
                     {
-                        sheet[row + 1, c] = val;
+                        sheet[row + 1, InputStartColumn + c] = val;
                     }
                 }
             }
@@ -469,8 +521,16 @@ namespace GeoChemistryNexus.ViewModels
             }
 
             HasDiagnosticData = true;
-            var rowFormat = LanguageService.Instance["cipw_row_format"] ?? "Row {0}";
-            SelectedRowInfo = string.Format(rowFormat, row);
+            var sampleName = sheet[row, SampleColumnIndex]?.ToString()?.Trim();
+            if (!string.IsNullOrEmpty(sampleName))
+            {
+                SelectedRowInfo = sampleName;
+            }
+            else
+            {
+                var rowFormat = LanguageService.Instance["cipw_row_format"] ?? "Row {0}";
+                SelectedRowInfo = string.Format(rowFormat, row);
+            }
             SelectedSilicaState = TranslateSilicaSaturation(result.SilicaSaturation);
             SelectedAluminaState = TranslateAluminaState(result.AluminaState);
             IsSilicaUndersaturated = result.SilicaSaturation == "undersaturated";

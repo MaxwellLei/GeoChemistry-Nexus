@@ -5,10 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
              xmlns:hc="https://handyorg.github.io/handycontrol"
-             xmlns:models="clr-namespace:GeoChemistryNexus.Models"
              xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
-             xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             xmlns:scott="clr-namespace:ScottPlot;assembly=ScottPlot"
              xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="300"
@@ -36,7 +33,7 @@
                 <Border Style="{StaticResource ModernCardStyle}" Margin="0,0,0,8">
                     <StackPanel Margin="10">
                         <TextBlock Text="{Binding [name],Source={x:Static lg:LanguageService.Instance}, FallbackValue='Name'}" Style="{StaticResource ModernLabelStyle}"/>
-                        <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                  Height="28" FontSize="13" Padding="6,3" VerticalContentAlignment="Center"/>
                     </StackPanel>
                 </Border>
@@ -45,10 +42,7 @@
                 <TextBlock Text="{Binding [position],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernSettingsGroupTitle}" Margin="4,10,0,6"/>
                 <Border Style="{StaticResource ModernCardStyle}" Margin="0,0,0,8">
                     <StackPanel Margin="10">
-                        <!-- Coordinates Label -->
                         <TextBlock Text="{Binding [start_and_end_coordinates],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}" Margin="0,0,0,8"/>
-                        
-                        <!-- Use PointDefinitionControl for coordinate display with ternary support -->
                         <local:PointDefinitionControl PointValue="{Binding StartAndEnd, Mode=TwoWay}" IsReadOnly="True"/>
                     </StackPanel>
                 </Border>
@@ -58,11 +52,13 @@
                 <Border Style="{StaticResource ModernCardStyle}" Margin="0,0,0,8">
                     <StackPanel Margin="10">
                         
-                        <!-- Color -->
-                        <TextBlock Text="{Binding [color],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
-                        <local:TextPropertyColorPicker SelectedColor="{Binding Color, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" Margin="0,0,0,16" Height="32"/>
+                        <!-- 填充颜色：仅实心形状显示 -->
+                        <StackPanel Visibility="{Binding HasFill, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <TextBlock Text="{Binding [fill_color],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
+                            <local:TextPropertyColorPicker SelectedColor="{Binding Color, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" Margin="0,0,0,16" Height="32"/>
+                        </StackPanel>
 
-                        <!-- Size & Type Grid -->
+                        <!-- Size & Type -->
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -70,7 +66,6 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <!-- Size -->
                             <StackPanel Grid.Column="0">
                                 <TextBlock Text="{Binding [size],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
                                 <hc:NumericUpDown Value="{Binding Size, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
@@ -78,41 +73,13 @@
                                                   Style="{StaticResource ModernNumericUpDownStyle}"/>
                             </StackPanel>
 
-                            <!-- Type -->
                             <StackPanel Grid.Column="2">
                                 <TextBlock Text="{Binding [type],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
-                                <ComboBox ItemsSource="{Binding MarkerShapes, RelativeSource={RelativeSource AncestorType=local:ScatterPropertyControl}}"
-                                          SelectedValue="{Binding MarkerShape, Mode=TwoWay}"
-                                          SelectedValuePath="Shape"
-                                          Style="{StaticResource ModernComboBoxStyle}">
-                                    <ComboBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Viewbox Width="12" Height="12" Margin="0,0,8,0">
-                                                    <Path Data="{Binding Icon}" 
-                                                          Stroke="#1D1D1F" 
-                                                          StrokeThickness="1">
-                                                        <Path.Style>
-                                                            <Style TargetType="Path">
-                                                                <Setter Property="Fill" Value="Transparent"/>
-                                                                <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding IsFilled}" Value="True">
-                                                                        <Setter Property="Fill" Value="#1D1D1F"/>
-                                                                    </DataTrigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </Path.Style>
-                                                    </Path>
-                                                </Viewbox>
-                                                <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center"/>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </ComboBox.ItemTemplate>
-                                </ComboBox>
+                                <local:MarkerShapePicker SelectedShape="{Binding MarkerShape, Mode=TwoWay}"/>
                             </StackPanel>
                         </Grid>
 
-                        <!-- Stroke Width & Color Grid -->
+                        <!-- Stroke Width & Color -->
                         <Grid Margin="0,16,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -120,7 +87,6 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <!-- Stroke Width -->
                             <StackPanel Grid.Column="0">
                                 <TextBlock Text="{Binding [stroke_width],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
                                 <hc:NumericUpDown Value="{Binding StrokeWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
@@ -128,7 +94,6 @@
                                                   Style="{StaticResource ModernNumericUpDownStyle}"/>
                             </StackPanel>
 
-                            <!-- Stroke Color -->
                             <StackPanel Grid.Column="2">
                                 <TextBlock Text="{Binding [stroke_color],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
                                 <local:TextPropertyColorPicker SelectedColor="{Binding StrokeColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" Height="32"/>

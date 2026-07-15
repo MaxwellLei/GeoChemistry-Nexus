@@ -21,7 +21,9 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="MainPlotPage"
-      Focusable="True">
+      Focusable="True"
+      UseLayoutRounding="True"
+      TextOptions.TextFormattingMode="Display">
 
     <Page.InputBindings>
         <KeyBinding Key="Z" Modifiers="Control" Command="{Binding UndoCommand}"/>
@@ -30,6 +32,13 @@
         <KeyBinding Key="D0" Modifiers="Control" Command="{Binding CenterPlotCommand}"/>
         <KeyBinding Key="NumPad0" Modifiers="Control" Command="{Binding CenterPlotCommand}"/>
         <KeyBinding Key="S" Modifiers="Control" Command="{Binding SaveBaseMapCommand}"/>
+        <!-- 模式切换快捷键 -->
+        <KeyBinding Key="D1" Modifiers="Alt" Command="{Binding SwitchToDiagramModeCommand}"/>
+        <KeyBinding Key="D2" Modifiers="Alt" Command="{Binding SwitchToDataModeCommand}"/>
+        <KeyBinding Key="D3" Modifiers="Alt" Command="{Binding SwitchToEditModeCommand}"/>
+        <KeyBinding Key="Tab" Modifiers="Control" Command="{Binding CyclePlotModeCommand}"/>
+        <!-- 数据模式：投图 -->
+        <KeyBinding Key="Enter" Modifiers="Control+Shift" Command="{Binding UpdateDataCommand}"/>
         <!-- 添加绘图对象快捷键 -->
         <KeyBinding Key="D1" Modifiers="Control" Command="{Binding AddLineCommand}"/>
         <KeyBinding Key="NumPad1" Modifiers="Control" Command="{Binding AddLineCommand}"/>
@@ -197,17 +206,28 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ToggleButton">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="6" ToolTip="{TemplateBinding ToolTip}">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="6"
+                                ToolTip="{TemplateBinding ToolTip}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#E5E5E5"/>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                    <Condition Property="IsEnabled" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="Bd" Property="Background" Value="#E5E5E5"/>
                                 <Setter Property="Foreground" Value="#000"/>
-                            </Trigger>
+                            </MultiTrigger>
                             <Trigger Property="IsChecked" Value="True">
-                                <Setter Property="Background" Value="#E5E5E5"/>
+                                <Setter TargetName="Bd" Property="Background" Value="#E5E5E5"/>
                                 <Setter Property="Foreground" Value="#0078D4"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.35"/>
+                                <Setter TargetName="Bd" Property="Background" Value="Transparent"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -225,16 +245,31 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="6" ToolTip="{TemplateBinding ToolTip}">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="6"
+                                ToolTip="{TemplateBinding ToolTip}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#E5E5E5"/>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                    <Condition Property="IsEnabled" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="Bd" Property="Background" Value="#E5E5E5"/>
                                 <Setter Property="Foreground" Value="#000"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#D1D1D1"/>
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsPressed" Value="True"/>
+                                    <Condition Property="IsEnabled" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="Bd" Property="Background" Value="#D1D1D1"/>
+                            </MultiTrigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.35"/>
+                                <Setter TargetName="Bd" Property="Background" Value="Transparent"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -248,16 +283,31 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="4" ToolTip="{TemplateBinding ToolTip}">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="4"
+                                ToolTip="{TemplateBinding ToolTip}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#E5E5E5"/>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                    <Condition Property="IsEnabled" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="Bd" Property="Background" Value="#E5E5E5"/>
                                 <Setter Property="Foreground" Value="#000"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#D1D1D1"/>
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsPressed" Value="True"/>
+                                    <Condition Property="IsEnabled" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="Bd" Property="Background" Value="#D1D1D1"/>
+                            </MultiTrigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.35"/>
+                                <Setter TargetName="Bd" Property="Background" Value="Transparent"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -307,7 +357,8 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="RadioButton">
-                        <Border x:Name="border" Background="Transparent" CornerRadius="5" Padding="{TemplateBinding Padding}">
+                        <Border x:Name="border" Background="Transparent" CornerRadius="5" Padding="{TemplateBinding Padding}"
+                                ToolTip="{TemplateBinding ToolTip}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -1890,8 +1941,53 @@
                                MaxWidth="360"
                                Margin="24"
                                VerticalAlignment="Center"
-                               HorizontalAlignment="Center"
-                               Visibility="{Binding IsTemplateCardsEmpty, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                               HorizontalAlignment="Center">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding IsTemplateCardsEmpty}" Value="True"/>
+                                            <Condition Binding="{Binding IsSearchNoResults}" Value="False"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </MultiDataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+
+                    <!-- 搜索无结果：提示反馈渠道 -->
+                    <StackPanel MaxWidth="420"
+                                Margin="24"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Visibility="{Binding IsSearchNoResults, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <TextBlock Text="{Binding TemplateCardsEmptyHint}"
+                                   FontSize="14"
+                                   Foreground="#AAAAAA"
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center"/>
+                        <TextBlock FontSize="13"
+                                   Foreground="#AAAAAA"
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center"
+                                   Margin="0,12,0,0"
+                                   LineHeight="22">
+                            <Run Text="{Binding [template_search_feedback_before_github], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay, FallbackValue=若您需要的模板尚未收录，欢迎在 }"/>
+                            <Hyperlink Command="{Binding OpenFeedbackUrlCommand}"
+                                       CommandParameter="https://github.com/MaxwellLei/GeoChemistry-Nexus/issues">
+                                <Run Text="{Binding [template_search_feedback_github], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay, FallbackValue=GitHub Issues}"/>
+                            </Hyperlink>
+                            <Run Text="{Binding [template_search_feedback_before_email], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay, FallbackValue= 反馈，或发邮件联系 }"/>
+                            <Hyperlink Command="{Binding OpenFeedbackUrlCommand}"
+                                       CommandParameter="mailto:maxwelllei@qq.com">
+                                <Run Text="maxwelllei@qq.com"/>
+                            </Hyperlink>
+                            <Run Text="{Binding [template_search_feedback_suffix], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay, FallbackValue=。}"/>
+                        </TextBlock>
+                    </StackPanel>
                 </Grid>
 
                 <!-- 蛛网图工具面板 -->
@@ -1919,11 +2015,27 @@
                                               FontSize="12" Foreground="#555"/>
                                 </Grid>
                                 <ComboBox x:Name="NormalizationComboBox"
-                                          ItemsSource="{Binding SpiderDiagramViewModel.AvailableStandards}" 
+                                          ItemsSource="{Binding SpiderDiagramViewModel.AvailableStandardsView}"
                                           SelectedItem="{Binding SpiderDiagramViewModel.SelectedStandard}"
                                           IsEnabled="{Binding SpiderDiagramViewModel.IsNormalizationEnabled}"
                                           DisplayMemberPath="Name"
-                                          Height="32" FontSize="13"/>
+                                          MaxDropDownHeight="420"
+                                          Height="32" FontSize="13">
+                                    <ComboBox.GroupStyle>
+                                        <GroupStyle>
+                                            <GroupStyle.HeaderTemplate>
+                                                <DataTemplate>
+                                                    <Border Background="#F0F0F0" Padding="8,4" Margin="0,2,0,0">
+                                                        <TextBlock Text="{Binding Name}"
+                                                                   FontWeight="SemiBold"
+                                                                   FontSize="12"
+                                                                   Foreground="#666666"/>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </GroupStyle.HeaderTemplate>
+                                        </GroupStyle>
+                                    </ComboBox.GroupStyle>
+                                </ComboBox>
                                 <Border Margin="0,8,0,0"
                                         Padding="10,8"
                                         Background="#FAFAFA"
@@ -2406,14 +2518,17 @@
                                     <RadioButton Content="{Binding [diagram], Source={x:Static lg:LanguageService.Instance}}" 
                                                  IsChecked="{Binding RibbonTabIndex, Converter={StaticResource IndexToBooleanConverter}, ConverterParameter=0}"
                                                  Style="{StaticResource SlidingSegmentedRadioButtonStyle}"
+                                                 ToolTip="{Binding [plot_toolbar_diagram_mode_tooltip], Source={x:Static lg:LanguageService.Instance}}"
                                                  Checked="OnSwitchRadioButtonChecked" Loaded="OnSwitchRadioButtonLoaded"/>
                                     <RadioButton Content="{Binding [Data], Source={x:Static lg:LanguageService.Instance}}" 
                                                  IsChecked="{Binding RibbonTabIndex, Converter={StaticResource IndexToBooleanConverter}, ConverterParameter=1}"
                                                  Style="{StaticResource SlidingSegmentedRadioButtonStyle}"
+                                                 ToolTip="{Binding [plot_toolbar_data_mode_tooltip], Source={x:Static lg:LanguageService.Instance}}"
                                                  Checked="OnSwitchRadioButtonChecked"/>
                                     <RadioButton Content="{Binding [Edit], Source={x:Static lg:LanguageService.Instance}}" 
                                                  IsChecked="{Binding RibbonTabIndex, Converter={StaticResource IndexToBooleanConverter}, ConverterParameter=2}"
                                                  Style="{StaticResource SlidingSegmentedRadioButtonStyle}"
+                                                 ToolTip="{Binding [plot_toolbar_edit_mode_tooltip], Source={x:Static lg:LanguageService.Instance}}"
                                                  Checked="OnSwitchRadioButtonChecked"/>
                                 </StackPanel>
                             </Grid>
@@ -2456,7 +2571,7 @@
                                     </Style.Triggers>
                                 </Style>
                             </StackPanel.Style>
-                            <Button Command="{Binding SaveBaseMapCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [Save], Source={x:Static lg:LanguageService.Instance}}">
+                            <Button Command="{Binding SaveBaseMapCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [plot_toolbar_save_tooltip], Source={x:Static lg:LanguageService.Instance}}">
                                 <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe61a;" FontSize="16" Foreground="#0078D4"/>
                             </Button>
                             <Rectangle Width="1" Height="24" Fill="#D0D0D0" Margin="8,0"/>
@@ -2479,17 +2594,17 @@
 
                             <Rectangle Width="1" Height="24" Fill="#D0D0D0" Margin="8,0"/>
 
-                            <Button Command="{Binding UndoCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [undo], Source={x:Static lg:LanguageService.Instance}}">
+                            <Button Command="{Binding UndoCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [plot_toolbar_undo_tooltip], Source={x:Static lg:LanguageService.Instance}}">
                                 <TextBlock FontFamily="Segoe UI Symbol" Text="&#x21A9;" FontSize="16"/>
                             </Button>
-                            <Button Command="{Binding RedoCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="Redo">
+                            <Button Command="{Binding RedoCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [plot_toolbar_redo_tooltip], Source={x:Static lg:LanguageService.Instance}}">
                                 <TextBlock FontFamily="Segoe UI Symbol" Text="&#x21AA;" FontSize="16"/>
                             </Button>
 
                             <Rectangle Width="1" Height="24" Fill="#D0D0D0" Margin="8,0"/>
 
                             <Button Command="{Binding DeleteSelectedObjectCommand}" Style="{StaticResource ToolbarButtonIconStyle}" ToolTip="{Binding [delete_object], Source={x:Static lg:LanguageService.Instance}}">
-                                <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe6a2;" FontSize="18" Foreground="#D92C2C"/>
+                                <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe6a2;" FontSize="15" Foreground="#D92C2C"/>
                             </Button>
 
                             <Rectangle Width="1" Height="24" Fill="#D0D0D0" Margin="8,0"/>
@@ -2670,7 +2785,7 @@
                                     <Button Command="{Binding ExportWorksheetCommand}" CommandParameter="{Binding ElementName=DataGrid}" Style="{StaticResource ToolbarButtonIconStyle}" Foreground="Black" ToolTip="{Binding [data_toolbar_export_data_tooltip], Source={x:Static lg:LanguageService.Instance}, FallbackValue='导出当前数据表格内容'}">
                                         <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe656;" FontSize="16" Foreground="Black"/>
                                     </Button>
-                                    <Button Command="{Binding UpdateDataCommand}" Style="{StaticResource ToolbarButtonIconRectStyle}" Foreground="Black" ToolTip="{Binding [data_toolbar_update_chart_tooltip], Source={x:Static lg:LanguageService.Instance}, FallbackValue='将当前数据投绘到图表'}">
+                                    <Button Command="{Binding UpdateDataCommand}" Style="{StaticResource ToolbarButtonIconRectStyle}" Foreground="Black" ToolTip="{Binding [data_toolbar_update_chart_tooltip], Source={x:Static lg:LanguageService.Instance}, FallbackValue='将当前数据投绘到图表 (Ctrl+Shift+Enter)'}">
                                         <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe62a;" FontSize="32" Foreground="Black" VerticalAlignment="Center"/>
                                     </Button>
                                 </StackPanel>
@@ -2839,7 +2954,8 @@
                 <GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Stretch" Background="Transparent"/>
 
                 <!-- Center Panel: Plot -->
-                <Grid Grid.Column="2" Background="#FFFFFF" x:Name="PlotContainer" ClipToBounds="True">
+                <Grid Grid.Column="2" Background="#FFFFFF" x:Name="PlotContainer" ClipToBounds="True"
+                      UseLayoutRounding="True" SnapsToDevicePixels="True">
                     <Grid.RenderTransform>
                         <TranslateTransform x:Name="PlotContainerTranslate"/>
                     </Grid.RenderTransform>

@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 using unvell.ReoGrid;
 using unvell.ReoGrid.Events;
@@ -42,6 +44,7 @@ namespace GeoChemistryNexus.Views
             _viewModel.SetHelpRichTextBox(this.HelpDocRichTextBox);
 
             // 监听 ReoGrid 选区变化事件，用于触发详细计算
+            ReoGridImeHelper.Attach(MyReoGrid);
             MyReoGrid.CurrentWorksheet.SelectionRangeChanged += OnSelectionRangeChanged;
             MyReoGrid.CurrentWorksheetChanged += OnCurrentWorksheetChanged;
             _viewModel.AttachWorksheetRowExpansionEvents(MyReoGrid.CurrentWorksheet);
@@ -210,6 +213,39 @@ namespace GeoChemistryNexus.Views
             _viewModel.OnRowSelected(worksheet, row);
 
             // 选中数据行只刷新计算详情内容，不改变用户当前的展开/收缩状态。
+        }
+
+        /// <summary>
+        /// 模板 ListBox 内置 ScrollViewer 会吞掉滚轮；转发给侧栏外层 ScrollViewer，保证悬停在选项上也能滚动。
+        /// </summary>
+        private void PluginListBox_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (sender is not ListBox listBox)
+                return;
+
+            var parentScrollViewer = FindVisualParent<ScrollViewer>(listBox);
+            if (parentScrollViewer == null)
+                return;
+
+            e.Handled = true;
+            parentScrollViewer.RaiseEvent(new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta)
+            {
+                RoutedEvent = UIElement.MouseWheelEvent,
+                Source = parentScrollViewer
+            });
+        }
+
+        private static T? FindVisualParent<T>(DependencyObject? child) where T : DependencyObject
+        {
+            while (child != null)
+            {
+                var parent = VisualTreeHelper.GetParent(child);
+                if (parent is T match)
+                    return match;
+                child = parent;
+            }
+
+            return null;
         }
 
         public static Page GetPage()

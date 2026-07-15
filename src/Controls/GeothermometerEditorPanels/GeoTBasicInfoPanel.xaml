@@ -101,34 +101,38 @@
                     </StackPanel>
                 </Grid>
 
-                <StackPanel Margin="0,0,0,12">
-                    <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_tags], Source={x:Static lg:LanguageService.Instance}, FallbackValue=温压计标签 *}"/>
-                    <ItemsControl ItemsSource="{Binding TagParts}" Margin="0,0,0,6">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Border Style="{StaticResource GeoTTokenBorderStyle}">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding DisplayName}" FontSize="12" Foreground="#0078D4" VerticalAlignment="Center"/>
-                                        <Button Tag="{Binding}" Click="RemoveTag_Click"
-                                                Style="{StaticResource GeoTTokenCloseButtonStyle}"
-                                                Foreground="#0078D4"
-                                                Visibility="{Binding DataContext.IsContentReadOnly, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BooleanToVisibilityReConverter}}"/>
-                                    </StackPanel>
-                                </Border>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                    <Grid Visibility="{Binding IsContentReadOnly, Converter={StaticResource BooleanToVisibilityReConverter}}" Margin="0,0,0,4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Border Grid.Column="0" Style="{StaticResource FieldControlHostStyle}" Margin="0">
+                <Grid Margin="0,0,0,12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="16"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- 左侧：温压计标签 -->
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_tags], Source={x:Static lg:LanguageService.Instance}, FallbackValue=温压计标签 *}"/>
+                        <ItemsControl ItemsSource="{Binding TagParts}" Margin="0,0,0,6">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource GeoTTokenBorderStyle}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding DisplayName}" FontSize="12" Foreground="#0078D4" VerticalAlignment="Center"/>
+                                            <Button Tag="{Binding}" Click="RemoveTag_Click"
+                                                    Style="{StaticResource GeoTTokenCloseButtonStyle}"
+                                                    Foreground="#0078D4"
+                                                    Visibility="{Binding DataContext.IsContentReadOnly, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BooleanToVisibilityReConverter}}"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <Border Style="{StaticResource FieldControlHostStyle}" Margin="0,0,0,4"
+                                Visibility="{Binding IsContentReadOnly, Converter={StaticResource BooleanToVisibilityReConverter}}">
                             <hc:ComboBox x:Name="TagCombo"
                                          IsEditable="True"
                                          StaysOpenOnEdit="True"
@@ -140,16 +144,47 @@
                                          HorizontalAlignment="Stretch"
                                          Style="{StaticResource EditorFieldComboBoxStyle}"/>
                         </Border>
-                        <TextBlock Grid.Column="1"
-                                   Text="{Binding [geo_tag_enter_hint], Source={x:Static lg:LanguageService.Instance}, FallbackValue=输入标签后按 Enter 确认}"
-                                   VerticalAlignment="Center"
-                                   Foreground="#AAA"
-                                   Margin="16,0,0,0"
-                                   FontSize="10"
-                                   TextWrapping="Wrap"/>
-                    </Grid>
-                    <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding [geo_example_tag], Source={x:Static lg:LanguageService.Instance}, FallbackValue=例如：石英}"/>
-                </StackPanel>
+                        <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding [geo_example_tag], Source={x:Static lg:LanguageService.Instance}, FallbackValue=例如：石英}"/>
+                    </StackPanel>
+
+                    <!-- 右侧：能力标签 -->
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_capabilities], Source={x:Static lg:LanguageService.Instance}, FallbackValue=能力标签}"/>
+                        <ItemsControl ItemsSource="{Binding CapabilityParts}" Margin="0,0,0,6">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource GeoTCapabilityTokenBorderStyle}"
+                                            ToolTip="{Binding Tooltip}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding DisplayName}" FontSize="12" Foreground="#2E7D32" VerticalAlignment="Center"/>
+                                            <Button Tag="{Binding}" Click="RemoveCapability_Click"
+                                                    Style="{StaticResource GeoTTokenCloseButtonStyle}"
+                                                    Foreground="#2E7D32"
+                                                    Visibility="{Binding DataContext.IsContentReadOnly, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BooleanToVisibilityReConverter}}"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <Border Style="{StaticResource FieldControlHostStyle}" Margin="0,0,0,4"
+                                Visibility="{Binding IsContentReadOnly, Converter={StaticResource BooleanToVisibilityReConverter}}">
+                            <hc:ComboBox x:Name="CapabilityCombo"
+                                         IsEditable="True"
+                                         StaysOpenOnEdit="True"
+                                         hc:InfoElement.Placeholder="{Binding [geo_capability_enter_hint], Source={x:Static lg:LanguageService.Instance}, FallbackValue=输入能力简写后按 Enter 确认}"
+                                         SelectionChanged="CapabilityCombo_SelectionChanged"
+                                         PreviewKeyDown="CapabilityCombo_PreviewKeyDown"
+                                         HorizontalAlignment="Stretch"
+                                         Style="{StaticResource EditorFieldComboBoxStyle}"/>
+                        </Border>
+                        <TextBlock Style="{StaticResource FieldHintStyle}" Text="{Binding [geo_example_capability], Source={x:Static lg:LanguageService.Instance}, FallbackValue=例如：P、T、fO2}"/>
+                    </StackPanel>
+                </Grid>
 
                 <StackPanel Margin="0,0,0,12">
                     <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{Binding [geo_field_author], Source={x:Static lg:LanguageService.Instance}, FallbackValue=作者 *}"/>

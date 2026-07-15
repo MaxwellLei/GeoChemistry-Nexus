@@ -170,6 +170,7 @@ namespace GeoChemistryNexus.ViewModels
             }
 
             _dataGrid = grid;
+            ReoGridImeHelper.Attach(grid);
 
             if (grid.Worksheets.Count == 0)
             {

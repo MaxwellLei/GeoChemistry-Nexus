@@ -184,6 +184,11 @@ namespace GeoChemistryNexus.Views
                 ScheduleTemplateCardItemSizeUpdate(preserveScrollRatio: true);
             }
 
+            if (e.PropertyName == nameof(MainPlotViewModel.GridScrollResetToken))
+            {
+                ResetDataGridScroll();
+            }
+
             if (e.PropertyName == nameof(MainPlotViewModel.RibbonTabIndex))
             {
                 if (viewModel.RibbonTabIndex == 1)
@@ -200,6 +205,20 @@ namespace GeoChemistryNexus.Views
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// 将数据表格的横向/纵向滚动条复位到起始位置
+        /// </summary>
+        private void ResetDataGridScroll()
+        {
+            DataGrid?.ScrollCurrentWorksheet(0, 0);
+
+            // 延迟再次复位，避免选区变更等后续操作重新触发滚动
+            DataGrid?.Dispatcher.BeginInvoke(() =>
+            {
+                DataGrid?.ScrollCurrentWorksheet(0, 0);
+            }, System.Windows.Threading.DispatcherPriority.Loaded);
         }
 
         /// <summary>
@@ -374,6 +393,9 @@ namespace GeoChemistryNexus.Views
             PlotContainerTranslate.BeginAnimation(TranslateTransform.XProperty, null);
             RightPanelTranslate.BeginAnimation(TranslateTransform.XProperty, null);
             RightSplitterTranslate.BeginAnimation(TranslateTransform.XProperty, null);
+            PlotContainerTranslate.X = 0;
+            RightPanelTranslate.X = 0;
+            RightSplitterTranslate.X = 0;
         }
 
         public static MainPlotPage GetPage()
@@ -1004,7 +1026,20 @@ namespace GeoChemistryNexus.Views
                 ScheduleTemplateCardItemSizeUpdate(preserveScrollRatio: true);
             }
 
-            if (e.VerticalChange == 0 && e.ViewportHeightChange == 0 && e.ViewportWidthChange == 0)
+            // 虚拟化面板 Extent 延后增高时，用 sticky 目标再次恢复，避免停在半截列表顶部
+            if (e.ExtentHeightChange != 0 &&
+                (_pendingTemplateCardsScrollOffset is > 0 || _stickyTemplateCardsScrollOffset is > 0))
+            {
+                if (_pendingTemplateCardsScrollOffset == null &&
+                    _stickyTemplateCardsScrollOffset is double stickyExtent)
+                {
+                    _pendingTemplateCardsScrollOffset = stickyExtent;
+                }
+
+                _ = TryRestoreTemplateCardsScrollAsync();
+            }
+
+            if (e.VerticalChange == 0 && e.ViewportHeightChange == 0 && e.ViewportWidthChange == 0 && e.ExtentHeightChange == 0)
                 return;
 
             RequestVisibleTemplateCardThumbnails();
@@ -1105,7 +1140,8 @@ namespace GeoChemistryNexus.Views
         {
             try
             {
-                await Task.Delay(800, token);
+                // 全量重建时虚拟化 Extent 增高较慢，保留更久以便 ExtentHeightChange 继续纠正
+                await Task.Delay(2500, token);
                 if (!token.IsCancellationRequested)
                     _stickyTemplateCardsScrollOffset = null;
             }
@@ -1148,7 +1184,7 @@ namespace GeoChemistryNexus.Views
                     double lastScrollableHeight = -1;
                     var stableScrollableCount = 0;
 
-                    for (var attempt = 0; attempt < 20; attempt++)
+                    for (var attempt = 0; attempt < 40; attempt++)
                     {
                         var pending = _pendingTemplateCardsScrollOffset ?? _stickyTemplateCardsScrollOffset;
                         if (pending is not double pendingOffset || pendingOffset <= 0)
@@ -1175,24 +1211,25 @@ namespace GeoChemistryNexus.Views
                             continue;
                         }
 
-                        // 内容仍在增高时不要过早判定成功，否则会停在“半截列表”的顶部附近
                         if (Math.Abs(scrollViewer.ScrollableHeight - lastScrollableHeight) < 0.5)
                             stableScrollableCount++;
                         else
                             stableScrollableCount = 0;
                         lastScrollableHeight = scrollViewer.ScrollableHeight;
 
-                        var contentReady = scrollViewer.ScrollableHeight + 1 >= desiredOffset
-                                           || stableScrollableCount >= 2;
-                        if (!contentReady)
+                        // 先滚到当前可达位置，促使虚拟化面板继续增高 Extent
+                        var targetOffset = Math.Min(desiredOffset, scrollViewer.ScrollableHeight);
+                        scrollViewer.ScrollToVerticalOffset(targetOffset);
+                        scrollViewer.UpdateLayout();
+
+                        var heightEnough = scrollViewer.ScrollableHeight + 1 >= desiredOffset;
+                        // 仅在高度足够，或多次重试后高度已稳定无法再增高时，才接受当前偏移
+                        var extentExhausted = !heightEnough && stableScrollableCount >= 5 && attempt >= 15;
+                        if (!heightEnough && !extentExhausted)
                         {
                             await Task.Delay(40);
                             continue;
                         }
-
-                        var targetOffset = Math.Min(desiredOffset, scrollViewer.ScrollableHeight);
-                        scrollViewer.ScrollToVerticalOffset(targetOffset);
-                        scrollViewer.UpdateLayout();
 
                         if (Math.Abs(scrollViewer.VerticalOffset - targetOffset) >= 1)
                         {
@@ -1218,7 +1255,13 @@ namespace GeoChemistryNexus.Views
                             continue;
                         }
 
-                        _pendingTemplateCardsScrollOffset = null;
+                        // 高度仍不足目标时保留 sticky，供后续 ExtentHeightChange 继续纠正
+                        if (scrollViewer.ScrollableHeight + 1 >= desiredOffset
+                            || Math.Abs(scrollViewer.VerticalOffset - desiredOffset) < 1)
+                        {
+                            _pendingTemplateCardsScrollOffset = null;
+                        }
+
                         FinishScrollRestoreAndShowCards();
                         return;
                     }

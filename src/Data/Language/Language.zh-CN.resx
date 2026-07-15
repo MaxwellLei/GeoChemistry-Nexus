@@ -129,6 +129,33 @@
   <data name="geo_field_tags" xml:space="preserve">
     <value>温压计标签 *</value>
   </data>
+  <data name="geo_field_capabilities" xml:space="preserve">
+    <value>能力标签</value>
+  </data>
+  <data name="geo_capability_enter_hint" xml:space="preserve">
+    <value>输入能力简写后按 Enter 确认</value>
+  </data>
+  <data name="geo_example_capability" xml:space="preserve">
+    <value>例如：P、T、fO2</value>
+  </data>
+  <data name="geo_filter_mineral_tags" xml:space="preserve">
+    <value>矿物标签</value>
+  </data>
+  <data name="geo_filter_capabilities" xml:space="preserve">
+    <value>能力</value>
+  </data>
+  <data name="geo_capability_tooltip_p" xml:space="preserve">
+    <value>压力</value>
+  </data>
+  <data name="geo_capability_tooltip_t" xml:space="preserve">
+    <value>温度</value>
+  </data>
+  <data name="geo_capability_tooltip_fo2" xml:space="preserve">
+    <value>氧逸度</value>
+  </data>
+  <data name="geo_validate_capability_too_long" xml:space="preserve">
+    <value>能力标签过长（最多 {0} 个字符）</value>
+  </data>
   <data name="geo_field_category" xml:space="preserve">
     <value>类别 *</value>
   </data>
@@ -169,7 +196,7 @@
     <value>年份不能为空。</value>
   </data>
   <data name="new_version_available_github" xml:space="preserve">
-    <value>发现新版本！请前往GitHub Release页面下载更新。</value>
+    <value>发现新版本 {0}，是否立即下载并安装？</value>
   </data>
   <data name="batch_download_fail_count" xml:space="preserve">
     <value>失败：{0} 个</value>
@@ -310,10 +337,10 @@
     <value>请输入链接</value>
   </data>
   <data name="add_text" xml:space="preserve">
-    <value>添加文本</value>
+    <value>添加文本 (Ctrl+2)</value>
   </data>
   <data name="add_line" xml:space="preserve">
-    <value>添加线条</value>
+    <value>添加线条 (Ctrl+1)</value>
   </data>
   <data name="add_link" xml:space="preserve">
     <value>添加链接</value>
@@ -676,7 +703,7 @@
     <value>正在检查更新...</value>
   </data>
   <data name="add_function" xml:space="preserve">
-    <value>添加函数</value>
+    <value>添加函数 (Ctrl+5)</value>
   </data>
   <data name="edit_diagram_template" xml:space="preserve">
     <value>编辑图解模板</value>
@@ -1480,7 +1507,7 @@
     <value>搜索...</value>
   </data>
   <data name="geo_tooltip_tag_filter" xml:space="preserve">
-    <value>按标签筛选</value>
+    <value>按矿物标签 / 能力筛选</value>
   </data>
   <data name="geo_msg_no_tags_available" xml:space="preserve">
     <value>暂无可用标签</value>
@@ -1649,7 +1676,7 @@
     <value>脚本内容为空</value>
   </data>
   <data name="go_to_download" xml:space="preserve">
-    <value>去下载</value>
+    <value>立即更新</value>
   </data>
   <data name="geo_msg_create_table_failed" xml:space="preserve">
     <value>创建表格失败: {0}</value>
@@ -1698,6 +1725,21 @@
   </data>
   <data name="diagram_hint_no_search_results" xml:space="preserve">
     <value>未找到匹配的模板。</value>
+  </data>
+  <data name="template_search_feedback_before_github" xml:space="preserve">
+    <value>若您需要的模板尚未收录，欢迎在 </value>
+  </data>
+  <data name="template_search_feedback_github" xml:space="preserve">
+    <value>GitHub Issues</value>
+  </data>
+  <data name="template_search_feedback_before_email" xml:space="preserve">
+    <value> 反馈，或发邮件联系 </value>
+  </data>
+  <data name="template_search_feedback_suffix" xml:space="preserve">
+    <value>。</value>
+  </data>
+  <data name="geo_hint_no_search_results" xml:space="preserve">
+    <value>未找到匹配的温压计模板。</value>
   </data>
   <data name="downloaded_file_hash_mismatch" xml:space="preserve">
     <value>下载的文件哈希值与服务器不匹配，文件可能已损坏或遭到篡改。</value>
@@ -1752,6 +1794,9 @@
   </data>
   <data name="support_json_format" xml:space="preserve">
     <value>支持 .json 格式</value>
+  </data>
+  <data name="cipw_col_sample" xml:space="preserve">
+    <value>样品</value>
   </data>
   <data name="cipw_col_silica_saturation" xml:space="preserve">
     <value>SiO2 饱和度</value>
@@ -1814,7 +1859,7 @@
     <value>编辑</value>
   </data>
   <data name="reset_view" xml:space="preserve">
-    <value>复位视图</value>
+    <value>复位视图 (Ctrl+0)</value>
   </data>
   <data name="Alignment_UpperRight" xml:space="preserve">
     <value>右上角</value>
@@ -1898,7 +1943,7 @@
     <value>启动图片删除失败： </value>
   </data>
   <data name="add_arrow" xml:space="preserve">
-    <value>添加箭头</value>
+    <value>添加箭头 (Ctrl+4)</value>
   </data>
   <data name="MarkerShape_Asterisk" xml:space="preserve">
     <value>星号</value>
@@ -2072,7 +2117,7 @@
     <value>帮助文档为可选内容，支持多语言 RTF 富文本格式。</value>
   </data>
   <data name="delete_object" xml:space="preserve">
-    <value>删除对象</value>
+    <value>删除对象 (Delete)</value>
   </data>
   <data name="cipw_title" xml:space="preserve">
     <value>CIPW 标准矿物计算</value>
@@ -2183,7 +2228,7 @@
     <value>当前已是最新版本</value>
   </data>
   <data name="update_auto_check_notify" xml:space="preserve">
-    <value>发现新版本，请前往设置页下载并安装。</value>
+    <value>发现新版本 {0}，是否立即下载并安装？</value>
   </data>
   <data name="update_download_confirm_shutdown" xml:space="preserve">
     <value>下载完成，程序即将退出并启动安装向导，是否继续？</value>
@@ -2276,6 +2321,21 @@
   </data>
   <data name="normalization_standard" xml:space="preserve">
     <value>标准化方案</value>
+  </data>
+  <data name="norm_category_chondrite" xml:space="preserve">
+    <value>球粒陨石</value>
+  </data>
+  <data name="norm_category_shale" xml:space="preserve">
+    <value>页岩 / 沉积岩</value>
+  </data>
+  <data name="norm_category_crust" xml:space="preserve">
+    <value>地壳</value>
+  </data>
+  <data name="norm_category_mantle" xml:space="preserve">
+    <value>地幔</value>
+  </data>
+  <data name="norm_category_basalt" xml:space="preserve">
+    <value>玄武岩端元</value>
   </data>
   <data name="linear" xml:space="preserve">
     <value>线性</value>
@@ -2530,7 +2590,7 @@
     <value>多个数据系列请用逗号分隔，例如：SiO2,TiO2</value>
   </data>
   <data name="add_polygon" xml:space="preserve">
-    <value>添加多边形</value>
+    <value>添加多边形 (Ctrl+3)</value>
   </data>
   <data name="batch_download_title" xml:space="preserve">
     <value>批量下载</value>
@@ -2744,6 +2804,15 @@
   <data name="geo_tooltip_export_csv" xml:space="preserve">
     <value>导出当前工作表为 CSV</value>
   </data>
+  <data name="geo_tooltip_export_calc_details" xml:space="preserve">
+    <value>导出计算详情为 CSV</value>
+  </data>
+  <data name="geo_tooltip_copy_calc_details" xml:space="preserve">
+    <value>复制计算详情到剪贴板</value>
+  </data>
+  <data name="geo_msg_calc_details_copied" xml:space="preserve">
+    <value>计算详情已复制到剪贴板</value>
+  </data>
   <data name="error_occurred_during_startup" xml:space="preserve">
     <value>启动过程中发生错误:</value>
   </data>
@@ -2760,7 +2829,7 @@
     <value>在当前选中行上方插入一行</value>
   </data>
   <data name="data_toolbar_update_chart_tooltip" xml:space="preserve">
-    <value>将当前数据投绘到图表</value>
+    <value>将当前数据投绘到图表 (Ctrl+Shift+Enter)</value>
   </data>
   <data name="data_toolbar_delete_row_tooltip" xml:space="preserve">
     <value>删除当前选中行</value>
@@ -2839,6 +2908,45 @@
   </data>
   <data name="shortcut_action_save_plot_desc" xml:space="preserve">
     <value>保存当前图解或模板内容。</value>
+  </data>
+  <data name="shortcut_action_switch_diagram_mode_name" xml:space="preserve">
+    <value>切换到图解模式</value>
+  </data>
+  <data name="shortcut_action_switch_diagram_mode_desc" xml:space="preserve">
+    <value>切换到图解模式面板。</value>
+  </data>
+  <data name="shortcut_action_switch_data_mode_name" xml:space="preserve">
+    <value>切换到数据模式</value>
+  </data>
+  <data name="shortcut_action_switch_data_mode_desc" xml:space="preserve">
+    <value>切换到数据模式面板。</value>
+  </data>
+  <data name="shortcut_action_switch_edit_mode_name" xml:space="preserve">
+    <value>切换到编辑模式</value>
+  </data>
+  <data name="shortcut_action_switch_edit_mode_desc" xml:space="preserve">
+    <value>切换到编辑模式面板。</value>
+  </data>
+  <data name="shortcut_action_cycle_plot_mode_name" xml:space="preserve">
+    <value>循环切换模式</value>
+  </data>
+  <data name="shortcut_action_cycle_plot_mode_desc" xml:space="preserve">
+    <value>在图解、数据、编辑三种模式之间循环切换。</value>
+  </data>
+  <data name="shortcut_action_middle_click_plot_mode_name" xml:space="preserve">
+    <value>中键切换模式</value>
+  </data>
+  <data name="shortcut_action_middle_click_plot_mode_keys" xml:space="preserve">
+    <value>绘图区左半 / 右半中键</value>
+  </data>
+  <data name="shortcut_action_middle_click_plot_mode_desc" xml:space="preserve">
+    <value>在绘图区按下鼠标中键：左侧切换到上一模式，右侧切换到下一模式（图解 ↔ 数据 ↔ 编辑）。</value>
+  </data>
+  <data name="shortcut_action_plot_data_name" xml:space="preserve">
+    <value>数据投图</value>
+  </data>
+  <data name="shortcut_action_plot_data_desc" xml:space="preserve">
+    <value>将当前数据表格内容投绘到图表（仅数据模式）。</value>
   </data>
   <data name="shortcut_action_add_line_name" xml:space="preserve">
     <value>添加直线</value>
@@ -3588,7 +3696,7 @@
     <value>启用后显示开发与调试相关功能</value>
   </data>
   <data name="AutoCheckUpdate_hint" xml:space="preserve">
-    <value>启动时自动检查软件是否有新版本</value>
+    <value>启动时检查软件更新，发现新版本时提示是否下载安装</value>
   </data>
   <data name="CheckUpdate_hint" xml:space="preserve">
     <value>立即检查是否有可用的软件更新</value>
@@ -3601,6 +3709,9 @@
   </data>
   <data name="inkscape_path_hint" xml:space="preserve">
     <value>设置 Inkscape 可执行文件路径，用于打开矢量图</value>
+  </data>
+  <data name="inkscape_get_it" xml:space="preserve">
+    <value>如果没有，点我获取</value>
   </data>
   <data name="adobe_illustrator_path_hint" xml:space="preserve">
     <value>设置 Adobe Illustrator 可执行文件路径，用于打开矢量图</value>
@@ -3634,6 +3745,33 @@
   </data>
   <data name="auto_check_geothermometer_updates_hint" xml:space="preserve">
     <value>启动时自动检查地质温压计是否有更新</value>
+  </data>
+  <data name="default_worksheet_row_count" xml:space="preserve">
+    <value>默认初始表格行数</value>
+  </data>
+  <data name="default_worksheet_row_count_hint" xml:space="preserve">
+    <value>新建或重置数据表格时的默认初始行数</value>
+  </data>
+  <data name="geothermometer_defaults" xml:space="preserve">
+    <value>默认设置</value>
+  </data>
+  <data name="plot_toolbar_save_tooltip" xml:space="preserve">
+    <value>保存 (Ctrl+S)</value>
+  </data>
+  <data name="plot_toolbar_undo_tooltip" xml:space="preserve">
+    <value>撤回 (Ctrl+Z)</value>
+  </data>
+  <data name="plot_toolbar_redo_tooltip" xml:space="preserve">
+    <value>重做 (Ctrl+Y)</value>
+  </data>
+  <data name="plot_toolbar_diagram_mode_tooltip" xml:space="preserve">
+    <value>图解模式 (Alt+1)</value>
+  </data>
+  <data name="plot_toolbar_data_mode_tooltip" xml:space="preserve">
+    <value>数据模式 (Alt+2)</value>
+  </data>
+  <data name="plot_toolbar_edit_mode_tooltip" xml:space="preserve">
+    <value>编辑模式 (Alt+3)</value>
   </data>
 </root>
 

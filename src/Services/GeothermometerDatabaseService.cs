@@ -90,6 +90,7 @@ namespace GeoChemistryNexus.Services
             entity.FileHash ??= string.Empty;
             entity.Category ??= string.Empty;
             entity.Tags ??= new List<string>();
+            entity.Capabilities ??= new List<string>();
             entity.Name ??= string.Empty;
             entity.NameLangKey ??= string.Empty;
             entity.Author ??= string.Empty;
@@ -316,6 +317,11 @@ namespace GeoChemistryNexus.Services
                 ["ScriptContent"] = entity.ScriptContent ?? string.Empty,
                 ["HelpDocuments"] = helpDocuments
             };
+
+            // 仅在有能力标签时写入哈希载荷，避免空数组改变旧模板哈希，导致与服务器清单不匹配
+            var capabilities = GeoTCapabilityHelper.NormalizeList(entity.Capabilities);
+            if (capabilities.Count > 0)
+                payload["Capabilities"] = capabilities;
 
             string json = System.Text.Json.JsonSerializer.Serialize(payload, EntityHashJsonOptions);
             return ComputeHash(json);

@@ -34,11 +34,6 @@ namespace GeoChemistryNexus.ViewModels
         IRecipient<GeoTMineralCategoryUpdatedMessage>
     {
         /// <summary>
-        /// 应用温压计后工作表的初始行数（含表头与示例行）
-        /// </summary>
-        private const int InitialWorksheetRowCount = 500;
-
-        /// <summary>
         /// 搜索防抖间隔，避免每个按键都重建侧栏绑定
         /// </summary>
         private static readonly TimeSpan SearchDebounceInterval = TimeSpan.FromMilliseconds(200);
@@ -47,6 +42,7 @@ namespace GeoChemistryNexus.ViewModels
         private DispatcherTimer? _searchDebounceTimer;
         private int _searchFilterVersion;
         private bool _isUpdatingTagFilters;
+        private bool _isUpdatingCapabilityFilters;
         /// <summary>
         /// 侧栏一级区块（收藏 / 官方 / 自定义），各含二级类别分组
         /// </summary>
@@ -120,26 +116,45 @@ namespace GeoChemistryNexus.ViewModels
         private string searchText = string.Empty;
 
         /// <summary>
+        /// 搜索/筛选无结果时显示反馈提示
+        /// </summary>
+        [ObservableProperty]
+        private bool isSearchNoResults;
+
+        /// <summary>
         /// 标签筛选菜单是否打开
         /// </summary>
         [ObservableProperty]
         private bool isTagFilterMenuOpen;
 
         /// <summary>
-        /// 可选标签筛选项（有搜索时来自搜索结果，否则来自全部模板）
+        /// 可选矿物标签筛选项（有搜索时来自搜索结果，否则来自全部模板）
         /// </summary>
         [ObservableProperty]
         private ObservableCollection<GeoTTagFilterItemViewModel> availableTagFilters = new();
 
         /// <summary>
-        /// 是否已启用标签筛选
+        /// 可选能力标签筛选项（内置 P/T/fO2 始终在前，自定义来自当前搜索结果）
         /// </summary>
-        public bool HasActiveTagFilter => AvailableTagFilters.Any(t => t.IsSelected);
+        [ObservableProperty]
+        private ObservableCollection<GeoTTagFilterItemViewModel> availableCapabilityFilters = new();
 
         /// <summary>
-        /// 是否存在可用标签筛选项
+        /// 是否已启用标签或能力筛选
+        /// </summary>
+        public bool HasActiveTagFilter =>
+            AvailableTagFilters.Any(t => t.IsSelected)
+            || AvailableCapabilityFilters.Any(t => t.IsSelected);
+
+        /// <summary>
+        /// 是否存在可用矿物标签筛选项
         /// </summary>
         public bool HasAvailableTagFilters => AvailableTagFilters.Count > 0;
+
+        /// <summary>
+        /// 是否存在可用能力标签筛选项（通常始终为 true，因内置三项常驻）
+        /// </summary>
+        public bool HasAvailableCapabilityFilters => AvailableCapabilityFilters.Count > 0;
 
         /// <summary>
         /// 已加载的 GTM 总数
@@ -551,12 +566,18 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 收集可用标签筛选项。
-        /// 有搜索时仅从搜索命中结果取标签；已勾选标签始终保留，避免选项消失后无法取消。
+        /// 收集可用矿物标签与能力标签筛选项。
+        /// 有搜索时仅从搜索命中结果取；已勾选项始终保留，避免选项消失后无法取消。
+        /// 能力侧：内置 P/T/fO2 始终展示，自定义能力来自当前搜索结果。
         /// </summary>
         private void LoadAvailableTagFilters()
         {
-            var previouslySelected = AvailableTagFilters
+            var previouslySelectedTags = AvailableTagFilters
+                .Where(t => t.IsSelected)
+                .Select(t => t.StorageKey)
+                .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+            var previouslySelectedCapabilities = AvailableCapabilityFilters
                 .Where(t => t.IsSelected)
                 .Select(t => t.StorageKey)
                 .ToHashSet(StringComparer.OrdinalIgnoreCase);
@@ -566,6 +587,7 @@ namespace GeoChemistryNexus.ViewModels
                 : SearchText.Trim().ToLowerInvariant();
 
             var tagMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            var customCapabilityKeys = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
             // 筛选项来自「当前搜索结果」；无搜索时来自全部模板
             foreach (var plugin in EnumerateAllSidebarPlugins())
@@ -582,10 +604,16 @@ namespace GeoChemistryNexus.ViewModels
                     if (!tagMap.ContainsKey(key))
                         tagMap[key] = GeoTMineralCategoryHelper.GetDisplayName(key);
                 }
+
+                foreach (var capability in GeoTCapabilityHelper.NormalizeList(plugin.Capabilities))
+                {
+                    if (!GeoTCapabilityHelper.IsBuiltIn(capability))
+                        customCapabilityKeys.Add(capability);
+                }
             }
 
             // 已勾选但不在当前搜索结果中的标签仍保留，便于取消勾选
-            foreach (var selectedKey in previouslySelected)
+            foreach (var selectedKey in previouslySelectedTags)
             {
                 if (tagMap.ContainsKey(selectedKey))
                     continue;
@@ -593,24 +621,48 @@ namespace GeoChemistryNexus.ViewModels
                 tagMap[selectedKey] = GeoTMineralCategoryHelper.GetDisplayName(selectedKey);
             }
 
-            // 侧栏尚未建好时（首次初始化），回退到全量实体标签
-            if (tagMap.Count == 0 && previouslySelected.Count == 0 && SidebarSections.Count == 0)
+            foreach (var selectedKey in previouslySelectedCapabilities)
             {
-                foreach (var entity in GeothermometerService.LoadedEntities)
-                {
-                    foreach (var storageKey in entity.Tags ?? Enumerable.Empty<string>())
-                    {
-                        if (string.IsNullOrWhiteSpace(storageKey))
-                            continue;
+                string? normalized = GeoTCapabilityHelper.Normalize(selectedKey);
+                if (normalized == null || GeoTCapabilityHelper.IsBuiltIn(normalized))
+                    continue;
+                customCapabilityKeys.Add(normalized);
+            }
 
-                        string key = storageKey.Trim();
-                        if (!tagMap.ContainsKey(key))
-                            tagMap[key] = GeoTMineralCategoryHelper.GetDisplayName(key);
+            // 侧栏尚未建好时（首次初始化），回退到全量实体标签/能力
+            if (SidebarSections.Count == 0)
+            {
+                if (tagMap.Count == 0 && previouslySelectedTags.Count == 0)
+                {
+                    foreach (var entity in GeothermometerService.LoadedEntities)
+                    {
+                        foreach (var storageKey in entity.Tags ?? Enumerable.Empty<string>())
+                        {
+                            if (string.IsNullOrWhiteSpace(storageKey))
+                                continue;
+
+                            string key = storageKey.Trim();
+                            if (!tagMap.ContainsKey(key))
+                                tagMap[key] = GeoTMineralCategoryHelper.GetDisplayName(key);
+                        }
+                    }
+                }
+
+                if (customCapabilityKeys.Count == 0)
+                {
+                    foreach (var entity in GeothermometerService.LoadedEntities)
+                    {
+                        foreach (var capability in GeoTCapabilityHelper.NormalizeList(entity.Capabilities))
+                        {
+                            if (!GeoTCapabilityHelper.IsBuiltIn(capability))
+                                customCapabilityKeys.Add(capability);
+                        }
                     }
                 }
             }
 
-            SyncAvailableTagFilters(tagMap, previouslySelected);
+            SyncAvailableTagFilters(tagMap, previouslySelectedTags);
+            SyncAvailableCapabilityFilters(customCapabilityKeys, previouslySelectedCapabilities);
         }
 
         private void SyncAvailableTagFilters(
@@ -666,6 +718,75 @@ namespace GeoChemistryNexus.ViewModels
             OnPropertyChanged(nameof(HasAvailableTagFilters));
         }
 
+        private void SyncAvailableCapabilityFilters(
+            HashSet<string> customCapabilityKeys,
+            HashSet<string> previouslySelected)
+        {
+            var ordered = new List<(string Key, string DisplayName, string Tooltip)>();
+            foreach (var builtIn in GeoTCapabilityHelper.BuiltInCapabilities)
+            {
+                ordered.Add((
+                    builtIn,
+                    GeoTCapabilityHelper.GetDisplayName(builtIn),
+                    GeoTCapabilityHelper.GetTooltip(builtIn)));
+            }
+
+            foreach (var custom in customCapabilityKeys
+                         .OrderBy(k => k, StringComparer.CurrentCultureIgnoreCase))
+            {
+                ordered.Add((
+                    custom,
+                    GeoTCapabilityHelper.GetDisplayName(custom),
+                    GeoTCapabilityHelper.GetTooltip(custom)));
+            }
+
+            bool needsRebuild = AvailableCapabilityFilters.Count != ordered.Count;
+            if (!needsRebuild)
+            {
+                for (int i = 0; i < ordered.Count; i++)
+                {
+                    var existing = AvailableCapabilityFilters[i];
+                    if (!string.Equals(existing.StorageKey, ordered[i].Key, StringComparison.OrdinalIgnoreCase)
+                        || !string.Equals(existing.DisplayName, ordered[i].DisplayName, StringComparison.Ordinal)
+                        || !string.Equals(existing.Tooltip, ordered[i].Tooltip, StringComparison.Ordinal))
+                    {
+                        needsRebuild = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!needsRebuild)
+            {
+                OnPropertyChanged(nameof(HasActiveTagFilter));
+                OnPropertyChanged(nameof(HasAvailableCapabilityFilters));
+                return;
+            }
+
+            _isUpdatingCapabilityFilters = true;
+            try
+            {
+                AvailableCapabilityFilters.Clear();
+                foreach (var item in ordered)
+                {
+                    AvailableCapabilityFilters.Add(new GeoTTagFilterItemViewModel(OnTagFilterSelectionChanged)
+                    {
+                        StorageKey = item.Key,
+                        DisplayName = item.DisplayName,
+                        Tooltip = item.Tooltip,
+                        IsSelected = previouslySelected.Contains(item.Key)
+                    });
+                }
+            }
+            finally
+            {
+                _isUpdatingCapabilityFilters = false;
+            }
+
+            OnPropertyChanged(nameof(HasActiveTagFilter));
+            OnPropertyChanged(nameof(HasAvailableCapabilityFilters));
+        }
+
         private IEnumerable<Geothermometer> EnumerateAllSidebarPlugins()
         {
             foreach (var section in SidebarSections)
@@ -688,11 +809,11 @@ namespace GeoChemistryNexus.ViewModels
 
         private void OnTagFilterSelectionChanged()
         {
-            if (_isUpdatingTagFilters)
+            if (_isUpdatingTagFilters || _isUpdatingCapabilityFilters)
                 return;
 
             OnPropertyChanged(nameof(HasActiveTagFilter));
-            // 标签筛选立即生效；搜索仍走防抖
+            // 标签/能力筛选立即生效；搜索仍走防抖
             ApplyListFilter();
         }
 
@@ -754,11 +875,18 @@ namespace GeoChemistryNexus.ViewModels
             }
 
             UpdatePluginCounts();
+            UpdateSearchNoResultsState(hasSearch || hasTagFilter);
 
             if (!preserveExpansionState && (hasSearch || hasTagFilter))
                 ApplyFilterExpansionState();
             else if (!preserveExpansionState && !hasSearch && !hasTagFilter)
                 ApplySidebarStateFromStorage();
+        }
+
+        private void UpdateSearchNoResultsState(bool hasActiveFilter)
+        {
+            IsSearchNoResults = hasActiveFilter
+                && SidebarSections.Sum(section => section.TotalCount) == 0;
         }
 
         private static void SyncObservableCollection(
@@ -789,8 +917,10 @@ namespace GeoChemistryNexus.ViewModels
 
         private bool MatchesListFilter(Geothermometer plugin, string? keyword)
         {
-            // 搜索 ∩ 标签筛选
-            return MatchesSearch(plugin, keyword) && MatchesTagFilter(plugin);
+            // 搜索 ∩ 矿物标签(OR) ∩ 能力标签(OR)
+            return MatchesSearch(plugin, keyword)
+                   && MatchesTagFilter(plugin)
+                   && MatchesCapabilityFilter(plugin);
         }
 
         private static bool MatchesSearch(Geothermometer plugin, string? keyword)
@@ -802,6 +932,7 @@ namespace GeoChemistryNexus.ViewModels
 
             return (plugin.Name ?? string.Empty).ToLowerInvariant().Contains(keyword) ||
                    (plugin.TagsDisplayText ?? string.Empty).ToLowerInvariant().Contains(keyword) ||
+                   (plugin.CapabilitiesDisplayText ?? string.Empty).ToLowerInvariant().Contains(keyword) ||
                    categoryDisplay.ToLowerInvariant().Contains(keyword) ||
                    (plugin.Author ?? string.Empty).ToLowerInvariant().Contains(keyword) ||
                    plugin.Year.ToString().Contains(keyword);
@@ -828,6 +959,25 @@ namespace GeoChemistryNexus.ViewModels
             return selectedKeys.Any(key => entityKeys.Contains(key));
         }
 
+        private bool MatchesCapabilityFilter(Geothermometer plugin)
+        {
+            var selectedKeys = AvailableCapabilityFilters
+                .Where(t => t.IsSelected)
+                .Select(t => t.StorageKey)
+                .ToList();
+
+            if (selectedKeys.Count == 0)
+                return true;
+
+            var entityKeys = GeoTCapabilityHelper.NormalizeList(plugin.Capabilities)
+                .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+            if (entityKeys.Count == 0)
+                return false;
+
+            return selectedKeys.Any(key => entityKeys.Contains(key));
+        }
+
         /// <summary>
         /// 切换标签筛选菜单显示状态
         /// </summary>
@@ -835,6 +985,25 @@ namespace GeoChemistryNexus.ViewModels
         private void ToggleTagFilterMenu()
         {
             IsTagFilterMenuOpen = !IsTagFilterMenuOpen;
+        }
+
+        /// <summary>
+        /// 打开反馈链接（GitHub Issues / 邮件）
+        /// </summary>
+        [RelayCommand]
+        private void OpenFeedbackUrl(string? url)
+        {
+            if (string.IsNullOrWhiteSpace(url))
+                return;
+
+            try
+            {
+                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.Warning((LanguageService.Instance["unable_to_open_link"] ?? "无法打开链接：") + ex.Message);
+            }
         }
 
         /// <summary>
@@ -1073,6 +1242,7 @@ namespace GeoChemistryNexus.ViewModels
                     IsFavorite = summary.IsFavorite,
                     Category = summary.Category,
                     Tags = summary.Tags != null ? new List<string>(summary.Tags) : new List<string>(),
+                    Capabilities = GeoTCapabilityHelper.NormalizeList(summary.Capabilities),
                     Name = summary.Name,
                     NameLangKey = summary.NameLangKey,
                     Author = summary.Author,
@@ -1101,6 +1271,7 @@ namespace GeoChemistryNexus.ViewModels
                 IsFavorite = plugin.IsFavorite,
                 Category = plugin.Category,
                 Tags = plugin.StorageTags != null ? new List<string>(plugin.StorageTags) : new List<string>(),
+                Capabilities = GeoTCapabilityHelper.NormalizeList(plugin.Capabilities),
                 Name = plugin.Name,
                 NameLangKey = plugin.NameLangKey,
                 Author = plugin.Author,
@@ -1312,7 +1483,7 @@ namespace GeoChemistryNexus.ViewModels
                 var currentScale = worksheet.ScaleFactor;
                 worksheet.Reset();
                 worksheet.ScaleFactor = currentScale;
-                worksheet.RowCount = InitialWorksheetRowCount;
+                worksheet.RowCount = WorksheetDefaultsHelper.GetDefaultRowCount(WorksheetDefaultsHelper.GtmConfigKey);
 
                 // 设置整个工作表默认居中对齐
                 worksheet.SetRangeStyles(RangePosition.EntireRange, new WorksheetRangeStyle
@@ -1568,6 +1739,124 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
+        /// 切换计算详情分组折叠状态（点击分隔标题）。
+        /// </summary>
+        [RelayCommand]
+        private void ToggleCalculationGroup(CalculationStep? separator)
+        {
+            if (separator == null || !separator.IsSeparator)
+                return;
+
+            separator.IsCollapsed = !separator.IsCollapsed;
+            GeothermometerService.ApplyCalculationStepGroupVisibility(CalculationSteps);
+        }
+
+        /// <summary>
+        /// 导出计算详情为 CSV。
+        /// </summary>
+        [RelayCommand(CanExecute = nameof(CanExportOrCopyCalculationDetails))]
+        private async Task ExportCalculationDetailsAsync()
+        {
+            if (CalculationSteps.Count == 0)
+                return;
+
+            string defaultName = string.IsNullOrWhiteSpace(SelectedRowInfo)
+                ? "calculation_details"
+                : SanitizeFileName(SelectedRowInfo);
+
+            string? filePath = await FileHelper.GetSaveFilePath2Async(
+                title: LanguageService.Instance["geo_msg_csv_save_title"],
+                filter: LanguageService.Instance["csv_file_filter"],
+                defaultExt: ".csv",
+                defaultFileName: defaultName);
+            if (string.IsNullOrEmpty(filePath))
+                return;
+
+            try
+            {
+                var csvContent = BuildCalculationDetailsCsv();
+                await Task.Run(() => File.WriteAllText(filePath, csvContent, new UTF8Encoding(true)));
+                MessageHelper.Success(LanguageService.Instance["geo_msg_export_success"]);
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.Error(string.Format(LanguageService.Instance["geo_msg_export_failed"], ex.Message));
+            }
+        }
+
+        /// <summary>
+        /// 复制计算详情到剪贴板（制表符分隔，便于粘贴到 Excel）。
+        /// </summary>
+        [RelayCommand(CanExecute = nameof(CanExportOrCopyCalculationDetails))]
+        private void CopyCalculationDetails()
+        {
+            if (CalculationSteps.Count == 0)
+                return;
+
+            try
+            {
+                Clipboard.SetText(BuildCalculationDetailsClipboardText());
+                MessageHelper.Success(LanguageService.Instance["geo_msg_calc_details_copied"]);
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.Error(LanguageService.Instance["copy_failed"] + ex.Message);
+            }
+        }
+
+        private bool CanExportOrCopyCalculationDetails()
+            => HasCalculationData && CalculationSteps.Count > 0;
+
+        partial void OnHasCalculationDataChanged(bool value)
+        {
+            ExportCalculationDetailsCommand.NotifyCanExecuteChanged();
+            CopyCalculationDetailsCommand.NotifyCanExecuteChanged();
+        }
+
+        private string BuildCalculationDetailsCsv()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("Name,Value,Description");
+            foreach (var step in CalculationSteps)
+            {
+                sb.Append(EscapeCsvField(step.Name)).Append(',')
+                  .Append(EscapeCsvField(step.Value)).Append(',')
+                  .Append(EscapeCsvField(step.Description))
+                  .AppendLine();
+            }
+            return sb.ToString();
+        }
+
+        private string BuildCalculationDetailsClipboardText()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("Name\tValue\tDescription");
+            foreach (var step in CalculationSteps)
+            {
+                sb.Append(step.Name).Append('\t')
+                  .Append(step.Value).Append('\t')
+                  .Append(step.Description)
+                  .AppendLine();
+            }
+            return sb.ToString().TrimEnd('\r', '\n');
+        }
+
+        private static string EscapeCsvField(string? value)
+        {
+            value ??= string.Empty;
+            if (value.Contains(',') || value.Contains('"') || value.Contains('\n') || value.Contains('\r'))
+                return $"\"{value.Replace("\"", "\"\"")}\"";
+            return value;
+        }
+
+        private static string SanitizeFileName(string name)
+        {
+            foreach (char c in Path.GetInvalidFileNameChars())
+                name = name.Replace(c, '_');
+            return string.IsNullOrWhiteSpace(name) ? "calculation_details" : name.Trim();
+        }
+
+        /// <summary>
         /// 清除计算数据，不改变用户当前的详情面板展开/收缩状态。
         /// </summary>
         private void ClearCalculationData()
@@ -1577,6 +1866,8 @@ namespace GeoChemistryNexus.ViewModels
             HasCalculationData = false;
             SelectedRowInfo = string.Empty;
             DetailScrollResetToken++;
+            ExportCalculationDetailsCommand.NotifyCanExecuteChanged();
+            CopyCalculationDetailsCommand.NotifyCanExecuteChanged();
         }
 
         /// <summary>
@@ -1839,6 +2130,7 @@ namespace GeoChemistryNexus.ViewModels
             try
             {
                 Worksheet newWorksheet = reoGridControl.CreateWorksheet();
+                newWorksheet.RowCount = WorksheetDefaultsHelper.GetDefaultRowCount(WorksheetDefaultsHelper.GtmConfigKey);
                 reoGridControl.Worksheets.Add(newWorksheet);
                 reoGridControl.CurrentWorksheet = newWorksheet;
             }
@@ -2136,6 +2428,8 @@ namespace GeoChemistryNexus.ViewModels
         public string StorageKey { get; init; } = string.Empty;
 
         public string DisplayName { get; init; } = string.Empty;
+
+        public string Tooltip { get; init; } = string.Empty;
 
         [ObservableProperty]
         private bool isSelected;

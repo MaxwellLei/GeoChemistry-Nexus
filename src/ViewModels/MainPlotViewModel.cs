@@ -2,7 +2,9 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using GeoChemistryNexus.Controls;
+using GeoChemistryNexus.Extensions.ScottPlotExtensions;
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Helpers.PlotMarkers;
 using GeoChemistryNexus.Interfaces;
 using GeoChemistryNexus.Messages;
 using GeoChemistryNexus.Models;
@@ -125,6 +127,17 @@ namespace GeoChemistryNexus.ViewModels
             {
                 DiagramLanguageStatus = LanguageService.GetLanguageDisplayName(CurrentDiagramLanguage);
             }
+        }
+
+        partial void OnIsDeveloperModeChanged(bool value)
+        {
+            // 开发者模式下允许双击绘图区域显示帧率
+            ApplyDoubleClickBenchmark(value);
+        }
+
+        private void ApplyDoubleClickBenchmark(bool enabled)
+        {
+            WpfPlot1?.UserInputProcessor.DoubleLeftClickBenchmark(enabled);
         }
 
         public void Receive(ObjectSelectionTriggerChangedMessage message)
@@ -289,6 +302,7 @@ namespace GeoChemistryNexus.ViewModels
 
             _propertyEditRefreshTimer = CreatePropertyEditRefreshTimer();
             _layerRefreshTimer = CreateLayerRefreshTimer();
+            _dataLinkFlashTimer = CreateDataLinkFlashTimer();
             _propertyGridModel = nullObject;
 
             if (bool.TryParse(Helpers.ConfigHelper.GetConfig("developer_mode"), out bool devMode))
@@ -343,27 +357,17 @@ namespace GeoChemistryNexus.ViewModels
                     ScriptsPropertyGrid = true;
                 }
                         
-                // 4. 隐藏数据点选中标记（防止表格选中事件触发错误显示）
-                if (_selectedDataPointMarker != null)
-                {
-                    _selectedDataPointMarker.IsVisible = false;
-                }
-                if (_selectedDataPointLabel != null)
-                {
-                    _selectedDataPointLabel.IsVisible = false;
-                }
-                        
-                // 5. 隐藏计算验证区域（因为数据已清空）
+                // 4. 隐藏计算验证区域（因为数据已清空）
                 IsCalculationVerificationVisible = false;
                 CalculationResultSummary = string.Empty;
                 CalculationLogs.Clear();
 
                 ClearDataGridPlotRefreshPending();
                         
-                // 6. 刷新绘图（使用 RefreshPlotFromLayers 确保图例被正确更新）
+                // 5. 刷新绘图（使用 RefreshPlotFromLayers 确保图例被正确更新）
                 RefreshPlotFromLayers();
 
-                // 7. 重置标志位（使用异步延迟确保所有清除操作完成后再解除阻止）
+                // 6. 重置标志位（使用异步延迟确保所有清除操作完成后再解除阻止）
                 System.Windows.Application.Current?.Dispatcher.BeginInvoke(new Action(() =>
                 {
                     _isBlockingTreeViewSelection = false;
@@ -593,6 +597,10 @@ namespace GeoChemistryNexus.ViewModels
         // 用于追踪当前鼠标悬浮的绘图对象及其对应的图层
         private ScottPlot.IPlottable? _lastHoveredPlottable;
         private LayerItemViewModel? _lastHoveredLayer;
+        /// <summary>数据模式散点悬停：同组内当前命中的点索引（-1 表示无）。</summary>
+        private int _lastHoveredScatterPointIndex = -1;
+        /// <summary>数据模式散点悬停：单点红色预览标记（非整组标红）。</summary>
+        private ScottPlot.Plottables.Marker? _scatterHoverMarker;
 
         // 用于绑定吸附选择按钮的状态
         [ObservableProperty]
@@ -674,6 +682,12 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private bool _isShowTemplateInfo = false;   // 显示绘图模板的说明帮助
 
+        /// <summary>
+        /// ReoGrid 滚动复位令牌（准备数据表格时递增，View 重置横向/纵向滚动位置）
+        /// </summary>
+        [ObservableProperty]
+        private int _gridScrollResetToken;
+
         // 卡片展示用的模板集合
         [ObservableProperty]
         private ObservableCollection<TemplateCardViewModel> _templateCards = new();
@@ -683,6 +697,9 @@ namespace GeoChemistryNexus.ViewModels
         // 模板卡片为空时的提示
         [ObservableProperty]
         private bool _isTemplateCardsEmpty;
+
+        [ObservableProperty]
+        private bool _isSearchNoResults;
 
         [ObservableProperty]
         private string _templateCardsEmptyHint = string.Empty;
@@ -795,6 +812,7 @@ namespace GeoChemistryNexus.ViewModels
                           && GetFilteredTemplateCardCount() == 0;
 
             IsTemplateCardsEmpty = isEmpty;
+            IsSearchNoResults = isEmpty && !string.IsNullOrWhiteSpace(SearchText);
             TemplateCardsEmptyHint = isEmpty ? GetTemplateCardsEmptyHint() : string.Empty;
         }
 
@@ -833,6 +851,25 @@ namespace GeoChemistryNexus.ViewModels
         private void ClearSearch()
         {
             SearchText = string.Empty;
+        }
+
+        /// <summary>
+        /// 打开反馈链接（GitHub Issues / 邮件）
+        /// </summary>
+        [RelayCommand]
+        private void OpenFeedbackUrl(string? url)
+        {
+            if (string.IsNullOrWhiteSpace(url))
+                return;
+
+            try
+            {
+                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.Warning((LanguageService.Instance["unable_to_open_link"] ?? "无法打开链接：") + ex.Message);
+            }
         }
 
         // 脚本属性面板显示
@@ -1322,6 +1359,29 @@ namespace GeoChemistryNexus.ViewModels
 
                 SetProperty(ref _ribbonTabIndex, value);
 
+                if (value == 1)
+                {
+                    // 进入数据模式：把当前选中对象/行同步为单点闪烁样式
+                    ApplyDataModeSelectionVisual();
+                    // 若仍悬停在散点分组上，立刻从整组标红切到单点预览
+                    ReapplyCurrentHoverStyleAfterModeChange();
+                }
+                else
+                {
+                    // 离开数据模式：停止闪烁，恢复默认分组选中样式
+                    StopDataLinkFlash();
+                    ClearScatterHoverPreview();
+                    _lastHoveredScatterPointIndex = -1;
+                    if (_selectedLayer is IPlotLayer)
+                    {
+                        ReapplySelectionVisualState();
+                        WpfPlot1?.Refresh();
+                    }
+
+                    // 若仍悬停在散点分组上，立刻切回整组标红
+                    ReapplyCurrentHoverStyleAfterModeChange();
+                }
+
                 // 切换到数据状态 (Index 1) 且未查看过帮助时，显示提示
                 if (value == 1 && !_hasViewedHelpForCurrentDiagram)
                 {
@@ -1345,7 +1405,31 @@ namespace GeoChemistryNexus.ViewModels
                 DeleteSelectedObjectCommand.NotifyCanExecuteChanged();
                 HandlePageDeleteKeyCommand.NotifyCanExecuteChanged();
                 SaveBaseMapCommand.NotifyCanExecuteChanged();
+                UpdateDataCommand.NotifyCanExecuteChanged();
             }
+        }
+
+        private bool CanSwitchPlotRibbonMode() => IsPlotMode;
+
+        [RelayCommand(CanExecute = nameof(CanSwitchPlotRibbonMode))]
+        private void SwitchToDiagramMode() => RibbonTabIndex = 0;
+
+        [RelayCommand(CanExecute = nameof(CanSwitchPlotRibbonMode))]
+        private void SwitchToDataMode() => RibbonTabIndex = 1;
+
+        [RelayCommand(CanExecute = nameof(CanSwitchPlotRibbonMode))]
+        private void SwitchToEditMode() => RibbonTabIndex = 2;
+
+        [RelayCommand(CanExecute = nameof(CanSwitchPlotRibbonMode))]
+        private void CyclePlotMode() => RibbonTabIndex = (_ribbonTabIndex + 1) % 3;
+
+        partial void OnIsPlotModeChanged(bool value)
+        {
+            SwitchToDiagramModeCommand.NotifyCanExecuteChanged();
+            SwitchToDataModeCommand.NotifyCanExecuteChanged();
+            SwitchToEditModeCommand.NotifyCanExecuteChanged();
+            CyclePlotModeCommand.NotifyCanExecuteChanged();
+            UpdateDataCommand.NotifyCanExecuteChanged();
         }
 
         private async Task ConfirmEditModeAsync()
@@ -1402,14 +1486,24 @@ namespace GeoChemistryNexus.ViewModels
         // 存储所有潜在吸附点的标记（提示用）
         private List<ScottPlot.Plottables.Marker> _potentialSnapMarkers = new();
 
-        // 数据点高亮标记
-        private ScottPlot.Plottables.Marker _selectedDataPointMarker;
-
-        // 数据点坐标标签
-        private ScottPlot.Plottables.Text? _selectedDataPointLabel;
-
         // 标志位：防止表格选择和绘图点击选择互相触发循环
         private bool _isSyncingSelection = false;
+
+        // 标志位：属性面板改名同步到表格时，不触发「数据已修改，请刷新投图」
+        private bool _isSyncingLayerNameToDataGrid = false;
+
+        // 数据模式单点闪烁高亮（保持原标记图案，仅交替颜色）
+        private readonly System.Windows.Threading.DispatcherTimer _dataLinkFlashTimer;
+        private ScottPlot.Plottables.Marker? _dataLinkFlashMarker;
+        private ScatterLayerItemViewModel? _dataLinkFlashScatterStyle;
+        private SpiderSampleLayerItemViewModel? _dataLinkFlashSpiderStyle;
+        /// <summary>数据模式蛛网图闪烁锁定的具体样品线（选中后不随悬停改变）。</summary>
+        private ScottPlot.IPlottable? _dataLinkFlashSpiderScatter;
+        private bool _dataLinkFlashLocationIsRenderCoords;
+        private bool _dataLinkFlashIsRed;
+        private bool _isDataGridSelectionVisuallyCleared;
+        private static readonly ScottPlot.Color DataLinkFlashRed = ScottPlot.Color.FromHex("#FF0000");
+        private static readonly ScottPlot.Color DataLinkFlashBlue = ScottPlot.Color.FromHex("#0000FF");
 
         // 标志位：阻止脚本验证清除数据后 TreeView 自动选中其他节点
         private bool _isBlockingTreeViewSelection = false;
@@ -1470,6 +1564,7 @@ namespace GeoChemistryNexus.ViewModels
         {
             _propertyEditRefreshTimer = CreatePropertyEditRefreshTimer();
             _layerRefreshTimer = CreateLayerRefreshTimer();
+            _dataLinkFlashTimer = CreateDataLinkFlashTimer();
             _propertyGridModel = nullObject;
 
             // 监听语言变化
@@ -1481,6 +1576,8 @@ namespace GeoChemistryNexus.ViewModels
             WpfPlot1 = wpfPlot;      // 获取绘图控件
             _richTextBox = richTextBox;      // 富文本框
             _dataGrid = dataGrid;        // 获取数据表格控件
+            ReoGridImeHelper.Attach(_dataGrid); // 修复中文 IME 首次输入需确认两次的问题
+            ReoGridDoubleClickFillHelper.Attach(_dataGrid); // 双击填充柄自动向下填充（类似 Excel）
             IsSnapSelectionEnabled = true;  // 吸附选择开启
             _isDoubleClickSelectionMode = ConfigHelper.GetConfig("object_selection_trigger") == "DoubleClick";
             if (int.TryParse(ConfigHelper.GetConfig("mouse_snap_auto_recognition_frame_rate"), out int snapFrameRate))
@@ -1518,32 +1615,13 @@ namespace GeoChemistryNexus.ViewModels
             _snapMarker.Shape = MarkerShape.OpenCircle;
             _snapMarker.LineWidth = 3; // 加粗
 
-            // 初始化选中数据点标记
-            _selectedDataPointMarker = WpfPlot1.Plot.Add.Marker(0, 0);
-            _selectedDataPointMarker.IsVisible = false;
-            _selectedDataPointMarker.Color = ScottPlot.Colors.Red; // 选中点使用红色
-            _selectedDataPointMarker.Size = 20; // 比数据点大（数据点通常是10）
-            _selectedDataPointMarker.Shape = MarkerShape.OpenCircle; // 空心圆圈
-            _selectedDataPointMarker.LineWidth = 2; // 线宽
-
-            // 初始化选中数据点坐标标签
-            _selectedDataPointLabel = WpfPlot1.Plot.Add.Text("", 0, 0);
-            _selectedDataPointLabel.IsVisible = false;
-            _selectedDataPointLabel.LabelFontColor = ScottPlot.Colors.Red;
-            _selectedDataPointLabel.LabelFontSize = 12;
-            _selectedDataPointLabel.LabelBold = true; // 加粗显示
-            _selectedDataPointLabel.LabelBackgroundColor = ScottPlot.Colors.Transparent; // 透明背景
-            _selectedDataPointLabel.LabelBorderColor = ScottPlot.Colors.Transparent; // 透明边框
-            _selectedDataPointLabel.LabelBorderWidth = 0; // 无边框
-            _selectedDataPointLabel.LabelAlignment = Alignment.MiddleCenter; // 标签居中对齐
-            _selectedDataPointLabel.OffsetY = -20; // 向上偏移20像素，确保在红色圆圈顶部
-
             // 订阅绘图控件的鼠标事件
             WpfPlot1.MouseEnter += WpfPlot1_MouseEnter;
             WpfPlot1.MouseLeave += WpfPlot1_MouseLeave;
             WpfPlot1.MouseMove += WpfPlot1_MouseMove;
 
             // 订阅线条绘制事件
+            WpfPlot1.MouseDown += WpfPlot1_MouseDown;
             WpfPlot1.MouseUp += WpfPlot1_MouseUp;
             WpfPlot1.MouseRightButtonUp += WpfPlot1_MouseRightButtonUp;
             WpfPlot1.MouseDoubleClick += WpfPlot1_MouseDoubleClick;
@@ -1553,8 +1631,12 @@ namespace GeoChemistryNexus.ViewModels
 
             WpfPlot1.Menu.Clear();      // 禁用原生右键菜单
 
-            // 禁用双击帧率显示
-            WpfPlot1.UserInputProcessor.DoubleLeftClickBenchmark(false);
+            // 开发者模式下允许双击显示帧率，否则禁用
+            ApplyDoubleClickBenchmark(IsDeveloperMode);
+
+            // 中键改由本应用切换图解/数据/编辑模式，禁用 ScottPlot 默认中键自动缩放与框选缩放
+            WpfPlot1.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.SingleClickAutoscale>();
+            WpfPlot1.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.MouseDragZoomRectangle>();
 
             // 输出DPI信息用于调试
             var source = PresentationSource.FromVisual(WpfPlot1);
@@ -1688,24 +1770,151 @@ namespace GeoChemistryNexus.ViewModels
             if (layerToRestore is not IPlotLayer plotLayer || plotLayer.Plottable == null)
                 return;
 
+            // 离开悬停时清除数据模式单点红色预览
+            if (ReferenceEquals(layerToRestore, _lastHoveredLayer))
+            {
+                ClearScatterHoverPreview();
+            }
+
             // 恢复原始样式
             plotLayer.Restore();
 
             // 判断是否需要应用遮罩
             // 如果当前有选中的图层，且正在恢复的图层不是选中的那个，说明它应该处于“变暗”状态
             // 排除选中项为 CategoryLayerItemViewModel 的情况（选中父类不应触发遮罩）
-            bool isSelectionActive = _selectedLayer != null && !(_selectedLayer is CategoryLayerItemViewModel);
-            bool isLayerSelected = layerToRestore == _selectedLayer || SelectedLayers.Contains(layerToRestore);
+            // 数据模式单点/单线闪烁也视为有效选中；闪烁激活时仅闪烁对象视为选中
+            bool flashActive = _dataLinkFlashSpiderStyle != null || _dataLinkFlashScatterStyle != null;
+            bool isSelectionActive = (_selectedLayer != null && !(_selectedLayer is CategoryLayerItemViewModel))
+                || flashActive;
+            bool isLayerSelected = flashActive
+                ? ReferenceEquals(layerToRestore, _dataLinkFlashSpiderStyle)
+                    || ReferenceEquals(layerToRestore, _dataLinkFlashScatterStyle)
+                : layerToRestore == _selectedLayer
+                    || SelectedLayers.Contains(layerToRestore);
 
             if (isLayerSelected && layerToRestore is SpiderSampleLayerItemViewModel selectedSpiderLayer)
             {
-                selectedSpiderLayer.Restore();
+                ApplySpiderSelectionVisual(selectedSpiderLayer);
+                // 数据模式：Restore/遮罩后立刻按锁定样品线补回闪烁色
+                if (RibbonTabIndex == 1
+                    && ReferenceEquals(_dataLinkFlashSpiderStyle, selectedSpiderLayer)
+                    && _dataLinkFlashSpiderScatter != null)
+                {
+                    ApplySpiderSeriesFlashColor(_dataLinkFlashIsRed ? DataLinkFlashRed : DataLinkFlashBlue);
+                }
+
+                return;
+            }
+
+            if (isLayerSelected && layerToRestore is ScatterLayerItemViewModel selectedScatterLayer)
+            {
+                // 数据模式闪烁选中：整组数据点保持遮罩，选中点由闪烁标记表现
+                ApplyScatterSelectionVisual(selectedScatterLayer);
                 return;
             }
 
             if (isSelectionActive && !isLayerSelected)
             {
                 plotLayer.Dim();
+            }
+        }
+
+        /// <summary>
+        /// 蛛网图选中外观：与图解模板一致——选中项保持原色，由外层对其他对象施加半透明遮罩。
+        /// 数据模式：同组未选中样品线也套用未选中遮罩，单条闪烁由 StartDataLinkFlash 负责。
+        /// </summary>
+        private void ApplySpiderSelectionVisual(SpiderSampleLayerItemViewModel spiderLayer)
+        {
+            if (spiderLayer == null)
+            {
+                return;
+            }
+
+            spiderLayer.Restore();
+
+            if (RibbonTabIndex == 1
+                && ReferenceEquals(_dataLinkFlashSpiderStyle, spiderLayer)
+                && _dataLinkFlashSpiderScatter != null)
+            {
+                spiderLayer.DimExcept(_dataLinkFlashSpiderScatter);
+            }
+        }
+
+        /// <summary>
+        /// 散点选中外观：图解模式保持原色；数据模式整组套用未选中遮罩，选中点由闪烁标记表现。
+        /// </summary>
+        private void ApplyScatterSelectionVisual(ScatterLayerItemViewModel scatterLayer)
+        {
+            if (scatterLayer == null)
+            {
+                return;
+            }
+
+            scatterLayer.Restore();
+
+            if (RibbonTabIndex == 1 && ReferenceEquals(_dataLinkFlashScatterStyle, scatterLayer))
+            {
+                scatterLayer.Dim();
+            }
+        }
+
+        /// <summary>
+        /// 数据模式选中后：其他绘图对象施加与图解模板相同的未选中半透明遮罩。
+        /// </summary>
+        private void ApplyDataModeUnselectedMask()
+        {
+            if (RibbonTabIndex != 1 || WpfPlot1 == null)
+            {
+                return;
+            }
+
+            LayerItemViewModel? keepLayer =
+                _dataLinkFlashSpiderStyle
+                ?? (LayerItemViewModel?)_dataLinkFlashScatterStyle
+                ?? _selectedLayer;
+
+            if (keepLayer == null || keepLayer is CategoryLayerItemViewModel)
+            {
+                return;
+            }
+
+            bool flashActive = _dataLinkFlashSpiderStyle != null || _dataLinkFlashScatterStyle != null;
+
+            foreach (var layer in FlattenTree(LayerTree).OfType<IPlotLayer>())
+            {
+                // 数据模式闪烁时仅保留闪烁对象为“选中”，其余（含其他数据系列）一律遮罩
+                bool isKeep = flashActive
+                    ? ReferenceEquals(layer, _dataLinkFlashSpiderStyle)
+                        || ReferenceEquals(layer, _dataLinkFlashScatterStyle)
+                    : ReferenceEquals(layer, keepLayer)
+                        || (layer is LayerItemViewModel vm && SelectedLayers.Contains(vm));
+
+                if (!isKeep)
+                {
+                    // 先恢复再遮罩，避免多次 Dim 叠加透明度
+                    layer.Restore();
+                    layer.Dim();
+                    continue;
+                }
+
+                if (layer is SpiderSampleLayerItemViewModel spiderLayer)
+                {
+                    ApplySpiderSelectionVisual(spiderLayer);
+                    if (ReferenceEquals(_dataLinkFlashSpiderStyle, spiderLayer)
+                        && _dataLinkFlashSpiderScatter != null)
+                    {
+                        ApplySpiderSeriesFlashColor(
+                            _dataLinkFlashIsRed ? DataLinkFlashRed : DataLinkFlashBlue);
+                    }
+                }
+                else if (layer is ScatterLayerItemViewModel scatterLayer)
+                {
+                    ApplyScatterSelectionVisual(scatterLayer);
+                }
+                else
+                {
+                    layer.Restore();
+                }
             }
         }
 
@@ -1722,13 +1931,20 @@ namespace GeoChemistryNexus.ViewModels
                 _targetPointDefinition.IsHighlighted = false;
             }
 
-            // 进入拾取模式
-            IsPickingPointMode = true;
+            // 先设高亮，再进入拾取模式，让吸附点标记能显示红色目标点。
+            // 此处不能全量 RefreshPlotFromLayers：笛卡尔图 Clear 重建会导致视域微跳，
+            // 且 IsHighlighted 还会间接触发 preserveAxisLimits:false 的延迟重绘。
             _targetPointDefinition = message.Value;
-
-            // 高亮目标点
             _targetPointDefinition.IsHighlighted = true;
-            RefreshPlotFromLayers(true);
+
+            if (!IsPickingPointMode)
+            {
+                IsPickingPointMode = true;
+            }
+            else
+            {
+                UpdatePotentialSnapPoints(true);
+            }
 
             // 提示用户-请在绘图区域点击以拾取坐标
             MessageHelper.Info(LanguageService.Instance["click_to_pick_coordinates"]);
@@ -1743,12 +1959,331 @@ namespace GeoChemistryNexus.ViewModels
         /// <summary>
         /// 高亮显示指定的图层
         /// </summary>
-        private void HighlightLayer(LayerItemViewModel layer)
+        /// <param name="hoveredScatterPointIndex">数据模式散点悬停时命中的点索引；非整组标红。</param>
+        private void HighlightLayer(
+            LayerItemViewModel layer,
+            ScottPlot.IPlottable? hoveredPlottable = null,
+            int hoveredScatterPointIndex = -1)
         {
+            if (layer is SpiderSampleLayerItemViewModel spiderLayer)
+            {
+                ClearScatterHoverPreview();
+
+                if (RibbonTabIndex == 1)
+                {
+                    // 数据模式悬停：固态红；选中闪烁线用 preserve 保住；其余保持未选中遮罩
+                    var target = hoveredPlottable ?? _lastHoveredPlottable;
+                    bool dimOthers = _dataLinkFlashSpiderStyle != null || _selectedLayer != null;
+                    spiderLayer.ApplyHoverPreviewColor(
+                        target,
+                        ScottPlot.Colors.Red,
+                        preserveFlashPlottable: _dataLinkFlashSpiderScatter,
+                        dimOthers: dimOthers);
+
+                    // 若悬停的不是选中线，立刻补一帧闪烁色，避免等定时器才恢复
+                    if (ReferenceEquals(_dataLinkFlashSpiderStyle, spiderLayer)
+                        && _dataLinkFlashSpiderScatter != null
+                        && !ReferenceEquals(target, _dataLinkFlashSpiderScatter))
+                    {
+                        ApplySpiderSeriesFlashColor(
+                            _dataLinkFlashIsRed ? DataLinkFlashRed : DataLinkFlashBlue);
+                    }
+
+                    return;
+                }
+
+                // 非数据模式：整组标红
+                spiderLayer.Highlight();
+                return;
+            }
+
+            if (layer is ScatterLayerItemViewModel scatterLayer)
+            {
+                if (RibbonTabIndex == 1)
+                {
+                    // 数据模式：仅悬停数据点标红，不整组 Highlight
+                    ApplyScatterDataModeHover(scatterLayer, hoveredScatterPointIndex);
+                    return;
+                }
+
+                ClearScatterHoverPreview();
+                scatterLayer.Highlight();
+                return;
+            }
+
+            ClearScatterHoverPreview();
             if (layer is IPlotLayer plotLayer)
             {
                 plotLayer.Highlight();
             }
+        }
+
+        /// <summary>
+        /// 数据模式散点悬停：仅当前命中点显示固态红（覆盖标记），分组本身保持原色/遮罩。
+        /// </summary>
+        private void ApplyScatterDataModeHover(ScatterLayerItemViewModel scatterLayer, int pointIndex)
+        {
+            if (scatterLayer == null || pointIndex < 0 || pointIndex >= scatterLayer.DataPoints.Count)
+            {
+                ClearScatterHoverPreview();
+                return;
+            }
+
+            int flashIndex = ReferenceEquals(_dataLinkFlashScatterStyle, scatterLayer)
+                ? FindScatterPointIndexByFlashMarker(scatterLayer)
+                : -1;
+
+            if (flashIndex >= 0 && flashIndex == pointIndex)
+            {
+                // 悬停在已选中闪烁点：用闪烁标记显示固态红，不另叠覆盖标记
+                ClearScatterHoverPreview();
+                if (_dataLinkFlashMarker != null)
+                {
+                    _dataLinkFlashIsRed = true;
+                    ApplyDataLinkFlashMarkerAppearance(DataLinkFlashRed);
+                    _dataLinkFlashMarker.IsVisible = true;
+                }
+
+                _lastHoveredScatterPointIndex = pointIndex;
+                return;
+            }
+
+            ShowScatterHoverMarker(scatterLayer, pointIndex);
+            _lastHoveredScatterPointIndex = pointIndex;
+        }
+
+        private void ShowScatterHoverMarker(ScatterLayerItemViewModel scatterLayer, int pointIndex)
+        {
+            if (WpfPlot1 == null || scatterLayer?.ScatterDefinition == null)
+            {
+                return;
+            }
+
+            EnsureScatterHoverMarker();
+            if (_scatterHoverMarker == null)
+            {
+                return;
+            }
+
+            // 提到最上层，避免被散点层遮挡
+            WpfPlot1.Plot.Remove(_scatterHoverMarker);
+            WpfPlot1.Plot.Add.Plottable(_scatterHoverMarker);
+
+            var def = scatterLayer.ScatterDefinition;
+            var color = ScottPlot.Colors.Red;
+            PlotMarkerStyleApplier.Apply(
+                _scatterHoverMarker.MarkerStyle,
+                def.MarkerShape,
+                color,
+                def.StrokeWidth,
+                color);
+            _scatterHoverMarker.Size = def.Size > 0 ? def.Size : 10;
+            _scatterHoverMarker.Location = PlotTransformHelper.ToRenderCoordinates(
+                WpfPlot1.Plot,
+                scatterLayer.DataPoints[pointIndex]);
+            _scatterHoverMarker.IsVisible = true;
+        }
+
+        private void EnsureScatterHoverMarker()
+        {
+            if (WpfPlot1 == null)
+            {
+                return;
+            }
+
+            bool existsInPlot = _scatterHoverMarker != null
+                && WpfPlot1.Plot.GetPlottables().Contains(_scatterHoverMarker);
+            if (existsInPlot)
+            {
+                return;
+            }
+
+            _scatterHoverMarker = WpfPlot1.Plot.Add.Marker(0, 0);
+            _scatterHoverMarker.IsVisible = false;
+            _scatterHoverMarker.Size = 10;
+        }
+
+        private void ClearScatterHoverPreview()
+        {
+            if (_scatterHoverMarker != null && _scatterHoverMarker.IsVisible)
+            {
+                _scatterHoverMarker.IsVisible = false;
+            }
+        }
+
+        /// <summary>
+        /// 图解/数据模式切换后，按新模式立刻重套当前悬停样式（避免鼠标未动时残留旧样式）。
+        /// </summary>
+        private void ReapplyCurrentHoverStyleAfterModeChange()
+        {
+            if (_lastHoveredLayer == null || _lastHoveredPlottable == null || WpfPlot1 == null)
+            {
+                return;
+            }
+
+            var layer = _lastHoveredLayer;
+            var plottable = _lastHoveredPlottable;
+            int index = _lastHoveredScatterPointIndex;
+
+            // 先按选中/遮罩状态恢复底色（含清除旧的整组标红或单点覆盖）
+            RestoreLayerToCorrectState(layer);
+
+            bool isDataMode = RibbonTabIndex == 1;
+            bool shouldShowHoverStyle = isDataMode || layer != _selectedLayer;
+            if (!shouldShowHoverStyle)
+            {
+                _lastHoveredScatterPointIndex = -1;
+                WpfPlot1.Refresh();
+                return;
+            }
+
+            if (isDataMode && layer is ScatterLayerItemViewModel scatterLayer)
+            {
+                if (index < 0 && ReferenceEquals(_dataLinkFlashScatterStyle, scatterLayer))
+                {
+                    index = FindScatterPointIndexByFlashMarker(scatterLayer);
+                }
+
+                HighlightLayer(scatterLayer, plottable, index);
+                _lastHoveredScatterPointIndex = index;
+            }
+            else
+            {
+                HighlightLayer(layer, plottable, index);
+            }
+
+            WpfPlot1.Refresh();
+        }
+
+        /// <summary>
+        /// 解析散点图层在指定坐标处命中的数据点索引；未命中返回 -1。
+        /// </summary>
+        private int TryGetScatterHoverPointIndex(
+            ScatterLayerItemViewModel scatterLayer,
+            ScottPlot.IPlottable? plottable,
+            Coordinates mouseCoordinates,
+            float radius = 10)
+        {
+            if (scatterLayer == null
+                || plottable is not ScottPlot.Plottables.Scatter scatter
+                || scatter is not IGetNearest hittable
+                || WpfPlot1 == null)
+            {
+                return -1;
+            }
+
+            DataPoint nearest = hittable.GetNearest(mouseCoordinates, WpfPlot1.Plot.LastRender, radius);
+            if (!nearest.IsReal || nearest.Index < 0 || nearest.Index >= scatterLayer.DataPoints.Count)
+            {
+                return -1;
+            }
+
+            return nearest.Index;
+        }
+
+        /// <summary>
+        /// 判断鼠标是否位于 ScottPlot 图例区域内（图例绘制在数据区之上，需单独命中）
+        /// </summary>
+        private bool IsMouseOverLegend(Pixel pixel)
+        {
+            var legend = WpfPlot1.Plot.Legend;
+            if (!legend.IsVisible)
+                return false;
+
+            var items = legend.GetItems();
+            if (items.Length == 0)
+                return false;
+
+            var dataRectAfterMargin = WpfPlot1.Plot.RenderManager.LastRender.DataRect.Contract(legend.Margin);
+            var tightLayout = legend.GetLayout(dataRectAfterMargin.Size);
+            if (tightLayout.LegendRect.Width <= 0 || tightLayout.LegendRect.Height <= 0)
+                return false;
+
+            var legendRect = tightLayout.LegendRect.AlignedInside(dataRectAfterMargin, legend.Alignment);
+            return legendRect.Contains(pixel);
+        }
+
+        /// <summary>
+        /// 判断鼠标是否位于可打开标题属性面板的区域
+        /// </summary>
+        private bool IsMouseOverTitle(Pixel pixel)
+        {
+            if (!WpfPlot1.Plot.Axes.Title.IsVisible ||
+                string.IsNullOrEmpty(WpfPlot1.Plot.Axes.Title.Label.Text))
+            {
+                return false;
+            }
+
+            var layout = WpfPlot1.Plot.RenderManager.LastRender.DataRect;
+            if (pixel.Y >= layout.Top * 0.6)
+                return false;
+
+            // 三元图标题命中仅看上边距；笛卡尔图还需落在左右边距之间
+            if (BaseMapType == "Ternary")
+                return true;
+
+            return pixel.X > layout.Left && pixel.X < layout.Right;
+        }
+
+        /// <summary>
+        /// 判断鼠标是否位于可打开坐标轴属性面板的区域
+        /// </summary>
+        private bool IsMouseOverAxis(Pixel pixel)
+        {
+            if (BaseMapType == "Ternary")
+            {
+                Coordinates cA = new Coordinates(0, 0);
+                Coordinates cB = new Coordinates(1, 0);
+                Coordinates cC = new Coordinates(0.5, Math.Sqrt(3) / 2);
+                Pixel pA = WpfPlot1.Plot.GetPixel(cA);
+                Pixel pB = WpfPlot1.Plot.GetPixel(cB);
+                Pixel pC = WpfPlot1.Plot.GetPixel(cC);
+
+                var ternaryPlot = WpfPlot1.Plot.GetPlottables()
+                    .OfType<ScottPlot.Plottables.TriangularAxis>()
+                    .FirstOrDefault();
+
+                double GetTernaryAxisHitScore(double dist, Pixel start, Pixel end, Pixel opposite, ScottPlot.TriangularAxisEdge? edge)
+                {
+                    if (edge != null)
+                    {
+                        Pixel mid = new((start.X + end.X) / 2, (start.Y + end.Y) / 2);
+                        Pixel labelPos = new(mid.X + edge.LabelStyle.OffsetX, mid.Y + edge.LabelStyle.OffsetY);
+                        double distLabel = Math.Sqrt(Math.Pow(pixel.X - labelPos.X, 2) + Math.Pow(pixel.Y - labelPos.Y, 2));
+                        if (distLabel < 50) return 0.1;
+                    }
+
+                    if (dist < 20) return dist;
+
+                    double cpRef = (end.X - start.X) * (opposite.Y - start.Y) - (end.Y - start.Y) * (opposite.X - start.X);
+                    double cpMouse = (end.X - start.X) * (pixel.Y - start.Y) - (end.Y - start.Y) * (pixel.X - start.X);
+                    bool isOutside = Math.Sign(cpRef) != Math.Sign(cpMouse);
+                    if (isOutside && dist < 60) return dist;
+
+                    return double.MaxValue;
+                }
+
+                double scoreBottom = GetTernaryAxisHitScore(DistancePointToSegment(pixel, pA, pB), pA, pB, pC, ternaryPlot?.Bottom);
+                double scoreLeft = GetTernaryAxisHitScore(DistancePointToSegment(pixel, pA, pC), pA, pC, pB, ternaryPlot?.Left);
+                double scoreRight = GetTernaryAxisHitScore(DistancePointToSegment(pixel, pB, pC), pB, pC, pA, ternaryPlot?.Right);
+
+                return Math.Min(scoreBottom, Math.Min(scoreLeft, scoreRight)) < double.MaxValue;
+            }
+
+            var layout = WpfPlot1.Plot.RenderManager.LastRender.DataRect;
+            bool inLeft = pixel.X < layout.Left && pixel.Y > layout.Top && pixel.Y < layout.Bottom;
+            bool inRight = pixel.X > layout.Right && pixel.Y > layout.Top && pixel.Y < layout.Bottom;
+            bool inBottom = pixel.Y > layout.Bottom && pixel.X > layout.Left && pixel.X < layout.Right;
+            bool inTop = pixel.Y < layout.Top && pixel.X > layout.Left && pixel.X < layout.Right && !IsMouseOverTitle(pixel);
+            return inLeft || inRight || inBottom || inTop;
+        }
+
+        /// <summary>
+        /// 鼠标是否位于可点击打开属性面板的非图层热区（图例/标题/坐标轴）
+        /// </summary>
+        private bool IsMouseOverPropertyPanelHotspot(Pixel pixel)
+        {
+            return IsMouseOverLegend(pixel) || IsMouseOverTitle(pixel) || IsMouseOverAxis(pixel);
         }
 
         /// <summary>
@@ -2019,12 +2554,15 @@ namespace GeoChemistryNexus.ViewModels
             {
                 MessageHelper.Warning(LanguageService.Instance["script_not_defined_in_template"]);
                 worksheet.Reset(); // 清空表格
+                worksheet.RowCount = WorksheetDefaultsHelper.GetDefaultRowCount(WorksheetDefaultsHelper.DiagramConfigKey);
                 RestoreWorksheetSelectionToSafeCell(worksheet);
                 UpdateSelectedCellDisplayText(0, 0);
+                RequestDataGridScrollReset();
                 return;
             }
 
             worksheet.Reset(); // 重置表格内容
+            worksheet.RowCount = WorksheetDefaultsHelper.GetDefaultRowCount(WorksheetDefaultsHelper.DiagramConfigKey);
 
             // 脚本数值列 + Category 分组列（Category 不参与脚本计算）
             var dataSeriesColumns = PlotDataGridHelper.ParseScriptDataColumns(CurrentTemplate.Script.RequiredDataSeries);
@@ -2032,8 +2570,10 @@ namespace GeoChemistryNexus.ViewModels
             {
                 MessageHelper.Warning(LanguageService.Instance["script_not_defined_in_template"]);
                 worksheet.Reset();
+                worksheet.RowCount = WorksheetDefaultsHelper.GetDefaultRowCount(WorksheetDefaultsHelper.DiagramConfigKey);
                 RestoreWorksheetSelectionToSafeCell(worksheet);
                 UpdateSelectedCellDisplayText(0, 0);
+                RequestDataGridScrollReset();
                 return;
             }
 
@@ -2077,6 +2617,15 @@ namespace GeoChemistryNexus.ViewModels
 
             RestoreWorksheetSelectionToSafeCell(worksheet);
             UpdateSelectedCellDisplayText(0, 0);
+            RequestDataGridScrollReset();
+        }
+
+        /// <summary>
+        /// 通知 View 将数据表格滚动条复位到左上角
+        /// </summary>
+        private void RequestDataGridScrollReset()
+        {
+            GridScrollResetToken++;
         }
 
         /// <summary>
@@ -2107,65 +2656,6 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
-        /// <summary>
-        /// 鼠标左键抬起事件，用于确定绘图对象的起点和终点
-        /// </summary>
-        private void UpdateSelectedDataPointMarker(Coordinates location)
-        {
-            if (WpfPlot1 == null || _selectedDataPointMarker == null) return;
-
-            if (BaseMapType == "Ternary")
-            {
-                HideSelectedDataPointMarker(refresh: true);
-                return;
-            }
-
-            // 移除并重新添加，确保标记显示在最上层
-            WpfPlot1.Plot.Remove(_selectedDataPointMarker);
-            WpfPlot1.Plot.Add.Plottable(_selectedDataPointMarker);
-
-            // 如果有坐标标签，也移除并重新添加
-            if (_selectedDataPointLabel != null)
-            {
-                WpfPlot1.Plot.Remove(_selectedDataPointLabel);
-                WpfPlot1.Plot.Add.Plottable(_selectedDataPointLabel);
-            }
-
-            // 将真实坐标转换为绘图坐标（处理对数轴）
-            var renderLocation = PlotTransformHelper.ToRenderCoordinates(WpfPlot1.Plot, location);
-
-            _selectedDataPointMarker.Location = renderLocation;
-            _selectedDataPointMarker.IsVisible = true;
-
-            // 更新坐标标签
-            if (_selectedDataPointLabel != null)
-            {
-                _selectedDataPointLabel.LabelText = $"({location.X:F4}, {location.Y:F4})";
-                _selectedDataPointLabel.Location = renderLocation;
-                _selectedDataPointLabel.IsVisible = true;
-            }
-
-            WpfPlot1.Refresh();
-        }
-
-        private void HideSelectedDataPointMarker(bool refresh = false)
-        {
-            if (_selectedDataPointMarker != null)
-            {
-                _selectedDataPointMarker.IsVisible = false;
-            }
-
-            if (_selectedDataPointLabel != null)
-            {
-                _selectedDataPointLabel.IsVisible = false;
-            }
-
-            if (refresh)
-            {
-                WpfPlot1?.Refresh();
-            }
-        }
-
         private void AttachDataGridWorksheetEvents(Worksheet? worksheet)
         {
             if (worksheet == null)
@@ -2176,6 +2666,7 @@ namespace GeoChemistryNexus.ViewModels
             worksheet.BeforePaste += CurrentWorksheet_BeforePaste;
             worksheet.SelectionRangeChanged += CurrentWorksheet_SelectionRangeChanged;
             worksheet.CellDataChanged += CurrentWorksheet_CellDataChanged;
+            worksheet.BeforeCellKeyDown += CurrentWorksheet_BeforeCellKeyDown;
             worksheet.AfterCellKeyDown += CurrentWorksheet_AfterCellKeyDown;
             worksheet.RangeDataChanged += CurrentWorksheet_RangeDataChanged;
         }
@@ -2185,7 +2676,74 @@ namespace GeoChemistryNexus.ViewModels
             // 禁用数据表格变更时的自动投图。
             // 仅保留手动执行投图命令的入口。
             UpdateSelectedCellDisplayText();
+            if (_isSyncingLayerNameToDataGrid)
+            {
+                return;
+            }
+
             MarkDataGridPlotRefreshPending();
+        }
+
+        private void CurrentWorksheet_BeforeCellKeyDown(object? sender, unvell.ReoGrid.Events.BeforeCellKeyDownEventArgs e)
+        {
+            // 数据表格焦点下，WPF Page.InputBindings 可能收不到模式切换快捷键，这里做兜底
+            var keyCode = e.KeyCode;
+            if (keyCode == (unvell.ReoGrid.Interaction.KeyCode.Control | unvell.ReoGrid.Interaction.KeyCode.Tab))
+            {
+                if (CyclePlotModeCommand.CanExecute(null))
+                {
+                    CyclePlotModeCommand.Execute(null);
+                }
+                e.IsCancelled = true;
+                return;
+            }
+
+            if (keyCode == (unvell.ReoGrid.Interaction.KeyCode.Alt | unvell.ReoGrid.Interaction.KeyCode.D1))
+            {
+                if (SwitchToDiagramModeCommand.CanExecute(null))
+                {
+                    SwitchToDiagramModeCommand.Execute(null);
+                }
+                e.IsCancelled = true;
+                return;
+            }
+
+            if (keyCode == (unvell.ReoGrid.Interaction.KeyCode.Alt | unvell.ReoGrid.Interaction.KeyCode.D2))
+            {
+                if (SwitchToDataModeCommand.CanExecute(null))
+                {
+                    SwitchToDataModeCommand.Execute(null);
+                }
+                e.IsCancelled = true;
+                return;
+            }
+
+            if (keyCode == (unvell.ReoGrid.Interaction.KeyCode.Alt | unvell.ReoGrid.Interaction.KeyCode.D3))
+            {
+                if (SwitchToEditModeCommand.CanExecute(null))
+                {
+                    SwitchToEditModeCommand.Execute(null);
+                }
+                e.IsCancelled = true;
+                return;
+            }
+
+            // 数据模式：有选中数据对象时，Delete/Back 删除绘图对象并清空对应数据（不删行）
+            if (RibbonTabIndex == 1
+                && keyCode is unvell.ReoGrid.Interaction.KeyCode.Delete or unvell.ReoGrid.Interaction.KeyCode.Back)
+            {
+                var worksheet = sender as Worksheet ?? _dataGrid?.CurrentWorksheet;
+                if (worksheet?.IsEditing == true)
+                {
+                    return;
+                }
+
+                if (CanDeleteSelectedDataObjectInDataMode())
+                {
+                    DeleteSelectedDataObjectInDataMode();
+                    e.IsCancelled = true;
+                }
+            }
         }
 
         private void CurrentWorksheet_AfterCellKeyDown(object? sender, unvell.ReoGrid.Events.AfterCellKeyDownEventArgs e)
@@ -2198,6 +2756,11 @@ namespace GeoChemistryNexus.ViewModels
 
         private void CurrentWorksheet_RangeDataChanged(object? sender, unvell.ReoGrid.Events.RangeEventArgs e)
         {
+            if (_isSyncingLayerNameToDataGrid)
+            {
+                return;
+            }
+
             MarkDataGridPlotRefreshPending();
         }
 
@@ -2209,19 +2772,14 @@ namespace GeoChemistryNexus.ViewModels
             {
                 _isSyncingSelection = true;
                 UpdateSelectedCellDisplayText(e.Range.Row, e.Range.Col);
+                RestoreDataGridSelectionStyleIfNeeded();
                 if (IsDataSelectionLinkEnabled)
                 {
                     HighlightDataPointByRowIndex(e.Range.Row);
                 }
-                else if (_selectedDataPointMarker.IsVisible)
+                else
                 {
-                    _selectedDataPointMarker.IsVisible = false;
-                    if (_selectedDataPointLabel != null)
-                    {
-                        _selectedDataPointLabel.IsVisible = false;
-                    }
-
-                    WpfPlot1.Refresh();
+                    StopDataLinkFlash();
                 }
                 
                 // 计算并显示当前选中行的计算结果
@@ -2352,101 +2910,165 @@ namespace GeoChemistryNexus.ViewModels
         {
             if (WpfPlot1 == null) return;
 
-            bool found = false;
+            if (TryStartDataModeFlashForScatterRow(rowIndex, selectLayer: true))
+            {
+                return;
+            }
 
-            // 遍历所有 ScatterLayer
+            if (TryStartDataModeFlashForSpiderRow(rowIndex, selectLayer: true))
+            {
+                return;
+            }
+
+            StopDataLinkFlash();
+        }
+
+        /// <summary>
+        /// 进入数据模式时，将当前选中状态同步为单点闪烁样式。
+        /// </summary>
+        private void ApplyDataModeSelectionVisual()
+        {
+            if (WpfPlot1 == null)
+            {
+                return;
+            }
+
+            // 1) 优先使用数据表格当前选中行
+            var worksheet = _dataGrid?.CurrentWorksheet
+                ?? (_dataGrid != null && _dataGrid.Worksheets.Count > 0 ? _dataGrid.Worksheets[0] : null);
+            if (worksheet != null)
+            {
+                var range = worksheet.SelectionRange;
+                if (!range.IsEmpty
+                    && range.Row >= 0
+                    && range.Row < worksheet.RowCount
+                    && worksheet.SelectionStyle != WorksheetSelectionStyle.None)
+                {
+                    if (TryStartDataModeFlashForScatterRow(range.Row, selectLayer: true)
+                        || TryStartDataModeFlashForSpiderRow(range.Row, selectLayer: true))
+                    {
+                        return;
+                    }
+                }
+            }
+
+            // 2) 表格无有效行时，用当前选中的散点图层：选中其首个数据点并闪烁
+            if (_selectedLayer is ScatterLayerItemViewModel scatterLayer
+                && scatterLayer.IsVisible
+                && scatterLayer.DataPoints.Count > 0
+                && scatterLayer.OriginalRowIndices != null
+                && scatterLayer.OriginalRowIndices.Count > 0)
+            {
+                int rowIndex = scatterLayer.OriginalRowIndices[0];
+                try
+                {
+                    _isSyncingSelection = true;
+                    SelectReoGridRow(rowIndex);
+                }
+                finally
+                {
+                    _isSyncingSelection = false;
+                }
+
+                StartDataLinkFlash(scatterLayer.DataPoints[0], scatterLayer);
+                return;
+            }
+
+            // 3) 当前选中蛛网图样品：闪烁并同步表格行
+            if (_selectedLayer is SpiderSampleLayerItemViewModel spiderLayer && spiderLayer.IsVisible)
+            {
+                var rows = spiderLayer.GetSelectedRowIndices();
+                if (rows.Count > 0)
+                {
+                    try
+                    {
+                        _isSyncingSelection = true;
+                        SelectReoGridRows(rows);
+                    }
+                    finally
+                    {
+                        _isSyncingSelection = false;
+                    }
+
+                    if (spiderLayer.TryGetFlashCoordinate(out var flashCoord))
+                    {
+                        StartDataLinkFlash(flashCoord, spiderLayer, locationIsRenderCoords: true);
+                        return;
+                    }
+                }
+            }
+
+            StopDataLinkFlash();
+        }
+
+        private bool TryStartDataModeFlashForScatterRow(int rowIndex, bool selectLayer)
+        {
             foreach (var layer in FlattenTree(LayerTree).OfType<ScatterLayerItemViewModel>())
             {
-                if (!layer.IsVisible || layer.OriginalRowIndices == null) continue;
+                if (!layer.IsVisible || layer.OriginalRowIndices == null)
+                {
+                    continue;
+                }
 
-                // 查找该行号在图层中的索引
                 int indexInLayer = layer.OriginalRowIndices.IndexOf(rowIndex);
-                if (indexInLayer >= 0 && indexInLayer < layer.DataPoints.Count)
+                if (indexInLayer < 0 || indexInLayer >= layer.DataPoints.Count)
                 {
-                    // 找到对应的点
-                    var point = layer.DataPoints[indexInLayer];
-
-                    // 更新并显示高亮标记
-                    UpdateSelectedDataPointMarker(point);
-
-                    // 选中对应的图层
-                    if (SelectLayerCommand.CanExecute(layer))
-                    {
-                        // 临时禁用 Sync，防止反向触发
-                        SelectLayerCommand.Execute(layer);
-                    }
-
-                    found = true;
-                    break;
+                    continue;
                 }
+
+                if (selectLayer && SelectLayerCommand.CanExecute(layer))
+                {
+                    SelectLayerCommand.Execute(layer);
+                }
+
+                StartDataLinkFlash(layer.DataPoints[indexInLayer], layer);
+                return true;
             }
 
-            if (!found)
-            {
-                foreach (var layer in FlattenTree(LayerTree).OfType<SpiderSampleLayerItemViewModel>())
-                {
-                    if (!layer.IsVisible || !layer.ContainsSourceRowIndex(rowIndex))
-                    {
-                        continue;
-                    }
-
-                    layer.TrySetActiveByRowIndex(rowIndex);
-
-                    if (_selectedDataPointMarker.IsVisible)
-                    {
-                        _selectedDataPointMarker.IsVisible = false;
-                        if (_selectedDataPointLabel != null)
-                        {
-                            _selectedDataPointLabel.IsVisible = false;
-                        }
-                    }
-
-                    if (SelectLayerCommand.CanExecute(layer))
-                    {
-                        SelectLayerCommand.Execute(layer);
-                    }
-
-                    layer.Highlight();
-                    found = true;
-                    break;
-                }
-            }
-
-            if (!found)
-            {
-                // 如果没找到（比如选中了空行），隐藏高亮标记
-                if (_selectedDataPointMarker.IsVisible)
-                {
-                    _selectedDataPointMarker.IsVisible = false;
-                    if (_selectedDataPointLabel != null)
-                    {
-                        _selectedDataPointLabel.IsVisible = false;
-                    }
-                    WpfPlot1.Refresh();
-                }
-            }
+            return false;
         }
 
-        private void ClearReoGridSelection()
+        private bool TryStartDataModeFlashForSpiderRow(int rowIndex, bool selectLayer)
         {
-            if (_dataGrid == null || _dataGrid.Worksheets.Count == 0) return;
-            var sheet = _dataGrid.Worksheets[0];
-
-            // 隐藏绘图区的高亮标记
-            if (_selectedDataPointMarker.IsVisible)
+            foreach (var layer in FlattenTree(LayerTree).OfType<SpiderSampleLayerItemViewModel>())
             {
-                _selectedDataPointMarker.IsVisible = false;
-                if (_selectedDataPointLabel != null)
+                if (!layer.IsVisible || !layer.ContainsSourceRowIndex(rowIndex))
                 {
-                    _selectedDataPointLabel.IsVisible = false;
+                    continue;
                 }
-                WpfPlot1.Refresh();
+
+                layer.TrySetActiveByRowIndex(rowIndex);
+
+                if (selectLayer && SelectLayerCommand.CanExecute(layer))
+                {
+                    // 必须同步选中，否则 SelectLayer 会 ResetActivePlottable 到组内首条，
+                    // 导致图解↔数据模式切换后闪烁跑到错误样品线上。
+                    try
+                    {
+                        _isSyncingSelection = true;
+                        SelectLayerCommand.Execute(layer);
+                    }
+                    finally
+                    {
+                        _isSyncingSelection = false;
+                    }
+                }
+
+                if (layer.TryGetFlashCoordinate(out var flashCoord))
+                {
+                    StartDataLinkFlash(flashCoord, layer, locationIsRenderCoords: true);
+                    return true;
+                }
+
+                return false;
             }
+
+            return false;
         }
 
-        private bool SelectDataPointAtMouse(Coordinates mouseCoordinates)
+        private bool SelectDataPointAtMouse(Coordinates mouseCoordinates, Pixel? mousePixel = null)
         {
-            // 遍历所有 ScatterLayer
+            // 散点图：按数据点命中
             foreach (var layer in FlattenTree(LayerTree).OfType<ScatterLayerItemViewModel>())
             {
                 if (!layer.IsVisible || !(layer.Plottable is ScottPlot.Plottables.Scatter scatter)) continue;
@@ -2461,6 +3083,7 @@ namespace GeoChemistryNexus.ViewModels
                         if (layer.OriginalRowIndices != null && index >= 0 && index < layer.OriginalRowIndices.Count)
                         {
                             int originalRowIndex = layer.OriginalRowIndices[index];
+                            bool isDataMode = RibbonTabIndex == 1;
 
                             try
                             {
@@ -2472,28 +3095,164 @@ namespace GeoChemistryNexus.ViewModels
                                 _isSyncingSelection = false;
                             }
 
-                            // 显示高亮标记
-                            UpdateSelectedDataPointMarker(layer.DataPoints[index]);
+                            if (isDataMode)
+                            {
+                                // 数据模式：选中点闪烁 + 表格选中对应行
+                                // 开启联动时同时选中图层（属性面板/图层树同步）
+                                if (IsDataSelectionLinkEnabled && SelectLayerCommand.CanExecute(layer))
+                                {
+                                    SelectLayerCommand.Execute(layer);
+                                }
 
-                            // 同时也选中图层
-                            if (SelectLayerCommand.CanExecute(layer))
-                                SelectLayerCommand.Execute(layer);
+                                StartDataLinkFlash(layer.DataPoints[index], layer);
+                            }
+                            else
+                            {
+                                // 非数据模式：按分组使用默认绘图对象选中样式
+                                StopDataLinkFlash();
+                                if (SelectLayerCommand.CanExecute(layer))
+                                {
+                                    SelectLayerCommand.Execute(layer);
+                                }
+                            }
 
                             return true; // 找到一个点后即停止
                         }
                     }
                 }
             }
+
+            // 蛛网图：与悬停同一套命中（优先像素命中），避免点选与悬浮错位
+            if (TrySelectSpiderSampleAtMouse(mouseCoordinates, mousePixel))
+            {
+                return true;
+            }
+
             return false;
+        }
+
+        /// <summary>
+        /// 蛛网图点选：数据模式下优先使用当前悬停的红色线条，保证“所见即所点”。
+        /// </summary>
+        private bool TrySelectSpiderSampleAtMouse(Coordinates mouseCoordinates, Pixel? mousePixel)
+        {
+            SpiderSampleLayerItemViewModel? hitLayer = null;
+            ScottPlot.IPlottable? hitPlottable = null;
+            bool isDataMode = RibbonTabIndex == 1;
+
+            // 数据模式：优先采用当前悬浮的红色线条（与用户看到的悬停样式一致）
+            if (isDataMode
+                && _lastHoveredLayer is SpiderSampleLayerItemViewModel hoveredLayer
+                && hoveredLayer.IsVisible
+                && _lastHoveredPlottable != null
+                && hoveredLayer.ContainsPlottable(_lastHoveredPlottable))
+            {
+                hitLayer = hoveredLayer;
+                hitPlottable = _lastHoveredPlottable;
+            }
+
+            // 回退：按点击像素命中（含折线，与 GetPlottableAtPixel 悬停算法一致）
+            if (hitLayer == null && mousePixel.HasValue)
+            {
+                var plottableAtPixel = GetPlottableAtPixel(mousePixel.Value, 10);
+                if (plottableAtPixel != null)
+                {
+                    var layer = FindLayerByPlottable(plottableAtPixel);
+                    if (layer is SpiderSampleLayerItemViewModel spiderLayer && spiderLayer.IsVisible)
+                    {
+                        hitLayer = spiderLayer;
+                        hitPlottable = plottableAtPixel;
+                    }
+                }
+            }
+
+            // 再回退：按最近顶点搜索
+            if (hitLayer == null)
+            {
+                foreach (var layer in FlattenTree(LayerTree).OfType<SpiderSampleLayerItemViewModel>())
+                {
+                    if (!layer.IsVisible)
+                    {
+                        continue;
+                    }
+
+                    if (layer.TryHitNearPoint(
+                            mouseCoordinates,
+                            WpfPlot1.Plot.LastRender,
+                            10,
+                            out _,
+                            out _,
+                            out _))
+                    {
+                        hitLayer = layer;
+                        hitPlottable = layer.Plottable;
+                        break;
+                    }
+                }
+            }
+
+            if (hitLayer == null || hitPlottable == null)
+            {
+                return false;
+            }
+
+            hitLayer.SetActivePlottable(hitPlottable);
+
+            var rowIndices = hitLayer.GetSelectedRowIndices();
+            if (rowIndices.Count == 0)
+            {
+                return false;
+            }
+
+            int sourceRowIndex = rowIndices[0];
+
+            try
+            {
+                _isSyncingSelection = true;
+                SelectReoGridRow(sourceRowIndex);
+            }
+            finally
+            {
+                _isSyncingSelection = false;
+            }
+
+            if (isDataMode)
+            {
+                // 数据模式：选中该线条 → 闪烁；并选中对应数据行（上方已完成）
+                var activePlottable = hitPlottable;
+                if (SelectLayerCommand.CanExecute(hitLayer))
+                {
+                    SelectLayerCommand.Execute(hitLayer);
+                }
+
+                hitLayer.SetActivePlottable(activePlottable);
+
+                if (hitLayer.TryGetFlashCoordinate(out var flashCoord))
+                {
+                    StartDataLinkFlash(flashCoord, hitLayer, locationIsRenderCoords: true);
+                }
+            }
+            else
+            {
+                StopDataLinkFlash();
+                if (SelectLayerCommand.CanExecute(hitLayer))
+                {
+                    SelectLayerCommand.Execute(hitLayer);
+                }
+            }
+
+            return true;
         }
 
         private void SelectReoGridRow(int row)
         {
             if (_dataGrid == null || _dataGrid.Worksheets.Count == 0) return;
-            var sheet = _dataGrid.Worksheets[0];
+            var sheet = _dataGrid.CurrentWorksheet ?? _dataGrid.Worksheets[0];
             if (row < 0 || row >= sheet.RowCount) return;
 
+            RestoreDataGridSelectionStyleIfNeeded();
             sheet.SelectionRange = new unvell.ReoGrid.RangePosition(row, 0, 1, sheet.ColumnCount);
+            ScrollReoGridRowIntoView(sheet, row);
         }
 
         private void SelectReoGridRows(IReadOnlyList<int> rows)
@@ -2501,7 +3260,7 @@ namespace GeoChemistryNexus.ViewModels
             if (_dataGrid == null || _dataGrid.Worksheets.Count == 0 || rows == null || rows.Count == 0)
                 return;
 
-            var sheet = _dataGrid.Worksheets[0];
+            var sheet = _dataGrid.CurrentWorksheet ?? _dataGrid.Worksheets[0];
             var validRows = rows
                 .Where(row => row >= 0 && row < sheet.RowCount)
                 .Distinct()
@@ -2510,6 +3269,8 @@ namespace GeoChemistryNexus.ViewModels
 
             if (validRows.Count == 0)
                 return;
+
+            RestoreDataGridSelectionStyleIfNeeded();
 
             if (validRows.Count == 1)
             {
@@ -2524,6 +3285,68 @@ namespace GeoChemistryNexus.ViewModels
             sheet.SelectionRange = isContinuous
                 ? new unvell.ReoGrid.RangePosition(startRow, 0, validRows.Count, sheet.ColumnCount)
                 : new unvell.ReoGrid.RangePosition(startRow, 0, 1, sheet.ColumnCount);
+            ScrollReoGridRowIntoView(sheet, startRow);
+        }
+
+        private void ScrollReoGridRowIntoView(Worksheet sheet, int row)
+        {
+            if (sheet == null || row < 0 || row >= sheet.RowCount)
+            {
+                return;
+            }
+
+            try
+            {
+                // 目标：选中行落在可视区域中上部（约距顶部 30%）
+                int visibleRows = EstimateVisibleRowCount(sheet);
+                int topOffset = Math.Max(1, (int)Math.Round(visibleRows * 0.30));
+                int topRow = Math.Clamp(row - topOffset, 0, Math.Max(0, sheet.RowCount - 1));
+
+                // 先滚到更下方再滚到目标顶部，避免 ScrollToCell 仅做“最小滚动”导致位置不准
+                int probeRow = Math.Min(sheet.RowCount - 1, Math.Max(row, topRow) + visibleRows);
+                sheet.ScrollToCell(probeRow, 0);
+                sheet.ScrollToCell(topRow, 0);
+            }
+            catch
+            {
+                try
+                {
+                    sheet.ScrollToRange(new RangePosition(row, 0, 1, Math.Max(1, sheet.ColumnCount)));
+                }
+                catch
+                {
+                    // 忽略滚动失败，不影响选中
+                }
+            }
+        }
+
+        private int EstimateVisibleRowCount(Worksheet sheet)
+        {
+            double viewportHeight = _dataGrid?.ActualHeight ?? 0;
+            if (viewportHeight <= 0)
+            {
+                viewportHeight = 320;
+            }
+
+            double rowHeight = 20;
+            try
+            {
+                int sampleRow = Math.Clamp(sheet.SelectionRange.Row, 0, Math.Max(0, sheet.RowCount - 1));
+                rowHeight = sheet.GetRowHeight(sampleRow);
+            }
+            catch
+            {
+                // keep default
+            }
+
+            if (rowHeight <= 1)
+            {
+                rowHeight = 20;
+            }
+
+            // 预留表头与边距
+            int count = (int)Math.Floor((viewportHeight - 28) / rowHeight);
+            return Math.Clamp(count, 6, 60);
         }
 
         private void SyncSpiderSelectionToDataGrid(SpiderSampleLayerItemViewModel spiderLayer)
@@ -2575,9 +3398,23 @@ namespace GeoChemistryNexus.ViewModels
             if (validRowIndices.Count == 0)
                 return;
 
-            foreach (var rowIndex in validRowIndices)
+            bool wasPending = IsDataGridPlotRefreshPending;
+            _isSyncingLayerNameToDataGrid = true;
+            try
             {
-                worksheet[rowIndex, columnIndex] = layerName;
+                foreach (var rowIndex in validRowIndices)
+                {
+                    worksheet[rowIndex, columnIndex] = layerName;
+                }
+            }
+            finally
+            {
+                _isSyncingLayerNameToDataGrid = false;
+                // 属性面板改名回写分组列不应留下「请刷新投图」提示
+                if (!wasPending)
+                {
+                    ClearDataGridPlotRefreshPending();
+                }
             }
         }
 
@@ -2603,6 +3440,31 @@ namespace GeoChemistryNexus.ViewModels
                 .ToList();
 
             SyncLayerNameToDataGrid(rowIndices, sampleName, "Category", "Sample");
+        }
+
+        /// <summary>
+        /// 中键按下：以绘图区水平中线为界，左侧切到上一模式，右侧切到下一模式（图解 ↔ 数据 ↔ 编辑）。
+        /// </summary>
+        private void WpfPlot1_MouseDown(object? sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton != MouseButton.Middle || !IsPlotMode)
+                return;
+
+            var mousePos = e.GetPosition(WpfPlot1);
+            double centerX = WpfPlot1.ActualWidth / 2.0;
+
+            if (mousePos.X < centerX)
+            {
+                // 左侧：上一模式（图解←数据←编辑←图解）
+                RibbonTabIndex = (_ribbonTabIndex + 2) % 3;
+            }
+            else
+            {
+                // 右侧：下一模式（图解→数据→编辑→图解）
+                RibbonTabIndex = (_ribbonTabIndex + 1) % 3;
+            }
+
+            e.Handled = true;
         }
 
         private void WpfPlot1_MouseUp(object? sender, MouseButtonEventArgs e)
@@ -2639,13 +3501,15 @@ namespace GeoChemistryNexus.ViewModels
                     // 坐标拾取成功
                     MessageHelper.Success(LanguageService.Instance["coordinates_picked_success"]);
 
-                    // 刷新绘图
+                    // 取消高亮（不触发全量重绘）
+                    _targetPointDefinition.IsHighlighted = false;
+
+                    // X/Y 赋值会排队图层刷新；取消掉，避免随后以 reset limits 覆盖当前视域
+                    CancelPendingPlotRefreshes();
+
+                    // 单次重绘并保留当前轴范围（坐标在轴内时视域不应变化）
                     RefreshPlotFromLayers(true);
                     ReapplySelectionVisualState();
-
-                    // 取消高亮
-                    _targetPointDefinition.IsHighlighted = false;
-                    RefreshPlotFromLayers(true);
                 }
 
                 // 退出拾取模式
@@ -2666,14 +3530,24 @@ namespace GeoChemistryNexus.ViewModels
                 var pointSelectMousePos = e.GetPosition(WpfPlot1);
                 Pixel pointSelectMousePixel = new(pointSelectMousePos.X * dpiScale, pointSelectMousePos.Y * dpiScale);
                 Coordinates pointSelectMouseCoordinates = WpfPlot1.Plot.GetCoordinates(pointSelectMousePixel);
-                if (SelectDataPointAtMouse(pointSelectMouseCoordinates))
+                if (SelectDataPointAtMouse(pointSelectMouseCoordinates, pointSelectMousePixel))
                 {
                     return;
                 }
-                else
+            }
+
+            // 图例绘制在数据区之上：优先于图层命中，打开图例属性面板
+            if (!isDrawingOrAdding && !_isDoubleClickSelectionMode && IsSnapSelectionEnabled)
+            {
+                var legendMousePos = e.GetPosition(WpfPlot1);
+                Pixel legendMousePixel = new(legendMousePos.X * dpiScale, legendMousePos.Y * dpiScale);
+                if (IsMouseOverLegend(legendMousePixel))
                 {
-                    // 如果点击了非数据点区域，尝试取消数据点高亮
-                    ClearReoGridSelection();
+                    if (LegendSettingCommand.CanExecute(null))
+                    {
+                        LegendSettingCommand.Execute(null);
+                    }
+                    return;
                 }
             }
 
@@ -3118,6 +3992,21 @@ namespace GeoChemistryNexus.ViewModels
             bool isDrawingOrAdding = IsPickingPointMode || IsAddingLine || IsAddingArrow || IsAddingPolygon || IsAddingText;
             if (isDrawingOrAdding) return;
 
+            // 双击图例：打开图例属性面板（优先于图层）
+            if (IsSnapSelectionEnabled)
+            {
+                var legendMousePos = e.GetPosition(WpfPlot1);
+                Pixel legendMousePixel = new(legendMousePos.X * dpiScale, legendMousePos.Y * dpiScale);
+                if (IsMouseOverLegend(legendMousePixel))
+                {
+                    if (LegendSettingCommand.CanExecute(null))
+                    {
+                        LegendSettingCommand.Execute(null);
+                    }
+                    return;
+                }
+            }
+
             // 双击选中图层对象
             if (IsSnapSelectionEnabled && _lastHoveredLayer != null)
             {
@@ -3255,11 +4144,10 @@ namespace GeoChemistryNexus.ViewModels
             // 如果正在拾取点，右键取消
             if (IsPickingPointMode)
             {
-                // 取消高亮
+                // 取消高亮；退出拾取模式时 UpdatePotentialSnapPoints 会清吸附标记，无需全量重绘
                 if (_targetPointDefinition != null)
                 {
                     _targetPointDefinition.IsHighlighted = false;
-                    RefreshPlotFromLayers(true);
                 }
         
                 IsPickingPointMode = false;
@@ -3463,6 +4351,13 @@ namespace GeoChemistryNexus.ViewModels
                 // 取消选择
                 CancelSelected();
                 return;
+            }
+
+            // 数据模式下可能只有单点闪烁（未选中图层），右键同样取消闪烁与表格行选中
+            if (_dataLinkFlashMarker?.IsVisible == true)
+            {
+                StopDataLinkFlash();
+                ClearDataGridSelection();
             }
         }
 
@@ -3963,6 +4858,9 @@ namespace GeoChemistryNexus.ViewModels
                     };
                     FavoriteTemplatesNode.Children.Add(node);
                 }
+
+                // 收藏列表来自本地库，需注入服务器哈希/版本，否则“有新版本”无法正确判定
+                ApplyServerMetadataToTemplateNode(FavoriteTemplatesNode);
             }
             catch (Exception ex)
             {
@@ -4013,6 +4911,9 @@ namespace GeoChemistryNexus.ViewModels
                         RecentsTemplatesNode.Children.Add(node);
                     }
                 }
+
+                // 与收藏相同：注入服务器元数据，保证更新状态与官方列表一致
+                ApplyServerMetadataToTemplateNode(RecentsTemplatesNode);
             }
             catch (Exception ex)
             {
@@ -4479,6 +5380,7 @@ namespace GeoChemistryNexus.ViewModels
                 var elements = SpiderDiagramViewModel.ElementOrder;
                 var sheet = _dataGrid.CurrentWorksheet;
                 sheet.Reset();
+                sheet.RowCount = WorksheetDefaultsHelper.GetDefaultRowCount(WorksheetDefaultsHelper.DiagramConfigKey);
 
                 // 设置列数
                 sheet.ColumnCount = elements.Count + 1;
@@ -4499,6 +5401,7 @@ namespace GeoChemistryNexus.ViewModels
 
                 RestoreWorksheetSelectionToSafeCell(sheet);
                 UpdateSelectedCellDisplayText(0, 0);
+                RequestDataGridScrollReset();
             }
 
             // 使用模板系统渲染图表
@@ -4546,16 +5449,8 @@ namespace GeoChemistryNexus.ViewModels
                     }
                     plot.Axes.Bottom.TickGenerator = customTicks;
 
-                    // 预设 Y 轴对数刻度格式
-                    var tickGen = new ScottPlot.TickGenerators.NumericAutomatic();
-                    tickGen.MinorTickGenerator = new ScottPlot.TickGenerators.LogMinorTickGenerator();
-                    tickGen.IntegerTicksOnly = true;
-                    tickGen.LabelFormatter = y =>
-                    {
-                        double val = Math.Pow(10, y);
-                        return val.ToString("G10");
-                    };
-                    plot.Axes.Left.TickGenerator = tickGen;
+                    // 预设 Y 轴对数刻度格式：按 decade 生成，保证端点 10^n 标签不丢失
+                    plot.Axes.Left.TickGenerator = new LogDecadeTickGenerator();
 
                     // 预设坐标轴范围（Log10 空间：-2 = 0.01, 4 = 10000）
                     plot.Axes.SetLimits(
@@ -4572,6 +5467,7 @@ namespace GeoChemistryNexus.ViewModels
             {
                 var sheet = _dataGrid.CurrentWorksheet;
                 sheet.Reset();
+                sheet.RowCount = WorksheetDefaultsHelper.GetDefaultRowCount(WorksheetDefaultsHelper.DiagramConfigKey);
 
                 // 设置列数
                 sheet.ColumnCount = elements.Count + 1;
@@ -4592,6 +5488,7 @@ namespace GeoChemistryNexus.ViewModels
 
                 RestoreWorksheetSelectionToSafeCell(sheet);
                 UpdateSelectedCellDisplayText(0, 0);
+                RequestDataGridScrollReset();
             }
 
             WpfPlot1.Refresh();
@@ -5160,6 +6057,51 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
+        /// 将 GraphMapList.json 中的服务器哈希/版本注入到节点树（收藏、最近使用等非官方树路径）。
+        /// </summary>
+        private void ApplyServerMetadataToTemplateNode(GraphMapTemplateNode? node)
+        {
+            if (node == null)
+                return;
+
+            var serverMeta = LoadServerTemplateMetadata();
+            if (serverMeta.Count == 0)
+                return;
+
+            var serverHashes = new Dictionary<Guid, string>();
+            var serverVersions = new Dictionary<Guid, string>();
+            foreach (var (id, meta) in serverMeta)
+            {
+                if (!string.IsNullOrEmpty(meta.Hash))
+                    serverHashes[id] = meta.Hash;
+                if (!string.IsNullOrWhiteSpace(meta.Version))
+                    serverVersions[id] = meta.Version!;
+            }
+
+            UpdateNodeMetadataFromServer(node, serverHashes, serverVersions);
+        }
+
+        /// <summary>
+        /// 用服务器清单校正卡片上的 ServerHash / ServerVersion（缓存卡片或非官方树路径可能仍是本地哈希）。
+        /// </summary>
+        private static void SyncCardServerMetadata(
+            TemplateCardViewModel card,
+            Dictionary<Guid, (string Hash, string? Version)> serverMeta)
+        {
+            if (card.IsCustomTemplate || !card.TemplateId.HasValue)
+                return;
+
+            if (!serverMeta.TryGetValue(card.TemplateId.Value, out var meta))
+                return;
+
+            if (!string.IsNullOrEmpty(meta.Hash))
+                card.ServerHash = meta.Hash;
+
+            if (!string.IsNullOrWhiteSpace(meta.Version))
+                card.ServerVersion = meta.Version;
+        }
+
+        /// <summary>
         /// 当鼠标进入绘图区域时调用
         /// </summary>
         private void WpfPlot1_MouseEnter(object? sender, MouseEventArgs e)
@@ -5178,6 +6120,8 @@ namespace GeoChemistryNexus.ViewModels
                 RestoreLayerToCorrectState(_lastHoveredLayer);
                 _lastHoveredLayer = null;
                 _lastHoveredPlottable = null;
+                _lastHoveredScatterPointIndex = -1;
+                ClearScatterHoverPreview();
                 WpfPlot1.Cursor = Cursors.Arrow;
                 WpfPlot1.Refresh();
             }
@@ -5717,52 +6661,100 @@ namespace GeoChemistryNexus.ViewModels
                 UpdateCoordinateStatus(mouseCoordinates, realCoordinates);
             }
 
-            // 只有当开启吸附，且距离上次检测超过设定间隔时，才执行命中测试
-            if (IsSnapSelectionEnabled && !(IsPickingPointMode || IsAddingLine || IsAddingArrow || IsAddingPolygon || IsAddingText) && (currentMs - _lastHitTestTimeMs > _hitTestIntervalMs))
+            // 只有当开启吸附，且距离上次检测超过设定间隔时，才执行图层命中测试（较昂贵）
+            // 光标更新每帧都做：避免节流间隔内被强制改回箭头，导致小手闪烁
+            if (IsSnapSelectionEnabled && !isDrawingOrPicking)
             {
-                // 更新最后检测时间
-                _lastHitTestTimeMs = currentMs;
-
-                var currentHoveredPlottable = GetPlottableAtPixel(mousePixel, 10);
-
-                if (currentHoveredPlottable != _lastHoveredPlottable)
+                if (currentMs - _lastHitTestTimeMs > _hitTestIntervalMs)
                 {
-                    // 1. 恢复上一个高亮的对象
-                    if (_lastHoveredLayer != null)
+                    // 更新最后检测时间
+                    _lastHitTestTimeMs = currentMs;
+
+                    var currentHoveredPlottable = GetPlottableAtPixel(mousePixel, 10);
+                    int currentHoveredScatterPointIndex = -1;
+
+                    // 数据模式散点：需解析命中点索引（同组共享一个 Plottable）
+                    // 直接查 lookup，避免对蛛网图调用 FindLayerByPlottable 产生 SetActive 副作用
+                    if (RibbonTabIndex == 1
+                        && currentHoveredPlottable != null
+                        && _plottableLayerLookup.TryGetValue(currentHoveredPlottable, out var layerForIndex)
+                        && layerForIndex is ScatterLayerItemViewModel scatterHoverLayer)
                     {
-                        RestoreLayerToCorrectState(_lastHoveredLayer);
-                        _lastHoveredLayer = null;
+                        currentHoveredScatterPointIndex = TryGetScatterHoverPointIndex(
+                            scatterHoverLayer,
+                            currentHoveredPlottable,
+                            mouseCoordinates,
+                            10);
                     }
 
-                    // 2. 高亮当前的新对象
-                    if (currentHoveredPlottable != null)
-                    {
-                        var currentLayer = FindLayerByPlottable(currentHoveredPlottable);
-                        if (currentLayer != null)
-                        {
-                            bool isSelectedSpiderSubItem = currentLayer == _selectedLayer &&
-                                                           currentLayer is SpiderSampleLayerItemViewModel selectedSpiderLayer &&
-                                                           selectedSpiderLayer.ContainsPlottable(currentHoveredPlottable);
+                    bool hoverTargetChanged = currentHoveredPlottable != _lastHoveredPlottable
+                        || currentHoveredScatterPointIndex != _lastHoveredScatterPointIndex;
 
-                            if (currentLayer != _selectedLayer || isSelectedSpiderSubItem)
+                    if (hoverTargetChanged)
+                    {
+                        bool sameScatterGroupPointSwitch =
+                            currentHoveredPlottable != null
+                            && ReferenceEquals(currentHoveredPlottable, _lastHoveredPlottable)
+                            && _lastHoveredLayer is ScatterLayerItemViewModel
+                            && currentHoveredScatterPointIndex != _lastHoveredScatterPointIndex;
+
+                        // 1. 恢复上一个高亮的对象（同组内换点时只更新预览标记，不整组 Restore）
+                        if (_lastHoveredLayer != null && !sameScatterGroupPointSwitch)
+                        {
+                            RestoreLayerToCorrectState(_lastHoveredLayer);
+                            _lastHoveredLayer = null;
+                        }
+
+                        // 2. 高亮当前的新对象
+                        if (currentHoveredPlottable != null)
+                        {
+                            var currentLayer = sameScatterGroupPointSwitch
+                                ? _lastHoveredLayer
+                                : FindLayerByPlottable(currentHoveredPlottable);
+                            if (currentLayer != null)
                             {
-                                HighlightLayer(currentLayer);
-                                _lastHoveredLayer = currentLayer;
+                                bool isDataMode = RibbonTabIndex == 1;
+                                bool isSelectedLayer = currentLayer == _selectedLayer;
+
+                                // 非数据模式：已选中对象不再叠加深红色悬停（只保留其他对象半透明遮罩）
+                                // 数据模式：悬停始终显示红色预览（含同组内切换不同线条/数据点）
+                                bool shouldShowHoverStyle = isDataMode || !isSelectedLayer;
+                                if (shouldShowHoverStyle)
+                                {
+                                    HighlightLayer(
+                                        currentLayer,
+                                        currentHoveredPlottable,
+                                        currentHoveredScatterPointIndex);
+                                    _lastHoveredLayer = currentLayer;
+                                }
+                                else
+                                {
+                                    ClearScatterHoverPreview();
+                                    _lastHoveredScatterPointIndex = -1;
+                                }
                             }
                         }
-                    }
+                        else
+                        {
+                            ClearScatterHoverPreview();
+                            _lastHoveredScatterPointIndex = -1;
+                        }
 
-                    // 3. 记录当前悬浮对象并刷新
-                    _lastHoveredPlottable = currentHoveredPlottable;
-                    needRefresh = true;
+                        // 3. 记录当前悬浮对象并刷新
+                        _lastHoveredPlottable = currentHoveredPlottable;
+                        _lastHoveredScatterPointIndex = currentHoveredPlottable != null
+                            ? currentHoveredScatterPointIndex
+                            : -1;
+                        needRefresh = true;
+                    }
                 }
 
-                // 鼠标指针应跟随当前命中状态，而不依赖于悬浮对象是否发生切换
-                WpfPlot1.Cursor = currentHoveredPlottable != null ? Cursors.Hand : Cursors.Arrow;
+                bool showHand = _lastHoveredPlottable != null || IsMouseOverPropertyPanelHotspot(mousePixel);
+                WpfPlot1.Cursor = showHand ? Cursors.Hand : Cursors.Arrow;
             }
-            else
+            else if (!isDrawingOrPicking)
             {
-                // 如果关闭了吸附，确保鼠标变回箭头
+                // 关闭吸附选择时恢复箭头（绘制/拾取模式由各自逻辑管理光标）
                 if (WpfPlot1.Cursor != Cursors.Arrow)
                     WpfPlot1.Cursor = Cursors.Arrow;
             }
@@ -6071,6 +7063,7 @@ namespace GeoChemistryNexus.ViewModels
                 return;
 
             summaryLookup ??= BuildTemplateSummaryLookup();
+            var serverMeta = LoadServerTemplateMetadata();
 
             await Task.Run(() =>
             {
@@ -6088,6 +7081,9 @@ namespace GeoChemistryNexus.ViewModels
                     {
                         if (!card.IsCustomTemplate)
                         {
+                            // 收藏/最近使用/缓存卡片可能仍持有本地 FileHash，先同步服务器元数据再判定更新
+                            SyncCardServerMetadata(card, serverMeta);
+
                             if (summaryLookup.TryGetValue(card.TemplateId.Value, out var summary))
                             {
                                 newState = ResolveOfficialTemplateUpdateState(
@@ -6277,6 +7273,10 @@ namespace GeoChemistryNexus.ViewModels
             };
         }
 
+        private const int TemplateThumbnailWidth = 680;
+        private const int TemplateThumbnailHeight = 480;
+        private const double TemplateThumbnailRenderScale = 1.2;
+
         /// <summary>
         /// 按数据库中缩略图原始分辨率解码（默认 680×480 灰度 JPEG）。虚拟化下同时呈现的卡片数量有限，内存可接受。
         /// </summary>
@@ -6289,6 +7289,39 @@ namespace GeoChemistryNexus.ViewModels
             bitmap.EndInit();
             bitmap.Freeze();
             return bitmap;
+        }
+
+        /// <summary>
+        /// 先以 1.2× 分辨率渲染，再缩放到 680×480 并编码为灰度 JPEG，减轻小画布下字号/线宽过挤。
+        /// </summary>
+        private static byte[] CreateTemplateThumbnailJpeg(Plot plot)
+        {
+            var colorBytes = plot.GetImageBytes(
+                (int)(TemplateThumbnailWidth * TemplateThumbnailRenderScale),
+                (int)(TemplateThumbnailHeight * TemplateThumbnailRenderScale),
+                ScottPlot.ImageFormat.Png);
+
+            using var input = new MemoryStream(colorBytes);
+            var colorBitmap = new BitmapImage();
+            colorBitmap.BeginInit();
+            colorBitmap.CacheOption = BitmapCacheOption.OnLoad;
+            colorBitmap.DecodePixelWidth = TemplateThumbnailWidth;
+            colorBitmap.StreamSource = input;
+            colorBitmap.EndInit();
+            colorBitmap.Freeze();
+
+            var grayBitmap = new FormatConvertedBitmap();
+            grayBitmap.BeginInit();
+            grayBitmap.Source = colorBitmap;
+            grayBitmap.DestinationFormat = PixelFormats.Gray8;
+            grayBitmap.EndInit();
+            grayBitmap.Freeze();
+
+            var encoder = new JpegBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(grayBitmap));
+            using var output = new MemoryStream();
+            encoder.Save(output);
+            return output.ToArray();
         }
 
         private TemplateCardViewModel CreateTemplateCardViewModel(
@@ -6340,6 +7373,93 @@ namespace GeoChemistryNexus.ViewModels
                     card.IsNewTemplate = summary.IsNewTemplate;
                 }
             }
+        }
+
+        /// <summary>
+        /// 保存已有模板后就地更新卡片/缓存（不标 dirty、不全量重建），避免返回模板库时滚动位置被冲掉。
+        /// </summary>
+        private void RefreshSavedTemplateCardLocally(Guid templateId, GraphMapTemplateEntity entity, byte[]? thumbnailBytes)
+        {
+            if (thumbnailBytes != null)
+            {
+                PutCachedThumbnailBytes(templateId, thumbnailBytes);
+            }
+
+            ImageSource? image = null;
+            if (thumbnailBytes != null)
+            {
+                try
+                {
+                    image = CreateTemplateCardThumbnailImage(thumbnailBytes);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"Failed to create saved template thumbnail image: {ex.Message}");
+                }
+            }
+
+            void UpdateCard(TemplateCardViewModel card)
+            {
+                if (card.TemplateId != templateId)
+                    return;
+
+                if (image != null)
+                    card.ThumbnailImage = image;
+
+                card.IsNewTemplate = entity.IsNewTemplate;
+                card.IsCustomTemplate = entity.IsCustom;
+                if (!string.IsNullOrEmpty(entity.FileHash))
+                    card.ServerHash = entity.FileHash;
+                if (!string.IsNullOrEmpty(entity.Version))
+                    card.ServerVersion = entity.Version;
+
+                // 官方保存后 Status 常为 null（PendingPublish），勿把卡片打成 Loading
+                if (!string.IsNullOrEmpty(entity.Status))
+                    card.State = ResolveTemplateState(entity.Status);
+                else if (card.State is TemplateState.Loading or TemplateState.UpdateAvailable)
+                    card.State = TemplateState.Ready;
+            }
+
+            foreach (var card in TemplateCards)
+                UpdateCard(card);
+
+            foreach (var cachedCards in _templateCardsCache.Values)
+            {
+                foreach (var card in cachedCards)
+                    UpdateCard(card);
+            }
+
+            UpdateTemplateNodeMetadataAfterSave(templateId, entity);
+        }
+
+        private void UpdateTemplateNodeMetadataAfterSave(Guid templateId, GraphMapTemplateEntity entity)
+        {
+            void Walk(GraphMapTemplateNode? node)
+            {
+                if (node == null)
+                    return;
+
+                if (node.TemplateId == templateId)
+                {
+                    if (!string.IsNullOrEmpty(entity.FileHash))
+                        node.FileHash = entity.FileHash;
+                    if (!string.IsNullOrEmpty(entity.Status))
+                        node.Status = entity.Status;
+                    node.IsCustomTemplate = entity.IsCustom;
+                }
+
+                if (node.Children == null)
+                    return;
+
+                foreach (var child in node.Children)
+                    Walk(child);
+            }
+
+            Walk(GraphMapTemplateNode);
+            Walk(PersonalTemplatesNode);
+            Walk(OfficialTemplatesNode);
+            Walk(FavoriteTemplatesNode);
+            Walk(RecentsTemplatesNode);
         }
 
         /// <summary>
@@ -7357,7 +8477,7 @@ namespace GeoChemistryNexus.ViewModels
 
         private bool CanUpdateData()
         {
-            return !IsTransitionLoading && !IsDataPlotLoading;
+            return IsPlotMode && RibbonTabIndex == 1 && !IsTransitionLoading && !IsDataPlotLoading;
         }
 
         partial void OnIsTransitionLoadingChanged(bool value)
@@ -7696,6 +8816,14 @@ namespace GeoChemistryNexus.ViewModels
             // 如果选中的是分类文件夹，也不应用遮罩
             if (_selectedLayer == null || _selectedLayer is CategoryLayerItemViewModel) return;
 
+            // 数据模式闪烁选中：统一走遮罩逻辑（含其他数据系列）
+            if (RibbonTabIndex == 1
+                && (_dataLinkFlashSpiderStyle != null || _dataLinkFlashScatterStyle != null))
+            {
+                ApplyDataModeUnselectedMask();
+                return;
+            }
+
             // 获取所有实现了 IPlotLayer 的图层
             var allPlotLayers = FlattenTree(LayerTree).OfType<IPlotLayer>();
 
@@ -7704,10 +8832,14 @@ namespace GeoChemistryNexus.ViewModels
                 // 检查是否是主选中项或者在多选列表中
                 if (layer == _selectedLayer || (layer is LayerItemViewModel vm && SelectedLayers.Contains(vm)))
                 {
-                    // 选中项：蜘蛛图数据图层保持原样式，其余恢复正常
+                    // 选中项：蛛网图按模式应用分组红/单条闪烁底色，其余恢复正常
                     if (layer is SpiderSampleLayerItemViewModel spiderLayer)
                     {
-                        spiderLayer.Restore();
+                        ApplySpiderSelectionVisual(spiderLayer);
+                    }
+                    else if (layer is ScatterLayerItemViewModel scatterLayer)
+                    {
+                        ApplyScatterSelectionVisual(scatterLayer);
                     }
                     else
                     {
@@ -7880,6 +9012,270 @@ namespace GeoChemistryNexus.ViewModels
             };
             timer.Tick += LayerRefreshTimer_Tick;
             return timer;
+        }
+
+        private System.Windows.Threading.DispatcherTimer CreateDataLinkFlashTimer()
+        {
+            var timer = new System.Windows.Threading.DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(450)
+            };
+            timer.Tick += DataLinkFlashTimer_Tick;
+            return timer;
+        }
+
+        private void DataLinkFlashTimer_Tick(object? sender, EventArgs e)
+        {
+            // 蛛网图：锁定的选中样品线持续闪烁（悬停其他线时也不停）
+            if (_dataLinkFlashSpiderStyle != null)
+            {
+                bool hoveringSelectedLine = _lastHoveredPlottable != null
+                    && _dataLinkFlashSpiderScatter != null
+                    && ReferenceEquals(_lastHoveredPlottable, _dataLinkFlashSpiderScatter);
+
+                if (hoveringSelectedLine)
+                {
+                    // 悬停在选中线上：该线显示固态红（悬停样式），暂不切换闪烁色
+                    _dataLinkFlashSpiderStyle.ApplyHoverPreviewColor(
+                        _lastHoveredPlottable,
+                        ScottPlot.Colors.Red,
+                        dimOthers: true);
+                    WpfPlot1?.Refresh();
+                    return;
+                }
+
+                // 未悬停选中线：选中线继续红/蓝闪烁
+                _dataLinkFlashIsRed = !_dataLinkFlashIsRed;
+                ApplySpiderSeriesFlashColor(
+                    _dataLinkFlashIsRed ? DataLinkFlashRed : DataLinkFlashBlue);
+
+                // 若正悬停同组其他线，保持其固态红，其余保持遮罩
+                if (_lastHoveredLayer != null
+                    && _lastHoveredPlottable != null
+                    && ReferenceEquals(_lastHoveredLayer, _dataLinkFlashSpiderStyle))
+                {
+                    _dataLinkFlashSpiderStyle.ApplyHoverPreviewColor(
+                        _lastHoveredPlottable,
+                        ScottPlot.Colors.Red,
+                        preserveFlashPlottable: _dataLinkFlashSpiderScatter,
+                        dimOthers: true);
+                }
+
+                WpfPlot1?.Refresh();
+                return;
+            }
+
+            // 散点图：选中点持续闪烁（悬停其他对象时不停）
+            if (_dataLinkFlashMarker == null)
+            {
+                if (_dataLinkFlashScatterStyle != null)
+                {
+                    StopDataLinkFlash();
+                }
+
+                return;
+            }
+
+            // 悬停在选中闪烁点上：保持固态红（与蛛网图悬停选中线一致）
+            if (RibbonTabIndex == 1
+                && _dataLinkFlashScatterStyle != null
+                && ReferenceEquals(_lastHoveredLayer, _dataLinkFlashScatterStyle)
+                && _lastHoveredScatterPointIndex >= 0)
+            {
+                int flashIndex = FindScatterPointIndexByFlashMarker(_dataLinkFlashScatterStyle);
+                if (flashIndex >= 0 && flashIndex == _lastHoveredScatterPointIndex)
+                {
+                    _dataLinkFlashIsRed = true;
+                    ApplyDataLinkFlashMarkerAppearance(DataLinkFlashRed);
+                    _dataLinkFlashMarker.IsVisible = true;
+                    WpfPlot1?.Refresh();
+                    return;
+                }
+            }
+
+            _dataLinkFlashMarker.IsVisible = true;
+            _dataLinkFlashIsRed = !_dataLinkFlashIsRed;
+            ApplyDataLinkFlashMarkerAppearance(
+                _dataLinkFlashIsRed ? DataLinkFlashRed : DataLinkFlashBlue);
+            WpfPlot1?.Refresh();
+        }
+
+        private void StartDataLinkFlash(Coordinates location, ScatterLayerItemViewModel styleLayer)
+        {
+            if (WpfPlot1 == null || styleLayer == null)
+            {
+                StopDataLinkFlash();
+                return;
+            }
+
+            // 若之前在闪蛛网图，先恢复其颜色
+            if (_dataLinkFlashSpiderStyle != null)
+            {
+                _dataLinkFlashSpiderStyle.Restore();
+            }
+
+            _dataLinkFlashScatterStyle = styleLayer;
+            _dataLinkFlashSpiderStyle = null;
+            _dataLinkFlashSpiderScatter = null;
+            _dataLinkFlashLocationIsRenderCoords = false;
+            BeginDataLinkFlash(location);
+            ApplyDataModeUnselectedMask();
+            WpfPlot1?.Refresh();
+        }
+
+        private void StartDataLinkFlash(
+            Coordinates location,
+            SpiderSampleLayerItemViewModel styleLayer,
+            bool locationIsRenderCoords)
+        {
+            if (WpfPlot1 == null || styleLayer == null)
+            {
+                StopDataLinkFlash();
+                return;
+            }
+
+            // 蛛网图改为整线闪烁，隐藏单点标记
+            if (_dataLinkFlashMarker != null)
+            {
+                _dataLinkFlashMarker.IsVisible = false;
+            }
+
+            _dataLinkFlashScatterStyle = null;
+            _dataLinkFlashSpiderStyle = styleLayer;
+            _dataLinkFlashSpiderScatter = styleLayer.Plottable;
+            _dataLinkFlashLocationIsRenderCoords = locationIsRenderCoords;
+            _dataLinkFlashIsRed = true;
+            ApplyDataModeUnselectedMask();
+            ApplySpiderSeriesFlashColor(DataLinkFlashRed);
+            WpfPlot1.Refresh();
+
+            if (!_dataLinkFlashTimer.IsEnabled)
+            {
+                _dataLinkFlashTimer.Start();
+            }
+        }
+
+        private void ApplySpiderSeriesFlashColor(ScottPlot.Color color)
+        {
+            _dataLinkFlashSpiderStyle?.ApplyTemporaryFlashColor(color, _dataLinkFlashSpiderScatter);
+        }
+
+        private void BeginDataLinkFlash(Coordinates location)
+        {
+            EnsureDataLinkFlashMarker();
+            if (_dataLinkFlashMarker == null || WpfPlot1 == null)
+            {
+                return;
+            }
+
+            // 提到最上层，避免被散点层遮挡
+            WpfPlot1.Plot.Remove(_dataLinkFlashMarker);
+            WpfPlot1.Plot.Add.Plottable(_dataLinkFlashMarker);
+
+            var renderLocation = _dataLinkFlashLocationIsRenderCoords
+                ? location
+                : PlotTransformHelper.ToRenderCoordinates(WpfPlot1.Plot, location);
+            _dataLinkFlashMarker.Location = renderLocation;
+            _dataLinkFlashIsRed = true;
+            ApplyDataLinkFlashMarkerAppearance(DataLinkFlashRed);
+            _dataLinkFlashMarker.IsVisible = true;
+            WpfPlot1.Refresh();
+
+            if (!_dataLinkFlashTimer.IsEnabled)
+            {
+                _dataLinkFlashTimer.Start();
+            }
+        }
+
+        private void ApplyDataLinkFlashMarkerAppearance(ScottPlot.Color color)
+        {
+            if (_dataLinkFlashMarker == null)
+            {
+                return;
+            }
+
+            if (_dataLinkFlashScatterStyle?.ScatterDefinition != null)
+            {
+                var def = _dataLinkFlashScatterStyle.ScatterDefinition;
+                // 保持与数据点相同的图案，仅切换闪烁颜色（不写 Marker.Color，避免覆盖空心填充）
+                PlotMarkerStyleApplier.Apply(
+                    _dataLinkFlashMarker.MarkerStyle,
+                    def.MarkerShape,
+                    color,
+                    def.StrokeWidth,
+                    color);
+                _dataLinkFlashMarker.Size = def.Size > 0 ? def.Size : 10;
+                return;
+            }
+
+            if (_dataLinkFlashSpiderStyle?.PropertyModel != null)
+            {
+                var pm = _dataLinkFlashSpiderStyle.PropertyModel;
+                float strokeWidth = PlotMarkerStyleApplier.IsFilled(pm.MarkerShape) ? 0f : 1.5f;
+                PlotMarkerStyleApplier.Apply(
+                    _dataLinkFlashMarker.MarkerStyle,
+                    pm.MarkerShape,
+                    color,
+                    strokeWidth,
+                    color);
+                _dataLinkFlashMarker.Size = pm.MarkerSize > 0 ? pm.MarkerSize : 5;
+            }
+        }
+
+        private void EnsureDataLinkFlashMarker()
+        {
+            if (WpfPlot1 == null)
+            {
+                return;
+            }
+
+            bool existsInPlot = _dataLinkFlashMarker != null
+                && WpfPlot1.Plot.GetPlottables().Contains(_dataLinkFlashMarker);
+            if (existsInPlot)
+            {
+                return;
+            }
+
+            _dataLinkFlashMarker = WpfPlot1.Plot.Add.Marker(0, 0);
+            _dataLinkFlashMarker.IsVisible = false;
+            _dataLinkFlashMarker.Size = 10;
+        }
+
+        private void StopDataLinkFlash()
+        {
+            if (_dataLinkFlashTimer.IsEnabled)
+            {
+                _dataLinkFlashTimer.Stop();
+            }
+
+            if (_dataLinkFlashSpiderStyle != null)
+            {
+                _dataLinkFlashSpiderStyle.Restore();
+                _dataLinkFlashSpiderStyle = null;
+            }
+
+            _dataLinkFlashSpiderScatter = null;
+            _dataLinkFlashScatterStyle = null;
+
+            if (_dataLinkFlashMarker != null && _dataLinkFlashMarker.IsVisible)
+            {
+                _dataLinkFlashMarker.IsVisible = false;
+            }
+
+            WpfPlot1?.Refresh();
+        }
+
+        partial void OnIsDataSelectionLinkEnabledChanged(bool value)
+        {
+            if (!value)
+            {
+                StopDataLinkFlash();
+                if (_selectedLayer is IPlotLayer)
+                {
+                    ReapplySelectionVisualState();
+                    WpfPlot1?.Refresh();
+                }
+            }
         }
 
         private void OnLayerRequestRefreshPreserveLimits(object? sender, EventArgs e) => ScheduleLayerRefresh(true);
@@ -8809,7 +10205,7 @@ namespace GeoChemistryNexus.ViewModels
             {
                 var polygonLayer = new PolygonLayerItemViewModel(info.Polygons[i], i);
                 if (attachEvents)
-                    AttachLayerPlotHandlers(polygonLayer, preserveAxisLimits: false);
+                    AttachLayerPlotHandlers(polygonLayer, preserveAxisLimits: true);
                 polygonsCategory.Children.Add(polygonLayer);
             }
             if (polygonsCategory.Children.Any()) list.Add(polygonsCategory);
@@ -8821,13 +10217,13 @@ namespace GeoChemistryNexus.ViewModels
             {
                 var lineLayer = new LineLayerItemViewModel(info.Lines[i], i);
                 if (attachEvents)
-                    AttachLayerPlotHandlers(lineLayer, preserveAxisLimits: false);
+                    AttachLayerPlotHandlers(lineLayer, preserveAxisLimits: true);
                 linesCategory.Children.Add(lineLayer);
             }
             if (linesCategory.Children.Any()) list.Add(linesCategory);
 
             // 4. 函数图层
-            var functionCategory = new CategoryLayerItemViewModel("Function", LayerTreeIconKind.Function); // Consider localization
+            var functionCategory = new CategoryLayerItemViewModel(LanguageService.Instance["function"], LayerTreeIconKind.Function);
             if (attachEvents) EnsureLayerRefreshHandler(functionCategory);
             for (int i = 0; i < info.Functions.Count; i++)
             {
@@ -8847,7 +10243,7 @@ namespace GeoChemistryNexus.ViewModels
             {
                 var pointLayer = new PointLayerItemViewModel(info.Points[i], i);
                 if (attachEvents)
-                    AttachLayerPlotHandlers(pointLayer, preserveAxisLimits: false);
+                    AttachLayerPlotHandlers(pointLayer, preserveAxisLimits: true);
                 pointsCategory.Children.Add(pointLayer);
             }
             if (pointsCategory.Children.Any()) list.Add(pointsCategory);
@@ -8859,7 +10255,7 @@ namespace GeoChemistryNexus.ViewModels
             {
                 var arrowLayer = new ArrowLayerItemViewModel(template.Info.Arrows[i], i);
                 if (attachEvents)
-                    AttachLayerPlotHandlers(arrowLayer, preserveAxisLimits: false);
+                    AttachLayerPlotHandlers(arrowLayer, preserveAxisLimits: true);
                 arrowsCategory.Children.Add(arrowLayer);
             }
             if (arrowsCategory.Children.Any()) list.Add(arrowsCategory);
@@ -8871,7 +10267,7 @@ namespace GeoChemistryNexus.ViewModels
             {
                 var annotationLayer = new AnnotationLayerItemViewModel(info.Annotations[i], i);
                 if (attachEvents)
-                    AttachLayerPlotHandlers(annotationLayer, preserveAxisLimits: false);
+                    AttachLayerPlotHandlers(annotationLayer, preserveAxisLimits: true);
                 annotationCategory.Children.Add(annotationLayer);
             }
             if (annotationCategory.Children.Any()) list.Add(annotationCategory);
@@ -8883,7 +10279,7 @@ namespace GeoChemistryNexus.ViewModels
             {
                 var textLayer = new TextLayerItemViewModel(info.Texts[i], i, DiagramLanguage);
                 if (attachEvents)
-                    AttachLayerPlotHandlers(textLayer, preserveAxisLimits: false);
+                    AttachLayerPlotHandlers(textLayer, preserveAxisLimits: true);
                 textCategory.Children.Add(textLayer);
             }
             if (textCategory.Children.Any()) list.Add(textCategory);
@@ -9562,12 +10958,31 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 页面级 Delete 快捷键：数据页交给 ReoGrid 处理单元格清除，其余页面删除绘图对象。
+        /// 页面级 Delete 快捷键：
+        /// 数据模式删除选中数据对象及其对应表格数据（不删行）；
+        /// 其余模式删除绘图对象。
         /// </summary>
-        private bool CanHandlePageDeleteKey() => RibbonTabIndex != 1 && CanDeleteSelectedObject();
+        private bool CanHandlePageDeleteKey()
+        {
+            if (RibbonTabIndex == 1)
+            {
+                return CanDeleteSelectedDataObjectInDataMode();
+            }
+
+            return CanDeleteSelectedObject();
+        }
 
         [RelayCommand(CanExecute = nameof(CanHandlePageDeleteKey))]
-        private Task HandlePageDeleteKey() => DeleteSelectedObject();
+        private void HandlePageDeleteKey()
+        {
+            if (RibbonTabIndex == 1)
+            {
+                DeleteSelectedDataObjectInDataMode();
+                return;
+            }
+
+            DeleteSelectedObject();
+        }
 
         /// <summary>
         /// 点击图层对象, 在图上高亮显示, 并在属性面板显示其属性
@@ -9582,6 +10997,9 @@ namespace GeoChemistryNexus.ViewModels
             {
                 return;
             }
+
+            // 非数据联动路径选中图层时，停止闪烁高亮
+            StopDataLinkFlash();
 
             // 获取所有可绘制的图层 (叶子节点)
             var allPlottableLayers = FlattenTree(LayerTree)
@@ -9615,13 +11033,24 @@ namespace GeoChemistryNexus.ViewModels
 
             if (selectedItem is SpiderSampleLayerItemViewModel spiderSelectedItem)
             {
-                bool isPlotHitSelection = _lastHoveredPlottable != null &&
-                                          ReferenceEquals(_lastHoveredLayer, selectedItem) &&
-                                          spiderSelectedItem.ContainsPlottable(_lastHoveredPlottable);
-
-                if (!isPlotHitSelection)
+                // 表格/模式切换等同步选中时，保留已由 TrySetActiveByRowIndex 指定的活动样品线，
+                // 避免被悬停命中或整组重置覆盖。
+                if (!_isSyncingSelection)
                 {
-                    spiderSelectedItem.ResetActivePlottable();
+                    bool isPlotHitSelection = _lastHoveredPlottable != null &&
+                                              ReferenceEquals(_lastHoveredLayer, selectedItem) &&
+                                              spiderSelectedItem.ContainsPlottable(_lastHoveredPlottable);
+
+                    if (isPlotHitSelection)
+                    {
+                        // 绘图区命中子系列：保持该条线为活动对象
+                        spiderSelectedItem.SetActivePlottable(_lastHoveredPlottable);
+                    }
+                    else
+                    {
+                        // 图层树点选整组时重置为组内首条
+                        spiderSelectedItem.ResetActivePlottable();
+                    }
                 }
             }
 
@@ -9781,6 +11210,12 @@ namespace GeoChemistryNexus.ViewModels
             if (!_isSyncingSelection && _selectedLayer is SpiderSampleLayerItemViewModel spiderLayer)
             {
                 SyncSpiderSelectionToDataGrid(spiderLayer);
+
+                // 数据模式下选中蛛网图样品：同步单点闪烁样式
+                if (RibbonTabIndex == 1 && spiderLayer.TryGetFlashCoordinate(out var flashCoord))
+                {
+                    StartDataLinkFlash(flashCoord, spiderLayer, locationIsRenderCoords: true);
+                }
             }
 
             // 应用选中样式：选中对象保持原样，其他的变暗
@@ -9790,10 +11225,14 @@ namespace GeoChemistryNexus.ViewModels
                 {
                     if (SelectedLayers.Contains(layer))
                     {
-                        // 选中图层：蛛网图保持原样，其余恢复原样
+                        // 选中图层：蛛网图保持原色（与图解模板一致），数据模式另由闪烁表现单条
                         if (layer is SpiderSampleLayerItemViewModel selectedSpiderLayer)
                         {
-                            selectedSpiderLayer.Restore();
+                            ApplySpiderSelectionVisual(selectedSpiderLayer);
+                        }
+                        else if (layer is ScatterLayerItemViewModel selectedScatterLayer)
+                        {
+                            ApplyScatterSelectionVisual(selectedScatterLayer);
                         }
                         else
                         {
@@ -9982,125 +11421,96 @@ namespace GeoChemistryNexus.ViewModels
                 var xAxisDef = CurrentTemplate.Info.Axes.FirstOrDefault(a => a.Type == "Bottom") as CartesianAxisDefinition;
                 var yAxisDef = CurrentTemplate.Info.Axes.FirstOrDefault(a => a.Type == "Left") as CartesianAxisDefinition;
 
-                // 检查是否有设定的范围 (最小值不等于最大值)
-                bool isXRangeSet = xAxisDef != null && Math.Abs(xAxisDef.Maximum - xAxisDef.Minimum) > 1e-9;
-                bool isYRangeSet = yAxisDef != null && Math.Abs(yAxisDef.Maximum - yAxisDef.Minimum) > 1e-9;
+                // 用户设定范围（不含边距，用于投点越界判断）与显示范围（含边距）
+                double xUserMin = 0, xUserMax = 0, yUserMin = 0, yUserMax = 0;
+                double xMin = 0, xMax = 0, yMin = 0, yMax = 0;
+                bool isXRangeSet = xAxisDef != null && PlotTransformHelper.TryGetPlotAxisRange(
+                    xAxisDef.Minimum, xAxisDef.Maximum, xAxisDef.ScaleType, out xUserMin, out xUserMax, applyPadding: false);
+                bool isYRangeSet = yAxisDef != null && PlotTransformHelper.TryGetPlotAxisRange(
+                    yAxisDef.Minimum, yAxisDef.Maximum, yAxisDef.ScaleType, out yUserMin, out yUserMax, applyPadding: false);
 
-                // 准备比较用的阈值变量
-                double xMin = xAxisDef?.Minimum ?? 0;
-                double xMax = xAxisDef?.Maximum ?? 0;
-                double yMin = yAxisDef?.Minimum ?? 0;
-                double yMax = yAxisDef?.Maximum ?? 0;
-
-                // 处理 Log 坐标转换：如果坐标轴是对数类型，需要将用户设定的线性值转换为对数值进行比较和设置
-                if (isXRangeSet && xAxisDef.ScaleType == AxisScaleType.Logarithmic)
+                if (isXRangeSet)
                 {
-                    if (xMin > 0 && xMax > 0)
-                    {
-                        xMin = Math.Log10(xMin);
-                        xMax = Math.Log10(xMax);
-                    }
-                    else
-                    {
-                        // 非法的 Log 范围 (<=0)，视为未设定，回退到自动缩放
-                        isXRangeSet = false;
-                    }
+                    xMin = xUserMin;
+                    xMax = xUserMax;
+                    PlotTransformHelper.ApplyFixedRangePadding(ref xMin, ref xMax, xAxisDef!.ScaleType);
                 }
 
-                if (isYRangeSet && yAxisDef.ScaleType == AxisScaleType.Logarithmic)
+                if (isYRangeSet)
                 {
-                    if (yMin > 0 && yMax > 0)
-                    {
-                        yMin = Math.Log10(yMin);
-                        yMax = Math.Log10(yMax);
-                    }
-                    else
-                    {
-                        isYRangeSet = false;
-                    }
+                    yMin = yUserMin;
+                    yMax = yUserMax;
+                    PlotTransformHelper.ApplyFixedRangePadding(ref yMin, ref yMax, yAxisDef!.ScaleType);
                 }
 
                 // 如果设定了范围
                 if (isXRangeSet || isYRangeSet)
                 {
-                    // 获取当前数据的边界
+                    // 仅检查用户投点数据是否越界；模板线/面/文本不参与判断，
+                    // 避免误触发 AutoScale 导致对数轴端点刻度标签丢失。
                     double dataXMin = double.MaxValue;
                     double dataXMax = double.MinValue;
                     double dataYMin = double.MaxValue;
                     double dataYMax = double.MinValue;
                     bool hasData = false;
 
-                    // 获取所有可见的 Plottables
-                    var plottables = WpfPlot1.Plot.GetPlottables().Where(p => p.IsVisible);
-
-                    foreach (var plottable in plottables)
+                    foreach (var scatterLayer in FlattenTree(LayerTree).OfType<ScatterLayerItemViewModel>())
                     {
-                        // 忽略一些辅助性的 plottable
-                        if (ReferenceEquals(plottable, _snapMarker)) continue;
-                        if (_potentialSnapMarkers != null && _potentialSnapMarkers.Any(m => ReferenceEquals(m, plottable))) continue;
+                        if (!scatterLayer.IsVisible)
+                            continue;
 
-                        // 忽略 Grid 和 Axis
-                        string typeName = plottable.GetType().Name;
-                        if (typeName.Contains("Grid") || typeName.Contains("Axis")) continue;
+                        if (scatterLayer.Plottable is not ScottPlot.Plottables.Scatter scatter || !scatter.IsVisible)
+                            continue;
 
-                        var limits = plottable.GetAxisLimits();
+                        if (scatterLayer.DataPoints == null || scatterLayer.DataPoints.Count == 0)
+                            continue;
+
+                        var limits = scatter.GetAxisLimits();
                         var rect = limits.Rect;
 
-                        // 检查是否有有效范围
-                        if (rect.Left <= rect.Right && rect.Bottom <= rect.Top)
+                        if (rect.Left <= rect.Right && rect.Bottom <= rect.Top
+                            && rect.Left > double.MinValue && rect.Right < double.MaxValue
+                            && rect.Bottom > double.MinValue && rect.Top < double.MaxValue)
                         {
-                            // 只有非默认/非无穷大的值才有效
-                            if (rect.Left > double.MinValue && rect.Right < double.MaxValue &&
-                                rect.Bottom > double.MinValue && rect.Top < double.MaxValue)
-                            {
-                                if (rect.Left < dataXMin) dataXMin = rect.Left;
-                                if (rect.Right > dataXMax) dataXMax = rect.Right;
-                                if (rect.Bottom < dataYMin) dataYMin = rect.Bottom;
-                                if (rect.Top > dataYMax) dataYMax = rect.Top;
-                                hasData = true;
-                            }
+                            if (rect.Left < dataXMin) dataXMin = rect.Left;
+                            if (rect.Right > dataXMax) dataXMax = rect.Right;
+                            if (rect.Bottom < dataYMin) dataYMin = rect.Bottom;
+                            if (rect.Top > dataYMax) dataYMax = rect.Top;
+                            hasData = true;
                         }
                     }
 
-                    // 检查是否超出范围
                     bool outOfRange = false;
-
                     if (hasData)
                     {
-                        // 稍微增加一点容差
-                        double tolerance = 1e-9;
+                        // 对数轴用稍宽容差，避免端点浮点误判为越界
+                        double tolerance = 1e-6;
 
                         if (isXRangeSet)
                         {
-                            // 支持倒置范围：需要考虑 xMin 可能大于 xMax 的情况
-                            double actualXMin = Math.Min(xMin, xMax);
-                            double actualXMax = Math.Max(xMin, xMax);
+                            double actualXMin = Math.Min(xUserMin, xUserMax);
+                            double actualXMax = Math.Max(xUserMin, xUserMax);
                             if (dataXMin < actualXMin - tolerance || dataXMax > actualXMax + tolerance)
-                            {
                                 outOfRange = true;
-                            }
                         }
 
                         if (isYRangeSet && !outOfRange)
                         {
-                            // 支持倒置范围：需要考虑 yMin 可能大于 yMax 的情况
-                            double actualYMin = Math.Min(yMin, yMax);
-                            double actualYMax = Math.Max(yMin, yMax);
+                            double actualYMin = Math.Min(yUserMin, yUserMax);
+                            double actualYMax = Math.Max(yUserMin, yUserMax);
                             if (dataYMin < actualYMin - tolerance || dataYMax > actualYMax + tolerance)
-                            {
                                 outOfRange = true;
-                            }
                         }
                     }
 
-                    // 如果有设定坐标轴范围且没有绘图对象超出了坐标轴范围，就设定缩放为当前的设定坐标轴范围
+                    // 投点均在设定范围内（或尚无投点）→ 使用设定范围；
+                    // 有投点越界 → AutoScale，便于用户看到超出范围的点。
                     if (!outOfRange)
                     {
                         shouldAutoScale = false;
 
                         if (isXRangeSet)
                         {
-                            // 支持倒置范围：直接设置 Range.Min 和 Range.Max，不使用 SetLimitsX
                             WpfPlot1.Plot.Axes.Bottom.Range.Min = xMin;
                             WpfPlot1.Plot.Axes.Bottom.Range.Max = xMax;
                         }
@@ -10111,7 +11521,6 @@ namespace GeoChemistryNexus.ViewModels
 
                         if (isYRangeSet)
                         {
-                            // 支持倒置范围：直接设置 Range.Min 和 Range.Max，不使用 SetLimitsY
                             WpfPlot1.Plot.Axes.Left.Range.Min = yMin;
                             WpfPlot1.Plot.Axes.Left.Range.Max = yMax;
                         }
@@ -10151,6 +11560,8 @@ namespace GeoChemistryNexus.ViewModels
 
         private void ClearLayerSelection()
         {
+            StopDataLinkFlash();
+
             // 获取所有可绘制的图层
             var allPlottableLayers = FlattenTree(LayerTree)
                                        .Where(l => l.Plottable != null && l.Children.Count == 0)
@@ -10191,18 +11602,66 @@ namespace GeoChemistryNexus.ViewModels
 
             IsShowTemplateInfo = false;     // 取消绘图模板指南显示
 
-            // 清除数据点高亮标记
-            if (_selectedDataPointMarker != null && _selectedDataPointMarker.IsVisible)
-            {
-                _selectedDataPointMarker.IsVisible = false;
-                if (_selectedDataPointLabel != null)
-                {
-                    _selectedDataPointLabel.IsVisible = false;
-                }
-                WpfPlot1.Refresh();
-            }
+            // 同步取消数据表格中因点选/联动产生的行选中
+            ClearDataGridSelection();
 
             NotifySelectionDependentCommandStates();
+        }
+
+        private void ClearDataGridSelection()
+        {
+            var worksheet = _dataGrid?.CurrentWorksheet;
+            if (worksheet == null && _dataGrid != null && _dataGrid.Worksheets.Count > 0)
+            {
+                worksheet = _dataGrid.Worksheets[0];
+            }
+
+            if (worksheet == null)
+            {
+                return;
+            }
+
+            try
+            {
+                _isSyncingSelection = true;
+
+                // ReoGrid 的 SelectRange 会直接忽略 Empty，必须切到 None 才能真正清空选区
+                var previousMode = worksheet.SelectionMode;
+                if (previousMode == WorksheetSelectionMode.None)
+                {
+                    previousMode = WorksheetSelectionMode.Range;
+                }
+
+                worksheet.SelectionMode = WorksheetSelectionMode.None;
+                // 恢复可选中能力（会落到 A1）；随后隐藏选区样式，避免看起来仍“选中着”）
+                worksheet.SelectionMode = previousMode;
+                worksheet.SelectionStyle = WorksheetSelectionStyle.None;
+                _isDataGridSelectionVisuallyCleared = true;
+
+                UpdateSelectedCellDisplayText();
+            }
+            finally
+            {
+                _isSyncingSelection = false;
+            }
+        }
+
+        private void RestoreDataGridSelectionStyleIfNeeded()
+        {
+            if (!_isDataGridSelectionVisuallyCleared || _dataGrid == null)
+            {
+                return;
+            }
+
+            var worksheet = _dataGrid.CurrentWorksheet
+                ?? (_dataGrid.Worksheets.Count > 0 ? _dataGrid.Worksheets[0] : null);
+            if (worksheet == null)
+            {
+                return;
+            }
+
+            worksheet.SelectionStyle = WorksheetSelectionStyle.Default;
+            _isDataGridSelectionVisuallyCleared = false;
         }
 
         /// <summary>
@@ -10315,7 +11774,7 @@ namespace GeoChemistryNexus.ViewModels
         public ObservableCollection<string> ThirdPartyApps { get; } = new() { "CorelDRAW", "Inkscape", "Adobe Illustrator", "Custom" };
 
         [ObservableProperty]
-        private string _selectedThirdPartyApp = "CorelDRAW";
+        private string _selectedThirdPartyApp = "Inkscape";
 
         /// <summary>
         /// 通过第三方应用打开
@@ -10832,38 +12291,12 @@ namespace GeoChemistryNexus.ViewModels
             _originalHelpDocumentRtf = RtfHelper.GetRtfString(_richTextBox);
             HasUnsavedChanges = false;
 
-            // 生成并保存缩略图（680x480 灰度图）
+            // 生成并保存缩略图（1.2× 渲染后缩放到 680×480 灰度 JPEG）
             try
             {
-                var colorImageBytes = WpfPlot1.Plot.GetImageBytes(680, 480);
-
-                // 转换为灰度图
-                using (var ms = new MemoryStream(colorImageBytes))
-                {
-                    var colorBitmap = new BitmapImage();
-                    colorBitmap.BeginInit();
-                    colorBitmap.CacheOption = BitmapCacheOption.OnLoad;
-                    colorBitmap.StreamSource = ms;
-                    colorBitmap.EndInit();
-                    
-                    // 转换为 8 位灰度图
-                    var grayBitmap = new FormatConvertedBitmap();
-                    grayBitmap.BeginInit();
-                    grayBitmap.Source = colorBitmap;
-                    grayBitmap.DestinationFormat = PixelFormats.Gray8;
-                    grayBitmap.EndInit();
-                    
-                    // 编码为 JPEG 并上传到数据库
-                    var encoder = new JpegBitmapEncoder();
-                    encoder.Frames.Add(BitmapFrame.Create(grayBitmap));
-                    using (var uploadStream = new MemoryStream())
-                    {
-                        encoder.Save(uploadStream);
-                        uploadStream.Position = 0;
-                        
-                        await Task.Run(() => GraphMapDatabaseService.Instance.UploadThumbnail(newEntity.Id, uploadStream));
-                    }
-                }
+                var thumbBytes = CreateTemplateThumbnailJpeg(WpfPlot1.Plot);
+                using var uploadStream = new MemoryStream(thumbBytes);
+                await Task.Run(() => GraphMapDatabaseService.Instance.UploadThumbnail(newEntity.Id, uploadStream));
             }
             catch (Exception ex)
             {
@@ -11400,33 +12833,8 @@ namespace GeoChemistryNexus.ViewModels
                 if (template.TemplateType != "Ternary")
                     plot.Axes.AutoScale();
 
-                // 生成 680x480 灰度缩略图
-                var colorImageBytes = plot.GetImageBytes(680, 480, ScottPlot.ImageFormat.Jpeg);
-                
-                // 转换为灰度图
-                using (var ms = new MemoryStream(colorImageBytes))
-                {
-                    var colorBitmap = new BitmapImage();
-                    colorBitmap.BeginInit();
-                    colorBitmap.CacheOption = BitmapCacheOption.OnLoad;
-                    colorBitmap.StreamSource = ms;
-                    colorBitmap.EndInit();
-                    
-                    // 转换为 8 位灰度图
-                    var grayBitmap = new FormatConvertedBitmap();
-                    grayBitmap.BeginInit();
-                    grayBitmap.Source = colorBitmap;
-                    grayBitmap.DestinationFormat = PixelFormats.Gray8;
-                    grayBitmap.EndInit();
-                    
-                    // 编码为 JPEG 并保存
-                    var encoder = new JpegBitmapEncoder();
-                    encoder.Frames.Add(BitmapFrame.Create(grayBitmap));
-                    using (var fileStream = new FileStream(outputPath, FileMode.Create))
-                    {
-                        encoder.Save(fileStream);
-                    }
-                }
+                // 生成 680×480 灰度缩略图（1.2× 渲染后缩放）
+                File.WriteAllBytes(outputPath, CreateTemplateThumbnailJpeg(plot));
             }
             catch (Exception ex)
             {
@@ -11820,6 +13228,7 @@ namespace GeoChemistryNexus.ViewModels
                     {
                         Name = categoryName,
                         Color = groupColor.ToHex(),
+                        StrokeColor = groupColor.ToHex(),
                         Size = 10
                     };
 
@@ -11839,7 +13248,8 @@ namespace GeoChemistryNexus.ViewModels
                     };
 
                     categoryViewModel.ScatterNameChanged += (layer, scatterName) => SyncScatterNameToDataGrid(layer, scatterName);
-                    AttachLayerPlotHandlers(categoryViewModel, preserveAxisLimits: false);
+                    // 投点后由 CenterPlot 决定视角；后续属性编辑应保留当前视角
+                    AttachLayerPlotHandlers(categoryViewModel, preserveAxisLimits: true);
                     rootDataNode.Children.Add(categoryViewModel);
                 }
 
@@ -11895,6 +13305,7 @@ namespace GeoChemistryNexus.ViewModels
                     {
                         Name = categoryName,
                         Color = groupColor.ToHex(),
+                        StrokeColor = groupColor.ToHex(),
                         Size = 10
                     };
 
@@ -11914,7 +13325,8 @@ namespace GeoChemistryNexus.ViewModels
                     };
 
                     categoryViewModel.ScatterNameChanged += (layer, scatterName) => SyncScatterNameToDataGrid(layer, scatterName);
-                    AttachLayerPlotHandlers(categoryViewModel, preserveAxisLimits: false);
+                    // 投点后由 CenterPlot 决定视角；后续属性编辑应保留当前视角（含越界 AutoScale）
+                    AttachLayerPlotHandlers(categoryViewModel, preserveAxisLimits: true);
                     rootDataNode.Children.Add(categoryViewModel);
                 }
             }
@@ -12333,8 +13745,8 @@ namespace GeoChemistryNexus.ViewModels
                 Width = 2
             };
 
-            // 查找或创建 "Function" 分类
-            var funcCategory = GetOrCreateCategory("Function");
+            // 查找或创建函数分类
+            var funcCategory = GetOrCreateCategory(LanguageService.Instance["function"]);
 
             // 添加图层
             var funcLayer = new FunctionLayerItemViewModel(funcDef, funcCategory.Children.Count);
@@ -12347,7 +13759,7 @@ namespace GeoChemistryNexus.ViewModels
             // 记录撤销/重做
             Action undo = () =>
             {
-                var cat = LayerTree.FirstOrDefault(c => c is CategoryLayerItemViewModel vm && vm.Name == "Function") as CategoryLayerItemViewModel;
+                var cat = LayerTree.FirstOrDefault(c => c is CategoryLayerItemViewModel vm && vm.Name == LanguageService.Instance["function"]) as CategoryLayerItemViewModel;
                 if (cat != null)
                 {
                     if (cat.Children.Contains(funcLayer)) cat.Children.Remove(funcLayer);
@@ -12357,7 +13769,7 @@ namespace GeoChemistryNexus.ViewModels
             };
             Action redo = () =>
             {
-                var cat = GetOrCreateCategory("Function");
+                var cat = GetOrCreateCategory(LanguageService.Instance["function"]);
                 if (!cat.Children.Contains(funcLayer)) cat.Children.Add(funcLayer);
                 RefreshPlotFromLayers(true);
             };
@@ -12447,38 +13859,6 @@ namespace GeoChemistryNexus.ViewModels
             }
 
             return layersToDelete;
-        }
-
-        private static bool HasBoundData(LayerItemViewModel layer) =>
-            layer is ScatterLayerItemViewModel or SpiderSampleLayerItemViewModel;
-
-        private List<int> CollectSourceRowIndices(IEnumerable<LayerItemViewModel> layers)
-        {
-            var rowIndices = new HashSet<int>();
-
-            foreach (var layer in layers)
-            {
-                switch (layer)
-                {
-                    case ScatterLayerItemViewModel scatterLayer:
-                        foreach (var rowIndex in scatterLayer.OriginalRowIndices.Where(index => index >= 0))
-                        {
-                            rowIndices.Add(rowIndex);
-                        }
-                        break;
-
-                    case SpiderSampleLayerItemViewModel spiderLayer:
-                        foreach (var rowIndex in spiderLayer.Samples
-                                     .SelectMany(sample => sample.SourceRowIndices)
-                                     .Where(index => index >= 0))
-                        {
-                            rowIndices.Add(rowIndex);
-                        }
-                        break;
-                }
-            }
-
-            return rowIndices.OrderBy(index => index).ToList();
         }
 
         private List<(SpiderSampleData Sample, int Index)> CaptureSpiderSamplesForDeletion(IEnumerable<LayerItemViewModel> layers)
@@ -12659,72 +14039,11 @@ namespace GeoChemistryNexus.ViewModels
             redo();
         }
 
-        private bool DeleteWorksheetRows(IReadOnlyList<int> rowIndices)
-        {
-            if (_dataGrid == null || _dataGrid.Worksheets.Count == 0 || rowIndices == null || rowIndices.Count == 0)
-            {
-                return false;
-            }
-
-            var worksheet = _dataGrid.Worksheets[0];
-            var validRows = rowIndices
-                .Where(row => row >= 0 && row < worksheet.RowCount)
-                .Distinct()
-                .OrderBy(row => row)
-                .ToList();
-
-            if (validRows.Count == 0)
-            {
-                return false;
-            }
-
-            bool deleteAllRows = validRows.Count >= worksheet.RowCount;
-            var rowsToDelete = deleteAllRows
-                ? validRows.Where(row => row != 0).ToList()
-                : validRows;
-
-            if (rowsToDelete.Count > 0)
-            {
-                int groupStart = rowsToDelete[^1];
-                int groupCount = 1;
-
-                for (int i = rowsToDelete.Count - 2; i >= 0; i--)
-                {
-                    int currentRow = rowsToDelete[i];
-                    if (currentRow == groupStart - 1)
-                    {
-                        groupStart = currentRow;
-                        groupCount++;
-                    }
-                    else
-                    {
-                        worksheet.DeleteRows(groupStart, groupCount);
-                        groupStart = currentRow;
-                        groupCount = 1;
-                    }
-                }
-
-                worksheet.DeleteRows(groupStart, groupCount);
-            }
-
-            if (deleteAllRows && worksheet.RowCount > 0)
-            {
-                for (int col = 0; col < worksheet.ColumnCount; col++)
-                {
-                    worksheet[0, col] = string.Empty;
-                }
-            }
-
-            RestoreWorksheetSelectionToSafeCell(worksheet);
-            UpdateSelectedCellDisplayText(0, 0);
-            return true;
-        }
-
         /// <summary>
-        /// 删除当前选中的绘图对象。
+        /// 删除当前选中的绘图对象（不弹确认框，不联动删除数据表行）。
         /// </summary>
         [RelayCommand(CanExecute = nameof(CanDeleteSelectedObject))]
-        private async Task DeleteSelectedObject()
+        private void DeleteSelectedObject()
         {
             var layersToDelete = GetSelectedLayersForDeletion();
             if (layersToDelete.Count == 0)
@@ -12733,73 +14052,728 @@ namespace GeoChemistryNexus.ViewModels
                 return;
             }
 
-            bool containsDataLayers = layersToDelete.Any(HasBoundData);
-            if (containsDataLayers)
-            {
-                int result = await NotificationManager.Instance.ShowThreeButtonDialogAsync(
-                    LanguageService.Instance["tips"] ?? "提示",
-                    LanguageService.Instance["delete_selected_data_and_drawing_objects"] ?? "是否删除选中的数据及绘图对象？",
-                    LanguageService.Instance["delete_all"] ?? "全部删除",
-                    LanguageService.Instance["keep_data"] ?? "保留数据",
-                    LanguageService.Instance["cancel_delete"] ?? "取消删除");
-
-                if (result == 2)
-                {
-                    return;
-                }
-
-                if (result == 0)
-                {
-                    var rowIndices = CollectSourceRowIndices(layersToDelete);
-                    if (rowIndices.Count == 0)
-                    {
-                        DeleteLayersFromTreeWithUndo(layersToDelete, removeSpiderSamples: layersToDelete.Any(layer => layer is SpiderSampleLayerItemViewModel));
-                        MessageHelper.Warning(LanguageService.Instance["no_source_data_found_only_drawing_objects_deleted"] ?? "未找到可删除的源数据，已仅删除绘图对象。");
-                        return;
-                    }
-
-                    try
-                    {
-                        CancelSelected();
-                        if (!DeleteWorksheetRows(rowIndices))
-                        {
-                            MessageHelper.Warning(LanguageService.Instance["no_source_data_found"] ?? "未找到可删除的源数据。");
-                            return;
-                        }
-
-                        ClearExistingPlottedData();
-                        PlotDataFromGrid();
-                        MessageHelper.Success(LanguageService.Instance["selected_data_and_drawing_objects_deleted"] ?? "已删除选中的数据及绘图对象。");
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageHelper.Warning(LanguageService.Instance["delete_data_failed"] ?? "删除数据失败: " + ex.Message);
-                    }
-
-                    NotifySelectionDependentCommandStates();
-                    return;
-                }
-
-                DeleteLayersFromTreeWithUndo(layersToDelete, removeSpiderSamples: layersToDelete.Any(layer => layer is SpiderSampleLayerItemViewModel));
-                MessageHelper.Success(LanguageService.Instance["selected_drawing_objects_deleted_data_kept"] ?? "已删除选中的绘图对象，已保留数据。");
-                NotifySelectionDependentCommandStates();
-                return;
-            }
-
-            bool confirmed = await NotificationManager.Instance.ShowDialogAsync(
-                LanguageService.Instance["tips"] ?? "提示",
-                LanguageService.Instance["delete_selected_drawing_objects"] ?? "是否删除选中的绘图对象？",
-                LanguageService.Instance["Confirm"] ?? "确认",
-                LanguageService.Instance["Cancel"] ?? "取消");
-
-            if (!confirmed)
-            {
-                return;
-            }
-
-            DeleteLayersFromTreeWithUndo(layersToDelete);
+            DeleteLayersFromTreeWithUndo(
+                layersToDelete,
+                removeSpiderSamples: layersToDelete.Any(layer => layer is SpiderSampleLayerItemViewModel));
             MessageHelper.Success(LanguageService.Instance["object_deleted_successfully"]);
             NotifySelectionDependentCommandStates();
+        }
+
+        /// <summary>
+        /// 数据模式：是否有可删除的单个数据项（当前选中的散点 / 蛛网样品线）。
+        /// </summary>
+        private bool CanDeleteSelectedDataObjectInDataMode()
+        {
+            return RibbonTabIndex == 1 && TryResolveSelectedDataDeletionTarget(out _, out _, out _, out _, out _);
+        }
+
+        /// <summary>
+        /// 数据模式 Delete：仅删除当前选中的单个数据点/样品线及其对应单元格数据（不删行、不删同组其他对象），随后取消选中。
+        /// </summary>
+        private void DeleteSelectedDataObjectInDataMode()
+        {
+            if (!TryResolveSelectedDataDeletionTarget(
+                    out int rowIndex,
+                    out var scatterLayer,
+                    out int pointIndex,
+                    out var spiderLayer,
+                    out var spiderSample))
+            {
+                return;
+            }
+
+            var rowsToClear = new List<int>();
+            if (rowIndex >= 0)
+            {
+                rowsToClear.Add(rowIndex);
+            }
+            else if (spiderSample?.SourceRowIndices != null)
+            {
+                rowsToClear.AddRange(spiderSample.SourceRowIndices.Where(r => r >= 0));
+            }
+
+            rowsToClear = rowsToClear.Distinct().ToList();
+            if (rowsToClear.Count == 0)
+            {
+                return;
+            }
+
+            var cellSnapshots = CaptureDataRowCellSnapshots(rowsToClear);
+
+            // 散点：记录被删点，必要时记录整层移除信息
+            Coordinates? removedScatterPoint = null;
+            int removedScatterPointIndex = -1;
+            ScatterLayerItemViewModel? scatterLayerRef = scatterLayer;
+            (LayerItemViewModel Layer, CategoryLayerItemViewModel? Parent, int Index, int ParentIndex)? removedScatterLayerInfo = null;
+
+            if (scatterLayer != null && pointIndex >= 0 && pointIndex < scatterLayer.DataPoints.Count)
+            {
+                removedScatterPoint = scatterLayer.DataPoints[pointIndex];
+                removedScatterPointIndex = pointIndex;
+
+                if (scatterLayer.DataPoints.Count <= 1)
+                {
+                    var parent = FindParentLayer(LayerTree, scatterLayer);
+                    int index = parent != null ? parent.Children.IndexOf(scatterLayer) : LayerTree.IndexOf(scatterLayer);
+                    int parentIndex = parent != null ? LayerTree.IndexOf(parent) : -1;
+                    removedScatterLayerInfo = (scatterLayer, parent, index, parentIndex);
+                }
+            }
+
+            // 蛛网：仅删除当前活动样品（增量，避免全量 RefreshPlotFromLayers）
+            (SpiderSampleData Sample, int Index)? capturedSpiderSample = null;
+            SpiderSampleLayerItemViewModel? spiderLayerRef = spiderLayer;
+            var spiderUndoState = new SpiderIncrementalDeleteState();
+
+            if (spiderSample != null && SpiderDiagramViewModel != null)
+            {
+                int sampleIndex = SpiderDiagramViewModel.Samples.IndexOf(spiderSample);
+                if (sampleIndex < 0)
+                {
+                    sampleIndex = SpiderDiagramViewModel.Samples.ToList().FindIndex(s => ReferenceEquals(s, spiderSample));
+                }
+
+                if (sampleIndex < 0)
+                {
+                    sampleIndex = SpiderDiagramViewModel.Samples
+                        .Select((s, i) => (s, i))
+                        .Where(x => x.s.SourceRowIndices.Any(r => rowsToClear.Contains(r)))
+                        .Select(x => x.i)
+                        .DefaultIfEmpty(-1)
+                        .First();
+                    if (sampleIndex >= 0)
+                    {
+                        spiderSample = SpiderDiagramViewModel.Samples[sampleIndex];
+                    }
+                }
+
+                if (sampleIndex >= 0 && spiderSample != null)
+                {
+                    capturedSpiderSample = (spiderSample, sampleIndex);
+                    spiderLayerRef ??= FlattenTree(LayerTree)
+                        .OfType<SpiderSampleLayerItemViewModel>()
+                        .FirstOrDefault(layer => layer.Samples.Any(sample =>
+                            ReferenceEquals(sample, spiderSample)
+                            || sample.SourceRowIndices.Any(r => rowsToClear.Contains(r))));
+                }
+            }
+
+            Action redo = () =>
+            {
+                ApplySelectedDataObjectDeletion(
+                    clearValues: true,
+                    capturedSpiderSample,
+                    spiderLayerRef,
+                    spiderUndoState,
+                    scatterLayerRef,
+                    removedScatterPoint,
+                    removedScatterPointIndex,
+                    removedScatterLayerInfo,
+                    rowsToClear,
+                    cellSnapshots,
+                    isUndo: false);
+            };
+
+            Action undo = () =>
+            {
+                ApplySelectedDataObjectDeletion(
+                    clearValues: false,
+                    capturedSpiderSample,
+                    spiderLayerRef,
+                    spiderUndoState,
+                    scatterLayerRef,
+                    removedScatterPoint,
+                    removedScatterPointIndex,
+                    removedScatterLayerInfo,
+                    rowsToClear,
+                    cellSnapshots,
+                    isUndo: true);
+            };
+
+            AddUndoState(undo, redo);
+            redo();
+            MessageHelper.Success(LanguageService.Instance["object_deleted_successfully"]);
+            NotifySelectionDependentCommandStates();
+        }
+
+        private sealed class SpiderIncrementalDeleteState
+        {
+            public ScottPlot.Plottables.Scatter? RemovedScatter { get; set; }
+            public int SeriesIndex { get; set; } = -1;
+            public bool RemovedEntireLayer { get; set; }
+            public CategoryLayerItemViewModel? Parent { get; set; }
+            public int LayerIndex { get; set; } = -1;
+            public int ParentIndex { get; set; } = -1;
+            public ScottPlot.Plottables.Scatter? LegendProxy { get; set; }
+        }
+
+        /// <summary>
+        /// 数据模式单点/单线删除的增量应用（避免 RefreshPlotFromLayers 全量重建）。
+        /// </summary>
+        private void ApplySelectedDataObjectDeletion(
+            bool clearValues,
+            (SpiderSampleData Sample, int Index)? capturedSpiderSample,
+            SpiderSampleLayerItemViewModel? spiderLayer,
+            SpiderIncrementalDeleteState spiderUndoState,
+            ScatterLayerItemViewModel? scatterLayerRef,
+            Coordinates? removedScatterPoint,
+            int removedScatterPointIndex,
+            (LayerItemViewModel Layer, CategoryLayerItemViewModel? Parent, int Index, int ParentIndex)? removedScatterLayerInfo,
+            IReadOnlyList<int> rowsToClear,
+            IReadOnlyList<(int Row, int Col, object? Value)> cellSnapshots,
+            bool isUndo)
+        {
+            if (isUndo)
+            {
+                if (capturedSpiderSample.HasValue)
+                {
+                    RestoreSpiderSampleIncrementally(capturedSpiderSample.Value, spiderLayer, spiderUndoState);
+                }
+
+                if (scatterLayerRef != null && removedScatterPoint.HasValue && removedScatterPointIndex >= 0)
+                {
+                    RestoreScatterPointIncrementally(
+                        scatterLayerRef,
+                        removedScatterPoint.Value,
+                        removedScatterPointIndex,
+                        rowsToClear.Count > 0 ? rowsToClear[0] : -1,
+                        removedScatterLayerInfo);
+                }
+
+                ApplyDataRowCellSnapshots(cellSnapshots, clearValues: false);
+                RebuildPlottableLayerLookup();
+                InvalidateSnapPointsCache();
+                WpfPlot1?.Refresh();
+                return;
+            }
+
+            if (capturedSpiderSample.HasValue)
+            {
+                // 先结束闪烁/遮罩并恢复真实颜色，再增量删除，避免 RebuildPropertyModel 捕获临时色。
+                StopDataLinkFlash();
+                RemoveSpiderSampleIncrementally(capturedSpiderSample.Value, spiderLayer, spiderUndoState);
+            }
+
+            if (scatterLayerRef != null && removedScatterPointIndex >= 0)
+            {
+                RemoveScatterPointIncrementally(
+                    scatterLayerRef,
+                    removedScatterPointIndex,
+                    removedScatterLayerInfo);
+            }
+
+            ApplyDataRowCellSnapshots(cellSnapshots, clearValues: true);
+            CancelSelected();
+            RebuildPlottableLayerLookup();
+            InvalidateSnapPointsCache();
+            WpfPlot1?.Refresh();
+        }
+
+        private void RemoveSpiderSampleIncrementally(
+            (SpiderSampleData Sample, int Index) captured,
+            SpiderSampleLayerItemViewModel? spiderLayer,
+            SpiderIncrementalDeleteState undoState)
+        {
+            if (SpiderDiagramViewModel == null || WpfPlot1 == null)
+            {
+                return;
+            }
+
+            RemoveSpiderSamplesFromCurrentPlot(new[] { captured });
+
+            var targetLayer = spiderLayer
+                ?? FlattenTree(LayerTree)
+                    .OfType<SpiderSampleLayerItemViewModel>()
+                    .FirstOrDefault(layer => layer.Samples.Any(sample => ReferenceEquals(sample, captured.Sample)));
+
+            if (targetLayer == null)
+            {
+                return;
+            }
+
+            if (!targetLayer.TryRemoveSample(captured.Sample, out var removedScatter, out int seriesIndex))
+            {
+                return;
+            }
+
+            undoState.RemovedScatter = removedScatter;
+            undoState.SeriesIndex = seriesIndex;
+            undoState.LegendProxy = targetLayer.LegendProxy;
+
+            if (removedScatter != null)
+            {
+                WpfPlot1.Plot.Remove(removedScatter);
+                _plottableLayerLookup.Remove(removedScatter);
+            }
+
+            if (targetLayer.SeriesCount == 0)
+            {
+                var parent = FindParentLayer(LayerTree, targetLayer);
+                undoState.RemovedEntireLayer = true;
+                undoState.Parent = parent;
+                undoState.LayerIndex = parent != null ? parent.Children.IndexOf(targetLayer) : LayerTree.IndexOf(targetLayer);
+                undoState.ParentIndex = parent != null ? LayerTree.IndexOf(parent) : -1;
+
+                if (targetLayer.LegendProxy != null)
+                {
+                    WpfPlot1.Plot.Remove(targetLayer.LegendProxy);
+                    _plottableLayerLookup.Remove(targetLayer.LegendProxy);
+                }
+
+                RemoveDataLayerFromTree(targetLayer);
+            }
+        }
+
+        private void RestoreSpiderSampleIncrementally(
+            (SpiderSampleData Sample, int Index) captured,
+            SpiderSampleLayerItemViewModel? spiderLayer,
+            SpiderIncrementalDeleteState undoState)
+        {
+            if (SpiderDiagramViewModel == null || WpfPlot1 == null)
+            {
+                return;
+            }
+
+            RestoreSpiderSamplesToCurrentPlot(new[] { captured });
+
+            if (undoState.RemovedScatter == null)
+            {
+                // 缺少可复用的 Scatter 时回退全量刷新
+                RefreshPlotFromLayers(true);
+                return;
+            }
+
+            // 先把 Scatter 加回 Plot
+            if (!WpfPlot1.Plot.GetPlottables().Contains(undoState.RemovedScatter))
+            {
+                WpfPlot1.Plot.Add.Plottable(undoState.RemovedScatter);
+            }
+
+            if (undoState.RemovedEntireLayer)
+            {
+                if (spiderLayer == null)
+                {
+                    RefreshPlotFromLayers(true);
+                    return;
+                }
+
+                spiderLayer.InsertSampleSeries(0, captured.Sample, undoState.RemovedScatter);
+
+                if (undoState.LegendProxy != null
+                    && !WpfPlot1.Plot.GetPlottables().Contains(undoState.LegendProxy))
+                {
+                    WpfPlot1.Plot.Add.Plottable(undoState.LegendProxy);
+                }
+
+                InsertDataLayerIntoTree(
+                    spiderLayer,
+                    undoState.Parent,
+                    undoState.LayerIndex,
+                    undoState.ParentIndex);
+                spiderLayer.RegisterPlottablesForLookup(_plottableLayerLookup);
+                return;
+            }
+
+            var targetLayer = spiderLayer
+                ?? FlattenTree(LayerTree)
+                    .OfType<SpiderSampleLayerItemViewModel>()
+                    .FirstOrDefault(layer =>
+                        string.Equals(layer.Name, captured.Sample.Name, StringComparison.OrdinalIgnoreCase));
+
+            if (targetLayer == null)
+            {
+                RefreshPlotFromLayers(true);
+                return;
+            }
+
+            targetLayer.InsertSampleSeries(undoState.SeriesIndex, captured.Sample, undoState.RemovedScatter);
+            targetLayer.RegisterPlottablesForLookup(_plottableLayerLookup);
+        }
+
+        private void RemoveScatterPointIncrementally(
+            ScatterLayerItemViewModel scatterLayer,
+            int pointIndex,
+            (LayerItemViewModel Layer, CategoryLayerItemViewModel? Parent, int Index, int ParentIndex)? removedScatterLayerInfo)
+        {
+            if (WpfPlot1 == null)
+            {
+                return;
+            }
+
+            if (removedScatterLayerInfo.HasValue || scatterLayer.DataPoints.Count <= 1)
+            {
+                scatterLayer.UnregisterPlottablesFromLookup(_plottableLayerLookup);
+                scatterLayer.DetachPlottablesFromPlot(WpfPlot1.Plot);
+                RemoveDataLayerFromTree(scatterLayer);
+                return;
+            }
+
+            if (pointIndex < 0 || pointIndex >= scatterLayer.DataPoints.Count)
+            {
+                return;
+            }
+
+            var points = scatterLayer.DataPoints.ToList();
+            var rows = scatterLayer.OriginalRowIndices.ToList();
+            points.RemoveAt(pointIndex);
+            if (pointIndex < rows.Count)
+            {
+                rows.RemoveAt(pointIndex);
+            }
+
+            scatterLayer.DataPoints = points;
+            scatterLayer.OriginalRowIndices = rows;
+
+            // 仅重绘该散点图层
+            scatterLayer.UnregisterPlottablesFromLookup(_plottableLayerLookup);
+            scatterLayer.DetachPlottablesFromPlot(WpfPlot1.Plot);
+            scatterLayer.AttachPlottablesToPlot(WpfPlot1.Plot);
+            scatterLayer.RegisterPlottablesForLookup(_plottableLayerLookup);
+        }
+
+        private void RestoreScatterPointIncrementally(
+            ScatterLayerItemViewModel scatterLayer,
+            Coordinates point,
+            int pointIndex,
+            int rowIndex,
+            (LayerItemViewModel Layer, CategoryLayerItemViewModel? Parent, int Index, int ParentIndex)? removedScatterLayerInfo)
+        {
+            if (WpfPlot1 == null)
+            {
+                return;
+            }
+
+            if (removedScatterLayerInfo.HasValue)
+            {
+                var info = removedScatterLayerInfo.Value;
+                InsertDataLayerIntoTree(info.Layer, info.Parent, info.Index, info.ParentIndex);
+                if (info.Layer is ScatterLayerItemViewModel restoredScatter)
+                {
+                    // 确保点数据仍在（删除整层时未改 DataPoints）
+                    if (restoredScatter.DataPoints.Count == 0 && rowIndex >= 0)
+                    {
+                        restoredScatter.DataPoints = new List<Coordinates> { point };
+                        restoredScatter.OriginalRowIndices = new List<int> { rowIndex };
+                    }
+
+                    restoredScatter.DetachPlottablesFromPlot(WpfPlot1.Plot);
+                    restoredScatter.AttachPlottablesToPlot(WpfPlot1.Plot);
+                    restoredScatter.RegisterPlottablesForLookup(_plottableLayerLookup);
+                }
+
+                return;
+            }
+
+            var points = scatterLayer.DataPoints.ToList();
+            var rows = scatterLayer.OriginalRowIndices.ToList();
+            int insertAt = Math.Clamp(pointIndex, 0, points.Count);
+            points.Insert(insertAt, point);
+            int rowInsertAt = Math.Clamp(pointIndex, 0, rows.Count);
+            if (rowIndex >= 0)
+            {
+                rows.Insert(rowInsertAt, rowIndex);
+            }
+
+            scatterLayer.DataPoints = points;
+            scatterLayer.OriginalRowIndices = rows;
+
+            scatterLayer.UnregisterPlottablesFromLookup(_plottableLayerLookup);
+            scatterLayer.DetachPlottablesFromPlot(WpfPlot1.Plot);
+            scatterLayer.AttachPlottablesToPlot(WpfPlot1.Plot);
+            scatterLayer.RegisterPlottablesForLookup(_plottableLayerLookup);
+        }
+
+        private void RemoveDataLayerFromTree(LayerItemViewModel layer)
+        {
+            var parent = FindParentLayer(LayerTree, layer);
+            if (parent != null)
+            {
+                if (parent.Children.Contains(layer))
+                {
+                    parent.Children.Remove(layer);
+                }
+
+                if (parent.Children.Count == 0 && LayerTree.Contains(parent))
+                {
+                    LayerTree.Remove(parent);
+                }
+
+                return;
+            }
+
+            if (LayerTree.Contains(layer))
+            {
+                LayerTree.Remove(layer);
+            }
+        }
+
+        private void InsertDataLayerIntoTree(
+            LayerItemViewModel layer,
+            CategoryLayerItemViewModel? parent,
+            int index,
+            int parentIndex)
+        {
+            if (parent != null)
+            {
+                if (!LayerTree.Contains(parent))
+                {
+                    if (parentIndex >= 0 && parentIndex <= LayerTree.Count)
+                    {
+                        LayerTree.Insert(parentIndex, parent);
+                    }
+                    else
+                    {
+                        LayerTree.Add(parent);
+                    }
+                }
+
+                if (!parent.Children.Contains(layer))
+                {
+                    if (index >= 0 && index <= parent.Children.Count)
+                    {
+                        parent.Children.Insert(index, layer);
+                    }
+                    else
+                    {
+                        parent.Children.Add(layer);
+                    }
+                }
+
+                return;
+            }
+
+            if (!LayerTree.Contains(layer))
+            {
+                if (index >= 0 && index <= LayerTree.Count)
+                {
+                    LayerTree.Insert(index, layer);
+                }
+                else
+                {
+                    LayerTree.Add(layer);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 解析数据模式下当前“选中项”：仅单个散点或单条蛛网样品线。
+        /// </summary>
+        private bool TryResolveSelectedDataDeletionTarget(
+            out int rowIndex,
+            out ScatterLayerItemViewModel? scatterLayer,
+            out int pointIndex,
+            out SpiderSampleLayerItemViewModel? spiderLayer,
+            out SpiderSampleData? spiderSample)
+        {
+            rowIndex = -1;
+            scatterLayer = null;
+            pointIndex = -1;
+            spiderLayer = null;
+            spiderSample = null;
+
+            int gridRow = TryGetCurrentDataGridSelectionRow();
+
+            if (_dataLinkFlashScatterStyle != null)
+            {
+                scatterLayer = _dataLinkFlashScatterStyle;
+                if (gridRow >= 0)
+                {
+                    pointIndex = scatterLayer.OriginalRowIndices.IndexOf(gridRow);
+                    if (pointIndex >= 0)
+                    {
+                        rowIndex = gridRow;
+                        return true;
+                    }
+                }
+
+                pointIndex = FindScatterPointIndexByFlashMarker(scatterLayer);
+                if (pointIndex >= 0 && pointIndex < scatterLayer.OriginalRowIndices.Count)
+                {
+                    rowIndex = scatterLayer.OriginalRowIndices[pointIndex];
+                    return true;
+                }
+
+                scatterLayer = null;
+                pointIndex = -1;
+            }
+
+            if (_dataLinkFlashSpiderStyle != null)
+            {
+                spiderLayer = _dataLinkFlashSpiderStyle;
+                spiderSample = FindSpiderSampleByPlottable(spiderLayer, _dataLinkFlashSpiderScatter)
+                    ?? spiderLayer.Sample;
+                if (spiderSample != null)
+                {
+                    if (gridRow >= 0 && spiderSample.SourceRowIndices.Contains(gridRow))
+                    {
+                        rowIndex = gridRow;
+                    }
+                    else
+                    {
+                        rowIndex = spiderSample.SourceRowIndices.FirstOrDefault(r => r >= 0);
+                    }
+
+                    return true;
+                }
+
+                spiderLayer = null;
+                spiderSample = null;
+            }
+
+            if (_selectedLayer is ScatterLayerItemViewModel selectedScatter && gridRow >= 0)
+            {
+                pointIndex = selectedScatter.OriginalRowIndices.IndexOf(gridRow);
+                if (pointIndex >= 0)
+                {
+                    scatterLayer = selectedScatter;
+                    rowIndex = gridRow;
+                    return true;
+                }
+            }
+
+            if (_selectedLayer is SpiderSampleLayerItemViewModel selectedSpider)
+            {
+                if (gridRow >= 0 && selectedSpider.ContainsSourceRowIndex(gridRow))
+                {
+                    selectedSpider.TrySetActiveByRowIndex(gridRow);
+                    spiderLayer = selectedSpider;
+                    spiderSample = selectedSpider.Sample;
+                    rowIndex = gridRow;
+                    return spiderSample != null;
+                }
+
+                spiderSample = selectedSpider.Sample;
+                if (spiderSample != null)
+                {
+                    spiderLayer = selectedSpider;
+                    rowIndex = spiderSample.SourceRowIndices.FirstOrDefault(r => r >= 0);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private int TryGetCurrentDataGridSelectionRow()
+        {
+            var worksheet = _dataGrid?.CurrentWorksheet
+                ?? (_dataGrid != null && _dataGrid.Worksheets.Count > 0 ? _dataGrid.Worksheets[0] : null);
+            if (worksheet == null)
+            {
+                return -1;
+            }
+
+            var range = worksheet.SelectionRange;
+            if (range.IsEmpty || range.Row < 0 || range.Row >= worksheet.RowCount)
+            {
+                return -1;
+            }
+
+            if (worksheet.SelectionStyle == WorksheetSelectionStyle.None)
+            {
+                return -1;
+            }
+
+            return range.Row;
+        }
+
+        private int FindScatterPointIndexByFlashMarker(ScatterLayerItemViewModel scatterLayer)
+        {
+            if (_dataLinkFlashMarker == null || scatterLayer.DataPoints.Count == 0 || WpfPlot1 == null)
+            {
+                return -1;
+            }
+
+            var flashLocation = _dataLinkFlashMarker.Location;
+            int bestIndex = -1;
+            double bestDistance = double.MaxValue;
+            for (int i = 0; i < scatterLayer.DataPoints.Count; i++)
+            {
+                var renderPoint = PlotTransformHelper.ToRenderCoordinates(WpfPlot1.Plot, scatterLayer.DataPoints[i]);
+                double dx = renderPoint.X - flashLocation.X;
+                double dy = renderPoint.Y - flashLocation.Y;
+                double distance = dx * dx + dy * dy;
+                if (distance < bestDistance)
+                {
+                    bestDistance = distance;
+                    bestIndex = i;
+                }
+            }
+
+            return bestIndex;
+        }
+
+        private static SpiderSampleData? FindSpiderSampleByPlottable(
+            SpiderSampleLayerItemViewModel spiderLayer,
+            ScottPlot.IPlottable? plottable)
+        {
+            if (spiderLayer == null || plottable == null)
+            {
+                return null;
+            }
+
+            spiderLayer.SetActivePlottable(plottable);
+            return spiderLayer.Sample;
+        }
+
+        private List<(int Row, int Col, object? Value)> CaptureDataRowCellSnapshots(IEnumerable<int> rows)
+        {
+            var snapshots = new List<(int Row, int Col, object? Value)>();
+            var worksheet = _dataGrid?.CurrentWorksheet
+                ?? (_dataGrid != null && _dataGrid.Worksheets.Count > 0 ? _dataGrid.Worksheets[0] : null);
+            if (worksheet == null)
+            {
+                return snapshots;
+            }
+
+            foreach (var row in rows.Distinct())
+            {
+                if (row < 0 || row >= worksheet.RowCount)
+                {
+                    continue;
+                }
+
+                for (int col = 0; col < worksheet.ColumnCount; col++)
+                {
+                    snapshots.Add((row, col, worksheet.GetCellData(row, col)));
+                }
+            }
+
+            return snapshots;
+        }
+
+        /// <summary>
+        /// clearValues=true 清空快照对应单元格；false 则还原快照值。不删行。
+        /// </summary>
+        private void ApplyDataRowCellSnapshots(
+            IReadOnlyList<(int Row, int Col, object? Value)> snapshots,
+            bool clearValues)
+        {
+            var worksheet = _dataGrid?.CurrentWorksheet
+                ?? (_dataGrid != null && _dataGrid.Worksheets.Count > 0 ? _dataGrid.Worksheets[0] : null);
+            if (worksheet == null || snapshots == null || snapshots.Count == 0)
+            {
+                return;
+            }
+
+            try
+            {
+                _isSyncingLayerNameToDataGrid = true;
+                foreach (var snapshot in snapshots)
+                {
+                    if (snapshot.Row < 0 || snapshot.Row >= worksheet.RowCount
+                        || snapshot.Col < 0 || snapshot.Col >= worksheet.ColumnCount)
+                    {
+                        continue;
+                    }
+
+                    worksheet[snapshot.Row, snapshot.Col] = clearValues ? null : snapshot.Value;
+                }
+            }
+            finally
+            {
+                _isSyncingLayerNameToDataGrid = false;
+            }
         }
 
         /// <summary>
@@ -12935,6 +14909,7 @@ namespace GeoChemistryNexus.ViewModels
             // 清除数据表格
             var worksheet = _dataGrid.Worksheets[0];
             worksheet.Reset();
+            worksheet.RowCount = WorksheetDefaultsHelper.GetDefaultRowCount(WorksheetDefaultsHelper.DiagramConfigKey);
             RestoreWorksheetSelectionToSafeCell(worksheet);
             UpdateSelectedCellDisplayText(0, 0);
 
@@ -12982,36 +14957,11 @@ namespace GeoChemistryNexus.ViewModels
                         string jsonString = SerializeTemplate(CurrentTemplate);
                         await File.WriteAllTextAsync(_currentTemplateFilePath, jsonString);
 
-                        // 2. 保存缩略图（680x480 灰度图）
+                        // 2. 保存缩略图（1.2× 渲染后缩放到 680×480 灰度 JPEG）
                         try
                         {
                             string thumbnailPath = Path.ChangeExtension(_currentTemplateFilePath, ".jpg");
-                            var colorImageBytes = WpfPlot1.Plot.GetImageBytes(680, 480, ScottPlot.ImageFormat.Jpeg);
-                            
-                            // 转换为灰度图
-                            using (var ms = new MemoryStream(colorImageBytes))
-                            {
-                                var colorBitmap = new BitmapImage();
-                                colorBitmap.BeginInit();
-                                colorBitmap.CacheOption = BitmapCacheOption.OnLoad;
-                                colorBitmap.StreamSource = ms;
-                                colorBitmap.EndInit();
-                                
-                                // 转换为 8 位灰度图
-                                var grayBitmap = new FormatConvertedBitmap();
-                                grayBitmap.BeginInit();
-                                grayBitmap.Source = colorBitmap;
-                                grayBitmap.DestinationFormat = PixelFormats.Gray8;
-                                grayBitmap.EndInit();
-                                
-                                // 编码为 JPEG 并保存
-                                var encoder = new JpegBitmapEncoder();
-                                encoder.Frames.Add(BitmapFrame.Create(grayBitmap));
-                                using (var fileStream = new FileStream(thumbnailPath, FileMode.Create))
-                                {
-                                    encoder.Save(fileStream);
-                                }
-                            }
+                            File.WriteAllBytes(thumbnailPath, CreateTemplateThumbnailJpeg(WpfPlot1.Plot));
                         }
                         catch (Exception ex)
                         {
@@ -13089,8 +15039,6 @@ namespace GeoChemistryNexus.ViewModels
                 // 保存到数据库
                 await Task.Run(() => GraphMapDatabaseService.Instance.UpsertTemplate(entity));
 
-                RequestTemplateLibraryRefresh();
-
                 // 更新原始状态记录
                 _originalTemplateJson = SerializeTemplate(CurrentTemplate);
 
@@ -13100,46 +15048,21 @@ namespace GeoChemistryNexus.ViewModels
                 // 重置未保存状态
                 HasUnsavedChanges = false;
 
-                // 更新或生成新的缩略图（680x480 灰度图）
+                // 更新或生成新的缩略图（1.2× 渲染后缩放到 680×480 灰度 JPEG）
+                byte[]? thumbBytes = null;
                 try
                 {
-                    var colorImageBytes = WpfPlot1.Plot.GetImageBytes(680, 480, ScottPlot.ImageFormat.Jpeg);
-                    
-                    // 转换为灰度图
-                    using (var ms = new MemoryStream(colorImageBytes))
-                    {
-                        var colorBitmap = new BitmapImage();
-                        colorBitmap.BeginInit();
-                        colorBitmap.CacheOption = BitmapCacheOption.OnLoad;
-                        colorBitmap.StreamSource = ms;
-                        colorBitmap.EndInit();
-                        
-                        // 转换为 8 位灰度图
-                        var grayBitmap = new FormatConvertedBitmap();
-                        grayBitmap.BeginInit();
-                        grayBitmap.Source = colorBitmap;
-                        grayBitmap.DestinationFormat = PixelFormats.Gray8;
-                        grayBitmap.EndInit();
-                        
-                        // 编码为 JPEG 并上传到数据库
-                        var encoder = new JpegBitmapEncoder();
-                        encoder.Frames.Add(BitmapFrame.Create(grayBitmap));
-                        using (var uploadStream = new MemoryStream())
-                        {
-                            encoder.Save(uploadStream);
-                            uploadStream.Position = 0;
-                            
-                            await Task.Run(() =>
-                            {
-                                GraphMapDatabaseService.Instance.UploadThumbnail(entity.Id, uploadStream);
-                            });
-                        }
-                    }
+                    thumbBytes = CreateTemplateThumbnailJpeg(WpfPlot1.Plot);
+                    using var uploadStream = new MemoryStream(thumbBytes);
+                    await Task.Run(() => GraphMapDatabaseService.Instance.UploadThumbnail(entity.Id, uploadStream));
                 }
                 catch (Exception ex)
                 {
                     System.Diagnostics.Debug.WriteLine($"Failed to save thumbnail: {ex.Message}");
                 }
+
+                // 就地刷新卡片，避免 RequestTemplateLibraryRefresh 导致返回时全量重建并丢失滚动位置
+                RefreshSavedTemplateCardLocally(entity.Id, entity, thumbBytes);
 
                 MessageHelper.Success(LanguageService.Instance["template_saved_successfully"]);
             }
@@ -13979,7 +15902,7 @@ namespace GeoChemistryNexus.ViewModels
             if (name == LanguageService.Instance["axes"]) return LayerTreeIconKind.Axis;
             if (name == LanguageService.Instance["polygon"]) return LayerTreeIconKind.Polygon;
             if (name == LanguageService.Instance["line"]) return LayerTreeIconKind.Line;
-            if (name == LanguageService.Instance["function"] || name == "Function") return LayerTreeIconKind.Function;
+            if (name == LanguageService.Instance["function"]) return LayerTreeIconKind.Function;
             if (name == LanguageService.Instance["point"] || name == LanguageService.Instance["data_point"]) return LayerTreeIconKind.Point;
             if (name == LanguageService.Instance["arrow"]) return LayerTreeIconKind.Arrow;
             if (name == LanguageService.Instance["annotation"] || name == LanguageService.Instance["text"]) return LayerTreeIconKind.Text;

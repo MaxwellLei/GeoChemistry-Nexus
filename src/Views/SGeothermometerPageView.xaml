@@ -35,6 +35,32 @@
                     </StackPanel>
                 </Border>
 
+                <!-- DEFAULTS -->
+                <TextBlock Text="{Binding [geothermometer_defaults],Source={x:Static lg:LanguageService.Instance}, FallbackValue=默认设置}" Style="{StaticResource ModernSettingsGroupTitle}"/>
+                <Border Style="{StaticResource ModernSettingsCard}">
+                    <StackPanel>
+                        <!-- Default Worksheet Row Count -->
+                        <Grid MinHeight="56" Background="Transparent" Margin="16,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+                                <TextBlock Text="{Binding [default_worksheet_row_count],Source={x:Static lg:LanguageService.Instance}, FallbackValue=默认初始表格行数}" FontSize="14"/>
+                                <TextBlock Text="{Binding [default_worksheet_row_count_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=新建或重置数据表格时的默认初始行数}" Style="{StaticResource ModernSettingsItemHintStyle}"/>
+                            </StackPanel>
+                            <ComboBox ItemsSource="{Binding DefaultWorksheetRowCounts}"
+                                      SelectedValue="{Binding DefaultWorksheetRowCount}"
+                                      FontSize="12"
+                                      VerticalAlignment="Center"
+                                      HorizontalAlignment="Right"
+                                      Width="100"
+                                      Height="30"
+                                      Grid.Column="1"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
                 <!-- UPDATE SETTINGS -->
                 <TextBlock Text="{Binding [automatic_updates],Source={x:Static lg:LanguageService.Instance}, FallbackValue=更新设置}" Style="{StaticResource ModernSettingsGroupTitle}"/>
                 <Border Style="{StaticResource ModernSettingsCard}">

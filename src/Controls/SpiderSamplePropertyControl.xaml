@@ -66,7 +66,7 @@
                             <hc:NumericUpDown Grid.Column="1" Value="{Binding MarkerSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" Minimum="0" Maximum="20" Increment="1" 
                                              Style="{StaticResource ModernNumericUpDownStyle}" Height="28"/>
                         </Grid>
-                        <!-- Marker Shape -->
+                        <!-- Marker Shape：与图解模板数据点相同的类型选择器 -->
                         <Grid Margin="0,0,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" MinWidth="70"/>
@@ -74,34 +74,7 @@
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Text="{Binding [type],Source={x:Static lg:LanguageService.Instance}, FallbackValue='Type'}" 
                                        Style="{StaticResource ModernLabelStyle}" VerticalAlignment="Center"/>
-                            <ComboBox Grid.Column="1" ItemsSource="{Binding MarkerShapes, RelativeSource={RelativeSource AncestorType=local:SpiderSamplePropertyControl}}"
-                                      SelectedValue="{Binding MarkerShape, Mode=TwoWay}"
-                                      SelectedValuePath="Shape"
-                                      Style="{StaticResource ModernComboBoxStyle}">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Viewbox Width="12" Height="12" Margin="0,0,8,0">
-                                                <Path Data="{Binding Icon}" 
-                                                      Stroke="#1D1D1F" 
-                                                      StrokeThickness="1">
-                                                    <Path.Style>
-                                                        <Style TargetType="Path">
-                                                            <Setter Property="Fill" Value="Transparent"/>
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding IsFilled}" Value="True">
-                                                                    <Setter Property="Fill" Value="#1D1D1F"/>
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </Path.Style>
-                                                </Path>
-                                            </Viewbox>
-                                            <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
+                            <local:MarkerShapePicker Grid.Column="1" SelectedShape="{Binding MarkerShape, Mode=TwoWay}"/>
                         </Grid>
                     </StackPanel>
                 </Border>

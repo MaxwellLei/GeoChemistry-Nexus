@@ -11,7 +11,7 @@
 	<!--图解格式版本号 x.y.z -->
     <FileVersion>1.2.0</FileVersion>
     <!--地质温压计格式版本号 x.y.z -->
-    <GeothermometerFormatVersion>1.0.0</GeothermometerFormatVersion>
+    <GeothermometerFormatVersion>1.1.0</GeothermometerFormatVersion>
     <Copyright>Copyright ©️ 2024</Copyright>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
@@ -110,6 +110,6 @@
     <Compile Remove="_build_out\**\*" />
     <Content Remove="_build_out\**\*" />
     <None Remove="_build_out\**\*" />
-  </ItemGroup>
+  </ItemGroup> 
 
 </Project>

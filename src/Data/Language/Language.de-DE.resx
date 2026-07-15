@@ -163,7 +163,7 @@
     <value>Jahr darf nicht leer sein.</value>
   </data>
   <data name="new_version_available_github" xml:space="preserve">
-    <value>Neue Version gefunden! Bitte laden Sie das Update von der GitHub Release-Seite herunter.</value>
+    <value>Neue Version {0} ist verfügbar. Jetzt herunterladen und installieren?</value>
   </data>
   <data name="batch_download_fail_count" xml:space="preserve">
     <value>Fehlgeschlagen: {0}</value>
@@ -289,10 +289,10 @@
     <value>Bitte Link eingeben</value>
   </data>
   <data name="add_text" xml:space="preserve">
-    <value>Text hinzufügen</value>
+    <value>Text hinzufügen (Strg+2)</value>
   </data>
   <data name="add_line" xml:space="preserve">
-    <value>Linie hinzufügen</value>
+    <value>Linie hinzufügen (Strg+1)</value>
   </data>
   <data name="add_link" xml:space="preserve">
     <value>Link hinzufügen</value>
@@ -439,7 +439,7 @@
     <value>Suche nach Updates...</value>
   </data>
   <data name="add_function" xml:space="preserve">
-    <value>Funktion hinzufügen</value>
+    <value>Funktion hinzufügen (Strg+5)</value>
   </data>
   <data name="edit_diagram_template" xml:space="preserve">
     <value>Diagrammvorlage bearbeiten</value>
@@ -1382,7 +1382,7 @@
     <value>Skriptinhalt ist leer</value>
   </data>
   <data name="go_to_download" xml:space="preserve">
-    <value>Zum Download</value>
+    <value>Jetzt aktualisieren</value>
   </data>
   <data name="geo_msg_create_table_failed" xml:space="preserve">
     <value>Tabellenerstellung fehlgeschlagen: {0}</value>
@@ -1465,6 +1465,9 @@
   <data name="support_json_format" xml:space="preserve">
     <value>Unterstützt .json Format</value>
   </data>
+  <data name="cipw_col_sample" xml:space="preserve">
+    <value>Probe</value>
+  </data>
   <data name="cipw_col_silica_saturation" xml:space="preserve">
     <value>SiO2-Sättigung</value>
   </data>
@@ -1520,7 +1523,7 @@
     <value>Bearbeiten</value>
   </data>
   <data name="reset_view" xml:space="preserve">
-    <value>Ansicht zurücksetzen</value>
+    <value>Ansicht zurücksetzen (Strg+0)</value>
   </data>
   <data name="Alignment_UpperRight" xml:space="preserve">
     <value>Oben rechts</value>
@@ -1604,7 +1607,7 @@
     <value>Startbild konnte nicht gelöscht werden: </value>
   </data>
   <data name="add_arrow" xml:space="preserve">
-    <value>Pfeil hinzufügen</value>
+    <value>Pfeil hinzufügen (Strg+4)</value>
   </data>
   <data name="MarkerShape_Asterisk" xml:space="preserve">
     <value>Sternchen</value>
@@ -1634,7 +1637,7 @@
     <value>Hilfedokument ist optional und unterstützt mehrsprachiges RTF-Format.</value>
   </data>
   <data name="delete_object" xml:space="preserve">
-    <value>Objekt löschen</value>
+    <value>Objekt löschen (Entf)</value>
   </data>
   <data name="cipw_title" xml:space="preserve">
     <value>CIPW-Normberechnung</value>
@@ -1999,7 +2002,7 @@
     <value>Mehrere Datenserien bitte mit Komma trennen, z.B.: SiO2,TiO2</value>
   </data>
   <data name="add_polygon" xml:space="preserve">
-    <value>Polygon hinzufügen</value>
+    <value>Polygon hinzufügen (Strg+3)</value>
   </data>
   <data name="batch_download_title" xml:space="preserve">
     <value>Stapel-Download</value>
@@ -2195,6 +2198,15 @@
   <data name="geo_tooltip_export_csv" xml:space="preserve">
     <value>Aktuelles Arbeitsblatt als CSV exportieren</value>
   </data>
+  <data name="geo_tooltip_export_calc_details" xml:space="preserve">
+    <value>Berechnungsdetails als CSV exportieren</value>
+  </data>
+  <data name="geo_tooltip_copy_calc_details" xml:space="preserve">
+    <value>Berechnungsdetails in die Zwischenablage kopieren</value>
+  </data>
+  <data name="geo_msg_calc_details_copied" xml:space="preserve">
+    <value>Berechnungsdetails in die Zwischenablage kopiert</value>
+  </data>
   <data name="error_occurred_during_startup" xml:space="preserve">
     <value>Fehler beim Starten:</value>
   </data>
@@ -2211,7 +2223,7 @@
     <value>Eine Zeile über der aktuellen Auswahl einfügen</value>
   </data>
   <data name="data_toolbar_update_chart_tooltip" xml:space="preserve">
-    <value>Die aktuellen Daten im Diagramm darstellen</value>
+    <value>Die aktuellen Daten im Diagramm darstellen (Strg+Umschalt+Enter)</value>
   </data>
   <data name="data_toolbar_delete_row_tooltip" xml:space="preserve">
     <value>Die aktuelle Zeile löschen</value>
@@ -2732,6 +2744,21 @@
   <data name="normalization_standard" xml:space="preserve">
     <value>Normalisierungsstandard</value>
   </data>
+  <data name="norm_category_chondrite" xml:space="preserve">
+    <value>Chondrit</value>
+  </data>
+  <data name="norm_category_shale" xml:space="preserve">
+    <value>Schiefer / Sediment</value>
+  </data>
+  <data name="norm_category_crust" xml:space="preserve">
+    <value>Kontinentalkruste</value>
+  </data>
+  <data name="norm_category_mantle" xml:space="preserve">
+    <value>Primärer Mantel</value>
+  </data>
+  <data name="norm_category_basalt" xml:space="preserve">
+    <value>Basalt-Endglieder</value>
+  </data>
   <data name="object_selection_trigger" xml:space="preserve">
     <value>Objektauswahl-Auslöser</value>
   </data>
@@ -2963,6 +2990,12 @@
   <data name="shortcut_action_close_notification_name" xml:space="preserve">
     <value>Benachrichtigung schließen</value>
   </data>
+  <data name="shortcut_action_cycle_plot_mode_desc" xml:space="preserve">
+    <value>Zwischen Diagramm-, Daten- und Bearbeitungsmodus wechseln.</value>
+  </data>
+  <data name="shortcut_action_cycle_plot_mode_name" xml:space="preserve">
+    <value>Modi durchschalten</value>
+  </data>
   <data name="shortcut_action_delete_selected_desc" xml:space="preserve">
     <value>Aktuell ausgewähltes Diagrammobjekt löschen.</value>
   </data>
@@ -2974,6 +3007,21 @@
   </data>
   <data name="shortcut_action_italic_name" xml:space="preserve">
     <value>Kursiv</value>
+  </data>
+  <data name="shortcut_action_middle_click_plot_mode_desc" xml:space="preserve">
+    <value>Mittelklick auf die linke Diagrammhälfte wechselt zum vorherigen Modus, Mittelklick auf die rechte Hälfte zum nächsten Modus (Diagramm ↔ Daten ↔ Bearbeiten).</value>
+  </data>
+  <data name="shortcut_action_middle_click_plot_mode_keys" xml:space="preserve">
+    <value>Mittelklick linke / rechte Plot-Hälfte</value>
+  </data>
+  <data name="shortcut_action_middle_click_plot_mode_name" xml:space="preserve">
+    <value>Modus per Mittelklick wechseln</value>
+  </data>
+  <data name="shortcut_action_plot_data_desc" xml:space="preserve">
+    <value>Aktuelle Tabellendaten in das Diagramm zeichnen (nur im Datenmodus).</value>
+  </data>
+  <data name="shortcut_action_plot_data_name" xml:space="preserve">
+    <value>Daten plotten</value>
   </data>
   <data name="shortcut_action_quick_delete_desc" xml:space="preserve">
     <value>Benutzerdefinierte Vorlage direkt ohne Bestätigung löschen.</value>
@@ -3004,6 +3052,24 @@
   </data>
   <data name="shortcut_action_save_plot_name" xml:space="preserve">
     <value>Diagramm speichern</value>
+  </data>
+  <data name="shortcut_action_switch_data_mode_desc" xml:space="preserve">
+    <value>Zum Datenmodus-Bereich wechseln.</value>
+  </data>
+  <data name="shortcut_action_switch_data_mode_name" xml:space="preserve">
+    <value>Zum Datenmodus wechseln</value>
+  </data>
+  <data name="shortcut_action_switch_diagram_mode_desc" xml:space="preserve">
+    <value>Zum Diagrammmodus-Bereich wechseln.</value>
+  </data>
+  <data name="shortcut_action_switch_diagram_mode_name" xml:space="preserve">
+    <value>Zum Diagrammmodus wechseln</value>
+  </data>
+  <data name="shortcut_action_switch_edit_mode_desc" xml:space="preserve">
+    <value>Zum Bearbeitungsmodus-Bereich wechseln.</value>
+  </data>
+  <data name="shortcut_action_switch_edit_mode_name" xml:space="preserve">
+    <value>Zum Bearbeitungsmodus wechseln</value>
   </data>
   <data name="shortcut_action_underline_desc" xml:space="preserve">
     <value>Unterstreichung für den ausgewählten Text umschalten.</value>
@@ -3175,6 +3241,33 @@
   </data>
   <data name="geo_example_category" xml:space="preserve">
     <value>z. B. Einmineral-Geothermobarometer</value>
+  </data>
+  <data name="geo_field_capabilities" xml:space="preserve">
+    <value>Fähigkeits-Tags</value>
+  </data>
+  <data name="geo_capability_enter_hint" xml:space="preserve">
+    <value>Fähigkeitskürzel eingeben und mit Enter bestätigen</value>
+  </data>
+  <data name="geo_example_capability" xml:space="preserve">
+    <value>z. B. P, T, fO2</value>
+  </data>
+  <data name="geo_filter_mineral_tags" xml:space="preserve">
+    <value>Mineral-Tags</value>
+  </data>
+  <data name="geo_filter_capabilities" xml:space="preserve">
+    <value>Fähigkeiten</value>
+  </data>
+  <data name="geo_capability_tooltip_p" xml:space="preserve">
+    <value>Druck</value>
+  </data>
+  <data name="geo_capability_tooltip_t" xml:space="preserve">
+    <value>Temperatur</value>
+  </data>
+  <data name="geo_capability_tooltip_fo2" xml:space="preserve">
+    <value>Sauerstofffugazität</value>
+  </data>
+  <data name="geo_validate_capability_too_long" xml:space="preserve">
+    <value>Fähigkeits-Tag ist zu lang (max. {0} Zeichen)</value>
   </data>
   <data name="geo_editor_title_view" xml:space="preserve">
     <value>Geothermobarometer anzeigen</value>
@@ -3411,6 +3504,16 @@
 
     <value>Beim Start automatisch nach Geothermobarometer-Updates suchen</value>
 
+  </data>
+
+  <data name="default_worksheet_row_count" xml:space="preserve">
+    <value>Standardmäßige Anfangszeilen der Tabelle</value>
+  </data>
+  <data name="default_worksheet_row_count_hint" xml:space="preserve">
+    <value>Standardanzahl der Zeilen beim Erstellen oder Zurücksetzen einer Datentabelle</value>
+  </data>
+  <data name="geothermometer_defaults" xml:space="preserve">
+    <value>STANDARDEINSTELLUNGEN</value>
   </data>
 
   <data name="coreldraw_path_hint" xml:space="preserve">
@@ -3768,6 +3871,9 @@
     <value>Pfad zur ausführbaren Datei von Inkscape zum Öffnen von Vektorgrafiken</value>
 
   </data>
+  <data name="inkscape_get_it" xml:space="preserve">
+    <value>Noch nicht installiert? Hier herunterladen</value>
+  </data>
 
   <data name="main_sidebar_collapse_style_hint" xml:space="preserve">
 
@@ -3902,9 +4008,7 @@
   </data>
 
   <data name="update_auto_check_notify" xml:space="preserve">
-
-    <value>Eine neue Version ist verfügbar. Öffnen Sie die Einstellungen zum Herunterladen und Installieren.</value>
-
+    <value>Neue Version {0} ist verfügbar. Jetzt herunterladen und installieren?</value>
   </data>
 
   <data name="update_download_confirm_shutdown" xml:space="preserve">
@@ -3931,6 +4035,39 @@
 
   </data>
 
+  <data name="plot_toolbar_save_tooltip" xml:space="preserve">
+    <value>Speichern (Strg+S)</value>
+  </data>
+  <data name="plot_toolbar_undo_tooltip" xml:space="preserve">
+    <value>Rückgängig (Strg+Z)</value>
+  </data>
+  <data name="plot_toolbar_redo_tooltip" xml:space="preserve">
+    <value>Wiederholen (Strg+Y)</value>
+  </data>
+  <data name="plot_toolbar_diagram_mode_tooltip" xml:space="preserve">
+    <value>Diagrammmodus (Alt+1)</value>
+  </data>
+  <data name="plot_toolbar_data_mode_tooltip" xml:space="preserve">
+    <value>Datenmodus (Alt+2)</value>
+  </data>
+  <data name="plot_toolbar_edit_mode_tooltip" xml:space="preserve">
+    <value>Bearbeitungsmodus (Alt+3)</value>
+  </data>
+  <data name="template_search_feedback_before_github" xml:space="preserve">
+    <value>Falls eine benötigte Vorlage noch fehlt, schlagen Sie sie bitte unter </value>
+  </data>
+  <data name="template_search_feedback_github" xml:space="preserve">
+    <value>GitHub Issues</value>
+  </data>
+  <data name="template_search_feedback_before_email" xml:space="preserve">
+    <value> vor oder schreiben Sie an </value>
+  </data>
+  <data name="template_search_feedback_suffix" xml:space="preserve">
+    <value>.</value>
+  </data>
+  <data name="geo_hint_no_search_results" xml:space="preserve">
+    <value>Keine Geothermobarometer-Vorlagen entsprechen Ihrer Suche.</value>
+  </data>
 </root>
 
 

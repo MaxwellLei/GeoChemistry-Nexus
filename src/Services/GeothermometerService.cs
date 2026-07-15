@@ -1,6 +1,7 @@
 using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Models;
 using GeoChemistryNexus.Messages;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using Jint;
 using Jint.Native;
@@ -14,6 +15,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using unvell.ReoGrid;
@@ -402,6 +404,7 @@ namespace GeoChemistryNexus.Services
                                 IsResult = true
                             });
                         }
+                        ApplyCalculationStepGroupVisibility(steps);
                         return steps;
                     }
 
@@ -414,14 +417,7 @@ namespace GeoChemistryNexus.Services
                             if (item.IsObject())
                             {
                                 var obj = item.AsObject();
-                                var isResultProp = obj.Get("isResult");
-                                steps.Add(new CalculationStep
-                                {
-                                    Name = obj.Get("name")?.AsString() ?? "",
-                                    Value = obj.Get("value")?.ToString() ?? "",
-                                    Description = ResolveStepDescription(obj),
-                                    IsResult = isResultProp.IsBoolean() && isResultProp.AsBoolean()
-                                });
+                                steps.Add(ParseCalculationStep(obj));
                             }
                         }
                     }
@@ -433,7 +429,147 @@ namespace GeoChemistryNexus.Services
                 steps.Add(new CalculationStep { Name = "Error", Value = ex.Message });
             }
 
+            ApplyCalculationStepGroupVisibility(steps);
             return steps;
+        }
+
+        /// <summary>
+        /// 将 JS 步骤对象映射为 CalculationStep（未知字段忽略，保证旧脚本兼容）。
+        /// </summary>
+        private static CalculationStep ParseCalculationStep(ObjectInstance obj)
+        {
+            var step = new CalculationStep
+            {
+                Name = ResolveStepName(obj),
+                Value = FormatStepValue(obj.Get("value")),
+                Description = ResolveStepDescription(obj),
+                IsResult = GetOptionalBoolean(obj, "isResult"),
+                IsHighlight = GetOptionalBoolean(obj, "isHighlight"),
+                IsSeparator = GetOptionalBoolean(obj, "isSeparator"),
+                IsCollapsed = GetOptionalBoolean(obj, "collapsed")
+            };
+
+            if (TryNormalizeHexColor(GetOptionalString(obj, "backgroundColor"), out string hex))
+                step.BackgroundColor = hex;
+
+            return step;
+        }
+
+        /// <summary>
+        /// 按分隔标题的折叠状态，刷新组内行的可见性。
+        /// </summary>
+        public static void ApplyCalculationStepGroupVisibility(IList<CalculationStep> steps)
+        {
+            if (steps == null || steps.Count == 0)
+                return;
+
+            bool hiding = false;
+            foreach (var step in steps)
+            {
+                if (step.IsSeparator)
+                {
+                    step.IsVisible = true;
+                    hiding = step.IsCollapsed;
+                    continue;
+                }
+
+                step.IsVisible = !hiding;
+            }
+        }
+
+        private static string ResolveStepName(ObjectInstance stepObject)
+        {
+            string defaultName = stepObject.Get("name")?.AsString() ?? string.Empty;
+
+            var nameLangValue = stepObject.Get("nameLang");
+            if (nameLangValue == null || nameLangValue.IsUndefined() || nameLangValue.IsNull() || !nameLangValue.IsObject())
+                return defaultName;
+
+            return ResolveLocalizedMap(nameLangValue.AsObject(), defaultName);
+        }
+
+        private static string FormatStepValue(JsValue? value)
+        {
+            if (value == null || value.IsUndefined() || value.IsNull())
+                return string.Empty;
+            if (value.IsString())
+                return value.AsString();
+            return value.ToString() ?? string.Empty;
+        }
+
+        private static bool GetOptionalBoolean(ObjectInstance obj, string propertyName)
+        {
+            var prop = obj.Get(propertyName);
+            return prop.IsBoolean() && prop.AsBoolean();
+        }
+
+        private static string? GetOptionalString(ObjectInstance obj, string propertyName)
+        {
+            var prop = obj.Get(propertyName);
+            if (prop == null || prop.IsUndefined() || prop.IsNull())
+                return null;
+            if (prop.IsString())
+                return prop.AsString();
+            return prop.ToString();
+        }
+
+        private static bool TryNormalizeHexColor(string? input, out string hex)
+        {
+            hex = string.Empty;
+            if (string.IsNullOrWhiteSpace(input))
+                return false;
+
+            string s = input.Trim();
+            if (!s.StartsWith("#", StringComparison.Ordinal))
+                s = "#" + s;
+
+            if (Regex.IsMatch(s, @"^#[0-9A-Fa-f]{3}$"))
+            {
+                hex = $"#{s[1]}{s[1]}{s[2]}{s[2]}{s[3]}{s[3]}";
+                return true;
+            }
+
+            if (Regex.IsMatch(s, @"^#[0-9A-Fa-f]{6}$") || Regex.IsMatch(s, @"^#[0-9A-Fa-f]{8}$"))
+            {
+                hex = s;
+                return true;
+            }
+
+            return false;
+        }
+
+        private static string ResolveLocalizedMap(ObjectInstance langObject, string defaultText)
+        {
+            var translations = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var property in langObject.GetOwnProperties())
+            {
+                string? key = property.Key.AsString();
+                string? text = langObject.Get(property.Key)?.AsString();
+                if (!string.IsNullOrEmpty(key) && !string.IsNullOrEmpty(text))
+                    translations[key] = text;
+            }
+
+            if (translations.Count == 0)
+                return defaultText;
+
+            string requested = LanguageService.CurrentLanguage;
+            if (AppCultureRegistry.TryNormalize(requested, out string normalized) &&
+                translations.TryGetValue(normalized, out string? localized) &&
+                !string.IsNullOrEmpty(localized))
+            {
+                return localized;
+            }
+
+            foreach (var pair in translations)
+            {
+                if (string.Equals(pair.Key, requested, StringComparison.OrdinalIgnoreCase) &&
+                    !string.IsNullOrEmpty(pair.Value))
+                {
+                    return pair.Value;
+                }
+            }
+
+            return defaultText;
         }
 
         private static GeothermometerEntity CloneSummary(GeothermometerEntity entity)
@@ -452,6 +588,7 @@ namespace GeoChemistryNexus.Services
                 IsFavorite = entity.IsFavorite,
                 Category = entity.Category,
                 Tags = entity.Tags != null ? new List<string>(entity.Tags) : new List<string>(),
+                Capabilities = GeoTCapabilityHelper.NormalizeList(entity.Capabilities),
                 Name = entity.Name,
                 NameLangKey = entity.NameLangKey,
                 Author = entity.Author,
@@ -505,37 +642,7 @@ namespace GeoChemistryNexus.Services
             if (descLangValue == null || descLangValue.IsUndefined() || descLangValue.IsNull() || !descLangValue.IsObject())
                 return defaultDesc;
 
-            var langObject = descLangValue.AsObject();
-            var translations = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            foreach (var property in langObject.GetOwnProperties())
-            {
-                string? key = property.Key.AsString();
-                string? text = langObject.Get(property.Key)?.AsString();
-                if (!string.IsNullOrEmpty(key) && !string.IsNullOrEmpty(text))
-                    translations[key] = text;
-            }
-
-            if (translations.Count == 0)
-                return defaultDesc;
-
-            string requested = LanguageService.CurrentLanguage;
-            if (AppCultureRegistry.TryNormalize(requested, out string normalized) &&
-                translations.TryGetValue(normalized, out string? localized) &&
-                !string.IsNullOrEmpty(localized))
-            {
-                return localized;
-            }
-
-            foreach (var pair in translations)
-            {
-                if (string.Equals(pair.Key, requested, StringComparison.OrdinalIgnoreCase) &&
-                    !string.IsNullOrEmpty(pair.Value))
-                {
-                    return pair.Value;
-                }
-            }
-
-            return defaultDesc;
+            return ResolveLocalizedMap(descLangValue.AsObject(), defaultDesc);
         }
 
         /// <summary>
@@ -603,6 +710,7 @@ namespace GeoChemistryNexus.Services
             ValidateFormulaNames(entity, entity.Id == Guid.Empty ? null : entity.Id);
 
             entity.ExampleRow = CommaSeparatedListHelper.AlignToHeaderCount(entity.Headers, entity.ExampleRow);
+            entity.Capabilities = GeoTCapabilityHelper.NormalizeList(entity.Capabilities);
 
             entity.LastModified = DateTime.Now;
             entity.FileHash = GeothermometerDatabaseService.ComputeEntityHash(entity);
@@ -735,6 +843,7 @@ namespace GeoChemistryNexus.Services
                 Category = GeoTCategoryHelper.NormalizeCategoryKey(entity.Category),
                 Tags = ResolveTagsDisplayNames(entity),
                 StorageTags = GetEntityTagSourceNames(entity).ToList(),
+                Capabilities = GeoTCapabilityHelper.NormalizeList(entity.Capabilities),
                 Name = entity.Name ?? string.Empty,
                 NameLangKey = entity.NameLangKey ?? string.Empty,
                 Author = entity.Author ?? string.Empty,
@@ -791,6 +900,11 @@ namespace GeoChemistryNexus.Services
                     ["AdditionalFormulas"] = entity.AdditionalFormulas,
                     ["ScriptFile"] = $"{entity.PluginId}.js"
                 };
+
+                // 与哈希口径一致：仅在有能力标签时写入，避免空数组破坏与旧版清单的兼容
+                var exportCapabilities = GeoTCapabilityHelper.NormalizeList(entity.Capabilities);
+                if (exportCapabilities.Count > 0)
+                    exportMeta["Capabilities"] = exportCapabilities;
 
                 string jsonPath = Path.Combine(tempDir, $"{entity.PluginId}.json");
                 File.WriteAllText(jsonPath, JsonSerializer.Serialize(exportMeta, JsonOptions));
@@ -908,6 +1022,7 @@ namespace GeoChemistryNexus.Services
                     IsOfficial = keepPluginIdentity,
                     Category = plugin.Category,
                     Tags = plugin.Tags ?? new List<string>(),
+                    Capabilities = GeoTCapabilityHelper.NormalizeList(plugin.Capabilities),
                     Name = plugin.Name,
                     NameLangKey = plugin.NameLangKey,
                     Author = plugin.Author,
@@ -1705,13 +1820,44 @@ namespace GeoChemistryNexus.Services
     }
 
     /// <summary>
-    /// 计算步骤模型
+    /// 计算步骤模型（由 calculateDetailed 返回对象映射）
     /// </summary>
-    public class CalculationStep
+    public class CalculationStep : ObservableObject
     {
         public string Name { get; set; } = string.Empty;
         public string Value { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public bool IsResult { get; set; }
+        public bool IsHighlight { get; set; }
+        public bool IsSeparator { get; set; }
+
+        /// <summary>
+        /// 自定义背景色（#RGB / #RRGGBB / #AARRGGBB）；优先于语义高亮色。
+        /// </summary>
+        public string? BackgroundColor { get; set; }
+
+        public bool HasCustomBackground => !string.IsNullOrWhiteSpace(BackgroundColor);
+
+        private bool _isCollapsed;
+
+        /// <summary>
+        /// 分隔标题是否折叠其后续分组（仅 IsSeparator 有效）。
+        /// </summary>
+        public bool IsCollapsed
+        {
+            get => _isCollapsed;
+            set => SetProperty(ref _isCollapsed, value);
+        }
+
+        private bool _isVisible = true;
+
+        /// <summary>
+        /// 是否因分组折叠而隐藏。
+        /// </summary>
+        public bool IsVisible
+        {
+            get => _isVisible;
+            set => SetProperty(ref _isVisible, value);
+        }
     }
 }

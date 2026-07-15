@@ -44,6 +44,8 @@ namespace GeoChemistryNexus.ViewModels
 
         public ObservableCollection<GeoTTagModel> TagParts { get; } = new();
 
+        public ObservableCollection<GeoTCapabilityModel> CapabilityParts { get; } = new();
+
         public ObservableCollection<GeoTCategoryOption> CategoryOptions { get; } = new();
 
         [ObservableProperty]
@@ -156,6 +158,9 @@ namespace GeoChemistryNexus.ViewModels
                 return new ObservableCollection<string>(TagParts.Select(t => t.DisplayName));
             }
         }
+
+        public ObservableCollection<string> PreviewCapabilities =>
+            new(CapabilityParts.Select(c => c.DisplayName));
 
         public string PreviewVersion => TemplateVersion;
 
@@ -324,13 +329,32 @@ function calculate(args) {
  * calculateDetailed(inputs) - Detailed calculation with intermediate steps
  * Called when user selects a data row in the table.
  * @param {number[]} inputs - Same input values as calculate()
- * @returns {Object[]} - Array of step objects: {name, value, desc, descLang?, isResult}
- *   desc      - Default description (fallback for all languages)
- *   descLang  - Optional map of language code to description, e.g. { 'zh-CN': '...', 'en-US': '...' }
+ * @returns {Object[]} - Array of step objects:
+ *   name, value, desc, descLang?, nameLang?,
+ *   isResult?, isHighlight?, isSeparator?, backgroundColor?, collapsed?
+ *   desc           - Default description (fallback for all languages)
+ *   descLang       - Optional map, e.g. { 'zh-CN': '...', 'en-US': '...' }
+ *   nameLang       - Optional localized name (useful for section titles)
+ *   isResult       - Mark final result row (light blue)
+ *   isHighlight    - Highlight row (light yellow, same as CIPW)
+ *   isSeparator    - Section title row (click to collapse/expand following rows)
+ *   backgroundColor- Optional custom hex color (#RGB / #RRGGBB), overrides semantic colors
+ *   collapsed      - Initial collapse state for separator groups (default false)
  */
 function calculateDetailed(inputs) {
     var result = calculate(inputs);
     return [
+        {
+            name: '—— Intermediate ——',
+            nameLang: { 'zh-CN': '—— 中间变量 ——' },
+            isSeparator: true
+        },
+        {
+            name: 'Example',
+            value: inputs[0],
+            desc: 'First input',
+            descLang: { 'zh-CN': '第一个输入' }
+        },
         {
             name: 'Result',
             value: result.toFixed(2),
@@ -345,6 +369,7 @@ function calculateDetailed(inputs) {
         {
             ScriptContent = ScriptTemplate;
             TagParts.CollectionChanged += (_, _) => NotifyPreviewChanged();
+            CapabilityParts.CollectionChanged += (_, _) => NotifyPreviewChanged();
             ReloadCategoryOptions();
             if (bool.TryParse(ConfigHelper.GetConfig("developer_mode"), out bool devMode))
                 IsDeveloperMode = devMode;
@@ -354,10 +379,16 @@ function calculateDetailed(inputs) {
             RefreshLanguageDisplayOptions();
         }
 
+        /// <summary>
+        /// 标签/能力建议列表需要刷新时回调（窗口侧刷新 ComboBox.ItemsSource）。
+        /// </summary>
+        public Action? OnTagSuggestionsNeedRefresh { get; set; }
+
         public void Receive(GeoTMineralCategoryUpdatedMessage message)
         {
             ReloadCategoryOptions();
             RefreshTagDisplayNames();
+            OnTagSuggestionsNeedRefresh?.Invoke();
         }
 
         private void ReloadCategoryOptions()
@@ -417,6 +448,7 @@ function calculateDetailed(inputs) {
             OnPropertyChanged(nameof(PreviewMetaLine));
             OnPropertyChanged(nameof(PreviewReference));
             OnPropertyChanged(nameof(PreviewTags));
+            OnPropertyChanged(nameof(PreviewCapabilities));
             OnPropertyChanged(nameof(PreviewVersion));
         }
 
@@ -593,6 +625,56 @@ function calculateDetailed(inputs) {
             TagParts.Remove(item);
         }
 
+        // ==================== 能力标签管理 ====================
+
+        public bool TryAddCapability(string text)
+        {
+            if (IsContentReadOnly) return false;
+            if (string.IsNullOrWhiteSpace(text)) return false;
+
+            string trimmed = text.Trim();
+            var invalidChars = Path.GetInvalidFileNameChars();
+            if (trimmed.IndexOfAny(invalidChars) >= 0)
+            {
+                ShowError(LanguageService.Instance["invalid_filename_char"]);
+                return false;
+            }
+
+            if (trimmed.Length > GeoTCapabilityHelper.MaxLength
+                && !GeoTCapabilityHelper.IsBuiltIn(trimmed))
+            {
+                ShowError(string.Format(
+                    LanguageService.Instance["geo_validate_capability_too_long"] ?? "Capability tag is too long (max {0}).",
+                    GeoTCapabilityHelper.MaxLength));
+                return false;
+            }
+
+            string? storageName = GeoTCapabilityHelper.Normalize(trimmed);
+            if (string.IsNullOrEmpty(storageName))
+                return false;
+
+            if (CapabilityParts.Any(c => string.Equals(c.StorageName, storageName, StringComparison.OrdinalIgnoreCase)))
+                return false;
+
+            CapabilityParts.Add(new GeoTCapabilityModel(storageName));
+            return true;
+        }
+
+        public void RemoveCapability(GeoTCapabilityModel item)
+        {
+            if (IsContentReadOnly || item == null) return;
+            CapabilityParts.Remove(item);
+        }
+
+        /// <summary>
+        /// 下拉建议：尚未选用的内置能力标签。
+        /// </summary>
+        public List<string> GetCapabilitySuggestions()
+        {
+            return GeoTCapabilityHelper.GetBuiltInSuggestions(
+                CapabilityParts.Select(c => c.StorageName));
+        }
+
         private static string ResolveTagStorageName(string text, Dictionary<string, string>? localizedNames)
         {
             if (localizedNames != null &&
@@ -613,9 +695,45 @@ function calculateDetailed(inputs) {
             return text.Trim();
         }
 
-        public static List<Dictionary<string, string>> GetTagSuggestions()
+        /// <summary>
+        /// 下拉建议：官方矿物标签，排除当前模板已选用的标签。
+        /// </summary>
+        public List<Dictionary<string, string>> GetTagSuggestions()
         {
-            return GeoTMineralCategoryHelper.GetAllTagSuggestions();
+            var selected = TagParts
+                .Select(t => t.StorageName)
+                .Where(t => !string.IsNullOrWhiteSpace(t))
+                .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+            if (selected.Count == 0)
+                return GeoTMineralCategoryHelper.GetAllTagSuggestions();
+
+            return GeoTMineralCategoryHelper.GetAllTagSuggestions()
+                .Where(entry => entry != null && !IsTagEntrySelected(entry, selected))
+                .ToList();
+        }
+
+        private static bool IsTagEntrySelected(
+            Dictionary<string, string> entry,
+            HashSet<string> selectedStorageNames)
+        {
+            if (entry.TryGetValue("zh-CN", out var zh) &&
+                !string.IsNullOrWhiteSpace(zh) &&
+                selectedStorageNames.Contains(zh.Trim()))
+            {
+                return true;
+            }
+
+            foreach (var value in entry.Values)
+            {
+                if (!string.IsNullOrWhiteSpace(value) &&
+                    selectedStorageNames.Contains(value.Trim()))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         // ==================== 步骤导航命令 ====================
@@ -845,6 +963,9 @@ function calculateDetailed(inputs) {
                 if (string.IsNullOrWhiteSpace(tag)) continue;
                 TagParts.Add(new GeoTTagModel(tag.Trim()));
             }
+            CapabilityParts.Clear();
+            foreach (var capability in GeoTCapabilityHelper.NormalizeList(entity.Capabilities))
+                CapabilityParts.Add(new GeoTCapabilityModel(capability));
             Author = entity.Author;
             Year = entity.Year;
             Reference = entity.Reference;
@@ -976,6 +1097,7 @@ function calculateDetailed(inputs) {
                 IsOfficial = _isOfficial,
                 Category = GeoTCategoryHelper.NormalizeCategoryKey(SelectedCategory),
                 Tags = TagParts.Select(t => t.StorageName).Where(t => t.Length > 0).Distinct(StringComparer.OrdinalIgnoreCase).ToList(),
+                Capabilities = GeoTCapabilityHelper.NormalizeList(CapabilityParts.Select(c => c.StorageName)),
                 Name = Name.Trim(),
                 Author = Author.Trim(),
                 Year = Year,
@@ -1095,6 +1217,22 @@ function calculateDetailed(inputs) {
         public string StorageName { get; }
 
         public string DisplayName => GeoTMineralCategoryHelper.GetDisplayName(StorageName);
+    }
+
+    public class GeoTCapabilityModel
+    {
+        public GeoTCapabilityModel(string storageName)
+        {
+            StorageName = GeoTCapabilityHelper.Normalize(storageName) ?? storageName.Trim();
+        }
+
+        public string StorageName { get; }
+
+        public string DisplayName => GeoTCapabilityHelper.GetDisplayName(StorageName);
+
+        public bool IsBuiltIn => GeoTCapabilityHelper.IsBuiltIn(StorageName);
+
+        public string Tooltip => GeoTCapabilityHelper.GetTooltip(StorageName);
     }
 
     public partial class AdditionalFormulaItemViewModel : ObservableObject

@@ -20,7 +20,11 @@ namespace GeoChemistryNexus.Converter
             else if (value is byte b) result = (double)b;
             else if (double.TryParse(value.ToString(), out double parsed)) result = parsed;
 
-            // 显示时保留四位小数 
+            // NumericUpDown.Value rejects NaN/Infinity
+            if (double.IsNaN(result) || double.IsInfinity(result))
+                return Binding.DoNothing;
+
+            // Keep 4 decimal places for display
             return Math.Round(result, 4);
         }
 

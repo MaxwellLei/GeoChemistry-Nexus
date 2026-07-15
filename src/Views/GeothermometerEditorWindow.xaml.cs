@@ -27,12 +27,16 @@ namespace GeoChemistryNexus.Views
             viewModel.OnCloseRequested = () => Close();
             viewModel.ShowErrorMessage = ShowErrorMessage;
             viewModel.ShowSuccessMessage = ShowSuccessMessage;
+            viewModel.OnTagSuggestionsNeedRefresh = () =>
+                Dispatcher.Invoke(() => EditorControl.BasicInfoPanel.RefreshTagSuggestions(viewModel));
 
-            EditorControl.BasicInfoPanel.RefreshTagSuggestions();
+            // 构造时显式传入 VM：此时子控件 DataContext 绑定可能尚未生效
+            EditorControl.BasicInfoPanel.RefreshTagSuggestions(viewModel);
+            Loaded += (_, _) => EditorControl.BasicInfoPanel.RefreshTagSuggestions(viewModel);
             LanguageService.Instance.PropertyChanged += (_, e) =>
             {
                 if (e.PropertyName == "Item[]")
-                    Dispatcher.Invoke(() => EditorControl.BasicInfoPanel.RefreshTagSuggestions());
+                    Dispatcher.Invoke(() => EditorControl.BasicInfoPanel.RefreshTagSuggestions(viewModel));
             };
 
             var helpEditor = EditorControl.HelpDocPanel.HelpDocEditorControl;

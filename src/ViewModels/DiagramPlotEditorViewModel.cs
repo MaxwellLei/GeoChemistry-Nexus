@@ -12,6 +12,7 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 
 namespace GeoChemistryNexus.ViewModels
@@ -62,6 +63,12 @@ namespace GeoChemistryNexus.ViewModels
 
         /// <summary>语言代码 → RTF 帮助文档内容。</summary>
         private readonly Dictionary<string, string> _helpDocuments = new();
+
+        /// <summary>
+        /// 帮助文档 RichTextBox 是否已与当前语言内容同步。
+        /// 未打开帮助文档分区时为 false，避免用空白编辑器覆盖已有文档。
+        /// </summary>
+        private bool _isHelpDocEditorSynced;
 
         /// <summary>由 View 设置：获取当前 RichTextBox 中的 RTF 内容。</summary>
         public Func<string?>? GetCurrentRtfContent { get; set; }
@@ -247,13 +254,19 @@ namespace GeoChemistryNexus.ViewModels
 
         partial void OnSelectedSectionIndexChanged(int oldValue, int newValue)
         {
+            // 离开帮助文档分区时，保存当前语言的 RTF，并标记编辑器未同步
             if (oldValue == 3)
-                SaveCurrentHelpLanguageRtf();
+            {
+                CommitCurrentHelpLanguageRtf(fromLeavingHelpSection: true);
+                _isHelpDocEditorSynced = false;
+            }
 
+            // 进入帮助文档分区时，加载当前语言的 RTF
             if (newValue == 3)
             {
                 SyncHelpLanguagesWithBasicSettings();
                 LoadSelectedHelpLanguageIntoEditor();
+                _isHelpDocEditorSynced = true;
             }
 
             if (newValue == 2)
@@ -262,23 +275,26 @@ namespace GeoChemistryNexus.ViewModels
 
         partial void OnSelectedHelpLanguageChanged(string? oldValue, string? newValue)
         {
+            // 仅在帮助文档分区内处理语言切换，避免未打开帮助文档时用空白编辑器覆盖
+            if (SelectedSectionIndex != 3)
+                return;
+
             if (oldValue != null &&
-                LanguageParts.Any(p => p.Text.Equals(oldValue, StringComparison.OrdinalIgnoreCase)) &&
-                GetCurrentRtfContent != null)
+                _isHelpDocEditorSynced &&
+                LanguageParts.Any(p => p.Text.Equals(oldValue, StringComparison.OrdinalIgnoreCase)))
             {
-                var rtf = GetCurrentRtfContent();
-                if (rtf != null)
-                    _helpDocuments[oldValue] = rtf;
+                CommitHelpLanguageRtf(oldValue);
             }
 
             if (newValue != null)
             {
-                _helpDocuments.TryGetValue(newValue, out var content);
-                SetCurrentRtfContent?.Invoke(content);
+                LoadSelectedHelpLanguageIntoEditor();
+                _isHelpDocEditorSynced = true;
             }
             else
             {
                 SetCurrentRtfContent?.Invoke(null);
+                _isHelpDocEditorSynced = false;
             }
         }
 
@@ -293,6 +309,7 @@ namespace GeoChemistryNexus.ViewModels
             TranslationStatusMessage = string.Empty;
             PatchVersion = 0;
             _helpDocuments.Clear();
+            _isHelpDocEditorSynced = false;
             SelectedHelpLanguage = null;
         }
 
@@ -624,15 +641,17 @@ namespace GeoChemistryNexus.ViewModels
             return GraphMapTemplateService.CloneTemplateContent(template) ?? template;
         }
 
-        /// <summary>提交前收集各语言 RTF 帮助文档（仅含非空内容）。</summary>
+        /// <summary>
+        /// 提交前收集各语言 RTF 帮助文档（仅含非空内容，且不会从未同步的编辑器覆盖已有文档）。
+        /// </summary>
         public Dictionary<string, string> GetHelpDocumentsForSubmit()
         {
-            SaveCurrentHelpLanguageRtf();
+            CommitCurrentHelpLanguageRtf(fromLeavingHelpSection: false);
 
             var result = new Dictionary<string, string>();
             foreach (var lang in LanguageParts.Select(l => l.Text))
             {
-                if (_helpDocuments.TryGetValue(lang, out var rtf) && !string.IsNullOrWhiteSpace(rtf))
+                if (_helpDocuments.TryGetValue(lang, out var rtf) && !IsBlankRtf(rtf))
                     result[lang] = rtf;
             }
 
@@ -655,6 +674,7 @@ namespace GeoChemistryNexus.ViewModels
         private void LoadHelpDocumentsFromEntity(GraphMapTemplateEntity entity)
         {
             _helpDocuments.Clear();
+            _isHelpDocEditorSynced = false;
             if (entity.HelpDocuments != null)
             {
                 foreach (var kvp in entity.HelpDocuments)
@@ -736,18 +756,51 @@ namespace GeoChemistryNexus.ViewModels
             SetCurrentRtfContent?.Invoke(content);
         }
 
-        private void SaveCurrentHelpLanguageRtf()
+        /// <summary>
+        /// 保存当前选中语言的 RTF 内容到字典（仅当处于帮助文档分区且编辑器已同步）。
+        /// </summary>
+        private void CommitCurrentHelpLanguageRtf(bool fromLeavingHelpSection)
         {
-            if (SelectedHelpLanguage == null ||
-                !LanguageParts.Any(p => p.Text.Equals(SelectedHelpLanguage, StringComparison.OrdinalIgnoreCase)) ||
+            if (!_isHelpDocEditorSynced || SelectedHelpLanguage == null)
+                return;
+
+            // 离开帮助文档分区时 SelectedSectionIndex 已变为新值，需用 fromLeavingHelpSection 放行
+            if (!fromLeavingHelpSection && SelectedSectionIndex != 3)
+                return;
+
+            CommitHelpLanguageRtf(SelectedHelpLanguage);
+        }
+
+        private void CommitHelpLanguageRtf(string languageCode)
+        {
+            if (!LanguageParts.Any(p => p.Text.Equals(languageCode, StringComparison.OrdinalIgnoreCase)) ||
                 GetCurrentRtfContent == null)
             {
                 return;
             }
 
             var rtf = GetCurrentRtfContent();
-            if (rtf != null)
-                _helpDocuments[SelectedHelpLanguage] = rtf;
+            if (rtf == null)
+                return;
+
+            // 空白编辑器内容不得覆盖已有非空帮助文档（防止从未打开帮助文档就保存）
+            if (IsBlankRtf(rtf) &&
+                _helpDocuments.TryGetValue(languageCode, out var existing) &&
+                !IsBlankRtf(existing))
+            {
+                return;
+            }
+
+            _helpDocuments[languageCode] = rtf;
+        }
+
+        private static bool IsBlankRtf(string? rtf)
+        {
+            if (string.IsNullOrWhiteSpace(rtf))
+                return true;
+
+            string text = Regex.Replace(rtf, @"\\[a-z]+\d* ?|\\'[0-9a-f]{2}|\{|\}", string.Empty, RegexOptions.IgnoreCase);
+            return string.IsNullOrWhiteSpace(text);
         }
 
         private void RebuildCategoryStructurePreview()

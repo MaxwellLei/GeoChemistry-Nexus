@@ -19,6 +19,8 @@
     <Page.Resources>
         <FontFamily x:Key="IconFont">pack://application:,,,/Data/Icon/#iconfont</FontFamily>
         <cvs:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <cvs:BoolToVisibilityReConverter x:Key="BoolToVisibilityReConverter"/>
+        <cvs:HexToBrushConverter x:Key="HexToBrushConverter"/>
         <cvs:GeoTPluginSelectedMultiConverter x:Key="GeoTPluginSelectedMultiConverter"/>
         <hp:BindingProxy x:Key="GridProxy" Data="{Binding ElementName=MyReoGrid}" />
         <hp:BindingProxy x:Key="ViewModelProxy" Data="{Binding}" />
@@ -609,20 +611,11 @@
                          Focusable="False"
                          SelectedItem="{Binding Data.SelectedPlugin, Source={StaticResource ViewModelProxy}, Mode=OneWay}"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                         ScrollViewer.CanContentScroll="True"
-                         VirtualizingPanel.IsVirtualizing="True"
-                         VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                         VirtualizingPanel.VirtualizationMode="Recycling"
-                         VirtualizingPanel.ScrollUnit="Item"
-                         MaxHeight="480"
+                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                         ScrollViewer.CanContentScroll="False"
+                         PreviewMouseWheel="PluginListBox_PreviewMouseWheel"
                          ItemContainerStyle="{StaticResource GeoTPluginListBoxItemStyle}"
-                         ItemTemplate="{StaticResource GeoTPluginItemTemplate}">
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <VirtualizingStackPanel/>
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                </ListBox>
+                         ItemTemplate="{StaticResource GeoTPluginItemTemplate}"/>
             </StackPanel>
         </DataTemplate>
 
@@ -955,48 +948,112 @@
                            AllowsTransparency="True"
                            IsOpen="{Binding IsTagFilterMenuOpen, Mode=TwoWay}">
                         <Border Background="White" CornerRadius="6" BorderBrush="#D0D0D0" BorderThickness="1"
-                                MinWidth="160" MaxWidth="240" Padding="4,6">
+                                MinWidth="280" MaxWidth="420" Padding="4,6">
                             <Border.Effect>
                                 <DropShadowEffect Color="Black" BlurRadius="12" ShadowDepth="3" Opacity="0.18"/>
                             </Border.Effect>
-                            <StackPanel>
-                                <ScrollViewer MaxHeight="280" VerticalScrollBarVisibility="Auto">
-                                    <ItemsControl ItemsSource="{Binding AvailableTagFilters}">
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate DataType="{x:Type vm:GeoTTagFilterItemViewModel}">
-                                                <CheckBox Content="{Binding DisplayName}"
-                                                          IsChecked="{Binding IsSelected, Mode=TwoWay}"
-                                                          Margin="8,3" FontSize="13"/>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
-                                </ScrollViewer>
-                                <TextBlock Text="{Binding [geo_msg_no_tags_available], Source={x:Static lg:LanguageService.Instance}, FallbackValue=暂无可用标签}"
-                                           FontSize="12" Foreground="#999" Margin="8,4">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding HasAvailableTagFilters}" Value="False">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                            </StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" MinWidth="140"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto" MinWidth="88"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- 左侧：矿物标签 -->
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="{Binding [geo_filter_mineral_tags], Source={x:Static lg:LanguageService.Instance}, FallbackValue=矿物标签}"
+                                               FontSize="11" Foreground="#888" Margin="8,2,8,4" FontWeight="SemiBold"/>
+                                    <ScrollViewer MaxHeight="280" VerticalScrollBarVisibility="Auto">
+                                        <ItemsControl ItemsSource="{Binding AvailableTagFilters}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate DataType="{x:Type vm:GeoTTagFilterItemViewModel}">
+                                                    <CheckBox Content="{Binding DisplayName}"
+                                                              IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                                              Margin="8,3" FontSize="13"/>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </ScrollViewer>
+                                    <TextBlock Text="{Binding [geo_msg_no_tags_available], Source={x:Static lg:LanguageService.Instance}, FallbackValue=暂无可用标签}"
+                                               FontSize="12" Foreground="#999" Margin="8,4">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding HasAvailableTagFilters}" Value="False">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </StackPanel>
+
+                                <Border Grid.Column="1" Width="1" Background="#E8E8E8" Margin="4,4" VerticalAlignment="Stretch"/>
+
+                                <!-- 右侧：能力标签 -->
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="{Binding [geo_filter_capabilities], Source={x:Static lg:LanguageService.Instance}, FallbackValue=能力}"
+                                               FontSize="11" Foreground="#888" Margin="8,2,8,4" FontWeight="SemiBold"/>
+                                    <ScrollViewer MaxHeight="280" VerticalScrollBarVisibility="Auto">
+                                        <ItemsControl ItemsSource="{Binding AvailableCapabilityFilters}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate DataType="{x:Type vm:GeoTTagFilterItemViewModel}">
+                                                    <CheckBox Content="{Binding DisplayName}"
+                                                              IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                                              ToolTip="{Binding Tooltip}"
+                                                              Margin="8,3" FontSize="13"/>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </ScrollViewer>
+                                </StackPanel>
+                            </Grid>
                         </Border>
                     </Popup>
                 </Grid>
             </Border>
 
-            <!-- 温压计导航列表 -->
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <StackPanel Margin="0,4,0,12">
-                    <ItemsControl ItemsSource="{Binding SidebarSections}"
-                                  ItemTemplate="{StaticResource GeoTSidebarSectionTemplate}"/>
+            <!-- 温压计导航列表 / 搜索无结果提示 -->
+            <Grid>
+                <ScrollViewer VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled"
+                              Visibility="{Binding IsSearchNoResults, Converter={StaticResource BoolToVisibilityReConverter}}">
+                    <StackPanel Margin="0,4,0,12">
+                        <ItemsControl ItemsSource="{Binding SidebarSections}"
+                                      ItemTemplate="{StaticResource GeoTSidebarSectionTemplate}"/>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <StackPanel Margin="16,24"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Stretch"
+                            Visibility="{Binding IsSearchNoResults, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock FontSize="13"
+                               Foreground="#AAAAAA"
+                               TextWrapping="Wrap"
+                               TextAlignment="Center"
+                               Text="{Binding [geo_hint_no_search_results], Source={x:Static lg:LanguageService.Instance}, FallbackValue=未找到匹配的温压计模板。}"/>
+                    <TextBlock FontSize="12"
+                               Foreground="#AAAAAA"
+                               TextWrapping="Wrap"
+                               TextAlignment="Center"
+                               Margin="0,12,0,0"
+                               LineHeight="20">
+                        <Run Text="{Binding [template_search_feedback_before_github], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay, FallbackValue=若您需要的模板尚未收录，欢迎在 }"/>
+                        <Hyperlink Command="{Binding OpenFeedbackUrlCommand}"
+                                   CommandParameter="https://github.com/MaxwellLei/GeoChemistry-Nexus/issues">
+                            <Run Text="{Binding [template_search_feedback_github], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay, FallbackValue=GitHub Issues}"/>
+                        </Hyperlink>
+                        <Run Text="{Binding [template_search_feedback_before_email], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay, FallbackValue= 反馈，或发邮件联系 }"/>
+                        <Hyperlink Command="{Binding OpenFeedbackUrlCommand}"
+                                   CommandParameter="mailto:maxwelllei@qq.com">
+                            <Run Text="maxwelllei@qq.com"/>
+                        </Hyperlink>
+                        <Run Text="{Binding [template_search_feedback_suffix], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay, FallbackValue=。}"/>
+                    </TextBlock>
                 </StackPanel>
-            </ScrollViewer>
+            </Grid>
         </DockPanel>
 
         <!-- 分隔条 -->
@@ -1062,7 +1119,7 @@
                             <TextBlock FontSize="12" Foreground="#666" Margin="0,4,0,0"
                                        Text="{Binding SelectedPlugin.Reference}" TextTrimming="CharacterEllipsis"/>
 
-                            <!-- 标签 · 版本 · 内置/自定义 -->
+                            <!-- 标签 · 能力 · 版本 · 内置/自定义 -->
                             <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
                                 <ItemsControl ItemsSource="{Binding SelectedPlugin.Tags}">
                                     <ItemsControl.ItemsPanel>
@@ -1074,6 +1131,21 @@
                                         <DataTemplate>
                                             <Border CornerRadius="4" Background="#E8F4FD" Padding="8,3" Margin="0,0,6,0">
                                                 <TextBlock FontSize="11" Foreground="#0078D4" Text="{Binding Mode=OneWay}"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <ItemsControl ItemsSource="{Binding SelectedPlugin.Capabilities}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border CornerRadius="4" Background="#E8F5E9" Padding="8,3" Margin="0,0,6,0">
+                                                <TextBlock FontSize="11" Foreground="#2E7D32" FontWeight="SemiBold"
+                                                           Text="{Binding Mode=OneWay}"/>
                                             </Border>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
@@ -1340,12 +1412,41 @@
                                         </TextBlock.Style>
                                     </TextBlock>
 
-                                    <!-- 面板控制按钮：展开/收缩（与 CIPW 一致） -->
-                                    <Button Grid.Column="2" Style="{StaticResource PanelControlButtonStyle}"
-                                            Click="OnToggleDetailExpandClick"
-                                            ToolTip="{Binding [cipw_tooltip_expand], Source={x:Static lg:LanguageService.Instance}, FallbackValue=展开/收缩}">
-                                        <TextBlock x:Name="DetailExpandIcon" Text="&#xE70D;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
-                                    </Button>
+                                    <!-- 右侧：展开时显示导出/复制，其后为展开/收缩 -->
+                                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,4,0">
+                                            <StackPanel.Style>
+                                                <Style TargetType="StackPanel">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <MultiDataTrigger>
+                                                            <MultiDataTrigger.Conditions>
+                                                                <Condition Binding="{Binding IsDetailPanelMinimized}" Value="False"/>
+                                                                <Condition Binding="{Binding HasCalculationData}" Value="True"/>
+                                                            </MultiDataTrigger.Conditions>
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </MultiDataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </StackPanel.Style>
+                                            <Button Style="{StaticResource PanelControlButtonStyle}"
+                                                    Command="{Binding ExportCalculationDetailsCommand}"
+                                                    ToolTip="{Binding [geo_tooltip_export_calc_details], Source={x:Static lg:LanguageService.Instance}, FallbackValue=导出计算详情为 CSV}"
+                                                    Margin="0,0,2,0">
+                                                <TextBlock Text="&#xe673;" FontFamily="{StaticResource IconFont}" FontSize="13"/>
+                                            </Button>
+                                            <Button Style="{StaticResource PanelControlButtonStyle}"
+                                                    Command="{Binding CopyCalculationDetailsCommand}"
+                                                    ToolTip="{Binding [geo_tooltip_copy_calc_details], Source={x:Static lg:LanguageService.Instance}, FallbackValue=复制计算详情到剪贴板}">
+                                                <TextBlock Text="&#xe63e;" FontFamily="{StaticResource IconFont}" FontSize="13"/>
+                                            </Button>
+                                        </StackPanel>
+                                        <Button Style="{StaticResource PanelControlButtonStyle}"
+                                                Click="OnToggleDetailExpandClick"
+                                                ToolTip="{Binding [cipw_tooltip_expand], Source={x:Static lg:LanguageService.Instance}, FallbackValue=展开/收缩}">
+                                            <TextBlock x:Name="DetailExpandIcon" Text="&#xE70D;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
+                                        </Button>
+                                    </StackPanel>
                                 </Grid>
                             </Border>
 
@@ -1367,13 +1468,25 @@
                                 <ItemsControl ItemsSource="{Binding CalculationSteps}" Margin="8,4,8,8">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Border Margin="0,1" Padding="10,6" CornerRadius="4">
+                                            <Border Margin="0,1" Padding="10,6" CornerRadius="4"
+                                                    Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <Border.Style>
                                                     <Style TargetType="Border">
                                                         <Setter Property="Background" Value="Transparent"/>
+                                                        <Setter Property="Cursor" Value="Arrow"/>
                                                         <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsHighlight}" Value="True">
+                                                                <Setter Property="Background" Value="#FFFDE7"/>
+                                                            </DataTrigger>
                                                             <DataTrigger Binding="{Binding IsResult}" Value="True">
                                                                 <Setter Property="Background" Value="#F0F7FF"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding IsSeparator}" Value="True">
+                                                                <Setter Property="Background" Value="#FAFAFA"/>
+                                                                <Setter Property="Cursor" Value="Hand"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding HasCustomBackground}" Value="True">
+                                                                <Setter Property="Background" Value="{Binding BackgroundColor, Converter={StaticResource HexToBrushConverter}}"/>
                                                             </DataTrigger>
                                                             <Trigger Property="IsMouseOver" Value="True">
                                                                 <Setter Property="Background" Value="#F5F5F7"/>
@@ -1381,15 +1494,40 @@
                                                         </Style.Triggers>
                                                     </Style>
                                                 </Border.Style>
+                                                <Border.InputBindings>
+                                                    <MouseBinding MouseAction="LeftClick"
+                                                                  Command="{Binding DataContext.ToggleCalculationGroupCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                                  CommandParameter="{Binding}"/>
+                                                </Border.InputBindings>
                                                 <Grid>
                                                     <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="160"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="Auto" MinWidth="160"/>
                                                         <ColumnDefinition Width="Auto"/>
                                                         <ColumnDefinition Width="*"/>
                                                     </Grid.ColumnDefinitions>
 
+                                                    <!-- 分组折叠箭头（仅分隔标题） -->
+                                                    <TextBlock Grid.Column="0" VerticalAlignment="Center" Margin="0,0,6,0"
+                                                               FontFamily="Segoe MDL2 Assets" FontSize="10" Foreground="#0078D4">
+                                                        <TextBlock.Style>
+                                                            <Style TargetType="TextBlock">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                                <Setter Property="Text" Value="&#xE70D;"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding IsSeparator}" Value="True">
+                                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding IsCollapsed}" Value="True">
+                                                                        <Setter Property="Text" Value="&#xE76C;"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </TextBlock.Style>
+                                                    </TextBlock>
+
                                                     <!-- 步骤名称 -->
-                                                    <TextBlock Grid.Column="0" VerticalAlignment="Center" Margin="0,0,8,0">
+                                                    <TextBlock Grid.Column="1" VerticalAlignment="Center" Margin="0,0,8,0">
                                                         <TextBlock.Style>
                                                             <Style TargetType="TextBlock">
                                                                 <Setter Property="FontSize" Value="12"/>
@@ -1400,24 +1538,33 @@
                                                                         <Setter Property="Foreground" Value="#0078D4"/>
                                                                         <Setter Property="FontWeight" Value="SemiBold"/>
                                                                     </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding IsSeparator}" Value="True">
+                                                                        <Setter Property="Foreground" Value="#0078D4"/>
+                                                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                                                        <Setter Property="FontSize" Value="11"/>
+                                                                    </DataTrigger>
                                                                 </Style.Triggers>
                                                             </Style>
                                                         </TextBlock.Style>
                                                         <Run Text="{Binding Name, Mode=OneWay}"/>
                                                     </TextBlock>
 
-                                                    <!-- 步骤值 -->
-                                                    <TextBlock Grid.Column="1" VerticalAlignment="Center" Margin="0,0,12,0">
+                                                    <!-- 步骤值（分隔行隐藏） -->
+                                                    <TextBlock Grid.Column="2" VerticalAlignment="Center" Margin="0,0,12,0">
                                                         <TextBlock.Style>
                                                             <Style TargetType="TextBlock">
                                                                 <Setter Property="FontSize" Value="12"/>
                                                                 <Setter Property="FontFamily" Value="Consolas"/>
                                                                 <Setter Property="Foreground" Value="#333"/>
                                                                 <Setter Property="FontWeight" Value="Normal"/>
+                                                                <Setter Property="Visibility" Value="Visible"/>
                                                                 <Style.Triggers>
                                                                     <DataTrigger Binding="{Binding IsResult}" Value="True">
                                                                         <Setter Property="FontWeight" Value="Bold"/>
                                                                         <Setter Property="FontSize" Value="13"/>
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding IsSeparator}" Value="True">
+                                                                        <Setter Property="Visibility" Value="Collapsed"/>
                                                                     </DataTrigger>
                                                                 </Style.Triggers>
                                                             </Style>
@@ -1425,10 +1572,21 @@
                                                         <Run Text="{Binding Value, Mode=OneWay}"/>
                                                     </TextBlock>
 
-                                                    <!-- 描述 -->
-                                                    <TextBlock Grid.Column="2" Text="{Binding Description}" FontSize="11" 
+                                                    <!-- 描述（分隔行隐藏） -->
+                                                    <TextBlock Grid.Column="3" Text="{Binding Description}" FontSize="11" 
                                                                Foreground="#999" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
-                                                               ToolTip="{Binding Description}"/>
+                                                               ToolTip="{Binding Description}">
+                                                        <TextBlock.Style>
+                                                            <Style TargetType="TextBlock">
+                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding IsSeparator}" Value="True">
+                                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </TextBlock.Style>
+                                                    </TextBlock>
                                                 </Grid>
                                             </Border>
                                         </DataTemplate>

@@ -5,7 +5,9 @@ using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Services;
 using GeoChemistryNexus.Messages;
 using GeoChemistryNexus.Models;
+using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows;
 
 namespace GeoChemistryNexus.ViewModels
@@ -45,6 +47,10 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private int mouseSnapAutoRecognitionFrameRate;
 
+        // 默认初始表格行数
+        [ObservableProperty]
+        private int defaultWorksheetRowCount;
+
         // 图解模板卡片大小档位
         [ObservableProperty]
         private TemplateCardSizePreset templateCardSizePreset = TemplateCardSizePreset.Standard;
@@ -60,10 +66,14 @@ namespace GeoChemistryNexus.ViewModels
 
         public ObservableCollection<int> MouseSnapAutoRecognitionFrameRates { get; } = new() { 24, 30, 60, 90, 144 };
 
+        public ObservableCollection<int> DefaultWorksheetRowCounts { get; } =
+            new(WorksheetDefaultsHelper.AllowedRowCounts);
+
         public RelayCommand SelectCorelDRAWPathCommand { get; }
         public RelayCommand SelectInkscapePathCommand { get; }
         public RelayCommand SelectAdobeIllustratorPathCommand { get; }
         public RelayCommand SelectCustomThirdPartyAppPathCommand { get; }
+        public RelayCommand OpenInkscapeDownloadCommand { get; }
 
         private bool isLoading = true;
 
@@ -75,6 +85,7 @@ namespace GeoChemistryNexus.ViewModels
             SelectInkscapePathCommand = new RelayCommand(ExecuteSelectInkscapePath);
             SelectAdobeIllustratorPathCommand = new RelayCommand(ExecuteSelectAdobeIllustratorPath);
             SelectCustomThirdPartyAppPathCommand = new RelayCommand(ExecuteSelectCustomThirdPartyAppPath);
+            OpenInkscapeDownloadCommand = new RelayCommand(ExecuteOpenInkscapeDownload);
 
             LoadConfig();
         }
@@ -105,7 +116,7 @@ namespace GeoChemistryNexus.ViewModels
             SelectedThirdPartyApp = ConfigHelper.GetConfig("default_third_party_app") ?? string.Empty;
             if (string.IsNullOrEmpty(SelectedThirdPartyApp))
             {
-                SelectedThirdPartyApp = "CorelDRAW";
+                SelectedThirdPartyApp = "Inkscape";
             }
 
             if (bool.TryParse(ConfigHelper.GetConfig("auto_check_template_update"), out bool checkTemp))
@@ -128,6 +139,8 @@ namespace GeoChemistryNexus.ViewModels
             {
                 MouseSnapAutoRecognitionFrameRate = 24;
             }
+
+            DefaultWorksheetRowCount = WorksheetDefaultsHelper.GetDefaultRowCount(WorksheetDefaultsHelper.DiagramConfigKey);
 
             ApplyTemplateCardLayoutSettings(TemplateCardLayoutHelper.LoadFromConfig(), persist: false, notify: false, showToast: false);
             
@@ -198,6 +211,18 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
+        private void ExecuteOpenInkscapeDownload()
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo("https://inkscape.org/") { UseShellExecute = true });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(LanguageService.Instance["unable_to_open_link"] + ex.Message);
+            }
+        }
+
         private void ExecuteSelectAdobeIllustratorPath()
         {
             string? path = FileHelper.GetFilePath("Adobe Illustrator Executable (*.exe)|*.exe");
@@ -258,6 +283,13 @@ namespace GeoChemistryNexus.ViewModels
             if (isLoading) return;
             ConfigHelper.SetConfig("mouse_snap_auto_recognition_frame_rate", value.ToString());
             WeakReferenceMessenger.Default.Send(new MouseSnapAutoRecognitionFrameRateChangedMessage(value));
+            MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
+        }
+
+        partial void OnDefaultWorksheetRowCountChanged(int value)
+        {
+            if (isLoading) return;
+            WorksheetDefaultsHelper.SaveDefaultRowCount(WorksheetDefaultsHelper.DiagramConfigKey, value);
             MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
         }
 

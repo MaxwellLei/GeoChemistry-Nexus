@@ -92,7 +92,13 @@ namespace GeoChemistryNexus.ViewModels
                         new ShortcutItem("shortcut_action_redo_name", "Ctrl+Y", "shortcut_action_redo_desc"),
                         new ShortcutItem("shortcut_action_delete_selected_name", "Delete", "shortcut_action_delete_selected_desc"),
                         new ShortcutItem("shortcut_action_center_view_name", "Ctrl+0 / Ctrl+NumPad0", "shortcut_action_center_view_desc"),
-                        new ShortcutItem("shortcut_action_save_plot_name", "Ctrl+S", "shortcut_action_save_plot_desc")
+                        new ShortcutItem("shortcut_action_save_plot_name", "Ctrl+S", "shortcut_action_save_plot_desc"),
+                        new ShortcutItem("shortcut_action_switch_diagram_mode_name", "Alt+1", "shortcut_action_switch_diagram_mode_desc"),
+                        new ShortcutItem("shortcut_action_switch_data_mode_name", "Alt+2", "shortcut_action_switch_data_mode_desc"),
+                        new ShortcutItem("shortcut_action_switch_edit_mode_name", "Alt+3", "shortcut_action_switch_edit_mode_desc"),
+                        new ShortcutItem("shortcut_action_cycle_plot_mode_name", "Ctrl+Tab", "shortcut_action_cycle_plot_mode_desc"),
+                        new ShortcutItem("shortcut_action_middle_click_plot_mode_name", "shortcut_action_middle_click_plot_mode_keys", "shortcut_action_middle_click_plot_mode_desc", true),
+                        new ShortcutItem("shortcut_action_plot_data_name", "Ctrl+Shift+Enter", "shortcut_action_plot_data_desc")
                     }),
                 new ShortcutGroup(
                     "shortcut_group_add_title",

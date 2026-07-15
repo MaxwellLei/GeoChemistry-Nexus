@@ -19,7 +19,6 @@ namespace GeoChemistryNexus.ViewModels
     [SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "WPF binding requires instance members.")]
     public partial class GeothermometerFreeSheetViewModel : ObservableObject
     {
-        private const int InitialRowCount = 500;
         private const int InitialColumnCount = 20;
 
         private ReoGridControl? _grid;
@@ -107,6 +106,7 @@ namespace GeoChemistryNexus.ViewModels
         public void AttachGrid(ReoGridControl grid)
         {
             _grid = grid;
+            ReoGridImeHelper.Attach(grid);
             InitializeWorksheet(grid);
         }
 
@@ -122,7 +122,9 @@ namespace GeoChemistryNexus.ViewModels
             }
 
             worksheet.Reset();
-            worksheet.Resize(InitialRowCount, InitialColumnCount);
+            worksheet.Resize(
+                WorksheetDefaultsHelper.GetDefaultRowCount(WorksheetDefaultsHelper.GtmConfigKey),
+                InitialColumnCount);
             worksheet.Name = LanguageService.Instance["geo_free_sheet_worksheet_name"];
 
             var defaultStyle = new WorksheetRangeStyle

@@ -27,14 +27,23 @@ namespace GeoChemistryNexus.ViewModels
             _contentLanguage = contentLanguage;
             PropertyChangedEventManager.AddHandler(TextDefinition, OnTextDefinitionChanged, string.Empty);
             
-            // 监听 Model 变化触发刷新
+            // 监听 Model 变化触发刷新（IsHighlighted 仅用于拾取/焦点高亮，不触发全量重绘）
             TextDefinition.PropertyChanged += (s, e) => OnRefreshRequired();
-            if (TextDefinition.StartAndEnd != null) TextDefinition.StartAndEnd.PropertyChanged += (s, e) => OnRefreshRequired();
+            if (TextDefinition.StartAndEnd != null)
+                TextDefinition.StartAndEnd.PropertyChanged += OnPointDefinitionPropertyChanged;
             
             TextDefinition.PropertyChanged += (s, e) => {
                 if (e.PropertyName == nameof(TextDefinition.StartAndEnd) && TextDefinition.StartAndEnd != null)
-                    TextDefinition.StartAndEnd.PropertyChanged += (sender, args) => OnRefreshRequired();
+                    TextDefinition.StartAndEnd.PropertyChanged += OnPointDefinitionPropertyChanged;
             };
+        }
+
+        private void OnPointDefinitionPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(PointDefinition.IsHighlighted))
+                return;
+
+            OnRefreshRequired();
         }
 
         private static string GetName(TextDefinition textDefinition, int index, ContentLanguageContext? contentLanguage)

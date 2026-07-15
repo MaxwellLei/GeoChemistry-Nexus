@@ -147,9 +147,7 @@ namespace GeoChemistryNexus.Models
         /// </summary>
         private static SpiderAxisDefinition CreateSpiderBottomAxis(string spiderType, List<string> elementOrder)
         {
-            var standardName = spiderType == "REE"
-                ? NormalizationData.GetReeStandards()[0].Name
-                : NormalizationData.GetTraceElementStandards()[0].Name;
+            var standardName = NormalizationData.GetRecommendedStandard(spiderType).Name;
 
             return new SpiderAxisDefinition
             {
@@ -180,9 +178,7 @@ namespace GeoChemistryNexus.Models
         /// </summary>
         private static SpiderAxisDefinition CreateSpiderLeftAxis(string spiderType, List<string> elementOrder)
         {
-            var standardName = spiderType == "REE"
-                ? NormalizationData.GetReeStandards()[0].Name
-                : NormalizationData.GetTraceElementStandards()[0].Name;
+            var standardName = NormalizationData.GetRecommendedStandard(spiderType).Name;
 
             return new SpiderAxisDefinition
             {

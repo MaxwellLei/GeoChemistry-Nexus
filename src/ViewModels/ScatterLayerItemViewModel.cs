@@ -1,4 +1,5 @@
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Helpers.PlotMarkers;
 using GeoChemistryNexus.Services;
 using GeoChemistryNexus.Interfaces;
 using GeoChemistryNexus.Models;
@@ -62,10 +63,23 @@ namespace GeoChemistryNexus.ViewModels
                 if (e.PropertyName == nameof(ScatterDefinition.Name))
                 {
                     var scatterName = ScatterDefinition.Name ?? string.Empty;
+                    if (string.IsNullOrWhiteSpace(scatterName))
+                    {
+                        // 名称不允许为空：回退到图层当前名称，避免触发全量重绘
+                        var fallbackName = string.IsNullOrWhiteSpace(Name)
+                            ? LanguageService.Instance["data_point"]
+                            : Name;
+                        if (ScatterDefinition.Name != fallbackName)
+                            ScatterDefinition.Name = fallbackName;
+                        MessageHelper.Warning(LanguageService.Instance["geo_validate_name_required"]);
+                        return;
+                    }
+
                     Name = scatterName;
                     UpdateLegendText(scatterName);
                     ScatterNameChanged?.Invoke(this, scatterName);
-                    OnRefreshRequired();
+                    // 仅刷新图例显示，保留当前视角（投点越界后的 AutoScale 视图）
+                    OnStyleUpdateRequired();
                     return;
                 }
 
@@ -74,7 +88,8 @@ namespace GeoChemistryNexus.ViewModels
                     e.PropertyName == nameof(ScatterDefinition.Size) ||
                     e.PropertyName == nameof(ScatterDefinition.MarkerShape) ||
                     e.PropertyName == nameof(ScatterDefinition.StrokeWidth) ||
-                    e.PropertyName == nameof(ScatterDefinition.StrokeColor))
+                    e.PropertyName == nameof(ScatterDefinition.StrokeColor) ||
+                    e.PropertyName == nameof(ScatterDefinition.HasFill))
                 {
                     OnStyleUpdateRequired();
                 }
@@ -125,6 +140,62 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
+        /// <summary>
+        /// 从 Plot 卸下本图层的主系列与图例替身（不修改 DataPoints）。
+        /// </summary>
+        public void DetachPlottablesFromPlot(ScottPlot.Plot plot)
+        {
+            if (plot == null)
+            {
+                return;
+            }
+
+            if (Plottable != null)
+            {
+                plot.Remove(Plottable);
+                Plottable = null;
+            }
+
+            if (_legendProxy != null)
+            {
+                plot.Remove(_legendProxy);
+                _legendProxy = null;
+            }
+
+            _cachedRenderPoints = null;
+        }
+
+        public void UnregisterPlottablesFromLookup(Dictionary<ScottPlot.IPlottable, LayerItemViewModel> lookup)
+        {
+            if (lookup == null)
+            {
+                return;
+            }
+
+            if (Plottable != null)
+            {
+                lookup.Remove(Plottable);
+            }
+
+            if (_legendProxy != null)
+            {
+                lookup.Remove(_legendProxy);
+            }
+        }
+
+        /// <summary>
+        /// 按当前 DataPoints 重新渲染到 Plot（先 Detach 再调用）。
+        /// </summary>
+        public void AttachPlottablesToPlot(ScottPlot.Plot plot)
+        {
+            if (plot == null)
+            {
+                return;
+            }
+
+            Render(plot);
+        }
+
         public void Render(Plot plot)
         {
             // 如果没有数据点，则不绘制
@@ -172,6 +243,17 @@ namespace GeoChemistryNexus.ViewModels
             }
 
             var scatterName = Name ?? string.Empty;
+            if (string.IsNullOrWhiteSpace(scatterName))
+            {
+                var fallbackName = string.IsNullOrWhiteSpace(ScatterDefinition.Name)
+                    ? LanguageService.Instance["data_point"]
+                    : ScatterDefinition.Name;
+                if (Name != fallbackName)
+                    Name = fallbackName;
+                MessageHelper.Warning(LanguageService.Instance["geo_validate_name_required"]);
+                return;
+            }
+
             if (ScatterDefinition.Name != scatterName)
             {
                 ScatterDefinition.Name = scatterName;
@@ -200,30 +282,50 @@ namespace GeoChemistryNexus.ViewModels
 
         private void UpdatePlottableStyle(ScottPlot.Plottables.Scatter scatterPlot, ScottPlot.Plottables.Scatter legendProxy)
         {
-            // --- 更新主对象样式 ---
-            scatterPlot.Color = ScottPlot.Color.FromHex(
+            var fillColor = ScottPlot.Color.FromHex(
                 GraphMapTemplateService.ConvertWpfHexToScottPlotHex(ScatterDefinition.Color));
-            scatterPlot.MarkerSize = ScatterDefinition.Size;
-            scatterPlot.MarkerShape = ScatterDefinition.MarkerShape;
-            scatterPlot.MarkerStyle.OutlineWidth = ScatterDefinition.StrokeWidth;
-            scatterPlot.MarkerStyle.OutlineColor = ScottPlot.Color.FromHex(
+            var strokeColor = ScottPlot.Color.FromHex(
                 GraphMapTemplateService.ConvertWpfHexToScottPlotHex(ScatterDefinition.StrokeColor));
 
-            // --- 更新图例替身样式 ---
-            legendProxy.Color = scatterPlot.Color;
+            // 系列主色：实心用填充色，空心/线型用描边色（图例颜色）
+            var seriesColor = ScatterDefinition.HasFill ? fillColor : strokeColor;
+
+            scatterPlot.Color = seriesColor;
+            scatterPlot.MarkerSize = ScatterDefinition.Size;
+            PlotMarkerStyleApplier.Apply(
+                scatterPlot.MarkerStyle,
+                ScatterDefinition.MarkerShape,
+                fillColor,
+                ScatterDefinition.StrokeWidth,
+                strokeColor);
+
+            legendProxy.Color = seriesColor;
             legendProxy.MarkerSize = 8; // 固定图例大小
-            legendProxy.MarkerShape = ScatterDefinition.MarkerShape;
-            legendProxy.MarkerStyle.OutlineWidth = ScatterDefinition.StrokeWidth;
-            legendProxy.MarkerStyle.OutlineColor = scatterPlot.MarkerStyle.OutlineColor;
+            PlotMarkerStyleApplier.Apply(
+                legendProxy.MarkerStyle,
+                ScatterDefinition.MarkerShape,
+                fillColor,
+                ScatterDefinition.StrokeWidth,
+                strokeColor);
         }
 
         public void Highlight()
         {
-            if (Plottable is ScottPlot.Plottables.Scatter scatterPlot)
+            if (Plottable is not ScottPlot.Plottables.Scatter scatterPlot)
             {
-                scatterPlot.MarkerStyle.OutlineColor = ScottPlot.Colors.Red;
-                scatterPlot.MarkerStyle.OutlineWidth = 2;
+                return;
             }
+
+            // 与线条等绘图对象一致：整组标记改为固态红色（非描边高亮）
+            var red = ScottPlot.Colors.Red;
+            scatterPlot.Color = red;
+            float strokeWidth = ScatterDefinition.StrokeWidth > 0 ? ScatterDefinition.StrokeWidth : 1.5f;
+            PlotMarkerStyleApplier.Apply(
+                scatterPlot.MarkerStyle,
+                ScatterDefinition.MarkerShape,
+                red,
+                strokeWidth,
+                red);
         }
 
         public void Dim()
@@ -231,6 +333,9 @@ namespace GeoChemistryNexus.ViewModels
             if (Plottable is ScottPlot.Plottables.Scatter scatterPlot)
             {
                 scatterPlot.Color = scatterPlot.Color.WithAlpha(60);
+                scatterPlot.MarkerStyle.FillColor = scatterPlot.MarkerStyle.FillColor.WithAlpha(60);
+                scatterPlot.MarkerStyle.LineColor = scatterPlot.MarkerStyle.LineColor.WithAlpha(60);
+                scatterPlot.MarkerStyle.OutlineColor = scatterPlot.MarkerStyle.OutlineColor.WithAlpha(60);
             }
         }
 
@@ -238,12 +343,17 @@ namespace GeoChemistryNexus.ViewModels
         {
             if (Plottable is ScottPlot.Plottables.Scatter scatterPlot)
             {
-                scatterPlot.Color = ScottPlot.Color.FromHex(GraphMapTemplateService.ConvertWpfHexToScottPlotHex(ScatterDefinition.Color));
-                
-                // 恢复描边样式
-                scatterPlot.MarkerStyle.OutlineWidth = ScatterDefinition.StrokeWidth;
-                scatterPlot.MarkerStyle.OutlineColor = ScottPlot.Color.FromHex(
+                var fillColor = ScottPlot.Color.FromHex(GraphMapTemplateService.ConvertWpfHexToScottPlotHex(ScatterDefinition.Color));
+                var strokeColor = ScottPlot.Color.FromHex(
                     GraphMapTemplateService.ConvertWpfHexToScottPlotHex(ScatterDefinition.StrokeColor));
+                var seriesColor = ScatterDefinition.HasFill ? fillColor : strokeColor;
+                scatterPlot.Color = seriesColor;
+                PlotMarkerStyleApplier.Apply(
+                    scatterPlot.MarkerStyle,
+                    ScatterDefinition.MarkerShape,
+                    fillColor,
+                    ScatterDefinition.StrokeWidth,
+                    strokeColor);
             }
         }
     }

@@ -16,7 +16,7 @@ namespace GeoChemistryNexus.ViewModels
         private ScottPlot.Plottables.Scatter? _scatterPlot;
 
         public FunctionLayerItemViewModel(FunctionDefinition functionDefinition, int index)
-            : base("Function " + (index + 1))
+            : base(LanguageService.Instance["function"] + $" {index + 1}")
         {
             FunctionDefinition = functionDefinition;
             FunctionDefinition.PropertyChanged += (s, e) => OnRefreshRequired();

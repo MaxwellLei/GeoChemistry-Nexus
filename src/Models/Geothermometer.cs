@@ -44,6 +44,19 @@ namespace GeoChemistryNexus.Models
             : string.Join(" · ", Tags);
 
         /// <summary>
+        /// 能力标签（已规范化：内置 P/T/fO2 在前，自定义简写在后）
+        /// </summary>
+        public List<string> Capabilities { get; set; } = new();
+
+        /// <summary>
+        /// 能力标签显示文本（用于搜索等）
+        /// </summary>
+        [JsonIgnore]
+        public string CapabilitiesDisplayText => Capabilities == null || Capabilities.Count == 0
+            ? string.Empty
+            : string.Join(" · ", Capabilities);
+
+        /// <summary>
         /// 温压计名称（显示名称）
         /// </summary>
         public string Name { get; set; } = string.Empty;

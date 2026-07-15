@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace GeoChemistryNexus.Services
 {
     /// <summary>
-    /// 启动时自动检查程序更新（仅通知，不自动下载安装）。
+    /// 启动时自动检查程序更新；发现新版本时询问是否立即下载安装。
     /// </summary>
     public static class AppUpdateService
     {
@@ -36,10 +36,20 @@ namespace GeoChemistryNexus.Services
                 if (!info.HasUpdate)
                     return;
 
-                string message = LanguageService.Instance["update_auto_check_notify"]
-                    ?? $"New version {info.LatestVersion} is available. Open Settings to download and install.";
+                string message = string.Format(
+                    LanguageService.Instance["update_auto_check_notify"]
+                        ?? "New version {0} is available. Download and install now?",
+                    info.LatestVersion);
 
-                MessageHelper.Info(message);
+                bool confirmed = await MessageHelper.ShowAsyncDialog(
+                    message,
+                    LanguageService.Instance["Cancel"] ?? "Cancel",
+                    LanguageService.Instance["go_to_download"] ?? "Update now");
+
+                if (!confirmed)
+                    return;
+
+                await TryDownloadAndInstallUpdateAsync(info);
             }
             catch (Exception ex)
             {

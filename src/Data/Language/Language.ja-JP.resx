@@ -163,7 +163,7 @@
     <value>年を空にできません。</value>
   </data>
   <data name="new_version_available_github" xml:space="preserve">
-    <value>新しいバージョンが見つかりました！GitHub Releaseページからダウンロードして更新してください。</value>
+    <value>新しいバージョン {0} があります。今すぐダウンロードしてインストールしますか？</value>
   </data>
   <data name="batch_download_fail_count" xml:space="preserve">
     <value>失敗：{0} 個</value>
@@ -289,10 +289,10 @@
     <value>リンクを入力してください</value>
   </data>
   <data name="add_text" xml:space="preserve">
-    <value>テキストを追加</value>
+    <value>テキストを追加 (Ctrl+2)</value>
   </data>
   <data name="add_line" xml:space="preserve">
-    <value>線を追加</value>
+    <value>線を追加 (Ctrl+1)</value>
   </data>
   <data name="add_link" xml:space="preserve">
     <value>リンクを追加</value>
@@ -439,7 +439,7 @@
     <value>更新を確認中...</value>
   </data>
   <data name="add_function" xml:space="preserve">
-    <value>関数を追加</value>
+    <value>関数を追加 (Ctrl+5)</value>
   </data>
   <data name="edit_diagram_template" xml:space="preserve">
     <value>図解テンプレートを編集</value>
@@ -1382,7 +1382,7 @@
     <value>スクリプト内容が空です</value>
   </data>
   <data name="go_to_download" xml:space="preserve">
-    <value>ダウンロードへ</value>
+    <value>今すぐ更新</value>
   </data>
   <data name="geo_msg_create_table_failed" xml:space="preserve">
     <value>テーブルの作成に失敗しました: {0}</value>
@@ -1465,6 +1465,9 @@
   <data name="support_json_format" xml:space="preserve">
     <value>json 形式をサポート</value>
   </data>
+  <data name="cipw_col_sample" xml:space="preserve">
+    <value>試料</value>
+  </data>
   <data name="cipw_col_silica_saturation" xml:space="preserve">
     <value>SiO2 飽和度</value>
   </data>
@@ -1520,7 +1523,7 @@
     <value>編集</value>
   </data>
   <data name="reset_view" xml:space="preserve">
-    <value>ビューをリセット</value>
+    <value>ビューをリセット (Ctrl+0)</value>
   </data>
   <data name="Alignment_UpperRight" xml:space="preserve">
     <value>右上</value>
@@ -1604,7 +1607,7 @@
     <value>起動画像の削除に失敗しました: </value>
   </data>
   <data name="add_arrow" xml:space="preserve">
-    <value>矢印を追加</value>
+    <value>矢印を追加 (Ctrl+4)</value>
   </data>
   <data name="MarkerShape_Asterisk" xml:space="preserve">
     <value>アスタリスク</value>
@@ -1634,7 +1637,7 @@
     <value>ヘルプドキュメントは任意で、多言語 RTF リッチテキスト形式をサポートします。</value>
   </data>
   <data name="delete_object" xml:space="preserve">
-    <value>オブジェクトを削除</value>
+    <value>オブジェクトを削除 (Delete)</value>
   </data>
   <data name="cipw_title" xml:space="preserve">
     <value>CIPW ノルム計算</value>
@@ -1999,7 +2002,7 @@
     <value>複数のデータ系列はカンマで区切ってください（例：SiO2,TiO2）</value>
   </data>
   <data name="add_polygon" xml:space="preserve">
-    <value>ポリゴンを追加</value>
+    <value>ポリゴンを追加 (Ctrl+3)</value>
   </data>
   <data name="batch_download_title" xml:space="preserve">
     <value>一括ダウンロード</value>
@@ -2195,6 +2198,15 @@
   <data name="geo_tooltip_export_csv" xml:space="preserve">
     <value>現在のワークシートを CSV としてエクスポート</value>
   </data>
+  <data name="geo_tooltip_export_calc_details" xml:space="preserve">
+    <value>計算の詳細を CSV としてエクスポート</value>
+  </data>
+  <data name="geo_tooltip_copy_calc_details" xml:space="preserve">
+    <value>計算の詳細をクリップボードにコピー</value>
+  </data>
+  <data name="geo_msg_calc_details_copied" xml:space="preserve">
+    <value>計算の詳細をクリップボードにコピーしました</value>
+  </data>
   <data name="error_occurred_during_startup" xml:space="preserve">
     <value>起動中にエラーが発生しました:</value>
   </data>
@@ -2211,7 +2223,7 @@
     <value>現在選択中の行の上に 1 行挿入</value>
   </data>
   <data name="data_toolbar_update_chart_tooltip" xml:space="preserve">
-    <value>現在のデータをグラフに反映</value>
+    <value>現在のデータをグラフに反映 (Ctrl+Shift+Enter)</value>
   </data>
   <data name="data_toolbar_delete_row_tooltip" xml:space="preserve">
     <value>現在の行を削除</value>
@@ -2732,6 +2744,21 @@
   <data name="normalization_standard" xml:space="preserve">
     <value>正規化基準</value>
   </data>
+  <data name="norm_category_chondrite" xml:space="preserve">
+    <value>コンドライト</value>
+  </data>
+  <data name="norm_category_shale" xml:space="preserve">
+    <value>頁岩 / 堆積岩</value>
+  </data>
+  <data name="norm_category_crust" xml:space="preserve">
+    <value>地殻</value>
+  </data>
+  <data name="norm_category_mantle" xml:space="preserve">
+    <value>マントル</value>
+  </data>
+  <data name="norm_category_basalt" xml:space="preserve">
+    <value>玄武岩端成分</value>
+  </data>
   <data name="object_selection_trigger" xml:space="preserve">
     <value>オブジェクト選択トリガー</value>
   </data>
@@ -2963,6 +2990,12 @@
   <data name="shortcut_action_close_notification_name" xml:space="preserve">
     <value>通知を閉じる</value>
   </data>
+  <data name="shortcut_action_cycle_plot_mode_desc" xml:space="preserve">
+    <value>図解・データ・編集の各モードを循環して切り替えます。</value>
+  </data>
+  <data name="shortcut_action_cycle_plot_mode_name" xml:space="preserve">
+    <value>モードを循環切り替え</value>
+  </data>
   <data name="shortcut_action_delete_selected_desc" xml:space="preserve">
     <value>現在選択中のプロットオブジェクトを削除します。</value>
   </data>
@@ -2974,6 +3007,21 @@
   </data>
   <data name="shortcut_action_italic_name" xml:space="preserve">
     <value>斜体</value>
+  </data>
+  <data name="shortcut_action_middle_click_plot_mode_desc" xml:space="preserve">
+    <value>プロット領域の左半分を中クリックで前のモード、右半分を中クリックで次のモードに切り替えます（図解 ↔ データ ↔ 編集）。</value>
+  </data>
+  <data name="shortcut_action_middle_click_plot_mode_keys" xml:space="preserve">
+    <value>プロット左半分 / 右半分を中クリック</value>
+  </data>
+  <data name="shortcut_action_middle_click_plot_mode_name" xml:space="preserve">
+    <value>中クリックでモード切替</value>
+  </data>
+  <data name="shortcut_action_plot_data_desc" xml:space="preserve">
+    <value>現在のワークシートデータをチャートにプロットします（データモードのみ）。</value>
+  </data>
+  <data name="shortcut_action_plot_data_name" xml:space="preserve">
+    <value>データ投図</value>
   </data>
   <data name="shortcut_action_quick_delete_desc" xml:space="preserve">
     <value>確認なしでカスタムテンプレートを直接削除します。</value>
@@ -3004,6 +3052,24 @@
   </data>
   <data name="shortcut_action_save_plot_name" xml:space="preserve">
     <value>図解を保存</value>
+  </data>
+  <data name="shortcut_action_switch_data_mode_desc" xml:space="preserve">
+    <value>データモードパネルに切り替えます。</value>
+  </data>
+  <data name="shortcut_action_switch_data_mode_name" xml:space="preserve">
+    <value>データモードに切り替え</value>
+  </data>
+  <data name="shortcut_action_switch_diagram_mode_desc" xml:space="preserve">
+    <value>図解モードパネルに切り替えます。</value>
+  </data>
+  <data name="shortcut_action_switch_diagram_mode_name" xml:space="preserve">
+    <value>図解モードに切り替え</value>
+  </data>
+  <data name="shortcut_action_switch_edit_mode_desc" xml:space="preserve">
+    <value>編集モードパネルに切り替えます。</value>
+  </data>
+  <data name="shortcut_action_switch_edit_mode_name" xml:space="preserve">
+    <value>編集モードに切り替え</value>
   </data>
   <data name="shortcut_action_underline_desc" xml:space="preserve">
     <value>選択テキストの下線を切り替えます。</value>
@@ -3175,6 +3241,33 @@
   </data>
   <data name="geo_example_category" xml:space="preserve">
     <value>例：単鉱物地質温圧計</value>
+  </data>
+  <data name="geo_field_capabilities" xml:space="preserve">
+    <value>能力タグ</value>
+  </data>
+  <data name="geo_capability_enter_hint" xml:space="preserve">
+    <value>能力の略称を入力して Enter キーで確定</value>
+  </data>
+  <data name="geo_example_capability" xml:space="preserve">
+    <value>例：P、T、fO2</value>
+  </data>
+  <data name="geo_filter_mineral_tags" xml:space="preserve">
+    <value>鉱物タグ</value>
+  </data>
+  <data name="geo_filter_capabilities" xml:space="preserve">
+    <value>能力</value>
+  </data>
+  <data name="geo_capability_tooltip_p" xml:space="preserve">
+    <value>圧力</value>
+  </data>
+  <data name="geo_capability_tooltip_t" xml:space="preserve">
+    <value>温度</value>
+  </data>
+  <data name="geo_capability_tooltip_fo2" xml:space="preserve">
+    <value>酸素フュガシティ</value>
+  </data>
+  <data name="geo_validate_capability_too_long" xml:space="preserve">
+    <value>能力タグが長すぎます（最大 {0} 文字）</value>
   </data>
   <data name="geo_editor_title_view" xml:space="preserve">
     <value>地質温圧計を表示</value>
@@ -3411,6 +3504,16 @@
 
     <value>起動時に地質温圧計の更新を自動的に確認する</value>
 
+  </data>
+
+  <data name="default_worksheet_row_count" xml:space="preserve">
+    <value>テーブル初期行数のデフォルト</value>
+  </data>
+  <data name="default_worksheet_row_count_hint" xml:space="preserve">
+    <value>データテーブルを新規作成またはリセットするときのデフォルト行数</value>
+  </data>
+  <data name="geothermometer_defaults" xml:space="preserve">
+    <value>デフォルト設定</value>
   </data>
 
   <data name="coreldraw_path_hint" xml:space="preserve">
@@ -3768,6 +3871,9 @@
     <value>ベクターグラフィックを開くための Inkscape 実行ファイルのパス</value>
 
   </data>
+  <data name="inkscape_get_it" xml:space="preserve">
+    <value>お持ちでない場合はこちら</value>
+  </data>
 
   <data name="main_sidebar_collapse_style_hint" xml:space="preserve">
 
@@ -3902,9 +4008,7 @@
   </data>
 
   <data name="update_auto_check_notify" xml:space="preserve">
-
-    <value>新しいバージョンがあります。設定ページを開いてダウンロードとインストールを行ってください。</value>
-
+    <value>新しいバージョン {0} があります。今すぐダウンロードしてインストールしますか？</value>
   </data>
 
   <data name="update_download_confirm_shutdown" xml:space="preserve">
@@ -3931,6 +4035,39 @@
 
   </data>
 
+  <data name="plot_toolbar_save_tooltip" xml:space="preserve">
+    <value>保存 (Ctrl+S)</value>
+  </data>
+  <data name="plot_toolbar_undo_tooltip" xml:space="preserve">
+    <value>元に戻す (Ctrl+Z)</value>
+  </data>
+  <data name="plot_toolbar_redo_tooltip" xml:space="preserve">
+    <value>やり直し (Ctrl+Y)</value>
+  </data>
+  <data name="plot_toolbar_diagram_mode_tooltip" xml:space="preserve">
+    <value>図解モード (Alt+1)</value>
+  </data>
+  <data name="plot_toolbar_data_mode_tooltip" xml:space="preserve">
+    <value>データモード (Alt+2)</value>
+  </data>
+  <data name="plot_toolbar_edit_mode_tooltip" xml:space="preserve">
+    <value>編集モード (Alt+3)</value>
+  </data>
+  <data name="template_search_feedback_before_github" xml:space="preserve">
+    <value>必要なテンプレートがまだ収録されていない場合は </value>
+  </data>
+  <data name="template_search_feedback_github" xml:space="preserve">
+    <value>GitHub Issues</value>
+  </data>
+  <data name="template_search_feedback_before_email" xml:space="preserve">
+    <value> でご提案いただくか、メールで </value>
+  </data>
+  <data name="template_search_feedback_suffix" xml:space="preserve">
+    <value>。</value>
+  </data>
+  <data name="geo_hint_no_search_results" xml:space="preserve">
+    <value>検索条件に一致する温圧計テンプレートがありません。</value>
+  </data>
 </root>
 
 

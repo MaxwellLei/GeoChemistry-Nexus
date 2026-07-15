@@ -1,14 +1,18 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using GeoChemistryNexus.Extensions.ScottPlotExtensions;
 using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Models.SpiderDiagram;
+using GeoChemistryNexus.Services;
 using ScottPlot;
 using ScottPlot.WPF;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Media;
 
 namespace GeoChemistryNexus.ViewModels
@@ -28,6 +32,11 @@ namespace GeoChemistryNexus.ViewModels
         /// </summary>
         [ObservableProperty]
         private ObservableCollection<NormalizationStandard> _availableStandards = new();
+
+        /// <summary>
+        /// 带分组的标准化方案视图（供 ComboBox 绑定）
+        /// </summary>
+        public ICollectionView? AvailableStandardsView { get; private set; }
 
         /// <summary>
         /// 当前选中的标准化方案
@@ -161,15 +170,18 @@ namespace GeoChemistryNexus.ViewModels
             Samples.Clear();
             IsNormalizationEnabled = true;
 
-            // 加载对应的标准化方案
+            // 加载对应的标准化方案（已按分组 + 年份排序）
             var standards = diagramType == "REE"
                 ? NormalizationData.GetReeStandards()
                 : NormalizationData.GetTraceElementStandards();
 
+            ApplyLocalizedCategories(standards);
             AvailableStandards = new ObservableCollection<NormalizationStandard>(standards);
+            RebuildAvailableStandardsView();
 
-            // 默认选中第一个
-            SelectedStandard = AvailableStandards.FirstOrDefault();
+            // 默认选中推荐方案
+            SelectedStandard = AvailableStandards.FirstOrDefault(s => s.IsRecommended)
+                               ?? AvailableStandards.FirstOrDefault();
 
             // 设置默认元素顺序
             var defaultOrder = diagramType == "REE"
@@ -180,6 +192,38 @@ namespace GeoChemistryNexus.ViewModels
             InitializeAllElements(defaultOrder);
 
             OnPropertyChanged(nameof(Title));
+        }
+
+        /// <summary>
+        /// 为标准化方案写入当前语言的分组标题
+        /// </summary>
+        private static void ApplyLocalizedCategories(IEnumerable<NormalizationStandard> standards)
+        {
+            foreach (var standard in standards)
+            {
+                standard.Category = LanguageService.GetString(
+                    standard.CategoryKey,
+                    NormalizationData.GetCategoryFallback(standard.CategoryKey));
+            }
+        }
+
+        /// <summary>
+        /// 重建带分组的标准化方案视图
+        /// </summary>
+        private void RebuildAvailableStandardsView()
+        {
+            AvailableStandardsView = CollectionViewSource.GetDefaultView(AvailableStandards);
+            if (AvailableStandardsView != null)
+            {
+                using (AvailableStandardsView.DeferRefresh())
+                {
+                    AvailableStandardsView.GroupDescriptions.Clear();
+                    AvailableStandardsView.GroupDescriptions.Add(
+                        new PropertyGroupDescription(nameof(NormalizationStandard.Category)));
+                }
+            }
+
+            OnPropertyChanged(nameof(AvailableStandardsView));
         }
 
         /// <summary>
@@ -554,16 +598,8 @@ namespace GeoChemistryNexus.ViewModels
                 ? $"Sample / {SelectedStandard!.ShortName}"
                 : "Concentration (ppm)";
 
-            // 对数轴刻度生成器：显示 10^n 形式的标签
-            var tickGen = new ScottPlot.TickGenerators.NumericAutomatic();
-            tickGen.MinorTickGenerator = new ScottPlot.TickGenerators.LogMinorTickGenerator();
-            tickGen.IntegerTicksOnly = true;
-            tickGen.LabelFormatter = y =>
-            {
-                double val = Math.Pow(10, y);
-                return val.ToString("G10");
-            };
-            plot.Axes.Left.TickGenerator = tickGen;
+            // 对数轴刻度生成器：按 decade 生成，保证端点 10^n 标签不丢失
+            plot.Axes.Left.TickGenerator = new LogDecadeTickGenerator();
 
             // 设置 X 轴自定义刻度标签
             double[] tickPositions = xPositions;

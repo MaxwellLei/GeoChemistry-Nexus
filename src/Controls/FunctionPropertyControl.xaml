@@ -13,6 +13,7 @@
              Background="#F5F5F7">
     <UserControl.Resources>
         <cvs:NumericTypeConverter x:Key="NumericTypeConverter"/>
+        <cvs:OptionalDoubleConverter x:Key="OptionalDoubleConverter"/>
         <cvs:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
         <cvs:StringColorConverter x:Key="StringColorConverter"/>
         <cvs:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
@@ -27,7 +28,7 @@
                 <!-- Header -->
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
                     <TextBlock Text="&#xe63a;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="24" Foreground="#1D1D1F" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                    <TextBlock Text="Function" FontWeight="Bold" FontSize="22" Foreground="#1D1D1F" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding [function],Source={x:Static lg:LanguageService.Instance}}" FontWeight="Bold" FontSize="22" Foreground="#1D1D1F" VerticalAlignment="Center"/>
                 </StackPanel>
 
                 <!-- Formula -->
@@ -84,14 +85,19 @@
 
                             <StackPanel Grid.Column="0">
                                 <TextBlock Text="{Binding [from],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
-                                <hc:NumericUpDown Value="{Binding MinY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
-                                                  Style="{StaticResource ModernNumericUpDownStyle}"/>
+                                <!-- NaN = 不限制；NumericUpDown 不接受 NaN -->
+                                <TextBox Text="{Binding MinY, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource OptionalDoubleConverter}}"
+                                         Padding="10,8"
+                                         Background="#F2F2F7" BorderThickness="0"
+                                         hc:BorderElement.CornerRadius="6"/>
                             </StackPanel>
 
                             <StackPanel Grid.Column="2">
                                 <TextBlock Text="{Binding [to],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
-                                <hc:NumericUpDown Value="{Binding MaxY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
-                                                  Style="{StaticResource ModernNumericUpDownStyle}"/>
+                                <TextBox Text="{Binding MaxY, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource OptionalDoubleConverter}}"
+                                         Padding="10,8"
+                                         Background="#F2F2F7" BorderThickness="0"
+                                         hc:BorderElement.CornerRadius="6"/>
                             </StackPanel>
                         </Grid>
 

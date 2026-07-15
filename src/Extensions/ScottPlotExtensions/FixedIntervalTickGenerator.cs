@@ -35,7 +35,7 @@ namespace GeoChemistryNexus.Extensions.ScottPlotExtensions
                 return;
             }
 
-            double epsilon = 1e-10;
+            double epsilon = Math.Max(1e-10, Interval * 1e-9);
 
             // 使用整数索引循环以避免浮点累积误差
             long firstIndex = (long)Math.Ceiling((range.Min - epsilon) / Interval);
@@ -45,21 +45,12 @@ namespace GeoChemistryNexus.Extensions.ScottPlotExtensions
             for (long i = firstIndex; i <= lastIndex; i++)
             {
                 double pos = i * Interval;
-                
-                // 格式化标签：对于常规间隔，舍入到10位小数以去除浮点噪声
-                // 如果间隔非常小（小于1e-7），则保留原始精度或使用更多位
-                string label;
-                if (Interval < 1e-7)
-                {
-                     label = pos.ToString();
-                }
-                else
-                {
-                     label = Math.Round(pos, 10).ToString();
-                }
-
-                ticks.Add(new Tick(pos, label, isMajor: true));
+                ticks.Add(new Tick(pos, FormatLabel(pos), isMajor: true));
             }
+
+            // 确保范围端点在落在步长网格上时始终有标签（防止浮点边界漏掉 0/Max）
+            EnsureEndpointMajorTick(ticks, range.Min, epsilon);
+            EnsureEndpointMajorTick(ticks, range.Max, epsilon);
 
             // 生成次刻度
             if (MinorTickCount > 0)
@@ -83,7 +74,33 @@ namespace GeoChemistryNexus.Extensions.ScottPlotExtensions
                 }
             }
             
-            Ticks = ticks.ToArray();
+            Ticks = ticks
+                .OrderBy(t => t.Position)
+                .ToArray();
+        }
+
+        private void EnsureEndpointMajorTick(List<Tick> ticks, double endpoint, double epsilon)
+        {
+            if (double.IsNaN(endpoint) || double.IsInfinity(endpoint))
+                return;
+
+            double nearestMultiple = Math.Round(endpoint / Interval) * Interval;
+            if (Math.Abs(nearestMultiple - endpoint) > epsilon)
+                return;
+
+            if (ticks.Any(t => t.IsMajor && Math.Abs(t.Position - nearestMultiple) <= epsilon))
+                return;
+
+            ticks.Add(new Tick(nearestMultiple, FormatLabel(nearestMultiple), isMajor: true));
+        }
+
+        private string FormatLabel(double pos)
+        {
+            // 格式化标签：对于常规间隔，舍入到10位小数以去除浮点噪声
+            if (Interval < 1e-7)
+                return pos.ToString();
+
+            return Math.Round(pos, 10).ToString();
         }
     }
 }

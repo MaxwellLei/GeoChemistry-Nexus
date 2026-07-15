@@ -53,7 +53,13 @@
                             </Grid.ColumnDefinitions>
                             <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
                                 <TextBlock Text="Inkscape" FontSize="14"/>
-                                <TextBlock Text="{Binding [inkscape_path_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=设置 Inkscape 可执行文件路径，用于打开矢量图}" Style="{StaticResource ModernSettingsItemHintStyle}"/>
+                                <TextBlock Style="{StaticResource ModernSettingsItemHintStyle}">
+                                    <Run Text="{Binding [inkscape_path_hint],Source={x:Static lg:LanguageService.Instance}, Mode=OneWay, FallbackValue=设置 Inkscape 可执行文件路径，用于打开矢量图}"/>
+                                    <Run Text=" "/>
+                                    <Hyperlink Command="{Binding OpenInkscapeDownloadCommand}">
+                                        <Run Text="{Binding [inkscape_get_it],Source={x:Static lg:LanguageService.Instance}, Mode=OneWay, FallbackValue=如果没有，点我获取}"/>
+                                    </Hyperlink>
+                                </TextBlock>
                             </StackPanel>
                             <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                                 <TextBox Text="{Binding InkscapePath}" IsReadOnly="True" BorderThickness="0" Background="Transparent"
@@ -178,6 +184,28 @@
                             </StackPanel>
                             <ComboBox ItemsSource="{Binding MouseSnapAutoRecognitionFrameRates}"
                                       SelectedValue="{Binding MouseSnapAutoRecognitionFrameRate}"
+                                      FontSize="12"
+                                      VerticalAlignment="Center"
+                                      HorizontalAlignment="Right"
+                                      Width="100"
+                                      Height="30"
+                                      Grid.Column="1"/>
+                        </Grid>
+
+                        <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>
+
+                        <!-- Default Worksheet Row Count -->
+                        <Grid MinHeight="56" Background="Transparent" Margin="16,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+                                <TextBlock Text="{Binding [default_worksheet_row_count],Source={x:Static lg:LanguageService.Instance}}" FontSize="14"/>
+                                <TextBlock Text="{Binding [default_worksheet_row_count_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=新建或重置数据表格时的默认初始行数}" Style="{StaticResource ModernSettingsItemHintStyle}"/>
+                            </StackPanel>
+                            <ComboBox ItemsSource="{Binding DefaultWorksheetRowCounts}"
+                                      SelectedValue="{Binding DefaultWorksheetRowCount}"
                                       FontSize="12"
                                       VerticalAlignment="Center"
                                       HorizontalAlignment="Right"

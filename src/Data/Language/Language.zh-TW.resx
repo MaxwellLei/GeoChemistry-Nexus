@@ -163,7 +163,7 @@
     <value>年份不能為空。</value>
   </data>
   <data name="new_version_available_github" xml:space="preserve">
-    <value>發現新版本！請前往GitHub Release頁面下載更新。</value>
+    <value>發現新版本 {0}，是否立即下載並安裝？</value>
   </data>
   <data name="batch_download_fail_count" xml:space="preserve">
     <value>失敗：{0} 個</value>
@@ -289,10 +289,10 @@
     <value>請輸入連結</value>
   </data>
   <data name="add_text" xml:space="preserve">
-    <value>新增文字</value>
+    <value>新增文字 (Ctrl+2)</value>
   </data>
   <data name="add_line" xml:space="preserve">
-    <value>新增線條</value>
+    <value>新增線條 (Ctrl+1)</value>
   </data>
   <data name="add_link" xml:space="preserve">
     <value>新增連結</value>
@@ -439,7 +439,7 @@
     <value>正在檢查更新...</value>
   </data>
   <data name="add_function" xml:space="preserve">
-    <value>新增函數</value>
+    <value>新增函數 (Ctrl+5)</value>
   </data>
   <data name="edit_diagram_template" xml:space="preserve">
     <value>編輯圖解範本</value>
@@ -1382,7 +1382,7 @@
     <value>腳本內容為空</value>
   </data>
   <data name="go_to_download" xml:space="preserve">
-    <value>去下載</value>
+    <value>立即更新</value>
   </data>
   <data name="geo_msg_create_table_failed" xml:space="preserve">
     <value>建立表格失敗: {0}</value>
@@ -1465,6 +1465,9 @@
   <data name="support_json_format" xml:space="preserve">
     <value>支援 .json 格式</value>
   </data>
+  <data name="cipw_col_sample" xml:space="preserve">
+    <value>樣品</value>
+  </data>
   <data name="cipw_col_silica_saturation" xml:space="preserve">
     <value>SiO2 飽和度</value>
   </data>
@@ -1520,7 +1523,7 @@
     <value>編輯</value>
   </data>
   <data name="reset_view" xml:space="preserve">
-    <value>重設檢視</value>
+    <value>重設檢視 (Ctrl+0)</value>
   </data>
   <data name="Alignment_UpperRight" xml:space="preserve">
     <value>右上角</value>
@@ -1604,7 +1607,7 @@
     <value>啟動圖片刪除失敗： </value>
   </data>
   <data name="add_arrow" xml:space="preserve">
-    <value>新增箭頭</value>
+    <value>新增箭頭 (Ctrl+4)</value>
   </data>
   <data name="MarkerShape_Asterisk" xml:space="preserve">
     <value>星號</value>
@@ -1634,7 +1637,7 @@
     <value>說明檔案為可選內容，支援多語言 RTF 富文字格式。</value>
   </data>
   <data name="delete_object" xml:space="preserve">
-    <value>刪除物件</value>
+    <value>刪除物件 (Delete)</value>
   </data>
   <data name="cipw_title" xml:space="preserve">
     <value>CIPW 標準礦物計算</value>
@@ -1999,7 +2002,7 @@
     <value>多個資料系列請用逗號分隔，例如：SiO2,TiO2</value>
   </data>
   <data name="add_polygon" xml:space="preserve">
-    <value>新增多邊形</value>
+    <value>新增多邊形 (Ctrl+3)</value>
   </data>
   <data name="batch_download_title" xml:space="preserve">
     <value>批次下載</value>
@@ -2195,6 +2198,15 @@
   <data name="geo_tooltip_export_csv" xml:space="preserve">
     <value>匯出目前工作表為 CSV</value>
   </data>
+  <data name="geo_tooltip_export_calc_details" xml:space="preserve">
+    <value>匯出計算詳情為 CSV</value>
+  </data>
+  <data name="geo_tooltip_copy_calc_details" xml:space="preserve">
+    <value>複製計算詳情到剪貼簿</value>
+  </data>
+  <data name="geo_msg_calc_details_copied" xml:space="preserve">
+    <value>計算詳情已複製到剪貼簿</value>
+  </data>
   <data name="error_occurred_during_startup" xml:space="preserve">
     <value>啟動過程中發生錯誤:</value>
   </data>
@@ -2211,7 +2223,7 @@
     <value>在目前選取列上方插入一列</value>
   </data>
   <data name="data_toolbar_update_chart_tooltip" xml:space="preserve">
-    <value>將目前資料投繪到圖表</value>
+    <value>將目前資料投繪到圖表 (Ctrl+Shift+Enter)</value>
   </data>
   <data name="data_toolbar_delete_row_tooltip" xml:space="preserve">
     <value>刪除目前選取列</value>
@@ -2287,6 +2299,45 @@
   </data>
   <data name="shortcut_action_save_plot_desc" xml:space="preserve">
     <value>儲存目前圖解或範本內容。</value>
+  </data>
+  <data name="shortcut_action_switch_diagram_mode_name" xml:space="preserve">
+    <value>切換到圖解模式</value>
+  </data>
+  <data name="shortcut_action_switch_diagram_mode_desc" xml:space="preserve">
+    <value>切換到圖解模式面板。</value>
+  </data>
+  <data name="shortcut_action_switch_data_mode_name" xml:space="preserve">
+    <value>切換到資料模式</value>
+  </data>
+  <data name="shortcut_action_switch_data_mode_desc" xml:space="preserve">
+    <value>切換到資料模式面板。</value>
+  </data>
+  <data name="shortcut_action_switch_edit_mode_name" xml:space="preserve">
+    <value>切換到編輯模式</value>
+  </data>
+  <data name="shortcut_action_switch_edit_mode_desc" xml:space="preserve">
+    <value>切換到編輯模式面板。</value>
+  </data>
+  <data name="shortcut_action_cycle_plot_mode_name" xml:space="preserve">
+    <value>循環切換模式</value>
+  </data>
+  <data name="shortcut_action_cycle_plot_mode_desc" xml:space="preserve">
+    <value>在圖解、資料、編輯三種模式之間循環切換。</value>
+  </data>
+  <data name="shortcut_action_middle_click_plot_mode_name" xml:space="preserve">
+    <value>中鍵切換模式</value>
+  </data>
+  <data name="shortcut_action_middle_click_plot_mode_keys" xml:space="preserve">
+    <value>繪圖區左半 / 右半中鍵</value>
+  </data>
+  <data name="shortcut_action_middle_click_plot_mode_desc" xml:space="preserve">
+    <value>在繪圖區按下滑鼠中鍵：左側切換到上一模式，右側切換到下一模式（圖解 ↔ 資料 ↔ 編輯）。</value>
+  </data>
+  <data name="shortcut_action_plot_data_name" xml:space="preserve">
+    <value>資料投圖</value>
+  </data>
+  <data name="shortcut_action_plot_data_desc" xml:space="preserve">
+    <value>將目前資料表格內容投繪到圖表（僅資料模式）。</value>
   </data>
   <data name="shortcut_action_add_line_name" xml:space="preserve">
     <value>新增直線</value>
@@ -2783,6 +2834,21 @@
   <data name="diagram_hint_no_search_results" xml:space="preserve">
     <value>未找到符合的範本。</value>
   </data>
+  <data name="template_search_feedback_before_github" xml:space="preserve">
+    <value>若您需要的範本尚未收錄，歡迎在 </value>
+  </data>
+  <data name="template_search_feedback_github" xml:space="preserve">
+    <value>GitHub Issues</value>
+  </data>
+  <data name="template_search_feedback_before_email" xml:space="preserve">
+    <value> 回饋，或寄信聯繫 </value>
+  </data>
+  <data name="template_search_feedback_suffix" xml:space="preserve">
+    <value>。</value>
+  </data>
+  <data name="geo_hint_no_search_results" xml:space="preserve">
+    <value>未找到符合的溫壓計範本。</value>
+  </data>
   <data name="diagram_hint_no_templates" xml:space="preserve">
     <value>暫無圖解範本。</value>
   </data>
@@ -2890,6 +2956,21 @@
   </data>
   <data name="normalization_standard" xml:space="preserve">
     <value>標準化方案</value>
+  </data>
+  <data name="norm_category_chondrite" xml:space="preserve">
+    <value>球粒隕石</value>
+  </data>
+  <data name="norm_category_shale" xml:space="preserve">
+    <value>頁岩 / 沉積岩</value>
+  </data>
+  <data name="norm_category_crust" xml:space="preserve">
+    <value>地殼</value>
+  </data>
+  <data name="norm_category_mantle" xml:space="preserve">
+    <value>地幔</value>
+  </data>
+  <data name="norm_category_basalt" xml:space="preserve">
+    <value>玄武岩端元</value>
   </data>
   <data name="object_selection_trigger" xml:space="preserve">
     <value>選取物件觸發方式</value>
@@ -3185,6 +3266,33 @@
   <data name="geo_example_category" xml:space="preserve">
     <value>例如：單礦物溫壓計</value>
   </data>
+  <data name="geo_field_capabilities" xml:space="preserve">
+    <value>能力標籤</value>
+  </data>
+  <data name="geo_capability_enter_hint" xml:space="preserve">
+    <value>輸入能力簡寫後按 Enter 確認</value>
+  </data>
+  <data name="geo_example_capability" xml:space="preserve">
+    <value>例如：P、T、fO2</value>
+  </data>
+  <data name="geo_filter_mineral_tags" xml:space="preserve">
+    <value>礦物標籤</value>
+  </data>
+  <data name="geo_filter_capabilities" xml:space="preserve">
+    <value>能力</value>
+  </data>
+  <data name="geo_capability_tooltip_p" xml:space="preserve">
+    <value>壓力</value>
+  </data>
+  <data name="geo_capability_tooltip_t" xml:space="preserve">
+    <value>溫度</value>
+  </data>
+  <data name="geo_capability_tooltip_fo2" xml:space="preserve">
+    <value>氧逸度</value>
+  </data>
+  <data name="geo_validate_capability_too_long" xml:space="preserve">
+    <value>能力標籤過長（最多 {0} 個字元）</value>
+  </data>
   <data name="geo_editor_title_view" xml:space="preserve">
     <value>查看溫壓計</value>
   </data>
@@ -3388,7 +3496,7 @@
     <value>啟用後顯示開發與偵錯相關功能</value>
   </data>
   <data name="AutoCheckUpdate_hint" xml:space="preserve">
-    <value>啟動時自動檢查軟體是否有新版本</value>
+    <value>啟動時檢查軟體更新，發現新版本時提示是否下載安裝</value>
   </data>
   <data name="CheckUpdate_hint" xml:space="preserve">
     <value>立即檢查是否有可用的軟體更新</value>
@@ -3401,6 +3509,9 @@
   </data>
   <data name="inkscape_path_hint" xml:space="preserve">
     <value>設定 Inkscape 可執行檔路徑，用於開啟向量圖</value>
+  </data>
+  <data name="inkscape_get_it" xml:space="preserve">
+    <value>如果沒有，點我獲取</value>
   </data>
   <data name="adobe_illustrator_path_hint" xml:space="preserve">
     <value>設定 Adobe Illustrator 可執行檔路徑，用於開啟向量圖</value>
@@ -3434,6 +3545,15 @@
   </data>
   <data name="auto_check_geothermometer_updates_hint" xml:space="preserve">
     <value>啟動時自動檢查地質溫壓計是否有更新</value>
+  </data>
+  <data name="default_worksheet_row_count" xml:space="preserve">
+    <value>預設初始表格列數</value>
+  </data>
+  <data name="default_worksheet_row_count_hint" xml:space="preserve">
+    <value>新建或重設資料表格時的預設初始列數</value>
+  </data>
+  <data name="geothermometer_defaults" xml:space="preserve">
+    <value>預設設定</value>
   </data>
   <data name="geo_additional_formula_badge" xml:space="preserve">
 
@@ -3828,9 +3948,7 @@
   </data>
 
   <data name="update_auto_check_notify" xml:space="preserve">
-
-    <value>發現新版本，請前往設定頁下載並安裝。</value>
-
+    <value>發現新版本 {0}，是否立即下載並安裝？</value>
   </data>
 
   <data name="update_download_confirm_shutdown" xml:space="preserve">
@@ -3857,5 +3975,23 @@
 
   </data>
 
+  <data name="plot_toolbar_save_tooltip" xml:space="preserve">
+    <value>儲存 (Ctrl+S)</value>
+  </data>
+  <data name="plot_toolbar_undo_tooltip" xml:space="preserve">
+    <value>復原 (Ctrl+Z)</value>
+  </data>
+  <data name="plot_toolbar_redo_tooltip" xml:space="preserve">
+    <value>重做 (Ctrl+Y)</value>
+  </data>
+  <data name="plot_toolbar_diagram_mode_tooltip" xml:space="preserve">
+    <value>圖解模式 (Alt+1)</value>
+  </data>
+  <data name="plot_toolbar_data_mode_tooltip" xml:space="preserve">
+    <value>資料模式 (Alt+2)</value>
+  </data>
+  <data name="plot_toolbar_edit_mode_tooltip" xml:space="preserve">
+    <value>編輯模式 (Alt+3)</value>
+  </data>
 </root>
 

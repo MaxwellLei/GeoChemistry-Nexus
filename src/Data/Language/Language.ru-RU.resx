@@ -163,7 +163,7 @@
     <value>Год не может быть пустым.</value>
   </data>
   <data name="new_version_available_github" xml:space="preserve">
-    <value>Найдена новая версия! Пожалуйста, скачайте обновление на странице релизов GitHub.</value>
+    <value>Доступна новая версия {0}. Скачать и установить сейчас?</value>
   </data>
   <data name="batch_download_fail_count" xml:space="preserve">
     <value>Ошибка: {0}</value>
@@ -289,10 +289,10 @@
     <value>Введите ссылку</value>
   </data>
   <data name="add_text" xml:space="preserve">
-    <value>Добавить текст</value>
+    <value>Добавить текст (Ctrl+2)</value>
   </data>
   <data name="add_line" xml:space="preserve">
-    <value>Добавить линию</value>
+    <value>Добавить линию (Ctrl+1)</value>
   </data>
   <data name="add_link" xml:space="preserve">
     <value>Добавить ссылку</value>
@@ -439,7 +439,7 @@
     <value>Проверка обновлений...</value>
   </data>
   <data name="add_function" xml:space="preserve">
-    <value>Добавить функцию</value>
+    <value>Добавить функцию (Ctrl+5)</value>
   </data>
   <data name="edit_diagram_template" xml:space="preserve">
     <value>Редактировать шаблон диаграммы</value>
@@ -1382,7 +1382,7 @@
     <value>Содержимое скрипта пусто</value>
   </data>
   <data name="go_to_download" xml:space="preserve">
-    <value>Скачать</value>
+    <value>Обновить сейчас</value>
   </data>
   <data name="geo_msg_create_table_failed" xml:space="preserve">
     <value>Не удалось создать таблицу: {0}</value>
@@ -1465,6 +1465,9 @@
   <data name="support_json_format" xml:space="preserve">
     <value>Поддержка .json</value>
   </data>
+  <data name="cipw_col_sample" xml:space="preserve">
+    <value>Образец</value>
+  </data>
   <data name="cipw_col_silica_saturation" xml:space="preserve">
     <value>Насыщение SiO2</value>
   </data>
@@ -1520,7 +1523,7 @@
     <value>Изменить</value>
   </data>
   <data name="reset_view" xml:space="preserve">
-    <value>Сбросить вид</value>
+    <value>Сбросить вид (Ctrl+0)</value>
   </data>
   <data name="Alignment_UpperRight" xml:space="preserve">
     <value>Справа сверху</value>
@@ -1604,7 +1607,7 @@
     <value>Не удалось удалить изображение запуска: </value>
   </data>
   <data name="add_arrow" xml:space="preserve">
-    <value>Добавить стрелку</value>
+    <value>Добавить стрелку (Ctrl+4)</value>
   </data>
   <data name="MarkerShape_Asterisk" xml:space="preserve">
     <value>Звездочка</value>
@@ -1634,7 +1637,7 @@
     <value>Справочный документ необязателен и поддерживает многоязычный формат RTF.</value>
   </data>
   <data name="delete_object" xml:space="preserve">
-    <value>Удалить объект</value>
+    <value>Удалить объект (Delete)</value>
   </data>
   <data name="cipw_title" xml:space="preserve">
     <value>Расчёт нормы CIPW</value>
@@ -1999,7 +2002,7 @@
     <value>Разделяйте несколько серий данных запятыми, например: SiO2,TiO2</value>
   </data>
   <data name="add_polygon" xml:space="preserve">
-    <value>Добавить полигон</value>
+    <value>Добавить полигон (Ctrl+3)</value>
   </data>
   <data name="batch_download_title" xml:space="preserve">
     <value>Пакетная загрузка</value>
@@ -2195,6 +2198,15 @@
   <data name="geo_tooltip_export_csv" xml:space="preserve">
     <value>Экспортировать текущий лист как CSV</value>
   </data>
+  <data name="geo_tooltip_export_calc_details" xml:space="preserve">
+    <value>Экспортировать детали расчёта как CSV</value>
+  </data>
+  <data name="geo_tooltip_copy_calc_details" xml:space="preserve">
+    <value>Скопировать детали расчёта в буфер обмена</value>
+  </data>
+  <data name="geo_msg_calc_details_copied" xml:space="preserve">
+    <value>Детали расчёта скопированы в буфер обмена</value>
+  </data>
   <data name="error_occurred_during_startup" xml:space="preserve">
     <value>Ошибка при запуске:</value>
   </data>
@@ -2211,7 +2223,7 @@
     <value>Вставить строку над текущим выбором</value>
   </data>
   <data name="data_toolbar_update_chart_tooltip" xml:space="preserve">
-    <value>Построить текущие данные на графике</value>
+    <value>Построить текущие данные на графике (Ctrl+Shift+Enter)</value>
   </data>
   <data name="data_toolbar_delete_row_tooltip" xml:space="preserve">
     <value>Удалить текущую строку</value>
@@ -2732,6 +2744,21 @@
   <data name="normalization_standard" xml:space="preserve">
     <value>Стандарт нормализации</value>
   </data>
+  <data name="norm_category_chondrite" xml:space="preserve">
+    <value>Хондрит</value>
+  </data>
+  <data name="norm_category_shale" xml:space="preserve">
+    <value>Сланец / осадочные</value>
+  </data>
+  <data name="norm_category_crust" xml:space="preserve">
+    <value>Континентальная кора</value>
+  </data>
+  <data name="norm_category_mantle" xml:space="preserve">
+    <value>Первичная мантия</value>
+  </data>
+  <data name="norm_category_basalt" xml:space="preserve">
+    <value>Базальтовые эндочлены</value>
+  </data>
   <data name="object_selection_trigger" xml:space="preserve">
     <value>Способ выбора объектов</value>
   </data>
@@ -2963,6 +2990,12 @@
   <data name="shortcut_action_close_notification_name" xml:space="preserve">
     <value>Закрыть уведомление</value>
   </data>
+  <data name="shortcut_action_cycle_plot_mode_desc" xml:space="preserve">
+    <value>Циклически переключать режимы диаграммы, данных и редактирования.</value>
+  </data>
+  <data name="shortcut_action_cycle_plot_mode_name" xml:space="preserve">
+    <value>Циклическое переключение режимов</value>
+  </data>
   <data name="shortcut_action_delete_selected_desc" xml:space="preserve">
     <value>Удалить выбранный объект диаграммы.</value>
   </data>
@@ -2974,6 +3007,21 @@
   </data>
   <data name="shortcut_action_italic_name" xml:space="preserve">
     <value>Курсив</value>
+  </data>
+  <data name="shortcut_action_middle_click_plot_mode_desc" xml:space="preserve">
+    <value>Средний клик по левой половине области графика переключает на предыдущий режим, по правой — на следующий (диаграмма ↔ данные ↔ редактирование).</value>
+  </data>
+  <data name="shortcut_action_middle_click_plot_mode_keys" xml:space="preserve">
+    <value>Средний клик по левой / правой половине графика</value>
+  </data>
+  <data name="shortcut_action_middle_click_plot_mode_name" xml:space="preserve">
+    <value>Переключение режима средним кликом</value>
+  </data>
+  <data name="shortcut_action_plot_data_desc" xml:space="preserve">
+    <value>Построить текущие данные таблицы на графике (только в режиме данных).</value>
+  </data>
+  <data name="shortcut_action_plot_data_name" xml:space="preserve">
+    <value>Построить данные</value>
   </data>
   <data name="shortcut_action_quick_delete_desc" xml:space="preserve">
     <value>Удалить пользовательский шаблон без подтверждения.</value>
@@ -3004,6 +3052,24 @@
   </data>
   <data name="shortcut_action_save_plot_name" xml:space="preserve">
     <value>Сохранить диаграмму</value>
+  </data>
+  <data name="shortcut_action_switch_data_mode_desc" xml:space="preserve">
+    <value>Переключить на панель режима данных.</value>
+  </data>
+  <data name="shortcut_action_switch_data_mode_name" xml:space="preserve">
+    <value>Переключить в режим данных</value>
+  </data>
+  <data name="shortcut_action_switch_diagram_mode_desc" xml:space="preserve">
+    <value>Переключить на панель режима диаграммы.</value>
+  </data>
+  <data name="shortcut_action_switch_diagram_mode_name" xml:space="preserve">
+    <value>Переключить в режим диаграммы</value>
+  </data>
+  <data name="shortcut_action_switch_edit_mode_desc" xml:space="preserve">
+    <value>Переключить на панель режима редактирования.</value>
+  </data>
+  <data name="shortcut_action_switch_edit_mode_name" xml:space="preserve">
+    <value>Переключить в режим редактирования</value>
   </data>
   <data name="shortcut_action_underline_desc" xml:space="preserve">
     <value>Переключить подчёркивание выделенного текста.</value>
@@ -3175,6 +3241,33 @@
   </data>
   <data name="geo_example_category" xml:space="preserve">
     <value>напр. Одноминеральный геотермобарометр</value>
+  </data>
+  <data name="geo_field_capabilities" xml:space="preserve">
+    <value>Теги возможностей</value>
+  </data>
+  <data name="geo_capability_enter_hint" xml:space="preserve">
+    <value>Введите сокращение возможности и нажмите Enter для подтверждения</value>
+  </data>
+  <data name="geo_example_capability" xml:space="preserve">
+    <value>напр. P, T, fO2</value>
+  </data>
+  <data name="geo_filter_mineral_tags" xml:space="preserve">
+    <value>Минеральные теги</value>
+  </data>
+  <data name="geo_filter_capabilities" xml:space="preserve">
+    <value>Возможности</value>
+  </data>
+  <data name="geo_capability_tooltip_p" xml:space="preserve">
+    <value>Давление</value>
+  </data>
+  <data name="geo_capability_tooltip_t" xml:space="preserve">
+    <value>Температура</value>
+  </data>
+  <data name="geo_capability_tooltip_fo2" xml:space="preserve">
+    <value>Летучесть кислорода</value>
+  </data>
+  <data name="geo_validate_capability_too_long" xml:space="preserve">
+    <value>Тег возможности слишком длинный (макс. {0} символов)</value>
   </data>
   <data name="geo_editor_title_view" xml:space="preserve">
     <value>Просмотр геотермобарометра</value>
@@ -3411,6 +3504,16 @@
 
     <value>Автоматически проверять обновления геотермобарометров при запуске</value>
 
+  </data>
+
+  <data name="default_worksheet_row_count" xml:space="preserve">
+    <value>Начальное число строк таблицы по умолчанию</value>
+  </data>
+  <data name="default_worksheet_row_count_hint" xml:space="preserve">
+    <value>Число строк по умолчанию при создании или сбросе таблицы данных</value>
+  </data>
+  <data name="geothermometer_defaults" xml:space="preserve">
+    <value>ПО УМОЛЧАНИЮ</value>
   </data>
 
   <data name="coreldraw_path_hint" xml:space="preserve">
@@ -3768,6 +3871,9 @@
     <value>Путь к исполняемому файлу Inkscape для открытия векторной графики</value>
 
   </data>
+  <data name="inkscape_get_it" xml:space="preserve">
+    <value>Нет Inkscape? Скачать здесь</value>
+  </data>
 
   <data name="main_sidebar_collapse_style_hint" xml:space="preserve">
 
@@ -3902,9 +4008,7 @@
   </data>
 
   <data name="update_auto_check_notify" xml:space="preserve">
-
-    <value>Доступна новая версия. Откройте «Параметры», чтобы скачать и установить.</value>
-
+    <value>Доступна новая версия {0}. Скачать и установить сейчас?</value>
   </data>
 
   <data name="update_download_confirm_shutdown" xml:space="preserve">
@@ -3931,6 +4035,39 @@
 
   </data>
 
+  <data name="plot_toolbar_save_tooltip" xml:space="preserve">
+    <value>Сохранить (Ctrl+S)</value>
+  </data>
+  <data name="plot_toolbar_undo_tooltip" xml:space="preserve">
+    <value>Отменить (Ctrl+Z)</value>
+  </data>
+  <data name="plot_toolbar_redo_tooltip" xml:space="preserve">
+    <value>Повторить (Ctrl+Y)</value>
+  </data>
+  <data name="plot_toolbar_diagram_mode_tooltip" xml:space="preserve">
+    <value>Режим диаграммы (Alt+1)</value>
+  </data>
+  <data name="plot_toolbar_data_mode_tooltip" xml:space="preserve">
+    <value>Режим данных (Alt+2)</value>
+  </data>
+  <data name="plot_toolbar_edit_mode_tooltip" xml:space="preserve">
+    <value>Режим редактирования (Alt+3)</value>
+  </data>
+  <data name="template_search_feedback_before_github" xml:space="preserve">
+    <value>Если нужного шаблона ещё нет, предложите его в </value>
+  </data>
+  <data name="template_search_feedback_github" xml:space="preserve">
+    <value>GitHub Issues</value>
+  </data>
+  <data name="template_search_feedback_before_email" xml:space="preserve">
+    <value> или напишите на </value>
+  </data>
+  <data name="template_search_feedback_suffix" xml:space="preserve">
+    <value>.</value>
+  </data>
+  <data name="geo_hint_no_search_results" xml:space="preserve">
+    <value>Нет шаблонов геотермобарометров, соответствующих поиску.</value>
+  </data>
 </root>
 
 

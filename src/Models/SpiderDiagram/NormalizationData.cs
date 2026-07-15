@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GeoChemistryNexus.Models.SpiderDiagram
 {
@@ -27,49 +29,106 @@ namespace GeoChemistryNexus.Models.SpiderDiagram
         };
 
         /// <summary>
-        /// 获取所有可用的 REE 标准化方案
+        /// 获取所有可用的 REE 标准化方案（按分组顺序，组内按年份升序）
         /// </summary>
         public static List<NormalizationStandard> GetReeStandards()
         {
-            return new List<NormalizationStandard>
+            return SortStandards(new List<NormalizationStandard>
             {
-                ChondriteSunMcDonough1995(),
-                ChondriteNakamura1977(),
-                ChondriteTaylorMcLennan1985(),
-                ChondriteSunMcDonough1989(),
-                ChondritePalmeONeill2014(),
-                ChondriteONeill2016(),
-                PaasTaylorMcLennan1985(),
-                PaasPourmand2012(),
-                NascGromet1984(),
-                EuropeanShaleBau2018(),
-                UpperContinentalCrustMcLennan2001(),
-                UpperContinentalCrustRudnickGao2003(),
-                BulkContinentalCrustRudnickGao2003(),
-                LowerContinentalCrustRudnickGao2003(),
-                PrimitiveMantleReeSunMcDonough1989(),
-                PrimitiveMantleReeMcDonoughSun1995(),
-                NMorbReeSunMcDonough1989(),
-                EMorbReeSunMcDonough1989(),
-                OibReeSunMcDonough1989()
-            };
+                Configure(ChondriteNakamura1977(), NormalizationCategories.Chondrite, 1977),
+                Configure(ChondriteTaylorMcLennan1985(), NormalizationCategories.Chondrite, 1985),
+                Configure(ChondriteSunMcDonough1989(), NormalizationCategories.Chondrite, 1989),
+                Configure(ChondriteSunMcDonough1995(), NormalizationCategories.Chondrite, 1995, isRecommended: true),
+                Configure(ChondritePalmeONeill2014(), NormalizationCategories.Chondrite, 2014),
+                Configure(ChondriteONeill2016(), NormalizationCategories.Chondrite, 2016),
+                Configure(NascGromet1984(), NormalizationCategories.Shale, 1984),
+                Configure(PaasTaylorMcLennan1985(), NormalizationCategories.Shale, 1985),
+                Configure(PaasPourmand2012(), NormalizationCategories.Shale, 2012),
+                Configure(EuropeanShaleBau2018(), NormalizationCategories.Shale, 2018),
+                Configure(UpperContinentalCrustMcLennan2001(), NormalizationCategories.Crust, 2001),
+                Configure(UpperContinentalCrustRudnickGao2003(), NormalizationCategories.Crust, 2003),
+                Configure(BulkContinentalCrustRudnickGao2003(), NormalizationCategories.Crust, 2003),
+                Configure(LowerContinentalCrustRudnickGao2003(), NormalizationCategories.Crust, 2003),
+                Configure(PrimitiveMantleReeSunMcDonough1989(), NormalizationCategories.Mantle, 1989),
+                Configure(PrimitiveMantleReeMcDonoughSun1995(), NormalizationCategories.Mantle, 1995),
+                Configure(NMorbReeSunMcDonough1989(), NormalizationCategories.Basalt, 1989),
+                Configure(EMorbReeSunMcDonough1989(), NormalizationCategories.Basalt, 1989),
+                Configure(OibReeSunMcDonough1989(), NormalizationCategories.Basalt, 1989)
+            });
         }
 
         /// <summary>
-        /// 获取所有可用的微量元素标准化方案
+        /// 获取所有可用的微量元素标准化方案（按分组顺序，组内按年份升序）
         /// </summary>
         public static List<NormalizationStandard> GetTraceElementStandards()
         {
-            return new List<NormalizationStandard>
+            return SortStandards(new List<NormalizationStandard>
             {
-                PrimitiveMantleSunMcDonough1989(),
-                PrimitiveMantleMcDonoughSun1995(),
-                ChondriteTraceSunMcDonough1989(),
-                MORBSunMcDonough1989(),
-                EMorbSunMcDonough1989(),
-                OibSunMcDonough1989(),
-                UpperContinentalCrustTraceRudnickGao2003(),
-                NMORBPearce1983()
+                Configure(ChondriteTraceSunMcDonough1989(), NormalizationCategories.Chondrite, 1989),
+                Configure(UpperContinentalCrustTraceRudnickGao2003(), NormalizationCategories.Crust, 2003),
+                Configure(PrimitiveMantleSunMcDonough1989(), NormalizationCategories.Mantle, 1989, isRecommended: true),
+                Configure(PrimitiveMantleMcDonoughSun1995(), NormalizationCategories.Mantle, 1995),
+                Configure(NMORBPearce1983(), NormalizationCategories.Basalt, 1983),
+                Configure(MORBSunMcDonough1989(), NormalizationCategories.Basalt, 1989),
+                Configure(EMorbSunMcDonough1989(), NormalizationCategories.Basalt, 1989),
+                Configure(OibSunMcDonough1989(), NormalizationCategories.Basalt, 1989)
+            });
+        }
+
+        /// <summary>
+        /// 获取指定图类型的推荐默认标准化方案
+        /// </summary>
+        public static NormalizationStandard GetRecommendedStandard(string diagramType)
+        {
+            var standards = diagramType == "REE"
+                ? GetReeStandards()
+                : GetTraceElementStandards();
+
+            return standards.FirstOrDefault(s => s.IsRecommended)
+                   ?? standards.FirstOrDefault()
+                   ?? throw new InvalidOperationException($"No normalization standards available for {diagramType}.");
+        }
+
+        private static NormalizationStandard Configure(
+            NormalizationStandard standard,
+            string categoryKey,
+            int year,
+            bool isRecommended = false)
+        {
+            standard.CategoryKey = categoryKey;
+            standard.Year = year;
+            standard.IsRecommended = isRecommended;
+            // 默认英文回退；UI 层会再写入本地化 Category
+            standard.Category = GetCategoryFallback(categoryKey);
+            return standard;
+        }
+
+        private static List<NormalizationStandard> SortStandards(List<NormalizationStandard> standards)
+        {
+            return standards
+                .OrderBy(s =>
+                {
+                    int index = Array.IndexOf(NormalizationCategories.DisplayOrder, s.CategoryKey);
+                    return index < 0 ? int.MaxValue : index;
+                })
+                .ThenBy(s => s.Year)
+                .ThenBy(s => s.Name, StringComparer.Ordinal)
+                .ToList();
+        }
+
+        /// <summary>
+        /// 分组标题英文回退（本地化失败时使用）
+        /// </summary>
+        public static string GetCategoryFallback(string categoryKey)
+        {
+            return categoryKey switch
+            {
+                NormalizationCategories.Chondrite => "Chondrite",
+                NormalizationCategories.Shale => "Shale / Sedimentary",
+                NormalizationCategories.Crust => "Continental Crust",
+                NormalizationCategories.Mantle => "Primitive Mantle",
+                NormalizationCategories.Basalt => "Basalt End-members",
+                _ => categoryKey
             };
         }
 

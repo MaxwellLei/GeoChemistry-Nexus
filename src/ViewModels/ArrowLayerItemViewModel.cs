@@ -6,6 +6,7 @@ using ScottPlot.Plottables;
 using ScottPlot;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,17 +23,25 @@ namespace GeoChemistryNexus.ViewModels
             ArrowDefinition = arrowDefinition;
             // 监听 Model 变化
             ArrowDefinition.PropertyChanged += (s, e) => OnRefreshRequired();
-            // 监听子对象
-            if (ArrowDefinition.Start != null) ArrowDefinition.Start.PropertyChanged += (s, e) => OnRefreshRequired();
-            if (ArrowDefinition.End != null) ArrowDefinition.End.PropertyChanged += (s, e) => OnRefreshRequired();
+            // 监听子对象（IsHighlighted 仅用于拾取/焦点高亮，不触发全量重绘）
+            if (ArrowDefinition.Start != null) ArrowDefinition.Start.PropertyChanged += OnPointDefinitionPropertyChanged;
+            if (ArrowDefinition.End != null) ArrowDefinition.End.PropertyChanged += OnPointDefinitionPropertyChanged;
 
             // 监听 Start/End 对象本身的替换
             ArrowDefinition.PropertyChanged += (s, e) => {
                 if (e.PropertyName == nameof(ArrowDefinition.Start) && ArrowDefinition.Start != null)
-                    ArrowDefinition.Start.PropertyChanged += (sender, args) => OnRefreshRequired();
+                    ArrowDefinition.Start.PropertyChanged += OnPointDefinitionPropertyChanged;
                 if (e.PropertyName == nameof(ArrowDefinition.End) && ArrowDefinition.End != null)
-                    ArrowDefinition.End.PropertyChanged += (sender, args) => OnRefreshRequired();
+                    ArrowDefinition.End.PropertyChanged += OnPointDefinitionPropertyChanged;
             };
+        }
+
+        private void OnPointDefinitionPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(PointDefinition.IsHighlighted))
+                return;
+
+            OnRefreshRequired();
         }
 
         public void Render(Plot plot)

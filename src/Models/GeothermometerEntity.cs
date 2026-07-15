@@ -61,6 +61,11 @@ namespace GeoChemistryNexus.Models
         public List<string> Tags { get; set; } = new();
 
         /// <summary>
+        /// 能力标签（P / T / fO2 等，标识可计算的结果类型；允许自定义简写）
+        /// </summary>
+        public List<string> Capabilities { get; set; } = new();
+
+        /// <summary>
         /// 温压计名称（显示名称）
         /// </summary>
         public string Name { get; set; } = string.Empty;

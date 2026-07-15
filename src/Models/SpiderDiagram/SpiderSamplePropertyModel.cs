@@ -1,4 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using GeoChemistryNexus.Helpers.PlotMarkers;
+using GeoChemistryNexus.Models;
 using GeoChemistryNexus.Services;
 using ScottPlot;
 using ScottPlot.Plottables;
@@ -15,6 +17,7 @@ namespace GeoChemistryNexus.Models.SpiderDiagram
     {
         private readonly List<Scatter> _scatters = new();
         private Scatter? _legendProxy;
+
         /// <summary>
         /// 样品名称
         /// </summary>
@@ -40,10 +43,10 @@ namespace GeoChemistryNexus.Models.SpiderDiagram
         private float _markerSize = 5f;
 
         /// <summary>
-        /// 标记点形状
+        /// 标记点形状（与图解模板数据点相同的 PlotMarkerShape）
         /// </summary>
         [ObservableProperty]
-        private MarkerShape _markerShape = MarkerShape.FilledCircle;
+        private PlotMarkerShape _markerShape = PlotMarkerShape.FilledCircle;
 
         public SpiderSamplePropertyModel()
         {
@@ -67,24 +70,18 @@ namespace GeoChemistryNexus.Models.SpiderDiagram
                 _color = firstScatter.Color.ToHex();
                 _lineWidth = firstScatter.LineWidth;
                 _markerSize = firstScatter.MarkerSize;
-                _markerShape = firstScatter.MarkerShape;
+                _markerShape = PlotMarkerStyleApplier.FromScottPlotShape(firstScatter.MarkerShape);
             }
         }
 
+        /// <summary>
+        /// 当前形状是否具有填充（与散点属性面板一致，便于扩展）
+        /// </summary>
+        public bool HasFill => PlotMarkerStyleApplier.IsFilled(MarkerShape);
+
         partial void OnColorChanged(string value)
         {
-            if (_scatters.Count == 0) return;
-            try
-            {
-                var color = ScottPlot.Color.FromHex(GraphMapTemplateService.ConvertWpfHexToScottPlotHex(value));
-                foreach (var scatter in _scatters)
-                {
-                    scatter.Color = color;
-                }
-                // 图例代理颜色同步
-                if (_legendProxy != null) _legendProxy.Color = color;
-            }
-            catch { }
+            ApplyLineAndMarkerStyles();
         }
 
         partial void OnLineWidthChanged(float value)
@@ -107,15 +104,10 @@ namespace GeoChemistryNexus.Models.SpiderDiagram
             // 不更新 _legendProxy.MarkerSize — 图例保持固定大小
         }
 
-        partial void OnMarkerShapeChanged(MarkerShape value)
+        partial void OnMarkerShapeChanged(PlotMarkerShape value)
         {
-            if (_scatters.Count == 0) return;
-            foreach (var scatter in _scatters)
-            {
-                scatter.MarkerShape = value;
-            }
-            // 图例代理形状同步
-            if (_legendProxy != null) _legendProxy.MarkerShape = value;
+            OnPropertyChanged(nameof(HasFill));
+            ApplyMarkerStyles();
         }
 
         partial void OnSampleNameChanged(string value)
@@ -132,6 +124,68 @@ namespace GeoChemistryNexus.Models.SpiderDiagram
                 {
                     scatter.LegendText = value;
                 }
+            }
+        }
+
+        private void ApplyLineAndMarkerStyles()
+        {
+            if (_scatters.Count == 0) return;
+            try
+            {
+                var color = ScottPlot.Color.FromHex(GraphMapTemplateService.ConvertWpfHexToScottPlotHex(Color));
+                foreach (var scatter in _scatters)
+                {
+                    scatter.Color = color;
+                }
+
+                if (_legendProxy != null)
+                {
+                    _legendProxy.Color = color;
+                }
+
+                ApplyMarkerStyles(color);
+            }
+            catch
+            {
+                // 忽略非法颜色
+            }
+        }
+
+        private void ApplyMarkerStyles(ScottPlot.Color? overrideColor = null)
+        {
+            if (_scatters.Count == 0) return;
+
+            ScottPlot.Color color;
+            try
+            {
+                color = overrideColor
+                    ?? ScottPlot.Color.FromHex(GraphMapTemplateService.ConvertWpfHexToScottPlotHex(Color));
+            }
+            catch
+            {
+                return;
+            }
+
+            float strokeWidth = PlotMarkerStyleApplier.IsFilled(MarkerShape) ? 0f : 1.5f;
+            foreach (var scatter in _scatters)
+            {
+                PlotMarkerStyleApplier.Apply(
+                    scatter.MarkerStyle,
+                    MarkerShape,
+                    color,
+                    strokeWidth,
+                    color);
+                scatter.MarkerSize = MarkerSize;
+            }
+
+            if (_legendProxy != null)
+            {
+                PlotMarkerStyleApplier.Apply(
+                    _legendProxy.MarkerStyle,
+                    MarkerShape,
+                    color,
+                    strokeWidth,
+                    color);
             }
         }
     }

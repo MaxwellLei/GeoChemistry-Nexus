@@ -130,18 +130,11 @@ namespace GeoChemistryNexus.ViewModels
                 }
                 else if (spiderAxisDef.Type == "Left")
                 {
-                    var tickGen = new ScottPlot.TickGenerators.NumericAutomatic();
                     var hideMinor = spiderAxisDef.MinorTickWidth <= 0 || spiderAxisDef.MinorTickLength <= 0;
-                    tickGen.MinorTickGenerator = hideMinor
-                        ? new ScottPlot.TickGenerators.EvenlySpacedMinorTickGenerator(0)
-                        : new ScottPlot.TickGenerators.LogMinorTickGenerator();
-                    tickGen.IntegerTicksOnly = true;
-                    tickGen.LabelFormatter = y =>
+                    targetAxis.TickGenerator = new LogDecadeTickGenerator
                     {
-                        double val = Math.Pow(10, y);
-                        return val.ToString("G10");
+                        ShowMinorTicks = !hideMinor
                     };
-                    targetAxis.TickGenerator = tickGen;
 
                     string axisLabel = spiderAxisDef.Label.Get(_contentLanguage);
                     targetAxis.Label.Text = string.IsNullOrWhiteSpace(axisLabel)
@@ -205,18 +198,11 @@ namespace GeoChemistryNexus.ViewModels
 
                 if (cartesianAxisDef.ScaleType == AxisScaleType.Logarithmic)
                 {
-                    var tickGen = new ScottPlot.TickGenerators.NumericAutomatic();
                     var hideMinor = cartesianAxisDef.MinorTickWidth <= 0 || cartesianAxisDef.MinorTickLength <= 0;
-                    tickGen.MinorTickGenerator = hideMinor
-                        ? new ScottPlot.TickGenerators.EvenlySpacedMinorTickGenerator(0)
-                        : new ScottPlot.TickGenerators.LogMinorTickGenerator();
-                    tickGen.IntegerTicksOnly = true;
-                    tickGen.LabelFormatter = y =>
+                    targetAxis.TickGenerator = new LogDecadeTickGenerator
                     {
-                        double val = Math.Pow(10, y);
-                        return val.ToString("G10");
+                        ShowMinorTicks = !hideMinor
                     };
-                    targetAxis.TickGenerator = tickGen;
                 }
                 else
                 {
@@ -390,15 +376,37 @@ namespace GeoChemistryNexus.ViewModels
             if (axis is ScottPlot.IXAxis xAxis && axis.Edge == ScottPlot.Edge.Bottom)
             {
                 plot.Axes.DefaultGrid.XAxis = xAxis;
+                foreach (var plottable in plot.GetPlottables())
+                {
+                    if (plottable.Axes.XAxis is not null)
+                        plottable.Axes.XAxis = xAxis;
+                }
             }
             else if (axis is ScottPlot.IYAxis yAxis && axis.Edge == ScottPlot.Edge.Left)
             {
                 plot.Axes.DefaultGrid.YAxis = yAxis;
+                foreach (var plottable in plot.GetPlottables())
+                {
+                    if (plottable.Axes.YAxis is not null)
+                        plottable.Axes.YAxis = yAxis;
+                }
             }
         }
 
         private void UpdateAxisLimits(Plot plot, CartesianAxisDefinition axisDef, IAxis targetAxis)
         {
+            if (PlotTransformHelper.TryGetPlotAxisRange(
+                    axisDef.Minimum,
+                    axisDef.Maximum,
+                    axisDef.ScaleType,
+                    out double plotMin,
+                    out double plotMax))
+            {
+                targetAxis.Range.Min = plotMin;
+                targetAxis.Range.Max = plotMax;
+                return;
+            }
+
             var currentLimits = targetAxis.Range;
             var newMin = !double.IsNaN(axisDef.Minimum) ? axisDef.Minimum : currentLimits.Min;
             var newMax = !double.IsNaN(axisDef.Maximum) ? axisDef.Maximum : currentLimits.Max;
@@ -412,26 +420,7 @@ namespace GeoChemistryNexus.ViewModels
                 if (isMaxSet) newMax = axisDef.Maximum > 0 ? Math.Log10(axisDef.Maximum) : currentLimits.Max;
             }
 
-            if (isMinSet && isMaxSet)
-            {
-                double rangeSpan = Math.Abs(newMax - newMin);
-                if (rangeSpan > 0)
-                {
-                    double padding = rangeSpan * 0.025;
-
-                    if (newMin > newMax)
-                    {
-                        newMin += padding;
-                        newMax -= padding;
-                    }
-                    else
-                    {
-                        newMin -= padding;
-                        newMax += padding;
-                    }
-                }
-            }
-
+            // 仅一端设定时不做端点边距，保持原有半自动范围行为
             targetAxis.Range.Min = newMin;
             targetAxis.Range.Max = newMax;
         }

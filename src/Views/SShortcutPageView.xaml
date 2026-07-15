@@ -12,7 +12,7 @@
 
     <Grid>
         <hc:ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-            <StackPanel Margin="20,20,20,40" MaxWidth="880" HorizontalAlignment="Stretch">
+            <StackPanel Margin="20,20,20,40" MaxWidth="800" HorizontalAlignment="Stretch">
 
                 <TextBlock Text="{Binding [shortcuts_title],Source={x:Static lg:LanguageService.Instance}, FallbackValue=快捷键}" Style="{StaticResource ModernSettingsGroupTitle}"/>
                 <Border Style="{StaticResource ModernSettingsCard}">

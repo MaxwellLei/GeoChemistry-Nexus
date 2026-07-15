@@ -11,6 +11,12 @@
     <SolidColorBrush x:Key="EditorTextPrimaryBrush" Color="#1D1D1F"/>
     <SolidColorBrush x:Key="EditorTextSecondaryBrush" Color="#86868B"/>
 
+    <Style x:Key="EditorFieldComboBoxItemStyle" TargetType="ComboBoxItem" BasedOn="{StaticResource ComboBoxItemBaseStyle}">
+        <!-- 使用本地值，避免默认/基样式里 RelativeSource→ItemsControl 在项销毁时绑定失败 -->
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+
     <Style x:Key="EditorFieldComboBoxStyle" TargetType="ComboBox" BasedOn="{StaticResource ComboBoxExtend}">
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="Padding" Value="6,4"/>
@@ -18,8 +24,12 @@
         <Setter Property="MinHeight" Value="32"/>
         <Setter Property="MaxHeight" Value="32"/>
         <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="hc:BorderElement.CornerRadius" Value="4"/>
+        <!-- ComboBoxExtend 可能带 StyleSelector；清空后统一走我们的 ItemContainerStyle -->
+        <Setter Property="ItemContainerStyleSelector" Value="{x:Null}"/>
+        <Setter Property="ItemContainerStyle" Value="{StaticResource EditorFieldComboBoxItemStyle}"/>
     </Style>
 
     <Style x:Key="FieldControlHostStyle" TargetType="Border">
@@ -231,6 +241,10 @@
         <Setter Property="Padding" Value="8,7"/>
         <Setter Property="ClipToBounds" Value="False"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
+    </Style>
+
+    <Style x:Key="GeoTCapabilityTokenBorderStyle" TargetType="Border" BasedOn="{StaticResource GeoTTokenBorderStyle}">
+        <Setter Property="Background" Value="#E8F5E9"/>
     </Style>
 
     <Style x:Key="GeoTTokenCloseButtonStyle" TargetType="Button">
