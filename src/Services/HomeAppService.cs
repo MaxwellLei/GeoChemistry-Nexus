@@ -27,6 +27,30 @@ namespace GeoChemistryNexus.Services
                     Description = LanguageService.Instance["view_latest_server_announcements"],
                     WidgetKey = "AnnouncementWidget",
                     Icon = "\ue789"
+                },
+                new HomeAppItem
+                {
+                    Type = HomeAppType.Widget,
+                    Title = LanguageService.Instance["alkalinity_calculator"],
+                    Description = LanguageService.Instance["alkalinity_calculator_desc"],
+                    WidgetKey = "AlkalinityCalculatorWidget",
+                    Icon = "\ue8ef"
+                },
+                new HomeAppItem
+                {
+                    Type = HomeAppType.Widget,
+                    Title = LanguageService.Instance["hardness_calculator"],
+                    Description = LanguageService.Instance["hardness_calculator_desc"],
+                    WidgetKey = "HardnessCalculatorWidget",
+                    Icon = "\ue9ca"
+                },
+                new HomeAppItem
+                {
+                    Type = HomeAppType.Widget,
+                    Title = LanguageService.Instance["black_body_radiation_calculator"],
+                    Description = LanguageService.Instance["black_body_radiation_calculator_desc"],
+                    WidgetKey = "BlackBodyRadiationCalculatorWidget",
+                    Icon = "\ue706"
                 }
             };
 

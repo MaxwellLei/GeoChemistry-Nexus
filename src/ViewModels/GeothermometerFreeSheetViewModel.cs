@@ -107,6 +107,7 @@ namespace GeoChemistryNexus.ViewModels
         {
             _grid = grid;
             ReoGridImeHelper.Attach(grid);
+            ReoGridDoubleClickFillHelper.Attach(grid); // 双击填充柄自动向下填充（类似 Excel）
             InitializeWorksheet(grid);
         }
 

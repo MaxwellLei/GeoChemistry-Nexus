@@ -1906,7 +1906,9 @@ namespace GeoChemistryNexus.ViewModels
             UpdateProgress = 0;
         }
 
-        private static string ShowGeothermometerDownloadResult(GeothermometerBatchDownloadResult downloadResult)
+        private static string ShowGeothermometerDownloadResult(
+            GeothermometerBatchDownloadResult downloadResult,
+            int incompatibleCount = 0)
         {
             var resultMessage = new StringBuilder();
             resultMessage.AppendLine(string.Format(
@@ -1918,6 +1920,15 @@ namespace GeoChemistryNexus.ViewModels
                 resultMessage.AppendLine(string.Format(
                     LanguageService.Instance["geo_msg_update_removed_count"],
                     downloadResult.RemovalCount));
+            }
+
+            if (incompatibleCount > 0)
+            {
+                resultMessage.AppendLine(string.Format(
+                    LanguageService.GetString(
+                        "update_incompatible_need_app_upgrade_count",
+                        "另有 {0} 个因版本过高，当前软件不兼容，请升级软件后再更新。"),
+                    incompatibleCount));
             }
 
             if (downloadResult.Failures.Count > 0)
@@ -1943,11 +1954,12 @@ namespace GeoChemistryNexus.ViewModels
 
             if (downloadResult.Failures.Count > 0
                 && downloadResult.SuccessCount == 0
-                && downloadResult.RemovalCount == 0)
+                && downloadResult.RemovalCount == 0
+                && incompatibleCount == 0)
             {
                 MessageHelper.Error(message);
             }
-            else if (downloadResult.Failures.Count > 0)
+            else if (downloadResult.Failures.Count > 0 || incompatibleCount > 0)
             {
                 MessageHelper.Warning(message);
             }
@@ -1986,6 +1998,7 @@ namespace GeoChemistryNexus.ViewModels
                 }
 
                 int changeCount = checkResult.Updates.Count + checkResult.Removals.Count;
+                int incompatibleCount = checkResult.RequiresAppUpgradeCount;
                 AvailableUpdateCount = changeCount;
 
                 if (checkResult.HasChanges)
@@ -2019,7 +2032,7 @@ namespace GeoChemistryNexus.ViewModels
                             checkResult.Removals,
                             progress);
 
-                        string result = ShowGeothermometerDownloadResult(downloadResult);
+                        string result = ShowGeothermometerDownloadResult(downloadResult, incompatibleCount);
                         UpdateStatusText = result;
 
                         if (downloadResult.SuccessCount > 0 || downloadResult.RemovalCount > 0)
@@ -2031,6 +2044,18 @@ namespace GeoChemistryNexus.ViewModels
                     else
                     {
                         UpdateStatusText = string.Empty;
+                    }
+                }
+                else if (incompatibleCount > 0)
+                {
+                    UpdateStatusText = string.Format(
+                        LanguageService.GetString(
+                            "update_blocked_need_app_upgrade",
+                            "有 {0} 个模板有新版本，当前软件不兼容，请升级软件后再更新。"),
+                        incompatibleCount);
+                    if (!_isAutoChecking)
+                    {
+                        MessageHelper.Warning(UpdateStatusText);
                     }
                 }
                 else

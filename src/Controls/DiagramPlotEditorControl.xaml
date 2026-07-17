@@ -9,6 +9,7 @@
              xmlns:vm="clr-namespace:GeoChemistryNexus.ViewModels"
              xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
              xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
+             x:Name="RootEditorControl"
              mc:Ignorable="d"
              d:DesignHeight="720" d:DesignWidth="1000"
              Background="#F5F5F7">
@@ -543,7 +544,25 @@
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Border Style="{StaticResource TokenBorderStyle}">
+                                        <Border Style="{StaticResource TokenBorderStyle}"
+                                                Tag="{Binding DataContext, ElementName=RootEditorControl}">
+                                            <Border.ContextMenu>
+                                                <ContextMenu>
+                                                    <MenuItem Header="{Binding [set_default_diagram_language], Source={x:Static lg:LanguageService.Instance}, FallbackValue='设为默认图解语言'}"
+                                                              Command="{Binding PlacementTarget.Tag.SetDefaultLanguageCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                              CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
+                                                        <MenuItem.Style>
+                                                            <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding PlacementTarget.DataContext.IsDefault, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True">
+                                                                        <Setter Property="IsEnabled" Value="False"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </MenuItem.Style>
+                                                    </MenuItem>
+                                                </ContextMenu>
+                                            </Border.ContextMenu>
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock Text="★" FontSize="9" FontWeight="Bold" Foreground="#0078D4" Margin="0,0,4,0"
                                                            Visibility="{Binding IsDefault, Converter={StaticResource BooleanToVisibilityConverter}}"/>

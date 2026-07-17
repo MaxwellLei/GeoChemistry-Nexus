@@ -3,7 +3,7 @@
 #define MyAppPublisher "Maxwell Lei"
 #define MyAppURL "https://github.com/MaxwellLei/GeoChemistry-Nexus"
 ; 发版时与 GeoChemistryNexus.csproj 中的 AssemblyVersion 保持一致
-#define MyAppVersion "0.8.0"
+#define MyAppVersion "0.8.2"
 
 #define PublishDir "..\src\_publish\win-x64"
 #define MyAppOutputBase "GeoChemistryNexus-Setup-" + MyAppVersion + "-x64"

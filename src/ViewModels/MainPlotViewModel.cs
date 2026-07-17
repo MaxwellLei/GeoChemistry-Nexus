@@ -15586,10 +15586,31 @@ namespace GeoChemistryNexus.ViewModels
                     return;
                 }
 
+                string appFormatVersion = ContentVersionHelper.GetDiagramFormatVersion();
+                var downloadable = new List<GraphMapTemplateEntity>();
+                int incompatibleCount = 0;
+                foreach (var template in notInstalledTemplates)
+                {
+                    if (ContentVersionHelper.RequiresAppUpgrade(template.Version, appFormatVersion))
+                        incompatibleCount++;
+                    else
+                        downloadable.Add(template);
+                }
+
+                if (downloadable.Count == 0)
+                {
+                    MessageHelper.Warning(string.Format(
+                        LanguageService.GetString(
+                            "update_blocked_need_app_upgrade",
+                            "有 {0} 个模板有新版本，当前软件不兼容，请升级软件后再更新。"),
+                        incompatibleCount));
+                    return;
+                }
+
                 // 弹窗确认
                 string confirmMessage = string.Format(
                     LanguageService.Instance["batch_download_confirm_message"] ?? "检测到 {0} 个未下载的新模板，是否批量下载？",
-                    notInstalledTemplates.Count);
+                    downloadable.Count);
 
                 bool confirmed = await NotificationManager.Instance.ShowDialogAsync(
                     LanguageService.Instance["batch_download_title"] ?? "批量下载",
@@ -15612,9 +15633,9 @@ namespace GeoChemistryNexus.ViewModels
                 int successCount = 0;
                 int failCount = 0;
                 List<string> failedTemplates = new List<string>();
-                int totalCount = notInstalledTemplates.Count;
+                int totalCount = downloadable.Count;
 
-                for (int i = 0; i < notInstalledTemplates.Count; i++)
+                for (int i = 0; i < downloadable.Count; i++)
                 {
                     // 检查是否取消
                     if (token.IsCancellationRequested)
@@ -15622,7 +15643,7 @@ namespace GeoChemistryNexus.ViewModels
                         break;
                     }
 
-                    var template = notInstalledTemplates[i];
+                    var template = downloadable[i];
 
                     // 更新进度信息
                     BatchDownloadProgressText = string.Format(
@@ -15640,6 +15661,7 @@ namespace GeoChemistryNexus.ViewModels
                             Name = template.Name,
                             TemplatePath = template.GraphMapPath,
                             ServerHash = template.FileHash,
+                            ServerVersion = template.Version,
                             State = TemplateState.Loading
                         };
 
@@ -15679,6 +15701,15 @@ namespace GeoChemistryNexus.ViewModels
                     resultMessage.AppendLine(string.Format(
                         LanguageService.Instance["batch_download_success_count"] ?? "成功下载：{0} 个",
                         successCount));
+
+                    if (incompatibleCount > 0)
+                    {
+                        resultMessage.AppendLine(string.Format(
+                            LanguageService.GetString(
+                                "update_incompatible_need_app_upgrade_count",
+                                "另有 {0} 个因版本过高，当前软件不兼容，请升级软件后再更新。"),
+                            incompatibleCount));
+                    }
                     
                     if (failCount > 0)
                     {
@@ -15699,7 +15730,9 @@ namespace GeoChemistryNexus.ViewModels
                     NotificationManager.Instance.Show(
                         LanguageService.Instance["batch_download_complete"] ?? "批量下载完成",
                         resultMessage.ToString(),
-                        successCount == notInstalledTemplates.Count ? NotificationType.Success : NotificationType.Warning,
+                        failCount == 0 && incompatibleCount == 0
+                            ? NotificationType.Success
+                            : NotificationType.Warning,
                         0);
                 }
 
@@ -15732,9 +15765,40 @@ namespace GeoChemistryNexus.ViewModels
                     return;
                 }
 
+                var serverMetadata = LoadServerTemplateMetadata();
+                if (serverMetadata.Count == 0)
+                {
+                    MessageHelper.Error(LanguageService.Instance["batch_update_failed"] ?? "批量更新失败：无法读取模板清单");
+                    return;
+                }
+
+                string appFormatVersion = ContentVersionHelper.GetDiagramFormatVersion();
+                var updatable = new List<GraphMapTemplateEntity>();
+                int incompatibleCount = 0;
+                foreach (var template in outdatedTemplates)
+                {
+                    string? serverVersion = serverMetadata.TryGetValue(template.Id, out var meta)
+                        ? meta.Version
+                        : template.Version;
+                    if (ContentVersionHelper.RequiresAppUpgrade(serverVersion, appFormatVersion))
+                        incompatibleCount++;
+                    else
+                        updatable.Add(template);
+                }
+
+                if (updatable.Count == 0)
+                {
+                    MessageHelper.Warning(string.Format(
+                        LanguageService.GetString(
+                            "update_blocked_need_app_upgrade",
+                            "有 {0} 个模板有新版本，当前软件不兼容，请升级软件后再更新。"),
+                        incompatibleCount));
+                    return;
+                }
+
                 string confirmMessage = string.Format(
                     LanguageService.Instance["batch_update_confirm_message"] ?? "检测到 {0} 个模板有新版本，是否批量更新？",
-                    outdatedTemplates.Count);
+                    updatable.Count);
 
                 bool confirmed = await NotificationManager.Instance.ShowDialogAsync(
                     LanguageService.Instance["batch_update_title"] ?? "批量更新",
@@ -15743,13 +15807,6 @@ namespace GeoChemistryNexus.ViewModels
                     LanguageService.Instance["Cancel"] ?? "取消");
 
                 if (!confirmed) return;
-
-                var serverMetadata = LoadServerTemplateMetadata();
-                if (serverMetadata.Count == 0)
-                {
-                    MessageHelper.Error(LanguageService.Instance["batch_update_failed"] ?? "批量更新失败：无法读取模板清单");
-                    return;
-                }
 
                 _batchDownloadCts?.Cancel();
                 _batchDownloadCts = new CancellationTokenSource();
@@ -15761,14 +15818,14 @@ namespace GeoChemistryNexus.ViewModels
                 int successCount = 0;
                 int failCount = 0;
                 List<string> failedTemplates = new List<string>();
-                int totalCount = outdatedTemplates.Count;
+                int totalCount = updatable.Count;
 
-                for (int i = 0; i < outdatedTemplates.Count; i++)
+                for (int i = 0; i < updatable.Count; i++)
                 {
                     if (token.IsCancellationRequested)
                         break;
 
-                    var template = outdatedTemplates[i];
+                    var template = updatable[i];
 
                     BatchDownloadProgressText = string.Format(
                         LanguageService.Instance["batch_update_progress"] ?? "正在更新：{0}/{1} - {2}",
@@ -15836,6 +15893,15 @@ namespace GeoChemistryNexus.ViewModels
                         LanguageService.Instance["batch_update_success_count"] ?? "成功更新：{0} 个",
                         successCount));
 
+                    if (incompatibleCount > 0)
+                    {
+                        resultMessage.AppendLine(string.Format(
+                            LanguageService.GetString(
+                                "update_incompatible_need_app_upgrade_count",
+                                "另有 {0} 个因版本过高，当前软件不兼容，请升级软件后再更新。"),
+                            incompatibleCount));
+                    }
+
                     if (failCount > 0)
                     {
                         resultMessage.AppendLine(string.Format(
@@ -15855,7 +15921,9 @@ namespace GeoChemistryNexus.ViewModels
                     NotificationManager.Instance.Show(
                         LanguageService.Instance["batch_update_complete"] ?? "批量更新完成",
                         resultMessage.ToString(),
-                        successCount == outdatedTemplates.Count ? NotificationType.Success : NotificationType.Warning,
+                        failCount == 0 && incompatibleCount == 0
+                            ? NotificationType.Success
+                            : NotificationType.Warning,
                         0);
                 }
 

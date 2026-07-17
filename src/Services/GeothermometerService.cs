@@ -1334,6 +1334,7 @@ namespace GeoChemistryNexus.Services
             bool mineralCategoriesSynced = false)
         {
             var updatable = new List<PluginIndexEntry>();
+            var requiresAppUpgrade = new List<PluginIndexEntry>();
             var serverPluginIds = new HashSet<string>();
             string appFormatVersion = ContentVersionHelper.GetGeothermometerFormatVersion();
 
@@ -1342,7 +1343,10 @@ namespace GeoChemistryNexus.Services
                 serverPluginIds.Add(entry.Id);
 
                 if (ContentVersionHelper.RequiresAppUpgrade(entry.Version, appFormatVersion))
+                {
+                    requiresAppUpgrade.Add(entry);
                     continue;
+                }
 
                 var local = _loadedEntities.FirstOrDefault(p => p.PluginId == entry.Id);
                 if (local == null)
@@ -1374,6 +1378,7 @@ namespace GeoChemistryNexus.Services
                 Status = GeothermometerUpdateCheckStatus.Success,
                 Updates = updatable,
                 Removals = removals,
+                RequiresAppUpgrade = requiresAppUpgrade,
                 MineralCategoriesSynced = mineralCategoriesSynced
             };
         }

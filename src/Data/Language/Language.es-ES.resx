@@ -2618,6 +2618,9 @@
   <data name="diagram_editor_basic_settings" xml:space="preserve">
     <value>Configuración básica</value>
   </data>
+  <data name="set_default_diagram_language" xml:space="preserve">
+    <value>Establecer como idioma predeterminado del diagrama</value>
+  </data>
   <data name="diagram_editor_content_translation" xml:space="preserve">
     <value>Traducción de contenido</value>
   </data>
@@ -4067,6 +4070,180 @@
   </data>
   <data name="geo_hint_no_search_results" xml:space="preserve">
     <value>Ninguna plantilla de geotermobarómetro coincide con su búsqueda.</value>
+  </data>
+  <data name="alkalinity_calculator" xml:space="preserve">
+    <value>Calculadora de alcalinidad</value>
+  </data>
+  <data name="alkalinity_calculator_desc" xml:space="preserve">
+    <value>Calcular la alcalinidad del agua a partir del punto final de titulación con HCl</value>
+  </data>
+  <data name="alkalinity_calculator_hint" xml:space="preserve">
+    <value>Introduzca los valores de titulación para calcular la alcalinidad como HCO3-, CO32-, CaCO3 y 0.5(CaCO3).</value>
+  </data>
+  <data name="alkalinity_calc_titration" xml:space="preserve">
+    <value>Entradas de titulación</value>
+  </data>
+  <data name="alkalinity_calc_hcl_molarity" xml:space="preserve">
+    <value>Molaridad de HCl</value>
+  </data>
+  <data name="alkalinity_calc_sample_volume" xml:space="preserve">
+    <value>Volumen de muestra</value>
+  </data>
+  <data name="alkalinity_calc_hcl_volume" xml:space="preserve">
+    <value>Volumen de HCl usado</value>
+  </data>
+  <data name="alkalinity_calc_reset" xml:space="preserve">
+    <value>Restablecer</value>
+  </data>
+  <data name="alkalinity_calc_summary" xml:space="preserve">
+    <value>Alcalinidad = {0:G6} meq/L</value>
+  </data>
+  <data name="alkalinity_calc_invalid_input" xml:space="preserve">
+    <value>Introduzca valores de titulación válidos (el volumen de muestra debe ser mayor que 0).</value>
+  </data>
+  <data name="alkalinity_calc_results" xml:space="preserve">
+    <value>Resultados</value>
+  </data>
+  <data name="alkalinity_calc_results_hint" xml:space="preserve">
+    <value>Las filas azules muestran la alcalinidad en distintas formas equivalentes y unidades.</value>
+  </data>
+  <data name="alkalinity_calc_form" xml:space="preserve">
+    <value>Forma</value>
+  </data>
+  <data name="alkalinity_calc_as_hco3" xml:space="preserve">
+    <value>Como HCO3-</value>
+  </data>
+  <data name="alkalinity_calc_as_co3" xml:space="preserve">
+    <value>Como CO32-</value>
+  </data>
+  <data name="alkalinity_calc_as_caco3" xml:space="preserve">
+    <value>Como CaCO3</value>
+  </data>
+  <data name="alkalinity_calc_as_half_caco3" xml:space="preserve">
+    <value>Como 0.5(CaCO3)</value>
+  </data>
+  <data name="alkalinity_calc_source_label" xml:space="preserve">
+    <value>Fuente:</value>
+  </data>
+  <data name="alkalinity_calc_source_link" xml:space="preserve">
+    <value>Kurt Hollocher — Geochemistry (Union College)</value>
+  </data>
+  <data name="hardness_calculator" xml:space="preserve">
+    <value>Calculadora de dureza</value>
+  </data>
+  <data name="hardness_calculator_desc" xml:space="preserve">
+    <value>Calcular la dureza del agua a partir de las concentraciones de Mg y Ca</value>
+  </data>
+  <data name="hardness_calculator_hint" xml:space="preserve">
+    <value>Introduzca las concentraciones de Mg y Ca (ppm) para calcular la dureza como CaCO3 y la clase USGS.</value>
+  </data>
+  <data name="hardness_calc_concentrations" xml:space="preserve">
+    <value>Concentraciones</value>
+  </data>
+  <data name="hardness_calc_mg" xml:space="preserve">
+    <value>Mg</value>
+  </data>
+  <data name="hardness_calc_ca" xml:space="preserve">
+    <value>Ca</value>
+  </data>
+  <data name="hardness_calc_reset" xml:space="preserve">
+    <value>Restablecer</value>
+  </data>
+  <data name="hardness_calc_summary" xml:space="preserve">
+    <value>Dureza = {0:0.0} ppm como CaCO3</value>
+  </data>
+  <data name="hardness_calc_invalid_input" xml:space="preserve">
+    <value>Introduzca concentraciones de Mg y Ca no negativas.</value>
+  </data>
+  <data name="hardness_calc_equation" xml:space="preserve">
+    <value>Ecuación: (Mg × {0:0.00}) + (Ca × {1:0.00}) = dureza como CaCO3</value>
+  </data>
+  <data name="hardness_calc_usgs_title" xml:space="preserve">
+    <value>Directrices generales del USGS para clasificar la dureza del agua</value>
+  </data>
+  <data name="hardness_calc_usgs_hint" xml:space="preserve">
+    <value>La fila resaltada es la clase de dureza actual.</value>
+  </data>
+  <data name="hardness_calc_class" xml:space="preserve">
+    <value>Clase</value>
+  </data>
+  <data name="hardness_calc_range" xml:space="preserve">
+    <value>Rango</value>
+  </data>
+  <data name="hardness_calc_class_soft" xml:space="preserve">
+    <value>Blanda</value>
+  </data>
+  <data name="hardness_calc_class_moderately_hard" xml:space="preserve">
+    <value>Moderadamente dura</value>
+  </data>
+  <data name="hardness_calc_class_hard" xml:space="preserve">
+    <value>Dura</value>
+  </data>
+  <data name="hardness_calc_class_very_hard" xml:space="preserve">
+    <value>Muy dura</value>
+  </data>
+  <data name="hardness_calc_source_label" xml:space="preserve">
+    <value>Fuente:</value>
+  </data>
+  <data name="hardness_calc_source_link" xml:space="preserve">
+    <value>Kurt Hollocher — Geochemistry (Union College)</value>
+  </data>
+  <data name="black_body_radiation_calculator" xml:space="preserve">
+    <value>Calculadora de radiación de cuerpo negro</value>
+  </data>
+  <data name="black_body_radiation_calculator_desc" xml:space="preserve">
+    <value>Calcular potencia de Stefan–Boltzmann, longitud de onda de Wien y espectro de cuerpo negro</value>
+  </data>
+  <data name="black_body_radiation_calculator_hint" xml:space="preserve">
+    <value>Introduzca la temperatura (K) para calcular la potencia radiante total, la longitud de onda pico y la curva espectral normalizada.</value>
+  </data>
+  <data name="black_body_radiation_calc_input" xml:space="preserve">
+    <value>Temperatura</value>
+  </data>
+  <data name="black_body_radiation_calc_temperature" xml:space="preserve">
+    <value>T</value>
+  </data>
+  <data name="black_body_radiation_calc_reset" xml:space="preserve">
+    <value>Restablecer</value>
+  </data>
+  <data name="black_body_radiation_calc_invalid_input" xml:space="preserve">
+    <value>Introduzca una temperatura mayor que 0 K.</value>
+  </data>
+  <data name="black_body_radiation_calc_laws" xml:space="preserve">
+    <value>Leyes de radiación</value>
+  </data>
+  <data name="black_body_radiation_calc_stefan_title" xml:space="preserve">
+    <value>Ley de Stefan–Boltzmann — potencia radiante total</value>
+  </data>
+  <data name="black_body_radiation_calc_stefan_result" xml:space="preserve">
+    <value>Potencia radiante total = {0:G6} W/m²</value>
+  </data>
+  <data name="black_body_radiation_calc_wien_title" xml:space="preserve">
+    <value>Ley de desplazamiento de Wien — longitud de onda pico</value>
+  </data>
+  <data name="black_body_radiation_calc_wien_result" xml:space="preserve">
+    <value>Longitud de onda pico λ_max = {0:G6} μm ({1:G6} nm)</value>
+  </data>
+  <data name="black_body_radiation_calc_spectrum_peak" xml:space="preserve">
+    <value>Pico del espectro (malla) = {0:G6} μm ({1:G6} nm)</value>
+  </data>
+  <data name="black_body_radiation_calc_spectrum" xml:space="preserve">
+    <value>Espectro de cuerpo negro</value>
+  </data>
+  <data name="black_body_radiation_calc_spectrum_hint" xml:space="preserve">
+    <value>Potencia espectral normalizada (pico = 100%). La línea discontinua marca el pico del espectro en la malla de cálculo.</value>
+  </data>
+  <data name="black_body_radiation_calc_axis_wavelength" xml:space="preserve">
+    <value>Longitud de onda (μm)</value>
+  </data>
+  <data name="black_body_radiation_calc_axis_normalized" xml:space="preserve">
+    <value>Potencia normalizada (%)</value>
+  </data>
+  <data name="black_body_radiation_calc_source_label" xml:space="preserve">
+    <value>Fuente:</value>
+  </data>
+  <data name="black_body_radiation_calc_source_link" xml:space="preserve">
+    <value>Kurt Hollocher — Geochemistry (Union College)</value>
   </data>
 </root>
 

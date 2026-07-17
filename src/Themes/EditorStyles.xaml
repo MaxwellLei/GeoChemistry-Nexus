@@ -55,7 +55,8 @@
 
     <Style x:Key="FieldInputStyle" TargetType="TextBox">
         <Setter Property="FontSize" Value="12"/>
-        <Setter Property="Padding" Value="6,4"/>
+        <!-- 垂直 Padding 略减，避免固定高度 32 时下划线等 descender 被裁切 -->
+        <Setter Property="Padding" Value="4,2"/>
         <Setter Property="Height" Value="32"/>
         <Setter Property="MinHeight" Value="32"/>
         <Setter Property="MaxHeight" Value="32"/>

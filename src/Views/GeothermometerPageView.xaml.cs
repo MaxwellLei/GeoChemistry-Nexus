@@ -45,6 +45,7 @@ namespace GeoChemistryNexus.Views
 
             // 监听 ReoGrid 选区变化事件，用于触发详细计算
             ReoGridImeHelper.Attach(MyReoGrid);
+            ReoGridDoubleClickFillHelper.Attach(MyReoGrid); // 双击填充柄自动向下填充（类似 Excel）
             MyReoGrid.CurrentWorksheet.SelectionRangeChanged += OnSelectionRangeChanged;
             MyReoGrid.CurrentWorksheetChanged += OnCurrentWorksheetChanged;
             _viewModel.AttachWorksheetRowExpansionEvents(MyReoGrid.CurrentWorksheet);

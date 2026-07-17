@@ -375,6 +375,45 @@ namespace GeoChemistryNexus.ViewModels
                         Content = new AnnouncementWidget { DataContext = new AnnouncementViewModel() }
                     };
                 }
+                else if (app.WidgetKey == "AlkalinityCalculatorWidget")
+                {
+                    window = new Window
+                    {
+                        Title = LanguageService.Instance["alkalinity_calculator"],
+                        Width = 680,
+                        Height = 560,
+                        MinWidth = 560,
+                        MinHeight = 420,
+                        Content = new AlkalinityCalculatorWidget { DataContext = new AlkalinityCalculatorViewModel() }
+                    };
+                }
+                else if (app.WidgetKey == "HardnessCalculatorWidget")
+                {
+                    window = new Window
+                    {
+                        Title = LanguageService.Instance["hardness_calculator"],
+                        Width = 560,
+                        Height = 580,
+                        MinWidth = 480,
+                        MinHeight = 440,
+                        Content = new HardnessCalculatorWidget { DataContext = new HardnessCalculatorViewModel() }
+                    };
+                }
+                else if (app.WidgetKey == "BlackBodyRadiationCalculatorWidget")
+                {
+                    window = new Window
+                    {
+                        Title = LanguageService.Instance["black_body_radiation_calculator"],
+                        Width = 920,
+                        Height = 560,
+                        MinWidth = 760,
+                        MinHeight = 460,
+                        Content = new BlackBodyRadiationCalculatorWidget
+                        {
+                            DataContext = new BlackBodyRadiationCalculatorViewModel()
+                        }
+                    };
+                }
 
                 if (window == null)
                     return;

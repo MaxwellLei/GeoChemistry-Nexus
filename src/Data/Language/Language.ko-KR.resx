@@ -2618,6 +2618,9 @@
   <data name="diagram_editor_basic_settings" xml:space="preserve">
     <value>기본 설정</value>
   </data>
+  <data name="set_default_diagram_language" xml:space="preserve">
+    <value>기본 도해 언어로 설정</value>
+  </data>
   <data name="diagram_editor_content_translation" xml:space="preserve">
     <value>콘텐츠 번역</value>
   </data>
@@ -4067,6 +4070,180 @@
   </data>
   <data name="geo_hint_no_search_results" xml:space="preserve">
     <value>검색과 일치하는 온압계 템플릿이 없습니다.</value>
+  </data>
+  <data name="alkalinity_calculator" xml:space="preserve">
+    <value>알칼리도 계산기</value>
+  </data>
+  <data name="alkalinity_calculator_desc" xml:space="preserve">
+    <value>HCl 적정 종말점에서 수질 알칼리도 계산</value>
+  </data>
+  <data name="alkalinity_calculator_hint" xml:space="preserve">
+    <value>적정값을 입력하여 HCO3-, CO32-, CaCO3, 0.5(CaCO3)로 표시된 알칼리도를 계산합니다.</value>
+  </data>
+  <data name="alkalinity_calc_titration" xml:space="preserve">
+    <value>적정 입력</value>
+  </data>
+  <data name="alkalinity_calc_hcl_molarity" xml:space="preserve">
+    <value>HCl 몰농도</value>
+  </data>
+  <data name="alkalinity_calc_sample_volume" xml:space="preserve">
+    <value>시료 부피</value>
+  </data>
+  <data name="alkalinity_calc_hcl_volume" xml:space="preserve">
+    <value>사용한 HCl 부피</value>
+  </data>
+  <data name="alkalinity_calc_reset" xml:space="preserve">
+    <value>초기화</value>
+  </data>
+  <data name="alkalinity_calc_summary" xml:space="preserve">
+    <value>알칼리도 = {0:G6} meq/L</value>
+  </data>
+  <data name="alkalinity_calc_invalid_input" xml:space="preserve">
+    <value>유효한 적정값을 입력하세요(시료 부피는 0보다 커야 합니다).</value>
+  </data>
+  <data name="alkalinity_calc_results" xml:space="preserve">
+    <value>계산 결과</value>
+  </data>
+  <data name="alkalinity_calc_results_hint" xml:space="preserve">
+    <value>파란색 행은 서로 다른 당량 형태와 단위로 나타낸 알칼리도입니다.</value>
+  </data>
+  <data name="alkalinity_calc_form" xml:space="preserve">
+    <value>표시 형태</value>
+  </data>
+  <data name="alkalinity_calc_as_hco3" xml:space="preserve">
+    <value>HCO3- 기준</value>
+  </data>
+  <data name="alkalinity_calc_as_co3" xml:space="preserve">
+    <value>CO32- 기준</value>
+  </data>
+  <data name="alkalinity_calc_as_caco3" xml:space="preserve">
+    <value>CaCO3 기준</value>
+  </data>
+  <data name="alkalinity_calc_as_half_caco3" xml:space="preserve">
+    <value>0.5(CaCO3) 기준</value>
+  </data>
+  <data name="alkalinity_calc_source_label" xml:space="preserve">
+    <value>출처:</value>
+  </data>
+  <data name="alkalinity_calc_source_link" xml:space="preserve">
+    <value>Kurt Hollocher — Geochemistry (Union College)</value>
+  </data>
+  <data name="hardness_calculator" xml:space="preserve">
+    <value>경도 계산기</value>
+  </data>
+  <data name="hardness_calculator_desc" xml:space="preserve">
+    <value>Mg·Ca 농도로부터 수경도 계산</value>
+  </data>
+  <data name="hardness_calculator_hint" xml:space="preserve">
+    <value>Mg·Ca 농도(ppm)를 입력하여 CaCO3 기준 경도와 USGS 경도 등급을 계산합니다.</value>
+  </data>
+  <data name="hardness_calc_concentrations" xml:space="preserve">
+    <value>농도 입력</value>
+  </data>
+  <data name="hardness_calc_mg" xml:space="preserve">
+    <value>Mg</value>
+  </data>
+  <data name="hardness_calc_ca" xml:space="preserve">
+    <value>Ca</value>
+  </data>
+  <data name="hardness_calc_reset" xml:space="preserve">
+    <value>초기화</value>
+  </data>
+  <data name="hardness_calc_summary" xml:space="preserve">
+    <value>경도 = {0:0.0} ppm (CaCO3 기준)</value>
+  </data>
+  <data name="hardness_calc_invalid_input" xml:space="preserve">
+    <value>음이 아닌 Mg·Ca 농도를 입력하세요.</value>
+  </data>
+  <data name="hardness_calc_equation" xml:space="preserve">
+    <value>식: (Mg × {0:0.00}) + (Ca × {1:0.00}) = CaCO3 기준 경도</value>
+  </data>
+  <data name="hardness_calc_usgs_title" xml:space="preserve">
+    <value>USGS 수경도 분류 일반 지침</value>
+  </data>
+  <data name="hardness_calc_usgs_hint" xml:space="preserve">
+    <value>강조된 행이 현재 경도 등급입니다.</value>
+  </data>
+  <data name="hardness_calc_class" xml:space="preserve">
+    <value>등급</value>
+  </data>
+  <data name="hardness_calc_range" xml:space="preserve">
+    <value>범위</value>
+  </data>
+  <data name="hardness_calc_class_soft" xml:space="preserve">
+    <value>연수</value>
+  </data>
+  <data name="hardness_calc_class_moderately_hard" xml:space="preserve">
+    <value>중경수</value>
+  </data>
+  <data name="hardness_calc_class_hard" xml:space="preserve">
+    <value>경수</value>
+  </data>
+  <data name="hardness_calc_class_very_hard" xml:space="preserve">
+    <value>극경수</value>
+  </data>
+  <data name="hardness_calc_source_label" xml:space="preserve">
+    <value>출처:</value>
+  </data>
+  <data name="hardness_calc_source_link" xml:space="preserve">
+    <value>Kurt Hollocher — Geochemistry (Union College)</value>
+  </data>
+  <data name="black_body_radiation_calculator" xml:space="preserve">
+    <value>흑체 복사 계산기</value>
+  </data>
+  <data name="black_body_radiation_calculator_desc" xml:space="preserve">
+    <value>슈테판–볼츠만 복사 강도, 빈 피크 파장 및 흑체 스펙트럼 계산</value>
+  </data>
+  <data name="black_body_radiation_calculator_hint" xml:space="preserve">
+    <value>온도(K)를 입력하여 총 복사 강도, 피크 파장 및 정규화 스펙트럼 곡선을 계산합니다.</value>
+  </data>
+  <data name="black_body_radiation_calc_input" xml:space="preserve">
+    <value>온도</value>
+  </data>
+  <data name="black_body_radiation_calc_temperature" xml:space="preserve">
+    <value>T</value>
+  </data>
+  <data name="black_body_radiation_calc_reset" xml:space="preserve">
+    <value>초기화</value>
+  </data>
+  <data name="black_body_radiation_calc_invalid_input" xml:space="preserve">
+    <value>0 K보다 큰 온도를 입력하세요.</value>
+  </data>
+  <data name="black_body_radiation_calc_laws" xml:space="preserve">
+    <value>복사 법칙</value>
+  </data>
+  <data name="black_body_radiation_calc_stefan_title" xml:space="preserve">
+    <value>슈테판–볼츠만 법칙 — 총 복사 강도</value>
+  </data>
+  <data name="black_body_radiation_calc_stefan_result" xml:space="preserve">
+    <value>총 복사 강도 = {0:G6} W/m²</value>
+  </data>
+  <data name="black_body_radiation_calc_wien_title" xml:space="preserve">
+    <value>빈의 변위 법칙 — 피크 파장</value>
+  </data>
+  <data name="black_body_radiation_calc_wien_result" xml:space="preserve">
+    <value>피크 파장 λ_max = {0:G6} μm ({1:G6} nm)</value>
+  </data>
+  <data name="black_body_radiation_calc_spectrum_peak" xml:space="preserve">
+    <value>스펙트럼 피크(격자) = {0:G6} μm ({1:G6} nm)</value>
+  </data>
+  <data name="black_body_radiation_calc_spectrum" xml:space="preserve">
+    <value>흑체 스펙트럼</value>
+  </data>
+  <data name="black_body_radiation_calc_spectrum_hint" xml:space="preserve">
+    <value>정규화 스펙트럼 강도(피크 = 100%). 점선은 계산 격자상의 스펙트럼 피크를 표시합니다.</value>
+  </data>
+  <data name="black_body_radiation_calc_axis_wavelength" xml:space="preserve">
+    <value>파장 (μm)</value>
+  </data>
+  <data name="black_body_radiation_calc_axis_normalized" xml:space="preserve">
+    <value>정규화 강도 (%)</value>
+  </data>
+  <data name="black_body_radiation_calc_source_label" xml:space="preserve">
+    <value>출처:</value>
+  </data>
+  <data name="black_body_radiation_calc_source_link" xml:space="preserve">
+    <value>Kurt Hollocher — Geochemistry (Union College)</value>
   </data>
 </root>
 

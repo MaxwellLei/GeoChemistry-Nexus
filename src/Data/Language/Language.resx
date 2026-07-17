@@ -1862,6 +1862,14 @@
     <value>Failed: {0}</value>
     <comment>Batch update result</comment>
   </data>
+  <data name="update_incompatible_need_app_upgrade_count" xml:space="preserve">
+    <value>{0} more could not be updated because their version is too high for this app. Please upgrade the software.</value>
+    <comment>Batch update/download result: incompatible high-version count</comment>
+  </data>
+  <data name="update_blocked_need_app_upgrade" xml:space="preserve">
+    <value>{0} templates have newer versions that are incompatible with this app. Please upgrade the software to update them.</value>
+    <comment>Shown when all pending updates require a higher app format version</comment>
+  </data>
   <data name="batch_update_complete" xml:space="preserve">
     <value>Batch Update Complete</value>
     <comment>Batch update result</comment>
@@ -3289,6 +3297,9 @@
   <data name="diagram_editor_basic_settings" xml:space="preserve">
     <value>Basic Settings</value>
   </data>
+  <data name="set_default_diagram_language" xml:space="preserve">
+    <value>Set as Default Diagram Language</value>
+  </data>
   <data name="diagram_editor_content_translation" xml:space="preserve">
     <value>Content Translation</value>
   </data>
@@ -3777,6 +3788,180 @@
   </data>
   <data name="norm_category_basalt" xml:space="preserve">
     <value>Basalt End-members</value>
+  </data>
+  <data name="alkalinity_calculator" xml:space="preserve">
+    <value>Alkalinity Calculator</value>
+  </data>
+  <data name="alkalinity_calculator_desc" xml:space="preserve">
+    <value>Calculate water alkalinity from HCl titration endpoint</value>
+  </data>
+  <data name="alkalinity_calculator_hint" xml:space="preserve">
+    <value>Enter titration values to compute alkalinity as HCO3-, CO32-, CaCO3, and 0.5(CaCO3).</value>
+  </data>
+  <data name="alkalinity_calc_titration" xml:space="preserve">
+    <value>Titration inputs</value>
+  </data>
+  <data name="alkalinity_calc_hcl_molarity" xml:space="preserve">
+    <value>HCl molarity</value>
+  </data>
+  <data name="alkalinity_calc_sample_volume" xml:space="preserve">
+    <value>Sample volume</value>
+  </data>
+  <data name="alkalinity_calc_hcl_volume" xml:space="preserve">
+    <value>HCl volume used</value>
+  </data>
+  <data name="alkalinity_calc_reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="alkalinity_calc_summary" xml:space="preserve">
+    <value>Alkalinity = {0:G6} meq/L</value>
+  </data>
+  <data name="alkalinity_calc_invalid_input" xml:space="preserve">
+    <value>Enter valid titration values (sample volume must be greater than 0).</value>
+  </data>
+  <data name="alkalinity_calc_results" xml:space="preserve">
+    <value>Results</value>
+  </data>
+  <data name="alkalinity_calc_results_hint" xml:space="preserve">
+    <value>Blue rows show alkalinity expressed in different equivalent forms and units.</value>
+  </data>
+  <data name="alkalinity_calc_form" xml:space="preserve">
+    <value>Form</value>
+  </data>
+  <data name="alkalinity_calc_as_hco3" xml:space="preserve">
+    <value>As HCO3-</value>
+  </data>
+  <data name="alkalinity_calc_as_co3" xml:space="preserve">
+    <value>As CO32-</value>
+  </data>
+  <data name="alkalinity_calc_as_caco3" xml:space="preserve">
+    <value>As CaCO3</value>
+  </data>
+  <data name="alkalinity_calc_as_half_caco3" xml:space="preserve">
+    <value>As 0.5(CaCO3)</value>
+  </data>
+  <data name="alkalinity_calc_source_label" xml:space="preserve">
+    <value>Source:</value>
+  </data>
+  <data name="alkalinity_calc_source_link" xml:space="preserve">
+    <value>Kurt Hollocher — Geochemistry (Union College)</value>
+  </data>
+  <data name="hardness_calculator" xml:space="preserve">
+    <value>Hardness Calculator</value>
+  </data>
+  <data name="hardness_calculator_desc" xml:space="preserve">
+    <value>Calculate water hardness from Mg and Ca concentrations</value>
+  </data>
+  <data name="hardness_calculator_hint" xml:space="preserve">
+    <value>Enter Mg and Ca concentrations (ppm) to compute hardness as CaCO3 and USGS hardness class.</value>
+  </data>
+  <data name="hardness_calc_concentrations" xml:space="preserve">
+    <value>Concentrations</value>
+  </data>
+  <data name="hardness_calc_mg" xml:space="preserve">
+    <value>Mg</value>
+  </data>
+  <data name="hardness_calc_ca" xml:space="preserve">
+    <value>Ca</value>
+  </data>
+  <data name="hardness_calc_reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="hardness_calc_summary" xml:space="preserve">
+    <value>Hardness = {0:0.0} ppm as CaCO3</value>
+  </data>
+  <data name="hardness_calc_invalid_input" xml:space="preserve">
+    <value>Enter non-negative Mg and Ca concentrations.</value>
+  </data>
+  <data name="hardness_calc_equation" xml:space="preserve">
+    <value>Equation: (Mg × {0:0.00}) + (Ca × {1:0.00}) = hardness as CaCO3</value>
+  </data>
+  <data name="hardness_calc_usgs_title" xml:space="preserve">
+    <value>USGS general guidelines for classifying water hardness</value>
+  </data>
+  <data name="hardness_calc_usgs_hint" xml:space="preserve">
+    <value>The highlighted row is the current hardness class.</value>
+  </data>
+  <data name="hardness_calc_class" xml:space="preserve">
+    <value>Class</value>
+  </data>
+  <data name="hardness_calc_range" xml:space="preserve">
+    <value>Range</value>
+  </data>
+  <data name="hardness_calc_class_soft" xml:space="preserve">
+    <value>Soft</value>
+  </data>
+  <data name="hardness_calc_class_moderately_hard" xml:space="preserve">
+    <value>Moderately hard</value>
+  </data>
+  <data name="hardness_calc_class_hard" xml:space="preserve">
+    <value>Hard</value>
+  </data>
+  <data name="hardness_calc_class_very_hard" xml:space="preserve">
+    <value>Very hard</value>
+  </data>
+  <data name="hardness_calc_source_label" xml:space="preserve">
+    <value>Source:</value>
+  </data>
+  <data name="hardness_calc_source_link" xml:space="preserve">
+    <value>Kurt Hollocher — Geochemistry (Union College)</value>
+  </data>
+  <data name="black_body_radiation_calculator" xml:space="preserve">
+    <value>Black Body Radiation Calculator</value>
+  </data>
+  <data name="black_body_radiation_calculator_desc" xml:space="preserve">
+    <value>Compute Stefan–Boltzmann power, Wien peak wavelength, and black-body spectrum</value>
+  </data>
+  <data name="black_body_radiation_calculator_hint" xml:space="preserve">
+    <value>Enter temperature (K) to calculate total radiant power, peak wavelength, and the normalized spectral curve.</value>
+  </data>
+  <data name="black_body_radiation_calc_input" xml:space="preserve">
+    <value>Temperature</value>
+  </data>
+  <data name="black_body_radiation_calc_temperature" xml:space="preserve">
+    <value>T</value>
+  </data>
+  <data name="black_body_radiation_calc_reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="black_body_radiation_calc_invalid_input" xml:space="preserve">
+    <value>Enter a temperature greater than 0 K.</value>
+  </data>
+  <data name="black_body_radiation_calc_laws" xml:space="preserve">
+    <value>Radiation laws</value>
+  </data>
+  <data name="black_body_radiation_calc_stefan_title" xml:space="preserve">
+    <value>Stefan–Boltzmann law — total radiant power</value>
+  </data>
+  <data name="black_body_radiation_calc_stefan_result" xml:space="preserve">
+    <value>Total radiant power = {0:G6} W/m²</value>
+  </data>
+  <data name="black_body_radiation_calc_wien_title" xml:space="preserve">
+    <value>Wien’s displacement law — peak-power wavelength</value>
+  </data>
+  <data name="black_body_radiation_calc_wien_result" xml:space="preserve">
+    <value>Peak wavelength λ_max = {0:G6} μm ({1:G6} nm)</value>
+  </data>
+  <data name="black_body_radiation_calc_spectrum_peak" xml:space="preserve">
+    <value>Spectrum peak (grid) = {0:G6} μm ({1:G6} nm)</value>
+  </data>
+  <data name="black_body_radiation_calc_spectrum" xml:space="preserve">
+    <value>Black body spectrum</value>
+  </data>
+  <data name="black_body_radiation_calc_spectrum_hint" xml:space="preserve">
+    <value>Normalized spectral power (peak = 100%). Dashed line marks the spectrum peak on the calculation grid.</value>
+  </data>
+  <data name="black_body_radiation_calc_axis_wavelength" xml:space="preserve">
+    <value>Wavelength (μm)</value>
+  </data>
+  <data name="black_body_radiation_calc_axis_normalized" xml:space="preserve">
+    <value>Normalized power (%)</value>
+  </data>
+  <data name="black_body_radiation_calc_source_label" xml:space="preserve">
+    <value>Source:</value>
+  </data>
+  <data name="black_body_radiation_calc_source_link" xml:space="preserve">
+    <value>Kurt Hollocher — Geochemistry (Union College)</value>
   </data>
 </root>
 

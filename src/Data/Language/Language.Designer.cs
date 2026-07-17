@@ -315,6 +315,177 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 As CaCO3 的本地化字符串。
+        /// </summary>
+        internal static string alkalinity_calc_as_caco3 {
+            get {
+                return ResourceManager.GetString("alkalinity_calc_as_caco3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 As CO32- 的本地化字符串。
+        /// </summary>
+        internal static string alkalinity_calc_as_co3 {
+            get {
+                return ResourceManager.GetString("alkalinity_calc_as_co3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 As 0.5(CaCO3) 的本地化字符串。
+        /// </summary>
+        internal static string alkalinity_calc_as_half_caco3 {
+            get {
+                return ResourceManager.GetString("alkalinity_calc_as_half_caco3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 As HCO3- 的本地化字符串。
+        /// </summary>
+        internal static string alkalinity_calc_as_hco3 {
+            get {
+                return ResourceManager.GetString("alkalinity_calc_as_hco3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Form 的本地化字符串。
+        /// </summary>
+        internal static string alkalinity_calc_form {
+            get {
+                return ResourceManager.GetString("alkalinity_calc_form", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 HCl molarity 的本地化字符串。
+        /// </summary>
+        internal static string alkalinity_calc_hcl_molarity {
+            get {
+                return ResourceManager.GetString("alkalinity_calc_hcl_molarity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 HCl volume used 的本地化字符串。
+        /// </summary>
+        internal static string alkalinity_calc_hcl_volume {
+            get {
+                return ResourceManager.GetString("alkalinity_calc_hcl_volume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Enter valid titration values (sample volume must be greater than 0). 的本地化字符串。
+        /// </summary>
+        internal static string alkalinity_calc_invalid_input {
+            get {
+                return ResourceManager.GetString("alkalinity_calc_invalid_input", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Reset 的本地化字符串。
+        /// </summary>
+        internal static string alkalinity_calc_reset {
+            get {
+                return ResourceManager.GetString("alkalinity_calc_reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Results 的本地化字符串。
+        /// </summary>
+        internal static string alkalinity_calc_results {
+            get {
+                return ResourceManager.GetString("alkalinity_calc_results", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Blue rows show alkalinity expressed in different equivalent forms and units. 的本地化字符串。
+        /// </summary>
+        internal static string alkalinity_calc_results_hint {
+            get {
+                return ResourceManager.GetString("alkalinity_calc_results_hint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Sample volume 的本地化字符串。
+        /// </summary>
+        internal static string alkalinity_calc_sample_volume {
+            get {
+                return ResourceManager.GetString("alkalinity_calc_sample_volume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Source: 的本地化字符串。
+        /// </summary>
+        internal static string alkalinity_calc_source_label {
+            get {
+                return ResourceManager.GetString("alkalinity_calc_source_label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Kurt Hollocher — Geochemistry (Union College) 的本地化字符串。
+        /// </summary>
+        internal static string alkalinity_calc_source_link {
+            get {
+                return ResourceManager.GetString("alkalinity_calc_source_link", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Alkalinity = {0:G6} meq/L 的本地化字符串。
+        /// </summary>
+        internal static string alkalinity_calc_summary {
+            get {
+                return ResourceManager.GetString("alkalinity_calc_summary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Titration inputs 的本地化字符串。
+        /// </summary>
+        internal static string alkalinity_calc_titration {
+            get {
+                return ResourceManager.GetString("alkalinity_calc_titration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Alkalinity Calculator 的本地化字符串。
+        /// </summary>
+        internal static string alkalinity_calculator {
+            get {
+                return ResourceManager.GetString("alkalinity_calculator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Calculate water alkalinity from HCl titration endpoint 的本地化字符串。
+        /// </summary>
+        internal static string alkalinity_calculator_desc {
+            get {
+                return ResourceManager.GetString("alkalinity_calculator_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Enter titration values to compute alkalinity as HCO3-, CO32-, CaCO3, and 0.5(CaCO3). 的本地化字符串。
+        /// </summary>
+        internal static string alkalinity_calculator_hint {
+            get {
+                return ResourceManager.GetString("alkalinity_calculator_hint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 All data cleared 的本地化字符串。
         /// </summary>
         internal static string all_data_cleared {
@@ -743,6 +914,177 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string batch_updating {
             get {
                 return ResourceManager.GetString("batch_updating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Normalized power (%) 的本地化字符串。
+        /// </summary>
+        internal static string black_body_radiation_calc_axis_normalized {
+            get {
+                return ResourceManager.GetString("black_body_radiation_calc_axis_normalized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Wavelength (μm) 的本地化字符串。
+        /// </summary>
+        internal static string black_body_radiation_calc_axis_wavelength {
+            get {
+                return ResourceManager.GetString("black_body_radiation_calc_axis_wavelength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Temperature 的本地化字符串。
+        /// </summary>
+        internal static string black_body_radiation_calc_input {
+            get {
+                return ResourceManager.GetString("black_body_radiation_calc_input", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Enter a temperature greater than 0 K. 的本地化字符串。
+        /// </summary>
+        internal static string black_body_radiation_calc_invalid_input {
+            get {
+                return ResourceManager.GetString("black_body_radiation_calc_invalid_input", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Radiation laws 的本地化字符串。
+        /// </summary>
+        internal static string black_body_radiation_calc_laws {
+            get {
+                return ResourceManager.GetString("black_body_radiation_calc_laws", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Reset 的本地化字符串。
+        /// </summary>
+        internal static string black_body_radiation_calc_reset {
+            get {
+                return ResourceManager.GetString("black_body_radiation_calc_reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Source: 的本地化字符串。
+        /// </summary>
+        internal static string black_body_radiation_calc_source_label {
+            get {
+                return ResourceManager.GetString("black_body_radiation_calc_source_label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Kurt Hollocher — Geochemistry (Union College) 的本地化字符串。
+        /// </summary>
+        internal static string black_body_radiation_calc_source_link {
+            get {
+                return ResourceManager.GetString("black_body_radiation_calc_source_link", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Black body spectrum 的本地化字符串。
+        /// </summary>
+        internal static string black_body_radiation_calc_spectrum {
+            get {
+                return ResourceManager.GetString("black_body_radiation_calc_spectrum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Normalized spectral power (peak = 100%). Dashed line marks the spectrum peak on the calculation grid. 的本地化字符串。
+        /// </summary>
+        internal static string black_body_radiation_calc_spectrum_hint {
+            get {
+                return ResourceManager.GetString("black_body_radiation_calc_spectrum_hint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Spectrum peak (grid) = {0:G6} μm ({1:G6} nm) 的本地化字符串。
+        /// </summary>
+        internal static string black_body_radiation_calc_spectrum_peak {
+            get {
+                return ResourceManager.GetString("black_body_radiation_calc_spectrum_peak", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Total radiant power = {0:G6} W/m² 的本地化字符串。
+        /// </summary>
+        internal static string black_body_radiation_calc_stefan_result {
+            get {
+                return ResourceManager.GetString("black_body_radiation_calc_stefan_result", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Stefan–Boltzmann law — total radiant power 的本地化字符串。
+        /// </summary>
+        internal static string black_body_radiation_calc_stefan_title {
+            get {
+                return ResourceManager.GetString("black_body_radiation_calc_stefan_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 T 的本地化字符串。
+        /// </summary>
+        internal static string black_body_radiation_calc_temperature {
+            get {
+                return ResourceManager.GetString("black_body_radiation_calc_temperature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Peak wavelength λ_max = {0:G6} μm ({1:G6} nm) 的本地化字符串。
+        /// </summary>
+        internal static string black_body_radiation_calc_wien_result {
+            get {
+                return ResourceManager.GetString("black_body_radiation_calc_wien_result", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Wien’s displacement law — peak-power wavelength 的本地化字符串。
+        /// </summary>
+        internal static string black_body_radiation_calc_wien_title {
+            get {
+                return ResourceManager.GetString("black_body_radiation_calc_wien_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Black Body Radiation Calculator 的本地化字符串。
+        /// </summary>
+        internal static string black_body_radiation_calculator {
+            get {
+                return ResourceManager.GetString("black_body_radiation_calculator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Compute Stefan–Boltzmann power, Wien peak wavelength, and black-body spectrum 的本地化字符串。
+        /// </summary>
+        internal static string black_body_radiation_calculator_desc {
+            get {
+                return ResourceManager.GetString("black_body_radiation_calculator_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Enter temperature (K) to calculate total radiant power, peak wavelength, and the normalized spectral curve. 的本地化字符串。
+        /// </summary>
+        internal static string black_body_radiation_calculator_hint {
+            get {
+                return ResourceManager.GetString("black_body_radiation_calculator_hint", resourceCulture);
             }
         }
         
@@ -6216,6 +6558,186 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Ca 的本地化字符串。
+        /// </summary>
+        internal static string hardness_calc_ca {
+            get {
+                return ResourceManager.GetString("hardness_calc_ca", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Class 的本地化字符串。
+        /// </summary>
+        internal static string hardness_calc_class {
+            get {
+                return ResourceManager.GetString("hardness_calc_class", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Hard 的本地化字符串。
+        /// </summary>
+        internal static string hardness_calc_class_hard {
+            get {
+                return ResourceManager.GetString("hardness_calc_class_hard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Moderately hard 的本地化字符串。
+        /// </summary>
+        internal static string hardness_calc_class_moderately_hard {
+            get {
+                return ResourceManager.GetString("hardness_calc_class_moderately_hard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Soft 的本地化字符串。
+        /// </summary>
+        internal static string hardness_calc_class_soft {
+            get {
+                return ResourceManager.GetString("hardness_calc_class_soft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Very hard 的本地化字符串。
+        /// </summary>
+        internal static string hardness_calc_class_very_hard {
+            get {
+                return ResourceManager.GetString("hardness_calc_class_very_hard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Concentrations 的本地化字符串。
+        /// </summary>
+        internal static string hardness_calc_concentrations {
+            get {
+                return ResourceManager.GetString("hardness_calc_concentrations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Equation: (Mg × {0:0.00}) + (Ca × {1:0.00}) = hardness as CaCO3 的本地化字符串。
+        /// </summary>
+        internal static string hardness_calc_equation {
+            get {
+                return ResourceManager.GetString("hardness_calc_equation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Enter non-negative Mg and Ca concentrations. 的本地化字符串。
+        /// </summary>
+        internal static string hardness_calc_invalid_input {
+            get {
+                return ResourceManager.GetString("hardness_calc_invalid_input", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Mg 的本地化字符串。
+        /// </summary>
+        internal static string hardness_calc_mg {
+            get {
+                return ResourceManager.GetString("hardness_calc_mg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Range 的本地化字符串。
+        /// </summary>
+        internal static string hardness_calc_range {
+            get {
+                return ResourceManager.GetString("hardness_calc_range", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Reset 的本地化字符串。
+        /// </summary>
+        internal static string hardness_calc_reset {
+            get {
+                return ResourceManager.GetString("hardness_calc_reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Source: 的本地化字符串。
+        /// </summary>
+        internal static string hardness_calc_source_label {
+            get {
+                return ResourceManager.GetString("hardness_calc_source_label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Kurt Hollocher — Geochemistry (Union College) 的本地化字符串。
+        /// </summary>
+        internal static string hardness_calc_source_link {
+            get {
+                return ResourceManager.GetString("hardness_calc_source_link", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Hardness = {0:0.0} ppm as CaCO3 的本地化字符串。
+        /// </summary>
+        internal static string hardness_calc_summary {
+            get {
+                return ResourceManager.GetString("hardness_calc_summary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 The highlighted row is the current hardness class. 的本地化字符串。
+        /// </summary>
+        internal static string hardness_calc_usgs_hint {
+            get {
+                return ResourceManager.GetString("hardness_calc_usgs_hint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 USGS general guidelines for classifying water hardness 的本地化字符串。
+        /// </summary>
+        internal static string hardness_calc_usgs_title {
+            get {
+                return ResourceManager.GetString("hardness_calc_usgs_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Hardness Calculator 的本地化字符串。
+        /// </summary>
+        internal static string hardness_calculator {
+            get {
+                return ResourceManager.GetString("hardness_calculator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Calculate water hardness from Mg and Ca concentrations 的本地化字符串。
+        /// </summary>
+        internal static string hardness_calculator_desc {
+            get {
+                return ResourceManager.GetString("hardness_calculator_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Enter Mg and Ca concentrations (ppm) to compute hardness as CaCO3 and USGS hardness class. 的本地化字符串。
+        /// </summary>
+        internal static string hardness_calculator_hint {
+            get {
+                return ResourceManager.GetString("hardness_calculator_hint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Harker Diagram 的本地化字符串。
         /// </summary>
         internal static string harker_diagram {
@@ -9357,6 +9879,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Set as Default Diagram Language 的本地化字符串。
+        /// </summary>
+        internal static string set_default_diagram_language {
+            get {
+                return ResourceManager.GetString("set_default_diagram_language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Setting 的本地化字符串。
         /// </summary>
         internal static string Setting {
@@ -10779,11 +11310,29 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 {0} templates have newer versions that are incompatible with this app. Please upgrade the software to update them. 的本地化字符串。
+        /// </summary>
+        internal static string update_blocked_need_app_upgrade {
+            get {
+                return ResourceManager.GetString("update_blocked_need_app_upgrade", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Download complete. The application will exit and launch the installer wizard. Continue? 的本地化字符串。
         /// </summary>
         internal static string update_download_confirm_shutdown {
             get {
                 return ResourceManager.GetString("update_download_confirm_shutdown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 {0} more could not be updated because their version is too high for this app. Please upgrade the software. 的本地化字符串。
+        /// </summary>
+        internal static string update_incompatible_need_app_upgrade_count {
+            get {
+                return ResourceManager.GetString("update_incompatible_need_app_upgrade_count", resourceCulture);
             }
         }
         

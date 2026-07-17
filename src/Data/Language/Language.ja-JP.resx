@@ -2618,6 +2618,9 @@
   <data name="diagram_editor_basic_settings" xml:space="preserve">
     <value>基本設定</value>
   </data>
+  <data name="set_default_diagram_language" xml:space="preserve">
+    <value>デフォルト図解言語に設定</value>
+  </data>
   <data name="diagram_editor_content_translation" xml:space="preserve">
     <value>コンテンツ翻訳</value>
   </data>
@@ -4067,6 +4070,180 @@
   </data>
   <data name="geo_hint_no_search_results" xml:space="preserve">
     <value>検索条件に一致する温圧計テンプレートがありません。</value>
+  </data>
+  <data name="alkalinity_calculator" xml:space="preserve">
+    <value>アルカリ度計算機</value>
+  </data>
+  <data name="alkalinity_calculator_desc" xml:space="preserve">
+    <value>HCl 滴定終点から水のアルカリ度を計算</value>
+  </data>
+  <data name="alkalinity_calculator_hint" xml:space="preserve">
+    <value>滴定値を入力し、HCO3-、CO32-、CaCO3、0.5(CaCO3) としてのアルカリ度を計算します。</value>
+  </data>
+  <data name="alkalinity_calc_titration" xml:space="preserve">
+    <value>滴定入力</value>
+  </data>
+  <data name="alkalinity_calc_hcl_molarity" xml:space="preserve">
+    <value>HCl 濃度</value>
+  </data>
+  <data name="alkalinity_calc_sample_volume" xml:space="preserve">
+    <value>試料体積</value>
+  </data>
+  <data name="alkalinity_calc_hcl_volume" xml:space="preserve">
+    <value>使用 HCl 体積</value>
+  </data>
+  <data name="alkalinity_calc_reset" xml:space="preserve">
+    <value>リセット</value>
+  </data>
+  <data name="alkalinity_calc_summary" xml:space="preserve">
+    <value>アルカリ度 = {0:G6} meq/L</value>
+  </data>
+  <data name="alkalinity_calc_invalid_input" xml:space="preserve">
+    <value>有効な滴定値を入力してください（試料体積は 0 より大きくする必要があります）。</value>
+  </data>
+  <data name="alkalinity_calc_results" xml:space="preserve">
+    <value>計算結果</value>
+  </data>
+  <data name="alkalinity_calc_results_hint" xml:space="preserve">
+    <value>青い行は、異なる当量形式と単位で表したアルカリ度です。</value>
+  </data>
+  <data name="alkalinity_calc_form" xml:space="preserve">
+    <value>表示形式</value>
+  </data>
+  <data name="alkalinity_calc_as_hco3" xml:space="preserve">
+    <value>HCO3- として</value>
+  </data>
+  <data name="alkalinity_calc_as_co3" xml:space="preserve">
+    <value>CO32- として</value>
+  </data>
+  <data name="alkalinity_calc_as_caco3" xml:space="preserve">
+    <value>CaCO3 として</value>
+  </data>
+  <data name="alkalinity_calc_as_half_caco3" xml:space="preserve">
+    <value>0.5(CaCO3) として</value>
+  </data>
+  <data name="alkalinity_calc_source_label" xml:space="preserve">
+    <value>出典：</value>
+  </data>
+  <data name="alkalinity_calc_source_link" xml:space="preserve">
+    <value>Kurt Hollocher — Geochemistry（Union College）</value>
+  </data>
+  <data name="hardness_calculator" xml:space="preserve">
+    <value>硬度計算機</value>
+  </data>
+  <data name="hardness_calculator_desc" xml:space="preserve">
+    <value>Mg・Ca 濃度から水の硬度を計算</value>
+  </data>
+  <data name="hardness_calculator_hint" xml:space="preserve">
+    <value>Mg・Ca 濃度（ppm）を入力し、CaCO3 としての硬度と USGS 硬度区分を計算します。</value>
+  </data>
+  <data name="hardness_calc_concentrations" xml:space="preserve">
+    <value>濃度入力</value>
+  </data>
+  <data name="hardness_calc_mg" xml:space="preserve">
+    <value>Mg</value>
+  </data>
+  <data name="hardness_calc_ca" xml:space="preserve">
+    <value>Ca</value>
+  </data>
+  <data name="hardness_calc_reset" xml:space="preserve">
+    <value>リセット</value>
+  </data>
+  <data name="hardness_calc_summary" xml:space="preserve">
+    <value>硬度 = {0:0.0} ppm（CaCO3 として）</value>
+  </data>
+  <data name="hardness_calc_invalid_input" xml:space="preserve">
+    <value>非負の Mg・Ca 濃度を入力してください。</value>
+  </data>
+  <data name="hardness_calc_equation" xml:space="preserve">
+    <value>式：(Mg × {0:0.00}) + (Ca × {1:0.00}) = CaCO3 としての硬度</value>
+  </data>
+  <data name="hardness_calc_usgs_title" xml:space="preserve">
+    <value>USGS 水硬度分類の一般指針</value>
+  </data>
+  <data name="hardness_calc_usgs_hint" xml:space="preserve">
+    <value>ハイライト行が現在の硬度区分です。</value>
+  </data>
+  <data name="hardness_calc_class" xml:space="preserve">
+    <value>区分</value>
+  </data>
+  <data name="hardness_calc_range" xml:space="preserve">
+    <value>範囲</value>
+  </data>
+  <data name="hardness_calc_class_soft" xml:space="preserve">
+    <value>軟水</value>
+  </data>
+  <data name="hardness_calc_class_moderately_hard" xml:space="preserve">
+    <value>やや硬水</value>
+  </data>
+  <data name="hardness_calc_class_hard" xml:space="preserve">
+    <value>硬水</value>
+  </data>
+  <data name="hardness_calc_class_very_hard" xml:space="preserve">
+    <value>非常に硬水</value>
+  </data>
+  <data name="hardness_calc_source_label" xml:space="preserve">
+    <value>出典：</value>
+  </data>
+  <data name="hardness_calc_source_link" xml:space="preserve">
+    <value>Kurt Hollocher — Geochemistry（Union College）</value>
+  </data>
+  <data name="black_body_radiation_calculator" xml:space="preserve">
+    <value>黒体放射計算機</value>
+  </data>
+  <data name="black_body_radiation_calculator_desc" xml:space="preserve">
+    <value>シュテファン–ボルツマン放射強度、ウィーンピーク波長、黒体スペクトルを計算</value>
+  </data>
+  <data name="black_body_radiation_calculator_hint" xml:space="preserve">
+    <value>温度（K）を入力して、総放射強度、ピーク波長、正規化スペクトル曲線を計算します。</value>
+  </data>
+  <data name="black_body_radiation_calc_input" xml:space="preserve">
+    <value>温度</value>
+  </data>
+  <data name="black_body_radiation_calc_temperature" xml:space="preserve">
+    <value>T</value>
+  </data>
+  <data name="black_body_radiation_calc_reset" xml:space="preserve">
+    <value>リセット</value>
+  </data>
+  <data name="black_body_radiation_calc_invalid_input" xml:space="preserve">
+    <value>0 K より大きい温度を入力してください。</value>
+  </data>
+  <data name="black_body_radiation_calc_laws" xml:space="preserve">
+    <value>放射法則</value>
+  </data>
+  <data name="black_body_radiation_calc_stefan_title" xml:space="preserve">
+    <value>シュテファン–ボルツマンの法則 — 総放射強度</value>
+  </data>
+  <data name="black_body_radiation_calc_stefan_result" xml:space="preserve">
+    <value>総放射強度 = {0:G6} W/m²</value>
+  </data>
+  <data name="black_body_radiation_calc_wien_title" xml:space="preserve">
+    <value>ウィーンの変位則 — ピーク波長</value>
+  </data>
+  <data name="black_body_radiation_calc_wien_result" xml:space="preserve">
+    <value>ピーク波長 λ_max = {0:G6} μm（{1:G6} nm）</value>
+  </data>
+  <data name="black_body_radiation_calc_spectrum_peak" xml:space="preserve">
+    <value>スペクトルピーク（格子）= {0:G6} μm（{1:G6} nm）</value>
+  </data>
+  <data name="black_body_radiation_calc_spectrum" xml:space="preserve">
+    <value>黒体スペクトル</value>
+  </data>
+  <data name="black_body_radiation_calc_spectrum_hint" xml:space="preserve">
+    <value>正規化スペクトル強度（ピーク = 100%）。破線は計算格子上のスペクトルピークを示します。</value>
+  </data>
+  <data name="black_body_radiation_calc_axis_wavelength" xml:space="preserve">
+    <value>波長（μm）</value>
+  </data>
+  <data name="black_body_radiation_calc_axis_normalized" xml:space="preserve">
+    <value>正規化強度（%）</value>
+  </data>
+  <data name="black_body_radiation_calc_source_label" xml:space="preserve">
+    <value>出典：</value>
+  </data>
+  <data name="black_body_radiation_calc_source_link" xml:space="preserve">
+    <value>Kurt Hollocher — Geochemistry（Union College）</value>
   </data>
 </root>
 

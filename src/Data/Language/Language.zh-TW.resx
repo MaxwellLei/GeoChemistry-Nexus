@@ -2807,6 +2807,9 @@
   <data name="diagram_editor_basic_settings" xml:space="preserve">
     <value>基本設定</value>
   </data>
+  <data name="set_default_diagram_language" xml:space="preserve">
+    <value>設為預設圖解語言</value>
+  </data>
   <data name="diagram_editor_content_translation" xml:space="preserve">
     <value>內容翻譯</value>
   </data>
@@ -3992,6 +3995,180 @@
   </data>
   <data name="plot_toolbar_edit_mode_tooltip" xml:space="preserve">
     <value>編輯模式 (Alt+3)</value>
+  </data>
+  <data name="alkalinity_calculator" xml:space="preserve">
+    <value>鹼度計算器</value>
+  </data>
+  <data name="alkalinity_calculator_desc" xml:space="preserve">
+    <value>根據 HCl 滴定終點計算水樣鹼度</value>
+  </data>
+  <data name="alkalinity_calculator_hint" xml:space="preserve">
+    <value>輸入滴定參數，計算以 HCO3-、CO32-、CaCO3、0.5(CaCO3) 表示的鹼度。</value>
+  </data>
+  <data name="alkalinity_calc_titration" xml:space="preserve">
+    <value>滴定輸入</value>
+  </data>
+  <data name="alkalinity_calc_hcl_molarity" xml:space="preserve">
+    <value>HCl 濃度</value>
+  </data>
+  <data name="alkalinity_calc_sample_volume" xml:space="preserve">
+    <value>水樣體積</value>
+  </data>
+  <data name="alkalinity_calc_hcl_volume" xml:space="preserve">
+    <value>消耗 HCl 體積</value>
+  </data>
+  <data name="alkalinity_calc_reset" xml:space="preserve">
+    <value>重置</value>
+  </data>
+  <data name="alkalinity_calc_summary" xml:space="preserve">
+    <value>鹼度 = {0:G6} meq/L</value>
+  </data>
+  <data name="alkalinity_calc_invalid_input" xml:space="preserve">
+    <value>請輸入有效的滴定參數（水樣體積須大於 0）。</value>
+  </data>
+  <data name="alkalinity_calc_results" xml:space="preserve">
+    <value>計算結果</value>
+  </data>
+  <data name="alkalinity_calc_results_hint" xml:space="preserve">
+    <value>藍色區域為不同當量形式與單位下的鹼度結果。</value>
+  </data>
+  <data name="alkalinity_calc_form" xml:space="preserve">
+    <value>表示形式</value>
+  </data>
+  <data name="alkalinity_calc_as_hco3" xml:space="preserve">
+    <value>以 HCO3- 計</value>
+  </data>
+  <data name="alkalinity_calc_as_co3" xml:space="preserve">
+    <value>以 CO32- 計</value>
+  </data>
+  <data name="alkalinity_calc_as_caco3" xml:space="preserve">
+    <value>以 CaCO3 計</value>
+  </data>
+  <data name="alkalinity_calc_as_half_caco3" xml:space="preserve">
+    <value>以 0.5(CaCO3) 計</value>
+  </data>
+  <data name="alkalinity_calc_source_label" xml:space="preserve">
+    <value>來源：</value>
+  </data>
+  <data name="alkalinity_calc_source_link" xml:space="preserve">
+    <value>Kurt Hollocher — Geochemistry（Union College）</value>
+  </data>
+  <data name="hardness_calculator" xml:space="preserve">
+    <value>硬度計算器</value>
+  </data>
+  <data name="hardness_calculator_desc" xml:space="preserve">
+    <value>根據 Mg、Ca 濃度計算水硬度</value>
+  </data>
+  <data name="hardness_calculator_hint" xml:space="preserve">
+    <value>輸入 Mg、Ca 濃度（ppm），計算以 CaCO3 表示的硬度及 USGS 硬度分級。</value>
+  </data>
+  <data name="hardness_calc_concentrations" xml:space="preserve">
+    <value>濃度輸入</value>
+  </data>
+  <data name="hardness_calc_mg" xml:space="preserve">
+    <value>Mg</value>
+  </data>
+  <data name="hardness_calc_ca" xml:space="preserve">
+    <value>Ca</value>
+  </data>
+  <data name="hardness_calc_reset" xml:space="preserve">
+    <value>重置</value>
+  </data>
+  <data name="hardness_calc_summary" xml:space="preserve">
+    <value>硬度 = {0:0.0} ppm（以 CaCO3 計）</value>
+  </data>
+  <data name="hardness_calc_invalid_input" xml:space="preserve">
+    <value>請輸入非負的 Mg、Ca 濃度。</value>
+  </data>
+  <data name="hardness_calc_equation" xml:space="preserve">
+    <value>公式：(Mg × {0:0.00}) + (Ca × {1:0.00}) = 以 CaCO3 計的硬度</value>
+  </data>
+  <data name="hardness_calc_usgs_title" xml:space="preserve">
+    <value>USGS 水硬度分級通用指南</value>
+  </data>
+  <data name="hardness_calc_usgs_hint" xml:space="preserve">
+    <value>高亮行為當前硬度等級。</value>
+  </data>
+  <data name="hardness_calc_class" xml:space="preserve">
+    <value>等級</value>
+  </data>
+  <data name="hardness_calc_range" xml:space="preserve">
+    <value>範圍</value>
+  </data>
+  <data name="hardness_calc_class_soft" xml:space="preserve">
+    <value>軟水</value>
+  </data>
+  <data name="hardness_calc_class_moderately_hard" xml:space="preserve">
+    <value>中硬水</value>
+  </data>
+  <data name="hardness_calc_class_hard" xml:space="preserve">
+    <value>硬水</value>
+  </data>
+  <data name="hardness_calc_class_very_hard" xml:space="preserve">
+    <value>極硬水</value>
+  </data>
+  <data name="hardness_calc_source_label" xml:space="preserve">
+    <value>來源：</value>
+  </data>
+  <data name="hardness_calc_source_link" xml:space="preserve">
+    <value>Kurt Hollocher — Geochemistry（Union College）</value>
+  </data>
+  <data name="black_body_radiation_calculator" xml:space="preserve">
+    <value>黑體輻射計算器</value>
+  </data>
+  <data name="black_body_radiation_calculator_desc" xml:space="preserve">
+    <value>計算斯特藩–玻爾茲曼總輻射功率、維恩峰值波長與黑體光譜</value>
+  </data>
+  <data name="black_body_radiation_calculator_hint" xml:space="preserve">
+    <value>輸入溫度（K），計算總輻射功率、峰值波長及歸一化光譜曲線。</value>
+  </data>
+  <data name="black_body_radiation_calc_input" xml:space="preserve">
+    <value>溫度</value>
+  </data>
+  <data name="black_body_radiation_calc_temperature" xml:space="preserve">
+    <value>T</value>
+  </data>
+  <data name="black_body_radiation_calc_reset" xml:space="preserve">
+    <value>重設</value>
+  </data>
+  <data name="black_body_radiation_calc_invalid_input" xml:space="preserve">
+    <value>請輸入大於 0 K 的溫度。</value>
+  </data>
+  <data name="black_body_radiation_calc_laws" xml:space="preserve">
+    <value>輻射定律</value>
+  </data>
+  <data name="black_body_radiation_calc_stefan_title" xml:space="preserve">
+    <value>斯特藩–玻爾茲曼定律 — 總輻射功率</value>
+  </data>
+  <data name="black_body_radiation_calc_stefan_result" xml:space="preserve">
+    <value>總輻射功率 = {0:G6} W/m²</value>
+  </data>
+  <data name="black_body_radiation_calc_wien_title" xml:space="preserve">
+    <value>維恩位移定律 — 峰值功率波長</value>
+  </data>
+  <data name="black_body_radiation_calc_wien_result" xml:space="preserve">
+    <value>峰值波長 λ_max = {0:G6} μm（{1:G6} nm）</value>
+  </data>
+  <data name="black_body_radiation_calc_spectrum_peak" xml:space="preserve">
+    <value>光譜峰值（網格）= {0:G6} μm（{1:G6} nm）</value>
+  </data>
+  <data name="black_body_radiation_calc_spectrum" xml:space="preserve">
+    <value>黑體光譜</value>
+  </data>
+  <data name="black_body_radiation_calc_spectrum_hint" xml:space="preserve">
+    <value>歸一化光譜功率（峰值 = 100%）。虛線標記計算網格上的光譜峰值。</value>
+  </data>
+  <data name="black_body_radiation_calc_axis_wavelength" xml:space="preserve">
+    <value>波長（μm）</value>
+  </data>
+  <data name="black_body_radiation_calc_axis_normalized" xml:space="preserve">
+    <value>歸一化功率（%）</value>
+  </data>
+  <data name="black_body_radiation_calc_source_label" xml:space="preserve">
+    <value>來源：</value>
+  </data>
+  <data name="black_body_radiation_calc_source_link" xml:space="preserve">
+    <value>Kurt Hollocher — Geochemistry（Union College）</value>
   </data>
 </root>
 

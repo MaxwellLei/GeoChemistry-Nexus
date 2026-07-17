@@ -208,11 +208,15 @@ namespace GeoChemistryNexus.ViewModels
                 {
                     foreach (var lang in _workingTemplate.NodeList.Translations.Keys)
                         LanguageParts.Add(new LanguageTagModel { Text = lang });
-                    UpdateLanguageDefaultStatus();
                 }
 
-                string defaultLang = _workingTemplate.DefaultLanguage;
-                if (_workingTemplate.NodeList?.Translations != null &&
+                // ★ 以模板 DefaultLanguage 为准；字典 Keys 顺序不等于默认语言
+                EnsureDefaultLanguageFirst(_workingTemplate.DefaultLanguage);
+                UpdateLanguageDefaultStatus();
+
+                string defaultLang = DefaultLanguageCode;
+                if (!string.IsNullOrEmpty(defaultLang) &&
+                    _workingTemplate.NodeList?.Translations != null &&
                     _workingTemplate.NodeList.Translations.TryGetValue(defaultLang, out var path))
                 {
                     var parts = path.Split('>', StringSplitOptions.RemoveEmptyEntries)
@@ -360,6 +364,37 @@ namespace GeoChemistryNexus.ViewModels
             for (int i = 0; i < LanguageParts.Count; i++)
                 LanguageParts[i].IsDefault = i == 0;
             OnPropertyChanged(nameof(DefaultLanguageCode));
+        }
+
+        /// <summary>
+        /// 将模板默认语言移到 LanguageParts 首位（用于加载时纠正字典 Keys 顺序）。
+        /// </summary>
+        private void EnsureDefaultLanguageFirst(string? defaultLanguage)
+        {
+            if (string.IsNullOrWhiteSpace(defaultLanguage) || LanguageParts.Count == 0)
+                return;
+
+            int idx = LanguageParts.ToList().FindIndex(
+                p => p.Text.Equals(defaultLanguage, StringComparison.OrdinalIgnoreCase));
+            if (idx > 0)
+                LanguageParts.Move(idx, 0);
+            else if (idx < 0)
+                LanguageParts.Insert(0, new LanguageTagModel { Text = defaultLanguage });
+        }
+
+        /// <summary>
+        /// 将指定语言移到 LanguageParts 首位，作为默认图解语言。
+        /// 不使用带参 CanExecute：ContextMenu 打开前 CommandParameter 常为 null，会导致菜单项一直灰显。
+        /// </summary>
+        [RelayCommand]
+        private void SetDefaultLanguage(LanguageTagModel? item)
+        {
+            if (item == null) return;
+
+            int idx = LanguageParts.IndexOf(item);
+            if (idx <= 0) return;
+
+            LanguageParts.Move(idx, 0);
         }
 
         public bool TryAddLanguage(string code)

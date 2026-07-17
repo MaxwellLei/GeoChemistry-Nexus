@@ -2618,6 +2618,9 @@
   <data name="diagram_editor_basic_settings" xml:space="preserve">
     <value>Grundeinstellungen</value>
   </data>
+  <data name="set_default_diagram_language" xml:space="preserve">
+    <value>Als Standard-Diagrammsprache festlegen</value>
+  </data>
   <data name="diagram_editor_content_translation" xml:space="preserve">
     <value>Inhaltsübersetzung</value>
   </data>
@@ -4067,6 +4070,180 @@
   </data>
   <data name="geo_hint_no_search_results" xml:space="preserve">
     <value>Keine Geothermobarometer-Vorlagen entsprechen Ihrer Suche.</value>
+  </data>
+  <data name="alkalinity_calculator" xml:space="preserve">
+    <value>Alkalinitätsrechner</value>
+  </data>
+  <data name="alkalinity_calculator_desc" xml:space="preserve">
+    <value>Wasseralkalinität aus dem HCl-Titrationsendpunkt berechnen</value>
+  </data>
+  <data name="alkalinity_calculator_hint" xml:space="preserve">
+    <value>Titrationswerte eingeben, um die Alkalinität als HCO3-, CO32-, CaCO3 und 0.5(CaCO3) zu berechnen.</value>
+  </data>
+  <data name="alkalinity_calc_titration" xml:space="preserve">
+    <value>Titrationseingaben</value>
+  </data>
+  <data name="alkalinity_calc_hcl_molarity" xml:space="preserve">
+    <value>HCl-Molarität</value>
+  </data>
+  <data name="alkalinity_calc_sample_volume" xml:space="preserve">
+    <value>Probenvolumen</value>
+  </data>
+  <data name="alkalinity_calc_hcl_volume" xml:space="preserve">
+    <value>Verbrauchtes HCl-Volumen</value>
+  </data>
+  <data name="alkalinity_calc_reset" xml:space="preserve">
+    <value>Zurücksetzen</value>
+  </data>
+  <data name="alkalinity_calc_summary" xml:space="preserve">
+    <value>Alkalinität = {0:G6} meq/L</value>
+  </data>
+  <data name="alkalinity_calc_invalid_input" xml:space="preserve">
+    <value>Gültige Titrationswerte eingeben (Probenvolumen muss größer als 0 sein).</value>
+  </data>
+  <data name="alkalinity_calc_results" xml:space="preserve">
+    <value>Ergebnisse</value>
+  </data>
+  <data name="alkalinity_calc_results_hint" xml:space="preserve">
+    <value>Blaue Zeilen zeigen die Alkalinität in verschiedenen Äquivalentformen und Einheiten.</value>
+  </data>
+  <data name="alkalinity_calc_form" xml:space="preserve">
+    <value>Form</value>
+  </data>
+  <data name="alkalinity_calc_as_hco3" xml:space="preserve">
+    <value>Als HCO3-</value>
+  </data>
+  <data name="alkalinity_calc_as_co3" xml:space="preserve">
+    <value>Als CO32-</value>
+  </data>
+  <data name="alkalinity_calc_as_caco3" xml:space="preserve">
+    <value>Als CaCO3</value>
+  </data>
+  <data name="alkalinity_calc_as_half_caco3" xml:space="preserve">
+    <value>Als 0.5(CaCO3)</value>
+  </data>
+  <data name="alkalinity_calc_source_label" xml:space="preserve">
+    <value>Quelle:</value>
+  </data>
+  <data name="alkalinity_calc_source_link" xml:space="preserve">
+    <value>Kurt Hollocher — Geochemistry (Union College)</value>
+  </data>
+  <data name="hardness_calculator" xml:space="preserve">
+    <value>Härterechner</value>
+  </data>
+  <data name="hardness_calculator_desc" xml:space="preserve">
+    <value>Wasserhärte aus Mg- und Ca-Konzentrationen berechnen</value>
+  </data>
+  <data name="hardness_calculator_hint" xml:space="preserve">
+    <value>Mg- und Ca-Konzentrationen (ppm) eingeben, um die Härte als CaCO3 und die USGS-Härteklasse zu berechnen.</value>
+  </data>
+  <data name="hardness_calc_concentrations" xml:space="preserve">
+    <value>Konzentrationen</value>
+  </data>
+  <data name="hardness_calc_mg" xml:space="preserve">
+    <value>Mg</value>
+  </data>
+  <data name="hardness_calc_ca" xml:space="preserve">
+    <value>Ca</value>
+  </data>
+  <data name="hardness_calc_reset" xml:space="preserve">
+    <value>Zurücksetzen</value>
+  </data>
+  <data name="hardness_calc_summary" xml:space="preserve">
+    <value>Härte = {0:0.0} ppm als CaCO3</value>
+  </data>
+  <data name="hardness_calc_invalid_input" xml:space="preserve">
+    <value>Nichtnegative Mg- und Ca-Konzentrationen eingeben.</value>
+  </data>
+  <data name="hardness_calc_equation" xml:space="preserve">
+    <value>Gleichung: (Mg × {0:0.00}) + (Ca × {1:0.00}) = Härte als CaCO3</value>
+  </data>
+  <data name="hardness_calc_usgs_title" xml:space="preserve">
+    <value>USGS-Richtlinien zur Klassifizierung der Wasserhärte</value>
+  </data>
+  <data name="hardness_calc_usgs_hint" xml:space="preserve">
+    <value>Die hervorgehobene Zeile ist die aktuelle Härteklasse.</value>
+  </data>
+  <data name="hardness_calc_class" xml:space="preserve">
+    <value>Klasse</value>
+  </data>
+  <data name="hardness_calc_range" xml:space="preserve">
+    <value>Bereich</value>
+  </data>
+  <data name="hardness_calc_class_soft" xml:space="preserve">
+    <value>Weich</value>
+  </data>
+  <data name="hardness_calc_class_moderately_hard" xml:space="preserve">
+    <value>Mäßig hart</value>
+  </data>
+  <data name="hardness_calc_class_hard" xml:space="preserve">
+    <value>Hart</value>
+  </data>
+  <data name="hardness_calc_class_very_hard" xml:space="preserve">
+    <value>Sehr hart</value>
+  </data>
+  <data name="hardness_calc_source_label" xml:space="preserve">
+    <value>Quelle:</value>
+  </data>
+  <data name="hardness_calc_source_link" xml:space="preserve">
+    <value>Kurt Hollocher — Geochemistry (Union College)</value>
+  </data>
+  <data name="black_body_radiation_calculator" xml:space="preserve">
+    <value>Schwarzkörperstrahlungsrechner</value>
+  </data>
+  <data name="black_body_radiation_calculator_desc" xml:space="preserve">
+    <value>Stefan-Boltzmann-Leistung, Wien-Peakwellenlänge und Schwarzkörperspektrum berechnen</value>
+  </data>
+  <data name="black_body_radiation_calculator_hint" xml:space="preserve">
+    <value>Temperatur (K) eingeben, um Gesamtleistung, Peakwellenlänge und die normalisierte Spektralkurve zu berechnen.</value>
+  </data>
+  <data name="black_body_radiation_calc_input" xml:space="preserve">
+    <value>Temperatur</value>
+  </data>
+  <data name="black_body_radiation_calc_temperature" xml:space="preserve">
+    <value>T</value>
+  </data>
+  <data name="black_body_radiation_calc_reset" xml:space="preserve">
+    <value>Zurücksetzen</value>
+  </data>
+  <data name="black_body_radiation_calc_invalid_input" xml:space="preserve">
+    <value>Temperatur größer als 0 K eingeben.</value>
+  </data>
+  <data name="black_body_radiation_calc_laws" xml:space="preserve">
+    <value>Strahlungsgesetze</value>
+  </data>
+  <data name="black_body_radiation_calc_stefan_title" xml:space="preserve">
+    <value>Stefan-Boltzmann-Gesetz — Gesamtleistung</value>
+  </data>
+  <data name="black_body_radiation_calc_stefan_result" xml:space="preserve">
+    <value>Gesamtleistung = {0:G6} W/m²</value>
+  </data>
+  <data name="black_body_radiation_calc_wien_title" xml:space="preserve">
+    <value>Wiensches Verschiebungsgesetz — Peakwellenlänge</value>
+  </data>
+  <data name="black_body_radiation_calc_wien_result" xml:space="preserve">
+    <value>Peakwellenlänge λ_max = {0:G6} μm ({1:G6} nm)</value>
+  </data>
+  <data name="black_body_radiation_calc_spectrum_peak" xml:space="preserve">
+    <value>Spektrumpeak (Raster) = {0:G6} μm ({1:G6} nm)</value>
+  </data>
+  <data name="black_body_radiation_calc_spectrum" xml:space="preserve">
+    <value>Schwarzkörperspektrum</value>
+  </data>
+  <data name="black_body_radiation_calc_spectrum_hint" xml:space="preserve">
+    <value>Normalisierte Spektralleistung (Peak = 100%). Die gestrichelte Linie markiert den Spektrumpeak im Rechenraster.</value>
+  </data>
+  <data name="black_body_radiation_calc_axis_wavelength" xml:space="preserve">
+    <value>Wellenlänge (μm)</value>
+  </data>
+  <data name="black_body_radiation_calc_axis_normalized" xml:space="preserve">
+    <value>Normalisierte Leistung (%)</value>
+  </data>
+  <data name="black_body_radiation_calc_source_label" xml:space="preserve">
+    <value>Quelle:</value>
+  </data>
+  <data name="black_body_radiation_calc_source_link" xml:space="preserve">
+    <value>Kurt Hollocher — Geochemistry (Union College)</value>
   </data>
 </root>
 

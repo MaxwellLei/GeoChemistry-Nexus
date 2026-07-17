@@ -171,6 +171,7 @@ namespace GeoChemistryNexus.ViewModels
 
             _dataGrid = grid;
             ReoGridImeHelper.Attach(grid);
+            ReoGridDoubleClickFillHelper.Attach(grid); // 双击填充柄自动向下填充（类似 Excel）
 
             if (grid.Worksheets.Count == 0)
             {

@@ -249,10 +249,15 @@ namespace GeoChemistryNexus.Models
         /// <summary>已从服务器清单下架、待删除的本地官方温压计实体 ID</summary>
         public List<Guid> Removals { get; set; } = new();
 
+        /// <summary>服务器版本高于当前程序格式、无法下载更新的条目</summary>
+        public List<PluginIndexEntry> RequiresAppUpgrade { get; set; } = new();
+
         /// <summary>本次检查是否同步了矿物分类翻译文件</summary>
         public bool MineralCategoriesSynced { get; set; }
 
         public bool HasChanges => Updates.Count > 0 || Removals.Count > 0;
+
+        public int RequiresAppUpgradeCount => RequiresAppUpgrade.Count;
     }
 
     /// <summary>
