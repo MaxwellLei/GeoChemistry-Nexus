@@ -51,9 +51,18 @@ namespace GeoChemistryNexus.Helpers
         public static bool IsCustomImage(string filePath) => !IsBuiltInImage(filePath);
 
         /// <summary>
+        /// CoverFlow 预览用解码宽度（UI 高度约 140，无需全分辨率）。
+        /// </summary>
+        public const int CoverFlowDecodePixelWidth = 480;
+
+        /// <summary>
         /// 将图片完整读入内存后再解码，避免 BitmapImage/BitmapFrame 按 URI 加载时锁定磁盘文件。
         /// </summary>
-        public static BitmapImage? LoadBitmapWithoutFileLock(string filePath)
+        /// <param name="filePath">图片路径</param>
+        /// <param name="decodePixelWidth">
+        /// 解码宽度；大于 0 时按此宽度缩略解码以降低内存，0 表示按原始分辨率解码。
+        /// </param>
+        public static BitmapImage? LoadBitmapWithoutFileLock(string filePath, int decodePixelWidth = 0)
         {
             if (string.IsNullOrWhiteSpace(filePath) || !File.Exists(filePath))
                 return null;
@@ -66,6 +75,8 @@ namespace GeoChemistryNexus.Helpers
                 {
                     image.BeginInit();
                     image.CacheOption = BitmapCacheOption.OnLoad;
+                    if (decodePixelWidth > 0)
+                        image.DecodePixelWidth = decodePixelWidth;
                     image.StreamSource = stream;
                     image.EndInit();
                 }

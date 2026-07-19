@@ -1503,15 +1503,11 @@
         <Setter Property="Height" Value="48"/>
         <Setter Property="Background" Value="White"/>
         <Setter Property="CornerRadius" Value="12"/>
-        <Setter Property="BorderBrush" Value="#14000000"/>
+        <Setter Property="BorderBrush" Value="#1A000000"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
-        <Setter Property="Effect">
-            <Setter.Value>
-                <DropShadowEffect BlurRadius="6" ShadowDepth="1" Direction="270" Color="#26000000" Opacity="0.35"/>
-            </Setter.Value>
-        </Setter>
+        <!-- Avoid per-tile DropShadowEffect: it forces expensive bitmap effects on every group switch -->
         <Setter Property="RenderTransform">
             <Setter.Value>
                 <ScaleTransform ScaleX="1" ScaleY="1"/>
@@ -1520,6 +1516,7 @@
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="#FAFAFA"/>
+                <Setter Property="BorderBrush" Value="#33000000"/>
                 <Setter Property="RenderTransform">
                     <Setter.Value>
                         <ScaleTransform ScaleX="1.03" ScaleY="1.03"/>

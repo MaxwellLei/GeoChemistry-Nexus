@@ -1450,13 +1450,10 @@
                                 </Grid>
                             </Border>
 
-                            <!-- 计算步骤列表 -->
-                            <hc:ScrollViewer x:Name="CalculationDetailScrollViewer" Grid.Row="1"
-                                             VerticalScrollBarVisibility="Auto"
-                                             HorizontalScrollBarVisibility="Auto"
-                                             Padding="0">
-                                <hc:ScrollViewer.Style>
-                                    <Style TargetType="hc:ScrollViewer" BasedOn="{StaticResource {x:Type hc:ScrollViewer}}">
+                            <!-- 计算步骤列表 + 异步加载遮罩 -->
+                            <Grid Grid.Row="1">
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
                                         <Setter Property="Visibility" Value="Visible"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsDetailPanelMinimized}" Value="True">
@@ -1464,135 +1461,157 @@
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
-                                </hc:ScrollViewer.Style>
-                                <ItemsControl ItemsSource="{Binding CalculationSteps}" Margin="8,4,8,8">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <Border Margin="0,1" Padding="10,6" CornerRadius="4"
-                                                    Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                <Border.Style>
-                                                    <Style TargetType="Border">
-                                                        <Setter Property="Background" Value="Transparent"/>
-                                                        <Setter Property="Cursor" Value="Arrow"/>
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding IsHighlight}" Value="True">
-                                                                <Setter Property="Background" Value="#FFFDE7"/>
-                                                            </DataTrigger>
-                                                            <DataTrigger Binding="{Binding IsResult}" Value="True">
-                                                                <Setter Property="Background" Value="#F0F7FF"/>
-                                                            </DataTrigger>
-                                                            <DataTrigger Binding="{Binding IsSeparator}" Value="True">
-                                                                <Setter Property="Background" Value="#FAFAFA"/>
-                                                                <Setter Property="Cursor" Value="Hand"/>
-                                                            </DataTrigger>
-                                                            <DataTrigger Binding="{Binding HasCustomBackground}" Value="True">
-                                                                <Setter Property="Background" Value="{Binding BackgroundColor, Converter={StaticResource HexToBrushConverter}}"/>
-                                                            </DataTrigger>
-                                                            <Trigger Property="IsMouseOver" Value="True">
-                                                                <Setter Property="Background" Value="#F5F5F7"/>
-                                                            </Trigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </Border.Style>
-                                                <Border.InputBindings>
-                                                    <MouseBinding MouseAction="LeftClick"
-                                                                  Command="{Binding DataContext.ToggleCalculationGroupCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                                  CommandParameter="{Binding}"/>
-                                                </Border.InputBindings>
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                        <ColumnDefinition Width="Auto" MinWidth="160"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
+                                </Grid.Style>
 
-                                                    <!-- 分组折叠箭头（仅分隔标题） -->
-                                                    <TextBlock Grid.Column="0" VerticalAlignment="Center" Margin="0,0,6,0"
-                                                               FontFamily="Segoe MDL2 Assets" FontSize="10" Foreground="#0078D4">
-                                                        <TextBlock.Style>
-                                                            <Style TargetType="TextBlock">
-                                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                                                <Setter Property="Text" Value="&#xE70D;"/>
-                                                                <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding IsSeparator}" Value="True">
-                                                                        <Setter Property="Visibility" Value="Visible"/>
-                                                                    </DataTrigger>
-                                                                    <DataTrigger Binding="{Binding IsCollapsed}" Value="True">
-                                                                        <Setter Property="Text" Value="&#xE76C;"/>
-                                                                    </DataTrigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </TextBlock.Style>
-                                                    </TextBlock>
+                                <hc:ScrollViewer x:Name="CalculationDetailScrollViewer"
+                                                 VerticalScrollBarVisibility="Auto"
+                                                 HorizontalScrollBarVisibility="Auto"
+                                                 Padding="0">
+                                    <ItemsControl ItemsSource="{Binding CalculationSteps}" Margin="8,4,8,8">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Margin="0,1" Padding="10,6" CornerRadius="4"
+                                                        Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Background" Value="Transparent"/>
+                                                            <Setter Property="Cursor" Value="Arrow"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsHighlight}" Value="True">
+                                                                    <Setter Property="Background" Value="#FFFDE7"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding IsResult}" Value="True">
+                                                                    <Setter Property="Background" Value="#F0F7FF"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding IsSeparator}" Value="True">
+                                                                    <Setter Property="Background" Value="#FAFAFA"/>
+                                                                    <Setter Property="Cursor" Value="Hand"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding HasCustomBackground}" Value="True">
+                                                                    <Setter Property="Background" Value="{Binding BackgroundColor, Converter={StaticResource HexToBrushConverter}}"/>
+                                                                </DataTrigger>
+                                                                <Trigger Property="IsMouseOver" Value="True">
+                                                                    <Setter Property="Background" Value="#F5F5F7"/>
+                                                                </Trigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <Border.InputBindings>
+                                                        <MouseBinding MouseAction="LeftClick"
+                                                                      Command="{Binding DataContext.ToggleCalculationGroupCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                                      CommandParameter="{Binding}"/>
+                                                    </Border.InputBindings>
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition Width="Auto" MinWidth="160"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
 
-                                                    <!-- 步骤名称 -->
-                                                    <TextBlock Grid.Column="1" VerticalAlignment="Center" Margin="0,0,8,0">
-                                                        <TextBlock.Style>
-                                                            <Style TargetType="TextBlock">
-                                                                <Setter Property="FontSize" Value="12"/>
-                                                                <Setter Property="Foreground" Value="#555"/>
-                                                                <Setter Property="FontWeight" Value="Normal"/>
-                                                                <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding IsResult}" Value="True">
-                                                                        <Setter Property="Foreground" Value="#0078D4"/>
-                                                                        <Setter Property="FontWeight" Value="SemiBold"/>
-                                                                    </DataTrigger>
-                                                                    <DataTrigger Binding="{Binding IsSeparator}" Value="True">
-                                                                        <Setter Property="Foreground" Value="#0078D4"/>
-                                                                        <Setter Property="FontWeight" Value="SemiBold"/>
-                                                                        <Setter Property="FontSize" Value="11"/>
-                                                                    </DataTrigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </TextBlock.Style>
-                                                        <Run Text="{Binding Name, Mode=OneWay}"/>
-                                                    </TextBlock>
+                                                        <!-- 分组折叠箭头（仅分隔标题） -->
+                                                        <TextBlock Grid.Column="0" VerticalAlignment="Center" Margin="0,0,6,0"
+                                                                   FontFamily="Segoe MDL2 Assets" FontSize="10" Foreground="#0078D4">
+                                                            <TextBlock.Style>
+                                                                <Style TargetType="TextBlock">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                    <Setter Property="Text" Value="&#xE70D;"/>
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding IsSeparator}" Value="True">
+                                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding IsCollapsed}" Value="True">
+                                                                            <Setter Property="Text" Value="&#xE76C;"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </TextBlock.Style>
+                                                        </TextBlock>
 
-                                                    <!-- 步骤值（分隔行隐藏） -->
-                                                    <TextBlock Grid.Column="2" VerticalAlignment="Center" Margin="0,0,12,0">
-                                                        <TextBlock.Style>
-                                                            <Style TargetType="TextBlock">
-                                                                <Setter Property="FontSize" Value="12"/>
-                                                                <Setter Property="FontFamily" Value="Consolas"/>
-                                                                <Setter Property="Foreground" Value="#333"/>
-                                                                <Setter Property="FontWeight" Value="Normal"/>
-                                                                <Setter Property="Visibility" Value="Visible"/>
-                                                                <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding IsResult}" Value="True">
-                                                                        <Setter Property="FontWeight" Value="Bold"/>
-                                                                        <Setter Property="FontSize" Value="13"/>
-                                                                    </DataTrigger>
-                                                                    <DataTrigger Binding="{Binding IsSeparator}" Value="True">
-                                                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                                                    </DataTrigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </TextBlock.Style>
-                                                        <Run Text="{Binding Value, Mode=OneWay}"/>
-                                                    </TextBlock>
+                                                        <!-- 步骤名称 -->
+                                                        <TextBlock Grid.Column="1" VerticalAlignment="Center" Margin="0,0,8,0">
+                                                            <TextBlock.Style>
+                                                                <Style TargetType="TextBlock">
+                                                                    <Setter Property="FontSize" Value="12"/>
+                                                                    <Setter Property="Foreground" Value="#555"/>
+                                                                    <Setter Property="FontWeight" Value="Normal"/>
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding IsResult}" Value="True">
+                                                                            <Setter Property="Foreground" Value="#0078D4"/>
+                                                                            <Setter Property="FontWeight" Value="SemiBold"/>
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding IsSeparator}" Value="True">
+                                                                            <Setter Property="Foreground" Value="#0078D4"/>
+                                                                            <Setter Property="FontWeight" Value="SemiBold"/>
+                                                                            <Setter Property="FontSize" Value="11"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </TextBlock.Style>
+                                                            <Run Text="{Binding Name, Mode=OneWay}"/>
+                                                        </TextBlock>
 
-                                                    <!-- 描述（分隔行隐藏） -->
-                                                    <TextBlock Grid.Column="3" Text="{Binding Description}" FontSize="11" 
-                                                               Foreground="#999" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
-                                                               ToolTip="{Binding Description}">
-                                                        <TextBlock.Style>
-                                                            <Style TargetType="TextBlock">
-                                                                <Setter Property="Visibility" Value="Visible"/>
-                                                                <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding IsSeparator}" Value="True">
-                                                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                                                    </DataTrigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </TextBlock.Style>
-                                                    </TextBlock>
-                                                </Grid>
-                                            </Border>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                            </hc:ScrollViewer>
+                                                        <!-- 步骤值（分隔行隐藏） -->
+                                                        <TextBlock Grid.Column="2" VerticalAlignment="Center" Margin="0,0,12,0">
+                                                            <TextBlock.Style>
+                                                                <Style TargetType="TextBlock">
+                                                                    <Setter Property="FontSize" Value="12"/>
+                                                                    <Setter Property="FontFamily" Value="Consolas"/>
+                                                                    <Setter Property="Foreground" Value="#333"/>
+                                                                    <Setter Property="FontWeight" Value="Normal"/>
+                                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding IsResult}" Value="True">
+                                                                            <Setter Property="FontWeight" Value="Bold"/>
+                                                                            <Setter Property="FontSize" Value="13"/>
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding IsSeparator}" Value="True">
+                                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </TextBlock.Style>
+                                                            <Run Text="{Binding Value, Mode=OneWay}"/>
+                                                        </TextBlock>
+
+                                                        <!-- 描述（分隔行隐藏） -->
+                                                        <TextBlock Grid.Column="3" Text="{Binding Description}" FontSize="11" 
+                                                                   Foreground="#999" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
+                                                                   ToolTip="{Binding Description}">
+                                                            <TextBlock.Style>
+                                                                <Style TargetType="TextBlock">
+                                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding IsSeparator}" Value="True">
+                                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </TextBlock.Style>
+                                                        </TextBlock>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </hc:ScrollViewer>
+
+                                <!-- 计算详情异步加载遮罩（与帮助文档一致） -->
+                                <Border Background="#CCFFFFFF"
+                                        Panel.ZIndex="10"
+                                        Visibility="{Binding IsCalculationDetailsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <ProgressBar Style="{StaticResource FlatProgressBarStyle}"
+                                                     Width="180"
+                                                     IsIndeterminate="True"
+                                                     Margin="0,0,0,12"/>
+                                        <TextBlock Text="{Binding [loading_status], Source={x:Static lg:LanguageService.Instance}, FallbackValue=加载中...}"
+                                                   FontSize="13"
+                                                   Foreground="#666"
+                                                   HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
                         </Grid>
                     </Border>
                 </Grid>

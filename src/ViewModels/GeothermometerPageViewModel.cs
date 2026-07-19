@@ -68,6 +68,12 @@ namespace GeoChemistryNexus.ViewModels
         private bool isHelpDocLoading;
 
         /// <summary>
+        /// 计算详情是否正在异步加载（详情面板进度遮罩）
+        /// </summary>
+        [ObservableProperty]
+        private bool isCalculationDetailsLoading;
+
+        /// <summary>
         /// 当前选中的温压计是否已应用（控制顶部按钮显示逻辑）
         /// </summary>
         [ObservableProperty]
@@ -248,6 +254,11 @@ namespace GeoChemistryNexus.ViewModels
         private CancellationTokenSource? _helpDocLoadCts;
 
         /// <summary>
+        /// 计算详情异步加载取消源（快速切换行时取消上一次）
+        /// </summary>
+        private CancellationTokenSource? _calculationDetailsLoadCts;
+
+        /// <summary>
         /// 当前语言帮助文档 RTF 缓存（key = "{pluginId}|{lang}"）
         /// </summary>
         private readonly Dictionary<string, string> _helpDocRtfCache = new(StringComparer.OrdinalIgnoreCase);
@@ -325,7 +336,10 @@ namespace GeoChemistryNexus.ViewModels
             if (_lastCalculationInputValues == null || _selectedFullEntity == null || !HasCalculationData)
                 return;
 
-            ApplyCalculationSteps(_lastCalculationInputValues);
+            _ = RefreshCalculationDetailsAsync(
+                _selectedFullEntity,
+                _lastCalculationInputValues,
+                SelectedRowInfo);
         }
 
         private void ReloadCategoryGroupsAndSelection()
@@ -1643,10 +1657,15 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 处理 ReoGrid 行选中事件，提取输入参数并计算中间步骤
+        /// 处理 ReoGrid 行选中事件，提取输入参数并异步计算中间步骤
         /// 由 View 的 code-behind 调用
         /// </summary>
         public void OnRowSelected(Worksheet worksheet, int row)
+        {
+            _ = OnRowSelectedAsync(worksheet, row);
+        }
+
+        private async Task OnRowSelectedAsync(Worksheet worksheet, int row)
         {
             if (_selectedFullEntity == null || worksheet == null || row < 1)
             {
@@ -1672,7 +1691,7 @@ namespace GeoChemistryNexus.ViewModels
 
             try
             {
-                // 根据 InputColumns 定义，从表头中找到对应列索引，提取该行数据
+                // 根据 InputColumns 定义，从表头中找到对应列索引，提取该行数据（须在 UI 线程访问 ReoGrid）
                 var inputValues = new List<double>();
                 bool allValid = true;
 
@@ -1704,17 +1723,10 @@ namespace GeoChemistryNexus.ViewModels
                 }
 
                 _lastCalculationInputValues = inputValues.ToArray();
-                var steps = ApplyCalculationSteps(_lastCalculationInputValues);
-
-                if (steps.Count > 0)
-                {
-                    SelectedRowInfo = $"Row {row} - {SelectedPluginDisplayName}";
-                    HasCalculationData = true;
-                }
-                else
-                {
-                    ClearCalculationData();
-                }
+                await RefreshCalculationDetailsAsync(
+                    _selectedFullEntity,
+                    _lastCalculationInputValues,
+                    $"Row {row} - {SelectedPluginDisplayName}").ConfigureAwait(true);
             }
             catch (Exception ex)
             {
@@ -1723,19 +1735,92 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
-        private List<CalculationStep> ApplyCalculationSteps(double[] inputValues)
+        /// <summary>
+        /// 后台执行详细计算并回填列表；先让出 UI 以便显示进度遮罩，快速切行时取消上一次。
+        /// </summary>
+        private async Task RefreshCalculationDetailsAsync(
+            GeothermometerEntity entity,
+            double[] inputValues,
+            string rowInfo)
         {
-            if (_selectedFullEntity == null)
-                return new List<CalculationStep>();
+            CancelCalculationDetailsLoad();
+            var cts = new CancellationTokenSource();
+            _calculationDetailsLoadCts = cts;
+            var token = cts.Token;
+            var entityId = entity.Id;
 
-            var steps = GeothermometerService.ExecuteDetailedCalculation(_selectedFullEntity, inputValues);
-            CalculationSteps.Clear();
-            foreach (var step in steps)
+            IsCalculationDetailsLoading = true;
+
+            try
             {
-                CalculationSteps.Add(step);
-            }
+                // 先让出 UI 线程，确保加载遮罩能完成一次渲染
+                await Dispatcher.Yield(DispatcherPriority.Render);
 
-            return steps;
+                if (token.IsCancellationRequested)
+                    return;
+
+                var steps = await Task.Run(
+                    () => GeothermometerService.ExecuteDetailedCalculation(entity, inputValues),
+                    token).ConfigureAwait(true);
+
+                if (token.IsCancellationRequested)
+                    return;
+
+                // 切模板后丢弃过期结果
+                if (_selectedFullEntity == null || _selectedFullEntity.Id != entityId)
+                    return;
+
+                CalculationSteps.Clear();
+                foreach (var step in steps)
+                {
+                    CalculationSteps.Add(step);
+                }
+
+                if (steps.Count > 0)
+                {
+                    SelectedRowInfo = rowInfo;
+                    HasCalculationData = true;
+                }
+                else
+                {
+                    ClearCalculationData();
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                // 快速切行取消，忽略
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[ViewModel] 详细计算失败: {ex.Message}");
+                if (!token.IsCancellationRequested)
+                    ClearCalculationData();
+            }
+            finally
+            {
+                if (ReferenceEquals(_calculationDetailsLoadCts, cts))
+                {
+                    IsCalculationDetailsLoading = false;
+                    _calculationDetailsLoadCts = null;
+                }
+
+                cts.Dispose();
+            }
+        }
+
+        private void CancelCalculationDetailsLoad()
+        {
+            if (_calculationDetailsLoadCts == null)
+                return;
+
+            try
+            {
+                _calculationDetailsLoadCts.Cancel();
+            }
+            catch (ObjectDisposedException)
+            {
+                // 已释放则忽略
+            }
         }
 
         /// <summary>
@@ -1861,6 +1946,8 @@ namespace GeoChemistryNexus.ViewModels
         /// </summary>
         private void ClearCalculationData()
         {
+            CancelCalculationDetailsLoad();
+            IsCalculationDetailsLoading = false;
             _lastCalculationInputValues = null;
             CalculationSteps.Clear();
             HasCalculationData = false;

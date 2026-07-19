@@ -54,7 +54,8 @@ namespace GeoChemistryNexus.Views
                 // 即使解码失败也占位，保证与 ViewModel 路径列表索引一致
                 coverItems.Add(new Image
                 {
-                    Source = StartPicHelper.LoadBitmapWithoutFileLock(file),
+                    Source = StartPicHelper.LoadBitmapWithoutFileLock(
+                        file, StartPicHelper.CoverFlowDecodePixelWidth),
                     Stretch = Stretch.Uniform
                 });
             }

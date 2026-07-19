@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace GeoChemistryNexus
 {
@@ -18,6 +19,8 @@ namespace GeoChemistryNexus
     /// </summary>
     public partial class App : Application
     {
+        private static bool _uiThemesLoaded;
+
         public App()
         {
             // 订阅全局异常事件
@@ -53,13 +56,18 @@ namespace GeoChemistryNexus
             // 0. 初始化语言
             LanguageService.InitializeLanguage();
 
-            // 1. 显示启动窗体
+            // 1. 尽快显示轻量启动窗体（不依赖 HandyControl / Styles）
             var startViewModel = new StartViewModel();
             var startWindow = new StartWindow
             {
                 DataContext = startViewModel
             };
             startWindow.Show();
+
+            // 等启动窗完成首帧绘制，再合并完整 UI 主题
+            await Dispatcher.InvokeAsync(() => { }, DispatcherPriority.ApplicationIdle);
+            startViewModel.UpdateProgress(5, LanguageService.Instance["loading_main_interface_components_ellipsis"]);
+            EnsureUiThemesLoaded();
 
             // 2. 后台执行初始化任务
             await Task.Run(async () =>
@@ -129,6 +137,31 @@ namespace GeoChemistryNexus
                     });
                 }
             });
+        }
+
+        /// <summary>
+        /// 在启动窗已显示后合并 HandyControl 与本地 Styles，避免拖慢首帧。
+        /// </summary>
+        private static void EnsureUiThemesLoaded()
+        {
+            if (_uiThemesLoaded)
+                return;
+
+            var merged = Current.Resources.MergedDictionaries;
+            merged.Add(new ResourceDictionary
+            {
+                Source = new Uri("pack://application:,,,/HandyControl;component/Themes/SkinDefault.xaml")
+            });
+            merged.Add(new ResourceDictionary
+            {
+                Source = new Uri("pack://application:,,,/HandyControl;component/Themes/Theme.xaml")
+            });
+            merged.Add(new ResourceDictionary
+            {
+                Source = new Uri("pack://application:,,,/GeoChemistryNexus;component/Themes/Styles.xaml")
+            });
+
+            _uiThemesLoaded = true;
         }
 
         private void App_Exit(object sender, ExitEventArgs e)

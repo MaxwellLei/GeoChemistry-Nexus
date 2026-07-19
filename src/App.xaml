@@ -4,18 +4,8 @@
              xmlns:local="clr-namespace:GeoChemistryNexus"
              xmlns:converter="clr-namespace:GeoChemistryNexus.Converter">
     <Application.Resources>
-        
+        <!-- 启动期保持轻量：HandyControl / Styles 延后到 StartWindow.Show 之后再合并 -->
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-
-                <!--HandyControl控件库引用-->
-                <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDefault.xaml"/>
-                <!--<ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDark.xaml"/>-->
-                <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/>
-                <!--本地资源-->
-                <ResourceDictionary Source="pack://application:,,,/GeoChemistryNexus;component/Themes/Styles.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-
             <converter:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
             <converter:BoolToVisibilityReConverter x:Key="BooleanToVisibilityReConverter"/>
         </ResourceDictionary>

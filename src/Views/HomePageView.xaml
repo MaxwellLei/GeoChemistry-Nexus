@@ -71,10 +71,20 @@
                                  Visibility="{Binding IsIconUrl, Converter={StaticResource BooleanToVisibilityReConverter}}">
                             <TextBlock Text="{Binding Icon}" FontFamily="Segoe MDL2 Assets" Foreground="#3C3C43"/>
                         </Viewbox>
-                        <Image Margin="10"
-                               Source="{Binding Icon, Converter={StaticResource HomeIconBitmapConverter}, ConverterParameter=48}"
-                               Stretch="Uniform"
-                               Visibility="{Binding IsIconUrl, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                        <!-- Source only binds when IsIconUrl=True so glyph tiles skip the bitmap converter -->
+                        <Image Margin="10" Stretch="Uniform" Visibility="Collapsed">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsIconUrl}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                            <Setter Property="Source"
+                                                    Value="{Binding Icon, Converter={StaticResource HomeIconBitmapConverter}, ConverterParameter=48}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
                         <Border Background="#007AFF" CornerRadius="7" Width="14" Height="14"
                                 HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-3,-3,0"
                                 Visibility="Collapsed">
@@ -269,7 +279,7 @@
                     </TextBlock>
 
                     <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
-                                  VerticalAlignment="Stretch" Padding="4,6,4,4" ClipToBounds="False">
+                                  VerticalAlignment="Stretch" Padding="4,6,4,4">
                         <ItemsControl ItemsSource="{Binding SelectedLinkGroup.Items}"
                                       ItemTemplate="{StaticResource ShortcutItemTemplate}"
                                       HorizontalAlignment="Left"
