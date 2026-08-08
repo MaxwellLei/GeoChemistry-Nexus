@@ -1061,7 +1061,9 @@ namespace GeoChemistryNexus.Views
             if (scrollViewer == null)
                 yield break;
 
-            var viewport = new Rect(0, scrollViewer.VerticalOffset, scrollViewer.ViewportWidth, scrollViewer.ViewportHeight);
+            // TransformToAncestor(ScrollViewer) 得到视口坐标系（可见项 Y ≈ 0..ViewportHeight），
+            // 不可再叠加 VerticalOffset，否则滚动后可见区域与卡片 bounds 永远不相交。
+            var viewport = new Rect(0, 0, scrollViewer.ViewportWidth, scrollViewer.ViewportHeight);
             foreach (var item in TemplateCardsControl.Items)
             {
                 if (item is not TemplateCardViewModel card)

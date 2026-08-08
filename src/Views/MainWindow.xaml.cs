@@ -165,7 +165,7 @@ namespace GeoChemistryNexus
         }
 
         /// <summary>
-        /// 处理安装器文件关联传入的 .gndiag / .gngtm：导航到对应模块并导入。
+        /// 处理安装器文件关联传入的 .gndiag / .gngtm：二次确认后导航到对应模块并导入。
         /// </summary>
         public async Task TryOpenAssociatedPackageAsync(string? filePath)
         {
@@ -176,6 +176,21 @@ namespace GeoChemistryNexus
                 return;
 
             if (DataContext is not MainWindowViewModel mainVm)
+                return;
+
+            string fileName = System.IO.Path.GetFileName(filePath);
+            string confirmMessage = string.Format(
+                LanguageService.GetString(
+                    "confirm_import_associated_package",
+                    "Do you want to import the template file \"{0}\"?"),
+                fileName);
+
+            bool confirmed = await MessageHelper.ShowAsyncDialog(
+                confirmMessage,
+                LanguageService.Instance["Cancel"] ?? "Cancel",
+                LanguageService.Instance["Confirm"] ?? "Confirm");
+
+            if (!confirmed)
                 return;
 
             if (TemplatePackageFileExtensions.IsDiagramAssociatedPath(filePath))

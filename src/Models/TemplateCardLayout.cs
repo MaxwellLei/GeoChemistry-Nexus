@@ -5,8 +5,11 @@ namespace GeoChemistryNexus.Models
     /// </summary>
     public enum TemplateCardSizePreset
     {
-        Compact = 0,
-        Standard = 1
+        /// <summary>标准档（默认）。</summary>
+        Standard = 0,
+
+        /// <summary>紧凑档。</summary>
+        Compact = 1
     }
 
     /// <summary>
@@ -14,6 +17,6 @@ namespace GeoChemistryNexus.Models
     /// </summary>
     public sealed class TemplateCardLayoutSettings
     {
-        public TemplateCardSizePreset SizePreset { get; init; }
+        public TemplateCardSizePreset SizePreset { get; init; } = TemplateCardSizePreset.Standard;
     }
 }

@@ -3222,6 +3222,10 @@
                                     <DataTemplate DataType="{x:Type models:CartesianAxisDefinition}">
                                         <uc:AxisPropertyControl SelectedObject="{Binding}"/>
                                     </DataTemplate>
+                                    <!-- 蛛网图坐标轴：复用笛卡尔轴属性面板（标题/子标题/刻度标签） -->
+                                    <DataTemplate DataType="{x:Type models:SpiderAxisDefinition}">
+                                        <uc:AxisPropertyControl SelectedObject="{Binding}"/>
+                                    </DataTemplate>
                                     <DataTemplate DataType="{x:Type models:TernaryAxisDefinition}">
                                         <uc:TernaryAxisPropertyControl SelectedObject="{Binding}"/>
                                     </DataTemplate>

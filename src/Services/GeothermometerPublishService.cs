@@ -16,7 +16,10 @@ namespace GeoChemistryNexus.Services
             GeothermometerService.Initialize();
 
             var preview = new PublishPreview();
-            var localOfficial = GeothermometerService.LoadedEntities.Where(e => e.IsOfficial).ToList();
+            var localOfficial = GeothermometerService.LoadedEntities
+                .Where(e => e.IsOfficial
+                    && !string.Equals(e.Status, GeothermometerInstallStatus.NotInstalled, StringComparison.Ordinal))
+                .ToList();
 
             Dictionary<string, PluginIndexEntry> remoteMap = new();
             try

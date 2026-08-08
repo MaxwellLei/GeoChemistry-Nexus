@@ -414,9 +414,6 @@
   <data name="library_section" xml:space="preserve">
     <value>리소스 라이브러리</value>
   </data>
-  <data name="server_announcement" xml:space="preserve">
-    <value>서버 공지</value>
-  </data>
   <data name="failed_templates" xml:space="preserve">
     <value>실패한 템플릿:</value>
   </data>
@@ -469,6 +466,9 @@
   </data>
   <data name="already_exists_overwrite_confirm" xml:space="preserve">
     <value>이미 존재합니다. 덮어쓰시겠습니까?</value>
+  </data>
+  <data name="confirm_import_associated_package" xml:space="preserve">
+    <value>템플릿 파일 "{0}"을(를) 가져오시겠습니까?</value>
   </data>
   <data name="geo_editor_title_edit" xml:space="preserve">
     <value>온압계 편집</value>
@@ -993,9 +993,6 @@
   <data name="enable_alternating_fill" xml:space="preserve">
     <value>교차 채우기 사용</value>
   </data>
-  <data name="delete_language_column" xml:space="preserve">
-    <value>언어 열 삭제</value>
-  </data>
   <data name="geo_msg_export_dialog_title" xml:space="preserve">
     <value>지질 온압계 내보내기</value>
   </data>
@@ -1233,17 +1230,11 @@
   <data name="Calculate" xml:space="preserve">
     <value>계산</value>
   </data>
-  <data name="failed_to_get_announcements" xml:space="preserve">
-    <value>공지 가져오기 실패:</value>
-  </data>
   <data name="MarkerShape_FilledDiamond" xml:space="preserve">
     <value>채워진 마름모</value>
   </data>
   <data name="export_and_tools" xml:space="preserve">
     <value>내보내기/도구</value>
-  </data>
-  <data name="select_drawing_template_file" xml:space="preserve">
-    <value>드로잉 템플릿 파일 선택</value>
   </data>
   <data name="geo_tooltip_test_input_eg" xml:space="preserve">
     <value>예: 45.2, 0.8, 12.3</value>
@@ -1290,12 +1281,6 @@
   <data name="cipw_msg_data_cleared" xml:space="preserve">
     <value>데이터가 지워졌습니다.</value>
   </data>
-  <data name="loading_announcements" xml:space="preserve">
-    <value>공지 로드 중...</value>
-  </data>
-  <data name="no_announcements" xml:space="preserve">
-    <value>공지 없음.</value>
-  </data>
   <data name="MessageAutoClose5" xml:space="preserve">
     <value>5초</value>
   </data>
@@ -1307,9 +1292,6 @@
   </data>
   <data name="MessageAutoClose2" xml:space="preserve">
     <value>2초</value>
-  </data>
-  <data name="edit_drawing_template_translations" xml:space="preserve">
-    <value>드로잉 템플릿 다국어 번역 편집</value>
   </data>
   <data name="MarkerShape_OpenTriangleUp" xml:space="preserve">
     <value>빈 위쪽 삼각형</value>
@@ -1461,9 +1443,6 @@
   </data>
   <data name="error_saving_rtf_file" xml:space="preserve">
     <value>RTF 파일 저장 중 오류 발생:</value>
-  </data>
-  <data name="support_json_format" xml:space="preserve">
-    <value>json 형식 지원</value>
   </data>
   <data name="cipw_col_sample" xml:space="preserve">
     <value>시료</value>
@@ -1675,9 +1654,6 @@
   <data name="major_tick_style" xml:space="preserve">
     <value>주 눈금 스타일</value>
   </data>
-  <data name="server_announcements" xml:space="preserve">
-    <value>서버 공지</value>
-  </data>
   <data name="ModifedSuccess" xml:space="preserve">
     <value>수정 성공</value>
   </data>
@@ -1686,9 +1662,6 @@
   </data>
   <data name="Orientation_Vertical" xml:space="preserve">
     <value>세로</value>
-  </data>
-  <data name="open_import" xml:space="preserve">
-    <value>가져오기 열기</value>
   </data>
   <data name="no_data_please_add_data" xml:space="preserve">
     <value>데이터 없음, 데이터를 추가하십시오</value>
@@ -1773,9 +1746,6 @@
   <data name="cipw_iron_estimated_feot" xml:space="preserve">
     <value>FeOT에서 추정</value>
   </data>
-  <data name="view_latest_server_announcements" xml:space="preserve">
-    <value>서버의 최신 공지 사항 보기</value>
-  </data>
   <data name="length" xml:space="preserve">
     <value>길이</value>
   </data>
@@ -1787,9 +1757,6 @@
   </data>
   <data name="calculation_results" xml:space="preserve">
     <value>계산 결과</value>
-  </data>
-  <data name="template_translator" xml:space="preserve">
-    <value>다이어그램 템플릿 번역기</value>
   </data>
   <data name="axis_title" xml:space="preserve">
     <value>좌표축 제목</value>
@@ -1944,6 +1911,12 @@
   <data name="batch_update_fail_count" xml:space="preserve">
     <value>실패: {0}개</value>
   </data>
+  <data name="update_incompatible_need_app_upgrade_count" xml:space="preserve">
+    <value>버전이 너무 높아 이 앱과 호환되지 않아 업데이트하지 못한 항목이 {0}개 더 있습니다. 소프트웨어를 업그레이드하세요.</value>
+  </data>
+  <data name="update_blocked_need_app_upgrade" xml:space="preserve">
+    <value>{0}개 템플릿에 이 앱과 호환되지 않는 새 버전이 있습니다. 업데이트하려면 소프트웨어를 업그레이드하세요.</value>
+  </data>
   <data name="batch_update_complete" xml:space="preserve">
     <value>일괄 업데이트 완료</value>
   </data>
@@ -1965,6 +1938,42 @@
   <data name="geo_menu_check_update" xml:space="preserve">
     <value>업데이트 확인</value>
   </data>
+  <data name="geo_menu_batch_download_not_installed" xml:space="preserve">
+    <value>미설치 항목 일괄 다운로드</value>
+  </data>
+  <data name="geo_menu_batch_update_outdated" xml:space="preserve">
+    <value>만료 항목 일괄 업데이트</value>
+  </data>
+  <data name="geo_btn_download" xml:space="preserve">
+    <value>다운로드</value>
+  </data>
+  <data name="geo_btn_update" xml:space="preserve">
+    <value>업데이트</value>
+  </data>
+  <data name="geo_msg_not_downloaded_please_download" xml:space="preserve">
+    <value>이 템플릿이 다운로드되지 않았습니다. 사용하려면 다운로드하세요.</value>
+  </data>
+  <data name="geo_msg_new_list_version_detected" xml:space="preserve">
+    <value>새로운 지온지압계 템플릿 라이브러리가 있습니다. 지금 목록을 업데이트할까요?</value>
+  </data>
+  <data name="geo_msg_list_update_success" xml:space="preserve">
+    <value>지온지압계 목록이 성공적으로 업데이트되었습니다</value>
+  </data>
+  <data name="geo_msg_list_sync_summary" xml:space="preserve">
+    <value>목록이 동기화되었습니다. 미설치: {0}, 업데이트 가능: {1}.</value>
+  </data>
+  <data name="geo_msg_list_already_latest" xml:space="preserve">
+    <value>지온지압계 목록이 이미 최신입니다</value>
+  </data>
+  <data name="geo_msg_confirm_update_overwrite" xml:space="preserve">
+    <value>업데이트하면 로컬 내용(로컬 수정 포함)이 공식 버전으로 덮어쓰입니다. 계속할까요?</value>
+  </data>
+  <data name="geo_msg_no_outdated_to_update" xml:space="preserve">
+    <value>업데이트할 오래된 지온지압계가 없습니다</value>
+  </data>
+  <data name="geo_msg_batch_update_confirm" xml:space="preserve">
+    <value>업데이트 가능한 지온지압계 {0}개가 감지되었습니다. 업데이트하면 로컬 내용이 덮어쓰입니다. 계속할까요?</value>
+  </data>
   <data name="geo_help_no_doc_text" xml:space="preserve">
     <value>도움말 문서가 없습니다.</value>
   </data>
@@ -1973,9 +1982,6 @@
   </data>
   <data name="download_template_failed" xml:space="preserve">
     <value>템플릿 다운로드 실패:</value>
-  </data>
-  <data name="click_or_drag_template_json_here" xml:space="preserve">
-    <value>템플릿 파일(JSON)을 클릭하거나 이곳으로 드래그하십시오</value>
   </data>
   <data name="file_drop_release_to_import" xml:space="preserve">
     <value>놓아서 가져오기</value>
@@ -2025,9 +2031,6 @@
   <data name="MarkerShape_OpenSquare" xml:space="preserve">
     <value>빈 사각형</value>
   </data>
-  <data name="add_language_column" xml:space="preserve">
-    <value>언어 열 추가</value>
-  </data>
   <data name="script_not_defined_in_template" xml:space="preserve">
     <value>다이어그램 템플릿에 스크립트가 정의되지 않았습니다</value>
   </data>
@@ -2060,6 +2063,9 @@
   </data>
   <data name="from" xml:space="preserve">
     <value>시작</value>
+  </data>
+  <data name="auto" xml:space="preserve">
+    <value>자동</value>
   </data>
   <data name="grid" xml:space="preserve">
     <value>그리드</value>
@@ -3567,8 +3573,6 @@
 
   </data>
 
-
-
   <data name="geo_additional_function_name" xml:space="preserve">
 
     <value>JS 함수 이름</value>
@@ -3617,11 +3621,6 @@
 
   </data>
 
-
-
-
-
-
   <data name="geo_free_sheet_clear" xml:space="preserve">
 
     <value>지우기</value>
@@ -3639,12 +3638,6 @@
     <value>스프레드시트를 지웠습니다</value>
 
   </data>
-
-
-
-
-
-
 
   <data name="geo_free_sheet_delete_col" xml:space="preserve">
 
@@ -3700,10 +3693,6 @@
 
   </data>
 
-
-
-
-
   <data name="geo_free_sheet_format_painter" xml:space="preserve">
 
     <value>서식 복사</value>
@@ -3739,7 +3728,6 @@
     <value>글꼴</value>
 
   </data>
-
 
   <data name="geo_free_sheet_hint" xml:space="preserve">
 
@@ -3801,7 +3789,6 @@
 
   </data>
 
-
   <data name="geo_main_formula_badge" xml:space="preserve">
 
     <value>주 수식</value>
@@ -3843,7 +3830,6 @@
     <value>스크립트의 JavaScript 함수 이름(예: calcPressure)</value>
 
   </data>
-
 
   <data name="geo_validate_additional_formula_incomplete" xml:space="preserve">
 
@@ -4111,10 +4097,10 @@
     <value>표시 형태</value>
   </data>
   <data name="alkalinity_calc_as_hco3" xml:space="preserve">
-    <value>HCO3- 기준</value>
+    <value>기준으로 HCO3-</value>
   </data>
   <data name="alkalinity_calc_as_co3" xml:space="preserve">
-    <value>CO32- 기준</value>
+    <value>기준으로 CO32-</value>
   </data>
   <data name="alkalinity_calc_as_caco3" xml:space="preserve">
     <value>CaCO3 기준</value>
@@ -4245,6 +4231,137 @@
   <data name="black_body_radiation_calc_source_link" xml:space="preserve">
     <value>Kurt Hollocher — Geochemistry (Union College)</value>
   </data>
+  <data name="periodic_table_widget" xml:space="preserve">
+    <value>지구화학 주기율표</value>
+  </data>
+  <data name="periodic_table_widget_desc" xml:space="preserve">
+    <value>대화형 주기율표: 지각 존재도, 산화물 분자량 등 빠른 조회</value>
+  </data>
+  <data name="periodic_table_widget_hint" xml:space="preserve">
+    <value>원소를 클릭하면 지구화학 속성을 볼 수 있습니다. REE, HFSE, LILE, PGE 및 Goldschmidt 분류로 강조할 수 있습니다.</value>
+  </data>
+  <data name="periodic_table_hint_select" xml:space="preserve">
+    <value>원소를 클릭하여 속성 보기</value>
+  </data>
+  <data name="periodic_table_status_selected" xml:space="preserve">
+    <value>선택됨: {0} ({1})</value>
+  </data>
+  <data name="periodic_table_search_tooltip" xml:space="preserve">
+    <value>원소 기호, 영문명 또는 원자 번호로 검색</value>
+  </data>
+  <data name="periodic_table_search_go" xml:space="preserve">
+    <value>찾기</value>
+  </data>
+  <data name="periodic_table_search_empty" xml:space="preserve">
+    <value>일치하는 원소가 없습니다.</value>
+  </data>
+  <data name="periodic_table_clear_group" xml:space="preserve">
+    <value>필터 지우기</value>
+  </data>
+  <data name="periodic_table_fblock_note" xml:space="preserve">
+    <value>하단 두 줄: 란타넘족(La–Lu)과 악티늄족(Ac–Lr).</value>
+  </data>
+  <data name="periodic_table_label_lanthanides" xml:space="preserve">
+    <value>란타넘족</value>
+  </data>
+  <data name="periodic_table_label_actinides" xml:space="preserve">
+    <value>악티늄족</value>
+  </data>
+  <data name="periodic_table_section_basic" xml:space="preserve">
+    <value>기본 정보</value>
+  </data>
+  <data name="periodic_table_section_geochem" xml:space="preserve">
+    <value>지구화학 속성</value>
+  </data>
+  <data name="periodic_table_section_oxides" xml:space="preserve">
+    <value>산화물 분자량</value>
+  </data>
+  <data name="periodic_table_field_z" xml:space="preserve">
+    <value>원자 번호</value>
+  </data>
+  <data name="periodic_table_field_weight" xml:space="preserve">
+    <value>원자량</value>
+  </data>
+  <data name="periodic_table_field_econf" xml:space="preserve">
+    <value>전자 배치</value>
+  </data>
+  <data name="periodic_table_field_abundance" xml:space="preserve">
+    <value>지각 존재도</value>
+  </data>
+  <data name="periodic_table_field_goldschmidt" xml:space="preserve">
+    <value>Goldschmidt 분류</value>
+  </data>
+  <data name="periodic_table_field_geochem_class" xml:space="preserve">
+    <value>지구화학 분류</value>
+  </data>
+  <data name="periodic_table_field_oxstates" xml:space="preserve">
+    <value>산화수</value>
+  </data>
+  <data name="periodic_table_abundance_value" xml:space="preserve">
+    <value>{0} mg/kg (ppm)</value>
+  </data>
+  <data name="periodic_table_abundance_source" xml:space="preserve">
+    <value>데이터 출처: {0}</value>
+  </data>
+  <data name="periodic_table_detail_subtitle" xml:space="preserve">
+    <value>Z = {0} · {1} 구역</value>
+  </data>
+  <data name="periodic_table_oxides_hint" xml:space="preserve">
+    <value>주요 양의 산화수로부터 추정한 일반 산화물입니다.</value>
+  </data>
+  <data name="periodic_table_no_oxides" xml:space="preserve">
+    <value>이 원소의 일반 산화물 식이 없습니다.</value>
+  </data>
+  <data name="periodic_table_mw_label" xml:space="preserve">
+    <value>분자량 = </value>
+  </data>
+  <data name="periodic_table_copy" xml:space="preserve">
+    <value>복사</value>
+  </data>
+  <data name="periodic_table_copy_mw" xml:space="preserve">
+    <value>분자량 복사</value>
+  </data>
+  <data name="periodic_table_copied" xml:space="preserve">
+    <value>클립보드에 복사했습니다.</value>
+  </data>
+  <data name="periodic_table_copy_failed" xml:space="preserve">
+    <value>복사에 실패했습니다.</value>
+  </data>
+  <data name="periodic_table_na" xml:space="preserve">
+    <value>없음</value>
+  </data>
+  <data name="periodic_table_group_ree" xml:space="preserve">
+    <value>REE</value>
+  </data>
+  <data name="periodic_table_group_lree" xml:space="preserve">
+    <value>LREE</value>
+  </data>
+  <data name="periodic_table_group_hree" xml:space="preserve">
+    <value>HREE</value>
+  </data>
+  <data name="periodic_table_group_hfse" xml:space="preserve">
+    <value>HFSE</value>
+  </data>
+  <data name="periodic_table_group_lile" xml:space="preserve">
+    <value>LILE</value>
+  </data>
+  <data name="periodic_table_group_pge" xml:space="preserve">
+    <value>PGE</value>
+  </data>
+  <data name="periodic_table_group_transition" xml:space="preserve">
+    <value>전이 금속</value>
+  </data>
+  <data name="periodic_table_group_lithophile" xml:space="preserve">
+    <value>친석</value>
+  </data>
+  <data name="periodic_table_group_siderophile" xml:space="preserve">
+    <value>친철</value>
+  </data>
+  <data name="periodic_table_group_chalcophile" xml:space="preserve">
+    <value>친동</value>
+  </data>
+  <data name="periodic_table_group_atmophile" xml:space="preserve">
+    <value>친기</value>
+  </data>
 </root>
-
 

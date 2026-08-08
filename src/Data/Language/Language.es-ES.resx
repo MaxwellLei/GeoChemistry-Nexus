@@ -414,9 +414,6 @@
   <data name="library_section" xml:space="preserve">
     <value>Biblioteca de recursos</value>
   </data>
-  <data name="server_announcement" xml:space="preserve">
-    <value>Anuncio del servidor</value>
-  </data>
   <data name="failed_templates" xml:space="preserve">
     <value>Plantillas fallidas:</value>
   </data>
@@ -469,6 +466,9 @@
   </data>
   <data name="already_exists_overwrite_confirm" xml:space="preserve">
     <value>Ya existe, ¿sobrescribir?</value>
+  </data>
+  <data name="confirm_import_associated_package" xml:space="preserve">
+    <value>¿Desea importar el archivo de plantilla "{0}"?</value>
   </data>
   <data name="geo_editor_title_edit" xml:space="preserve">
     <value>Editar geotermobarómetro</value>
@@ -993,9 +993,6 @@
   <data name="enable_alternating_fill" xml:space="preserve">
     <value>Habilitar relleno alternativo</value>
   </data>
-  <data name="delete_language_column" xml:space="preserve">
-    <value>Eliminar columna de idioma</value>
-  </data>
   <data name="geo_msg_export_dialog_title" xml:space="preserve">
     <value>Exportar geotermobarómetro</value>
   </data>
@@ -1233,17 +1230,11 @@
   <data name="Calculate" xml:space="preserve">
     <value>Calcular</value>
   </data>
-  <data name="failed_to_get_announcements" xml:space="preserve">
-    <value>Error al obtener anuncios:</value>
-  </data>
   <data name="MarkerShape_FilledDiamond" xml:space="preserve">
     <value>Diamante relleno</value>
   </data>
   <data name="export_and_tools" xml:space="preserve">
     <value>Exportar/Herramientas</value>
-  </data>
-  <data name="select_drawing_template_file" xml:space="preserve">
-    <value>Seleccionar archivo de plantilla de dibujo</value>
   </data>
   <data name="geo_tooltip_test_input_eg" xml:space="preserve">
     <value>p. ej. 45.2, 0.8, 12.3</value>
@@ -1290,12 +1281,6 @@
   <data name="cipw_msg_data_cleared" xml:space="preserve">
     <value>Datos borrados.</value>
   </data>
-  <data name="loading_announcements" xml:space="preserve">
-    <value>Cargando anuncios...</value>
-  </data>
-  <data name="no_announcements" xml:space="preserve">
-    <value>Sin anuncios.</value>
-  </data>
   <data name="MessageAutoClose5" xml:space="preserve">
     <value>5 segundos</value>
   </data>
@@ -1307,9 +1292,6 @@
   </data>
   <data name="MessageAutoClose2" xml:space="preserve">
     <value>2 segundos</value>
-  </data>
-  <data name="edit_drawing_template_translations" xml:space="preserve">
-    <value>Editar traducciones de plantilla de dibujo</value>
   </data>
   <data name="MarkerShape_OpenTriangleUp" xml:space="preserve">
     <value>Triángulo vacío hacia arriba</value>
@@ -1461,9 +1443,6 @@
   </data>
   <data name="error_saving_rtf_file" xml:space="preserve">
     <value>Error al guardar archivo RTF:</value>
-  </data>
-  <data name="support_json_format" xml:space="preserve">
-    <value>Soporta formato .json</value>
   </data>
   <data name="cipw_col_sample" xml:space="preserve">
     <value>Muestra</value>
@@ -1675,9 +1654,6 @@
   <data name="major_tick_style" xml:space="preserve">
     <value>Estilo de marca principal</value>
   </data>
-  <data name="server_announcements" xml:space="preserve">
-    <value>Anuncios del servidor</value>
-  </data>
   <data name="ModifedSuccess" xml:space="preserve">
     <value>Modificación exitosa</value>
   </data>
@@ -1686,9 +1662,6 @@
   </data>
   <data name="Orientation_Vertical" xml:space="preserve">
     <value>Vertical</value>
-  </data>
-  <data name="open_import" xml:space="preserve">
-    <value>Abrir importación</value>
   </data>
   <data name="no_data_please_add_data" xml:space="preserve">
     <value>Sin datos, por favor agregue datos</value>
@@ -1773,9 +1746,6 @@
   <data name="cipw_iron_estimated_feot" xml:space="preserve">
     <value>Estimado a partir de FeOT</value>
   </data>
-  <data name="view_latest_server_announcements" xml:space="preserve">
-    <value>Ver los últimos anuncios del servidor</value>
-  </data>
   <data name="length" xml:space="preserve">
     <value>Longitud</value>
   </data>
@@ -1787,9 +1757,6 @@
   </data>
   <data name="calculation_results" xml:space="preserve">
     <value>Resultados del cálculo</value>
-  </data>
-  <data name="template_translator" xml:space="preserve">
-    <value>Traductor de plantillas de diagrama</value>
   </data>
   <data name="axis_title" xml:space="preserve">
     <value>Título del eje</value>
@@ -1944,6 +1911,12 @@
   <data name="batch_update_fail_count" xml:space="preserve">
     <value>Fallidas: {0}</value>
   </data>
+  <data name="update_incompatible_need_app_upgrade_count" xml:space="preserve">
+    <value>Otros {0} no se pudieron actualizar porque su versión es demasiado alta para esta aplicación. Actualice el software.</value>
+  </data>
+  <data name="update_blocked_need_app_upgrade" xml:space="preserve">
+    <value>{0} plantillas tienen versiones más recientes incompatibles con esta aplicación. Actualice el software para actualizarlas.</value>
+  </data>
   <data name="batch_update_complete" xml:space="preserve">
     <value>Actualización por lotes completada</value>
   </data>
@@ -1965,6 +1938,42 @@
   <data name="geo_menu_check_update" xml:space="preserve">
     <value>Buscar actualizaciones</value>
   </data>
+  <data name="geo_menu_batch_download_not_installed" xml:space="preserve">
+    <value>Descargar no instaladas en lote</value>
+  </data>
+  <data name="geo_menu_batch_update_outdated" xml:space="preserve">
+    <value>Actualizar obsoletas en lote</value>
+  </data>
+  <data name="geo_btn_download" xml:space="preserve">
+    <value>Descargar</value>
+  </data>
+  <data name="geo_btn_update" xml:space="preserve">
+    <value>Actualizar</value>
+  </data>
+  <data name="geo_msg_not_downloaded_please_download" xml:space="preserve">
+    <value>Esta plantilla no está descargada. Descárguela para usarla.</value>
+  </data>
+  <data name="geo_msg_new_list_version_detected" xml:space="preserve">
+    <value>Hay una nueva biblioteca de plantillas de geotermobarómetros. ¿Actualizar la lista ahora?</value>
+  </data>
+  <data name="geo_msg_list_update_success" xml:space="preserve">
+    <value>Lista de geotermobarómetros actualizada correctamente</value>
+  </data>
+  <data name="geo_msg_list_sync_summary" xml:space="preserve">
+    <value>Lista sincronizada. No instaladas: {0}, actualizables: {1}.</value>
+  </data>
+  <data name="geo_msg_list_already_latest" xml:space="preserve">
+    <value>La lista de geotermobarómetros ya está actualizada</value>
+  </data>
+  <data name="geo_msg_confirm_update_overwrite" xml:space="preserve">
+    <value>La actualización sobrescribirá el contenido local (incluidas las ediciones locales) con la versión oficial. ¿Continuar?</value>
+  </data>
+  <data name="geo_msg_no_outdated_to_update" xml:space="preserve">
+    <value>No hay geotermobarómetros obsoletos para actualizar</value>
+  </data>
+  <data name="geo_msg_batch_update_confirm" xml:space="preserve">
+    <value>Se detectaron {0} geotermobarómetros actualizables. La actualización sobrescribirá el contenido local. ¿Continuar?</value>
+  </data>
   <data name="geo_help_no_doc_text" xml:space="preserve">
     <value>No hay documento de ayuda disponible.</value>
   </data>
@@ -1973,9 +1982,6 @@
   </data>
   <data name="download_template_failed" xml:space="preserve">
     <value>Error al descargar plantilla:</value>
-  </data>
-  <data name="click_or_drag_template_json_here" xml:space="preserve">
-    <value>Haga clic o arrastre el archivo de plantilla (JSON) aquí</value>
   </data>
   <data name="file_drop_release_to_import" xml:space="preserve">
     <value>Suelte para importar</value>
@@ -2025,9 +2031,6 @@
   <data name="MarkerShape_OpenSquare" xml:space="preserve">
     <value>Cuadrado vacío</value>
   </data>
-  <data name="add_language_column" xml:space="preserve">
-    <value>Agregar columna de idioma</value>
-  </data>
   <data name="script_not_defined_in_template" xml:space="preserve">
     <value>Script no definido en la plantilla</value>
   </data>
@@ -2060,6 +2063,9 @@
   </data>
   <data name="from" xml:space="preserve">
     <value>Desde</value>
+  </data>
+  <data name="auto" xml:space="preserve">
+    <value>Auto</value>
   </data>
   <data name="grid" xml:space="preserve">
     <value>Cuadrícula</value>
@@ -3567,8 +3573,6 @@
 
   </data>
 
-
-
   <data name="geo_additional_function_name" xml:space="preserve">
 
     <value>Nombre de función JS</value>
@@ -3617,11 +3621,6 @@
 
   </data>
 
-
-
-
-
-
   <data name="geo_free_sheet_clear" xml:space="preserve">
 
     <value>Borrar</value>
@@ -3639,12 +3638,6 @@
     <value>Hoja de cálculo borrada</value>
 
   </data>
-
-
-
-
-
-
 
   <data name="geo_free_sheet_delete_col" xml:space="preserve">
 
@@ -3700,10 +3693,6 @@
 
   </data>
 
-
-
-
-
   <data name="geo_free_sheet_format_painter" xml:space="preserve">
 
     <value>Copiar formato</value>
@@ -3739,7 +3728,6 @@
     <value>Fuente</value>
 
   </data>
-
 
   <data name="geo_free_sheet_hint" xml:space="preserve">
 
@@ -3801,7 +3789,6 @@
 
   </data>
 
-
   <data name="geo_main_formula_badge" xml:space="preserve">
 
     <value>Principal</value>
@@ -3843,7 +3830,6 @@
     <value>Nombre de función JavaScript en el script, p. ej. calcPressure</value>
 
   </data>
-
 
   <data name="geo_validate_additional_formula_incomplete" xml:space="preserve">
 
@@ -4245,6 +4231,137 @@
   <data name="black_body_radiation_calc_source_link" xml:space="preserve">
     <value>Kurt Hollocher — Geochemistry (Union College)</value>
   </data>
+  <data name="periodic_table_widget" xml:space="preserve">
+    <value>Tabla periódica geoquímica</value>
+  </data>
+  <data name="periodic_table_widget_desc" xml:space="preserve">
+    <value>Tabla periódica interactiva: consulta rápida de abundancia cortical, pesos moleculares de óxidos, etc</value>
+  </data>
+  <data name="periodic_table_widget_hint" xml:space="preserve">
+    <value>Haga clic en un elemento para ver propiedades geoquímicas. Use filtros REE, HFSE, LILE, PGE y clases de Goldschmidt.</value>
+  </data>
+  <data name="periodic_table_hint_select" xml:space="preserve">
+    <value>Haga clic en un elemento para ver propiedades</value>
+  </data>
+  <data name="periodic_table_status_selected" xml:space="preserve">
+    <value>Seleccionado: {0} ({1})</value>
+  </data>
+  <data name="periodic_table_search_tooltip" xml:space="preserve">
+    <value>Buscar por símbolo, nombre en inglés o número atómico</value>
+  </data>
+  <data name="periodic_table_search_go" xml:space="preserve">
+    <value>Buscar</value>
+  </data>
+  <data name="periodic_table_search_empty" xml:space="preserve">
+    <value>No se encontró ningún elemento.</value>
+  </data>
+  <data name="periodic_table_clear_group" xml:space="preserve">
+    <value>Borrar filtro</value>
+  </data>
+  <data name="periodic_table_fblock_note" xml:space="preserve">
+    <value>Filas inferiores: lantánidos (La–Lu) y actínidos (Ac–Lr).</value>
+  </data>
+  <data name="periodic_table_label_lanthanides" xml:space="preserve">
+    <value>Lantánidos</value>
+  </data>
+  <data name="periodic_table_label_actinides" xml:space="preserve">
+    <value>Actínidos</value>
+  </data>
+  <data name="periodic_table_section_basic" xml:space="preserve">
+    <value>Información básica</value>
+  </data>
+  <data name="periodic_table_section_geochem" xml:space="preserve">
+    <value>Propiedades geoquímicas</value>
+  </data>
+  <data name="periodic_table_section_oxides" xml:space="preserve">
+    <value>Pesos moleculares de óxidos</value>
+  </data>
+  <data name="periodic_table_field_z" xml:space="preserve">
+    <value>Número atómico</value>
+  </data>
+  <data name="periodic_table_field_weight" xml:space="preserve">
+    <value>Peso atómico</value>
+  </data>
+  <data name="periodic_table_field_econf" xml:space="preserve">
+    <value>Configuración electrónica</value>
+  </data>
+  <data name="periodic_table_field_abundance" xml:space="preserve">
+    <value>Abundancia cortical</value>
+  </data>
+  <data name="periodic_table_field_goldschmidt" xml:space="preserve">
+    <value>Clase de Goldschmidt</value>
+  </data>
+  <data name="periodic_table_field_geochem_class" xml:space="preserve">
+    <value>Clase geoquímica</value>
+  </data>
+  <data name="periodic_table_field_oxstates" xml:space="preserve">
+    <value>Estados de oxidación</value>
+  </data>
+  <data name="periodic_table_abundance_value" xml:space="preserve">
+    <value>{0} mg/kg (ppm)</value>
+  </data>
+  <data name="periodic_table_abundance_source" xml:space="preserve">
+    <value>Fuente de datos: {0}</value>
+  </data>
+  <data name="periodic_table_detail_subtitle" xml:space="preserve">
+    <value>Z = {0} · bloque {1}</value>
+  </data>
+  <data name="periodic_table_oxides_hint" xml:space="preserve">
+    <value>Óxidos comunes inferidos a partir de los estados de oxidación positivos principales.</value>
+  </data>
+  <data name="periodic_table_no_oxides" xml:space="preserve">
+    <value>No hay fórmula de óxido común disponible para este elemento.</value>
+  </data>
+  <data name="periodic_table_mw_label" xml:space="preserve">
+    <value>PM = </value>
+  </data>
+  <data name="periodic_table_copy" xml:space="preserve">
+    <value>Copiar</value>
+  </data>
+  <data name="periodic_table_copy_mw" xml:space="preserve">
+    <value>Copiar PM</value>
+  </data>
+  <data name="periodic_table_copied" xml:space="preserve">
+    <value>Copiado al portapapeles.</value>
+  </data>
+  <data name="periodic_table_copy_failed" xml:space="preserve">
+    <value>Error al copiar.</value>
+  </data>
+  <data name="periodic_table_na" xml:space="preserve">
+    <value>N/D</value>
+  </data>
+  <data name="periodic_table_group_ree" xml:space="preserve">
+    <value>REE</value>
+  </data>
+  <data name="periodic_table_group_lree" xml:space="preserve">
+    <value>LREE</value>
+  </data>
+  <data name="periodic_table_group_hree" xml:space="preserve">
+    <value>HREE</value>
+  </data>
+  <data name="periodic_table_group_hfse" xml:space="preserve">
+    <value>HFSE</value>
+  </data>
+  <data name="periodic_table_group_lile" xml:space="preserve">
+    <value>LILE</value>
+  </data>
+  <data name="periodic_table_group_pge" xml:space="preserve">
+    <value>PGE</value>
+  </data>
+  <data name="periodic_table_group_transition" xml:space="preserve">
+    <value>Metales de transición</value>
+  </data>
+  <data name="periodic_table_group_lithophile" xml:space="preserve">
+    <value>Litófilo</value>
+  </data>
+  <data name="periodic_table_group_siderophile" xml:space="preserve">
+    <value>Siderófilo</value>
+  </data>
+  <data name="periodic_table_group_chalcophile" xml:space="preserve">
+    <value>Calcófilo</value>
+  </data>
+  <data name="periodic_table_group_atmophile" xml:space="preserve">
+    <value>Atmófilo</value>
+  </data>
 </root>
-
 

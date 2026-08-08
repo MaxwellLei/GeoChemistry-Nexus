@@ -622,6 +622,9 @@ namespace GeoChemistryNexus.ViewModels
 
             // 启用图例
             plot.Legend.IsVisible = true;
+            // 关闭图例阴影，避免独立蛛网图工具的图例出现视觉噪点
+            plot.Legend.ShadowColor = ScottPlot.Colors.Transparent;
+            plot.Legend.ShadowOffset = new ScottPlot.PixelOffset(0, 0);
 
             // 刷新
             _wpfPlot.Refresh();

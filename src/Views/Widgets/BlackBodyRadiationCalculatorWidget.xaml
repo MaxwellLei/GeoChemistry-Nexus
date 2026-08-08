@@ -52,18 +52,23 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0">
-                                <hc:NumericUpDown Value="{Binding TemperatureKelvin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                  Style="{StaticResource ModernNumericUpDownStyle}"
-                                                  Minimum="1" Maximum="100000" Increment="100"/>
-                                <TextBlock Text="K" Style="{StaticResource ModernSettingsItemHintStyle}" Margin="0,4,0,0"/>
-                            </StackPanel>
-                            <Button Grid.Column="1"
+                            <hc:NumericUpDown Grid.Column="0"
+                                              Value="{Binding TemperatureKelvin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              Style="{StaticResource ModernNumericUpDownStyle}"
+                                              Minimum="1" Maximum="100000" Increment="100"
+                                              VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="1"
+                                       Text="K"
+                                       Style="{StaticResource ModernSettingsItemHintStyle}"
+                                       VerticalAlignment="Center"
+                                       Margin="8,0,0,0"/>
+                            <Button Grid.Column="2"
                                     Content="{Binding [black_body_radiation_calc_reset], Source={x:Static lg:LanguageService.Instance}}"
                                     Command="{Binding ResetCommand}"
                                     Padding="14,6" Margin="12,0,0,0"
-                                    VerticalAlignment="Top"/>
+                                    VerticalAlignment="Center"/>
                         </Grid>
                     </StackPanel>
                 </Border>

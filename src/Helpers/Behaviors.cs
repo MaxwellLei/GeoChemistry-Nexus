@@ -508,6 +508,17 @@ namespace GeoChemistryNexus.Helpers
 
             Panel.SetZIndex(_overlay, 10000);
 
+            // Grid 默认只占 (0,0)；跨满行列，遮罩覆盖整个页面而非左侧栏
+            if (panel is Grid grid)
+            {
+                int columnSpan = Math.Max(1, grid.ColumnDefinitions.Count);
+                int rowSpan = Math.Max(1, grid.RowDefinitions.Count);
+                Grid.SetColumn(_overlay, 0);
+                Grid.SetRow(_overlay, 0);
+                Grid.SetColumnSpan(_overlay, columnSpan);
+                Grid.SetRowSpan(_overlay, rowSpan);
+            }
+
             panel.Children.Add(_overlay);
 
         }

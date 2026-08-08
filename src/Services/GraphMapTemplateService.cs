@@ -92,15 +92,33 @@ namespace GeoChemistryNexus.Services
         }
 
         /// <summary>
+        /// 官方模板清单同步结果（仅目录/状态，不含 ZIP 下载）。
+        /// </summary>
+        public sealed class OfficialTemplateCatalogSyncResult
+        {
+            public bool CatalogChanged { get; set; }
+            public int AddedCount { get; set; }
+            public int OutdatedCount { get; set; }
+            public int RemovalCount { get; set; }
+        }
+
+        /// <summary>
         /// 将本地官方模板与服务器 GraphMapList 对齐：更新元数据/状态，并删除已从清单下架的项。
         /// </summary>
         /// <returns>若数据库或状态有变更则为 true。</returns>
         public static bool SyncOfficialTemplatesFromServerList(List<JsonTemplateItem> serverList)
-        {
-            if (serverList == null || serverList.Count == 0)
-                return false;
+            => SyncOfficialTemplatesFromServerListDetailed(serverList).CatalogChanged;
 
-            bool changed = false;
+        /// <summary>
+        /// 将本地官方模板与服务器 GraphMapList 对齐，并返回新增/可更新/下架计数。
+        /// </summary>
+        public static OfficialTemplateCatalogSyncResult SyncOfficialTemplatesFromServerListDetailed(
+            List<JsonTemplateItem> serverList)
+        {
+            var result = new OfficialTemplateCatalogSyncResult();
+            if (serverList == null || serverList.Count == 0)
+                return result;
+
             var dbService = GraphMapDatabaseService.Instance;
             var existingTemplates = dbService.GetSummaries().ToDictionary(x => x.Id, x => x);
             var serverIds = new HashSet<Guid>();
@@ -147,7 +165,7 @@ namespace GeoChemistryNexus.Services
                             fullEntity.FileHash = item.FileHash;
 
                         dbService.UpsertTemplate(fullEntity);
-                        changed = true;
+                        result.CatalogChanged = true;
                     }
                 }
                 else
@@ -167,7 +185,8 @@ namespace GeoChemistryNexus.Services
                         HelpDocuments = new Dictionary<string, string>()
                     };
                     dbService.UpsertTemplate(newEntity);
-                    changed = true;
+                    result.AddedCount++;
+                    result.CatalogChanged = true;
                 }
             }
 
@@ -176,11 +195,16 @@ namespace GeoChemistryNexus.Services
                 if (!serverIds.Contains(local.Id))
                 {
                     dbService.DeleteTemplate(local.Id);
-                    changed = true;
+                    result.RemovalCount++;
+                    result.CatalogChanged = true;
                 }
             }
 
-            return changed;
+            var officialSummaries = dbService.GetSummaries().Where(e => !e.IsCustom);
+            result.OutdatedCount = officialSummaries.Count(e =>
+                string.Equals(e.Status, "OUTDATED", StringComparison.Ordinal));
+
+            return result;
         }
 
         private static bool NodeListEquals(LocalizedString a, LocalizedString b)

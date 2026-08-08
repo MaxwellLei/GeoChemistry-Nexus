@@ -18,8 +18,11 @@ namespace GeoChemistryNexus.ViewModels
     /// </summary>
     public partial class AxisLayerItemViewModel : LayerItemViewModel, IPlotLayer
     {
+        private const byte UnselectedMaskAlpha = 60;
+
         public BaseAxisDefinition AxisDefinition { get; }
         private readonly ContentLanguageContext? _contentLanguage;
+        private Plot? _plot;
 
         public AxisLayerItemViewModel(BaseAxisDefinition axisDefinition, ContentLanguageContext? contentLanguage = null)
             : base(GetAxisDisplayName(axisDefinition, contentLanguage))
@@ -72,6 +75,8 @@ namespace GeoChemistryNexus.ViewModels
 
         public void Render(Plot plot)
         {
+            _plot = plot;
+
             if (AxisDefinition is SpiderAxisDefinition spiderAxisDef)
             {
                 ScottPlot.IAxis? targetAxis = spiderAxisDef.Type switch
@@ -89,6 +94,9 @@ namespace GeoChemistryNexus.ViewModels
                 ApplyAxisLabelStyle(targetAxis, spiderAxisDef);
                 ApplyTickStyles(targetAxis, spiderAxisDef);
                 ApplySubtitle(targetAxis, spiderAxisDef);
+
+                // 与笛卡尔一致：显式恢复边框，避免遮罩透明度残留
+                targetAxis.FrameLineStyle.Color = ScottPlot.Colors.Black;
 
                 var displayElements = GetSpiderDisplayElements(spiderAxisDef);
 
@@ -243,6 +251,9 @@ namespace GeoChemistryNexus.ViewModels
                     GraphMapTemplateService.ConvertWpfHexToScottPlotHex(cartesianAxisDef.TickLablecolor));
                 targetAxis.TickLabelStyle.Bold = cartesianAxisDef.TickLableisBold;
                 targetAxis.TickLabelStyle.Italic = cartesianAxisDef.TickLableisItalic;
+
+                // Render 需显式恢复边框色：选中遮罩会降低 FrameLineStyle 透明度，且复用轴对象时不会自动重置
+                targetAxis.FrameLineStyle.Color = ScottPlot.Colors.Black;
 
                 if (targetAxis is LeftAxisWithSubtitle leftSub)
                 {
@@ -407,12 +418,17 @@ namespace GeoChemistryNexus.ViewModels
                 return;
             }
 
-            var currentLimits = targetAxis.Range;
-            var newMin = !double.IsNaN(axisDef.Minimum) ? axisDef.Minimum : currentLimits.Min;
-            var newMax = !double.IsNaN(axisDef.Maximum) ? axisDef.Maximum : currentLimits.Max;
-
             bool isMinSet = !double.IsNaN(axisDef.Minimum);
             bool isMaxSet = !double.IsNaN(axisDef.Maximum);
+
+            // 两端都是自动：不要沿用当前轴限（否则清回 Auto 后会卡在半固定范围，例如 1~10）
+            // 完整自动范围由 CenterPlot / AutoScale 在全部图层渲染后重算
+            if (!isMinSet && !isMaxSet)
+                return;
+
+            var currentLimits = targetAxis.Range;
+            var newMin = isMinSet ? axisDef.Minimum : currentLimits.Min;
+            var newMax = isMaxSet ? axisDef.Maximum : currentLimits.Max;
 
             if (axisDef.ScaleType == AxisScaleType.Logarithmic)
             {
@@ -425,9 +441,163 @@ namespace GeoChemistryNexus.ViewModels
             targetAxis.Range.Max = newMax;
         }
 
-        public void Highlight() { }
-        public void Dim() { }
-        public void Restore() { }
+        public void Highlight()
+        {
+            if (_plot == null || !IsVisible)
+                return;
+
+            if (AxisDefinition is TernaryAxisDefinition ternaryAxisDef)
+            {
+                var edge = TryGetTernaryEdge(_plot, ternaryAxisDef.Type);
+                if (edge == null)
+                    return;
+
+                edge.LabelStyle.ForeColor = ScottPlot.Colors.Red;
+                edge.TickMarkStyle.Color = ScottPlot.Colors.Red;
+                edge.TickLabelStyle.ForeColor = ScottPlot.Colors.Red;
+                return;
+            }
+
+            var targetAxis = TryGetCartesianAxis(_plot, AxisDefinition.Type);
+            if (targetAxis == null)
+                return;
+
+            targetAxis.Label.ForeColor = ScottPlot.Colors.Red;
+            targetAxis.TickLabelStyle.ForeColor = ScottPlot.Colors.Red;
+            targetAxis.MajorTickStyle.Color = ScottPlot.Colors.Red;
+            targetAxis.MinorTickStyle.Color = ScottPlot.Colors.Red;
+            targetAxis.FrameLineStyle.Color = ScottPlot.Colors.Red;
+            HighlightSubtitle(targetAxis);
+        }
+
+        public void Dim()
+        {
+            if (_plot == null || !IsVisible)
+                return;
+
+            if (AxisDefinition is TernaryAxisDefinition ternaryAxisDef)
+            {
+                var edge = TryGetTernaryEdge(_plot, ternaryAxisDef.Type);
+                if (edge == null)
+                    return;
+
+                edge.LabelStyle.ForeColor = edge.LabelStyle.ForeColor.WithAlpha(UnselectedMaskAlpha);
+                edge.TickMarkStyle.Color = edge.TickMarkStyle.Color.WithAlpha(UnselectedMaskAlpha);
+                edge.TickLabelStyle.ForeColor = edge.TickLabelStyle.ForeColor.WithAlpha(UnselectedMaskAlpha);
+                return;
+            }
+
+            var targetAxis = TryGetCartesianAxis(_plot, AxisDefinition.Type);
+            if (targetAxis == null)
+                return;
+
+            targetAxis.Label.ForeColor = targetAxis.Label.ForeColor.WithAlpha(UnselectedMaskAlpha);
+            targetAxis.TickLabelStyle.ForeColor = targetAxis.TickLabelStyle.ForeColor.WithAlpha(UnselectedMaskAlpha);
+            targetAxis.MajorTickStyle.Color = targetAxis.MajorTickStyle.Color.WithAlpha(UnselectedMaskAlpha);
+            targetAxis.MinorTickStyle.Color = targetAxis.MinorTickStyle.Color.WithAlpha(UnselectedMaskAlpha);
+            targetAxis.FrameLineStyle.Color = targetAxis.FrameLineStyle.Color.WithAlpha(UnselectedMaskAlpha);
+            DimSubtitle(targetAxis);
+        }
+
+        public void Restore()
+        {
+            if (_plot == null)
+                return;
+
+            ApplyColorsFromDefinition(_plot);
+        }
+
+        private void ApplyColorsFromDefinition(Plot plot)
+        {
+            if (AxisDefinition is TernaryAxisDefinition ternaryAxisDef)
+            {
+                var edge = TryGetTernaryEdge(plot, ternaryAxisDef.Type);
+                if (edge == null)
+                    return;
+
+                bool edgeVisible = IsVisible;
+                edge.LabelStyle.ForeColor = ScottPlot.Color.FromHex(
+                    edgeVisible
+                        ? GraphMapTemplateService.ConvertWpfHexToScottPlotHex(ternaryAxisDef.Color)
+                        : "#00000000");
+                edge.TickMarkStyle.Color = edgeVisible && ternaryAxisDef.IsShowMajorTicks
+                    ? ScottPlot.Color.FromHex(GraphMapTemplateService.ConvertWpfHexToScottPlotHex(ternaryAxisDef.MajorTickWidthColor))
+                    : ScottPlot.Color.FromHex("#00000000");
+                edge.TickLabelStyle.ForeColor = ScottPlot.Color.FromHex(
+                    edgeVisible
+                        ? GraphMapTemplateService.ConvertWpfHexToScottPlotHex(ternaryAxisDef.TickLablecolor)
+                        : "#00000000");
+                return;
+            }
+
+            var targetAxis = TryGetCartesianAxis(plot, AxisDefinition.Type);
+            if (targetAxis == null)
+                return;
+
+            if (AxisDefinition is CartesianAxisDefinition cartesianAxisDef)
+            {
+                ApplyAxisLabelStyle(targetAxis, cartesianAxisDef);
+                ApplyTickStyles(targetAxis, cartesianAxisDef);
+                ApplySubtitle(targetAxis, cartesianAxisDef);
+                targetAxis.FrameLineStyle.Color = ScottPlot.Colors.Black;
+            }
+            else
+            {
+                ApplyAxisLabelStyle(targetAxis, AxisDefinition);
+                targetAxis.FrameLineStyle.Color = ScottPlot.Colors.Black;
+            }
+        }
+
+        private static ScottPlot.IAxis? TryGetCartesianAxis(Plot plot, string axisType)
+        {
+            return axisType switch
+            {
+                "Left" => plot.Axes.Left,
+                "Right" => plot.Axes.Right,
+                "Bottom" => plot.Axes.Bottom,
+                "Top" => plot.Axes.Top,
+                _ => null
+            };
+        }
+
+        private static ScottPlot.TriangularAxisEdge? TryGetTernaryEdge(Plot plot, string axisType)
+        {
+            var triangularAxis = plot.GetPlottables().OfType<ScottPlot.Plottables.TriangularAxis>().FirstOrDefault();
+            if (triangularAxis == null)
+                return null;
+
+            return axisType switch
+            {
+                "Bottom" => triangularAxis.Bottom,
+                "Left" => triangularAxis.Left,
+                "Right" => triangularAxis.Right,
+                _ => null
+            };
+        }
+
+        private static void DimSubtitle(ScottPlot.IAxis targetAxis)
+        {
+            if (targetAxis is LeftAxisWithSubtitle leftSub)
+                leftSub.SubLabelStyle.ForeColor = leftSub.SubLabelStyle.ForeColor.WithAlpha(UnselectedMaskAlpha);
+            else if (targetAxis is RightAxisWithSubtitle rightSub)
+                rightSub.SubLabelStyle.ForeColor = rightSub.SubLabelStyle.ForeColor.WithAlpha(UnselectedMaskAlpha);
+            else if (targetAxis is BottomAxisWithSubtitle bottomSub)
+                bottomSub.SubLabelStyle.ForeColor = bottomSub.SubLabelStyle.ForeColor.WithAlpha(UnselectedMaskAlpha);
+            else if (targetAxis is TopAxisWithSubtitle topSub)
+                topSub.SubLabelStyle.ForeColor = topSub.SubLabelStyle.ForeColor.WithAlpha(UnselectedMaskAlpha);
+        }
+
+        private static void HighlightSubtitle(ScottPlot.IAxis targetAxis)
+        {
+            if (targetAxis is LeftAxisWithSubtitle leftSub)
+                leftSub.SubLabelStyle.ForeColor = ScottPlot.Colors.Red;
+            else if (targetAxis is RightAxisWithSubtitle rightSub)
+                rightSub.SubLabelStyle.ForeColor = ScottPlot.Colors.Red;
+            else if (targetAxis is BottomAxisWithSubtitle bottomSub)
+                bottomSub.SubLabelStyle.ForeColor = ScottPlot.Colors.Red;
+            else if (targetAxis is TopAxisWithSubtitle topSub)
+                topSub.SubLabelStyle.ForeColor = ScottPlot.Colors.Red;
+        }
 
         private void ApplyAxisLabelStyle(ScottPlot.IAxis targetAxis, BaseAxisDefinition axisDef)
         {

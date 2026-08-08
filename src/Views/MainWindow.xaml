@@ -112,8 +112,12 @@
                         </BeginStoryboard>
                     </DataTrigger.ExitActions>
                 </DataTrigger>
+                <!-- 图标模式：收掉文字宽度以便水平居中，但保留高度，避免 Collapsed 导致行高变矮、图标上跳 -->
                 <DataTrigger Binding="{Binding IsSideBarNavCentered}" Value="True">
-                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Setter Property="Width" Value="0"/>
+                    <Setter Property="Margin" Value="0"/>
+                    <Setter Property="Opacity" Value="0"/>
+                    <Setter Property="IsHitTestVisible" Value="False"/>
                 </DataTrigger>
             </Style.Triggers>
         </Style>

@@ -326,6 +326,17 @@ namespace GeoChemistryNexus.ViewModels
                 red,
                 strokeWidth,
                 red);
+
+            if (_legendProxy != null)
+            {
+                _legendProxy.Color = red;
+                PlotMarkerStyleApplier.Apply(
+                    _legendProxy.MarkerStyle,
+                    ScatterDefinition.MarkerShape,
+                    red,
+                    strokeWidth,
+                    red);
+            }
         }
 
         public void Dim()
@@ -337,24 +348,61 @@ namespace GeoChemistryNexus.ViewModels
                 scatterPlot.MarkerStyle.LineColor = scatterPlot.MarkerStyle.LineColor.WithAlpha(60);
                 scatterPlot.MarkerStyle.OutlineColor = scatterPlot.MarkerStyle.OutlineColor.WithAlpha(60);
             }
+
+            // 图例替身独立于主散点，遮罩时需同步变暗，否则图例符号仍为原色
+            if (_legendProxy != null)
+            {
+                _legendProxy.Color = _legendProxy.Color.WithAlpha(60);
+                _legendProxy.MarkerStyle.FillColor = _legendProxy.MarkerStyle.FillColor.WithAlpha(60);
+                _legendProxy.MarkerStyle.LineColor = _legendProxy.MarkerStyle.LineColor.WithAlpha(60);
+                _legendProxy.MarkerStyle.OutlineColor = _legendProxy.MarkerStyle.OutlineColor.WithAlpha(60);
+            }
         }
 
         public void Restore()
         {
-            if (Plottable is ScottPlot.Plottables.Scatter scatterPlot)
+            if (Plottable is ScottPlot.Plottables.Scatter scatterPlot && _legendProxy != null)
+            {
+                UpdatePlottableStyle(scatterPlot, _legendProxy);
+            }
+            else if (Plottable is ScottPlot.Plottables.Scatter scatterOnly)
             {
                 var fillColor = ScottPlot.Color.FromHex(GraphMapTemplateService.ConvertWpfHexToScottPlotHex(ScatterDefinition.Color));
                 var strokeColor = ScottPlot.Color.FromHex(
                     GraphMapTemplateService.ConvertWpfHexToScottPlotHex(ScatterDefinition.StrokeColor));
                 var seriesColor = ScatterDefinition.HasFill ? fillColor : strokeColor;
-                scatterPlot.Color = seriesColor;
+                scatterOnly.Color = seriesColor;
                 PlotMarkerStyleApplier.Apply(
-                    scatterPlot.MarkerStyle,
+                    scatterOnly.MarkerStyle,
                     ScatterDefinition.MarkerShape,
                     fillColor,
                     ScatterDefinition.StrokeWidth,
                     strokeColor);
             }
+        }
+
+        /// <summary>
+        /// 仅恢复图例替身颜色（选中图例时：符号保持原色，主数据点可继续遮罩）。
+        /// </summary>
+        public void RestoreLegendProxy()
+        {
+            if (_legendProxy == null)
+                return;
+
+            var fillColor = ScottPlot.Color.FromHex(
+                GraphMapTemplateService.ConvertWpfHexToScottPlotHex(ScatterDefinition.Color));
+            var strokeColor = ScottPlot.Color.FromHex(
+                GraphMapTemplateService.ConvertWpfHexToScottPlotHex(ScatterDefinition.StrokeColor));
+            var seriesColor = ScatterDefinition.HasFill ? fillColor : strokeColor;
+
+            _legendProxy.Color = seriesColor;
+            _legendProxy.MarkerSize = 8;
+            PlotMarkerStyleApplier.Apply(
+                _legendProxy.MarkerStyle,
+                ScatterDefinition.MarkerShape,
+                fillColor,
+                ScatterDefinition.StrokeWidth,
+                strokeColor);
         }
     }
 }

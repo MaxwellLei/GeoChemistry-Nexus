@@ -57,12 +57,14 @@ namespace GeoChemistryNexus.Helpers
 
         public static TemplateCardSizePreset ParseSizePreset(string? value)
         {
+            // 名称优先；历史数值 0 曾表示 Compact（旧枚举顺序），仍按紧凑解析。
             if (string.Equals(value, nameof(TemplateCardSizePreset.Compact), StringComparison.OrdinalIgnoreCase)
                 || value == "0")
             {
                 return TemplateCardSizePreset.Compact;
             }
 
+            // 缺省、Standard、以及历史 Large 等均回落到标准档
             return TemplateCardSizePreset.Standard;
         }
 

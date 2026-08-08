@@ -15,22 +15,6 @@ namespace GeoChemistryNexus.Services
                 new HomeAppItem
                 {
                     Type = HomeAppType.Widget,
-                    Title = LanguageService.Instance["template_translator"],
-                    Description = LanguageService.Instance["edit_drawing_template_translations"],
-                    WidgetKey = "TemplateTranslatorWidget",
-                    Icon = "\ue8c1"
-                },
-                new HomeAppItem
-                {
-                    Type = HomeAppType.Widget,
-                    Title = LanguageService.Instance["server_announcements"],
-                    Description = LanguageService.Instance["view_latest_server_announcements"],
-                    WidgetKey = "AnnouncementWidget",
-                    Icon = "\ue789"
-                },
-                new HomeAppItem
-                {
-                    Type = HomeAppType.Widget,
                     Title = LanguageService.Instance["alkalinity_calculator"],
                     Description = LanguageService.Instance["alkalinity_calculator_desc"],
                     WidgetKey = "AlkalinityCalculatorWidget",
@@ -51,12 +35,20 @@ namespace GeoChemistryNexus.Services
                     Description = LanguageService.Instance["black_body_radiation_calculator_desc"],
                     WidgetKey = "BlackBodyRadiationCalculatorWidget",
                     Icon = "\ue706"
+                },
+                new HomeAppItem
+                {
+                    Type = HomeAppType.Widget,
+                    Title = LanguageService.Instance["periodic_table_widget"],
+                    Description = LanguageService.Instance["periodic_table_widget_desc"],
+                    WidgetKey = "PeriodicTableWidget",
+                    Icon = "\ue81e"
                 }
             };
 
             if (isDeveloperMode)
             {
-                widgets.Insert(1, new HomeAppItem
+                widgets.Insert(0, new HomeAppItem
                 {
                     Type = HomeAppType.Widget,
                     Title = LanguageService.Instance["official_template_publisher"],

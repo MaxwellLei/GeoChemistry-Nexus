@@ -164,14 +164,14 @@
                             
                             <StackPanel Grid.Column="0">
                                 <TextBlock Text="{Binding [from],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
-                                <hc:NumericUpDown Value="{Binding Minimum, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" Minimum="{Binding AllowedInputMinimum}" 
-                                                  Style="{StaticResource ModernNumericUpDownStyle}"/>
+                                <local:AutoNumericUpDown Value="{Binding Minimum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         Minimum="{Binding AllowedInputMinimum}"/>
                             </StackPanel>
 
                             <StackPanel Grid.Column="2">
                                 <TextBlock Text="{Binding [to],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
-                                <hc:NumericUpDown Value="{Binding Maximum, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" Minimum="{Binding AllowedInputMinimum}" 
-                                                  Style="{StaticResource ModernNumericUpDownStyle}"/>
+                                <local:AutoNumericUpDown Value="{Binding Maximum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         Minimum="{Binding AllowedInputMinimum}"/>
                             </StackPanel>
                         </Grid>
                     </StackPanel>

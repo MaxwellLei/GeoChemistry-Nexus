@@ -88,6 +88,8 @@ namespace GeoChemistryNexus.Services
             entity.PluginId ??= string.Empty;
             entity.Version ??= string.Empty;
             entity.FileHash ??= string.Empty;
+            entity.ServerHash ??= string.Empty;
+            entity.Status ??= string.Empty;
             entity.Category ??= string.Empty;
             entity.Tags ??= new List<string>();
             entity.Capabilities ??= new List<string>();

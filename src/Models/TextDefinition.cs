@@ -29,7 +29,7 @@ namespace GeoChemistryNexus.Models
         /// 注释内容，多语言
         /// </summary>
         [ObservableProperty]
-        private TextAlignment _contentHorizontalAlignment = TextAlignment.Left;
+        private TextAlignment _contentHorizontalAlignment = TextAlignment.Center;
 
 
         /// <summary>

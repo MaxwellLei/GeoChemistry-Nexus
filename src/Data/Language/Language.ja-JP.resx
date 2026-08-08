@@ -414,9 +414,6 @@
   <data name="library_section" xml:space="preserve">
     <value>リソースライブラリ</value>
   </data>
-  <data name="server_announcement" xml:space="preserve">
-    <value>サーバーからのお知らせ</value>
-  </data>
   <data name="failed_templates" xml:space="preserve">
     <value>失敗したテンプレート：</value>
   </data>
@@ -469,6 +466,9 @@
   </data>
   <data name="already_exists_overwrite_confirm" xml:space="preserve">
     <value>既に存在します。上書きしますか？</value>
+  </data>
+  <data name="confirm_import_associated_package" xml:space="preserve">
+    <value>テンプレートファイル「{0}」をインポートしますか？</value>
   </data>
   <data name="geo_editor_title_edit" xml:space="preserve">
     <value>温圧計を編集</value>
@@ -993,9 +993,6 @@
   <data name="enable_alternating_fill" xml:space="preserve">
     <value>交互塗りつぶしを有効化</value>
   </data>
-  <data name="delete_language_column" xml:space="preserve">
-    <value>言語列を削除</value>
-  </data>
   <data name="geo_msg_export_dialog_title" xml:space="preserve">
     <value>地質温圧計をエクスポート</value>
   </data>
@@ -1233,17 +1230,11 @@
   <data name="Calculate" xml:space="preserve">
     <value>計算</value>
   </data>
-  <data name="failed_to_get_announcements" xml:space="preserve">
-    <value>お知らせの取得に失敗しました:</value>
-  </data>
   <data name="MarkerShape_FilledDiamond" xml:space="preserve">
     <value>塗りつぶされたひし形</value>
   </data>
   <data name="export_and_tools" xml:space="preserve">
     <value>エクスポート/ツール</value>
-  </data>
-  <data name="select_drawing_template_file" xml:space="preserve">
-    <value>描画テンプレートファイルを選択</value>
   </data>
   <data name="geo_tooltip_test_input_eg" xml:space="preserve">
     <value>例: 45.2, 0.8, 12.3</value>
@@ -1290,12 +1281,6 @@
   <data name="cipw_msg_data_cleared" xml:space="preserve">
     <value>データをクリアしました.</value>
   </data>
-  <data name="loading_announcements" xml:space="preserve">
-    <value>お知らせを読み込み中...</value>
-  </data>
-  <data name="no_announcements" xml:space="preserve">
-    <value>お知らせはありません。</value>
-  </data>
   <data name="MessageAutoClose5" xml:space="preserve">
     <value>5 秒</value>
   </data>
@@ -1307,9 +1292,6 @@
   </data>
   <data name="MessageAutoClose2" xml:space="preserve">
     <value>2 秒</value>
-  </data>
-  <data name="edit_drawing_template_translations" xml:space="preserve">
-    <value>描画テンプレートの多言語翻訳を編集</value>
   </data>
   <data name="MarkerShape_OpenTriangleUp" xml:space="preserve">
     <value>白抜き上向き三角形</value>
@@ -1461,9 +1443,6 @@
   </data>
   <data name="error_saving_rtf_file" xml:space="preserve">
     <value>RTFファイルの保存中にエラーが発生しました:</value>
-  </data>
-  <data name="support_json_format" xml:space="preserve">
-    <value>json 形式をサポート</value>
   </data>
   <data name="cipw_col_sample" xml:space="preserve">
     <value>試料</value>
@@ -1675,9 +1654,6 @@
   <data name="major_tick_style" xml:space="preserve">
     <value>主目盛のスタイル</value>
   </data>
-  <data name="server_announcements" xml:space="preserve">
-    <value>サーバーからのお知らせ</value>
-  </data>
   <data name="ModifedSuccess" xml:space="preserve">
     <value>変更しました</value>
   </data>
@@ -1686,9 +1662,6 @@
   </data>
   <data name="Orientation_Vertical" xml:space="preserve">
     <value>縦方向</value>
-  </data>
-  <data name="open_import" xml:space="preserve">
-    <value>インポートを開く</value>
   </data>
   <data name="no_data_please_add_data" xml:space="preserve">
     <value>データがありません。データを追加してください</value>
@@ -1773,9 +1746,6 @@
   <data name="cipw_iron_estimated_feot" xml:space="preserve">
     <value>FeOT から推定</value>
   </data>
-  <data name="view_latest_server_announcements" xml:space="preserve">
-    <value>サーバーからの最新のお知らせを表示</value>
-  </data>
   <data name="length" xml:space="preserve">
     <value>長さ</value>
   </data>
@@ -1787,9 +1757,6 @@
   </data>
   <data name="calculation_results" xml:space="preserve">
     <value>計算結果</value>
-  </data>
-  <data name="template_translator" xml:space="preserve">
-    <value>図解テンプレート翻訳機</value>
   </data>
   <data name="axis_title" xml:space="preserve">
     <value>座標軸のタイトル</value>
@@ -1944,6 +1911,12 @@
   <data name="batch_update_fail_count" xml:space="preserve">
     <value>失敗：{0} 件</value>
   </data>
+  <data name="update_incompatible_need_app_upgrade_count" xml:space="preserve">
+    <value>さらに {0} 件はバージョンが高すぎてこのアプリと互換性がないため更新できませんでした。ソフトウェアをアップグレードしてください。</value>
+  </data>
+  <data name="update_blocked_need_app_upgrade" xml:space="preserve">
+    <value>{0} 個のテンプレートに、このアプリと互換性のない新しいバージョンがあります。更新するにはソフトウェアをアップグレードしてください。</value>
+  </data>
   <data name="batch_update_complete" xml:space="preserve">
     <value>一括更新が完了しました</value>
   </data>
@@ -1965,6 +1938,42 @@
   <data name="geo_menu_check_update" xml:space="preserve">
     <value>更新を確認</value>
   </data>
+  <data name="geo_menu_batch_download_not_installed" xml:space="preserve">
+    <value>未インストールを一括ダウンロード</value>
+  </data>
+  <data name="geo_menu_batch_update_outdated" xml:space="preserve">
+    <value>期限切れを一括更新</value>
+  </data>
+  <data name="geo_btn_download" xml:space="preserve">
+    <value>ダウンロード</value>
+  </data>
+  <data name="geo_btn_update" xml:space="preserve">
+    <value>更新</value>
+  </data>
+  <data name="geo_msg_not_downloaded_please_download" xml:space="preserve">
+    <value>このテンプレートはダウンロードされていません。使用するにはダウンロードしてください。</value>
+  </data>
+  <data name="geo_msg_new_list_version_detected" xml:space="preserve">
+    <value>新しい地質温度圧力計テンプレートライブラリがあります。今すぐリストを更新しますか？</value>
+  </data>
+  <data name="geo_msg_list_update_success" xml:space="preserve">
+    <value>地質温度圧力計リストの更新に成功しました</value>
+  </data>
+  <data name="geo_msg_list_sync_summary" xml:space="preserve">
+    <value>リストを同期しました。未インストール: {0}、更新可能: {1}。</value>
+  </data>
+  <data name="geo_msg_list_already_latest" xml:space="preserve">
+    <value>地質温度圧力計リストは既に最新です</value>
+  </data>
+  <data name="geo_msg_confirm_update_overwrite" xml:space="preserve">
+    <value>更新するとローカル内容（ローカル編集を含む）が公式バージョンで上書きされます。続行しますか？</value>
+  </data>
+  <data name="geo_msg_no_outdated_to_update" xml:space="preserve">
+    <value>更新可能な期限切れの地質温度圧力計はありません</value>
+  </data>
+  <data name="geo_msg_batch_update_confirm" xml:space="preserve">
+    <value>更新可能な地質温度圧力計が {0} 件検出されました。更新するとローカル内容が上書きされます。続行しますか？</value>
+  </data>
   <data name="geo_help_no_doc_text" xml:space="preserve">
     <value>ヘルプドキュメントはありません。</value>
   </data>
@@ -1973,9 +1982,6 @@
   </data>
   <data name="download_template_failed" xml:space="preserve">
     <value>テンプレートのダウンロードに失敗しました:</value>
-  </data>
-  <data name="click_or_drag_template_json_here" xml:space="preserve">
-    <value>テンプレートファイル(JSON)をクリックまたはドラッグしてください</value>
   </data>
   <data name="file_drop_release_to_import" xml:space="preserve">
     <value>離してインポート</value>
@@ -2025,9 +2031,6 @@
   <data name="MarkerShape_OpenSquare" xml:space="preserve">
     <value>白抜き正方形</value>
   </data>
-  <data name="add_language_column" xml:space="preserve">
-    <value>言語列を追加</value>
-  </data>
   <data name="script_not_defined_in_template" xml:space="preserve">
     <value>図解テンプレートでスクリプトが定義されていません</value>
   </data>
@@ -2060,6 +2063,9 @@
   </data>
   <data name="from" xml:space="preserve">
     <value>開始</value>
+  </data>
+  <data name="auto" xml:space="preserve">
+    <value>自動</value>
   </data>
   <data name="grid" xml:space="preserve">
     <value>グリッド</value>
@@ -3567,8 +3573,6 @@
 
   </data>
 
-
-
   <data name="geo_additional_function_name" xml:space="preserve">
 
     <value>JS 関数名</value>
@@ -3617,11 +3621,6 @@
 
   </data>
 
-
-
-
-
-
   <data name="geo_free_sheet_clear" xml:space="preserve">
 
     <value>クリア</value>
@@ -3639,12 +3638,6 @@
     <value>スプレッドシートをクリアしました</value>
 
   </data>
-
-
-
-
-
-
 
   <data name="geo_free_sheet_delete_col" xml:space="preserve">
 
@@ -3700,10 +3693,6 @@
 
   </data>
 
-
-
-
-
   <data name="geo_free_sheet_format_painter" xml:space="preserve">
 
     <value>書式のコピー/貼り付け</value>
@@ -3739,7 +3728,6 @@
     <value>フォント</value>
 
   </data>
-
 
   <data name="geo_free_sheet_hint" xml:space="preserve">
 
@@ -3801,7 +3789,6 @@
 
   </data>
 
-
   <data name="geo_main_formula_badge" xml:space="preserve">
 
     <value>主数式</value>
@@ -3843,7 +3830,6 @@
     <value>スクリプト内の JavaScript 関数名（例：calcPressure）</value>
 
   </data>
-
 
   <data name="geo_validate_additional_formula_incomplete" xml:space="preserve">
 
@@ -4111,10 +4097,10 @@
     <value>表示形式</value>
   </data>
   <data name="alkalinity_calc_as_hco3" xml:space="preserve">
-    <value>HCO3- として</value>
+    <value>として HCO3-</value>
   </data>
   <data name="alkalinity_calc_as_co3" xml:space="preserve">
-    <value>CO32- として</value>
+    <value>として CO32-</value>
   </data>
   <data name="alkalinity_calc_as_caco3" xml:space="preserve">
     <value>CaCO3 として</value>
@@ -4245,6 +4231,137 @@
   <data name="black_body_radiation_calc_source_link" xml:space="preserve">
     <value>Kurt Hollocher — Geochemistry（Union College）</value>
   </data>
+  <data name="periodic_table_widget" xml:space="preserve">
+    <value>地球化学周期表</value>
+  </data>
+  <data name="periodic_table_widget_desc" xml:space="preserve">
+    <value>インタラクティブ周期表：地殻存在度、酸化物分子量などの簡易照会</value>
+  </data>
+  <data name="periodic_table_widget_hint" xml:space="preserve">
+    <value>元素をクリックして地球化学的性質を表示。REE、HFSE、LILE、PGE、Goldschmidt 分類で絞り込みできます。</value>
+  </data>
+  <data name="periodic_table_hint_select" xml:space="preserve">
+    <value>元素をクリックして属性を表示</value>
+  </data>
+  <data name="periodic_table_status_selected" xml:space="preserve">
+    <value>選択中：{0}（{1}）</value>
+  </data>
+  <data name="periodic_table_search_tooltip" xml:space="preserve">
+    <value>元素記号、英名、または原子番号で検索</value>
+  </data>
+  <data name="periodic_table_search_go" xml:space="preserve">
+    <value>検索</value>
+  </data>
+  <data name="periodic_table_search_empty" xml:space="preserve">
+    <value>一致する元素がありません。</value>
+  </data>
+  <data name="periodic_table_clear_group" xml:space="preserve">
+    <value>絞り込み解除</value>
+  </data>
+  <data name="periodic_table_fblock_note" xml:space="preserve">
+    <value>下段：ランタノイド（La–Lu）とアクチノイド（Ac–Lr）。</value>
+  </data>
+  <data name="periodic_table_label_lanthanides" xml:space="preserve">
+    <value>ランタノイド</value>
+  </data>
+  <data name="periodic_table_label_actinides" xml:space="preserve">
+    <value>アクチノイド</value>
+  </data>
+  <data name="periodic_table_section_basic" xml:space="preserve">
+    <value>基本情報</value>
+  </data>
+  <data name="periodic_table_section_geochem" xml:space="preserve">
+    <value>地球化学的性質</value>
+  </data>
+  <data name="periodic_table_section_oxides" xml:space="preserve">
+    <value>酸化物分子量</value>
+  </data>
+  <data name="periodic_table_field_z" xml:space="preserve">
+    <value>原子番号</value>
+  </data>
+  <data name="periodic_table_field_weight" xml:space="preserve">
+    <value>原子量</value>
+  </data>
+  <data name="periodic_table_field_econf" xml:space="preserve">
+    <value>電子配置</value>
+  </data>
+  <data name="periodic_table_field_abundance" xml:space="preserve">
+    <value>地殻存在度</value>
+  </data>
+  <data name="periodic_table_field_goldschmidt" xml:space="preserve">
+    <value>Goldschmidt 分類</value>
+  </data>
+  <data name="periodic_table_field_geochem_class" xml:space="preserve">
+    <value>地球化学的分類</value>
+  </data>
+  <data name="periodic_table_field_oxstates" xml:space="preserve">
+    <value>酸化数</value>
+  </data>
+  <data name="periodic_table_abundance_value" xml:space="preserve">
+    <value>{0} mg/kg（ppm）</value>
+  </data>
+  <data name="periodic_table_abundance_source" xml:space="preserve">
+    <value>データ出典: {0}</value>
+  </data>
+  <data name="periodic_table_detail_subtitle" xml:space="preserve">
+    <value>Z = {0} · {1} ブロック</value>
+  </data>
+  <data name="periodic_table_oxides_hint" xml:space="preserve">
+    <value>主な正の酸化数から推定した一般的な酸化物。</value>
+  </data>
+  <data name="periodic_table_no_oxides" xml:space="preserve">
+    <value>この元素の一般的な酸化物式はありません。</value>
+  </data>
+  <data name="periodic_table_mw_label" xml:space="preserve">
+    <value>分子量 = </value>
+  </data>
+  <data name="periodic_table_copy" xml:space="preserve">
+    <value>コピー</value>
+  </data>
+  <data name="periodic_table_copy_mw" xml:space="preserve">
+    <value>分子量をコピー</value>
+  </data>
+  <data name="periodic_table_copied" xml:space="preserve">
+    <value>クリップボードにコピーしました。</value>
+  </data>
+  <data name="periodic_table_copy_failed" xml:space="preserve">
+    <value>コピーに失敗しました。</value>
+  </data>
+  <data name="periodic_table_na" xml:space="preserve">
+    <value>なし</value>
+  </data>
+  <data name="periodic_table_group_ree" xml:space="preserve">
+    <value>REE</value>
+  </data>
+  <data name="periodic_table_group_lree" xml:space="preserve">
+    <value>LREE</value>
+  </data>
+  <data name="periodic_table_group_hree" xml:space="preserve">
+    <value>HREE</value>
+  </data>
+  <data name="periodic_table_group_hfse" xml:space="preserve">
+    <value>HFSE</value>
+  </data>
+  <data name="periodic_table_group_lile" xml:space="preserve">
+    <value>LILE</value>
+  </data>
+  <data name="periodic_table_group_pge" xml:space="preserve">
+    <value>PGE</value>
+  </data>
+  <data name="periodic_table_group_transition" xml:space="preserve">
+    <value>遷移金属</value>
+  </data>
+  <data name="periodic_table_group_lithophile" xml:space="preserve">
+    <value>親石</value>
+  </data>
+  <data name="periodic_table_group_siderophile" xml:space="preserve">
+    <value>親鉄</value>
+  </data>
+  <data name="periodic_table_group_chalcophile" xml:space="preserve">
+    <value>親銅</value>
+  </data>
+  <data name="periodic_table_group_atmophile" xml:space="preserve">
+    <value>親気</value>
+  </data>
 </root>
-
 

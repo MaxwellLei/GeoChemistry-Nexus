@@ -678,9 +678,6 @@
   <data name="library_section" xml:space="preserve">
     <value>资源库</value>
   </data>
-  <data name="server_announcement" xml:space="preserve">
-    <value>服务器公告</value>
-  </data>
   <data name="failed_templates" xml:space="preserve">
     <value>失败模板：</value>
   </data>
@@ -745,6 +742,9 @@
   </data>
   <data name="already_exists_overwrite_confirm" xml:space="preserve">
     <value>已存在，是否覆盖？</value>
+  </data>
+  <data name="confirm_import_associated_package" xml:space="preserve">
+    <value>是否导入模板文件“{0}”？</value>
   </data>
   <data name="geo_editor_title_edit" xml:space="preserve">
     <value>编辑温压计</value>
@@ -1284,9 +1284,6 @@
   <data name="enable_alternating_fill" xml:space="preserve">
     <value>启用交替填充</value>
   </data>
-  <data name="delete_language_column" xml:space="preserve">
-    <value>删除语言列</value>
-  </data>
   <data name="geo_msg_export_dialog_title" xml:space="preserve">
     <value>导出地质温压计</value>
   </data>
@@ -1527,17 +1524,11 @@
   <data name="Calculate" xml:space="preserve">
     <value>计算</value>
   </data>
-  <data name="failed_to_get_announcements" xml:space="preserve">
-    <value>获取公告失败:</value>
-  </data>
   <data name="MarkerShape_FilledDiamond" xml:space="preserve">
     <value>实心菱形</value>
   </data>
   <data name="export_and_tools" xml:space="preserve">
     <value>导出/工具</value>
-  </data>
-  <data name="select_drawing_template_file" xml:space="preserve">
-    <value>选择绘图模板文件</value>
   </data>
   <data name="geo_tooltip_test_input_eg" xml:space="preserve">
     <value>例如: 45.2, 0.8, 12.3</value>
@@ -1584,12 +1575,6 @@
   <data name="cipw_msg_data_cleared" xml:space="preserve">
     <value>数据已清除.</value>
   </data>
-  <data name="loading_announcements" xml:space="preserve">
-    <value>正在加载公告...</value>
-  </data>
-  <data name="no_announcements" xml:space="preserve">
-    <value>暂无公告。</value>
-  </data>
   <data name="MessageAutoClose5" xml:space="preserve">
     <value>5 秒</value>
   </data>
@@ -1601,9 +1586,6 @@
   </data>
   <data name="MessageAutoClose2" xml:space="preserve">
     <value>2 秒</value>
-  </data>
-  <data name="edit_drawing_template_translations" xml:space="preserve">
-    <value>编辑绘图模板的多语言翻译</value>
   </data>
   <data name="MarkerShape_OpenTriangleUp" xml:space="preserve">
     <value>空心上三角</value>
@@ -1791,9 +1773,6 @@
   </data>
   <data name="error_saving_rtf_file" xml:space="preserve">
     <value>保存RTF文件时出错:</value>
-  </data>
-  <data name="support_json_format" xml:space="preserve">
-    <value>支持 .json 格式</value>
   </data>
   <data name="cipw_col_sample" xml:space="preserve">
     <value>样品</value>
@@ -2191,9 +2170,6 @@
   <data name="major_tick_style" xml:space="preserve">
     <value>主刻度样式</value>
   </data>
-  <data name="server_announcements" xml:space="preserve">
-    <value>服务器公告</value>
-  </data>
   <data name="announcement" xml:space="preserve">
     <value>公告</value>
   </data>
@@ -2205,9 +2181,6 @@
   </data>
   <data name="Orientation_Vertical" xml:space="preserve">
     <value>纵向</value>
-  </data>
-  <data name="open_import" xml:space="preserve">
-    <value>打开导入</value>
   </data>
   <data name="no_data_please_add_data" xml:space="preserve">
     <value>无数据，请添加数据</value>
@@ -2343,9 +2316,6 @@
   <data name="cipw_iron_estimated_feot" xml:space="preserve">
     <value>从 FeOT 估算</value>
   </data>
-  <data name="view_latest_server_announcements" xml:space="preserve">
-    <value>查看服务器发布的最新公告信息</value>
-  </data>
   <data name="length" xml:space="preserve">
     <value>长度</value>
   </data>
@@ -2360,9 +2330,6 @@
   </data>
   <data name="calculation_results" xml:space="preserve">
     <value>计算结果</value>
-  </data>
-  <data name="template_translator" xml:space="preserve">
-    <value>图解模板翻译器</value>
   </data>
   <data name="axis_title" xml:space="preserve">
     <value>坐标轴标题</value>
@@ -2559,6 +2526,42 @@
   <data name="geo_menu_check_update" xml:space="preserve">
     <value>检查更新</value>
   </data>
+  <data name="geo_menu_batch_download_not_installed" xml:space="preserve">
+    <value>批量下载未安装</value>
+  </data>
+  <data name="geo_menu_batch_update_outdated" xml:space="preserve">
+    <value>批量更新过期</value>
+  </data>
+  <data name="geo_btn_download" xml:space="preserve">
+    <value>下载</value>
+  </data>
+  <data name="geo_btn_update" xml:space="preserve">
+    <value>更新</value>
+  </data>
+  <data name="geo_msg_not_downloaded_please_download" xml:space="preserve">
+    <value>该模板未下载，请下载使用。</value>
+  </data>
+  <data name="geo_msg_new_list_version_detected" xml:space="preserve">
+    <value>检测到温压计模板库有新版本，是否立即更新列表？</value>
+  </data>
+  <data name="geo_msg_list_update_success" xml:space="preserve">
+    <value>温压计列表更新成功</value>
+  </data>
+  <data name="geo_msg_list_sync_summary" xml:space="preserve">
+    <value>列表已同步。未安装 {0} 个，可更新 {1} 个。</value>
+  </data>
+  <data name="geo_msg_list_already_latest" xml:space="preserve">
+    <value>当前温压计列表已是最新版本</value>
+  </data>
+  <data name="geo_msg_confirm_update_overwrite" xml:space="preserve">
+    <value>更新将用官方版本覆盖本地内容（含本地修改），是否继续？</value>
+  </data>
+  <data name="geo_msg_no_outdated_to_update" xml:space="preserve">
+    <value>没有可更新的温压计</value>
+  </data>
+  <data name="geo_msg_batch_update_confirm" xml:space="preserve">
+    <value>检测到 {0} 个可更新的温压计，更新将覆盖本地内容，是否继续？</value>
+  </data>
   <data name="geo_help_no_doc_text" xml:space="preserve">
     <value>暂无帮助文档。</value>
   </data>
@@ -2567,9 +2570,6 @@
   </data>
   <data name="download_template_failed" xml:space="preserve">
     <value>下载模板失败:</value>
-  </data>
-  <data name="click_or_drag_template_json_here" xml:space="preserve">
-    <value>点击或拖拽模板文件(JSON)到此处</value>
   </data>
   <data name="file_drop_release_to_import" xml:space="preserve">
     <value>松开鼠标以导入</value>
@@ -2622,9 +2622,6 @@
   <data name="MarkerShape_OpenSquare" xml:space="preserve">
     <value>空心正方形</value>
   </data>
-  <data name="add_language_column" xml:space="preserve">
-    <value>添加语言列</value>
-  </data>
   <data name="script_not_defined_in_template" xml:space="preserve">
     <value>图解模板中未定义脚本</value>
   </data>
@@ -2657,6 +2654,9 @@
   </data>
   <data name="from" xml:space="preserve">
     <value>从</value>
+  </data>
+  <data name="auto" xml:space="preserve">
+    <value>自动</value>
   </data>
   <data name="grid" xml:space="preserve">
     <value>网格</value>
@@ -3822,10 +3822,10 @@
     <value>表示形式</value>
   </data>
   <data name="alkalinity_calc_as_hco3" xml:space="preserve">
-    <value>以 HCO3- 计</value>
+    <value>计作 HCO3-</value>
   </data>
   <data name="alkalinity_calc_as_co3" xml:space="preserve">
-    <value>以 CO32- 计</value>
+    <value>计作 CO32-</value>
   </data>
   <data name="alkalinity_calc_as_caco3" xml:space="preserve">
     <value>以 CaCO3 计</value>
@@ -3955,6 +3955,138 @@
   </data>
   <data name="black_body_radiation_calc_source_link" xml:space="preserve">
     <value>Kurt Hollocher — Geochemistry（Union College）</value>
+  </data>
+  <data name="periodic_table_widget" xml:space="preserve">
+    <value>地球化学周期表</value>
+  </data>
+  <data name="periodic_table_widget_desc" xml:space="preserve">
+    <value>交互式周期表：地壳丰度，氧化物分子量等快捷查询</value>
+  </data>
+  <data name="periodic_table_widget_hint" xml:space="preserve">
+    <value>点击元素查看地球化学属性。可用分组筛选高亮 REE、HFSE、LILE、PGE 及 Goldschmidt 分类。</value>
+  </data>
+  <data name="periodic_table_hint_select" xml:space="preserve">
+    <value>点击元素查看属性</value>
+  </data>
+  <data name="periodic_table_status_selected" xml:space="preserve">
+    <value>已选中：{0}（{1}）</value>
+  </data>
+  <data name="periodic_table_search_tooltip" xml:space="preserve">
+    <value>按元素符号、英文名或原子序数搜索</value>
+  </data>
+  <data name="periodic_table_search_go" xml:space="preserve">
+    <value>定位</value>
+  </data>
+  <data name="periodic_table_search_empty" xml:space="preserve">
+    <value>未找到匹配元素。</value>
+  </data>
+  <data name="periodic_table_clear_group" xml:space="preserve">
+    <value>清除筛选</value>
+  </data>
+  <data name="periodic_table_fblock_note" xml:space="preserve">
+    <value>底部两行：镧系（La–Lu）与锕系（Ac–Lr）。</value>
+  </data>
+  <data name="periodic_table_label_lanthanides" xml:space="preserve">
+    <value>镧系</value>
+  </data>
+  <data name="periodic_table_label_actinides" xml:space="preserve">
+    <value>锕系</value>
+  </data>
+  <data name="periodic_table_section_basic" xml:space="preserve">
+    <value>基本信息</value>
+  </data>
+  <data name="periodic_table_section_geochem" xml:space="preserve">
+    <value>地球化学属性</value>
+  </data>
+  <data name="periodic_table_section_oxides" xml:space="preserve">
+    <value>氧化物分子量</value>
+  </data>
+  <data name="periodic_table_field_z" xml:space="preserve">
+    <value>原子序数</value>
+  </data>
+  <data name="periodic_table_field_weight" xml:space="preserve">
+    <value>原子量</value>
+  </data>
+  <data name="periodic_table_field_econf" xml:space="preserve">
+    <value>电子排布</value>
+  </data>
+  <data name="periodic_table_field_abundance" xml:space="preserve">
+    <value>地壳丰度</value>
+  </data>
+  <data name="periodic_table_field_goldschmidt" xml:space="preserve">
+    <value>Goldschmidt 分类</value>
+  </data>
+  <data name="periodic_table_field_geochem_class" xml:space="preserve">
+    <value>地球化学类别</value>
+  </data>
+  <data name="periodic_table_field_oxstates" xml:space="preserve">
+    <value>常见价态</value>
+  </data>
+  <data name="periodic_table_abundance_value" xml:space="preserve">
+    <value>{0} mg/kg（ppm）</value>
+  </data>
+  <data name="periodic_table_abundance_source" xml:space="preserve">
+    <value>数据来源: {0}</value>
+  </data>
+  <data name="periodic_table_detail_subtitle" xml:space="preserve">
+    <value>Z = {0} · {1} 区</value>
+  </data>
+  <data name="periodic_table_oxides_hint" xml:space="preserve">
+    <value>根据主要正价态推断的常见氧化物。</value>
+  </data>
+  <data name="periodic_table_no_oxides" xml:space="preserve">
+    <value>该元素暂无可用的常见氧化物式。</value>
+  </data>
+  <data name="periodic_table_mw_label" xml:space="preserve">
+    <value>分子量 = </value>
+  </data>
+  <data name="periodic_table_copy" xml:space="preserve">
+    <value>复制</value>
+  </data>
+  <data name="periodic_table_copy_mw" xml:space="preserve">
+    <value>复制分子量</value>
+  </data>
+  <data name="periodic_table_copied" xml:space="preserve">
+    <value>已复制到剪贴板。</value>
+  </data>
+  <data name="periodic_table_copy_failed" xml:space="preserve">
+    <value>复制失败。</value>
+  </data>
+  <data name="periodic_table_na" xml:space="preserve">
+    <value>暂无</value>
+  </data>
+  <data name="periodic_table_group_ree" xml:space="preserve">
+    <value>REE</value>
+  </data>
+  <data name="periodic_table_group_lree" xml:space="preserve">
+    <value>LREE</value>
+  </data>
+  <data name="periodic_table_group_hree" xml:space="preserve">
+    <value>HREE</value>
+  </data>
+  <data name="periodic_table_group_hfse" xml:space="preserve">
+    <value>HFSE</value>
+  </data>
+  <data name="periodic_table_group_lile" xml:space="preserve">
+    <value>LILE</value>
+  </data>
+  <data name="periodic_table_group_pge" xml:space="preserve">
+    <value>PGE</value>
+  </data>
+  <data name="periodic_table_group_transition" xml:space="preserve">
+    <value>过渡金属</value>
+  </data>
+  <data name="periodic_table_group_lithophile" xml:space="preserve">
+    <value>亲石</value>
+  </data>
+  <data name="periodic_table_group_siderophile" xml:space="preserve">
+    <value>亲铁</value>
+  </data>
+  <data name="periodic_table_group_chalcophile" xml:space="preserve">
+    <value>亲铜</value>
+  </data>
+  <data name="periodic_table_group_atmophile" xml:space="preserve">
+    <value>亲气</value>
   </data>
 </root>
 

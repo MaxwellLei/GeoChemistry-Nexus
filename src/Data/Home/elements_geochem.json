@@ -1,0 +1,4412 @@
+{
+  "source": {
+    "abundanceCrustCitation": "CRC Handbook/ Haynes (via mendeleev)",
+    "abundanceCrustUnit": "mg/kg (ppm by mass)"
+  },
+  "elements": [
+    {
+      "atomicNumber": 1,
+      "symbol": "H",
+      "name": "Hydrogen",
+      "atomicWeight": 1.008,
+      "abundanceCrustMgPerKg": 1400.0,
+      "abundanceSeaMgPerL": 108000.0,
+      "goldschmidtClass": "atmophile",
+      "geochemicalClass": "volatile",
+      "electronicConfiguration": "1s",
+      "period": 1,
+      "groupId": 1,
+      "block": "s",
+      "series": "Nonmetals",
+      "oxidationStates": [
+        {
+          "state": -1,
+          "category": "main"
+        },
+        {
+          "state": 1,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 2,
+      "symbol": "He",
+      "name": "Helium",
+      "atomicWeight": 4.002602,
+      "abundanceCrustMgPerKg": 0.008,
+      "abundanceSeaMgPerL": 7.000000000000001e-06,
+      "goldschmidtClass": "atmophile",
+      "geochemicalClass": "volatile",
+      "electronicConfiguration": "1s2",
+      "period": 1,
+      "groupId": 18,
+      "block": "s",
+      "series": "Noble gases",
+      "oxidationStates": []
+    },
+    {
+      "atomicNumber": 3,
+      "symbol": "Li",
+      "name": "Lithium",
+      "atomicWeight": 6.94,
+      "abundanceCrustMgPerKg": 20.0,
+      "abundanceSeaMgPerL": 0.18,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "alkali metal",
+      "electronicConfiguration": "[He] 2s",
+      "period": 2,
+      "groupId": 1,
+      "block": "s",
+      "series": "Alkali metals",
+      "oxidationStates": [
+        {
+          "state": 1,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 4,
+      "symbol": "Be",
+      "name": "Beryllium",
+      "atomicWeight": 9.0121831,
+      "abundanceCrustMgPerKg": 2.8,
+      "abundanceSeaMgPerL": 5.6e-06,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "alkaline earth metal",
+      "electronicConfiguration": "[He] 2s2",
+      "period": 2,
+      "groupId": 2,
+      "block": "s",
+      "series": "Alkaline earth metals",
+      "oxidationStates": [
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 5,
+      "symbol": "B",
+      "name": "Boron",
+      "atomicWeight": 10.81,
+      "abundanceCrustMgPerKg": 10.0,
+      "abundanceSeaMgPerL": 4.44,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[He] 2s2 2p",
+      "period": 2,
+      "groupId": 13,
+      "block": "p",
+      "series": "Metalloids",
+      "oxidationStates": [
+        {
+          "state": -5,
+          "category": "extended"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 6,
+      "symbol": "C",
+      "name": "Carbon",
+      "atomicWeight": 12.011,
+      "abundanceCrustMgPerKg": 200.0,
+      "abundanceSeaMgPerL": 28.0,
+      "goldschmidtClass": "atmophile",
+      "geochemicalClass": "semi-volatile",
+      "electronicConfiguration": "[He] 2s2 2p2",
+      "period": 2,
+      "groupId": 14,
+      "block": "p",
+      "series": "Nonmetals",
+      "oxidationStates": [
+        {
+          "state": -4,
+          "category": "main"
+        },
+        {
+          "state": -3,
+          "category": "extended"
+        },
+        {
+          "state": -2,
+          "category": "extended"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 7,
+      "symbol": "N",
+      "name": "Nitrogen",
+      "atomicWeight": 14.007,
+      "abundanceCrustMgPerKg": 19.0,
+      "abundanceSeaMgPerL": 0.5,
+      "goldschmidtClass": "atmophile",
+      "geochemicalClass": "volatile",
+      "electronicConfiguration": "[He] 2s2 2p3",
+      "period": 2,
+      "groupId": 15,
+      "block": "p",
+      "series": "Nonmetals",
+      "oxidationStates": [
+        {
+          "state": -3,
+          "category": "main"
+        },
+        {
+          "state": -2,
+          "category": "extended"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        },
+        {
+          "state": 5,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 8,
+      "symbol": "O",
+      "name": "Oxygen",
+      "atomicWeight": 15.999,
+      "abundanceCrustMgPerKg": 461000.0,
+      "abundanceSeaMgPerL": 857000.0,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "major",
+      "electronicConfiguration": "[He] 2s2 2p4",
+      "period": 2,
+      "groupId": 16,
+      "block": "p",
+      "series": "Nonmetals",
+      "oxidationStates": [
+        {
+          "state": -2,
+          "category": "main"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 9,
+      "symbol": "F",
+      "name": "Fluorine",
+      "atomicWeight": 18.998403163,
+      "abundanceCrustMgPerKg": 585.0,
+      "abundanceSeaMgPerL": 1.3,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "semi-volatile",
+      "electronicConfiguration": "[He] 2s2 2p5",
+      "period": 2,
+      "groupId": 17,
+      "block": "p",
+      "series": "Halogens",
+      "oxidationStates": [
+        {
+          "state": -1,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 10,
+      "symbol": "Ne",
+      "name": "Neon",
+      "atomicWeight": 20.1797,
+      "abundanceCrustMgPerKg": 0.005,
+      "abundanceSeaMgPerL": 0.00011999999999999999,
+      "goldschmidtClass": "atmophile",
+      "geochemicalClass": "volatile",
+      "electronicConfiguration": "[He] 2s2 2p6",
+      "period": 2,
+      "groupId": 18,
+      "block": "p",
+      "series": "Noble gases",
+      "oxidationStates": []
+    },
+    {
+      "atomicNumber": 11,
+      "symbol": "Na",
+      "name": "Sodium",
+      "atomicWeight": 22.98976928,
+      "abundanceCrustMgPerKg": 23600.0,
+      "abundanceSeaMgPerL": 10800.0,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "major",
+      "electronicConfiguration": "[Ne] 3s",
+      "period": 3,
+      "groupId": 1,
+      "block": "s",
+      "series": "Alkali metals",
+      "oxidationStates": [
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 12,
+      "symbol": "Mg",
+      "name": "Magnesium",
+      "atomicWeight": 24.305,
+      "abundanceCrustMgPerKg": 23300.0,
+      "abundanceSeaMgPerL": 1290.0,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "major",
+      "electronicConfiguration": "[Ne] 3s2",
+      "period": 3,
+      "groupId": 2,
+      "block": "s",
+      "series": "Alkaline earth metals",
+      "oxidationStates": [
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 13,
+      "symbol": "Al",
+      "name": "Aluminum",
+      "atomicWeight": 26.9815385,
+      "abundanceCrustMgPerKg": 82300.0,
+      "abundanceSeaMgPerL": 0.002,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "major",
+      "electronicConfiguration": "[Ne] 3s2 3p",
+      "period": 3,
+      "groupId": 13,
+      "block": "p",
+      "series": "Poor metals",
+      "oxidationStates": [
+        {
+          "state": -2,
+          "category": "extended"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 14,
+      "symbol": "Si",
+      "name": "Silicon",
+      "atomicWeight": 28.085,
+      "abundanceCrustMgPerKg": 282000.0,
+      "abundanceSeaMgPerL": 2.2,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "major",
+      "electronicConfiguration": "[Ne] 3s2 3p2",
+      "period": 3,
+      "groupId": 14,
+      "block": "p",
+      "series": "Metalloids",
+      "oxidationStates": [
+        {
+          "state": -4,
+          "category": "main"
+        },
+        {
+          "state": -3,
+          "category": "extended"
+        },
+        {
+          "state": -2,
+          "category": "extended"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 15,
+      "symbol": "P",
+      "name": "Phosphorus",
+      "atomicWeight": 30.973761998,
+      "abundanceCrustMgPerKg": 1050.0,
+      "abundanceSeaMgPerL": 0.06,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Ne] 3s2 3p3",
+      "period": 3,
+      "groupId": 15,
+      "block": "p",
+      "series": "Nonmetals",
+      "oxidationStates": [
+        {
+          "state": -3,
+          "category": "main"
+        },
+        {
+          "state": -2,
+          "category": "extended"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        },
+        {
+          "state": 5,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 16,
+      "symbol": "S",
+      "name": "Sulfur",
+      "atomicWeight": 32.06,
+      "abundanceCrustMgPerKg": 350.0,
+      "abundanceSeaMgPerL": 905.0,
+      "goldschmidtClass": "chalcophile",
+      "geochemicalClass": "semi-volatile",
+      "electronicConfiguration": "[Ne] 3s2 3p4",
+      "period": 3,
+      "groupId": 16,
+      "block": "p",
+      "series": "Nonmetals",
+      "oxidationStates": [
+        {
+          "state": -2,
+          "category": "main"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "main"
+        },
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "main"
+        },
+        {
+          "state": 5,
+          "category": "extended"
+        },
+        {
+          "state": 6,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 17,
+      "symbol": "Cl",
+      "name": "Chlorine",
+      "atomicWeight": 35.45,
+      "abundanceCrustMgPerKg": 145.0,
+      "abundanceSeaMgPerL": 19400.0,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "semi-volatile",
+      "electronicConfiguration": "[Ne] 3s2 3p5",
+      "period": 3,
+      "groupId": 17,
+      "block": "p",
+      "series": "Halogens",
+      "oxidationStates": [
+        {
+          "state": -1,
+          "category": "main"
+        },
+        {
+          "state": 1,
+          "category": "main"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        },
+        {
+          "state": 5,
+          "category": "main"
+        },
+        {
+          "state": 6,
+          "category": "extended"
+        },
+        {
+          "state": 7,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 18,
+      "symbol": "Ar",
+      "name": "Argon",
+      "atomicWeight": 39.948,
+      "abundanceCrustMgPerKg": 3.5,
+      "abundanceSeaMgPerL": 0.45,
+      "goldschmidtClass": "atmophile",
+      "geochemicalClass": "volatile",
+      "electronicConfiguration": "[Ne] 3s2 3p6",
+      "period": 3,
+      "groupId": 18,
+      "block": "p",
+      "series": "Noble gases",
+      "oxidationStates": []
+    },
+    {
+      "atomicNumber": 19,
+      "symbol": "K",
+      "name": "Potassium",
+      "atomicWeight": 39.0983,
+      "abundanceCrustMgPerKg": 20900.0,
+      "abundanceSeaMgPerL": 399.0,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "alkali metal",
+      "electronicConfiguration": "[Ar] 4s",
+      "period": 4,
+      "groupId": 1,
+      "block": "s",
+      "series": "Alkali metals",
+      "oxidationStates": [
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 20,
+      "symbol": "Ca",
+      "name": "Calcium",
+      "atomicWeight": 40.078,
+      "abundanceCrustMgPerKg": 41500.0,
+      "abundanceSeaMgPerL": 412.0,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "major",
+      "electronicConfiguration": "[Ar] 4s2",
+      "period": 4,
+      "groupId": 2,
+      "block": "s",
+      "series": "Alkaline earth metals",
+      "oxidationStates": [
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 21,
+      "symbol": "Sc",
+      "name": "Scandium",
+      "atomicWeight": 44.955908,
+      "abundanceCrustMgPerKg": 22.0,
+      "abundanceSeaMgPerL": 6e-07,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "first series transition metal",
+      "electronicConfiguration": "[Ar] 3d 4s2",
+      "period": 4,
+      "groupId": 3,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 22,
+      "symbol": "Ti",
+      "name": "Titanium",
+      "atomicWeight": 47.867,
+      "abundanceCrustMgPerKg": 5650.0,
+      "abundanceSeaMgPerL": 0.001,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "first series transition metal",
+      "electronicConfiguration": "[Ar] 3d2 4s2",
+      "period": 4,
+      "groupId": 4,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": -2,
+          "category": "extended"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 23,
+      "symbol": "V",
+      "name": "Vanadium",
+      "atomicWeight": 50.9415,
+      "abundanceCrustMgPerKg": 120.0,
+      "abundanceSeaMgPerL": 0.0025,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "first series transition metal",
+      "electronicConfiguration": "[Ar] 3d3 4s2",
+      "period": 4,
+      "groupId": 5,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": -3,
+          "category": "extended"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        },
+        {
+          "state": 5,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 24,
+      "symbol": "Cr",
+      "name": "Chromium",
+      "atomicWeight": 51.9961,
+      "abundanceCrustMgPerKg": 102.0,
+      "abundanceSeaMgPerL": 0.0003,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "first series transition metal",
+      "electronicConfiguration": "[Ar] 3d5 4s",
+      "period": 4,
+      "groupId": 6,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": -4,
+          "category": "extended"
+        },
+        {
+          "state": -2,
+          "category": "extended"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        },
+        {
+          "state": 5,
+          "category": "extended"
+        },
+        {
+          "state": 6,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 25,
+      "symbol": "Mn",
+      "name": "Manganese",
+      "atomicWeight": 54.938044,
+      "abundanceCrustMgPerKg": 950.0,
+      "abundanceSeaMgPerL": 0.0002,
+      "goldschmidtClass": "siderophile",
+      "geochemicalClass": "first series transition metal",
+      "electronicConfiguration": "[Ar] 3d5 4s2",
+      "period": 4,
+      "groupId": 7,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": -3,
+          "category": "extended"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "main"
+        },
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "main"
+        },
+        {
+          "state": 5,
+          "category": "extended"
+        },
+        {
+          "state": 6,
+          "category": "extended"
+        },
+        {
+          "state": 7,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 26,
+      "symbol": "Fe",
+      "name": "Iron",
+      "atomicWeight": 55.845,
+      "abundanceCrustMgPerKg": 56300.0,
+      "abundanceSeaMgPerL": 0.002,
+      "goldschmidtClass": "siderophile",
+      "geochemicalClass": "major",
+      "electronicConfiguration": "[Ar] 3d6 4s2",
+      "period": 4,
+      "groupId": 8,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": -4,
+          "category": "extended"
+        },
+        {
+          "state": -2,
+          "category": "extended"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "main"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        },
+        {
+          "state": 5,
+          "category": "extended"
+        },
+        {
+          "state": 6,
+          "category": "extended"
+        },
+        {
+          "state": 7,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 27,
+      "symbol": "Co",
+      "name": "Cobalt",
+      "atomicWeight": 58.933194,
+      "abundanceCrustMgPerKg": 25.0,
+      "abundanceSeaMgPerL": 2e-05,
+      "goldschmidtClass": "siderophile",
+      "geochemicalClass": "first series transition metal",
+      "electronicConfiguration": "[Ar] 3d7 4s2",
+      "period": 4,
+      "groupId": 9,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": -3,
+          "category": "extended"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "main"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        },
+        {
+          "state": 5,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 28,
+      "symbol": "Ni",
+      "name": "Nickel",
+      "atomicWeight": 58.6934,
+      "abundanceCrustMgPerKg": 84.0,
+      "abundanceSeaMgPerL": 0.00056,
+      "goldschmidtClass": "siderophile",
+      "geochemicalClass": "first series transition metal",
+      "electronicConfiguration": "[Ar] 3d8 4s2",
+      "period": 4,
+      "groupId": 10,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": -2,
+          "category": "extended"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "main"
+        },
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 29,
+      "symbol": "Cu",
+      "name": "Copper",
+      "atomicWeight": 63.546,
+      "abundanceCrustMgPerKg": 60.0,
+      "abundanceSeaMgPerL": 0.00025,
+      "goldschmidtClass": "chalcophile",
+      "geochemicalClass": "first series transition metal",
+      "electronicConfiguration": "[Ar] 3d10 4s",
+      "period": 4,
+      "groupId": 11,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": -2,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "main"
+        },
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 30,
+      "symbol": "Zn",
+      "name": "Zinc",
+      "atomicWeight": 65.38,
+      "abundanceCrustMgPerKg": 70.0,
+      "abundanceSeaMgPerL": 0.0049,
+      "goldschmidtClass": "chalcophile",
+      "geochemicalClass": "first series transition metal",
+      "electronicConfiguration": "[Ar] 3d10 4s2",
+      "period": 4,
+      "groupId": 12,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": -2,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 31,
+      "symbol": "Ga",
+      "name": "Gallium",
+      "atomicWeight": 69.723,
+      "abundanceCrustMgPerKg": 19.0,
+      "abundanceSeaMgPerL": 2.9999999999999997e-05,
+      "goldschmidtClass": "chalcophile",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Ar] 3d10 4s2 4p",
+      "period": 4,
+      "groupId": 13,
+      "block": "p",
+      "series": "Poor metals",
+      "oxidationStates": [
+        {
+          "state": -5,
+          "category": "extended"
+        },
+        {
+          "state": -4,
+          "category": "extended"
+        },
+        {
+          "state": -3,
+          "category": "extended"
+        },
+        {
+          "state": -2,
+          "category": "extended"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 32,
+      "symbol": "Ge",
+      "name": "Germanium",
+      "atomicWeight": 72.63,
+      "abundanceCrustMgPerKg": 1.5,
+      "abundanceSeaMgPerL": 5e-05,
+      "goldschmidtClass": "chalcophile",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Ar] 3d10 4s2 4p2",
+      "period": 4,
+      "groupId": 14,
+      "block": "p",
+      "series": "Metalloids",
+      "oxidationStates": [
+        {
+          "state": -4,
+          "category": "main"
+        },
+        {
+          "state": -3,
+          "category": "extended"
+        },
+        {
+          "state": -2,
+          "category": "extended"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "main"
+        },
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 33,
+      "symbol": "As",
+      "name": "Arsenic",
+      "atomicWeight": 74.921595,
+      "abundanceCrustMgPerKg": 1.8,
+      "abundanceSeaMgPerL": 0.0037,
+      "goldschmidtClass": "chalcophile",
+      "geochemicalClass": "semi-volatile",
+      "electronicConfiguration": "[Ar] 3d10 4s2 4p3",
+      "period": 4,
+      "groupId": 15,
+      "block": "p",
+      "series": "Metalloids",
+      "oxidationStates": [
+        {
+          "state": -3,
+          "category": "main"
+        },
+        {
+          "state": -2,
+          "category": "extended"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        },
+        {
+          "state": 5,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 34,
+      "symbol": "Se",
+      "name": "Selenium",
+      "atomicWeight": 78.971,
+      "abundanceCrustMgPerKg": 0.05,
+      "abundanceSeaMgPerL": 0.0002,
+      "goldschmidtClass": "chalcophile",
+      "geochemicalClass": "semi-volatile",
+      "electronicConfiguration": "[Ar] 3d10 4s2 4p4",
+      "period": 4,
+      "groupId": 16,
+      "block": "p",
+      "series": "Nonmetals",
+      "oxidationStates": [
+        {
+          "state": -2,
+          "category": "main"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "main"
+        },
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "main"
+        },
+        {
+          "state": 5,
+          "category": "extended"
+        },
+        {
+          "state": 6,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 35,
+      "symbol": "Br",
+      "name": "Bromine",
+      "atomicWeight": 79.904,
+      "abundanceCrustMgPerKg": 2.4,
+      "abundanceSeaMgPerL": 67.3,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "semi-volatile",
+      "electronicConfiguration": "[Ar] 3d10 4s2 4p5",
+      "period": 4,
+      "groupId": 17,
+      "block": "p",
+      "series": "Halogens",
+      "oxidationStates": [
+        {
+          "state": -1,
+          "category": "main"
+        },
+        {
+          "state": 1,
+          "category": "main"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        },
+        {
+          "state": 5,
+          "category": "main"
+        },
+        {
+          "state": 7,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 36,
+      "symbol": "Kr",
+      "name": "Krypton",
+      "atomicWeight": 83.798,
+      "abundanceCrustMgPerKg": 0.0001,
+      "abundanceSeaMgPerL": 0.00021,
+      "goldschmidtClass": "atmophile",
+      "geochemicalClass": "volatile",
+      "electronicConfiguration": "[Ar] 3d10 4s2 4p6",
+      "period": 4,
+      "groupId": 18,
+      "block": "p",
+      "series": "Noble gases",
+      "oxidationStates": [
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 37,
+      "symbol": "Rb",
+      "name": "Rubidium",
+      "atomicWeight": 85.4678,
+      "abundanceCrustMgPerKg": 90.0,
+      "abundanceSeaMgPerL": 0.12,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "alkali metal",
+      "electronicConfiguration": "[Kr] 5s",
+      "period": 5,
+      "groupId": 1,
+      "block": "s",
+      "series": "Alkali metals",
+      "oxidationStates": [
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 38,
+      "symbol": "Sr",
+      "name": "Strontium",
+      "atomicWeight": 87.62,
+      "abundanceCrustMgPerKg": 370.0,
+      "abundanceSeaMgPerL": 7.9,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "alkaline earth metal",
+      "electronicConfiguration": "[Kr] 5s2",
+      "period": 5,
+      "groupId": 2,
+      "block": "s",
+      "series": "Alkaline earth metals",
+      "oxidationStates": [
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 39,
+      "symbol": "Y",
+      "name": "Yttrium",
+      "atomicWeight": 88.90584,
+      "abundanceCrustMgPerKg": 33.0,
+      "abundanceSeaMgPerL": 1.3000000000000001e-05,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "rare earth & related",
+      "electronicConfiguration": "[Kr] 4d 5s2",
+      "period": 5,
+      "groupId": 3,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 40,
+      "symbol": "Zr",
+      "name": "Zirconium",
+      "atomicWeight": 91.224,
+      "abundanceCrustMgPerKg": 165.0,
+      "abundanceSeaMgPerL": 2.9999999999999997e-05,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "high field strength",
+      "electronicConfiguration": "[Kr] 4d2 5s2",
+      "period": 5,
+      "groupId": 4,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 41,
+      "symbol": "Nb",
+      "name": "Niobium",
+      "atomicWeight": 92.90637,
+      "abundanceCrustMgPerKg": 20.0,
+      "abundanceSeaMgPerL": 1e-05,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "high field strength",
+      "electronicConfiguration": "[Kr] 4d4 5s",
+      "period": 5,
+      "groupId": 5,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": -3,
+          "category": "extended"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        },
+        {
+          "state": 5,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 42,
+      "symbol": "Mo",
+      "name": "Molybdenum",
+      "atomicWeight": 95.95,
+      "abundanceCrustMgPerKg": 1.2,
+      "abundanceSeaMgPerL": 0.01,
+      "goldschmidtClass": "siderophile",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Kr] 4d5 5s",
+      "period": 5,
+      "groupId": 6,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": -4,
+          "category": "extended"
+        },
+        {
+          "state": -2,
+          "category": "extended"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "main"
+        },
+        {
+          "state": 5,
+          "category": "extended"
+        },
+        {
+          "state": 6,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 43,
+      "symbol": "Tc",
+      "name": "Technetium",
+      "atomicWeight": 97.90721,
+      "abundanceCrustMgPerKg": null,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "synthetic",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Kr] 4d5 5s2",
+      "period": 5,
+      "groupId": 7,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": -3,
+          "category": "extended"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "main"
+        },
+        {
+          "state": 5,
+          "category": "extended"
+        },
+        {
+          "state": 6,
+          "category": "extended"
+        },
+        {
+          "state": 7,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 44,
+      "symbol": "Ru",
+      "name": "Ruthenium",
+      "atomicWeight": 101.07,
+      "abundanceCrustMgPerKg": 0.001,
+      "abundanceSeaMgPerL": 7e-07,
+      "goldschmidtClass": "siderophile",
+      "geochemicalClass": "noble metal",
+      "electronicConfiguration": "[Kr] 4d7 5s",
+      "period": 5,
+      "groupId": 8,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": -4,
+          "category": "extended"
+        },
+        {
+          "state": -2,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        },
+        {
+          "state": 4,
+          "category": "main"
+        },
+        {
+          "state": 5,
+          "category": "extended"
+        },
+        {
+          "state": 6,
+          "category": "extended"
+        },
+        {
+          "state": 7,
+          "category": "extended"
+        },
+        {
+          "state": 8,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 45,
+      "symbol": "Rh",
+      "name": "Rhodium",
+      "atomicWeight": 102.9055,
+      "abundanceCrustMgPerKg": 0.001,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "siderophile",
+      "geochemicalClass": "noble metal",
+      "electronicConfiguration": "[Kr] 4d8 5s",
+      "period": 5,
+      "groupId": 9,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": -3,
+          "category": "extended"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        },
+        {
+          "state": 5,
+          "category": "extended"
+        },
+        {
+          "state": 6,
+          "category": "extended"
+        },
+        {
+          "state": 7,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 46,
+      "symbol": "Pd",
+      "name": "Palladium",
+      "atomicWeight": 106.42,
+      "abundanceCrustMgPerKg": 0.015,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "siderophile",
+      "geochemicalClass": "noble metal",
+      "electronicConfiguration": "[Kr] 4d10",
+      "period": 5,
+      "groupId": 10,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "main"
+        },
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "main"
+        },
+        {
+          "state": 5,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 47,
+      "symbol": "Ag",
+      "name": "Silver",
+      "atomicWeight": 107.8682,
+      "abundanceCrustMgPerKg": 0.075,
+      "abundanceSeaMgPerL": 4e-05,
+      "goldschmidtClass": "chalcophile",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Kr] 4d10 5s",
+      "period": 5,
+      "groupId": 11,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": -2,
+          "category": "extended"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "main"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 48,
+      "symbol": "Cd",
+      "name": "Cadmium",
+      "atomicWeight": 112.414,
+      "abundanceCrustMgPerKg": 0.15,
+      "abundanceSeaMgPerL": 0.00011,
+      "goldschmidtClass": "chalcophile",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Kr] 4d10 5s2",
+      "period": 5,
+      "groupId": 12,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": -2,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 49,
+      "symbol": "In",
+      "name": "Indium",
+      "atomicWeight": 114.818,
+      "abundanceCrustMgPerKg": 0.25,
+      "abundanceSeaMgPerL": 0.02,
+      "goldschmidtClass": "chalcophile",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Kr] 4d10 5s2 5p",
+      "period": 5,
+      "groupId": 13,
+      "block": "p",
+      "series": "Poor metals",
+      "oxidationStates": [
+        {
+          "state": -5,
+          "category": "extended"
+        },
+        {
+          "state": -2,
+          "category": "extended"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 50,
+      "symbol": "Sn",
+      "name": "Tin",
+      "atomicWeight": 118.71,
+      "abundanceCrustMgPerKg": 2.3,
+      "abundanceSeaMgPerL": 4e-06,
+      "goldschmidtClass": "chalcophile",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Kr] 4d10 5s2 5p2",
+      "period": 5,
+      "groupId": 14,
+      "block": "p",
+      "series": "Poor metals",
+      "oxidationStates": [
+        {
+          "state": -4,
+          "category": "main"
+        },
+        {
+          "state": -3,
+          "category": "extended"
+        },
+        {
+          "state": -2,
+          "category": "extended"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "main"
+        },
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 51,
+      "symbol": "Sb",
+      "name": "Antimony",
+      "atomicWeight": 121.76,
+      "abundanceCrustMgPerKg": 0.2,
+      "abundanceSeaMgPerL": 0.00023999999999999998,
+      "goldschmidtClass": "chalcophile",
+      "geochemicalClass": "semi-volatile",
+      "electronicConfiguration": "[Kr] 4d10 5s2 5p3",
+      "period": 5,
+      "groupId": 15,
+      "block": "p",
+      "series": "Metalloids",
+      "oxidationStates": [
+        {
+          "state": -3,
+          "category": "main"
+        },
+        {
+          "state": -2,
+          "category": "extended"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        },
+        {
+          "state": 5,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 52,
+      "symbol": "Te",
+      "name": "Tellurium",
+      "atomicWeight": 127.6,
+      "abundanceCrustMgPerKg": 0.001,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "chalcophile",
+      "geochemicalClass": "semi-volatile",
+      "electronicConfiguration": "[Kr] 4d10 5s2 5p4",
+      "period": 5,
+      "groupId": 16,
+      "block": "p",
+      "series": "Metalloids",
+      "oxidationStates": [
+        {
+          "state": -2,
+          "category": "main"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "main"
+        },
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "main"
+        },
+        {
+          "state": 5,
+          "category": "extended"
+        },
+        {
+          "state": 6,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 53,
+      "symbol": "I",
+      "name": "Iodine",
+      "atomicWeight": 126.90447,
+      "abundanceCrustMgPerKg": 0.45,
+      "abundanceSeaMgPerL": 0.06,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "semi-volatile",
+      "electronicConfiguration": "[Kr] 4d10 5s2 5p5",
+      "period": 5,
+      "groupId": 17,
+      "block": "p",
+      "series": "Halogens",
+      "oxidationStates": [
+        {
+          "state": -1,
+          "category": "main"
+        },
+        {
+          "state": 1,
+          "category": "main"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        },
+        {
+          "state": 5,
+          "category": "main"
+        },
+        {
+          "state": 6,
+          "category": "extended"
+        },
+        {
+          "state": 7,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 54,
+      "symbol": "Xe",
+      "name": "Xenon",
+      "atomicWeight": 131.293,
+      "abundanceCrustMgPerKg": 2.9999999999999997e-05,
+      "abundanceSeaMgPerL": 5e-05,
+      "goldschmidtClass": "atmophile",
+      "geochemicalClass": "volatile",
+      "electronicConfiguration": "[Kr] 4d10 5s2 5p6",
+      "period": 5,
+      "groupId": 18,
+      "block": "p",
+      "series": "Noble gases",
+      "oxidationStates": [
+        {
+          "state": 2,
+          "category": "main"
+        },
+        {
+          "state": 4,
+          "category": "main"
+        },
+        {
+          "state": 6,
+          "category": "main"
+        },
+        {
+          "state": 8,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 55,
+      "symbol": "Cs",
+      "name": "Cesium",
+      "atomicWeight": 132.90545196,
+      "abundanceCrustMgPerKg": 3.0,
+      "abundanceSeaMgPerL": 0.0003,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "alkali metal",
+      "electronicConfiguration": "[Xe] 6s",
+      "period": 6,
+      "groupId": 1,
+      "block": "s",
+      "series": "Alkali metals",
+      "oxidationStates": [
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 56,
+      "symbol": "Ba",
+      "name": "Barium",
+      "atomicWeight": 137.327,
+      "abundanceCrustMgPerKg": 425.0,
+      "abundanceSeaMgPerL": 0.013000000000000001,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "alkaline earth metal",
+      "electronicConfiguration": "[Xe] 6s2",
+      "period": 6,
+      "groupId": 2,
+      "block": "s",
+      "series": "Alkaline earth metals",
+      "oxidationStates": [
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 57,
+      "symbol": "La",
+      "name": "Lanthanum",
+      "atomicWeight": 138.90547,
+      "abundanceCrustMgPerKg": 39.0,
+      "abundanceSeaMgPerL": 3.4e-06,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "rare earth & related",
+      "electronicConfiguration": "[Xe] 5d 6s2",
+      "period": 6,
+      "groupId": 3,
+      "block": "d",
+      "series": "Lanthanides",
+      "oxidationStates": [
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 58,
+      "symbol": "Ce",
+      "name": "Cerium",
+      "atomicWeight": 140.116,
+      "abundanceCrustMgPerKg": 66.5,
+      "abundanceSeaMgPerL": 1.2e-06,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "rare earth & related",
+      "electronicConfiguration": "[Xe] 4f 5d 6s2",
+      "period": 6,
+      "groupId": null,
+      "block": "f",
+      "series": "Lanthanides",
+      "oxidationStates": [
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        },
+        {
+          "state": 4,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 59,
+      "symbol": "Pr",
+      "name": "Praseodymium",
+      "atomicWeight": 140.90766,
+      "abundanceCrustMgPerKg": 9.2,
+      "abundanceSeaMgPerL": 6.4e-07,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "rare earth & related",
+      "electronicConfiguration": "[Xe] 4f3 6s2",
+      "period": 6,
+      "groupId": null,
+      "block": "f",
+      "series": "Lanthanides",
+      "oxidationStates": [
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        },
+        {
+          "state": 5,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 60,
+      "symbol": "Nd",
+      "name": "Neodymium",
+      "atomicWeight": 144.242,
+      "abundanceCrustMgPerKg": 41.5,
+      "abundanceSeaMgPerL": 2.8e-06,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "rare earth & related",
+      "electronicConfiguration": "[Xe] 4f4 6s2",
+      "period": 6,
+      "groupId": null,
+      "block": "f",
+      "series": "Lanthanides",
+      "oxidationStates": [
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 61,
+      "symbol": "Pm",
+      "name": "Promethium",
+      "atomicWeight": 144.91276,
+      "abundanceCrustMgPerKg": null,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "rare earth & related",
+      "electronicConfiguration": "[Xe] 4f5 6s2",
+      "period": 6,
+      "groupId": null,
+      "block": "f",
+      "series": "Lanthanides",
+      "oxidationStates": [
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 62,
+      "symbol": "Sm",
+      "name": "Samarium",
+      "atomicWeight": 150.36,
+      "abundanceCrustMgPerKg": 7.05,
+      "abundanceSeaMgPerL": 4.5e-07,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "rare earth & related",
+      "electronicConfiguration": "[Xe] 4f6 6s2",
+      "period": 6,
+      "groupId": null,
+      "block": "f",
+      "series": "Lanthanides",
+      "oxidationStates": [
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 63,
+      "symbol": "Eu",
+      "name": "Europium",
+      "atomicWeight": 151.964,
+      "abundanceCrustMgPerKg": 2.0,
+      "abundanceSeaMgPerL": 1.3e-07,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "rare earth & related",
+      "electronicConfiguration": "[Xe] 4f7 6s2",
+      "period": 6,
+      "groupId": null,
+      "block": "f",
+      "series": "Lanthanides",
+      "oxidationStates": [
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "main"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 64,
+      "symbol": "Gd",
+      "name": "Gadolinium",
+      "atomicWeight": 157.25,
+      "abundanceCrustMgPerKg": 6.2,
+      "abundanceSeaMgPerL": 7e-07,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "rare earth & related",
+      "electronicConfiguration": "[Xe] 4f7 5d 6s2",
+      "period": 6,
+      "groupId": null,
+      "block": "f",
+      "series": "Lanthanides",
+      "oxidationStates": [
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 65,
+      "symbol": "Tb",
+      "name": "Terbium",
+      "atomicWeight": 158.92535,
+      "abundanceCrustMgPerKg": 1.2,
+      "abundanceSeaMgPerL": 1.4e-07,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "rare earth & related",
+      "electronicConfiguration": "[Xe] 4f9 6s2",
+      "period": 6,
+      "groupId": null,
+      "block": "f",
+      "series": "Lanthanides",
+      "oxidationStates": [
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 66,
+      "symbol": "Dy",
+      "name": "Dysprosium",
+      "atomicWeight": 162.5,
+      "abundanceCrustMgPerKg": 5.2,
+      "abundanceSeaMgPerL": 9.1e-07,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "rare earth & related",
+      "electronicConfiguration": "[Xe] 4f10 6s2",
+      "period": 6,
+      "groupId": null,
+      "block": "f",
+      "series": "Lanthanides",
+      "oxidationStates": [
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 67,
+      "symbol": "Ho",
+      "name": "Holmium",
+      "atomicWeight": 164.93033,
+      "abundanceCrustMgPerKg": 1.3,
+      "abundanceSeaMgPerL": 2.2e-07,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "rare earth & related",
+      "electronicConfiguration": "[Xe] 4f11 6s2",
+      "period": 6,
+      "groupId": null,
+      "block": "f",
+      "series": "Lanthanides",
+      "oxidationStates": [
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 68,
+      "symbol": "Er",
+      "name": "Erbium",
+      "atomicWeight": 167.259,
+      "abundanceCrustMgPerKg": 3.5,
+      "abundanceSeaMgPerL": 8.7e-07,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "rare earth & related",
+      "electronicConfiguration": "[Xe] 4f12 6s2",
+      "period": 6,
+      "groupId": null,
+      "block": "f",
+      "series": "Lanthanides",
+      "oxidationStates": [
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 69,
+      "symbol": "Tm",
+      "name": "Thulium",
+      "atomicWeight": 168.93422,
+      "abundanceCrustMgPerKg": 0.52,
+      "abundanceSeaMgPerL": 1.7e-07,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "rare earth & related",
+      "electronicConfiguration": "[Xe] 4f13 6s2",
+      "period": 6,
+      "groupId": null,
+      "block": "f",
+      "series": "Lanthanides",
+      "oxidationStates": [
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 70,
+      "symbol": "Yb",
+      "name": "Ytterbium",
+      "atomicWeight": 173.045,
+      "abundanceCrustMgPerKg": 3.2,
+      "abundanceSeaMgPerL": 8.2e-07,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "rare earth & related",
+      "electronicConfiguration": "[Xe] 4f14 6s2",
+      "period": 6,
+      "groupId": null,
+      "block": "f",
+      "series": "Lanthanides",
+      "oxidationStates": [
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 71,
+      "symbol": "Lu",
+      "name": "Lutetium",
+      "atomicWeight": 174.9668,
+      "abundanceCrustMgPerKg": 0.8,
+      "abundanceSeaMgPerL": 1.5e-07,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "rare earth & related",
+      "electronicConfiguration": "[Xe] 4f14 5d 6s2",
+      "period": 6,
+      "groupId": null,
+      "block": "f",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 72,
+      "symbol": "Hf",
+      "name": "Hafnium",
+      "atomicWeight": 178.49,
+      "abundanceCrustMgPerKg": 3.0,
+      "abundanceSeaMgPerL": 7.000000000000001e-06,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "high field strength",
+      "electronicConfiguration": "[Xe] 4f14 5d2 6s2",
+      "period": 6,
+      "groupId": 4,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": -2,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 73,
+      "symbol": "Ta",
+      "name": "Tantalum",
+      "atomicWeight": 180.94788,
+      "abundanceCrustMgPerKg": 2.0,
+      "abundanceSeaMgPerL": 2e-06,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "high field strength",
+      "electronicConfiguration": "[Xe] 4f14 5d3 6s2",
+      "period": 6,
+      "groupId": 5,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": -3,
+          "category": "extended"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        },
+        {
+          "state": 5,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 74,
+      "symbol": "W",
+      "name": "Tungsten",
+      "atomicWeight": 183.84,
+      "abundanceCrustMgPerKg": 1.25,
+      "abundanceSeaMgPerL": 0.0001,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Xe] 4f14 5d4 6s2",
+      "period": 6,
+      "groupId": 6,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": -4,
+          "category": "extended"
+        },
+        {
+          "state": -2,
+          "category": "extended"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "main"
+        },
+        {
+          "state": 5,
+          "category": "extended"
+        },
+        {
+          "state": 6,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 75,
+      "symbol": "Re",
+      "name": "Rhenium",
+      "atomicWeight": 186.207,
+      "abundanceCrustMgPerKg": 0.0007,
+      "abundanceSeaMgPerL": 4e-06,
+      "goldschmidtClass": "siderophile",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Xe] 4f14 5d5 6s2",
+      "period": 6,
+      "groupId": 7,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": -3,
+          "category": "extended"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "main"
+        },
+        {
+          "state": 5,
+          "category": "extended"
+        },
+        {
+          "state": 6,
+          "category": "extended"
+        },
+        {
+          "state": 7,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 76,
+      "symbol": "Os",
+      "name": "Osmium",
+      "atomicWeight": 190.23,
+      "abundanceCrustMgPerKg": 0.0015,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "siderophile",
+      "geochemicalClass": "noble metal",
+      "electronicConfiguration": "[Xe] 4f14 5d6 6s2",
+      "period": 6,
+      "groupId": 8,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": -4,
+          "category": "extended"
+        },
+        {
+          "state": -2,
+          "category": "extended"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "main"
+        },
+        {
+          "state": 5,
+          "category": "extended"
+        },
+        {
+          "state": 6,
+          "category": "extended"
+        },
+        {
+          "state": 7,
+          "category": "extended"
+        },
+        {
+          "state": 8,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 77,
+      "symbol": "Ir",
+      "name": "Iridium",
+      "atomicWeight": 192.217,
+      "abundanceCrustMgPerKg": 0.001,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "siderophile",
+      "geochemicalClass": "noble metal",
+      "electronicConfiguration": "[Xe] 4f14 5d7 6s2",
+      "period": 6,
+      "groupId": 9,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": -3,
+          "category": "extended"
+        },
+        {
+          "state": -2,
+          "category": "extended"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        },
+        {
+          "state": 4,
+          "category": "main"
+        },
+        {
+          "state": 5,
+          "category": "extended"
+        },
+        {
+          "state": 6,
+          "category": "extended"
+        },
+        {
+          "state": 7,
+          "category": "extended"
+        },
+        {
+          "state": 8,
+          "category": "extended"
+        },
+        {
+          "state": 9,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 78,
+      "symbol": "Pt",
+      "name": "Platinum",
+      "atomicWeight": 195.084,
+      "abundanceCrustMgPerKg": 0.005,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "siderophile",
+      "geochemicalClass": "noble metal",
+      "electronicConfiguration": "[Xe] 4f14 5d9 6s",
+      "period": 6,
+      "groupId": 10,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": -3,
+          "category": "extended"
+        },
+        {
+          "state": -2,
+          "category": "extended"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "main"
+        },
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "main"
+        },
+        {
+          "state": 5,
+          "category": "extended"
+        },
+        {
+          "state": 6,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 79,
+      "symbol": "Au",
+      "name": "Gold",
+      "atomicWeight": 196.966569,
+      "abundanceCrustMgPerKg": 0.004,
+      "abundanceSeaMgPerL": 4e-06,
+      "goldschmidtClass": "siderophile",
+      "geochemicalClass": "noble metal",
+      "electronicConfiguration": "[Xe] 4f14 5d10 6s",
+      "period": 6,
+      "groupId": 11,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": -3,
+          "category": "extended"
+        },
+        {
+          "state": -2,
+          "category": "extended"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        },
+        {
+          "state": 5,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 80,
+      "symbol": "Hg",
+      "name": "Mercury",
+      "atomicWeight": 200.592,
+      "abundanceCrustMgPerKg": 0.085,
+      "abundanceSeaMgPerL": 2.9999999999999997e-05,
+      "goldschmidtClass": "chalcophile",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Xe] 4f14 5d10 6s2",
+      "period": 6,
+      "groupId": 12,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": -2,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "main"
+        },
+        {
+          "state": 2,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 81,
+      "symbol": "Tl",
+      "name": "Thallium",
+      "atomicWeight": 204.38,
+      "abundanceCrustMgPerKg": 0.85,
+      "abundanceSeaMgPerL": 1.9e-05,
+      "goldschmidtClass": "chalcophile",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Xe] 4f14 5d10 6s2 6p",
+      "period": 6,
+      "groupId": 13,
+      "block": "p",
+      "series": "Poor metals",
+      "oxidationStates": [
+        {
+          "state": -5,
+          "category": "extended"
+        },
+        {
+          "state": -2,
+          "category": "extended"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "main"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 82,
+      "symbol": "Pb",
+      "name": "Lead",
+      "atomicWeight": 207.2,
+      "abundanceCrustMgPerKg": 14.0,
+      "abundanceSeaMgPerL": 2.9999999999999997e-05,
+      "goldschmidtClass": "chalcophile",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Xe] 4f14 5d10 6s2 6p2",
+      "period": 6,
+      "groupId": 14,
+      "block": "p",
+      "series": "Poor metals",
+      "oxidationStates": [
+        {
+          "state": -4,
+          "category": "extended"
+        },
+        {
+          "state": -2,
+          "category": "extended"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "main"
+        },
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 83,
+      "symbol": "Bi",
+      "name": "Bismuth",
+      "atomicWeight": 208.9804,
+      "abundanceCrustMgPerKg": 0.0085,
+      "abundanceSeaMgPerL": 2e-05,
+      "goldschmidtClass": "chalcophile",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Xe] 4f14 5d10 6s2 6p3",
+      "period": 6,
+      "groupId": 15,
+      "block": "p",
+      "series": "Poor metals",
+      "oxidationStates": [
+        {
+          "state": -3,
+          "category": "extended"
+        },
+        {
+          "state": -2,
+          "category": "extended"
+        },
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 0,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        },
+        {
+          "state": 5,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 84,
+      "symbol": "Po",
+      "name": "Polonium",
+      "atomicWeight": 209.0,
+      "abundanceCrustMgPerKg": 2e-10,
+      "abundanceSeaMgPerL": 1.5e-14,
+      "goldschmidtClass": "synthetic",
+      "geochemicalClass": "U/Th decay series",
+      "electronicConfiguration": "[Xe] 4f14 5d10 6s2 6p4",
+      "period": 6,
+      "groupId": 16,
+      "block": "p",
+      "series": "Metalloids",
+      "oxidationStates": [
+        {
+          "state": -2,
+          "category": "main"
+        },
+        {
+          "state": 2,
+          "category": "main"
+        },
+        {
+          "state": 4,
+          "category": "main"
+        },
+        {
+          "state": 5,
+          "category": "extended"
+        },
+        {
+          "state": 6,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 85,
+      "symbol": "At",
+      "name": "Astatine",
+      "atomicWeight": 210.0,
+      "abundanceCrustMgPerKg": null,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "synthetic",
+      "geochemicalClass": "U/Th decay series",
+      "electronicConfiguration": "[Xe] 4f14 5d10 6s2 6p5",
+      "period": 6,
+      "groupId": 17,
+      "block": "p",
+      "series": "Halogens",
+      "oxidationStates": [
+        {
+          "state": -1,
+          "category": "main"
+        },
+        {
+          "state": 1,
+          "category": "main"
+        },
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 5,
+          "category": "extended"
+        },
+        {
+          "state": 7,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 86,
+      "symbol": "Rn",
+      "name": "Radon",
+      "atomicWeight": 222.0,
+      "abundanceCrustMgPerKg": 4e-13,
+      "abundanceSeaMgPerL": 6e-16,
+      "goldschmidtClass": "synthetic",
+      "geochemicalClass": "U/Th decay series",
+      "electronicConfiguration": "[Xe] 4f14 5d10 6s2 6p6",
+      "period": 6,
+      "groupId": 18,
+      "block": "p",
+      "series": "Noble gases",
+      "oxidationStates": [
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 6,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 87,
+      "symbol": "Fr",
+      "name": "Francium",
+      "atomicWeight": 223.0,
+      "abundanceCrustMgPerKg": null,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "synthetic",
+      "geochemicalClass": "U/Th decay series",
+      "electronicConfiguration": "[Rn] 7s",
+      "period": 7,
+      "groupId": 1,
+      "block": "s",
+      "series": "Alkali metals",
+      "oxidationStates": [
+        {
+          "state": 1,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 88,
+      "symbol": "Ra",
+      "name": "Radium",
+      "atomicWeight": 226.0,
+      "abundanceCrustMgPerKg": 9e-07,
+      "abundanceSeaMgPerL": 8.9e-11,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "U/Th decay series",
+      "electronicConfiguration": "[Rn] 7s2",
+      "period": 7,
+      "groupId": 2,
+      "block": "s",
+      "series": "Alkaline earth metals",
+      "oxidationStates": [
+        {
+          "state": 2,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 89,
+      "symbol": "Ac",
+      "name": "Actinium",
+      "atomicWeight": 227.0,
+      "abundanceCrustMgPerKg": 5.5e-10,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "synthetic",
+      "geochemicalClass": "U/Th decay series",
+      "electronicConfiguration": "[Rn] 6d 7s2",
+      "period": 7,
+      "groupId": 3,
+      "block": "d",
+      "series": "Actinides",
+      "oxidationStates": [
+        {
+          "state": 3,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 90,
+      "symbol": "Th",
+      "name": "Thorium",
+      "atomicWeight": 232.0377,
+      "abundanceCrustMgPerKg": 9.6,
+      "abundanceSeaMgPerL": 1e-06,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "rare earth & related",
+      "electronicConfiguration": "[Rn] 6d2 7s2",
+      "period": 7,
+      "groupId": null,
+      "block": "f",
+      "series": "Actinides",
+      "oxidationStates": [
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 91,
+      "symbol": "Pa",
+      "name": "Protactinium",
+      "atomicWeight": 231.03588,
+      "abundanceCrustMgPerKg": 1.4e-06,
+      "abundanceSeaMgPerL": 5e-11,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "U/Th decay series",
+      "electronicConfiguration": "[Rn] 5f2 6d 7s2",
+      "period": 7,
+      "groupId": null,
+      "block": "f",
+      "series": "Actinides",
+      "oxidationStates": [
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        },
+        {
+          "state": 5,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 92,
+      "symbol": "U",
+      "name": "Uranium",
+      "atomicWeight": 238.02891,
+      "abundanceCrustMgPerKg": 2.7,
+      "abundanceSeaMgPerL": 0.0032,
+      "goldschmidtClass": "litophile",
+      "geochemicalClass": "rare earth & related",
+      "electronicConfiguration": "[Rn] 5f3 6d 7s2",
+      "period": 7,
+      "groupId": null,
+      "block": "f",
+      "series": "Actinides",
+      "oxidationStates": [
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        },
+        {
+          "state": 5,
+          "category": "extended"
+        },
+        {
+          "state": 6,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 93,
+      "symbol": "Np",
+      "name": "Neptunium",
+      "atomicWeight": 237.0,
+      "abundanceCrustMgPerKg": null,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "synthetic",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Rn] 5f4 6d 7s2",
+      "period": 7,
+      "groupId": null,
+      "block": "f",
+      "series": "Actinides",
+      "oxidationStates": [
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        },
+        {
+          "state": 5,
+          "category": "main"
+        },
+        {
+          "state": 6,
+          "category": "extended"
+        },
+        {
+          "state": 7,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 94,
+      "symbol": "Pu",
+      "name": "Plutonium",
+      "atomicWeight": 244.0,
+      "abundanceCrustMgPerKg": null,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "synthetic",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Rn] 5f6 7s2",
+      "period": 7,
+      "groupId": null,
+      "block": "f",
+      "series": "Actinides",
+      "oxidationStates": [
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "main"
+        },
+        {
+          "state": 5,
+          "category": "extended"
+        },
+        {
+          "state": 6,
+          "category": "extended"
+        },
+        {
+          "state": 7,
+          "category": "extended"
+        },
+        {
+          "state": 8,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 95,
+      "symbol": "Am",
+      "name": "Americium",
+      "atomicWeight": 243.0,
+      "abundanceCrustMgPerKg": null,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "synthetic",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Rn] 5f7 7s2",
+      "period": 7,
+      "groupId": null,
+      "block": "f",
+      "series": "Actinides",
+      "oxidationStates": [
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        },
+        {
+          "state": 5,
+          "category": "extended"
+        },
+        {
+          "state": 6,
+          "category": "extended"
+        },
+        {
+          "state": 7,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 96,
+      "symbol": "Cm",
+      "name": "Curium",
+      "atomicWeight": 247.0,
+      "abundanceCrustMgPerKg": null,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "synthetic",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Rn] 5f7 6d 7s2",
+      "period": 7,
+      "groupId": null,
+      "block": "f",
+      "series": "Actinides",
+      "oxidationStates": [
+        {
+          "state": 3,
+          "category": "main"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        },
+        {
+          "state": 5,
+          "category": "extended"
+        },
+        {
+          "state": 6,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 97,
+      "symbol": "Bk",
+      "name": "Berkelium",
+      "atomicWeight": 247.0,
+      "abundanceCrustMgPerKg": null,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "synthetic",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Rn] 5f9 7s2",
+      "period": 7,
+      "groupId": null,
+      "block": "f",
+      "series": "Actinides",
+      "oxidationStates": [
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        },
+        {
+          "state": 5,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 98,
+      "symbol": "Cf",
+      "name": "Californium",
+      "atomicWeight": 251.0,
+      "abundanceCrustMgPerKg": null,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "synthetic",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Rn] 5f10 7s2",
+      "period": 7,
+      "groupId": null,
+      "block": "f",
+      "series": "Actinides",
+      "oxidationStates": [
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        },
+        {
+          "state": 5,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 99,
+      "symbol": "Es",
+      "name": "Einsteinium",
+      "atomicWeight": 252.0,
+      "abundanceCrustMgPerKg": null,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "synthetic",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Rn] 5f11 7s2",
+      "period": 7,
+      "groupId": null,
+      "block": "f",
+      "series": "Actinides",
+      "oxidationStates": [
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 100,
+      "symbol": "Fm",
+      "name": "Fermium",
+      "atomicWeight": 257.0,
+      "abundanceCrustMgPerKg": null,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "synthetic",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Rn] 5f12 7s2",
+      "period": 7,
+      "groupId": null,
+      "block": "f",
+      "series": "Actinides",
+      "oxidationStates": [
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 101,
+      "symbol": "Md",
+      "name": "Mendelevium",
+      "atomicWeight": 258.0,
+      "abundanceCrustMgPerKg": null,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "synthetic",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Rn] 5f13 7s2",
+      "period": 7,
+      "groupId": null,
+      "block": "f",
+      "series": "Actinides",
+      "oxidationStates": [
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 102,
+      "symbol": "No",
+      "name": "Nobelium",
+      "atomicWeight": 259.0,
+      "abundanceCrustMgPerKg": null,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "synthetic",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Rn] 5f14 7s2",
+      "period": 7,
+      "groupId": null,
+      "block": "f",
+      "series": "Actinides",
+      "oxidationStates": [
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 103,
+      "symbol": "Lr",
+      "name": "Lawrencium",
+      "atomicWeight": 262.0,
+      "abundanceCrustMgPerKg": null,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "synthetic",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Rn] 5f14 7s2 7p1",
+      "period": 7,
+      "groupId": null,
+      "block": "f",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": 3,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 104,
+      "symbol": "Rf",
+      "name": "Rutherfordium",
+      "atomicWeight": 267.0,
+      "abundanceCrustMgPerKg": null,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "synthetic",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Rn] 5f14 6d2 7s2",
+      "period": 7,
+      "groupId": 4,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "main"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 105,
+      "symbol": "Db",
+      "name": "Dubnium",
+      "atomicWeight": 268.0,
+      "abundanceCrustMgPerKg": null,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "synthetic",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Rn] 5f14 6d3 7s2",
+      "period": 7,
+      "groupId": 5,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        },
+        {
+          "state": 5,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 106,
+      "symbol": "Sg",
+      "name": "Seaborgium",
+      "atomicWeight": 271.0,
+      "abundanceCrustMgPerKg": null,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "synthetic",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Rn] 5f14 6d4 7s2",
+      "period": 7,
+      "groupId": 6,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        },
+        {
+          "state": 5,
+          "category": "extended"
+        },
+        {
+          "state": 6,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 107,
+      "symbol": "Bh",
+      "name": "Bohrium",
+      "atomicWeight": 274.0,
+      "abundanceCrustMgPerKg": null,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "synthetic",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Rn] 5f14 6d5 7s2",
+      "period": 7,
+      "groupId": 7,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        },
+        {
+          "state": 5,
+          "category": "extended"
+        },
+        {
+          "state": 7,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 108,
+      "symbol": "Hs",
+      "name": "Hassium",
+      "atomicWeight": 269.0,
+      "abundanceCrustMgPerKg": null,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "synthetic",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Rn] 5f14 6d6 7s2",
+      "period": 7,
+      "groupId": 8,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        },
+        {
+          "state": 6,
+          "category": "extended"
+        },
+        {
+          "state": 8,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 109,
+      "symbol": "Mt",
+      "name": "Meitnerium",
+      "atomicWeight": 276.0,
+      "abundanceCrustMgPerKg": null,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "synthetic",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Rn] 5f14 6d7 7s2",
+      "period": 7,
+      "groupId": 9,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 6,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 110,
+      "symbol": "Ds",
+      "name": "Darmstadtium",
+      "atomicWeight": 281.0,
+      "abundanceCrustMgPerKg": null,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "synthetic",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Rn] 5f14 6d9 7s1",
+      "period": 7,
+      "groupId": 10,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        },
+        {
+          "state": 6,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 111,
+      "symbol": "Rg",
+      "name": "Roentgenium",
+      "atomicWeight": 281.0,
+      "abundanceCrustMgPerKg": null,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "synthetic",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Rn] 5f14 6d10 7s1",
+      "period": 7,
+      "groupId": 11,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 3,
+          "category": "extended"
+        },
+        {
+          "state": 5,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 112,
+      "symbol": "Cn",
+      "name": "Copernicium",
+      "atomicWeight": 285.0,
+      "abundanceCrustMgPerKg": null,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "synthetic",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Rn] 5f14 6d10 7s2",
+      "period": 7,
+      "groupId": 12,
+      "block": "d",
+      "series": "Transition metals",
+      "oxidationStates": [
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 113,
+      "symbol": "Nh",
+      "name": "Nihonium",
+      "atomicWeight": 286.0,
+      "abundanceCrustMgPerKg": null,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "synthetic",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Rn] 5f14 6d10 7s2 7p1",
+      "period": 7,
+      "groupId": 13,
+      "block": "p",
+      "series": "Poor metals",
+      "oxidationStates": []
+    },
+    {
+      "atomicNumber": 114,
+      "symbol": "Fl",
+      "name": "Flerovium",
+      "atomicWeight": 289.0,
+      "abundanceCrustMgPerKg": null,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "synthetic",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Rn] 5f14 6d10 7s2 7p2",
+      "period": 7,
+      "groupId": 14,
+      "block": "p",
+      "series": "Poor metals",
+      "oxidationStates": []
+    },
+    {
+      "atomicNumber": 115,
+      "symbol": "Mc",
+      "name": "Moscovium",
+      "atomicWeight": 288.0,
+      "abundanceCrustMgPerKg": null,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "synthetic",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Rn] 5f14 6d10 7s2 7p3",
+      "period": 7,
+      "groupId": 15,
+      "block": "p",
+      "series": "Poor metals",
+      "oxidationStates": []
+    },
+    {
+      "atomicNumber": 116,
+      "symbol": "Lv",
+      "name": "Livermorium",
+      "atomicWeight": 293.0,
+      "abundanceCrustMgPerKg": null,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "synthetic",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Rn] 5f14 6d10 7s2 7p4",
+      "period": 7,
+      "groupId": 16,
+      "block": "p",
+      "series": "Poor metals",
+      "oxidationStates": [
+        {
+          "state": -2,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 117,
+      "symbol": "Ts",
+      "name": "Tennessine",
+      "atomicWeight": 294.0,
+      "abundanceCrustMgPerKg": null,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "synthetic",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Rn] 5f14 6d10 7s2 7p5",
+      "period": 7,
+      "groupId": 17,
+      "block": "p",
+      "series": "Halogens",
+      "oxidationStates": [
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 5,
+          "category": "extended"
+        }
+      ]
+    },
+    {
+      "atomicNumber": 118,
+      "symbol": "Og",
+      "name": "Oganesson",
+      "atomicWeight": 294.0,
+      "abundanceCrustMgPerKg": null,
+      "abundanceSeaMgPerL": null,
+      "goldschmidtClass": "synthetic",
+      "geochemicalClass": null,
+      "electronicConfiguration": "[Rn] 5f14 6d10 7s2 7p6",
+      "period": 7,
+      "groupId": 18,
+      "block": "p",
+      "series": "Noble gases",
+      "oxidationStates": [
+        {
+          "state": -1,
+          "category": "extended"
+        },
+        {
+          "state": 1,
+          "category": "extended"
+        },
+        {
+          "state": 2,
+          "category": "extended"
+        },
+        {
+          "state": 4,
+          "category": "extended"
+        },
+        {
+          "state": 6,
+          "category": "extended"
+        }
+      ]
+    }
+  ]
+}

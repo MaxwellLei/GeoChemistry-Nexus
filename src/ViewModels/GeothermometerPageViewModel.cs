@@ -110,10 +110,44 @@ namespace GeoChemistryNexus.ViewModels
         private string updateStatusText = string.Empty;
 
         /// <summary>
-        /// 可用更新数量
+        /// 可用更新数量（未安装 + 可更新）
         /// </summary>
         [ObservableProperty]
         private int availableUpdateCount;
+
+        /// <summary>
+        /// 「更新」菜单：批量下载未安装是否可见
+        /// </summary>
+        [ObservableProperty]
+        private bool isBatchDownloadMenuVisible;
+
+        /// <summary>
+        /// 「更新」菜单：批量更新过期是否可见
+        /// </summary>
+        [ObservableProperty]
+        private bool isBatchUpdateMenuVisible;
+
+        /// <summary>
+        /// 当前选中项是否未安装（右侧「应用」变为「下载」，帮助区显示占位）
+        /// </summary>
+        public bool IsSelectedPluginNotInstalled => SelectedPlugin?.IsNotInstalled == true;
+
+        /// <summary>
+        /// 当前选中项是否可更新
+        /// </summary>
+        public bool IsSelectedPluginUpdateAvailable => SelectedPlugin?.IsUpdateAvailable == true;
+
+        /// <summary>
+        /// 顶部「应用」按钮可见（已安装且尚未应用）
+        /// </summary>
+        public bool IsApplyButtonVisible =>
+            SelectedPlugin != null && !IsPluginApplied && !IsSelectedPluginNotInstalled;
+
+        /// <summary>
+        /// 顶部「下载」按钮可见（未安装）
+        /// </summary>
+        public bool IsDownloadSelectedButtonVisible =>
+            SelectedPlugin != null && IsSelectedPluginNotInstalled;
 
         /// <summary>
         /// 搜索文本
@@ -316,6 +350,9 @@ namespace GeoChemistryNexus.ViewModels
             // 初始化 GTM 服务
             GeothermometerService.Initialize();
 
+            // 若本地已有 GeoT-List，静默对账一次（创建未安装占位 / 刷新状态，不访问网络）
+            TryReconcileLocalCatalog();
+
             // 加载分组数据（内部会按当前搜索刷新筛选项与列表）
             LoadSidebarSections();
 
@@ -444,12 +481,62 @@ namespace GeoChemistryNexus.ViewModels
 
             ApplyListFilterCore(preserveExpansionState: true);
             ApplySidebarStateFromStorage();
+            RefreshPendingInstallMenuVisibility();
 
             if (!string.IsNullOrEmpty(selectedPluginId))
                 SelectedPlugin = FindPluginById(selectedPluginId);
 
             if (!string.IsNullOrEmpty(appliedPluginId))
                 _appliedPlugin = FindPluginById(appliedPluginId);
+
+            NotifySelectedPluginInstallStateChanged();
+        }
+
+        private void RefreshPendingInstallMenuVisibility()
+        {
+            var (notInstalled, outdated) = GeothermometerService.GetPendingInstallCounts();
+            IsBatchDownloadMenuVisible = notInstalled > 0;
+            IsBatchUpdateMenuVisible = outdated > 0;
+            AvailableUpdateCount = notInstalled + outdated;
+        }
+
+        /// <summary>
+        /// 用本地缓存的 GeoT-List 对账数据库（无网络）
+        /// </summary>
+        private static void TryReconcileLocalCatalog()
+        {
+            try
+            {
+                var index = GeothermometerService.TryLoadLocalPluginIndex();
+                if (index?.Plugins == null || index.Plugins.Count == 0)
+                    return;
+
+                if (GeothermometerService.SyncOfficialPluginsFromServerList(index))
+                    GeothermometerService.ReloadPlugins();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[GeothermometerPageViewModel] Local catalog reconcile failed: {ex.Message}");
+            }
+        }
+
+        private void NotifySelectedPluginInstallStateChanged()
+        {
+            OnPropertyChanged(nameof(IsSelectedPluginNotInstalled));
+            OnPropertyChanged(nameof(IsSelectedPluginUpdateAvailable));
+            OnPropertyChanged(nameof(IsApplyButtonVisible));
+            OnPropertyChanged(nameof(IsDownloadSelectedButtonVisible));
+        }
+
+        partial void OnSelectedPluginChanged(Geothermometer? value)
+        {
+            NotifySelectedPluginInstallStateChanged();
+        }
+
+        partial void OnIsPluginAppliedChanged(bool value)
+        {
+            OnPropertyChanged(nameof(IsApplyButtonVisible));
+            OnPropertyChanged(nameof(IsDownloadSelectedButtonVisible));
         }
 
         private static GeoTSidebarSectionViewModel BuildSidebarSection(
@@ -1107,6 +1194,17 @@ namespace GeoChemistryNexus.ViewModels
                 if (token.IsCancellationRequested)
                     return;
 
+                // 未安装：不读库，直接提示下载
+                if (SelectedPlugin?.IsNotInstalled == true
+                    && string.Equals(SelectedPlugin.Id, pluginId, StringComparison.OrdinalIgnoreCase))
+                {
+                    ShowHelpDocPlaceholder(
+                        LanguageService.GetString(
+                            "geo_msg_not_downloaded_please_download",
+                            "该模板未下载，请下载使用"));
+                    return;
+                }
+
                 string? rtfContent = null;
                 if (!forceReload && _helpDocRtfCache.TryGetValue(cacheKey, out var cached))
                 {
@@ -1338,6 +1436,14 @@ namespace GeoChemistryNexus.ViewModels
                 return;
             }
 
+            if (plugin.IsNotInstalled)
+            {
+                MessageHelper.Info(LanguageService.GetString(
+                    "geo_msg_not_downloaded_please_download",
+                    "该模板未下载，请下载使用"));
+                return;
+            }
+
             var entityId = GeothermometerDatabaseService.GenerateId(plugin.Id);
             var entity = GeothermometerDatabaseService.Instance.GetEntity(entityId);
             if (entity == null)
@@ -1474,6 +1580,12 @@ namespace GeoChemistryNexus.ViewModels
         {
             if (SelectedPlugin == null || reoGridControl == null) return;
 
+            if (SelectedPlugin.IsNotInstalled)
+            {
+                await DownloadPluginAsync(SelectedPlugin);
+                return;
+            }
+
             try
             {
                 bool isConfirmed = await MessageHelper.ShowAsyncDialog(
@@ -1559,7 +1671,7 @@ namespace GeoChemistryNexus.ViewModels
                             unvell.ReoGrid.DataFormat.CellDataFormatFlag.Number,
                             new unvell.ReoGrid.DataFormat.NumberDataFormatter.NumberFormatArgs
                             {
-                                DecimalPlaces = 0
+                                DecimalPlaces = 2
                             });
                     }
                 }
@@ -1695,15 +1807,14 @@ namespace GeoChemistryNexus.ViewModels
                 var inputValues = new List<double>();
                 bool allValid = true;
 
-                foreach (var inputCol in inputColumns)
+                if (!GeothermometerService.TryResolveInputColumnIndices(headers, inputColumns, out var inputIndices))
                 {
-                    int colIndex = headers.IndexOf(inputCol);
-                    if (colIndex < 0)
-                    {
-                        allValid = false;
-                        break;
-                    }
+                    ClearCalculationData();
+                    return;
+                }
 
+                foreach (int colIndex in inputIndices)
+                {
                     var cellData = worksheet.GetCellData(row, colIndex);
                     if (cellData != null && double.TryParse(cellData.ToString(), out double val))
                     {
@@ -2059,7 +2170,7 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 检查 GTM 更新
+        /// 检查并同步官方温压计总列表（不对 ZIP 做全量下载）
         /// </summary>
         [RelayCommand]
         private async Task CheckForPluginUpdates()
@@ -2071,66 +2182,71 @@ namespace GeoChemistryNexus.ViewModels
 
             try
             {
-                var checkResult = await GeothermometerService.CheckForUpdatesAsync();
-                bool listNeedsReload = checkResult.MineralCategoriesSynced;
+                var (probeOk, listOutdated, probeError) = await GeothermometerService.IsRemoteListOutdatedAsync();
+                if (!probeOk)
+                {
+                    UpdateStatusText = LanguageService.Instance["geo_msg_check_update_failed"];
+                    if (!_isAutoChecking)
+                        MessageHelper.Error($"{UpdateStatusText}: {probeError}");
+                    return;
+                }
+
+                bool downloadList = true;
+                if (listOutdated)
+                {
+                    HideUpdateOverlay();
+                    bool confirmed = await MessageHelper.ShowAsyncDialog(
+                        LanguageService.GetString(
+                            "geo_msg_new_list_version_detected",
+                            "检测到温压计模板库有新版本，是否立即更新列表？"),
+                        LanguageService.Instance["Cancel"],
+                        LanguageService.Instance["Confirm"]);
+
+                    if (!confirmed)
+                    {
+                        UpdateStatusText = string.Empty;
+                        return;
+                    }
+
+                    ShowUpdateOverlay(true, LanguageService.Instance["geo_msg_checking_update"]);
+                }
+
+                var checkResult = await GeothermometerService.CheckForUpdatesAsync(downloadListIfOutdated: downloadList);
+                bool listNeedsReload = checkResult.MineralCategoriesSynced || checkResult.CatalogChanged;
 
                 if (checkResult.Status == GeothermometerUpdateCheckStatus.Failed)
                 {
                     UpdateStatusText = LanguageService.Instance["geo_msg_check_update_failed"];
                     if (!_isAutoChecking)
-                    {
                         MessageHelper.Error($"{UpdateStatusText}: {checkResult.ErrorMessage}");
-                    }
                     return;
                 }
 
-                int changeCount = checkResult.Updates.Count + checkResult.Removals.Count;
+                AvailableUpdateCount = checkResult.NotInstalledCount + checkResult.OutdatedCount;
+                RefreshPendingInstallMenuVisibility();
+
                 int incompatibleCount = checkResult.RequiresAppUpgradeCount;
-                AvailableUpdateCount = changeCount;
 
-                if (checkResult.HasChanges)
+                if (checkResult.ListDownloaded || checkResult.CatalogChanged)
                 {
-                    string msg = string.Format(LanguageService.Instance["geo_msg_update_available"], changeCount);
-                    UpdateStatusText = msg;
-
-                    HideUpdateOverlay();
-
-                    bool confirmed = await MessageHelper.ShowAsyncDialog(
-                        msg,
-                        LanguageService.Instance["Cancel"],
-                        LanguageService.Instance["Confirm"]);
-
-                    if (confirmed)
+                    UpdateStatusText = LanguageService.GetString(
+                        "geo_msg_list_update_success",
+                        "温压计列表更新成功");
+                    if (!_isAutoChecking)
                     {
-                        ShowUpdateOverlay(false, LanguageService.Instance["geo_msg_downloading_update"]);
-
-                        var progress = new Progress<(int current, int total, string name)>(p =>
+                        string detail = string.Format(
+                            LanguageService.GetString(
+                                "geo_msg_list_sync_summary",
+                                "列表已同步。未安装 {0} 个，可更新 {1} 个。"),
+                            checkResult.NotInstalledCount,
+                            checkResult.OutdatedCount);
+                        if (checkResult.RemovalCount > 0)
                         {
-                            UpdateProgress = p.total > 0 ? (double)p.current / p.total * 100 : 0;
-                            UpdateStatusText = string.Format(
-                                LanguageService.Instance["batch_download_progress"],
-                                p.current,
-                                p.total,
-                                p.name);
-                        });
-
-                        var downloadResult = await GeothermometerService.DownloadAndReloadAsync(
-                            checkResult.Updates,
-                            checkResult.Removals,
-                            progress);
-
-                        string result = ShowGeothermometerDownloadResult(downloadResult, incompatibleCount);
-                        UpdateStatusText = result;
-
-                        if (downloadResult.SuccessCount > 0 || downloadResult.RemovalCount > 0)
-                        {
-                            InvalidateHelpDocCache();
-                            listNeedsReload = true;
+                            detail += " " + string.Format(
+                                LanguageService.Instance["geo_msg_update_removed_count"],
+                                checkResult.RemovalCount);
                         }
-                    }
-                    else
-                    {
-                        UpdateStatusText = string.Empty;
+                        MessageHelper.Success(detail);
                     }
                 }
                 else if (incompatibleCount > 0)
@@ -2141,26 +2257,240 @@ namespace GeoChemistryNexus.ViewModels
                             "有 {0} 个模板有新版本，当前软件不兼容，请升级软件后再更新。"),
                         incompatibleCount);
                     if (!_isAutoChecking)
-                    {
                         MessageHelper.Warning(UpdateStatusText);
-                    }
+                }
+                else if (checkResult.HasPendingActions)
+                {
+                    UpdateStatusText = string.Format(
+                        LanguageService.GetString(
+                            "geo_msg_list_sync_summary",
+                            "列表已同步。未安装 {0} 个，可更新 {1} 个。"),
+                        checkResult.NotInstalledCount,
+                        checkResult.OutdatedCount);
+                    if (!_isAutoChecking)
+                        MessageHelper.Info(UpdateStatusText);
                 }
                 else
                 {
-                    UpdateStatusText = LanguageService.Instance["geo_msg_already_latest"];
+                    UpdateStatusText = LanguageService.GetString(
+                        "geo_msg_list_already_latest",
+                        "当前温压计列表已是最新版本");
                     if (!_isAutoChecking)
-                    {
                         MessageHelper.Info(UpdateStatusText);
-                    }
                 }
 
                 if (listNeedsReload)
+                {
+                    InvalidateHelpDocCache();
                     ReloadCategoryGroupsAndSelection();
+                }
+                else
+                {
+                    RefreshPendingInstallMenuVisibility();
+                }
             }
             catch (Exception ex)
             {
                 UpdateStatusText = LanguageService.Instance["geo_msg_check_update_failed"];
                 MessageHelper.Error($"{UpdateStatusText}: {ex.Message}");
+            }
+            finally
+            {
+                HideUpdateOverlay();
+                IsCheckingUpdates = false;
+            }
+        }
+
+        /// <summary>
+        /// 侧栏 / 顶部：下载单个未安装官方温压计
+        /// </summary>
+        [RelayCommand]
+        private async Task DownloadPluginAsync(Geothermometer? plugin)
+        {
+            if (plugin == null || !plugin.IsBuiltIn || !plugin.IsNotInstalled)
+                return;
+
+            await DownloadOrUpdatePluginCoreAsync(plugin);
+        }
+
+        /// <summary>
+        /// 侧栏：更新单个过期官方温压计
+        /// </summary>
+        [RelayCommand]
+        private async Task UpdatePluginAsync(Geothermometer? plugin)
+        {
+            if (plugin == null || !plugin.IsBuiltIn || !plugin.IsUpdateAvailable)
+                return;
+
+            bool confirmed = await MessageHelper.ShowAsyncDialog(
+                LanguageService.GetString(
+                    "geo_msg_confirm_update_overwrite",
+                    "更新将用官方版本覆盖本地内容（含本地修改），是否继续？"),
+                LanguageService.Instance["Cancel"],
+                LanguageService.Instance["Confirm"]);
+            if (!confirmed)
+                return;
+
+            await DownloadOrUpdatePluginCoreAsync(plugin);
+        }
+
+        private async Task DownloadOrUpdatePluginCoreAsync(Geothermometer plugin)
+        {
+            if (IsCheckingUpdates)
+                return;
+
+            IsCheckingUpdates = true;
+            ShowUpdateOverlay(false, LanguageService.Instance["geo_msg_downloading_update"]);
+
+            try
+            {
+                var entry = GeothermometerService.FindLocalListEntry(plugin.Id);
+                if (entry == null)
+                {
+                    var (fresh, error) = await GeothermometerService.FetchFreshPluginIndexEntryAsync(plugin.Id);
+                    if (!string.IsNullOrEmpty(error) || fresh == null)
+                    {
+                        MessageHelper.Error(
+                            $"{LanguageService.Instance["geo_msg_check_update_failed"]}: {error ?? LanguageService.Instance["force_update_template_not_found"]}");
+                        return;
+                    }
+                    entry = fresh;
+                }
+
+                UpdateProgress = 30;
+                var result = await GeothermometerService.DownloadPluginAsync(entry);
+                UpdateProgress = 100;
+
+                if (result.Success)
+                {
+                    InvalidateHelpDocCache(plugin.Id);
+                    LoadSidebarSections();
+
+                    var refreshed = FindPluginById(plugin.Id);
+                    if (refreshed != null)
+                    {
+                        SelectedPlugin = refreshed;
+                        _selectedFullEntity = BuildWorkingEntityFromPlugin(refreshed);
+                        OnPropertyChanged(nameof(SelectedPluginDisplayName));
+                        if (IsHelpDocVisible)
+                            await LoadHelpDocumentAsync(refreshed.Id, forceReload: true);
+                    }
+
+                    MessageHelper.Success(string.Format(
+                        LanguageService.Instance["geo_msg_update_downloaded"],
+                        1));
+                }
+                else
+                {
+                    MessageHelper.Error(result.ErrorMessage);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.Error($"{LanguageService.Instance["geo_msg_check_update_failed"]}: {ex.Message}");
+            }
+            finally
+            {
+                HideUpdateOverlay();
+                IsCheckingUpdates = false;
+            }
+        }
+
+        /// <summary>
+        /// 批量下载未安装官方温压计
+        /// </summary>
+        [RelayCommand]
+        private async Task BatchDownloadNotInstalledAsync()
+        {
+            var entries = GeothermometerService.GetNotInstalledPluginEntries();
+            if (entries.Count == 0)
+            {
+                MessageHelper.Info(LanguageService.GetString("no_new_templates_to_download", "没有可下载的新模板"));
+                RefreshPendingInstallMenuVisibility();
+                return;
+            }
+
+            bool confirmed = await MessageHelper.ShowAsyncDialog(
+                string.Format(
+                    LanguageService.GetString(
+                        "batch_download_confirm_message",
+                        "检测到 {0} 个未下载的新模板，是否批量下载？"),
+                    entries.Count),
+                LanguageService.Instance["Cancel"],
+                LanguageService.Instance["Confirm"]);
+            if (!confirmed)
+                return;
+
+            await RunBatchDownloadAsync(entries);
+        }
+
+        /// <summary>
+        /// 批量更新过期官方温压计
+        /// </summary>
+        [RelayCommand]
+        private async Task BatchUpdateOutdatedAsync()
+        {
+            var entries = GeothermometerService.GetOutdatedPluginEntries();
+            if (entries.Count == 0)
+            {
+                MessageHelper.Info(LanguageService.GetString(
+                    "geo_msg_no_outdated_to_update",
+                    "没有可更新的温压计"));
+                RefreshPendingInstallMenuVisibility();
+                return;
+            }
+
+            bool confirmed = await MessageHelper.ShowAsyncDialog(
+                string.Format(
+                    LanguageService.GetString(
+                        "geo_msg_batch_update_confirm",
+                        "检测到 {0} 个可更新的温压计，更新将覆盖本地内容，是否继续？"),
+                    entries.Count),
+                LanguageService.Instance["Cancel"],
+                LanguageService.Instance["Confirm"]);
+            if (!confirmed)
+                return;
+
+            await RunBatchDownloadAsync(entries);
+        }
+
+        private async Task RunBatchDownloadAsync(List<PluginIndexEntry> entries)
+        {
+            if (IsCheckingUpdates || entries == null || entries.Count == 0)
+                return;
+
+            IsCheckingUpdates = true;
+            ShowUpdateOverlay(false, LanguageService.Instance["geo_msg_downloading_update"]);
+
+            try
+            {
+                var progress = new Progress<(int current, int total, string name)>(p =>
+                {
+                    UpdateProgress = p.total > 0 ? (double)p.current / p.total * 100 : 0;
+                    UpdateStatusText = string.Format(
+                        LanguageService.Instance["batch_download_progress"],
+                        p.current,
+                        p.total,
+                        p.name);
+                });
+
+                var downloadResult = await GeothermometerService.DownloadAndReloadAsync(entries, removals: null, progress);
+                string result = ShowGeothermometerDownloadResult(downloadResult, incompatibleCount: 0);
+                UpdateStatusText = result;
+
+                if (downloadResult.SuccessCount > 0)
+                {
+                    InvalidateHelpDocCache();
+                    ReloadCategoryGroupsAndSelection();
+                }
+                else
+                {
+                    RefreshPendingInstallMenuVisibility();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.Error($"{LanguageService.Instance["geo_msg_check_update_failed"]}: {ex.Message}");
             }
             finally
             {
@@ -2292,7 +2622,7 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private void EditCustomThermometer(Geothermometer plugin)
         {
-            if (plugin == null) return;
+            if (plugin == null || plugin.IsNotInstalled) return;
 
             var entityId = GeothermometerDatabaseService.GenerateId(plugin.Id);
             var entity = GeothermometerDatabaseService.Instance.GetEntity(entityId);

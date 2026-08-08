@@ -557,6 +557,7 @@ namespace GeoChemistryNexus.ViewModels
                 }
             }
 
+            ApplyLegendProxyColor(ScottPlot.Colors.Red);
             _wpfPlot?.Refresh();
         }
 
@@ -567,6 +568,12 @@ namespace GeoChemistryNexus.ViewModels
                 var dimColor = entry.BaseStyle.Color.WithAlpha(60);
                 entry.Scatter.Color = dimColor;
                 ApplyConfiguredMarkerStyle(entry.Scatter, dimColor, entry.BaseStyle.MarkerSize);
+            }
+
+            // 图例替身需同步遮罩，否则图例符号仍为原色
+            if (_legendProxy != null)
+            {
+                ApplyLegendProxyColor(_legendProxy.Color.WithAlpha(60));
             }
 
             _wpfPlot?.Refresh();
@@ -616,7 +623,49 @@ namespace GeoChemistryNexus.ViewModels
                     PropertyModel?.MarkerSize ?? entry.BaseStyle.MarkerSize);
             }
 
+            RestoreLegendProxy();
             _wpfPlot?.Refresh();
+        }
+
+        /// <summary>
+        /// 仅恢复图例替身颜色（选中图例时：符号保持原色，主数据线可继续遮罩）。
+        /// </summary>
+        public void RestoreLegendProxy()
+        {
+            ApplyLegendProxyColor(ResolveCurrentSeriesColor());
+        }
+
+        private ScottPlot.Color ResolveCurrentSeriesColor()
+        {
+            if (PropertyModel != null)
+            {
+                try
+                {
+                    return ScottPlot.Color.FromHex(
+                        GraphMapTemplateService.ConvertWpfHexToScottPlotHex(PropertyModel.Color));
+                }
+                catch
+                {
+                    // fall through
+                }
+            }
+
+            return _seriesEntries.FirstOrDefault()?.BaseStyle.Color ?? ScottPlot.Colors.Black;
+        }
+
+        private void ApplyLegendProxyColor(ScottPlot.Color color)
+        {
+            if (_legendProxy == null)
+                return;
+
+            _legendProxy.Color = color;
+            _legendProxy.LineWidth = PropertyModel?.LineWidth
+                ?? _seriesEntries.FirstOrDefault()?.BaseStyle.LineWidth
+                ?? _legendProxy.LineWidth;
+            ApplyConfiguredMarkerStyle(
+                _legendProxy,
+                color,
+                markerSize: 8);
         }
 
         /// <summary>

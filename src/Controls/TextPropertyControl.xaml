@@ -144,30 +144,37 @@
                         <local:FontFamilyControl FontFamilyName="{Binding Family, Mode=TwoWay}" Margin="0,0,0,16"/>
 
                         <!-- Style -->
-                        <TextBlock Text="{Binding [style],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
                         <Grid Margin="0,0,0,16">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="12"/>
+                                <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            
-                            <StackPanel Orientation="Horizontal" Grid.Column="0">
-                                <ToggleButton Width="40" Height="32" Margin="0,0,8,0" 
-                                            IsChecked="{Binding IsBold, Mode=TwoWay}"
-                                            Style="{StaticResource FontStyleToggleButtonStyle}">
-                                    <TextBlock Text="B" FontWeight="Bold"/>
-                                </ToggleButton>
-                                <ToggleButton Width="40" Height="32" 
-                                            IsChecked="{Binding IsItalic, Mode=TwoWay}"
-                                            Style="{StaticResource FontStyleToggleButtonStyle}">
-                                    <TextBlock Text="I" FontStyle="Italic" FontFamily="Times New Roman"/>
-                                </ToggleButton>
+
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{Binding [style],Source={x:Static lg:LanguageService.Instance}}"
+                                           Style="{StaticResource ModernLabelStyle}"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <ToggleButton Width="40" Height="32" Margin="0,0,8,0"
+                                                IsChecked="{Binding IsBold, Mode=TwoWay}"
+                                                Style="{StaticResource FontStyleToggleButtonStyle}">
+                                        <TextBlock Text="B" FontWeight="Bold"/>
+                                    </ToggleButton>
+                                    <ToggleButton Width="40" Height="32"
+                                                IsChecked="{Binding IsItalic, Mode=TwoWay}"
+                                                Style="{StaticResource FontStyleToggleButtonStyle}">
+                                        <TextBlock Text="I" FontStyle="Italic" FontFamily="Times New Roman"/>
+                                    </ToggleButton>
+                                </StackPanel>
                             </StackPanel>
 
-                            <local:TextPropertyColorPicker Grid.Column="2" 
-                                                   SelectedColor="{Binding Color, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" 
-                                                   Height="32" Width="100"/>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="{Binding [font_color],Source={x:Static lg:LanguageService.Instance}}"
+                                           Style="{StaticResource ModernLabelStyle}"/>
+                                <local:TextPropertyColorPicker
+                                    SelectedColor="{Binding Color, Mode=TwoWay, Converter={StaticResource StringColorConverter}}"
+                                    Height="32"/>
+                            </StackPanel>
                         </Grid>
 
                         <!-- Size & Rotation -->

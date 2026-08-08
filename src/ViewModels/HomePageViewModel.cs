@@ -351,29 +351,9 @@ namespace GeoChemistryNexus.ViewModels
 
                 Window window = null;
 
-                if (app.WidgetKey == "TemplateTranslatorWidget")
-                {
-                    window = new Window
-                    {
-                        Title = LanguageService.Instance["template_translator"],
-                        Width = 900,
-                        Height = 600,
-                        Content = new TemplateTranslatorWidget { DataContext = new TemplateTranslatorViewModel() }
-                    };
-                }
-                else if (app.WidgetKey == "OfficialTemplatePublisherWidget")
+                if (app.WidgetKey == "OfficialTemplatePublisherWidget")
                 {
                     window = new OfficialTemplatePublisherWindow();
-                }
-                else if (app.WidgetKey == "AnnouncementWidget")
-                {
-                    window = new Window
-                    {
-                        Title = LanguageService.Instance["server_announcement"],
-                        Width = 500,
-                        Height = 350,
-                        Content = new AnnouncementWidget { DataContext = new AnnouncementViewModel() }
-                    };
                 }
                 else if (app.WidgetKey == "AlkalinityCalculatorWidget")
                 {
@@ -414,6 +394,32 @@ namespace GeoChemistryNexus.ViewModels
                         }
                     };
                 }
+                else if (app.WidgetKey == "PeriodicTableWidget")
+                {
+                    var main = Application.Current.MainWindow;
+                    double maxWidth = main != null && main.ActualWidth > 0 ? main.ActualWidth : SystemParameters.WorkArea.Width;
+                    double maxHeight = main != null && main.ActualHeight > 0 ? main.ActualHeight : SystemParameters.WorkArea.Height;
+
+                    // 独立窗体高度不超过主窗体
+                    double height = Math.Min(640, maxHeight);
+                    double width = Math.Min(1180, maxWidth);
+                    double minHeight = Math.Min(480, height);
+                    double minWidth = Math.Min(960, width);
+
+                    window = new Window
+                    {
+                        Title = LanguageService.Instance["periodic_table_widget"],
+                        Width = width,
+                        Height = height,
+                        MinWidth = minWidth,
+                        MinHeight = minHeight,
+                        MaxHeight = maxHeight,
+                        Content = new PeriodicTableWidget
+                        {
+                            DataContext = new PeriodicTableWidgetViewModel()
+                        }
+                    };
+                }
 
                 if (window == null)
                     return;
@@ -423,6 +429,8 @@ namespace GeoChemistryNexus.ViewModels
                 {
                     window.Owner = mainWindow;
                     window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                    if (window.MaxHeight <= 0 || double.IsInfinity(window.MaxHeight))
+                        window.MaxHeight = mainWindow.ActualHeight > 0 ? mainWindow.ActualHeight : SystemParameters.WorkArea.Height;
                 }
                 else
                 {

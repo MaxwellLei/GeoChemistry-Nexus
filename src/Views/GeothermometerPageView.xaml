@@ -266,6 +266,16 @@
                 <MenuItem.Icon>
                     <TextBlock Text="&#xE70F;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
                 </MenuItem.Icon>
+                <MenuItem.Style>
+                    <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding PlacementTarget.DataContext.IsNotInstalled, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </MenuItem.Style>
             </MenuItem>
             <MenuItem Header="{Binding [geo_ctx_export_zip],Source={x:Static lg:LanguageService.Instance}, FallbackValue=导出 ZIP}"
                       Command="{Binding PlacementTarget.Tag.ExportPluginCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
@@ -273,6 +283,16 @@
                 <MenuItem.Icon>
                     <TextBlock Text="&#xe673;" FontFamily="{StaticResource IconFont}" FontSize="12"/>
                 </MenuItem.Icon>
+                <MenuItem.Style>
+                    <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding PlacementTarget.DataContext.IsNotInstalled, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </MenuItem.Style>
             </MenuItem>
             <MenuItem Header="{Binding [force_update_template],Source={x:Static lg:LanguageService.Instance}, TargetNullValue='强制更新'}"
                       Command="{Binding PlacementTarget.Tag.ForceUpdatePluginCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
@@ -490,6 +510,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0">
                     <TextBlock Text="{Binding Name}" Style="{StaticResource GeoTPluginNameTextStyle}"/>
@@ -500,7 +521,79 @@
                         <Run Text=")"/>
                     </TextBlock>
                 </StackPanel>
-                <Border Grid.Column="1" CornerRadius="4" Background="#FFF3E0" Padding="5,2"
+                <!-- 未安装：蓝色下载（仅图标） -->
+                <Button Grid.Column="1"
+                        Command="{Binding Data.DownloadPluginCommand, Source={StaticResource ViewModelProxy}}"
+                        CommandParameter="{Binding}"
+                        VerticalAlignment="Center"
+                        Margin="6,0,0,0"
+                        Padding="6,4"
+                        Foreground="White"
+                        Background="#0078D4"
+                        BorderThickness="0"
+                        Cursor="Hand"
+                        ToolTip="{Binding [geo_btn_download],Source={x:Static lg:LanguageService.Instance}, FallbackValue=下载}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}"
+                                                CornerRadius="4"
+                                                Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsNotInstalled}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <TextBlock Text="&#xe64e;" FontFamily="{StaticResource IconFont}"
+                               Foreground="White" FontSize="14"/>
+                </Button>
+                <!-- 可更新：绿色更新（仅图标） -->
+                <Button Grid.Column="1"
+                        Command="{Binding Data.UpdatePluginCommand, Source={StaticResource ViewModelProxy}}"
+                        CommandParameter="{Binding}"
+                        VerticalAlignment="Center"
+                        Margin="6,0,0,0"
+                        Padding="6,4"
+                        Foreground="White"
+                        Background="#2E7D32"
+                        BorderThickness="0"
+                        Cursor="Hand"
+                        ToolTip="{Binding [geo_btn_update],Source={x:Static lg:LanguageService.Instance}, FallbackValue=更新}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}"
+                                                CornerRadius="4"
+                                                Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsUpdateAvailable}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <TextBlock Text="&#xe74b;" FontFamily="{StaticResource IconFont}"
+                               Foreground="White" FontSize="14"/>
+                </Button>
+                <Border Grid.Column="2" CornerRadius="4" Background="#FFF3E0" Padding="5,2"
                         VerticalAlignment="Center" Margin="4,0,0,0">
                     <Border.Style>
                         <Style TargetType="Border">
@@ -515,7 +608,7 @@
                     <TextBlock Text="{Binding [geo_label_custom_chip],Source={x:Static lg:LanguageService.Instance}, FallbackValue=自定义}"
                                FontSize="9" Foreground="#E65100"/>
                 </Border>
-                <Border Grid.Column="2" Width="6" Height="6" CornerRadius="3"
+                <Border Grid.Column="3" Width="6" Height="6" CornerRadius="3"
                         Background="#2B7DE9"
                         VerticalAlignment="Center" Margin="8,0,2,0">
                     <Border.Style>
@@ -839,6 +932,12 @@
                     <MenuItem Header="{Binding [geo_menu_update],Source={x:Static lg:LanguageService.Instance}, FallbackValue=更新}">
                         <MenuItem Header="{Binding [geo_menu_check_update],Source={x:Static lg:LanguageService.Instance}, FallbackValue=检查更新}" 
                                   Command="{Binding CheckForPluginUpdatesCommand}"/>
+                        <MenuItem Header="{Binding [geo_menu_batch_download_not_installed],Source={x:Static lg:LanguageService.Instance}, FallbackValue=批量下载未安装}"
+                                  Command="{Binding BatchDownloadNotInstalledCommand}"
+                                  Visibility="{Binding IsBatchDownloadMenuVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <MenuItem Header="{Binding [geo_menu_batch_update_outdated],Source={x:Static lg:LanguageService.Instance}, FallbackValue=批量更新过期}"
+                                  Command="{Binding BatchUpdateOutdatedCommand}"
+                                  Visibility="{Binding IsBatchUpdateMenuVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
                     </MenuItem>
                 </Menu>
             </Border>
@@ -1199,11 +1298,21 @@
                             </Style>
                         </StackPanel.Style>
 
-                        <!-- ===== 应用前：仅显示【应用】按钮 ===== -->
+                        <!-- ===== 未安装：显示【下载】按钮（仅图标） ===== -->
+                        <Button Style="{StaticResource PrimaryButtonStyle}"
+                                Command="{Binding DownloadPluginCommand}"
+                                CommandParameter="{Binding SelectedPlugin}"
+                                ToolTip="{Binding [geo_btn_download],Source={x:Static lg:LanguageService.Instance}, FallbackValue=下载}"
+                                Visibility="{Binding IsDownloadSelectedButtonVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <TextBlock Text="&#xe64e;" FontFamily="{StaticResource IconFont}" FontSize="15"
+                                       VerticalAlignment="Center"/>
+                        </Button>
+
+                        <!-- ===== 已安装且未应用：显示【应用】按钮 ===== -->
                         <Button Style="{StaticResource PrimaryButtonStyle}"
                                 Command="{Binding ApplyPluginCommand}"
                                 CommandParameter="{Binding Data, Source={StaticResource GridProxy}}"
-                                Visibility="{Binding IsPluginApplied, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Inverse}">
+                                Visibility="{Binding IsApplyButtonVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="&#xE768;" FontFamily="Segoe MDL2 Assets" FontSize="13" 
                                            VerticalAlignment="Center" Margin="0,0,6,0"/>

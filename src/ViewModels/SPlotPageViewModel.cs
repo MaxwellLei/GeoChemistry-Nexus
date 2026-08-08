@@ -57,8 +57,8 @@ namespace GeoChemistryNexus.ViewModels
 
         public TemplateCardSizePreset[] TemplateCardSizePresetOptions { get; } =
         {
-            TemplateCardSizePreset.Compact,
-            TemplateCardSizePreset.Standard
+            TemplateCardSizePreset.Standard,
+            TemplateCardSizePreset.Compact
         };
 
         // 当前图解版本（只读）

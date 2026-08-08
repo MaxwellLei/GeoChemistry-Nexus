@@ -414,9 +414,6 @@
   <data name="library_section" xml:space="preserve">
     <value>Библиотека ресурсов</value>
   </data>
-  <data name="server_announcement" xml:space="preserve">
-    <value>Объявление сервера</value>
-  </data>
   <data name="failed_templates" xml:space="preserve">
     <value>Неудачные шаблоны:</value>
   </data>
@@ -469,6 +466,9 @@
   </data>
   <data name="already_exists_overwrite_confirm" xml:space="preserve">
     <value>Уже существует, перезаписать?</value>
+  </data>
+  <data name="confirm_import_associated_package" xml:space="preserve">
+    <value>Импортировать файл шаблона «{0}»?</value>
   </data>
   <data name="geo_editor_title_edit" xml:space="preserve">
     <value>Изменить геотермобарометр</value>
@@ -993,9 +993,6 @@
   <data name="enable_alternating_fill" xml:space="preserve">
     <value>Включить чередующуюся заливку</value>
   </data>
-  <data name="delete_language_column" xml:space="preserve">
-    <value>Удалить столбец языка</value>
-  </data>
   <data name="geo_msg_export_dialog_title" xml:space="preserve">
     <value>Экспорт геотермобарометра</value>
   </data>
@@ -1233,17 +1230,11 @@
   <data name="Calculate" xml:space="preserve">
     <value>Вычислить</value>
   </data>
-  <data name="failed_to_get_announcements" xml:space="preserve">
-    <value>Ошибка получения объявлений:</value>
-  </data>
   <data name="MarkerShape_FilledDiamond" xml:space="preserve">
     <value>Закрашенный ромб</value>
   </data>
   <data name="export_and_tools" xml:space="preserve">
     <value>Экспорт/Инструменты</value>
-  </data>
-  <data name="select_drawing_template_file" xml:space="preserve">
-    <value>Выберите файл шаблона</value>
   </data>
   <data name="geo_tooltip_test_input_eg" xml:space="preserve">
     <value>Например: 45.2, 0.8, 12.3</value>
@@ -1290,12 +1281,6 @@
   <data name="cipw_msg_data_cleared" xml:space="preserve">
     <value>Данные очищены.</value>
   </data>
-  <data name="loading_announcements" xml:space="preserve">
-    <value>Загрузка объявлений...</value>
-  </data>
-  <data name="no_announcements" xml:space="preserve">
-    <value>Нет объявлений.</value>
-  </data>
   <data name="MessageAutoClose5" xml:space="preserve">
     <value>5 сек</value>
   </data>
@@ -1307,9 +1292,6 @@
   </data>
   <data name="MessageAutoClose2" xml:space="preserve">
     <value>2 сек</value>
-  </data>
-  <data name="edit_drawing_template_translations" xml:space="preserve">
-    <value>Редактировать переводы шаблона</value>
   </data>
   <data name="MarkerShape_OpenTriangleUp" xml:space="preserve">
     <value>Пустой треугольник вверх</value>
@@ -1461,9 +1443,6 @@
   </data>
   <data name="error_saving_rtf_file" xml:space="preserve">
     <value>Ошибка сохранения RTF:</value>
-  </data>
-  <data name="support_json_format" xml:space="preserve">
-    <value>Поддержка .json</value>
   </data>
   <data name="cipw_col_sample" xml:space="preserve">
     <value>Образец</value>
@@ -1675,9 +1654,6 @@
   <data name="major_tick_style" xml:space="preserve">
     <value>Стиль основных делений</value>
   </data>
-  <data name="server_announcements" xml:space="preserve">
-    <value>Объявления сервера</value>
-  </data>
   <data name="ModifedSuccess" xml:space="preserve">
     <value>Изменено успешно</value>
   </data>
@@ -1686,9 +1662,6 @@
   </data>
   <data name="Orientation_Vertical" xml:space="preserve">
     <value>Вертикально</value>
-  </data>
-  <data name="open_import" xml:space="preserve">
-    <value>Открыть импорт</value>
   </data>
   <data name="no_data_please_add_data" xml:space="preserve">
     <value>Нет данных, пожалуйста, добавьте данные</value>
@@ -1773,9 +1746,6 @@
   <data name="cipw_iron_estimated_feot" xml:space="preserve">
     <value>Оценено по FeOT</value>
   </data>
-  <data name="view_latest_server_announcements" xml:space="preserve">
-    <value>Просмотр последних объявлений сервера</value>
-  </data>
   <data name="length" xml:space="preserve">
     <value>Длина</value>
   </data>
@@ -1787,9 +1757,6 @@
   </data>
   <data name="calculation_results" xml:space="preserve">
     <value>Результаты вычислений</value>
-  </data>
-  <data name="template_translator" xml:space="preserve">
-    <value>Переводчик шаблонов</value>
   </data>
   <data name="axis_title" xml:space="preserve">
     <value>Заголовок оси</value>
@@ -1944,6 +1911,12 @@
   <data name="batch_update_fail_count" xml:space="preserve">
     <value>Ошибок: {0}</value>
   </data>
+  <data name="update_incompatible_need_app_upgrade_count" xml:space="preserve">
+    <value>Ещё {0} не удалось обновить: версия слишком высока для этого приложения. Обновите программу.</value>
+  </data>
+  <data name="update_blocked_need_app_upgrade" xml:space="preserve">
+    <value>У {0} шаблонов есть новые версии, несовместимые с этим приложением. Обновите программу, чтобы обновить их.</value>
+  </data>
   <data name="batch_update_complete" xml:space="preserve">
     <value>Пакетное обновление завершено</value>
   </data>
@@ -1965,6 +1938,42 @@
   <data name="geo_menu_check_update" xml:space="preserve">
     <value>Проверить обновления</value>
   </data>
+  <data name="geo_menu_batch_download_not_installed" xml:space="preserve">
+    <value>Пакетная загрузка неустановленных</value>
+  </data>
+  <data name="geo_menu_batch_update_outdated" xml:space="preserve">
+    <value>Пакетное обновление устаревших</value>
+  </data>
+  <data name="geo_btn_download" xml:space="preserve">
+    <value>Загрузить</value>
+  </data>
+  <data name="geo_btn_update" xml:space="preserve">
+    <value>Обновить</value>
+  </data>
+  <data name="geo_msg_not_downloaded_please_download" xml:space="preserve">
+    <value>Этот шаблон не загружен. Загрузите его для использования.</value>
+  </data>
+  <data name="geo_msg_new_list_version_detected" xml:space="preserve">
+    <value>Доступна новая библиотека шаблонов геотермобарометров. Обновить список сейчас?</value>
+  </data>
+  <data name="geo_msg_list_update_success" xml:space="preserve">
+    <value>Список геотермобарометров успешно обновлён</value>
+  </data>
+  <data name="geo_msg_list_sync_summary" xml:space="preserve">
+    <value>Список синхронизирован. Не установлено: {0}, можно обновить: {1}.</value>
+  </data>
+  <data name="geo_msg_list_already_latest" xml:space="preserve">
+    <value>Список геотермобарометров уже актуален</value>
+  </data>
+  <data name="geo_msg_confirm_update_overwrite" xml:space="preserve">
+    <value>Обновление перезапишет локальное содержимое (включая локальные изменения) официальной версией. Продолжить?</value>
+  </data>
+  <data name="geo_msg_no_outdated_to_update" xml:space="preserve">
+    <value>Нет устаревших геотермобарометров для обновления</value>
+  </data>
+  <data name="geo_msg_batch_update_confirm" xml:space="preserve">
+    <value>Обнаружено обновляемых геотермобарометров: {0}. Обновление перезапишет локальное содержимое. Продолжить?</value>
+  </data>
   <data name="geo_help_no_doc_text" xml:space="preserve">
     <value>Справочный документ отсутствует.</value>
   </data>
@@ -1973,9 +1982,6 @@
   </data>
   <data name="download_template_failed" xml:space="preserve">
     <value>Ошибка загрузки шаблона:</value>
-  </data>
-  <data name="click_or_drag_template_json_here" xml:space="preserve">
-    <value>Нажмите или перетащите файл шаблона (JSON) сюда</value>
   </data>
   <data name="file_drop_release_to_import" xml:space="preserve">
     <value>Отпустите для импорта</value>
@@ -2025,9 +2031,6 @@
   <data name="MarkerShape_OpenSquare" xml:space="preserve">
     <value>Пустой квадрат</value>
   </data>
-  <data name="add_language_column" xml:space="preserve">
-    <value>Добавить столбец языка</value>
-  </data>
   <data name="script_not_defined_in_template" xml:space="preserve">
     <value>Скрипт не определен в шаблоне</value>
   </data>
@@ -2060,6 +2063,9 @@
   </data>
   <data name="from" xml:space="preserve">
     <value>От</value>
+  </data>
+  <data name="auto" xml:space="preserve">
+    <value>Авто</value>
   </data>
   <data name="grid" xml:space="preserve">
     <value>Сетка</value>
@@ -3567,8 +3573,6 @@
 
   </data>
 
-
-
   <data name="geo_additional_function_name" xml:space="preserve">
 
     <value>Имя функции JS</value>
@@ -3617,11 +3621,6 @@
 
   </data>
 
-
-
-
-
-
   <data name="geo_free_sheet_clear" xml:space="preserve">
 
     <value>Очистить</value>
@@ -3639,12 +3638,6 @@
     <value>Таблица очищена</value>
 
   </data>
-
-
-
-
-
-
 
   <data name="geo_free_sheet_delete_col" xml:space="preserve">
 
@@ -3700,10 +3693,6 @@
 
   </data>
 
-
-
-
-
   <data name="geo_free_sheet_format_painter" xml:space="preserve">
 
     <value>Формат по образцу</value>
@@ -3739,7 +3728,6 @@
     <value>Шрифт</value>
 
   </data>
-
 
   <data name="geo_free_sheet_hint" xml:space="preserve">
 
@@ -3801,7 +3789,6 @@
 
   </data>
 
-
   <data name="geo_main_formula_badge" xml:space="preserve">
 
     <value>Основная</value>
@@ -3843,7 +3830,6 @@
     <value>Имя функции JavaScript в скрипте, например calcPressure</value>
 
   </data>
-
 
   <data name="geo_validate_additional_formula_incomplete" xml:space="preserve">
 
@@ -4245,6 +4231,137 @@
   <data name="black_body_radiation_calc_source_link" xml:space="preserve">
     <value>Kurt Hollocher — Geochemistry (Union College)</value>
   </data>
+  <data name="periodic_table_widget" xml:space="preserve">
+    <value>Геохимическая периодическая таблица</value>
+  </data>
+  <data name="periodic_table_widget_desc" xml:space="preserve">
+    <value>Интерактивная таблица: быстрый просмотр распространённости в коре, молекулярных масс оксидов и др</value>
+  </data>
+  <data name="periodic_table_widget_hint" xml:space="preserve">
+    <value>Нажмите элемент, чтобы увидеть геохимические свойства. Фильтры: REE, HFSE, LILE, PGE и классы Гольдшмидта.</value>
+  </data>
+  <data name="periodic_table_hint_select" xml:space="preserve">
+    <value>Нажмите элемент, чтобы увидеть свойства</value>
+  </data>
+  <data name="periodic_table_status_selected" xml:space="preserve">
+    <value>Выбрано: {0} ({1})</value>
+  </data>
+  <data name="periodic_table_search_tooltip" xml:space="preserve">
+    <value>Поиск по символу, английскому названию или атомному номеру</value>
+  </data>
+  <data name="periodic_table_search_go" xml:space="preserve">
+    <value>Найти</value>
+  </data>
+  <data name="periodic_table_search_empty" xml:space="preserve">
+    <value>Элемент не найден.</value>
+  </data>
+  <data name="periodic_table_clear_group" xml:space="preserve">
+    <value>Сбросить фильтр</value>
+  </data>
+  <data name="periodic_table_fblock_note" xml:space="preserve">
+    <value>Нижние строки: лантаноиды (La–Lu) и актиноиды (Ac–Lr).</value>
+  </data>
+  <data name="periodic_table_label_lanthanides" xml:space="preserve">
+    <value>Лантаноиды</value>
+  </data>
+  <data name="periodic_table_label_actinides" xml:space="preserve">
+    <value>Актиноиды</value>
+  </data>
+  <data name="periodic_table_section_basic" xml:space="preserve">
+    <value>Основная информация</value>
+  </data>
+  <data name="periodic_table_section_geochem" xml:space="preserve">
+    <value>Геохимические свойства</value>
+  </data>
+  <data name="periodic_table_section_oxides" xml:space="preserve">
+    <value>Молекулярные массы оксидов</value>
+  </data>
+  <data name="periodic_table_field_z" xml:space="preserve">
+    <value>Атомный номер</value>
+  </data>
+  <data name="periodic_table_field_weight" xml:space="preserve">
+    <value>Атомная масса</value>
+  </data>
+  <data name="periodic_table_field_econf" xml:space="preserve">
+    <value>Электронная конфигурация</value>
+  </data>
+  <data name="periodic_table_field_abundance" xml:space="preserve">
+    <value>Распространённость в коре</value>
+  </data>
+  <data name="periodic_table_field_goldschmidt" xml:space="preserve">
+    <value>Класс Гольдшмидта</value>
+  </data>
+  <data name="periodic_table_field_geochem_class" xml:space="preserve">
+    <value>Геохимический класс</value>
+  </data>
+  <data name="periodic_table_field_oxstates" xml:space="preserve">
+    <value>Степени окисления</value>
+  </data>
+  <data name="periodic_table_abundance_value" xml:space="preserve">
+    <value>{0} мг/кг (ppm)</value>
+  </data>
+  <data name="periodic_table_abundance_source" xml:space="preserve">
+    <value>Источник данных: {0}</value>
+  </data>
+  <data name="periodic_table_detail_subtitle" xml:space="preserve">
+    <value>Z = {0} · {1}-блок</value>
+  </data>
+  <data name="periodic_table_oxides_hint" xml:space="preserve">
+    <value>Обычные оксиды, выведенные из основных положительных степеней окисления.</value>
+  </data>
+  <data name="periodic_table_no_oxides" xml:space="preserve">
+    <value>Для этого элемента нет доступной формулы обычного оксида.</value>
+  </data>
+  <data name="periodic_table_mw_label" xml:space="preserve">
+    <value>М.м. = </value>
+  </data>
+  <data name="periodic_table_copy" xml:space="preserve">
+    <value>Копировать</value>
+  </data>
+  <data name="periodic_table_copy_mw" xml:space="preserve">
+    <value>Копировать м.м</value>
+  </data>
+  <data name="periodic_table_copied" xml:space="preserve">
+    <value>Скопировано в буфер обмена.</value>
+  </data>
+  <data name="periodic_table_copy_failed" xml:space="preserve">
+    <value>Не удалось скопировать.</value>
+  </data>
+  <data name="periodic_table_na" xml:space="preserve">
+    <value>Н/Д</value>
+  </data>
+  <data name="periodic_table_group_ree" xml:space="preserve">
+    <value>REE</value>
+  </data>
+  <data name="periodic_table_group_lree" xml:space="preserve">
+    <value>LREE</value>
+  </data>
+  <data name="periodic_table_group_hree" xml:space="preserve">
+    <value>HREE</value>
+  </data>
+  <data name="periodic_table_group_hfse" xml:space="preserve">
+    <value>HFSE</value>
+  </data>
+  <data name="periodic_table_group_lile" xml:space="preserve">
+    <value>LILE</value>
+  </data>
+  <data name="periodic_table_group_pge" xml:space="preserve">
+    <value>PGE</value>
+  </data>
+  <data name="periodic_table_group_transition" xml:space="preserve">
+    <value>Переходные металлы</value>
+  </data>
+  <data name="periodic_table_group_lithophile" xml:space="preserve">
+    <value>Литофильные</value>
+  </data>
+  <data name="periodic_table_group_siderophile" xml:space="preserve">
+    <value>Сидерофильные</value>
+  </data>
+  <data name="periodic_table_group_chalcophile" xml:space="preserve">
+    <value>Халькофильные</value>
+  </data>
+  <data name="periodic_table_group_atmophile" xml:space="preserve">
+    <value>Атмофильные</value>
+  </data>
 </root>
-
 

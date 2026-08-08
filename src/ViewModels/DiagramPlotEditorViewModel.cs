@@ -736,7 +736,8 @@ namespace GeoChemistryNexus.ViewModels
                     EnsureDefaultHelpDocForLanguage(lang);
             }
 
-            IsHelpSectionEnabled = langs.Count > 0;
+            // 新建模式不展示帮助文档侧栏，仅编辑模式启用
+            IsHelpSectionEnabled = IsEditMode && langs.Count > 0;
 
             if (SelectedHelpLanguage == null ||
                 !langs.Any(l => l.Equals(SelectedHelpLanguage, StringComparison.OrdinalIgnoreCase)))
@@ -889,7 +890,8 @@ namespace GeoChemistryNexus.ViewModels
             if (_suppressTranslationRebuild) return;
 
             var languages = LanguageParts.Select(l => l.Text).ToList();
-            IsTranslationSectionEnabled = languages.Count > 0 && CategoryParts.Count >= 2;
+            // 新建模式不展示内容翻译 / 脚本侧栏，仅编辑模式启用
+            IsTranslationSectionEnabled = IsEditMode && languages.Count > 0 && CategoryParts.Count >= 2;
             IsScriptSectionEnabled = IsTranslationSectionEnabled;
 
             if (!IsTranslationSectionEnabled)

@@ -1,0 +1,16 @@
+<UserControl x:Class="GeoChemistryNexus.Controls.AutoNumericUpDown"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
+             x:Name="Root">
+    <hc:NumericUpDown x:Name="InnerNumeric"
+                      Style="{StaticResource ModernNumericUpDownStyle}"
+                      Minimum="{Binding Minimum, ElementName=Root}"
+                      Maximum="{Binding Maximum, ElementName=Root}"
+                      Increment="{Binding Increment, ElementName=Root}"
+                      DecimalPlaces="{Binding DecimalPlaces, ElementName=Root}"
+                      ValueFormat="{Binding ValueFormat, ElementName=Root}"
+                      hc:InfoElement.Placeholder="{Binding [auto], Source={x:Static lg:LanguageService.Instance}}"
+                      ValueChanged="InnerNumeric_ValueChanged"/>
+</UserControl>

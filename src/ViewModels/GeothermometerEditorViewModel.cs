@@ -1004,11 +1004,16 @@ function calculateDetailed(inputs) {
             if (entity.InputColumns != null && entity.Headers != null && entity.ExampleRow != null)
             {
                 var testValues = new List<string>();
-                foreach (var col in entity.InputColumns)
+                if (GeothermometerService.TryResolveInputColumnIndices(
+                    entity.Headers,
+                    entity.InputColumns,
+                    out var inputIndices))
                 {
-                    int idx = entity.Headers.IndexOf(col);
-                    if (idx >= 0 && idx < entity.ExampleRow.Count)
-                        testValues.Add(entity.ExampleRow[idx]);
+                    foreach (int idx in inputIndices)
+                    {
+                        if (idx >= 0 && idx < entity.ExampleRow.Count)
+                            testValues.Add(entity.ExampleRow[idx]);
+                    }
                 }
                 TestInputText = string.Join(", ", testValues);
             }

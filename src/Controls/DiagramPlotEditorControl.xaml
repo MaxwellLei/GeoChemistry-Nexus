@@ -396,7 +396,8 @@
                     </RadioButton>
                     <RadioButton x:Name="NavTranslation" Style="{StaticResource NavItemStyle}"
                                  Checked="NavSection_Checked" Tag="1"
-                                 IsEnabled="{Binding IsTranslationSectionEnabled}">
+                                 IsEnabled="{Binding IsTranslationSectionEnabled}"
+                                 Visibility="{Binding IsEditMode, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="🌐" Margin="0,0,8,0"/>
                             <TextBlock Text="{Binding [diagram_editor_content_translation], Source={x:Static lg:LanguageService.Instance}, TargetNullValue='内容翻译'}"/>
@@ -404,7 +405,8 @@
                     </RadioButton>
                     <RadioButton x:Name="NavScript" Style="{StaticResource NavItemStyle}"
                                  Checked="NavSection_Checked" Tag="2"
-                                 IsEnabled="{Binding IsScriptSectionEnabled}">
+                                 IsEnabled="{Binding IsScriptSectionEnabled}"
+                                 Visibility="{Binding IsEditMode, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="📜" Margin="0,0,8,0"/>
                             <TextBlock Text="{Binding [script_definition], Source={x:Static lg:LanguageService.Instance}, TargetNullValue='图解脚本'}"/>
@@ -412,7 +414,8 @@
                     </RadioButton>
                     <RadioButton x:Name="NavHelp" Style="{StaticResource NavItemStyle}"
                                  Checked="NavSection_Checked" Tag="3"
-                                 IsEnabled="{Binding IsHelpSectionEnabled}">
+                                 IsEnabled="{Binding IsHelpSectionEnabled}"
+                                 Visibility="{Binding IsEditMode, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="📄" Margin="0,0,8,0"/>
                             <TextBlock Text="{Binding [geo_step_help_doc], Source={x:Static lg:LanguageService.Instance}, TargetNullValue='帮助文档'}"/>

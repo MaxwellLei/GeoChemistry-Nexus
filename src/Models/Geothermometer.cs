@@ -138,6 +138,37 @@ namespace GeoChemistryNexus.Models
         /// </summary>
         [JsonIgnore]
         public bool IsFavorite { get; set; }
+
+        /// <summary>
+        /// 安装状态：NOT_INSTALLED / UP_TO_DATE / OUTDATED / REQUIRES_APP_UPGRADE
+        /// </summary>
+        [JsonIgnore]
+        public string Status { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 未安装（需下载）
+        /// </summary>
+        [JsonIgnore]
+        public bool IsNotInstalled =>
+            string.Equals(Status, GeothermometerInstallStatus.NotInstalled, StringComparison.Ordinal);
+
+        /// <summary>
+        /// 有可更新版本或本地相对官方有改动
+        /// </summary>
+        [JsonIgnore]
+        public bool IsUpdateAvailable =>
+            string.Equals(Status, GeothermometerInstallStatus.Outdated, StringComparison.Ordinal);
+    }
+
+    /// <summary>
+    /// 温压计官方目录安装状态常量（与图解模板 Status 对齐）
+    /// </summary>
+    public static class GeothermometerInstallStatus
+    {
+        public const string NotInstalled = "NOT_INSTALLED";
+        public const string UpToDate = "UP_TO_DATE";
+        public const string Outdated = "OUTDATED";
+        public const string RequiresAppUpgrade = "REQUIRES_APP_UPGRADE";
     }
 
     /// <summary>
@@ -177,7 +208,7 @@ namespace GeoChemistryNexus.Models
     }
 
     /// <summary>
-    /// 服务器 GTM 索引条目模型
+    /// 服务器 GTM 索引条目模型（GeoT-List.json 目录项，含足够元数据供未安装占位展示）
     /// </summary>
     public class PluginIndexEntry
     {
@@ -192,9 +223,54 @@ namespace GeoChemistryNexus.Models
         public string Version { get; set; } = "1.0.0";
 
         /// <summary>
+        /// 显示名称
+        /// </summary>
+        public string Name { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 名称多语言键
+        /// </summary>
+        public string NameLangKey { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 类别键
+        /// </summary>
+        public string Category { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 标签
+        /// </summary>
+        public List<string> Tags { get; set; } = new();
+
+        /// <summary>
+        /// 能力标签
+        /// </summary>
+        public List<string> Capabilities { get; set; } = new();
+
+        /// <summary>
+        /// 作者
+        /// </summary>
+        public string Author { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 发表年份
+        /// </summary>
+        public int Year { get; set; }
+
+        /// <summary>
         /// 参考文献
         /// </summary>
         public string Reference { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 图标编码
+        /// </summary>
+        public string IconCode { get; set; } = "\ue60d";
+
+        /// <summary>
+        /// 图标颜色
+        /// </summary>
+        public string IconColor { get; set; } = "#555555";
 
         /// <summary>
         /// 下载地址（相对路径）
@@ -235,7 +311,7 @@ namespace GeoChemistryNexus.Models
     }
 
     /// <summary>
-    /// 温压计更新检查结果
+    /// 温压计更新检查结果（仅同步目录与状态，不自动下载 ZIP）
     /// </summary>
     public class GeothermometerUpdateCheckResult
     {
@@ -243,11 +319,20 @@ namespace GeoChemistryNexus.Models
 
         public string ErrorMessage { get; set; } = string.Empty;
 
-        /// <summary>需要从服务器下载或更新的条目</summary>
-        public List<PluginIndexEntry> Updates { get; set; } = new();
+        /// <summary>是否下载了新的 GeoT-List.json</summary>
+        public bool ListDownloaded { get; set; }
 
-        /// <summary>已从服务器清单下架、待删除的本地官方温压计实体 ID</summary>
-        public List<Guid> Removals { get; set; } = new();
+        /// <summary>本地数据库目录是否因同步发生变更（含占位/状态/下架）</summary>
+        public bool CatalogChanged { get; set; }
+
+        /// <summary>当前未安装的官方项数量</summary>
+        public int NotInstalledCount { get; set; }
+
+        /// <summary>当前可更新（OUTDATED）的官方项数量</summary>
+        public int OutdatedCount { get; set; }
+
+        /// <summary>本次同步删除的下架官方项数量</summary>
+        public int RemovalCount { get; set; }
 
         /// <summary>服务器版本高于当前程序格式、无法下载更新的条目</summary>
         public List<PluginIndexEntry> RequiresAppUpgrade { get; set; } = new();
@@ -255,7 +340,7 @@ namespace GeoChemistryNexus.Models
         /// <summary>本次检查是否同步了矿物分类翻译文件</summary>
         public bool MineralCategoriesSynced { get; set; }
 
-        public bool HasChanges => Updates.Count > 0 || Removals.Count > 0;
+        public bool HasPendingActions => NotInstalledCount > 0 || OutdatedCount > 0;
 
         public int RequiresAppUpgradeCount => RequiresAppUpgrade.Count;
     }

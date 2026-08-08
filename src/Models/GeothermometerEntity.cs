@@ -48,6 +48,16 @@ namespace GeoChemistryNexus.Models
         /// </summary>
         public bool IsFavorite { get; set; }
 
+        /// <summary>
+        /// 安装状态：NOT_INSTALLED / UP_TO_DATE / OUTDATED / REQUIRES_APP_UPGRADE
+        /// </summary>
+        public string Status { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 服务器清单中的内容哈希（用于本地修改后判定 OUTDATED；未安装占位时与 FileHash 相同）
+        /// </summary>
+        public string ServerHash { get; set; } = string.Empty;
+
         // --- 轻量元数据区 (用于列表展示) ---
 
         /// <summary>
