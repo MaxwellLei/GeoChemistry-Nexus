@@ -9,6 +9,7 @@ namespace GeoChemistryNexus.Models
 
         public const string ServerInfoUrl = CosBaseUrl + "/server_info.json";
         public const string HomeLinksCatalogUrl = CosBaseUrl + "/HomeLinksCatalog.json";
+        public const string AnnouncementsUrl = CosBaseUrl + "/Announcements.json";
         public const string GraphMapListUrl = CosBaseUrl + "/GraphMapList.json";
         public const string PlotTemplateCategoriesUrl = CosBaseUrl + "/PlotTemplateCategories.json";
 
@@ -16,6 +17,7 @@ namespace GeoChemistryNexus.Models
         public const string PlotTemplateCategoriesFileName = "PlotTemplateCategories.json";
         public const string ServerInfoFileName = "server_info.json";
         public const string HomeLinksCatalogFileName = "HomeLinksCatalog.json";
+        public const string AnnouncementsFileName = "Announcements.json";
         public const string PublishManifestFileName = "publish_manifest.json";
         public const string TemplatesFolderName = "Templates";
         public const string InstallersFolderName = "Installers";

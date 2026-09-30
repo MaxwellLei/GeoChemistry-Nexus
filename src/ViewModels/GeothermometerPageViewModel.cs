@@ -2186,8 +2186,7 @@ namespace GeoChemistryNexus.ViewModels
                 if (!probeOk)
                 {
                     UpdateStatusText = LanguageService.Instance["geo_msg_check_update_failed"];
-                    if (!_isAutoChecking)
-                        MessageHelper.Error($"{UpdateStatusText}: {probeError}");
+                    MessageHelper.Error($"{UpdateStatusText}: {probeError}");
                     return;
                 }
 
@@ -2217,8 +2216,7 @@ namespace GeoChemistryNexus.ViewModels
                 if (checkResult.Status == GeothermometerUpdateCheckStatus.Failed)
                 {
                     UpdateStatusText = LanguageService.Instance["geo_msg_check_update_failed"];
-                    if (!_isAutoChecking)
-                        MessageHelper.Error($"{UpdateStatusText}: {checkResult.ErrorMessage}");
+                    MessageHelper.Error($"{UpdateStatusText}: {checkResult.ErrorMessage}");
                     return;
                 }
 

@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace GeoChemistryNexus.ViewModels
 {
@@ -57,11 +58,49 @@ namespace GeoChemistryNexus.ViewModels
 
         public bool IsSelectedGroupPersonal => SelectedLinkGroup?.IsPersonal == true;
 
+        private List<HomeAnnouncementEntry> _announcementEntries = new();
+
+        public ObservableCollection<HomeAnnouncementDisplayViewModel> Announcements { get; } = new();
+
         [ObservableProperty]
-        private string announcementText = string.Empty;
+        private HomeAnnouncementDisplayViewModel? currentAnnouncement;
+
+        /// <summary>
+        /// 正在滑出的公告。动画结束后清空。
+        /// </summary>
+        [ObservableProperty]
+        private HomeAnnouncementDisplayViewModel? outgoingAnnouncement;
+
+        /// <summary>
+        /// 1 表示下一页（向左滚），-1 表示上一页（向右滚），0 表示不播放动画。
+        /// </summary>
+        [ObservableProperty]
+        private int announcementSlideDirection;
+
+        /// <summary>
+        /// 每次切换加一，用来触发滚动动画。
+        /// </summary>
+        [ObservableProperty]
+        private int announcementSlideId;
+
+        private int _currentAnnouncementIndex;
 
         [ObservableProperty]
         private bool hasAnnouncement;
+
+        [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(NextAnnouncementCommand))]
+        [NotifyCanExecuteChangedFor(nameof(PreviousAnnouncementCommand))]
+        private bool hasMultipleAnnouncements;
+
+        /// <summary>
+        /// 多条公告时自动轮播的间隔。手动切换后重新计时。
+        /// </summary>
+        private static readonly TimeSpan AnnouncementCarouselInterval = TimeSpan.FromSeconds(6);
+
+        private DispatcherTimer? _announcementCarouselTimer;
+
+        private bool _announcementCarouselPaused;
 
         [ObservableProperty]
         private bool isAnnouncementBusy;
@@ -78,12 +117,16 @@ namespace GeoChemistryNexus.ViewModels
         {
             LanguageService.Instance.PropertyChanged += OnAppLanguageChanged;
             RebuildGroups();
+            ShowLocalAnnouncements();
         }
 
         private void OnAppLanguageChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "Item[]")
+            {
                 RebuildGroups();
+                RebuildAnnouncementDisplays();
+            }
         }
 
         [RelayCommand]
@@ -101,7 +144,8 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private async Task RefreshAnnouncement()
         {
-            await LoadAnnouncementAsync();
+            var serverInfo = await TryGetServerInfoAsync();
+            await SyncAnnouncementsFromServerAsync(serverInfo);
         }
 
         private async Task RefreshHomeDataAsync(bool showUpdateMessage)
@@ -112,8 +156,12 @@ namespace GeoChemistryNexus.ViewModels
             IsCatalogBusy = true;
             try
             {
-                bool updated = await HomeLinksCatalogService.SyncFromServerAsync();
-                await LoadAnnouncementAsync();
+                var serverInfo = await TryGetServerInfoAsync();
+                var linksTask = HomeLinksCatalogService.SyncFromServerAsync(serverInfo);
+                var announcementsTask = SyncAnnouncementsFromServerAsync(serverInfo);
+                await Task.WhenAll(linksTask, announcementsTask);
+
+                bool updated = await linksTask;
                 RebuildGroups();
 
                 if (showUpdateMessage)
@@ -136,7 +184,19 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
-        private async Task LoadAnnouncementAsync()
+        /// <summary>
+        /// 立刻用本地（或安装包内置）公告填充卡片，不等待网络。
+        /// </summary>
+        private void ShowLocalAnnouncements()
+        {
+            _announcementEntries = HomeAnnouncementService.LoadLocalAnnouncements();
+            RebuildAnnouncementDisplays();
+        }
+
+        /// <summary>
+        /// 后台按 server_info 的 hash 更新公告。失败或无变化时保留当前已显示的内容。
+        /// </summary>
+        private async Task SyncAnnouncementsFromServerAsync(ServerInfo? serverInfo)
         {
             if (IsAnnouncementBusy)
                 return;
@@ -145,27 +205,248 @@ namespace GeoChemistryNexus.ViewModels
             OnPropertyChanged(nameof(IsAnnouncementIdle));
             try
             {
-                string text = await ServerAnnouncementService.LoadAnnouncementAsync();
-                if (!string.IsNullOrWhiteSpace(text))
-                {
-                    AnnouncementText = text;
-                    HasAnnouncement = true;
-                }
-                else
-                {
-                    AnnouncementText = string.Empty;
-                    HasAnnouncement = false;
-                }
+                bool changed = await HomeAnnouncementService.SyncFromServerAsync(serverInfo);
+                if (!changed && _announcementEntries.Count > 0)
+                    return;
+
+                var entries = HomeAnnouncementService.LoadLocalAnnouncements();
+                if (entries.Count == 0)
+                    entries = HomeAnnouncementService.CreateLegacyEntries(serverInfo);
+
+                if (!changed && entries.Count == 0)
+                    return;
+
+                _announcementEntries = entries;
+                RebuildAnnouncementDisplays();
             }
-            catch
+            catch (Exception ex)
             {
-                AnnouncementText = string.Empty;
-                HasAnnouncement = false;
+                Debug.WriteLine($"[HomePageViewModel] Announcement sync failed: {ex.Message}");
             }
             finally
             {
                 IsAnnouncementBusy = false;
                 OnPropertyChanged(nameof(IsAnnouncementIdle));
+            }
+        }
+
+        private static async Task<ServerInfo?> TryGetServerInfoAsync()
+        {
+            try
+            {
+                return await UpdateHelper.GetServerInfoAsync();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[HomePageViewModel] server_info fetch failed: {ex.Message}");
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 按当前界面语言把公告原始数据解析为展示项；语言切换时重建。
+        /// </summary>
+        private void RebuildAnnouncementDisplays()
+        {
+            string? previousId = CurrentAnnouncement?.Id;
+
+            Announcements.Clear();
+            foreach (var entry in _announcementEntries)
+            {
+                bool useImage = HomeAnnouncementBackground.IsImageMode(entry.BackgroundMode)
+                    && HomeAnnouncementBackground.IsHttpImageUrl(entry.BackgroundImageUrl);
+                string polygon = HomeAnnouncementBackground.ResolvePolygonStyle(entry.PolygonStyle, Announcements.Count);
+                bool showPolygons = entry.ShowPolygons && !useImage;
+
+                Announcements.Add(new HomeAnnouncementDisplayViewModel
+                {
+                    Id = entry.Id,
+                    Tag = HomeLinksLocalization.ResolveForApp(entry.Tag),
+                    Title = HomeLinksLocalization.ResolveForApp(entry.Title),
+                    Body = HomeLinksLocalization.ResolveForApp(entry.Body),
+                    DateText = entry.Date ?? string.Empty,
+                    ActionLabel = HomeLinksLocalization.ResolveForApp(entry.Action?.Label),
+                    ActionUrl = entry.Action?.Url ?? string.Empty,
+                    ThemeKey = string.IsNullOrWhiteSpace(entry.Theme) ? "blue" : entry.Theme,
+                    BackgroundColor = entry.BackgroundColor?.Trim() ?? string.Empty,
+                    UseImageBackground = useImage,
+                    BackgroundImageUrl = entry.BackgroundImageUrl?.Trim() ?? string.Empty,
+                    ShowPolygons = showPolygons,
+                    PolygonStyle = polygon
+                });
+            }
+
+            _ = LoadAnnouncementImagesAsync();
+
+            HasAnnouncement = Announcements.Count > 0;
+            HasMultipleAnnouncements = Announcements.Count > 1;
+
+            int index = 0;
+            if (!string.IsNullOrEmpty(previousId))
+            {
+                int found = Announcements.ToList().FindIndex(a => a.Id == previousId);
+                if (found >= 0)
+                    index = found;
+            }
+
+            ShowAnnouncementAt(index);
+        }
+
+        private async Task LoadAnnouncementImagesAsync()
+        {
+            var pending = Announcements.Where(item => item.UseImageBackground).ToList();
+            if (pending.Count == 0)
+                return;
+
+            try
+            {
+                await Task.WhenAll(pending.Select(item => item.LoadBackgroundImageAsync()));
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[HomePage] announcement images failed: {ex.Message}");
+            }
+        }
+
+        private void ShowAnnouncementAt(int index)
+        {
+            if (Announcements.Count == 0)
+            {
+                _currentAnnouncementIndex = 0;
+                CurrentAnnouncement = null;
+                BeginAnnouncementSlide(null, null, 0);
+                SyncAnnouncementCarousel();
+                return;
+            }
+
+            int fromIndex = _currentAnnouncementIndex;
+            int nextIndex = ((index % Announcements.Count) + Announcements.Count) % Announcements.Count;
+            var next = Announcements[nextIndex];
+            var previous = CurrentAnnouncement;
+
+            foreach (var item in Announcements)
+                item.IsCurrent = false;
+
+            next.IsCurrent = true;
+            _currentAnnouncementIndex = nextIndex;
+
+            bool animate = previous != null
+                && !ReferenceEquals(previous, next)
+                && Announcements.Contains(previous);
+            int direction = 0;
+            if (animate)
+                direction = index < fromIndex ? -1 : 1;
+            BeginAnnouncementSlide(next, animate ? previous : null, direction);
+            SyncAnnouncementCarousel();
+        }
+
+        private void BeginAnnouncementSlide(
+            HomeAnnouncementDisplayViewModel? incoming,
+            HomeAnnouncementDisplayViewModel? outgoing,
+            int direction)
+        {
+            OutgoingAnnouncement = outgoing;
+            AnnouncementSlideDirection = direction;
+            CurrentAnnouncement = incoming;
+            AnnouncementSlideId++;
+        }
+
+        [RelayCommand]
+        private void CompleteAnnouncementSlide(int slideId)
+        {
+            if (slideId != AnnouncementSlideId)
+                return;
+
+            OutgoingAnnouncement = null;
+        }
+
+        /// <summary>
+        /// 多于一条、且指针不在卡片上时按固定间隔循环切换。
+        /// 只有一条、没有公告，或正在查看卡片时停掉计时。
+        /// </summary>
+        private void SyncAnnouncementCarousel()
+        {
+            if (!HasMultipleAnnouncements || _announcementCarouselPaused)
+            {
+                _announcementCarouselTimer?.Stop();
+                return;
+            }
+
+            if (_announcementCarouselTimer == null)
+            {
+                _announcementCarouselTimer = new DispatcherTimer
+                {
+                    Interval = AnnouncementCarouselInterval
+                };
+                _announcementCarouselTimer.Tick += OnAnnouncementCarouselTick;
+            }
+
+            _announcementCarouselTimer.Stop();
+            _announcementCarouselTimer.Start();
+        }
+
+        private void OnAnnouncementCarouselTick(object? sender, EventArgs e)
+        {
+            ShowAnnouncementAt(_currentAnnouncementIndex + 1);
+        }
+
+        [RelayCommand]
+        private void PauseAnnouncementCarousel()
+        {
+            _announcementCarouselPaused = true;
+            _announcementCarouselTimer?.Stop();
+        }
+
+        [RelayCommand]
+        private void ResumeAnnouncementCarousel()
+        {
+            _announcementCarouselPaused = false;
+            SyncAnnouncementCarousel();
+        }
+
+        private bool CanSwitchAnnouncement() => HasMultipleAnnouncements;
+
+        [RelayCommand(CanExecute = nameof(CanSwitchAnnouncement))]
+        private void NextAnnouncement()
+        {
+            ShowAnnouncementAt(_currentAnnouncementIndex + 1);
+        }
+
+        [RelayCommand(CanExecute = nameof(CanSwitchAnnouncement))]
+        private void PreviousAnnouncement()
+        {
+            ShowAnnouncementAt(_currentAnnouncementIndex - 1);
+        }
+
+        [RelayCommand]
+        private void SelectAnnouncement(HomeAnnouncementDisplayViewModel item)
+        {
+            if (item == null)
+                return;
+
+            int index = Announcements.IndexOf(item);
+            if (index >= 0)
+                ShowAnnouncementAt(index);
+        }
+
+        [RelayCommand]
+        private void OpenAnnouncementAction(HomeAnnouncementDisplayViewModel item)
+        {
+            string? url = item?.ActionUrl;
+            if (string.IsNullOrWhiteSpace(url))
+                return;
+
+            try
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = url,
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.Warning("OpenBrowserError: " + ex.Message);
             }
         }
 

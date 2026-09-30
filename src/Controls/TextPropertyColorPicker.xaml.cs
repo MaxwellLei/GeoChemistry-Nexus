@@ -91,6 +91,15 @@ namespace GeoChemistryNexus.Controls
 
             if (e.NewValue is string hex)
             {
+                if (string.IsNullOrWhiteSpace(hex))
+                {
+                    control._isUpdating = true;
+                    control.SelectedColor = Colors.Transparent;
+                    control.SelectedBrush = new SolidColorBrush(Colors.Transparent);
+                    control._isUpdating = false;
+                    return;
+                }
+
                 try
                 {
                     var color = (Color)ColorConverter.ConvertFromString(hex);

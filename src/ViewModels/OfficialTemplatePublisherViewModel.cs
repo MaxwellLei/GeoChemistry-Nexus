@@ -271,11 +271,15 @@ namespace GeoChemistryNexus.ViewModels
             PlotCategoriesLanguageContext.ContentLanguage = SelectedPlotCategoriesLanguage;
             SelectedGeoTMineralCategoriesLanguage = SelectedHomeLinksLanguage;
             GeoTMineralCategoriesLanguageContext.ContentLanguage = SelectedGeoTMineralCategoriesLanguage;
+            SelectedAnnouncementsLanguage = SelectedHomeLinksLanguage;
+            AnnouncementsLanguageContext.ContentLanguage = SelectedAnnouncementsLanguage;
+            AnnouncementEntries.CollectionChanged += OnAnnouncementEntriesChanged;
             LoadHomeLinksEditor();
             LoadPlotCategoriesEditor();
             LoadGeoTMineralCategoriesEditor();
             _ = InitializeHomeLinksEditorAsync();
             _ = LoadAnnouncementFromServerAsync();
+            _ = LoadAnnouncementsEditorFromServerAsync();
         }
 
         private async Task InitializeHomeLinksEditorAsync()
@@ -321,7 +325,8 @@ namespace GeoChemistryNexus.ViewModels
             AnnouncementHasRemoteChanges = !string.Equals(
                 AnnouncementText?.Trim(),
                 _remoteAnnouncementText?.Trim(),
-                StringComparison.Ordinal);
+                StringComparison.Ordinal)
+                || AnnouncementsCatalogHasRemoteChanges();
 
             MinimumSupportedVersionHasRemoteChanges = !string.Equals(
                 MinimumSupportedVersionText?.Trim(),
@@ -381,7 +386,7 @@ namespace GeoChemistryNexus.ViewModels
         private int CountPublishExportSteps(bool exportDiagrams, bool exportGeothermometers)
         {
             int steps = 0;
-            if (PublishAnnouncement && !exportDiagrams && !PublishHomeLinks)
+            if (PublishAnnouncement)
                 steps++;
             if (PublishHomeLinks && !exportDiagrams)
                 steps++;
@@ -615,6 +620,11 @@ namespace GeoChemistryNexus.ViewModels
                         AnnouncementPreviewLines.Add(LanguageService.Instance["official_publisher_announcement_empty"] ?? "(empty)");
                     }
 
+                    var announcementsCatalogPreview = BuildAnnouncementsCatalogFromEditor();
+                    AnnouncementPreviewLines.Add(
+                        $"多语言公告目录：{announcementsCatalogPreview.Announcements.Count} 条（发布时上传 {OfficialContentEndpoints.AnnouncementsFileName}，远端 hash：{(string.IsNullOrEmpty(remoteInfo?.AnnouncementsHash) ? "(无)" : remoteInfo.AnnouncementsHash)}）");
+                    ReportAnnouncementPublishWarnings(AnnouncementPreviewLines);
+
                     Log(AnnouncementHasRemoteChanges
                         ? (LanguageService.Instance["official_publisher_announcement_pending"] ?? "Announcement pending publish.")
                         : (LanguageService.Instance["official_publisher_announcement_up_to_date"] ?? "Announcement is up to date."));
@@ -663,11 +673,16 @@ namespace GeoChemistryNexus.ViewModels
 
                 HomeLinksPublishResult? homeLinksResult = null;
                 AnnouncementPublishResult? announcementResult = null;
+                HomeAnnouncementCatalog? publishedAnnouncementsCatalog = null;
 
-                if (PublishAnnouncement && !exportDiagrams && !PublishHomeLinks)
+                if (PublishAnnouncement)
                 {
+                    ReportAnnouncementPublishWarnings();
+                    // 先导出公告（含多语言公告目录），后续主页链接/图解导出会从暂存目录合并 server_info，保留 announcements_hash
+                    publishedAnnouncementsCatalog = BuildAnnouncementsCatalogFromEditor();
+                    var announcementsCatalog = publishedAnnouncementsCatalog;
                     announcementResult = await Task.Run(() =>
-                        HomeLinksPublishService.ExportAnnouncementToDirectory(outputDir, announcement, minimumSupportedVersion, latestAppVersion));
+                        HomeLinksPublishService.ExportAnnouncementToDirectory(outputDir, announcement, minimumSupportedVersion, latestAppVersion, announcementsCatalog));
                     Log(announcementResult.Summary);
                 }
 
@@ -764,14 +779,19 @@ namespace GeoChemistryNexus.ViewModels
                 GeothermometerPublishResult? geoResult = null;
                 HomeLinksPublishResult? homeLinksResult = null;
                 AnnouncementPublishResult? announcementResult = null;
+                HomeAnnouncementCatalog? publishedAnnouncementsCatalog = null;
 
-                if (PublishAnnouncement && !exportDiagrams && !PublishHomeLinks)
+                if (PublishAnnouncement)
                 {
                     string exportMessage = LanguageService.Instance["official_publisher_progress_exporting_announcement"]
                         ?? "Exporting announcement...";
                     ReportPublishExportStep(exportMessage);
+                    ReportAnnouncementPublishWarnings();
+                    // 先导出公告（含多语言公告目录），后续主页链接/图解导出会从暂存目录合并 server_info，保留 announcements_hash
+                    publishedAnnouncementsCatalog = BuildAnnouncementsCatalogFromEditor();
+                    var announcementsCatalog = publishedAnnouncementsCatalog;
                     announcementResult = await Task.Run(() =>
-                        HomeLinksPublishService.ExportAnnouncementToDirectory(outputDir, announcement, minimumSupportedVersion, latestAppVersion));
+                        HomeLinksPublishService.ExportAnnouncementToDirectory(outputDir, announcement, minimumSupportedVersion, latestAppVersion, announcementsCatalog));
                     Log(announcementResult.Summary);
                 }
 
@@ -859,6 +879,8 @@ namespace GeoChemistryNexus.ViewModels
                     _remoteAnnouncementText = announcement ?? string.Empty;
                     _remoteMinimumSupportedVersion = minimumSupportedVersion ?? string.Empty;
                     _remoteLatestAppVersion = latestAppVersion ?? string.Empty;
+                    if (publishedAnnouncementsCatalog != null)
+                        RememberRemoteAnnouncementsCatalog(publishedAnnouncementsCatalog, known: true);
                     UpdateServerConfigChangeState();
                 }
 

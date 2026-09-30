@@ -1628,12 +1628,25 @@
 
     <Style x:Key="HomeGroupTitleStyle" TargetType="TextBlock" BasedOn="{StaticResource HomeSectionTitleStyle}"/>
 
+    <!-- 主页分段控件：与设置页 TemplateCardSizeSegmented 同一视觉。
+         外层容器内放官方分组 ListBox + “个人”按钮，视觉上是一个整体 -->
+    <Style x:Key="HomeSegmentedWrapStyle" TargetType="Border">
+        <Setter Property="Background" Value="#EEEEEE"/>
+        <Setter Property="BorderBrush" Value="#E0E0E0"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="6"/>
+        <Setter Property="Padding" Value="2"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
+    </Style>
+
     <Style x:Key="HomeGroupTabListStyle" TargetType="ListBox">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Padding" Value="0"/>
-        <Setter Property="Margin" Value="0,0,0,4"/>
-        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden"/>
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
         <Setter Property="ItemsPanel">
             <Setter.Value>
@@ -1644,67 +1657,81 @@
         </Setter>
     </Style>
 
-    <Style x:Key="HomePersonalTabButtonStyle" TargetType="Button">
-        <Setter Property="Background" Value="#E8E8ED"/>
-        <Setter Property="Foreground" Value="#3C3C43"/>
-        <Setter Property="Padding" Value="14,8"/>
-        <Setter Property="Margin" Value="0,0,0,0"/>
-        <Setter Property="FontSize" Value="13"/>
-        <Setter Property="FontWeight" Value="Medium"/>
-        <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="BorderThickness" Value="0"/>
+    <!-- 分段控件选项：选中底色由滑块绘制，文字本身不挂 Effect，避免高 DPI 下发糊 -->
+    <Style x:Key="HomeGroupTabItemStyle" TargetType="ListBoxItem" BasedOn="{StaticResource TemplateCardSizeSegmentedItemStyle}">
+        <Setter Property="MinHeight" Value="24"/>
+        <Setter Property="MinWidth" Value="56"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border x:Name="TabBorder" Background="{TemplateBinding Background}"
-                            CornerRadius="10" Padding="{TemplateBinding Padding}">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                <ControlTemplate TargetType="ListBoxItem">
+                    <Border x:Name="Bd"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="4"
+                            Padding="6,0"
+                            SnapsToDevicePixels="True"
+                            UseLayoutRounding="True"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          SnapsToDevicePixels="True"
+                                          UseLayoutRounding="True"
                                           TextElement.Foreground="{TemplateBinding Foreground}"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="TabBorder" Property="Background" Value="#D8D8DE"/>
+                            <Setter TargetName="Bd" Property="Background" Value="#E4E4E4"/>
+                            <Setter Property="Foreground" Value="#333333"/>
                         </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="TabBorder" Property="Background" Value="#C8C8CE"/>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="Transparent"/>
+                            <Setter Property="Foreground" Value="#333333"/>
                         </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True"/>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Bd" Property="Background" Value="Transparent"/>
+                            <Setter Property="Foreground" Value="#333333"/>
+                        </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
 
-    <Style x:Key="HomeGroupTabItemStyle" TargetType="ListBoxItem">
-        <Setter Property="Background" Value="#E8E8ED"/>
-        <Setter Property="Foreground" Value="#3C3C43"/>
-        <Setter Property="Padding" Value="14,8"/>
-        <Setter Property="Margin" Value="0,0,8,0"/>
-        <Setter Property="FontSize" Value="13"/>
-        <Setter Property="FontWeight" Value="Medium"/>
+    <!-- 分段控件内的“个人”按钮：与 TemplateCardSizeSegmentedItemStyle 同视觉（跟随 IsSelectedGroupPersonal） -->
+    <Style x:Key="HomePersonalTabButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="#666666"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Margin" Value="1,0"/>
+        <Setter Property="MinHeight" Value="24"/>
+        <Setter Property="MinWidth" Value="56"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="ListBoxItem">
-                    <Border x:Name="TabBorder" Background="{TemplateBinding Background}"
-                            CornerRadius="10" Padding="{TemplateBinding Padding}"
-                            BorderBrush="Transparent" BorderThickness="1">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                            CornerRadius="4" Padding="6,0" SnapsToDevicePixels="True" UseLayoutRounding="True">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                          SnapsToDevicePixels="True"
+                                          UseLayoutRounding="True"
+                                          TextElement.Foreground="{TemplateBinding Foreground}"/>
                     </Border>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="TabBorder" Property="Background" Value="#007AFF"/>
-                            <Setter Property="Foreground" Value="White"/>
-                        </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="TabBorder" Property="Background" Value="#D8D8DE"/>
+                            <Setter TargetName="Bd" Property="Background" Value="#E4E4E4"/>
+                            <Setter Property="Foreground" Value="#333333"/>
                         </Trigger>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsMouseOver" Value="True"/>
-                                <Condition Property="IsSelected" Value="True"/>
-                            </MultiTrigger.Conditions>
-                            <Setter TargetName="TabBorder" Property="Background" Value="#0062CC"/>
-                        </MultiTrigger>
+                        <DataTrigger Binding="{Binding IsSelectedGroupPersonal}" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="Transparent"/>
+                            <Setter Property="Foreground" Value="#333333"/>
+                        </DataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -1724,6 +1751,123 @@
                 <Setter Property="Background" Value="#F0F4FF"/>
                 <Setter Property="BorderBrush" Value="#B8D4FF"/>
             </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- ===== 主页 · 半透明卡片视觉 ===== -->
+
+    <!-- 半透明白卡（约 90% 不透明度，替代毛玻璃） -->
+    <Style x:Key="HomeGlassCardStyle" TargetType="Border">
+        <Setter Property="Background" Value="#E6FFFFFF"/>
+        <Setter Property="BorderBrush" Value="#B3FFFFFF"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="16"/>
+    </Style>
+
+    <!-- 公告大卡右上高光叠层（保持圆角，无需裁剪） -->
+    <RadialGradientBrush x:Key="HomeHeroHighlightBrush" Center="0.88,0.05" GradientOrigin="0.88,0.05" RadiusX="0.75" RadiusY="1.4">
+        <GradientStop Color="#38FFFFFF" Offset="0"/>
+        <GradientStop Color="#00FFFFFF" Offset="1"/>
+    </RadialGradientBrush>
+
+    <!-- 自定义图片上的底部压暗，保证白字可读 -->
+    <LinearGradientBrush x:Key="HomeHeroImageScrimBrush" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#00000000" Offset="0.28"/>
+        <GradientStop Color="#59000000" Offset="0.68"/>
+        <GradientStop Color="#A6000000" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- 公告轮播导航按钮：平时只显示白色图标，悬停时深灰圆形底 -->
+    <Style x:Key="HomeHeroNavButtonStyle" TargetType="Button">
+        <Setter Property="Width" Value="28"/>
+        <Setter Property="Height" Value="28"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Root" Background="Transparent" CornerRadius="14">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                          TextElement.Foreground="{TemplateBinding Foreground}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Root" Property="Background" Value="#666666"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Root" Property="Background" Value="#555555"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.4"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- 公告动作：透明文字按钮，无底无边框 -->
+    <Style x:Key="HomeHeroActionButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Root" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"
+                            Padding="{TemplateBinding Padding}">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Left"
+                                              RecognizesAccessKey="True"/>
+                            <TextBlock Text=">" Margin="6,0,0,0" VerticalAlignment="Center"
+                                       FontSize="14" FontWeight="SemiBold"
+                                       Foreground="{TemplateBinding Foreground}"/>
+                        </StackPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Root" Property="Opacity" Value="0.75"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Root" Property="Opacity" Value="0.55"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- 公告眉题标签（胶囊） -->
+    <Style x:Key="HomeHeroTagStyle" TargetType="Border">
+        <Setter Property="Background" Value="#2EFFFFFF"/>
+        <Setter Property="CornerRadius" Value="9"/>
+        <Setter Property="Padding" Value="8,2"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <!-- 公告分页点 -->
+    <Style x:Key="HomeHeroDotStyle" TargetType="Border">
+        <Setter Property="Width" Value="6"/>
+        <Setter Property="Height" Value="6"/>
+        <Setter Property="CornerRadius" Value="3"/>
+        <Setter Property="Margin" Value="0,0,6,0"/>
+        <Setter Property="Background" Value="#73FFFFFF"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsCurrent}" Value="True">
+                <Setter Property="Width" Value="16"/>
+                <Setter Property="Background" Value="White"/>
+            </DataTrigger>
         </Style.Triggers>
     </Style>
 

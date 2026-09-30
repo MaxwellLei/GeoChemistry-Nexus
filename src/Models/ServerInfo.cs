@@ -28,10 +28,16 @@ namespace GeoChemistryNexus.Models
         public string HomeLinksHash { get; set; } = string.Empty;
 
         /// <summary>
-        /// 服务器公告信息
+        /// 服务器公告信息（旧版纯文本字段，保留用于兼容回退）
         /// </summary>
         [JsonPropertyName("announcement")]
         public string Announcement { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 服务器端公告目录文件（Announcements.json）的哈希值
+        /// </summary>
+        [JsonPropertyName("announcements_hash")]
+        public string AnnouncementsHash { get; set; } = string.Empty;
 
         /// <summary>
         /// 当前服务器允许继续使用的软件最低版本号

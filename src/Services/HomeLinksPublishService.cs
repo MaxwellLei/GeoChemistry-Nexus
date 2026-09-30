@@ -143,9 +143,10 @@ namespace GeoChemistryNexus.Services
 
         public static AnnouncementPublishResult ExportAnnouncementToDirectory(
             string outputDir,
-            string announcement,
+            string? announcement,
             string? minimumSupportedVersion = null,
-            string? latestAppVersion = null)
+            string? latestAppVersion = null,
+            HomeAnnouncementCatalog? announcementsCatalog = null)
         {
             if (string.IsNullOrWhiteSpace(outputDir))
                 throw new ArgumentException("Output directory is required.", nameof(outputDir));
@@ -160,6 +161,19 @@ namespace GeoChemistryNexus.Services
             if (latestAppVersion != null)
                 serverInfo.LatestAppVersion = latestAppVersion;
 
+            // 多语言公告目录：写入 Announcements.json 并把 hash 记入 server_info，客户端据此增量同步
+            string announcementsPath = string.Empty;
+            string announcementsHash = string.Empty;
+            int announcementsCount = 0;
+            if (announcementsCatalog != null)
+            {
+                announcementsPath = Path.Combine(outputDir, OfficialContentEndpoints.AnnouncementsFileName);
+                File.WriteAllText(announcementsPath, JsonSerializer.Serialize(announcementsCatalog, JsonOptions));
+                announcementsHash = UpdateHelper.ComputeFileMd5(announcementsPath);
+                announcementsCount = announcementsCatalog.Announcements?.Count ?? 0;
+                serverInfo.AnnouncementsHash = announcementsHash;
+            }
+
             string serverInfoPath = Path.Combine(outputDir, OfficialContentEndpoints.ServerInfoFileName);
             File.WriteAllText(serverInfoPath, JsonSerializer.Serialize(serverInfo, JsonOptions));
 
@@ -169,7 +183,10 @@ namespace GeoChemistryNexus.Services
                 ServerInfoPath = serverInfoPath,
                 Announcement = announcement ?? string.Empty,
                 MinimumSupportedVersion = serverInfo.MinimumSupportedVersion ?? string.Empty,
-                LatestAppVersion = serverInfo.LatestAppVersion ?? string.Empty
+                LatestAppVersion = serverInfo.LatestAppVersion ?? string.Empty,
+                AnnouncementsCatalogPath = announcementsPath,
+                AnnouncementsHash = announcementsHash,
+                AnnouncementsEntryCount = announcementsCount
             };
         }
 

@@ -142,7 +142,14 @@ namespace GeoChemistryNexus.Models
         public string MinimumSupportedVersion { get; set; } = string.Empty;
         public string LatestAppVersion { get; set; } = string.Empty;
 
-        public string Summary => "公告已写入 server_info.json。";
+        /// <summary>多语言公告目录（Announcements.json）导出路径，为空表示本次未发布公告目录</summary>
+        public string AnnouncementsCatalogPath { get; set; } = string.Empty;
+        public string AnnouncementsHash { get; set; } = string.Empty;
+        public int AnnouncementsEntryCount { get; set; }
+
+        public string Summary => string.IsNullOrEmpty(AnnouncementsCatalogPath)
+            ? "公告已写入 server_info.json。"
+            : $"公告已写入 server_info.json，多语言公告目录 {AnnouncementsEntryCount} 条。";
     }
 
     public class CosUploadResult

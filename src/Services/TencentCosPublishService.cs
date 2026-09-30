@@ -283,6 +283,15 @@ namespace GeoChemistryNexus.Services
             if (string.IsNullOrEmpty(publishResult?.ServerInfoPath) || !File.Exists(publishResult.ServerInfoPath))
                 throw new InvalidOperationException("server_info.json was not generated.");
 
+            // 多语言公告目录先于 server_info 上传，避免客户端读到新 hash 却拉不到新文件
+            if (!string.IsNullOrEmpty(publishResult.AnnouncementsCatalogPath) && File.Exists(publishResult.AnnouncementsCatalogPath))
+            {
+                UploadFile(cosXml, settings.Bucket, OfficialContentEndpoints.AnnouncementsFileName, publishResult.AnnouncementsCatalogPath);
+                uploadedKeys.Add(OfficialContentEndpoints.AnnouncementsFileName);
+                uploadTracker?.Advance();
+                Log($"Uploaded: {OfficialContentEndpoints.AnnouncementsFileName}");
+            }
+
             UploadFile(cosXml, settings.Bucket, OfficialContentEndpoints.ServerInfoFileName, publishResult.ServerInfoPath);
             uploadedKeys.Add(OfficialContentEndpoints.ServerInfoFileName);
             uploadTracker?.Advance();
@@ -291,7 +300,8 @@ namespace GeoChemistryNexus.Services
             bool verified = await VerifyAnnouncementAsync(
                 publishResult.Announcement,
                 publishResult.MinimumSupportedVersion,
-                publishResult.LatestAppVersion);
+                publishResult.LatestAppVersion,
+                publishResult.AnnouncementsHash);
             Log(verified
                 ? "server_info.json announcement verification passed."
                 : "Warning: announcement verification failed or CDN not yet refreshed.");
@@ -324,7 +334,7 @@ namespace GeoChemistryNexus.Services
             bool diagramVerified = true;
             bool geoVerified = true;
             bool homeLinksVerified = true;
-            bool announcementVerified = true;
+            bool announcementVerified = !uploadAnnouncement;
 
             int totalFiles = CountCombinedUploadFiles(
                 diagramResult,
@@ -336,6 +346,19 @@ namespace GeoChemistryNexus.Services
                 uploadHomeLinks,
                 uploadAnnouncement);
             var uploadTracker = uploadProgress != null ? new UploadProgressTracker(uploadProgress, totalFiles) : null;
+
+            string? announcementsCatalogPath = announcementResult?.AnnouncementsCatalogPath;
+            bool uploadAnnouncementsWithOtherContent = uploadAnnouncement
+                && (uploadDiagrams || uploadHomeLinks)
+                && !string.IsNullOrEmpty(announcementsCatalogPath)
+                && File.Exists(announcementsCatalogPath);
+
+            // 组合发布时先上传公告目录，再上传带有 announcements_hash 的 server_info，
+            // 避免客户端先读到新 hash、Announcements.json 还没到。
+            if (uploadAnnouncementsWithOtherContent)
+            {
+                UploadAnnouncementsCatalogFile(settings, announcementsCatalogPath!, allKeys, uploadTracker, log);
+            }
 
             if (uploadDiagrams && diagramResult != null)
             {
@@ -356,6 +379,18 @@ namespace GeoChemistryNexus.Services
                 announcementVerified = announcementUpload.ServerInfoVerified;
             }
 
+            if (uploadAnnouncementsWithOtherContent)
+            {
+                announcementVerified = await VerifyAnnouncementAsync(
+                    announcementResult!.Announcement,
+                    announcementResult.MinimumSupportedVersion,
+                    announcementResult.LatestAppVersion,
+                    announcementResult.AnnouncementsHash);
+                log?.Report(announcementVerified
+                    ? "server_info.json announcements_hash verification passed."
+                    : "Warning: announcements_hash verification failed or CDN not yet refreshed.");
+            }
+
             if (uploadGeothermometers && geothermometerResult != null)
             {
                 var geoUpload = await UploadGeothermometerPublishResultCoreAsync(geothermometerResult, settings, log, uploadTracker);
@@ -366,7 +401,7 @@ namespace GeoChemistryNexus.Services
             bool allVerified = (!uploadDiagrams || diagramVerified)
                 && (!uploadGeothermometers || geoVerified)
                 && (!uploadHomeLinks || uploadDiagrams || homeLinksVerified)
-                && (!uploadAnnouncement || uploadDiagrams || uploadHomeLinks || announcementVerified);
+                && (!uploadAnnouncement || announcementVerified);
 
             return new CosUploadResult
             {
@@ -433,6 +468,13 @@ namespace GeoChemistryNexus.Services
                 total += CountHomeLinksPublishFiles(homeLinksResult);
             else if (uploadAnnouncement && announcementResult != null)
                 total += CountAnnouncementPublishFiles(announcementResult);
+
+            // 组合发布补传的多语言公告目录
+            if (uploadAnnouncement
+                && (uploadDiagrams || uploadHomeLinks)
+                && !string.IsNullOrEmpty(announcementResult?.AnnouncementsCatalogPath)
+                && File.Exists(announcementResult.AnnouncementsCatalogPath))
+                total += 1;
 
             if (uploadGeothermometers && geothermometerResult != null)
                 total += CountGeothermometerPublishFiles(geothermometerResult);
@@ -504,7 +546,10 @@ namespace GeoChemistryNexus.Services
             if (publishResult == null)
                 return 0;
 
-            return !string.IsNullOrEmpty(publishResult.ServerInfoPath) && File.Exists(publishResult.ServerInfoPath) ? 1 : 0;
+            int count = !string.IsNullOrEmpty(publishResult.ServerInfoPath) && File.Exists(publishResult.ServerInfoPath) ? 1 : 0;
+            if (!string.IsNullOrEmpty(publishResult.AnnouncementsCatalogPath) && File.Exists(publishResult.AnnouncementsCatalogPath))
+                count++;
+            return count;
         }
 
         private static CosXml CreateCosClient(CosPublishSettings settings, string secretKey)
@@ -604,10 +649,32 @@ namespace GeoChemistryNexus.Services
             return false;
         }
 
+        private static void UploadAnnouncementsCatalogFile(
+            CosPublishSettings settings,
+            string localPath,
+            List<string> uploadedKeys,
+            UploadProgressTracker? uploadTracker,
+            IProgress<string>? log)
+        {
+            if (settings == null || !settings.IsConfigured)
+                throw new InvalidOperationException("COS publish settings are not configured.");
+
+            string secretKey = CosPublishSettingsService.UnprotectSecretKey(settings);
+            if (string.IsNullOrEmpty(secretKey))
+                throw new InvalidOperationException("Failed to decrypt COS SecretKey.");
+
+            var cosXml = CreateCosClient(settings, secretKey);
+            UploadFile(cosXml, settings.Bucket, OfficialContentEndpoints.AnnouncementsFileName, localPath);
+            uploadedKeys.Add(OfficialContentEndpoints.AnnouncementsFileName);
+            uploadTracker?.Advance();
+            log?.Report($"Uploaded: {OfficialContentEndpoints.AnnouncementsFileName}");
+        }
+
         private static async Task<bool> VerifyAnnouncementAsync(
             string expectedAnnouncement,
             string? expectedMinimumSupportedVersion = null,
-            string? expectedLatestAppVersion = null)
+            string? expectedLatestAppVersion = null,
+            string? expectedAnnouncementsHash = null)
         {
             for (int attempt = 0; attempt < 3; attempt++)
             {
@@ -619,7 +686,8 @@ namespace GeoChemistryNexus.Services
                     string json = await UpdateHelper.GetUrlContentAsync(OfficialContentEndpoints.ServerInfoUrl);
                     var serverInfo = JsonHelper.Deserialize<ServerInfo>(json);
                     if (serverInfo != null
-                        && string.Equals(serverInfo.Announcement?.Trim(), expectedAnnouncement?.Trim(), StringComparison.Ordinal))
+                        && string.Equals(serverInfo.Announcement?.Trim(), expectedAnnouncement?.Trim(), StringComparison.Ordinal)
+                        && IsAnnouncementsHashVerified(serverInfo, expectedAnnouncementsHash))
                     {
                         return IsMinimumSupportedVersionVerified(serverInfo, expectedMinimumSupportedVersion)
                             && IsLatestAppVersionVerified(serverInfo, expectedLatestAppVersion);
@@ -632,6 +700,17 @@ namespace GeoChemistryNexus.Services
             }
 
             return false;
+        }
+
+        private static bool IsAnnouncementsHashVerified(ServerInfo serverInfo, string? expectedAnnouncementsHash)
+        {
+            if (string.IsNullOrEmpty(expectedAnnouncementsHash))
+                return true;
+
+            return string.Equals(
+                serverInfo.AnnouncementsHash?.Trim(),
+                expectedAnnouncementsHash.Trim(),
+                StringComparison.OrdinalIgnoreCase);
         }
 
         private static bool IsMinimumSupportedVersionVerified(

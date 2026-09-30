@@ -14178,18 +14178,12 @@ namespace GeoChemistryNexus.ViewModels
             }
             catch (HttpRequestException netEx)
             {
-                if (_isAutoCheckingTemplateUpdate)
-                    return;
-
-                // 网络连接失败，无法检查更新
+                // 网络连接失败，无法检查更新（自动检查与手动检查提示相同）
                 MessageHelper.Error(LanguageService.Instance["network_connection_failed_cannot_check_for_updates"] + $"{netEx.Message}");
             }
             catch (Exception ex)
             {
-                if (_isAutoCheckingTemplateUpdate)
-                    return;
-
-                // 检查更新时发生错误：
+                // 检查更新时发生错误（自动检查与手动检查提示相同）
                 MessageHelper.Error(LanguageService.Instance["error_occurred_while_checking_for_updates"] + $"{ex.Message}");
             }
         }
@@ -14281,10 +14275,7 @@ namespace GeoChemistryNexus.ViewModels
             }
             catch (Exception ex)
             {
-                if (_isAutoCheckingTemplateUpdate)
-                    return;
-
-                // 更新列表文件失败
+                // 更新列表文件失败（自动检查与手动检查提示相同）
                 MessageHelper.Error(LanguageService.Instance["update_list_file_failed"] + $" {ex.Message}");
             }
             finally

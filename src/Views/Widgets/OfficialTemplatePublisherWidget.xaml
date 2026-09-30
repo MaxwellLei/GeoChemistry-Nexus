@@ -12,6 +12,8 @@
 
              xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
 
+             xmlns:controls="clr-namespace:GeoChemistryNexus.Controls"
+
              mc:Ignorable="d"
 
              d:DesignHeight="720" d:DesignWidth="920">
@@ -666,6 +668,188 @@
                             </ListBox.ItemTemplate>
 
                         </ListBox>
+
+                    </Grid>
+
+                </Grid>
+
+            </TabItem>
+
+            <TabItem Header="公告目录（多语言）">
+
+                <Grid Margin="4">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- 工具栏：编辑语言 + 增删 + 重新加载 -->
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
+                        <TextBlock Text="{Binding [home_links_edit_language], Source={x:Static lg:LanguageService.Instance}, FallbackValue=Editing language:}"
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <ComboBox ItemsSource="{Binding HomeLinksLanguageOptions}"
+                                  DisplayMemberPath="DisplayName"
+                                  SelectedValuePath="Code"
+                                  SelectedValue="{Binding SelectedAnnouncementsLanguage}"
+                                  Width="180" Margin="0,0,16,0" VerticalAlignment="Center"/>
+                        <Button Content="新增公告" Command="{Binding AddAnnouncementEntryCommand}" Margin="0,0,8,0" MinWidth="88"/>
+                        <Button Content="{Binding [Delete], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}"
+                                Command="{Binding RemoveAnnouncementEntryCommand}" Margin="0,0,8,0" MinWidth="72"/>
+                        <Button Content="{Binding [refresh], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}"
+                                Command="{Binding LoadAnnouncementsEditorFromServerCommand}" MinWidth="72"
+                                ToolTip="从服务器重新加载线上公告目录（会丢弃未发布的修改）"/>
+                        <TextBlock Foreground="#636366" FontSize="12" VerticalAlignment="Center" Margin="16,0,0,0"
+                                   Text="发布时请勾选上方“公告”，Announcements.json 与 server_info.json 会一并上传"/>
+                    </StackPanel>
+
+                    <Grid Grid.Row="1" MinHeight="260">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="260"/>
+                            <ColumnDefinition Width="8"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- 条目列表 -->
+                        <ListBox Grid.Column="0"
+                                 ItemsSource="{Binding AnnouncementEntries}"
+                                 SelectedItem="{Binding SelectedAnnouncementEntry}"
+                                 BorderBrush="#EEEEEE" BorderThickness="1">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="2">
+                                        <TextBlock Text="{Binding DisplayTitle}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding BackgroundSummary}" FontSize="11" Foreground="#888888"/>
+                                            <TextBlock Text="{Binding Id, StringFormat=' · {0}'}" FontSize="11" Foreground="#AAAAAA" TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+
+                        <!-- 条目编辑表单 -->
+                        <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">
+                            <Grid Margin="4,0,4,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="90"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="90"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="ID" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" Margin="0,0,12,8"
+                                         Text="{Binding SelectedAnnouncementEntry.Id, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                <TextBlock Grid.Row="0" Grid.Column="2" Text="主题色" VerticalAlignment="Center"/>
+                                <ComboBox Grid.Row="0" Grid.Column="3" Margin="0,0,0,8"
+                                          ItemsSource="{Binding AnnouncementThemeOptions}"
+                                          SelectedItem="{Binding SelectedAnnouncementEntry.Theme}"
+                                          ToolTip="未填写自定义颜色时，用该主题生成渐变；图片加载失败时也回退到这里"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="展示日期" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Margin="0,0,12,8"
+                                         Text="{Binding SelectedAnnouncementEntry.Date, UpdateSourceTrigger=PropertyChanged}"
+                                         ToolTip="格式 yyyy-MM-dd，显示在公告眉题处"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="2" Text="优先级" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="1" Grid.Column="3" Margin="0,0,0,8"
+                                         Text="{Binding SelectedAnnouncementEntry.Priority, UpdateSourceTrigger=PropertyChanged}"
+                                         ToolTip="数值越大越靠前"/>
+
+                                <TextBlock Grid.Row="2" Grid.Column="0" Text="上架日期" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="2" Grid.Column="1" Margin="0,0,12,8"
+                                         Text="{Binding SelectedAnnouncementEntry.StartDate, UpdateSourceTrigger=PropertyChanged}"
+                                         ToolTip="yyyy-MM-dd，留空立即生效"/>
+
+                                <TextBlock Grid.Row="2" Grid.Column="2" Text="下架日期" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="2" Grid.Column="3" Margin="0,0,0,8"
+                                         Text="{Binding SelectedAnnouncementEntry.EndDate, UpdateSourceTrigger=PropertyChanged}"
+                                         ToolTip="yyyy-MM-dd，留空长期有效"/>
+
+                                <TextBlock Grid.Row="3" Grid.Column="0" Text="眉题标签" VerticalAlignment="Top" Margin="0,6,0,0"/>
+                                <controls:LocalizedStringControl Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Margin="0,0,0,8" MinHeight="30"
+                                                                 Value="{Binding SelectedAnnouncementEntry.Tag, Mode=TwoWay}"
+                                                                 ContentLanguageContext="{Binding AnnouncementsLanguageContext}"/>
+
+                                <TextBlock Grid.Row="4" Grid.Column="0" Text="标题 *" VerticalAlignment="Top" Margin="0,6,0,0"/>
+                                <controls:LocalizedStringControl Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" Margin="0,0,0,8" MinHeight="30"
+                                                                 Value="{Binding SelectedAnnouncementEntry.Title, Mode=TwoWay}"
+                                                                 ContentLanguageContext="{Binding AnnouncementsLanguageContext}"/>
+
+                                <TextBlock Grid.Row="5" Grid.Column="0" Text="正文" VerticalAlignment="Top" Margin="0,6,0,0"/>
+                                <controls:LocalizedStringControl Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" Margin="0,0,0,8" MinHeight="64"
+                                                                 Value="{Binding SelectedAnnouncementEntry.Body, Mode=TwoWay}"
+                                                                 ContentLanguageContext="{Binding AnnouncementsLanguageContext}"/>
+
+                                <TextBlock Grid.Row="6" Grid.Column="0" Text="按钮文字" VerticalAlignment="Top" Margin="0,6,0,0"/>
+                                <controls:LocalizedStringControl Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3" Margin="0,0,0,8" MinHeight="30"
+                                                                 Value="{Binding SelectedAnnouncementEntry.ActionLabel, Mode=TwoWay}"
+                                                                 ContentLanguageContext="{Binding AnnouncementsLanguageContext}"/>
+
+                                <TextBlock Grid.Row="7" Grid.Column="0" Text="按钮链接" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3" Margin="0,0,0,8"
+                                         Text="{Binding SelectedAnnouncementEntry.ActionUrl, UpdateSourceTrigger=PropertyChanged}"
+                                         ToolTip="按钮文字留空时不显示按钮。填写了按钮文字时必须同时填写链接，否则按钮不会出现。"/>
+
+                                <TextBlock Grid.Row="8" Grid.Column="0" Text="背景" VerticalAlignment="Center"/>
+                                <ComboBox Grid.Row="8" Grid.Column="1" Margin="0,0,12,8"
+                                          ItemsSource="{Binding AnnouncementBackgroundModeOptions}"
+                                          DisplayMemberPath="Label"
+                                          SelectedValuePath="Value"
+                                          SelectedValue="{Binding SelectedAnnouncementEntry.BackgroundMode}"/>
+                                <TextBlock Grid.Row="8" Grid.Column="2" Grid.ColumnSpan="2"
+                                           Text="默认：一种颜色，并可加装饰图形。自定义：铺满一张网络图片。"
+                                           Foreground="#888888" FontSize="12" VerticalAlignment="Center"
+                                           TextWrapping="Wrap" Margin="0,0,0,8"/>
+
+                                <TextBlock Grid.Row="9" Grid.Column="0" Text="颜色" VerticalAlignment="Center"
+                                           Visibility="{Binding SelectedAnnouncementEntry.IsDefaultBackground, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                <controls:TextPropertyColorPicker Grid.Row="9" Grid.Column="1" Margin="0,0,12,8"
+                                                                  HexColor="{Binding SelectedAnnouncementEntry.BackgroundColor, UpdateSourceTrigger=PropertyChanged}"
+                                                                  ToolTip="留空则使用主题色。客户端会按这个颜色生成同色系渐变。"
+                                                                  Visibility="{Binding SelectedAnnouncementEntry.IsDefaultBackground, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                <TextBlock Grid.Row="9" Grid.Column="2" Text="图形样式" VerticalAlignment="Center"
+                                           Visibility="{Binding SelectedAnnouncementEntry.IsDefaultBackground, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                <ComboBox Grid.Row="9" Grid.Column="3" Margin="0,0,0,8"
+                                          ItemsSource="{Binding SelectedAnnouncementEntry.PolygonStyleOptions}"
+                                          DisplayMemberPath="Label"
+                                          SelectedValuePath="Value"
+                                          SelectedValue="{Binding SelectedAnnouncementEntry.PolygonStyle}"
+                                          IsEnabled="{Binding SelectedAnnouncementEntry.ShowPolygons}"
+                                          ToolTip="自动会按公告顺序轮换本版本支持的图形。更新版本新增的样式名会保留，当前版本显示为其中一种已知图形。"
+                                          Visibility="{Binding SelectedAnnouncementEntry.IsDefaultBackground, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                                <CheckBox Grid.Row="10" Grid.Column="1" Grid.ColumnSpan="3" Margin="0,0,0,8"
+                                          Content="显示装饰多边形"
+                                          IsChecked="{Binding SelectedAnnouncementEntry.ShowPolygons}"
+                                          VerticalAlignment="Center"
+                                          Visibility="{Binding SelectedAnnouncementEntry.IsDefaultBackground, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                                <TextBlock Grid.Row="11" Grid.Column="0" Text="图片地址" VerticalAlignment="Center"
+                                           Visibility="{Binding SelectedAnnouncementEntry.IsImageBackground, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                <TextBox Grid.Row="11" Grid.Column="1" Grid.ColumnSpan="3" Margin="0,0,0,8"
+                                         Text="{Binding SelectedAnnouncementEntry.BackgroundImageUrl, UpdateSourceTrigger=PropertyChanged}"
+                                         ToolTip="http 或 https 图片地址。加载完成前以及加载失败时，仍显示主题色或自定义颜色。"
+                                         Visibility="{Binding SelectedAnnouncementEntry.IsImageBackground, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                            </Grid>
+                        </ScrollViewer>
 
                     </Grid>
 

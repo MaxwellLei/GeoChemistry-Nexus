@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "announcements": [
+    {
+      "id": "welcome",
+      "tag": {
+        "default": "en-US",
+        "translations": {
+          "zh-CN": "欢迎",
+          "zh-TW": "歡迎",
+          "en-US": "Welcome",
+          "de-DE": "Willkommen",
+          "es-ES": "Bienvenida",
+          "ja-JP": "ようこそ",
+          "ko-KR": "환영",
+          "ru-RU": "Добро пожаловать",
+          "fr-FR": "Bienvenue",
+          "pt-BR": "Boas-vindas"
+        }
+      },
+      "title": {
+        "default": "en-US",
+        "translations": {
+          "zh-CN": "欢迎使用 GeoChemistry Nexus",
+          "zh-TW": "歡迎使用 GeoChemistry Nexus",
+          "en-US": "Welcome to GeoChemistry Nexus",
+          "de-DE": "Willkommen bei GeoChemistry Nexus",
+          "es-ES": "Bienvenido a GeoChemistry Nexus",
+          "ja-JP": "GeoChemistry Nexus へようこそ",
+          "ko-KR": "GeoChemistry Nexus에 오신 것을 환영합니다",
+          "ru-RU": "Добро пожаловать в GeoChemistry Nexus",
+          "fr-FR": "Bienvenue dans GeoChemistry Nexus",
+          "pt-BR": "Bem-vindo ao GeoChemistry Nexus"
+        }
+      },
+      "body": {
+        "default": "en-US",
+        "translations": {
+          "zh-CN": "图解、温压计与 CIPW 计算集成于一个工作台。查看文档快速上手。",
+          "zh-TW": "圖解、溫壓計與 CIPW 計算整合於一個工作台。查看文件快速上手。",
+          "en-US": "Diagrams, geothermometers and CIPW calculation in one workbench. Check the documentation to get started.",
+          "de-DE": "Diagramme, Geothermometer und CIPW-Berechnung in einer Arbeitsumgebung. In der Dokumentation geht es los.",
+          "es-ES": "Diagramas, geotermómetros y cálculo CIPW en un mismo entorno. Consulta la documentación para empezar.",
+          "ja-JP": "図解、地質温度圧力計、CIPW 計算を一つの作業台にまとめています。ドキュメントを見て始めましょう。",
+          "ko-KR": "도해, 지온지압계, CIPW 계산을 하나의 작업대에 모았습니다. 문서에서 시작하세요.",
+          "ru-RU": "Диаграммы, геотермометры и расчёт CIPW в одной рабочей среде. Начните с документации.",
+          "fr-FR": "Diagrammes, géothermomètres et calcul CIPW dans un seul atelier. Consultez la documentation pour commencer.",
+          "pt-BR": "Diagramas, geotermômetros e cálculo CIPW em uma só bancada. Consulte a documentação para começar."
+        }
+      },
+      "date": "2025-01-01",
+      "priority": 0,
+      "theme": "blue",
+      "backgroundMode": "default",
+      "backgroundColor": "",
+      "showPolygons": true,
+      "polygonStyle": "ring",
+      "action": {
+        "label": {
+          "default": "en-US",
+          "translations": {
+            "zh-CN": "打开文档",
+            "zh-TW": "開啟文件",
+            "en-US": "Open Documentation",
+            "de-DE": "Dokumentation öffnen",
+            "es-ES": "Abrir documentación",
+            "ja-JP": "ドキュメントを開く",
+            "ko-KR": "문서 열기",
+            "ru-RU": "Открыть документацию",
+            "fr-FR": "Ouvrir la documentation",
+            "pt-BR": "Abrir documentação"
+          }
+        },
+        "url": "https://geochemistry-nexus.pages.dev/"
+      }
+    }
+  ]
+}

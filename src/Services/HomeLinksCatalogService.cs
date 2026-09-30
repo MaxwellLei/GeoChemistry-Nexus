@@ -28,6 +28,22 @@ namespace GeoChemistryNexus.Services
                     return EnsureLocalCatalogExists();
 
                 var serverInfo = JsonHelper.Deserialize<ServerInfo>(json);
+                return await SyncFromServerAsync(serverInfo);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[HomeLinksCatalogService] Sync failed: {ex.Message}");
+                return EnsureLocalCatalogExists();
+            }
+        }
+
+        /// <summary>
+        /// 用已取得的 server_info 同步主页链接目录，避免和公告重复请求 server_info.json。
+        /// </summary>
+        public static async Task<bool> SyncFromServerAsync(ServerInfo? serverInfo)
+        {
+            try
+            {
                 if (serverInfo == null || string.IsNullOrWhiteSpace(serverInfo.HomeLinksHash))
                     return EnsureLocalCatalogExists();
 
