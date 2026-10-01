@@ -2724,7 +2724,7 @@
     <value>편집 언어:</value>
   </data>
   <data name="home_personal_group" xml:space="preserve">
-    <value>개인</value>
+    <value>나의</value>
   </data>
   <data name="home_recommended_content" xml:space="preserve">
     <value>추천</value>
@@ -3469,55 +3469,46 @@
     <value>시작 시 애플리케이션 업데이트를 자동으로 확인</value>
 
   </data>
-
   <data name="Boot_hint" xml:space="preserve">
 
     <value>Windows 시작 시 애플리케이션을 자동으로 실행</value>
 
   </data>
-
   <data name="CheckUpdate_hint" xml:space="preserve">
 
     <value>지금 더 새 애플리케이션 버전이 있는지 확인</value>
 
   </data>
-
   <data name="Language_hint" xml:space="preserve">
 
     <value>애플리케이션 인터페이스 표시 언어 선택</value>
 
   </data>
-
   <data name="MessageAutoClose_hint" xml:space="preserve">
 
     <value>토스트 메시지가 자동으로 닫히기 전까지의 표시 시간</value>
 
   </data>
-
   <data name="QuitAppMode_hint" xml:space="preserve">
 
     <value>창을 닫을 때 시스템 트레이로 최소화하거나 애플리케이션을 종료</value>
 
   </data>
-
   <data name="adobe_illustrator_path_hint" xml:space="preserve">
 
     <value>벡터 그래픽을 열기 위한 Adobe Illustrator 실행 파일 경로</value>
 
   </data>
-
   <data name="auto_check_diagram_template_updates_hint" xml:space="preserve">
 
     <value>시작 시 다이어그램 템플릿 업데이트를 자동으로 확인</value>
 
   </data>
-
   <data name="auto_check_geothermometer_updates_hint" xml:space="preserve">
 
     <value>시작 시 지질온압계 업데이트를 자동으로 확인</value>
 
   </data>
-
   <data name="default_worksheet_row_count" xml:space="preserve">
     <value>기본 초기 표 행 수</value>
   </data>
@@ -3527,337 +3518,281 @@
   <data name="geothermometer_defaults" xml:space="preserve">
     <value>기본 설정</value>
   </data>
-
   <data name="coreldraw_path_hint" xml:space="preserve">
 
     <value>벡터 그래픽을 열기 위한 CorelDRAW 실행 파일 경로</value>
 
   </data>
-
   <data name="current_diagram_version_hint" xml:space="preserve">
 
     <value>이 애플리케이션이 지원하는 다이어그램 템플릿 형식 버전(읽기 전용)</value>
 
   </data>
-
   <data name="custom_app_hint" xml:space="preserve">
 
     <value>사용자 지정 타사 그래픽 편집기 실행 파일 경로</value>
 
   </data>
-
   <data name="default_diagram_expand_level_hint" xml:space="preserve">
 
     <value>다이어그램 범주 트리의 기본 확장 깊이</value>
 
   </data>
-
   <data name="default_third_party_editor_hint" xml:space="preserve">
 
     <value>벡터 그래픽 편집 또는 내보내기 시 기본으로 여는 타사 앱</value>
 
   </data>
-
   <data name="developer_mode_hint" xml:space="preserve">
 
     <value>사용 시 개발 및 디버깅 옵션 표시</value>
 
   </data>
-
   <data name="geo_additional_formula_badge" xml:space="preserve">
 
     <value>추가</value>
 
   </data>
-
   <data name="geo_additional_formula_name" xml:space="preserve">
 
     <value>Grid 수식 이름</value>
 
   </data>
-
   <data name="geo_additional_function_name" xml:space="preserve">
 
     <value>JS 함수 이름</value>
 
   </data>
-
   <data name="geo_btn_add_additional_formula" xml:space="preserve">
 
     <value>추가 수식 추가</value>
 
   </data>
-
   <data name="geo_current_app_format_version_hint" xml:space="preserve">
 
     <value>이 애플리케이션이 지원하는 지질온압계 템플릿 형식 버전(읽기 전용)</value>
 
   </data>
-
   <data name="geo_formulas_hint" xml:space="preserve">
 
     <value>Grid 사용자 정의 함수 이름을 아래 스크립트의 JavaScript 함수에 매핑합니다. 주 수식은 항상 calculate(args)를 호출합니다.</value>
 
   </data>
-
   <data name="geo_formulas_title" xml:space="preserve">
 
     <value>Grid 수식 *</value>
 
   </data>
-
   <data name="geo_free_sheet_align_center" xml:space="preserve">
 
     <value>가운데</value>
 
   </data>
-
   <data name="geo_free_sheet_align_left" xml:space="preserve">
 
     <value>왼쪽 맞춤</value>
 
   </data>
-
   <data name="geo_free_sheet_align_right" xml:space="preserve">
 
     <value>오른쪽 맞춤</value>
 
   </data>
-
   <data name="geo_free_sheet_clear" xml:space="preserve">
 
     <value>지우기</value>
 
   </data>
-
   <data name="geo_free_sheet_clear_confirm" xml:space="preserve">
 
     <value>현재 스프레드시트의 모든 데이터를 지우시겠습니까?</value>
 
   </data>
-
   <data name="geo_free_sheet_clear_success" xml:space="preserve">
 
     <value>스프레드시트를 지웠습니다</value>
 
   </data>
-
   <data name="geo_free_sheet_delete_col" xml:space="preserve">
 
     <value>열 삭제</value>
 
   </data>
-
   <data name="geo_free_sheet_delete_col_confirm" xml:space="preserve">
 
     <value>선택한 열을 삭제하시겠습니까?</value>
 
   </data>
-
   <data name="geo_free_sheet_delete_col_failed" xml:space="preserve">
 
     <value>열 삭제 실패: </value>
 
   </data>
-
   <data name="geo_free_sheet_delete_row_confirm" xml:space="preserve">
 
     <value>선택한 행을 삭제하시겠습니까?</value>
 
   </data>
-
   <data name="geo_free_sheet_export_formulas" xml:space="preserve">
 
     <value>수식 내보내기(값 제외)</value>
 
   </data>
-
   <data name="geo_free_sheet_export_mode_prompt" xml:space="preserve">
 
     <value>내보낼 콘텐츠 유형 선택</value>
 
   </data>
-
   <data name="geo_free_sheet_export_title" xml:space="preserve">
 
     <value>내보내기 옵션</value>
 
   </data>
-
   <data name="geo_free_sheet_export_values" xml:space="preserve">
 
     <value>값 내보내기(수식 제외)</value>
 
   </data>
-
   <data name="geo_free_sheet_fill_color" xml:space="preserve">
 
     <value>채우기 색</value>
 
   </data>
-
   <data name="geo_free_sheet_format_painter" xml:space="preserve">
 
     <value>서식 복사</value>
 
   </data>
-
   <data name="geo_free_sheet_group_align" xml:space="preserve">
 
     <value>맞춤</value>
 
   </data>
-
   <data name="geo_free_sheet_group_cells" xml:space="preserve">
 
     <value>셀</value>
 
   </data>
-
   <data name="geo_free_sheet_group_edit" xml:space="preserve">
 
     <value>편집</value>
 
   </data>
-
   <data name="geo_free_sheet_group_file" xml:space="preserve">
 
     <value>파일</value>
 
   </data>
-
   <data name="geo_free_sheet_group_font" xml:space="preserve">
 
     <value>글꼴</value>
 
   </data>
-
   <data name="geo_free_sheet_hint" xml:space="preserve">
 
     <value>등록된 온압계 수식을 사용할 수 있습니다. 예: =FormulaName(A2,B2)</value>
 
   </data>
-
   <data name="geo_free_sheet_import" xml:space="preserve">
 
     <value>가져오기</value>
 
   </data>
-
   <data name="geo_free_sheet_import_failed" xml:space="preserve">
 
     <value>가져오기 실패: {0}</value>
 
   </data>
-
   <data name="geo_free_sheet_insert_col_left" xml:space="preserve">
 
     <value>왼쪽에 열 삽입</value>
 
   </data>
-
   <data name="geo_free_sheet_insert_col_right" xml:space="preserve">
 
     <value>오른쪽에 열 삽입</value>
 
   </data>
-
   <data name="geo_free_sheet_italic" xml:space="preserve">
 
     <value>기울임꼴</value>
 
   </data>
-
   <data name="geo_free_sheet_merge" xml:space="preserve">
 
     <value>병합하고 가운데 맞춤</value>
 
   </data>
-
   <data name="geo_free_sheet_title" xml:space="preserve">
 
     <value>자유 온압계 스프레드시트</value>
 
   </data>
-
   <data name="geo_free_sheet_underline" xml:space="preserve">
 
     <value>밑줄</value>
 
   </data>
-
   <data name="geo_free_sheet_worksheet_name" xml:space="preserve">
 
     <value>자유시트</value>
 
   </data>
-
   <data name="geo_main_formula_badge" xml:space="preserve">
 
     <value>주 수식</value>
 
   </data>
-
   <data name="geo_menu_open_free_sheet" xml:space="preserve">
 
     <value>자유 스프레드시트 열기</value>
 
   </data>
-
   <data name="geo_msg_batch_import_success" xml:space="preserve">
 
     <value>가져오기 성공: {0}</value>
 
   </data>
-
   <data name="geo_msg_update_download_failed_detail" xml:space="preserve">
 
     <value>{0}: {1}</value>
 
   </data>
-
   <data name="geo_msg_update_download_failed_items" xml:space="preserve">
 
     <value>다운로드 실패 항목:</value>
 
   </data>
-
   <data name="geo_msg_update_removed_count" xml:space="preserve">
 
     <value>제거됨: {0}</value>
 
   </data>
-
   <data name="geo_tooltip_additional_function_name" xml:space="preserve">
 
     <value>스크립트의 JavaScript 함수 이름(예: calcPressure)</value>
 
   </data>
-
   <data name="geo_validate_additional_formula_incomplete" xml:space="preserve">
 
     <value>추가 수식 {0}행: Grid 수식 이름과 JS 함수 이름이 모두 필요합니다.</value>
 
   </data>
-
   <data name="geo_validate_additional_function_name_invalid" xml:space="preserve">
 
     <value>JS 함수 이름 '{0}'이(가) 잘못되었습니다(유효한 JavaScript 식별자여야 함).</value>
 
   </data>
-
   <data name="geo_validate_additional_function_reserved" xml:space="preserve">
 
     <value>JS 함수 이름 '{0}'은(는) 주 수식 또는 상세 계산용으로 예약되어 있습니다.</value>
 
   </data>
-
   <data name="geo_validate_example_row_column_mismatch" xml:space="preserve">
 
     <value>샘플 행의 열 수는 머리글과 같아야 합니다(예상 {0}, 실제 {1}).</value>
 
   </data>
-
   <data name="inkscape_path_hint" xml:space="preserve">
 
     <value>벡터 그래픽을 열기 위한 Inkscape 실행 파일 경로</value>
@@ -3866,167 +3801,139 @@
   <data name="inkscape_get_it" xml:space="preserve">
     <value>없다면 여기서 받기</value>
   </data>
-
   <data name="main_sidebar_collapse_style_hint" xml:space="preserve">
 
     <value>메인 사이드바를 완전히 접을지 아이콘을 남길지 선택</value>
 
   </data>
-
   <data name="minimum_version_auto_update" xml:space="preserve">
 
     <value>자동 업데이트</value>
 
   </data>
-
   <data name="minimum_version_dialog_message" xml:space="preserve">
 
     <value>현재 버전 {0}이(가) 최소 지원 버전 {1}보다 낮습니다. GeoChemistry Nexus를 업데이트하세요.</value>
 
   </data>
-
   <data name="minimum_version_dialog_title" xml:space="preserve">
 
     <value>업데이트 필요</value>
 
   </data>
-
   <data name="minimum_version_force_confirm" xml:space="preserve">
 
     <value>그래도 계속</value>
 
   </data>
-
   <data name="minimum_version_force_confirm_message" xml:space="preserve">
 
     <value>이 버전은 더 이상 지원되지 않습니다. 계속하면 예기치 않은 문제가 발생할 수 있습니다. 그래도 계속하시겠습니까?</value>
 
   </data>
-
   <data name="minimum_version_force_use" xml:space="preserve">
 
     <value>강제 사용</value>
 
   </data>
-
   <data name="minimum_version_manual_update" xml:space="preserve">
 
     <value>수동 업데이트</value>
 
   </data>
-
   <data name="mouse_snap_auto_recognition_frame_rate_hint" xml:space="preserve">
 
     <value>마우스 스냅 자동 인식 새로 고침 빈도. 높을수록 부드럽지만 더 많은 리소스를 사용합니다</value>
 
   </data>
-
   <data name="object_selection_trigger_hint" xml:space="preserve">
 
     <value>플롯 캔버스에서 개체를 선택하는 마우스 동작</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_empty" xml:space="preserve">
 
     <value>(비어 있음)</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_hint" xml:space="preserve">
 
     <value>형식: 1.2.3. 비워 두면 최소 버전 제한이 비활성화됩니다.</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_invalid" xml:space="preserve">
 
     <value>최소 지원 버전은 유효한 버전이어야 합니다(예: 1.2.3).</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_label" xml:space="preserve">
 
     <value>최소 지원 버전</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_pending" xml:space="preserve">
 
     <value>최소 버전 게시 대기 중</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_preview" xml:space="preserve">
 
     <value>최소 지원 버전: {0}</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_up_to_date" xml:space="preserve">
 
     <value>최소 지원 버전이 최신입니다.</value>
 
   </data>
-
   <data name="startup_background_image_hint" xml:space="preserve">
 
     <value>시작 화면에 표시할 이미지를 하나 이상 추가</value>
 
   </data>
-
   <data name="template_card_size_preset_hint" xml:space="preserve">
 
     <value>라이브러리에서 다이어그램 템플릿 카드의 표시 크기</value>
 
   </data>
-
   <data name="ui_scale_auto" xml:space="preserve">
 
     <value>자동</value>
 
   </data>
-
   <data name="ui_scale_mode" xml:space="preserve">
 
     <value>UI 배율</value>
 
   </data>
-
   <data name="ui_scale_mode_hint" xml:space="preserve">
 
     <value>현재 디스플레이에 자동 맞추거나 고정 UI 배율 설정</value>
 
   </data>
-
   <data name="update_auto_check_notify" xml:space="preserve">
     <value>새 버전 {0}이(가) 있습니다. 지금 다운로드하고 설치할까요?</value>
   </data>
-
   <data name="update_download_confirm_shutdown" xml:space="preserve">
 
     <value>다운로드가 완료되었습니다. 애플리케이션이 종료되고 설치 마법사가 시작됩니다. 계속하시겠습니까?</value>
 
   </data>
-
   <data name="update_installer_not_found" xml:space="preserve">
 
     <value>최신 릴리스에서 설치 패키지를 찾을 수 없습니다.</value>
 
   </data>
-
   <data name="update_installer_saved" xml:space="preserve">
 
     <value>설치 패키지를 다운로드하여 저장했습니다.</value>
 
   </data>
-
   <data name="update_portable_mode_hint" xml:space="preserve">
 
     <value>포터블 모드가 감지되었습니다. Releases 페이지에서 설치 프로그램 또는 포터블 패키지를 다운로드하세요.</value>
 
   </data>
-
   <data name="plot_toolbar_save_tooltip" xml:space="preserve">
     <value>저장 (Ctrl+S)</value>
   </data>
@@ -4367,4 +4274,3 @@
     <value>친기</value>
   </data>
 </root>
-

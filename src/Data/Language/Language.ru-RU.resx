@@ -2724,7 +2724,7 @@
     <value>Язык редактирования:</value>
   </data>
   <data name="home_personal_group" xml:space="preserve">
-    <value>Личное</value>
+    <value>мой</value>
   </data>
   <data name="home_recommended_content" xml:space="preserve">
     <value>Рекомендуемое</value>
@@ -3469,55 +3469,46 @@
     <value>Автоматически проверять обновления приложения при запуске</value>
 
   </data>
-
   <data name="Boot_hint" xml:space="preserve">
 
     <value>Автоматически запускать приложение при старте Windows</value>
 
   </data>
-
   <data name="CheckUpdate_hint" xml:space="preserve">
 
     <value>Сейчас проверить, доступна ли более новая версия приложения</value>
 
   </data>
-
   <data name="Language_hint" xml:space="preserve">
 
     <value>Выберите язык интерфейса приложения</value>
 
   </data>
-
   <data name="MessageAutoClose_hint" xml:space="preserve">
 
     <value>Как долго уведомления остаются видимыми до автоматического закрытия</value>
 
   </data>
-
   <data name="QuitAppMode_hint" xml:space="preserve">
 
     <value>Свернуть в системный трей или выйти из приложения при закрытии окна</value>
 
   </data>
-
   <data name="adobe_illustrator_path_hint" xml:space="preserve">
 
     <value>Путь к исполняемому файлу Adobe Illustrator для открытия векторной графики</value>
 
   </data>
-
   <data name="auto_check_diagram_template_updates_hint" xml:space="preserve">
 
     <value>Автоматически проверять обновления шаблонов диаграмм при запуске</value>
 
   </data>
-
   <data name="auto_check_geothermometer_updates_hint" xml:space="preserve">
 
     <value>Автоматически проверять обновления геотермобарометров при запуске</value>
 
   </data>
-
   <data name="default_worksheet_row_count" xml:space="preserve">
     <value>Начальное число строк таблицы по умолчанию</value>
   </data>
@@ -3527,337 +3518,281 @@
   <data name="geothermometer_defaults" xml:space="preserve">
     <value>ПО УМОЛЧАНИЮ</value>
   </data>
-
   <data name="coreldraw_path_hint" xml:space="preserve">
 
     <value>Путь к исполняемому файлу CorelDRAW для открытия векторной графики</value>
 
   </data>
-
   <data name="current_diagram_version_hint" xml:space="preserve">
 
     <value>Версия формата шаблона диаграмм, поддерживаемая этим приложением (только чтение)</value>
 
   </data>
-
   <data name="custom_app_hint" xml:space="preserve">
 
     <value>Путь к исполняемому файлу пользовательского стороннего графического редактора</value>
 
   </data>
-
   <data name="default_diagram_expand_level_hint" xml:space="preserve">
 
     <value>Глубина раскрытия дерева категорий диаграмм по умолчанию</value>
 
   </data>
-
   <data name="default_third_party_editor_hint" xml:space="preserve">
 
     <value>Стороннее приложение по умолчанию при редактировании или экспорте векторной графики</value>
 
   </data>
-
   <data name="developer_mode_hint" xml:space="preserve">
 
     <value>При включении показывать параметры разработки и отладки</value>
 
   </data>
-
   <data name="geo_additional_formula_badge" xml:space="preserve">
 
     <value>Доп</value>
 
   </data>
-
   <data name="geo_additional_formula_name" xml:space="preserve">
 
     <value>Имя формулы Grid</value>
 
   </data>
-
   <data name="geo_additional_function_name" xml:space="preserve">
 
     <value>Имя функции JS</value>
 
   </data>
-
   <data name="geo_btn_add_additional_formula" xml:space="preserve">
 
     <value>Добавить дополнительную формулу</value>
 
   </data>
-
   <data name="geo_current_app_format_version_hint" xml:space="preserve">
 
     <value>Версия формата шаблона геотермобарометра, поддерживаемая этим приложением (только чтение)</value>
 
   </data>
-
   <data name="geo_formulas_hint" xml:space="preserve">
 
     <value>Сопоставьте имена пользовательских функций Grid с функциями JavaScript в скрипте ниже. Основная формула всегда вызывает calculate(args).</value>
 
   </data>
-
   <data name="geo_formulas_title" xml:space="preserve">
 
     <value>Формулы Grid *</value>
 
   </data>
-
   <data name="geo_free_sheet_align_center" xml:space="preserve">
 
     <value>По центру</value>
 
   </data>
-
   <data name="geo_free_sheet_align_left" xml:space="preserve">
 
     <value>По левому краю</value>
 
   </data>
-
   <data name="geo_free_sheet_align_right" xml:space="preserve">
 
     <value>По правому краю</value>
 
   </data>
-
   <data name="geo_free_sheet_clear" xml:space="preserve">
 
     <value>Очистить</value>
 
   </data>
-
   <data name="geo_free_sheet_clear_confirm" xml:space="preserve">
 
     <value>Очистить все данные в текущей таблице?</value>
 
   </data>
-
   <data name="geo_free_sheet_clear_success" xml:space="preserve">
 
     <value>Таблица очищена</value>
 
   </data>
-
   <data name="geo_free_sheet_delete_col" xml:space="preserve">
 
     <value>Удалить столбец</value>
 
   </data>
-
   <data name="geo_free_sheet_delete_col_confirm" xml:space="preserve">
 
     <value>Удалить выбранный столбец(цы)?</value>
 
   </data>
-
   <data name="geo_free_sheet_delete_col_failed" xml:space="preserve">
 
     <value>Не удалось удалить столбец: </value>
 
   </data>
-
   <data name="geo_free_sheet_delete_row_confirm" xml:space="preserve">
 
     <value>Удалить выбранную строку(и)?</value>
 
   </data>
-
   <data name="geo_free_sheet_export_formulas" xml:space="preserve">
 
     <value>Экспортировать формулы (без значений)</value>
 
   </data>
-
   <data name="geo_free_sheet_export_mode_prompt" xml:space="preserve">
 
     <value>Выберите тип содержимого для экспорта</value>
 
   </data>
-
   <data name="geo_free_sheet_export_title" xml:space="preserve">
 
     <value>Параметры экспорта</value>
 
   </data>
-
   <data name="geo_free_sheet_export_values" xml:space="preserve">
 
     <value>Экспортировать значения (без формул)</value>
 
   </data>
-
   <data name="geo_free_sheet_fill_color" xml:space="preserve">
 
     <value>Цвет заливки</value>
 
   </data>
-
   <data name="geo_free_sheet_format_painter" xml:space="preserve">
 
     <value>Формат по образцу</value>
 
   </data>
-
   <data name="geo_free_sheet_group_align" xml:space="preserve">
 
     <value>Выравнивание</value>
 
   </data>
-
   <data name="geo_free_sheet_group_cells" xml:space="preserve">
 
     <value>Ячейки</value>
 
   </data>
-
   <data name="geo_free_sheet_group_edit" xml:space="preserve">
 
     <value>Правка</value>
 
   </data>
-
   <data name="geo_free_sheet_group_file" xml:space="preserve">
 
     <value>Файл</value>
 
   </data>
-
   <data name="geo_free_sheet_group_font" xml:space="preserve">
 
     <value>Шрифт</value>
 
   </data>
-
   <data name="geo_free_sheet_hint" xml:space="preserve">
 
     <value>Можно использовать зарегистрированные формулы геотермобарометра, например =FormulaName(A2,B2)</value>
 
   </data>
-
   <data name="geo_free_sheet_import" xml:space="preserve">
 
     <value>Импорт</value>
 
   </data>
-
   <data name="geo_free_sheet_import_failed" xml:space="preserve">
 
     <value>Ошибка импорта: {0}</value>
 
   </data>
-
   <data name="geo_free_sheet_insert_col_left" xml:space="preserve">
 
     <value>Вставить столбец слева</value>
 
   </data>
-
   <data name="geo_free_sheet_insert_col_right" xml:space="preserve">
 
     <value>Вставить столбец справа</value>
 
   </data>
-
   <data name="geo_free_sheet_italic" xml:space="preserve">
 
     <value>Курсив</value>
 
   </data>
-
   <data name="geo_free_sheet_merge" xml:space="preserve">
 
     <value>Объединить и выровнять по центру</value>
 
   </data>
-
   <data name="geo_free_sheet_title" xml:space="preserve">
 
     <value>Свободная таблица геотермобарометра</value>
 
   </data>
-
   <data name="geo_free_sheet_underline" xml:space="preserve">
 
     <value>Подчёркнутый</value>
 
   </data>
-
   <data name="geo_free_sheet_worksheet_name" xml:space="preserve">
 
     <value>СвободнаяТаблица</value>
 
   </data>
-
   <data name="geo_main_formula_badge" xml:space="preserve">
 
     <value>Основная</value>
 
   </data>
-
   <data name="geo_menu_open_free_sheet" xml:space="preserve">
 
     <value>Открыть свободную таблицу</value>
 
   </data>
-
   <data name="geo_msg_batch_import_success" xml:space="preserve">
 
     <value>Успешно импортировано: {0}</value>
 
   </data>
-
   <data name="geo_msg_update_download_failed_detail" xml:space="preserve">
 
     <value>{0}: {1}</value>
 
   </data>
-
   <data name="geo_msg_update_download_failed_items" xml:space="preserve">
 
     <value>Неудачные загрузки:</value>
 
   </data>
-
   <data name="geo_msg_update_removed_count" xml:space="preserve">
 
     <value>Удалено: {0}</value>
 
   </data>
-
   <data name="geo_tooltip_additional_function_name" xml:space="preserve">
 
     <value>Имя функции JavaScript в скрипте, например calcPressure</value>
 
   </data>
-
   <data name="geo_validate_additional_formula_incomplete" xml:space="preserve">
 
     <value>Дополнительная формула, строка {0}: требуются и имя формулы Grid, и имя функции JS.</value>
 
   </data>
-
   <data name="geo_validate_additional_function_name_invalid" xml:space="preserve">
 
     <value>Имя функции JS «{0}» недопустимо (должен быть допустимый идентификатор JavaScript).</value>
 
   </data>
-
   <data name="geo_validate_additional_function_reserved" xml:space="preserve">
 
     <value>Имя функции JS «{0}» зарезервировано для основной формулы или подробного расчёта.</value>
 
   </data>
-
   <data name="geo_validate_example_row_column_mismatch" xml:space="preserve">
 
     <value>Строка примера должна иметь то же число столбцов, что и заголовки (ожидалось {0}, найдено {1}).</value>
 
   </data>
-
   <data name="inkscape_path_hint" xml:space="preserve">
 
     <value>Путь к исполняемому файлу Inkscape для открытия векторной графики</value>
@@ -3866,167 +3801,139 @@
   <data name="inkscape_get_it" xml:space="preserve">
     <value>Нет Inkscape? Скачать здесь</value>
   </data>
-
   <data name="main_sidebar_collapse_style_hint" xml:space="preserve">
 
     <value>Выберите, сворачивать ли главную боковую панель полностью или оставлять значки видимыми</value>
 
   </data>
-
   <data name="minimum_version_auto_update" xml:space="preserve">
 
     <value>Автообновление</value>
 
   </data>
-
   <data name="minimum_version_dialog_message" xml:space="preserve">
 
     <value>Текущая версия {0} ниже минимально поддерживаемой версии {1}. Обновите GeoChemistry Nexus.</value>
 
   </data>
-
   <data name="minimum_version_dialog_title" xml:space="preserve">
 
     <value>Требуется обновление</value>
 
   </data>
-
   <data name="minimum_version_force_confirm" xml:space="preserve">
 
     <value>Всё равно продолжить</value>
 
   </data>
-
   <data name="minimum_version_force_confirm_message" xml:space="preserve">
 
     <value>Эта версия больше не поддерживается. Продолжение может привести к непредсказуемым проблемам. Всё равно продолжить?</value>
 
   </data>
-
   <data name="minimum_version_force_use" xml:space="preserve">
 
     <value>Принудительное использование</value>
 
   </data>
-
   <data name="minimum_version_manual_update" xml:space="preserve">
 
     <value>Ручное обновление</value>
 
   </data>
-
   <data name="mouse_snap_auto_recognition_frame_rate_hint" xml:space="preserve">
 
     <value>Частота обновления автораспознавания привязки мыши; выше — плавнее, но больше нагрузка</value>
 
   </data>
-
   <data name="object_selection_trigger_hint" xml:space="preserve">
 
     <value>Действие мыши для выбора объектов на холсте графика</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_empty" xml:space="preserve">
 
     <value>(пусто)</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_hint" xml:space="preserve">
 
     <value>Формат: 1.2.3. Оставьте пустым, чтобы отключить порог минимальной версии.</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_invalid" xml:space="preserve">
 
     <value>Минимально поддерживаемая версия должна быть допустимой, например 1.2.3.</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_label" xml:space="preserve">
 
     <value>Минимально поддерживаемая версия</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_pending" xml:space="preserve">
 
     <value>Минимальная версия ожидает публикации</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_preview" xml:space="preserve">
 
     <value>Минимально поддерживаемая версия: {0}</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_up_to_date" xml:space="preserve">
 
     <value>Минимально поддерживаемая версия актуальна.</value>
 
   </data>
-
   <data name="startup_background_image_hint" xml:space="preserve">
 
     <value>Добавьте одно или несколько изображений для экрана запуска</value>
 
   </data>
-
   <data name="template_card_size_preset_hint" xml:space="preserve">
 
     <value>Размер отображения карточек шаблонов диаграмм в библиотеке</value>
 
   </data>
-
   <data name="ui_scale_auto" xml:space="preserve">
 
     <value>Авто</value>
 
   </data>
-
   <data name="ui_scale_mode" xml:space="preserve">
 
     <value>Масштаб интерфейса</value>
 
   </data>
-
   <data name="ui_scale_mode_hint" xml:space="preserve">
 
     <value>Автоматически подстраиваться под текущий дисплей или задать фиксированный масштаб интерфейса</value>
 
   </data>
-
   <data name="update_auto_check_notify" xml:space="preserve">
     <value>Доступна новая версия {0}. Скачать и установить сейчас?</value>
   </data>
-
   <data name="update_download_confirm_shutdown" xml:space="preserve">
 
     <value>Загрузка завершена. Приложение будет закрыто, и запустится мастер установки. Продолжить?</value>
 
   </data>
-
   <data name="update_installer_not_found" xml:space="preserve">
 
     <value>В последнем выпуске не найден установочный пакет.</value>
 
   </data>
-
   <data name="update_installer_saved" xml:space="preserve">
 
     <value>Установочный пакет загружен и сохранён.</value>
 
   </data>
-
   <data name="update_portable_mode_hint" xml:space="preserve">
 
     <value>Обнаружен портативный режим. Скачайте установщик или портативный пакет со страницы Releases.</value>
 
   </data>
-
   <data name="plot_toolbar_save_tooltip" xml:space="preserve">
     <value>Сохранить (Ctrl+S)</value>
   </data>
@@ -4367,4 +4274,3 @@
     <value>Атмофильные</value>
   </data>
 </root>
-

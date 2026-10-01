@@ -125,7 +125,7 @@
     <value>Edit</value>
   </data>
   <data name="PlotSetting" xml:space="preserve">
-    <value>Plot Settings</value>
+    <value>Diagram Plot Settings</value>
   </data>
   <data name="GeothermometerSetting" xml:space="preserve">
     <value>Geothermobarometer Settings</value>
@@ -1090,7 +1090,7 @@
     <value>Recommended</value>
   </data>
   <data name="home_personal_group" xml:space="preserve">
-    <value>Personal</value>
+    <value>My</value>
   </data>
   <data name="home_widgets_section" xml:space="preserve">
     <value>Widgets</value>
@@ -3490,7 +3490,7 @@
     <value>{0} additional rows have similar issues.</value>
   </data>
   <data name="plot_row_script_result_invalid" xml:space="preserve">
-    <value>This row&apos;s script result is invalid.</value>
+    <value>This row's script result is invalid.</value>
   </data>
   <data name="plot_ternary_script_return_three_finite_values" xml:space="preserve">
     <value>Ternary diagram scripts must return 3 valid finite numbers.</value>
@@ -3499,7 +3499,7 @@
     <value>Script result is not an array.</value>
   </data>
   <data name="plot_invalid_coordinate_hint" xml:space="preserve">
-    <value>This row&apos;s script result is invalid, so a valid coordinate cannot be generated. Check for division by zero, empty values, logarithms of negative numbers, or square roots of negative numbers.</value>
+    <value>This row's script result is invalid, so a valid coordinate cannot be generated. Check for division by zero, empty values, logarithms of negative numbers, or square roots of negative numbers.</value>
   </data>
   <data name="plot_script_result_invalid_coordinate" xml:space="preserve">
     <value>Script result is not a valid coordinate.</value>
@@ -4200,6 +4200,21 @@
   <data name="official_publisher_announcement_add" xml:space="preserve">
     <value>Add announcement</value>
   </data>
+  <data name="official_publisher_announcement_import" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="official_publisher_announcement_import_tooltip" xml:space="preserve">
+    <value>Import an announcement catalog JSON file and replace the current editor contents.</value>
+  </data>
+  <data name="official_publisher_announcement_import_invalid" xml:space="preserve">
+    <value>This file is not a valid announcement catalog. It must be a JSON object with an announcements array.</value>
+  </data>
+  <data name="official_publisher_announcement_import_confirm" xml:space="preserve">
+    <value>Import replaces the announcements in the editor. Unpublished edits will be lost.</value>
+  </data>
+  <data name="official_publisher_announcement_import_loaded" xml:space="preserve">
+    <value>Imported announcement catalog: {0} entries.</value>
+  </data>
   <data name="official_publisher_announcement_publish_hint" xml:space="preserve">
     <value>When this section is included, Announcements.json and server_info.json are uploaded together.</value>
   </data>
@@ -4273,4 +4288,3 @@
     <value>Custom image</value>
   </data>
 </root>
-

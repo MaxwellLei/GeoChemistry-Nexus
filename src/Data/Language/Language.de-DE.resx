@@ -2724,7 +2724,7 @@
     <value>Bearbeitungssprache:</value>
   </data>
   <data name="home_personal_group" xml:space="preserve">
-    <value>Persönlich</value>
+    <value>Mein</value>
   </data>
   <data name="home_recommended_content" xml:space="preserve">
     <value>Empfohlen</value>
@@ -3469,55 +3469,46 @@
     <value>Beim Start automatisch nach Anwendungsupdates suchen</value>
 
   </data>
-
   <data name="Boot_hint" xml:space="preserve">
 
     <value>Anwendung automatisch starten, wenn Windows gestartet wird</value>
 
   </data>
-
   <data name="CheckUpdate_hint" xml:space="preserve">
 
     <value>Jetzt prüfen, ob eine neuere Anwendungsversion verfügbar ist</value>
 
   </data>
-
   <data name="Language_hint" xml:space="preserve">
 
     <value>Anzeigesprache der Anwendungsoberfläche auswählen</value>
 
   </data>
-
   <data name="MessageAutoClose_hint" xml:space="preserve">
 
     <value>Wie lange Toast-Meldungen sichtbar bleiben, bevor sie automatisch geschlossen werden</value>
 
   </data>
-
   <data name="QuitAppMode_hint" xml:space="preserve">
 
     <value>Beim Schließen des Fensters in den Systemtray minimieren oder die Anwendung beenden</value>
 
   </data>
-
   <data name="adobe_illustrator_path_hint" xml:space="preserve">
 
     <value>Pfad zur ausführbaren Datei von Adobe Illustrator zum Öffnen von Vektorgrafiken</value>
 
   </data>
-
   <data name="auto_check_diagram_template_updates_hint" xml:space="preserve">
 
     <value>Beim Start automatisch nach Diagrammvorlagen-Updates suchen</value>
 
   </data>
-
   <data name="auto_check_geothermometer_updates_hint" xml:space="preserve">
 
     <value>Beim Start automatisch nach Geothermobarometer-Updates suchen</value>
 
   </data>
-
   <data name="default_worksheet_row_count" xml:space="preserve">
     <value>Standardmäßige Anfangszeilen der Tabelle</value>
   </data>
@@ -3527,337 +3518,281 @@
   <data name="geothermometer_defaults" xml:space="preserve">
     <value>STANDARDEINSTELLUNGEN</value>
   </data>
-
   <data name="coreldraw_path_hint" xml:space="preserve">
 
     <value>Pfad zur ausführbaren Datei von CorelDRAW zum Öffnen von Vektorgrafiken</value>
 
   </data>
-
   <data name="current_diagram_version_hint" xml:space="preserve">
 
     <value>Von dieser Anwendung unterstützte Diagrammvorlagen-Formatversion (schreibgeschützt)</value>
 
   </data>
-
   <data name="custom_app_hint" xml:space="preserve">
 
     <value>Pfad zur ausführbaren Datei eines benutzerdefinierten Drittanbieter-Grafikeditors</value>
 
   </data>
-
   <data name="default_diagram_expand_level_hint" xml:space="preserve">
 
     <value>Standardmäßige Expansionstiefe des Diagrammkategoriebaums</value>
 
   </data>
-
   <data name="default_third_party_editor_hint" xml:space="preserve">
 
     <value>Standard-Drittanbieter-App beim Bearbeiten oder Exportieren von Vektorgrafiken</value>
 
   </data>
-
   <data name="developer_mode_hint" xml:space="preserve">
 
     <value>Bei Aktivierung Entwickler- und Debug-Optionen anzeigen</value>
 
   </data>
-
   <data name="geo_additional_formula_badge" xml:space="preserve">
 
     <value>Zusätzlich</value>
 
   </data>
-
   <data name="geo_additional_formula_name" xml:space="preserve">
 
     <value>Grid-Formelname</value>
 
   </data>
-
   <data name="geo_additional_function_name" xml:space="preserve">
 
     <value>JS-Funktionsname</value>
 
   </data>
-
   <data name="geo_btn_add_additional_formula" xml:space="preserve">
 
     <value>Zusätzliche Formel hinzufügen</value>
 
   </data>
-
   <data name="geo_current_app_format_version_hint" xml:space="preserve">
 
     <value>Von dieser Anwendung unterstützte Geothermobarometer-Vorlagenformatversion (schreibgeschützt)</value>
 
   </data>
-
   <data name="geo_formulas_hint" xml:space="preserve">
 
     <value>Grid-Benutzerfunktionsnamen auf JavaScript-Funktionen im Skript darunter abbilden. Die Hauptformel ruft immer calculate(args) auf.</value>
 
   </data>
-
   <data name="geo_formulas_title" xml:space="preserve">
 
     <value>Grid-Formeln *</value>
 
   </data>
-
   <data name="geo_free_sheet_align_center" xml:space="preserve">
 
     <value>Zentriert</value>
 
   </data>
-
   <data name="geo_free_sheet_align_left" xml:space="preserve">
 
     <value>Linksbündig</value>
 
   </data>
-
   <data name="geo_free_sheet_align_right" xml:space="preserve">
 
     <value>Rechtsbündig</value>
 
   </data>
-
   <data name="geo_free_sheet_clear" xml:space="preserve">
 
     <value>Leeren</value>
 
   </data>
-
   <data name="geo_free_sheet_clear_confirm" xml:space="preserve">
 
     <value>Alle Daten in der aktuellen Tabelle löschen?</value>
 
   </data>
-
   <data name="geo_free_sheet_clear_success" xml:space="preserve">
 
     <value>Tabelle geleert</value>
 
   </data>
-
   <data name="geo_free_sheet_delete_col" xml:space="preserve">
 
     <value>Spalte löschen</value>
 
   </data>
-
   <data name="geo_free_sheet_delete_col_confirm" xml:space="preserve">
 
     <value>Ausgewählte Spalte(n) löschen?</value>
 
   </data>
-
   <data name="geo_free_sheet_delete_col_failed" xml:space="preserve">
 
     <value>Spalte konnte nicht gelöscht werden: </value>
 
   </data>
-
   <data name="geo_free_sheet_delete_row_confirm" xml:space="preserve">
 
     <value>Ausgewählte Zeile(n) löschen?</value>
 
   </data>
-
   <data name="geo_free_sheet_export_formulas" xml:space="preserve">
 
     <value>Formeln exportieren (ohne Werte)</value>
 
   </data>
-
   <data name="geo_free_sheet_export_mode_prompt" xml:space="preserve">
 
     <value>Exportinhaltstyp auswählen</value>
 
   </data>
-
   <data name="geo_free_sheet_export_title" xml:space="preserve">
 
     <value>Exportoptionen</value>
 
   </data>
-
   <data name="geo_free_sheet_export_values" xml:space="preserve">
 
     <value>Werte exportieren (ohne Formeln)</value>
 
   </data>
-
   <data name="geo_free_sheet_fill_color" xml:space="preserve">
 
     <value>Füllfarbe</value>
 
   </data>
-
   <data name="geo_free_sheet_format_painter" xml:space="preserve">
 
     <value>Format übertragen</value>
 
   </data>
-
   <data name="geo_free_sheet_group_align" xml:space="preserve">
 
     <value>Ausrichtung</value>
 
   </data>
-
   <data name="geo_free_sheet_group_cells" xml:space="preserve">
 
     <value>Zellen</value>
 
   </data>
-
   <data name="geo_free_sheet_group_edit" xml:space="preserve">
 
     <value>Bearbeiten</value>
 
   </data>
-
   <data name="geo_free_sheet_group_file" xml:space="preserve">
 
     <value>Datei</value>
 
   </data>
-
   <data name="geo_free_sheet_group_font" xml:space="preserve">
 
     <value>Schriftart</value>
 
   </data>
-
   <data name="geo_free_sheet_hint" xml:space="preserve">
 
     <value>Registrierte Geothermobarometer-Formeln verwenden, z. B. =FormulaName(A2,B2)</value>
 
   </data>
-
   <data name="geo_free_sheet_import" xml:space="preserve">
 
     <value>Importieren</value>
 
   </data>
-
   <data name="geo_free_sheet_import_failed" xml:space="preserve">
 
     <value>Import fehlgeschlagen: {0}</value>
 
   </data>
-
   <data name="geo_free_sheet_insert_col_left" xml:space="preserve">
 
     <value>Spalte links einfügen</value>
 
   </data>
-
   <data name="geo_free_sheet_insert_col_right" xml:space="preserve">
 
     <value>Spalte rechts einfügen</value>
 
   </data>
-
   <data name="geo_free_sheet_italic" xml:space="preserve">
 
     <value>Kursiv</value>
 
   </data>
-
   <data name="geo_free_sheet_merge" xml:space="preserve">
 
     <value>Verbinden und zentrieren</value>
 
   </data>
-
   <data name="geo_free_sheet_title" xml:space="preserve">
 
     <value>Freie Geothermobarometer-Tabelle</value>
 
   </data>
-
   <data name="geo_free_sheet_underline" xml:space="preserve">
 
     <value>Unterstreichen</value>
 
   </data>
-
   <data name="geo_free_sheet_worksheet_name" xml:space="preserve">
 
     <value>FreieTabelle</value>
 
   </data>
-
   <data name="geo_main_formula_badge" xml:space="preserve">
 
     <value>Haupt</value>
 
   </data>
-
   <data name="geo_menu_open_free_sheet" xml:space="preserve">
 
     <value>Freie Tabelle öffnen</value>
 
   </data>
-
   <data name="geo_msg_batch_import_success" xml:space="preserve">
 
     <value>Erfolgreich importiert: {0}</value>
 
   </data>
-
   <data name="geo_msg_update_download_failed_detail" xml:space="preserve">
 
     <value>{0}: {1}</value>
 
   </data>
-
   <data name="geo_msg_update_download_failed_items" xml:space="preserve">
 
     <value>Fehlgeschlagene Downloads:</value>
 
   </data>
-
   <data name="geo_msg_update_removed_count" xml:space="preserve">
 
     <value>Entfernt: {0}</value>
 
   </data>
-
   <data name="geo_tooltip_additional_function_name" xml:space="preserve">
 
     <value>JavaScript-Funktionsname im Skript, z. B. calcPressure</value>
 
   </data>
-
   <data name="geo_validate_additional_formula_incomplete" xml:space="preserve">
 
     <value>Zusätzliche Formel Zeile {0}: Grid-Formelname und JS-Funktionsname sind beide erforderlich.</value>
 
   </data>
-
   <data name="geo_validate_additional_function_name_invalid" xml:space="preserve">
 
     <value>JS-Funktionsname „{0}“ ist ungültig (muss ein gültiger JavaScript-Bezeichner sein).</value>
 
   </data>
-
   <data name="geo_validate_additional_function_reserved" xml:space="preserve">
 
     <value>JS-Funktionsname „{0}“ ist für die Hauptformel oder die detaillierte Berechnung reserviert.</value>
 
   </data>
-
   <data name="geo_validate_example_row_column_mismatch" xml:space="preserve">
 
     <value>Beispielzeile muss dieselbe Spaltenanzahl wie die Kopfzeile haben ({0} erwartet, {1} gefunden).</value>
 
   </data>
-
   <data name="inkscape_path_hint" xml:space="preserve">
 
     <value>Pfad zur ausführbaren Datei von Inkscape zum Öffnen von Vektorgrafiken</value>
@@ -3866,167 +3801,139 @@
   <data name="inkscape_get_it" xml:space="preserve">
     <value>Noch nicht installiert? Hier herunterladen</value>
   </data>
-
   <data name="main_sidebar_collapse_style_hint" xml:space="preserve">
 
     <value>Festlegen, ob die Hauptseitenleiste vollständig eingeklappt wird oder Symbole sichtbar bleiben</value>
 
   </data>
-
   <data name="minimum_version_auto_update" xml:space="preserve">
 
     <value>Automatisch aktualisieren</value>
 
   </data>
-
   <data name="minimum_version_dialog_message" xml:space="preserve">
 
     <value>Ihre aktuelle Version {0} liegt unter der mindestens unterstützten Version {1}. Bitte aktualisieren Sie GeoChemistry Nexus.</value>
 
   </data>
-
   <data name="minimum_version_dialog_title" xml:space="preserve">
 
     <value>Update erforderlich</value>
 
   </data>
-
   <data name="minimum_version_force_confirm" xml:space="preserve">
 
     <value>Trotzdem fortfahren</value>
 
   </data>
-
   <data name="minimum_version_force_confirm_message" xml:space="preserve">
 
     <value>Diese Version wird nicht mehr unterstützt. Fortfahren kann unvorhersehbare Probleme verursachen. Trotzdem fortfahren?</value>
 
   </data>
-
   <data name="minimum_version_force_use" xml:space="preserve">
 
     <value>Erzwungen verwenden</value>
 
   </data>
-
   <data name="minimum_version_manual_update" xml:space="preserve">
 
     <value>Manuell aktualisieren</value>
 
   </data>
-
   <data name="mouse_snap_auto_recognition_frame_rate_hint" xml:space="preserve">
 
     <value>Bildwiederholrate für die automatische Mausfang-Erkennung; höher ist flüssiger, verbraucht aber mehr Ressourcen</value>
 
   </data>
-
   <data name="object_selection_trigger_hint" xml:space="preserve">
 
     <value>Mausaktion zum Auswählen von Objekten auf der Zeichenfläche</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_empty" xml:space="preserve">
 
     <value>(leer)</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_hint" xml:space="preserve">
 
     <value>Format: 1.2.3. Leer lassen, um die Mindestversionsprüfung zu deaktivieren.</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_invalid" xml:space="preserve">
 
     <value>Die Mindestens unterstützte Version muss eine gültige Version sein, z. B. 1.2.3.</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_label" xml:space="preserve">
 
     <value>Mindestens unterstützte Version</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_pending" xml:space="preserve">
 
     <value>Mindestversion ausstehend zur Veröffentlichung</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_preview" xml:space="preserve">
 
     <value>Mindestens unterstützte Version: {0}</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_up_to_date" xml:space="preserve">
 
     <value>Die mindestens unterstützte Version ist aktuell.</value>
 
   </data>
-
   <data name="startup_background_image_hint" xml:space="preserve">
 
     <value>Ein oder mehrere Bilder für den Startbildschirm hinzufügen</value>
 
   </data>
-
   <data name="template_card_size_preset_hint" xml:space="preserve">
 
     <value>Anzeigegröße der Diagrammvorlagenkarten in der Bibliothek</value>
 
   </data>
-
   <data name="ui_scale_auto" xml:space="preserve">
 
     <value>Automatisch</value>
 
   </data>
-
   <data name="ui_scale_mode" xml:space="preserve">
 
     <value>UI-Skalierung</value>
 
   </data>
-
   <data name="ui_scale_mode_hint" xml:space="preserve">
 
     <value>Automatisch an das aktuelle Display anpassen oder eine feste UI-Skalierung festlegen</value>
 
   </data>
-
   <data name="update_auto_check_notify" xml:space="preserve">
     <value>Neue Version {0} ist verfügbar. Jetzt herunterladen und installieren?</value>
   </data>
-
   <data name="update_download_confirm_shutdown" xml:space="preserve">
 
     <value>Download abgeschlossen. Die Anwendung wird beendet und der Installationsassistent gestartet. Fortfahren?</value>
 
   </data>
-
   <data name="update_installer_not_found" xml:space="preserve">
 
     <value>Im neuesten Release wurde kein Installationspaket gefunden.</value>
 
   </data>
-
   <data name="update_installer_saved" xml:space="preserve">
 
     <value>Installationspaket heruntergeladen und gespeichert.</value>
 
   </data>
-
   <data name="update_portable_mode_hint" xml:space="preserve">
 
     <value>Portabler Modus erkannt. Bitte laden Sie das Installations- oder Portable-Paket von der Releases-Seite herunter.</value>
 
   </data>
-
   <data name="plot_toolbar_save_tooltip" xml:space="preserve">
     <value>Speichern (Strg+S)</value>
   </data>
@@ -4367,4 +4274,3 @@
     <value>Atmophil</value>
   </data>
 </root>
-

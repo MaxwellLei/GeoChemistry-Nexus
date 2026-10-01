@@ -9,6 +9,7 @@
       xmlns:local="clr-namespace:GeoChemistryNexus.Views"
       xmlns:models="clr-namespace:GeoChemistryNexus.Models"
       xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
+      xmlns:helpers="clr-namespace:GeoChemistryNexus.Helpers"
       xmlns:sys="clr-namespace:System;assembly=mscorlib"
       mc:Ignorable="d" 
       d:DesignHeight="800" d:DesignWidth="600"
@@ -226,20 +227,52 @@
                                 <TextBlock Text="{Binding [template_card_size_preset],Source={x:Static lg:LanguageService.Instance}}" FontSize="14"/>
                                 <TextBlock Text="{Binding [template_card_size_preset_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=图解模板库中卡片的显示尺寸}" Style="{StaticResource ModernSettingsItemHintStyle}"/>
                             </StackPanel>
-                            <ListBox Grid.Column="1"
-                                     Height="32" Width="140"
-                                     VerticalAlignment="Center" HorizontalAlignment="Right"
-                                     Style="{StaticResource TemplateCardSizeSegmentedStyle}"
-                                     ItemContainerStyle="{StaticResource TemplateCardSizeSegmentedItemStyle}"
-                                     ItemsSource="{Binding TemplateCardSizePresetOptions}"
-                                     SelectedItem="{Binding TemplateCardSizePreset, Mode=TwoWay}">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding Converter={StaticResource TemplateCardSizePresetToDisplayConverter}}"
-                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
+                            <Border Grid.Column="1"
+                                    Height="32" Width="140"
+                                    VerticalAlignment="Center" HorizontalAlignment="Right"
+                                    Style="{StaticResource HomeSegmentedWrapStyle}">
+                                <Grid>
+                                    <i:Interaction.Behaviors>
+                                        <helpers:HomeSegmentedThumbBehavior Indicator="{Binding ElementName=CardSizeThumb}"/>
+                                    </i:Interaction.Behaviors>
+                                    <!-- 选中滑块单独成层，阴影不作用在文字上 -->
+                                    <Grid x:Name="CardSizeThumb"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Top"
+                                          IsHitTestVisible="False"
+                                          Visibility="Collapsed"
+                                          SnapsToDevicePixels="True"
+                                          UseLayoutRounding="True">
+                                        <Border Background="#14000000" CornerRadius="4" Margin="0,1,0,0"/>
+                                        <Border Background="White" CornerRadius="4" Margin="0,0,0,1"/>
+                                    </Grid>
+                                    <ListBox Background="Transparent"
+                                             BorderThickness="0"
+                                             Padding="0"
+                                             ItemContainerStyle="{StaticResource TemplateCardSizeSegmentedItemStyle}"
+                                             ItemsSource="{Binding TemplateCardSizePresetOptions}"
+                                             SelectedItem="{Binding TemplateCardSizePreset, Mode=TwoWay}"
+                                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                             ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                        <ListBox.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <UniformGrid Rows="1"/>
+                                            </ItemsPanelTemplate>
+                                        </ListBox.ItemsPanel>
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Converter={StaticResource TemplateCardSizePresetToDisplayConverter}}"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"
+                                                           SnapsToDevicePixels="True"
+                                                           UseLayoutRounding="True"
+                                                           TextOptions.TextFormattingMode="Display"
+                                                           TextOptions.TextRenderingMode="ClearType"/>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </Grid>
+                            </Border>
                         </Grid>
 
                         <Border Height="1" Background="#E5E5E5" Margin="16,0,0,0"/>

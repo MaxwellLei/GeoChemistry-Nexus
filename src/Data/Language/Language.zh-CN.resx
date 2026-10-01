@@ -349,7 +349,7 @@
     <value>推荐内容</value>
   </data>
   <data name="home_personal_group" xml:space="preserve">
-    <value>个人</value>
+    <value>我的</value>
   </data>
   <data name="home_widgets_section" xml:space="preserve">
     <value>小组件</value>
@@ -2805,7 +2805,7 @@
 • 芒硝（Th）：SO₃ + Na₂O</value>
   </data>
   <data name="PlotSetting" xml:space="preserve">
-    <value>绘图设置</value>
+    <value>图解绘图设置</value>
   </data>
   <data name="geo_step_help_doc" xml:space="preserve">
     <value>帮助文档</value>
@@ -4193,6 +4193,21 @@
   <data name="official_publisher_announcement_add" xml:space="preserve">
     <value>新增公告</value>
   </data>
+  <data name="official_publisher_announcement_import" xml:space="preserve">
+    <value>导入</value>
+  </data>
+  <data name="official_publisher_announcement_import_tooltip" xml:space="preserve">
+    <value>从 JSON 文件导入公告目录，并替换当前编辑内容。</value>
+  </data>
+  <data name="official_publisher_announcement_import_invalid" xml:space="preserve">
+    <value>文件不是有效的公告目录，需要 JSON 对象且包含 announcements 数组。</value>
+  </data>
+  <data name="official_publisher_announcement_import_confirm" xml:space="preserve">
+    <value>导入会替换当前公告目录中的条目，未发布的修改会丢失。</value>
+  </data>
+  <data name="official_publisher_announcement_import_loaded" xml:space="preserve">
+    <value>已从文件导入多语言公告目录：{0} 条。</value>
+  </data>
   <data name="official_publisher_announcement_publish_hint" xml:space="preserve">
     <value>勾选「本次发布包含此项」后，Announcements.json 与 server_info.json 会一并上传。</value>
   </data>
@@ -4266,4 +4281,3 @@
     <value>自定义图片</value>
   </data>
 </root>
-

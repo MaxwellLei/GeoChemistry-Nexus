@@ -1160,6 +1160,7 @@
         </Setter>
     </Style>
 
+    <!-- 选中底色由滑块绘制。文字不挂 Effect，避免高 DPI 下选中项被栅格化发糊 -->
     <Style x:Key="TemplateCardSizeSegmentedItemStyle" TargetType="ListBoxItem">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
@@ -1168,10 +1169,13 @@
         <Setter Property="Foreground" Value="#666666"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBoxItem">
@@ -1180,10 +1184,16 @@
                             CornerRadius="4"
                             Padding="6,0"
                             SnapsToDevicePixels="True"
+                            UseLayoutRounding="True"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch">
                         <ContentPresenter HorizontalAlignment="Center"
                                           VerticalAlignment="Center"
+                                          SnapsToDevicePixels="True"
+                                          UseLayoutRounding="True"
+                                          TextOptions.TextFormattingMode="Display"
+                                          TextOptions.TextRenderingMode="ClearType"
+                                          RenderOptions.ClearTypeHint="Enabled"
                                           TextElement.Foreground="{TemplateBinding Foreground}"/>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -1192,20 +1202,15 @@
                             <Setter Property="Foreground" Value="#333333"/>
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="Bd" Property="Background" Value="White"/>
+                            <Setter TargetName="Bd" Property="Background" Value="Transparent"/>
                             <Setter Property="Foreground" Value="#333333"/>
-                            <Setter TargetName="Bd" Property="Effect">
-                                <Setter.Value>
-                                    <DropShadowEffect BlurRadius="4" ShadowDepth="0" Opacity="0.12" Color="#000000"/>
-                                </Setter.Value>
-                            </Setter>
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsSelected" Value="True"/>
                                 <Condition Property="IsMouseOver" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="Bd" Property="Background" Value="White"/>
+                            <Setter TargetName="Bd" Property="Background" Value="Transparent"/>
                             <Setter Property="Foreground" Value="#333333"/>
                         </MultiTrigger>
                     </ControlTemplate.Triggers>

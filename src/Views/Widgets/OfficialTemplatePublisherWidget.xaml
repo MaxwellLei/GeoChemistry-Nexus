@@ -287,7 +287,8 @@
                     </Grid>
                 </Grid>
 
-                <Grid Visibility="{Binding IsAnnouncementSection, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Grid Visibility="{Binding IsAnnouncementSection, Converter={StaticResource BooleanToVisibilityConverter}}"
+                      PreviewMouseWheel="AnnouncementSection_PreviewMouseWheel">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -347,8 +348,9 @@
                                 </StackPanel>
                             </Grid>
                             <TextBox Text="{Binding AnnouncementText, UpdateSourceTrigger=PropertyChanged}"
-                                     AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
-                                     MinHeight="80" Padding="8"/>
+                                     Padding="6,3" MaxLines="1"
+                                     VerticalContentAlignment="Center"
+                                     VerticalScrollBarVisibility="Disabled"/>
                         </StackPanel>
                     </Border>
 
@@ -370,6 +372,9 @@
                                     Command="{Binding AddAnnouncementEntryCommand}" Margin="0,0,8,0" MinWidth="88"/>
                             <Button Content="{Binding [Delete], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}"
                                     Command="{Binding RemoveAnnouncementEntryCommand}" Margin="0,0,8,0" MinWidth="72"/>
+                            <Button Content="{Binding [official_publisher_announcement_import], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}"
+                                    Command="{Binding ImportAnnouncementsCatalogCommand}" Margin="0,0,8,0" MinWidth="72"
+                                    ToolTip="{Binding [official_publisher_announcement_import_tooltip], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}"/>
                             <Button Content="{Binding [refresh], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}"
                                     Command="{Binding LoadAnnouncementsEditorFromServerCommand}" MinWidth="72"
                                     ToolTip="{Binding [official_publisher_announcement_reload_tooltip], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}"/>

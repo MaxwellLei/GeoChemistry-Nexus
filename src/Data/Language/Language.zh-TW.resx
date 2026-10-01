@@ -2199,7 +2199,7 @@
 • 芒硝（Th）：SO₃ + Na₂O</value>
   </data>
   <data name="PlotSetting" xml:space="preserve">
-    <value>繪圖設定</value>
+    <value>圖解繪圖設定</value>
   </data>
   <data name="geo_step_help_doc" xml:space="preserve">
     <value>說明檔案</value>
@@ -2928,7 +2928,7 @@
     <value>編輯語言：</value>
   </data>
   <data name="home_personal_group" xml:space="preserve">
-    <value>個人</value>
+    <value>我的</value>
   </data>
   <data name="home_recommended_content" xml:space="preserve">
     <value>推薦內容</value>
@@ -3314,7 +3314,6 @@
   <data name="data_grid_plot_refresh_pending" xml:space="preserve">
     <value>資料已修改，請重新整理圖解。</value>
   </data>
-
   <data name="plot_invalid_row_example" xml:space="preserve">
     <value>第 {0} 列：{1}</value>
   </data>
@@ -3572,401 +3571,334 @@
     <value>附加</value>
 
   </data>
-
   <data name="geo_additional_formula_name" xml:space="preserve">
 
     <value>Grid 公式名</value>
 
   </data>
-
   <data name="geo_additional_function_name" xml:space="preserve">
 
     <value>JS 函式名</value>
 
   </data>
-
   <data name="geo_btn_add_additional_formula" xml:space="preserve">
 
     <value>新增附加公式</value>
 
   </data>
-
   <data name="geo_formulas_hint" xml:space="preserve">
 
     <value>將 Grid 自訂函式名對應到下方 JS 腳本中的函式。首列主公式固定呼叫 calculate(args)。</value>
 
   </data>
-
   <data name="geo_formulas_title" xml:space="preserve">
 
     <value>Grid 公式 *</value>
 
   </data>
-
   <data name="geo_free_sheet_align_center" xml:space="preserve">
 
     <value>置中</value>
 
   </data>
-
   <data name="geo_free_sheet_align_left" xml:space="preserve">
 
     <value>靠左對齊</value>
 
   </data>
-
   <data name="geo_free_sheet_align_right" xml:space="preserve">
 
     <value>靠右對齊</value>
 
   </data>
-
   <data name="geo_free_sheet_clear" xml:space="preserve">
 
     <value>清空</value>
 
   </data>
-
   <data name="geo_free_sheet_clear_confirm" xml:space="preserve">
 
     <value>確定要清空目前表格中的所有資料嗎？</value>
 
   </data>
-
   <data name="geo_free_sheet_clear_success" xml:space="preserve">
 
     <value>表格已清空</value>
 
   </data>
-
   <data name="geo_free_sheet_delete_col" xml:space="preserve">
 
     <value>刪除欄</value>
 
   </data>
-
   <data name="geo_free_sheet_delete_col_confirm" xml:space="preserve">
 
     <value>確定要刪除選取的欄嗎？</value>
 
   </data>
-
   <data name="geo_free_sheet_delete_col_failed" xml:space="preserve">
 
     <value>刪除欄失敗： </value>
 
   </data>
-
   <data name="geo_free_sheet_delete_row_confirm" xml:space="preserve">
 
     <value>確定要刪除選取的列嗎？</value>
 
   </data>
-
   <data name="geo_free_sheet_export_formulas" xml:space="preserve">
 
     <value>匯出公式（不含值）</value>
 
   </data>
-
   <data name="geo_free_sheet_export_mode_prompt" xml:space="preserve">
 
     <value>請選擇匯出內容類型</value>
 
   </data>
-
   <data name="geo_free_sheet_export_title" xml:space="preserve">
 
     <value>匯出選項</value>
 
   </data>
-
   <data name="geo_free_sheet_export_values" xml:space="preserve">
 
     <value>匯出值（不含公式）</value>
 
   </data>
-
   <data name="geo_free_sheet_fill_color" xml:space="preserve">
 
     <value>填滿色彩</value>
 
   </data>
-
   <data name="geo_free_sheet_format_painter" xml:space="preserve">
 
     <value>格式刷</value>
 
   </data>
-
   <data name="geo_free_sheet_group_align" xml:space="preserve">
 
     <value>對齊</value>
 
   </data>
-
   <data name="geo_free_sheet_group_cells" xml:space="preserve">
 
     <value>儲存格</value>
 
   </data>
-
   <data name="geo_free_sheet_group_edit" xml:space="preserve">
 
     <value>編輯</value>
 
   </data>
-
   <data name="geo_free_sheet_group_file" xml:space="preserve">
 
     <value>檔案</value>
 
   </data>
-
   <data name="geo_free_sheet_group_font" xml:space="preserve">
 
     <value>字型</value>
 
   </data>
-
   <data name="geo_free_sheet_hint" xml:space="preserve">
 
     <value>可使用已註冊溫壓計公式，例如 =FormulaName(A2,B2)</value>
 
   </data>
-
   <data name="geo_free_sheet_import" xml:space="preserve">
 
     <value>匯入</value>
 
   </data>
-
   <data name="geo_free_sheet_import_failed" xml:space="preserve">
 
     <value>匯入失敗：{0}</value>
 
   </data>
-
   <data name="geo_free_sheet_insert_col_left" xml:space="preserve">
 
     <value>在左側插入欄</value>
 
   </data>
-
   <data name="geo_free_sheet_insert_col_right" xml:space="preserve">
 
     <value>在右側插入欄</value>
 
   </data>
-
   <data name="geo_free_sheet_italic" xml:space="preserve">
 
     <value>斜體</value>
 
   </data>
-
   <data name="geo_free_sheet_merge" xml:space="preserve">
 
     <value>合併置中</value>
 
   </data>
-
   <data name="geo_free_sheet_title" xml:space="preserve">
 
     <value>自由溫壓計表格</value>
 
   </data>
-
   <data name="geo_free_sheet_underline" xml:space="preserve">
 
     <value>底線</value>
 
   </data>
-
   <data name="geo_free_sheet_worksheet_name" xml:space="preserve">
 
     <value>自由表格</value>
 
   </data>
-
   <data name="geo_main_formula_badge" xml:space="preserve">
 
     <value>主公式</value>
 
   </data>
-
   <data name="geo_menu_open_free_sheet" xml:space="preserve">
 
     <value>開啟自由表格</value>
 
   </data>
-
   <data name="geo_msg_batch_import_success" xml:space="preserve">
 
     <value>成功匯入 {0} 個溫壓計範本</value>
 
   </data>
-
   <data name="geo_msg_update_download_failed_detail" xml:space="preserve">
 
     <value>{0}: {1}</value>
 
   </data>
-
   <data name="geo_msg_update_download_failed_items" xml:space="preserve">
 
     <value>下載失敗項：</value>
 
   </data>
-
   <data name="geo_msg_update_removed_count" xml:space="preserve">
 
     <value>下架：{0} 個</value>
 
   </data>
-
   <data name="geo_tooltip_additional_function_name" xml:space="preserve">
 
     <value>腳本中的 JS 函式名，例如 calcPressure</value>
 
   </data>
-
   <data name="geo_validate_additional_formula_incomplete" xml:space="preserve">
 
     <value>附加公式第 {0} 列：Grid 公式名與 JS 函式名均不能為空。</value>
 
   </data>
-
   <data name="geo_validate_additional_function_name_invalid" xml:space="preserve">
 
     <value>JS 函式名「{0}」無效（須為合法的 JavaScript 識別碼）。</value>
 
   </data>
-
   <data name="geo_validate_additional_function_reserved" xml:space="preserve">
 
     <value>JS 函式名「{0}」已保留給主公式或詳細計算，不能用於附加公式。</value>
 
   </data>
-
   <data name="geo_validate_example_row_column_mismatch" xml:space="preserve">
 
     <value>範例列欄數必須與表頭一致（期望 {0} 欄，實際 {1} 欄）。</value>
 
   </data>
-
   <data name="minimum_version_auto_update" xml:space="preserve">
 
     <value>自動更新</value>
 
   </data>
-
   <data name="minimum_version_dialog_message" xml:space="preserve">
 
     <value>目前版本 {0} 低於伺服器最低支援版本 {1}。請升級 GeoChemistry Nexus 後繼續使用。</value>
 
   </data>
-
   <data name="minimum_version_dialog_title" xml:space="preserve">
 
     <value>需要升級軟體</value>
 
   </data>
-
   <data name="minimum_version_force_confirm" xml:space="preserve">
 
     <value>仍然繼續</value>
 
   </data>
-
   <data name="minimum_version_force_confirm_message" xml:space="preserve">
 
     <value>目前版本已低於最低支援版本，繼續使用可能出現不可預知的問題。是否仍然繼續？</value>
 
   </data>
-
   <data name="minimum_version_force_use" xml:space="preserve">
 
     <value>強制使用</value>
 
   </data>
-
   <data name="minimum_version_manual_update" xml:space="preserve">
 
     <value>手動更新</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_empty" xml:space="preserve">
 
     <value>（空）</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_hint" xml:space="preserve">
 
     <value>格式：1.2.3。留空表示不啟用最低版本門檻。</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_invalid" xml:space="preserve">
 
     <value>最低支援版本必須是有效版本號，例如 1.2.3。</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_label" xml:space="preserve">
 
     <value>最低支援版本</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_pending" xml:space="preserve">
 
     <value>最低版本待發布</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_preview" xml:space="preserve">
 
     <value>最低支援版本：{0}</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_up_to_date" xml:space="preserve">
 
     <value>最低支援版本已是最新。</value>
 
   </data>
-
   <data name="update_auto_check_notify" xml:space="preserve">
     <value>發現新版本 {0}，是否立即下載並安裝？</value>
   </data>
-
   <data name="update_download_confirm_shutdown" xml:space="preserve">
 
     <value>下載完成，程式即將結束並啟動安裝精靈，是否繼續？</value>
 
   </data>
-
   <data name="update_installer_not_found" xml:space="preserve">
 
     <value>最新發布中未找到安裝套件。</value>
 
   </data>
-
   <data name="update_installer_saved" xml:space="preserve">
 
     <value>安裝套件已下載儲存。</value>
 
   </data>
-
   <data name="update_portable_mode_hint" xml:space="preserve">
 
     <value>目前為可攜模式，請前往 Releases 頁面手動下載安裝套件或可攜版。</value>
 
   </data>
-
   <data name="plot_toolbar_save_tooltip" xml:space="preserve">
     <value>儲存 (Ctrl+S)</value>
   </data>
@@ -4292,4 +4224,3 @@
     <value>親氣</value>
   </data>
 </root>
-

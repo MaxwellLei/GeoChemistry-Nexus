@@ -6927,7 +6927,7 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Personal 的本地化字符串。
+        ///   查找类似 My 的本地化字符串。
         /// </summary>
         internal static string home_personal_group {
             get {
@@ -8309,6 +8309,51 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string official_publisher_announcement_empty {
             get {
                 return ResourceManager.GetString("official_publisher_announcement_empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Import 的本地化字符串。
+        /// </summary>
+        internal static string official_publisher_announcement_import {
+            get {
+                return ResourceManager.GetString("official_publisher_announcement_import", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Import replaces the announcements in the editor. Unpublished edits will be lost. 的本地化字符串。
+        /// </summary>
+        internal static string official_publisher_announcement_import_confirm {
+            get {
+                return ResourceManager.GetString("official_publisher_announcement_import_confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 This file is not a valid announcement catalog. It must be a JSON object with an announcements array. 的本地化字符串。
+        /// </summary>
+        internal static string official_publisher_announcement_import_invalid {
+            get {
+                return ResourceManager.GetString("official_publisher_announcement_import_invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Imported announcement catalog: {0} entries. 的本地化字符串。
+        /// </summary>
+        internal static string official_publisher_announcement_import_loaded {
+            get {
+                return ResourceManager.GetString("official_publisher_announcement_import_loaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Import an announcement catalog JSON file and replace the current editor contents. 的本地化字符串。
+        /// </summary>
+        internal static string official_publisher_announcement_import_tooltip {
+            get {
+                return ResourceManager.GetString("official_publisher_announcement_import_tooltip", resourceCulture);
             }
         }
         
@@ -10248,7 +10293,7 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Plot Settings 的本地化字符串。
+        ///   查找类似 Diagram Plot Settings 的本地化字符串。
         /// </summary>
         internal static string PlotSetting {
             get {

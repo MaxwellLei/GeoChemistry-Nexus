@@ -14,7 +14,7 @@ namespace GeoChemistryNexus.Converter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values.Length == 3
+            if (values.Length >= 3
                 && values[0] is double width
                 && values[1] is double height
                 && values[2] is CornerRadius radius)
@@ -29,6 +29,15 @@ namespace GeoChemistryNexus.Converter
                     double topRight = radius.TopRight;
                     double bottomRight = radius.BottomRight;
                     double bottomLeft = radius.BottomLeft;
+
+                    // 传入边框厚度时，半径收到描边内侧，内容贴着圆角边框、不盖住描边
+                    if (values.Length >= 4 && values[3] is Thickness thickness)
+                    {
+                        topLeft = Math.Max(0, topLeft - Math.Max(thickness.Left, thickness.Top));
+                        topRight = Math.Max(0, topRight - Math.Max(thickness.Right, thickness.Top));
+                        bottomRight = Math.Max(0, bottomRight - Math.Max(thickness.Right, thickness.Bottom));
+                        bottomLeft = Math.Max(0, bottomLeft - Math.Max(thickness.Left, thickness.Bottom));
+                    }
 
                     ctx.BeginFigure(new Point(topLeft, 0), true, true);
 

@@ -11,6 +11,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -114,24 +115,8 @@ namespace GeoChemistryNexus.ViewModels
 
                 await Application.Current.Dispatcher.InvokeAsync(() =>
                 {
-                    _suppressAnnouncementCatalogTracking = true;
-                    try
-                    {
-                        AnnouncementEntries.Clear();
-                        if (catalog?.Announcements != null)
-                        {
-                            foreach (var entry in catalog.Announcements)
-                                AnnouncementEntries.Add(new AnnouncementEditorItemViewModel(entry, AnnouncementsLanguageContext));
-                        }
-
-                        SelectedAnnouncementEntry = AnnouncementEntries.FirstOrDefault();
-                        RememberRemoteAnnouncementsCatalog(known ? catalog : null, known);
-                    }
-                    finally
-                    {
-                        _suppressAnnouncementCatalogTracking = false;
-                    }
-
+                    ReplaceAnnouncementEntries(catalog ?? new HomeAnnouncementCatalog());
+                    RememberRemoteAnnouncementsCatalog(known ? catalog : null, known);
                     UpdateServerConfigChangeState();
                     Log(!known
                         ? "多语言公告目录下载失败，暂不能判断是否与服务器一致。"
@@ -144,6 +129,48 @@ namespace GeoChemistryNexus.ViewModels
             {
                 Log(ex.Message);
             }
+        }
+
+        /// <summary>
+        /// 从本地 JSON 导入公告目录。文件须为公告目录对象，且包含 announcements 数组。
+        /// </summary>
+        [RelayCommand]
+        private async Task ImportAnnouncementsCatalogAsync()
+        {
+            string? path = FileHelper.GetFilePath(FileDialogFilterHelper.JsonOnly, OwnerWindow);
+            if (string.IsNullOrWhiteSpace(path))
+                return;
+
+            string? json = JsonHelper.ReadJsonFile(path);
+            if (!TryParseAnnouncementCatalog(json, out var catalog))
+            {
+                string invalid = LanguageService.GetString(
+                    "official_publisher_announcement_import_invalid",
+                    "This file is not a valid announcement catalog. It must be a JSON object with an announcements array.");
+                ShowWarning(invalid);
+                Log(invalid);
+                return;
+            }
+
+            if (AnnouncementEntries.Count > 0)
+            {
+                bool confirmed = await ShowConfirmAsync(
+                    LanguageService.GetString(
+                        "official_publisher_announcement_import_confirm",
+                        "Import replaces the announcements in the editor. Unpublished edits will be lost."),
+                    LanguageService.Instance["Cancel"] ?? "Cancel",
+                    LanguageService.Instance["Confirm"] ?? "Confirm");
+                if (!confirmed)
+                    return;
+            }
+
+            ReplaceAnnouncementEntries(catalog!);
+            UpdateServerConfigChangeState();
+            Log(string.Format(
+                LanguageService.GetString(
+                    "official_publisher_announcement_import_loaded",
+                    "Imported announcement catalog: {0} entries."),
+                AnnouncementEntries.Count));
         }
 
         [RelayCommand]
@@ -209,6 +236,71 @@ namespace GeoChemistryNexus.ViewModels
             }
 
             return catalog;
+        }
+
+        private void ReplaceAnnouncementEntries(HomeAnnouncementCatalog catalog)
+        {
+            _suppressAnnouncementCatalogTracking = true;
+            try
+            {
+                AnnouncementEntries.Clear();
+                if (catalog.Announcements != null)
+                {
+                    foreach (var entry in catalog.Announcements)
+                    {
+                        if (entry == null)
+                            continue;
+
+                        AnnouncementEntries.Add(new AnnouncementEditorItemViewModel(entry, AnnouncementsLanguageContext));
+                    }
+                }
+
+                SelectedAnnouncementEntry = AnnouncementEntries.FirstOrDefault();
+            }
+            finally
+            {
+                _suppressAnnouncementCatalogTracking = false;
+            }
+        }
+
+        private static bool TryParseAnnouncementCatalog(string? json, out HomeAnnouncementCatalog? catalog)
+        {
+            catalog = null;
+            if (string.IsNullOrWhiteSpace(json))
+                return false;
+
+            try
+            {
+                using var document = JsonDocument.Parse(json);
+                if (document.RootElement.ValueKind != JsonValueKind.Object
+                    || !TryGetPropertyIgnoreCase(document.RootElement, "announcements", out var announcements)
+                    || announcements.ValueKind != JsonValueKind.Array)
+                {
+                    return false;
+                }
+            }
+            catch (JsonException)
+            {
+                return false;
+            }
+
+            catalog = JsonHelper.Deserialize<HomeAnnouncementCatalog>(json);
+            return catalog?.Announcements != null;
+        }
+
+        private static bool TryGetPropertyIgnoreCase(JsonElement element, string name, out JsonElement value)
+        {
+            foreach (var property in element.EnumerateObject())
+            {
+                if (string.Equals(property.Name, name, StringComparison.OrdinalIgnoreCase))
+                {
+                    value = property.Value;
+                    return true;
+                }
+            }
+
+            value = default;
+            return false;
         }
 
         private void OnAnnouncementEntriesChanged(object? sender, NotifyCollectionChangedEventArgs e)

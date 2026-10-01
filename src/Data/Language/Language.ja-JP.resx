@@ -2199,7 +2199,7 @@
 • 芒硝（Th）: SO₃ + Na₂O</value>
   </data>
   <data name="PlotSetting" xml:space="preserve">
-    <value>描画設定</value>
+    <value>図解描画設定</value>
   </data>
   <data name="geo_step_help_doc" xml:space="preserve">
     <value>ヘルプドキュメント</value>
@@ -2724,7 +2724,7 @@
     <value>編集言語：</value>
   </data>
   <data name="home_personal_group" xml:space="preserve">
-    <value>個人</value>
+    <value>私の</value>
   </data>
   <data name="home_recommended_content" xml:space="preserve">
     <value>おすすめ</value>
@@ -3469,55 +3469,46 @@
     <value>起動時にアプリケーションの更新を自動的に確認する</value>
 
   </data>
-
   <data name="Boot_hint" xml:space="preserve">
 
     <value>Windows の起動時に本アプリケーションを自動起動する</value>
 
   </data>
-
   <data name="CheckUpdate_hint" xml:space="preserve">
 
     <value>新しいアプリケーションバージョンがあるか今すぐ確認する</value>
 
   </data>
-
   <data name="Language_hint" xml:space="preserve">
 
     <value>アプリケーションの表示言語を選択する</value>
 
   </data>
-
   <data name="MessageAutoClose_hint" xml:space="preserve">
 
     <value>トーストメッセージが自動的に閉じるまでの表示時間</value>
 
   </data>
-
   <data name="QuitAppMode_hint" xml:space="preserve">
 
     <value>ウィンドウを閉じるときにシステムトレイに最小化するか、アプリケーションを終了するか</value>
 
   </data>
-
   <data name="adobe_illustrator_path_hint" xml:space="preserve">
 
     <value>ベクターグラフィックを開くための Adobe Illustrator 実行ファイルのパス</value>
 
   </data>
-
   <data name="auto_check_diagram_template_updates_hint" xml:space="preserve">
 
     <value>起動時に図解テンプレートの更新を自動的に確認する</value>
 
   </data>
-
   <data name="auto_check_geothermometer_updates_hint" xml:space="preserve">
 
     <value>起動時に地質温圧計の更新を自動的に確認する</value>
 
   </data>
-
   <data name="default_worksheet_row_count" xml:space="preserve">
     <value>テーブル初期行数のデフォルト</value>
   </data>
@@ -3527,337 +3518,281 @@
   <data name="geothermometer_defaults" xml:space="preserve">
     <value>デフォルト設定</value>
   </data>
-
   <data name="coreldraw_path_hint" xml:space="preserve">
 
     <value>ベクターグラフィックを開くための CorelDRAW 実行ファイルのパス</value>
 
   </data>
-
   <data name="current_diagram_version_hint" xml:space="preserve">
 
     <value>このアプリケーションがサポートする図解テンプレート形式バージョン（読み取り専用）</value>
 
   </data>
-
   <data name="custom_app_hint" xml:space="preserve">
 
     <value>カスタムサードパーティ描画ソフトの実行ファイルパス</value>
 
   </data>
-
   <data name="default_diagram_expand_level_hint" xml:space="preserve">
 
     <value>図解カテゴリツリーの既定の展開深さ</value>
 
   </data>
-
   <data name="default_third_party_editor_hint" xml:space="preserve">
 
     <value>ベクターグラフィックの編集またはエクスポート時に既定で開くサードパーティアプリ</value>
 
   </data>
-
   <data name="developer_mode_hint" xml:space="preserve">
 
     <value>有効にすると開発・デバッグ関連のオプションを表示する</value>
 
   </data>
-
   <data name="geo_additional_formula_badge" xml:space="preserve">
 
     <value>追加</value>
 
   </data>
-
   <data name="geo_additional_formula_name" xml:space="preserve">
 
     <value>Grid 数式名</value>
 
   </data>
-
   <data name="geo_additional_function_name" xml:space="preserve">
 
     <value>JS 関数名</value>
 
   </data>
-
   <data name="geo_btn_add_additional_formula" xml:space="preserve">
 
     <value>追加数式を追加</value>
 
   </data>
-
   <data name="geo_current_app_format_version_hint" xml:space="preserve">
 
     <value>このアプリケーションがサポートする地質温圧計テンプレート形式バージョン（読み取り専用）</value>
 
   </data>
-
   <data name="geo_formulas_hint" xml:space="preserve">
 
     <value>Grid カスタム関数名を下のスクリプト内の JavaScript 関数に対応付けます。主数式は常に calculate(args) を呼び出します。</value>
 
   </data>
-
   <data name="geo_formulas_title" xml:space="preserve">
 
     <value>Grid 数式 *</value>
 
   </data>
-
   <data name="geo_free_sheet_align_center" xml:space="preserve">
 
     <value>中央揃え</value>
 
   </data>
-
   <data name="geo_free_sheet_align_left" xml:space="preserve">
 
     <value>左揃え</value>
 
   </data>
-
   <data name="geo_free_sheet_align_right" xml:space="preserve">
 
     <value>右揃え</value>
 
   </data>
-
   <data name="geo_free_sheet_clear" xml:space="preserve">
 
     <value>クリア</value>
 
   </data>
-
   <data name="geo_free_sheet_clear_confirm" xml:space="preserve">
 
     <value>現在のスプレッドシートのすべてのデータをクリアしますか？</value>
 
   </data>
-
   <data name="geo_free_sheet_clear_success" xml:space="preserve">
 
     <value>スプレッドシートをクリアしました</value>
 
   </data>
-
   <data name="geo_free_sheet_delete_col" xml:space="preserve">
 
     <value>列を削除</value>
 
   </data>
-
   <data name="geo_free_sheet_delete_col_confirm" xml:space="preserve">
 
     <value>選択した列を削除しますか？</value>
 
   </data>
-
   <data name="geo_free_sheet_delete_col_failed" xml:space="preserve">
 
     <value>列の削除に失敗しました： </value>
 
   </data>
-
   <data name="geo_free_sheet_delete_row_confirm" xml:space="preserve">
 
     <value>選択した行を削除しますか？</value>
 
   </data>
-
   <data name="geo_free_sheet_export_formulas" xml:space="preserve">
 
     <value>数式をエクスポート（値なし）</value>
 
   </data>
-
   <data name="geo_free_sheet_export_mode_prompt" xml:space="preserve">
 
     <value>エクスポートする内容の種類を選択</value>
 
   </data>
-
   <data name="geo_free_sheet_export_title" xml:space="preserve">
 
     <value>エクスポートオプション</value>
 
   </data>
-
   <data name="geo_free_sheet_export_values" xml:space="preserve">
 
     <value>値をエクスポート（数式なし）</value>
 
   </data>
-
   <data name="geo_free_sheet_fill_color" xml:space="preserve">
 
     <value>塗りつぶしの色</value>
 
   </data>
-
   <data name="geo_free_sheet_format_painter" xml:space="preserve">
 
     <value>書式のコピー/貼り付け</value>
 
   </data>
-
   <data name="geo_free_sheet_group_align" xml:space="preserve">
 
     <value>配置</value>
 
   </data>
-
   <data name="geo_free_sheet_group_cells" xml:space="preserve">
 
     <value>セル</value>
 
   </data>
-
   <data name="geo_free_sheet_group_edit" xml:space="preserve">
 
     <value>編集</value>
 
   </data>
-
   <data name="geo_free_sheet_group_file" xml:space="preserve">
 
     <value>ファイル</value>
 
   </data>
-
   <data name="geo_free_sheet_group_font" xml:space="preserve">
 
     <value>フォント</value>
 
   </data>
-
   <data name="geo_free_sheet_hint" xml:space="preserve">
 
     <value>登録済みの温圧計数式を使用できます。例：=FormulaName(A2,B2)</value>
 
   </data>
-
   <data name="geo_free_sheet_import" xml:space="preserve">
 
     <value>インポート</value>
 
   </data>
-
   <data name="geo_free_sheet_import_failed" xml:space="preserve">
 
     <value>インポートに失敗しました：{0}</value>
 
   </data>
-
   <data name="geo_free_sheet_insert_col_left" xml:space="preserve">
 
     <value>左に列を挿入</value>
 
   </data>
-
   <data name="geo_free_sheet_insert_col_right" xml:space="preserve">
 
     <value>右に列を挿入</value>
 
   </data>
-
   <data name="geo_free_sheet_italic" xml:space="preserve">
 
     <value>斜体</value>
 
   </data>
-
   <data name="geo_free_sheet_merge" xml:space="preserve">
 
     <value>結合して中央揃え</value>
 
   </data>
-
   <data name="geo_free_sheet_title" xml:space="preserve">
 
     <value>自由温圧計スプレッドシート</value>
 
   </data>
-
   <data name="geo_free_sheet_underline" xml:space="preserve">
 
     <value>下線</value>
 
   </data>
-
   <data name="geo_free_sheet_worksheet_name" xml:space="preserve">
 
     <value>自由シート</value>
 
   </data>
-
   <data name="geo_main_formula_badge" xml:space="preserve">
 
     <value>主数式</value>
 
   </data>
-
   <data name="geo_menu_open_free_sheet" xml:space="preserve">
 
     <value>自由スプレッドシートを開く</value>
 
   </data>
-
   <data name="geo_msg_batch_import_success" xml:space="preserve">
 
     <value>正常にインポートしました：{0}</value>
 
   </data>
-
   <data name="geo_msg_update_download_failed_detail" xml:space="preserve">
 
     <value>{0}: {1}</value>
 
   </data>
-
   <data name="geo_msg_update_download_failed_items" xml:space="preserve">
 
     <value>ダウンロード失敗項目：</value>
 
   </data>
-
   <data name="geo_msg_update_removed_count" xml:space="preserve">
 
     <value>削除：{0}</value>
 
   </data>
-
   <data name="geo_tooltip_additional_function_name" xml:space="preserve">
 
     <value>スクリプト内の JavaScript 関数名（例：calcPressure）</value>
 
   </data>
-
   <data name="geo_validate_additional_formula_incomplete" xml:space="preserve">
 
     <value>追加数式の {0} 行目：Grid 数式名と JS 関数名の両方が必要です。</value>
 
   </data>
-
   <data name="geo_validate_additional_function_name_invalid" xml:space="preserve">
 
     <value>JS 関数名「{0}」が無効です（有効な JavaScript 識別子である必要があります）。</value>
 
   </data>
-
   <data name="geo_validate_additional_function_reserved" xml:space="preserve">
 
     <value>JS 関数名「{0}」は主数式または詳細計算用に予約されています。</value>
 
   </data>
-
   <data name="geo_validate_example_row_column_mismatch" xml:space="preserve">
 
     <value>サンプル行の列数はヘッダーと一致する必要があります（期待 {0}、実際 {1}）。</value>
 
   </data>
-
   <data name="inkscape_path_hint" xml:space="preserve">
 
     <value>ベクターグラフィックを開くための Inkscape 実行ファイルのパス</value>
@@ -3866,167 +3801,139 @@
   <data name="inkscape_get_it" xml:space="preserve">
     <value>お持ちでない場合はこちら</value>
   </data>
-
   <data name="main_sidebar_collapse_style_hint" xml:space="preserve">
 
     <value>メインサイドバーを完全に折りたたむか、アイコンを残すかを選択</value>
 
   </data>
-
   <data name="minimum_version_auto_update" xml:space="preserve">
 
     <value>自動更新</value>
 
   </data>
-
   <data name="minimum_version_dialog_message" xml:space="preserve">
 
     <value>現在のバージョン {0} は、サポートされる最低バージョン {1} より低いです。GeoChemistry Nexus を更新してください。</value>
 
   </data>
-
   <data name="minimum_version_dialog_title" xml:space="preserve">
 
     <value>更新が必要です</value>
 
   </data>
-
   <data name="minimum_version_force_confirm" xml:space="preserve">
 
     <value>続行する</value>
 
   </data>
-
   <data name="minimum_version_force_confirm_message" xml:space="preserve">
 
     <value>このバージョンはサポートされていません。続行すると予期しない問題が発生する可能性があります。それでも続行しますか？</value>
 
   </data>
-
   <data name="minimum_version_force_use" xml:space="preserve">
 
     <value>強制使用</value>
 
   </data>
-
   <data name="minimum_version_manual_update" xml:space="preserve">
 
     <value>手動更新</value>
 
   </data>
-
   <data name="mouse_snap_auto_recognition_frame_rate_hint" xml:space="preserve">
 
     <value>マウス吸着の自動認識のリフレッシュレート。高いほど滑らかですが、より多くのリソースを使用します</value>
 
   </data>
-
   <data name="object_selection_trigger_hint" xml:space="preserve">
 
     <value>プロットキャンバス上でオブジェクトを選択するマウス操作</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_empty" xml:space="preserve">
 
     <value>（空）</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_hint" xml:space="preserve">
 
     <value>形式：1.2.3。空欄の場合、最低バージョン制限は無効になります。</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_invalid" xml:space="preserve">
 
     <value>サポート最低バージョンは有効なバージョン番号（例：1.2.3）である必要があります。</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_label" xml:space="preserve">
 
     <value>サポート最低バージョン</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_pending" xml:space="preserve">
 
     <value>最低バージョンは公開待ち</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_preview" xml:space="preserve">
 
     <value>サポート最低バージョン：{0}</value>
 
   </data>
-
   <data name="official_publisher_minimum_version_up_to_date" xml:space="preserve">
 
     <value>サポート最低バージョンは最新です。</value>
 
   </data>
-
   <data name="startup_background_image_hint" xml:space="preserve">
 
     <value>起動画面に表示する画像を 1 枚以上追加できます</value>
 
   </data>
-
   <data name="template_card_size_preset_hint" xml:space="preserve">
 
     <value>ライブラリ内の図解テンプレートカードの表示サイズ</value>
 
   </data>
-
   <data name="ui_scale_auto" xml:space="preserve">
 
     <value>自動</value>
 
   </data>
-
   <data name="ui_scale_mode" xml:space="preserve">
 
     <value>UI スケール</value>
 
   </data>
-
   <data name="ui_scale_mode_hint" xml:space="preserve">
 
     <value>現在のディスプレイに自動適合するか、固定の UI スケールを設定する</value>
 
   </data>
-
   <data name="update_auto_check_notify" xml:space="preserve">
     <value>新しいバージョン {0} があります。今すぐダウンロードしてインストールしますか？</value>
   </data>
-
   <data name="update_download_confirm_shutdown" xml:space="preserve">
 
     <value>ダウンロードが完了しました。アプリケーションを終了してインストーラーウィザードを起動します。続行しますか？</value>
 
   </data>
-
   <data name="update_installer_not_found" xml:space="preserve">
 
     <value>最新リリースにインストーラーパッケージが見つかりませんでした。</value>
 
   </data>
-
   <data name="update_installer_saved" xml:space="preserve">
 
     <value>インストーラーをダウンロードして保存しました。</value>
 
   </data>
-
   <data name="update_portable_mode_hint" xml:space="preserve">
 
     <value>ポータブルモードが検出されました。Releases ページからインストーラーまたはポータブルパッケージをダウンロードしてください。</value>
 
   </data>
-
   <data name="plot_toolbar_save_tooltip" xml:space="preserve">
     <value>保存 (Ctrl+S)</value>
   </data>
@@ -4367,4 +4274,3 @@
     <value>親気</value>
   </data>
 </root>
-
