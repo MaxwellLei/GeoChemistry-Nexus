@@ -56,10 +56,16 @@ namespace GeoChemistryNexus.ViewModels
         private Geothermometer? selectedPlugin;
 
         /// <summary>
-        /// 是否显示帮助文档区域（选中温压计时显示，点击确认后隐藏）
+        /// 是否显示帮助文档区域（选中温压计时显示；计算界面内可再次打开）
         /// </summary>
         [ObservableProperty]
         private bool isHelpDocVisible;
+
+        /// <summary>
+        /// 是否进入整页计算界面（应用模板后占满页面，返回后回到模板库）
+        /// </summary>
+        [ObservableProperty]
+        private bool isCalculationWorkspaceVisible;
 
         /// <summary>
         /// 帮助文档是否正在异步加载（控制帮助区遮罩）
@@ -138,7 +144,7 @@ namespace GeoChemistryNexus.ViewModels
         public bool IsSelectedPluginUpdateAvailable => SelectedPlugin?.IsUpdateAvailable == true;
 
         /// <summary>
-        /// 顶部「应用」按钮可见（已安装且尚未应用）
+        /// 模板库帮助区底部「应用」按钮可见（已安装且尚未进入计算界面）
         /// </summary>
         public bool IsApplyButtonVisible =>
             SelectedPlugin != null && !IsPluginApplied && !IsSelectedPluginNotInstalled;
@@ -1117,6 +1123,7 @@ namespace GeoChemistryNexus.ViewModels
 
             SelectedPlugin = plugin;
             IsPluginApplied = false;
+            IsCalculationWorkspaceVisible = false;
             _selectedFullEntity = BuildWorkingEntityFromPlugin(plugin);
 
             OnPropertyChanged(nameof(SelectedPluginDisplayName));
@@ -1126,24 +1133,66 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 确认阅读完帮助文档，隐藏文档区域，恢复之前已应用的温压计界面
+        /// 关闭计算界面中的帮助文档，回到表格
         /// </summary>
         [RelayCommand]
         private void ConfirmAndShowTable()
         {
-            CancelHelpDocLoad();
-            IsHelpDocLoading = false;
+            if (_appliedPlugin == null)
+            {
+                CancelHelpDocLoad();
+                IsHelpDocLoading = false;
+                IsHelpDocVisible = false;
+                return;
+            }
 
-            // 如果之前有已应用的温压计，恢复到该温压计的状态
-            if (_appliedPlugin != null)
+            EnterCalculationWorkspace(restoreAppliedPlugin: true);
+        }
+
+        /// <summary>
+        /// 从整页计算界面返回温压计模板库（确认后退出，保留已应用表格数据）
+        /// </summary>
+        [RelayCommand]
+        private async Task BackToTemplateLibrary()
+        {
+            bool isConfirmed = await MessageHelper.ShowAsyncDialog(
+                LanguageService.GetString("geo_dialog_exit_calculation", "是否退出当前计算界面？"),
+                LanguageService.Instance["Cancel"],
+                LanguageService.Instance["Confirm"]);
+
+            if (!isConfirmed)
+                return;
+
+            IsCalculationWorkspaceVisible = false;
+            IsPluginApplied = false;
+
+            if (SelectedPlugin == null)
+            {
+                IsHelpDocVisible = false;
+                return;
+            }
+
+            IsHelpDocVisible = true;
+            _ = LoadHelpDocumentAsync(SelectedPlugin.Id, forceReload: false);
+        }
+
+        /// <summary>
+        /// 进入整页计算界面。再次进入同一已应用模板时不重建表格。
+        /// </summary>
+        private void EnterCalculationWorkspace(bool restoreAppliedPlugin)
+        {
+            if (restoreAppliedPlugin && _appliedPlugin != null)
             {
                 SelectedPlugin = _appliedPlugin;
                 _selectedFullEntity = _appliedFullEntity;
-                IsPluginApplied = true;
                 OnPropertyChanged(nameof(SelectedPluginDisplayName));
             }
 
+            CancelHelpDocLoad();
+            IsHelpDocLoading = false;
             IsHelpDocVisible = false;
+            IsPluginApplied = true;
+            IsCalculationWorkspaceVisible = true;
         }
 
         /// <summary>
@@ -1586,14 +1635,27 @@ namespace GeoChemistryNexus.ViewModels
                 return;
             }
 
+            // 从模板库再次打开同一已应用模板：保留表格，只进入计算界面
+            if (!IsPluginApplied
+                && _appliedPlugin != null
+                && string.Equals(_appliedPlugin.Id, SelectedPlugin.Id, StringComparison.OrdinalIgnoreCase))
+            {
+                EnterCalculationWorkspace(restoreAppliedPlugin: true);
+                return;
+            }
+
             try
             {
-                bool isConfirmed = await MessageHelper.ShowAsyncDialog(
-                    LanguageService.Instance["geo_dialog_apply_overwrite"],
-                    LanguageService.Instance["Cancel"],
-                    LanguageService.Instance["Confirm"]);
+                // 重置会覆盖当前表格，仍需确认；首次应用直接进入计算界面
+                if (IsPluginApplied)
+                {
+                    bool isConfirmed = await MessageHelper.ShowAsyncDialog(
+                        LanguageService.Instance["geo_dialog_apply_overwrite"],
+                        LanguageService.Instance["Cancel"],
+                        LanguageService.Instance["Confirm"]);
 
-                if (!isConfirmed) return;
+                    if (!isConfirmed) return;
+                }
 
                 // 应用时再按需加载脚本（点选阶段不读 ScriptContent）
                 EnsureSelectedEntityScriptLoaded();
@@ -1681,7 +1743,7 @@ namespace GeoChemistryNexus.ViewModels
 
                 AttachWorksheetRowExpansionEvents(worksheet);
 
-                // 记录已应用的温压计，用于确定按钮恢复
+                // 记录已应用的温压计，用于再次进入时恢复
                 _appliedPlugin = SelectedPlugin;
                 _appliedFullEntity = _selectedFullEntity;
 
@@ -1689,10 +1751,9 @@ namespace GeoChemistryNexus.ViewModels
                 worksheet.SelectRange(new RangePosition(1, 0, 1, 1));
                 GridScrollResetToken++;
 
-                // 应用后确保切换到表格视图，并清除上一模板的计算详情
-                IsHelpDocVisible = false;
-                IsPluginApplied = true;
+                // 应用后进入整页计算界面，并清除上一模板的计算详情
                 ClearCalculationData();
+                EnterCalculationWorkspace(restoreAppliedPlugin: false);
             }
             catch (Exception ex)
             {
@@ -2666,6 +2727,14 @@ namespace GeoChemistryNexus.ViewModels
             if (GeothermometerService.DeleteEntity(entityId))
             {
                 InvalidateHelpDocCache(plugin.Id);
+                if (string.Equals(_appliedPlugin?.Id, plugin.Id, StringComparison.OrdinalIgnoreCase))
+                {
+                    _appliedPlugin = null;
+                    _appliedFullEntity = null;
+                    IsPluginApplied = false;
+                    IsCalculationWorkspaceVisible = false;
+                }
+
                 if (string.Equals(SelectedPlugin?.Id, plugin.Id, StringComparison.OrdinalIgnoreCase))
                 {
                     CancelHelpDocLoad();
@@ -2673,6 +2742,7 @@ namespace GeoChemistryNexus.ViewModels
                     SelectedPlugin = null;
                     _selectedFullEntity = null;
                     IsHelpDocVisible = false;
+                    IsCalculationWorkspaceVisible = false;
                 }
 
                 LoadSidebarSections();

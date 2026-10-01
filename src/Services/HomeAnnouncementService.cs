@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace GeoChemistryNexus.Services
@@ -47,8 +46,7 @@ namespace GeoChemistryNexus.Services
                 if (string.Equals(localHash, serverHash, StringComparison.OrdinalIgnoreCase))
                     return false;
 
-                using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(15) };
-                string catalogJson = await client.GetStringAsync(OfficialContentEndpoints.AnnouncementsUrl);
+                string catalogJson = await OfficialContentMirrorClient.GetStringAsync(OfficialContentEndpoints.AnnouncementsFileName);
                 if (string.IsNullOrWhiteSpace(catalogJson))
                     return false;
 

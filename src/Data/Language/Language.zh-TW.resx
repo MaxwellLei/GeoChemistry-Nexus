@@ -1564,6 +1564,9 @@
   <data name="geo_btn_help_confirm" xml:space="preserve">
     <value>確定</value>
   </data>
+  <data name="geo_dialog_exit_calculation" xml:space="preserve">
+    <value>是否退出目前計算介面？</value>
+  </data>
   <data name="content_and_position" xml:space="preserve">
     <value>內容與位置</value>
   </data>

@@ -127,7 +127,7 @@ namespace GeoChemistryNexus.Services
 
             try
             {
-                string json = await UpdateHelper.GetUrlContentAsync(OfficialContentEndpoints.ServerInfoUrl);
+                string json = await OfficialContentMirrorClient.GetStringAsync(OfficialContentEndpoints.ServerInfoFileName);
                 var serverInfo = JsonHelper.Deserialize<ServerInfo>(json);
                 preview.RemoteHash = serverInfo?.HomeLinksHash ?? string.Empty;
                 preview.HasRemoteChanges = !string.Equals(localHash, preview.RemoteHash, StringComparison.OrdinalIgnoreCase);

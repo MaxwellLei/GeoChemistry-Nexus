@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using GeoChemistryNexus.Converter;
 using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Models;
 using GeoChemistryNexus.Services;
@@ -41,12 +42,38 @@ namespace GeoChemistryNexus.ViewModels
         private string selectedAnnouncementsLanguage = AppCultureRegistry.DefaultContentLanguage;
 
         /// <summary>预设主题名，对应客户端内置渐变。未填自定义颜色时使用。</summary>
-        public IReadOnlyList<string> AnnouncementThemeOptions { get; } = new[] { "blue", "purple", "teal", "orange" };
+        public IReadOnlyList<AnnouncementEditorChoice> AnnouncementThemeOptions { get; } =
+            AnnouncementBrushes.ThemeKeys
+                .Select(key => new AnnouncementEditorChoice(key, ThemeLabel(key)))
+                .ToArray();
+
+        private static string ThemeLabel(string key) => key switch
+        {
+            "blue" => "蓝色",
+            "purple" => "紫色",
+            "teal" => "青绿",
+            "orange" => "橙色",
+            "red" => "红色",
+            "green" => "绿色",
+            "indigo" => "靛蓝",
+            "rose" => "玫红",
+            "cyan" => "青色",
+            "gold" => "金色",
+            "slate" => "灰蓝",
+            "magenta" => "品红",
+            "navy" => "藏青",
+            "copper" => "铜棕",
+            _ => key
+        };
 
         public IReadOnlyList<AnnouncementEditorChoice> AnnouncementBackgroundModeOptions { get; } = new[]
         {
-            new AnnouncementEditorChoice(HomeAnnouncementBackground.ModeDefault, "默认颜色"),
-            new AnnouncementEditorChoice(HomeAnnouncementBackground.ModeImage, "自定义图片")
+            new AnnouncementEditorChoice(
+                HomeAnnouncementBackground.ModeDefault,
+                LanguageService.GetString("official_publisher_background_default", "Solid color")),
+            new AnnouncementEditorChoice(
+                HomeAnnouncementBackground.ModeImage,
+                LanguageService.GetString("official_publisher_background_image", "Custom image"))
         };
 
         partial void OnSelectedAnnouncementsLanguageChanged(string value)
@@ -68,7 +95,7 @@ namespace GeoChemistryNexus.ViewModels
                 HomeAnnouncementCatalog? catalog = null;
                 try
                 {
-                    string json = await UpdateHelper.GetUrlContentAsync(OfficialContentEndpoints.AnnouncementsUrl);
+                    string json = await OfficialContentMirrorClient.GetStringAsync(OfficialContentEndpoints.AnnouncementsFileName);
                     if (string.IsNullOrWhiteSpace(json))
                     {
                         known = true;

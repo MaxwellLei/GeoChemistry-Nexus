@@ -1564,6 +1564,9 @@
   <data name="geo_btn_help_confirm" xml:space="preserve">
     <value>OK</value>
   </data>
+  <data name="geo_dialog_exit_calculation" xml:space="preserve">
+    <value>Aktuelle Berechnungsansicht verlassen?</value>
+  </data>
   <data name="content_and_position" xml:space="preserve">
     <value>Inhalt und Position</value>
   </data>

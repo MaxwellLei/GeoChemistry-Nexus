@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 namespace GeoChemistryNexus.Models
 {
     /// <summary>
@@ -6,6 +9,18 @@ namespace GeoChemistryNexus.Models
     public static class OfficialContentEndpoints
     {
         public const string CosBaseUrl = "https://geochemistrynexus-1303234197.cos.ap-hongkong.myqcloud.com";
+
+        public const string CosChinaBaseUrl = "https://geochemistrynexus-cn-1303234197.cos.ap-beijing.myqcloud.com";
+
+        /// <summary>
+        /// 客户端内置的对象存储根地址。默认顺序是香港、北京。
+        /// 简体中文界面会把北京放到前面，见 <see cref="EnumerateBuiltinBaseUrls"/>。
+        /// </summary>
+        public static readonly string[] BuiltinBaseUrls =
+        {
+            CosBaseUrl,
+            CosChinaBaseUrl
+        };
 
         public const string ServerInfoUrl = CosBaseUrl + "/server_info.json";
         public const string HomeLinksCatalogUrl = CosBaseUrl + "/HomeLinksCatalog.json";
@@ -53,6 +68,48 @@ namespace GeoChemistryNexus.Models
         public static string BuildCosInstallerUrl(string version)
         {
             return $"{CosBaseUrl}/{InstallersFolderName}/{BuildInstallerFileName(version)}";
+        }
+
+        /// <summary>
+        /// 简体中文先试北京，其余界面先试香港。另一台始终作为后备。
+        /// </summary>
+        public static IEnumerable<string> EnumerateBuiltinBaseUrls(bool preferChinaMainland)
+        {
+            if (preferChinaMainland)
+            {
+                yield return CosChinaBaseUrl;
+                yield return CosBaseUrl;
+                yield break;
+            }
+
+            yield return CosBaseUrl;
+            yield return CosChinaBaseUrl;
+        }
+
+        public static string NormalizeBaseUrl(string? url)
+        {
+            return (url ?? string.Empty).Trim().TrimEnd('/');
+        }
+
+        public static string Combine(string? baseUrl, string? relativePath)
+        {
+            string root = NormalizeBaseUrl(baseUrl);
+            string relative = (relativePath ?? string.Empty).Trim().TrimStart('/');
+            if (string.IsNullOrEmpty(root))
+                return relative;
+            if (string.IsNullOrEmpty(relative))
+                return root;
+            return root + "/" + relative;
+        }
+
+        public static string BuildDefaultPublicBaseUrl(string? bucket, string? region)
+        {
+            string bucketName = (bucket ?? string.Empty).Trim();
+            string regionName = (region ?? string.Empty).Trim();
+            if (bucketName.Length == 0 || regionName.Length == 0)
+                return string.Empty;
+
+            return $"https://{bucketName}.cos.{regionName}.myqcloud.com";
         }
     }
 }

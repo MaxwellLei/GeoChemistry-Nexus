@@ -239,7 +239,7 @@ namespace GeoChemistryNexus
                 string minimumSupportedVersion = string.Empty;
                 try
                 {
-                    string json = UpdateHelper.GetUrlContentAsync(OfficialContentEndpoints.ServerInfoUrl).GetAwaiter().GetResult();
+                    string json = OfficialContentMirrorClient.GetStringAsync(OfficialContentEndpoints.ServerInfoFileName).GetAwaiter().GetResult();
                     var info = JsonHelper.Deserialize<ServerInfo>(json);
                     announcement = info?.Announcement ?? string.Empty;
                     minimumSupportedVersion = info?.MinimumSupportedVersion ?? string.Empty;
@@ -265,18 +265,38 @@ namespace GeoChemistryNexus
                 }
                 else
                 {
-                    if (!settings.IsConfigured)
+                    var targets = settings.EnabledTargets.ToList();
+                    if (targets.Count == 0)
                         throw new InvalidOperationException("COS settings are not configured.");
 
+                    OfficialContentMirrorClient.StampServerInfoFile(
+                        publishResult.ServerInfoPath,
+                        targets.Select(target => target.PublicBaseUrl));
+
                     var progress = new Progress<string>(Log);
-                    var uploadResult = TencentCosPublishService.UploadCombinedPublishAsync(
-                        stagingDir, publishResult, geoResult, null, null, settings, true, true, false, false, progress).GetAwaiter().GetResult();
+                    var failures = new List<string>();
+                    foreach (var target in targets)
+                    {
+                        try
+                        {
+                            Log($"Uploading to {target.DisplayName}...");
+                            var uploadResult = TencentCosPublishService.UploadCombinedPublishAsync(
+                                stagingDir, publishResult, geoResult, null, null, target, true, true, false, false, progress).GetAwaiter().GetResult();
+                            Log($"{target.DisplayName}: {uploadResult.Message}");
+                            if (!uploadResult.Success)
+                                failures.Add(target.DisplayName);
+                        }
+                        catch (Exception uploadEx)
+                        {
+                            failures.Add(target.DisplayName);
+                            Log($"ERROR {target.DisplayName}: {uploadEx.Message}");
+                        }
+                    }
 
-                    Log(uploadResult.Message);
-                    if (!uploadResult.Success)
+                    if (failures.Count < targets.Count)
+                        GraphMapTemplatePublishService.ClearPendingPublishFlags();
+                    if (failures.Count > 0)
                         Environment.ExitCode = 1;
-
-                    GraphMapTemplatePublishService.ClearPendingPublishFlags();
                 }
 
                 File.WriteAllLines(logFile, logLines);

@@ -12,7 +12,7 @@ namespace GeoChemistryNexus.Services
         {
             try
             {
-                string json = await UpdateHelper.GetUrlContentAsync(OfficialContentEndpoints.ServerInfoUrl);
+                string json = await OfficialContentMirrorClient.GetStringAsync(OfficialContentEndpoints.ServerInfoFileName);
                 if (string.IsNullOrWhiteSpace(json))
                     return string.Empty;
 

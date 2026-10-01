@@ -59,7 +59,7 @@ namespace GeoChemistryNexus.Helpers
 
         public static async Task<ServerInfo?> GetServerInfoAsync()
         {
-            string json = await GetUrlContentAsync(ServerInfoUrl);
+            string json = await OfficialContentMirrorClient.GetStringAsync(OfficialContentEndpoints.ServerInfoFileName);
             if (string.IsNullOrWhiteSpace(json))
                 return null;
 
@@ -88,7 +88,7 @@ namespace GeoChemistryNexus.Helpers
 
             try
             {
-                string json = GetUrlContentAsync(OfficialContentEndpoints.ServerInfoUrl)
+                string json = OfficialContentMirrorClient.GetStringAsync(OfficialContentEndpoints.ServerInfoFileName)
                     .GetAwaiter()
                     .GetResult();
                 var remote = JsonHelper.Deserialize<ServerInfo>(json);
@@ -223,7 +223,7 @@ namespace GeoChemistryNexus.Helpers
         {
             try
             {
-                string serverInfoJson = await GetUrlContentAsync(ServerInfoUrl);
+                string serverInfoJson = await OfficialContentMirrorClient.GetStringAsync(OfficialContentEndpoints.ServerInfoFileName);
                 var serverInfo = JsonHelper.Deserialize<ServerInfo>(serverInfoJson);
 
                 if (serverInfo == null || string.IsNullOrEmpty(serverInfo.ListPlotCategoriesHash))
@@ -234,12 +234,13 @@ namespace GeoChemistryNexus.Helpers
 
                 if (!string.Equals(localHash, serverInfo.ListPlotCategoriesHash, StringComparison.OrdinalIgnoreCase))
                 {
-                    string downloadUrl = ServerInfoUrl.Replace("server_info.json", "PlotTemplateCategories.json");
                     string? directory = Path.GetDirectoryName(localPath);
                     if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
                         Directory.CreateDirectory(directory);
 
-                    await DownloadFileAsync(downloadUrl, localPath);
+                    await OfficialContentMirrorClient.DownloadFileAsync(
+                        OfficialContentEndpoints.PlotTemplateCategoriesFileName,
+                        localPath);
                 }
             }
             catch (Exception ex)
@@ -297,7 +298,13 @@ namespace GeoChemistryNexus.Helpers
             {
                 Debug.WriteLine($"[UpdateHelper] GitHub installer download failed, switching to COS: {primaryEx.Message}");
                 await DeletePartialDownloadAsync(destinationPath);
-                await DownloadFileAsync(fallbackDownloadUrl!, destinationPath, progress);
+                string installerName = Path.GetFileName(destinationPath);
+                if (string.IsNullOrWhiteSpace(installerName))
+                    installerName = Path.GetFileName(new Uri(fallbackDownloadUrl).LocalPath);
+                await OfficialContentMirrorClient.DownloadFileAsync(
+                    $"{OfficialContentEndpoints.InstallersFolderName}/{installerName}",
+                    destinationPath,
+                    progress);
             }
 
             return destinationPath;

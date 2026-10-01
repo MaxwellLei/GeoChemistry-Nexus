@@ -35,6 +35,87 @@ namespace GeoChemistryNexus.ViewModels
 
         public bool IsNotBusy => !IsBusy;
 
+        partial void OnIsBusyChanged(bool value) => OnPropertyChanged(nameof(IsNotBusy));
+
+        public const string SectionTargets = "targets";
+        public const string SectionDiagrams = "diagrams";
+        public const string SectionGeothermometers = "geothermometers";
+        public const string SectionHomeLinks = "homeLinks";
+        public const string SectionAnnouncement = "announcement";
+        public const string SectionPlotCategories = "plotCategories";
+        public const string SectionGeoTCategories = "geotCategories";
+
+        [ObservableProperty]
+        private string selectedSection = SectionTargets;
+
+        public bool IsTargetsSection
+        {
+            get => SelectedSection == SectionTargets;
+            set { if (value) SelectedSection = SectionTargets; }
+        }
+
+        public bool IsDiagramsSection
+        {
+            get => SelectedSection == SectionDiagrams;
+            set { if (value) SelectedSection = SectionDiagrams; }
+        }
+
+        public bool IsGeothermometersSection
+        {
+            get => SelectedSection == SectionGeothermometers;
+            set { if (value) SelectedSection = SectionGeothermometers; }
+        }
+
+        public bool IsHomeLinksSection
+        {
+            get => SelectedSection == SectionHomeLinks;
+            set { if (value) SelectedSection = SectionHomeLinks; }
+        }
+
+        public bool IsAnnouncementSection
+        {
+            get => SelectedSection == SectionAnnouncement;
+            set { if (value) SelectedSection = SectionAnnouncement; }
+        }
+
+        public bool IsPlotCategoriesSection
+        {
+            get => SelectedSection == SectionPlotCategories;
+            set { if (value) SelectedSection = SectionPlotCategories; }
+        }
+
+        public bool IsGeoTCategoriesSection
+        {
+            get => SelectedSection == SectionGeoTCategories;
+            set { if (value) SelectedSection = SectionGeoTCategories; }
+        }
+
+        partial void OnSelectedSectionChanged(string value)
+        {
+            OnPropertyChanged(nameof(IsTargetsSection));
+            OnPropertyChanged(nameof(IsDiagramsSection));
+            OnPropertyChanged(nameof(IsGeothermometersSection));
+            OnPropertyChanged(nameof(IsHomeLinksSection));
+            OnPropertyChanged(nameof(IsAnnouncementSection));
+            OnPropertyChanged(nameof(IsPlotCategoriesSection));
+            OnPropertyChanged(nameof(IsGeoTCategoriesSection));
+        }
+
+        public ObservableCollection<CosPublishTargetItemViewModel> PublishTargets { get; } = new();
+
+        [ObservableProperty]
+        private CosPublishTargetItemViewModel? selectedPublishTarget;
+
+        public int EnabledTargetCount => PublishTargets.Count(target => target.Enabled);
+
+        public bool HasSelectedPublishTarget => SelectedPublishTarget != null;
+
+        partial void OnSelectedPublishTargetChanged(CosPublishTargetItemViewModel? value)
+        {
+            SecretKey = string.Empty;
+            OnPropertyChanged(nameof(HasSelectedPublishTarget));
+        }
+
         private int _publishExportStepCount;
         private int _publishExportStepIndex;
 
@@ -89,16 +170,7 @@ namespace GeoChemistryNexus.ViewModels
         private HomeLinkEntryEditorViewModel? selectedHomeLink;
 
         [ObservableProperty]
-        private string secretId = string.Empty;
-
-        [ObservableProperty]
         private string secretKey = string.Empty;
-
-        [ObservableProperty]
-        private string region = OfficialContentEndpoints.DefaultRegion;
-
-        [ObservableProperty]
-        private string bucket = OfficialContentEndpoints.DefaultBucket;
 
         [ObservableProperty]
         private string stagingDirectory = string.Empty;
@@ -256,10 +328,18 @@ namespace GeoChemistryNexus.ViewModels
                 IsDeveloperMode = devMode;
 
             var settings = CosPublishSettingsService.Load();
-            SecretId = settings.SecretId ?? string.Empty;
-            Region = string.IsNullOrWhiteSpace(settings.Region) ? OfficialContentEndpoints.DefaultRegion : settings.Region;
-            Bucket = string.IsNullOrWhiteSpace(settings.Bucket) ? OfficialContentEndpoints.DefaultBucket : settings.Bucket;
             StagingDirectory = settings.StagingDirectory ?? ConfigHelper.GetConfig("publish_staging_dir") ?? string.Empty;
+            if (settings.Targets.Count == 0)
+                PublishTargets.Add(CreateDefaultPublishTarget());
+            else
+            {
+                foreach (var target in settings.Targets.OrderBy(item => item.SortOrder))
+                    PublishTargets.Add(CosPublishTargetItemViewModel.FromModel(target));
+            }
+
+            foreach (var target in PublishTargets)
+                target.PropertyChanged += OnPublishTargetPropertyChanged;
+            SelectedPublishTarget = PublishTargets.FirstOrDefault();
 
             Log(LanguageService.Instance["official_publisher_ready"] ?? "Official publisher ready.");
             if (!IsDeveloperMode)
@@ -405,25 +485,45 @@ namespace GeoChemistryNexus.ViewModels
             {
                 StagingDirectory = folder;
                 ConfigHelper.SetConfig("publish_staging_dir", StagingDirectory);
+                PersistPublishTargets();
             }
         }
 
         [RelayCommand]
         private void SaveCosSettings()
         {
-            if (string.IsNullOrWhiteSpace(SecretId))
+            if (SelectedPublishTarget == null)
+            {
+                ShowWarning(LanguageService.GetString("official_publisher_no_target", "Add a server first."));
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(SelectedPublishTarget.SecretId))
             {
                 ShowWarning(LanguageService.Instance["cos_secret_id_required"] ?? "SecretId is required.");
                 return;
             }
 
-            var settings = CosPublishSettingsService.Load();
-            settings.SecretId = SecretId.Trim();
-            settings.Region = string.IsNullOrWhiteSpace(Region) ? OfficialContentEndpoints.DefaultRegion : Region.Trim();
-            settings.Bucket = string.IsNullOrWhiteSpace(Bucket) ? OfficialContentEndpoints.DefaultBucket : Bucket.Trim();
-            settings.StagingDirectory = StagingDirectory;
+            if (string.IsNullOrWhiteSpace(SelectedPublishTarget.Bucket))
+            {
+                ShowWarning(LanguageService.GetString("official_publisher_bucket_required", "Bucket is required."));
+                return;
+            }
 
-            CosPublishSettingsService.Save(settings, string.IsNullOrWhiteSpace(SecretKey) ? null : SecretKey.Trim());
+            if (string.IsNullOrWhiteSpace(SelectedPublishTarget.PublicBaseUrl))
+            {
+                ShowWarning(LanguageService.GetString("official_publisher_public_url_required", "Public base URL is required."));
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(SecretKey) && string.IsNullOrWhiteSpace(SelectedPublishTarget.ProtectedSecretKey))
+            {
+                ShowWarning(LanguageService.Instance["cos_credentials_required"] ?? "Configure COS credentials first.");
+                return;
+            }
+
+            ApplyPendingSecretKey();
+            PersistPublishTargets();
             SecretKey = string.Empty;
             Log(LanguageService.Instance["cos_settings_saved"] ?? "COS settings saved.");
             ShowSuccess(LanguageService.Instance["cos_settings_saved"] ?? "COS settings saved.");
@@ -438,14 +538,21 @@ namespace GeoChemistryNexus.ViewModels
             IsBusy = true;
             try
             {
-                var settings = BuildSettingsFromUi();
-                if (!settings.IsConfigured && string.IsNullOrWhiteSpace(SecretKey))
+                var target = BuildSelectedTarget();
+                if (target == null || string.IsNullOrWhiteSpace(target.SecretId) || string.IsNullOrWhiteSpace(target.Bucket))
                 {
                     ShowWarning(LanguageService.Instance["cos_credentials_required"] ?? "Configure COS credentials first.");
                     return;
                 }
 
-                bool ok = await TencentCosPublishService.TestConnectionAsync(settings, SecretKey.Trim());
+                if (string.IsNullOrWhiteSpace(SecretKey) && string.IsNullOrWhiteSpace(target.ProtectedSecretKey))
+                {
+                    ShowWarning(LanguageService.Instance["cos_credentials_required"] ?? "Configure COS credentials first.");
+                    return;
+                }
+
+                string? plainKey = string.IsNullOrWhiteSpace(SecretKey) ? null : SecretKey.Trim();
+                bool ok = await TencentCosPublishService.TestConnectionAsync(target, plainKey);
                 if (ok)
                 {
                     Log(LanguageService.Instance["cos_test_success"] ?? "COS connection test succeeded.");
@@ -576,8 +683,8 @@ namespace GeoChemistryNexus.ViewModels
                         : (LanguageService.Instance["official_publisher_minimum_version_up_to_date"] ?? "Minimum supported version is up to date."));
 
                     AnnouncementPreviewLines.Add(LatestAppVersionHasRemoteChanges
-                        ? "Latest app version pending publish."
-                        : "Latest app version is up to date.");
+                        ? LanguageService.GetString("official_publisher_latest_version_pending", "Latest app version pending publish.")
+                        : LanguageService.GetString("official_publisher_latest_version_up_to_date", "Latest app version is up to date."));
 
                     if (!TryNormalizeMinimumSupportedVersion(MinimumSupportedVersionText, out string normalizedMinimumVersion, out string minimumVersionError))
                     {
@@ -601,8 +708,10 @@ namespace GeoChemistryNexus.ViewModels
                             : normalizedMinimumVersion));
 
                     AnnouncementPreviewLines.Add(string.IsNullOrWhiteSpace(normalizedLatestVersion)
-                        ? "Latest app version: (empty)"
-                        : $"Latest app version: {normalizedLatestVersion}");
+                        ? LanguageService.GetString("official_publisher_latest_version_empty", "Latest app version: (empty)")
+                        : string.Format(
+                            LanguageService.GetString("official_publisher_latest_version_preview", "Latest app version: {0}"),
+                            normalizedLatestVersion));
 
                     if (!string.IsNullOrWhiteSpace(normalizedLatestVersion))
                     {
@@ -621,8 +730,12 @@ namespace GeoChemistryNexus.ViewModels
                     }
 
                     var announcementsCatalogPreview = BuildAnnouncementsCatalogFromEditor();
-                    AnnouncementPreviewLines.Add(
-                        $"多语言公告目录：{announcementsCatalogPreview.Announcements.Count} 条（发布时上传 {OfficialContentEndpoints.AnnouncementsFileName}，远端 hash：{(string.IsNullOrEmpty(remoteInfo?.AnnouncementsHash) ? "(无)" : remoteInfo.AnnouncementsHash)}）");
+                    AnnouncementPreviewLines.Add(string.Format(
+                        LanguageService.GetString(
+                            "official_publisher_announcements_preview",
+                            "Announcement catalog: {0} entries. Remote hash: {1}."),
+                        announcementsCatalogPreview.Announcements.Count,
+                        string.IsNullOrEmpty(remoteInfo?.AnnouncementsHash) ? "(none)" : remoteInfo.AnnouncementsHash));
                     ReportAnnouncementPublishWarnings(AnnouncementPreviewLines);
 
                     Log(AnnouncementHasRemoteChanges
@@ -743,10 +856,13 @@ namespace GeoChemistryNexus.ViewModels
             SaveGeoTMineralCategoriesToLocal();
             if (!await EnsurePublishTargetSelectedAsync()) return;
 
-            var settings = BuildSettingsFromUi();
-            if (!settings.IsConfigured)
+            ApplyPendingSecretKey();
+            var targets = GetConfiguredTargets();
+            if (targets.Count == 0)
             {
-                ShowWarning(LanguageService.Instance["cos_credentials_required"] ?? "Configure and save COS credentials first.");
+                ShowWarning(LanguageService.GetString(
+                    "official_publisher_no_enabled_target",
+                    "There is no enabled server with complete credentials."));
                 return;
             }
 
@@ -754,7 +870,11 @@ namespace GeoChemistryNexus.ViewModels
             if (string.IsNullOrEmpty(outputDir)) return;
 
             bool confirm = await ShowConfirmAsync(
-                LanguageService.Instance["official_publisher_confirm"] ?? "Publish official content to COS?",
+                string.Format(
+                    LanguageService.GetString(
+                        "official_publisher_confirm_targets",
+                        "Publish this content to {0} enabled server(s)?"),
+                    targets.Count),
                 LanguageService.Instance["Cancel"] ?? "Cancel",
                 LanguageService.Instance["Confirm"] ?? "Confirm");
             if (!confirm) return;
@@ -835,38 +955,88 @@ namespace GeoChemistryNexus.ViewModels
                     Log(geoResult.Summary);
                 }
 
+                string? serverInfoPath = diagramResult?.ServerInfoPath;
+                if (string.IsNullOrEmpty(serverInfoPath) || !File.Exists(serverInfoPath))
+                    serverInfoPath = homeLinksResult?.ServerInfoPath;
+                if (string.IsNullOrEmpty(serverInfoPath) || !File.Exists(serverInfoPath))
+                    serverInfoPath = announcementResult?.ServerInfoPath;
+                OfficialContentMirrorClient.StampServerInfoFile(
+                    serverInfoPath,
+                    targets.Select(target => target.PublicBaseUrl));
+
                 var logProgress = new Progress<string>(Log);
-                var uploadProgress = new Progress<(int current, int total)>(progress =>
+                var failures = new List<string>();
+                int succeeded = 0;
+                double serverSpan = targets.Count == 0
+                    ? 0
+                    : (PublishUploadPhaseEnd - PublishUploadPhaseStart) / targets.Count;
+
+                for (int index = 0; index < targets.Count; index++)
                 {
-                    if (progress.total <= 0)
-                        return;
+                    var target = targets[index];
+                    string targetName = target.DisplayName;
+                    int serverNumber = index + 1;
+                    var uploadProgress = new Progress<(int current, int total)>(progress =>
+                    {
+                        if (progress.total <= 0)
+                            return;
 
-                    double uploadFraction = progress.current / (double)progress.total;
-                    double value = PublishUploadPhaseStart + (PublishUploadPhaseEnd - PublishUploadPhaseStart) * uploadFraction;
-                    string message = string.Format(
-                        LanguageService.Instance["official_publisher_progress_uploading"] ?? "Uploading to COS ({0}/{1})...",
-                        progress.current,
-                        progress.total);
-                    ReportPublishProgress(value, message);
-                });
+                        double uploadFraction = progress.current / (double)progress.total;
+                        double value = PublishUploadPhaseStart + serverSpan * index + serverSpan * uploadFraction;
+                        string message = string.Format(
+                            LanguageService.GetString(
+                                "official_publisher_progress_server",
+                                "Uploading to {0} ({1}/{2})..."),
+                            targetName,
+                            serverNumber,
+                            targets.Count);
+                        ReportPublishProgress(value, message);
+                    });
 
-                string uploadingMessage = LanguageService.Instance["official_publisher_progress_uploading_cos"]
-                    ?? "Uploading to COS...";
-                ReportPublishProgress(PublishUploadPhaseStart, uploadingMessage);
+                    string uploadingMessage = string.Format(
+                        LanguageService.GetString(
+                            "official_publisher_progress_server",
+                            "Uploading to {0} ({1}/{2})..."),
+                        targetName,
+                        serverNumber,
+                        targets.Count);
+                    ReportPublishProgress(PublishUploadPhaseStart + serverSpan * index, uploadingMessage);
+                    Log(uploadingMessage);
 
-                var uploadResult = await TencentCosPublishService.UploadCombinedPublishAsync(
-                    outputDir,
-                    diagramResult,
-                    geoResult,
-                    homeLinksResult,
-                    announcementResult,
-                    settings,
-                    exportDiagrams,
-                    exportGeothermometers,
-                    PublishHomeLinks,
-                    PublishAnnouncement,
-                    logProgress,
-                    uploadProgress);
+                    try
+                    {
+                        var uploadResult = await TencentCosPublishService.UploadCombinedPublishAsync(
+                            outputDir,
+                            diagramResult,
+                            geoResult,
+                            homeLinksResult,
+                            announcementResult,
+                            target,
+                            exportDiagrams,
+                            exportGeothermometers,
+                            PublishHomeLinks,
+                            PublishAnnouncement,
+                            logProgress,
+                            uploadProgress);
+                        succeeded++;
+                        Log($"{targetName}: {uploadResult.Message}");
+                    }
+                    catch (Exception ex)
+                    {
+                        failures.Add(targetName);
+                        Log(string.Format(
+                            LanguageService.GetString(
+                                "official_publisher_upload_target_failed",
+                                "{0} failed: {1}"),
+                            targetName,
+                            ex.Message));
+                    }
+                }
+
+                if (succeeded == 0)
+                    throw new InvalidOperationException(LanguageService.GetString(
+                        "official_publisher_upload_all_failed",
+                        "Every enabled server failed."));
 
                 if (exportDiagrams && PublishDiagrams)
                 {
@@ -874,7 +1044,7 @@ namespace GeoChemistryNexus.ViewModels
                     WeakReferenceMessenger.Default.Send(new OfficialTemplatesPublishedMessage());
                 }
 
-                if (PublishAnnouncement)
+                if (PublishAnnouncement && succeeded > 0)
                 {
                     _remoteAnnouncementText = announcement ?? string.Empty;
                     _remoteMinimumSupportedVersion = minimumSupportedVersion ?? string.Empty;
@@ -884,10 +1054,15 @@ namespace GeoChemistryNexus.ViewModels
                     UpdateServerConfigChangeState();
                 }
 
-                string doneMessage = LanguageService.Instance["official_publisher_progress_done"] ?? "Publish completed.";
+                string doneMessage = failures.Count == 0
+                    ? (LanguageService.GetString("official_publisher_upload_all_ok", "Published to every enabled server."))
+                    : (LanguageService.GetString("official_publisher_upload_partial", "Some servers failed."));
                 ReportPublishProgress(100, doneMessage);
-                Log(uploadResult.Message);
-                ShowSuccess(uploadResult.Message);
+                Log(doneMessage);
+                if (failures.Count == 0)
+                    ShowSuccess(doneMessage);
+                else
+                    ShowWarning(doneMessage);
             }
             catch (Exception ex)
             {
@@ -901,14 +1076,128 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
-        private CosPublishSettings BuildSettingsFromUi()
+        private CosPublishTarget? BuildSelectedTarget()
         {
-            var settings = CosPublishSettingsService.Load();
-            settings.SecretId = SecretId?.Trim() ?? string.Empty;
-            settings.Region = string.IsNullOrWhiteSpace(Region) ? OfficialContentEndpoints.DefaultRegion : Region.Trim();
-            settings.Bucket = string.IsNullOrWhiteSpace(Bucket) ? OfficialContentEndpoints.DefaultBucket : Bucket.Trim();
-            settings.StagingDirectory = StagingDirectory;
-            return settings;
+            if (SelectedPublishTarget == null)
+                return null;
+
+            ApplyPendingSecretKey();
+            return SelectedPublishTarget.ToModel();
+        }
+
+        private void ApplyPendingSecretKey()
+        {
+            if (SelectedPublishTarget == null || string.IsNullOrWhiteSpace(SecretKey))
+                return;
+
+            SelectedPublishTarget.ProtectedSecretKey = CosPublishSettingsService.ProtectSecretKey(SecretKey.Trim());
+        }
+
+        private List<CosPublishTarget> GetConfiguredTargets()
+        {
+            PersistPublishTargets();
+            return PublishTargets
+                .Select(item => item.ToModel())
+                .Where(target => target.Enabled && target.IsConfigured)
+                .ToList();
+        }
+
+        private void PersistPublishTargets()
+        {
+            var settings = new CosPublishSettings
+            {
+                StagingDirectory = StagingDirectory ?? string.Empty
+            };
+
+            for (int index = 0; index < PublishTargets.Count; index++)
+            {
+                var model = PublishTargets[index].ToModel();
+                model.SortOrder = index;
+                PublishTargets[index].SortOrder = index;
+                settings.Targets.Add(model);
+            }
+
+            CosPublishSettingsService.Save(settings);
+            OnPropertyChanged(nameof(EnabledTargetCount));
+        }
+
+        private CosPublishTargetItemViewModel CreateDefaultPublishTarget()
+        {
+            return new CosPublishTargetItemViewModel
+            {
+                Name = LanguageService.GetString("official_publisher_default_target_name", "Hong Kong"),
+                Enabled = true,
+                Region = OfficialContentEndpoints.DefaultRegion,
+                Bucket = OfficialContentEndpoints.DefaultBucket,
+                PublicBaseUrl = OfficialContentEndpoints.CosBaseUrl
+            };
+        }
+
+        private void OnPublishTargetPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(CosPublishTargetItemViewModel.Enabled))
+                OnPropertyChanged(nameof(EnabledTargetCount));
+        }
+
+        [RelayCommand]
+        private void AddPublishTarget()
+        {
+            var target = new CosPublishTargetItemViewModel
+            {
+                Name = LanguageService.GetString("official_publisher_new_target_name", "New server"),
+                Enabled = true,
+                Region = OfficialContentEndpoints.DefaultRegion
+            };
+            target.PropertyChanged += OnPublishTargetPropertyChanged;
+            PublishTargets.Add(target);
+            SelectedPublishTarget = target;
+            SecretKey = string.Empty;
+            OnPropertyChanged(nameof(EnabledTargetCount));
+        }
+
+        [RelayCommand]
+        private void RemovePublishTarget()
+        {
+            if (SelectedPublishTarget == null)
+                return;
+
+            var removing = SelectedPublishTarget;
+            int index = PublishTargets.IndexOf(removing);
+            removing.PropertyChanged -= OnPublishTargetPropertyChanged;
+            PublishTargets.Remove(removing);
+            SelectedPublishTarget = PublishTargets.Count == 0
+                ? null
+                : PublishTargets[Math.Min(index, PublishTargets.Count - 1)];
+            SecretKey = string.Empty;
+            PersistPublishTargets();
+        }
+
+        [RelayCommand]
+        private void MovePublishTargetUp()
+        {
+            if (SelectedPublishTarget == null)
+                return;
+
+            int index = PublishTargets.IndexOf(SelectedPublishTarget);
+            if (index <= 0)
+                return;
+
+            PublishTargets.Move(index, index - 1);
+            PersistPublishTargets();
+        }
+
+        [RelayCommand]
+        private void MovePublishTargetDown()
+        {
+            if (SelectedPublishTarget == null)
+                return;
+
+            int index = PublishTargets.IndexOf(SelectedPublishTarget);
+            if (index < 0 || index >= PublishTargets.Count - 1)
+                return;
+
+            PublishTargets.Move(index, index + 1);
+            PersistPublishTargets();
         }
 
         private string? ResolveStagingDirectory()
@@ -993,7 +1282,8 @@ namespace GeoChemistryNexus.ViewModels
             string localHash = UpdateHelper.ComputeFileMd5(path);
             try
             {
-                string json = await UpdateHelper.GetUrlContentAsync(OfficialContentEndpoints.GeoTIndexUrl);
+                string json = await OfficialContentMirrorClient.GetStringAsync(
+                    $"{OfficialContentEndpoints.GeothermometerFolderName}/{OfficialContentEndpoints.GeoTIndexFileName}");
                 var index = JsonHelper.Deserialize<GeoTIndex>(json);
                 return string.IsNullOrEmpty(index?.MineralCategoriesHash)
                     || !string.Equals(localHash, index.MineralCategoriesHash, StringComparison.OrdinalIgnoreCase);
@@ -1342,7 +1632,7 @@ namespace GeoChemistryNexus.ViewModels
         {
             try
             {
-                string json = await UpdateHelper.GetUrlContentAsync(OfficialContentEndpoints.ServerInfoUrl);
+                string json = await OfficialContentMirrorClient.GetStringAsync(OfficialContentEndpoints.ServerInfoFileName);
                 return JsonHelper.Deserialize<ServerInfo>(json) ?? new ServerInfo();
             }
             catch

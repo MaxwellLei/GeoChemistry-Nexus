@@ -2139,6 +2139,9 @@
   <data name="geo_btn_help_confirm" xml:space="preserve">
     <value>OK</value>
   </data>
+  <data name="geo_dialog_exit_calculation" xml:space="preserve">
+    <value>Exit the current calculation view?</value>
+  </data>
   <data name="geo_btn_save" xml:space="preserve">
     <value>Save</value>
   </data>
@@ -4094,6 +4097,180 @@
   </data>
   <data name="periodic_table_group_atmophile" xml:space="preserve">
     <value>Atmophile</value>
+  </data>
+  <data name="official_publisher_section_targets" xml:space="preserve">
+    <value>Targets</value>
+  </data>
+  <data name="official_publisher_section_announcement" xml:space="preserve">
+    <value>Announcements and versions</value>
+  </data>
+  <data name="official_publisher_include_this" xml:space="preserve">
+    <value>Include in this publish</value>
+  </data>
+  <data name="official_publisher_targets_hint" xml:space="preserve">
+    <value>The same files are uploaded to each enabled server, in list order. A new public URL helps users in China immediately only after it is added to the built-in client list and shipped. URLs stored only here are discovered after a user reaches any existing server.</value>
+  </data>
+  <data name="official_publisher_add_target" xml:space="preserve">
+    <value>Add server</value>
+  </data>
+  <data name="official_publisher_move_up" xml:space="preserve">
+    <value>Move up</value>
+  </data>
+  <data name="official_publisher_move_down" xml:space="preserve">
+    <value>Move down</value>
+  </data>
+  <data name="official_publisher_target_name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="official_publisher_public_base_url" xml:space="preserve">
+    <value>Public base URL</value>
+  </data>
+  <data name="official_publisher_public_base_url_hint" xml:space="preserve">
+    <value>Example: https://bucket.cos.region.myqcloud.com without a trailing slash</value>
+  </data>
+  <data name="official_publisher_enabled" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="official_publisher_no_target" xml:space="preserve">
+    <value>Add a server first.</value>
+  </data>
+  <data name="official_publisher_bucket_required" xml:space="preserve">
+    <value>Bucket is required.</value>
+  </data>
+  <data name="official_publisher_public_url_required" xml:space="preserve">
+    <value>Public base URL is required.</value>
+  </data>
+  <data name="official_publisher_no_enabled_target" xml:space="preserve">
+    <value>There is no enabled server with complete credentials.</value>
+  </data>
+  <data name="official_publisher_confirm_targets" xml:space="preserve">
+    <value>Publish this content to {0} enabled server(s)?</value>
+  </data>
+  <data name="official_publisher_progress_server" xml:space="preserve">
+    <value>Uploading to {0} ({1}/{2})</value>
+  </data>
+  <data name="official_publisher_upload_target_failed" xml:space="preserve">
+    <value>{0} failed: {1}</value>
+  </data>
+  <data name="official_publisher_upload_all_failed" xml:space="preserve">
+    <value>Every enabled server failed.</value>
+  </data>
+  <data name="official_publisher_upload_partial" xml:space="preserve">
+    <value>Some servers failed. Successful uploads were kept.</value>
+  </data>
+  <data name="official_publisher_upload_all_ok" xml:space="preserve">
+    <value>Published to every enabled server.</value>
+  </data>
+  <data name="official_publisher_enabled_servers_label" xml:space="preserve">
+    <value>Enabled servers</value>
+  </data>
+  <data name="official_publisher_default_target_name" xml:space="preserve">
+    <value>Hong Kong</value>
+  </data>
+  <data name="official_publisher_new_target_name" xml:space="preserve">
+    <value>New server</value>
+  </data>
+  <data name="official_publisher_publish_targets" xml:space="preserve">
+    <value>Publish to enabled servers</value>
+  </data>
+  <data name="official_publisher_latest_version_label" xml:space="preserve">
+    <value>Latest version</value>
+  </data>
+  <data name="official_publisher_latest_version_hint" xml:space="preserve">
+    <value>Written to latest_app_version in server_info.json</value>
+  </data>
+  <data name="official_publisher_latest_version_pending" xml:space="preserve">
+    <value>Latest version is pending publish</value>
+  </data>
+  <data name="official_publisher_latest_version_up_to_date" xml:space="preserve">
+    <value>Latest version matches the server</value>
+  </data>
+  <data name="official_publisher_latest_version_empty" xml:space="preserve">
+    <value>Latest version: (empty)</value>
+  </data>
+  <data name="official_publisher_latest_version_preview" xml:space="preserve">
+    <value>Latest version: {0}</value>
+  </data>
+  <data name="official_publisher_legacy_announcement" xml:space="preserve">
+    <value>Legacy plain-text announcement</value>
+  </data>
+  <data name="official_publisher_announcements_catalog" xml:space="preserve">
+    <value>Announcement catalog</value>
+  </data>
+  <data name="official_publisher_announcement_add" xml:space="preserve">
+    <value>Add announcement</value>
+  </data>
+  <data name="official_publisher_announcement_publish_hint" xml:space="preserve">
+    <value>When this section is included, Announcements.json and server_info.json are uploaded together.</value>
+  </data>
+  <data name="official_publisher_announcement_reload_tooltip" xml:space="preserve">
+    <value>Reload the live announcement catalog. Unpublished edits will be discarded.</value>
+  </data>
+  <data name="official_publisher_announcements_preview" xml:space="preserve">
+    <value>Announcement catalog: {0} entries. Remote hash: {1}.</value>
+  </data>
+  <data name="official_publisher_plot_categories_note" xml:space="preserve">
+    <value>Categories are published with the diagram index. If categories changed, the diagram index is included even when diagrams are not checked.</value>
+  </data>
+  <data name="official_publisher_geot_categories_note" xml:space="preserve">
+    <value>Mineral categories are published with the geothermobarometer index. If they changed, that index is included even when geothermobarometers are not checked.</value>
+  </data>
+  <data name="official_publisher_ann_id" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="official_publisher_ann_theme" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="official_publisher_ann_date" xml:space="preserve">
+    <value>Display date</value>
+  </data>
+  <data name="official_publisher_ann_priority" xml:space="preserve">
+    <value>Priority</value>
+  </data>
+  <data name="official_publisher_ann_start" xml:space="preserve">
+    <value>Start date</value>
+  </data>
+  <data name="official_publisher_ann_end" xml:space="preserve">
+    <value>End date</value>
+  </data>
+  <data name="official_publisher_ann_tag" xml:space="preserve">
+    <value>Eyebrow</value>
+  </data>
+  <data name="official_publisher_ann_title" xml:space="preserve">
+    <value>Title *</value>
+  </data>
+  <data name="official_publisher_ann_body" xml:space="preserve">
+    <value>Body</value>
+  </data>
+  <data name="official_publisher_ann_action" xml:space="preserve">
+    <value>Button text</value>
+  </data>
+  <data name="official_publisher_ann_action_url" xml:space="preserve">
+    <value>Button link</value>
+  </data>
+  <data name="official_publisher_ann_background" xml:space="preserve">
+    <value>Background</value>
+  </data>
+  <data name="official_publisher_ann_background_hint" xml:space="preserve">
+    <value>Default uses one color and optional shapes. Custom fills the card with an image URL.</value>
+  </data>
+  <data name="official_publisher_ann_color" xml:space="preserve">
+    <value>Color</value>
+  </data>
+  <data name="official_publisher_ann_polygon" xml:space="preserve">
+    <value>Shape</value>
+  </data>
+  <data name="official_publisher_ann_show_polygons" xml:space="preserve">
+    <value>Show decorative polygons</value>
+  </data>
+  <data name="official_publisher_ann_image_url" xml:space="preserve">
+    <value>Image URL</value>
+  </data>
+  <data name="official_publisher_background_default" xml:space="preserve">
+    <value>Solid color</value>
+  </data>
+  <data name="official_publisher_background_image" xml:space="preserve">
+    <value>Custom image</value>
   </data>
 </root>
 

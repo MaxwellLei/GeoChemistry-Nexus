@@ -14110,7 +14110,7 @@ namespace GeoChemistryNexus.ViewModels
                 string localCategoryPath = FileHelper.GetDataPath("PlotData", "PlotTemplateCategories.json");
 
                 // 从服务器获取 server_info.json
-                string jsonContent = await UpdateHelper.GetUrlContentAsync();
+                string jsonContent = await OfficialContentMirrorClient.GetStringAsync(OfficialContentEndpoints.ServerInfoFileName);
 
                 // 反序列化 JSON
                 var serverInfo = JsonSerializer.Deserialize<ServerInfo>(jsonContent);
@@ -14201,11 +14201,9 @@ namespace GeoChemistryNexus.ViewModels
 
             try
             {
-                // 服务器端的 GraphMapList.json 下载地址
-                string listDownloadUrl = OfficialContentEndpoints.GraphMapListUrl;
-
-                // 下载到临时文件
-                await UpdateHelper.DownloadFileAsync(listDownloadUrl, tempFilePath);
+                await OfficialContentMirrorClient.DownloadFileAsync(
+                    OfficialContentEndpoints.GraphMapListFileName,
+                    tempFilePath);
 
                 // 校验数据完整性
                 // 哈希校验 (如果传入了期望值)
@@ -14306,11 +14304,9 @@ namespace GeoChemistryNexus.ViewModels
 
             try
             {
-                // 服务器端的 PlotTemplateCategories.json 下载地址
-                string listDownloadUrl = OfficialContentEndpoints.PlotTemplateCategoriesUrl;
-
-                // 下载到临时文件
-                await UpdateHelper.DownloadFileAsync(listDownloadUrl, tempFilePath);
+                await OfficialContentMirrorClient.DownloadFileAsync(
+                    OfficialContentEndpoints.PlotTemplateCategoriesFileName,
+                    tempFilePath);
 
                 // 校验数据完整性
                 if (!string.IsNullOrEmpty(expectedHash))
@@ -15974,7 +15970,7 @@ namespace GeoChemistryNexus.ViewModels
         /// </summary>
         private static async Task<bool> TryRefreshOfficialTemplateMetadataFromServer(TemplateCardViewModel card)
         {
-            string json = await UpdateHelper.GetUrlContentAsync(OfficialContentEndpoints.GraphMapListUrl);
+            string json = await OfficialContentMirrorClient.GetStringAsync(OfficialContentEndpoints.GraphMapListFileName);
             var list = JsonSerializer.Deserialize<List<GraphMapTemplateService.JsonTemplateItem>>(json);
             if (list == null || list.Count == 0)
                 return false;
@@ -16007,13 +16003,9 @@ namespace GeoChemistryNexus.ViewModels
                 card.State = TemplateState.Downloading;
                 card.DownloadProgress = 0;
 
-                // 准备路径: {BaseUrl}/{GraphMapPath}.zip
-                string baseUrl = OfficialContentEndpoints.CosBaseUrl;
-                // string idStr = card.TemplateId.Value.ToString(); 
-
                 // 对路径进行 URL 编码
                 string encodedPath = Uri.EscapeDataString(card.TemplatePath);
-                string zipUrl = $"{baseUrl}/Templates/{encodedPath}.zip";
+                string zipRelativePath = $"{OfficialContentEndpoints.TemplatesFolderName}/{encodedPath}.zip";
                 string tempZipPath = Path.Combine(Path.GetTempPath(), $"{card.TemplatePath}_{Guid.NewGuid()}.zip");
                 string tempExtractDir = Path.Combine(Path.GetTempPath(), $"{card.TemplatePath}_{Guid.NewGuid()}_extract");
 
@@ -16021,7 +16013,7 @@ namespace GeoChemistryNexus.ViewModels
                 var progressIndicator = new Progress<double>(p => card.DownloadProgress = p);
 
                 // 开始下载
-                await UpdateHelper.DownloadFileAsync(zipUrl, tempZipPath, progressIndicator);
+                await OfficialContentMirrorClient.DownloadFileAsync(zipRelativePath, tempZipPath, progressIndicator);
 
                 await Task.Run(() =>
                 {

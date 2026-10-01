@@ -7,7 +7,6 @@
       xmlns:helpers="clr-namespace:GeoChemistryNexus.Helpers"
       xmlns:models="clr-namespace:GeoChemistryNexus.Models"
       xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
-      xmlns:dd="urn:gong-wpf-dragdrop"
       xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
       mc:Ignorable="d"
       d:DesignHeight="600" d:DesignWidth="1000"
@@ -328,7 +327,7 @@
                             Visibility="{Binding HasBackgroundImage, Converter={StaticResource BooleanToVisibilityReConverter}}"/>
 
                     <Grid Margin="22,16,18,14">
-                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" MaxWidth="720">
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" MaxWidth="800">
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                 <Border Style="{StaticResource HomeHeroTagStyle}"
                                         Visibility="{Binding HasTag, Converter={StaticResource BooleanToVisibilityConverter}}">
@@ -540,31 +539,13 @@
 
                         <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
                                       VerticalAlignment="Stretch" Padding="4,6,4,4">
-                            <ItemsControl HorizontalAlignment="Left"
-                                          dd:DragDrop.DropHandler="{Binding}"
-                                          dd:DragDrop.UseDefaultDragAdorner="True">
+                            <ItemsControl HorizontalAlignment="Left">
                                 <ItemsControl.ItemsSource>
                                     <CompositeCollection>
                                         <CollectionContainer Collection="{Binding Data.SelectedLinkGroup.Items, Source={StaticResource VmProxy}}"/>
                                         <helpers:HomeAddLinkMarker/>
                                     </CompositeCollection>
                                 </ItemsControl.ItemsSource>
-                                <ItemsControl.Style>
-                                    <Style TargetType="ItemsControl">
-                                        <Setter Property="dd:DragDrop.IsDragSource" Value="False"/>
-                                        <Setter Property="dd:DragDrop.IsDropTarget" Value="False"/>
-                                        <Style.Triggers>
-                                            <MultiDataTrigger>
-                                                <MultiDataTrigger.Conditions>
-                                                    <Condition Binding="{Binding Data.IsSelectedGroupPersonal, Source={StaticResource VmProxy}}" Value="True"/>
-                                                    <Condition Binding="{Binding Data.IsEditMode, Source={StaticResource VmProxy}}" Value="True"/>
-                                                </MultiDataTrigger.Conditions>
-                                                <Setter Property="dd:DragDrop.IsDragSource" Value="True"/>
-                                                <Setter Property="dd:DragDrop.IsDropTarget" Value="True"/>
-                                            </MultiDataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ItemsControl.Style>
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <WrapPanel Orientation="Horizontal"/>
@@ -595,11 +576,7 @@
                                        FontSize="14" FontWeight="SemiBold" Foreground="#1C1C1E" VerticalAlignment="Center"/>
                         </DockPanel>
                         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                            <ItemsControl ItemsSource="{Binding Widgets}" ItemTemplate="{StaticResource WidgetPanelTileTemplate}"
-                                          dd:DragDrop.IsDragSource="{Binding IsEditMode}"
-                                          dd:DragDrop.IsDropTarget="{Binding IsEditMode}"
-                                          dd:DragDrop.DropHandler="{Binding}"
-                                          dd:DragDrop.UseDefaultDragAdorner="True"/>
+                            <ItemsControl ItemsSource="{Binding Widgets}" ItemTemplate="{StaticResource WidgetPanelTileTemplate}"/>
                         </ScrollViewer>
                     </Grid>
                 </Border>

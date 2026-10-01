@@ -68,7 +68,7 @@ namespace GeoChemistryNexus.Models
         public int Priority { get; set; }
 
         /// <summary>
-        /// 预设主题名：blue / purple / teal / orange。未填写自定义颜色时映射到内置渐变，未知值回退 blue。
+        /// 预设主题名，见 <see cref="AnnouncementBrushes.ThemeKeys"/>。未填写自定义颜色时映射到内置渐变，未知值回退 blue。
         /// </summary>
         [JsonPropertyName("theme")]
         public string Theme { get; set; } = "blue";

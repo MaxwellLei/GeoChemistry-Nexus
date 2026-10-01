@@ -1166,38 +1166,60 @@
             </GridSplitter.Template>
         </GridSplitter>
 
-        <!-- ==================== 右侧：内容区域 ==================== -->
-        <Grid Grid.Column="2" Background="#F5F5F5">
+        <!-- ==================== 右侧：模板帮助；应用后展开为整页计算界面 ==================== -->
+        <Grid Background="#F5F5F5">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Grid.Column" Value="2"/>
+                    <Setter Property="Grid.ColumnSpan" Value="1"/>
+                    <Setter Property="Panel.ZIndex" Value="1"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsCalculationWorkspaceVisible}" Value="True">
+                            <Setter Property="Grid.Column" Value="0"/>
+                            <Setter Property="Grid.ColumnSpan" Value="3"/>
+                            <Setter Property="Panel.ZIndex" Value="2"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- 顶部：温压计信息卡片 + 操作按钮 -->
+            <!-- 顶部：温压计信息卡片 + 操作按钮（未选中模板时隐藏，提示放到内容区正中） -->
             <Border Grid.Row="0" Background="White" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1" Padding="20,14">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedPlugin}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- 左侧：选中的温压计信息 -->
-                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                        <!-- 未选中时的提示 -->
-                        <TextBlock FontSize="16" Foreground="#999" Margin="0,4">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                    <Setter Property="Text" Value="{Binding [geo_hint_select_thermometer],Source={x:Static lg:LanguageService.Instance}, FallbackValue=请从左侧面板选择温压计}"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding SelectedPlugin}" Value="{x:Null}">
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-
+                    <!-- 左侧：返回模板库 + 选中的温压计信息 -->
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button Command="{Binding BackToTemplateLibraryCommand}"
+                                Style="{StaticResource GTMToolbarButtonStyle}"
+                                Margin="0,0,8,0"
+                                ToolTip="{Binding [return_to_template_library], Source={x:Static lg:LanguageService.Instance}, FallbackValue=返回}"
+                                Visibility="{Binding IsCalculationWorkspaceVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontFamily="{StaticResource IconFont}" Text="&#xe61f;" FontSize="16"
+                                           VerticalAlignment="Center" Margin="0,1,6,0"/>
+                                <TextBlock Text="{Binding [return_to_template_library], Source={x:Static lg:LanguageService.Instance}, FallbackValue=返回}"
+                                           FontWeight="SemiBold" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <StackPanel VerticalAlignment="Center">
                         <!-- 选中时的信息 -->
                         <StackPanel>
                             <StackPanel.Style>
@@ -1283,6 +1305,7 @@
                                 </Border>
                             </StackPanel>
                         </StackPanel>
+                        </StackPanel>
                     </StackPanel>
 
                     <!-- 右侧：操作按钮 -->
@@ -1306,19 +1329,6 @@
                                 Visibility="{Binding IsDownloadSelectedButtonVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                             <TextBlock Text="&#xe64e;" FontFamily="{StaticResource IconFont}" FontSize="15"
                                        VerticalAlignment="Center"/>
-                        </Button>
-
-                        <!-- ===== 已安装且未应用：显示【应用】按钮 ===== -->
-                        <Button Style="{StaticResource PrimaryButtonStyle}"
-                                Command="{Binding ApplyPluginCommand}"
-                                CommandParameter="{Binding Data, Source={StaticResource GridProxy}}"
-                                Visibility="{Binding IsApplyButtonVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE768;" FontFamily="Segoe MDL2 Assets" FontSize="13" 
-                                           VerticalAlignment="Center" Margin="0,0,6,0"/>
-                                <TextBlock Text="{Binding [geo_btn_apply],Source={x:Static lg:LanguageService.Instance}, FallbackValue=应用}" 
-                                           FontSize="13" VerticalAlignment="Center"/>
-                            </StackPanel>
                         </Button>
 
                         <!-- ===== 应用后：显示【帮助说明】【导出】【重置】 ===== -->
@@ -1378,16 +1388,38 @@
 
             <!-- 下方：帮助文档区域 / ReoGrid 表格 + 计算详情面板 -->
             <Grid Grid.Row="1">
+                <!-- 未选中模板时，提示位于右侧区域正中 -->
+                <TextBlock Text="{Binding [geo_hint_select_thermometer],Source={x:Static lg:LanguageService.Instance}, FallbackValue=请从左侧面板选择温压计}"
+                           FontSize="16"
+                           Foreground="#999"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           TextAlignment="Center">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedPlugin}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
 
-                <!-- ==================== 数据表格区域（IsHelpDocVisible=False 时显示） ==================== -->
+                <!-- ==================== 数据表格区域（整页计算界面且未打开帮助时显示） ==================== -->
                 <Grid>
                     <Grid.Style>
                         <Style TargetType="Grid">
-                            <Setter Property="Visibility" Value="Visible"/>
+                            <Setter Property="Visibility" Value="Collapsed"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsHelpDocVisible}" Value="True">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding IsCalculationWorkspaceVisible}" Value="True"/>
+                                        <Condition Binding="{Binding IsHelpDocVisible}" Value="False"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </MultiDataTrigger>
                             </Style.Triggers>
                         </Style>
                     </Grid.Style>
@@ -1777,9 +1809,27 @@
                         </Grid>
                     </Border>
 
-                    <!-- 底部确认按钮栏 -->
-                    <Border Grid.Row="1" Background="#F8F8FA" BorderBrush="#E0E0E0" BorderThickness="0,1,0,0" 
-                            Padding="20,12">
+                    <!-- 模板库：底部应用（原确定按钮的位置） -->
+                    <Border Grid.Row="1" Background="#F8F8FA" BorderBrush="#E0E0E0" BorderThickness="0,1,0,0"
+                            Padding="20,12"
+                            Visibility="{Binding IsApplyButtonVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Button Style="{StaticResource PrimaryButtonStyle}"
+                                Command="{Binding ApplyPluginCommand}"
+                                CommandParameter="{Binding Data, Source={StaticResource GridProxy}}"
+                                HorizontalAlignment="Right">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE768;" FontFamily="Segoe MDL2 Assets" FontSize="13"
+                                           VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                <TextBlock Text="{Binding [geo_btn_apply],Source={x:Static lg:LanguageService.Instance}, FallbackValue=应用}"
+                                           FontSize="13" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </Border>
+
+                    <!-- 计算界面帮助：关闭后回到表格 -->
+                    <Border Grid.Row="1" Background="#F8F8FA" BorderBrush="#E0E0E0" BorderThickness="0,1,0,0"
+                            Padding="20,12"
+                            Visibility="{Binding IsCalculationWorkspaceVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                         <DockPanel>
                             <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" FontSize="12" Foreground="#888"
                                        Text="{Binding [geo_placeholder_help_read_confirm], Source={x:Static lg:LanguageService.Instance}, FallbackValue=阅读文档后点击确认继续。}"/>
@@ -1787,9 +1837,9 @@
                                     Command="{Binding ConfirmAndShowTableCommand}"
                                     HorizontalAlignment="Right">
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="13" 
+                                    <TextBlock Text="&#xE8BB;" FontFamily="Segoe MDL2 Assets" FontSize="13"
                                                VerticalAlignment="Center" Margin="0,0,6,0"/>
-                                    <TextBlock Text="{Binding [geo_btn_help_confirm], Source={x:Static lg:LanguageService.Instance}, FallbackValue=确定}" 
+                                    <TextBlock Text="{Binding [close], Source={x:Static lg:LanguageService.Instance}, FallbackValue=关闭}"
                                                FontSize="13" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Button>

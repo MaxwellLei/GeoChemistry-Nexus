@@ -50,5 +50,11 @@ namespace GeoChemistryNexus.Models
         /// </summary>
         [JsonPropertyName("latest_app_version")]
         public string LatestAppVersion { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 官方内容对象存储公共根地址。客户端连上任意一台后，把这里多出来的地址并入本次会话的尝试列表。
+        /// </summary>
+        [JsonPropertyName("content_mirrors")]
+        public List<string> ContentMirrors { get; set; } = new();
     }
 }

@@ -1,6 +1,7 @@
 using GeoChemistryNexus.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
@@ -68,13 +69,33 @@ namespace GeoChemistryNexus.Converter
         private static readonly Point GradientStart = new(0, 0.08);
         private static readonly Point GradientEnd = new(1, 0.62);
 
-        private static readonly Dictionary<string, Brush> Themes = new(StringComparer.OrdinalIgnoreCase)
+        /// <summary>
+        /// 预设主题。顺序即发布器下拉顺序。左侧偏深，保证白字可读。
+        /// </summary>
+        private static readonly (string Key, string Start, string Mid, string End)[] Palette =
         {
-            ["blue"] = CreateGradient("#0A5CE0", "#1687FF", "#6AB8FF"),
-            ["purple"] = CreateGradient("#5B2BD0", "#8552E8", "#C79BFF"),
-            ["teal"] = CreateGradient("#067A68", "#0AA88E", "#6FD9C3"),
-            ["orange"] = CreateGradient("#C45A08", "#F79523", "#FFC56A"),
+            ("blue", "#0A5CE0", "#1687FF", "#6AB8FF"),
+            ("purple", "#5B2BD0", "#8552E8", "#C79BFF"),
+            ("teal", "#067A68", "#0AA88E", "#6FD9C3"),
+            ("orange", "#C45A08", "#F79523", "#FFC56A"),
+            ("red", "#C62828", "#EF5350", "#FF9A8B"),
+            ("green", "#1B8A42", "#2EBE5A", "#8BE0A4"),
+            ("indigo", "#3F51C5", "#6674EE", "#B0BAFF"),
+            ("rose", "#D12A72", "#F25C98", "#FFB0D0"),
+            ("cyan", "#0C86B5", "#22B4DE", "#8ADCF3"),
+            ("gold", "#8A5E06", "#D4A017", "#F0CC62"),
+            ("slate", "#3D4F61", "#6A7E92", "#B4C2D0"),
+            ("magenta", "#A81CC0", "#D44AE8", "#F2B0FA"),
+            ("navy", "#163E8C", "#3A6FD4", "#8FB4F0"),
+            ("copper", "#A85A28", "#D4843C", "#F0C090"),
         };
+
+        public static IReadOnlyList<string> ThemeKeys { get; } = Palette.Select(item => item.Key).ToArray();
+
+        private static readonly Dictionary<string, Brush> Themes = Palette.ToDictionary(
+            item => item.Key,
+            item => CreateGradient(item.Start, item.Mid, item.End),
+            StringComparer.OrdinalIgnoreCase);
 
         public static Brush Create(string? theme, string? colorHex)
         {

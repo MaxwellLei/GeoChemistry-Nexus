@@ -29,7 +29,7 @@ namespace GeoChemistryNexus.Services
             Dictionary<Guid, GraphMapTemplateService.JsonTemplateItem> remoteMap = new();
             try
             {
-                string remoteJson = await UpdateHelper.GetUrlContentAsync(OfficialContentEndpoints.GraphMapListUrl);
+                string remoteJson = await OfficialContentMirrorClient.GetStringAsync(OfficialContentEndpoints.GraphMapListFileName);
                 var remoteList = JsonHelper.Deserialize<List<GraphMapTemplateService.JsonTemplateItem>>(remoteJson);
                 if (remoteList != null)
                 {

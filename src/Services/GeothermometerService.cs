@@ -13,7 +13,6 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Net.Http;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -30,8 +29,6 @@ namespace GeoChemistryNexus.Services
     /// </summary>
     public static class GeothermometerService
     {
-        // 服务器地址
-        private const string DefaultServerBaseUrl = "https://geochemistrynexus-1303234197.cos.ap-hongkong.myqcloud.com/Geothermometer";
         private const string GeoTIndexFileName = "GeoT-index.json";
         private const string GeoTListFileName = "GeoT-List.json";
 
@@ -61,7 +58,6 @@ namespace GeoChemistryNexus.Services
         private static readonly ConcurrentDictionary<string, Lazy<CachedScriptEngine>> _scriptEngines =
             new(StringComparer.OrdinalIgnoreCase);
         private static readonly Dictionary<Guid, HashSet<string>> _entityFormulaNames = new();
-        private static string _serverBaseUrl = DefaultServerBaseUrl;
 
         /// <summary>
         /// 本地 GeoT-List.json 存储路径
@@ -79,8 +75,41 @@ namespace GeoChemistryNexus.Services
 
         public static void SetServerBaseUrl(string url)
         {
-            if (!string.IsNullOrWhiteSpace(url))
-                _serverBaseUrl = url.TrimEnd('/');
+            if (string.IsNullOrWhiteSpace(url))
+                return;
+
+            string trimmed = url.Trim().TrimEnd('/');
+            const string suffix = "/Geothermometer";
+            if (trimmed.EndsWith(suffix, StringComparison.OrdinalIgnoreCase))
+                trimmed = trimmed.Substring(0, trimmed.Length - suffix.Length);
+
+            OfficialContentMirrorClient.RememberPreferred(trimmed);
+        }
+
+        private static string GeoRelative(string fileName) =>
+            $"{OfficialContentEndpoints.GeothermometerFolderName}/{fileName.TrimStart('/')}";
+
+        private static async Task DownloadPluginPackageAsync(string downloadUrl, string destinationPath)
+        {
+            if (string.IsNullOrWhiteSpace(downloadUrl))
+                throw new InvalidOperationException("Plugin download URL is empty.");
+
+            if (downloadUrl.StartsWith("http", StringComparison.OrdinalIgnoreCase))
+            {
+                string? relative = OfficialContentMirrorClient.TryGetRelativePath(downloadUrl);
+                if (string.IsNullOrEmpty(relative))
+                {
+                    await UpdateHelper.DownloadFileAsync(downloadUrl, destinationPath);
+                    return;
+                }
+
+                await OfficialContentMirrorClient.DownloadFileAsync(relative, destinationPath);
+                return;
+            }
+
+            string file = downloadUrl.Trim().TrimStart('/');
+            string relativePath = file.Contains('/') ? file : GeoRelative(file);
+            await OfficialContentMirrorClient.DownloadFileAsync(relativePath, destinationPath);
         }
 
         /// <summary>
@@ -1273,10 +1302,7 @@ namespace GeoChemistryNexus.Services
         {
             try
             {
-                using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(15) };
-
-                string indexUrl = $"{_serverBaseUrl}/{GeoTIndexFileName}";
-                string indexJson = await client.GetStringAsync(indexUrl);
+                string indexJson = await OfficialContentMirrorClient.GetStringAsync(GeoRelative(GeoTIndexFileName));
                 var geoTIndex = JsonSerializer.Deserialize<GeoTIndex>(indexJson, JsonOptions);
                 if (geoTIndex == null || string.IsNullOrEmpty(geoTIndex.ListHash))
                 {
@@ -1287,7 +1313,7 @@ namespace GeoChemistryNexus.Services
                     };
                 }
 
-                bool mineralCategoriesSynced = await SyncMineralCategoriesAsync(geoTIndex, client);
+                bool mineralCategoriesSynced = await SyncMineralCategoriesAsync(geoTIndex);
 
                 bool needDownloadList = true;
                 if (File.Exists(LocalListFilePath))
@@ -1315,8 +1341,7 @@ namespace GeoChemistryNexus.Services
                         };
                     }
 
-                    string listUrl = $"{_serverBaseUrl}/{GeoTListFileName}";
-                    listJson = await client.GetStringAsync(listUrl);
+                    listJson = await OfficialContentMirrorClient.GetStringAsync(GeoRelative(GeoTListFileName));
 
                     string downloadedHash = GeothermometerDatabaseService.ComputeHash(listJson);
                     if (!string.Equals(downloadedHash, geoTIndex.ListHash, StringComparison.OrdinalIgnoreCase))
@@ -1391,9 +1416,7 @@ namespace GeoChemistryNexus.Services
         {
             try
             {
-                using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(15) };
-                string indexUrl = $"{_serverBaseUrl}/{GeoTIndexFileName}";
-                string indexJson = await client.GetStringAsync(indexUrl);
+                string indexJson = await OfficialContentMirrorClient.GetStringAsync(GeoRelative(GeoTIndexFileName));
                 var geoTIndex = JsonSerializer.Deserialize<GeoTIndex>(indexJson, JsonOptions);
                 if (geoTIndex == null || string.IsNullOrEmpty(geoTIndex.ListHash))
                     return (false, false, "Invalid GeoT-index.json");
@@ -1415,13 +1438,10 @@ namespace GeoChemistryNexus.Services
         /// <summary>
         /// 从服务器同步矿物分类多语言文件（GeoT-index 中的 MineralCategoriesHash 校验）。
         /// </summary>
-        public static async Task<bool> SyncMineralCategoriesAsync(GeoTIndex? geoTIndex, HttpClient? client = null)
+        public static async Task<bool> SyncMineralCategoriesAsync(GeoTIndex? geoTIndex)
         {
             if (geoTIndex == null || string.IsNullOrEmpty(geoTIndex.MineralCategoriesHash))
                 return false;
-
-            bool ownsClient = client == null;
-            client ??= new HttpClient { Timeout = TimeSpan.FromSeconds(15) };
 
             try
             {
@@ -1435,8 +1455,8 @@ namespace GeoChemistryNexus.Services
                 if (string.Equals(localHash, geoTIndex.MineralCategoriesHash, StringComparison.OrdinalIgnoreCase))
                     return false;
 
-                string downloadUrl = $"{_serverBaseUrl}/{OfficialContentEndpoints.GeoTMineralCategoriesFileName}";
-                string categoriesJson = await client.GetStringAsync(downloadUrl);
+                string categoriesJson = await OfficialContentMirrorClient.GetStringAsync(
+                    GeoRelative(OfficialContentEndpoints.GeoTMineralCategoriesFileName));
 
                 string downloadedHash = GeothermometerDatabaseService.ComputeHash(categoriesJson);
                 if (!string.Equals(downloadedHash, geoTIndex.MineralCategoriesHash, StringComparison.OrdinalIgnoreCase))
@@ -1468,11 +1488,6 @@ namespace GeoChemistryNexus.Services
             {
                 Debug.WriteLine($"[GeothermometerService] Sync mineral categories failed: {ex.Message}");
                 return false;
-            }
-            finally
-            {
-                if (ownsClient)
-                    client.Dispose();
             }
         }
 
@@ -1878,18 +1893,14 @@ namespace GeoChemistryNexus.Services
 
             try
             {
-                using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(15) };
-
-                string indexUrl = $"{_serverBaseUrl}/{GeoTIndexFileName}";
-                string indexJson = await client.GetStringAsync(indexUrl);
+                string indexJson = await OfficialContentMirrorClient.GetStringAsync(GeoRelative(GeoTIndexFileName));
                 var geoTIndex = JsonSerializer.Deserialize<GeoTIndex>(indexJson, JsonOptions);
                 if (geoTIndex == null || string.IsNullOrEmpty(geoTIndex.ListHash))
                     return (null, "Invalid GeoT-index.json");
 
-                await SyncMineralCategoriesAsync(geoTIndex, client);
+                await SyncMineralCategoriesAsync(geoTIndex);
 
-                string listUrl = $"{_serverBaseUrl}/{GeoTListFileName}";
-                string listJson = await client.GetStringAsync(listUrl);
+                string listJson = await OfficialContentMirrorClient.GetStringAsync(GeoRelative(GeoTListFileName));
 
                 string downloadedHash = GeothermometerDatabaseService.ComputeHash(listJson);
                 if (!string.Equals(downloadedHash, geoTIndex.ListHash, StringComparison.OrdinalIgnoreCase))
@@ -1923,15 +1934,8 @@ namespace GeoChemistryNexus.Services
         {
             try
             {
-                using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
-                string downloadUrl = entry.DownloadUrl.StartsWith("http")
-                    ? entry.DownloadUrl
-                    : $"{_serverBaseUrl}/{entry.DownloadUrl}";
-
-                byte[] zipBytes = await client.GetByteArrayAsync(downloadUrl);
-
                 string tempZip = Path.Combine(Path.GetTempPath(), $"{entry.Id}.zip");
-                await File.WriteAllBytesAsync(tempZip, zipBytes);
+                await DownloadPluginPackageAsync(entry.DownloadUrl, tempZip);
 
                 try
                 {
@@ -2000,11 +2004,9 @@ namespace GeoChemistryNexus.Services
         {
             try
             {
-                using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(15) };
-                string indexUrl = $"{_serverBaseUrl}/{GeoTIndexFileName}";
-                string indexJson = await client.GetStringAsync(indexUrl);
+                string indexJson = await OfficialContentMirrorClient.GetStringAsync(GeoRelative(GeoTIndexFileName));
                 var geoTIndex = JsonSerializer.Deserialize<GeoTIndex>(indexJson, JsonOptions);
-                await SyncMineralCategoriesAsync(geoTIndex, client);
+                await SyncMineralCategoriesAsync(geoTIndex);
             }
             catch (Exception ex)
             {

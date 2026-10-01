@@ -5,19 +5,20 @@ using GeoChemistryNexus.Services;
 using GeoChemistryNexus.Models;
 using GeoChemistryNexus.Views;
 using GeoChemistryNexus.Views.Widgets;
-using GongSolutions.Wpf.DragDrop;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace GeoChemistryNexus.ViewModels
 {
-    public partial class HomePageViewModel : ObservableObject, IDropTarget
+    public partial class HomePageViewModel : ObservableObject
     {
         private readonly ObservableCollection<HomeAppItem> _widgets = new();
         private readonly Dictionary<string, Window> _openedWindows = new();
@@ -99,6 +100,10 @@ namespace GeoChemistryNexus.ViewModels
         private static readonly TimeSpan AnnouncementCarouselInterval = TimeSpan.FromSeconds(6);
 
         private DispatcherTimer? _announcementCarouselTimer;
+
+        private int _announcementImageLoadVersion;
+
+        private CancellationTokenSource? _announcementImageLoadCts;
 
         private bool _announcementCarouselPaused;
 
@@ -249,6 +254,12 @@ namespace GeoChemistryNexus.ViewModels
         private void RebuildAnnouncementDisplays()
         {
             string? previousId = CurrentAnnouncement?.Id;
+            var shownImages = new Dictionary<string, ImageSource>(StringComparer.Ordinal);
+            foreach (var item in Announcements)
+            {
+                if (item.BackgroundImage != null && !string.IsNullOrWhiteSpace(item.BackgroundImageUrl))
+                    shownImages.TryAdd(item.BackgroundImageUrl, item.BackgroundImage);
+            }
 
             Announcements.Clear();
             foreach (var entry in _announcementEntries)
@@ -258,7 +269,7 @@ namespace GeoChemistryNexus.ViewModels
                 string polygon = HomeAnnouncementBackground.ResolvePolygonStyle(entry.PolygonStyle, Announcements.Count);
                 bool showPolygons = entry.ShowPolygons && !useImage;
 
-                Announcements.Add(new HomeAnnouncementDisplayViewModel
+                var display = new HomeAnnouncementDisplayViewModel
                 {
                     Id = entry.Id,
                     Tag = HomeLinksLocalization.ResolveForApp(entry.Tag),
@@ -273,7 +284,11 @@ namespace GeoChemistryNexus.ViewModels
                     BackgroundImageUrl = entry.BackgroundImageUrl?.Trim() ?? string.Empty,
                     ShowPolygons = showPolygons,
                     PolygonStyle = polygon
-                });
+                };
+                if (useImage && shownImages.TryGetValue(display.BackgroundImageUrl, out ImageSource? shown))
+                    display.BackgroundImage = shown;
+
+                Announcements.Add(display);
             }
 
             _ = LoadAnnouncementImagesAsync();
@@ -294,13 +309,19 @@ namespace GeoChemistryNexus.ViewModels
 
         private async Task LoadAnnouncementImagesAsync()
         {
+            int loadVersion = Interlocked.Increment(ref _announcementImageLoadVersion);
+            _announcementImageLoadCts?.Cancel();
+            var loadCts = new CancellationTokenSource();
+            _announcementImageLoadCts = loadCts;
+
             var pending = Announcements.Where(item => item.UseImageBackground).ToList();
+            HomeAnnouncementImageCache.PruneExcept(pending.Select(item => item.BackgroundImageUrl), loadVersion);
             if (pending.Count == 0)
                 return;
 
             try
             {
-                await Task.WhenAll(pending.Select(item => item.LoadBackgroundImageAsync()));
+                await Task.WhenAll(pending.Select(item => item.LoadBackgroundImageAsync(loadVersion, loadCts.Token)));
             }
             catch (Exception ex)
             {
@@ -813,66 +834,6 @@ namespace GeoChemistryNexus.ViewModels
         private void SaveWidgets()
         {
             HomeUserConfigService.SaveWidgets(_widgets);
-        }
-
-        void IDropTarget.DragOver(IDropInfo dropInfo)
-        {
-            if (!IsEditMode || dropInfo.Data is not HomeAppItem source || dropInfo.TargetItem is not HomeAppItem target)
-                return;
-
-            if (source.IsReadOnly || target.IsReadOnly)
-                return;
-
-            if (!IsSameReorderScope(source, target))
-                return;
-
-            dropInfo.DropTargetAdorner = DropTargetAdorners.Insert;
-            dropInfo.Effects = DragDropEffects.Move;
-        }
-
-        void IDropTarget.Drop(IDropInfo dropInfo)
-        {
-            if (!IsEditMode || dropInfo.Data is not HomeAppItem sourceItem || dropInfo.TargetItem is not HomeAppItem targetItem)
-                return;
-
-            if (sourceItem.IsReadOnly || targetItem.IsReadOnly)
-                return;
-
-            if (_widgets.Contains(sourceItem) && _widgets.Contains(targetItem))
-            {
-                int sourceIndex = _widgets.IndexOf(sourceItem);
-                int targetIndex = _widgets.IndexOf(targetItem);
-                if (sourceIndex != -1 && targetIndex != -1)
-                {
-                    _widgets.Move(sourceIndex, targetIndex);
-                    SaveWidgets();
-                }
-
-                return;
-            }
-
-            if (SelectedLinkGroup?.IsPersonal == true
-                && SelectedLinkGroup.Items.Contains(sourceItem)
-                && SelectedLinkGroup.Items.Contains(targetItem))
-            {
-                int sourceIndex = SelectedLinkGroup.Items.IndexOf(sourceItem);
-                int targetIndex = SelectedLinkGroup.Items.IndexOf(targetItem);
-                if (sourceIndex != -1 && targetIndex != -1)
-                {
-                    SelectedLinkGroup.Items.Move(sourceIndex, targetIndex);
-                    SavePersonalLinks();
-                }
-            }
-        }
-
-        private bool IsSameReorderScope(HomeAppItem a, HomeAppItem b)
-        {
-            if (_widgets.Contains(a) && _widgets.Contains(b))
-                return true;
-
-            return SelectedLinkGroup?.IsPersonal == true
-                   && SelectedLinkGroup.Items.Contains(a)
-                   && SelectedLinkGroup.Items.Contains(b);
         }
     }
 }

@@ -139,7 +139,7 @@
                         <!-- Libraries -->
                          <Grid Margin="16">
                              <StackPanel>
-                                <TextBlock Text="HandyControl, Ookii.Dialogs.Wpf, gong-wpf-dragdrop, VirtualizingWrapPanel" Foreground="#86868B" FontSize="13" HorizontalAlignment="Center" Margin="0,2"/>
+                                <TextBlock Text="HandyControl, Ookii.Dialogs.Wpf, VirtualizingWrapPanel" Foreground="#86868B" FontSize="13" HorizontalAlignment="Center" Margin="0,2"/>
                                  <TextBlock Text="ScottPlot, ReoGrid, Jint, LiteDB" Foreground="#86868B" FontSize="13" HorizontalAlignment="Center" Margin="0,2"/>
                                  <TextBlock Text="CommunityToolkit.Mvvm, Microsoft.Xaml.Behaviors.Wpf, System.Text.Json" Foreground="#86868B" FontSize="13" HorizontalAlignment="Center" Margin="0,2"/>
                              </StackPanel>

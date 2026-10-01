@@ -24,7 +24,8 @@ namespace GeoChemistryNexus.Services
             Dictionary<string, PluginIndexEntry> remoteMap = new();
             try
             {
-                string remoteJson = await UpdateHelper.GetUrlContentAsync(OfficialContentEndpoints.GeoTListUrl);
+                string remoteJson = await OfficialContentMirrorClient.GetStringAsync(
+                    $"{OfficialContentEndpoints.GeothermometerFolderName}/{OfficialContentEndpoints.GeoTListFileName}");
                 var remoteList = JsonHelper.Deserialize<PluginIndex>(remoteJson);
                 if (remoteList?.Plugins != null)
                 {

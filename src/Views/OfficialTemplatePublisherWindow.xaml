@@ -7,8 +7,8 @@
         xmlns:widgets="clr-namespace:GeoChemistryNexus.Views.Widgets"
         mc:Ignorable="d"
         x:Name="RootWindow"
-        Height="700" Width="920"
-        MinHeight="600" MinWidth="880"
+        Height="780" Width="1180"
+        MinHeight="640" MinWidth="1040"
         WindowStartupLocation="CenterOwner"
         WindowStyle="SingleBorderWindow"
         Background="#F5F5F7">
