@@ -1,0 +1,620 @@
+using System;
+using System.Data;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Win32;
+using HandyControl.Controls;
+using System.Linq;
+using System.Windows;
+using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Services;
+using System.Windows.Media.Imaging;
+using System.Windows.Media;
+
+namespace GeoChemistryNexus.Helpers
+{
+public class FileHelper
+{
+    #region Win32 API for dialog window monitoring
+
+    [DllImport("kernel32.dll")]
+    private static extern uint GetCurrentThreadId();
+
+    [DllImport("user32.dll")]
+    private static extern bool EnumThreadWindows(uint dwThreadId, EnumThreadDelegate lpfn, IntPtr lParam);
+
+    [DllImport("user32.dll")]
+    private static extern bool IsWindowVisible(IntPtr hWnd);
+
+    private delegate bool EnumThreadDelegate(IntPtr hWnd, IntPtr lParam);
+
+    /// <summary>
+    /// 检查指定线程是否有可见窗口
+    /// </summary>
+    private static bool ThreadHasVisibleWindow(uint threadId)
+    {
+        bool hasVisible = false;
+        EnumThreadWindows(threadId, (hWnd, lParam) =>
+        {
+            if (IsWindowVisible(hWnd))
+            {
+                hasVisible = true;
+                return false; // 停止枚举
+            }
+            return true; // 继续枚举
+        }, IntPtr.Zero);
+        return hasVisible;
+    }
+
+    /// <summary>
+    /// 等待对话框窗口关闭，一旦检测到关闭立即恢复主窗口
+    /// </summary>
+    private static async Task WaitForDialogCloseAndRestore(uint nativeThreadId, Task dialogTask, System.Windows.Window mainWindow)
+    {
+        bool dialogAppeared = false;
+
+        while (!dialogTask.IsCompleted)
+        {
+            bool hasVisibleWindow = ThreadHasVisibleWindow(nativeThreadId);
+
+            if (!dialogAppeared && hasVisibleWindow)
+            {
+                dialogAppeared = true;
+            }
+            else if (dialogAppeared && !hasVisibleWindow)
+            {
+                // 对话框已经从屏幕上消失，立即恢复主窗口
+                break;
+            }
+
+            await Task.Delay(50);
+        }
+
+        // 立即恢复主窗口交互
+        if (!mainWindow.IsEnabled)
+        {
+            mainWindow.IsEnabled = true;
+            mainWindow.Activate();
+        }
+    }
+
+    #endregion
+
+
+    // 获取保存文件路径  —— 不带文件过滤器
+    public static string GetSaveFilePath(string defaultFileName, string? initialDirectory = null)
+    {
+        // 创建文件保存对话框的实例
+        var dialog = new SaveFileDialog
+        {
+            FileName = defaultFileName, // 设置默认文件名
+            Filter = FileDialogFilterHelper.AllFiles,
+            Title = LanguageService.Instance["save_file_title"] ?? "Save File"
+        };
+
+        // 如果提供了初始目录，则设置它
+        if (!string.IsNullOrWhiteSpace(initialDirectory) && Directory.Exists(initialDirectory))
+        {
+            dialog.InitialDirectory = initialDirectory;
+        }
+
+        // 显示对话框并检查结果
+        bool? result = dialog.ShowDialog(Application.Current.MainWindow);
+
+        // 如果用户点击了“保存”按钮，返回完整的文件路径
+        if (result == true)
+        {
+            return dialog.FileName;
+        }
+
+        // 用户取消操作，返回一个空字符串或其他指示性值
+        return string.Empty;
+    }
+
+    //获取文件路径——不带格式限制
+    public static string? GetFilePath()
+    {
+        OpenFileDialog openFileDialog = new();
+        if (openFileDialog.ShowDialog(Application.Current.MainWindow) == true)
+        {
+            return openFileDialog.FileName;     //用户正确选择了路径
+        }
+        else
+        {
+            return null;    //用户直接关闭了窗口
+        }
+    }
+
+    //获取文件路径——带有格式限制
+    public static string? GetFilePath(string filter, System.Windows.Window? owner = null)
+    {
+        OpenFileDialog openFileDialog = new() { Filter = filter };
+        var dialogOwner = owner ?? Application.Current.MainWindow;
+        if (openFileDialog.ShowDialog(dialogOwner) == true)
+        {
+            return openFileDialog.FileName;     //用户正确选择了路径
+        }
+        else
+        {
+            return null;    //用户直接关闭了窗口
+        }
+    }
+
+    /// <summary>
+    /// 获取文件保存路径 —— 带文件过滤器
+    /// </summary>
+    /// <param name="title">对话框标题</param>
+    /// <param name="filter">文件类型过滤器</param>
+    /// <param name="defaultExt">默认文件扩展名</param>
+    /// <returns>选择的文件保存路径，如果用户取消则返回null</returns>
+    public static string? GetSaveFilePath2(string? title = null, string? filter = null, string defaultExt = "", string defaultFileName = "")
+    {
+        try
+        {
+            var dialog = new SaveFileDialog
+            {
+                Title = title ?? LanguageService.Instance["save_file_title"] ?? "Save File",
+                Filter = filter ?? FileDialogFilterHelper.AllFiles,
+                DefaultExt = defaultExt,
+                AddExtension = true,
+                FileName = defaultFileName
+            };
+
+            bool? result = dialog.ShowDialog(Application.Current.MainWindow);
+
+            if (result == true)
+            {
+                return dialog.FileName;
+            }
+
+            return null;
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// 异步获取文件保存路径 - 在独立STA线程上显示对话框，避免COM清理阻塞UI线程
+    /// 使用Win32 API监测对话框窗口关闭，一旦关闭立即恢复主窗口交互
+    /// </summary>
+    public static async Task<string?> GetSaveFilePath2Async(string? title = null, string? filter = null, string defaultExt = "", string defaultFileName = "", System.Windows.Window? owner = null)
+    {
+        var targetWindow = owner ?? Application.Current.MainWindow;
+        targetWindow.IsEnabled = false;
+
+        string resolvedTitle = title ?? LanguageService.Instance["save_file_title"] ?? "Save File";
+        string resolvedFilter = filter ?? FileDialogFilterHelper.AllFiles;
+
+        try
+        {
+            var tcs = new TaskCompletionSource<string?>(TaskCreationOptions.RunContinuationsAsynchronously);
+            var threadIdTcs = new TaskCompletionSource<uint>(TaskCreationOptions.RunContinuationsAsynchronously);
+
+            var thread = new Thread(() =>
+            {
+                try
+                {
+                    // 在STA线程上报告原生线程ID
+                    threadIdTcs.SetResult(GetCurrentThreadId());
+
+                    var dialog = new SaveFileDialog
+                    {
+                        Title = resolvedTitle,
+                        Filter = resolvedFilter,
+                        DefaultExt = defaultExt,
+                        AddExtension = true,
+                        FileName = defaultFileName
+                    };
+
+                    bool? result = dialog.ShowDialog();
+                    tcs.SetResult(result == true ? dialog.FileName : null);
+                }
+                catch (Exception)
+                {
+                    if (!threadIdTcs.Task.IsCompleted)
+                        threadIdTcs.TrySetResult(0);
+                    tcs.TrySetResult(null);
+                }
+            });
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.IsBackground = true;
+            thread.Start();
+
+            // 获取STA线程的原生线程ID
+            uint nativeThreadId = await threadIdTcs.Task;
+
+            if (nativeThreadId != 0)
+            {
+                // 监测对话框窗口，一旦关闭立即恢复主窗口
+                await WaitForDialogCloseAndRestore(nativeThreadId, tcs.Task, targetWindow);
+            }
+
+            return await tcs.Task;
+        }
+        finally
+        {
+            // 确保无论如何目标窗口都能恢复
+            if (!targetWindow.IsEnabled)
+            {
+                targetWindow.IsEnabled = true;
+                targetWindow.Activate();
+            }
+        }
+    }
+
+    /// <summary>
+    /// 异步获取文件打开路径 - 在独立STA线程上显示对话框，避免COM清理阻塞UI线程
+    /// 使用Win32 API监测对话框窗口关闭，一旦关闭立即恢复主窗口交互
+    /// </summary>
+    public static async Task<string?> GetFilePathAsync(string? filter = null, System.Windows.Window? owner = null)
+    {
+        var targetWindow = owner ?? Application.Current.MainWindow;
+        targetWindow.IsEnabled = false;
+
+        try
+        {
+            var tcs = new TaskCompletionSource<string?>(TaskCreationOptions.RunContinuationsAsynchronously);
+            var threadIdTcs = new TaskCompletionSource<uint>(TaskCreationOptions.RunContinuationsAsynchronously);
+
+            var thread = new Thread(() =>
+            {
+                try
+                {
+                    // 在STA线程上报告原生线程ID
+                    threadIdTcs.SetResult(GetCurrentThreadId());
+
+                    var dialog = new OpenFileDialog();
+                    if (!string.IsNullOrEmpty(filter))
+                        dialog.Filter = filter;
+
+                    bool? result = dialog.ShowDialog();
+                    tcs.SetResult(result == true ? dialog.FileName : null);
+                }
+                catch (Exception)
+                {
+                    if (!threadIdTcs.Task.IsCompleted)
+                        threadIdTcs.TrySetResult(0);
+                    tcs.TrySetResult(null);
+                }
+            });
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.IsBackground = true;
+            thread.Start();
+
+            // 获取STA线程的原生线程ID
+            uint nativeThreadId = await threadIdTcs.Task;
+
+            if (nativeThreadId != 0)
+            {
+                // 监测对话框窗口，一旦关闭立即恢复主窗口
+                await WaitForDialogCloseAndRestore(nativeThreadId, tcs.Task, targetWindow);
+            }
+
+            return await tcs.Task;
+        }
+        finally
+        {
+            // 确保无论如何目标窗口都能恢复
+            if (!targetWindow.IsEnabled)
+            {
+                targetWindow.IsEnabled = true;
+                targetWindow.Activate();
+            }
+        }
+    }
+
+    //打开文件所在路径
+    public static bool Openxplorer(string path)
+    {
+        try
+        {
+            System.Diagnostics.Process.Start("explorer.exe", path);
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
+    //删除指定路径文件
+    public static bool DeleteFile(string path)
+    {
+        try
+        {
+            File.Delete(path);
+            Growl.Success("删除成功");
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
+    //检查文件是否被占用
+    public static bool IsFileInUse(string path)
+    {
+        if (!File.Exists(path))
+            return false;
+
+        try
+        {
+            using var fs = File.Open(path, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+            return false;
+        }
+        catch (Exception)
+        {
+            return true;
+        }
+    }
+
+    //解除文件占用
+    public static bool ReleaseFile(string path)
+    {
+        if (!File.Exists(path))
+            return true;
+
+        try
+        {
+            using var fs = File.Open(path, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
+    //检查文件是否存在
+    public static bool IsFileExist(string path)
+    {
+        return System.IO.File.Exists(path);
+    }
+
+    //检查文件是否存在，如果不存在则创建
+    public static bool CreateFile(string path)
+    {
+        try
+        {
+            if (!IsFileExist(path))
+            {
+                using (File.Create(path)) { }
+            }
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
+    //检查文件夹是否存在
+    public static bool IsFolderExist(string path)
+    {
+        return System.IO.Directory.Exists(path);
+    }
+
+    //如果文件夹不存在则创建文件夹
+    public static bool CreateFolder(string path)
+    {
+        try
+        {
+            if (!IsFolderExist(path))
+            {
+                System.IO.Directory.CreateDirectory(path);
+            }
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
+    //获取当前运行程序所在路径（只读资源、内置种子文件）
+    public static string GetAppPath()
+    {
+        return AppDataPathHelper.GetAppDirectory();
+    }
+
+    //获取可写用户数据路径
+    public static string GetDataPath(params string[] segments)
+    {
+        return AppDataPathHelper.GetDataPath(segments);
+    }
+
+    //判断文件夹是否为空
+    public static bool IsFolderEmpty(string path)
+    {
+        return Directory.GetFiles(path).Length == 0;
+    }
+
+    //获取文件夹路径
+    public static string? GetFolderPath()
+    {
+        var dialog = new OpenFolderDialog
+        {
+            Title = LanguageService.GetString("select_folder", "请选择一个文件夹"),
+            Multiselect = false
+        };
+
+        var owner = Application.Current?.MainWindow;
+        bool? result = owner != null ? dialog.ShowDialog(owner) : dialog.ShowDialog();
+        if (result == true)
+        {
+            return dialog.FolderName;
+        }
+
+        return null;
+    }
+
+        // 复制文件到目标路径
+    public static bool CopyFile(string sourcePath, string targetDir)
+    {
+        try
+        {
+            // 检查源文件是否存在
+            if (!File.Exists(sourcePath))
+            {
+                Console.WriteLine($"错误：源文件 {sourcePath} 不存在");
+                return false;
+            }
+
+            // 确保目标目录存在
+            if (!string.IsNullOrEmpty(targetDir) && !Directory.Exists(targetDir))
+            {
+                Directory.CreateDirectory(targetDir);
+            }
+
+            // 获取源文件的文件名，并构造目标文件的完整路径
+            string fileName = Path.GetFileName(sourcePath);
+            string targetPath = Path.Combine(targetDir, fileName);
+
+            // 执行文件复制
+            File.Copy(sourcePath, targetPath, true); // true表示如果目标文件存在则覆盖
+            Console.WriteLine($"文件已成功从 {sourcePath} 复制到 {targetPath}");
+            return true;
+        }
+        catch (UnauthorizedAccessException)
+        {
+            Console.WriteLine("错误：权限不足，无法复制文件");
+            return false;
+        }
+        catch (IOException ex)
+        {
+            Console.WriteLine($"复制文件时发生IO错误: {ex.Message}");
+            return false;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"复制文件时发生错误: {ex.Message}");
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// 获取指定文件路径的文件名称（包括扩展名）。
+    /// </summary>
+    /// <param name="filePath">文件的完整路径。</param>
+    /// <returns>文件名称（包含扩展名）。</returns>
+    /// <exception cref="ArgumentException">当文件路径为空或为 null 时抛出。</exception>
+    public static string GetFileName(string filePath)
+    {
+        if (string.IsNullOrEmpty(filePath))
+        {
+            throw new ArgumentException("文件路径不能为空", nameof(filePath));
+        }
+
+        return Path.GetFileName(filePath);
+    }
+
+    /// <summary>
+    /// 查找文件夹返回文件，查找不到则第一个同类型文件
+    /// </summary>
+    /// <param name="folderPath">查找文件的文件夹</param>
+    /// <param name="fileName">文件名称</param>
+    /// <param name="fileExtension">文件后缀</param>
+    /// <param name="includeSubfolders">子文件查找</param>
+    /// <returns></returns>
+    /// <exception cref="UnauthorizedAccessException"></exception>
+    /// <exception cref="Exception"></exception>
+    public static string? FindFileOrGetFirstWithExtension(string folderPath, string fileName, string fileExtension, bool includeSubfolders = false)
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(folderPath) || string.IsNullOrWhiteSpace(fileName) || string.IsNullOrWhiteSpace(fileExtension))
+            {
+                throw new ArgumentException("参数不能为空或null");
+            }
+
+            if (!Directory.Exists(folderPath))
+            {
+                throw new DirectoryNotFoundException($"文件夹不存在: {folderPath}");
+            }
+
+            if (!fileExtension.StartsWith("."))
+            {
+                fileExtension = "." + fileExtension;
+            }
+
+            // 设置搜索选项
+            SearchOption searchOption = includeSubfolders ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+
+            // 构建完整的目标文件路径
+            string targetFilePath = Path.Combine(folderPath, fileName + fileExtension);
+
+            // 检查目标文件是否存在
+            if (File.Exists(targetFilePath))
+            {
+                return targetFilePath;
+            }
+
+            // 如果目标文件不存在，查找第一个具有相同扩展名的文件
+            string[] filesWithExtension = Directory.GetFiles(folderPath, "*" + fileExtension, searchOption);
+
+            if (filesWithExtension.Length > 0)
+            {
+                return filesWithExtension[0];
+            }
+
+            return null;
+        }
+        catch (UnauthorizedAccessException)
+        {
+            throw new UnauthorizedAccessException($"没有权限访问文件夹: {folderPath}");
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"搜索文件时发生错误: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// 无锁加载图片 + 尺寸优化 + (可选)灰度优化
+    /// </summary>
+    /// <param name="path">图片路径</param>
+    /// <param name="decodeWidth">解码宽度，默认400</param>
+    /// <param name="toGray">是否转为灰度图以极致节省内存</param>
+    public static BitmapSource? LoadBitmapNoLock(string path, int decodeWidth = 400, bool toGray = true)
+    {
+        if (!File.Exists(path)) return null;
+
+        try
+        {
+            using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            // 按尺寸优化加载
+            var bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.DecodePixelWidth = decodeWidth;
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.StreamSource = stream;
+            bitmap.EndInit();
+
+            if (toGray)
+            {
+                // 如果需要灰度，进行格式转换
+                var grayBitmap = new FormatConvertedBitmap();
+                grayBitmap.BeginInit();
+                grayBitmap.Source = bitmap; // 源
+                grayBitmap.DestinationFormat = PixelFormats.Gray8; // 转换为 8位灰度
+                grayBitmap.EndInit();
+
+                grayBitmap.Freeze(); // 冻结灰度图
+                return grayBitmap;
+            }
+
+            bitmap.Freeze();
+            return bitmap;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+}
+}

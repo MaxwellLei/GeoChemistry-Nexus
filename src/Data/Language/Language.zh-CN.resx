@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -210,9 +210,6 @@
   <data name="ternary_phase_diagram_sum_must_be_one" xml:space="preserve">
     <value>三元相图之和必须为 1.</value>
   </data>
-  <data name="add_text_operation_canceled" xml:space="preserve">
-    <value>添加文本操作已取消.</value>
-  </data>
   <data name="geo_btn_reset" xml:space="preserve">
     <value>重置</value>
   </data>
@@ -369,20 +366,11 @@
   <data name="official_publisher_home_links_summary" xml:space="preserve">
     <value>主页链接：{0} 个分组，{1} 个链接，hash={2}。</value>
   </data>
-  <data name="official_publisher_include_home_links" xml:space="preserve">
-    <value>包含主页链接</value>
-  </data>
   <data name="home_links_edit_language" xml:space="preserve">
     <value>编辑语言：</value>
   </data>
   <data name="official_publisher_home_links_section" xml:space="preserve">
     <value>主页链接</value>
-  </data>
-  <data name="official_publisher_home_groups" xml:space="preserve">
-    <value>分组</value>
-  </data>
-  <data name="official_publisher_home_link_items" xml:space="preserve">
-    <value>链接</value>
   </data>
   <data name="official_publisher_home_links_pending" xml:space="preserve">
     <value>待发布</value>
@@ -1230,9 +1218,6 @@
   <data name="custom_path_not_set_configure_in_settings" xml:space="preserve">
     <value>未设置自定义程序路径，请在设置中配置。</value>
   </data>
-  <data name="add_line_operation_canceled" xml:space="preserve">
-    <value>添加线条操作已取消.</value>
-  </data>
   <data name="show_major_ticks" xml:space="preserve">
     <value>显示主刻度</value>
   </data>
@@ -1566,9 +1551,6 @@
   <data name="font_size" xml:space="preserve">
     <value>字体大小</value>
   </data>
-  <data name="close_file" xml:space="preserve">
-    <value>关闭文件</value>
-  </data>
   <data name="open_diagram_template" xml:space="preserve">
     <value>打开图解模板</value>
   </data>
@@ -1747,9 +1729,6 @@
   <data name="geo_hint_select_thermometer" xml:space="preserve">
     <value>请从左侧面板选择温压计</value>
   </data>
-  <data name="QuitEdit" xml:space="preserve">
-    <value>退出编辑</value>
-  </data>
   <data name="popup_diagram_window" xml:space="preserve">
     <value>弹出图解窗口</value>
   </data>
@@ -1764,9 +1743,6 @@
   </data>
   <data name="move_down" xml:space="preserve">
     <value>下移</value>
-  </data>
-  <data name="save_changes" xml:space="preserve">
-    <value>保存更改</value>
   </data>
   <data name="MarkerShape_OpenTriangleDown" xml:space="preserve">
     <value>空心下三角</value>
@@ -1897,9 +1873,6 @@
   <data name="x_coordinate" xml:space="preserve">
     <value>X 坐标</value>
   </data>
-  <data name="geo_btn_help_confirm" xml:space="preserve">
-    <value>确定</value>
-  </data>
   <data name="geo_dialog_exit_calculation" xml:space="preserve">
     <value>是否退出当前计算界面？</value>
   </data>
@@ -1963,9 +1936,6 @@
   <data name="official_publisher_export_local" xml:space="preserve">
     <value>仅导出到本地</value>
   </data>
-  <data name="official_publisher_publish_cos" xml:space="preserve">
-    <value>一键发布到 COS</value>
-  </data>
   <data name="official_publisher_refreshing" xml:space="preserve">
     <value>正在刷新发布预览...</value>
   </data>
@@ -1984,21 +1954,6 @@
   <data name="official_publisher_exporting" xml:space="preserve">
     <value>正在导出到 {0}...</value>
   </data>
-  <data name="official_publisher_confirm" xml:space="preserve">
-    <value>确认将官方内容发布到 COS？</value>
-  </data>
-  <data name="official_publisher_include_diagrams" xml:space="preserve">
-    <value>图解</value>
-  </data>
-  <data name="official_publisher_include_geothermometers" xml:space="preserve">
-    <value>温压计</value>
-  </data>
-  <data name="official_publisher_include_announcement" xml:space="preserve">
-    <value>公告</value>
-  </data>
-  <data name="official_publisher_announcement_section" xml:space="preserve">
-    <value>公告</value>
-  </data>
   <data name="official_publisher_announcement_pending" xml:space="preserve">
     <value>待发布</value>
   </data>
@@ -2007,9 +1962,6 @@
   </data>
   <data name="official_publisher_announcement_loaded" xml:space="preserve">
     <value>已从服务器加载公告。</value>
-  </data>
-  <data name="official_publisher_announcement_edit_hint" xml:space="preserve">
-    <value>在此编辑公告内容，发布后将在主页「公告」区域显示。</value>
   </data>
   <data name="official_publisher_announcement_load" xml:space="preserve">
     <value>从服务器加载</value>
@@ -2052,15 +2004,6 @@
   </data>
   <data name="official_publisher_progress_exporting_geothermometers" xml:space="preserve">
     <value>正在导出地质温压计...</value>
-  </data>
-  <data name="official_publisher_progress_uploading_cos" xml:space="preserve">
-    <value>正在上传到 COS...</value>
-  </data>
-  <data name="official_publisher_progress_uploading" xml:space="preserve">
-    <value>正在上传到 COS ({0}/{1})...</value>
-  </data>
-  <data name="official_publisher_progress_done" xml:space="preserve">
-    <value>发布完成。</value>
   </data>
   <data name="cos_save_settings" xml:space="preserve">
     <value>保存配置</value>
@@ -2154,9 +2097,6 @@
   </data>
   <data name="geo_validate_additional_function_reserved" xml:space="preserve">
     <value>JS 函数名「{0}」已保留给主公式或详细计算，不能用于附加公式。</value>
-  </data>
-  <data name="edit_menu_bar_item" xml:space="preserve">
-    <value>编辑菜单栏项</value>
   </data>
   <data name="confirm_clear_all_data" xml:space="preserve">
     <value>是否清除表格数据（包括绘图数据点）？</value>
@@ -2564,6 +2504,12 @@
   </data>
   <data name="geo_msg_batch_update_confirm" xml:space="preserve">
     <value>检测到 {0} 个可更新的温压计，更新将覆盖本地内容，是否继续？</value>
+  </data>
+  <data name="geo_msg_batch_sync_all_confirm" xml:space="preserve">
+    <value>检测到 {0} 个未下载模板与 {1} 个可更新模板，是否批量下载与更新？</value>
+  </data>
+  <data name="geo_msg_batch_sync_tooltip" xml:space="preserve">
+    <value>检测到 {0} 个未下载模板与 {1} 个可更新模板，点击全部更新。</value>
   </data>
   <data name="geo_help_no_doc_text" xml:space="preserve">
     <value>暂无帮助文档。</value>
@@ -3050,36 +2996,6 @@
   <data name="parsing_table_and_refreshing_layer_please_wait" xml:space="preserve">
     <value>正在解析表格并刷新图层，请稍候...</value>
   </data>
-  <data name="delete_selected_drawing_objects" xml:space="preserve">
-    <value>是否删除选中的绘图对象？</value>
-  </data>
-  <data name="delete_selected_data_and_drawing_objects" xml:space="preserve">
-    <value>是否删除选中的数据及绘图对象？</value>
-  </data>
-  <data name="delete_all" xml:space="preserve">
-    <value>全部删除</value>
-  </data>
-  <data name="keep_data" xml:space="preserve">
-    <value>保留数据</value>
-  </data>
-  <data name="cancel_delete" xml:space="preserve">
-    <value>取消删除</value>
-  </data>
-  <data name="selected_data_and_drawing_objects_deleted" xml:space="preserve">
-    <value>已删除选中的数据及绘图对象。</value>
-  </data>
-  <data name="selected_drawing_objects_deleted_data_kept" xml:space="preserve">
-    <value>已删除选中的绘图对象，已保留数据。</value>
-  </data>
-  <data name="no_source_data_found_only_drawing_objects_deleted" xml:space="preserve">
-    <value>未找到可删除的源数据，已仅删除绘图对象。</value>
-  </data>
-  <data name="no_source_data_found" xml:space="preserve">
-    <value>未找到可删除的源数据。</value>
-  </data>
-  <data name="delete_data_failed" xml:space="preserve">
-    <value>删除数据失败：</value>
-  </data>
   <data name="enable_data_to_drawing_object_linkage" xml:space="preserve">
     <value>启用数据到绘图对象联动</value>
   </data>
@@ -3383,17 +3299,8 @@
   <data name="translation_loaded" xml:space="preserve">
     <value>已加载翻译数据</value>
   </data>
-  <data name="enter_language_code_prompt" xml:space="preserve">
-    <value>请输入语言代码（例如 fr-FR）：</value>
-  </data>
   <data name="at_least_two_languages_swap" xml:space="preserve">
     <value>至少需要两种语言才能交换。</value>
-  </data>
-  <data name="select_language_to_delete" xml:space="preserve">
-    <value>请选择要删除的语言：</value>
-  </data>
-  <data name="confirm_delete_language" xml:space="preserve">
-    <value>确定要删除语言「{0}」吗？此操作不可撤销。</value>
   </data>
   <data name="notification_success" xml:space="preserve">
     <value>成功</value>
@@ -3914,9 +3821,6 @@
   <data name="black_body_radiation_calc_input" xml:space="preserve">
     <value>温度</value>
   </data>
-  <data name="black_body_radiation_calc_temperature" xml:space="preserve">
-    <value>T</value>
-  </data>
   <data name="black_body_radiation_calc_reset" xml:space="preserve">
     <value>重置</value>
   </data>
@@ -3965,14 +3869,8 @@
   <data name="periodic_table_widget_desc" xml:space="preserve">
     <value>交互式周期表：地壳丰度，氧化物分子量等快捷查询</value>
   </data>
-  <data name="periodic_table_widget_hint" xml:space="preserve">
-    <value>点击元素查看地球化学属性。可用分组筛选高亮 REE、HFSE、LILE、PGE 及 Goldschmidt 分类。</value>
-  </data>
   <data name="periodic_table_hint_select" xml:space="preserve">
     <value>点击元素查看属性</value>
-  </data>
-  <data name="periodic_table_status_selected" xml:space="preserve">
-    <value>已选中：{0}（{1}）</value>
   </data>
   <data name="periodic_table_search_tooltip" xml:space="preserve">
     <value>按元素符号、英文名或原子序数搜索</value>
@@ -3985,9 +3883,6 @@
   </data>
   <data name="periodic_table_clear_group" xml:space="preserve">
     <value>清除筛选</value>
-  </data>
-  <data name="periodic_table_fblock_note" xml:space="preserve">
-    <value>底部两行：镧系（La–Lu）与锕系（Ac–Lr）。</value>
   </data>
   <data name="periodic_table_label_lanthanides" xml:space="preserve">
     <value>镧系</value>
@@ -4212,10 +4107,10 @@
     <value>勾选「本次发布包含此项」后，Announcements.json 与 server_info.json 会一并上传。</value>
   </data>
   <data name="official_publisher_announcement_reload_tooltip" xml:space="preserve">
-    <value>从服务器重新加载线上公告目录（会丢弃未发布的修改）</value>
+    <value>从服务器重新加载线上公告目录（会丢弃未发布的修改）。</value>
   </data>
   <data name="official_publisher_announcements_preview" xml:space="preserve">
-    <value>多语言公告目录：{0} 条。远端 hash：{1}</value>
+    <value>多语言公告目录：{0} 条。远端 hash：{1}。</value>
   </data>
   <data name="official_publisher_plot_categories_note" xml:space="preserve">
     <value>分类会随图解索引一起发布。分类有改动时，即使未勾选图解模板，也会带上图解索引文件。</value>
@@ -4279,5 +4174,44 @@
   </data>
   <data name="official_publisher_background_image" xml:space="preserve">
     <value>自定义图片</value>
+  </data>
+  <data name="developer_settings" xml:space="preserve">
+    <value>开发者选项</value>
+  </data>
+  <data name="reset_diagram_database" xml:space="preserve">
+    <value>重置图解数据库</value>
+  </data>
+  <data name="reset_diagram_database_hint" xml:space="preserve">
+    <value>清空本地图解模板数据库</value>
+  </data>
+  <data name="reset_geothermometer_database" xml:space="preserve">
+    <value>重置地质温压计数据库</value>
+  </data>
+  <data name="reset_geothermometer_database_hint" xml:space="preserve">
+    <value>清空本地地质温压计模板数据库</value>
+  </data>
+  <data name="clear" xml:space="preserve">
+    <value>清空</value>
+  </data>
+  <data name="confirm_reset_diagram_database" xml:space="preserve">
+    <value>确定要清空本地图解模板数据库吗？清空后所有本地图解模板数据将被移除，此操作不可撤销。</value>
+  </data>
+  <data name="confirm_reset_geothermometer_database" xml:space="preserve">
+    <value>确定要清空本地地质温压计模板数据库吗？清空后所有本地地质温压计模板数据将被移除，此操作不可撤销。</value>
+  </data>
+  <data name="diagram_database_cleared" xml:space="preserve">
+    <value>本地图解数据库已清空。</value>
+  </data>
+  <data name="geothermometer_database_cleared" xml:space="preserve">
+    <value>本地地质温压计数据库已清空。</value>
+  </data>
+  <data name="select_folder" xml:space="preserve">
+    <value>请选择一个文件夹</value>
+  </data>
+  <data name="loading_geothermometer_module_ellipsis" xml:space="preserve">
+    <value>正在加载温压计模块...</value>
+  </data>
+  <data name="unhandled_exception_occurred" xml:space="preserve">
+    <value>应用程序发生未处理错误：</value>
   </data>
 </root>

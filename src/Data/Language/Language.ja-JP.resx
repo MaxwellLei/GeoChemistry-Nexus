@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -176,9 +176,6 @@
   </data>
   <data name="ternary_phase_diagram_sum_must_be_one" xml:space="preserve">
     <value>三元相図の合計は 1 でなければなりません。</value>
-  </data>
-  <data name="add_text_operation_canceled" xml:space="preserve">
-    <value>テキストの追加操作がキャンセルされました。</value>
   </data>
   <data name="geo_btn_reset" xml:space="preserve">
     <value>リセット</value>
@@ -942,9 +939,6 @@
   <data name="custom_path_not_set_configure_in_settings" xml:space="preserve">
     <value>カスタムプログラムのパスが設定されていません。設定で構成してください。</value>
   </data>
-  <data name="add_line_operation_canceled" xml:space="preserve">
-    <value>線の追加操作がキャンセルされました。</value>
-  </data>
   <data name="show_major_ticks" xml:space="preserve">
     <value>主目盛を表示</value>
   </data>
@@ -1272,9 +1266,6 @@
   <data name="font_size" xml:space="preserve">
     <value>フォントサイズ</value>
   </data>
-  <data name="close_file" xml:space="preserve">
-    <value>ファイルを閉じる</value>
-  </data>
   <data name="open_diagram_template" xml:space="preserve">
     <value>図解テンプレートを開く</value>
   </data>
@@ -1420,9 +1411,6 @@
   <data name="geo_hint_select_thermometer" xml:space="preserve">
     <value>左側のパネルから温圧計を選択してください</value>
   </data>
-  <data name="QuitEdit" xml:space="preserve">
-    <value>編集を終了</value>
-  </data>
   <data name="popup_diagram_window" xml:space="preserve">
     <value>図解ウィンドウをポップアップ</value>
   </data>
@@ -1434,9 +1422,6 @@
   </data>
   <data name="unsaved_template_changes_confirm" xml:space="preserve">
     <value>現在のテンプレートに未保存の内容があります。保存しますか？</value>
-  </data>
-  <data name="save_changes" xml:space="preserve">
-    <value>変更を保存</value>
   </data>
   <data name="MarkerShape_OpenTriangleDown" xml:space="preserve">
     <value>白抜き下向き三角形</value>
@@ -1561,9 +1546,6 @@
   <data name="x_coordinate" xml:space="preserve">
     <value>X 座標</value>
   </data>
-  <data name="geo_btn_help_confirm" xml:space="preserve">
-    <value>OK</value>
-  </data>
   <data name="geo_dialog_exit_calculation" xml:space="preserve">
     <value>現在の計算画面を終了しますか？</value>
   </data>
@@ -1638,9 +1620,6 @@
   </data>
   <data name="geo_script_result" xml:space="preserve">
     <value>結果:</value>
-  </data>
-  <data name="edit_menu_bar_item" xml:space="preserve">
-    <value>メニューバー項目を編集</value>
   </data>
   <data name="confirm_clear_all_data" xml:space="preserve">
     <value>テーブルデータ（描画データポイントを含む）をクリアしてもよろしいですか？</value>
@@ -1977,6 +1956,12 @@
   <data name="geo_msg_batch_update_confirm" xml:space="preserve">
     <value>更新可能な地質温度圧力計が {0} 件検出されました。更新するとローカル内容が上書きされます。続行しますか？</value>
   </data>
+  <data name="geo_msg_batch_sync_all_confirm" xml:space="preserve">
+    <value>未インストールのテンプレート {0} 個と更新可能なテンプレート {1} 個が検出されました。すべてダウンロードして更新しますか？</value>
+  </data>
+  <data name="geo_msg_batch_sync_tooltip" xml:space="preserve">
+    <value>未インストールのテンプレート {0} 個と更新可能なテンプレート {1} 個が検出されました。クリックしてすべて更新します。</value>
+  </data>
   <data name="geo_help_no_doc_text" xml:space="preserve">
     <value>ヘルプドキュメントはありません。</value>
   </data>
@@ -2258,36 +2243,6 @@
   <data name="parsing_table_and_refreshing_layer_please_wait" xml:space="preserve">
     <value>テーブルを解析してレイヤーを更新しています。しばらくお待ちください...</value>
   </data>
-  <data name="delete_selected_drawing_objects" xml:space="preserve">
-    <value>選択した描画オブジェクトを削除しますか？</value>
-  </data>
-  <data name="delete_selected_data_and_drawing_objects" xml:space="preserve">
-    <value>選択したデータと描画オブジェクトを削除しますか？</value>
-  </data>
-  <data name="delete_all" xml:space="preserve">
-    <value>すべて削除</value>
-  </data>
-  <data name="keep_data" xml:space="preserve">
-    <value>データを保持</value>
-  </data>
-  <data name="cancel_delete" xml:space="preserve">
-    <value>削除をキャンセル</value>
-  </data>
-  <data name="selected_data_and_drawing_objects_deleted" xml:space="preserve">
-    <value>選択したデータと描画オブジェクトを削除しました。</value>
-  </data>
-  <data name="selected_drawing_objects_deleted_data_kept" xml:space="preserve">
-    <value>選択した描画オブジェクトを削除し、データは保持しました。</value>
-  </data>
-  <data name="no_source_data_found_only_drawing_objects_deleted" xml:space="preserve">
-    <value>元データが見つからなかったため、描画オブジェクトのみ削除しました。</value>
-  </data>
-  <data name="no_source_data_found" xml:space="preserve">
-    <value>元データが見つかりませんでした。</value>
-  </data>
-  <data name="delete_data_failed" xml:space="preserve">
-    <value>データの削除に失敗しました:</value>
-  </data>
   <data name="enable_data_to_drawing_object_linkage" xml:space="preserve">
     <value>データと描画オブジェクトの連動を有効にする</value>
   </data>
@@ -2389,9 +2344,6 @@
   </data>
   <data name="at_least_two_languages_swap" xml:space="preserve">
     <value>入れ替えには少なくとも2つの言語が必要です。</value>
-  </data>
-  <data name="confirm_delete_language" xml:space="preserve">
-    <value>言語「{0}」を削除しますか？この操作は元に戻せません。</value>
   </data>
   <data name="cos_credentials_required" xml:space="preserve">
     <value>先に COS 認証情報を設定して保存してください。</value>
@@ -2675,9 +2627,6 @@
   <data name="enable_normalization" xml:space="preserve">
     <value>正規化を有効化</value>
   </data>
-  <data name="enter_language_code_prompt" xml:space="preserve">
-    <value>言語コードを入力してください（例：fr-FR）：</value>
-  </data>
   <data name="enter_plot_mode" xml:space="preserve">
     <value>プロットモードに入る</value>
   </data>
@@ -2774,9 +2723,6 @@
   <data name="object_selection_trigger" xml:space="preserve">
     <value>オブジェクト選択トリガー</value>
   </data>
-  <data name="official_publisher_announcement_edit_hint" xml:space="preserve">
-    <value>ここでお知らせを編集します。公開後、ホームページの「お知らせ」エリアに表示されます。</value>
-  </data>
   <data name="official_publisher_announcement_empty" xml:space="preserve">
     <value>（空）</value>
   </data>
@@ -2792,14 +2738,8 @@
   <data name="official_publisher_announcement_preview" xml:space="preserve">
     <value>現在の下書き：</value>
   </data>
-  <data name="official_publisher_announcement_section" xml:space="preserve">
-    <value>お知らせ</value>
-  </data>
   <data name="official_publisher_announcement_up_to_date" xml:space="preserve">
     <value>サーバーは最新です</value>
-  </data>
-  <data name="official_publisher_confirm" xml:space="preserve">
-    <value>公式コンテンツを COS に公開しますか？</value>
   </data>
   <data name="official_publisher_dev_mode_required" xml:space="preserve">
     <value>公開には開発者モードが必要です。</value>
@@ -2831,12 +2771,6 @@
   <data name="official_publisher_home_edit_group" xml:space="preserve">
     <value>グループを編集</value>
   </data>
-  <data name="official_publisher_home_groups" xml:space="preserve">
-    <value>グループ</value>
-  </data>
-  <data name="official_publisher_home_link_items" xml:space="preserve">
-    <value>リンク</value>
-  </data>
   <data name="official_publisher_home_links_draft_saved" xml:space="preserve">
     <value>ホームリンク下書きをローカルに保存しました。</value>
   </data>
@@ -2864,23 +2798,8 @@
   <data name="official_publisher_home_select_group" xml:space="preserve">
     <value>先にグループを選択してください。</value>
   </data>
-  <data name="official_publisher_include_announcement" xml:space="preserve">
-    <value>お知らせ</value>
-  </data>
-  <data name="official_publisher_include_diagrams" xml:space="preserve">
-    <value>図解</value>
-  </data>
-  <data name="official_publisher_include_geothermometers" xml:space="preserve">
-    <value>地質温圧計</value>
-  </data>
-  <data name="official_publisher_include_home_links" xml:space="preserve">
-    <value>ホームリンクを含める</value>
-  </data>
   <data name="official_publisher_new" xml:space="preserve">
     <value>新規</value>
-  </data>
-  <data name="official_publisher_progress_done" xml:space="preserve">
-    <value>公開が完了しました。</value>
   </data>
   <data name="official_publisher_progress_exporting_announcement" xml:space="preserve">
     <value>お知らせをエクスポート中...</value>
@@ -2893,15 +2812,6 @@
   </data>
   <data name="official_publisher_progress_exporting_home_links" xml:space="preserve">
     <value>ホームリンクをエクスポート中...</value>
-  </data>
-  <data name="official_publisher_progress_uploading" xml:space="preserve">
-    <value>COS にアップロード中 ({0}/{1})...</value>
-  </data>
-  <data name="official_publisher_progress_uploading_cos" xml:space="preserve">
-    <value>COS にアップロード中...</value>
-  </data>
-  <data name="official_publisher_publish_cos" xml:space="preserve">
-    <value>COS に公開</value>
   </data>
   <data name="official_publisher_ready" xml:space="preserve">
     <value>公式パブリッシャーの準備ができました。</value>
@@ -2947,9 +2857,6 @@
   </data>
   <data name="select_all" xml:space="preserve">
     <value>すべて選択</value>
-  </data>
-  <data name="select_language_to_delete" xml:space="preserve">
-    <value>削除する言語を選択：</value>
   </data>
   <data name="shortcut_action_add_arrow_desc" xml:space="preserve">
     <value>矢印オブジェクトを挿入します。</value>
@@ -4096,9 +4003,6 @@
   <data name="black_body_radiation_calc_input" xml:space="preserve">
     <value>温度</value>
   </data>
-  <data name="black_body_radiation_calc_temperature" xml:space="preserve">
-    <value>T</value>
-  </data>
   <data name="black_body_radiation_calc_reset" xml:space="preserve">
     <value>リセット</value>
   </data>
@@ -4147,14 +4051,8 @@
   <data name="periodic_table_widget_desc" xml:space="preserve">
     <value>インタラクティブ周期表：地殻存在度、酸化物分子量などの簡易照会</value>
   </data>
-  <data name="periodic_table_widget_hint" xml:space="preserve">
-    <value>元素をクリックして地球化学的性質を表示。REE、HFSE、LILE、PGE、Goldschmidt 分類で絞り込みできます。</value>
-  </data>
   <data name="periodic_table_hint_select" xml:space="preserve">
     <value>元素をクリックして属性を表示</value>
-  </data>
-  <data name="periodic_table_status_selected" xml:space="preserve">
-    <value>選択中：{0}（{1}）</value>
   </data>
   <data name="periodic_table_search_tooltip" xml:space="preserve">
     <value>元素記号、英名、または原子番号で検索</value>
@@ -4167,9 +4065,6 @@
   </data>
   <data name="periodic_table_clear_group" xml:space="preserve">
     <value>絞り込み解除</value>
-  </data>
-  <data name="periodic_table_fblock_note" xml:space="preserve">
-    <value>下段：ランタノイド（La–Lu）とアクチノイド（Ac–Lr）。</value>
   </data>
   <data name="periodic_table_label_lanthanides" xml:space="preserve">
     <value>ランタノイド</value>
@@ -4272,5 +4167,233 @@
   </data>
   <data name="periodic_table_group_atmophile" xml:space="preserve">
     <value>親気</value>
+  </data>
+  <data name="official_publisher_section_targets" xml:space="preserve">
+    <value>公開先サーバー</value>
+  </data>
+  <data name="official_publisher_section_announcement" xml:space="preserve">
+    <value>お知らせとバージョン</value>
+  </data>
+  <data name="official_publisher_include_this" xml:space="preserve">
+    <value>今回の公開に含める</value>
+  </data>
+  <data name="official_publisher_targets_hint" xml:space="preserve">
+    <value>同じファイルがリスト順に各有効サーバーにアップロードされます。中国国内のユーザーが新しいURLに直接接続するには、クライアントの内蔵リストに追加してリリースする必要があります。ここにのみ保存されたURLは、既存のサーバーに接続した後に検出されます。</value>
+  </data>
+  <data name="official_publisher_add_target" xml:space="preserve">
+    <value>サーバーを追加</value>
+  </data>
+  <data name="official_publisher_move_up" xml:space="preserve">
+    <value>上へ移動</value>
+  </data>
+  <data name="official_publisher_move_down" xml:space="preserve">
+    <value>下へ移動</value>
+  </data>
+  <data name="official_publisher_target_name" xml:space="preserve">
+    <value>名前</value>
+  </data>
+  <data name="official_publisher_public_base_url" xml:space="preserve">
+    <value>公開ベースURL</value>
+  </data>
+  <data name="official_publisher_public_base_url_hint" xml:space="preserve">
+    <value>例：https://bucket.cos.region.myqcloud.com（末尾のスラッシュなし）</value>
+  </data>
+  <data name="official_publisher_enabled" xml:space="preserve">
+    <value>有効</value>
+  </data>
+  <data name="official_publisher_no_target" xml:space="preserve">
+    <value>まずサーバーを追加してください。</value>
+  </data>
+  <data name="official_publisher_bucket_required" xml:space="preserve">
+    <value>Bucket は必須です。</value>
+  </data>
+  <data name="official_publisher_public_url_required" xml:space="preserve">
+    <value>公開ベースURLは必須です。</value>
+  </data>
+  <data name="official_publisher_no_enabled_target" xml:space="preserve">
+    <value>認証情報が揃った有効なサーバーがありません。</value>
+  </data>
+  <data name="official_publisher_confirm_targets" xml:space="preserve">
+    <value>{0} 台の有効なサーバーにこの内容を公開しますか？</value>
+  </data>
+  <data name="official_publisher_progress_server" xml:space="preserve">
+    <value>{0} にアップロード中（{1}/{2}）</value>
+  </data>
+  <data name="official_publisher_upload_target_failed" xml:space="preserve">
+    <value>{0} へのアップロード失敗：{1}</value>
+  </data>
+  <data name="official_publisher_upload_all_failed" xml:space="preserve">
+    <value>すべての有効なサーバーへのアップロードに失敗しました。</value>
+  </data>
+  <data name="official_publisher_upload_partial" xml:space="preserve">
+    <value>一部のサーバーへのアップロードに失敗しました。成功したサーバーは保持されます。</value>
+  </data>
+  <data name="official_publisher_upload_all_ok" xml:space="preserve">
+    <value>すべての有効なサーバーに公開しました。</value>
+  </data>
+  <data name="official_publisher_enabled_servers_label" xml:space="preserve">
+    <value>有効なサーバー</value>
+  </data>
+  <data name="official_publisher_default_target_name" xml:space="preserve">
+    <value>香港</value>
+  </data>
+  <data name="official_publisher_new_target_name" xml:space="preserve">
+    <value>新規サーバー</value>
+  </data>
+  <data name="official_publisher_publish_targets" xml:space="preserve">
+    <value>有効なサーバーに公開</value>
+  </data>
+  <data name="official_publisher_latest_version_label" xml:space="preserve">
+    <value>最新バージョン</value>
+  </data>
+  <data name="official_publisher_latest_version_hint" xml:space="preserve">
+    <value>server_info.json の latest_app_version に書き込まれます</value>
+  </data>
+  <data name="official_publisher_latest_version_pending" xml:space="preserve">
+    <value>最新バージョンは公開待ち</value>
+  </data>
+  <data name="official_publisher_latest_version_up_to_date" xml:space="preserve">
+    <value>最新バージョンはサーバーと一致しています</value>
+  </data>
+  <data name="official_publisher_latest_version_empty" xml:space="preserve">
+    <value>最新バージョン：（空）</value>
+  </data>
+  <data name="official_publisher_latest_version_preview" xml:space="preserve">
+    <value>最新バージョン：{0}</value>
+  </data>
+  <data name="official_publisher_legacy_announcement" xml:space="preserve">
+    <value>旧形式のテキストお知らせ</value>
+  </data>
+  <data name="official_publisher_announcements_catalog" xml:space="preserve">
+    <value>お知らせカタログ（多言語）</value>
+  </data>
+  <data name="official_publisher_announcement_add" xml:space="preserve">
+    <value>お知らせを追加</value>
+  </data>
+  <data name="official_publisher_announcement_import" xml:space="preserve">
+    <value>インポート</value>
+  </data>
+  <data name="official_publisher_announcement_import_tooltip" xml:space="preserve">
+    <value>お知らせカタログ JSON ファイルをインポートし、エディターの内容を置き換えます。</value>
+  </data>
+  <data name="official_publisher_announcement_import_invalid" xml:space="preserve">
+    <value>有効なお知らせカタログファイルではありません。announcements 配列を含む JSON オブジェクトである必要があります。</value>
+  </data>
+  <data name="official_publisher_announcement_import_confirm" xml:space="preserve">
+    <value>インポートするとエディター内のお知らせが置き換えられます。未公開の変更は失われます。</value>
+  </data>
+  <data name="official_publisher_announcement_import_loaded" xml:space="preserve">
+    <value>多言語お知らせカタログをインポートしました：{0} 件。</value>
+  </data>
+  <data name="official_publisher_announcement_publish_hint" xml:space="preserve">
+    <value>「今回の公開に含める」を有効にすると、Announcements.json と server_info.json が一緒にアップロードされます。</value>
+  </data>
+  <data name="official_publisher_announcement_reload_tooltip" xml:space="preserve">
+    <value>オンラインのお知らせカタログをサーバーから再読み込みします（未公開の変更は破棄されます）。</value>
+  </data>
+  <data name="official_publisher_announcements_preview" xml:space="preserve">
+    <value>多言語お知らせカタログ：{0} 件。リモートハッシュ：{1}。</value>
+  </data>
+  <data name="official_publisher_plot_categories_note" xml:space="preserve">
+    <value>カテゴリは図解インデックスと一緒に公開されます。カテゴリが変更された場合、図解テンプレートが選択されていなくても図解インデックスが含まれます。</value>
+  </data>
+  <data name="official_publisher_geot_categories_note" xml:space="preserve">
+    <value>鉱物カテゴリは地質温圧計インデックスと一緒に公開されます。変更された場合、温圧計が選択されていなくても温圧計インデックスが含まれます。</value>
+  </data>
+  <data name="official_publisher_ann_id" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="official_publisher_ann_theme" xml:space="preserve">
+    <value>テーマカラー</value>
+  </data>
+  <data name="official_publisher_ann_date" xml:space="preserve">
+    <value>表示日付</value>
+  </data>
+  <data name="official_publisher_ann_priority" xml:space="preserve">
+    <value>優先度</value>
+  </data>
+  <data name="official_publisher_ann_start" xml:space="preserve">
+    <value>開始日</value>
+  </data>
+  <data name="official_publisher_ann_end" xml:space="preserve">
+    <value>終了日</value>
+  </data>
+  <data name="official_publisher_ann_tag" xml:space="preserve">
+    <value>アイブロウタグ</value>
+  </data>
+  <data name="official_publisher_ann_title" xml:space="preserve">
+    <value>タイトル *</value>
+  </data>
+  <data name="official_publisher_ann_body" xml:space="preserve">
+    <value>本文</value>
+  </data>
+  <data name="official_publisher_ann_action" xml:space="preserve">
+    <value>ボタンのテキスト</value>
+  </data>
+  <data name="official_publisher_ann_action_url" xml:space="preserve">
+    <value>ボタンのリンク</value>
+  </data>
+  <data name="official_publisher_ann_background" xml:space="preserve">
+    <value>背景</value>
+  </data>
+  <data name="official_publisher_ann_background_hint" xml:space="preserve">
+    <value>デフォルト：単色と装飾図形。カスタム：Web画像をカード全体に配置。</value>
+  </data>
+  <data name="official_publisher_ann_color" xml:space="preserve">
+    <value>カラー</value>
+  </data>
+  <data name="official_publisher_ann_polygon" xml:space="preserve">
+    <value>図形スタイル</value>
+  </data>
+  <data name="official_publisher_ann_show_polygons" xml:space="preserve">
+    <value>装飾ポリゴンを表示</value>
+  </data>
+  <data name="official_publisher_ann_image_url" xml:space="preserve">
+    <value>画像URL</value>
+  </data>
+  <data name="official_publisher_background_default" xml:space="preserve">
+    <value>デフォルトカラー</value>
+  </data>
+  <data name="official_publisher_background_image" xml:space="preserve">
+    <value>カスタム画像</value>
+  </data>
+  <data name="developer_settings" xml:space="preserve">
+    <value>開発者向けオプション</value>
+  </data>
+  <data name="reset_diagram_database" xml:space="preserve">
+    <value>図表データベースをリセット</value>
+  </data>
+  <data name="reset_diagram_database_hint" xml:space="preserve">
+    <value>ローカル図表テンプレートデータベースをクリア</value>
+  </data>
+  <data name="reset_geothermometer_database" xml:space="preserve">
+    <value>地質温度圧力計データベースをリセット</value>
+  </data>
+  <data name="reset_geothermometer_database_hint" xml:space="preserve">
+    <value>ローカル地質温度圧力計テンプレートデータベースをクリア</value>
+  </data>
+  <data name="clear" xml:space="preserve">
+    <value>クリア</value>
+  </data>
+  <data name="confirm_reset_diagram_database" xml:space="preserve">
+    <value>ローカル図表テンプレートデータベースをクリアしてもよろしいですか？クリアするとすべてのローカルデータが削除されます。この操作は取り消せません。</value>
+  </data>
+  <data name="confirm_reset_geothermometer_database" xml:space="preserve">
+    <value>ローカル地質温度圧力計テンプレートデータベースをクリアしてもよろしいですか？クリアするとすべてのローカルデータが削除されます。この操作は取り消せません。</value>
+  </data>
+  <data name="diagram_database_cleared" xml:space="preserve">
+    <value>ローカル図表データベースをクリアしました。</value>
+  </data>
+  <data name="geothermometer_database_cleared" xml:space="preserve">
+    <value>ローカル地質温度圧力計データベースをクリアしました。</value>
+  </data>
+  <data name="select_folder" xml:space="preserve">
+    <value>フォルダーを選択してください</value>
+  </data>
+  <data name="loading_geothermometer_module_ellipsis" xml:space="preserve">
+    <value>地質温度圧力計モジュールを読み込み中...</value>
+  </data>
+  <data name="unhandled_exception_occurred" xml:space="preserve">
+    <value>アプリケーションで未処理のエラーが発生しました：</value>
   </data>
 </root>

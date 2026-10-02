@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -176,9 +176,6 @@
   </data>
   <data name="ternary_phase_diagram_sum_must_be_one" xml:space="preserve">
     <value>Сумма тройной диаграммы должна быть равна 1.</value>
-  </data>
-  <data name="add_text_operation_canceled" xml:space="preserve">
-    <value>Добавление текста отменено.</value>
   </data>
   <data name="geo_btn_reset" xml:space="preserve">
     <value>Сброс</value>
@@ -942,9 +939,6 @@
   <data name="custom_path_not_set_configure_in_settings" xml:space="preserve">
     <value>Путь к пользовательской программе не задан, настройте в параметрах.</value>
   </data>
-  <data name="add_line_operation_canceled" xml:space="preserve">
-    <value>Добавление линии отменено.</value>
-  </data>
   <data name="show_major_ticks" xml:space="preserve">
     <value>Показать основные деления</value>
   </data>
@@ -1272,9 +1266,6 @@
   <data name="font_size" xml:space="preserve">
     <value>Размер шрифта</value>
   </data>
-  <data name="close_file" xml:space="preserve">
-    <value>Закрыть файл</value>
-  </data>
   <data name="open_diagram_template" xml:space="preserve">
     <value>Открыть шаблон диаграммы</value>
   </data>
@@ -1420,9 +1411,6 @@
   <data name="geo_hint_select_thermometer" xml:space="preserve">
     <value>Выберите геотермобарометр на левой панели</value>
   </data>
-  <data name="QuitEdit" xml:space="preserve">
-    <value>Выйти из редактирования</value>
-  </data>
   <data name="popup_diagram_window" xml:space="preserve">
     <value>Всплывающее окно диаграммы</value>
   </data>
@@ -1434,9 +1422,6 @@
   </data>
   <data name="unsaved_template_changes_confirm" xml:space="preserve">
     <value>В шаблоне есть несохраненные изменения, сохранить?</value>
-  </data>
-  <data name="save_changes" xml:space="preserve">
-    <value>Сохранить изменения</value>
   </data>
   <data name="MarkerShape_OpenTriangleDown" xml:space="preserve">
     <value>Пустой треугольник вниз</value>
@@ -1561,9 +1546,6 @@
   <data name="x_coordinate" xml:space="preserve">
     <value>Координата X</value>
   </data>
-  <data name="geo_btn_help_confirm" xml:space="preserve">
-    <value>OK</value>
-  </data>
   <data name="geo_dialog_exit_calculation" xml:space="preserve">
     <value>Выйти из текущего экрана расчёта?</value>
   </data>
@@ -1638,9 +1620,6 @@
   </data>
   <data name="geo_script_result" xml:space="preserve">
     <value>Результат:</value>
-  </data>
-  <data name="edit_menu_bar_item" xml:space="preserve">
-    <value>Редактировать пункт меню</value>
   </data>
   <data name="confirm_clear_all_data" xml:space="preserve">
     <value>Очистить данные таблицы (включая точки графика)?</value>
@@ -1977,6 +1956,12 @@
   <data name="geo_msg_batch_update_confirm" xml:space="preserve">
     <value>Обнаружено обновляемых геотермобарометров: {0}. Обновление перезапишет локальное содержимое. Продолжить?</value>
   </data>
+  <data name="geo_msg_batch_sync_all_confirm" xml:space="preserve">
+    <value>Обнаружено {0} неустановленных и {1} устаревших шаблонов. Скачать и обновить все?</value>
+  </data>
+  <data name="geo_msg_batch_sync_tooltip" xml:space="preserve">
+    <value>Обнаружено {0} неустановленных и {1} устаревших шаблонов. Нажмите, чтобы синхронизировать все.</value>
+  </data>
   <data name="geo_help_no_doc_text" xml:space="preserve">
     <value>Справочный документ отсутствует.</value>
   </data>
@@ -2258,36 +2243,6 @@
   <data name="parsing_table_and_refreshing_layer_please_wait" xml:space="preserve">
     <value>Анализ таблицы и обновление слоя, пожалуйста, подождите...</value>
   </data>
-  <data name="delete_selected_drawing_objects" xml:space="preserve">
-    <value>Удалить выбранные объекты чертежа?</value>
-  </data>
-  <data name="delete_selected_data_and_drawing_objects" xml:space="preserve">
-    <value>Удалить выбранные данные и объекты чертежа?</value>
-  </data>
-  <data name="delete_all" xml:space="preserve">
-    <value>Удалить все</value>
-  </data>
-  <data name="keep_data" xml:space="preserve">
-    <value>Сохранить данные</value>
-  </data>
-  <data name="cancel_delete" xml:space="preserve">
-    <value>Отменить удаление</value>
-  </data>
-  <data name="selected_data_and_drawing_objects_deleted" xml:space="preserve">
-    <value>Выбранные данные и объекты чертежа были удалены.</value>
-  </data>
-  <data name="selected_drawing_objects_deleted_data_kept" xml:space="preserve">
-    <value>Выбранные объекты чертежа были удалены, данные сохранены.</value>
-  </data>
-  <data name="no_source_data_found_only_drawing_objects_deleted" xml:space="preserve">
-    <value>Исходные данные не найдены; удалены только объекты чертежа.</value>
-  </data>
-  <data name="no_source_data_found" xml:space="preserve">
-    <value>Исходные данные не найдены.</value>
-  </data>
-  <data name="delete_data_failed" xml:space="preserve">
-    <value>Не удалось удалить данные:</value>
-  </data>
   <data name="enable_data_to_drawing_object_linkage" xml:space="preserve">
     <value>Включить связь данных с объектами чертежа</value>
   </data>
@@ -2389,9 +2344,6 @@
   </data>
   <data name="at_least_two_languages_swap" xml:space="preserve">
     <value>Для обмена требуется как минимум два языка.</value>
-  </data>
-  <data name="confirm_delete_language" xml:space="preserve">
-    <value>Удалить язык «{0}»? Это действие нельзя отменить.</value>
   </data>
   <data name="cos_credentials_required" xml:space="preserve">
     <value>Сначала настройте и сохраните учётные данные COS.</value>
@@ -2675,9 +2627,6 @@
   <data name="enable_normalization" xml:space="preserve">
     <value>Включить нормализацию</value>
   </data>
-  <data name="enter_language_code_prompt" xml:space="preserve">
-    <value>Введите код языка (например, fr-FR):</value>
-  </data>
   <data name="enter_plot_mode" xml:space="preserve">
     <value>Войти в режим построения</value>
   </data>
@@ -2774,9 +2723,6 @@
   <data name="object_selection_trigger" xml:space="preserve">
     <value>Способ выбора объектов</value>
   </data>
-  <data name="official_publisher_announcement_edit_hint" xml:space="preserve">
-    <value>Редактируйте объявление здесь. После публикации оно появится в области объявлений на главной странице.</value>
-  </data>
   <data name="official_publisher_announcement_empty" xml:space="preserve">
     <value>(пусто)</value>
   </data>
@@ -2792,14 +2738,8 @@
   <data name="official_publisher_announcement_preview" xml:space="preserve">
     <value>Текущий черновик:</value>
   </data>
-  <data name="official_publisher_announcement_section" xml:space="preserve">
-    <value>Объявление</value>
-  </data>
   <data name="official_publisher_announcement_up_to_date" xml:space="preserve">
     <value>На сервере уже актуально</value>
-  </data>
-  <data name="official_publisher_confirm" xml:space="preserve">
-    <value>Опубликовать официальное содержимое в COS?</value>
   </data>
   <data name="official_publisher_dev_mode_required" xml:space="preserve">
     <value>Для публикации требуется режим разработчика.</value>
@@ -2831,12 +2771,6 @@
   <data name="official_publisher_home_edit_group" xml:space="preserve">
     <value>Редактировать группу</value>
   </data>
-  <data name="official_publisher_home_groups" xml:space="preserve">
-    <value>Группы</value>
-  </data>
-  <data name="official_publisher_home_link_items" xml:space="preserve">
-    <value>Ссылки</value>
-  </data>
   <data name="official_publisher_home_links_draft_saved" xml:space="preserve">
     <value>Черновик ссылок главной страницы сохранён локально.</value>
   </data>
@@ -2864,23 +2798,8 @@
   <data name="official_publisher_home_select_group" xml:space="preserve">
     <value>Сначала выберите группу.</value>
   </data>
-  <data name="official_publisher_include_announcement" xml:space="preserve">
-    <value>Объявление</value>
-  </data>
-  <data name="official_publisher_include_diagrams" xml:space="preserve">
-    <value>Диаграммы</value>
-  </data>
-  <data name="official_publisher_include_geothermometers" xml:space="preserve">
-    <value>Геотермобарометры</value>
-  </data>
-  <data name="official_publisher_include_home_links" xml:space="preserve">
-    <value>Включить ссылки главной страницы</value>
-  </data>
   <data name="official_publisher_new" xml:space="preserve">
     <value>Новое</value>
-  </data>
-  <data name="official_publisher_progress_done" xml:space="preserve">
-    <value>Публикация завершена.</value>
   </data>
   <data name="official_publisher_progress_exporting_announcement" xml:space="preserve">
     <value>Экспорт объявления...</value>
@@ -2893,15 +2812,6 @@
   </data>
   <data name="official_publisher_progress_exporting_home_links" xml:space="preserve">
     <value>Экспорт ссылок главной страницы...</value>
-  </data>
-  <data name="official_publisher_progress_uploading" xml:space="preserve">
-    <value>Загрузка в COS ({0}/{1})...</value>
-  </data>
-  <data name="official_publisher_progress_uploading_cos" xml:space="preserve">
-    <value>Загрузка в COS...</value>
-  </data>
-  <data name="official_publisher_publish_cos" xml:space="preserve">
-    <value>Опубликовать в COS</value>
   </data>
   <data name="official_publisher_ready" xml:space="preserve">
     <value>Официальный издатель готов.</value>
@@ -2947,9 +2857,6 @@
   </data>
   <data name="select_all" xml:space="preserve">
     <value>Выбрать всё</value>
-  </data>
-  <data name="select_language_to_delete" xml:space="preserve">
-    <value>Выберите язык для удаления:</value>
   </data>
   <data name="shortcut_action_add_arrow_desc" xml:space="preserve">
     <value>Вставить объект «стрелка».</value>
@@ -4096,9 +4003,6 @@
   <data name="black_body_radiation_calc_input" xml:space="preserve">
     <value>Температура</value>
   </data>
-  <data name="black_body_radiation_calc_temperature" xml:space="preserve">
-    <value>T</value>
-  </data>
   <data name="black_body_radiation_calc_reset" xml:space="preserve">
     <value>Сброс</value>
   </data>
@@ -4147,14 +4051,8 @@
   <data name="periodic_table_widget_desc" xml:space="preserve">
     <value>Интерактивная таблица: быстрый просмотр распространённости в коре, молекулярных масс оксидов и др</value>
   </data>
-  <data name="periodic_table_widget_hint" xml:space="preserve">
-    <value>Нажмите элемент, чтобы увидеть геохимические свойства. Фильтры: REE, HFSE, LILE, PGE и классы Гольдшмидта.</value>
-  </data>
   <data name="periodic_table_hint_select" xml:space="preserve">
     <value>Нажмите элемент, чтобы увидеть свойства</value>
-  </data>
-  <data name="periodic_table_status_selected" xml:space="preserve">
-    <value>Выбрано: {0} ({1})</value>
   </data>
   <data name="periodic_table_search_tooltip" xml:space="preserve">
     <value>Поиск по символу, английскому названию или атомному номеру</value>
@@ -4167,9 +4065,6 @@
   </data>
   <data name="periodic_table_clear_group" xml:space="preserve">
     <value>Сбросить фильтр</value>
-  </data>
-  <data name="periodic_table_fblock_note" xml:space="preserve">
-    <value>Нижние строки: лантаноиды (La–Lu) и актиноиды (Ac–Lr).</value>
   </data>
   <data name="periodic_table_label_lanthanides" xml:space="preserve">
     <value>Лантаноиды</value>
@@ -4272,5 +4167,233 @@
   </data>
   <data name="periodic_table_group_atmophile" xml:space="preserve">
     <value>Атмофильные</value>
+  </data>
+  <data name="official_publisher_section_targets" xml:space="preserve">
+    <value>Цели публикации</value>
+  </data>
+  <data name="official_publisher_section_announcement" xml:space="preserve">
+    <value>Объявления и версии</value>
+  </data>
+  <data name="official_publisher_include_this" xml:space="preserve">
+    <value>Включить в текущую публикацию</value>
+  </data>
+  <data name="official_publisher_targets_hint" xml:space="preserve">
+    <value>Одни и те же файлы загружаются на каждый включенный сервер по порядку в списке. Новый публичный URL станет доступен пользователям напрямую только после добавления во встроенный список клиента и выпуска обновления. URL, сохраненные только здесь, обнаруживаются после обращения к любому существующему серверу.</value>
+  </data>
+  <data name="official_publisher_add_target" xml:space="preserve">
+    <value>Добавить сервер</value>
+  </data>
+  <data name="official_publisher_move_up" xml:space="preserve">
+    <value>Вверх</value>
+  </data>
+  <data name="official_publisher_move_down" xml:space="preserve">
+    <value>Вниз</value>
+  </data>
+  <data name="official_publisher_target_name" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="official_publisher_public_base_url" xml:space="preserve">
+    <value>Публичный базовый URL</value>
+  </data>
+  <data name="official_publisher_public_base_url_hint" xml:space="preserve">
+    <value>Пример: https://bucket.cos.region.myqcloud.com без косой черты на конце</value>
+  </data>
+  <data name="official_publisher_enabled" xml:space="preserve">
+    <value>Включено</value>
+  </data>
+  <data name="official_publisher_no_target" xml:space="preserve">
+    <value>Сначала добавьте сервер.</value>
+  </data>
+  <data name="official_publisher_bucket_required" xml:space="preserve">
+    <value>Необходимо указать Bucket.</value>
+  </data>
+  <data name="official_publisher_public_url_required" xml:space="preserve">
+    <value>Необходимо указать публичный базовый URL.</value>
+  </data>
+  <data name="official_publisher_no_enabled_target" xml:space="preserve">
+    <value>Нет включенных серверов с полными учетными данными.</value>
+  </data>
+  <data name="official_publisher_confirm_targets" xml:space="preserve">
+    <value>Опубликовать это содержимое на {0} включенных серверах?</value>
+  </data>
+  <data name="official_publisher_progress_server" xml:space="preserve">
+    <value>Загрузка на {0} ({1}/{2})</value>
+  </data>
+  <data name="official_publisher_upload_target_failed" xml:space="preserve">
+    <value>Ошибка {0}: {1}</value>
+  </data>
+  <data name="official_publisher_upload_all_failed" xml:space="preserve">
+    <value>Не удалось загрузить ни на один включенный сервер.</value>
+  </data>
+  <data name="official_publisher_upload_partial" xml:space="preserve">
+    <value>На некоторые серверы загрузка не удалась. Успешные загрузки сохранены.</value>
+  </data>
+  <data name="official_publisher_upload_all_ok" xml:space="preserve">
+    <value>Опубликовано на всех включенных серверах.</value>
+  </data>
+  <data name="official_publisher_enabled_servers_label" xml:space="preserve">
+    <value>Включенные серверы</value>
+  </data>
+  <data name="official_publisher_default_target_name" xml:space="preserve">
+    <value>Гонконг</value>
+  </data>
+  <data name="official_publisher_new_target_name" xml:space="preserve">
+    <value>Новый сервер</value>
+  </data>
+  <data name="official_publisher_publish_targets" xml:space="preserve">
+    <value>Опубликовать на включенных серверах</value>
+  </data>
+  <data name="official_publisher_latest_version_label" xml:space="preserve">
+    <value>Последняя версия</value>
+  </data>
+  <data name="official_publisher_latest_version_hint" xml:space="preserve">
+    <value>Записывается в latest_app_version файла server_info.json</value>
+  </data>
+  <data name="official_publisher_latest_version_pending" xml:space="preserve">
+    <value>Последняя версия ожидает публикации</value>
+  </data>
+  <data name="official_publisher_latest_version_up_to_date" xml:space="preserve">
+    <value>Последняя версия совпадает с сервером</value>
+  </data>
+  <data name="official_publisher_latest_version_empty" xml:space="preserve">
+    <value>Последняя версия: (пусто)</value>
+  </data>
+  <data name="official_publisher_latest_version_preview" xml:space="preserve">
+    <value>Последняя версия: {0}</value>
+  </data>
+  <data name="official_publisher_legacy_announcement" xml:space="preserve">
+    <value>Устаревшее текстовое объявление</value>
+  </data>
+  <data name="official_publisher_announcements_catalog" xml:space="preserve">
+    <value>Каталог объявлений (многоязычный)</value>
+  </data>
+  <data name="official_publisher_announcement_add" xml:space="preserve">
+    <value>Добавить объявление</value>
+  </data>
+  <data name="official_publisher_announcement_import" xml:space="preserve">
+    <value>Импорт</value>
+  </data>
+  <data name="official_publisher_announcement_import_tooltip" xml:space="preserve">
+    <value>Импортировать JSON-файл каталога объявлений и заменить текущее содержимое редактора.</value>
+  </data>
+  <data name="official_publisher_announcement_import_invalid" xml:space="preserve">
+    <value>Этот файл не является корректным каталогом объявлений. Он должен быть объектом JSON с массивом announcements.</value>
+  </data>
+  <data name="official_publisher_announcement_import_confirm" xml:space="preserve">
+    <value>Импорт заменит объявления в редакторе. Неопубликованные изменения будут потеряны.</value>
+  </data>
+  <data name="official_publisher_announcement_import_loaded" xml:space="preserve">
+    <value>Импортирован каталог объявлений: {0} записей.</value>
+  </data>
+  <data name="official_publisher_announcement_publish_hint" xml:space="preserve">
+    <value>Если этот раздел включен, Announcements.json и server_info.json загружаются вместе.</value>
+  </data>
+  <data name="official_publisher_announcement_reload_tooltip" xml:space="preserve">
+    <value>Перезагрузить каталог объявлений с сервера (неопубликованные правки будут сброшены).</value>
+  </data>
+  <data name="official_publisher_announcements_preview" xml:space="preserve">
+    <value>Каталог объявлений: {0} записей. Удаленный хэш: {1}.</value>
+  </data>
+  <data name="official_publisher_plot_categories_note" xml:space="preserve">
+    <value>Категории публикуются вместе с индексом диаграмм. При изменении категорий индекс диаграмм включается, даже если диаграммы не выбраны.</value>
+  </data>
+  <data name="official_publisher_geot_categories_note" xml:space="preserve">
+    <value>Минеральные категории публикуются вместе с индексом геотермобарометров. При изменении этот индекс включается, даже если геотермобарометры не выбраны.</value>
+  </data>
+  <data name="official_publisher_ann_id" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="official_publisher_ann_theme" xml:space="preserve">
+    <value>Тема</value>
+  </data>
+  <data name="official_publisher_ann_date" xml:space="preserve">
+    <value>Дата отображения</value>
+  </data>
+  <data name="official_publisher_ann_priority" xml:space="preserve">
+    <value>Приоритет</value>
+  </data>
+  <data name="official_publisher_ann_start" xml:space="preserve">
+    <value>Дата начала</value>
+  </data>
+  <data name="official_publisher_ann_end" xml:space="preserve">
+    <value>Дата окончания</value>
+  </data>
+  <data name="official_publisher_ann_tag" xml:space="preserve">
+    <value>Верхняя метка</value>
+  </data>
+  <data name="official_publisher_ann_title" xml:space="preserve">
+    <value>Заголовок *</value>
+  </data>
+  <data name="official_publisher_ann_body" xml:space="preserve">
+    <value>Текст</value>
+  </data>
+  <data name="official_publisher_ann_action" xml:space="preserve">
+    <value>Текст кнопки</value>
+  </data>
+  <data name="official_publisher_ann_action_url" xml:space="preserve">
+    <value>Ссылка кнопки</value>
+  </data>
+  <data name="official_publisher_ann_background" xml:space="preserve">
+    <value>Фон</value>
+  </data>
+  <data name="official_publisher_ann_background_hint" xml:space="preserve">
+    <value>По умолчанию используется один цвет и декоративные фигуры. Пользовательский заполняет карточку изображением по URL.</value>
+  </data>
+  <data name="official_publisher_ann_color" xml:space="preserve">
+    <value>Цвет</value>
+  </data>
+  <data name="official_publisher_ann_polygon" xml:space="preserve">
+    <value>Форма фигуры</value>
+  </data>
+  <data name="official_publisher_ann_show_polygons" xml:space="preserve">
+    <value>Показывать декоративные многоугольники</value>
+  </data>
+  <data name="official_publisher_ann_image_url" xml:space="preserve">
+    <value>URL изображения</value>
+  </data>
+  <data name="official_publisher_background_default" xml:space="preserve">
+    <value>Сплошной цвет</value>
+  </data>
+  <data name="official_publisher_background_image" xml:space="preserve">
+    <value>Пользовательское изображение</value>
+  </data>
+  <data name="developer_settings" xml:space="preserve">
+    <value>Параметры разработчика</value>
+  </data>
+  <data name="reset_diagram_database" xml:space="preserve">
+    <value>Сбросить базу данных диаграмм</value>
+  </data>
+  <data name="reset_diagram_database_hint" xml:space="preserve">
+    <value>Очистить локальную базу данных шаблонов диаграмм</value>
+  </data>
+  <data name="reset_geothermometer_database" xml:space="preserve">
+    <value>Сбросить базу данных геотермобарометров</value>
+  </data>
+  <data name="reset_geothermometer_database_hint" xml:space="preserve">
+    <value>Очистить локальную базу данных шаблонов геотермобарометров</value>
+  </data>
+  <data name="clear" xml:space="preserve">
+    <value>Очистить</value>
+  </data>
+  <data name="confirm_reset_diagram_database" xml:space="preserve">
+    <value>Вы уверены, что хотите очистить локальную базу данных шаблонов диаграмм? Все локальные данные будут удалены. Это действие необратимо.</value>
+  </data>
+  <data name="confirm_reset_geothermometer_database" xml:space="preserve">
+    <value>Вы уверены, что хотите очистить локальную базу данных шаблонов геотермобарометров? Все локальные данные будут удалены. Это действие необратимо.</value>
+  </data>
+  <data name="diagram_database_cleared" xml:space="preserve">
+    <value>Локальная база данных диаграмм успешно очищена.</value>
+  </data>
+  <data name="geothermometer_database_cleared" xml:space="preserve">
+    <value>Локальная база данных геотермобарометров успешно очищена.</value>
+  </data>
+  <data name="select_folder" xml:space="preserve">
+    <value>Пожалуйста, выберите папку</value>
+  </data>
+  <data name="loading_geothermometer_module_ellipsis" xml:space="preserve">
+    <value>Загрузка модуля геотермометра...</value>
+  </data>
+  <data name="unhandled_exception_occurred" xml:space="preserve">
+    <value>В приложении произошла необработанная ошибка:</value>
   </data>
 </root>

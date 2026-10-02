@@ -96,7 +96,7 @@ namespace GeoChemistryNexus
                     });
 
                     // 阶段 4.1: 预加载温压计模块（提前实例化 GeothermometerPageView 单例，避免首次进入卡顿）
-                    startViewModel.UpdateProgress(75, LanguageService.Instance["loading_drawing_module_ellipsis"]);
+                    startViewModel.UpdateProgress(75, LanguageService.Instance["loading_geothermometer_module_ellipsis"] ?? "正在加载温压计模块...");
                     await this.Dispatcher.InvokeAsync(() =>
                     {
                         GeothermometerPageView.GetPage();
@@ -206,7 +206,7 @@ namespace GeoChemistryNexus
             string? stagingArg = args.FirstOrDefault(a => a.StartsWith("--staging-dir=", StringComparison.OrdinalIgnoreCase));
             string? stagingDir = null;
             if (!string.IsNullOrEmpty(stagingArg))
-                stagingDir = stagingArg.Substring("--staging-dir=".Length).Trim('"');
+                stagingDir = stagingArg["--staging-dir=".Length..].Trim('"');
 
             LanguageService.InitializeLanguage();
 
@@ -320,8 +320,9 @@ namespace GeoChemistryNexus
         {
             LogException(e.Exception, "DispatcherUnhandledException");
             
+            string errorPrefix = LanguageService.Instance["unhandled_exception_occurred"] ?? "应用程序发生未处理错误：";
             MessageBox.Show(
-                $"{LanguageService.Instance["error_occurred_during_startup"]}{e.Exception.Message}\r\n\r\n{LanguageService.Instance["see_error_log_for_details"]}",
+                $"{errorPrefix}{e.Exception.Message}\r\n\r\n{LanguageService.Instance["see_error_log_for_details"]}",
                 LanguageService.Instance["error"],
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
@@ -353,7 +354,7 @@ namespace GeoChemistryNexus
         /// <summary>
         /// 记录异常到日志文件
         /// </summary>
-        private void LogException(Exception ex, string source)
+        private static void LogException(Exception ex, string source)
         {
             try
             {

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -176,9 +176,6 @@
   </data>
   <data name="ternary_phase_diagram_sum_must_be_one" xml:space="preserve">
     <value>三元相圖之和必須為 1.</value>
-  </data>
-  <data name="add_text_operation_canceled" xml:space="preserve">
-    <value>新增文字操作已取消.</value>
   </data>
   <data name="geo_btn_reset" xml:space="preserve">
     <value>重設</value>
@@ -942,9 +939,6 @@
   <data name="custom_path_not_set_configure_in_settings" xml:space="preserve">
     <value>未設定自訂程式路徑，請在設定中配置。</value>
   </data>
-  <data name="add_line_operation_canceled" xml:space="preserve">
-    <value>新增線條操作已取消.</value>
-  </data>
   <data name="show_major_ticks" xml:space="preserve">
     <value>顯示主刻度</value>
   </data>
@@ -1272,9 +1266,6 @@
   <data name="font_size" xml:space="preserve">
     <value>字型大小</value>
   </data>
-  <data name="close_file" xml:space="preserve">
-    <value>關閉檔案</value>
-  </data>
   <data name="open_diagram_template" xml:space="preserve">
     <value>開啟圖解範本</value>
   </data>
@@ -1420,9 +1411,6 @@
   <data name="geo_hint_select_thermometer" xml:space="preserve">
     <value>請從左側面板選擇溫壓計</value>
   </data>
-  <data name="QuitEdit" xml:space="preserve">
-    <value>退出編輯</value>
-  </data>
   <data name="popup_diagram_window" xml:space="preserve">
     <value>彈出圖解視窗</value>
   </data>
@@ -1434,9 +1422,6 @@
   </data>
   <data name="unsaved_template_changes_confirm" xml:space="preserve">
     <value>目前範本有未儲存的內容，是否儲存？</value>
-  </data>
-  <data name="save_changes" xml:space="preserve">
-    <value>儲存更改</value>
   </data>
   <data name="MarkerShape_OpenTriangleDown" xml:space="preserve">
     <value>空心下三角</value>
@@ -1561,9 +1546,6 @@
   <data name="x_coordinate" xml:space="preserve">
     <value>X 座標</value>
   </data>
-  <data name="geo_btn_help_confirm" xml:space="preserve">
-    <value>確定</value>
-  </data>
   <data name="geo_dialog_exit_calculation" xml:space="preserve">
     <value>是否退出目前計算介面？</value>
   </data>
@@ -1638,9 +1620,6 @@
   </data>
   <data name="geo_script_result" xml:space="preserve">
     <value>結果：</value>
-  </data>
-  <data name="edit_menu_bar_item" xml:space="preserve">
-    <value>編輯選單欄項</value>
   </data>
   <data name="confirm_clear_all_data" xml:space="preserve">
     <value>是否清除表格資料（包括繪圖資料點）？</value>
@@ -1976,6 +1955,12 @@
   </data>
   <data name="geo_msg_batch_update_confirm" xml:space="preserve">
     <value>偵測到 {0} 個可更新的溫壓計，更新將覆蓋本地內容，是否繼續？</value>
+  </data>
+  <data name="geo_msg_batch_sync_all_confirm" xml:space="preserve">
+    <value>偵測到 {0} 個未下載範本與 {1} 個可更新範本，是否批次下載與更新？</value>
+  </data>
+  <data name="geo_msg_batch_sync_tooltip" xml:space="preserve">
+    <value>偵測到 {0} 個未下載範本與 {1} 個可更新範本，點擊全部更新。</value>
   </data>
   <data name="geo_help_no_doc_text" xml:space="preserve">
     <value>目前沒有說明檔案。</value>
@@ -2447,36 +2432,6 @@
   <data name="parsing_table_and_refreshing_layer_please_wait" xml:space="preserve">
     <value>正在解析表格並刷新圖層，請稍候...</value>
   </data>
-  <data name="delete_selected_drawing_objects" xml:space="preserve">
-    <value>是否刪除選中的繪圖物件？</value>
-  </data>
-  <data name="delete_selected_data_and_drawing_objects" xml:space="preserve">
-    <value>是否刪除選中的資料及繪圖物件？</value>
-  </data>
-  <data name="delete_all" xml:space="preserve">
-    <value>全部刪除</value>
-  </data>
-  <data name="keep_data" xml:space="preserve">
-    <value>保留資料</value>
-  </data>
-  <data name="cancel_delete" xml:space="preserve">
-    <value>取消刪除</value>
-  </data>
-  <data name="selected_data_and_drawing_objects_deleted" xml:space="preserve">
-    <value>已刪除選中的資料及繪圖物件。</value>
-  </data>
-  <data name="selected_drawing_objects_deleted_data_kept" xml:space="preserve">
-    <value>已刪除選中的繪圖物件，已保留資料。</value>
-  </data>
-  <data name="no_source_data_found_only_drawing_objects_deleted" xml:space="preserve">
-    <value>未找到可刪除的來源資料，已僅刪除繪圖物件。</value>
-  </data>
-  <data name="no_source_data_found" xml:space="preserve">
-    <value>未找到可刪除的來源資料。</value>
-  </data>
-  <data name="delete_data_failed" xml:space="preserve">
-    <value>刪除資料失敗：</value>
-  </data>
   <data name="enable_data_to_drawing_object_linkage" xml:space="preserve">
     <value>啟用資料到繪圖物件聯動</value>
   </data>
@@ -2578,9 +2533,6 @@
   </data>
   <data name="at_least_two_languages_swap" xml:space="preserve">
     <value>至少需要兩種語言才能交換。</value>
-  </data>
-  <data name="confirm_delete_language" xml:space="preserve">
-    <value>確定要刪除語言「{0}」嗎？此操作無法復原。</value>
   </data>
   <data name="cos_credentials_required" xml:space="preserve">
     <value>請先設定並儲存 COS 憑證。</value>
@@ -2879,9 +2831,6 @@
   <data name="enable_normalization" xml:space="preserve">
     <value>啟用標準化</value>
   </data>
-  <data name="enter_language_code_prompt" xml:space="preserve">
-    <value>請輸入語言代碼（例如 fr-FR）：</value>
-  </data>
   <data name="enter_plot_mode" xml:space="preserve">
     <value>進入繪圖模式</value>
   </data>
@@ -2987,9 +2936,6 @@
   <data name="object_selection_trigger" xml:space="preserve">
     <value>選取物件觸發方式</value>
   </data>
-  <data name="official_publisher_announcement_edit_hint" xml:space="preserve">
-    <value>在此編輯公告內容，發布後將在首頁「公告」區域顯示。</value>
-  </data>
   <data name="official_publisher_announcement_empty" xml:space="preserve">
     <value>（空）</value>
   </data>
@@ -3005,14 +2951,8 @@
   <data name="official_publisher_announcement_preview" xml:space="preserve">
     <value>目前草稿：</value>
   </data>
-  <data name="official_publisher_announcement_section" xml:space="preserve">
-    <value>公告</value>
-  </data>
   <data name="official_publisher_announcement_up_to_date" xml:space="preserve">
     <value>伺服器已是最新</value>
-  </data>
-  <data name="official_publisher_confirm" xml:space="preserve">
-    <value>確認將官方內容發布至 COS？</value>
   </data>
   <data name="official_publisher_dev_mode_required" xml:space="preserve">
     <value>發布官方範本需要開啟開發者模式。</value>
@@ -3044,12 +2984,6 @@
   <data name="official_publisher_home_edit_group" xml:space="preserve">
     <value>編輯分組</value>
   </data>
-  <data name="official_publisher_home_groups" xml:space="preserve">
-    <value>分組</value>
-  </data>
-  <data name="official_publisher_home_link_items" xml:space="preserve">
-    <value>連結</value>
-  </data>
   <data name="official_publisher_home_links_draft_saved" xml:space="preserve">
     <value>首頁連結草稿已儲存至本地。</value>
   </data>
@@ -3077,23 +3011,8 @@
   <data name="official_publisher_home_select_group" xml:space="preserve">
     <value>請先選擇一個分組。</value>
   </data>
-  <data name="official_publisher_include_announcement" xml:space="preserve">
-    <value>公告</value>
-  </data>
-  <data name="official_publisher_include_diagrams" xml:space="preserve">
-    <value>圖解</value>
-  </data>
-  <data name="official_publisher_include_geothermometers" xml:space="preserve">
-    <value>溫壓計</value>
-  </data>
-  <data name="official_publisher_include_home_links" xml:space="preserve">
-    <value>包含首頁連結</value>
-  </data>
   <data name="official_publisher_new" xml:space="preserve">
     <value>新增</value>
-  </data>
-  <data name="official_publisher_progress_done" xml:space="preserve">
-    <value>發布完成。</value>
   </data>
   <data name="official_publisher_progress_exporting_announcement" xml:space="preserve">
     <value>正在匯出公告...</value>
@@ -3106,15 +3025,6 @@
   </data>
   <data name="official_publisher_progress_exporting_home_links" xml:space="preserve">
     <value>正在匯出首頁連結...</value>
-  </data>
-  <data name="official_publisher_progress_uploading" xml:space="preserve">
-    <value>正在上傳至 COS ({0}/{1})...</value>
-  </data>
-  <data name="official_publisher_progress_uploading_cos" xml:space="preserve">
-    <value>正在上傳至 COS...</value>
-  </data>
-  <data name="official_publisher_publish_cos" xml:space="preserve">
-    <value>一鍵發布至 COS</value>
   </data>
   <data name="official_publisher_ready" xml:space="preserve">
     <value>官方發布器已就緒。</value>
@@ -3160,9 +3070,6 @@
   </data>
   <data name="select_all" xml:space="preserve">
     <value>全選</value>
-  </data>
-  <data name="select_language_to_delete" xml:space="preserve">
-    <value>請選擇要刪除的語言：</value>
   </data>
   <data name="single_click" xml:space="preserve">
     <value>單擊</value>
@@ -4046,9 +3953,6 @@
   <data name="black_body_radiation_calc_input" xml:space="preserve">
     <value>溫度</value>
   </data>
-  <data name="black_body_radiation_calc_temperature" xml:space="preserve">
-    <value>T</value>
-  </data>
   <data name="black_body_radiation_calc_reset" xml:space="preserve">
     <value>重設</value>
   </data>
@@ -4097,14 +4001,8 @@
   <data name="periodic_table_widget_desc" xml:space="preserve">
     <value>互動式週期表：地殼豐度，氧化物分子量等快捷查詢</value>
   </data>
-  <data name="periodic_table_widget_hint" xml:space="preserve">
-    <value>點擊元素查看地球化學屬性。可用分組篩選高亮 REE、HFSE、LILE、PGE 及 Goldschmidt 分類。</value>
-  </data>
   <data name="periodic_table_hint_select" xml:space="preserve">
     <value>點擊元素查看屬性</value>
-  </data>
-  <data name="periodic_table_status_selected" xml:space="preserve">
-    <value>已選中：{0}（{1}）</value>
   </data>
   <data name="periodic_table_search_tooltip" xml:space="preserve">
     <value>按元素符號、英文名或原子序數搜尋</value>
@@ -4117,9 +4015,6 @@
   </data>
   <data name="periodic_table_clear_group" xml:space="preserve">
     <value>清除篩選</value>
-  </data>
-  <data name="periodic_table_fblock_note" xml:space="preserve">
-    <value>底部兩行：鑭系（La–Lu）與錒系（Ac–Lr）。</value>
   </data>
   <data name="periodic_table_label_lanthanides" xml:space="preserve">
     <value>鑭系</value>
@@ -4222,5 +4117,233 @@
   </data>
   <data name="periodic_table_group_atmophile" xml:space="preserve">
     <value>親氣</value>
+  </data>
+  <data name="official_publisher_section_targets" xml:space="preserve">
+    <value>發布目標</value>
+  </data>
+  <data name="official_publisher_section_announcement" xml:space="preserve">
+    <value>公告與版本</value>
+  </data>
+  <data name="official_publisher_include_this" xml:space="preserve">
+    <value>本次發布包含此項</value>
+  </data>
+  <data name="official_publisher_targets_hint" xml:space="preserve">
+    <value>同一份內容會按清單順序依次上傳到已啟用的伺服器。國內使用者要直接連上新位址，還需要把該公共根位址寫進客戶端內建清單並發版；只寫在這裡的新位址，要等使用者連上任意一台已有伺服器後才能被發現。</value>
+  </data>
+  <data name="official_publisher_add_target" xml:space="preserve">
+    <value>新增伺服器</value>
+  </data>
+  <data name="official_publisher_move_up" xml:space="preserve">
+    <value>上移</value>
+  </data>
+  <data name="official_publisher_move_down" xml:space="preserve">
+    <value>下移</value>
+  </data>
+  <data name="official_publisher_target_name" xml:space="preserve">
+    <value>名稱</value>
+  </data>
+  <data name="official_publisher_public_base_url" xml:space="preserve">
+    <value>公共根位址</value>
+  </data>
+  <data name="official_publisher_public_base_url_hint" xml:space="preserve">
+    <value>例如 https://bucket.cos.region.myqcloud.com，不要以斜線結尾</value>
+  </data>
+  <data name="official_publisher_enabled" xml:space="preserve">
+    <value>啟用</value>
+  </data>
+  <data name="official_publisher_no_target" xml:space="preserve">
+    <value>請先新增一台伺服器。</value>
+  </data>
+  <data name="official_publisher_bucket_required" xml:space="preserve">
+    <value>請填寫 Bucket。</value>
+  </data>
+  <data name="official_publisher_public_url_required" xml:space="preserve">
+    <value>請填寫公共根位址。</value>
+  </data>
+  <data name="official_publisher_no_enabled_target" xml:space="preserve">
+    <value>沒有已啟用且設定完整的伺服器。</value>
+  </data>
+  <data name="official_publisher_confirm_targets" xml:space="preserve">
+    <value>將本次內容發布到 {0} 台已啟用的伺服器？</value>
+  </data>
+  <data name="official_publisher_progress_server" xml:space="preserve">
+    <value>正在上傳到 {0}（{1}/{2}）</value>
+  </data>
+  <data name="official_publisher_upload_target_failed" xml:space="preserve">
+    <value>{0} 上傳失敗：{1}</value>
+  </data>
+  <data name="official_publisher_upload_all_failed" xml:space="preserve">
+    <value>所有已啟用的伺服器都上傳失敗。</value>
+  </data>
+  <data name="official_publisher_upload_partial" xml:space="preserve">
+    <value>部分伺服器上傳失敗，已成功的伺服器不會復原。</value>
+  </data>
+  <data name="official_publisher_upload_all_ok" xml:space="preserve">
+    <value>已上傳到全部已啟用的伺服器。</value>
+  </data>
+  <data name="official_publisher_enabled_servers_label" xml:space="preserve">
+    <value>已啟用伺服器</value>
+  </data>
+  <data name="official_publisher_default_target_name" xml:space="preserve">
+    <value>香港</value>
+  </data>
+  <data name="official_publisher_new_target_name" xml:space="preserve">
+    <value>新伺服器</value>
+  </data>
+  <data name="official_publisher_publish_targets" xml:space="preserve">
+    <value>發布到已啟用的伺服器</value>
+  </data>
+  <data name="official_publisher_latest_version_label" xml:space="preserve">
+    <value>最新版本號</value>
+  </data>
+  <data name="official_publisher_latest_version_hint" xml:space="preserve">
+    <value>寫入 server_info.json 的 latest_app_version</value>
+  </data>
+  <data name="official_publisher_latest_version_pending" xml:space="preserve">
+    <value>最新版本號待發布</value>
+  </data>
+  <data name="official_publisher_latest_version_up_to_date" xml:space="preserve">
+    <value>最新版本號已與伺服器一致</value>
+  </data>
+  <data name="official_publisher_latest_version_empty" xml:space="preserve">
+    <value>最新版本號：（空）</value>
+  </data>
+  <data name="official_publisher_latest_version_preview" xml:space="preserve">
+    <value>最新版本號：{0}</value>
+  </data>
+  <data name="official_publisher_legacy_announcement" xml:space="preserve">
+    <value>舊版純文字公告</value>
+  </data>
+  <data name="official_publisher_announcements_catalog" xml:space="preserve">
+    <value>公告目錄（多語言）</value>
+  </data>
+  <data name="official_publisher_announcement_add" xml:space="preserve">
+    <value>新增公告</value>
+  </data>
+  <data name="official_publisher_announcement_import" xml:space="preserve">
+    <value>匯入</value>
+  </data>
+  <data name="official_publisher_announcement_import_tooltip" xml:space="preserve">
+    <value>從 JSON 檔案匯入公告目錄，並替換目前編輯內容。</value>
+  </data>
+  <data name="official_publisher_announcement_import_invalid" xml:space="preserve">
+    <value>檔案不是有效的公告目錄，需要 JSON 物件且包含 announcements 陣列。</value>
+  </data>
+  <data name="official_publisher_announcement_import_confirm" xml:space="preserve">
+    <value>匯入會替換目前公告目錄中的條目，未發布的修改會遺失。</value>
+  </data>
+  <data name="official_publisher_announcement_import_loaded" xml:space="preserve">
+    <value>已從檔案匯入多語言公告目錄：{0} 條。</value>
+  </data>
+  <data name="official_publisher_announcement_publish_hint" xml:space="preserve">
+    <value>勾選「本次發布包含此項」後，Announcements.json 與 server_info.json 會一併上傳。</value>
+  </data>
+  <data name="official_publisher_announcement_reload_tooltip" xml:space="preserve">
+    <value>從伺服器重新載入線上公告目錄（會捨棄未發布的修改）。</value>
+  </data>
+  <data name="official_publisher_announcements_preview" xml:space="preserve">
+    <value>多語言公告目錄：{0} 條。遠端 hash：{1}。</value>
+  </data>
+  <data name="official_publisher_plot_categories_note" xml:space="preserve">
+    <value>分類會隨圖解索引一起發布。分類有改動時，即使未勾選圖解範本，也會帶上圖解索引檔案。</value>
+  </data>
+  <data name="official_publisher_geot_categories_note" xml:space="preserve">
+    <value>礦物分類會隨溫壓計索引一起發布。分類有改動時，即使未勾選溫壓計，也會帶上溫壓計索引檔案。</value>
+  </data>
+  <data name="official_publisher_ann_id" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="official_publisher_ann_theme" xml:space="preserve">
+    <value>主題色</value>
+  </data>
+  <data name="official_publisher_ann_date" xml:space="preserve">
+    <value>展示日期</value>
+  </data>
+  <data name="official_publisher_ann_priority" xml:space="preserve">
+    <value>優先級</value>
+  </data>
+  <data name="official_publisher_ann_start" xml:space="preserve">
+    <value>上架日期</value>
+  </data>
+  <data name="official_publisher_ann_end" xml:space="preserve">
+    <value>下架日期</value>
+  </data>
+  <data name="official_publisher_ann_tag" xml:space="preserve">
+    <value>眉題標籤</value>
+  </data>
+  <data name="official_publisher_ann_title" xml:space="preserve">
+    <value>標題 *</value>
+  </data>
+  <data name="official_publisher_ann_body" xml:space="preserve">
+    <value>內文</value>
+  </data>
+  <data name="official_publisher_ann_action" xml:space="preserve">
+    <value>按鈕文字</value>
+  </data>
+  <data name="official_publisher_ann_action_url" xml:space="preserve">
+    <value>按鈕連結</value>
+  </data>
+  <data name="official_publisher_ann_background" xml:space="preserve">
+    <value>背景</value>
+  </data>
+  <data name="official_publisher_ann_background_hint" xml:space="preserve">
+    <value>預設：一種顏色，並可加裝飾圖形。自訂：鋪滿一張網路圖片。</value>
+  </data>
+  <data name="official_publisher_ann_color" xml:space="preserve">
+    <value>顏色</value>
+  </data>
+  <data name="official_publisher_ann_polygon" xml:space="preserve">
+    <value>圖形樣式</value>
+  </data>
+  <data name="official_publisher_ann_show_polygons" xml:space="preserve">
+    <value>顯示裝飾多邊形</value>
+  </data>
+  <data name="official_publisher_ann_image_url" xml:space="preserve">
+    <value>圖片位址</value>
+  </data>
+  <data name="official_publisher_background_default" xml:space="preserve">
+    <value>預設顏色</value>
+  </data>
+  <data name="official_publisher_background_image" xml:space="preserve">
+    <value>自訂圖片</value>
+  </data>
+  <data name="developer_settings" xml:space="preserve">
+    <value>開發者選項</value>
+  </data>
+  <data name="reset_diagram_database" xml:space="preserve">
+    <value>重設圖解資料庫</value>
+  </data>
+  <data name="reset_diagram_database_hint" xml:space="preserve">
+    <value>清空本機圖解範本資料庫</value>
+  </data>
+  <data name="reset_geothermometer_database" xml:space="preserve">
+    <value>重設地質溫壓計資料庫</value>
+  </data>
+  <data name="reset_geothermometer_database_hint" xml:space="preserve">
+    <value>清空本機地質溫壓計範本資料庫</value>
+  </data>
+  <data name="clear" xml:space="preserve">
+    <value>清空</value>
+  </data>
+  <data name="confirm_reset_diagram_database" xml:space="preserve">
+    <value>確定要清空本機圖解範本資料庫嗎？清空後所有本機圖解範本資料將被移除，此操作不可撤銷。</value>
+  </data>
+  <data name="confirm_reset_geothermometer_database" xml:space="preserve">
+    <value>確定要清空本機地質溫壓計範本資料庫嗎？清空後所有本機地質溫壓計範本資料將被移除，此操作不可撤銷。</value>
+  </data>
+  <data name="diagram_database_cleared" xml:space="preserve">
+    <value>本機圖解資料庫已清空。</value>
+  </data>
+  <data name="geothermometer_database_cleared" xml:space="preserve">
+    <value>本機地質溫壓計資料庫已清空。</value>
+  </data>
+  <data name="select_folder" xml:space="preserve">
+    <value>請選擇一個資料夾</value>
+  </data>
+  <data name="loading_geothermometer_module_ellipsis" xml:space="preserve">
+    <value>正在載入溫壓計模組...</value>
+  </data>
+  <data name="unhandled_exception_occurred" xml:space="preserve">
+    <value>應用程式發生未處理錯誤：</value>
   </data>
 </root>

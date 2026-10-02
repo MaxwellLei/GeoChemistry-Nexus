@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -176,9 +176,6 @@
   </data>
   <data name="ternary_phase_diagram_sum_must_be_one" xml:space="preserve">
     <value>Summe im ternären Diagramm muss 1 sein.</value>
-  </data>
-  <data name="add_text_operation_canceled" xml:space="preserve">
-    <value>Text-Erstellung abgebrochen.</value>
   </data>
   <data name="geo_btn_reset" xml:space="preserve">
     <value>Zurücksetzen</value>
@@ -942,9 +939,6 @@
   <data name="custom_path_not_set_configure_in_settings" xml:space="preserve">
     <value>Benutzerdefinierter Programmpfad nicht festgelegt. Bitte in den Einstellungen konfigurieren.</value>
   </data>
-  <data name="add_line_operation_canceled" xml:space="preserve">
-    <value>Linien-Erstellung abgebrochen.</value>
-  </data>
   <data name="show_major_ticks" xml:space="preserve">
     <value>Hauptskalen anzeigen</value>
   </data>
@@ -1272,9 +1266,6 @@
   <data name="font_size" xml:space="preserve">
     <value>Schriftgröße</value>
   </data>
-  <data name="close_file" xml:space="preserve">
-    <value>Datei schließen</value>
-  </data>
   <data name="open_diagram_template" xml:space="preserve">
     <value>Diagrammvorlage öffnen</value>
   </data>
@@ -1420,9 +1411,6 @@
   <data name="geo_hint_select_thermometer" xml:space="preserve">
     <value>Bitte wählen Sie ein Geothermobarometer im linken Bereich</value>
   </data>
-  <data name="QuitEdit" xml:space="preserve">
-    <value>Bearbeitung beenden</value>
-  </data>
   <data name="popup_diagram_window" xml:space="preserve">
     <value>Diagrammfenster ausklappen</value>
   </data>
@@ -1434,9 +1422,6 @@
   </data>
   <data name="unsaved_template_changes_confirm" xml:space="preserve">
     <value>Die aktuelle Vorlage enthält nicht gespeicherte Änderungen. Möchten Sie diese speichern?</value>
-  </data>
-  <data name="save_changes" xml:space="preserve">
-    <value>Änderungen speichern</value>
   </data>
   <data name="MarkerShape_OpenTriangleDown" xml:space="preserve">
     <value>Leeres Dreieck nach unten</value>
@@ -1561,9 +1546,6 @@
   <data name="x_coordinate" xml:space="preserve">
     <value>X-Koordinate</value>
   </data>
-  <data name="geo_btn_help_confirm" xml:space="preserve">
-    <value>OK</value>
-  </data>
   <data name="geo_dialog_exit_calculation" xml:space="preserve">
     <value>Aktuelle Berechnungsansicht verlassen?</value>
   </data>
@@ -1638,9 +1620,6 @@
   </data>
   <data name="geo_script_result" xml:space="preserve">
     <value>Ergebnis:</value>
-  </data>
-  <data name="edit_menu_bar_item" xml:space="preserve">
-    <value>Menüleisteneintrag bearbeiten</value>
   </data>
   <data name="confirm_clear_all_data" xml:space="preserve">
     <value>Alle Tabellendaten löschen (inkl. Plot-Punkte)?</value>
@@ -1977,6 +1956,12 @@
   <data name="geo_msg_batch_update_confirm" xml:space="preserve">
     <value>{0} aktualisierbare Geothermobarometer erkannt. Die Aktualisierung überschreibt lokalen Inhalt. Fortfahren?</value>
   </data>
+  <data name="geo_msg_batch_sync_all_confirm" xml:space="preserve">
+    <value>{0} nicht installierte und {1} veraltete Vorlagen erkannt. Alle herunterladen und aktualisieren?</value>
+  </data>
+  <data name="geo_msg_batch_sync_tooltip" xml:space="preserve">
+    <value>{0} nicht installierte und {1} veraltete Vorlagen erkannt. Klicken Sie hier, um alle zu synchronisieren.</value>
+  </data>
   <data name="geo_help_no_doc_text" xml:space="preserve">
     <value>Kein Hilfedokument verfügbar.</value>
   </data>
@@ -2258,36 +2243,6 @@
   <data name="parsing_table_and_refreshing_layer_please_wait" xml:space="preserve">
     <value>Tabelle wird analysiert und Ebene wird aktualisiert, bitte warten...</value>
   </data>
-  <data name="delete_selected_drawing_objects" xml:space="preserve">
-    <value>Ausgewählte Zeichnungsobjekte löschen?</value>
-  </data>
-  <data name="delete_selected_data_and_drawing_objects" xml:space="preserve">
-    <value>Ausgewählte Daten und Zeichnungsobjekte löschen?</value>
-  </data>
-  <data name="delete_all" xml:space="preserve">
-    <value>Alle löschen</value>
-  </data>
-  <data name="keep_data" xml:space="preserve">
-    <value>Daten behalten</value>
-  </data>
-  <data name="cancel_delete" xml:space="preserve">
-    <value>Löschen abbrechen</value>
-  </data>
-  <data name="selected_data_and_drawing_objects_deleted" xml:space="preserve">
-    <value>Die ausgewählten Daten und Zeichnungsobjekte wurden gelöscht.</value>
-  </data>
-  <data name="selected_drawing_objects_deleted_data_kept" xml:space="preserve">
-    <value>Die ausgewählten Zeichnungsobjekte wurden gelöscht, die Daten wurden beibehalten.</value>
-  </data>
-  <data name="no_source_data_found_only_drawing_objects_deleted" xml:space="preserve">
-    <value>Keine Quelldaten gefunden; nur Zeichnungsobjekte wurden gelöscht.</value>
-  </data>
-  <data name="no_source_data_found" xml:space="preserve">
-    <value>Keine Quelldaten gefunden.</value>
-  </data>
-  <data name="delete_data_failed" xml:space="preserve">
-    <value>Daten konnten nicht gelöscht werden:</value>
-  </data>
   <data name="enable_data_to_drawing_object_linkage" xml:space="preserve">
     <value>Daten-zu-Zeichnungsobjekt-Verknüpfung aktivieren</value>
   </data>
@@ -2389,9 +2344,6 @@
   </data>
   <data name="at_least_two_languages_swap" xml:space="preserve">
     <value>Zum Tauschen werden mindestens zwei Sprachen benötigt.</value>
-  </data>
-  <data name="confirm_delete_language" xml:space="preserve">
-    <value>Sprache „{0}“ löschen? Dies kann nicht rückgängig gemacht werden.</value>
   </data>
   <data name="cos_credentials_required" xml:space="preserve">
     <value>Bitte konfigurieren und speichern Sie zuerst die COS-Anmeldedaten.</value>
@@ -2675,9 +2627,6 @@
   <data name="enable_normalization" xml:space="preserve">
     <value>Normalisierung aktivieren</value>
   </data>
-  <data name="enter_language_code_prompt" xml:space="preserve">
-    <value>Sprachcode eingeben (z. B. fr-FR):</value>
-  </data>
   <data name="enter_plot_mode" xml:space="preserve">
     <value>Zeichenmodus starten</value>
   </data>
@@ -2774,9 +2723,6 @@
   <data name="object_selection_trigger" xml:space="preserve">
     <value>Objektauswahl-Auslöser</value>
   </data>
-  <data name="official_publisher_announcement_edit_hint" xml:space="preserve">
-    <value>Bearbeiten Sie hier die Ankündigung. Nach der Veröffentlichung erscheint sie im Ankündigungsbereich der Startseite.</value>
-  </data>
   <data name="official_publisher_announcement_empty" xml:space="preserve">
     <value>(leer)</value>
   </data>
@@ -2792,14 +2738,8 @@
   <data name="official_publisher_announcement_preview" xml:space="preserve">
     <value>Aktueller Entwurf:</value>
   </data>
-  <data name="official_publisher_announcement_section" xml:space="preserve">
-    <value>Ankündigung</value>
-  </data>
   <data name="official_publisher_announcement_up_to_date" xml:space="preserve">
     <value>Auf dem Server bereits aktuell</value>
-  </data>
-  <data name="official_publisher_confirm" xml:space="preserve">
-    <value>Offizielle Inhalte auf COS veröffentlichen?</value>
   </data>
   <data name="official_publisher_dev_mode_required" xml:space="preserve">
     <value>Für die Veröffentlichung ist der Entwicklermodus erforderlich.</value>
@@ -2831,12 +2771,6 @@
   <data name="official_publisher_home_edit_group" xml:space="preserve">
     <value>Gruppe bearbeiten</value>
   </data>
-  <data name="official_publisher_home_groups" xml:space="preserve">
-    <value>Gruppen</value>
-  </data>
-  <data name="official_publisher_home_link_items" xml:space="preserve">
-    <value>Links</value>
-  </data>
   <data name="official_publisher_home_links_draft_saved" xml:space="preserve">
     <value>Startseiten-Links-Entwurf lokal gespeichert.</value>
   </data>
@@ -2864,23 +2798,8 @@
   <data name="official_publisher_home_select_group" xml:space="preserve">
     <value>Bitte wählen Sie zuerst eine Gruppe.</value>
   </data>
-  <data name="official_publisher_include_announcement" xml:space="preserve">
-    <value>Ankündigung</value>
-  </data>
-  <data name="official_publisher_include_diagrams" xml:space="preserve">
-    <value>Diagramme</value>
-  </data>
-  <data name="official_publisher_include_geothermometers" xml:space="preserve">
-    <value>Geothermobarometer</value>
-  </data>
-  <data name="official_publisher_include_home_links" xml:space="preserve">
-    <value>Startseiten-Links einschließen</value>
-  </data>
   <data name="official_publisher_new" xml:space="preserve">
     <value>Neu</value>
-  </data>
-  <data name="official_publisher_progress_done" xml:space="preserve">
-    <value>Veröffentlichung abgeschlossen.</value>
   </data>
   <data name="official_publisher_progress_exporting_announcement" xml:space="preserve">
     <value>Ankündigung wird exportiert...</value>
@@ -2893,15 +2812,6 @@
   </data>
   <data name="official_publisher_progress_exporting_home_links" xml:space="preserve">
     <value>Startseiten-Links werden exportiert...</value>
-  </data>
-  <data name="official_publisher_progress_uploading" xml:space="preserve">
-    <value>Upload nach COS ({0}/{1})...</value>
-  </data>
-  <data name="official_publisher_progress_uploading_cos" xml:space="preserve">
-    <value>Upload nach COS...</value>
-  </data>
-  <data name="official_publisher_publish_cos" xml:space="preserve">
-    <value>Auf COS veröffentlichen</value>
   </data>
   <data name="official_publisher_ready" xml:space="preserve">
     <value>Offizieller Publisher bereit.</value>
@@ -2947,9 +2857,6 @@
   </data>
   <data name="select_all" xml:space="preserve">
     <value>Alle auswählen</value>
-  </data>
-  <data name="select_language_to_delete" xml:space="preserve">
-    <value>Zu löschende Sprache auswählen:</value>
   </data>
   <data name="shortcut_action_add_arrow_desc" xml:space="preserve">
     <value>Pfeilobjekt einfügen.</value>
@@ -4096,9 +4003,6 @@
   <data name="black_body_radiation_calc_input" xml:space="preserve">
     <value>Temperatur</value>
   </data>
-  <data name="black_body_radiation_calc_temperature" xml:space="preserve">
-    <value>T</value>
-  </data>
   <data name="black_body_radiation_calc_reset" xml:space="preserve">
     <value>Zurücksetzen</value>
   </data>
@@ -4147,14 +4051,8 @@
   <data name="periodic_table_widget_desc" xml:space="preserve">
     <value>Interaktives Periodensystem: schnelle Abfrage von Krustenabundanz, Oxid-Molekulargewichten u. a</value>
   </data>
-  <data name="periodic_table_widget_hint" xml:space="preserve">
-    <value>Element anklicken, um geochemische Eigenschaften anzuzeigen. Gruppenfilter für REE, HFSE, LILE, PGE und Goldschmidt-Klassen.</value>
-  </data>
   <data name="periodic_table_hint_select" xml:space="preserve">
     <value>Element anklicken, um Eigenschaften anzuzeigen</value>
-  </data>
-  <data name="periodic_table_status_selected" xml:space="preserve">
-    <value>Ausgewählt: {0} ({1})</value>
   </data>
   <data name="periodic_table_search_tooltip" xml:space="preserve">
     <value>Suche nach Symbol, englischem Namen oder Ordnungszahl</value>
@@ -4167,9 +4065,6 @@
   </data>
   <data name="periodic_table_clear_group" xml:space="preserve">
     <value>Filter löschen</value>
-  </data>
-  <data name="periodic_table_fblock_note" xml:space="preserve">
-    <value>Untere Zeilen: Lanthanoide (La–Lu) und Actinoide (Ac–Lr).</value>
   </data>
   <data name="periodic_table_label_lanthanides" xml:space="preserve">
     <value>Lanthanoide</value>
@@ -4272,5 +4167,233 @@
   </data>
   <data name="periodic_table_group_atmophile" xml:space="preserve">
     <value>Atmophil</value>
+  </data>
+  <data name="official_publisher_section_targets" xml:space="preserve">
+    <value>Veröffentlichungsziele</value>
+  </data>
+  <data name="official_publisher_section_announcement" xml:space="preserve">
+    <value>Ankündigungen und Versionen</value>
+  </data>
+  <data name="official_publisher_include_this" xml:space="preserve">
+    <value>In diese Veröffentlichung einbeziehen</value>
+  </data>
+  <data name="official_publisher_targets_hint" xml:space="preserve">
+    <value>Dieselben Dateien werden in der Listenreihenfolge auf jeden aktivierten Server hochgeladen. Eine neue öffentliche URL hilft Benutzern erst, nachdem sie zur integrierten Clientliste hinzugefügt und veröffentlicht wurde. Nur hier gespeicherte URLs werden erkannt, nachdem ein Benutzer einen vorhandenen Server erreicht hat.</value>
+  </data>
+  <data name="official_publisher_add_target" xml:space="preserve">
+    <value>Server hinzufügen</value>
+  </data>
+  <data name="official_publisher_move_up" xml:space="preserve">
+    <value>Nach oben</value>
+  </data>
+  <data name="official_publisher_move_down" xml:space="preserve">
+    <value>Nach unten</value>
+  </data>
+  <data name="official_publisher_target_name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="official_publisher_public_base_url" xml:space="preserve">
+    <value>Öffentliche Basis-URL</value>
+  </data>
+  <data name="official_publisher_public_base_url_hint" xml:space="preserve">
+    <value>Beispiel: https://bucket.cos.region.myqcloud.com ohne abschließenden Schrägstrich</value>
+  </data>
+  <data name="official_publisher_enabled" xml:space="preserve">
+    <value>Aktiviert</value>
+  </data>
+  <data name="official_publisher_no_target" xml:space="preserve">
+    <value>Fügen Sie zuerst einen Server hinzu.</value>
+  </data>
+  <data name="official_publisher_bucket_required" xml:space="preserve">
+    <value>Bucket ist erforderlich.</value>
+  </data>
+  <data name="official_publisher_public_url_required" xml:space="preserve">
+    <value>Öffentliche Basis-URL ist erforderlich.</value>
+  </data>
+  <data name="official_publisher_no_enabled_target" xml:space="preserve">
+    <value>Es gibt keinen aktivierten Server mit vollständigen Anmeldedaten.</value>
+  </data>
+  <data name="official_publisher_confirm_targets" xml:space="preserve">
+    <value>Diesen Inhalt auf {0} aktivierten Server(n) veröffentlichen?</value>
+  </data>
+  <data name="official_publisher_progress_server" xml:space="preserve">
+    <value>Hochladen auf {0} ({1}/{2})</value>
+  </data>
+  <data name="official_publisher_upload_target_failed" xml:space="preserve">
+    <value>{0} fehlgeschlagen: {1}</value>
+  </data>
+  <data name="official_publisher_upload_all_failed" xml:space="preserve">
+    <value>Alle aktivierten Server sind fehlgeschlagen.</value>
+  </data>
+  <data name="official_publisher_upload_partial" xml:space="preserve">
+    <value>Einige Server sind fehlgeschlagen. Erfolgreiche Uploads wurden beibehalten.</value>
+  </data>
+  <data name="official_publisher_upload_all_ok" xml:space="preserve">
+    <value>Auf allen aktivierten Servern veröffentlicht.</value>
+  </data>
+  <data name="official_publisher_enabled_servers_label" xml:space="preserve">
+    <value>Aktivierte Server</value>
+  </data>
+  <data name="official_publisher_default_target_name" xml:space="preserve">
+    <value>Hongkong</value>
+  </data>
+  <data name="official_publisher_new_target_name" xml:space="preserve">
+    <value>Neuer Server</value>
+  </data>
+  <data name="official_publisher_publish_targets" xml:space="preserve">
+    <value>Auf aktivierten Servern veröffentlichen</value>
+  </data>
+  <data name="official_publisher_latest_version_label" xml:space="preserve">
+    <value>Neueste Version</value>
+  </data>
+  <data name="official_publisher_latest_version_hint" xml:space="preserve">
+    <value>Wird in latest_app_version in server_info.json geschrieben</value>
+  </data>
+  <data name="official_publisher_latest_version_pending" xml:space="preserve">
+    <value>Neueste Version steht zur Veröffentlichung aus</value>
+  </data>
+  <data name="official_publisher_latest_version_up_to_date" xml:space="preserve">
+    <value>Neueste Version stimmt mit dem Server überein</value>
+  </data>
+  <data name="official_publisher_latest_version_empty" xml:space="preserve">
+    <value>Neueste Version: (leer)</value>
+  </data>
+  <data name="official_publisher_latest_version_preview" xml:space="preserve">
+    <value>Neueste Version: {0}</value>
+  </data>
+  <data name="official_publisher_legacy_announcement" xml:space="preserve">
+    <value>Ältere Nur-Text-Ankündigung</value>
+  </data>
+  <data name="official_publisher_announcements_catalog" xml:space="preserve">
+    <value>Ankündigungskatalog (mehrsprachig)</value>
+  </data>
+  <data name="official_publisher_announcement_add" xml:space="preserve">
+    <value>Ankündigung hinzufügen</value>
+  </data>
+  <data name="official_publisher_announcement_import" xml:space="preserve">
+    <value>Importieren</value>
+  </data>
+  <data name="official_publisher_announcement_import_tooltip" xml:space="preserve">
+    <value>Eine Ankündigungskatalog-JSON-Datei importieren und aktuellen Editor-Inhalt ersetzen.</value>
+  </data>
+  <data name="official_publisher_announcement_import_invalid" xml:space="preserve">
+    <value>Diese Datei ist kein gültiger Ankündigungskatalog. Es muss ein JSON-Objekt mit einem announcements-Array sein.</value>
+  </data>
+  <data name="official_publisher_announcement_import_confirm" xml:space="preserve">
+    <value>Durch den Import werden die Ankündigungen im Editor ersetzt. Nicht veröffentlichte Änderungen gehen verloren.</value>
+  </data>
+  <data name="official_publisher_announcement_import_loaded" xml:space="preserve">
+    <value>Ankündigungskatalog importiert: {0} Einträge.</value>
+  </data>
+  <data name="official_publisher_announcement_publish_hint" xml:space="preserve">
+    <value>Wenn dieser Abschnitt ausgewählt ist, werden Announcements.json und server_info.json zusammen hochgeladen.</value>
+  </data>
+  <data name="official_publisher_announcement_reload_tooltip" xml:space="preserve">
+    <value>Den Online-Ankündigungskatalog vom Server neu laden (nicht veröffentlichte Änderungen werden verworfen).</value>
+  </data>
+  <data name="official_publisher_announcements_preview" xml:space="preserve">
+    <value>Ankündigungskatalog: {0} Einträge. Remote-Hash: {1}.</value>
+  </data>
+  <data name="official_publisher_plot_categories_note" xml:space="preserve">
+    <value>Kategorien werden mit dem Diagramm-Index veröffentlicht. Bei Änderungen wird der Diagramm-Index auch dann einbezogen, wenn Diagramme nicht markiert sind.</value>
+  </data>
+  <data name="official_publisher_geot_categories_note" xml:space="preserve">
+    <value>Mineralkategorien werden mit dem Geothermobarometer-Index veröffentlicht. Bei Änderungen wird dieser Index auch dann einbezogen, wenn Geothermobarometer nicht markiert sind.</value>
+  </data>
+  <data name="official_publisher_ann_id" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="official_publisher_ann_theme" xml:space="preserve">
+    <value>Designfarbe</value>
+  </data>
+  <data name="official_publisher_ann_date" xml:space="preserve">
+    <value>Anzeigedatum</value>
+  </data>
+  <data name="official_publisher_ann_priority" xml:space="preserve">
+    <value>Priorität</value>
+  </data>
+  <data name="official_publisher_ann_start" xml:space="preserve">
+    <value>Startdatum</value>
+  </data>
+  <data name="official_publisher_ann_end" xml:space="preserve">
+    <value>Enddatum</value>
+  </data>
+  <data name="official_publisher_ann_tag" xml:space="preserve">
+    <value>Dachzeile</value>
+  </data>
+  <data name="official_publisher_ann_title" xml:space="preserve">
+    <value>Titel *</value>
+  </data>
+  <data name="official_publisher_ann_body" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="official_publisher_ann_action" xml:space="preserve">
+    <value>Schaltflächentext</value>
+  </data>
+  <data name="official_publisher_ann_action_url" xml:space="preserve">
+    <value>Schaltflächenlink</value>
+  </data>
+  <data name="official_publisher_ann_background" xml:space="preserve">
+    <value>Hintergrund</value>
+  </data>
+  <data name="official_publisher_ann_background_hint" xml:space="preserve">
+    <value>Standardmäßig wird eine Farbe mit optionalen Formen verwendet. Benutzerdefiniert füllt die Karte mit einer Bild-URL.</value>
+  </data>
+  <data name="official_publisher_ann_color" xml:space="preserve">
+    <value>Farbe</value>
+  </data>
+  <data name="official_publisher_ann_polygon" xml:space="preserve">
+    <value>Formstil</value>
+  </data>
+  <data name="official_publisher_ann_show_polygons" xml:space="preserve">
+    <value>Dekorative Polygone anzeigen</value>
+  </data>
+  <data name="official_publisher_ann_image_url" xml:space="preserve">
+    <value>Bild-URL</value>
+  </data>
+  <data name="official_publisher_background_default" xml:space="preserve">
+    <value>Einfarbig</value>
+  </data>
+  <data name="official_publisher_background_image" xml:space="preserve">
+    <value>Benutzerdefiniertes Bild</value>
+  </data>
+  <data name="developer_settings" xml:space="preserve">
+    <value>Entwickleroptionen</value>
+  </data>
+  <data name="reset_diagram_database" xml:space="preserve">
+    <value>Diagrammdatenbank zurücksetzen</value>
+  </data>
+  <data name="reset_diagram_database_hint" xml:space="preserve">
+    <value>Lokale Diagrammvorlagen-Datenbank leeren</value>
+  </data>
+  <data name="reset_geothermometer_database" xml:space="preserve">
+    <value>Geothermometer-Datenbank zurücksetzen</value>
+  </data>
+  <data name="reset_geothermometer_database_hint" xml:space="preserve">
+    <value>Lokale Geothermometervorlagen-Datenbank leeren</value>
+  </data>
+  <data name="clear" xml:space="preserve">
+    <value>Leeren</value>
+  </data>
+  <data name="confirm_reset_diagram_database" xml:space="preserve">
+    <value>Sind Sie sicher, dass Sie die lokale Diagrammvorlagen-Datenbank leeren möchten? Alle lokalen Daten werden entfernt. Diese Aktion kann nicht rückgängig gemacht werden.</value>
+  </data>
+  <data name="confirm_reset_geothermometer_database" xml:space="preserve">
+    <value>Sind Sie sicher, dass Sie die lokale Geothermometervorlagen-Datenbank leeren möchten? Alle lokalen Daten werden entfernt. Diese Aktion kann nicht rückgängig gemacht werden.</value>
+  </data>
+  <data name="diagram_database_cleared" xml:space="preserve">
+    <value>Lokale Diagrammdatenbank erfolgreich geleert.</value>
+  </data>
+  <data name="geothermometer_database_cleared" xml:space="preserve">
+    <value>Lokale Geothermometer-Datenbank erfolgreich geleert.</value>
+  </data>
+  <data name="select_folder" xml:space="preserve">
+    <value>Bitte wählen Sie einen Ordner</value>
+  </data>
+  <data name="loading_geothermometer_module_ellipsis" xml:space="preserve">
+    <value>Geothermometer-Modul wird geladen...</value>
+  </data>
+  <data name="unhandled_exception_occurred" xml:space="preserve">
+    <value>Ein unbehandelter Anwendungsfehler ist aufgetreten:</value>
   </data>
 </root>

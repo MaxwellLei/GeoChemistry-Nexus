@@ -48,8 +48,8 @@ namespace GeoChemistryNexus.Views
             Random random = new Random();
             int randomIndex = random.Next(files.Length);
 
-            //将随机选择的图片显示为背景（内存加载，避免锁定启动图文件）
-            var bitmap = StartPicHelper.LoadBitmapWithoutFileLock(files[randomIndex]);
+            //将随机选择的图片显示为背景（内存加载，避免锁定启动图文件；限制解码宽度避免高分原图占用过大内存）
+            var bitmap = StartPicHelper.LoadBitmapWithoutFileLock(files[randomIndex], decodePixelWidth: 960);
             if (bitmap == null)
                 return false;
 
@@ -57,18 +57,6 @@ namespace GeoChemistryNexus.Views
             return true;
         }
 
-        //窗体启动动画
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            // 移除启动渐入动画
-            // DoubleAnimation animation = new()
-            // {
-            //     From = 0,
-            //     To = 1,
-            //     Duration = TimeSpan.FromSeconds(1)
-            // };
-            // this.BeginAnimation(UIElement.OpacityProperty, animation);
-        }
         //鼠标按下
         private void Window_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {

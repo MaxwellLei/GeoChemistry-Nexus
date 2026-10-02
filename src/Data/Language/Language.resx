@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
 		Microsoft ResX Schema
@@ -132,9 +132,6 @@
   </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
-  </data>
-  <data name="QuitEdit" xml:space="preserve">
-    <value>Quit Edit</value>
   </data>
   <data name="PlotData" xml:space="preserve">
     <value>Data</value>
@@ -627,12 +624,6 @@
   <data name="not_enough_vertices_add_polygon_canceled" xml:space="preserve">
     <value>Not enough vertices, add polygon operation canceled.</value>
   </data>
-  <data name="add_line_operation_canceled" xml:space="preserve">
-    <value>Add line operation canceled.</value>
-  </data>
-  <data name="add_text_operation_canceled" xml:space="preserve">
-    <value>Add text operation canceled.</value>
-  </data>
   <data name="language_setting_duplicate_found" xml:space="preserve">
     <value>Duplicate items exist in language settings, please check!</value>
   </data>
@@ -963,9 +954,6 @@
   <data name="official_publisher_export_local" xml:space="preserve">
     <value>Export Local</value>
   </data>
-  <data name="official_publisher_publish_cos" xml:space="preserve">
-    <value>Publish to COS</value>
-  </data>
   <data name="official_publisher_refreshing" xml:space="preserve">
     <value>Refreshing publish preview...</value>
   </data>
@@ -983,15 +971,6 @@
   </data>
   <data name="official_publisher_exporting" xml:space="preserve">
     <value>Exporting to {0}...</value>
-  </data>
-  <data name="official_publisher_confirm" xml:space="preserve">
-    <value>Publish official content to COS?</value>
-  </data>
-  <data name="official_publisher_include_diagrams" xml:space="preserve">
-    <value>Diagrams</value>
-  </data>
-  <data name="official_publisher_include_geothermometers" xml:space="preserve">
-    <value>Geothermobarometers</value>
   </data>
   <data name="official_publisher_diagram_section" xml:space="preserve">
     <value>Diagrams</value>
@@ -1025,15 +1004,6 @@
   </data>
   <data name="official_publisher_progress_exporting_geothermometers" xml:space="preserve">
     <value>Exporting geothermobarometers...</value>
-  </data>
-  <data name="official_publisher_progress_uploading_cos" xml:space="preserve">
-    <value>Uploading to COS...</value>
-  </data>
-  <data name="official_publisher_progress_uploading" xml:space="preserve">
-    <value>Uploading to COS ({0}/{1})...</value>
-  </data>
-  <data name="official_publisher_progress_done" xml:space="preserve">
-    <value>Publish completed.</value>
   </data>
   <data name="cos_save_settings" xml:space="preserve">
     <value>Save Settings</value>
@@ -1110,15 +1080,6 @@
   <data name="official_publisher_home_links_summary" xml:space="preserve">
     <value>Home links: {0} groups, {1} links, hash={2}.</value>
   </data>
-  <data name="official_publisher_include_home_links" xml:space="preserve">
-    <value>Include home links</value>
-  </data>
-  <data name="official_publisher_include_announcement" xml:space="preserve">
-    <value>Announcement</value>
-  </data>
-  <data name="official_publisher_announcement_section" xml:space="preserve">
-    <value>Announcement</value>
-  </data>
   <data name="official_publisher_announcement_pending" xml:space="preserve">
     <value>Pending publish</value>
   </data>
@@ -1127,9 +1088,6 @@
   </data>
   <data name="official_publisher_announcement_loaded" xml:space="preserve">
     <value>Announcement loaded from server.</value>
-  </data>
-  <data name="official_publisher_announcement_edit_hint" xml:space="preserve">
-    <value>Edit the announcement here. After publishing, it will appear in the home page announcement area.</value>
   </data>
   <data name="official_publisher_announcement_load" xml:space="preserve">
     <value>Load from server</value>
@@ -1145,12 +1103,6 @@
   </data>
   <data name="official_publisher_home_links_section" xml:space="preserve">
     <value>Home Links</value>
-  </data>
-  <data name="official_publisher_home_groups" xml:space="preserve">
-    <value>Groups</value>
-  </data>
-  <data name="official_publisher_home_link_items" xml:space="preserve">
-    <value>Links</value>
   </data>
   <data name="official_publisher_home_links_pending" xml:space="preserve">
     <value>Pending publish</value>
@@ -1245,9 +1197,6 @@
   <data name="refresh" xml:space="preserve">
     <value>Refresh</value>
   </data>
-  <data name="close_file" xml:space="preserve">
-    <value>Close File</value>
-  </data>
   <data name="swap_language_columns" xml:space="preserve">
     <value>Swap Language Columns</value>
   </data>
@@ -1259,12 +1208,6 @@
   </data>
   <data name="file_drop_supported_geothermometer" xml:space="preserve">
     <value>Supports .gngtm / .zip geothermobarometer packages (multiple files)</value>
-  </data>
-  <data name="save_changes" xml:space="preserve">
-    <value>Save Changes</value>
-  </data>
-  <data name="edit_menu_bar_item" xml:space="preserve">
-    <value>Edit Menu Bar Item</value>
   </data>
   <data name="import_custom_diagram_template" xml:space="preserve">
     <value>Import Custom Diagram Template</value>
@@ -2079,6 +2022,12 @@
   <data name="geo_msg_batch_update_confirm" xml:space="preserve">
     <value>Detected {0} updatable geothermobarometers. Updating will overwrite local content. Continue?</value>
   </data>
+  <data name="geo_msg_batch_sync_all_confirm" xml:space="preserve">
+    <value>Detected {0} uninstalled and {1} outdated templates. Download and update all?</value>
+  </data>
+  <data name="geo_msg_batch_sync_tooltip" xml:space="preserve">
+    <value>Detected {0} uninstalled and {1} outdated templates. Click to sync all.</value>
+  </data>
   <data name="geo_section_official" xml:space="preserve">
     <value>Official Geothermobarometers</value>
   </data>
@@ -2135,9 +2084,6 @@
   </data>
   <data name="geo_btn_reset" xml:space="preserve">
     <value>Reset</value>
-  </data>
-  <data name="geo_btn_help_confirm" xml:space="preserve">
-    <value>OK</value>
   </data>
   <data name="geo_dialog_exit_calculation" xml:space="preserve">
     <value>Exit the current calculation view?</value>
@@ -3042,36 +2988,6 @@
   <data name="parsing_table_and_refreshing_layer_please_wait" xml:space="preserve">
     <value>Parsing table and refreshing layer, please wait...</value>
   </data>
-  <data name="delete_selected_drawing_objects" xml:space="preserve">
-    <value>Delete selected drawing objects?</value>
-  </data>
-  <data name="delete_selected_data_and_drawing_objects" xml:space="preserve">
-    <value>Delete selected data and drawing objects?</value>
-  </data>
-  <data name="delete_all" xml:space="preserve">
-    <value>Delete All</value>
-  </data>
-  <data name="keep_data" xml:space="preserve">
-    <value>Keep Data</value>
-  </data>
-  <data name="cancel_delete" xml:space="preserve">
-    <value>Cancel Delete</value>
-  </data>
-  <data name="selected_data_and_drawing_objects_deleted" xml:space="preserve">
-    <value>Selected data and drawing objects have been deleted.</value>
-  </data>
-  <data name="selected_drawing_objects_deleted_data_kept" xml:space="preserve">
-    <value>Selected drawing objects have been deleted, data kept.</value>
-  </data>
-  <data name="no_source_data_found_only_drawing_objects_deleted" xml:space="preserve">
-    <value>No source data found; only drawing objects were deleted.</value>
-  </data>
-  <data name="no_source_data_found" xml:space="preserve">
-    <value>No source data found.</value>
-  </data>
-  <data name="delete_data_failed" xml:space="preserve">
-    <value>Failed to delete data:</value>
-  </data>
   <data name="enable_data_to_drawing_object_linkage" xml:space="preserve">
     <value>Enable data-to-drawing object linkage</value>
   </data>
@@ -3375,17 +3291,8 @@
   <data name="translation_loaded" xml:space="preserve">
     <value>Translation data loaded</value>
   </data>
-  <data name="enter_language_code_prompt" xml:space="preserve">
-    <value>Enter language code (e.g. fr-FR):</value>
-  </data>
   <data name="at_least_two_languages_swap" xml:space="preserve">
     <value>At least two languages are required to swap.</value>
-  </data>
-  <data name="select_language_to_delete" xml:space="preserve">
-    <value>Select the language to delete:</value>
-  </data>
-  <data name="confirm_delete_language" xml:space="preserve">
-    <value>Delete language '{0}'? This cannot be undone.</value>
   </data>
   <data name="notification_success" xml:space="preserve">
     <value>Success</value>
@@ -3921,9 +3828,6 @@
   <data name="black_body_radiation_calc_input" xml:space="preserve">
     <value>Temperature</value>
   </data>
-  <data name="black_body_radiation_calc_temperature" xml:space="preserve">
-    <value>T</value>
-  </data>
   <data name="black_body_radiation_calc_reset" xml:space="preserve">
     <value>Reset</value>
   </data>
@@ -3972,14 +3876,8 @@
   <data name="periodic_table_widget_desc" xml:space="preserve">
     <value>Interactive periodic table: quick lookup for crustal abundance, oxide molecular weights, and more</value>
   </data>
-  <data name="periodic_table_widget_hint" xml:space="preserve">
-    <value>Click an element for geochemical properties. Use group filters to highlight REE, HFSE, LILE, PGE, and Goldschmidt classes.</value>
-  </data>
   <data name="periodic_table_hint_select" xml:space="preserve">
     <value>Click an element to view properties</value>
-  </data>
-  <data name="periodic_table_status_selected" xml:space="preserve">
-    <value>Selected: {0} ({1})</value>
   </data>
   <data name="periodic_table_search_tooltip" xml:space="preserve">
     <value>Search by symbol, English name, or atomic number</value>
@@ -3992,9 +3890,6 @@
   </data>
   <data name="periodic_table_clear_group" xml:space="preserve">
     <value>Clear filter</value>
-  </data>
-  <data name="periodic_table_fblock_note" xml:space="preserve">
-    <value>Bottom rows: lanthanides (La–Lu) and actinides (Ac–Lr).</value>
   </data>
   <data name="periodic_table_label_lanthanides" xml:space="preserve">
     <value>Lanthanides</value>
@@ -4286,5 +4181,44 @@
   </data>
   <data name="official_publisher_background_image" xml:space="preserve">
     <value>Custom image</value>
+  </data>
+  <data name="developer_settings" xml:space="preserve">
+    <value>DEVELOPER OPTIONS</value>
+  </data>
+  <data name="reset_diagram_database" xml:space="preserve">
+    <value>Reset Diagram Database</value>
+  </data>
+  <data name="reset_diagram_database_hint" xml:space="preserve">
+    <value>Clear the local diagram template database</value>
+  </data>
+  <data name="reset_geothermometer_database" xml:space="preserve">
+    <value>Reset Geothermometer Database</value>
+  </data>
+  <data name="reset_geothermometer_database_hint" xml:space="preserve">
+    <value>Clear the local geothermometer template database</value>
+  </data>
+  <data name="clear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="confirm_reset_diagram_database" xml:space="preserve">
+    <value>Are you sure you want to clear the local diagram template database? All local diagram template data will be removed. This action cannot be undone.</value>
+  </data>
+  <data name="confirm_reset_geothermometer_database" xml:space="preserve">
+    <value>Are you sure you want to clear the local geothermometer template database? All local geothermometer template data will be removed. This action cannot be undone.</value>
+  </data>
+  <data name="diagram_database_cleared" xml:space="preserve">
+    <value>Local diagram database cleared successfully.</value>
+  </data>
+  <data name="geothermometer_database_cleared" xml:space="preserve">
+    <value>Local geothermometer database cleared successfully.</value>
+  </data>
+  <data name="select_folder" xml:space="preserve">
+    <value>Please select a folder</value>
+  </data>
+  <data name="loading_geothermometer_module_ellipsis" xml:space="preserve">
+    <value>Loading geothermometer module...</value>
+  </data>
+  <data name="unhandled_exception_occurred" xml:space="preserve">
+    <value>An unhandled application error occurred:</value>
   </data>
 </root>

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Data\Icon\logo.ico</ApplicationIcon>
@@ -15,6 +15,14 @@
     <Copyright>Copyright ©️ 2024</Copyright>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
+
+  <!-- Release 发布时禁用调试符号输出与发布 (不生成且不复制 .pdb 文件) -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <CopyOutputSymbolsToPublishDirectory>false</CopyOutputSymbolsToPublishDirectory>
+  </PropertyGroup>
+
 
   <ItemGroup>
     <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
@@ -78,17 +86,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
     <PackageReference Include="Tencent.QCloud.Cos.Sdk" Version="5.4.49" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
     <PackageReference Include="HandyControl" Version="3.6.0-rc3" />
     <PackageReference Include="Jint" Version="4.2.0" />
     <PackageReference Include="LiteDB" Version="5.0.21" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
-    <PackageReference Include="net6.ReoGridWPF.dll" Version="3.0.3" />
-    <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
+    <PackageReference Include="unvell.ReoGridWPF.dll" Version="3.3.0" />
     <PackageReference Include="ScottPlot.WPF" Version="5.0.56" />
-    <PackageReference Include="System.Text.Json" Version="8.0.5" />
     <PackageReference Include="VirtualizingWrapPanel" Version="2.3.2" />
   </ItemGroup>
 

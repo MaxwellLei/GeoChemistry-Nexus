@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="StartWindow" Height="450" Width="800" AllowsTransparency="True" Background="Transparent"
-        WindowStartupLocation="CenterScreen" WindowStyle="None" BorderThickness="0" Loaded="Window_Loaded"
+        WindowStartupLocation="CenterScreen" WindowStyle="None" BorderThickness="0"
         MouseDown="Window_MouseDown" MouseMove="Window_MouseMove" MouseUp="Window_MouseUp">
     <!-- 纯 WPF 启动页：不依赖 HandyControl / App 主题，尽快首帧 -->
     <Border Name="Basemap" CornerRadius="8" Margin="20">

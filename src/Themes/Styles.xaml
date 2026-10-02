@@ -557,49 +557,10 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="RibbonSmallToggleButton" TargetType="ToggleButton">
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="BorderBrush" Value="Transparent"/>
-        <Setter Property="HorizontalContentAlignment" Value="Center"/>
-        <Setter Property="Padding" Value="2"/>
-        <Setter Property="ToolTipService.InitialShowDelay" Value="360"/>
-        <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="ToggleButton">
-                    <Border Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="4"
-                            Padding="{TemplateBinding Padding}">
-                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Style.Triggers>
-            <MultiTrigger>
-                <MultiTrigger.Conditions>
-                    <Condition Property="IsMouseOver" Value="True"/>
-                    <Condition Property="IsChecked" Value="False"/>
-                </MultiTrigger.Conditions>
-                <Setter Property="Background" Value="#E5F3FF"/>
-                <Setter Property="BorderBrush" Value="#CCE7FF"/>
-            </MultiTrigger>
-            <Trigger Property="IsChecked" Value="True">
-                <Setter Property="Background" Value="#CCE7FF"/>
-                <Setter Property="BorderBrush" Value="#99D1FF"/>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-
     <!-- 开发者模式：已转换为内置模板的图解卡片边框色 -->
     <SolidColorBrush x:Key="ConvertedBuiltinTemplateBorderBrush" Color="#8B0000"/>
 
     <!-- 图解模板卡片网格尺寸：标准档位基准 276；运行时由 TemplateCardLayoutHelper 按视口重算 ItemSize -->
-    <sys:Double x:Key="TemplateCardMinDimension">160</sys:Double>
-    <sys:Double x:Key="TemplateCardCellDimension">276</sys:Double>
     <Size x:Key="TemplateCardCellSize">276,276</Size>
 
     <!-- 图解卡片列表：滚动条贴齐右侧；Padding 仅作用于 ItemsPresenter，保持最右列卡片与边框间距 -->
@@ -1128,38 +1089,6 @@
         </Setter>
     </Style>
 
-    <!-- 图解卡片大小档位：工具栏/设置页用的浅色分段控件 -->
-    <Style x:Key="TemplateCardSizeSegmentedStyle" TargetType="ListBox">
-        <Setter Property="Background" Value="#EEEEEE"/>
-        <Setter Property="BorderBrush" Value="#E0E0E0"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Padding" Value="2"/>
-        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
-        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
-        <Setter Property="ItemsPanel">
-            <Setter.Value>
-                <ItemsPanelTemplate>
-                    <UniformGrid Rows="1"/>
-                </ItemsPanelTemplate>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="ListBox">
-                    <Border Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="6"
-                            Padding="{TemplateBinding Padding}"
-                            SnapsToDevicePixels="True"
-                            UseLayoutRounding="True">
-                        <ItemsPresenter/>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
     <!-- 选中底色由滑块绘制。文字不挂 Effect，避免高 DPI 下选中项被栅格化发糊 -->
     <Style x:Key="TemplateCardSizeSegmentedItemStyle" TargetType="ListBoxItem">
         <Setter Property="Background" Value="Transparent"/>
@@ -1417,98 +1346,6 @@
         </Setter>
     </Style>
 
-    <Style x:Key="DataPrepCardStyle" TargetType="Border">
-        <Setter Property="Background" Value="White"/>
-        <Setter Property="BorderBrush" Value="#E5EAF2"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="CornerRadius" Value="18"/>
-        <Setter Property="Padding" Value="22"/>
-        <Setter Property="Margin" Value="0,0,0,16"/>
-        <Setter Property="SnapsToDevicePixels" Value="True"/>
-        <Setter Property="Effect">
-            <Setter.Value>
-                <DropShadowEffect BlurRadius="18" ShadowDepth="2" Direction="270" Color="#1A0F172A" Opacity="0.35"/>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="DataPrepSectionTitleStyle" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="17"/>
-        <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Foreground" Value="#0F172A"/>
-    </Style>
-
-    <Style x:Key="DataPrepMutedTextStyle" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="12"/>
-        <Setter Property="Foreground" Value="#64748B"/>
-        <Setter Property="TextWrapping" Value="Wrap"/>
-    </Style>
-
-    <Style x:Key="DataPrepTagStyle" TargetType="Border">
-        <Setter Property="Background" Value="#EEF4FF"/>
-        <Setter Property="BorderBrush" Value="#D6E6FF"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="CornerRadius" Value="12"/>
-        <Setter Property="Padding" Value="10,4"/>
-        <Setter Property="Margin" Value="0,0,8,8"/>
-    </Style>
-
-    <LinearGradientBrush x:Key="HomePageScrimBrush" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#00000000" Offset="0"/>
-        <GradientStop Color="#33000000" Offset="0.45"/>
-        <GradientStop Color="#99000000" Offset="1"/>
-    </LinearGradientBrush>
-
-    <Style x:Key="HomeContentCardStyle" TargetType="Border">
-        <Setter Property="Background" Value="#F2FFFFFF"/>
-        <Setter Property="BorderBrush" Value="#40FFFFFF"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="CornerRadius" Value="20"/>
-        <Setter Property="Padding" Value="20,18"/>
-        <Setter Property="Effect">
-            <Setter.Value>
-                <DropShadowEffect BlurRadius="24" ShadowDepth="0" Direction="270" Color="#40000000" Opacity="0.45"/>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="HomeAnnouncementCardStyle" TargetType="Border" BasedOn="{StaticResource HomeContentCardStyle}">
-        <Setter Property="Padding" Value="16,14"/>
-        <Setter Property="Margin" Value="0,0,0,14"/>
-    </Style>
-
-    <Style x:Key="HomeSectionTitleStyle" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="13"/>
-        <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Foreground" Value="#636366"/>
-        <Setter Property="Margin" Value="4,0,0,12"/>
-    </Style>
-
-    <Style x:Key="HomeClockTextStyle" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="72"/>
-        <Setter Property="FontWeight" Value="Light"/>
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="HorizontalAlignment" Value="Center"/>
-        <Setter Property="FontFamily" Value="Segoe UI"/>
-        <Setter Property="Effect">
-            <Setter.Value>
-                <DropShadowEffect BlurRadius="8" ShadowDepth="0" Color="Black" Opacity="0.35"/>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="HomeDateTextStyle" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="15"/>
-        <Setter Property="Foreground" Value="#E6FFFFFF"/>
-        <Setter Property="HorizontalAlignment" Value="Center"/>
-        <Setter Property="FontWeight" Value="Normal"/>
-        <Setter Property="Effect">
-            <Setter.Value>
-                <DropShadowEffect BlurRadius="6" ShadowDepth="0" Color="Black" Opacity="0.3"/>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
     <Style x:Key="HomeLinkTileBorderStyle" TargetType="Border">
         <Setter Property="Width" Value="48"/>
         <Setter Property="Height" Value="48"/>
@@ -1631,8 +1468,6 @@
         </Setter>
     </Style>
 
-    <Style x:Key="HomeGroupTitleStyle" TargetType="TextBlock" BasedOn="{StaticResource HomeSectionTitleStyle}"/>
-
     <!-- 主页分段控件：与设置页 TemplateCardSizeSegmented 同一视觉。
          外层容器内放官方分组 ListBox + “个人”按钮，视觉上是一个整体 -->
     <Style x:Key="HomeSegmentedWrapStyle" TargetType="Border">
@@ -1741,22 +1576,6 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>
-
-    <Style x:Key="HomeWidgetCardStyle" TargetType="Border">
-        <Setter Property="Background" Value="#FAFAFC"/>
-        <Setter Property="BorderBrush" Value="#E5E5EA"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="CornerRadius" Value="12"/>
-        <Setter Property="Padding" Value="14,12"/>
-        <Setter Property="Margin" Value="0,0,0,10"/>
-        <Setter Property="Cursor" Value="Hand"/>
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#F0F4FF"/>
-                <Setter Property="BorderBrush" Value="#B8D4FF"/>
-            </Trigger>
-        </Style.Triggers>
     </Style>
 
     <!-- ===== 主页 · 半透明卡片视觉 ===== -->

@@ -1,0 +1,340 @@
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Services;
+using GeoChemistryNexus.Messages;
+using GeoChemistryNexus.Models;
+using System;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using System.Windows;
+
+namespace GeoChemistryNexus.ViewModels
+{
+    public partial class SPlotPageViewModel : ObservableObject,
+        IRecipient<TemplateCardLayoutChangedMessage>,
+        IRecipient<DeveloperModeChangedMessage>
+    {
+        [ObservableProperty]
+        private bool isDeveloperMode;
+
+        [ObservableProperty]
+        private string corelDRAWPath = string.Empty;
+
+        [ObservableProperty]
+        private string inkscapePath = string.Empty;
+
+        [ObservableProperty]
+        private string adobeIllustratorPath = string.Empty;
+
+        [ObservableProperty]
+        private string customThirdPartyAppPath = string.Empty;
+
+        // 默认图解列表展开层级 (1-4)
+        [ObservableProperty]
+        private int defaultTreeExpandLevel;
+
+        // 第三方应用列表
+        public ObservableCollection<string> ThirdPartyApps { get; } = new() { "CorelDRAW", "Inkscape", "Adobe Illustrator", "Custom" };
+
+        [ObservableProperty]
+        private string selectedThirdPartyApp = string.Empty;
+
+        [ObservableProperty]
+        private bool autoCheckTemplateUpdate;
+
+        // 选中对象触发方式：SingleClick 或 DoubleClick
+        [ObservableProperty]
+        private string objectSelectionTrigger = string.Empty;
+
+        // 鼠标吸附自动识别帧率
+        [ObservableProperty]
+        private int mouseSnapAutoRecognitionFrameRate;
+
+        // 默认初始表格行数
+        [ObservableProperty]
+        private int defaultWorksheetRowCount;
+
+        // 图解模板卡片大小档位
+        [ObservableProperty]
+        private TemplateCardSizePreset templateCardSizePreset = TemplateCardSizePreset.Standard;
+
+        public TemplateCardSizePreset[] TemplateCardSizePresetOptions { get; } =
+        {
+            TemplateCardSizePreset.Standard,
+            TemplateCardSizePreset.Compact
+        };
+
+        // 当前图解版本（只读）
+        public string CurrentDiagramVersion { get; } = ContentVersionHelper.GetDiagramFormatVersion();
+
+        public ObservableCollection<int> MouseSnapAutoRecognitionFrameRates { get; } = new() { 24, 30, 60, 90, 144 };
+
+        public ObservableCollection<int> DefaultWorksheetRowCounts { get; } =
+            new(WorksheetDefaultsHelper.AllowedRowCounts);
+
+        public RelayCommand SelectCorelDRAWPathCommand { get; }
+        public RelayCommand SelectInkscapePathCommand { get; }
+        public RelayCommand SelectAdobeIllustratorPathCommand { get; }
+        public RelayCommand SelectCustomThirdPartyAppPathCommand { get; }
+        public RelayCommand OpenInkscapeDownloadCommand { get; }
+
+        private bool isLoading = true;
+
+        public SPlotPageViewModel()
+        {
+            WeakReferenceMessenger.Default.RegisterAll(this);
+
+            SelectCorelDRAWPathCommand = new RelayCommand(ExecuteSelectCorelDRAWPath);
+            SelectInkscapePathCommand = new RelayCommand(ExecuteSelectInkscapePath);
+            SelectAdobeIllustratorPathCommand = new RelayCommand(ExecuteSelectAdobeIllustratorPath);
+            SelectCustomThirdPartyAppPathCommand = new RelayCommand(ExecuteSelectCustomThirdPartyAppPath);
+            OpenInkscapeDownloadCommand = new RelayCommand(ExecuteOpenInkscapeDownload);
+
+            LoadConfig();
+        }
+
+        public void Receive(TemplateCardLayoutChangedMessage message)
+        {
+            ApplyTemplateCardLayoutSettings(message.Value, persist: false, notify: false, showToast: false);
+        }
+
+        public void Receive(DeveloperModeChangedMessage message)
+        {
+            IsDeveloperMode = message.Value;
+        }
+
+        private void LoadConfig()
+        {
+            isLoading = true;
+
+            IsDeveloperMode = bool.TryParse(ConfigHelper.GetConfig("developer_mode"), out bool devMode) && devMode;
+
+            CorelDRAWPath = ConfigHelper.GetConfig("coreldraw_path") ?? string.Empty;
+            InkscapePath = ConfigHelper.GetConfig("inkscape_path") ?? string.Empty;
+            AdobeIllustratorPath = ConfigHelper.GetConfig("adobe_illustrator_path") ?? string.Empty;
+            CustomThirdPartyAppPath = ConfigHelper.GetConfig("custom_third_party_app_path") ?? string.Empty;
+            
+            if (int.TryParse(ConfigHelper.GetConfig("default_tree_expand_level"), out int expandLevel))
+            {
+                DefaultTreeExpandLevel = expandLevel;
+            }
+            else
+            {
+                DefaultTreeExpandLevel = 2; // Default to level 2
+            }
+
+            SelectedThirdPartyApp = ConfigHelper.GetConfig("default_third_party_app") ?? string.Empty;
+            if (string.IsNullOrEmpty(SelectedThirdPartyApp))
+            {
+                SelectedThirdPartyApp = "Inkscape";
+            }
+
+            if (bool.TryParse(ConfigHelper.GetConfig("auto_check_template_update"), out bool checkTemp))
+            {
+                AutoCheckTemplateUpdate = checkTemp;
+            }
+
+            ObjectSelectionTrigger = ConfigHelper.GetConfig("object_selection_trigger") ?? string.Empty;
+            if (string.IsNullOrEmpty(ObjectSelectionTrigger))
+            {
+                ObjectSelectionTrigger = "SingleClick"; // 默认单击
+            }
+
+            if (int.TryParse(ConfigHelper.GetConfig("mouse_snap_auto_recognition_frame_rate"), out int snapFrameRate)
+                && MouseSnapAutoRecognitionFrameRates.Contains(snapFrameRate))
+            {
+                MouseSnapAutoRecognitionFrameRate = snapFrameRate;
+            }
+            else
+            {
+                MouseSnapAutoRecognitionFrameRate = 24;
+            }
+
+            DefaultWorksheetRowCount = WorksheetDefaultsHelper.GetDefaultRowCount(WorksheetDefaultsHelper.DiagramConfigKey);
+
+            ApplyTemplateCardLayoutSettings(TemplateCardLayoutHelper.LoadFromConfig(), persist: false, notify: false, showToast: false);
+            
+            isLoading = false;
+        }
+
+        private void ApplyTemplateCardLayoutSettings(TemplateCardLayoutSettings settings, bool persist, bool notify, bool showToast)
+        {
+            bool previousLoading = isLoading;
+            isLoading = true;
+            try
+            {
+                TemplateCardSizePreset = settings.SizePreset;
+            }
+            finally
+            {
+                isLoading = previousLoading;
+            }
+
+            if (persist)
+            {
+                TemplateCardLayoutHelper.SaveToConfig(TemplateCardSizePreset);
+            }
+
+            if (notify)
+            {
+                WeakReferenceMessenger.Default.Send(new TemplateCardLayoutChangedMessage(new TemplateCardLayoutSettings
+                {
+                    SizePreset = TemplateCardSizePreset
+                }));
+            }
+
+            if (showToast)
+            {
+                MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
+            }
+        }
+
+        private void PersistTemplateCardLayoutFromUi()
+        {
+            if (isLoading) return;
+
+            ApplyTemplateCardLayoutSettings(new TemplateCardLayoutSettings
+            {
+                SizePreset = TemplateCardSizePreset
+            }, persist: true, notify: true, showToast: true);
+        }
+
+        private void ExecuteSelectCorelDRAWPath()
+        {
+            string? path = FileHelper.GetFilePath("CorelDRAW Executable (*.exe)|*.exe");
+            if (!string.IsNullOrEmpty(path))
+            {
+                CorelDRAWPath = path;
+                ConfigHelper.SetConfig("coreldraw_path", path);
+                MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
+            }
+        }
+
+        private void ExecuteSelectInkscapePath()
+        {
+            string? path = FileHelper.GetFilePath("Inkscape Executable (*.exe)|*.exe");
+            if (!string.IsNullOrEmpty(path))
+            {
+                InkscapePath = path;
+                ConfigHelper.SetConfig("inkscape_path", path);
+                MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
+            }
+        }
+
+        private void ExecuteOpenInkscapeDownload()
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo("https://inkscape.org/") { UseShellExecute = true });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(LanguageService.Instance["unable_to_open_link"] + ex.Message);
+            }
+        }
+
+        private void ExecuteSelectAdobeIllustratorPath()
+        {
+            string? path = FileHelper.GetFilePath("Adobe Illustrator Executable (*.exe)|*.exe");
+            if (!string.IsNullOrEmpty(path))
+            {
+                AdobeIllustratorPath = path;
+                ConfigHelper.SetConfig("adobe_illustrator_path", path);
+                MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
+            }
+        }
+
+        private void ExecuteSelectCustomThirdPartyAppPath()
+        {
+            string? path = FileHelper.GetFilePath("Executable (*.exe)|*.exe");
+            if (!string.IsNullOrEmpty(path))
+            {
+                CustomThirdPartyAppPath = path;
+                ConfigHelper.SetConfig("custom_third_party_app_path", path);
+                MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
+            }
+        }
+
+        partial void OnSelectedThirdPartyAppChanged(string value)
+        {
+            if (isLoading) return;
+            ConfigHelper.SetConfig("default_third_party_app", value);
+            MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
+        }
+
+        partial void OnAutoCheckTemplateUpdateChanged(bool value)
+        {
+            if (isLoading) return;
+             ConfigHelper.SetConfig("auto_check_template_update", value.ToString());
+             MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
+        }
+
+        partial void OnObjectSelectionTriggerChanged(string value)
+        {
+            if (isLoading) return;
+            ConfigHelper.SetConfig("object_selection_trigger", value);
+            WeakReferenceMessenger.Default.Send(new ObjectSelectionTriggerChangedMessage(value));
+            MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
+        }
+
+        partial void OnDefaultTreeExpandLevelChanged(int value)
+        {
+            if (isLoading) return;
+            ConfigHelper.SetConfig("default_tree_expand_level", value.ToString());
+            
+            // 发送消息通知
+            WeakReferenceMessenger.Default.Send(new DefaultTreeExpandLevelChangedMessage(value));
+
+            MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
+        }
+
+        partial void OnMouseSnapAutoRecognitionFrameRateChanged(int value)
+        {
+            if (isLoading) return;
+            ConfigHelper.SetConfig("mouse_snap_auto_recognition_frame_rate", value.ToString());
+            WeakReferenceMessenger.Default.Send(new MouseSnapAutoRecognitionFrameRateChangedMessage(value));
+            MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
+        }
+
+        partial void OnDefaultWorksheetRowCountChanged(int value)
+        {
+            if (isLoading) return;
+            WorksheetDefaultsHelper.SaveDefaultRowCount(WorksheetDefaultsHelper.DiagramConfigKey, value);
+            MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
+        }
+
+        partial void OnTemplateCardSizePresetChanged(TemplateCardSizePreset value)
+        {
+            PersistTemplateCardLayoutFromUi();
+        }
+
+        [RelayCommand]
+        private async Task ResetDiagramDatabaseAsync()
+        {
+            string message = LanguageService.Instance["confirm_reset_diagram_database"]
+                ?? "Are you sure you want to clear the local diagram template database? All local diagram template data will be removed. This action cannot be undone.";
+
+            bool isConfirmed = await MessageHelper.ShowAsyncDialog(
+                message,
+                LanguageService.Instance["Cancel"] ?? "Cancel",
+                LanguageService.Instance["clear"] ?? "Clear");
+
+            if (!isConfirmed)
+                return;
+
+            try
+            {
+                GraphMapDatabaseService.Instance.ClearDatabase();
+                WeakReferenceMessenger.Default.Send(new DiagramDatabaseResetMessage());
+                MessageHelper.Success(LanguageService.Instance["diagram_database_cleared"] ?? "Local diagram template database cleared successfully.");
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.Error(ex.Message);
+            }
+        }
+    }
+}

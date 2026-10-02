@@ -180,15 +180,6 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Add line operation canceled. 的本地化字符串。
-        /// </summary>
-        internal static string add_line_operation_canceled {
-            get {
-                return ResourceManager.GetString("add_line_operation_canceled", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Add Link 的本地化字符串。
         /// </summary>
         internal static string add_link {
@@ -212,15 +203,6 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string add_text {
             get {
                 return ResourceManager.GetString("add_text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Add text operation canceled. 的本地化字符串。
-        /// </summary>
-        internal static string add_text_operation_canceled {
-            get {
-                return ResourceManager.GetString("add_text_operation_canceled", resourceCulture);
             }
         }
         
@@ -1035,15 +1017,6 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 T 的本地化字符串。
-        /// </summary>
-        internal static string black_body_radiation_calc_temperature {
-            get {
-                return ResourceManager.GetString("black_body_radiation_calc_temperature", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Peak wavelength λ_max = {0:G6} μm ({1:G6} nm) 的本地化字符串。
         /// </summary>
         internal static string black_body_radiation_calc_wien_result {
@@ -1166,15 +1139,6 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string Cancel {
             get {
                 return ResourceManager.GetString("Cancel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Cancel Delete 的本地化字符串。
-        /// </summary>
-        internal static string cancel_delete {
-            get {
-                return ResourceManager.GetString("cancel_delete", resourceCulture);
             }
         }
         
@@ -2301,6 +2265,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Clear 的本地化字符串。
+        /// </summary>
+        internal static string clear {
+            get {
+                return ResourceManager.GetString("clear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Clear Template Table 的本地化字符串。
         /// </summary>
         internal static string clearTemplateTable {
@@ -2342,15 +2315,6 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string close {
             get {
                 return ResourceManager.GetString("close", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Close File 的本地化字符串。
-        /// </summary>
-        internal static string close_file {
-            get {
-                return ResourceManager.GetString("close_file", resourceCulture);
             }
         }
         
@@ -2436,15 +2400,6 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Delete language &apos;{0}&apos;? This cannot be undone. 的本地化字符串。
-        /// </summary>
-        internal static string confirm_delete_language {
-            get {
-                return ResourceManager.GetString("confirm_delete_language", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Are you sure you want to delete the selected row(s)? 的本地化字符串。
         /// </summary>
         internal static string confirm_delete_row {
@@ -2468,6 +2423,24 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string confirm_import_associated_package {
             get {
                 return ResourceManager.GetString("confirm_import_associated_package", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Are you sure you want to clear the local diagram template database? All local diagram template data will be removed. This action cannot be undone. 的本地化字符串。
+        /// </summary>
+        internal static string confirm_reset_diagram_database {
+            get {
+                return ResourceManager.GetString("confirm_reset_diagram_database", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Are you sure you want to clear the local geothermometer template database? All local geothermometer template data will be removed. This action cannot be undone. 的本地化字符串。
+        /// </summary>
+        internal static string confirm_reset_geothermometer_database {
+            get {
+                return ResourceManager.GetString("confirm_reset_geothermometer_database", resourceCulture);
             }
         }
         
@@ -3570,24 +3543,6 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Delete All 的本地化字符串。
-        /// </summary>
-        internal static string delete_all {
-            get {
-                return ResourceManager.GetString("delete_all", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Failed to delete data: 的本地化字符串。
-        /// </summary>
-        internal static string delete_data_failed {
-            get {
-                return ResourceManager.GetString("delete_data_failed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Delete failed: 的本地化字符串。
         /// </summary>
         internal static string delete_failed {
@@ -3611,24 +3566,6 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string delete_object {
             get {
                 return ResourceManager.GetString("delete_object", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Delete selected data and drawing objects? 的本地化字符串。
-        /// </summary>
-        internal static string delete_selected_data_and_drawing_objects {
-            get {
-                return ResourceManager.GetString("delete_selected_data_and_drawing_objects", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Delete selected drawing objects? 的本地化字符串。
-        /// </summary>
-        internal static string delete_selected_drawing_objects {
-            get {
-                return ResourceManager.GetString("delete_selected_drawing_objects", resourceCulture);
             }
         }
         
@@ -3705,11 +3642,29 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 DEVELOPER OPTIONS 的本地化字符串。
+        /// </summary>
+        internal static string developer_settings {
+            get {
+                return ResourceManager.GetString("developer_settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Diagram 的本地化字符串。
         /// </summary>
         internal static string diagram {
             get {
                 return ResourceManager.GetString("diagram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Local diagram database cleared successfully. 的本地化字符串。
+        /// </summary>
+        internal static string diagram_database_cleared {
+            get {
+                return ResourceManager.GetString("diagram_database_cleared", resourceCulture);
             }
         }
         
@@ -4002,15 +3957,6 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Edit Menu Bar Item 的本地化字符串。
-        /// </summary>
-        internal static string edit_menu_bar_item {
-            get {
-                return ResourceManager.GetString("edit_menu_bar_item", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Element Order 的本地化字符串。
         /// </summary>
         internal static string element_order {
@@ -4088,15 +4034,6 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string enter_language_add {
             get {
                 return ResourceManager.GetString("enter_language_add", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Enter language code (e.g. fr-FR): 的本地化字符串。
-        /// </summary>
-        internal static string enter_language_code_prompt {
-            get {
-                return ResourceManager.GetString("enter_language_code_prompt", resourceCulture);
             }
         }
         
@@ -4772,15 +4709,6 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string geo_btn_help {
             get {
                 return ResourceManager.GetString("geo_btn_help", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 OK 的本地化字符串。
-        /// </summary>
-        internal static string geo_btn_help_confirm {
-            get {
-                return ResourceManager.GetString("geo_btn_help_confirm", resourceCulture);
             }
         }
         
@@ -5748,6 +5676,24 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Detected {0} uninstalled and {1} outdated templates. Download and update all? 的本地化字符串。
+        /// </summary>
+        internal static string geo_msg_batch_sync_all_confirm {
+            get {
+                return ResourceManager.GetString("geo_msg_batch_sync_all_confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Detected {0} uninstalled and {1} outdated templates. Click to sync all. 的本地化字符串。
+        /// </summary>
+        internal static string geo_msg_batch_sync_tooltip {
+            get {
+                return ResourceManager.GetString("geo_msg_batch_sync_tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Detected {0} updatable geothermobarometers. Updating will overwrite local content. Continue? 的本地化字符串。
         /// </summary>
         internal static string geo_msg_batch_update_confirm {
@@ -6612,6 +6558,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Local geothermometer database cleared successfully. 的本地化字符串。
+        /// </summary>
+        internal static string geothermometer_database_cleared {
+            get {
+                return ResourceManager.GetString("geothermometer_database_cleared", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 DEFAULTS 的本地化字符串。
         /// </summary>
         internal static string geothermometer_defaults {
@@ -7161,15 +7116,6 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Keep Data 的本地化字符串。
-        /// </summary>
-        internal static string keep_data {
-            get {
-                return ResourceManager.GetString("keep_data", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Language 的本地化字符串。
         /// </summary>
         internal static string Language_ {
@@ -7346,6 +7292,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string loading_font_resources_ellipsis {
             get {
                 return ResourceManager.GetString("loading_font_resources_ellipsis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Loading geothermometer module... 的本地化字符串。
+        /// </summary>
+        internal static string loading_geothermometer_module_ellipsis {
+            get {
+                return ResourceManager.GetString("loading_geothermometer_module_ellipsis", resourceCulture);
             }
         }
         
@@ -7971,24 +7926,6 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 No source data found. 的本地化字符串。
-        /// </summary>
-        internal static string no_source_data_found {
-            get {
-                return ResourceManager.GetString("no_source_data_found", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 No source data found; only drawing objects were deleted. 的本地化字符串。
-        /// </summary>
-        internal static string no_source_data_found_only_drawing_objects_deleted {
-            get {
-                return ResourceManager.GetString("no_source_data_found_only_drawing_objects_deleted", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 No savable template or save path specified. Please use Save As to save. 的本地化字符串。
         /// </summary>
         internal static string no_template_or_path_specified {
@@ -8295,15 +8232,6 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Edit the announcement here. After publishing, it will appear in the home page announcement area. 的本地化字符串。
-        /// </summary>
-        internal static string official_publisher_announcement_edit_hint {
-            get {
-                return ResourceManager.GetString("official_publisher_announcement_edit_hint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 (empty) 的本地化字符串。
         /// </summary>
         internal static string official_publisher_announcement_empty {
@@ -8412,15 +8340,6 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Announcement 的本地化字符串。
-        /// </summary>
-        internal static string official_publisher_announcement_section {
-            get {
-                return ResourceManager.GetString("official_publisher_announcement_section", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Already up to date on server 的本地化字符串。
         /// </summary>
         internal static string official_publisher_announcement_up_to_date {
@@ -8489,15 +8408,6 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string official_publisher_category_edit {
             get {
                 return ResourceManager.GetString("official_publisher_category_edit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Publish official content to COS? 的本地化字符串。
-        /// </summary>
-        internal static string official_publisher_confirm {
-            get {
-                return ResourceManager.GetString("official_publisher_confirm", resourceCulture);
             }
         }
         
@@ -8664,24 +8574,6 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Groups 的本地化字符串。
-        /// </summary>
-        internal static string official_publisher_home_groups {
-            get {
-                return ResourceManager.GetString("official_publisher_home_groups", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Links 的本地化字符串。
-        /// </summary>
-        internal static string official_publisher_home_link_items {
-            get {
-                return ResourceManager.GetString("official_publisher_home_link_items", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Home links draft saved locally. 的本地化字符串。
         /// </summary>
         internal static string official_publisher_home_links_draft_saved {
@@ -8759,42 +8651,6 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string official_publisher_home_select_group {
             get {
                 return ResourceManager.GetString("official_publisher_home_select_group", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Announcement 的本地化字符串。
-        /// </summary>
-        internal static string official_publisher_include_announcement {
-            get {
-                return ResourceManager.GetString("official_publisher_include_announcement", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Diagrams 的本地化字符串。
-        /// </summary>
-        internal static string official_publisher_include_diagrams {
-            get {
-                return ResourceManager.GetString("official_publisher_include_diagrams", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Geothermobarometers 的本地化字符串。
-        /// </summary>
-        internal static string official_publisher_include_geothermometers {
-            get {
-                return ResourceManager.GetString("official_publisher_include_geothermometers", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Include home links 的本地化字符串。
-        /// </summary>
-        internal static string official_publisher_include_home_links {
-            get {
-                return ResourceManager.GetString("official_publisher_include_home_links", resourceCulture);
             }
         }
         
@@ -9033,15 +8889,6 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Publish completed. 的本地化字符串。
-        /// </summary>
-        internal static string official_publisher_progress_done {
-            get {
-                return ResourceManager.GetString("official_publisher_progress_done", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Exporting announcement... 的本地化字符串。
         /// </summary>
         internal static string official_publisher_progress_exporting_announcement {
@@ -9087,24 +8934,6 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Uploading to COS ({0}/{1})... 的本地化字符串。
-        /// </summary>
-        internal static string official_publisher_progress_uploading {
-            get {
-                return ResourceManager.GetString("official_publisher_progress_uploading", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Uploading to COS... 的本地化字符串。
-        /// </summary>
-        internal static string official_publisher_progress_uploading_cos {
-            get {
-                return ResourceManager.GetString("official_publisher_progress_uploading_cos", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Public base URL 的本地化字符串。
         /// </summary>
         internal static string official_publisher_public_base_url {
@@ -9128,15 +8957,6 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string official_publisher_public_url_required {
             get {
                 return ResourceManager.GetString("official_publisher_public_url_required", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Publish to COS 的本地化字符串。
-        /// </summary>
-        internal static string official_publisher_publish_cos {
-            get {
-                return ResourceManager.GetString("official_publisher_publish_cos", resourceCulture);
             }
         }
         
@@ -9537,15 +9357,6 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Bottom rows: lanthanides (La–Lu) and actinides (Ac–Lr). 的本地化字符串。
-        /// </summary>
-        internal static string periodic_table_fblock_note {
-            get {
-                return ResourceManager.GetString("periodic_table_fblock_note", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Crustal abundance 的本地化字符串。
         /// </summary>
         internal static string periodic_table_field_abundance {
@@ -9825,15 +9636,6 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Selected: {0} ({1}) 的本地化字符串。
-        /// </summary>
-        internal static string periodic_table_status_selected {
-            get {
-                return ResourceManager.GetString("periodic_table_status_selected", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Geochemical Periodic Table 的本地化字符串。
         /// </summary>
         internal static string periodic_table_widget {
@@ -9848,15 +9650,6 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string periodic_table_widget_desc {
             get {
                 return ResourceManager.GetString("periodic_table_widget_desc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Click an element for geochemical properties. Use group filters to highlight REE, HFSE, LILE, PGE, and Goldschmidt classes. 的本地化字符串。
-        /// </summary>
-        internal static string periodic_table_widget_hint {
-            get {
-                return ResourceManager.GetString("periodic_table_widget_hint", resourceCulture);
             }
         }
         
@@ -10410,15 +10203,6 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Quit Edit 的本地化字符串。
-        /// </summary>
-        internal static string QuitEdit {
-            get {
-                return ResourceManager.GetString("QuitEdit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Range 的本地化字符串。
         /// </summary>
         internal static string range {
@@ -10505,6 +10289,42 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string reset_default {
             get {
                 return ResourceManager.GetString("reset_default", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Reset Diagram Database 的本地化字符串。
+        /// </summary>
+        internal static string reset_diagram_database {
+            get {
+                return ResourceManager.GetString("reset_diagram_database", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Clear the local diagram template database 的本地化字符串。
+        /// </summary>
+        internal static string reset_diagram_database_hint {
+            get {
+                return ResourceManager.GetString("reset_diagram_database_hint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Reset Geothermometer Database 的本地化字符串。
+        /// </summary>
+        internal static string reset_geothermometer_database {
+            get {
+                return ResourceManager.GetString("reset_geothermometer_database", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Clear the local geothermometer template database 的本地化字符串。
+        /// </summary>
+        internal static string reset_geothermometer_database_hint {
+            get {
+                return ResourceManager.GetString("reset_geothermometer_database_hint", resourceCulture);
             }
         }
         
@@ -10604,15 +10424,6 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string save_as_csv_file {
             get {
                 return ResourceManager.GetString("save_as_csv_file", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Save Changes 的本地化字符串。
-        /// </summary>
-        internal static string save_changes {
-            get {
-                return ResourceManager.GetString("save_changes", resourceCulture);
             }
         }
         
@@ -10824,6 +10635,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Please select a folder 的本地化字符串。
+        /// </summary>
+        internal static string select_folder {
+            get {
+                return ResourceManager.GetString("select_folder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Select Language 的本地化字符串。
         /// </summary>
         internal static string select_language {
@@ -10833,38 +10653,11 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Select the language to delete: 的本地化字符串。
-        /// </summary>
-        internal static string select_language_to_delete {
-            get {
-                return ResourceManager.GetString("select_language_to_delete", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Select Software 的本地化字符串。
         /// </summary>
         internal static string select_software {
             get {
                 return ResourceManager.GetString("select_software", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Selected data and drawing objects have been deleted. 的本地化字符串。
-        /// </summary>
-        internal static string selected_data_and_drawing_objects_deleted {
-            get {
-                return ResourceManager.GetString("selected_data_and_drawing_objects_deleted", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Selected drawing objects have been deleted, data kept. 的本地化字符串。
-        /// </summary>
-        internal static string selected_drawing_objects_deleted_data_kept {
-            get {
-                return ResourceManager.GetString("selected_drawing_objects_deleted_data_kept", resourceCulture);
             }
         }
         
@@ -12224,6 +12017,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string unfavorite {
             get {
                 return ResourceManager.GetString("unfavorite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 An unhandled application error occurred: 的本地化字符串。
+        /// </summary>
+        internal static string unhandled_exception_occurred {
+            get {
+                return ResourceManager.GetString("unhandled_exception_occurred", resourceCulture);
             }
         }
         

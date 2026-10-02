@@ -318,14 +318,14 @@ namespace GeoChemistryNexus.Models.Cipw
         /// <summary>
         /// 铁的配分处理
         /// </summary>
-        private static (Dictionary<string, double> oxides, string ironMode, List<CipwMessage> warnings) HandleIron(
+        private static (Dictionary<string, double> oxides, string? ironMode, List<CipwMessage> warnings) HandleIron(
             Dictionary<string, double> oxides, double fe3Fraction, bool strict)
         {
             if (fe3Fraction < 0.0 || fe3Fraction > 1.0)
                 throw new CipwCalculationException("cipw_error_fe3_fraction_range");
 
             var ox = new Dictionary<string, double>(oxides);
-            string ironMode = null;
+            string? ironMode = null;
             var warnings = new List<CipwMessage>();
 
             bool hasFeo = ox.ContainsKey("FeO") && ox["FeO"] > 0;

@@ -8,8 +8,6 @@
     <SolidColorBrush x:Key="EditorBorderBrushLight" Color="#E5E5EA"/>
     <SolidColorBrush x:Key="EditorPrimaryBrush" Color="#007AFF"/>
     <SolidColorBrush x:Key="EditorPrimarySoftBrush" Color="#EAF3FF"/>
-    <SolidColorBrush x:Key="EditorTextPrimaryBrush" Color="#1D1D1F"/>
-    <SolidColorBrush x:Key="EditorTextSecondaryBrush" Color="#86868B"/>
 
     <Style x:Key="EditorFieldComboBoxItemStyle" TargetType="ComboBoxItem" BasedOn="{StaticResource ComboBoxItemBaseStyle}">
         <!-- 使用本地值，避免默认/基样式里 RelativeSource→ItemsControl 在项销毁时绑定失败 -->
@@ -102,29 +100,6 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="Bd" Property="Background" Value="#E8E8E8"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="PrimaryEditorButtonStyle" TargetType="Button" BasedOn="{StaticResource EditorButtonStyle}">
-        <Setter Property="Background" Value="#007AFF"/>
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="BorderBrush" Value="#007AFF"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border x:Name="Bd" Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="6" Padding="{TemplateBinding Padding}">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Bd" Property="Background" Value="#0066DD"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
