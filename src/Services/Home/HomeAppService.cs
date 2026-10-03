@@ -43,6 +43,30 @@ namespace GeoChemistryNexus.Services
                     Description = LanguageService.Instance["periodic_table_widget_desc"],
                     WidgetKey = "PeriodicTableWidget",
                     Icon = "\ue81e"
+                },
+                new HomeAppItem
+                {
+                    Type = HomeAppType.Widget,
+                    Title = LanguageService.Instance["chronostrat_navigator_widget"],
+                    Description = LanguageService.Instance["chronostrat_navigator_widget_desc"],
+                    WidgetKey = "ChronostratNavigatorWidget",
+                    Icon = "\ue929"
+                },
+                new HomeAppItem
+                {
+                    Type = HomeAppType.Widget,
+                    Title = LanguageService.Instance["oxide_element_converter"],
+                    Description = LanguageService.Instance["oxide_element_converter_desc"],
+                    WidgetKey = "OxideElementConverterWidget",
+                    Icon = "\ue9d5"
+                },
+                new HomeAppItem
+                {
+                    Type = HomeAppType.Widget,
+                    Title = LanguageService.Instance["geoscience_unit_converter"],
+                    Description = LanguageService.Instance["geoscience_unit_converter_desc"],
+                    WidgetKey = "GeoscienceUnitConverterWidget",
+                    Icon = "\ue94e"
                 }
             };
 

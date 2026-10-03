@@ -5,6 +5,7 @@ using GeoChemistryNexus.Services;
 using GeoChemistryNexus.Models;
 using GeoChemistryNexus.Views;
 using GeoChemistryNexus.Views.Widgets;
+using GeoChemistryNexus.ViewModels.Home;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -595,6 +596,7 @@ namespace GeoChemistryNexus.ViewModels
 
             var dialog = new AddLinkWindow();
             dialog.Owner = Application.Current.MainWindow;
+            WindowActivationHelper.AttachOwnerFocusPreservation(dialog, dialog.Owner);
             dialog.TitleBox.Text = app.Title;
             dialog.UrlBox.Text = app.Url;
             dialog.DescBox.Text = app.Description;
@@ -722,6 +724,61 @@ namespace GeoChemistryNexus.ViewModels
                         }
                     };
                 }
+                else if (app.WidgetKey == "ChronostratNavigatorWidget")
+                {
+                    var main = Application.Current.MainWindow;
+                    double maxWidth  = main != null && main.ActualWidth  > 0 ? main.ActualWidth  : SystemParameters.WorkArea.Width;
+                    double maxHeight = main != null && main.ActualHeight > 0 ? main.ActualHeight : SystemParameters.WorkArea.Height;
+
+                    double width     = Math.Min(1100, maxWidth);
+                    double height    = Math.Min(760,  maxHeight);
+                    double minWidth  = Math.Min(900,  width);
+                    double minHeight = Math.Min(600,  height);
+
+                    window = new Window
+                    {
+                        Title    = LanguageService.Instance["chronostrat_navigator_widget"],
+                        Width    = width,
+                        Height   = height,
+                        MinWidth = minWidth,
+                        MinHeight = minHeight,
+                        MaxHeight = maxHeight,
+                        Content  = new ChronostratNavigatorWidget
+                        {
+                            DataContext = new ChronostratNavigatorWidgetViewModel()
+                        }
+                    };
+                }
+                else if (app.WidgetKey == "OxideElementConverterWidget")
+                {
+                    window = new Window
+                    {
+                        Title    = LanguageService.Instance["oxide_element_converter"],
+                        Width    = 720,
+                        Height   = 640,
+                        MinWidth = 560,
+                        MinHeight = 480,
+                        Content  = new OxideElementConverterWidget
+                        {
+                            DataContext = new OxideElementConverterViewModel()
+                        }
+                    };
+                }
+                else if (app.WidgetKey == "GeoscienceUnitConverterWidget")
+                {
+                    window = new Window
+                    {
+                        Title    = LanguageService.Instance["geoscience_unit_converter"],
+                        Width    = 1080,
+                        Height   = 680,
+                        MinWidth = 880,
+                        MinHeight = 500,
+                        Content  = new GeoscienceUnitConverterWidget
+                        {
+                            DataContext = new GeoscienceUnitConverterViewModel()
+                        }
+                    };
+                }
 
                 if (window == null)
                     return;
@@ -738,6 +795,8 @@ namespace GeoChemistryNexus.ViewModels
                 {
                     window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                 }
+
+                WindowActivationHelper.AttachOwnerFocusPreservation(window, mainWindow);
 
                 window.Show();
 
@@ -781,6 +840,7 @@ namespace GeoChemistryNexus.ViewModels
 
             var dialog = new AddLinkWindow();
             dialog.Owner = Application.Current.MainWindow;
+            WindowActivationHelper.AttachOwnerFocusPreservation(dialog, dialog.Owner);
             if (dialog.ShowDialog() == true && dialog.Result != null)
             {
                 _personalGroup.Items.Add(dialog.Result);
@@ -792,22 +852,36 @@ namespace GeoChemistryNexus.ViewModels
         private void AddWidget()
         {
             var widgets = HomeAppService.GetAvailableWidgets();
-            var dialog = new AddWidgetWindow(widgets);
-            dialog.Owner = Application.Current.MainWindow;
-
-            if (dialog.ShowDialog() == true && dialog.SelectedWidget != null)
-            {
-                var widget = dialog.SelectedWidget;
-                _widgets.Add(new HomeAppItem
+            var dialog = new AddWidgetWindow(
+                widgets,
+                _widgets,
+                widget =>
                 {
-                    Type = HomeAppType.Widget,
-                    Title = widget.Title,
-                    Description = widget.Description,
-                    WidgetKey = widget.WidgetKey,
-                    Icon = widget.Icon
+                    if (_widgets.Any(w => w.WidgetKey == widget.WidgetKey))
+                        return;
+
+                    _widgets.Add(new HomeAppItem
+                    {
+                        Type = HomeAppType.Widget,
+                        Title = widget.Title,
+                        Description = widget.Description,
+                        WidgetKey = widget.WidgetKey,
+                        Icon = widget.Icon
+                    });
+                    SaveWidgets();
+                },
+                widget =>
+                {
+                    var existing = _widgets.FirstOrDefault(w => w.WidgetKey == widget.WidgetKey);
+                    if (existing != null)
+                    {
+                        _widgets.Remove(existing);
+                        SaveWidgets();
+                    }
                 });
-                SaveWidgets();
-            }
+            dialog.Owner = Application.Current.MainWindow;
+            WindowActivationHelper.AttachOwnerFocusPreservation(dialog, dialog.Owner);
+            dialog.ShowDialog();
         }
 
         private void EnsurePersonalGroup()

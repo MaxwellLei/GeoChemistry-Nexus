@@ -12917,6 +12917,7 @@ namespace GeoChemistryNexus.ViewModels
             {
                 if (Application.Current.MainWindow != null && Application.Current.MainWindow.IsVisible)
                     window.Owner = Application.Current.MainWindow;
+                WindowActivationHelper.AttachOwnerFocusPreservation(window, Application.Current.MainWindow);
             }
             catch (Exception ex)
             {

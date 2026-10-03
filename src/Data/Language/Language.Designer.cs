@@ -216,6 +216,33 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Discover and expand your geochemical toolkit on the home page 的本地化字符串。
+        /// </summary>
+        internal static string add_widget_subtitle {
+            get {
+                return ResourceManager.GetString("add_widget_subtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Tip: Added widgets can be used directly on the home page or removed via right-click 的本地化字符串。
+        /// </summary>
+        internal static string add_widget_tip {
+            get {
+                return ResourceManager.GetString("add_widget_tip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Added 的本地化字符串。
+        /// </summary>
+        internal static string added {
+            get {
+                return ResourceManager.GetString("added", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Executable path of Adobe Illustrator for opening vector graphics 的本地化字符串。
         /// </summary>
         internal static string adobe_illustrator_path_hint {
@@ -1107,15 +1134,6 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Calculate 的本地化字符串。
-        /// </summary>
-        internal static string Calculate {
-            get {
-                return ResourceManager.GetString("Calculate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Calculation Error 的本地化字符串。
         /// </summary>
         internal static string calculation_error {
@@ -1139,6 +1157,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string Cancel {
             get {
                 return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Cancel Add 的本地化字符串。
+        /// </summary>
+        internal static string cancel_add {
+            get {
+                return ResourceManager.GetString("cancel_add", resourceCulture);
             }
         }
         
@@ -1193,6 +1220,249 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string CheckUpdate_hint {
             get {
                 return ResourceManager.GetString("CheckUpdate_hint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Age Lookup 的本地化字符串。
+        /// </summary>
+        internal static string chronostrat_age_lookup_label {
+            get {
+                return ResourceManager.GetString("chronostrat_age_lookup_label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Age Lookup Result 的本地化字符串。
+        /// </summary>
+        internal static string chronostrat_age_result_label {
+            get {
+                return ResourceManager.GetString("chronostrat_age_result_label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Age Boundaries 的本地化字符串。
+        /// </summary>
+        internal static string chronostrat_boundary_label {
+            get {
+                return ResourceManager.GetString("chronostrat_boundary_label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Stratigraphic Tree 的本地化字符串。
+        /// </summary>
+        internal static string chronostrat_chart_tree_title {
+            get {
+                return ResourceManager.GetString("chronostrat_chart_tree_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Sub-units 的本地化字符串。
+        /// </summary>
+        internal static string chronostrat_children_label {
+            get {
+                return ResourceManager.GetString("chronostrat_children_label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Standard Reference 的本地化字符串。
+        /// </summary>
+        internal static string chronostrat_citation_label {
+            get {
+                return ResourceManager.GetString("chronostrat_citation_label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Click a unit to view details 的本地化字符串。
+        /// </summary>
+        internal static string chronostrat_click_hint {
+            get {
+                return ResourceManager.GetString("chronostrat_click_hint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Collapse All 的本地化字符串。
+        /// </summary>
+        internal static string chronostrat_collapse_all {
+            get {
+                return ResourceManager.GetString("chronostrat_collapse_all", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 IUGS Official Color 的本地化字符串。
+        /// </summary>
+        internal static string chronostrat_color_label {
+            get {
+                return ResourceManager.GetString("chronostrat_color_label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Copy 的本地化字符串。
+        /// </summary>
+        internal static string chronostrat_copy_citation {
+            get {
+                return ResourceManager.GetString("chronostrat_copy_citation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Copy HEX 的本地化字符串。
+        /// </summary>
+        internal static string chronostrat_copy_hex {
+            get {
+                return ResourceManager.GetString("chronostrat_copy_hex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Copy RGB 的本地化字符串。
+        /// </summary>
+        internal static string chronostrat_copy_rgb {
+            get {
+                return ResourceManager.GetString("chronostrat_copy_rgb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Duration 的本地化字符串。
+        /// </summary>
+        internal static string chronostrat_duration_label {
+            get {
+                return ResourceManager.GetString("chronostrat_duration_label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Top (End) 的本地化字符串。
+        /// </summary>
+        internal static string chronostrat_end_label {
+            get {
+                return ResourceManager.GetString("chronostrat_end_label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Expand All 的本地化字符串。
+        /// </summary>
+        internal static string chronostrat_expand_all {
+            get {
+                return ResourceManager.GetString("chronostrat_expand_all", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 To Periods 的本地化字符串。
+        /// </summary>
+        internal static string chronostrat_expand_period {
+            get {
+                return ResourceManager.GetString("chronostrat_expand_period", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 The base of this unit is defined by an officially ratified golden spike (GSSP). 的本地化字符串。
+        /// </summary>
+        internal static string chronostrat_gssp_desc {
+            get {
+                return ResourceManager.GetString("chronostrat_gssp_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Ratified Global Boundary Stratotype Section and Point 的本地化字符串。
+        /// </summary>
+        internal static string chronostrat_gssp_ratified {
+            get {
+                return ResourceManager.GetString("chronostrat_gssp_ratified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Lookup 的本地化字符串。
+        /// </summary>
+        internal static string chronostrat_lookup_btn {
+            get {
+                return ResourceManager.GetString("chronostrat_lookup_btn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Chronostratigraphic Navigator 的本地化字符串。
+        /// </summary>
+        internal static string chronostrat_navigator_widget {
+            get {
+                return ResourceManager.GetString("chronostrat_navigator_widget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Interactive ICS chronostratigraphic chart: age-to-stratigraphy lookup, hierarchy explorer, and IUGS official color codes. 的本地化字符串。
+        /// </summary>
+        internal static string chronostrat_navigator_widget_desc {
+            get {
+                return ResourceManager.GetString("chronostrat_navigator_widget_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Reset 的本地化字符串。
+        /// </summary>
+        internal static string chronostrat_reset {
+            get {
+                return ResourceManager.GetString("chronostrat_reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Search unit... 的本地化字符串。
+        /// </summary>
+        internal static string chronostrat_search_hint {
+            get {
+                return ResourceManager.GetString("chronostrat_search_hint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Search Results 的本地化字符串。
+        /// </summary>
+        internal static string chronostrat_search_results {
+            get {
+                return ResourceManager.GetString("chronostrat_search_results", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Select a unit from the left panel to view details 的本地化字符串。
+        /// </summary>
+        internal static string chronostrat_select_hint {
+            get {
+                return ResourceManager.GetString("chronostrat_select_hint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Data Source Repository: 的本地化字符串。
+        /// </summary>
+        internal static string chronostrat_source_label {
+            get {
+                return ResourceManager.GetString("chronostrat_source_label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Base (Start) 的本地化字符串。
+        /// </summary>
+        internal static string chronostrat_start_label {
+            get {
+                return ResourceManager.GetString("chronostrat_start_label", resourceCulture);
             }
         }
         
@@ -1422,7 +1692,7 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Diagnostic Details 的本地化字符串。
+        ///   查找类似 Calculation Details 的本地化字符串。
         /// </summary>
         internal static string cipw_diagnostic_details {
             get {
@@ -1872,6 +2142,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 CIPW Norm 的本地化字符串。
+        /// </summary>
+        internal static string cipw_norm {
+            get {
+                return ResourceManager.GetString("cipw_norm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 The CIPW norm calculation (also called CIPW Norm) is a petrochemical method proposed by Cross, Iddings, Pirsson and Washington in 1902. Based on whole-rock major-element oxide analyses, it allocates oxides to a set of idealized standard minerals in a fixed priority order, supporting rock classification and comparative studies. 的本地化字符串。
         /// </summary>
         internal static string cipw_overview {
@@ -1910,7 +2189,7 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Select a data row to view diagnostic details 的本地化字符串。
+        ///   查找类似 Select a data row to view calculation details 的本地化字符串。
         /// </summary>
         internal static string cipw_select_row_hint {
             get {
@@ -3867,6 +4146,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Done 的本地化字符串。
+        /// </summary>
+        internal static string done {
+            get {
+                return ResourceManager.GetString("done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Don&apos;t Save 的本地化字符串。
         /// </summary>
         internal static string DontSave {
@@ -5658,15 +5946,6 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Already up to date 的本地化字符串。
-        /// </summary>
-        internal static string geo_msg_already_latest {
-            get {
-                return ResourceManager.GetString("geo_msg_already_latest", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Successfully imported: {0} 的本地化字符串。
         /// </summary>
         internal static string geo_msg_batch_import_success {
@@ -6018,15 +6297,6 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 {0} geothermobarometers can be updated 的本地化字符串。
-        /// </summary>
-        internal static string geo_msg_update_available {
-            get {
-                return ResourceManager.GetString("geo_msg_update_available", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 {0}: {1} 的本地化字符串。
         /// </summary>
         internal static string geo_msg_update_download_failed_detail {
@@ -6059,6 +6329,348 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string geo_msg_update_removed_count {
             get {
                 return ResourceManager.GetString("geo_msg_update_removed_count", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Phanerozoic GSSP boundary &amp; Cambrian explosion base 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_cambrian_base_note {
+            get {
+                return ResourceManager.GetString("geo_p_cambrian_base_note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Base of Cambrian 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_cambrian_base_title {
+            get {
+                return ResourceManager.GetString("geo_p_cambrian_base_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Characteristic X-ray diffraction wavelength for Cu Kα 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_cu_ka_note {
+            get {
+                return ResourceManager.GetString("geo_p_cu_ka_note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Cu Kα Wavelength 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_cu_ka_title {
+            get {
+                return ResourceManager.GetString("geo_p_cu_ka_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Age of Earth from meteorite lead isotope systematics 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_earth_age_note {
+            get {
+                return ResourceManager.GetString("geo_p_earth_age_note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Age of the Earth 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_earth_age_title {
+            get {
+                return ResourceManager.GetString("geo_p_earth_age_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Typical focused beam spot diameter for EPMA analysis 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_epma_beam_note {
+            get {
+                return ResourceManager.GetString("geo_p_epma_beam_note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 EPMA Beam Spot 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_epma_beam_title {
+            get {
+                return ResourceManager.GetString("geo_p_epma_beam_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Upper crust lithostatic &amp; pore fluid pressure 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_fluid_press_note {
+            get {
+                return ResourceManager.GetString("geo_p_fluid_press_note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 1 km Fluid Pressure 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_fluid_press_title {
+            get {
+                return ResourceManager.GetString("geo_p_fluid_press_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Typical cut-off grade for hard-rock gold mining 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_gold_cutoff_note {
+            get {
+                return ResourceManager.GetString("geo_p_gold_cutoff_note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Au Cut-off Grade 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_gold_cutoff_title {
+            get {
+                return ResourceManager.GetString("geo_p_gold_cutoff_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 North American troy oz per short ton indicator (≈34.29 g/t) 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_high_grade_ore_note {
+            get {
+                return ResourceManager.GetString("geo_p_high_grade_ore_note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 High-grade Ore (1 opt) 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_high_grade_ore_title {
+            get {
+                return ResourceManager.GetString("geo_p_high_grade_ore_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Homogenization temperature in quartz-vein gold fluid inclusions 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_hydrothermal_note {
+            get {
+                return ResourceManager.GetString("geo_p_hydrothermal_note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Hydrothermal Ore Fluid 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_hydrothermal_title {
+            get {
+                return ResourceManager.GetString("geo_p_hydrothermal_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Cretaceous-Paleogene dinosaur extinction impact boundary 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_k_pg_boundary_note {
+            get {
+                return ResourceManager.GetString("geo_p_k_pg_boundary_note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 K-Pg Boundary 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_k_pg_boundary_title {
+            get {
+                return ResourceManager.GetString("geo_p_k_pg_boundary_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Typical base of continental crust pressure (~10 kbar) 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_moho_press_note {
+            get {
+                return ResourceManager.GetString("geo_p_moho_press_note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Lower Crust / Moho 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_moho_press_title {
+            get {
+                return ResourceManager.GetString("geo_p_moho_press_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Typical mantle peridotite &amp; igneous PGE abundance 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_pge_au_note {
+            get {
+                return ResourceManager.GetString("geo_p_pge_au_note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 PGE / Au Ultra-trace 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_pge_au_title {
+            get {
+                return ResourceManager.GetString("geo_p_pge_au_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Standard optical polarizing microscope field (1000 μm) 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_phenocryst_note {
+            get {
+                return ResourceManager.GetString("geo_p_phenocryst_note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Phenocryst Scale 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_phenocryst_title {
+            get {
+                return ResourceManager.GetString("geo_p_phenocryst_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Typical grade of giant porphyry copper deposits (~5000 ppm) 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_porphyry_cu_note {
+            get {
+                return ResourceManager.GetString("geo_p_porphyry_cu_note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Porphyry Cu Deposit 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_porphyry_cu_title {
+            get {
+                return ResourceManager.GetString("geo_p_porphyry_cu_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Pleistocene major glaciation &amp; hominid evolution dawn 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_quaternary_base_note {
+            get {
+                return ResourceManager.GetString("geo_p_quaternary_base_note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Base of Quaternary 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_quaternary_base_title {
+            get {
+                return ResourceManager.GetString("geo_p_quaternary_base_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Clay minerals and nano-scale particles under SEM 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_sem_nano_note {
+            get {
+                return ResourceManager.GetString("geo_p_sem_nano_note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 SEM Nano-grain 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_sem_nano_title {
+            get {
+                return ResourceManager.GetString("geo_p_sem_nano_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Water-saturated felsic magma solidus boundary 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_solidus_note {
+            get {
+                return ResourceManager.GetString("geo_p_solidus_note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Granite Solidus 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_solidus_title {
+            get {
+                return ResourceManager.GetString("geo_p_solidus_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 101.325 kPa, standard laboratory reference state 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_std_atm_note {
+            get {
+                return ResourceManager.GetString("geo_p_std_atm_note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Surface Pressure (1 atm) 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_std_atm_title {
+            get {
+                return ResourceManager.GetString("geo_p_std_atm_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Standard laboratory ambient state (298.15 K) 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_surface_temp_note {
+            get {
+                return ResourceManager.GetString("geo_p_surface_temp_note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Ambient Surface Temp 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_surface_temp_title {
+            get {
+                return ResourceManager.GetString("geo_p_surface_temp_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 410 km olivine-wadsleyite high pressure boundary 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_trans_zone_note {
+            get {
+                return ResourceManager.GetString("geo_p_trans_zone_note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Mantle Transition Zone 的本地化字符串。
+        /// </summary>
+        internal static string geo_p_trans_zone_title {
+            get {
+                return ResourceManager.GetString("geo_p_trans_zone_title", resourceCulture);
             }
         }
         
@@ -6405,6 +7017,438 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Lattice parameters and XRD characteristic wavelength (1 Å = 0.1 nm = 10⁻⁴ μm) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_angstrom_desc {
+            get {
+                return ResourceManager.GetString("geo_u_angstrom_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Angstrom (Å) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_angstrom_name {
+            get {
+                return ResourceManager.GetString("geo_u_angstrom_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Standard physical atmosphere (1 atm = 101.325 kPa = 0.101325 MPa) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_atm_desc {
+            get {
+                return ResourceManager.GetString("geo_u_atm_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Atmosphere (atm) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_atm_name {
+            get {
+                return ResourceManager.GetString("geo_u_atm_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Experimental thermodynamic pressure (1 bar = 0.1 MPa = 100 kPa) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_bar_desc {
+            get {
+                return ResourceManager.GetString("geo_u_bar_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Bar 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_bar_name {
+            get {
+                return ResourceManager.GetString("geo_u_bar_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Common geoscience temperature and geothermal gradient 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_celsius_desc {
+            get {
+                return ResourceManager.GetString("geo_u_celsius_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Celsius (℃) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_celsius_name {
+            get {
+                return ResourceManager.GetString("geo_u_celsius_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 North American petroleum engineering scale (℉ = ℃ × 1.8 + 32) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_fahrenheit_desc {
+            get {
+                return ResourceManager.GetString("geo_u_fahrenheit_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Fahrenheit (℉) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_fahrenheit_name {
+            get {
+                return ResourceManager.GetString("geo_u_fahrenheit_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Standard grade unit in economic geology (1 g/t = 1 ppm = 1 mg/kg) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_g_t_desc {
+            get {
+                return ResourceManager.GetString("geo_u_g_t_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Gram per Tonne 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_g_t_name {
+            get {
+                return ResourceManager.GetString("geo_u_g_t_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Precambrian deep time and early Earth evolution (1 Ga = 1,000 Ma = 10⁹ yr) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_ga_desc {
+            get {
+                return ResourceManager.GetString("geo_u_ga_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Billion Years (Ga / Gyr) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_ga_name {
+            get {
+                return ResourceManager.GetString("geo_u_ga_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Deep lithosphere and mantle high pressure (1 GPa = 10 kbar = 1,000 MPa) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_gpa_desc {
+            get {
+                return ResourceManager.GetString("geo_u_gpa_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Gigapascal (GPa) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_gpa_name {
+            get {
+                return ResourceManager.GetString("geo_u_gpa_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Quaternary glaciation, ¹⁴C, and OSL dating (1 ka = 1,000 yr = 0.001 Ma) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_ka_desc {
+            get {
+                return ResourceManager.GetString("geo_u_ka_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Thousand Years (ka / kyr) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_ka_name {
+            get {
+                return ResourceManager.GetString("geo_u_ka_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Metamorphic petrology standard (1 kbar = 100 MPa = 0.1 GPa) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_kbar_desc {
+            get {
+                return ResourceManager.GetString("geo_u_kbar_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Kilobar (kbar) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_kbar_name {
+            get {
+                return ResourceManager.GetString("geo_u_kbar_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Thermodynamic equations of state and absolute temperature (0 ℃ = 273.15 K) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_kelvin_desc {
+            get {
+                return ResourceManager.GetString("geo_u_kelvin_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Kelvin (K) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_kelvin_name {
+            get {
+                return ResourceManager.GetString("geo_u_kelvin_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Phanerozoic timescale and radiometric dating standard (1 Ma = 10⁶ yr) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_ma_desc {
+            get {
+                return ResourceManager.GetString("geo_u_ma_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Million Years (Ma / Myr) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_ma_name {
+            get {
+                return ResourceManager.GetString("geo_u_ma_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Phenocryst and petrographic macroscopic scale (1 mm = 1,000 μm) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_mm_desc {
+            get {
+                return ResourceManager.GetString("geo_u_mm_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Millimeter (mm) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_mm_name {
+            get {
+                return ResourceManager.GetString("geo_u_mm_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Geostress and shallow crust fluid pressure (1 MPa = 10 bar = 10⁶ Pa) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_mpa_desc {
+            get {
+                return ResourceManager.GetString("geo_u_mpa_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Megapascal (MPa) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_mpa_name {
+            get {
+                return ResourceManager.GetString("geo_u_mpa_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Clay interlayers and nanoparticles (1 nm = 10 Å = 0.001 μm) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_nm_desc {
+            get {
+                return ResourceManager.GetString("geo_u_nm_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Nanometer (nm) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_nm_name {
+            get {
+                return ResourceManager.GetString("geo_u_nm_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 North American mining standard (1 short ton ≈ 0.907 t, 1 opt ≈ 34.2857 g/t) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_oz_st_desc {
+            get {
+                return ResourceManager.GetString("geo_u_oz_st_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Troy Ounce per Short Ton (opt) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_oz_st_name {
+            get {
+                return ResourceManager.GetString("geo_u_oz_st_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Troy ounce per metric tonne (1 troy oz ≈ 31.1035 g/t) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_oz_t_desc {
+            get {
+                return ResourceManager.GetString("geo_u_oz_t_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Troy Ounce per Metric Tonne 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_oz_t_name {
+            get {
+                return ResourceManager.GetString("geo_u_oz_t_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Effective ionic radius and atomic orbitals (1 Å = 100 pm, 1 pm = 10⁻⁶ μm) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_pm_desc {
+            get {
+                return ResourceManager.GetString("geo_u_pm_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Picometer (pm) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_pm_name {
+            get {
+                return ResourceManager.GetString("geo_u_pm_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Ultra-trace elements and PGE (1 ppb = 10⁻⁹ = 0.001 g/t) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_ppb_desc {
+            get {
+                return ResourceManager.GetString("geo_u_ppb_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Parts per Billion (ppb) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_ppb_name {
+            get {
+                return ResourceManager.GetString("geo_u_ppb_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Trace element mass concentration (1 ppm = 10⁻⁶ = 1 g/t) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_ppm_desc {
+            get {
+                return ResourceManager.GetString("geo_u_ppm_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Parts per Million (ppm) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_ppm_name {
+            get {
+                return ResourceManager.GetString("geo_u_ppm_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Drilling and petroleum engineering formation pressure (1 MPa ≈ 145.038 psi) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_psi_desc {
+            get {
+                return ResourceManager.GetString("geo_u_psi_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Pounds per Square Inch (psi) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_psi_name {
+            get {
+                return ResourceManager.GetString("geo_u_psi_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 EPMA probe beam spot and SEM observation scale (1 μm = 1,000 nm) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_um_desc {
+            get {
+                return ResourceManager.GetString("geo_u_um_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Micrometer (μm) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_um_name {
+            get {
+                return ResourceManager.GetString("geo_u_um_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Major elements and high-grade ores (1 wt% = 10,000 g/t) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_wt_pct_desc {
+            get {
+                return ResourceManager.GetString("geo_u_wt_pct_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Weight Percent (wt%) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_wt_pct_name {
+            get {
+                return ResourceManager.GetString("geo_u_wt_pct_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Absolute calendar years (1 Ma = 1,000,000 yr) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_yr_desc {
+            get {
+                return ResourceManager.GetString("geo_u_yr_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Years (yr / a) 的本地化字符串。
+        /// </summary>
+        internal static string geo_u_yr_name {
+            get {
+                return ResourceManager.GetString("geo_u_yr_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Additional formula row {0}: both Grid formula name and JS function name are required. 的本地化字符串。
         /// </summary>
         internal static string geo_validate_additional_formula_incomplete {
@@ -6545,6 +7589,168 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string geo_validate_year_required {
             get {
                 return ResourceManager.GetString("geo_validate_year_required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 All Units Live Dashboard 的本地化字符串。
+        /// </summary>
+        internal static string geoscience_unit_conv_all_results {
+            get {
+                return ResourceManager.GetString("geoscience_unit_conv_all_results", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 BASE 的本地化字符串。
+        /// </summary>
+        internal static string geoscience_unit_conv_base_badge {
+            get {
+                return ResourceManager.GetString("geoscience_unit_conv_base_badge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Grade / Concentration 的本地化字符串。
+        /// </summary>
+        internal static string geoscience_unit_conv_cat_grade {
+            get {
+                return ResourceManager.GetString("geoscience_unit_conv_cat_grade", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Pressure / Stress 的本地化字符串。
+        /// </summary>
+        internal static string geoscience_unit_conv_cat_pressure {
+            get {
+                return ResourceManager.GetString("geoscience_unit_conv_cat_pressure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Microbeam Scale 的本地化字符串。
+        /// </summary>
+        internal static string geoscience_unit_conv_cat_scale {
+            get {
+                return ResourceManager.GetString("geoscience_unit_conv_cat_scale", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Temperature 的本地化字符串。
+        /// </summary>
+        internal static string geoscience_unit_conv_cat_temperature {
+            get {
+                return ResourceManager.GetString("geoscience_unit_conv_cat_temperature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Geological Age 的本地化字符串。
+        /// </summary>
+        internal static string geoscience_unit_conv_cat_time {
+            get {
+                return ResourceManager.GetString("geoscience_unit_conv_cat_time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Category 的本地化字符串。
+        /// </summary>
+        internal static string geoscience_unit_conv_category {
+            get {
+                return ResourceManager.GetString("geoscience_unit_conv_category", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Copied {0} {1} 的本地化字符串。
+        /// </summary>
+        internal static string geoscience_unit_conv_copied_val {
+            get {
+                return ResourceManager.GetString("geoscience_unit_conv_copied_val", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Copy 的本地化字符串。
+        /// </summary>
+        internal static string geoscience_unit_conv_copy {
+            get {
+                return ResourceManager.GetString("geoscience_unit_conv_copy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Select a category, enter a value and base unit to view live conversions across all units. Click any row to copy or set as input base. 的本地化字符串。
+        /// </summary>
+        internal static string geoscience_unit_conv_hint {
+            get {
+                return ResourceManager.GetString("geoscience_unit_conv_hint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Input Value 的本地化字符串。
+        /// </summary>
+        internal static string geoscience_unit_conv_input_value {
+            get {
+                return ResourceManager.GetString("geoscience_unit_conv_input_value", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Geoscience Reference Presets 的本地化字符串。
+        /// </summary>
+        internal static string geoscience_unit_conv_presets {
+            get {
+                return ResourceManager.GetString("geoscience_unit_conv_presets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Reset 的本地化字符串。
+        /// </summary>
+        internal static string geoscience_unit_conv_reset {
+            get {
+                return ResourceManager.GetString("geoscience_unit_conv_reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Set as Base 的本地化字符串。
+        /// </summary>
+        internal static string geoscience_unit_conv_set_as_base {
+            get {
+                return ResourceManager.GetString("geoscience_unit_conv_set_as_base", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Base Unit 的本地化字符串。
+        /// </summary>
+        internal static string geoscience_unit_conv_source_unit {
+            get {
+                return ResourceManager.GetString("geoscience_unit_conv_source_unit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Geoscience Unit Converter 的本地化字符串。
+        /// </summary>
+        internal static string geoscience_unit_converter {
+            get {
+                return ResourceManager.GetString("geoscience_unit_converter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Instant conversion dashboard for grade, pressure, microbeam scale, temperature, and age 的本地化字符串。
+        /// </summary>
+        internal static string geoscience_unit_converter_desc {
+            get {
+                return ResourceManager.GetString("geoscience_unit_converter_desc", resourceCulture);
             }
         }
         
@@ -7395,177 +8601,6 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Asterisk 的本地化字符串。
-        /// </summary>
-        internal static string MarkerShape_Asterisk {
-            get {
-                return ResourceManager.GetString("MarkerShape_Asterisk", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Cross 的本地化字符串。
-        /// </summary>
-        internal static string MarkerShape_Cross {
-            get {
-                return ResourceManager.GetString("MarkerShape_Cross", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 X Mark 的本地化字符串。
-        /// </summary>
-        internal static string MarkerShape_Eks {
-            get {
-                return ResourceManager.GetString("MarkerShape_Eks", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Filled Circle 的本地化字符串。
-        /// </summary>
-        internal static string MarkerShape_FilledCircle {
-            get {
-                return ResourceManager.GetString("MarkerShape_FilledCircle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Filled Diamond 的本地化字符串。
-        /// </summary>
-        internal static string MarkerShape_FilledDiamond {
-            get {
-                return ResourceManager.GetString("MarkerShape_FilledDiamond", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Filled Square 的本地化字符串。
-        /// </summary>
-        internal static string MarkerShape_FilledSquare {
-            get {
-                return ResourceManager.GetString("MarkerShape_FilledSquare", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Filled Triangle Down 的本地化字符串。
-        /// </summary>
-        internal static string MarkerShape_FilledTriangleDown {
-            get {
-                return ResourceManager.GetString("MarkerShape_FilledTriangleDown", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Filled Triangle Up 的本地化字符串。
-        /// </summary>
-        internal static string MarkerShape_FilledTriangleUp {
-            get {
-                return ResourceManager.GetString("MarkerShape_FilledTriangleUp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Hash 的本地化字符串。
-        /// </summary>
-        internal static string MarkerShape_HashTag {
-            get {
-                return ResourceManager.GetString("MarkerShape_HashTag", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Horizontal Bar 的本地化字符串。
-        /// </summary>
-        internal static string MarkerShape_HorizontalBar {
-            get {
-                return ResourceManager.GetString("MarkerShape_HorizontalBar", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Open Circle 的本地化字符串。
-        /// </summary>
-        internal static string MarkerShape_OpenCircle {
-            get {
-                return ResourceManager.GetString("MarkerShape_OpenCircle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Open Circle with Cross 的本地化字符串。
-        /// </summary>
-        internal static string MarkerShape_OpenCircleWithCross {
-            get {
-                return ResourceManager.GetString("MarkerShape_OpenCircleWithCross", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Open Circle with Dot 的本地化字符串。
-        /// </summary>
-        internal static string MarkerShape_OpenCircleWithDot {
-            get {
-                return ResourceManager.GetString("MarkerShape_OpenCircleWithDot", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Open Circle with X 的本地化字符串。
-        /// </summary>
-        internal static string MarkerShape_OpenCircleWithEks {
-            get {
-                return ResourceManager.GetString("MarkerShape_OpenCircleWithEks", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Open Diamond 的本地化字符串。
-        /// </summary>
-        internal static string MarkerShape_OpenDiamond {
-            get {
-                return ResourceManager.GetString("MarkerShape_OpenDiamond", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Open Square 的本地化字符串。
-        /// </summary>
-        internal static string MarkerShape_OpenSquare {
-            get {
-                return ResourceManager.GetString("MarkerShape_OpenSquare", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Open Triangle Down 的本地化字符串。
-        /// </summary>
-        internal static string MarkerShape_OpenTriangleDown {
-            get {
-                return ResourceManager.GetString("MarkerShape_OpenTriangleDown", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Open Triangle Up 的本地化字符串。
-        /// </summary>
-        internal static string MarkerShape_OpenTriangleUp {
-            get {
-                return ResourceManager.GetString("MarkerShape_OpenTriangleUp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Vertical Bar 的本地化字符串。
-        /// </summary>
-        internal static string MarkerShape_VerticalBar {
-            get {
-                return ResourceManager.GetString("MarkerShape_VerticalBar", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Maximize 的本地化字符串。
         /// </summary>
         internal static string maximize {
@@ -7890,6 +8925,1122 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Metaluminous 的本地化字符串。
+        /// </summary>
+        internal static string niggli_alumina_metaluminous {
+            get {
+                return ResourceManager.GetString("niggli_alumina_metaluminous", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Peralkaline 的本地化字符串。
+        /// </summary>
+        internal static string niggli_alumina_peralkaline {
+            get {
+                return ResourceManager.GetString("niggli_alumina_peralkaline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Peraluminous 的本地化字符串。
+        /// </summary>
+        internal static string niggli_alumina_peraluminous {
+            get {
+                return ResourceManager.GetString("niggli_alumina_peraluminous", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Calculate 的本地化字符串。
+        /// </summary>
+        internal static string niggli_btn_calculate {
+            get {
+                return ResourceManager.GetString("niggli_btn_calculate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Cancel 的本地化字符串。
+        /// </summary>
+        internal static string niggli_btn_cancel {
+            get {
+                return ResourceManager.GetString("niggli_btn_cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Clear 的本地化字符串。
+        /// </summary>
+        internal static string niggli_btn_clear {
+            get {
+                return ResourceManager.GetString("niggli_btn_clear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Close 的本地化字符串。
+        /// </summary>
+        internal static string niggli_btn_close {
+            get {
+                return ResourceManager.GetString("niggli_btn_close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Confirm Clear 的本地化字符串。
+        /// </summary>
+        internal static string niggli_btn_confirm_clear {
+            get {
+                return ResourceManager.GetString("niggli_btn_confirm_clear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Example 的本地化字符串。
+        /// </summary>
+        internal static string niggli_btn_example {
+            get {
+                return ResourceManager.GetString("niggli_btn_example", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Export 的本地化字符串。
+        /// </summary>
+        internal static string niggli_btn_export {
+            get {
+                return ResourceManager.GetString("niggli_btn_export", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Help 的本地化字符串。
+        /// </summary>
+        internal static string niggli_btn_help {
+            get {
+                return ResourceManager.GetString("niggli_btn_help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Alumina State 的本地化字符串。
+        /// </summary>
+        internal static string niggli_col_alumina_state {
+            get {
+                return ResourceManager.GetString("niggli_col_alumina_state", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Mineral Sum 的本地化字符串。
+        /// </summary>
+        internal static string niggli_col_cation_sum {
+            get {
+                return ResourceManager.GetString("niggli_col_cation_sum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Sample 的本地化字符串。
+        /// </summary>
+        internal static string niggli_col_sample {
+            get {
+                return ResourceManager.GetString("niggli_col_sample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Silica Saturation 的本地化字符串。
+        /// </summary>
+        internal static string niggli_col_silica_saturation {
+            get {
+                return ResourceManager.GetString("niggli_col_silica_saturation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Are you sure you want to clear all data and calculation results? 的本地化字符串。
+        /// </summary>
+        internal static string niggli_confirm_clear_msg {
+            get {
+                return ResourceManager.GetString("niggli_confirm_clear_msg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 CSV File (*.csv)|*.csv 的本地化字符串。
+        /// </summary>
+        internal static string niggli_csv_filter {
+            get {
+                return ResourceManager.GetString("niggli_csv_filter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Default 0.15 的本地化字符串。
+        /// </summary>
+        internal static string niggli_default_value_text {
+            get {
+                return ResourceManager.GetString("niggli_default_value_text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Diopside Endmembers (Wo-En-Fs) 的本地化字符串。
+        /// </summary>
+        internal static string niggli_diag_diopside_ratio {
+            get {
+                return ResourceManager.GetString("niggli_diag_diopside_ratio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Magnesium Ratio (Mgr / Mg#) 的本地化字符串。
+        /// </summary>
+        internal static string niggli_diag_mgr {
+            get {
+                return ResourceManager.GetString("niggli_diag_mgr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Olivine Endmembers (Fo-Fa) 的本地化字符串。
+        /// </summary>
+        internal static string niggli_diag_olivine_ratio {
+            get {
+                return ResourceManager.GetString("niggli_diag_olivine_ratio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Plagioclase Endmember (An%) 的本地化字符串。
+        /// </summary>
+        internal static string niggli_diag_plag_an {
+            get {
+                return ResourceManager.GetString("niggli_diag_plag_an", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 ── Rock Classification &amp; Saturation ── 的本地化字符串。
+        /// </summary>
+        internal static string niggli_diag_section_classification {
+            get {
+                return ResourceManager.GetString("niggli_diag_section_classification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 ── Desilication Steps ── 的本地化字符串。
+        /// </summary>
+        internal static string niggli_diag_section_desilication {
+            get {
+                return ResourceManager.GetString("niggli_diag_section_desilication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 ── Mineral Endmembers ── 的本地化字符串。
+        /// </summary>
+        internal static string niggli_diag_section_endmembers {
+            get {
+                return ResourceManager.GetString("niggli_diag_section_endmembers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 ── Main Normative Minerals (&gt; 1%) ── 的本地化字符串。
+        /// </summary>
+        internal static string niggli_diag_section_main_minerals {
+            get {
+                return ResourceManager.GetString("niggli_diag_section_main_minerals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 ── Niggli Values ── 的本地化字符串。
+        /// </summary>
+        internal static string niggli_diag_section_parameters {
+            get {
+                return ResourceManager.GetString("niggli_diag_section_parameters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Total Normative Minerals 的本地化字符串。
+        /// </summary>
+        internal static string niggli_diag_total_minerals {
+            get {
+                return ResourceManager.GetString("niggli_diag_total_minerals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 ── Warnings ── 的本地化字符串。
+        /// </summary>
+        internal static string niggli_diag_warnings {
+            get {
+                return ResourceManager.GetString("niggli_diag_warnings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Calculation Details 的本地化字符串。
+        /// </summary>
+        internal static string niggli_diagnostic_details {
+            get {
+                return ResourceManager.GetString("niggli_diagnostic_details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Calculation Error 的本地化字符串。
+        /// </summary>
+        internal static string niggli_error {
+            get {
+                return ResourceManager.GetString("niggli_error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Total rock cations insufficient or invalid data 的本地化字符串。
+        /// </summary>
+        internal static string niggli_error_cation_sum_zero {
+            get {
+                return ResourceManager.GetString("niggli_error_cation_sum_zero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Export Niggli Results 的本地化字符串。
+        /// </summary>
+        internal static string niggli_export_dialog_title {
+            get {
+                return ResourceManager.GetString("niggli_export_dialog_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Barth-Niggli molecular norm (Catanorm) was introduced by Paul Niggli (1948) and Tom F. W. Barth (1948). Unlike the traditional CIPW norm which calculates weight percentages, Catanorm calculates cation equivalent percentages. This avoids the distortion caused by heavy elements such as iron and yields mineral proportions much closer to true modal volume percentages observed under the petrographic microscope. This module also provides classical Niggli Numbers (si, al, fm, c, alk, k, mg, qz). 的本地化字符串。
+        /// </summary>
+        internal static string niggli_help_overview {
+            get {
+                return ResourceManager.GetString("niggli_help_overview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Niggli Norm Calculation - Algorithm Guide 的本地化字符串。
+        /// </summary>
+        internal static string niggli_help_window_title {
+            get {
+                return ResourceManager.GetString("niggli_help_window_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Albite 的本地化字符串。
+        /// </summary>
+        internal static string niggli_mineral_Ab {
+            get {
+                return ResourceManager.GetString("niggli_mineral_Ab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Acmite 的本地化字符串。
+        /// </summary>
+        internal static string niggli_mineral_Ac {
+            get {
+                return ResourceManager.GetString("niggli_mineral_Ac", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Anorthite 的本地化字符串。
+        /// </summary>
+        internal static string niggli_mineral_An {
+            get {
+                return ResourceManager.GetString("niggli_mineral_An", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Apatite 的本地化字符串。
+        /// </summary>
+        internal static string niggli_mineral_Ap {
+            get {
+                return ResourceManager.GetString("niggli_mineral_Ap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Corundum 的本地化字符串。
+        /// </summary>
+        internal static string niggli_mineral_C {
+            get {
+                return ResourceManager.GetString("niggli_mineral_C", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Calcite 的本地化字符串。
+        /// </summary>
+        internal static string niggli_mineral_Cc {
+            get {
+                return ResourceManager.GetString("niggli_mineral_Cc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Calcium Silicate 的本地化字符串。
+        /// </summary>
+        internal static string niggli_mineral_Cs {
+            get {
+                return ResourceManager.GetString("niggli_mineral_Cs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Diopside 的本地化字符串。
+        /// </summary>
+        internal static string niggli_mineral_Di {
+            get {
+                return ResourceManager.GetString("niggli_mineral_Di", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Fluorite 的本地化字符串。
+        /// </summary>
+        internal static string niggli_mineral_Fr {
+            get {
+                return ResourceManager.GetString("niggli_mineral_Fr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Hematite 的本地化字符串。
+        /// </summary>
+        internal static string niggli_mineral_Hm {
+            get {
+                return ResourceManager.GetString("niggli_mineral_Hm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Hypersthene 的本地化字符串。
+        /// </summary>
+        internal static string niggli_mineral_Hy {
+            get {
+                return ResourceManager.GetString("niggli_mineral_Hy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Ilmenite 的本地化字符串。
+        /// </summary>
+        internal static string niggli_mineral_Il {
+            get {
+                return ResourceManager.GetString("niggli_mineral_Il", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Kaliophilite 的本地化字符串。
+        /// </summary>
+        internal static string niggli_mineral_Kp {
+            get {
+                return ResourceManager.GetString("niggli_mineral_Kp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Potassium Metasilicate 的本地化字符串。
+        /// </summary>
+        internal static string niggli_mineral_Ks {
+            get {
+                return ResourceManager.GetString("niggli_mineral_Ks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Leucite 的本地化字符串。
+        /// </summary>
+        internal static string niggli_mineral_Lc {
+            get {
+                return ResourceManager.GetString("niggli_mineral_Lc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Magnetite 的本地化字符串。
+        /// </summary>
+        internal static string niggli_mineral_Mt {
+            get {
+                return ResourceManager.GetString("niggli_mineral_Mt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Nepheline 的本地化字符串。
+        /// </summary>
+        internal static string niggli_mineral_Ne {
+            get {
+                return ResourceManager.GetString("niggli_mineral_Ne", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Sodium Metasilicate 的本地化字符串。
+        /// </summary>
+        internal static string niggli_mineral_Ns {
+            get {
+                return ResourceManager.GetString("niggli_mineral_Ns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Olivine 的本地化字符串。
+        /// </summary>
+        internal static string niggli_mineral_Ol {
+            get {
+                return ResourceManager.GetString("niggli_mineral_Ol", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Orthoclase 的本地化字符串。
+        /// </summary>
+        internal static string niggli_mineral_Or {
+            get {
+                return ResourceManager.GetString("niggli_mineral_Or", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Perovskite 的本地化字符串。
+        /// </summary>
+        internal static string niggli_mineral_Pf {
+            get {
+                return ResourceManager.GetString("niggli_mineral_Pf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Plagioclase 的本地化字符串。
+        /// </summary>
+        internal static string niggli_mineral_Plag {
+            get {
+                return ResourceManager.GetString("niggli_mineral_Plag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Pyrite 的本地化字符串。
+        /// </summary>
+        internal static string niggli_mineral_Py {
+            get {
+                return ResourceManager.GetString("niggli_mineral_Py", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Quartz 的本地化字符串。
+        /// </summary>
+        internal static string niggli_mineral_Q {
+            get {
+                return ResourceManager.GetString("niggli_mineral_Q", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Rutile 的本地化字符串。
+        /// </summary>
+        internal static string niggli_mineral_Ru {
+            get {
+                return ResourceManager.GetString("niggli_mineral_Ru", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Sum 的本地化字符串。
+        /// </summary>
+        internal static string niggli_mineral_Sum {
+            get {
+                return ResourceManager.GetString("niggli_mineral_Sum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Titanite 的本地化字符串。
+        /// </summary>
+        internal static string niggli_mineral_Tn {
+            get {
+                return ResourceManager.GetString("niggli_mineral_Tn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Wollastonite 的本地化字符串。
+        /// </summary>
+        internal static string niggli_mineral_Wo {
+            get {
+                return ResourceManager.GetString("niggli_mineral_Wo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 All {0} samples calculated successfully. 的本地化字符串。
+        /// </summary>
+        internal static string niggli_msg_calc_all_success {
+            get {
+                return ResourceManager.GetString("niggli_msg_calc_all_success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Calculation complete: {0} succeeded, {1} failed. 的本地化字符串。
+        /// </summary>
+        internal static string niggli_msg_calc_partial_success {
+            get {
+                return ResourceManager.GetString("niggli_msg_calc_partial_success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Data cleared. 的本地化字符串。
+        /// </summary>
+        internal static string niggli_msg_data_cleared {
+            get {
+                return ResourceManager.GetString("niggli_msg_data_cleared", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Export failed: {0} 的本地化字符串。
+        /// </summary>
+        internal static string niggli_msg_export_failed {
+            get {
+                return ResourceManager.GetString("niggli_msg_export_failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Results exported to: {0} 的本地化字符串。
+        /// </summary>
+        internal static string niggli_msg_export_success {
+            get {
+                return ResourceManager.GetString("niggli_msg_export_success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 No valid major element data detected 的本地化字符串。
+        /// </summary>
+        internal static string niggli_msg_no_data {
+            get {
+                return ResourceManager.GetString("niggli_msg_no_data", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Niggli Norm 的本地化字符串。
+        /// </summary>
+        internal static string niggli_norm {
+            get {
+                return ResourceManager.GetString("niggli_norm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 al (Alumina index) 的本地化字符串。
+        /// </summary>
+        internal static string niggli_param_al {
+            get {
+                return ResourceManager.GetString("niggli_param_al", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 alk (Alkali index) 的本地化字符串。
+        /// </summary>
+        internal static string niggli_param_alk {
+            get {
+                return ResourceManager.GetString("niggli_param_alk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 c (Calcium index) 的本地化字符串。
+        /// </summary>
+        internal static string niggli_param_c {
+            get {
+                return ResourceManager.GetString("niggli_param_c", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 fm (Iron-magnesium index) 的本地化字符串。
+        /// </summary>
+        internal static string niggli_param_fm {
+            get {
+                return ResourceManager.GetString("niggli_param_fm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 k (Potassium ratio K₂O/(Na₂O+K₂O)) 的本地化字符串。
+        /// </summary>
+        internal static string niggli_param_k {
+            get {
+                return ResourceManager.GetString("niggli_param_k", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 mg (Magnesium ratio MgO/(MgO+FeO...)) 的本地化字符串。
+        /// </summary>
+        internal static string niggli_param_mg {
+            get {
+                return ResourceManager.GetString("niggli_param_mg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 p (Phosphorus index) 的本地化字符串。
+        /// </summary>
+        internal static string niggli_param_p {
+            get {
+                return ResourceManager.GetString("niggli_param_p", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 qz (Quartz index) 的本地化字符串。
+        /// </summary>
+        internal static string niggli_param_qz {
+            get {
+                return ResourceManager.GetString("niggli_param_qz", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 si (Silica index) 的本地化字符串。
+        /// </summary>
+        internal static string niggli_param_si {
+            get {
+                return ResourceManager.GetString("niggli_param_si", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 ti (Titanium index) 的本地化字符串。
+        /// </summary>
+        internal static string niggli_param_ti {
+            get {
+                return ResourceManager.GetString("niggli_param_ti", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 • Core algorithm logic is adapted from the open-source Geochemical Data Toolkit (GCDkit), refactored and optimized in C# with modern object-oriented architecture and bug-fixed desilication reaction pathways (https://www.gcdkit.org/). 的本地化字符串。
+        /// </summary>
+        internal static string niggli_references_gcdkit {
+            get {
+                return ResourceManager.GetString("niggli_references_gcdkit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Key References 的本地化字符串。
+        /// </summary>
+        internal static string niggli_references_title {
+            get {
+                return ResourceManager.GetString("niggli_references_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Row {0} 的本地化字符串。
+        /// </summary>
+        internal static string niggli_row_format {
+            get {
+                return ResourceManager.GetString("niggli_row_format", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Select a row to view calculation details 的本地化字符串。
+        /// </summary>
+        internal static string niggli_select_row_hint {
+            get {
+                return ResourceManager.GetString("niggli_select_row_hint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Niggli 的本地化字符串。
+        /// </summary>
+        internal static string niggli_sheet_name {
+            get {
+                return ResourceManager.GetString("niggli_sheet_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Oversaturated 的本地化字符串。
+        /// </summary>
+        internal static string niggli_silica_oversaturated {
+            get {
+                return ResourceManager.GetString("niggli_silica_oversaturated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Saturated 的本地化字符串。
+        /// </summary>
+        internal static string niggli_silica_saturated {
+            get {
+                return ResourceManager.GetString("niggli_silica_saturated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Undersaturated 的本地化字符串。
+        /// </summary>
+        internal static string niggli_silica_undersaturated {
+            get {
+                return ResourceManager.GetString("niggli_silica_undersaturated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Silica deficit detected: initial deficit D = {0}% 的本地化字符串。
+        /// </summary>
+        internal static string niggli_step_deficit_init {
+            get {
+                return ResourceManager.GetString("niggli_step_deficit_init", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Silica oversaturated: formed quartz Q = {0}% 的本地化字符串。
+        /// </summary>
+        internal static string niggli_step_oversaturated {
+            get {
+                return ResourceManager.GetString("niggli_step_oversaturated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Oxide weight percentages are divided by molar mass and multiplied by cation counts to obtain millications. The sum of all cations is normalized to 100%. Total iron (FeOT) can be partitioned using the adjustable Fe3+/Fe ratio (default 0.15). 的本地化字符串。
+        /// </summary>
+        internal static string niggli_step1_detail {
+            get {
+                return ResourceManager.GetString("niggli_step1_detail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Desilication Step 1: Hypersthene -&gt; Olivine (Hy → Ol), consumed {0}% Hy, silica deficit completely eliminated 的本地化字符串。
+        /// </summary>
+        internal static string niggli_step1_hy_ol_done {
+            get {
+                return ResourceManager.GetString("niggli_step1_hy_ol_done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Desilication Step 1: Hypersthene -&gt; Olivine (Hy → Ol), all Hy ({0}%) converted to Ol, remaining deficit D = {1}% 的本地化字符串。
+        /// </summary>
+        internal static string niggli_step1_hy_ol_part {
+            get {
+                return ResourceManager.GetString("niggli_step1_hy_ol_part", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Cation millications and 100% normalization 的本地化字符串。
+        /// </summary>
+        internal static string niggli_step1_title {
+            get {
+                return ResourceManager.GetString("niggli_step1_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Based on molecular proportions with base = al + fm + c + alk = 100, calculating si, al, fm, c, alk, ti, p, k, mg and quartz index qz. 的本地化字符串。
+        /// </summary>
+        internal static string niggli_step2_detail {
+            get {
+                return ResourceManager.GetString("niggli_step2_detail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Classical Niggli Numbers 的本地化字符串。
+        /// </summary>
+        internal static string niggli_step2_title {
+            get {
+                return ResourceManager.GetString("niggli_step2_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Desilication Step 2: Titanite -&gt; Perovskite (Tn → Pf), consumed {0}% Tn, silica deficit completely eliminated 的本地化字符串。
+        /// </summary>
+        internal static string niggli_step2_tn_pf_done {
+            get {
+                return ResourceManager.GetString("niggli_step2_tn_pf_done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Desilication Step 2: Titanite -&gt; Perovskite (Tn → Pf), all Tn converted, remaining deficit D = {0}% 的本地化字符串。
+        /// </summary>
+        internal static string niggli_step2_tn_pf_part {
+            get {
+                return ResourceManager.GetString("niggli_step2_tn_pf_part", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Desilication Step 3: Albite -&gt; Nepheline (Ab → Ne), consumed {0}% Ab, silica deficit completely eliminated 的本地化字符串。
+        /// </summary>
+        internal static string niggli_step3_ab_ne_done {
+            get {
+                return ResourceManager.GetString("niggli_step3_ab_ne_done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Desilication Step 3: Albite -&gt; Nepheline (Ab → Ne), all Ab converted, remaining deficit D = {0}% 的本地化字符串。
+        /// </summary>
+        internal static string niggli_step3_ab_ne_part {
+            get {
+                return ResourceManager.GetString("niggli_step3_ab_ne_part", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Early allocation: CO2 and Ca form Calcite (Cc); P, F and Ca form Apatite (Ap); remaining F forms Fluorite (Fr); S and Fe2+ form Pyrite (Py); Ti and Fe2+ form Ilmenite (Il). 的本地化字符串。
+        /// </summary>
+        internal static string niggli_step3_detail {
+            get {
+                return ResourceManager.GetString("niggli_step3_detail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Accessory minerals, carbonates, and sulfides 的本地化字符串。
+        /// </summary>
+        internal static string niggli_step3_title {
+            get {
+                return ResourceManager.GetString("niggli_step3_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 K forms Orthoclase (Or) and Potassium Metasilicate (Ks). Na forms Albite (Ab), Acmite (Ac), and Sodium Metasilicate (Ns). Remaining Al forms Anorthite (An) and Corundum (C). Ti forms Titanite (Tn) or Rutile (Ru). 的本地化字符串。
+        /// </summary>
+        internal static string niggli_step4_detail {
+            get {
+                return ResourceManager.GetString("niggli_step4_detail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Desilication Step 4: Orthoclase -&gt; Leucite (Or → Lc), consumed {0}% Or, silica deficit completely eliminated 的本地化字符串。
+        /// </summary>
+        internal static string niggli_step4_or_lc_done {
+            get {
+                return ResourceManager.GetString("niggli_step4_or_lc_done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Desilication Step 4: Orthoclase -&gt; Leucite (Or → Lc), all Or converted, remaining deficit D = {0}% 的本地化字符串。
+        /// </summary>
+        internal static string niggli_step4_or_lc_part {
+            get {
+                return ResourceManager.GetString("niggli_step4_or_lc_part", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Alkali feldspars, anorthite, and alkaline silicates 的本地化字符串。
+        /// </summary>
+        internal static string niggli_step4_title {
+            get {
+                return ResourceManager.GetString("niggli_step4_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Fe3+ and Fe2+ form Magnetite (Mt) and Hematite (Hm). Ca, Mg, and Fe2+ form Wollastonite (Wo), Enstatite (En), and Ferrosilite (Fs). En + Fs form Hypersthene (Hy). Wo and Hy combine to form Diopside (Di). 的本地化字符串。
+        /// </summary>
+        internal static string niggli_step5_detail {
+            get {
+                return ResourceManager.GetString("niggli_step5_detail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Desilication Step 5: Leucite -&gt; Kalsilite (Lc → Kp), consumed {0}% Lc, silica deficit completely eliminated 的本地化字符串。
+        /// </summary>
+        internal static string niggli_step5_lc_kp_done {
+            get {
+                return ResourceManager.GetString("niggli_step5_lc_kp_done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Desilication Step 5: Leucite -&gt; Kalsilite (Lc → Kp), all Lc converted, remaining deficit D = {0}% 的本地化字符串。
+        /// </summary>
+        internal static string niggli_step5_lc_kp_part {
+            get {
+                return ResourceManager.GetString("niggli_step5_lc_kp_part", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Iron oxides and pyroxenes 的本地化字符串。
+        /// </summary>
+        internal static string niggli_step5_title {
+            get {
+                return ResourceManager.GetString("niggli_step5_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 If excess Si &gt;= 0, Quartz (Q) forms. If silica deficit D = -Si occurs, desilication proceeds in thermodynamic order: ① Hy -&gt; Ol, ② Tn -&gt; Pf, ③ Ab -&gt; Ne, ④ Or -&gt; Lc, ⑤ Lc -&gt; Kp, ⑥ Wo -&gt; Cs, ⑦ Di -&gt; Cs + Ol. 的本地化字符串。
+        /// </summary>
+        internal static string niggli_step6_detail {
+            get {
+                return ResourceManager.GetString("niggli_step6_detail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Silica balance and 7-stage desilication chain 的本地化字符串。
+        /// </summary>
+        internal static string niggli_step6_title {
+            get {
+                return ResourceManager.GetString("niggli_step6_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Desilication Step 6: Wollastonite -&gt; Rankinite (Wo → Cs), consumed {0}% Wo, silica deficit completely eliminated 的本地化字符串。
+        /// </summary>
+        internal static string niggli_step6_wo_cs_done {
+            get {
+                return ResourceManager.GetString("niggli_step6_wo_cs_done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Desilication Step 6: Wollastonite -&gt; Rankinite (Wo → Cs), all Wo converted, remaining deficit D = {0}% 的本地化字符串。
+        /// </summary>
+        internal static string niggli_step6_wo_cs_part {
+            get {
+                return ResourceManager.GetString("niggli_step6_wo_cs_part", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Desilication Step 7: Diopside -&gt; Rankinite + Olivine (Di → Cs + Ol), consumed {0}% Di, silica deficit completely eliminated 的本地化字符串。
+        /// </summary>
+        internal static string niggli_step7_di_cs_ol_done {
+            get {
+                return ResourceManager.GetString("niggli_step7_di_cs_ol_done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Desilication Step 7: Diopside -&gt; Rankinite + Olivine (Di → Cs + Ol), all Di converted 的本地化字符串。
+        /// </summary>
+        internal static string niggli_step7_di_cs_ol_part {
+            get {
+                return ResourceManager.GetString("niggli_step7_di_cs_ol_part", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Niggli Norm Calculation 的本地化字符串。
+        /// </summary>
+        internal static string niggli_title {
+            get {
+                return ResourceManager.GetString("niggli_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Calculate Niggli Norm &amp; Values 的本地化字符串。
+        /// </summary>
+        internal static string niggli_tooltip_calculate {
+            get {
+                return ResourceManager.GetString("niggli_tooltip_calculate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Clear all input data and results 的本地化字符串。
+        /// </summary>
+        internal static string niggli_tooltip_clear {
+            get {
+                return ResourceManager.GetString("niggli_tooltip_clear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Fill example rock samples (Granite, Basalt, Phonolite) 的本地化字符串。
+        /// </summary>
+        internal static string niggli_tooltip_example {
+            get {
+                return ResourceManager.GetString("niggli_tooltip_example", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Expand/Collapse calculation details panel 的本地化字符串。
+        /// </summary>
+        internal static string niggli_tooltip_expand {
+            get {
+                return ResourceManager.GetString("niggli_tooltip_expand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Export calculation results to CSV file 的本地化字符串。
+        /// </summary>
+        internal static string niggli_tooltip_export {
+            get {
+                return ResourceManager.GetString("niggli_tooltip_export", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 View Barth-Niggli Catanorm &amp; Niggli Values calculation guide 的本地化字符串。
+        /// </summary>
+        internal static string niggli_tooltip_help {
+            get {
+                return ResourceManager.GetString("niggli_tooltip_help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Estimated oxidation state using total iron FeOT (Fe³⁺/Fe = {0}) 的本地化字符串。
+        /// </summary>
+        internal static string niggli_warning_feot_estimated {
+            get {
+                return ResourceManager.GetString("niggli_warning_feot_estimated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 No data columns defined 的本地化字符串。
         /// </summary>
         internal static string no_data_columns_defined {
@@ -7904,6 +10055,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string no_data_please_add_data {
             get {
                 return ResourceManager.GetString("no_data_please_add_data", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 No matching widgets found 的本地化字符串。
+        /// </summary>
+        internal static string no_matching_widgets {
+            get {
+                return ResourceManager.GetString("no_matching_widgets", resourceCulture);
             }
         }
         
@@ -9258,6 +11418,204 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Element 的本地化字符串。
+        /// </summary>
+        internal static string oxide_element_conv_col_element {
+            get {
+                return ResourceManager.GetString("oxide_element_conv_col_element", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 → Element Factor 的本地化字符串。
+        /// </summary>
+        internal static string oxide_element_conv_col_factor_to_elem {
+            get {
+                return ResourceManager.GetString("oxide_element_conv_col_factor_to_elem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 → Oxide Factor 的本地化字符串。
+        /// </summary>
+        internal static string oxide_element_conv_col_factor_to_oxide {
+            get {
+                return ResourceManager.GetString("oxide_element_conv_col_factor_to_oxide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Oxide 的本地化字符串。
+        /// </summary>
+        internal static string oxide_element_conv_col_oxide {
+            get {
+                return ResourceManager.GetString("oxide_element_conv_col_oxide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Conversion Factor 的本地化字符串。
+        /// </summary>
+        internal static string oxide_element_conv_factor_label {
+            get {
+                return ResourceManager.GetString("oxide_element_conv_factor_label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Chemical Formula 的本地化字符串。
+        /// </summary>
+        internal static string oxide_element_conv_formula_label {
+            get {
+                return ResourceManager.GetString("oxide_element_conv_formula_label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Input Value 的本地化字符串。
+        /// </summary>
+        internal static string oxide_element_conv_input_label {
+            get {
+                return ResourceManager.GetString("oxide_element_conv_input_label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Please enter a non-negative value. 的本地化字符串。
+        /// </summary>
+        internal static string oxide_element_conv_invalid_input {
+            get {
+                return ResourceManager.GetString("oxide_element_conv_invalid_input", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Element → Oxide 的本地化字符串。
+        /// </summary>
+        internal static string oxide_element_conv_mode_elem_to_oxide {
+            get {
+                return ResourceManager.GetString("oxide_element_conv_mode_elem_to_oxide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Oxide → Element 的本地化字符串。
+        /// </summary>
+        internal static string oxide_element_conv_mode_oxide_to_elem {
+            get {
+                return ResourceManager.GetString("oxide_element_conv_mode_oxide_to_elem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Atomic Weight (g/mol) 的本地化字符串。
+        /// </summary>
+        internal static string oxide_element_conv_mw_elem {
+            get {
+                return ResourceManager.GetString("oxide_element_conv_mw_elem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Oxide Molecular Weight (g/mol) 的本地化字符串。
+        /// </summary>
+        internal static string oxide_element_conv_mw_oxide {
+            get {
+                return ResourceManager.GetString("oxide_element_conv_mw_oxide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Common elements and their oxides with stoichiometric conversion factors. 的本地化字符串。
+        /// </summary>
+        internal static string oxide_element_conv_reference_hint {
+            get {
+                return ResourceManager.GetString("oxide_element_conv_reference_hint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Reference Table 的本地化字符串。
+        /// </summary>
+        internal static string oxide_element_conv_reference_title {
+            get {
+                return ResourceManager.GetString("oxide_element_conv_reference_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Reset 的本地化字符串。
+        /// </summary>
+        internal static string oxide_element_conv_reset {
+            get {
+                return ResourceManager.GetString("oxide_element_conv_reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Result 的本地化字符串。
+        /// </summary>
+        internal static string oxide_element_conv_result_label {
+            get {
+                return ResourceManager.GetString("oxide_element_conv_result_label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Select Element / Oxide 的本地化字符串。
+        /// </summary>
+        internal static string oxide_element_conv_select_substance {
+            get {
+                return ResourceManager.GetString("oxide_element_conv_select_substance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 ppm 的本地化字符串。
+        /// </summary>
+        internal static string oxide_element_conv_unit_ppm {
+            get {
+                return ResourceManager.GetString("oxide_element_conv_unit_ppm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 wt% 的本地化字符串。
+        /// </summary>
+        internal static string oxide_element_conv_unit_wt_pct {
+            get {
+                return ResourceManager.GetString("oxide_element_conv_unit_wt_pct", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Oxide-Element Converter 的本地化字符串。
+        /// </summary>
+        internal static string oxide_element_converter {
+            get {
+                return ResourceManager.GetString("oxide_element_converter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Convert between element and oxide weight percentages using stoichiometric factors 的本地化字符串。
+        /// </summary>
+        internal static string oxide_element_converter_desc {
+            get {
+                return ResourceManager.GetString("oxide_element_converter_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Select an element or oxide, enter a value, and instantly get the converted result in the other form. 的本地化字符串。
+        /// </summary>
+        internal static string oxide_element_converter_hint {
+            get {
+                return ResourceManager.GetString("oxide_element_converter_hint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Parameter format is correct 的本地化字符串。
         /// </summary>
         internal static string parameter_format_correct {
@@ -9771,15 +12129,6 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
-        ///   查找类似 Please select a widget 的本地化字符串。
-        /// </summary>
-        internal static string please_select_a_widget {
-            get {
-                return ResourceManager.GetString("please_select_a_widget", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Please select an object to delete first. 的本地化字符串。
         /// </summary>
         internal static string please_select_an_object_to_delete_first {
@@ -9794,15 +12143,6 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string please_select_language {
             get {
                 return ResourceManager.GetString("please_select_language", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Please select a widget to add: 的本地化字符串。
-        /// </summary>
-        internal static string please_select_widget_to_add {
-            get {
-                return ResourceManager.GetString("please_select_widget_to_add", resourceCulture);
             }
         }
         
@@ -10563,20 +12903,20 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Search widgets by name or feature... 的本地化字符串。
+        /// </summary>
+        internal static string search_widgets_hint {
+            get {
+                return ResourceManager.GetString("search_widgets_hint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 See error.log for details. 的本地化字符串。
         /// </summary>
         internal static string see_error_log_for_details {
             get {
                 return ResourceManager.GetString("see_error_log_for_details", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Select 的本地化字符串。
-        /// </summary>
-        internal static string select {
-            get {
-                return ResourceManager.GetString("select", resourceCulture);
             }
         }
         

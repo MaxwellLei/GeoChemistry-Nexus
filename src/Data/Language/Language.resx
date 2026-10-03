@@ -142,9 +142,6 @@
   <data name="Background" xml:space="preserve">
     <value>Background</value>
   </data>
-  <data name="Calculate" xml:space="preserve">
-    <value>Calculate</value>
-  </data>
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
@@ -287,9 +284,6 @@
   </data>
   <data name="coordinate_positioning" xml:space="preserve">
     <value>Coordinate</value>
-  </data>
-  <data name="select" xml:space="preserve">
-    <value>Select</value>
   </data>
   <data name="deselect" xml:space="preserve">
     <value>Deselect</value>
@@ -1185,12 +1179,6 @@
   <data name="add_widget" xml:space="preserve">
     <value>Add Widget</value>
   </data>
-  <data name="please_select_widget_to_add" xml:space="preserve">
-    <value>Please select a widget to add:</value>
-  </data>
-  <data name="please_select_a_widget" xml:space="preserve">
-    <value>Please select a widget</value>
-  </data>
   <data name="announcement" xml:space="preserve">
     <value>Announcement</value>
   </data>
@@ -1604,63 +1592,6 @@
   </data>
   <data name="update_available_click_to_download" xml:space="preserve">
     <value>New version available, click to update</value>
-  </data>
-  <data name="MarkerShape_FilledCircle" xml:space="preserve">
-    <value>Filled Circle</value>
-  </data>
-  <data name="MarkerShape_OpenCircle" xml:space="preserve">
-    <value>Open Circle</value>
-  </data>
-  <data name="MarkerShape_FilledSquare" xml:space="preserve">
-    <value>Filled Square</value>
-  </data>
-  <data name="MarkerShape_OpenSquare" xml:space="preserve">
-    <value>Open Square</value>
-  </data>
-  <data name="MarkerShape_FilledTriangleUp" xml:space="preserve">
-    <value>Filled Triangle Up</value>
-  </data>
-  <data name="MarkerShape_OpenTriangleUp" xml:space="preserve">
-    <value>Open Triangle Up</value>
-  </data>
-  <data name="MarkerShape_FilledTriangleDown" xml:space="preserve">
-    <value>Filled Triangle Down</value>
-  </data>
-  <data name="MarkerShape_OpenTriangleDown" xml:space="preserve">
-    <value>Open Triangle Down</value>
-  </data>
-  <data name="MarkerShape_FilledDiamond" xml:space="preserve">
-    <value>Filled Diamond</value>
-  </data>
-  <data name="MarkerShape_OpenDiamond" xml:space="preserve">
-    <value>Open Diamond</value>
-  </data>
-  <data name="MarkerShape_Cross" xml:space="preserve">
-    <value>Cross</value>
-  </data>
-  <data name="MarkerShape_Eks" xml:space="preserve">
-    <value>X Mark</value>
-  </data>
-  <data name="MarkerShape_Asterisk" xml:space="preserve">
-    <value>Asterisk</value>
-  </data>
-  <data name="MarkerShape_VerticalBar" xml:space="preserve">
-    <value>Vertical Bar</value>
-  </data>
-  <data name="MarkerShape_HorizontalBar" xml:space="preserve">
-    <value>Horizontal Bar</value>
-  </data>
-  <data name="MarkerShape_HashTag" xml:space="preserve">
-    <value>Hash</value>
-  </data>
-  <data name="MarkerShape_OpenCircleWithDot" xml:space="preserve">
-    <value>Open Circle with Dot</value>
-  </data>
-  <data name="MarkerShape_OpenCircleWithCross" xml:space="preserve">
-    <value>Open Circle with Cross</value>
-  </data>
-  <data name="MarkerShape_OpenCircleWithEks" xml:space="preserve">
-    <value>Open Circle with X</value>
   </data>
   <data name="invalid_filename_char" xml:space="preserve">
     <value>Content contains unsupported characters</value>
@@ -2412,9 +2343,6 @@
   <data name="geo_msg_checking_update" xml:space="preserve">
     <value>Checking for updates...</value>
   </data>
-  <data name="geo_msg_update_available" xml:space="preserve">
-    <value>{0} geothermobarometers can be updated</value>
-  </data>
   <data name="geo_msg_downloading_update" xml:space="preserve">
     <value>Downloading...</value>
   </data>
@@ -2429,9 +2357,6 @@
   </data>
   <data name="geo_msg_update_download_failed_detail" xml:space="preserve">
     <value>{0}: {1}</value>
-  </data>
-  <data name="geo_msg_already_latest" xml:space="preserve">
-    <value>Already up to date</value>
   </data>
   <data name="geo_msg_check_update_failed" xml:space="preserve">
     <value>Failed to check for updates</value>
@@ -2508,6 +2433,9 @@
   <data name="geo_msg_test_error" xml:space="preserve">
     <value>Error: {0}</value>
   </data>
+  <data name="cipw_norm" xml:space="preserve">
+    <value>CIPW Norm</value>
+  </data>
   <data name="cipw_title" xml:space="preserve">
     <value>CIPW Norm Calculation</value>
   </data>
@@ -2560,10 +2488,10 @@
     <value>Expand / Collapse</value>
   </data>
   <data name="cipw_diagnostic_details" xml:space="preserve">
-    <value>Diagnostic Details</value>
+    <value>Calculation Details</value>
   </data>
   <data name="cipw_select_row_hint" xml:space="preserve">
-    <value>Select a data row to view diagnostic details</value>
+    <value>Select a data row to view calculation details</value>
   </data>
   <data name="cipw_overview" xml:space="preserve">
     <value>The CIPW norm calculation (also called CIPW Norm) is a petrochemical method proposed by Cross, Iddings, Pirsson and Washington in 1902. Based on whole-rock major-element oxide analyses, it allocates oxides to a set of idealized standard minerals in a fixed priority order, supporting rock classification and comparative studies.</value>
@@ -4220,5 +4148,857 @@
   </data>
   <data name="unhandled_exception_occurred" xml:space="preserve">
     <value>An unhandled application error occurred:</value>
+  </data>
+  <data name="add_widget_subtitle" xml:space="preserve">
+    <value>Discover and expand your geochemical toolkit on the home page</value>
+  </data>
+  <data name="search_widgets_hint" xml:space="preserve">
+    <value>Search widgets by name or feature...</value>
+  </data>
+  <data name="no_matching_widgets" xml:space="preserve">
+    <value>No matching widgets found</value>
+  </data>
+  <data name="add_widget_tip" xml:space="preserve">
+    <value>Tip: Added widgets can be used directly on the home page or removed via right-click</value>
+  </data>
+  <data name="cancel_add" xml:space="preserve">
+    <value>Cancel Add</value>
+  </data>
+  <data name="added" xml:space="preserve">
+    <value>Added</value>
+  </data>
+  <data name="done" xml:space="preserve">
+    <value>Done</value>
+  </data>
+  <data name="chronostrat_navigator_widget" xml:space="preserve">
+    <value>Chronostratigraphic Navigator</value>
+  </data>
+  <data name="chronostrat_navigator_widget_desc" xml:space="preserve">
+    <value>Interactive ICS chronostratigraphic chart: age-to-stratigraphy lookup, hierarchy explorer, and IUGS official color codes.</value>
+  </data>
+  <data name="chronostrat_age_lookup_label" xml:space="preserve">
+    <value>Age Lookup</value>
+  </data>
+  <data name="chronostrat_lookup_btn" xml:space="preserve">
+    <value>Lookup</value>
+  </data>
+  <data name="chronostrat_search_hint" xml:space="preserve">
+    <value>Search unit...</value>
+  </data>
+  <data name="chronostrat_reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="chronostrat_age_result_label" xml:space="preserve">
+    <value>Age Lookup Result</value>
+  </data>
+  <data name="chronostrat_click_hint" xml:space="preserve">
+    <value>Click a unit to view details</value>
+  </data>
+  <data name="chronostrat_search_results" xml:space="preserve">
+    <value>Search Results</value>
+  </data>
+  <data name="chronostrat_select_hint" xml:space="preserve">
+    <value>Select a unit from the left panel to view details</value>
+  </data>
+  <data name="chronostrat_boundary_label" xml:space="preserve">
+    <value>Age Boundaries</value>
+  </data>
+  <data name="chronostrat_start_label" xml:space="preserve">
+    <value>Base (Start)</value>
+  </data>
+  <data name="chronostrat_end_label" xml:space="preserve">
+    <value>Top (End)</value>
+  </data>
+  <data name="chronostrat_duration_label" xml:space="preserve">
+    <value>Duration</value>
+  </data>
+  <data name="chronostrat_gssp_ratified" xml:space="preserve">
+    <value>Ratified Global Boundary Stratotype Section and Point</value>
+  </data>
+  <data name="chronostrat_gssp_desc" xml:space="preserve">
+    <value>The base of this unit is defined by an officially ratified golden spike (GSSP).</value>
+  </data>
+  <data name="chronostrat_color_label" xml:space="preserve">
+    <value>IUGS Official Color</value>
+  </data>
+  <data name="chronostrat_copy_hex" xml:space="preserve">
+    <value>Copy HEX</value>
+  </data>
+  <data name="chronostrat_copy_rgb" xml:space="preserve">
+    <value>Copy RGB</value>
+  </data>
+  <data name="chronostrat_citation_label" xml:space="preserve">
+    <value>Standard Reference</value>
+  </data>
+  <data name="chronostrat_copy_citation" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="chronostrat_children_label" xml:space="preserve">
+    <value>Sub-units</value>
+  </data>
+  <data name="chronostrat_chart_tree_title" xml:space="preserve">
+    <value>Stratigraphic Tree</value>
+  </data>
+  <data name="chronostrat_expand_period" xml:space="preserve">
+    <value>To Periods</value>
+  </data>
+  <data name="chronostrat_expand_all" xml:space="preserve">
+    <value>Expand All</value>
+  </data>
+  <data name="chronostrat_collapse_all" xml:space="preserve">
+    <value>Collapse All</value>
+  </data>
+  <data name="chronostrat_source_label" xml:space="preserve">
+    <value>Data Source Repository:</value>
+  </data>
+  <data name="niggli_alumina_metaluminous" xml:space="preserve">
+    <value>Metaluminous</value>
+  </data>
+  <data name="niggli_alumina_peralkaline" xml:space="preserve">
+    <value>Peralkaline</value>
+  </data>
+  <data name="niggli_alumina_peraluminous" xml:space="preserve">
+    <value>Peraluminous</value>
+  </data>
+  <data name="niggli_btn_calculate" xml:space="preserve">
+    <value>Calculate</value>
+  </data>
+  <data name="niggli_btn_cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="niggli_btn_clear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="niggli_btn_close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="niggli_btn_confirm_clear" xml:space="preserve">
+    <value>Confirm Clear</value>
+  </data>
+  <data name="niggli_btn_example" xml:space="preserve">
+    <value>Example</value>
+  </data>
+  <data name="niggli_btn_export" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="niggli_btn_help" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="niggli_col_alumina_state" xml:space="preserve">
+    <value>Alumina State</value>
+  </data>
+  <data name="niggli_col_cation_sum" xml:space="preserve">
+    <value>Mineral Sum</value>
+  </data>
+  <data name="niggli_col_sample" xml:space="preserve">
+    <value>Sample</value>
+  </data>
+  <data name="niggli_col_silica_saturation" xml:space="preserve">
+    <value>Silica Saturation</value>
+  </data>
+  <data name="niggli_confirm_clear_msg" xml:space="preserve">
+    <value>Are you sure you want to clear all data and calculation results?</value>
+  </data>
+  <data name="niggli_csv_filter" xml:space="preserve">
+    <value>CSV File (*.csv)|*.csv</value>
+  </data>
+  <data name="niggli_default_value_text" xml:space="preserve">
+    <value>Default 0.15</value>
+  </data>
+  <data name="niggli_diag_diopside_ratio" xml:space="preserve">
+    <value>Diopside Endmembers (Wo-En-Fs)</value>
+  </data>
+  <data name="niggli_diag_mgr" xml:space="preserve">
+    <value>Magnesium Ratio (Mgr / Mg#)</value>
+  </data>
+  <data name="niggli_diag_olivine_ratio" xml:space="preserve">
+    <value>Olivine Endmembers (Fo-Fa)</value>
+  </data>
+  <data name="niggli_diag_plag_an" xml:space="preserve">
+    <value>Plagioclase Endmember (An%)</value>
+  </data>
+  <data name="niggli_diag_section_classification" xml:space="preserve">
+    <value>── Rock Classification &amp; Saturation ──</value>
+  </data>
+  <data name="niggli_diag_section_desilication" xml:space="preserve">
+    <value>── Desilication Steps ──</value>
+  </data>
+  <data name="niggli_diag_section_endmembers" xml:space="preserve">
+    <value>── Mineral Endmembers ──</value>
+  </data>
+  <data name="niggli_diag_section_main_minerals" xml:space="preserve">
+    <value>── Main Normative Minerals (&gt; 1%) ──</value>
+  </data>
+  <data name="niggli_diag_section_parameters" xml:space="preserve">
+    <value>── Niggli Values ──</value>
+  </data>
+  <data name="niggli_diag_total_minerals" xml:space="preserve">
+    <value>Total Normative Minerals</value>
+  </data>
+  <data name="niggli_diag_warnings" xml:space="preserve">
+    <value>── Warnings ──</value>
+  </data>
+  <data name="niggli_diagnostic_details" xml:space="preserve">
+    <value>Calculation Details</value>
+  </data>
+  <data name="niggli_error" xml:space="preserve">
+    <value>Calculation Error</value>
+  </data>
+  <data name="niggli_error_cation_sum_zero" xml:space="preserve">
+    <value>Total rock cations insufficient or invalid data</value>
+  </data>
+  <data name="niggli_export_dialog_title" xml:space="preserve">
+    <value>Export Niggli Results</value>
+  </data>
+  <data name="niggli_help_overview" xml:space="preserve">
+    <value>Barth-Niggli molecular norm (Catanorm) was introduced by Paul Niggli (1948) and Tom F. W. Barth (1948). Unlike the traditional CIPW norm which calculates weight percentages, Catanorm calculates cation equivalent percentages. This avoids the distortion caused by heavy elements such as iron and yields mineral proportions much closer to true modal volume percentages observed under the petrographic microscope. This module also provides classical Niggli Numbers (si, al, fm, c, alk, k, mg, qz).</value>
+  </data>
+  <data name="niggli_help_window_title" xml:space="preserve">
+    <value>Niggli Norm Calculation - Algorithm Guide</value>
+  </data>
+  <data name="niggli_mineral_Ab" xml:space="preserve">
+    <value>Albite</value>
+  </data>
+  <data name="niggli_mineral_Ac" xml:space="preserve">
+    <value>Acmite</value>
+  </data>
+  <data name="niggli_mineral_An" xml:space="preserve">
+    <value>Anorthite</value>
+  </data>
+  <data name="niggli_mineral_Ap" xml:space="preserve">
+    <value>Apatite</value>
+  </data>
+  <data name="niggli_mineral_C" xml:space="preserve">
+    <value>Corundum</value>
+  </data>
+  <data name="niggli_mineral_Cc" xml:space="preserve">
+    <value>Calcite</value>
+  </data>
+  <data name="niggli_mineral_Cs" xml:space="preserve">
+    <value>Calcium Silicate</value>
+  </data>
+  <data name="niggli_mineral_Di" xml:space="preserve">
+    <value>Diopside</value>
+  </data>
+  <data name="niggli_mineral_Fr" xml:space="preserve">
+    <value>Fluorite</value>
+  </data>
+  <data name="niggli_mineral_Hm" xml:space="preserve">
+    <value>Hematite</value>
+  </data>
+  <data name="niggli_mineral_Hy" xml:space="preserve">
+    <value>Hypersthene</value>
+  </data>
+  <data name="niggli_mineral_Il" xml:space="preserve">
+    <value>Ilmenite</value>
+  </data>
+  <data name="niggli_mineral_Kp" xml:space="preserve">
+    <value>Kaliophilite</value>
+  </data>
+  <data name="niggli_mineral_Ks" xml:space="preserve">
+    <value>Potassium Metasilicate</value>
+  </data>
+  <data name="niggli_mineral_Lc" xml:space="preserve">
+    <value>Leucite</value>
+  </data>
+  <data name="niggli_mineral_Mt" xml:space="preserve">
+    <value>Magnetite</value>
+  </data>
+  <data name="niggli_mineral_Ne" xml:space="preserve">
+    <value>Nepheline</value>
+  </data>
+  <data name="niggli_mineral_Ns" xml:space="preserve">
+    <value>Sodium Metasilicate</value>
+  </data>
+  <data name="niggli_mineral_Ol" xml:space="preserve">
+    <value>Olivine</value>
+  </data>
+  <data name="niggli_mineral_Or" xml:space="preserve">
+    <value>Orthoclase</value>
+  </data>
+  <data name="niggli_mineral_Pf" xml:space="preserve">
+    <value>Perovskite</value>
+  </data>
+  <data name="niggli_mineral_Plag" xml:space="preserve">
+    <value>Plagioclase</value>
+  </data>
+  <data name="niggli_mineral_Py" xml:space="preserve">
+    <value>Pyrite</value>
+  </data>
+  <data name="niggli_mineral_Q" xml:space="preserve">
+    <value>Quartz</value>
+  </data>
+  <data name="niggli_mineral_Ru" xml:space="preserve">
+    <value>Rutile</value>
+  </data>
+  <data name="niggli_mineral_Sum" xml:space="preserve">
+    <value>Sum</value>
+  </data>
+  <data name="niggli_mineral_Tn" xml:space="preserve">
+    <value>Titanite</value>
+  </data>
+  <data name="niggli_mineral_Wo" xml:space="preserve">
+    <value>Wollastonite</value>
+  </data>
+  <data name="niggli_msg_calc_all_success" xml:space="preserve">
+    <value>All {0} samples calculated successfully.</value>
+  </data>
+  <data name="niggli_msg_calc_partial_success" xml:space="preserve">
+    <value>Calculation complete: {0} succeeded, {1} failed.</value>
+  </data>
+  <data name="niggli_msg_data_cleared" xml:space="preserve">
+    <value>Data cleared.</value>
+  </data>
+  <data name="niggli_msg_export_failed" xml:space="preserve">
+    <value>Export failed: {0}</value>
+  </data>
+  <data name="niggli_msg_export_success" xml:space="preserve">
+    <value>Results exported to: {0}</value>
+  </data>
+  <data name="niggli_msg_no_data" xml:space="preserve">
+    <value>No valid major element data detected</value>
+  </data>
+  <data name="niggli_param_al" xml:space="preserve">
+    <value>al (Alumina index)</value>
+  </data>
+  <data name="niggli_param_alk" xml:space="preserve">
+    <value>alk (Alkali index)</value>
+  </data>
+  <data name="niggli_param_c" xml:space="preserve">
+    <value>c (Calcium index)</value>
+  </data>
+  <data name="niggli_param_fm" xml:space="preserve">
+    <value>fm (Iron-magnesium index)</value>
+  </data>
+  <data name="niggli_param_k" xml:space="preserve">
+    <value>k (Potassium ratio K₂O/(Na₂O+K₂O))</value>
+  </data>
+  <data name="niggli_param_mg" xml:space="preserve">
+    <value>mg (Magnesium ratio MgO/(MgO+FeO...))</value>
+  </data>
+  <data name="niggli_param_p" xml:space="preserve">
+    <value>p (Phosphorus index)</value>
+  </data>
+  <data name="niggli_param_qz" xml:space="preserve">
+    <value>qz (Quartz index)</value>
+  </data>
+  <data name="niggli_param_si" xml:space="preserve">
+    <value>si (Silica index)</value>
+  </data>
+  <data name="niggli_param_ti" xml:space="preserve">
+    <value>ti (Titanium index)</value>
+  </data>
+  <data name="niggli_references_gcdkit" xml:space="preserve">
+    <value>• Core algorithm logic is adapted from the open-source Geochemical Data Toolkit (GCDkit), refactored and optimized in C# with modern object-oriented architecture and bug-fixed desilication reaction pathways (https://www.gcdkit.org/).</value>
+  </data>
+  <data name="niggli_references_title" xml:space="preserve">
+    <value>Key References</value>
+  </data>
+  <data name="niggli_row_format" xml:space="preserve">
+    <value>Row {0}</value>
+  </data>
+  <data name="niggli_select_row_hint" xml:space="preserve">
+    <value>Select a row to view calculation details</value>
+  </data>
+  <data name="niggli_sheet_name" xml:space="preserve">
+    <value>Niggli</value>
+  </data>
+  <data name="niggli_silica_oversaturated" xml:space="preserve">
+    <value>Oversaturated</value>
+  </data>
+  <data name="niggli_silica_saturated" xml:space="preserve">
+    <value>Saturated</value>
+  </data>
+  <data name="niggli_silica_undersaturated" xml:space="preserve">
+    <value>Undersaturated</value>
+  </data>
+  <data name="niggli_step1_detail" xml:space="preserve">
+    <value>Oxide weight percentages are divided by molar mass and multiplied by cation counts to obtain millications. The sum of all cations is normalized to 100%. Total iron (FeOT) can be partitioned using the adjustable Fe3+/Fe ratio (default 0.15).</value>
+  </data>
+  <data name="niggli_step1_hy_ol_done" xml:space="preserve">
+    <value>Desilication Step 1: Hypersthene -&gt; Olivine (Hy → Ol), consumed {0}% Hy, silica deficit completely eliminated</value>
+  </data>
+  <data name="niggli_step1_hy_ol_part" xml:space="preserve">
+    <value>Desilication Step 1: Hypersthene -&gt; Olivine (Hy → Ol), all Hy ({0}%) converted to Ol, remaining deficit D = {1}%</value>
+  </data>
+  <data name="niggli_step1_title" xml:space="preserve">
+    <value>Cation millications and 100% normalization</value>
+  </data>
+  <data name="niggli_step2_detail" xml:space="preserve">
+    <value>Based on molecular proportions with base = al + fm + c + alk = 100, calculating si, al, fm, c, alk, ti, p, k, mg and quartz index qz.</value>
+  </data>
+  <data name="niggli_step2_title" xml:space="preserve">
+    <value>Classical Niggli Numbers</value>
+  </data>
+  <data name="niggli_step2_tn_pf_done" xml:space="preserve">
+    <value>Desilication Step 2: Titanite -&gt; Perovskite (Tn → Pf), consumed {0}% Tn, silica deficit completely eliminated</value>
+  </data>
+  <data name="niggli_step2_tn_pf_part" xml:space="preserve">
+    <value>Desilication Step 2: Titanite -&gt; Perovskite (Tn → Pf), all Tn converted, remaining deficit D = {0}%</value>
+  </data>
+  <data name="niggli_step3_ab_ne_done" xml:space="preserve">
+    <value>Desilication Step 3: Albite -&gt; Nepheline (Ab → Ne), consumed {0}% Ab, silica deficit completely eliminated</value>
+  </data>
+  <data name="niggli_step3_ab_ne_part" xml:space="preserve">
+    <value>Desilication Step 3: Albite -&gt; Nepheline (Ab → Ne), all Ab converted, remaining deficit D = {0}%</value>
+  </data>
+  <data name="niggli_step3_detail" xml:space="preserve">
+    <value>Early allocation: CO2 and Ca form Calcite (Cc); P, F and Ca form Apatite (Ap); remaining F forms Fluorite (Fr); S and Fe2+ form Pyrite (Py); Ti and Fe2+ form Ilmenite (Il).</value>
+  </data>
+  <data name="niggli_step3_title" xml:space="preserve">
+    <value>Accessory minerals, carbonates, and sulfides</value>
+  </data>
+  <data name="niggli_step4_detail" xml:space="preserve">
+    <value>K forms Orthoclase (Or) and Potassium Metasilicate (Ks). Na forms Albite (Ab), Acmite (Ac), and Sodium Metasilicate (Ns). Remaining Al forms Anorthite (An) and Corundum (C). Ti forms Titanite (Tn) or Rutile (Ru).</value>
+  </data>
+  <data name="niggli_step4_or_lc_done" xml:space="preserve">
+    <value>Desilication Step 4: Orthoclase -&gt; Leucite (Or → Lc), consumed {0}% Or, silica deficit completely eliminated</value>
+  </data>
+  <data name="niggli_step4_or_lc_part" xml:space="preserve">
+    <value>Desilication Step 4: Orthoclase -&gt; Leucite (Or → Lc), all Or converted, remaining deficit D = {0}%</value>
+  </data>
+  <data name="niggli_step4_title" xml:space="preserve">
+    <value>Alkali feldspars, anorthite, and alkaline silicates</value>
+  </data>
+  <data name="niggli_step5_detail" xml:space="preserve">
+    <value>Fe3+ and Fe2+ form Magnetite (Mt) and Hematite (Hm). Ca, Mg, and Fe2+ form Wollastonite (Wo), Enstatite (En), and Ferrosilite (Fs). En + Fs form Hypersthene (Hy). Wo and Hy combine to form Diopside (Di).</value>
+  </data>
+  <data name="niggli_step5_lc_kp_done" xml:space="preserve">
+    <value>Desilication Step 5: Leucite -&gt; Kalsilite (Lc → Kp), consumed {0}% Lc, silica deficit completely eliminated</value>
+  </data>
+  <data name="niggli_step5_lc_kp_part" xml:space="preserve">
+    <value>Desilication Step 5: Leucite -&gt; Kalsilite (Lc → Kp), all Lc converted, remaining deficit D = {0}%</value>
+  </data>
+  <data name="niggli_step5_title" xml:space="preserve">
+    <value>Iron oxides and pyroxenes</value>
+  </data>
+  <data name="niggli_step6_detail" xml:space="preserve">
+    <value>If excess Si &gt;= 0, Quartz (Q) forms. If silica deficit D = -Si occurs, desilication proceeds in thermodynamic order: ① Hy -&gt; Ol, ② Tn -&gt; Pf, ③ Ab -&gt; Ne, ④ Or -&gt; Lc, ⑤ Lc -&gt; Kp, ⑥ Wo -&gt; Cs, ⑦ Di -&gt; Cs + Ol.</value>
+  </data>
+  <data name="niggli_step6_title" xml:space="preserve">
+    <value>Silica balance and 7-stage desilication chain</value>
+  </data>
+  <data name="niggli_step6_wo_cs_done" xml:space="preserve">
+    <value>Desilication Step 6: Wollastonite -&gt; Rankinite (Wo → Cs), consumed {0}% Wo, silica deficit completely eliminated</value>
+  </data>
+  <data name="niggli_step6_wo_cs_part" xml:space="preserve">
+    <value>Desilication Step 6: Wollastonite -&gt; Rankinite (Wo → Cs), all Wo converted, remaining deficit D = {0}%</value>
+  </data>
+  <data name="niggli_step7_di_cs_ol_done" xml:space="preserve">
+    <value>Desilication Step 7: Diopside -&gt; Rankinite + Olivine (Di → Cs + Ol), consumed {0}% Di, silica deficit completely eliminated</value>
+  </data>
+  <data name="niggli_step7_di_cs_ol_part" xml:space="preserve">
+    <value>Desilication Step 7: Diopside -&gt; Rankinite + Olivine (Di → Cs + Ol), all Di converted</value>
+  </data>
+  <data name="niggli_step_deficit_init" xml:space="preserve">
+    <value>Silica deficit detected: initial deficit D = {0}%</value>
+  </data>
+  <data name="niggli_step_oversaturated" xml:space="preserve">
+    <value>Silica oversaturated: formed quartz Q = {0}%</value>
+  </data>
+  <data name="niggli_norm" xml:space="preserve">
+    <value>Niggli Norm</value>
+  </data>
+  <data name="niggli_title" xml:space="preserve">
+    <value>Niggli Norm Calculation</value>
+  </data>
+  <data name="niggli_tooltip_calculate" xml:space="preserve">
+    <value>Calculate Niggli Norm &amp; Values</value>
+  </data>
+  <data name="niggli_tooltip_clear" xml:space="preserve">
+    <value>Clear all input data and results</value>
+  </data>
+  <data name="niggli_tooltip_example" xml:space="preserve">
+    <value>Fill example rock samples (Granite, Basalt, Phonolite)</value>
+  </data>
+  <data name="niggli_tooltip_expand" xml:space="preserve">
+    <value>Expand/Collapse calculation details panel</value>
+  </data>
+  <data name="niggli_tooltip_export" xml:space="preserve">
+    <value>Export calculation results to CSV file</value>
+  </data>
+  <data name="niggli_tooltip_help" xml:space="preserve">
+    <value>View Barth-Niggli Catanorm &amp; Niggli Values calculation guide</value>
+  </data>
+  <data name="niggli_warning_feot_estimated" xml:space="preserve">
+    <value>Estimated oxidation state using total iron FeOT (Fe³⁺/Fe = {0})</value>
+  </data>
+  <data name="oxide_element_converter" xml:space="preserve">
+    <value>Oxide-Element Converter</value>
+  </data>
+  <data name="oxide_element_converter_desc" xml:space="preserve">
+    <value>Convert between element and oxide weight percentages using stoichiometric factors</value>
+  </data>
+  <data name="oxide_element_converter_hint" xml:space="preserve">
+    <value>Select an element or oxide, enter a value, and instantly get the converted result in the other form.</value>
+  </data>
+  <data name="oxide_element_conv_input_label" xml:space="preserve">
+    <value>Input Value</value>
+  </data>
+  <data name="oxide_element_conv_mode_elem_to_oxide" xml:space="preserve">
+    <value>Element → Oxide</value>
+  </data>
+  <data name="oxide_element_conv_mode_oxide_to_elem" xml:space="preserve">
+    <value>Oxide → Element</value>
+  </data>
+  <data name="oxide_element_conv_select_substance" xml:space="preserve">
+    <value>Select Element / Oxide</value>
+  </data>
+  <data name="oxide_element_conv_result_label" xml:space="preserve">
+    <value>Result</value>
+  </data>
+  <data name="oxide_element_conv_factor_label" xml:space="preserve">
+    <value>Conversion Factor</value>
+  </data>
+  <data name="oxide_element_conv_mw_elem" xml:space="preserve">
+    <value>Atomic Weight (g/mol)</value>
+  </data>
+  <data name="oxide_element_conv_mw_oxide" xml:space="preserve">
+    <value>Oxide Molecular Weight (g/mol)</value>
+  </data>
+  <data name="oxide_element_conv_formula_label" xml:space="preserve">
+    <value>Chemical Formula</value>
+  </data>
+  <data name="oxide_element_conv_unit_wt_pct" xml:space="preserve">
+    <value>wt%</value>
+  </data>
+  <data name="oxide_element_conv_unit_ppm" xml:space="preserve">
+    <value>ppm</value>
+  </data>
+  <data name="oxide_element_conv_reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="oxide_element_conv_invalid_input" xml:space="preserve">
+    <value>Please enter a non-negative value.</value>
+  </data>
+  <data name="oxide_element_conv_reference_title" xml:space="preserve">
+    <value>Reference Table</value>
+  </data>
+  <data name="oxide_element_conv_reference_hint" xml:space="preserve">
+    <value>Common elements and their oxides with stoichiometric conversion factors.</value>
+  </data>
+  <data name="oxide_element_conv_col_element" xml:space="preserve">
+    <value>Element</value>
+  </data>
+  <data name="oxide_element_conv_col_oxide" xml:space="preserve">
+    <value>Oxide</value>
+  </data>
+  <data name="oxide_element_conv_col_factor_to_oxide" xml:space="preserve">
+    <value>→ Oxide Factor</value>
+  </data>
+  <data name="oxide_element_conv_col_factor_to_elem" xml:space="preserve">
+    <value>→ Element Factor</value>
+  </data>
+  <data name="geoscience_unit_converter" xml:space="preserve">
+    <value>Geoscience Unit Converter</value>
+  </data>
+  <data name="geoscience_unit_converter_desc" xml:space="preserve">
+    <value>Instant conversion dashboard for grade, pressure, microbeam scale, temperature, and age</value>
+  </data>
+  <data name="geoscience_unit_conv_hint" xml:space="preserve">
+    <value>Select a category, enter a value and base unit to view live conversions across all units. Click any row to copy or set as input base.</value>
+  </data>
+  <data name="geoscience_unit_conv_category" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="geoscience_unit_conv_cat_grade" xml:space="preserve">
+    <value>Grade / Concentration</value>
+  </data>
+  <data name="geoscience_unit_conv_cat_pressure" xml:space="preserve">
+    <value>Pressure / Stress</value>
+  </data>
+  <data name="geoscience_unit_conv_cat_scale" xml:space="preserve">
+    <value>Microbeam Scale</value>
+  </data>
+  <data name="geoscience_unit_conv_cat_temperature" xml:space="preserve">
+    <value>Temperature</value>
+  </data>
+  <data name="geoscience_unit_conv_cat_time" xml:space="preserve">
+    <value>Geological Age</value>
+  </data>
+  <data name="geoscience_unit_conv_input_value" xml:space="preserve">
+    <value>Input Value</value>
+  </data>
+  <data name="geoscience_unit_conv_source_unit" xml:space="preserve">
+    <value>Base Unit</value>
+  </data>
+  <data name="geoscience_unit_conv_presets" xml:space="preserve">
+    <value>Geoscience Reference Presets</value>
+  </data>
+  <data name="geoscience_unit_conv_all_results" xml:space="preserve">
+    <value>All Units Live Dashboard</value>
+  </data>
+  <data name="geoscience_unit_conv_set_as_base" xml:space="preserve">
+    <value>Set as Base</value>
+  </data>
+  <data name="geoscience_unit_conv_copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="geoscience_unit_conv_copied_val" xml:space="preserve">
+    <value>Copied {0} {1}</value>
+  </data>
+  <data name="geoscience_unit_conv_reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="geoscience_unit_conv_base_badge" xml:space="preserve">
+    <value>BASE</value>
+  </data>
+  <data name="geo_u_g_t_name" xml:space="preserve">
+    <value>Gram per Tonne</value>
+  </data>
+  <data name="geo_u_g_t_desc" xml:space="preserve">
+    <value>Standard grade unit in economic geology (1 g/t = 1 ppm = 1 mg/kg)</value>
+  </data>
+  <data name="geo_u_ppm_name" xml:space="preserve">
+    <value>Parts per Million (ppm)</value>
+  </data>
+  <data name="geo_u_ppm_desc" xml:space="preserve">
+    <value>Trace element mass concentration (1 ppm = 10⁻⁶ = 1 g/t)</value>
+  </data>
+  <data name="geo_u_wt_pct_name" xml:space="preserve">
+    <value>Weight Percent (wt%)</value>
+  </data>
+  <data name="geo_u_wt_pct_desc" xml:space="preserve">
+    <value>Major elements and high-grade ores (1 wt% = 10,000 g/t)</value>
+  </data>
+  <data name="geo_u_ppb_name" xml:space="preserve">
+    <value>Parts per Billion (ppb)</value>
+  </data>
+  <data name="geo_u_ppb_desc" xml:space="preserve">
+    <value>Ultra-trace elements and PGE (1 ppb = 10⁻⁹ = 0.001 g/t)</value>
+  </data>
+  <data name="geo_u_oz_t_name" xml:space="preserve">
+    <value>Troy Ounce per Metric Tonne</value>
+  </data>
+  <data name="geo_u_oz_t_desc" xml:space="preserve">
+    <value>Troy ounce per metric tonne (1 troy oz ≈ 31.1035 g/t)</value>
+  </data>
+  <data name="geo_u_oz_st_name" xml:space="preserve">
+    <value>Troy Ounce per Short Ton (opt)</value>
+  </data>
+  <data name="geo_u_oz_st_desc" xml:space="preserve">
+    <value>North American mining standard (1 short ton ≈ 0.907 t, 1 opt ≈ 34.2857 g/t)</value>
+  </data>
+  <data name="geo_u_gpa_name" xml:space="preserve">
+    <value>Gigapascal (GPa)</value>
+  </data>
+  <data name="geo_u_gpa_desc" xml:space="preserve">
+    <value>Deep lithosphere and mantle high pressure (1 GPa = 10 kbar = 1,000 MPa)</value>
+  </data>
+  <data name="geo_u_kbar_name" xml:space="preserve">
+    <value>Kilobar (kbar)</value>
+  </data>
+  <data name="geo_u_kbar_desc" xml:space="preserve">
+    <value>Metamorphic petrology standard (1 kbar = 100 MPa = 0.1 GPa)</value>
+  </data>
+  <data name="geo_u_mpa_name" xml:space="preserve">
+    <value>Megapascal (MPa)</value>
+  </data>
+  <data name="geo_u_mpa_desc" xml:space="preserve">
+    <value>Geostress and shallow crust fluid pressure (1 MPa = 10 bar = 10⁶ Pa)</value>
+  </data>
+  <data name="geo_u_bar_name" xml:space="preserve">
+    <value>Bar</value>
+  </data>
+  <data name="geo_u_bar_desc" xml:space="preserve">
+    <value>Experimental thermodynamic pressure (1 bar = 0.1 MPa = 100 kPa)</value>
+  </data>
+  <data name="geo_u_atm_name" xml:space="preserve">
+    <value>Atmosphere (atm)</value>
+  </data>
+  <data name="geo_u_atm_desc" xml:space="preserve">
+    <value>Standard physical atmosphere (1 atm = 101.325 kPa = 0.101325 MPa)</value>
+  </data>
+  <data name="geo_u_psi_name" xml:space="preserve">
+    <value>Pounds per Square Inch (psi)</value>
+  </data>
+  <data name="geo_u_psi_desc" xml:space="preserve">
+    <value>Drilling and petroleum engineering formation pressure (1 MPa ≈ 145.038 psi)</value>
+  </data>
+  <data name="geo_u_mm_name" xml:space="preserve">
+    <value>Millimeter (mm)</value>
+  </data>
+  <data name="geo_u_mm_desc" xml:space="preserve">
+    <value>Phenocryst and petrographic macroscopic scale (1 mm = 1,000 μm)</value>
+  </data>
+  <data name="geo_u_um_name" xml:space="preserve">
+    <value>Micrometer (μm)</value>
+  </data>
+  <data name="geo_u_um_desc" xml:space="preserve">
+    <value>EPMA probe beam spot and SEM observation scale (1 μm = 1,000 nm)</value>
+  </data>
+  <data name="geo_u_nm_name" xml:space="preserve">
+    <value>Nanometer (nm)</value>
+  </data>
+  <data name="geo_u_nm_desc" xml:space="preserve">
+    <value>Clay interlayers and nanoparticles (1 nm = 10 Å = 0.001 μm)</value>
+  </data>
+  <data name="geo_u_angstrom_name" xml:space="preserve">
+    <value>Angstrom (Å)</value>
+  </data>
+  <data name="geo_u_angstrom_desc" xml:space="preserve">
+    <value>Lattice parameters and XRD characteristic wavelength (1 Å = 0.1 nm = 10⁻⁴ μm)</value>
+  </data>
+  <data name="geo_u_pm_name" xml:space="preserve">
+    <value>Picometer (pm)</value>
+  </data>
+  <data name="geo_u_pm_desc" xml:space="preserve">
+    <value>Effective ionic radius and atomic orbitals (1 Å = 100 pm, 1 pm = 10⁻⁶ μm)</value>
+  </data>
+  <data name="geo_u_celsius_name" xml:space="preserve">
+    <value>Celsius (℃)</value>
+  </data>
+  <data name="geo_u_celsius_desc" xml:space="preserve">
+    <value>Common geoscience temperature and geothermal gradient</value>
+  </data>
+  <data name="geo_u_kelvin_name" xml:space="preserve">
+    <value>Kelvin (K)</value>
+  </data>
+  <data name="geo_u_kelvin_desc" xml:space="preserve">
+    <value>Thermodynamic equations of state and absolute temperature (0 ℃ = 273.15 K)</value>
+  </data>
+  <data name="geo_u_fahrenheit_name" xml:space="preserve">
+    <value>Fahrenheit (℉)</value>
+  </data>
+  <data name="geo_u_fahrenheit_desc" xml:space="preserve">
+    <value>North American petroleum engineering scale (℉ = ℃ × 1.8 + 32)</value>
+  </data>
+  <data name="geo_u_ga_name" xml:space="preserve">
+    <value>Billion Years (Ga / Gyr)</value>
+  </data>
+  <data name="geo_u_ga_desc" xml:space="preserve">
+    <value>Precambrian deep time and early Earth evolution (1 Ga = 1,000 Ma = 10⁹ yr)</value>
+  </data>
+  <data name="geo_u_ma_name" xml:space="preserve">
+    <value>Million Years (Ma / Myr)</value>
+  </data>
+  <data name="geo_u_ma_desc" xml:space="preserve">
+    <value>Phanerozoic timescale and radiometric dating standard (1 Ma = 10⁶ yr)</value>
+  </data>
+  <data name="geo_u_ka_name" xml:space="preserve">
+    <value>Thousand Years (ka / kyr)</value>
+  </data>
+  <data name="geo_u_ka_desc" xml:space="preserve">
+    <value>Quaternary glaciation, ¹⁴C, and OSL dating (1 ka = 1,000 yr = 0.001 Ma)</value>
+  </data>
+  <data name="geo_u_yr_name" xml:space="preserve">
+    <value>Years (yr / a)</value>
+  </data>
+  <data name="geo_u_yr_desc" xml:space="preserve">
+    <value>Absolute calendar years (1 Ma = 1,000,000 yr)</value>
+  </data>
+  <data name="geo_p_gold_cutoff_title" xml:space="preserve">
+    <value>Au Cut-off Grade</value>
+  </data>
+  <data name="geo_p_gold_cutoff_note" xml:space="preserve">
+    <value>Typical cut-off grade for hard-rock gold mining</value>
+  </data>
+  <data name="geo_p_porphyry_cu_title" xml:space="preserve">
+    <value>Porphyry Cu Deposit</value>
+  </data>
+  <data name="geo_p_porphyry_cu_note" xml:space="preserve">
+    <value>Typical grade of giant porphyry copper deposits (~5000 ppm)</value>
+  </data>
+  <data name="geo_p_pge_au_title" xml:space="preserve">
+    <value>PGE / Au Ultra-trace</value>
+  </data>
+  <data name="geo_p_pge_au_note" xml:space="preserve">
+    <value>Typical mantle peridotite &amp; igneous PGE abundance</value>
+  </data>
+  <data name="geo_p_high_grade_ore_title" xml:space="preserve">
+    <value>High-grade Ore (1 opt)</value>
+  </data>
+  <data name="geo_p_high_grade_ore_note" xml:space="preserve">
+    <value>North American troy oz per short ton indicator (≈34.29 g/t)</value>
+  </data>
+  <data name="geo_p_fluid_press_title" xml:space="preserve">
+    <value>1 km Fluid Pressure</value>
+  </data>
+  <data name="geo_p_fluid_press_note" xml:space="preserve">
+    <value>Upper crust lithostatic &amp; pore fluid pressure</value>
+  </data>
+  <data name="geo_p_moho_press_title" xml:space="preserve">
+    <value>Lower Crust / Moho</value>
+  </data>
+  <data name="geo_p_moho_press_note" xml:space="preserve">
+    <value>Typical base of continental crust pressure (~10 kbar)</value>
+  </data>
+  <data name="geo_p_trans_zone_title" xml:space="preserve">
+    <value>Mantle Transition Zone</value>
+  </data>
+  <data name="geo_p_trans_zone_note" xml:space="preserve">
+    <value>410 km olivine-wadsleyite high pressure boundary</value>
+  </data>
+  <data name="geo_p_std_atm_title" xml:space="preserve">
+    <value>Surface Pressure (1 atm)</value>
+  </data>
+  <data name="geo_p_std_atm_note" xml:space="preserve">
+    <value>101.325 kPa, standard laboratory reference state</value>
+  </data>
+  <data name="geo_p_phenocryst_title" xml:space="preserve">
+    <value>Phenocryst Scale</value>
+  </data>
+  <data name="geo_p_phenocryst_note" xml:space="preserve">
+    <value>Standard optical polarizing microscope field (1000 μm)</value>
+  </data>
+  <data name="geo_p_epma_beam_title" xml:space="preserve">
+    <value>EPMA Beam Spot</value>
+  </data>
+  <data name="geo_p_epma_beam_note" xml:space="preserve">
+    <value>Typical focused beam spot diameter for EPMA analysis</value>
+  </data>
+  <data name="geo_p_sem_nano_title" xml:space="preserve">
+    <value>SEM Nano-grain</value>
+  </data>
+  <data name="geo_p_sem_nano_note" xml:space="preserve">
+    <value>Clay minerals and nano-scale particles under SEM</value>
+  </data>
+  <data name="geo_p_cu_ka_title" xml:space="preserve">
+    <value>Cu Kα Wavelength</value>
+  </data>
+  <data name="geo_p_cu_ka_note" xml:space="preserve">
+    <value>Characteristic X-ray diffraction wavelength for Cu Kα</value>
+  </data>
+  <data name="geo_p_surface_temp_title" xml:space="preserve">
+    <value>Ambient Surface Temp</value>
+  </data>
+  <data name="geo_p_surface_temp_note" xml:space="preserve">
+    <value>Standard laboratory ambient state (298.15 K)</value>
+  </data>
+  <data name="geo_p_hydrothermal_title" xml:space="preserve">
+    <value>Hydrothermal Ore Fluid</value>
+  </data>
+  <data name="geo_p_hydrothermal_note" xml:space="preserve">
+    <value>Homogenization temperature in quartz-vein gold fluid inclusions</value>
+  </data>
+  <data name="geo_p_solidus_title" xml:space="preserve">
+    <value>Granite Solidus</value>
+  </data>
+  <data name="geo_p_solidus_note" xml:space="preserve">
+    <value>Water-saturated felsic magma solidus boundary</value>
+  </data>
+  <data name="geo_p_earth_age_title" xml:space="preserve">
+    <value>Age of the Earth</value>
+  </data>
+  <data name="geo_p_earth_age_note" xml:space="preserve">
+    <value>Age of Earth from meteorite lead isotope systematics</value>
+  </data>
+  <data name="geo_p_cambrian_base_title" xml:space="preserve">
+    <value>Base of Cambrian</value>
+  </data>
+  <data name="geo_p_cambrian_base_note" xml:space="preserve">
+    <value>Phanerozoic GSSP boundary &amp; Cambrian explosion base</value>
+  </data>
+  <data name="geo_p_k_pg_boundary_title" xml:space="preserve">
+    <value>K-Pg Boundary</value>
+  </data>
+  <data name="geo_p_k_pg_boundary_note" xml:space="preserve">
+    <value>Cretaceous-Paleogene dinosaur extinction impact boundary</value>
+  </data>
+  <data name="geo_p_quaternary_base_title" xml:space="preserve">
+    <value>Base of Quaternary</value>
+  </data>
+  <data name="geo_p_quaternary_base_note" xml:space="preserve">
+    <value>Pleistocene major glaciation &amp; hominid evolution dawn</value>
   </data>
 </root>

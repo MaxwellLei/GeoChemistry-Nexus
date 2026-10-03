@@ -586,10 +586,20 @@
                             <!-- CIPW -->
                             <RadioButton Name="RadioButton5" Style="{StaticResource SidebarNavButton}" GroupName="SideBar" 
                                          Command="{Binding CipwPageCommand}" CommandParameter="{Binding ElementName=MyNav}"
-                                         ToolTip="CIPW">
+                                         ToolTip="{Binding [cipw_norm],Source={x:Static lg:LanguageService.Instance}, FallbackValue='CIPW 标准'}">
                                 <StackPanel Style="{StaticResource SidebarNavItemPanelStyle}">
                                     <TextBlock Text="&#xe626;" Style="{StaticResource SidebarNavIconStyle}" FontWeight="Bold"/>
-                                    <TextBlock Text="CIPW" Style="{StaticResource SidebarLabelTextStyle}"/>
+                                    <TextBlock Text="{Binding [cipw_norm],Source={x:Static lg:LanguageService.Instance}, FallbackValue='CIPW 标准'}" Style="{StaticResource SidebarLabelTextStyle}"/>
+                                </StackPanel>
+                            </RadioButton>
+
+                            <!-- Niggli -->
+                            <RadioButton Name="RadioButtonNiggli" Style="{StaticResource SidebarNavButton}" GroupName="SideBar" 
+                                         Command="{Binding NiggliPageCommand}" CommandParameter="{Binding ElementName=MyNav}"
+                                         ToolTip="{Binding [niggli_norm],Source={x:Static lg:LanguageService.Instance}, FallbackValue='Niggli 标准'}">
+                                <StackPanel Style="{StaticResource SidebarNavItemPanelStyle}">
+                                    <TextBlock Text="&#xe64a;" Style="{StaticResource SidebarNavIconStyle}"/>
+                                    <TextBlock Text="{Binding [niggli_norm],Source={x:Static lg:LanguageService.Instance}, FallbackValue='Niggli 标准'}" Style="{StaticResource SidebarLabelTextStyle}"/>
                                 </StackPanel>
                             </RadioButton>
                         </StackPanel>

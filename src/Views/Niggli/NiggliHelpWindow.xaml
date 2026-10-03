@@ -1,0 +1,141 @@
+<Window x:Class="GeoChemistryNexus.Views.NiggliHelpWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
+        Title="{Binding [niggli_help_window_title],Source={x:Static lg:LanguageService.Instance}, FallbackValue='Niggli 标准矿物计算 - 算法说明'}"
+        Height="700" Width="780"
+        WindowStartupLocation="CenterOwner"
+        WindowStyle="SingleBorderWindow"
+        ResizeMode="CanResize"
+        Background="#FAFBFC">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- 顶部标题区 -->
+        <Border Grid.Row="0" Background="White" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1" Padding="24,16">
+            <StackPanel>
+                <TextBlock Text="{Binding [niggli_title],Source={x:Static lg:LanguageService.Instance}, FallbackValue='Niggli 标准矿物计算'}" FontSize="20" FontWeight="SemiBold" Foreground="#333"/>
+                <TextBlock Text="Barth-Niggli's Molecular Norm (Catanorm) &amp; Niggli Values" 
+                           FontSize="12" Foreground="#888" Margin="0,4,0,0" FontStyle="Italic"/>
+            </StackPanel>
+        </Border>
+
+        <!-- 内容区 -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="24,16">
+            <StackPanel>
+                <!-- 概述 -->
+                <TextBlock TextWrapping="Wrap" FontSize="13" Foreground="#444" LineHeight="22" Margin="0,0,0,16"
+                           Text="{Binding [niggli_help_overview],Source={x:Static lg:LanguageService.Instance}, FallbackValue='Barth-Niggli 分子标准矿物（Catanorm）由瑞士岩石学家 Paul Niggli (1948) 与 Tom F. W. Barth (1948) 提出。与传统 CIPW 采用质量百分比不同，Niggli 体系以阳离子分子比例（Cation Equivalent Percentage）为计算基数，消除了重金属元素（如 Fe）对体积占比的偏倚，其计算结果与岩石显微薄片下的实际模态矿物（Modal Minerals）体积百分比更为接近。本模块同时提供经典的尼格里参数（Niggli Numbers: si, al, fm, c, alk, k, mg, qz）双轨计算。'}"/>
+
+                <!-- 步骤1: 阳离子比例与归一化 -->
+                <Border Background="White" CornerRadius="6" Padding="16" Margin="0,0,0,12" BorderBrush="#E8E8E8" BorderThickness="1">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <Border Background="#0078D4" CornerRadius="12" Width="24" Height="24" VerticalAlignment="Center">
+                                <TextBlock Text="1" Foreground="White" FontSize="12" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock Text="{Binding [niggli_step1_title],Source={x:Static lg:LanguageService.Instance}, FallbackValue='阳离子毫克分子比例与 100% 归一化'}" FontSize="14" FontWeight="SemiBold" Foreground="#333" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                        </StackPanel>
+                        <TextBlock TextWrapping="Wrap" FontSize="12.5" Foreground="#555" LineHeight="20" Margin="34,0,0,0"
+                                   Text="{Binding [niggli_step1_detail],Source={x:Static lg:LanguageService.Instance}, FallbackValue='全岩各氧化物重量百分比除以其分子量，乘以化学式中的阳离子数获得阳离子摩尔比例（Millications）。将全体阳离子摩尔量求和，归一化为 100% 作为后续计算的基础。未实测 FeO/Fe2O3 时可由 FeOT 按可调节的 Fe³⁺/Fe 比例（默认 0.15）拆分。'}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- 步骤2: 经典尼格里参数 -->
+                <Border Background="White" CornerRadius="6" Padding="16" Margin="0,0,0,12" BorderBrush="#E8E8E8" BorderThickness="1">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <Border Background="#0078D4" CornerRadius="12" Width="24" Height="24" VerticalAlignment="Center">
+                                <TextBlock Text="2" Foreground="White" FontSize="12" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock Text="{Binding [niggli_step2_title],Source={x:Static lg:LanguageService.Instance}, FallbackValue='经典尼格里参数 (Niggli Numbers)'}" FontSize="14" FontWeight="SemiBold" Foreground="#333" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                        </StackPanel>
+                        <TextBlock TextWrapping="Wrap" FontSize="12.5" Foreground="#555" LineHeight="20" Margin="34,0,0,0"
+                                   Text="{Binding [niggli_step2_detail],Source={x:Static lg:LanguageService.Instance}, FallbackValue='根据分子比令 base = al + fm + c + alk = 100，计算 si、al、fm、c、alk、ti、p 比例，以及 k = K2O/(Na2O+K2O)、mg = MgO/(FeO+2Fe2O3+MnO+MgO)。石英指数 qz = si - (100 + 4*al) 用于直接判断岩石的硅饱和程度。'}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- 步骤3: 副矿物与盐类分配 -->
+                <Border Background="White" CornerRadius="6" Padding="16" Margin="0,0,0,12" BorderBrush="#E8E8E8" BorderThickness="1">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <Border Background="#0078D4" CornerRadius="12" Width="24" Height="24" VerticalAlignment="Center">
+                                <TextBlock Text="3" Foreground="White" FontSize="12" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock Text="{Binding [niggli_step3_title],Source={x:Static lg:LanguageService.Instance}, FallbackValue='副矿物、碳酸盐与硫化物结合'}" FontSize="14" FontWeight="SemiBold" Foreground="#333" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                        </StackPanel>
+                        <TextBlock TextWrapping="Wrap" FontSize="12.5" Foreground="#555" LineHeight="20" Margin="34,0,0,0"
+                                   Text="{Binding [niggli_step3_detail],Source={x:Static lg:LanguageService.Instance}, FallbackValue='优先分配：CO2 与 Ca 结合生成方解石 (Cc)；P、F 与 Ca 结合生成磷灰石 (Ap)；余 F 与 Ca 结合生成萤石 (Fr)；S 与 Fe²⁺ 结合生成黄铁矿 (Py)；Ti 与 Fe²⁺ 结合生成钛铁矿 (Il)。'}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- 步骤4: 长石类与碱性硅酸盐 -->
+                <Border Background="White" CornerRadius="6" Padding="16" Margin="0,0,0,12" BorderBrush="#E8E8E8" BorderThickness="1">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <Border Background="#0078D4" CornerRadius="12" Width="24" Height="24" VerticalAlignment="Center">
+                                <TextBlock Text="4" Foreground="White" FontSize="12" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock Text="{Binding [niggli_step4_title],Source={x:Static lg:LanguageService.Instance}, FallbackValue='碱性长石、钙长石与过碱矿物'}" FontSize="14" FontWeight="SemiBold" Foreground="#333" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                        </StackPanel>
+                        <TextBlock TextWrapping="Wrap" FontSize="12.5" Foreground="#555" LineHeight="20" Margin="34,0,0,0"
+                                   Text="{Binding [niggli_step4_detail],Source={x:Static lg:LanguageService.Instance}, FallbackValue='K 与 Al、Si 结合生成正长石 (Or，5阳离子分子)；多余 K 生成偏硅酸钾 (Ks)。Na 与 Al、Si 结合生成钠长石 (Ab)；若 Na 过剩则与 Fe³⁺ 生成霓石 (Ac)，再过剩生成偏硅酸钠 (Ns)。剩余 Al 与 Ca 结合生成钙长石 (An)；余 Al 生成刚玉 (C)。余 Ti 与 Ca 结合生成榍石 (Tn) 或金红石 (Ru)。'}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- 步骤5: 铁氧化物与辉石 -->
+                <Border Background="White" CornerRadius="6" Padding="16" Margin="0,0,0,12" BorderBrush="#E8E8E8" BorderThickness="1">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <Border Background="#0078D4" CornerRadius="12" Width="24" Height="24" VerticalAlignment="Center">
+                                <TextBlock Text="5" Foreground="White" FontSize="12" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock Text="{Binding [niggli_step5_title],Source={x:Static lg:LanguageService.Instance}, FallbackValue='铁氧化物与辉石类矿物分配'}" FontSize="14" FontWeight="SemiBold" Foreground="#333" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                        </StackPanel>
+                        <TextBlock TextWrapping="Wrap" FontSize="12.5" Foreground="#555" LineHeight="20" Margin="34,0,0,0"
+                                   Text="{Binding [niggli_step5_detail],Source={x:Static lg:LanguageService.Instance}, FallbackValue='Fe³⁺ 与 Fe²⁺ 结合生成磁铁矿 (Mt)，多余 Fe³⁺ 生成赤铁矿 (Hm)。Ca、Mg、Fe²⁺ 分别形成硅灰石 (Wo)、顽火辉石 (En) 与铁辉石 (Fs) 分子；En 与 Fs 构成正辉石 (Hy)。Wo 与 Hy 等摩尔结合形成透辉石 (Di)。'}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- 步骤6: 7级连续去硅链 -->
+                <Border Background="White" CornerRadius="6" Padding="16" Margin="0,0,0,12" BorderBrush="#E8E8E8" BorderThickness="1">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <Border Background="#0078D4" CornerRadius="12" Width="24" Height="24" VerticalAlignment="Center">
+                                <TextBlock Text="6" Foreground="White" FontSize="12" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock Text="{Binding [niggli_step6_title],Source={x:Static lg:LanguageService.Instance}, FallbackValue='硅饱和检验与 7 级连续去硅反应链'}" FontSize="14" FontWeight="SemiBold" Foreground="#333" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                        </StackPanel>
+                        <TextBlock TextWrapping="Wrap" FontSize="12.5" Foreground="#555" LineHeight="20" Margin="34,0,0,0"
+                                   Text="{Binding [niggli_step6_detail],Source={x:Static lg:LanguageService.Instance}, FallbackValue='若剩余 Si >= 0，形成石英 (Q)；若 Si &lt; 0 产生硅亏损 D = -Si，按热力学稳定顺序依次去硅：\n① Hy → Ol (4 Hy 转化为 3 Ol，释放 1 Si)\n② Tn → Pf (3 Tn 转化为 2 Pf，释放 1 Si)\n③ Ab → Ne (5 Ab 转化为 3 Ne，释放 2 Si)\n④ Or → Lc (5 Or 转化为 4 Lc，释放 1 Si)\n⑤ Lc → Kp (4 Lc 转化为 3 Kp，释放 1 Si)\n⑥ Wo → Cs (4 Wo 转化为 3 Cs，释放 1 Si)\n⑦ Di → Cs + Ol (4 Di 转化为 1.5 Cs + 1.5 Ol，释放 1 Si)'}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- 参考文献 -->
+                <Border Background="#F0F4F8" CornerRadius="6" Padding="16" Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock Text="{Binding [niggli_references_title],Source={x:Static lg:LanguageService.Instance}, FallbackValue='主要参考文献'}" FontSize="13" FontWeight="SemiBold" Foreground="#333" Margin="0,0,0,8"/>
+                        <TextBlock TextWrapping="Wrap" FontSize="11.5" Foreground="#666" LineHeight="18">
+                            <Run Text="{Binding [niggli_references_gcdkit],Source={x:Static lg:LanguageService.Instance}, Mode=OneWay, FallbackValue='• 算法核心逻辑参考开源地球化学数据工具包 GCDkit (Geochemical Data Toolkit)，本系统基于现代面向对象架构采用 C# 原创重构、性能优化并修复了去硅反应链路 (https://www.gcdkit.org/)'}"/><LineBreak/>
+                            <Run Text="• Janoušek, V., Farrow, C.M., &amp; Erban, V. (2006). Interpretation of whole-rock geochemical data in igneous geochemistry: introducing Geochemical Data Toolkit (GCDkit). Journal of Petrology, 47(6), 1255-1259."/><LineBreak/>
+                            <Run Text="• Niggli, P. (1948). Gesteine und Minerallagerstätten. Birkhäuser, Basel, pp. 1-540."/><LineBreak/>
+                            <Run Text="• Barth, T.F.W. (1948). The distribution of oxygen in the lithosphere. The Journal of Geology, 56(1), 41-49."/><LineBreak/>
+                            <Run Text="• Le Maitre, R.W. (2002). Igneous Rocks: A Classification and Glossary of Terms. Cambridge University Press."/>
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- 底部按钮区 -->
+        <Border Grid.Row="2" Background="White" BorderBrush="#E0E0E0" BorderThickness="0,1,0,0" Padding="24,12">
+            <Button Content="{Binding [niggli_btn_close],Source={x:Static lg:LanguageService.Instance}, FallbackValue=关闭}" 
+                    HorizontalAlignment="Right" Width="80" Height="30"
+                    IsDefault="True" Click="OnCloseClick"/>
+        </Border>
+    </Grid>
+</Window>

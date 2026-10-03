@@ -691,6 +691,7 @@ namespace GeoChemistryNexus.Views
             {
                 _popOutWindow.Owner = mainWindow;
             }
+            WindowActivationHelper.AttachOwnerFocusPreservation(_popOutWindow, mainWindow);
 
             // 3. 将 WpfPlot1 放入新窗口
             // 为了保持样式，最好包一层 Grid

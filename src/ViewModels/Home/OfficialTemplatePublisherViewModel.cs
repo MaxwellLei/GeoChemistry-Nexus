@@ -1347,6 +1347,7 @@ namespace GeoChemistryNexus.ViewModels
                 HomeLinksLanguageContext,
                 LanguageService.Instance["official_publisher_home_add_group"] ?? "Add Group");
             dialog.Owner = OwnerWindow ?? Application.Current.MainWindow;
+            WindowActivationHelper.AttachOwnerFocusPreservation(dialog, dialog.Owner);
             if (dialog.ShowDialog() != true)
                 return;
 
@@ -1374,6 +1375,7 @@ namespace GeoChemistryNexus.ViewModels
                 LanguageService.Instance["official_publisher_home_edit_group"] ?? "Edit Group",
                 title: SelectedHomeLinkGroup.Title);
             dialog.Owner = OwnerWindow ?? Application.Current.MainWindow;
+            WindowActivationHelper.AttachOwnerFocusPreservation(dialog, dialog.Owner);
             if (dialog.ShowDialog() != true)
                 return;
 
@@ -1535,6 +1537,7 @@ namespace GeoChemistryNexus.ViewModels
                 url: existing?.Url,
                 icon: existing?.Icon);
             dialog.Owner = OwnerWindow ?? Application.Current.MainWindow;
+            WindowActivationHelper.AttachOwnerFocusPreservation(dialog, dialog.Owner);
 
             if (dialog.ShowDialog() != true)
                 return false;
@@ -1918,6 +1921,7 @@ namespace GeoChemistryNexus.ViewModels
                     : (LanguageService.Instance["official_publisher_category_edit"] ?? "Edit Category"),
                 title: existing?.Title);
             dialog.Owner = OwnerWindow ?? Application.Current.MainWindow;
+            WindowActivationHelper.AttachOwnerFocusPreservation(dialog, dialog.Owner);
 
             if (dialog.ShowDialog() != true)
                 return false;

@@ -80,6 +80,12 @@ namespace GeoChemistryNexus.Helpers
             return Path.Combine(new[] { GetAppDirectory(), "Data" }.Concat(segments).ToArray());
         }
 
+        public static void EnsureConfigReady()
+        {
+            string defaultDllConfig = Path.Combine(GetAppDirectory(), "GeoChemistryNexus.dll.config");
+            SeedFileIfMissing(defaultDllConfig, GetUserConfigPath());
+        }
+
         public static void Initialize()
         {
             if (_initialized)

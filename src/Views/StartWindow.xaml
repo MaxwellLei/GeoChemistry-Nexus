@@ -20,6 +20,8 @@
                               Color="Black"/>
         </Border.Effect>
         <Grid>
+            <!-- 启动图异步加载图层：初始透明，后台解码完成后平滑淡入 -->
+            <Border x:Name="ImageLayer" CornerRadius="8" Opacity="0"/>
             <Border VerticalAlignment="Bottom"
                     Background="#99000000"
                     CornerRadius="0,0,7,7"

@@ -13,7 +13,7 @@ namespace GeoChemistryNexus.Helpers
             if (_mappedConfig != null)
                 return _mappedConfig;
 
-            AppDataPathHelper.Initialize();
+            AppDataPathHelper.EnsureConfigReady();
 
             string configPath = AppDataPathHelper.GetUserConfigPath();
             var map = new ExeConfigurationFileMap

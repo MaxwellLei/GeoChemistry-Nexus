@@ -2818,6 +2818,7 @@ namespace GeoChemistryNexus.ViewModels
             {
                 Owner = Application.Current.MainWindow
             };
+            WindowActivationHelper.AttachOwnerFocusPreservation(window, window.Owner);
             window.ShowDialog();
         }
 
@@ -2848,6 +2849,7 @@ namespace GeoChemistryNexus.ViewModels
             {
                 Owner = Application.Current.MainWindow
             };
+            WindowActivationHelper.AttachOwnerFocusPreservation(window, window.Owner);
             window.ShowDialog();
         }
 

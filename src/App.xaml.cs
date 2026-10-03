@@ -34,8 +34,6 @@ namespace GeoChemistryNexus
         {
             base.OnStartup(e);
 
-            AppDataPathHelper.Initialize();
-
             if (TryHandleHeadlessPublish(e.Args))
                 return;
 
@@ -53,10 +51,10 @@ namespace GeoChemistryNexus
             if (!string.IsNullOrEmpty(associatedPath))
                 SingleInstanceHelper.EnqueuePackagePath(associatedPath);
 
-            // 0. 初始化语言
+            // 0. 初始化语言（保留语言包依赖，确保首帧和后续提示使用用户偏好/系统语言）
             LanguageService.InitializeLanguage();
 
-            // 1. 尽快显示轻量启动窗体（不依赖 HandyControl / Styles）
+            // 1. 尽快显示轻量启动窗体（纯 XAML 毫秒级首帧呈现，背景图在后台异步淡入）
             var startViewModel = new StartViewModel();
             var startWindow = new StartWindow
             {
@@ -74,10 +72,10 @@ namespace GeoChemistryNexus
             {
                 try
                 {
-                    // 阶段 1: 语言服务
+                    // 阶段 1: 数据结构与模板文件（后台异步初始化，彻底消除首帧磁盘阻塞）
                     startViewModel.UpdateProgress(10, LanguageService.Instance["initializing_language_service_ellipsis"]);
-                    // 语言初始化已提前完成
-                    await Task.Delay(200); // 稍微停顿以便用户看清提示
+                    AppDataPathHelper.Initialize();
+                    await Task.Delay(150);
 
                     // 阶段 2: 字体资源
                     startViewModel.UpdateProgress(30, LanguageService.Instance["loading_font_resources_ellipsis"]);
@@ -208,6 +206,7 @@ namespace GeoChemistryNexus
             if (!string.IsNullOrEmpty(stagingArg))
                 stagingDir = stagingArg["--staging-dir=".Length..].Trim('"');
 
+            AppDataPathHelper.Initialize();
             LanguageService.InitializeLanguage();
 
             string logDir = AppDataPathHelper.GetLogsPath();

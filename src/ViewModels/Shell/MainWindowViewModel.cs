@@ -304,6 +304,16 @@ namespace GeoChemistryNexus.ViewModels
             NavigateToPage(nav, CipwPageView.GetPage());
         }
 
+        /// <summary>
+        /// 切换Niggli标准分子矿物计算页面
+        /// </summary>
+        /// <param name="nav">导航</param>
+        [RelayCommand]
+        private void NiggliPage(Frame nav)
+        {
+            NavigateToPage(nav, NiggliPageView.GetPage());
+        }
+
 
 
         ///切换设置命令
@@ -320,11 +330,15 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private void ShowWindow(Window window)
         {
+            if (window == null) return;
             // 显示窗口并将其置于屏幕的最顶层
             window.Show();
             window.WindowState = WindowState.Normal;
             window.Topmost = true;
             window.Activate();
+
+            // 将置顶属性重置为 false，避免扰乱系统 Z-Order 链条
+            window.Dispatcher.BeginInvoke(new Action(() => { window.Topmost = false; }));
         }
 
 

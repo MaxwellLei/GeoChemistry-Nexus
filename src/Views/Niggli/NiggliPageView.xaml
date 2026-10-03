@@ -1,4 +1,4 @@
-<Page x:Class="GeoChemistryNexus.Views.CipwPageView"
+<Page x:Class="GeoChemistryNexus.Views.NiggliPageView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -10,15 +10,15 @@
       xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="1100"
-      Title="CipwPageView">
+      Title="NiggliPageView">
 
     <Page.Resources>
         <cvs:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-        <hp:BindingProxy x:Key="GridProxy" Data="{Binding ElementName=CipwReoGrid}" />
+        <hp:BindingProxy x:Key="GridProxy" Data="{Binding ElementName=NiggliReoGrid}" />
         <hp:BindingProxy x:Key="ViewModelProxy" Data="{Binding}" />
 
         <!-- 工具栏按钮样式 -->
-        <Style x:Key="CipwToolbarButtonStyle" TargetType="Button">
+        <Style x:Key="NiggliToolbarButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Padding" Value="10,6"/>
@@ -50,8 +50,8 @@
             </Setter>
         </Style>
 
-        <!-- 计算按钮样式（醒目的主操作） -->
-        <Style x:Key="CipwCalculateButtonStyle" TargetType="Button">
+        <!-- 计算按钮样式（主操作） -->
+        <Style x:Key="NiggliCalculateButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="#0078D4"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="BorderThickness" Value="0"/>
@@ -82,7 +82,7 @@
             </Setter>
         </Style>
 
-        <!-- 面板控制小按钮样式 -->
+        <!-- 面板控制按钮样式 -->
         <Style x:Key="PanelControlButtonStyle" TargetType="Button">
             <Setter Property="Width" Value="26"/>
             <Setter Property="Height" Value="26"/>
@@ -131,7 +131,8 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- 左侧：标题 -->
-                <TextBlock Grid.Column="0" Text="{Binding [cipw_title],Source={x:Static lg:LanguageService.Instance}, FallbackValue=CIPW 标准矿物计算}" FontSize="16" FontWeight="SemiBold" Foreground="#333" 
+                <TextBlock Grid.Column="0" Text="{Binding [niggli_title],Source={x:Static lg:LanguageService.Instance}, FallbackValue='Niggli 标准矿物计算'}" 
+                           FontSize="16" FontWeight="SemiBold" Foreground="#333" 
                            VerticalAlignment="Center" Margin="0,0,20,0"/>
 
                 <!-- 中间：Fe3+/Fe 参数区 -->
@@ -152,7 +153,7 @@
                         </TextBox>
                         <StackPanel Orientation="Vertical" Margin="10,0,0,0" VerticalAlignment="Center">
                             <TextBlock FontSize="10" Foreground="#999"
-                                       Text="{Binding [cipw_default_value_text],Source={x:Static lg:LanguageService.Instance}, FallbackValue=默认 0.15}"/>
+                                       Text="{Binding [niggli_default_value_text],Source={x:Static lg:LanguageService.Instance}, FallbackValue=默认 0.15}"/>
                             <TextBlock FontSize="9.5" Foreground="#AAA" FontStyle="Italic">
                                 <Run Text="Le Maitre, 2002"/>
                             </TextBlock>
@@ -163,45 +164,45 @@
                 <!-- 右侧：操作按钮组 -->
                 <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
                     <!-- 算法说明 -->
-                    <Button Style="{StaticResource CipwToolbarButtonStyle}"
-                            ToolTip="{Binding [cipw_tooltip_help],Source={x:Static lg:LanguageService.Instance}, FallbackValue='查看CIPW标准矿物计算的算法流程说明'}"
+                    <Button Style="{StaticResource NiggliToolbarButtonStyle}"
+                            ToolTip="{Binding [niggli_tooltip_help],Source={x:Static lg:LanguageService.Instance}, FallbackValue='查看 Barth-Niggli Catanorm 与尼格里参数算法说明'}"
                             Click="OnHelpClick">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE946;" FontFamily="Segoe MDL2 Assets" FontSize="14" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                            <TextBlock Text="{Binding [cipw_btn_help],Source={x:Static lg:LanguageService.Instance}, FallbackValue=说明}" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding [niggli_btn_help],Source={x:Static lg:LanguageService.Instance}, FallbackValue=说明}" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
 
                     <!-- 填充示例 -->
-                    <Button Style="{StaticResource CipwToolbarButtonStyle}"
-                            ToolTip="{Binding [cipw_tooltip_example],Source={x:Static lg:LanguageService.Instance}, FallbackValue='填充示例数据（花岗岩、玄武岩、安山岩）'}"
+                    <Button Style="{StaticResource NiggliToolbarButtonStyle}"
+                            ToolTip="{Binding [niggli_tooltip_example],Source={x:Static lg:LanguageService.Instance}, FallbackValue='填充示例数据（花岗岩、玄武岩、响岩）'}"
                             Command="{Binding FillExampleCommand}"
                             CommandParameter="{Binding Data, Source={StaticResource GridProxy}}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE7C3;" FontFamily="Segoe MDL2 Assets" FontSize="14" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                            <TextBlock Text="{Binding [cipw_btn_example],Source={x:Static lg:LanguageService.Instance}, FallbackValue=示例}" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding [niggli_btn_example],Source={x:Static lg:LanguageService.Instance}, FallbackValue=示例}" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
 
                     <!-- 导出结果 -->
-                    <Button Style="{StaticResource CipwToolbarButtonStyle}"
-                            ToolTip="{Binding [cipw_tooltip_export],Source={x:Static lg:LanguageService.Instance}, FallbackValue='导出计算结果到 CSV 文件'}"
+                    <Button Style="{StaticResource NiggliToolbarButtonStyle}"
+                            ToolTip="{Binding [niggli_tooltip_export],Source={x:Static lg:LanguageService.Instance}, FallbackValue='导出计算结果到 CSV 文件'}"
                             Command="{Binding ExportCsvCommand}"
                             CommandParameter="{Binding Data, Source={StaticResource GridProxy}}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xEDE1;" FontFamily="Segoe MDL2 Assets" FontSize="14" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                            <TextBlock Text="{Binding [cipw_btn_export],Source={x:Static lg:LanguageService.Instance}, FallbackValue=导出}" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding [niggli_btn_export],Source={x:Static lg:LanguageService.Instance}, FallbackValue=导出}" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
 
                     <!-- 清除数据 -->
-                    <Button Style="{StaticResource CipwToolbarButtonStyle}"
-                            ToolTip="{Binding [cipw_tooltip_clear],Source={x:Static lg:LanguageService.Instance}, FallbackValue='清除所有输入和计算结果'}"
+                    <Button Style="{StaticResource NiggliToolbarButtonStyle}"
+                            ToolTip="{Binding [niggli_tooltip_clear],Source={x:Static lg:LanguageService.Instance}, FallbackValue='清除所有输入和计算结果'}"
                             Command="{Binding ClearDataCommand}"
                             CommandParameter="{Binding Data, Source={StaticResource GridProxy}}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="14" Foreground="#D13438" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                            <TextBlock Text="{Binding [cipw_btn_clear],Source={x:Static lg:LanguageService.Instance}, FallbackValue=清除}" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding [niggli_btn_clear],Source={x:Static lg:LanguageService.Instance}, FallbackValue=清除}" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
 
@@ -209,14 +210,14 @@
                     <Rectangle Width="1" Height="22" Fill="#E0E0E0" Margin="8,0" VerticalAlignment="Center"/>
 
                     <!-- 执行计算（主操作） -->
-                    <Button Style="{StaticResource CipwCalculateButtonStyle}"
+                    <Button Style="{StaticResource NiggliCalculateButtonStyle}"
                             Command="{Binding CalculateCommand}"
                             CommandParameter="{Binding Data, Source={StaticResource GridProxy}}"
-                            ToolTip="{Binding [cipw_tooltip_calculate],Source={x:Static lg:LanguageService.Instance}, FallbackValue='对所有有数据的行执行 CIPW 标准矿物计算'}">
+                            ToolTip="{Binding [niggli_tooltip_calculate],Source={x:Static lg:LanguageService.Instance}, FallbackValue='执行 Niggli 标准分子矿物计算'}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE768;" FontFamily="Segoe MDL2 Assets" FontSize="13" 
                                        VerticalAlignment="Center" Margin="0,0,6,0"/>
-                            <TextBlock Text="{Binding [cipw_btn_calculate],Source={x:Static lg:LanguageService.Instance}, FallbackValue=执行计算}" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding [niggli_btn_calculate],Source={x:Static lg:LanguageService.Instance}, FallbackValue=执行计算}" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>
@@ -224,7 +225,7 @@
         </Border>
 
         <!-- ==================== 中间：全宽数据表格 ==================== -->
-        <rg:ReoGridControl Grid.Row="1" x:Name="CipwReoGrid">
+        <rg:ReoGridControl Grid.Row="1" x:Name="NiggliReoGrid">
             <rg:ReoGridControl.Resources>
                 <ControlTemplate x:Key="ModernThumbTemplate" TargetType="Thumb">
                     <Border x:Name="thumbBorder" Background="#C2C3C9" CornerRadius="4" BorderThickness="0"/>
@@ -270,7 +271,7 @@
             </rg:ReoGridControl.Resources>
         </rg:ReoGridControl>
 
-        <!-- 表格与计算详情之间的可拖动分隔条 -->
+        <!-- 表格与诊断详情之间的可拖动分隔条 -->
         <GridSplitter x:Name="DetailSplitter" Grid.Row="2"
                       Height="6"
                       HorizontalAlignment="Stretch"
@@ -291,7 +292,7 @@
             </GridSplitter.Template>
         </GridSplitter>
 
-        <!-- ==================== 底部：计算详情面板 ==================== -->
+        <!-- ==================== 底部：诊断详情面板 ==================== -->
         <Border Grid.Row="3" BorderBrush="#D4D4D4" BorderThickness="0,1,0,0" Background="White">
             <Grid>
                 <Grid.RowDefinitions>
@@ -314,7 +315,8 @@
                         <!-- 有数据时显示计算详情摘要 -->
                         <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center"
                                     Visibility="{Binding HasDiagnosticData, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <TextBlock Text="{Binding [cipw_diagnostic_details],Source={x:Static lg:LanguageService.Instance}, FallbackValue=计算详情}" FontSize="13" FontWeight="SemiBold" Foreground="#333"/>
+                            <TextBlock Text="{Binding [niggli_diagnostic_details],Source={x:Static lg:LanguageService.Instance}, FallbackValue=计算详情}" 
+                                       FontSize="13" FontWeight="SemiBold" Foreground="#333"/>
                             <TextBlock Text=" - " FontSize="12" Foreground="#999" Margin="4,0"/>
                             <TextBlock Text="{Binding SelectedRowInfo}" FontSize="12" Foreground="#666"/>
 
@@ -344,7 +346,7 @@
                         </StackPanel>
 
                         <!-- 无数据时 -->
-                        <TextBlock Grid.Column="1" Text="{Binding [cipw_select_row_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=选择数据行查看计算详情}" 
+                        <TextBlock Grid.Column="1" Text="{Binding [niggli_select_row_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=选择数据行查看计算详情}" 
                                    FontSize="12" Foreground="#999" VerticalAlignment="Center">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
@@ -361,7 +363,7 @@
                         <!-- 面板控制按钮：展开/收缩 -->
                         <Button Grid.Column="2" Style="{StaticResource PanelControlButtonStyle}" 
                                 Click="OnToggleExpandClick"
-                                ToolTip="{Binding [cipw_tooltip_expand],Source={x:Static lg:LanguageService.Instance}, FallbackValue='展开/收缩'}">
+                                ToolTip="{Binding [niggli_tooltip_expand],Source={x:Static lg:LanguageService.Instance}, FallbackValue='展开/收缩'}">
                             <TextBlock x:Name="ExpandIcon" Text="&#xE70D;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
                         </Button>
                     </Grid>
@@ -392,7 +394,7 @@
                                     </Border.Style>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="150"/>
+                                            <ColumnDefinition Width="220"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
 

@@ -6,97 +6,312 @@
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
         mc:Ignorable="d"
-        Title="{Binding [add_widget],Source={x:Static lg:LanguageService.Instance}}" Height="400" Width="500"
-        WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False">
+        Title="{Binding [add_widget],Source={x:Static lg:LanguageService.Instance}}" 
+        Height="560" Width="780" MinHeight="480" MinWidth="640"
+        WindowStartupLocation="CenterOwner" ResizeMode="CanResizeWithGrip" ShowInTaskbar="False"
+        Background="#F8F9FA">
 
-    <Grid Margin="20">
+    <Window.InputBindings>
+        <KeyBinding Key="Escape" Command="{Binding CloseCommand, RelativeSource={RelativeSource AncestorType=hc:Window}}"/>
+    </Window.InputBindings>
+
+    <Window.Resources>
+        <!-- 卡片容器样式 -->
+        <Style x:Key="WidgetCardBorderStyle" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E5E5EA"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="16,14"/>
+            <Setter Property="Margin" Value="6,6"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="8" ShadowDepth="2" Direction="270" Color="#000000" Opacity="0.04"/>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush" Value="#A0C8FF"/>
+                    <Setter Property="Background" Value="#FCFDFF"/>
+                    <Setter Property="Effect">
+                        <Setter.Value>
+                            <DropShadowEffect BlurRadius="12" ShadowDepth="3" Direction="270" Color="#0078D4" Opacity="0.08"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- 添加 / 取消添加 按钮样式（支持多语言内容嵌套） -->
+        <Style x:Key="CardAddButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="MinWidth" Value="86"/>
+            <Setter Property="Padding" Value="14,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="#0078D4"/>
+            <Setter Property="BorderBrush" Value="#0078D4"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                              Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.88"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.75"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsAdded}" Value="True">
+                    <Setter Property="Background" Value="#FFF2F2"/>
+                    <Setter Property="BorderBrush" Value="#FFCDD2"/>
+                    <Setter Property="Foreground" Value="#D32F2F"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- 搜索框原生模板（精确对其光标起始位置与占位符） -->
+        <Style x:Key="GallerySearchBoxStyle" TargetType="TextBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="CaretBrush" Value="#0078D4"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- 搜索放大镜图标 -->
+                                <TextBlock Grid.Column="0" Text="&#xE721;" FontFamily="Segoe MDL2 Assets"
+                                           FontSize="13" Foreground="#9E9E9E" 
+                                           Margin="10,0,6,0" VerticalAlignment="Center"/>
+
+                                <!-- 输入文本区域：光标从左侧零边距起始 -->
+                                <Grid Grid.Column="1" VerticalAlignment="Center">
+                                    <ScrollViewer x:Name="PART_ContentHost"
+                                                  Margin="0" Padding="0"
+                                                  Focusable="False"
+                                                  HorizontalScrollBarVisibility="Hidden"
+                                                  VerticalScrollBarVisibility="Hidden"
+                                                  VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding [search_widgets_hint], Source={x:Static lg:LanguageService.Instance}}"
+                                               FontSize="12" Foreground="#BDBDBD" VerticalAlignment="Center"
+                                               Margin="0,0,0,0" IsHitTestVisible="False">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}" Value="">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Grid>
+
+                                <!-- 清空按钮 -->
+                                <Button Grid.Column="2" x:Name="ClearBtn" Click="ClearSearch_Click"
+                                        Width="20" Height="20" Padding="0" Margin="0,0,8,0"
+                                        Cursor="Hand">
+                                    <Button.Style>
+                                        <Style TargetType="Button" BasedOn="{StaticResource ButtonIcon}">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}" Value="">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                    <TextBlock Text="&#xE894;" FontFamily="Segoe MDL2 Assets" FontSize="10" Foreground="#888"/>
+                                </Button>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="BorderBrush" Value="#0078D4"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="#B0D5FF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="24,18,24,16">
         <Grid.RowDefinitions>
+            <!-- 顶栏：标题与搜索 -->
             <RowDefinition Height="Auto"/>
+            <!-- 内容：卡片网格 -->
             <RowDefinition Height="*"/>
+            <!-- 底栏：提示与完成 -->
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="{Binding [please_select_widget_to_add],Source={x:Static lg:LanguageService.Instance}}" Margin="0,0,0,10" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextBrush}"/>
+        <!-- ===== 顶栏 ===== -->
+        <Grid Grid.Row="0" Margin="0,0,0,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
 
-        <ListBox Name="WidgetList" Grid.Row="1" Margin="0,0,0,20">
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="Padding" Value="6"/>
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
-                </Style>
-            </ListBox.ItemContainerStyle>
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Border x:Name="ItemRoot" CornerRadius="6" Padding="6" Background="Transparent" BorderBrush="Transparent" BorderThickness="1" Margin="5">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
-                                        <Setter Property="Background" Value="#E6F3FF"/>
-                                        <Setter Property="BorderBrush" Value="#66A3FF"/>
-                                        <Setter Property="BorderThickness" Value="1"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Border Width="40" Height="40" Background="#EEE" CornerRadius="4" Margin="0,0,10,0">
-                                <TextBlock Text="{Binding Icon}" FontFamily="Segoe MDL2 Assets" 
-                                           HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Foreground" Value="#333"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
-                                                    <Setter Property="Foreground" Value="#1F1F1F"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
+            <!-- 标题与副标题 -->
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock Text="{Binding [add_widget],Source={x:Static lg:LanguageService.Instance}}" 
+                           FontSize="18" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                <TextBlock Text="{Binding [add_widget_subtitle],Source={x:Static lg:LanguageService.Instance}}" 
+                           FontSize="12" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,4,0,0"/>
+            </StackPanel>
+
+            <!-- 精确对齐光标的搜索框 -->
+            <TextBox x:Name="SearchBox" Grid.Column="1" Width="260" Height="34"
+                     Style="{StaticResource GallerySearchBoxStyle}"
+                     Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        </Grid>
+
+        <!-- ===== 内容区：网格画廊 ===== -->
+        <Grid Grid.Row="1">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,0,4,0">
+                <ItemsControl ItemsSource="{Binding FilteredCards}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="2" VerticalAlignment="Top"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource WidgetCardBorderStyle}">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!-- 顶部：标准统一图标 + 组件名称 -->
+                                    <Grid Grid.Row="0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- 统一标准图标容器 -->
+                                        <Border Grid.Column="0" Width="42" Height="42" CornerRadius="8"
+                                                Background="#F2F3F5" BorderBrush="#E5E5EA"
+                                                BorderThickness="1" Margin="0,0,12,0" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Icon}" FontFamily="Segoe MDL2 Assets"
+                                                       Foreground="#0078D4"
+                                                       FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <!-- 仅小组件名称 -->
+                                        <TextBlock Grid.Column="1" Text="{Binding Title}" FontWeight="SemiBold" FontSize="14"
+                                                   Foreground="{DynamicResource PrimaryTextBrush}"
+                                                   VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                    </Grid>
+
+                                    <!-- 中部：功能亮点与描述 -->
+                                    <TextBlock Grid.Row="1" Text="{Binding Description}" FontSize="12" Foreground="#666668"
+                                               TextWrapping="Wrap" LineHeight="18" Margin="0,10,0,14" MinHeight="36"
+                                               MaxHeight="54" TextTrimming="CharacterEllipsis"/>
+
+                                    <!-- 底部：状态与操作按钮 -->
+                                    <Grid Grid.Row="2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- 已添加状态指示 -->
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
+                                                    Visibility="{Binding IsAdded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#34C759"
+                                                       VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                            <TextBlock Text="{Binding [added], Source={x:Static lg:LanguageService.Instance}}" 
+                                                       FontSize="12" Foreground="#34C759" VerticalAlignment="Center"/>
+                                        </StackPanel>
+
+                                        <!-- 添加 / 取消添加 按钮（多语言） -->
+                                        <Button Grid.Column="1" Command="{Binding ToggleAddCommand}"
+                                                Style="{StaticResource CardAddButtonStyle}">
+                                            <Grid>
+                                                <!-- 未添加状态 -->
+                                                <StackPanel Orientation="Horizontal"
+                                                            Visibility="{Binding IsAdded, Converter={StaticResource BooleanToVisibilityReConverter}}">
+                                                    <TextBlock Text="+ "/>
+                                                    <TextBlock Text="{Binding [add], Source={x:Static lg:LanguageService.Instance}}"/>
+                                                </StackPanel>
+
+                                                <!-- 已添加状态 -->
+                                                <TextBlock Text="{Binding [cancel_add], Source={x:Static lg:LanguageService.Instance}}"
+                                                           Visibility="{Binding IsAdded, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                            </Grid>
+                                        </Button>
+                                    </Grid>
+                                </Grid>
                             </Border>
-                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="14">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
-                                                    <Setter Property="Foreground" Value="#1F1F1F"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                                <TextBlock Text="{Binding Description}" FontSize="12">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Foreground" Value="#666"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
-                                                    <Setter Property="Foreground" Value="#4D4D4D"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                            </StackPanel>
-                        </Grid>
-                    </Border>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
-            <!-- 取消 -->
-            <Button Content="{Binding [Cancel],Source={x:Static lg:LanguageService.Instance}}" Click="Cancel_Click" Margin="0,0,10,0"/>
-            <!-- 添加 -->
-            <Button Content="{Binding [add],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ButtonPrimary}" Click="Ok_Click"/>
-        </StackPanel>
+            <!-- 空状态：搜索无结果时显示 -->
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center"
+                        Visibility="{Binding HasMatches, Converter={StaticResource BooleanToVisibilityReConverter}}">
+                <TextBlock Text="&#xE721;" FontFamily="Segoe MDL2 Assets" FontSize="44" Foreground="#D1D1D6" 
+                           HorizontalAlignment="Center" Margin="0,0,0,12"/>
+                <TextBlock Text="{Binding [no_matching_widgets], Source={x:Static lg:LanguageService.Instance}}" 
+                           FontSize="14" Foreground="#8E8E93" HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- ===== 底栏 ===== -->
+        <Border Grid.Row="2" Margin="0,14,0,0" Padding="0,12,0,0" BorderBrush="#EAEAEA" BorderThickness="0,1,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- 温馨提示 -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="&#xE946;" FontFamily="Segoe MDL2 Assets" FontSize="14" Foreground="#0078D4" 
+                               VerticalAlignment="Center" Margin="0,0,6,0"/>
+                    <TextBlock Text="{Binding [add_widget_tip], Source={x:Static lg:LanguageService.Instance}}" 
+                               FontSize="12" Foreground="#8E8E93" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- 完成按钮（多语言） -->
+                <Button Grid.Column="1" Content="{Binding [done], Source={x:Static lg:LanguageService.Instance}}" 
+                        Width="92" Height="32" Click="Done_Click" Style="{StaticResource ButtonPrimary}"/>
+            </Grid>
+        </Border>
     </Grid>
 </hc:Window>

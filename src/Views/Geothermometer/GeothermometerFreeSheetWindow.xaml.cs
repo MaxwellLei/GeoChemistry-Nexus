@@ -36,6 +36,7 @@ namespace GeoChemistryNexus.Views
                 {
                     Owner = Application.Current.MainWindow
                 };
+                WindowActivationHelper.AttachOwnerFocusPreservation(_instance, Application.Current.MainWindow);
                 _instance.Closed += (_, _) => _instance = null;
                 _instance.Show();
                 return;

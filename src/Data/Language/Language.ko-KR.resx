@@ -138,9 +138,6 @@
   <data name="unfavorite" xml:space="preserve">
     <value>즐겨찾기 해제</value>
   </data>
-  <data name="select" xml:space="preserve">
-    <value>선택</value>
-  </data>
   <data name="cipw_col_alumina_state" xml:space="preserve">
     <value>Al2O3 상태</value>
   </data>
@@ -215,12 +212,6 @@
   </data>
   <data name="script_return_value_error_must_be_array" xml:space="preserve">
     <value>스크립트 반환 값 오류: 스크립트는 배열을 반환해야 합니다.</value>
-  </data>
-  <data name="MarkerShape_VerticalBar" xml:space="preserve">
-    <value>수직선</value>
-  </data>
-  <data name="MarkerShape_OpenDiamond" xml:space="preserve">
-    <value>빈 마름모</value>
   </data>
   <data name="geo_script_javascript" xml:space="preserve">
     <value>JavaScript 스크립트</value>
@@ -349,7 +340,7 @@
     <value>주석</value>
   </data>
   <data name="geo_dialog_apply_overwrite" xml:space="preserve">
-    <value>적용하면 현재 워크시트 내용을 덮어씁니다. 계속하시겠습니까？</value>
+    <value>적용하면 현재 워크시트 내용을 덮어씁니다. 계속하시겠습니까?</value>
   </data>
   <data name="geo_msg_save_failed" xml:space="preserve">
     <value>저장 실패: {0}</value>
@@ -531,16 +522,13 @@
     <value>삭제하시겠습니까?</value>
   </data>
   <data name="error_occurred_while_checking_for_updates" xml:space="preserve">
-    <value>업데이트 확인 중 오류 발생：</value>
+    <value>업데이트 확인 중 오류 발생:</value>
   </data>
   <data name="GeothermometerSetting" xml:space="preserve">
     <value>지질 온압계 설정</value>
   </data>
   <data name="PlotTitle" xml:space="preserve">
     <value>플롯 제목</value>
-  </data>
-  <data name="MarkerShape_FilledTriangleUp" xml:space="preserve">
-    <value>채워진 위쪽 삼각형</value>
   </data>
   <data name="geo_btn_save_export_zip" xml:space="preserve">
     <value>저장 후 패키지 내보내기</value>
@@ -558,7 +546,7 @@
     <value>Inkscape 환경 변수를 찾을 수 없습니다. 열 프로그램을 선택하십시오.</value>
   </data>
   <data name="cipw_select_row_hint" xml:space="preserve">
-    <value>데이터 행을 선택하여 진단 세부 정보를 확인합니다</value>
+    <value>데이터 행을 선택하여 계산 세부정보를 확인합니다</value>
   </data>
   <data name="loading_drawing_module_ellipsis" xml:space="preserve">
     <value>드로잉 모듈 로드 중...</value>
@@ -575,17 +563,8 @@
   <data name="Language_" xml:space="preserve">
     <value>언어</value>
   </data>
-  <data name="MarkerShape_HashTag" xml:space="preserve">
-    <value>우물 정자</value>
-  </data>
   <data name="cipw_btn_calculate" xml:space="preserve">
     <value>계산 실행</value>
-  </data>
-  <data name="MarkerShape_OpenCircleWithDot" xml:space="preserve">
-    <value>가운데 점이 있는 원</value>
-  </data>
-  <data name="MarkerShape_OpenCircleWithEks" xml:space="preserve">
-    <value>X 표시가 있는 원</value>
   </data>
   <data name="cipw_diag_warnings" xml:space="preserve">
     <value>── 경고 ──</value>
@@ -610,9 +589,6 @@
   </data>
   <data name="geo_msg_test_input_invalid" xml:space="preserve">
     <value>테스트 입력이 잘못되었습니다. 쉼표로 구분된 숫자를 사용하세요.</value>
-  </data>
-  <data name="MarkerShape_FilledTriangleDown" xml:space="preserve">
-    <value>채워진 아래쪽 삼각형</value>
   </data>
   <data name="missing_translation_warning" xml:space="preserve">
     <value>번역 누락: 일부 텍스트에 다국어 번역이 누락되었습니다.</value>
@@ -682,9 +658,6 @@
   </data>
   <data name="export_image" xml:space="preserve">
     <value>이미지 내보내기</value>
-  </data>
-  <data name="MarkerShape_FilledSquare" xml:space="preserve">
-    <value>채워진 사각형</value>
   </data>
   <data name="cipw_tooltip_example" xml:space="preserve">
     <value>예제 데이터 입력 (화강암, 현무암, 안산암)</value>
@@ -781,11 +754,8 @@
   <data name="completeness_check" xml:space="preserve">
     <value>완성도 검사</value>
   </data>
-  <data name="MarkerShape_Eks" xml:space="preserve">
-    <value>X 모양</value>
-  </data>
   <data name="geo_script_sample_row" xml:space="preserve">
-    <value>예시 행（쉼표 구분）</value>
+    <value>예시 행 (쉼표 구분)</value>
   </data>
   <data name="line_width" xml:space="preserve">
     <value>선 두께</value>
@@ -831,9 +801,6 @@
   </data>
   <data name="geo_msg_import_invalid_format" xml:space="preserve">
     <value>사용자 지정 지질 온압계 파일이 손상되었거나 유효한 지질 온압계 JSON 파일이 포함되어 있지 않습니다.</value>
-  </data>
-  <data name="MarkerShape_OpenCircleWithCross" xml:space="preserve">
-    <value>십자가가 있는 원</value>
   </data>
   <data name="geo_validate_formula_name_required" xml:space="preserve">
     <value>수식 이름은 비워둘 수 없습니다.</value>
@@ -978,9 +945,6 @@
   <data name="Placeholder_Ternary_Title" xml:space="preserve">
     <value>새 삼원상 다이어그램</value>
   </data>
-  <data name="MarkerShape_FilledCircle" xml:space="preserve">
-    <value>채워진 원</value>
-  </data>
   <data name="position" xml:space="preserve">
     <value>속성</value>
   </data>
@@ -1034,9 +998,6 @@
   </data>
   <data name="failed_to_open_widget" xml:space="preserve">
     <value>위젯 열기 실패:</value>
-  </data>
-  <data name="MarkerShape_Cross" xml:space="preserve">
-    <value>십자형</value>
   </data>
   <data name="geo_msg_delete_success" xml:space="preserve">
     <value>삭제되었습니다</value>
@@ -1149,9 +1110,6 @@
   <data name="arrow" xml:space="preserve">
     <value>화살표</value>
   </data>
-  <data name="please_select_a_widget" xml:space="preserve">
-    <value>위젯을 선택하십시오</value>
-  </data>
   <data name="close" xml:space="preserve">
     <value>닫기</value>
   </data>
@@ -1221,12 +1179,6 @@
   <data name="all_data_cleared" xml:space="preserve">
     <value>모든 데이터가 지워짐</value>
   </data>
-  <data name="Calculate" xml:space="preserve">
-    <value>계산</value>
-  </data>
-  <data name="MarkerShape_FilledDiamond" xml:space="preserve">
-    <value>채워진 마름모</value>
-  </data>
   <data name="export_and_tools" xml:space="preserve">
     <value>내보내기/도구</value>
   </data>
@@ -1284,9 +1236,6 @@
   <data name="MessageAutoClose2" xml:space="preserve">
     <value>2초</value>
   </data>
-  <data name="MarkerShape_OpenTriangleUp" xml:space="preserve">
-    <value>빈 위쪽 삼각형</value>
-  </data>
   <data name="object_deleted_successfully" xml:space="preserve">
     <value>개체가 성공적으로 삭제되었습니다.</value>
   </data>
@@ -1342,9 +1291,6 @@
   </data>
   <data name="startup_background_image" xml:space="preserve">
     <value>시작 배경 이미지</value>
-  </data>
-  <data name="MarkerShape_HorizontalBar" xml:space="preserve">
-    <value>수평선</value>
   </data>
   <data name="cipw_step6_detail" xml:space="preserve">
     <value>철 산화물을 광물에 할당:
@@ -1423,9 +1369,6 @@
   <data name="unsaved_template_changes_confirm" xml:space="preserve">
     <value>현재 템플릿에 저장되지 않은 내용이 있습니다. 저장하시겠습니까?</value>
   </data>
-  <data name="MarkerShape_OpenTriangleDown" xml:space="preserve">
-    <value>빈 아래쪽 삼각형</value>
-  </data>
   <data name="error_saving_rtf_file" xml:space="preserve">
     <value>RTF 파일 저장 중 오류 발생:</value>
   </data>
@@ -1458,9 +1401,6 @@
   </data>
   <data name="geo_tooltip_help" xml:space="preserve">
     <value>도움말</value>
-  </data>
-  <data name="please_select_widget_to_add" xml:space="preserve">
-    <value>추가할 위젯을 선택하십시오:</value>
   </data>
   <data name="offset_y" xml:space="preserve">
     <value>오프셋 Y</value>
@@ -1541,7 +1481,7 @@
     <value>이 정점 삭제</value>
   </data>
   <data name="geo_dialog_delete_thermometer" xml:space="preserve">
-    <value>{0} 온압계「{1}」을(를) 삭제하시겠습니까？</value>
+    <value>{0} 온압계「{1}」을(를) 삭제하시겠습니까?</value>
   </data>
   <data name="x_coordinate" xml:space="preserve">
     <value>X 좌표</value>
@@ -1573,9 +1513,6 @@
   <data name="add_arrow" xml:space="preserve">
     <value>화살표 추가 (Ctrl+4)</value>
   </data>
-  <data name="MarkerShape_Asterisk" xml:space="preserve">
-    <value>별표</value>
-  </data>
   <data name="failed_to_delete_row" xml:space="preserve">
     <value>행 삭제 실패:</value>
   </data>
@@ -1583,10 +1520,10 @@
     <value>촘촘한 파선</value>
   </data>
   <data name="geo_script_inputs" xml:space="preserve">
-    <value>입력 열（쉼표 구분）</value>
+    <value>입력 열 (쉼표 구분)</value>
   </data>
   <data name="cipw_diagnostic_details" xml:space="preserve">
-    <value>진단 세부 정보</value>
+    <value>계산 세부정보</value>
   </data>
   <data name="line_type_solid" xml:space="preserve">
     <value>실선</value>
@@ -1602,6 +1539,9 @@
   </data>
   <data name="delete_object" xml:space="preserve">
     <value>개체 삭제 (Delete)</value>
+  </data>
+  <data name="cipw_norm" xml:space="preserve">
+    <value>CIPW 표준 광물 계산</value>
   </data>
   <data name="cipw_title" xml:space="preserve">
     <value>CIPW 표준 광물 계산</value>
@@ -1719,9 +1659,6 @@
   <data name="diagram_template_corrupted_or_invalid" xml:space="preserve">
     <value>다이어그램 템플릿 파일이 손상되었거나 유효한 다이어그램 템플릿 JSON 파일이 포함되어 있지 않습니다.</value>
   </data>
-  <data name="MarkerShape_OpenCircle" xml:space="preserve">
-    <value>빈 원</value>
-  </data>
   <data name="linear" xml:space="preserve">
     <value>선형</value>
   </data>
@@ -1783,7 +1720,7 @@
     <value>기울임꼴</value>
   </data>
   <data name="geo_script_headers" xml:space="preserve">
-    <value>헤더 *（쉼표 구분）</value>
+    <value>헤더 * (쉼표 구분)</value>
   </data>
   <data name="select_an_object" xml:space="preserve">
     <value>개체를 선택하십시오</value>
@@ -1983,14 +1920,8 @@
   <data name="coordinate_positioning" xml:space="preserve">
     <value>좌표 위치 지정</value>
   </data>
-  <data name="geo_msg_already_latest" xml:space="preserve">
-    <value>이미 최신 버전입니다</value>
-  </data>
   <data name="cipw_step3_title" xml:space="preserve">
     <value>부광물 형성</value>
-  </data>
-  <data name="geo_msg_update_available" xml:space="preserve">
-    <value>{0}개의 지질 온압계를 업데이트할 수 있습니다</value>
   </data>
   <data name="multiple_data_series_hint" xml:space="preserve">
     <value>여러 데이터 계열은 쉼표로 구분하십시오. 예: SiO2,TiO2</value>
@@ -2015,9 +1946,6 @@
   </data>
   <data name="geo_msg_check_update_failed" xml:space="preserve">
     <value>업데이트 확인 실패</value>
-  </data>
-  <data name="MarkerShape_OpenSquare" xml:space="preserve">
-    <value>빈 사각형</value>
   </data>
   <data name="script_not_defined_in_template" xml:space="preserve">
     <value>다이어그램 템플릿에 스크립트가 정의되지 않았습니다</value>
@@ -4395,5 +4323,857 @@
   </data>
   <data name="unhandled_exception_occurred" xml:space="preserve">
     <value>응용 프로그램에서 처리되지 않은 오류가 발생했습니다:</value>
+  </data>
+  <data name="add_widget_subtitle" xml:space="preserve">
+    <value>홈페이지 지구화학 도구 탐색 및 확장</value>
+  </data>
+  <data name="search_widgets_hint" xml:space="preserve">
+    <value>위젯 이름 또는 기능으로 검색...</value>
+  </data>
+  <data name="no_matching_widgets" xml:space="preserve">
+    <value>일치하는 위젯을 찾을 수 없습니다</value>
+  </data>
+  <data name="add_widget_tip" xml:space="preserve">
+    <value>팁: 추가된 위젯은 홈페이지에서 바로 사용하거나 우클릭하여 제거할 수 있습니다</value>
+  </data>
+  <data name="cancel_add" xml:space="preserve">
+    <value>추가 취소</value>
+  </data>
+  <data name="added" xml:space="preserve">
+    <value>추가됨</value>
+  </data>
+  <data name="done" xml:space="preserve">
+    <value>완료</value>
+  </data>
+  <data name="chronostrat_navigator_widget" xml:space="preserve">
+    <value>연대학적 층서 탐색기</value>
+  </data>
+  <data name="chronostrat_navigator_widget_desc" xml:space="preserve">
+    <value>ICS 국제 연대학적 층서표 대화형 도구: 연대 기반 층서 역추적, 계층 구조 탐색 및 IUGS 공식 색상 코드 제공.</value>
+  </data>
+  <data name="chronostrat_age_lookup_label" xml:space="preserve">
+    <value>연대 역추적</value>
+  </data>
+  <data name="chronostrat_lookup_btn" xml:space="preserve">
+    <value>검색</value>
+  </data>
+  <data name="chronostrat_search_hint" xml:space="preserve">
+    <value>단위 검색...</value>
+  </data>
+  <data name="chronostrat_reset" xml:space="preserve">
+    <value>초기화</value>
+  </data>
+  <data name="chronostrat_age_result_label" xml:space="preserve">
+    <value>연대 역추적 결과</value>
+  </data>
+  <data name="chronostrat_click_hint" xml:space="preserve">
+    <value>경로의 단위를 클릭하여 세부정보 확인</value>
+  </data>
+  <data name="chronostrat_search_results" xml:space="preserve">
+    <value>검색 결과</value>
+  </data>
+  <data name="chronostrat_select_hint" xml:space="preserve">
+    <value>왼쪽 목록에서 지질 연대 단위를 선택하여 세부정보를 확인하세요</value>
+  </data>
+  <data name="chronostrat_boundary_label" xml:space="preserve">
+    <value>연대 경계</value>
+  </data>
+  <data name="chronostrat_start_label" xml:space="preserve">
+    <value>하저 (시작)</value>
+  </data>
+  <data name="chronostrat_end_label" xml:space="preserve">
+    <value>상부 (종료)</value>
+  </data>
+  <data name="chronostrat_duration_label" xml:space="preserve">
+    <value>지속 기간</value>
+  </data>
+  <data name="chronostrat_gssp_ratified" xml:space="preserve">
+    <value>비준된 GSSP (국제표준모식층 단면 및 지점)</value>
+  </data>
+  <data name="chronostrat_gssp_desc" xml:space="preserve">
+    <value>이 단위의 기저는 공식 비준된 황금못(GSSP)으로 정의됩니다.</value>
+  </data>
+  <data name="chronostrat_color_label" xml:space="preserve">
+    <value>IUGS 공식 색상</value>
+  </data>
+  <data name="chronostrat_copy_hex" xml:space="preserve">
+    <value>HEX 복사</value>
+  </data>
+  <data name="chronostrat_copy_rgb" xml:space="preserve">
+    <value>RGB 복사</value>
+  </data>
+  <data name="chronostrat_citation_label" xml:space="preserve">
+    <value>표준 인용 형식</value>
+  </data>
+  <data name="chronostrat_copy_citation" xml:space="preserve">
+    <value>복사</value>
+  </data>
+  <data name="chronostrat_children_label" xml:space="preserve">
+    <value>하위 연대 단위</value>
+  </data>
+  <data name="chronostrat_chart_tree_title" xml:space="preserve">
+    <value>층서 계층 트리</value>
+  </data>
+  <data name="chronostrat_expand_period" xml:space="preserve">
+    <value>기까지 펼치기</value>
+  </data>
+  <data name="chronostrat_expand_all" xml:space="preserve">
+    <value>모두 펼치기</value>
+  </data>
+  <data name="chronostrat_collapse_all" xml:space="preserve">
+    <value>모두 접기</value>
+  </data>
+  <data name="chronostrat_source_label" xml:space="preserve">
+    <value>오픈소스 저장소:</value>
+  </data>
+  <data name="niggli_alumina_metaluminous" xml:space="preserve">
+    <value>준알루미나질</value>
+  </data>
+  <data name="niggli_alumina_peralkaline" xml:space="preserve">
+    <value>과알칼리질</value>
+  </data>
+  <data name="niggli_alumina_peraluminous" xml:space="preserve">
+    <value>과알루미나</value>
+  </data>
+  <data name="niggli_btn_calculate" xml:space="preserve">
+    <value>계산 실행</value>
+  </data>
+  <data name="niggli_btn_cancel" xml:space="preserve">
+    <value>취소</value>
+  </data>
+  <data name="niggli_btn_clear" xml:space="preserve">
+    <value>지우기</value>
+  </data>
+  <data name="niggli_btn_close" xml:space="preserve">
+    <value>닫기</value>
+  </data>
+  <data name="niggli_btn_confirm_clear" xml:space="preserve">
+    <value>지우기 확인</value>
+  </data>
+  <data name="niggli_btn_example" xml:space="preserve">
+    <value>예제</value>
+  </data>
+  <data name="niggli_btn_export" xml:space="preserve">
+    <value>내보내기</value>
+  </data>
+  <data name="niggli_btn_help" xml:space="preserve">
+    <value>설명</value>
+  </data>
+  <data name="niggli_col_alumina_state" xml:space="preserve">
+    <value>알루미나 상태</value>
+  </data>
+  <data name="niggli_col_cation_sum" xml:space="preserve">
+    <value>광물 합계</value>
+  </data>
+  <data name="niggli_col_sample" xml:space="preserve">
+    <value>시료</value>
+  </data>
+  <data name="niggli_col_silica_saturation" xml:space="preserve">
+    <value>실리카 포화도</value>
+  </data>
+  <data name="niggli_confirm_clear_msg" xml:space="preserve">
+    <value>모든 데이터와 계산 결과를 지우시겠습니까?</value>
+  </data>
+  <data name="niggli_csv_filter" xml:space="preserve">
+    <value>CSV 파일 (*.csv)|*.csv</value>
+  </data>
+  <data name="niggli_default_value_text" xml:space="preserve">
+    <value>기본값 0.15</value>
+  </data>
+  <data name="niggli_diag_diopside_ratio" xml:space="preserve">
+    <value>투휘석 단성분 (Wo-En-Fs)</value>
+  </data>
+  <data name="niggli_diag_mgr" xml:space="preserve">
+    <value>마그네슘 지수 (Mgr / Mg#)</value>
+  </data>
+  <data name="niggli_diag_olivine_ratio" xml:space="preserve">
+    <value>감람석 단성분 (Fo-Fa)</value>
+  </data>
+  <data name="niggli_diag_plag_an" xml:space="preserve">
+    <value>사장석 단성분 (An%)</value>
+  </data>
+  <data name="niggli_diag_section_classification" xml:space="preserve">
+    <value>── 암석 분류 및 포화도 ──</value>
+  </data>
+  <data name="niggli_diag_section_desilication" xml:space="preserve">
+    <value>── 탈규산 반응 과정 ──</value>
+  </data>
+  <data name="niggli_diag_section_endmembers" xml:space="preserve">
+    <value>── 광물 단성분비 ──</value>
+  </data>
+  <data name="niggli_diag_section_main_minerals" xml:space="preserve">
+    <value>── 주요 표준 광물 (&gt; 1%) ──</value>
+  </data>
+  <data name="niggli_diag_section_parameters" xml:space="preserve">
+    <value>── Niggli 값 ──</value>
+  </data>
+  <data name="niggli_diag_total_minerals" xml:space="preserve">
+    <value>표준 광물 합계</value>
+  </data>
+  <data name="niggli_diag_warnings" xml:space="preserve">
+    <value>── 경고 ──</value>
+  </data>
+  <data name="niggli_diagnostic_details" xml:space="preserve">
+    <value>계산 세부정보</value>
+  </data>
+  <data name="niggli_error" xml:space="preserve">
+    <value>계산 오류</value>
+  </data>
+  <data name="niggli_error_cation_sum_zero" xml:space="preserve">
+    <value>전암 양이온 합계 부족 또는 유효하지 않은 데이터</value>
+  </data>
+  <data name="niggli_export_dialog_title" xml:space="preserve">
+    <value>Niggli 결과 내보내기</value>
+  </data>
+  <data name="niggli_help_overview" xml:space="preserve">
+    <value>Barth-Niggli Catanorm은 양이온 분자 비율을 기준으로 계산되어 현미경 하의 실제 모드 광물 부피비에 더욱 근접한 결과를 제공합니다. 고전적인 Niggli 값(si, al, fm, c, alk, k, mg, qz)도 함께 계산됩니다.</value>
+  </data>
+  <data name="niggli_help_window_title" xml:space="preserve">
+    <value>Niggli 표준 광물 계산 - 설명서</value>
+  </data>
+  <data name="niggli_mineral_Ab" xml:space="preserve">
+    <value>조장석</value>
+  </data>
+  <data name="niggli_mineral_Ac" xml:space="preserve">
+    <value>추석</value>
+  </data>
+  <data name="niggli_mineral_An" xml:space="preserve">
+    <value>회장석</value>
+  </data>
+  <data name="niggli_mineral_Ap" xml:space="preserve">
+    <value>인회석</value>
+  </data>
+  <data name="niggli_mineral_C" xml:space="preserve">
+    <value>강옥</value>
+  </data>
+  <data name="niggli_mineral_Cc" xml:space="preserve">
+    <value>방해석</value>
+  </data>
+  <data name="niggli_mineral_Cs" xml:space="preserve">
+    <value>규산칼슘</value>
+  </data>
+  <data name="niggli_mineral_Di" xml:space="preserve">
+    <value>투휘석</value>
+  </data>
+  <data name="niggli_mineral_Fr" xml:space="preserve">
+    <value>형석</value>
+  </data>
+  <data name="niggli_mineral_Hm" xml:space="preserve">
+    <value>적철석</value>
+  </data>
+  <data name="niggli_mineral_Hy" xml:space="preserve">
+    <value>자소휘석</value>
+  </data>
+  <data name="niggli_mineral_Il" xml:space="preserve">
+    <value>티탄철석</value>
+  </data>
+  <data name="niggli_mineral_Kp" xml:space="preserve">
+    <value>칼리오필라이트</value>
+  </data>
+  <data name="niggli_mineral_Ks" xml:space="preserve">
+    <value>메타규산칼륨</value>
+  </data>
+  <data name="niggli_mineral_Lc" xml:space="preserve">
+    <value>백류석</value>
+  </data>
+  <data name="niggli_mineral_Mt" xml:space="preserve">
+    <value>자철석</value>
+  </data>
+  <data name="niggli_mineral_Ne" xml:space="preserve">
+    <value>하석</value>
+  </data>
+  <data name="niggli_mineral_Ns" xml:space="preserve">
+    <value>메타규산나트륨</value>
+  </data>
+  <data name="niggli_mineral_Ol" xml:space="preserve">
+    <value>감람석</value>
+  </data>
+  <data name="niggli_mineral_Or" xml:space="preserve">
+    <value>정장석</value>
+  </data>
+  <data name="niggli_mineral_Pf" xml:space="preserve">
+    <value>페로브스카이트</value>
+  </data>
+  <data name="niggli_mineral_Plag" xml:space="preserve">
+    <value>사장석</value>
+  </data>
+  <data name="niggli_mineral_Py" xml:space="preserve">
+    <value>황철석</value>
+  </data>
+  <data name="niggli_mineral_Q" xml:space="preserve">
+    <value>석영</value>
+  </data>
+  <data name="niggli_mineral_Ru" xml:space="preserve">
+    <value>금홍석</value>
+  </data>
+  <data name="niggli_mineral_Sum" xml:space="preserve">
+    <value>합계</value>
+  </data>
+  <data name="niggli_mineral_Tn" xml:space="preserve">
+    <value>티타나이트</value>
+  </data>
+  <data name="niggli_mineral_Wo" xml:space="preserve">
+    <value>규회석</value>
+  </data>
+  <data name="niggli_msg_calc_all_success" xml:space="preserve">
+    <value>전체 {0}개 시료 계산 완료.</value>
+  </data>
+  <data name="niggli_msg_calc_partial_success" xml:space="preserve">
+    <value>계산 완료: 성공 {0}개, 실패 {1}개.</value>
+  </data>
+  <data name="niggli_msg_data_cleared" xml:space="preserve">
+    <value>데이터가 삭제되었습니다.</value>
+  </data>
+  <data name="niggli_msg_export_failed" xml:space="preserve">
+    <value>내보내기 실패: {0}</value>
+  </data>
+  <data name="niggli_msg_export_success" xml:space="preserve">
+    <value>결과가 내보내졌습니다: {0}</value>
+  </data>
+  <data name="niggli_msg_no_data" xml:space="preserve">
+    <value>유효한 주원소 분석 데이터를 찾을 수 없습니다</value>
+  </data>
+  <data name="niggli_param_al" xml:space="preserve">
+    <value>al (알루미나 지수)</value>
+  </data>
+  <data name="niggli_param_alk" xml:space="preserve">
+    <value>alk (알칼리 지수)</value>
+  </data>
+  <data name="niggli_param_c" xml:space="preserve">
+    <value>c (칼슘 지수)</value>
+  </data>
+  <data name="niggli_param_fm" xml:space="preserve">
+    <value>fm (철-마그네슘 지수)</value>
+  </data>
+  <data name="niggli_param_k" xml:space="preserve">
+    <value>k (칼륨 비 K₂O/(Na₂O+K₂O))</value>
+  </data>
+  <data name="niggli_param_mg" xml:space="preserve">
+    <value>mg (마그네슘 비 MgO/(MgO+FeO...))</value>
+  </data>
+  <data name="niggli_param_p" xml:space="preserve">
+    <value>p (인 지수)</value>
+  </data>
+  <data name="niggli_param_qz" xml:space="preserve">
+    <value>qz (석영 지수)</value>
+  </data>
+  <data name="niggli_param_si" xml:space="preserve">
+    <value>si (규산 지수)</value>
+  </data>
+  <data name="niggli_param_ti" xml:space="preserve">
+    <value>ti (티타늄 지수)</value>
+  </data>
+  <data name="niggli_references_gcdkit" xml:space="preserve">
+    <value>• 알고리즘 핵심 로직은 오픈소스 지구화학 데이터 툴킷 GCDkit (Geochemical Data Toolkit)을 참고하였으며, 현대적인 객체 지향 아키텍처를 기반으로 C#으로 재구축, 성능 최적화 및 탈규산 반응 경로를 수정하였습니다 (https://www.gcdkit.org/).</value>
+  </data>
+  <data name="niggli_references_title" xml:space="preserve">
+    <value>주요 참고문헌</value>
+  </data>
+  <data name="niggli_row_format" xml:space="preserve">
+    <value>{0}번째 행</value>
+  </data>
+  <data name="niggli_select_row_hint" xml:space="preserve">
+    <value>행을 선택하여 계산 세부정보 확인</value>
+  </data>
+  <data name="niggli_sheet_name" xml:space="preserve">
+    <value>Niggli</value>
+  </data>
+  <data name="niggli_silica_oversaturated" xml:space="preserve">
+    <value>과포화</value>
+  </data>
+  <data name="niggli_silica_saturated" xml:space="preserve">
+    <value>포화</value>
+  </data>
+  <data name="niggli_silica_undersaturated" xml:space="preserve">
+    <value>불포화</value>
+  </data>
+  <data name="niggli_step1_detail" xml:space="preserve">
+    <value>산화물 중량%를 분자량으로 나누고 양이온 수를 곱하여 100%로 정규화합니다.</value>
+  </data>
+  <data name="niggli_step1_hy_ol_done" xml:space="preserve">
+    <value>탈규산 반응 Step 1: 자소휘석 -&gt; 감람석 (Hy → Ol), Hy {0}% 소모, 규산 결핍 완전 해소</value>
+  </data>
+  <data name="niggli_step1_hy_ol_part" xml:space="preserve">
+    <value>탈규산 반응 Step 1: 자소휘석 -&gt; 감람석 (Hy → Ol), 전체 Hy ({0}%)가 Ol로 전환됨, 잔여 결핍 D = {1}%</value>
+  </data>
+  <data name="niggli_step1_title" xml:space="preserve">
+    <value>양이온 밀리당량 및 100% 정규화</value>
+  </data>
+  <data name="niggli_step2_detail" xml:space="preserve">
+    <value>si, al, fm, c, alk, ti, p, k, mg 및 석영 지수 qz 계산.</value>
+  </data>
+  <data name="niggli_step2_title" xml:space="preserve">
+    <value>고전 Niggli 값 (Niggli Numbers)</value>
+  </data>
+  <data name="niggli_step2_tn_pf_done" xml:space="preserve">
+    <value>탈규산 반응 Step 2: 쐐기석 -&gt; 페로브스카이트 (Tn → Pf), Tn {0}% 소모, 규산 결핍 완전 해소</value>
+  </data>
+  <data name="niggli_step2_tn_pf_part" xml:space="preserve">
+    <value>탈규산 반응 Step 2: 쐐기석 -&gt; 페로브스카이트 (Tn → Pf), 전체 Tn 전환됨, 잔여 결핍 D = {0}%</value>
+  </data>
+  <data name="niggli_step3_ab_ne_done" xml:space="preserve">
+    <value>탈규산 반응 Step 3: 조장석 -&gt; 하석 (Ab → Ne), Ab {0}% 소모, 규산 결핍 완전 해소</value>
+  </data>
+  <data name="niggli_step3_ab_ne_part" xml:space="preserve">
+    <value>탈규산 반응 Step 3: 조장석 -&gt; 하석 (Ab → Ne), 전체 Ab 전환됨, 잔여 결핍 D = {0}%</value>
+  </data>
+  <data name="niggli_step3_detail" xml:space="preserve">
+    <value>방해석 (Cc), 인회석 (Ap), 형석 (Fr), 황철석 (Py), 티탄철석 (Il) 분배.</value>
+  </data>
+  <data name="niggli_step3_title" xml:space="preserve">
+    <value>부성분 광물, 탄산염 및 황화물 분배</value>
+  </data>
+  <data name="niggli_step4_detail" xml:space="preserve">
+    <value>정장석 (Or), 조장석 (Ab), 회장석 (An), 추석 (Ac) 분배.</value>
+  </data>
+  <data name="niggli_step4_or_lc_done" xml:space="preserve">
+    <value>탈규산 반응 Step 4: 정장석 -&gt; 백류석 (Or → Lc), Or {0}% 소모, 규산 결핍 완전 해소</value>
+  </data>
+  <data name="niggli_step4_or_lc_part" xml:space="preserve">
+    <value>탈규산 반응 Step 4: 정장석 -&gt; 백류석 (Or → Lc), 전체 Or 전환됨, 잔여 결핍 D = {0}%</value>
+  </data>
+  <data name="niggli_step4_title" xml:space="preserve">
+    <value>알칼리장석, 사장석 및 알칼리 규산염</value>
+  </data>
+  <data name="niggli_step5_detail" xml:space="preserve">
+    <value>자철석 (Mt), 적철석 (Hm), 규회석 (Wo), 엔스타타이트 (En), 페로실라이트 (Fs), 투휘석 (Di) 분배.</value>
+  </data>
+  <data name="niggli_step5_lc_kp_done" xml:space="preserve">
+    <value>탈규산 반응 Step 5: 백류석 -&gt; 칼실라이트 (Lc → Kp), Lc {0}% 소모, 규산 결핍 완전 해소</value>
+  </data>
+  <data name="niggli_step5_lc_kp_part" xml:space="preserve">
+    <value>탈규산 반응 Step 5: 백류석 -&gt; 칼실라이트 (Lc → Kp), 전체 Lc 전환됨, 잔여 결핍 D = {0}%</value>
+  </data>
+  <data name="niggli_step5_title" xml:space="preserve">
+    <value>철산화물 및 휘석류</value>
+  </data>
+  <data name="niggli_step6_detail" xml:space="preserve">
+    <value>실리카 부족 시 연쇄반응: ① Hy -&gt; Ol, ② Tn -&gt; Pf, ③ Ab -&gt; Ne, ④ Or -&gt; Lc, ⑤ Lc -&gt; Kp, ⑥ Wo -&gt; Cs, ⑦ Di -&gt; Cs + Ol.</value>
+  </data>
+  <data name="niggli_step6_title" xml:space="preserve">
+    <value>실리카 수지 및 7단계 탈규산 연쇄반응</value>
+  </data>
+  <data name="niggli_step6_wo_cs_done" xml:space="preserve">
+    <value>탈규산 반응 Step 6: 규회석 -&gt; 란키나이트 (Wo → Cs), Wo {0}% 소모, 규산 결핍 완전 해소</value>
+  </data>
+  <data name="niggli_step6_wo_cs_part" xml:space="preserve">
+    <value>탈규산 반응 Step 6: 규회석 -&gt; 란키나이트 (Wo → Cs), 전체 Wo 전환됨, 잔여 결핍 D = {0}%</value>
+  </data>
+  <data name="niggli_step7_di_cs_ol_done" xml:space="preserve">
+    <value>탈규산 반응 Step 7: 투휘석 -&gt; 란키나이트 + 감람석 (Di → Cs + Ol), Di {0}% 소모, 규산 결핍 완전 해소</value>
+  </data>
+  <data name="niggli_step7_di_cs_ol_part" xml:space="preserve">
+    <value>탈규산 반응 Step 7: 투휘석 -&gt; 란키나이트 + 감람석 (Di → Cs + Ol), 전체 Di 전환 완료</value>
+  </data>
+  <data name="niggli_step_deficit_init" xml:space="preserve">
+    <value>규산 결핍 감지: 초기 결핍량 D = {0}%</value>
+  </data>
+  <data name="niggli_step_oversaturated" xml:space="preserve">
+    <value>규산 과포화: 석영 Q = {0}%</value>
+  </data>
+  <data name="niggli_norm" xml:space="preserve">
+    <value>Niggli 표준 광물 계산</value>
+  </data>
+  <data name="niggli_title" xml:space="preserve">
+    <value>Niggli 표준 광물 계산</value>
+  </data>
+  <data name="niggli_tooltip_calculate" xml:space="preserve">
+    <value>Niggli 표준 광물 계산 실행</value>
+  </data>
+  <data name="niggli_tooltip_clear" xml:space="preserve">
+    <value>모든 입력 및 계산 결과 지우기</value>
+  </data>
+  <data name="niggli_tooltip_example" xml:space="preserve">
+    <value>예제 데이터 채우기 (화강암, 현무암, 향암)</value>
+  </data>
+  <data name="niggli_tooltip_expand" xml:space="preserve">
+    <value>계산 세부정보 패널 확장/축소</value>
+  </data>
+  <data name="niggli_tooltip_export" xml:space="preserve">
+    <value>계산 결과를 CSV 파일로 내보내기</value>
+  </data>
+  <data name="niggli_tooltip_help" xml:space="preserve">
+    <value>Barth-Niggli Catanorm 및 Niggli 파라미터 계산 설명 보기</value>
+  </data>
+  <data name="niggli_warning_feot_estimated" xml:space="preserve">
+    <value>전철 FeOT를 사용하여 산화 상태 추정 (Fe³⁺/Fe = {0})</value>
+  </data>
+  <data name="oxide_element_converter" xml:space="preserve">
+    <value>산화물-원소 변환기</value>
+  </data>
+  <data name="oxide_element_converter_desc" xml:space="preserve">
+    <value>화학량론 인수를 이용하여 원소와 산화물 wt% 사이를 상호 변환</value>
+  </data>
+  <data name="oxide_element_converter_hint" xml:space="preserve">
+    <value>원소 또는 산화물을 선택하고 값을 입력하면 다른 형태로의 변환 결과를 즉시 확인할 수 있습니다.</value>
+  </data>
+  <data name="oxide_element_conv_input_label" xml:space="preserve">
+    <value>입력값</value>
+  </data>
+  <data name="oxide_element_conv_mode_elem_to_oxide" xml:space="preserve">
+    <value>원소 → 산화물</value>
+  </data>
+  <data name="oxide_element_conv_mode_oxide_to_elem" xml:space="preserve">
+    <value>산화물 → 원소</value>
+  </data>
+  <data name="oxide_element_conv_select_substance" xml:space="preserve">
+    <value>원소 / 산화물 선택</value>
+  </data>
+  <data name="oxide_element_conv_result_label" xml:space="preserve">
+    <value>변환 결과</value>
+  </data>
+  <data name="oxide_element_conv_factor_label" xml:space="preserve">
+    <value>전환 인수</value>
+  </data>
+  <data name="oxide_element_conv_mw_elem" xml:space="preserve">
+    <value>원자량 (g/mol)</value>
+  </data>
+  <data name="oxide_element_conv_mw_oxide" xml:space="preserve">
+    <value>산화물 분자량 (g/mol)</value>
+  </data>
+  <data name="oxide_element_conv_formula_label" xml:space="preserve">
+    <value>화학식</value>
+  </data>
+  <data name="oxide_element_conv_unit_wt_pct" xml:space="preserve">
+    <value>wt%</value>
+  </data>
+  <data name="oxide_element_conv_unit_ppm" xml:space="preserve">
+    <value>ppm</value>
+  </data>
+  <data name="oxide_element_conv_reset" xml:space="preserve">
+    <value>초기화</value>
+  </data>
+  <data name="oxide_element_conv_invalid_input" xml:space="preserve">
+    <value>0 이상의 값을 입력하세요.</value>
+  </data>
+  <data name="oxide_element_conv_reference_title" xml:space="preserve">
+    <value>참조 표</value>
+  </data>
+  <data name="oxide_element_conv_reference_hint" xml:space="preserve">
+    <value>일반 원소와 해당 산화물 및 화학량론적 전환 인수.</value>
+  </data>
+  <data name="oxide_element_conv_col_element" xml:space="preserve">
+    <value>원소</value>
+  </data>
+  <data name="oxide_element_conv_col_oxide" xml:space="preserve">
+    <value>산화물</value>
+  </data>
+  <data name="oxide_element_conv_col_factor_to_oxide" xml:space="preserve">
+    <value>→ 산화물 인수</value>
+  </data>
+  <data name="oxide_element_conv_col_factor_to_elem" xml:space="preserve">
+    <value>→ 원소 인수</value>
+  </data>
+  <data name="geoscience_unit_converter" xml:space="preserve">
+    <value>지구과학 단위 고속 환산기</value>
+  </data>
+  <data name="geoscience_unit_converter_desc" xml:space="preserve">
+    <value>품위/농도, 지압, 미세 스케일, 온도, 동위원소 연대의 실시간 환산 대시보드</value>
+  </data>
+  <data name="geoscience_unit_conv_hint" xml:space="preserve">
+    <value>분류를 선택하고 값과 기준 단위를 입력하면 모든 단위가 실시간으로 동기 환산됩니다. 행을 클릭하여 복사하거나 기준 단위로 설정할 수 있습니다.</value>
+  </data>
+  <data name="geoscience_unit_conv_category" xml:space="preserve">
+    <value>분류</value>
+  </data>
+  <data name="geoscience_unit_conv_cat_grade" xml:space="preserve">
+    <value>품위 / 농도</value>
+  </data>
+  <data name="geoscience_unit_conv_cat_pressure" xml:space="preserve">
+    <value>압력 / 응력</value>
+  </data>
+  <data name="geoscience_unit_conv_cat_scale" xml:space="preserve">
+    <value>미세 스케일</value>
+  </data>
+  <data name="geoscience_unit_conv_cat_temperature" xml:space="preserve">
+    <value>온도 / 지온</value>
+  </data>
+  <data name="geoscience_unit_conv_cat_time" xml:space="preserve">
+    <value>동위원소 연대</value>
+  </data>
+  <data name="geoscience_unit_conv_input_value" xml:space="preserve">
+    <value>입력값</value>
+  </data>
+  <data name="geoscience_unit_conv_source_unit" xml:space="preserve">
+    <value>기준 단위</value>
+  </data>
+  <data name="geoscience_unit_conv_presets" xml:space="preserve">
+    <value>지구과학 표준 프리셋</value>
+  </data>
+  <data name="geoscience_unit_conv_all_results" xml:space="preserve">
+    <value>전체 단위 실시간 환산 보드</value>
+  </data>
+  <data name="geoscience_unit_conv_set_as_base" xml:space="preserve">
+    <value>기준으로 설정</value>
+  </data>
+  <data name="geoscience_unit_conv_copy" xml:space="preserve">
+    <value>복사</value>
+  </data>
+  <data name="geoscience_unit_conv_reset" xml:space="preserve">
+    <value>재설정</value>
+  </data>
+  <data name="geoscience_unit_conv_base_badge" xml:space="preserve">
+    <value>기준</value>
+  </data>
+  <data name="geoscience_unit_conv_copied_val" xml:space="preserve">
+    <value>{0} {1} 복사되었습니다</value>
+  </data>
+  <data name="geo_u_g_t_name" xml:space="preserve">
+    <value>그램/톤 (g/t)</value>
+  </data>
+  <data name="geo_u_g_t_desc" xml:space="preserve">
+    <value>광상학 및 선광학 표준 품위 단위 (1 g/t = 1 ppm = 1 mg/kg)</value>
+  </data>
+  <data name="geo_u_ppm_name" xml:space="preserve">
+    <value>백만분율 (ppm)</value>
+  </data>
+  <data name="geo_u_ppm_desc" xml:space="preserve">
+    <value>미량원소 지구화학 질량농도 (1 ppm = 10⁻⁶ = 1 g/t)</value>
+  </data>
+  <data name="geo_u_wt_pct_name" xml:space="preserve">
+    <value>중량백분율 (wt%)</value>
+  </data>
+  <data name="geo_u_wt_pct_desc" xml:space="preserve">
+    <value>주원소 및 고품위 광석 표준 단위 (1 wt% = 10,000 g/t)</value>
+  </data>
+  <data name="geo_u_ppb_name" xml:space="preserve">
+    <value>십억분율 (ppb)</value>
+  </data>
+  <data name="geo_u_ppb_desc" xml:space="preserve">
+    <value>초미량 원소 및 백금족 원소 (1 ppb = 10⁻⁹ = 0.001 g/t)</value>
+  </data>
+  <data name="geo_u_oz_t_name" xml:space="preserve">
+    <value>트로이온스/메트릭톤</value>
+  </data>
+  <data name="geo_u_oz_t_desc" xml:space="preserve">
+    <value>미터법 톤당 트로이온스 (1 troy oz ≈ 31.1035 g/t)</value>
+  </data>
+  <data name="geo_u_oz_st_name" xml:space="preserve">
+    <value>트로이온스/숏톤 (opt)</value>
+  </data>
+  <data name="geo_u_oz_st_desc" xml:space="preserve">
+    <value>북미 광업 표준 숏톤 (1 short ton ≈ 0.907 t, 1 opt ≈ 34.2857 g/t)</value>
+  </data>
+  <data name="geo_u_gpa_name" xml:space="preserve">
+    <value>기가파스칼 (GPa)</value>
+  </data>
+  <data name="geo_u_gpa_desc" xml:space="preserve">
+    <value>심부 암석권 및 맨틀 고압 단위 (1 GPa = 10 kbar = 1,000 MPa)</value>
+  </data>
+  <data name="geo_u_kbar_name" xml:space="preserve">
+    <value>킬로바 (kbar)</value>
+  </data>
+  <data name="geo_u_kbar_desc" xml:space="preserve">
+    <value>변성상 및 실험암석학 고전 단위 (1 kbar = 100 MPa = 0.1 GPa)</value>
+  </data>
+  <data name="geo_u_mpa_name" xml:space="preserve">
+    <value>메가파스칼 (MPa)</value>
+  </data>
+  <data name="geo_u_mpa_desc" xml:space="preserve">
+    <value>지각 응력 및 천부 유체정압 (1 MPa = 10 bar = 10⁶ Pa)</value>
+  </data>
+  <data name="geo_u_bar_name" xml:space="preserve">
+    <value>바 (bar)</value>
+  </data>
+  <data name="geo_u_bar_desc" xml:space="preserve">
+    <value>열역학 기압 단위 (1 bar = 0.1 MPa = 100 kPa)</value>
+  </data>
+  <data name="geo_u_atm_name" xml:space="preserve">
+    <value>표준대기압 (atm)</value>
+  </data>
+  <data name="geo_u_atm_desc" xml:space="preserve">
+    <value>물리 표준 대기압 (1 atm = 101.325 kPa = 0.101325 MPa)</value>
+  </data>
+  <data name="geo_u_psi_name" xml:space="preserve">
+    <value>제곱인치당 파운드 (psi)</value>
+  </data>
+  <data name="geo_u_psi_desc" xml:space="preserve">
+    <value>시추 및 석유공학 지층 압력 (1 MPa ≈ 145.038 psi)</value>
+  </data>
+  <data name="geo_u_mm_name" xml:space="preserve">
+    <value>밀리미터 (mm)</value>
+  </data>
+  <data name="geo_u_mm_desc" xml:space="preserve">
+    <value>광물 반정 및 박편 육안 스케일 (1 mm = 1,000 μm)</value>
+  </data>
+  <data name="geo_u_um_name" xml:space="preserve">
+    <value>마이크로미터 (μm)</value>
+  </data>
+  <data name="geo_u_um_desc" xml:space="preserve">
+    <value>전자탐침 (EPMA) 빔 스팟 및 SEM 관찰 (1 μm = 1,000 nm)</value>
+  </data>
+  <data name="geo_u_nm_name" xml:space="preserve">
+    <value>나노미터 (nm)</value>
+  </data>
+  <data name="geo_u_nm_desc" xml:space="preserve">
+    <value>점토광물 층간 간격 및 나노입자 (1 nm = 10 Å = 0.001 μm)</value>
+  </data>
+  <data name="geo_u_angstrom_name" xml:space="preserve">
+    <value>옹스트롬 (Å)</value>
+  </data>
+  <data name="geo_u_angstrom_desc" xml:space="preserve">
+    <value>격자상수 및 X선 회절 특성파장 (1 Å = 0.1 nm = 10⁻⁴ μm)</value>
+  </data>
+  <data name="geo_u_pm_name" xml:space="preserve">
+    <value>피코미터 (pm)</value>
+  </data>
+  <data name="geo_u_pm_desc" xml:space="preserve">
+    <value>이온 유효반경 및 원자궤도 스케일 (1 Å = 100 pm, 1 pm = 10⁻⁶ μm)</value>
+  </data>
+  <data name="geo_u_celsius_name" xml:space="preserve">
+    <value>섭씨온도 (℃)</value>
+  </data>
+  <data name="geo_u_celsius_desc" xml:space="preserve">
+    <value>지구과학 일상온도 및 지온경사</value>
+  </data>
+  <data name="geo_u_kelvin_name" xml:space="preserve">
+    <value>켈빈 (K)</value>
+  </data>
+  <data name="geo_u_kelvin_desc" xml:space="preserve">
+    <value>열역학 상태방정식 및 절대온도 (0 ℃ = 273.15 K)</value>
+  </data>
+  <data name="geo_u_fahrenheit_name" xml:space="preserve">
+    <value>화씨온도 (℉)</value>
+  </data>
+  <data name="geo_u_fahrenheit_desc" xml:space="preserve">
+    <value>북미 유전 및 시추공학 지층온도 (℉ = ℃ × 1.8 + 32)</value>
+  </data>
+  <data name="geo_u_ga_name" xml:space="preserve">
+    <value>십억년 (Ga / Gyr)</value>
+  </data>
+  <data name="geo_u_ga_desc" xml:space="preserve">
+    <value>선캄브리아기 딥타임 및 초기 지구 진화 (1 Ga = 1,000 Ma = 10⁹ 년)</value>
+  </data>
+  <data name="geo_u_ma_name" xml:space="preserve">
+    <value>백만년 (Ma / Myr)</value>
+  </data>
+  <data name="geo_u_ma_desc" xml:space="preserve">
+    <value>현생누대 및 동위원소 연대측정 표준 단위 (1 Ma = 10⁶ 년)</value>
+  </data>
+  <data name="geo_u_ka_name" xml:space="preserve">
+    <value>천년 (ka / kyr)</value>
+  </data>
+  <data name="geo_u_ka_desc" xml:space="preserve">
+    <value>제4기 빙기 및 ¹⁴C / OSL 연대측정 (1 ka = 1,000 년 = 0.001 Ma)</value>
+  </data>
+  <data name="geo_u_yr_name" xml:space="preserve">
+    <value>년 (yr / a)</value>
+  </data>
+  <data name="geo_u_yr_desc" xml:space="preserve">
+    <value>절대 달력 연도 (1 Ma = 1,000,000 년)</value>
+  </data>
+  <data name="geo_p_gold_cutoff_title" xml:space="preserve">
+    <value>금광석 한계품위</value>
+  </data>
+  <data name="geo_p_gold_cutoff_note" xml:space="preserve">
+    <value>일반 암석형 금광 개발 참고 한계품위</value>
+  </data>
+  <data name="geo_p_porphyry_cu_title" xml:space="preserve">
+    <value>반암동광 전형품위</value>
+  </data>
+  <data name="geo_p_porphyry_cu_note" xml:space="preserve">
+    <value>초대형 반암동광산 평균 공업품위 (~5000 ppm)</value>
+  </data>
+  <data name="geo_p_pge_au_title" xml:space="preserve">
+    <value>PGE / Au 극미량</value>
+  </data>
+  <data name="geo_p_pge_au_note" xml:space="preserve">
+    <value>맨틀 감람암 및 화성암 백금족 원소 농도</value>
+  </data>
+  <data name="geo_p_high_grade_ore_title" xml:space="preserve">
+    <value>고품위 광석 (1 opt)</value>
+  </data>
+  <data name="geo_p_high_grade_ore_note" xml:space="preserve">
+    <value>북미 온스/숏톤 지표 (≈34.29 g/t)</value>
+  </data>
+  <data name="geo_p_fluid_press_title" xml:space="preserve">
+    <value>지하 1 km 유체압</value>
+  </data>
+  <data name="geo_p_fluid_press_note" xml:space="preserve">
+    <value>지각 천부 정암압 및 공극 유체압력</value>
+  </data>
+  <data name="geo_p_moho_press_title" xml:space="preserve">
+    <value>하부지각 / 모호면</value>
+  </data>
+  <data name="geo_p_moho_press_note" xml:space="preserve">
+    <value>대륙지각 기저부 전형적 고압 (~10 kbar)</value>
+  </data>
+  <data name="geo_p_trans_zone_title" xml:space="preserve">
+    <value>맨틀전이대 상부</value>
+  </data>
+  <data name="geo_p_trans_zone_note" xml:space="preserve">
+    <value>410 km 감람석 상전이 경계 압력</value>
+  </data>
+  <data name="geo_p_std_atm_title" xml:space="preserve">
+    <value>지표 표준기압</value>
+  </data>
+  <data name="geo_p_std_atm_note" xml:space="preserve">
+    <value>101.325 kPa, 실험실 표준 참조상태</value>
+  </data>
+  <data name="geo_p_phenocryst_title" xml:space="preserve">
+    <value>현미경 반정 크기</value>
+  </data>
+  <data name="geo_p_phenocryst_note" xml:space="preserve">
+    <value>편광현미경 표준 육안 시야 (1000 μm)</value>
+  </data>
+  <data name="geo_p_epma_beam_title" xml:space="preserve">
+    <value>EPMA 빔 스팟</value>
+  </data>
+  <data name="geo_p_epma_beam_note" xml:space="preserve">
+    <value>전자현미탐침 정량분석 집속 빔 직경</value>
+  </data>
+  <data name="geo_p_sem_nano_title" xml:space="preserve">
+    <value>SEM 나노결정 입자</value>
+  </data>
+  <data name="geo_p_sem_nano_note" xml:space="preserve">
+    <value>주사전자현미경 하 점토광물 및 나노입자</value>
+  </data>
+  <data name="geo_p_cu_ka_title" xml:space="preserve">
+    <value>Cu Kα 파장</value>
+  </data>
+  <data name="geo_p_cu_ka_note" xml:space="preserve">
+    <value>X선 단결정/분말회절 Cu-Kα 특성파장</value>
+  </data>
+  <data name="geo_p_surface_temp_title" xml:space="preserve">
+    <value>지표 상온</value>
+  </data>
+  <data name="geo_p_surface_temp_note" xml:space="preserve">
+    <value>표준 실험실 환경 참조상태 (298.15 K)</value>
+  </data>
+  <data name="geo_p_hydrothermal_title" xml:space="preserve">
+    <value>중저온 열수유체</value>
+  </data>
+  <data name="geo_p_hydrothermal_note" xml:space="preserve">
+    <value>석영맥형 금광 유체포유물 균질화온도</value>
+  </data>
+  <data name="geo_p_solidus_title" xml:space="preserve">
+    <value>화강암 고상선</value>
+  </data>
+  <data name="geo_p_solidus_note" xml:space="preserve">
+    <value>함수 규장질 마그마 결정화 고상선 경계</value>
+  </data>
+  <data name="geo_p_earth_age_title" xml:space="preserve">
+    <value>지구 형성 연령</value>
+  </data>
+  <data name="geo_p_earth_age_note" xml:space="preserve">
+    <value>운석 납 동위원소로 결정된 지구의 나이</value>
+  </data>
+  <data name="geo_p_cambrian_base_title" xml:space="preserve">
+    <value>캄브리아기 저계</value>
+  </data>
+  <data name="geo_p_cambrian_base_note" xml:space="preserve">
+    <value>현생누대 시작 및 캄브리아기 대폭발 GSSP 경계</value>
+  </data>
+  <data name="geo_p_k_pg_boundary_title" xml:space="preserve">
+    <value>K-Pg 멸종 경계</value>
+  </data>
+  <data name="geo_p_k_pg_boundary_note" xml:space="preserve">
+    <value>공룡 멸종 및 칙술루브 충돌 사건 경계</value>
+  </data>
+  <data name="geo_p_quaternary_base_title" xml:space="preserve">
+    <value>제4기 저계</value>
+  </data>
+  <data name="geo_p_quaternary_base_note" xml:space="preserve">
+    <value>플라이스토세 빙하기 및 인류 진화의 시작</value>
   </data>
 </root>

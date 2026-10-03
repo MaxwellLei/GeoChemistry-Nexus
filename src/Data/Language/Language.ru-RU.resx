@@ -138,9 +138,6 @@
   <data name="unfavorite" xml:space="preserve">
     <value>Удалить из избранного</value>
   </data>
-  <data name="select" xml:space="preserve">
-    <value>Выбрать</value>
-  </data>
   <data name="cipw_col_alumina_state" xml:space="preserve">
     <value>Состояние Al2O3</value>
   </data>
@@ -215,12 +212,6 @@
   </data>
   <data name="script_return_value_error_must_be_array" xml:space="preserve">
     <value>Ошибка возврата скрипта: должен возвращать массив.</value>
-  </data>
-  <data name="MarkerShape_VerticalBar" xml:space="preserve">
-    <value>Вертикальная линия</value>
-  </data>
-  <data name="MarkerShape_OpenDiamond" xml:space="preserve">
-    <value>Пустой ромб</value>
   </data>
   <data name="geo_script_javascript" xml:space="preserve">
     <value>Сценарий JavaScript</value>
@@ -531,16 +522,13 @@
     <value>Вы уверены, что хотите удалить?</value>
   </data>
   <data name="error_occurred_while_checking_for_updates" xml:space="preserve">
-    <value>Ошибка при проверке обновлений：</value>
+    <value>Ошибка при проверке обновлений:</value>
   </data>
   <data name="GeothermometerSetting" xml:space="preserve">
     <value>Настройки геотермобарометра</value>
   </data>
   <data name="PlotTitle" xml:space="preserve">
     <value>Заголовок графика</value>
-  </data>
-  <data name="MarkerShape_FilledTriangleUp" xml:space="preserve">
-    <value>Закрашенный треугольник вверх</value>
   </data>
   <data name="geo_btn_save_export_zip" xml:space="preserve">
     <value>Сохранить и экспортировать пакет</value>
@@ -558,7 +546,7 @@
     <value>Переменная среды Inkscape не найдена, выберите программу.</value>
   </data>
   <data name="cipw_select_row_hint" xml:space="preserve">
-    <value>Выберите строку данных, чтобы увидеть сведения о диагностике</value>
+    <value>Выберите строку данных, чтобы увидеть детали расчёта</value>
   </data>
   <data name="loading_drawing_module_ellipsis" xml:space="preserve">
     <value>Загрузка модуля рисования...</value>
@@ -575,17 +563,8 @@
   <data name="Language_" xml:space="preserve">
     <value>Язык</value>
   </data>
-  <data name="MarkerShape_HashTag" xml:space="preserve">
-    <value>Решетка</value>
-  </data>
   <data name="cipw_btn_calculate" xml:space="preserve">
     <value>Рассчитать</value>
-  </data>
-  <data name="MarkerShape_OpenCircleWithDot" xml:space="preserve">
-    <value>Пустой круг с точкой</value>
-  </data>
-  <data name="MarkerShape_OpenCircleWithEks" xml:space="preserve">
-    <value>Пустой круг с иксом</value>
   </data>
   <data name="cipw_diag_warnings" xml:space="preserve">
     <value>── Предупреждения ──</value>
@@ -610,9 +589,6 @@
   </data>
   <data name="geo_msg_test_input_invalid" xml:space="preserve">
     <value>Неверные тестовые данные. Используйте числа через запятую.</value>
-  </data>
-  <data name="MarkerShape_FilledTriangleDown" xml:space="preserve">
-    <value>Закрашенный треугольник вниз</value>
   </data>
   <data name="missing_translation_warning" xml:space="preserve">
     <value>Пропущен перевод: у некоторых текстов нет перевода.</value>
@@ -682,9 +658,6 @@
   </data>
   <data name="export_image" xml:space="preserve">
     <value>Экспорт изображения</value>
-  </data>
-  <data name="MarkerShape_FilledSquare" xml:space="preserve">
-    <value>Закрашенный квадрат</value>
   </data>
   <data name="cipw_tooltip_example" xml:space="preserve">
     <value>Заполнить пример данных (гранит, базальт, андезит)</value>
@@ -781,9 +754,6 @@
   <data name="completeness_check" xml:space="preserve">
     <value>Проверка полноты</value>
   </data>
-  <data name="MarkerShape_Eks" xml:space="preserve">
-    <value>X-образная форма</value>
-  </data>
   <data name="geo_script_sample_row" xml:space="preserve">
     <value>Пример строки (через запятую)</value>
   </data>
@@ -832,9 +802,6 @@
   <data name="geo_msg_import_invalid_format" xml:space="preserve">
     <value>Файл геотермобарометра повреждён или не содержит допустимый JSON-файл геотермобарометра.</value>
   </data>
-  <data name="MarkerShape_OpenCircleWithCross" xml:space="preserve">
-    <value>Пустой круг с крестом</value>
-  </data>
   <data name="geo_validate_formula_name_required" xml:space="preserve">
     <value>Имя формулы не может быть пустым.</value>
   </data>
@@ -877,7 +844,7 @@
     <value>Сохранить как файл CSV</value>
   </data>
   <data name="language_switch_error" xml:space="preserve">
-    <value>Ошибка переключения языка：</value>
+    <value>Ошибка переключения языка:</value>
   </data>
   <data name="unable_to_open_link" xml:space="preserve">
     <value>Невозможно открыть ссылку:</value>
@@ -904,7 +871,7 @@
     <value>Образование полевых шпатов и щелочных силикатов</value>
   </data>
   <data name="failed_to_open_file" xml:space="preserve">
-    <value>Не удалось открыть файл：</value>
+    <value>Не удалось открыть файл:</value>
   </data>
   <data name="cipw_col_mass_balance_error" xml:space="preserve">
     <value>Ошибка баланса масс (%)</value>
@@ -964,7 +931,7 @@
     <value>Штриховая</value>
   </data>
   <data name="import_failed" xml:space="preserve">
-    <value>Ошибка импорта：</value>
+    <value>Ошибка импорта:</value>
   </data>
   <data name="geo_msg_downloading_update" xml:space="preserve">
     <value>Загрузка...</value>
@@ -977,9 +944,6 @@
   </data>
   <data name="Placeholder_Ternary_Title" xml:space="preserve">
     <value>Новая тройная диаграмма</value>
-  </data>
-  <data name="MarkerShape_FilledCircle" xml:space="preserve">
-    <value>Закрашенный круг</value>
   </data>
   <data name="position" xml:space="preserve">
     <value>Свойства</value>
@@ -1033,10 +997,7 @@
     <value>Автообновление</value>
   </data>
   <data name="failed_to_open_widget" xml:space="preserve">
-    <value>Не удалось открыть виджет：</value>
-  </data>
-  <data name="MarkerShape_Cross" xml:space="preserve">
-    <value>Крест</value>
+    <value>Не удалось открыть виджет:</value>
   </data>
   <data name="geo_msg_delete_success" xml:space="preserve">
     <value>Успешно удалено</value>
@@ -1099,7 +1060,7 @@
     <value>Ось X</value>
   </data>
   <data name="network_connection_failed_cannot_check_for_updates" xml:space="preserve">
-    <value>Ошибка сети, невозможно проверить обновления：</value>
+    <value>Ошибка сети, невозможно проверить обновления:</value>
   </data>
   <data name="geo_field_version" xml:space="preserve">
     <value>Версия *</value>
@@ -1138,7 +1099,7 @@
     <value>Сторонний редактор по умолчанию</value>
   </data>
   <data name="failed_to_load_diagram_template" xml:space="preserve">
-    <value>Не удалось загрузить шаблон：</value>
+    <value>Не удалось загрузить шаблон:</value>
   </data>
   <data name="font_style" xml:space="preserve">
     <value>Стиль шрифта</value>
@@ -1149,9 +1110,6 @@
   <data name="arrow" xml:space="preserve">
     <value>Стрелка</value>
   </data>
-  <data name="please_select_a_widget" xml:space="preserve">
-    <value>Выберите виджет</value>
-  </data>
   <data name="close" xml:space="preserve">
     <value>Закрыть</value>
   </data>
@@ -1159,7 +1117,7 @@
     <value>Цвет</value>
   </data>
   <data name="count" xml:space="preserve">
-    <value>Количество</value>
+    <value>Количество вспомогательных делений</value>
   </data>
   <data name="point" xml:space="preserve">
     <value>Точка</value>
@@ -1221,12 +1179,6 @@
   <data name="all_data_cleared" xml:space="preserve">
     <value>Все данные очищены</value>
   </data>
-  <data name="Calculate" xml:space="preserve">
-    <value>Вычислить</value>
-  </data>
-  <data name="MarkerShape_FilledDiamond" xml:space="preserve">
-    <value>Закрашенный ромб</value>
-  </data>
   <data name="export_and_tools" xml:space="preserve">
     <value>Экспорт/Инструменты</value>
   </data>
@@ -1249,7 +1201,7 @@
     <value>Ошибка копирования:</value>
   </data>
   <data name="failed_to_open" xml:space="preserve">
-    <value>Ошибка открытия：</value>
+    <value>Ошибка открытия:</value>
   </data>
   <data name="template_version_too_high" xml:space="preserve">
     <value>Версия шаблона выше текущей версии ПО, пожалуйста, обновитесь.</value>
@@ -1283,9 +1235,6 @@
   </data>
   <data name="MessageAutoClose2" xml:space="preserve">
     <value>2 сек</value>
-  </data>
-  <data name="MarkerShape_OpenTriangleUp" xml:space="preserve">
-    <value>Пустой треугольник вверх</value>
   </data>
   <data name="object_deleted_successfully" xml:space="preserve">
     <value>Объект успешно удален.</value>
@@ -1329,7 +1278,7 @@
     <value>Пример</value>
   </data>
   <data name="custom_program_start_failed" xml:space="preserve">
-    <value>Ошибка запуска программы：</value>
+    <value>Ошибка запуска программы:</value>
   </data>
   <data name="geo_label_custom" xml:space="preserve">
     <value>пользовательский</value>
@@ -1342,9 +1291,6 @@
   </data>
   <data name="startup_background_image" xml:space="preserve">
     <value>Фоновое изображение запуска</value>
-  </data>
-  <data name="MarkerShape_HorizontalBar" xml:space="preserve">
-    <value>Горизонтальная линия</value>
   </data>
   <data name="cipw_step6_detail" xml:space="preserve">
     <value>Распределить оксиды железа по минералам:
@@ -1423,9 +1369,6 @@
   <data name="unsaved_template_changes_confirm" xml:space="preserve">
     <value>В шаблоне есть несохраненные изменения, сохранить?</value>
   </data>
-  <data name="MarkerShape_OpenTriangleDown" xml:space="preserve">
-    <value>Пустой треугольник вниз</value>
-  </data>
   <data name="error_saving_rtf_file" xml:space="preserve">
     <value>Ошибка сохранения RTF:</value>
   </data>
@@ -1439,7 +1382,7 @@
     <value>Проверить синтаксис</value>
   </data>
   <data name="delete_failed" xml:space="preserve">
-    <value>Ошибка удаления：</value>
+    <value>Ошибка удаления:</value>
   </data>
   <data name="cipw_step5_detail" xml:space="preserve">
     <value>Последовательно распределить щелочные оксиды и глинозём в полевые шпаты:
@@ -1458,9 +1401,6 @@
   </data>
   <data name="geo_tooltip_help" xml:space="preserve">
     <value>Справка</value>
-  </data>
-  <data name="please_select_widget_to_add" xml:space="preserve">
-    <value>Выберите виджет:</value>
   </data>
   <data name="offset_y" xml:space="preserve">
     <value>Смещение Y</value>
@@ -1573,11 +1513,8 @@
   <data name="add_arrow" xml:space="preserve">
     <value>Добавить стрелку (Ctrl+4)</value>
   </data>
-  <data name="MarkerShape_Asterisk" xml:space="preserve">
-    <value>Звездочка</value>
-  </data>
   <data name="failed_to_delete_row" xml:space="preserve">
-    <value>Не удалось удалить строку：</value>
+    <value>Не удалось удалить строку:</value>
   </data>
   <data name="line_type_densely_dashed" xml:space="preserve">
     <value>Частая штриховая</value>
@@ -1586,7 +1523,7 @@
     <value>Входные столбцы (через запятую)</value>
   </data>
   <data name="cipw_diagnostic_details" xml:space="preserve">
-    <value>Сведения о диагностике</value>
+    <value>Детали расчёта</value>
   </data>
   <data name="line_type_solid" xml:space="preserve">
     <value>Сплошная</value>
@@ -1602,6 +1539,9 @@
   </data>
   <data name="delete_object" xml:space="preserve">
     <value>Удалить объект (Delete)</value>
+  </data>
+  <data name="cipw_norm" xml:space="preserve">
+    <value>Расчёт нормы CIPW</value>
   </data>
   <data name="cipw_title" xml:space="preserve">
     <value>Расчёт нормы CIPW</value>
@@ -1652,7 +1592,7 @@
     <value>Пакетная загрузка</value>
   </data>
   <data name="error_creating_new_template" xml:space="preserve">
-    <value>Ошибка создания шаблона：</value>
+    <value>Ошибка создания шаблона:</value>
   </data>
   <data name="geo_field_name" xml:space="preserve">
     <value>Имя *</value>
@@ -1719,9 +1659,6 @@
   <data name="diagram_template_corrupted_or_invalid" xml:space="preserve">
     <value>Файл шаблона поврежден или не содержит допустимый JSON.</value>
   </data>
-  <data name="MarkerShape_OpenCircle" xml:space="preserve">
-    <value>Пустой круг</value>
-  </data>
   <data name="linear" xml:space="preserve">
     <value>Линейный</value>
   </data>
@@ -1750,7 +1687,7 @@
     <value>‘ не является допустимым именем.</value>
   </data>
   <data name="template_potential_issues_detected" xml:space="preserve">
-    <value>Обнаружены потенциальные проблемы в шаблоне：</value>
+    <value>Обнаружены потенциальные проблемы в шаблоне:</value>
   </data>
   <data name="unknown_error_checking_for_updates" xml:space="preserve">
     <value>Неизвестная ошибка при проверке обновлений</value>
@@ -1774,7 +1711,7 @@
     <value>Библиотека шаблонов</value>
   </data>
   <data name="coordinates_picked_success" xml:space="preserve">
-    <value>Координаты получены！</value>
+    <value>Координаты получены!</value>
   </data>
   <data name="csv_file_filter" xml:space="preserve">
     <value>Файл CSV|*.csv</value>
@@ -1983,14 +1920,8 @@
   <data name="coordinate_positioning" xml:space="preserve">
     <value>Координаты</value>
   </data>
-  <data name="geo_msg_already_latest" xml:space="preserve">
-    <value>Уже актуальная версия</value>
-  </data>
   <data name="cipw_step3_title" xml:space="preserve">
     <value>Образование акцессорных минералов</value>
-  </data>
-  <data name="geo_msg_update_available" xml:space="preserve">
-    <value>Доступно обновление {0} геотермобарометров</value>
   </data>
   <data name="multiple_data_series_hint" xml:space="preserve">
     <value>Разделяйте несколько серий данных запятыми, например: SiO2,TiO2</value>
@@ -2015,9 +1946,6 @@
   </data>
   <data name="geo_msg_check_update_failed" xml:space="preserve">
     <value>Не удалось проверить обновления</value>
-  </data>
-  <data name="MarkerShape_OpenSquare" xml:space="preserve">
-    <value>Пустой квадрат</value>
   </data>
   <data name="script_not_defined_in_template" xml:space="preserve">
     <value>Скрипт не определен в шаблоне</value>
@@ -4395,5 +4323,857 @@
   </data>
   <data name="unhandled_exception_occurred" xml:space="preserve">
     <value>В приложении произошла необработанная ошибка:</value>
+  </data>
+  <data name="add_widget_subtitle" xml:space="preserve">
+    <value>Изучите и расширьте набор геохимических инструментов на главной странице</value>
+  </data>
+  <data name="search_widgets_hint" xml:space="preserve">
+    <value>Поиск по названию или функции виджета...</value>
+  </data>
+  <data name="no_matching_widgets" xml:space="preserve">
+    <value>Подходящие виджеты не найдены</value>
+  </data>
+  <data name="add_widget_tip" xml:space="preserve">
+    <value>Совет: добавленные виджеты можно использовать на главной странице или удалить правым кликом</value>
+  </data>
+  <data name="cancel_add" xml:space="preserve">
+    <value>Отменить добавление</value>
+  </data>
+  <data name="added" xml:space="preserve">
+    <value>Добавлено</value>
+  </data>
+  <data name="done" xml:space="preserve">
+    <value>Готово</value>
+  </data>
+  <data name="chronostrat_navigator_widget" xml:space="preserve">
+    <value>Хроностратиграфический навигатор</value>
+  </data>
+  <data name="chronostrat_navigator_widget_desc" xml:space="preserve">
+    <value>Интерактивная международная хроностратиграфическая шкала МКС: поиск подразделений по возрасту, иерархический навигатор и официальные цвета МСГН.</value>
+  </data>
+  <data name="chronostrat_age_lookup_label" xml:space="preserve">
+    <value>Поиск по возрасту</value>
+  </data>
+  <data name="chronostrat_lookup_btn" xml:space="preserve">
+    <value>Найти</value>
+  </data>
+  <data name="chronostrat_search_hint" xml:space="preserve">
+    <value>Поиск подразделения...</value>
+  </data>
+  <data name="chronostrat_reset" xml:space="preserve">
+    <value>Сброс</value>
+  </data>
+  <data name="chronostrat_age_result_label" xml:space="preserve">
+    <value>Результат поиска по возрасту</value>
+  </data>
+  <data name="chronostrat_click_hint" xml:space="preserve">
+    <value>Нажмите на подразделение для просмотра подробностей</value>
+  </data>
+  <data name="chronostrat_search_results" xml:space="preserve">
+    <value>Результаты поиска</value>
+  </data>
+  <data name="chronostrat_select_hint" xml:space="preserve">
+    <value>Выберите подразделение из списка слева для просмотра подробностей</value>
+  </data>
+  <data name="chronostrat_boundary_label" xml:space="preserve">
+    <value>Возрастные границы</value>
+  </data>
+  <data name="chronostrat_start_label" xml:space="preserve">
+    <value>Подошва (Начало)</value>
+  </data>
+  <data name="chronostrat_end_label" xml:space="preserve">
+    <value>Кровля (Конец)</value>
+  </data>
+  <data name="chronostrat_duration_label" xml:space="preserve">
+    <value>Продолжительность</value>
+  </data>
+  <data name="chronostrat_gssp_ratified" xml:space="preserve">
+    <value>Ратифицированный GSSP (Золотой гвоздь)</value>
+  </data>
+  <data name="chronostrat_gssp_desc" xml:space="preserve">
+    <value>Подошва этого подразделения определена официально ратифицированным стратотипом границы (GSSP).</value>
+  </data>
+  <data name="chronostrat_color_label" xml:space="preserve">
+    <value>Официальный цвет МСГН (IUGS)</value>
+  </data>
+  <data name="chronostrat_copy_hex" xml:space="preserve">
+    <value>Копировать HEX</value>
+  </data>
+  <data name="chronostrat_copy_rgb" xml:space="preserve">
+    <value>Копировать RGB</value>
+  </data>
+  <data name="chronostrat_citation_label" xml:space="preserve">
+    <value>Стандартная ссылка</value>
+  </data>
+  <data name="chronostrat_copy_citation" xml:space="preserve">
+    <value>Копировать</value>
+  </data>
+  <data name="chronostrat_children_label" xml:space="preserve">
+    <value>Подчиненные подразделения</value>
+  </data>
+  <data name="chronostrat_chart_tree_title" xml:space="preserve">
+    <value>Дерево шкалы</value>
+  </data>
+  <data name="chronostrat_expand_period" xml:space="preserve">
+    <value>Развернуть до периодов</value>
+  </data>
+  <data name="chronostrat_expand_all" xml:space="preserve">
+    <value>Развернуть все</value>
+  </data>
+  <data name="chronostrat_collapse_all" xml:space="preserve">
+    <value>Свернуть все</value>
+  </data>
+  <data name="chronostrat_source_label" xml:space="preserve">
+    <value>Репозиторий данных:</value>
+  </data>
+  <data name="niggli_alumina_metaluminous" xml:space="preserve">
+    <value>Металюминиевое</value>
+  </data>
+  <data name="niggli_alumina_peralkaline" xml:space="preserve">
+    <value>Пералкалиновое</value>
+  </data>
+  <data name="niggli_alumina_peraluminous" xml:space="preserve">
+    <value>Пералюминиевое</value>
+  </data>
+  <data name="niggli_btn_calculate" xml:space="preserve">
+    <value>Рассчитать</value>
+  </data>
+  <data name="niggli_btn_cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="niggli_btn_clear" xml:space="preserve">
+    <value>Очистить</value>
+  </data>
+  <data name="niggli_btn_close" xml:space="preserve">
+    <value>Закрыть</value>
+  </data>
+  <data name="niggli_btn_confirm_clear" xml:space="preserve">
+    <value>Подтвердить очистку</value>
+  </data>
+  <data name="niggli_btn_example" xml:space="preserve">
+    <value>Пример</value>
+  </data>
+  <data name="niggli_btn_export" xml:space="preserve">
+    <value>Экспорт</value>
+  </data>
+  <data name="niggli_btn_help" xml:space="preserve">
+    <value>Справка</value>
+  </data>
+  <data name="niggli_col_alumina_state" xml:space="preserve">
+    <value>Состояние глинозёма</value>
+  </data>
+  <data name="niggli_col_cation_sum" xml:space="preserve">
+    <value>Сумма минералов</value>
+  </data>
+  <data name="niggli_col_sample" xml:space="preserve">
+    <value>Образец</value>
+  </data>
+  <data name="niggli_col_silica_saturation" xml:space="preserve">
+    <value>Насыщенность кремнезёмом</value>
+  </data>
+  <data name="niggli_confirm_clear_msg" xml:space="preserve">
+    <value>Вы действительно хотите очистить все данные и результаты?</value>
+  </data>
+  <data name="niggli_csv_filter" xml:space="preserve">
+    <value>Файл CSV (*.csv)|*.csv</value>
+  </data>
+  <data name="niggli_default_value_text" xml:space="preserve">
+    <value>По умолч. 0.15</value>
+  </data>
+  <data name="niggli_diag_diopside_ratio" xml:space="preserve">
+    <value>Диопсидовые миналы (Wo-En-Fs)</value>
+  </data>
+  <data name="niggli_diag_mgr" xml:space="preserve">
+    <value>Магнезиальность (Mgr / Mg#)</value>
+  </data>
+  <data name="niggli_diag_olivine_ratio" xml:space="preserve">
+    <value>Оливиновые миналы (Fo-Fa)</value>
+  </data>
+  <data name="niggli_diag_plag_an" xml:space="preserve">
+    <value>Плагиоклазовый минал (An%)</value>
+  </data>
+  <data name="niggli_diag_section_classification" xml:space="preserve">
+    <value>── Классификация и насыщенность ──</value>
+  </data>
+  <data name="niggli_diag_section_desilication" xml:space="preserve">
+    <value>── Стадии десилификации ──</value>
+  </data>
+  <data name="niggli_diag_section_endmembers" xml:space="preserve">
+    <value>── Конечные члены ──</value>
+  </data>
+  <data name="niggli_diag_section_main_minerals" xml:space="preserve">
+    <value>── Главные нормативные минералы (&gt; 1%) ──</value>
+  </data>
+  <data name="niggli_diag_section_parameters" xml:space="preserve">
+    <value>── Числа Ниггли ──</value>
+  </data>
+  <data name="niggli_diag_total_minerals" xml:space="preserve">
+    <value>Сумма нормативных минералов</value>
+  </data>
+  <data name="niggli_diag_warnings" xml:space="preserve">
+    <value>── Предупреждения ──</value>
+  </data>
+  <data name="niggli_diagnostic_details" xml:space="preserve">
+    <value>Детали расчёта</value>
+  </data>
+  <data name="niggli_error" xml:space="preserve">
+    <value>Ошибка расчёта</value>
+  </data>
+  <data name="niggli_error_cation_sum_zero" xml:space="preserve">
+    <value>Сумма катионов недостаточна или данные недействительны</value>
+  </data>
+  <data name="niggli_export_dialog_title" xml:space="preserve">
+    <value>Экспорт результатов Ниггли</value>
+  </data>
+  <data name="niggli_help_overview" xml:space="preserve">
+    <value>Молекулярная катанорма Барта-Ниггли (1948) рассчитывается на основе эквивалентных катионных процентов, что исключает искажение из-за тяжёлых элементов и даёт значения, максимально близкие к модальным объёмным процентам.</value>
+  </data>
+  <data name="niggli_help_window_title" xml:space="preserve">
+    <value>Расчёт нормы Ниггли - Руководство</value>
+  </data>
+  <data name="niggli_mineral_Ab" xml:space="preserve">
+    <value>Альбит</value>
+  </data>
+  <data name="niggli_mineral_Ac" xml:space="preserve">
+    <value>Акмит</value>
+  </data>
+  <data name="niggli_mineral_An" xml:space="preserve">
+    <value>Анортит</value>
+  </data>
+  <data name="niggli_mineral_Ap" xml:space="preserve">
+    <value>Апатит</value>
+  </data>
+  <data name="niggli_mineral_C" xml:space="preserve">
+    <value>Корунд</value>
+  </data>
+  <data name="niggli_mineral_Cc" xml:space="preserve">
+    <value>Кальцит</value>
+  </data>
+  <data name="niggli_mineral_Cs" xml:space="preserve">
+    <value>Ларнит (Силикат кальция)</value>
+  </data>
+  <data name="niggli_mineral_Di" xml:space="preserve">
+    <value>Диопсид</value>
+  </data>
+  <data name="niggli_mineral_Fr" xml:space="preserve">
+    <value>Флюорит</value>
+  </data>
+  <data name="niggli_mineral_Hm" xml:space="preserve">
+    <value>Гематит</value>
+  </data>
+  <data name="niggli_mineral_Hy" xml:space="preserve">
+    <value>Гиперстен</value>
+  </data>
+  <data name="niggli_mineral_Il" xml:space="preserve">
+    <value>Ильменит</value>
+  </data>
+  <data name="niggli_mineral_Kp" xml:space="preserve">
+    <value>Калиофилит</value>
+  </data>
+  <data name="niggli_mineral_Ks" xml:space="preserve">
+    <value>Метасиликат калия</value>
+  </data>
+  <data name="niggli_mineral_Lc" xml:space="preserve">
+    <value>Лейцит</value>
+  </data>
+  <data name="niggli_mineral_Mt" xml:space="preserve">
+    <value>Магнетит</value>
+  </data>
+  <data name="niggli_mineral_Ne" xml:space="preserve">
+    <value>Нефелин</value>
+  </data>
+  <data name="niggli_mineral_Ns" xml:space="preserve">
+    <value>Метасиликат натрия</value>
+  </data>
+  <data name="niggli_mineral_Ol" xml:space="preserve">
+    <value>Оливин</value>
+  </data>
+  <data name="niggli_mineral_Or" xml:space="preserve">
+    <value>Ортоклаз</value>
+  </data>
+  <data name="niggli_mineral_Pf" xml:space="preserve">
+    <value>Перовскит</value>
+  </data>
+  <data name="niggli_mineral_Plag" xml:space="preserve">
+    <value>Плагиоклаз</value>
+  </data>
+  <data name="niggli_mineral_Py" xml:space="preserve">
+    <value>Пирит</value>
+  </data>
+  <data name="niggli_mineral_Q" xml:space="preserve">
+    <value>Кварц</value>
+  </data>
+  <data name="niggli_mineral_Ru" xml:space="preserve">
+    <value>Рутил</value>
+  </data>
+  <data name="niggli_mineral_Sum" xml:space="preserve">
+    <value>Сумма</value>
+  </data>
+  <data name="niggli_mineral_Tn" xml:space="preserve">
+    <value>Титанит (Сфен)</value>
+  </data>
+  <data name="niggli_mineral_Wo" xml:space="preserve">
+    <value>Волластонит</value>
+  </data>
+  <data name="niggli_msg_calc_all_success" xml:space="preserve">
+    <value>Все образцы ({0}) успешно рассчитаны.</value>
+  </data>
+  <data name="niggli_msg_calc_partial_success" xml:space="preserve">
+    <value>Расчёт завершён: успешно {0}, с ошибкой {1}.</value>
+  </data>
+  <data name="niggli_msg_data_cleared" xml:space="preserve">
+    <value>Данные очищены.</value>
+  </data>
+  <data name="niggli_msg_export_failed" xml:space="preserve">
+    <value>Ошибка экспорта: {0}</value>
+  </data>
+  <data name="niggli_msg_export_success" xml:space="preserve">
+    <value>Результаты экспортированы в: {0}</value>
+  </data>
+  <data name="niggli_msg_no_data" xml:space="preserve">
+    <value>Не обнаружено корректных данных анализов петрогенных элементов</value>
+  </data>
+  <data name="niggli_param_al" xml:space="preserve">
+    <value>al (Глиноземистый индекс)</value>
+  </data>
+  <data name="niggli_param_alk" xml:space="preserve">
+    <value>alk (Щелочной индекс)</value>
+  </data>
+  <data name="niggli_param_c" xml:space="preserve">
+    <value>c (Кальциевый индекс)</value>
+  </data>
+  <data name="niggli_param_fm" xml:space="preserve">
+    <value>fm (Железомагнезиальный индекс)</value>
+  </data>
+  <data name="niggli_param_k" xml:space="preserve">
+    <value>k (Калиевое отношение K₂O/(Na₂O+K₂O))</value>
+  </data>
+  <data name="niggli_param_mg" xml:space="preserve">
+    <value>mg (Магнезиальное отношение MgO/(MgO+FeO...))</value>
+  </data>
+  <data name="niggli_param_p" xml:space="preserve">
+    <value>p (Фосфорный индекс)</value>
+  </data>
+  <data name="niggli_param_qz" xml:space="preserve">
+    <value>qz (Кварцевый индекс)</value>
+  </data>
+  <data name="niggli_param_si" xml:space="preserve">
+    <value>si (Кремниевый индекс)</value>
+  </data>
+  <data name="niggli_param_ti" xml:space="preserve">
+    <value>ti (Титановый индекс)</value>
+  </data>
+  <data name="niggli_references_gcdkit" xml:space="preserve">
+    <value>• Основная логика алгоритма основана на открытом наборе геохимических инструментов GCDkit (Geochemical Data Toolkit), переработана и оптимизирована на C# с использованием современной объектно-ориентированной архитектуры и исправленными путями реакций десилификации (https://www.gcdkit.org/).</value>
+  </data>
+  <data name="niggli_references_title" xml:space="preserve">
+    <value>Основные литературные источники</value>
+  </data>
+  <data name="niggli_row_format" xml:space="preserve">
+    <value>Строка {0}</value>
+  </data>
+  <data name="niggli_select_row_hint" xml:space="preserve">
+    <value>Выберите строку для просмотра деталей расчёта</value>
+  </data>
+  <data name="niggli_sheet_name" xml:space="preserve">
+    <value>Niggli</value>
+  </data>
+  <data name="niggli_silica_oversaturated" xml:space="preserve">
+    <value>Перенасыщенное</value>
+  </data>
+  <data name="niggli_silica_saturated" xml:space="preserve">
+    <value>Насыщенное</value>
+  </data>
+  <data name="niggli_silica_undersaturated" xml:space="preserve">
+    <value>Ненасыщенное</value>
+  </data>
+  <data name="niggli_step1_detail" xml:space="preserve">
+    <value>Весовые проценты оксидов делятся на молярную массу и умножаются на число катионов, нормализуясь к сумме 100%. Общее железо (FeOT) можно разделить с помощью настраиваемого соотношения Fe3+/Fe (по умолчанию 0.15).</value>
+  </data>
+  <data name="niggli_step1_hy_ol_done" xml:space="preserve">
+    <value>Десилификация Шаг 1: Гиперстен -&gt; Оливин (Hy → Ol), израсходовано {0}% Hy, дефицит кремния полностью устранен</value>
+  </data>
+  <data name="niggli_step1_hy_ol_part" xml:space="preserve">
+    <value>Десилификация Шаг 1: Гиперстен -&gt; Оливин (Hy → Ol), весь Hy ({0}%) превращен в Ol, остаточный дефицит D = {1}%</value>
+  </data>
+  <data name="niggli_step1_title" xml:space="preserve">
+    <value>Милликатионы и 100% нормализация</value>
+  </data>
+  <data name="niggli_step2_detail" xml:space="preserve">
+    <value>Расчёт параметров si, al, fm, c, alk, ti, p, k, mg и кварцевого числа qz.</value>
+  </data>
+  <data name="niggli_step2_title" xml:space="preserve">
+    <value>Классические числа Ниггли</value>
+  </data>
+  <data name="niggli_step2_tn_pf_done" xml:space="preserve">
+    <value>Десилификация Шаг 2: Титанит -&gt; Перовскит (Tn → Pf), израсходовано {0}% Tn, дефицит кремния полностью устранен</value>
+  </data>
+  <data name="niggli_step2_tn_pf_part" xml:space="preserve">
+    <value>Десилификация Шаг 2: Титанит -&gt; Перовскит (Tn → Pf), весь Tn превращен, остаточный дефицит D = {0}%</value>
+  </data>
+  <data name="niggli_step3_ab_ne_done" xml:space="preserve">
+    <value>Десилификация Шаг 3: Альбит -&gt; Нефелин (Ab → Ne), израсходовано {0}% Ab, дефицит кремния полностью устранен</value>
+  </data>
+  <data name="niggli_step3_ab_ne_part" xml:space="preserve">
+    <value>Десилификация Шаг 3: Альбит -&gt; Нефелин (Ab → Ne), весь Ab превращен, остаточный дефицит D = {0}%</value>
+  </data>
+  <data name="niggli_step3_detail" xml:space="preserve">
+    <value>Распределение кальцита (Cc), апатита (Ap), флюорита (Fr), пирита (Py) и ильменита (Il).</value>
+  </data>
+  <data name="niggli_step3_title" xml:space="preserve">
+    <value>Акцессорные минералы, карбонаты и сульфиды</value>
+  </data>
+  <data name="niggli_step4_detail" xml:space="preserve">
+    <value>Формирование ортоклаза (Or), альбита (Ab), анортита (An) и акмита (Ac).</value>
+  </data>
+  <data name="niggli_step4_or_lc_done" xml:space="preserve">
+    <value>Десилификация Шаг 4: Ортоклаз -&gt; Лейцит (Or → Lc), израсходовано {0}% Or, дефицит кремния полностью устранен</value>
+  </data>
+  <data name="niggli_step4_or_lc_part" xml:space="preserve">
+    <value>Десилификация Шаг 4: Ортоклаз -&gt; Лейцит (Or → Lc), весь Or превращен, остаточный дефицит D = {0}%</value>
+  </data>
+  <data name="niggli_step4_title" xml:space="preserve">
+    <value>Щелочные полевые шпаты, плагиоклаз и силикаты</value>
+  </data>
+  <data name="niggli_step5_detail" xml:space="preserve">
+    <value>Распределение магнетита (Mt), гематита (Hm), волластонита (Wo), энстатита (En), ферросилита (Fs) и диопсида (Di).</value>
+  </data>
+  <data name="niggli_step5_lc_kp_done" xml:space="preserve">
+    <value>Десилификация Шаг 5: Лейцит -&gt; Кальсилит (Lc → Kp), израсходовано {0}% Lc, дефицит кремния полностью устранен</value>
+  </data>
+  <data name="niggli_step5_lc_kp_part" xml:space="preserve">
+    <value>Десилификация Шаг 5: Лейцит -&gt; Кальсилит (Lc → Kp), весь Lc превращен, остаточный дефицит D = {0}%</value>
+  </data>
+  <data name="niggli_step5_title" xml:space="preserve">
+    <value>Оксиды железа и пироксены</value>
+  </data>
+  <data name="niggli_step6_detail" xml:space="preserve">
+    <value>При дефиците SiO2 D = -Si: ① Hy -&gt; Ol, ② Tn -&gt; Pf, ③ Ab -&gt; Ne, ④ Or -&gt; Lc, ⑤ Lc -&gt; Kp, ⑥ Wo -&gt; Cs, ⑦ Di -&gt; Cs + Ol.</value>
+  </data>
+  <data name="niggli_step6_title" xml:space="preserve">
+    <value>Баланс кремнезёма и 7-стадийная десилификация</value>
+  </data>
+  <data name="niggli_step6_wo_cs_done" xml:space="preserve">
+    <value>Десилификация Шаг 6: Волластонит -&gt; Ранкинит (Wo → Cs), израсходовано {0}% Wo, дефицит кремния полностью устранен</value>
+  </data>
+  <data name="niggli_step6_wo_cs_part" xml:space="preserve">
+    <value>Десилификация Шаг 6: Волластонит -&gt; Ранкинит (Wo → Cs), весь Wo превращен, остаточный дефицит D = {0}%</value>
+  </data>
+  <data name="niggli_step7_di_cs_ol_done" xml:space="preserve">
+    <value>Десилификация Шаг 7: Диопсид -&gt; Ранкинит + Оливин (Di → Cs + Ol), израсходовано {0}% Di, дефицит кремния полностью устранен</value>
+  </data>
+  <data name="niggli_step7_di_cs_ol_part" xml:space="preserve">
+    <value>Десилификация Шаг 7: Диопсид -&gt; Ранкинит + Оливин (Di → Cs + Ol), весь Di превращен</value>
+  </data>
+  <data name="niggli_step_deficit_init" xml:space="preserve">
+    <value>Обнаружен дефицит кремния: начальный дефицит D = {0}%</value>
+  </data>
+  <data name="niggli_step_oversaturated" xml:space="preserve">
+    <value>Пересыщение кремнием: образован кварц Q = {0}%</value>
+  </data>
+  <data name="niggli_norm" xml:space="preserve">
+    <value>Норма Ниггли</value>
+  </data>
+  <data name="niggli_title" xml:space="preserve">
+    <value>Расчёт нормы Ниггли</value>
+  </data>
+  <data name="niggli_tooltip_calculate" xml:space="preserve">
+    <value>Выполнить расчёт нормы Ниггли</value>
+  </data>
+  <data name="niggli_tooltip_clear" xml:space="preserve">
+    <value>Очистить все входные данные и результаты</value>
+  </data>
+  <data name="niggli_tooltip_example" xml:space="preserve">
+    <value>Заполнить примерные данные (гранит, базальт, фонолит)</value>
+  </data>
+  <data name="niggli_tooltip_expand" xml:space="preserve">
+    <value>Развернуть/свернуть панель деталей расчёта</value>
+  </data>
+  <data name="niggli_tooltip_export" xml:space="preserve">
+    <value>Экспортировать результаты расчёта в CSV</value>
+  </data>
+  <data name="niggli_tooltip_help" xml:space="preserve">
+    <value>Просмотр описания катанормы Барта-Ниггли и параметров Ниггли</value>
+  </data>
+  <data name="niggli_warning_feot_estimated" xml:space="preserve">
+    <value>Степень окисления оценена по общему железу FeOT (Fe³⁺/Fe = {0})</value>
+  </data>
+  <data name="oxide_element_converter" xml:space="preserve">
+    <value>Конвертер оксид-элемент</value>
+  </data>
+  <data name="oxide_element_converter_desc" xml:space="preserve">
+    <value>Пересчёт между мас.% элемента и оксида с помощью стехиометрических коэффициентов</value>
+  </data>
+  <data name="oxide_element_converter_hint" xml:space="preserve">
+    <value>Выберите элемент или оксид, введите значение и мгновенно получите результат в другой форме.</value>
+  </data>
+  <data name="oxide_element_conv_input_label" xml:space="preserve">
+    <value>Входное значение</value>
+  </data>
+  <data name="oxide_element_conv_mode_elem_to_oxide" xml:space="preserve">
+    <value>Элемент → Оксид</value>
+  </data>
+  <data name="oxide_element_conv_mode_oxide_to_elem" xml:space="preserve">
+    <value>Оксид → Элемент</value>
+  </data>
+  <data name="oxide_element_conv_select_substance" xml:space="preserve">
+    <value>Выбор элемента / оксида</value>
+  </data>
+  <data name="oxide_element_conv_result_label" xml:space="preserve">
+    <value>Результат</value>
+  </data>
+  <data name="oxide_element_conv_factor_label" xml:space="preserve">
+    <value>Коэффициент пересчёта</value>
+  </data>
+  <data name="oxide_element_conv_mw_elem" xml:space="preserve">
+    <value>Атомная масса (г/моль)</value>
+  </data>
+  <data name="oxide_element_conv_mw_oxide" xml:space="preserve">
+    <value>Молярная масса оксида (г/моль)</value>
+  </data>
+  <data name="oxide_element_conv_formula_label" xml:space="preserve">
+    <value>Химическая формула</value>
+  </data>
+  <data name="oxide_element_conv_unit_wt_pct" xml:space="preserve">
+    <value>wt%</value>
+  </data>
+  <data name="oxide_element_conv_unit_ppm" xml:space="preserve">
+    <value>ppm</value>
+  </data>
+  <data name="oxide_element_conv_reset" xml:space="preserve">
+    <value>Сбросить</value>
+  </data>
+  <data name="oxide_element_conv_invalid_input" xml:space="preserve">
+    <value>Введите неотрицательное значение.</value>
+  </data>
+  <data name="oxide_element_conv_reference_title" xml:space="preserve">
+    <value>Справочная таблица</value>
+  </data>
+  <data name="oxide_element_conv_reference_hint" xml:space="preserve">
+    <value>Распространённые элементы и их оксиды со стехиометрическими коэффициентами пересчёта.</value>
+  </data>
+  <data name="oxide_element_conv_col_element" xml:space="preserve">
+    <value>Элемент</value>
+  </data>
+  <data name="oxide_element_conv_col_oxide" xml:space="preserve">
+    <value>Оксид</value>
+  </data>
+  <data name="oxide_element_conv_col_factor_to_oxide" xml:space="preserve">
+    <value>→ Фактор оксида</value>
+  </data>
+  <data name="oxide_element_conv_col_factor_to_elem" xml:space="preserve">
+    <value>→ Фактор элемента</value>
+  </data>
+  <data name="geoscience_unit_converter" xml:space="preserve">
+    <value>Быстрый конвертер геологических единиц</value>
+  </data>
+  <data name="geoscience_unit_converter_desc" xml:space="preserve">
+    <value>Интерактивная панель пересчета содержаний, давления, микрошкалы, температуры и возраста</value>
+  </data>
+  <data name="geoscience_unit_conv_hint" xml:space="preserve">
+    <value>Выберите категорию, введите значение и исходную единицу — все величины пересчитываются синхронно. Нажмите на строку для копирования или смены базы.</value>
+  </data>
+  <data name="geoscience_unit_conv_category" xml:space="preserve">
+    <value>Категория</value>
+  </data>
+  <data name="geoscience_unit_conv_cat_grade" xml:space="preserve">
+    <value>Содержание / Концентрация</value>
+  </data>
+  <data name="geoscience_unit_conv_cat_pressure" xml:space="preserve">
+    <value>Давление / Напряжение</value>
+  </data>
+  <data name="geoscience_unit_conv_cat_scale" xml:space="preserve">
+    <value>Микрошкала</value>
+  </data>
+  <data name="geoscience_unit_conv_cat_temperature" xml:space="preserve">
+    <value>Температура</value>
+  </data>
+  <data name="geoscience_unit_conv_cat_time" xml:space="preserve">
+    <value>Изотопный возраст</value>
+  </data>
+  <data name="geoscience_unit_conv_input_value" xml:space="preserve">
+    <value>Входное значение</value>
+  </data>
+  <data name="geoscience_unit_conv_source_unit" xml:space="preserve">
+    <value>Базовая единица</value>
+  </data>
+  <data name="geoscience_unit_conv_presets" xml:space="preserve">
+    <value>Типовые геологические ориентиры</value>
+  </data>
+  <data name="geoscience_unit_conv_all_results" xml:space="preserve">
+    <value>Сводная панель пересчета</value>
+  </data>
+  <data name="geoscience_unit_conv_set_as_base" xml:space="preserve">
+    <value>Сделать базовой</value>
+  </data>
+  <data name="geoscience_unit_conv_copy" xml:space="preserve">
+    <value>Копировать</value>
+  </data>
+  <data name="geoscience_unit_conv_reset" xml:space="preserve">
+    <value>Сброс</value>
+  </data>
+  <data name="geoscience_unit_conv_base_badge" xml:space="preserve">
+    <value>БАЗА</value>
+  </data>
+  <data name="geoscience_unit_conv_copied_val" xml:space="preserve">
+    <value>Скопировано {0} {1}</value>
+  </data>
+  <data name="geo_u_g_t_name" xml:space="preserve">
+    <value>Грамм на тонну (г/т)</value>
+  </data>
+  <data name="geo_u_g_t_desc" xml:space="preserve">
+    <value>Основная единица содержания в рудной геологии (1 г/т = 1 ppm = 1 мг/кг)</value>
+  </data>
+  <data name="geo_u_ppm_name" xml:space="preserve">
+    <value>Миллионная доля (ppm)</value>
+  </data>
+  <data name="geo_u_ppm_desc" xml:space="preserve">
+    <value>Массовая концентрация микроэлементов (1 ppm = 10⁻⁶ = 1 г/т)</value>
+  </data>
+  <data name="geo_u_wt_pct_name" xml:space="preserve">
+    <value>Массовый процент (мас.%)</value>
+  </data>
+  <data name="geo_u_wt_pct_desc" xml:space="preserve">
+    <value>Главные петрогенные элементы и богатые руды (1 мас.% = 10 000 г/т)</value>
+  </data>
+  <data name="geo_u_ppb_name" xml:space="preserve">
+    <value>Миллиардная доля (ppb)</value>
+  </data>
+  <data name="geo_u_ppb_desc" xml:space="preserve">
+    <value>Ультраредкие элементы и платиноиды (ЭПГ) (1 ppb = 10⁻⁹ = 0,001 г/т)</value>
+  </data>
+  <data name="geo_u_oz_t_name" xml:space="preserve">
+    <value>Тройская унция / метр. т</value>
+  </data>
+  <data name="geo_u_oz_t_desc" xml:space="preserve">
+    <value>Тройская унция на метрическую тонну (1 troy oz ≈ 31,1035 г/т)</value>
+  </data>
+  <data name="geo_u_oz_st_name" xml:space="preserve">
+    <value>Тройская унция / короткая т (opt)</value>
+  </data>
+  <data name="geo_u_oz_st_desc" xml:space="preserve">
+    <value>Североамериканский стандарт (1 short ton ≈ 0,907 т, 1 opt ≈ 34,2857 г/т)</value>
+  </data>
+  <data name="geo_u_gpa_name" xml:space="preserve">
+    <value>Гигапаскаль (ГПа)</value>
+  </data>
+  <data name="geo_u_gpa_desc" xml:space="preserve">
+    <value>Высокие давления мантии и глубокой литосферы (1 ГПа = 10 кбар = 1 000 МПа)</value>
+  </data>
+  <data name="geo_u_kbar_name" xml:space="preserve">
+    <value>Килобар (кбар)</value>
+  </data>
+  <data name="geo_u_kbar_desc" xml:space="preserve">
+    <value>Классическая единица метаморфической петрологии (1 кбар = 100 МПа = 0,1 ГПа)</value>
+  </data>
+  <data name="geo_u_mpa_name" xml:space="preserve">
+    <value>Мегапаскаль (МПа)</value>
+  </data>
+  <data name="geo_u_mpa_desc" xml:space="preserve">
+    <value>Тектонические напряжения и гидростатическое давление (1 МПа = 10 бар = 10⁶ Па)</value>
+  </data>
+  <data name="geo_u_bar_name" xml:space="preserve">
+    <value>Бар</value>
+  </data>
+  <data name="geo_u_bar_desc" xml:space="preserve">
+    <value>Термодинамическое давление газов (1 бар = 0,1 МПа = 100 кПа)</value>
+  </data>
+  <data name="geo_u_atm_name" xml:space="preserve">
+    <value>Стандартная атмосфера (атм)</value>
+  </data>
+  <data name="geo_u_atm_desc" xml:space="preserve">
+    <value>Физическая нормальная атмосфера (1 атм = 101,325 кПа = 0,101325 МПа)</value>
+  </data>
+  <data name="geo_u_psi_name" xml:space="preserve">
+    <value>Фунт на кв. дюйм (psi)</value>
+  </data>
+  <data name="geo_u_psi_desc" xml:space="preserve">
+    <value>Пластовое давление в бурении и нефтегазовом деле (1 МПа ≈ 145,038 psi)</value>
+  </data>
+  <data name="geo_u_mm_name" xml:space="preserve">
+    <value>Миллиметр (мм)</value>
+  </data>
+  <data name="geo_u_mm_desc" xml:space="preserve">
+    <value>Вкрапленники и макроскопический масштаб шлифа (1 мм = 1 000 мкм)</value>
+  </data>
+  <data name="geo_u_um_name" xml:space="preserve">
+    <value>Микрометр (мкм)</value>
+  </data>
+  <data name="geo_u_um_desc" xml:space="preserve">
+    <value>Диаметр зонда микроанализатора (EPMA) и СЭМ (1 мкм = 1 000 нм)</value>
+  </data>
+  <data name="geo_u_nm_name" xml:space="preserve">
+    <value>Нанометр (нм)</value>
+  </data>
+  <data name="geo_u_nm_desc" xml:space="preserve">
+    <value>Межслоевые пространства глин и наночастицы (1 нм = 10 Å = 0,001 мкм)</value>
+  </data>
+  <data name="geo_u_angstrom_name" xml:space="preserve">
+    <value>Ангстрем (Å)</value>
+  </data>
+  <data name="geo_u_angstrom_desc" xml:space="preserve">
+    <value>Параметры кристаллической решетки и длина волны рентгена (1 Å = 0,1 нм = 10⁻⁴ мкм)</value>
+  </data>
+  <data name="geo_u_pm_name" xml:space="preserve">
+    <value>Пикометр (пм)</value>
+  </data>
+  <data name="geo_u_pm_desc" xml:space="preserve">
+    <value>Эффективные ионные радиусы и атомные орбитали (1 Å = 100 пм, 1 пм = 10⁻⁶ мкм)</value>
+  </data>
+  <data name="geo_u_celsius_name" xml:space="preserve">
+    <value>Градус Цельсия (℃)</value>
+  </data>
+  <data name="geo_u_celsius_desc" xml:space="preserve">
+    <value>Геотермический градиент и общепринятая температура</value>
+  </data>
+  <data name="geo_u_kelvin_name" xml:space="preserve">
+    <value>Кельвин (K)</value>
+  </data>
+  <data name="geo_u_kelvin_desc" xml:space="preserve">
+    <value>Уравнения состояния и абсолютная термодинамическая шкала (0 ℃ = 273,15 K)</value>
+  </data>
+  <data name="geo_u_fahrenheit_name" xml:space="preserve">
+    <value>Градус Фаренгейта (℉)</value>
+  </data>
+  <data name="geo_u_fahrenheit_desc" xml:space="preserve">
+    <value>Шкала пластовых температур в нефтегазовом деле США (℉ = ℃ × 1,8 + 32)</value>
+  </data>
+  <data name="geo_u_ga_name" xml:space="preserve">
+    <value>Миллиарды лет (Ga / млрд лет)</value>
+  </data>
+  <data name="geo_u_ga_desc" xml:space="preserve">
+    <value>Докембрий, глубокое время и ранняя Земля (1 Ga = 1 000 Ma = 10⁹ лет)</value>
+  </data>
+  <data name="geo_u_ma_name" xml:space="preserve">
+    <value>Миллионы лет (Ma / млн лет)</value>
+  </data>
+  <data name="geo_u_ma_desc" xml:space="preserve">
+    <value>Фанерозой и радиологическое датирование (1 Ma = 10⁶ лет)</value>
+  </data>
+  <data name="geo_u_ka_name" xml:space="preserve">
+    <value>Тысячи лет (ka / тыс. лет)</value>
+  </data>
+  <data name="geo_u_ka_desc" xml:space="preserve">
+    <value>Четвертичные оледенения и датирование по ¹⁴C / ОСЛ (1 ka = 1 000 лет = 0,001 Ma)</value>
+  </data>
+  <data name="geo_u_yr_name" xml:space="preserve">
+    <value>Годы (yr / лет)</value>
+  </data>
+  <data name="geo_u_yr_desc" xml:space="preserve">
+    <value>Абсолютное календарное время (1 Ma = 1 000 000 лет)</value>
+  </data>
+  <data name="geo_p_gold_cutoff_title" xml:space="preserve">
+    <value>Бортовое содержание Au</value>
+  </data>
+  <data name="geo_p_gold_cutoff_note" xml:space="preserve">
+    <value>Типовой экономический предел рентабельной добычи золота</value>
+  </data>
+  <data name="geo_p_porphyry_cu_title" xml:space="preserve">
+    <value>Порфировое Cu месторождение</value>
+  </data>
+  <data name="geo_p_porphyry_cu_note" xml:space="preserve">
+    <value>Среднее промышленное содержание гигантских порфировых руд (~5000 ppm)</value>
+  </data>
+  <data name="geo_p_pge_au_title" xml:space="preserve">
+    <value>ЭПГ / Au ультраследы</value>
+  </data>
+  <data name="geo_p_pge_au_note" xml:space="preserve">
+    <value>Типовая распространенность платиноидов в мантийных перидотитах</value>
+  </data>
+  <data name="geo_p_high_grade_ore_title" xml:space="preserve">
+    <value>Богатая руда (1 opt)</value>
+  </data>
+  <data name="geo_p_high_grade_ore_note" xml:space="preserve">
+    <value>Американский показатель в унциях на короткую тонну (≈34,29 г/t)</value>
+  </data>
+  <data name="geo_p_fluid_press_title" xml:space="preserve">
+    <value>Давление флюида на 1 км</value>
+  </data>
+  <data name="geo_p_fluid_press_note" xml:space="preserve">
+    <value>Литостатическое и поровое давление в верхней коре</value>
+  </data>
+  <data name="geo_p_moho_press_title" xml:space="preserve">
+    <value>Нижняя кора / Мохо</value>
+  </data>
+  <data name="geo_p_moho_press_note" xml:space="preserve">
+    <value>Характерное давление у подошвы континентальной коры (~10 кбар)</value>
+  </data>
+  <data name="geo_p_trans_zone_title" xml:space="preserve">
+    <value>Переходная зона мантии</value>
+  </data>
+  <data name="geo_p_trans_zone_note" xml:space="preserve">
+    <value>Давление фазового перехода оливина на глубине 410 км</value>
+  </data>
+  <data name="geo_p_std_atm_title" xml:space="preserve">
+    <value>Нормальное атмосферное давление</value>
+  </data>
+  <data name="geo_p_std_atm_note" xml:space="preserve">
+    <value>101,325 кПа, стандартное лабораторное состояние</value>
+  </data>
+  <data name="geo_p_phenocryst_title" xml:space="preserve">
+    <value>Размер порфиробласта</value>
+  </data>
+  <data name="geo_p_phenocryst_note" xml:space="preserve">
+    <value>Стандартное поле зрения поляризационного микроскопа (1000 мкм)</value>
+  </data>
+  <data name="geo_p_epma_beam_title" xml:space="preserve">
+    <value>Диаметр пучка EPMA</value>
+  </data>
+  <data name="geo_p_epma_beam_note" xml:space="preserve">
+    <value>Фокусированный пучок электронного микрозонда для количественного анализа</value>
+  </data>
+  <data name="geo_p_sem_nano_title" xml:space="preserve">
+    <value>Нанокристаллы в СЭМ</value>
+  </data>
+  <data name="geo_p_sem_nano_note" xml:space="preserve">
+    <value>Глинистые минералы и наночастицы под сканирующим микроскопом</value>
+  </data>
+  <data name="geo_p_cu_ka_title" xml:space="preserve">
+    <value>Длина волны Cu Kα</value>
+  </data>
+  <data name="geo_p_cu_ka_note" xml:space="preserve">
+    <value>Характеристическая длина волны рентгеновского излучения Cu-Kα</value>
+  </data>
+  <data name="geo_p_surface_temp_title" xml:space="preserve">
+    <value>Комнатная температура</value>
+  </data>
+  <data name="geo_p_surface_temp_note" xml:space="preserve">
+    <value>Лабораторные нормальные условия (298,15 K)</value>
+  </data>
+  <data name="geo_p_hydrothermal_title" xml:space="preserve">
+    <value>Гидротермальный флюид</value>
+  </data>
+  <data name="geo_p_hydrothermal_note" xml:space="preserve">
+    <value>Температура гомогенизации флюидных включений кварц-золотых жил</value>
+  </data>
+  <data name="geo_p_solidus_title" xml:space="preserve">
+    <value>Солидус гранита</value>
+  </data>
+  <data name="geo_p_solidus_note" xml:space="preserve">
+    <value>Температурная граница солидуса водонасыщенной кислой магмы</value>
+  </data>
+  <data name="geo_p_earth_age_title" xml:space="preserve">
+    <value>Возраст Земли</value>
+  </data>
+  <data name="geo_p_earth_age_note" xml:space="preserve">
+    <value>Возраст Земли, установленный по свинцовым изотопам метеоритов</value>
+  </data>
+  <data name="geo_p_cambrian_base_title" xml:space="preserve">
+    <value>Подошва кембрия</value>
+  </data>
+  <data name="geo_p_cambrian_base_note" xml:space="preserve">
+    <value>Начало фанерозоя и кембрийского взрыва биоразнообразия (GSSP)</value>
+  </data>
+  <data name="geo_p_k_pg_boundary_title" xml:space="preserve">
+    <value>Граница K-Pg</value>
+  </data>
+  <data name="geo_p_k_pg_boundary_note" xml:space="preserve">
+    <value>Вымирание динозавров и Чиксулубский метеоритный импакт</value>
+  </data>
+  <data name="geo_p_quaternary_base_title" xml:space="preserve">
+    <value>Подошва четвертичного периода</value>
+  </data>
+  <data name="geo_p_quaternary_base_note" xml:space="preserve">
+    <value>Начало плейстоценовых оледенений и эволюции человека</value>
   </data>
 </root>

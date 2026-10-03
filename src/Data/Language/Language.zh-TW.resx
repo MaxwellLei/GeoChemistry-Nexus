@@ -138,9 +138,6 @@
   <data name="unfavorite" xml:space="preserve">
     <value>取消收藏</value>
   </data>
-  <data name="select" xml:space="preserve">
-    <value>選擇</value>
-  </data>
   <data name="cipw_col_alumina_state" xml:space="preserve">
     <value>Al2O3 狀態</value>
   </data>
@@ -215,12 +212,6 @@
   </data>
   <data name="script_return_value_error_must_be_array" xml:space="preserve">
     <value>腳本回傳值錯誤：腳本必須回傳一個陣列。</value>
-  </data>
-  <data name="MarkerShape_VerticalBar" xml:space="preserve">
-    <value>豎線</value>
-  </data>
-  <data name="MarkerShape_OpenDiamond" xml:space="preserve">
-    <value>空心菱形</value>
   </data>
   <data name="geo_script_javascript" xml:space="preserve">
     <value>JavaScript 指令碼</value>
@@ -539,9 +530,6 @@
   <data name="PlotTitle" xml:space="preserve">
     <value>繪圖標題</value>
   </data>
-  <data name="MarkerShape_FilledTriangleUp" xml:space="preserve">
-    <value>實心上三角形</value>
-  </data>
   <data name="geo_btn_save_export_zip" xml:space="preserve">
     <value>儲存並匯出套件</value>
   </data>
@@ -558,7 +546,7 @@
     <value>未找到 Inkscape 環境變數，請選擇開啟程式。</value>
   </data>
   <data name="cipw_select_row_hint" xml:space="preserve">
-    <value>選擇資料列檢視計算診斷詳情</value>
+    <value>選擇資料列檢視計算詳情</value>
   </data>
   <data name="loading_drawing_module_ellipsis" xml:space="preserve">
     <value>正在載入繪圖模組...</value>
@@ -575,17 +563,8 @@
   <data name="Language_" xml:space="preserve">
     <value>語言</value>
   </data>
-  <data name="MarkerShape_HashTag" xml:space="preserve">
-    <value>井號</value>
-  </data>
   <data name="cipw_btn_calculate" xml:space="preserve">
     <value>執行計算</value>
-  </data>
-  <data name="MarkerShape_OpenCircleWithDot" xml:space="preserve">
-    <value>空心圓加點</value>
-  </data>
-  <data name="MarkerShape_OpenCircleWithEks" xml:space="preserve">
-    <value>空心圓加叉</value>
   </data>
   <data name="cipw_diag_warnings" xml:space="preserve">
     <value>── 警告 ──</value>
@@ -610,9 +589,6 @@
   </data>
   <data name="geo_msg_test_input_invalid" xml:space="preserve">
     <value>測試輸入無效，請使用逗號分隔的數字。</value>
-  </data>
-  <data name="MarkerShape_FilledTriangleDown" xml:space="preserve">
-    <value>實心下三角形</value>
   </data>
   <data name="missing_translation_warning" xml:space="preserve">
     <value>翻譯缺失：部分文字缺少多語言翻譯。</value>
@@ -682,9 +658,6 @@
   </data>
   <data name="export_image" xml:space="preserve">
     <value>匯出圖片</value>
-  </data>
-  <data name="MarkerShape_FilledSquare" xml:space="preserve">
-    <value>實心方塊</value>
   </data>
   <data name="cipw_tooltip_example" xml:space="preserve">
     <value>填入範例資料（花崗岩、玄武岩、安山岩）</value>
@@ -781,9 +754,6 @@
   <data name="completeness_check" xml:space="preserve">
     <value>完整度檢查</value>
   </data>
-  <data name="MarkerShape_Eks" xml:space="preserve">
-    <value>X 形</value>
-  </data>
   <data name="geo_script_sample_row" xml:space="preserve">
     <value>範例列（逗號分隔）</value>
   </data>
@@ -831,9 +801,6 @@
   </data>
   <data name="geo_msg_import_invalid_format" xml:space="preserve">
     <value>自訂溫壓計檔案已損壞或未包含有效的溫壓計 JSON 檔案。</value>
-  </data>
-  <data name="MarkerShape_OpenCircleWithCross" xml:space="preserve">
-    <value>空心圓加十字</value>
   </data>
   <data name="geo_validate_formula_name_required" xml:space="preserve">
     <value>公式名稱不能為空。</value>
@@ -978,9 +945,6 @@
   <data name="Placeholder_Ternary_Title" xml:space="preserve">
     <value>新增三元相圖</value>
   </data>
-  <data name="MarkerShape_FilledCircle" xml:space="preserve">
-    <value>實心圓</value>
-  </data>
   <data name="position" xml:space="preserve">
     <value>屬性</value>
   </data>
@@ -1034,9 +998,6 @@
   </data>
   <data name="failed_to_open_widget" xml:space="preserve">
     <value>開啟組件失敗：</value>
-  </data>
-  <data name="MarkerShape_Cross" xml:space="preserve">
-    <value>十字</value>
   </data>
   <data name="geo_msg_delete_success" xml:space="preserve">
     <value>刪除成功</value>
@@ -1149,9 +1110,6 @@
   <data name="arrow" xml:space="preserve">
     <value>箭頭</value>
   </data>
-  <data name="please_select_a_widget" xml:space="preserve">
-    <value>請選擇一個組件</value>
-  </data>
   <data name="close" xml:space="preserve">
     <value>關閉</value>
   </data>
@@ -1221,12 +1179,6 @@
   <data name="all_data_cleared" xml:space="preserve">
     <value>所有資料已清除</value>
   </data>
-  <data name="Calculate" xml:space="preserve">
-    <value>計算</value>
-  </data>
-  <data name="MarkerShape_FilledDiamond" xml:space="preserve">
-    <value>實心菱形</value>
-  </data>
   <data name="export_and_tools" xml:space="preserve">
     <value>匯出/工具</value>
   </data>
@@ -1284,9 +1236,6 @@
   <data name="MessageAutoClose2" xml:space="preserve">
     <value>2 秒</value>
   </data>
-  <data name="MarkerShape_OpenTriangleUp" xml:space="preserve">
-    <value>空心上三角</value>
-  </data>
   <data name="object_deleted_successfully" xml:space="preserve">
     <value>物件已成功刪除.</value>
   </data>
@@ -1342,9 +1291,6 @@
   </data>
   <data name="startup_background_image" xml:space="preserve">
     <value>啟動背景圖片</value>
-  </data>
-  <data name="MarkerShape_HorizontalBar" xml:space="preserve">
-    <value>橫線</value>
   </data>
   <data name="cipw_step6_detail" xml:space="preserve">
     <value>分配鐵氧化物到礦物中：
@@ -1423,9 +1369,6 @@
   <data name="unsaved_template_changes_confirm" xml:space="preserve">
     <value>目前範本有未儲存的內容，是否儲存？</value>
   </data>
-  <data name="MarkerShape_OpenTriangleDown" xml:space="preserve">
-    <value>空心下三角</value>
-  </data>
   <data name="error_saving_rtf_file" xml:space="preserve">
     <value>儲存RTF檔案時出錯:</value>
   </data>
@@ -1458,9 +1401,6 @@
   </data>
   <data name="geo_tooltip_help" xml:space="preserve">
     <value>說明</value>
-  </data>
-  <data name="please_select_widget_to_add" xml:space="preserve">
-    <value>請選擇要新增的組件：</value>
   </data>
   <data name="offset_y" xml:space="preserve">
     <value>偏移量 Y</value>
@@ -1573,9 +1513,6 @@
   <data name="add_arrow" xml:space="preserve">
     <value>新增箭頭 (Ctrl+4)</value>
   </data>
-  <data name="MarkerShape_Asterisk" xml:space="preserve">
-    <value>星號</value>
-  </data>
   <data name="failed_to_delete_row" xml:space="preserve">
     <value>無法刪除列：</value>
   </data>
@@ -1586,7 +1523,7 @@
     <value>輸入欄（逗號分隔）</value>
   </data>
   <data name="cipw_diagnostic_details" xml:space="preserve">
-    <value>診斷詳情</value>
+    <value>計算詳情</value>
   </data>
   <data name="line_type_solid" xml:space="preserve">
     <value>實線</value>
@@ -1602,6 +1539,9 @@
   </data>
   <data name="delete_object" xml:space="preserve">
     <value>刪除物件 (Delete)</value>
+  </data>
+  <data name="cipw_norm" xml:space="preserve">
+    <value>CIPW 標準礦物計算</value>
   </data>
   <data name="cipw_title" xml:space="preserve">
     <value>CIPW 標準礦物計算</value>
@@ -1718,9 +1658,6 @@
   </data>
   <data name="diagram_template_corrupted_or_invalid" xml:space="preserve">
     <value>圖解範本檔案已損壞或未包含有效的圖解範本 JSON 檔案。</value>
-  </data>
-  <data name="MarkerShape_OpenCircle" xml:space="preserve">
-    <value>空心圓</value>
   </data>
   <data name="linear" xml:space="preserve">
     <value>線性</value>
@@ -1983,14 +1920,8 @@
   <data name="coordinate_positioning" xml:space="preserve">
     <value>座標定位</value>
   </data>
-  <data name="geo_msg_already_latest" xml:space="preserve">
-    <value>已是最新版本</value>
-  </data>
   <data name="cipw_step3_title" xml:space="preserve">
     <value>形成副礦物</value>
-  </data>
-  <data name="geo_msg_update_available" xml:space="preserve">
-    <value>有 {0} 個地質溫壓計可更新</value>
   </data>
   <data name="multiple_data_series_hint" xml:space="preserve">
     <value>多個資料系列請用逗號分隔，例如：SiO2,TiO2</value>
@@ -2015,9 +1946,6 @@
   </data>
   <data name="geo_msg_check_update_failed" xml:space="preserve">
     <value>檢查更新失敗</value>
-  </data>
-  <data name="MarkerShape_OpenSquare" xml:space="preserve">
-    <value>空心方塊</value>
   </data>
   <data name="script_not_defined_in_template" xml:space="preserve">
     <value>圖解範本中未定義腳本</value>
@@ -4345,5 +4273,864 @@
   </data>
   <data name="unhandled_exception_occurred" xml:space="preserve">
     <value>應用程式發生未處理錯誤：</value>
+  </data>
+  <data name="add_widget_subtitle" xml:space="preserve">
+    <value>探索並擴展主頁地球化學工具庫</value>
+  </data>
+  <data name="search_widgets_hint" xml:space="preserve">
+    <value>搜尋小組件名稱或功能...</value>
+  </data>
+  <data name="no_matching_widgets" xml:space="preserve">
+    <value>未找到相符的小組件</value>
+  </data>
+  <data name="add_widget_tip" xml:space="preserve">
+    <value>提示：新增後可直接在主頁點擊使用，或按右鍵進行移除</value>
+  </data>
+  <data name="cancel_add" xml:space="preserve">
+    <value>取消新增</value>
+  </data>
+  <data name="added" xml:space="preserve">
+    <value>已新增</value>
+  </data>
+  <data name="done" xml:space="preserve">
+    <value>完成</value>
+  </data>
+  <data name="chronostrat_navigator_widget" xml:space="preserve">
+    <value>年代地層速查卡</value>
+  </data>
+  <data name="chronostrat_navigator_widget_desc" xml:space="preserve">
+    <value>基於 ICS 國際地質年代表的互動速查工具：按年齡反查地層、下鑽探索層級體系、取得 IUGS 官方配色方案。</value>
+  </data>
+  <data name="chronostrat_age_lookup_label" xml:space="preserve">
+    <value>年齡反查</value>
+  </data>
+  <data name="chronostrat_lookup_btn" xml:space="preserve">
+    <value>查詢</value>
+  </data>
+  <data name="chronostrat_search_hint" xml:space="preserve">
+    <value>搜尋地質年代單元...</value>
+  </data>
+  <data name="chronostrat_reset" xml:space="preserve">
+    <value>重設</value>
+  </data>
+  <data name="chronostrat_age_result_label" xml:space="preserve">
+    <value>年齡反查結果</value>
+  </data>
+  <data name="chronostrat_click_hint" xml:space="preserve">
+    <value>點選路徑中的任意單元檢視詳細資訊</value>
+  </data>
+  <data name="chronostrat_search_results" xml:space="preserve">
+    <value>搜尋結果</value>
+  </data>
+  <data name="chronostrat_select_hint" xml:space="preserve">
+    <value>從左側清單選擇地質年代單元以檢視詳細資訊</value>
+  </data>
+  <data name="chronostrat_boundary_label" xml:space="preserve">
+    <value>年代界線</value>
+  </data>
+  <data name="chronostrat_start_label" xml:space="preserve">
+    <value>底界（起始）</value>
+  </data>
+  <data name="chronostrat_end_label" xml:space="preserve">
+    <value>頂界（終止）</value>
+  </data>
+  <data name="chronostrat_duration_label" xml:space="preserve">
+    <value>持續時長</value>
+  </data>
+  <data name="chronostrat_gssp_ratified" xml:space="preserve">
+    <value>已批准 GSSP 全球層型剖面和點</value>
+  </data>
+  <data name="chronostrat_gssp_desc" xml:space="preserve">
+    <value>該單元底界已獲國際地層委員會正式批准，設立金釘子（GSSP）。</value>
+  </data>
+  <data name="chronostrat_color_label" xml:space="preserve">
+    <value>IUGS 官方配色</value>
+  </data>
+  <data name="chronostrat_copy_hex" xml:space="preserve">
+    <value>複製 HEX</value>
+  </data>
+  <data name="chronostrat_copy_rgb" xml:space="preserve">
+    <value>複製 RGB</value>
+  </data>
+  <data name="chronostrat_citation_label" xml:space="preserve">
+    <value>標準引用格式</value>
+  </data>
+  <data name="chronostrat_copy_citation" xml:space="preserve">
+    <value>複製</value>
+  </data>
+  <data name="chronostrat_children_label" xml:space="preserve">
+    <value>子級年代單元</value>
+  </data>
+  <data name="chronostrat_chart_tree_title" xml:space="preserve">
+    <value>年表層級樹</value>
+  </data>
+  <data name="chronostrat_expand_period" xml:space="preserve">
+    <value>展開至紀</value>
+  </data>
+  <data name="chronostrat_expand_all" xml:space="preserve">
+    <value>全部展開</value>
+  </data>
+  <data name="chronostrat_collapse_all" xml:space="preserve">
+    <value>全部摺疊</value>
+  </data>
+  <data name="chronostrat_source_label" xml:space="preserve">
+    <value>開源資料倉儲：</value>
+  </data>
+  <data name="niggli_alumina_metaluminous" xml:space="preserve">
+    <value>準鋁質</value>
+  </data>
+  <data name="niggli_alumina_peralkaline" xml:space="preserve">
+    <value>過鹼質</value>
+  </data>
+  <data name="niggli_alumina_peraluminous" xml:space="preserve">
+    <value>過鋁質</value>
+  </data>
+  <data name="niggli_btn_calculate" xml:space="preserve">
+    <value>執行計算</value>
+  </data>
+  <data name="niggli_btn_cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="niggli_btn_clear" xml:space="preserve">
+    <value>清除</value>
+  </data>
+  <data name="niggli_btn_close" xml:space="preserve">
+    <value>關閉</value>
+  </data>
+  <data name="niggli_btn_confirm_clear" xml:space="preserve">
+    <value>確認清除</value>
+  </data>
+  <data name="niggli_btn_example" xml:space="preserve">
+    <value>範例</value>
+  </data>
+  <data name="niggli_btn_export" xml:space="preserve">
+    <value>匯出</value>
+  </data>
+  <data name="niggli_btn_help" xml:space="preserve">
+    <value>說明</value>
+  </data>
+  <data name="niggli_col_alumina_state" xml:space="preserve">
+    <value>鋁飽和狀態</value>
+  </data>
+  <data name="niggli_col_cation_sum" xml:space="preserve">
+    <value>礦物總和</value>
+  </data>
+  <data name="niggli_col_sample" xml:space="preserve">
+    <value>樣品</value>
+  </data>
+  <data name="niggli_col_silica_saturation" xml:space="preserve">
+    <value>矽飽和狀態</value>
+  </data>
+  <data name="niggli_confirm_clear_msg" xml:space="preserve">
+    <value>確定要清除所有資料與計算結果嗎？</value>
+  </data>
+  <data name="niggli_csv_filter" xml:space="preserve">
+    <value>CSV 檔案 (*.csv)|*.csv</value>
+  </data>
+  <data name="niggli_default_value_text" xml:space="preserve">
+    <value>預設 0.15</value>
+  </data>
+  <data name="niggli_diag_diopside_ratio" xml:space="preserve">
+    <value>透輝石端元 (Wo-En-Fs)</value>
+  </data>
+  <data name="niggli_diag_mgr" xml:space="preserve">
+    <value>鎂指數 (Mgr / Mg#)</value>
+  </data>
+  <data name="niggli_diag_olivine_ratio" xml:space="preserve">
+    <value>橄欖石端元 (Fo-Fa)</value>
+  </data>
+  <data name="niggli_diag_plag_an" xml:space="preserve">
+    <value>斜長石端元 (An%)</value>
+  </data>
+  <data name="niggli_diag_section_classification" xml:space="preserve">
+    <value>── 岩石分類與飽和狀態 ──</value>
+  </data>
+  <data name="niggli_diag_section_desilication" xml:space="preserve">
+    <value>── 去矽反應歷程 (Desilication) ──</value>
+  </data>
+  <data name="niggli_diag_section_endmembers" xml:space="preserve">
+    <value>── 礦物端元成分比 (Endmembers) ──</value>
+  </data>
+  <data name="niggli_diag_section_main_minerals" xml:space="preserve">
+    <value>── 主要標準礦物 (&gt; 1%) ──</value>
+  </data>
+  <data name="niggli_diag_section_parameters" xml:space="preserve">
+    <value>── 尼格里參數 (Niggli Values) ──</value>
+  </data>
+  <data name="niggli_diag_total_minerals" xml:space="preserve">
+    <value>標準礦物總和</value>
+  </data>
+  <data name="niggli_diag_warnings" xml:space="preserve">
+    <value>── 警告 ──</value>
+  </data>
+  <data name="niggli_diagnostic_details" xml:space="preserve">
+    <value>計算詳情</value>
+  </data>
+  <data name="niggli_error" xml:space="preserve">
+    <value>計算錯誤</value>
+  </data>
+  <data name="niggli_error_cation_sum_zero" xml:space="preserve">
+    <value>全岩陽離子總和不足或數據無效</value>
+  </data>
+  <data name="niggli_export_dialog_title" xml:space="preserve">
+    <value>匯出 Niggli 計算結果</value>
+  </data>
+  <data name="niggli_help_overview" xml:space="preserve">
+    <value>Barth-Niggli 分子標準礦物（Catanorm）由瑞士岩石學家 Paul Niggli (1948) 與 Tom F. W. Barth (1948) 提出。與傳統 CIPW 採用質量百分比不同，Niggli 體系以陽離子分子比例（Cation Equivalent Percentage）為計算基數，消除了重金屬元素（如 Fe）對體積佔比的偏倚，其計算結果與岩石顯微薄片下的實際模態礦物（Modal Minerals）體積百分比更為接近。本模組同時提供經典的尼格里參數（Niggli Numbers: si, al, fm, c, alk, k, mg, qz）雙軌計算。</value>
+  </data>
+  <data name="niggli_help_window_title" xml:space="preserve">
+    <value>Niggli 標準礦物計算 - 演算法說明</value>
+  </data>
+  <data name="niggli_mineral_Ab" xml:space="preserve">
+    <value>鈉長石</value>
+  </data>
+  <data name="niggli_mineral_Ac" xml:space="preserve">
+    <value>霓石</value>
+  </data>
+  <data name="niggli_mineral_An" xml:space="preserve">
+    <value>鈣長石</value>
+  </data>
+  <data name="niggli_mineral_Ap" xml:space="preserve">
+    <value>磷灰石</value>
+  </data>
+  <data name="niggli_mineral_C" xml:space="preserve">
+    <value>剛玉</value>
+  </data>
+  <data name="niggli_mineral_Cc" xml:space="preserve">
+    <value>方解石</value>
+  </data>
+  <data name="niggli_mineral_Cs" xml:space="preserve">
+    <value>矽鈣石</value>
+  </data>
+  <data name="niggli_mineral_Di" xml:space="preserve">
+    <value>透輝石</value>
+  </data>
+  <data name="niggli_mineral_Fr" xml:space="preserve">
+    <value>螢石</value>
+  </data>
+  <data name="niggli_mineral_Hm" xml:space="preserve">
+    <value>赤鐵礦</value>
+  </data>
+  <data name="niggli_mineral_Hy" xml:space="preserve">
+    <value>正輝石</value>
+  </data>
+  <data name="niggli_mineral_Il" xml:space="preserve">
+    <value>鈦鐵礦</value>
+  </data>
+  <data name="niggli_mineral_Kp" xml:space="preserve">
+    <value>鉀霞石</value>
+  </data>
+  <data name="niggli_mineral_Ks" xml:space="preserve">
+    <value>偏矽酸鉀</value>
+  </data>
+  <data name="niggli_mineral_Lc" xml:space="preserve">
+    <value>白榴石</value>
+  </data>
+  <data name="niggli_mineral_Mt" xml:space="preserve">
+    <value>磁鐵礦</value>
+  </data>
+  <data name="niggli_mineral_Ne" xml:space="preserve">
+    <value>霞石</value>
+  </data>
+  <data name="niggli_mineral_Ns" xml:space="preserve">
+    <value>偏矽酸鈉</value>
+  </data>
+  <data name="niggli_mineral_Ol" xml:space="preserve">
+    <value>橄欖石</value>
+  </data>
+  <data name="niggli_mineral_Or" xml:space="preserve">
+    <value>正長石</value>
+  </data>
+  <data name="niggli_mineral_Pf" xml:space="preserve">
+    <value>鈣鈦礦</value>
+  </data>
+  <data name="niggli_mineral_Plag" xml:space="preserve">
+    <value>斜長石</value>
+  </data>
+  <data name="niggli_mineral_Py" xml:space="preserve">
+    <value>黃鐵礦</value>
+  </data>
+  <data name="niggli_mineral_Q" xml:space="preserve">
+    <value>石英</value>
+  </data>
+  <data name="niggli_mineral_Ru" xml:space="preserve">
+    <value>金紅石</value>
+  </data>
+  <data name="niggli_mineral_Sum" xml:space="preserve">
+    <value>總和</value>
+  </data>
+  <data name="niggli_mineral_Tn" xml:space="preserve">
+    <value>榍石</value>
+  </data>
+  <data name="niggli_mineral_Wo" xml:space="preserve">
+    <value>矽灰石</value>
+  </data>
+  <data name="niggli_msg_calc_all_success" xml:space="preserve">
+    <value>全部 {0} 件樣品計算完成。</value>
+  </data>
+  <data name="niggli_msg_calc_partial_success" xml:space="preserve">
+    <value>計算完成：成功 {0} 件，失敗 {1} 件。</value>
+  </data>
+  <data name="niggli_msg_data_cleared" xml:space="preserve">
+    <value>資料已清空。</value>
+  </data>
+  <data name="niggli_msg_export_failed" xml:space="preserve">
+    <value>匯出失敗：{0}</value>
+  </data>
+  <data name="niggli_msg_export_success" xml:space="preserve">
+    <value>結果已成功匯出至：{0}</value>
+  </data>
+  <data name="niggli_msg_no_data" xml:space="preserve">
+    <value>未偵測到有效的主量元素分析資料</value>
+  </data>
+  <data name="niggli_param_al" xml:space="preserve">
+    <value>al (鋁指數)</value>
+  </data>
+  <data name="niggli_param_alk" xml:space="preserve">
+    <value>alk (鹼指數)</value>
+  </data>
+  <data name="niggli_param_c" xml:space="preserve">
+    <value>c (鈣指數)</value>
+  </data>
+  <data name="niggli_param_fm" xml:space="preserve">
+    <value>fm (鐵鎂指數)</value>
+  </data>
+  <data name="niggli_param_k" xml:space="preserve">
+    <value>k (鉀比值 K₂O/(Na₂O+K₂O))</value>
+  </data>
+  <data name="niggli_param_mg" xml:space="preserve">
+    <value>mg (鎂比值 MgO/(MgO+FeO...))</value>
+  </data>
+  <data name="niggli_param_p" xml:space="preserve">
+    <value>p (磷指數)</value>
+  </data>
+  <data name="niggli_param_qz" xml:space="preserve">
+    <value>qz (石英指數)</value>
+  </data>
+  <data name="niggli_param_si" xml:space="preserve">
+    <value>si (矽指數)</value>
+  </data>
+  <data name="niggli_param_ti" xml:space="preserve">
+    <value>ti (鈦指數)</value>
+  </data>
+  <data name="niggli_references_gcdkit" xml:space="preserve">
+    <value>• 演算法核心邏輯參考開源地球化學數據工具包 GCDkit (Geochemical Data Toolkit)，本系統基於現代物件導向架構採用 C# 原創重構、效能優化並修復了去矽反應鏈路 (https://www.gcdkit.org/)。</value>
+  </data>
+  <data name="niggli_references_title" xml:space="preserve">
+    <value>主要參考文獻</value>
+  </data>
+  <data name="niggli_row_format" xml:space="preserve">
+    <value>第 {0} 列</value>
+  </data>
+  <data name="niggli_select_row_hint" xml:space="preserve">
+    <value>選取資料列檢視計算詳情</value>
+  </data>
+  <data name="niggli_sheet_name" xml:space="preserve">
+    <value>Niggli</value>
+  </data>
+  <data name="niggli_silica_oversaturated" xml:space="preserve">
+    <value>矽過飽和</value>
+  </data>
+  <data name="niggli_silica_saturated" xml:space="preserve">
+    <value>矽飽和</value>
+  </data>
+  <data name="niggli_silica_undersaturated" xml:space="preserve">
+    <value>矽不飽和</value>
+  </data>
+  <data name="niggli_step1_detail" xml:space="preserve">
+    <value>全岩各氧化物重量百分比除以其分子量，乘以化學式中的陽離子數獲得陽離子莫耳比例（Millications）。將全體陽離子莫耳量求和，歸一化為 100% 作為後續計算的基礎。未實測 FeO/Fe2O3 時可由 FeOT 按可調節的 Fe³⁺/Fe 比例（預設 0.15）拆分。</value>
+  </data>
+  <data name="niggli_step1_hy_ol_done" xml:space="preserve">
+    <value>去矽反應 Step 1: 正輝石 -&gt; 橄欖石 (Hy → Ol)，消耗 Hy {0}%，完全消除矽虧損</value>
+  </data>
+  <data name="niggli_step1_hy_ol_part" xml:space="preserve">
+    <value>去矽反應 Step 1: 正輝石 -&gt; 橄欖石 (Hy → Ol)，全部 Hy ({0}%) 轉化為 Ol，剩餘虧損 D = {1}%</value>
+  </data>
+  <data name="niggli_step1_title" xml:space="preserve">
+    <value>陽離子毫克分子比例與 100% 歸一化</value>
+  </data>
+  <data name="niggli_step2_detail" xml:space="preserve">
+    <value>根據分子比令 base = al + fm + c + alk = 100，計算 si、al、fm、c、alk、ti、p 比例，以及 k = K2O/(Na2O+K2O)、mg = MgO/(FeO+2Fe2O3+MnO+MgO)。石英指數 qz = si - (100 + 4*al) 用於直接判斷岩石的矽飽和程度。</value>
+  </data>
+  <data name="niggli_step2_title" xml:space="preserve">
+    <value>經典尼格里參數 (Niggli Numbers)</value>
+  </data>
+  <data name="niggli_step2_tn_pf_done" xml:space="preserve">
+    <value>去矽反應 Step 2: 榍石 -&gt; 鈣鈦礦 (Tn → Pf)，消耗 Tn {0}%，完全消除矽虧損</value>
+  </data>
+  <data name="niggli_step2_tn_pf_part" xml:space="preserve">
+    <value>去矽反應 Step 2: 榍石 -&gt; 鈣鈦礦 (Tn → Pf)，全部 Tn 轉化，剩餘虧損 D = {0}%</value>
+  </data>
+  <data name="niggli_step3_ab_ne_done" xml:space="preserve">
+    <value>去矽反應 Step 3: 鈉長石 -&gt; 霞石 (Ab → Ne)，消耗 Ab {0}%，完全消除矽虧損</value>
+  </data>
+  <data name="niggli_step3_ab_ne_part" xml:space="preserve">
+    <value>去矽反應 Step 3: 鈉長石 -&gt; 霞石 (Ab → Ne)，全部 Ab 轉化，剩餘虧損 D = {0}%</value>
+  </data>
+  <data name="niggli_step3_detail" xml:space="preserve">
+    <value>優先分配：CO2 與 Ca 結合生成方解石 (Cc)；P、F 與 Ca 結合生成磷灰石 (Ap)；餘 F 與 Ca 結合生成螢石 (Fr)；S 與 Fe²⁺ 結合生成黃鐵礦 (Py)；Ti 與 Fe²⁺ 結合生成鈦鐵礦 (Il)。</value>
+  </data>
+  <data name="niggli_step3_title" xml:space="preserve">
+    <value>副礦物、碳酸鹽與硫化物結合</value>
+  </data>
+  <data name="niggli_step4_detail" xml:space="preserve">
+    <value>K 與 Al、Si 結合生成正長石 (Or，5陽離子分子)；多餘 K 生成偏矽酸鉀 (Ks)。Na 與 Al、Si 結合生成鈉長石 (Ab)；若 Na 過剩則與 Fe³⁺ 生成霓石 (Ac)，再過剩生成偏矽酸鈉 (Ns)。剩餘 Al 與 Ca 結合生成鈣長石 (An)；餘 Al 生成剛玉 (C)。餘 Ti 與 Ca 結合生成榍石 (Tn) 或金紅石 (Ru)。</value>
+  </data>
+  <data name="niggli_step4_or_lc_done" xml:space="preserve">
+    <value>去矽反應 Step 4: 正長石 -&gt; 白榴石 (Or → Lc)，消耗 Or {0}%，完全消除矽虧損</value>
+  </data>
+  <data name="niggli_step4_or_lc_part" xml:space="preserve">
+    <value>去矽反應 Step 4: 正長石 -&gt; 白榴石 (Or → Lc)，全部 Or 轉化，剩餘虧損 D = {0}%</value>
+  </data>
+  <data name="niggli_step4_title" xml:space="preserve">
+    <value>鹼性長石、鈣長石與過鹼礦物</value>
+  </data>
+  <data name="niggli_step5_detail" xml:space="preserve">
+    <value>Fe³⁺ 與 Fe²⁺ 結合生成磁鐵礦 (Mt)，多餘 Fe³⁺ 生成赤鐵礦 (Hm)。Ca、Mg、Fe²⁺ 分別形成矽灰石 (Wo)、頑火輝石 (En) 與鐵輝石 (Fs) 分子；En 與 Fs 構成正輝石 (Hy)。Wo 與 Hy 等莫耳結合形成透輝石 (Di)。</value>
+  </data>
+  <data name="niggli_step5_lc_kp_done" xml:space="preserve">
+    <value>去矽反應 Step 5: 白榴石 -&gt; 鉀霞石 (Lc → Kp)，消耗 Lc {0}%，完全消除矽虧損</value>
+  </data>
+  <data name="niggli_step5_lc_kp_part" xml:space="preserve">
+    <value>去矽反應 Step 5: 白榴石 -&gt; 鉀霞石 (Lc → Kp)，全部 Lc 轉化，剩餘虧損 D = {0}%</value>
+  </data>
+  <data name="niggli_step5_title" xml:space="preserve">
+    <value>鐵氧化物與輝石類礦物分配</value>
+  </data>
+  <data name="niggli_step6_detail" xml:space="preserve">
+    <value>若剩餘 Si &gt;= 0，形成石英 (Q)；若 Si &lt; 0 產生矽虧損 D = -Si，按熱力學穩定順序依次去矽：
+① Hy → Ol (4 Hy 轉化為 3 Ol，釋放 1 Si)
+② Tn → Pf (3 Tn 轉化為 2 Pf，釋放 1 Si)
+③ Ab → Ne (5 Ab 轉化為 3 Ne，釋放 2 Si)
+④ Or → Lc (5 Or 轉化為 4 Lc，釋放 1 Si)
+⑤ Lc → Kp (4 Lc 轉化為 3 Kp，釋放 1 Si)
+⑥ Wo → Cs (4 Wo 轉化為 3 Cs，釋放 1 Si)
+⑦ Di → Cs + Ol (4 Di 轉化為 1.5 Cs + 1.5 Ol，釋放 1 Si)。</value>
+  </data>
+  <data name="niggli_step6_title" xml:space="preserve">
+    <value>矽飽和檢驗與 7 級連續去矽反應鏈</value>
+  </data>
+  <data name="niggli_step6_wo_cs_done" xml:space="preserve">
+    <value>去矽反應 Step 6: 矽灰石 -&gt; 矽鈣石 (Wo → Cs)，消耗 Wo {0}%，完全消除矽虧損</value>
+  </data>
+  <data name="niggli_step6_wo_cs_part" xml:space="preserve">
+    <value>去矽反應 Step 6: 矽灰石 -&gt; 矽鈣石 (Wo → Cs)，全部 Wo 轉化，剩餘虧損 D = {0}%</value>
+  </data>
+  <data name="niggli_step7_di_cs_ol_done" xml:space="preserve">
+    <value>去矽反應 Step 7: 透輝石 -&gt; 矽鈣石 + 橄欖石 (Di → Cs + Ol)，消耗 Di {0}%，完全消除矽虧損</value>
+  </data>
+  <data name="niggli_step7_di_cs_ol_part" xml:space="preserve">
+    <value>去矽反應 Step 7: 透輝石 -&gt; 矽鈣石 + 橄欖石 (Di → Cs + Ol)，全部 Di 轉化完畢</value>
+  </data>
+  <data name="niggli_step_deficit_init" xml:space="preserve">
+    <value>檢測到矽虧損：初始虧損量 D = {0}%</value>
+  </data>
+  <data name="niggli_step_oversaturated" xml:space="preserve">
+    <value>矽過飽和：形成石英 Q = {0}%</value>
+  </data>
+  <data name="niggli_norm" xml:space="preserve">
+    <value>Niggli 標準礦物計算</value>
+  </data>
+  <data name="niggli_title" xml:space="preserve">
+    <value>Niggli 標準礦物計算</value>
+  </data>
+  <data name="niggli_tooltip_calculate" xml:space="preserve">
+    <value>執行 Niggli 標準礦物計算</value>
+  </data>
+  <data name="niggli_tooltip_clear" xml:space="preserve">
+    <value>清除所有輸入與計算結果</value>
+  </data>
+  <data name="niggli_tooltip_example" xml:space="preserve">
+    <value>填入範例資料（花崗岩、玄武岩、響岩）</value>
+  </data>
+  <data name="niggli_tooltip_expand" xml:space="preserve">
+    <value>展開/摺疊計算詳情面板</value>
+  </data>
+  <data name="niggli_tooltip_export" xml:space="preserve">
+    <value>匯出計算結果至 CSV 檔案</value>
+  </data>
+  <data name="niggli_tooltip_help" xml:space="preserve">
+    <value>檢視 Barth-Niggli Catanorm 與尼格里參數演算法說明</value>
+  </data>
+  <data name="niggli_warning_feot_estimated" xml:space="preserve">
+    <value>使用全鐵 FeOT 估算價態 (Fe³⁺/Fe = {0})</value>
+  </data>
+  <data name="oxide_element_converter" xml:space="preserve">
+    <value>元素 ↔ 氧化物換算器</value>
+  </data>
+  <data name="oxide_element_converter_desc" xml:space="preserve">
+    <value>通過化學計量因子在元素與氧化物質量分數之間快速互換</value>
+  </data>
+  <data name="oxide_element_converter_hint" xml:space="preserve">
+    <value>選擇元素或氧化物，輸入數值，立即得到另一種形式的換算結果。</value>
+  </data>
+  <data name="oxide_element_conv_input_label" xml:space="preserve">
+    <value>輸入數值</value>
+  </data>
+  <data name="oxide_element_conv_mode_elem_to_oxide" xml:space="preserve">
+    <value>元素 → 氧化物</value>
+  </data>
+  <data name="oxide_element_conv_mode_oxide_to_elem" xml:space="preserve">
+    <value>氧化物 → 元素</value>
+  </data>
+  <data name="oxide_element_conv_select_substance" xml:space="preserve">
+    <value>選擇元素 / 氧化物</value>
+  </data>
+  <data name="oxide_element_conv_result_label" xml:space="preserve">
+    <value>換算結果</value>
+  </data>
+  <data name="oxide_element_conv_factor_label" xml:space="preserve">
+    <value>化學計量因子</value>
+  </data>
+  <data name="oxide_element_conv_mw_elem" xml:space="preserve">
+    <value>原子量 (g/mol)</value>
+  </data>
+  <data name="oxide_element_conv_mw_oxide" xml:space="preserve">
+    <value>氧化物分子量 (g/mol)</value>
+  </data>
+  <data name="oxide_element_conv_formula_label" xml:space="preserve">
+    <value>化學式</value>
+  </data>
+  <data name="oxide_element_conv_unit_wt_pct" xml:space="preserve">
+    <value>wt%</value>
+  </data>
+  <data name="oxide_element_conv_unit_ppm" xml:space="preserve">
+    <value>ppm</value>
+  </data>
+  <data name="oxide_element_conv_reset" xml:space="preserve">
+    <value>重置</value>
+  </data>
+  <data name="oxide_element_conv_invalid_input" xml:space="preserve">
+    <value>請輸入非負數值。</value>
+  </data>
+  <data name="oxide_element_conv_reference_title" xml:space="preserve">
+    <value>常用參考表</value>
+  </data>
+  <data name="oxide_element_conv_reference_hint" xml:space="preserve">
+    <value>常用元素及其氧化物與化學計量換算因子。</value>
+  </data>
+  <data name="oxide_element_conv_col_element" xml:space="preserve">
+    <value>元素</value>
+  </data>
+  <data name="oxide_element_conv_col_oxide" xml:space="preserve">
+    <value>氧化物</value>
+  </data>
+  <data name="oxide_element_conv_col_factor_to_oxide" xml:space="preserve">
+    <value>→ 氧化物因子</value>
+  </data>
+  <data name="oxide_element_conv_col_factor_to_elem" xml:space="preserve">
+    <value>→ 元素因子</value>
+  </data>
+  <data name="geoscience_unit_converter" xml:space="preserve">
+    <value>地質常用單位極速換算器</value>
+  </data>
+  <data name="geoscience_unit_converter_desc" xml:space="preserve">
+    <value>品位濃度、地應力、微區尺度、地溫與同位素年代極速換算看板</value>
+  </data>
+  <data name="geoscience_unit_conv_hint" xml:space="preserve">
+    <value>選擇分類、輸入數值與基準單位，所有目標單位即時同步換算。點擊任意行可一鍵複製或設為輸入基準。</value>
+  </data>
+  <data name="geoscience_unit_conv_category" xml:space="preserve">
+    <value>分類</value>
+  </data>
+  <data name="geoscience_unit_conv_cat_grade" xml:space="preserve">
+    <value>品位 / 濃度</value>
+  </data>
+  <data name="geoscience_unit_conv_cat_pressure" xml:space="preserve">
+    <value>壓力 / 應力</value>
+  </data>
+  <data name="geoscience_unit_conv_cat_scale" xml:space="preserve">
+    <value>微區尺度</value>
+  </data>
+  <data name="geoscience_unit_conv_cat_temperature" xml:space="preserve">
+    <value>溫度 / 地溫</value>
+  </data>
+  <data name="geoscience_unit_conv_cat_time" xml:space="preserve">
+    <value>同位素年代</value>
+  </data>
+  <data name="geoscience_unit_conv_input_value" xml:space="preserve">
+    <value>輸入數值</value>
+  </data>
+  <data name="geoscience_unit_conv_source_unit" xml:space="preserve">
+    <value>基準單位</value>
+  </data>
+  <data name="geoscience_unit_conv_presets" xml:space="preserve">
+    <value>典型地學參考基準</value>
+  </data>
+  <data name="geoscience_unit_conv_all_results" xml:space="preserve">
+    <value>全量單位換算看板</value>
+  </data>
+  <data name="geoscience_unit_conv_set_as_base" xml:space="preserve">
+    <value>設為基準</value>
+  </data>
+  <data name="geoscience_unit_conv_copy" xml:space="preserve">
+    <value>複製</value>
+  </data>
+  <data name="geoscience_unit_conv_reset" xml:space="preserve">
+    <value>重置</value>
+  </data>
+  <data name="geoscience_unit_conv_base_badge" xml:space="preserve">
+    <value>基準</value>
+  </data>
+  <data name="geoscience_unit_conv_copied_val" xml:space="preserve">
+    <value>已複製 {0} {1}</value>
+  </data>
+  <data name="geo_u_g_t_name" xml:space="preserve">
+    <value>克/噸</value>
+  </data>
+  <data name="geo_u_g_t_desc" xml:space="preserve">
+    <value>固體礦產與選冶最常用品位單位 (1 g/t = 1 ppm = 1 mg/kg)</value>
+  </data>
+  <data name="geo_u_ppm_name" xml:space="preserve">
+    <value>百萬分比 (mg/kg)</value>
+  </data>
+  <data name="geo_u_ppm_desc" xml:space="preserve">
+    <value>微量元素地球化學質量濃度 (1 ppm = 10⁻⁶ = 1 g/t)</value>
+  </data>
+  <data name="geo_u_wt_pct_name" xml:space="preserve">
+    <value>質量百分比</value>
+  </data>
+  <data name="geo_u_wt_pct_desc" xml:space="preserve">
+    <value>主量元素與高品位礦石常用 (1 wt% = 10,000 g/t)</value>
+  </data>
+  <data name="geo_u_ppb_name" xml:space="preserve">
+    <value>十億分比 (μg/kg)</value>
+  </data>
+  <data name="geo_u_ppb_desc" xml:space="preserve">
+    <value>超微量元素與稀貴金屬鉑族元素 (1 ppb = 10⁻⁹ = 0.001 g/t)</value>
+  </data>
+  <data name="geo_u_oz_t_name" xml:space="preserve">
+    <value>金衡盎司/公噸</value>
+  </data>
+  <data name="geo_u_oz_t_desc" xml:space="preserve">
+    <value>公制噸金衡盎司 (1 troy oz ≈ 31.1035 g/t)</value>
+  </data>
+  <data name="geo_u_oz_st_name" xml:space="preserve">
+    <value>金衡盎司/短噸 (opt)</value>
+  </data>
+  <data name="geo_u_oz_st_desc" xml:space="preserve">
+    <value>北美礦業常用短噸 (1 short ton ≈ 0.907 t, 1 opt ≈ 34.2857 g/t)</value>
+  </data>
+  <data name="geo_u_gpa_name" xml:space="preserve">
+    <value>吉帕</value>
+  </data>
+  <data name="geo_u_gpa_desc" xml:space="preserve">
+    <value>深部岩石圈與地函高壓 (1 GPa = 10 kbar = 1,000 MPa)</value>
+  </data>
+  <data name="geo_u_kbar_name" xml:space="preserve">
+    <value>千巴</value>
+  </data>
+  <data name="geo_u_kbar_desc" xml:space="preserve">
+    <value>變質相與實驗岩石學經典單位 (1 kbar = 100 MPa = 0.1 GPa)</value>
+  </data>
+  <data name="geo_u_mpa_name" xml:space="preserve">
+    <value>兆帕</value>
+  </data>
+  <data name="geo_u_mpa_desc" xml:space="preserve">
+    <value>地應力與地殼淺層流體靜水壓力 (1 MPa = 10 bar = 10⁶ Pa)</value>
+  </data>
+  <data name="geo_u_bar_name" xml:space="preserve">
+    <value>巴</value>
+  </data>
+  <data name="geo_u_bar_desc" xml:space="preserve">
+    <value>實驗熱力學常用氣壓單位 (1 bar = 0.1 MPa = 100 kPa)</value>
+  </data>
+  <data name="geo_u_atm_name" xml:space="preserve">
+    <value>標準大氣壓</value>
+  </data>
+  <data name="geo_u_atm_desc" xml:space="preserve">
+    <value>物理標準大氣壓 (1 atm = 101.325 kPa = 0.101325 MPa)</value>
+  </data>
+  <data name="geo_u_psi_name" xml:space="preserve">
+    <value>磅力/平方英寸</value>
+  </data>
+  <data name="geo_u_psi_desc" xml:space="preserve">
+    <value>石油天然氣與鑽井工程地層壓力 (1 MPa ≈ 145.038 psi)</value>
+  </data>
+  <data name="geo_u_mm_name" xml:space="preserve">
+    <value>毫米</value>
+  </data>
+  <data name="geo_u_mm_desc" xml:space="preserve">
+    <value>礦物斑晶與手標本薄片肉眼尺度 (1 mm = 1,000 μm)</value>
+  </data>
+  <data name="geo_u_um_name" xml:space="preserve">
+    <value>微米</value>
+  </data>
+  <data name="geo_u_um_desc" xml:space="preserve">
+    <value>電子探針 (EPMA) 束斑與 SEM 觀察尺度 (1 μm = 1,000 nm)</value>
+  </data>
+  <data name="geo_u_nm_name" xml:space="preserve">
+    <value>奈米</value>
+  </data>
+  <data name="geo_u_nm_desc" xml:space="preserve">
+    <value>粘土礦物層間間隙與奈米礦物顆粒 (1 nm = 10 Å = 0.001 μm)</value>
+  </data>
+  <data name="geo_u_angstrom_name" xml:space="preserve">
+    <value>埃</value>
+  </data>
+  <data name="geo_u_angstrom_desc" xml:space="preserve">
+    <value>晶格常數與 X 射線繞射特徵波長 (1 Å = 0.1 nm = 10⁻⁴ μm)</value>
+  </data>
+  <data name="geo_u_pm_name" xml:space="preserve">
+    <value>皮米</value>
+  </data>
+  <data name="geo_u_pm_desc" xml:space="preserve">
+    <value>離子有效半徑與原子軌域尺度 (1 Å = 100 pm, 1 pm = 10⁻⁶ μm)</value>
+  </data>
+  <data name="geo_u_celsius_name" xml:space="preserve">
+    <value>攝氏度</value>
+  </data>
+  <data name="geo_u_celsius_desc" xml:space="preserve">
+    <value>地學常規溫度與地溫梯度主流單位</value>
+  </data>
+  <data name="geo_u_kelvin_name" xml:space="preserve">
+    <value>克氏溫標 (K)</value>
+  </data>
+  <data name="geo_u_kelvin_desc" xml:space="preserve">
+    <value>熱力學狀態方程式與絕對溫標 (0 ℃ = 273.15 K)</value>
+  </data>
+  <data name="geo_u_fahrenheit_name" xml:space="preserve">
+    <value>華氏度</value>
+  </data>
+  <data name="geo_u_fahrenheit_desc" xml:space="preserve">
+    <value>北美油氣田與鑽井工程地層溫標 (℉ = ℃ × 1.8 + 32)</value>
+  </data>
+  <data name="geo_u_ga_name" xml:space="preserve">
+    <value>十億年 (Gyr)</value>
+  </data>
+  <data name="geo_u_ga_desc" xml:space="preserve">
+    <value>前寒武紀深時與地球早期演化 (1 Ga = 1,000 Ma = 10⁹ 年)</value>
+  </data>
+  <data name="geo_u_ma_name" xml:space="preserve">
+    <value>百萬年 (Myr)</value>
+  </data>
+  <data name="geo_u_ma_desc" xml:space="preserve">
+    <value>顯生宙與同位素定年主流單位 (1 Ma = 10⁶ 年)</value>
+  </data>
+  <data name="geo_u_ka_name" xml:space="preserve">
+    <value>千年 (kyr)</value>
+  </data>
+  <data name="geo_u_ka_desc" xml:space="preserve">
+    <value>第四紀冰期與 ¹⁴C / OSL 定年 (1 ka = 1,000 年 = 0.001 Ma)</value>
+  </data>
+  <data name="geo_u_yr_name" xml:space="preserve">
+    <value>年 (a)</value>
+  </data>
+  <data name="geo_u_yr_desc" xml:space="preserve">
+    <value>絕對日曆年 (1 Ma = 1,000,000 年)</value>
+  </data>
+  <data name="geo_p_gold_cutoff_title" xml:space="preserve">
+    <value>金礦邊界品位</value>
+  </data>
+  <data name="geo_p_gold_cutoff_note" xml:space="preserve">
+    <value>常規岩金工業開採參考邊界品位</value>
+  </data>
+  <data name="geo_p_porphyry_cu_title" xml:space="preserve">
+    <value>斑岩銅礦典型</value>
+  </data>
+  <data name="geo_p_porphyry_cu_note" xml:space="preserve">
+    <value>超大型斑岩銅礦平均工業品位 (~5000 ppm)</value>
+  </data>
+  <data name="geo_p_pge_au_title" xml:space="preserve">
+    <value>PGE/Au 超微量</value>
+  </data>
+  <data name="geo_p_pge_au_note" xml:space="preserve">
+    <value>地函橄欖岩與火成岩鉑族元素常見豐度</value>
+  </data>
+  <data name="geo_p_high_grade_ore_title" xml:space="preserve">
+    <value>富礦石 (1 opt)</value>
+  </data>
+  <data name="geo_p_high_grade_ore_note" xml:space="preserve">
+    <value>北美高品位金礦常用盎司短噸指標 (≈34.29 g/t)</value>
+  </data>
+  <data name="geo_p_fluid_press_title" xml:space="preserve">
+    <value>地下 1 km 流體壓</value>
+  </data>
+  <data name="geo_p_fluid_press_note" xml:space="preserve">
+    <value>地殼淺部靜岩與孔隙流體壓力</value>
+  </data>
+  <data name="geo_p_moho_press_title" xml:space="preserve">
+    <value>地殼下部/莫霍面</value>
+  </data>
+  <data name="geo_p_moho_press_note" xml:space="preserve">
+    <value>大陸地殼底部典型壓力 (~10 kbar)</value>
+  </data>
+  <data name="geo_p_trans_zone_title" xml:space="preserve">
+    <value>地函過渡帶頂界</value>
+  </data>
+  <data name="geo_p_trans_zone_note" xml:space="preserve">
+    <value>410 km 橄欖石相變高壓邊界</value>
+  </data>
+  <data name="geo_p_std_atm_title" xml:space="preserve">
+    <value>地表常壓 (標況)</value>
+  </data>
+  <data name="geo_p_std_atm_note" xml:space="preserve">
+    <value>101.325 kPa，實驗室參考態</value>
+  </data>
+  <data name="geo_p_phenocryst_title" xml:space="preserve">
+    <value>顯微鏡斑晶</value>
+  </data>
+  <data name="geo_p_phenocryst_note" xml:space="preserve">
+    <value>常規偏光顯微鏡宏觀視域 (1000 μm)</value>
+  </data>
+  <data name="geo_p_epma_beam_title" xml:space="preserve">
+    <value>EPMA 電子探針束斑</value>
+  </data>
+  <data name="geo_p_epma_beam_note" xml:space="preserve">
+    <value>定量微區電子探針聚焦束斑典型直徑</value>
+  </data>
+  <data name="geo_p_sem_nano_title" xml:space="preserve">
+    <value>SEM 奈晶顆粒</value>
+  </data>
+  <data name="geo_p_sem_nano_note" xml:space="preserve">
+    <value>掃描電鏡下粘土礦物與奈米礦物</value>
+  </data>
+  <data name="geo_p_cu_ka_title" xml:space="preserve">
+    <value>Cu Kα 射線波長</value>
+  </data>
+  <data name="geo_p_cu_ka_note" xml:space="preserve">
+    <value>X 射線單晶/粉末繞射 Cu-Kα 特徵波長</value>
+  </data>
+  <data name="geo_p_surface_temp_title" xml:space="preserve">
+    <value>地表常溫</value>
+  </data>
+  <data name="geo_p_surface_temp_note" xml:space="preserve">
+    <value>標準實驗室環境參考態 (298.15 K)</value>
+  </data>
+  <data name="geo_p_hydrothermal_title" xml:space="preserve">
+    <value>中低溫熱液</value>
+  </data>
+  <data name="geo_p_hydrothermal_note" xml:space="preserve">
+    <value>石英脈型金礦流體包裹體典型均一溫度</value>
+  </data>
+  <data name="geo_p_solidus_title" xml:space="preserve">
+    <value>花崗岩固相線</value>
+  </data>
+  <data name="geo_p_solidus_note" xml:space="preserve">
+    <value>含水長英質岩漿結晶成岩固相線</value>
+  </data>
+  <data name="geo_p_earth_age_title" xml:space="preserve">
+    <value>地球形成年齡</value>
+  </data>
+  <data name="geo_p_earth_age_note" xml:space="preserve">
+    <value>隕石鉛同位素確定的地球誕生年齡</value>
+  </data>
+  <data name="geo_p_cambrian_base_title" xml:space="preserve">
+    <value>寒武紀底界</value>
+  </data>
+  <data name="geo_p_cambrian_base_note" xml:space="preserve">
+    <value>顯生宙與寒武紀大爆發金釘子底界</value>
+  </data>
+  <data name="geo_p_k_pg_boundary_title" xml:space="preserve">
+    <value>K-Pg 白堊紀滅絕</value>
+  </data>
+  <data name="geo_p_k_pg_boundary_note" xml:space="preserve">
+    <value>恐龍滅絕與希克蘇魯伯撞擊事件界線</value>
+  </data>
+  <data name="geo_p_quaternary_base_title" xml:space="preserve">
+    <value>第四紀底界</value>
+  </data>
+  <data name="geo_p_quaternary_base_note" xml:space="preserve">
+    <value>更新世大冰期與人類演化紀元開端</value>
   </data>
 </root>

@@ -30,31 +30,36 @@ namespace GeoChemistryNexus.Views
         {
             InitializeComponent();
             UiScaleHelper.Attach(this);
-            DisplayRandomImage();
+            LoadRandomImageAsync();
         }
 
-        //随机启动图
-        private bool DisplayRandomImage()
+        // 异步后台加载随机启动图并在完成后平滑淡入，彻底消除主线程磁盘与解码阻塞
+        private async void LoadRandomImageAsync()
         {
-            string[] files = StartPicHelper.GetImageFiles();
-
-            //如果没有找到图片文件，返回
-            if (files.Length == 0)
+            try
             {
-                return false;
+                var bitmap = await Task.Run(() =>
+                {
+                    string[] files = StartPicHelper.GetImageFiles();
+                    if (files.Length == 0)
+                        return null;
+
+                    Random random = new Random();
+                    int randomIndex = random.Next(files.Length);
+                    return StartPicHelper.LoadBitmapWithoutFileLock(files[randomIndex], decodePixelWidth: 960);
+                });
+
+                if (bitmap != null)
+                {
+                    ImageLayer.Background = new ImageBrush { ImageSource = bitmap };
+                    var fadeIn = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(250));
+                    ImageLayer.BeginAnimation(UIElement.OpacityProperty, fadeIn);
+                }
             }
-
-            // 生成一个随机数
-            Random random = new Random();
-            int randomIndex = random.Next(files.Length);
-
-            //将随机选择的图片显示为背景（内存加载，避免锁定启动图文件；限制解码宽度避免高分原图占用过大内存）
-            var bitmap = StartPicHelper.LoadBitmapWithoutFileLock(files[randomIndex], decodePixelWidth: 960);
-            if (bitmap == null)
-                return false;
-
-            Basemap.Background = new ImageBrush { ImageSource = bitmap };
-            return true;
+            catch
+            {
+                // 启动图读取异常时保持默认深灰底色，不影响窗体正常渲染
+            }
         }
 
         //鼠标按下
