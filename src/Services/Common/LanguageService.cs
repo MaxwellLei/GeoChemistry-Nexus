@@ -62,7 +62,7 @@ namespace GeoChemistryNexus.Services
             return AppCultureRegistry.GetDisplayName(code);
         }
 
-        public string? this[string name]
+        public string this[string name]
         {
             get
             {
@@ -71,7 +71,7 @@ namespace GeoChemistryNexus.Services
                     throw new ArgumentNullException(nameof(name));
                 }
 
-                return _resourceManager.GetString(name, _cachedCulture);
+                return _resourceManager.GetString(name, _cachedCulture) ?? string.Empty;
             }
         }
 

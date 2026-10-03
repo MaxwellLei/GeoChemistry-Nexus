@@ -298,7 +298,7 @@ namespace GeoChemistryNexus.Services
         }
 
         private static PublishPreviewItem CreatePreviewItem(
-            GraphMapTemplateEntity local, string localHash, string remoteHash, PublishAction action)
+            GraphMapTemplateEntity local, string localHash, string? remoteHash, PublishAction action)
         {
             return new PublishPreviewItem
             {
@@ -306,7 +306,7 @@ namespace GeoChemistryNexus.Services
                 GraphMapPath = local.GraphMapPath,
                 Name = local.Name ?? local.GraphMapPath,
                 LocalHash = localHash,
-                RemoteHash = remoteHash,
+                RemoteHash = remoteHash ?? string.Empty,
                 Action = action
             };
         }

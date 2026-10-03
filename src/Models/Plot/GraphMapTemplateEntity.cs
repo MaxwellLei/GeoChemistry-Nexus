@@ -80,7 +80,7 @@ namespace GeoChemistryNexus.Models
         /// <summary>
         /// 模板状态：NOT_INSTALLED, UP_TO_DATE, OUTDATED
         /// </summary>
-        public string Status { get; set; } = string.Empty;
+        public string? Status { get; set; }
 
         /// <summary>
         /// 是否收藏

@@ -141,7 +141,7 @@ namespace GeoChemistryNexus.Helpers
             RequestUpdate(animate: true);
         }
 
-        private void OnGeneratorStatusChanged(object sender, EventArgs e)
+        private void OnGeneratorStatusChanged(object? sender, EventArgs e)
         {
             if (_listBox?.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
                 RequestUpdate(animate: false);

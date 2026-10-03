@@ -50,7 +50,7 @@ namespace GeoChemistryNexus.Services
                     string partName = pathParts[i];
                     bool isLeaf = (i == pathParts.Length - 1);
                     
-                    GraphMapTemplateNode existingNode = null;
+                    GraphMapTemplateNode? existingNode = null;
                     
                     if (!isLeaf)
                     {
@@ -85,7 +85,7 @@ namespace GeoChemistryNexus.Services
                 currentNode.FileHash = item.FileHash;
                 currentNode.IsCustomTemplate = item.IsCustom;
                 currentNode.TemplateId = item.Id;
-                currentNode.Status = item.Status;
+                currentNode.Status = item.Status ?? string.Empty;
             }
 
             return rootNode;
@@ -270,11 +270,11 @@ namespace GeoChemistryNexus.Services
         /// </summary>
         public class JsonTemplateItem
         {
-            public string ID { get; set; }
-            public LocalizedString NodeList { get; set; }
-            public string GraphMapPath { get; set; }
-            public string FileHash { get; set; }
-            public string Version { get; set; }
+            public string ID { get; set; } = string.Empty;
+            public LocalizedString NodeList { get; set; } = new();
+            public string GraphMapPath { get; set; } = string.Empty;
+            public string FileHash { get; set; } = string.Empty;
+            public string Version { get; set; } = string.Empty;
         }
 
         /// <summary>
@@ -296,7 +296,7 @@ namespace GeoChemistryNexus.Services
         /// </summary>
         /// <param name="template">模板对象</param>
         /// <returns>如果是 true 则兼容，否则不兼容</returns>
-        public static bool IsVersionCompatible(GraphMapTemplate template)
+        public static bool IsVersionCompatible(GraphMapTemplate? template)
         {
             if (template == null) return false;
             return ContentVersionHelper.IsDiagramFormatCompatible(template.Version);
@@ -324,7 +324,7 @@ namespace GeoChemistryNexus.Services
         /// <summary>
         /// 校验已反序列化的图解模板内容是否完整有效。
         /// </summary>
-        public static bool IsValidDiagramTemplateContent(GraphMapTemplate? template)
+        public static bool IsValidDiagramTemplateContent([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] GraphMapTemplate? template)
         {
             if (template?.Info == null || template.Script == null)
                 return false;
@@ -346,7 +346,7 @@ namespace GeoChemistryNexus.Services
         /// <summary>
         /// 解析并校验图解模板 JSON；失败时 template 为 null（不含版本校验）。
         /// </summary>
-        public static bool TryParseDiagramTemplate(string jsonContent, out GraphMapTemplate? template)
+        public static bool TryParseDiagramTemplate(string jsonContent, [System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out GraphMapTemplate? template)
         {
             template = null;
             if (!HasValidDiagramTemplateJsonStructure(jsonContent))
@@ -362,7 +362,7 @@ namespace GeoChemistryNexus.Services
                 return false;
             }
 
-            if (!IsValidDiagramTemplateContent(template))
+            if (template == null || !IsValidDiagramTemplateContent(template))
             {
                 template = null;
                 return false;
@@ -481,7 +481,7 @@ namespace GeoChemistryNexus.Services
         /// <summary>
         /// 序列化模板内容为 JSON 字符串（与 FileHash 口径一致）
         /// </summary>
-        public static string SerializeTemplateContent(GraphMapTemplate template)
+        public static string SerializeTemplateContent(GraphMapTemplate? template)
         {
             if (template == null) return string.Empty;
             return JsonSerializer.Serialize(template, CreateTemplateJsonOptions());

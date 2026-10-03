@@ -22,7 +22,7 @@ namespace GeoChemistryNexus.ViewModels
     {
         private readonly ObservableCollection<HomeAppItem> _widgets = new();
         private readonly Dictionary<string, Window> _openedWindows = new();
-        private HomeLinkGroupViewModel _personalGroup;
+        private HomeLinkGroupViewModel _personalGroup = null!;
 
         public ObservableCollection<HomeLinkGroupViewModel> OfficialLinkGroups { get; } = new();
 
@@ -32,18 +32,18 @@ namespace GeoChemistryNexus.ViewModels
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsSelectedGroupPersonal))]
-        private HomeLinkGroupViewModel selectedLinkGroup;
+        private HomeLinkGroupViewModel? selectedLinkGroup;
 
         [ObservableProperty]
-        private HomeLinkGroupViewModel selectedOfficialGroup;
+        private HomeLinkGroupViewModel? selectedOfficialGroup;
 
-        partial void OnSelectedOfficialGroupChanged(HomeLinkGroupViewModel value)
+        partial void OnSelectedOfficialGroupChanged(HomeLinkGroupViewModel? value)
         {
             if (value != null)
                 SelectedLinkGroup = value;
         }
 
-        partial void OnSelectedLinkGroupChanged(HomeLinkGroupViewModel value)
+        partial void OnSelectedLinkGroupChanged(HomeLinkGroupViewModel? value)
         {
             if (value?.IsPersonal == true)
                 SelectedOfficialGroup = null;
@@ -473,7 +473,7 @@ namespace GeoChemistryNexus.ViewModels
 
         private void RebuildGroups()
         {
-            string previousGroupId = SelectedLinkGroup?.GroupId;
+            string? previousGroupId = SelectedLinkGroup?.GroupId;
 
             var catalog = HomeLinksCatalogService.LoadLocalCatalog();
             var userConfig = HomeUserConfigService.Load();
@@ -537,7 +537,7 @@ namespace GeoChemistryNexus.ViewModels
             RestoreSelectedLinkGroup(previousGroupId);
         }
 
-        private void RestoreSelectedLinkGroup(string previousGroupId)
+        private void RestoreSelectedLinkGroup(string? previousGroupId)
         {
             if (string.Equals(previousGroupId, "personal", StringComparison.OrdinalIgnoreCase))
             {
@@ -651,7 +651,7 @@ namespace GeoChemistryNexus.ViewModels
                     _openedWindows.Remove(app.WidgetKey);
                 }
 
-                Window window = null;
+                Window? window = null;
 
                 if (app.WidgetKey == "OfficialTemplatePublisherWidget")
                 {
