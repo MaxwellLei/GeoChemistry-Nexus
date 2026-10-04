@@ -1099,6 +1099,21 @@
   <data name="dev_mode_warning_non_developers" xml:space="preserve">
     <value>非开发者不建议开启，可能会导致不必要的问题。</value>
   </data>
+  <data name="developer_mode_warning" xml:space="preserve">
+    <value>非开发者不建议开启，可能会导致不必要的问题。</value>
+  </data>
+  <data name="marker_size" xml:space="preserve">
+    <value>符号大小</value>
+  </data>
+  <data name="edit_failed" xml:space="preserve">
+    <value>编辑失败： </value>
+  </data>
+  <data name="official_publisher_plot_categories_auto_included" xml:space="preserve">
+    <value>图解分类已变更，本次发布将包含图解索引文件。</value>
+  </data>
+  <data name="official_publisher_geot_categories_auto_included" xml:space="preserve">
+    <value>温压计矿物标签已变更，本次发布将包含温压计索引文件。</value>
+  </data>
   <data name="NormalSetting" xml:space="preserve">
     <value>常规设置</value>
   </data>

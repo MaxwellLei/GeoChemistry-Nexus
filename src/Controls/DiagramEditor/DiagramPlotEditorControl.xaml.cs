@@ -99,6 +99,18 @@ namespace GeoChemistryNexus.Controls
             });
         }
 
+        private bool _released;
+
+        public void ReleaseResources()
+        {
+            if (_released)
+                return;
+
+            _released = true;
+            WeakReferenceMessenger.Default.UnregisterAll(this);
+            ViewModel.Release();
+        }
+
         public void InitializeForCreate() => ViewModel.InitializeForCreate();
 
         public void InitializeForEdit(Models.GraphMapTemplateEntity entity) => ViewModel.InitializeForEdit(entity);

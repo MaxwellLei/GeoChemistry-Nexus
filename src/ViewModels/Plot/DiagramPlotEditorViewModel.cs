@@ -9,6 +9,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -147,14 +148,31 @@ namespace GeoChemistryNexus.ViewModels
                 RebuildCategoryStructurePreview();
                 RebuildTranslationPreview();
             };
-            LanguageService.Instance.PropertyChanged += (_, args) =>
-            {
-                if (args.PropertyName == "Item[]")
-                {
-                    InitializePlotTypes();
-                }
-            };
+            LanguageService.Instance.PropertyChanged += OnLanguageChanged;
             WeakReferenceMessenger.Default.Register<DeveloperModeChangedMessage>(this);
+        }
+
+        private bool _released;
+
+        private void OnLanguageChanged(object? sender, PropertyChangedEventArgs args)
+        {
+            if (args.PropertyName == "Item[]")
+                InitializePlotTypes();
+        }
+
+        /// <summary>
+        /// 编辑器关闭时退订静态语言事件和消息。
+        /// </summary>
+        public void Release()
+        {
+            if (_released)
+                return;
+
+            _released = true;
+            LanguageService.Instance.PropertyChanged -= OnLanguageChanged;
+            WeakReferenceMessenger.Default.UnregisterAll(this);
+            GetCurrentRtfContent = null;
+            SetCurrentRtfContent = null;
         }
 
         public void Receive(DeveloperModeChangedMessage message)

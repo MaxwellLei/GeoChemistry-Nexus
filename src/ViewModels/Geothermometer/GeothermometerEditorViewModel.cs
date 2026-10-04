@@ -379,6 +379,28 @@ function calculateDetailed(inputs) {
             RefreshLanguageDisplayOptions();
         }
 
+        private bool _released;
+
+        /// <summary>
+        /// 窗口关闭时退订静态语言事件和消息，避免编辑器被静态事件钉住。
+        /// </summary>
+        public void Release()
+        {
+            if (_released)
+                return;
+
+            _released = true;
+            LanguageService.Instance.PropertyChanged -= OnLanguageChanged;
+            WeakReferenceMessenger.Default.UnregisterAll(this);
+            OnSaved = null;
+            OnCloseRequested = null;
+            ShowErrorMessage = null;
+            ShowSuccessMessage = null;
+            OnTagSuggestionsNeedRefresh = null;
+            GetCurrentRtfContent = null;
+            SetCurrentRtfContent = null;
+        }
+
         /// <summary>
         /// 标签/能力建议列表需要刷新时回调（窗口侧刷新 ComboBox.ItemsSource）。
         /// </summary>
@@ -1055,7 +1077,7 @@ function calculateDetailed(inputs) {
             {
                 testInputs = TestInputText
                     .Split(new[] { ',', ' ', ';' }, StringSplitOptions.RemoveEmptyEntries)
-                    .Select(s => double.Parse(s.Trim()))
+                    .Select(s => InvariantNumberParser.Parse(s.Trim()))
                     .ToArray();
             }
             catch

@@ -3,6 +3,7 @@ using GeoChemistryNexus.Services;
 using GeoChemistryNexus.ViewModels;
 using System;
 using System.Collections.ObjectModel;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -14,6 +15,8 @@ namespace GeoChemistryNexus.Views
         private readonly GeothermometerFreeSheetViewModel _viewModel;
 
         public ObservableCollection<NotificationViewModel> LocalNotifications { get; } = new();
+
+        private readonly CancellationTokenSource _notificationCts = new();
 
         Window IFreeSheetNotificationHost.OwnerWindow => this;
 
@@ -62,6 +65,8 @@ namespace GeoChemistryNexus.Views
 
         private void OnClosed(object? sender, EventArgs e)
         {
+            _notificationCts.Cancel();
+            _notificationCts.Dispose();
             _viewModel.AttachNotificationHost(null);
 
             var worksheet = FreeReoGrid.CurrentWorksheet;
@@ -166,10 +171,11 @@ namespace GeoChemistryNexus.Views
 
                 if (durationSeconds > 0)
                 {
-                    _ = Task.Delay(TimeSpan.FromSeconds(durationSeconds)).ContinueWith(_ =>
-                    {
-                        Dispatcher.BeginInvoke(new Action(async () => await vm.Close()));
-                    });
+                    LocalNotificationDelay.Schedule(
+                        Dispatcher,
+                        durationSeconds,
+                        _notificationCts.Token,
+                        async () => await vm.Close());
                 }
             });
         }

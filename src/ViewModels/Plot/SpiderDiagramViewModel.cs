@@ -470,7 +470,7 @@ namespace GeoChemistryNexus.ViewModels
                 var values = new Dictionary<string, double>(ElementOrder.Count, StringComparer.OrdinalIgnoreCase);
                 foreach (var element in ElementOrder)
                 {
-                    if (row.TryGetValue(element, out string? textValue) && double.TryParse(textValue, out double val))
+                    if (row.TryGetValue(element, out string? textValue) && InvariantNumberParser.TryParse(textValue, out double val))
                     {
                         values[element] = val;
                     }

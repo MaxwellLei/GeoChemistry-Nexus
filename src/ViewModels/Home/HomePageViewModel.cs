@@ -803,7 +803,15 @@ namespace GeoChemistryNexus.ViewModels
                 if (!string.IsNullOrEmpty(app.WidgetKey))
                 {
                     _openedWindows[app.WidgetKey] = window;
-                    window.Closed += (s, e) => _openedWindows.Remove(app.WidgetKey);
+                    window.Closed += (_, _) =>
+                    {
+                        _openedWindows.Remove(app.WidgetKey);
+                        if (window.Content is System.Windows.FrameworkElement content
+                            && content.DataContext is IDisposable disposable)
+                        {
+                            disposable.Dispose();
+                        }
+                    };
                 }
             }
             catch (Exception ex)

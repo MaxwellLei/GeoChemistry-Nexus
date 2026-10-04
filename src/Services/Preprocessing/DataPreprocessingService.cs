@@ -1,3 +1,4 @@
+using GeoChemistryNexus.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -843,20 +844,8 @@ namespace GeoChemistryNexus.Services
         private static bool TryParseDouble(string text, out double value)
         {
             string normalized = (text ?? string.Empty).Trim();
-            normalized = normalized.Replace("，", ",").Replace("％", "").Replace("%", "");
-
-            if (double.TryParse(normalized, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out value))
-            {
-                return true;
-            }
-
-            if (double.TryParse(normalized, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.CurrentCulture, out value))
-            {
-                return true;
-            }
-
-            normalized = normalized.Replace(",", string.Empty);
-            return double.TryParse(normalized, NumberStyles.Float, CultureInfo.InvariantCulture, out value);
+            normalized = normalized.Replace("％", string.Empty).Replace("%", string.Empty);
+            return InvariantNumberParser.TryParse(normalized, out value);
         }
 
         private static double? TryExtractDetectionLimit(string text)

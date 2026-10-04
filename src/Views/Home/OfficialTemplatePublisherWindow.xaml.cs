@@ -3,6 +3,7 @@ using GeoChemistryNexus.Services;
 using GeoChemistryNexus.ViewModels;
 using System;
 using System.Collections.ObjectModel;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -11,6 +12,8 @@ namespace GeoChemistryNexus.Views
     public partial class OfficialTemplatePublisherWindow : Window
     {
         public ObservableCollection<NotificationViewModel> LocalNotifications { get; } = new();
+
+        private readonly CancellationTokenSource _notificationCts = new();
 
         public OfficialTemplatePublisherWindow()
         {
@@ -78,10 +81,20 @@ namespace GeoChemistryNexus.Views
                 LocalNotifications.Add(vm);
                 if (durationSeconds > 0)
                 {
-                    _ = Task.Delay(TimeSpan.FromSeconds(durationSeconds)).ContinueWith(_ =>
-                        Dispatcher.BeginInvoke(new Action(async () => await vm.Close())));
+                    LocalNotificationDelay.Schedule(
+                        Dispatcher,
+                        durationSeconds,
+                        _notificationCts.Token,
+                        async () => await vm.Close());
                 }
             });
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            _notificationCts.Cancel();
+            _notificationCts.Dispose();
+            base.OnClosed(e);
         }
 
         private void RemoveNotification(NotificationViewModel vm)

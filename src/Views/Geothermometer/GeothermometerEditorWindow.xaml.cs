@@ -3,6 +3,8 @@ using GeoChemistryNexus.Services;
 using GeoChemistryNexus.ViewModels;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -14,6 +16,9 @@ namespace GeoChemistryNexus.Views
     public partial class GeothermometerEditorWindow : Window
     {
         public ObservableCollection<NotificationViewModel> LocalNotifications { get; } = new();
+
+        private readonly CancellationTokenSource _notificationCts = new();
+        private PropertyChangedEventHandler? _languageChanged;
 
         public GeothermometerEditorWindow()
         {
@@ -33,11 +38,12 @@ namespace GeoChemistryNexus.Views
             // 构造时显式传入 VM：此时子控件 DataContext 绑定可能尚未生效
             EditorControl.BasicInfoPanel.RefreshTagSuggestions(viewModel);
             Loaded += (_, _) => EditorControl.BasicInfoPanel.RefreshTagSuggestions(viewModel);
-            LanguageService.Instance.PropertyChanged += (_, e) =>
+            _languageChanged = (_, e) =>
             {
                 if (e.PropertyName == "Item[]")
                     Dispatcher.Invoke(() => EditorControl.BasicInfoPanel.RefreshTagSuggestions(viewModel));
             };
+            LanguageService.Instance.PropertyChanged += _languageChanged;
 
             var helpEditor = EditorControl.HelpDocPanel.HelpDocEditorControl;
             viewModel.GetCurrentRtfContent = () =>
@@ -91,12 +97,29 @@ namespace GeoChemistryNexus.Views
 
                 if (durationSeconds > 0)
                 {
-                    _ = Task.Delay(TimeSpan.FromSeconds(durationSeconds)).ContinueWith(_ =>
-                    {
-                        Dispatcher.BeginInvoke(new Action(async () => await vm.Close()));
-                    });
+                    LocalNotificationDelay.Schedule(
+                        Dispatcher,
+                        durationSeconds,
+                        _notificationCts.Token,
+                        async () => await vm.Close());
                 }
             });
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            if (_languageChanged != null)
+            {
+                LanguageService.Instance.PropertyChanged -= _languageChanged;
+                _languageChanged = null;
+            }
+
+            if (DataContext is GeothermometerEditorViewModel viewModel)
+                viewModel.Release();
+
+            _notificationCts.Cancel();
+            _notificationCts.Dispose();
+            base.OnClosed(e);
         }
 
         private void RemoveNotification(NotificationViewModel vm)

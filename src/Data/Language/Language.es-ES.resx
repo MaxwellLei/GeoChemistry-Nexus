@@ -820,6 +820,21 @@
   <data name="dev_mode_warning_non_developers" xml:space="preserve">
     <value>No se recomienda para personas que no sean desarrolladores; puede causar problemas innecesarios.</value>
   </data>
+  <data name="developer_mode_warning" xml:space="preserve">
+    <value>No se recomienda para personas que no sean desarrolladores; puede causar problemas innecesarios.</value>
+  </data>
+  <data name="marker_size" xml:space="preserve">
+    <value>Tamaño del marcador</value>
+  </data>
+  <data name="edit_failed" xml:space="preserve">
+    <value>Error al editar: </value>
+  </data>
+  <data name="official_publisher_plot_categories_auto_included" xml:space="preserve">
+    <value>Las categorías de diagramas cambiaron; esta publicación incluirá los archivos de índice de diagramas.</value>
+  </data>
+  <data name="official_publisher_geot_categories_auto_included" xml:space="preserve">
+    <value>Las etiquetas minerales de GeoT cambiaron; esta publicación incluirá los archivos de índice del geotermómetro.</value>
+  </data>
   <data name="NormalSetting" xml:space="preserve">
     <value>Configuración general</value>
   </data>

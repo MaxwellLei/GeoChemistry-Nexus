@@ -820,6 +820,21 @@
   <data name="dev_mode_warning_non_developers" xml:space="preserve">
     <value>개발자가 아닌 경우 권장하지 않으며, 불필요한 문제가 발생할 수 있습니다.</value>
   </data>
+  <data name="developer_mode_warning" xml:space="preserve">
+    <value>개발자가 아닌 경우 권장하지 않으며, 불필요한 문제가 발생할 수 있습니다.</value>
+  </data>
+  <data name="marker_size" xml:space="preserve">
+    <value>마커 크기</value>
+  </data>
+  <data name="edit_failed" xml:space="preserve">
+    <value>편집 실패: </value>
+  </data>
+  <data name="official_publisher_plot_categories_auto_included" xml:space="preserve">
+    <value>다이어그램 분류가 변경되어 이번 게시에 다이어그램 색인 파일을 포함합니다.</value>
+  </data>
+  <data name="official_publisher_geot_categories_auto_included" xml:space="preserve">
+    <value>지온지압계 광물 태그가 변경되어 이번 게시에 지온지압계 색인 파일을 포함합니다.</value>
+  </data>
   <data name="NormalSetting" xml:space="preserve">
     <value>일반 설정</value>
   </data>

@@ -91,7 +91,7 @@ namespace GeoChemistryNexus.ViewModels
         }
     }
 
-    public partial class GeoscienceUnitConverterViewModel : ObservableObject
+    public partial class GeoscienceUnitConverterViewModel : ObservableObject, IDisposable
     {
         // ────────────────── 分类选项卡 ──────────────────
         public ObservableCollection<GeoCategoryTabItem> Categories { get; } = new();
@@ -135,6 +135,11 @@ namespace GeoChemistryNexus.ViewModels
             LanguageService.Instance.PropertyChanged += OnAppLanguageChanged;
             InitCategories();
             SelectedCategoryItem = Categories.FirstOrDefault();
+        }
+
+        public void Dispose()
+        {
+            LanguageService.Instance.PropertyChanged -= OnAppLanguageChanged;
         }
 
         private void OnAppLanguageChanged(object? sender, PropertyChangedEventArgs e)

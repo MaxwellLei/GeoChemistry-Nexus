@@ -220,7 +220,7 @@ namespace GeoChemistryNexus.Controls
                 }
 
                 // 创建一个新的Jint引擎实例
-                var engine = new Engine();
+                var engine = JintHelper.CreateEngine();
                 var tempLogs = new List<string>();
                 Helpers.JintHelper.InjectTraceFunction(engine, tempLogs); // 注入trace函数避免验证失败
 

@@ -1602,6 +1602,21 @@
   <data name="dev_mode_warning_non_developers" xml:space="preserve">
     <value>Not recommended for non-developers; it may cause unnecessary issues.</value>
   </data>
+  <data name="developer_mode_warning" xml:space="preserve">
+    <value>Not recommended for non-developers; it may cause unnecessary issues.</value>
+  </data>
+  <data name="marker_size" xml:space="preserve">
+    <value>Marker Size</value>
+  </data>
+  <data name="edit_failed" xml:space="preserve">
+    <value>Edit failed: </value>
+  </data>
+  <data name="official_publisher_plot_categories_auto_included" xml:space="preserve">
+    <value>Plot categories changed; including diagram index files in this publish.</value>
+  </data>
+  <data name="official_publisher_geot_categories_auto_included" xml:space="preserve">
+    <value>GeoT mineral tags changed; including geothermometer index files in this publish.</value>
+  </data>
   <data name="click_to_download" xml:space="preserve">
     <value>Click to download</value>
   </data>

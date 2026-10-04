@@ -3921,6 +3921,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Not recommended for non-developers; it may cause unnecessary issues. 的本地化字符串。
+        /// </summary>
+        internal static string developer_mode_warning {
+            get {
+                return ResourceManager.GetString("developer_mode_warning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 DEVELOPER OPTIONS 的本地化字符串。
         /// </summary>
         internal static string developer_settings {
@@ -4232,6 +4241,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string edit_diagram_template {
             get {
                 return ResourceManager.GetString("edit_diagram_template", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Edit failed:  的本地化字符串。
+        /// </summary>
+        internal static string edit_failed {
+            get {
+                return ResourceManager.GetString("edit_failed", resourceCulture);
             }
         }
         
@@ -8601,6 +8619,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 Marker Size 的本地化字符串。
+        /// </summary>
+        internal static string marker_size {
+            get {
+                return ResourceManager.GetString("marker_size", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Maximize 的本地化字符串。
         /// </summary>
         internal static string maximize {
@@ -10671,6 +10698,15 @@ namespace GeoChemistryNexus.Data.Language {
         }
         
         /// <summary>
+        ///   查找类似 GeoT mineral tags changed; including geothermometer index files in this publish. 的本地化字符串。
+        /// </summary>
+        internal static string official_publisher_geot_categories_auto_included {
+            get {
+                return ResourceManager.GetString("official_publisher_geot_categories_auto_included", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 GeoT mineral categories draft saved locally. 的本地化字符串。
         /// </summary>
         internal static string official_publisher_geot_categories_draft_saved {
@@ -11000,6 +11036,15 @@ namespace GeoChemistryNexus.Data.Language {
         internal static string official_publisher_no_target {
             get {
                 return ResourceManager.GetString("official_publisher_no_target", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Plot categories changed; including diagram index files in this publish. 的本地化字符串。
+        /// </summary>
+        internal static string official_publisher_plot_categories_auto_included {
+            get {
+                return ResourceManager.GetString("official_publisher_plot_categories_auto_included", resourceCulture);
             }
         }
         

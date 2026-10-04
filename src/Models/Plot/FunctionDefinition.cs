@@ -39,11 +39,22 @@ namespace GeoChemistryNexus.Models
         [ObservableProperty]
         private double _maxY = double.NaN;
 
+        public const int MinPointCount = 2;
+        public const int MaxPointCount = 5000;
+
         /// <summary>
         /// 采样点数量 (影响平滑度)
         /// </summary>
         [ObservableProperty]
         private int _pointCount = 1000;
+
+        partial void OnPointCountChanged(int value)
+        {
+            if (value < MinPointCount)
+                PointCount = MinPointCount;
+            else if (value > MaxPointCount)
+                PointCount = MaxPointCount;
+        }
 
         /// <summary>
         /// 颜色

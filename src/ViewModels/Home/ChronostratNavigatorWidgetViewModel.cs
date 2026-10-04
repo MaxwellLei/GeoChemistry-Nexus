@@ -14,7 +14,7 @@ namespace GeoChemistryNexus.ViewModels.Home
     /// <summary>
     /// 国际年代地层表速查卡（ICS Chronostratigraphic Navigator）的 ViewModel。
     /// </summary>
-    public partial class ChronostratNavigatorWidgetViewModel : ObservableObject
+    public partial class ChronostratNavigatorWidgetViewModel : ObservableObject, IDisposable
     {
         public const string SourceUrl = "https://github.com/i-c-stratigraphy/chart";
 
@@ -143,6 +143,11 @@ namespace GeoChemistryNexus.ViewModels.Home
         {
             LoadRoots();
             LanguageService.Instance.PropertyChanged += OnLanguageChanged;
+        }
+
+        public void Dispose()
+        {
+            LanguageService.Instance.PropertyChanged -= OnLanguageChanged;
         }
 
         private void OnLanguageChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)

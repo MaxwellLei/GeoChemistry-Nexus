@@ -262,7 +262,7 @@ namespace GeoChemistryNexus.ViewModels
                 for (int c = 0; c < InputColumns.Length; c++)
                 {
                     var cellValue = sheet[row, InputStartColumn + c];
-                    if (cellValue != null && double.TryParse(cellValue.ToString(), out double value) && value > 0)
+                    if (InvariantNumberParser.TryParseCell(cellValue, out double value) && value > 0)
                     {
                         oxides[InputColumns[c]] = value;
                         hasData = true;
@@ -290,7 +290,7 @@ namespace GeoChemistryNexus.ViewModels
                     int dc = diagStartCol;
                     sheet[row, dc++] = TranslateSilicaSaturation(result.SilicaSaturation);
                     sheet[row, dc++] = TranslateAluminaState(result.AluminaState);
-                    sheet[row, dc] = result.MineralSum.ToString("F2");
+                    sheet[row, dc] = InvariantNumberParser.Format(result.MineralSum, "F2");
 
                     // 3. 写入标准矿物列 (阳离子百分比)
                     for (int m = 0; m < ResultMineralOrder.Length; m++)
@@ -355,7 +355,7 @@ namespace GeoChemistryNexus.ViewModels
                 {
                     var headerVal = sheet[0, c]?.ToString() ?? "";
                     if (headerVal == "│") headerVal = "---";
-                    headers.Add(headerVal);
+                    headers.Add(ReoGridFormatHelper.EscapeCsvCell(headerVal));
                 }
                 sb.AppendLine(string.Join(",", headers));
 
@@ -365,9 +365,9 @@ namespace GeoChemistryNexus.ViewModels
                     var rowData = new List<string>();
                     for (int c = 0; c < sheet.ColumnCount; c++)
                     {
-                        var val = sheet[row, c]?.ToString() ?? "";
+                        var val = InvariantNumberParser.ToText(sheet[row, c]);
                         if (!string.IsNullOrEmpty(val)) hasData = true;
-                        rowData.Add(val);
+                        rowData.Add(ReoGridFormatHelper.EscapeCsvCell(val));
                     }
                     if (hasData)
                         sb.AppendLine(string.Join(",", rowData));

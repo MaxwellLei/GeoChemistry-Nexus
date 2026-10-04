@@ -820,6 +820,21 @@
   <data name="dev_mode_warning_non_developers" xml:space="preserve">
     <value>非開發者不建議開啟，可能會導致不必要的問題。</value>
   </data>
+  <data name="developer_mode_warning" xml:space="preserve">
+    <value>非開發者不建議開啟，可能會導致不必要的問題。</value>
+  </data>
+  <data name="marker_size" xml:space="preserve">
+    <value>符號大小</value>
+  </data>
+  <data name="edit_failed" xml:space="preserve">
+    <value>編輯失敗： </value>
+  </data>
+  <data name="official_publisher_plot_categories_auto_included" xml:space="preserve">
+    <value>圖解分類已變更，本次發布將包含圖解索引檔。</value>
+  </data>
+  <data name="official_publisher_geot_categories_auto_included" xml:space="preserve">
+    <value>溫壓計礦物標籤已變更，本次發布將包含溫壓計索引檔。</value>
+  </data>
   <data name="NormalSetting" xml:space="preserve">
     <value>一般設定</value>
   </data>

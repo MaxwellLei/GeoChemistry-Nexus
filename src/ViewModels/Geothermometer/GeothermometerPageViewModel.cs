@@ -1952,7 +1952,7 @@ namespace GeoChemistryNexus.ViewModels
                 foreach (int colIndex in inputIndices)
                 {
                     var cellData = worksheet.GetCellData(row, colIndex);
-                    if (cellData != null && double.TryParse(cellData.ToString(), out double val))
+                    if (InvariantNumberParser.TryParseCell(cellData, out double val))
                     {
                         inputValues.Add(val);
                     }
@@ -2713,8 +2713,15 @@ namespace GeoChemistryNexus.ViewModels
             string? filePath = FileHelper.GetFilePath(LanguageService.Instance["csv_file_filter"]);
             if (filePath != null)
             {
-                reoGridControl.Load(filePath);
-                MessageHelper.Success(LanguageService.Instance["geo_msg_import_success"]);
+                try
+                {
+                    reoGridControl.Load(filePath);
+                    MessageHelper.Success(LanguageService.Instance["geo_msg_import_success"]);
+                }
+                catch (Exception ex)
+                {
+                    MessageHelper.Error(string.Format(LanguageService.Instance["geo_free_sheet_import_failed"], ex.Message));
+                }
             }
             else
             {

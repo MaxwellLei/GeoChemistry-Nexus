@@ -17,6 +17,31 @@ namespace GeoChemistryNexus.Helpers
     public static class JintHelper
     {
         public const string CoordinateScriptFunctionName = "__geoCalc";
+        public static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(5);
+        public const int DefaultMaxStatements = 1_000_000;
+        public const int DefaultMaxRecursion = 64;
+
+        /// <summary>
+        /// 带超时、语句数和递归深度限制的引擎。避免脚本死循环占住 UI 线程。
+        /// </summary>
+        public static Engine CreateEngine(TimeSpan? timeout = null)
+        {
+            var timeoutInterval = timeout ?? DefaultTimeout;
+            if (timeoutInterval <= TimeSpan.Zero)
+                timeoutInterval = DefaultTimeout;
+
+            return new Engine(options =>
+            {
+                options.TimeoutInterval(timeoutInterval);
+                options.LimitRecursion(DefaultMaxRecursion);
+                options.MaxStatements(DefaultMaxStatements);
+            });
+        }
+
+        public static EngineGlobalSnapshot CaptureGlobalSnapshot(Engine engine)
+        {
+            return EngineGlobalSnapshot.Capture(engine);
+        }
 
         /// <summary>
         /// 将坐标脚本预编译为可重复调用的函数，避免逐行 Evaluate 重复解析。
@@ -60,7 +85,7 @@ namespace GeoChemistryNexus.Helpers
 
             try
             {
-                var engine = new Engine();
+                var engine = CreateEngine(TimeSpan.FromSeconds(2));
                 engine.Execute("var sin=Math.sin; var cos=Math.cos; var tan=Math.tan; var abs=Math.abs; var sqrt=Math.sqrt; var pow=Math.pow; var log=Math.log; var log10=Math.log10; var exp=Math.exp; var PI=Math.PI;");
                 // 将用户输入的公式包装成 JS 函数 f(x)
                 engine.Execute($"function f(x) {{ return {expr}; }}");
@@ -260,6 +285,95 @@ namespace GeoChemistryNexus.Helpers
                     logs.Add(message.ToString() ?? string.Empty);
                 }
             }));
+        }
+    }
+
+    /// <summary>
+    /// 记录引擎全局属性的初始值。每次调用后恢复，避免上一行样品改写的全局变量进入下一行。
+    /// </summary>
+    public sealed class EngineGlobalSnapshot
+    {
+        private readonly (string Name, JsValue Value)[] _properties;
+
+        private EngineGlobalSnapshot((string Name, JsValue Value)[] properties)
+        {
+            _properties = properties;
+        }
+
+        public static EngineGlobalSnapshot Capture(Engine engine)
+        {
+            if (engine == null)
+                throw new ArgumentNullException(nameof(engine));
+
+            var entries = new List<(string, JsValue)>();
+            foreach (var property in engine.Global.GetOwnProperties())
+            {
+                if (!property.Key.IsString())
+                    continue;
+
+                var name = property.Key.AsString();
+                if (string.IsNullOrEmpty(name))
+                    continue;
+
+                entries.Add((name, engine.Global.Get(property.Key)));
+            }
+
+            return new EngineGlobalSnapshot(entries.ToArray());
+        }
+
+        public void Restore(Engine engine)
+        {
+            if (engine == null)
+                return;
+
+            try
+            {
+                RestoreCore(engine);
+            }
+            catch
+            {
+                // 超时后的引擎可能已不可再枚举，调用方会丢弃这次结果
+            }
+        }
+
+        private void RestoreCore(Engine engine)
+        {
+            var keep = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var (name, value) in _properties)
+            {
+                keep.Add(name);
+                try
+                {
+                    engine.SetValue(name, value);
+                }
+                catch
+                {
+                    // 只读内置属性保持原状
+                }
+            }
+
+            var stale = new List<JsValue>();
+            foreach (var property in engine.Global.GetOwnProperties())
+            {
+                if (!property.Key.IsString())
+                    continue;
+
+                var name = property.Key.AsString();
+                if (string.IsNullOrEmpty(name) || !keep.Contains(name))
+                    stale.Add(property.Key);
+            }
+
+            foreach (var key in stale)
+            {
+                try
+                {
+                    engine.Global.Delete(key);
+                }
+                catch
+                {
+                    // 删不掉的属性留在引擎里，不影响下一次数值入参覆盖
+                }
+            }
         }
     }
 }

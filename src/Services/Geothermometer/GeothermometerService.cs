@@ -296,10 +296,10 @@ namespace GeoChemistryNexus.Services
             // 统一使用较长超时：表格单元格与详细计算共用同一缓存引擎
             var lazy = _scriptEngines.GetOrAdd(cacheKey, _ => new Lazy<CachedScriptEngine>(() =>
             {
-                var engine = new Engine(cfg => cfg.TimeoutInterval(TimeSpan.FromSeconds(10)));
+                var engine = JintHelper.CreateEngine(TimeSpan.FromSeconds(10));
                 engine.Execute(MathHelpers);
                 engine.Execute(script);
-                return new CachedScriptEngine(engine);
+                return new CachedScriptEngine(engine, JintHelper.CaptureGlobalSnapshot(engine));
             }, LazyThreadSafetyMode.ExecutionAndPublication));
 
             return lazy.Value;
@@ -324,15 +324,26 @@ namespace GeoChemistryNexus.Services
                         var cached = GetOrCreateScriptEngine(registrationEntity);
                         lock (cached.SyncRoot)
                         {
-                            var doubleArgs = new double[args.Length];
-                            for (int i = 0; i < args.Length; i++)
-                                doubleArgs[i] = Convert.ToDouble(args[i]);
+                            cached.Globals.Restore(cached.Engine);
+                            try
+                            {
+                                var doubleArgs = new double[args.Length];
+                                for (int i = 0; i < args.Length; i++)
+                                {
+                                    if (!InvariantNumberParser.TryParseCell(args[i], out doubleArgs[i]))
+                                        return null;
+                                }
 
-                            var result = cached.Engine.Invoke("calculate", new object[] { doubleArgs });
-                            if (result == null || result.IsNull() || result.IsUndefined())
-                                return null;
+                                var result = cached.Engine.Invoke("calculate", new object[] { doubleArgs });
+                                if (result == null || result.IsNull() || result.IsUndefined())
+                                    return null;
 
-                            return Convert.ToDouble(result.AsNumber());
+                                return Convert.ToDouble(result.AsNumber(), System.Globalization.CultureInfo.InvariantCulture);
+                            }
+                            finally
+                            {
+                                cached.Globals.Restore(cached.Engine);
+                            }
                         }
                     }
                     catch (Exception ex)
@@ -371,18 +382,26 @@ namespace GeoChemistryNexus.Services
                         var cached = GetOrCreateScriptEngine(registrationEntity);
                         lock (cached.SyncRoot)
                         {
-                            var jsArgs = new object[args.Length];
-                            for (int i = 0; i < args.Length; i++)
-                                jsArgs[i] = args[i];
+                            cached.Globals.Restore(cached.Engine);
+                            try
+                            {
+                                var jsArgs = new object[args.Length];
+                                for (int i = 0; i < args.Length; i++)
+                                    jsArgs[i] = args[i];
 
-                            var result = cached.Engine.Invoke(jsFuncName, jsArgs);
-                            if (result == null || result.IsNull() || result.IsUndefined())
-                                return null;
-                            if (result.IsNumber())
-                                return Convert.ToDouble(result.AsNumber());
-                            if (result.IsString())
-                                return result.AsString();
-                            return result.ToString();
+                                var result = cached.Engine.Invoke(jsFuncName, jsArgs);
+                                if (result == null || result.IsNull() || result.IsUndefined())
+                                    return null;
+                                if (result.IsNumber())
+                                    return Convert.ToDouble(result.AsNumber(), System.Globalization.CultureInfo.InvariantCulture);
+                                if (result.IsString())
+                                    return result.AsString();
+                                return result.ToString();
+                            }
+                            finally
+                            {
+                                cached.Globals.Restore(cached.Engine);
+                            }
                         }
                     }
                     catch (Exception ex)
@@ -421,6 +440,9 @@ namespace GeoChemistryNexus.Services
                 var cached = GetOrCreateScriptEngine(fullEntity);
                 lock (cached.SyncRoot)
                 {
+                    cached.Globals.Restore(cached.Engine);
+                    try
+                    {
                     var funcValue = cached.Engine.GetValue("calculateDetailed");
                     if (funcValue == null || funcValue.IsUndefined())
                     {
@@ -450,6 +472,11 @@ namespace GeoChemistryNexus.Services
                                 steps.Add(ParseCalculationStep(obj));
                             }
                         }
+                    }
+                    }
+                    finally
+                    {
+                        cached.Globals.Restore(cached.Engine);
                     }
                 }
             }
@@ -654,12 +681,14 @@ namespace GeoChemistryNexus.Services
 
         private sealed class CachedScriptEngine
         {
-            public CachedScriptEngine(Engine engine)
+            public CachedScriptEngine(Engine engine, EngineGlobalSnapshot globals)
             {
                 Engine = engine;
+                Globals = globals;
             }
 
             public Engine Engine { get; }
+            public EngineGlobalSnapshot Globals { get; }
             public object SyncRoot { get; } = new();
         }
 
@@ -884,7 +913,7 @@ namespace GeoChemistryNexus.Services
         {
             try
             {
-                var engine = new Engine(cfg => cfg.TimeoutInterval(TimeSpan.FromSeconds(5)));
+                var engine = JintHelper.CreateEngine(TimeSpan.FromSeconds(5));
                 engine.Execute(MathHelpers);
                 engine.Execute(scriptContent);
 

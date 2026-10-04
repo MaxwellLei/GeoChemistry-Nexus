@@ -9,6 +9,7 @@ using HandyControl.Controls;
 using ScottPlot;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -415,16 +416,20 @@ namespace GeoChemistryNexus.ViewModels
             string? langConfig = Helpers.ConfigHelper.GetConfig("language");
             SelectedAppLanguageCode = AppCultureRegistry.ResolveAppLanguage(langConfig ?? string.Empty);
 
-            AutoOffTime = int.Parse(Helpers.ConfigHelper.GetConfig("auto_off_time") ?? "0");    //读取消息通知时间
-            
+            AutoOffTime = int.TryParse(Helpers.ConfigHelper.GetConfig("auto_off_time"), NumberStyles.Integer, CultureInfo.InvariantCulture, out int autoOffTime)
+                ? autoOffTime
+                : 0;
+
             if (bool.TryParse(Helpers.ConfigHelper.GetConfig("developer_mode"), out bool devMode))
             {
                 DeveloperMode = devMode;
             }
 
-            Boot = bool.Parse(Helpers.ConfigHelper.GetConfig("boot") ?? "false");     //读取是否自动开机
-            AutoCheck = bool.Parse(Helpers.ConfigHelper.GetConfig("auto_check_update") ?? "false");   //读取是否自动检查更新
-            ExitMode = int.Parse(Helpers.ConfigHelper.GetConfig("exit_program_mode") ?? "0");  //读取退出方式
+            Boot = bool.TryParse(Helpers.ConfigHelper.GetConfig("boot"), out bool boot) && boot;
+            AutoCheck = bool.TryParse(Helpers.ConfigHelper.GetConfig("auto_check_update"), out bool autoCheck) && autoCheck;
+            ExitMode = int.TryParse(Helpers.ConfigHelper.GetConfig("exit_program_mode"), NumberStyles.Integer, CultureInfo.InvariantCulture, out int exitMode)
+                ? exitMode
+                : 0;
             if (int.TryParse(Helpers.ConfigHelper.GetConfig("main_sidebar_collapse_mode"), out int sidebarCollapseMode)
                 && sidebarCollapseMode >= 0 && sidebarCollapseMode <= 1)
             {

@@ -233,6 +233,11 @@ namespace GeoChemistryNexus.Helpers
             return formula.StartsWith("=", StringComparison.Ordinal) ? formula : $"={formula}";
         }
 
+        public static string FormatCsvField(object? cell)
+        {
+            return EscapeCsvCell(InvariantNumberParser.ToText(cell));
+        }
+
         public static string EscapeCsvCell(string value)
         {
             if (string.IsNullOrEmpty(value))

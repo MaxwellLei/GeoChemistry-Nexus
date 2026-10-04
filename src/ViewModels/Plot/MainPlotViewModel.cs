@@ -8229,7 +8229,7 @@ namespace GeoChemistryNexus.ViewModels
                     // Check execution. Coordinate scripts are treated as function bodies and must explicitly return an array.
                     try
                     {
-                        var engine = new Jint.Engine();
+                        var engine = JintHelper.CreateEngine();
                         var tempLogs = new List<string>();
                         JintHelper.InjectTraceFunction(engine, tempLogs); // 注入trace函数避免验证失败
                         foreach (var v in vars)
@@ -8275,7 +8275,7 @@ namespace GeoChemistryNexus.ViewModels
                 {
                     try
                     {
-                        var engine = new Jint.Engine();
+                        var engine = JintHelper.CreateEngine();
                         var tempLogs = new List<string>();
                         JintHelper.InjectTraceFunction(engine, tempLogs); // 注入trace函数避免验证失败
                         if (!JintHelper.TryPrepareCoordinateScript(engine, template.Script.ScriptBody))
@@ -10048,7 +10048,7 @@ namespace GeoChemistryNexus.ViewModels
         /// <param name="dataRow">数据行</param>
         /// <param name="dataColumns">参与计算的数据列名</param>
         /// <returns>返回计算结果的double数组,如果计算失败或返回类型不正确则返回null</returns>
-        private double[]? CalculateCoordinatesUsingScript(Jint.Engine engine, DataRow dataRow, List<string> dataColumns, out string? invalidReason)
+        private double[]? CalculateCoordinatesUsingScript(Jint.Engine engine, DataRow dataRow, List<string> dataColumns, EngineGlobalSnapshot? globals, out string? invalidReason)
         {
             invalidReason = null;
             try
@@ -10103,6 +10103,10 @@ namespace GeoChemistryNexus.ViewModels
                 System.Diagnostics.Debug.WriteLine(LanguageService.Instance["script_execution_failed"] + ex.Message);
                 invalidReason = $"{Lang("plot_script_execution_failed_with_reason", "Script execution failed")}: {ex.Message}";
                 return null;
+            }
+            finally
+            {
+                globals?.Restore(engine);
             }
         }
 
@@ -10195,7 +10199,7 @@ namespace GeoChemistryNexus.ViewModels
         private static bool TryParseCoordinateScriptInput(string? rawValue, out double value)
         {
             value = default;
-            return !string.IsNullOrWhiteSpace(rawValue) && double.TryParse(rawValue, out value) && IsFiniteValue(value);
+            return InvariantNumberParser.TryParse(rawValue, out value);
         }
 
         private static bool IsFiniteValue(double value)
@@ -10492,7 +10496,7 @@ namespace GeoChemistryNexus.ViewModels
                 var logs = new List<string>();
         
                 // 创建Jint引擎并注入trace函数
-                var engine = new Jint.Engine();
+                var engine = JintHelper.CreateEngine();
                 JintHelper.InjectTraceFunction(engine, logs);
 
                 if (!TrySetCoordinateScriptInputs(engine, sheet, rowIndex, dataColumns, out var inputInvalidReason))
@@ -13625,7 +13629,7 @@ namespace GeoChemistryNexus.ViewModels
                 {
                     // 使用映射获取对应的 Worksheet 列索引
                     int worksheetColIndex = columnMapping[c];
-                    var cellValue = worksheet.GetCellData(r, worksheetColIndex)?.ToString();
+                    var cellValue = InvariantNumberParser.ToText(worksheet.GetCellData(r, worksheetColIndex));
 
                     newRow[c] = cellValue;
                     if (!string.IsNullOrWhiteSpace(cellValue))
@@ -13734,7 +13738,7 @@ namespace GeoChemistryNexus.ViewModels
             }
 
             // 创建Jint引擎并注入trace函数
-            var engine = new Jint.Engine();
+            var engine = JintHelper.CreateEngine();
             var engineLogs = new List<string>(); // 收集日志
             JintHelper.InjectTraceFunction(engine, engineLogs);
 
@@ -13745,6 +13749,8 @@ namespace GeoChemistryNexus.ViewModels
                     Lang("plot_script_must_return_array_explicitly", "Scripts must explicitly return an array, for example: return [x, y];"));
                 return;
             }
+
+            var scriptGlobals = JintHelper.CaptureGlobalSnapshot(engine);
 
             try
             {
@@ -13775,7 +13781,7 @@ namespace GeoChemistryNexus.ViewModels
                         int rowIndex = item.OriginalRowIndex; // 获取原始数据行号
                         try
                         {
-                            var ternaryValues = CalculateCoordinatesUsingScript(engine, row, dataColumns, out var invalidReason);
+                            var ternaryValues = CalculateCoordinatesUsingScript(engine, row, dataColumns, scriptGlobals, out var invalidReason);
                             // 脚本必须为三元图返回三个值
                             if (ternaryValues != null && ternaryValues.Length == 3)
                             {
@@ -13877,7 +13883,7 @@ namespace GeoChemistryNexus.ViewModels
                         int rowIndex = item.OriginalRowIndex;
                         try
                         {
-                            var coordinates = CalculateCoordinatesUsingScript(engine, row, dataColumns, out var invalidReason);
+                            var coordinates = CalculateCoordinatesUsingScript(engine, row, dataColumns, scriptGlobals, out var invalidReason);
                             // 脚本必须为笛卡尔坐标图返回两个值
                             if (coordinates != null && coordinates.Length == 2)
                             {
@@ -14013,9 +14019,8 @@ namespace GeoChemistryNexus.ViewModels
 
                 foreach (var (element, columnIndex) in elementColumns)
                 {
-                    var cellValue = worksheet[row, columnIndex]?.ToString();
-                    if (!string.IsNullOrWhiteSpace(cellValue)
-                        && double.TryParse(cellValue, out double numericValue))
+                    var cellData = worksheet[row, columnIndex];
+                    if (InvariantNumberParser.TryParseCell(cellData, out double numericValue))
                     {
                         elementValues[element] = numericValue;
                         hasData = true;

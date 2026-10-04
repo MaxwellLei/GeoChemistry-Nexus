@@ -10,26 +10,25 @@ namespace GeoChemistryNexus.Helpers
     class BootHelper
     {
         //开机自动启动
+        private const string RunValueName = "GeoChemistry Nexus";
+        private const string LegacyRunValueName = "Geochemistrt Nexus";
+
         public static void SetAutoRun(bool isAutoRun)
         {
-            try
+            using RegistryKey? reg = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run");
+            if (reg == null)
+                return;
+
+            if (isAutoRun)
             {
-                string name = "Geochemistrt Nexus";
-                Microsoft.Win32.RegistryKey reg = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run");
-                if (isAutoRun)
-                {
-                    reg.SetValue(name, System.Windows.Forms.Application.ExecutablePath);
-                }
-                else
-                {
-                    reg.DeleteValue(name);
-                }
-                reg.Close();
+                reg.SetValue(RunValueName, System.Windows.Forms.Application.ExecutablePath);
             }
-            catch (Exception)
+            else
             {
-                throw;
+                reg.DeleteValue(RunValueName, throwOnMissingValue: false);
             }
+
+            reg.DeleteValue(LegacyRunValueName, throwOnMissingValue: false);
         }
     }
 }

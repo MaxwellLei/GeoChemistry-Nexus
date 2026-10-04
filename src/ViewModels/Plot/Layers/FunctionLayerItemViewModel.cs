@@ -37,12 +37,13 @@ namespace GeoChemistryNexus.ViewModels
             bool hasMinY = !double.IsNaN(minY);
             bool hasMaxY = !double.IsNaN(maxY);
             int count = FunctionDefinition.PointCount;
-            if (count < 2) count = 2;
+            if (count < FunctionDefinition.MinPointCount) count = FunctionDefinition.MinPointCount;
+            if (count > FunctionDefinition.MaxPointCount) count = FunctionDefinition.MaxPointCount;
             
             double step = (maxX - minX) / (count - 1);
             bool previousPointSkipped = false;
             
-            var engine = new Engine();
+            var engine = JintHelper.CreateEngine();
             // Pre-add common math functions aliases
             engine.Execute("var sin = Math.sin; var cos = Math.cos; var tan = Math.tan; var abs = Math.abs; var sqrt = Math.sqrt; var pow = Math.pow; var log = Math.log; var log10 = Math.log10; var exp = Math.exp; var PI = Math.PI;");
 

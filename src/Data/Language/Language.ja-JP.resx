@@ -820,6 +820,21 @@
   <data name="dev_mode_warning_non_developers" xml:space="preserve">
     <value>開発者以外の方の有効化は推奨されません。不必要な問題が発生する可能性があります。</value>
   </data>
+  <data name="developer_mode_warning" xml:space="preserve">
+    <value>開発者以外の方の有効化は推奨されません。不必要な問題が発生する可能性があります。</value>
+  </data>
+  <data name="marker_size" xml:space="preserve">
+    <value>マーカーサイズ</value>
+  </data>
+  <data name="edit_failed" xml:space="preserve">
+    <value>編集に失敗しました： </value>
+  </data>
+  <data name="official_publisher_plot_categories_auto_included" xml:space="preserve">
+    <value>ダイアグラム分類が変更されたため、今回の公開にダイアグラム索引ファイルを含めます。</value>
+  </data>
+  <data name="official_publisher_geot_categories_auto_included" xml:space="preserve">
+    <value>地質温度圧力計の鉱物タグが変更されたため、今回の公開に地質温度圧力計の索引ファイルを含めます。</value>
+  </data>
   <data name="NormalSetting" xml:space="preserve">
     <value>一般設定</value>
   </data>
