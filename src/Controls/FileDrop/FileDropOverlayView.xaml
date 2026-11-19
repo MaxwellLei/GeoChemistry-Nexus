@@ -1,0 +1,24 @@
+<UserControl x:Class="GeoChemistryNexus.Controls.FileDropOverlayView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
+             HorizontalAlignment="Stretch"
+             VerticalAlignment="Stretch"
+             IsHitTestVisible="False"
+             Focusable="False">
+    <Border x:Name="Root" Style="{DynamicResource FileDropOverlayMaskStyle}">
+        <Border x:Name="Card" Style="{DynamicResource FileDropOverlayCardStyle}">
+            <StackPanel HorizontalAlignment="Center">
+                <Grid Width="240" Height="200" Margin="0,0,0,2">
+                    <local:FileDropImportIllustration x:Name="AcceptedArt"/>
+                    <local:FileDropRejectedIllustration x:Name="RejectedArt" Opacity="0"/>
+                </Grid>
+                <TextBlock x:Name="KickerText" Style="{DynamicResource FileDropOverlayKickerStyle}"/>
+                <TextBlock x:Name="TitleText" Style="{DynamicResource FileDropOverlayHintStyle}"/>
+                <TextBlock x:Name="SubText" Style="{DynamicResource FileDropOverlaySubHintStyle}"/>
+                <WrapPanel x:Name="Chips" HorizontalAlignment="Center" Margin="0,14,0,0"/>
+                <TextBlock x:Name="CountText" Style="{DynamicResource FileDropOverlayCountStyle}"/>
+            </StackPanel>
+        </Border>
+    </Border>
+</UserControl>

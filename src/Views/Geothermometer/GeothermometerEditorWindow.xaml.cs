@@ -1,30 +1,45 @@
-using GeoChemistryNexus.Helpers;
+﻿using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Services;
 using GeoChemistryNexus.ViewModels;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Interop;
 
 namespace GeoChemistryNexus.Views
 {
     /// <summary>
     /// GeothermometerEditorWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class GeothermometerEditorWindow : Window
+    public partial class GeothermometerEditorWindow : Window, INotificationCenterHost
     {
-        public ObservableCollection<NotificationViewModel> LocalNotifications { get; } = new();
+        /// <summary>
+        /// 本窗口独立的通知中心（由 XAML 中的 NotificationHost 呈现）。
+        /// </summary>
+        public NotificationCenter Notifications { get; } = new();
 
-        private readonly CancellationTokenSource _notificationCts = new();
         private PropertyChangedEventHandler? _languageChanged;
 
         public GeothermometerEditorWindow()
         {
             InitializeComponent();
             UiScaleHelper.Attach(this);
+            GeoChemistryNexus.Helpers.WindowWorkAreaHelper.Attach(this);
+
+            // 无边框窗口：交给 DWM 绘制原生阴影（与 EPMA 模板编辑窗口一致）
+            SourceInitialized += (_, _) =>
+            {
+                int policy = 2; // DWMNCRP_ENABLED
+                DwmSetWindowAttribute(new WindowInteropHelper(this).Handle, 2, ref policy, sizeof(int));
+            };
         }
+
+        [DllImport("dwmapi.dll")]
+        private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attribute, ref int value, int size);
 
         public GeothermometerEditorWindow(GeothermometerEditorViewModel viewModel) : this()
         {
@@ -45,66 +60,13 @@ namespace GeoChemistryNexus.Views
             };
             LanguageService.Instance.PropertyChanged += _languageChanged;
 
-            var helpEditor = EditorControl.HelpDocPanel.HelpDocEditorControl;
-            viewModel.GetCurrentRtfContent = () =>
-            {
-                try
-                {
-                    return RtfHelper.GetRtfString(helpEditor);
-                }
-                catch
-                {
-                    return null;
-                }
-            };
-
-            viewModel.SetCurrentRtfContent = rtf =>
-            {
-                try
-                {
-                    if (string.IsNullOrEmpty(rtf))
-                    {
-                        helpEditor.Document.Blocks.Clear();
-                    }
-                    else
-                    {
-                        RtfHelper.LoadRtfString(helpEditor, rtf);
-                    }
-                }
-                catch
-                {
-                    helpEditor.Document.Blocks.Clear();
-                }
-            };
+            // 帮助文档页使用与 EPMA 共用的 EpmaHelpDocEditor：它会通过 IHelpDocEditorHost 自行挂接 ViewModel，
+            // 这里不再需要手动接线 RTF 读写回调。
         }
 
-        private void ShowSuccessMessage(string message)
-        {
-            ShowLocalNotification("Success", message, NotificationType.Success, MessageHelper.WaitTime);
-        }
+        private void ShowSuccessMessage(string message) => Notifications.Success(message);
 
-        private void ShowErrorMessage(string message)
-        {
-            ShowLocalNotification("Error", message, NotificationType.Error);
-        }
-
-        private void ShowLocalNotification(string title, string message, NotificationType type, int durationSeconds = 0)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                var vm = new NotificationViewModel(title, message, type, RemoveNotification);
-                LocalNotifications.Add(vm);
-
-                if (durationSeconds > 0)
-                {
-                    LocalNotificationDelay.Schedule(
-                        Dispatcher,
-                        durationSeconds,
-                        _notificationCts.Token,
-                        async () => await vm.Close());
-                }
-            });
-        }
+        private void ShowErrorMessage(string message) => Notifications.Error(message);
 
         protected override void OnClosed(EventArgs e)
         {
@@ -117,20 +79,8 @@ namespace GeoChemistryNexus.Views
             if (DataContext is GeothermometerEditorViewModel viewModel)
                 viewModel.Release();
 
-            _notificationCts.Cancel();
-            _notificationCts.Dispose();
+            Notifications.Dispose();
             base.OnClosed(e);
-        }
-
-        private void RemoveNotification(NotificationViewModel vm)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                if (LocalNotifications.Contains(vm))
-                {
-                    LocalNotifications.Remove(vm);
-                }
-            });
         }
     }
 }

@@ -12,11 +12,18 @@ namespace GeoChemistryNexus.Models
         Compact = 1
     }
 
+    public enum TemplateCardAppearance
+    {
+        Frameless = 0,
+        Regular = 1
+    }
+
     /// <summary>
     /// 图解模板卡片布局设置快照。
     /// </summary>
     public sealed class TemplateCardLayoutSettings
     {
         public TemplateCardSizePreset SizePreset { get; init; } = TemplateCardSizePreset.Standard;
+        public TemplateCardAppearance Appearance { get; init; } = TemplateCardAppearance.Frameless;
     }
 }

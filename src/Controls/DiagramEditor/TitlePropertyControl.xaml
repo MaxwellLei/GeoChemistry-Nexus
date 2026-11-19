@@ -1,106 +1,49 @@
-<UserControl x:Class="GeoChemistryNexus.Controls.TitlePropertyControl"
+﻿<UserControl x:Class="GeoChemistryNexus.Controls.TitlePropertyControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
-             xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:models="clr-namespace:GeoChemistryNexus.Models"
              xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
-             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="300"
              Background="#F5F5F7">
     <UserControl.Resources>
         <cvs:NumericTypeConverter x:Key="NumericTypeConverter"/>
-        <cvs:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
         <cvs:StringColorConverter x:Key="StringColorConverter"/>
-        <cvs:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-        <cvs:DoublePrecisionConverter x:Key="DoublePrecisionConverter" Precision="4"/>
-        
-        <Style x:Key="ToggleButtonSwitch" TargetType="ToggleButton" BasedOn="{StaticResource ToggleButtonSwitch}">
-        </Style>
     </UserControl.Resources>
 
     <Grid DataContext="{Binding SelectedObject, RelativeSource={RelativeSource AncestorType=local:TitlePropertyControl}}">
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel Margin="10,12,10,12">
-                <!-- Header -->
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                    <TextBlock Text="&#xe62b;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="24" Foreground="#1D1D1F" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                    <TextBlock Text="{Binding [PlotTitle],Source={x:Static lg:LanguageService.Instance}}" 
-                               FontSize="22" FontWeight="Bold" Foreground="#1D1D1F" VerticalAlignment="Center"/>
-                </StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-                <!-- Content -->
-                <TextBlock Text="{Binding [content],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernSettingsGroupTitle}" Margin="4,10,0,6"/>
-                <Border Style="{StaticResource ModernCardStyle}" Margin="0,0,0,8">
-                    <StackPanel Margin="10">
-                         <TextBlock Text="{Binding [content],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
-                         <local:LocalizedStringControl Value="{Binding Label, Mode=TwoWay}" Margin="0,0,0,16"/>
-                    </StackPanel>
-                </Border>
+        <local:InspectorHeader Glyph="&#xe62b;"
+                               Title="{Binding [PlotTitle],Source={x:Static lg:LanguageService.Instance}}"/>
 
-                <!-- Typography -->
-                <TextBlock Text="{Binding [font_style],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernSettingsGroupTitle}" Margin="4,10,0,6"/>
-                <Border Style="{StaticResource ModernCardStyle}" Margin="0,0,0,8">
-                    <StackPanel Margin="10">
-                        <!-- Font Family -->
-                        <TextBlock Text="{Binding [font_family],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
-                        <local:FontFamilyControl FontFamilyName="{Binding Family, Mode=TwoWay}" Margin="0,0,0,16"/>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="12,10,12,18">
 
-                        <!-- Style -->
-                        <Grid Margin="0,0,0,16">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="12"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                <!-- 内容：单行多语言文本，语言标记在输入框右侧，只占自身宽度 -->
+                <local:InspectorGroup Header="{Binding [content],Source={x:Static lg:LanguageService.Instance}}">
+                    <local:LocalizedStringControl Value="{Binding Label, Mode=TwoWay}"
+                                                  TextBoxStyle="{StaticResource InspectorTextBoxStyle}"
+                                                  IsSingleLine="True"
+                                                  ShowLanguageChip="True"/>
+                </local:InspectorGroup>
 
-                            <StackPanel Grid.Column="0">
-                                <TextBlock Text="{Binding [style],Source={x:Static lg:LanguageService.Instance}}"
-                                           Style="{StaticResource ModernLabelStyle}"/>
-                                <StackPanel Orientation="Horizontal">
-                                    <ToggleButton Width="40" Height="32" Margin="0,0,8,0"
-                                                  IsChecked="{Binding IsBold, Mode=TwoWay}"
-                                                  Style="{StaticResource FontStyleToggleButtonStyle}">
-                                        <TextBlock Text="B" FontWeight="Bold"/>
-                                    </ToggleButton>
-                                    <ToggleButton Width="40" Height="32"
-                                                  IsChecked="{Binding IsItalic, Mode=TwoWay}"
-                                                  Style="{StaticResource FontStyleToggleButtonStyle}">
-                                        <TextBlock Text="I" FontStyle="Italic" FontFamily="Times New Roman"/>
-                                    </ToggleButton>
-                                </StackPanel>
-                            </StackPanel>
-
-                            <StackPanel Grid.Column="2">
-                                <TextBlock Text="{Binding [font_color],Source={x:Static lg:LanguageService.Instance}}"
-                                           Style="{StaticResource ModernLabelStyle}"/>
-                                <local:TextPropertyColorPicker
-                                    SelectedColor="{Binding Color, Mode=TwoWay, Converter={StaticResource StringColorConverter}}"
-                                    Height="32"/>
-                            </StackPanel>
-                        </Grid>
-
-                        <!-- Size -->
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="10"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            
-                            <StackPanel Grid.Column="0">
-                                <TextBlock Text="{Binding [font_size],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
-                                <hc:NumericUpDown Value="{Binding Size, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
-                                                  hc:InfoElement.Placeholder="pt" 
-                                                  Style="{StaticResource ModernNumericUpDownStyle}"/>
-                            </StackPanel>
-                        </Grid>
-                    </StackPanel>
-                </Border>
+                <!-- 字体：字体名 / 字号·B·I·颜色 -->
+                <local:InspectorGroup Header="{Binding [font_style],Source={x:Static lg:LanguageService.Instance}}">
+                    <local:InspectorFontEditor
+                        FontFamilyName="{Binding Family, Mode=TwoWay}"
+                        PointSize="{Binding Size, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}"
+                        IsBold="{Binding IsBold, Mode=TwoWay}"
+                        IsItalic="{Binding IsItalic, Mode=TwoWay}"
+                        FontColor="{Binding Color, Mode=TwoWay, Converter={StaticResource StringColorConverter}}"/>
+                </local:InspectorGroup>
             </StackPanel>
         </ScrollViewer>
     </Grid>

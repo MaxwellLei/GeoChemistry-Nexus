@@ -1,0 +1,192 @@
+<UserControl x:Class="GeoChemistryNexus.Controls.PersonalGeothermometerIllustration"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             IsHitTestVisible="False"
+             SnapsToDevicePixels="False">
+
+    <UserControl.Resources>
+        <RadialGradientBrush x:Key="PtGlowBrush">
+            <GradientStop Color="{DynamicResource ThemeArtStrongA1FColor}" Offset="0"/>
+            <GradientStop Color="{DynamicResource ThemeArtStrongA08Color}" Offset="0.7"/>
+            <GradientStop Color="{DynamicResource ThemeArtStrongA00Color}" Offset="1"/>
+        </RadialGradientBrush>
+        <LinearGradientBrush x:Key="PtFolderFrontBrush" MappingMode="Absolute" StartPoint="48,86" EndPoint="146,144">
+            <GradientStop Color="{DynamicResource ThemeArtLighterA52Color}" Offset="0"/>
+            <GradientStop Color="{DynamicResource ThemeArtStrongA1FColor}" Offset="1"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="PtCrystalBrush" MappingMode="Absolute" StartPoint="68,52" EndPoint="88,105">
+            <GradientStop Color="{DynamicResource ThemeArtLighterA8CColor}" Offset="0"/>
+            <GradientStop Color="{DynamicResource ThemeArtStrongA33Color}" Offset="1"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="PtBadgeBrush" MappingMode="Absolute" StartPoint="122,112" EndPoint="154,144">
+            <GradientStop Color="{DynamicResource ThemeArtLighterColor}" Offset="0"/>
+            <GradientStop Color="{DynamicResource ThemeArtStrongColor}" Offset="1"/>
+        </LinearGradientBrush>
+    </UserControl.Resources>
+
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <!-- 档案盒整体微悬浮 -->
+                    <DoubleAnimation Storyboard.TargetName="FolderTranslate" Storyboard.TargetProperty="Y"
+                                     From="0" To="-4" Duration="0:0:2.4" AutoReverse="True" RepeatBehavior="Forever">
+                        <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+
+                    <!-- 模板卡片抽起 -->
+                    <DoubleAnimation Storyboard.TargetName="CardTranslate" Storyboard.TargetProperty="Y"
+                                     From="0" To="-9" Duration="0:0:2.4" AutoReverse="True" RepeatBehavior="Forever">
+                        <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                    <DoubleAnimation Storyboard.TargetName="CardRotate" Storyboard.TargetProperty="Angle"
+                                     From="2" To="0" Duration="0:0:2.4" AutoReverse="True" RepeatBehavior="Forever">
+                        <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+
+                    <!-- 底部投影联动 -->
+                    <DoubleAnimation Storyboard.TargetName="ShadowScale" Storyboard.TargetProperty="ScaleX"
+                                     From="1" To="0.88" Duration="0:0:2.4" AutoReverse="True" RepeatBehavior="Forever">
+                        <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                    <DoubleAnimation Storyboard.TargetName="BaseShadow" Storyboard.TargetProperty="Opacity"
+                                     From="0.55" To="0.35" Duration="0:0:2.4" AutoReverse="True" RepeatBehavior="Forever"/>
+
+                    <!-- 徽章脉冲 -->
+                    <DoubleAnimation Storyboard.TargetName="BadgeScale" Storyboard.TargetProperty="ScaleX"
+                                     From="1" To="1.08" Duration="0:0:1.6" AutoReverse="True" RepeatBehavior="Forever"/>
+                    <DoubleAnimation Storyboard.TargetName="BadgeScale" Storyboard.TargetProperty="ScaleY"
+                                     From="1" To="1.08" Duration="0:0:1.6" AutoReverse="True" RepeatBehavior="Forever"/>
+
+                    <!-- 徽章扩散光环 -->
+                    <DoubleAnimation Storyboard.TargetName="RingScale" Storyboard.TargetProperty="ScaleX"
+                                     From="0.85" To="1.38" Duration="0:0:3.2" RepeatBehavior="Forever"/>
+                    <DoubleAnimation Storyboard.TargetName="RingScale" Storyboard.TargetProperty="ScaleY"
+                                     From="0.85" To="1.38" Duration="0:0:3.2" RepeatBehavior="Forever"/>
+                    <DoubleAnimationUsingKeyFrames Storyboard.TargetName="RingEllipse" Storyboard.TargetProperty="Opacity"
+                                                   Duration="0:0:3.2" RepeatBehavior="Forever">
+                        <LinearDoubleKeyFrame KeyTime="0:0:0" Value="0.75"/>
+                        <LinearDoubleKeyFrame KeyTime="0:0:2.4" Value="0"/>
+                        <LinearDoubleKeyFrame KeyTime="0:0:3.2" Value="0"/>
+                    </DoubleAnimationUsingKeyFrames>
+
+                    <!-- 星点闪烁 -->
+                    <DoubleAnimation Storyboard.TargetName="Star1" Storyboard.TargetProperty="Opacity"
+                                     From="0.25" To="0.95" Duration="0:0:1.7" AutoReverse="True" RepeatBehavior="Forever"/>
+                    <DoubleAnimation Storyboard.TargetName="Star1Scale" Storyboard.TargetProperty="ScaleX"
+                                     From="0.8" To="1.18" Duration="0:0:1.7" AutoReverse="True" RepeatBehavior="Forever"/>
+                    <DoubleAnimation Storyboard.TargetName="Star1Scale" Storyboard.TargetProperty="ScaleY"
+                                     From="0.8" To="1.18" Duration="0:0:1.7" AutoReverse="True" RepeatBehavior="Forever"/>
+                    <DoubleAnimation Storyboard.TargetName="Star2" Storyboard.TargetProperty="Opacity"
+                                     From="0.25" To="0.95" Duration="0:0:2" BeginTime="0:0:1.4" AutoReverse="True" RepeatBehavior="Forever"/>
+                    <DoubleAnimation Storyboard.TargetName="Star2Scale" Storyboard.TargetProperty="ScaleX"
+                                     From="0.8" To="1.18" Duration="0:0:2" BeginTime="0:0:1.4" AutoReverse="True" RepeatBehavior="Forever"/>
+                    <DoubleAnimation Storyboard.TargetName="Star2Scale" Storyboard.TargetProperty="ScaleY"
+                                     From="0.8" To="1.18" Duration="0:0:2" BeginTime="0:0:1.4" AutoReverse="True" RepeatBehavior="Forever"/>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </UserControl.Triggers>
+
+    <Viewbox Stretch="Uniform">
+        <Canvas Width="200" Height="185">
+
+            <!-- 背景光晕与底部呼吸阴影 -->
+            <Ellipse Canvas.Left="28" Canvas.Top="24" Width="144" Height="144" Fill="{StaticResource PtGlowBrush}"/>
+            <Ellipse x:Name="BaseShadow" Canvas.Left="50" Canvas.Top="157.5" Width="100" Height="13" Fill="#CBD5E1"
+                     Opacity="0.55" RenderTransformOrigin="0.5,0.5">
+                <Ellipse.RenderTransform><ScaleTransform x:Name="ShadowScale"/></Ellipse.RenderTransform>
+            </Ellipse>
+
+            <!-- 背景虚线轨道 -->
+            <Ellipse Canvas.Left="36" Canvas.Top="80" Width="128" Height="48"
+                     Stroke="#CBD5E1" StrokeThickness="1.2" StrokeDashArray="3.33 3.33" Opacity="0.65">
+                <Ellipse.RenderTransform><RotateTransform Angle="-12" CenterX="64" CenterY="24"/></Ellipse.RenderTransform>
+            </Ellipse>
+
+            <!-- 悬浮主体 -->
+            <Canvas>
+                <Canvas.RenderTransform><TranslateTransform x:Name="FolderTranslate"/></Canvas.RenderTransform>
+
+                <!-- 档案夹后背板 -->
+                <Path Data="M48,72 C48,68.5 50.8,66 54,66 L78,66 C81,66 83.5,67.8 85,70.5 L88,76 L138,76 C141.5,76 144,78.8 144,82 L144,138 C144,141.5 141.5,144 138,144 L54,144 C50.8,144 48,141.5 48,138 Z"
+                      Fill="#E2E8F0" Stroke="#94A3B8" StrokeThickness="1.7" StrokeLineJoin="Round"/>
+
+                <!-- 石英晶簇 -->
+                <Polygon Points="60,64 70,50 80,62 80,98 60,98" Fill="{StaticResource PtCrystalBrush}"
+                         Stroke="{DynamicResource ThemeArtStrongBrush}" StrokeThickness="1.5" StrokeLineJoin="Round"/>
+                <Polyline Points="60,64 70,71 80,62" Stroke="{DynamicResource ThemeArtStrongBrush}" StrokeThickness="1.2" Opacity="0.6"/>
+                <Line X1="70" Y1="50" X2="70" Y2="98" Stroke="{DynamicResource ThemeArtStrongBrush}" StrokeThickness="1.2" Opacity="0.45"/>
+
+                <!-- P-T 温压模板卡片 -->
+                <Canvas>
+                    <Canvas.RenderTransform>
+                        <TransformGroup>
+                            <RotateTransform x:Name="CardRotate" Angle="2" CenterX="102" CenterY="85"/>
+                            <TranslateTransform x:Name="CardTranslate"/>
+                        </TransformGroup>
+                    </Canvas.RenderTransform>
+
+                    <Rectangle Canvas.Left="74" Canvas.Top="42" Width="58" Height="72" RadiusX="6" RadiusY="6"
+                               Fill="White" Stroke="{DynamicResource ThemeArtStrongBrush}" StrokeThickness="1.7"/>
+                    <Path Data="M120,42 L132,54 L122,54 C120.8,54 120,53.2 120,52 Z"
+                          Fill="{DynamicResource ThemeArtSoftBrush}" Stroke="{DynamicResource ThemeArtStrongBrush}" StrokeThickness="1.4" StrokeLineJoin="Round"/>
+
+                    <!-- 微型 P-T 坐标系 -->
+                    <Polyline Points="84,56 84,84 120,84" Stroke="#64748B" StrokeThickness="1.5"
+                              StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                    <Path Data="M86,80 Q100,74 116,58" Stroke="{DynamicResource ThemeArtStrongBrush}" StrokeThickness="1.8"
+                          StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                    <Path Data="M86,68 L114,78" Stroke="{DynamicResource ThemeArtMistBrush}" StrokeThickness="1.3" StrokeDashArray="2.3 1.9"
+                          StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                    <Ellipse Canvas.Left="100.2" Canvas.Top="66.2" Width="5.6" Height="5.6" Fill="{DynamicResource ThemeArtStrongBrush}"/>
+                    <Ellipse Canvas.Left="98" Canvas.Top="64" Width="10" Height="10" Stroke="{DynamicResource ThemeArtLighterBrush}" StrokeThickness="1" Opacity="0.6"/>
+
+                    <!-- 参数横线 -->
+                    <Line X1="84" Y1="93" X2="108" Y2="93" Stroke="#94A3B8" StrokeThickness="1.8" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                    <Line X1="84" Y1="100" X2="120" Y2="100" Stroke="#CBD5E1" StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                </Canvas>
+
+                <!-- 档案夹前盖板 -->
+                <Path Data="M48,92 C48,89 50.5,86.5 53.5,86.5 L144.5,86.5 C147.8,86.5 150.2,89.5 149.5,92.8 L143.5,139.5 C143,142.2 140.7,144 138,144 L54,144 C50.8,144 48,141.5 48,138 Z"
+                      Fill="#C7FFFFFF"/>
+                <Path Data="M48,92 C48,89 50.5,86.5 53.5,86.5 L144.5,86.5 C147.8,86.5 150.2,89.5 149.5,92.8 L143.5,139.5 C143,142.2 140.7,144 138,144 L54,144 C50.8,144 48,141.5 48,138 Z"
+                      Fill="{StaticResource PtFolderFrontBrush}" Stroke="{DynamicResource ThemeArtStrongBrush}" StrokeThickness="1.7" StrokeLineJoin="Round"/>
+
+                <!-- 虚线空槽框 + 温度计标识 -->
+                <Rectangle Canvas.Left="66" Canvas.Top="100" Width="54" Height="28" RadiusX="4.5" RadiusY="4.5"
+                           Stroke="{DynamicResource ThemeArtStrongBrush}" StrokeThickness="1.3" StrokeDashArray="2.7 2.3" Fill="#8CFFFFFF"/>
+                <Path Data="M93,108 L93,117 M93,119 A2.2,2.2 0 1 0 93.01,119" Stroke="{DynamicResource ThemeArtLighterBrush}" StrokeThickness="1.8"
+                      StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+            </Canvas>
+
+            <!-- 右下角「+」徽章：光环 -->
+            <Ellipse x:Name="RingEllipse" Canvas.Left="120" Canvas.Top="110" Width="36" Height="36"
+                     Stroke="{DynamicResource ThemeArtLighterBrush}" StrokeThickness="1.6" Opacity="0.75" RenderTransformOrigin="0.5,0.5">
+                <Ellipse.RenderTransform><ScaleTransform x:Name="RingScale" ScaleX="0.85" ScaleY="0.85"/></Ellipse.RenderTransform>
+            </Ellipse>
+
+            <Canvas>
+                <Canvas.RenderTransform><ScaleTransform x:Name="BadgeScale" CenterX="138" CenterY="128"/></Canvas.RenderTransform>
+                <Ellipse Canvas.Left="118.5" Canvas.Top="108.5" Width="39" Height="39" Fill="#F8F9FA"/>
+                <Ellipse Canvas.Left="121.5" Canvas.Top="111.5" Width="33" Height="33" Fill="{StaticResource PtBadgeBrush}"
+                         Stroke="{DynamicResource ThemeArtStrongBrush}" StrokeThickness="1.5"/>
+                <Path Data="M128,119 A12,12 0 0 1 143,116" Stroke="{DynamicResource ThemeArtMistBrush}" StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                <Line X1="138" Y1="120.5" X2="138" Y2="135.5" Stroke="White" StrokeThickness="2.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                <Line X1="130.5" Y1="128" X2="145.5" Y2="128" Stroke="White" StrokeThickness="2.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+            </Canvas>
+
+            <!-- 星点与微粒 -->
+            <Path x:Name="Star1" Data="M46,48 L47.8,54.2 L54,56 L47.8,57.8 L46,64 L44.2,57.8 L38,56 L44.2,54.2 Z"
+                  Fill="{DynamicResource ThemeArtLighterBrush}" Opacity="0.25">
+                <Path.RenderTransform><ScaleTransform x:Name="Star1Scale" CenterX="46" CenterY="56"/></Path.RenderTransform>
+            </Path>
+            <Path x:Name="Star2" Data="M154,46 L155.2,50.8 L160,52 L155.2,53.2 L154,58 L152.8,53.2 L148,52 L152.8,50.8 Z"
+                  Fill="#94A3B8" Opacity="0.25">
+                <Path.RenderTransform><ScaleTransform x:Name="Star2Scale" CenterX="154" CenterY="52"/></Path.RenderTransform>
+            </Path>
+            <Ellipse Canvas.Left="35.8" Canvas.Top="105.8" Width="4.4" Height="4.4" Fill="#CBD5E1"/>
+            <Ellipse Canvas.Left="159.5" Canvas.Top="89.5" Width="5" Height="5" Fill="{DynamicResource ThemeArtMistBrush}"/>
+        </Canvas>
+    </Viewbox>
+</UserControl>

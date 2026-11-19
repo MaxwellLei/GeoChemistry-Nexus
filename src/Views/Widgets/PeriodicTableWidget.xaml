@@ -1,87 +1,123 @@
-<UserControl x:Class="GeoChemistryNexus.Views.Widgets.PeriodicTableWidget"
+﻿<UserControl x:Class="GeoChemistryNexus.Views.Widgets.PeriodicTableWidget"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
+             xmlns:widgets="clr-namespace:GeoChemistryNexus.Views.Widgets"
+             xmlns:uc="clr-namespace:GeoChemistryNexus.Controls"
+             xmlns:conv="clr-namespace:GeoChemistryNexus.Converter"
              mc:Ignorable="d"
              d:DesignHeight="760" d:DesignWidth="1200"
-             Background="#F4F6F8"
+             Background="#F5F7FA"
              PreviewKeyDown="OnPreviewKeyDown">
-    <Grid Margin="14">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/GeoChemistryNexus;component/Themes/WidgetStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <conv:WidthToAspectHeightConverter x:Key="WidthToAspectHeightConverter"/>
+            <Style x:Key="PeriodicTableGhostButtonStyle" TargetType="Button" BasedOn="{StaticResource WidgetAction}"/>
+            <Style x:Key="PeriodicTablePrimaryButtonStyle" TargetType="Button" BasedOn="{StaticResource WidgetPrimaryAction}"/>
+            <Style x:Key="PeriodicTableSearchBoxStyle" TargetType="TextBox" BasedOn="{StaticResource WidgetTextBox}">
+                <Setter Property="MinHeight" Value="32"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
 
-        <!-- 分组、清除与搜索工具栏 -->
-        <Border Grid.Row="0"
-                Background="White"
-                BorderBrush="#E2E8F0"
-                BorderThickness="1"
-                CornerRadius="10"
-                Padding="10,8,10,0"
-                Margin="0,0,0,10">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-
-                <ItemsControl Grid.Column="0" ItemsSource="{Binding Groups}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Horizontal"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <ToggleButton Content="{Binding Title}"
-                                          Style="{StaticResource PeriodicTableFilterChipStyle}"
-                                          IsChecked="{Binding IsActive, Mode=OneWay}"
-                                          Command="{Binding DataContext.ToggleGroupCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                          CommandParameter="{Binding}"/>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-
-                <Button Grid.Column="1"
-                        VerticalAlignment="Top"
-                        Margin="8,0,0,8"
-                        Style="{StaticResource PeriodicTableGhostButtonStyle}"
-                        Content="{Binding [periodic_table_clear_group], Source={x:Static lg:LanguageService.Instance}}"
-                        Command="{Binding ClearGroupCommand}"/>
-
-                <StackPanel Grid.Column="2"
-                            Orientation="Horizontal"
-                            VerticalAlignment="Top"
-                            Margin="8,0,0,8">
-                    <TextBox Width="100"
-                             Style="{StaticResource PeriodicTableSearchBoxStyle}"
-                             Padding="2,0"
-                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
-                             ToolTip="{Binding [periodic_table_search_tooltip], Source={x:Static lg:LanguageService.Instance}}"/>
-                    <Button Margin="6,0,0,0"
-                            Style="{StaticResource PeriodicTablePrimaryButtonStyle}"
-                            Content="{Binding [periodic_table_search_go], Source={x:Static lg:LanguageService.Instance}}"
-                            Command="{Binding FindNextFromSearchCommand}"/>
-                </StackPanel>
-            </Grid>
-        </Border>
+    <Grid Margin="20">
 
         <!-- 主区 -->
-        <Grid Grid.Row="1">
+
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <Grid MinWidth="1000">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" MinWidth="680"/>
                 <ColumnDefinition Width="12"/>
-                <ColumnDefinition Width="320" MinWidth="280"/>
+                <ColumnDefinition Width="300" MinWidth="280"/>
             </Grid.ColumnDefinitions>
 
+            <!-- 左列：顶部工具栏（类别筛选 / 清除 / 搜索 / 定位一字排开） + 周期表 -->
+            <StackPanel x:Name="PeriodicTableColumn" Grid.Column="0" VerticalAlignment="Top">
+            <Grid Margin="0,0,0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- 地球化学类别筛选：同一容器内放切换按钮与 Popup，避免弹层内点击冒泡到按钮 -->
+                <Grid Grid.Column="0" VerticalAlignment="Center">
+                    <ToggleButton Style="{StaticResource WidgetCaptionDropdown}"
+                                  ToolTip="{Binding [periodic_table_field_geochem_class], Source={x:Static lg:LanguageService.Instance}}">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="&#xE71C;" FontFamily="Segoe MDL2 Assets" FontSize="13" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding [periodic_table_field_geochem_class], Source={x:Static lg:LanguageService.Instance}}"
+                                       Margin="8,0,0,0" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </ToggleButton>
+                    <Popup Placement="Bottom" VerticalOffset="6" StaysOpen="False"
+                           AllowsTransparency="True" PopupAnimation="Fade"
+                           IsOpen="{Binding Children[0].IsChecked, RelativeSource={RelativeSource AncestorType=Grid}, Mode=TwoWay}">
+                        <Border Margin="10" Padding="12,12,6,4" Background="White" BorderBrush="#E2E8F0"
+                                BorderThickness="1" CornerRadius="10" MaxWidth="420">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="14" ShadowDepth="2" Opacity="0.18" Color="#0F172A"/>
+                            </Border.Effect>
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource WidgetCaptionLabel}" Margin="2,0,0,8"
+                                           Text="{Binding [periodic_table_field_geochem_class], Source={x:Static lg:LanguageService.Instance}}"/>
+                                <ItemsControl ItemsSource="{Binding Groups}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <ToggleButton Content="{Binding Title}"
+                                                          Style="{StaticResource PeriodicTableFilterChipStyle}"
+                                                          IsChecked="{Binding IsActive, Mode=OneWay}"
+                                                          Command="{Binding PlacementTarget.DataContext.ToggleGroupCommand, RelativeSource={RelativeSource AncestorType=Popup}}"
+                                                          CommandParameter="{Binding}"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+                    </Popup>
+                </Grid>
+
+                <Button Grid.Column="1"
+                        Style="{StaticResource WidgetCaptionAction}"
+                        Content="{Binding [periodic_table_clear_group], Source={x:Static lg:LanguageService.Instance}}"
+                        Command="{Binding ClearGroupCommand}"/>
+                <Border Grid.Column="2" Style="{StaticResource WidgetCaptionDivider}"/>
+                <uc:SearchBox Grid.Column="3" Height="30" Margin="0,0,6,0" VerticalAlignment="Center"
+                              FontSize="12.5" IconFontSize="12" Padding="10,0,8,0" CornerRadius="5"
+                              Background="White" BorderBrush="#DDE3EB"
+                              FocusBorderBrush="{DynamicResource ThemeAccentBrush}"
+                              ShowClearButton="True"
+                              Placeholder="{Binding [periodic_table_search_tooltip], Source={x:Static lg:LanguageService.Instance}}"
+                              Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}">
+                    <uc:SearchBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding FindNextFromSearchCommand}"/>
+                        <KeyBinding Key="Escape" Command="{Binding ClearSearchCommand}"/>
+                    </uc:SearchBox.InputBindings>
+                </uc:SearchBox>
+                <Button Grid.Column="4"
+                        Style="{StaticResource WidgetCaptionPrimary}"
+                        Margin="0"
+                        Content="{Binding [periodic_table_search_go], Source={x:Static lg:LanguageService.Instance}}"
+                        Command="{Binding FindNextFromSearchCommand}"/>
+            </Grid>
+
             <!-- 周期表 -->
-            <Border Grid.Column="0"
-                    Background="White"
-                    BorderBrush="#E2E8F0"
+            <Border Background="White"
+                    BorderBrush="#E5E5EA"
                     BorderThickness="1"
                     CornerRadius="12"
                     Padding="8,10,10,6"
@@ -94,24 +130,27 @@
                                Foreground="#94A3B8"
                                TextWrapping="Wrap"/>
 
-                    <!-- 表格区域：元素网格 + 悬浮标注（不占列宽） -->
-                    <Grid ClipToBounds="False">
+                    <!-- 表格区域：元素网格 + 悬浮标注（不占列宽）。
+                         高度按宽度等比换算：18 列 × 9 行（含 f 区）且单元格高:宽 ≈ 1.1，使元素近似正方形、略微竖长 -->
+                    <Grid ClipToBounds="False"
+                          VerticalAlignment="Top"
+                          Height="{Binding ActualWidth, RelativeSource={RelativeSource Self}, Converter={StaticResource WidthToAspectHeightConverter}, ConverterParameter='0.55,6'}">
                         <ItemsControl ClipToBounds="False"
                                       ItemsSource="{Binding Elements}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <Grid>
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="*" MinHeight="50"/>
-                                            <RowDefinition Height="*" MinHeight="50"/>
-                                            <RowDefinition Height="*" MinHeight="50"/>
-                                            <RowDefinition Height="*" MinHeight="50"/>
-                                            <RowDefinition Height="*" MinHeight="50"/>
-                                            <RowDefinition Height="*" MinHeight="50"/>
-                                            <RowDefinition Height="*" MinHeight="50"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
                                             <RowDefinition Height="6"/>
-                                            <RowDefinition Height="*" MinHeight="50"/>
-                                            <RowDefinition Height="*" MinHeight="50"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/><ColumnDefinition Width="*"/>
@@ -147,7 +186,6 @@
                                             Background="Transparent"
                                             HorizontalAlignment="Stretch"
                                             VerticalAlignment="Stretch"
-                                            MinHeight="46"
                                             HorizontalContentAlignment="Stretch"
                                             VerticalContentAlignment="Stretch">
                                         <Button.Template>
@@ -189,7 +227,7 @@
                                                     <Trigger Property="IsMouseOver" Value="True">
                                                         <Setter TargetName="CellBorder" Property="Effect">
                                                             <Setter.Value>
-                                                                <DropShadowEffect BlurRadius="8" ShadowDepth="1" Opacity="0.16" Color="#0078D4"/>
+                                                                <DropShadowEffect BlurRadius="8" ShadowDepth="1" Opacity="0.16" Color="{DynamicResource ThemeAccentColor}"/>
                                                             </Setter.Value>
                                                         </Setter>
                                                     </Trigger>
@@ -206,16 +244,16 @@
                               HorizontalAlignment="Left"
                               Margin="2,0,0,0">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="*" MinHeight="50"/>
-                                <RowDefinition Height="*" MinHeight="50"/>
-                                <RowDefinition Height="*" MinHeight="50"/>
-                                <RowDefinition Height="*" MinHeight="50"/>
-                                <RowDefinition Height="*" MinHeight="50"/>
-                                <RowDefinition Height="*" MinHeight="50"/>
-                                <RowDefinition Height="*" MinHeight="50"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
                                 <RowDefinition Height="6"/>
-                                <RowDefinition Height="*" MinHeight="50"/>
-                                <RowDefinition Height="*" MinHeight="50"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <TextBlock Grid.Row="8"
                                        Text="{Binding [periodic_table_label_lanthanides], Source={x:Static lg:LanguageService.Instance}}"
@@ -235,18 +273,21 @@
                     </Grid>
                 </DockPanel>
             </Border>
+            </StackPanel>
 
-            <!-- 详情面板 -->
+            <!-- 详情面板：高度与左列（工具栏 + 周期表）保持一致 -->
             <Border Grid.Column="2"
+                    VerticalAlignment="Top"
+                    Height="{Binding ActualHeight, ElementName=PeriodicTableColumn}"
                     Background="White"
-                    BorderBrush="#E2E8F0"
+                    BorderBrush="#E5E5EA"
                     BorderThickness="1"
                     CornerRadius="12"
                     Padding="0">
                 <DockPanel>
                     <Border DockPanel.Dock="Top"
                             Background="#F8FAFC"
-                            BorderBrush="#E2E8F0"
+                            BorderBrush="#E5E5EA"
                             BorderThickness="0,0,0,1"
                             CornerRadius="12,12,0,0"
                             Padding="14,12">
@@ -337,16 +378,6 @@
                                        Foreground="#0F172A"
                                        Margin="0,0,0,10"/>
 
-                            <TextBlock Text="{Binding [periodic_table_field_goldschmidt], Source={x:Static lg:LanguageService.Instance}}"
-                                       Style="{StaticResource PeriodicTableFieldLabelStyle}"/>
-                            <TextBlock Text="{Binding GoldschmidtText}"
-                                       Style="{StaticResource PeriodicTableFieldValueStyle}"/>
-
-                            <TextBlock Text="{Binding [periodic_table_field_geochem_class], Source={x:Static lg:LanguageService.Instance}}"
-                                       Style="{StaticResource PeriodicTableFieldLabelStyle}"/>
-                            <TextBlock Text="{Binding GeochemicalClassText}"
-                                       Style="{StaticResource PeriodicTableFieldValueStyle}"/>
-
                             <TextBlock Text="{Binding [periodic_table_field_oxstates], Source={x:Static lg:LanguageService.Instance}}"
                                        Style="{StaticResource PeriodicTableFieldLabelStyle}"/>
                             <TextBlock Text="{Binding OxidationStatesText}"
@@ -366,7 +397,7 @@
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <Border Background="#F8FAFC"
-                                                BorderBrush="#E2E8F0"
+                                                BorderBrush="#E5E5EA"
                                                 BorderThickness="1"
                                                 CornerRadius="8"
                                                 Padding="10,8"
@@ -426,5 +457,6 @@
                 </DockPanel>
             </Border>
         </Grid>
+        </ScrollViewer>
     </Grid>
 </UserControl>

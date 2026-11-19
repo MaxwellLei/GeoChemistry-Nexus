@@ -22,7 +22,7 @@ namespace GeoChemistryNexus.Helpers
         public static string CsvFiles =>
             FormatFilter("filter_csv_files", "CSV Files", "*.csv", "*.csv");
 
-        /// <summary>图解用户导出包（.gndiag）。</summary>
+        /// <summary>图解模板包（.diag.zip）。</summary>
         public static string DiagramPackageFiles =>
             FormatFilter(
                 "filter_diagram_package",
@@ -30,7 +30,7 @@ namespace GeoChemistryNexus.Helpers
                 $"*{TemplatePackageFileExtensions.DiagramPrimary}",
                 $"*{TemplatePackageFileExtensions.DiagramPrimary}");
 
-        /// <summary>温压计用户导出包（.gngtm）。</summary>
+        /// <summary>温压计模板包（.gtm.zip）。</summary>
         public static string GeothermometerPackageFiles =>
             FormatFilter(
                 "filter_geothermometer_package",
@@ -38,28 +38,31 @@ namespace GeoChemistryNexus.Helpers
                 $"*{TemplatePackageFileExtensions.GeothermometerPrimary}",
                 $"*{TemplatePackageFileExtensions.GeothermometerPrimary}");
 
-        /// <summary>图解打开/导入可选文件（新后缀 + zip + json）。</summary>
+        /// <summary>图解打开/导入可选文件。说明只写 .diag.zip + json，匹配模式额外包含隐藏的裸 .zip。</summary>
         public static string TemplateFiles =>
             FormatFilter(
                 "filter_template_files",
                 "Template Files",
-                $"*{TemplatePackageFileExtensions.DiagramPrimary};*.zip;*.json",
-                $"*{TemplatePackageFileExtensions.DiagramPrimary};*.zip;*.json");
+                $"*{TemplatePackageFileExtensions.DiagramPrimary};*.json",
+                $"*{TemplatePackageFileExtensions.DiagramPrimary};*{TemplatePackageFileExtensions.Zip};*.json");
 
         public static string OpenTemplate =>
-            $"{TemplateFiles}|{DiagramPackageFiles}|{ZipFiles}|{JsonFiles}|{AllFiles}";
+            $"{TemplateFiles}|{DiagramPackageFiles}|{JsonFiles}";
 
         public static string ImportTemplates =>
-            $"{TemplateFiles}|{DiagramPackageFiles}|{ZipFiles}|{JsonFiles}|{AllFiles}";
+            $"{TemplateFiles}|{DiagramPackageFiles}|{JsonFiles}";
 
-        /// <summary>温压计导入（.gngtm + 兼容 .zip）。</summary>
+        /// <summary>温压计导入。说明只写 .gtm.zip，匹配模式额外包含隐藏的裸 .zip。</summary>
         public static string ImportGeothermometerPackages =>
             FormatFilter(
-                "filter_geothermometer_import",
-                "Geothermometer Packages",
-                $"*{TemplatePackageFileExtensions.GeothermometerPrimary};*.zip",
-                $"*{TemplatePackageFileExtensions.GeothermometerPrimary};*.zip")
-            + $"|{GeothermometerPackageFiles}|{ZipFiles}|{AllFiles}";
+                "filter_geothermometer_package",
+                "Geothermometer Package",
+                $"*{TemplatePackageFileExtensions.GeothermometerPrimary}",
+                $"*{TemplatePackageFileExtensions.GeothermometerPrimary};*{TemplatePackageFileExtensions.Zip}");
+
+        /// <summary>EPMA 导入。说明只写 .epma.zip，匹配模式额外包含隐藏的裸 .zip。</summary>
+        public static string ImportEpmaPackages =>
+            $"EPMA template package (*{TemplatePackageFileExtensions.EpmaPrimary})|*{TemplatePackageFileExtensions.EpmaPrimary};*{TemplatePackageFileExtensions.Zip}";
 
         public static string JsonOrAll =>
             $"{JsonFiles}|{AllFiles}";

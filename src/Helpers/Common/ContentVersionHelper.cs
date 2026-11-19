@@ -6,20 +6,34 @@ namespace GeoChemistryNexus.Helpers
 {
     /// <summary>
     /// 统一的内容版本号工具：存储格式为 string "x.y.z"。
-    /// x.y 为格式兼容基线（图解来自 FileVersion，温压计来自 GeothermometerFormatVersion）；
+    /// x.y 为格式兼容基线，均由 csproj 属性经 AssemblyMetadata 写入程序集：
+    /// 图解来自 DiagramFormatVersion，温压计来自 GeothermometerFormatVersion，EPMA 来自 EpmaFormatVersion；
     /// z 为同格式下的内容修订号。
+    /// 软件自身版本（AssemblyVersion / FileVersion）与内容格式版本互相独立。
     /// </summary>
     public static class ContentVersionHelper
     {
         public const string DefaultVersion = "1.0.0";
 
+        private const string DiagramFormatMetadataKey = "DiagramFormatVersion";
         private const string GeothermometerFormatMetadataKey = "GeothermometerFormatVersion";
+        private const string EpmaFormatMetadataKey = "EpmaFormatVersion";
 
-        /// <summary>图解格式基线版本（来自 Assembly FileVersion）。</summary>
-        public static string GetDiagramFormatVersion() => Normalize(ReadFileVersion());
+        /// <summary>图解格式基线版本（来自 csproj DiagramFormatVersion）。</summary>
+        public static string GetDiagramFormatVersion() => Normalize(ReadMetadataVersion(DiagramFormatMetadataKey));
+
+        /// <summary>取版本号的格式基线 x.y。</summary>
+        public static string FormatBaseline(string? version)
+        {
+            var parts = Normalize(version).Split('.');
+            return parts.Length >= 2 ? $"{parts[0]}.{parts[1]}" : "1.0";
+        }
 
         /// <summary>地质温压计格式基线版本（来自 csproj GeothermometerFormatVersion）。</summary>
-        public static string GetGeothermometerFormatVersion() => Normalize(ReadGeothermometerFormatVersion());
+        public static string GetGeothermometerFormatVersion() => Normalize(ReadMetadataVersion(GeothermometerFormatMetadataKey));
+
+        /// <summary>EPMA 模块版本（来自 csproj EpmaFormatVersion，从 1.0 起）。</summary>
+        public static string GetEpmaFormatVersion() => Normalize(ReadMetadataVersion(EpmaFormatMetadataKey));
 
         /// <summary>将任意输入规范化为 x.y.z 字符串。</summary>
         public static string Normalize(string? input)
@@ -115,8 +129,27 @@ namespace GeoChemistryNexus.Helpers
         public static string WithAppDiagramFormat(int patch)
             => CombineWithPatch(GetDiagramFormatVersion(), patch);
 
+        /// <summary>EPMA 模板版本：x.y 跟随 EPMA 模块版本，z 为模板修订号。</summary>
+        public static string WithAppEpmaFormat(int patch)
+            => CombineWithPatch(GetEpmaFormatVersion(), patch);
+
         public static string WithAppGeothermometerFormat(int patch)
             => CombineWithPatch(GetGeothermometerFormatVersion(), patch);
+
+        /// <summary>
+        /// 保存后版本的展示。已有模板版本与即将写入的版本不同时显示「原版本 -> 保存后版本」，否则只显示保存后版本。
+        /// </summary>
+        public static string FormatSavedVersion(string? originalVersion, string savedVersion)
+        {
+            if (string.IsNullOrWhiteSpace(originalVersion))
+                return savedVersion;
+
+            string original = Normalize(originalVersion);
+            if (Compare(original, savedVersion) == 0)
+                return savedVersion;
+
+            return $"{original} -> {savedVersion}";
+        }
 
         public static string IncrementPatch(string? version)
         {
@@ -141,30 +174,13 @@ namespace GeoChemistryNexus.Helpers
             return IncrementPatch(currentVersion);
         }
 
-        private static string ReadFileVersion()
-        {
-            try
-            {
-                var attr = Assembly.GetExecutingAssembly()
-                    .GetCustomAttribute<AssemblyFileVersionAttribute>();
-                if (!string.IsNullOrWhiteSpace(attr?.Version))
-                    return attr.Version;
-            }
-            catch
-            {
-                // ignore
-            }
-
-            return DefaultVersion;
-        }
-
-        private static string ReadGeothermometerFormatVersion()
+        private static string ReadMetadataVersion(string key)
         {
             try
             {
                 var metadata = Assembly.GetExecutingAssembly()
                     .GetCustomAttributes<AssemblyMetadataAttribute>()
-                    .FirstOrDefault(a => a.Key == GeothermometerFormatMetadataKey);
+                    .FirstOrDefault(a => a.Key == key);
 
                 if (!string.IsNullOrWhiteSpace(metadata?.Value))
                     return metadata.Value;

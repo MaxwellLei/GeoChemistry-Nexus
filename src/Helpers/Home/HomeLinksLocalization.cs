@@ -1,4 +1,5 @@
 using GeoChemistryNexus.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -91,10 +92,19 @@ namespace GeoChemistryNexus.Helpers
 
         public static Dictionary<string, string> ToDictionary(LocalizedString? value)
         {
-            if (value?.Translations == null || value.Translations.Count == 0)
-                return new Dictionary<string, string>();
+            var result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            if (value?.Translations == null)
+                return result;
 
-            return new Dictionary<string, string>(value.Translations);
+            foreach (var pair in value.Translations)
+            {
+                if (string.IsNullOrWhiteSpace(pair.Key) || string.IsNullOrWhiteSpace(pair.Value))
+                    continue;
+
+                result[pair.Key] = pair.Value.Trim();
+            }
+
+            return result;
         }
     }
 }

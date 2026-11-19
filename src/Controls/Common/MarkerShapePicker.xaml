@@ -1,4 +1,4 @@
-<UserControl x:Class="GeoChemistryNexus.Controls.MarkerShapePicker"
+﻿<UserControl x:Class="GeoChemistryNexus.Controls.MarkerShapePicker"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -9,7 +9,7 @@
              HorizontalAlignment="Stretch">
     <Grid>
         <!-- 当前形状预览按钮：仅图标，宽度跟随列宽 -->
-        <Button Height="32"
+        <Button Height="32" Focusable="False"
                 Cursor="Hand"
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Stretch"
@@ -17,9 +17,9 @@
             <Button.Template>
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="Root"
-                            Background="#F2F2F7"
+                            Background="{StaticResource InspectorFieldBrush}"
                             CornerRadius="8"
-                            Padding="10,0"
+                            Padding="10,0,8,0"
                             SnapsToDevicePixels="True">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -28,10 +28,10 @@
                             </Grid.ColumnDefinitions>
 
                             <Viewbox Width="16" Height="16"
-                                     HorizontalAlignment="Center"
+                                     HorizontalAlignment="Left"
                                      VerticalAlignment="Center">
                                 <Path Data="{Binding PreviewIcon, RelativeSource={RelativeSource AncestorType=local:MarkerShapePicker}}"
-                                      Stroke="#1D1D1F"
+                                      Stroke="{StaticResource InspectorTextBrush}"
                                       StrokeThickness="1"
                                       StrokeLineJoin="Round">
                                     <Path.Style>
@@ -39,7 +39,7 @@
                                             <Setter Property="Fill" Value="Transparent"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding PreviewIsFilled, RelativeSource={RelativeSource AncestorType=local:MarkerShapePicker}}" Value="True">
-                                                    <Setter Property="Fill" Value="#1D1D1F"/>
+                                                    <Setter Property="Fill" Value="{StaticResource InspectorTextBrush}"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -51,14 +51,14 @@
                                        Text="&#xE70E;"
                                        FontFamily="Segoe MDL2 Assets"
                                        FontSize="10"
-                                       Foreground="#8E8E93"
+                                       Foreground="{StaticResource InspectorHintBrush}"
                                        VerticalAlignment="Center"
                                        Margin="4,0,0,0"/>
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Root" Property="Background" Value="#E8E8ED"/>
+                            <Setter TargetName="Root" Property="Background" Value="{StaticResource InspectorFieldHoverBrush}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -68,18 +68,19 @@
         <!-- 展开后的图标网格：默认向上展开 -->
         <Popup x:Name="ShapePopup"
                PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType=local:MarkerShapePicker}}"
-               Placement="Top"
+               Placement="Bottom"
                StaysOpen="False"
                AllowsTransparency="True"
                HorizontalOffset="0"
-               VerticalOffset="-4">
+               VerticalOffset="2">
             <Border Background="White"
-                    CornerRadius="10"
-                    BorderBrush="#E5E5EA"
+                    CornerRadius="12"
+                    BorderBrush="{StaticResource InspectorCardBorderBrush}"
                     BorderThickness="1"
                     Padding="8"
-                    Width="220"
-                    Height="220">
+                    Margin="10,0,10,16"
+                    Width="250"
+                    Height="224">
                 <Border.Effect>
                     <DropShadowEffect Color="Black" BlurRadius="16" ShadowDepth="4" Opacity="0.18"/>
                 </Border.Effect>
@@ -92,17 +93,17 @@
                          PreviewMouseLeftButtonUp="ShapeList_PreviewMouseLeftButtonUp"
                          ScrollViewer.VerticalScrollBarVisibility="Auto"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                         Height="204">
+                         Height="208">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <UniformGrid Columns="5"/>
+                            <UniformGrid Columns="6"/>
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Viewbox Width="14" Height="14" Stretch="Uniform">
                                 <Path Data="{Binding Icon}"
-                                      Stroke="#1D1D1F"
+                                      Stroke="{StaticResource InspectorTextBrush}"
                                       StrokeThickness="1"
                                       StrokeLineJoin="Round">
                                     <Path.Style>
@@ -110,7 +111,7 @@
                                             <Setter Property="Fill" Value="Transparent"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IsFilled}" Value="True">
-                                                    <Setter Property="Fill" Value="#1D1D1F"/>
+                                                    <Setter Property="Fill" Value="{StaticResource InspectorTextBrush}"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>

@@ -8,7 +8,7 @@ namespace GeoChemistryNexus.Services
     {
         public static List<HomeAppItem> GetAvailableWidgets()
         {
-            bool isDeveloperMode = bool.TryParse(ConfigHelper.GetConfig("developer_mode"), out bool devMode) && devMode;
+            bool isDeveloperMode = bool.TryParse(ConfigHelper.GetConfig(ConfigKeys.DeveloperMode), out bool devMode) && devMode;
 
             var widgets = new List<HomeAppItem>
             {

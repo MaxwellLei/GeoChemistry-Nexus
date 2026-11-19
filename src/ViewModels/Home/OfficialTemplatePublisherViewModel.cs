@@ -5,14 +5,17 @@ using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Messages;
 using GeoChemistryNexus.Models;
 using GeoChemistryNexus.Services;
+using GeoChemistryNexus.Services.Epma;
 using GeoChemistryNexus.Views.Widgets;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 
 namespace GeoChemistryNexus.ViewModels
 {
@@ -35,18 +38,32 @@ namespace GeoChemistryNexus.ViewModels
 
         public bool IsNotBusy => !IsBusy;
 
-        partial void OnIsBusyChanged(bool value) => OnPropertyChanged(nameof(IsNotBusy));
+        partial void OnIsBusyChanged(bool value)
+        {
+            OnPropertyChanged(nameof(IsNotBusy));
+            OnPropertyChanged(nameof(CanStageOrPublish));
+            OnPropertyChanged(nameof(CanPublish));
+            OnPropertyChanged(nameof(CanPublishSection));
+        }
 
+        public const string SectionRelease = "release";
         public const string SectionTargets = "targets";
         public const string SectionDiagrams = "diagrams";
         public const string SectionGeothermometers = "geothermometers";
+        public const string SectionEpma = "epma";
         public const string SectionHomeLinks = "homeLinks";
         public const string SectionAnnouncement = "announcement";
         public const string SectionPlotCategories = "plotCategories";
         public const string SectionGeoTCategories = "geotCategories";
 
         [ObservableProperty]
-        private string selectedSection = SectionTargets;
+        private string selectedSection = SectionRelease;
+
+        public bool IsReleaseSection
+        {
+            get => SelectedSection == SectionRelease;
+            set { if (value) SelectedSection = SectionRelease; }
+        }
 
         public bool IsTargetsSection
         {
@@ -64,6 +81,12 @@ namespace GeoChemistryNexus.ViewModels
         {
             get => SelectedSection == SectionGeothermometers;
             set { if (value) SelectedSection = SectionGeothermometers; }
+        }
+
+        public bool IsEpmaSection
+        {
+            get => SelectedSection == SectionEpma;
+            set { if (value) SelectedSection = SectionEpma; }
         }
 
         public bool IsHomeLinksSection
@@ -92,13 +115,111 @@ namespace GeoChemistryNexus.ViewModels
 
         partial void OnSelectedSectionChanged(string value)
         {
+            OnPropertyChanged(nameof(IsReleaseSection));
             OnPropertyChanged(nameof(IsTargetsSection));
             OnPropertyChanged(nameof(IsDiagramsSection));
             OnPropertyChanged(nameof(IsGeothermometersSection));
+            OnPropertyChanged(nameof(IsEpmaSection));
             OnPropertyChanged(nameof(IsHomeLinksSection));
             OnPropertyChanged(nameof(IsAnnouncementSection));
             OnPropertyChanged(nameof(IsPlotCategoriesSection));
             OnPropertyChanged(nameof(IsGeoTCategoriesSection));
+            OnPropertyChanged(nameof(IsLibrarySection));
+            OnPropertyChanged(nameof(SectionTitle));
+        }
+
+        public bool IsLibrarySection => IsDiagramsSection || IsGeothermometersSection || IsEpmaSection;
+
+        public string SectionTitle => SelectedSection switch
+        {
+            SectionAnnouncement => "公告与版本",
+            SectionHomeLinks => "导航链接",
+            SectionDiagrams => "图解与分类",
+            SectionGeothermometers => "温压计与矿物分类",
+            SectionEpma => "EPMA 计算模板",
+            SectionTargets => "发布目标",
+            _ => "发布单"
+        };
+
+        public string PublishButtonText => EnabledTargetCount == 0
+            ? "没有可用服务器"
+            : $"发布到 {EnabledTargetCount} 台服务器";
+
+        public bool HasIncludedPack =>
+            PublishAnnouncement || PublishHomeLinks || PublishDiagrams || PublishGeothermometers || PublishEpma;
+
+        public bool CanStageOrPublish => IsNotBusy && HasIncludedPack;
+
+        /// <summary>至少勾选了一项内容，并且至少有一台启用的服务器。</summary>
+        public bool CanPublish => CanStageOrPublish && EnabledTargetCount > 0;
+
+        public bool HasNoEnabledTarget => EnabledTargetCount == 0;
+
+        /// <summary>“发布本页”按钮是否可用：不依赖发布单里的勾选，只要空闲并且有服务器。</summary>
+        public bool CanPublishSection => IsNotBusy && EnabledTargetCount > 0;
+
+        public string AnnouncementReleaseStatus
+        {
+            get
+            {
+                string min = string.IsNullOrWhiteSpace(MinimumSupportedVersionText) ? "—" : MinimumSupportedVersionText.Trim();
+                string latest = string.IsNullOrWhiteSpace(LatestAppVersionText) ? "—" : LatestAppVersionText.Trim();
+                return $"{AnnouncementEntries.Count} 条 · 最低 {min} · 最新 {latest}";
+            }
+        }
+
+        public string AnnouncementReleaseChip => !PublishAnnouncement ? "不发布" : AnnouncementPackHasChanges ? "有改动" : "纳入";
+
+        public string HomeLinksReleaseStatus => $"{HomeLinkGroupCount} 个分组 · {HomeLinkCount} 个链接";
+
+        public string HomeLinksReleaseChip => !PublishHomeLinks ? "不发布" : HomeLinksHasRemoteChanges ? "有改动" : "纳入";
+
+        public string DiagramReleaseStatus =>
+            $"新增 {DiagramNewCount} · 更新 {DiagramUpdatedCount} · 移除 {DiagramRemovedCount} · 未变化 {DiagramUnchangedCount}";
+
+        public string DiagramReleaseChip =>
+            !PublishDiagrams ? "不发布" : DiagramPackHasChanges ? "有改动" : "纳入";
+
+        public string GeoReleaseStatus =>
+            $"新增 {GeoNewCount} · 更新 {GeoUpdatedCount} · 移除 {GeoRemovedCount} · 未变化 {GeoUnchangedCount}";
+
+        public string GeoReleaseChip =>
+            !PublishGeothermometers ? "不发布" : GeoPackHasChanges ? "有改动" : "纳入";
+
+        public string EpmaReleaseStatus =>
+            $"新增 {EpmaNewCount} · 更新 {EpmaUpdatedCount} · 移除 {EpmaRemovedCount} · 未变化 {EpmaUnchangedCount}";
+
+        public string EpmaReleaseChip =>
+            !PublishEpma ? "不发布" : EpmaPackHasChanges ? "有改动" : "纳入";
+
+        private void NotifyReleaseSheet()
+        {
+            OnPropertyChanged(nameof(AnnouncementReleaseStatus));
+            OnPropertyChanged(nameof(AnnouncementReleaseChip));
+            OnPropertyChanged(nameof(HomeLinksReleaseStatus));
+            OnPropertyChanged(nameof(HomeLinksReleaseChip));
+            OnPropertyChanged(nameof(DiagramReleaseStatus));
+            OnPropertyChanged(nameof(DiagramReleaseChip));
+            OnPropertyChanged(nameof(GeoReleaseStatus));
+            OnPropertyChanged(nameof(GeoReleaseChip));
+            OnPropertyChanged(nameof(EpmaReleaseStatus));
+            OnPropertyChanged(nameof(EpmaReleaseChip));
+            OnPropertyChanged(nameof(HasIncludedPack));
+            OnPropertyChanged(nameof(CanStageOrPublish));
+            OnPropertyChanged(nameof(CanPublish));
+            OnPropertyChanged(nameof(PublishButtonText));
+            OnPropertyChanged(nameof(ReleaseSummaryText));
+        }
+
+        /// <summary>启用的服务器数量变化后，刷新依赖它的按钮文字和可用状态。</summary>
+        private void NotifyPublishTargetsChanged()
+        {
+            OnPropertyChanged(nameof(EnabledTargetCount));
+            OnPropertyChanged(nameof(HasNoEnabledTarget));
+            OnPropertyChanged(nameof(PublishButtonText));
+            OnPropertyChanged(nameof(CanPublish));
+            OnPropertyChanged(nameof(CanPublishSection));
+            OnPropertyChanged(nameof(ReleaseSummaryText));
         }
 
         public ObservableCollection<CosPublishTargetItemViewModel> PublishTargets { get; } = new();
@@ -116,6 +237,62 @@ namespace GeoChemistryNexus.ViewModels
             OnPropertyChanged(nameof(HasSelectedPublishTarget));
         }
 
+        public bool HasSelectedHomeLinkGroup => SelectedHomeLinkGroup != null;
+
+        public bool HasSelectedHomeLink => SelectedHomeLink != null;
+
+        public bool HasSelectedPlotCategory => SelectedPlotCategoryEntry != null;
+
+        public bool HasSelectedMineralCategory => SelectedGeoTMineralEntry != null;
+
+        partial void OnSelectedPlotCategoryEntryChanged(LocalizedCategoryEntryViewModel? value)
+            => OnPropertyChanged(nameof(HasSelectedPlotCategory));
+
+        partial void OnSelectedGeoTMineralEntryChanged(LocalizedCategoryEntryViewModel? value)
+            => OnPropertyChanged(nameof(HasSelectedMineralCategory));
+
+        partial void OnSelectedHomeLinkGroupChanged(HomeLinkGroupEditorViewModel? value)
+        {
+            OnPropertyChanged(nameof(HasSelectedHomeLinkGroup));
+            if (_suppressHomeLinksTracking)
+                return;
+
+            SelectedHomeLink = value?.Links.FirstOrDefault();
+        }
+
+        partial void OnSelectedHomeLinkChanged(HomeLinkEntryEditorViewModel? value)
+        {
+            OnPropertyChanged(nameof(HasSelectedHomeLink));
+        }
+
+        partial void OnSelectedPreviewFilterChanged(string value)
+        {
+            DiagramPreviewView?.Refresh();
+            GeothermometerPreviewView?.Refresh();
+            EpmaPreviewView?.Refresh();
+        }
+
+        [RelayCommand]
+        private void OpenPublisherSection(string? section)
+        {
+            if (section is SectionAnnouncement or SectionHomeLinks or SectionDiagrams or SectionGeothermometers or SectionEpma or SectionTargets or SectionRelease)
+                SelectedSection = section;
+        }
+
+        [RelayCommand]
+        private void SetPreviewFilter(string? filter)
+        {
+            if (filter is "all" or "new" or "update" or "remove" or "same")
+                SelectedPreviewFilter = filter;
+        }
+
+        [RelayCommand]
+        private void SetPlotCategoryLevel(string? level)
+        {
+            if (!string.IsNullOrWhiteSpace(level) && PlotCategoryLevelKeys.Contains(level))
+                SelectedPlotCategoryLevel = level;
+        }
+
         private int _publishExportStepCount;
         private int _publishExportStepIndex;
 
@@ -127,14 +304,27 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private bool publishDiagrams;
 
+        partial void OnPublishDiagramsChanged(bool value) => NotifyReleaseSheet();
+
         [ObservableProperty]
         private bool publishGeothermometers;
+
+        partial void OnPublishGeothermometersChanged(bool value) => NotifyReleaseSheet();
+
+        [ObservableProperty]
+        private bool publishEpma;
+
+        partial void OnPublishEpmaChanged(bool value) => NotifyReleaseSheet();
 
         [ObservableProperty]
         private bool publishHomeLinks;
 
+        partial void OnPublishHomeLinksChanged(bool value) => NotifyReleaseSheet();
+
         [ObservableProperty]
         private bool publishAnnouncement;
+
+        partial void OnPublishAnnouncementChanged(bool value) => NotifyReleaseSheet();
 
         [ObservableProperty]
         private string announcementText = string.Empty;
@@ -202,8 +392,30 @@ namespace GeoChemistryNexus.ViewModels
         [ObservableProperty]
         private int geoUnchangedCount;
 
+        [ObservableProperty]
+        private int epmaNewCount;
+
+        [ObservableProperty]
+        private int epmaUpdatedCount;
+
+        [ObservableProperty]
+        private int epmaRemovedCount;
+
+        [ObservableProperty]
+        private int epmaUnchangedCount;
+
         public ObservableCollection<string> DiagramPreviewLines { get; } = new();
         public ObservableCollection<string> GeothermometerPreviewLines { get; } = new();
+        public ObservableCollection<string> EpmaPreviewLines { get; } = new();
+        public ObservableCollection<PublishDiffRow> DiagramPreviewItems { get; } = new();
+        public ObservableCollection<PublishDiffRow> GeothermometerPreviewItems { get; } = new();
+        public ObservableCollection<PublishDiffRow> EpmaPreviewItems { get; } = new();
+        public ICollectionView DiagramPreviewView { get; }
+        public ICollectionView GeothermometerPreviewView { get; }
+        public ICollectionView EpmaPreviewView { get; }
+
+        [ObservableProperty]
+        private string selectedPreviewFilter = "all";
         public ObservableCollection<string> HomeLinksPreviewLines { get; } = new();
         public ObservableCollection<string> AnnouncementPreviewLines { get; } = new();
         public ObservableCollection<HomeLinkGroupEditorViewModel> HomeLinkGroups { get; } = new();
@@ -220,7 +432,7 @@ namespace GeoChemistryNexus.ViewModels
 
         public ObservableCollection<LocalizedCategoryEntryViewModel> GeoTMineralEntries { get; } = new();
 
-        public IReadOnlyList<CultureOption> HomeLinksLanguageOptions { get; } = AppCultureRegistry.GetContentOptions();
+        public IReadOnlyList<CultureOption> HomeLinksLanguageOptions { get; } = AppCultureRegistry.GetOptions();
 
         [ObservableProperty]
         private string selectedHomeLinksLanguage = AppCultureRegistry.DefaultContentLanguage;
@@ -268,12 +480,16 @@ namespace GeoChemistryNexus.ViewModels
             RefreshPlotCategoryEntriesForSelectedLevel();
         }
 
+        private bool _suppressHomeLinksTracking;
+        private bool _suppressCategoryTracking;
+
         private string _remoteAnnouncementText = string.Empty;
         private string _remoteMinimumSupportedVersion = string.Empty;
         private string _remoteLatestAppVersion = string.Empty;
 
         private PublishPreview? _diagramPreview;
         private PublishPreview? _geothermometerPreview;
+        private PublishPreview? _epmaPreview;
 
         public Action<string>? ShowSuccessMessage { get; set; }
         public Action<string>? ShowWarningMessage { get; set; }
@@ -324,11 +540,18 @@ namespace GeoChemistryNexus.ViewModels
 
         public OfficialTemplatePublisherViewModel()
         {
-            if (bool.TryParse(ConfigHelper.GetConfig("developer_mode"), out bool devMode))
+            DiagramPreviewView = CollectionViewSource.GetDefaultView(DiagramPreviewItems);
+            GeothermometerPreviewView = CollectionViewSource.GetDefaultView(GeothermometerPreviewItems);
+            EpmaPreviewView = CollectionViewSource.GetDefaultView(EpmaPreviewItems);
+            DiagramPreviewView.Filter = MatchesPreviewFilter;
+            GeothermometerPreviewView.Filter = MatchesPreviewFilter;
+            EpmaPreviewView.Filter = MatchesPreviewFilter;
+
+            if (bool.TryParse(ConfigHelper.GetConfig(ConfigKeys.DeveloperMode), out bool devMode))
                 IsDeveloperMode = devMode;
 
             var settings = CosPublishSettingsService.Load();
-            StagingDirectory = settings.StagingDirectory ?? ConfigHelper.GetConfig("publish_staging_dir") ?? string.Empty;
+            StagingDirectory = settings.StagingDirectory ?? ConfigHelper.GetConfig(ConfigKeys.PublishStagingDir) ?? string.Empty;
             if (settings.Targets.Count == 0)
                 PublishTargets.Add(CreateDefaultPublishTarget());
             else
@@ -353,13 +576,15 @@ namespace GeoChemistryNexus.ViewModels
             GeoTMineralCategoriesLanguageContext.ContentLanguage = SelectedGeoTMineralCategoriesLanguage;
             SelectedAnnouncementsLanguage = SelectedHomeLinksLanguage;
             AnnouncementsLanguageContext.ContentLanguage = SelectedAnnouncementsLanguage;
+            AnnouncementPreviewLanguage = SelectedHomeLinksLanguage;
+            SelectedEditLanguage = SelectedHomeLinksLanguage;
+            RefreshAnnouncementTranslationChips();
             AnnouncementEntries.CollectionChanged += OnAnnouncementEntriesChanged;
             LoadHomeLinksEditor();
             LoadPlotCategoriesEditor();
             LoadGeoTMineralCategoriesEditor();
             _ = InitializeHomeLinksEditorAsync();
-            _ = LoadAnnouncementFromServerAsync();
-            _ = LoadAnnouncementsEditorFromServerAsync();
+            _ = InitializeRemoteStateAsync();
         }
 
         private async Task InitializeHomeLinksEditorAsync()
@@ -417,6 +642,8 @@ namespace GeoChemistryNexus.ViewModels
                 LatestAppVersionText?.Trim(),
                 _remoteLatestAppVersion?.Trim(),
                 StringComparison.OrdinalIgnoreCase);
+            NotifyReleaseSheet();
+            RequestDraftSave(PublisherDraftKinds.Announcements);
         }
 
         partial void OnAnnouncementTextChanged(string value) => UpdateServerConfigChangeState();
@@ -474,6 +701,8 @@ namespace GeoChemistryNexus.ViewModels
                 steps++;
             if (exportGeothermometers)
                 steps++;
+            if (PublishEpma)
+                steps++;
             return Math.Max(1, steps);
         }
 
@@ -484,7 +713,7 @@ namespace GeoChemistryNexus.ViewModels
             if (!string.IsNullOrEmpty(folder))
             {
                 StagingDirectory = folder;
-                ConfigHelper.SetConfig("publish_staging_dir", StagingDirectory);
+                ConfigHelper.SetConfig(ConfigKeys.PublishStagingDir, StagingDirectory);
                 PersistPublishTargets();
             }
         }
@@ -584,94 +813,54 @@ namespace GeoChemistryNexus.ViewModels
             IsBusy = true;
             DiagramPreviewLines.Clear();
             GeothermometerPreviewLines.Clear();
+            EpmaPreviewLines.Clear();
             try
             {
-                Log(LanguageService.Instance["official_publisher_refreshing"] ?? "Refreshing publish preview...");
+                Log("正在刷新预览");
 
-                if (PublishDiagrams)
-                {
-                    _diagramPreview = await GraphMapTemplatePublishService.GetPublishPreviewAsync();
-                    DiagramNewCount = _diagramPreview.NewItems.Count;
-                    DiagramUpdatedCount = _diagramPreview.UpdatedItems.Count;
-                    DiagramRemovedCount = _diagramPreview.RemovedItems.Count;
-                    DiagramUnchangedCount = _diagramPreview.UnchangedItems.Count;
+                _diagramPreview = await GraphMapTemplatePublishService.GetPublishPreviewAsync();
+                DiagramNewCount = _diagramPreview.NewItems.Count;
+                DiagramUpdatedCount = _diagramPreview.UpdatedItems.Count;
+                DiagramRemovedCount = _diagramPreview.RemovedItems.Count;
+                DiagramUnchangedCount = _diagramPreview.UnchangedItems.Count;
+                FillDiffRows(DiagramPreviewItems, _diagramPreview);
+                Log($"图解：新增 {DiagramNewCount}，更新 {DiagramUpdatedCount}，移除 {DiagramRemovedCount}，未变化 {DiagramUnchangedCount}");
 
-                    AppendPreviewGroup(DiagramPreviewLines,
-                        LanguageService.Instance["official_publisher_diagram_section"] ?? "Diagrams",
-                        _diagramPreview.NewItems, _diagramPreview.UpdatedItems, _diagramPreview.RemovedItems);
+                _geothermometerPreview = await GeothermometerPublishService.GetPublishPreviewAsync();
+                GeoNewCount = _geothermometerPreview.NewItems.Count;
+                GeoUpdatedCount = _geothermometerPreview.UpdatedItems.Count;
+                GeoRemovedCount = _geothermometerPreview.RemovedItems.Count;
+                GeoUnchangedCount = _geothermometerPreview.UnchangedItems.Count;
+                FillDiffRows(GeothermometerPreviewItems, _geothermometerPreview);
+                Log($"温压计：新增 {GeoNewCount}，更新 {GeoUpdatedCount}，移除 {GeoRemovedCount}，未变化 {GeoUnchangedCount}");
 
-                    Log(string.Format(
-                        LanguageService.Instance["official_publisher_diagram_preview_summary"] ?? "Diagrams: new {0}, updated {1}, removed {2}, unchanged {3}.",
-                        DiagramNewCount, DiagramUpdatedCount, DiagramRemovedCount, DiagramUnchangedCount));
-                }
-                else
-                {
-                    _diagramPreview = null;
-                    DiagramNewCount = DiagramUpdatedCount = DiagramRemovedCount = DiagramUnchangedCount = 0;
-                }
+                _epmaPreview = await EpmaPublishService.GetPublishPreviewAsync();
+                EpmaNewCount = _epmaPreview.NewItems.Count;
+                EpmaUpdatedCount = _epmaPreview.UpdatedItems.Count;
+                EpmaRemovedCount = _epmaPreview.RemovedItems.Count;
+                EpmaUnchangedCount = _epmaPreview.UnchangedItems.Count;
+                FillDiffRows(EpmaPreviewItems, _epmaPreview);
+                Log($"EPMA：新增 {EpmaNewCount}，更新 {EpmaUpdatedCount}，移除 {EpmaRemovedCount}，未变化 {EpmaUnchangedCount}");
 
-                if (PublishGeothermometers)
-                {
-                    _geothermometerPreview = await GeothermometerPublishService.GetPublishPreviewAsync();
-                    GeoNewCount = _geothermometerPreview.NewItems.Count;
-                    GeoUpdatedCount = _geothermometerPreview.UpdatedItems.Count;
-                    GeoRemovedCount = _geothermometerPreview.RemovedItems.Count;
-                    GeoUnchangedCount = _geothermometerPreview.UnchangedItems.Count;
+                HomeLinksPreviewLines.Clear();
+                var catalog = BuildCatalogFromEditor();
+                UpdateHomeLinkCounts(catalog);
+                var homePreview = await HomeLinksPublishService.GetPublishPreviewAsync(catalog);
+                HomeLinksHasRemoteChanges = homePreview.HasRemoteChanges;
+                Log(homePreview.HasRemoteChanges
+                    ? $"导航链接有改动：{homePreview.GroupCount} 个分组，{homePreview.LinkCount} 个链接"
+                    : $"导航链接已与服务器一致：{homePreview.GroupCount} 个分组，{homePreview.LinkCount} 个链接");
 
-                    AppendPreviewGroup(GeothermometerPreviewLines,
-                        LanguageService.Instance["official_publisher_geothermometer_section"] ?? "Geothermobarometers",
-                        _geothermometerPreview.NewItems, _geothermometerPreview.UpdatedItems, _geothermometerPreview.RemovedItems);
-
-                    Log(string.Format(
-                        LanguageService.Instance["official_publisher_geo_preview_summary"] ?? "Geothermobarometers: new {0}, updated {1}, removed {2}, unchanged {3}.",
-                        GeoNewCount, GeoUpdatedCount, GeoRemovedCount, GeoUnchangedCount));
-                }
-                else
-                {
-                    _geothermometerPreview = null;
-                    GeoNewCount = GeoUpdatedCount = GeoRemovedCount = GeoUnchangedCount = 0;
-                }
-
-                if (PublishHomeLinks)
-                {
-                    HomeLinksPreviewLines.Clear();
-                    var catalog = BuildCatalogFromEditor();
-                    UpdateHomeLinkCounts(catalog);
-                    var homePreview = await HomeLinksPublishService.GetPublishPreviewAsync(catalog);
-                    HomeLinksHasRemoteChanges = homePreview.HasRemoteChanges;
-
-                    HomeLinksPreviewLines.Add(string.Format(
-                        LanguageService.Instance["official_publisher_home_links_preview_summary"]
-                            ?? "Groups: {0}, links: {1}, local hash: {2}, remote hash: {3}.",
-                        homePreview.GroupCount,
-                        homePreview.LinkCount,
-                        homePreview.LocalHash,
-                        string.IsNullOrEmpty(homePreview.RemoteHash) ? "(none)" : homePreview.RemoteHash));
-
-                    HomeLinksPreviewLines.Add(homePreview.HasRemoteChanges
-                        ? (LanguageService.Instance["official_publisher_home_links_pending"] ?? "Pending publish.")
-                        : (LanguageService.Instance["official_publisher_home_links_up_to_date"] ?? "Already up to date on server."));
-
-                    Log(string.Format(
-                        LanguageService.Instance["official_publisher_home_links_summary"]
-                            ?? "Home links: {0} groups, {1} links, hash={2}.",
-                        homePreview.GroupCount,
-                        homePreview.LinkCount,
-                        homePreview.LocalHash ?? string.Empty));
-                }
-                else
-                {
-                    HomeLinksPreviewLines.Clear();
-                    HomeLinksHasRemoteChanges = false;
-                }
-
-                if (PublishAnnouncement)
                 {
                     AnnouncementPreviewLines.Clear();
                     var remoteInfo = await LoadRemoteServerInfoAsync();
-                    _remoteAnnouncementText = remoteInfo?.Announcement ?? string.Empty;
-                    _remoteMinimumSupportedVersion = remoteInfo?.MinimumSupportedVersion ?? string.Empty;
-                    _remoteLatestAppVersion = remoteInfo?.LatestAppVersion ?? string.Empty;
+                    // 刚发布完时 CDN 可能还没刷新，沿用刚发布的值作为对照基线，避免误报“有改动”
+                    if (!_keepAnnouncementBaseline)
+                    {
+                        _remoteAnnouncementText = remoteInfo?.Announcement ?? string.Empty;
+                        _remoteMinimumSupportedVersion = remoteInfo?.MinimumSupportedVersion ?? string.Empty;
+                        _remoteLatestAppVersion = remoteInfo?.LatestAppVersion ?? string.Empty;
+                    }
                     UpdateServerConfigChangeState();
 
                     AnnouncementPreviewLines.Add(AnnouncementHasRemoteChanges
@@ -738,15 +927,10 @@ namespace GeoChemistryNexus.ViewModels
                         string.IsNullOrEmpty(remoteInfo?.AnnouncementsHash) ? "(none)" : remoteInfo.AnnouncementsHash));
                     ReportAnnouncementPublishWarnings(AnnouncementPreviewLines);
 
-                    Log(AnnouncementHasRemoteChanges
-                        ? (LanguageService.Instance["official_publisher_announcement_pending"] ?? "Announcement pending publish.")
-                        : (LanguageService.Instance["official_publisher_announcement_up_to_date"] ?? "Announcement is up to date."));
+                    Log(AnnouncementHasRemoteChanges ? "公告与版本有改动" : "公告与版本已与服务器一致");
                 }
-                else
-                {
-                    AnnouncementPreviewLines.Clear();
-                    AnnouncementHasRemoteChanges = false;
-                }
+
+                Log("预览已刷新");
             }
             catch (Exception ex)
             {
@@ -756,6 +940,7 @@ namespace GeoChemistryNexus.ViewModels
             finally
             {
                 IsBusy = false;
+                NotifyReleaseSheet();
             }
         }
 
@@ -833,7 +1018,16 @@ namespace GeoChemistryNexus.ViewModels
                     Log(geoResult.Summary);
                 }
 
-                ShowSuccess(LanguageService.Instance["official_publisher_export_done"] ?? "Export completed.");
+                if (PublishEpma)
+                {
+                    var epmaResult = await Task.Run(() => EpmaPublishService.ExportToDirectory(outputDir));
+                    Log(epmaResult.Summary);
+                }
+
+                MessageHelper.ExportSuccess(
+                    LanguageService.Instance["official_publisher_export_done"] ?? "Export completed.",
+                    outputDir,
+                    OwnerWindow);
             }
             catch (Exception ex)
             {
@@ -869,17 +1063,22 @@ namespace GeoChemistryNexus.ViewModels
             string? outputDir = ResolveStagingDirectory();
             if (string.IsNullOrEmpty(outputDir)) return;
 
+            var included = new List<string>();
+            if (PublishAnnouncement) included.Add($"公告与版本（{AnnouncementReleaseChip}）");
+            if (PublishHomeLinks) included.Add($"导航链接（{HomeLinksReleaseChip}）");
+            if (PublishDiagrams) included.Add($"图解与分类（{DiagramReleaseChip}）");
+            if (PublishGeothermometers) included.Add($"温压计与矿物分类（{GeoReleaseChip}）");
+            if (PublishEpma) included.Add($"EPMA 计算模板（{EpmaReleaseChip}）");
+            string serverNames = string.Join("、", targets.Select(target =>
+                string.IsNullOrWhiteSpace(target.Name) ? target.Bucket : target.Name.Trim()));
             bool confirm = await ShowConfirmAsync(
-                string.Format(
-                    LanguageService.GetString(
-                        "official_publisher_confirm_targets",
-                        "Publish this content to {0} enabled server(s)?"),
-                    targets.Count),
-                LanguageService.Instance["Cancel"] ?? "Cancel",
-                LanguageService.Instance["Confirm"] ?? "Confirm");
+                $"发布这些内容？\n{string.Join("\n", included.Select(item => "· " + item))}\n\n发布到：{serverNames}",
+                "取消",
+                "发布");
             if (!confirm) return;
 
             var (exportDiagrams, exportGeothermometers) = await ResolveCategoryExportFlagsAsync();
+            bool published = false;
 
             IsBusy = true;
             BeginPublishProgress(CountPublishExportSteps(exportDiagrams, exportGeothermometers));
@@ -897,6 +1096,7 @@ namespace GeoChemistryNexus.ViewModels
 
                 PublishResult? diagramResult = null;
                 GeothermometerPublishResult? geoResult = null;
+                EpmaPublishResult? epmaResult = null;
                 HomeLinksPublishResult? homeLinksResult = null;
                 AnnouncementPublishResult? announcementResult = null;
                 HomeAnnouncementCatalog? publishedAnnouncementsCatalog = null;
@@ -953,6 +1153,15 @@ namespace GeoChemistryNexus.ViewModels
                     ReportPublishExportStep(exportMessage);
                     geoResult = await Task.Run(() => GeothermometerPublishService.ExportToDirectory(outputDir));
                     Log(geoResult.Summary);
+                }
+
+                if (PublishEpma)
+                {
+                    string exportMessage = LanguageService.GetString(
+                        "official_publisher_progress_exporting_epma", "Exporting EPMA calculation templates...");
+                    ReportPublishExportStep(exportMessage);
+                    epmaResult = await Task.Run(() => EpmaPublishService.ExportToDirectory(outputDir));
+                    Log(epmaResult.Summary);
                 }
 
                 string? serverInfoPath = diagramResult?.ServerInfoPath;
@@ -1017,7 +1226,9 @@ namespace GeoChemistryNexus.ViewModels
                             PublishHomeLinks,
                             PublishAnnouncement,
                             logProgress,
-                            uploadProgress);
+                            uploadProgress,
+                            epmaResult,
+                            PublishEpma);
                         succeeded++;
                         Log($"{targetName}: {uploadResult.Message}");
                     }
@@ -1044,6 +1255,11 @@ namespace GeoChemistryNexus.ViewModels
                     WeakReferenceMessenger.Default.Send(new OfficialTemplatesPublishedMessage());
                 }
 
+                if (PublishEpma && epmaResult != null)
+                {
+                    await EpmaPublishService.ApplyPublishedResultAsync(epmaResult);
+                }
+
                 if (PublishAnnouncement && succeeded > 0)
                 {
                     _remoteAnnouncementText = announcement ?? string.Empty;
@@ -1058,6 +1274,7 @@ namespace GeoChemistryNexus.ViewModels
                     ? (LanguageService.GetString("official_publisher_upload_all_ok", "Published to every enabled server."))
                     : (LanguageService.GetString("official_publisher_upload_partial", "Some servers failed."));
                 ReportPublishProgress(100, doneMessage);
+                published = true;
                 Log(doneMessage);
                 if (failures.Count == 0)
                     ShowSuccess(doneMessage);
@@ -1073,6 +1290,20 @@ namespace GeoChemistryNexus.ViewModels
             {
                 IsBusy = false;
                 ResetPublishProgress();
+            }
+
+            // 发布后立刻对照服务器重新计算，发布单上的“有改动”标签才不会过期
+            if (published)
+            {
+                _keepAnnouncementBaseline = PublishAnnouncement;
+                try
+                {
+                    await RefreshPreview();
+                }
+                finally
+                {
+                    _keepAnnouncementBaseline = false;
+                }
             }
         }
 
@@ -1091,6 +1322,7 @@ namespace GeoChemistryNexus.ViewModels
                 return;
 
             SelectedPublishTarget.ProtectedSecretKey = CosPublishSettingsService.ProtectSecretKey(SecretKey.Trim());
+            SelectedPublishTarget.NotifySecretKeyChanged();
         }
 
         private List<CosPublishTarget> GetConfiguredTargets()
@@ -1118,7 +1350,7 @@ namespace GeoChemistryNexus.ViewModels
             }
 
             CosPublishSettingsService.Save(settings);
-            OnPropertyChanged(nameof(EnabledTargetCount));
+            NotifyPublishTargetsChanged();
         }
 
         private CosPublishTargetItemViewModel CreateDefaultPublishTarget()
@@ -1136,7 +1368,7 @@ namespace GeoChemistryNexus.ViewModels
         private void OnPublishTargetPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(CosPublishTargetItemViewModel.Enabled))
-                OnPropertyChanged(nameof(EnabledTargetCount));
+                NotifyPublishTargetsChanged();
         }
 
         [RelayCommand]
@@ -1152,7 +1384,7 @@ namespace GeoChemistryNexus.ViewModels
             PublishTargets.Add(target);
             SelectedPublishTarget = target;
             SecretKey = string.Empty;
-            OnPropertyChanged(nameof(EnabledTargetCount));
+            NotifyPublishTargetsChanged();
         }
 
         [RelayCommand]
@@ -1204,7 +1436,7 @@ namespace GeoChemistryNexus.ViewModels
         {
             if (!string.IsNullOrWhiteSpace(StagingDirectory))
             {
-                ConfigHelper.SetConfig("publish_staging_dir", StagingDirectory);
+                ConfigHelper.SetConfig(ConfigKeys.PublishStagingDir, StagingDirectory);
                 return StagingDirectory;
             }
 
@@ -1212,7 +1444,7 @@ namespace GeoChemistryNexus.ViewModels
             if (!string.IsNullOrEmpty(folder))
             {
                 StagingDirectory = folder;
-                ConfigHelper.SetConfig("publish_staging_dir", StagingDirectory);
+                ConfigHelper.SetConfig(ConfigKeys.PublishStagingDir, StagingDirectory);
                 return StagingDirectory;
             }
 
@@ -1227,23 +1459,18 @@ namespace GeoChemistryNexus.ViewModels
             return false;
         }
 
-        private async Task<bool> EnsurePublishTargetSelectedAsync()
+        private Task<bool> EnsurePublishTargetSelectedAsync()
         {
-            if (PublishDiagrams || PublishGeothermometers || PublishHomeLinks || PublishAnnouncement)
-                return true;
+            if (PublishDiagrams || PublishGeothermometers || PublishEpma || PublishHomeLinks || PublishAnnouncement)
+                return Task.FromResult(true);
 
-            if (await HasPlotCategoriesPendingPublishAsync() || await HasGeoTMineralCategoriesPendingPublishAsync())
-                return true;
-
-            ShowWarning(LanguageService.Instance["official_publisher_target_required"] ?? "Select at least one publish target.");
-            return false;
+            ShowWarning("先在发布单里勾选要发布的内容。");
+            return Task.FromResult(false);
         }
 
-        private async Task<(bool exportDiagrams, bool exportGeothermometers)> ResolveCategoryExportFlagsAsync()
+        private Task<(bool exportDiagrams, bool exportGeothermometers)> ResolveCategoryExportFlagsAsync()
         {
-            bool plotCategoriesPending = await HasPlotCategoriesPendingPublishAsync();
-            bool geoCategoriesPending = await HasGeoTMineralCategoriesPendingPublishAsync();
-            return (PublishDiagrams || plotCategoriesPending, PublishGeothermometers || geoCategoriesPending);
+            return Task.FromResult((PublishDiagrams, PublishGeothermometers));
         }
 
         private void LogCategoryOnlyExportNotice(bool exportDiagrams, bool exportGeothermometers)
@@ -1258,39 +1485,6 @@ namespace GeoChemistryNexus.ViewModels
             {
                 Log(LanguageService.Instance["official_publisher_geot_categories_auto_included"]
                     ?? "GeoT mineral tags changed; including geothermometer index files in this publish.");
-            }
-        }
-
-        private static async Task<bool> HasPlotCategoriesPendingPublishAsync()
-        {
-            string path = PlotCategoryHelper.ResolveExportConfigPath();
-            if (!File.Exists(path))
-                return false;
-
-            string localHash = UpdateHelper.ComputeFileMd5(path);
-            var info = await LoadRemoteServerInfoAsync();
-            return string.IsNullOrEmpty(info.ListPlotCategoriesHash)
-                || !string.Equals(localHash, info.ListPlotCategoriesHash, StringComparison.OrdinalIgnoreCase);
-        }
-
-        private static async Task<bool> HasGeoTMineralCategoriesPendingPublishAsync()
-        {
-            string path = GeoTMineralCategoryHelper.ResolveExportConfigPath();
-            if (!File.Exists(path))
-                return false;
-
-            string localHash = UpdateHelper.ComputeFileMd5(path);
-            try
-            {
-                string json = await OfficialContentMirrorClient.GetStringAsync(
-                    $"{OfficialContentEndpoints.GeothermometerFolderName}/{OfficialContentEndpoints.GeoTIndexFileName}");
-                var index = JsonHelper.Deserialize<GeoTIndex>(json);
-                return string.IsNullOrEmpty(index?.MineralCategoriesHash)
-                    || !string.Equals(localHash, index.MineralCategoriesHash, StringComparison.OrdinalIgnoreCase);
-            }
-            catch
-            {
-                return true;
             }
         }
 
@@ -1342,25 +1536,17 @@ namespace GeoChemistryNexus.ViewModels
         [RelayCommand]
         private void AddHomeLinkGroup()
         {
-            var dialog = new HomeLinkLocalizedEditWindow(
-                HomeLinkLocalizedEditMode.Group,
-                HomeLinksLanguageContext,
-                LanguageService.Instance["official_publisher_home_add_group"] ?? "Add Group");
-            dialog.Owner = OwnerWindow ?? Application.Current.MainWindow;
-            WindowActivationHelper.AttachOwnerFocusPreservation(dialog, dialog.Owner);
-            if (dialog.ShowDialog() != true)
-                return;
-
             int nextOrder = HomeLinkGroups.Count == 0 ? 0 : HomeLinkGroups.Max(g => g.SortOrder) + 1;
             var group = new HomeLinkGroupEditorViewModel(HomeLinksLanguageContext)
             {
-                Title = dialog.ResultTitle,
+                Id = "group-" + Guid.NewGuid().ToString("N")[..6],
+                Title = new LocalizedString(),
                 SortOrder = nextOrder
             };
-            group.Id = Slugify(HomeLinksLocalization.GetSortKey(group.Title));
+            HookHomeLinkGroup(group);
             HomeLinkGroups.Add(group);
             SelectedHomeLinkGroup = group;
-            UpdateHomeLinkCounts(BuildCatalogFromEditor());
+            MarkHomeLinksDirty();
         }
 
         [RelayCommand]
@@ -1389,10 +1575,11 @@ namespace GeoChemistryNexus.ViewModels
             if (SelectedHomeLinkGroup == null)
                 return;
 
+            UnhookHomeLinkGroup(SelectedHomeLinkGroup);
             HomeLinkGroups.Remove(SelectedHomeLinkGroup);
             SelectedHomeLinkGroup = HomeLinkGroups.FirstOrDefault();
             SelectedHomeLink = null;
-            UpdateHomeLinkCounts(BuildCatalogFromEditor());
+            MarkHomeLinksDirty();
         }
 
         [RelayCommand]
@@ -1404,12 +1591,17 @@ namespace GeoChemistryNexus.ViewModels
                 return;
             }
 
-            if (!TryEditLink(null, out var link) || link == null)
-                return;
-
+            var link = new HomeLinkEntryEditorViewModel(HomeLinksLanguageContext)
+            {
+                Id = "link-" + Guid.NewGuid().ToString("N")[..6],
+                Title = new LocalizedString(),
+                Description = new LocalizedString(),
+                Url = "https://",
+                Icon = HomeIconHelper.DefaultIcon
+            };
             SelectedHomeLinkGroup.Links.Add(link);
             SelectedHomeLink = link;
-            UpdateHomeLinkCounts(BuildCatalogFromEditor());
+            MarkHomeLinksDirty();
         }
 
         [RelayCommand]
@@ -1436,7 +1628,7 @@ namespace GeoChemistryNexus.ViewModels
 
             SelectedHomeLinkGroup.Links.Remove(SelectedHomeLink);
             SelectedHomeLink = null;
-            UpdateHomeLinkCounts(BuildCatalogFromEditor());
+            MarkHomeLinksDirty();
         }
 
         [RelayCommand]
@@ -1446,8 +1638,51 @@ namespace GeoChemistryNexus.ViewModels
                 return;
 
             SaveHomeLinksToLocal();
-            Log(LanguageService.Instance["official_publisher_home_links_draft_saved"] ?? "Home links draft saved locally.");
-            ShowSuccess(LanguageService.Instance["official_publisher_home_links_draft_saved"] ?? "Home links draft saved locally.");
+            Log("导航链接已保存");
+            ShowSuccess("导航链接已保存");
+        }
+
+        [RelayCommand]
+        private async Task ExportHomeLinksCatalog()
+        {
+            string? path = await FileHelper.GetSaveFilePath2Async(
+                "导出导航链接",
+                FileDialogFilterHelper.JsonOnly,
+                ".json",
+                "HomeLinksCatalog.json",
+                OwnerWindow);
+            if (string.IsNullOrWhiteSpace(path))
+                return;
+
+            File.WriteAllText(path, HomeLinksPublishService.SerializeCatalog(BuildCatalogFromEditor()));
+            Log("已导出导航链接");
+            ShowSuccess("已导出导航链接");
+        }
+
+        [RelayCommand]
+        private async Task ImportHomeLinksCatalog()
+        {
+            string? path = FileHelper.GetFilePath(FileDialogFilterHelper.JsonOnly, OwnerWindow);
+            if (string.IsNullOrWhiteSpace(path))
+                return;
+
+            if (!HomeLinksPublishService.TryDeserializeCatalog(JsonHelper.ReadJsonFile(path), out var catalog))
+            {
+                ShowWarning("这个文件不是导航链接目录。");
+                return;
+            }
+
+            if (HomeLinkGroups.Count > 0)
+            {
+                bool confirmed = await ShowConfirmAsync("导入会替换当前导航链接。", "取消", "导入");
+                if (!confirmed)
+                    return;
+            }
+
+            PopulateHomeLinksEditor(catalog);
+            MarkHomeLinksDirty();
+            Log($"已导入导航链接：{HomeLinkGroupCount} 个分组，{HomeLinkCount} 个链接。");
+            ShowSuccess("已导入导航链接");
         }
 
         private void LoadHomeLinksEditor()
@@ -1457,35 +1692,46 @@ namespace GeoChemistryNexus.ViewModels
 
         private void PopulateHomeLinksEditor(HomeLinksCatalog catalog)
         {
-            HomeLinkGroups.Clear();
-
-            foreach (var group in catalog.Groups ?? Enumerable.Empty<HomeLinkGroup>())
+            _suppressHomeLinksTracking = true;
+            try
             {
-                var groupVm = new HomeLinkGroupEditorViewModel(HomeLinksLanguageContext)
-                {
-                    Id = group.Id ?? string.Empty,
-                    Title = HomeLinksLocalization.Clone(group.Title),
-                    SortOrder = group.SortOrder
-                };
+                foreach (var existing in HomeLinkGroups.ToList())
+                    UnhookHomeLinkGroup(existing);
+                HomeLinkGroups.Clear();
 
-                foreach (var link in group.Links ?? Enumerable.Empty<HomeLinkEntry>())
+                foreach (var group in catalog.Groups ?? Enumerable.Empty<HomeLinkGroup>())
                 {
-                    groupVm.Links.Add(new HomeLinkEntryEditorViewModel(HomeLinksLanguageContext)
+                    var groupVm = new HomeLinkGroupEditorViewModel(HomeLinksLanguageContext)
                     {
-                        Id = link.Id ?? string.Empty,
-                        Title = HomeLinksLocalization.Clone(link.Title),
-                        Description = HomeLinksLocalization.Clone(link.Description),
-                        Url = link.Url ?? string.Empty,
-                        Icon = HomeIconHelper.ResolveIcon(link.Icon)
-                    });
+                        Id = group.Id ?? string.Empty,
+                        Title = HomeLinksLocalization.Clone(group.Title),
+                        SortOrder = group.SortOrder
+                    };
+
+                    foreach (var link in group.Links ?? Enumerable.Empty<HomeLinkEntry>())
+                    {
+                        groupVm.Links.Add(new HomeLinkEntryEditorViewModel(HomeLinksLanguageContext)
+                        {
+                            Id = link.Id ?? string.Empty,
+                            Title = HomeLinksLocalization.Clone(link.Title),
+                            Description = HomeLinksLocalization.Clone(link.Description),
+                            Url = link.Url ?? string.Empty,
+                            Icon = HomeIconHelper.ResolveIcon(link.Icon)
+                        });
+                    }
+
+                    HookHomeLinkGroup(groupVm);
+                    HomeLinkGroups.Add(groupVm);
                 }
 
-                HomeLinkGroups.Add(groupVm);
+                SelectedHomeLinkGroup = HomeLinkGroups.FirstOrDefault();
+                SelectedHomeLink = SelectedHomeLinkGroup?.Links.FirstOrDefault();
+                UpdateHomeLinkCounts(catalog);
             }
-
-            SelectedHomeLinkGroup = HomeLinkGroups.FirstOrDefault();
-            SelectedHomeLink = SelectedHomeLinkGroup?.Links.FirstOrDefault();
-            UpdateHomeLinkCounts(catalog);
+            finally
+            {
+                _suppressHomeLinksTracking = false;
+            }
         }
 
         private HomeLinksCatalog BuildCatalogFromEditor()
@@ -1515,12 +1761,66 @@ namespace GeoChemistryNexus.ViewModels
             HomeLinksPublishService.SavePublisherCatalog(BuildCatalogFromEditor());
         }
 
+        private void HookHomeLinkGroup(HomeLinkGroupEditorViewModel group)
+        {
+            group.PropertyChanged += OnHomeLinkEditorChanged;
+            group.Links.CollectionChanged += OnHomeLinkListChanged;
+            foreach (var link in group.Links)
+                link.PropertyChanged += OnHomeLinkEditorChanged;
+        }
+
+        private void UnhookHomeLinkGroup(HomeLinkGroupEditorViewModel group)
+        {
+            group.PropertyChanged -= OnHomeLinkEditorChanged;
+            group.Links.CollectionChanged -= OnHomeLinkListChanged;
+            foreach (var link in group.Links)
+                link.PropertyChanged -= OnHomeLinkEditorChanged;
+        }
+
+        private void OnHomeLinkListChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems != null)
+            {
+                foreach (HomeLinkEntryEditorViewModel link in e.NewItems)
+                    link.PropertyChanged += OnHomeLinkEditorChanged;
+            }
+
+            if (e.OldItems != null)
+            {
+                foreach (HomeLinkEntryEditorViewModel link in e.OldItems)
+                    link.PropertyChanged -= OnHomeLinkEditorChanged;
+            }
+
+            MarkHomeLinksDirty();
+        }
+
+        private void OnHomeLinkEditorChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName is nameof(HomeLinkEntryEditorViewModel.DisplayTitle)
+                or nameof(HomeLinkEntryEditorViewModel.DisplayDescription)
+                or nameof(HomeLinkGroupEditorViewModel.DisplayTitle))
+                return;
+
+            MarkHomeLinksDirty();
+        }
+
+        private void MarkHomeLinksDirty()
+        {
+            if (_suppressHomeLinksTracking)
+                return;
+
+            HomeLinksHasRemoteChanges = true;
+            UpdateHomeLinkCounts(BuildCatalogFromEditor());
+            RequestDraftSave(PublisherDraftKinds.HomeLinks);
+        }
+
         private void UpdateHomeLinkCounts(HomeLinksCatalog catalog)
         {
             HomeLinkGroupCount = catalog?.Groups?.Count ?? 0;
             HomeLinkCount = catalog?.Groups?
                 .SelectMany(g => g.Links ?? Enumerable.Empty<HomeLinkEntry>())
                 .Count() ?? 0;
+            NotifyReleaseSheet();
         }
 
         private bool TryEditLink(HomeLinkEntryEditorViewModel? existing, out HomeLinkEntryEditorViewModel? result)
@@ -1701,20 +2001,65 @@ namespace GeoChemistryNexus.ViewModels
                 return;
 
             SavePlotCategoriesToLocal();
-            Log(LanguageService.Instance["official_publisher_plot_categories_draft_saved"] ?? "Plot categories draft saved locally.");
-            ShowSuccess(LanguageService.Instance["official_publisher_plot_categories_draft_saved"] ?? "Plot categories draft saved locally.");
+            Log("图解分类已保存");
+            ShowSuccess("图解分类已保存");
+        }
+
+        [RelayCommand]
+        private async Task ExportPlotCategories()
+        {
+            string? path = await FileHelper.GetSaveFilePath2Async(
+                "导出图解分类",
+                FileDialogFilterHelper.JsonOnly,
+                ".json",
+                "PlotTemplateCategories.json",
+                OwnerWindow);
+            if (string.IsNullOrWhiteSpace(path))
+                return;
+
+            PublisherConfigHelper.ExportRelaxed(BuildPlotCategoryConfigFromEditor(), path);
+            Log("已导出图解分类");
+            ShowSuccess("已导出图解分类");
+        }
+
+        [RelayCommand]
+        private async Task ImportPlotCategories()
+        {
+            string? path = FileHelper.GetFilePath(FileDialogFilterHelper.JsonOnly, OwnerWindow);
+            if (string.IsNullOrWhiteSpace(path))
+                return;
+
+            string? json = JsonHelper.ReadJsonFile(path);
+            var config = string.IsNullOrWhiteSpace(json) ? null : JsonHelper.Deserialize<PlotTemplateCategoryConfig>(json);
+            if (config == null || !config.Keys.Any(key => key.StartsWith("Level", StringComparison.OrdinalIgnoreCase)))
+            {
+                ShowWarning("这个文件不是图解分类。");
+                return;
+            }
+
+            if (_plotCategoryEntriesByLevel.Values.Any(list => list.Count > 0))
+            {
+                bool confirmed = await ShowConfirmAsync("导入会替换当前图解分类。", "取消", "导入");
+                if (!confirmed)
+                    return;
+            }
+
+            LoadPlotCategories(config);
+            PublishDiagrams = true;
+            Log("已导入图解分类");
+            ShowSuccess("已导入图解分类");
         }
 
         [RelayCommand]
         private void AddPlotCategoryEntry()
         {
-            if (!TryEditCategoryEntry(null, PlotCategoriesLanguageContext, out var entry) || entry == null)
-                return;
-
+            var entry = new LocalizedCategoryEntryViewModel(PlotCategoriesLanguageContext);
+            entry.PropertyChanged += OnPlotCategoryEntryChanged;
             GetPlotCategoryCollection(SelectedPlotCategoryLevel).Add(entry);
             PlotCategoryEntries.Add(entry);
             SelectedPlotCategoryEntry = entry;
             UpdatePlotCategoryEntryCount();
+            PublishDiagrams = true;
         }
 
         [RelayCommand]
@@ -1735,10 +2080,12 @@ namespace GeoChemistryNexus.ViewModels
             if (SelectedPlotCategoryEntry == null)
                 return;
 
+            SelectedPlotCategoryEntry.PropertyChanged -= OnPlotCategoryEntryChanged;
             GetPlotCategoryCollection(SelectedPlotCategoryLevel).Remove(SelectedPlotCategoryEntry);
             PlotCategoryEntries.Remove(SelectedPlotCategoryEntry);
             SelectedPlotCategoryEntry = PlotCategoryEntries.FirstOrDefault();
             UpdatePlotCategoryEntryCount();
+            PublishDiagrams = true;
         }
 
         [RelayCommand]
@@ -1755,19 +2102,65 @@ namespace GeoChemistryNexus.ViewModels
                 return;
 
             SaveGeoTMineralCategoriesToLocal();
-            Log(LanguageService.Instance["official_publisher_geot_categories_draft_saved"] ?? "GeoT mineral categories draft saved locally.");
-            ShowSuccess(LanguageService.Instance["official_publisher_geot_categories_draft_saved"] ?? "GeoT mineral categories draft saved locally.");
+            Log("矿物分类已保存");
+            ShowSuccess("矿物分类已保存");
+        }
+
+        [RelayCommand]
+        private async Task ExportGeoTMineralCategories()
+        {
+            string? path = await FileHelper.GetSaveFilePath2Async(
+                "导出矿物分类",
+                FileDialogFilterHelper.JsonOnly,
+                ".json",
+                "GeoTMineralCategories.json",
+                OwnerWindow);
+            if (string.IsNullOrWhiteSpace(path))
+                return;
+
+            PublisherConfigHelper.ExportRelaxed(BuildGeoTMineralCategoryConfigFromEditor(), path);
+            Log("已导出矿物分类");
+            ShowSuccess("已导出矿物分类");
+        }
+
+        [RelayCommand]
+        private async Task ImportGeoTMineralCategories()
+        {
+            string? path = FileHelper.GetFilePath(FileDialogFilterHelper.JsonOnly, OwnerWindow);
+            if (string.IsNullOrWhiteSpace(path))
+                return;
+
+            string? json = JsonHelper.ReadJsonFile(path);
+            var config = string.IsNullOrWhiteSpace(json) ? null : JsonHelper.Deserialize<GeoTMineralCategoryConfig>(json);
+            if (string.IsNullOrWhiteSpace(json) || config == null || json.IndexOf("minerals", StringComparison.OrdinalIgnoreCase) < 0)
+            {
+                ShowWarning("这个文件不是矿物分类。");
+                return;
+            }
+
+            if (GeoTMineralEntries.Count > 0)
+            {
+                bool confirmed = await ShowConfirmAsync("导入会替换当前矿物分类。", "取消", "导入");
+                if (!confirmed)
+                    return;
+            }
+
+            config.Minerals ??= new System.Collections.Generic.List<System.Collections.Generic.Dictionary<string, string>>();
+            LoadGeoTMineralCategories(config);
+            PublishGeothermometers = true;
+            Log("已导入矿物分类");
+            ShowSuccess("已导入矿物分类");
         }
 
         [RelayCommand]
         private void AddGeoTMineralEntry()
         {
-            if (!TryEditCategoryEntry(null, GeoTMineralCategoriesLanguageContext, out var entry) || entry == null)
-                return;
-
+            var entry = new LocalizedCategoryEntryViewModel(GeoTMineralCategoriesLanguageContext);
+            entry.PropertyChanged += OnGeoTMineralEntryChanged;
             GeoTMineralEntries.Add(entry);
             SelectedGeoTMineralEntry = entry;
             UpdateGeoTMineralEntryCount();
+            PublishGeothermometers = true;
         }
 
         [RelayCommand]
@@ -1788,51 +2181,107 @@ namespace GeoChemistryNexus.ViewModels
             if (SelectedGeoTMineralEntry == null)
                 return;
 
+            SelectedGeoTMineralEntry.PropertyChanged -= OnGeoTMineralEntryChanged;
             GeoTMineralEntries.Remove(SelectedGeoTMineralEntry);
             SelectedGeoTMineralEntry = GeoTMineralEntries.FirstOrDefault();
             UpdateGeoTMineralEntryCount();
+            PublishGeothermometers = true;
         }
 
         private void LoadPlotCategoriesEditor()
         {
-            _plotCategoryEntriesByLevel.Clear();
-            var config = PlotCategoryHelper.LoadPublisherConfig();
+            LoadPlotCategories(PlotCategoryHelper.LoadPublisherConfig());
+        }
 
-            foreach (string level in PlotCategoryLevelKeys)
+        private void LoadPlotCategories(PlotTemplateCategoryConfig config)
+        {
+            _suppressCategoryTracking = true;
+            try
             {
-                var entries = new ObservableCollection<LocalizedCategoryEntryViewModel>();
-                if (config.TryGetValue(level, out var items))
+                foreach (var existing in _plotCategoryEntriesByLevel.Values.SelectMany(entries => entries))
+                    existing.PropertyChanged -= OnPlotCategoryEntryChanged;
+
+                _plotCategoryEntriesByLevel.Clear();
+                config ??= new PlotTemplateCategoryConfig();
+
+                foreach (string level in PlotCategoryLevelKeys)
                 {
-                    foreach (var item in items ?? Enumerable.Empty<Dictionary<string, string>>())
+                    var entries = new ObservableCollection<LocalizedCategoryEntryViewModel>();
+                    if (config.TryGetValue(level, out var items))
                     {
-                        entries.Add(new LocalizedCategoryEntryViewModel(PlotCategoriesLanguageContext)
+                        foreach (var item in items ?? Enumerable.Empty<Dictionary<string, string>>())
                         {
-                            Title = HomeLinksLocalization.FromDictionary(item)
-                        });
+                            var entry = new LocalizedCategoryEntryViewModel(PlotCategoriesLanguageContext)
+                            {
+                                Title = HomeLinksLocalization.FromDictionary(item)
+                            };
+                            entry.PropertyChanged += OnPlotCategoryEntryChanged;
+                            entries.Add(entry);
+                        }
                     }
+
+                    _plotCategoryEntriesByLevel[level] = entries;
                 }
 
-                _plotCategoryEntriesByLevel[level] = entries;
+                RefreshPlotCategoryEntriesForSelectedLevel();
             }
-
-            RefreshPlotCategoryEntriesForSelectedLevel();
+            finally
+            {
+                _suppressCategoryTracking = false;
+            }
         }
 
         private void LoadGeoTMineralCategoriesEditor()
         {
-            GeoTMineralEntries.Clear();
-            var config = GeoTMineralCategoryHelper.LoadPublisherConfig();
+            LoadGeoTMineralCategories(GeoTMineralCategoryHelper.LoadPublisherConfig());
+        }
 
-            foreach (var item in config.Minerals ?? Enumerable.Empty<Dictionary<string, string>>())
+        private void LoadGeoTMineralCategories(GeoTMineralCategoryConfig config)
+        {
+            _suppressCategoryTracking = true;
+            try
             {
-                GeoTMineralEntries.Add(new LocalizedCategoryEntryViewModel(GeoTMineralCategoriesLanguageContext)
-                {
-                    Title = HomeLinksLocalization.FromDictionary(item)
-                });
-            }
+                foreach (var existing in GeoTMineralEntries)
+                    existing.PropertyChanged -= OnGeoTMineralEntryChanged;
 
-            SelectedGeoTMineralEntry = GeoTMineralEntries.FirstOrDefault();
-            UpdateGeoTMineralEntryCount();
+                GeoTMineralEntries.Clear();
+                config ??= new GeoTMineralCategoryConfig();
+
+                foreach (var item in config.Minerals ?? Enumerable.Empty<Dictionary<string, string>>())
+                {
+                    var entry = new LocalizedCategoryEntryViewModel(GeoTMineralCategoriesLanguageContext)
+                    {
+                        Title = HomeLinksLocalization.FromDictionary(item)
+                    };
+                    entry.PropertyChanged += OnGeoTMineralEntryChanged;
+                    GeoTMineralEntries.Add(entry);
+                }
+
+                SelectedGeoTMineralEntry = GeoTMineralEntries.FirstOrDefault();
+                UpdateGeoTMineralEntryCount();
+            }
+            finally
+            {
+                _suppressCategoryTracking = false;
+            }
+        }
+
+        private void OnPlotCategoryEntryChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (_suppressCategoryTracking || e.PropertyName != nameof(LocalizedCategoryEntryViewModel.Title))
+                return;
+
+            PublishDiagrams = true;
+            RequestDraftSave(PublisherDraftKinds.PlotCategories);
+        }
+
+        private void OnGeoTMineralEntryChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (_suppressCategoryTracking || e.PropertyName != nameof(LocalizedCategoryEntryViewModel.Title))
+                return;
+
+            PublishGeothermometers = true;
+            RequestDraftSave(PublisherDraftKinds.GeoTCategories);
         }
 
         private void RefreshPlotCategoryEntriesForSelectedLevel()
@@ -1900,11 +2349,15 @@ namespace GeoChemistryNexus.ViewModels
         private void UpdatePlotCategoryEntryCount()
         {
             PlotCategoryEntryCount = GetPlotCategoryCollection(SelectedPlotCategoryLevel).Count;
+            if (!_suppressCategoryTracking)
+                RequestDraftSave(PublisherDraftKinds.PlotCategories);
         }
 
         private void UpdateGeoTMineralEntryCount()
         {
             GeoTMineralEntryCount = GeoTMineralEntries.Count;
+            if (!_suppressCategoryTracking)
+                RequestDraftSave(PublisherDraftKinds.GeoTCategories);
         }
 
         private bool TryEditCategoryEntry(
@@ -1932,5 +2385,57 @@ namespace GeoChemistryNexus.ViewModels
             };
             return true;
         }
+
+        private bool MatchesPreviewFilter(object item)
+        {
+            if (item is not PublishDiffRow row)
+                return false;
+
+            return SelectedPreviewFilter == "all" || row.Action == SelectedPreviewFilter;
+        }
+
+        private static void FillDiffRows(ObservableCollection<PublishDiffRow> rows, PublishPreview? preview)
+        {
+            rows.Clear();
+            if (preview == null)
+                return;
+
+            AddDiffRows(rows, preview.NewItems, "new", "新增");
+            AddDiffRows(rows, preview.UpdatedItems, "update", "更新");
+            AddDiffRows(rows, preview.RemovedItems, "remove", "移除");
+            AddDiffRows(rows, preview.UnchangedItems, "same", "未变化");
+        }
+
+        private static void AddDiffRows(
+            ObservableCollection<PublishDiffRow> rows,
+            List<PublishPreviewItem>? items,
+            string action,
+            string label)
+        {
+            if (items == null)
+                return;
+
+            foreach (var item in items)
+            {
+                string name = string.IsNullOrWhiteSpace(item.Name) ? item.GraphMapPath : item.Name;
+                rows.Add(new PublishDiffRow(name, action, label));
+            }
+        }
+    }
+
+    public sealed class PublishDiffRow
+    {
+        public PublishDiffRow(string name, string action, string actionLabel)
+        {
+            Name = name;
+            Action = action;
+            ActionLabel = actionLabel;
+        }
+
+        public string Name { get; }
+
+        public string Action { get; }
+
+        public string ActionLabel { get; }
     }
 }

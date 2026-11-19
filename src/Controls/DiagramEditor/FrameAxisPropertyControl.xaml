@@ -1,0 +1,49 @@
+<UserControl x:Class="GeoChemistryNexus.Controls.FrameAxisPropertyControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
+             xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
+             xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
+             mc:Ignorable="d"
+             d:DesignHeight="400" d:DesignWidth="300"
+             Background="#F5F5F7">
+    <UserControl.Resources>
+        <cvs:NumericTypeConverter x:Key="NumericTypeConverter"/>
+        <cvs:StringColorConverter x:Key="StringColorConverter"/>
+    </UserControl.Resources>
+
+    <!-- 顶端 / 右侧图框边：只有轴线（宽度、颜色），没有标题、范围、刻度 -->
+    <Grid DataContext="{Binding SelectedObject, RelativeSource={RelativeSource AncestorType=local:FrameAxisPropertyControl}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <local:InspectorHeader Glyph="&#xe605;"
+                               Title="{Binding [axes],Source={x:Static lg:LanguageService.Instance}}"/>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="12,10,12,18" Grid.IsSharedSizeScope="True">
+                <local:InspectorGroup Header="{Binding [axis_line],Source={x:Static lg:LanguageService.Instance}}">
+                    <local:InspectorStack Spacing="8">
+                        <local:InspectorColumns Columns="2" Spacing="8">
+                            <HeaderedContentControl Style="{StaticResource InspectorFieldStyle}"
+                                                    Header="{Binding [width],Source={x:Static lg:LanguageService.Instance}}">
+                                <local:NumericUpDown Value="{Binding AxisLineWidth, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}"
+                                                     Increment="0.5"
+                                                     Style="{StaticResource InspectorNumericUpDownStyle}"/>
+                            </HeaderedContentControl>
+                            <HeaderedContentControl Style="{StaticResource InspectorFieldStyle}"
+                                                    Header="{Binding [color],Source={x:Static lg:LanguageService.Instance}}">
+                                <local:TextPropertyColorPicker ShowHexText="False"
+                                                               SelectedColor="{Binding AxisLineColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}"/>
+                            </HeaderedContentControl>
+                        </local:InspectorColumns>
+                    </local:InspectorStack>
+                </local:InspectorGroup>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

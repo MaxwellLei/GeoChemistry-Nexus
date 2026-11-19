@@ -1,4 +1,4 @@
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using GeoChemistryNexus.Extensions.ScottPlotExtensions;
 using GeoChemistryNexus.Services;
 using ScottPlot;
@@ -181,7 +181,10 @@ namespace GeoChemistryNexus.Models.SpiderDiagram
             {
                 _axis.Label.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateService.ConvertWpfHexToScottPlotHex(value));
             }
-            catch { }
+            catch (System.Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[SpiderAxis] Invalid label color '{value}': {ex.Message}");
+            }
         }
 
         partial void OnSubLabelChanged(string value)
@@ -204,7 +207,10 @@ namespace GeoChemistryNexus.Models.SpiderDiagram
             {
                 style.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateService.ConvertWpfHexToScottPlotHex(value));
             }
-            catch { }
+            catch (System.Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[SpiderAxis] Invalid sub-label color '{value}': {ex.Message}");
+            }
         }
 
         partial void OnSubLabelBoldChanged(bool value)
@@ -240,7 +246,10 @@ namespace GeoChemistryNexus.Models.SpiderDiagram
             {
                 _axis.TickLabelStyle.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateService.ConvertWpfHexToScottPlotHex(value));
             }
-            catch { }
+            catch (System.Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[SpiderAxis] Invalid tick color '{value}': {ex.Message}");
+            }
         }
 
         partial void OnTickIsBoldChanged(bool value)

@@ -19,7 +19,7 @@ namespace GeoChemistryNexus.Views
     public partial class GeothermometerPageView : Page
     {
         private static GeothermometerPageView? commonPage = null;
-        private GeothermometerPageViewModel _viewModel;
+        private readonly GeothermometerPageViewModel _viewModel;
         private Worksheet? _boundSelectionWorksheet;
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace GeoChemistryNexus.Views
             _viewModel.AttachWorksheetRowExpansionEvents(MyReoGrid.CurrentWorksheet);
 
             // 默认状态：收缩为底部状态条
-            CollapseDetailPanel(resetManualLock: false);
+            CollapseDetailPanel();
 
             // 监听 ViewModel 属性变化，处理计算详情面板的布局切换
             _viewModel.PropertyChanged += OnViewModelPropertyChanged;
@@ -107,11 +107,11 @@ namespace GeoChemistryNexus.Views
         {
             if (_viewModel.IsDetailPanelMinimized)
             {
-                CollapseDetailPanel(resetManualLock: false);
+                CollapseDetailPanel();
             }
             else
             {
-                ExpandDetailPanel(resetManualLock: false);
+                ExpandDetailPanel();
             }
         }
 
@@ -143,7 +143,7 @@ namespace GeoChemistryNexus.Views
         /// <summary>
         /// 展开：恢复正常高度
         /// </summary>
-        private void ExpandDetailPanel(bool resetManualLock)
+        private void ExpandDetailPanel()
         {
             TableRow.Height = new GridLength(1, GridUnitType.Star);
             DetailRow.MinHeight = MinDetailPanelHeight;
@@ -157,7 +157,7 @@ namespace GeoChemistryNexus.Views
         /// <summary>
         /// 收缩：仅保留标题栏状态条
         /// </summary>
-        private void CollapseDetailPanel(bool resetManualLock)
+        private void CollapseDetailPanel()
         {
             RememberDetailPanelHeight();
 
@@ -183,10 +183,7 @@ namespace GeoChemistryNexus.Views
 
         private void BindWorksheetEvents()
         {
-            if (_boundSelectionWorksheet != null)
-            {
-                _boundSelectionWorksheet.SelectionRangeChanged -= OnSelectionRangeChanged;
-            }
+            _boundSelectionWorksheet?.SelectionRangeChanged -= OnSelectionRangeChanged;
 
             if (MyReoGrid?.CurrentWorksheet == null)
             {
@@ -221,8 +218,9 @@ namespace GeoChemistryNexus.Views
             int row = selRange.Row;
 
             // 跳过表头行（第0行）
-            if (row < 1) return;
+            if (row < 0) return;
 
+            _viewModel.RefreshSelectedCellEditor(worksheet);
             _viewModel.OnRowSelected(worksheet, row);
 
             // 选中数据行只刷新计算详情内容，不改变用户当前的展开/收缩状态。
@@ -263,11 +261,7 @@ namespace GeoChemistryNexus.Views
 
         public static Page GetPage()
         {
-            if (commonPage == null)
-            {
-                commonPage = new GeothermometerPageView();
-            }
-            return commonPage;
+            return commonPage ??= new GeothermometerPageView();
         }
 
         public Task CheckUpdatesIfNeededAsync()

@@ -52,6 +52,12 @@ namespace GeoChemistryNexus.Models
         public string LatestAppVersion { get; set; } = string.Empty;
 
         /// <summary>
+        /// 最新版安装包的 SHA256（十六进制）。填写后客户端会在安装前校验；留空则只做完整性（长度）校验。
+        /// </summary>
+        [JsonPropertyName("latest_app_installer_sha256")]
+        public string LatestAppInstallerSha256 { get; set; } = string.Empty;
+
+        /// <summary>
         /// 官方内容对象存储公共根地址。客户端连上任意一台后，把这里多出来的地址并入本次会话的尝试列表。
         /// </summary>
         [JsonPropertyName("content_mirrors")]

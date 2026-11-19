@@ -55,6 +55,14 @@ namespace GeoChemistryNexus.Models
         public const string GeoTMineralCategoriesFileName = "GeoTMineralCategories.json";
         public const string GeothermometerPublishManifestFileName = "geothermometer_publish_manifest.json";
 
+        public const string EpmaFolderName = "Epma";
+        public const string EpmaBaseUrl = CosBaseUrl + "/" + EpmaFolderName;
+        public const string EpmaListUrl = EpmaBaseUrl + "/EPMA-List.json";
+        public const string EpmaIndexUrl = EpmaBaseUrl + "/EPMA-index.json";
+        public const string EpmaListFileName = "EPMA-List.json";
+        public const string EpmaIndexFileName = "EPMA-index.json";
+        public const string EpmaPublishManifestFileName = "epma_publish_manifest.json";
+
         public static string BuildInstallerFileName(string version)
         {
             return $"{InstallerAssetPrefix}{version}{InstallerAssetSuffix}";

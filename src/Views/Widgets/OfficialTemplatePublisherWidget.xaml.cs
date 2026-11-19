@@ -43,39 +43,53 @@ namespace GeoChemistryNexus.Views.Widgets
                 vm.SecretKey = box.Password;
         }
 
-        private bool _redirectingAnnouncementWheel;
+        private bool _redirectingWheel;
 
         /// <summary>
-        /// 公告与版本区域内的文本框、下拉框、列表和内层滚动条会吃掉滚轮。
-        /// 当前控件还能滚动时留给它；否则把滚轮交给页面。
+        /// 列表和内层滚动区域在没有滚动条时也会吃掉滚轮。
+        /// 内容没有超出区域时，把滚轮交给页面。
         /// </summary>
-        private void AnnouncementSection_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        private void Publisher_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            if (_redirectingAnnouncementWheel || e.Handled || sender is not DependencyObject section)
+            if (_redirectingWheel || e.Handled)
                 return;
 
-            if (IsInsideOpenComboBox(e.OriginalSource as DependencyObject, section))
+            if (IsInsideOpenComboBox(e.OriginalSource as DependencyObject, this))
                 return;
 
-            var page = FindVisualParent<ScrollViewer>(section);
-            if (page == null)
+            if (HasInnerScrollableViewer(e.OriginalSource as DependencyObject))
                 return;
 
-            var target = FindWheelScrollTarget(e.OriginalSource as DependencyObject, page, e.Delta) ?? page;
             e.Handled = true;
-            _redirectingAnnouncementWheel = true;
+            _redirectingWheel = true;
             try
             {
-                target.RaiseEvent(new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta)
+                PageScroll.RaiseEvent(new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta)
                 {
                     RoutedEvent = UIElement.MouseWheelEvent,
-                    Source = target
+                    Source = PageScroll
                 });
             }
             finally
             {
-                _redirectingAnnouncementWheel = false;
+                _redirectingWheel = false;
             }
+        }
+
+        /// <summary>
+        /// 鼠标下面有一块真正能滚动的区域（列表超出可视范围）时，滚轮留给它。
+        /// </summary>
+        private bool HasInnerScrollableViewer(DependencyObject? source)
+        {
+            for (var current = source; current != null && current != this; current = GetParentObject(current))
+            {
+                if (current is ScrollViewer viewer
+                    && !ReferenceEquals(viewer, PageScroll)
+                    && viewer.ScrollableHeight > 1)
+                    return true;
+            }
+
+            return false;
         }
 
         private static bool IsInsideOpenComboBox(DependencyObject? source, DependencyObject boundary)
@@ -89,31 +103,6 @@ namespace GeoChemistryNexus.Views.Widgets
             return false;
         }
 
-        /// <summary>
-        /// 从鼠标下的控件向上找第一个还能沿滚轮方向滚动的 ScrollViewer，找不到则由页面滚动。
-        /// </summary>
-        private static ScrollViewer? FindWheelScrollTarget(DependencyObject? source, ScrollViewer page, int delta)
-        {
-            for (var current = source; current != null && current != page; current = GetParentObject(current))
-            {
-                if (current is ScrollViewer viewer && CanScrollVertically(viewer, delta))
-                    return viewer;
-            }
-
-            return null;
-        }
-
-        private static bool CanScrollVertically(ScrollViewer viewer, int delta)
-        {
-            if (viewer.ScrollableHeight <= 0)
-                return false;
-
-            if (delta > 0)
-                return viewer.VerticalOffset > 0.5;
-
-            return viewer.VerticalOffset < viewer.ScrollableHeight - 0.5;
-        }
-
         private static DependencyObject? GetParentObject(DependencyObject current)
         {
             if (current is Visual or System.Windows.Media.Media3D.Visual3D)
@@ -122,18 +111,5 @@ namespace GeoChemistryNexus.Views.Widgets
             return LogicalTreeHelper.GetParent(current);
         }
 
-        private static T? FindVisualParent<T>(DependencyObject? child) where T : DependencyObject
-        {
-            while (child != null)
-            {
-                var parent = GetParentObject(child);
-                if (parent is T match)
-                    return match;
-
-                child = parent;
-            }
-
-            return null;
-        }
     }
 }

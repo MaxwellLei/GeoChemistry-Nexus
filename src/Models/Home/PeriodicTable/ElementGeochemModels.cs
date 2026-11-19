@@ -50,12 +50,6 @@ namespace GeoChemistryNexus.Models.PeriodicTable
         [JsonPropertyName("abundanceSeaMgPerL")]
         public double? AbundanceSeaMgPerL { get; set; }
 
-        [JsonPropertyName("goldschmidtClass")]
-        public string? GoldschmidtClass { get; set; }
-
-        [JsonPropertyName("geochemicalClass")]
-        public string? GeochemicalClass { get; set; }
-
         [JsonPropertyName("electronicConfiguration")]
         public string? ElectronicConfiguration { get; set; }
 

@@ -7,7 +7,7 @@ namespace GeoChemistryNexus.Controls
     {
         public static readonly DependencyProperty SelectedObjectProperty =
             DependencyProperty.Register("SelectedObject", typeof(object), typeof(TernaryAxisPropertyControl),
-                new PropertyMetadata(null));
+                new PropertyMetadata(null, OnSelectedObjectChanged));
 
         public object SelectedObject
         {
@@ -18,6 +18,17 @@ namespace GeoChemistryNexus.Controls
         public TernaryAxisPropertyControl()
         {
             InitializeComponent();
+        }
+
+        /// <summary>
+        /// 换到另一条边时回到标题页。
+        /// </summary>
+        private static void OnSelectedObjectChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TernaryAxisPropertyControl control && control.TabTitle != null)
+            {
+                control.TabTitle.IsChecked = true;
+            }
         }
     }
 }

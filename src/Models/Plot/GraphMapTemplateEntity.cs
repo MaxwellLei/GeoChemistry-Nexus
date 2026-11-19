@@ -68,6 +68,21 @@ namespace GeoChemistryNexus.Models
         /// </summary>
         public GraphMapTemplate? Content { get; set; }
 
+        private bool? _isInstalledOverride;
+
+        /// <summary>
+        /// 本地是否已有模板内容（已安装）。官方目录占位记录没有 Content。
+        /// 完整实体按 Content 计算；摘要查询不加载 Content，由数据库服务在投影时写入。
+        /// 不入库。
+        /// </summary>
+        [BsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        public bool IsInstalled
+        {
+            get => _isInstalledOverride ?? Content != null;
+            set => _isInstalledOverride = value;
+        }
+
         // --- 附属资源区 ---
 
         /// <summary>

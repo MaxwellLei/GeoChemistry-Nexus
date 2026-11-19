@@ -74,7 +74,7 @@ namespace GeoChemistryNexus.Helpers
                 if (!ResourceKeyMap.TryGetValue(catKey, out string? resourceKey))
                     continue;
 
-                foreach (string langCode in AppCultureRegistry.AppUiCodes)
+                foreach (string langCode in AppCultureRegistry.SupportedCodes)
                 {
                     try
                     {

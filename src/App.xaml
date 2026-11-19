@@ -1,10 +1,10 @@
-<Application x:Class="GeoChemistryNexus.App"
+﻿<Application x:Class="GeoChemistryNexus.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:GeoChemistryNexus"
              xmlns:converter="clr-namespace:GeoChemistryNexus.Converter">
     <Application.Resources>
-        <!-- 启动期保持轻量：HandyControl / Styles 延后到 StartWindow.Show 之后再合并 -->
+        <!-- 启动期保持轻量：Styles 延后到 StartWindow.Show 之后再合并 -->
         <ResourceDictionary>
             <converter:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
             <converter:BoolToVisibilityReConverter x:Key="BooleanToVisibilityReConverter"/>

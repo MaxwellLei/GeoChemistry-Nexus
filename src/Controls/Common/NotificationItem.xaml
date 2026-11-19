@@ -1,20 +1,28 @@
-<UserControl x:Class="GeoChemistryNexus.Controls.NotificationItem"
+﻿<UserControl x:Class="GeoChemistryNexus.Controls.NotificationItem"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:vm="clr-namespace:GeoChemistryNexus.ViewModels"
-             mc:Ignorable="d" 
              xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
+             xmlns:helpers="clr-namespace:GeoChemistryNexus.Helpers"
+             mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=vm:NotificationViewModel}"
-             d:DesignHeight="64" d:DesignWidth="400"
-             Margin="0,5"
+             d:DesignHeight="90" d:DesignWidth="372"
+             Margin="16,4,16,6"
+             Opacity="0"
+             RenderTransformOrigin="1,0"
              PreviewMouseDown="OnPreviewMouseDown">
-    
+
+    <!--
+        Toast 卡片：状态反馈（信息 / 成功 / 警告 / 错误）与进度任务。
+        交互确认类（确认 / 三按钮 / 单选）由 NotificationSheet 以居中 Sheet 呈现。
+    -->
     <UserControl.Resources>
+        <!-- 进场：右侧滑入 + 渐显（0.3s） -->
         <Storyboard x:Key="SlideIn">
-            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.3" FillBehavior="Stop">
+            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.3">
                 <DoubleAnimation.EasingFunction>
                     <ExponentialEase EasingMode="EaseOut" Exponent="6"/>
                 </DoubleAnimation.EasingFunction>
@@ -25,20 +33,147 @@
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
         </Storyboard>
+
+        <!-- 退场：向右滑出 + 渐隐（0.32s），滑出距离需完全移出右侧边缘 -->
         <Storyboard x:Key="SlideOut">
-            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.2">
+            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.32">
                 <DoubleAnimation.EasingFunction>
                     <ExponentialEase EasingMode="EaseIn" Exponent="6"/>
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
-            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)" From="0" To="100" Duration="0:0:0.2">
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)" From="0" To="430" Duration="0:0:0.32">
                 <DoubleAnimation.EasingFunction>
                     <BackEase EasingMode="EaseIn" Amplitude="0.4"/>
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
         </Storyboard>
+
+        <!-- 复制按钮图标：已复制后切换为对勾 -->
+        <Style x:Key="CopyIconPathStyle" TargetType="Path">
+            <Setter Property="Stroke" Value="{DynamicResource NotificationMessageBrush}"/>
+            <Setter Property="StrokeThickness" Value="2"/>
+            <Setter Property="StrokeLineJoin" Value="Round"/>
+            <Setter Property="StrokeStartLineCap" Value="Round"/>
+            <Setter Property="StrokeEndLineCap" Value="Round"/>
+            <Setter Property="Data" Value="M11 9 H20 A2 2 0 0 1 22 11 V20 A2 2 0 0 1 20 22 H11 A2 2 0 0 1 9 20 V11 A2 2 0 0 1 11 9 Z M5 15 H4 A2 2 0 0 1 2 13 V4 A2 2 0 0 1 4 2 H13 A2 2 0 0 1 15 4 V5"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsCopied}" Value="True">
+                    <Setter Property="Stroke" Value="{StaticResource NotificationSuccessAccentBrush}"/>
+                    <Setter Property="StrokeThickness" Value="2.6"/>
+                    <Setter Property="Data" Value="M5 13 L9 17 L19 7"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!--
+            操作区按需实例化：每张卡片只创建自己需要的那一块（复制栏 / 进度条 / 操作按钮），
+            不为隐藏部分创建控件，降低弹出瞬间的卡顿。
+        -->
+        <DataTemplate x:Key="EmptyActionTemplate">
+            <Grid/>
+        </DataTemplate>
+
+        <!-- 警告 / 错误：诊断码 + 一键复制 -->
+        <DataTemplate x:Key="CopyBarTemplate">
+            <Grid Margin="0,8,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding CodeLabel}" FontFamily="Cascadia Mono, Consolas" FontSize="10.5"
+                           Foreground="{DynamicResource NotificationMutedBrush}"
+                           VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                <Button Grid.Column="1" Command="{Binding CopyCommand}"
+                        Style="{StaticResource NotificationCopyChipStyle}"
+                        ToolTip="{Binding [copy_content], Source={x:Static lg:LanguageService.Instance}}">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Viewbox Width="10" Height="10" VerticalAlignment="Center">
+                            <Canvas Width="24" Height="24">
+                                <Path Style="{StaticResource CopyIconPathStyle}"/>
+                            </Canvas>
+                        </Viewbox>
+                        <TextBlock Margin="4,0,0,0" VerticalAlignment="Center"
+                                   Text="{Binding [copy_content], Source={x:Static lg:LanguageService.Instance}}"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </DataTemplate>
+
+        <!-- 进度任务：说明文字 + 百分比 + 进度条 -->
+        <DataTemplate x:Key="ProgressBarTemplate">
+            <StackPanel Margin="0,9,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{Binding ProgressDetail}" FontFamily="Cascadia Mono, Consolas" FontSize="11"
+                               Foreground="{DynamicResource NotificationMutedBrush}" TextTrimming="CharacterEllipsis"/>
+                    <TextBlock Grid.Column="1" Text="{Binding TaskProgressText}" Margin="8,0,0,0"
+                               FontFamily="Cascadia Mono, Consolas" FontSize="11" FontWeight="Bold"
+                               Foreground="{DynamicResource NotificationProgressTextBrush}"/>
+                </Grid>
+                <Border Height="5" Margin="0,6,0,0" CornerRadius="3" Background="{DynamicResource NotificationDividerBrush}">
+                    <Border Style="{StaticResource NotificationTaskBarFillStyle}">
+                        <Border.RenderTransform>
+                            <ScaleTransform ScaleX="{Binding TaskProgress}"/>
+                        </Border.RenderTransform>
+                    </Border>
+                </Border>
+            </StackPanel>
+        </DataTemplate>
+
+        <!-- 操作按钮行（撤销 / 查看 / 取消） -->
+        <DataTemplate x:Key="ActionsRowTemplate">
+            <ItemsControl Margin="0,8,0,0" Focusable="False" ItemsSource="{Binding Actions}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Content="{Binding Text}"
+                                Style="{StaticResource NotificationActionLinkStyle}"
+                                Command="{Binding DataContext.InvokeActionCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                CommandParameter="{Binding}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </DataTemplate>
+
+        <!-- 主体操作区：按卡片形态选择模板 -->
+        <Style x:Key="ActionAreaStyle" TargetType="ContentControl">
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="IsTabStop" Value="False"/>
+            <Setter Property="ContentTemplate" Value="{StaticResource EmptyActionTemplate}"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ShowCopyBar}" Value="True">
+                    <Setter Property="ContentTemplate" Value="{StaticResource CopyBarTemplate}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ShowProgressBar}" Value="True">
+                    <Setter Property="ContentTemplate" Value="{StaticResource ProgressBarTemplate}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- 操作按钮区：仅有操作按钮时实例化 -->
+        <Style x:Key="ActionsRowStyle" TargetType="ContentControl">
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="IsTabStop" Value="False"/>
+            <Setter Property="ContentTemplate" Value="{StaticResource EmptyActionTemplate}"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ShowActions}" Value="True">
+                    <Setter Property="ContentTemplate" Value="{StaticResource ActionsRowTemplate}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
     </UserControl.Resources>
-    
+
+    <UserControl.LayoutTransform>
+        <ScaleTransform ScaleX="1" ScaleY="1"/>
+    </UserControl.LayoutTransform>
+
     <UserControl.RenderTransform>
         <TranslateTransform/>
     </UserControl.RenderTransform>
@@ -54,328 +189,92 @@
             </Style.Triggers>
         </Style>
     </UserControl.Style>
-    
+
     <UserControl.Triggers>
         <EventTrigger RoutedEvent="Loaded">
             <BeginStoryboard Storyboard="{StaticResource SlideIn}"/>
         </EventTrigger>
     </UserControl.Triggers>
 
-    <!-- Modern-style Glassmorphism Card -->
-    <Border Background="{Binding BackgroundColor}" CornerRadius="8" BorderBrush="{Binding BorderColor}" BorderThickness="1">
-        <Border.Style>
-            <Style TargetType="Border">
-                <Setter Property="MinWidth" Value="300"/>
-                <Setter Property="MaxWidth" Value="380"/>
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsInteractive}" Value="True">
-                        <Setter Property="MinWidth" Value="360"/>
-                        <Setter Property="MaxWidth" Value="420"/>
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-        </Border.Style>
-        <Border.Effect>
-            <DropShadowEffect Color="Black" BlurRadius="20" ShadowDepth="4" Opacity="0.15"/>
-        </Border.Effect>
-        <Grid Margin="16,10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+    <!-- 悬停时暂停自动关闭倒计时 -->
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="MouseEnter">
+            <i:CallMethodAction TargetObject="{Binding}" MethodName="PauseAutoClose"/>
+        </i:EventTrigger>
+        <i:EventTrigger EventName="MouseLeave">
+            <i:CallMethodAction TargetObject="{Binding}" MethodName="ResumeAutoClose"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
 
-            <!-- Icon Container -->
-            <Border Width="38" Height="38" CornerRadius="19" Background="#20000000" Margin="0,0,14,0" VerticalAlignment="Top">
-                <Path Fill="{Binding ForegroundColor}" Stretch="Uniform" Width="18" Height="18" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Path.Style>
-                        <Style TargetType="Path">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Type}" Value="Success">
-                                    <Setter Property="Data" Value="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Type}" Value="Warning">
-                                    <Setter Property="Data" Value="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Type}" Value="Error">
-                                    <Setter Property="Data" Value="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Type}" Value="Info">
-                                    <Setter Property="Data" Value="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Path.Style>
-                </Path>
-            </Border>
+    <Grid>
+        <!-- 两层阴影（衬底投射，位于卡片之下） -->
+        <Border Style="{StaticResource NotificationShadowAmbientStyle}"/>
+        <Border Style="{StaticResource NotificationShadowContactStyle}"/>
 
-            <!-- Content -->
-            <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="14" Foreground="{Binding ForegroundColor}" Margin="0,0,0,3"/>
-                <TextBlock Text="{Binding Message}" FontSize="13" Foreground="{Binding ForegroundColor}" Opacity="0.85" TextWrapping="Wrap" LineHeight="18"/>
-                
-                <!-- Language Selection -->
-                <StackPanel Margin="0,10,0,0">
-                    <StackPanel.Style>
-                        <Style TargetType="StackPanel">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsLanguageSelection}" Value="True">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </StackPanel.Style>
-                    
-                    <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding SelectedLanguage}" 
-                              Margin="0,0,0,10" Padding="6,4" BorderThickness="1" BorderBrush="{Binding BorderColor}"/>
-                    
-                    <StackPanel Orientation="Horizontal">
-                        <Button Content="{Binding [Confirm], Source={x:Static lg:LanguageService.Instance}}" 
-                                Command="{Binding SelectLanguageCommand}" 
-                                Margin="0,0,10,0" Padding="12,5" Background="{Binding ForegroundColor}" Foreground="White" 
-                                BorderThickness="0" Cursor="Hand" FontWeight="SemiBold">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}" CornerRadius="6" Padding="{TemplateBinding Padding}">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-                        
-                        <Button Content="{Binding [Cancel], Source={x:Static lg:LanguageService.Instance}}" 
-                                Command="{Binding CancelCommand}" 
-                                Padding="12,5" Background="Transparent" Foreground="{Binding ForegroundColor}" 
-                                BorderBrush="{Binding ForegroundColor}" BorderThickness="1" Cursor="Hand" FontWeight="SemiBold">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6" Padding="{TemplateBinding Padding}">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
+        <!-- 白色卡片 -->
+        <Border Style="{StaticResource NotificationCardStyle}">
+            <Grid>
+                <Grid Margin="12,11,12,11">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- 淡色圆形语义图标 -->
+                    <Border Style="{StaticResource NotificationSoftBadgeStyle}" Margin="0,0,10,0">
+                        <Viewbox Width="14" Height="14">
+                            <Canvas Width="24" Height="24">
+                                <Path Style="{StaticResource NotificationSoftIconPathStyle}"/>
+                            </Canvas>
+                        </Viewbox>
+                    </Border>
+
+                    <StackPanel Grid.Column="1">
+                        <!-- 标题行：标题 + 时间戳 -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Title}" FontSize="12.5"
+                                       Style="{StaticResource NotificationTitleTextStyle}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding TimeText}" Margin="8,0,0,0"
+                                       FontFamily="Cascadia Mono, Consolas" FontSize="10.5"
+                                       Style="{StaticResource NotificationMutedTextStyle}"/>
+                        </Grid>
+
+                        <!-- 消息正文：最多 3 行，完整内容可通过“复制”或通知中心查看 -->
+                        <TextBlock Text="{Binding Message}" Margin="0,2,0,0" LineHeight="17" MaxHeight="51"
+                                   TextTrimming="CharacterEllipsis"
+                                   Style="{StaticResource NotificationMessageTextStyle}"/>
+
+                        <!-- 按形态实例化的操作区 -->
+                        <ContentControl Content="{Binding}" Style="{StaticResource ActionAreaStyle}"/>
+                        <ContentControl Content="{Binding}" Style="{StaticResource ActionsRowStyle}"/>
                     </StackPanel>
-                </StackPanel>
 
-                <!-- Export Mode Selection -->
-                <StackPanel Margin="0,10,0,0">
-                    <StackPanel.Style>
-                        <Style TargetType="StackPanel">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsExportModeSelection}" Value="True">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </StackPanel.Style>
+                    <!-- 右上角关闭按钮（进度任务不显示，需通过“取消”结束） -->
+                    <Button Grid.Column="2" Margin="8,0,-4,0" VerticalAlignment="Top"
+                            Command="{Binding CloseCommand}"
+                            Style="{StaticResource NotificationCloseButtonStyle}"
+                            ToolTip="{Binding [shortcut_action_close_notification_name], Source={x:Static lg:LanguageService.Instance}}"
+                            Visibility="{Binding ShowCloseButton, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                </Grid>
 
-                    <ComboBox ItemsSource="{Binding ExportOptions}" SelectedItem="{Binding SelectedExportOption}"
-                              Margin="0,0,0,10" Padding="6,4" BorderThickness="1" BorderBrush="{Binding BorderColor}"/>
-
-                    <StackPanel Orientation="Horizontal">
-                        <Button Content="{Binding [Confirm], Source={x:Static lg:LanguageService.Instance}}"
-                                Command="{Binding SelectExportModeCommand}"
-                                Margin="0,0,10,0" Padding="12,5" Background="{Binding ForegroundColor}" Foreground="White"
-                                BorderThickness="0" Cursor="Hand" FontWeight="SemiBold">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}" CornerRadius="6" Padding="{TemplateBinding Padding}">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-
-                        <Button Content="{Binding [Cancel], Source={x:Static lg:LanguageService.Instance}}"
-                                Command="{Binding CancelCommand}"
-                                Padding="12,5" Background="Transparent" Foreground="{Binding ForegroundColor}"
-                                BorderBrush="{Binding ForegroundColor}" BorderThickness="1" Cursor="Hand" FontWeight="SemiBold">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6" Padding="{TemplateBinding Padding}">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-                    </StackPanel>
-                </StackPanel>
-
-                <!-- Action Buttons -->
-                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                    <StackPanel.Style>
-                        <Style TargetType="StackPanel">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                            <Style.Triggers>
-                                <MultiDataTrigger>
-                                    <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding IsInteractive}" Value="True"/>
-                                        <Condition Binding="{Binding IsLanguageSelection}" Value="False"/>
-                                        <Condition Binding="{Binding IsExportModeSelection}" Value="False"/>
-                                        <Condition Binding="{Binding IsThreeButtonDialog}" Value="False"/>
-                                    </MultiDataTrigger.Conditions>
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                </MultiDataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </StackPanel.Style>
-                    
-                    <Button Content="{Binding ConfirmText}" Command="{Binding ConfirmCommand}" 
-                            Margin="0,0,10,0" Padding="12,5" Background="{Binding ForegroundColor}" Foreground="White" 
-                            BorderThickness="0" Cursor="Hand" FontWeight="SemiBold">
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Border Background="{TemplateBinding Background}" CornerRadius="6" Padding="{TemplateBinding Padding}">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
-                    
-                    <Button Content="{Binding CancelText}" Command="{Binding CancelCommand}" 
-                            Padding="12,5" Background="Transparent" Foreground="{Binding ForegroundColor}" 
-                            BorderBrush="{Binding ForegroundColor}" BorderThickness="1" Cursor="Hand" FontWeight="SemiBold">
-                         <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6" Padding="{TemplateBinding Padding}">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
-                </StackPanel>
-
-                <!-- Three Button Dialog -->
-                <WrapPanel Orientation="Horizontal" Margin="0,10,0,0">
-                    <WrapPanel.Style>
-                        <Style TargetType="WrapPanel">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                            <Style.Triggers>
-                                <MultiDataTrigger>
-                                    <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding IsInteractive}" Value="True"/>
-                                        <Condition Binding="{Binding IsThreeButtonDialog}" Value="True"/>
-                                    </MultiDataTrigger.Conditions>
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                </MultiDataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </WrapPanel.Style>
-                    
-                    <Button Content="{Binding ConfirmText}" Command="{Binding ConfirmCommand}" 
-                            Margin="0,0,8,0" Padding="12,5" Background="{Binding ForegroundColor}" Foreground="White" 
-                            BorderThickness="0" Cursor="Hand" FontWeight="SemiBold">
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Border Background="{TemplateBinding Background}" CornerRadius="6" Padding="{TemplateBinding Padding}">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
-                    
-                    <Button Content="{Binding ThirdButtonText}" Command="{Binding ThirdButtonCommand}" 
-                            Margin="0,0,8,0" Padding="12,5" Background="Transparent"
-                            BorderThickness="1" Cursor="Hand">
-                        <Button.Style>
-                            <Style TargetType="Button">
-                                <Setter Property="Foreground" Value="{Binding ForegroundColor}"/>
-                                <Setter Property="BorderBrush" Value="{Binding ForegroundColor}"/>
-                                <Setter Property="FontWeight" Value="SemiBold"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsThirdButtonSubtle}" Value="True">
-                                        <Setter Property="Foreground" Value="#8E8E93"/>
-                                        <Setter Property="BorderBrush" Value="Transparent"/>
-                                        <Setter Property="FontWeight" Value="Normal"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6" Padding="{TemplateBinding Padding}">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
-                    
-                    <Button Content="{Binding CancelText}" Command="{Binding CancelCommand}" 
-                            Padding="12,5" Background="Transparent" Foreground="{Binding ForegroundColor}" 
-                            BorderBrush="{Binding ForegroundColor}" BorderThickness="1" Cursor="Hand" FontWeight="SemiBold">
-                         <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6" Padding="{TemplateBinding Padding}">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
-                </WrapPanel>
-            </StackPanel>
-
-            <!-- Close Button -->
-            <Button Grid.Column="2" Command="{Binding CloseCommand}" Background="Transparent" BorderThickness="0" 
-                    Margin="8,-4,-4,0" VerticalAlignment="Top" HorizontalAlignment="Right" Cursor="Hand" Width="24" Height="24">
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="Visibility" Value="Visible"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsInteractive}" Value="True">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="12">
-                            <Path Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" 
-                                  Fill="{Binding ForegroundColor}" Width="10" Height="10" Stretch="Uniform" Opacity="0.5" 
-                                  VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#10000000"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
-
-            <!-- Copy Button -->
-            <Button Grid.Column="2" Command="{Binding CopyCommand}" Background="Transparent" BorderThickness="0" 
-                    Margin="8,0,-4,-4" VerticalAlignment="Bottom" HorizontalAlignment="Right" Cursor="Hand" Width="24" Height="24"
-                    ToolTip="{Binding [copy_content],Source={x:Static lg:LanguageService.Instance}}">
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsCopyVisible}" Value="True">
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="12">
-                            <Path Data="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" 
-                                  Fill="{Binding ForegroundColor}" Stretch="Uniform" Width="12" Height="12" Opacity="0.5" 
-                                  VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#10000000"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
-        </Grid>
-    </Border>
+                <!-- 自动关闭倒计时细进度条 -->
+                <Border VerticalAlignment="Bottom" Height="2" Margin="14,0"
+                        CornerRadius="1" Background="{StaticResource NotificationTimerTrackBrush}"
+                        IsHitTestVisible="False"
+                        Visibility="{Binding HasTimer, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Border CornerRadius="1" Background="{DynamicResource NotificationTimerBarBrush}"
+                            RenderTransformOrigin="0,0.5">
+                        <Border.RenderTransform>
+                            <ScaleTransform ScaleX="{Binding Progress}"/>
+                        </Border.RenderTransform>
+                    </Border>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
 </UserControl>
-

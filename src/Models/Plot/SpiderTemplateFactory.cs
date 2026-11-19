@@ -2,6 +2,7 @@ using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Models.SpiderDiagram;
 using ScottPlot;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GeoChemistryNexus.Models
 {
@@ -69,6 +70,7 @@ namespace GeoChemistryNexus.Models
                 Script = new ScriptDefinition
                 {
                     RequiredDataSeries = "La,Ce,Pr,Nd,Sm,Eu,Gd,Tb,Dy,Ho,Er,Tm,Yb,Lu",
+                    DataSeriesUnits = ConcentrationUnits("La,Ce,Pr,Nd,Sm,Eu,Gd,Tb,Dy,Ho,Er,Tm,Yb,Lu"),
                     ScriptBody = "var elements = ['La','Ce','Pr','Nd','Sm','Eu','Gd','Tb','Dy','Ho','Er','Tm','Yb','Lu'];\nvar validElements = elements.filter(e => typeof data[e] !== 'undefined' && data[e] > 0);\nreturn validElements.map(e => ({element: e, value: Math.log10(data[e] / standard[e])}));"
                 }
             };
@@ -135,6 +137,7 @@ namespace GeoChemistryNexus.Models
                 Script = new ScriptDefinition
                 {
                     RequiredDataSeries = "Rb,Ba,Th,U,Nb,Ta,La,Ce,Pb,Pr,Sr,P,Nd,Zr,Sm,Ti,Y,Yb",
+                    DataSeriesUnits = ConcentrationUnits("Rb,Ba,Th,U,Nb,Ta,La,Ce,Pb,Pr,Sr,P,Nd,Zr,Sm,Ti,Y,Yb"),
                     ScriptBody = "var elements = ['Rb','Ba','Th','U','Nb','Ta','La','Ce','Pb','Pr','Sr','P','Nd','Zr','Sm','Ti','Y','Yb'];\nvar validElements = elements.filter(e => typeof data[e] !== 'undefined' && data[e] > 0);\nreturn validElements.map(e => ({element: e, value: Math.log10(data[e] / standard[e])}));"
                 }
             };
@@ -202,6 +205,17 @@ namespace GeoChemistryNexus.Models
                 IsBold = false,
                 IsItalic = false
             };
+        }
+
+        /// <summary>
+        /// 为每个数据列填写浓度单位，顺序与数据列一致。
+        /// </summary>
+        private static string ConcentrationUnits(string requiredDataSeries)
+        {
+            int count = requiredDataSeries.Split(',', System.StringSplitOptions.RemoveEmptyEntries | System.StringSplitOptions.TrimEntries).Length;
+            return count == 0
+                ? string.Empty
+                : string.Join(",", Enumerable.Repeat(NormalizationData.ConcentrationUnit, count));
         }
 
         /// <summary>

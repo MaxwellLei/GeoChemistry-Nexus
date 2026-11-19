@@ -1,14 +1,13 @@
 namespace GeoChemistryNexus.Models
 {
     /// <summary>
-    /// 界面缩放模式。Auto 按当前显示器分辨率与系统 DPI 估算；其余为固定倍率。
+    /// 界面缩放档位（固定倍率，默认 100%）。
     /// </summary>
     public enum UiScaleMode
     {
-        Auto = 0,
+        Percent90 = 90,
         Percent100 = 100,
         Percent125 = 125,
-        Percent150 = 150,
-        Percent200 = 200
+        Percent150 = 150
     }
 }

@@ -53,8 +53,6 @@
       "theme": "blue",
       "backgroundMode": "default",
       "backgroundColor": "",
-      "showPolygons": true,
-      "polygonStyle": "ring",
       "action": {
         "label": {
           "default": "en-US",

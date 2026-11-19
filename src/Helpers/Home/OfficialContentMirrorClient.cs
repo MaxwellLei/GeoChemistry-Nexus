@@ -18,6 +18,7 @@ namespace GeoChemistryNexus.Helpers
     public static class OfficialContentMirrorClient
     {
         private static readonly TimeSpan ConnectTimeout = TimeSpan.FromSeconds(8);
+        private static readonly TimeSpan DownloadTimeout = TimeSpan.FromMinutes(10);
         private static readonly object Gate = new();
         private static string? _preferredBaseUrl;
         private static readonly List<string> LearnedBaseUrls = new();
@@ -42,7 +43,9 @@ namespace GeoChemistryNexus.Helpers
                 foreach (string mirror in mirrors)
                 {
                     string normalized = OfficialContentEndpoints.NormalizeBaseUrl(mirror);
-                    if (!IsHttpUrl(normalized) || ContainsUrl(LearnedBaseUrls, normalized))
+                    // 服务器下发的镜像会参与安装包等内容的下载，只接受 HTTPS，避免被降级到明文。
+                    if (!normalized.StartsWith("https://", StringComparison.OrdinalIgnoreCase)
+                        || ContainsUrl(LearnedBaseUrls, normalized))
                         continue;
 
                     LearnedBaseUrls.Add(normalized);
@@ -93,7 +96,7 @@ namespace GeoChemistryNexus.Helpers
                 {
                     lastError = ex;
                     Debug.WriteLine($"[OfficialContentMirror] {baseUrl}/{relativePath} failed: {ex.Message}");
-                    TryDeleteFile(destinationPath);
+                    // 失败时 .part 已在下载流程内清理；目标文件保持原样，不再误删已有的好文件。
                 }
             }
 
@@ -136,8 +139,8 @@ namespace GeoChemistryNexus.Helpers
 
         private static async Task<string> GetStringFromAbsoluteAsync(string url)
         {
-            using var client = CreateClient(ConnectTimeout);
-            return await client.GetStringAsync(url).ConfigureAwait(false);
+            using var timeoutCts = new CancellationTokenSource(ConnectTimeout);
+            return await SharedHttpClient.GetStringAsync(url, timeoutCts.Token).ConfigureAwait(false);
         }
 
         private static async Task DownloadFromAbsoluteAsync(string url, string destinationPath, IProgress<double>? progress)
@@ -146,32 +149,49 @@ namespace GeoChemistryNexus.Helpers
             if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
 
-            using var client = CreateClient(TimeSpan.FromMinutes(10));
             using var connectCts = new CancellationTokenSource(ConnectTimeout);
-            using var response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, connectCts.Token).ConfigureAwait(false);
-            // 响应头已经到达。停掉 8 秒连接计时，但不要释放令牌，否则正文读取会被取消。
-            connectCts.CancelAfter(Timeout.InfiniteTimeSpan);
+            using var response = await SharedHttpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, connectCts.Token).ConfigureAwait(false);
+            // 响应头已经到达。把 8 秒连接计时改为整个下载的 10 分钟上限（原先由 HttpClient.Timeout 承担），
+            // 令牌不能提前释放，且需传给正文读取，才能让上限继续生效。
+            connectCts.CancelAfter(DownloadTimeout);
+            var downloadToken = connectCts.Token;
             response.EnsureSuccessStatusCode();
 
             var totalBytes = response.Content.Headers.ContentLength ?? -1L;
             bool canReportProgress = totalBytes > 0 && progress != null;
 
-            await using var contentStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-            await using var fileStream = new FileStream(destinationPath, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true);
-
-            var buffer = new byte[8192];
-            long totalRead = 0;
-            int bytesRead;
-            while ((bytesRead = await contentStream.ReadAsync(buffer.AsMemory()).ConfigureAwait(false)) > 0)
+            // 先写 .part，下载完整且长度一致后再改名，避免留下残缺的目标文件。
+            string partPath = destinationPath + ".part";
+            try
             {
-                await fileStream.WriteAsync(buffer.AsMemory(0, bytesRead)).ConfigureAwait(false);
-                totalRead += bytesRead;
-                if (canReportProgress)
-                    progress!.Report((double)totalRead / totalBytes * 100);
-            }
+                long totalRead = 0;
+                await using (var contentStream = await response.Content.ReadAsStreamAsync(downloadToken).ConfigureAwait(false))
+                await using (var fileStream = new FileStream(partPath, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true))
+                {
+                    var buffer = new byte[8192];
+                    int bytesRead;
+                    while ((bytesRead = await contentStream.ReadAsync(buffer.AsMemory(), downloadToken).ConfigureAwait(false)) > 0)
+                    {
+                        await fileStream.WriteAsync(buffer.AsMemory(0, bytesRead), downloadToken).ConfigureAwait(false);
+                        totalRead += bytesRead;
+                        if (canReportProgress)
+                            progress!.Report((double)totalRead / totalBytes * 100);
+                    }
+                }
 
-            if (totalRead == 0)
-                throw new IOException("Downloaded content is empty.");
+                if (totalRead == 0)
+                    throw new IOException("Downloaded content is empty.");
+
+                if (totalBytes > 0 && totalRead != totalBytes)
+                    throw new IOException($"Download incomplete: expected {totalBytes} bytes, received {totalRead}.");
+
+                File.Move(partPath, destinationPath, overwrite: true);
+            }
+            catch
+            {
+                TryDeleteFile(partPath);
+                throw;
+            }
         }
 
         private static void TryLearnFromServerInfo(string relativePath, string json)
@@ -255,9 +275,15 @@ namespace GeoChemistryNexus.Helpers
                 || url.StartsWith("http://", StringComparison.OrdinalIgnoreCase);
         }
 
-        private static HttpClient CreateClient(TimeSpan timeout)
+        /// <summary>
+        /// 进程内共享的 HttpClient（复用连接池与 DNS 缓存，避免每次请求新建造成端口耗尽）。
+        /// 超时由各调用方通过 CancellationToken 控制，因此此处不设置整体 Timeout。
+        /// </summary>
+        internal static HttpClient SharedHttpClient { get; } = CreateSharedClient();
+
+        private static HttpClient CreateSharedClient()
         {
-            var client = new HttpClient { Timeout = timeout };
+            var client = new HttpClient { Timeout = Timeout.InfiniteTimeSpan };
             client.DefaultRequestHeaders.UserAgent.Add(
                 new ProductInfoHeaderValue("GeoChemistry-Nexus-Update-Checker", "1.0"));
             return client;

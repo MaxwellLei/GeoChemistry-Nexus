@@ -670,7 +670,10 @@ namespace GeoChemistryNexus.ViewModels
             {
                 string csvContent = ReoGridFormatHelper.BuildCsv(worksheet, exportMode.Value);
                 await Task.Run(() => File.WriteAllText(filePath, csvContent, new UTF8Encoding(true)));
-                NotifySuccess(LanguageService.Instance["geo_msg_export_success"]);
+                MessageHelper.ExportSuccess(
+                    LanguageService.Instance["geo_msg_export_success"],
+                    filePath,
+                    _notificationHost?.OwnerWindow);
             }
             catch (Exception ex)
             {

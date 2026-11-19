@@ -43,6 +43,25 @@ namespace GeoChemistryNexus.Helpers
             return Split(Join(items));
         }
 
+        /// <summary>是否至少有一列填写了单位。</summary>
+        public static bool HasAnyUnit(IReadOnlyList<string>? units)
+            => units != null && units.Any(unit => !string.IsNullOrWhiteSpace(unit));
+
+        /// <summary>
+        /// 把单位列表对齐到表头列数（不足补空串、多余截断）。
+        /// 没有任何非空单位时返回空列表，使保存、导出和哈希与 1.3 之前的模板内容完全一致。
+        /// </summary>
+        public static List<string> NormalizeUnits(IReadOnlyList<string>? headers, IReadOnlyList<string>? units)
+        {
+            if (headers == null || !HasAnyUnit(units))
+                return new List<string>();
+
+            var result = new List<string>(headers.Count);
+            for (int i = 0; i < headers.Count; i++)
+                result.Add(i < units!.Count ? units[i]?.Trim() ?? string.Empty : string.Empty);
+            return result;
+        }
+
         /// <summary>
         /// 将示例行与表头列数对齐；合并因错误拆分而散落在末尾的公式片段。
         /// </summary>

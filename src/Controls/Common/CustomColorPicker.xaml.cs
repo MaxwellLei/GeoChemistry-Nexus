@@ -21,7 +21,7 @@ namespace GeoChemistryNexus.Controls
 
         public static readonly DependencyProperty SelectedBrushProperty =
             DependencyProperty.Register("SelectedBrush", typeof(SolidColorBrush), typeof(CustomColorPicker),
-                new FrameworkPropertyMetadata(Brushes.Red, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+                new FrameworkPropertyMetadata(Brushes.Red, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnSelectedBrushChanged));
 
         public static readonly DependencyProperty AProperty =
             DependencyProperty.Register("A", typeof(byte), typeof(CustomColorPicker),
@@ -34,6 +34,14 @@ namespace GeoChemistryNexus.Controls
         public static readonly DependencyProperty GProperty =
             DependencyProperty.Register("G", typeof(byte), typeof(CustomColorPicker),
                 new FrameworkPropertyMetadata((byte)0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnARGBChanged));
+
+        public static readonly DependencyProperty ShowChannelInputsProperty =
+            DependencyProperty.Register(nameof(ShowChannelInputs), typeof(bool), typeof(CustomColorPicker),
+                new PropertyMetadata(true));
+
+        public static readonly DependencyProperty IsCompactProperty =
+            DependencyProperty.Register(nameof(IsCompact), typeof(bool), typeof(CustomColorPicker),
+                new PropertyMetadata(false, OnIsCompactChanged));
 
         public static readonly DependencyProperty BProperty =
             DependencyProperty.Register("B", typeof(byte), typeof(CustomColorPicker),
@@ -75,15 +83,80 @@ namespace GeoChemistryNexus.Controls
             set { SetValue(BProperty, value); }
         }
 
+        /// <summary>是否显示 A/R/G/B 四个数字框。图解弹层改用 rgba 文本，设为 false。</summary>
+        public bool ShowChannelInputs
+        {
+            get { return (bool)GetValue(ShowChannelInputsProperty); }
+            set { SetValue(ShowChannelInputsProperty, value); }
+        }
+
+        /// <summary>图解弹层用的紧凑布局：240 宽、较矮的色板，不带底部快捷色。</summary>
+        public bool IsCompact
+        {
+            get { return (bool)GetValue(IsCompactProperty); }
+            set { SetValue(IsCompactProperty, value); }
+        }
+
         public CustomColorPicker()
         {
             InitializeComponent();
+            ApplyCompactLayout();
             Loaded += CustomColorPicker_Loaded;
+            SizeChanged += (_, _) => UpdateThumbsFromColor(SelectedColor);
+        }
+
+        private static void OnIsCompactChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((CustomColorPicker)d).ApplyCompactLayout();
+        }
+
+        private void ApplyCompactLayout()
+        {
+            if (RootGrid == null) return;
+
+            if (IsCompact)
+            {
+                Width = 240;
+                RootGrid.Margin = new Thickness(0);
+                RootGrid.RowDefinitions[0].Height = new GridLength(110);
+                SvClip.Margin = new Thickness(0, 0, 0, 8);
+                SvClip.CornerRadius = new CornerRadius(8);
+                HueRow.Margin = new Thickness(0, 0, 0, 8);
+                AlphaRow.Margin = new Thickness(0, 0, 0, 0);
+                QuickColors.Visibility = Visibility.Collapsed;
+                return;
+            }
+
+            Width = 270;
+            RootGrid.Margin = new Thickness(10);
+            RootGrid.RowDefinitions[0].Height = new GridLength(180);
+            SvClip.Margin = new Thickness(0, 0, 0, 10);
+            SvClip.CornerRadius = new CornerRadius(0);
+            HueRow.Margin = new Thickness(0, 0, 0, 10);
+            AlphaRow.Margin = new Thickness(0, 0, 0, 10);
+            QuickColors.Visibility = Visibility.Visible;
         }
 
         private void CustomColorPicker_Loaded(object sender, RoutedEventArgs e)
         {
             UpdateThumbsFromColor(SelectedColor);
+        }
+
+        private static void OnSelectedBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var picker = (CustomColorPicker)d;
+            if (picker._isUpdating) return;
+            if (e.NewValue is not SolidColorBrush brush) return;
+
+            var color = brush.Color;
+            picker._isUpdating = true;
+            picker.SelectedColor = color;
+            picker.A = color.A;
+            picker.R = color.R;
+            picker.G = color.G;
+            picker.B = color.B;
+            picker.UpdateThumbsFromColor(color);
+            picker._isUpdating = false;
         }
 
         private static void OnSelectedColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -314,7 +387,10 @@ namespace GeoChemistryNexus.Controls
                 {
                     SelectedColor = (Color)ColorConverter.ConvertFromString(hex);
                 }
-                catch { }
+                catch (FormatException)
+                {
+                    // 用户输入的十六进制颜色不合法：保持当前颜色不变
+                }
             }
         }
 

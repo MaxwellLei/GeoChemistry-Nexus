@@ -3,8 +3,36 @@ using GeoChemistryNexus.Services;
 using System.ComponentModel;
 using System.Collections.Generic;
 
+using System;
+
 namespace GeoChemistryNexus.ViewModels
 {
+    /// <summary>键帽中的一个按键，如 Ctrl、Z。</summary>
+    public class ShortcutKeyPart
+    {
+        public string Text { get; }
+        public bool ShowPlusBefore { get; }
+
+        public ShortcutKeyPart(string text, bool showPlusBefore)
+        {
+            Text = text;
+            ShowPlusBefore = showPlusBefore;
+        }
+    }
+
+    /// <summary>一组组合键，如 Ctrl+Z；一个操作可以有多组（用“ / ”分隔）。</summary>
+    public class ShortcutCombo
+    {
+        public IReadOnlyList<ShortcutKeyPart> Parts { get; }
+        public bool ShowSeparatorBefore { get; }
+
+        public ShortcutCombo(IReadOnlyList<ShortcutKeyPart> parts, bool showSeparatorBefore)
+        {
+            Parts = parts;
+            ShowSeparatorBefore = showSeparatorBefore;
+        }
+    }
+
     public partial class ShortcutItem : ObservableObject
     {
         private readonly string _nameKey;
@@ -16,12 +44,17 @@ namespace GeoChemistryNexus.ViewModels
         public string Description => LanguageService.Instance[_descriptionKey];
         private readonly string _literalKeys;
 
+        /// <summary>键盘组合键（以键帽显示）；鼠标操作等纯文字说明时为空。</summary>
+        public IReadOnlyList<ShortcutCombo> Combos { get; }
+        public bool HasCombos => Combos.Count > 0;
+
         public ShortcutItem(string nameKey, string keys, string descriptionKey)
         {
             _nameKey = nameKey;
             _literalKeys = keys;
             _keysResourceKey = null;
             _descriptionKey = descriptionKey;
+            Combos = ParseCombos(keys);
 
             LanguageService.Instance.PropertyChanged += OnLanguageChanged;
         }
@@ -32,8 +65,28 @@ namespace GeoChemistryNexus.ViewModels
             _literalKeys = string.Empty;
             _keysResourceKey = useResourceKeyForKeys ? keysResourceKey : null;
             _descriptionKey = descriptionKey;
+            Combos = Array.Empty<ShortcutCombo>();
 
             LanguageService.Instance.PropertyChanged += OnLanguageChanged;
+        }
+
+        private static IReadOnlyList<ShortcutCombo> ParseCombos(string keys)
+        {
+            var combos = new List<ShortcutCombo>();
+            var groups = keys.Split(" / ", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            foreach (var group in groups)
+            {
+                var parts = new List<ShortcutKeyPart>();
+                foreach (var token in group.Split('+', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+                {
+                    parts.Add(new ShortcutKeyPart(token, parts.Count > 0));
+                }
+                if (parts.Count > 0)
+                {
+                    combos.Add(new ShortcutCombo(parts, combos.Count > 0));
+                }
+            }
+            return combos;
         }
 
         private void OnLanguageChanged(object? sender, PropertyChangedEventArgs e)
@@ -83,6 +136,13 @@ namespace GeoChemistryNexus.ViewModels
         {
             ShortcutGroups = new List<ShortcutGroup>
             {
+                new ShortcutGroup(
+                    "shortcut_group_global_title",
+                    "shortcut_group_global_desc",
+                    new List<ShortcutItem>
+                    {
+                        new ShortcutItem("shortcut_action_open_settings_name", "Ctrl+,", "shortcut_action_open_settings_desc")
+                    }),
                 new ShortcutGroup(
                     "shortcut_group_plot_title",
                     "shortcut_group_plot_desc",

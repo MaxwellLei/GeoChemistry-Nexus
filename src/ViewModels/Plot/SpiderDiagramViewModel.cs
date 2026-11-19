@@ -664,6 +664,8 @@ namespace GeoChemistryNexus.ViewModels
                 {
                     _wpfPlot.Plot.SavePng(dialog.FileName, 800, 600);
                 }
+
+                MessageHelper.ExportSuccess(LanguageService.Instance["export_successful"], dialog.FileName);
             }
         }
 

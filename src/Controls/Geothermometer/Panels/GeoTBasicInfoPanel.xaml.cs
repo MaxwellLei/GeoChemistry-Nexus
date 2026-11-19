@@ -1,9 +1,12 @@
-using GeoChemistryNexus.Helpers;
+﻿using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Models;
 using GeoChemistryNexus.Services;
 using GeoChemistryNexus.ViewModels;
+using GeoChemistryNexus.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -15,6 +18,27 @@ namespace GeoChemistryNexus.Controls.GeothermometerEditorPanels
         public GeoTBasicInfoPanel()
         {
             InitializeComponent();
+        }
+
+        // ==================== 支持语言（仅 UI 交互，逻辑在 ViewModel） ====================
+
+        private void RemoveLanguage_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is GeothermometerEditorViewModel vm &&
+                (sender as Button)?.Tag is LanguageTagModel language)
+            {
+                vm.RemoveLanguage(language);
+            }
+        }
+
+        private void LocalizationClick(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not GeothermometerEditorViewModel vm) return;
+
+            var sheet = vm.CreateLocalizationSheet();
+            var dialog = new EpmaLocalizationWindow(sheet) { Owner = Window.GetWindow(this) };
+            if (dialog.ShowDialog() == true)
+                vm.ApplyLocalizationSheet(sheet);
         }
 
         /// <summary>

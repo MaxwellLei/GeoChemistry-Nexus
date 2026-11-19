@@ -7,7 +7,7 @@ namespace GeoChemistryNexus.Controls
     {
         public static readonly DependencyProperty SelectedObjectProperty =
             DependencyProperty.Register("SelectedObject", typeof(object), typeof(AxisPropertyControl),
-                new PropertyMetadata(null));
+                new PropertyMetadata(null, OnSelectedObjectChanged));
 
         public object SelectedObject
         {
@@ -18,6 +18,17 @@ namespace GeoChemistryNexus.Controls
         public AxisPropertyControl()
         {
             InitializeComponent();
+        }
+
+        /// <summary>
+        /// 切换到另一个坐标轴时回到第一个标签页，避免上一个轴的标签页在新轴上不可用（如范围 / 刻度）。
+        /// </summary>
+        private static void OnSelectedObjectChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is AxisPropertyControl control && control.TabTitle != null)
+            {
+                control.TabTitle.IsChecked = true;
+            }
         }
     }
 }

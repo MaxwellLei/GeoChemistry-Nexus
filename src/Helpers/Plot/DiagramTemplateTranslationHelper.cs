@@ -58,6 +58,8 @@ namespace GeoChemistryNexus.Helpers
 
                     if (axis is CartesianAxisDefinition cartesian && cartesian.SubLabel != null)
                         result.Add(cartesian.SubLabel);
+                    else if (axis is TernaryAxisDefinition ternary && ternary.SubLabel != null)
+                        result.Add(ternary.SubLabel);
                 }
             }
 
@@ -132,6 +134,8 @@ namespace GeoChemistryNexus.Helpers
 
                     if (axis is CartesianAxisDefinition cartesian && cartesian.SubLabel != null)
                         AddRow(dt, $"{LanguageService.Instance["translation_axis_subtitle"] ?? "Axis Subtitle"} #{i + 1}", $"axis.{i}.sublabel", cartesian.SubLabel, orderedLanguages);
+                    else if (axis is TernaryAxisDefinition ternary && ternary.SubLabel != null)
+                        AddRow(dt, $"{LanguageService.Instance["translation_axis_subtitle"] ?? "Axis Subtitle"} #{i + 1}", $"axis.{i}.sublabel", ternary.SubLabel, orderedLanguages);
                 }
             }
 

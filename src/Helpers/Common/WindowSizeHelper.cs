@@ -168,6 +168,91 @@ namespace GeoChemistryNexus.Helpers
                 window.Top = workArea.Bottom - window.Height;
         }
 
+        /// <summary>
+        /// 以物理像素为单位，将窗口居中到目标显示器工作区。
+        /// 启动时 HWND 先创建在主屏 DPI 下，移到不同缩放的副屏/2K 屏后会触发 DPI 变化并按比例缩放窗口，
+        /// 用 DIP 设置的 Left/Top 因此会偏移；DPI 稳定后直接按像素重新居中可避免该问题。
+        /// </summary>
+        public static void CenterInWorkAreaPixels(Window window, bool preferCursorMonitor = false)
+        {
+            if (window == null || window.WindowState != WindowState.Normal)
+                return;
+
+            var hwnd = new WindowInteropHelper(window).Handle;
+            if (hwnd == IntPtr.Zero || !GetWindowRect(hwnd, out var rect))
+                return;
+
+            IntPtr monitor = IntPtr.Zero;
+            if (preferCursorMonitor && GetCursorPos(out var cursor))
+                monitor = MonitorFromPoint(cursor, MonitorDefaultToNearest);
+            if (monitor == IntPtr.Zero)
+                monitor = MonitorFromWindow(hwnd, MonitorDefaultToNearest);
+            if (monitor == IntPtr.Zero)
+                return;
+
+            var info = new MonitorInfo { cbSize = (uint)Marshal.SizeOf<MonitorInfo>() };
+            if (!GetMonitorInfo(monitor, ref info))
+                return;
+
+            var work = info.rcWork;
+            int width = rect.Right - rect.Left;
+            int height = rect.Bottom - rect.Top;
+
+            int left = work.Left + ((work.Right - work.Left) - width) / 2;
+            int top = work.Top + ((work.Bottom - work.Top) - height) / 2;
+
+            if (left == rect.Left && top == rect.Top)
+                return;
+
+            SetWindowPos(hwnd, IntPtr.Zero, left, top, 0, 0, SwpNoSize | SwpNoZOrder | SwpNoActivate);
+        }
+
+        public const int WmDpiChanged = 0x02E0;
+
+        /// <summary>
+        /// 在 WM_DPICHANGED 消息里把系统建议的新窗口矩形（lParam 指向 RECT，物理像素）改为目标显示器工作区正中。
+        /// WPF 随后会直接采用这个矩形，窗口一出现就在正中，不会先偏后跳。
+        /// 在 HwndSource 钩子里调用，且不要把消息标记为已处理。
+        /// </summary>
+        public static void CenterDpiSuggestedRect(IntPtr lParam, bool preferCursorMonitor = true)
+        {
+            if (lParam == IntPtr.Zero)
+                return;
+
+            var rect = Marshal.PtrToStructure<RectApi>(lParam);
+
+            IntPtr monitor = IntPtr.Zero;
+            if (preferCursorMonitor && GetCursorPos(out var cursor))
+                monitor = MonitorFromPoint(cursor, MonitorDefaultToNearest);
+            if (monitor == IntPtr.Zero)
+            {
+                var center = new PointApi
+                {
+                    X = rect.Left + (rect.Right - rect.Left) / 2,
+                    Y = rect.Top + (rect.Bottom - rect.Top) / 2
+                };
+                monitor = MonitorFromPoint(center, MonitorDefaultToNearest);
+            }
+            if (monitor == IntPtr.Zero)
+                return;
+
+            var info = new MonitorInfo { cbSize = (uint)Marshal.SizeOf<MonitorInfo>() };
+            if (!GetMonitorInfo(monitor, ref info))
+                return;
+
+            var work = info.rcWork;
+            int width = rect.Right - rect.Left;
+            int height = rect.Bottom - rect.Top;
+            int left = work.Left + ((work.Right - work.Left) - width) / 2;
+            int top = work.Top + ((work.Bottom - work.Top) - height) / 2;
+
+            rect.Left = left;
+            rect.Top = top;
+            rect.Right = left + width;
+            rect.Bottom = top + height;
+            Marshal.StructureToPtr(rect, lParam, false);
+        }
+
         public static bool TryGetWorkAreaDip(Window window, out Rect workAreaDip, bool preferCursorMonitor = false)
         {
             workAreaDip = Rect.Empty;
@@ -215,6 +300,20 @@ namespace GeoChemistryNexus.Helpers
                 return false;
 
             var work = info.rcWork;
+
+            // 优先按目标显示器自身 DPI 换算：启动时窗口句柄还在主屏 DPI 下，
+            // 用窗口当前 DPI 换算会得到错误的 DIP 尺寸，窗口显示后又要被二次调整（表现为闪一下）
+            double monitorScale = GetMonitorDipScale(monitor);
+            if (monitorScale > 0)
+            {
+                workAreaDip = new Rect(
+                    work.Left / monitorScale,
+                    work.Top / monitorScale,
+                    (work.Right - work.Left) / monitorScale,
+                    (work.Bottom - work.Top) / monitorScale);
+                return workAreaDip.Width > 0 && workAreaDip.Height > 0;
+            }
+
             var source = PresentationSource.FromVisual(window);
             if (source?.CompositionTarget != null)
             {
@@ -234,6 +333,21 @@ namespace GeoChemistryNexus.Helpers
             }
 
             return workAreaDip.Width > 0 && workAreaDip.Height > 0;
+        }
+
+        /// <summary>显示器缩放比例（有效 DPI / 96），失败返回 0。</summary>
+        private static double GetMonitorDipScale(IntPtr monitor)
+        {
+            try
+            {
+                if (GetDpiForMonitor(monitor, 0, out var dpiX, out _) == 0 && dpiX > 0)
+                    return dpiX / 96.0;
+            }
+            catch (Exception ex) when (ex is DllNotFoundException or EntryPointNotFoundException)
+            {
+            }
+
+            return 0;
         }
 
         private static double GetFallbackDipScale(Window window)
@@ -264,6 +378,16 @@ namespace GeoChemistryNexus.Helpers
 
         [DllImport("user32.dll")]
         private static extern bool GetCursorPos(out PointApi lpPoint);
+
+        [DllImport("shcore.dll")]
+        private static extern int GetDpiForMonitor(IntPtr hmonitor, int dpiType, out uint dpiX, out uint dpiY);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, uint uFlags);
+
+        private const uint SwpNoSize = 0x0001;
+        private const uint SwpNoZOrder = 0x0004;
+        private const uint SwpNoActivate = 0x0010;
 
         [StructLayout(LayoutKind.Sequential)]
         private struct PointApi

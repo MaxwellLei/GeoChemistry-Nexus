@@ -25,7 +25,7 @@ namespace GeoChemistryNexus.Models
         /// 边框线样式-边框颜色
         /// </summary>
         [ObservableProperty]
-        public string _borderColor = "#FF0078D4";       // 默认蓝色
+        public string _borderColor = "#FF000000";       // 默认黑色
 
         /// <summary>
         /// 边框线样式-边框宽度

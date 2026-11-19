@@ -1,0 +1,228 @@
+<UserControl x:Class="GeoChemistryNexus.Controls.NotificationHistoryPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Type=lg:NotificationCenter}"
+             d:DesignHeight="600" d:DesignWidth="340"
+             Width="340"
+             Focusable="False">
+
+    <!--
+        通知中心历史面板：从窗口右侧滑出，列出最近的通知（含进度任务的实时进度）。
+        DataContext 为 NotificationCenter；展开状态由 IsHistoryOpen 驱动。
+    -->
+    <UserControl.Resources>
+        <!-- 滑入 / 滑出（滑出距离略大于面板宽度，保证左侧阴影也完全离开窗口） -->
+        <Storyboard x:Key="PanelIn">
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                             To="0" Duration="0:0:0.38">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Key="PanelOut">
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                             To="360" Duration="0:0:0.3">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseIn"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+
+        <!-- 条目飞出：向右滑出面板并渐隐 -->
+        <Storyboard x:Key="ItemFlyOut">
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                             To="380" Duration="0:0:0.34">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseIn"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.34"/>
+        </Storyboard>
+
+        <!-- 历史条目 -->
+        <DataTemplate x:Key="HistoryItemTemplate">
+            <Border Margin="8,0" Padding="8,9" CornerRadius="10" Background="Transparent"
+                    ToolTip="{Binding Message}">
+                <Border.RenderTransform>
+                    <TranslateTransform/>
+                </Border.RenderTransform>
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#F6F7FC"/>
+                            </Trigger>
+                            <!-- “清除全部”：条目向右飞出并渐隐（时长需与 NotificationCenter.ClearFlyOutMilliseconds 一致） -->
+                            <DataTrigger Binding="{Binding IsClearing}" Value="True">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard Storyboard="{StaticResource ItemFlyOut}"/>
+                                </DataTrigger.EnterActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Style="{StaticResource NotificationSoftBadgeStyle}"
+                            Width="26" Height="26" CornerRadius="13" Margin="0,0,10,0">
+                        <Viewbox Width="13" Height="13">
+                            <Canvas Width="24" Height="24">
+                                <Path Style="{StaticResource NotificationSoftIconPathStyle}"/>
+                            </Canvas>
+                        </Viewbox>
+                    </Border>
+
+                    <StackPanel Grid.Column="1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Title}" FontSize="12.5"
+                                       Style="{StaticResource NotificationTitleTextStyle}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding TimeText}" Margin="8,0,0,0"
+                                       FontFamily="Cascadia Mono, Consolas" FontSize="10.5"
+                                       Style="{StaticResource NotificationMutedTextStyle}"/>
+                        </Grid>
+                        <TextBlock Text="{Binding Message}" FontSize="12" Margin="0,1,0,0"
+                                   TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"
+                                   Foreground="{DynamicResource NotificationMessageBrush}"/>
+                        <!-- 进行中的任务：实时进度条 -->
+                        <Border Margin="0,6,0,0" Height="5" CornerRadius="3"
+                                Background="{DynamicResource NotificationDividerBrush}"
+                                Visibility="{Binding ShowProgressBar, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Border Style="{StaticResource NotificationTaskBarFillStyle}">
+                                <Border.RenderTransform>
+                                    <ScaleTransform ScaleX="{Binding TaskProgress}"/>
+                                </Border.RenderTransform>
+                            </Border>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- 未读圆点 -->
+                    <Ellipse Grid.Column="2" Width="7" Height="7" Margin="8,6,0,0" VerticalAlignment="Top"
+                             Fill="{DynamicResource NotificationUnreadDotBrush}"
+                             Visibility="{Binding IsUnread, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                </Grid>
+            </Border>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <!-- 整体随展开状态滑入 / 滑出：左侧阴影条 + 面板本体 -->
+    <Grid>
+        <Grid.RenderTransform>
+            <TranslateTransform X="360"/>
+        </Grid.RenderTransform>
+        <Grid.Style>
+            <Style TargetType="Grid">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsHistoryOpen}" Value="True">
+                        <DataTrigger.EnterActions>
+                            <BeginStoryboard Storyboard="{StaticResource PanelIn}"/>
+                        </DataTrigger.EnterActions>
+                        <DataTrigger.ExitActions>
+                            <BeginStoryboard Storyboard="{StaticResource PanelOut}"/>
+                        </DataTrigger.ExitActions>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Style>
+
+        <!-- 只在面板左侧的柔和阴影（渐变条，不使用 DropShadowEffect，因此顶部 / 底部没有阴影） -->
+        <Border Width="16" HorizontalAlignment="Left" Margin="-16,0,0,0" IsHitTestVisible="False">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                    <GradientStop Color="#0016204A" Offset="0"/>
+                    <GradientStop Color="#0716204A" Offset="0.55"/>
+                    <GradientStop Color="#1416204A" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
+
+    <Border Background="White" BorderBrush="{DynamicResource NotificationCardBorderBrush}" BorderThickness="1,0,0,0">
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- 头部：标题 + 勿扰开关 + 清除全部 + 关闭 -->
+            <Grid Margin="16,14,12,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="{Binding [notification_center_title], Source={x:Static lg:LanguageService.Instance}}"
+                           FontSize="14" FontWeight="Bold" Foreground="{DynamicResource NotificationTitleBrush}"
+                           VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="8,0,0,0"
+                            ToolTip="{Binding [notification_do_not_disturb_tip], Source={x:Static lg:LanguageService.Instance}}">
+                    <TextBlock Text="{Binding [notification_do_not_disturb], Source={x:Static lg:LanguageService.Instance}}"
+                               FontSize="11.5" Foreground="{DynamicResource NotificationMessageBrush}"
+                               VerticalAlignment="Center" Margin="0,0,6,0"/>
+                    <ToggleButton Style="{StaticResource NotificationSwitchStyle}"
+                                  IsChecked="{Binding IsDoNotDisturb, Mode=TwoWay}"/>
+                </StackPanel>
+
+                <Button Grid.Column="2" Margin="14,0,10,0"
+                        Content="{Binding [notification_clear_all], Source={x:Static lg:LanguageService.Instance}}"
+                        Command="{Binding ClearHistoryCommand}"
+                        Style="{StaticResource NotificationHeaderLinkStyle}"/>
+
+                <Button Grid.Column="3" VerticalAlignment="Center"
+                        Command="{Binding CloseHistoryCommand}"
+                        Style="{StaticResource NotificationCloseButtonStyle}"
+                        ToolTip="{Binding [close], Source={x:Static lg:LanguageService.Instance}}"/>
+            </Grid>
+
+            <!-- 分区标题 -->
+            <TextBlock Grid.Row="1" Margin="16,6,16,4" FontFamily="Cascadia Mono, Consolas" FontSize="10" FontWeight="Bold"
+                       Foreground="{DynamicResource NotificationMutedBrush}">
+                <Run Text="{Binding [notification_history], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}"/>
+                <Run Text=" · HISTORY"/>
+            </TextBlock>
+
+            <!-- 历史列表 -->
+            <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                          Focusable="False" Padding="0,0,0,10">
+                <Grid>
+                    <ItemsControl ItemsSource="{Binding History}" Focusable="False"
+                                  ItemTemplate="{StaticResource HistoryItemTemplate}"/>
+
+                    <!-- 空状态 -->
+                    <TextBlock Text="{Binding [notification_empty], Source={x:Static lg:LanguageService.Instance}}"
+                               HorizontalAlignment="Center" Margin="0,48,0,0" FontSize="12.5"
+                               Foreground="{DynamicResource NotificationMutedBrush}">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding History.Count}" Value="0">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+    </Border>
+    </Grid>
+</UserControl>

@@ -1,18 +1,25 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Input;
 using GeoChemistryNexus.Models;
 using GeoChemistryNexus.Services;
 using GeoChemistryNexus.Helpers;
 
 namespace GeoChemistryNexus.Views.Widgets
 {
-    public partial class AddLinkWindow : HandyControl.Controls.Window
+    public partial class AddLinkWindow : Window, INotificationCenterHost
     {
         public HomeAppItem? Result { get; private set; }
+
+        /// <summary>
+        /// 本窗口独立的通知中心（由 XAML 中的 NotificationHost 呈现）。
+        /// </summary>
+        public NotificationCenter Notifications { get; } = new();
 
         public AddLinkWindow()
         {
             InitializeComponent();
+            CommandBindings.Add(new CommandBinding(SystemCommands.CloseWindowCommand, (_, _) => Close()));
             UiScaleHelper.Attach(this);
 
             IconBox.ItemsSource = HomeIconHelper.CreatePresetIcons();
@@ -52,14 +59,14 @@ namespace GeoChemistryNexus.Views.Widgets
             if (string.IsNullOrWhiteSpace(TitleBox.Text))
             {
                 // 请输入名称
-                HandyControl.Controls.Growl.Warning(LanguageService.Instance["please_enter_name"]);
+                Notifications.Warning(LanguageService.Instance["please_enter_name"]);
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(UrlBox.Text))
             {
                 // 请输入链接
-                HandyControl.Controls.Growl.Warning(LanguageService.Instance["please_enter_link"]);
+                Notifications.Warning(LanguageService.Instance["please_enter_link"]);
                 return;
             }
 
@@ -77,12 +84,6 @@ namespace GeoChemistryNexus.Views.Widgets
             };
 
             DialogResult = true;
-            Close();
-        }
-
-        private void Cancel_Click(object? sender, RoutedEventArgs e)
-        {
-            DialogResult = false;
             Close();
         }
     }

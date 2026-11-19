@@ -650,12 +650,16 @@ namespace GeoChemistryNexus.Services
                 Capabilities = GeoTCapabilityHelper.NormalizeList(entity.Capabilities),
                 Name = entity.Name,
                 NameLangKey = entity.NameLangKey,
+                Languages = entity.Languages != null ? new List<string>(entity.Languages) : new List<string>(),
+                NameLang = entity.NameLang != null ? new Dictionary<string, string>(entity.NameLang) : new Dictionary<string, string>(),
+                ReferenceLang = entity.ReferenceLang != null ? new Dictionary<string, string>(entity.ReferenceLang) : new Dictionary<string, string>(),
                 Author = entity.Author,
                 Year = entity.Year,
                 Reference = entity.Reference,
                 IconCode = entity.IconCode,
                 IconColor = entity.IconColor,
                 Headers = entity.Headers != null ? new List<string>(entity.Headers) : new List<string>(),
+                Units = entity.Units != null ? new List<string>(entity.Units) : new List<string>(),
                 ExampleRow = entity.ExampleRow != null ? new List<string>(entity.ExampleRow) : new List<string>(),
                 FormulaName = entity.FormulaName,
                 InputColumns = entity.InputColumns != null ? new List<string>(entity.InputColumns) : new List<string>(),
@@ -663,6 +667,7 @@ namespace GeoChemistryNexus.Services
                     ? new List<AdditionalFormula>(entity.AdditionalFormulas)
                     : new List<AdditionalFormula>(),
                 ScriptContent = string.Empty,
+                IsInstalled = entity.IsInstalled,
                 HelpDocuments = new Dictionary<string, string>()
             };
         }
@@ -771,7 +776,9 @@ namespace GeoChemistryNexus.Services
             ValidateFormulaNames(entity, entity.Id == Guid.Empty ? null : entity.Id);
 
             entity.ExampleRow = CommaSeparatedListHelper.AlignToHeaderCount(entity.Headers, entity.ExampleRow);
+            entity.Units = CommaSeparatedListHelper.NormalizeUnits(entity.Headers, entity.Units);
             entity.Capabilities = GeoTCapabilityHelper.NormalizeList(entity.Capabilities);
+            GeoTLocalizationHelper.Normalize(entity);
 
             // 如果是新建，生成 ID
             if (entity.Id == Guid.Empty)
@@ -858,7 +865,8 @@ namespace GeoChemistryNexus.Services
             entity.Status = string.IsNullOrEmpty(entity.ScriptContent)
                 ? GeothermometerInstallStatus.NotInstalled
                 : GeothermometerInstallStatus.UpToDate;
-            entity.ServerHash = entity.FileHash ?? string.Empty;
+            // 尚未发布：服务器哈希留空，目录同步时不会把它当作“已下架”删除
+            entity.ServerHash = string.Empty;
 
             dbService.UpsertEntity(entity);
             UpsertLoadedPlugin(entity);
@@ -987,20 +995,26 @@ namespace GeoChemistryNexus.Services
                 Tags = ResolveTagsDisplayNames(entity),
                 StorageTags = GetEntityTagSourceNames(entity).ToList(),
                 Capabilities = GeoTCapabilityHelper.NormalizeList(entity.Capabilities),
-                Name = entity.Name ?? string.Empty,
+                // 列表与详情显示按当前界面语言解析；旧模板没有多语言字段时即为 Name / Reference 原值
+                Name = GeoTLocalizationHelper.ResolveName(entity),
                 NameLangKey = entity.NameLangKey ?? string.Empty,
+                Languages = entity.Languages ?? new List<string>(),
+                NameLang = entity.NameLang ?? new Dictionary<string, string>(),
+                ReferenceLang = entity.ReferenceLang ?? new Dictionary<string, string>(),
                 Author = entity.Author ?? string.Empty,
                 Year = entity.Year,
-                Reference = entity.Reference ?? string.Empty,
+                Reference = GeoTLocalizationHelper.ResolveReference(entity),
                 IconCode = entity.IconCode ?? "\ue60d",
                 IconColor = entity.IconColor ?? "#555555",
                 Headers = entity.Headers ?? new List<string>(),
+                Units = CommaSeparatedListHelper.NormalizeUnits(entity.Headers, entity.Units),
                 ExampleRow = CommaSeparatedListHelper.AlignToHeaderCount(entity.Headers, entity.ExampleRow),
                 FormulaName = entity.FormulaName ?? string.Empty,
                 InputColumns = entity.InputColumns ?? new List<string>(),
                 AdditionalFormulas = entity.AdditionalFormulas ?? new List<AdditionalFormula>(),
                 IsBuiltIn = entity.IsOfficial,
                 IsFavorite = entity.IsFavorite,
+                IsInstalledLocally = entity.IsInstalled,
                 Status = string.IsNullOrWhiteSpace(entity.Status)
                     ? (entity.IsOfficial ? GeothermometerInstallStatus.UpToDate : string.Empty)
                     : entity.Status
@@ -1047,10 +1061,31 @@ namespace GeoChemistryNexus.Services
                     ["ScriptFile"] = $"{entity.PluginId}.js"
                 };
 
+                // 单位（格式 1.3）：没有任何单位时不写入，旧模板导出内容保持原样
+                if (CommaSeparatedListHelper.HasAnyUnit(entity.Units))
+                    exportMeta["Units"] = entity.Units;
+
                 // 与哈希口径一致：仅在有能力标签时写入，避免空数组破坏与旧版清单的兼容
                 var exportCapabilities = GeoTCapabilityHelper.NormalizeList(entity.Capabilities);
                 if (exportCapabilities.Count > 0)
                     exportMeta["Capabilities"] = exportCapabilities;
+
+                // 多语言字段（格式 1.2）：旧模板没有语言列表时不写入，导出内容保持原样
+                var exportLanguages = (entity.Languages ?? new List<string>())
+                    .Where(language => !string.IsNullOrWhiteSpace(language))
+                    .ToList();
+                if (exportLanguages.Count > 0)
+                {
+                    exportMeta["Languages"] = exportLanguages;
+
+                    var exportNameLang = GeoTLocalizationHelper.Compact(entity.NameLang, exportLanguages);
+                    if (exportNameLang.Count > 0)
+                        exportMeta["NameLang"] = exportNameLang;
+
+                    var exportReferenceLang = GeoTLocalizationHelper.Compact(entity.ReferenceLang, exportLanguages);
+                    if (exportReferenceLang.Count > 0)
+                        exportMeta["ReferenceLang"] = exportReferenceLang;
+                }
 
                 string jsonPath = Path.Combine(tempDir, $"{entity.PluginId}.json");
                 File.WriteAllText(jsonPath, JsonSerializer.Serialize(exportMeta, JsonOptions));
@@ -1171,12 +1206,16 @@ namespace GeoChemistryNexus.Services
                     Capabilities = GeoTCapabilityHelper.NormalizeList(plugin.Capabilities),
                     Name = plugin.Name,
                     NameLangKey = plugin.NameLangKey,
+                    Languages = plugin.Languages,
+                    NameLang = plugin.NameLang,
+                    ReferenceLang = plugin.ReferenceLang,
                     Author = plugin.Author,
                     Year = plugin.Year,
                     Reference = plugin.Reference,
                     IconCode = plugin.IconCode,
                     IconColor = plugin.IconColor,
                     Headers = plugin.Headers,
+                    Units = CommaSeparatedListHelper.NormalizeUnits(plugin.Headers, plugin.Units),
                     ExampleRow = CommaSeparatedListHelper.AlignToHeaderCount(plugin.Headers, plugin.ExampleRow),
                     FormulaName = plugin.FormulaName,
                     InputColumns = plugin.InputColumns ?? new List<string>(),
@@ -1187,6 +1226,7 @@ namespace GeoChemistryNexus.Services
                         ? GeothermometerInstallStatus.UpToDate
                         : string.Empty
                 };
+                GeoTLocalizationHelper.Normalize(entity);
                 entity.FileHash = GeothermometerDatabaseService.ComputeEntityHash(entity);
                 if (keepPluginIdentity)
                     entity.ServerHash = entity.FileHash;
@@ -1364,6 +1404,7 @@ namespace GeoChemistryNexus.Services
                             Status = GeothermometerUpdateCheckStatus.Success,
                             ListDownloaded = false,
                             CatalogChanged = false,
+                            ListOutdated = true,
                             MineralCategoriesSynced = mineralCategoriesSynced,
                             NotInstalledCount = CountByStatus(GeothermometerInstallStatus.NotInstalled),
                             OutdatedCount = CountByStatus(GeothermometerInstallStatus.Outdated)
@@ -1547,9 +1588,17 @@ namespace GeoChemistryNexus.Services
             var serverPluginIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             string appFormatVersion = ContentVersionHelper.GetGeothermometerFormatVersion();
 
+            // 清单里没有任何有效条目（空清单 / 结构异常）时不做任何删除或改写，
+            // 避免一次错误发布把本地所有官方温压计清空（与图解的空清单保护一致）
+            if (!pluginList.Plugins.Any(p => p != null && !string.IsNullOrWhiteSpace(p.Id)))
+            {
+                FillPendingCounts(result, dbService);
+                return result;
+            }
+
             foreach (var entry in pluginList.Plugins)
             {
-                if (string.IsNullOrWhiteSpace(entry.Id))
+                if (entry == null || string.IsNullOrWhiteSpace(entry.Id))
                     continue;
 
                 serverPluginIds.Add(entry.Id);
@@ -1559,44 +1608,39 @@ namespace GeoChemistryNexus.Services
 
                 if (existingOfficial.TryGetValue(entry.Id, out var summary))
                 {
-                    var fullEntity = dbService.GetEntity(summary.Id);
-                    if (fullEntity == null)
-                        continue;
+                    // 先用摘要判断是否需要写回（摘要已带安装标记与全部目录元数据），
+                    // 避免每次检查都把所有官方项的脚本与帮助文档整条读出
+                    bool isNotInstalled = string.Equals(summary.Status, GeothermometerInstallStatus.NotInstalled, StringComparison.Ordinal)
+                                          || !summary.IsInstalled;
 
-                    bool isNotInstalled = string.Equals(fullEntity.Status, GeothermometerInstallStatus.NotInstalled, StringComparison.Ordinal)
-                                          || string.IsNullOrEmpty(fullEntity.ScriptContent);
+                    // 与图解 / EPMA 共用同一套状态规则
+                    string newStatus = ContentInstallStatus.Resolve(
+                        !isNotInstalled,
+                        requiresUpgrade,
+                        summary.FileHash,
+                        entry.Hash,
+                        summary.Version,
+                        entry.Version);
 
-                    string newStatus;
-                    if (requiresUpgrade)
-                    {
-                        newStatus = GeothermometerInstallStatus.RequiresAppUpgrade;
-                    }
-                    else if (isNotInstalled)
-                    {
-                        newStatus = GeothermometerInstallStatus.NotInstalled;
-                    }
-                    else
-                    {
-                        bool isHashSame = string.IsNullOrEmpty(entry.Hash)
-                            || string.Equals(fullEntity.FileHash, entry.Hash, StringComparison.OrdinalIgnoreCase);
-                        bool hasVersionUpdate = ContentVersionHelper.HasContentUpdate(fullEntity.Version, entry.Version)
-                                               || ContentVersionHelper.Compare(entry.Version, fullEntity.Version) > 0;
-                        newStatus = isHashSame && !hasVersionUpdate
-                            ? GeothermometerInstallStatus.UpToDate
-                            : GeothermometerInstallStatus.Outdated;
-                    }
+                    bool metadataChanged = ApplyCatalogMetadata(summary, entry)
+                        || !string.Equals(summary.Status, newStatus, StringComparison.Ordinal)
+                        || !string.Equals(summary.ServerHash, entry.Hash ?? string.Empty, StringComparison.OrdinalIgnoreCase)
+                        // 本地版本号只在未安装占位上跟随服务器；已安装的保留本地内容自带的版本号
+                        || (isNotInstalled
+                            && !string.IsNullOrWhiteSpace(entry.Version)
+                            && ContentVersionHelper.Compare(summary.Version, entry.Version) != 0);
 
-                    bool metadataChanged = ApplyCatalogMetadata(fullEntity, entry)
-                        || !string.Equals(fullEntity.Status, newStatus, StringComparison.Ordinal)
-                        || !string.Equals(fullEntity.ServerHash, entry.Hash ?? string.Empty, StringComparison.OrdinalIgnoreCase)
-                        || (!string.IsNullOrWhiteSpace(entry.Version)
-                            && ContentVersionHelper.Compare(fullEntity.Version, entry.Version) != 0);
-
-                    if (metadataChanged || string.IsNullOrEmpty(fullEntity.Status))
+                    if (metadataChanged || string.IsNullOrEmpty(summary.Status))
                     {
+                        // 仅在需要写回时才读取完整实体
+                        var fullEntity = dbService.GetEntity(summary.Id);
+                        if (fullEntity == null)
+                            continue;
+
+                        ApplyCatalogMetadata(fullEntity, entry);
                         fullEntity.Status = newStatus;
                         fullEntity.ServerHash = entry.Hash ?? string.Empty;
-                        if (!string.IsNullOrWhiteSpace(entry.Version))
+                        if (isNotInstalled && !string.IsNullOrWhiteSpace(entry.Version))
                             fullEntity.Version = ContentVersionHelper.Normalize(entry.Version);
 
                         // 未安装占位同步服务器哈希；已安装保留本地内容哈希
@@ -1629,6 +1673,10 @@ namespace GeoChemistryNexus.Services
                 if (serverPluginIds.Contains(local.PluginId))
                     continue;
 
+                // 开发者本地新建 / 由自定义转成的官方温压计尚未发布（无服务器哈希），不能当作“已下架”删除
+                if (local.IsInstalled && string.IsNullOrEmpty(local.ServerHash))
+                    continue;
+
                 dbService.DeleteEntity(local.Id);
                 UnloadPlugin(local.Id);
                 result.RemovalCount++;
@@ -1636,13 +1684,18 @@ namespace GeoChemistryNexus.Services
             }
 
             // 统计以数据库最新摘要为准
+            FillPendingCounts(result, dbService);
+
+            return result;
+        }
+
+        private static void FillPendingCounts(CatalogSyncResult result, GeothermometerDatabaseService dbService)
+        {
             var officialSummaries = dbService.GetSummaries(isOfficial: true);
             result.NotInstalledCount = officialSummaries.Count(e =>
                 string.Equals(e.Status, GeothermometerInstallStatus.NotInstalled, StringComparison.Ordinal));
             result.OutdatedCount = officialSummaries.Count(e =>
                 string.Equals(e.Status, GeothermometerInstallStatus.Outdated, StringComparison.Ordinal));
-
-            return result;
         }
 
         private static GeothermometerEntity CreateCatalogStub(PluginIndexEntry entry, string status)
@@ -1663,6 +1716,9 @@ namespace GeoChemistryNexus.Services
                 Capabilities = GeoTCapabilityHelper.NormalizeList(entry.Capabilities),
                 Name = string.IsNullOrWhiteSpace(entry.Name) ? entry.Id : entry.Name,
                 NameLangKey = entry.NameLangKey ?? string.Empty,
+                Languages = entry.Languages != null ? new List<string>(entry.Languages) : new List<string>(),
+                NameLang = entry.NameLang != null ? new Dictionary<string, string>(entry.NameLang) : new Dictionary<string, string>(),
+                ReferenceLang = entry.ReferenceLang != null ? new Dictionary<string, string>(entry.ReferenceLang) : new Dictionary<string, string>(),
                 Author = entry.Author ?? string.Empty,
                 Year = entry.Year,
                 Reference = entry.Reference ?? string.Empty,
@@ -1696,6 +1752,25 @@ namespace GeoChemistryNexus.Services
             if (!string.Equals(entity.NameLangKey ?? string.Empty, entry.NameLangKey ?? string.Empty, StringComparison.Ordinal))
             {
                 entity.NameLangKey = entry.NameLangKey ?? string.Empty;
+                changed = true;
+            }
+
+            // 目录携带多语言名称时同步（旧目录没有这些字段，保持本地值不变）
+            if (entry.Languages is { Count: > 0 } && !ListEqualsOrdinal(entity.Languages, entry.Languages))
+            {
+                entity.Languages = new List<string>(entry.Languages);
+                changed = true;
+            }
+
+            if (entry.NameLang is { Count: > 0 } && !DictionaryEqualsOrdinal(entity.NameLang, entry.NameLang))
+            {
+                entity.NameLang = new Dictionary<string, string>(entry.NameLang);
+                changed = true;
+            }
+
+            if (entry.ReferenceLang is { Count: > 0 } && !DictionaryEqualsOrdinal(entity.ReferenceLang, entry.ReferenceLang))
+            {
+                entity.ReferenceLang = new Dictionary<string, string>(entry.ReferenceLang);
                 changed = true;
             }
 
@@ -1767,6 +1842,20 @@ namespace GeoChemistryNexus.Services
             for (int i = 0; i < a.Count; i++)
             {
                 if (!string.Equals(a[i], b[i], StringComparison.Ordinal))
+                    return false;
+            }
+            return true;
+        }
+
+        private static bool DictionaryEqualsOrdinal(Dictionary<string, string>? a, Dictionary<string, string>? b)
+        {
+            if (ReferenceEquals(a, b)) return true;
+            if (a == null || b == null) return false;
+            if (a.Count != b.Count) return false;
+            foreach (var pair in a)
+            {
+                if (!b.TryGetValue(pair.Key, out string? other)
+                    || !string.Equals(pair.Value, other, StringComparison.Ordinal))
                     return false;
             }
             return true;
@@ -1963,19 +2052,27 @@ namespace GeoChemistryNexus.Services
         {
             try
             {
-                string tempZip = Path.Combine(Path.GetTempPath(), $"{entry.Id}.zip");
-                await DownloadPluginPackageAsync(entry.DownloadUrl, tempZip);
+                // 临时文件名不使用清单里的 Id（来自服务器，可能含路径分隔符 / 非法字符，也避免并发冲突）
+                string tempZip = Path.Combine(Path.GetTempPath(), $"geot_{Guid.NewGuid():N}.zip");
 
                 try
                 {
+                    await DownloadPluginPackageAsync(entry.DownloadUrl, tempZip);
+
                     var imported = ImportFromZip(tempZip, persist: false, keepPluginIdentity: true);
+
+                    if (!string.Equals(imported.PluginId, entry.Id, StringComparison.OrdinalIgnoreCase))
+                    {
+                        Debug.WriteLine($"[GeothermometerService] GTM Id 与清单不一致 [{entry.Id}]: package={imported.PluginId}");
+                        return GeothermometerDownloadItemResult.Failed(entry.Id, "Package id does not match the catalog entry.");
+                    }
 
                     if (!string.IsNullOrEmpty(entry.Hash) &&
                         !string.Equals(imported.FileHash, entry.Hash, StringComparison.OrdinalIgnoreCase))
                     {
                         string errorMessage = LanguageService.Instance["downloaded_file_hash_mismatch"];
                         Debug.WriteLine($"[GeothermometerService] GTM 哈希校验失败 [{entry.Id}]: expected={entry.Hash}, actual={imported.FileHash}");
-                        return GeothermometerDownloadItemResult.Failed(entry.Id, errorMessage);
+                        return GeothermometerDownloadItemResult.Failed(entry.Id, errorMessage, isHashMismatch: true);
                     }
 
                     try
@@ -2024,6 +2121,41 @@ namespace GeoChemistryNexus.Services
         }
 
         /// <summary>
+        /// 下载单个温压计；若因哈希与（可能已过期的）本地目录不一致而失败，
+        /// 则拉取最新目录并用新条目重试一次（与图解下载前刷新服务器元数据的行为一致）。
+        /// </summary>
+        /// <param name="listRefreshed">批量下载时共享：目录只刷新一次，之后直接读取已刷新的本地目录</param>
+        public static async Task<GeothermometerDownloadItemResult> DownloadPluginWithRefreshAsync(
+            PluginIndexEntry entry,
+            System.Runtime.CompilerServices.StrongBox<bool>? listRefreshed = null)
+        {
+            var result = await DownloadPluginAsync(entry);
+            if (result.Success || !result.IsHashMismatch)
+                return result;
+
+            PluginIndexEntry? fresh;
+            if (listRefreshed is { Value: true })
+            {
+                fresh = FindLocalListEntry(entry.Id);
+            }
+            else
+            {
+                (fresh, _) = await FetchFreshPluginIndexEntryAsync(entry.Id);
+                if (listRefreshed != null)
+                    listRefreshed.Value = true;
+            }
+
+            if (fresh == null
+                || (string.Equals(fresh.Hash, entry.Hash, StringComparison.OrdinalIgnoreCase)
+                    && string.Equals(fresh.DownloadUrl, entry.DownloadUrl, StringComparison.Ordinal)))
+            {
+                return result;
+            }
+
+            return await DownloadPluginAsync(fresh);
+        }
+
+        /// <summary>
         /// 批量下载、删除下架项并重新加载
         /// </summary>
         public static async Task<GeothermometerBatchDownloadResult> DownloadAndReloadAsync(
@@ -2056,11 +2188,12 @@ namespace GeoChemistryNexus.Services
 
             int successCount = 0;
             var failures = new List<GeothermometerDownloadItemResult>();
+            var listRefreshed = new System.Runtime.CompilerServices.StrongBox<bool>(false);
             foreach (var entry in entries)
             {
                 current++;
                 progress?.Report((current, total, entry.Id));
-                var itemResult = await DownloadPluginAsync(entry);
+                var itemResult = await DownloadPluginWithRefreshAsync(entry, listRefreshed);
                 if (itemResult.Success)
                 {
                     successCount++;
@@ -2288,6 +2421,9 @@ namespace GeoChemistryNexus.Services
                         Version = fullEntity.Version,
                         Name = fullEntity.Name ?? string.Empty,
                         NameLangKey = fullEntity.NameLangKey ?? string.Empty,
+                        Languages = fullEntity.Languages != null ? new List<string>(fullEntity.Languages) : new List<string>(),
+                        NameLang = fullEntity.NameLang != null ? new Dictionary<string, string>(fullEntity.NameLang) : new Dictionary<string, string>(),
+                        ReferenceLang = fullEntity.ReferenceLang != null ? new Dictionary<string, string>(fullEntity.ReferenceLang) : new Dictionary<string, string>(),
                         Category = GeoTCategoryHelper.NormalizeCategoryKey(fullEntity.Category),
                         Tags = fullEntity.Tags != null ? new List<string>(fullEntity.Tags) : new List<string>(),
                         Capabilities = GeoTCapabilityHelper.NormalizeList(fullEntity.Capabilities),

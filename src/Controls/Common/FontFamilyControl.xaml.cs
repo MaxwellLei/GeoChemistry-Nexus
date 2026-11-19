@@ -54,31 +54,58 @@ namespace GeoChemistryNexus.Controls
             set { SetValue(FontFamilyNameProperty, value); }
         }
 
+        /// <summary>内部字体下拉框使用的样式（如属性面板的 InspectorComboBoxStyle）；为空时沿用默认样式。</summary>
+        public static readonly DependencyProperty ComboBoxStyleProperty =
+            DependencyProperty.Register(nameof(ComboBoxStyle), typeof(Style), typeof(FontFamilyControl),
+                new PropertyMetadata(null, OnComboBoxStyleChanged));
+
+        public Style? ComboBoxStyle
+        {
+            get { return (Style?)GetValue(ComboBoxStyleProperty); }
+            set { SetValue(ComboBoxStyleProperty, value); }
+        }
+
+        private static void OnComboBoxStyleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is FontFamilyControl control && e.NewValue is Style style)
+            {
+                control.FontComboBox.Style = style;
+            }
+        }
+
         public FontFamilyControl()
         {
             InitializeComponent();
             
             // Initial load
-            LoadFonts();
+            _ = LoadFontsAsync();
 
             // Subscribe to Loaded to set initial selection
             this.Loaded += FontFamilyControl_Loaded;
         }
 
-        private async void LoadFonts()
+        private async Task LoadFontsAsync()
         {
             // Use cached items if available
-            if (_cachedAllFontItems == null)
+            try
             {
-                var fontNames = await FontService.GetFontNamesAsync();
-                _cachedAllFontItems = fontNames.Select(font => new FontItem 
-                { 
-                    Name = font, 
-                    Category = LanguageService.Instance["all_fonts"] ?? string.Empty        // 所有字体
-                }).ToList();
-            }
+                if (_cachedAllFontItems == null)
+                {
+                    var fontNames = await FontService.GetFontNamesAsync();
+                    _cachedAllFontItems = fontNames.Select(font => new FontItem 
+                    { 
+                        Name = font, 
+                        Category = LanguageService.Instance["all_fonts"] ?? string.Empty        // 所有字体
+                    }).ToList();
+                }
 
-            UpdateFontList();
+                UpdateFontList();
+            }
+            catch (Exception ex)
+            {
+                // 发后即忘调用：字体枚举失败时保留空列表，不让异常变成未观察的 Task 异常
+                System.Diagnostics.Debug.WriteLine($"[FontFamilyControl] LoadFonts failed: {ex.Message}");
+            }
         }
 
         private void UpdateFontList()

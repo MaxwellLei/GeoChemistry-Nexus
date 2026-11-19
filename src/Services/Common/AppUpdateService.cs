@@ -24,7 +24,7 @@ namespace GeoChemistryNexus.Services
             if (handledMinimumVersion)
                 return;
 
-            if (!bool.TryParse(ConfigHelper.GetConfig("auto_check_update"), out bool autoCheck) || !autoCheck)
+            if (!bool.TryParse(ConfigHelper.GetConfig(ConfigKeys.AutoCheckUpdate), out bool autoCheck) || !autoCheck)
                 return;
 
             if (AppDataPathHelper.IsPortableMode() || AppDataPathHelper.IsDevMode())
@@ -162,7 +162,8 @@ namespace GeoChemistryNexus.Services
                         updateInfo.InstallerDownloadUrl,
                         installerPath,
                         progress,
-                        fallbackDownloadUrl: updateInfo.FallbackInstallerDownloadUrl);
+                        fallbackDownloadUrl: updateInfo.FallbackInstallerDownloadUrl,
+                        expectedSha256: updateInfo.InstallerSha256);
                 }
 
                 string shutdownMessage = LanguageService.Instance["update_download_confirm_shutdown"]

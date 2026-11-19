@@ -1,0 +1,52 @@
+<UserControl x:Class="GeoChemistryNexus.Controls.InspectorFontEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
+             xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
+             x:Name="Root"
+             mc:Ignorable="d" 
+             d:DesignHeight="80" d:DesignWidth="280">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+    </UserControl.Resources>
+    <!-- 属性面板通用的字体编辑块：[字体下拉] + [字号 pt][B][I][颜色]；各面板只需绑定 4 个值 -->
+    <local:InspectorStack Spacing="8">
+        <local:FontFamilyControl FontFamilyName="{Binding FontFamilyName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 ComboBoxStyle="{StaticResource InspectorComboBoxStyle}"
+                                 Visibility="{Binding ShowFamily, ElementName=Root, Converter={StaticResource BoolToVisibility}}"/>
+        <!-- 78 | B I | 颜色（含十六进制），间距 6 -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="78"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <local:NumericUpDown Grid.Column="0"
+                                 Value="{Binding PointSize, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Minimum="1"
+                                 local:InspectorAssist.Unit="pt"
+                                 ToolTip="{Binding [font_size], Source={x:Static lg:LanguageService.Instance}}"
+                                 Style="{StaticResource InspectorNumericUpDownStyle}"/>
+            <StackPanel Grid.Column="2" Orientation="Horizontal">
+                <ToggleButton IsChecked="{Binding IsBold, ElementName=Root, Mode=TwoWay}"
+                              ToolTip="{Binding [bold], Source={x:Static lg:LanguageService.Instance}}"
+                              Style="{StaticResource InspectorToggleButtonStyle}">
+                    <TextBlock Text="B" FontWeight="ExtraBold" FontSize="13"/>
+                </ToggleButton>
+                <ToggleButton Margin="4,0,0,0" IsChecked="{Binding IsItalic, ElementName=Root, Mode=TwoWay}"
+                              ToolTip="{Binding [italic], Source={x:Static lg:LanguageService.Instance}}"
+                              Style="{StaticResource InspectorToggleButtonStyle}">
+                    <TextBlock Text="I" FontStyle="Italic" FontWeight="SemiBold" FontFamily="Times New Roman" FontSize="14"/>
+                </ToggleButton>
+            </StackPanel>
+            <local:TextPropertyColorPicker Grid.Column="4"
+                                           ToolTip="{Binding [font_color], Source={x:Static lg:LanguageService.Instance}}"
+                                           SelectedColor="{Binding FontColor, ElementName=Root, Mode=TwoWay}"/>
+        </Grid>
+    </local:InspectorStack>
+</UserControl>

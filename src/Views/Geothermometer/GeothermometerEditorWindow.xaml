@@ -4,33 +4,24 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:GeoChemistryNexus.Controls"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
         mc:Ignorable="d"
         x:Name="RootWindow"
         Title="{Binding EditorTitle}"
-        Height="720" Width="1180"
-        MinHeight="600" MinWidth="960"
-        WindowStartupLocation="CenterOwner"
-        WindowStyle="SingleBorderWindow"
-        Background="#F5F5F7">
+        Width="1180" Height="700" MinWidth="960" MinHeight="560"
+        WindowStyle="None" ResizeMode="CanResize" WindowStartupLocation="CenterOwner"
+        Background="#F5F7FA" FontFamily="Segoe UI, Microsoft YaHei UI" FontSize="13"
+        UseLayoutRounding="True">
+    <shell:WindowChrome.WindowChrome>
+        <shell:WindowChrome CaptionHeight="44" ResizeBorderThickness="6" CornerRadius="0" GlassFrameThickness="1" UseAeroCaptionButtons="False"/>
+    </shell:WindowChrome.WindowChrome>
 
     <Grid>
         <controls:GeothermometerEditorControl x:Name="EditorControl" DataContext="{Binding}"/>
 
-        <ScrollViewer VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,16,16,0"
-                      MaxHeight="480" VerticalScrollBarVisibility="Hidden" PanningMode="VerticalOnly"
-                      IsHitTestVisible="True" BorderThickness="0" Background="Transparent">
-            <ItemsControl ItemsSource="{Binding ElementName=RootWindow, Path=LocalNotifications}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel VerticalAlignment="Top"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <controls:NotificationItem/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
+        <controls:NotificationHost Panel.ZIndex="1000"
+                                   VerticalAlignment="Stretch" HorizontalAlignment="Right"
+                                   Margin="0,44,0,16"
+                                   Center="{Binding Notifications, ElementName=RootWindow}"/>
     </Grid>
 </Window>

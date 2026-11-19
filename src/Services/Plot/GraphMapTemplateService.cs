@@ -99,6 +99,7 @@ namespace GeoChemistryNexus.Services
             public bool CatalogChanged { get; set; }
             public int AddedCount { get; set; }
             public int OutdatedCount { get; set; }
+            public int RequiresAppUpgradeCount { get; set; }
             public int RemovalCount { get; set; }
         }
 
@@ -122,6 +123,7 @@ namespace GeoChemistryNexus.Services
             var dbService = GraphMapDatabaseService.Instance;
             var existingTemplates = dbService.GetSummaries().ToDictionary(x => x.Id, x => x);
             var serverIds = new HashSet<Guid>();
+            string appFormatVersion = ContentVersionHelper.GetDiagramFormatVersion();
 
             foreach (var item in serverList)
             {
@@ -130,38 +132,46 @@ namespace GeoChemistryNexus.Services
 
                 serverIds.Add(itemId);
 
-                if (existingTemplates.TryGetValue(itemId, out _))
+                if (existingTemplates.TryGetValue(itemId, out var summary))
                 {
-                    var fullEntity = dbService.GetTemplate(itemId);
-                    if (fullEntity == null)
-                        continue;
+                    // 已安装 = 本地有模板内容（占位记录没有 Content）。摘要投影已带上该标记，无需读库；
+                    // 状态规则与温压计 / EPMA 共用
+                    bool isInstalled = summary.IsInstalled;
+                    string newStatus = ContentInstallStatus.Resolve(
+                        isInstalled,
+                        summary.FileHash,
+                        item.FileHash,
+                        summary.Version,
+                        item.Version,
+                        appFormatVersion);
 
-                    bool isHashSame = string.Equals(fullEntity.FileHash, item.FileHash, StringComparison.OrdinalIgnoreCase);
-                    bool hasVersionUpdate = ContentVersionHelper.HasContentUpdate(fullEntity.Version, item.Version);
-                    string newStatus = string.Equals(fullEntity.Status, "NOT_INSTALLED", StringComparison.Ordinal)
-                        ? "NOT_INSTALLED"
-                        : (isHashSame && !hasVersionUpdate ? "UP_TO_DATE" : "OUTDATED");
-
+                    // 本地版本号只在未安装占位上跟随服务器；已安装的保留模板内容自带的版本号
                     bool metadataChanged =
-                        fullEntity.Status != newStatus
-                        || fullEntity.GraphMapPath != item.GraphMapPath
-                        || !NodeListEquals(fullEntity.NodeList, item.NodeList)
-                        || (!string.IsNullOrWhiteSpace(item.Version)
-                            && ContentVersionHelper.Compare(fullEntity.Version, item.Version) != 0)
-                        || fullEntity.IsNewTemplate;
+                        summary.Status != newStatus
+                        || summary.GraphMapPath != item.GraphMapPath
+                        || !NodeListEquals(summary.NodeList, item.NodeList)
+                        || (!isInstalled
+                            && !string.IsNullOrWhiteSpace(item.Version)
+                            && ContentVersionHelper.Compare(summary.Version, item.Version) != 0)
+                        || summary.IsNewTemplate;
 
                     if (metadataChanged)
                     {
+                        // 仅在需要写回时才读取完整实体
+                        var fullEntity = dbService.GetTemplate(itemId);
+                        if (fullEntity == null)
+                            continue;
+
                         fullEntity.Status = newStatus;
                         fullEntity.GraphMapPath = item.GraphMapPath;
                         fullEntity.NodeList = item.NodeList;
                         fullEntity.IsNewTemplate = false;
 
-                        if (!string.IsNullOrWhiteSpace(item.Version))
+                        if (!isInstalled && !string.IsNullOrWhiteSpace(item.Version))
                             fullEntity.Version = ContentVersionHelper.Normalize(item.Version);
 
                         // 仅未安装占位记录同步服务器哈希；已安装模板保留本地 Content 对应的 FileHash
-                        if (string.Equals(newStatus, "NOT_INSTALLED", StringComparison.Ordinal))
+                        if (!isInstalled)
                             fullEntity.FileHash = item.FileHash;
 
                         dbService.UpsertTemplate(fullEntity);
@@ -177,7 +187,7 @@ namespace GeoChemistryNexus.Services
                         GraphMapPath = item.GraphMapPath,
                         FileHash = item.FileHash,
                         IsCustom = false,
-                        Status = "NOT_INSTALLED",
+                        Status = ContentInstallStatus.Resolve(false, null, item.FileHash, null, item.Version, appFormatVersion),
                         LastModified = DateTime.Now,
                         Content = null,
                         TemplateType = string.Empty,
@@ -194,6 +204,11 @@ namespace GeoChemistryNexus.Services
             {
                 if (!serverIds.Contains(local.Id))
                 {
+                    // 开发者本地新建 / 由自定义转成的官方模板尚未发布，不能当作“服务器已下架”删除；
+                    // 待发布的修改同理（与 EPMA 对本地未发布官方包的保护一致）
+                    if (local.IsNewTemplate || local.PendingPublish)
+                        continue;
+
                     dbService.DeleteTemplate(local.Id);
                     result.RemovalCount++;
                     result.CatalogChanged = true;
@@ -202,7 +217,9 @@ namespace GeoChemistryNexus.Services
 
             var officialSummaries = dbService.GetSummaries().Where(e => !e.IsCustom);
             result.OutdatedCount = officialSummaries.Count(e =>
-                string.Equals(e.Status, "OUTDATED", StringComparison.Ordinal));
+                string.Equals(e.Status, ContentInstallStatus.Outdated, StringComparison.Ordinal));
+            result.RequiresAppUpgradeCount = officialSummaries.Count(e =>
+                ContentInstallStatus.IsRequiresAppUpgrade(e.Status));
 
             return result;
         }
@@ -457,24 +474,28 @@ namespace GeoChemistryNexus.Services
         /// <summary>
         /// 图解模板 JSON 反序列化选项（导入/打开时使用，与持久化口径一致并忽略大小写）。
         /// </summary>
-        public static JsonSerializerOptions CreateTemplateParseJsonOptions()
-        {
-            var options = CreateTemplateJsonOptions();
-            options.PropertyNameCaseInsensitive = true;
-            return options;
-        }
+        public static JsonSerializerOptions CreateTemplateParseJsonOptions() => TemplateParseJsonOptions;
 
         /// <summary>
         /// 模板内容 JSON 序列化选项（与 FileHash 计算口径一致）
         /// </summary>
-        public static JsonSerializerOptions CreateTemplateJsonOptions()
+        public static JsonSerializerOptions CreateTemplateJsonOptions() => TemplateJsonOptions;
+
+        // System.Text.Json 的类型元数据缓存挂在 options 实例上，必须复用同一实例；
+        // 返回的实例首次使用后即为只读，调用方不得修改。
+        private static readonly JsonSerializerOptions TemplateJsonOptions = BuildTemplateJsonOptions(false);
+
+        private static readonly JsonSerializerOptions TemplateParseJsonOptions = BuildTemplateJsonOptions(true);
+
+        private static JsonSerializerOptions BuildTemplateJsonOptions(bool caseInsensitive)
         {
             return new JsonSerializerOptions
             {
                 WriteIndented = false,
                 Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
                 Converters = { new JsonStringEnumConverter() },
-                NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals
+                NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
+                PropertyNameCaseInsensitive = caseInsensitive
             };
         }
 

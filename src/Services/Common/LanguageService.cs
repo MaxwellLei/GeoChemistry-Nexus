@@ -30,7 +30,7 @@ namespace GeoChemistryNexus.Services
 
         public static void InitializeLanguage()
         {
-            string? language = ConfigHelper.GetConfig("language");
+            string? language = ConfigHelper.GetConfig(ConfigKeys.Language);
             if (!string.IsNullOrEmpty(language))
             {
                 CurrentLanguage = AppCultureRegistry.ResolveAppLanguage(language);
@@ -40,7 +40,7 @@ namespace GeoChemistryNexus.Services
 
             // 首次启动：按系统 UI 语言选择默认语言并写入配置
             string detected = AppCultureRegistry.ResolveFromSystemCulture();
-            ConfigHelper.SetConfig("language", detected);
+            ConfigHelper.SetConfig(ConfigKeys.Language, detected);
             CurrentLanguage = detected;
             Instance.ChangeLanguage(new CultureInfo(detected));
         }
@@ -48,7 +48,7 @@ namespace GeoChemistryNexus.Services
         // 主动获取语言设置
         public static string GetLanguage()
         {
-            string? language = ConfigHelper.GetConfig("language");
+            string? language = ConfigHelper.GetConfig(ConfigKeys.Language);
             if (!string.IsNullOrEmpty(language))
             {
                 return language;

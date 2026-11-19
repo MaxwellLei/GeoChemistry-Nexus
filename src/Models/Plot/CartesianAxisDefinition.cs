@@ -11,9 +11,34 @@ namespace GeoChemistryNexus.Models
     {
         public virtual bool ShowAxisStyleOptions => true;
 
+        /// <summary>
+        /// 是否允许在属性面板里切换缩放类型（线性 / 对数）。Harker 多联图等工具图解固定为线性，会置为 false。
+        /// </summary>
+        [System.Text.Json.Serialization.JsonIgnore]
+        [ObservableProperty]
+        private bool _isScaleTypeSupported = true;
+
         public virtual bool ShowMajorTickStyleOptions => true;
 
         public virtual bool ShowMinorTickStyleOptions => true;
+
+        /// <summary>
+        /// 坐标轴边框线宽度。底轴是横线，左轴、右轴和顶轴是竖线。
+        /// </summary>
+        [ObservableProperty]
+        private float _axisLineWidth = 1;
+
+        /// <summary>
+        /// 坐标轴边框线颜色
+        /// </summary>
+        [ObservableProperty]
+        private string _axisLineColor = "#000000";
+
+        partial void OnAxisLineWidthChanged(float value)
+        {
+            if (value < 0)
+                AxisLineWidth = 0;
+        }
 
         /// <summary>
         /// 坐标轴类型 (线性/对数)
@@ -72,6 +97,13 @@ namespace GeoChemistryNexus.Models
         /// </summary>
         [ObservableProperty]
         private double _maximum = double.NaN;
+
+        /// <summary>
+        /// 刻度对齐方式（仅在两端范围都已设定时生效）：
+        /// 自动 = 范围两端保留少量边距；严格 = 范围两端的刻度线与标签位于轴的最边缘，不留边距。
+        /// </summary>
+        [ObservableProperty]
+        private AxisTickAlignment _tickAlignment = AxisTickAlignment.Auto;
 
         /// <summary>
         /// Axis major tick length

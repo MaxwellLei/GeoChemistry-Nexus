@@ -1,33 +1,62 @@
-<Page x:Class="GeoChemistryNexus.Views.SShortcutPageView"
+﻿<Page x:Class="GeoChemistryNexus.Views.SShortcutPageView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
-      xmlns:hc="https://handyorg.github.io/handycontrol"
+      xmlns:conv="clr-namespace:GeoChemistryNexus.Converter"
       mc:Ignorable="d"
       d:DesignHeight="800" d:DesignWidth="600"
       Title="SShortcutPageView"
-      UseLayoutRounding="True" TextOptions.TextFormattingMode="Display">
+      UseLayoutRounding="True" TextOptions.TextFormattingMode="{DynamicResource AppTextFormattingMode}">
+
+    <Page.Resources>
+        <conv:BoolToVisibilityConverter x:Key="BoolToVis"/>
+    </Page.Resources>
 
     <Grid>
-        <hc:ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-            <StackPanel Margin="20,20,20,40" MaxWidth="800" HorizontalAlignment="Stretch">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Margin="75,20,75,40" MaxWidth="800" HorizontalAlignment="Stretch">
 
-                <TextBlock Text="{Binding [shortcuts_title],Source={x:Static lg:LanguageService.Instance}, FallbackValue=快捷键}" Style="{StaticResource ModernSettingsGroupTitle}"/>
-                <Border Style="{StaticResource ModernSettingsCard}">
-                    <StackPanel Margin="16">
-                        <TextBlock Text="{Binding [shortcuts_intro],Source={x:Static lg:LanguageService.Instance}, FallbackValue=这里展示当前版本已经支持的快捷键，仅供查看，不能在此页面修改。}"
-                                   FontSize="14"
-                                   Foreground="#1D1D1F"
-                                   TextWrapping="Wrap"/>
-                        <TextBlock Text="{Binding [shortcuts_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=提示：部分快捷键仅在对应页面处于激活状态或获得焦点时生效。}"
-                                   Margin="0,8,0,0"
-                                   FontSize="12"
-                                   Foreground="#86868B"
+                <!-- 标题区：标题 + 说明，右侧“仅供查看”标签 -->
+                <Grid Margin="16,0,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel>
+                        <TextBlock Text="{Binding [shortcuts_title],Source={x:Static lg:LanguageService.Instance}, FallbackValue=快捷键}"
+                                   FontSize="24"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource HomeInkBrush}"/>
+                        <TextBlock Text="{Binding [shortcuts_subtitle],Source={x:Static lg:LanguageService.Instance}, FallbackValue=当前版本已支持的快捷键。部分快捷键仅在对应页面激活或获得焦点时生效。}"
+                                   Margin="0,6,0,0"
+                                   FontSize="13"
+                                   Foreground="{DynamicResource HomeSubBrush}"
                                    TextWrapping="Wrap"/>
                     </StackPanel>
-                </Border>
+                    <Border Grid.Column="1"
+                            VerticalAlignment="Top"
+                            Margin="16,6,0,0"
+                            Background="White"
+                            BorderBrush="{DynamicResource HomeLineBrush}"
+                            BorderThickness="1"
+                            CornerRadius="14"
+                            Padding="10,5">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE72E;"
+                                       FontFamily="Segoe MDL2 Assets"
+                                       FontSize="12"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,6,0"
+                                       Foreground="{DynamicResource HomeSubBrush}"/>
+                            <TextBlock Text="{Binding [shortcut_ui_readonly],Source={x:Static lg:LanguageService.Instance}, FallbackValue=仅供查看}"
+                                       FontSize="12"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource HomeSubBrush}"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
 
                 <ItemsControl ItemsSource="{Binding ShortcutGroups}">
                     <ItemsControl.ItemTemplate>
@@ -51,7 +80,7 @@
 
                                                     <StackPanel Margin="0,0,20,0">
                                                         <TextBlock Text="{Binding Name}"
-                                                                   FontSize="14"
+                                                                   FontSize="13"
                                                                    FontWeight="SemiBold"
                                                                    Foreground="#1D1D1F"/>
                                                         <TextBlock Text="{Binding Description}"
@@ -61,17 +90,72 @@
                                                                    TextWrapping="Wrap"/>
                                                     </StackPanel>
 
+                                                    <!-- 键盘组合键：键帽，如 [Ctrl] + [Z] -->
+                                                    <ItemsControl Grid.Column="1"
+                                                                  ItemsSource="{Binding Combos}"
+                                                                  MaxWidth="260"
+                                                                  HorizontalAlignment="Right"
+                                                                  VerticalAlignment="Center"
+                                                                  IsTabStop="False"
+                                                                  Focusable="False"
+                                                                  Visibility="{Binding HasCombos, Converter={StaticResource BoolToVis}}">
+                                                        <ItemsControl.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <WrapPanel Orientation="Horizontal"/>
+                                                            </ItemsPanelTemplate>
+                                                        </ItemsControl.ItemsPanel>
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <StackPanel Orientation="Horizontal" Margin="0,2">
+                                                                    <TextBlock Text="/"
+                                                                               FontSize="12"
+                                                                               Margin="6,0"
+                                                                               VerticalAlignment="Center"
+                                                                               Foreground="{DynamicResource HomeMuteBrush}"
+                                                                               Visibility="{Binding ShowSeparatorBefore, Converter={StaticResource BoolToVis}}"/>
+                                                                    <ItemsControl ItemsSource="{Binding Parts}" IsTabStop="False" Focusable="False">
+                                                                        <ItemsControl.ItemsPanel>
+                                                                            <ItemsPanelTemplate>
+                                                                                <StackPanel Orientation="Horizontal"/>
+                                                                            </ItemsPanelTemplate>
+                                                                        </ItemsControl.ItemsPanel>
+                                                                        <ItemsControl.ItemTemplate>
+                                                                            <DataTemplate>
+                                                                                <StackPanel Orientation="Horizontal">
+                                                                                    <TextBlock Text="+"
+                                                                                               FontSize="12"
+                                                                                               Margin="5,0"
+                                                                                               VerticalAlignment="Center"
+                                                                                               Foreground="{DynamicResource HomeMuteBrush}"
+                                                                                               Visibility="{Binding ShowPlusBefore, Converter={StaticResource BoolToVis}}"/>
+                                                                                    <Border Style="{StaticResource ShortcutKbdBorderStyle}">
+                                                                                        <TextBlock Text="{Binding Text}" Style="{StaticResource ShortcutKbdTextStyle}"/>
+                                                                                    </Border>
+                                                                                </StackPanel>
+                                                                            </DataTemplate>
+                                                                        </ItemsControl.ItemTemplate>
+                                                                    </ItemsControl>
+                                                                </StackPanel>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+
+                                                    <!-- 鼠标操作等纯文字说明：沿用灰色文字框 -->
                                                     <Border Grid.Column="1"
+                                                            MaxWidth="260"
+                                                            HorizontalAlignment="Right"
                                                             VerticalAlignment="Center"
                                                             Background="#F2F4F7"
                                                             BorderBrush="#D9DEE5"
                                                             BorderThickness="1"
                                                             CornerRadius="8"
-                                                            Padding="12,6">
+                                                            Padding="12,6"
+                                                            Visibility="{Binding HasCombos, Converter={StaticResource BoolToVis}, ConverterParameter=Inverse}">
                                                         <TextBlock Text="{Binding Keys}"
                                                                    FontSize="12"
                                                                    FontWeight="SemiBold"
-                                                                   Foreground="#1D1D1F"/>
+                                                                   Foreground="#1D1D1F"
+                                                                   TextWrapping="Wrap"/>
                                                     </Border>
                                                 </Grid>
                                             </Border>
@@ -83,6 +167,6 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </StackPanel>
-        </hc:ScrollViewer>
+        </ScrollViewer>
     </Grid>
 </Page>

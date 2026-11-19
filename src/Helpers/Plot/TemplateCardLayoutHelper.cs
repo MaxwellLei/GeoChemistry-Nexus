@@ -68,17 +68,34 @@ namespace GeoChemistryNexus.Helpers
             return TemplateCardSizePreset.Standard;
         }
 
+        public static TemplateCardAppearance ParseAppearance(string? value)
+        {
+            return string.Equals(value, nameof(TemplateCardAppearance.Regular), StringComparison.OrdinalIgnoreCase)
+                ? TemplateCardAppearance.Regular
+                : TemplateCardAppearance.Frameless;
+        }
+
         public static TemplateCardLayoutSettings LoadFromConfig()
         {
             return new TemplateCardLayoutSettings
             {
-                SizePreset = ParseSizePreset(ConfigHelper.GetConfig("template_card_size_preset"))
+                SizePreset = ParseSizePreset(ConfigHelper.GetConfig(ConfigKeys.TemplateCardSizePreset)),
+                Appearance = ParseAppearance(ConfigHelper.GetConfig(ConfigKeys.TemplateCardAppearance))
             };
         }
 
         public static void SaveToConfig(TemplateCardSizePreset preset)
         {
-            ConfigHelper.SetConfig("template_card_size_preset", preset.ToString());
+            ConfigHelper.SetConfig(ConfigKeys.TemplateCardSizePreset, preset.ToString());
+        }
+
+        public static void SaveToConfig(TemplateCardLayoutSettings settings)
+        {
+            ConfigHelper.SetConfigs(new System.Collections.Generic.Dictionary<string, string>
+            {
+                [ConfigKeys.TemplateCardSizePreset] = settings.SizePreset.ToString(),
+                [ConfigKeys.TemplateCardAppearance] = settings.Appearance.ToString()
+            });
         }
     }
 }

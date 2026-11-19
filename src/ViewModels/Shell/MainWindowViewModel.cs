@@ -6,7 +6,6 @@ using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Messages;
 using GeoChemistryNexus.Models;
 using GeoChemistryNexus.Views;
-using HandyControl.Tools;
 using ScottPlot;
 using ScottPlot.Colormaps;
 using ScottPlot.Grids;
@@ -73,6 +72,7 @@ namespace GeoChemistryNexus.ViewModels
 
         partial void OnIsSideBarVisibleChanged(bool value)
         {
+            ShellLayoutState.Instance.IsSideBarVisible = value;
             OnPropertyChanged(nameof(IsSideBarInIconMode));
             OnPropertyChanged(nameof(HasVisibleSideBarSurface));
             UpdateSideBarNavCentered();
@@ -80,6 +80,7 @@ namespace GeoChemistryNexus.ViewModels
 
         partial void OnUseIconOnlySidebarCollapseChanged(bool value)
         {
+            ShellLayoutState.Instance.UseIconOnlySidebarCollapse = value;
             OnPropertyChanged(nameof(IsSideBarInIconMode));
             OnPropertyChanged(nameof(HasVisibleSideBarSurface));
             UpdateSideBarNavCentered();
@@ -116,7 +117,7 @@ namespace GeoChemistryNexus.ViewModels
 
         private void LoadMainSidebarCollapseMode()
         {
-            UseIconOnlySidebarCollapse = Helpers.ConfigHelper.GetConfig("main_sidebar_collapse_mode") == "1";
+            UseIconOnlySidebarCollapse = Helpers.ConfigHelper.GetConfig(ConfigKeys.MainSidebarCollapseMode) == "1";
         }
 
         public void Receive(MainSidebarCollapseModeChangedMessage message)
@@ -273,16 +274,6 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 切换数据预处理与校正页面
-        /// </summary>
-        /// <param name="nav">导航</param>
-        [RelayCommand]
-        private void DataPreprocessingPage(Frame nav)
-        {
-            NavigateToPage(nav, DataPreprocessingPageView.GetPage());
-        }
-
-        /// <summary>
         /// 切换新温压计计算命令（GTM 页面）
         /// </summary>
         /// <param name="nav">导航</param>
@@ -314,6 +305,14 @@ namespace GeoChemistryNexus.ViewModels
             NavigateToPage(nav, NiggliPageView.GetPage());
         }
 
+        [RelayCommand]
+        private async Task EpmaPage(Frame nav)
+        {
+            var page = EpmaPageView.GetPage();
+            NavigateToPage(nav, page);
+            await page.CheckUpdatesIfNeededAsync();
+        }
+
 
 
         ///切换设置命令
@@ -321,6 +320,27 @@ namespace GeoChemistryNexus.ViewModels
         private void SettingPage(Frame nav)
         {
             nav.Navigate(SettingPageView.GetPage());
+        }
+
+        /// <summary>
+        /// 侧边栏「设置」项是否处于选中状态（与 RadioButton 双向绑定，供 Ctrl+, 快捷键同步选中态）
+        /// </summary>
+        [ObservableProperty]
+        private bool _isSettingsPageSelected;
+
+        /// <summary>
+        /// 快捷键 Ctrl+, ：从任意模块跳转到设置页，并同步侧边栏选中状态。
+        /// 侧边栏选中标记可能和当前页不一致，只有内容已经是设置页时才忽略。
+        /// </summary>
+        /// <param name="nav">导航</param>
+        [RelayCommand]
+        private void OpenSettingsByShortcut(Frame nav)
+        {
+            if (nav == null || (IsSettingsPageSelected && nav.Content is SettingPageView))
+                return;
+
+            IsSettingsPageSelected = true;
+            SettingPage(nav);
         }
 
 
@@ -339,25 +359,6 @@ namespace GeoChemistryNexus.ViewModels
 
             // 将置顶属性重置为 false，避免扰乱系统 Z-Order 链条
             window.Dispatcher.BeginInvoke(new Action(() => { window.Topmost = false; }));
-        }
-
-
-        /// <summary>
-        /// 帮助按钮
-        /// </summary>
-        [RelayCommand]
-        private void Help()
-        {
-            string url = "https://geochemistry-nexus.pages.dev/";
-            //拉起浏览器
-            try
-            {
-                Process.Start(new ProcessStartInfo("cmd", $"/c start {url}") { CreateNoWindow = true });
-            }
-            catch (Exception ex)
-            {
-                MessageHelper.Warning((string)System.Windows.Application.Current.Resources["OpenBrowserError"] + ex.Message);
-            }
         }
 
     }

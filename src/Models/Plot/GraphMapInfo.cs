@@ -48,6 +48,12 @@ namespace GeoChemistryNexus.Models
         public List<BaseAxisDefinition> Axes { get; set; } = new List<BaseAxisDefinition>();
 
         /// <summary>
+        /// 二维图顶端 / 右侧图框边的轴线样式（仅在用户修改过后才会写入）
+        /// </summary>
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+        public List<FrameAxisDefinition>? FrameAxes { get; set; }
+
+        /// <summary>
         /// 绘图标题
         /// </summary>
         public TitleDefinition Title { get; set; } = new TitleDefinition();

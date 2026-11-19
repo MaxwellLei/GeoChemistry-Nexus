@@ -1,0 +1,34 @@
+<UserControl x:Class="GeoChemistryNexus.Controls.TemplateFeedbackHint"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
+             xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
+             mc:Ignorable="d"
+             x:Name="Root"
+             FontSize="12.5"
+             d:DesignWidth="360">
+    <!--
+        「搜索无结果」统一反馈提示：若您需要的模板尚未收录，欢迎在 GitHub Issues 反馈，或发邮件联系 xxx。
+        GitHub Issues 与邮箱均为可点击链接，复用 Themes/Styles.xaml 的 ThemeLinkButtonStyle（蓝色，随主题色切换）。
+        文案取自语言资源 template_search_feedback_*；文字颜色/字号由使用方通过 Foreground / FontSize 指定。
+    -->
+    <TextBlock Foreground="{Binding Foreground, ElementName=Root}"
+               FontSize="{Binding FontSize, ElementName=Root}"
+               TextWrapping="Wrap"
+               TextAlignment="Center"
+               LineHeight="22">
+        <Run Text="{Binding [template_search_feedback_before_github], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay, FallbackValue=若您需要的模板尚未收录，欢迎在 }"/><InlineUIContainer BaselineAlignment="TextBottom"><Button Style="{StaticResource ThemeLinkButtonStyle}"
+                    Padding="3,0"
+                    BorderThickness="0"
+                    FontSize="{Binding FontSize, ElementName=Root}"
+                    Command="{Binding OpenLinkCommand, ElementName=Root}"
+                    CommandParameter="{x:Static local:TemplateFeedbackHint.GitHubIssuesUrl}"><TextBlock LineHeight="NaN" Text="{Binding [template_search_feedback_github], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay, FallbackValue=GitHub Issues}"/></Button></InlineUIContainer><Run Text="{Binding [template_search_feedback_before_email], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay, FallbackValue=' 反馈，或发邮件联系 '}"/><InlineUIContainer BaselineAlignment="TextBottom"><Button Style="{StaticResource ThemeLinkButtonStyle}"
+                    Padding="3,0"
+                    BorderThickness="0"
+                    FontSize="{Binding FontSize, ElementName=Root}"
+                    Command="{Binding OpenLinkCommand, ElementName=Root}"
+                    CommandParameter="{x:Static local:TemplateFeedbackHint.ContactMailtoUrl}"><TextBlock LineHeight="NaN" Text="{x:Static local:TemplateFeedbackHint.ContactEmail}"/></Button></InlineUIContainer><Run Text="{Binding [template_search_feedback_suffix], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay, FallbackValue=。}"/>
+    </TextBlock>
+</UserControl>

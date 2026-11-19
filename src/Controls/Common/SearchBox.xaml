@@ -1,0 +1,127 @@
+<UserControl x:Class="GeoChemistryNexus.Controls.SearchBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
+             mc:Ignorable="d"
+             Focusable="False"
+             d:DesignHeight="26" d:DesignWidth="180">
+    <!-- 全局统一搜索框：放大镜图标 + 输入区 + 占位提示 + 可选清空按钮。
+         外观全部通过依赖属性定制（Background / BorderBrush / CornerRadius / FocusBorderBrush / FocusBackground /
+         IconBrush / PlaceholderBrush / Foreground / FontSize / Padding / ShowClearButton），内部控件样式定义在 Themes/Styles.xaml。
+         用法：<uc:SearchBox Width="180" Height="26" Placeholder="..." Text="{Binding SearchText}"/> -->
+    <!-- UserControl 默认模板自带一层 Border，会按 Background / BorderBrush / Padding 再画一圈直角外框；
+         这些属性已由下面的 Root 绘制，这里换成纯内容呈现，避免出现重复的方形外框 -->
+    <UserControl.Template>
+        <ControlTemplate TargetType="UserControl">
+            <ContentPresenter/>
+        </ControlTemplate>
+    </UserControl.Template>
+    <Border x:Name="Root"
+            Background="{Binding Background, RelativeSource={RelativeSource AncestorType=local:SearchBox}}"
+            BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType=local:SearchBox}}"
+            BorderThickness="{Binding BorderThickness, RelativeSource={RelativeSource AncestorType=local:SearchBox}}"
+            CornerRadius="{Binding CornerRadius, RelativeSource={RelativeSource AncestorType=local:SearchBox}}"
+            Cursor="IBeam"
+            MouseLeftButtonDown="Root_MouseLeftButtonDown">
+        <Border.Style>
+            <Style TargetType="Border">
+                <Style.Triggers>
+                    <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                        <Setter Property="BorderBrush"
+                                Value="{Binding FocusBorderBrush, RelativeSource={RelativeSource AncestorType=local:SearchBox}}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
+        <Grid>
+            <!-- 聚焦时叠加的背景层（FocusBackground 为空则不绘制） -->
+            <Border CornerRadius="{Binding CornerRadius, RelativeSource={RelativeSource AncestorType=local:SearchBox}}"
+                    Background="{Binding FocusBackground, RelativeSource={RelativeSource AncestorType=local:SearchBox}}"
+                    IsHitTestVisible="False">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsKeyboardFocusWithin, ElementName=Root}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+            </Border>
+
+            <Grid Margin="{Binding Padding, RelativeSource={RelativeSource AncestorType=local:SearchBox}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- 搜索图标 -->
+                <TextBlock Grid.Column="0"
+                           Text="{Binding Icon, RelativeSource={RelativeSource AncestorType=local:SearchBox}}"
+                           FontFamily="Segoe MDL2 Assets"
+                           FontSize="{Binding IconFontSize, RelativeSource={RelativeSource AncestorType=local:SearchBox}}"
+                           Foreground="{Binding IconBrush, RelativeSource={RelativeSource AncestorType=local:SearchBox}}"
+                           Margin="0,0,8,0" VerticalAlignment="Center" IsHitTestVisible="False"/>
+
+                <!-- 输入区：光标与占位符共用同一起始位置 -->
+                <Grid Grid.Column="1" VerticalAlignment="Center">
+                    <TextBox x:Name="PART_TextBox"
+                             Style="{DynamicResource SearchBoxInnerTextBoxStyle}"
+                             Text="{Binding Text, RelativeSource={RelativeSource AncestorType=local:SearchBox}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             FontSize="{Binding FontSize, RelativeSource={RelativeSource AncestorType=local:SearchBox}}"
+                             Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=local:SearchBox}}"
+                             CaretBrush="{Binding Foreground, RelativeSource={RelativeSource AncestorType=local:SearchBox}}"/>
+                    <TextBlock Text="{Binding Placeholder, RelativeSource={RelativeSource AncestorType=local:SearchBox}}"
+                               FontSize="{Binding FontSize, RelativeSource={RelativeSource AncestorType=local:SearchBox}}"
+                               Foreground="{Binding PlaceholderBrush, RelativeSource={RelativeSource AncestorType=local:SearchBox}}"
+                               VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
+                               IsHitTestVisible="False">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource AncestorType=local:SearchBox}}" Value="">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource AncestorType=local:SearchBox}}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </Grid>
+
+                <!-- 清空按钮：仅 ShowClearButton=True 且有文本时显示 -->
+                <Grid Grid.Column="2" Margin="6,0,0,0" VerticalAlignment="Center">
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ShowClearButton, RelativeSource={RelativeSource AncestorType=local:SearchBox}}" Value="False">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource AncestorType=local:SearchBox}}" Value="">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource AncestorType=local:SearchBox}}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                    <Button Style="{DynamicResource SearchBoxClearButtonStyle}"
+                            Foreground="{Binding IconBrush, RelativeSource={RelativeSource AncestorType=local:SearchBox}}"
+                            Click="ClearButton_Click">
+                        <TextBlock Text="&#xE894;" FontFamily="Segoe MDL2 Assets" FontSize="10"
+                                   Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                    </Button>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Border>
+</UserControl>

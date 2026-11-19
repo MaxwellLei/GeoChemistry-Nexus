@@ -72,15 +72,25 @@ namespace GeoChemistryNexus.Services
             using var db = GetDatabase();
             var col = db.GetCollection<BsonDocument>(CollectionName);
 
-            const string projection = "{ _id: $._id, GraphMapPath: $.GraphMapPath, FileHash: $.FileHash, IsCustom: $.IsCustom, IsNewTemplate: $.IsNewTemplate, LastModified: $.LastModified, Name: $.Name, NodeList: $.NodeList, TemplateType: $.TemplateType, Version: $.Version, Status: $.Status, IsFavorite: $.IsFavorite, PendingPublish: $.PendingPublish }";
+            const string projection = "{ _id: $._id, GraphMapPath: $.GraphMapPath, FileHash: $.FileHash, IsCustom: $.IsCustom, IsNewTemplate: $.IsNewTemplate, LastModified: $.LastModified, Name: $.Name, NodeList: $.NodeList, TemplateType: $.TemplateType, Version: $.Version, Status: $.Status, IsFavorite: $.IsFavorite, PendingPublish: $.PendingPublish, ContentIsNull: IS_NULL($.Content) }";
 
             var docs = col.Query().Select(projection).ToList();
-            var allEntities = docs.Select(d => db.Mapper.ToObject<GraphMapTemplateEntity>(d)).ToList();
+            var allEntities = new List<GraphMapTemplateEntity>(docs.Count);
 
-            foreach (var entity in allEntities)
+            foreach (var doc in docs)
             {
+                var entity = db.Mapper.ToObject<GraphMapTemplateEntity>(doc);
+
+                // 摘要不加载 Content：安装与否在投影时判定（占位记录没有 Content）。
+                // 投影字段缺失时回退到状态判断。
+                entity.IsInstalled = doc.TryGetValue("ContentIsNull", out var contentIsNull) && contentIsNull.IsBoolean
+                    ? !contentIsNull.AsBoolean
+                    : !string.Equals(entity.Status, "NOT_INSTALLED", StringComparison.Ordinal)
+                        && !string.Equals(entity.Status, "REQUIRES_APP_UPGRADE", StringComparison.Ordinal);
+
                 entity.Content = null;
                 entity.HelpDocuments = new Dictionary<string, string>();
+                allEntities.Add(entity);
             }
 
             return allEntities;
@@ -101,6 +111,7 @@ namespace GeoChemistryNexus.Services
                 TemplateType = source.TemplateType,
                 Version = source.Version,
                 Content = null,
+                IsInstalled = source.IsInstalled,
                 HelpDocuments = new Dictionary<string, string>(),
                 Status = source.Status,
                 IsFavorite = source.IsFavorite,

@@ -1,0 +1,123 @@
+<UserControl x:Class="GeoChemistryNexus.Controls.FileDropRejectedIllustration"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             IsHitTestVisible="False"
+             SnapsToDevicePixels="False">
+
+    <UserControl.Resources>
+        <LinearGradientBrush x:Key="MutedAreaBrush" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#1F3C4A98" Offset="0"/>
+            <GradientStop Color="#003C4A98" Offset="1"/>
+        </LinearGradientBrush>
+        <DropShadowEffect x:Key="CardShadow" Color="#0F172A" Opacity="0.06" BlurRadius="10" ShadowDepth="6" Direction="270"/>
+        <DropShadowEffect x:Key="FileShadow" Color="#B42318" Opacity="0.2" BlurRadius="7" ShadowDepth="5" Direction="270"/>
+    </UserControl.Resources>
+
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="BackCardTranslate" Storyboard.TargetProperty="Y"
+                                     From="0" To="-3" Duration="0:0:2.5" AutoReverse="True" RepeatBehavior="Forever">
+                        <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+
+                    <DoubleAnimation Storyboard.TargetName="FileTranslate" Storyboard.TargetProperty="X"
+                                     From="0" To="1" Duration="0:0:1.4" AutoReverse="True" RepeatBehavior="Forever">
+                        <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                    <DoubleAnimation Storyboard.TargetName="FileTranslate" Storyboard.TargetProperty="Y"
+                                     From="-7" To="2" Duration="0:0:1.4" AutoReverse="True" RepeatBehavior="Forever">
+                        <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                    <DoubleAnimation Storyboard.TargetName="FileRotate" Storyboard.TargetProperty="Angle"
+                                     From="-8" To="-3" Duration="0:0:1.4" AutoReverse="True" RepeatBehavior="Forever">
+                        <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+
+                    <DoubleAnimation Storyboard.TargetName="SealScale" Storyboard.TargetProperty="ScaleX"
+                                     From="1" To="1.08" Duration="0:0:1.4" AutoReverse="True" RepeatBehavior="Forever"/>
+                    <DoubleAnimation Storyboard.TargetName="SealScale" Storyboard.TargetProperty="ScaleY"
+                                     From="1" To="1.08" Duration="0:0:1.4" AutoReverse="True" RepeatBehavior="Forever"/>
+
+                    <DoubleAnimation Storyboard.TargetName="SpiderLine" Storyboard.TargetProperty="StrokeDashOffset"
+                                     From="16" To="0" Duration="0:0:3" RepeatBehavior="Forever"/>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </UserControl.Triggers>
+
+    <Viewbox Stretch="Uniform">
+        <Canvas Width="240" Height="200">
+            <Ellipse Canvas.Left="38" Canvas.Top="165" Width="156" Height="18" Fill="#E2E8F0" Opacity="0.7"/>
+            <Ellipse Canvas.Left="23" Canvas.Top="67" Width="6" Height="6" Fill="{DynamicResource ThemeArtMistBrush}" Opacity="0.75"/>
+            <Ellipse Canvas.Left="209.5" Canvas.Top="41.5" Width="9" Height="9" Fill="#F6C9C4" Opacity="0.9"/>
+            <Path Data="M36,132 L40,136 M40,132 L36,136" Stroke="{DynamicResource ThemeArtMistBrush}" StrokeThickness="1.6"
+                  StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+            <Path Data="M200,148 H206 M203,145 V151" Stroke="#B42318" StrokeThickness="1.6" Opacity="0.55"
+                  StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+
+            <Canvas Effect="{StaticResource CardShadow}">
+                <Canvas.RenderTransform>
+                    <TranslateTransform x:Name="BackCardTranslate"/>
+                </Canvas.RenderTransform>
+                <Canvas>
+                    <Canvas.RenderTransform>
+                        <RotateTransform Angle="8" CenterX="78" CenterY="84"/>
+                    </Canvas.RenderTransform>
+                    <Rectangle Canvas.Left="30" Canvas.Top="48" Width="96" Height="74" RadiusX="10" RadiusY="10"
+                               Fill="White" Stroke="#E2E8F0" StrokeThickness="1.2"/>
+                    <Path Data="M78,60 L56,108 L100,108 Z" Fill="#F8FAFC" Stroke="#CBD5E1" StrokeThickness="1.3" StrokeLineJoin="Round"/>
+                    <Path Data="M67,84 H89 M78,60 V108" Stroke="#E2E8F0" StrokeThickness="0.9" StrokeDashArray="2 2"/>
+                    <Ellipse Canvas.Left="69.8" Canvas.Top="87.8" Width="4.4" Height="4.4" Fill="{DynamicResource ThemeArtLighterBrush}"/>
+                    <Ellipse Canvas.Left="82.2" Canvas.Top="76.2" Width="3.6" Height="3.6" Fill="{DynamicResource ThemeArtMistBrush}"/>
+                </Canvas>
+            </Canvas>
+
+            <Canvas Effect="{StaticResource CardShadow}">
+                <Rectangle Canvas.Left="54" Canvas.Top="30" Width="118" Height="112" RadiusX="12" RadiusY="12"
+                           Fill="White" Stroke="#DCE3EC" StrokeThickness="1.5"/>
+                <Rectangle Canvas.Left="66" Canvas.Top="40" Width="28" Height="5" RadiusX="2.5" RadiusY="2.5" Fill="{DynamicResource ThemeArtSoftBrush}"/>
+                <Rectangle Canvas.Left="132" Canvas.Top="40" Width="26" Height="5" RadiusX="2.5" RadiusY="2.5" Fill="#F1F5F9"/>
+                <Line X1="70" Y1="56" X2="70" Y2="122" Stroke="#CBD5E1" StrokeThickness="1.4" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                <Line X1="70" Y1="122" X2="156" Y2="122" Stroke="#CBD5E1" StrokeThickness="1.4" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                <Line X1="92" Y1="58" X2="92" Y2="122" Stroke="#F1F5F9" StrokeThickness="1" StrokeDashArray="2 2"/>
+                <Line X1="114" Y1="58" X2="114" Y2="122" Stroke="#F1F5F9" StrokeThickness="1" StrokeDashArray="2 2"/>
+                <Line X1="136" Y1="58" X2="136" Y2="122" Stroke="#F1F5F9" StrokeThickness="1" StrokeDashArray="2 2"/>
+                <Path Data="M70,108 L88,90 L106,98 L126,70 L146,86 L146,122 L70,122 Z" Fill="{StaticResource MutedAreaBrush}"/>
+                <Path x:Name="SpiderLine" Data="M70,114 L88,104 L106,108 L126,92 L146,100"
+                      Stroke="#C9D1F0" StrokeThickness="1.5" StrokeDashArray="2 1.333"
+                      StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                <Path Data="M70,108 L88,90 L106,98 L126,70 L146,86"
+                      Stroke="#9AA3C4" StrokeThickness="2.2"
+                      StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                <Ellipse Canvas.Left="84.5" Canvas.Top="86.5" Width="7" Height="7" Fill="White" Stroke="#C9D1F0" StrokeThickness="2"/>
+                <Ellipse Canvas.Left="103.4" Canvas.Top="95.4" Width="5.2" Height="5.2" Fill="White" Stroke="#C9D1F0" StrokeThickness="1.7"/>
+                <Ellipse Canvas.Left="122.5" Canvas.Top="66.5" Width="7" Height="7" Fill="White" Stroke="#C9D1F0" StrokeThickness="2"/>
+            </Canvas>
+
+            <Canvas Effect="{StaticResource FileShadow}">
+                <Canvas.RenderTransform>
+                    <TransformGroup>
+                        <RotateTransform x:Name="FileRotate" Angle="-8" CenterX="172.8" CenterY="96"/>
+                        <TranslateTransform x:Name="FileTranslate" Y="-7"/>
+                    </TransformGroup>
+                </Canvas.RenderTransform>
+                <Path Data="M158,52 H186 L208,74 V108 A8,8 0 0 1 200,116 H158 A8,8 0 0 1 150,108 V60 A8,8 0 0 1 158,52 Z"
+                      Fill="White" Stroke="#B42318" StrokeThickness="2.2" StrokeLineJoin="Round"/>
+                <Path Data="M187.4,54.6 L205.2,72.4 H193 A8,8 0 0 1 185,64.4 V54.6 Z" Fill="#FDECEC"/>
+                <Path Data="M186,72 H193 A8,8 0 0 0 201,64 V52" Stroke="#F3C1BC" StrokeThickness="1.6" StrokeLineJoin="Round"/>
+                <Rectangle Canvas.Left="164" Canvas.Top="82" Width="26" Height="3.5" RadiusX="1.75" RadiusY="1.75" Fill="#E2E8F0"/>
+                <Rectangle Canvas.Left="164" Canvas.Top="90" Width="18" Height="3.5" RadiusX="1.75" RadiusY="1.75" Fill="#F1F5F9"/>
+                <Canvas>
+                    <Canvas.RenderTransform>
+                        <ScaleTransform x:Name="SealScale" CenterX="186" CenterY="112"/>
+                    </Canvas.RenderTransform>
+                    <Ellipse Canvas.Left="172" Canvas.Top="98" Width="28" Height="28" Fill="White" Stroke="#B42318" StrokeThickness="2.4"/>
+                    <Path Data="M180,106 L192,118 M192,106 L180,118" Stroke="#B42318" StrokeThickness="2.3"
+                          StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                </Canvas>
+            </Canvas>
+        </Canvas>
+    </Viewbox>
+</UserControl>

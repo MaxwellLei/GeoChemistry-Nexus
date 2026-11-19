@@ -1,18 +1,23 @@
-<UserControl x:Class="GeoChemistryNexus.Views.Widgets.ChronostratNavigatorWidget"
+﻿<UserControl x:Class="GeoChemistryNexus.Views.Widgets.ChronostratNavigatorWidget"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ctrl="clr-namespace:GeoChemistryNexus.Controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
              xmlns:vm="clr-namespace:GeoChemistryNexus.ViewModels.Home"
              xmlns:model="clr-namespace:GeoChemistryNexus.Models.Chronostrat"
              xmlns:conv="clr-namespace:GeoChemistryNexus.Converter"
+             xmlns:widgets="clr-namespace:GeoChemistryNexus.Views.Widgets"
              mc:Ignorable="d"
              d:DesignHeight="720" d:DesignWidth="1060"
-             Background="White">
+             Background="#F5F7FA">
 
     <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/GeoChemistryNexus;component/Themes/WidgetStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
         <conv:HexToBrushConverter x:Key="HexToBrushConverter"/>
 
         <!-- 年代单元行模板（主导航列表）-->
@@ -65,7 +70,7 @@
                         Padding="6,2"
                         Command="{Binding DataContext.SelectUnitCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                         CommandParameter="{Binding}"
-                        Style="{StaticResource ButtonDefault}"
+                        Style="{StaticResource WidgetAction}"
                         FontSize="11"/>
                 <TextBlock Text=" ›" VerticalAlignment="Center" Foreground="#C7C7CC" FontSize="11" Margin="2,0,0,0"/>
             </StackPanel>
@@ -76,7 +81,7 @@
             <Button Margin="0,0,6,6" Padding="10,5" FontSize="12"
                     Command="{Binding DataContext.SelectUnitCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                     CommandParameter="{Binding}"
-                    Style="{StaticResource ButtonDefault}">
+                    Style="{StaticResource WidgetAction}">
                 <StackPanel Orientation="Horizontal">
                     <Border Width="8" Height="8" CornerRadius="2" Margin="0,0,6,0"
                             Background="{Binding ColorHex, Converter={StaticResource HexToBrushConverter}}"/>
@@ -218,7 +223,7 @@
                                 <Setter TargetName="Bd" Property="Background" Value="#0A000000"/>
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#1F007AFF"/>
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemeAccentTintBrush}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -226,90 +231,79 @@
             </Setter>
         </Style>
 
+            </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <!-- 标题栏：年龄反查、搜索、重置（原页面顶部工具栏） -->
+    <UserControl.Style>
+        <Style TargetType="UserControl">
+            <Setter Property="widgets:WidgetWindow.CaptionContent">
+                <Setter.Value>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <!-- 年龄反查 -->
+            <TextBlock Style="{StaticResource WidgetCaptionLabel}"
+                       Text="{Binding [chronostrat_age_lookup_label], Source={x:Static lg:LanguageService.Instance}}"/>
+            <ctrl:NumericUpDown Style="{StaticResource WidgetCaptionNumber}" Width="88"
+                              Value="{Binding AgeLookupMa, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              Minimum="0" Maximum="4600" Increment="0.1" DecimalPlaces="3"/>
+            <TextBlock Text="Ma" Style="{StaticResource WidgetCaptionLabel}" Margin="4,0,8,0"/>
+            <Button Style="{StaticResource WidgetCaptionPrimary}"
+                    Content="{Binding [chronostrat_lookup_btn], Source={x:Static lg:LanguageService.Instance}}"
+                    Command="{Binding LookupAgeCommand}"/>
+            <Border Style="{StaticResource WidgetCaptionDivider}"/>
+            <!-- 搜索 -->
+            <TextBox Style="{StaticResource AppSearchTextBoxStyle}" Width="160" Height="28" VerticalAlignment="Center" Margin="0,0,8,0"
+                          Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          ctrl:ControlAssist.Placeholder="{Binding [chronostrat_search_hint], Source={x:Static lg:LanguageService.Instance}}"/>
+            <Border Style="{StaticResource WidgetCaptionDivider}"/>
+            <!-- 树的展开 / 折叠（搜索模式下隐藏） -->
+            <StackPanel Orientation="Horizontal"
+                        Visibility="{Binding IsInSearchMode, Converter={StaticResource BooleanToVisibilityReConverter}}">
+                <Button Style="{StaticResource WidgetCaptionAction}"
+                        Content="{Binding [chronostrat_expand_period], Source={x:Static lg:LanguageService.Instance}}"
+                        Command="{Binding ExpandToPeriodCommand}"/>
+                <Button Style="{StaticResource WidgetCaptionAction}"
+                        Content="{Binding [chronostrat_expand_all], Source={x:Static lg:LanguageService.Instance}}"
+                        Command="{Binding ExpandAllCommand}"/>
+                <Button Style="{StaticResource WidgetCaptionAction}"
+                        Content="{Binding [chronostrat_collapse_all], Source={x:Static lg:LanguageService.Instance}}"
+                        Command="{Binding CollapseAllCommand}"/>
+                <Border Style="{StaticResource WidgetCaptionDivider}"/>
+            </StackPanel>
+            <Button Style="{StaticResource WidgetCaptionAction}" Margin="0"
+                    Content="{Binding [chronostrat_reset], Source={x:Static lg:LanguageService.Instance}}"
+                    Command="{Binding ResetCommand}"/>
+        </StackPanel>
+                    </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Style>
 
-        <!-- ══════ 顶部工具栏 ══════ -->
-        <Border Grid.Row="0" Padding="16,14,16,12" BorderBrush="#E5E5E5" BorderThickness="0,0,0,1">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="12"/>
-                    <ColumnDefinition Width="200"/>
-                    <ColumnDefinition Width="8"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-
-                <!-- 标题与版本说明 -->
-                <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                    <TextBlock Text="{Binding [chronostrat_navigator_widget], Source={x:Static lg:LanguageService.Instance}}"
-                               FontSize="15" FontWeight="Bold"/>
-                    <TextBlock FontSize="10" Foreground="#8E8E93" Margin="0,2,0,0">
-                        <Run Text="ICS · v"/>
-                        <Run Text="{Binding SourceVersion, Mode=OneTime}"/>
-                    </TextBlock>
-                </StackPanel>
-
-                <!-- 年龄反查区（无边框，排在查询框左侧）-->
-                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock Text="{Binding [chronostrat_age_lookup_label], Source={x:Static lg:LanguageService.Instance}}"
-                               VerticalAlignment="Center" FontSize="12" Foreground="#8E8E93" Margin="0,0,6,0"/>
-                    <hc:NumericUpDown Value="{Binding AgeLookupMa, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      Style="{StaticResource ModernNumericUpDownStyle}"
-                                      Minimum="0" Maximum="4600" Increment="0.1"
-                                      DecimalPlaces="3"
-                                      Width="90"
-                                      VerticalAlignment="Center"/>
-                    <TextBlock Text="Ma" VerticalAlignment="Center" FontSize="12" Foreground="#8E8E93" Margin="4,0,8,0"/>
-                    <Button Content="{Binding [chronostrat_lookup_btn], Source={x:Static lg:LanguageService.Instance}}"
-                            Command="{Binding LookupAgeCommand}"
-                            Style="{StaticResource ButtonPrimary}"
-                            Padding="12,3" FontSize="12" VerticalAlignment="Center"/>
-                </StackPanel>
-
-                <!-- 搜索框（查询）-->
-                <hc:SearchBar Grid.Column="4"
-                              Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              hc:InfoElement.Placeholder="{Binding [chronostrat_search_hint], Source={x:Static lg:LanguageService.Instance}}"
-                              VerticalAlignment="Center"/>
-
-                <!-- 重置按钮 -->
-                <Button Grid.Column="6"
-                        Content="{Binding [chronostrat_reset], Source={x:Static lg:LanguageService.Instance}}"
-                        Command="{Binding ResetCommand}"
-                        Style="{StaticResource ButtonDefault}"
-                        Padding="10,4" FontSize="12" VerticalAlignment="Center"/>
-            </Grid>
-        </Border>
+    <Grid Margin="20">
 
         <!-- ══════ 主体内容区 ══════ -->
-        <Grid Grid.Row="1">
+        <Grid>
+
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="340" MinWidth="260"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="300" MinWidth="240"/>
+                <ColumnDefinition Width="14"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <!-- ── 左侧导航列表 ── -->
-            <Grid Grid.Column="0">
+            <Border Grid.Column="0" Background="White" BorderBrush="#E5E5EA" BorderThickness="1" CornerRadius="12">
+            <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
                 <!-- 年龄反查结果横幅 -->
-                <Border Grid.Row="0" Margin="12,12,12,0" Padding="10,8" CornerRadius="8" Background="#F0F7FF"
+                <Border Grid.Row="0" Margin="12,12,12,0" Padding="10,8" CornerRadius="8" Background="{DynamicResource ThemeAccentSoftBrush}"
                         Visibility="{Binding HasAgeLookupResult, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <StackPanel>
                         <TextBlock Text="{Binding [chronostrat_age_result_label], Source={x:Static lg:LanguageService.Instance}}"
-                                   FontSize="11" FontWeight="SemiBold" Foreground="#0078D4" Margin="0,0,0,4"/>
+                                   FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource ThemeAccentBrush}" Margin="0,0,0,4"/>
                         <TextBlock Text="{Binding AgeLookupResultText}"
                                    FontSize="12" TextWrapping="Wrap" Foreground="#1C1C1E"/>
                         <TextBlock Text="{Binding [chronostrat_click_hint], Source={x:Static lg:LanguageService.Instance}}"
@@ -347,33 +341,8 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <!-- 树形快捷操作栏 -->
-                    <Grid Grid.Row="0" Margin="4,0,4,8">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0"
-                                   Text="{Binding [chronostrat_chart_tree_title], Source={x:Static lg:LanguageService.Instance}}"
-                                   FontSize="11" FontWeight="SemiBold" Foreground="#8E8E93" VerticalAlignment="Center"/>
-                        <StackPanel Grid.Column="1" Orientation="Horizontal">
-                            <Button Content="{Binding [chronostrat_expand_period], Source={x:Static lg:LanguageService.Instance}}"
-                                    Command="{Binding ExpandToPeriodCommand}"
-                                    Style="{StaticResource ButtonDefault}"
-                                    Padding="6,2" FontSize="11" Margin="0,0,4,0"/>
-                            <Button Content="{Binding [chronostrat_expand_all], Source={x:Static lg:LanguageService.Instance}}"
-                                    Command="{Binding ExpandAllCommand}"
-                                    Style="{StaticResource ButtonDefault}"
-                                    Padding="6,2" FontSize="11" Margin="0,0,4,0"/>
-                            <Button Content="{Binding [chronostrat_collapse_all], Source={x:Static lg:LanguageService.Instance}}"
-                                    Command="{Binding CollapseAllCommand}"
-                                    Style="{StaticResource ButtonDefault}"
-                                    Padding="6,2" FontSize="11"/>
-                        </StackPanel>
-                    </Grid>
-
                     <!-- 可折叠层级树 -->
-                    <TreeView Grid.Row="1"
+                    <TreeView Grid.Row="0" Grid.RowSpan="2"
                               ItemsSource="{Binding RootNodes}"
                               ItemTemplate="{StaticResource ChronostratTreeNodeTemplate}"
                               ItemContainerStyle="{StaticResource ChronostratTreeViewItemStyle}"
@@ -384,12 +353,12 @@
                               SelectedItemChanged="OnTreeViewSelectedItemChanged"/>
                 </Grid>
             </Grid>
+            </Border>
 
-            <!-- 分隔线 -->
-            <Border Grid.Column="1" Width="1" Background="#E5E5E5" Margin="0,12"/>
+            <!-- 卡片之间留出呼吸空间 -->
 
             <!-- ── 右侧详情面板 ── -->
-            <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto" Padding="20,16,20,16">
+            <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto" Padding="0,0,4,0">
                 <Grid>
                     <!-- 未选中时的空白提示 -->
                     <StackPanel Visibility="{Binding HasSelectedUnit, Converter={StaticResource BooleanToVisibilityReConverter}}"
@@ -402,7 +371,7 @@
                         <TextBlock FontSize="11" Foreground="#8E8E93" Margin="0,16,0,0" HorizontalAlignment="Center">
                             <Run Text="{Binding [chronostrat_source_label], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}"/>
                             <Run Text=" "/>
-                            <Hyperlink Command="{Binding OpenSourceCommand}" Foreground="#0078D4">
+                            <Hyperlink Command="{Binding OpenSourceCommand}" Foreground="{DynamicResource ThemeAccentBrush}">
                                 <Run Text="https://github.com/i-c-stratigraphy/chart"/>
                             </Hyperlink>
                         </TextBlock>
@@ -449,7 +418,7 @@
                         </Border>
 
                         <!-- ❷ 年代界线信息卡 -->
-                        <Border Style="{StaticResource ModernCardStyle}" Padding="16">
+                        <Border Style="{StaticResource WidgetCard}" Padding="16">
                             <StackPanel>
                                 <TextBlock Text="{Binding [chronostrat_boundary_label], Source={x:Static lg:LanguageService.Instance}}"
                                            Style="{StaticResource ModernGroupTitleStyle}" Margin="0,0,0,10"/>
@@ -514,7 +483,7 @@
                         <!-- ❸ GSSP 认证状态（有徽章时才显示）-->
                         <Border Padding="16">
                             <Border.Style>
-                                <Style TargetType="Border" BasedOn="{StaticResource ModernCardStyle}">
+                                <Style TargetType="Border" BasedOn="{StaticResource WidgetCard}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding BoundaryBadgeText}" Value="">
                                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -533,13 +502,13 @@
                                         <Run Text="{Binding [chronostrat_gssp_ratified], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}"/>
                                     </TextBlock>
                                     <TextBlock Text="{Binding [chronostrat_gssp_desc], Source={x:Static lg:LanguageService.Instance}}"
-                                               Style="{StaticResource ModernSettingsItemHintStyle}" Margin="0,2,0,0"/>
+                                               Style="{StaticResource WidgetHint}" Margin="0,2,0,0"/>
                                 </StackPanel>
                             </DockPanel>
                         </Border>
 
                         <!-- ❹ IUGS 官方色标卡 -->
-                        <Border Style="{StaticResource ModernCardStyle}" Padding="16">
+                        <Border Style="{StaticResource WidgetCard}" Padding="16">
                             <StackPanel>
                                 <TextBlock Text="{Binding [chronostrat_color_label], Source={x:Static lg:LanguageService.Instance}}"
                                            Style="{StaticResource ModernGroupTitleStyle}" Margin="0,0,0,10"/>
@@ -560,7 +529,7 @@
                                                        VerticalAlignment="Center" Margin="0,0,10,0"/>
                                             <Button Content="{Binding [chronostrat_copy_hex], Source={x:Static lg:LanguageService.Instance}}"
                                                     Command="{Binding CopyHexCommand}"
-                                                    Style="{StaticResource ButtonDefault}"
+                                                    Style="{StaticResource WidgetAction}"
                                                     Padding="8,3" FontSize="11"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal">
@@ -569,7 +538,7 @@
                                                        VerticalAlignment="Center" Margin="0,0,10,0"/>
                                             <Button Content="{Binding [chronostrat_copy_rgb], Source={x:Static lg:LanguageService.Instance}}"
                                                     Command="{Binding CopyRgbCommand}"
-                                                    Style="{StaticResource ButtonDefault}"
+                                                    Style="{StaticResource WidgetAction}"
                                                     Padding="8,3" FontSize="11"/>
                                         </StackPanel>
                                     </StackPanel>
@@ -578,12 +547,12 @@
                         </Border>
 
                         <!-- ❺ 复制引用 -->
-                        <Border Style="{StaticResource ModernCardStyle}" Padding="16">
+                        <Border Style="{StaticResource WidgetCard}" Padding="16">
                             <DockPanel>
                                 <Button DockPanel.Dock="Right"
                                         Content="{Binding [chronostrat_copy_citation], Source={x:Static lg:LanguageService.Instance}}"
                                         Command="{Binding CopyCitationCommand}"
-                                        Style="{StaticResource ButtonDefault}"
+                                        Style="{StaticResource WidgetAction}"
                                         Padding="12,5" FontSize="12"/>
                                 <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
                                     <TextBlock Text="{Binding [chronostrat_citation_label], Source={x:Static lg:LanguageService.Instance}}"
@@ -604,7 +573,7 @@
                         <!-- ❻ 子单元快速跳转 -->
                         <Border Padding="16">
                             <Border.Style>
-                                <Style TargetType="Border" BasedOn="{StaticResource ModernCardStyle}">
+                                <Style TargetType="Border" BasedOn="{StaticResource WidgetCard}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding Children.Count}" Value="0">
                                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -633,7 +602,7 @@
                             <TextBlock FontSize="10" Foreground="#8E8E93" Margin="0,4,0,0">
                                 <Run Text="{Binding [chronostrat_source_label], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}"/>
                                 <Run Text=" "/>
-                                <Hyperlink Command="{Binding OpenSourceCommand}" Foreground="#0078D4">
+                                <Hyperlink Command="{Binding OpenSourceCommand}" Foreground="{DynamicResource ThemeAccentBrush}">
                                     <Run Text="https://github.com/i-c-stratigraphy/chart"/>
                                 </Hyperlink>
                             </TextBlock>

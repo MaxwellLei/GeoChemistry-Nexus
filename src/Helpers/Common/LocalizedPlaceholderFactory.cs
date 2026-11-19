@@ -30,7 +30,7 @@ namespace GeoChemistryNexus.Helpers
                 defaultLanguage = LanguageService.CurrentLanguage;
             }
 
-            var languagesToProcess = targetLanguages ?? AppCultureRegistry.AppUiCodes;
+            var languagesToProcess = targetLanguages ?? AppCultureRegistry.SupportedCodes;
 
             var localizedString = new LocalizedString
             {
@@ -75,6 +75,6 @@ namespace GeoChemistryNexus.Helpers
         /// <summary>
         /// 获取支持语言列表的辅助属性，以备他用。
         /// </summary>
-        public static IReadOnlyList<string> SupportedLanguages => AppCultureRegistry.AppUiCodes;
+        public static IReadOnlyList<string> SupportedLanguages => AppCultureRegistry.SupportedCodes;
     }
 }

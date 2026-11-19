@@ -1,0 +1,77 @@
+<UserControl x:Class="GeoChemistryNexus.Controls.NotificationHost"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
+             mc:Ignorable="d"
+             x:Name="Root"
+             Width="372"
+             Focusable="False"
+             VerticalContentAlignment="Top"
+             d:DesignHeight="400" d:DesignWidth="372">
+
+    <!-- 没有任何通知 / 对话框时整体折叠：本控件是贴靠宿主右侧的整条叠加层，空闲时不能遮挡下方的按钮与输入框 -->
+    <UserControl.Style>
+        <Style TargetType="local:NotificationHost">
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Center.Notifications.Count, RelativeSource={RelativeSource Self}}" Value="0"/>
+                        <Condition Binding="{Binding Center.Dialogs.Count, RelativeSource={RelativeSource Self}}" Value="0"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </MultiDataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Style>
+
+    <!--
+        通知中心的呈现区：自上而下堆叠 Toast 卡片，贴靠宿主右侧。
+        - VerticalContentAlignment=Top（本控件显式默认值；UserControl 自身默认是 Stretch）贴顶堆叠；Bottom 则贴底堆叠（主窗口使用，最新消息靠近右下角）。
+        - ShowDialogs=True（默认）时，交互对话框以 Sheet 形式排在 Toast 之前；
+          主窗口把 ShowDialogs 设为 False，改用窗口居中的 Sheet 层呈现。
+    -->
+    <ScrollViewer VerticalAlignment="{Binding VerticalContentAlignment, ElementName=Root}"
+                  Background="{x:Null}"
+                  BorderThickness="0"
+                  Focusable="False"
+                  VerticalScrollBarVisibility="Hidden"
+                  HorizontalScrollBarVisibility="Disabled"
+                  PanningMode="VerticalOnly">
+        <!-- 上下预留空白，让卡片阴影不被滚动区域裁出硬边 -->
+        <StackPanel Margin="0,8,0,18">
+            <!-- 对话框（仅 ShowDialogs=True 时才绑定数据源，避免与主窗口的 Sheet 层重复创建） -->
+            <ItemsControl Focusable="False">
+                <ItemsControl.Style>
+                    <Style TargetType="ItemsControl">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ShowDialogs, ElementName=Root}" Value="True">
+                                <Setter Property="ItemsSource" Value="{Binding Center.Dialogs, ElementName=Root}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ItemsControl.Style>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <local:NotificationSheet/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <!-- Toast -->
+            <ItemsControl ItemsSource="{Binding Center.Notifications, ElementName=Root}" Focusable="False">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel VerticalAlignment="Top"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <local:NotificationItem/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

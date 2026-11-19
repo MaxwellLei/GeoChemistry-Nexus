@@ -2,7 +2,6 @@ using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using unvell.ReoGrid;
 using unvell.ReoGrid.Events;
 
@@ -10,15 +9,13 @@ namespace GeoChemistryNexus.Views
 {
     /// <summary>
     /// NiggliPageView.xaml 的交互逻辑
+    /// 右侧检查器的展开 / 收起由公共表格控件（ReoGridTableHost）负责，这里只转发选区变化与窗口操作。
     /// </summary>
     public partial class NiggliPageView : Page
     {
         private static NiggliPageView? _instance;
         private readonly NiggliPageViewModel _viewModel;
 
-        private double _normalPanelHeight = 200;
-        private const double MinDetailPanelHeight = 80;
-        private bool _userManuallyCollapsed = false;
         private Worksheet? _boundWorksheet;
 
         public NiggliPageView()
@@ -29,9 +26,6 @@ namespace GeoChemistryNexus.Views
 
             // 初始化工作表
             _viewModel.InitializeWorksheet(NiggliReoGrid);
-
-            // 默认状态：收缩为底部状态条
-            CollapseDiagnosticPanel(saveHeight: false);
 
             // 监听选区变化
             BindWorksheetEvents();
@@ -59,6 +53,9 @@ namespace GeoChemistryNexus.Views
             BindWorksheetEvents();
         }
 
+        /// <summary>
+        /// 选区变化时更新检查器中的计算详情
+        /// </summary>
         private void OnSelectionRangeChanged(object? sender, RangeEventArgs e)
         {
             if (_viewModel == null) return;
@@ -67,64 +64,9 @@ namespace GeoChemistryNexus.Views
             if (worksheet == null) return;
 
             int row = worksheet.SelectionRange.Row;
-            if (row < 1) return;
+            if (row < 0) return;
 
             _viewModel.OnRowSelected(worksheet, row);
-
-            if (!_userManuallyCollapsed && _viewModel.HasDiagnosticData && !_viewModel.IsDiagnosticPanelExpanded)
-            {
-                ExpandDiagnosticPanel();
-            }
-        }
-
-        private void OnToggleExpandClick(object? sender, RoutedEventArgs e)
-        {
-            if (_viewModel.IsDiagnosticPanelExpanded)
-            {
-                CollapseDiagnosticPanel(saveHeight: true);
-                _userManuallyCollapsed = true;
-            }
-            else
-            {
-                ExpandDiagnosticPanel();
-                _userManuallyCollapsed = false;
-            }
-        }
-
-        private void OnDetailSplitterDragCompleted(object? sender, DragCompletedEventArgs e)
-        {
-            RememberDetailPanelHeight();
-        }
-
-        private void ExpandDiagnosticPanel()
-        {
-            DiagnosticRowDef.MinHeight = MinDetailPanelHeight;
-            DiagnosticRowDef.Height = new GridLength(_normalPanelHeight);
-            DetailSplitter.Visibility = Visibility.Visible;
-            _viewModel.IsDiagnosticPanelExpanded = true;
-            ExpandIcon.Text = "\uE70D";
-        }
-
-        private void CollapseDiagnosticPanel(bool saveHeight)
-        {
-            if (saveHeight)
-            {
-                RememberDetailPanelHeight();
-            }
-
-            DiagnosticRowDef.MinHeight = 0;
-            DiagnosticRowDef.Height = GridLength.Auto;
-            DetailSplitter.Visibility = Visibility.Collapsed;
-            _viewModel.IsDiagnosticPanelExpanded = false;
-            ExpandIcon.Text = "\uE70E";
-        }
-
-        private void RememberDetailPanelHeight()
-        {
-            if (DiagnosticRowDef.Height.IsAbsolute && DiagnosticRowDef.Height.Value >= MinDetailPanelHeight)
-            {
-                _normalPanelHeight = DiagnosticRowDef.Height.Value;
-            }
         }
 
         private void OnHelpClick(object? sender, RoutedEventArgs e)

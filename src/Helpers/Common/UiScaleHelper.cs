@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.Windows;
-using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Shell;
 using CommunityToolkit.Mvvm.Messaging;
@@ -12,16 +10,27 @@ using GeoChemistryNexus.Models;
 namespace GeoChemistryNexus.Helpers
 {
     /// <summary>
-    /// 应用级 UI 缩放：在高分辨率且系统 DPI 偏低时放大界面（近似系统缩放效果）。
-    /// Auto 跟随窗口所在显示器；固定档位全局生效。
+    /// 应用级 UI 缩放：以固定倍率（默认 100%）整体放大界面内容。
     /// </summary>
     public static class UiScaleHelper
     {
-        public const string ConfigKey = "ui_scale_mode";
+        public const string ConfigKey = ConfigKeys.UiScaleMode;
 
-        private const double DesignCaptionHeight = 40;
-        private const double DesignResizeBorder = 15;
-        private const uint MonitorDefaultToNearest = 2;
+        /// <summary>
+        /// 全局文字排版模式资源键（Application 资源，XAML 中以 DynamicResource 引用）。
+        /// 100% 时使用 Display（贴合像素网格，最清晰）；非 100%（放大或缩小）时使用 Ideal，
+        /// 避免按 1x 像素网格对齐（hinting）的文字经缩放变换后发虚。
+        /// </summary>
+        public const string TextFormattingModeResourceKey = "AppTextFormattingMode";
+
+        private sealed record ChromeMetrics(double CaptionHeight, Thickness ResizeBorderThickness);
+
+        private static readonly DependencyProperty DesignChromeMetricsProperty =
+            DependencyProperty.RegisterAttached(
+                "DesignChromeMetrics",
+                typeof(ChromeMetrics),
+                typeof(UiScaleHelper),
+                new PropertyMetadata(null));
 
         private static readonly DependencyProperty IsAttachedProperty =
             DependencyProperty.RegisterAttached(
@@ -29,13 +38,6 @@ namespace GeoChemistryNexus.Helpers
                 typeof(bool),
                 typeof(UiScaleHelper),
                 new PropertyMetadata(false));
-
-        private static readonly DependencyProperty LastMonitorProperty =
-            DependencyProperty.RegisterAttached(
-                "LastUiScaleMonitor",
-                typeof(IntPtr),
-                typeof(UiScaleHelper),
-                new PropertyMetadata(IntPtr.Zero));
 
         private static readonly DependencyProperty LastScaleProperty =
             DependencyProperty.RegisterAttached(
@@ -54,68 +56,61 @@ namespace GeoChemistryNexus.Helpers
         public static void SetMode(UiScaleMode mode)
         {
             ConfigHelper.SetConfig(ConfigKey, ModeToConfigValue(mode));
+            UpdateTextFormattingMode(ModeToFixedScale(mode));
             RefreshAllAttachedWindows();
             WeakReferenceMessenger.Default.Send(new UiScaleModeChangedMessage(mode));
         }
 
+        /// <summary>
+        /// 解析配置值；空值或无法识别的值（含旧版本的 "Auto"）一律视为 100%。
+        /// </summary>
         public static UiScaleMode ParseMode(string? value)
         {
             if (string.IsNullOrWhiteSpace(value))
-                return UiScaleMode.Auto;
-
-            if (value.Equals("Auto", StringComparison.OrdinalIgnoreCase) || value == "0")
-                return UiScaleMode.Auto;
+                return UiScaleMode.Percent100;
 
             if (int.TryParse(value, out int percent))
             {
                 return percent switch
                 {
-                    100 => UiScaleMode.Percent100,
+                    90 => UiScaleMode.Percent90,
                     125 => UiScaleMode.Percent125,
                     150 => UiScaleMode.Percent150,
-                    200 => UiScaleMode.Percent200,
-                    _ => UiScaleMode.Auto
+                    _ => UiScaleMode.Percent100
                 };
             }
 
             return value.ToLowerInvariant() switch
             {
-                "100" or "p100" or "percent100" => UiScaleMode.Percent100,
-                "125" or "p125" or "percent125" => UiScaleMode.Percent125,
-                "150" or "p150" or "percent150" => UiScaleMode.Percent150,
-                "200" or "p200" or "percent200" => UiScaleMode.Percent200,
-                _ => UiScaleMode.Auto
+                "p90" or "percent90" => UiScaleMode.Percent90,
+                "p125" or "percent125" => UiScaleMode.Percent125,
+                "p150" or "percent150" => UiScaleMode.Percent150,
+                _ => UiScaleMode.Percent100
             };
         }
 
         public static string ModeToConfigValue(UiScaleMode mode) => mode switch
         {
-            UiScaleMode.Percent100 => "100",
+            UiScaleMode.Percent90 => "90",
             UiScaleMode.Percent125 => "125",
             UiScaleMode.Percent150 => "150",
-            UiScaleMode.Percent200 => "200",
-            _ => "Auto"
+            _ => "100"
         };
 
         public static double ModeToFixedScale(UiScaleMode mode) => mode switch
         {
-            UiScaleMode.Percent100 => 1.0,
+            UiScaleMode.Percent90 => 0.9,
             UiScaleMode.Percent125 => 1.25,
             UiScaleMode.Percent150 => 1.5,
-            UiScaleMode.Percent200 => 2.0,
             _ => 1.0
         };
 
         /// <summary>
-        /// 计算窗口当前应使用的 UI 缩放倍率。
+        /// 当前应使用的 UI 缩放倍率（全局固定）。
         /// </summary>
         public static double ComputeScale(Window window)
         {
-            var mode = GetMode();
-            if (mode != UiScaleMode.Auto)
-                return ModeToFixedScale(mode);
-
-            return ComputeAutoScale(window);
+            return ModeToFixedScale(GetMode());
         }
 
         /// <summary>
@@ -129,9 +124,10 @@ namespace GeoChemistryNexus.Helpers
             window.SetValue(IsAttachedProperty, true);
             AttachedWindows.Add(new WeakReference<Window>(window));
 
+            UpdateTextFormattingMode(ComputeScale(window));
+
             window.SourceInitialized += (_, _) => Apply(window);
             window.Loaded += (_, _) => Apply(window);
-            window.LocationChanged += (_, _) => ApplyIfMonitorChanged(window);
             window.DpiChanged += (_, _) => Apply(window);
             window.StateChanged += (_, _) => Apply(window);
 
@@ -160,6 +156,7 @@ namespace GeoChemistryNexus.Helpers
 
             var scale = ComputeScale(window);
             var lastScale = (double)window.GetValue(LastScaleProperty);
+
             if (Math.Abs(lastScale - scale) < 0.001 && content.LayoutTransform is ScaleTransform)
             {
                 SyncWindowChrome(window, scale);
@@ -176,17 +173,30 @@ namespace GeoChemistryNexus.Helpers
                 content.LayoutTransform = new ScaleTransform(scale, scale);
             }
 
+            // 非 100% 时图片使用高质量重采样，避免位图被拉伸 / 压缩后发糊
+            if (Math.Abs(scale - 1.0) > 0.001)
+                RenderOptions.SetBitmapScalingMode(content, BitmapScalingMode.HighQuality);
+            else
+                content.ClearValue(RenderOptions.BitmapScalingModeProperty);
+
             window.SetValue(LastScaleProperty, scale);
-            window.SetValue(LastMonitorProperty, GetMonitorHandle(window));
             SyncWindowChrome(window, scale);
         }
 
-        private static void ApplyIfMonitorChanged(Window window)
+        /// <summary>
+        /// 根据缩放倍率切换全局文字排版模式（见 <see cref="TextFormattingModeResourceKey"/>）。
+        /// </summary>
+        private static void UpdateTextFormattingMode(double scale)
         {
-            var monitor = GetMonitorHandle(window);
-            var last = (IntPtr)window.GetValue(LastMonitorProperty);
-            if (monitor != IntPtr.Zero && monitor != last)
-                Apply(window);
+            var app = Application.Current;
+            if (app == null)
+                return;
+
+            var mode = Math.Abs(scale - 1.0) > 0.001 ? TextFormattingMode.Ideal : TextFormattingMode.Display;
+            if (app.Resources[TextFormattingModeResourceKey] is TextFormattingMode current && current == mode)
+                return;
+
+            app.Resources[TextFormattingModeResourceKey] = mode;
         }
 
         private static void SyncWindowChrome(Window window, double scale)
@@ -195,140 +205,18 @@ namespace GeoChemistryNexus.Helpers
             if (chrome == null)
                 return;
 
-            chrome.CaptionHeight = DesignCaptionHeight * scale;
-            chrome.ResizeBorderThickness = new Thickness(DesignResizeBorder * scale);
-        }
-
-        private static double ComputeAutoScale(Window window)
-        {
-            if (!TryGetMonitorMetrics(window, out int pixelHeight, out double systemScale))
-                return 1.0;
-
-            // 目标：高分屏在系统缩放不足时，补到接近 Windows 推荐观感
-            double targetTotalScale = 1.0;
-            if (pixelHeight >= 2160)
-                targetTotalScale = 1.5; // 4K 类，目标约 150%
-            else if (pixelHeight >= 1440)
-                targetTotalScale = 1.25; // 1440p 类
-
-            var appScale = targetTotalScale / Math.Max(systemScale, 0.5);
-            appScale = Math.Clamp(appScale, 1.0, 2.0);
-
-            // 收敛到常见档位，避免 1.333 这类难看倍率
-            return SnapScale(appScale);
-        }
-
-        private static double SnapScale(double scale)
-        {
-            if (scale < 1.12) return 1.0;
-            if (scale < 1.37) return 1.25;
-            if (scale < 1.75) return 1.5;
-            return 2.0;
-        }
-
-        private static bool TryGetMonitorMetrics(Window window, out int pixelHeight, out double systemScale)
-        {
-            pixelHeight = 0;
-            systemScale = 1.0;
-
-            var hwnd = new WindowInteropHelper(window).Handle;
-            if (hwnd == IntPtr.Zero)
+            // 保留各窗口自己的设计值：主窗口使用页面拖动条，编辑窗口使用原生 Caption。
+            // 只记录一次，避免切换缩放或最大化/还原时在已缩放的值上继续累乘。
+            if (window.GetValue(DesignChromeMetricsProperty) is not ChromeMetrics metrics)
             {
-                // 句柄未创建时，用系统主屏工作区高度与当前视觉 DPI 兜底
-                pixelHeight = (int)Math.Round(SystemParameters.PrimaryScreenHeight * GetVisualScale(window));
-                systemScale = GetVisualScale(window);
-                return pixelHeight > 0;
+                metrics = new ChromeMetrics(chrome.CaptionHeight, chrome.ResizeBorderThickness);
+                window.SetValue(DesignChromeMetricsProperty, metrics);
             }
 
-            var monitor = GetMonitorHandle(window);
-            if (monitor == IntPtr.Zero)
-                return false;
-
-            var info = new MonitorInfo { cbSize = (uint)Marshal.SizeOf<MonitorInfo>() };
-            if (!GetMonitorInfo(monitor, ref info))
-                return false;
-
-            pixelHeight = info.rcMonitor.Bottom - info.rcMonitor.Top;
-            systemScale = GetVisualScale(window);
-            return pixelHeight > 0;
+            chrome.CaptionHeight = metrics.CaptionHeight * scale;
+            var border = metrics.ResizeBorderThickness;
+            chrome.ResizeBorderThickness = new Thickness(
+                border.Left * scale, border.Top * scale, border.Right * scale, border.Bottom * scale);
         }
-
-        private static double GetVisualScale(Window window)
-        {
-            var source = PresentationSource.FromVisual(window);
-            if (source?.CompositionTarget != null)
-                return source.CompositionTarget.TransformToDevice.M11;
-
-            try
-            {
-                return VisualTreeHelper.GetDpi(window).DpiScaleX;
-            }
-            catch
-            {
-                return 1.0;
-            }
-        }
-
-        private static IntPtr GetMonitorHandle(Window window)
-        {
-            var hwnd = new WindowInteropHelper(window).Handle;
-            if (hwnd == IntPtr.Zero)
-                return IntPtr.Zero;
-
-            if (GetWindowRect(hwnd, out var rect))
-            {
-                var center = new PointApi
-                {
-                    X = rect.Left + (rect.Right - rect.Left) / 2,
-                    Y = rect.Top + (rect.Bottom - rect.Top) / 2
-                };
-                var fromPoint = MonitorFromPoint(center, MonitorDefaultToNearest);
-                if (fromPoint != IntPtr.Zero)
-                    return fromPoint;
-            }
-
-            return MonitorFromWindow(hwnd, MonitorDefaultToNearest);
-        }
-
-        #region Win32
-
-        [DllImport("user32.dll")]
-        private static extern IntPtr MonitorFromWindow(IntPtr hwnd, uint dwFlags);
-
-        [DllImport("user32.dll")]
-        private static extern IntPtr MonitorFromPoint(PointApi pt, uint dwFlags);
-
-        [DllImport("user32.dll")]
-        private static extern bool GetMonitorInfo(IntPtr hMonitor, ref MonitorInfo lpmi);
-
-        [DllImport("user32.dll")]
-        private static extern bool GetWindowRect(IntPtr hwnd, out RectApi lpRect);
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct PointApi
-        {
-            public int X;
-            public int Y;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct RectApi
-        {
-            public int Left;
-            public int Top;
-            public int Right;
-            public int Bottom;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct MonitorInfo
-        {
-            public uint cbSize;
-            public RectApi rcMonitor;
-            public RectApi rcWork;
-            public uint dwFlags;
-        }
-
-        #endregion
     }
 }

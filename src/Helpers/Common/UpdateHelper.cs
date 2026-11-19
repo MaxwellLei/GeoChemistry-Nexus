@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -19,6 +20,8 @@ namespace GeoChemistryNexus.Helpers
         public string InstallerDownloadUrl { get; set; } = string.Empty;
         public string FallbackInstallerDownloadUrl { get; set; } = string.Empty;
         public string InstallerFileName { get; set; } = string.Empty;
+        /// <summary>服务器公布的安装包 SHA256；为空表示服务器未提供。</summary>
+        public string InstallerSha256 { get; set; } = string.Empty;
     }
 
     public class AppMinimumVersionCheckResult
@@ -48,8 +51,8 @@ namespace GeoChemistryNexus.Helpers
 
         public static async Task<string> GetUrlContentAsync(string url = ServerInfoUrl)
         {
-            using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(10) };
-            return await client.GetStringAsync(url);
+            using var timeoutCts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+            return await OfficialContentMirrorClient.SharedHttpClient.GetStringAsync(url, timeoutCts.Token);
         }
 
         public static string GetCurrentAppVersion()
@@ -185,6 +188,7 @@ namespace GeoChemistryNexus.Helpers
                     result.InstallerFileName = OfficialContentEndpoints.BuildInstallerFileName(normalizedLatestVersion);
                     result.InstallerDownloadUrl = OfficialContentEndpoints.BuildGitHubInstallerUrl(normalizedLatestVersion);
                     result.FallbackInstallerDownloadUrl = OfficialContentEndpoints.BuildCosInstallerUrl(normalizedLatestVersion);
+                    result.InstallerSha256 = NormalizeSha256(serverInfo?.LatestAppInstallerSha256);
                 }
             }
             catch (Exception ex)
@@ -274,17 +278,34 @@ namespace GeoChemistryNexus.Helpers
                 return false;
 
             var fileInfo = new FileInfo(installerPath);
-            return fileInfo.Length > 0;
+            if (fileInfo.Length <= 0)
+                return false;
+
+            // 服务器公布了 SHA256 时，缓存文件必须与之一致；不一致说明文件残缺或被替换，直接丢弃。
+            if (!string.IsNullOrEmpty(updateInfo.InstallerSha256)
+                && !VerifyFileSha256(installerPath, updateInfo.InstallerSha256))
+            {
+                TryDeleteFile(installerPath);
+                installerPath = string.Empty;
+                return false;
+            }
+
+            return true;
         }
 
         public static async Task<string> DownloadInstallerAsync(
             string downloadUrl,
             string destinationPath,
             IProgress<double>? progress = null,
-            string? fallbackDownloadUrl = null)
+            string? fallbackDownloadUrl = null,
+            string? expectedSha256 = null)
         {
             if (string.IsNullOrWhiteSpace(downloadUrl))
                 throw new InvalidOperationException("Installer download URL is empty.");
+
+            // 安装包会被直接执行，禁止走明文 HTTP。
+            if (!IsHttpsUrl(downloadUrl))
+                throw new InvalidOperationException("Installer download URL must use HTTPS.");
 
             string? directory = Path.GetDirectoryName(destinationPath);
             if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
@@ -307,7 +328,54 @@ namespace GeoChemistryNexus.Helpers
                     progress);
             }
 
+            string normalizedHash = NormalizeSha256(expectedSha256);
+            if (!string.IsNullOrEmpty(normalizedHash) && !VerifyFileSha256(destinationPath, normalizedHash))
+            {
+                TryDeleteFile(destinationPath);
+                throw new InvalidDataException("Installer SHA256 mismatch. The downloaded file was discarded.");
+            }
+
             return destinationPath;
+        }
+
+        private static bool IsHttpsUrl(string url)
+        {
+            return Uri.TryCreate(url, UriKind.Absolute, out Uri? uri)
+                && string.Equals(uri.Scheme, Uri.UriSchemeHttps, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static string NormalizeSha256(string? hash)
+        {
+            return (hash ?? string.Empty).Trim().Replace("-", string.Empty).ToLowerInvariant();
+        }
+
+        private static bool VerifyFileSha256(string filePath, string expectedSha256)
+        {
+            try
+            {
+                using var sha = System.Security.Cryptography.SHA256.Create();
+                using var stream = File.OpenRead(filePath);
+                string actual = Convert.ToHexString(sha.ComputeHash(stream)).ToLowerInvariant();
+                return string.Equals(actual, NormalizeSha256(expectedSha256), StringComparison.Ordinal);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[UpdateHelper] SHA256 verification failed: {ex.Message}");
+                return false;
+            }
+        }
+
+        private static void TryDeleteFile(string path)
+        {
+            try
+            {
+                if (File.Exists(path))
+                    File.Delete(path);
+            }
+            catch
+            {
+                // 下次下载会覆盖
+            }
         }
 
         public static void LaunchInstallerAndShutdown(string installerPath)
@@ -368,35 +436,57 @@ namespace GeoChemistryNexus.Helpers
             if (File.Exists(destinationPath))
                 File.Delete(destinationPath);
 
+            TryDeleteFile(destinationPath + ".part");
+
             return Task.CompletedTask;
         }
 
         public static async Task DownloadFileAsync(string url, string destinationPath, IProgress<double>? progress = null)
         {
-            using var client = new HttpClient();
-            client.DefaultRequestHeaders.UserAgent.Add(
-                new ProductInfoHeaderValue("GeoChemistry-Nexus-Update-Checker", "1.0"));
+            // 先写入 .part 临时文件，下载完整并校验长度后再改名；
+            // 中途失败或退出只会留下 .part，不会产生"看起来已下载"的残缺目标文件。
+            string partPath = destinationPath + ".part";
 
-            using var response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
-            response.EnsureSuccessStatusCode();
-
-            var totalBytes = response.Content.Headers.ContentLength ?? -1L;
-            var canReportProgress = totalBytes != -1 && progress != null;
-
-            using var contentStream = await response.Content.ReadAsStreamAsync();
-            using var fileStream = new FileStream(destinationPath, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true);
-
-            var buffer = new byte[8192];
-            long totalRead = 0;
-            int bytesRead;
-
-            while ((bytesRead = await contentStream.ReadAsync(buffer.AsMemory())) > 0)
+            try
             {
-                await fileStream.WriteAsync(buffer.AsMemory(0, bytesRead));
-                totalRead += bytesRead;
+                // 共享 HttpClient 无整体超时；沿用原 HttpClient 默认的 100 秒"等待响应头"超时，下载正文不受限。
+                using var headerTimeoutCts = new CancellationTokenSource(TimeSpan.FromSeconds(100));
+                using var response = await OfficialContentMirrorClient.SharedHttpClient.GetAsync(
+                    url, HttpCompletionOption.ResponseHeadersRead, headerTimeoutCts.Token);
+                response.EnsureSuccessStatusCode();
 
-                if (canReportProgress)
-                    progress!.Report((double)totalRead / totalBytes * 100);
+                var totalBytes = response.Content.Headers.ContentLength ?? -1L;
+                var canReportProgress = totalBytes != -1 && progress != null;
+                long totalRead = 0;
+
+                await using (var contentStream = await response.Content.ReadAsStreamAsync())
+                await using (var fileStream = new FileStream(partPath, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true))
+                {
+                    var buffer = new byte[8192];
+                    int bytesRead;
+
+                    while ((bytesRead = await contentStream.ReadAsync(buffer.AsMemory())) > 0)
+                    {
+                        await fileStream.WriteAsync(buffer.AsMemory(0, bytesRead));
+                        totalRead += bytesRead;
+
+                        if (canReportProgress)
+                            progress!.Report((double)totalRead / totalBytes * 100);
+                    }
+                }
+
+                if (totalRead == 0)
+                    throw new IOException("Downloaded content is empty.");
+
+                if (totalBytes > 0 && totalRead != totalBytes)
+                    throw new IOException($"Download incomplete: expected {totalBytes} bytes, received {totalRead}.");
+
+                File.Move(partPath, destinationPath, overwrite: true);
+            }
+            catch
+            {
+                TryDeleteFile(partPath);
+                throw;
             }
         }
 

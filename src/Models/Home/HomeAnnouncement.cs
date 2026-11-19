@@ -2,6 +2,7 @@ using GeoChemistryNexus.Converter;
 using GeoChemistryNexus.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -21,7 +22,7 @@ namespace GeoChemistryNexus.Models
 
     /// <summary>
     /// 单条公告。文案全部为结构化多语言纯文本。
-    /// 背景可以是主题色或自定义颜色（可选装饰图形），也可以是一张网络图片。
+    /// 背景可以是主题色、自定义颜色，或一张网络图片。没有图片时主页固定绘制同一套品牌图形。
     /// </summary>
     public class HomeAnnouncementEntry
     {
@@ -68,13 +69,20 @@ namespace GeoChemistryNexus.Models
         public int Priority { get; set; }
 
         /// <summary>
+        /// 这条公告对哪些界面语言展示。空或未填写表示所有语言都展示。
+        /// </summary>
+        [JsonPropertyName("languages")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public List<string>? Languages { get; set; }
+
+        /// <summary>
         /// 预设主题名，见 <see cref="AnnouncementBrushes.ThemeKeys"/>。未填写自定义颜色时映射到内置渐变，未知值回退 blue。
         /// </summary>
         [JsonPropertyName("theme")]
         public string Theme { get; set; } = "blue";
 
         /// <summary>
-        /// 背景方式：default（颜色 + 可选装饰图形）或 image（网络图片）。
+        /// 背景方式：default（颜色）或 image（网络图片）。
         /// </summary>
         [JsonPropertyName("backgroundMode")]
         public string BackgroundMode { get; set; } = HomeAnnouncementBackground.ModeDefault;
@@ -86,20 +94,7 @@ namespace GeoChemistryNexus.Models
         public string BackgroundColor { get; set; } = string.Empty;
 
         /// <summary>
-        /// default 模式下是否绘制装饰多边形。图片背景不绘制。
-        /// </summary>
-        [JsonPropertyName("showPolygons")]
-        public bool ShowPolygons { get; set; } = true;
-
-        /// <summary>
-        /// 装饰图形的样式名。为空表示按条目顺序在本版本已知样式间轮换。
-        /// 未知名称（更新版本新增的样式）会原样保留，当前版本绘制时回退到已知图形。
-        /// </summary>
-        [JsonPropertyName("polygonStyle")]
-        public string PolygonStyle { get; set; } = string.Empty;
-
-        /// <summary>
-        /// 本版本模型里没有的字段。重新发布时原样写回，避免丢掉更新版本的样式参数。
+        /// 本版本模型里没有的字段。重新发布时原样写回，避免丢掉更新版本新增的参数。
         /// </summary>
         [JsonExtensionData]
         public Dictionary<string, JsonElement>? ExtensionData { get; set; }
@@ -112,6 +107,12 @@ namespace GeoChemistryNexus.Models
 
         [JsonPropertyName("action")]
         public HomeAnnouncementAction? Action { get; set; }
+
+        /// <summary>
+        /// 当前界面语言是否应该看到这条公告。未指定语言时所有语言都展示。
+        /// </summary>
+        public bool IsVisibleForLanguage(string? language)
+            => HomeAnnouncementLanguages.IsVisible(Languages, language);
 
         /// <summary>
         /// 当前时间是否在展示窗口内
@@ -148,121 +149,18 @@ namespace GeoChemistryNexus.Models
     }
 
     /// <summary>
-    /// 本版本能够绘制的一种公告装饰图形。
-    /// </summary>
-    public sealed class HomeAnnouncementPolygonStyle
-    {
-        public HomeAnnouncementPolygonStyle(string id, string label)
-        {
-            Id = id;
-            Label = label;
-        }
-
-        public string Id { get; }
-
-        public string Label { get; }
-    }
-
-    /// <summary>
     /// 公告背景的取值约定。服务端只存短字符串，具体画法由客户端决定。
-    /// 多边形样式以 <see cref="HomeAnnouncementBackground.KnownPolygonStyles"/> 为闭集：
-    /// 能识别的才绘制；不认识的名称留给更新版本，当前版本回退到已知图形。
     /// </summary>
     public static class HomeAnnouncementBackground
     {
         public const string ModeDefault = "default";
         public const string ModeImage = "image";
-        public const string PolygonStyleAuto = "auto";
-
-        public const string PolygonRing = "ring";
-        public const string PolygonTile = "tile";
-        public const string PolygonCircles = "circles";
-        public const string PolygonDots = "dots";
-        public const string PolygonDiamond = "diamond";
-        public const string PolygonHex = "hex";
-        public const string PolygonArc = "arc";
-        public const string PolygonBars = "bars";
-
-        /// <summary>
-        /// 本版本会绘制的样式。新增图形时只扩展这里，并在主页补上对应画布。
-        /// </summary>
-        public static IReadOnlyList<HomeAnnouncementPolygonStyle> KnownPolygonStyles { get; } = new[]
-        {
-            new HomeAnnouncementPolygonStyle(PolygonRing, "圆环"),
-            new HomeAnnouncementPolygonStyle(PolygonTile, "圆角方块"),
-            new HomeAnnouncementPolygonStyle(PolygonCircles, "同心圆"),
-            new HomeAnnouncementPolygonStyle(PolygonDots, "散点"),
-            new HomeAnnouncementPolygonStyle(PolygonDiamond, "菱形"),
-            new HomeAnnouncementPolygonStyle(PolygonHex, "六边形"),
-            new HomeAnnouncementPolygonStyle(PolygonArc, "弧线"),
-            new HomeAnnouncementPolygonStyle(PolygonBars, "条纹")
-        };
 
         public static bool IsImageMode(string? mode)
             => string.Equals(mode, ModeImage, StringComparison.OrdinalIgnoreCase);
 
         public static string NormalizeMode(string? mode)
             => IsImageMode(mode) ? ModeImage : ModeDefault;
-
-        public static bool IsKnownPolygonStyle(string? style)
-            => TryGetKnownPolygonStyle(style, out _);
-
-        /// <summary>
-        /// 写入目录时：已知样式规范为小写 id；自动存空字符串；未知非空名称原样保留。
-        /// </summary>
-        public static string NormalizePolygonStyle(string? style)
-        {
-            if (string.IsNullOrWhiteSpace(style))
-                return string.Empty;
-
-            string trimmed = style.Trim();
-            if (string.Equals(trimmed, PolygonStyleAuto, StringComparison.OrdinalIgnoreCase))
-                return string.Empty;
-
-            if (TryGetKnownPolygonStyle(trimmed, out string canonical))
-                return canonical;
-
-            return trimmed;
-        }
-
-        /// <summary>
-        /// 得到本版本实际要画的样式。未指定或来自更新版本的未知名称，按顺序回退到已知图形。
-        /// </summary>
-        public static string ResolvePolygonStyle(string? style, int index)
-        {
-            if (TryGetKnownPolygonStyle(style, out string canonical))
-                return canonical;
-
-            var known = KnownPolygonStyles;
-            if (known.Count == 0)
-                return PolygonRing;
-
-            int count = known.Count;
-            int safeIndex = index % count;
-            if (safeIndex < 0)
-                safeIndex += count;
-
-            return known[safeIndex].Id;
-        }
-
-        public static bool TryGetKnownPolygonStyle(string? style, out string canonical)
-        {
-            canonical = string.Empty;
-            if (string.IsNullOrWhiteSpace(style))
-                return false;
-
-            string trimmed = style.Trim();
-            foreach (var item in KnownPolygonStyles)
-            {
-                if (string.Equals(item.Id, trimmed, StringComparison.OrdinalIgnoreCase))
-                {
-                    canonical = item.Id;
-                    return true;
-                }
-            }
-
-            return false;
-        }
 
         public static bool IsHttpImageUrl(string? url)
         {
@@ -272,6 +170,38 @@ namespace GeoChemistryNexus.Models
             string trimmed = url.Trim();
             return trimmed.StartsWith("https://", StringComparison.OrdinalIgnoreCase)
                 || trimmed.StartsWith("http://", StringComparison.OrdinalIgnoreCase);
+        }
+    }
+
+    /// <summary>
+    /// 公告展示语言。空列表表示所有界面语言都展示，便于旧目录保持原样。
+    /// </summary>
+    public static class HomeAnnouncementLanguages
+    {
+        public static List<string> Normalize(IEnumerable<string>? languages)
+        {
+            var selected = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            if (languages != null)
+            {
+                foreach (string code in languages)
+                {
+                    if (AppCultureRegistry.TryNormalize(code, out string normalized)
+                        && AppCultureRegistry.IsSupportedCode(normalized))
+                        selected.Add(normalized);
+                }
+            }
+
+            return AppCultureRegistry.SupportedCodes.Where(selected.Contains).ToList();
+        }
+
+        public static bool IsVisible(IEnumerable<string>? languages, string? language)
+        {
+            var selected = Normalize(languages);
+            if (selected.Count == 0)
+                return true;
+
+            string requested = AppCultureRegistry.ResolveAppLanguage(language);
+            return selected.Contains(requested, StringComparer.OrdinalIgnoreCase);
         }
     }
 }

@@ -45,6 +45,28 @@ namespace GeoChemistryNexus.Helpers
                 .ToList();
         }
 
+        /// <summary>
+        /// 解析各数据列的单位，结果与 <see cref="ParseScriptDataColumns"/> 返回的列一一对应（同样的过滤与去重）。
+        /// <paramref name="dataSeriesUnits"/> 按位置对应 <paramref name="requiredDataSeries"/> 的原始条目；没有单位的列为 null。
+        /// </summary>
+        public static List<string?> ParseScriptDataUnits(string? requiredDataSeries, string? dataSeriesUnits)
+        {
+            var result = new List<string?>();
+            if (string.IsNullOrWhiteSpace(requiredDataSeries)) return result;
+
+            var units = (dataSeriesUnits ?? string.Empty).Split(',');
+            var tokens = requiredDataSeries.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
+            var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            for (int i = 0; i < tokens.Length; i++)
+            {
+                string name = tokens[i].Trim();
+                if (name.Length == 0 || IsMetadataColumn(name) || !seen.Add(name)) continue;
+                string unit = i < units.Length ? units[i].Trim() : string.Empty;
+                result.Add(unit.Length == 0 ? null : unit);
+            }
+            return result;
+        }
+
         public static string GetRowColumnText(DataRow row, string columnName)
         {
             if (!row.Table.Columns.Contains(columnName))

@@ -1,13 +1,13 @@
-<UserControl x:Class="GeoChemistryNexus.Controls.CustomColorPicker"
+﻿<UserControl x:Class="GeoChemistryNexus.Controls.CustomColorPicker"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
-             xmlns:hc="https://handyorg.github.io/handycontrol"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="270" Width="270">
+             d:DesignHeight="300" d:DesignWidth="270">
     <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
         <Style TargetType="Thumb" x:Key="ColorThumbStyle">
             <Setter Property="Template">
                 <Setter.Value>
@@ -61,7 +61,7 @@
         </Style>
     </UserControl.Resources>
     
-    <Grid Margin="10">
+    <Grid x:Name="RootGrid" Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="180"/>
             <RowDefinition Height="Auto"/>
@@ -71,7 +71,8 @@
         </Grid.RowDefinitions>
 
         <!-- Saturation / Value Area -->
-        <Grid Grid.Row="0" Margin="0,0,0,10">
+        <Border x:Name="SvClip" Grid.Row="0" Margin="0,0,0,10" ClipToBounds="True">
+        <Grid>
             <!-- Base Color (Hue) -->
             <Border x:Name="HueMonitor" Background="Red"/>
             
@@ -98,9 +99,10 @@
                 <Thumb x:Name="SvThumb" Style="{StaticResource ColorThumbStyle}" Canvas.Left="0" Canvas.Top="0" DragDelta="SvThumb_DragDelta"/>
             </Canvas>
         </Grid>
+        </Border>
 
         <!-- Hue Slider -->
-        <Grid Grid.Row="1" Margin="0,0,0,10">
+        <Grid x:Name="HueRow" Grid.Row="1" Margin="0,0,0,10">
             <Border Height="12" CornerRadius="6">
                 <Border.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
@@ -120,7 +122,7 @@
         </Grid>
 
         <!-- Alpha Slider -->
-        <Grid Grid.Row="2" Margin="0,0,0,10">
+        <Grid x:Name="AlphaRow" Grid.Row="2" Margin="0,0,0,10">
             <Border Height="12" CornerRadius="6">
                 <Border.Background>
                     <DrawingBrush TileMode="Tile" Viewport="0,0,6,6" ViewportUnits="Absolute">
@@ -157,8 +159,9 @@
             </Canvas>
         </Grid>
 
-        <!-- Preview and Inputs -->
-        <Grid Grid.Row="3" Margin="0,0,0,10">
+        <!-- Preview and Inputs：图解弹层改用外面的 rgba 文本，这里可以关掉 -->
+        <Grid Grid.Row="3" Margin="0,0,0,10"
+              Visibility="{Binding ShowChannelInputs, RelativeSource={RelativeSource AncestorType=local:CustomColorPicker}, Converter={StaticResource BoolToVisibility}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -193,18 +196,18 @@
             <!-- RGB / Hex Inputs -->
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
                 <TextBlock Text="A:" VerticalAlignment="Center" Margin="0,0,4,0" Foreground="#666"/>
-                <hc:TextBox Text="{Binding A, RelativeSource={RelativeSource AncestorType=local:CustomColorPicker}, Mode=TwoWay}" Width="30" Margin="0,0,8,0" Padding="2"/>
+                <TextBox Text="{Binding A, RelativeSource={RelativeSource AncestorType=local:CustomColorPicker}, Mode=TwoWay}" Width="30" Margin="0,0,8,0" Padding="2"/>
                 <TextBlock Text="R:" VerticalAlignment="Center" Margin="0,0,4,0" Foreground="#666"/>
-                <hc:TextBox Text="{Binding R, RelativeSource={RelativeSource AncestorType=local:CustomColorPicker}, Mode=TwoWay}" Width="30" Margin="0,0,8,0" Padding="2"/>
+                <TextBox Text="{Binding R, RelativeSource={RelativeSource AncestorType=local:CustomColorPicker}, Mode=TwoWay}" Width="30" Margin="0,0,8,0" Padding="2"/>
                 <TextBlock Text="G:" VerticalAlignment="Center" Margin="0,0,4,0" Foreground="#666"/>
-                <hc:TextBox Text="{Binding G, RelativeSource={RelativeSource AncestorType=local:CustomColorPicker}, Mode=TwoWay}" Width="30" Margin="0,0,8,0" Padding="2"/>
+                <TextBox Text="{Binding G, RelativeSource={RelativeSource AncestorType=local:CustomColorPicker}, Mode=TwoWay}" Width="30" Margin="0,0,8,0" Padding="2"/>
                 <TextBlock Text="B:" VerticalAlignment="Center" Margin="0,0,4,0" Foreground="#666"/>
-                <hc:TextBox Text="{Binding B, RelativeSource={RelativeSource AncestorType=local:CustomColorPicker}, Mode=TwoWay}" Width="30" Padding="2"/>
+                <TextBox Text="{Binding B, RelativeSource={RelativeSource AncestorType=local:CustomColorPicker}, Mode=TwoWay}" Width="30" Padding="2"/>
             </StackPanel>
         </Grid>
 
         <!-- Quick Colors -->
-        <Grid Grid.Row="4">
+        <Grid x:Name="QuickColors" Grid.Row="4">
              <UniformGrid Columns="8" Rows="2">
                 <Button Style="{StaticResource ColorButtonStyle}" Background="#FF0000" Click="QuickColor_Click" Tag="#FFFF0000"/>
                 <Button Style="{StaticResource ColorButtonStyle}" Background="#FFA500" Click="QuickColor_Click" Tag="#FFFFA500"/>

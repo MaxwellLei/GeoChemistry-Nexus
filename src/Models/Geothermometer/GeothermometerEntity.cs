@@ -86,6 +86,21 @@ namespace GeoChemistryNexus.Models
         public string NameLangKey { get; set; } = string.Empty;
 
         /// <summary>
+        /// 模板文本支持的语言（格式 1.2 起写入；第一项为默认语言，旧模板为空）
+        /// </summary>
+        public List<string> Languages { get; set; } = new();
+
+        /// <summary>
+        /// 各语言的模板名称（语言代码 → 文本；Name 保存默认语言文本）
+        /// </summary>
+        public Dictionary<string, string> NameLang { get; set; } = new();
+
+        /// <summary>
+        /// 各语言的参考文献（语言代码 → 文本；Reference 保存默认语言文本）
+        /// </summary>
+        public Dictionary<string, string> ReferenceLang { get; set; } = new();
+
+        /// <summary>
         /// 作者信息
         /// </summary>
         public string Author { get; set; } = string.Empty;
@@ -118,6 +133,12 @@ namespace GeoChemistryNexus.Models
         public List<string> Headers { get; set; } = new();
 
         /// <summary>
+        /// 各列单位（格式 1.3 新增，可选）：按位置与 <see cref="Headers"/> 一一对应，没有单位的列为空串；
+        /// 旧模板或完全没有单位时为空列表。
+        /// </summary>
+        public List<string> Units { get; set; } = new();
+
+        /// <summary>
         /// 示例数据行
         /// </summary>
         public List<string> ExampleRow { get; set; } = new();
@@ -144,6 +165,21 @@ namespace GeoChemistryNexus.Models
         /// 包含 calculate(args) 和 calculateDetailed(inputs) 两个函数
         /// </summary>
         public string ScriptContent { get; set; } = string.Empty;
+
+        private bool? _isInstalledOverride;
+
+        /// <summary>
+        /// 本地是否已有脚本（已安装）。官方目录占位记录没有脚本。
+        /// 完整实体按 ScriptContent 计算；摘要查询不加载脚本，由数据库服务在投影时写入。
+        /// 不入库。
+        /// </summary>
+        [BsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        public bool IsInstalled
+        {
+            get => _isInstalledOverride ?? !string.IsNullOrEmpty(ScriptContent);
+            set => _isInstalledOverride = value;
+        }
 
         // --- 附属资源区 ---
 

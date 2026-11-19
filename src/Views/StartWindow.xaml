@@ -1,59 +1,10 @@
 <Window x:Class="GeoChemistryNexus.Views.StartWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d"
-        Title="StartWindow" Height="450" Width="800" AllowsTransparency="True" Background="Transparent"
-        WindowStartupLocation="CenterScreen" WindowStyle="None" BorderThickness="0"
-        MouseDown="Window_MouseDown" MouseMove="Window_MouseMove" MouseUp="Window_MouseUp">
-    <!-- 纯 WPF 启动页：不依赖 HandyControl / App 主题，尽快首帧 -->
-    <Border Name="Basemap" CornerRadius="8" Margin="20">
-        <Border.Background>
-            <SolidColorBrush Color="#FF333333"/>
-        </Border.Background>
-
-        <Border.Effect>
-            <DropShadowEffect ShadowDepth="0"
-                              BlurRadius="15"
-                              Opacity="0.5"
-                              Color="Black"/>
-        </Border.Effect>
-        <Grid>
-            <!-- 启动图异步加载图层：初始透明，后台解码完成后平滑淡入 -->
-            <Border x:Name="ImageLayer" CornerRadius="8" Opacity="0"/>
-            <Border VerticalAlignment="Bottom"
-                    Background="#99000000"
-                    CornerRadius="0,0,7,7"
-                    Margin="1">
-                <StackPanel Margin="15,10">
-                    <TextBlock Foreground="White"
-                               Text="{Binding ProgressText}"
-                               FontWeight="Bold"
-                               FontSize="14"
-                               HorizontalAlignment="Center"
-                               Margin="0,0,0,8"/>
-
-                    <ProgressBar x:Name="progressBar"
-                                 Minimum="0" Maximum="100" Value="{Binding ProgressValue}"
-                                 Height="4" BorderThickness="0"
-                                 Background="#40FFFFFF" Foreground="White">
-                        <ProgressBar.Template>
-                            <ControlTemplate TargetType="ProgressBar">
-                                <Grid>
-                                    <Border Background="{TemplateBinding Background}" CornerRadius="2"/>
-                                    <Border x:Name="PART_Track" CornerRadius="2">
-                                        <Border x:Name="PART_Indicator"
-                                                HorizontalAlignment="Left"
-                                                Background="{TemplateBinding Foreground}"
-                                                CornerRadius="2"/>
-                                    </Border>
-                                </Grid>
-                            </ControlTemplate>
-                        </ProgressBar.Template>
-                    </ProgressBar>
-                </StackPanel>
-            </Border>
-        </Grid>
-    </Border>
+        xmlns:startup="clr-namespace:GeoChemistryNexus.Controls.Startup"
+        Title="GeoChemistry Nexus" Width="691.2" Height="432"
+        Style="{x:Null}" WindowStyle="None" ResizeMode="NoResize"
+        WindowStartupLocation="Manual" Background="White" UseLayoutRounding="True">
+    <!-- This artwork is the first frame. No browser, placeholder, external theme or loading screen. -->
+    <startup:StartupAnimation x:Name="Animation"/>
 </Window>

@@ -1,55 +1,306 @@
-<UserControl x:Class="GeoChemistryNexus.Controls.TextPropertyColorPicker"
+﻿<UserControl x:Class="GeoChemistryNexus.Controls.TextPropertyColorPicker"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
-             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
+             xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
              mc:Ignorable="d" 
-             d:DesignHeight="40" d:DesignWidth="200">
+             MinHeight="30"
+             d:DesignHeight="30" d:DesignWidth="200">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+        <cvs:BoolToVisibilityReConverter x:Key="HideWhenTrueConverter"/>
+        <local:HexMatchConverter x:Key="HexMatchConverter"/>
+        <Style x:Key="PopupChannelBoxStyle" TargetType="TextBox">
+            <Setter Property="MaxLength" Value="3"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="FontFamily" Value="{StaticResource InspectorMonoFont}"/>
+            <Setter Property="FontSize" Value="12.5"/>
+            <Setter Property="Foreground" Value="{StaticResource InspectorTextBrush}"/>
+            <Setter Property="CaretBrush" Value="{StaticResource InspectorTextBrush}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <ScrollViewer x:Name="PART_ContentHost" Focusable="False"
+                                      HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="PopupTextFieldStyle" TargetType="Border">
+            <Setter Property="Margin" Value="0,8,0,0"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="CornerRadius" Value="7"/>
+            <Setter Property="Padding" Value="6,0"/>
+            <Setter Property="Background" Value="{StaticResource InspectorFieldBrush}"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Style.Triggers>
+                <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource ThemeAccentBrush}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- 调色板色块按钮 -->
+        <Style x:Key="PaletteSwatchButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="22"/>
+            <Setter Property="Height" Value="22"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Grid Width="22" Height="22">
+                                <Border x:Name="Swatch" CornerRadius="6" BorderBrush="#26000000" BorderThickness="1"
+                                        Background="{TemplateBinding Background}"/>
+                                <Border x:Name="Ring" Margin="-4" CornerRadius="9" BorderThickness="2" BorderBrush="Transparent" IsHitTestVisible="False"/>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Swatch" Property="BorderBrush" Value="{DynamicResource ThemeAccentBrush}"/>
+                                    <Setter TargetName="Swatch" Property="BorderThickness" Value="2"/>
+                                </Trigger>
+                                <DataTrigger Value="True">
+                                    <DataTrigger.Binding>
+                                        <MultiBinding Converter="{StaticResource HexMatchConverter}">
+                                            <Binding/>
+                                            <Binding Path="HexColor" RelativeSource="{RelativeSource AncestorType=local:TextPropertyColorPicker}"/>
+                                        </MultiBinding>
+                                    </DataTrigger.Binding>
+                                    <Setter TargetName="Ring" Property="BorderBrush" Value="{DynamicResource ThemeAccentBrush}"/>
+                                </DataTrigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+        <!-- 字段外框：色块 + 十六进制输入（ShowHexText=False 时仅保留居中的色块） -->
+        <Border x:Name="FieldBorder" BorderThickness="1" CornerRadius="7">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Background" Value="{StaticResource InspectorFieldBrush}"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource InspectorFieldHoverBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                            <Setter Property="Background" Value="White"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource ThemeAccentBrush}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <Grid Margin="8,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-        <!-- Color Preview Circle -->
-        <Button Grid.Column="0" 
-                Width="24" Height="24" 
-                Margin="0,0,8,0"
-                Cursor="Hand"
-                Command="{Binding ShowColorPickerCommand, RelativeSource={RelativeSource AncestorType=local:TextPropertyColorPicker}}">
-            <Button.Template>
-                <ControlTemplate TargetType="Button">
-                    <Border CornerRadius="12" 
-                            BorderBrush="#E0E0E0" 
-                            BorderThickness="1"
-                            Background="{Binding SelectedBrush, RelativeSource={RelativeSource AncestorType=local:TextPropertyColorPicker}}">
-                    </Border>
-                </ControlTemplate>
-            </Button.Template>
-        </Button>
+                <!-- 色块 -->
+                <Button Grid.Column="0"
+                        Width="18" Height="18"
+                        VerticalAlignment="Center"
+                        Cursor="Hand"
+                        Focusable="False"
+                        Command="{Binding ShowColorPickerCommand, RelativeSource={RelativeSource AncestorType=local:TextPropertyColorPicker}}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ShowHexText, RelativeSource={RelativeSource AncestorType=local:TextPropertyColorPicker}}" Value="False">
+                                    <Setter Property="Grid.ColumnSpan" Value="2"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="5"
+                                    BorderBrush="#26000000"
+                                    BorderThickness="1"
+                                    Background="{Binding SelectedBrush, RelativeSource={RelativeSource AncestorType=local:TextPropertyColorPicker}}"/>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
 
-        <!-- Hex Input -->
-        <hc:TextBox Grid.Column="1" 
-                   Text="{Binding HexColor, RelativeSource={RelativeSource AncestorType=local:TextPropertyColorPicker}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                   BorderThickness="1"
-                   BorderBrush="#E0E0E0"
-                   Height="28"
-                   VerticalContentAlignment="Center"
-                   Padding="5,0"/>
+                <!-- 十六进制输入 -->
+                <TextBox Grid.Column="1"
+                         Visibility="{Binding ShowHexText, RelativeSource={RelativeSource AncestorType=local:TextPropertyColorPicker}, Converter={StaticResource BoolToVisibility}}"
+                         Text="{Binding HexColor, RelativeSource={RelativeSource AncestorType=local:TextPropertyColorPicker}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                         Style="{x:Null}"
+                         Margin="8,0,0,0" Padding="0"
+                         BorderThickness="0"
+                         Background="Transparent"
+                         FontFamily="{StaticResource InspectorMonoFont}"
+                         FontSize="12.5"
+                         CharacterCasing="Upper"
+                         Foreground="{StaticResource InspectorTextBrush}"
+                         CaretBrush="{StaticResource InspectorTextBrush}"
+                         SelectionBrush="{DynamicResource ThemeAccentBrush}"
+                         VerticalAlignment="Center"
+                         VerticalContentAlignment="Center">
+                    <TextBox.Template>
+                        <ControlTemplate TargetType="TextBox">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="False"
+                                          HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled"/>
+                        </ControlTemplate>
+                    </TextBox.Template>
+                </TextBox>
+            </Grid>
+        </Border>
 
-        <!-- HandyControl ColorPicker Popup -->
+        <!-- 调色板弹层：常用色 + 更多颜色（完整取色器） -->
         <Popup x:Name="ColorPopup" 
                PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType=local:TextPropertyColorPicker}}" 
                StaysOpen="False"
                AllowsTransparency="True"
                Placement="Bottom">
-            <Border Background="White" CornerRadius="4" BorderBrush="#E0E0E0" BorderThickness="1" Padding="10">
+            <Border Margin="10,2,10,16" Background="White" CornerRadius="12" BorderBrush="{StaticResource InspectorCardBorderBrush}"
+                    BorderThickness="1" Padding="10">
                 <Border.Effect>
-                    <DropShadowEffect Color="Black" BlurRadius="15" ShadowDepth="5" Opacity="0.4"/>
+                    <DropShadowEffect Color="Black" BlurRadius="16" ShadowDepth="3" Direction="270" Opacity="0.16"/>
                 </Border.Effect>
-                <local:CustomColorPicker SelectedBrush="{Binding SelectedBrush, RelativeSource={RelativeSource AncestorType=local:TextPropertyColorPicker}, Mode=TwoWay}"/>
+                <StackPanel>
+                    <local:CustomColorPicker Margin="0" IsCompact="True" ShowChannelInputs="False"
+                                             Visibility="{Binding IsChecked, ElementName=MoreColorsToggle, Converter={StaticResource BoolToVisibility}}"
+                                             SelectedBrush="{Binding SelectedBrush, RelativeSource={RelativeSource AncestorType=local:TextPropertyColorPicker}, Mode=TwoWay}"/>
+
+                    <!-- 点开「更多颜色」后收起顶部预设，按钮也一并收起 -->
+                    <ItemsControl ItemsSource="{x:Static local:TextPropertyColorPicker.PaletteColors}"
+                                  Visibility="{Binding IsChecked, ElementName=MoreColorsToggle, Converter={StaticResource HideWhenTrueConverter}}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="8"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Style="{StaticResource PaletteSwatchButtonStyle}"
+                                        Background="{Binding}"
+                                        CommandParameter="{Binding}"
+                                        Command="{Binding SelectPaletteColorCommand, RelativeSource={RelativeSource AncestorType=local:TextPropertyColorPicker}}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <!-- 色块 + 十六进制：两种状态都在。展开后紧接着一行 rgba -->
+                    <Border Style="{StaticResource PopupTextFieldStyle}">
+                        <DockPanel LastChildFill="True">
+                            <Button DockPanel.Dock="Right" Margin="6,0,0,0" ToolTip="{Binding [insp_eyedropper], Source={x:Static lg:LanguageService.Instance}}"
+                                    Style="{StaticResource InspectorIconButtonStyle}" Click="EyedropperButton_Click">
+                                <Viewbox Width="13" Height="13">
+                                    <Canvas Width="16" Height="16">
+                                        <Path Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                              StrokeThickness="1.2" StrokeLineJoin="Round">
+                                            <Path.Data>
+                                                <GeometryGroup>
+                                                    <EllipseGeometry Center="8,2.45" RadiusX="1.55" RadiusY="1.55"/>
+                                                    <PathGeometry Figures="M6.45,5.25 H9.55 V10.4 L8,13.55 L6.45,10.4 Z"/>
+                                                    <GeometryGroup.Transform>
+                                                        <RotateTransform Angle="45" CenterX="8" CenterY="8"/>
+                                                    </GeometryGroup.Transform>
+                                                </GeometryGroup>
+                                            </Path.Data>
+                                        </Path>
+                                    </Canvas>
+                                </Viewbox>
+                            </Button>
+                            <Border DockPanel.Dock="Left" Width="18" Height="18" Margin="0,0,8,0" CornerRadius="5"
+                                    BorderBrush="#26000000" BorderThickness="1" VerticalAlignment="Center"
+                                    Background="{Binding SelectedBrush, RelativeSource={RelativeSource AncestorType=local:TextPropertyColorPicker}}"/>
+                            <TextBox x:Name="PopupHexBox"
+                                     Text="{Binding HexColor, RelativeSource={RelativeSource AncestorType=local:TextPropertyColorPicker}, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
+                                     LostKeyboardFocus="PopupHexBox_LostKeyboardFocus"
+                                     KeyDown="PopupHexBox_KeyDown"
+                                     MaxLength="9"
+                                     BorderThickness="0" Background="Transparent" Padding="0"
+                                     FontFamily="{StaticResource InspectorMonoFont}" FontSize="12.5"
+                                     CharacterCasing="Upper"
+                                     Foreground="{StaticResource InspectorTextBrush}"
+                                     CaretBrush="{StaticResource InspectorTextBrush}"
+                                     VerticalAlignment="Center" VerticalContentAlignment="Center">
+                                <TextBox.Template>
+                                    <ControlTemplate TargetType="TextBox">
+                                        <ScrollViewer x:Name="PART_ContentHost" Focusable="False"
+                                                      HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled"/>
+                                    </ControlTemplate>
+                                </TextBox.Template>
+                            </TextBox>
+                        </DockPanel>
+                    </Border>
+
+                    <UniformGrid Columns="4" Margin="0,8,0,0"
+                                 Visibility="{Binding IsChecked, ElementName=MoreColorsToggle, Converter={StaticResource BoolToVisibility}}">
+                        <Border Style="{StaticResource PopupTextFieldStyle}" Margin="0,0,4,0" Padding="6,0">
+                            <DockPanel>
+                                <TextBlock DockPanel.Dock="Left" Text="R" Margin="0,0,4,0" VerticalAlignment="Center"
+                                           FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource InspectorHintBrush}"/>
+                                <TextBox x:Name="PopupRBox" Style="{StaticResource PopupChannelBoxStyle}"
+                                         LostKeyboardFocus="PopupChannel_LostKeyboardFocus" KeyDown="PopupChannel_KeyDown"/>
+                            </DockPanel>
+                        </Border>
+                        <Border Style="{StaticResource PopupTextFieldStyle}" Margin="0,0,4,0" Padding="6,0">
+                            <DockPanel>
+                                <TextBlock DockPanel.Dock="Left" Text="G" Margin="0,0,4,0" VerticalAlignment="Center"
+                                           FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource InspectorHintBrush}"/>
+                                <TextBox x:Name="PopupGBox" Style="{StaticResource PopupChannelBoxStyle}"
+                                         LostKeyboardFocus="PopupChannel_LostKeyboardFocus" KeyDown="PopupChannel_KeyDown"/>
+                            </DockPanel>
+                        </Border>
+                        <Border Style="{StaticResource PopupTextFieldStyle}" Margin="0,0,4,0" Padding="6,0">
+                            <DockPanel>
+                                <TextBlock DockPanel.Dock="Left" Text="B" Margin="0,0,4,0" VerticalAlignment="Center"
+                                           FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource InspectorHintBrush}"/>
+                                <TextBox x:Name="PopupBBox" Style="{StaticResource PopupChannelBoxStyle}"
+                                         LostKeyboardFocus="PopupChannel_LostKeyboardFocus" KeyDown="PopupChannel_KeyDown"/>
+                            </DockPanel>
+                        </Border>
+                        <Border Style="{StaticResource PopupTextFieldStyle}" Margin="0" Padding="6,0">
+                            <DockPanel>
+                                <TextBlock DockPanel.Dock="Left" Text="A" Margin="0,0,4,0" VerticalAlignment="Center"
+                                           FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource InspectorHintBrush}"/>
+                                <TextBox x:Name="PopupABox" Style="{StaticResource PopupChannelBoxStyle}"
+                                         LostKeyboardFocus="PopupChannel_LostKeyboardFocus" KeyDown="PopupChannel_KeyDown"/>
+                            </DockPanel>
+                        </Border>
+                    </UniformGrid>
+
+                    <ToggleButton x:Name="MoreColorsToggle" Margin="0,8,0,0" Height="28" Cursor="Hand" Focusable="False"
+                                  Visibility="{Binding IsChecked, RelativeSource={RelativeSource Self}, Converter={StaticResource HideWhenTrueConverter}}"
+                                  Content="{Binding [insp_more_colors], Source={x:Static lg:LanguageService.Instance}}">
+                        <ToggleButton.Template>
+                            <ControlTemplate TargetType="ToggleButton">
+                                <Border x:Name="Bd" CornerRadius="7" Background="{StaticResource InspectorFieldBrush}">
+                                    <TextBlock Text="{TemplateBinding Content}" FontSize="12" FontWeight="SemiBold"
+                                               Foreground="{StaticResource InspectorLabelBrush}"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="Bd" Property="Background" Value="{StaticResource InspectorFieldHoverBrush}"/>
+                                    </Trigger>
+                                    <Trigger Property="IsChecked" Value="True">
+                                        <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemeAccentSoftBrush}"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </ToggleButton.Template>
+                    </ToggleButton>
+                </StackPanel>
             </Border>
         </Popup>
     </Grid>

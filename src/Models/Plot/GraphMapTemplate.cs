@@ -9,7 +9,7 @@ namespace GeoChemistryNexus.Models
     public class GraphMapTemplate
     {
         /// <summary>
-        /// 底图版本（x.y.z；x.y 对齐程序 FileVersion，z 为内容修订号）
+        /// 底图版本（x.y.z；x.y 对齐程序图解格式版本 DiagramFormatVersion，z 为内容修订号）
         /// </summary>
         [JsonConverter(typeof(ContentVersionJsonConverter))]
         public string Version { get; set; } = ContentVersionHelper.DefaultVersion;

@@ -43,7 +43,7 @@ namespace GeoChemistryNexus.ViewModels
         private bool _isFavorite;
 
         [ObservableProperty]
-        private bool _isCtrlOverlayVisible; // Ctrl键遮罩显示状态
+        private bool _isCtrlOverlayVisible; // 右 Alt 按住时的操作遮罩
 
         [ObservableProperty]
         private ImageSource? _thumbnailImage; // 支持动态修改（下载前是默认图，下载后是真实图）
@@ -68,6 +68,9 @@ namespace GeoChemistryNexus.ViewModels
             TemplateState.Error => LanguageService.Instance["retry_action"],
             // 加载中
             TemplateState.Loading => LanguageService.Instance["loading_status"],
+            // 服务器版本需要升级软件（本地未安装 / 本地已有旧版）
+            TemplateState.RequiresAppUpgrade => LanguageService.Instance["status_requires_app_upgrade"],
+            TemplateState.UpdateRequiresAppUpgrade => LanguageService.Instance["status_update_requires_app_upgrade"],
             _ => ""
         };
 
@@ -89,13 +92,19 @@ namespace GeoChemistryNexus.ViewModels
             _isProcessing = true;
             try
             {
-                if (State == TemplateState.Ready || State == TemplateState.Loading || State == TemplateState.UpdateAvailable)
+                if (State == TemplateState.Ready || State == TemplateState.Loading || State == TemplateState.UpdateAvailable
+                    || State == TemplateState.UpdateRequiresAppUpgrade)
                 {
                     if (OpenHandler != null) await OpenHandler(this);
                 }
                 else if (State == TemplateState.NotDownloaded || State == TemplateState.Error)
                 {
                     if (DownloadHandler != null) await DownloadHandler(this);
+                }
+                else if (State == TemplateState.RequiresAppUpgrade)
+                {
+                    // 本地没有可用版本，不下载也不打开，只提示升级软件
+                    MessageHelper.Warning(LanguageService.GetString("status_requires_app_upgrade_hint", "需升级软件"));
                 }
             }
             finally
@@ -108,6 +117,7 @@ namespace GeoChemistryNexus.ViewModels
         private async Task Update()
         {
             if (_isProcessing) return;
+            if (State is TemplateState.RequiresAppUpgrade or TemplateState.UpdateRequiresAppUpgrade) return;
             _isProcessing = true;
             try
             {
@@ -168,7 +178,7 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 快捷收藏 - Ctrl+卡片右侧点击
+        /// 快捷收藏 - 按住右 Alt 后点击卡片右侧
         /// </summary>
         [RelayCommand]
         private async Task QuickFavorite()
@@ -177,12 +187,12 @@ namespace GeoChemistryNexus.ViewModels
         }
 
         /// <summary>
-        /// 快捷删除 - Ctrl+卡片左侧点击（跳过二次确认）
+        /// 快捷删除 - 按住右 Alt 后点击卡片左侧（跳过二次确认）
         /// </summary>
         [RelayCommand]
         private async Task QuickDelete()
         {
-            // 仅自定义模板支持 Ctrl 快捷删除
+            // 仅自定义模板支持右 Alt 快捷删除
             if (!IsCustomTemplate || !TemplateId.HasValue) return;
 
             // 直接调用删除处理，由 MainPlotViewModel 实现，跳过二次确认
@@ -202,6 +212,8 @@ namespace GeoChemistryNexus.ViewModels
         UpdateAvailable,// 本地存在但哈希不匹配，需要更新
         Downloading,    // 正在下载/解压中
         Error,          // 下载或校验失败
-        Loading         // 正在加载/检查中
+        Loading,        // 正在加载/检查中
+        RequiresAppUpgrade,       // 本地未安装，服务器版本需要升级软件：不能下载也不能打开
+        UpdateRequiresAppUpgrade  // 本地已有旧版，服务器新版需要升级软件：仍可打开旧版，不能更新
     }
 }

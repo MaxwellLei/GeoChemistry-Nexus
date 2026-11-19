@@ -1,0 +1,202 @@
+<UserControl x:Class="GeoChemistryNexus.Controls.GeothermometerEditorPanels.GeoTColumnTables"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
+             xmlns:views="clr-namespace:GeoChemistryNexus.Views"
+             xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="700">
+
+    <!-- 输入列 / 输出列表格：与 EPMA 新建计算模板窗口同款控件，示例为单行 -->
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/GeoChemistryNexus;component/Themes/EditorStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <cvs:EpmaColumnWidthConverter x:Key="ColumnWidth"/>
+            <cvs:EpmaColumnDividerConverter x:Key="ColumnDivider"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <StackPanel x:Name="ColumnTables" PreviewMouseWheel="ColumnTablesMouseWheel">
+
+        <!-- 输入列 -->
+        <DockPanel Margin="0,0,0,10" LastChildFill="False">
+            <TextBlock DockPanel.Dock="Left" Style="{StaticResource GeoTSectionHeading}" Margin="2,4"
+                       Text="{Binding [epma_json_field_inputs], Source={x:Static lg:LanguageService.Instance}}"/>
+            <Button DockPanel.Dock="Right" Style="{StaticResource EditorLink}"
+                    Command="{Binding AddInputCommand}"
+                    Content="{Binding [epma_editor_add_column], Source={x:Static lg:LanguageService.Instance}}"
+                    Visibility="{Binding IsContentReadOnly, Converter={StaticResource BooleanToVisibilityReConverter}}"/>
+        </DockPanel>
+        <Border BorderBrush="#D6E1EE" BorderThickness="1" CornerRadius="8" Background="White" Margin="0,0,0,8"
+                ClipToBounds="True" HorizontalAlignment="Stretch">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="96"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border BorderBrush="#D6E1EE" BorderThickness="0,0,1,0" VerticalAlignment="Top">
+                    <StackPanel>
+                        <!-- 第 1 行：列头（列名）；第 2 行：单位（可选）；第 3 行起：示例值 -->
+                        <Border Height="33" Background="#EDF4FC" BorderBrush="#D6E1EE" BorderThickness="0,0,0,1">
+                            <TextBlock Margin="8,0,0,0" VerticalAlignment="Center" Foreground="#475569"
+                                       Text="{Binding [epma_editor_row_header], Source={x:Static lg:LanguageService.Instance}}"/>
+                        </Border>
+                        <Border Height="32" BorderBrush="#E7EDF5" BorderThickness="0,0,0,1">
+                            <TextBlock Margin="8,0,8,0" VerticalAlignment="Center" Foreground="#64748B"
+                                       Text="{Binding [epma_json_field_unit], Source={x:Static lg:LanguageService.Instance}}"/>
+                        </Border>
+                        <Border Height="32" BorderBrush="#E7EDF5" BorderThickness="0,0,0,1">
+                            <TextBlock Margin="8,0,8,0" VerticalAlignment="Center" Foreground="#64748B">
+                                <Run Text="{Binding [epma_form_example], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}"/><Run Text=" 1"/>
+                            </TextBlock>
+                        </Border>
+                    </StackPanel>
+                </Border>
+                <ScrollViewer x:Name="InputColumnsScroll" Grid.Column="1" Style="{StaticResource EditorTableScroll}">
+                    <ItemsControl x:Name="InputsEditor" AlternationCount="2147483647" ItemsSource="{Binding InputColumns}"
+                                  HorizontalAlignment="Stretch">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="#D6E1EE">
+                                    <Border.BorderThickness>
+                                        <MultiBinding Converter="{StaticResource ColumnDivider}">
+                                            <Binding Path="(ItemsControl.AlternationIndex)" RelativeSource="{RelativeSource AncestorType=ContentPresenter}"/>
+                                            <Binding Path="DataContext.InputColumns.Count" RelativeSource="{RelativeSource AncestorType=UserControl}"/>
+                                        </MultiBinding>
+                                    </Border.BorderThickness>
+                                    <Border.Width>
+                                        <MultiBinding Converter="{StaticResource ColumnWidth}">
+                                            <Binding Path="Id"/>
+                                            <Binding Path="ExampleValues"/>
+                                            <Binding RelativeSource="{RelativeSource Self}"/>
+                                            <Binding Path="ViewportWidth" RelativeSource="{RelativeSource AncestorType=ScrollViewer}"/>
+                                            <Binding Path="DataContext.InputColumns.Count" RelativeSource="{RelativeSource AncestorType=UserControl}"/>
+                                            <Binding Path="(ItemsControl.AlternationIndex)" RelativeSource="{RelativeSource AncestorType=ContentPresenter}"/>
+                                        </MultiBinding>
+                                    </Border.Width>
+                                    <StackPanel>
+                                        <Border Background="#EDF4FC" BorderBrush="#D6E1EE" BorderThickness="0,0,0,1">
+                                            <DockPanel>
+                                                <Button DockPanel.Dock="Right" Style="{StaticResource GeoTRemoveColumn}"
+                                                        Command="{Binding DataContext.RemoveInputCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding}"/>
+                                                <TextBox Style="{StaticResource GeoTColumnCell}" Text="{Binding Id, UpdateSourceTrigger=PropertyChanged}"
+                                                         Tag="{Binding [epma_editor_column_placeholder], Source={x:Static lg:LanguageService.Instance}}"
+                                                         AutomationProperties.Name="{Binding [epma_editor_row_header], Source={x:Static lg:LanguageService.Instance}}"/>
+                                            </DockPanel>
+                                        </Border>
+                                        <!-- 单位（可选） -->
+                                        <Border BorderBrush="#E7EDF5" BorderThickness="0,0,0,1" Height="32">
+                                            <TextBox Style="{StaticResource GeoTColumnCell}" Height="31"
+                                                     Text="{Binding Unit, UpdateSourceTrigger=PropertyChanged}"
+                                                     Tag="{Binding [epma_editor_unit_placeholder], Source={x:Static lg:LanguageService.Instance}}"
+                                                     AutomationProperties.Name="{Binding [epma_json_field_unit], Source={x:Static lg:LanguageService.Instance}}"/>
+                                        </Border>
+                                        <Border BorderBrush="#E7EDF5" BorderThickness="0,0,0,1" Height="32">
+                                            <TextBox Style="{StaticResource GeoTColumnCell}" Height="31"
+                                                     Text="{Binding ExampleValue, UpdateSourceTrigger=PropertyChanged}"
+                                                     Tag="{Binding [epma_editor_sample_placeholder], Source={x:Static lg:LanguageService.Instance}}"
+                                                     AutomationProperties.Name="{Binding [epma_form_example], Source={x:Static lg:LanguageService.Instance}}"/>
+                                        </Border>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+
+        <!-- 输出列：示例为 Grid 公式 -->
+        <DockPanel Margin="0,14,0,10" LastChildFill="False">
+            <TextBlock DockPanel.Dock="Left" Style="{StaticResource GeoTSectionHeading}" Margin="2,4"
+                       Text="{Binding [epma_json_field_outputs], Source={x:Static lg:LanguageService.Instance}}"/>
+            <Button DockPanel.Dock="Right" Style="{StaticResource EditorLink}"
+                    Command="{Binding AddOutputCommand}"
+                    Content="{Binding [epma_editor_add_column], Source={x:Static lg:LanguageService.Instance}}"
+                    Visibility="{Binding IsContentReadOnly, Converter={StaticResource BooleanToVisibilityReConverter}}"/>
+        </DockPanel>
+        <Border BorderBrush="#D6E1EE" BorderThickness="1" CornerRadius="8" Background="#F7F9FC"
+                ClipToBounds="True" HorizontalAlignment="Stretch">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="96"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border BorderBrush="#D6E1EE" BorderThickness="0,0,1,0" VerticalAlignment="Top">
+                    <StackPanel>
+                        <Border Height="33" BorderBrush="#D6E1EE" BorderThickness="0,0,0,1">
+                            <TextBlock Margin="8,0,0,0" VerticalAlignment="Center" Foreground="#475569"
+                                       Text="{Binding [epma_json_field_outputs], Source={x:Static lg:LanguageService.Instance}}"/>
+                        </Border>
+                        <Border Height="32">
+                            <TextBlock Margin="8,0,8,0" VerticalAlignment="Center" Foreground="#64748B">
+                                <Run Text="{Binding [epma_form_example], Source={x:Static lg:LanguageService.Instance}, Mode=OneWay}"/><Run Text=" 1"/>
+                            </TextBlock>
+                        </Border>
+                    </StackPanel>
+                </Border>
+                <ScrollViewer x:Name="OutputColumnsScroll" Grid.Column="1" Style="{StaticResource EditorTableScroll}">
+                    <ItemsControl x:Name="OutputsEditor" AlternationCount="2147483647" ItemsSource="{Binding OutputColumns}"
+                                  HorizontalAlignment="Stretch">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="#D6E1EE">
+                                    <Border.BorderThickness>
+                                        <MultiBinding Converter="{StaticResource ColumnDivider}">
+                                            <Binding Path="(ItemsControl.AlternationIndex)" RelativeSource="{RelativeSource AncestorType=ContentPresenter}"/>
+                                            <Binding Path="DataContext.OutputColumns.Count" RelativeSource="{RelativeSource AncestorType=UserControl}"/>
+                                        </MultiBinding>
+                                    </Border.BorderThickness>
+                                    <Border.Width>
+                                        <MultiBinding Converter="{StaticResource ColumnWidth}">
+                                            <Binding Path="Id"/>
+                                            <Binding Path="ExampleValue"/>
+                                            <Binding RelativeSource="{RelativeSource Self}"/>
+                                            <Binding Path="ViewportWidth" RelativeSource="{RelativeSource AncestorType=ScrollViewer}"/>
+                                            <Binding Path="DataContext.OutputColumns.Count" RelativeSource="{RelativeSource AncestorType=UserControl}"/>
+                                            <Binding Path="(ItemsControl.AlternationIndex)" RelativeSource="{RelativeSource AncestorType=ContentPresenter}"/>
+                                        </MultiBinding>
+                                    </Border.Width>
+                                    <StackPanel>
+                                        <Border BorderBrush="#D6E1EE" BorderThickness="0,0,0,1">
+                                            <DockPanel>
+                                                <Button DockPanel.Dock="Right" Style="{StaticResource GeoTRemoveColumn}"
+                                                        Command="{Binding DataContext.RemoveOutputCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding}"/>
+                                                <TextBox Style="{StaticResource GeoTColumnCell}" Text="{Binding Id, UpdateSourceTrigger=PropertyChanged}"
+                                                         Tag="{Binding [epma_editor_column_placeholder], Source={x:Static lg:LanguageService.Instance}}"
+                                                         AutomationProperties.Name="{Binding [epma_json_field_outputs], Source={x:Static lg:LanguageService.Instance}}"/>
+                                            </DockPanel>
+                                        </Border>
+                                        <Border Height="32">
+                                            <TextBox Style="{StaticResource GeoTColumnCell}" Height="31"
+                                                     Text="{Binding ExampleValue, UpdateSourceTrigger=PropertyChanged}"
+                                                     Tag="{Binding [epma_editor_sample_placeholder], Source={x:Static lg:LanguageService.Instance}}"
+                                                     ToolTip="{Binding [geo_tooltip_sample_row_eg], Source={x:Static lg:LanguageService.Instance}}"
+                                                     AutomationProperties.Name="{Binding [epma_form_example], Source={x:Static lg:LanguageService.Instance}}"/>
+                                        </Border>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+    </StackPanel>
+</UserControl>

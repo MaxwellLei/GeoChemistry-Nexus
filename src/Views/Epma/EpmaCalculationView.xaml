@@ -1,0 +1,410 @@
+﻿<UserControl x:Class="GeoChemistryNexus.Views.EpmaCalculationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:rg="clr-namespace:unvell.ReoGrid;assembly=unvell.ReoGrid"
+             xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
+             xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
+             xmlns:ctrl="clr-namespace:GeoChemistryNexus.Controls"
+             FontFamily="Segoe UI, Microsoft YaHei UI" FontSize="13" Foreground="#334155"
+             UseLayoutRounding="True" TextOptions.TextFormattingMode="{DynamicResource AppTextFormattingMode}"
+             Background="White" SizeChanged="WorkbenchSizeChanged">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="EpmaWorkbenchStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <cvs:BoolToVisibilityConverter x:Key="Show"/>
+            <!-- Match CIPW's compact header buttons, with EPMA's grey outline. -->
+            <Style x:Key="HeaderToolbarButton" TargetType="Button">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Foreground" Value="#555"/>
+                <Setter Property="BorderBrush" Value="#B8BDC5"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Padding" Value="8,4"/>
+                <Setter Property="Margin" Value="2,0"/>
+                <Setter Property="FontFamily" Value="{x:Static SystemFonts.MessageFontFamily}"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" CornerRadius="6"
+                                    BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
+                                    Padding="{TemplateBinding Padding}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#E5E5E5"/>
+                                    <Setter Property="Foreground" Value="#000"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="#D1D1D1"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Foreground" Value="#BBB"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="HeaderPrimaryButton" TargetType="Button" BasedOn="{StaticResource HeaderToolbarButton}">
+                <Setter Property="Background" Value="{DynamicResource ThemeAccentBrush}"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="Padding" Value="12,4"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="Surface" Background="{TemplateBinding Background}" CornerRadius="6"
+                                    BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
+                                    Padding="{TemplateBinding Padding}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Surface" Property="Background" Value="{DynamicResource ThemeAccentDarkBrush}"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="Surface" Property="Background" Value="#004578"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter TargetName="Surface" Property="Background" Value="#CCCCCC"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <DataTemplate x:Key="ParameterTemplate">
+                <StackPanel Margin="0,0,0,8" Visibility="{Binding Visible, Converter={StaticResource Show}}">
+                    <TextBlock Text="{Binding Label}" ToolTip="{Binding Label}" Style="{StaticResource FieldLabel}"/>
+                    <TextBox Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsReadOnly}" AutomationProperties.Name="{Binding Label}">
+                        <TextBox.Style>
+                            <Style TargetType="TextBox" BasedOn="{StaticResource FieldText}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Type}" Value="choice"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
+                    <ComboBox IsEnabled="{Binding Editable}" ItemsSource="{Binding Choices}" SelectedValue="{Binding Text, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedValuePath="Value" DisplayMemberPath="Label" ToolTip="{Binding SelectedItem.Label, RelativeSource={RelativeSource Self}}"
+                              AutomationProperties.Name="{Binding Label}">
+                        <ComboBox.Style>
+                            <Style TargetType="ComboBox" BasedOn="{StaticResource FieldCombo}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Type}" Value="choice"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ComboBox.Style>
+                    </ComboBox>
+                </StackPanel>
+            </DataTemplate>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*" MinHeight="100"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition x:Name="DetailsRow" Height="Auto"/>
+        </Grid.RowDefinitions>
+        <!-- 计算顶栏：返回 + 模板名称 + 工具栏；窄窗口时操作按钮折到第二行。 -->
+        <ContentControl Grid.Row="0" Style="{StaticResource PageTitleBarStyle}">
+            <Grid x:Name="ToolbarGrid" Margin="0,6">
+                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Command="{Binding BackCommand}" Style="{StaticResource HeaderToolbarButton}" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE72B;" FontFamily="Segoe MDL2 Assets" FontSize="12" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                        <TextBlock Text="{Binding [return_to_template_library], Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <TextBlock x:Name="PackageTitle" Grid.Column="1" Text="{Binding PackageName}"
+                           FontFamily="{x:Static SystemFonts.MessageFontFamily}" FontSize="16" FontWeight="SemiBold"
+                           Foreground="#1E293B" LineHeight="24" LineStackingStrategy="BlockLineHeight"
+                           HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8,0,0,0"
+                           TextTrimming="CharacterEllipsis" MaxWidth="300"/>
+                <StackPanel x:Name="ToolbarActions" Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Command="{Binding ToggleHelpCommand}" Style="{StaticResource HeaderToolbarButton}"
+                            ToolTip="{Binding [epma_help_tooltip], Source={x:Static lg:LanguageService.Instance}}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE946;" FontFamily="Segoe MDL2 Assets" FontSize="12" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                            <TextBlock Text="{Binding [epma_help], Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding ExampleCommand}" Style="{StaticResource HeaderToolbarButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE7C3;" FontFamily="Segoe MDL2 Assets" FontSize="12" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                            <TextBlock Text="{Binding [epma_example_data], Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding ExportCommand}" Style="{StaticResource HeaderToolbarButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xEDE1;" FontFamily="Segoe MDL2 Assets" FontSize="12" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                            <TextBlock Text="{Binding [epma_export], Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding ClearCommand}" Style="{StaticResource HeaderToolbarButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#D13438" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                            <TextBlock Text="{Binding [epma_clear], Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Rectangle Width="1" Height="18" Fill="#E0E0E0" Margin="8,0" VerticalAlignment="Center"/>
+                    <Button Command="{Binding CancelCommand}"
+                            Style="{StaticResource HeaderToolbarButton}"
+                            Visibility="{Binding IsBusy, Converter={StaticResource Show}}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="12" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                            <TextBlock Text="{Binding [epma_cancel], Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding CalculateCommand}" Style="{StaticResource HeaderPrimaryButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE768;" FontFamily="Segoe MDL2 Assets" FontSize="12" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                            <TextBlock Text="{Binding [epma_calculate], Source={x:Static lg:LanguageService.Instance}}" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </ContentControl>
+
+
+        <Border x:Name="SettingsSurface" Grid.Row="1" Background="White" BorderBrush="#E2E8F0" BorderThickness="0,0,0,1"
+                Visibility="{Binding IsSettingsExpanded, Converter={StaticResource Show}}">
+        <StackPanel>
+            <ScrollViewer x:Name="SettingsScroll" Style="{x:Null}" MaxHeight="224"
+                          VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <StackPanel>
+                    <Grid x:Name="SettingsGrid">
+                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.3*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="1.7*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border x:Name="IronCard" Style="{StaticResource ParameterSection}" Visibility="{Binding HasIronParameters, Converter={StaticResource Show}}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                    <TextBlock Text="&#xE713;" Style="{StaticResource SectionIcon}"/>
+                                    <TextBlock Text="{Binding [epma_group_iron], Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource SectionTitle}"/>
+                                </StackPanel>
+                                <Grid x:Name="IronFields">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                    <ItemsControl ItemsSource="{Binding IronModeParameters}" ItemTemplate="{StaticResource ParameterTemplate}">
+                                        <ItemsControl.ItemsPanel><ItemsPanelTemplate><UniformGrid Columns="2"/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemContainerStyle><Style TargetType="ContentPresenter"><Setter Property="Margin" Value="0,0,8,0"/></Style></ItemsControl.ItemContainerStyle>
+                                    </ItemsControl>
+                                    <ItemsControl Grid.Column="1" Width="130" Margin="10,0,0,0"
+                                                  ItemsSource="{Binding IronValueParameters}" ItemTemplate="{StaticResource ParameterTemplate}"
+                                                  Visibility="{Binding HasIronValueParameters, Converter={StaticResource Show}}"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                        <Border x:Name="NormalizationCard" Grid.Column="1" Style="{StaticResource ParameterSection}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                    <TextBlock Text="&#xE1D2;" Style="{StaticResource SectionIcon}"/>
+                                    <TextBlock Text="{Binding [epma_group_normalization], Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource SectionTitle}"/>
+                                </StackPanel>
+                                <ItemsControl ItemsSource="{Binding NormalizationParameters}" ItemTemplate="{StaticResource ParameterTemplate}">
+                                    <ItemsControl.ItemsPanel><ItemsPanelTemplate><UniformGrid Columns="2"/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemContainerStyle><Style TargetType="ContentPresenter"><Setter Property="Margin" Value="0,0,8,0"/></Style></ItemsControl.ItemContainerStyle>
+                                </ItemsControl>
+                                <StackPanel Visibility="{Binding HasFixedRules, Converter={StaticResource Show}}">
+                                    <Border Background="#F6F8FB" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="4" Padding="9,7">
+                                        <DockPanel>
+                                            <TextBlock Text="&#xE72E;" FontFamily="Segoe MDL2 Assets" Margin="0,0,7,0" VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding TemplateRuleSummary}" ToolTip="{Binding TemplateDescription}" FontSize="12" TextTrimming="CharacterEllipsis"/>
+                                        </DockPanel>
+                                    </Border>
+                                    <TextBlock Text="{Binding [epma_template_rules_hint], Source={x:Static lg:LanguageService.Instance}}" ToolTip="{Binding TemplateDescription}"
+                                               TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxHeight="32"
+                                               Foreground="#64748B" FontSize="11" Margin="0,6,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                        <Border x:Name="DisplayCard" Grid.Column="2" Style="{StaticResource ParameterSection}" BorderThickness="0">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                    <TextBlock Text="&#xE8A5;" Style="{StaticResource SectionIcon}"/>
+                                    <TextBlock Text="{Binding [epma_group_input_display], Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource SectionTitle}"/>
+                                </StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="1.15*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="0.8*"/></Grid.ColumnDefinitions>
+                                    <ItemsControl ItemsSource="{Binding InputParameters}" ItemTemplate="{StaticResource ParameterTemplate}" Margin="0,0,10,0"/>
+                                    <StackPanel Grid.Column="1" Margin="0,0,10,8">
+                                        <TextBlock Text="{Binding [epma_numeric_format], Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource FieldLabel}"/>
+                                        <ComboBox ItemsSource="{Binding NumericFormats}" SelectedItem="{Binding NumericFormat}" DisplayMemberPath="Label"
+                                                  Style="{StaticResource FieldCombo}" AutomationProperties.Name="{Binding [epma_numeric_format], Source={x:Static lg:LanguageService.Instance}}"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2" Margin="0,0,0,8">
+                                        <TextBlock Text="{Binding [epma_decimals], Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource FieldLabel}"/>
+                                        <TextBox Text="{Binding DisplayDecimals, ValidatesOnExceptions=True}" TextAlignment="Center" Style="{StaticResource FieldText}"
+                                                 AutomationProperties.Name="{Binding [epma_decimals], Source={x:Static lg:LanguageService.Instance}}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                    <Border Style="{StaticResource ParameterSection}" BorderThickness="0,1,0,0" Visibility="{Binding HasOtherParameters, Converter={StaticResource Show}}">
+                        <StackPanel>
+                            <TextBlock Text="{Binding [epma_group_other], Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource SectionTitle}" Margin="0,0,0,10"/>
+                            <ItemsControl ItemsSource="{Binding OtherParameters}" ItemTemplate="{StaticResource ParameterTemplate}">
+                                <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemContainerStyle><Style TargetType="ContentPresenter"><Setter Property="Width" Value="230"/><Setter Property="Margin" Value="0,0,12,0"/></Style></ItemsControl.ItemContainerStyle>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+        </StackPanel>
+        </Border>
+
+        <ctrl:ReoGridTableHost x:Name="WorksheetSurface" Grid.Row="2" Style="{StaticResource ReoGridTableHostStyle}"
+                               UseBuiltInCellEditor="False"
+                               ResetLayoutCommand="{Binding ResetWorksheetLayoutCommand}"
+                               SelectedCellContent="{Binding SelectedCellContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               SelectedCellAddress="{Binding SelectedCellAddress}"
+                               IsSelectedCellReadOnly="{Binding IsSelectedCellReadOnly}">
+            <ctrl:ReoGridTableHost.ToolbarActions>
+                <Button x:Name="SettingsToggle" Command="{Binding ToggleSettingsCommand}"
+                        Style="{StaticResource ToolbarButton}" Margin="14,0,0,0" Padding="8,5"
+                        AutomationProperties.Name="{Binding SettingsToggleText}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding SettingsToggleText}" FontSize="12" VerticalAlignment="Center"/>
+                        <TextBlock FontFamily="Segoe MDL2 Assets" Margin="6,0,0,0" VerticalAlignment="Center" FontSize="11">
+                            <TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Text" Value="&#xE70D;"/>
+                                <Style.Triggers><DataTrigger Binding="{Binding IsSettingsExpanded}" Value="True"><Setter Property="Text" Value="&#xE70E;"/></DataTrigger></Style.Triggers>
+                            </Style></TextBlock.Style>
+                        </TextBlock>
+                    </StackPanel>
+                </Button>
+            </ctrl:ReoGridTableHost.ToolbarActions>
+            <rg:ReoGridControl x:Name="ScriptGrid"/>
+        </ctrl:ReoGridTableHost>
+
+        <GridSplitter x:Name="DetailSplitter" Grid.Row="3" Height="6" HorizontalAlignment="Stretch"
+                      ResizeDirection="Rows" ResizeBehavior="PreviousAndNext" Background="Transparent"
+                      ShowsPreview="False" Cursor="SizeNS" DragCompleted="RememberHeight"
+                      Visibility="{Binding IsDiagnosticsExpanded, Converter={StaticResource Show}}">
+            <GridSplitter.Template><ControlTemplate TargetType="GridSplitter">
+                <Border Background="#F8FAFC" BorderBrush="#E2E8F0" BorderThickness="0,1"><Border Background="#CBD5E1" Height="2" Width="36" VerticalAlignment="Center"/></Border>
+            </ControlTemplate></GridSplitter.Template>
+        </GridSplitter>
+
+        <Border x:Name="DiagnosticSurface" Grid.Row="4" Style="{StaticResource FlatSurface}">
+            <TabControl x:Name="DetailTabs" Style="{StaticResource DetailTabs}">
+                    <TabItem Header="QC">
+                        <DockPanel>
+                            <TextBlock DockPanel.Dock="Top" Text="{Binding QcStatusText}" Margin="12,8,12,6" FontSize="11" Foreground="#64748B" TextWrapping="Wrap"/>
+                            <Grid>
+                                <DataGrid ItemsSource="{Binding Diagnostics}"
+                                          SelectionChanged="DiagnosticSelectionChanged" EnableRowVirtualization="True" EnableColumnVirtualization="True">
+                                    <DataGrid.Style><Style TargetType="DataGrid" BasedOn="{StaticResource DetailGrid}">
+                                        <Style.Triggers><DataTrigger Binding="{Binding Diagnostics.Count}" Value="0"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers>
+                                    </Style></DataGrid.Style>
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="{Binding [epma_column_InputRow], Source={x:Static lg:LanguageService.Instance}}" Binding="{Binding InputRow}" Width="70"/>
+                                        <DataGridTextColumn Header="{Binding [epma_column_Sample], Source={x:Static lg:LanguageService.Instance}}" Binding="{Binding Sample}" Width="130"/>
+                                        <DataGridTemplateColumn Header="{Binding [epma_column_Level], Source={x:Static lg:LanguageService.Instance}}" Width="90">
+                                            <DataGridTemplateColumn.CellTemplate><DataTemplate>
+                                                <Border CornerRadius="4" Padding="6,2" HorizontalAlignment="Left">
+                                                    <Border.Style><Style TargetType="Border">
+                                                        <Setter Property="Background" Value="{DynamicResource ThemeAccentSoftBrush}"/><Setter Property="TextElement.Foreground" Value="{DynamicResource ThemeAccentBrush}"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Level}" Value="Warning"><Setter Property="Background" Value="#FEF3C7"/><Setter Property="TextElement.Foreground" Value="#92400E"/></DataTrigger>
+                                                            <DataTrigger Binding="{Binding Level}" Value="Error"><Setter Property="Background" Value="#FEE2E2"/><Setter Property="TextElement.Foreground" Value="#B91C1C"/></DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style></Border.Style>
+                                                    <TextBlock Text="{Binding LevelLabel}" FontSize="11"/>
+                                                </Border>
+                                            </DataTemplate></DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTextColumn Header="{Binding [epma_column_Message], Source={x:Static lg:LanguageService.Instance}}" Binding="{Binding Message}" Width="*" MinWidth="280">
+                                            <DataGridTextColumn.ElementStyle><Style TargetType="TextBlock"><Setter Property="TextTrimming" Value="CharacterEllipsis"/><Setter Property="ToolTip" Value="{Binding Message}"/></Style></DataGridTextColumn.ElementStyle>
+                                        </DataGridTextColumn>
+                                        <DataGridTextColumn Header="{Binding [epma_column_Target], Source={x:Static lg:LanguageService.Instance}}" Binding="{Binding Target}" Width="110"/>
+                                        <DataGridTextColumn Header="{Binding [epma_column_Actual], Source={x:Static lg:LanguageService.Instance}}" Binding="{Binding Actual}" Width="85"/>
+                                        <DataGridTextColumn Header="{Binding [epma_column_Expectation], Source={x:Static lg:LanguageService.Instance}}" Binding="{Binding Expectation}" Width="85"/>
+                                        <DataGridTextColumn Header="{Binding [epma_column_Source], Source={x:Static lg:LanguageService.Instance}}" Binding="{Binding Source}" Width="100"/>
+                                        <DataGridTextColumn Header="{Binding [epma_column_Code], Source={x:Static lg:LanguageService.Instance}}" Binding="{Binding Code}" Width="190"/>
+                                        <DataGridTextColumn Header="{Binding [epma_column_Stale], Source={x:Static lg:LanguageService.Instance}}" Binding="{Binding Stale}" Width="80"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                                <Border Background="White">
+                                    <Border.Style><Style TargetType="Border"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers>
+                                        <DataTrigger Binding="{Binding Diagnostics.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
+                                    </Style.Triggers></Style></Border.Style>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12,4">
+                                        <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="20" VerticalAlignment="Center" Margin="0,0,8,0">
+                                            <TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Text" Value="&#xE946;"/><Setter Property="Foreground" Value="#94A3B8"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsQcClear}" Value="True"><Setter Property="Text" Value="&#xE73E;"/><Setter Property="Foreground" Value="#16A34A"/></DataTrigger>
+                                                    <DataTrigger Binding="{Binding HasStaleResults}" Value="True"><Setter Property="Foreground" Value="#D97706"/></DataTrigger>
+                                                </Style.Triggers>
+                                            </Style></TextBlock.Style>
+                                        </TextBlock>
+                                        <TextBlock Text="{Binding QcEmptyTitle}" FontSize="12" VerticalAlignment="Center" Foreground="#475569" TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                        </DockPanel>
+                    </TabItem>
+                    <TabItem Header="{Binding [epma_provenance], Source={x:Static lg:LanguageService.Instance}}">
+                        <TextBox Text="{Binding Details, Mode=OneWay}" Style="{StaticResource RecordBox}"/>
+                    </TabItem>
+                    <TabItem Header="{Binding [epma_process_record], Source={x:Static lg:LanguageService.Instance}}">
+                        <TextBox Text="{Binding ProcessText, Mode=OneWay}" Style="{StaticResource RecordBox}"/>
+                    </TabItem>
+                    <TabItem Header="{Binding [epma_fields], Source={x:Static lg:LanguageService.Instance}}">
+                        <DataGrid ItemsSource="{Binding Fields}" Style="{StaticResource DetailGrid}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Field" Binding="{Binding Id}" Width="140"/>
+                                <DataGridTextColumn Header="Meaning" Binding="{Binding DisplayLabel}" Width="160"/>
+                                <DataGridTextColumn Header="Description" Binding="{Binding DisplayDescription}" Width="*"/>
+                                <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="80"/>
+                                <DataGridTextColumn Header="Unit" Binding="{Binding DisplayUnit}" Width="80"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </TabItem>
+
+
+                </TabControl>
+        </Border>
+
+        <!-- 帮助文档：点击工具栏“帮助”后覆盖工具栏下方的工作区，再次点击返回 -->
+        <Border x:Name="HelpSurface" Grid.Row="1" Grid.RowSpan="4" Background="White" Panel.ZIndex="10"
+                Visibility="{Binding IsHelpVisible, Converter={StaticResource Show}}">
+            <Grid>
+                <RichTextBox x:Name="HelpDocViewer" IsReadOnly="True" IsDocumentEnabled="True" Padding="20,16" BorderThickness="0"
+                             VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                    <RichTextBox.Resources>
+                        <Style TargetType="{x:Type FlowDocument}">
+                            <Setter Property="ColumnWidth" Value="999999"/>
+                            <Setter Property="PagePadding" Value="10"/>
+                        </Style>
+                    </RichTextBox.Resources>
+                    <FlowDocument/>
+                </RichTextBox>
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding HasHelpDocument}" Value="False">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+                    <TextBlock Text="&#xE7C3;" FontFamily="Segoe MDL2 Assets" FontSize="36" Foreground="#CBD5E1" HorizontalAlignment="Center" Margin="0,0,0,12"/>
+                    <TextBlock Text="{Binding [epma_help_no_doc], Source={x:Static lg:LanguageService.Instance}}" FontSize="14" Foreground="#94A3B8" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

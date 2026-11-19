@@ -8,8 +8,9 @@ namespace GeoChemistryNexus.Helpers
     /// </summary>
     public static class WorksheetDefaultsHelper
     {
-        public const string DiagramConfigKey = "diagram_default_worksheet_row_count";
-        public const string GtmConfigKey = "gtm_default_worksheet_row_count";
+        public const string DiagramConfigKey = ConfigKeys.DiagramDefaultWorksheetRowCount;
+        public const string GtmConfigKey = ConfigKeys.GtmDefaultWorksheetRowCount;
+        public const string EpmaConfigKey = ConfigKeys.EpmaDefaultWorksheetRowCount;
         public const int FallbackRowCount = 500;
 
         public static readonly IReadOnlyList<int> AllowedRowCounts = new[] { 100, 200, 500, 1000, 2000, 5000 };

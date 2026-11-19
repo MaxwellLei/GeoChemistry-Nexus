@@ -63,7 +63,7 @@ namespace GeoChemistryNexus.Helpers
         /// <summary>
         /// 通知已运行的主实例：激活窗口，并可选导入关联包。
         /// </summary>
-        public static bool TryNotifyRunningInstance(string? packagePath)
+        public static async Task<bool> TryNotifyRunningInstanceAsync(string? packagePath)
         {
             string payload = string.IsNullOrWhiteSpace(packagePath)
                 ? ActivateToken
@@ -73,28 +73,20 @@ namespace GeoChemistryNexus.Helpers
             {
                 try
                 {
-                    using var client = new NamedPipeClientStream(
+                    await using var client = new NamedPipeClientStream(
                         ".",
                         PipeName,
                         PipeDirection.Out,
-                        PipeOptions.None);
+                        PipeOptions.Asynchronous);
 
-                    client.Connect(500);
-                    using var writer = new StreamWriter(client, Encoding.UTF8) { AutoFlush = true };
-                    writer.WriteLine(payload);
+                    await client.ConnectAsync(500).ConfigureAwait(false);
+                    await using var writer = new StreamWriter(client, Encoding.UTF8) { AutoFlush = true };
+                    await writer.WriteLineAsync(payload).ConfigureAwait(false);
                     return true;
                 }
-                catch (TimeoutException)
+                catch (Exception ex) when (ex is TimeoutException or IOException or UnauthorizedAccessException)
                 {
-                    Thread.Sleep(150);
-                }
-                catch (IOException)
-                {
-                    Thread.Sleep(150);
-                }
-                catch (UnauthorizedAccessException)
-                {
-                    Thread.Sleep(150);
+                    await Task.Delay(150).ConfigureAwait(false);
                 }
             }
 

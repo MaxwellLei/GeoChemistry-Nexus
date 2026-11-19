@@ -14,13 +14,18 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using unvell.ReoGrid;
+using unvell.ReoGrid.Events;
 
 namespace GeoChemistryNexus.ViewModels
 {
     /// <summary>
     /// Niggli 标准分子矿物计算页面 ViewModel
+    /// <para>
+    /// 同时实现公共表格控件的两个可选接口：
+    /// <see cref="IWorksheetRowStatusProvider"/>（行头状态点）与 <see cref="IWorksheetColumnHeaderProvider"/>（列头分组行 / 单位）。
+    /// </para>
     /// </summary>
-    public partial class NiggliPageViewModel : ObservableObject
+    public partial class NiggliPageViewModel : ObservableObject, IWorksheetRowStatusProvider, IWorksheetColumnHeaderProvider
     {
         /// <summary>
         /// Fe3+/Fe总比值 (默认 0.15)
@@ -65,10 +70,10 @@ namespace GeoChemistryNexus.ViewModels
         private bool _isSilicaUndersaturated;
 
         /// <summary>
-        /// 诊断面板是否展开
+        /// 右侧检查器（计算详情）是否展开；与表格控件的 IsInspectorOpen 双向绑定，默认收起。
         /// </summary>
         [ObservableProperty]
-        private bool _isDiagnosticPanelExpanded = false;
+        private bool _isInspectorOpen = false;
 
         public void ClampFe3Fraction()
         {
@@ -94,7 +99,20 @@ namespace GeoChemistryNexus.ViewModels
         };
 
         private readonly Dictionary<int, NiggliResult> _rowResults = new();
+
+        /// <summary>最近一次计算失败的行（用于行头状态点）。</summary>
+        private readonly HashSet<int> _failedRows = new();
+
+        /// <summary>计算之后输入被修改、结果已过期的行（用于行头状态点）。</summary>
+        private readonly HashSet<int> _staleRows = new();
+
+        /// <summary>氧化物输入列中属于“主量元素”的个数（SiO2 … K2O），其后为其他氧化物 / 挥发分。</summary>
+        private static readonly int MajorOxideCount = Array.IndexOf(InputColumns, "K2O") + 1;
+
         private ReoGridControl? _grid;
+
+        public event EventHandler? RowStatusChanged;
+        public event EventHandler? ColumnHeaderInfoChanged;
 
         public NiggliPageViewModel()
         {
@@ -107,6 +125,8 @@ namespace GeoChemistryNexus.ViewModels
                 return;
 
             RefreshLocalizedHeaders(_grid.CurrentWorksheet);
+            // 分组名是本地化文字，切换语言后需要重新计算列头布局。
+            ColumnHeaderInfoChanged?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -125,43 +145,36 @@ namespace GeoChemistryNexus.ViewModels
                             DiagnosticColumns.Length + ResultMineralOrder.Length;
             sheet.Resize(InitialWorksheetRowCount, totalCols);
 
+            // 统一表格外观（与 EPMA 计算表格一致）：数据区默认字体/行高
+            ReoGridTableAppearance.ApplyCellDefaults(sheet);
+
+            int separatorCol = InputStartColumn + InputColumns.Length;
+
+            // 使用 ReoGrid 原生列头作为表头：输入列 / 分隔列 / 结果列分别套用对应的列头样式
+            sheet.SetSettings(WorksheetSettings.View_ShowColumnHeader, true);
+            for (int c = 0; c < totalCols; c++)
+            {
+                ReoGridTableAppearance.SetColumnHeader(grid, c, kind: GetColumnKind(c, separatorCol));
+            }
+            ReoGridTableAppearance.ConfigureColumnHeaderHeight(sheet);
+
             // 输入列标题
             for (int c = 0; c < InputColumns.Length; c++)
             {
                 int col = InputStartColumn + c;
-                sheet[0, col] = InputColumns[c];
+                sheet.ColumnHeaders[col].Text = InputColumns[c];
                 sheet.SetColumnsWidth(col, 1, 70);
             }
 
             // 分隔列
-            int separatorCol = InputStartColumn + InputColumns.Length;
-            sheet[0, separatorCol] = "│";
+            sheet.ColumnHeaders[separatorCol].Text = string.Empty;
             sheet.SetColumnsWidth(separatorCol, 1, 20);
-            var separatorStyle = new WorksheetRangeStyle
-            {
-                Flag = PlainStyleFlag.BackColor,
-                BackColor = Color.FromRgb(240, 240, 240)
-            };
-            sheet.SetRangeStyles(new RangePosition(0, separatorCol, InitialWorksheetRowCount, 1), separatorStyle);
 
-            // 表头样式
-            var headerStyle = new WorksheetRangeStyle
-            {
-                Flag = PlainStyleFlag.BackColor | PlainStyleFlag.TextColor |
-                       PlainStyleFlag.FontStyleBold | PlainStyleFlag.HorizontalAlign,
-                Bold = true,
-                BackColor = Colors.LightGray,
-                TextColor = Colors.Black,
-                HAlign = ReoGridHorAlign.Center
-            };
-            sheet.SetRangeStyles(new RangePosition(0, 0, 1, totalCols), headerStyle);
-            ApplyHeaderSideBorders(sheet, totalCols);
-
-            // 锁定表头
-            for (int i = 0; i < totalCols; i++)
-            {
-                sheet.Cells[0, i].IsReadOnly = true;
-            }
+            // 分隔列、结果列底色
+            ReoGridTableAppearance.StyleBodyRange(sheet,
+                new RangePosition(0, separatorCol, InitialWorksheetRowCount, 1), ReoGridColumnKind.Separator);
+            ReoGridTableAppearance.StyleBodyRange(sheet,
+                new RangePosition(0, separatorCol + 1, InitialWorksheetRowCount, totalCols - separatorCol - 1), ReoGridColumnKind.Output);
 
             // 数据区域居中对齐
             var dataStyle = new WorksheetRangeStyle
@@ -169,13 +182,97 @@ namespace GeoChemistryNexus.ViewModels
                 Flag = PlainStyleFlag.HorizontalAlign,
                 HAlign = ReoGridHorAlign.Center
             };
-            sheet.SetRangeStyles(new RangePosition(1, 0, InitialWorksheetRowCount - 1, totalCols), dataStyle);
+            sheet.SetRangeStyles(new RangePosition(0, 0, InitialWorksheetRowCount, totalCols), dataStyle);
 
-            // 冻结首行
-            sheet.FreezeToCell(1, 0);
+            // 冻结第 1 列（样品号），向右滚动时始终可见；只冻结这一列，不冻结行
+            sheet.FreezeToCell(0, 1);
 
             RefreshLocalizedHeaders(sheet);
+
+            // 可选的表格外观扩展：列头分组行 / 单位、行头状态点
+            ReoGridTableAppearance.SetColumnHeaderProvider(grid, this);
+            ReoGridTableAppearance.SetRowStatusProvider(grid, this);
+            sheet.CellDataChanged += OnWorksheetCellDataChanged;
         }
+
+        /// <summary>
+        /// 输入单元格被修改后，已有结果的行标记为“过期”；新录入数据的行也需要刷新状态点。
+        /// 计算本身写入的是结果列，不在输入列范围内，不会触发这里。
+        /// </summary>
+        private void OnWorksheetCellDataChanged(object? sender, CellEventArgs e)
+        {
+            int separatorCol = InputStartColumn + InputColumns.Length;
+            int column = e.Cell.Column;
+            if (column < InputStartColumn || column >= separatorCol) return;
+
+            int row = e.Cell.Row;
+            if (_rowResults.ContainsKey(row) || _failedRows.Contains(row)) _staleRows.Add(row);
+            RowStatusChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>该行输入氧化物区域是否有任何内容。</summary>
+        private bool HasInputData(Worksheet sheet, int row)
+        {
+            for (int c = 0; c < InputColumns.Length; c++)
+            {
+                var value = sheet[row, InputStartColumn + c];
+                if (value != null && !(value is string text && string.IsNullOrWhiteSpace(text))) return true;
+            }
+            return false;
+        }
+
+        #region 公共表格控件接口：行头状态点
+
+        public WorksheetRowStatus GetRowStatus(int row)
+        {
+            var sheet = _grid?.CurrentWorksheet;
+            if (sheet == null || row < 0 || row >= sheet.RowCount) return WorksheetRowStatus.None;
+
+            if (_rowResults.TryGetValue(row, out var result))
+            {
+                if (_staleRows.Contains(row)) return WorksheetRowStatus.Stale;
+                return result.Warnings.Count > 0 ? WorksheetRowStatus.Warning : WorksheetRowStatus.Ok;
+            }
+
+            if (!HasInputData(sheet, row)) return WorksheetRowStatus.None;
+            if (_staleRows.Contains(row)) return WorksheetRowStatus.Stale;
+            return _failedRows.Contains(row) ? WorksheetRowStatus.Error : WorksheetRowStatus.NotCalculated;
+        }
+
+        #endregion
+
+        #region 公共表格控件接口：列头分组行 / 单位
+
+        public string? GetGroup(int column)
+        {
+            int separatorCol = InputStartColumn + InputColumns.Length;
+            int diagStartCol = separatorCol + 1 + NiggliValueColumns.Length;
+            if (column < InputStartColumn || column == separatorCol) return null;   // 样品列、分隔列不属于任何分组
+
+            if (column < separatorCol)
+            {
+                return column - InputStartColumn < MajorOxideCount
+                    ? LanguageService.GetString("sheet_group_major_elements", "Major elements")
+                    : LanguageService.GetString("sheet_group_other_oxides", "Other oxides / volatiles");
+            }
+
+            if (column < diagStartCol) return LanguageService.GetString("niggli_group_values", "Niggli values");
+            return column < diagStartCol + DiagnosticColumns.Length
+                ? LanguageService.GetString("sheet_group_diagnostics", "Diagnostics")
+                : LanguageService.GetString("niggli_group_minerals", "Normative minerals");
+        }
+
+        public string? GetUnit(int column)
+        {
+            int separatorCol = InputStartColumn + InputColumns.Length;
+            int mineralStartCol = separatorCol + 1 + NiggliValueColumns.Length + DiagnosticColumns.Length;
+            // 氧化物为质量百分比，标准矿物为阳离子百分比；样品列、尼格里参数（无量纲）和诊断列没有单位。
+            if (column >= InputStartColumn && column < separatorCol) return "wt%";
+            if (column >= mineralStartCol) return "cat%";
+            return null;
+        }
+
+        #endregion
 
         private void RefreshLocalizedHeaders(Worksheet sheet)
         {
@@ -183,7 +280,7 @@ namespace GeoChemistryNexus.ViewModels
 
             int col = SampleColumnIndex;
             var sampleHeader = LanguageService.Instance["niggli_col_sample"] ?? "Sample";
-            sheet[0, col] = sampleHeader;
+            sheet.ColumnHeaders[col].Text = sampleHeader;
             SetColumnWidthForHeader(sheet, col, sampleHeader, minWidth: 90);
 
             // 跳过输入列和分隔列
@@ -193,7 +290,7 @@ namespace GeoChemistryNexus.ViewModels
             foreach (var niggliVal in NiggliValueColumns)
             {
                 var headerText = niggliVal;
-                sheet[0, col] = headerText;
+                sheet.ColumnHeaders[col].Text = headerText;
                 SetColumnWidthForHeader(sheet, col, headerText, minWidth: 65);
                 col++;
             }
@@ -202,7 +299,7 @@ namespace GeoChemistryNexus.ViewModels
             foreach (var diag in DiagnosticColumns)
             {
                 var headerText = LanguageService.Instance[diag] ?? diag;
-                sheet[0, col] = headerText;
+                sheet.ColumnHeaders[col].Text = headerText;
                 SetColumnWidthForHeader(sheet, col, headerText, minWidth: 100);
                 col++;
             }
@@ -211,20 +308,20 @@ namespace GeoChemistryNexus.ViewModels
             foreach (var mineral in ResultMineralOrder)
             {
                 var headerText = FormatMineralHeader(mineral);
-                sheet[0, col] = headerText;
+                sheet.ColumnHeaders[col].Text = headerText;
                 SetColumnWidthForHeader(sheet, col, headerText, minWidth: 75);
                 col++;
             }
+
+            // 列头文字在绘制时读取，这里只需触发重绘
+            sheet.RequestInvalidate();
         }
 
-        private static void ApplyHeaderSideBorders(Worksheet sheet, int totalCols)
+        /// <summary>输入列（样品号 + 氧化物）为输入样式，分隔列之后的尼格里值/诊断/矿物列为结果样式。</summary>
+        private static ReoGridColumnKind GetColumnKind(int column, int separatorCol)
         {
-            for (int i = 0; i < totalCols; i++)
-            {
-                var cellRange = new RangePosition(0, i, 1, 1);
-                sheet.SetRangeBorders(cellRange, BorderPositions.Left, RangeBorderStyle.SilverSolid);
-                sheet.SetRangeBorders(cellRange, BorderPositions.Right, RangeBorderStyle.SilverSolid);
-            }
+            if (column < separatorCol) return ReoGridColumnKind.Input;
+            return column == separatorCol ? ReoGridColumnKind.Separator : ReoGridColumnKind.Output;
         }
 
         [RelayCommand]
@@ -235,6 +332,8 @@ namespace GeoChemistryNexus.ViewModels
             ClampFe3Fraction();
             var sheet = grid.CurrentWorksheet;
             _rowResults.Clear();
+            _failedRows.Clear();
+            _staleRows.Clear();
 
             int successCount = 0;
             int totalCount = 0;
@@ -245,7 +344,7 @@ namespace GeoChemistryNexus.ViewModels
             int mineralStartCol = diagStartCol + DiagnosticColumns.Length;
 
             // 清除旧计算结果
-            for (int row = 1; row < sheet.RowCount; row++)
+            for (int row = 0; row < sheet.RowCount; row++)
             {
                 for (int c = niggliValStartCol; c < sheet.ColumnCount; c++)
                 {
@@ -254,7 +353,7 @@ namespace GeoChemistryNexus.ViewModels
             }
 
             // 逐行执行计算
-            for (int row = 1; row < sheet.RowCount; row++)
+            for (int row = 0; row < sheet.RowCount; row++)
             {
                 var oxides = new Dictionary<string, double>();
                 bool hasData = false;
@@ -308,6 +407,7 @@ namespace GeoChemistryNexus.ViewModels
                 }
                 else
                 {
+                    _failedRows.Add(row);
                     sheet[row, diagStartCol] = LanguageService.Instance["niggli_error"] ?? "Error";
                     string err = !string.IsNullOrEmpty(result.ErrorKey)
                         ? (LanguageService.Instance[result.ErrorKey] ?? result.ErrorMessage)
@@ -315,6 +415,9 @@ namespace GeoChemistryNexus.ViewModels
                     sheet[row, diagStartCol + 1] = err;
                 }
             }
+
+            // 结果已更新，刷新行头状态点
+            RowStatusChanged?.Invoke(this, EventArgs.Empty);
 
             if (totalCount == 0)
             {
@@ -351,15 +454,15 @@ namespace GeoChemistryNexus.ViewModels
                 var sb = new StringBuilder();
 
                 var headers = new List<string>();
+                int separatorCol = InputStartColumn + InputColumns.Length;
                 for (int c = 0; c < sheet.ColumnCount; c++)
                 {
-                    var headerVal = sheet[0, c]?.ToString() ?? "";
-                    if (headerVal == "│") headerVal = "---";
+                    var headerVal = c == separatorCol ? "---" : sheet.ColumnHeaders[c].Text ?? "";
                     headers.Add(ReoGridFormatHelper.EscapeCsvCell(headerVal));
                 }
                 sb.AppendLine(string.Join(",", headers));
 
-                for (int row = 1; row < sheet.RowCount; row++)
+                for (int row = 0; row < sheet.RowCount; row++)
                 {
                     bool hasData = false;
                     var rowData = new List<string>();
@@ -375,7 +478,7 @@ namespace GeoChemistryNexus.ViewModels
 
                 await Task.Run(() => File.WriteAllText(filePath, sb.ToString(), Encoding.UTF8));
                 var template = LanguageService.Instance["niggli_msg_export_success"] ?? "Results exported to: {0}";
-                MessageHelper.Success(string.Format(template, Path.GetFileName(filePath)));
+                MessageHelper.ExportSuccess(string.Format(template, Path.GetFileName(filePath)), filePath);
             }
             catch (Exception ex)
             {
@@ -398,7 +501,7 @@ namespace GeoChemistryNexus.ViewModels
             var sheet = grid.CurrentWorksheet ?? (grid.Worksheets.Count > 0 ? grid.Worksheets[0] : null);
             if (sheet == null) return;
 
-            for (int row = 1; row < sheet.RowCount; row++)
+            for (int row = 0; row < sheet.RowCount; row++)
             {
                 for (int c = 0; c < sheet.ColumnCount; c++)
                 {
@@ -407,6 +510,9 @@ namespace GeoChemistryNexus.ViewModels
             }
 
             _rowResults.Clear();
+            _failedRows.Clear();
+            _staleRows.Clear();
+            RowStatusChanged?.Invoke(this, EventArgs.Empty);
             HasDiagnosticData = false;
             DiagnosticItems.Clear();
             SelectedRowInfo = string.Empty;
@@ -455,7 +561,7 @@ namespace GeoChemistryNexus.ViewModels
 
             for (int i = 0; i < samples.Length; i++)
             {
-                int row = i + 1;
+                int row = i;
                 sheet[row, SampleColumnIndex] = names[i];
                 for (int c = 0; c < InputColumns.Length; c++)
                 {
@@ -485,7 +591,7 @@ namespace GeoChemistryNexus.ViewModels
             var sampleName = sheet[row, SampleColumnIndex]?.ToString()?.Trim();
             SelectedRowInfo = !string.IsNullOrEmpty(sampleName)
                 ? sampleName
-                : string.Format(LanguageService.Instance["niggli_row_format"] ?? "Row {0}", row);
+                : string.Format(LanguageService.Instance["niggli_row_format"] ?? "Row {0}", row + 1);
 
             SelectedSilicaState = TranslateSilicaSaturation(result.SilicaSaturation);
             SelectedAluminaState = TranslateAluminaState(result.AluminaState);
@@ -710,28 +816,8 @@ namespace GeoChemistryNexus.ViewModels
 
         private static void SetColumnWidthForHeader(Worksheet sheet, int column, string headerText, int minWidth)
         {
-            double pixelsPerDip = 1.0;
-            try
-            {
-                var mainWindow = Application.Current?.MainWindow;
-                if (mainWindow != null)
-                {
-                    pixelsPerDip = VisualTreeHelper.GetDpi(mainWindow).PixelsPerDip;
-                }
-            }
-            catch { }
-
-            var formattedText = new FormattedText(
-                headerText ?? string.Empty,
-                System.Globalization.CultureInfo.CurrentCulture,
-                FlowDirection.LeftToRight,
-                new Typeface("Microsoft YaHei UI"),
-                13,
-                Brushes.Black,
-                pixelsPerDip);
-
-            var width = Math.Clamp((int)Math.Ceiling(formattedText.Width + 26), minWidth, 200);
-            sheet.SetColumnsWidth(column, 1, (ushort)width);
+            // 按表头实际字体（与 EPMA 表格一致的粗体 Segoe UI）计算列宽
+            sheet.SetColumnsWidth(column, 1, ReoGridTableAppearance.GetHeaderColumnWidth(headerText, minWidth, 200));
         }
 
         private static string TranslateSilicaSaturation(string value) => value switch

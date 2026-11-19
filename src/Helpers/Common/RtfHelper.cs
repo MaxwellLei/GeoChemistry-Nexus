@@ -51,6 +51,7 @@ namespace GeoChemistryNexus.Helpers
                 using (MemoryStream rtfMemoryStream = new MemoryStream(Encoding.UTF8.GetBytes(rtfContent)))
                 {
                     textRange.Load(rtfMemoryStream, DataFormats.Rtf);
+                    ApplyScriptBaselines(richTextBox.Document);
                 }
 
                 return true;
@@ -101,6 +102,7 @@ namespace GeoChemistryNexus.Helpers
                         using (MemoryStream rtfMemoryStream = new MemoryStream(Encoding.UTF8.GetBytes(rtfContent)))
                         {
                             textRange.Load(rtfMemoryStream, DataFormats.Rtf);
+                    ApplyScriptBaselines(richTextBox.Document);
                         }
                     });
                 }
@@ -110,6 +112,7 @@ namespace GeoChemistryNexus.Helpers
                     using (MemoryStream rtfMemoryStream = new MemoryStream(Encoding.UTF8.GetBytes(rtfContent)))
                     {
                         textRange.Load(rtfMemoryStream, DataFormats.Rtf);
+                    ApplyScriptBaselines(richTextBox.Document);
                     }
                 }
 
@@ -146,6 +149,7 @@ namespace GeoChemistryNexus.Helpers
              using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(rtfContent)))
              {
                  textRange.Load(ms, DataFormats.Rtf);
+                 ApplyScriptBaselines(richTextBox.Document);
              }
         }
 
@@ -187,6 +191,98 @@ namespace GeoChemistryNexus.Helpers
                 MessageHelper.Error(LanguageService.Instance["error_saving_rtf_file"] + $"{ex.Message}");
                 return false;
             }
+        }
+
+        // ===== 上标 / 下标 =====
+        // RTF 只会保存 Typography.Variants（\super / \sub），不保存 Inline.BaselineAlignment；
+        // 而多数字体不支持 OpenType 上下标，Variants 本身没有可见效果。
+        // 因此：编辑时同时写入 Variants（用于持久化）、BaselineAlignment（用于显示）与缩小的字号；
+        // 加载 RTF 后再根据 Variants 恢复 BaselineAlignment（字号已随 RTF 保存）。
+
+        /// <summary>上下标文字相对正常字号的缩放比例（2/3 可使字号在 RTF 半磅取整后保持精确）。</summary>
+        private const double ScriptFontScale = 2d / 3d;
+
+        /// <summary>
+        /// 加载 RTF 后，根据 Typography.Variants 为上下标文字恢复基线对齐（不改动字号）。
+        /// </summary>
+        public static void ApplyScriptBaselines(FlowDocument? document)
+        {
+            if (document == null) return;
+            var pointer = document.ContentStart;
+            while (pointer != null && pointer.CompareTo(document.ContentEnd) < 0)
+            {
+                if (pointer.GetPointerContext(LogicalDirection.Forward) == TextPointerContext.ElementStart
+                    && pointer.GetAdjacentElement(LogicalDirection.Forward) is Run run)
+                {
+                    var alignment = run.Typography.Variants switch
+                    {
+                        FontVariants.Superscript => BaselineAlignment.Superscript,
+                        FontVariants.Subscript => BaselineAlignment.Subscript,
+                        _ => BaselineAlignment.Baseline
+                    };
+                    if (run.BaselineAlignment != alignment) run.BaselineAlignment = alignment;
+                }
+                pointer = pointer.GetNextContextPosition(LogicalDirection.Forward);
+            }
+        }
+
+        /// <summary>
+        /// 切换选区的上标 / 下标。已是目标格式则还原，否则应用（上下标之间切换不重复缩放字号）。
+        /// </summary>
+        public static void ToggleScript(RichTextBox richTextBox, FontVariants target)
+        {
+            if (richTextBox == null || richTextBox.IsReadOnly) return;
+            if (target != FontVariants.Superscript && target != FontVariants.Subscript) return;
+
+            var selection = richTextBox.Selection;
+            bool turnOff = selection.GetPropertyValue(Typography.VariantsProperty) is FontVariants current && current == target;
+
+            // 先按文本段记录选区范围（TextRange 会随编辑自动跟踪位置），再逐段应用，保证混合字号时各段独立缩放
+            var segments = new List<TextRange>();
+            if (selection.IsEmpty)
+            {
+                segments.Add(selection);
+            }
+            else
+            {
+                var pointer = selection.Start;
+                while (pointer != null && pointer.CompareTo(selection.End) < 0)
+                {
+                    var next = pointer.GetNextContextPosition(LogicalDirection.Forward);
+                    if (next == null) break;
+                    if (pointer.GetPointerContext(LogicalDirection.Forward) == TextPointerContext.Text && pointer.Parent is Run)
+                    {
+                        segments.Add(new TextRange(pointer, next.CompareTo(selection.End) < 0 ? next : selection.End));
+                    }
+                    pointer = next;
+                }
+            }
+
+            richTextBox.BeginChange();
+            try
+            {
+                foreach (var segment in segments)
+                {
+                    bool isNormal = segment.GetPropertyValue(Typography.VariantsProperty) is not FontVariants variant
+                                    || (variant != FontVariants.Superscript && variant != FontVariants.Subscript);
+                    double size = segment.GetPropertyValue(TextElement.FontSizeProperty) is double s ? s : richTextBox.FontSize;
+
+                    if (turnOff)
+                    {
+                        segment.ApplyPropertyValue(TextElement.FontSizeProperty, Math.Round(size / ScriptFontScale, 1));
+                        segment.ApplyPropertyValue(Typography.VariantsProperty, FontVariants.Normal);
+                        segment.ApplyPropertyValue(Inline.BaselineAlignmentProperty, BaselineAlignment.Baseline);
+                    }
+                    else
+                    {
+                        if (isNormal) segment.ApplyPropertyValue(TextElement.FontSizeProperty, Math.Round(size * ScriptFontScale, 2));
+                        segment.ApplyPropertyValue(Typography.VariantsProperty, target);
+                        segment.ApplyPropertyValue(Inline.BaselineAlignmentProperty,
+                            target == FontVariants.Superscript ? BaselineAlignment.Superscript : BaselineAlignment.Subscript);
+                    }
+                }
+            }
+            finally { richTextBox.EndChange(); }
         }
     }
 }

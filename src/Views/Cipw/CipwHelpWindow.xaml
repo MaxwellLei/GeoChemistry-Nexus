@@ -36,7 +36,7 @@
                         BorderBrush="#E8E8E8" BorderThickness="1">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <Border Background="#0078D4" CornerRadius="12" Width="24" Height="24" VerticalAlignment="Center">
+                            <Border Background="{DynamicResource ThemeAccentBrush}" CornerRadius="12" Width="24" Height="24" VerticalAlignment="Center">
                                 <TextBlock Text="1" Foreground="White" FontSize="12" FontWeight="Bold"
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
@@ -53,7 +53,7 @@
                         BorderBrush="#E8E8E8" BorderThickness="1">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <Border Background="#0078D4" CornerRadius="12" Width="24" Height="24" VerticalAlignment="Center">
+                            <Border Background="{DynamicResource ThemeAccentBrush}" CornerRadius="12" Width="24" Height="24" VerticalAlignment="Center">
                                 <TextBlock Text="2" Foreground="White" FontSize="12" FontWeight="Bold"
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
@@ -70,7 +70,7 @@
                         BorderBrush="#E8E8E8" BorderThickness="1">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <Border Background="#0078D4" CornerRadius="12" Width="24" Height="24" VerticalAlignment="Center">
+                            <Border Background="{DynamicResource ThemeAccentBrush}" CornerRadius="12" Width="24" Height="24" VerticalAlignment="Center">
                                 <TextBlock Text="3" Foreground="White" FontSize="12" FontWeight="Bold"
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
@@ -87,7 +87,7 @@
                         BorderBrush="#E8E8E8" BorderThickness="1">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <Border Background="#0078D4" CornerRadius="12" Width="24" Height="24" VerticalAlignment="Center">
+                            <Border Background="{DynamicResource ThemeAccentBrush}" CornerRadius="12" Width="24" Height="24" VerticalAlignment="Center">
                                 <TextBlock Text="4" Foreground="White" FontSize="12" FontWeight="Bold"
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
@@ -104,7 +104,7 @@
                         BorderBrush="#E8E8E8" BorderThickness="1">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <Border Background="#0078D4" CornerRadius="12" Width="24" Height="24" VerticalAlignment="Center">
+                            <Border Background="{DynamicResource ThemeAccentBrush}" CornerRadius="12" Width="24" Height="24" VerticalAlignment="Center">
                                 <TextBlock Text="5" Foreground="White" FontSize="12" FontWeight="Bold"
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
@@ -121,7 +121,7 @@
                         BorderBrush="#E8E8E8" BorderThickness="1">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <Border Background="#0078D4" CornerRadius="12" Width="24" Height="24" VerticalAlignment="Center">
+                            <Border Background="{DynamicResource ThemeAccentBrush}" CornerRadius="12" Width="24" Height="24" VerticalAlignment="Center">
                                 <TextBlock Text="6" Foreground="White" FontSize="12" FontWeight="Bold"
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
@@ -138,7 +138,7 @@
                         BorderBrush="#E8E8E8" BorderThickness="1">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <Border Background="#0078D4" CornerRadius="12" Width="24" Height="24" VerticalAlignment="Center">
+                            <Border Background="{DynamicResource ThemeAccentBrush}" CornerRadius="12" Width="24" Height="24" VerticalAlignment="Center">
                                 <TextBlock Text="7" Foreground="White" FontSize="12" FontWeight="Bold"
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
@@ -155,7 +155,7 @@
                         BorderBrush="#E8E8E8" BorderThickness="1">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <Border Background="#0078D4" CornerRadius="12" Width="24" Height="24" VerticalAlignment="Center">
+                            <Border Background="{DynamicResource ThemeAccentBrush}" CornerRadius="12" Width="24" Height="24" VerticalAlignment="Center">
                                 <TextBlock Text="8" Foreground="White" FontSize="12" FontWeight="Bold"
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
@@ -172,7 +172,7 @@
                         BorderBrush="#E8E8E8" BorderThickness="1">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <Border Background="#0078D4" CornerRadius="12" Width="24" Height="24" VerticalAlignment="Center">
+                            <Border Background="{DynamicResource ThemeAccentBrush}" CornerRadius="12" Width="24" Height="24" VerticalAlignment="Center">
                                 <TextBlock Text="9" Foreground="White" FontSize="12" FontWeight="Bold"
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>

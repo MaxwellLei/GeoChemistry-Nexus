@@ -1,159 +1,73 @@
-<UserControl x:Class="GeoChemistryNexus.Views.Widgets.GeoscienceUnitConverterWidget"
+﻿<UserControl x:Class="GeoChemistryNexus.Views.Widgets.GeoscienceUnitConverterWidget"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ctrl="clr-namespace:GeoChemistryNexus.Controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
              xmlns:vm="clr-namespace:GeoChemistryNexus.ViewModels"
+             xmlns:widgets="clr-namespace:GeoChemistryNexus.Views.Widgets"
              mc:Ignorable="d"
              d:DesignHeight="720" d:DesignWidth="1080"
              d:DataContext="{d:DesignInstance Type=vm:GeoscienceUnitConverterViewModel, IsDesignTimeCreatable=False}"
-             Background="White">
+             Background="#F5F7FA">
 
     <UserControl.Resources>
-        <!-- 预设芯片按钮样式 -->
-        <Style x:Key="PresetChipButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#F2F5F9"/>
-            <Setter Property="BorderBrush" Value="#D0DCEB"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Foreground" Value="#2D3748"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Padding" Value="9,4"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="Bd" Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="6" Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#E1ECF8"/>
-                                <Setter TargetName="Bd" Property="BorderBrush" Value="#0078D4"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#CCE2F7"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/GeoChemistryNexus;component/Themes/WidgetStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        <Style x:Key="PresetChipButtonStyle" TargetType="Button" BasedOn="{StaticResource WidgetAction}">
+            <Setter Property="Padding" Value="10,5"/>
         </Style>
-
-        <!-- 结果行操作小按钮样式 -->
-        <Style x:Key="MiniActionButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#F3F4F6"/>
-            <Setter Property="BorderBrush" Value="#E5E7EB"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Foreground" Value="#4B5563"/>
-            <Setter Property="Cursor" Value="Hand"/>
+        <Style x:Key="MiniActionButtonStyle" TargetType="Button" BasedOn="{StaticResource WidgetAction}">
             <Setter Property="Padding" Value="8,4"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="Bd" Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="5" Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#E5E7EB"/>
-                                <Setter Property="Foreground" Value="#111827"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#D1D5DB"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
+            <Setter Property="MinHeight" Value="28"/>
         </Style>
-
-        <!-- 强调型操作小按钮样式 (如设为基准) -->
-        <Style x:Key="MiniPrimaryActionButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#EFF6FF"/>
-            <Setter Property="BorderBrush" Value="#BFDBFE"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Foreground" Value="#1D4ED8"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Padding" Value="8,4"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="Bd" Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="5" Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#DBEAFE"/>
-                                <Setter TargetName="Bd" Property="BorderBrush" Value="#93C5FD"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#BFDBFE"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
+        <Style x:Key="MiniPrimaryActionButtonStyle" TargetType="Button" BasedOn="{StaticResource MiniActionButtonStyle}">
+            <Setter Property="Background" Value="{DynamicResource ThemeAccentSoftBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}"/>
         </Style>
+        </ResourceDictionary>
     </UserControl.Resources>
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="20">
-        <StackPanel>
-
-            <!-- ===== 标题区 ===== -->
-            <TextBlock Text="{Binding [geoscience_unit_converter], Source={x:Static lg:LanguageService.Instance}}"
-                       FontSize="20" FontWeight="Bold" Margin="0,0,0,4"/>
-            <TextBlock Text="{Binding [geoscience_unit_conv_hint], Source={x:Static lg:LanguageService.Instance}}"
-                       Style="{StaticResource ModernSettingsItemHintStyle}"
-                       Margin="0,0,0,16"/>
-
-            <!-- ===== 分类选项卡 (Pill 胶囊按钮栏) ===== -->
+    <!-- 标题栏：重置 -->
+    <UserControl.Style>
+        <Style TargetType="UserControl">
+            <Setter Property="widgets:WidgetWindow.CaptionContent">
+                <Setter.Value>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <!-- 分类选项卡 (紧凑胶囊按钮栏) -->
             <ListBox ItemsSource="{Binding Categories}"
                      SelectedItem="{Binding SelectedCategoryItem, Mode=TwoWay}"
-                     BorderThickness="0" Background="Transparent"
+                     BorderThickness="0" Background="Transparent" VerticalAlignment="Center"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                     Margin="0,0,0,12">
+                     Margin="0,0,8,0">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal"/>
+                        <StackPanel Orientation="Horizontal"/>
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
-                        <Setter Property="Padding" Value="14,8"/>
-                        <Setter Property="Margin" Value="0,0,8,8"/>
+                        <Setter Property="Padding" Value="9,4"/>
+                        <Setter Property="Margin" Value="0,0,4,0"/>
                         <Setter Property="Cursor" Value="Hand"/>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="ListBoxItem">
-                                    <Border x:Name="Bd" Background="#F4F5F7" CornerRadius="8" Padding="{TemplateBinding Padding}"
-                                            BorderBrush="#E5E7EB" BorderThickness="1">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding Icon}" FontFamily="Segoe MDL2 Assets" FontSize="13"
-                                                       VerticalAlignment="Center" Margin="0,0,6,0" x:Name="IconText" Foreground="#0078D4"/>
-                                            <TextBlock Text="{Binding Title}" FontSize="13" FontWeight="SemiBold"
-                                                       VerticalAlignment="Center" x:Name="LabelText" Foreground="#374151"/>
-                                        </StackPanel>
+                                    <Border x:Name="Bd" Background="White" CornerRadius="6" Padding="{TemplateBinding Padding}"
+                                            BorderBrush="#E5E7EB" BorderThickness="0">
+                                        <TextBlock Text="{Binding Title}" FontSize="12" FontWeight="SemiBold"
+                                                   VerticalAlignment="Center" x:Name="LabelText" Foreground="#374151"/>
                                     </Border>
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsMouseOver" Value="True">
                                             <Setter TargetName="Bd" Property="Background" Value="#EBF3FD"/>
-                                            <Setter TargetName="Bd" Property="BorderBrush" Value="#BAD7F9"/>
                                         </Trigger>
                                         <Trigger Property="IsSelected" Value="True">
-                                            <Setter TargetName="Bd" Property="Background" Value="#0078D4"/>
-                                            <Setter TargetName="Bd" Property="BorderBrush" Value="#0078D4"/>
-                                            <Setter TargetName="IconText" Property="Foreground" Value="White"/>
+                                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemeAccentBrush}"/>
                                             <Setter TargetName="LabelText" Property="Foreground" Value="White"/>
                                         </Trigger>
                                     </ControlTemplate.Triggers>
@@ -163,9 +77,20 @@
                     </Style>
                 </ListBox.ItemContainerStyle>
             </ListBox>
+            <Button Style="{StaticResource WidgetCaptionAction}"
+                    Content="{Binding [geoscience_unit_conv_reset], Source={x:Static lg:LanguageService.Instance}}"
+                    Command="{Binding ResetCommand}"/>
+        </StackPanel>
+                    </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Style>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="20">
+        <StackPanel>
 
             <!-- ===== 典型地学基准值快捷预设条 ===== -->
-            <Border Style="{StaticResource ModernCardStyle}" Padding="12,10" Margin="0,0,0,14" Background="#FAFBFC">
+            <Border Style="{StaticResource WidgetCard}" Padding="12,10" Margin="0,0,0,14" Background="#FAFBFC">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                         <TextBlock Text="&#xE735;" FontFamily="Segoe MDL2 Assets" Foreground="#D97706" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center"/>
@@ -188,7 +113,7 @@
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{Binding Title}" FontSize="12" FontWeight="SemiBold"/>
                                         <TextBlock Text=" (" FontSize="12" Foreground="#9CA3AF"/>
-                                        <TextBlock Text="{Binding Value}" FontSize="12" Foreground="#0078D4" FontWeight="SemiBold"/>
+                                        <TextBlock Text="{Binding Value}" FontSize="12" Foreground="{DynamicResource ThemeAccentBrush}" FontWeight="SemiBold"/>
                                         <TextBlock Text=" " FontSize="12"/>
                                         <TextBlock Text="{Binding UnitSymbol}" FontSize="12" Foreground="#4B5563"/>
                                         <TextBlock Text=")" FontSize="12" Foreground="#9CA3AF"/>
@@ -201,22 +126,20 @@
             </Border>
 
             <!-- ===== 输入数值与源单位选择卡片 ===== -->
-            <Border Style="{StaticResource ModernCardStyle}" Padding="16" Margin="0,0,0,16">
+            <Border Style="{StaticResource WidgetCard}" Padding="16" Margin="0,0,0,16">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1.4*"/>
                         <ColumnDefinition Width="12"/>
                         <ColumnDefinition Width="1.6*"/>
-                        <ColumnDefinition Width="12"/>
-                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
                     <!-- 输入数值 -->
                     <StackPanel Grid.Column="0">
                         <TextBlock Text="{Binding [geoscience_unit_conv_input_value], Source={x:Static lg:LanguageService.Instance}}"
-                                   FontSize="12" FontWeight="SemiBold" Foreground="#0078D4" Margin="0,0,0,6"/>
-                        <hc:NumericUpDown Value="{Binding InputValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          Style="{StaticResource ModernNumericUpDownStyle}"
+                                   FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource ThemeAccentBrush}" Margin="0,0,0,6"/>
+                        <ctrl:NumericUpDown Value="{Binding InputValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          Style="{StaticResource WidgetNumber}"
                                           Minimum="-999999999" Maximum="999999999"
                                           Increment="1" DecimalPlaces="6"/>
                     </StackPanel>
@@ -228,15 +151,9 @@
                         <ComboBox ItemsSource="{Binding CurrentUnits}"
                                   SelectedItem="{Binding SelectedSourceUnit, Mode=TwoWay}"
                                   DisplayMemberPath="DisplayLabel"
-                                  Style="{StaticResource ComboBoxExtend}"/>
+                                  Style="{StaticResource WidgetCombo}"/>
                     </StackPanel>
 
-                    <!-- 重置按钮 (纯文本，无图标，支持多语言) -->
-                    <StackPanel Grid.Column="4" VerticalAlignment="Bottom">
-                        <Button Content="{Binding [geoscience_unit_conv_reset], Source={x:Static lg:LanguageService.Instance}}"
-                                Command="{Binding ResetCommand}"
-                                Padding="16,6" Height="34"/>
-                    </StackPanel>
                 </Grid>
             </Border>
 
@@ -256,7 +173,7 @@
                                     <Style.Triggers>
                                         <!-- 当作为输入基准行时，高亮显示 -->
                                         <DataTrigger Binding="{Binding IsBaseUnit}" Value="True">
-                                            <Setter Property="Background" Value="#F0F7FF"/>
+                                            <Setter Property="Background" Value="{DynamicResource ThemeAccentSoftBrush}"/>
                                             <Setter Property="BorderBrush" Value="#90CDF4"/>
                                             <Setter Property="BorderThickness" Value="1.5"/>
                                         </DataTrigger>
@@ -275,15 +192,15 @@
                                 <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,14,0">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{Binding Symbol}" FontSize="16" FontWeight="Bold"
-                                                   Foreground="#0078D4" VerticalAlignment="Center"/>
+                                                   Foreground="{DynamicResource ThemeAccentBrush}" VerticalAlignment="Center"/>
                                         <TextBlock Text="{Binding Name, StringFormat=' ({0})'}" FontSize="12"
                                                    Foreground="#4B5563" VerticalAlignment="Center" Margin="6,0,0,0"/>
                                         <!-- 基准标记 (多语言) -->
                                         <Border Margin="8,0,0,0" Padding="5,2" CornerRadius="4"
-                                                Background="#DBEAFE" VerticalAlignment="Center"
+                                                Background="{DynamicResource ThemeAccentSoftBrush}" VerticalAlignment="Center"
                                                 Visibility="{Binding IsBaseUnit, Converter={StaticResource BooleanToVisibilityConverter}}">
                                             <TextBlock Text="{Binding [geoscience_unit_conv_base_badge], Source={x:Static lg:LanguageService.Instance}}"
-                                                       FontSize="9" FontWeight="Bold" Foreground="#1E40AF"/>
+                                                       FontSize="9" FontWeight="Bold" Foreground="{DynamicResource ThemeAccentDarkBrush}"/>
                                         </Border>
                                     </StackPanel>
                                     <!-- 底部灰色文本：严格显示为单行，不折行 -->

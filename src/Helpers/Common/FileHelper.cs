@@ -5,7 +5,6 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Win32;
-using HandyControl.Controls;
 using System.Linq;
 using System.Windows;
 using GeoChemistryNexus.Helpers;
@@ -321,13 +320,42 @@ public class FileHelper
         }
     }
 
+    /// <summary>
+    /// 在资源管理器中定位文件。路径是文件夹时直接打开该文件夹。
+    /// </summary>
+    public static bool RevealInExplorer(string? path)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+            return false;
+
+        try
+        {
+            string fullPath = Path.GetFullPath(path);
+            string arguments = Directory.Exists(fullPath)
+                ? "\"" + fullPath + "\""
+                : "/select,\"" + fullPath + "\"";
+
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = "explorer.exe",
+                Arguments = arguments,
+                UseShellExecute = false
+            });
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
     //删除指定路径文件
     public static bool DeleteFile(string path)
     {
         try
         {
             File.Delete(path);
-            Growl.Success("删除成功");
+            MessageHelper.Success(LanguageService.Instance["geo_msg_delete_success"] ?? "Deleted successfully");
             return true;
         }
         catch (Exception)

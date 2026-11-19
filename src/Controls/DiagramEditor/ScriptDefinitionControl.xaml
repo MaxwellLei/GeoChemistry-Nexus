@@ -5,149 +5,136 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
              xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
-             xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:models="clr-namespace:GeoChemistryNexus.Models"
+             xmlns:views="clr-namespace:GeoChemistryNexus.Views"
              mc:Ignorable="d" 
              Background="#F5F5F7"
              d:DesignHeight="600" d:DesignWidth="300">
     <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- 与 EPMA / 图解编辑器共用的代码编辑器样式（EpmaSourceBox） -->
+                <ResourceDictionary Source="pack://application:,,,/GeoChemistryNexus;component/Views/Epma/EpmaTemplateEditorStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- 代码编辑器：窄面板里固定高度；只读时（未进入编辑状态）不可编辑 -->
+            <Style x:Key="ScriptSourceBoxStyle" TargetType="local:EpmaCodeEditor" BasedOn="{StaticResource EpmaSourceBox}">
+                <Setter Property="Height" Value="260"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="IsReadOnly" Value="{Binding ScriptDefinition.IsReadOnly, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+            </Style>
+
+            <Style x:Key="ScriptValidateButtonStyle" TargetType="Button" BasedOn="{StaticResource InspectorSmallButtonStyle}">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding ScriptDefinition.IsReadOnly, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
+                        <Setter Property="IsEnabled" Value="False"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid>
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel Margin="10,12,10,12">
-                <!-- Header -->
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                    <TextBlock Text="&#xe614;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="24" Foreground="#1D1D1F" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                    <TextBlock Text="{Binding [script_definition],Source={x:Static lg:LanguageService.Instance}}" 
-                               FontSize="22" FontWeight="Bold" Foreground="#1D1D1F" VerticalAlignment="Center"/>
-                </StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-                <!-- Settings -->
-                <TextBlock Text="{Binding [script_settings],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernSettingsGroupTitle}" Margin="4,10,0,6"/>
-                <Border Style="{StaticResource ModernCardStyle}" Margin="0,0,0,8">
-                    <StackPanel Margin="10">
-                        <!-- Language -->
-                        <TextBlock Text="{Binding [script_language],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
-                        <ComboBox x:Name="LanguageComboBox" 
-                                  Margin="0,0,0,16"
-                                  SelectedValue="{Binding ScriptDefinition.Language, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                  DisplayMemberPath="DisplayName"
-                                  SelectedValuePath="Value">
-                            <ComboBox.Style>
-                                <Style TargetType="ComboBox" BasedOn="{StaticResource ModernComboBoxStyle}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ScriptDefinition.IsReadOnly, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
-                                            <Setter Property="IsEnabled" Value="False"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </ComboBox.Style>
-                        </ComboBox>
-
-                        <!-- Data Series -->
-                        <TextBlock Text="{Binding [data_series],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
-                        <TextBox x:Name="RequiredDataSeriesTextBox"
-                                    Text="{Binding ScriptDefinition.RequiredDataSeries, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                    Margin="0,0,0,8"
-                                    Padding="10,8"
-                                    Background="#F2F2F7" BorderThickness="0"
-                                    hc:BorderElement.CornerRadius="6">
-                            <TextBox.Style>
-                                <Style TargetType="TextBox">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ScriptDefinition.IsReadOnly, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
-                                            <Setter Property="IsReadOnly" Value="True"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBox.Style>
-                        </TextBox>
-                        
-                        <TextBlock Text="{Binding [multiple_data_series_hint],Source={x:Static lg:LanguageService.Instance}}" 
-                                   FontSize="11" TextWrapping="Wrap"
-                                   Foreground="#8E8E93"/>
+        <local:InspectorHeader Glyph="&#xe614;"
+                               Title="{Binding [script_definition],Source={x:Static lg:LanguageService.Instance}}"
+                               Summary="diagram.script.js"
+                               HeaderRightVisibility="{Binding ScriptDefinition.IsReadOnly, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}">
+            <!-- 只读标签 -->
+            <local:InspectorHeader.HeaderRight>
+                <Border CornerRadius="8" Padding="7,2" Background="#EEF1F6" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Width="9" Height="10" Stretch="Uniform" Stroke="{StaticResource InspectorLabelBrush}"
+                              StrokeThickness="1.3" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                              Data="M 3,6 V 4 A 3,3 0 0 1 9,4 V 6 M 1.5,6 H 10.5 V 12 H 1.5 Z" Margin="0,0,4,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding [insp_readonly],Source={x:Static lg:LanguageService.Instance}}"
+                                   FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource InspectorLabelBrush}"/>
                     </StackPanel>
                 </Border>
+            </local:InspectorHeader.HeaderRight>
+        </local:InspectorHeader>
 
-                <!-- Script Content -->
-                <TextBlock Text="{Binding [script_content],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernSettingsGroupTitle}" Margin="4,10,0,6"/>
-                <Border Style="{StaticResource ModernCardStyle}" Margin="0,0,0,8">
-                    <StackPanel Margin="10">
-                        <Border Background="#FAFAFA" BorderBrush="#E5E5E5" BorderThickness="1" CornerRadius="6" Margin="0,0,0,16">
-                            <TextBox x:Name="ScriptBodyTextBox"
-                                     Text="{Binding ScriptDefinition.ScriptBody, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                     Height="240"
-                                     AcceptsReturn="True"
-                                     AcceptsTab="True"
-                                     FontFamily="Menlo, Consolas, Courier New"
-                                     FontSize="12"
-                                     TextWrapping="NoWrap"
-                                     VerticalScrollBarVisibility="Auto"
-                                     HorizontalScrollBarVisibility="Auto"
-                                     Background="Transparent"
-                                     Padding="12"
-                                     VerticalContentAlignment="Top"
-                                     BorderThickness="0">
-                                <TextBox.Style>
-                                    <Style TargetType="TextBox">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ScriptDefinition.IsReadOnly, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
-                                                <Setter Property="IsReadOnly" Value="True"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBox.Style>
-                            </TextBox>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Margin="12,10,12,18">
+
+                <!-- 数据系列：列名 + 单位表格（脚本语言固定为 JavaScript，不再提供选择） -->
+                <local:InspectorGroup Header="{Binding [data_series],Source={x:Static lg:LanguageService.Instance}}"
+                                      Count="{Binding Rows.Count, ElementName=SeriesEditor}"
+                                      IsCollapsible="False"
+                                      Padding="0">
+                    <local:InspectorDataSeriesEditor x:Name="SeriesEditor"
+                        Names="{Binding ScriptDefinition.RequiredDataSeries, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
+                        Units="{Binding ScriptDefinition.DataSeriesUnits, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
+                        IsReadOnly="{Binding ScriptDefinition.IsReadOnly, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                </local:InspectorGroup>
+
+                <!-- 脚本：编辑器卡片 + 状态块 -->
+                <local:InspectorGroup Header="{Binding [script_content],Source={x:Static lg:LanguageService.Instance}}"
+                                      IsCollapsible="False">
+                    <StackPanel>
+                        <Border BorderBrush="#E1E7EF" BorderThickness="1" CornerRadius="10" Background="White">
+                            <DockPanel LastChildFill="True">
+                                <!-- 顶栏：JS 标记 + 文件名 + 验证按钮 -->
+                                <Border DockPanel.Dock="Top" Background="#F7F9FC" BorderBrush="#E1E7EF" BorderThickness="0,0,0,1"
+                                        CornerRadius="9,9,0,0" Padding="10,6">
+                                    <DockPanel LastChildFill="False">
+                                        <Border DockPanel.Dock="Left" Background="#F5D76E" CornerRadius="4" Padding="5,1" VerticalAlignment="Center">
+                                            <TextBlock Text="JS" FontFamily="{StaticResource InspectorMonoFont}" FontSize="10.5"
+                                                       FontWeight="Bold" Foreground="#574800"/>
+                                        </Border>
+                                        <TextBlock DockPanel.Dock="Left" Text="diagram.script.js"
+                                                   FontFamily="{StaticResource InspectorMonoFont}" FontSize="11.5"
+                                                   Foreground="#475569" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                                        <Button x:Name="ValidateButton" DockPanel.Dock="Right"
+                                                Style="{StaticResource ScriptValidateButtonStyle}"
+                                                Click="ValidateButton_Click">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Path Data="M 0,0 L 8,5 L 0,10 Z" Fill="{DynamicResource ThemeAccentBrush}"
+                                                      Stretch="None" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                                <TextBlock Text="{Binding [validate_syntax],Source={x:Static lg:LanguageService.Instance}}"/>
+                                            </StackPanel>
+                                        </Button>
+                                    </DockPanel>
+                                </Border>
+
+                                <!-- 底栏：行列位置 + 语言 -->
+                                <Border DockPanel.Dock="Bottom" Background="#F7F9FC" BorderBrush="#E1E7EF" BorderThickness="0,1,0,0"
+                                        CornerRadius="0,0,9,9" Padding="10,4">
+                                    <DockPanel>
+                                        <TextBlock DockPanel.Dock="Right" Text="JavaScript · UTF-8" Foreground="#64748B" FontSize="11"/>
+                                        <TextBlock x:Name="LineColumnTextBlock"
+                                                   Text="{Binding [row_1_column_1],Source={x:Static lg:LanguageService.Instance}}"
+                                                   Foreground="#64748B" FontFamily="{StaticResource InspectorMonoFont}" FontSize="11"/>
+                                    </DockPanel>
+                                </Border>
+
+                                <local:EpmaCodeEditor x:Name="ScriptBodyTextBox"
+                                                      Style="{StaticResource ScriptSourceBoxStyle}"
+                                                      Text="{Binding ScriptDefinition.ScriptBody, RelativeSource={RelativeSource AncestorType=UserControl}, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DockPanel>
                         </Border>
 
-                        <!-- Status Bar -->
-                        <Border Background="#F2F2F7" 
-                                CornerRadius="6" 
-                                Padding="12,8"
-                                Margin="0,0,0,16">
+                        <!-- 状态块：就绪（灰）/ 通过（绿）/ 错误（红） -->
+                        <Border x:Name="StatusBox" Style="{StaticResource InspectorStatusBoxStyle}" Margin="0,10,0,0">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-
-                                <TextBlock x:Name="StatusTextBlock" 
-                                           Grid.Column="0"
-                                           Text="{Binding [ready],Source={x:Static lg:LanguageService.Instance}}" 
-                                           FontSize="12" 
-                                           Foreground="#666666"
-                                           VerticalAlignment="Center"
-                                           TextWrapping="Wrap"/>
-
-                                <TextBlock x:Name="LineColumnTextBlock"
-                                           Grid.Column="1" 
-                                           Text="{Binding [row_1_column_1],Source={x:Static lg:LanguageService.Instance}}" 
-                                           FontSize="12" 
-                                           Foreground="#8E8E93"
-                                           VerticalAlignment="Center"
-                                           Margin="8,0,0,0"/>
+                                <Path Grid.Column="0" Data="M 1,6 L 4.5,9.5 L 11,2.5" Margin="0,3,8,0" VerticalAlignment="Top"
+                                      Stroke="{Binding Foreground, ElementName=StatusTextBlock}" StrokeThickness="1.6"
+                                      StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Stretch="None"/>
+                                <TextBlock x:Name="StatusTextBlock" Grid.Column="1"
+                                           Text="{Binding [ready],Source={x:Static lg:LanguageService.Instance}}"
+                                           FontSize="12" Foreground="#5C6B7F" TextWrapping="Wrap" VerticalAlignment="Center"/>
                             </Grid>
                         </Border>
-
-                        <!-- Actions -->
-                        <Button x:Name="ValidateButton" 
-                                Content="{Binding [validate_syntax],Source={x:Static lg:LanguageService.Instance}}" 
-                                HorizontalAlignment="Stretch"
-                                Click="ValidateButton_Click">
-                            <Button.Style>
-                                <Style TargetType="Button" BasedOn="{StaticResource ModernButtonStyle}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ScriptDefinition.IsReadOnly, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
-                                            <Setter Property="IsEnabled" Value="False"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-                        </Button>
                     </StackPanel>
-                </Border>
-
+                </local:InspectorGroup>
             </StackPanel>
         </ScrollViewer>
     </Grid>

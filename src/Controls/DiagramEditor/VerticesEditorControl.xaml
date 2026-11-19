@@ -1,123 +1,178 @@
-<UserControl x:Class="GeoChemistryNexus.Controls.VerticesEditorControl"
+﻿<UserControl x:Class="GeoChemistryNexus.Controls.VerticesEditorControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
-             xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
              xmlns:models="clr-namespace:GeoChemistryNexus.Models"
              xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
              x:Name="RootControl"
              mc:Ignorable="d" 
-             d:DesignHeight="200" d:DesignWidth="300">
+             d:DesignHeight="260" d:DesignWidth="300">
     <UserControl.Resources>
         <cvs:NumericTypeConverter x:Key="NumericTypeConverter"/>
-        
-        <Style x:Key="ButtonIcon" TargetType="Button">
+        <cvs:OneBasedIndexConverter x:Key="OneBasedIndexConverter"/>
+
+        <!-- 行：悬停浅灰，键盘聚焦（正在编辑该行）为强调色浅底；末行无分隔线 -->
+        <Style x:Key="VertexRowStyle" TargetType="Border">
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="0"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" CornerRadius="2">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#EEE"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#DDD"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
+            <Setter Property="BorderBrush" Value="{StaticResource InspectorRowDividerBrush}"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="MinHeight" Value="30"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FAFBFD"/>
+                </Trigger>
+                <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource ThemeAccentSoftBrush}"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
+
     </UserControl.Resources>
+
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+        <!-- 表格视图：列标题 + 行（序号 / X / Y / 行内操作）+ 底部添加条 -->
+        <Grid>
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ViewMode, ElementName=RootControl}" Value="Text">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" MaxHeight="250">
-            <ItemsControl x:Name="VerticesItemsControl" ItemsSource="{Binding ElementName=RootControl, Path=VerticesValue}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="{x:Type models:PointDefinition}">
-                        <Grid Margin="0,4,4,4">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
+            <!-- 列标题 -->
+            <Border Grid.Row="0" Height="26" Background="{StaticResource InspectorSubtleSurfaceBrush}"
+                    BorderBrush="{StaticResource InspectorRowDividerBrush}" BorderThickness="0,1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="28"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="52"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="1" Text="X" Margin="10,0,0,0" Style="{StaticResource InspectorTableHeaderLabelStyle}"/>
+                    <TextBlock Grid.Column="2" Text="Y" Margin="10,0,0,0" Style="{StaticResource InspectorTableHeaderLabelStyle}"/>
+                </Grid>
+            </Border>
 
-                            <Grid Grid.Column="0">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-
-                                <Grid Grid.Row="0">
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" MaxHeight="208">
+                <ItemsControl x:Name="VerticesItemsControl" AlternationCount="100000"
+                              ItemsSource="{Binding ElementName=RootControl, Path=VerticesValue}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type models:PointDefinition}">
+                            <Border x:Name="RowBorder" Style="{StaticResource VertexRowStyle}">
+                                <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="28"/>
                                         <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="X:" VerticalAlignment="Center" Margin="2,0,5,0" MinWidth="15"/>
-                                    <hc:NumericUpDown Grid.Column="1" Value="{Binding X, Converter={StaticResource NumericTypeConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                      Tag="{Binding}"
-                                                      GotFocus="Coordinate_GotFocus"
-                                                      LostFocus="Coordinate_LostFocus"/>
-                                </Grid>
-
-                                <Grid Grid.Row="1" Margin="0,4,0,0">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="52"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="Y:" VerticalAlignment="Center" Margin="2,0,5,0" MinWidth="15"/>
-                                    <hc:NumericUpDown Grid.Column="1" Value="{Binding Y, Converter={StaticResource NumericTypeConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                      Tag="{Binding}"
-                                                      GotFocus="Coordinate_GotFocus"
-                                                      LostFocus="Coordinate_LostFocus"/>
+
+                                    <TextBlock Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                               FontSize="10.5" FontWeight="SemiBold"
+                                               FontFamily="{StaticResource InspectorMonoFont}"
+                                               Foreground="{StaticResource InspectorHintBrush}"
+                                               Text="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ContentPresenter}, Converter={StaticResource OneBasedIndexConverter}}"/>
+
+                                    <local:NumericUpDown Grid.Column="1"
+                                                         Value="{Binding X, Converter={StaticResource NumericTypeConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         Tag="{Binding}"
+                                                         GotFocus="Coordinate_GotFocus"
+                                                         LostFocus="Coordinate_LostFocus"
+                                                         Style="{StaticResource InspectorCellNumericUpDownStyle}"/>
+                                    <local:NumericUpDown Grid.Column="2"
+                                                         Value="{Binding Y, Converter={StaticResource NumericTypeConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         Tag="{Binding}"
+                                                         GotFocus="Coordinate_GotFocus"
+                                                         LostFocus="Coordinate_LostFocus"
+                                                         Style="{StaticResource InspectorCellNumericUpDownStyle}"/>
+
+                                    <StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right"
+                                                VerticalAlignment="Center" Margin="0,0,4,0">
+                                        <StackPanel.Style>
+                                            <Style TargetType="StackPanel">
+                                                <Setter Property="Visibility" Value="Hidden"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsMouseOver, ElementName=RowBorder}" Value="True">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding IsKeyboardFocusWithin, ElementName=RowBorder}" Value="True">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </StackPanel.Style>
+                                        <!-- 重新拾取该顶点 -->
+                                        <Button Width="22" Height="22"
+                                                Style="{StaticResource InspectorIconButtonStyle}"
+                                                ToolTip="{Binding [pick_coordinate],Source={x:Static lg:LanguageService.Instance}}"
+                                                Click="PickPointButton_Click">
+                                            <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe601;" FontSize="13"/>
+                                        </Button>
+                                        <!-- 删除该顶点 -->
+                                        <Button x:Name="DeleteButton" Width="22" Height="22"
+                                                Style="{StaticResource InspectorDangerIconButtonStyle}"
+                                                Click="DeleteButton_Click"
+                                                ToolTip="{Binding [remove_point],Source={x:Static lg:LanguageService.Instance}}">
+                                            <Path Data="M 0,0 L 8,8 M 8,0 L 0,8"
+                                                  Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                                  StrokeThickness="1.4" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                                                  Stretch="None"/>
+                                        </Button>
+                                    </StackPanel>
                                 </Grid>
-                            </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
 
-                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,0,0,0">
-                                <!-- 拾取坐标按钮 -->
-                                <Button Width="20" Height="20" Margin="0,0,4,0"
-                                        Style="{StaticResource ButtonIcon}"
-                                        ToolTip="{Binding [pick_coordinate],Source={x:Static lg:LanguageService.Instance}}"
-                                        Click="PickPointButton_Click">
-                                    <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe601;" FontSize="14" Foreground="#666"/>
-                                </Button>
+            <!-- 底部：添加顶点 -->
+            <Border Grid.Row="2" Padding="10,8" Background="#FBFCFE"
+                    BorderBrush="{StaticResource InspectorRowDividerBrush}" BorderThickness="0,1,0,0">
+                <Button x:Name="AddButton" Click="AddButton_Click" HorizontalAlignment="Stretch"
+                        Style="{StaticResource InspectorSmallButtonStyle}">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Data="M 6,1 V 11 M 1,6 H 11" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                              StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                              Stretch="None" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                        <TextBlock Text="{Binding [vertex_add_new],Source={x:Static lg:LanguageService.Instance}}"/>
+                    </StackPanel>
+                </Button>
+            </Border>
+        </Grid>
 
-                                <!-- 删除按钮 -->
-                                <Button x:Name="DeleteButton"
-                                        Width="20" Height="20"
-                                        Style="{StaticResource ButtonIcon}"
-                                        Click="DeleteButton_Click"
-                                        ToolTip="{Binding [remove_point],Source={x:Static lg:LanguageService.Instance}}">
-                                    <Path Data="M19,6.41L17.59,5 12,10.59 6.41,5 5,6.41 10.59,12 5,17.59 6.41,19 12,13.41 17.59,19 19,17.59 13.41,12z"
-                                          Fill="#666"
-                                          Stretch="Uniform"
-                                          Width="12"
-                                          Height="12"/>
-                                </Button>
-                            </StackPanel>
-                        </Grid>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
-
-        <Button Grid.Row="1" 
-                x:Name="AddButton"
-                Click="AddButton_Click"
-                Content="{Binding [vertex_add_new],Source={x:Static lg:LanguageService.Instance}}" 
-                Margin="0,8,0,0"
-                HorizontalAlignment="Stretch"/>
+        <!-- 文本视图：每行一个顶点 “X, Y”，失去焦点时应用（可直接粘贴整段坐标） -->
+        <Grid>
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ViewMode, ElementName=RootControl}" Value="Text">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            <TextBox x:Name="VertexTextBox"
+                     Style="{StaticResource InspectorTextBoxStyle}"
+                     Margin="12,10,12,12" Height="178"
+                     AcceptsReturn="True" AcceptsTab="False" TextWrapping="NoWrap" SpellCheck.IsEnabled="False"
+                     FontFamily="{StaticResource InspectorMonoFont}" FontSize="12.5"
+                     VerticalContentAlignment="Top"
+                     VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
+                     LostFocus="VertexTextBox_LostFocus"/>
+        </Grid>
     </Grid>
 </UserControl>

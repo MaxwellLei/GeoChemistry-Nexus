@@ -1,0 +1,155 @@
+<UserControl x:Class="GeoChemistryNexus.Controls.LanguagePicker"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
+             xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
+             mc:Ignorable="d"
+             x:Name="Root"
+             Focusable="False"
+             d:DesignHeight="30" d:DesignWidth="100">
+    <!-- 统一的“添加语言”控件：触发按钮 + 带阴影与搜索框的弹层。
+         图解 / 地质温压计 / EPMA 模板编辑器共用；样式统一定义在 Themes/Styles.xaml（LanguagePicker*）。
+         数据由 Candidates（EpmaEditorLanguageOption 列表）提供，点击候选项时执行 ToggleCommand（参数为该候选项）。
+         标题行右侧的“全选”执行 SelectAllCommand，一次加入尚未添加的语言。
+         可用性（IsEnabled）与显隐（Visibility）由使用方直接设置在本控件上。 -->
+    <UserControl.Template>
+        <ControlTemplate TargetType="UserControl">
+            <ContentPresenter/>
+        </ControlTemplate>
+    </UserControl.Template>
+
+    <UserControl.Resources>
+        <!-- 弹层展开时触发按钮不参与命中测试，再次点击按钮区域只会关闭弹层，而不会立刻重新打开 -->
+        <Style x:Key="TriggerButtonStyle" TargetType="Button" BasedOn="{StaticResource LanguagePickerTriggerStyle}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsDropDownOpen, ElementName=Root}" Value="True">
+                    <Setter Property="IsHitTestVisible" Value="False"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Button x:Name="TriggerButton"
+                Style="{StaticResource TriggerButtonStyle}"
+                Click="TriggerButton_Click"
+                Content="{Binding [epma_editor_add_language], Source={x:Static lg:LanguageService.Instance}}"/>
+
+        <Popup x:Name="DropPopup"
+               IsOpen="{Binding IsDropDownOpen, ElementName=Root, Mode=TwoWay}"
+               PlacementTarget="{Binding ElementName=TriggerButton}"
+               Placement="Custom"
+               StaysOpen="False"
+               AllowsTransparency="True"
+               PopupAnimation="Fade"
+               Opened="DropPopup_Opened">
+            <Border Style="{StaticResource LanguagePickerPopupSurfaceStyle}">
+                <StackPanel>
+                    <Grid Margin="12,8,8,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding [epma_editor_choose_languages], Source={x:Static lg:LanguageService.Instance}}"
+                                   Foreground="{DynamicResource HomeSubBrush}" FontSize="11"
+                                   VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                        <Button Grid.Column="1" Margin="8,0,0,0"
+                                Style="{StaticResource LanguagePickerSelectAllButtonStyle}"
+                                Content="{Binding [select_all], Source={x:Static lg:LanguageService.Instance}}"
+                                Command="{Binding SelectAllCommand, ElementName=Root}"/>
+                    </Grid>
+
+                    <local:SearchBox x:Name="SearchBox"
+                                     Margin="8,8,8,6" Height="28"
+                                     Text="{Binding SearchText, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     Placeholder="{Binding [language_selector_search_placeholder], Source={x:Static lg:LanguageService.Instance}}"
+                                     Background="#FAFBFD" BorderBrush="#E1E5EF"
+                                     CornerRadius="4" Padding="8,0"
+                                     FocusBackground="White"
+                                     FocusBorderBrush="{DynamicResource ThemeAccentBrush}"
+                                     IconBrush="{DynamicResource HomeMuteBrush}"
+                                     PlaceholderBrush="{DynamicResource HomeMuteBrush}"
+                                     Foreground="{DynamicResource HomeInkBrush}"
+                                     FontSize="12" IconFontSize="12"
+                                     ShowClearButton="True"
+                                     PreviewKeyDown="SearchBox_PreviewKeyDown"/>
+
+                    <Grid>
+                        <ScrollViewer MaxHeight="260" Padding="6,0"
+                                      VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                            <ItemsControl x:Name="CandidateList">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Button Style="{StaticResource LanguagePickerItemStyle}"
+                                                IsEnabled="{Binding CanToggle}"
+                                                Command="{Binding ToggleCommand, ElementName=Root}"
+                                                CommandParameter="{Binding}">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="24"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <!-- 已添加：对勾 -->
+                                                <TextBlock Text="✓" FontSize="13" Foreground="{DynamicResource HomeBrandBrush}">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Visibility" Value="Hidden"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsAdded}" Value="True">
+                                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+
+                                                <TextBlock Grid.Column="1" Text="{Binding DisplayName}" FontSize="12"
+                                                           TextTrimming="CharacterEllipsis"/>
+
+                                                <!-- 未添加显示文化代码；已添加显示“已添加” -->
+                                                <TextBlock Grid.Column="2" FontSize="11" Margin="10,0,0,0">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Text" Value="{Binding Code}"/>
+                                                            <Setter Property="FontFamily" Value="Consolas"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsAdded}" Value="True">
+                                                                    <Setter Property="Text" Value="{Binding [added], Source={x:Static lg:LanguageService.Instance}}"/>
+                                                                    <Setter Property="FontFamily" Value="Segoe UI"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </Grid>
+                                        </Button>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+
+                        <!-- 无匹配结果 -->
+                        <TextBlock Text="{Binding [language_selector_no_match], Source={x:Static lg:LanguageService.Instance}}"
+                                   Padding="12" HorizontalAlignment="Center" FontSize="12"
+                                   Foreground="{DynamicResource HomeMuteBrush}">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding HasNoResults, ElementName=Root}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Popup>
+    </Grid>
+</UserControl>

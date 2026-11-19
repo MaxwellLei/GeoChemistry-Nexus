@@ -1,24 +1,18 @@
-using CommunityToolkit.Mvvm.Messaging;
-using GeoChemistryNexus.Converter;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Messages;
 using GeoChemistryNexus.Models;
-using GeoChemistryNexus.ViewModels;
-using HandyControl.Controls;
-using HandyControl.Data;
-using HandyControl.Tools.Extension;
-using ScottPlot.Plottables;
-using ScottPlot.WPF;
 using System;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace GeoChemistryNexus.Controls
 {
     /// <summary>
-    /// PointDefinitionControl.xaml 的交互逻辑
+    /// 属性面板的“坐标点”一行：[彩色圆点 + 名称] X 输入框 Y 输入框 [拾取 / 锁定图标]。
+    /// X / Y 前缀显示在输入框内部；三元图模式下自动在显示坐标与存储的笛卡尔坐标之间转换（始终修改原 PointDefinition 实例）。
     /// </summary>
     public partial class PointDefinitionControl : UserControl
     {
@@ -33,6 +27,21 @@ namespace GeoChemistryNexus.Controls
             DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(PointDefinitionControl),
                 new PropertyMetadata(false, OnIsReadOnlyChanged));
 
+        /// <summary>行首名称（如“起点”）；为空时不显示名称列。</summary>
+        public static readonly DependencyProperty LabelProperty =
+            DependencyProperty.Register(nameof(Label), typeof(string), typeof(PointDefinitionControl),
+                new PropertyMetadata(string.Empty));
+
+        /// <summary>名称前的彩色圆点；为空时不显示圆点。</summary>
+        public static readonly DependencyProperty DotBrushProperty =
+            DependencyProperty.Register(nameof(DotBrush), typeof(Brush), typeof(PointDefinitionControl),
+                new PropertyMetadata(null));
+
+        /// <summary>是否显示“在图上拾取”按钮（只读时显示锁定图标）。</summary>
+        public static readonly DependencyProperty ShowPickButtonProperty =
+            DependencyProperty.Register(nameof(ShowPickButton), typeof(bool), typeof(PointDefinitionControl),
+                new PropertyMetadata(true));
+
         public PointDefinition PointValue
         {
             get { return (PointDefinition)GetValue(PointValueProperty); }
@@ -43,6 +52,24 @@ namespace GeoChemistryNexus.Controls
         {
             get { return (bool)GetValue(IsReadOnlyProperty); }
             set { SetValue(IsReadOnlyProperty, value); }
+        }
+
+        public string Label
+        {
+            get => (string)GetValue(LabelProperty);
+            set => SetValue(LabelProperty, value);
+        }
+
+        public Brush? DotBrush
+        {
+            get => (Brush?)GetValue(DotBrushProperty);
+            set => SetValue(DotBrushProperty, value);
+        }
+
+        public bool ShowPickButton
+        {
+            get => (bool)GetValue(ShowPickButtonProperty);
+            set => SetValue(ShowPickButtonProperty, value);
         }
 
         public PointDefinitionControl()
@@ -70,6 +97,7 @@ namespace GeoChemistryNexus.Controls
         private void UserControl_Loaded(object? sender, RoutedEventArgs e)
         {
             UpdateCoordinateLabels();
+            UpdateUIFromPoint(PointValue);
         }
 
         /// <summary>
@@ -77,23 +105,13 @@ namespace GeoChemistryNexus.Controls
         /// </summary>
         private void UpdateCoordinateLabels()
         {
-            string xLabel = TernaryCoordinateHelper.XAxisLabel;
-            string yLabel = TernaryCoordinateHelper.YAxisLabel;
+            ControlAssist.SetTitle(NumericUpDownX, TernaryCoordinateHelper.XAxisLabel);
+            ControlAssist.SetTitle(NumericUpDownY, TernaryCoordinateHelper.YAxisLabel);
 
-            InfoElement.SetTitle(NumericUpDownX, xLabel);
-            InfoElement.SetTitle(NumericUpDownY, yLabel);
-            
             // 三元图模式下限制最大值为1
-            if (TernaryCoordinateHelper.IsTernaryMode)
-            {
-                NumericUpDownX.Maximum = 1.0;
-                NumericUpDownY.Maximum = 1.0;
-            }
-            else
-            {
-                NumericUpDownX.Maximum = double.MaxValue;
-                NumericUpDownY.Maximum = double.MaxValue;
-            }
+            double max = TernaryCoordinateHelper.IsTernaryMode ? 1.0 : double.MaxValue;
+            NumericUpDownX.Maximum = max;
+            NumericUpDownY.Maximum = max;
         }
 
         /// <summary>
@@ -102,23 +120,14 @@ namespace GeoChemistryNexus.Controls
         private static void OnPointValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var control = (PointDefinitionControl)d;
-            var oldPoint = e.OldValue as PointDefinition;
-            var newPoint = e.NewValue as PointDefinition;
 
-            // 解绑旧对象
-            if (oldPoint != null)
-            {
+            if (e.OldValue is PointDefinition oldPoint)
                 oldPoint.PropertyChanged -= control.OnPointPropertyChanged;
-            }
 
-            // 绑定新对象
-            if (newPoint != null)
-            {
+            if (e.NewValue is PointDefinition newPoint)
                 newPoint.PropertyChanged += control.OnPointPropertyChanged;
-            }
 
-            // 更新 UI
-            control.UpdateUIFromPoint(newPoint);
+            control.UpdateUIFromPoint(e.NewValue as PointDefinition);
         }
 
         private void OnPointPropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -136,22 +145,12 @@ namespace GeoChemistryNexus.Controls
             _isUpdatingFromSource = true;
             if (point != null)
             {
-                // 如果是三元图就转换坐标为三元值
-                if(MainPlotViewModel.BaseMapType == "Ternary")
-                {
-                    var ternary = MainPlotViewModel.ToTernary(point.X, point.Y, MainPlotViewModel.Clockwise);
-                    NumericUpDownX.Value = Math.Round(ternary.Item1, 4);
-                    NumericUpDownY.Value = Math.Round(ternary.Item2, 4);
-                }
-                else
-                {
-                    NumericUpDownX.Value = Math.Round(point.X, 4);
-                    NumericUpDownY.Value = Math.Round(point.Y, 4);
-                }
+                var (displayX, displayY) = TernaryCoordinateHelper.CartesianToDisplay(point.X, point.Y);
+                NumericUpDownX.Value = Math.Round(displayX, 4);
+                NumericUpDownY.Value = Math.Round(displayY, 4);
             }
             else
             {
-                // 如果源为空,可以清空或设置为默认值
                 NumericUpDownX.Value = 0;
                 NumericUpDownY.Value = 0;
             }
@@ -161,38 +160,23 @@ namespace GeoChemistryNexus.Controls
         /// <summary>
         /// 当UI控件的值被用户修改时,更新PointValue依赖属性
         /// </summary>
-        private void OnNumericUpDownValueChanged(object? sender, FunctionEventArgs<double> e)
+        private void OnNumericUpDownValueChanged(object? sender, RoutedPropertyChangedEventArgs<double> e)
         {
             // 如果UI的更新是代码触发的,则直接返回
             if (_isUpdatingFromSource) return;
 
-            // 如果是三元图就转换坐标为笛卡尔值
-            if(MainPlotViewModel.BaseMapType == "Ternary")
+            var (cartesianX, cartesianY) = TernaryCoordinateHelper.DisplayToCartesian(
+                NumericUpDownX.Value, NumericUpDownY.Value);
+
+            // 直接更新属性,而不是创建新对象,保持对象引用一致
+            if (PointValue != null)
             {
-                (Double tempX,Double tempY) = MainPlotViewModel.ToCartesian(NumericUpDownX.Value, NumericUpDownY.Value,
-                    1 - NumericUpDownY.Value - NumericUpDownX.Value);
-                PointValue = new PointDefinition
-                {
-                    X = tempX,
-                    Y = tempY
-                };
+                PointValue.X = cartesianX;
+                PointValue.Y = cartesianY;
             }
             else
             {
-                // 直接更新属性,而不是创建新对象,保持对象引用一致
-                if (PointValue != null)
-                {
-                    PointValue.X = NumericUpDownX.Value;
-                    PointValue.Y = NumericUpDownY.Value;
-                }
-                else
-                {
-                    PointValue = new PointDefinition
-                    {
-                        X = NumericUpDownX.Value,
-                        Y = NumericUpDownY.Value
-                    };
-                }
+                PointValue = new PointDefinition { X = cartesianX, Y = cartesianY };
             }
         }
 

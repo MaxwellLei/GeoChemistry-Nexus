@@ -95,31 +95,6 @@ namespace GeoChemistryNexus.Services
             return (row, col);
         }
 
-        public static string NormalizeGoldschmidtClass(string? raw)
-        {
-            if (string.IsNullOrWhiteSpace(raw))
-                return string.Empty;
-
-            // 兼容 litophile / lithophile 两种拼写
-            if (string.Equals(raw, "litophile", StringComparison.OrdinalIgnoreCase) ||
-                string.Equals(raw, "lithophile", StringComparison.OrdinalIgnoreCase))
-                return "Lithophile";
-
-            if (string.Equals(raw, "siderophile", StringComparison.OrdinalIgnoreCase))
-                return "Siderophile";
-
-            if (string.Equals(raw, "chalcophile", StringComparison.OrdinalIgnoreCase))
-                return "Chalcophile";
-
-            if (string.Equals(raw, "atmophile", StringComparison.OrdinalIgnoreCase))
-                return "Atmophile";
-
-            if (string.Equals(raw, "synthetic", StringComparison.OrdinalIgnoreCase))
-                return "Synthetic";
-
-            return char.ToUpperInvariant(raw[0]) + raw[1..].ToLowerInvariant();
-        }
-
         public static IReadOnlyList<OxideFormulaInfo> BuildCommonOxides(ElementGeochemRecord element)
         {
             if (element.AtomicWeight is not > 0)
@@ -210,7 +185,7 @@ namespace GeoChemistryNexus.Services
         private static IReadOnlyList<ElementGroupDefinition> BuildGroups()
         {
             // REE: La–Lu + Y；LREE/HREE 按火成岩常用划分；
-            // HFSE / LILE / PGE 为核心元素集合；过渡金属与 Goldschmidt 由元素字段推导。
+            // HFSE / LILE / PGE 与 Goldschmidt 四类为固定元素集合；过渡金属由元素字段推导。
             return new List<ElementGroupDefinition>
             {
                 new("REE", "periodic_table_group_ree",
@@ -230,30 +205,17 @@ namespace GeoChemistryNexus.Services
                     IsDerived = true,
                     DerivedKind = ElementGroupDerivedKind.TransitionMetals
                 },
-                new("Lithophile", "periodic_table_group_lithophile", Array.Empty<string>())
-                {
-                    IsDerived = true,
-                    DerivedKind = ElementGroupDerivedKind.Goldschmidt,
-                    GoldschmidtKey = "lithophile"
-                },
-                new("Siderophile", "periodic_table_group_siderophile", Array.Empty<string>())
-                {
-                    IsDerived = true,
-                    DerivedKind = ElementGroupDerivedKind.Goldschmidt,
-                    GoldschmidtKey = "siderophile"
-                },
-                new("Chalcophile", "periodic_table_group_chalcophile", Array.Empty<string>())
-                {
-                    IsDerived = true,
-                    DerivedKind = ElementGroupDerivedKind.Goldschmidt,
-                    GoldschmidtKey = "chalcophile"
-                },
-                new("Atmophile", "periodic_table_group_atmophile", Array.Empty<string>())
-                {
-                    IsDerived = true,
-                    DerivedKind = ElementGroupDerivedKind.Goldschmidt,
-                    GoldschmidtKey = "atmophile"
-                }
+                // Goldschmidt 地球化学分类（亲石 / 亲铁 / 亲铜 / 亲气），元素集合固定，不再依赖数据集字段
+                new("Lithophile", "periodic_table_group_lithophile",
+                    "Li", "Be", "B", "O", "F", "Na", "Mg", "Al", "Si", "P", "Cl", "K", "Ca", "Sc", "Ti", "V", "Cr",
+                    "Br", "Rb", "Sr", "Y", "Zr", "Nb", "I", "Cs", "Ba", "La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu",
+                    "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu", "Hf", "Ta", "W", "Ra", "Th", "Pa", "U"),
+                new("Siderophile", "periodic_table_group_siderophile",
+                    "Mn", "Fe", "Co", "Ni", "Mo", "Ru", "Rh", "Pd", "Re", "Os", "Ir", "Pt", "Au"),
+                new("Chalcophile", "periodic_table_group_chalcophile",
+                    "S", "Cu", "Zn", "Ga", "Ge", "As", "Se", "Ag", "Cd", "In", "Sn", "Sb", "Te", "Hg", "Tl", "Pb", "Bi"),
+                new("Atmophile", "periodic_table_group_atmophile",
+                    "H", "He", "C", "N", "Ne", "Ar", "Kr", "Xe")
             };
         }
     }
@@ -261,8 +223,7 @@ namespace GeoChemistryNexus.Services
     public enum ElementGroupDerivedKind
     {
         None = 0,
-        TransitionMetals = 1,
-        Goldschmidt = 2
+        TransitionMetals = 1
     }
 
     public sealed class ElementGroupDefinition
@@ -279,7 +240,6 @@ namespace GeoChemistryNexus.Services
         public IReadOnlyList<string> Symbols { get; }
         public bool IsDerived { get; init; }
         public ElementGroupDerivedKind DerivedKind { get; init; }
-        public string? GoldschmidtKey { get; init; }
     }
 
     public static class OxideMolecularWeightHelper

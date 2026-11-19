@@ -24,7 +24,9 @@ namespace GeoChemistryNexus.Helpers
         /// <summary>
         /// 带超时、语句数和递归深度限制的引擎。避免脚本死循环占住 UI 线程。
         /// </summary>
-        public static Engine CreateEngine(TimeSpan? timeout = null)
+        public static Engine CreateEngine(TimeSpan? timeout = null) => CreateEngine(timeout, null);
+
+        public static Engine CreateEngine(TimeSpan? timeout, Action<Options>? configure)
         {
             var timeoutInterval = timeout ?? DefaultTimeout;
             if (timeoutInterval <= TimeSpan.Zero)
@@ -35,6 +37,7 @@ namespace GeoChemistryNexus.Helpers
                 options.TimeoutInterval(timeoutInterval);
                 options.LimitRecursion(DefaultMaxRecursion);
                 options.MaxStatements(DefaultMaxStatements);
+                configure?.Invoke(options);
             });
         }
 
@@ -69,9 +72,28 @@ namespace GeoChemistryNexus.Helpers
             return engine.Invoke(CoordinateScriptFunctionName);
         }
 
+        // 校验结果只取决于表达式文本；图层每次重绘都会校验，这里缓存以免重复创建引擎与跑正则。
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, bool> FunctionExpressionValidityCache = new(StringComparer.Ordinal);
+        private const int FunctionExpressionValidityCacheLimit = 256;
+
         public static bool IsValidFunctionExpression(string expression)
         {
             if (string.IsNullOrWhiteSpace(expression)) return false;
+
+            if (FunctionExpressionValidityCache.TryGetValue(expression, out bool cached))
+                return cached;
+
+            bool valid = ValidateFunctionExpression(expression);
+
+            if (FunctionExpressionValidityCache.Count >= FunctionExpressionValidityCacheLimit)
+                FunctionExpressionValidityCache.Clear();
+            FunctionExpressionValidityCache[expression] = valid;
+
+            return valid;
+        }
+
+        private static bool ValidateFunctionExpression(string expression)
+        {
             var expr = expression.Trim();
 
             if (!HasBalancedParentheses(expr)) return false;

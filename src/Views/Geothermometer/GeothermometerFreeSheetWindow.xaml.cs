@@ -1,22 +1,23 @@
-using GeoChemistryNexus.Helpers;
+﻿using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Services;
 using GeoChemistryNexus.ViewModels;
 using System;
-using System.Collections.ObjectModel;
-using System.Threading;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Interop;
 
 namespace GeoChemistryNexus.Views
 {
-    public partial class GeothermometerFreeSheetWindow : Window, IFreeSheetNotificationHost
+    public partial class GeothermometerFreeSheetWindow : Window, IFreeSheetNotificationHost, INotificationCenterHost
     {
         private static GeothermometerFreeSheetWindow? _instance;
         private readonly GeothermometerFreeSheetViewModel _viewModel;
 
-        public ObservableCollection<NotificationViewModel> LocalNotifications { get; } = new();
-
-        private readonly CancellationTokenSource _notificationCts = new();
+        /// <summary>
+        /// 本窗口独立的通知中心（由 XAML 中的 NotificationHost 呈现）。
+        /// </summary>
+        public NotificationCenter Notifications { get; } = new();
 
         Window IFreeSheetNotificationHost.OwnerWindow => this;
 
@@ -24,12 +25,30 @@ namespace GeoChemistryNexus.Views
         {
             InitializeComponent();
             UiScaleHelper.Attach(this);
+            GeoChemistryNexus.Helpers.WindowWorkAreaHelper.Attach(this);
             _viewModel = new GeothermometerFreeSheetViewModel();
             DataContext = _viewModel;
 
+            SourceInitialized += (_, _) =>
+            {
+                int policy = 2; // Match the native DWM shadow of the template editor windows.
+                DwmSetWindowAttribute(new WindowInteropHelper(this).Handle, 2, ref policy, sizeof(int));
+            };
             Loaded += OnLoaded;
             Closed += OnClosed;
         }
+
+        [DllImport("dwmapi.dll")]
+        private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attribute, ref int value, int size);
+
+        private void MinimizeClick(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
+
+        private void MaximizeClick(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
+        }
+
+        private void CloseClick(object sender, RoutedEventArgs e) => Close();
 
         public static void ShowOrActivate()
         {
@@ -65,8 +84,7 @@ namespace GeoChemistryNexus.Views
 
         private void OnClosed(object? sender, EventArgs e)
         {
-            _notificationCts.Cancel();
-            _notificationCts.Dispose();
+            Notifications.Dispose();
             _viewModel.AttachNotificationHost(null);
 
             var worksheet = FreeReoGrid.CurrentWorksheet;
@@ -93,100 +111,40 @@ namespace GeoChemistryNexus.Views
                 _viewModel.OnSelectionChanged(worksheet);
         }
 
-        void IFreeSheetNotificationHost.ShowInfo(string message) =>
-            ShowLocalNotification(LanguageService.Instance["information"] ?? "Information", message, NotificationType.Info, MessageHelper.WaitTime);
+        void IFreeSheetNotificationHost.ShowInfo(string message) => Notifications.Info(message);
 
-        void IFreeSheetNotificationHost.ShowSuccess(string message) =>
-            ShowLocalNotification(LanguageService.Instance["notification_success"] ?? "Success", message, NotificationType.Success, MessageHelper.WaitTime);
+        void IFreeSheetNotificationHost.ShowSuccess(string message) => Notifications.Success(message);
 
-        void IFreeSheetNotificationHost.ShowWarning(string message) =>
-            ShowLocalNotification(LanguageService.Instance["notification_warning"] ?? "Warning", message, NotificationType.Warning);
+        void IFreeSheetNotificationHost.ShowWarning(string message) => Notifications.Warning(message);
 
-        void IFreeSheetNotificationHost.ShowError(string message) =>
-            ShowLocalNotification(LanguageService.Instance["error"] ?? "Error", message, NotificationType.Error);
+        void IFreeSheetNotificationHost.ShowError(string message) => Notifications.Error(message);
 
-        Task<bool> IFreeSheetNotificationHost.ShowConfirmAsync(string message, string cancelText, string confirmText)
-        {
-            var tcs = new TaskCompletionSource<bool>();
-            Dispatcher.Invoke(() =>
-            {
-                var vm = new NotificationViewModel(
-                    LanguageService.Instance["Confirm"] ?? "Confirm",
-                    message,
-                    NotificationType.Info,
-                    RemoveNotification)
-                {
-                    IsInteractive = true,
-                    ConfirmText = confirmText,
-                    CancelText = cancelText,
-                    DialogResultAction = result => tcs.TrySetResult(result)
-                };
-                LocalNotifications.Add(vm);
-            });
-            return tcs.Task;
-        }
+        Task<bool> IFreeSheetNotificationHost.ShowConfirmAsync(string message, string cancelText, string confirmText) =>
+            Notifications.ShowDialogAsync(
+                LanguageService.Instance["Confirm"] ?? "Confirm",
+                message,
+                confirmText,
+                cancelText);
 
-        Task<FreeSheetCsvExportMode?> IFreeSheetNotificationHost.ShowExportModeAsync()
+        async Task<FreeSheetCsvExportMode?> IFreeSheetNotificationHost.ShowExportModeAsync()
         {
             string valuesOption = LanguageService.Instance["geo_free_sheet_export_values"];
             string formulasOption = LanguageService.Instance["geo_free_sheet_export_formulas"];
-            var tcs = new TaskCompletionSource<FreeSheetCsvExportMode?>();
 
-            Dispatcher.Invoke(() =>
-            {
-                var vm = new NotificationViewModel(
-                    LanguageService.Instance["geo_free_sheet_export_title"],
-                    LanguageService.Instance["geo_free_sheet_export_mode_prompt"],
-                    NotificationType.Info,
-                    RemoveNotification)
-                {
-                    IsInteractive = true,
-                    IsExportModeSelection = true,
-                    ExportOptions = new ObservableCollection<string> { valuesOption, formulasOption },
-                    SelectedExportOption = valuesOption,
-                    ExportModeSelectionAction = selected =>
-                    {
-                        tcs.TrySetResult(string.Equals(selected, formulasOption, StringComparison.Ordinal)
-                            ? FreeSheetCsvExportMode.Formulas
-                            : FreeSheetCsvExportMode.Values);
-                    },
-                    DialogResultAction = confirmed =>
-                    {
-                        if (!confirmed)
-                            tcs.TrySetResult(null);
-                    }
-                };
-                LocalNotifications.Add(vm);
-            });
+            string? selected = await Notifications.ShowChoiceAsync(
+                LanguageService.Instance["geo_free_sheet_export_title"],
+                LanguageService.Instance["geo_free_sheet_export_mode_prompt"],
+                new[] { valuesOption, formulasOption },
+                LanguageService.Instance["Confirm"] ?? "Confirm",
+                LanguageService.Instance["Cancel"] ?? "Cancel",
+                valuesOption);
 
-            return tcs.Task;
-        }
+            if (selected == null)
+                return null;
 
-        private void ShowLocalNotification(string title, string message, NotificationType type, int durationSeconds = 0)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                var vm = new NotificationViewModel(title, message, type, RemoveNotification);
-                LocalNotifications.Add(vm);
-
-                if (durationSeconds > 0)
-                {
-                    LocalNotificationDelay.Schedule(
-                        Dispatcher,
-                        durationSeconds,
-                        _notificationCts.Token,
-                        async () => await vm.Close());
-                }
-            });
-        }
-
-        private void RemoveNotification(NotificationViewModel vm)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                if (LocalNotifications.Contains(vm))
-                    LocalNotifications.Remove(vm);
-            });
+            return string.Equals(selected, formulasOption, StringComparison.Ordinal)
+                ? FreeSheetCsvExportMode.Formulas
+                : FreeSheetCsvExportMode.Values;
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text.Json;
 
 namespace GeoChemistryNexus.Helpers
 {
@@ -41,6 +42,15 @@ namespace GeoChemistryNexus.Helpers
         public static void SaveToPath<T>(T config, string path)
         {
             JsonHelper.SerializeToJsonFile(config, path);
+        }
+
+        public static void ExportRelaxed<T>(T config, string path)
+        {
+            string? directory = Path.GetDirectoryName(path);
+            if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
+
+            File.WriteAllText(path, JsonSerializer.Serialize(config, JsonHelper.CreateRelaxedIndentedOptions()));
         }
     }
 }

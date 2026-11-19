@@ -119,6 +119,13 @@ namespace GeoChemistryNexus.ViewModels
 
         // ────────────────── 命令 ──────────────────
         [RelayCommand]
+        private void SelectEntry(OxideElementEntry? entry)
+        {
+            if (entry != null)
+                SelectedEntry = entry;
+        }
+
+        [RelayCommand]
         private void Reset()
         {
             InputValue      = 1.0;

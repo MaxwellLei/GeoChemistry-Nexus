@@ -95,8 +95,7 @@ namespace GeoChemistryNexus.ViewModels
                 ApplyTickStyles(targetAxis, spiderAxisDef);
                 ApplySubtitle(targetAxis, spiderAxisDef);
 
-                // 与笛卡尔一致：显式恢复边框，避免遮罩透明度残留
-                targetAxis.FrameLineStyle.Color = ScottPlot.Colors.Black;
+                ApplyFrameLine(targetAxis, spiderAxisDef);
 
                 var displayElements = GetSpiderDisplayElements(spiderAxisDef);
 
@@ -209,7 +208,8 @@ namespace GeoChemistryNexus.ViewModels
                     var hideMinor = cartesianAxisDef.MinorTickWidth <= 0 || cartesianAxisDef.MinorTickLength <= 0;
                     targetAxis.TickGenerator = new LogDecadeTickGenerator
                     {
-                        ShowMinorTicks = !hideMinor
+                        ShowMinorTicks = !hideMinor,
+                        ShowRangeEndpoints = true
                     };
                 }
                 else
@@ -252,8 +252,8 @@ namespace GeoChemistryNexus.ViewModels
                 targetAxis.TickLabelStyle.Bold = cartesianAxisDef.TickLableisBold;
                 targetAxis.TickLabelStyle.Italic = cartesianAxisDef.TickLableisItalic;
 
-                // Render 需显式恢复边框色：选中遮罩会降低 FrameLineStyle 透明度，且复用轴对象时不会自动重置
-                targetAxis.FrameLineStyle.Color = ScottPlot.Colors.Black;
+                // Render 需显式恢复边框：选中遮罩会降低 FrameLineStyle 透明度，且复用轴对象时不会自动重置
+                ApplyFrameLine(targetAxis, cartesianAxisDef);
 
                 if (targetAxis is LeftAxisWithSubtitle leftSub)
                 {
@@ -309,36 +309,11 @@ namespace GeoChemistryNexus.ViewModels
                     targetEdge.LabelStyle.OffsetX = (float)ternaryAxisDef.LabelOffsetX;
                     targetEdge.LabelStyle.OffsetY = (float)ternaryAxisDef.LabelOffsetY;
 
-                    targetEdge.TickMarkStyle.Width = edgeVisible && ternaryAxisDef.IsShowMajorTicks ? 1 : 0;
-                    targetEdge.TickMarkStyle.Color = edgeVisible && ternaryAxisDef.IsShowMajorTicks
-                        ? ScottPlot.Color.FromHex(GraphMapTemplateService.ConvertWpfHexToScottPlotHex(ternaryAxisDef.MajorTickWidthColor))
-                        : ScottPlot.Color.FromHex("#00000000");
-
-                    targetEdge.TickLabelStyle.FontName = ternaryAxisDef.TickLableFamily;
-                    targetEdge.TickLabelStyle.FontSize = edgeVisible && ternaryAxisDef.IsShowTickLabels ? ternaryAxisDef.TickLablesize : 0;
-                    targetEdge.TickLabelStyle.ForeColor = ScottPlot.Color.FromHex(
-                        edgeVisible
-                            ? GraphMapTemplateService.ConvertWpfHexToScottPlotHex(ternaryAxisDef.TickLablecolor)
-                            : "#00000000");
-                    targetEdge.TickLabelStyle.Bold = ternaryAxisDef.TickLableisBold;
-                    targetEdge.TickLabelStyle.Italic = ternaryAxisDef.TickLableisItalic;
-
-                    targetEdge.Ticks.Clear();
-                    if (!edgeVisible)
-                    {
-                        return;
-                    }
-
-                    int ticksPerEdge = 10;
-                    for (int i = 0; i <= ticksPerEdge; i++)
-                    {
-                        double fraction = i / (double)ticksPerEdge;
-                        double tickX = targetEdge.Start.X + fraction * (targetEdge.End.X - targetEdge.Start.X);
-                        double tickY = targetEdge.Start.Y + fraction * (targetEdge.End.Y - targetEdge.Start.Y);
-                        ScottPlot.Coordinates tickPoint = new(tickX, tickY);
-                        string tickLabel = $"{fraction:0.#}";
-                        targetEdge.Ticks.Add((tickPoint, tickLabel));
-                    }
+                    ApplyTernaryEdgeLine(targetEdge, ternaryAxisDef, edgeVisible);
+                    ApplyTernaryTickStyle(targetEdge, ternaryAxisDef, edgeVisible);
+                    ApplyTernaryTickLabels(targetEdge, ternaryAxisDef, edgeVisible);
+                    ApplyTernarySubtitle(plot, ternaryAxisDef, edgeVisible);
+                    RebuildTernaryTicks(targetEdge, ternaryAxisDef, edgeVisible);
                 }
             }
         }
@@ -411,7 +386,8 @@ namespace GeoChemistryNexus.ViewModels
                     axisDef.Maximum,
                     axisDef.ScaleType,
                     out double plotMin,
-                    out double plotMax))
+                    out double plotMax,
+                    applyPadding: axisDef.TickAlignment != AxisTickAlignment.Strict))
             {
                 targetAxis.Range.Min = plotMin;
                 targetAxis.Range.Max = plotMax;
@@ -453,8 +429,10 @@ namespace GeoChemistryNexus.ViewModels
                     return;
 
                 edge.LabelStyle.ForeColor = ScottPlot.Colors.Red;
+                edge.EdgeLineStyle.Color = ScottPlot.Colors.Red;
                 edge.TickMarkStyle.Color = ScottPlot.Colors.Red;
                 edge.TickLabelStyle.ForeColor = ScottPlot.Colors.Red;
+                SetTernarySubtitleColor(_plot, ternaryAxisDef.Type, ScottPlot.Colors.Red);
                 return;
             }
 
@@ -482,8 +460,10 @@ namespace GeoChemistryNexus.ViewModels
                     return;
 
                 edge.LabelStyle.ForeColor = edge.LabelStyle.ForeColor.WithAlpha(UnselectedMaskAlpha);
+                edge.EdgeLineStyle.Color = edge.EdgeLineStyle.Color.WithAlpha(UnselectedMaskAlpha);
                 edge.TickMarkStyle.Color = edge.TickMarkStyle.Color.WithAlpha(UnselectedMaskAlpha);
                 edge.TickLabelStyle.ForeColor = edge.TickLabelStyle.ForeColor.WithAlpha(UnselectedMaskAlpha);
+                DimTernarySubtitle(_plot, ternaryAxisDef.Type);
                 return;
             }
 
@@ -520,6 +500,7 @@ namespace GeoChemistryNexus.ViewModels
                     edgeVisible
                         ? GraphMapTemplateService.ConvertWpfHexToScottPlotHex(ternaryAxisDef.Color)
                         : "#00000000");
+                ApplyTernaryEdgeLine(edge, ternaryAxisDef, edgeVisible);
                 edge.TickMarkStyle.Color = edgeVisible && ternaryAxisDef.IsShowMajorTicks
                     ? ScottPlot.Color.FromHex(GraphMapTemplateService.ConvertWpfHexToScottPlotHex(ternaryAxisDef.MajorTickWidthColor))
                     : ScottPlot.Color.FromHex("#00000000");
@@ -527,6 +508,7 @@ namespace GeoChemistryNexus.ViewModels
                     edgeVisible
                         ? GraphMapTemplateService.ConvertWpfHexToScottPlotHex(ternaryAxisDef.TickLablecolor)
                         : "#00000000");
+                ApplyTernarySubtitle(plot, ternaryAxisDef, edgeVisible);
                 return;
             }
 
@@ -539,12 +521,13 @@ namespace GeoChemistryNexus.ViewModels
                 ApplyAxisLabelStyle(targetAxis, cartesianAxisDef);
                 ApplyTickStyles(targetAxis, cartesianAxisDef);
                 ApplySubtitle(targetAxis, cartesianAxisDef);
-                targetAxis.FrameLineStyle.Color = ScottPlot.Colors.Black;
+                ApplyFrameLine(targetAxis, cartesianAxisDef);
             }
             else
             {
                 ApplyAxisLabelStyle(targetAxis, AxisDefinition);
                 targetAxis.FrameLineStyle.Color = ScottPlot.Colors.Black;
+                targetAxis.FrameLineStyle.Width = 1;
             }
         }
 
@@ -722,6 +705,169 @@ namespace GeoChemistryNexus.ViewModels
             style.ForeColor = ScottPlot.Color.FromHex(GraphMapTemplateService.ConvertWpfHexToScottPlotHex(def.SubLabelColor));
             style.Bold = def.SubLabelBold;
             style.Italic = def.SubLabelItalic;
+        }
+
+        private static void ApplyFrameLine(ScottPlot.IAxis targetAxis, CartesianAxisDefinition axisDef)
+        {
+            targetAxis.FrameLineStyle.Width = Math.Max(0, axisDef.AxisLineWidth);
+            targetAxis.FrameLineStyle.Color = ScottPlot.Color.FromHex(
+                GraphMapTemplateService.ConvertWpfHexToScottPlotHex(axisDef.AxisLineColor));
+        }
+
+        private static void ApplyTernaryEdgeLine(ScottPlot.TriangularAxisEdge edge, TernaryAxisDefinition def, bool edgeVisible)
+        {
+            edge.EdgeLineStyle.Width = edgeVisible ? Math.Max(0, def.AxisLineWidth) : 0;
+            edge.EdgeLineStyle.Color = ScottPlot.Color.FromHex(
+                edgeVisible
+                    ? GraphMapTemplateService.ConvertWpfHexToScottPlotHex(def.AxisLineColor)
+                    : "#00000000");
+        }
+
+        private static void ApplyTernaryTickStyle(ScottPlot.TriangularAxisEdge edge, TernaryAxisDefinition def, bool edgeVisible)
+        {
+            float length = Math.Max(0, def.TickLength);
+            edge.TickMarkStyle.Length = length;
+            edge.TickMarkStyle.Width = edgeVisible && def.IsShowMajorTicks ? Math.Max(0, def.TickWidth) : 0;
+            edge.TickMarkStyle.Color = edgeVisible && def.IsShowMajorTicks
+                ? ScottPlot.Color.FromHex(GraphMapTemplateService.ConvertWpfHexToScottPlotHex(def.MajorTickWidthColor))
+                : ScottPlot.Color.FromHex("#00000000");
+            edge.TickOffset = def.Type switch
+            {
+                "Left" => new ScottPlot.PixelOffset(-length, 0),
+                "Right" => new ScottPlot.PixelOffset(length, 0),
+                _ => new ScottPlot.PixelOffset(0, length)
+            };
+        }
+
+        private static void ApplyTernaryTickLabels(ScottPlot.TriangularAxisEdge edge, TernaryAxisDefinition def, bool edgeVisible)
+        {
+            float gap = (float)Math.Max(0, def.TickLabelGap);
+            edge.TickLabelStyle.FontName = def.TickLableFamily;
+            edge.TickLabelStyle.FontSize = edgeVisible && def.IsShowTickLabels ? def.TickLablesize : 0;
+            edge.TickLabelStyle.ForeColor = ScottPlot.Color.FromHex(
+                edgeVisible
+                    ? GraphMapTemplateService.ConvertWpfHexToScottPlotHex(def.TickLablecolor)
+                    : "#00000000");
+            edge.TickLabelStyle.Bold = def.TickLableisBold;
+            edge.TickLabelStyle.Italic = def.TickLableisItalic;
+            edge.TickLabelStyle.OffsetX = def.Type switch
+            {
+                "Left" => -gap,
+                "Right" => gap,
+                _ => 0
+            };
+            edge.TickLabelStyle.OffsetY = def.Type == "Bottom" ? gap : 0;
+        }
+
+        private void ApplyTernarySubtitle(Plot plot, TernaryAxisDefinition def, bool edgeVisible)
+        {
+            if (plot.GetPlottables().OfType<SubtitledTriangularAxis>().FirstOrDefault() is not SubtitledTriangularAxis axis)
+                return;
+
+            string text = edgeVisible
+                ? def.SubLabel.Get(_contentLanguage)?.Replace("\r\n", "\n").Replace("\r", "\n") ?? ""
+                : string.Empty;
+            var color = ScottPlot.Color.FromHex(
+                edgeVisible
+                    ? GraphMapTemplateService.ConvertWpfHexToScottPlotHex(def.SubLabelColor)
+                    : "#00000000");
+
+            switch (def.Type)
+            {
+                case "Bottom":
+                    ConfigureTernarySubtitle(axis.BottomSubStyle, def, edgeVisible, color);
+                    axis.BottomSubText = text;
+                    axis.BottomSubExtraX = (float)def.SubLabelOffsetX;
+                    axis.BottomSubExtraY = (float)def.SubLabelOffsetY;
+                    break;
+                case "Left":
+                    ConfigureTernarySubtitle(axis.LeftSubStyle, def, edgeVisible, color);
+                    axis.LeftSubText = text;
+                    axis.LeftSubExtraX = (float)def.SubLabelOffsetX;
+                    axis.LeftSubExtraY = (float)def.SubLabelOffsetY;
+                    break;
+                case "Right":
+                    ConfigureTernarySubtitle(axis.RightSubStyle, def, edgeVisible, color);
+                    axis.RightSubText = text;
+                    axis.RightSubExtraX = (float)def.SubLabelOffsetX;
+                    axis.RightSubExtraY = (float)def.SubLabelOffsetY;
+                    break;
+            }
+        }
+
+        private static void ConfigureTernarySubtitle(ScottPlot.LabelStyle style, TernaryAxisDefinition def, bool edgeVisible, ScottPlot.Color color)
+        {
+            style.FontName = def.Family;
+            style.FontSize = edgeVisible ? def.SubLabelSize : 0;
+            style.ForeColor = color;
+            style.Bold = def.SubLabelBold;
+            style.Italic = def.SubLabelItalic;
+        }
+
+        private static void SetTernarySubtitleColor(Plot plot, string axisType, ScottPlot.Color color)
+        {
+            if (plot.GetPlottables().OfType<SubtitledTriangularAxis>().FirstOrDefault() is not SubtitledTriangularAxis axis)
+                return;
+
+            var style = axis.SubStyleFor(axisType);
+            if (style != null)
+                style.ForeColor = color;
+        }
+
+        private static void DimTernarySubtitle(Plot plot, string axisType)
+        {
+            if (plot.GetPlottables().OfType<SubtitledTriangularAxis>().FirstOrDefault() is not SubtitledTriangularAxis axis)
+                return;
+
+            var style = axis.SubStyleFor(axisType);
+            if (style != null)
+                style.ForeColor = style.ForeColor.WithAlpha(UnselectedMaskAlpha);
+        }
+
+        private static void RebuildTernaryTicks(ScottPlot.TriangularAxisEdge edge, TernaryAxisDefinition def, bool edgeVisible)
+        {
+            edge.Ticks.Clear();
+            if (!edgeVisible)
+                return;
+
+            bool percent = def.TickValueMode == TernaryTickValueMode.Percent;
+            double end = percent ? 100d : 1d;
+            double step = def.TickStep > 0 ? def.TickStep : (percent ? 10d : 0.1d);
+            if (step > end)
+                step = end;
+
+            int intervals = (int)Math.Floor(end / step + 1e-8);
+            if (intervals < 1)
+                intervals = 1;
+            if (intervals > 100)
+                intervals = 100;
+
+            // 步长刚好走完整条边时，最后一个刻度钉在顶点上，避免 0.1 累加后停在 0.9999
+            bool reachesEnd = Math.Abs(intervals * step - end) <= step * 1e-4;
+            for (int i = 0; i <= intervals; i++)
+            {
+                double value = reachesEnd && i == intervals ? end : Math.Min(end, i * step);
+                AddTernaryTick(edge, value, end, percent);
+            }
+
+            if (!reachesEnd)
+                AddTernaryTick(edge, end, end, percent);
+        }
+
+        private static void AddTernaryTick(ScottPlot.TriangularAxisEdge edge, double value, double end, bool percent)
+        {
+            double fraction = value / end;
+            double tickX = edge.Start.X + fraction * (edge.End.X - edge.Start.X);
+            double tickY = edge.Start.Y + fraction * (edge.End.Y - edge.Start.Y);
+            edge.Ticks.Add((new ScottPlot.Coordinates(tickX, tickY), FormatTernaryTick(value, percent)));
+        }
+
+        private static string FormatTernaryTick(double value, bool percent)
+        {
+            if (percent)
+                return Math.Round(value).ToString("0");
+
+            return Math.Round(value, 4).ToString("0.####");
         }
     }
 }

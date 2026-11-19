@@ -1,4 +1,4 @@
-using GeoChemistryNexus.Models;
+﻿using GeoChemistryNexus.Models;
 using Jint.Runtime;
 using Jint;
 using System;
@@ -55,7 +55,6 @@ namespace GeoChemistryNexus.Controls
         public ScriptDefinitionControl()
         {
             InitializeComponent();
-            InitializeLanguageComboBox();
             InitializeEventHandlers();
 
             // 如果没有脚本定义对象，默认创建
@@ -81,16 +80,6 @@ namespace GeoChemistryNexus.Controls
                     control.UpdateStatus(LanguageService.Instance["ready"]); // 同时也可以重置状态
                 });
             }
-        }
-
-        private void InitializeLanguageComboBox()
-        {
-            var languageItems = new List<object>
-            {
-                new { DisplayName = "JavaScript", Value = ScriptLanguage.JavaScript }
-            };
-
-            LanguageComboBox.ItemsSource = languageItems;
         }
 
         private void InitializeEventHandlers()
@@ -124,10 +113,33 @@ namespace GeoChemistryNexus.Controls
             }
         }
 
+        /// <summary>
+        /// 更新状态块：红色 = 错误（红底）、绿色 = 通过（绿底），其余为就绪 / 提示（灰底）。
+        /// </summary>
         private void UpdateStatus(string status, Brush? color = null)
         {
             StatusTextBlock.Text = status;
-            StatusTextBlock.Foreground = color ?? new SolidColorBrush((Color)ColorConverter.ConvertFromString("#666666"));
+
+            string kind;
+            string foreground;
+            if (ReferenceEquals(color, Brushes.Red))
+            {
+                kind = "Error";
+                foreground = "#9B2B1E";
+            }
+            else if (ReferenceEquals(color, Brushes.Green))
+            {
+                kind = "Ok";
+                foreground = "#1D5B37";
+            }
+            else
+            {
+                kind = string.Empty;
+                foreground = "#5C6B7F";
+            }
+
+            StatusBox.Tag = kind;
+            StatusTextBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(foreground));
         }
 
         private void ValidateButton_Click(object sender, RoutedEventArgs e)
@@ -212,7 +224,8 @@ namespace GeoChemistryNexus.Controls
         {
             try
             {
-                (string,bool) res = CheckParameter(RequiredDataSeriesTextBox.Text);
+                string requiredSeries = ScriptDefinition?.RequiredDataSeries ?? string.Empty;
+                (string,bool) res = CheckParameter(requiredSeries);
                 if (!res.Item2)
                 {
                     UpdateStatus(res.Item1, Brushes.Red);
@@ -225,7 +238,7 @@ namespace GeoChemistryNexus.Controls
                 Helpers.JintHelper.InjectTraceFunction(engine, tempLogs); // 注入trace函数避免验证失败
 
                 // 按逗号分隔字符串并去除多余的空格
-                string[] variables = RequiredDataSeriesTextBox.Text.Split(',').Select(v => v.Trim()).ToArray();
+                string[] variables = requiredSeries.Split(',').Select(v => v.Trim()).ToArray();
                 // 将每个变量添加到 Jint 中
                 foreach (string variable in variables)
                 {

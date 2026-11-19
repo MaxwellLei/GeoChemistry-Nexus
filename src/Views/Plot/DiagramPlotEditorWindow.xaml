@@ -1,40 +1,59 @@
-<Window x:Class="GeoChemistryNexus.Views.DiagramPlotEditorWindow"
+﻿<Window x:Class="GeoChemistryNexus.Views.DiagramPlotEditorWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:controls="clr-namespace:GeoChemistryNexus.Controls"
         xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
         mc:Ignorable="d"
         x:Name="RootWindow"
         Title="{Binding ViewModel.WindowTitle, ElementName=EditorControl}"
-        Height="720" Width="1000"
-        MinHeight="600" MinWidth="880"
+        Width="1180" Height="700" MinWidth="960" MinHeight="560"
         WindowStartupLocation="CenterOwner"
-        WindowStyle="SingleBorderWindow"
-        Background="#F5F5F7">
+        WindowStyle="None" ResizeMode="CanResize"
+        Background="#F5F7FA"
+        FontFamily="Segoe UI, Microsoft YaHei UI" FontSize="13"
+        UseLayoutRounding="True">
+
+    <shell:WindowChrome.WindowChrome>
+        <shell:WindowChrome CaptionHeight="44" ResizeBorderThickness="6" CornerRadius="0" GlassFrameThickness="1" UseAeroCaptionButtons="False"/>
+    </shell:WindowChrome.WindowChrome>
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/GeoChemistryNexus;component/Views/Epma/EpmaTemplateEditorStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
 
     <Grid>
         <controls:DiagramPlotEditorControl x:Name="EditorControl"
                                            ConfirmCommand="{Binding ConfirmCommand, ElementName=RootWindow}"
                                            CancelCommand="{Binding CancelCommand, ElementName=RootWindow}"/>
 
-        <ScrollViewer VerticalAlignment="Top" HorizontalAlignment="Right"
-                      Margin="0,16,16,0" MaxHeight="480"
-                      VerticalScrollBarVisibility="Hidden" IsHitTestVisible="True"
-                      BorderThickness="0" Background="Transparent">
-            <ItemsControl ItemsSource="{Binding LocalNotifications, ElementName=RootWindow}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <controls:NotificationItem/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
+        <!-- 顶栏右侧：确认按钮与窗口按钮（与 EPMA 模板编辑器一致） -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Height="44"
+                    shell:WindowChrome.IsHitTestVisibleInChrome="True">
+            <Button x:Name="ConfirmButton" Style="{StaticResource EditorAction}" VerticalAlignment="Center"
+                    Click="ConfirmClick"
+                    Content="{Binding [Confirm], Source={x:Static lg:LanguageService.Instance}}"
+                    Background="{DynamicResource ThemeAccentBrush}" Foreground="White" BorderBrush="{DynamicResource ThemeAccentBrush}" Padding="16,5"/>
+            <Border Width="1" Height="18" Background="#DFE5ED" Margin="12,0,8,0"/>
+            <Button x:Name="CaptionMinimizeButton" Style="{StaticResource EditorCaption}" Content="&#xe67a;" Click="MinimizeClick"
+                    AutomationProperties.Name="{Binding [epma_editor_minimize], Source={x:Static lg:LanguageService.Instance}}"
+                    ToolTip="{Binding [epma_editor_minimize], Source={x:Static lg:LanguageService.Instance}}"/>
+            <Button x:Name="CaptionMaximizeButton" Style="{StaticResource EditorCaptionMaximize}" Click="MaximizeClick"
+                    AutomationProperties.Name="{Binding [epma_editor_maximize], Source={x:Static lg:LanguageService.Instance}}"
+                    ToolTip="{Binding [epma_editor_maximize], Source={x:Static lg:LanguageService.Instance}}"/>
+            <Button x:Name="CaptionCloseButton" Style="{StaticResource EditorCaptionClose}" Content="&#xeaf2;" Click="CancelClick"
+                    AutomationProperties.Name="{Binding [close], Source={x:Static lg:LanguageService.Instance}}"
+                    ToolTip="{Binding [close], Source={x:Static lg:LanguageService.Instance}}"/>
+        </StackPanel>
+
+        <controls:NotificationHost VerticalAlignment="Stretch" HorizontalAlignment="Right"
+                                   Margin="0,44,0,16"
+                                   Center="{Binding Notifications, ElementName=RootWindow}"/>
     </Grid>
 </Window>

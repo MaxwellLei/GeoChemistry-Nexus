@@ -66,6 +66,38 @@ namespace GeoChemistryNexus.Services
             WriteCatalogToPath(PublisherCatalogPath, catalog);
         }
 
+        public static string SerializeCatalog(HomeLinksCatalog catalog)
+        {
+            if (catalog == null)
+                throw new ArgumentNullException(nameof(catalog));
+
+            NormalizeCatalog(catalog);
+            return JsonSerializer.Serialize(catalog, JsonOptions);
+        }
+
+        public static bool TryDeserializeCatalog(string? json, out HomeLinksCatalog catalog)
+        {
+            catalog = new HomeLinksCatalog();
+            if (string.IsNullOrWhiteSpace(json))
+                return false;
+
+            try
+            {
+                var parsed = JsonSerializer.Deserialize<HomeLinksCatalog>(json, JsonOptions);
+                if (parsed == null)
+                    return false;
+
+                parsed.Groups ??= new List<HomeLinkGroup>();
+                catalog = parsed;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[HomeLinksPublishService] Catalog parse failed: {ex.Message}");
+                return false;
+            }
+        }
+
         public static void SaveBundledCatalog(HomeLinksCatalog catalog)
         {
             SavePublisherCatalog(catalog);

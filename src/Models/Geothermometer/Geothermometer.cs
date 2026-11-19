@@ -67,6 +67,21 @@ namespace GeoChemistryNexus.Models
         public string NameLangKey { get; set; } = string.Empty;
 
         /// <summary>
+        /// 模板文本支持的语言（格式 1.2 起；第一项为默认语言，旧模板为空）
+        /// </summary>
+        public List<string> Languages { get; set; } = new();
+
+        /// <summary>
+        /// 各语言的模板名称（Name 保存默认语言文本）
+        /// </summary>
+        public Dictionary<string, string> NameLang { get; set; } = new();
+
+        /// <summary>
+        /// 各语言的参考文献（Reference 保存默认语言文本）
+        /// </summary>
+        public Dictionary<string, string> ReferenceLang { get; set; } = new();
+
+        /// <summary>
         /// 作者信息
         /// </summary>
         public string Author { get; set; } = string.Empty;
@@ -95,6 +110,12 @@ namespace GeoChemistryNexus.Models
         /// 表格表头列表
         /// </summary>
         public List<string> Headers { get; set; } = new();
+
+        /// <summary>
+        /// 各列单位（格式 1.3 新增，可选）：按位置与 <see cref="Headers"/> 一一对应，没有单位的列为空串；
+        /// 旧模板或完全没有单位时为空列表。
+        /// </summary>
+        public List<string> Units { get; set; } = new();
 
         /// <summary>
         /// 示例数据行
@@ -158,6 +179,19 @@ namespace GeoChemistryNexus.Models
         [JsonIgnore]
         public bool IsUpdateAvailable =>
             string.Equals(Status, GeothermometerInstallStatus.Outdated, StringComparison.Ordinal);
+
+        /// <summary>
+        /// 服务器版本高于当前软件支持的格式：不能下载/更新；本地没有安装时也不能使用，已有旧版时仍可使用旧版
+        /// </summary>
+        [JsonIgnore]
+        public bool IsRequiresAppUpgrade =>
+            string.Equals(Status, GeothermometerInstallStatus.RequiresAppUpgrade, StringComparison.Ordinal);
+
+        /// <summary>
+        /// 本地是否已有脚本（已安装），来自数据库摘要投影，无需再读库
+        /// </summary>
+        [JsonIgnore]
+        public bool IsInstalledLocally { get; set; }
     }
 
     /// <summary>
@@ -231,6 +265,21 @@ namespace GeoChemistryNexus.Models
         /// 名称多语言键
         /// </summary>
         public string NameLangKey { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 模板文本支持的语言（第一项为默认语言；旧目录无此字段）
+        /// </summary>
+        public List<string> Languages { get; set; } = new();
+
+        /// <summary>
+        /// 各语言的模板名称（旧目录无此字段）
+        /// </summary>
+        public Dictionary<string, string> NameLang { get; set; } = new();
+
+        /// <summary>
+        /// 各语言的参考文献（旧目录无此字段）
+        /// </summary>
+        public Dictionary<string, string> ReferenceLang { get; set; } = new();
 
         /// <summary>
         /// 类别键
@@ -340,6 +389,9 @@ namespace GeoChemistryNexus.Models
         /// <summary>本次检查是否同步了矿物分类翻译文件</summary>
         public bool MineralCategoriesSynced { get; set; }
 
+        /// <summary>远端清单哈希与本地缓存不一致（以 downloadListIfOutdated=false 检查且未下载时返回，调用方可据此征求确认）</summary>
+        public bool ListOutdated { get; set; }
+
         public bool HasPendingActions => NotInstalledCount > 0 || OutdatedCount > 0;
 
         public int RequiresAppUpgradeCount => RequiresAppUpgrade.Count;
@@ -356,11 +408,14 @@ namespace GeoChemistryNexus.Models
 
         public string ErrorMessage { get; init; } = string.Empty;
 
+        /// <summary>失败原因是下载内容与目录哈希不一致（本地目录可能已过期，可刷新目录后重试）</summary>
+        public bool IsHashMismatch { get; init; }
+
         public static GeothermometerDownloadItemResult Succeeded(string pluginId)
             => new() { Success = true, PluginId = pluginId };
 
-        public static GeothermometerDownloadItemResult Failed(string pluginId, string errorMessage)
-            => new() { Success = false, PluginId = pluginId, ErrorMessage = errorMessage };
+        public static GeothermometerDownloadItemResult Failed(string pluginId, string errorMessage, bool isHashMismatch = false)
+            => new() { Success = false, PluginId = pluginId, ErrorMessage = errorMessage, IsHashMismatch = isHashMismatch };
     }
 
     /// <summary>

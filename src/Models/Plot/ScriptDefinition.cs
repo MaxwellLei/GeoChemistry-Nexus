@@ -21,6 +21,14 @@ namespace GeoChemistryNexus.Models
         private string _requiredDataSeries = "";
 
         /// <summary>
+        /// 各数据列的单位（图解脚本格式 1.3 新增，可选）。
+        /// 以逗号分隔，按位置与 <see cref="RequiredDataSeries"/> 一一对应；某一列没有单位时留空，全部没有单位时整体为空串。
+        /// 数据表格的表头会在非空单位的列名下方显示该单位。
+        /// </summary>
+        [ObservableProperty]
+        private string _dataSeriesUnits = "";
+
+        /// <summary>
         /// 要执行的脚本内容
         /// </summary>
         [ObservableProperty]

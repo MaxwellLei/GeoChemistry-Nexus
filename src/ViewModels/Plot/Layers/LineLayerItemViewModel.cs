@@ -37,9 +37,7 @@ namespace GeoChemistryNexus.ViewModels
 
         private void OnPointDefinitionPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(PointDefinition.IsHighlighted))
-                return;
-
+            // 坐标或高亮状态变化都需要重绘（高亮时 Render 会绘制红色圆圈标记）
             OnRefreshRequired();
         }
 

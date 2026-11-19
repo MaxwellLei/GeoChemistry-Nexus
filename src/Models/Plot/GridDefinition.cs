@@ -15,6 +15,18 @@ namespace GeoChemistryNexus.Models
         private bool _majorGridLineIsVisible = false;
 
         /// <summary>
+        /// 主网格 X 方向（竖线，对应 X 轴主刻度）是否显示，需同时启用 <see cref="MajorGridLineIsVisible"/>
+        /// </summary>
+        [ObservableProperty]
+        private bool _xMajorGridLineIsVisible = true;
+
+        /// <summary>
+        /// 主网格 Y 方向（横线，对应 Y 轴主刻度）是否显示，需同时启用 <see cref="MajorGridLineIsVisible"/>
+        /// </summary>
+        [ObservableProperty]
+        private bool _yMajorGridLineIsVisible = true;
+
+        /// <summary>
         /// 主网格 颜色
         /// </summary>
         [ObservableProperty]
@@ -45,6 +57,18 @@ namespace GeoChemistryNexus.Models
         /// </summary>
         [ObservableProperty]
         private bool _minorGridLineIsVisible = false;
+
+        /// <summary>
+        /// 次网格 X 方向（竖线）是否显示，需同时启用 <see cref="MinorGridLineIsVisible"/>
+        /// </summary>
+        [ObservableProperty]
+        private bool _xMinorGridLineIsVisible = true;
+
+        /// <summary>
+        /// 次网格 Y 方向（横线）是否显示，需同时启用 <see cref="MinorGridLineIsVisible"/>
+        /// </summary>
+        [ObservableProperty]
+        private bool _yMinorGridLineIsVisible = true;
 
         /// <summary>
         /// 次网格 颜色
@@ -91,6 +115,13 @@ namespace GeoChemistryNexus.Models
         /// </summary>
         [ObservableProperty]
         private string _gridFillColor2 = Colors.Transparent.ToHex();
+        /// <summary>
+        /// 是否支持按 X / Y 方向分别控制网格（三元图不支持）
+        /// </summary>
+        [System.Text.Json.Serialization.JsonIgnore]
+        [ObservableProperty]
+        private bool _isGridDirectionSupported = true;
+
         [System.Text.Json.Serialization.JsonIgnore]
         [ObservableProperty]
         private bool _isMinorGridSupported = true;

@@ -67,6 +67,8 @@ namespace GeoChemistryNexus.ViewModels
 
         public string DisplayTitle => HomeLinksLocalization.ResolveForContext(Title, _languageContext);
 
+        public int LinkCount => Links.Count;
+
         public ObservableCollection<HomeLinkEntryEditorViewModel> Links { get; }
 
         public HomeLinkGroupEditorViewModel(ContentLanguageContext languageContext)
@@ -74,6 +76,7 @@ namespace GeoChemistryNexus.ViewModels
             _languageContext = languageContext ?? throw new ArgumentNullException(nameof(languageContext));
             _languageContext.PropertyChanged += OnLanguageContextChanged;
             Links = new ObservableCollection<HomeLinkEntryEditorViewModel>();
+            Links.CollectionChanged += (_, _) => OnPropertyChanged(nameof(LinkCount));
         }
 
         partial void OnTitleChanged(LocalizedString value) => OnPropertyChanged(nameof(DisplayTitle));

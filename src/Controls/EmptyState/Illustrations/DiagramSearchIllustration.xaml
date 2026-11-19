@@ -1,0 +1,174 @@
+<UserControl x:Class="GeoChemistryNexus.Controls.DiagramSearchIllustration"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             IsHitTestVisible="False"
+             SnapsToDevicePixels="False">
+
+    <UserControl.Resources>
+        <LinearGradientBrush x:Key="LensBrush" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="{DynamicResource ThemeArtSoftAE0Color}" Offset="0"/>
+            <GradientStop Color="{DynamicResource ThemeArtSoftA8CColor}" Offset="1"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="SpiderAreaBrush" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="{DynamicResource ThemeArtStrongA2EColor}" Offset="0"/>
+            <GradientStop Color="{DynamicResource ThemeArtStrongA00Color}" Offset="1"/>
+        </LinearGradientBrush>
+        <DropShadowEffect x:Key="CardShadow" Color="#0F172A" Opacity="0.06" BlurRadius="10" ShadowDepth="6" Direction="270"/>
+        <DropShadowEffect x:Key="MagShadow" Color="{DynamicResource ThemeArtStrongColor}" Opacity="0.16" BlurRadius="7" ShadowDepth="5" Direction="270"/>
+    </UserControl.Resources>
+
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <!-- 放大镜悬浮搜索 -->
+                    <DoubleAnimation Storyboard.TargetName="MagTranslate" Storyboard.TargetProperty="X"
+                                     From="0" To="-6" Duration="0:0:2" AutoReverse="True" RepeatBehavior="Forever">
+                        <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                    <DoubleAnimation Storyboard.TargetName="MagTranslate" Storyboard.TargetProperty="Y"
+                                     From="0" To="-7" Duration="0:0:2" AutoReverse="True" RepeatBehavior="Forever">
+                        <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                    <DoubleAnimation Storyboard.TargetName="MagRotate" Storyboard.TargetProperty="Angle"
+                                     From="0" To="-2" Duration="0:0:2" AutoReverse="True" RepeatBehavior="Forever">
+                        <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+
+                    <!-- 背景卡片呼吸 -->
+                    <DoubleAnimation Storyboard.TargetName="BackCardTranslate" Storyboard.TargetProperty="Y"
+                                     From="0" To="-3" Duration="0:0:2.5" AutoReverse="True" RepeatBehavior="Forever">
+                        <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+
+                    <!-- 数据点脉冲 -->
+                    <DoubleAnimation Storyboard.TargetName="Point1" Storyboard.TargetProperty="Opacity"
+                                     From="1" To="0.45" Duration="0:0:1.3" AutoReverse="True" RepeatBehavior="Forever"/>
+                    <DoubleAnimation Storyboard.TargetName="Point1Scale" Storyboard.TargetProperty="ScaleX"
+                                     From="1" To="0.82" Duration="0:0:1.3" AutoReverse="True" RepeatBehavior="Forever"/>
+                    <DoubleAnimation Storyboard.TargetName="Point1Scale" Storyboard.TargetProperty="ScaleY"
+                                     From="1" To="0.82" Duration="0:0:1.3" AutoReverse="True" RepeatBehavior="Forever"/>
+                    <DoubleAnimation Storyboard.TargetName="Point2" Storyboard.TargetProperty="Opacity"
+                                     From="1" To="0.45" Duration="0:0:1.6" BeginTime="0:0:0.8" AutoReverse="True" RepeatBehavior="Forever"/>
+                    <DoubleAnimation Storyboard.TargetName="Point2Scale" Storyboard.TargetProperty="ScaleX"
+                                     From="1" To="0.82" Duration="0:0:1.6" BeginTime="0:0:0.8" AutoReverse="True" RepeatBehavior="Forever"/>
+                    <DoubleAnimation Storyboard.TargetName="Point2Scale" Storyboard.TargetProperty="ScaleY"
+                                     From="1" To="0.82" Duration="0:0:1.6" BeginTime="0:0:0.8" AutoReverse="True" RepeatBehavior="Forever"/>
+
+                    <!-- 折线流动 -->
+                    <DoubleAnimation Storyboard.TargetName="SpiderLine" Storyboard.TargetProperty="StrokeDashOffset"
+                                     From="16" To="0" Duration="0:0:3" RepeatBehavior="Forever"/>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </UserControl.Triggers>
+
+    <Viewbox Stretch="Uniform">
+    <Canvas Width="240" Height="200">
+
+        <!-- 底部投影 -->
+        <Ellipse Canvas.Left="44" Canvas.Top="163" Width="152" Height="18" Fill="#E2E8F0" Opacity="0.65"/>
+
+        <!-- 装饰微粒 -->
+        <Ellipse Canvas.Left="31" Canvas.Top="55" Width="6" Height="6" Fill="{DynamicResource ThemeArtMistBrush}" Opacity="0.7"/>
+        <Ellipse Canvas.Left="200" Canvas.Top="44" Width="8" Height="8" Fill="{DynamicResource ThemeArtSoftBorderBrush}" Opacity="0.7"/>
+        <Path Data="M44,136 L48,140 M48,136 L44,140" Stroke="{DynamicResource ThemeArtMistBrush}" StrokeThickness="1.6"
+              StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+        <Path Data="M196,100 L201,100 M198.5,97.5 L198.5,102.5" Stroke="{DynamicResource ThemeArtLighterBrush}" StrokeThickness="1.6"
+              StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+
+        <!-- 后层卡片 -->
+        <Canvas Effect="{StaticResource CardShadow}">
+            <Canvas.RenderTransform>
+                <TranslateTransform x:Name="BackCardTranslate"/>
+            </Canvas.RenderTransform>
+            <Rectangle Canvas.Left="38" Canvas.Top="34" Width="110" Height="86" RadiusX="9" RadiusY="9"
+                       Fill="White" Stroke="#E2E8F0" StrokeThickness="1.2">
+                <Rectangle.RenderTransform>
+                    <RotateTransform Angle="-7" CenterX="0" CenterY="0"/>
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Canvas>
+                <Canvas.RenderTransform>
+                    <RotateTransform Angle="-7" CenterX="74" CenterY="72"/>
+                </Canvas.RenderTransform>
+                <Path Data="M74,52 L54,92 L94,92 Z" Stroke="#CBD5E1" StrokeThickness="1.3"
+                      StrokeLineJoin="Round" Fill="#F8FAFC"/>
+                <Path Data="M64,72 L84,72 M74,52 L74,92" Stroke="#E2E8F0" StrokeThickness="0.9"
+                      StrokeDashArray="2 2"/>
+            </Canvas>
+            <Ellipse Canvas.Left="68.8" Canvas.Top="71.8" Width="4.4" Height="4.4" Fill="{DynamicResource ThemeArtLighterBrush}"/>
+            <Ellipse Canvas.Left="76.2" Canvas.Top="67.2" Width="3.6" Height="3.6" Fill="{DynamicResource ThemeArtMistBrush}"/>
+        </Canvas>
+
+        <!-- 前层主图解 -->
+        <Canvas Effect="{StaticResource CardShadow}">
+            <Rectangle Canvas.Left="52" Canvas.Top="32" Width="128" Height="104" RadiusX="10" RadiusY="10"
+                       Fill="White" Stroke="#DCE3EC" StrokeThickness="1.5"/>
+            <Line X1="52" Y1="49" X2="180" Y2="49" Stroke="#F1F5F9" StrokeThickness="1.2"/>
+            <Ellipse Canvas.Left="61.5" Canvas.Top="38" Width="5" Height="5" Fill="#CBD5E1"/>
+            <Ellipse Canvas.Left="70.5" Canvas.Top="38" Width="5" Height="5" Fill="#E2E8F0"/>
+            <Ellipse Canvas.Left="79.5" Canvas.Top="38" Width="5" Height="5" Fill="#E2E8F0"/>
+            <Rectangle Canvas.Left="136" Canvas.Top="38" Width="32" Height="5" RadiusX="2.5" RadiusY="2.5" Fill="#F1F5F9"/>
+
+            <Line X1="68" Y1="58" X2="68" Y2="120" Stroke="#CBD5E1" StrokeThickness="1.4"
+                  StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+            <Line X1="68" Y1="120" X2="164" Y2="120" Stroke="#CBD5E1" StrokeThickness="1.4"
+                  StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+
+            <Line X1="88" Y1="60" X2="88" Y2="120" Stroke="#F1F5F9" StrokeThickness="1" StrokeDashArray="2 2"/>
+            <Line X1="108" Y1="60" X2="108" Y2="120" Stroke="#F1F5F9" StrokeThickness="1" StrokeDashArray="2 2"/>
+            <Line X1="128" Y1="60" X2="128" Y2="120" Stroke="#F1F5F9" StrokeThickness="1" StrokeDashArray="2 2"/>
+            <Line X1="148" Y1="60" X2="148" Y2="120" Stroke="#F1F5F9" StrokeThickness="1" StrokeDashArray="2 2"/>
+
+            <Path Data="M68,102 L85,78 L104,91 L125,63 L144,82 L160,68 L160,120 L68,120 Z"
+                  Fill="{StaticResource SpiderAreaBrush}"/>
+
+            <Path x:Name="SpiderLine" Data="M68,110 L85,95 L104,103 L125,84 L144,96 L160,88"
+                  Stroke="{DynamicResource ThemeArtMistBrush}" StrokeThickness="1.5" StrokeDashArray="2.667 1.333"
+                  StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+
+            <Path Data="M68,102 L85,78 L104,91 L125,63 L144,82 L160,68"
+                  Stroke="{DynamicResource ThemeArtStrongBrush}" StrokeThickness="2.2"
+                  StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+
+            <Ellipse x:Name="Point1" Canvas.Left="81.5" Canvas.Top="74.5" Width="7" Height="7"
+                     Fill="White" Stroke="{DynamicResource ThemeArtStrongBrush}" StrokeThickness="2" RenderTransformOrigin="0.5,0.5">
+                <Ellipse.RenderTransform><ScaleTransform x:Name="Point1Scale"/></Ellipse.RenderTransform>
+            </Ellipse>
+            <Ellipse Canvas.Left="101.2" Canvas.Top="88.2" Width="5.6" Height="5.6"
+                     Fill="White" Stroke="{DynamicResource ThemeArtStrongBrush}" StrokeThickness="1.8"/>
+            <Ellipse x:Name="Point2" Canvas.Left="121.5" Canvas.Top="59.5" Width="7" Height="7"
+                     Fill="White" Stroke="{DynamicResource ThemeArtStrongBrush}" StrokeThickness="2" RenderTransformOrigin="0.5,0.5">
+                <Ellipse.RenderTransform><ScaleTransform x:Name="Point2Scale"/></Ellipse.RenderTransform>
+            </Ellipse>
+            <Ellipse Canvas.Left="141.2" Canvas.Top="79.2" Width="5.6" Height="5.6"
+                     Fill="White" Stroke="{DynamicResource ThemeArtStrongBrush}" StrokeThickness="1.8"/>
+        </Canvas>
+
+        <!-- 放大镜 -->
+        <Canvas Effect="{StaticResource MagShadow}">
+            <Canvas.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform x:Name="MagRotate" CenterX="155" CenterY="125"/>
+                    <TranslateTransform x:Name="MagTranslate"/>
+                </TransformGroup>
+            </Canvas.RenderTransform>
+            <Path Data="M167,137 L187,157" Stroke="{DynamicResource ThemeArtStrongBrush}" StrokeThickness="7"
+                  StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+            <Path Data="M167,137 L173,143" Stroke="{DynamicResource ThemeArtLighterBrush}" StrokeThickness="4"
+                  StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+            <Ellipse Canvas.Left="120" Canvas.Top="90" Width="54" Height="54"
+                     Fill="{StaticResource LensBrush}" Stroke="{DynamicResource ThemeArtStrongBrush}" StrokeThickness="3.2"/>
+            <Ellipse Canvas.Left="125" Canvas.Top="95" Width="44" Height="44"
+                     Stroke="White" StrokeThickness="1.2" Opacity="0.8"/>
+            <Path Data="M132,103 A18,18 0 0 1 154,98" Stroke="White" StrokeThickness="2.2"
+                  StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+            <Path Data="M142.5,111 C142.5,107.5 145.5,105.5 148,105.5 C150.8,105.5 153,107.5 153,110.2 C153,112.5 151.2,113.8 149.2,115.2 C147.8,116.2 147.5,117.2 147.5,118.8"
+                  Stroke="{DynamicResource ThemeArtStrongBrush}" StrokeThickness="2.4"
+                  StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+            <Ellipse Canvas.Left="145.9" Canvas.Top="122.9" Width="3.2" Height="3.2" Fill="{DynamicResource ThemeArtStrongBrush}"/>
+        </Canvas>
+    </Canvas>
+    </Viewbox>
+</UserControl>

@@ -1,4 +1,4 @@
-using GeoChemistryNexus.Helpers;
+﻿using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Services;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,9 +11,14 @@ namespace GeoChemistryNexus.Views.Widgets
         Link
     }
 
-    public partial class HomeLinkLocalizedEditWindow : HandyControl.Controls.Window
+    public partial class HomeLinkLocalizedEditWindow : WidgetWindow, INotificationCenterHost
     {
         public ContentLanguageContext LanguageContext { get; }
+
+        /// <summary>
+        /// 本窗口独立的通知中心（由 XAML 中的 NotificationHost 呈现）。
+        /// </summary>
+        public NotificationCenter Notifications { get; } = new();
 
         public LocalizedString ResultTitle { get; private set; } = new();
 
@@ -40,7 +45,7 @@ namespace GeoChemistryNexus.Views.Widgets
             LanguageContext = languageContext;
             Title = windowTitle;
 
-            LanguageBox.ItemsSource = AppCultureRegistry.GetContentOptions();
+            LanguageBox.ItemsSource = AppCultureRegistry.GetOptions();
             LanguageBox.SelectedValue = languageContext.ContentLanguage
                 ?? AppCultureRegistry.DefaultContentLanguage;
 
@@ -50,18 +55,12 @@ namespace GeoChemistryNexus.Views.Widgets
             bool isLinkMode = mode == HomeLinkLocalizedEditMode.Link;
             DescriptionLabel.Visibility = isLinkMode ? Visibility.Visible : Visibility.Collapsed;
             DescriptionControl.Visibility = isLinkMode ? Visibility.Visible : Visibility.Collapsed;
-            UrlBox.Visibility = isLinkMode ? Visibility.Visible : Visibility.Collapsed;
-            IconBox.Visibility = isLinkMode ? Visibility.Visible : Visibility.Collapsed;
-            IconUrlBox.Visibility = isLinkMode ? Visibility.Visible : Visibility.Collapsed;
+            LinkOnlyPanel.Visibility = isLinkMode ? Visibility.Visible : Visibility.Collapsed;
 
             if (isLinkMode)
             {
                 UrlBox.Text = url ?? string.Empty;
                 InitializeIcons(icon);
-            }
-            else
-            {
-                Height = 280;
             }
         }
 
@@ -112,13 +111,13 @@ namespace GeoChemistryNexus.Views.Widgets
 
             if (!HomeLinksLocalization.HasText(TitleControl.Value, LanguageContext))
             {
-                HandyControl.Controls.Growl.Warning(LanguageService.Instance["please_enter_name"]);
+                Notifications.Warning(LanguageService.Instance["please_enter_name"]);
                 return;
             }
 
             if (_mode == HomeLinkLocalizedEditMode.Link && string.IsNullOrWhiteSpace(UrlBox.Text))
             {
-                HandyControl.Controls.Growl.Warning(LanguageService.Instance["please_enter_link"]);
+                Notifications.Warning(LanguageService.Instance["please_enter_link"]);
                 return;
             }
 
@@ -130,12 +129,6 @@ namespace GeoChemistryNexus.Views.Widgets
                 : IconBox.SelectedValue?.ToString() ?? HomeIconHelper.DefaultIcon;
 
             DialogResult = true;
-            Close();
-        }
-
-        private void Cancel_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = false;
             Close();
         }
     }

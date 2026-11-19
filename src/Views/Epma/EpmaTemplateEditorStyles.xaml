@@ -1,0 +1,194 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
+                    xmlns:views="clr-namespace:GeoChemistryNexus.Views"
+                    xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
+                    xmlns:ctrl="clr-namespace:GeoChemistryNexus.Controls">
+        <Style x:Key="EpmaSourceBox" TargetType="ctrl:EpmaCodeEditor">
+            <Setter Property="FontFamily" Value="Consolas"/><Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="Transparent"/><Setter Property="Background" Value="White"/>
+            <Setter Property="CaretBrush" Value="{DynamicResource ThemeAccentBrush}"/><Setter Property="SelectionBrush" Value="{DynamicResource ThemeAccentSoftBorderBrush}"/>
+            <Setter Property="AcceptsReturn" Value="True"/><Setter Property="AcceptsTab" Value="True"/>
+            <Setter Property="TextWrapping" Value="NoWrap"/>
+            <Setter Property="TextBlock.LineHeight" Value="22"/>
+            <Setter Property="TextBlock.LineStackingStrategy" Value="BlockLineHeight"/>
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/><Setter Property="HorizontalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="Padding" Value="12,4"/><Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="IsReadOnly" Value="{Binding IsReadOnly}"/>
+            <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ctrl:EpmaCodeEditor">
+                <Grid Background="{TemplateBinding Background}">
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                    <views:EpmaCodeCurrentLine x:Name="PART_CurrentLine" Grid.ColumnSpan="2" IsHitTestVisible="False" ClipToBounds="True"/>
+                    <views:EpmaCodeLineNumbers x:Name="PART_LineNumbers" Width="48" ClipToBounds="True" IsHitTestVisible="False"/>
+                    <ScrollViewer x:Name="PART_ContentHost" Grid.Column="1" Focusable="False"/>
+                    <ctrl:EpmaCodeSyntaxLayer x:Name="PART_Syntax" Grid.Column="1" IsHitTestVisible="False" ClipToBounds="True"/>
+                </Grid>
+            </ControlTemplate></Setter.Value></Setter>
+        </Style>
+    <cvs:EpmaLanguageNameConverter x:Key="LanguageName"/>
+    <Style x:Key="EditorAction" TargetType="Button">
+        <Setter Property="Padding" Value="10,5"/><Setter Property="MinHeight" Value="28"/>
+        <Setter Property="FontSize" Value="12"/><Setter Property="Foreground" Value="#263549"/>
+        <Setter Property="Background" Value="White"/><Setter Property="BorderBrush" Value="#DDE3EB"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Button">
+            <Border x:Name="Surface" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="5" Padding="{TemplateBinding Padding}">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Surface" Property="Opacity" Value=".78"/></Trigger>
+                <Trigger Property="IsEnabled" Value="False"><Setter Property="Opacity" Value=".4"/></Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate></Setter.Value></Setter>
+    </Style>
+    <!-- 编辑器中的文字链接：与 IconLinkButton 共用 Styles.xaml 的 ThemeLinkButtonStyle，配色随主题色切换 -->
+    <Style x:Key="EditorLink" TargetType="Button" BasedOn="{StaticResource ThemeLinkButtonStyle}">
+        <Setter Property="MinHeight" Value="28"/>
+    </Style>
+    <!-- 主题色文字链接 + 前置图标（图标字符通过 Tag 指定，Segoe MDL2 Assets） -->
+    <Style x:Key="EditorIconLink" TargetType="Button" BasedOn="{StaticResource EditorLink}">
+        <Setter Property="Tag" Value="&#xE710;"/>
+        <Setter Property="ContentTemplate"><Setter.Value><DataTemplate>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock Text="{Binding Tag,RelativeSource={RelativeSource AncestorType=Button}}" FontFamily="Segoe MDL2 Assets" FontSize="11" Margin="0,0,4,0" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding}" VerticalAlignment="Center"/>
+            </StackPanel>
+        </DataTemplate></Setter.Value></Setter>
+    </Style>
+    <Style x:Key="EditorCaption" TargetType="Button">
+        <Setter Property="Width" Value="46"/><Setter Property="Height" Value="44"/>
+        <Setter Property="Padding" Value="0"/><Setter Property="Margin" Value="0"/>
+        <Setter Property="Background" Value="Transparent"/><Setter Property="Foreground" Value="#333333"/>
+        <Setter Property="FontSize" Value="14"/><Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FontFamily" Value="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont"/>
+        <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Button">
+            <Border x:Name="CaptionSurface" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True"><Setter Property="Background" Value="#E5E5E5"/></Trigger>
+                <Trigger Property="IsPressed" Value="True"><Setter Property="Background" Value="#CCCCCC"/></Trigger>
+                <Trigger Property="IsEnabled" Value="False"><Setter Property="Opacity" Value=".4"/></Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate></Setter.Value></Setter>
+    </Style>
+    <Style x:Key="EditorCaptionMaximize" TargetType="Button" BasedOn="{StaticResource EditorCaption}">
+        <Setter Property="Content" Value="&#xf2b2;"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding WindowState,RelativeSource={RelativeSource AncestorType=Window}}" Value="Maximized">
+                <Setter Property="Content" Value="&#xf2b4;"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="EditorCaptionClose" TargetType="Button" BasedOn="{StaticResource EditorCaption}">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True"><Setter Property="Background" Value="#E81123"/><Setter Property="Foreground" Value="White"/></Trigger>
+            <Trigger Property="IsPressed" Value="True"><Setter Property="Background" Value="#C50F1F"/><Setter Property="Foreground" Value="White"/></Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="EditorFormRow" TargetType="Border">
+        <Setter Property="MinHeight" Value="44"/><Setter Property="Padding" Value="0,6,12,6"/>
+        <Setter Property="Margin" Value="16,0,0,0"/><Setter Property="BorderBrush" Value="#E7EBF0"/>
+        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+    </Style>
+    <Style x:Key="EditorFormLabel" TargetType="TextBlock">
+        <Setter Property="VerticalAlignment" Value="Center"/><Setter Property="Width" Value="116"/>
+        <Setter Property="Foreground" Value="#263549"/><Setter Property="FontSize" Value="13"/>
+    </Style>
+    <Style x:Key="EditorFormValue" TargetType="TextBox">
+        <Setter Property="IsReadOnly" Value="{Binding IsReadOnly}"/>
+        <Setter Property="Padding" Value="8,3"/><Setter Property="Height" Value="30"/>
+        <Setter Property="BorderThickness" Value="0"/><Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="#263549"/><Setter Property="TextAlignment" Value="Right"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="TextBox">
+            <Border x:Name="Surface" CornerRadius="6" Background="{TemplateBinding Background}">
+                <Grid>
+                    <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Center" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled"/>
+                    <TextBlock x:Name="Hint" Margin="{TemplateBinding Padding}" Text="{TemplateBinding Tag}" Foreground="#8793A3" TextAlignment="{TemplateBinding TextAlignment}" VerticalAlignment="Center" IsHitTestVisible="False" Visibility="Collapsed"/>
+                </Grid>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="Text" Value=""><Setter TargetName="Hint" Property="Visibility" Value="Visible"/></Trigger>
+                <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Surface" Property="Background" Value="#F5F7FA"/></Trigger>
+                <Trigger Property="IsKeyboardFocusWithin" Value="True"><Setter Property="TextAlignment" Value="Left"/><Setter TargetName="Surface" Property="Background" Value="#F5F7FA"/></Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate></Setter.Value></Setter>
+    </Style>
+    <Style x:Key="EditorIconValue" TargetType="TextBox" BasedOn="{StaticResource EditorFormValue}">
+        <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="TextBox">
+            <Border x:Name="Surface" CornerRadius="6" Background="{TemplateBinding Background}">
+                <Grid>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                    <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Center" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled"/>
+                    <TextBlock x:Name="Hint" Margin="{TemplateBinding Padding}" Text="{TemplateBinding Tag}" Foreground="#8793A3" TextAlignment="{TemplateBinding TextAlignment}" VerticalAlignment="Center" IsHitTestVisible="False" Visibility="Collapsed"/>
+                    <TextBlock x:Name="IconCharacterCount" Grid.Column="1" Text="{Binding TemplateIconCount}" Visibility="Collapsed" Margin="6,0,8,0" FontFamily="Consolas" FontSize="11" Foreground="#7A8798" VerticalAlignment="Center" IsHitTestVisible="False" AutomationProperties.LiveSetting="Polite"/>
+                </Grid>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="Text" Value=""><Setter TargetName="Hint" Property="Visibility" Value="Visible"/></Trigger>
+                <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Surface" Property="Background" Value="#F5F7FA"/></Trigger>
+                <Trigger Property="IsFocused" Value="True"><Setter TargetName="IconCharacterCount" Property="Visibility" Value="Visible"/></Trigger>
+                <Trigger Property="IsKeyboardFocusWithin" Value="True"><Setter Property="TextAlignment" Value="Left"/><Setter TargetName="Surface" Property="Background" Value="#F5F7FA"/></Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate></Setter.Value></Setter>
+    </Style>
+    <DataTemplate x:Key="EditorLanguageContent">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <TextBlock Text="{Binding Text,Converter={StaticResource LanguageName}}" VerticalAlignment="Center"/>
+            <Border Background="{DynamicResource ThemeAccentBrush}" CornerRadius="7" Margin="6,0,0,0" Padding="5,1" VerticalAlignment="Center">
+                <Border.Style><Style TargetType="Border"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers>
+                    <DataTrigger Binding="{Binding IsDefault}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
+                </Style.Triggers></Style></Border.Style>
+                <TextBlock Text="{Binding [epma_editor_default_badge],Source={x:Static lg:LanguageService.Instance}}" FontSize="10" Foreground="White" VerticalAlignment="Center"/>
+            </Border>
+        </StackPanel>
+    </DataTemplate>
+    <Style x:Key="EditorLanguageTab" TargetType="ListBoxItem">
+        <Setter Property="Margin" Value="0,0,8,8"/><Setter Property="Padding" Value="10,5"/>
+        <Setter Property="Foreground" Value="#758195"/><Setter Property="FontSize" Value="12"/>
+        <Setter Property="ContentTemplate" Value="{StaticResource EditorLanguageContent}"/>
+        <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ListBoxItem">
+            <Border x:Name="Pill" Background="#F5F7FA" CornerRadius="16" Padding="{TemplateBinding Padding}" BorderThickness="1" BorderBrush="Transparent">
+                <ContentPresenter VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsSelected" Value="True"><Setter TargetName="Pill" Property="Background" Value="{DynamicResource ThemeAccentSoftBrush}"/><Setter TargetName="Pill" Property="BorderBrush" Value="{DynamicResource ThemeAccentSoftBorderBrush}"/><Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}"/></Trigger>
+                <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Pill" Property="Opacity" Value=".8"/></Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate></Setter.Value></Setter>
+    </Style>
+    <Style x:Key="EditorTableThumb" TargetType="Thumb">
+        <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Thumb">
+            <Grid Background="Transparent"><Border x:Name="Line" Height="3" CornerRadius="3" Background="#A8AFBA" VerticalAlignment="Center" Opacity="0"/></Grid>
+            <ControlTemplate.Triggers>
+                <DataTrigger Binding="{Binding IsMouseOver,RelativeSource={RelativeSource AncestorType=ScrollViewer}}" Value="True"><Setter TargetName="Line" Property="Opacity" Value="1"/></DataTrigger>
+                <DataTrigger Binding="{Binding IsKeyboardFocusWithin,RelativeSource={RelativeSource AncestorType=ScrollViewer}}" Value="True"><Setter TargetName="Line" Property="Opacity" Value="1"/></DataTrigger>
+                <DataTrigger Binding="{Binding IsMouseOver,RelativeSource={RelativeSource AncestorType=ScrollBar}}" Value="True"><Setter TargetName="Line" Property="Height" Value="6"/></DataTrigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate></Setter.Value></Setter>
+    </Style>
+    <Style x:Key="EditorTableScrollBar" TargetType="ScrollBar">
+        <Setter Property="Height" Value="10"/><Setter Property="MinHeight" Value="10"/>
+        <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ScrollBar">
+            <Grid Background="Transparent"><Track x:Name="PART_Track" Orientation="Horizontal" IsDirectionReversed="False">
+                <Track.DecreaseRepeatButton><RepeatButton Command="ScrollBar.PageLeftCommand" Opacity="0" Focusable="False"/></Track.DecreaseRepeatButton>
+                <Track.Thumb><Thumb Style="{StaticResource EditorTableThumb}"/></Track.Thumb>
+                <Track.IncreaseRepeatButton><RepeatButton Command="ScrollBar.PageRightCommand" Opacity="0" Focusable="False"/></Track.IncreaseRepeatButton>
+            </Track></Grid>
+        </ControlTemplate></Setter.Value></Setter>
+    </Style>
+    <Style x:Key="EditorTableScroll" TargetType="ScrollViewer">
+        <Setter Property="HorizontalScrollBarVisibility" Value="Auto"/><Setter Property="VerticalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="CanContentScroll" Value="False"/>
+        <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ScrollViewer">
+            <Grid>
+                <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" CanContentScroll="{TemplateBinding CanContentScroll}"/>
+                <ScrollBar x:Name="PART_HorizontalScrollBar" Grid.Row="1" Orientation="Horizontal" Style="{StaticResource EditorTableScrollBar}"
+                           Maximum="{TemplateBinding ScrollableWidth}" ViewportSize="{TemplateBinding ViewportWidth}"
+                           Value="{Binding HorizontalOffset,RelativeSource={RelativeSource TemplatedParent},Mode=OneWay}" Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"/>
+            </Grid>
+        </ControlTemplate></Setter.Value></Setter>
+    </Style>
+</ResourceDictionary>

@@ -1,0 +1,216 @@
+<UserControl x:Class="GeoChemistryNexus.Controls.GeothermometerIllustration"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             IsHitTestVisible="False"
+             SnapsToDevicePixels="False">
+
+    <UserControl.Resources>
+        <!-- 晶体切面渐变 -->
+        <LinearGradientBrush x:Key="CrystalLeftTopBrush" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="{DynamicResource ThemeArtLighterAE0Color}" Offset="0"/>
+            <GradientStop Color="{DynamicResource ThemeArtDarkAB8Color}" Offset="1"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="CrystalRightTopBrush" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="{DynamicResource ThemeArtMistAEBColor}" Offset="0"/>
+            <GradientStop Color="{DynamicResource ThemeArtLighterAD1Color}" Offset="1"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="CrystalLeftBottomBrush" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="{DynamicResource ThemeArtDarkAC7Color}" Offset="0"/>
+            <GradientStop Color="{DynamicResource ThemeArtDeepA94Color}" Offset="1"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="CrystalRightBottomBrush" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="{DynamicResource ThemeArtLighterABFColor}" Offset="0"/>
+            <GradientStop Color="{DynamicResource ThemeArtDarkA85Color}" Offset="1"/>
+        </LinearGradientBrush>
+
+        <!-- 背景柔和光晕 -->
+        <RadialGradientBrush x:Key="BgGlowBrush" Center="0.5,0.48" GradientOrigin="0.5,0.48" RadiusX="0.48" RadiusY="0.48">
+            <GradientStop Color="{DynamicResource ThemeArtStrongA24Color}" Offset="0"/>
+            <GradientStop Color="{DynamicResource ThemeArtLighterA0AColor}" Offset="0.65"/>
+            <GradientStop Color="{DynamicResource ThemeArtStrongA00Color}" Offset="1"/>
+        </RadialGradientBrush>
+
+        <!-- P-T 曲线渐变 -->
+        <LinearGradientBrush x:Key="PtCurveBrush" StartPoint="0,1" EndPoint="1,0">
+            <GradientStop Color="{DynamicResource ThemeArtLighterA4DColor}" Offset="0"/>
+            <GradientStop Color="{DynamicResource ThemeArtStrongAA6Color}" Offset="0.5"/>
+            <GradientStop Color="#BFF59E0B" Offset="1"/>
+        </LinearGradientBrush>
+
+        <DropShadowEffect x:Key="CardShadow" Color="#0F172A" Opacity="0.06" BlurRadius="10" ShadowDepth="4" Direction="270"/>
+    </UserControl.Resources>
+
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <!-- 中央晶体悬浮 -->
+                    <DoubleAnimation Storyboard.TargetName="CrystalTranslate" Storyboard.TargetProperty="Y"
+                                     From="0" To="-7" Duration="0:0:2.25" AutoReverse="True"
+                                     RepeatBehavior="Forever">
+                        <DoubleAnimation.EasingFunction>
+                            <SineEase EasingMode="EaseInOut"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+
+                    <!-- 左侧温度计浮动 -->
+                    <DoubleAnimation Storyboard.TargetName="BadgeLeftTranslate" Storyboard.TargetProperty="Y"
+                                     From="0" To="-4" Duration="0:0:2.5" AutoReverse="True"
+                                     RepeatBehavior="Forever">
+                        <DoubleAnimation.EasingFunction>
+                            <SineEase EasingMode="EaseInOut"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+
+                    <!-- 右侧压力计浮动 -->
+                    <DoubleAnimation Storyboard.TargetName="BadgeRightTranslate" Storyboard.TargetProperty="Y"
+                                     From="0" To="4" Duration="0:0:2.75" AutoReverse="True"
+                                     RepeatBehavior="Forever">
+                        <DoubleAnimation.EasingFunction>
+                            <SineEase EasingMode="EaseInOut"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+
+                    <!-- P-T 虚线流动（偏移量单位为线宽倍数：24px / 2.2） -->
+                    <DoubleAnimation Storyboard.TargetName="PtCurvePath" Storyboard.TargetProperty="StrokeDashOffset"
+                                     From="0" To="-10.909" Duration="0:0:3"
+                                     RepeatBehavior="Forever"/>
+
+                    <!-- 光晕呼吸 -->
+                    <DoubleAnimation Storyboard.TargetName="GlowEllipse" Storyboard.TargetProperty="Opacity"
+                                     From="0.45" To="0.85" Duration="0:0:2" AutoReverse="True"
+                                     RepeatBehavior="Forever">
+                        <DoubleAnimation.EasingFunction>
+                            <SineEase EasingMode="EaseInOut"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                    <DoubleAnimation Storyboard.TargetName="GlowScale" Storyboard.TargetProperty="ScaleX"
+                                     From="0.96" To="1.04" Duration="0:0:2" AutoReverse="True"
+                                     RepeatBehavior="Forever">
+                        <DoubleAnimation.EasingFunction>
+                            <SineEase EasingMode="EaseInOut"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                    <DoubleAnimation Storyboard.TargetName="GlowScale" Storyboard.TargetProperty="ScaleY"
+                                     From="0.96" To="1.04" Duration="0:0:2" AutoReverse="True"
+                                     RepeatBehavior="Forever">
+                        <DoubleAnimation.EasingFunction>
+                            <SineEase EasingMode="EaseInOut"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </UserControl.Triggers>
+
+    <Viewbox Stretch="Uniform">
+        <Canvas Width="240" Height="240">
+
+            <!-- 1. 底部扩散光晕 -->
+            <Ellipse x:Name="GlowEllipse" Canvas.Left="28" Canvas.Top="23" Width="184" Height="184"
+                     Fill="{StaticResource BgGlowBrush}" Opacity="0.45"
+                     RenderTransformOrigin="0.5,0.5">
+                <Ellipse.RenderTransform>
+                    <ScaleTransform x:Name="GlowScale" ScaleX="0.96" ScaleY="0.96"/>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+
+            <!-- 2. P-T 坐标网格底纹 -->
+            <Rectangle Canvas.Left="44" Canvas.Top="42" Width="152" Height="146" RadiusX="12" RadiusY="12"
+                       Fill="#59FFFFFF" Stroke="#A6CBD5E1" StrokeThickness="1" StrokeDashArray="3 3"/>
+            <Line X1="44" Y1="78" X2="196" Y2="78" Stroke="#A6CBD5E1" StrokeThickness="1" StrokeDashArray="2 4"/>
+            <Line X1="44" Y1="115" X2="196" Y2="115" Stroke="#A6CBD5E1" StrokeThickness="1" StrokeDashArray="2 4"/>
+            <Line X1="44" Y1="152" X2="196" Y2="152" Stroke="#A6CBD5E1" StrokeThickness="1" StrokeDashArray="2 4"/>
+            <Line X1="82" Y1="42" X2="82" Y2="188" Stroke="#A6CBD5E1" StrokeThickness="1" StrokeDashArray="2 4"/>
+            <Line X1="120" Y1="42" X2="120" Y2="188" Stroke="#A6CBD5E1" StrokeThickness="1" StrokeDashArray="2 4"/>
+            <Line X1="158" Y1="42" X2="158" Y2="188" Stroke="#A6CBD5E1" StrokeThickness="1" StrokeDashArray="2 4"/>
+
+            <!-- 坐标轴标签 -->
+            <TextBlock Canvas.Left="52" Canvas.Top="44" Text="P (kbar)" FontSize="9" FontWeight="SemiBold"
+                       FontFamily="Segoe UI" Foreground="#94A3B8"/>
+            <TextBlock Canvas.Left="160" Canvas.Top="170" Text="T (°C)" FontSize="9" FontWeight="SemiBold"
+                       FontFamily="Segoe UI" Foreground="#94A3B8"/>
+
+            <!-- 3. 动态相平衡演化曲线 -->
+            <Path x:Name="PtCurvePath"
+                  Data="M 52,172 Q 95,156 122,114 Q 149,72 186,54"
+                  Stroke="{StaticResource PtCurveBrush}" StrokeThickness="2.2"
+                  StrokeDashArray="2.273 1.364" StrokeDashCap="Flat"
+                  StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+            <Path Data="M 56,142 C 92,140 134,115 178,88"
+                  Stroke="{DynamicResource ThemeArtMistA4DBrush}" StrokeThickness="1.2"
+                  StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+
+            <!-- 4. 核心元素：悬浮双锥矿物晶体 -->
+            <Canvas>
+                <Canvas.RenderTransform>
+                    <TranslateTransform x:Name="CrystalTranslate"/>
+                </Canvas.RenderTransform>
+
+                <!-- 投影 -->
+                <Ellipse Canvas.Left="94" Canvas.Top="191" Width="52" Height="10" Fill="#3894A3B8"/>
+
+                <!-- 上半部分 -->
+                <Polygon Points="120,44 82,108 120,124" Fill="{StaticResource CrystalLeftTopBrush}"
+                         Stroke="White" StrokeThickness="0.8" StrokeLineJoin="Round"/>
+                <Polygon Points="120,44 158,108 120,124" Fill="{StaticResource CrystalRightTopBrush}"
+                         Stroke="White" StrokeThickness="0.8" StrokeLineJoin="Round"/>
+
+                <!-- 下半部分 -->
+                <Polygon Points="82,108 120,180 120,124" Fill="{StaticResource CrystalLeftBottomBrush}"
+                         Stroke="White" StrokeThickness="0.8" StrokeLineJoin="Round"/>
+                <Polygon Points="158,108 120,180 120,124" Fill="{StaticResource CrystalRightBottomBrush}"
+                         Stroke="White" StrokeThickness="0.8" StrokeLineJoin="Round"/>
+
+                <!-- 高光与折射线 -->
+                <Polygon Points="120,44 103,108 120,124 137,108" Fill="{DynamicResource ThemeArtSoftA52Brush}"/>
+                <Polyline Points="103,108 120,180 137,108" Stroke="{DynamicResource ThemeArtSoftAA6Brush}" StrokeThickness="0.9"/>
+                <Line X1="82" Y1="108" X2="158" Y2="108" Stroke="{DynamicResource ThemeArtSoftACCBrush}" StrokeThickness="1.1"/>
+
+                <!-- 顶点微光 -->
+                <Ellipse Canvas.Left="117.5" Canvas.Top="41.5" Width="5" Height="5" Fill="White"/>
+                <Ellipse Canvas.Left="118" Canvas.Top="122" Width="4" Height="4" Fill="White" Opacity="0.85"/>
+            </Canvas>
+
+            <!-- 5. 左侧悬浮组件：温度计 -->
+            <Canvas Effect="{StaticResource CardShadow}">
+                <Canvas.RenderTransform>
+                    <TranslateTransform x:Name="BadgeLeftTranslate"/>
+                </Canvas.RenderTransform>
+                <Rectangle Canvas.Left="24" Canvas.Top="88" Width="38" Height="62" RadiusX="10" RadiusY="10"
+                           Fill="White" Stroke="#E2E8F0" StrokeThickness="1.2"/>
+                <Rectangle Canvas.Left="40" Canvas.Top="98" Width="6" Height="30" RadiusX="3" RadiusY="3"
+                           Fill="#F1F5F9" Stroke="#64748B" StrokeThickness="1.2"/>
+                <Rectangle Canvas.Left="41.5" Canvas.Top="110" Width="3" Height="18" RadiusX="1.5" RadiusY="1.5"
+                           Fill="#EF4444"/>
+                <Ellipse Canvas.Left="36.5" Canvas.Top="124.5" Width="13" Height="13" Fill="#EF4444"/>
+                <Ellipse Canvas.Left="39" Canvas.Top="127.5" Width="4" Height="4" Fill="#FCA5A5"/>
+                <Line X1="49" Y1="103" X2="53" Y2="103" Stroke="#94A3B8" StrokeThickness="1.2" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                <Line X1="49" Y1="109" X2="52" Y2="109" Stroke="#94A3B8" StrokeThickness="1.2" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                <Line X1="49" Y1="115" X2="53" Y2="115" Stroke="#94A3B8" StrokeThickness="1.2" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                <Line X1="49" Y1="121" X2="52" Y2="121" Stroke="#94A3B8" StrokeThickness="1.2" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+            </Canvas>
+
+            <!-- 6. 右侧悬浮组件：压力计 -->
+            <Canvas Effect="{StaticResource CardShadow}">
+                <Canvas.RenderTransform>
+                    <TranslateTransform x:Name="BadgeRightTranslate"/>
+                </Canvas.RenderTransform>
+                <Rectangle Canvas.Left="172" Canvas.Top="102" Width="46" Height="46" RadiusX="12" RadiusY="12"
+                           Fill="White" Stroke="#E2E8F0" StrokeThickness="1.2"/>
+                <Ellipse Canvas.Left="181" Canvas.Top="111" Width="28" Height="28"
+                         Fill="#F8FAFC" Stroke="#64748B" StrokeThickness="1.2"/>
+                <Path Data="M 185,131 A 11,11 0 1 1 205,131" Stroke="{DynamicResource ThemeArtStrongACCBrush}" StrokeThickness="2"
+                      StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                <Line X1="195" Y1="125" X2="202" Y2="117" Stroke="{DynamicResource ThemeArtStrongBrush}" StrokeThickness="1.8"
+                      StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                <Ellipse Canvas.Left="192.8" Canvas.Top="122.8" Width="4.4" Height="4.4" Fill="#1E293B"/>
+            </Canvas>
+
+            <!-- 7. 环境微粒点缀 -->
+            <Ellipse Canvas.Left="70" Canvas.Top="64" Width="4" Height="4" Fill="{DynamicResource ThemeArtLighterBrush}" Opacity="0.5"/>
+            <Ellipse Canvas.Left="165.5" Canvas.Top="67.5" Width="5" Height="5" Fill="{DynamicResource ThemeArtLighterBrush}" Opacity="0.45"/>
+            <Ellipse Canvas.Left="72.2" Canvas.Top="164.2" Width="3.6" Height="3.6" Fill="#94A3B8" Opacity="0.4"/>
+        </Canvas>
+    </Viewbox>
+</UserControl>

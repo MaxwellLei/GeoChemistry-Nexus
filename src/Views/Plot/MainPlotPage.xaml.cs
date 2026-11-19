@@ -39,20 +39,18 @@ namespace GeoChemistryNexus.Views
         // 单例本体
         private static MainPlotPage homePage = null!;
 
-        private MainPlotViewModel viewModel;
-        private bool _isUpdatingToolbarState = false;
+        private readonly MainPlotViewModel viewModel;
 
         public MainPlotPage()
         {
             InitializeComponent();
             // 链接 ViewModel
-            viewModel = new MainPlotViewModel(this.WpfPlot1, this.Drichtextbox, this.DataGrid);
+            viewModel = new MainPlotViewModel(this.WpfPlot1, this.HelpDocEditor.Editor, this.DataGrid);
             this.DataContext = viewModel;
 
             viewModel.PropertyChanged += ViewModel_PropertyChanged;
             viewModel.GetTemplateCardsScrollOffset = GetTemplateCardsScrollOffset;
             viewModel.RestoreTemplateCardsScrollAsync = RestoreTemplateCardsScrollAsync;
-            viewModel.TemplateCardsPresentationChanged += OnTemplateCardsPresentationChanged;
             AttachTemplateCardsScrollBehavior();
             AttachBreadcrumbScrollBehavior();
             AttachTemplateCardLayoutBehavior();
@@ -61,6 +59,8 @@ namespace GeoChemistryNexus.Views
             {
                 // 页面加载后，获取窗口并添加键盘事件监听
                 AttachKeyboardEvents();
+                viewModel.TemplateCardsPresentationChanged -= OnTemplateCardsPresentationChanged;
+                viewModel.TemplateCardsPresentationChanged += OnTemplateCardsPresentationChanged;
                 ScheduleTemplateCardItemSizeUpdate();
             };
 
@@ -73,21 +73,9 @@ namespace GeoChemistryNexus.Views
                 _hideTemplateCardsUntilScrollRestored = false;
                 SetTemplateCardsVisibilityForScrollRestore(visible: true);
                 CompleteScrollRestore();
-                if (viewModel != null)
-                    viewModel.TemplateCardsPresentationChanged -= OnTemplateCardsPresentationChanged;
+                viewModel.TemplateCardsPresentationChanged -= OnTemplateCardsPresentationChanged;
             };
 
-            var dpd = System.ComponentModel.DependencyPropertyDescriptor.FromProperty(CustomColorPicker.SelectedColorProperty, typeof(CustomColorPicker));
-            dpd.AddValueChanged(RichTextColorPicker, (s, e) =>
-            {
-                // Skip if we're just updating toolbar state to reflect current selection
-                if (_isUpdatingToolbarState) return;
-                
-                if (Drichtextbox == null || Drichtextbox.IsReadOnly) return;
-                var color = RichTextColorPicker.SelectedColor;
-
-                Drichtextbox.Selection.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(color));
-            });
         }
 
         private void OnSwitchRadioButtonChecked(object sender, RoutedEventArgs e)
@@ -137,13 +125,17 @@ namespace GeoChemistryNexus.Views
                     if (targetWidth <= 0) return;
 
                     // Animate Margin
-                    var marginAnim = new ThicknessAnimation(targetMargin, TimeSpan.FromMilliseconds(250));
-                    marginAnim.EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut };
+                    var marginAnim = new ThicknessAnimation(targetMargin, TimeSpan.FromMilliseconds(250))
+                    {
+                        EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+                    };
                     SwitchSlider.BeginAnimation(Border.MarginProperty, marginAnim);
 
                     // Animate Width
-                    var widthAnim = new DoubleAnimation(targetWidth, TimeSpan.FromMilliseconds(250));
-                    widthAnim.EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut };
+                    var widthAnim = new DoubleAnimation(targetWidth, TimeSpan.FromMilliseconds(250))
+                    {
+                        EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+                    };
                     SwitchSlider.BeginAnimation(Border.WidthProperty, widthAnim);
                 }
                 catch (Exception)
@@ -153,15 +145,15 @@ namespace GeoChemistryNexus.Views
             }
         }
 
-        // 绘图模式列宽比例：左 20% + 绘图 56% + 右 24% = 100%
-        private const double PlotModeLeftStar = 20;
+        // 绘图模式列宽比例：左 19% + 绘图 56% + 右 25% = 100%
+        private const double PlotModeLeftStar = 19;
         private const double PlotModePlotStar = 56;
-        private const double PlotModeRightStar = 24;
+        private const double PlotModeRightStar = 25;
 
         // 记录切换前的宽度状态，用于恢复
-        private GridLength _lastInnerLeftWidth = new GridLength(PlotModeLeftStar, GridUnitType.Star);
-        private GridLength _lastPlotWidth = new GridLength(PlotModePlotStar, GridUnitType.Star);
-        private GridLength _lastOuterRightWidth = new GridLength(PlotModeRightStar, GridUnitType.Star);
+        private GridLength _lastInnerLeftWidth = new(PlotModeLeftStar, GridUnitType.Star);
+        private GridLength _lastPlotWidth = new(PlotModePlotStar, GridUnitType.Star);
+        private GridLength _lastOuterRightWidth = new(PlotModeRightStar, GridUnitType.Star);
         
         // 标记当前是否处于折叠模式（数据表格模式）
         private bool _isCollapsedMode = false;
@@ -171,6 +163,18 @@ namespace GeoChemistryNexus.Views
 
         // 标记动画是否正在进行中
         private bool _isAnimating = false;
+
+        // 图层面板收起为 40px 窄轨。与上面的数据表格模式无关。
+        private const double LayerRailWidth = 40;
+        private static readonly TimeSpan LayerPanelAnimationDuration = TimeSpan.FromMilliseconds(380);
+
+        private bool _isLayerPanelCollapsed;
+        private bool _isLayerPanelAnimating;
+        private bool _suppressLayerPanelReaction;
+        private int _layerAnimVersion;
+        private double _layerExpandedLeftPx;
+        private double _layerExpandedPlotPx;
+        private double _layerExpandedRightPx;
 
         private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -205,6 +209,11 @@ namespace GeoChemistryNexus.Views
                     }
                 }
             }
+
+            if (e.PropertyName == nameof(MainPlotViewModel.IsLayerPanelExpanded))
+            {
+                SyncLayerPanelToViewModel();
+            }
         }
 
         /// <summary>
@@ -229,6 +238,15 @@ namespace GeoChemistryNexus.Views
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
+                // 图层处于收起态时，先把列宽属性收回展开比例，供返回绘图模式时恢复。
+                // 不调用 UpdateLayout：ActualWidth 仍是当前视觉宽度，下面的平移动画从轨道位置起步。
+                double visualLeftAdjust = 0;
+                if (_isLayerPanelCollapsed || _isLayerPanelAnimating)
+                {
+                    visualLeftAdjust = PlotContainerTranslate.X;
+                    SnapLayerPanelOpen();
+                }
+
                 // 如果正在动画中，取消当前动画
                 if (_isAnimating)
                 {
@@ -255,8 +273,8 @@ namespace GeoChemistryNexus.Views
                     return;
                 }
 
-                // 记录当前实际尺寸
-                double oldLeftWidth = InnerLeftCol.ActualWidth;
+                // 记录当前实际尺寸。图层刚收起时 ActualWidth 还是轨道宽度，再加上未结束的平移量。
+                double oldLeftWidth = InnerLeftCol.ActualWidth + visualLeftAdjust;
                 double rightWidth = OuterRightCol.ActualWidth;
 
                 // 计算目标宽度：左侧 45%，Plot 55%
@@ -306,6 +324,8 @@ namespace GeoChemistryNexus.Views
         /// 切换回绘图模式：先 snap 布局，用已知目标值计算偏移，
         /// 再用 RenderTransform 从旧位置平滑动画到新位置。
         /// 不调用 UpdateLayout()，避免打断图层列表的绑定/模板加载。
+        /// 若图层面板应保持收起，则在 snap 阶段就直接使用收起态宽度，
+        /// 避免动画结束后再跑一次折叠动画。
         /// </summary>
         private void AnimateToPlotMode()
         {
@@ -324,7 +344,6 @@ namespace GeoChemistryNexus.Views
             double splitterWidth = 8;
             double availableWidth = Math.Max(0, gridWidth - splitterWidth);
             double totalStars = GetPlotModeTotalStars();
-            double targetLeftWidth = availableWidth * (_lastInnerLeftWidth.Value / totalStars);
             double targetRightWidth = availableWidth * (_lastOuterRightWidth.Value / totalStars);
 
             // 立即 snap 到绘图模式布局
@@ -332,11 +351,74 @@ namespace GeoChemistryNexus.Views
             OuterRightCol.BeginAnimation(ColumnDefinition.WidthProperty, null);
             PlotColumn.BeginAnimation(ColumnDefinition.WidthProperty, null);
 
-            InnerLeftCol.Width = _lastInnerLeftWidth;
-            InnerLeftCol.MaxWidth = double.PositiveInfinity;
-            PlotColumn.Width = _lastPlotWidth;
-            OuterRightCol.Width = _lastOuterRightWidth;
-            OuterRightCol.MinWidth = 250;
+            // 判断图层面板是否应保持收起——若是，则 snap 时直接使用收起态宽度，
+            // 这样整个返回动画期间左侧始终是轨道宽度，不会出现先展开再折叠的闪烁。
+            bool shouldLayerBeCollapsed = !viewModel.IsLayerPanelExpanded;
+            double targetLeftWidth;
+
+            if (shouldLayerBeCollapsed && availableWidth > LayerRailWidth + 1)
+            {
+                // 收起态：左侧固定为 LayerRailWidth，其余按收起时的像素比例分配给 Plot 和右侧。
+                // 收起后 FinishLayerCollapse 的 Star 值为：
+                //   Plot  = _layerExpandedPlotPx
+                //   Right = _layerExpandedRightPx + (_layerExpandedLeftPx - LayerRailWidth)
+                // 必须复现这个比例，否则 Plot 会被错误地拉宽。
+                double plotStar = _layerExpandedPlotPx;
+                double rightStar = _layerExpandedRightPx + Math.Max(0, _layerExpandedLeftPx - LayerRailWidth);
+                // 若历史像素数据无效（极少数情况），回退到保存的 Star 比例
+                if (plotStar < 1 || rightStar < 1)
+                {
+                    plotStar = _lastPlotWidth.Value;
+                    rightStar = _lastOuterRightWidth.Value;
+                }
+                double plotRightSum = Math.Max(1, plotStar + rightStar);
+                double rest = availableWidth - LayerRailWidth;
+                double targetPlotWidth = rest * (plotStar / plotRightSum);
+                double targetRightWidthCollapsed = rest - targetPlotWidth;
+
+                targetLeftWidth = LayerRailWidth;
+
+                InnerLeftCol.MinWidth = LayerRailWidth;
+                InnerLeftCol.MaxWidth = LayerRailWidth;
+                InnerLeftCol.Width = new GridLength(LayerRailWidth, GridUnitType.Pixel);
+                PlotColumn.Width = new GridLength(Math.Max(targetPlotWidth, 1), GridUnitType.Star);
+                OuterRightCol.Width = new GridLength(Math.Max(targetRightWidthCollapsed, 1), GridUnitType.Star);
+                OuterRightCol.MinWidth = 250;
+                targetRightWidth = targetRightWidthCollapsed;
+
+                // 立即把图层面板设置为收起的视觉状态，无需等待动画结束
+                _layerAnimVersion++;
+                _isLayerPanelCollapsed = true;
+                _isLayerPanelAnimating = false;
+                SetLayerAnimationCache(false);
+
+                SetTranslateX(LeftPanelTranslate, 0);
+                SetTranslateX(LeftSplitterTranslate, 0);
+                SetTranslateX(LayerRailTranslate, 0);
+                LayerRail.BeginAnimation(UIElement.OpacityProperty, null);
+                LayerRail.Opacity = 1;
+                LayerRail.IsHitTestVisible = true;
+
+                LeftPanelSlide.Visibility = Visibility.Hidden;
+                LeftPanelSlide.IsHitTestVisible = false;
+                LeftPanelSlide.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                if (_layerExpandedLeftPx > 0)
+                    LeftPanelSlide.Width = _layerExpandedLeftPx;
+
+                Panel.SetZIndex(LeftPanelHost, 1);
+                LeftSplitter.IsHitTestVisible = false;
+                RightSplitter.IsHitTestVisible = false;
+            }
+            else
+            {
+                targetLeftWidth = availableWidth * (_lastInnerLeftWidth.Value / totalStars);
+
+                InnerLeftCol.Width = _lastInnerLeftWidth;
+                InnerLeftCol.MaxWidth = double.PositiveInfinity;
+                PlotColumn.Width = _lastPlotWidth;
+                OuterRightCol.Width = _lastOuterRightWidth;
+                OuterRightCol.MinWidth = 250;
+            }
 
             // 计算补偿偏移：布局 snap 使内容左移，正向补偿使其视觉上仍在旧位置
             double shift = oldLeftWidth - targetLeftWidth; // 正值 = 内容原本偏右
@@ -357,6 +439,14 @@ namespace GeoChemistryNexus.Views
                 CancelTransformAnimations();
                 _isStableExpanded = true;
                 _isAnimating = false;
+                // 仅在未预设收起态时才同步（收起态已在动画前设好，无需再跑一次折叠动画）
+                if (!shouldLayerBeCollapsed)
+                    SyncLayerPanelToViewModel();
+                else
+                {
+                    // 收起态：动画结束后恢复 Splitter 交互，但保持收起状态
+                    RightSplitter.IsHitTestVisible = true;
+                }
             };
 
             // 启动动画
@@ -390,20 +480,418 @@ namespace GeoChemistryNexus.Views
         /// </summary>
         private void CancelTransformAnimations()
         {
-            PlotContainerTranslate.BeginAnimation(TranslateTransform.XProperty, null);
-            RightPanelTranslate.BeginAnimation(TranslateTransform.XProperty, null);
-            RightSplitterTranslate.BeginAnimation(TranslateTransform.XProperty, null);
-            PlotContainerTranslate.X = 0;
-            RightPanelTranslate.X = 0;
-            RightSplitterTranslate.X = 0;
+            SetTranslateX(PlotContainerTranslate, 0);
+            SetTranslateX(RightPanelTranslate, 0);
+            SetTranslateX(RightSplitterTranslate, 0);
+            SetTranslateX(LeftPanelTranslate, 0);
+            SetTranslateX(LeftSplitterTranslate, 0);
+            SetTranslateX(LayerRailTranslate, 0);
+        }
+
+        /// <summary>
+        /// 按视图模型同步图层面板。数据表格模式不收起，动画进行中只记住目标，结束后再对齐。
+        /// </summary>
+        private void SyncLayerPanelToViewModel()
+        {
+            if (_suppressLayerPanelReaction || !viewModel.IsPlotMode || viewModel.RibbonTabIndex == 1)
+                return;
+            if (_isAnimating || _isLayerPanelAnimating)
+                return;
+
+            if (viewModel.IsLayerPanelExpanded)
+            {
+                if (_isLayerPanelCollapsed)
+                    ExpandLayerPanel();
+            }
+            else if (!_isLayerPanelCollapsed)
+            {
+                CollapseLayerPanel();
+            }
+        }
+
+        /// <summary>
+        /// 收起图层：绘图区保持当前像素宽度并左移，多出的宽度立刻划给属性面板，再用平移把第一帧拉回原位。
+        /// </summary>
+        private void CollapseLayerPanel()
+        {
+            if (_isLayerPanelCollapsed || _isLayerPanelAnimating)
+                return;
+
+            double leftPx = InnerLeftCol.ActualWidth;
+            double plotPx = PlotColumn.ActualWidth;
+            double rightPx = OuterRightCol.ActualWidth;
+            double shift = leftPx - LayerRailWidth;
+            if (MainLayoutGrid.ActualWidth <= 0 || shift <= 1 || plotPx < 1 || double.IsNaN(leftPx))
+            {
+                RevertLayerPanelExpanded(true);
+                return;
+            }
+
+            _layerExpandedLeftPx = leftPx;
+            _layerExpandedPlotPx = plotPx;
+            _layerExpandedRightPx = rightPx;
+
+            int version = ++_layerAnimVersion;
+            _isLayerPanelCollapsed = true;
+            _isLayerPanelAnimating = true;
+
+            LeftSplitter.IsHitTestVisible = false;
+            RightSplitter.IsHitTestVisible = false;
+            LayerRail.IsHitTestVisible = false;
+            // 窄轨从面板右缘滑到左侧列里，结束时留在 40px 列上，不跟图层内容一起移出画面。
+            LayerRail.Opacity = 0;
+
+            ReleaseColumnWidthAnimations();
+            InnerLeftCol.MinWidth = LayerRailWidth;
+            InnerLeftCol.MaxWidth = LayerRailWidth;
+            OuterRightCol.MinWidth = 0;
+            InnerLeftCol.Width = new GridLength(LayerRailWidth, GridUnitType.Pixel);
+            PlotColumn.Width = new GridLength(plotPx, GridUnitType.Pixel);
+            OuterRightCol.Width = new GridLength(rightPx + shift, GridUnitType.Pixel);
+
+            LeftPanelSlide.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+            LeftPanelSlide.Width = leftPx;
+            LeftPanelSlide.Visibility = Visibility.Visible;
+            LeftPanelSlide.IsHitTestVisible = false;
+
+            var easing = CreateLayerEase();
+            var slideAnim = CreateLayerAnimation(0, -shift, easing);
+            var plotAnim = CreateLayerAnimation(shift, 0, easing);
+            var rightAnim = CreateLayerAnimation(shift, 0, easing);
+            var leftSplitterAnim = CreateLayerAnimation(shift, 0, easing);
+            var rightSplitterAnim = CreateLayerAnimation(shift, 0, easing);
+            var railSlideAnim = CreateLayerAnimation(shift, 0, easing);
+            var railAnim = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(80))
+            {
+                EasingFunction = easing
+            };
+
+            plotAnim.Completed += (_, _) =>
+            {
+                if (version != _layerAnimVersion)
+                    return;
+                FinishLayerCollapse(version, shift, plotPx, rightPx + shift);
+            };
+
+            SetLayerAnimationCache(true);
+            LeftPanelTranslate.BeginAnimation(TranslateTransform.XProperty, slideAnim);
+            PlotContainerTranslate.BeginAnimation(TranslateTransform.XProperty, plotAnim);
+            RightPanelTranslate.BeginAnimation(TranslateTransform.XProperty, rightAnim);
+            LeftSplitterTranslate.BeginAnimation(TranslateTransform.XProperty, leftSplitterAnim);
+            RightSplitterTranslate.BeginAnimation(TranslateTransform.XProperty, rightSplitterAnim);
+            LayerRailTranslate.BeginAnimation(TranslateTransform.XProperty, railSlideAnim);
+            LayerRail.BeginAnimation(UIElement.OpacityProperty, railAnim);
+            Panel.SetZIndex(LeftPanelHost, 1);
+        }
+
+        private void FinishLayerCollapse(int version, double shift, double plotPx, double rightPx)
+        {
+            if (version != _layerAnimVersion)
+                return;
+            _layerAnimVersion++;
+            SetLayerAnimationCache(false);
+
+            SetTranslateX(LeftPanelTranslate, -shift);
+            SetTranslateX(PlotContainerTranslate, 0);
+            SetTranslateX(RightPanelTranslate, 0);
+            SetTranslateX(LeftSplitterTranslate, 0);
+            SetTranslateX(RightSplitterTranslate, 0);
+            SetTranslateX(LayerRailTranslate, 0);
+
+            LayerRail.BeginAnimation(UIElement.OpacityProperty, null);
+            LayerRail.Opacity = 1;
+            LayerRail.IsHitTestVisible = true;
+            // 图层内容已经滑出左侧，藏掉，只留窄轨。收起期间保持在绘图区上方，避免窄轨被绘图区盖住。
+            LeftPanelSlide.Visibility = Visibility.Hidden;
+            LeftPanelSlide.IsHitTestVisible = false;
+            LeftPanelSlide.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+            LeftPanelSlide.Width = _layerExpandedLeftPx;
+
+            InnerLeftCol.MinWidth = LayerRailWidth;
+            InnerLeftCol.MaxWidth = LayerRailWidth;
+            InnerLeftCol.Width = new GridLength(LayerRailWidth, GridUnitType.Pixel);
+            PlotColumn.Width = new GridLength(Math.Max(plotPx, 1), GridUnitType.Star);
+            OuterRightCol.Width = new GridLength(Math.Max(rightPx, 1), GridUnitType.Star);
+            OuterRightCol.ClearValue(ColumnDefinition.MinWidthProperty);
+
+            RightSplitter.IsHitTestVisible = true;
+            _isLayerPanelCollapsed = true;
+            _isLayerPanelAnimating = false;
+            SyncLayerPanelToViewModel();
+        }
+
+        /// <summary>
+        /// 展开图层：按收起前的像素比例铺回当前可用宽度。绘图区宽度只有窗口尺寸变了才会变。
+        /// </summary>
+        private void ExpandLayerPanel()
+        {
+            if (!_isLayerPanelCollapsed || _isLayerPanelAnimating)
+                return;
+
+            double available = Math.Max(0, MainLayoutGrid.ActualWidth - 8);
+            if (available <= LayerRailWidth + 1)
+            {
+                RevertLayerPanelExpanded(false);
+                return;
+            }
+
+            GetExpandedTargets(available, out double targetLeft, out double targetPlot, out double targetRight);
+            double oldLeft = InnerLeftCol.ActualWidth;
+            double oldPlot = PlotColumn.ActualWidth;
+            double oldRight = OuterRightCol.ActualWidth;
+            double leftShift = targetLeft - oldLeft;
+            double rightShift = leftShift + (targetPlot - oldPlot);
+
+            int version = ++_layerAnimVersion;
+            _isLayerPanelCollapsed = false;
+            _isLayerPanelAnimating = true;
+
+            LayerRail.IsHitTestVisible = false;
+            LeftSplitter.IsHitTestVisible = false;
+            RightSplitter.IsHitTestVisible = false;
+            SetTranslateX(LayerRailTranslate, 0);
+            LeftPanelSlide.Visibility = Visibility.Visible;
+            LeftPanelSlide.IsHitTestVisible = true;
+            Panel.SetZIndex(LeftPanelHost, 1);
+
+            ReleaseColumnWidthAnimations();
+            InnerLeftCol.MaxWidth = double.PositiveInfinity;
+            InnerLeftCol.MinWidth = 0;
+            OuterRightCol.MinWidth = 0;
+            InnerLeftCol.Width = new GridLength(targetLeft, GridUnitType.Pixel);
+            PlotColumn.Width = new GridLength(targetPlot, GridUnitType.Pixel);
+            OuterRightCol.Width = new GridLength(Math.Max(targetRight, 1), GridUnitType.Pixel);
+            // 列宽正好排满，面板本身保持收起时的可见宽度，多出的部分被主网格裁掉，右边缘才不会先跳。
+            RightPanelBorder.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+            RightPanelBorder.Width = Math.Max(oldRight, targetRight);
+
+            LeftPanelSlide.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+            LeftPanelSlide.Width = targetLeft;
+
+            var easing = CreateLayerEase();
+            var slideAnim = CreateLayerAnimation(-leftShift, 0, easing);
+            var plotAnim = CreateLayerAnimation(-leftShift, 0, easing);
+            var rightAnim = CreateLayerAnimation(-rightShift, 0, easing);
+            var leftSplitterAnim = CreateLayerAnimation(-leftShift, 0, easing);
+            var rightSplitterAnim = CreateLayerAnimation(-rightShift, 0, easing);
+            var railAnim = new DoubleAnimation(LayerRail.Opacity, 0, TimeSpan.FromMilliseconds(140))
+            {
+                EasingFunction = easing
+            };
+
+            plotAnim.Completed += (_, _) =>
+            {
+                if (version != _layerAnimVersion)
+                    return;
+                FinishLayerExpand(version, targetLeft, targetPlot, targetRight);
+            };
+
+            SetLayerAnimationCache(true);
+            LeftPanelTranslate.BeginAnimation(TranslateTransform.XProperty, slideAnim);
+            PlotContainerTranslate.BeginAnimation(TranslateTransform.XProperty, plotAnim);
+            RightPanelTranslate.BeginAnimation(TranslateTransform.XProperty, rightAnim);
+            LeftSplitterTranslate.BeginAnimation(TranslateTransform.XProperty, leftSplitterAnim);
+            RightSplitterTranslate.BeginAnimation(TranslateTransform.XProperty, rightSplitterAnim);
+            LayerRail.BeginAnimation(UIElement.OpacityProperty, railAnim);
+        }
+
+        private void FinishLayerExpand(int version, double targetLeft, double targetPlot, double targetRight)
+        {
+            if (version != _layerAnimVersion)
+                return;
+            _layerAnimVersion++;
+            SetLayerAnimationCache(false);
+
+            SetTranslateX(LeftPanelTranslate, 0);
+            SetTranslateX(PlotContainerTranslate, 0);
+            SetTranslateX(RightPanelTranslate, 0);
+            SetTranslateX(LeftSplitterTranslate, 0);
+            SetTranslateX(RightSplitterTranslate, 0);
+            SetTranslateX(LayerRailTranslate, 0);
+
+            LayerRail.BeginAnimation(UIElement.OpacityProperty, null);
+            LayerRail.Opacity = 0;
+            LayerRail.IsHitTestVisible = false;
+            Panel.SetZIndex(LeftPanelHost, 0);
+
+            RightPanelBorder.ClearValue(FrameworkElement.WidthProperty);
+            RightPanelBorder.ClearValue(FrameworkElement.HorizontalAlignmentProperty);
+            LeftPanelSlide.ClearValue(FrameworkElement.WidthProperty);
+            LeftPanelSlide.ClearValue(FrameworkElement.HorizontalAlignmentProperty);
+            LeftPanelSlide.IsHitTestVisible = true;
+
+            InnerLeftCol.ClearValue(ColumnDefinition.MinWidthProperty);
+            InnerLeftCol.ClearValue(ColumnDefinition.MaxWidthProperty);
+            OuterRightCol.ClearValue(ColumnDefinition.MinWidthProperty);
+            InnerLeftCol.Width = new GridLength(Math.Max(targetLeft, 1), GridUnitType.Star);
+            PlotColumn.Width = new GridLength(Math.Max(targetPlot, 1), GridUnitType.Star);
+            OuterRightCol.Width = new GridLength(Math.Max(targetRight, 1), GridUnitType.Star);
+
+            LeftSplitter.IsHitTestVisible = true;
+            RightSplitter.IsHitTestVisible = true;
+            _isLayerPanelCollapsed = false;
+            _isLayerPanelAnimating = false;
+            SyncLayerPanelToViewModel();
+        }
+
+        /// <summary>
+        /// 进入数据模式前无动画打开图层，避免 40px 轨道被记成恢复宽度。
+        /// </summary>
+        private void SnapLayerPanelOpen()
+        {
+            _layerAnimVersion++;
+            _isLayerPanelCollapsed = false;
+            _isLayerPanelAnimating = false;
+            SetLayerAnimationCache(false);
+
+            SetTranslateX(LeftPanelTranslate, 0);
+            SetTranslateX(LeftSplitterTranslate, 0);
+            SetTranslateX(PlotContainerTranslate, 0);
+            SetTranslateX(RightPanelTranslate, 0);
+            SetTranslateX(RightSplitterTranslate, 0);
+            SetTranslateX(LayerRailTranslate, 0);
+            LayerRail.BeginAnimation(UIElement.OpacityProperty, null);
+            LayerRail.Opacity = 0;
+            LayerRail.IsHitTestVisible = false;
+            Panel.SetZIndex(LeftPanelHost, 0);
+
+            LeftPanelSlide.ClearValue(FrameworkElement.WidthProperty);
+            LeftPanelSlide.ClearValue(FrameworkElement.HorizontalAlignmentProperty);
+            LeftPanelSlide.Visibility = Visibility.Visible;
+            LeftPanelSlide.IsHitTestVisible = true;
+            RightPanelBorder.ClearValue(FrameworkElement.WidthProperty);
+            RightPanelBorder.ClearValue(FrameworkElement.HorizontalAlignmentProperty);
+
+            ReleaseColumnWidthAnimations();
+            double left = _layerExpandedLeftPx;
+            double plot = _layerExpandedPlotPx;
+            double right = _layerExpandedRightPx;
+            if (left + plot + right < 1)
+            {
+                left = PlotModeLeftStar;
+                plot = PlotModePlotStar;
+                right = PlotModeRightStar;
+            }
+
+            InnerLeftCol.ClearValue(ColumnDefinition.MinWidthProperty);
+            InnerLeftCol.ClearValue(ColumnDefinition.MaxWidthProperty);
+            OuterRightCol.ClearValue(ColumnDefinition.MinWidthProperty);
+            InnerLeftCol.Width = new GridLength(Math.Max(left, 1), GridUnitType.Star);
+            PlotColumn.Width = new GridLength(Math.Max(plot, 1), GridUnitType.Star);
+            OuterRightCol.Width = new GridLength(Math.Max(right, 1), GridUnitType.Star);
+
+            LeftSplitter.IsHitTestVisible = true;
+            RightSplitter.IsHitTestVisible = true;
+        }
+
+        private void GetExpandedTargets(double available, out double left, out double plot, out double right)
+        {
+            double savedLeft = _layerExpandedLeftPx;
+            double savedPlot = _layerExpandedPlotPx;
+            double savedRight = _layerExpandedRightPx;
+            double sum = savedLeft + savedPlot + savedRight;
+            if (sum < 1)
+            {
+                savedLeft = PlotModeLeftStar;
+                savedPlot = PlotModePlotStar;
+                savedRight = PlotModeRightStar;
+                sum = savedLeft + savedPlot + savedRight;
+            }
+
+            left = available * savedLeft / sum;
+            plot = available * savedPlot / sum;
+            right = Math.Max(0, available - left - plot);
+
+            const double minLeft = 200;
+            const double minRight = 250;
+            if (available < minLeft + minRight)
+                return;
+
+            if (left < minLeft)
+            {
+                left = minLeft;
+                double rest = available - left;
+                double plotShare = savedPlot / Math.Max(1, savedPlot + savedRight);
+                plot = rest * plotShare;
+                right = rest - plot;
+            }
+
+            if (right < minRight)
+            {
+                right = minRight;
+                double rest = available - right;
+                double leftShare = savedLeft / Math.Max(1, savedLeft + savedPlot);
+                left = Math.Max(minLeft, rest * leftShare);
+                plot = rest - left;
+            }
+        }
+
+        private void RevertLayerPanelExpanded(bool expanded)
+        {
+            if (viewModel.IsLayerPanelExpanded == expanded)
+                return;
+
+            _suppressLayerPanelReaction = true;
+            try
+            {
+                viewModel.IsLayerPanelExpanded = expanded;
+            }
+            finally
+            {
+                _suppressLayerPanelReaction = false;
+            }
+        }
+
+        private void ReleaseColumnWidthAnimations()
+        {
+            InnerLeftCol.BeginAnimation(ColumnDefinition.WidthProperty, null);
+            PlotColumn.BeginAnimation(ColumnDefinition.WidthProperty, null);
+            OuterRightCol.BeginAnimation(ColumnDefinition.WidthProperty, null);
+        }
+
+        /// <summary>
+        /// 图层面板收起/展开动画期间，把参与平移的三大区域缓存为 GPU 位图纹理。
+        /// 否则每一帧 WPF 都要重新遍历并绘制整棵可视树（图层列表、属性面板、ScottPlot），动画会卡顿。
+        /// 动画结束后立即移除缓存，保证文字清晰、控件交互不受影响。
+        /// </summary>
+        private void SetLayerAnimationCache(bool enabled)
+        {
+            if (enabled)
+            {
+                double scale = VisualTreeHelper.GetDpi(this).DpiScaleX;
+                LeftPanelSlide.CacheMode = new BitmapCache(scale);
+                PlotContainer.CacheMode = new BitmapCache(scale);
+                RightPanelBorder.CacheMode = new BitmapCache(scale);
+            }
+            else
+            {
+                LeftPanelSlide.ClearValue(UIElement.CacheModeProperty);
+                PlotContainer.ClearValue(UIElement.CacheModeProperty);
+                RightPanelBorder.ClearValue(UIElement.CacheModeProperty);
+            }
+        }
+
+        private static void SetTranslateX(TranslateTransform transform, double x)
+        {
+            transform.X = x;
+            transform.BeginAnimation(TranslateTransform.XProperty, null);
+        }
+
+        private static CubicEase CreateLayerEase()
+        {
+            var easing = new CubicEase { EasingMode = EasingMode.EaseOut };
+            easing.Freeze();
+            return easing;
+        }
+
+        private static DoubleAnimation CreateLayerAnimation(double from, double to, CubicEase easing)
+        {
+            return new DoubleAnimation(from, to, LayerPanelAnimationDuration) { EasingFunction = easing };
         }
 
         public static MainPlotPage GetPage()
         {
-            if (homePage == null)
-            {
-                homePage = new MainPlotPage();
-            }
+            homePage ??= new MainPlotPage();
             return homePage;
         }
 
@@ -429,8 +917,7 @@ namespace GeoChemistryNexus.Views
             }
 
             // 检查父类状态
-            var originalSource = e.OriginalSource as DependencyObject;
-            if (originalSource != null && FindAncestor<ToggleButton>(originalSource) != null)
+            if (e.OriginalSource is DependencyObject originalSource && FindAncestor<ToggleButton>(originalSource) != null)
             {
                 return;
             }
@@ -497,7 +984,7 @@ namespace GeoChemistryNexus.Views
         /// <typeparam name="T">要查找的父控件的类型。</typeparam>
         /// <param name="current">查找的起始依赖对象。</param>
         /// <returns>找到的第一个指定类型的父控件，如果找不到则返回 null。</returns>
-        private T? FindAncestor<T>(DependencyObject? current) where T : DependencyObject
+        private static T? FindAncestor<T>(DependencyObject? current) where T : DependencyObject
         {
             while (current != null)
             {
@@ -510,154 +997,7 @@ namespace GeoChemistryNexus.Views
             return null;
         }
 
-        #region RichTextBox Toolbar Events
 
-        private void FontSizeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (Drichtextbox == null || Drichtextbox.IsReadOnly) return;
-            if (!Drichtextbox.Selection.IsEmpty && sender is System.Windows.Controls.ComboBox comboBox && comboBox.SelectedItem is System.Windows.Controls.ComboBoxItem item)
-            {
-                if (double.TryParse(item.Content.ToString(), out double size))
-                {
-                    Drichtextbox.Selection.ApplyPropertyValue(TextElement.FontSizeProperty, size);
-                }
-            }
-        }
-
-        private void FontSizeComboBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
-                ApplyFontSize(sender);
-                // 移除焦点，让用户可以继续编辑文档
-                Drichtextbox.Focus();
-                e.Handled = true;
-            }
-        }
-
-        private void FontSizeComboBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            ApplyFontSize(sender);
-        }
-
-        private void ApplyFontSize(object sender)
-        {
-            if (Drichtextbox == null || Drichtextbox.IsReadOnly) return;
-            if (sender is System.Windows.Controls.ComboBox comboBox)
-            {
-                if (double.TryParse(comboBox.Text, out double size))
-                {
-                    if (!Drichtextbox.Selection.IsEmpty)
-                    {
-                        Drichtextbox.Selection.ApplyPropertyValue(TextElement.FontSizeProperty, size);
-                    }
-                }
-            }
-        }
-
-
-        private void SubscriptButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (Drichtextbox == null || Drichtextbox.IsReadOnly) return;
-            ToggleBaselineAlignment(BaselineAlignment.Subscript);
-        }
-
-        private void SuperscriptButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (Drichtextbox == null || Drichtextbox.IsReadOnly) return;
-            ToggleBaselineAlignment(BaselineAlignment.Superscript);
-        }
-
-        private void ToggleBaselineAlignment(BaselineAlignment alignment)
-        {
-            if (Drichtextbox == null || Drichtextbox.Selection.IsEmpty) return;
-
-            var currentAlignment = Drichtextbox.Selection.GetPropertyValue(Inline.BaselineAlignmentProperty);
-
-            // 如果已经是这个状态，就取消（恢复到 Baseline）
-            if (currentAlignment != DependencyProperty.UnsetValue && currentAlignment is BaselineAlignment ba && ba == alignment)
-            {
-                Drichtextbox.Selection.ApplyPropertyValue(Inline.BaselineAlignmentProperty, BaselineAlignment.Baseline);
-            }
-            else
-            {
-                Drichtextbox.Selection.ApplyPropertyValue(Inline.BaselineAlignmentProperty, alignment);
-            }
-            
-            UpdateToolbarState();
-        }
-
-        private void Drichtextbox_SelectionChanged(object sender, RoutedEventArgs e)
-        {
-            UpdateToolbarState();
-        }
-
-        private void UpdateToolbarState()
-        {
-            if (Drichtextbox == null) return;
-
-            _isUpdatingToolbarState = true;
-            try
-            {
-                // Bold
-                var weight = Drichtextbox.Selection.GetPropertyValue(TextElement.FontWeightProperty);
-                if (BoldButton != null)
-                    BoldButton.IsChecked = (weight != DependencyProperty.UnsetValue) && (weight.Equals(FontWeights.Bold));
-
-                // Italic
-                var style = Drichtextbox.Selection.GetPropertyValue(TextElement.FontStyleProperty);
-                if (ItalicButton != null)
-                    ItalicButton.IsChecked = (style != DependencyProperty.UnsetValue) && (style.Equals(FontStyles.Italic));
-
-                // Underline
-                var decoration = Drichtextbox.Selection.GetPropertyValue(Inline.TextDecorationsProperty);
-                if (UnderlineButton != null)
-                    UnderlineButton.IsChecked = (decoration != DependencyProperty.UnsetValue) && (decoration == TextDecorations.Underline);
-
-                // Sub/Superscript
-                var alignment = Drichtextbox.Selection.GetPropertyValue(Inline.BaselineAlignmentProperty);
-                if (SuperscriptButton != null)
-                    SuperscriptButton.IsChecked = (alignment != DependencyProperty.UnsetValue) && ((BaselineAlignment)alignment == BaselineAlignment.Superscript);
-                if (SubscriptButton != null)
-                    SubscriptButton.IsChecked = (alignment != DependencyProperty.UnsetValue) && ((BaselineAlignment)alignment == BaselineAlignment.Subscript);
-                
-                // Font Size
-                var size = Drichtextbox.Selection.GetPropertyValue(TextElement.FontSizeProperty);
-                if (FontSizeComboBox != null)
-                {
-                    if (size != DependencyProperty.UnsetValue && size is double dSize)
-                    {
-                        FontSizeComboBox.Text = dSize.ToString("0.#");
-                    }
-                    else
-                    {
-                        FontSizeComboBox.Text = "";
-                    }
-                }
-
-                // Text Color - Update color picker to reflect current selection's color
-                if (RichTextColorPicker != null)
-                {
-                    var foreground = Drichtextbox.Selection.GetPropertyValue(TextElement.ForegroundProperty);
-                    if (foreground != DependencyProperty.UnsetValue && foreground is SolidColorBrush brush)
-                    {
-                        // Update the color picker to show the current selection's color
-                        RichTextColorPicker.SelectedColor = brush.Color;
-                    }
-                    else
-                    {
-                        // Default to black if no color is set
-                        RichTextColorPicker.SelectedColor = System.Windows.Media.Colors.Black;
-                    }
-                }
-            }
-            finally
-            {
-                _isUpdatingToolbarState = false;
-            }
-        }
-
-        #endregion
 
         private Window? _popOutWindow;
 
@@ -777,33 +1117,44 @@ namespace GeoChemistryNexus.Views
         }
 
         /// <summary>
-        /// Ctrl 键按下事件 - 显示卡片操作遮罩
+        /// 右 Alt 按下时，WPF 常把它报成 System 键，真实按键在 SystemKey 里。
+        /// </summary>
+        private static bool IsRightAltKey(KeyEventArgs e)
+        {
+            return e.Key == System.Windows.Input.Key.RightAlt || e.SystemKey == System.Windows.Input.Key.RightAlt;
+        }
+
+        /// <summary>
+        /// 右 Alt 按下 - 显示卡片操作遮罩
         /// </summary>
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            // 只在模板库模式下生效
-            if (!viewModel.IsPlotMode && (e.Key == System.Windows.Input.Key.LeftCtrl || e.Key == System.Windows.Input.Key.RightCtrl))
-            {
-                var count = viewModel.TemplateCardsView?.Cast<object>()?.Count() ?? 0;
-                System.Diagnostics.Debug.WriteLine($"Ctrl Key Down - IsPlotMode: {viewModel.IsPlotMode}, TemplateCardsView Count: {count}");
-                UpdateCtrlOverlayState(true);
-            }
+            if (!IsRightAltKey(e) || viewModel.IsPlotMode)
+                return;
+
+            var count = viewModel.TemplateCardsView?.Cast<object>()?.Count() ?? 0;
+            System.Diagnostics.Debug.WriteLine($"Right Alt Key Down - IsPlotMode: {viewModel.IsPlotMode}, TemplateCardsView Count: {count}");
+            UpdateCtrlOverlayState(true);
+            // 吃掉右 Alt，避免按住时主菜单进入访问键模式
+            e.Handled = true;
         }
 
         /// <summary>
-        /// Ctrl 键释放事件 - 隐藏卡片操作遮罩
+        /// 右 Alt 释放 - 隐藏卡片操作遮罩
         /// </summary>
         private void Window_PreviewKeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.LeftCtrl || e.Key == System.Windows.Input.Key.RightCtrl)
-            {
-                System.Diagnostics.Debug.WriteLine($"Ctrl Key Up");
-                UpdateCtrlOverlayState(false);
-            }
+            if (!IsRightAltKey(e))
+                return;
+
+            System.Diagnostics.Debug.WriteLine("Right Alt Key Up");
+            UpdateCtrlOverlayState(false);
+            if (!viewModel.IsPlotMode)
+                e.Handled = true;
         }
 
         /// <summary>
-        /// 更新所有卡片的 Ctrl 遮罩状态
+        /// 更新所有卡片的右 Alt 操作遮罩状态
         /// </summary>
         private void UpdateCtrlOverlayState(bool isVisible)
         {
@@ -872,6 +1223,7 @@ namespace GeoChemistryNexus.Views
 
         private void OnTemplateCardsPresentationChanged()
         {
+            ScheduleTemplateCardItemSizeUpdate(preserveScrollRatio: true);
             RequestVisibleTemplateCardThumbnails();
 
             // 卡片重建后：若 pending 或 sticky 目标仍在，重新恢复（覆盖延迟 Clear 冲掉滚动的情况）
@@ -903,6 +1255,7 @@ namespace GeoChemistryNexus.Views
                 scrollViewer.ScrollChanged += TemplateCardsScrollViewer_ScrollChanged;
                 scrollViewer.SizeChanged -= TemplateCardsScrollViewer_SizeChanged;
                 scrollViewer.SizeChanged += TemplateCardsScrollViewer_SizeChanged;
+                AttachTemplateCardsViewportSizeBehavior(scrollViewer);
                 ScheduleTemplateCardItemSizeUpdate();
                 RequestVisibleTemplateCardThumbnails();
             };
@@ -912,6 +1265,26 @@ namespace GeoChemistryNexus.Views
         {
             TemplateCardsControl.SizeChanged -= TemplateCardsControl_SizeChanged;
             TemplateCardsControl.SizeChanged += TemplateCardsControl_SizeChanged;
+            TemplateCardsControl.IsVisibleChanged += (_, e) =>
+            {
+                if (e.NewValue is true)
+                    ScheduleTemplateCardItemSizeUpdate(preserveScrollRatio: true);
+            };
+        }
+
+        private ScrollContentPresenter? _templateCardsScrollContentPresenter;
+
+        private void AttachTemplateCardsViewportSizeBehavior(ScrollViewer scrollViewer)
+        {
+            var presenter = FindVisualChild<ScrollContentPresenter>(scrollViewer);
+            if (ReferenceEquals(presenter, _templateCardsScrollContentPresenter))
+                return;
+
+            if (_templateCardsScrollContentPresenter is { } oldPresenter)
+                oldPresenter.SizeChanged -= TemplateCardsScrollViewer_SizeChanged;
+
+            _templateCardsScrollContentPresenter = presenter;
+            presenter?.SizeChanged += TemplateCardsScrollViewer_SizeChanged;
         }
 
         private void TemplateCardsControl_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -931,9 +1304,7 @@ namespace GeoChemistryNexus.Views
             ScheduleTemplateCardItemSizeUpdate(preserveScrollRatio: true);
         }
 
-        private Size _lastAppliedTemplateCardItemSize = new(TemplateCardLayoutHelper.DefaultCellSize, TemplateCardLayoutHelper.DefaultCellSize);
         private double _lastTemplateCardAvailableWidth;
-        private bool _templateCardItemSizeRetryPending;
         private bool _templateCardItemSizeUpdateScheduled;
         private bool _pendingPreserveScrollRatio;
 
@@ -955,19 +1326,24 @@ namespace GeoChemistryNexus.Views
 
         private void UpdateTemplateCardItemSize(bool preserveScrollRatio = false)
         {
-            if (viewModel == null || TemplateCardsControl == null)
+            if (viewModel == null || !TemplateCardsControl.IsLoaded || !TemplateCardsControl.IsVisible)
                 return;
 
             var scrollViewer = FindVisualChild<ScrollViewer>(TemplateCardsControl);
-            double availableWidth = scrollViewer?.ViewportWidth ?? 0;
-            if (availableWidth <= 0)
-                availableWidth = TemplateCardsControl.ActualWidth;
+            if (scrollViewer == null)
+                return;
 
-            // ListBox 右侧 Padding=10，与 TemplateCardListBoxStyle 一致
-            if (availableWidth > 10)
-                availableWidth -= 10;
+            AttachTemplateCardsViewportSizeBehavior(scrollViewer);
+            // ViewportWidth 来自虚拟化面板的缓存，切换页面后可能仍是上一次测量值。
+            // Presenter 的实际宽度已扣除滚动条；ItemsPresenter 的 Margin 则来自列表 Padding。
+            double availableWidth = (_templateCardsScrollContentPresenter?.ActualWidth ?? 0)
+                - TemplateCardsControl.Padding.Left - TemplateCardsControl.Padding.Right;
 
-            if (availableWidth <= 0)
+            if (availableWidth <= 0 || !double.IsFinite(availableWidth))
+                return;
+
+            var panel = FindVisualChild<VirtualizingWrapPanel>(TemplateCardsControl);
+            if (panel == null)
                 return;
 
             var newSize = TemplateCardLayoutHelper.ComputeItemSize(
@@ -975,8 +1351,9 @@ namespace GeoChemistryNexus.Views
                 viewModel.TemplateCardSizePreset);
 
             bool widthUnchanged = Math.Abs(availableWidth - _lastTemplateCardAvailableWidth) < 0.5;
-            bool sizeUnchanged = Math.Abs(newSize.Width - _lastAppliedTemplateCardItemSize.Width) < 0.5
-                && Math.Abs(newSize.Height - _lastAppliedTemplateCardItemSize.Height) < 0.5;
+            // 比较当前面板，避免模板重建后沿用旧面板的尺寸缓存而跳过更新。
+            bool sizeUnchanged = Math.Abs(newSize.Width - panel.ItemSize.Width) < 0.01
+                && Math.Abs(newSize.Height - panel.ItemSize.Height) < 0.01;
             if (widthUnchanged && sizeUnchanged)
                 return;
 
@@ -986,23 +1363,7 @@ namespace GeoChemistryNexus.Views
                 scrollRatio = scrollViewer.VerticalOffset / scrollViewer.ExtentHeight;
             }
 
-            var panel = FindVisualChild<VirtualizingWrapPanel>(TemplateCardsControl);
-            if (panel == null)
-            {
-                if (_templateCardItemSizeRetryPending)
-                    return;
-
-                _templateCardItemSizeRetryPending = true;
-                Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    _templateCardItemSizeRetryPending = false;
-                    UpdateTemplateCardItemSize(preserveScrollRatio);
-                }), System.Windows.Threading.DispatcherPriority.Loaded);
-                return;
-            }
-
             panel.ItemSize = newSize;
-            _lastAppliedTemplateCardItemSize = newSize;
             _lastTemplateCardAvailableWidth = availableWidth;
 
             // 强制面板按新 ItemSize 重新测量（取消最大化后仅改属性可能不立刻重排）
@@ -1070,8 +1431,7 @@ namespace GeoChemistryNexus.Views
                 if (item is not TemplateCardViewModel card)
                     continue;
 
-                var container = TemplateCardsControl.ItemContainerGenerator.ContainerFromItem(item) as FrameworkElement;
-                if (container == null)
+                if (TemplateCardsControl.ItemContainerGenerator.ContainerFromItem(item) is not FrameworkElement container)
                     continue;
 
                 if (IsTemplateCardVisibleInViewport(container, scrollViewer, viewport))

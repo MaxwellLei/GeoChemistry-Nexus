@@ -123,4 +123,17 @@ namespace GeoChemistryNexus.Models
         [LocalizedDescription("logarithmic")]
         Logarithmic
     }
+
+    /// <summary>
+    /// 坐标轴刻度对齐方式：自动（两端保留少量边距）/ 严格（范围两端即为轴的边缘，无边距）
+    /// </summary>
+    [TypeConverter(typeof(EnumLocalizationConverter))]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public enum AxisTickAlignment
+    {
+        [LocalizedDescription("auto")]
+        Auto,
+        [LocalizedDescription("tick_align_strict")]
+        Strict
+    }
 }

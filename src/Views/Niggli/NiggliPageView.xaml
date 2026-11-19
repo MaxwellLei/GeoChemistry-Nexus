@@ -1,13 +1,13 @@
-<Page x:Class="GeoChemistryNexus.Views.NiggliPageView"
+﻿<Page x:Class="GeoChemistryNexus.Views.NiggliPageView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:hc="https://handyorg.github.io/handycontrol"
       xmlns:rg="clr-namespace:unvell.ReoGrid;assembly=unvell.ReoGrid"
       xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
       xmlns:hp="clr-namespace:GeoChemistryNexus.Helpers"
       xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
+      xmlns:ctrl="clr-namespace:GeoChemistryNexus.Controls"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="1100"
       Title="NiggliPageView">
@@ -20,16 +20,19 @@
         <!-- 工具栏按钮样式 -->
         <Style x:Key="NiggliToolbarButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="BorderBrush" Value="#B8BDC5"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="8,4"/>
             <Setter Property="Margin" Value="2,0"/>
             <Setter Property="Foreground" Value="#555"/>
-            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontFamily" Value="{x:Static SystemFonts.MessageFontFamily}"/>
+            <Setter Property="FontSize" Value="12"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}" CornerRadius="6" 
+                                BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
                                 Padding="{TemplateBinding Padding}" ToolTip="{TemplateBinding ToolTip}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
@@ -52,23 +55,26 @@
 
         <!-- 计算按钮样式（主操作） -->
         <Style x:Key="NiggliCalculateButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#0078D4"/>
+            <Setter Property="Background" Value="{DynamicResource ThemeAccentBrush}"/>
             <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="14,6"/>
+            <Setter Property="BorderBrush" Value="#B8BDC5"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="12,4"/>
             <Setter Property="Margin" Value="2,0"/>
-            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontFamily" Value="{x:Static SystemFonts.MessageFontFamily}"/>
+            <Setter Property="FontSize" Value="12"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="6" 
+                                BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
                                 Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#005A9E"/>
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemeAccentDarkBrush}"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter TargetName="Bd" Property="Background" Value="#004578"/>
@@ -82,93 +88,54 @@
             </Setter>
         </Style>
 
-        <!-- 面板控制按钮样式 -->
-        <Style x:Key="PanelControlButtonStyle" TargetType="Button">
-            <Setter Property="Width" Value="26"/>
-            <Setter Property="Height" Value="26"/>
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Foreground" Value="#888"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="4" 
-                                ToolTip="{TemplateBinding ToolTip}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#E8E8E8"/>
-                                <Setter Property="Foreground" Value="#333"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#D4D4D4"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
     </Page.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition x:Name="GridRowDef" Height="*"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition x:Name="DiagnosticRowDef" Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!-- ==================== 顶部：工具栏 ==================== -->
-        <Border Grid.Row="0" Background="White" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1" Padding="16,10,16,10">
+        <!-- 页面顶栏：模块名称 + 工具栏（融入主窗口顶部） -->
+        <ContentControl Grid.Row="0" Style="{StaticResource PageTitleBarStyle}"
+                        Tag="{Binding [niggli_norm],Source={x:Static lg:LanguageService.Instance}, FallbackValue='Niggli 标准'}">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- 左侧：标题 -->
-                <TextBlock Grid.Column="0" Text="{Binding [niggli_title],Source={x:Static lg:LanguageService.Instance}, FallbackValue='Niggli 标准矿物计算'}" 
-                           FontSize="16" FontWeight="SemiBold" Foreground="#333" 
-                           VerticalAlignment="Center" Margin="0,0,20,0"/>
+                <!-- 左侧：标题已由顶栏模块名称取代 -->
 
-                <!-- 中间：Fe3+/Fe 参数区 -->
-                <Border Grid.Column="1" Background="#F8F8FA" CornerRadius="6" Padding="12,6" VerticalAlignment="Center">
+                <!-- Fe³⁺/ΣFe：未实测 FeO / Fe₂O₃ 时，按此比例把全铁拆成二价铁和三价铁。单行芯片，避免撑高顶栏。 -->
+                <Border Grid.Column="0" Style="{StaticResource TitleBarParamChipStyle}">
+                    <Border.ToolTip>
+                        <TextBlock>
+                            <Run Text="Fe&#x00B3;&#x207A;/ΣFe  ·  "/>
+                            <Run Text="{Binding [niggli_default_value_text],Source={x:Static lg:LanguageService.Instance}, Mode=OneWay, FallbackValue=默认 0.15}"/>
+                            <Run Text="  ·  Le Maitre, 2002"/>
+                        </TextBlock>
+                    </Border.ToolTip>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Fe&#x00B3;&#x207A;/Fe" FontSize="12" FontWeight="Medium" Foreground="#333" 
-                                   VerticalAlignment="Center" Margin="0,0,10,0"/>
-                        <TextBox x:Name="Fe3FractionTextBox" Width="56" Height="26" Padding="6,2"
-                                 Text="{Binding Fe3Fraction, UpdateSourceTrigger=PropertyChanged, StringFormat=F2}" 
-                                 FontSize="12" TextAlignment="Center" VerticalContentAlignment="Center"
-                                 BorderBrush="#D0D0D0" BorderThickness="1"
-                                 LostFocus="OnFe3FractionLostFocus">
-                            <TextBox.Resources>
-                                <Style TargetType="Border">
-                                    <Setter Property="CornerRadius" Value="4"/>
-                                </Style>
-                            </TextBox.Resources>
-                        </TextBox>
-                        <StackPanel Orientation="Vertical" Margin="10,0,0,0" VerticalAlignment="Center">
-                            <TextBlock FontSize="10" Foreground="#999"
-                                       Text="{Binding [niggli_default_value_text],Source={x:Static lg:LanguageService.Instance}, FallbackValue=默认 0.15}"/>
-                            <TextBlock FontSize="9.5" Foreground="#AAA" FontStyle="Italic">
-                                <Run Text="Le Maitre, 2002"/>
-                            </TextBlock>
-                        </StackPanel>
+                        <Border Style="{StaticResource TitleBarParamChipLabelStyle}">
+                            <TextBlock Text="Fe&#x00B3;&#x207A;/ΣFe" Style="{StaticResource TitleBarParamChipLabelTextStyle}"/>
+                        </Border>
+                        <TextBox x:Name="Fe3FractionTextBox" Style="{StaticResource TitleBarParamChipTextBoxStyle}"
+                                 Text="{Binding Fe3Fraction, UpdateSourceTrigger=PropertyChanged, StringFormat=F2}"
+                                 LostFocus="OnFe3FractionLostFocus"/>
                     </StackPanel>
                 </Border>
 
                 <!-- 右侧：操作按钮组 -->
-                <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
                     <!-- 算法说明 -->
                     <Button Style="{StaticResource NiggliToolbarButtonStyle}"
                             ToolTip="{Binding [niggli_tooltip_help],Source={x:Static lg:LanguageService.Instance}, FallbackValue='查看 Barth-Niggli Catanorm 与尼格里参数算法说明'}"
                             Click="OnHelpClick">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xE946;" FontFamily="Segoe MDL2 Assets" FontSize="14" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                            <TextBlock Text="&#xE946;" FontFamily="Segoe MDL2 Assets" FontSize="12" VerticalAlignment="Center" Margin="0,0,5,0"/>
                             <TextBlock Text="{Binding [niggli_btn_help],Source={x:Static lg:LanguageService.Instance}, FallbackValue=说明}" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
@@ -179,7 +146,7 @@
                             Command="{Binding FillExampleCommand}"
                             CommandParameter="{Binding Data, Source={StaticResource GridProxy}}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xE7C3;" FontFamily="Segoe MDL2 Assets" FontSize="14" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                            <TextBlock Text="&#xE7C3;" FontFamily="Segoe MDL2 Assets" FontSize="12" VerticalAlignment="Center" Margin="0,0,5,0"/>
                             <TextBlock Text="{Binding [niggli_btn_example],Source={x:Static lg:LanguageService.Instance}, FallbackValue=示例}" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
@@ -190,7 +157,7 @@
                             Command="{Binding ExportCsvCommand}"
                             CommandParameter="{Binding Data, Source={StaticResource GridProxy}}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xEDE1;" FontFamily="Segoe MDL2 Assets" FontSize="14" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                            <TextBlock Text="&#xEDE1;" FontFamily="Segoe MDL2 Assets" FontSize="12" VerticalAlignment="Center" Margin="0,0,5,0"/>
                             <TextBlock Text="{Binding [niggli_btn_export],Source={x:Static lg:LanguageService.Instance}, FallbackValue=导出}" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
@@ -201,13 +168,13 @@
                             Command="{Binding ClearDataCommand}"
                             CommandParameter="{Binding Data, Source={StaticResource GridProxy}}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="14" Foreground="#D13438" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                            <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="#D13438" VerticalAlignment="Center" Margin="0,0,5,0"/>
                             <TextBlock Text="{Binding [niggli_btn_clear],Source={x:Static lg:LanguageService.Instance}, FallbackValue=清除}" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
 
                     <!-- 分隔符 -->
-                    <Rectangle Width="1" Height="22" Fill="#E0E0E0" Margin="8,0" VerticalAlignment="Center"/>
+                    <Rectangle Width="1" Height="18" Fill="#E0E0E0" Margin="8,0" VerticalAlignment="Center"/>
 
                     <!-- 执行计算（主操作） -->
                     <Button Style="{StaticResource NiggliCalculateButtonStyle}"
@@ -217,217 +184,134 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE768;" FontFamily="Segoe MDL2 Assets" FontSize="13" 
                                        VerticalAlignment="Center" Margin="0,0,6,0"/>
-                            <TextBlock Text="{Binding [niggli_btn_calculate],Source={x:Static lg:LanguageService.Instance}, FallbackValue=执行计算}" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding [niggli_btn_calculate],Source={x:Static lg:LanguageService.Instance}, FallbackValue=执行计算}" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>
             </Grid>
-        </Border>
+        </ContentControl>
 
         <!-- ==================== 中间：全宽数据表格 ==================== -->
-        <rg:ReoGridControl Grid.Row="1" x:Name="NiggliReoGrid">
-            <rg:ReoGridControl.Resources>
-                <ControlTemplate x:Key="ModernThumbTemplate" TargetType="Thumb">
-                    <Border x:Name="thumbBorder" Background="#C2C3C9" CornerRadius="4" BorderThickness="0"/>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="thumbBorder" Property="Background" Value="#6E6E6E"/>
-                        </Trigger>
-                        <Trigger Property="IsDragging" Value="True">
-                            <Setter TargetName="thumbBorder" Property="Background" Value="#424242"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-                <Style TargetType="{x:Type ScrollBar}">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type ScrollBar}">
-                                <Grid x:Name="GridRoot" Background="Transparent">
-                                    <Track x:Name="PART_Track" IsDirectionReversed="true" Focusable="false">
-                                        <Track.DecreaseRepeatButton>
-                                            <RepeatButton Command="{x:Static ScrollBar.LineUpCommand}" Opacity="0" Background="Transparent" BorderThickness="0" Focusable="false"/>
-                                        </Track.DecreaseRepeatButton>
-                                        <Track.IncreaseRepeatButton>
-                                            <RepeatButton Command="{x:Static ScrollBar.LineDownCommand}" Opacity="0" Background="Transparent" BorderThickness="0" Focusable="false"/>
-                                        </Track.IncreaseRepeatButton>
-                                        <Track.Thumb>
-                                            <Thumb Template="{StaticResource ModernThumbTemplate}" Margin="1"/>
-                                        </Track.Thumb>
-                                    </Track>
-                                </Grid>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="Orientation" Value="Horizontal">
-                                        <Setter TargetName="PART_Track" Property="Orientation" Value="Horizontal"/>
-                                        <Setter TargetName="PART_Track" Property="IsDirectionReversed" Value="false"/>
-                                        <Setter Property="Width" Value="NaN"/>
-                                        <Setter Property="Height" Value="10"/>
-                                        <Setter Property="Width" Value="Auto"/>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </rg:ReoGridControl.Resources>
-        </rg:ReoGridControl>
+        <!-- 完整的数据工作表由公共控件统一提供：顶栏、列头分组行 / 单位、行头状态点、右侧检查器与底部状态栏。 -->
+        <ctrl:ReoGridTableHost x:Name="WorksheetTable" Grid.Row="1" Style="{StaticResource ReoGridTableHostStyle}"
+                               IsInspectorOpen="{Binding IsInspectorOpen, Mode=TwoWay}"
+                               InspectorTitle="{Binding [niggli_diagnostic_details],Source={x:Static lg:LanguageService.Instance}, FallbackValue=计算详情}">
+            <!-- 右侧检查器：当前选中样品的计算详情（内容由本模块自己决定） -->
+            <ctrl:ReoGridTableHost.Inspector>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
-        <!-- 表格与诊断详情之间的可拖动分隔条 -->
-        <GridSplitter x:Name="DetailSplitter" Grid.Row="2"
-                      Height="6"
-                      HorizontalAlignment="Stretch"
-                      VerticalAlignment="Center"
-                      ResizeDirection="Rows"
-                      ResizeBehavior="PreviousAndNext"
-                      Background="Transparent"
-                      ShowsPreview="True"
-                      Visibility="Collapsed"
-                      DragCompleted="OnDetailSplitterDragCompleted"
-                      Cursor="SizeNS">
-            <GridSplitter.Template>
-                <ControlTemplate TargetType="GridSplitter">
-                    <Grid Background="Transparent">
-                        <Border Height="1" VerticalAlignment="Center" Background="#E0E0E0"/>
-                    </Grid>
-                </ControlTemplate>
-            </GridSplitter.Template>
-        </GridSplitter>
-
-        <!-- ==================== 底部：诊断详情面板 ==================== -->
-        <Border Grid.Row="3" BorderBrush="#D4D4D4" BorderThickness="0,1,0,0" Background="White">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-
-                <!-- 面板标题栏（始终可见，作为状态条） -->
-                <Border Grid.Row="0" Background="#F8F8FA" Padding="12,6" BorderBrush="#E8E8E8" BorderThickness="0,0,0,1" MinHeight="32">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Grid.Column="0" Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" 
-                                   FontSize="14" Foreground="#0078D4" VerticalAlignment="Center" Margin="0,0,8,0"/>
-
-                        <!-- 有数据时显示计算详情摘要 -->
-                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center"
-                                    Visibility="{Binding HasDiagnosticData, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <TextBlock Text="{Binding [niggli_diagnostic_details],Source={x:Static lg:LanguageService.Instance}, FallbackValue=计算详情}" 
-                                       FontSize="13" FontWeight="SemiBold" Foreground="#333"/>
-                            <TextBlock Text=" - " FontSize="12" Foreground="#999" Margin="4,0"/>
-                            <TextBlock Text="{Binding SelectedRowInfo}" FontSize="12" Foreground="#666"/>
-
-                            <!-- 快速诊断摘要徽章 -->
-                            <Border CornerRadius="4" Padding="6,2" Margin="12,0,4,0" VerticalAlignment="Center">
-                                <Border.Style>
-                                    <Style TargetType="Border">
-                                        <Setter Property="Background" Value="#E3F2FD"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsSilicaUndersaturated}" Value="True">
-                                                <Setter Property="Background" Value="#FFF3E0"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Border.Style>
-                                <TextBlock FontSize="11" Foreground="#1565C0">
-                                    <Run Text="Si: "/>
-                                    <Run Text="{Binding SelectedSilicaState, Mode=OneWay}"/>
-                                </TextBlock>
-                            </Border>
-                            <Border CornerRadius="4" Background="#F3E5F5" Padding="6,2" Margin="0,0,4,0" VerticalAlignment="Center">
-                                <TextBlock FontSize="11" Foreground="#6A1B9A">
-                                    <Run Text="Al: "/>
-                                    <Run Text="{Binding SelectedAluminaState, Mode=OneWay}"/>
-                                </TextBlock>
-                            </Border>
-                        </StackPanel>
-
-                        <!-- 无数据时 -->
-                        <TextBlock Grid.Column="1" Text="{Binding [niggli_select_row_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=选择数据行查看计算详情}" 
-                                   FontSize="12" Foreground="#999" VerticalAlignment="Center">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding HasDiagnosticData}" Value="True">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-
-                        <!-- 面板控制按钮：展开/收缩 -->
-                        <Button Grid.Column="2" Style="{StaticResource PanelControlButtonStyle}" 
-                                Click="OnToggleExpandClick"
-                                ToolTip="{Binding [niggli_tooltip_expand],Source={x:Static lg:LanguageService.Instance}, FallbackValue='展开/收缩'}">
-                            <TextBlock x:Name="ExpandIcon" Text="&#xE70D;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
-                        </Button>
-                    </Grid>
-                </Border>
-
-                <!-- 诊断列表内容（收缩时隐藏） -->
-                <hc:ScrollViewer x:Name="DiagnosticContent" Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="0"
-                                 Visibility="{Binding IsDiagnosticPanelExpanded, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <ItemsControl ItemsSource="{Binding DiagnosticItems}" Margin="8,4,8,8">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Border Margin="0,1" Padding="10,4" CornerRadius="4">
+                    <!-- 摘要：选中样品 + 硅 / 铝饱和度徽章 -->
+                    <Border Grid.Row="0" Padding="14,10" Background="White" BorderBrush="#E8E8E8" BorderThickness="0,0,0,1"
+                            Visibility="{Binding HasDiagnosticData, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <StackPanel>
+                            <TextBlock Text="{Binding SelectedRowInfo}" FontSize="13" FontWeight="SemiBold" Foreground="#333" TextTrimming="CharacterEllipsis"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                <Border CornerRadius="4" Padding="6,2" Margin="0,0,6,0" VerticalAlignment="Center">
                                     <Border.Style>
                                         <Style TargetType="Border">
-                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Setter Property="Background" Value="{DynamicResource ThemeAccentSoftBrush}"/>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsHighlight}" Value="True">
-                                                    <Setter Property="Background" Value="#FFFDE7"/>
+                                                <DataTrigger Binding="{Binding IsSilicaUndersaturated}" Value="True">
+                                                    <Setter Property="Background" Value="#FFF3E0"/>
                                                 </DataTrigger>
-                                                <DataTrigger Binding="{Binding IsSeparator}" Value="True">
-                                                    <Setter Property="Background" Value="#FAFAFA"/>
-                                                </DataTrigger>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Background" Value="#F5F5F7"/>
-                                                </Trigger>
                                             </Style.Triggers>
                                         </Style>
                                     </Border.Style>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="220"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
+                                    <TextBlock FontSize="11" Foreground="{DynamicResource ThemeAccentDarkBrush}">
+                                        <Run Text="Si: "/>
+                                        <Run Text="{Binding SelectedSilicaState, Mode=OneWay}"/>
+                                    </TextBlock>
+                                </Border>
+                                <Border CornerRadius="4" Background="#F3E5F5" Padding="6,2" VerticalAlignment="Center">
+                                    <TextBlock FontSize="11" Foreground="#6A1B9A">
+                                        <Run Text="Al: "/>
+                                        <Run Text="{Binding SelectedAluminaState, Mode=OneWay}"/>
+                                    </TextBlock>
+                                </Border>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
 
-                                        <!-- 项目名称 -->
-                                        <TextBlock Grid.Column="0" VerticalAlignment="Center">
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock">
-                                                    <Setter Property="FontSize" Value="12"/>
-                                                    <Setter Property="Foreground" Value="#555"/>
-                                                    <Setter Property="FontWeight" Value="Normal"/>
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="0">
+                        <Grid>
+                            <!-- 未选中已计算的样品时的提示 -->
+                            <TextBlock Text="{Binding [niggli_select_row_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=选择数据行查看计算详情}"
+                                       FontSize="12" Foreground="#999" Margin="14,12" TextWrapping="Wrap">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding HasDiagnosticData}" Value="True">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+
+                            <ItemsControl ItemsSource="{Binding DiagnosticItems}" Margin="8,6,8,8">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Margin="0,1" Padding="10,4" CornerRadius="4">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="Background" Value="Transparent"/>
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsSeparator}" Value="True">
-                                                            <Setter Property="Foreground" Value="#0078D4"/>
-                                                            <Setter Property="FontWeight" Value="SemiBold"/>
-                                                            <Setter Property="FontSize" Value="11"/>
+                                                        <DataTrigger Binding="{Binding IsHighlight}" Value="True">
+                                                            <Setter Property="Background" Value="#FFFDE7"/>
                                                         </DataTrigger>
+                                                        <DataTrigger Binding="{Binding IsSeparator}" Value="True">
+                                                            <Setter Property="Background" Value="#FAFAFA"/>
+                                                        </DataTrigger>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Background" Value="#F5F5F7"/>
+                                                        </Trigger>
                                                     </Style.Triggers>
                                                 </Style>
-                                            </TextBlock.Style>
-                                            <Run Text="{Binding Name, Mode=OneWay}"/>
-                                        </TextBlock>
+                                            </Border.Style>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="150"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
 
-                                        <!-- 项目值 -->
-                                        <TextBlock Grid.Column="1" VerticalAlignment="Center"
-                                                   FontFamily="Consolas" FontSize="12" Foreground="#333"
-                                                   Text="{Binding Value}" TextWrapping="Wrap"/>
-                                    </Grid>
-                                </Border>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </hc:ScrollViewer>
-            </Grid>
-        </Border>
+                                                <!-- 项目名称 -->
+                                                <TextBlock Grid.Column="0" VerticalAlignment="Center" TextWrapping="Wrap" Margin="0,0,8,0">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="FontSize" Value="12"/>
+                                                            <Setter Property="Foreground" Value="#555"/>
+                                                            <Setter Property="FontWeight" Value="Normal"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsSeparator}" Value="True">
+                                                                    <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}"/>
+                                                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                                                    <Setter Property="FontSize" Value="11"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                    <Run Text="{Binding Name, Mode=OneWay}"/>
+                                                </TextBlock>
+
+                                                <!-- 项目值 -->
+                                                <TextBlock Grid.Column="1" VerticalAlignment="Center"
+                                                           FontFamily="Consolas" FontSize="12" Foreground="#333"
+                                                           Text="{Binding Value}" TextWrapping="Wrap"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Grid>
+                    </ScrollViewer>
+                </Grid>
+            </ctrl:ReoGridTableHost.Inspector>
+            <rg:ReoGridControl x:Name="NiggliReoGrid"/>
+        </ctrl:ReoGridTableHost>
     </Grid>
 </Page>

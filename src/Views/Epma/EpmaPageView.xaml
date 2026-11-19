@@ -1,0 +1,11 @@
+<Page x:Class="GeoChemistryNexus.Views.EpmaPageView"
+ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ xmlns:lg="clr-namespace:GeoChemistryNexus.Services" xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
+ xmlns:views="clr-namespace:GeoChemistryNexus.Views" Title="EPMA"
+ AutomationProperties.Name="{Binding [epma_title],Source={x:Static lg:LanguageService.Instance}}">
+ <Page.Resources><cvs:BoolToVisibilityConverter x:Key="Show"/></Page.Resources>
+ <Grid Background="#F7F8FA">
+  <views:EpmaCalculationView x:Name="WorkbenchView" DataContext="{Binding Workbench}" Visibility="{Binding DataContext.IsCalculationOpen,RelativeSource={RelativeSource AncestorType=Page},Converter={StaticResource Show}}"/>
+  <views:EpmaLibraryView Visibility="{Binding IsLibraryOpen,Converter={StaticResource Show}}"/>
+ </Grid>
+</Page>

@@ -1,6 +1,8 @@
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Messages;
 using GeoChemistryNexus.Services;
 using GeoChemistryNexus.Models;
 using GeoChemistryNexus.Views;
@@ -31,12 +33,46 @@ namespace GeoChemistryNexus.ViewModels
 
         public HomeLinkGroupViewModel PersonalLinkGroup => _personalGroup;
 
+        /// <summary>
+        /// 左侧导航使用的全部分组：官方分组在前，个人分组在最后。
+        /// </summary>
+        public ObservableCollection<HomeLinkGroupViewModel> NavGroups { get; } = new();
+
+        /// <summary>
+        /// 右侧网格实际展示的链接：未搜索时为当前分组，搜索时为所有分组中的匹配项。
+        /// </summary>
+        public ObservableCollection<HomeAppItem> DisplayedLinks { get; } = new();
+
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsSelectedGroupPersonal))]
+        [NotifyPropertyChangedFor(nameof(ShowAddLinkTile))]
         private HomeLinkGroupViewModel? selectedLinkGroup;
 
         [ObservableProperty]
         private HomeLinkGroupViewModel? selectedOfficialGroup;
+
+        [ObservableProperty]
+        private string linkSearchText = string.Empty;
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(ShowAddLinkTile))]
+        private bool isSearchingLinks;
+
+        [ObservableProperty]
+        private bool hasNoDisplayedLinks;
+
+        [ObservableProperty]
+        private string emptyLinksMessage = string.Empty;
+
+        /// <summary>
+        /// 仅在“我的”分组且不在搜索状态时，网格末尾显示“添加链接”卡片。
+        /// </summary>
+        public bool ShowAddLinkTile => IsSelectedGroupPersonal && !IsSearchingLinks;
+
+        partial void OnLinkSearchTextChanged(string value)
+        {
+            RefreshDisplayedLinks();
+        }
 
         partial void OnSelectedOfficialGroupChanged(HomeLinkGroupViewModel? value)
         {
@@ -53,6 +89,79 @@ namespace GeoChemistryNexus.ViewModels
 
             if (value?.IsPersonal != true && IsEditMode)
                 IsEditMode = false;
+
+            RefreshDisplayedLinks();
+        }
+
+        private void RefreshDisplayedLinks()
+        {
+            string query = (LinkSearchText ?? string.Empty).Trim();
+            bool searching = query.Length > 0;
+            IsSearchingLinks = searching;
+
+            IEnumerable<HomeAppItem> source = searching
+                ? NavGroups.SelectMany(g => g.Items).Where(item =>
+                    (item.Title?.Contains(query, StringComparison.OrdinalIgnoreCase) ?? false)
+                    || (item.Description?.Contains(query, StringComparison.OrdinalIgnoreCase) ?? false))
+                : SelectedLinkGroup?.Items ?? Enumerable.Empty<HomeAppItem>();
+
+            DisplayedLinks.Clear();
+            foreach (var item in source)
+                DisplayedLinks.Add(item);
+
+            // 仅搜索无结果时提示；空分组不再显示提示（“我的”分组末尾始终有“添加链接”入口）
+            HasNoDisplayedLinks = searching && DisplayedLinks.Count == 0;
+            EmptyLinksMessage = searching
+                ? LanguageService.Instance["home_search_no_results"]
+                : string.Empty;
+        }
+
+        // ===== 问候区 =====
+
+        [ObservableProperty]
+        private string greetingPrefix = string.Empty;
+
+        [ObservableProperty]
+        private string greetingHighlight = string.Empty;
+
+        [ObservableProperty]
+        private string greetingTail = string.Empty;
+
+        [ObservableProperty]
+        private string todayText = string.Empty;
+
+        [ObservableProperty]
+        private string weekdayText = string.Empty;
+
+        private void RefreshGreeting()
+        {
+            var now = DateTime.Now;
+            string key = now.Hour switch
+            {
+                < 6 => "home_greeting_night",
+                < 12 => "home_greeting_morning",
+                < 18 => "home_greeting_afternoon",
+                _ => "home_greeting_evening"
+            };
+
+            GreetingPrefix = LanguageService.Instance[key];
+            GreetingHighlight = LanguageService.Instance["home_hello_highlight"];
+            GreetingTail = LanguageService.Instance["home_hello_tail"];
+            TodayText = now.ToString("yyyy.MM.dd");
+            WeekdayText = now.ToString("dddd");
+        }
+
+        /// <summary>
+        /// 轮播计数，如 “02 / 10”。
+        /// </summary>
+        [ObservableProperty]
+        private string announcementCounterText = string.Empty;
+
+        private void UpdateAnnouncementCounter()
+        {
+            AnnouncementCounterText = Announcements.Count == 0
+                ? string.Empty
+                : $"{_currentAnnouncementIndex + 1:00} / {Announcements.Count:00}";
         }
 
         [ObservableProperty]
@@ -122,6 +231,11 @@ namespace GeoChemistryNexus.ViewModels
         public HomePageViewModel()
         {
             LanguageService.Instance.PropertyChanged += OnAppLanguageChanged;
+            _widgets.CollectionChanged += (_, _) => OnWidgetsCollectionChanged();
+            // 主题色切换后重建公告展示项，让跟随主题色的公告背景立即换色
+            WeakReferenceMessenger.Default.Register<HomePageViewModel, AppThemeChangedMessage>(
+                this, static (recipient, _) => recipient.RebuildAnnouncementDisplays());
+            RefreshGreeting();
             RebuildGroups();
             ShowLocalAnnouncements();
         }
@@ -130,6 +244,7 @@ namespace GeoChemistryNexus.ViewModels
         {
             if (e.PropertyName == "Item[]")
             {
+                RefreshGreeting();
                 RebuildGroups();
                 RebuildAnnouncementDisplays();
             }
@@ -145,13 +260,6 @@ namespace GeoChemistryNexus.ViewModels
         private async Task RefreshCatalog()
         {
             await RefreshHomeDataAsync(showUpdateMessage: true);
-        }
-
-        [RelayCommand]
-        private async Task RefreshAnnouncement()
-        {
-            var serverInfo = await TryGetServerInfoAsync();
-            await SyncAnnouncementsFromServerAsync(serverInfo);
         }
 
         private async Task RefreshHomeDataAsync(bool showUpdateMessage)
@@ -251,6 +359,7 @@ namespace GeoChemistryNexus.ViewModels
 
         /// <summary>
         /// 按当前界面语言把公告原始数据解析为展示项；语言切换时重建。
+        /// 未指定展示语言的公告对所有语言显示。
         /// </summary>
         private void RebuildAnnouncementDisplays()
         {
@@ -263,30 +372,15 @@ namespace GeoChemistryNexus.ViewModels
             }
 
             Announcements.Clear();
+            string appLanguage = AppCultureRegistry.ResolveAppLanguage(LanguageService.CurrentLanguage);
             foreach (var entry in _announcementEntries)
             {
-                bool useImage = HomeAnnouncementBackground.IsImageMode(entry.BackgroundMode)
-                    && HomeAnnouncementBackground.IsHttpImageUrl(entry.BackgroundImageUrl);
-                string polygon = HomeAnnouncementBackground.ResolvePolygonStyle(entry.PolygonStyle, Announcements.Count);
-                bool showPolygons = entry.ShowPolygons && !useImage;
+                if (!entry.IsVisibleForLanguage(appLanguage))
+                    continue;
 
-                var display = new HomeAnnouncementDisplayViewModel
-                {
-                    Id = entry.Id,
-                    Tag = HomeLinksLocalization.ResolveForApp(entry.Tag),
-                    Title = HomeLinksLocalization.ResolveForApp(entry.Title),
-                    Body = HomeLinksLocalization.ResolveForApp(entry.Body),
-                    DateText = entry.Date ?? string.Empty,
-                    ActionLabel = HomeLinksLocalization.ResolveForApp(entry.Action?.Label),
-                    ActionUrl = entry.Action?.Url ?? string.Empty,
-                    ThemeKey = string.IsNullOrWhiteSpace(entry.Theme) ? "blue" : entry.Theme,
-                    BackgroundColor = entry.BackgroundColor?.Trim() ?? string.Empty,
-                    UseImageBackground = useImage,
-                    BackgroundImageUrl = entry.BackgroundImageUrl?.Trim() ?? string.Empty,
-                    ShowPolygons = showPolygons,
-                    PolygonStyle = polygon
-                };
-                if (useImage && shownImages.TryGetValue(display.BackgroundImageUrl, out ImageSource? shown))
+                var display = HomeAnnouncementDisplayViewModel.FromEntry(entry, HomeLinksLocalization.ResolveForApp);
+                if (display.UseImageBackground
+                    && shownImages.TryGetValue(display.BackgroundImageUrl, out ImageSource? shown))
                     display.BackgroundImage = shown;
 
                 Announcements.Add(display);
@@ -337,6 +431,7 @@ namespace GeoChemistryNexus.ViewModels
                 _currentAnnouncementIndex = 0;
                 CurrentAnnouncement = null;
                 BeginAnnouncementSlide(null, null, 0);
+                UpdateAnnouncementCounter();
                 SyncAnnouncementCarousel();
                 return;
             }
@@ -359,6 +454,7 @@ namespace GeoChemistryNexus.ViewModels
             if (animate)
                 direction = index < fromIndex ? -1 : 1;
             BeginAnnouncementSlide(next, animate ? previous : null, direction);
+            UpdateAnnouncementCounter();
             SyncAnnouncementCarousel();
         }
 
@@ -516,7 +612,15 @@ namespace GeoChemistryNexus.ViewModels
                 _personalGroup.Items.Add(link);
             }
 
+            // 个人链接增删时，右侧网格同步刷新
+            _personalGroup.Items.CollectionChanged += (_, _) => RefreshDisplayedLinks();
+
             OnPropertyChanged(nameof(PersonalLinkGroup));
+
+            NavGroups.Clear();
+            foreach (var officialGroup in OfficialLinkGroups)
+                NavGroups.Add(officialGroup);
+            NavGroups.Add(_personalGroup);
 
             var availableWidgets = HomeAppService.GetAvailableWidgets()
                 .Where(w => !string.IsNullOrEmpty(w.WidgetKey))
@@ -661,8 +765,9 @@ namespace GeoChemistryNexus.ViewModels
                 }
                 else if (app.WidgetKey == "AlkalinityCalculatorWidget")
                 {
-                    window = new Window
+                    window = new WidgetWindow
                     {
+                        WidgetIcon = app.Icon,
                         Title = LanguageService.Instance["alkalinity_calculator"],
                         Width = 680,
                         Height = 560,
@@ -673,8 +778,9 @@ namespace GeoChemistryNexus.ViewModels
                 }
                 else if (app.WidgetKey == "HardnessCalculatorWidget")
                 {
-                    window = new Window
+                    window = new WidgetWindow
                     {
+                        WidgetIcon = app.Icon,
                         Title = LanguageService.Instance["hardness_calculator"],
                         Width = 560,
                         Height = 580,
@@ -685,8 +791,9 @@ namespace GeoChemistryNexus.ViewModels
                 }
                 else if (app.WidgetKey == "BlackBodyRadiationCalculatorWidget")
                 {
-                    window = new Window
+                    window = new WidgetWindow
                     {
+                        WidgetIcon = app.Icon,
                         Title = LanguageService.Instance["black_body_radiation_calculator"],
                         Width = 920,
                         Height = 560,
@@ -705,19 +812,19 @@ namespace GeoChemistryNexus.ViewModels
                     double maxHeight = main != null && main.ActualHeight > 0 ? main.ActualHeight : SystemParameters.WorkArea.Height;
 
                     // 独立窗体高度不超过主窗体
-                    double height = Math.Min(640, maxHeight);
+                    double height = Math.Min(620, maxHeight);
                     double width = Math.Min(1180, maxWidth);
                     double minHeight = Math.Min(480, height);
                     double minWidth = Math.Min(960, width);
 
-                    window = new Window
+                    window = new WidgetWindow
                     {
+                        WidgetIcon = app.Icon,
                         Title = LanguageService.Instance["periodic_table_widget"],
                         Width = width,
                         Height = height,
                         MinWidth = minWidth,
                         MinHeight = minHeight,
-                        MaxHeight = maxHeight,
                         Content = new PeriodicTableWidget
                         {
                             DataContext = new PeriodicTableWidgetViewModel()
@@ -730,19 +837,19 @@ namespace GeoChemistryNexus.ViewModels
                     double maxWidth  = main != null && main.ActualWidth  > 0 ? main.ActualWidth  : SystemParameters.WorkArea.Width;
                     double maxHeight = main != null && main.ActualHeight > 0 ? main.ActualHeight : SystemParameters.WorkArea.Height;
 
-                    double width     = Math.Min(1100, maxWidth);
-                    double height    = Math.Min(760,  maxHeight);
-                    double minWidth  = Math.Min(900,  width);
+                    double width     = Math.Min(1180, maxWidth);
+                    double height    = Math.Min(740,  maxHeight);
+                    double minWidth  = Math.Min(960,  width);
                     double minHeight = Math.Min(600,  height);
 
-                    window = new Window
+                    window = new WidgetWindow
                     {
+                        WidgetIcon = app.Icon,
                         Title    = LanguageService.Instance["chronostrat_navigator_widget"],
                         Width    = width,
                         Height   = height,
                         MinWidth = minWidth,
                         MinHeight = minHeight,
-                        MaxHeight = maxHeight,
                         Content  = new ChronostratNavigatorWidget
                         {
                             DataContext = new ChronostratNavigatorWidgetViewModel()
@@ -751,8 +858,9 @@ namespace GeoChemistryNexus.ViewModels
                 }
                 else if (app.WidgetKey == "OxideElementConverterWidget")
                 {
-                    window = new Window
+                    window = new WidgetWindow
                     {
+                        WidgetIcon = app.Icon,
                         Title    = LanguageService.Instance["oxide_element_converter"],
                         Width    = 720,
                         Height   = 640,
@@ -766,12 +874,13 @@ namespace GeoChemistryNexus.ViewModels
                 }
                 else if (app.WidgetKey == "GeoscienceUnitConverterWidget")
                 {
-                    window = new Window
+                    window = new WidgetWindow
                     {
+                        WidgetIcon = app.Icon,
                         Title    = LanguageService.Instance["geoscience_unit_converter"],
-                        Width    = 1080,
+                        Width    = 720,
                         Height   = 680,
-                        MinWidth = 880,
+                        MinWidth = 720,
                         MinHeight = 500,
                         Content  = new GeoscienceUnitConverterWidget
                         {
@@ -788,13 +897,14 @@ namespace GeoChemistryNexus.ViewModels
                 {
                     window.Owner = mainWindow;
                     window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-                    if (window.MaxHeight <= 0 || double.IsInfinity(window.MaxHeight))
-                        window.MaxHeight = mainWindow.ActualHeight > 0 ? mainWindow.ActualHeight : SystemParameters.WorkArea.Height;
                 }
                 else
                 {
                     window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                 }
+
+                // 子窗体必须小于主窗体（宽高、最小尺寸、最大高度统一收敛）
+                ChildWindowSizeHelper.FitInside(window, mainWindow);
 
                 WindowActivationHelper.AttachOwnerFocusPreservation(window, mainWindow);
 
@@ -856,40 +966,140 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
+        // ===== 添加小组件：锚定在“+”按钮下方的气泡面板 =====
+
+        private readonly List<AddWidgetCardItem> _widgetPickerAll = new();
+
+        /// <summary>
+        /// 气泡面板当前展示（已按搜索词过滤）的小组件条目。
+        /// </summary>
+        public ObservableCollection<AddWidgetCardItem> WidgetPickerItems { get; } = new();
+
+        public bool HasWidgets => _widgets.Count > 0;
+
+        public bool HasWidgetPickerMatches => WidgetPickerItems.Count > 0;
+
+        [ObservableProperty]
+        private bool isWidgetPickerOpen;
+
+        [ObservableProperty]
+        private string widgetPickerSearchText = string.Empty;
+
+        [ObservableProperty]
+        private string widgetPickerCountText = string.Empty;
+
+        partial void OnIsWidgetPickerOpenChanged(bool value)
+        {
+            if (!value)
+                return;
+
+            // 每次打开都重新读取可用小组件（语言 / 开发者模式可能变化），并清空上次的搜索词
+            WidgetPickerSearchText = string.Empty;
+            BuildWidgetPicker();
+        }
+
+        partial void OnWidgetPickerSearchTextChanged(string value)
+        {
+            ApplyWidgetPickerFilter();
+        }
+
         [RelayCommand]
         private void AddWidget()
         {
-            var widgets = HomeAppService.GetAvailableWidgets();
-            var dialog = new AddWidgetWindow(
-                widgets,
-                _widgets,
-                widget =>
-                {
-                    if (_widgets.Any(w => w.WidgetKey == widget.WidgetKey))
-                        return;
+            IsWidgetPickerOpen = !IsWidgetPickerOpen;
+        }
 
-                    _widgets.Add(new HomeAppItem
-                    {
-                        Type = HomeAppType.Widget,
-                        Title = widget.Title,
-                        Description = widget.Description,
-                        WidgetKey = widget.WidgetKey,
-                        Icon = widget.Icon
-                    });
-                    SaveWidgets();
-                },
-                widget =>
+        private void BuildWidgetPicker()
+        {
+            _widgetPickerAll.Clear();
+
+            var addedKeys = GetAddedWidgetKeys();
+            foreach (var widget in HomeAppService.GetAvailableWidgets().Where(w => !string.IsNullOrEmpty(w.WidgetKey)))
+            {
+                _widgetPickerAll.Add(new AddWidgetCardItem(
+                    widget,
+                    addedKeys.Contains(widget.WidgetKey),
+                    card => AddWidgetFromTemplate(card.Item),
+                    card => RemoveWidgetByKey(card.WidgetKey)));
+            }
+
+            ApplyWidgetPickerFilter();
+            UpdateWidgetPickerSummary();
+        }
+
+        private void ApplyWidgetPickerFilter()
+        {
+            string query = (WidgetPickerSearchText ?? string.Empty).Trim();
+
+            WidgetPickerItems.Clear();
+            foreach (var card in _widgetPickerAll)
+            {
+                if (query.Length == 0
+                    || (card.Title?.Contains(query, StringComparison.OrdinalIgnoreCase) ?? false)
+                    || (card.Description?.Contains(query, StringComparison.OrdinalIgnoreCase) ?? false))
                 {
-                    var existing = _widgets.FirstOrDefault(w => w.WidgetKey == widget.WidgetKey);
-                    if (existing != null)
-                    {
-                        _widgets.Remove(existing);
-                        SaveWidgets();
-                    }
-                });
-            dialog.Owner = Application.Current.MainWindow;
-            WindowActivationHelper.AttachOwnerFocusPreservation(dialog, dialog.Owner);
-            dialog.ShowDialog();
+                    WidgetPickerItems.Add(card);
+                }
+            }
+
+            OnPropertyChanged(nameof(HasWidgetPickerMatches));
+        }
+
+        private void UpdateWidgetPickerSummary()
+        {
+            int added = _widgetPickerAll.Count(c => c.IsAdded);
+            WidgetPickerCountText = $"{LanguageService.Instance["added"]} {added} / {_widgetPickerAll.Count}";
+        }
+
+        private HashSet<string> GetAddedWidgetKeys()
+        {
+            return new HashSet<string>(
+                _widgets.Select(w => w.WidgetKey).Where(k => !string.IsNullOrEmpty(k)),
+                StringComparer.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// 小组件列表发生变化（包括在列表里右键移除）时，同步气泡面板里的“已添加”状态。
+        /// </summary>
+        private void OnWidgetsCollectionChanged()
+        {
+            OnPropertyChanged(nameof(HasWidgets));
+
+            if (_widgetPickerAll.Count == 0)
+                return;
+
+            var addedKeys = GetAddedWidgetKeys();
+            foreach (var card in _widgetPickerAll)
+                card.IsAdded = addedKeys.Contains(card.WidgetKey);
+
+            UpdateWidgetPickerSummary();
+        }
+
+        private void AddWidgetFromTemplate(HomeAppItem template)
+        {
+            if (_widgets.Any(w => string.Equals(w.WidgetKey, template.WidgetKey, StringComparison.OrdinalIgnoreCase)))
+                return;
+
+            _widgets.Add(new HomeAppItem
+            {
+                Type = HomeAppType.Widget,
+                Title = template.Title,
+                Description = template.Description,
+                WidgetKey = template.WidgetKey,
+                Icon = template.Icon
+            });
+            SaveWidgets();
+        }
+
+        private void RemoveWidgetByKey(string widgetKey)
+        {
+            var existing = _widgets.FirstOrDefault(w =>
+                string.Equals(w.WidgetKey, widgetKey, StringComparison.OrdinalIgnoreCase));
+            if (existing == null)
+                return;
+
+            _widgets.Remove(existing);
+            SaveWidgets();
         }
 
         private void EnsurePersonalGroup()

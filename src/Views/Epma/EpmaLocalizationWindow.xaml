@@ -1,0 +1,270 @@
+﻿<Window x:Class="GeoChemistryNexus.Views.EpmaLocalizationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
+        xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
+        xmlns:views="clr-namespace:GeoChemistryNexus.Views"
+        xmlns:controls="clr-namespace:GeoChemistryNexus.Controls"
+        xmlns:helpers="clr-namespace:GeoChemistryNexus.Helpers"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        Title="{Binding Title}"
+        Width="860" SizeToContent="Height" MinWidth="560" MinHeight="360"
+        WindowStyle="None" ResizeMode="CanResize" WindowStartupLocation="CenterOwner" ShowInTaskbar="True"
+        Background="#FAFAFC" Foreground="#1D1D1F" FontFamily="Segoe UI, Microsoft YaHei UI" FontSize="13" UseLayoutRounding="True">
+    <shell:WindowChrome.WindowChrome>
+        <shell:WindowChrome CaptionHeight="40" ResizeBorderThickness="6" CornerRadius="0" GlassFrameThickness="1" UseAeroCaptionButtons="False"/>
+    </shell:WindowChrome.WindowChrome>
+    <Window.InputBindings>
+        <KeyBinding Key="Escape" Command="{Binding CancelCommand}"/>
+    </Window.InputBindings>
+    <Window.Resources>
+        <cvs:BoolToVisibilityConverter x:Key="Show"/>
+        <!-- 单元格容器：左侧分隔线 -->
+        <Style x:Key="CellBox" TargetType="Border">
+            <Setter Property="BorderBrush" Value="#0D000000"/>
+            <Setter Property="BorderThickness" Value="1,0,0,0"/>
+        </Style>
+        <Style x:Key="CellInput" TargetType="TextBox" BasedOn="{StaticResource EpmaLocInputBox}">
+            <Setter Property="Text" Value="{Binding Text,UpdateSourceTrigger=PropertyChanged}"/>
+            <Setter Property="Tag" Value="{Binding Placeholder}"/>
+            <Setter Property="IsReadOnly" Value="{Binding DataContext.IsReadOnly,RelativeSource={RelativeSource AncestorType=Window}}"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsMultiline}" Value="True">
+                    <Setter Property="AcceptsReturn" Value="True"/>
+                    <Setter Property="TextWrapping" Value="Wrap"/>
+                    <Setter Property="VerticalContentAlignment" Value="Top"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <!-- 左侧字段项名称：名称/说明为深色，标签为浅灰；说明行顶端对齐 -->
+        <Style x:Key="RowLabel" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12.5"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Foreground" Value="#515154"/>
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="16,10,8,10"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsTag}" Value="True">
+                    <Setter Property="Foreground" Value="#6E6E73"/>
+                    <Setter Property="Margin" Value="16,8,8,8"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsDescription}" Value="True">
+                    <Setter Property="VerticalAlignment" Value="Top"/>
+                    <Setter Property="Margin" Value="16,14,8,14"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <ItemsPanelTemplate x:Key="LanguageColumnsPanel">
+            <StackPanel Orientation="Horizontal"/>
+        </ItemsPanelTemplate>
+
+        <!-- 列头：语言名 + 默认徽标（行高固定，文字与徽标同为固定行高并垂直居中）+ 填写进度 -->
+        <DataTemplate x:Key="ColumnHeaderTemplate">
+            <Grid Width="{Binding Width}">
+            <Border Style="{StaticResource CellBox}" Height="46" Padding="14,0">
+                <DockPanel VerticalAlignment="Center">
+                    <Border DockPanel.Dock="Right" Margin="8,0,0,0" Padding="8,2" VerticalAlignment="Center" Background="White"
+                            BorderBrush="#0F000000" BorderThickness="1" CornerRadius="10">
+                        <StackPanel Orientation="Horizontal">
+                            <ContentControl Style="{StaticResource EpmaLocStatusDot}"/>
+                            <TextBlock Text="{Binding Progress}" Margin="4,0,0,0" VerticalAlignment="Center" FontFamily="Consolas" FontSize="11"
+                                       FontWeight="Medium" Foreground="#515154"/>
+                        </StackPanel>
+                    </Border>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Header}" VerticalAlignment="Center" FontSize="12.5" FontWeight="Normal" Foreground="#1D1D1F"
+                                   LineHeight="16" LineStackingStrategy="BlockLineHeight" TextTrimming="CharacterEllipsis"/>
+                        <Border Margin="6,0,0,0" Height="16" Padding="6,0" VerticalAlignment="Center" Background="{DynamicResource ThemeAccentTintBrush}" CornerRadius="4"
+                                Visibility="{Binding IsDefault,Converter={StaticResource Show}}">
+                            <TextBlock VerticalAlignment="Center" FontSize="10.5" FontWeight="Medium" Foreground="{DynamicResource ThemeAccentBrush}"
+                                       LineHeight="16" LineStackingStrategy="BlockLineHeight"
+                                       Text="{Binding [epma_editor_default_badge],Source={x:Static lg:LanguageService.Instance}}"/>
+                        </Border>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+            <!-- 拖动右侧边缘调整该语言列的宽度 -->
+            <controls:ResizeGripThumb Style="{StaticResource LocResizeGripStyle}" Orientation="Horizontal" MinValue="160"
+                                      Value="{Binding Width, Mode=TwoWay}"/>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="CellTemplate">
+            <Border Style="{StaticResource CellBox}" Width="{Binding Column.Width}" Padding="6,5">
+                <TextBox Style="{StaticResource CellInput}"/>
+            </Border>
+        </DataTemplate>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- 1. 顶部标题栏：左侧标题，右侧 导入 导出 | 最小化 最大化 关闭 -->
+        <Grid Height="40">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0,0,0">
+                <Border Width="18" Height="18" CornerRadius="5">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="#2B95FF" Offset="0"/>
+                            <GradientStop Color="#0066DC" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <Viewbox Width="12" Height="12">
+                        <Canvas Width="20" Height="20">
+                            <Path Fill="White" Data="F0 M7 2a1 1 0 011 1v1h3a1 1 0 110 2H9.578a18.87 18.87 0 01-1.724 4.78c.29.354.596.696.914 1.026a1 1 0 11-1.44 1.389c-.188-.196-.373-.396-.554-.6a19.098 19.098 0 01-3.107 3.567 1 1 0 01-1.334-1.49 17.087 17.087 0 003.13-3.733 18.992 18.992 0 01-1.487-2.494 1 1 0 111.79-.89c.234.47.489.928.764 1.372.417-.934.752-1.913.997-2.927H3a1 1 0 110-2h3V3a1 1 0 011-1zm6 6a1 1 0 01.894.553l2.991 5.982a.869.869 0 01.02.037l.99 1.98a1 1 0 11-1.79.895L15.383 16h-4.764l-.724 1.447a1 1 0 11-1.788-.894l.99-1.98.019-.038 2.99-5.982A1 1 0 0113 8zm-1.382 6h2.764L13 11.236 11.618 14z"/>
+                        </Canvas>
+                    </Viewbox>
+                </Border>
+                <TextBlock Text="{Binding Title}" Margin="8,0,0,0" VerticalAlignment="Center" FontSize="13" FontWeight="SemiBold" Foreground="#1D1D1F"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" shell:WindowChrome.IsHitTestVisibleInChrome="True">
+                <Button Style="{StaticResource EpmaLocButton}" VerticalAlignment="Center" Command="{Binding ImportCommand}"
+                        Visibility="{Binding CanEdit,Converter={StaticResource Show}}">
+                    <StackPanel Orientation="Horizontal">
+                        <Viewbox Width="14" Height="14" Margin="0,0,5,0">
+                            <Canvas Width="24" Height="24">
+                                <Path Data="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" Stroke="#515154" StrokeThickness="1.7"
+                                      StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                            </Canvas>
+                        </Viewbox>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding [epma_loc_import],Source={x:Static lg:LanguageService.Instance}}"/>
+                    </StackPanel>
+                </Button>
+                <Button Style="{StaticResource EpmaLocButton}" VerticalAlignment="Center" Command="{Binding ExportCommand}" Margin="8,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Viewbox Width="14" Height="14" Margin="0,0,5,0">
+                            <Canvas Width="24" Height="24">
+                                <Path Data="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" Stroke="#515154" StrokeThickness="1.7"
+                                      StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                            </Canvas>
+                        </Viewbox>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding [epma_loc_export],Source={x:Static lg:LanguageService.Instance}}"/>
+                    </StackPanel>
+                </Button>
+                <Border Width="1" Height="16" Margin="12,0,4,0" VerticalAlignment="Center" Background="#1A000000"/>
+                <Button x:Name="CaptionMinimizeButton" Style="{StaticResource EpmaLocCaptionButton}" Click="MinimizeClick"
+                        ToolTip="{Binding [epma_editor_minimize],Source={x:Static lg:LanguageService.Instance}}">
+                    <Canvas Width="10" Height="10">
+                        <Path Data="M1.5,5 H8.5" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.1" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                    </Canvas>
+                </Button>
+                <Button x:Name="CaptionMaximizeButton" Click="MaximizeClick"
+                        ToolTip="{Binding [epma_editor_maximize],Source={x:Static lg:LanguageService.Instance}}">
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource EpmaLocCaptionButton}">
+                            <Setter Property="FontFamily" Value="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont"/>
+                            <Setter Property="FontSize" Value="14"/>
+                            <Setter Property="Content" Value="&#xf2b2;"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding WindowState,RelativeSource={RelativeSource AncestorType=Window}}" Value="Maximized">
+                                    <Setter Property="Content" Value="&#xf2b4;"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button Style="{StaticResource EpmaLocCaptionCloseButton}" Command="{Binding CancelCommand}"
+                        ToolTip="{Binding [close],Source={x:Static lg:LanguageService.Instance}}">
+                    <Canvas Width="10" Height="10">
+                        <Path Data="M1.75,1.75 L8.25,8.25 M8.25,1.75 L1.75,8.25" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.2" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                    </Canvas>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <!-- 2. 核心表格区：字段项与默认语言冻结在左侧，其余语言在右侧横向滚动；整体纵向滚动 -->
+        <ScrollViewer x:Name="TableScroll" Grid.Row="1" Margin="20,4,20,16"
+                      HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
+                      helpers:LocalizationTableLayoutBehavior.Columns="{Binding Columns}"
+                      helpers:ScrollWheelBehavior.ShiftHorizontalTarget="{Binding ElementName=OtherLanguagesScroll}">
+            <Border Background="White" BorderBrush="#12000000" BorderThickness="1" CornerRadius="10">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- 冻结列：字段项 + 默认语言；右侧加粗分界线提示此处为冻结位置 -->
+                    <Border Grid.Column="0" HorizontalAlignment="Left" Panel.ZIndex="1"
+                            BorderBrush="#C3C9D4" BorderThickness="0,0,2,0">
+                    <StackPanel>
+                        <Border Background="#F8F9FB" BorderBrush="#0F000000" BorderThickness="0,0,0,1" CornerRadius="9,0,0,0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="96"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Margin="16,0,8,0" VerticalAlignment="Center" FontSize="11.5" FontWeight="Medium" Foreground="#86868B"
+                                           Text="{Binding [epma_loc_field_header],Source={x:Static lg:LanguageService.Instance}}"/>
+                                <ContentControl Grid.Column="1" Content="{Binding DefaultColumn}" ContentTemplate="{StaticResource ColumnHeaderTemplate}"
+                                                HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Focusable="False" IsTabStop="False"/>
+                            </Grid>
+                        </Border>
+                        <ItemsControl ItemsSource="{Binding TableRows}" Focusable="False">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="#0D000000" BorderThickness="0,1,0,0" Height="{Binding RowHeight}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="96"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Border Background="#FCFCFD">
+                                                <TextBlock Text="{Binding Label}" Style="{StaticResource RowLabel}"/>
+                                            </Border>
+                                            <ContentControl Grid.Column="1" Content="{Binding DefaultCell}" ContentTemplate="{StaticResource CellTemplate}"
+                                                            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Focusable="False" IsTabStop="False"/>
+                                            <!-- 拖动行底部边缘调整该行高度 -->
+                                            <controls:ResizeGripThumb Grid.ColumnSpan="2" Style="{StaticResource LocResizeGripStyle}"
+                                                                      Orientation="Vertical" MinValue="36"
+                                                                      Value="{Binding RowHeight, Mode=TwoWay}"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                    </Border>
+
+                    <!-- 其余语言：横向滚动，滚轮交给外层纵向滚动，Shift + 滚轮横向滚动 -->
+                    <ScrollViewer x:Name="OtherLanguagesScroll" Grid.Column="1"
+                                  HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled"
+                                  helpers:ScrollWheelBehavior.PassVerticalWheelToParent="True">
+                        <StackPanel>
+                            <Border Background="#F8F9FB" BorderBrush="#0F000000" BorderThickness="0,0,0,1" CornerRadius="0,9,0,0">
+                                <ItemsControl ItemsSource="{Binding OtherColumns}" ItemsPanel="{StaticResource LanguageColumnsPanel}"
+                                              ItemTemplate="{StaticResource ColumnHeaderTemplate}" Focusable="False"/>
+                            </Border>
+                            <ItemsControl ItemsSource="{Binding TableRows}" Focusable="False">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border BorderBrush="#0D000000" BorderThickness="0,1,0,0" Height="{Binding RowHeight}">
+                                            <ItemsControl ItemsSource="{Binding OtherCells}" ItemsPanel="{StaticResource LanguageColumnsPanel}"
+                                                          ItemTemplate="{StaticResource CellTemplate}" Focusable="False"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </ScrollViewer>
+
+        <!-- 3. 底部操作栏 -->
+        <Border Grid.Row="2" Background="#99FFFFFF" BorderBrush="#0F000000" BorderThickness="0,1,0,0" Padding="20,14">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Style="{StaticResource EpmaLocButton}" Padding="16,0" Command="{Binding CancelCommand}"
+                        Content="{Binding [Cancel],Source={x:Static lg:LanguageService.Instance}}"/>
+                <Button Style="{StaticResource EpmaLocPrimaryButton}" Margin="10,0,0,0" Command="{Binding ConfirmCommand}"
+                        Visibility="{Binding CanEdit,Converter={StaticResource Show}}"
+                        Content="{Binding [Confirm],Source={x:Static lg:LanguageService.Instance}}"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

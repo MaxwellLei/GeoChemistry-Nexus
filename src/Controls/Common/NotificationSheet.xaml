@@ -1,0 +1,208 @@
+<UserControl x:Class="GeoChemistryNexus.Controls.NotificationSheet"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="clr-namespace:GeoChemistryNexus.ViewModels"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Type=vm:NotificationViewModel}"
+             d:DesignHeight="220" d:DesignWidth="380"
+             MaxWidth="380"
+             Margin="16,6,16,12"
+             Opacity="0"
+             RenderTransformOrigin="0.5,0"
+             Focusable="True"
+             FocusVisualStyle="{x:Null}">
+
+    <!--
+        Sheet 对话框：确认 / 三按钮 / 单选。以居中卡片呈现，配合主窗口的模态遮罩。
+        Enter = 主操作，Esc = 取消（均通过命令绑定，不含逻辑代码）。
+    -->
+    <UserControl.InputBindings>
+        <KeyBinding Key="Enter" Command="{Binding ConfirmCommand}"/>
+        <KeyBinding Key="Escape" Command="{Binding CancelCommand}"/>
+    </UserControl.InputBindings>
+
+    <UserControl.Resources>
+        <!-- 进场：自上方轻微落下 + 放大 + 渐显 -->
+        <Storyboard x:Key="SheetIn">
+            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.28">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)"
+                             From="0.94" To="1" Duration="0:0:0.38" FillBehavior="Stop">
+                <DoubleAnimation.EasingFunction>
+                    <BackEase EasingMode="EaseOut" Amplitude="0.3"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)"
+                             From="0.94" To="1" Duration="0:0:0.38" FillBehavior="Stop">
+                <DoubleAnimation.EasingFunction>
+                    <BackEase EasingMode="EaseOut" Amplitude="0.3"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[1].(TranslateTransform.Y)"
+                             From="-22" To="0" Duration="0:0:0.38" FillBehavior="Stop">
+                <DoubleAnimation.EasingFunction>
+                    <BackEase EasingMode="EaseOut" Amplitude="0.3"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+
+        <!-- 退场：渐隐 + 略微缩小上移 -->
+        <Storyboard x:Key="SheetOut">
+            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.22">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseIn"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)"
+                             To="0.96" Duration="0:0:0.22"/>
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)"
+                             To="0.96" Duration="0:0:0.22"/>
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[1].(TranslateTransform.Y)"
+                             To="-10" Duration="0:0:0.22"/>
+        </Storyboard>
+
+        <DataTemplate x:Key="EmptySheetTemplate">
+            <Grid/>
+        </DataTemplate>
+
+        <!-- 双按钮决策：通栏等宽 -->
+        <DataTemplate x:Key="ConfirmSheetTemplate">
+            <Grid Margin="0,18,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Content="{Binding CancelText}" Command="{Binding CancelCommand}"
+                        Style="{StaticResource NotificationSecondaryButtonStyle}"
+                        Height="32" Margin="0,0,4,0"/>
+                <Button Grid.Column="1" Content="{Binding ConfirmText}" Command="{Binding ConfirmCommand}"
+                        Style="{StaticResource NotificationPrimaryButtonStyle}"
+                        Height="32" Margin="4,0,0,0"/>
+            </Grid>
+        </DataTemplate>
+
+        <!-- 三按钮：取消 | 第三动作 | 主动作，三等分 -->
+        <DataTemplate x:Key="ThreeButtonSheetTemplate">
+            <Grid Margin="0,18,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Content="{Binding CancelText}" Command="{Binding CancelCommand}"
+                        Style="{StaticResource NotificationSecondaryButtonStyle}"
+                        Height="32" Margin="0,0,4,0"/>
+                <Button Grid.Column="1" Content="{Binding ThirdButtonText}" Command="{Binding ThirdButtonCommand}"
+                        Style="{StaticResource NotificationDestructiveButtonStyle}"
+                        Height="32" Margin="4,0"
+                        Visibility="{Binding IsThirdButtonDestructive, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <Button Grid.Column="1" Content="{Binding ThirdButtonText}" Command="{Binding ThirdButtonCommand}"
+                        Style="{StaticResource NotificationSecondaryButtonStyle}"
+                        Height="32" Margin="4,0"
+                        Visibility="{Binding IsThirdButtonSubtle, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <Button Grid.Column="2" Content="{Binding ConfirmText}" Command="{Binding ConfirmCommand}"
+                        Style="{StaticResource NotificationPrimaryButtonStyle}"
+                        Height="32" Margin="4,0,0,0"/>
+            </Grid>
+        </DataTemplate>
+
+        <!-- 单选：整行选项列表 + 确认 / 取消 -->
+        <DataTemplate x:Key="ChoiceSheetTemplate">
+            <StackPanel>
+                <ListBox Margin="0,14,0,0" MaxHeight="210"
+                         Style="{StaticResource NotificationChoiceListStyle}"
+                         ItemsSource="{Binding ChoiceOptions}"
+                         SelectedItem="{Binding SelectedChoice, Mode=TwoWay}"/>
+                <Grid Margin="0,16,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" Content="{Binding CancelText}" Command="{Binding CancelCommand}"
+                            Style="{StaticResource NotificationSecondaryButtonStyle}"
+                            Height="32" Margin="0,0,4,0"/>
+                    <Button Grid.Column="1" Content="{Binding ConfirmText}" Command="{Binding ConfirmCommand}"
+                            Style="{StaticResource NotificationPrimaryButtonStyle}"
+                            Height="32" Margin="4,0,0,0"/>
+                </Grid>
+            </StackPanel>
+        </DataTemplate>
+
+        <!-- 按对话框形态选择按钮区 -->
+        <Style x:Key="SheetAreaStyle" TargetType="ContentControl">
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="IsTabStop" Value="False"/>
+            <Setter Property="ContentTemplate" Value="{StaticResource EmptySheetTemplate}"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ShowConfirm}" Value="True">
+                    <Setter Property="ContentTemplate" Value="{StaticResource ConfirmSheetTemplate}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ShowThreeButtons}" Value="True">
+                    <Setter Property="ContentTemplate" Value="{StaticResource ThreeButtonSheetTemplate}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ShowChoice}" Value="True">
+                    <Setter Property="ContentTemplate" Value="{StaticResource ChoiceSheetTemplate}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <UserControl.RenderTransform>
+        <TransformGroup>
+            <ScaleTransform/>
+            <TranslateTransform/>
+        </TransformGroup>
+    </UserControl.RenderTransform>
+
+    <UserControl.Style>
+        <Style TargetType="UserControl">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsClosing}" Value="True">
+                    <DataTrigger.EnterActions>
+                        <BeginStoryboard Storyboard="{StaticResource SheetOut}"/>
+                    </DataTrigger.EnterActions>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Style>
+
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="Loaded">
+            <BeginStoryboard Storyboard="{StaticResource SheetIn}"/>
+        </EventTrigger>
+    </UserControl.Triggers>
+
+    <Grid>
+        <Border Style="{StaticResource NotificationSheetShadowAmbientStyle}"/>
+        <Border Style="{StaticResource NotificationSheetShadowContactStyle}"/>
+
+        <Border Style="{StaticResource NotificationSheetCardStyle}">
+            <StackPanel Margin="22,22,22,16">
+                <!-- 大图标：语义实色圆角方块 + 白色线性图标 -->
+                <Border Style="{StaticResource NotificationIconBadgeStyle}"
+                        Width="44" Height="44" CornerRadius="12" HorizontalAlignment="Center">
+                    <Viewbox Width="22" Height="22">
+                        <Canvas Width="24" Height="24">
+                            <Path Style="{StaticResource NotificationIconPathStyle}"/>
+                        </Canvas>
+                    </Viewbox>
+                </Border>
+
+                <TextBlock Text="{Binding Title}" Margin="0,12,0,0" FontSize="15"
+                           HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap"
+                           Style="{StaticResource NotificationTitleTextStyle}"/>
+
+                <TextBlock Text="{Binding Message}" Margin="0,6,0,0" FontSize="12.5" LineHeight="19"
+                           TextAlignment="Center"
+                           Style="{StaticResource NotificationMessageTextStyle}"/>
+
+                <ContentControl Content="{Binding}" Style="{StaticResource SheetAreaStyle}"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

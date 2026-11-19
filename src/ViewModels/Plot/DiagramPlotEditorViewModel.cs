@@ -1,7 +1,8 @@
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using GeoChemistryNexus.Helpers;
+using GeoChemistryNexus.Interfaces;
 using GeoChemistryNexus.Messages;
 using GeoChemistryNexus.Models;
 using GeoChemistryNexus.Services;
@@ -24,8 +25,25 @@ namespace GeoChemistryNexus.ViewModels
         Edit
     }
 
-    public partial class DiagramPlotEditorViewModel : ObservableObject, IRecipient<DeveloperModeChangedMessage>
+    public enum DiagramTernaryDirection
     {
+        Clockwise,
+        CounterClockwise
+    }
+
+    /// <summary>
+    /// 图解模板编辑器。侧栏顺序：基本信息 → 多语言 → 数据与脚本 → 帮助文档。
+    /// </summary>
+    public partial class DiagramPlotEditorViewModel : ObservableObject, IRecipient<DeveloperModeChangedMessage>, IHelpDocEditorHost
+    {
+        public const int SectionBasic = 0;
+        public const int SectionTranslation = 1;
+        public const int SectionScript = 2;
+        public const int SectionHelp = 3;
+
+        /// <summary>导出成功提示使用的通知中心。图解编辑窗口打开时赋值。</summary>
+        public NotificationCenter? ExportNotificationCenter { get; set; }
+
         [ObservableProperty]
         private DiagramPlotEditorMode _mode = DiagramPlotEditorMode.Create;
 
@@ -40,6 +58,45 @@ namespace GeoChemistryNexus.ViewModels
 
         [ObservableProperty]
         private DataTable? _translationTable;
+
+        /// <summary>多语言页：与 EPMA 多语言编辑窗同款的列头（默认语言在前）。</summary>
+        public ObservableCollection<EpmaLocalizationColumn> TranslationColumns { get; } = new();
+
+        /// <summary>多语言页表格行（字段项 + 各语言单元格）。</summary>
+        public ObservableCollection<EpmaLocalizationTableRow> TranslationDisplayRows { get; } = new();
+
+        public EpmaLocalizationColumn? TranslationDefaultColumn => TranslationColumns.FirstOrDefault();
+
+        public IReadOnlyList<EpmaLocalizationColumn> TranslationOtherColumns =>
+            TranslationColumns.Skip(1).ToList();
+
+        public int TranslationLanguageCount => TranslationColumns.Count;
+
+        public bool HasTranslationContent => TranslationDisplayRows.Count > 0;
+
+        partial void OnTranslationTableChanged(DataTable? value) => RebuildTranslationDisplay();
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(HasScriptStatus))]
+        private string _scriptStatus = string.Empty;
+
+        public bool HasScriptStatus => !string.IsNullOrWhiteSpace(ScriptStatus);
+
+        [ObservableProperty]
+        private bool _scriptHasError;
+
+        [RelayCommand]
+        private void TestScript()
+        {
+            var script = ScriptDefinition;
+            var result = string.IsNullOrWhiteSpace(script?.ScriptBody)
+                ? (Success: false, Message: LanguageService.Instance["script_content_is_empty"] ?? "Script is empty.")
+                : ScriptSyntaxValidator.ValidateJavaScript($"(function() {{\n{script.ScriptBody}\n}})();", script.RequiredDataSeries);
+            _draftNeedsValidation = false;
+            ScriptHasError = !result.Success;
+            ScriptStatus = result.Message;
+            RefreshTemplateStatus();
+        }
 
         [ObservableProperty]
         private string _translationStatusMessage = string.Empty;
@@ -56,8 +113,15 @@ namespace GeoChemistryNexus.ViewModels
         /// <summary>当前工作模板中的图解脚本定义。</summary>
         public ScriptDefinition? ScriptDefinition => _workingTemplate?.Script;
 
+        /// <summary>数据与脚本页：RequiredDataSeries 拆成的列名（与 EPMA 输入列表格同款交互）。</summary>
+        public ObservableCollection<DiagramDataSeriesColumn> DataSeriesColumns { get; } = new();
+
+        private bool _suppressDataSeriesSync;
+
         [ObservableProperty]
         private string? _selectedHelpLanguage;
+
+        private const int MaxContentPatch = 9999;
 
         [ObservableProperty]
         private int _patchVersion;
@@ -94,28 +158,22 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
-        /// <summary>侧边栏显示的版本摘要（编辑=当前版本，新建=保存后版本）。</summary>
-        public string SidebarVersionText =>
-            IsEditMode && !string.IsNullOrWhiteSpace(OriginalTemplateVersion)
-                ? OriginalTemplateVersion
-                : TemplateVersion;
-
-        /// <summary>版本区域收缩时显示的摘要。</summary>
-        public string VersionSectionCollapsedSummary =>
-            IsEditMode && !string.IsNullOrWhiteSpace(OriginalTemplateVersion)
-                ? $"{OriginalTemplateVersion} → {TemplateVersion}"
-                : TemplateVersion;
+        /// <summary>程序图解格式基线 x.y，不含修订号。</summary>
+        public string FormatVersionBaseline =>
+            ContentVersionHelper.FormatBaseline(ContentVersionHelper.GetDiagramFormatVersion());
 
         /// <summary>保存后将写入的完整模板版本 x.y.z。</summary>
         public string TemplateVersion => ContentVersionHelper.WithAppDiagramFormat(PatchVersion);
 
-        [ObservableProperty]
-        private bool _isVersionSectionExpanded;
+        /// <summary>保存后版本的展示。与打开时的版本不同时为「原版本 -> 当前版本」。</summary>
+        public string SavedVersionText => ContentVersionHelper.FormatSavedVersion(
+            OriginalTemplateVersion,
+            TemplateVersion);
 
         public ObservableCollection<LanguageTagModel> LanguageParts { get; } = new();
 
         [ObservableProperty]
-        private IReadOnlyList<CultureOption> _appLanguageOptions = AppCultureRegistry.GetContentOptions();
+        private IReadOnlyList<CultureOption> _appLanguageOptions = AppCultureRegistry.GetOptions();
 
         public ObservableCollection<CategoryPartModel> CategoryParts { get; } = new();
         public ObservableCollection<PlotTypeOption> PlotTypeOptions { get; } = new();
@@ -130,8 +188,80 @@ namespace GeoChemistryNexus.ViewModels
         private GraphMapTemplateEntity? _editEntity;
         private bool _suppressTranslationRebuild;
 
+        /// <summary>加载模板时改写方向，不把已有图元当成用户切换来重算。</summary>
+        private bool _suppressClockwiseRemap;
+
+        /// <summary>批量加入语言时先挂起逐项刷新，结束后再统一重建。</summary>
+        private bool _bulkLanguageUpdate;
+
         [ObservableProperty]
         private string _selectedPlotType = "2D_Plot";
+
+        /// <summary>三元相图端元环绕方向。默认顺时针；二维图解不使用。</summary>
+        [ObservableProperty]
+        private bool _isClockwise = true;
+
+        public DiagramTernaryDirection TernaryDirection
+        {
+            get => IsClockwise ? DiagramTernaryDirection.Clockwise : DiagramTernaryDirection.CounterClockwise;
+            set => IsClockwise = value == DiagramTernaryDirection.Clockwise;
+        }
+
+        public bool IsTernaryPlot =>
+            string.Equals(SelectedPlotType, "Ternary_Plot", StringComparison.Ordinal);
+
+        partial void OnIsClockwiseChanged(bool value)
+        {
+            OnPropertyChanged(nameof(TernaryDirection));
+            if (_suppressClockwiseRemap)
+                return;
+
+            if (_workingTemplate != null
+                && string.Equals(_workingTemplate.TemplateType, "Ternary", StringComparison.Ordinal)
+                && _workingTemplate.Clockwise != value)
+            {
+                RemapWorkingTemplateGeometry(_workingTemplate.Clockwise, value);
+            }
+
+            ApplyClockwiseToWorkingTemplate();
+        }
+
+        /// <summary>各端元方向下的几何快照；用于来回切换方向时无损还原，避免浮点换算误差累积。</summary>
+        private readonly Dictionary<bool, string> _ternaryGeometrySnapshots = new();
+        private GraphMapTemplate? _ternarySnapshotOwner;
+
+        /// <summary>
+        /// 切换端元方向时重算几何。顺时针 ↔ 逆时针的坐标换算存在浮点误差，
+        /// 因此离开某方向前保存其快照，切回时直接还原，保证内容（及 FileHash）与原来完全一致。
+        /// </summary>
+        private void RemapWorkingTemplateGeometry(bool fromClockwise, bool toClockwise)
+        {
+            var template = _workingTemplate;
+            if (template == null)
+                return;
+
+            if (!ReferenceEquals(_ternarySnapshotOwner, template))
+            {
+                _ternaryGeometrySnapshots.Clear();
+                _ternarySnapshotOwner = template;
+            }
+
+            var options = GraphMapTemplateService.CreateTemplateJsonOptions();
+            _ternaryGeometrySnapshots[fromClockwise] =
+                System.Text.Json.JsonSerializer.Serialize(template.Info, options);
+
+            if (_ternaryGeometrySnapshots.TryGetValue(toClockwise, out var snapshot))
+            {
+                var restored = System.Text.Json.JsonSerializer.Deserialize<GraphMapInfo>(snapshot, options);
+                if (restored != null)
+                {
+                    template.Info = restored;
+                    return;
+                }
+            }
+
+            TernaryCoordinateHelper.RemapGeometry(template.Info, fromClockwise, toClockwise);
+        }
 
         /// <summary>翻译表默认语言（与 LanguageParts 首项一致）。</summary>
         public string DefaultLanguageCode =>
@@ -141,23 +271,37 @@ namespace GeoChemistryNexus.ViewModels
         {
             WindowTitle = LanguageService.Instance["new_template"] ?? "New Diagram";
             InitializePlotTypes();
+            RefreshAvailableLanguageOptions();
             LoadCategories();
-            LanguageParts.CollectionChanged += (_, _) => OnLanguagesChanged();
+            LanguageParts.CollectionChanged += (_, _) =>
+            {
+                if (!_bulkLanguageUpdate)
+                    OnLanguagesChanged();
+            };
+            TranslationDisplayRows.CollectionChanged += (_, _) => OnPropertyChanged(nameof(HasTranslationContent));
             CategoryParts.CollectionChanged += (_, _) =>
             {
                 RebuildCategoryStructurePreview();
                 RebuildTranslationPreview();
+                RefreshTemplateStatus();
             };
             LanguageService.Instance.PropertyChanged += OnLanguageChanged;
             WeakReferenceMessenger.Default.Register<DeveloperModeChangedMessage>(this);
         }
+
+        /// <summary>添加语言弹窗的候选语言（与 EPMA 模板编辑器一致）。</summary>
+        public ObservableCollection<EpmaEditorLanguageOption> LanguageCandidates { get; } = new();
 
         private bool _released;
 
         private void OnLanguageChanged(object? sender, PropertyChangedEventArgs args)
         {
             if (args.PropertyName == "Item[]")
+            {
                 InitializePlotTypes();
+                OnPropertyChanged(nameof(ActivePageTitle));
+                RefreshTemplateStatus();
+            }
         }
 
         /// <summary>
@@ -171,6 +315,7 @@ namespace GeoChemistryNexus.ViewModels
             _released = true;
             LanguageService.Instance.PropertyChanged -= OnLanguageChanged;
             WeakReferenceMessenger.Default.UnregisterAll(this);
+            ReleaseTemplateStatus();
             GetCurrentRtfContent = null;
             SetCurrentRtfContent = null;
         }
@@ -182,9 +327,36 @@ namespace GeoChemistryNexus.ViewModels
 
         public void RefreshLanguageDisplayNames()
         {
-            AppLanguageOptions = AppCultureRegistry.GetContentOptions();
+            RefreshAvailableLanguageOptions();
             foreach (var part in LanguageParts)
                 part.NotifyDisplayTextChanged();
+        }
+
+        /// <summary>
+        /// 添加语言下拉框只保留尚未加入 LanguageParts 的语言。
+        /// </summary>
+        private void RefreshAvailableLanguageOptions()
+        {
+            var added = LanguageParts
+                .Select(part => part.Text)
+                .ToHashSet(StringComparer.OrdinalIgnoreCase);
+            AppLanguageOptions = AppCultureRegistry.GetOptions()
+                .Where(option => !added.Contains(option.Code))
+                .ToList();
+
+            if (LanguageCandidates.Count == 0)
+            {
+                foreach (var option in AppCultureRegistry.GetOptions(false))
+                    LanguageCandidates.Add(new EpmaEditorLanguageOption(option.Code, EpmaTemplateEditorViewModel.LanguageName(option.Code)));
+            }
+
+            foreach (var candidate in LanguageCandidates)
+            {
+                candidate.IsAdded = added.Contains(candidate.Code);
+                candidate.CanToggle = !candidate.IsAdded || LanguageParts.Count > 1;
+            }
+
+            SelectAllLanguagesCommand.NotifyCanExecuteChanged();
         }
 
         public void InitializeForCreate()
@@ -196,9 +368,11 @@ namespace GeoChemistryNexus.ViewModels
             _workingTemplate = null;
             OriginalTemplateVersion = string.Empty;
             ClearAll();
+            TryAddLanguage(AppCultureRegistry.ResolveAppLanguage(LanguageService.CurrentLanguage));
             SelectPlotType("2D_Plot");
             SelectedSectionIndex = 0;
             NotifyVersionPropertiesChanged();
+            InitializeTemplateStatus(newTemplate: true);
         }
 
         public void InitializeForEdit(GraphMapTemplateEntity entity)
@@ -208,97 +382,154 @@ namespace GeoChemistryNexus.ViewModels
             var clonedContent = GraphMapTemplateService.CloneTemplateContent(entity.Content);
             if (clonedContent == null) return;
 
-            Mode = DiagramPlotEditorMode.Edit;
-            WindowTitle = LanguageService.Instance["edit_diagram_template"] ?? "Edit Diagram";
-            IsPlotTypeSelectionEnabled = false;
-            _editEntity = entity;
-            _workingTemplate = clonedContent;
-            OriginalTemplateVersion = ContentVersionHelper.Normalize(entity.Content.Version);
-
-            _suppressTranslationRebuild = true;
+            bool clockwise = clonedContent.Clockwise;
+            _suppressClockwiseRemap = true;
             try
             {
-                ClearAll();
+                Mode = DiagramPlotEditorMode.Edit;
+                WindowTitle = LanguageService.Instance["edit_diagram_template"] ?? "Edit Diagram";
+                IsPlotTypeSelectionEnabled = false;
+                _editEntity = entity;
+                _workingTemplate = clonedContent;
+                OriginalTemplateVersion = ContentVersionHelper.Normalize(entity.Content.Version);
 
-                SelectPlotType(entity.Content.TemplateType == "Ternary" ? "Ternary_Plot" : "2D_Plot");
-
-                if (_workingTemplate.NodeList?.Translations != null)
+                _suppressTranslationRebuild = true;
+                try
                 {
-                    foreach (var lang in _workingTemplate.NodeList.Translations.Keys)
-                        LanguageParts.Add(new LanguageTagModel { Text = lang });
-                }
+                    ClearAll();
 
-                // ★ 以模板 DefaultLanguage 为准；字典 Keys 顺序不等于默认语言
-                EnsureDefaultLanguageFirst(_workingTemplate.DefaultLanguage);
-                UpdateLanguageDefaultStatus();
+                    SelectPlotType(entity.Content.TemplateType == "Ternary" ? "Ternary_Plot" : "2D_Plot");
 
-                string defaultLang = DefaultLanguageCode;
-                if (!string.IsNullOrEmpty(defaultLang) &&
-                    _workingTemplate.NodeList?.Translations != null &&
-                    _workingTemplate.NodeList.Translations.TryGetValue(defaultLang, out var path))
-                {
-                    var parts = path.Split('>', StringSplitOptions.RemoveEmptyEntries)
-                        .Select(p => p.Trim());
-                    foreach (var part in parts)
+                    if (_workingTemplate.NodeList?.Translations != null)
                     {
-                        CategoryParts.Add(new CategoryPartModel
-                        {
-                            DisplayName = part,
-                            LocalizedNames = null
-                        });
+                        foreach (var lang in _workingTemplate.NodeList.Translations.Keys)
+                            LanguageParts.Add(new LanguageTagModel { Text = lang });
                     }
+
+                    // ★ 以模板 DefaultLanguage 为准；字典 Keys 顺序不等于默认语言
+                    EnsureDefaultLanguageFirst(_workingTemplate.DefaultLanguage);
+                    UpdateLanguageDefaultStatus();
+
+                    string defaultLang = DefaultLanguageCode;
+                    if (!string.IsNullOrEmpty(defaultLang) &&
+                        _workingTemplate.NodeList?.Translations != null &&
+                        _workingTemplate.NodeList.Translations.TryGetValue(defaultLang, out var path))
+                    {
+                        var parts = path.Split('>', StringSplitOptions.RemoveEmptyEntries)
+                            .Select(p => p.Trim());
+                        foreach (var part in parts)
+                        {
+                            CategoryParts.Add(new CategoryPartModel
+                            {
+                                DisplayName = part,
+                                LocalizedNames = null
+                            });
+                        }
+                    }
+
+                    TranslationTable = DiagramTemplateTranslationHelper.BuildTranslationTable(
+                        _workingTemplate,
+                        LanguageParts.Select(l => l.Text));
+                    IsTranslationSectionEnabled = LanguageParts.Count > 0;
+                    TranslationStatusMessage = LanguageService.Instance["translation_loaded"] ?? "Translation data loaded";
+                }
+                finally
+                {
+                    _suppressTranslationRebuild = false;
                 }
 
-                TranslationTable = DiagramTemplateTranslationHelper.BuildTranslationTable(
-                    _workingTemplate,
-                    LanguageParts.Select(l => l.Text));
-                IsTranslationSectionEnabled = LanguageParts.Count > 0;
-                TranslationStatusMessage = LanguageService.Instance["translation_loaded"] ?? "Translation data loaded";
+                RebuildCategoryStructurePreview();
+                LoadHelpDocumentsFromEntity(entity);
+                IsScriptSectionEnabled = true;
+                NotifyScriptDefinitionChanged();
+                PatchVersion = ContentVersionHelper.TryGetPatch(entity.Content.Version, out int patch) ? patch : 0;
+                ApplyPatchToWorkingTemplate();
+                IsClockwise = clockwise;
             }
             finally
             {
-                _suppressTranslationRebuild = false;
+                _suppressClockwiseRemap = false;
             }
-
-            RebuildCategoryStructurePreview();
-            LoadHelpDocumentsFromEntity(entity);
-            IsScriptSectionEnabled = true;
-            NotifyScriptDefinitionChanged();
-            PatchVersion = ContentVersionHelper.TryGetPatch(entity.Content.Version, out int patch) ? patch : 0;
-            ApplyPatchToWorkingTemplate();
+            ApplyClockwiseToWorkingTemplate();
             SelectedSectionIndex = 0;
             NotifyVersionPropertiesChanged();
+            InitializeTemplateStatus(newTemplate: false);
         }
 
         partial void OnModeChanged(DiagramPlotEditorMode value) => NotifyVersionPropertiesChanged();
 
         partial void OnOriginalTemplateVersionChanged(string value) => NotifyVersionPropertiesChanged();
 
+        /// <summary>顶栏当前页标题。</summary>
+        public string ActivePageTitle => SelectedSectionIndex switch
+        {
+            SectionScript => LanguageService.Instance["epma_editor_nav_script"] ?? "数据与脚本",
+            SectionHelp => LanguageService.Instance["epma_editor_documents"] ?? "帮助文档",
+            SectionTranslation => LanguageService.Instance["diagram_editor_content_translation"] ?? "多语言",
+            _ => LanguageService.Instance["epma_editor_nav_basic"] ?? "基本信息",
+        };
+
         partial void OnSelectedSectionIndexChanged(int oldValue, int newValue)
         {
+            OnPropertyChanged(nameof(ActivePageTitle));
+
             // 离开帮助文档分区时，保存当前语言的 RTF，并标记编辑器未同步
-            if (oldValue == 3)
+            if (oldValue == SectionHelp)
             {
                 CommitCurrentHelpLanguageRtf(fromLeavingHelpSection: true);
                 _isHelpDocEditorSynced = false;
             }
 
             // 进入帮助文档分区时，加载当前语言的 RTF
-            if (newValue == 3)
+            if (newValue == SectionHelp)
             {
                 SyncHelpLanguagesWithBasicSettings();
                 LoadSelectedHelpLanguageIntoEditor();
                 _isHelpDocEditorSynced = true;
             }
 
-            if (newValue == 2)
+            if (newValue == SectionScript)
                 EnsureScriptEditable();
+
+            RefreshTemplateStatus();
         }
+
+        // ---- IHelpDocEditorHost：与 EPMA 共用的帮助文档富文本编辑器 ----
+
+        public bool CanShowSave => true;
+        public bool CanEdit => true;
+        public bool IsReadOnly => false;
+
+        /// <summary>供 EditorStyles 中 GeoTColumnCell / GeoTRemoveColumn 绑定（图解编辑器始终可编辑）。</summary>
+        public bool IsContentReadOnly => false;
+
+        public void AttachHelpEditor(Func<string?> read, Action<string?> write)
+        {
+            GetCurrentRtfContent = read;
+            SetCurrentRtfContent = write;
+
+            if (SelectedSectionIndex == SectionHelp && SelectedHelpLanguage != null)
+            {
+                LoadSelectedHelpLanguageIntoEditor();
+                _isHelpDocEditorSynced = true;
+            }
+        }
+
+        public void UpdateHelpDocumentDraft(string? rtf)
+        {
+            if (_isHelpDocEditorSynced && SelectedSectionIndex == SectionHelp && SelectedHelpLanguage != null)
+            {
+                _helpDocuments[SelectedHelpLanguage] = rtf ?? string.Empty;
+                RefreshTemplateStatus();
+            }
+        }
+
+        public void ShowLanguageSettings() => SelectedSectionIndex = SectionBasic;
 
         partial void OnSelectedHelpLanguageChanged(string? oldValue, string? newValue)
         {
             // 仅在帮助文档分区内处理语言切换，避免未打开帮助文档时用空白编辑器覆盖
-            if (SelectedSectionIndex != 3)
+            if (SelectedSectionIndex != SectionHelp)
                 return;
 
             if (oldValue != null &&
@@ -318,6 +549,8 @@ namespace GeoChemistryNexus.ViewModels
                 SetCurrentRtfContent?.Invoke(null);
                 _isHelpDocEditorSynced = false;
             }
+
+            RefreshTemplateStatus();
         }
 
         public void ClearAll()
@@ -329,7 +562,10 @@ namespace GeoChemistryNexus.ViewModels
             IsHelpSectionEnabled = false;
             IsScriptSectionEnabled = false;
             TranslationStatusMessage = string.Empty;
+            ScriptStatus = string.Empty;
+            ScriptHasError = false;
             PatchVersion = 0;
+            IsClockwise = true;
             _helpDocuments.Clear();
             _isHelpDocEditorSynced = false;
             SelectedHelpLanguage = null;
@@ -339,26 +575,45 @@ namespace GeoChemistryNexus.ViewModels
         {
             NotifyVersionPropertiesChanged();
             ApplyPatchToWorkingTemplate();
+            DecreasePatchCommand?.NotifyCanExecuteChanged();
+            IncreasePatchCommand?.NotifyCanExecuteChanged();
         }
 
         private void NotifyVersionPropertiesChanged()
         {
             OnPropertyChanged(nameof(TemplateVersion));
-            OnPropertyChanged(nameof(SidebarVersionText));
-            OnPropertyChanged(nameof(VersionSectionCollapsedSummary));
+            OnPropertyChanged(nameof(SavedVersionText));
             OnPropertyChanged(nameof(IsEditMode));
         }
 
-        [RelayCommand]
-        private void ToggleVersionSection()
+        [RelayCommand(CanExecute = nameof(CanDecreasePatch))]
+        private void DecreasePatch()
         {
-            IsVersionSectionExpanded = !IsVersionSectionExpanded;
+            if (PatchVersion > 0)
+                PatchVersion--;
         }
+
+        [RelayCommand(CanExecute = nameof(CanIncreasePatch))]
+        private void IncreasePatch()
+        {
+            if (PatchVersion < MaxContentPatch)
+                PatchVersion++;
+        }
+
+        private bool CanDecreasePatch() => PatchVersion > 0;
+
+        private bool CanIncreasePatch() => PatchVersion < MaxContentPatch;
 
         private void ApplyPatchToWorkingTemplate()
         {
             if (_workingTemplate == null) return;
             _workingTemplate.Version = ContentVersionHelper.WithAppDiagramFormat(PatchVersion);
+        }
+
+        private void ApplyClockwiseToWorkingTemplate()
+        {
+            if (_workingTemplate == null) return;
+            _workingTemplate.Clockwise = IsClockwise;
         }
 
         public IEnumerable<CategoryPartModel> GetCategoryParts() => CategoryParts;
@@ -374,6 +629,7 @@ namespace GeoChemistryNexus.ViewModels
 
         partial void OnSelectedPlotTypeChanged(string value)
         {
+            OnPropertyChanged(nameof(IsTernaryPlot));
             RebuildTranslationPreview();
         }
 
@@ -435,6 +691,52 @@ namespace GeoChemistryNexus.ViewModels
             UpdateLanguageDefaultStatus();
         }
 
+        /// <summary>添加语言弹层中的“全选”：一次加入全部尚未添加的语言。</summary>
+        [RelayCommand(CanExecute = nameof(CanSelectAllLanguages))]
+        private void SelectAllLanguages()
+        {
+            var pending = LanguageCandidates
+                .Where(candidate => !candidate.IsAdded)
+                .Select(candidate => candidate.Code)
+                .ToList();
+            if (pending.Count == 0)
+                return;
+
+            _bulkLanguageUpdate = true;
+            try
+            {
+                foreach (var code in pending)
+                    TryAddLanguage(code);
+            }
+            finally
+            {
+                _bulkLanguageUpdate = false;
+            }
+
+            OnLanguagesChanged();
+        }
+
+        private bool CanSelectAllLanguages() =>
+            LanguageCandidates.Any(candidate => !candidate.IsAdded);
+
+        /// <summary>“添加语言”弹层中点击候选项：已添加则移除，未添加则添加。</summary>
+        [RelayCommand]
+        private void ToggleLanguage(EpmaEditorLanguageOption? candidate)
+        {
+            if (candidate == null) return;
+
+            if (candidate.IsAdded)
+            {
+                var part = LanguageParts.FirstOrDefault(p => p.Text == candidate.Code);
+                if (part != null)
+                    RemoveLanguage(part);
+            }
+            else
+            {
+                TryAddLanguage(candidate.Code);
+            }
+        }
+
         public bool TryAddCategory(string text, Dictionary<string, string>? localizedNames = null)
         {
             if (string.IsNullOrWhiteSpace(text)) return false;
@@ -442,11 +744,7 @@ namespace GeoChemistryNexus.ViewModels
             var invalidChars = System.IO.Path.GetInvalidFileNameChars();
             if (text.IndexOfAny(invalidChars) >= 0)
             {
-                HandyControl.Controls.MessageBox.Show(
-                    LanguageService.Instance["invalid_filename_char"],
-                    LanguageService.Instance["error"],
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                MessageHelper.Error(LanguageService.Instance["invalid_filename_char"]);
                 return false;
             }
 
@@ -528,9 +826,11 @@ namespace GeoChemistryNexus.ViewModels
                     languages,
                     DefaultLanguageCode);
                 File.WriteAllText(dialog.FileName, json);
-                TranslationStatusMessage = string.Format(
+                string exportedMessage = string.Format(
                     LanguageService.Instance["translation_export_success"] ?? "Exported translations to {0}.",
                     dialog.FileName);
+                TranslationStatusMessage = exportedMessage;
+                MessageHelper.ExportSuccess(exportedMessage, dialog.FileName, ExportNotificationCenter);
             }
             catch (Exception ex)
             {
@@ -585,33 +885,6 @@ namespace GeoChemistryNexus.ViewModels
             {
                 TranslationStatusMessage = $"{LanguageService.Instance["translation_import_failed"] ?? "Import failed."} {ex.Message}";
             }
-        }
-
-        [RelayCommand]
-        private void SwapTranslationLanguages(Tuple<string, string>? args)
-        {
-            if (args == null || TranslationTable == null) return;
-            string lang1 = args.Item1;
-            string lang2 = args.Item2;
-            if (!TranslationTable.Columns.Contains(lang1) || !TranslationTable.Columns.Contains(lang2))
-                return;
-
-            foreach (DataRow row in TranslationTable.Rows)
-            {
-                var temp = row[lang1];
-                row[lang1] = row[lang2];
-                row[lang2] = temp;
-            }
-
-            int idx1 = LanguageParts.ToList().FindIndex(p => p.Text == lang1);
-            int idx2 = LanguageParts.ToList().FindIndex(p => p.Text == lang2);
-            if (idx1 >= 0 && idx2 >= 0)
-                LanguageParts.Move(idx1, idx2);
-
-            UpdateLanguageDefaultStatus();
-            RefreshTranslationTableBinding();
-            SyncWorkingTemplateFromTable();
-            TranslationStatusMessage = LanguageService.Instance["swap_language_columns"] ?? "Languages swapped";
         }
 
         public bool Validate(out string errorMessage)
@@ -672,9 +945,22 @@ namespace GeoChemistryNexus.ViewModels
             }
             else
             {
-                template = GraphMapTemplate.CreateDefault(languages, SelectedPlotType, categoryNodeList);
-                _workingTemplate = template;
+                // 新建模式：复用编辑过程中的工作模板，否则数据脚本、翻译表等改动会被全新的默认模板覆盖
+                if (_workingTemplate != null && IsWorkingTemplateOfSelectedType(_workingTemplate))
+                {
+                    template = _workingTemplate;
+                }
+                else
+                {
+                    template = GraphMapTemplate.CreateDefault(languages, SelectedPlotType, categoryNodeList);
+                    _workingTemplate = template;
+                    ReloadDataSeriesColumnsFromScript();
+                }
             }
+
+            // 提交前把数据列表格的内容落到脚本定义上，避免依赖属性变更事件
+            if (DataSeriesColumns.Count > 0)
+                CommitDataSeriesColumnsToScript();
 
             if (TranslationTable != null)
             {
@@ -690,6 +976,7 @@ namespace GeoChemistryNexus.ViewModels
 
             template.DefaultLanguage = languages.First();
             template.Version = ContentVersionHelper.WithAppDiagramFormat(PatchVersion);
+            template.Clockwise = IsClockwise;
 
             return GraphMapTemplateService.CloneTemplateContent(template) ?? template;
         }
@@ -718,10 +1005,12 @@ namespace GeoChemistryNexus.ViewModels
 
         private void OnLanguagesChanged()
         {
+            RefreshAvailableLanguageOptions();
             UpdateLanguageDefaultStatus();
             SyncHelpLanguagesWithBasicSettings();
             RebuildCategoryStructurePreview();
             RebuildTranslationPreview();
+            RefreshTemplateStatus();
         }
 
         private void LoadHelpDocumentsFromEntity(GraphMapTemplateEntity entity)
@@ -754,8 +1043,7 @@ namespace GeoChemistryNexus.ViewModels
                     EnsureDefaultHelpDocForLanguage(lang);
             }
 
-            // 新建模式不展示帮助文档侧栏，仅编辑模式启用
-            IsHelpSectionEnabled = IsEditMode && langs.Count > 0;
+            IsHelpSectionEnabled = true;
 
             if (SelectedHelpLanguage == null ||
                 !langs.Any(l => l.Equals(SelectedHelpLanguage, StringComparison.OrdinalIgnoreCase)))
@@ -819,7 +1107,7 @@ namespace GeoChemistryNexus.ViewModels
                 return;
 
             // 离开帮助文档分区时 SelectedSectionIndex 已变为新值，需用 fromLeavingHelpSection 放行
-            if (!fromLeavingHelpSection && SelectedSectionIndex != 3)
+            if (!fromLeavingHelpSection && SelectedSectionIndex != SectionHelp)
                 return;
 
             CommitHelpLanguageRtf(SelectedHelpLanguage);
@@ -908,11 +1196,10 @@ namespace GeoChemistryNexus.ViewModels
             if (_suppressTranslationRebuild) return;
 
             var languages = LanguageParts.Select(l => l.Text).ToList();
-            // 新建模式不展示内容翻译 / 脚本侧栏，仅编辑模式启用
-            IsTranslationSectionEnabled = IsEditMode && languages.Count > 0 && CategoryParts.Count >= 2;
-            IsScriptSectionEnabled = IsTranslationSectionEnabled;
+            IsTranslationSectionEnabled = true;
+            IsScriptSectionEnabled = true;
 
-            if (!IsTranslationSectionEnabled)
+            if (languages.Count == 0 || CategoryParts.Count < 2)
             {
                 TranslationTable = null;
                 return;
@@ -933,6 +1220,14 @@ namespace GeoChemistryNexus.ViewModels
                     MergeCategoryNodeListFromBasicSettings(draft.NodeList, categoryNodeList, languages);
                     DiagramTemplateTranslationHelper.SyncTemplateLanguages(draft, languages);
                 }
+                else if (_workingTemplate != null && IsWorkingTemplateOfSelectedType(_workingTemplate))
+                {
+                    // 新建模式下语言/分类变化时复用已有草稿，保留已编辑的数据脚本与翻译
+                    draft = _workingTemplate;
+                    draft.NodeList ??= new LocalizedString();
+                    MergeCategoryNodeListFromBasicSettings(draft.NodeList, categoryNodeList, languages);
+                    DiagramTemplateTranslationHelper.SyncTemplateLanguages(draft, languages);
+                }
                 else
                 {
                     draft = GraphMapTemplate.CreateDefault(languages, SelectedPlotType, categoryNodeList);
@@ -944,6 +1239,7 @@ namespace GeoChemistryNexus.ViewModels
                     TranslationTable, languages, draft);
                 _workingTemplate = draft;
                 ApplyPatchToWorkingTemplate();
+                ApplyClockwiseToWorkingTemplate();
                 NotifyScriptDefinitionChanged();
             }
             catch (Exception ex)
@@ -952,16 +1248,99 @@ namespace GeoChemistryNexus.ViewModels
             }
         }
 
+        private bool IsWorkingTemplateOfSelectedType(GraphMapTemplate template)
+        {
+            string expected = SelectedPlotType == "Ternary_Plot" ? "Ternary" : "Cartesian";
+            return string.Equals(template.TemplateType, expected, StringComparison.Ordinal);
+        }
+
         private void NotifyScriptDefinitionChanged()
         {
             OnPropertyChanged(nameof(ScriptDefinition));
             EnsureScriptEditable();
+            ReloadDataSeriesColumnsFromScript();
+            HookStatusScript();
         }
 
         private void EnsureScriptEditable()
         {
             if (_workingTemplate?.Script != null)
                 _workingTemplate.Script.IsReadOnly = false;
+        }
+
+        private void ReloadDataSeriesColumnsFromScript()
+        {
+            _suppressDataSeriesSync = true;
+            try
+            {
+                DataSeriesColumns.Clear();
+                string raw = ScriptDefinition?.RequiredDataSeries ?? string.Empty;
+                // 单位按位置与列名一一对应（保留空项），脚本格式 1.3 之前的模板没有单位，对应位置即为空
+                var units = (ScriptDefinition?.DataSeriesUnits ?? string.Empty).Split(',', StringSplitOptions.TrimEntries);
+                int index = 0;
+                foreach (var part in raw.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+                {
+                    DataSeriesColumns.Add(new DiagramDataSeriesColumn(part) { Unit = index < units.Length ? units[index] : string.Empty });
+                    index++;
+                }
+
+                if (DataSeriesColumns.Count == 0)
+                    DataSeriesColumns.Add(new DiagramDataSeriesColumn(string.Empty));
+            }
+            finally
+            {
+                _suppressDataSeriesSync = false;
+            }
+
+            foreach (var column in DataSeriesColumns)
+                HookDataSeriesColumn(column);
+        }
+
+        private void HookDataSeriesColumn(DiagramDataSeriesColumn column)
+        {
+            column.PropertyChanged -= OnDataSeriesColumnChanged;
+            column.PropertyChanged += OnDataSeriesColumnChanged;
+        }
+
+        private void OnDataSeriesColumnChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName is nameof(DiagramDataSeriesColumn.Id) or nameof(DiagramDataSeriesColumn.Unit))
+                CommitDataSeriesColumnsToScript();
+        }
+
+        private void CommitDataSeriesColumnsToScript()
+        {
+            if (_suppressDataSeriesSync || ScriptDefinition == null) return;
+            // 只保留有列名的列；单位与列名同序写出，单位里的逗号会破坏按位置对应的存储格式，统一换成空格
+            var named = DataSeriesColumns.Where(c => !string.IsNullOrWhiteSpace(c.Id?.Trim())).ToList();
+            ScriptDefinition.RequiredDataSeries = string.Join(",", named.Select(c => c.Id.Trim()));
+            var units = named.Select(c => (c.Unit ?? string.Empty).Replace(',', ' ').Replace(';', ' ').Trim()).ToList();
+            // 所有列都没有单位时保持为空串，与 1.3 之前的模板内容一致
+            ScriptDefinition.DataSeriesUnits = units.Any(u => u.Length > 0) ? string.Join(",", units) : string.Empty;
+        }
+
+        [RelayCommand]
+        private void AddDataSeries()
+        {
+            var column = new DiagramDataSeriesColumn(string.Empty);
+            HookDataSeriesColumn(column);
+            DataSeriesColumns.Add(column);
+        }
+
+        [RelayCommand]
+        private void RemoveDataSeries(DiagramDataSeriesColumn? column)
+        {
+            if (column == null) return;
+            if (DataSeriesColumns.Count <= 1)
+            {
+                column.Id = string.Empty;
+                CommitDataSeriesColumnsToScript();
+                return;
+            }
+
+            column.PropertyChanged -= OnDataSeriesColumnChanged;
+            DataSeriesColumns.Remove(column);
+            CommitDataSeriesColumnsToScript();
         }
 
         /// <summary>
@@ -1007,6 +1386,95 @@ namespace GeoChemistryNexus.ViewModels
             TranslationTable = temp;
         }
 
+        /// <summary>
+        /// 将 DataTable 翻译表投影为 EPMA 多语言编辑窗同款的冻结列 + 横向滚动列结构。
+        /// </summary>
+        private void RebuildTranslationDisplay()
+        {
+            TranslationDisplayRows.Clear();
+            TranslationColumns.Clear();
+
+            if (TranslationTable == null)
+            {
+                OnPropertyChanged(nameof(TranslationDefaultColumn));
+                OnPropertyChanged(nameof(TranslationOtherColumns));
+                OnPropertyChanged(nameof(TranslationLanguageCount));
+                RefreshTemplateStatus();
+                return;
+            }
+
+            var languages = LanguageParts.Select(l => l.Text).Where(l => !string.IsNullOrWhiteSpace(l)).ToList();
+            if (languages.Count == 0)
+            {
+                languages = TranslationTable.Columns.Cast<DataColumn>()
+                    .Where(c => DiagramTemplateTranslationHelper.IsLanguageColumn(c.ColumnName))
+                    .Select(c => c.ColumnName)
+                    .ToList();
+            }
+
+            for (int i = 0; i < languages.Count; i++)
+            {
+                string code = languages[i];
+                string header = EpmaTemplateEditorViewModel.LanguageName(code);
+                TranslationColumns.Add(new EpmaLocalizationColumn(header, i == 0));
+            }
+
+            string placeholder = LanguageService.Instance["epma_loc_placeholder"] ?? string.Empty;
+            foreach (DataRow dataRow in TranslationTable.Rows)
+            {
+                string label = dataRow["Context"] as string ?? string.Empty;
+                var source = new EpmaLocalizationRow(EpmaLocalizationRowKind.Name, label, languages.Count);
+                var cells = new List<EpmaLocalizationCell>();
+                for (int i = 0; i < languages.Count; i++)
+                {
+                    string lang = languages[i];
+                    string value = TranslationTable.Columns.Contains(lang)
+                        ? dataRow[lang] as string ?? string.Empty
+                        : string.Empty;
+                    source.Values[i] = value;
+                    var cell = new EpmaLocalizationCell(value, placeholder, isMultiline: true, TranslationColumns[i]);
+                    int langIndex = i;
+                    string langCode = lang;
+                    DataRow capturedRow = dataRow;
+                    cell.PropertyChanged += (_, e) =>
+                    {
+                        if (e.PropertyName != nameof(EpmaLocalizationCell.Text)) return;
+                        if (TranslationTable != null && TranslationTable.Columns.Contains(langCode))
+                            capturedRow[langCode] = cell.Text ?? string.Empty;
+                        source.Values[langIndex] = cell.Text ?? string.Empty;
+                        RefreshTranslationColumnProgress();
+                        SyncWorkingTemplateFromTable();
+                        RefreshTemplateStatus();
+                    };
+                    cells.Add(cell);
+                }
+
+                TranslationDisplayRows.Add(new EpmaLocalizationTableRow(source, cells));
+            }
+
+            RefreshTranslationColumnProgress();
+            OnPropertyChanged(nameof(TranslationDefaultColumn));
+            OnPropertyChanged(nameof(TranslationOtherColumns));
+            OnPropertyChanged(nameof(TranslationLanguageCount));
+            RefreshTemplateStatus();
+        }
+
+        private void RefreshTranslationColumnProgress()
+        {
+            int total = TranslationDisplayRows.Count;
+            for (int column = 0; column < TranslationColumns.Count; column++)
+            {
+                int filled = TranslationDisplayRows.Count(row =>
+                    column < row.Cells.Count && !string.IsNullOrWhiteSpace(row.Cells[column].Text));
+                var target = TranslationColumns[column];
+                target.Filled = filled;
+                target.Total = total;
+                target.State = filled == 0 ? EpmaLocalizationColumnState.Empty
+                    : filled >= total ? EpmaLocalizationColumnState.Complete
+                    : EpmaLocalizationColumnState.Partial;
+            }
+        }
+
         private void LoadCategories()
         {
             _categoryConfig = PlotCategoryHelper.LoadConfig();
@@ -1040,5 +1508,18 @@ namespace GeoChemistryNexus.ViewModels
             "Ternary_Plot" => "Ternary_Plot",
             _ => "2D_Plot"
         };
+    }
+
+    /// <summary>图解「数据与脚本」页中的数据序列列名。</summary>
+    public partial class DiagramDataSeriesColumn : ObservableObject
+    {
+        [ObservableProperty]
+        private string _id = string.Empty;
+
+        /// <summary>该数据列的单位（可选，留空表示没有单位）。</summary>
+        [ObservableProperty]
+        private string _unit = string.Empty;
+
+        public DiagramDataSeriesColumn(string id) => Id = id ?? string.Empty;
     }
 }

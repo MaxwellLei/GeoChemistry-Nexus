@@ -1,4 +1,4 @@
-using GeoChemistryNexus.Helpers;
+﻿using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Models;
 using LiteDB;
 using System;
@@ -51,7 +51,7 @@ namespace GeoChemistryNexus.Services
             using var db = GetDatabase();
             var col = db.GetCollection<BsonDocument>(CollectionName);
 
-            const string projection = "{ _id: $._id, PluginId: $.PluginId, Version: $.Version, FileHash: $.FileHash, LastModified: $.LastModified, IsOfficial: $.IsOfficial, IsFavorite: $.IsFavorite, Status: $.Status, ServerHash: $.ServerHash, Category: $.Category, Tags: $.Tags, Capabilities: $.Capabilities, Name: $.Name, NameLangKey: $.NameLangKey, Author: $.Author, Year: $.Year, Reference: $.Reference, IconCode: $.IconCode, IconColor: $.IconColor, Headers: $.Headers, ExampleRow: $.ExampleRow, FormulaName: $.FormulaName, InputColumns: $.InputColumns, AdditionalFormulas: $.AdditionalFormulas }";
+            const string projection = "{ _id: $._id, PluginId: $.PluginId, Version: $.Version, FileHash: $.FileHash, LastModified: $.LastModified, IsOfficial: $.IsOfficial, IsFavorite: $.IsFavorite, Status: $.Status, ServerHash: $.ServerHash, Category: $.Category, Tags: $.Tags, Capabilities: $.Capabilities, Name: $.Name, NameLangKey: $.NameLangKey, Languages: $.Languages, NameLang: $.NameLang, ReferenceLang: $.ReferenceLang, Author: $.Author, Year: $.Year, Reference: $.Reference, IconCode: $.IconCode, IconColor: $.IconColor, Headers: $.Headers, Units: $.Units, ExampleRow: $.ExampleRow, FormulaName: $.FormulaName, InputColumns: $.InputColumns, AdditionalFormulas: $.AdditionalFormulas, ScriptLength: LENGTH($.ScriptContent) }";
 
             var query = col.Query();
             if (isOfficial.HasValue)
@@ -60,10 +60,22 @@ namespace GeoChemistryNexus.Services
             }
 
             var docs = query.Select(projection).ToList();
-            var allEntities = docs.Select(d => db.Mapper.ToObject<GeothermometerEntity>(d)).ToList();
+            var allEntities = new List<GeothermometerEntity>(docs.Count);
 
-            foreach (var entity in allEntities)
+            foreach (var doc in docs)
+            {
+                var entity = db.Mapper.ToObject<GeothermometerEntity>(doc);
+
+                // 摘要不加载 ScriptContent：安装与否在投影时按脚本长度判定（占位记录脚本为空）。
+                // 投影字段缺失时回退到状态判断。
+                entity.IsInstalled = doc.TryGetValue("ScriptLength", out var scriptLength)
+                    ? scriptLength.IsNumber && scriptLength.AsInt32 > 0
+                    : !string.Equals(entity.Status, "NOT_INSTALLED", StringComparison.Ordinal)
+                        && !string.Equals(entity.Status, "REQUIRES_APP_UPGRADE", StringComparison.Ordinal);
+
                 StripHeavyFields(entity);
+                allEntities.Add(entity);
+            }
 
             return allEntities;
         }
@@ -76,7 +88,7 @@ namespace GeoChemistryNexus.Services
             using var db = GetDatabase();
             var col = db.GetCollection<BsonDocument>(CollectionName);
 
-            const string projection = "{ _id: $._id, PluginId: $.PluginId, Version: $.Version, FileHash: $.FileHash, LastModified: $.LastModified, IsOfficial: $.IsOfficial, IsFavorite: $.IsFavorite, Status: $.Status, ServerHash: $.ServerHash, Category: $.Category, Tags: $.Tags, Capabilities: $.Capabilities, Name: $.Name, NameLangKey: $.NameLangKey, Author: $.Author, Year: $.Year, Reference: $.Reference, IconCode: $.IconCode, IconColor: $.IconColor, Headers: $.Headers, ExampleRow: $.ExampleRow, FormulaName: $.FormulaName, InputColumns: $.InputColumns, AdditionalFormulas: $.AdditionalFormulas, ScriptContent: $.ScriptContent }";
+            const string projection = "{ _id: $._id, PluginId: $.PluginId, Version: $.Version, FileHash: $.FileHash, LastModified: $.LastModified, IsOfficial: $.IsOfficial, IsFavorite: $.IsFavorite, Status: $.Status, ServerHash: $.ServerHash, Category: $.Category, Tags: $.Tags, Capabilities: $.Capabilities, Name: $.Name, NameLangKey: $.NameLangKey, Languages: $.Languages, NameLang: $.NameLang, ReferenceLang: $.ReferenceLang, Author: $.Author, Year: $.Year, Reference: $.Reference, IconCode: $.IconCode, IconColor: $.IconColor, Headers: $.Headers, Units: $.Units, ExampleRow: $.ExampleRow, FormulaName: $.FormulaName, InputColumns: $.InputColumns, AdditionalFormulas: $.AdditionalFormulas, ScriptContent: $.ScriptContent }";
 
             var doc = col.Query().Where(BsonExpression.Create("$._id = @0", id)).Select(projection).FirstOrDefault();
             if (doc == null)
@@ -103,11 +115,15 @@ namespace GeoChemistryNexus.Services
             entity.Capabilities ??= new List<string>();
             entity.Name ??= string.Empty;
             entity.NameLangKey ??= string.Empty;
+            entity.Languages ??= new List<string>();
+            entity.NameLang ??= new Dictionary<string, string>();
+            entity.ReferenceLang ??= new Dictionary<string, string>();
             entity.Author ??= string.Empty;
             entity.Reference ??= string.Empty;
             entity.IconCode ??= "\ue60d";
             entity.IconColor ??= "#555555";
             entity.Headers ??= new List<string>();
+            entity.Units ??= new List<string>();
             entity.ExampleRow ??= new List<string>();
             entity.FormulaName ??= string.Empty;
             entity.InputColumns ??= new List<string>();
@@ -341,10 +357,31 @@ namespace GeoChemistryNexus.Services
                 ["HelpDocuments"] = helpDocuments
             };
 
+            // 单位（格式 1.3）同理：没有任何单位时不写入，旧模板哈希保持不变
+            if (CommaSeparatedListHelper.HasAnyUnit(entity.Units))
+                payload["Units"] = entity.Units;
+
             // 仅在有能力标签时写入哈希载荷，避免空数组改变旧模板哈希，导致与服务器清单不匹配
             var capabilities = GeoTCapabilityHelper.NormalizeList(entity.Capabilities);
             if (capabilities.Count > 0)
                 payload["Capabilities"] = capabilities;
+
+            // 多语言字段同理：旧模板没有这些字段时不写入，保持原有哈希
+            var languages = (entity.Languages ?? new List<string>())
+                .Where(language => !string.IsNullOrWhiteSpace(language))
+                .ToList();
+            if (languages.Count > 0)
+            {
+                payload["Languages"] = languages;
+
+                var nameLang = GeoTLocalizationHelper.Compact(entity.NameLang, languages);
+                if (nameLang.Count > 0)
+                    payload["NameLang"] = nameLang;
+
+                var referenceLang = GeoTLocalizationHelper.Compact(entity.ReferenceLang, languages);
+                if (referenceLang.Count > 0)
+                    payload["ReferenceLang"] = referenceLang;
+            }
 
             string json = System.Text.Json.JsonSerializer.Serialize(payload, EntityHashJsonOptions);
             return ComputeHash(json);

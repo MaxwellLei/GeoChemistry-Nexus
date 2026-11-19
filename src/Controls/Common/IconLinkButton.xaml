@@ -1,0 +1,27 @@
+<UserControl x:Class="GeoChemistryNexus.Controls.IconLinkButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
+             mc:Ignorable="d"
+             d:DesignHeight="24" d:DesignWidth="120">
+    <!--
+        通用「图标 + 主题色文字」链接按钮（检查更新 / 新建图解 / 新建温压计 / 新建计算 等）。
+        配色统一来自 Themes/Styles.xaml 的 ThemeLinkButtonStyle（ThemeLinkBrush），随软件主题色切换。
+    -->
+    <Button x:Name="PART_Button"
+            Style="{StaticResource ThemeLinkButtonStyle}"
+            Command="{Binding Command, RelativeSource={RelativeSource AncestorType=local:IconLinkButton}}"
+            CommandParameter="{Binding CommandParameter, RelativeSource={RelativeSource AncestorType=local:IconLinkButton}}">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <TextBlock Text="{Binding Icon, RelativeSource={RelativeSource AncestorType=local:IconLinkButton}}"
+                       FontFamily="{Binding IconFontFamily, RelativeSource={RelativeSource AncestorType=local:IconLinkButton}}"
+                       FontSize="{Binding IconFontSize, RelativeSource={RelativeSource AncestorType=local:IconLinkButton}}"
+                       Margin="0,0,4,0"
+                       VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding Text, RelativeSource={RelativeSource AncestorType=local:IconLinkButton}}"
+                       VerticalAlignment="Center"/>
+        </StackPanel>
+    </Button>
+</UserControl>

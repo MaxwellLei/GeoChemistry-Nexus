@@ -1,0 +1,529 @@
+﻿<UserControl x:Class="GeoChemistryNexus.Views.EpmaLibraryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
+             xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
+             xmlns:views="clr-namespace:GeoChemistryNexus.Views"
+             xmlns:uc="clr-namespace:GeoChemistryNexus.Controls"
+             xmlns:hp="clr-namespace:GeoChemistryNexus.Helpers"
+             xmlns:vm="clr-namespace:GeoChemistryNexus.ViewModels"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             FontSize="13"
+             UseLayoutRounding="True"
+             TextOptions.TextFormattingMode="{DynamicResource AppTextFormattingMode}"
+             Background="#F5F5F5">
+    <UserControl.Resources>
+        <cvs:BoolToVisibilityConverter x:Key="Show"/>
+        <Style x:Key="LibraryToolbarButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="Margin" Value="2,0"/>
+            <Setter Property="Foreground" Value="#555"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="6"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#E5E5E5"/>
+                                <Setter Property="Foreground" Value="#000"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#D1D1D1"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="#BBB"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="LibraryPrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource ThemeAccentBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="6"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ThemeAccentDarkBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#004578"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Bd" Property="Background" Value="#CCCCCC"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+
+        <!-- 卡片内的主题色徽标：选中时卡片底色为主题浅色，徽标改为白底以保持层次 -->
+        <Style x:Key="LibraryCardBadgeBorderStyle" TargetType="Border" BasedOn="{StaticResource ThemeTagChipBorderStyle}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
+                    <Setter Property="Background" Value="White"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <DataTemplate x:Key="Tag">
+            <Border Style="{StaticResource LibraryCardBadgeBorderStyle}" Margin="0,0,6,6" Padding="8,3">
+                <TextBlock Text="{Binding Mode=OneWay}" Style="{StaticResource ThemeTagChipTextStyle}"/>
+            </Border>
+        </DataTemplate>
+
+    </UserControl.Resources>
+
+    <Grid>
+        <i:Interaction.Behaviors>
+            <hp:FileDropBehavior DropCommand="{Binding ImportTemplateFromPathsCommand}"
+                                 AllowedExtensions="{x:Static hp:TemplatePackageFileExtensions.EpmaDropAllowed}"
+                                 OverlayFormats="{x:Static hp:TemplatePackageFileExtensions.EpmaPrimary}"
+                                 KickerText="{Binding [file_drop_epma_kicker], Source={x:Static lg:LanguageService.Instance}}"
+                                 HintText="{Binding [file_drop_release_to_import], Source={x:Static lg:LanguageService.Instance}}"
+                                 SubHintText="{Binding [file_drop_epma_sub], Source={x:Static lg:LanguageService.Instance}}"
+                                 InvalidHintText="{Binding [file_drop_invalid_format], Source={x:Static lg:LanguageService.Instance}}"
+                                 InvalidSubHintText="{Binding [file_drop_use_formats_below], Source={x:Static lg:LanguageService.Instance}}"
+                                 RecognizedCountFormat="{Binding [file_drop_recognized_count], Source={x:Static lg:LanguageService.Instance}}"/>
+        </i:Interaction.Behaviors>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- 页面顶栏：文件菜单收在左侧面板与中间区域分割线的左侧，搜索在分割线右侧 -->
+        <ContentControl Grid.Row="0" Style="{StaticResource PageTitleBarCustomLayoutStyle}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{Binding Width, ElementName=LibraryPanelColumn}"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="0">
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Margin" Value="18,0,8,0"/>
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Source={x:Static vm:ShellLayoutState.Instance}, Path=IsSideBarVisible, Mode=OneWay}" Value="False"/>
+                                        <Condition Binding="{Binding Source={x:Static vm:ShellLayoutState.Instance}, Path=UseIconOnlySidebarCollapse, Mode=OneWay}" Value="False"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Margin" Value="56,0,8,0"/>
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="{Binding [epma_title],Source={x:Static lg:LanguageService.Instance}}"
+                               VerticalAlignment="Center" FontSize="15" FontWeight="Bold" Foreground="#0F172A"
+                               TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" IsHitTestVisible="False"/>
+                    <Menu Grid.Column="1" Style="{StaticResource TitleBarMenuStyle}" Margin="8,0,0,0" VerticalAlignment="Center">
+                        <MenuItem Header="{Binding [File],Source={x:Static lg:LanguageService.Instance}}">
+                            <MenuItem Header="{Binding [epma_library_create],Source={x:Static lg:LanguageService.Instance}}"
+                                      InputGestureText=".epma.zip"
+                                      Click="CreateTemplateClick"/>
+                            <MenuItem Header="{Binding [epma_library_import],Source={x:Static lg:LanguageService.Instance}}"
+                                      InputGestureText=".epma.zip"
+                                      Command="{Binding ImportTemplateCommand}"/>
+                            <MenuItem Header="{Binding PendingUpdateText}" Command="{Binding DownloadAllPendingCommand}"
+                                      Visibility="{Binding HasPendingUpdates, Converter={StaticResource Show}}"/>
+                        </MenuItem>
+                    </Menu>
+                </Grid>
+
+                <DockPanel Grid.Column="1" LastChildFill="False" Margin="16,0,0,0">
+                    <uc:SearchBox DockPanel.Dock="Left" Width="240" Height="26" Margin="0,0,16,0" FontSize="12"
+                                  Placeholder="{Binding [epma_library_search],Source={x:Static lg:LanguageService.Instance}}"
+                                  Text="{Binding LibrarySearchText,UpdateSourceTrigger=PropertyChanged}"/>
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button Command="{Binding DownloadAllPendingCommand}" Style="{StaticResource BatchActionButtonStyle}"
+                                Margin="2,0" IsEnabled="{Binding CanManageTemplates}"
+                                Visibility="{Binding HasPendingUpdates, Converter={StaticResource Show}}">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="&#xE896;" FontFamily="Segoe MDL2 Assets" FontSize="12"
+                                           VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                <TextBlock Text="{Binding PendingUpdateText}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Command="{Binding ImportTemplateCancelCommand}" Style="{StaticResource LibraryToolbarButtonStyle}"
+                                Content="{Binding [epma_cancel],Source={x:Static lg:LanguageService.Instance}}">
+                            <Button.Visibility>
+                                <Binding Path="ImportTemplateCommand.IsRunning" Converter="{StaticResource Show}"/>
+                            </Button.Visibility>
+                        </Button>
+                </StackPanel>
+                </DockPanel>
+            </Grid>
+        </ContentControl>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="LibraryPanelColumn" Width="240"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="320"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- 左侧导航：沿用温压计的资源库 / 我的空间分组与蓝色链接按钮。 -->
+            <DockPanel Grid.Column="0" TextElement.FontFamily="Segoe UI, Microsoft YaHei UI"
+                       Background="{StaticResource DiagramLibraryBackgroundBrush}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="10,6,10,14">
+                        <Grid>
+                            <TextBlock Text="{Binding [library_section],Source={x:Static lg:LanguageService.Instance}, FallbackValue='资源库'}"
+                                       Style="{StaticResource DiagramLibrarySectionHeaderStyle}"
+                                       Margin="10,2,10,5" HorizontalAlignment="Left"/>
+                            <uc:IconLinkButton Text="{Binding [epma_update_check_menu],Source={x:Static lg:LanguageService.Instance}}"
+                                               Command="{Binding CheckUpdatesCommand}"
+                                               Margin="10,0,6,3" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        </Grid>
+
+                        <!-- 在线 EPMA 矿物计算 -->
+                        <Button Style="{StaticResource DiagramLibraryItemButtonStyle}"
+                                Tag="{Binding IsRecommendedLibrary}"
+                                Command="{Binding SelectLibrarySourceCommand}" CommandParameter="Recommended">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="18"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Viewbox Grid.Column="1" Width="17" Height="17" Margin="0,0,7,0" VerticalAlignment="Center">
+                                    <Canvas Width="24" Height="24"><Path Style="{StaticResource DiagramLibraryButtonIconStyle}" Data="M5,4 L19,4 A2,2 0 0 1 21,6 L21,18 A2,2 0 0 1 19,20 L5,20 A2,2 0 0 1 3,18 L3,6 A2,2 0 0 1 5,4 Z M3,9 L21,9 M9,14 L15,14"/></Canvas>
+                                </Viewbox>
+                                <TextBlock Grid.Column="2" Text="{Binding [epma_library_recommended],Source={x:Static lg:LanguageService.Instance}}"
+                                           ToolTip="{Binding [epma_library_recommended],Source={x:Static lg:LanguageService.Instance}}"
+                                           VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                <TextBlock Grid.Column="3" Text="{Binding RecommendedCount}" FontSize="11.5" FontWeight="Medium"
+                                           Typography.NumeralAlignment="Tabular" Padding="5,1" Margin="6,0,0,0" VerticalAlignment="Center">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Foreground" Value="{StaticResource DiagramLibrarySecondaryBrush}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding RecommendedCount}" Value="0"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger>
+                                                <DataTrigger Binding="{Binding IsRecommendedLibrary}" Value="True"><Setter Property="Foreground" Value="#D9FFFFFF"/></DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                        </Button>
+
+                        <!-- 我的空间 -->
+                        <Grid>
+                            <TextBlock Text="{Binding [workspace_section],Source={x:Static lg:LanguageService.Instance}, FallbackValue='我的空间'}"
+                                       Style="{StaticResource DiagramLibrarySectionHeaderStyle}" HorizontalAlignment="Left"/>
+                            <uc:IconLinkButton x:Name="NewCalculationButton" Icon="&#xE710;"
+                                               Text="{Binding [epma_library_new_calculation],Source={x:Static lg:LanguageService.Instance}, FallbackValue='新建计算'}"
+                                               IsEnabled="{Binding CanManageTemplates}"
+                                               Margin="10,0,6,1" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                        </Grid>
+
+                        <!-- 我的 -->
+                        <Button Style="{StaticResource DiagramLibraryItemButtonStyle}"
+                                Tag="{Binding IsMyLibrary}"
+                                Command="{Binding SelectLibrarySourceCommand}" CommandParameter="Mine">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="18"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Viewbox Grid.Column="1" Width="17" Height="17" Margin="0,0,7,0" VerticalAlignment="Center">
+                                    <Canvas Width="24" Height="24"><Path Style="{StaticResource DiagramLibraryButtonIconStyle}" Data="M19,21 L19,19 A4,4 0 0 0 15,15 L9,15 A4,4 0 0 0 5,19 L5,21 M16,7 A4,4 0 1 1 8,7 A4,4 0 1 1 16,7"/></Canvas>
+                                </Viewbox>
+                                <TextBlock Grid.Column="2" Text="{Binding [epma_library_mine],Source={x:Static lg:LanguageService.Instance}}"
+                                           ToolTip="{Binding [epma_library_mine],Source={x:Static lg:LanguageService.Instance}}"
+                                           VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                            </Grid>
+                        </Button>
+
+                        <!-- 收藏 -->
+                        <Button Style="{StaticResource DiagramLibraryItemButtonStyle}"
+                                Tag="{Binding IsFavoriteLibrary}"
+                                Command="{Binding SelectLibrarySourceCommand}" CommandParameter="Favorite">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="18"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Viewbox Grid.Column="1" Width="17" Height="17" Margin="0,0,7,0" VerticalAlignment="Center">
+                                    <Canvas Width="24" Height="24"><Path Style="{StaticResource DiagramLibraryButtonIconStyle}" Data="M12,2 L15.09,8.26 L22,9.27 L17,14.14 L18.18,21.02 L12,17.77 L5.82,21.02 L7,14.14 L2,9.27 L8.91,8.26 Z"/></Canvas>
+                                </Viewbox>
+                                <TextBlock Grid.Column="2" Text="{Binding [epma_library_favorites],Source={x:Static lg:LanguageService.Instance}}"
+                                           VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                            </Grid>
+                        </Button>
+
+                        <!-- 最近使用 -->
+                        <TextBlock Text="{Binding [epma_library_recent],Source={x:Static lg:LanguageService.Instance}}"
+                                   Style="{StaticResource DiagramLibrarySectionHeaderStyle}"/>
+                        <ItemsControl ItemsSource="{Binding RecentLibraryItems}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Style="{StaticResource DiagramLibraryItemButtonStyle}"
+                                            Command="{Binding DataContext.OpenRecentTemplateCommand,RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}" ToolTip="{Binding Name}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="18"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Viewbox Grid.Column="1" Width="17" Height="17" Margin="0,0,7,0" VerticalAlignment="Center">
+                                                <Canvas Width="24" Height="24"><Path Style="{StaticResource DiagramLibraryButtonIconStyle}" Data="M21,12 A9,9 0 1 1 3,12 A9,9 0 1 1 21,12 M12,7 L12,12 L15.5,14"/></Canvas>
+                                            </Viewbox>
+                                            <TextBlock Grid.Column="2" Text="{Binding Name}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Grid.Column="3" Text="{Binding Origin}" FontSize="11" Margin="6,0,0,0" VerticalAlignment="Center"
+                                                       Foreground="{StaticResource DiagramLibrarySecondaryBrush}"/>
+                                        </Grid>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <TextBlock Text="{Binding [epma_library_recent_empty],Source={x:Static lg:LanguageService.Instance}}"
+                                   Margin="10,4" FontSize="11.5" TextWrapping="Wrap"
+                                   Foreground="{StaticResource DiagramLibrarySecondaryBrush}">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding HasRecentTemplates}" Value="False"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </StackPanel>
+                </ScrollViewer>
+            </DockPanel>
+            <Rectangle Grid.Column="0" Width="1" HorizontalAlignment="Right" Fill="#E0E0E0"/>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="1">
+                <ListBox x:Name="TemplateList" ItemsSource="{Binding FilteredLibraryItems}" SelectedItem="{Binding SelectedTemplate}"
+                         BorderThickness="0" Background="Transparent" Padding="16"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         ScrollViewer.CanContentScroll="False"
+                         HorizontalContentAlignment="Stretch">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <uc:EvenWrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <EventSetter Event="PreviewMouseRightButtonDown" Handler="TemplateRightButtonDown"/>
+                            <EventSetter Event="ContextMenuOpening" Handler="TemplateContextMenuOpening"/>
+                            <Setter Property="ContextMenu"><Setter.Value><ContextMenu/></Setter.Value></Setter>
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="Margin" Value="0"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <Border x:Name="Card" Background="White" BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="8">
+                                            <ContentPresenter/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Card" Property="BorderBrush" Value="{DynamicResource ThemeAccentBrush}"/>
+                                            </Trigger>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Card" Property="BorderBrush" Value="{DynamicResource ThemeAccentBrush}"/>
+                                                <Setter TargetName="Card" Property="Background" Value="{DynamicResource ThemeAccentSoftBrush}"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="14,12" ToolTip="{Binding Origin}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Width="36" Height="36" CornerRadius="8" Padding="0"
+                                            Style="{StaticResource LibraryCardBadgeBorderStyle}" Margin="0">
+                                        <Viewbox Margin="4" Stretch="Uniform" StretchDirection="DownOnly"><TextBlock Text="{Binding Details.Icon}"
+                                                   Foreground="{DynamicResource ThemeAccentDeepBrush}"
+                                                   FontSize="16" FontWeight="SemiBold"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/></Viewbox>
+                                    </Border>
+                                    <StackPanel Grid.Column="1" Margin="10,0,8,0" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Name}" ToolTip="{Binding Name}"
+                                                   FontSize="14" FontWeight="SemiBold" Foreground="#333"
+                                                   TextWrapping="Wrap" MaxHeight="40" TextTrimming="CharacterEllipsis"/>
+                                        <Border Style="{StaticResource LibraryCardBadgeBorderStyle}" HorizontalAlignment="Left" Padding="6,2" Margin="0,6,0,0">
+                                            <TextBlock Text="{Binding Id}" Style="{StaticResource ThemeTagChipTextStyle}"/>
+                                        </Border>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2" VerticalAlignment="Top">
+                                        <TextBlock Text="{Binding Version}" Foreground="#888" FontSize="12" HorizontalAlignment="Right"/>
+                                        <Border Style="{StaticResource EpmaStatusChipBorderStyle}"
+                                                Visibility="{Binding HasStatus, Converter={StaticResource Show}}">
+                                            <TextBlock Text="{Binding StatusText}" Style="{StaticResource EpmaStatusChipTextStyle}"/>
+                                        </Border>
+                                    </StackPanel>
+                                </Grid>
+                                <TextBlock Grid.Row="1" Text="{Binding Description}" ToolTip="{Binding Description}"
+                                           Foreground="#666" FontSize="12" TextWrapping="Wrap" MaxHeight="36"
+                                           TextTrimming="CharacterEllipsis" Margin="0,10,0,8"/>
+                                <ItemsControl Grid.Row="2" ItemsSource="{Binding Tags}" ItemTemplate="{StaticResource Tag}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </ItemsControl>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <views:EpmaEmptyState x:Name="LibraryEmptyState">
+                    <views:EpmaEmptyState.Style>
+                        <Style TargetType="views:EpmaEmptyState">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding HasLibraryMatches}" Value="False">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </views:EpmaEmptyState.Style>
+                </views:EpmaEmptyState>
+                </Grid>
+            </Grid>
+
+            <Border Grid.Column="2" Background="White" BorderBrush="#E0E0E0" BorderThickness="1,0,0,0">
+                <DockPanel>
+                    <Border DockPanel.Dock="Bottom" Margin="16,0,16,14" Padding="0,12,0,0">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderBrush" Value="#E8E8E8"/>
+                                <Setter Property="BorderThickness" Value="0,1,0,0"/>
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedTemplate}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <StackPanel>
+                        <TextBlock Text="{Binding SelectedTemplate.UpgradeHintText}" Foreground="#C77700" FontSize="12"
+                                   TextWrapping="Wrap" Margin="0,0,0,10"
+                                   Visibility="{Binding SelectedTemplate.HasUpgradeHint, Converter={StaticResource Show}, FallbackValue=Collapsed}"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Command="{Binding DownloadSelectedCommand}" CommandParameter="{Binding SelectedTemplate}"
+                                    Style="{StaticResource LibraryToolbarButtonStyle}" Margin="0,0,8,0"
+                                    Content="{Binding SelectedTemplate.DownloadActionText}"
+                                    IsEnabled="{Binding CanManageTemplates}"
+                                    Visibility="{Binding SelectedTemplate.NeedsDownload, Converter={StaticResource Show}, FallbackValue=Collapsed}"/>
+                            <Button Command="{Binding EnterCalculationCommand}" Style="{StaticResource LibraryPrimaryButtonStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE768;" FontFamily="Segoe MDL2 Assets" FontSize="13" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                    <TextBlock Text="{Binding [epma_library_enter],Source={x:Static lg:LanguageService.Instance}}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                        </StackPanel>
+                    </Border>
+                    <Grid>
+                        <TextBlock Text="{Binding [epma_library_description],Source={x:Static lg:LanguageService.Instance}}"
+                                   Foreground="#AAA" FontSize="13" TextWrapping="Wrap" TextAlignment="Center"
+                                   VerticalAlignment="Center" Margin="24">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedTemplate}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <views:EpmaTemplateDetailsView x:Name="TemplateDetails" DataContext="{Binding SelectedTemplate.Details}">
+                            <views:EpmaTemplateDetailsView.Style>
+                                <Style TargetType="views:EpmaTemplateDetailsView">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </views:EpmaTemplateDetailsView.Style>
+                        </views:EpmaTemplateDetailsView>
+                    </Grid>
+                </DockPanel>
+            </Border>
+        </Grid>
+
+        <!-- 服务器检查 / 下载进度遮罩 -->
+        <Border Grid.RowSpan="2" Style="{StaticResource EpmaUpdateOverlayStyle}">
+            <Border Background="White" CornerRadius="12" Width="420" Padding="36,28"
+                    VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="20" ShadowDepth="0" Opacity="0.3"/>
+                </Border.Effect>
+                <StackPanel>
+                    <TextBlock Text="{Binding UpdateOverlayTitle}" FontSize="18" FontWeight="SemiBold" Foreground="#333"
+                               HorizontalAlignment="Center" Margin="0,0,0,16" TextWrapping="Wrap"/>
+                    <Grid Margin="0,0,0,10">
+                        <TextBlock Text="{Binding UpdateStatusText}" FontSize="13" Foreground="#666" TextAlignment="Center"
+                                   TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
+                    </Grid>
+                    <ProgressBar Style="{StaticResource FlatProgressBarStyle}" Maximum="100"
+                                 Value="{Binding UpdateProgress}" IsIndeterminate="{Binding IsUpdateProgressIndeterminate}"/>
+                </StackPanel>
+            </Border>
+        </Border>
+    </Grid>
+</UserControl>

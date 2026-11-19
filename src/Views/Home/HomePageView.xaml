@@ -1,4 +1,4 @@
-<Page x:Class="GeoChemistryNexus.Views.HomePageView"
+﻿<Page x:Class="GeoChemistryNexus.Views.HomePageView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -6,39 +6,53 @@
       xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
       xmlns:helpers="clr-namespace:GeoChemistryNexus.Helpers"
       xmlns:models="clr-namespace:GeoChemistryNexus.Models"
+      xmlns:views="clr-namespace:GeoChemistryNexus.Views"
       xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
+      xmlns:uc="clr-namespace:GeoChemistryNexus.Controls"
       xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
       mc:Ignorable="d"
-      d:DesignHeight="600" d:DesignWidth="1000"
+      d:DesignHeight="800" d:DesignWidth="1100"
       Title="HomePageView"
-      Background="#F2F2F7"
+      Background="{DynamicResource ThemePageBgBrush}"
       HorizontalAlignment="Stretch"
       VerticalAlignment="Stretch">
     <Page.Resources>
         <cvs:StringToBitmapImageConverter x:Key="HomeIconBitmapConverter"/>
-        <cvs:AnnouncementThemeToBrushConverter x:Key="AnnouncementThemeConverter"/>
-        <cvs:AnnouncementDecorScaleConverter x:Key="AnnouncementDecorScaleConverter"/>
-        <cvs:AnnouncementPolygonVisibilityConverter x:Key="AnnouncementPolygonVisibilityConverter"/>
+        <cvs:AnnouncementLightThemeToBrushConverter x:Key="AnnouncementLightThemeConverter"/>
+        <cvs:ViewportFillMinHeightConverter x:Key="ViewportFillMinHeightConverter"/>
         <helpers:BindingProxy x:Key="VmProxy" Data="{Binding}" />
 
+        <!-- ===== 导航站链接卡片 ===== -->
         <DataTemplate DataType="{x:Type models:HomeAppItem}">
-            <StackPanel Width="68" Margin="0,2,10,10">
-                <StackPanel.Style>
-                    <Style TargetType="StackPanel">
+            <Border ToolTipService.InitialShowDelay="350" ToolTipService.Placement="Top">
+                <Border.Style>
+                    <Style TargetType="Border" BasedOn="{StaticResource HomeLinkCardStyle}">
+                        <Setter Property="ToolTip">
+                            <Setter.Value>
+                                <ToolTip Style="{StaticResource HomeLinkDescriptionToolTipStyle}"
+                                         Content="{Binding Description}"/>
+                            </Setter.Value>
+                        </Setter>
                         <Style.Triggers>
                             <!-- 官方分组只读，右键不弹出空菜单 -->
                             <DataTrigger Binding="{Binding IsReadOnly}" Value="True">
                                 <Setter Property="ContextMenuService.IsEnabled" Value="False"/>
                             </DataTrigger>
+                            <DataTrigger Binding="{Binding Description}" Value="">
+                                <Setter Property="ToolTipService.IsEnabled" Value="False"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Description}" Value="{x:Null}">
+                                <Setter Property="ToolTipService.IsEnabled" Value="False"/>
+                            </DataTrigger>
                         </Style.Triggers>
                     </Style>
-                </StackPanel.Style>
-                <StackPanel.InputBindings>
+                </Border.Style>
+                <Border.InputBindings>
                     <MouseBinding MouseAction="LeftClick"
                                   Command="{Binding Data.OpenAppCommand, Source={StaticResource VmProxy}}"
                                   CommandParameter="{Binding}"/>
-                </StackPanel.InputBindings>
-                <StackPanel.ContextMenu>
+                </Border.InputBindings>
+                <Border.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="{Binding [Edit],Source={x:Static lg:LanguageService.Instance}}"
                                   Command="{Binding Data.EditAppCommand, Source={StaticResource VmProxy}}"
@@ -49,6 +63,7 @@
                             </MenuItem.Icon>
                         </MenuItem>
                         <MenuItem Header="{Binding [Delete],Source={x:Static lg:LanguageService.Instance}}"
+                                  Tag="Danger"
                                   Command="{Binding Data.RemoveAppCommand, Source={StaticResource VmProxy}}"
                                   CommandParameter="{Binding}"
                                   Visibility="{Binding IsReadOnly, Converter={StaticResource BooleanToVisibilityReConverter}}">
@@ -57,101 +72,94 @@
                             </MenuItem.Icon>
                         </MenuItem>
                     </ContextMenu>
-                </StackPanel.ContextMenu>
-
-                <Border ToolTipService.InitialShowDelay="350" ToolTipService.Placement="Top">
-                    <Border.Style>
-                        <Style TargetType="Border" BasedOn="{StaticResource HomeLinkTileBorderStyle}">
-                            <Setter Property="ToolTip">
-                                <Setter.Value>
-                                    <ToolTip Style="{StaticResource HomeLinkDescriptionToolTipStyle}"
-                                             Content="{Binding Description}"/>
-                                </Setter.Value>
-                            </Setter>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Description}" Value="">
-                                    <Setter Property="ToolTipService.IsEnabled" Value="False"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Description}" Value="{x:Null}">
-                                    <Setter Property="ToolTipService.IsEnabled" Value="False"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-                    <Grid>
-                        <Viewbox Margin="10"
-                                 Visibility="{Binding IsIconUrl, Converter={StaticResource BooleanToVisibilityReConverter}}">
-                            <TextBlock Text="{Binding Icon}" FontFamily="Segoe MDL2 Assets" Foreground="#3C3C43"/>
-                        </Viewbox>
-                        <!-- Source only binds when IsIconUrl=True so glyph tiles skip the bitmap converter -->
-                        <Image Margin="10" Stretch="Uniform" Visibility="Collapsed">
-                            <Image.Style>
-                                <Style TargetType="Image">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsIconUrl}" Value="True">
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                            <Setter Property="Source"
-                                                    Value="{Binding Icon, Converter={StaticResource HomeIconBitmapConverter}, ConverterParameter=48}"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Image.Style>
-                        </Image>
-                        <Border Background="#007AFF" CornerRadius="7" Width="14" Height="14"
-                                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-3,-3,0"
-                                Visibility="Collapsed">
-                            <Border.Style>
-                                <Style TargetType="Border">
-                                    <Style.Triggers>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding Data.IsEditMode, Source={StaticResource VmProxy}}" Value="True"/>
-                                                <Condition Binding="{Binding Data.IsSelectedGroupPersonal, Source={StaticResource VmProxy}}" Value="True"/>
-                                                <Condition Binding="{Binding IsReadOnly}" Value="False"/>
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                        </MultiDataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
-                            <TextBlock Text="&#xE70F;" FontFamily="Segoe MDL2 Assets" Foreground="White" FontSize="8"
-                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <Border.InputBindings>
-                                <MouseBinding MouseAction="LeftClick"
-                                              Command="{Binding Data.EditAppCommand, Source={StaticResource VmProxy}}"
-                                              CommandParameter="{Binding}"/>
-                            </Border.InputBindings>
-                        </Border>
-                    </Grid>
-                </Border>
-                <Grid Style="{StaticResource HomeLinkTitleHostStyle}">
-                    <TextBlock Text="{Binding Title}" Style="{StaticResource HomeLinkTitleStyle}" VerticalAlignment="Center"/>
+                </Border.ContextMenu>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="0" Style="{StaticResource HomeIconBadgeStyle}" Background="White"
+                            BorderBrush="{DynamicResource HomeLineBrush}" BorderThickness="1">
+                        <Grid>
+                            <Viewbox Margin="9"
+                                     Visibility="{Binding IsIconUrl, Converter={StaticResource BooleanToVisibilityReConverter}}">
+                                <TextBlock Text="{Binding Icon}" FontFamily="Segoe MDL2 Assets"
+                                           Foreground="{DynamicResource HomeBrandBrush}"/>
+                            </Viewbox>
+                            <!-- Source only binds when IsIconUrl=True so glyph tiles skip the bitmap converter -->
+                            <Image Margin="6" Stretch="Uniform" Visibility="Collapsed">
+                                <Image.Style>
+                                    <Style TargetType="Image">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsIconUrl}" Value="True">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Source"
+                                                        Value="{Binding Icon, Converter={StaticResource HomeIconBitmapConverter}, ConverterParameter=48}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                        </Grid>
+                    </Border>
+                    <StackPanel Grid.Column="1" Margin="11,0,6,0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Title}" FontSize="13.5" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource HomeInkBrush}" TextTrimming="CharacterEllipsis"/>
+                        <TextBlock Text="{Binding Description}" FontSize="11.5" Margin="0,1,0,0"
+                                   Foreground="{DynamicResource HomeSubBrush}" TextTrimming="CharacterEllipsis"/>
+                    </StackPanel>
+                    <TextBlock Grid.Column="2" Text="&#xE8A7;" FontFamily="Segoe MDL2 Assets" FontSize="11"
+                               Foreground="{DynamicResource HomeMuteBrush}" VerticalAlignment="Center">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Opacity" Value="0"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Border}}" Value="True">
+                                        <Setter Property="Opacity" Value="1"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
                 </Grid>
-            </StackPanel>
+            </Border>
         </DataTemplate>
 
+        <!-- ===== “添加链接”卡片（仅“我的”分组且未搜索时显示） ===== -->
         <DataTemplate DataType="{x:Type helpers:HomeAddLinkMarker}">
-            <StackPanel Width="68" Margin="0,2,10,10"
-                        Visibility="{Binding Data.IsSelectedGroupPersonal, Source={StaticResource VmProxy}, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <Border Style="{StaticResource HomeLinkTileBorderStyle}">
-                    <Border.InputBindings>
-                        <MouseBinding MouseAction="LeftClick"
-                                      Command="{Binding Data.AddWebLinkCommand, Source={StaticResource VmProxy}}"/>
-                    </Border.InputBindings>
-                    <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="18"
-                               Foreground="#3C3C43"
-                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                </Border>
-                <Grid Style="{StaticResource HomeLinkTitleHostStyle}">
-                    <TextBlock Text="{Binding [add_link],Source={x:Static lg:LanguageService.Instance}}"
-                               Style="{StaticResource HomeLinkTitleStyle}"
-                               VerticalAlignment="Center"/>
+            <Border Style="{StaticResource HomeLinkCardStyle}"
+                    Visibility="{Binding Data.ShowAddLinkTile, Source={StaticResource VmProxy}, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Border.InputBindings>
+                    <MouseBinding MouseAction="LeftClick"
+                                  Command="{Binding Data.AddWebLinkCommand, Source={StaticResource VmProxy}}"/>
+                </Border.InputBindings>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="0" Style="{StaticResource HomeIconBadgeStyle}" Background="White"
+                            BorderBrush="{DynamicResource HomeLineBrush}" BorderThickness="1">
+                        <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="15"
+                                   Foreground="{DynamicResource HomeBrandBrush}"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel Grid.Column="1" Margin="11,0,6,0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding [add_link],Source={x:Static lg:LanguageService.Instance}}"
+                                   FontSize="13.5" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource HomeInkBrush}" TextTrimming="CharacterEllipsis"/>
+                        <TextBlock Text="{Binding [home_add_link_subtitle],Source={x:Static lg:LanguageService.Instance}}"
+                                   FontSize="11.5" Margin="0,1,0,0"
+                                   Foreground="{DynamicResource HomeSubBrush}" TextTrimming="CharacterEllipsis"/>
+                    </StackPanel>
                 </Grid>
-            </StackPanel>
+            </Border>
         </DataTemplate>
 
+        <!-- ===== 小组件行 ===== -->
         <DataTemplate x:Key="WidgetPanelTileTemplate">
-            <Border Style="{StaticResource HomeWidgetPanelTileStyle}">
+            <Border Style="{StaticResource HomeWidgetRowStyle}">
                 <Border.InputBindings>
                     <MouseBinding MouseAction="LeftClick"
                                   Command="{Binding Data.OpenAppCommand, Source={StaticResource VmProxy}}"
@@ -160,6 +168,7 @@
                 <Border.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="{Binding [Delete],Source={x:Static lg:LanguageService.Instance}}"
+                                  Tag="Danger"
                                   Command="{Binding Data.RemoveAppCommand, Source={StaticResource VmProxy}}"
                                   CommandParameter="{Binding}">
                             <MenuItem.Icon>
@@ -170,194 +179,120 @@
                 </Border.ContextMenu>
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="40"/>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Border Grid.Column="0" Width="36" Height="36" Background="White" CornerRadius="9"
-                            BorderBrush="#E5E5EA" BorderThickness="1" VerticalAlignment="Center">
+                    <Border Grid.Column="0" Style="{StaticResource HomeIconBadgeStyle}" Width="34" Height="34">
                         <Viewbox Margin="8">
-                            <TextBlock Text="{Binding Icon}" FontFamily="Segoe MDL2 Assets" Foreground="#007AFF"/>
+                            <TextBlock Text="{Binding Icon}" FontFamily="Segoe MDL2 Assets"
+                                       Foreground="{DynamicResource HomeBrandBrush}"/>
                         </Viewbox>
                     </Border>
-                    <StackPanel Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center">
-                        <TextBlock Text="{Binding Title}" FontSize="13" FontWeight="SemiBold" Foreground="#1C1C1E"
+                    <StackPanel Grid.Column="1" Margin="13,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Title}" FontSize="13.5" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource HomeInkBrush}" TextTrimming="CharacterEllipsis"/>
+                        <TextBlock Text="{Binding Description}" FontSize="11.5" Margin="0,1,0,0"
+                                   Foreground="{DynamicResource HomeSubBrush}"
                                    TextTrimming="CharacterEllipsis"/>
-                        <TextBlock Text="{Binding Description}" FontSize="11" Foreground="#8E8E93" Margin="0,2,0,0"
-                                   TextTrimming="CharacterEllipsis" MaxHeight="32" TextWrapping="Wrap"/>
                     </StackPanel>
                 </Grid>
             </Border>
         </DataTemplate>
-        <DataTemplate x:Key="HomeAnnouncementSlideTemplate">
-                <Grid Background="{Binding Converter={StaticResource AnnouncementThemeConverter}}">
-                    <Border IsHitTestVisible="False"
-                            Visibility="{Binding HasBackgroundImage, Converter={StaticResource BooleanToVisibilityConverter}}">
-                        <Border.Background>
-                            <ImageBrush ImageSource="{Binding BackgroundImage}" Stretch="UniformToFill"/>
-                        </Border.Background>
+
+        <!-- ===== “添加小组件”气泡面板里的条目：整行可点，右侧圆形状态指示添加 / 移除 ===== -->
+        <DataTemplate x:Key="WidgetPickerRowTemplate">
+            <Button Style="{StaticResource HomeWidgetPickerRowStyle}"
+                    Command="{Binding ToggleAddCommand}"
+                    ToolTip="{Binding Description}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="0" Style="{StaticResource HomeIconBadgeStyle}" Width="34" Height="34">
+                        <Viewbox Margin="8">
+                            <TextBlock Text="{Binding Icon}" FontFamily="Segoe MDL2 Assets"
+                                       Foreground="{DynamicResource HomeBrandBrush}"/>
+                        </Viewbox>
                     </Border>
-                    <Border IsHitTestVisible="False"
-                            Background="{StaticResource HomeHeroImageScrimBrush}"
-                            Visibility="{Binding HasBackgroundImage, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-
-                    <!-- 装饰图形按卡片短边同比缩放，且不参与高度测量。每种已知样式一块画布，未知样式不会绑到这里。 -->
-                    <Grid IsHitTestVisible="False"
-                          Visibility="{Binding ShowPolygons, Converter={StaticResource BooleanToVisibilityConverter}}">
-                        <Canvas RenderTransformOrigin="1,0"
-                                Visibility="{Binding PolygonStyle, Converter={StaticResource AnnouncementPolygonVisibilityConverter}, ConverterParameter=ring}">
-                            <Canvas.RenderTransform>
-                                <ScaleTransform ScaleX="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource AnnouncementDecorScaleConverter}}"
-                                                ScaleY="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource AnnouncementDecorScaleConverter}}"/>
-                            </Canvas.RenderTransform>
-                            <Ellipse Width="340" Height="340"
-                                     Canvas.Right="-96" Canvas.Top="-108"
-                                     Stroke="#1FFFFFFF" StrokeThickness="44" Fill="Transparent"/>
-                            <Border Width="96" Height="96" CornerRadius="30"
-                                    Canvas.Right="128" Canvas.Top="28"
-                                    BorderBrush="#59FFFFFF" BorderThickness="1" Background="Transparent"
-                                    RenderTransformOrigin="0.5,0.5">
-                                <Border.RenderTransform>
-                                    <RotateTransform Angle="18"/>
-                                </Border.RenderTransform>
-                            </Border>
-                        </Canvas>
-                        <Canvas RenderTransformOrigin="1,1"
-                                Visibility="{Binding PolygonStyle, Converter={StaticResource AnnouncementPolygonVisibilityConverter}, ConverterParameter=tile}">
-                            <Canvas.RenderTransform>
-                                <ScaleTransform ScaleX="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource AnnouncementDecorScaleConverter}}"
-                                                ScaleY="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource AnnouncementDecorScaleConverter}}"/>
-                            </Canvas.RenderTransform>
-                            <Border Width="320" Height="320" CornerRadius="122"
-                                    Canvas.Right="-72" Canvas.Bottom="-156"
-                                    BorderBrush="#1AFFFFFF" BorderThickness="38" Background="Transparent"
-                                    RenderTransformOrigin="0.5,0.5">
-                                <Border.RenderTransform>
-                                    <RotateTransform Angle="24"/>
-                                </Border.RenderTransform>
-                            </Border>
-                        </Canvas>
-                        <Canvas RenderTransformOrigin="0,0"
-                                Visibility="{Binding PolygonStyle, Converter={StaticResource AnnouncementPolygonVisibilityConverter}, ConverterParameter=circles}">
-                            <Canvas.RenderTransform>
-                                <ScaleTransform ScaleX="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource AnnouncementDecorScaleConverter}}"
-                                                ScaleY="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource AnnouncementDecorScaleConverter}}"/>
-                            </Canvas.RenderTransform>
-                            <Ellipse Width="300" Height="300"
-                                     Canvas.Left="-64" Canvas.Top="-96"
-                                     Stroke="#4DFFFFFF" StrokeThickness="1.25" Fill="Transparent"/>
-                            <Ellipse Width="220" Height="220"
-                                     Canvas.Left="-12" Canvas.Top="-40"
-                                     Stroke="#33FFFFFF" StrokeThickness="1.25" Fill="Transparent"/>
-                        </Canvas>
-                        <Canvas RenderTransformOrigin="1,0"
-                                Visibility="{Binding PolygonStyle, Converter={StaticResource AnnouncementPolygonVisibilityConverter}, ConverterParameter=dots}">
-                            <Canvas.RenderTransform>
-                                <ScaleTransform ScaleX="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource AnnouncementDecorScaleConverter}}"
-                                                ScaleY="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource AnnouncementDecorScaleConverter}}"/>
-                            </Canvas.RenderTransform>
-                            <Ellipse Width="22" Height="22" Fill="#38FFFFFF" Canvas.Right="42" Canvas.Top="22"/>
-                            <Ellipse Width="10" Height="10" Fill="#70FFFFFF" Canvas.Right="78" Canvas.Top="18"/>
-                            <Ellipse Width="36" Height="36" Fill="#1FFFFFFF" Canvas.Right="16" Canvas.Top="58"/>
-                            <Ellipse Width="14" Height="14" Fill="#55FFFFFF" Canvas.Right="108" Canvas.Top="64"/>
-                            <Ellipse Width="8" Height="8" Fill="#8CFFFFFF" Canvas.Right="64" Canvas.Top="96"/>
-                            <Ellipse Width="18" Height="18" Fill="#2EFFFFFF" Canvas.Right="132" Canvas.Top="28"/>
-                        </Canvas>
-                        <Canvas RenderTransformOrigin="1,1"
-                                Visibility="{Binding PolygonStyle, Converter={StaticResource AnnouncementPolygonVisibilityConverter}, ConverterParameter=diamond}">
-                            <Canvas.RenderTransform>
-                                <ScaleTransform ScaleX="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource AnnouncementDecorScaleConverter}}"
-                                                ScaleY="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource AnnouncementDecorScaleConverter}}"/>
-                            </Canvas.RenderTransform>
-                            <Border Width="168" Height="168" BorderBrush="#33FFFFFF" BorderThickness="1.5" Background="Transparent"
-                                    Canvas.Right="-24" Canvas.Bottom="-36" RenderTransformOrigin="0.5,0.5">
-                                <Border.RenderTransform>
-                                    <RotateTransform Angle="45"/>
-                                </Border.RenderTransform>
-                            </Border>
-                            <Border Width="92" Height="92" BorderBrush="#59FFFFFF" BorderThickness="1.25" Background="#14FFFFFF"
-                                    Canvas.Right="72" Canvas.Bottom="18" RenderTransformOrigin="0.5,0.5">
-                                <Border.RenderTransform>
-                                    <RotateTransform Angle="45"/>
-                                </Border.RenderTransform>
-                            </Border>
-                        </Canvas>
-                        <Canvas RenderTransformOrigin="1,0"
-                                Visibility="{Binding PolygonStyle, Converter={StaticResource AnnouncementPolygonVisibilityConverter}, ConverterParameter=hex}">
-                            <Canvas.RenderTransform>
-                                <ScaleTransform ScaleX="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource AnnouncementDecorScaleConverter}}"
-                                                ScaleY="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource AnnouncementDecorScaleConverter}}"/>
-                            </Canvas.RenderTransform>
-                            <Polygon Points="90,6 164,48 164,132 90,174 16,132 16,48"
-                                     Stroke="#40FFFFFF" StrokeThickness="1.5" Fill="Transparent"
-                                     StrokeLineJoin="Round"
-                                     Canvas.Right="-8" Canvas.Top="-36"/>
-                            <Polygon Points="46,4 82,24 82,66 46,86 10,66 10,24"
-                                     Stroke="#66FFFFFF" StrokeThickness="1.25" Fill="#14FFFFFF"
-                                     StrokeLineJoin="Round"
-                                     Canvas.Right="86" Canvas.Top="28"/>
-                        </Canvas>
-                        <Canvas RenderTransformOrigin="1,0"
-                                Visibility="{Binding PolygonStyle, Converter={StaticResource AnnouncementPolygonVisibilityConverter}, ConverterParameter=arc}">
-                            <Canvas.RenderTransform>
-                                <ScaleTransform ScaleX="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource AnnouncementDecorScaleConverter}}"
-                                                ScaleY="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource AnnouncementDecorScaleConverter}}"/>
-                            </Canvas.RenderTransform>
-                            <Path Stroke="#2EFFFFFF" StrokeThickness="22" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
-                                  Fill="Transparent" Canvas.Right="-36" Canvas.Top="-48"
-                                  Data="M 20,210 A 160,160 0 0 1 230,28"/>
-                            <Path Stroke="#55FFFFFF" StrokeThickness="8" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
-                                  Fill="Transparent" Canvas.Right="8" Canvas.Top="-8"
-                                  Data="M 36,168 A 112,112 0 0 1 176,24"/>
-                        </Canvas>
-                        <Canvas RenderTransformOrigin="1,1"
-                                Visibility="{Binding PolygonStyle, Converter={StaticResource AnnouncementPolygonVisibilityConverter}, ConverterParameter=bars}">
-                            <Canvas.RenderTransform>
-                                <ScaleTransform ScaleX="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource AnnouncementDecorScaleConverter}}"
-                                                ScaleY="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource AnnouncementDecorScaleConverter}}"/>
-                            </Canvas.RenderTransform>
-                            <Border Width="16" Height="52" CornerRadius="8" Background="#2EFFFFFF" Canvas.Right="24" Canvas.Bottom="22"/>
-                            <Border Width="16" Height="96" CornerRadius="8" Background="#47FFFFFF" Canvas.Right="50" Canvas.Bottom="22"/>
-                            <Border Width="16" Height="38" CornerRadius="8" Background="#24FFFFFF" Canvas.Right="76" Canvas.Bottom="22"/>
-                            <Border Width="16" Height="74" CornerRadius="8" Background="#38FFFFFF" Canvas.Right="102" Canvas.Bottom="22"/>
-                            <Border Width="16" Height="120" CornerRadius="8" Background="#1FFFFFFF" Canvas.Right="128" Canvas.Bottom="22"/>
-                        </Canvas>
-                    </Grid>
-
-                    <Border CornerRadius="16" Background="{StaticResource HomeHeroHighlightBrush}" IsHitTestVisible="False"
-                            Visibility="{Binding HasBackgroundImage, Converter={StaticResource BooleanToVisibilityReConverter}}"/>
-
-                    <Grid Margin="22,16,18,14">
-                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" MaxWidth="800">
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                <Border Style="{StaticResource HomeHeroTagStyle}"
-                                        Visibility="{Binding HasTag, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                    <TextBlock Text="{Binding Tag}" Foreground="White"
-                                               FontSize="10" FontWeight="SemiBold"/>
-                                </Border>
-                                <TextBlock Text="{Binding DateText}" Foreground="#B3FFFFFF"
-                                           FontSize="10" Margin="8,0,0,0" VerticalAlignment="Center"
-                                           Visibility="{Binding HasDate, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                            </StackPanel>
-
-                            <TextBlock Text="{Binding Title}"
-                                       Foreground="White" FontSize="20" FontWeight="SemiBold"
-                                       TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxHeight="56"/>
-
-                            <TextBlock Text="{Binding Body}"
-                                       Foreground="#E6FFFFFF" FontSize="12.5" LineHeight="19"
-                                       TextWrapping="Wrap" Margin="0,6,0,0"
-                                       TextTrimming="CharacterEllipsis" MaxHeight="60"
-                                       Visibility="{Binding HasBody, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-
-                            <Button Margin="0,8,0,0"
-                                    Style="{StaticResource HomeHeroActionButtonStyle}"
-                                    Content="{Binding ActionLabel}"
-                                    Command="{Binding Data.OpenAnnouncementActionCommand, Source={StaticResource VmProxy}}"
-                                    CommandParameter="{Binding}"
-                                    Visibility="{Binding HasAction, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                        </StackPanel>
-                    </Grid>
+                    <StackPanel Grid.Column="1" Margin="12,0,8,0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Title}" FontSize="13.5" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource HomeInkBrush}" TextTrimming="CharacterEllipsis"/>
+                        <TextBlock Text="{Binding Description}" FontSize="11.5" Margin="0,1,0,0"
+                                   Foreground="{DynamicResource HomeSubBrush}" TextTrimming="CharacterEllipsis"/>
+                    </StackPanel>
+                    <Border Grid.Column="2" Style="{StaticResource HomeWidgetPickerIndicatorStyle}">
+                        <TextBlock Style="{StaticResource HomeWidgetPickerIndicatorGlyphStyle}"/>
+                    </Border>
                 </Grid>
+            </Button>
+        </DataTemplate>
+
+        <!-- ===== 公告轮播页：浅色渐变底 + 深色文字 + 右侧品牌图形；自定义图片背景时改为白字 ===== -->
+        <DataTemplate x:Key="HomeAnnouncementSlideTemplate">
+            <Grid Background="{Binding Converter={StaticResource AnnouncementLightThemeConverter}}">
+                <Border IsHitTestVisible="False"
+                        Visibility="{Binding HasBackgroundImage, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Border.Background>
+                        <ImageBrush ImageSource="{Binding BackgroundImage}" Stretch="UniformToFill"/>
+                    </Border.Background>
+                </Border>
+                <Border IsHitTestVisible="False"
+                        Background="{StaticResource HomeHeroImageScrimBrush}"
+                        Visibility="{Binding HasBackgroundImage, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.25*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Margin="34,30,16,30" VerticalAlignment="Top">
+                        <StackPanel Orientation="Horizontal">
+                            <Border Style="{StaticResource HomeSlideTagBorderStyle}"
+                                    Visibility="{Binding HasTag, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <TextBlock Text="{Binding Tag}" Style="{StaticResource HomeSlideTagTextStyle}"/>
+                            </Border>
+                            <TextBlock Text="{Binding DateText}" Style="{StaticResource HomeSlideMetaStyle}"
+                                       Margin="8,0,0,0"
+                                       Visibility="{Binding HasDate, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                        </StackPanel>
+
+                        <TextBlock Text="{Binding Title}" Style="{StaticResource HomeSlideTitleStyle}"/>
+
+                        <TextBlock Text="{Binding Body}" Style="{StaticResource HomeSlideBodyStyle}"
+                                   Visibility="{Binding HasBody, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                        <Button Margin="0,14,0,0"
+                                Style="{StaticResource HomeSlideActionButtonStyle}"
+                                Content="{Binding ActionLabel}"
+                                Command="{Binding Data.OpenAnnouncementActionCommand, Source={StaticResource VmProxy}}"
+                                CommandParameter="{Binding}"
+                                Visibility="{Binding HasAction, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    </StackPanel>
+
+                    <!-- 品牌图形：仅在没有自定义图片背景时显示 -->
+                    <Viewbox Grid.Column="1" MaxWidth="170" Stretch="Uniform" Margin="0,0,24,0"
+                             HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False"
+                             Visibility="{Binding HasBackgroundImage, Converter={StaticResource BooleanToVisibilityReConverter}}">
+                        <Canvas Width="170" Height="136">
+                            <Canvas.Effect>
+                                <DropShadowEffect Color="{DynamicResource ThemeAccentColor}" Opacity="0.28" BlurRadius="26" ShadowDepth="10" Direction="270"/>
+                            </Canvas.Effect>
+                            <Polygon Points="58,8 125,8 116,63 41,114 7,102 8,68"
+                                     Fill="{DynamicResource ThemeGlyphBrush}" Stroke="{DynamicResource ThemeGlyphBrush}"
+                                     StrokeLineJoin="Round" StrokeThickness="5"/>
+                            <Polygon Points="140,7 163,75 148,90 129,64"
+                                     Fill="{DynamicResource ThemeAccentDeepBrush}" Stroke="{DynamicResource ThemeAccentDeepBrush}"
+                                     StrokeLineJoin="Round" StrokeThickness="5"/>
+                            <Polygon Points="119,75 136,97 94,129 57,118"
+                                     Fill="{DynamicResource ThemeAccentLighterBrush}" Stroke="{DynamicResource ThemeAccentLighterBrush}"
+                                     StrokeLineJoin="Round" StrokeThickness="5"/>
+                        </Canvas>
+                    </Viewbox>
+                </Grid>
+            </Grid>
         </DataTemplate>
     </Page.Resources>
 
@@ -368,219 +303,496 @@
     </i:Interaction.Triggers>
 
     <Grid ClipToBounds="True">
-        <Grid Margin="16">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-            <!-- ===== 公告：主题渐变 / 自定义图片大卡轮播 ===== -->
-            <Border x:Name="HomeAnnouncementCard" Grid.Row="0" Margin="0,0,0,14" CornerRadius="16" MinHeight="150"
-                    helpers:HomeRoundedClip.Radius="16"
-                    Visibility="{Binding HasAnnouncement, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <i:Interaction.Behaviors>
-                    <helpers:HomeAnnouncementWheelBehavior
-                        PreviousCommand="{Binding PreviousAnnouncementCommand}"
-                        NextCommand="{Binding NextAnnouncementCommand}"/>
-                </i:Interaction.Behaviors>
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseEnter">
-                        <i:InvokeCommandAction Command="{Binding PauseAnnouncementCarouselCommand}"/>
-                    </i:EventTrigger>
-                    <i:EventTrigger EventName="MouseLeave">
-                        <i:InvokeCommandAction Command="{Binding ResumeAnnouncementCarouselCommand}"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-                <Grid>
-                    <Grid x:Name="AnnouncementSlideHost">
-                        <i:Interaction.Behaviors>
-                            <helpers:HomeAnnouncementSlideBehavior
-                                SlideId="{Binding AnnouncementSlideId}"
-                                Direction="{Binding AnnouncementSlideDirection}"
-                                Incoming="{Binding ElementName=AnnouncementIncoming}"
-                                Outgoing="{Binding ElementName=AnnouncementOutgoing}"
-                                CompletedCommand="{Binding CompleteAnnouncementSlideCommand}"/>
-                        </i:Interaction.Behaviors>
-                        <ContentPresenter x:Name="AnnouncementIncoming"
-                                          Content="{Binding CurrentAnnouncement}"
-                                          ContentTemplate="{StaticResource HomeAnnouncementSlideTemplate}">
-                            <ContentPresenter.RenderTransform>
-                                <TranslateTransform/>
-                            </ContentPresenter.RenderTransform>
-                        </ContentPresenter>
-                        <!-- 零尺寸画布不参与高度测量，滑出的一页仍按卡片尺寸绘制。 -->
-                        <Canvas Width="0" Height="0" HorizontalAlignment="Left" VerticalAlignment="Top" IsHitTestVisible="False">
-                            <ContentPresenter x:Name="AnnouncementOutgoing"
-                                              Content="{Binding OutgoingAnnouncement}"
-                                              ContentTemplate="{StaticResource HomeAnnouncementSlideTemplate}"
-                                              Width="{Binding ActualWidth, ElementName=AnnouncementSlideHost}"
-                                              Height="{Binding ActualHeight, ElementName=AnnouncementSlideHost}"
-                                              Visibility="Collapsed"
-                                              IsHitTestVisible="False">
-                                <ContentPresenter.RenderTransform>
-                                    <TranslateTransform/>
-                                </ContentPresenter.RenderTransform>
-                            </ContentPresenter>
+        <!-- 页面顶栏：模块名称；滚到最底部时，右侧淡入「回到顶部」 -->
+        <ContentControl Grid.Row="0" Style="{StaticResource PageTitleBarStyle}" Background="{DynamicResource ThemePageBgBrush}"
+                        Tag="{Binding [home],Source={x:Static lg:LanguageService.Instance}, FallbackValue=主页}">
+            <Button Style="{StaticResource HomeBackToTopButtonStyle}"
+                    Opacity="0"
+                    IsHitTestVisible="False"
+                    Focusable="False"
+                    helpers:HomeScrollEdge.ScrollTarget="{Binding ElementName=HomeScrollViewer}">
+                <Button.RenderTransform>
+                    <TranslateTransform X="8"/>
+                </Button.RenderTransform>
+                <StackPanel Orientation="Horizontal">
+                    <Viewbox Width="14" Height="14" Margin="0,0,6,0" VerticalAlignment="Center" Stretch="Uniform">
+                        <Canvas Width="16" Height="16">
+                            <Rectangle Canvas.Left="2.4" Canvas.Top="2.1" Width="11.2" Height="1.7"
+                                       RadiusX="0.85" RadiusY="0.85"
+                                       Fill="{DynamicResource HomeBrandBrush}"/>
+                            <Path Fill="{DynamicResource HomeBrandBrush}"
+                                  Data="M8,5.15 L12.05,9.35 H9.2 V13.7 H6.8 V9.35 H3.95 Z"/>
                         </Canvas>
-                    </Grid>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top"
-                                Margin="0,16,18,0" Panel.ZIndex="2">
-                            <Button Style="{StaticResource HomeHeroNavButtonStyle}" Margin="0,0,10,0"
-                                    Command="{Binding RefreshAnnouncementCommand}"
-                                    IsEnabled="{Binding IsAnnouncementIdle}"
-                                    ToolTip="{Binding [refresh],Source={x:Static lg:LanguageService.Instance}}">
-                                <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="11"/>
-                            </Button>
-                            <Button Style="{StaticResource HomeHeroNavButtonStyle}" Margin="0,0,6,0"
-                                    Command="{Binding PreviousAnnouncementCommand}"
-                                    Visibility="{Binding HasMultipleAnnouncements, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                <TextBlock Text="&#xE76B;" FontFamily="Segoe MDL2 Assets" FontSize="11"/>
-                            </Button>
-                            <Button Style="{StaticResource HomeHeroNavButtonStyle}"
-                                    Command="{Binding NextAnnouncementCommand}"
-                                    Visibility="{Binding HasMultipleAnnouncements, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                <TextBlock Text="&#xE76C;" FontFamily="Segoe MDL2 Assets" FontSize="11"/>
-                            </Button>
-                        </StackPanel>
+                    </Viewbox>
+                    <TextBlock Text="{Binding [home_back_to_top],Source={x:Static lg:LanguageService.Instance}, FallbackValue=回到顶部}"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+        </ContentControl>
 
-                    <ItemsControl ItemsSource="{Binding Announcements}"
-                                  HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                                  Margin="0,0,18,14" Panel.ZIndex="2"
-                                      Visibility="{Binding HasMultipleAnnouncements, Converter={StaticResource BooleanToVisibilityConverter}}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal"/>
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Border Style="{StaticResource HomeHeroDotStyle}">
-                                        <Border.InputBindings>
-                                            <MouseBinding MouseAction="LeftClick"
-                                                          Command="{Binding Data.SelectAnnouncementCommand, Source={StaticResource VmProxy}}"
-                                                          CommandParameter="{Binding}"/>
-                                        </Border.InputBindings>
-                                    </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                </Grid>
-            </Border>
+        <ScrollViewer x:Name="HomeScrollViewer" Grid.Row="1"
+                      helpers:HomeScrollEdge.TrackBottom="True"
+                      VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel MaxWidth="1240" Margin="34,22,34,10">
 
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*"/>
-                    <ColumnDefinition Width="16"/>
-                    <ColumnDefinition Width="2*" MinWidth="240" MaxWidth="420"/>
-                </Grid.ColumnDefinitions>
-
-                <!-- ===== 推荐内容（半透明白卡） ===== -->
-                <Border Grid.Column="0" Style="{StaticResource HomeGlassCardStyle}" Padding="16,14"
-                        VerticalAlignment="Stretch">
+                <!-- ===== 问候区：问候语在左，日期在最右，同一水平线 ===== -->
+                <Border Padding="0,4,0,0" Margin="0,0,0,20">
                     <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-
-                        <DockPanel Grid.Row="0" Margin="0,0,0,10">
-                            <!-- 分段控件：官方分组 + 个人，与标题同行、区域最右侧 -->
-                            <Border DockPanel.Dock="Right" Margin="8,0,0,0" Style="{StaticResource HomeSegmentedWrapStyle}">
-                                <Grid>
-                                    <!-- 选中滑块单独成层，阴影不作用在文字上，避免高 DPI 下选中文字发糊 -->
-                                    <Grid x:Name="HomeGroupThumb"
-                                          HorizontalAlignment="Left"
-                                          VerticalAlignment="Top"
-                                          IsHitTestVisible="False"
-                                          Visibility="Collapsed"
-                                          SnapsToDevicePixels="True"
-                                          UseLayoutRounding="True">
-                                        <Border Background="#14000000" CornerRadius="4" Margin="0,1,0,0"/>
-                                        <Border Background="White" CornerRadius="4" Margin="0,0,0,1"/>
-                                    </Grid>
-                                    <StackPanel Orientation="Horizontal">
-                                        <i:Interaction.Behaviors>
-                                            <helpers:HomeSegmentedThumbBehavior
-                                                Indicator="{Binding ElementName=HomeGroupThumb}"
-                                                AlternateTarget="{Binding ElementName=HomePersonalGroupTab}"
-                                                IsAlternateSelected="{Binding IsSelectedGroupPersonal}"/>
-                                        </i:Interaction.Behaviors>
-                                        <ListBox ItemsSource="{Binding OfficialLinkGroups}"
-                                                 SelectedItem="{Binding SelectedOfficialGroup, Mode=TwoWay}"
-                                                 DisplayMemberPath="Title"
-                                                 Style="{StaticResource HomeGroupTabListStyle}"
-                                                 ItemContainerStyle="{StaticResource HomeGroupTabItemStyle}"/>
-                                        <Button x:Name="HomePersonalGroupTab"
-                                                Command="{Binding SelectPersonalGroupCommand}"
-                                                Style="{StaticResource HomePersonalTabButtonStyle}"
-                                                Content="{Binding [home_personal_group],Source={x:Static lg:LanguageService.Instance}}"/>
-                                    </StackPanel>
-                                </Grid>
-                            </Border>
-                            <TextBlock Text="{Binding [home_recommended_content],Source={x:Static lg:LanguageService.Instance}}"
-                                       FontSize="14" FontWeight="SemiBold" Foreground="#1C1C1E" VerticalAlignment="Center"/>
-                        </DockPanel>
-
-                        <TextBlock Grid.Row="1" Text="{Binding [home_group_empty_links],Source={x:Static lg:LanguageService.Instance}}"
-                                   FontSize="13" Foreground="#8E8E93" HorizontalAlignment="Center" Margin="0,0,0,4"
-                                   TextAlignment="Center">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding SelectedLinkGroup.Items.Count}" Value="0">
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" VerticalAlignment="Center"
+                                   FontSize="28" FontWeight="SemiBold" Foreground="{DynamicResource HomeInkBrush}"
+                                   TextTrimming="CharacterEllipsis">
+                            <Run Text="{Binding GreetingPrefix, Mode=OneWay}"/><Run Text="{Binding GreetingHighlight, Mode=OneWay}"
+                                                                                   Foreground="{DynamicResource HomeBrandBrush}"/><Run Text="{Binding GreetingTail, Mode=OneWay}"/>
                         </TextBlock>
-
-                        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
-                                      VerticalAlignment="Stretch" Padding="4,6,4,4">
-                            <ItemsControl HorizontalAlignment="Left">
-                                <ItemsControl.ItemsSource>
-                                    <CompositeCollection>
-                                        <CollectionContainer Collection="{Binding Data.SelectedLinkGroup.Items, Source={StaticResource VmProxy}}"/>
-                                        <helpers:HomeAddLinkMarker/>
-                                    </CompositeCollection>
-                                </ItemsControl.ItemsSource>
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <WrapPanel Orientation="Horizontal"/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                            </ItemsControl>
-                        </ScrollViewer>
+                        <TextBlock Grid.Column="1" Margin="24,0,0,0"
+                                   HorizontalAlignment="Right" VerticalAlignment="Center" TextAlignment="Right"
+                                   FontSize="13" FontFamily="Cascadia Mono, Consolas"
+                                   Foreground="{DynamicResource HomeSubBrush}">
+                            <Run Text="{Binding TodayText, Mode=OneWay}"/><Run Text="  "/><Run Text="{Binding WeekdayText, Mode=OneWay}"/>
+                        </TextBlock>
                     </Grid>
                 </Border>
 
-                <!-- ===== 小组件（半透明白卡） ===== -->
-                <Border Grid.Column="2" Style="{StaticResource HomeGlassCardStyle}" Padding="14,14"
-                        VerticalAlignment="Stretch">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <DockPanel Grid.Row="0" Margin="0,0,0,10">
-                            <Button DockPanel.Dock="Right" Style="{StaticResource HomeToolbarButtonStyle}" Margin="0"
-                                    Command="{Binding AddWidgetCommand}"
-                                    ToolTip="{Binding [add_widget],Source={x:Static lg:LanguageService.Instance}}">
-                                <TextBlock Text="&#xE74C;" FontFamily="Segoe MDL2 Assets" FontSize="15"
+                <!-- ===== 公告轮播 + 小组件 ===== -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.6*"/>
+                        <ColumnDefinition Width="36"/>
+                        <ColumnDefinition Width="1*" MinWidth="260"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- 公告 -->
+                    <StackPanel Grid.Column="0"
+                                Visibility="{Binding HasAnnouncement, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Grid Height="28" Margin="0,0,0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Style="{StaticResource HomeSectionTitleTextStyle}"
+                                       Text="{Binding [home_section_announcements],Source={x:Static lg:LanguageService.Instance}}"/>
+                            <Border Grid.Column="1" Height="1" Margin="10,0,10,0" VerticalAlignment="Center"
+                                    Background="{DynamicResource HomeLineBrush}"/>
+                            <Button Grid.Column="2" Style="{StaticResource HomeToolbarButtonStyle}"
+                                    Width="28" Height="28" MinWidth="28" MinHeight="28" Margin="0"
+                                    Command="{Binding RefreshCatalogCommand}"
+                                    IsEnabled="{Binding IsCatalogIdle}"
+                                    ToolTip="{Binding [refresh],Source={x:Static lg:LanguageService.Instance}}">
+                                <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="13"
                                            Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
                                            VerticalAlignment="Center" HorizontalAlignment="Center"/>
                             </Button>
-                            <TextBlock Text="{Binding [home_widgets_section],Source={x:Static lg:LanguageService.Instance}}"
-                                       FontSize="14" FontWeight="SemiBold" Foreground="#1C1C1E" VerticalAlignment="Center"/>
-                        </DockPanel>
-                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                            <ItemsControl ItemsSource="{Binding Widgets}" ItemTemplate="{StaticResource WidgetPanelTileTemplate}"/>
-                        </ScrollViewer>
+                        </Grid>
+
+                        <!-- 公告卡与右侧小组件卡高度固定一致（368），两者永远底边齐平 -->
+                        <Border x:Name="HomeAnnouncementCard" Style="{StaticResource HomeSurfaceCardStyle}"
+                                Height="368" CornerRadius="18" helpers:HomeRoundedClip.Radius="18"
+                                helpers:ScrollWheelBehavior.IgnoreWheel="True">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseEnter">
+                                    <i:InvokeCommandAction Command="{Binding PauseAnnouncementCarouselCommand}"/>
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="MouseLeave">
+                                    <i:InvokeCommandAction Command="{Binding ResumeAnnouncementCarouselCommand}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- 舞台：当前页 + 滑出页 + 浮层按钮 -->
+                                <Grid Grid.Row="0">
+                                    <Grid x:Name="AnnouncementSlideHost">
+                                        <i:Interaction.Behaviors>
+                                            <helpers:HomeAnnouncementSlideBehavior
+                                                SlideId="{Binding AnnouncementSlideId}"
+                                                Direction="{Binding AnnouncementSlideDirection}"
+                                                Incoming="{Binding ElementName=AnnouncementIncoming}"
+                                                Outgoing="{Binding ElementName=AnnouncementOutgoing}"
+                                                CompletedCommand="{Binding CompleteAnnouncementSlideCommand}"/>
+                                        </i:Interaction.Behaviors>
+                                        <ContentPresenter x:Name="AnnouncementIncoming"
+                                                          Content="{Binding CurrentAnnouncement}"
+                                                          ContentTemplate="{StaticResource HomeAnnouncementSlideTemplate}">
+                                            <ContentPresenter.RenderTransform>
+                                                <TranslateTransform/>
+                                            </ContentPresenter.RenderTransform>
+                                        </ContentPresenter>
+                                        <!-- 零尺寸画布不参与高度测量，滑出的一页仍按卡片尺寸绘制。 -->
+                                        <Canvas Width="0" Height="0" HorizontalAlignment="Left" VerticalAlignment="Top" IsHitTestVisible="False">
+                                            <ContentPresenter x:Name="AnnouncementOutgoing"
+                                                              Content="{Binding OutgoingAnnouncement}"
+                                                              ContentTemplate="{StaticResource HomeAnnouncementSlideTemplate}"
+                                                              Width="{Binding ActualWidth, ElementName=AnnouncementSlideHost}"
+                                                              Height="{Binding ActualHeight, ElementName=AnnouncementSlideHost}"
+                                                              Visibility="Collapsed"
+                                                              IsHitTestVisible="False">
+                                                <ContentPresenter.RenderTransform>
+                                                    <TranslateTransform/>
+                                                </ContentPresenter.RenderTransform>
+                                            </ContentPresenter>
+                                        </Canvas>
+                                    </Grid>
+
+                                    <!-- 右上：计数 -->
+                                    <Border Background="#CCFFFFFF" CornerRadius="10" Padding="9,3"
+                                            HorizontalAlignment="Right" VerticalAlignment="Top"
+                                            Margin="0,14,18,0" Panel.ZIndex="2"
+                                            Visibility="{Binding HasMultipleAnnouncements, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <TextBlock Text="{Binding AnnouncementCounterText}" FontSize="12"
+                                                   FontFamily="Cascadia Mono, Consolas"
+                                                   Foreground="{DynamicResource HomeSubBrush}"/>
+                                    </Border>
+
+                                    <!-- 右下：上一页 / 下一页 -->
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                                Margin="0,0,22,22" Panel.ZIndex="2"
+                                                Visibility="{Binding HasMultipleAnnouncements, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <Button Style="{StaticResource HomeCarouselRoundButtonStyle}" Margin="0,0,8,0"
+                                                Command="{Binding PreviousAnnouncementCommand}">
+                                            <TextBlock Text="&#xE76B;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
+                                        </Button>
+                                        <Button Style="{StaticResource HomeCarouselRoundButtonStyle}"
+                                                Command="{Binding NextAnnouncementCommand}">
+                                            <TextBlock Text="&#xE76C;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+
+                                <!-- 底部缩略条：单条公告时也显示，保证卡片高度固定；多条时当前项带 6 秒进度条 -->
+                                <Border Grid.Row="1" Height="66" BorderBrush="{DynamicResource HomeLineBrush}" BorderThickness="0,1,0,0">
+                                    <ListBox ItemsSource="{Binding Announcements}"
+                                             SelectedItem="{Binding CurrentAnnouncement, Mode=OneWay}"
+                                             ItemContainerStyle="{StaticResource HomeAnnouncementStripItemStyle}"
+                                             Background="Transparent" BorderThickness="0" Padding="0"
+                                             ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                                             ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                        <i:Interaction.Behaviors>
+                                            <helpers:HomeListBoxScrollIntoViewBehavior/>
+                                        </i:Interaction.Behaviors>
+                                        <ListBox.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Horizontal"/>
+                                            </ItemsPanelTemplate>
+                                        </ListBox.ItemsPanel>
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Background="Transparent">
+                                                    <Grid.InputBindings>
+                                                        <MouseBinding MouseAction="LeftClick"
+                                                                      Command="{Binding Data.SelectAnnouncementCommand, Source={StaticResource VmProxy}}"
+                                                                      CommandParameter="{Binding}"/>
+                                                    </Grid.InputBindings>
+                                                    <!-- 只有多条公告会自动轮播，单条时不显示进度条 -->
+                                                    <Grid VerticalAlignment="Top"
+                                                          Visibility="{Binding Data.HasMultipleAnnouncements, Source={StaticResource VmProxy}, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                        <Border Style="{StaticResource HomeAnnouncementProgressBarStyle}">
+                                                            <Border.RenderTransform>
+                                                                <ScaleTransform ScaleX="0"/>
+                                                            </Border.RenderTransform>
+                                                        </Border>
+                                                    </Grid>
+                                                    <StackPanel Margin="16,12">
+                                                        <TextBlock Text="{Binding DateText}" FontSize="12"
+                                                                   Foreground="{DynamicResource HomeSubBrush}"/>
+                                                        <TextBlock Text="{Binding Title}"
+                                                                   Style="{StaticResource HomeAnnouncementStripTitleStyle}"/>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- 小组件 -->
+                    <StackPanel Grid.Column="2">
+                        <Grid Height="28" Margin="0,0,0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Style="{StaticResource HomeSectionTitleTextStyle}"
+                                       Text="{Binding [home_section_widgets],Source={x:Static lg:LanguageService.Instance}}"/>
+                            <Border Grid.Column="1" Height="1" Margin="10,0,10,0" VerticalAlignment="Center"
+                                    Background="{DynamicResource HomeLineBrush}"/>
+                            <Button x:Name="AddWidgetButton" Grid.Column="2"
+                                    Style="{StaticResource HomeAddWidgetToggleButtonStyle}"
+                                    Width="28" Height="28" MinWidth="28" MinHeight="28" Margin="0"
+                                    Command="{Binding AddWidgetCommand}"
+                                    ToolTip="{Binding [add_widget],Source={x:Static lg:LanguageService.Instance}}">
+                                <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="13"
+                                           Style="{StaticResource HomeAddWidgetPlusGlyphStyle}"
+                                           Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                           VerticalAlignment="Center" HorizontalAlignment="Center"
+                                           RenderTransformOrigin="0.5,0.5">
+                                    <TextBlock.RenderTransform>
+                                        <RotateTransform Angle="0"/>
+                                    </TextBlock.RenderTransform>
+                                </TextBlock>
+                            </Button>
+
+                            <!-- 添加小组件：从“+”按钮下方展开的气泡面板，右缘与按钮右缘对齐 -->
+                            <Popup Grid.Column="2"
+                                   IsOpen="{Binding IsWidgetPickerOpen, Mode=TwoWay}"
+                                   PlacementTarget="{Binding ElementName=AddWidgetButton}"
+                                   Placement="Bottom" HorizontalOffset="-304" VerticalOffset="0"
+                                   StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
+                                <Grid Margin="12,4,12,22" Width="320">
+                                    <Grid.RenderTransform>
+                                        <TranslateTransform Y="-8"/>
+                                    </Grid.RenderTransform>
+                                    <Grid.Triggers>
+                                        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                                                                     From="-8" To="0" Duration="0:0:0.2">
+                                                        <DoubleAnimation.EasingFunction>
+                                                            <CubicEase EasingMode="EaseOut"/>
+                                                        </DoubleAnimation.EasingFunction>
+                                                    </DoubleAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                    </Grid.Triggers>
+
+                                    <Border Style="{StaticResource HomePopupShadowStyle}"/>
+                                    <Border Style="{StaticResource HomeSurfaceCardStyle}" ClipToBounds="True">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <!-- 标题 + 已添加计数 -->
+                                            <Grid Grid.Row="0" Margin="18,16,16,12">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <StackPanel>
+                                                    <TextBlock Text="{Binding [add_widget],Source={x:Static lg:LanguageService.Instance}}"
+                                                               FontSize="15" FontWeight="SemiBold"
+                                                               Foreground="{DynamicResource HomeInkBrush}"/>
+                                                    <TextBlock Text="{Binding [add_widget_subtitle],Source={x:Static lg:LanguageService.Instance}}"
+                                                               FontSize="11.5" Margin="0,3,0,0"
+                                                               Foreground="{DynamicResource HomeSubBrush}"
+                                                               TextTrimming="CharacterEllipsis"/>
+                                                </StackPanel>
+                                                <Border Grid.Column="1" Margin="10,0,0,0" Padding="9,3"
+                                                        VerticalAlignment="Top" CornerRadius="10"
+                                                        Background="{DynamicResource HomeSoftBrush}">
+                                                    <TextBlock Text="{Binding WidgetPickerCountText}" FontSize="11.5"
+                                                               FontFamily="Cascadia Mono, Consolas"
+                                                               Foreground="{DynamicResource HomeBrandBrush}"/>
+                                                </Border>
+                                            </Grid>
+
+                                            <!-- 搜索 -->
+                                            <uc:SearchBox Grid.Row="1" Height="32" Margin="14,0,14,8"
+                                                          FontSize="13" IconFontSize="13" Padding="12,0"
+                                                          CornerRadius="8" BorderBrush="#DFE3EE"
+                                                          FocusBorderBrush="{DynamicResource HomeBrandBrush}"
+                                                          IconBrush="{DynamicResource HomeMuteBrush}"
+                                                          PlaceholderBrush="{DynamicResource HomeMuteBrush}"
+                                                          Foreground="{DynamicResource HomeInkBrush}"
+                                                          ShowClearButton="True"
+                                                          Placeholder="{Binding [search_widgets_hint],Source={x:Static lg:LanguageService.Instance}}"
+                                                          Text="{Binding WidgetPickerSearchText, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                            <!-- 列表 / 空结果 -->
+                                            <Grid Grid.Row="2">
+                                                <ScrollViewer MaxHeight="292" VerticalScrollBarVisibility="Auto"
+                                                              HorizontalScrollBarVisibility="Disabled">
+                                                    <ItemsControl ItemsSource="{Binding WidgetPickerItems}"
+                                                                  ItemTemplate="{StaticResource WidgetPickerRowTemplate}"
+                                                                  Margin="8,0,8,6"/>
+                                                </ScrollViewer>
+                                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,22"
+                                                            Visibility="{Binding HasWidgetPickerMatches, Converter={StaticResource BooleanToVisibilityReConverter}}">
+                                                    <TextBlock Text="&#xE721;" FontFamily="Segoe MDL2 Assets" FontSize="26"
+                                                               Foreground="{DynamicResource HomeMuteBrush}"
+                                                               HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                                                    <TextBlock Text="{Binding [no_matching_widgets],Source={x:Static lg:LanguageService.Instance}}"
+                                                               FontSize="12.5" Foreground="{DynamicResource HomeSubBrush}"
+                                                               HorizontalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </Grid>
+                                    </Border>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                        <!-- 与公告卡同高；小组件超出时在卡内滚动 -->
+                        <!-- 右侧不留内边距：滚动条紧贴圆角卡片的右边缘，内容与滚动条的间距由 ItemsControl 右边距提供 -->
+                        <Border Style="{StaticResource HomeSurfaceCardStyle}" Height="368" Padding="8,12,0,12">
+                            <Grid>
+                                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                                              helpers:ScrollWheelBehavior.PassWheelWhenNotScrollable="True">
+                                    <ItemsControl ItemsSource="{Binding Widgets}"
+                                                  ItemTemplate="{StaticResource WidgetPanelTileTemplate}"
+                                                  Margin="0,0,8,0"/>
+                                </ScrollViewer>
+
+                                <!-- 还没有小组件：给一个虚线引导块，点击展开添加面板 -->
+                                <Button Style="{StaticResource HomeWidgetEmptyAddButtonStyle}"
+                                        Margin="0,0,8,0" Height="150"
+                                        VerticalAlignment="Center"
+                                        Command="{Binding AddWidgetCommand}"
+                                        Visibility="{Binding HasWidgets, Converter={StaticResource BooleanToVisibilityReConverter}}">
+                                    <StackPanel HorizontalAlignment="Center">
+                                        <Border Width="40" Height="40" CornerRadius="20"
+                                                Background="{DynamicResource HomeSoftBrush}" HorizontalAlignment="Center">
+                                            <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                                       Foreground="{DynamicResource HomeBrandBrush}"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <TextBlock Text="{Binding [add_widget],Source={x:Static lg:LanguageService.Instance}}"
+                                                   FontSize="13.5" FontWeight="SemiBold" Margin="0,10,0,0"
+                                                   Foreground="{DynamicResource HomeInkBrush}" HorizontalAlignment="Center"/>
+                                        <TextBlock Text="{Binding [add_widget_subtitle],Source={x:Static lg:LanguageService.Instance}}"
+                                                   FontSize="11.5" Margin="0,3,0,0" TextAlignment="Center" TextWrapping="Wrap"
+                                                   Foreground="{DynamicResource HomeSubBrush}" HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </Grid>
+
+                <!-- ===== 推荐内容：左侧分类导航 + 右侧链接网格 ===== -->
+                <!-- 最小高度 = 可视区高度 - 底部边距（10，需与上方 StackPanel 底部 Margin 一致）：滚到底时，推荐内容正好占满整屏 -->
+                <Grid Margin="0,34,0,0"
+                      MinHeight="{Binding ViewportHeight, ElementName=HomeScrollViewer, Converter={StaticResource ViewportFillMinHeightConverter}, ConverterParameter='20,350'}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Margin="0,0,0,16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="280"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding [home_recommended_content],Source={x:Static lg:LanguageService.Instance}}"
+                                       FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource HomeInkBrush}"/>
+                            <TextBlock Text="{Binding [home_links_all_groups_hint],Source={x:Static lg:LanguageService.Instance}}"
+                                       FontSize="12" Margin="14,3,0,0" VerticalAlignment="Center"
+                                       Foreground="{DynamicResource HomeMuteBrush}"
+                                       Visibility="{Binding IsSearchingLinks, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                        </StackPanel>
+                        <uc:SearchBox Grid.Column="2" Height="30" FontSize="13" IconFontSize="13" Padding="12,0"
+                                      CornerRadius="8" BorderBrush="#DFE3EE"
+                                      FocusBorderBrush="{DynamicResource HomeBrandBrush}"
+                                      IconBrush="{DynamicResource HomeMuteBrush}"
+                                      PlaceholderBrush="{DynamicResource HomeMuteBrush}"
+                                      Foreground="{DynamicResource HomeInkBrush}"
+                                      ShowClearButton="True"
+                                      Placeholder="{Binding [home_search_placeholder],Source={x:Static lg:LanguageService.Instance}}"
+                                      Text="{Binding LinkSearchText, UpdateSourceTrigger=PropertyChanged}"/>
+                        <!-- 刷新：与公告区的刷新按钮功能一致，同时刷新公告与推荐内容 -->
+                        <Button Grid.Column="3" Style="{StaticResource HomeToolbarButtonStyle}"
+                                Width="28" Height="28" MinWidth="28" MinHeight="28" Margin="8,0,0,0"
+                                VerticalAlignment="Center"
+                                Command="{Binding RefreshCatalogCommand}"
+                                IsEnabled="{Binding IsCatalogIdle}"
+                                ToolTip="{Binding [refresh],Source={x:Static lg:LanguageService.Instance}}">
+                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="13"
+                                       Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Button>
                     </Grid>
-                </Border>
-            </Grid>
-        </Grid>
+
+                    <Border Grid.Row="1" Style="{StaticResource HomeSurfaceCardStyle}" Padding="14">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="190"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- 分类导航 -->
+                            <Border Grid.Column="0" BorderBrush="{DynamicResource HomeLineBrush}" BorderThickness="0,0,1,0"
+                                    Padding="0,0,12,0">
+                                <ListBox ItemsSource="{Binding NavGroups}"
+                                         SelectedItem="{Binding SelectedLinkGroup, Mode=TwoWay}"
+                                         Style="{StaticResource HomeNavListStyle}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding Items.Count}" FontSize="11"
+                                                           FontFamily="Cascadia Mono, Consolas" VerticalAlignment="Center"
+                                                           Foreground="{DynamicResource HomeMuteBrush}"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </Border>
+
+                            <!-- 链接网格 -->
+                            <StackPanel Grid.Column="1" Margin="20,4,0,0">
+                                <ItemsControl>
+                                    <ItemsControl.ItemsSource>
+                                        <CompositeCollection>
+                                            <CollectionContainer Collection="{Binding Data.DisplayedLinks, Source={StaticResource VmProxy}}"/>
+                                            <helpers:HomeAddLinkMarker/>
+                                        </CompositeCollection>
+                                    </ItemsControl.ItemsSource>
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <uc:EvenWrapPanel PreferredItemWidth="232" MinItemWidth="200"
+                                                                 MaxItemWidth="420" ItemGap="8"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </ItemsControl>
+                            </StackPanel>
+
+                            <!-- 搜索无结果：动态插画 + 提示，位于链接区域正中（跟随主题色） -->
+                            <uc:EmptyStateView Grid.Column="1"
+                                               IconKind="HomeSearch"
+                                               IconSize="220"
+                                               TitleFontSize="14"
+                                               TitleForeground="{DynamicResource HomeSubBrush}"
+                                               Margin="20,0,0,0"
+                                               MaxWidth="420"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Title="{Binding EmptyLinksMessage}"
+                                               Visibility="{Binding HasNoDisplayedLinks, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <uc:EmptyStateView.Description>
+                                    <uc:TemplateFeedbackHint FontSize="12.5"
+                                                             Foreground="{DynamicResource HomeMuteBrush}"
+                                                             Margin="0,10,0,0"/>
+                                </uc:EmptyStateView.Description>
+                            </uc:EmptyStateView>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>

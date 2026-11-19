@@ -11,6 +11,11 @@ namespace GeoChemistryNexus.Models.SpiderDiagram
     public static class NormalizationData
     {
         /// <summary>
+        /// 蛛网图数据表中元素浓度的单位。样品值、标准化参考值，以及未归一化时的纵轴，都按这个单位。
+        /// </summary>
+        public const string ConcentrationUnit = "ppm";
+
+        /// <summary>
         /// REE 元素默认顺序（La 到 Lu）
         /// </summary>
         public static readonly List<string> ReeElementOrder = new List<string>

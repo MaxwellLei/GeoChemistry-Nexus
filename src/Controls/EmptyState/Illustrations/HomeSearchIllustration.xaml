@@ -1,0 +1,161 @@
+<UserControl x:Class="GeoChemistryNexus.Controls.HomeSearchIllustration"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             IsHitTestVisible="False"
+             SnapsToDevicePixels="False">
+
+    <!-- 主页推荐内容“搜索无结果”插画：链接卡片面板 + 悬浮放大镜；配色全部取自主题色（ThemeArt*），随软件主题切换 -->
+    <UserControl.Resources>
+        <LinearGradientBrush x:Key="LensBrush" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="{DynamicResource ThemeArtSoftAE0Color}" Offset="0"/>
+            <GradientStop Color="{DynamicResource ThemeArtSoftA8CColor}" Offset="1"/>
+        </LinearGradientBrush>
+        <RadialGradientBrush x:Key="GlowBrush">
+            <GradientStop Color="{DynamicResource ThemeArtStrongA1FColor}" Offset="0"/>
+            <GradientStop Color="{DynamicResource ThemeArtStrongA08Color}" Offset="0.7"/>
+            <GradientStop Color="{DynamicResource ThemeArtStrongA00Color}" Offset="1"/>
+        </RadialGradientBrush>
+        <DropShadowEffect x:Key="CardShadow" Color="#0F172A" Opacity="0.06" BlurRadius="10" ShadowDepth="6" Direction="270"/>
+        <DropShadowEffect x:Key="MagShadow" Color="{DynamicResource ThemeArtStrongColor}" Opacity="0.16" BlurRadius="7" ShadowDepth="5" Direction="270"/>
+    </UserControl.Resources>
+
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <!-- 放大镜悬浮搜索 -->
+                    <DoubleAnimation Storyboard.TargetName="MagTranslate" Storyboard.TargetProperty="X"
+                                     From="0" To="-6" Duration="0:0:2" AutoReverse="True" RepeatBehavior="Forever">
+                        <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                    <DoubleAnimation Storyboard.TargetName="MagTranslate" Storyboard.TargetProperty="Y"
+                                     From="0" To="-7" Duration="0:0:2" AutoReverse="True" RepeatBehavior="Forever">
+                        <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                    <DoubleAnimation Storyboard.TargetName="MagRotate" Storyboard.TargetProperty="Angle"
+                                     From="0" To="-2" Duration="0:0:2" AutoReverse="True" RepeatBehavior="Forever">
+                        <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+
+                    <!-- 面板轻微呼吸 -->
+                    <DoubleAnimation Storyboard.TargetName="PanelTranslate" Storyboard.TargetProperty="Y"
+                                     From="0" To="-3" Duration="0:0:2.5" AutoReverse="True" RepeatBehavior="Forever">
+                        <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+
+                    <!-- 搜索框光标闪烁 -->
+                    <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Caret" Storyboard.TargetProperty="Opacity"
+                                                   Duration="0:0:1.1" RepeatBehavior="Forever">
+                        <DiscreteDoubleKeyFrame KeyTime="0:0:0" Value="1"/>
+                        <DiscreteDoubleKeyFrame KeyTime="0:0:0.55" Value="0"/>
+                    </DoubleAnimationUsingKeyFrames>
+
+                    <!-- 被筛掉的卡片淡出淡入 -->
+                    <DoubleAnimation Storyboard.TargetName="TileA" Storyboard.TargetProperty="Opacity"
+                                     From="1" To="0.45" Duration="0:0:1.5" AutoReverse="True" RepeatBehavior="Forever"/>
+                    <DoubleAnimation Storyboard.TargetName="TileB" Storyboard.TargetProperty="Opacity"
+                                     From="1" To="0.45" Duration="0:0:1.9" BeginTime="0:0:0.7" AutoReverse="True" RepeatBehavior="Forever"/>
+                    <DoubleAnimation Storyboard.TargetName="TileC" Storyboard.TargetProperty="Opacity"
+                                     From="1" To="0.45" Duration="0:0:1.7" BeginTime="0:0:1.2" AutoReverse="True" RepeatBehavior="Forever"/>
+
+                    <!-- 空位虚线流动 -->
+                    <DoubleAnimation Storyboard.TargetName="EmptySlot" Storyboard.TargetProperty="StrokeDashOffset"
+                                     From="12" To="0" Duration="0:0:3" RepeatBehavior="Forever"/>
+
+                    <!-- 装饰星点脉冲 -->
+                    <DoubleAnimation Storyboard.TargetName="Spark1" Storyboard.TargetProperty="Opacity"
+                                     From="0.25" To="0.95" Duration="0:0:1.6" AutoReverse="True" RepeatBehavior="Forever"/>
+                    <DoubleAnimation Storyboard.TargetName="Spark2" Storyboard.TargetProperty="Opacity"
+                                     From="0.25" To="0.95" Duration="0:0:1.9" BeginTime="0:0:0.6" AutoReverse="True" RepeatBehavior="Forever"/>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </UserControl.Triggers>
+
+    <Viewbox Stretch="Uniform">
+        <Canvas Width="240" Height="200">
+
+            <!-- 光晕与底部投影 -->
+            <Ellipse Canvas.Left="38" Canvas.Top="24" Width="164" Height="150" Fill="{StaticResource GlowBrush}"/>
+            <Ellipse Canvas.Left="44" Canvas.Top="163" Width="152" Height="18" Fill="#E2E8F0" Opacity="0.65"/>
+
+            <!-- 装饰微粒 -->
+            <Ellipse Canvas.Left="31" Canvas.Top="55" Width="6" Height="6" Fill="{DynamicResource ThemeArtMistBrush}" Opacity="0.7"/>
+            <Ellipse Canvas.Left="200" Canvas.Top="44" Width="8" Height="8" Fill="{DynamicResource ThemeArtSoftBorderBrush}" Opacity="0.9"/>
+            <Path Data="M44,136 L48,140 M48,136 L44,140" Stroke="{DynamicResource ThemeArtMistBrush}" StrokeThickness="1.6"
+                  StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+            <Path x:Name="Spark1" Data="M200,100 L201.2,104.8 L206,106 L201.2,107.2 L200,112 L198.8,107.2 L194,106 L198.8,104.8 Z"
+                  Fill="{DynamicResource ThemeArtLighterBrush}" Opacity="0.25"/>
+            <Path x:Name="Spark2" Data="M36,84 L37,88 L41,89 L37,90 L36,94 L35,90 L31,89 L35,88 Z"
+                  Fill="{DynamicResource ThemeArtMistBrush}" Opacity="0.25"/>
+
+            <!-- 链接面板 -->
+            <Canvas Effect="{StaticResource CardShadow}">
+                <Canvas.RenderTransform>
+                    <TranslateTransform x:Name="PanelTranslate"/>
+                </Canvas.RenderTransform>
+
+                <Rectangle Canvas.Left="52" Canvas.Top="32" Width="128" Height="104" RadiusX="10" RadiusY="10"
+                           Fill="White" Stroke="#DCE3EC" StrokeThickness="1.5"/>
+
+                <!-- 搜索框 -->
+                <Rectangle Canvas.Left="62" Canvas.Top="39" Width="108" Height="11" RadiusX="5.5" RadiusY="5.5" Fill="#F1F5F9"/>
+                <Ellipse Canvas.Left="67" Canvas.Top="41.5" Width="6" Height="6" Stroke="{DynamicResource ThemeArtLighterBrush}" StrokeThickness="1.2"/>
+                <Line X1="72.5" Y1="47" X2="74.5" Y2="49" Stroke="{DynamicResource ThemeArtLighterBrush}" StrokeThickness="1.2" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                <Line x:Name="Caret" X1="80" Y1="42" X2="80" Y2="47" Stroke="{DynamicResource ThemeArtStrongBrush}" StrokeThickness="1.3" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+
+                <!-- 卡片 A -->
+                <Canvas x:Name="TileA">
+                    <Rectangle Canvas.Left="62" Canvas.Top="58" Width="48" Height="30" RadiusX="6" RadiusY="6" Fill="#F8FAFC" Stroke="#E2E8F0" StrokeThickness="1.1"/>
+                    <Rectangle Canvas.Left="68" Canvas.Top="64" Width="10" Height="10" RadiusX="2.5" RadiusY="2.5" Fill="{DynamicResource ThemeArtSoftBrush}" Stroke="{DynamicResource ThemeArtLighterBrush}" StrokeThickness="1"/>
+                    <Line X1="83" Y1="67" X2="102" Y2="67" Stroke="#CBD5E1" StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                    <Line X1="68" Y1="80" X2="100" Y2="80" Stroke="#E2E8F0" StrokeThickness="1.4" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                </Canvas>
+
+                <!-- 卡片 B -->
+                <Canvas x:Name="TileB">
+                    <Rectangle Canvas.Left="122" Canvas.Top="58" Width="48" Height="30" RadiusX="6" RadiusY="6" Fill="#F8FAFC" Stroke="#E2E8F0" StrokeThickness="1.1"/>
+                    <Rectangle Canvas.Left="128" Canvas.Top="64" Width="10" Height="10" RadiusX="2.5" RadiusY="2.5" Fill="{DynamicResource ThemeArtSoftBrush}" Stroke="{DynamicResource ThemeArtLighterBrush}" StrokeThickness="1"/>
+                    <Line X1="143" Y1="67" X2="160" Y2="67" Stroke="#CBD5E1" StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                    <Line X1="128" Y1="80" X2="158" Y2="80" Stroke="#E2E8F0" StrokeThickness="1.4" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                </Canvas>
+
+                <!-- 卡片 C -->
+                <Canvas x:Name="TileC">
+                    <Rectangle Canvas.Left="62" Canvas.Top="96" Width="48" Height="30" RadiusX="6" RadiusY="6" Fill="#F8FAFC" Stroke="#E2E8F0" StrokeThickness="1.1"/>
+                    <Rectangle Canvas.Left="68" Canvas.Top="102" Width="10" Height="10" RadiusX="2.5" RadiusY="2.5" Fill="{DynamicResource ThemeArtSoftBrush}" Stroke="{DynamicResource ThemeArtLighterBrush}" StrokeThickness="1"/>
+                    <Line X1="83" Y1="105" X2="104" Y2="105" Stroke="#CBD5E1" StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                    <Line X1="68" Y1="118" X2="98" Y2="118" Stroke="#E2E8F0" StrokeThickness="1.4" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                </Canvas>
+
+                <!-- 空位（没有匹配项） -->
+                <Rectangle x:Name="EmptySlot" Canvas.Left="122" Canvas.Top="96" Width="48" Height="30" RadiusX="6" RadiusY="6"
+                           Stroke="{DynamicResource ThemeArtMistBrush}" StrokeThickness="1.3" StrokeDashArray="3 3"/>
+            </Canvas>
+
+            <!-- 放大镜 -->
+            <Canvas Effect="{StaticResource MagShadow}">
+                <Canvas.RenderTransform>
+                    <TransformGroup>
+                        <RotateTransform x:Name="MagRotate" CenterX="155" CenterY="125"/>
+                        <TranslateTransform x:Name="MagTranslate"/>
+                    </TransformGroup>
+                </Canvas.RenderTransform>
+                <Path Data="M167,137 L187,157" Stroke="{DynamicResource ThemeArtStrongBrush}" StrokeThickness="7"
+                      StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                <Path Data="M167,137 L173,143" Stroke="{DynamicResource ThemeArtLighterBrush}" StrokeThickness="4"
+                      StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                <Ellipse Canvas.Left="120" Canvas.Top="90" Width="54" Height="54"
+                         Fill="{StaticResource LensBrush}" Stroke="{DynamicResource ThemeArtStrongBrush}" StrokeThickness="3.2"/>
+                <Ellipse Canvas.Left="125" Canvas.Top="95" Width="44" Height="44"
+                         Stroke="White" StrokeThickness="1.2" Opacity="0.8"/>
+                <Path Data="M132,103 A18,18 0 0 1 154,98" Stroke="White" StrokeThickness="2.2"
+                      StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                <Path Data="M142.5,111 C142.5,107.5 145.5,105.5 148,105.5 C150.8,105.5 153,107.5 153,110.2 C153,112.5 151.2,113.8 149.2,115.2 C147.8,116.2 147.5,117.2 147.5,118.8"
+                      Stroke="{DynamicResource ThemeArtStrongBrush}" StrokeThickness="2.4"
+                      StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                <Ellipse Canvas.Left="145.9" Canvas.Top="122.9" Width="3.2" Height="3.2" Fill="{DynamicResource ThemeArtStrongBrush}"/>
+            </Canvas>
+        </Canvas>
+    </Viewbox>
+</UserControl>

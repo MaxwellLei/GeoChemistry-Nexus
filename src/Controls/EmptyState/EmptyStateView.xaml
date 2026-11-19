@@ -1,0 +1,108 @@
+<UserControl x:Class="GeoChemistryNexus.Controls.EmptyStateView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:GeoChemistryNexus.Controls"
+             x:Name="Root">
+
+    <UserControl.Resources>
+        <!-- 插画选择样式：每个 EmptyStateIconKind 对应一个 DataTemplate（每次使用均创建独立实例，动画互不干扰） -->
+        <Style x:Key="IllustrationStyle" TargetType="ContentControl">
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Setter Property="IsTabStop" Value="False"/>
+            <Setter Property="Focusable" Value="False"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IconKind, ElementName=Root}"
+                             Value="{x:Static controls:EmptyStateIconKind.Geothermometer}">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Setter Property="ContentTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <controls:GeothermometerIllustration/>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+
+                <DataTrigger Binding="{Binding IconKind, ElementName=Root}"
+                             Value="{x:Static controls:EmptyStateIconKind.DiagramSearch}">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Setter Property="ContentTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <controls:DiagramSearchIllustration/>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+
+                <DataTrigger Binding="{Binding IconKind, ElementName=Root}"
+                             Value="{x:Static controls:EmptyStateIconKind.PersonalDiagram}">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Setter Property="ContentTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <controls:PersonalDiagramIllustration/>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+
+                <DataTrigger Binding="{Binding IconKind, ElementName=Root}"
+                             Value="{x:Static controls:EmptyStateIconKind.PersonalGeothermometer}">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Setter Property="ContentTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <controls:PersonalGeothermometerIllustration/>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+
+                <DataTrigger Binding="{Binding IconKind, ElementName=Root}"
+                             Value="{x:Static controls:EmptyStateIconKind.HomeSearch}">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Setter Property="ContentTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <controls:HomeSearchIllustration/>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
+        <!-- 动态插画；Content 绑定枚举值仅用于保证模板被实例化（null 内容不会应用模板） -->
+        <ContentControl Style="{StaticResource IllustrationStyle}"
+                        Content="{Binding IconKind, ElementName=Root}"
+                        Width="{Binding IconSize, ElementName=Root}"
+                        HorizontalAlignment="Center"
+                        IsHitTestVisible="False"/>
+
+        <!-- 标题 -->
+        <TextBlock Text="{Binding Title, ElementName=Root}"
+                   Margin="0,8,0,0"
+                   FontSize="{Binding TitleFontSize, ElementName=Root}"
+                   Foreground="{Binding TitleForeground, ElementName=Root}"
+                   HorizontalAlignment="Center"
+                   TextAlignment="Center"
+                   TextWrapping="Wrap">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Style.Triggers>
+                        <Trigger Property="Text" Value="">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+
+        <!-- 附加内容（描述文字、链接、按钮等任意元素） -->
+        <ContentPresenter Content="{Binding Description, ElementName=Root}"
+                          HorizontalAlignment="Center"/>
+    </StackPanel>
+</UserControl>

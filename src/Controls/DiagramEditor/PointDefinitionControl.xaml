@@ -1,34 +1,96 @@
-<UserControl x:Class="GeoChemistryNexus.Controls.PointDefinitionControl"
+﻿<UserControl x:Class="GeoChemistryNexus.Controls.PointDefinitionControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
              xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
              x:Name="RootControl"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
+             d:DesignHeight="40" d:DesignWidth="300"
              Loaded="UserControl_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" SharedSizeGroup="InspectorLabel"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="12"/>
+            <ColumnDefinition Width="6"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <hc:NumericUpDown x:Name="NumericUpDownX" Grid.Column="0"
-                          hc:InfoElement.Title="X" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.TitleWidth="15"
-                          hc:InfoElement.Placeholder="0.0"
-                          Style="{StaticResource ModernNumericUpDownStyle}"
-                          GotFocus="Coordinate_GotFocus"
-                          LostFocus="Coordinate_LostFocus"/>
+        <!-- 名称 + 彩色圆点（Label 为空时整列隐藏） -->
+        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,8,0">
+            <StackPanel.Style>
+                <Style TargetType="StackPanel">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Label, ElementName=RootControl}" Value="">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
+            <Ellipse Width="8" Height="8" Margin="0,0,6,0" VerticalAlignment="Center"
+                     Fill="{Binding DotBrush, ElementName=RootControl}">
+                <Ellipse.Style>
+                    <Style TargetType="Ellipse">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding DotBrush, ElementName=RootControl}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Ellipse.Style>
+            </Ellipse>
+            <TextBlock Text="{Binding Label, ElementName=RootControl}" MinWidth="34" FontSize="12"
+                       Foreground="{StaticResource InspectorLabelBrush}" VerticalAlignment="Center"/>
+        </StackPanel>
 
-        <hc:NumericUpDown x:Name="NumericUpDownY" Grid.Column="2"
-                          hc:InfoElement.Title="Y" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.TitleWidth="15"
-                          hc:InfoElement.Placeholder="0.0"
-                          Style="{StaticResource ModernNumericUpDownStyle}"
-                          GotFocus="Coordinate_GotFocus"
-                          LostFocus="Coordinate_LostFocus"/>
+        <local:NumericUpDown x:Name="NumericUpDownX" Grid.Column="1"
+                             local:ControlAssist.Title="X"
+                             Style="{StaticResource InspectorNumericUpDownStyle}"
+                             GotFocus="Coordinate_GotFocus"
+                             LostFocus="Coordinate_LostFocus"/>
+
+        <local:NumericUpDown x:Name="NumericUpDownY" Grid.Column="3"
+                             local:ControlAssist.Title="Y"
+                             Style="{StaticResource InspectorNumericUpDownStyle}"
+                             GotFocus="Coordinate_GotFocus"
+                             LostFocus="Coordinate_LostFocus"/>
+
+        <!-- 在图上拾取 / 只读锁定 -->
+        <Grid Grid.Column="4" Margin="6,0,0,0" VerticalAlignment="Center">
+            <Button Click="PickPointButton_Click"
+                    ToolTip="{Binding [coordinate_positioning], Source={x:Static lg:LanguageService.Instance}}">
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource InspectorIconButtonStyle}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsReadOnly, ElementName=RootControl}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ShowPickButton, ElementName=RootControl}" Value="False">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <TextBlock FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" Text="&#xe601;" FontSize="14"/>
+            </Button>
+
+            <!-- 只读时显示的小锁 -->
+            <Path Width="12" Height="13" Margin="6,0" Stretch="Uniform" Stroke="{StaticResource InspectorHintBrush}"
+                  StrokeThickness="1.4" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                  Data="M 3,6 V 4 A 3,3 0 0 1 9,4 V 6 M 1.5,6 H 10.5 V 12 H 1.5 Z">
+                <Path.Style>
+                    <Style TargetType="Path">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsReadOnly, ElementName=RootControl}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Path.Style>
+            </Path>
+        </Grid>
     </Grid>
 </UserControl>

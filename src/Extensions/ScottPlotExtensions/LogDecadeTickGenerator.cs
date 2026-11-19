@@ -15,6 +15,12 @@ namespace GeoChemistryNexus.Extensions.ScottPlotExtensions
     {
         public bool ShowMinorTicks { get; set; } = true;
 
+        /// <summary>
+        /// 是否始终在坐标轴两端显示带标签的刻度（适用于用户/模板显式指定范围的轴）。
+        /// 自动缩放的轴建议保持 false，否则端点会出现不规整的数值。
+        /// </summary>
+        public bool ShowRangeEndpoints { get; set; } = false;
+
         public Tick[] Ticks { get; set; } = Array.Empty<Tick>();
 
         public int MaxTickCount { get; set; } = 10000;
@@ -53,22 +59,78 @@ namespace GeoChemistryNexus.Extensions.ScottPlotExtensions
                 ticks.Add(new Tick(pos, FormatDecadeLabel(pos), isMajor: true));
             }
 
-            if (ShowMinorTicks && ticks.Count >= 1)
-            {
-                double[] majorPositions = ticks.Select(t => t.Position).ToArray();
-                var minorGen = new LogMinorTickGenerator();
-                foreach (double minorPos in minorGen.GetMinorTicks(majorPositions, range))
-                {
-                    if (!range.Contains(minorPos))
-                        continue;
-                    if (majorPositions.Any(m => Math.Abs(m - minorPos) <= epsilon))
-                        continue;
+            // 范围内整数 decade 太少（<3）时，仅显示 decade 标签会让读者看不出范围边界，
+            // 例如 2-100 只有 10、100。此时给 2/5（或 2-9）等中间刻度也加上标签。
+            bool labelIntermediate = ticks.Count < 3;
+            int[] labeledMantissas = range.Length <= 0.7
+                ? new[] { 2, 3, 4, 5, 6, 7, 8, 9 }
+                : new[] { 2, 5 };
 
-                    ticks.Add(new Tick(minorPos, "", isMajor: false));
+            if (ShowMinorTicks || labelIntermediate)
+            {
+                long startDecade = (long)Math.Floor(range.Min) - 1;
+                long endDecade = (long)Math.Ceiling(range.Max);
+
+                for (long decade = startDecade; decade <= endDecade; decade++)
+                {
+                    double decadeValue = Math.Pow(10, decade);
+                    for (int m = 2; m <= 9; m++)
+                    {
+                        double minorPos = decade + Math.Log10(m);
+                        if (!range.Contains(minorPos))
+                            continue;
+
+                        if (labelIntermediate && labeledMantissas.Contains(m))
+                        {
+                            // 作为带标签刻度添加（ScottPlot 只对 IsMajor 的刻度绘制文字）
+                            ticks.Add(new Tick(minorPos, (m * decadeValue).ToString("G10"), isMajor: true));
+                        }
+                        else if (ShowMinorTicks)
+                        {
+                            ticks.Add(new Tick(minorPos, "", isMajor: false));
+                        }
+                    }
                 }
             }
 
+            if (ShowRangeEndpoints)
+                AddRangeEndpointTicks(ticks, range, edge, size, epsilon);
+
             Ticks = ticks.OrderBy(t => t.Position).ToArray();
+        }
+
+        /// <summary>
+        /// 保证坐标轴两端始终有带标签的刻度；
+        /// 若附近已有的标签与端点标签挤在一起，则保留端点、丢弃邻近标签。
+        /// </summary>
+        private static void AddRangeEndpointTicks(List<Tick> ticks, CoordinateRange range, Edge edge, PixelLength size, double epsilon)
+        {
+            if (range.Length <= 0 || double.IsNaN(range.Length) || double.IsInfinity(range.Length))
+                return;
+
+            bool isHorizontal = edge == Edge.Bottom || edge == Edge.Top;
+            double minLabelGapPx = isHorizontal ? 45 : 20;
+            double pxPerLogUnit = size.Length > 0 ? size.Length / range.Length : 0;
+            double minGapLog = pxPerLogUnit > 0 ? minLabelGapPx / pxPerLogUnit : 0;
+
+            foreach (double endPos in new[] { range.Min, range.Max })
+            {
+                if (double.IsNaN(endPos) || double.IsInfinity(endPos))
+                    continue;
+
+                // 端点已经是带标签刻度（如恰好落在 10^n 上），无需重复添加
+                bool alreadyLabeled = ticks.Any(t => t.IsMajor && Math.Abs(t.Position - endPos) <= epsilon);
+                if (alreadyLabeled)
+                    continue;
+
+                // 移除与端点标签过近的其他带标签刻度（例如范围 9.5-100 时的 10）
+                ticks.RemoveAll(t => t.IsMajor && Math.Abs(t.Position - endPos) < minGapLog);
+
+                // 移除与端点重合的次刻度，避免重复绘制
+                ticks.RemoveAll(t => !t.IsMajor && Math.Abs(t.Position - endPos) <= epsilon);
+
+                ticks.Add(new Tick(endPos, Math.Pow(10, endPos).ToString("G6"), isMajor: true));
+            }
         }
 
         private static bool IsNearInteger(double value, double epsilon)

@@ -1,13 +1,11 @@
-<UserControl x:Class="GeoChemistryNexus.Controls.PolygonPropertyControl"
+﻿<UserControl x:Class="GeoChemistryNexus.Controls.PolygonPropertyControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GeoChemistryNexus.Controls"
-             xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:models="clr-namespace:GeoChemistryNexus.Models"
              xmlns:cvs="clr-namespace:GeoChemistryNexus.Converter"
-             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="300"
@@ -15,57 +13,59 @@
     <UserControl.Resources>
         <cvs:NumericTypeConverter x:Key="NumericTypeConverter"/>
         <cvs:StringColorConverter x:Key="StringColorConverter"/>
-        <cvs:DoublePrecisionConverter x:Key="DoublePrecisionConverter" Precision="2"/>
+        <cvs:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
     </UserControl.Resources>
 
     <Grid DataContext="{Binding SelectedObject, RelativeSource={RelativeSource AncestorType=local:PolygonPropertyControl}}">
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel Margin="10,12,10,12">
-                <!-- Header -->
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                    <TextBlock Text="&#xe61b;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="24" Foreground="#1D1D1F" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                    <TextBlock Text="{Binding [polygon],Source={x:Static lg:LanguageService.Instance}}" 
-                               FontSize="22" FontWeight="Bold" Foreground="#1D1D1F" VerticalAlignment="Center"/>
-                </StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-                <!-- Vertices -->
-                <TextBlock Text="{Binding [vertices],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernSettingsGroupTitle}" Margin="4,10,0,6"/>
-                <Border Style="{StaticResource ModernCardStyle}" Margin="0,0,0,8">
-                    <StackPanel Margin="10">
-                        <local:VerticesEditorControl VerticesValue="{Binding Vertices}"/>
-                    </StackPanel>
-                </Border>
+        <local:InspectorHeader Glyph="&#xe61b;" Title="{Binding [polygon],Source={x:Static lg:LanguageService.Instance}}"/>
 
-                <!-- Style -->
-                <TextBlock Text="{Binding [style],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernSettingsGroupTitle}" Margin="4,10,0,6"/>
-                <Border Style="{StaticResource ModernCardStyle}" Margin="0,0,0,8">
-                    <StackPanel Margin="10">
-                        
-                        <!-- Fill Color -->
-                        <TextBlock Text="{Binding [fill_color],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
-                        <local:TextPropertyColorPicker 
-                            SelectedColor="{Binding FillColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" 
-                            HorizontalAlignment="Stretch"
-                            Height="32"
-                            Margin="0,0,0,16"/>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="12,10,12,18" Grid.IsSharedSizeScope="True">
 
-                        <!-- Border Color -->
-                        <TextBlock Text="{Binding [border_color],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
-                        <local:TextPropertyColorPicker 
-                            SelectedColor="{Binding BorderColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" 
-                            HorizontalAlignment="Stretch"
-                            Height="32"
-                            Margin="0,0,0,16"/>
+                <!-- 顶点：贴边的表格 / 文本编辑器，标题栏右侧为“表格 | 文本”切换 -->
+                <local:InspectorGroup Header="{Binding [vertices],Source={x:Static lg:LanguageService.Instance}}"
+                                      Count="{Binding Vertices.Count, Mode=OneWay}"
+                                      IsCollapsible="False"
+                                      Padding="0">
+                    <local:InspectorGroup.HeaderRight>
+                        <Border Style="{StaticResource InspectorMiniSegmentTrackStyle}">
+                            <StackPanel Orientation="Horizontal">
+                                <RadioButton GroupName="VertexViewMode"
+                                             Style="{StaticResource InspectorMiniSegmentRadioStyle}"
+                                             Content="{Binding [table_view],Source={x:Static lg:LanguageService.Instance}}"
+                                             IsChecked="{Binding ViewMode, ElementName=VerticesEditor, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Table}"/>
+                                <RadioButton GroupName="VertexViewMode"
+                                             Style="{StaticResource InspectorMiniSegmentRadioStyle}"
+                                             Content="{Binding [text],Source={x:Static lg:LanguageService.Instance}}"
+                                             IsChecked="{Binding ViewMode, ElementName=VerticesEditor, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Text}"/>
+                            </StackPanel>
+                        </Border>
+                    </local:InspectorGroup.HeaderRight>
+                    <local:VerticesEditorControl x:Name="VerticesEditor" VerticesValue="{Binding Vertices}"/>
+                </local:InspectorGroup>
 
-                        <!-- Border Width -->
-                        <TextBlock Text="{Binding [border_width],Source={x:Static lg:LanguageService.Instance}}" Style="{StaticResource ModernLabelStyle}"/>
-                        <hc:NumericUpDown Value="{Binding BorderWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}" 
-                                    hc:InfoElement.Placeholder="1.0"
-                                    Style="{StaticResource ModernNumericUpDownStyle}"/>
+                <!-- 外观：填充 + 边框（描边，不带线型） -->
+                <local:InspectorGroup Header="{Binding [insp_appearance],Source={x:Static lg:LanguageService.Instance}}">
+                    <local:InspectorStack Spacing="10">
+                        <HeaderedContentControl Style="{StaticResource InspectorRowStyle}"
+                                                Header="{Binding [insp_fill],Source={x:Static lg:LanguageService.Instance}}">
+                            <local:TextPropertyColorPicker
+                                SelectedColor="{Binding FillColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}"/>
+                        </HeaderedContentControl>
 
-                    </StackPanel>
-                </Border>
-
+                        <HeaderedContentControl Style="{StaticResource InspectorFieldStyle}"
+                                                Header="{Binding [insp_border],Source={x:Static lg:LanguageService.Instance}}">
+                            <local:InspectorStrokeEditor ShowLineStyle="False"
+                                StrokeColor="{Binding BorderColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}"
+                                StrokeWidth="{Binding BorderWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericTypeConverter}}"/>
+                        </HeaderedContentControl>
+                    </local:InspectorStack>
+                </local:InspectorGroup>
             </StackPanel>
         </ScrollViewer>
     </Grid>

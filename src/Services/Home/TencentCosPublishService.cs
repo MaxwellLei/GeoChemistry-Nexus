@@ -256,6 +256,82 @@ namespace GeoChemistryNexus.Services
             };
         }
 
+        public static async Task<CosUploadResult> UploadEpmaPublishResultAsync(
+            EpmaPublishResult publishResult,
+            CosPublishTarget settings,
+            IProgress<string>? log = null)
+        {
+            return await UploadEpmaPublishResultCoreAsync(publishResult, settings, log, null);
+        }
+
+        /// <summary>
+        /// Uploads changed packages first, then EPMA-List.json, and EPMA-index.json last:
+        /// clients only trust the index hash, so they never see a catalog that points to missing packages.
+        /// </summary>
+        private static async Task<CosUploadResult> UploadEpmaPublishResultCoreAsync(
+            EpmaPublishResult publishResult,
+            CosPublishTarget settings,
+            IProgress<string>? log,
+            UploadProgressTracker? uploadTracker)
+        {
+            if (settings == null || !settings.IsConfigured)
+                throw new InvalidOperationException("COS publish settings are not configured.");
+
+            string secretKey = CosPublishSettingsService.UnprotectSecretKey(settings);
+            if (string.IsNullOrEmpty(secretKey))
+                throw new InvalidOperationException("Failed to decrypt COS SecretKey.");
+
+            var cosXml = CreateCosClient(settings, secretKey);
+            var uploadedKeys = new List<string>();
+
+            void Log(string message) => log?.Report(message);
+
+            foreach (var entry in publishResult.ManifestEntries)
+            {
+                if (entry.Action == PublishAction.Skip.ToString().ToLowerInvariant())
+                    continue;
+
+                if (string.IsNullOrEmpty(entry.LocalPath) || !File.Exists(entry.LocalPath))
+                    continue;
+
+                UploadFile(cosXml, settings.Bucket, entry.CosKey, entry.LocalPath);
+                uploadedKeys.Add(entry.CosKey);
+                uploadTracker?.Advance();
+                Log($"Uploaded: {entry.CosKey}");
+            }
+
+            var catalogFiles = new[]
+            {
+                (Local: publishResult.ListPath, Key: $"{OfficialContentEndpoints.EpmaFolderName}/{OfficialContentEndpoints.EpmaListFileName}"),
+                (Local: publishResult.IndexPath, Key: $"{OfficialContentEndpoints.EpmaFolderName}/{OfficialContentEndpoints.EpmaIndexFileName}")
+            };
+
+            foreach (var file in catalogFiles)
+            {
+                if (string.IsNullOrEmpty(file.Local) || !File.Exists(file.Local))
+                    continue;
+
+                UploadFile(cosXml, settings.Bucket, file.Key, file.Local);
+                uploadedKeys.Add(file.Key);
+                uploadTracker?.Advance();
+                Log($"Uploaded: {file.Key}");
+            }
+
+            bool verified = await VerifyEpmaIndexAsync(settings, publishResult.ListHash);
+            Log(verified
+                ? "EPMA-index.json verification passed."
+                : "Warning: EPMA-index.json verification failed or CDN not yet refreshed.");
+
+            return new CosUploadResult
+            {
+                Success = true,
+                UploadedFileCount = uploadedKeys.Count,
+                ServerInfoVerified = verified,
+                Message = verified ? "EPMA publish completed successfully." : "EPMA publish completed with verification warning.",
+                UploadedKeys = uploadedKeys
+            };
+        }
+
         public static async Task<CosUploadResult> UploadAnnouncementPublishResultAsync(
             AnnouncementPublishResult publishResult,
             CosPublishTarget settings,
@@ -331,11 +407,14 @@ namespace GeoChemistryNexus.Services
             bool uploadHomeLinks,
             bool uploadAnnouncement,
             IProgress<string>? log = null,
-            IProgress<(int current, int total)>? uploadProgress = null)
+            IProgress<(int current, int total)>? uploadProgress = null,
+            EpmaPublishResult? epmaResult = null,
+            bool uploadEpma = false)
         {
             var allKeys = new List<string>();
             bool diagramVerified = true;
             bool geoVerified = true;
+            bool epmaVerified = true;
             bool homeLinksVerified = true;
             bool announcementVerified = !uploadAnnouncement;
 
@@ -347,7 +426,9 @@ namespace GeoChemistryNexus.Services
                 uploadDiagrams,
                 uploadGeothermometers,
                 uploadHomeLinks,
-                uploadAnnouncement);
+                uploadAnnouncement,
+                epmaResult,
+                uploadEpma);
             var uploadTracker = uploadProgress != null ? new UploadProgressTracker(uploadProgress, totalFiles) : null;
 
             string? announcementsCatalogPath = announcementResult?.AnnouncementsCatalogPath;
@@ -402,8 +483,16 @@ namespace GeoChemistryNexus.Services
                 geoVerified = geoUpload.ServerInfoVerified;
             }
 
+            if (uploadEpma && epmaResult != null)
+            {
+                var epmaUpload = await UploadEpmaPublishResultCoreAsync(epmaResult, settings, log, uploadTracker);
+                allKeys.AddRange(epmaUpload.UploadedKeys);
+                epmaVerified = epmaUpload.ServerInfoVerified;
+            }
+
             bool allVerified = (!uploadDiagrams || diagramVerified)
                 && (!uploadGeothermometers || geoVerified)
+                && (!uploadEpma || epmaVerified)
                 && (!uploadHomeLinks || uploadDiagrams || homeLinksVerified)
                 && (!uploadAnnouncement || announcementVerified);
 
@@ -462,7 +551,9 @@ namespace GeoChemistryNexus.Services
             bool uploadDiagrams,
             bool uploadGeothermometers,
             bool uploadHomeLinks,
-            bool uploadAnnouncement)
+            bool uploadAnnouncement,
+            EpmaPublishResult? epmaResult = null,
+            bool uploadEpma = false)
         {
             int total = 0;
 
@@ -483,7 +574,25 @@ namespace GeoChemistryNexus.Services
             if (uploadGeothermometers && geothermometerResult != null)
                 total += CountGeothermometerPublishFiles(geothermometerResult);
 
+            if (uploadEpma && epmaResult != null)
+                total += CountEpmaPublishFiles(epmaResult);
+
             return total;
+        }
+
+        private static int CountEpmaPublishFiles(EpmaPublishResult? publishResult)
+        {
+            if (publishResult == null)
+                return 0;
+
+            int count = new[] { publishResult.ListPath, publishResult.IndexPath }
+                .Count(path => !string.IsNullOrEmpty(path) && File.Exists(path));
+            count += publishResult.ManifestEntries?.Count(entry =>
+                entry.Action != PublishAction.Skip.ToString().ToLowerInvariant()
+                && !string.IsNullOrEmpty(entry.LocalPath)
+                && File.Exists(entry.LocalPath)) ?? 0;
+
+            return count;
         }
 
         private static int CountPublishResultFiles(PublishResult? publishResult)
@@ -764,6 +873,35 @@ namespace GeoChemistryNexus.Services
                 serverInfo.Announcement?.Trim(),
                 expectedAnnouncement.Trim(),
                 StringComparison.Ordinal);
+        }
+
+        private static async Task<bool> VerifyEpmaIndexAsync(CosPublishTarget target, string expectedListHash)
+        {
+            if (string.IsNullOrEmpty(expectedListHash) || string.IsNullOrWhiteSpace(target?.PublicBaseUrl))
+                return false;
+
+            for (int attempt = 0; attempt < 3; attempt++)
+            {
+                try
+                {
+                    if (attempt > 0)
+                        await Task.Delay(2000);
+
+                    string json = await ReadPublicJsonAsync(
+                        target,
+                        $"{OfficialContentEndpoints.EpmaFolderName}/{OfficialContentEndpoints.EpmaIndexFileName}");
+                    var index = JsonHelper.Deserialize<EpmaListIndex>(json);
+                    if (index != null
+                        && string.Equals(index.ListHash, expectedListHash, StringComparison.OrdinalIgnoreCase))
+                        return true;
+                }
+                catch
+                {
+                    // retry
+                }
+            }
+
+            return false;
         }
 
         private static async Task<bool> VerifyGeoTIndexAsync(

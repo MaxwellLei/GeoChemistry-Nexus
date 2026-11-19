@@ -5,48 +5,35 @@ using System.Linq;
 
 namespace GeoChemistryNexus.Helpers
 {
-    public enum CultureScope
-    {
-        AppUi,
-        Content,
-        Both
-    }
-
-    public sealed record CultureDescriptor(string Code, CultureScope Scope, int SortOrder);
-
     public sealed record CultureOption(string Code, string DisplayName);
 
     /// <summary>
     /// 全项目唯一的文化代码注册表（BCP 47 / CultureInfo.Name）。
+    /// 软件界面语言、图解 / 地质温压计 / EPMA 模板的“添加语言”列表共用 <see cref="SupportedCodes"/>；
+    /// 新增语言只需在此处追加一项（并在 Data/Language 下补充对应的 resx 文件）。
     /// </summary>
     public static class AppCultureRegistry
     {
         public const string DefaultAppLanguage = "en-US";
         public const string DefaultContentLanguage = "en-US";
 
-        private static readonly IReadOnlyList<CultureDescriptor> Descriptors = new[]
+        /// <summary>全项目支持的语言（按显示顺序）。</summary>
+        public static IReadOnlyList<string> SupportedCodes { get; } = new[]
         {
-            new CultureDescriptor("zh-CN", CultureScope.Both, 0),
-            new CultureDescriptor("zh-TW", CultureScope.Both, 1),
-            new CultureDescriptor("en-US", CultureScope.Both, 2),
-            new CultureDescriptor("de-DE", CultureScope.Both, 3),
-            new CultureDescriptor("es-ES", CultureScope.Both, 4),
-            new CultureDescriptor("ja-JP", CultureScope.Both, 5),
-            new CultureDescriptor("ko-KR", CultureScope.Both, 6),
-            new CultureDescriptor("ru-RU", CultureScope.Both, 7),
-            new CultureDescriptor("fr-FR", CultureScope.Content, 8),
-            new CultureDescriptor("pt-BR", CultureScope.Content, 9),
+            "zh-CN",
+            "zh-TW",
+            "en-US",
+            "de-DE",
+            "es-ES",
+            "ja-JP",
+            "ko-KR",
+            "ru-RU",
+            "fr-FR",
+            "pt-BR",
         };
 
-        private static readonly HashSet<string> AppUiCodeSet = Descriptors
-            .Where(d => d.Scope is CultureScope.AppUi or CultureScope.Both)
-            .Select(d => d.Code)
-            .ToHashSet(StringComparer.OrdinalIgnoreCase);
-
-        private static readonly HashSet<string> ContentCodeSet = Descriptors
-            .Where(d => d.Scope is CultureScope.Content or CultureScope.Both)
-            .Select(d => d.Code)
-            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+        private static readonly HashSet<string> SupportedCodeSet =
+            SupportedCodes.ToHashSet(StringComparer.OrdinalIgnoreCase);
 
         private static readonly Dictionary<string, string> CustomDisplayNames =
             new(StringComparer.OrdinalIgnoreCase)
@@ -55,35 +42,16 @@ namespace GeoChemistryNexus.Helpers
                 ["zh-TW"] = "繁体中文（中國臺灣）",
             };
 
-        public static IReadOnlyList<string> AppUiCodes { get; } = Descriptors
-            .Where(d => d.Scope is CultureScope.AppUi or CultureScope.Both)
-            .OrderBy(d => d.SortOrder)
-            .Select(d => d.Code)
-            .ToList();
-
-        public static IReadOnlyList<string> ContentCodes { get; } = Descriptors
-            .Where(d => d.Scope is CultureScope.Content or CultureScope.Both)
-            .OrderBy(d => d.SortOrder)
-            .Select(d => d.Code)
-            .ToList();
-
-        public static IReadOnlyList<CultureOption> GetAppUiOptions(bool? includeCultureCode = null)
+        public static IReadOnlyList<CultureOption> GetOptions(bool? includeCultureCode = null)
         {
-            return AppUiCodes
-                .Select(code => new CultureOption(code, GetDisplayName(code, includeCultureCode)))
-                .ToList();
-        }
-
-        public static IReadOnlyList<CultureOption> GetContentOptions(bool? includeCultureCode = null)
-        {
-            return ContentCodes
+            return SupportedCodes
                 .Select(code => new CultureOption(code, GetDisplayName(code, includeCultureCode)))
                 .ToList();
         }
 
         public static bool IsDeveloperModeEnabled()
         {
-            return bool.TryParse(ConfigHelper.GetConfig("developer_mode"), out bool enabled) && enabled;
+            return bool.TryParse(ConfigHelper.GetConfig(ConfigKeys.DeveloperMode), out bool enabled) && enabled;
         }
 
         public static string GetDisplayName(string? code, bool? includeCultureCode = null)
@@ -115,14 +83,9 @@ namespace GeoChemistryNexus.Helpers
             }
         }
 
-        public static bool IsValidAppUiCode(string? code)
+        public static bool IsSupportedCode(string? code)
         {
-            return !string.IsNullOrWhiteSpace(code) && AppUiCodeSet.Contains(code);
-        }
-
-        public static bool IsValidContentCode(string? code)
-        {
-            return !string.IsNullOrWhiteSpace(code) && ContentCodeSet.Contains(code);
+            return !string.IsNullOrWhiteSpace(code) && SupportedCodeSet.Contains(code);
         }
 
         /// <summary>
@@ -143,7 +106,7 @@ namespace GeoChemistryNexus.Helpers
             string hyphenated = trimmed.Replace('_', '-');
 
             // 预置码统一为注册表中的规范形式（_ → -）。
-            if (AppUiCodeSet.Contains(hyphenated) || ContentCodeSet.Contains(hyphenated))
+            if (SupportedCodeSet.Contains(hyphenated))
             {
                 normalized = hyphenated;
                 return true;
@@ -156,7 +119,7 @@ namespace GeoChemistryNexus.Helpers
 
         public static string ResolveAppLanguage(string? requested)
         {
-            if (TryNormalize(requested, out string normalized) && IsValidAppUiCode(normalized))
+            if (TryNormalize(requested, out string normalized) && IsSupportedCode(normalized))
                 return normalized;
 
             return DefaultAppLanguage;
@@ -189,7 +152,7 @@ namespace GeoChemistryNexus.Helpers
             string name = cultureName.Trim().Replace('_', '-');
 
             // 精确匹配已支持的 UI 语言码
-            string? exact = AppUiCodes.FirstOrDefault(c =>
+            string? exact = SupportedCodes.FirstOrDefault(c =>
                 c.Equals(name, StringComparison.OrdinalIgnoreCase));
             if (exact != null)
             {
@@ -224,7 +187,7 @@ namespace GeoChemistryNexus.Helpers
             // 仅语言部分匹配，例如 en-GB → en-US、de-AT → de-DE
             int dashIndex = name.IndexOf('-');
             string language = dashIndex > 0 ? name[..dashIndex] : name;
-            string? byLanguage = AppUiCodes.FirstOrDefault(c =>
+            string? byLanguage = SupportedCodes.FirstOrDefault(c =>
                 c.Equals(language, StringComparison.OrdinalIgnoreCase) ||
                 c.StartsWith(language + "-", StringComparison.OrdinalIgnoreCase));
             if (byLanguage != null)

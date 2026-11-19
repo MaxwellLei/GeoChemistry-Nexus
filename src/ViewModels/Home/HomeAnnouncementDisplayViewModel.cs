@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Models;
 using GeoChemistryNexus.Services;
 using System;
@@ -40,8 +41,9 @@ namespace GeoChemistryNexus.ViewModels
 
         /// <summary>
         /// 预设主题名，见 <see cref="GeoChemistryNexus.Converter.AnnouncementBrushes.ThemeKeys"/>。
+        /// 为空时跟随软件当前主题色。
         /// </summary>
-        public string ThemeKey { get; init; } = "blue";
+        public string ThemeKey { get; init; } = string.Empty;
 
         /// <summary>
         /// 自定义背景色。为空时按 <see cref="ThemeKey"/> 取预设渐变。
@@ -55,16 +57,6 @@ namespace GeoChemistryNexus.ViewModels
 
         public string BackgroundImageUrl { get; init; } = string.Empty;
 
-        /// <summary>
-        /// 颜色背景下是否绘制装饰图形。图片背景不绘制。
-        /// </summary>
-        public bool ShowPolygons { get; init; }
-
-        /// <summary>
-        /// 本版本实际绘制的样式 id，一定是 <see cref="HomeAnnouncementBackground.KnownPolygonStyles"/> 中的一项。
-        /// </summary>
-        public string PolygonStyle { get; init; } = HomeAnnouncementBackground.PolygonRing;
-
         public bool HasTag => !string.IsNullOrWhiteSpace(Tag);
 
         public bool HasBody => !string.IsNullOrWhiteSpace(Body);
@@ -74,6 +66,36 @@ namespace GeoChemistryNexus.ViewModels
         public bool HasAction => !string.IsNullOrWhiteSpace(ActionLabel) && !string.IsNullOrWhiteSpace(ActionUrl);
 
         public bool HasBackgroundImage => BackgroundImage != null;
+
+        /// <summary>
+        /// 把目录条目解析成当前语言下的展示项。文案由调用方按目标语言解析。
+        /// </summary>
+        public static HomeAnnouncementDisplayViewModel FromEntry(
+            HomeAnnouncementEntry entry,
+            Func<LocalizedString?, string> resolveText)
+        {
+            bool useImage = HomeAnnouncementBackground.IsImageMode(entry.BackgroundMode)
+                && HomeAnnouncementBackground.IsHttpImageUrl(entry.BackgroundImageUrl);
+
+            return new HomeAnnouncementDisplayViewModel
+            {
+                Id = entry.Id,
+                Tag = resolveText(entry.Tag),
+                Title = resolveText(entry.Title),
+                Body = resolveText(entry.Body),
+                DateText = entry.Date ?? string.Empty,
+                ActionLabel = resolveText(entry.Action?.Label),
+                ActionUrl = entry.Action?.Url ?? string.Empty,
+                // 未指定预设主题，或仍是历史默认值 "blue" 时留空：公告配色跟随软件当前主题色
+                ThemeKey = string.IsNullOrWhiteSpace(entry.Theme)
+                    || string.Equals(entry.Theme.Trim(), "blue", StringComparison.OrdinalIgnoreCase)
+                        ? string.Empty
+                        : entry.Theme,
+                BackgroundColor = entry.BackgroundColor?.Trim() ?? string.Empty,
+                UseImageBackground = useImage,
+                BackgroundImageUrl = entry.BackgroundImageUrl?.Trim() ?? string.Empty
+            };
+        }
 
         [ObservableProperty]
         private ImageSource? backgroundImage;

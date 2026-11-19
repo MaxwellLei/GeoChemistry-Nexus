@@ -28,6 +28,12 @@ namespace GeoChemistryNexus.ViewModels
 
         public string ProtectedSecretKey { get; set; } = string.Empty;
 
+        public bool HasSavedSecretKey => !string.IsNullOrWhiteSpace(ProtectedSecretKey);
+
+        public void NotifySecretKeyChanged() => OnPropertyChanged(nameof(HasSavedSecretKey));
+
+        public string StatusLabel => $"{(Enabled ? "启用" : "停用")} · {Region}";
+
         public int SortOrder { get; set; }
 
         public string ListLabel =>
@@ -38,6 +44,10 @@ namespace GeoChemistryNexus.ViewModels
         partial void OnNameChanged(string value) => OnPropertyChanged(nameof(ListLabel));
 
         partial void OnBucketChanged(string value) => OnPropertyChanged(nameof(ListLabel));
+
+        partial void OnEnabledChanged(bool value) => OnPropertyChanged(nameof(StatusLabel));
+
+        partial void OnRegionChanged(string value) => OnPropertyChanged(nameof(StatusLabel));
 
         public static CosPublishTargetItemViewModel FromModel(CosPublishTarget target)
         {

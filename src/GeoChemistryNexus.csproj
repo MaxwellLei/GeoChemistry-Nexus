@@ -7,11 +7,15 @@
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Data\Icon\logo.ico</ApplicationIcon>
 	<!--软件版本号-->
-    <AssemblyVersion>0.8.4</AssemblyVersion>
+    <AssemblyVersion>0.9.0</AssemblyVersion>
+    <!--程序文件版本号：与软件版本保持一致（不再承载图解格式版本） -->
+    <FileVersion>$(AssemblyVersion)</FileVersion>
 	<!--图解格式版本号 x.y.z -->
-    <FileVersion>1.2.0</FileVersion>
+    <DiagramFormatVersion>1.3.0</DiagramFormatVersion>
     <!--地质温压计格式版本号 x.y.z -->
-    <GeothermometerFormatVersion>1.1.0</GeothermometerFormatVersion>
+    <GeothermometerFormatVersion>1.3.0</GeothermometerFormatVersion>
+    <!--EPMA 模块版本号 x.y.z，从 1.0 起；前两位是模块版本 -->
+    <EpmaFormatVersion>1.0.0</EpmaFormatVersion>
     <Copyright>Copyright ©️ 2024</Copyright>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
@@ -28,8 +32,16 @@
 
   <ItemGroup>
     <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+      <_Parameter1>DiagramFormatVersion</_Parameter1>
+      <_Parameter2>$(DiagramFormatVersion)</_Parameter2>
+    </AssemblyAttribute>
+    <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
       <_Parameter1>GeothermometerFormatVersion</_Parameter1>
       <_Parameter2>$(GeothermometerFormatVersion)</_Parameter2>
+    </AssemblyAttribute>
+    <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+      <_Parameter1>EpmaFormatVersion</_Parameter1>
+      <_Parameter2>$(EpmaFormatVersion)</_Parameter2>
     </AssemblyAttribute>
   </ItemGroup>
 
@@ -37,10 +49,6 @@
     <None Remove="Data\Documents\template.rtf" />
     <None Remove="Data\Icon\iconfont.ttf" />
     <None Remove="Data\Icon\logo.png" />
-    <None Remove="Data\Image\StartPic\1.jpg" />
-    <None Remove="Data\Image\StartPic\2.jpg" />
-    <None Remove="Data\Image\StartPic\3.jpg" />
-    <None Remove="Data\Image\StartPic\4.jpg" />
     <None Remove="Data\PlotData\PlotTemplateCategories.json" />
     <None Remove="Data\Plugins\GeoTMineralCategories.json" />
     <None Remove="Data\Config\App.config" />
@@ -53,18 +61,7 @@
     <Resource Include="Data\Icon\iconfont.ttf" />
     <Content Include="Data\Icon\logo.ico" />
     <Resource Include="Data\Icon\logo.png" />
-    <Content Include="Data\Image\StartPic\1.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\Image\StartPic\2.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\Image\StartPic\3.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\Image\StartPic\4.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Resource Include="Data\Image\Startup\rock-thin-section.png" />
     <Content Include="Data\PlotData\PlotTemplateCategories.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -93,7 +90,6 @@
   <ItemGroup>
     <PackageReference Include="Tencent.QCloud.Cos.Sdk" Version="5.4.49" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
-    <PackageReference Include="HandyControl" Version="3.6.0-rc3" />
     <PackageReference Include="Jint" Version="4.2.0" />
     <PackageReference Include="LiteDB" Version="5.0.21" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
@@ -122,8 +118,6 @@
     <Page Remove="Others\**\*" />
     <EmbeddedResource Remove="Others\**\*" />
     <None Remove="Others\**\*" />
-    <Compile Remove="_build_out\**\*" />
-    <Content Remove="_build_out\**\*" />
-    <None Remove="_build_out\**\*" />
   </ItemGroup> 
+
 </Project>

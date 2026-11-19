@@ -44,5 +44,11 @@ namespace GeoChemistryNexus.ViewModels
         {
             _nav.Navigate(SGeothermometerPageView.GetPage());
         }
+
+        [RelayCommand]
+        private void EpmaPage()
+        {
+            _nav.Navigate(SEpmaPageView.GetPage());
+        }
     }
 }

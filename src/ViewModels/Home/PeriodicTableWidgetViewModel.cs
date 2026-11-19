@@ -49,12 +49,6 @@ namespace GeoChemistryNexus.ViewModels
         private string abundanceSourceText = string.Empty;
 
         [ObservableProperty]
-        private string goldschmidtText = "—";
-
-        [ObservableProperty]
-        private string geochemicalClassText = "—";
-
-        [ObservableProperty]
         private string oxidationStatesText = "—";
 
         [ObservableProperty]
@@ -154,8 +148,6 @@ namespace GeoChemistryNexus.ViewModels
             AtomicWeightText = dash;
             ElectronicConfigurationText = dash;
             AbundanceCrustText = dash;
-            GoldschmidtText = dash;
-            GeochemicalClassText = dash;
             OxidationStatesText = dash;
             Oxides.Clear();
         }
@@ -276,28 +268,7 @@ namespace GeoChemistryNexus.ViewModels
                     .ToHashSet(StringComparer.OrdinalIgnoreCase);
             }
 
-            if (def.DerivedKind == ElementGroupDerivedKind.Goldschmidt &&
-                !string.IsNullOrWhiteSpace(def.GoldschmidtKey))
-            {
-                return Elements
-                    .Where(e => !e.IsPlaceholder && MatchesGoldschmidt(e.Record.GoldschmidtClass, def.GoldschmidtKey))
-                    .Select(e => e.Symbol)
-                    .ToHashSet(StringComparer.OrdinalIgnoreCase);
-            }
-
             return new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        }
-
-        private static bool MatchesGoldschmidt(string? raw, string key)
-        {
-            if (string.IsNullOrWhiteSpace(raw))
-                return false;
-
-            string normalized = PeriodicTableDataService.NormalizeGoldschmidtClass(raw);
-            return string.Equals(normalized, key, StringComparison.OrdinalIgnoreCase) ||
-                   (string.Equals(key, "lithophile", StringComparison.OrdinalIgnoreCase) &&
-                    (string.Equals(raw, "litophile", StringComparison.OrdinalIgnoreCase) ||
-                     string.Equals(raw, "lithophile", StringComparison.OrdinalIgnoreCase)));
         }
 
         private void ApplySearchAndHighlight()
@@ -361,13 +332,6 @@ namespace GeoChemistryNexus.ViewModels
             }
 
             AbundanceSourceText = BuildAbundanceSourceText();
-            GoldschmidtText = string.IsNullOrWhiteSpace(record.GoldschmidtClass)
-                ? (LanguageService.Instance["periodic_table_na"] ?? "N/A")
-                : PeriodicTableDataService.NormalizeGoldschmidtClass(record.GoldschmidtClass);
-
-            GeochemicalClassText = string.IsNullOrWhiteSpace(record.GeochemicalClass)
-                ? (LanguageService.Instance["periodic_table_na"] ?? "N/A")
-                : record.GeochemicalClass;
 
             OxidationStatesText = FormatOxidationStates(record);
             Oxides.Clear();

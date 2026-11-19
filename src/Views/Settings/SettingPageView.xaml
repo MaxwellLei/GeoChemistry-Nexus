@@ -1,34 +1,39 @@
-<Grid x:Class="GeoChemistryNexus.Views.SettingPageView"
+﻿<Grid x:Class="GeoChemistryNexus.Views.SettingPageView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:GeoChemistryNexus.Views"
       xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
-      xmlns:hc="https://handyorg.github.io/handycontrol"
+      xmlns:helpers="clr-namespace:GeoChemistryNexus.Helpers"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="900"
-      UseLayoutRounding="True" TextOptions.TextFormattingMode="Display">
+      UseLayoutRounding="True" TextOptions.TextFormattingMode="{DynamicResource AppTextFormattingMode}">
 
     <!--Settings page-->
+    <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
     <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="300" MinWidth="200" MaxWidth="320"/>
+        <ColumnDefinition Width="270" MinWidth="200" MaxWidth="290"/>
         <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
 
+    <!-- 页面顶栏：与其他模块一致，只显示模块名称 -->
+    <ContentControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource PageTitleBarStyle}"
+                    Tag="{Binding [Setting],Source={x:Static lg:LanguageService.Instance}, FallbackValue=Settings}"/>
+
     <!-- Sidebar -->
-    <Border Grid.Column="0" Background="#F2F2F7" BorderBrush="#E5E5E5" BorderThickness="0,0,1,0">
-        <StackPanel Margin="16,20,16,20">
-            <!-- Title -->
-            <TextBlock Text="{Binding [Setting],Source={x:Static lg:LanguageService.Instance}, FallbackValue=Settings}" 
-                       FontSize="22" FontWeight="Bold" Margin="12,0,0,15" Foreground="Black"/>
+    <Border Grid.Row="1" Grid.Column="0" Background="#F2F2F7" BorderBrush="#E5E5E5" BorderThickness="0,0,1,0">
+        <StackPanel Margin="16,16,16,20">
 
             <!--Routine Settings-->
             <RadioButton Style="{StaticResource ModernSidebarRadioButton}" GroupName="SettingSideBar"
                          IsChecked="True" Command="{Binding CommonPageCommand}">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="&#xe616;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="18" VerticalAlignment="Center" Margin="0,0,12,0"/>
-                    <TextBlock Text="{Binding [NormalSetting],Source={x:Static lg:LanguageService.Instance}}" FontSize="14" VerticalAlignment="Center"/>
+                    <ContentControl Style="{StaticResource LineIconStyle}" Tag="{StaticResource GeoIcon.General}" Margin="0,0,10,0"/>
+                    <TextBlock Text="{Binding [NormalSetting],Source={x:Static lg:LanguageService.Instance}}" FontSize="13" VerticalAlignment="Center"/>
                 </StackPanel>
             </RadioButton>
 
@@ -36,8 +41,8 @@
             <RadioButton Style="{StaticResource ModernSidebarRadioButton}" GroupName="SettingSideBar"
                          Command="{Binding PlotPageCommand}">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="&#xe66f;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="18" VerticalAlignment="Center" Margin="0,0,12,0"/>
-                    <TextBlock Text="{Binding [PlotSetting],Source={x:Static lg:LanguageService.Instance}}" FontSize="14" VerticalAlignment="Center"/>
+                    <ContentControl Style="{StaticResource LineIconStyle}" Tag="{StaticResource GeoIcon.Plot}" Margin="0,0,10,0"/>
+                    <TextBlock Text="{Binding [PlotSetting],Source={x:Static lg:LanguageService.Instance}}" FontSize="13" VerticalAlignment="Center"/>
                 </StackPanel>
             </RadioButton>
 
@@ -45,8 +50,17 @@
             <RadioButton Style="{StaticResource ModernSidebarRadioButton}" GroupName="SettingSideBar"
                          Command="{Binding GeothermometerPageCommand}">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="&#xe634;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="18" VerticalAlignment="Center" Margin="0,0,12,0"/>
-                    <TextBlock Text="{Binding [GeothermometerSetting],Source={x:Static lg:LanguageService.Instance}, FallbackValue=地质温压计设置}" FontSize="14" VerticalAlignment="Center"/>
+                    <ContentControl Style="{StaticResource LineIconStyle}" Tag="{StaticResource GeoIcon.Thermo}" Margin="0,0,10,0"/>
+                    <TextBlock Text="{Binding [GeothermometerSetting],Source={x:Static lg:LanguageService.Instance}, FallbackValue=地质温压计设置}" FontSize="13" VerticalAlignment="Center"/>
+                </StackPanel>
+            </RadioButton>
+
+            <!--EPMA settings-->
+            <RadioButton Style="{StaticResource ModernSidebarRadioButton}" GroupName="SettingSideBar"
+                         Command="{Binding EpmaPageCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <ContentControl Style="{StaticResource LineIconStyle}" Tag="{StaticResource GeoIcon.Epma}" Margin="0,0,10,0"/>
+                    <TextBlock Text="{Binding [epma_setting],Source={x:Static lg:LanguageService.Instance}, FallbackValue=EPMA设置}" FontSize="13" VerticalAlignment="Center"/>
                 </StackPanel>
             </RadioButton>
 
@@ -54,8 +68,8 @@
             <RadioButton Style="{StaticResource ModernSidebarRadioButton}" GroupName="SettingSideBar"
                          Command="{Binding ShortcutPageCommand}">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="&#xE765;" FontFamily="Segoe MDL2 Assets" FontSize="18" VerticalAlignment="Center" Margin="0,0,12,0"/>
-                    <TextBlock Text="{Binding [shortcuts_title],Source={x:Static lg:LanguageService.Instance}, FallbackValue=快捷键}" FontSize="14" VerticalAlignment="Center"/>
+                    <ContentControl Style="{StaticResource LineIconStyle}" Tag="{StaticResource GeoIcon.Shortcuts}" Margin="0,0,10,0"/>
+                    <TextBlock Text="{Binding [shortcuts_title],Source={x:Static lg:LanguageService.Instance}, FallbackValue=快捷键}" FontSize="13" VerticalAlignment="Center"/>
                 </StackPanel>
             </RadioButton>
 
@@ -63,15 +77,15 @@
             <RadioButton Style="{StaticResource ModernSidebarRadioButton}" GroupName="SettingSideBar"
                          Command="{Binding AboutPageCommand}">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="&#xe61d;" FontFamily="pack://application:,,,/GeoChemistryNexus;component/Data/Icon/#iconfont" FontSize="18" VerticalAlignment="Center" Margin="0,0,12,0"/>
-                    <TextBlock Text="{Binding [About],Source={x:Static lg:LanguageService.Instance}}" FontSize="14" VerticalAlignment="Center"/>
+                    <ContentControl Style="{StaticResource LineIconStyle}" Tag="{StaticResource GeoIcon.About}" Margin="0,0,10,0"/>
+                    <TextBlock Text="{Binding [About],Source={x:Static lg:LanguageService.Instance}}" FontSize="13" VerticalAlignment="Center"/>
                 </StackPanel>
             </RadioButton>
         </StackPanel>
     </Border>
 
     <!-- Content Area -->
-    <Grid Grid.Column="1" Background="#F5F5F7">
+    <Grid Grid.Row="1" Grid.Column="1" Background="#F5F5F7">
         <Frame Name="SettingNav" NavigationUIVisibility="Hidden" BorderThickness="0"/>
     </Grid>
 

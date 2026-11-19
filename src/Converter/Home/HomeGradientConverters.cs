@@ -1,3 +1,4 @@
+using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -27,34 +28,16 @@ namespace GeoChemistryNexus.Converter
     }
 
     /// <summary>
-    /// 公告装饰图形缩放：按卡片短边相对原型高度（236）同比缩小。
+    /// 公告浅色背景：与 <see cref="AnnouncementThemeToBrushConverter"/> 同色系，但整体偏浅，配深色文字使用。
     /// </summary>
-    public class AnnouncementDecorScaleConverter : IValueConverter
-    {
-        public const double ReferenceHeight = 236d;
-
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            double height = value is double actual && actual > 1 ? actual : 150d;
-            return height / ReferenceHeight;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-            => throw new NotSupportedException();
-    }
-
-    /// <summary>
-    /// 只显示与 ConverterParameter 相同的已知多边形样式。未知样式不会到达这里。
-    /// </summary>
-    public class AnnouncementPolygonVisibilityConverter : IValueConverter
+    public class AnnouncementLightThemeToBrushConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            string current = value as string ?? string.Empty;
-            string expected = parameter as string ?? string.Empty;
-            return string.Equals(current, expected, StringComparison.OrdinalIgnoreCase)
-                ? Visibility.Visible
-                : Visibility.Collapsed;
+            if (value is HomeAnnouncementDisplayViewModel announcement)
+                return AnnouncementBrushes.CreateLight(announcement.ThemeKey, announcement.BackgroundColor);
+
+            return AnnouncementBrushes.CreateLight(value as string, null);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -102,8 +85,50 @@ namespace GeoChemistryNexus.Converter
             if (TryParseColor(colorHex, out Color color))
                 return CreateGradient(Darken(color, 0.30), color, Lighten(color, 0.42));
 
-            string key = string.IsNullOrWhiteSpace(theme) ? "blue" : theme;
-            return Themes.TryGetValue(key, out Brush? brush) && brush != null ? brush : Themes["blue"];
+            // 未指定预设主题：跟随软件当前主题色
+            if (string.IsNullOrWhiteSpace(theme))
+            {
+                Color mid = AppThemeHelper.LightAccentColor;
+                return CreateGradient(AppThemeHelper.AccentColor, mid, Lighten(mid, 0.45));
+            }
+
+            return Themes.TryGetValue(theme, out Brush? brush) && brush != null ? brush : Themes["blue"];
+        }
+
+        /// <summary>
+        /// 浅色版渐变：取预设主题（或自定义色）的中间色大幅提亮，左上略深、右下更浅。
+        /// </summary>
+        public static Brush CreateLight(string? theme, string? colorHex)
+        {
+            Color baseColor;
+            if (!TryParseColor(colorHex, out baseColor))
+            {
+                if (string.IsNullOrWhiteSpace(theme))
+                {
+                    // 未指定预设主题：跟随软件当前主题色
+                    baseColor = AppThemeHelper.LightAccentColor;
+                }
+                else
+                {
+                    var entry = Palette.FirstOrDefault(p => string.Equals(p.Key, theme, StringComparison.OrdinalIgnoreCase));
+                    if (entry.Key == null)
+                        entry = Palette[0];
+                    baseColor = (Color)ColorConverter.ConvertFromString(entry.Mid);
+                }
+            }
+
+            var brush = new LinearGradientBrush
+            {
+                StartPoint = new Point(0, 0),
+                EndPoint = new Point(1, 1),
+                GradientStops = new GradientStopCollection
+                {
+                    new GradientStop(Lighten(baseColor, 0.90), 0),
+                    new GradientStop(Lighten(baseColor, 0.76), 1),
+                }
+            };
+            brush.Freeze();
+            return brush;
         }
 
         private static bool TryParseColor(string? value, out Color color)

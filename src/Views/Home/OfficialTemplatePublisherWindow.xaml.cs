@@ -2,18 +2,19 @@ using GeoChemistryNexus.Helpers;
 using GeoChemistryNexus.Services;
 using GeoChemistryNexus.ViewModels;
 using System;
-using System.Collections.ObjectModel;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
 namespace GeoChemistryNexus.Views
 {
-    public partial class OfficialTemplatePublisherWindow : Window
+    public partial class OfficialTemplatePublisherWindow : Widgets.WidgetWindow, INotificationCenterHost
     {
-        public ObservableCollection<NotificationViewModel> LocalNotifications { get; } = new();
+        /// <summary>
+        /// 本窗口独立的通知中心（由 XAML 中的 NotificationHost 呈现）。
+        /// </summary>
+        public NotificationCenter Notifications { get; } = new();
 
-        private readonly CancellationTokenSource _notificationCts = new();
+        private readonly OfficialTemplatePublisherViewModel _viewModel;
 
         public OfficialTemplatePublisherWindow()
         {
@@ -21,9 +22,10 @@ namespace GeoChemistryNexus.Views
             UiScaleHelper.Attach(this);
             WindowActivationHelper.AttachOwnerFocusPreservation(this);
 
-            Title = LanguageService.Instance["official_template_publisher"];
+            Title = "官方发布器";
 
             var viewModel = new OfficialTemplatePublisherViewModel();
+            _viewModel = viewModel;
             PublisherWidget.DataContext = viewModel;
             viewModel.ShowSuccessMessage = ShowSuccessMessage;
             viewModel.ShowWarningMessage = ShowWarningMessage;
@@ -37,73 +39,21 @@ namespace GeoChemistryNexus.Views
             viewModel.OwnerWindow = this;
         }
 
-        public void ShowSuccessMessage(string message) =>
-            ShowLocalNotification(
-                LanguageService.Instance["notification_success"] ?? "Success",
-                message,
-                NotificationType.Success,
-                MessageHelper.WaitTime);
+        public void ShowSuccessMessage(string message) => Notifications.Success(message);
 
-        public void ShowWarningMessage(string message) =>
-            ShowLocalNotification(
-                LanguageService.Instance["notification_warning"] ?? "Warning",
-                message,
-                NotificationType.Warning);
+        public void ShowWarningMessage(string message) => Notifications.Warning(message);
 
-        public void ShowErrorMessage(string message) =>
-            ShowLocalNotification(
-                LanguageService.Instance["error"] ?? "Error",
-                message,
-                NotificationType.Error);
+        public void ShowErrorMessage(string message) => Notifications.Error(message);
 
-        public Task<bool> ShowConfirmDialogAsync(string title, string message, string confirmText, string cancelText)
-        {
-            var tcs = new TaskCompletionSource<bool>();
-            Dispatcher.Invoke(() =>
-            {
-                var vm = new NotificationViewModel(title, message, NotificationType.Info, RemoveNotification)
-                {
-                    IsInteractive = true,
-                    ConfirmText = confirmText,
-                    CancelText = cancelText,
-                    DialogResultAction = result => tcs.TrySetResult(result)
-                };
-                LocalNotifications.Add(vm);
-            });
-            return tcs.Task;
-        }
-
-        private void ShowLocalNotification(string title, string message, NotificationType type, int durationSeconds = 0)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                var vm = new NotificationViewModel(title, message, type, RemoveNotification);
-                LocalNotifications.Add(vm);
-                if (durationSeconds > 0)
-                {
-                    LocalNotificationDelay.Schedule(
-                        Dispatcher,
-                        durationSeconds,
-                        _notificationCts.Token,
-                        async () => await vm.Close());
-                }
-            });
-        }
+        public Task<bool> ShowConfirmDialogAsync(string title, string message, string confirmText, string cancelText) =>
+            Notifications.ShowDialogAsync(title, message, confirmText, cancelText);
 
         protected override void OnClosed(EventArgs e)
         {
-            _notificationCts.Cancel();
-            _notificationCts.Dispose();
+            // 编辑后 0.8 秒内就关窗口时，待保存的草稿也要落盘
+            _viewModel.FlushPendingDrafts();
+            Notifications.Dispose();
             base.OnClosed(e);
-        }
-
-        private void RemoveNotification(NotificationViewModel vm)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                if (LocalNotifications.Contains(vm))
-                    LocalNotifications.Remove(vm);
-            });
         }
     }
 }

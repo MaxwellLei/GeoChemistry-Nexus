@@ -8,7 +8,7 @@ namespace GeoChemistryNexus.Helpers
     /// </summary>
     public static class GeoTSidebarStateHelper
     {
-        private const string ConfigKey = "geot_sidebar_state";
+        private const string ConfigKey = ConfigKeys.GeotSidebarState;
 
         public static GeoTSidebarState Load()
         {

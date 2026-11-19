@@ -1,19 +1,18 @@
-<Page x:Class="GeoChemistryNexus.Views.SGeothermometerPageView"
+﻿<Page x:Class="GeoChemistryNexus.Views.SGeothermometerPageView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:lg="clr-namespace:GeoChemistryNexus.Services"
-      xmlns:hc="https://handyorg.github.io/handycontrol"
       xmlns:local="clr-namespace:GeoChemistryNexus.Views"
       mc:Ignorable="d" 
       d:DesignHeight="800" d:DesignWidth="600"
       Title="SGeothermometerPageView"
-      UseLayoutRounding="True" TextOptions.TextFormattingMode="Display">
+      UseLayoutRounding="True" TextOptions.TextFormattingMode="{DynamicResource AppTextFormattingMode}">
 
     <Grid>
-        <hc:ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-            <StackPanel Margin="20,20,20,40" MaxWidth="800" HorizontalAlignment="Stretch">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Margin="75,20,75,40" MaxWidth="800" HorizontalAlignment="Stretch">
 
                 <!-- VERSION INFO -->
                 <TextBlock Text="{Binding [geo_field_version],Source={x:Static lg:LanguageService.Instance}, FallbackValue=版本}" Style="{StaticResource ModernSettingsGroupTitle}"/>
@@ -26,11 +25,11 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
-                                <TextBlock Text="{Binding [geo_current_app_format_version],Source={x:Static lg:LanguageService.Instance}, FallbackValue=当前软件温压计版本}" FontSize="14"/>
+                                <TextBlock Text="{Binding [geo_current_app_format_version],Source={x:Static lg:LanguageService.Instance}, FallbackValue=当前软件温压计版本}" FontSize="13"/>
                                 <TextBlock Text="{Binding [geo_current_app_format_version_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=当前软件支持的地质温压计模板格式版本（只读）}" Style="{StaticResource ModernSettingsItemHintStyle}"/>
                             </StackPanel>
                             <TextBlock Grid.Column="1" Text="{Binding CurrentGeothermometerVersion}" VerticalAlignment="Center"
-                                       FontSize="14" Foreground="Gray" HorizontalAlignment="Right"/>
+                                       FontSize="13" Foreground="Gray" HorizontalAlignment="Right"/>
                         </Grid>
                     </StackPanel>
                 </Border>
@@ -46,7 +45,7 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
-                                <TextBlock Text="{Binding [default_worksheet_row_count],Source={x:Static lg:LanguageService.Instance}, FallbackValue=默认初始表格行数}" FontSize="14"/>
+                                <TextBlock Text="{Binding [default_worksheet_row_count],Source={x:Static lg:LanguageService.Instance}, FallbackValue=默认初始表格行数}" FontSize="13"/>
                                 <TextBlock Text="{Binding [default_worksheet_row_count_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=新建或重置数据表格时的默认初始行数}" Style="{StaticResource ModernSettingsItemHintStyle}"/>
                             </StackPanel>
                             <ComboBox ItemsSource="{Binding DefaultWorksheetRowCounts}"
@@ -72,7 +71,7 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
-                                <TextBlock Text="{Binding [auto_check_geothermometer_updates],Source={x:Static lg:LanguageService.Instance}, FallbackValue=自动检查地质温压计更新}" FontSize="14"/>
+                                <TextBlock Text="{Binding [auto_check_geothermometer_updates],Source={x:Static lg:LanguageService.Instance}, FallbackValue=自动检查地质温压计更新}" FontSize="13"/>
                                 <TextBlock Text="{Binding [auto_check_geothermometer_updates_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=启动时自动检查地质温压计是否有更新}" Style="{StaticResource ModernSettingsItemHintStyle}"/>
                             </StackPanel>
                             <ToggleButton IsChecked="{Binding AutoCheckGtmUpdate}" Grid.Column="1" Style="{StaticResource ToggleButtonSwitch}" VerticalAlignment="Center"/>
@@ -92,7 +91,7 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
-                                    <TextBlock Text="{Binding [reset_geothermometer_database],Source={x:Static lg:LanguageService.Instance}, FallbackValue=重置地质温压计数据库}" FontSize="14"/>
+                                    <TextBlock Text="{Binding [reset_geothermometer_database],Source={x:Static lg:LanguageService.Instance}, FallbackValue=重置地质温压计数据库}" FontSize="13"/>
                                     <TextBlock Text="{Binding [reset_geothermometer_database_hint],Source={x:Static lg:LanguageService.Instance}, FallbackValue=清空本地地质温压计模板数据库}" Style="{StaticResource ModernSettingsItemHintStyle}"/>
                                 </StackPanel>
                                 <Button Content="{Binding [clear],Source={x:Static lg:LanguageService.Instance}, FallbackValue=清空}"
@@ -105,6 +104,6 @@
                 </StackPanel>
 
             </StackPanel>
-        </hc:ScrollViewer>
+        </ScrollViewer>
     </Grid>
 </Page>

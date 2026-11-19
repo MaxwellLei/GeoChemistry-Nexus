@@ -44,12 +44,10 @@ namespace GeoChemistryNexus.ViewModels
         {
             isLoading = true;
 
-            IsDeveloperMode = bool.TryParse(ConfigHelper.GetConfig("developer_mode"), out bool devMode) && devMode;
+            IsDeveloperMode = bool.TryParse(ConfigHelper.GetConfig(ConfigKeys.DeveloperMode), out bool devMode) && devMode;
 
-            if (bool.TryParse(ConfigHelper.GetConfig("auto_check_gtm_update"), out bool checkGtm))
-            {
-                AutoCheckGtmUpdate = checkGtm;
-            }
+            // 配置缺失时默认开启，与图解、EPMA 保持一致
+            AutoCheckGtmUpdate = !bool.TryParse(ConfigHelper.GetConfig(ConfigKeys.AutoCheckGtmUpdate), out bool checkGtm) || checkGtm;
 
             DefaultWorksheetRowCount = WorksheetDefaultsHelper.GetDefaultRowCount(WorksheetDefaultsHelper.GtmConfigKey);
 
@@ -59,7 +57,7 @@ namespace GeoChemistryNexus.ViewModels
         partial void OnAutoCheckGtmUpdateChanged(bool value)
         {
             if (isLoading) return;
-            ConfigHelper.SetConfig("auto_check_gtm_update", value.ToString());
+            ConfigHelper.SetConfig(ConfigKeys.AutoCheckGtmUpdate, value.ToString());
             MessageHelper.Success(LanguageService.Instance["ModifedSuccess"]);
         }
 

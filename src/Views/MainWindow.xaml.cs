@@ -34,8 +34,11 @@ namespace GeoChemistryNexus
     /// <summary>
     /// 主窗体,啥也不是
     /// </summary>
-    public partial class MainWindow
+    public partial class MainWindow : INotificationCenterHost
     {
+        /// <summary>主窗口通知中心，与右下角通知区绑定的是同一个实例。</summary>
+        public NotificationCenter Notifications => NotificationManager.Instance;
+
         #region Win32 API for Window Message Handling
         private const int WM_GETMINMAXINFO = 0x0024;
         private const int WM_WINDOWPOSCHANGING = 0x0046;
@@ -112,10 +115,11 @@ namespace GeoChemistryNexus
         }
         #endregion
 
-        private DateTime _lastClickTime = DateTime.MinValue;
-        private const int DoubleClickMilliseconds = 500; // 双击的时间窗口
         private IntPtr _lastMonitorHandle = IntPtr.Zero;
         private bool _isApplyingAdaptiveWindowSize;
+
+        /// <summary>首帧渲染前为 false：此阶段 DPI 变化时把系统建议矩形改为正中。</summary>
+        private bool _startupCentered;
 
         public MainWindow()
         {
@@ -130,6 +134,9 @@ namespace GeoChemistryNexus
             this.LocationChanged += MainWindow_LocationChanged;
             this.DpiChanged += MainWindow_DpiChanged;
             this.Loaded += MainWindow_Loaded;
+            this.ContentRendered += MainWindow_ContentRendered;
+            // handledEventsToo：输入法或控件抢先标记 Handled 时仍要收到 Ctrl+,
+            AddHandler(PreviewKeyDownEvent, new KeyEventHandler(MainWindow_PreviewKeyDown), handledEventsToo: true);
 
             // 高分屏 UI 自适应缩放（Auto 跟当前显示器；设置可覆盖）
             UiScaleHelper.Attach(this);
@@ -137,6 +144,51 @@ namespace GeoChemistryNexus
             {
                 Dispatcher.BeginInvoke(new Action(ApplyAdaptiveWindowSizeForCurrentMonitor));
             });
+        }
+
+        /// <summary>
+        /// 全局快捷键：Ctrl+, 打开设置页（仅转发给 ViewModel 命令）。
+        /// 中文输入法下 e.Key 通常是 ImeProcessed，真实按键在 ImeProcessedKey，不能只比较 OemComma。
+        /// </summary>
+        private void MainWindow_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (!IsCtrlComma(e) || NotificationManager.Instance.IsModal)
+                return;
+
+            if (DataContext is MainWindowViewModel vm && vm.OpenSettingsByShortcutCommand.CanExecute(MyNav))
+            {
+                vm.OpenSettingsByShortcutCommand.Execute(MyNav);
+                e.Handled = true;
+            }
+        }
+
+        /// <summary>
+        /// 仅 Ctrl（不含 Shift / Alt / Win）时，当前键是否为逗号。
+        /// </summary>
+        private static bool IsCtrlComma(KeyEventArgs e)
+        {
+            if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift)
+                || Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)
+                || Keyboard.IsKeyDown(Key.LWin) || Keyboard.IsKeyDown(Key.RWin))
+                return false;
+
+            if (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Keyboard.IsKeyDown(Key.RightCtrl))
+                return false;
+
+            var key = e.Key switch
+            {
+                Key.ImeProcessed when e.ImeProcessedKey != Key.None => e.ImeProcessedKey,
+                Key.DeadCharProcessed when e.DeadCharProcessedKey != Key.None => e.DeadCharProcessedKey,
+                Key.System when e.SystemKey != Key.None => e.SystemKey,
+                _ => e.Key
+            };
+
+            if (key == Key.OemComma)
+                return true;
+
+            // 输入法把键值藏起来时，事件不再是 OemComma，但逗号键仍处于按下状态
+            return (key is Key.None or Key.ImeProcessed or Key.DeadCharProcessed or Key.System)
+                && Keyboard.IsKeyDown(Key.OemComma);
         }
 
         private void ApplyAdaptiveWindowSizeForCurrentMonitor()
@@ -157,6 +209,28 @@ namespace GeoChemistryNexus
             }
         }
 
+        /// <summary>
+        /// 首次渲染后（DPI 变化已处理完毕）按物理像素把窗口精确居中，仅执行一次。
+        /// </summary>
+        private void MainWindow_ContentRendered(object? sender, EventArgs e)
+        {
+            ContentRendered -= MainWindow_ContentRendered;
+            _startupCentered = true;
+
+            // 兜底校正：正常情况下窗口已在正中，这里不会产生移动
+            _isApplyingAdaptiveWindowSize = true;
+            try
+            {
+                WindowSizeHelper.CenterInWorkAreaPixels(this, preferCursorMonitor: true);
+            }
+            finally
+            {
+                _isApplyingAdaptiveWindowSize = false;
+            }
+
+            _lastMonitorHandle = GetCurrentMonitorHandle();
+        }
+
         private async void MainWindow_Loaded(object? sender, RoutedEventArgs e)
         {
             UpdateMaxSizeFromCurrentMonitor();
@@ -165,7 +239,7 @@ namespace GeoChemistryNexus
         }
 
         /// <summary>
-        /// 处理安装器文件关联传入的 .gndiag / .gngtm：二次确认后导航到对应模块并导入。
+        /// 处理启动参数传入的图解或温压计包：二次确认后导航到对应模块并导入。
         /// </summary>
         public async Task TryOpenAssociatedPackageAsync(string? filePath)
         {
@@ -248,7 +322,8 @@ namespace GeoChemistryNexus
 
         private void MainWindow_LocationChanged(object? sender, EventArgs e)
         {
-            if (_isApplyingAdaptiveWindowSize)
+            // 启动阶段位置/尺寸已由 SourceInitialized 与 WM_DPICHANGED 钩子确定，不再二次调整
+            if (_isApplyingAdaptiveWindowSize || !_startupCentered)
                 return;
 
             // 跨屏拖动时：先刷新 UI 缩放，再按新屏推荐尺寸调整窗口
@@ -262,6 +337,10 @@ namespace GeoChemistryNexus
 
         private void MainWindow_DpiChanged(object? sender, DpiChangedEventArgs e)
         {
+            // 启动阶段 DIP 尺寸已按目标显示器 DPI 算好，系统缩放建议矩形会保持该 DIP 尺寸，无需再调整
+            if (!_startupCentered)
+                return;
+
             ApplyAdaptiveWindowSizeForCurrentMonitor();
         }
 
@@ -283,6 +362,8 @@ namespace GeoChemistryNexus
                 WindowSizeHelper.ApplyAdaptiveSize(this, centerInWorkArea: true, preferCursorMonitor: true);
                 UiScaleHelper.Apply(this);
                 WindowSizeHelper.ApplyAdaptiveSizePreservingCenter(this);
+                // 最后按物理像素精确居中（此时 DPI 变化通常已处理完毕）
+                WindowSizeHelper.CenterInWorkAreaPixels(this, preferCursorMonitor: true);
             }
             finally
             {
@@ -395,6 +476,11 @@ namespace GeoChemistryNexus
                 return false;
 
             _lastMonitorHandle = monitor;
+
+            // 按目标显示器自身 DPI 换算，避免启动时窗口 DPI 尚未更新导致 MaxWidth/MaxHeight 偏小而挤压窗口
+            if (WindowSizeHelper.TryGetWorkAreaDip(this, out workAreaDip))
+                return true;
+
             var work = monitorInfo.rcWork;
 
             var source = PresentationSource.FromVisual(this);
@@ -416,6 +502,10 @@ namespace GeoChemistryNexus
         /// </summary>
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
+            // 启动阶段移动到不同缩放的显示器时，把系统建议矩形改为正中（不标记已处理，WPF 会采用修改后的矩形）
+            if (msg == WindowSizeHelper.WmDpiChanged && !_startupCentered)
+                WindowSizeHelper.CenterDpiSuggestedRect(lParam, preferCursorMonitor: true);
+
             if (msg == WM_GETMINMAXINFO)
             {
                 // 用窗口中心点取显示器，避免最大化过程中 MonitorFromWindow 偶发回到主屏
@@ -514,7 +604,7 @@ namespace GeoChemistryNexus
         //窗体关闭触发
         private void Window_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (ConfigHelper.GetConfig("exit_program_mode") == "0")
+            if (ConfigHelper.GetConfig(ConfigKeys.ExitProgramMode) == "0")
             {
                 // 将窗口隐藏并最小化到托盘
                 e.Cancel = true;
@@ -528,33 +618,6 @@ namespace GeoChemistryNexus
         {
             // 关闭应用程序
             System.Windows.Application.Current.Shutdown();
-        }
-
-        /// <summary>
-        /// 标题栏鼠标左键按下事件处理
-        /// </summary>
-        private void TitleBar_MouseLeftButtonDown(object? sender, MouseButtonEventArgs e)
-        {
-            var now = DateTime.Now;
-            var timeSinceLastClick = (now - _lastClickTime).TotalMilliseconds;
-            _lastClickTime = now;
-
-            // 如果是双击（两次点击间隔小于阈值），触发最大化按钮的命令
-            if (timeSinceLastClick < DoubleClickMilliseconds && timeSinceLastClick > 0)
-            {
-                // 直接触发最大化按钮的命令，确保效果完全一致
-                if (MaximizeButton.Command != null && MaximizeButton.Command.CanExecute(MaximizeButton.CommandParameter))
-                {
-                    MaximizeButton.Command.Execute(MaximizeButton.CommandParameter);
-                }
-                return;
-            }
-
-            // 单击时执行拖动命令
-            if (this.DataContext is MainWindowViewModel viewModel)
-            {
-                viewModel.MoveWindowCommand.Execute(this);
-            }
         }
     }
 }
